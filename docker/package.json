@@ -1,0 +1,25 @@
+{
+    "name": "@pulumi/docker",
+    "version": "${VERSION}",
+    "license": "Apache 2.0",
+    "description": "Pulumi's Docker helper library",
+    "keywords": [
+        "pulumi",
+        "docker"
+    ],
+    "homepage": "https://pulumi.io",
+    "repository": "https://github.com/pulumi/pulumi-docker",
+    "dependencies": {
+        "@pulumi/pulumi": "^0.14.3-dev-1531359233-gd79dbdce",
+        "mime": "^2.0.3",
+        "semver": "^5.4.0"
+    },
+    "devDependencies": {
+        "@types/aws-sdk": "^2.7.0",
+        "@types/mime": "^2.0.0",
+        "@types/node": "^8.0.26",
+        "@types/semver": "^5.4.0",
+        "tslint": "^5.7.0",
+        "typescript": "^2.6.2"
+    }
+}
