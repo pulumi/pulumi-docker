@@ -34,11 +34,58 @@ interface BuildResult {
     stages: string[];
 }
 
+/**
+ * CacheFrom may be used to specify build stages to use for the Docker build cache. The final image
+ * is always implicitly included.
+ */
+export interface CacheFrom {
+    /**
+     * An optional list of build stages to use for caching. Each build stage in this list will be
+     * built explicitly and pushed to the target repository. A given stage's image will be tagged as
+     * "[stage-name]".
+     */
+    stages?: string[];
+}
+
+/**
+ * DockerBuild may be used to specify detailed instructions about how to build a container.
+ */
+export interface DockerBuild {
+    /**
+     * context is a path to a directory to use for the Docker build context, usually the directory
+     * in which the Dockerfile resides (although dockerfile may be used to choose a custom location
+     * independent of this choice). If not specified, the context defaults to the current working
+     * directory; if a relative path is used, it is relative to the current working directory that
+     * Pulumi is evaluating.
+     */
+    context?: string;
+    /**
+     * dockerfile may be used to override the default Dockerfile name and/or location.  By default,
+     * it is assumed to be a file named Dockerfile in the root of the build context.
+     */
+    dockerfile?: string;
+    /**
+     * An optional map of named build-time argument variables to set during the Docker build.  This
+     * flag allows you to pass built-time variables that can be accessed like environment variables
+     * inside the `RUN` instruction.
+     */
+    args?: {
+        [key: string]: string;
+    };
+    /**
+     * An optional CacheFrom object with information about the build stages to use for the Docker
+     * build cache. This parameter maps to the --cache-from argument to the Docker CLI. If this
+     * parameter is `true`, only the final image will be pulled and passed to --cache-from; if it is
+     * a CacheFrom object, the stages named therein will also be pulled and passed to --cache-from.
+     */
+    cacheFrom?: boolean | CacheFrom;
+}
+
 // buildAndPushImage will build and push the Dockerfile and context from [buildPath] into the requested ECR
 // [repository].  It returns the digest of the built image.
 export function buildAndPushImage(
     imageName: string,
-    container: cloud.Container,
+    pathOrBuild: string | DockerBuild,
     repositoryUrl: pulumi.Input<string>,
     logResource: pulumi.Resource,
     connectToRegistry: () => Promise<Registry>): pulumi.Output<string> {
@@ -54,19 +101,19 @@ export function buildAndPushImage(
 
     // If the container specified a cacheFrom parameter, first set up the cached stages.
     let cacheFrom: Promise<string[] | undefined>;
-    if (typeof container.build !== "string" && container.build && container.build.cacheFrom) {
+    if (typeof pathOrBuild !== "string" && pathOrBuild && pathOrBuild.cacheFrom) {
         // NOTE: we pull the promise out of the repository URL s.t. we can observe whether or not it exists. Were we
         // to instead hang an apply off of the raw Input<>, we would never end up running the pull if the repository
         // had not yet been created.
         const repoUrl = (<any>pulumi.output(repositoryUrl)).promise();
-        const cacheFromParam = typeof container.build.cacheFrom === "boolean" ? {} : container.build.cacheFrom;
+        const cacheFromParam = typeof pathOrBuild.cacheFrom === "boolean" ? {} : pathOrBuild.cacheFrom;
         cacheFrom = pullCacheAsync(imageName, cacheFromParam, login, repoUrl, logResource);
     } else {
         cacheFrom = Promise.resolve(undefined);
     }
 
     // First build the image.
-    const buildResult = buildImageAsync(imageName, container, logResource, cacheFrom);
+    const buildResult = buildImageAsync(imageName, pathOrBuild, logResource, cacheFrom);
 
     // Then collect its output digest as well as the repo url and repo registry id.
     const outputs = pulumi.all([buildResult, repositoryUrl]);
@@ -92,7 +139,7 @@ export function buildAndPushImage(
 
 async function pullCacheAsync(
     imageName: string,
-    cacheFrom: cloud.CacheFrom,
+    cacheFrom: CacheFrom,
     login: () => Promise<void>,
     repositoryUrl: Promise<string>,
     logResource: pulumi.Resource): Promise<string[] | undefined> {
@@ -130,17 +177,17 @@ function localStageImageName(imageName: string, stage: string): string {
 
 async function buildImageAsync(
     imageName: string,
-    container: cloud.Container,
+    pathOrBuild: string | DockerBuild,
     logResource: pulumi.Resource,
     cacheFrom: Promise<string[] | undefined>): Promise<BuildResult> {
 
-    let build: cloud.ContainerBuild;
-    if (typeof container.build === "string") {
+    let build: DockerBuild;
+    if (typeof pathOrBuild === "string") {
         build = {
-            context: container.build,
+            context: pathOrBuild,
         };
-    } else if (container.build) {
-        build = container.build;
+    } else if (pathOrBuild) {
+        build = pathOrBuild;
     } else {
         throw new RunError(`Cannot build a container with an empty build specification`);
     }
@@ -210,7 +257,7 @@ async function buildImageAsync(
 
 async function dockerBuild(
     imageName: string,
-    build: cloud.ContainerBuild,
+    build: DockerBuild,
     cacheFrom: Promise<string[] | undefined>,
     logResource: pulumi.Resource,
     target?: string): Promise<void> {
