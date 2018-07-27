@@ -35,5 +35,4 @@ publish() {
     popd
 }
 
-publish api
-publish aws
+publish docker
