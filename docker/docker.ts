@@ -206,8 +206,10 @@ async function buildImageAsync(
     // Verify that 'docker' is on the PATH and get the client/server versions
     if (!cachedDockerVersionString) {
         try {
+            // Get the version of docker, but do not forward the output of this command this to the
+            // CLI to show the user.
             const versionResult = await runCLICommand(
-                "docker", ["version", "-f", "{{json .}}"], logResource);
+                "docker", ["version", "-f", "{{json .}}"], /*resourceOpt*/ undefined);
             // IDEA: In the future we could warn here on out-of-date versions of Docker which may not support key
             // features we want to use.
             cachedDockerVersionString = versionResult.stdout;
@@ -241,9 +243,11 @@ async function buildImageAsync(
     // Invoke Docker CLI commands to build.
     await dockerBuild(imageName, build, cacheFrom, logResource);
 
-    // Finally, inspect the image so we can return the SHA digest.
+    // Finally, inspect the image so we can return the SHA digest. Do not forward the output of this
+    // command this to the CLI to show the user.
+
     const inspectResult = await runCLICommand(
-        "docker", ["image", "inspect", "-f", "{{.Id}}", imageName], logResource);
+        "docker", ["image", "inspect", "-f", "{{.Id}}", imageName], /*resourceOpt*/ undefined);
     if (inspectResult.code || !inspectResult.stdout) {
         throw new RunError(
             `No digest available for image ${imageName}: ${inspectResult.code} -- ${inspectResult.stdout}`);
@@ -350,14 +354,18 @@ interface CommandResult {
     stdout?: string;
 }
 
-// Runs a CLI command in a child process, returning a promise for the process's exit.
-// Both stdout and stderr are redirected to process.stdout and process.stder by default.
-// If the [returnStdout] argument is `true`, stdout is not redirected and is instead returned with the promise.
+// Runs a CLI command in a child process, returning a promise for the process's exit. Both stdout
+// and stderr are redirected to process.stdout and process.stder by default.
+//
 // If the [stdin] argument is defined, it's contents are piped into stdin for the child process.
+//
+// [resourceOpt] is used to specify the resource to associate command output with.  If present,
+// command output will be sent to the CLI, associated with that resource, to show the user. If it is
+// not provided, any output by the command will not be presented to the user.
 async function runCLICommand(
     cmd: string,
     args: string[],
-    resource: pulumi.Resource,
+    resourceOpt: pulumi.Resource | undefined,
     stdin?: string): Promise<CommandResult> {
 
     // Generate a unique stream-ID that we'll associate all the docker output with. This will allow
@@ -382,7 +390,9 @@ async function runCLICommand(
         // We store the results from stdout in memory and will return them as a string.
         const chunks: Buffer[] = [];
         p.stdout.on("data", (chunk: Buffer) => {
-            pulumi.log.info(chunk.toString(), resource, streamID);
+            if (resourceOpt) {
+                pulumi.log.info(chunk.toString(), resourceOpt, streamID);
+            }
             chunks.push(chunk);
         });
         p.stdout.on("end", () => {
