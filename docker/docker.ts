@@ -78,18 +78,7 @@ export interface DockerBuild {
 
 // buildAndPushImage will build and push the Dockerfile and context from [buildPath] into the requested ECR
 // [repository].  It returns the digest of the built image.
-export function buildAndPushImage(
-    imageName: string,
-    pathOrBuild: string | DockerBuild,
-    repositoryUrl: pulumi.Input<string>,
-    logResource: pulumi.Resource,
-    connectToRegistry: () => Promise<Registry>): pulumi.Output<string> {
-
-    return pulumi.output(repositoryUrl).apply(repoUrl =>
-        buildAndPushImageAsync(imageName, pathOrBuild, repoUrl, logResource, connectToRegistry));
-}
-
-async function buildAndPushImageAsync(
+export async function buildAndPushImage(
     imageName: string,
     pathOrBuild: string | DockerBuild,
     repositoryUrl: string,
