@@ -333,22 +333,6 @@ async function pushImageAsync(
     }
 }
 
-// parseDockerEngineUpdatesFromBuffer extracts messages from the Docker engine
-// that are communicated over the stream returned from a Build or Push
-// operation.
-function parseDockerEngineUpdatesFromBuffer(buffer: Buffer): any[] {
-    const str = buffer.toString();
-    const lines = str.split("\n");
-    const results = [];
-    for (const line of lines) {
-        if (line.length === 0) {
-            continue;
-        }
-        results.push(JSON.parse(line));
-    }
-    return results;
-}
-
 interface CommandResult {
     code: number;
     stdout?: string;
