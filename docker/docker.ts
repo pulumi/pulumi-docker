@@ -295,7 +295,7 @@ async function dockerBuild(
     }
 }
 
-async function loginToRegistry(registry: Registry, logResource: pulumi.Resource) {
+async function loginToRegistry(registry: Registry, logResource: pulumi.Resource): Promise<void> {
     const { registry: registryName, username, password } = registry;
 
     let loginResult: CommandResult;
@@ -313,7 +313,7 @@ async function loginToRegistry(registry: Registry, logResource: pulumi.Resource)
 }
 
 async function pushImageAsync(
-        imageName: string, repositoryUrl: string, logResource: pulumi.Resource, tag?: string) {
+        imageName: string, repositoryUrl: string, logResource: pulumi.Resource, tag?: string): Promise<void> {
 
     // Tag and push the image to the remote repository.
     if (!repositoryUrl) {
