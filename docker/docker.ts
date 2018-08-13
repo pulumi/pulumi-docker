@@ -29,11 +29,6 @@ export interface Registry {
     password: string;
 }
 
-interface BuildResult {
-    digest: string;
-    stages: string[];
-}
-
 /**
  * CacheFrom may be used to specify build stages to use for the Docker build cache. The final image
  * is always implicitly included.
@@ -90,6 +85,17 @@ export function buildAndPushImage(
     logResource: pulumi.Resource,
     connectToRegistry: () => Promise<Registry>): pulumi.Output<string> {
 
+    return pulumi.output(repositoryUrl).apply(repoUrl =>
+        buildAndPushImageAsync(imageName, pathOrBuild, repoUrl, logResource, connectToRegistry));
+}
+
+async function buildAndPushImageAsync(
+    imageName: string,
+    pathOrBuild: string | DockerBuild,
+    repositoryUrl: string,
+    logResource: pulumi.Resource,
+    connectToRegistry: () => Promise<Registry>): Promise<string> {
+
     let loggedIn: Promise<void> | undefined;
     const login = () => {
         if (!loggedIn) {
@@ -105,47 +111,41 @@ export function buildAndPushImage(
         // NOTE: we pull the promise out of the repository URL s.t. we can observe whether or not it exists. Were we
         // to instead hang an apply off of the raw Input<>, we would never end up running the pull if the repository
         // had not yet been created.
-        const repoUrl = (<any>pulumi.output(repositoryUrl)).promise();
         const cacheFromParam = typeof pathOrBuild.cacheFrom === "boolean" ? {} : pathOrBuild.cacheFrom;
-        cacheFrom = pullCacheAsync(imageName, cacheFromParam, login, repoUrl, logResource);
+        cacheFrom = pullCacheAsync(imageName, cacheFromParam, login, repositoryUrl, logResource);
     } else {
         cacheFrom = Promise.resolve(undefined);
     }
 
     // First build the image.
-    const buildResult = buildImageAsync(imageName, pathOrBuild, logResource, cacheFrom);
-
-    // Then collect its output digest as well as the repo url and repo registry id.
-    const outputs = pulumi.all([buildResult, repositoryUrl]);
+    const buildResult = await buildImageAsync(imageName, pathOrBuild, logResource, cacheFrom);
 
     // Use those then push the image.  Then just return the digest as the final result for our caller to use.
-    return outputs.apply(async ([result, url]) => {
-        if (!pulumi.runtime.isDryRun()) {
-            // Only push the image during an update, do not push during a preview, even if digest and url are available
-            // from a previous update.
-            await login();
+    if (!pulumi.runtime.isDryRun()) {
+        // Only push the image during an update, do not push during a preview, even if digest and url are available
+        // from a previous update.
+        await login();
 
-            // Push the final image first, then push the stage images to use for caching.
-            await pushImageAsync(imageName, url, logResource);
+        // Push the final image first, then push the stage images to use for caching.
+        await pushImageAsync(imageName, repositoryUrl, logResource);
 
-            for (const stage of result.stages) {
-                await pushImageAsync(
-                    localStageImageName(imageName, stage), url, logResource, stage);
-            }
+        for (const stage of buildResult.stages) {
+            await pushImageAsync(
+                localStageImageName(imageName, stage), repositoryUrl, logResource, stage);
         }
-        return result.digest;
-    });
+    }
+
+    return buildResult.digest;
 }
 
 async function pullCacheAsync(
     imageName: string,
     cacheFrom: CacheFrom,
     login: () => Promise<void>,
-    repositoryUrl: Promise<string>,
+    repoUrl: string,
     logResource: pulumi.Resource): Promise<string[] | undefined> {
 
     // Ensure that we have a repository URL. If we don't, we won't be able to pull anything.
-    const repoUrl = await repositoryUrl;
     if (!repoUrl) {
         return undefined;
     }
@@ -173,6 +173,11 @@ async function pullCacheAsync(
 
 function localStageImageName(imageName: string, stage: string): string {
     return `${imageName}-${stage}`;
+}
+
+interface BuildResult {
+    digest: string;
+    stages: string[];
 }
 
 async function buildImageAsync(
