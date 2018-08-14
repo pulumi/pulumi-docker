@@ -76,8 +76,9 @@ export interface DockerBuild {
     cacheFrom?: boolean | CacheFrom;
 }
 
-// buildAndPushImage will build and push the Dockerfile and context from [buildPath] into the requested ECR
-// [repository].  It returns the digest of the built image.
+/**
+ * @deprecated Use [buildAndPushImageAsync] instead.
+ */
 export function buildAndPushImage(
     imageName: string,
     pathOrBuild: string | DockerBuild,
@@ -89,7 +90,9 @@ export function buildAndPushImage(
         buildAndPushImageAsync(imageName, pathOrBuild, repoUrl, logResource, connectToRegistry));
 }
 
-async function buildAndPushImageAsync(
+// buildAndPushImageAsync will build and push the Dockerfile and context from [buildPath] into the
+// requested ECR [repositoryUrl].  It returns the digest of the built image.
+export async function buildAndPushImageAsync(
     imageName: string,
     pathOrBuild: string | DockerBuild,
     repositoryUrl: string,
