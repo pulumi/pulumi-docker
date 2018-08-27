@@ -387,12 +387,17 @@ async function runCLICommand(
             }
             chunks.push(chunk);
         });
+
         p.stdout.on("end", () => {
             result = Buffer.concat(chunks).toString();
         });
 
         p.stderr.on("data", (chunk: Buffer) => {
             if (resourceOpt) {
+                // 'warn' is deliberate here.  Docker prints warnings to stderr.  So if we
+                // reported these as 'errors' it would be escalating warnings higher than
+                // they should be.  Any true errors should actually result in the process
+                // producing an error code out which we catch with p.on("close") below.
                 pulumi.log.warn(chunk.toString(), resourceOpt, streamID);
             }
             else {
@@ -400,16 +405,17 @@ async function runCLICommand(
             }
         });
 
-        p.on("error", (err) => {
+        p.on("error", err => {
             reject(err);
         });
 
-        p.on("close", (code) => {
+        p.on("close", code => {
             resolve({
                 code: code,
                 stdout: result,
             });
         });
+
         if (stdin) {
             p.stdin.end(stdin);
         }
