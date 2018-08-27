@@ -163,7 +163,7 @@ async function pullCacheAsync(
     for (const stage of stages) {
         const tag = stage ? `:${stage}` : "";
         const image = `${repoUrl}${tag}`;
-        const pullResult = await runCLICommand("docker", ["pull", image], logResource);
+        const pullResult = await runCLICommand("docker", ["pull", image], logResource, /*reportStdout*/ true);
         if (pullResult.code) {
             pulumi.log.info(
                 `Docker pull of build stage ${image} failed with exit code: ${pullResult.code}`, logResource);
@@ -217,7 +217,7 @@ async function buildImageAsync(
             // Get the version of docker, but do not forward the output of this command this to the
             // CLI to show the user.
             const versionResult = await runCLICommand(
-                "docker", ["version", "-f", "{{json .}}"], /*resourceOpt*/ undefined);
+                "docker", ["version", "-f", "{{json .}}"], logResource, /*reportStdout*/ false);
             // IDEA: In the future we could warn here on out-of-date versions of Docker which may not support key
             // features we want to use.
             cachedDockerVersionString = versionResult.stdout;
@@ -255,7 +255,7 @@ async function buildImageAsync(
     // command this to the CLI to show the user.
 
     const inspectResult = await runCLICommand(
-        "docker", ["image", "inspect", "-f", "{{.Id}}", imageName], /*resourceOpt*/ undefined);
+        "docker", ["image", "inspect", "-f", "{{.Id}}", imageName], logResource, /*reportStdout*/ false);
     if (inspectResult.code || !inspectResult.stdout) {
         throw new RunError(
             `No digest available for image ${imageName}: ${inspectResult.code} -- ${inspectResult.stdout}`);
@@ -297,7 +297,7 @@ async function dockerBuild(
         buildArgs.push(...[ "--target", target ]);
     }
 
-    const buildResult = await runCLICommand("docker", buildArgs, logResource);
+    const buildResult = await runCLICommand("docker", buildArgs, logResource, /*reportStdout*/ true);
     if (buildResult.code) {
         throw new RunError(`Docker build of image '${imageName}' failed with exit code: ${buildResult.code}`);
     }
@@ -309,11 +309,11 @@ async function loginToRegistry(registry: Registry, logResource: pulumi.Resource)
     let loginResult: CommandResult;
     if (!dockerPasswordStdin) {
         loginResult = await runCLICommand(
-            "docker", ["login", "-u", username, "-p", password, registryName], logResource);
+            "docker", ["login", "-u", username, "-p", password, registryName], logResource, /*reportStdout*/ true);
     } else {
         loginResult = await runCLICommand(
             "docker", ["login", "-u", username, "--password-stdin", registryName],
-            logResource, password);
+            logResource, /*reportStdout*/ true, password);
     }
     if (loginResult.code) {
         throw new RunError(`Failed to login to Docker registry ${registryName}`);
@@ -331,11 +331,13 @@ async function pushImageAsync(
     tag = tag ? `:${tag}` : "";
     const targetImage = `${repositoryUrl}${tag}`;
 
-    const tagResult = await runCLICommand("docker", ["tag", imageName, targetImage], logResource);
+    const tagResult = await runCLICommand(
+        "docker", ["tag", imageName, targetImage], logResource, /*reportStdout*/ true);
+
     if (tagResult.code) {
         throw new RunError(`Failed to tag Docker image with remote registry URL ${repositoryUrl}`);
     }
-    const pushResult = await runCLICommand("docker", ["push", targetImage], logResource);
+    const pushResult = await runCLICommand("docker", ["push", targetImage], logResource, /*reportStdout*/ true);
     if (pushResult.code) {
         throw new RunError(`Docker push of image '${imageName}' failed with exit code: ${pushResult.code}`);
     }
@@ -351,13 +353,15 @@ interface CommandResult {
 //
 // If the [stdin] argument is defined, it's contents are piped into stdin for the child process.
 //
-// [resourceOpt] is used to specify the resource to associate command output with.  If present,
-// command output will be sent to the CLI, associated with that resource, to show the user. If it is
-// not provided, any output by the command will not be presented to the user.
+// [resourceOpt] is used to specify the resource to associate command output with. Stderr messages
+// are always sent (since they may contain important information about something that's gone wrong).
+// Stdout messages will be logged to this resource if reportStdout is provided. Otherwise that output
+// will not be presented to the user.
 async function runCLICommand(
     cmd: string,
     args: string[],
     resourceOpt: pulumi.Resource | undefined,
+    reportStdout: boolean,
     stdin?: string): Promise<CommandResult> {
 
     // Generate a unique stream-ID that we'll associate all the docker output with. This will allow
@@ -382,25 +386,35 @@ async function runCLICommand(
         // We store the results from stdout in memory and will return them as a string.
         const chunks: Buffer[] = [];
         p.stdout.on("data", (chunk: Buffer) => {
-            if (resourceOpt) {
+            if (reportStdout) {
                 pulumi.log.info(chunk.toString(), resourceOpt, streamID);
             }
             chunks.push(chunk);
         });
+
         p.stdout.on("end", () => {
             result = Buffer.concat(chunks).toString();
         });
 
-        p.stderr.pipe(process.stderr);
-        p.on("error", (err) => {
+        p.stderr.on("data", (chunk: Buffer) => {
+            // 'warn' is deliberate here.  Docker prints warnings to stderr.  So if we
+            // reported these as 'errors' it would be escalating warnings higher than
+            // they should be.  Any true errors should actually result in the process
+            // producing an error code out which we catch with p.on("close") below.
+            pulumi.log.warn(chunk.toString(), resourceOpt, streamID);
+        });
+
+        p.on("error", err => {
             reject(err);
         });
-        p.on("close", (code) => {
+
+        p.on("close", code => {
             resolve({
                 code: code,
                 stdout: result,
             });
         });
+
         if (stdin) {
             p.stdin.end(stdin);
         }
