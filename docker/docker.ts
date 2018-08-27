@@ -102,7 +102,7 @@ export async function buildAndPushImageAsync(
     let loggedIn: Promise<void> | undefined;
     const login = () => {
         if (!loggedIn) {
-            console.log("logging in to registry...");
+            pulumi.log.info("logging in to registry...", logResource);
             loggedIn = connectToRegistry().then(r => loginToRegistry(r, logResource));
         }
         return loggedIn;
@@ -165,7 +165,8 @@ async function pullCacheAsync(
         const image = `${repoUrl}${tag}`;
         const pullResult = await runCLICommand("docker", ["pull", image], logResource);
         if (pullResult.code) {
-            console.log(`Docker pull of build stage ${image} failed with exit code: ${pullResult.code}`);
+            pulumi.log.info(
+                `Docker pull of build stage ${image} failed with exit code: ${pullResult.code}`, logResource);
         } else {
             cacheFromImages.push(image);
         }
@@ -205,11 +206,10 @@ async function buildImageAsync(
         build.context = ".";
     }
 
-    console.log(
+    pulumi.log.info(
         `Building container image '${imageName}': context=${build.context}` +
             (build.dockerfile ? `, dockerfile=${build.dockerfile}` : "") +
-                (build.args ? `, args=${JSON.stringify(build.args)}` : ""),
-    );
+            (build.args ? `, args=${JSON.stringify(build.args)}` : ""), logResource);
 
     // Verify that 'docker' is on the PATH and get the client/server versions
     if (!cachedDockerVersionString) {
@@ -234,7 +234,7 @@ async function buildImageAsync(
                 dockerPasswordStdin = true;
             }
         } catch (err) {
-            console.log(`Could not process Docker version (${err})`);
+            pulumi.log.info(`Could not process Docker version (${err})`, logResource);
         }
     }
 
