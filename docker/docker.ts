@@ -391,10 +391,19 @@ async function runCLICommand(
             result = Buffer.concat(chunks).toString();
         });
 
-        p.stderr.pipe(process.stderr);
+        p.stderr.on("data", (chunk: Buffer) => {
+            if (resourceOpt) {
+                pulumi.log.warn(chunk.toString(), resourceOpt, streamID);
+            }
+            else {
+                process.stderr.write(chunk);
+            }
+        });
+
         p.on("error", (err) => {
             reject(err);
         });
+
         p.on("close", (code) => {
             resolve({
                 code: code,
