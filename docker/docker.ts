@@ -18,10 +18,6 @@ import { RunError } from "@pulumi/pulumi/errors";
 import * as child_process from "child_process";
 import * as semver from "semver";
 
-// Store this so we can verify `docker` command is available only once per deployment.
-let cachedDockerVersionString: string|undefined;
-let dockerPasswordStdin: boolean = false;
-
 // Registry is the information required to login to a Docker registry.
 export interface Registry {
     registry: string;
@@ -74,6 +70,46 @@ export interface DockerBuild {
      * a CacheFrom object, the stages named therein will also be pulled and passed to --cache-from.
      */
     cacheFrom?: boolean | CacheFrom;
+}
+
+let dockerPasswordPromise: Promise<boolean> | undefined;
+
+function useDockerPasswordStdin(logResource: pulumi.Resource) {
+    if (!dockerPasswordPromise) {
+        dockerPasswordPromise = useDockerPasswordStdinWorker();
+    }
+
+    return dockerPasswordPromise;
+
+    async function useDockerPasswordStdinWorker() {
+        // Verify that 'docker' is on the PATH and get the client/server versions
+        let dockerVersionString: string;
+        try {
+            // Get the version of docker, but do not forward the output of this command this to the
+            // CLI to show the user.
+            const versionResult = await runCLICommand(
+                "docker", ["version", "-f", "{{json .}}"], logResource, /*reportStdout*/ false);
+            // IDEA: In the future we could warn here on out-of-date versions of Docker which may not support key
+            // features we want to use.
+            dockerVersionString = versionResult.stdout!;
+            pulumi.log.debug(`'docker version' => ${dockerVersionString}`, logResource);
+        }
+        catch (err) {
+            throw new RunError("No 'docker' command available on PATH: Please install to use container 'build' mode.");
+        }
+
+        // Decide whether to use --password or --password-stdin based on the client version.
+        try {
+            const versionData: any = JSON.parse(dockerVersionString!);
+            const clientVersion: string = versionData.Client.Version;
+            return semver.gte(clientVersion, "17.07.0", true);
+        }
+        catch (err) {
+            pulumi.log.info(`Could not process Docker version (${err})`, logResource);
+        }
+
+        return false;
+    }
 }
 
 /**
@@ -166,7 +202,7 @@ async function pullCacheAsync(
         const pullResult = await runCLICommand("docker", ["pull", image], logResource, /*reportStdout*/ true);
         if (pullResult.code) {
             pulumi.log.info(
-                `Docker pull of build stage ${image} failed with exit code: ${pullResult.code}`, logResource);
+                `Docker pull of build stage ${image} failed with exit code: ${pullResult.code}.`, logResource);
         } else {
             cacheFromImages.push(image);
         }
@@ -210,33 +246,6 @@ async function buildImageAsync(
         `Building container image '${imageName}': context=${build.context}` +
             (build.dockerfile ? `, dockerfile=${build.dockerfile}` : "") +
             (build.args ? `, args=${JSON.stringify(build.args)}` : ""), logResource);
-
-    // Verify that 'docker' is on the PATH and get the client/server versions
-    if (!cachedDockerVersionString) {
-        try {
-            // Get the version of docker, but do not forward the output of this command this to the
-            // CLI to show the user.
-            const versionResult = await runCLICommand(
-                "docker", ["version", "-f", "{{json .}}"], logResource, /*reportStdout*/ false);
-            // IDEA: In the future we could warn here on out-of-date versions of Docker which may not support key
-            // features we want to use.
-            cachedDockerVersionString = versionResult.stdout;
-            pulumi.log.debug(`'docker version' => ${cachedDockerVersionString}`, logResource);
-        } catch (err) {
-            throw new RunError("No 'docker' command available on PATH: Please install to use container 'build' mode.");
-        }
-
-        // Decide whether to use --password or --password-stdin based on the client version.
-        try {
-            const versionData: any = JSON.parse(cachedDockerVersionString!);
-            const clientVersion: string = versionData.Client.Version;
-            if (semver.gte(clientVersion, "17.07.0", true)) {
-                dockerPasswordStdin = true;
-            }
-        } catch (err) {
-            pulumi.log.info(`Could not process Docker version (${err})`, logResource);
-        }
-    }
 
     // If the container build specified build stages to cache, build each in turn.
     const stages = [];
@@ -305,6 +314,8 @@ async function dockerBuild(
 
 async function loginToRegistry(registry: Registry, logResource: pulumi.Resource): Promise<void> {
     const { registry: registryName, username, password } = registry;
+
+    const dockerPasswordStdin = await useDockerPasswordStdin(logResource);
 
     let loginResult: CommandResult;
     if (!dockerPasswordStdin) {
