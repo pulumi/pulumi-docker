@@ -220,6 +220,11 @@ interface BuildResult {
     stages: string[];
 }
 
+interface DockerInspectImage {
+    Id: string;
+    RepoDigests: string[];
+}
+
 async function buildImageAsync(
     imageName: string,
     pathOrBuild: string | DockerBuild,
@@ -260,18 +265,49 @@ async function buildImageAsync(
     // Invoke Docker CLI commands to build.
     await dockerBuild(imageName, build, cacheFrom, logResource);
 
-    // Finally, inspect the image so we can return the SHA digest. Do not forward the output of this
-    // command this to the CLI to show the user.
+    // Finally, inspect the image so we can return the SHA digest. The image digest is found in the `RepoDigests`
+    // section of the inspect results.
+
+    // Do not forward the output of this command this to the CLI to show the user.
 
     const inspectResult = await runCLICommand(
-        "docker", ["image", "inspect", "-f", "{{.Id}}", imageName], logResource, /*reportStdout*/ false);
+        "docker", ["image", "inspect", imageName], logResource, /*reportStdout*/ false);
     if (inspectResult.code || !inspectResult.stdout) {
         throw new RunError(
             `No digest available for image ${imageName}: ${inspectResult.code} -- ${inspectResult.stdout}`);
     }
 
+    // Parse the `docker image inspect` JSON
+    let inspectData: DockerInspectImage;
+    try {
+        inspectData = <DockerInspectImage>(JSON.parse(inspectResult.stdout)[0]);
+    } catch (err) {
+        throw new RunError(`Unable to inspect image ${imageName}: ${inspectResult.stdout}`);
+    }
+
+    // Find the entry in `RepoDigests` that corresponds to the repo+image name we are pushing and extract it's digest.
+    //
+    // ```
+    // "RepoDigests": [
+    //     "lukehoban/atest@sha256:622cf8084812ee72845d603f41dc6b85cb595e20d0be05909008f1412e867bfe",
+    //     "lukehoban/redise2e@sha256:622cf8084812ee72845d603f41dc6b85cb595e20d0be05909008f1412e867bfe",
+    //     "k8s.gcr.io/redis@sha256:f066bcf26497fbc55b9bf0769cb13a35c0afa2aa42e737cc46b7fb04b23a2f25"
+    // ],
+    // ```
+    //
+    // We look up the untagged repo name, so drop any tags.
+    const [untaggedImageName] = imageName.split(":");
+    const prefix = `${untaggedImageName}@`;
+    let digest = "";
+    for (const repoDigest of inspectData.RepoDigests) {
+        if (repoDigest.startsWith(prefix)) {
+            digest = repoDigest.substring(prefix.length);
+            break;
+        }
+    }
+
     return {
-        digest: inspectResult.stdout.trim(),
+        digest: digest,
         stages: stages,
     };
 }
