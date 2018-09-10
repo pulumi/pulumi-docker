@@ -40,9 +40,13 @@ export interface ImageArgs {
 
 export interface ImageRegistry {
     /**
-     * Docker registry to push to.
+     * Docker registry server URL to push to.  Some common values include:
+     * DockerHub: `docker.io` or `https://index.docker.io/v1`
+     * Azure Container Registry: `<name>.azurecr.io`
+     * AWS Elastic Container Registry: `<account>.dkr.ecr.us-east-2.amazonaws.com`
+     * Google Container Registry: `<name>.gcr.io`
      */
-    name: pulumi.Input<string>;
+    server: pulumi.Input<string>;
     /**
      * Username for login to the target Docker registry.
      */
@@ -62,10 +66,10 @@ export interface ImageRegistry {
  */
 export class Image extends pulumi.ComponentResource {
     /**
-     * The raw image name that was built and pushed.  This does now include the digest annotation, so is not pinned to
+     * The base image name that was built and pushed.  This does now include the digest annotation, so is not pinned to
      * the specific build performed by this docker.Image.
      */
-    public rawImageName: pulumi.Output<string>;
+    public baseImageName: pulumi.Output<string>;
     /**
      * The pinned image name, including digest annotation.
      */
@@ -83,14 +87,14 @@ export class Image extends pulumi.ComponentResource {
             .all([args.imageName, args.build, args.localImageName, args.registry])
             .apply(([imageName, build, localImageName, registry]) =>
                 pulumi
-                .all([registry.name, registry.username, registry.password])
-                .apply(([registryName, username, password]) => {
+                .all([registry.server, registry.username, registry.password])
+                .apply(([registryServer, username, password]) => {
                     if (!localImageName) {
                         localImageName = imageName;
                     }
                     return buildAndPushImage(localImageName, build, imageName, this, async () => {
                         return {
-                            registry: registryName,
+                            registry: registryServer,
                             username: username,
                             password: password,
                         };
@@ -98,13 +102,13 @@ export class Image extends pulumi.ComponentResource {
                 }));
 
         this.digest = imageDigest;
-        this.rawImageName = pulumi.output(args.imageName);
+        this.baseImageName = pulumi.output(args.imageName);
         this.imageName =
             pulumi
             .all([args.imageName, imageDigest])
             .apply(([imageName, digest]) => `${imageName}@${digest}`);
         this.registerOutputs({
-            rawImageName: this.rawImageName,
+            baseImageName: this.baseImageName,
             imageName: this.imageName,
             digest: this.digest,
         });

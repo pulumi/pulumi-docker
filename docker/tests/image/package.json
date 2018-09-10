@@ -9,7 +9,8 @@
     },
     "dependencies": {
         "@pulumi/pulumi": "^0.15.0",
-        "@pulumi/aws": "^0.15.0"
+        "@pulumi/aws": "^0.15.0",
+        "@pulumi/azure": "^0.15.0"
     },
     "devDependencies": {
         "@types/node": "^10.3.0",
