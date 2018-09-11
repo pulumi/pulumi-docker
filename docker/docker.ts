@@ -18,20 +18,11 @@ import { RunError } from "@pulumi/pulumi/errors";
 import * as child_process from "child_process";
 import * as semver from "semver";
 
-// Store this so we can verify `docker` command is available only once per deployment.
-let cachedDockerVersionString: string|undefined;
-let dockerPasswordStdin: boolean = false;
-
 // Registry is the information required to login to a Docker registry.
 export interface Registry {
     registry: string;
     username: string;
     password: string;
-}
-
-interface BuildResult {
-    digest: string;
-    stages: string[];
 }
 
 /**
@@ -81,8 +72,49 @@ export interface DockerBuild {
     cacheFrom?: boolean | CacheFrom;
 }
 
-// buildAndPushImage will build and push the Dockerfile and context from [buildPath] into the requested ECR
-// [repository].  It returns the digest of the built image.
+let dockerPasswordPromise: Promise<boolean> | undefined;
+
+function useDockerPasswordStdin(logResource: pulumi.Resource) {
+    if (!dockerPasswordPromise) {
+        dockerPasswordPromise = useDockerPasswordStdinWorker();
+    }
+
+    return dockerPasswordPromise;
+
+    async function useDockerPasswordStdinWorker() {
+        // Verify that 'docker' is on the PATH and get the client/server versions
+        let dockerVersionString: string;
+        try {
+            // Get the version of docker, but do not forward the output of this command this to the
+            // CLI to show the user.
+            const versionResult = await runCLICommand(
+                "docker", ["version", "-f", "{{json .}}"], logResource, /*reportStdout*/ false);
+            // IDEA: In the future we could warn here on out-of-date versions of Docker which may not support key
+            // features we want to use.
+            dockerVersionString = versionResult.stdout!;
+            pulumi.log.debug(`'docker version' => ${dockerVersionString}`, logResource);
+        }
+        catch (err) {
+            throw new RunError("No 'docker' command available on PATH: Please install to use container 'build' mode.");
+        }
+
+        // Decide whether to use --password or --password-stdin based on the client version.
+        try {
+            const versionData: any = JSON.parse(dockerVersionString!);
+            const clientVersion: string = versionData.Client.Version;
+            return semver.gte(clientVersion, "17.07.0", true);
+        }
+        catch (err) {
+            pulumi.log.info(`Could not process Docker version (${err})`, logResource);
+        }
+
+        return false;
+    }
+}
+
+/**
+ * @deprecated Use [buildAndPushImageAsync] instead.
+ */
 export function buildAndPushImage(
     imageName: string,
     pathOrBuild: string | DockerBuild,
@@ -90,10 +122,23 @@ export function buildAndPushImage(
     logResource: pulumi.Resource,
     connectToRegistry: () => Promise<Registry>): pulumi.Output<string> {
 
+    return pulumi.output(repositoryUrl).apply(repoUrl =>
+        buildAndPushImageAsync(imageName, pathOrBuild, repoUrl, logResource, connectToRegistry));
+}
+
+// buildAndPushImageAsync will build and push the Dockerfile and context from [buildPath] into the
+// requested ECR [repositoryUrl].  It returns the digest of the built image.
+export async function buildAndPushImageAsync(
+    imageName: string,
+    pathOrBuild: string | DockerBuild,
+    repositoryUrl: string,
+    logResource: pulumi.Resource,
+    connectToRegistry: () => Promise<Registry>): Promise<string> {
+
     let loggedIn: Promise<void> | undefined;
     const login = () => {
         if (!loggedIn) {
-            console.log("logging in to registry...");
+            pulumi.log.info("logging in to registry...", logResource);
             loggedIn = connectToRegistry().then(r => loginToRegistry(r, logResource));
         }
         return loggedIn;
@@ -105,47 +150,41 @@ export function buildAndPushImage(
         // NOTE: we pull the promise out of the repository URL s.t. we can observe whether or not it exists. Were we
         // to instead hang an apply off of the raw Input<>, we would never end up running the pull if the repository
         // had not yet been created.
-        const repoUrl = (<any>pulumi.output(repositoryUrl)).promise();
         const cacheFromParam = typeof pathOrBuild.cacheFrom === "boolean" ? {} : pathOrBuild.cacheFrom;
-        cacheFrom = pullCacheAsync(imageName, cacheFromParam, login, repoUrl, logResource);
+        cacheFrom = pullCacheAsync(imageName, cacheFromParam, login, repositoryUrl, logResource);
     } else {
         cacheFrom = Promise.resolve(undefined);
     }
 
     // First build the image.
-    const buildResult = buildImageAsync(imageName, pathOrBuild, logResource, cacheFrom);
-
-    // Then collect its output digest as well as the repo url and repo registry id.
-    const outputs = pulumi.all([buildResult, repositoryUrl]);
+    const buildResult = await buildImageAsync(imageName, pathOrBuild, logResource, cacheFrom);
 
     // Use those then push the image.  Then just return the digest as the final result for our caller to use.
-    return outputs.apply(async ([result, url]) => {
-        if (!pulumi.runtime.isDryRun()) {
-            // Only push the image during an update, do not push during a preview, even if digest and url are available
-            // from a previous update.
-            await login();
+    if (!pulumi.runtime.isDryRun()) {
+        // Only push the image during an update, do not push during a preview, even if digest and url are available
+        // from a previous update.
+        await login();
 
-            // Push the final image first, then push the stage images to use for caching.
-            await pushImageAsync(imageName, url, logResource);
+        // Push the final image first, then push the stage images to use for caching.
+        await pushImageAsync(imageName, repositoryUrl, logResource);
 
-            for (const stage of result.stages) {
-                await pushImageAsync(
-                    localStageImageName(imageName, stage), url, logResource, stage);
-            }
+        for (const stage of buildResult.stages) {
+            await pushImageAsync(
+                localStageImageName(imageName, stage), repositoryUrl, logResource, stage);
         }
-        return result.digest;
-    });
+    }
+
+    return buildResult.digest;
 }
 
 async function pullCacheAsync(
     imageName: string,
     cacheFrom: CacheFrom,
     login: () => Promise<void>,
-    repositoryUrl: Promise<string>,
+    repoUrl: string,
     logResource: pulumi.Resource): Promise<string[] | undefined> {
 
     // Ensure that we have a repository URL. If we don't, we won't be able to pull anything.
-    const repoUrl = await repositoryUrl;
     if (!repoUrl) {
         return undefined;
     }
@@ -160,9 +199,10 @@ async function pullCacheAsync(
     for (const stage of stages) {
         const tag = stage ? `:${stage}` : "";
         const image = `${repoUrl}${tag}`;
-        const pullResult = await runCLICommand("docker", ["pull", image], logResource);
+        const pullResult = await runCLICommand("docker", ["pull", image], logResource, /*reportStdout*/ true);
         if (pullResult.code) {
-            console.log(`Docker pull of build stage ${image} failed with exit code: ${pullResult.code}`);
+            pulumi.log.info(
+                `Docker pull of build stage ${image} failed with exit code: ${pullResult.code}.`, logResource);
         } else {
             cacheFromImages.push(image);
         }
@@ -173,6 +213,16 @@ async function pullCacheAsync(
 
 function localStageImageName(imageName: string, stage: string): string {
     return `${imageName}-${stage}`;
+}
+
+interface BuildResult {
+    digest: string;
+    stages: string[];
+}
+
+interface DockerInspectImage {
+    Id: string;
+    RepoDigests: string[];
 }
 
 async function buildImageAsync(
@@ -197,38 +247,10 @@ async function buildImageAsync(
         build.context = ".";
     }
 
-    console.log(
+    pulumi.log.info(
         `Building container image '${imageName}': context=${build.context}` +
             (build.dockerfile ? `, dockerfile=${build.dockerfile}` : "") +
-                (build.args ? `, args=${JSON.stringify(build.args)}` : ""),
-    );
-
-    // Verify that 'docker' is on the PATH and get the client/server versions
-    if (!cachedDockerVersionString) {
-        try {
-            // Get the version of docker, but do not forward the output of this command this to the
-            // CLI to show the user.
-            const versionResult = await runCLICommand(
-                "docker", ["version", "-f", "{{json .}}"], /*resourceOpt*/ undefined);
-            // IDEA: In the future we could warn here on out-of-date versions of Docker which may not support key
-            // features we want to use.
-            cachedDockerVersionString = versionResult.stdout;
-            pulumi.log.debug(`'docker version' => ${cachedDockerVersionString}`, logResource);
-        } catch (err) {
-            throw new RunError("No 'docker' command available on PATH: Please install to use container 'build' mode.");
-        }
-
-        // Decide whether to use --password or --password-stdin based on the client version.
-        try {
-            const versionData: any = JSON.parse(cachedDockerVersionString!);
-            const clientVersion: string = versionData.Client.Version;
-            if (semver.gte(clientVersion, "17.07.0", true)) {
-                dockerPasswordStdin = true;
-            }
-        } catch (err) {
-            console.log(`Could not process Docker version (${err})`);
-        }
-    }
+            (build.args ? `, args=${JSON.stringify(build.args)}` : ""), logResource);
 
     // If the container build specified build stages to cache, build each in turn.
     const stages = [];
@@ -243,18 +265,49 @@ async function buildImageAsync(
     // Invoke Docker CLI commands to build.
     await dockerBuild(imageName, build, cacheFrom, logResource);
 
-    // Finally, inspect the image so we can return the SHA digest. Do not forward the output of this
-    // command this to the CLI to show the user.
+    // Finally, inspect the image so we can return the SHA digest. The image digest is found in the `RepoDigests`
+    // section of the inspect results.
+
+    // Do not forward the output of this command this to the CLI to show the user.
 
     const inspectResult = await runCLICommand(
-        "docker", ["image", "inspect", "-f", "{{.Id}}", imageName], /*resourceOpt*/ undefined);
+        "docker", ["image", "inspect", imageName], logResource, /*reportStdout*/ false);
     if (inspectResult.code || !inspectResult.stdout) {
         throw new RunError(
             `No digest available for image ${imageName}: ${inspectResult.code} -- ${inspectResult.stdout}`);
     }
 
+    // Parse the `docker image inspect` JSON
+    let inspectData: DockerInspectImage;
+    try {
+        inspectData = <DockerInspectImage>(JSON.parse(inspectResult.stdout)[0]);
+    } catch (err) {
+        throw new RunError(`Unable to inspect image ${imageName}: ${inspectResult.stdout}`);
+    }
+
+    // Find the entry in `RepoDigests` that corresponds to the repo+image name we are pushing and extract it's digest.
+    //
+    // ```
+    // "RepoDigests": [
+    //     "lukehoban/atest@sha256:622cf8084812ee72845d603f41dc6b85cb595e20d0be05909008f1412e867bfe",
+    //     "lukehoban/redise2e@sha256:622cf8084812ee72845d603f41dc6b85cb595e20d0be05909008f1412e867bfe",
+    //     "k8s.gcr.io/redis@sha256:f066bcf26497fbc55b9bf0769cb13a35c0afa2aa42e737cc46b7fb04b23a2f25"
+    // ],
+    // ```
+    //
+    // We look up the untagged repo name, so drop any tags.
+    const [untaggedImageName] = imageName.split(":");
+    const prefix = `${untaggedImageName}@`;
+    let digest = "";
+    for (const repoDigest of inspectData.RepoDigests) {
+        if (repoDigest.startsWith(prefix)) {
+            digest = repoDigest.substring(prefix.length);
+            break;
+        }
+    }
+
     return {
-        digest: inspectResult.stdout.trim(),
+        digest: digest,
         stages: stages,
     };
 }
@@ -289,23 +342,25 @@ async function dockerBuild(
         buildArgs.push(...[ "--target", target ]);
     }
 
-    const buildResult = await runCLICommand("docker", buildArgs, logResource);
+    const buildResult = await runCLICommand("docker", buildArgs, logResource, /*reportStdout*/ true);
     if (buildResult.code) {
         throw new RunError(`Docker build of image '${imageName}' failed with exit code: ${buildResult.code}`);
     }
 }
 
-async function loginToRegistry(registry: Registry, logResource: pulumi.Resource) {
+async function loginToRegistry(registry: Registry, logResource: pulumi.Resource): Promise<void> {
     const { registry: registryName, username, password } = registry;
+
+    const dockerPasswordStdin = await useDockerPasswordStdin(logResource);
 
     let loginResult: CommandResult;
     if (!dockerPasswordStdin) {
         loginResult = await runCLICommand(
-            "docker", ["login", "-u", username, "-p", password, registryName], logResource);
+            "docker", ["login", "-u", username, "-p", password, registryName], logResource, /*reportStdout*/ true);
     } else {
         loginResult = await runCLICommand(
             "docker", ["login", "-u", username, "--password-stdin", registryName],
-            logResource, password);
+            logResource, /*reportStdout*/ true, password);
     }
     if (loginResult.code) {
         throw new RunError(`Failed to login to Docker registry ${registryName}`);
@@ -313,7 +368,7 @@ async function loginToRegistry(registry: Registry, logResource: pulumi.Resource)
 }
 
 async function pushImageAsync(
-        imageName: string, repositoryUrl: string, logResource: pulumi.Resource, tag?: string) {
+        imageName: string, repositoryUrl: string, logResource: pulumi.Resource, tag?: string): Promise<void> {
 
     // Tag and push the image to the remote repository.
     if (!repositoryUrl) {
@@ -323,30 +378,16 @@ async function pushImageAsync(
     tag = tag ? `:${tag}` : "";
     const targetImage = `${repositoryUrl}${tag}`;
 
-    const tagResult = await runCLICommand("docker", ["tag", imageName, targetImage], logResource);
+    const tagResult = await runCLICommand(
+        "docker", ["tag", imageName, targetImage], logResource, /*reportStdout*/ true);
+
     if (tagResult.code) {
         throw new RunError(`Failed to tag Docker image with remote registry URL ${repositoryUrl}`);
     }
-    const pushResult = await runCLICommand("docker", ["push", targetImage], logResource);
+    const pushResult = await runCLICommand("docker", ["push", targetImage], logResource, /*reportStdout*/ true);
     if (pushResult.code) {
         throw new RunError(`Docker push of image '${imageName}' failed with exit code: ${pushResult.code}`);
     }
-}
-
-// parseDockerEngineUpdatesFromBuffer extracts messages from the Docker engine
-// that are communicated over the stream returned from a Build or Push
-// operation.
-function parseDockerEngineUpdatesFromBuffer(buffer: Buffer): any[] {
-    const str = buffer.toString();
-    const lines = str.split("\n");
-    const results = [];
-    for (const line of lines) {
-        if (line.length === 0) {
-            continue;
-        }
-        results.push(JSON.parse(line));
-    }
-    return results;
 }
 
 interface CommandResult {
@@ -359,13 +400,15 @@ interface CommandResult {
 //
 // If the [stdin] argument is defined, it's contents are piped into stdin for the child process.
 //
-// [resourceOpt] is used to specify the resource to associate command output with.  If present,
-// command output will be sent to the CLI, associated with that resource, to show the user. If it is
-// not provided, any output by the command will not be presented to the user.
+// [resourceOpt] is used to specify the resource to associate command output with. Stderr messages
+// are always sent (since they may contain important information about something that's gone wrong).
+// Stdout messages will be logged to this resource if reportStdout is provided. Otherwise that output
+// will not be presented to the user.
 async function runCLICommand(
     cmd: string,
     args: string[],
     resourceOpt: pulumi.Resource | undefined,
+    reportStdout: boolean,
     stdin?: string): Promise<CommandResult> {
 
     // Generate a unique stream-ID that we'll associate all the docker output with. This will allow
@@ -390,25 +433,35 @@ async function runCLICommand(
         // We store the results from stdout in memory and will return them as a string.
         const chunks: Buffer[] = [];
         p.stdout.on("data", (chunk: Buffer) => {
-            if (resourceOpt) {
+            if (reportStdout) {
                 pulumi.log.info(chunk.toString(), resourceOpt, streamID);
             }
             chunks.push(chunk);
         });
+
         p.stdout.on("end", () => {
             result = Buffer.concat(chunks).toString();
         });
 
-        p.stderr.pipe(process.stderr);
-        p.on("error", (err) => {
+        p.stderr.on("data", (chunk: Buffer) => {
+            // 'warn' is deliberate here.  Docker prints warnings to stderr.  So if we
+            // reported these as 'errors' it would be escalating warnings higher than
+            // they should be.  Any true errors should actually result in the process
+            // producing an error code out which we catch with p.on("close") below.
+            pulumi.log.warn(chunk.toString(), resourceOpt, streamID);
+        });
+
+        p.on("error", err => {
             reject(err);
         });
-        p.on("close", (code) => {
+
+        p.on("close", code => {
             resolve({
                 code: code,
                 stdout: result,
             });
         });
+
         if (stdin) {
             p.stdin.end(stdin);
         }
