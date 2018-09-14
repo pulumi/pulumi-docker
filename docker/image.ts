@@ -66,7 +66,7 @@ export interface ImageRegistry {
  */
 export class Image extends pulumi.ComponentResource {
     /**
-     * The base image name that was built and pushed.  This does now include the digest annotation, so is not pinned to
+     * The base image name that was built and pushed.  This does not include the digest annotation, so is not pinned to
      * the specific build performed by this docker.Image.
      */
     public baseImageName: pulumi.Output<string>;
