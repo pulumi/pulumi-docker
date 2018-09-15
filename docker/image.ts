@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import * as pulumi from "@pulumi/pulumi";
-import { buildAndPushImage, DockerBuild, Registry } from "./docker";
+import { buildAndPushImageAsync, DockerBuild, getDigest } from "./docker";
 
 /**
  * Arguments for constructing an Image resource.
@@ -75,32 +75,44 @@ export class Image extends pulumi.ComponentResource {
      */
     public imageName: pulumi.Output<string>;
     /**
-     * The built image digest.
+     * The built image Id.
      */
-    public digest: pulumi.Output<string>;
+    public id: pulumi.Output<string>;
+    /**
+     * The pushed image digest.
+     */
+    public digest: pulumi.Output<string | undefined>;
 
     constructor(name: string, args: ImageArgs, opts?: pulumi.ComponentResourceOptions) {
         super("docker:image:Image", name, args, opts);
 
-        const imageDigest = pulumi.output(args).apply(imageArgs => {
-            let localImageName = imageArgs.localImageName;
-            if (!localImageName) {
-                localImageName = imageArgs.imageName;
-            }
-            return buildAndPushImage(localImageName, imageArgs.build, imageArgs.imageName, this, async () => {
-                return {
-                    registry: imageArgs.registry.server,
-                    username: imageArgs.registry.username,
-                    password: imageArgs.registry.password,
-                };
-            });
-        });
+        const imageData =
+            pulumi
+            .all([args.imageName, args.build, args.localImageName, args.registry])
+            .apply(([imageName, build, localImageName, registry]) =>
+                pulumi
+                .all([registry.server, registry.username, registry.password])
+                .apply(async ([registryServer, username, password]) => {
+                    if (!localImageName) {
+                        localImageName = imageName;
+                    }
+                    const id = await buildAndPushImageAsync(localImageName, build, imageName, this, async () => {
+                        return {
+                            registry: registryServer,
+                            username: username,
+                            password: password,
+                        };
+                    });
+                    const digest = await getDigest(imageName, this);
+                    return { digest, id };
+                }));
 
-        this.digest = imageDigest;
+        this.id = imageData.apply(d => d.id);
+        this.digest = imageData.apply(d => d.digest);
         this.baseImageName = pulumi.output(args.imageName);
         this.imageName =
             pulumi
-            .all([args.imageName, imageDigest])
+            .all([args.imageName, this.digest])
             .apply(([imageName, digest]) => `${imageName}@${digest}`);
         this.registerOutputs({
             baseImageName: this.baseImageName,
