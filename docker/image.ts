@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import * as pulumi from "@pulumi/pulumi";
-import { buildAndPushImage, DockerBuild, Registry } from "./docker";
+import { buildAndPushImageAsync, DockerBuild, getDigest } from "./docker";
 
 /**
  * Arguments for constructing an Image resource.
@@ -66,7 +66,7 @@ export interface ImageRegistry {
  */
 export class Image extends pulumi.ComponentResource {
     /**
-     * The base image name that was built and pushed.  This does now include the digest annotation, so is not pinned to
+     * The base image name that was built and pushed.  This does not include the digest annotation, so is not pinned to
      * the specific build performed by this docker.Image.
      */
     public baseImageName: pulumi.Output<string>;
@@ -75,37 +75,44 @@ export class Image extends pulumi.ComponentResource {
      */
     public imageName: pulumi.Output<string>;
     /**
-     * The built image digest.
+     * The built image Id.
      */
-    public digest: pulumi.Output<string>;
+    public id: pulumi.Output<string>;
+    /**
+     * The pushed image digest.
+     */
+    public digest: pulumi.Output<string | undefined>;
 
     constructor(name: string, args: ImageArgs, opts?: pulumi.ComponentResourceOptions) {
         super("docker:image:Image", name, args, opts);
 
-        const imageDigest =
+        const imageData =
             pulumi
             .all([args.imageName, args.build, args.localImageName, args.registry])
             .apply(([imageName, build, localImageName, registry]) =>
                 pulumi
                 .all([registry.server, registry.username, registry.password])
-                .apply(([registryServer, username, password]) => {
+                .apply(async ([registryServer, username, password]) => {
                     if (!localImageName) {
                         localImageName = imageName;
                     }
-                    return buildAndPushImage(localImageName, build, imageName, this, async () => {
+                    const id = await buildAndPushImageAsync(localImageName, build, imageName, this, async () => {
                         return {
                             registry: registryServer,
                             username: username,
                             password: password,
                         };
                     });
+                    const digest = await getDigest(imageName, this);
+                    return { digest, id };
                 }));
 
-        this.digest = imageDigest;
+        this.id = imageData.apply(d => d.id);
+        this.digest = imageData.apply(d => d.digest);
         this.baseImageName = pulumi.output(args.imageName);
         this.imageName =
             pulumi
-            .all([args.imageName, imageDigest])
+            .all([args.imageName, this.digest])
             .apply(([imageName, digest]) => `${imageName}@${digest}`);
         this.registerOutputs({
             baseImageName: this.baseImageName,
