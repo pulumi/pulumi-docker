@@ -95,7 +95,7 @@ function useDockerPasswordStdin(logResource: pulumi.Resource) {
             pulumi.log.debug(`'docker version' => ${dockerVersionString}`, logResource);
         }
         catch (err) {
-            throw new RunError("No 'docker' command available on PATH: Please install to use container 'build' mode.");
+            throw new RunError("No 'docker' command available on PATH: Please install to use container 'build' mode.", logResource);
         }
 
         // Decide whether to use --password or --password-stdin based on the client version.
@@ -239,7 +239,7 @@ async function buildImageAsync(
     } else if (pathOrBuild) {
         build = pathOrBuild;
     } else {
-        throw new RunError(`Cannot build a container with an empty build specification`);
+        throw new RunError(`Cannot build a container with an empty build specification`, logResource);
     }
 
     // If the build context is missing, default it to the working directory.
@@ -271,7 +271,7 @@ async function buildImageAsync(
         "docker", ["image", "inspect", "-f", "{{.Id}}", imageName], logResource, /*reportStdout*/ false);
     if (inspectResult.code || !inspectResult.stdout) {
        throw new RunError(
-           `No digest available for image ${imageName}: ${inspectResult.code} -- ${inspectResult.stdout}`);
+           `No digest available for image ${imageName}: ${inspectResult.code} -- ${inspectResult.stdout}`, logResource);
     }
     return {
         id: inspectResult.stdout.trim(),
@@ -311,7 +311,7 @@ async function dockerBuild(
 
     const buildResult = await runCLICommand("docker", buildArgs, logResource, /*reportStdout*/ true);
     if (buildResult.code) {
-        throw new RunError(`Docker build of image '${imageName}' failed with exit code: ${buildResult.code}`);
+        throw new RunError(`Docker build of image '${imageName}' failed with exit code: ${buildResult.code}`, logResource);
     }
 }
 
@@ -330,7 +330,7 @@ async function loginToRegistry(registry: Registry, logResource: pulumi.Resource)
             logResource, /*reportStdout*/ true, password);
     }
     if (loginResult.code) {
-        throw new RunError(`Failed to login to Docker registry ${registryName}`);
+        throw new RunError(`Failed to login to Docker registry ${registryName}`, logResource);
     }
 }
 
@@ -339,7 +339,7 @@ async function pushImageAsync(
 
     // Tag and push the image to the remote repository.
     if (!repositoryUrl) {
-        throw new RunError("Expected repository URL to be defined during push");
+        throw new RunError("Expected repository URL to be defined during push", logResource);
     }
 
     tag = tag ? `:${tag}` : "";
@@ -349,11 +349,11 @@ async function pushImageAsync(
         "docker", ["tag", imageName, targetImage], logResource, /*reportStdout*/ true);
 
     if (tagResult.code) {
-        throw new RunError(`Failed to tag Docker image with remote registry URL ${repositoryUrl}`);
+        throw new RunError(`Failed to tag Docker image with remote registry URL ${repositoryUrl}`, logResource);
     }
     const pushResult = await runCLICommand("docker", ["push", targetImage], logResource, /*reportStdout*/ true);
     if (pushResult.code) {
-        throw new RunError(`Docker push of image '${imageName}' failed with exit code: ${pushResult.code}`);
+        throw new RunError(`Docker push of image '${imageName}' failed with exit code: ${pushResult.code}`, logResource);
     }
 }
 
@@ -366,7 +366,7 @@ export async function getDigest(targetImage: string, logResource: pulumi.Resourc
         "docker", ["image", "inspect", targetImage], logResource, /*reportStdout*/ false);
     if (inspectResult.code || !inspectResult.stdout) {
         throw new RunError(
-            `No digest available for image ${targetImage}: ${inspectResult.code} -- ${inspectResult.stdout}`);
+            `No digest available for image ${targetImage}: ${inspectResult.code} -- ${inspectResult.stdout}`, logResource);
     }
 
     // Parse the `docker image inspect` JSON
@@ -374,7 +374,7 @@ export async function getDigest(targetImage: string, logResource: pulumi.Resourc
     try {
         inspectData = <DockerInspectImage>(JSON.parse(inspectResult.stdout)[0]);
     } catch (err) {
-        throw new RunError(`Unable to inspect image ${targetImage}: ${inspectResult.stdout}`);
+        throw new RunError(`Unable to inspect image ${targetImage}: ${inspectResult.stdout}`, logResource);
     }
 
     // Find the entry in `RepoDigests` that corresponds to the repo+image name we are pushing and extract it's digest.
@@ -439,42 +439,63 @@ async function runCLICommand(
 
     return new Promise<CommandResult>((resolve, reject) => {
         const p = child_process.spawn(cmd, args);
-        let result: string | undefined;
 
         // We store the results from stdout in memory and will return them as a string.
-        const chunks: Buffer[] = [];
+        const stdOutChunks: Buffer[] = [];
+        let stdErrChunks: Buffer[] = [];
+
         p.stdout.on("data", (chunk: Buffer) => {
             if (reportStdout) {
                 pulumi.log.info(chunk.toString(), resourceOpt, streamID);
             }
-            chunks.push(chunk);
-        });
 
-        p.stdout.on("end", () => {
-            result = Buffer.concat(chunks).toString();
+            stdOutChunks.push(chunk);
         });
 
         p.stderr.on("data", (chunk: Buffer) => {
-            // 'warn' is deliberate here.  Docker prints warnings to stderr.  So if we
-            // reported these as 'errors' it would be escalating warnings higher than
-            // they should be.  Any true errors should actually result in the process
-            // producing an error code out which we catch with p.on("close") below.
-            pulumi.log.warn(chunk.toString(), resourceOpt, streamID);
+            // We can't stream these stderr messages as we receive them because we don't knows at
+            // this point because Docker uses stderr for both errors and warnings.  So, instead, we
+            // just collect the messages, and wait for the process to end to decide how to report
+            // them.
+            stdErrChunks.push(chunk);
         });
 
         p.on("error", err => {
+            // If we actually full on received some sort of error in the process, also try to dump
+            // any stderr messages in case they might be useful.
+            logStdErrMessages(/*code: */ 1);
             reject(err);
         });
 
         p.on("close", code => {
+            logStdErrMessages(code);
+
             resolve({
                 code: code,
-                stdout: result,
+                stdout: Buffer.concat(stdOutChunks).toString(),
             });
         });
 
         if (stdin) {
             p.stdin.end(stdin);
+        }
+
+        return;
+
+        function logStdErrMessages(code: number) {
+            if (stdErrChunks.length > 0) {
+                const errorOrWarnings = Buffer.concat(stdErrChunks).toString();
+                stdErrChunks = [];
+
+                if (code) {
+                    // Command returned non-zero code.  Treat these stderr messages as an error.
+                    pulumi.log.error(errorOrWarnings, resourceOpt, streamID);
+                }
+                else {
+                    // command succeeded.  These were just warning.
+                    pulumi.log.warn(errorOrWarnings, resourceOpt, streamID);
+                }
+            }
         }
     });
 }
