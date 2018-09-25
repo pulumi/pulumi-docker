@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import * as pulumi from "@pulumi/pulumi";
-import { RunError } from "@pulumi/pulumi/errors";
+import { ResourceError } from "@pulumi/pulumi/errors";
 
 import * as child_process from "child_process";
 import * as semver from "semver";
@@ -95,7 +95,7 @@ function useDockerPasswordStdin(logResource: pulumi.Resource) {
             pulumi.log.debug(`'docker version' => ${dockerVersionString}`, logResource);
         }
         catch (err) {
-            throw new RunError("No 'docker' command available on PATH: Please install to use container 'build' mode.", logResource);
+            throw new ResourceError("No 'docker' command available on PATH: Please install to use container 'build' mode.", logResource);
         }
 
         // Decide whether to use --password or --password-stdin based on the client version.
@@ -239,7 +239,7 @@ async function buildImageAsync(
     } else if (pathOrBuild) {
         build = pathOrBuild;
     } else {
-        throw new RunError(`Cannot build a container with an empty build specification`, logResource);
+        throw new ResourceError(`Cannot build a container with an empty build specification`, logResource);
     }
 
     // If the build context is missing, default it to the working directory.
@@ -270,7 +270,7 @@ async function buildImageAsync(
     const inspectResult = await runCLICommand(
         "docker", ["image", "inspect", "-f", "{{.Id}}", imageName], logResource, /*reportStdout*/ false);
     if (inspectResult.code || !inspectResult.stdout) {
-       throw new RunError(
+       throw new ResourceError(
            `No digest available for image ${imageName}: ${inspectResult.code} -- ${inspectResult.stdout}`, logResource);
     }
     return {
@@ -311,7 +311,7 @@ async function dockerBuild(
 
     const buildResult = await runCLICommand("docker", buildArgs, logResource, /*reportStdout*/ true);
     if (buildResult.code) {
-        throw new RunError(`Docker build of image '${imageName}' failed with exit code: ${buildResult.code}`, logResource);
+        throw new ResourceError(`Docker build of image '${imageName}' failed with exit code: ${buildResult.code}`, logResource);
     }
 }
 
@@ -330,7 +330,7 @@ async function loginToRegistry(registry: Registry, logResource: pulumi.Resource)
             logResource, /*reportStdout*/ true, password);
     }
     if (loginResult.code) {
-        throw new RunError(`Failed to login to Docker registry ${registryName}`, logResource);
+        throw new ResourceError(`Failed to login to Docker registry ${registryName}`, logResource);
     }
 }
 
@@ -339,7 +339,7 @@ async function pushImageAsync(
 
     // Tag and push the image to the remote repository.
     if (!repositoryUrl) {
-        throw new RunError("Expected repository URL to be defined during push", logResource);
+        throw new ResourceError("Expected repository URL to be defined during push", logResource);
     }
 
     tag = tag ? `:${tag}` : "";
@@ -349,11 +349,11 @@ async function pushImageAsync(
         "docker", ["tag", imageName, targetImage], logResource, /*reportStdout*/ true);
 
     if (tagResult.code) {
-        throw new RunError(`Failed to tag Docker image with remote registry URL ${repositoryUrl}`, logResource);
+        throw new ResourceError(`Failed to tag Docker image with remote registry URL ${repositoryUrl}`, logResource);
     }
     const pushResult = await runCLICommand("docker", ["push", targetImage], logResource, /*reportStdout*/ true);
     if (pushResult.code) {
-        throw new RunError(`Docker push of image '${imageName}' failed with exit code: ${pushResult.code}`, logResource);
+        throw new ResourceError(`Docker push of image '${imageName}' failed with exit code: ${pushResult.code}`, logResource);
     }
 }
 
@@ -365,7 +365,7 @@ export async function getDigest(targetImage: string, logResource: pulumi.Resourc
     const inspectResult = await runCLICommand(
         "docker", ["image", "inspect", targetImage], logResource, /*reportStdout*/ false);
     if (inspectResult.code || !inspectResult.stdout) {
-        throw new RunError(
+        throw new ResourceError(
             `No digest available for image ${targetImage}: ${inspectResult.code} -- ${inspectResult.stdout}`, logResource);
     }
 
@@ -374,7 +374,7 @@ export async function getDigest(targetImage: string, logResource: pulumi.Resourc
     try {
         inspectData = <DockerInspectImage>(JSON.parse(inspectResult.stdout)[0]);
     } catch (err) {
-        throw new RunError(`Unable to inspect image ${targetImage}: ${inspectResult.stdout}`, logResource);
+        throw new ResourceError(`Unable to inspect image ${targetImage}: ${inspectResult.stdout}`, logResource);
     }
 
     // Find the entry in `RepoDigests` that corresponds to the repo+image name we are pushing and extract it's digest.
