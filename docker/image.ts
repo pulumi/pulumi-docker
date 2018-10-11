@@ -33,9 +33,9 @@ export interface ImageArgs {
      */
     localImageName?: pulumi.Input<string>;
     /**
-     * Docker registry to push to.
+     * Credentials for the docker registry to push to.
      */
-    registry: pulumi.Input<ImageRegistry>;
+    registry?: pulumi.Input<ImageRegistry>;
 }
 
 export interface ImageRegistry {
@@ -96,13 +96,13 @@ export class Image extends pulumi.ComponentResource {
                     if (!localImageName) {
                         localImageName = imageName;
                     }
-                    const id = await buildAndPushImageAsync(localImageName, build, imageName, this, async () => {
+                    const id = await buildAndPushImageAsync(localImageName, build, imageName, this, registry && (async () => {
                         return {
                             registry: registryServer,
                             username: username,
                             password: password,
                         };
-                    });
+                    }));
                     const digest = await getDigest(imageName, this);
                     return { digest, id };
                 }));
