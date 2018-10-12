@@ -33,9 +33,9 @@ export interface ImageArgs {
      */
     localImageName?: pulumi.Input<string>;
     /**
-     * Docker registry to push to.
+     * Credentials for the docker registry to push to.
      */
-    registry: pulumi.Input<ImageRegistry>;
+    registry?: pulumi.Input<ImageRegistry>;
 }
 
 export interface ImageRegistry {
@@ -86,26 +86,28 @@ export class Image extends pulumi.ComponentResource {
     constructor(name: string, args: ImageArgs, opts?: pulumi.ComponentResourceOptions) {
         super("docker:image:Image", name, args, opts);
 
-        const imageData =
-            pulumi
-            .all([args.imageName, args.build, args.localImageName, args.registry])
-            .apply(([imageName, build, localImageName, registry]) =>
-                pulumi
-                .all([registry.server, registry.username, registry.password])
-                .apply(async ([registryServer, username, password]) => {
-                    if (!localImageName) {
-                        localImageName = imageName;
-                    }
-                    const id = await buildAndPushImageAsync(localImageName, build, imageName, this, async () => {
-                        return {
-                            registry: registryServer,
-                            username: username,
-                            password: password,
-                        };
-                    });
-                    const digest = await getDigest(imageName, this);
-                    return { digest, id };
-                }));
+        const imageData = pulumi.output(args).apply(async (imageArgs) => {
+            let localImageName = imageArgs.localImageName;
+            if (!localImageName) {
+                localImageName = imageArgs.imageName;
+            }
+            const registry = imageArgs.registry;
+            const id = await buildAndPushImageAsync(
+                localImageName,
+                imageArgs.build,
+                imageArgs.imageName,
+                this,
+                registry && (async () => {
+                    return {
+                        registry: registry.server,
+                        username: registry.username,
+                        password: registry.password,
+                    };
+                }),
+            );
+            const digest = await getDigest(imageArgs.imageName, this);
+            return { digest, id };
+        });
 
         this.id = imageData.apply(d => d.id);
         this.digest = imageData.apply(d => d.digest);

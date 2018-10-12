@@ -133,13 +133,19 @@ export async function buildAndPushImageAsync(
     pathOrBuild: string | DockerBuild,
     repositoryUrl: string,
     logResource: pulumi.Resource,
-    connectToRegistry: () => Promise<Registry>): Promise<string> {
+    connectToRegistry?: () => Promise<Registry>): Promise<string> {
 
     let loggedIn: Promise<void> | undefined;
+
+    // If no `connectToRegistry` function was passed in we simply assume docker is already logged-in to the correct registry (or uses auto-login via credential helpers)
+    // hence we resolve loggedIn immediately.
+    if (!connectToRegistry) {
+        loggedIn = Promise.resolve();
+    }
     const login = () => {
         if (!loggedIn) {
             pulumi.log.info("logging in to registry...", logResource);
-            loggedIn = connectToRegistry().then(r => loginToRegistry(r, logResource));
+            loggedIn = connectToRegistry!().then(r => loginToRegistry(r, logResource));
         }
         return loggedIn;
     };
