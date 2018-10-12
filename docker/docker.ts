@@ -136,7 +136,7 @@ export async function buildAndPushImageAsync(
     // Give an initial message indicating what we're about to do.  That way, if anything
     // takes a while, the user has an idea about what's going on.
     pulumi.log.info("Starting docker build and push...",
-        logResource, /*streamId*/ undefined, /*ephemeral*/ true);
+        logResource, /*streamId:*/ undefined, /*ephemeral:*/ true);
 
     const result = await buildAndPushImageWorkerAsync(
         imageName, pathOrBuild, repositoryUrl, logResource, connectToRegistry);
@@ -145,7 +145,7 @@ export async function buildAndPushImageAsync(
     // indicating that things worked properly.  That way, the info bar isn't stuck showing the very
     // last thing printed by some subcommand we launched.
     pulumi.log.info("Successfully pushed to docker",
-        logResource, /*streamId*/ undefined, /*ephemeral*/ true);
+        logResource, /*streamId:*/ undefined, /*ephemeral:*/ true);
 
     return result;
 }
@@ -166,7 +166,10 @@ async function buildAndPushImageWorkerAsync(
     }
     const login = () => {
         if (!loggedIn) {
-            pulumi.log.info("logging in to registry...", logResource);
+            pulumi.log.info(
+                "logging in to registry...",
+                logResource, /*streamId:*/ undefined, /*ephemeral:*/ true);
+
             loggedIn = connectToRegistry!().then(r => loginToRegistry(r, logResource));
         }
         return loggedIn;
@@ -281,7 +284,8 @@ async function buildImageAsync(
     pulumi.log.info(
         `Building container image '${imageName}': context=${build.context}` +
             (build.dockerfile ? `, dockerfile=${build.dockerfile}` : "") +
-            (build.args ? `, args=${JSON.stringify(build.args)}` : ""), logResource);
+            (build.args ? `, args=${JSON.stringify(build.args)}` : ""),
+        logResource, /*streamId:*/ undefined, /*ephemeral:*/ true);
 
     // If the container build specified build stages to cache, build each in turn.
     const stages = [];
@@ -455,8 +459,11 @@ async function runCommandThatMustSucceed(
         cmd, args, logResource, reportFullCommandLine, stdin);
 
     if (code !== 0) {
-        // Fail the entire build and push.  This includes the full output of the command so
-        // that at the end the user can review the full docker message about what the problem was.
+        // Fail the entire build and push.  This includes the full output of the command so that at
+        // the end the user can review the full docker message about what the problem was.
+        //
+        // Note: a message about the command failing will have already been ephemerally reported to
+        // the status column.
         throw new ResourceError(
             `${getFailureMessage(cmd, args, reportFullCommandLine, code)}\n${stdout}`, logResource);
     }
@@ -482,8 +489,9 @@ async function runCommandThatCanFail(
     stdin?: string): Promise<CommandResult> {
 
     // Let the user ephemerally know the command we're going to execute.
-    const commandLineMessage = getCommandLineMessage(cmd, args, reportFullCommandLine);
-    pulumi.log.info("Executing " + commandLineMessage, logResource, /*streamId*/ undefined, /*ephemeral*/ true);
+    pulumi.log.info(
+        `Executing ${getCommandLineMessage(cmd, args, reportFullCommandLine)}`,
+        logResource, /*streamId:*/ undefined, /*ephemeral:*/ true);
 
     // Generate a unique stream-ID that we'll associate all the docker output with. This will allow
     // each spawned CLI command's output to associated with 'resource' and also streamed to the UI
@@ -511,7 +519,7 @@ async function runCommandThatCanFail(
             // Report all stdout messages as ephemeral messages.  That way they show up in the
             // info bar as they're happening.  But they do not overwhelm the user as the end
             // of the run.
-            pulumi.log.info(chunk.toString(), logResource, streamID, /*ephemeral:*/ true);
+            pulumi.log.info(chunk.toString(), logResource, /*streamId:*/ undefined, /*ephemeral:*/ true);
             stdOutChunks.push(chunk);
         });
 
@@ -538,8 +546,9 @@ async function runCommandThatCanFail(
             if (code) {
                 // Report an ephemeral message indicating which command failed.  That way the user
                 // can immediately see something went wrong, and what command caused it.
-                const message = getFailureMessage(cmd, args, reportFullCommandLine, code);
-                pulumi.log.info(message, logResource, /*streamId*/ undefined, /*ephemeral*/ true);
+                pulumi.log.info(
+                    getFailureMessage(cmd, args, reportFullCommandLine, code),
+                    logResource, /*streamId:*/ undefined, /*ephemeral:*/ true);
             }
 
             resolve({ code, stdout });
