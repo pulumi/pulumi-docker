@@ -124,7 +124,7 @@ export function buildAndPushImage(
         buildAndPushImageAsync(imageName, pathOrBuild, repoUrl, logResource, connectToRegistry));
 }
 
-function logEphemeral(message: string, logResource: pulumi.Resource | undefined) {
+function logEphemeral(message: string, logResource: pulumi.Resource) {
     pulumi.log.info(message, logResource, /*streamId:*/ undefined, /*ephemeral:*/ true);
 }
 
@@ -443,7 +443,7 @@ function getFailureMessage(cmd: string, args: string[], reportFullCommandLine: b
 async function runCommandThatMustSucceed(
     cmd: string,
     args: string[],
-    logResource: pulumi.Resource | undefined,
+    logResource: pulumi.Resource,
     reportFullCommandLine: boolean = true,
     stdin?: string): Promise<string> {
 
@@ -476,7 +476,7 @@ async function runCommandThatMustSucceed(
 async function runCommandThatCanFail(
     cmd: string,
     args: string[],
-    logResource: pulumi.Resource | undefined,
+    logResource: pulumi.Resource,
     reportFullCommandLine: boolean,
     stdin?: string): Promise<CommandResult> {
 
