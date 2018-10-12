@@ -234,7 +234,7 @@ async function pullCacheAsync(
         // Try to pull the existing image if it exists.  This may fail if the image does not exist.
         // That's fine, just move onto the next sage.
         const { code, stdout } = await runCommandThatCanFail(
-            "docker", ["pull", image], logResource, /*reportFullCommandLine:*/ true);
+            "docker", ["pull", image], logResource, /*reportFullCommand:*/ true);
         if (code) {
             continue;
         }
@@ -303,8 +303,7 @@ async function buildImageAsync(
     // Finally, inspect the image so we can return the SHA digest. Do not forward the output of this
     // command this to the CLI to show the user.
     const inspectResult = await runCommandThatMustSucceed(
-        "docker", ["image", "inspect", "-f", "{{.Id}}", imageName],
-        logResource, /*reportFullCommandLine*/ true);
+        "docker", ["image", "inspect", "-f", "{{.Id}}", imageName], logResource);
     if (!inspectResult) {
        throw new ResourceError(
            `No digest available for image ${imageName}`, logResource);
@@ -346,8 +345,7 @@ async function dockerBuild(
         buildArgs.push(...[ "--target", target ]);
     }
 
-    await runCommandThatMustSucceed(
-        "docker", buildArgs, logResource, /*reportFullCommandLine*/ true);
+    await runCommandThatMustSucceed("docker", buildArgs, logResource);
 }
 
 async function loginToRegistry(registry: Registry, logResource: pulumi.Resource): Promise<void> {
@@ -380,11 +378,8 @@ async function pushImageAsync(
     tag = tag ? `:${tag}` : "";
     const targetImage = `${repositoryUrl}${tag}`;
 
-    await runCommandThatMustSucceed(
-        "docker", ["tag", imageName, targetImage], logResource, /*reportFullCommandLine*/ true);
-
-    await runCommandThatMustSucceed(
-        "docker", ["push", targetImage], logResource, /*reportFullCommandLine*/ true);
+    await runCommandThatMustSucceed("docker", ["tag", imageName, targetImage], logResource);
+    await runCommandThatMustSucceed("docker", ["push", targetImage], logResource);
 }
 
 // getDigest returns the digest, if available, of a target image.  The digest will only be available once the repo image
@@ -392,8 +387,7 @@ async function pushImageAsync(
 export async function getDigest(targetImage: string, logResource: pulumi.Resource): Promise<string | undefined> {
     // Do not forward the output of this command this to the CLI to show the user.
 
-    const inspectResult = await runCommandThatMustSucceed(
-        "docker", ["image", "inspect", targetImage], logResource, /*reportFullCommandLine*/ true);
+    const inspectResult = await runCommandThatMustSucceed("docker", ["image", "inspect", targetImage], logResource);
     if (!inspectResult) {
         throw new ResourceError(
             `No digest available for image ${targetImage}`, logResource);
