@@ -85,13 +85,11 @@ function useDockerPasswordStdin(logResource: pulumi.Resource) {
         // Verify that 'docker' is on the PATH and get the client/server versions
         let dockerVersionString: string;
         try {
-            // Get the version of docker, but do not forward the output of this command this to the
-            // CLI to show the user.
-            const versionResult = await runCLICommand(
-                "docker", ["version", "-f", "{{json .}}"], logResource, /*reportStdout*/ false);
+            dockerVersionString = await runCommandThatMustSucceed(
+                "docker", ["version", "-f", "{{json .}}"], logResource);
             // IDEA: In the future we could warn here on out-of-date versions of Docker which may not support key
             // features we want to use.
-            dockerVersionString = versionResult.stdout!;
+
             pulumi.log.debug(`'docker version' => ${dockerVersionString}`, logResource);
         }
         catch (err) {
@@ -134,6 +132,30 @@ export async function buildAndPushImageAsync(
     repositoryUrl: string,
     logResource: pulumi.Resource,
     connectToRegistry?: () => Promise<Registry>): Promise<string> {
+
+    // Give an initial message indicating what we're about to do.  That way, if anything
+    // takes a while, the user has an idea about what's going on.
+    pulumi.log.info("Starting docker build and push...",
+        logResource, /*streamId*/ undefined, /*ephemeral*/ true);
+
+    const result = await buildAndPushImageWorkerAsync(
+        imageName, pathOrBuild, repositoryUrl, logResource, connectToRegistry);
+
+    // If we got here, then building/pushing didn't throw any errors.  Update the status bar
+    // indicating that things worked properly.  That way, the info bar isn't stuck showing the very
+    // last thing printed by some subcommand we launched.
+    pulumi.log.info("Successfully pushed to docker",
+        logResource, /*streamId*/ undefined, /*ephemeral*/ true);
+
+    return result;
+}
+
+async function buildAndPushImageWorkerAsync(
+    imageName: string,
+    pathOrBuild: string | DockerBuild,
+    repositoryUrl: string,
+    logResource: pulumi.Resource,
+    connectToRegistry: (() => Promise<Registry>) | undefined): Promise<string> {
 
     let loggedIn: Promise<void> | undefined;
 
@@ -205,13 +227,16 @@ async function pullCacheAsync(
     for (const stage of stages) {
         const tag = stage ? `:${stage}` : "";
         const image = `${repoUrl}${tag}`;
-        const pullResult = await runCLICommand("docker", ["pull", image], logResource, /*reportStdout*/ true);
-        if (pullResult.code) {
-            pulumi.log.info(
-                `Docker pull of build stage ${image} failed with exit code: ${pullResult.code}.`, logResource);
-        } else {
-            cacheFromImages.push(image);
+
+        // Try to pull the existing image if it exists.  This may fail if the image does not exist.
+        // That's fine, just move onto the next sage.
+        const { code, stdout } = await runCommandThatCanFail(
+            "docker", ["pull", image], logResource, /*reportFullCommandLine:*/ true);
+        if (code) {
+            continue;
         }
+
+        cacheFromImages.push(image);
     }
 
     return cacheFromImages;
@@ -273,14 +298,16 @@ async function buildImageAsync(
 
     // Finally, inspect the image so we can return the SHA digest. Do not forward the output of this
     // command this to the CLI to show the user.
-    const inspectResult = await runCLICommand(
-        "docker", ["image", "inspect", "-f", "{{.Id}}", imageName], logResource, /*reportStdout*/ false);
-    if (inspectResult.code || !inspectResult.stdout) {
+    const inspectResult = await runCommandThatMustSucceed(
+        "docker", ["image", "inspect", "-f", "{{.Id}}", imageName],
+        logResource, /*reportFullCommandLine*/ true);
+    if (!inspectResult) {
        throw new ResourceError(
-           `No digest available for image ${imageName}: ${inspectResult.code} -- ${inspectResult.stdout}`, logResource);
+           `No digest available for image ${imageName}`, logResource);
     }
+
     return {
-        id: inspectResult.stdout.trim(),
+        id: inspectResult.trim(),
         stages: stages,
     };
 }
@@ -315,10 +342,8 @@ async function dockerBuild(
         buildArgs.push(...[ "--target", target ]);
     }
 
-    const buildResult = await runCLICommand("docker", buildArgs, logResource, /*reportStdout*/ true);
-    if (buildResult.code) {
-        throw new ResourceError(`Docker build of image '${imageName}' failed with exit code: ${buildResult.code}`, logResource);
-    }
+    await runCommandThatMustSucceed(
+        "docker", buildArgs, logResource, /*reportFullCommandLine*/ true);
 }
 
 async function loginToRegistry(registry: Registry, logResource: pulumi.Resource): Promise<void> {
@@ -326,17 +351,17 @@ async function loginToRegistry(registry: Registry, logResource: pulumi.Resource)
 
     const dockerPasswordStdin = await useDockerPasswordStdin(logResource);
 
-    let loginResult: CommandResult;
+    // pass 'reportFullCommandLine: false' here so that if we fail to login we don't emit the
+    // username/password in our logs.  Instead, we'll just say "'docker login' failed with code ..."
     if (!dockerPasswordStdin) {
-        loginResult = await runCLICommand(
-            "docker", ["login", "-u", username, "-p", password, registryName], logResource, /*reportStdout*/ true);
-    } else {
-        loginResult = await runCLICommand(
-            "docker", ["login", "-u", username, "--password-stdin", registryName],
-            logResource, /*reportStdout*/ true, password);
+        await runCommandThatMustSucceed(
+            "docker", ["login", "-u", username, "-p", password, registryName],
+            logResource, /*reportFullCommandLine*/ false);
     }
-    if (loginResult.code) {
-        throw new ResourceError(`Failed to login to Docker registry ${registryName}`, logResource);
+    else {
+        await runCommandThatMustSucceed(
+            "docker", ["login", "-u", username, "--password-stdin", registryName],
+            logResource, /*reportFullCommandLine*/ false, password);
     }
 }
 
@@ -351,16 +376,11 @@ async function pushImageAsync(
     tag = tag ? `:${tag}` : "";
     const targetImage = `${repositoryUrl}${tag}`;
 
-    const tagResult = await runCLICommand(
-        "docker", ["tag", imageName, targetImage], logResource, /*reportStdout*/ true);
+    await runCommandThatMustSucceed(
+        "docker", ["tag", imageName, targetImage], logResource, /*reportFullCommandLine*/ true);
 
-    if (tagResult.code) {
-        throw new ResourceError(`Failed to tag Docker image with remote registry URL ${repositoryUrl}`, logResource);
-    }
-    const pushResult = await runCLICommand("docker", ["push", targetImage], logResource, /*reportStdout*/ true);
-    if (pushResult.code) {
-        throw new ResourceError(`Docker push of image '${imageName}' failed with exit code: ${pushResult.code}`, logResource);
-    }
+    await runCommandThatMustSucceed(
+        "docker", ["push", targetImage], logResource, /*reportFullCommandLine*/ true);
 }
 
 // getDigest returns the digest, if available, of a target image.  The digest will only be available once the repo image
@@ -368,19 +388,19 @@ async function pushImageAsync(
 export async function getDigest(targetImage: string, logResource: pulumi.Resource): Promise<string | undefined> {
     // Do not forward the output of this command this to the CLI to show the user.
 
-    const inspectResult = await runCLICommand(
-        "docker", ["image", "inspect", targetImage], logResource, /*reportStdout*/ false);
-    if (inspectResult.code || !inspectResult.stdout) {
+    const inspectResult = await runCommandThatMustSucceed(
+        "docker", ["image", "inspect", targetImage], logResource, /*reportFullCommandLine*/ true);
+    if (!inspectResult) {
         throw new ResourceError(
-            `No digest available for image ${targetImage}: ${inspectResult.code} -- ${inspectResult.stdout}`, logResource);
+            `No digest available for image ${targetImage}`, logResource);
     }
 
     // Parse the `docker image inspect` JSON
     let inspectData: DockerInspectImage;
     try {
-        inspectData = <DockerInspectImage>(JSON.parse(inspectResult.stdout)[0]);
+        inspectData = <DockerInspectImage>(JSON.parse(inspectResult)[0]);
     } catch (err) {
-        throw new ResourceError(`Unable to inspect image ${targetImage}: ${inspectResult.stdout}`, logResource);
+        throw new ResourceError(`Unable to inspect image ${targetImage}: ${inspectResult}`, logResource);
     }
 
     // Find the entry in `RepoDigests` that corresponds to the repo+image name we are pushing and extract it's digest.
@@ -409,7 +429,39 @@ export async function getDigest(targetImage: string, logResource: pulumi.Resourc
 
 interface CommandResult {
     code: number;
-    stdout?: string;
+    stdout: string;
+}
+
+function getCommandLineMessage(cmd: string, args: string[], reportFullCommandLine: boolean) {
+    const argString = reportFullCommandLine ? args.join(" ") : args[0];
+    return `'${cmd} ${argString}'`;
+}
+
+function getFailureMessage(cmd: string, args: string[], reportFullCommandLine: boolean, code: number) {
+    return `${getCommandLineMessage(cmd, args, reportFullCommandLine)} failed with exit code ${code}`;
+}
+
+// [reportFullCommandLine] is used to determine if the full command line should be reported
+// when an error happens.  In general reporting the full command line is fine.  But it should be set
+// to false if it might contain sensitive information (like a username/password)
+async function runCommandThatMustSucceed(
+    cmd: string,
+    args: string[],
+    logResource: pulumi.Resource | undefined,
+    reportFullCommandLine: boolean = true,
+    stdin?: string): Promise<string> {
+
+    const { code, stdout } = await runCommandThatCanFail(
+        cmd, args, logResource, reportFullCommandLine, stdin);
+
+    if (code !== 0) {
+        // Fail the entire build and push.  This includes the full output of the command so
+        // that at the end the user can review the full docker message about what the problem was.
+        throw new ResourceError(
+            `${getFailureMessage(cmd, args, reportFullCommandLine, code)}\n${stdout}`, logResource);
+    }
+
+    return stdout;
 }
 
 // Runs a CLI command in a child process, returning a promise for the process's exit. Both stdout
@@ -417,16 +469,21 @@ interface CommandResult {
 //
 // If the [stdin] argument is defined, it's contents are piped into stdin for the child process.
 //
-// [resourceOpt] is used to specify the resource to associate command output with. Stderr messages
+// [logResource] is used to specify the resource to associate command output with. Stderr messages
 // are always sent (since they may contain important information about something that's gone wrong).
-// Stdout messages will be logged to this resource if reportStdout is provided. Otherwise that output
-// will not be presented to the user.
-async function runCLICommand(
+// Stdout messages will be logged ephemerally to this resource.  This lets the user know there is
+// progress, without having that dumped on them at the end.  If an error occurs though, the stdout
+// content will be printed.
+async function runCommandThatCanFail(
     cmd: string,
     args: string[],
-    resourceOpt: pulumi.Resource | undefined,
-    reportStdout: boolean,
+    logResource: pulumi.Resource | undefined,
+    reportFullCommandLine: boolean,
     stdin?: string): Promise<CommandResult> {
+
+    // Let the user ephemerally know the command we're going to execute.
+    const commandLineMessage = getCommandLineMessage(cmd, args, reportFullCommandLine);
+    pulumi.log.info("Executing " + commandLineMessage, logResource, /*streamId*/ undefined, /*ephemeral*/ true);
 
     // Generate a unique stream-ID that we'll associate all the docker output with. This will allow
     // each spawned CLI command's output to associated with 'resource' and also streamed to the UI
@@ -451,10 +508,10 @@ async function runCLICommand(
         let stdErrChunks: Buffer[] = [];
 
         p.stdout.on("data", (chunk: Buffer) => {
-            if (reportStdout) {
-                pulumi.log.info(chunk.toString(), resourceOpt, streamID);
-            }
-
+            // Report all stdout messages as ephemeral messages.  That way they show up in the
+            // info bar as they're happening.  But they do not overwhelm the user as the end
+            // of the run.
+            pulumi.log.info(chunk.toString(), logResource, streamID, /*ephemeral:*/ true);
             stdOutChunks.push(chunk);
         });
 
@@ -476,10 +533,16 @@ async function runCLICommand(
         p.on("close", code => {
             logStdErrMessages(code);
 
-            resolve({
-                code: code,
-                stdout: Buffer.concat(stdOutChunks).toString(),
-            });
+            const stdout = Buffer.concat(stdOutChunks).toString();
+
+            if (code) {
+                // Report an ephemeral message indicating which command failed.  That way the user
+                // can immediately see something went wrong, and what command caused it.
+                const message = getFailureMessage(cmd, args, reportFullCommandLine, code);
+                pulumi.log.info(message, logResource, /*streamId*/ undefined, /*ephemeral*/ true);
+            }
+
+            resolve({ code, stdout });
         });
 
         if (stdin) {
@@ -495,11 +558,11 @@ async function runCLICommand(
 
                 if (code) {
                     // Command returned non-zero code.  Treat these stderr messages as an error.
-                    pulumi.log.error(errorOrWarnings, resourceOpt, streamID);
+                    pulumi.log.error(errorOrWarnings, logResource, streamID);
                 }
                 else {
                     // command succeeded.  These were just warning.
-                    pulumi.log.warn(errorOrWarnings, resourceOpt, streamID);
+                    pulumi.log.warn(errorOrWarnings, logResource, streamID);
                 }
             }
         }
