@@ -346,23 +346,46 @@ async function dockerBuild(
     await runCommandThatMustSucceed("docker", buildArgs, logResource);
 }
 
+// Keep track of registries and users that have been logged in.  If we've already logged into that
+// registry with that user, there's no need to do it again.
+const loggedInUsers: { registryName: string, username: string }[] = [];
+
 async function loginToRegistry(registry: Registry, logResource: pulumi.Resource): Promise<void> {
     const { registry: registryName, username, password } = registry;
+
+    if (isLoggedIn(registry)) {
+        logEphemeral(`Reusing existing login for ${username}@${registryName}`, logResource);
+        return;
+    }
+
+    loggedInUsers.push({ registryName, username });
 
     const dockerPasswordStdin = await useDockerPasswordStdin(logResource);
 
     // pass 'reportFullCommandLine: false' here so that if we fail to login we don't emit the
     // username/password in our logs.  Instead, we'll just say "'docker login' failed with code ..."
-    if (!dockerPasswordStdin) {
-        await runCommandThatMustSucceed(
-            "docker", ["login", "-u", username, "-p", password, registryName],
-            logResource, /*reportFullCommandLine*/ false);
-    }
-    else {
+    if (dockerPasswordStdin) {
         await runCommandThatMustSucceed(
             "docker", ["login", "-u", username, "--password-stdin", registryName],
             logResource, /*reportFullCommandLine*/ false, password);
     }
+    else {
+        await runCommandThatMustSucceed(
+            "docker", ["login", "-u", username, "-p", password, registryName],
+            logResource, /*reportFullCommandLine*/ false);
+    }
+}
+
+function isLoggedIn(registry: Registry): boolean {
+    for (const { registryName, username } of loggedInUsers) {
+        if (registryName === registry.registry &&
+            username === registry.username) {
+
+            return true;
+        }
+    }
+
+    return false;
 }
 
 async function pushImageAsync(
