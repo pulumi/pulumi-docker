@@ -58,10 +58,11 @@ export interface ImageRegistry {
 }
 
 /**
- * A docker.Image resource represents a Docker image built locally which is published and made available via a remote
- * Docker registry.  This can be used to ensure that a Docker source directory from a local deployment environment is
- * built and pushed to a cloud-hosted Docker registry as part of a Pulumi deployment, so that it can be referenced as an
- * image input from other cloud services that reference Docker images - including Kubernetes Pods, AWS ECS Tasks, and
+ * A docker.Image resource represents a Docker image built locally which is published and made
+ * available via a remote Docker registry.  This can be used to ensure that a Docker source
+ * directory from a local deployment environment is built and pushed to a cloud-hosted Docker
+ * registry as part of a Pulumi deployment, so that it can be referenced as an image input from
+ * other cloud services that reference Docker images - including Kubernetes Pods, AWS ECS Tasks, and
  * Azure Container Instances.
  */
 export class Image extends pulumi.ComponentResource {
@@ -82,6 +83,10 @@ export class Image extends pulumi.ComponentResource {
      * The pushed image digest.
      */
     public digest: pulumi.Output<string | undefined>;
+    /**
+     * The server the image is located at.
+     */
+    public registryServer: pulumi.Output<string | undefined>;
 
     constructor(name: string, args: ImageArgs, opts?: pulumi.ComponentResourceOptions) {
         super("docker:image:Image", name, argsWithoutRegistry(args), opts);
@@ -106,11 +111,12 @@ export class Image extends pulumi.ComponentResource {
                 }),
             );
             const digest = await getDigest(imageArgs.imageName, this);
-            return { digest, id };
+            return { digest, id, registryServer: registry && registry.server };
         });
 
         this.id = imageData.apply(d => d.id);
         this.digest = imageData.apply(d => d.digest);
+        this.registryServer = imageData.apply(d => d.registryServer);
         this.baseImageName = pulumi.output(args.imageName);
         this.imageName =
             pulumi
@@ -120,6 +126,7 @@ export class Image extends pulumi.ComponentResource {
             baseImageName: this.baseImageName,
             imageName: this.imageName,
             digest: this.digest,
+            registryServer: this.registryServer,
         });
     }
 }
