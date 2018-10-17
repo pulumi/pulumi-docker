@@ -238,7 +238,13 @@ function createUniqueTargetName(imageName: string, tag: string | undefined, imag
     }
 
     pieces.push(imageId);
-    return `${imageName}:${pieces.join("-")}`;
+
+    // A tag name must be valid ASCII and may contain lowercase and uppercase letters, digits,
+    // underscores, periods and dashes. A tag name may not start with a period or a dash and may
+    // contain a maximum of 128 characters.
+    const fullTag = pieces.join("-").replace(/[^-_.a-zA-Z0-9]/, "").substr(0, 128);
+
+    return `${imageName}:${fullTag}`;
 }
 
 async function pullCacheAsync(
@@ -331,10 +337,12 @@ async function buildImageAsync(
            `No digest available for image ${imageName}`, logResource);
     }
 
-    return {
-        imageId: inspectResult.trim(),
-        stages: stages,
-    };
+    // Trim off the hash kind if there is one.
+    let imageId = inspectResult.trim();
+    const colonIndex = imageId.lastIndexOf(":");
+    imageId = colonIndex < 0 ? imageId : imageId.substr(colonIndex + 1);
+
+    return { imageId, stages };
 }
 
 async function dockerBuild(
@@ -422,7 +430,7 @@ async function tagAndPushImageAsync(
     }
 
     // Ensure we have a unique target name for this image, and tag and push to that unique target.
-    await doTagAndPushAsync(createUniqueTargetName(imageId, tag, imageId));
+    await doTagAndPushAsync(createUniqueTargetName(imageName, tag, imageId));
 
     if (tag) {
         // user provided a tag themselves (like "x/y:dev").  In this case, also tag and push
