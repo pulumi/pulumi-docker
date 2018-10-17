@@ -202,10 +202,10 @@ async function buildAndPushImageWorkerAsync(
     // resources will be appropriately replaced.
     const uniqueTargetName = createUniqueTargetName(imageName, tag, imageId);
 
-    // Use those then push the image.  Then just return the digest as the final result for our caller to use.
+    // Use those then push the image.  Then just return the unique target name. as the final result
+    // for our caller to use.
     if (!pulumi.runtime.isDryRun()) {
-        // Only push the image during an update, do not push during a preview, even if digest and url are available
-        // from a previous update.
+        // Only push the image during an update, do not push during a preview.
         await login();
 
         // Push the final image first, then push the stage images to use for caching.
@@ -281,11 +281,6 @@ async function pullCacheAsync(
 interface BuildResult {
     imageId: string;
     stages: string[];
-}
-
-interface DockerInspectImage {
-    Id: string;
-    RepoDigests: string[];
 }
 
 async function buildImageAsync(
@@ -447,49 +442,6 @@ async function tagAndPushImageAsync(
         await runCommandThatMustSucceed("docker", ["tag", imageName, targetName], logResource);
         await runCommandThatMustSucceed("docker", ["push", targetName], logResource);
     }
-}
-
-// getDigest returns the digest, if available, of a target image.  The digest will only be available once the repo image
-// is pushed or pulled from the target repository.
-export async function getDigest(targetImage: string, logResource: pulumi.Resource): Promise<string | undefined> {
-    // Do not forward the output of this command this to the CLI to show the user.
-
-    const inspectResult = await runCommandThatMustSucceed("docker", ["image", "inspect", targetImage], logResource);
-    if (!inspectResult) {
-        throw new ResourceError(
-            `No digest available for image ${targetImage}`, logResource);
-    }
-
-    // Parse the `docker image inspect` JSON
-    let inspectData: DockerInspectImage;
-    try {
-        inspectData = <DockerInspectImage>(JSON.parse(inspectResult)[0]);
-    } catch (err) {
-        throw new ResourceError(`Unable to inspect image ${targetImage}: ${inspectResult}`, logResource);
-    }
-
-    // Find the entry in `RepoDigests` that corresponds to the repo+image name we are pushing and extract it's digest.
-    //
-    // ```
-    // "RepoDigests": [
-    //     "lukehoban/atest@sha256:622cf8084812ee72845d603f41dc6b85cb595e20d0be05909008f1412e867bfe",
-    //     "lukehoban/redise2e@sha256:622cf8084812ee72845d603f41dc6b85cb595e20d0be05909008f1412e867bfe",
-    //     "k8s.gcr.io/redis@sha256:f066bcf26497fbc55b9bf0769cb13a35c0afa2aa42e737cc46b7fb04b23a2f25"
-    // ],
-    // ```
-    //
-    // We look up the untagged repo name, so drop any tags.
-    const [untaggedTargetImage] = targetImage.split(":");
-    const prefix = `${untaggedTargetImage}@`;
-    let digest: string | undefined = undefined;
-    for (const repoDigest of inspectData.RepoDigests) {
-        if (repoDigest.startsWith(prefix)) {
-            digest = repoDigest.substring(prefix.length);
-            break;
-        }
-    }
-
-    return digest;
 }
 
 interface CommandResult {
