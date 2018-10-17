@@ -326,7 +326,8 @@ async function buildImageAsync(
     const stages = [];
     if (build.cacheFrom && typeof build.cacheFrom !== "boolean" && build.cacheFrom.stages) {
         for (const stage of build.cacheFrom.stages) {
-            await dockerBuild(localStageImageName(imageName, stage), build, cacheFrom, logResource, stage);
+            await dockerBuild(
+                localStageImageName(imageName, stage), build, cacheFrom, logResource, stage);
             stages.push(stage);
         }
     }
