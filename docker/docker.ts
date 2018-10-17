@@ -129,7 +129,10 @@ function logEphemeral(message: string, logResource: pulumi.Resource) {
 }
 
 // buildAndPushImageAsync will build and push the Dockerfile and context from [buildPath] into the
-// requested ECR [repositoryUrl].  It returns the digest of the built image.
+// requested docker repo [repositoryUrl].  It returns the unique target image name for the image in
+// the docker repository.  During preview this will build the image, and return the target image
+// name, without pushing. During a normal update, it will do the same, as well as tag and push the
+// image.
 export async function buildAndPushImageAsync(
     imageName: string,
     pathOrBuild: string | DockerBuild,
@@ -153,11 +156,13 @@ export async function buildAndPushImageAsync(
 }
 
 async function buildAndPushImageWorkerAsync(
-    imageName: string,
+    unprocessedImageName: string,
     pathOrBuild: string | DockerBuild,
     repositoryUrl: string,
     logResource: pulumi.Resource,
     connectToRegistry: (() => Promise<Registry>) | undefined): Promise<string> {
+
+    const { imageName, tag } = getImageNameAndTag(unprocessedImageName);
 
     let loggedIn: Promise<void> | undefined;
 
@@ -187,7 +192,15 @@ async function buildAndPushImageWorkerAsync(
     }
 
     // First build the image.
-    const buildResult = await buildImageAsync(imageName, pathOrBuild, logResource, cacheFrom);
+    const { imageId, stages } = await buildImageAsync(imageName, pathOrBuild, logResource, cacheFrom);
+
+    // Generate a name that uniquely will identify this built image.  This is similar in purpose to
+    // the name@digest form that can be normally be retrieved from a docker repository.  However,
+    // this tag doesn't require actually pushing the image, nor does it require communicating with
+    // some external system, making it suitable for unique identification, even during preview.
+    // This also means that if docker produces a new imageId, we'll get a new name here, ensuring that
+    // resources will be appropriately replaced.
+    const uniqueTargetName = createUniqueTargetName(imageName, tag, imageId);
 
     // Use those then push the image.  Then just return the digest as the final result for our caller to use.
     if (!pulumi.runtime.isDryRun()) {
@@ -196,15 +209,36 @@ async function buildAndPushImageWorkerAsync(
         await login();
 
         // Push the final image first, then push the stage images to use for caching.
-        await pushImageAsync(imageName, repositoryUrl, logResource);
+        await tagAndPushImageAsync(imageName, tag, imageId, repositoryUrl, logResource);
 
-        for (const stage of buildResult.stages) {
-            await pushImageAsync(
-                localStageImageName(imageName, stage), repositoryUrl, logResource, stage);
+        for (const stage of stages) {
+            await tagAndPushImageAsync(localStageImageName(imageName, stage), tag, imageId, repositoryUrl, logResource);
         }
     }
 
-    return buildResult.id;
+    return uniqueTargetName;
+}
+
+function localStageImageName(imageName: string, stage: string) {
+    return `${imageName}-${stage}`;
+}
+
+function getImageNameAndTag(unprocessedImageName: string): { imageName: string, tag: string | undefined } {
+    const lastColon = unprocessedImageName.lastIndexOf(":");
+    const imageName = lastColon < 0 ? unprocessedImageName : unprocessedImageName.substr(0, lastColon);
+    const tag = lastColon < 0 ? undefined : unprocessedImageName.substr(lastColon + 1);
+
+    return  { imageName, tag };
+}
+
+function createUniqueTargetName(imageName: string, tag: string | undefined, imageId: string): string {
+    const pieces: string[] = [];
+    if (tag) {
+        pieces.push(tag);
+    }
+
+    pieces.push(imageId);
+    return `${imageName}:${pieces.join("-")}`;
 }
 
 async function pullCacheAsync(
@@ -244,12 +278,8 @@ async function pullCacheAsync(
     return cacheFromImages;
 }
 
-function localStageImageName(imageName: string, stage: string): string {
-    return `${imageName}-${stage}`;
-}
-
 interface BuildResult {
-    id: string;
+    imageId: string;
     stages: string[];
 }
 
@@ -289,8 +319,7 @@ async function buildImageAsync(
     const stages = [];
     if (build.cacheFrom && typeof build.cacheFrom !== "boolean" && build.cacheFrom.stages) {
         for (const stage of build.cacheFrom.stages) {
-            await dockerBuild(
-                localStageImageName(imageName, stage), build, cacheFrom, logResource, stage);
+            await dockerBuild(localStageImageName(imageName, stage), build, cacheFrom, logResource, stage);
             stages.push(stage);
         }
     }
@@ -308,7 +337,7 @@ async function buildImageAsync(
     }
 
     return {
-        id: inspectResult.trim(),
+        imageId: inspectResult.trim(),
         stages: stages,
     };
 }
@@ -388,19 +417,36 @@ function isLoggedIn(registry: Registry): boolean {
     return false;
 }
 
-async function pushImageAsync(
-        imageName: string, repositoryUrl: string, logResource: pulumi.Resource, tag?: string): Promise<void> {
+async function tagAndPushImageAsync(
+        imageName: string, tag: string | undefined, imageId: string,
+        repositoryUrl: string, logResource: pulumi.Resource): Promise<void> {
 
     // Tag and push the image to the remote repository.
     if (!repositoryUrl) {
         throw new ResourceError("Expected repository URL to be defined during push", logResource);
     }
 
-    tag = tag ? `:${tag}` : "";
-    const targetImage = `${repositoryUrl}${tag}`;
+    // Ensure we have a unique target name for this image, and tag and push to that unique target.
+    await doTagAndPushAsync(createUniqueTargetName(imageId, tag, imageId));
 
-    await runCommandThatMustSucceed("docker", ["tag", imageName, targetImage], logResource);
-    await runCommandThatMustSucceed("docker", ["push", targetImage], logResource);
+    if (tag) {
+        // user provided a tag themselves (like "x/y:dev").  In this case, also tag and push
+        // directly to that 'dev' tag.  This is not going to be a unique location, and future pushes
+        // will overwrite this location.  However, that's ok as there's still the unique target we
+        // generated above.
+        //
+        // We don't need to do this for the main image we tagged and pushed as the repo will
+        // automatically give is a :latest tag that serves the same purpose.  So this tagged/pushed
+        // build will simply act as the 'latest' pointer for this specific tag.
+        await doTagAndPushAsync(`${imageName}:${tag}`);
+    }
+
+    return;
+
+    async function doTagAndPushAsync(targetName: string) {
+        await runCommandThatMustSucceed("docker", ["tag", imageName, targetName], logResource);
+        await runCommandThatMustSucceed("docker", ["push", targetName], logResource);
+    }
 }
 
 // getDigest returns the digest, if available, of a target image.  The digest will only be available once the repo image
