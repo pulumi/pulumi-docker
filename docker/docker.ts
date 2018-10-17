@@ -134,7 +134,7 @@ function logEphemeral(message: string, logResource: pulumi.Resource) {
 // name, without pushing. During a normal update, it will do the same, as well as tag and push the
 // image.
 export async function buildAndPushImageAsync(
-    imageName: string,
+    baseImageName: string,
     pathOrBuild: string | DockerBuild,
     repositoryUrl: string,
     logResource: pulumi.Resource,
@@ -145,7 +145,7 @@ export async function buildAndPushImageAsync(
     logEphemeral("Starting docker build and push...", logResource);
 
     const result = await buildAndPushImageWorkerAsync(
-        imageName, pathOrBuild, repositoryUrl, logResource, connectToRegistry);
+        baseImageName, pathOrBuild, repositoryUrl, logResource, connectToRegistry);
 
     // If we got here, then building/pushing didn't throw any errors.  Update the status bar
     // indicating that things worked properly.  That way, the info bar isn't stuck showing the very
@@ -156,13 +156,13 @@ export async function buildAndPushImageAsync(
 }
 
 async function buildAndPushImageWorkerAsync(
-    unprocessedImageName: string,
+    baseImageName: string,
     pathOrBuild: string | DockerBuild,
     repositoryUrl: string,
     logResource: pulumi.Resource,
     connectToRegistry: (() => Promise<Registry>) | undefined): Promise<string> {
 
-    const { imageName, tag } = getImageNameAndTag(unprocessedImageName);
+    const { imageName, tag } = getImageNameAndTag(baseImageName);
 
     let loggedIn: Promise<void> | undefined;
 
@@ -223,10 +223,10 @@ function localStageImageName(imageName: string, stage: string) {
     return `${imageName}-${stage}`;
 }
 
-function getImageNameAndTag(unprocessedImageName: string): { imageName: string, tag: string | undefined } {
-    const lastColon = unprocessedImageName.lastIndexOf(":");
-    const imageName = lastColon < 0 ? unprocessedImageName : unprocessedImageName.substr(0, lastColon);
-    const tag = lastColon < 0 ? undefined : unprocessedImageName.substr(lastColon + 1);
+function getImageNameAndTag(baseImageName: string): { imageName: string, tag: string | undefined } {
+    const lastColon = baseImageName.lastIndexOf(":");
+    const imageName = lastColon < 0 ? baseImageName : baseImageName.substr(0, lastColon);
+    const tag = lastColon < 0 ? undefined : baseImageName.substr(lastColon + 1);
 
     return  { imageName, tag };
 }
