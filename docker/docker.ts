@@ -201,7 +201,7 @@ async function buildAndPushImageWorkerAsync(
     // this tag doesn't require actually pushing the image, nor does it require communicating with
     // some external system, making it suitable for unique identification, even during preview.
     // This also means that if docker produces a new imageId, we'll get a new name here, ensuring that
-    // resources will be appropriately replaced.
+    // resources (like docker.Image and cloud.Service) will be appropriately replaced.
     const uniqueTargetName = createTargetName(repositoryUrl, tag, imageId);
 
     // Use those then push the image.  Then just return the unique target name. as the final result
