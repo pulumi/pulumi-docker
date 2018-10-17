@@ -180,19 +180,21 @@ async function buildAndPushImageWorkerAsync(
     };
 
     // If the container specified a cacheFrom parameter, first set up the cached stages.
-    let cacheFrom: Promise<string[] | undefined>;
+    let cacheFrom: string[] | undefined;
     if (typeof pathOrBuild !== "string" && pathOrBuild && pathOrBuild.cacheFrom) {
-        // NOTE: we pull the promise out of the repository URL s.t. we can observe whether or not it exists. Were we
-        // to instead hang an apply off of the raw Input<>, we would never end up running the pull if the repository
-        // had not yet been created.
+        // NOTE: we pull the promise out of the repository URL s.t. we can observe whether or not it
+        // exists. Were we to instead hang an apply off of the raw Input<>, we would never end up
+        // running the pull if the repository had not yet been created.
         const cacheFromParam = typeof pathOrBuild.cacheFrom === "boolean" ? {} : pathOrBuild.cacheFrom;
-        cacheFrom = pullCacheAsync(imageName, cacheFromParam, login, repositoryUrl, logResource);
-    } else {
-        cacheFrom = Promise.resolve(undefined);
+        cacheFrom = await pullCacheAsync(imageName, cacheFromParam, login, repositoryUrl, logResource);
     }
 
     // First build the image.
     const { imageId, stages } = await buildImageAsync(imageName, pathOrBuild, logResource, cacheFrom);
+
+    if (!repositoryUrl) {
+        throw new ResourceError("Expected repository URL to be defined during push", logResource);
+    }
 
     // Generate a name that uniquely will identify this built image.  This is similar in purpose to
     // the name@digest form that can be normally be retrieved from a docker repository.  However,
@@ -200,7 +202,7 @@ async function buildAndPushImageWorkerAsync(
     // some external system, making it suitable for unique identification, even during preview.
     // This also means that if docker produces a new imageId, we'll get a new name here, ensuring that
     // resources will be appropriately replaced.
-    const uniqueTargetName = createUniqueTargetName(imageName, tag, imageId);
+    const uniqueTargetName = createTargetName(repositoryUrl, tag, imageId);
 
     // Use those then push the image.  Then just return the unique target name. as the final result
     // for our caller to use.
@@ -212,7 +214,8 @@ async function buildAndPushImageWorkerAsync(
         await tagAndPushImageAsync(imageName, tag, imageId, repositoryUrl, logResource);
 
         for (const stage of stages) {
-            await tagAndPushImageAsync(localStageImageName(imageName, stage), tag, imageId, repositoryUrl, logResource);
+            await tagAndPushImageAsync(
+                localStageImageName(imageName, stage), tag, /*imageId:*/ undefined, repositoryUrl, logResource);
         }
     }
 
@@ -231,20 +234,22 @@ function getImageNameAndTag(baseImageName: string): { imageName: string, tag: st
     return  { imageName, tag };
 }
 
-function createUniqueTargetName(imageName: string, tag: string | undefined, imageId: string): string {
+function createTargetName(repositoryUrl: string, tag: string | undefined, imageId: string | undefined): string {
     const pieces: string[] = [];
     if (tag) {
         pieces.push(tag);
     }
 
-    pieces.push(imageId);
+    if (imageId) {
+        pieces.push(imageId);
+    }
 
     // A tag name must be valid ASCII and may contain lowercase and uppercase letters, digits,
     // underscores, periods and dashes. A tag name may not start with a period or a dash and may
     // contain a maximum of 128 characters.
     const fullTag = pieces.join("-").replace(/[^-_.a-zA-Z0-9]/, "").substr(0, 128);
 
-    return `${imageName}:${fullTag}`;
+    return fullTag ? `${repositoryUrl}:${fullTag}` : repositoryUrl;
 }
 
 async function pullCacheAsync(
@@ -264,16 +269,17 @@ async function pullCacheAsync(
     // Ensure that we're logged in to the source registry and attempt to pull each stage in turn.
     await login();
 
-    const cacheFromImages = [];
+    const cacheFromImages: string[] = [];
     const stages = (cacheFrom.stages || []).concat([""]);
     for (const stage of stages) {
         const tag = stage ? `:${stage}` : "";
         const image = `${repoUrl}${tag}`;
 
         // Try to pull the existing image if it exists.  This may fail if the image does not exist.
-        // That's fine, just move onto the next sage.
-        const { code, stdout } = await runCommandThatCanFail(
-            "docker", ["pull", image], logResource, /*reportFullCommand:*/ true);
+        // That's fine, just move onto the next stage.
+        const { code } = await runCommandThatCanFail(
+            "docker", ["pull", image], logResource,
+            /*reportFullCommand:*/ true, /*reportErrorAsWarning:*/ true);
         if (code) {
             continue;
         }
@@ -293,7 +299,7 @@ async function buildImageAsync(
     imageName: string,
     pathOrBuild: string | DockerBuild,
     logResource: pulumi.Resource,
-    cacheFrom: Promise<string[] | undefined>): Promise<BuildResult> {
+    cacheFrom: string[] | undefined): Promise<BuildResult> {
 
     let build: DockerBuild;
     if (typeof pathOrBuild === "string") {
@@ -348,7 +354,7 @@ async function buildImageAsync(
 async function dockerBuild(
     imageName: string,
     build: DockerBuild,
-    cacheFrom: Promise<string[] | undefined>,
+    cacheFrom: string[] | undefined,
     logResource: pulumi.Resource,
     target?: string): Promise<void> {
 
@@ -363,9 +369,8 @@ async function dockerBuild(
         }
     }
     if (build.cacheFrom) {
-        const cacheFromImages = await cacheFrom;
-        if (cacheFromImages) {
-            buildArgs.push(...[ "--cache-from", cacheFromImages.join() ]);
+        if (cacheFrom && cacheFrom.length) {
+            buildArgs.push(...[ "--cache-from", cacheFrom.join() ]);
         }
     }
     buildArgs.push(build.context!); // push the docker build context onto the path.
@@ -421,16 +426,11 @@ function isLoggedIn(registry: Registry): boolean {
 }
 
 async function tagAndPushImageAsync(
-        imageName: string, tag: string | undefined, imageId: string,
+        imageName: string, tag: string | undefined, imageId: string | undefined,
         repositoryUrl: string, logResource: pulumi.Resource): Promise<void> {
 
-    // Tag and push the image to the remote repository.
-    if (!repositoryUrl) {
-        throw new ResourceError("Expected repository URL to be defined during push", logResource);
-    }
-
     // Ensure we have a unique target name for this image, and tag and push to that unique target.
-    await doTagAndPushAsync(createUniqueTargetName(imageName, tag, imageId));
+    await doTagAndPushAsync(createTargetName(repositoryUrl, tag, imageId));
 
     if (tag) {
         // user provided a tag themselves (like "x/y:dev").  In this case, also tag and push
@@ -441,7 +441,7 @@ async function tagAndPushImageAsync(
         // We don't need to do this for the main image we tagged and pushed as the repo will
         // automatically give is a :latest tag that serves the same purpose.  So this tagged/pushed
         // build will simply act as the 'latest' pointer for this specific tag.
-        await doTagAndPushAsync(`${imageName}:${tag}`);
+        await doTagAndPushAsync(`${repositoryUrl}:${tag}`);
     }
 
     return;
@@ -477,7 +477,7 @@ async function runCommandThatMustSucceed(
     stdin?: string): Promise<string> {
 
     const { code, stdout } = await runCommandThatCanFail(
-        cmd, args, logResource, reportFullCommandLine, stdin);
+        cmd, args, logResource, reportFullCommandLine, /*reportErrorAsWarning:*/ false, stdin);
 
     if (code !== 0) {
         // Fail the entire build and push.  This includes the full output of the command so that at
@@ -507,6 +507,7 @@ async function runCommandThatCanFail(
     args: string[],
     logResource: pulumi.Resource,
     reportFullCommandLine: boolean,
+    reportErrorAsWarning: boolean,
     stdin?: string): Promise<CommandResult> {
 
     // Let the user ephemerally know the command we're going to execute.
@@ -551,15 +552,22 @@ async function runCommandThatCanFail(
         });
 
         p.on("error", err => {
-            // If we actually full on received some sort of error in the process, also try to dump
-            // any stderr messages in case they might be useful.
-            logStdErrMessages(/*code: */ 1);
-            reject(err);
+            stdErrChunks.push(new Buffer(err.message));
+            finish(/*code: */ 1);
         });
 
         p.on("close", code => {
-            logStdErrMessages(code);
+            finish(code);
+        });
 
+        if (stdin) {
+            p.stdin.end(stdin);
+        }
+
+        return;
+
+        function finish(code: number) {
+            logStdErrMessages(code);
             const stdout = Buffer.concat(stdOutChunks).toString();
 
             if (code) {
@@ -569,20 +577,14 @@ async function runCommandThatCanFail(
             }
 
             resolve({ code, stdout });
-        });
-
-        if (stdin) {
-            p.stdin.end(stdin);
         }
-
-        return;
 
         function logStdErrMessages(code: number) {
             if (stdErrChunks.length > 0) {
                 const errorOrWarnings = Buffer.concat(stdErrChunks).toString();
                 stdErrChunks = [];
 
-                if (code) {
+                if (code && !reportErrorAsWarning) {
                     // Command returned non-zero code.  Treat these stderr messages as an error.
                     pulumi.log.error(errorOrWarnings, logResource, streamID);
                 }
