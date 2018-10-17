@@ -72,7 +72,7 @@ export class Image extends pulumi.ComponentResource {
      */
     public baseImageName: pulumi.Output<string>;
     /**
-     * The pinned image name, including unique id annotation.
+     * The unique pinned image name on the remote repository.
      */
     public imageName: pulumi.Output<string>;
     /**
