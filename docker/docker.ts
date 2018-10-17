@@ -211,11 +211,11 @@ async function buildAndPushImageWorkerAsync(
         await login();
 
         // Push the final image first, then push the stage images to use for caching.
-        await tagAndPushImageAsync(imageName, tag, imageId, repositoryUrl, logResource);
+        await tagAndPushImageAsync(imageName, repositoryUrl, tag, imageId, logResource);
 
         for (const stage of stages) {
             await tagAndPushImageAsync(
-                localStageImageName(imageName, stage), tag, /*imageId:*/ undefined, repositoryUrl, logResource);
+                localStageImageName(imageName, stage), repositoryUrl, tag, /*imageId:*/ undefined, logResource);
         }
     }
 
@@ -426,8 +426,9 @@ function isLoggedIn(registry: Registry): boolean {
 }
 
 async function tagAndPushImageAsync(
-        imageName: string, tag: string | undefined, imageId: string | undefined,
-        repositoryUrl: string, logResource: pulumi.Resource): Promise<void> {
+        imageName: string, repositoryUrl: string,
+        tag: string | undefined, imageId: string | undefined,
+        logResource: pulumi.Resource): Promise<void> {
 
     // Ensure we have a unique target name for this image, and tag and push to that unique target.
     await doTagAndPushAsync(createTargetName(repositoryUrl, tag, imageId));
