@@ -518,6 +518,10 @@ async function runCommandThatMustSucceed(
 // Stdout messages will be logged ephemerally to this resource.  This lets the user know there is
 // progress, without having that dumped on them at the end.  If an error occurs though, the stdout
 // content will be printed.
+//
+// The promise returned by this function should never reach the rejected state.  Even if the
+// underlying spawned command has a problem, this will result in a resolved promise with the
+// [CommandResult.code] value set to a non-zero value.
 async function runCommandThatCanFail(
     cmd: string,
     args: string[],
@@ -548,7 +552,7 @@ async function runCommandThatCanFail(
         const p = child_process.spawn(cmd, args);
 
         // We store the results from stdout in memory and will return them as a string.
-        const stdOutChunks: Buffer[] = [];
+        let stdOutChunks: Buffer[] = [];
         let stdErrChunks: Buffer[] = [];
 
         p.stdout.on("data", (chunk: Buffer) => {
@@ -567,7 +571,29 @@ async function runCommandThatCanFail(
             stdErrChunks.push(chunk);
         });
 
+        // In both cases of 'error' or 'close' we execute the same 'finish up' codepath. This
+        // codepath effectively flushes (and clears) the stdout and stderr streams we've been
+        // buffering.  We'll also return the stdout stream to the caller, and we'll appropriately
+        // return if we failed or not depending on if we got an actual exception, or if the spawned
+        // process returned a non-0 error code.
+        //
+        // Effectively, we are ensuring that we never reject the promise we're returning.  It will
+        // always 'resolve', and we will always have the behaviors that:
+        //
+        // 1. all stderr information is flushed (including the message of an exception if we got one).
+        // 2. an ephemeral info message is printed stating if there were any exceptions/status-codes
+        // 3. all stdout information is returned to the caller.
+        // 4. the caller gets a 0-code on success, and a non-0-code for either an exception or an
+        //    error status code.
+        //
+        // The caller can then decide what to do with this.  Nearly all callers will will be coming
+        // through runCommandThatMustSucceed, which will see a non-0 code and will then throw with
+        // a full message.
+
         p.on("error", err => {
+            // received some sort of real error.  push the message of that error to our stdErr
+            // stream (so it will get reported) and then move this promise to the resolved, 1-code
+            // state to indicate failure.
             stdErrChunks.push(new Buffer(err.message));
             finish(/*code: */ 1);
         });
@@ -582,33 +608,42 @@ async function runCommandThatCanFail(
 
         return;
 
+        // Moves our promise to the resolved state, after appropriately dealing with any errors
+        // we've encountered.  Importantly, this function can be called multiple times safely.
+        // It will clean up after itself so that multiple calls don't end up causing any issues.
+
         function finish(code: number) {
-            logStdErrMessages(code);
+            // Collapse our stored stdout/stderr messages into single strings.
+            const stderr = Buffer.concat(stdErrChunks).toString();
             const stdout = Buffer.concat(stdOutChunks).toString();
 
+            // Clear out our output buffers.  This ensures that if we get called again, we don't
+            // double print these messages.
+            stdOutChunks = [];
+            stdErrChunks = [];
+
+            // If we got any stderr messages, report them as an error/warning depending on the
+            // result of the operation.
+            if (stderr.length > 0) {
+                if (code && !reportErrorAsWarning) {
+                    // Command returned non-zero code.  Treat these stderr messages as an error.
+                    pulumi.log.error(stderr, logResource, streamID);
+                }
+                else {
+                    // command succeeded.  These were just warning.
+                    pulumi.log.warn(stderr, logResource, streamID);
+                }
+            }
+
+            // If the command failed report an ephemeral message indicating which command it was.
+            // That way the user can immediately see something went wrong in the info bar.  The
+            // caller (normally runCommandThatMustSucceed) can choose to also report this
+            // non-ephemerally.
             if (code) {
-                // Report an ephemeral message indicating which command failed.  That way the user
-                // can immediately see something went wrong, and what command caused it.
                 logEphemeral(getFailureMessage(cmd, args, reportFullCommandLine, code), logResource);
             }
 
             resolve({ code, stdout });
-        }
-
-        function logStdErrMessages(code: number) {
-            if (stdErrChunks.length > 0) {
-                const errorOrWarnings = Buffer.concat(stdErrChunks).toString();
-                stdErrChunks = [];
-
-                if (code && !reportErrorAsWarning) {
-                    // Command returned non-zero code.  Treat these stderr messages as an error.
-                    pulumi.log.error(errorOrWarnings, logResource, streamID);
-                }
-                else {
-                    // command succeeded.  These were just warning.
-                    pulumi.log.warn(errorOrWarnings, logResource, streamID);
-                }
-            }
         }
     });
 }
