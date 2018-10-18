@@ -351,7 +351,13 @@ async function buildImageAsync(
            `No digest available for image ${imageName}`, logResource);
     }
 
-    // Trim off the hash kind if there is one.
+    // From https://docs.docker.com/registry/spec/api/#content-digests
+    //
+    // the image id will be a "algorithm:hex" pair.  We don't care about the algorithm part.  All we
+    // want is the unique portion we can use elsewhere.  Since we are also going to place this in an
+    // image tag, we also don't want the colon, as that's not legal there.  So simply grab the hex
+    // portion after the colon and return that.
+
     let imageId = inspectResult.trim();
     const colonIndex = imageId.lastIndexOf(":");
     imageId = colonIndex < 0 ? imageId : imageId.substr(colonIndex + 1);
