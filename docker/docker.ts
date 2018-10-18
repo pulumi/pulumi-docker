@@ -198,7 +198,7 @@ async function buildAndPushImageWorkerAsync(
     // some external system, making it suitable for unique identification, even during preview.
     // This also means that if docker produces a new imageId, we'll get a new name here, ensuring that
     // resources (like docker.Image and cloud.Service) will be appropriately replaced.
-    const uniqueTargetName = createTargetName(repositoryUrl, tag, imageId);
+    const uniqueTaggedImageName = createTaggedImageName(repositoryUrl, tag, imageId);
 
     // Use those then push the image.  Then just return the unique target name. as the final result
     // for our caller to use.
@@ -215,7 +215,7 @@ async function buildAndPushImageWorkerAsync(
         }
     }
 
-    return uniqueTargetName;
+    return uniqueTaggedImageName;
 }
 
 function localStageImageName(imageName: string, stage: string) {
@@ -230,7 +230,7 @@ function getImageNameAndTag(baseImageName: string): { imageName: string, tag: st
     return  { imageName, tag };
 }
 
-function createTargetName(repositoryUrl: string, tag: string | undefined, imageId: string | undefined): string {
+function createTaggedImageName(repositoryUrl: string, tag: string | undefined, imageId: string | undefined): string {
     const pieces: string[] = [];
     if (tag) {
         pieces.push(tag);
@@ -429,7 +429,7 @@ async function tagAndPushImageAsync(
         logResource: pulumi.Resource): Promise<void> {
 
     // Ensure we have a unique target name for this image, and tag and push to that unique target.
-    await doTagAndPushAsync(createTargetName(repositoryUrl, tag, imageId));
+    await doTagAndPushAsync(createTaggedImageName(repositoryUrl, tag, imageId));
 
     if (tag) {
         // user provided a tag themselves (like "x/y:dev").  In this case, also tag and push
