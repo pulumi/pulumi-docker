@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import * as pulumi from "@pulumi/pulumi";
-import { buildAndPushImageAsync, DockerBuild, getDigest } from "./docker";
+import * as docker from "./docker";
 
 /**
  * Arguments for constructing an Image resource.
@@ -27,7 +27,7 @@ export interface ImageArgs {
     /**
      * The Docker build context, as a folder path or a detailed DockerBuild object.
      */
-    build: pulumi.Input<string | DockerBuild>;
+    build: pulumi.Input<string | docker.DockerBuild>;
     /**
      * The docker image name to build locally before tagging with imageName.
      */
@@ -67,26 +67,28 @@ export interface ImageRegistry {
  */
 export class Image extends pulumi.ComponentResource {
     /**
-     * The base image name that was built and pushed.  This does not include the digest annotation, so is not pinned to
-     * the specific build performed by this docker.Image.
+     * The base image name that was built and pushed.  This does not include the id annotation, so
+     * is not pinned to the specific build performed by this docker.Image.
      */
     public baseImageName: pulumi.Output<string>;
     /**
-     * The pinned image name, including digest annotation.
+     * The unique pinned image name on the remote repository.
      */
     public imageName: pulumi.Output<string>;
-    /**
-     * The built image Id.
-     */
-    public id: pulumi.Output<string>;
-    /**
-     * The pushed image digest.
-     */
-    public digest: pulumi.Output<string | undefined>;
     /**
      * The server the image is located at.
      */
     public registryServer: pulumi.Output<string | undefined>;
+
+    /** @deprecated This will have the same value as [imageName], but will be removed in the future. */
+    public id: pulumi.Output<string>;
+
+    /**
+     * @deprecated This will have the same value as [imageName], but will be removed in the future.
+     * It can be used to get a unique name for this specific image, but is not the actual repository
+     * digest value.
+     */
+    public digest: pulumi.Output<string | undefined>;
 
     constructor(name: string, args: ImageArgs, opts?: pulumi.ComponentResourceOptions) {
         super("docker:image:Image", name, argsWithoutRegistry(args), opts);
@@ -97,11 +99,11 @@ export class Image extends pulumi.ComponentResource {
                 localImageName = imageArgs.imageName;
             }
             const registry = imageArgs.registry;
-            const id = await buildAndPushImageAsync(
+            const uniqueTargetName = await docker.buildAndPushImageAsync(
                 localImageName,
                 imageArgs.build,
                 imageArgs.imageName,
-                this,
+                /*logResource:*/ this,
                 registry && (async () => {
                     return {
                         registry: registry.server,
@@ -110,21 +112,20 @@ export class Image extends pulumi.ComponentResource {
                     };
                 }),
             );
-            const digest = await getDigest(imageArgs.imageName, this);
-            return { digest, id, registryServer: registry && registry.server };
+
+            return { uniqueTargetName, registryServer: registry && registry.server };
         });
 
-        this.id = imageData.apply(d => d.id);
-        this.digest = imageData.apply(d => d.digest);
+        this.imageName = imageData.apply(d => d.uniqueTargetName);
+        this.id = this.imageName;
+        this.digest = this.imageName;
         this.registryServer = imageData.apply(d => d.registryServer);
         this.baseImageName = pulumi.output(args.imageName);
-        this.imageName =
-            pulumi
-            .all([args.imageName, this.digest])
-            .apply(([imageName, digest]) => `${imageName}@${digest}`);
+
         this.registerOutputs({
             baseImageName: this.baseImageName,
             imageName: this.imageName,
+            id: this.id,
             digest: this.digest,
             registryServer: this.registryServer,
         });

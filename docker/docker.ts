@@ -129,9 +129,12 @@ function logEphemeral(message: string, logResource: pulumi.Resource) {
 }
 
 // buildAndPushImageAsync will build and push the Dockerfile and context from [buildPath] into the
-// requested ECR [repositoryUrl].  It returns the digest of the built image.
+// requested docker repo [repositoryUrl].  It returns the unique target image name for the image in
+// the docker repository.  During preview this will build the image, and return the target image
+// name, without pushing. During a normal update, it will do the same, as well as tag and push the
+// image.
 export async function buildAndPushImageAsync(
-    imageName: string,
+    baseImageName: string,
     pathOrBuild: string | DockerBuild,
     repositoryUrl: string,
     logResource: pulumi.Resource,
@@ -142,7 +145,7 @@ export async function buildAndPushImageAsync(
     logEphemeral("Starting docker build and push...", logResource);
 
     const result = await buildAndPushImageWorkerAsync(
-        imageName, pathOrBuild, repositoryUrl, logResource, connectToRegistry);
+        baseImageName, pathOrBuild, repositoryUrl, logResource, connectToRegistry);
 
     // If we got here, then building/pushing didn't throw any errors.  Update the status bar
     // indicating that things worked properly.  That way, the info bar isn't stuck showing the very
@@ -153,11 +156,13 @@ export async function buildAndPushImageAsync(
 }
 
 async function buildAndPushImageWorkerAsync(
-    imageName: string,
+    baseImageName: string,
     pathOrBuild: string | DockerBuild,
     repositoryUrl: string,
     logResource: pulumi.Resource,
     connectToRegistry: (() => Promise<Registry>) | undefined): Promise<string> {
+
+    const { imageName, tag } = getImageNameAndTag(baseImageName);
 
     let loggedIn: Promise<void> | undefined;
 
@@ -175,36 +180,81 @@ async function buildAndPushImageWorkerAsync(
     };
 
     // If the container specified a cacheFrom parameter, first set up the cached stages.
-    let cacheFrom: Promise<string[] | undefined>;
+    let cacheFrom = Promise.resolve<string[] | undefined>(undefined);
     if (typeof pathOrBuild !== "string" && pathOrBuild && pathOrBuild.cacheFrom) {
-        // NOTE: we pull the promise out of the repository URL s.t. we can observe whether or not it exists. Were we
-        // to instead hang an apply off of the raw Input<>, we would never end up running the pull if the repository
-        // had not yet been created.
+        // NOTE: we pull the promise out of the repository URL s.t. we can observe whether or not it
+        // exists. Were we to instead hang an apply off of the raw Input<>, we would never end up
+        // running the pull if the repository had not yet been created.
         const cacheFromParam = typeof pathOrBuild.cacheFrom === "boolean" ? {} : pathOrBuild.cacheFrom;
         cacheFrom = pullCacheAsync(imageName, cacheFromParam, login, repositoryUrl, logResource);
-    } else {
-        cacheFrom = Promise.resolve(undefined);
     }
 
     // First build the image.
-    const buildResult = await buildImageAsync(imageName, pathOrBuild, logResource, cacheFrom);
+    const { imageId, stages } = await buildImageAsync(imageName, pathOrBuild, logResource, cacheFrom);
 
-    // Use those then push the image.  Then just return the digest as the final result for our caller to use.
+    // Generate a name that uniquely will identify this built image.  This is similar in purpose to
+    // the name@digest form that can be normally be retrieved from a docker repository.  However,
+    // this tag doesn't require actually pushing the image, nor does it require communicating with
+    // some external system, making it suitable for unique identification, even during preview.
+    // This also means that if docker produces a new imageId, we'll get a new name here, ensuring that
+    // resources (like docker.Image and cloud.Service) will be appropriately replaced.
+    const uniqueTaggedImageName = createTaggedImageName(repositoryUrl, tag, imageId);
+
+    // Use those then push the image.  Then just return the unique target name. as the final result
+    // for our caller to use.
     if (!pulumi.runtime.isDryRun()) {
-        // Only push the image during an update, do not push during a preview, even if digest and url are available
-        // from a previous update.
+        // Only push the image during an update, do not push during a preview.
         await login();
 
         // Push the final image first, then push the stage images to use for caching.
-        await pushImageAsync(imageName, repositoryUrl, logResource);
+        await tagAndPushImageAsync(imageName, repositoryUrl, tag, imageId, logResource);
 
-        for (const stage of buildResult.stages) {
-            await pushImageAsync(
-                localStageImageName(imageName, stage), repositoryUrl, logResource, stage);
+        for (const stage of stages) {
+            await tagAndPushImageAsync(
+                localStageImageName(imageName, stage), repositoryUrl, tag, /*imageId:*/ undefined, logResource);
         }
     }
 
-    return buildResult.id;
+    return uniqueTaggedImageName;
+}
+
+function localStageImageName(imageName: string, stage: string) {
+    return `${imageName}-${stage}`;
+}
+
+function getImageNameAndTag(baseImageName: string): { imageName: string, tag: string | undefined } {
+    // From https://docs.docker.com/engine/reference/commandline/tag
+    //
+    // "A tag name must be valid ASCII and may contain lowercase and uppercase letters, digits,
+    // underscores, periods and dashes. A tag name may not start with a period or a dash and may
+    // contain a maximum of 128 characters."
+    //
+    // So it is safe for us to just look for the colon, and consume whatever follows as the tag
+    // for the image.
+
+    const lastColon = baseImageName.lastIndexOf(":");
+    const imageName = lastColon < 0 ? baseImageName : baseImageName.substr(0, lastColon);
+    const tag = lastColon < 0 ? undefined : baseImageName.substr(lastColon + 1);
+
+    return  { imageName, tag };
+}
+
+function createTaggedImageName(repositoryUrl: string, tag: string | undefined, imageId: string | undefined): string {
+    const pieces: string[] = [];
+    if (tag) {
+        pieces.push(tag);
+    }
+
+    if (imageId) {
+        pieces.push(imageId);
+    }
+
+    // Note: we don't do any validation that the tag is well formed, as per:
+    // https://docs.docker.com/engine/reference/commandline/tag
+    //
+    // If there are any issues with it, we'll just let docker report the problem.
+    const fullTag = pieces.join("-");
+    return fullTag ? `${repositoryUrl}:${fullTag}` : repositoryUrl;
 }
 
 async function pullCacheAsync(
@@ -224,16 +274,19 @@ async function pullCacheAsync(
     // Ensure that we're logged in to the source registry and attempt to pull each stage in turn.
     await login();
 
-    const cacheFromImages = [];
+    const cacheFromImages: string[] = [];
     const stages = (cacheFrom.stages || []).concat([""]);
     for (const stage of stages) {
         const tag = stage ? `:${stage}` : "";
         const image = `${repoUrl}${tag}`;
 
         // Try to pull the existing image if it exists.  This may fail if the image does not exist.
-        // That's fine, just move onto the next sage.
-        const { code, stdout } = await runCommandThatCanFail(
-            "docker", ["pull", image], logResource, /*reportFullCommand:*/ true);
+        // That's fine, just move onto the next stage.  Also, pass along a flag saying that we
+        // should print that error as a warning instead.  We don't want the update to succeed but
+        // the user to then get a nasty "error:" message at the end.
+        const { code } = await runCommandThatCanFail(
+            "docker", ["pull", image], logResource,
+            /*reportFullCommand:*/ true, /*reportErrorAsWarning:*/ true);
         if (code) {
             continue;
         }
@@ -244,18 +297,9 @@ async function pullCacheAsync(
     return cacheFromImages;
 }
 
-function localStageImageName(imageName: string, stage: string): string {
-    return `${imageName}-${stage}`;
-}
-
 interface BuildResult {
-    id: string;
+    imageId: string;
     stages: string[];
-}
-
-interface DockerInspectImage {
-    Id: string;
-    RepoDigests: string[];
 }
 
 async function buildImageAsync(
@@ -307,10 +351,18 @@ async function buildImageAsync(
            `No digest available for image ${imageName}`, logResource);
     }
 
-    return {
-        id: inspectResult.trim(),
-        stages: stages,
-    };
+    // From https://docs.docker.com/registry/spec/api/#content-digests
+    //
+    // the image id will be a "algorithm:hex" pair.  We don't care about the algorithm part.  All we
+    // want is the unique portion we can use elsewhere.  Since we are also going to place this in an
+    // image tag, we also don't want the colon, as that's not legal there.  So simply grab the hex
+    // portion after the colon and return that.
+
+    let imageId = inspectResult.trim();
+    const colonIndex = imageId.lastIndexOf(":");
+    imageId = colonIndex < 0 ? imageId : imageId.substr(colonIndex + 1);
+
+    return { imageId, stages };
 }
 
 async function dockerBuild(
@@ -332,7 +384,7 @@ async function dockerBuild(
     }
     if (build.cacheFrom) {
         const cacheFromImages = await cacheFrom;
-        if (cacheFromImages) {
+        if (cacheFromImages && cacheFromImages.length) {
             buildArgs.push(...[ "--cache-from", cacheFromImages.join() ]);
         }
     }
@@ -388,62 +440,32 @@ function isLoggedIn(registry: Registry): boolean {
     return false;
 }
 
-async function pushImageAsync(
-        imageName: string, repositoryUrl: string, logResource: pulumi.Resource, tag?: string): Promise<void> {
+async function tagAndPushImageAsync(
+        imageName: string, repositoryUrl: string,
+        tag: string | undefined, imageId: string | undefined,
+        logResource: pulumi.Resource): Promise<void> {
 
-    // Tag and push the image to the remote repository.
-    if (!repositoryUrl) {
-        throw new ResourceError("Expected repository URL to be defined during push", logResource);
+    // Ensure we have a unique target name for this image, and tag and push to that unique target.
+    await doTagAndPushAsync(createTaggedImageName(repositoryUrl, tag, imageId));
+
+    if (tag) {
+        // user provided a tag themselves (like "x/y:dev").  In this case, also tag and push
+        // directly to that 'dev' tag.  This is not going to be a unique location, and future pushes
+        // will overwrite this location.  However, that's ok as there's still the unique target we
+        // generated above.
+        //
+        // We don't need to do this for the main image we tagged and pushed as the repo will
+        // automatically give is a :latest tag that serves the same purpose.  So this tagged/pushed
+        // build will simply act as the 'latest' pointer for this specific tag.
+        await doTagAndPushAsync(`${repositoryUrl}:${tag}`);
     }
 
-    tag = tag ? `:${tag}` : "";
-    const targetImage = `${repositoryUrl}${tag}`;
+    return;
 
-    await runCommandThatMustSucceed("docker", ["tag", imageName, targetImage], logResource);
-    await runCommandThatMustSucceed("docker", ["push", targetImage], logResource);
-}
-
-// getDigest returns the digest, if available, of a target image.  The digest will only be available once the repo image
-// is pushed or pulled from the target repository.
-export async function getDigest(targetImage: string, logResource: pulumi.Resource): Promise<string | undefined> {
-    // Do not forward the output of this command this to the CLI to show the user.
-
-    const inspectResult = await runCommandThatMustSucceed("docker", ["image", "inspect", targetImage], logResource);
-    if (!inspectResult) {
-        throw new ResourceError(
-            `No digest available for image ${targetImage}`, logResource);
+    async function doTagAndPushAsync(targetName: string) {
+        await runCommandThatMustSucceed("docker", ["tag", imageName, targetName], logResource);
+        await runCommandThatMustSucceed("docker", ["push", targetName], logResource);
     }
-
-    // Parse the `docker image inspect` JSON
-    let inspectData: DockerInspectImage;
-    try {
-        inspectData = <DockerInspectImage>(JSON.parse(inspectResult)[0]);
-    } catch (err) {
-        throw new ResourceError(`Unable to inspect image ${targetImage}: ${inspectResult}`, logResource);
-    }
-
-    // Find the entry in `RepoDigests` that corresponds to the repo+image name we are pushing and extract it's digest.
-    //
-    // ```
-    // "RepoDigests": [
-    //     "lukehoban/atest@sha256:622cf8084812ee72845d603f41dc6b85cb595e20d0be05909008f1412e867bfe",
-    //     "lukehoban/redise2e@sha256:622cf8084812ee72845d603f41dc6b85cb595e20d0be05909008f1412e867bfe",
-    //     "k8s.gcr.io/redis@sha256:f066bcf26497fbc55b9bf0769cb13a35c0afa2aa42e737cc46b7fb04b23a2f25"
-    // ],
-    // ```
-    //
-    // We look up the untagged repo name, so drop any tags.
-    const [untaggedTargetImage] = targetImage.split(":");
-    const prefix = `${untaggedTargetImage}@`;
-    let digest: string | undefined = undefined;
-    for (const repoDigest of inspectData.RepoDigests) {
-        if (repoDigest.startsWith(prefix)) {
-            digest = repoDigest.substring(prefix.length);
-            break;
-        }
-    }
-
-    return digest;
 }
 
 interface CommandResult {
@@ -471,7 +493,7 @@ async function runCommandThatMustSucceed(
     stdin?: string): Promise<string> {
 
     const { code, stdout } = await runCommandThatCanFail(
-        cmd, args, logResource, reportFullCommandLine, stdin);
+        cmd, args, logResource, reportFullCommandLine, /*reportErrorAsWarning:*/ false, stdin);
 
     if (code !== 0) {
         // Fail the entire build and push.  This includes the full output of the command so that at
@@ -496,11 +518,16 @@ async function runCommandThatMustSucceed(
 // Stdout messages will be logged ephemerally to this resource.  This lets the user know there is
 // progress, without having that dumped on them at the end.  If an error occurs though, the stdout
 // content will be printed.
+//
+// The promise returned by this function should never reach the rejected state.  Even if the
+// underlying spawned command has a problem, this will result in a resolved promise with the
+// [CommandResult.code] value set to a non-zero value.
 async function runCommandThatCanFail(
     cmd: string,
     args: string[],
     logResource: pulumi.Resource,
     reportFullCommandLine: boolean,
+    reportErrorAsWarning: boolean,
     stdin?: string): Promise<CommandResult> {
 
     // Let the user ephemerally know the command we're going to execute.
@@ -525,7 +552,7 @@ async function runCommandThatCanFail(
         const p = child_process.spawn(cmd, args);
 
         // We store the results from stdout in memory and will return them as a string.
-        const stdOutChunks: Buffer[] = [];
+        let stdOutChunks: Buffer[] = [];
         let stdErrChunks: Buffer[] = [];
 
         p.stdout.on("data", (chunk: Buffer) => {
@@ -544,25 +571,35 @@ async function runCommandThatCanFail(
             stdErrChunks.push(chunk);
         });
 
+        // In both cases of 'error' or 'close' we execute the same 'finish up' codepath. This
+        // codepath effectively flushes (and clears) the stdout and stderr streams we've been
+        // buffering.  We'll also return the stdout stream to the caller, and we'll appropriately
+        // return if we failed or not depending on if we got an actual exception, or if the spawned
+        // process returned a non-0 error code.
+        //
+        // Effectively, we are ensuring that we never reject the promise we're returning.  It will
+        // always 'resolve', and we will always have the behaviors that:
+        //
+        // 1. all stderr information is flushed (including the message of an exception if we got one).
+        // 2. an ephemeral info message is printed stating if there were any exceptions/status-codes
+        // 3. all stdout information is returned to the caller.
+        // 4. the caller gets a 0-code on success, and a non-0-code for either an exception or an
+        //    error status code.
+        //
+        // The caller can then decide what to do with this.  Nearly all callers will will be coming
+        // through runCommandThatMustSucceed, which will see a non-0 code and will then throw with
+        // a full message.
+
         p.on("error", err => {
-            // If we actually full on received some sort of error in the process, also try to dump
-            // any stderr messages in case they might be useful.
-            logStdErrMessages(/*code: */ 1);
-            reject(err);
+            // received some sort of real error.  push the message of that error to our stdErr
+            // stream (so it will get reported) and then move this promise to the resolved, 1-code
+            // state to indicate failure.
+            stdErrChunks.push(new Buffer(err.message));
+            finish(/*code: */ 1);
         });
 
         p.on("close", code => {
-            logStdErrMessages(code);
-
-            const stdout = Buffer.concat(stdOutChunks).toString();
-
-            if (code) {
-                // Report an ephemeral message indicating which command failed.  That way the user
-                // can immediately see something went wrong, and what command caused it.
-                logEphemeral(getFailureMessage(cmd, args, reportFullCommandLine, code), logResource);
-            }
-
-            resolve({ code, stdout });
+            finish(code);
         });
 
         if (stdin) {
@@ -571,20 +608,42 @@ async function runCommandThatCanFail(
 
         return;
 
-        function logStdErrMessages(code: number) {
-            if (stdErrChunks.length > 0) {
-                const errorOrWarnings = Buffer.concat(stdErrChunks).toString();
-                stdErrChunks = [];
+        // Moves our promise to the resolved state, after appropriately dealing with any errors
+        // we've encountered.  Importantly, this function can be called multiple times safely.
+        // It will clean up after itself so that multiple calls don't end up causing any issues.
 
-                if (code) {
+        function finish(code: number) {
+            // Collapse our stored stdout/stderr messages into single strings.
+            const stderr = Buffer.concat(stdErrChunks).toString();
+            const stdout = Buffer.concat(stdOutChunks).toString();
+
+            // Clear out our output buffers.  This ensures that if we get called again, we don't
+            // double print these messages.
+            stdOutChunks = [];
+            stdErrChunks = [];
+
+            // If we got any stderr messages, report them as an error/warning depending on the
+            // result of the operation.
+            if (stderr.length > 0) {
+                if (code && !reportErrorAsWarning) {
                     // Command returned non-zero code.  Treat these stderr messages as an error.
-                    pulumi.log.error(errorOrWarnings, logResource, streamID);
+                    pulumi.log.error(stderr, logResource, streamID);
                 }
                 else {
                     // command succeeded.  These were just warning.
-                    pulumi.log.warn(errorOrWarnings, logResource, streamID);
+                    pulumi.log.warn(stderr, logResource, streamID);
                 }
             }
+
+            // If the command failed report an ephemeral message indicating which command it was.
+            // That way the user can immediately see something went wrong in the info bar.  The
+            // caller (normally runCommandThatMustSucceed) can choose to also report this
+            // non-ephemerally.
+            if (code) {
+                logEphemeral(getFailureMessage(cmd, args, reportFullCommandLine, code), logResource);
+            }
+
+            resolve({ code, stdout });
         }
     });
 }
