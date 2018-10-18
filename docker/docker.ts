@@ -281,7 +281,9 @@ async function pullCacheAsync(
         const image = `${repoUrl}${tag}`;
 
         // Try to pull the existing image if it exists.  This may fail if the image does not exist.
-        // That's fine, just move onto the next stage.
+        // That's fine, just move onto the next stage.  Also, pass along a flag saying that we
+        // should print that error as a warning instead.  We don't want the update to succeed but
+        // the user to then get a nasty "error:" message at the end.
         const { code } = await runCommandThatCanFail(
             "docker", ["pull", image], logResource,
             /*reportFullCommand:*/ true, /*reportErrorAsWarning:*/ true);
