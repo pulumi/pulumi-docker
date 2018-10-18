@@ -249,11 +249,11 @@ function createTaggedImageName(repositoryUrl: string, tag: string | undefined, i
         pieces.push(imageId);
     }
 
-    // A tag name must be valid ASCII and may contain lowercase and uppercase letters, digits,
-    // underscores, periods and dashes. A tag name may not start with a period or a dash and may
-    // contain a maximum of 128 characters.
-    const fullTag = pieces.join("-").replace(/[^-_.a-zA-Z0-9]/, "").substr(0, 128);
-
+    // Note: we don't do any validation that the tag is well formed, as per:
+    // https://docs.docker.com/engine/reference/commandline/tag
+    //
+    // If there are any issues with it, we'll just let docker report the problem.
+    const fullTag = pieces.join("-");
     return fullTag ? `${repositoryUrl}:${fullTag}` : repositoryUrl;
 }
 
