@@ -180,13 +180,13 @@ async function buildAndPushImageWorkerAsync(
     };
 
     // If the container specified a cacheFrom parameter, first set up the cached stages.
-    let cacheFrom: string[] | undefined;
+    let cacheFrom = Promise.resolve<string[] | undefined>(undefined);
     if (typeof pathOrBuild !== "string" && pathOrBuild && pathOrBuild.cacheFrom) {
         // NOTE: we pull the promise out of the repository URL s.t. we can observe whether or not it
         // exists. Were we to instead hang an apply off of the raw Input<>, we would never end up
         // running the pull if the repository had not yet been created.
         const cacheFromParam = typeof pathOrBuild.cacheFrom === "boolean" ? {} : pathOrBuild.cacheFrom;
-        cacheFrom = await pullCacheAsync(imageName, cacheFromParam, login, repositoryUrl, logResource);
+        cacheFrom = pullCacheAsync(imageName, cacheFromParam, login, repositoryUrl, logResource);
     }
 
     // First build the image.
@@ -299,7 +299,7 @@ async function buildImageAsync(
     imageName: string,
     pathOrBuild: string | DockerBuild,
     logResource: pulumi.Resource,
-    cacheFrom: string[] | undefined): Promise<BuildResult> {
+    cacheFrom: Promise<string[] | undefined>): Promise<BuildResult> {
 
     let build: DockerBuild;
     if (typeof pathOrBuild === "string") {
@@ -355,7 +355,7 @@ async function buildImageAsync(
 async function dockerBuild(
     imageName: string,
     build: DockerBuild,
-    cacheFrom: string[] | undefined,
+    cacheFrom: Promise<string[] | undefined>,
     logResource: pulumi.Resource,
     target?: string): Promise<void> {
 
@@ -370,8 +370,9 @@ async function dockerBuild(
         }
     }
     if (build.cacheFrom) {
-        if (cacheFrom && cacheFrom.length) {
-            buildArgs.push(...[ "--cache-from", cacheFrom.join() ]);
+        const cacheFromImages = await cacheFrom;
+        if (cacheFromImages && cacheFromImages.length) {
+            buildArgs.push(...[ "--cache-from", cacheFromImages.join() ]);
         }
     }
     buildArgs.push(build.context!); // push the docker build context onto the path.
