@@ -223,6 +223,15 @@ function localStageImageName(imageName: string, stage: string) {
 }
 
 function getImageNameAndTag(baseImageName: string): { imageName: string, tag: string | undefined } {
+    // From https://docs.docker.com/engine/reference/commandline/tag
+    //
+    // "A tag name must be valid ASCII and may contain lowercase and uppercase letters, digits,
+    // underscores, periods and dashes. A tag name may not start with a period or a dash and may
+    // contain a maximum of 128 characters."
+    //
+    // So it is safe for us to just look for the colon, and consume whatever follows as the tag
+    // for the image.
+
     const lastColon = baseImageName.lastIndexOf(":");
     const imageName = lastColon < 0 ? baseImageName : baseImageName.substr(0, lastColon);
     const tag = lastColon < 0 ? undefined : baseImageName.substr(lastColon + 1);
