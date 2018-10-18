@@ -80,6 +80,16 @@ export class Image extends pulumi.ComponentResource {
      */
     public registryServer: pulumi.Output<string | undefined>;
 
+    /**@deprecated This will have the same value as [imageName], but will be removed in the future. */
+    public id: pulumi.Output<string>;
+
+    /**
+     * @deprecated This will have the same value as [imageName], but will be removed in the future.
+     * It can be used to get a unique name for this specific image, but is not the actual repository
+     * digest value.
+     */
+    public digest: pulumi.Output<string | undefined>;
+
     constructor(name: string, args: ImageArgs, opts?: pulumi.ComponentResourceOptions) {
         super("docker:image:Image", name, argsWithoutRegistry(args), opts);
 
@@ -107,12 +117,16 @@ export class Image extends pulumi.ComponentResource {
         });
 
         this.imageName = imageData.apply(d => d.uniqueTargetName);
+        this.id = this.imageName;
+        this.digest = this.imageName;
         this.registryServer = imageData.apply(d => d.registryServer);
         this.baseImageName = pulumi.output(args.imageName);
 
         this.registerOutputs({
             baseImageName: this.baseImageName,
             imageName: this.imageName,
+            id: this.id,
+            digest: this.digest,
             registryServer: this.registryServer,
         });
     }
