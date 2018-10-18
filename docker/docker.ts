@@ -192,10 +192,6 @@ async function buildAndPushImageWorkerAsync(
     // First build the image.
     const { imageId, stages } = await buildImageAsync(imageName, pathOrBuild, logResource, cacheFrom);
 
-    if (!repositoryUrl) {
-        throw new ResourceError("Expected repository URL to be defined during push", logResource);
-    }
-
     // Generate a name that uniquely will identify this built image.  This is similar in purpose to
     // the name@digest form that can be normally be retrieved from a docker repository.  However,
     // this tag doesn't require actually pushing the image, nor does it require communicating with
