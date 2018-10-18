@@ -80,7 +80,7 @@ export class Image extends pulumi.ComponentResource {
      */
     public registryServer: pulumi.Output<string | undefined>;
 
-    /**@deprecated This will have the same value as [imageName], but will be removed in the future. */
+    /** @deprecated This will have the same value as [imageName], but will be removed in the future. */
     public id: pulumi.Output<string>;
 
     /**
