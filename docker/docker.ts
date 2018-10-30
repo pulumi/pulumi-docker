@@ -208,10 +208,11 @@ async function buildAndPushImageWorkerAsync(
 
         // Push the final image first, then push the stage images to use for caching.
         await tagAndPushImageAsync(imageName, repositoryUrl, tag, imageId, logResource);
+        await tagAndPushImageAsync(imageName, repositoryUrl, tag, /*imageId:*/ undefined, logResource);
 
         for (const stage of stages) {
             await tagAndPushImageAsync(
-                localStageImageName(imageName, stage), repositoryUrl, tag, /*imageId:*/ undefined, logResource);
+                localStageImageName(imageName, stage), repositoryUrl, stage, /*imageId:*/ undefined, logResource);
         }
     }
 
