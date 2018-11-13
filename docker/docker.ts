@@ -401,7 +401,7 @@ async function dockerBuild(
 }
 
 interface LoginResult {
-    registryName:string;
+    registryName: string;
     username: string;
     loginCommand: Promise<void> | undefined;
 }
@@ -410,7 +410,7 @@ interface LoginResult {
 // registry with that user, there's no need to do it again.
 const loginResults: LoginResult[] = [];
 
-async function loginToRegistry(registry: Registry, logResource: pulumi.Resource): Promise<void> {
+function loginToRegistry(registry: Registry, logResource: pulumi.Resource): Promise<void> {
     const { registry: registryName, username, password } = registry;
 
     // See if we've issued an outstanding requests to login into this registry.  If so, just
@@ -419,6 +419,10 @@ async function loginToRegistry(registry: Registry, logResource: pulumi.Resource)
     let loginResult = loginResults.find(
         r => r.registryName === registryName && r.username === username);
     if (!loginResult) {
+        // Note: we explicitly do not 'await' the 'loginAsync' call here.  We do not want
+        // to relinquish control of this thread-of-execution yet.  We want to ensure that
+        // we first update `loginResults` with our record object so that any future executions
+        // through this method see that the login was kicked off and can wait on that.
         loginResult = { registryName, username, loginCommand: loginAsync() };
         loginResults.push(loginResult);
     }
@@ -426,8 +430,7 @@ async function loginToRegistry(registry: Registry, logResource: pulumi.Resource)
         logEphemeral(`Reusing existing login for ${username}@${registryName}`, logResource);
     }
 
-    await loginResult.loginCommand;
-    return;
+    return loginResult.loginCommand!;
 
     async function loginAsync() {
         const dockerPasswordStdin = await useDockerPasswordStdin(logResource);
