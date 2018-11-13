@@ -403,7 +403,7 @@ async function dockerBuild(
 interface LoginResult {
     registryName: string;
     username: string;
-    loginCommand: Promise<void> | undefined;
+    loginCommand: Promise<void>;
 }
 
 // Keep track of registries and users that have been logged in.  If we've already logged into that
@@ -430,7 +430,7 @@ function loginToRegistry(registry: Registry, logResource: pulumi.Resource): Prom
         logEphemeral(`Reusing existing login for ${username}@${registryName}`, logResource);
     }
 
-    return loginResult.loginCommand!;
+    return loginResult.loginCommand;
 
     async function loginAsync() {
         const dockerPasswordStdin = await useDockerPasswordStdin(logResource);
