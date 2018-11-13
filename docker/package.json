@@ -10,7 +10,7 @@
     "homepage": "https://pulumi.io",
     "repository": "https://github.com/pulumi/pulumi-docker",
     "dependencies": {
-        "@pulumi/pulumi": "dev",
+        "@pulumi/pulumi": "^0.16.4",
         "semver": "^5.4.0"
     },
     "devDependencies": {
