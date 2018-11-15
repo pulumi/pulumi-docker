@@ -256,7 +256,7 @@ function createTaggedImageName(repositoryUrl: string, tag: string | undefined, i
     // If there are any issues with it, we'll just let docker report the problem.
     const fullTag = pieces.join("-");
 
-    // remove user provided tag from `repositoryUrl`
+    // Remove user provided tag from `repositoryUrl`.
     repositoryUrl = getImageNameAndTag(repositoryUrl).imageName;
 
     return fullTag ? `${repositoryUrl}:${fullTag}` : repositoryUrl;
