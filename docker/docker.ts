@@ -255,6 +255,10 @@ function createTaggedImageName(repositoryUrl: string, tag: string | undefined, i
     //
     // If there are any issues with it, we'll just let docker report the problem.
     const fullTag = pieces.join("-");
+
+    // remove user provided tag from `repositoryUrl`
+    repositoryUrl = getImageNameAndTag(repositoryUrl).imageName;
+
     return fullTag ? `${repositoryUrl}:${fullTag}` : repositoryUrl;
 }
 
@@ -467,7 +471,7 @@ async function tagAndPushImageAsync(
         // We don't need to do this for the main image we tagged and pushed as the repo will
         // automatically give is a :latest tag that serves the same purpose.  So this tagged/pushed
         // build will simply act as the 'latest' pointer for this specific tag.
-        await doTagAndPushAsync(`${repositoryUrl}:${tag}`);
+        await doTagAndPushAsync(createTaggedImageName(repositoryUrl, tag, undefined));
     }
 
     return;
