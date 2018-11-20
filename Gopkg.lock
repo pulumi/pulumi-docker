@@ -2,10 +2,25 @@
 
 
 [[projects]]
+  branch = "master"
+  name = "github.com/Azure/go-ansiterm"
+  packages = [
+    ".",
+    "winterm"
+  ]
+  revision = "d6e3b3328b783f23731bc4d058875b0371ff8109"
+
+[[projects]]
   name = "github.com/Microsoft/go-winio"
   packages = ["."]
   revision = "97e4973ce50b2ff5f09635a57e2b88a037aae829"
   version = "v0.4.11"
+
+[[projects]]
+  name = "github.com/Nvveen/Gotty"
+  packages = ["."]
+  revision = "a8b993ba6abdb0e0c12b0125c603323a71c7790c"
+  source = "https://github.com/ijc25/Gotty"
 
 [[projects]]
   name = "github.com/agext/levenshtein"
@@ -60,11 +75,14 @@
     "private/protocol",
     "private/protocol/eventstream",
     "private/protocol/eventstream/eventstreamapi",
+    "private/protocol/json/jsonutil",
+    "private/protocol/jsonrpc",
     "private/protocol/query",
     "private/protocol/query/queryutil",
     "private/protocol/rest",
     "private/protocol/restxml",
     "private/protocol/xml/xmlutil",
+    "service/cloudwatchlogs",
     "service/s3",
     "service/sts"
   ]
@@ -137,7 +155,9 @@
     "api/types/versions",
     "api/types/volume",
     "client",
-    "errdefs"
+    "errdefs",
+    "pkg/term",
+    "pkg/term/windows"
   ]
   revision = "68cbc3712cae868b4bf7af27ada06081f7f04670"
 
@@ -156,6 +176,15 @@
   packages = ["."]
   revision = "47565b4f722fb6ceae66b95f853feed578a4a51c"
   version = "v0.3.3"
+
+[[projects]]
+  name = "github.com/dustin/go-humanize"
+  packages = [
+    ".",
+    "english"
+  ]
+  revision = "9f541cc9db5d55bce703bd99987c9d5cb8eea45e"
+  version = "v1.0.0"
 
 [[projects]]
   name = "github.com/emirpasic/gods"
@@ -367,10 +396,22 @@
   revision = "0b12d6b5"
 
 [[projects]]
+  branch = "master"
+  name = "github.com/kballard/go-shellquote"
+  packages = ["."]
+  revision = "95032a82bc518f77982ea72343cc1ade730072f0"
+
+[[projects]]
   name = "github.com/kevinburke/ssh_config"
   packages = ["."]
   revision = "81db2a75821ed34e682567d48be488a1c3121088"
   version = "0.5"
+
+[[projects]]
+  name = "github.com/konsorten/go-windows-terminal-sequences"
+  packages = ["."]
+  revision = "5c8c8bd35d3832f5d134ae1e1e375b69a4d25242"
+  version = "v1.0.1"
 
 [[projects]]
   name = "github.com/mattn/go-colorable"
@@ -383,6 +424,12 @@
   packages = ["."]
   revision = "6ca4dbf54d38eea1a992b3c722a76a5d1c4cb25c"
   version = "v0.0.4"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/mgutz/ansi"
+  packages = ["."]
+  revision = "9520e82c474b0a04dd04f8a40959027271bab992"
 
 [[projects]]
   name = "github.com/mitchellh/cli"
@@ -476,6 +523,12 @@
   version = "v0.8.0"
 
 [[projects]]
+  name = "github.com/pmezard/go-difflib"
+  packages = ["difflib"]
+  revision = "792786c7400a136282c1664665ae0a8db921c6c2"
+  version = "v1.0.0"
+
+[[projects]]
   name = "github.com/posener/complete"
   packages = [
     ".",
@@ -490,15 +543,29 @@
   branch = "master"
   name = "github.com/pulumi/pulumi"
   packages = [
+    "pkg/apitype",
+    "pkg/apitype/migrate",
+    "pkg/backend",
+    "pkg/backend/display",
+    "pkg/backend/filestate",
     "pkg/diag",
     "pkg/diag/colors",
     "pkg/encoding",
+    "pkg/engine",
+    "pkg/operations",
     "pkg/resource",
     "pkg/resource/config",
+    "pkg/resource/deploy",
+    "pkg/resource/deploy/providers",
+    "pkg/resource/graph",
     "pkg/resource/plugin",
     "pkg/resource/provider",
+    "pkg/resource/stack",
+    "pkg/testing",
+    "pkg/testing/integration",
     "pkg/tokens",
     "pkg/tools",
+    "pkg/util/cancel",
     "pkg/util/ciutil",
     "pkg/util/cmdutil",
     "pkg/util/contract",
@@ -507,10 +574,15 @@
     "pkg/util/httputil",
     "pkg/util/logging",
     "pkg/util/mapper",
+    "pkg/util/result",
     "pkg/util/retry",
     "pkg/util/rpcutil",
     "pkg/util/rpcutil/rpcerror",
+    "pkg/version",
     "pkg/workspace",
+    "sdk/go/pulumi",
+    "sdk/go/pulumi/asset",
+    "sdk/go/pulumi/config",
     "sdk/proto/go"
   ]
   revision = "a7d2f10eafcfdf84acc79fd47ad00a3341a70b0e"
@@ -531,10 +603,28 @@
   revision = "2ab6b7470a54bfa9b5b0289f9b4e8fc4839838f7"
 
 [[projects]]
+  name = "github.com/satori/go.uuid"
+  packages = ["."]
+  revision = "f58768cc1a7a7e77a3bd49e98cdd21419399b6a3"
+  version = "v1.2.0"
+
+[[projects]]
   name = "github.com/sergi/go-diff"
   packages = ["diffmatchpatch"]
   revision = "1744e2970ca51c86172c8190fadad617561ed6e7"
   version = "v1.0.0"
+
+[[projects]]
+  name = "github.com/sirupsen/logrus"
+  packages = ["."]
+  revision = "bcd833dfe83d3cebad139e4a29ed79cb2318bf95"
+  version = "v1.2.0"
+
+[[projects]]
+  name = "github.com/spf13/cast"
+  packages = ["."]
+  revision = "8c9545af88b134710ab1cd196795e7f2388358d7"
+  version = "v1.3.0"
 
 [[projects]]
   name = "github.com/spf13/cobra"
@@ -558,6 +648,12 @@
   ]
   revision = "1ac3a1ac202429a54835fe8408a92880156b489d"
   version = "v1.4.0"
+
+[[projects]]
+  name = "github.com/stretchr/testify"
+  packages = ["assert"]
+  revision = "f35b8ab0b5a2cef36673838d662e249dd9c94686"
+  version = "v1.2.2"
 
 [[projects]]
   branch = "master"
@@ -744,6 +840,16 @@
   version = "v1.16.0"
 
 [[projects]]
+  name = "gopkg.in/AlecAivazis/survey.v1"
+  packages = [
+    ".",
+    "core",
+    "terminal"
+  ]
+  revision = "fb519f89e19299d852ffdd9b734af122d2dcbd30"
+  version = "v1.7.0"
+
+[[projects]]
   name = "gopkg.in/src-d/go-billy.v4"
   packages = [
     ".",
@@ -817,6 +923,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "376ffa7ab8a54306b49f8a03dbe329b90f1fdef609303788de44b583c1dc9700"
+  inputs-digest = "dc5578ae86d00e28c1d8e75cb7af1457448536fbfa5bb08e0b5bee96c2e181d0"
   solver-name = "gps-cdcl"
   solver-version = 1

@@ -55,8 +55,9 @@ func dockerDataSource(mod string, res string) tokens.ModuleMember {
 }
 
 func Provider() tfbridge.ProviderInfo {
-	return tfbridge.ProviderInfo{
-		P:           docker.Provider().(*schema.Provider),
+	p := docker.Provider().(*schema.Provider)
+	prov := tfbridge.ProviderInfo{
+		P:           p,
 		Name:        "docker",
 		Description: "A Pulumi package for interacting with Docker in Pulumi programs",
 		Keywords:    []string{"pulumi", "docker"},
@@ -97,4 +98,23 @@ func Provider() tfbridge.ProviderInfo {
 			},
 		},
 	}
+
+	// For all resources with name properties, we will add an auto-name property.  Make sure to skip those that
+	// already have a name mapping entry, since those may have custom overrides set above (e.g., for length).
+	const dockerName = "name"
+	for resname, res := range prov.Resources {
+		if schema := p.ResourcesMap[resname]; schema != nil {
+			// Only apply auto-name to input properties (Optional || Required) named `name`
+			if tfs, has := schema.Schema[dockerName]; has && (tfs.Optional || tfs.Required) {
+				if _, hasfield := res.Fields[dockerName]; !hasfield {
+					if res.Fields == nil {
+						res.Fields = make(map[string]*tfbridge.SchemaInfo)
+					}
+					res.Fields[dockerName] = tfbridge.AutoName(dockerName, 255)
+				}
+			}
+		}
+	}
+
+	return prov
 }
