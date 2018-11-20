@@ -108,36 +108,38 @@
   version = "v1.1.0"
 
 [[projects]]
+  branch = "master"
   name = "github.com/docker/distribution"
   packages = [
-    "digest",
+    "digestset",
     "reference"
   ]
-  revision = "48294d928ced5dd9b378f7fd7c6f5da3ff3f2c89"
-  version = "v2.6.2"
+  revision = "93e082742a009850ac46962150b2f652a822c5ff"
 
 [[projects]]
+  branch = "master"
   name = "github.com/docker/docker"
   packages = [
+    "api",
     "api/types",
     "api/types/blkiodev",
     "api/types/container",
     "api/types/events",
     "api/types/filters",
+    "api/types/image",
     "api/types/mount",
     "api/types/network",
-    "api/types/reference",
     "api/types/registry",
     "api/types/strslice",
     "api/types/swarm",
+    "api/types/swarm/runtime",
     "api/types/time",
     "api/types/versions",
     "api/types/volume",
     "client",
-    "pkg/tlsconfig"
+    "errdefs"
   ]
-  revision = "092cba3727bb9b4a2f0e922cd6c0f93ea270e363"
-  version = "v1.13.1"
+  revision = "68cbc3712cae868b4bf7af27ada06081f7f04670"
 
 [[projects]]
   name = "github.com/docker/go-connections"
@@ -179,6 +181,12 @@
   name = "github.com/gedex/inflector"
   packages = ["."]
   revision = "16278e9db8130ac7ec405dc174cfb94344f16325"
+
+[[projects]]
+  name = "github.com/gogo/protobuf"
+  packages = ["proto"]
+  revision = "636bf0302bc95575d69441b25a2603156ffdddf1"
+  version = "v1.1.1"
 
 [[projects]]
   branch = "master"
@@ -431,6 +439,21 @@
   version = "v1.0.0"
 
 [[projects]]
+  name = "github.com/opencontainers/go-digest"
+  packages = ["."]
+  revision = "279bed98673dd5bef374d3b6e4b09e2af76183bf"
+  version = "v1.0.0-rc1"
+
+[[projects]]
+  name = "github.com/opencontainers/image-spec"
+  packages = [
+    "specs-go",
+    "specs-go/v1"
+  ]
+  revision = "d60099175f88c47cd379c4738d158884749ed235"
+  version = "v1.0.1"
+
+[[projects]]
   name = "github.com/opentracing/opentracing-go"
   packages = [
     ".",
@@ -475,6 +498,7 @@
     "pkg/resource/plugin",
     "pkg/resource/provider",
     "pkg/tokens",
+    "pkg/tools",
     "pkg/util/ciutil",
     "pkg/util/cmdutil",
     "pkg/util/contract",
@@ -494,7 +518,10 @@
 [[projects]]
   branch = "master"
   name = "github.com/pulumi/pulumi-terraform"
-  packages = ["pkg/tfbridge"]
+  packages = [
+    "pkg/tfbridge",
+    "pkg/tfgen"
+  ]
   revision = "48b52f432aee94c78e4519e064b0400965a4f3d7"
 
 [[projects]]
@@ -632,7 +659,6 @@
   name = "golang.org/x/net"
   packages = [
     "context",
-    "context/ctxhttp",
     "html",
     "html/atom",
     "http/httpguts",
@@ -791,6 +817,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "b3c94388880d8abcb868fe9a590464774ea65baa94518be457591ba1fddc859b"
+  inputs-digest = "376ffa7ab8a54306b49f8a03dbe329b90f1fdef609303788de44b583c1dc9700"
   solver-name = "gps-cdcl"
   solver-version = 1

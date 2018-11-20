@@ -9,3 +9,11 @@
 [[constraint]]
   branch = "master"
   name = "github.com/terraform-providers/terraform-provider-docker"
+
+[[override]]
+  branch = "master"
+  name = "github.com/docker/docker"
+
+[[override]]
+  branch = "master"
+  name = "github.com/docker/distribution"

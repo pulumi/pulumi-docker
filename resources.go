@@ -25,8 +25,9 @@ import (
 )
 
 const (
-	dockerPkg = "docker"
-	dockerMod = "index"
+	dockerPkg      = "docker"
+	dockerMod      = "index"
+	dockerSwarmMod = "swarm"
 )
 
 // dockerMember manufactures a type token for the docker package and the given module and type.
@@ -46,6 +47,13 @@ func dockerResource(mod string, res string) tokens.Type {
 	return dockerType(mod+"/"+fn, res)
 }
 
+// dockerDataSource manufactures a standard resource token given a module and resource name.  It automatically uses the
+// Docker package and names the file by simply lower casing the data source's first character.
+func dockerDataSource(mod string, res string) tokens.ModuleMember {
+	fn := string(unicode.ToLower(rune(res[0]))) + res[1:]
+	return dockerMember(mod+"/"+fn, res)
+}
+
 func Provider() tfbridge.ProviderInfo {
 	return tfbridge.ProviderInfo{
 		P:           docker.Provider().(*schema.Provider),
@@ -56,9 +64,16 @@ func Provider() tfbridge.ProviderInfo {
 		Homepage:    "https://pulumi.io",
 		Repository:  "https://github.com/pulumi/pulumi-docker",
 		Resources: map[string]*tfbridge.ResourceInfo{
-			"docker_container": {
-				Tok: dockerResource(dockerMod, "Container"),
-			},
+			"docker_container": {Tok: dockerResource(dockerMod, "Container")},
+			"docker_image":     {Tok: dockerResource(dockerMod, "RemoteImage")},
+			"docker_network":   {Tok: dockerResource(dockerMod, "Network")},
+			"docker_volume":    {Tok: dockerResource(dockerMod, "Volume")},
+			"docker_config":    {Tok: dockerResource(dockerSwarmMod, "Config")},
+			"docker_secret":    {Tok: dockerResource(dockerSwarmMod, "Secret")},
+			"docker_service":   {Tok: dockerResource(dockerSwarmMod, "Service")},
+		},
+		DataSources: map[string]*tfbridge.DataSourceInfo{
+			"docker_registry_image": {Tok: dockerDataSource(dockerMod, "getRegistryImage")},
 		},
 		JavaScript: &tfbridge.JavaScriptInfo{
 			Dependencies: map[string]string{
@@ -68,6 +83,12 @@ func Provider() tfbridge.ProviderInfo {
 			DevDependencies: map[string]string{
 				"@types/node":   "^8.0.26",
 				"@types/semver": "^5.4.0",
+			},
+			Overlay: &tfbridge.OverlayInfo{
+				DestFiles: []string{
+					"docker.ts",
+					"image.ts",
+				},
 			},
 		},
 		Python: &tfbridge.PythonInfo{
