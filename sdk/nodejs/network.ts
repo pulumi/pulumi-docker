@@ -84,7 +84,7 @@ export class Network extends pulumi.CustomResource {
      * @param args The arguments to use to populate this resource's properties.
      * @param opts A bag of options that control this resource's behavior.
      */
-    constructor(name: string, args: NetworkArgs, opts?: pulumi.CustomResourceOptions)
+    constructor(name: string, args?: NetworkArgs, opts?: pulumi.CustomResourceOptions)
     constructor(name: string, argsOrState?: NetworkArgs | NetworkState, opts?: pulumi.CustomResourceOptions) {
         let inputs: pulumi.Inputs = {};
         if (opts && opts.id) {
@@ -103,9 +103,6 @@ export class Network extends pulumi.CustomResource {
             inputs["scope"] = state ? state.scope : undefined;
         } else {
             const args = argsOrState as NetworkArgs | undefined;
-            if (!args || args.name === undefined) {
-                throw new Error("Missing required property 'name'");
-            }
             inputs["attachable"] = args ? args.attachable : undefined;
             inputs["checkDuplicate"] = args ? args.checkDuplicate : undefined;
             inputs["driver"] = args ? args.driver : undefined;
@@ -234,7 +231,7 @@ export interface NetworkArgs {
     /**
      * The name of the Docker network.
      */
-    readonly name: pulumi.Input<string>;
+    readonly name?: pulumi.Input<string>;
     /**
      * Network specific options to be used by
      * the drivers.

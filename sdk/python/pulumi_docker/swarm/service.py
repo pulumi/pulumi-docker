@@ -35,8 +35,6 @@ class Service(pulumi.CustomResource):
 
         __props__['mode'] = mode
 
-        if not name:
-            raise TypeError('Missing required property name')
         __props__['name'] = name
 
         __props__['rollback_config'] = rollback_config

@@ -53,9 +53,6 @@ export class Secret extends pulumi.CustomResource {
             if (!args || args.data === undefined) {
                 throw new Error("Missing required property 'data'");
             }
-            if (!args || args.name === undefined) {
-                throw new Error("Missing required property 'name'");
-            }
             inputs["data"] = args ? args.data : undefined;
             inputs["labels"] = args ? args.labels : undefined;
             inputs["name"] = args ? args.name : undefined;
@@ -97,5 +94,5 @@ export interface SecretArgs {
     /**
      * The name of the Docker secret.
      */
-    readonly name: pulumi.Input<string>;
+    readonly name?: pulumi.Input<string>;
 }

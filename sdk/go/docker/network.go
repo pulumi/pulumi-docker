@@ -4,7 +4,6 @@
 package docker
 
 import (
-	"github.com/pkg/errors"
 	"github.com/pulumi/pulumi/sdk/go/pulumi"
 )
 
@@ -18,9 +17,6 @@ type Network struct {
 // NewNetwork registers a new resource with the given unique name, arguments, and options.
 func NewNetwork(ctx *pulumi.Context,
 	name string, args *NetworkArgs, opts ...pulumi.ResourceOpt) (*Network, error) {
-	if args == nil || args.Name == nil {
-		return nil, errors.New("missing required argument 'Name'")
-	}
 	inputs := make(map[string]interface{})
 	if args == nil {
 		inputs["attachable"] = nil

@@ -75,8 +75,6 @@ class Container(pulumi.CustomResource):
 
         __props__['must_run'] = must_run
 
-        if not name:
-            raise TypeError('Missing required property name')
         __props__['name'] = name
 
         __props__['network_aliases'] = network_aliases

@@ -41,8 +41,6 @@ class Network(pulumi.CustomResource):
 
         __props__['labels'] = labels
 
-        if not name:
-            raise TypeError('Missing required property name')
         __props__['name'] = name
 
         __props__['options'] = options

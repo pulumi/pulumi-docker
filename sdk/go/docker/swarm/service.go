@@ -20,9 +20,6 @@ type Service struct {
 // NewService registers a new resource with the given unique name, arguments, and options.
 func NewService(ctx *pulumi.Context,
 	name string, args *ServiceArgs, opts ...pulumi.ResourceOpt) (*Service, error) {
-	if args == nil || args.Name == nil {
-		return nil, errors.New("missing required argument 'Name'")
-	}
 	if args == nil || args.TaskSpec == nil {
 		return nil, errors.New("missing required argument 'TaskSpec'")
 	}

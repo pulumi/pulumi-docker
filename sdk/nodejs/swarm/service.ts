@@ -84,9 +84,6 @@ export class Service extends pulumi.CustomResource {
             inputs["updateConfig"] = state ? state.updateConfig : undefined;
         } else {
             const args = argsOrState as ServiceArgs | undefined;
-            if (!args || args.name === undefined) {
-                throw new Error("Missing required property 'name'");
-            }
             if (!args || args.taskSpec === undefined) {
                 throw new Error("Missing required property 'taskSpec'");
             }
@@ -173,7 +170,7 @@ export interface ServiceArgs {
     /**
      * The name of the Docker service.
      */
-    readonly name: pulumi.Input<string>;
+    readonly name?: pulumi.Input<string>;
     /**
      * See RollbackConfig below for details.
      */

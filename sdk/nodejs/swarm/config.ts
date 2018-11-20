@@ -48,9 +48,6 @@ export class Config extends pulumi.CustomResource {
             if (!args || args.data === undefined) {
                 throw new Error("Missing required property 'data'");
             }
-            if (!args || args.name === undefined) {
-                throw new Error("Missing required property 'name'");
-            }
             inputs["data"] = args ? args.data : undefined;
             inputs["name"] = args ? args.name : undefined;
         }
@@ -83,5 +80,5 @@ export interface ConfigArgs {
     /**
      * The name of the Docker config.
      */
-    readonly name: pulumi.Input<string>;
+    readonly name?: pulumi.Input<string>;
 }

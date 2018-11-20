@@ -25,8 +25,6 @@ class Config(pulumi.CustomResource):
             raise TypeError('Missing required property data')
         __props__['data'] = data
 
-        if not name:
-            raise TypeError('Missing required property name')
         __props__['name'] = name
 
         super(Config, __self__).__init__(

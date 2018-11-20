@@ -311,9 +311,6 @@ export class Container extends pulumi.CustomResource {
             if (!args || args.image === undefined) {
                 throw new Error("Missing required property 'image'");
             }
-            if (!args || args.name === undefined) {
-                throw new Error("Missing required property 'name'");
-            }
             inputs["attach"] = args ? args.attach : undefined;
             inputs["capabilities"] = args ? args.capabilities : undefined;
             inputs["commands"] = args ? args.commands : undefined;
@@ -722,7 +719,7 @@ export interface ContainerArgs {
      * assumes it is successful.
      */
     readonly mustRun?: pulumi.Input<boolean>;
-    readonly name: pulumi.Input<string>;
+    readonly name?: pulumi.Input<string>;
     /**
      * Network aliases of the container for user-defined networks only. *Deprecated:* use `networks_advanced` instead.
      */

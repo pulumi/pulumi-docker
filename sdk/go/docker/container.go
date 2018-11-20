@@ -19,9 +19,6 @@ func NewContainer(ctx *pulumi.Context,
 	if args == nil || args.Image == nil {
 		return nil, errors.New("missing required argument 'Image'")
 	}
-	if args == nil || args.Name == nil {
-		return nil, errors.New("missing required argument 'Name'")
-	}
 	inputs := make(map[string]interface{})
 	if args == nil {
 		inputs["attach"] = nil

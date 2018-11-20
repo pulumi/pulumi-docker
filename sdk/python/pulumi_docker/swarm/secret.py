@@ -27,8 +27,6 @@ class Secret(pulumi.CustomResource):
 
         __props__['labels'] = labels
 
-        if not name:
-            raise TypeError('Missing required property name')
         __props__['name'] = name
 
         super(Secret, __self__).__init__(
