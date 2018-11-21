@@ -10,7 +10,7 @@ class Container(pulumi.CustomResource):
     """
     Manages the lifecycle of a Docker container.
     """
-    def __init__(__self__, __name__, __opts__=None, attach=None, capabilities=None, command=None, cpu_set=None, cpu_shares=None, destroy_grace_seconds=None, devices=None, dns=None, dns_opts=None, dns_searches=None, domainname=None, entrypoints=None, envs=None, healthcheck=None, hosts=None, hostname=None, image=None, labels=None, links=None, log_driver=None, log_opts=None, logs=None, max_retry_count=None, memory=None, memory_swap=None, must_run=None, name=None, network_aliases=None, network_mode=None, networks=None, networks_advanceds=None, pid_mode=None, ports=None, privileged=None, publish_all_ports=None, restart=None, rm=None, start=None, ulimits=None, uploads=None, user=None, userns_mode=None, volumes=None):
+    def __init__(__self__, __name__, __opts__=None, attach=None, capabilities=None, command=None, cpu_set=None, cpu_shares=None, destroy_grace_seconds=None, devices=None, dns=None, dns_opts=None, dns_searches=None, domainname=None, entrypoints=None, envs=None, healthcheck=None, hosts=None, hostname=None, image=None, labels=None, links=None, log_driver=None, log_opts=None, logs=None, max_retry_count=None, memory=None, memory_swap=None, must_run=None, name=None, network_aliases=None, network_mode=None, networks=None, networks_advanced=None, pid_mode=None, ports=None, privileged=None, publish_all_ports=None, restart=None, rm=None, start=None, ulimits=None, uploads=None, user=None, userns_mode=None, volumes=None):
         """Create a Container resource with the given unique name, props, and options."""
         if not __name__:
             raise TypeError('Missing resource name argument (for URN creation)')
@@ -83,7 +83,7 @@ class Container(pulumi.CustomResource):
 
         __props__['networks'] = networks
 
-        __props__['networks_advanceds'] = networks_advanceds
+        __props__['networks_advanced'] = networks_advanced
 
         __props__['pid_mode'] = pid_mode
 
