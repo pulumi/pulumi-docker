@@ -23,7 +23,7 @@ func NewContainer(ctx *pulumi.Context,
 	if args == nil {
 		inputs["attach"] = nil
 		inputs["capabilities"] = nil
-		inputs["commands"] = nil
+		inputs["command"] = nil
 		inputs["cpuSet"] = nil
 		inputs["cpuShares"] = nil
 		inputs["destroyGraceSeconds"] = nil
@@ -67,7 +67,7 @@ func NewContainer(ctx *pulumi.Context,
 	} else {
 		inputs["attach"] = args.Attach
 		inputs["capabilities"] = args.Capabilities
-		inputs["commands"] = args.Commands
+		inputs["command"] = args.Command
 		inputs["cpuSet"] = args.CpuSet
 		inputs["cpuShares"] = args.CpuShares
 		inputs["destroyGraceSeconds"] = args.DestroyGraceSeconds
@@ -132,7 +132,7 @@ func GetContainer(ctx *pulumi.Context,
 		inputs["attach"] = state.Attach
 		inputs["bridge"] = state.Bridge
 		inputs["capabilities"] = state.Capabilities
-		inputs["commands"] = state.Commands
+		inputs["command"] = state.Command
 		inputs["containerLogs"] = state.ContainerLogs
 		inputs["cpuSet"] = state.CpuSet
 		inputs["cpuShares"] = state.CpuShares
@@ -215,8 +215,8 @@ func (r *Container) Capabilities() *pulumi.Output {
 // The command to use to start the
 // container. For example, to run `/usr/bin/myprogram -f baz.conf` set the
 // command to be `["/usr/bin/myprogram", "-f", "baz.conf"]`.
-func (r *Container) Commands() *pulumi.ArrayOutput {
-	return (*pulumi.ArrayOutput)(r.s.State["commands"])
+func (r *Container) Command() *pulumi.ArrayOutput {
+	return (*pulumi.ArrayOutput)(r.s.State["command"])
 }
 
 // The logs of the container if its execution is done (`attach` must be disabled).
@@ -483,7 +483,7 @@ type ContainerState struct {
 	// The command to use to start the
 	// container. For example, to run `/usr/bin/myprogram -f baz.conf` set the
 	// command to be `["/usr/bin/myprogram", "-f", "baz.conf"]`.
-	Commands interface{}
+	Command interface{}
 	// The logs of the container if its execution is done (`attach` must be disabled).
 	ContainerLogs interface{}
 	// A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
@@ -610,7 +610,7 @@ type ContainerArgs struct {
 	// The command to use to start the
 	// container. For example, to run `/usr/bin/myprogram -f baz.conf` set the
 	// command to be `["/usr/bin/myprogram", "-f", "baz.conf"]`.
-	Commands interface{}
+	Command interface{}
 	// A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
 	CpuSet interface{}
 	// CPU shares (relative weight) for the container.

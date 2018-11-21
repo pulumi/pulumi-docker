@@ -18,7 +18,7 @@ import * as docker from "@pulumi/docker";
 // try to download it from the public Docker Hub.
 const image = new docker.RemoteImage("nginx-image", {
     name: "nginx:1.15.6",
-    keepLocally: true,
+    keepLocally: true, // don't delete the image from the local cache when deleting this resource
 });
 
 // Launch a container using the nginx image we just downloaded.
@@ -26,8 +26,14 @@ const container = new docker.Container("nginx", {
     image: image.name,
     ports: [{
         internal: 80,
+        // external: defaults to an open ephemeral port
+        // protocol: defaults to TCP
+        // ip: defaults to 0.0.0.0
     }]
 });
 
 // Since the container is auto-named, export the name.
 export const name = container.name;
+
+// Since the provider picked a random ephemeral port for this container, export the endpoint.
+export const endpoints = container.ports.apply(ports => `${ports![0].ip}:${ports![0].external}`);

@@ -37,7 +37,7 @@ export class Container extends pulumi.CustomResource {
      * container. For example, to run `/usr/bin/myprogram -f baz.conf` set the
      * command to be `["/usr/bin/myprogram", "-f", "baz.conf"]`.
      */
-    public readonly commands: pulumi.Output<string[] | undefined>;
+    public readonly command: pulumi.Output<string[] | undefined>;
     /**
      * The logs of the container if its execution is done (`attach` must be disabled).
      */
@@ -259,7 +259,7 @@ export class Container extends pulumi.CustomResource {
             inputs["attach"] = state ? state.attach : undefined;
             inputs["bridge"] = state ? state.bridge : undefined;
             inputs["capabilities"] = state ? state.capabilities : undefined;
-            inputs["commands"] = state ? state.commands : undefined;
+            inputs["command"] = state ? state.command : undefined;
             inputs["containerLogs"] = state ? state.containerLogs : undefined;
             inputs["cpuSet"] = state ? state.cpuSet : undefined;
             inputs["cpuShares"] = state ? state.cpuShares : undefined;
@@ -313,7 +313,7 @@ export class Container extends pulumi.CustomResource {
             }
             inputs["attach"] = args ? args.attach : undefined;
             inputs["capabilities"] = args ? args.capabilities : undefined;
-            inputs["commands"] = args ? args.commands : undefined;
+            inputs["command"] = args ? args.command : undefined;
             inputs["cpuSet"] = args ? args.cpuSet : undefined;
             inputs["cpuShares"] = args ? args.cpuShares : undefined;
             inputs["destroyGraceSeconds"] = args ? args.destroyGraceSeconds : undefined;
@@ -387,7 +387,7 @@ export interface ContainerState {
      * container. For example, to run `/usr/bin/myprogram -f baz.conf` set the
      * command to be `["/usr/bin/myprogram", "-f", "baz.conf"]`.
      */
-    readonly commands?: pulumi.Input<pulumi.Input<string>[]>;
+    readonly command?: pulumi.Input<pulumi.Input<string>[]>;
     /**
      * The logs of the container if its execution is done (`attach` must be disabled).
      */
@@ -612,7 +612,7 @@ export interface ContainerArgs {
      * container. For example, to run `/usr/bin/myprogram -f baz.conf` set the
      * command to be `["/usr/bin/myprogram", "-f", "baz.conf"]`.
      */
-    readonly commands?: pulumi.Input<pulumi.Input<string>[]>;
+    readonly command?: pulumi.Input<pulumi.Input<string>[]>;
     /**
      * A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
      */
