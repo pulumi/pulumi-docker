@@ -30,9 +30,6 @@ const (
 
 	// dockerMod is the root module for unparented Docker resources.
 	dockerMod = "index"
-
-	// dockerSwarmMod is the module for all Swarm-related resources.
-	dockerSwarmMod = "swarm"
 )
 
 // dockerMember manufactures a type token for the docker package and the given module and type.
@@ -52,13 +49,6 @@ func dockerResource(mod string, res string) tokens.Type {
 	return dockerType(mod+"/"+fn, res)
 }
 
-// dockerDataSource manufactures a standard resource token given a module and resource name.  It automatically uses the
-// Docker package and names the file by simply lower casing the data source's first character.
-func dockerDataSource(mod string, res string) tokens.ModuleMember {
-	fn := string(unicode.ToLower(rune(res[0]))) + res[1:]
-	return dockerMember(mod+"/"+fn, res)
-}
-
 func Provider() tfbridge.ProviderInfo {
 	p := docker.Provider().(*schema.Provider)
 	prov := tfbridge.ProviderInfo{
@@ -74,7 +64,7 @@ func Provider() tfbridge.ProviderInfo {
 				Tok: dockerResource(dockerMod, "Container"),
 				Fields: map[string]*tfbridge.SchemaInfo{
 					// Despite being a list, "command" represents a single command and should not be puralized.
-					"command": {
+					"command": { // ["echo", "1"]
 						Name: "command",
 					},
 					// This property is named strangely in Terraform, despite allowing multiple entries it is not plural
@@ -87,12 +77,6 @@ func Provider() tfbridge.ProviderInfo {
 			"docker_image":   {Tok: dockerResource(dockerMod, "RemoteImage")},
 			"docker_network": {Tok: dockerResource(dockerMod, "Network")},
 			"docker_volume":  {Tok: dockerResource(dockerMod, "Volume")},
-			"docker_config":  {Tok: dockerResource(dockerSwarmMod, "Config")},
-			"docker_secret":  {Tok: dockerResource(dockerSwarmMod, "Secret")},
-			"docker_service": {Tok: dockerResource(dockerSwarmMod, "Service")},
-		},
-		DataSources: map[string]*tfbridge.DataSourceInfo{
-			"docker_registry_image": {Tok: dockerDataSource(dockerMod, "getRegistryImage")},
 		},
 		JavaScript: &tfbridge.JavaScriptInfo{
 			Dependencies: map[string]string{
@@ -121,6 +105,11 @@ func Provider() tfbridge.ProviderInfo {
 	// already have a name mapping entry, since those may have custom overrides set above (e.g., for length).
 	const dockerName = "name"
 	for resname, res := range prov.Resources {
+		// Don't autoname "docker_image". docker_image uses the "name" property to refer to an image that is going to be
+		// downloaded, so it's crucial that we don't try to make up a random name whenever a user omits it.
+		if resname == "docker_image" {
+			continue
+		}
 		if schema := p.ResourcesMap[resname]; schema != nil {
 			// Only apply auto-name to input properties (Optional || Required) named `name`
 			if tfs, has := schema.Schema[dockerName]; has && (tfs.Optional || tfs.Required) {
