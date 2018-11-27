@@ -27,6 +27,8 @@ class RemoteImage(pulumi.CustomResource):
 
         __props__['keep_locally'] = keep_locally
 
+        if not name:
+            raise TypeError('Missing required property name')
         __props__['name'] = name
 
         __props__['pull_trigger'] = pull_trigger

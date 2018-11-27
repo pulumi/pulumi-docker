@@ -4,7 +4,6 @@
 // Export members:
 export * from "./container";
 export * from "./docker";
-export * from "./getRegistryImage";
 export * from "./image";
 export * from "./network";
 export * from "./provider";
@@ -13,5 +12,4 @@ export * from "./volume";
 
 // Export sub-modules:
 import * as config from "./config/index";
-import * as swarm from "./swarm/index";
-export {config, swarm};
+export {config};

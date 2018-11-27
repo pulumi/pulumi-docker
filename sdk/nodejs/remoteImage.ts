@@ -54,7 +54,7 @@ export class RemoteImage extends pulumi.CustomResource {
      * @param args The arguments to use to populate this resource's properties.
      * @param opts A bag of options that control this resource's behavior.
      */
-    constructor(name: string, args?: RemoteImageArgs, opts?: pulumi.CustomResourceOptions)
+    constructor(name: string, args: RemoteImageArgs, opts?: pulumi.CustomResourceOptions)
     constructor(name: string, argsOrState?: RemoteImageArgs | RemoteImageState, opts?: pulumi.CustomResourceOptions) {
         let inputs: pulumi.Inputs = {};
         if (opts && opts.id) {
@@ -66,6 +66,9 @@ export class RemoteImage extends pulumi.CustomResource {
             inputs["pullTriggers"] = state ? state.pullTriggers : undefined;
         } else {
             const args = argsOrState as RemoteImageArgs | undefined;
+            if (!args || args.name === undefined) {
+                throw new Error("Missing required property 'name'");
+            }
             inputs["keepLocally"] = args ? args.keepLocally : undefined;
             inputs["name"] = args ? args.name : undefined;
             inputs["pullTrigger"] = args ? args.pullTrigger : undefined;
@@ -117,7 +120,7 @@ export interface RemoteImageArgs {
     /**
      * The name of the Docker image, including any tags or SHA256 repo digests.
      */
-    readonly name?: pulumi.Input<string>;
+    readonly name: pulumi.Input<string>;
     /**
      * **Deprecated**, use `pull_triggers` instead.
      */

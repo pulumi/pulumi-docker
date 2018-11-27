@@ -188,7 +188,7 @@ export class Container extends pulumi.CustomResource {
     /**
      * See Networks Advanced below for details. If this block has priority to the deprecated `network_alias` and `network` properties.
      */
-    public readonly networks_advanced: pulumi.Output<{ aliases?: string[], ipv4Address?: string, ipv6Address?: string, name: string }[] | undefined>;
+    public readonly networksAdvanced: pulumi.Output<{ aliases?: string[], ipv4Address?: string, ipv6Address?: string, name: string }[] | undefined>;
     /**
      * The PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
      */
@@ -293,7 +293,7 @@ export class Container extends pulumi.CustomResource {
             inputs["networkDatas"] = state ? state.networkDatas : undefined;
             inputs["networkMode"] = state ? state.networkMode : undefined;
             inputs["networks"] = state ? state.networks : undefined;
-            inputs["networks_advanced"] = state ? state.networks_advanced : undefined;
+            inputs["networksAdvanced"] = state ? state.networksAdvanced : undefined;
             inputs["pidMode"] = state ? state.pidMode : undefined;
             inputs["ports"] = state ? state.ports : undefined;
             inputs["privileged"] = state ? state.privileged : undefined;
@@ -341,7 +341,7 @@ export class Container extends pulumi.CustomResource {
             inputs["networkAliases"] = args ? args.networkAliases : undefined;
             inputs["networkMode"] = args ? args.networkMode : undefined;
             inputs["networks"] = args ? args.networks : undefined;
-            inputs["networks_advanced"] = args ? args.networks_advanced : undefined;
+            inputs["networksAdvanced"] = args ? args.networksAdvanced : undefined;
             inputs["pidMode"] = args ? args.pidMode : undefined;
             inputs["ports"] = args ? args.ports : undefined;
             inputs["privileged"] = args ? args.privileged : undefined;
@@ -538,7 +538,7 @@ export interface ContainerState {
     /**
      * See Networks Advanced below for details. If this block has priority to the deprecated `network_alias` and `network` properties.
      */
-    readonly networks_advanced?: pulumi.Input<pulumi.Input<{ aliases?: pulumi.Input<pulumi.Input<string>[]>, ipv4Address?: pulumi.Input<string>, ipv6Address?: pulumi.Input<string>, name: pulumi.Input<string> }>[]>;
+    readonly networksAdvanced?: pulumi.Input<pulumi.Input<{ aliases?: pulumi.Input<pulumi.Input<string>[]>, ipv4Address?: pulumi.Input<string>, ipv6Address?: pulumi.Input<string>, name: pulumi.Input<string> }>[]>;
     /**
      * The PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
      */
@@ -736,7 +736,7 @@ export interface ContainerArgs {
     /**
      * See Networks Advanced below for details. If this block has priority to the deprecated `network_alias` and `network` properties.
      */
-    readonly networks_advanced?: pulumi.Input<pulumi.Input<{ aliases?: pulumi.Input<pulumi.Input<string>[]>, ipv4Address?: pulumi.Input<string>, ipv6Address?: pulumi.Input<string>, name: pulumi.Input<string> }>[]>;
+    readonly networksAdvanced?: pulumi.Input<pulumi.Input<{ aliases?: pulumi.Input<pulumi.Input<string>[]>, ipv4Address?: pulumi.Input<string>, ipv6Address?: pulumi.Input<string>, name: pulumi.Input<string> }>[]>;
     /**
      * The PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
      */

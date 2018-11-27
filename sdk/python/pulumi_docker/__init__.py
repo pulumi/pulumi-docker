@@ -3,11 +3,10 @@
 # *** Do not edit by hand unless you're certain you know what you are doing! ***
 
 # Make subpackages available:
-__all__ = ['config', 'swarm']
+__all__ = ['config']
 
 # Export this package's modules as members:
 from .container import *
 from .remote_image import *
 from .network import *
 from .volume import *
-from .get_registry_image import *

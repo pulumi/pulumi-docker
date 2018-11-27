@@ -51,7 +51,7 @@ func NewContainer(ctx *pulumi.Context,
 		inputs["networkAliases"] = nil
 		inputs["networkMode"] = nil
 		inputs["networks"] = nil
-		inputs["networks_advanced"] = nil
+		inputs["networksAdvanced"] = nil
 		inputs["pidMode"] = nil
 		inputs["ports"] = nil
 		inputs["privileged"] = nil
@@ -95,7 +95,7 @@ func NewContainer(ctx *pulumi.Context,
 		inputs["networkAliases"] = args.NetworkAliases
 		inputs["networkMode"] = args.NetworkMode
 		inputs["networks"] = args.Networks
-		inputs["networks_advanced"] = args.Networks_advanced
+		inputs["networksAdvanced"] = args.NetworksAdvanced
 		inputs["pidMode"] = args.PidMode
 		inputs["ports"] = args.Ports
 		inputs["privileged"] = args.Privileged
@@ -166,7 +166,7 @@ func GetContainer(ctx *pulumi.Context,
 		inputs["networkDatas"] = state.NetworkDatas
 		inputs["networkMode"] = state.NetworkMode
 		inputs["networks"] = state.Networks
-		inputs["networks_advanced"] = state.Networks_advanced
+		inputs["networksAdvanced"] = state.NetworksAdvanced
 		inputs["pidMode"] = state.PidMode
 		inputs["ports"] = state.Ports
 		inputs["privileged"] = state.Privileged
@@ -402,8 +402,8 @@ func (r *Container) Networks() *pulumi.ArrayOutput {
 }
 
 // See Networks Advanced below for details. If this block has priority to the deprecated `network_alias` and `network` properties.
-func (r *Container) Networks_advanced() *pulumi.ArrayOutput {
-	return (*pulumi.ArrayOutput)(r.s.State["networks_advanced"])
+func (r *Container) NetworksAdvanced() *pulumi.ArrayOutput {
+	return (*pulumi.ArrayOutput)(r.s.State["networksAdvanced"])
 }
 
 // The PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
@@ -568,7 +568,7 @@ type ContainerState struct {
 	// container is. *Deprecated:* use `networks_advanced` instead.
 	Networks interface{}
 	// See Networks Advanced below for details. If this block has priority to the deprecated `network_alias` and `network` properties.
-	Networks_advanced interface{}
+	NetworksAdvanced interface{}
 	// The PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
 	PidMode interface{}
 	// See Ports below for details.
@@ -680,7 +680,7 @@ type ContainerArgs struct {
 	// container is. *Deprecated:* use `networks_advanced` instead.
 	Networks interface{}
 	// See Networks Advanced below for details. If this block has priority to the deprecated `network_alias` and `network` properties.
-	Networks_advanced interface{}
+	NetworksAdvanced interface{}
 	// The PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
 	PidMode interface{}
 	// See Ports below for details.
