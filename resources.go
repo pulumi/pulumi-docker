@@ -61,7 +61,8 @@ func Provider() tfbridge.ProviderInfo {
 		Repository:  "https://github.com/pulumi/pulumi-docker",
 		Resources: map[string]*tfbridge.ResourceInfo{
 			"docker_container": {
-				Tok: dockerResource(dockerMod, "Container"),
+				Tok:                 dockerResource(dockerMod, "Container"),
+				DeleteBeforeReplace: true,
 				Fields: map[string]*tfbridge.SchemaInfo{
 					// Despite being a list, "command" represents a single command and should not be puralized.
 					"command": { // ["echo", "1"]
@@ -70,7 +71,7 @@ func Provider() tfbridge.ProviderInfo {
 					// This property is named strangely in Terraform, despite allowing multiple entries it is not plural
 					// and is not intended to be plural.
 					"networks_advanced": {
-						Name: "networks_advanced",
+						Name: "networksAdvanced",
 					},
 				},
 			},
