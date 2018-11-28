@@ -1,18 +1,16 @@
 #!/bin/bash
-# publish.sh builds and publishes a release.
+# publish_packages.sh uploads our packages to package repositories like npm
 set -o nounset -o errexit -o pipefail
 ROOT=$(dirname $0)/..
+if [[ "${TRAVIS_OS_NAME:-}" == "linux" ]]; then
+    # Publish the NPM package.
+    echo "Publishing NPM package to NPMjs.com:"
 
-echo "Publishing NPM packages to NPMjs.com:"
-
-# For each package, first create the package.json to publish.  This must be different than the one we use for
-# development and testing the SDK, since we use symlinking for those workflows.  Namely, we must promote the SDK
-# dependencies from peerDependencies that are resolved via those links, to real installable dependencies.
-publish() {
-    node $(dirname $0)/promote.js ${@:2} < \
-        ${ROOT}/$1/bin/package.json > \
-        ${ROOT}/$1/bin/package.json.publish
-    pushd ${ROOT}/$1/bin
+    # First, add an install script to our package.json
+    node $(dirname $0)/promote.js < \
+        ${ROOT}/sdk/nodejs/bin/package.json > \
+        ${ROOT}/sdk/nodejs/bin/package.json.publish
+    pushd ${ROOT}/sdk/nodejs/bin
     mv package.json package.json.dev
     mv package.json.publish package.json
 
@@ -39,6 +37,4 @@ publish() {
     twine upload \
         -u pulumi -p ${PYPI_PASSWORD} \
         ${ROOT}/sdk/python/bin/dist/*.tar.gz
-}
-
-publish docker
+fi
