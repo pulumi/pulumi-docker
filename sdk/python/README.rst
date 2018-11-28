@@ -3,7 +3,7 @@
 Pulumi Docker Helpers
 =====================
 
-Pulumi’s helper library for interacting with Docker. Used so that this
+Pulumi helper library for interacting with Docker. Used so that this
 logic can be shared with other parts of the Pulumi stack.
 
 .. |Build Status| image:: https://travis-ci.com/pulumi/pulumi-docker.svg?token=eHg7Zp5zdDDJfTjY8ejq&branch=master
