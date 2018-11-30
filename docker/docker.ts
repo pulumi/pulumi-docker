@@ -14,6 +14,7 @@
 
 import * as pulumi from "@pulumi/pulumi";
 import { ResourceError } from "@pulumi/pulumi/errors";
+import * as utils from "./utils";
 
 import * as child_process from "child_process";
 import * as semver from "semver";
@@ -162,7 +163,12 @@ async function buildAndPushImageWorkerAsync(
     logResource: pulumi.Resource,
     connectToRegistry: (() => Promise<Registry>) | undefined): Promise<string> {
 
-    const { imageName, tag } = getImageNameAndTag(baseImageName);
+    const { tag: repositoryUrlTag } = utils.getImageNameAndTag(repositoryUrl);
+    if (repositoryUrlTag) {
+        throw new Error(`[repositoryUrl] should not contain a tag: ${repositoryUrlTag}`);
+    }
+
+    const { imageName, tag } = utils.getImageNameAndTag(baseImageName);
 
     let loggedIn: Promise<void> | undefined;
 
@@ -191,6 +197,9 @@ async function buildAndPushImageWorkerAsync(
 
     // First build the image.
     const { imageId, stages } = await buildImageAsync(imageName, pathOrBuild, logResource, cacheFrom);
+    if (imageId === undefined) {
+        throw new Error("Internal error: docker build did not produce an imageId.");
+    }
 
     // Generate a name that uniquely will identify this built image.  This is similar in purpose to
     // the name@digest form that can be normally be retrieved from a docker repository.  However,
@@ -207,6 +216,15 @@ async function buildAndPushImageWorkerAsync(
         await login();
 
         // Push the final image first, then push the stage images to use for caching.
+
+        // First, push with both the optionally-requested-tag *and* imageId (which is guaranteed to
+        // be defined).  By using the imageId we give the image a fully unique location that we can
+        // successfully pull regardless of whatever else has happened at this repositoryUrl.
+
+        // Next, push only with the optionally-requested-tag.  Users of this API still want to get a
+        // nice and simple url that they can reach this image at, without having the explicit imageId
+        // hash added to it.  Note: this location is not guaranteed to be idempotent.  For example,
+        // pushes on other machines might overwrite that location.
         await tagAndPushImageAsync(imageName, repositoryUrl, tag, imageId, logResource);
         await tagAndPushImageAsync(imageName, repositoryUrl, tag, /*imageId:*/ undefined, logResource);
 
@@ -221,23 +239,6 @@ async function buildAndPushImageWorkerAsync(
 
 function localStageImageName(imageName: string, stage: string) {
     return `${imageName}-${stage}`;
-}
-
-function getImageNameAndTag(baseImageName: string): { imageName: string, tag: string | undefined } {
-    // From https://docs.docker.com/engine/reference/commandline/tag
-    //
-    // "A tag name must be valid ASCII and may contain lowercase and uppercase letters, digits,
-    // underscores, periods and dashes. A tag name may not start with a period or a dash and may
-    // contain a maximum of 128 characters."
-    //
-    // So it is safe for us to just look for the colon, and consume whatever follows as the tag
-    // for the image.
-
-    const lastColon = baseImageName.lastIndexOf(":");
-    const imageName = lastColon < 0 ? baseImageName : baseImageName.substr(0, lastColon);
-    const tag = lastColon < 0 ? undefined : baseImageName.substr(lastColon + 1);
-
-    return  { imageName, tag };
 }
 
 function createTaggedImageName(repositoryUrl: string, tag: string | undefined, imageId: string | undefined): string {
@@ -458,16 +459,14 @@ async function tagAndPushImageAsync(
     // Ensure we have a unique target name for this image, and tag and push to that unique target.
     await doTagAndPushAsync(createTaggedImageName(repositoryUrl, tag, imageId));
 
-    if (tag) {
-        // user provided a tag themselves (like "x/y:dev").  In this case, also tag and push
-        // directly to that 'dev' tag.  This is not going to be a unique location, and future pushes
-        // will overwrite this location.  However, that's ok as there's still the unique target we
-        // generated above.
-        //
-        // We don't need to do this for the main image we tagged and pushed as the repo will
-        // automatically give is a :latest tag that serves the same purpose.  So this tagged/pushed
-        // build will simply act as the 'latest' pointer for this specific tag.
-        await doTagAndPushAsync(`${repositoryUrl}:${tag}`);
+    // If the user provided a tag themselves (like "x/y:dev") then also tag and push directly to
+    // that 'dev' tag.  This is not going to be a unique location, and future pushes will overwrite
+    // this location.  However, that's ok as there's still the unique target we generated above.
+    //
+    // Note: don't need to do this if imageId was 'undefined' as the above line will have already
+    // taken care of things for us.
+    if (tag !== undefined && imageId !== undefined) {
+        await doTagAndPushAsync(createTaggedImageName(repositoryUrl, tag, /*imageId:*/ undefined));
     }
 
     return;

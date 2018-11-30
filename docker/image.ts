@@ -14,14 +14,19 @@
 
 import * as pulumi from "@pulumi/pulumi";
 import * as docker from "./docker";
+import * as utils from "./utils";
 
 /**
  * Arguments for constructing an Image resource.
  */
 export interface ImageArgs {
     /**
-     * The qualified image name that will be pushed to the remote registry.  Must be a supported image name for the
-     * target registry user.
+     * The qualified image name that will be pushed to the remote registry.  Must be a supported
+     * image name for the target registry user.  This name can include a tag at the end.  If
+     * provided all pushed image resources will contain that tag as well.
+     *
+     * Either [imageName] or [localImageName] can have a tag.  However, if both have a tag, then
+     * those tags must match.
      */
     imageName: pulumi.Input<string>;
     /**
@@ -29,7 +34,12 @@ export interface ImageArgs {
      */
     build: pulumi.Input<string | docker.DockerBuild>;
     /**
-     * The docker image name to build locally before tagging with imageName.
+     * The docker image name to build locally before tagging with imageName.  If not provided, it
+     * will be given the value of to [imageName].  This name can include a tag at the end.  If
+     * provided all pushed image resources will contain that tag as well.
+     *
+     * Either [imageName] or [localImageName] can have a tag.  However, if both have a tag, then
+     * those tags must match.
      */
     localImageName?: pulumi.Input<string>;
     /**
@@ -94,15 +104,38 @@ export class Image extends pulumi.ComponentResource {
         super("docker:image:Image", name, argsWithoutRegistry(args), opts);
 
         const imageData = pulumi.output(args).apply(async (imageArgs) => {
-            let localImageName = imageArgs.localImageName;
-            if (!localImageName) {
-                localImageName = imageArgs.imageName;
-            }
+            const imageName = imageArgs.imageName;
+
+            // If there is no localImageName set it equal to imageName.  Note: this means
+            // that if imageName contains a tag, localImageName will contain the same tag.
+            const localImageName = imageArgs.localImageName || imageName;
+
+            // Now break both the localImageName and the imageName into the untagged part and the
+            // optional tag.  If both have tags, they must match.  If one or the other has a tag, we
+            // just use that as the tag to use.  This allows users to flexibly provide a tag on one
+            // option or the other and still have it work out.
+            const { imageName: localImageNameWithoutTag, tag: localImageNameTag } = utils.getImageNameAndTag(localImageName);
+            const { imageName: imageNameWithoutTag, tag: imageNameTag } = utils.getImageNameAndTag(imageName);
+
+            const tag = localImageNameTag || imageNameTag;
+
+            checkTag(localImageNameTag);
+            checkTag(imageNameTag);
+
+            // buildAndPushImageAsync expects only the baseImageName to have a tag.  So build that
+            // name appropriately if we were given a tag.
+            const baseImageName = tag ? `${localImageNameWithoutTag}:${tag}` : localImageName;
+
+            // buildAndPushImageAsync does not want the repositoryUrl to have a tag.  This is just
+            // the base url where the images will be pushed to.  All tagging will be taken care of
+            // inside that api.
+            const repositoryUrl = imageNameWithoutTag;
+
             const registry = imageArgs.registry;
             const uniqueTargetName = await docker.buildAndPushImageAsync(
-                localImageName,
+                baseImageName,
                 imageArgs.build,
-                imageArgs.imageName,
+                repositoryUrl,
                 /*logResource:*/ this,
                 registry && (async () => {
                     return {
@@ -114,6 +147,13 @@ export class Image extends pulumi.ComponentResource {
             );
 
             return { uniqueTargetName, registryServer: registry && registry.server };
+
+            function checkTag(t: string | undefined) {
+                if (t && (t !== tag)) {
+                    throw new Error(`[localImageName] and [imageName] had mismatched tags.
+        ${JSON.stringify(localImageNameTag)} !== ${JSON.stringify(imageNameTag)}`);
+                }
+            }
         });
 
         this.imageName = imageData.apply(d => d.uniqueTargetName);
