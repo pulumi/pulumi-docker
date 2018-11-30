@@ -1,0 +1,24 @@
+{
+    "compilerOptions": {
+        "outDir": "bin",
+        "target": "es6",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "declaration": true,
+        "sourceMap": true
+    },
+    "files": [
+        "config/index.ts",
+        "config/vars.ts",
+        "container.ts",
+        "docker.ts",
+        "image.ts",
+        "index.ts",
+        "network.ts",
+        "provider.ts",
+        "remoteImage.ts",
+        "utilities.ts",
+        "volume.ts"
+    ]
+}
+

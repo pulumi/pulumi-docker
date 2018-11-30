@@ -36,10 +36,8 @@
 #
 #  - only_build: this target runs build and install targets
 #
-#  - only_test: this target runs the lint and test_all targets
+#  - only_test: this target runs the list and test_all targets
 #               (test_all itself runs test_fast)
-#
-#  - only_test_fast: this target runs the lint and test_fast targets
 #
 #  - default: this is the target that is run by default when no
 #             arguments are passed to make, it runs the build, lint,
@@ -106,17 +104,52 @@ endif
 PULUMI_BIN          := $(PULUMI_ROOT)/bin
 PULUMI_NODE_MODULES := $(PULUMI_ROOT)/node_modules
 
-.PHONY: default all ensure only_build only_test only_test_fast build lint install test_fast test_all core
+.PHONY: default all ensure only_build only_test build lint install test_fast test_all core
 
 # ensure that `default` is the target that is run when no arguments are passed to make
 default::
+
+# Ensure the requisite tools are on the PATH.
+#     - Prefer Python2 over Python.
+PYTHON := $(shell command -v python2 2>/dev/null)
+ifeq ($(PYTHON),)
+	PYTHON = $(shell command -v python 2>/dev/null)
+endif
+ifeq ($(PYTHON),)
+ensure::
+	$(error "missing python 2.7 (`python2` or `python`) from your $$PATH; \
+		please see https://github.com/pulumi/home/wiki/Package-Management-Prerequisites")
+else
+PYTHON_VERSION := $(shell command $(PYTHON) --version 2>&1)
+ifeq (,$(findstring 2.7,$(PYTHON_VERSION)))
+ensure::
+	$(error "$(PYTHON) did not report a 2.7 version number ($(PYTHON_VERSION)); \
+		please see https://github.com/pulumi/home/wiki/Package-Management-Prerequisites")
+endif
+endif
+#     - Prefer Pip2 over Pip.
+PIP := $(shell command -v pip2 2>/dev/null)
+ifeq ($(PIP),)
+	PIP = $(shell command -v pip 2>/dev/null)
+endif
+ifeq ($(PIP),)
+ensure::
+	$(error "missing pip 2.7 (`pip2` or `pip`) from your $$PATH; \
+		please see https://github.com/pulumi/home/wiki/Package-Management-Prerequisites")
+else
+PIP_VERSION := $(shell command $(PIP) --version 2>&1)
+ifeq (,$(findstring python 2.7,$(PIP_VERSION)))
+ensure::
+	$(error "$(PIP) did not report a 2.7 version number ($(PIP_VERSION)); \
+		please see https://github.com/pulumi/home/wiki/Package-Management-Prerequisites")
+endif
+endif
 
 # If there are sub projects, our default, all, and ensure targets will
 # recurse into them.
 ifneq ($(SUB_PROJECTS),)
 only_build:: $(SUB_PROJECTS:%=%_only_build)
 only_test:: $(SUB_PROJECTS:%=%_only_test)
-only_test_fast:: $(SUB_PROJECTS:%=%_only_test_fast)
 default:: $(SUB_PROJECTS:%=%_default)
 all:: $(SUB_PROJECTS:%=%_all)
 ensure:: $(SUB_PROJECTS:%=%_ensure)
@@ -171,14 +204,13 @@ install::
 	cp yarn.lock "$(PULUMI_NODE_MODULES)/$(NODE_MODULE_NAME)"
 	rm -rf "$(PULUMI_NODE_MODULES)/$(NODE_MODULE_NAME)/node_modules"
 	cd "$(PULUMI_NODE_MODULES)/$(NODE_MODULE_NAME)" && \
-		yarn install --offline --production && \
-		(yarn unlink > /dev/null 2>&1 || true) && \
-		yarn link
+	yarn install --offline --production && \
+	(yarn unlink > /dev/null 2>&1 || true) && \
+	yarn link
 endif
 
 only_build:: build install
 only_test:: lint test_all
-only_test_fast:: lint test_fast
 
 # Generate targets for each sub project. This project's default and
 # all targets will depend on the sub project's targets, and the
@@ -203,8 +235,6 @@ $(SUB_PROJECTS:%=%_only_build):
 	@$(MAKE) -C ./$(@:%_only_build=%) only_build
 $(SUB_PROJECTS:%=%_only_test):
 	@$(MAKE) -C ./$(@:%_only_test=%) only_test
-$(SUB_PROJECTS:%=%_only_test_fast):
-	@$(MAKE) -C ./$(@:%_only_test_fast=%) only_test_fast
 endif
 
 # As a convinece, we provide a format target that folks can build to
