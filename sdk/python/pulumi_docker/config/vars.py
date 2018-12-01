@@ -8,30 +8,30 @@ from .. import utilities, tables
 
 __config__ = pulumi.Config('docker')
 
-ca_material = __config__.get('caMaterial')
+ca_material = __config__.get('caMaterial') or utilities.get_env('DOCKER_CA_MATERIAL')
 """
 PEM-encoded content of Docker host CA certificate
 """
 
-cert_material = __config__.get('certMaterial')
+cert_material = __config__.get('certMaterial') or utilities.get_env('DOCKER_CERT_MATERIAL')
 """
 PEM-encoded content of Docker client certificate
 """
 
-cert_path = __config__.get('certPath')
+cert_path = __config__.get('certPath') or utilities.get_env('DOCKER_CERT_PATH')
 """
 Path to directory with Docker TLS config
 """
 
-host = __config__.require('host')
+host = utilities.require_with_default(lambda: __config__.require('host'), (utilities.get_env('DOCKER_HOST') or 'unix:///var/run/docker.sock'))
 """
 The Docker daemon address
 """
 
-key_material = __config__.get('keyMaterial')
+key_material = __config__.get('keyMaterial') or utilities.get_env('DOCKER_KEY_MATERIAL')
 """
 PEM-encoded content of Docker client private key
 """
 
-registry_auths = __config__.get('registryAuths')
+registry_auth = __config__.get('registryAuth')
 

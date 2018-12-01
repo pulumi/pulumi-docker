@@ -16,18 +16,15 @@ export class Provider extends pulumi.ProviderResource {
      * @param args The arguments to use to populate this resource's properties.
      * @param opts A bag of options that control this resource's behavior.
      */
-    constructor(name: string, args: ProviderArgs, opts?: pulumi.ResourceOptions) {
+    constructor(name: string, args?: ProviderArgs, opts?: pulumi.ResourceOptions) {
         let inputs: pulumi.Inputs = {};
         {
-            if (!args || args.host === undefined) {
-                throw new Error("Missing required property 'host'");
-            }
-            inputs["caMaterial"] = args ? args.caMaterial : undefined;
-            inputs["certMaterial"] = args ? args.certMaterial : undefined;
-            inputs["certPath"] = args ? args.certPath : undefined;
-            inputs["host"] = args ? args.host : undefined;
-            inputs["keyMaterial"] = args ? args.keyMaterial : undefined;
-            inputs["registryAuths"] = pulumi.output(args ? args.registryAuths : undefined).apply(JSON.stringify);
+            inputs["caMaterial"] = (args ? args.caMaterial : undefined) || utilities.getEnv("DOCKER_CA_MATERIAL");
+            inputs["certMaterial"] = (args ? args.certMaterial : undefined) || utilities.getEnv("DOCKER_CERT_MATERIAL");
+            inputs["certPath"] = (args ? args.certPath : undefined) || utilities.getEnv("DOCKER_CERT_PATH");
+            inputs["host"] = (args ? args.host : undefined) || (utilities.getEnv("DOCKER_HOST") || "unix:///var/run/docker.sock");
+            inputs["keyMaterial"] = (args ? args.keyMaterial : undefined) || utilities.getEnv("DOCKER_KEY_MATERIAL");
+            inputs["registryAuth"] = pulumi.output(args ? args.registryAuth : undefined).apply(JSON.stringify);
         }
         super("docker", name, inputs, opts);
     }
@@ -52,10 +49,10 @@ export interface ProviderArgs {
     /**
      * The Docker daemon address
      */
-    readonly host: pulumi.Input<string>;
+    readonly host?: pulumi.Input<string>;
     /**
      * PEM-encoded content of Docker client private key
      */
     readonly keyMaterial?: pulumi.Input<string>;
-    readonly registryAuths?: pulumi.Input<pulumi.Input<{ address: pulumi.Input<string>, configFile?: pulumi.Input<string>, password?: pulumi.Input<string>, username?: pulumi.Input<string> }>[]>;
+    readonly registryAuth?: pulumi.Input<pulumi.Input<{ address: pulumi.Input<string>, configFile?: pulumi.Input<string>, password?: pulumi.Input<string>, username?: pulumi.Input<string> }>[]>;
 }

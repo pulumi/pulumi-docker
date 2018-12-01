@@ -9,21 +9,21 @@ let __config = new pulumi.Config("docker");
 /**
  * PEM-encoded content of Docker host CA certificate
  */
-export let caMaterial: string | undefined = __config.get("caMaterial");
+export let caMaterial: string | undefined = __config.get("caMaterial") || utilities.getEnv("DOCKER_CA_MATERIAL");
 /**
  * PEM-encoded content of Docker client certificate
  */
-export let certMaterial: string | undefined = __config.get("certMaterial");
+export let certMaterial: string | undefined = __config.get("certMaterial") || utilities.getEnv("DOCKER_CERT_MATERIAL");
 /**
  * Path to directory with Docker TLS config
  */
-export let certPath: string | undefined = __config.get("certPath");
+export let certPath: string | undefined = __config.get("certPath") || utilities.getEnv("DOCKER_CERT_PATH");
 /**
  * The Docker daemon address
  */
-export let host: string = __config.require("host");
+export let host: string = utilities.requireWithDefault(() => __config.require("host"), (utilities.getEnv("DOCKER_HOST") || "unix:///var/run/docker.sock"));
 /**
  * PEM-encoded content of Docker client private key
  */
-export let keyMaterial: string | undefined = __config.get("keyMaterial");
-export let registryAuths: { address: string, configFile?: string, password?: string, username?: string }[] | undefined = __config.getObject<{ address: string, configFile?: string, password?: string, username?: string }[]>("registryAuths");
+export let keyMaterial: string | undefined = __config.get("keyMaterial") || utilities.getEnv("DOCKER_KEY_MATERIAL");
+export let registryAuth: { address: string, configFile?: string, password?: string, username?: string }[] | undefined = __config.getObject<{ address: string, configFile?: string, password?: string, username?: string }[]>("registryAuth");
