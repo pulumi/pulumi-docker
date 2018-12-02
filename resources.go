@@ -59,6 +59,37 @@ func Provider() tfbridge.ProviderInfo {
 		License:     "Apache-2.0",
 		Homepage:    "https://pulumi.io",
 		Repository:  "https://github.com/pulumi/pulumi-docker",
+		Config: map[string]*tfbridge.SchemaInfo{
+			"host": {
+				Default: &tfbridge.DefaultInfo{
+					Value:   "unix:///var/run/docker.sock",
+					EnvVars: []string{"DOCKER_HOST"},
+				},
+			},
+			"ca_material": {
+				Default: &tfbridge.DefaultInfo{
+					EnvVars: []string{"DOCKER_CA_MATERIAL"},
+				},
+			},
+			"cert_material": {
+				Default: &tfbridge.DefaultInfo{
+					EnvVars: []string{"DOCKER_CERT_MATERIAL"},
+				},
+			},
+			"key_material": {
+				Default: &tfbridge.DefaultInfo{
+					EnvVars: []string{"DOCKER_KEY_MATERIAL"},
+				},
+			},
+			"cert_path": {
+				Default: &tfbridge.DefaultInfo{
+					EnvVars: []string{"DOCKER_CERT_PATH"},
+				},
+			},
+			"registry_auth": {
+				Name: "registryAuth", // not plural
+			},
+		},
 		Resources: map[string]*tfbridge.ResourceInfo{
 			"docker_container": {
 				Tok:                 dockerResource(dockerMod, "Container"),

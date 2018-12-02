@@ -10,29 +10,65 @@ import (
 
 // PEM-encoded content of Docker host CA certificate
 func GetCaMaterial(ctx *pulumi.Context) string {
-	return config.Get(ctx, "docker:caMaterial")
+	v, err := config.Try(ctx, "docker:caMaterial")
+	if err == nil {
+		return v
+	}
+	if dv, ok := getEnvOrDefault("", nil, "DOCKER_CA_MATERIAL").(string); ok {
+		return dv
+	}
+	return v
 }
 
 // PEM-encoded content of Docker client certificate
 func GetCertMaterial(ctx *pulumi.Context) string {
-	return config.Get(ctx, "docker:certMaterial")
+	v, err := config.Try(ctx, "docker:certMaterial")
+	if err == nil {
+		return v
+	}
+	if dv, ok := getEnvOrDefault("", nil, "DOCKER_CERT_MATERIAL").(string); ok {
+		return dv
+	}
+	return v
 }
 
 // Path to directory with Docker TLS config
 func GetCertPath(ctx *pulumi.Context) string {
-	return config.Get(ctx, "docker:certPath")
+	v, err := config.Try(ctx, "docker:certPath")
+	if err == nil {
+		return v
+	}
+	if dv, ok := getEnvOrDefault("", nil, "DOCKER_CERT_PATH").(string); ok {
+		return dv
+	}
+	return v
 }
 
 // The Docker daemon address
 func GetHost(ctx *pulumi.Context) string {
-	return config.Require(ctx, "docker:host")
+	v, err := config.Try(ctx, "docker:host")
+	if err == nil {
+		return v
+	}
+	if dv, ok := getEnvOrDefault("unix:///var/run/docker.sock", nil, "DOCKER_HOST").(string); ok {
+		return dv
+	}
+	panic(err.Error())
+	return v
 }
 
 // PEM-encoded content of Docker client private key
 func GetKeyMaterial(ctx *pulumi.Context) string {
-	return config.Get(ctx, "docker:keyMaterial")
+	v, err := config.Try(ctx, "docker:keyMaterial")
+	if err == nil {
+		return v
+	}
+	if dv, ok := getEnvOrDefault("", nil, "DOCKER_KEY_MATERIAL").(string); ok {
+		return dv
+	}
+	return v
 }
 
-func GetRegistryAuths(ctx *pulumi.Context) string {
-	return config.Get(ctx, "docker:registryAuths")
+func GetRegistryAuth(ctx *pulumi.Context) string {
+	return config.Get(ctx, "docker:registryAuth")
 }

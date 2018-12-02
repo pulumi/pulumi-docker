@@ -26,9 +26,7 @@ import (
 
 var base = integration.ProgramTestOptions{
 	ExpectRefreshChanges: true, // Docker resources generally see changes when refreshed.
-	Config: map[string]string{
-		"docker:host": "unix:///var/run/docker.sock",
-	},
+	// Note: no Config! This package should be usable without any config.
 }
 
 func TestNginx(t *testing.T) {
