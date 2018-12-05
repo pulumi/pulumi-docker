@@ -1,5 +1,10 @@
+## 0.16.3 (unreleased)
 
-## 0.16.2 (unreleased)
+## 0.16.2 (Released December 5th, 2018)
+
+### Improvements
+
+- Expose resources from Terraform's `docker` provider.
 
 ## 0.16.1 (Released Novemeber 13th, 2018)
 
