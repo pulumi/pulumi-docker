@@ -1,4 +1,0 @@
-name: image
-description: Basic docker Image test.
-runtime: nodejs
-
