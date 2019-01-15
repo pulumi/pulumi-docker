@@ -1,5 +1,9 @@
 ## 0.16.3 (unreleased)
 
+### Improvements
+
+- Updated package constraints such that we do not depend on unreleased versions of `@pulumi/pulumi`.
+
 ## 0.16.2 (Released December 5th, 2018)
 
 ### Improvements
