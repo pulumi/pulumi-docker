@@ -13,11 +13,11 @@
         "build": "tsc"
     },
     "dependencies": {
-        "@pulumi/pulumi": "^0.16.4",
+        "@pulumi/pulumi": "^0.16.10",
         "semver": "^5.4.0"
     },
     "devDependencies": {
-        "@types/node": "^8.0.26",
+        "@types/node": "^10.0.0",
         "@types/semver": "^5.4.0",
         "typescript": "^2.6.2"
     },
