@@ -101,7 +101,7 @@ export class Image extends pulumi.ComponentResource {
     public digest: pulumi.Output<string | undefined>;
 
     constructor(name: string, args: ImageArgs, opts?: pulumi.ComponentResourceOptions) {
-        super("docker:image:Image", name, argsWithoutRegistry(args), opts);
+        super("docker:image:Image", name, {}, opts);
 
         const imageData = pulumi.output(args).apply(async (imageArgs) => {
             const imageName = imageArgs.imageName;
@@ -170,14 +170,4 @@ export class Image extends pulumi.ComponentResource {
             registryServer: this.registryServer,
         });
     }
-}
-
-// Take out the registry information from the args.  It is needed to build and push the image.  But
-// it's not an intrinsic part of this Image resource.  We do not want to store it, otherwise a
-// change to something like a registry password would cause this to be recreated.  Instead, we only
-// want to recreate if our actual digests change.
-function argsWithoutRegistry(args: ImageArgs): ImageArgs {
-    const result = {...args};
-    delete result.registry;
-    return result;
 }
