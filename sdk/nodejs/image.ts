@@ -45,7 +45,15 @@ export interface ImageArgs {
     /**
      * Credentials for the docker registry to push to.
      */
-    registry?: pulumi.Input<ImageRegistry>;
+    registry?: pulumi.Input<ImageRegistry> | ImageRegistryProvider;
+}
+
+export interface ImageRegistryProvider {
+    registry(): pulumi.Input<ImageRegistry>;
+}
+
+function isImageRegistryProvider(obj: any): obj is ImageRegistryProvider {
+    return obj && !!(<ImageRegistryProvider>obj).registry;
 }
 
 export interface ImageRegistry {
@@ -103,12 +111,18 @@ export class Image extends pulumi.ComponentResource {
     constructor(name: string, args: ImageArgs, opts?: pulumi.ComponentResourceOptions) {
         super("docker:image:Image", name, {}, opts);
 
-        const imageData = pulumi.output(args).apply(async (imageArgs) => {
-            const imageName = imageArgs.imageName;
+        const registry =!args.registry
+            ? undefined
+            : isImageRegistryProvider(args.registry)
+                ? args.registry.registry()
+                : args.registry;
+
+        const imageData = pulumi.all([args, registry]).apply(async ([args, registry]) => {
+            const imageName = args.imageName;
 
             // If there is no localImageName set it equal to imageName.  Note: this means
             // that if imageName contains a tag, localImageName will contain the same tag.
-            const localImageName = imageArgs.localImageName || imageName;
+            const localImageName = args.localImageName || imageName;
 
             // Now break both the localImageName and the imageName into the untagged part and the
             // optional tag.  If both have tags, they must match.  If one or the other has a tag, we
@@ -131,10 +145,9 @@ export class Image extends pulumi.ComponentResource {
             // inside that api.
             const repositoryUrl = imageNameWithoutTag;
 
-            const registry = imageArgs.registry;
             const uniqueTargetName = await docker.buildAndPushImageAsync(
                 baseImageName,
-                imageArgs.build,
+                args.build,
                 repositoryUrl,
                 /*logResource:*/ this,
                 registry && (async () => {
