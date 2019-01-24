@@ -29,6 +29,24 @@ var base = integration.ProgramTestOptions{
 	// Note: no Config! This package should be usable without any config.
 }
 
+func TestAws(t *testing.T) {
+	cwd, err := os.Getwd()
+	if !assert.NoError(t, err) {
+		t.FailNow()
+	}
+
+	opts := base.With(integration.ProgramTestOptions{
+		Config: map[string]string{
+			"aws:region": "us-west-1",
+		},
+		Dependencies: []string{
+			"@pulumi/docker",
+		},
+		Dir: path.Join(cwd, "nginx"),
+	})
+	integration.ProgramTest(t, &opts)
+}
+
 func TestNginx(t *testing.T) {
 	cwd, err := os.Getwd()
 	if !assert.NoError(t, err) {

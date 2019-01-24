@@ -21,9 +21,9 @@ import * as semver from "semver";
 
 // Registry is the information required to login to a Docker registry.
 export interface Registry {
-    registry: string;
-    username: string;
-    password: string;
+    registry: pulumi.Input<string>;
+    username: pulumi.Input<string>;
+    password: pulumi.Input<string>;
 }
 
 /**
@@ -118,7 +118,7 @@ export function buildAndPushImage(
     pathOrBuild: pulumi.Input<string | DockerBuild>,
     repositoryUrl: pulumi.Input<string>,
     logResource: pulumi.Resource,
-    connectToRegistry: () => Promise<Registry>): pulumi.Output<string> {
+    connectToRegistry: () => pulumi.Input<Registry>): pulumi.Output<string> {
 
     return pulumi.all([pathOrBuild, repositoryUrl])
                  .apply(_ => buildAndPushImageAsync(
@@ -139,7 +139,7 @@ export async function buildAndPushImageAsync(
     pathOrBuild: pulumi.Input<string | DockerBuild>,
     repositoryUrl: pulumi.Input<string>,
     logResource: pulumi.Resource,
-    connectToRegistry?: () => Promise<Registry>): Promise<string> {
+    connectToRegistry?: () => pulumi.Input<Registry>): Promise<string> {
 
     // Give an initial message indicating what we're about to do.  That way, if anything
     // takes a while, the user has an idea about what's going on.
@@ -166,7 +166,7 @@ async function buildAndPushImageWorkerAsync(
     pathOrBuild: string | pulumi.Unwrap<DockerBuild>,
     repositoryUrl: string,
     logResource: pulumi.Resource,
-    connectToRegistry: (() => Promise<Registry>) | undefined): Promise<string> {
+    connectToRegistry: (() => pulumi.Input<Registry>) | undefined): Promise<string> {
 
     const { tag: repositoryUrlTag } = utils.getImageNameAndTag(repositoryUrl);
     if (repositoryUrlTag) {
@@ -185,7 +185,10 @@ async function buildAndPushImageWorkerAsync(
     const login = () => {
         if (!loggedIn) {
             logEphemeral("Logging in to registry...", logResource);
-            loggedIn = connectToRegistry!().then(r => loginToRegistry(r, logResource));
+            const registryOutput = pulumi.output(connectToRegistry!());
+            const registryPromise: Promise<pulumi.Unwrap<Registry>> = (<any>registryOutput).promise();
+
+            loggedIn = registryPromise.then(r => loginToRegistry(r, logResource));
         }
         return loggedIn;
     };
@@ -416,7 +419,7 @@ interface LoginResult {
 // registry with that user, there's no need to do it again.
 const loginResults: LoginResult[] = [];
 
-function loginToRegistry(registry: Registry, logResource: pulumi.Resource): Promise<void> {
+function loginToRegistry(registry: pulumi.Unwrap<Registry>, logResource: pulumi.Resource): Promise<void> {
     const { registry: registryName, username, password } = registry;
 
     // See if we've issued an outstanding requests to login into this registry.  If so, just
