@@ -111,54 +111,59 @@ function useDockerPasswordStdin(logResource: pulumi.Resource) {
 }
 
 /**
- * @deprecated Use [buildAndPushImageAsync] instead.
+ * @deprecated Use [buildAndPushImage] instead.  This function loses the Output resource tracking
+ * information from [pathOrBuild] and [repositoryUrl].  [buildAndPushImage] properly keeps track of
+ * this in the result.
  */
-export function buildAndPushImage(
-    imageName: string,
-    pathOrBuild: pulumi.Input<string | DockerBuild>,
-    repositoryUrl: pulumi.Input<string>,
-    logResource: pulumi.Resource,
-    connectToRegistry: () => pulumi.Input<Registry>): pulumi.Output<string> {
-
-    return pulumi.all([pathOrBuild, repositoryUrl])
-                 .apply(_ => buildAndPushImageAsync(
-                     imageName, pathOrBuild, repositoryUrl, logResource, connectToRegistry));
-}
-
-function logEphemeral(message: string, logResource: pulumi.Resource) {
-    pulumi.log.info(message, logResource, /*streamId:*/ undefined, /*ephemeral:*/ true);
-}
-
-// buildAndPushImageAsync will build and push the Dockerfile and context from [buildPath] into the
-// requested docker repo [repositoryUrl].  It returns the unique target image name for the image in
-// the docker repository.  During preview this will build the image, and return the target image
-// name, without pushing. During a normal update, it will do the same, as well as tag and push the
-// image.
-export async function buildAndPushImageAsync(
+export function buildAndPushImageAsync(
     baseImageName: string,
     pathOrBuild: pulumi.Input<string | DockerBuild>,
     repositoryUrl: pulumi.Input<string>,
     logResource: pulumi.Resource,
     connectToRegistry?: () => pulumi.Input<Registry>): Promise<string> {
 
-    // Give an initial message indicating what we're about to do.  That way, if anything
-    // takes a while, the user has an idea about what's going on.
-    logEphemeral("Starting docker build and push...", logResource);
+    const output = buildAndPushImage(baseImageName, pathOrBuild, repositoryUrl, logResource, connectToRegistry);
 
-    // Ugly, but this allows us to get to the underlying 'unwrapped' values so we can operate just
-    // on raw POJO data without interior outputs/promises.
-    const pathOrBuildUnwrapped: string | pulumi.Unwrap<DockerBuild> = await (<any>pulumi.output(pathOrBuild)).promise();
-    const repositoryUrlUnwrapped: string = await (<any>pulumi.output(repositoryUrl)).promise();
+    // Ugly, but necessary to bridge between the proper Output-returning function and this
+    // Promise-returning one.
+    return (<any>output).promise();
+}
 
-    const result = await buildAndPushImageWorkerAsync(
-        baseImageName, pathOrBuildUnwrapped, repositoryUrlUnwrapped, logResource, connectToRegistry);
+/**
+ * buildAndPushImage will build and push the Dockerfile and context from [pathOrBuild] into the
+ * requested docker repo [repositoryUrl].  It returns the unique target image name for the image in
+ * the docker repository.  During preview this will build the image, and return the target image
+ * name, without pushing. During a normal update, it will do the same, as well as tag and push the
+ * image.
+ */
+export function buildAndPushImage(
+    imageName: string,
+    pathOrBuild: pulumi.Input<string | DockerBuild>,
+    repositoryUrl: pulumi.Input<string>,
+    logResource: pulumi.Resource,
+    connectToRegistry?: () => pulumi.Input<Registry>): pulumi.Output<string> {
 
-    // If we got here, then building/pushing didn't throw any errors.  Update the status bar
-    // indicating that things worked properly.  That way, the info bar isn't stuck showing the very
-    // last thing printed by some subcommand we launched.
-    logEphemeral("Successfully pushed to docker", logResource);
+    return pulumi.all([pathOrBuild, repositoryUrl])
+                 .apply(async ([pathOrBuild, repositoryUrl]) => {
 
-    return result;
+        // Give an initial message indicating what we're about to do.  That way, if anything
+        // takes a while, the user has an idea about what's going on.
+        logEphemeral("Starting docker build and push...", logResource);
+
+        const result = await buildAndPushImageWorkerAsync(
+            imageName, pathOrBuild, repositoryUrl, logResource, connectToRegistry);
+
+        // If we got here, then building/pushing didn't throw any errors.  Update the status bar
+        // indicating that things worked properly.  That way, the info bar isn't stuck showing the very
+        // last thing printed by some subcommand we launched.
+        logEphemeral("Successfully pushed to docker", logResource);
+
+        return result;
+    });
+}
+
+function logEphemeral(message: string, logResource: pulumi.Resource) {
+    pulumi.log.info(message, logResource, /*streamId:*/ undefined, /*ephemeral:*/ true);
 }
 
 async function buildAndPushImageWorkerAsync(
