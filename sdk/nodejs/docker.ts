@@ -21,9 +21,9 @@ import * as semver from "semver";
 
 // Registry is the information required to login to a Docker registry.
 export interface Registry {
-    registry: string;
-    username: string;
-    password: string;
+    registry: pulumi.Input<string>;
+    username: pulumi.Input<string>;
+    password: pulumi.Input<string>;
 }
 
 /**
@@ -36,7 +36,7 @@ export interface CacheFrom {
      * built explicitly and pushed to the target repository. A given stage's image will be tagged as
      * "[stage-name]".
      */
-    stages?: string[];
+    stages?: pulumi.Input<pulumi.Input<string>[]>;
 }
 
 /**
@@ -50,27 +50,26 @@ export interface DockerBuild {
      * directory; if a relative path is used, it is relative to the current working directory that
      * Pulumi is evaluating.
      */
-    context?: string;
+    context?: pulumi.Input<string>;
     /**
      * dockerfile may be used to override the default Dockerfile name and/or location.  By default,
      * it is assumed to be a file named Dockerfile in the root of the build context.
      */
-    dockerfile?: string;
+    dockerfile?: pulumi.Input<string>;
     /**
      * An optional map of named build-time argument variables to set during the Docker build.  This
      * flag allows you to pass built-time variables that can be accessed like environment variables
      * inside the `RUN` instruction.
      */
-    args?: {
-        [key: string]: string;
-    };
+    args?: pulumi.Input<Record<string, pulumi.Input<string>>>;
+
     /**
      * An optional CacheFrom object with information about the build stages to use for the Docker
      * build cache. This parameter maps to the --cache-from argument to the Docker CLI. If this
      * parameter is `true`, only the final image will be pulled and passed to --cache-from; if it is
      * a CacheFrom object, the stages named therein will also be pulled and passed to --cache-from.
      */
-    cacheFrom?: boolean | CacheFrom;
+    cacheFrom?: pulumi.Input<boolean | CacheFrom>;
 }
 
 let dockerPasswordPromise: Promise<boolean> | undefined;
@@ -116,13 +115,14 @@ function useDockerPasswordStdin(logResource: pulumi.Resource) {
  */
 export function buildAndPushImage(
     imageName: string,
-    pathOrBuild: string | DockerBuild,
+    pathOrBuild: pulumi.Input<string | DockerBuild>,
     repositoryUrl: pulumi.Input<string>,
     logResource: pulumi.Resource,
-    connectToRegistry: () => Promise<Registry>): pulumi.Output<string> {
+    connectToRegistry: () => pulumi.Input<Registry>): pulumi.Output<string> {
 
-    return pulumi.output(repositoryUrl).apply(repoUrl =>
-        buildAndPushImageAsync(imageName, pathOrBuild, repoUrl, logResource, connectToRegistry));
+    return pulumi.all([pathOrBuild, repositoryUrl])
+                 .apply(_ => buildAndPushImageAsync(
+                     imageName, pathOrBuild, repositoryUrl, logResource, connectToRegistry));
 }
 
 function logEphemeral(message: string, logResource: pulumi.Resource) {
@@ -136,17 +136,22 @@ function logEphemeral(message: string, logResource: pulumi.Resource) {
 // image.
 export async function buildAndPushImageAsync(
     baseImageName: string,
-    pathOrBuild: string | DockerBuild,
-    repositoryUrl: string,
+    pathOrBuild: pulumi.Input<string | DockerBuild>,
+    repositoryUrl: pulumi.Input<string>,
     logResource: pulumi.Resource,
-    connectToRegistry?: () => Promise<Registry>): Promise<string> {
+    connectToRegistry?: () => pulumi.Input<Registry>): Promise<string> {
 
     // Give an initial message indicating what we're about to do.  That way, if anything
     // takes a while, the user has an idea about what's going on.
     logEphemeral("Starting docker build and push...", logResource);
 
+    // Ugly, but this allows us to get to the underlying 'unwrapped' values so we can operate just
+    // on raw POJO data without interior outputs/promises.
+    const pathOrBuildUnwrapped: string | pulumi.Unwrap<DockerBuild> = await (<any>pulumi.output(pathOrBuild)).promise();
+    const repositoryUrlUnwrapped: string = await (<any>pulumi.output(repositoryUrl)).promise();
+
     const result = await buildAndPushImageWorkerAsync(
-        baseImageName, pathOrBuild, repositoryUrl, logResource, connectToRegistry);
+        baseImageName, pathOrBuildUnwrapped, repositoryUrlUnwrapped, logResource, connectToRegistry);
 
     // If we got here, then building/pushing didn't throw any errors.  Update the status bar
     // indicating that things worked properly.  That way, the info bar isn't stuck showing the very
@@ -158,10 +163,10 @@ export async function buildAndPushImageAsync(
 
 async function buildAndPushImageWorkerAsync(
     baseImageName: string,
-    pathOrBuild: string | DockerBuild,
+    pathOrBuild: string | pulumi.Unwrap<DockerBuild>,
     repositoryUrl: string,
     logResource: pulumi.Resource,
-    connectToRegistry: (() => Promise<Registry>) | undefined): Promise<string> {
+    connectToRegistry: (() => pulumi.Input<Registry>) | undefined): Promise<string> {
 
     const { tag: repositoryUrlTag } = utils.getImageNameAndTag(repositoryUrl);
     if (repositoryUrlTag) {
@@ -180,7 +185,10 @@ async function buildAndPushImageWorkerAsync(
     const login = () => {
         if (!loggedIn) {
             logEphemeral("Logging in to registry...", logResource);
-            loggedIn = connectToRegistry!().then(r => loginToRegistry(r, logResource));
+            const registryOutput = pulumi.output(connectToRegistry!());
+            const registryPromise: Promise<pulumi.Unwrap<Registry>> = (<any>registryOutput).promise();
+
+            loggedIn = registryPromise.then(r => loginToRegistry(r, logResource));
         }
         return loggedIn;
     };
@@ -261,7 +269,7 @@ function createTaggedImageName(repositoryUrl: string, tag: string | undefined, i
 
 async function pullCacheAsync(
     imageName: string,
-    cacheFrom: CacheFrom,
+    cacheFrom: pulumi.Unwrap<CacheFrom>,
     login: () => Promise<void>,
     repoUrl: string,
     logResource: pulumi.Resource): Promise<string[] | undefined> {
@@ -306,11 +314,11 @@ interface BuildResult {
 
 async function buildImageAsync(
     imageName: string,
-    pathOrBuild: string | DockerBuild,
+    pathOrBuild: string | pulumi.Unwrap<DockerBuild>,
     logResource: pulumi.Resource,
     cacheFrom: Promise<string[] | undefined>): Promise<BuildResult> {
 
-    let build: DockerBuild;
+    let build: pulumi.Unwrap<DockerBuild>;
     if (typeof pathOrBuild === "string") {
         build = {
             context: pathOrBuild,
@@ -369,7 +377,7 @@ async function buildImageAsync(
 
 async function dockerBuild(
     imageName: string,
-    build: DockerBuild,
+    build: pulumi.Unwrap<DockerBuild>,
     cacheFrom: Promise<string[] | undefined>,
     logResource: pulumi.Resource,
     target?: string): Promise<void> {
@@ -411,7 +419,7 @@ interface LoginResult {
 // registry with that user, there's no need to do it again.
 const loginResults: LoginResult[] = [];
 
-function loginToRegistry(registry: Registry, logResource: pulumi.Resource): Promise<void> {
+function loginToRegistry(registry: pulumi.Unwrap<Registry>, logResource: pulumi.Resource): Promise<void> {
     const { registry: registryName, username, password } = registry;
 
     // See if we've issued an outstanding requests to login into this registry.  If so, just

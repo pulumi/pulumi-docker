@@ -16,14 +16,14 @@ import * as docker from "@pulumi/docker";
 
 // Get a reference to the remote image "nginx:1.15.6". Without specifying the repository, the Docker provider will
 // try to download it from the public Docker Hub.
-const image = new docker.RemoteImage("nginx-image", {
+const remoteImage = new docker.RemoteImage("nginx-image", {
     name: "nginx:1.15.6",
     keepLocally: true, // don't delete the image from the local cache when deleting this resource
 });
 
 // Launch a container using the nginx image we just downloaded.
 const container = new docker.Container("nginx", {
-    image: image.name,
+    image: remoteImage.name,
     ports: [{
         internal: 80,
         // external: defaults to an open ephemeral port

@@ -15,6 +15,7 @@
 package examples
 
 import (
+	"fmt"
 	"os"
 	"path"
 	"testing"
@@ -27,6 +28,30 @@ import (
 var base = integration.ProgramTestOptions{
 	ExpectRefreshChanges: true, // Docker resources generally see changes when refreshed.
 	// Note: no Config! This package should be usable without any config.
+}
+
+func TestAws(t *testing.T) {
+	region := os.Getenv("AWS_REGION")
+	if region == "" {
+		t.Skipf("Skipping test due to missing AWS_REGION environment variable")
+	}
+	fmt.Printf("AWS Region: %v\n", region)
+
+	cwd, err := os.Getwd()
+	if !assert.NoError(t, err) {
+		t.FailNow()
+	}
+
+	opts := base.With(integration.ProgramTestOptions{
+		Config: map[string]string{
+			"aws:region": region,
+		},
+		Dependencies: []string{
+			"@pulumi/docker",
+		},
+		Dir: path.Join(cwd, "aws"),
+	})
+	integration.ProgramTest(t, &opts)
 }
 
 func TestNginx(t *testing.T) {
