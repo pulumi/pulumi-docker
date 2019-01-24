@@ -15,6 +15,7 @@
 package examples
 
 import (
+	"fmt"
 	"os"
 	"path"
 	"testing"
@@ -30,6 +31,12 @@ var base = integration.ProgramTestOptions{
 }
 
 func TestAws(t *testing.T) {
+	region := os.Getenv("AWS_REGION")
+	if region == "" {
+		t.Skipf("Skipping test due to missing AWS_REGION environment variable")
+	}
+	fmt.Printf("AWS Region: %v\n", region)
+
 	cwd, err := os.Getwd()
 	if !assert.NoError(t, err) {
 		t.FailNow()
@@ -37,7 +44,7 @@ func TestAws(t *testing.T) {
 
 	opts := base.With(integration.ProgramTestOptions{
 		Config: map[string]string{
-			"aws:region": "us-west-1",
+			"aws:region": region,
 		},
 		Dependencies: []string{
 			"@pulumi/docker",
