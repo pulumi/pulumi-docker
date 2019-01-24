@@ -49,7 +49,7 @@ func TestAws(t *testing.T) {
 		Dependencies: []string{
 			"@pulumi/docker",
 		},
-		Dir: path.Join(cwd, "nginx"),
+		Dir: path.Join(cwd, "aws"),
 	})
 	integration.ProgramTest(t, &opts)
 }
