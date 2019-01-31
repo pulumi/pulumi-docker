@@ -112,7 +112,7 @@ func Provider() tfbridge.ProviderInfo {
 		},
 		JavaScript: &tfbridge.JavaScriptInfo{
 			Dependencies: map[string]string{
-				"@pulumi/pulumi": "=0.16.15-dev.1548967161",
+				"@pulumi/pulumi": "feature-proxyOutput",
 				"semver":         "^5.4.0",
 			},
 			DevDependencies: map[string]string{

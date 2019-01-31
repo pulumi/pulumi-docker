@@ -13,7 +13,7 @@
         "build": "tsc"
     },
     "dependencies": {
-        "@pulumi/pulumi": "=0.16.15-dev.1548967161",
+        "@pulumi/pulumi": "feature-proxyOutput",
         "semver": "^5.4.0"
     },
     "devDependencies": {
