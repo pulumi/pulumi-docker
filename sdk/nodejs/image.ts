@@ -151,7 +151,7 @@ export class Image extends pulumi.ComponentResource {
             function checkTag(t: string | undefined) {
                 if (t && (t !== tag)) {
                     throw new Error(`[localImageName] and [imageName] had mismatched tags.
-        ${JSON.stringify(localImageNameTag)} !== ${JSON.stringify(imageNameTag)}`);
+    ${JSON.stringify(localImageNameTag)} !== ${JSON.stringify(imageNameTag)}`);
                 }
             }
         });
