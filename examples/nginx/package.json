@@ -4,6 +4,6 @@
         "@types/node": "latest"
     },
     "dependencies": {
-        "@pulumi/pulumi": "=0.16.14-dev.1548964247"
+        "@pulumi/pulumi": "=0.16.15-dev.1548967161"
     }
 }
