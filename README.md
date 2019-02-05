@@ -3,4 +3,3 @@
 # Pulumi Docker Helpers
 
 Pulumi helper library for interacting with Docker.  Used so that this logic can be shared with other parts of the Pulumi stack.
-
