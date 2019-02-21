@@ -4,6 +4,7 @@
 
 - docker.Image and docker.buildAndPushImage allow a wider set of inputs (i.e. promises and outputs), making it easier to pass in values produced by other resources.
 
+
 ### Improvements
 
 ## 0.16.3 (Released January 15th, 2019)
