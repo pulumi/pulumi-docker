@@ -61,7 +61,7 @@
   version = "v1.0.0"
 
 [[projects]]
-  digest = "1:9fec98899724a3809740252dd1f33d84b5ebfbbeab2b49b74d605bff98280548"
+  digest = "1:50c942ee74999c8a5c81aeace323986affb39a5c3aaaefb628ea69bd563de301"
   name = "github.com/aws/aws-sdk-go"
   packages = [
     "aws",
@@ -103,8 +103,8 @@
     "service/sts",
   ]
   pruneopts = ""
-  revision = "416a7057457ed9af569ea3682f7319ec3466044d"
-  version = "v1.17.3"
+  revision = "e8b22c9937cae1fee9bc364a88f3752cc4d1ac2f"
+  version = "v1.17.4"
 
 [[projects]]
   branch = "master"
@@ -678,7 +678,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:298abcb216e8ae918c110f06e2647461f9e306285189e7e3ba13b80efc4b536d"
+  digest = "1:f7426a952fbe99a95b8c0d582aa6fc638f77c291d3aa7274787f23e747e820bd"
   name = "github.com/pulumi/pulumi"
   packages = [
     "pkg/apitype",
@@ -725,27 +725,18 @@
     "sdk/proto/go",
   ]
   pruneopts = ""
-  revision = "ee5b13cb107969a62752d034f9d08d985816ff52"
+  revision = "93c9464125178f9ee96dfb6078177dbbb7f170cd"
 
 [[projects]]
-<<<<<<< HEAD
   branch = "features/pojo"
-  digest = "1:70d81696654accbf5fb7de71d2a87806c6c32e5691e1091d6c618e9b54bdbb7f"
-=======
-  branch = "master"
-  digest = "1:a058a558a8e844483a8b7a29d95c2c7227210c04753e9f7771f65f63ca7d03a2"
->>>>>>> origin/master
+  digest = "1:49190d6094b54f3befc133178466be003562e7436fc9e5ec5a0f9265532bbee2"
   name = "github.com/pulumi/pulumi-terraform"
   packages = [
     "pkg/tfbridge",
     "pkg/tfgen",
   ]
   pruneopts = ""
-<<<<<<< HEAD
-  revision = "d3463aa66312275daa8545ce63bf6c27d78e6dd4"
-=======
-  revision = "caafea5a213d2c9e7e73418a73ceb03c81b3059e"
->>>>>>> origin/master
+  revision = "cf8bddfc86f2a86f6554f3dd1c6b467c8272e17f"
 
 [[projects]]
   branch = "master"

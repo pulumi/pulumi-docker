@@ -143,7 +143,7 @@ export function buildAndPushImage(
     logResource: pulumi.Resource,
     connectToRegistry?: () => pulumi.Input<Registry>): pulumi.Output<string> {
 
-    return pulumi.all<string | DockerBuild, string>([pathOrBuild, repositoryUrl])
+    return pulumi.all([pathOrBuild, repositoryUrl])
                  .apply(async ([pathOrBuild, repositoryUrl]) => {
 
         // Give an initial message indicating what we're about to do.  That way, if anything

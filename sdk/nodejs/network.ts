@@ -28,7 +28,7 @@ export class Network extends pulumi.CustomResource {
      * @param id The _unique_ provider ID of the resource to lookup.
      * @param state Any extra arguments used during the lookup.
      */
-    public static get(name: string, id: pulumi.Input<pulumi.ID>, state?: NetworkState, opts?: pulumi.CustomResourceOptions): Network {
+    public static get(name: string, id: pulumi.Input<pulumi.ID>, state?: pulumi.WrappedObject<NetworkState>, opts?: pulumi.CustomResourceOptions): Network {
         return new Network(name, <any>state, { ...opts, id: id });
     }
 
@@ -94,8 +94,8 @@ export class Network extends pulumi.CustomResource {
      * @param args The arguments to use to populate this resource's properties.
      * @param opts A bag of options that control this resource's behavior.
      */
-    constructor(name: string, args?: pulumi.InputObject<NetworkArgs>, opts?: pulumi.CustomResourceOptions)
-    constructor(name: string, argsOrState?: pulumi.InputObject<NetworkArgs> | pulumi.InputObject<NetworkState>, opts?: pulumi.CustomResourceOptions) {
+    constructor(name: string, args?: pulumi.WrappedObject<NetworkArgs>, opts?: pulumi.CustomResourceOptions)
+    constructor(name: string, argsOrState?: pulumi.WrappedObject<NetworkArgs> | pulumi.WrappedObject<NetworkState>, opts?: pulumi.CustomResourceOptions) {
         let inputs: pulumi.Inputs = {};
         if (opts && opts.id) {
             const state: NetworkState = argsOrState as NetworkState | undefined;

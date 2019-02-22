@@ -100,7 +100,7 @@ export class Image extends pulumi.ComponentResource {
      */
     public digest: pulumi.Output<string | undefined>;
 
-    constructor(name: string, args: pulumi.InputObject<ImageArgs>, opts?: pulumi.ComponentResourceOptions) {
+    constructor(name: string, args: pulumi.WrappedObject<ImageArgs>, opts?: pulumi.ComponentResourceOptions) {
         super("docker:image:Image", name, {}, opts);
 
         const imageData = pulumi.output(args).apply(async (imageArgs) => {
