@@ -8,6 +8,16 @@ import * as utilities from "./utilities";
  * Creates and destroys a volume in Docker. This can be used alongside
  * [docker\_container](https://www.terraform.io/docs/providers/docker/r/container.html)
  * to prepare volumes that can be shared across containers.
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as docker from "@pulumi/docker";
+ * 
+ * // Creates a docker volume "shared_volume".
+ * const sharedVolume = new docker.Volume("shared_volume", {});
+ * ```
  */
 export class Volume extends pulumi.CustomResource {
     /**
@@ -18,8 +28,8 @@ export class Volume extends pulumi.CustomResource {
      * @param id The _unique_ provider ID of the resource to lookup.
      * @param state Any extra arguments used during the lookup.
      */
-    public static get(name: string, id: pulumi.Input<pulumi.ID>, state?: VolumeState): Volume {
-        return new Volume(name, <any>state, { id });
+    public static get(name: string, id: pulumi.Input<pulumi.ID>, state?: VolumeState, opts?: pulumi.CustomResourceOptions): Volume {
+        return new Volume(name, <any>state, { ...opts, id: id });
     }
 
     /**
