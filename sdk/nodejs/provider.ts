@@ -5,7 +5,10 @@ import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "./utilities";
 
 /**
- * The provider type for the docker package
+ * The provider type for the docker package. By default, resources use package-wide configuration
+ * settings, however an explicit `Provider` instance may be created and passed during resource
+ * construction to achieve fine-grained programmatic control over provider settings. See the
+ * [documentation](https://pulumi.io/reference/programming-model.html#providers) for more information.
  */
 export class Provider extends pulumi.ProviderResource {
 
@@ -16,7 +19,7 @@ export class Provider extends pulumi.ProviderResource {
      * @param args The arguments to use to populate this resource's properties.
      * @param opts A bag of options that control this resource's behavior.
      */
-    constructor(name: string, args?: ProviderArgs, opts?: pulumi.ResourceOptions) {
+    constructor(name: string, args?: pulumi.InputObject<ProviderArgs>, opts?: pulumi.ResourceOptions) {
         let inputs: pulumi.Inputs = {};
         {
             inputs["caMaterial"] = (args ? args.caMaterial : undefined) || utilities.getEnv("DOCKER_CA_MATERIAL");
@@ -37,22 +40,22 @@ export interface ProviderArgs {
     /**
      * PEM-encoded content of Docker host CA certificate
      */
-    readonly caMaterial?: pulumi.Input<string>;
+    readonly caMaterial?: string;
     /**
      * PEM-encoded content of Docker client certificate
      */
-    readonly certMaterial?: pulumi.Input<string>;
+    readonly certMaterial?: string;
     /**
      * Path to directory with Docker TLS config
      */
-    readonly certPath?: pulumi.Input<string>;
+    readonly certPath?: string;
     /**
      * The Docker daemon address
      */
-    readonly host?: pulumi.Input<string>;
+    readonly host?: string;
     /**
      * PEM-encoded content of Docker client private key
      */
-    readonly keyMaterial?: pulumi.Input<string>;
-    readonly registryAuth?: pulumi.Input<pulumi.Input<{ address: pulumi.Input<string>, configFile?: pulumi.Input<string>, password?: pulumi.Input<string>, username?: pulumi.Input<string> }>[]>;
+    readonly keyMaterial?: string;
+    readonly registryAuth?: { address: string, configFile?: string, password?: string, username?: string }[];
 }

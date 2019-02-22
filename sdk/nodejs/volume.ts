@@ -8,6 +8,16 @@ import * as utilities from "./utilities";
  * Creates and destroys a volume in Docker. This can be used alongside
  * [docker\_container](https://www.terraform.io/docs/providers/docker/r/container.html)
  * to prepare volumes that can be shared across containers.
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as docker from "@pulumi/docker";
+ * 
+ * // Creates a docker volume "shared_volume".
+ * const sharedVolume = new docker.Volume("shared_volume", {});
+ * ```
  */
 export class Volume extends pulumi.CustomResource {
     /**
@@ -18,8 +28,8 @@ export class Volume extends pulumi.CustomResource {
      * @param id The _unique_ provider ID of the resource to lookup.
      * @param state Any extra arguments used during the lookup.
      */
-    public static get(name: string, id: pulumi.Input<pulumi.ID>, state?: VolumeState): Volume {
-        return new Volume(name, <any>state, { id });
+    public static get(name: string, id: pulumi.Input<pulumi.ID>, state?: VolumeState, opts?: pulumi.CustomResourceOptions): Volume {
+        return new Volume(name, <any>state, { ...opts, id: id });
     }
 
     /**
@@ -48,8 +58,8 @@ export class Volume extends pulumi.CustomResource {
      * @param args The arguments to use to populate this resource's properties.
      * @param opts A bag of options that control this resource's behavior.
      */
-    constructor(name: string, args?: VolumeArgs, opts?: pulumi.CustomResourceOptions)
-    constructor(name: string, argsOrState?: VolumeArgs | VolumeState, opts?: pulumi.CustomResourceOptions) {
+    constructor(name: string, args?: pulumi.InputObject<VolumeArgs>, opts?: pulumi.CustomResourceOptions)
+    constructor(name: string, argsOrState?: pulumi.InputObject<VolumeArgs> | pulumi.InputObject<VolumeState>, opts?: pulumi.CustomResourceOptions) {
         let inputs: pulumi.Inputs = {};
         if (opts && opts.id) {
             const state: VolumeState = argsOrState as VolumeState | undefined;
@@ -77,21 +87,21 @@ export interface VolumeState {
     /**
      * Driver type for the volume (defaults to local).
      */
-    readonly driver?: pulumi.Input<string>;
+    readonly driver?: string;
     /**
      * Options specific to the driver.
      */
-    readonly driverOpts?: pulumi.Input<{[key: string]: any}>;
+    readonly driverOpts?: {[key: string]: any};
     /**
      * User-defined key/value metadata.
      */
-    readonly labels?: pulumi.Input<{[key: string]: any}>;
-    readonly mountpoint?: pulumi.Input<string>;
+    readonly labels?: {[key: string]: any};
+    readonly mountpoint?: string;
     /**
      * The name of the Docker volume (generated if not
      * provided).
      */
-    readonly name?: pulumi.Input<string>;
+    readonly name?: string;
 }
 
 /**
@@ -101,18 +111,18 @@ export interface VolumeArgs {
     /**
      * Driver type for the volume (defaults to local).
      */
-    readonly driver?: pulumi.Input<string>;
+    readonly driver?: string;
     /**
      * Options specific to the driver.
      */
-    readonly driverOpts?: pulumi.Input<{[key: string]: any}>;
+    readonly driverOpts?: {[key: string]: any};
     /**
      * User-defined key/value metadata.
      */
-    readonly labels?: pulumi.Input<{[key: string]: any}>;
+    readonly labels?: {[key: string]: any};
     /**
      * The name of the Docker volume (generated if not
      * provided).
      */
-    readonly name?: pulumi.Input<string>;
+    readonly name?: string;
 }

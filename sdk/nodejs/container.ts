@@ -6,6 +6,20 @@ import * as utilities from "./utilities";
 
 /**
  * Manages the lifecycle of a Docker container.
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as docker from "@pulumi/docker";
+ * 
+ * // Find the latest Ubuntu precise image.
+ * const ubuntuRemoteImage = new docker.RemoteImage("ubuntu", {});
+ * // Start a container
+ * const ubuntuContainer = new docker.Container("ubuntu", {
+ *     image: ubuntuRemoteImage.latest,
+ * });
+ * ```
  */
 export class Container extends pulumi.CustomResource {
     /**
@@ -16,8 +30,8 @@ export class Container extends pulumi.CustomResource {
      * @param id The _unique_ provider ID of the resource to lookup.
      * @param state Any extra arguments used during the lookup.
      */
-    public static get(name: string, id: pulumi.Input<pulumi.ID>, state?: ContainerState): Container {
-        return new Container(name, <any>state, { id });
+    public static get(name: string, id: pulumi.Input<pulumi.ID>, state?: ContainerState, opts?: pulumi.CustomResourceOptions): Container {
+        return new Container(name, <any>state, { ...opts, id: id });
     }
 
     /**
@@ -251,8 +265,8 @@ export class Container extends pulumi.CustomResource {
      * @param args The arguments to use to populate this resource's properties.
      * @param opts A bag of options that control this resource's behavior.
      */
-    constructor(name: string, args: ContainerArgs, opts?: pulumi.CustomResourceOptions)
-    constructor(name: string, argsOrState?: ContainerArgs | ContainerState, opts?: pulumi.CustomResourceOptions) {
+    constructor(name: string, args: pulumi.InputObject<ContainerArgs>, opts?: pulumi.CustomResourceOptions)
+    constructor(name: string, argsOrState?: pulumi.InputObject<ContainerArgs> | pulumi.InputObject<ContainerState>, opts?: pulumi.CustomResourceOptions) {
         let inputs: pulumi.Inputs = {};
         if (opts && opts.id) {
             const state: ContainerState = argsOrState as ContainerState | undefined;
@@ -373,57 +387,57 @@ export interface ContainerState {
     /**
      * If true attach to the container after its creation and waits the end of his execution.
      */
-    readonly attach?: pulumi.Input<boolean>;
+    readonly attach?: boolean;
     /**
      * The network bridge of the container as read from its NetworkSettings.
      */
-    readonly bridge?: pulumi.Input<string>;
+    readonly bridge?: string;
     /**
      * See Capabilities below for details.
      */
-    readonly capabilities?: pulumi.Input<{ adds?: pulumi.Input<pulumi.Input<string>[]>, drops?: pulumi.Input<pulumi.Input<string>[]> }>;
+    readonly capabilities?: { adds?: string[], drops?: string[] };
     /**
      * The command to use to start the
      * container. For example, to run `/usr/bin/myprogram -f baz.conf` set the
      * command to be `["/usr/bin/myprogram", "-f", "baz.conf"]`.
      */
-    readonly command?: pulumi.Input<pulumi.Input<string>[]>;
+    readonly command?: string[];
     /**
      * The logs of the container if its execution is done (`attach` must be disabled).
      */
-    readonly containerLogs?: pulumi.Input<string>;
+    readonly containerLogs?: string;
     /**
      * A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
      */
-    readonly cpuSet?: pulumi.Input<string>;
+    readonly cpuSet?: string;
     /**
      * CPU shares (relative weight) for the container.
      */
-    readonly cpuShares?: pulumi.Input<number>;
+    readonly cpuShares?: number;
     /**
      * If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
      */
-    readonly destroyGraceSeconds?: pulumi.Input<number>;
+    readonly destroyGraceSeconds?: number;
     /**
      * See Devices below for details.
      */
-    readonly devices?: pulumi.Input<pulumi.Input<{ containerPath?: pulumi.Input<string>, hostPath: pulumi.Input<string>, permissions?: pulumi.Input<string> }>[]>;
+    readonly devices?: { containerPath?: string, hostPath: string, permissions?: string }[];
     /**
      * Set of DNS servers.
      */
-    readonly dns?: pulumi.Input<pulumi.Input<string>[]>;
+    readonly dns?: string[];
     /**
      * Set of DNS options used by the DNS provider(s), see `resolv.conf` documentation for valid list of options.
      */
-    readonly dnsOpts?: pulumi.Input<pulumi.Input<string>[]>;
+    readonly dnsOpts?: string[];
     /**
      * Set of DNS search domains that are used when bare unqualified hostnames are used inside of the container.
      */
-    readonly dnsSearches?: pulumi.Input<pulumi.Input<string>[]>;
+    readonly dnsSearches?: string[];
     /**
      * Domain name of the container.
      */
-    readonly domainname?: pulumi.Input<string>;
+    readonly domainname?: string;
     /**
      * The command to use as the
      * Entrypoint for the container. The Entrypoint allows you to configure a
@@ -431,168 +445,168 @@ export interface ContainerState {
      * when starting a container, set the entrypoint to be
      * `["/usr/bin/myprogram"]`.
      */
-    readonly entrypoints?: pulumi.Input<pulumi.Input<string>[]>;
+    readonly entrypoints?: string[];
     /**
      * Environment variables to set.
      */
-    readonly envs?: pulumi.Input<pulumi.Input<string>[]>;
+    readonly envs?: string[];
     /**
      * The exit code of the container if its execution is done (`must_run` must be disabled).
      */
-    readonly exitCode?: pulumi.Input<number>;
+    readonly exitCode?: number;
     /**
      * *Deprecated:* Use `network_data` instead. The network gateway of the container as read from its
      * NetworkSettings.
      */
-    readonly gateway?: pulumi.Input<string>;
+    readonly gateway?: string;
     /**
      * See Healthcheck below for details.
      */
-    readonly healthcheck?: pulumi.Input<{ interval?: pulumi.Input<string>, retries?: pulumi.Input<number>, startPeriod?: pulumi.Input<string>, tests: pulumi.Input<pulumi.Input<string>[]>, timeout?: pulumi.Input<string> }>;
+    readonly healthcheck?: { interval?: string, retries?: number, startPeriod?: string, tests: string[], timeout?: string };
     /**
      * Hostname to add.
      */
-    readonly hosts?: pulumi.Input<pulumi.Input<{ host: pulumi.Input<string>, ip: pulumi.Input<string> }>[]>;
+    readonly hosts?: { host: string, ip: string }[];
     /**
      * Hostname of the container.
      */
-    readonly hostname?: pulumi.Input<string>;
+    readonly hostname?: string;
     /**
      * The ID of the image to back this container.
      * The easiest way to get this value is to use the `docker_image` resource
      * as is shown in the example above.
      */
-    readonly image?: pulumi.Input<string>;
+    readonly image?: string;
     /**
      * *Deprecated:* Use `network_data` instead. The IP address of the container's first network it.
      */
-    readonly ipAddress?: pulumi.Input<string>;
+    readonly ipAddress?: string;
     /**
      * *Deprecated:* Use `network_data` instead. The IP prefix length of the container as read from its
      * NetworkSettings.
      */
-    readonly ipPrefixLength?: pulumi.Input<number>;
+    readonly ipPrefixLength?: number;
     /**
      * Key/value pairs to set as labels on the
      * container.
      */
-    readonly labels?: pulumi.Input<{[key: string]: any}>;
+    readonly labels?: {[key: string]: any};
     /**
      * Set of links for link based
      * connectivity between containers that are running on the same host.
      */
-    readonly links?: pulumi.Input<pulumi.Input<string>[]>;
+    readonly links?: string[];
     /**
      * The logging driver to use for the container.
      * Defaults to "json-file".
      */
-    readonly logDriver?: pulumi.Input<string>;
+    readonly logDriver?: string;
     /**
      * Key/value pairs to use as options for
      * the logging driver.
      */
-    readonly logOpts?: pulumi.Input<{[key: string]: any}>;
+    readonly logOpts?: {[key: string]: any};
     /**
      * Save the container logs (`attach` must be enabled).
      */
-    readonly logs?: pulumi.Input<boolean>;
+    readonly logs?: boolean;
     /**
      * The maximum amount of times to an attempt
      * a restart when `restart` is set to "on-failure"
      */
-    readonly maxRetryCount?: pulumi.Input<number>;
+    readonly maxRetryCount?: number;
     /**
      * The memory limit for the container in MBs.
      */
-    readonly memory?: pulumi.Input<number>;
+    readonly memory?: number;
     /**
      * The total memory limit (memory + swap) for the
      * container in MBs. This setting may compute to `-1` after `terraform apply` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
      */
-    readonly memorySwap?: pulumi.Input<number>;
+    readonly memorySwap?: number;
     /**
      * If true, then the Docker container will be
      * kept running. If false, then as long as the container exists, Terraform
      * assumes it is successful.
      */
-    readonly mustRun?: pulumi.Input<boolean>;
-    readonly name?: pulumi.Input<string>;
+    readonly mustRun?: boolean;
+    readonly name?: string;
     /**
      * Network aliases of the container for user-defined networks only. *Deprecated:* use `networks_advanced` instead.
      */
-    readonly networkAliases?: pulumi.Input<pulumi.Input<string>[]>;
+    readonly networkAliases?: string[];
     /**
      * (Map of a block) The IP addresses of the container on each
      * network. Key are the network names, values are the IP addresses.
      */
-    readonly networkDatas?: pulumi.Input<pulumi.Input<{ gateway?: pulumi.Input<string>, ipAddress?: pulumi.Input<string>, ipPrefixLength?: pulumi.Input<number>, networkName?: pulumi.Input<string> }>[]>;
+    readonly networkDatas?: { gateway?: string, ipAddress?: string, ipPrefixLength?: number, networkName?: string }[];
     /**
      * Network mode of the container.
      */
-    readonly networkMode?: pulumi.Input<string>;
+    readonly networkMode?: string;
     /**
      * Id of the networks in which the
      * container is. *Deprecated:* use `networks_advanced` instead.
      */
-    readonly networks?: pulumi.Input<pulumi.Input<string>[]>;
+    readonly networks?: string[];
     /**
      * See Networks Advanced below for details. If this block has priority to the deprecated `network_alias` and `network` properties.
      */
-    readonly networksAdvanced?: pulumi.Input<pulumi.Input<{ aliases?: pulumi.Input<pulumi.Input<string>[]>, ipv4Address?: pulumi.Input<string>, ipv6Address?: pulumi.Input<string>, name: pulumi.Input<string> }>[]>;
+    readonly networksAdvanced?: { aliases?: string[], ipv4Address?: string, ipv6Address?: string, name: string }[];
     /**
      * The PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
      */
-    readonly pidMode?: pulumi.Input<string>;
+    readonly pidMode?: string;
     /**
      * See Ports below for details.
      */
-    readonly ports?: pulumi.Input<pulumi.Input<{ external?: pulumi.Input<number>, internal: pulumi.Input<number>, ip?: pulumi.Input<string>, protocol?: pulumi.Input<string> }>[]>;
+    readonly ports?: { external?: number, internal: number, ip?: string, protocol?: string }[];
     /**
      * Run container in privileged mode.
      */
-    readonly privileged?: pulumi.Input<boolean>;
+    readonly privileged?: boolean;
     /**
      * Publish all ports of the container.
      */
-    readonly publishAllPorts?: pulumi.Input<boolean>;
+    readonly publishAllPorts?: boolean;
     /**
      * The restart policy for the container. Must be
      * one of "no", "on-failure", "always", "unless-stopped".
      */
-    readonly restart?: pulumi.Input<string>;
+    readonly restart?: string;
     /**
      * If true, then the container will be automatically removed after his execution. Terraform
      * won't check this container after creation.
      */
-    readonly rm?: pulumi.Input<boolean>;
+    readonly rm?: boolean;
     /**
      * If true, then the Docker container will be
      * started after creation. If false, then the container is only created.
      */
-    readonly start?: pulumi.Input<boolean>;
+    readonly start?: boolean;
     /**
      * See Ulimits below for
      * details.
      */
-    readonly ulimits?: pulumi.Input<pulumi.Input<{ hard: pulumi.Input<number>, name: pulumi.Input<string>, soft: pulumi.Input<number> }>[]>;
+    readonly ulimits?: { hard: number, name: string, soft: number }[];
     /**
      * See File Upload below for details.
      */
-    readonly uploads?: pulumi.Input<pulumi.Input<{ content: pulumi.Input<string>, executable?: pulumi.Input<boolean>, file: pulumi.Input<string> }>[]>;
+    readonly uploads?: { content: string, executable?: boolean, file: string }[];
     /**
      * User used for run the first process. Format is
      * `user` or `user:group` which user and group can be passed literraly or
      * by name.
      */
-    readonly user?: pulumi.Input<string>;
+    readonly user?: string;
     /**
      * Sets the usernamespace mode for the container when usernamespace remapping option is enabled.
      */
-    readonly usernsMode?: pulumi.Input<string>;
+    readonly usernsMode?: string;
     /**
      * See Volumes below for details.
      */
-    readonly volumes?: pulumi.Input<pulumi.Input<{ containerPath?: pulumi.Input<string>, fromContainer?: pulumi.Input<string>, hostPath?: pulumi.Input<string>, readOnly?: pulumi.Input<boolean>, volumeName?: pulumi.Input<string> }>[]>;
+    readonly volumes?: { containerPath?: string, fromContainer?: string, hostPath?: string, readOnly?: boolean, volumeName?: string }[];
 }
 
 /**
@@ -602,49 +616,49 @@ export interface ContainerArgs {
     /**
      * If true attach to the container after its creation and waits the end of his execution.
      */
-    readonly attach?: pulumi.Input<boolean>;
+    readonly attach?: boolean;
     /**
      * See Capabilities below for details.
      */
-    readonly capabilities?: pulumi.Input<{ adds?: pulumi.Input<pulumi.Input<string>[]>, drops?: pulumi.Input<pulumi.Input<string>[]> }>;
+    readonly capabilities?: { adds?: string[], drops?: string[] };
     /**
      * The command to use to start the
      * container. For example, to run `/usr/bin/myprogram -f baz.conf` set the
      * command to be `["/usr/bin/myprogram", "-f", "baz.conf"]`.
      */
-    readonly command?: pulumi.Input<pulumi.Input<string>[]>;
+    readonly command?: string[];
     /**
      * A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
      */
-    readonly cpuSet?: pulumi.Input<string>;
+    readonly cpuSet?: string;
     /**
      * CPU shares (relative weight) for the container.
      */
-    readonly cpuShares?: pulumi.Input<number>;
+    readonly cpuShares?: number;
     /**
      * If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
      */
-    readonly destroyGraceSeconds?: pulumi.Input<number>;
+    readonly destroyGraceSeconds?: number;
     /**
      * See Devices below for details.
      */
-    readonly devices?: pulumi.Input<pulumi.Input<{ containerPath?: pulumi.Input<string>, hostPath: pulumi.Input<string>, permissions?: pulumi.Input<string> }>[]>;
+    readonly devices?: { containerPath?: string, hostPath: string, permissions?: string }[];
     /**
      * Set of DNS servers.
      */
-    readonly dns?: pulumi.Input<pulumi.Input<string>[]>;
+    readonly dns?: string[];
     /**
      * Set of DNS options used by the DNS provider(s), see `resolv.conf` documentation for valid list of options.
      */
-    readonly dnsOpts?: pulumi.Input<pulumi.Input<string>[]>;
+    readonly dnsOpts?: string[];
     /**
      * Set of DNS search domains that are used when bare unqualified hostnames are used inside of the container.
      */
-    readonly dnsSearches?: pulumi.Input<pulumi.Input<string>[]>;
+    readonly dnsSearches?: string[];
     /**
      * Domain name of the container.
      */
-    readonly domainname?: pulumi.Input<string>;
+    readonly domainname?: string;
     /**
      * The command to use as the
      * Entrypoint for the container. The Entrypoint allows you to configure a
@@ -652,143 +666,143 @@ export interface ContainerArgs {
      * when starting a container, set the entrypoint to be
      * `["/usr/bin/myprogram"]`.
      */
-    readonly entrypoints?: pulumi.Input<pulumi.Input<string>[]>;
+    readonly entrypoints?: string[];
     /**
      * Environment variables to set.
      */
-    readonly envs?: pulumi.Input<pulumi.Input<string>[]>;
+    readonly envs?: string[];
     /**
      * See Healthcheck below for details.
      */
-    readonly healthcheck?: pulumi.Input<{ interval?: pulumi.Input<string>, retries?: pulumi.Input<number>, startPeriod?: pulumi.Input<string>, tests: pulumi.Input<pulumi.Input<string>[]>, timeout?: pulumi.Input<string> }>;
+    readonly healthcheck?: { interval?: string, retries?: number, startPeriod?: string, tests: string[], timeout?: string };
     /**
      * Hostname to add.
      */
-    readonly hosts?: pulumi.Input<pulumi.Input<{ host: pulumi.Input<string>, ip: pulumi.Input<string> }>[]>;
+    readonly hosts?: { host: string, ip: string }[];
     /**
      * Hostname of the container.
      */
-    readonly hostname?: pulumi.Input<string>;
+    readonly hostname?: string;
     /**
      * The ID of the image to back this container.
      * The easiest way to get this value is to use the `docker_image` resource
      * as is shown in the example above.
      */
-    readonly image: pulumi.Input<string>;
+    readonly image: string;
     /**
      * Key/value pairs to set as labels on the
      * container.
      */
-    readonly labels?: pulumi.Input<{[key: string]: any}>;
+    readonly labels?: {[key: string]: any};
     /**
      * Set of links for link based
      * connectivity between containers that are running on the same host.
      */
-    readonly links?: pulumi.Input<pulumi.Input<string>[]>;
+    readonly links?: string[];
     /**
      * The logging driver to use for the container.
      * Defaults to "json-file".
      */
-    readonly logDriver?: pulumi.Input<string>;
+    readonly logDriver?: string;
     /**
      * Key/value pairs to use as options for
      * the logging driver.
      */
-    readonly logOpts?: pulumi.Input<{[key: string]: any}>;
+    readonly logOpts?: {[key: string]: any};
     /**
      * Save the container logs (`attach` must be enabled).
      */
-    readonly logs?: pulumi.Input<boolean>;
+    readonly logs?: boolean;
     /**
      * The maximum amount of times to an attempt
      * a restart when `restart` is set to "on-failure"
      */
-    readonly maxRetryCount?: pulumi.Input<number>;
+    readonly maxRetryCount?: number;
     /**
      * The memory limit for the container in MBs.
      */
-    readonly memory?: pulumi.Input<number>;
+    readonly memory?: number;
     /**
      * The total memory limit (memory + swap) for the
      * container in MBs. This setting may compute to `-1` after `terraform apply` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
      */
-    readonly memorySwap?: pulumi.Input<number>;
+    readonly memorySwap?: number;
     /**
      * If true, then the Docker container will be
      * kept running. If false, then as long as the container exists, Terraform
      * assumes it is successful.
      */
-    readonly mustRun?: pulumi.Input<boolean>;
-    readonly name?: pulumi.Input<string>;
+    readonly mustRun?: boolean;
+    readonly name?: string;
     /**
      * Network aliases of the container for user-defined networks only. *Deprecated:* use `networks_advanced` instead.
      */
-    readonly networkAliases?: pulumi.Input<pulumi.Input<string>[]>;
+    readonly networkAliases?: string[];
     /**
      * Network mode of the container.
      */
-    readonly networkMode?: pulumi.Input<string>;
+    readonly networkMode?: string;
     /**
      * Id of the networks in which the
      * container is. *Deprecated:* use `networks_advanced` instead.
      */
-    readonly networks?: pulumi.Input<pulumi.Input<string>[]>;
+    readonly networks?: string[];
     /**
      * See Networks Advanced below for details. If this block has priority to the deprecated `network_alias` and `network` properties.
      */
-    readonly networksAdvanced?: pulumi.Input<pulumi.Input<{ aliases?: pulumi.Input<pulumi.Input<string>[]>, ipv4Address?: pulumi.Input<string>, ipv6Address?: pulumi.Input<string>, name: pulumi.Input<string> }>[]>;
+    readonly networksAdvanced?: { aliases?: string[], ipv4Address?: string, ipv6Address?: string, name: string }[];
     /**
      * The PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
      */
-    readonly pidMode?: pulumi.Input<string>;
+    readonly pidMode?: string;
     /**
      * See Ports below for details.
      */
-    readonly ports?: pulumi.Input<pulumi.Input<{ external?: pulumi.Input<number>, internal: pulumi.Input<number>, ip?: pulumi.Input<string>, protocol?: pulumi.Input<string> }>[]>;
+    readonly ports?: { external?: number, internal: number, ip?: string, protocol?: string }[];
     /**
      * Run container in privileged mode.
      */
-    readonly privileged?: pulumi.Input<boolean>;
+    readonly privileged?: boolean;
     /**
      * Publish all ports of the container.
      */
-    readonly publishAllPorts?: pulumi.Input<boolean>;
+    readonly publishAllPorts?: boolean;
     /**
      * The restart policy for the container. Must be
      * one of "no", "on-failure", "always", "unless-stopped".
      */
-    readonly restart?: pulumi.Input<string>;
+    readonly restart?: string;
     /**
      * If true, then the container will be automatically removed after his execution. Terraform
      * won't check this container after creation.
      */
-    readonly rm?: pulumi.Input<boolean>;
+    readonly rm?: boolean;
     /**
      * If true, then the Docker container will be
      * started after creation. If false, then the container is only created.
      */
-    readonly start?: pulumi.Input<boolean>;
+    readonly start?: boolean;
     /**
      * See Ulimits below for
      * details.
      */
-    readonly ulimits?: pulumi.Input<pulumi.Input<{ hard: pulumi.Input<number>, name: pulumi.Input<string>, soft: pulumi.Input<number> }>[]>;
+    readonly ulimits?: { hard: number, name: string, soft: number }[];
     /**
      * See File Upload below for details.
      */
-    readonly uploads?: pulumi.Input<pulumi.Input<{ content: pulumi.Input<string>, executable?: pulumi.Input<boolean>, file: pulumi.Input<string> }>[]>;
+    readonly uploads?: { content: string, executable?: boolean, file: string }[];
     /**
      * User used for run the first process. Format is
      * `user` or `user:group` which user and group can be passed literraly or
      * by name.
      */
-    readonly user?: pulumi.Input<string>;
+    readonly user?: string;
     /**
      * Sets the usernamespace mode for the container when usernamespace remapping option is enabled.
      */
-    readonly usernsMode?: pulumi.Input<string>;
+    readonly usernsMode?: string;
     /**
      * See Volumes below for details.
      */
-    readonly volumes?: pulumi.Input<pulumi.Input<{ containerPath?: pulumi.Input<string>, fromContainer?: pulumi.Input<string>, hostPath?: pulumi.Input<string>, readOnly?: pulumi.Input<boolean>, volumeName?: pulumi.Input<string> }>[]>;
+    readonly volumes?: { containerPath?: string, fromContainer?: string, hostPath?: string, readOnly?: boolean, volumeName?: string }[];
 }

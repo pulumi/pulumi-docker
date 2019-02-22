@@ -727,15 +727,15 @@
   revision = "b245fd7595f2fcfb8f9e8c7ddc22d558f0029671"
 
 [[projects]]
-  branch = "master"
-  digest = "1:c954141d1ea97d435e48de398fbb454f4db5a877ffe141b10b3f43cd8c61e101"
+  branch = "features/pojo"
+  digest = "1:70d81696654accbf5fb7de71d2a87806c6c32e5691e1091d6c618e9b54bdbb7f"
   name = "github.com/pulumi/pulumi-terraform"
   packages = [
     "pkg/tfbridge",
     "pkg/tfgen",
   ]
   pruneopts = ""
-  revision = "48b52f432aee94c78e4519e064b0400965a4f3d7"
+  revision = "d3463aa66312275daa8545ce63bf6c27d78e6dd4"
 
 [[projects]]
   branch = "master"
