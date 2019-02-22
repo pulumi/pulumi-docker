@@ -21,9 +21,9 @@ import * as semver from "semver";
 
 // Registry is the information required to login to a Docker registry.
 export interface Registry {
-    registry: pulumi.Input<string>;
-    username: pulumi.Input<string>;
-    password: pulumi.Input<string>;
+    registry: string;
+    username: string;
+    password: string;
 }
 
 /**
@@ -36,7 +36,7 @@ export interface CacheFrom {
      * built explicitly and pushed to the target repository. A given stage's image will be tagged as
      * "[stage-name]".
      */
-    stages?: pulumi.Input<pulumi.Input<string>[]>;
+    stages?: string[];
 }
 
 /**
@@ -50,18 +50,18 @@ export interface DockerBuild {
      * directory; if a relative path is used, it is relative to the current working directory that
      * Pulumi is evaluating.
      */
-    context?: pulumi.Input<string>;
+    context?: string;
     /**
      * dockerfile may be used to override the default Dockerfile name and/or location.  By default,
      * it is assumed to be a file named Dockerfile in the root of the build context.
      */
-    dockerfile?: pulumi.Input<string>;
+    dockerfile?: string;
     /**
      * An optional map of named build-time argument variables to set during the Docker build.  This
      * flag allows you to pass built-time variables that can be accessed like environment variables
      * inside the `RUN` instruction.
      */
-    args?: pulumi.Input<Record<string, pulumi.Input<string>>>;
+    args?: Record<string, string>;
 
     /**
      * An optional CacheFrom object with information about the build stages to use for the Docker
@@ -69,7 +69,7 @@ export interface DockerBuild {
      * parameter is `true`, only the final image will be pulled and passed to --cache-from; if it is
      * a CacheFrom object, the stages named therein will also be pulled and passed to --cache-from.
      */
-    cacheFrom?: pulumi.Input<boolean | CacheFrom>;
+    cacheFrom?: boolean | CacheFrom;
 }
 
 let dockerPasswordPromise: Promise<boolean> | undefined;

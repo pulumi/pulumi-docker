@@ -28,11 +28,11 @@ export interface ImageArgs {
      * Either [imageName] or [localImageName] can have a tag.  However, if both have a tag, then
      * those tags must match.
      */
-    imageName: pulumi.Input<string>;
+    imageName: string;
     /**
      * The Docker build context, as a folder path or a detailed DockerBuild object.
      */
-    build: pulumi.Input<string | docker.DockerBuild>;
+    build: string | docker.DockerBuild;
     /**
      * The docker image name to build locally before tagging with imageName.  If not provided, it
      * will be given the value of to [imageName].  This name can include a tag at the end.  If
@@ -41,11 +41,11 @@ export interface ImageArgs {
      * Either [imageName] or [localImageName] can have a tag.  However, if both have a tag, then
      * those tags must match.
      */
-    localImageName?: pulumi.Input<string>;
+    localImageName?: string;
     /**
      * Credentials for the docker registry to push to.
      */
-    registry?: pulumi.Input<ImageRegistry>;
+    registry?: ImageRegistry;
 }
 
 export interface ImageRegistry {
@@ -56,15 +56,15 @@ export interface ImageRegistry {
      * AWS Elastic Container Registry: `<account>.dkr.ecr.us-east-2.amazonaws.com`
      * Google Container Registry: `<name>.gcr.io`
      */
-    server: pulumi.Input<string>;
+    server: string;
     /**
      * Username for login to the target Docker registry.
      */
-    username: pulumi.Input<string>;
+    username: string;
     /**
      * Password for login to the target Docker registry.
      */
-    password: pulumi.Input<string>;
+    password: string;
 }
 
 /**
@@ -100,7 +100,7 @@ export class Image extends pulumi.ComponentResource {
      */
     public digest: pulumi.Output<string | undefined>;
 
-    constructor(name: string, args: ImageArgs, opts?: pulumi.ComponentResourceOptions) {
+    constructor(name: string, args: pulumi.InputObject<ImageArgs>, opts?: pulumi.ComponentResourceOptions) {
         super("docker:image:Image", name, {}, opts);
 
         const imageData = pulumi.output(args).apply(async (imageArgs) => {

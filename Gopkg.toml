@@ -3,7 +3,7 @@
   branch = "master"
 
 [[constraint]]
-  branch = "master"
+  branch = "features/pojo"
   name = "github.com/pulumi/pulumi-terraform"
 
 [[constraint]]
