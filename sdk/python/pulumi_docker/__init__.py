@@ -10,3 +10,4 @@ from .container import *
 from .remote_image import *
 from .network import *
 from .volume import *
+from .provider import *

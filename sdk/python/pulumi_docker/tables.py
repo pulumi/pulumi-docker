@@ -3,6 +3,9 @@
 # *** Do not edit by hand unless you're certain you know what you are doing! ***
 
 _SNAKE_TO_CAMEL_CASE_TABLE = {
+    "ca_material": "caMaterial",
+    "cert_material": "certMaterial",
+    "cert_path": "certPath",
     "check_duplicate": "checkDuplicate",
     "container_logs": "containerLogs",
     "cpu_set": "cpuSet",
@@ -17,6 +20,7 @@ _SNAKE_TO_CAMEL_CASE_TABLE = {
     "ipam_configs": "ipamConfigs",
     "ipam_driver": "ipamDriver",
     "keep_locally": "keepLocally",
+    "key_material": "keyMaterial",
     "log_driver": "logDriver",
     "log_opts": "logOpts",
     "max_retry_count": "maxRetryCount",
@@ -30,10 +34,14 @@ _SNAKE_TO_CAMEL_CASE_TABLE = {
     "publish_all_ports": "publishAllPorts",
     "pull_trigger": "pullTrigger",
     "pull_triggers": "pullTriggers",
+    "registry_auth": "registryAuth",
     "userns_mode": "usernsMode",
 }
 
 _CAMEL_TO_SNAKE_CASE_TABLE = {
+    "caMaterial": "ca_material",
+    "certMaterial": "cert_material",
+    "certPath": "cert_path",
     "checkDuplicate": "check_duplicate",
     "containerLogs": "container_logs",
     "cpuSet": "cpu_set",
@@ -48,6 +56,7 @@ _CAMEL_TO_SNAKE_CASE_TABLE = {
     "ipamConfigs": "ipam_configs",
     "ipamDriver": "ipam_driver",
     "keepLocally": "keep_locally",
+    "keyMaterial": "key_material",
     "logDriver": "log_driver",
     "logOpts": "log_opts",
     "maxRetryCount": "max_retry_count",
@@ -61,5 +70,6 @@ _CAMEL_TO_SNAKE_CASE_TABLE = {
     "publishAllPorts": "publish_all_ports",
     "pullTrigger": "pull_trigger",
     "pullTriggers": "pull_triggers",
+    "registryAuth": "registry_auth",
     "usernsMode": "userns_mode",
 }
