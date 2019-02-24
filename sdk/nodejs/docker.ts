@@ -168,7 +168,7 @@ function logEphemeral(message: string, logResource: pulumi.Resource) {
 
 async function buildAndPushImageWorkerAsync(
     baseImageName: string,
-    pathOrBuild: string | pulumi.Unwrap<DockerBuild>,
+    pathOrBuild: string | DockerBuild,
     repositoryUrl: string,
     logResource: pulumi.Resource,
     connectToRegistry: (() => pulumi.Input<Registry>) | undefined): Promise<string> {
