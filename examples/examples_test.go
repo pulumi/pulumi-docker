@@ -42,16 +42,28 @@ func TestAws(t *testing.T) {
 		t.FailNow()
 	}
 
-	opts := base.With(integration.ProgramTestOptions{
-		Config: map[string]string{
-			"aws:region": region,
-		},
-		Dependencies: []string{
-			"@pulumi/docker",
-		},
-		Dir: path.Join(cwd, "aws"),
-	})
-	integration.ProgramTest(t, &opts)
+	shortTests := []integration.ProgramTestOptions{}
+
+	longTests := []integration.ProgramTestOptions{
+		base.With(integration.ProgramTestOptions{
+			Config: map[string]string{
+				"aws:region": region,
+			},
+			Dependencies: []string{
+				"@pulumi/docker",
+			},
+			Dir: path.Join(cwd, "aws"),
+		}),
+	}
+
+	tests := shortTests
+	if !testing.Short() {
+		tests = append(tests, longTests...)
+	}
+
+	for _, ex := range tests {
+		integration.ProgramTest(t, &ex)
+	}
 }
 
 func TestNginx(t *testing.T) {
