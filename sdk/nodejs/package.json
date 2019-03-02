@@ -13,7 +13,7 @@
         "build": "tsc"
     },
     "dependencies": {
-        "@pulumi/pulumi": "^0.16.17",
+        "@pulumi/pulumi": "^0.16.18",
         "semver": "^5.4.0"
     },
     "devDependencies": {
