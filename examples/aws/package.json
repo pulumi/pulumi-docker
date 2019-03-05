@@ -5,6 +5,6 @@
     },
     "dependencies": {
         "@pulumi/pulumi": "feature-seventeen",
-        "@pulumi/aws": "dev"
+        "@pulumi/aws": "feature-seventeen"
     }
 }
