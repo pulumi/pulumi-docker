@@ -10,6 +10,30 @@ import * as utilities from "./utilities";
  * This resource will *not* pull new layers of the image automatically unless used in
  * conjunction with [`docker_registry_image`](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
  * data source to update the `pull_triggers` field.
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as docker from "@pulumi/docker";
+ * 
+ * // Find the latest Ubuntu precise image.
+ * const ubuntu = new docker.RemoteImage("ubuntu", {});
+ * ```
+ * 
+ * ### Dynamic image
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as docker from "@pulumi/docker";
+ * 
+ * const ubuntuRegistryImage = pulumi.output(docker.RegistryImage({
+ *     name: "ubuntu:precise",
+ * }));
+ * const ubuntuRemoteImage = new docker.RemoteImage("ubuntu", {
+ *     pullTriggers: [ubuntuRegistryImage.apply(ubuntuRegistryImage => ubuntuRegistryImage.sha256Digest)],
+ * });
+ * ```
  */
 export class RemoteImage extends pulumi.CustomResource {
     /**
@@ -20,8 +44,8 @@ export class RemoteImage extends pulumi.CustomResource {
      * @param id The _unique_ provider ID of the resource to lookup.
      * @param state Any extra arguments used during the lookup.
      */
-    public static get(name: string, id: pulumi.Input<pulumi.ID>, state?: RemoteImageState): RemoteImage {
-        return new RemoteImage(name, <any>state, { id });
+    public static get(name: string, id: pulumi.Input<pulumi.ID>, state?: RemoteImageState, opts?: pulumi.CustomResourceOptions): RemoteImage {
+        return new RemoteImage(name, <any>state, { ...opts, id: id });
     }
 
     /**

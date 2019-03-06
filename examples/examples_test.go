@@ -29,29 +29,41 @@ var base = integration.ProgramTestOptions{
 	// Note: no Config! This package should be usable without any config.
 }
 
-// func TestAws(t *testing.T) {
-// 	region := os.Getenv("AWS_REGION")
-// 	if region == "" {
-// 		t.Skipf("Skipping test due to missing AWS_REGION environment variable")
-// 	}
-// 	fmt.Printf("AWS Region: %v\n", region)
+func TestAws(t *testing.T) {
+	region := os.Getenv("AWS_REGION")
+	if region == "" {
+		t.Skipf("Skipping test due to missing AWS_REGION environment variable")
+	}
+	fmt.Printf("AWS Region: %v\n", region)
 
-// 	cwd, err := os.Getwd()
-// 	if !assert.NoError(t, err) {
-// 		t.FailNow()
-// 	}
+	cwd, err := os.Getwd()
+	if !assert.NoError(t, err) {
+		t.FailNow()
+	}
 
-// 	opts := base.With(integration.ProgramTestOptions{
-// 		Config: map[string]string{
-// 			"aws:region": region,
-// 		},
-// 		Dependencies: []string{
-// 			"@pulumi/docker",
-// 		},
-// 		Dir: path.Join(cwd, "aws"),
-// 	})
-// 	integration.ProgramTest(t, &opts)
-// }
+	shortTests := []integration.ProgramTestOptions{}
+
+	longTests := []integration.ProgramTestOptions{
+		base.With(integration.ProgramTestOptions{
+			Config: map[string]string{
+				"aws:region": region,
+			},
+			Dependencies: []string{
+				"@pulumi/docker",
+			},
+			Dir: path.Join(cwd, "aws"),
+		}),
+	}
+
+	tests := shortTests
+	if !testing.Short() {
+		tests = append(tests, longTests...)
+	}
+
+	for _, ex := range tests {
+		integration.ProgramTest(t, &ex)
+	}
+}
 
 func TestNginx(t *testing.T) {
 	cwd, err := os.Getwd()
