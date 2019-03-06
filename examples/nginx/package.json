@@ -4,6 +4,6 @@
         "@types/node": "latest"
     },
     "dependencies": {
-        "@pulumi/pulumi": "^v0.17.0"
+        "@pulumi/pulumi": "dev"
     }
 }
