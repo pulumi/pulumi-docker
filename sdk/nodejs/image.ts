@@ -156,10 +156,10 @@ export class Image extends pulumi.ComponentResource {
             }
         });
 
-        this.imageName = imageData.apply(d => d.uniqueTargetName);
+        this.imageName = imageData.uniqueTargetName;
         this.id = this.imageName;
         this.digest = this.imageName;
-        this.registryServer = imageData.apply(d => d.registryServer);
+        this.registryServer = imageData.registryServer;
         this.baseImageName = pulumi.output(args.imageName);
 
         this.registerOutputs({
