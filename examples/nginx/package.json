@@ -4,6 +4,6 @@
         "@types/node": "latest"
     },
     "dependencies": {
-        "@pulumi/pulumi": "feature-seventeen"
+        "@pulumi/pulumi": "^v0.17.0"
     }
 }
