@@ -75,7 +75,7 @@ export interface DockerBuild {
      * An optional catch-all string to provide extra CLI options to the docker build command.  For
      * example, use to specify `--network host`.
      */
-    extraOptions?: pulumi.Input<string[]>;
+    extraOptions?: pulumi.Input<Input<string>[]>;
 }
 
 let dockerPasswordPromise: Promise<boolean> | undefined;
