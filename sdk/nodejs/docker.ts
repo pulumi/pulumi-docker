@@ -70,6 +70,12 @@ export interface DockerBuild {
      * a CacheFrom object, the stages named therein will also be pulled and passed to --cache-from.
      */
     cacheFrom?: pulumi.Input<boolean | CacheFrom>;
+
+    /**
+     * An optional catch-all string to provide extra CLI options to the docker build command.  For
+     * example, use to specify `--network host`.
+     */
+    extraOptions?: pulumi.Input<pulumi.Input<string>[]>;
 }
 
 let dockerPasswordPromise: Promise<boolean> | undefined;
@@ -402,6 +408,9 @@ async function dockerBuild(
         if (cacheFromImages && cacheFromImages.length) {
             buildArgs.push(...[ "--cache-from", cacheFromImages.join() ]);
         }
+    }
+    if (build.extraOptions) {
+        buildArgs.push(...build.extraOptions);
     }
     buildArgs.push(build.context!); // push the docker build context onto the path.
 
