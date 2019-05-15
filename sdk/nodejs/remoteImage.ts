@@ -31,7 +31,7 @@ import * as utilities from "./utilities";
  *     name: "ubuntu:precise",
  * }));
  * const ubuntuRemoteImage = new docker.RemoteImage("ubuntu", {
- *     pullTriggers: [ubuntuRegistryImage.apply(ubuntuRegistryImage => ubuntuRegistryImage.sha256Digest)],
+ *     pullTriggers: [ubuntuRegistryImage.sha256Digest],
  * });
  * ```
  */
