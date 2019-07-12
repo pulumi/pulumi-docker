@@ -184,7 +184,7 @@ async function buildAndPushImageWorkerAsync(
         throw new Error(`[repositoryUrl] should not contain a tag: ${repositoryUrlTag}`);
     }
 
-    const { imageName, tag } = utils.getImageNameAndTag(baseImageName);
+    const tag = utils.getImageNameAndTag(baseImageName).tag;
 
     let loggedIn: Promise<void> | undefined;
 
@@ -211,11 +211,11 @@ async function buildAndPushImageWorkerAsync(
         // exists. Were we to instead hang an apply off of the raw Input<>, we would never end up
         // running the pull if the repository had not yet been created.
         const cacheFromParam = typeof pathOrBuild.cacheFrom === "boolean" ? {} : pathOrBuild.cacheFrom;
-        cacheFrom = pullCacheAsync(imageName, cacheFromParam, login, repositoryUrl, logResource);
+        cacheFrom = pullCacheAsync(baseImageName, cacheFromParam, login, repositoryUrl, logResource);
     }
 
     // First build the image.
-    const { imageId, stages } = await buildImageAsync(imageName, pathOrBuild, logResource, cacheFrom);
+    const { imageId, stages } = await buildImageAsync(baseImageName, pathOrBuild, logResource, cacheFrom);
     if (imageId === undefined) {
         throw new Error("Internal error: docker build did not produce an imageId.");
     }
@@ -244,12 +244,12 @@ async function buildAndPushImageWorkerAsync(
         // nice and simple url that they can reach this image at, without having the explicit imageId
         // hash added to it.  Note: this location is not guaranteed to be idempotent.  For example,
         // pushes on other machines might overwrite that location.
-        await tagAndPushImageAsync(imageName, repositoryUrl, tag, imageId, logResource);
-        await tagAndPushImageAsync(imageName, repositoryUrl, tag, /*imageId:*/ undefined, logResource);
+        await tagAndPushImageAsync(baseImageName, repositoryUrl, tag, imageId, logResource);
+        await tagAndPushImageAsync(baseImageName, repositoryUrl, tag, /*imageId:*/ undefined, logResource);
 
         for (const stage of stages) {
             await tagAndPushImageAsync(
-                localStageImageName(imageName, stage), repositoryUrl, stage, /*imageId:*/ undefined, logResource);
+                localStageImageName(baseImageName, stage), repositoryUrl, stage, /*imageId:*/ undefined, logResource);
         }
     }
 
