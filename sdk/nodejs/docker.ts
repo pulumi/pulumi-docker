@@ -205,7 +205,8 @@ async function buildAndPushImageWorkerAsync(
         // NOTE: we pull the promise out of the repository URL s.t. we can observe whether or not it
         // exists. Were we to instead hang an apply off of the raw Input<>, we would never end up
         // running the pull if the repository had not yet been created.
-        const cacheFromParam = typeof pathOrBuild.cacheFrom === "boolean" ? {} : pathOrBuild.cacheFrom;
+        const dockerBuild = <pulumi.UnwrappedObject<DockerBuild>>pathOrBuild;
+        const cacheFromParam = typeof dockerBuild.cacheFrom === "boolean" ? {} : dockerBuild.cacheFrom;
         cacheFrom = pullCacheAsync(imageName, cacheFromParam, repositoryUrl, logResource);
     }
 
