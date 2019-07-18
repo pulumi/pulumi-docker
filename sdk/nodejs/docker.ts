@@ -203,10 +203,10 @@ async function buildAndPushImageWorkerAsync(
 
     const pullFromCache = typeof pathOrBuild !== "string" && pathOrBuild && pathOrBuild.cacheFrom && !!repositoryUrl;
 
+    // If no `connectToRegistry` function was passed in we simply assume docker is already
+    // logged-in to the correct registry (or uses auto-login via credential helpers).
     if (connectToRegistry) {
         if (!pulumi.runtime.isDryRun() || pullFromCache) {
-            // If no `connectToRegistry` function was passed in we simply assume docker is already
-            // logged-in to the correct registry (or uses auto-login via credential helpers).
             logEphemeral("Logging in to registry...", logResource);
             const registryOutput = pulumi.output(connectToRegistry());
             const registry: pulumi.Unwrap<Registry> = await (<any>registryOutput).promise();
@@ -222,7 +222,7 @@ async function buildAndPushImageWorkerAsync(
         cacheFrom = pullCacheAsync(imageName, cacheFromParam, repositoryUrl, logResource);
     }
 
-    // First build the image.
+    // Next, build the image.
     const { imageId, stages } = await buildImageAsync(imageName, pathOrBuild, logResource, cacheFrom);
     if (imageId === undefined) {
         throw new Error("Internal error: docker build did not produce an imageId.");
@@ -236,9 +236,8 @@ async function buildAndPushImageWorkerAsync(
     // resources (like docker.Image and cloud.Service) will be appropriately replaced.
     const uniqueTaggedImageName = createTaggedImageName(repositoryUrl, tag, imageId);
 
-    // Use those then push the image.  Then just return the unique target name. as the final result
-    // for our caller to use.
-    // Only push the image during an update, do not push during a preview.
+    // Use those to push the image.  Then just return the unique target name. as the final result
+    // for our caller to use. Only push the image during an update, do not push during a preview.
     if (!pulumi.runtime.isDryRun()) {
         // Push the final image first, then push the stage images to use for caching.
 
