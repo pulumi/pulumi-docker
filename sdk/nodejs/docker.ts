@@ -192,7 +192,7 @@ async function buildAndPushImageWorkerAsync(
         // logged-in to the correct registry (or uses auto-login via credential helpers).
         if (connectToRegistry) {
             logEphemeral("Logging in to registry...", logResource);
-            const registryOutput = pulumi.output(connectToRegistry!());
+            const registryOutput = pulumi.output(connectToRegistry());
             const registryPromise: Promise<pulumi.Unwrap<Registry>> = (<any>registryOutput).promise();
             const registry = await registryPromise;
             await loginToRegistry(registry, logResource);
