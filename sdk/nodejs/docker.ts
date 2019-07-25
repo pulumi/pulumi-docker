@@ -186,35 +186,43 @@ async function buildAndPushImageWorkerAsync(
 
     const tag = utils.getImageNameAndTag(baseImageName).tag;
 
-    let loggedIn: Promise<void> | undefined;
+    // login immediately if we're going to have to actually communicate with a remote registry.
+    //
+    // We know we have to login if:
+    //
+    //  1. We're doing an update.  In that case, we'll always want to login so we can push our
+    //     images to the remote registry.
+    //
+    // 2. We're in preview or update and the build information contains 'cache from' information. In
+    //    that case, we'll want want to pull from the registry and will need to login for that.
+    //
+    // Logging in immediately also helps us side-step a strange issue we've seen downstream where
+    // Node can be unhappy if we try to call connectToRegistry (which may end up calling deasync'ed
+    // invoke calls) *after* we've spawned some calls to docker builds.  Front-loading this step
+    // seems to avoid all those issues.
 
-    // If no `connectToRegistry` function was passed in we simply assume docker is already logged-in to the correct registry (or uses auto-login via credential helpers)
-    // hence we resolve loggedIn immediately.
-    if (!connectToRegistry) {
-        loggedIn = Promise.resolve();
-    }
-    const login = () => {
-        if (!loggedIn) {
+    const pullFromCache = typeof pathOrBuild !== "string" && pathOrBuild && pathOrBuild.cacheFrom && !!repositoryUrl;
+
+    // If no `connectToRegistry` function was passed in we simply assume docker is already
+    // logged-in to the correct registry (or uses auto-login via credential helpers).
+    if (connectToRegistry) {
+        if (!pulumi.runtime.isDryRun() || pullFromCache) {
             logEphemeral("Logging in to registry...", logResource);
-            const registryOutput = pulumi.output(connectToRegistry!());
-            const registryPromise: Promise<pulumi.Unwrap<Registry>> = (<any>registryOutput).promise();
-
-            loggedIn = registryPromise.then(r => loginToRegistry(r, logResource));
+            const registryOutput = pulumi.output(connectToRegistry());
+            const registry: pulumi.Unwrap<Registry> = await (<any>registryOutput).promise();
+            await loginToRegistry(registry, logResource);
         }
-        return loggedIn;
-    };
+    }
 
     // If the container specified a cacheFrom parameter, first set up the cached stages.
     let cacheFrom = Promise.resolve<string[] | undefined>(undefined);
-    if (typeof pathOrBuild !== "string" && pathOrBuild && pathOrBuild.cacheFrom) {
-        // NOTE: we pull the promise out of the repository URL s.t. we can observe whether or not it
-        // exists. Were we to instead hang an apply off of the raw Input<>, we would never end up
-        // running the pull if the repository had not yet been created.
-        const cacheFromParam = typeof pathOrBuild.cacheFrom === "boolean" ? {} : pathOrBuild.cacheFrom;
-        cacheFrom = pullCacheAsync(baseImageName, cacheFromParam, login, repositoryUrl, logResource);
+    if (pullFromCache) {
+        const dockerBuild = <pulumi.UnwrappedObject<DockerBuild>>pathOrBuild;
+        const cacheFromParam = typeof dockerBuild.cacheFrom === "boolean" ? {} : dockerBuild.cacheFrom;
+        cacheFrom = pullCacheAsync(baseImageName, cacheFromParam, repositoryUrl, logResource);
     }
 
-    // First build the image.
+    // Next, build the image.
     const { imageId, stages } = await buildImageAsync(baseImageName, pathOrBuild, logResource, cacheFrom);
     if (imageId === undefined) {
         throw new Error("Internal error: docker build did not produce an imageId.");
@@ -228,12 +236,9 @@ async function buildAndPushImageWorkerAsync(
     // resources (like docker.Image and cloud.Service) will be appropriately replaced.
     const uniqueTaggedImageName = createTaggedImageName(repositoryUrl, tag, imageId);
 
-    // Use those then push the image.  Then just return the unique target name. as the final result
-    // for our caller to use.
+    // Use those to push the image.  Then just return the unique target name. as the final result
+    // for our caller to use. Only push the image during an update, do not push during a preview.
     if (!pulumi.runtime.isDryRun()) {
-        // Only push the image during an update, do not push during a preview.
-        await login();
-
         // Push the final image first, then push the stage images to use for caching.
 
         // First, push with both the optionally-requested-tag *and* imageId (which is guaranteed to
@@ -281,7 +286,6 @@ function createTaggedImageName(repositoryUrl: string, tag: string | undefined, i
 async function pullCacheAsync(
     imageName: string,
     cacheFrom: pulumi.Unwrap<CacheFrom>,
-    login: () => Promise<void>,
     repoUrl: string,
     logResource: pulumi.Resource): Promise<string[] | undefined> {
 
@@ -291,9 +295,6 @@ async function pullCacheAsync(
     }
 
     pulumi.log.debug(`pulling cache for ${imageName} from ${repoUrl}`, logResource);
-
-    // Ensure that we're logged in to the source registry and attempt to pull each stage in turn.
-    await login();
 
     const cacheFromImages: string[] = [];
     const stages = (cacheFrom.stages || []).concat([""]);
