@@ -1,9 +1,10 @@
 ## 0.17.3 (Unreleased)
 
+- Fix image tag name collission during build time (https://github.com/pulumi/pulumi-docker/pull/90)
+
 ## 0.17.2 (Released July 19, 2019)
 
 - Add ability to specify arbitrary extra `docker build` CLI options for `buildAndPush...()` functions.
-- Fix image tag name collission during build time (https://github.com/pulumi/pulumi-docker/pull/90)
 
 ## 0.17.1 (Released March 7, 2019)
 
