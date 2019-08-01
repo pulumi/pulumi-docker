@@ -42,9 +42,7 @@ func TestAws(t *testing.T) {
 		t.FailNow()
 	}
 
-	shortTests := []integration.ProgramTestOptions{}
-
-	longTests := []integration.ProgramTestOptions{
+	shortTests := []integration.ProgramTestOptions{
 		base.With(integration.ProgramTestOptions{
 			Config: map[string]string{
 				"aws:region": region,
@@ -55,6 +53,8 @@ func TestAws(t *testing.T) {
 			Dir: path.Join(cwd, "aws"),
 		}),
 	}
+
+	longTests := []integration.ProgramTestOptions{}
 
 	tests := shortTests
 	if !testing.Short() {

@@ -9,6 +9,11 @@ before_install:
     - git clone https://github.com/pulumi/scripts ${GOPATH}/src/github.com/pulumi/scripts
     - source ${GOPATH}/src/github.com/pulumi/scripts/ci/prepare-environment.sh
     - source ${PULUMI_SCRIPTS}/ci/keep-failed-tests.sh
+    # Install latest docker-ce
+    - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+    - sudo apt-get update
+    - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
 install:
     - source ${PULUMI_SCRIPTS}/ci/install-common-toolchain.sh
     - curl -L https://get.pulumi.com/ | bash
