@@ -51,11 +51,13 @@ export interface DockerBuild {
      * Pulumi is evaluating.
      */
     context?: pulumi.Input<string>;
+
     /**
      * dockerfile may be used to override the default Dockerfile name and/or location.  By default,
      * it is assumed to be a file named Dockerfile in the root of the build context.
      */
     dockerfile?: pulumi.Input<string>;
+
     /**
      * An optional map of named build-time argument variables to set during the Docker build.  This
      * flag allows you to pass built-time variables that can be accessed like environment variables
@@ -76,6 +78,12 @@ export interface DockerBuild {
      * example, use to specify `--network host`.
      */
     extraOptions?: pulumi.Input<pulumi.Input<string>[]>;
+
+    /**
+     * Environment variables to set on the invocation of `docker build`, for example to support
+     * `DOCKER_BUILDKIT=1 docker build`.
+     */
+    env?: Record<string, string>;
 }
 
 let dockerPasswordPromise: Promise<boolean> | undefined;
@@ -150,14 +158,14 @@ export function buildAndPushImage(
     connectToRegistry?: () => pulumi.Input<Registry>): pulumi.Output<string> {
 
     return pulumi.all([pathOrBuild, repositoryUrl])
-                 .apply(async ([pathOrBuild, repositoryUrl]) => {
+                 .apply(async ([pathOrBuildVal, repositoryUrlVal]) => {
 
         // Give an initial message indicating what we're about to do.  That way, if anything
         // takes a while, the user has an idea about what's going on.
         logEphemeral("Starting docker build and push...", logResource);
 
         const result = await buildAndPushImageWorkerAsync(
-            imageName, pathOrBuild, repositoryUrl, logResource, connectToRegistry);
+            imageName, pathOrBuildVal, repositoryUrlVal, logResource, connectToRegistry);
 
         // If we got here, then building/pushing didn't throw any errors.  Update the status bar
         // indicating that things worked properly.  That way, the info bar isn't stuck showing the very
@@ -420,7 +428,7 @@ async function dockerBuild(
         buildArgs.push(...[ "--target", target ]);
     }
 
-    await runCommandThatMustSucceed("docker", buildArgs, logResource);
+    await runCommandThatMustSucceed("docker", buildArgs, logResource, undefined, undefined, build.env);
 
 }
 
@@ -505,13 +513,18 @@ interface CommandResult {
     stdout: string;
 }
 
-function getCommandLineMessage(cmd: string, args: string[], reportFullCommandLine: boolean) {
+function getCommandLineMessage(
+    cmd: string, args: string[], reportFullCommandLine: boolean, env?: Record<string, string>) {
+
     const argString = reportFullCommandLine ? args.join(" ") : args[0];
-    return `'${cmd} ${argString}'`;
+    const envString = Object.keys(env || {}).map(k => `${k}=${env[k]}`).join(" ");
+    return `'${envString} ${cmd} ${argString}'`;
 }
 
-function getFailureMessage(cmd: string, args: string[], reportFullCommandLine: boolean, code: number) {
-    return `${getCommandLineMessage(cmd, args, reportFullCommandLine)} failed with exit code ${code}`;
+function getFailureMessage(
+    cmd: string, args: string[], reportFullCommandLine: boolean, code: number, env?: Record<string, string>) {
+
+    return `${getCommandLineMessage(cmd, args, reportFullCommandLine, env)} failed with exit code ${code}`;
 }
 
 // [reportFullCommandLine] is used to determine if the full command line should be reported
@@ -522,10 +535,11 @@ async function runCommandThatMustSucceed(
     args: string[],
     logResource: pulumi.Resource,
     reportFullCommandLine: boolean = true,
-    stdin?: string): Promise<string> {
+    stdin?: string,
+    env?: {[name: string]: string}): Promise<string> {
 
     const { code, stdout } = await runCommandThatCanFail(
-        cmd, args, logResource, reportFullCommandLine, /*reportErrorAsWarning:*/ false, stdin);
+        cmd, args, logResource, reportFullCommandLine, /*reportErrorAsWarning:*/ false, stdin, env);
 
     if (code !== 0) {
         // Fail the entire build and push.  This includes the full output of the command so that at
@@ -560,10 +574,11 @@ async function runCommandThatCanFail(
     logResource: pulumi.Resource,
     reportFullCommandLine: boolean,
     reportErrorAsWarning: boolean,
-    stdin?: string): Promise<CommandResult> {
+    stdin?: string,
+    env?: {[name: string]: string}): Promise<CommandResult> {
 
     // Let the user ephemerally know the command we're going to execute.
-    logEphemeral(`Executing ${getCommandLineMessage(cmd, args, reportFullCommandLine)}`, logResource);
+    logEphemeral(`Executing ${getCommandLineMessage(cmd, args, reportFullCommandLine, env)}`, logResource);
 
     // Generate a unique stream-ID that we'll associate all the docker output with. This will allow
     // each spawned CLI command's output to associated with 'resource' and also streamed to the UI
@@ -581,7 +596,7 @@ async function runCommandThatCanFail(
     const streamID = Math.floor(Math.random() * (1 << 30));
 
     return new Promise<CommandResult>((resolve, reject) => {
-        const p = child_process.spawn(cmd, args);
+        const p = child_process.spawn(cmd, args, { env });
 
         // We store the results from stdout in memory and will return them as a string.
         let stdOutChunks: Buffer[] = [];

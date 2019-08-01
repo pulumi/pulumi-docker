@@ -40,6 +40,7 @@ const image1 = new docker.Image("build-cached", {
     build: {
         context: "./app",
         cacheFrom: true,
+        env: { DOCKER_BUILDKIT: "1" },
     },
     registry: getImageRegistry(ecr1),
 });
