@@ -29,6 +29,6 @@ setup(name='pulumi_docker',
       license='Apache-2.0',
       packages=find_packages(),
       install_requires=[
-          'pulumi>=0.17.1,<0.18.0'
+          'pulumi>=0.17.1,<2.0.0'
       ],
       zip_safe=False)
