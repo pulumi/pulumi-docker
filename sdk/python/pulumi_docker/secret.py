@@ -9,40 +9,30 @@ import pulumi.runtime
 from typing import Union
 from . import utilities, tables
 
-class Volume(pulumi.CustomResource):
-    driver: pulumi.Output[str]
+class Secret(pulumi.CustomResource):
+    data: pulumi.Output[str]
     """
-    Driver type for the volume (defaults to local).
-    """
-    driver_opts: pulumi.Output[dict]
-    """
-    Options specific to the driver.
+    The base64 encoded data of the secret.
     """
     labels: pulumi.Output[dict]
     """
     User-defined key/value metadata.
     """
-    mountpoint: pulumi.Output[str]
     name: pulumi.Output[str]
     """
-    The name of the Docker volume (generated if not
-    provided).
+    The name of the Docker secret.
     """
-    def __init__(__self__, resource_name, opts=None, driver=None, driver_opts=None, labels=None, name=None, __props__=None, __name__=None, __opts__=None):
+    def __init__(__self__, resource_name, opts=None, data=None, labels=None, name=None, __props__=None, __name__=None, __opts__=None):
         """
-        Creates and destroys a volume in Docker. This can be used alongside
-        [docker\_container](https://www.terraform.io/docs/providers/docker/r/container.html)
-        to prepare volumes that can be shared across containers.
+        Manages the secrets of a Docker service in a swarm.
         
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
-        :param pulumi.Input[str] driver: Driver type for the volume (defaults to local).
-        :param pulumi.Input[dict] driver_opts: Options specific to the driver.
+        :param pulumi.Input[str] data: The base64 encoded data of the secret.
         :param pulumi.Input[dict] labels: User-defined key/value metadata.
-        :param pulumi.Input[str] name: The name of the Docker volume (generated if not
-               provided).
+        :param pulumi.Input[str] name: The name of the Docker secret.
 
-        > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/volume.html.markdown.
+        > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/secret.html.markdown.
         """
         if __name__ is not None:
             warnings.warn("explicit use of __name__ is deprecated", DeprecationWarning)
@@ -61,43 +51,39 @@ class Volume(pulumi.CustomResource):
                 raise TypeError('__props__ is only valid when passed in combination with a valid opts.id to get an existing resource')
             __props__ = dict()
 
-            __props__['driver'] = driver
-            __props__['driver_opts'] = driver_opts
+            if data is None:
+                raise TypeError("Missing required property 'data'")
+            __props__['data'] = data
             __props__['labels'] = labels
             __props__['name'] = name
-            __props__['mountpoint'] = None
-        super(Volume, __self__).__init__(
-            'docker:index/volume:Volume',
+        super(Secret, __self__).__init__(
+            'docker:index/secret:Secret',
             resource_name,
             __props__,
             opts)
 
     @staticmethod
-    def get(resource_name, id, opts=None, driver=None, driver_opts=None, labels=None, mountpoint=None, name=None):
+    def get(resource_name, id, opts=None, data=None, labels=None, name=None):
         """
-        Get an existing Volume resource's state with the given name, id, and optional extra
+        Get an existing Secret resource's state with the given name, id, and optional extra
         properties used to qualify the lookup.
         
         :param str resource_name: The unique name of the resulting resource.
         :param str id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
-        :param pulumi.Input[str] driver: Driver type for the volume (defaults to local).
-        :param pulumi.Input[dict] driver_opts: Options specific to the driver.
+        :param pulumi.Input[str] data: The base64 encoded data of the secret.
         :param pulumi.Input[dict] labels: User-defined key/value metadata.
-        :param pulumi.Input[str] name: The name of the Docker volume (generated if not
-               provided).
+        :param pulumi.Input[str] name: The name of the Docker secret.
 
-        > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/volume.html.markdown.
+        > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/secret.html.markdown.
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
 
         __props__ = dict()
-        __props__["driver"] = driver
-        __props__["driver_opts"] = driver_opts
+        __props__["data"] = data
         __props__["labels"] = labels
-        __props__["mountpoint"] = mountpoint
         __props__["name"] = name
-        return Volume(resource_name, opts=opts, __props__=__props__)
+        return Secret(resource_name, opts=opts, __props__=__props__)
     def translate_output_property(self, prop):
         return tables._CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
 

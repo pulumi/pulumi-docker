@@ -2,6 +2,8 @@
 // *** Do not edit by hand unless you're certain you know what you are doing! ***
 
 import * as pulumi from "@pulumi/pulumi";
+import * as inputs from "./types/input";
+import * as outputs from "./types/output";
 import * as utilities from "./utilities";
 
 /**
@@ -16,8 +18,10 @@ import * as utilities from "./utilities";
  * import * as docker from "@pulumi/docker";
  * 
  * // Create a new docker network
- * const privateNetwork = new docker.Network("private_network", {});
+ * const privateNetwork = new docker.Network("privateNetwork", {});
  * ```
+ *
+ * > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/network.html.markdown.
  */
 export class Network extends pulumi.CustomResource {
     /**
@@ -32,60 +36,74 @@ export class Network extends pulumi.CustomResource {
         return new Network(name, <any>state, { ...opts, id: id });
     }
 
+    /** @internal */
+    public static readonly __pulumiType = 'docker:index/network:Network';
+
+    /**
+     * Returns true if the given object is an instance of Network.  This is designed to work even
+     * when multiple copies of the Pulumi SDK have been loaded into the same process.
+     */
+    public static isInstance(obj: any): obj is Network {
+        if (obj === undefined || obj === null) {
+            return false;
+        }
+        return obj['__pulumiType'] === Network.__pulumiType;
+    }
+
     /**
      * Enable manual container attachment to the network.
      * Defaults to `false`.
      */
-    public readonly attachable: pulumi.Output<boolean | undefined>;
+    public readonly attachable!: pulumi.Output<boolean | undefined>;
     /**
      * Requests daemon to check for networks
      * with same name.
      */
-    public readonly checkDuplicate: pulumi.Output<boolean | undefined>;
+    public readonly checkDuplicate!: pulumi.Output<boolean | undefined>;
     /**
      * Name of the network driver to use. Defaults to
      * `bridge` driver.
      */
-    public readonly driver: pulumi.Output<string>;
+    public readonly driver!: pulumi.Output<string>;
     /**
      * Create swarm routing-mesh network.
      * Defaults to `false`.
      */
-    public readonly ingress: pulumi.Output<boolean | undefined>;
+    public readonly ingress!: pulumi.Output<boolean | undefined>;
     /**
      * Restrict external access to the network.
      * Defaults to `false`.
      */
-    public readonly internal: pulumi.Output<boolean>;
+    public readonly internal!: pulumi.Output<boolean>;
     /**
      * See IPAM config below for
      * details.
      */
-    public readonly ipamConfigs: pulumi.Output<{ auxAddress?: {[key: string]: any}, gateway?: string, ipRange?: string, subnet?: string }[] | undefined>;
+    public readonly ipamConfigs!: pulumi.Output<outputs.NetworkIpamConfig[] | undefined>;
     /**
      * Driver used by the custom IP scheme of the
      * network.
      */
-    public readonly ipamDriver: pulumi.Output<string | undefined>;
+    public readonly ipamDriver!: pulumi.Output<string | undefined>;
     /**
      * Enable IPv6 networking.
      * Defaults to `false`.
      */
-    public readonly ipv6: pulumi.Output<boolean | undefined>;
+    public readonly ipv6!: pulumi.Output<boolean | undefined>;
     /**
      * User-defined key/value metadata.
      */
-    public readonly labels: pulumi.Output<{[key: string]: any} | undefined>;
+    public readonly labels!: pulumi.Output<{[key: string]: any} | undefined>;
     /**
      * The name of the Docker network.
      */
-    public readonly name: pulumi.Output<string>;
+    public readonly name!: pulumi.Output<string>;
     /**
      * Network specific options to be used by
      * the drivers.
      */
-    public readonly options: pulumi.Output<{[key: string]: any}>;
-    public /*out*/ readonly scope: pulumi.Output<string>;
+    public readonly options!: pulumi.Output<{[key: string]: any}>;
+    public /*out*/ readonly scope!: pulumi.Output<string>;
 
     /**
      * Create a Network resource with the given unique name, arguments, and options.
@@ -98,7 +116,7 @@ export class Network extends pulumi.CustomResource {
     constructor(name: string, argsOrState?: NetworkArgs | NetworkState, opts?: pulumi.CustomResourceOptions) {
         let inputs: pulumi.Inputs = {};
         if (opts && opts.id) {
-            const state: NetworkState = argsOrState as NetworkState | undefined;
+            const state = argsOrState as NetworkState | undefined;
             inputs["attachable"] = state ? state.attachable : undefined;
             inputs["checkDuplicate"] = state ? state.checkDuplicate : undefined;
             inputs["driver"] = state ? state.driver : undefined;
@@ -126,7 +144,14 @@ export class Network extends pulumi.CustomResource {
             inputs["options"] = args ? args.options : undefined;
             inputs["scope"] = undefined /*out*/;
         }
-        super("docker:index/network:Network", name, inputs, opts);
+        if (!opts) {
+            opts = {}
+        }
+
+        if (!opts.version) {
+            opts.version = utilities.getVersion();
+        }
+        super(Network.__pulumiType, name, inputs, opts);
     }
 }
 
@@ -163,7 +188,7 @@ export interface NetworkState {
      * See IPAM config below for
      * details.
      */
-    readonly ipamConfigs?: pulumi.Input<pulumi.Input<{ auxAddress?: pulumi.Input<{[key: string]: any}>, gateway?: pulumi.Input<string>, ipRange?: pulumi.Input<string>, subnet?: pulumi.Input<string> }>[]>;
+    readonly ipamConfigs?: pulumi.Input<pulumi.Input<inputs.NetworkIpamConfig>[]>;
     /**
      * Driver used by the custom IP scheme of the
      * network.
@@ -223,7 +248,7 @@ export interface NetworkArgs {
      * See IPAM config below for
      * details.
      */
-    readonly ipamConfigs?: pulumi.Input<pulumi.Input<{ auxAddress?: pulumi.Input<{[key: string]: any}>, gateway?: pulumi.Input<string>, ipRange?: pulumi.Input<string>, subnet?: pulumi.Input<string> }>[]>;
+    readonly ipamConfigs?: pulumi.Input<pulumi.Input<inputs.NetworkIpamConfig>[]>;
     /**
      * Driver used by the custom IP scheme of the
      * network.

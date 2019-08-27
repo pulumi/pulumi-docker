@@ -6,6 +6,7 @@ import json
 import warnings
 import pulumi
 import pulumi.runtime
+from typing import Union
 from .. import utilities, tables
 
 __config__ = pulumi.Config('docker')
@@ -25,7 +26,7 @@ cert_path = __config__.get('certPath') or utilities.get_env('DOCKER_CERT_PATH')
 Path to directory with Docker TLS config
 """
 
-host = utilities.require_with_default(lambda: __config__.require('host'), (utilities.get_env('DOCKER_HOST') or 'unix:///var/run/docker.sock'))
+host = __config__.get('host') or (utilities.get_env('DOCKER_HOST') or 'unix:///var/run/docker.sock')
 """
 The Docker daemon address
 """

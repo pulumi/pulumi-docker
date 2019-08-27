@@ -10,6 +10,8 @@ import (
 // Creates and destroys a volume in Docker. This can be used alongside
 // [docker\_container](https://www.terraform.io/docs/providers/docker/r/container.html)
 // to prepare volumes that can be shared across containers.
+//
+// > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/volume.html.markdown.
 type Volume struct {
 	s *pulumi.ResourceState
 }

@@ -11,8 +11,10 @@ import (
 // Pulls a Docker image to a given Docker host from a Docker Registry.
 // 
 // This resource will *not* pull new layers of the image automatically unless used in
-// conjunction with [`docker_registry_image`](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
-// data source to update the `pull_triggers` field.
+// conjunction with [`.getRegistryImage`](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
+// data source to update the `pullTriggers` field.
+//
+// > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/image.html.markdown.
 type RemoteImage struct {
 	s *pulumi.ResourceState
 }
@@ -88,14 +90,14 @@ func (r *RemoteImage) Name() *pulumi.StringOutput {
 	return (*pulumi.StringOutput)(r.s.State["name"])
 }
 
-// **Deprecated**, use `pull_triggers` instead.
+// **Deprecated**, use `pullTriggers` instead.
 func (r *RemoteImage) PullTrigger() *pulumi.StringOutput {
 	return (*pulumi.StringOutput)(r.s.State["pullTrigger"])
 }
 
 // List of values which cause an
 // image pull when changed. This is used to store the image digest from the
-// registry when using the `docker_registry_image` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
+// registry when using the `.getRegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
 // to trigger an image update.
 func (r *RemoteImage) PullTriggers() *pulumi.ArrayOutput {
 	return (*pulumi.ArrayOutput)(r.s.State["pullTriggers"])
@@ -110,11 +112,11 @@ type RemoteImageState struct {
 	Latest interface{}
 	// The name of the Docker image, including any tags or SHA256 repo digests.
 	Name interface{}
-	// **Deprecated**, use `pull_triggers` instead.
+	// **Deprecated**, use `pullTriggers` instead.
 	PullTrigger interface{}
 	// List of values which cause an
 	// image pull when changed. This is used to store the image digest from the
-	// registry when using the `docker_registry_image` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
+	// registry when using the `.getRegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
 	// to trigger an image update.
 	PullTriggers interface{}
 }
@@ -127,11 +129,11 @@ type RemoteImageArgs struct {
 	KeepLocally interface{}
 	// The name of the Docker image, including any tags or SHA256 repo digests.
 	Name interface{}
-	// **Deprecated**, use `pull_triggers` instead.
+	// **Deprecated**, use `pullTriggers` instead.
 	PullTrigger interface{}
 	// List of values which cause an
 	// image pull when changed. This is used to store the image digest from the
-	// registry when using the `docker_registry_image` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
+	// registry when using the `.getRegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
 	// to trigger an image update.
 	PullTriggers interface{}
 }

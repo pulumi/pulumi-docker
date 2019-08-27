@@ -2,14 +2,20 @@
 // *** Do not edit by hand unless you're certain you know what you are doing! ***
 
 // Export members:
+export * from "./config";
 export * from "./container";
 export * from "./docker";
+export * from "./getNetwork";
+export * from "./getRegistryImage";
 export * from "./image";
 export * from "./network";
 export * from "./provider";
 export * from "./remoteImage";
+export * from "./secret";
+export * from "./service";
 export * from "./volume";
 
 // Export sub-modules:
 import * as config from "./config/index";
-export {config};
+import * as types from "./types/index";
+export {config, types};
