@@ -51,9 +51,9 @@ class Container(pulumi.CustomResource):
     """
     See Devices below for details.
     
-      * `container_path` (`str`) - The path in the container where the
+      * `containerPath` (`str`) - The path in the container where the
         device will be binded.
-      * `host_path` (`str`) - The path on the host where the device
+      * `hostPath` (`str`) - The path on the host where the device
         is located.
       * `permissions` (`str`) - The cgroup permissions given to the
         container to access the device.
@@ -102,7 +102,7 @@ class Container(pulumi.CustomResource):
     
       * `interval` (`str`)
       * `retries` (`float`)
-      * `start_period` (`str`)
+      * `startPeriod` (`str`)
       * `tests` (`list`)
       * `timeout` (`str`)
     """
@@ -169,26 +169,26 @@ class Container(pulumi.CustomResource):
     """
     See Mounts below for details.
     
-      * `bind_options` (`dict`) - Optional configuration for the `bind` type.
+      * `bindOptions` (`dict`) - Optional configuration for the `bind` type.
     
         * `propagation` (`str`) - A propagation mode with the value.
     
-      * `read_only` (`bool`) - If true, this volume will be readonly.
+      * `readOnly` (`bool`) - If true, this volume will be readonly.
         Defaults to false.
       * `source` (`str`) - The mount source (e.g., a volume name, a host path)
       * `target` (`str`) - The container path.
-      * `tmpfs_options` (`dict`) - Optional configuration for the `tmpf` type.
+      * `tmpfsOptions` (`dict`) - Optional configuration for the `tmpf` type.
     
         * `mode` (`float`) - The permission mode for the tmpfs mount in an integer.
-        * `size_bytes` (`float`) - The size for the tmpfs mount in bytes. 
+        * `sizeBytes` (`float`) - The size for the tmpfs mount in bytes. 
     
       * `type` (`str`) - The mount type: valid values are `bind|volume|tmpfs`.
-      * `volume_options` (`dict`) - Optional configuration for the `volume` type.
+      * `volumeOptions` (`dict`) - Optional configuration for the `volume` type.
     
-        * `driver_name` (`str`)
-        * `driver_options` (`dict`) - Options for the driver.
+        * `driverName` (`str`)
+        * `driverOptions` (`dict`) - Options for the driver.
         * `labels` (`dict`) - Adding labels.
-        * `no_copy` (`bool`) - Whether to populate volume with data from the target.
+        * `noCopy` (`bool`) - Whether to populate volume with data from the target.
     """
     must_run: pulumi.Output[bool]
     name: pulumi.Output[str]
@@ -206,7 +206,7 @@ class Container(pulumi.CustomResource):
       * `ip_address` (`str`) - *Deprecated:* Use `network_data` instead. The IP address of the container's first network it.
       * `ip_prefix_length` (`float`) - *Deprecated:* Use `network_data` instead. The IP prefix length of the container as read from its
         NetworkSettings.
-      * `network_name` (`str`)
+      * `networkName` (`str`)
     """
     network_mode: pulumi.Output[str]
     """
@@ -222,8 +222,8 @@ class Container(pulumi.CustomResource):
     See Networks Advanced below for details. If this block has priority to the deprecated `network_alias` and `network` properties.
     
       * `aliases` (`list`) - The network aliases of the container in the specific network.
-      * `ipv4_address` (`str`) - The IPV4 address of the container in the specific network.
-      * `ipv6_address` (`str`) - The IPV6 address of the container in the specific network.
+      * `ipv4Address` (`str`) - The IPV4 address of the container in the specific network.
+      * `ipv6Address` (`str`) - The IPV6 address of the container in the specific network.
       * `name` (`str`)
     """
     pid_mode: pulumi.Output[str]
@@ -300,15 +300,15 @@ class Container(pulumi.CustomResource):
     """
     See Volumes below for details.
     
-      * `container_path` (`str`) - The path in the container where the
+      * `containerPath` (`str`) - The path in the container where the
         device will be binded.
-      * `from_container` (`str`) - The container where the volume is
+      * `fromContainer` (`str`) - The container where the volume is
         coming from.
-      * `host_path` (`str`) - The path on the host where the device
+      * `hostPath` (`str`) - The path on the host where the device
         is located.
-      * `read_only` (`bool`) - If true, this volume will be readonly.
+      * `readOnly` (`bool`) - If true, this volume will be readonly.
         Defaults to false.
-      * `volume_name` (`str`) - The name of the docker volume which
+      * `volumeName` (`str`) - The name of the docker volume which
         should be mounted.
     """
     def __init__(__self__, resource_name, opts=None, attach=None, capabilities=None, command=None, cpu_set=None, cpu_shares=None, destroy_grace_seconds=None, devices=None, dns=None, dns_opts=None, dns_searches=None, domainname=None, entrypoints=None, envs=None, healthcheck=None, hosts=None, hostname=None, image=None, labels=None, links=None, log_driver=None, log_opts=None, logs=None, max_retry_count=None, memory=None, memory_swap=None, mounts=None, must_run=None, name=None, network_aliases=None, network_mode=None, networks=None, networks_advanced=None, pid_mode=None, ports=None, privileged=None, publish_all_ports=None, restart=None, rm=None, start=None, sysctls=None, tmpfs=None, ulimits=None, uploads=None, user=None, userns_mode=None, volumes=None, __props__=None, __name__=None, __opts__=None):
@@ -385,9 +385,9 @@ class Container(pulumi.CustomResource):
         
         The **devices** object supports the following:
         
-          * `container_path` (`pulumi.Input[str]`) - The path in the container where the
+          * `containerPath` (`pulumi.Input[str]`) - The path in the container where the
             device will be binded.
-          * `host_path` (`pulumi.Input[str]`) - The path on the host where the device
+          * `hostPath` (`pulumi.Input[str]`) - The path on the host where the device
             is located.
           * `permissions` (`pulumi.Input[str]`) - The cgroup permissions given to the
             container to access the device.
@@ -397,7 +397,7 @@ class Container(pulumi.CustomResource):
         
           * `interval` (`pulumi.Input[str]`)
           * `retries` (`pulumi.Input[float]`)
-          * `start_period` (`pulumi.Input[str]`)
+          * `startPeriod` (`pulumi.Input[str]`)
           * `tests` (`pulumi.Input[list]`)
           * `timeout` (`pulumi.Input[str]`)
         
@@ -408,32 +408,32 @@ class Container(pulumi.CustomResource):
         
         The **mounts** object supports the following:
         
-          * `bind_options` (`pulumi.Input[dict]`) - Optional configuration for the `bind` type.
+          * `bindOptions` (`pulumi.Input[dict]`) - Optional configuration for the `bind` type.
         
             * `propagation` (`pulumi.Input[str]`) - A propagation mode with the value.
         
-          * `read_only` (`pulumi.Input[bool]`) - If true, this volume will be readonly.
+          * `readOnly` (`pulumi.Input[bool]`) - If true, this volume will be readonly.
             Defaults to false.
           * `source` (`pulumi.Input[str]`) - The mount source (e.g., a volume name, a host path)
           * `target` (`pulumi.Input[str]`) - The container path.
-          * `tmpfs_options` (`pulumi.Input[dict]`) - Optional configuration for the `tmpf` type.
+          * `tmpfsOptions` (`pulumi.Input[dict]`) - Optional configuration for the `tmpf` type.
         
             * `mode` (`pulumi.Input[float]`) - The permission mode for the tmpfs mount in an integer.
-            * `size_bytes` (`pulumi.Input[float]`) - The size for the tmpfs mount in bytes. 
+            * `sizeBytes` (`pulumi.Input[float]`) - The size for the tmpfs mount in bytes. 
         
           * `type` (`pulumi.Input[str]`) - The mount type: valid values are `bind|volume|tmpfs`.
-          * `volume_options` (`pulumi.Input[dict]`) - Optional configuration for the `volume` type.
+          * `volumeOptions` (`pulumi.Input[dict]`) - Optional configuration for the `volume` type.
         
-            * `driver_name` (`pulumi.Input[str]`)
-            * `driver_options` (`pulumi.Input[dict]`) - Options for the driver.
+            * `driverName` (`pulumi.Input[str]`)
+            * `driverOptions` (`pulumi.Input[dict]`) - Options for the driver.
             * `labels` (`pulumi.Input[dict]`) - Adding labels.
-            * `no_copy` (`pulumi.Input[bool]`) - Whether to populate volume with data from the target.
+            * `noCopy` (`pulumi.Input[bool]`) - Whether to populate volume with data from the target.
         
         The **networks_advanced** object supports the following:
         
           * `aliases` (`pulumi.Input[list]`) - The network aliases of the container in the specific network.
-          * `ipv4_address` (`pulumi.Input[str]`) - The IPV4 address of the container in the specific network.
-          * `ipv6_address` (`pulumi.Input[str]`) - The IPV6 address of the container in the specific network.
+          * `ipv4Address` (`pulumi.Input[str]`) - The IPV4 address of the container in the specific network.
+          * `ipv6Address` (`pulumi.Input[str]`) - The IPV6 address of the container in the specific network.
           * `name` (`pulumi.Input[str]`)
         
         The **ports** object supports the following:
@@ -460,15 +460,15 @@ class Container(pulumi.CustomResource):
         
         The **volumes** object supports the following:
         
-          * `container_path` (`pulumi.Input[str]`) - The path in the container where the
+          * `containerPath` (`pulumi.Input[str]`) - The path in the container where the
             device will be binded.
-          * `from_container` (`pulumi.Input[str]`) - The container where the volume is
+          * `fromContainer` (`pulumi.Input[str]`) - The container where the volume is
             coming from.
-          * `host_path` (`pulumi.Input[str]`) - The path on the host where the device
+          * `hostPath` (`pulumi.Input[str]`) - The path on the host where the device
             is located.
-          * `read_only` (`pulumi.Input[bool]`) - If true, this volume will be readonly.
+          * `readOnly` (`pulumi.Input[bool]`) - If true, this volume will be readonly.
             Defaults to false.
-          * `volume_name` (`pulumi.Input[str]`) - The name of the docker volume which
+          * `volumeName` (`pulumi.Input[str]`) - The name of the docker volume which
             should be mounted.
 
         > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/container.html.markdown.
@@ -638,9 +638,9 @@ class Container(pulumi.CustomResource):
         
         The **devices** object supports the following:
         
-          * `container_path` (`pulumi.Input[str]`) - The path in the container where the
+          * `containerPath` (`pulumi.Input[str]`) - The path in the container where the
             device will be binded.
-          * `host_path` (`pulumi.Input[str]`) - The path on the host where the device
+          * `hostPath` (`pulumi.Input[str]`) - The path on the host where the device
             is located.
           * `permissions` (`pulumi.Input[str]`) - The cgroup permissions given to the
             container to access the device.
@@ -650,7 +650,7 @@ class Container(pulumi.CustomResource):
         
           * `interval` (`pulumi.Input[str]`)
           * `retries` (`pulumi.Input[float]`)
-          * `start_period` (`pulumi.Input[str]`)
+          * `startPeriod` (`pulumi.Input[str]`)
           * `tests` (`pulumi.Input[list]`)
           * `timeout` (`pulumi.Input[str]`)
         
@@ -661,26 +661,26 @@ class Container(pulumi.CustomResource):
         
         The **mounts** object supports the following:
         
-          * `bind_options` (`pulumi.Input[dict]`) - Optional configuration for the `bind` type.
+          * `bindOptions` (`pulumi.Input[dict]`) - Optional configuration for the `bind` type.
         
             * `propagation` (`pulumi.Input[str]`) - A propagation mode with the value.
         
-          * `read_only` (`pulumi.Input[bool]`) - If true, this volume will be readonly.
+          * `readOnly` (`pulumi.Input[bool]`) - If true, this volume will be readonly.
             Defaults to false.
           * `source` (`pulumi.Input[str]`) - The mount source (e.g., a volume name, a host path)
           * `target` (`pulumi.Input[str]`) - The container path.
-          * `tmpfs_options` (`pulumi.Input[dict]`) - Optional configuration for the `tmpf` type.
+          * `tmpfsOptions` (`pulumi.Input[dict]`) - Optional configuration for the `tmpf` type.
         
             * `mode` (`pulumi.Input[float]`) - The permission mode for the tmpfs mount in an integer.
-            * `size_bytes` (`pulumi.Input[float]`) - The size for the tmpfs mount in bytes. 
+            * `sizeBytes` (`pulumi.Input[float]`) - The size for the tmpfs mount in bytes. 
         
           * `type` (`pulumi.Input[str]`) - The mount type: valid values are `bind|volume|tmpfs`.
-          * `volume_options` (`pulumi.Input[dict]`) - Optional configuration for the `volume` type.
+          * `volumeOptions` (`pulumi.Input[dict]`) - Optional configuration for the `volume` type.
         
-            * `driver_name` (`pulumi.Input[str]`)
-            * `driver_options` (`pulumi.Input[dict]`) - Options for the driver.
+            * `driverName` (`pulumi.Input[str]`)
+            * `driverOptions` (`pulumi.Input[dict]`) - Options for the driver.
             * `labels` (`pulumi.Input[dict]`) - Adding labels.
-            * `no_copy` (`pulumi.Input[bool]`) - Whether to populate volume with data from the target.
+            * `noCopy` (`pulumi.Input[bool]`) - Whether to populate volume with data from the target.
         
         The **network_datas** object supports the following:
         
@@ -689,13 +689,13 @@ class Container(pulumi.CustomResource):
           * `ip_address` (`pulumi.Input[str]`) - *Deprecated:* Use `network_data` instead. The IP address of the container's first network it.
           * `ip_prefix_length` (`pulumi.Input[float]`) - *Deprecated:* Use `network_data` instead. The IP prefix length of the container as read from its
             NetworkSettings.
-          * `network_name` (`pulumi.Input[str]`)
+          * `networkName` (`pulumi.Input[str]`)
         
         The **networks_advanced** object supports the following:
         
           * `aliases` (`pulumi.Input[list]`) - The network aliases of the container in the specific network.
-          * `ipv4_address` (`pulumi.Input[str]`) - The IPV4 address of the container in the specific network.
-          * `ipv6_address` (`pulumi.Input[str]`) - The IPV6 address of the container in the specific network.
+          * `ipv4Address` (`pulumi.Input[str]`) - The IPV4 address of the container in the specific network.
+          * `ipv6Address` (`pulumi.Input[str]`) - The IPV6 address of the container in the specific network.
           * `name` (`pulumi.Input[str]`)
         
         The **ports** object supports the following:
@@ -722,15 +722,15 @@ class Container(pulumi.CustomResource):
         
         The **volumes** object supports the following:
         
-          * `container_path` (`pulumi.Input[str]`) - The path in the container where the
+          * `containerPath` (`pulumi.Input[str]`) - The path in the container where the
             device will be binded.
-          * `from_container` (`pulumi.Input[str]`) - The container where the volume is
+          * `fromContainer` (`pulumi.Input[str]`) - The container where the volume is
             coming from.
-          * `host_path` (`pulumi.Input[str]`) - The path on the host where the device
+          * `hostPath` (`pulumi.Input[str]`) - The path on the host where the device
             is located.
-          * `read_only` (`pulumi.Input[bool]`) - If true, this volume will be readonly.
+          * `readOnly` (`pulumi.Input[bool]`) - If true, this volume will be readonly.
             Defaults to false.
-          * `volume_name` (`pulumi.Input[str]`) - The name of the docker volume which
+          * `volumeName` (`pulumi.Input[str]`) - The name of the docker volume which
             should be mounted.
 
         > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/container.html.markdown.

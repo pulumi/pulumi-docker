@@ -34,16 +34,16 @@ class Service(pulumi.CustomResource):
     
         * `name` (`str`) - A random name for the port.
         * `protocol` (`str`) - Protocol that can be used over this port: `tcp|udp|sctp`. Default: `tcp`.
-        * `publish_mode` (`str`) - Represents the mode in which the port is to be published: `ingress|host`
-        * `published_port` (`float`) - The port on the swarm hosts. If not set the value of `target_port` will be used.
-        * `target_port` (`float`) - Port inside the container.
+        * `publishMode` (`str`) - Represents the mode in which the port is to be published: `ingress|host`
+        * `publishedPort` (`float`) - The port on the swarm hosts. If not set the value of `target_port` will be used.
+        * `targetPort` (`float`) - Port inside the container.
     """
     labels: pulumi.Output[dict]
     mode: pulumi.Output[dict]
     """
     The mode of resolution to use for internal load balancing between tasks. `(vip|dnsrr)`. Default: `vip`.
     
-      * `global_` (`bool`)
+      * `global` (`bool`)
       * `replicated` (`dict`)
     
         * `replicas` (`float`)
@@ -57,8 +57,8 @@ class Service(pulumi.CustomResource):
     See RollbackConfig below for details.
     
       * `delay` (`str`)
-      * `failure_action` (`str`)
-      * `max_failure_ratio` (`str`)
+      * `failureAction` (`str`)
+      * `maxFailureRatio` (`str`)
       * `monitor` (`str`)
       * `order` (`str`)
       * `parallelism` (`float`)
@@ -67,18 +67,18 @@ class Service(pulumi.CustomResource):
     """
     See TaskSpec below for details.
     
-      * `container_spec` (`dict`)
+      * `containerSpec` (`dict`)
     
         * `args` (`list`)
         * `commands` (`list`)
         * `configs` (`list`)
     
-          * `config_id` (`str`) - ConfigID represents the ID of the specific config.
-          * `config_name` (`str`) - The name of the config that this references, but internally it is just provided for lookup/display purposes
-          * `file_name` (`str`) - Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
+          * `configId` (`str`) - ConfigID represents the ID of the specific config.
+          * `configName` (`str`) - The name of the config that this references, but internally it is just provided for lookup/display purposes
+          * `fileName` (`str`) - Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
     
         * `dir` (`str`)
-        * `dns_config` (`dict`)
+        * `dnsConfig` (`dict`)
     
           * `nameservers` (`list`)
           * `options` (`list`) - The options for the logging driver, e.g.
@@ -90,7 +90,7 @@ class Service(pulumi.CustomResource):
     
           * `interval` (`str`)
           * `retries` (`float`)
-          * `start_period` (`str`)
+          * `startPeriod` (`str`)
           * `tests` (`list`)
           * `timeout` (`str`)
     
@@ -105,34 +105,34 @@ class Service(pulumi.CustomResource):
         * `labels` (`dict`)
         * `mounts` (`list`)
     
-          * `bind_options` (`dict`)
+          * `bindOptions` (`dict`)
     
             * `propagation` (`str`)
     
-          * `read_only` (`bool`)
+          * `readOnly` (`bool`)
           * `source` (`str`)
           * `target` (`str`)
-          * `tmpfs_options` (`dict`)
+          * `tmpfsOptions` (`dict`)
     
             * `mode` (`float`) - The mode of resolution to use for internal load balancing between tasks. `(vip|dnsrr)`. Default: `vip`.
-            * `size_bytes` (`float`)
+            * `sizeBytes` (`float`)
     
           * `type` (`str`)
-          * `volume_options` (`dict`)
+          * `volumeOptions` (`dict`)
     
-            * `driver_name` (`str`)
-            * `driver_options` (`dict`)
+            * `driverName` (`str`)
+            * `driverOptions` (`dict`)
             * `labels` (`dict`)
-            * `no_copy` (`bool`)
+            * `noCopy` (`bool`)
     
         * `privileges` (`dict`)
     
-          * `credential_spec` (`dict`)
+          * `credentialSpec` (`dict`)
     
             * `file` (`str`)
             * `registry` (`str`)
     
-          * `se_linux_context` (`dict`)
+          * `seLinuxContext` (`dict`)
     
             * `disable` (`bool`)
             * `level` (`str`)
@@ -140,18 +140,18 @@ class Service(pulumi.CustomResource):
             * `type` (`str`)
             * `user` (`str`)
     
-        * `read_only` (`bool`)
+        * `readOnly` (`bool`)
         * `secrets` (`list`)
     
-          * `file_name` (`str`) - Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
-          * `secret_id` (`str`)
-          * `secret_name` (`str`)
+          * `fileName` (`str`) - Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
+          * `secretId` (`str`)
+          * `secretName` (`str`)
     
-        * `stop_grace_period` (`str`)
-        * `stop_signal` (`str`)
+        * `stopGracePeriod` (`str`)
+        * `stopSignal` (`str`)
         * `user` (`str`)
     
-      * `force_update` (`float`)
+      * `forceUpdate` (`float`)
       * `log_driver` (`dict`)
     
         * `name` (`str`) - A random name for the port.
@@ -172,29 +172,29 @@ class Service(pulumi.CustomResource):
     
         * `limits` (`dict`)
     
-          * `generic_resources` (`dict`)
+          * `genericResources` (`dict`)
     
-            * `discrete_resources_specs` (`list`)
-            * `named_resources_specs` (`list`)
+            * `discreteResourcesSpecs` (`list`)
+            * `namedResourcesSpecs` (`list`)
     
-          * `memory_bytes` (`float`)
-          * `nano_cpus` (`float`)
+          * `memoryBytes` (`float`)
+          * `nanoCpus` (`float`)
     
         * `reservation` (`dict`)
     
-          * `generic_resources` (`dict`)
+          * `genericResources` (`dict`)
     
-            * `discrete_resources_specs` (`list`)
-            * `named_resources_specs` (`list`)
+            * `discreteResourcesSpecs` (`list`)
+            * `namedResourcesSpecs` (`list`)
     
-          * `memory_bytes` (`float`)
-          * `nano_cpus` (`float`)
+          * `memoryBytes` (`float`)
+          * `nanoCpus` (`float`)
     
-      * `restart_policy` (`dict`)
+      * `restartPolicy` (`dict`)
     
         * `condition` (`str`)
         * `delay` (`str`)
-        * `max_attempts` (`float`)
+        * `maxAttempts` (`float`)
         * `window` (`str`)
     
       * `runtime` (`str`)
@@ -204,8 +204,8 @@ class Service(pulumi.CustomResource):
     See UpdateConfig below for details.
     
       * `delay` (`str`)
-      * `failure_action` (`str`)
-      * `max_failure_ratio` (`str`)
+      * `failureAction` (`str`)
+      * `maxFailureRatio` (`str`)
       * `monitor` (`str`)
       * `order` (`str`)
       * `parallelism` (`float`)
@@ -243,13 +243,13 @@ class Service(pulumi.CustomResource):
         
             * `name` (`pulumi.Input[str]`) - A random name for the port.
             * `protocol` (`pulumi.Input[str]`) - Protocol that can be used over this port: `tcp|udp|sctp`. Default: `tcp`.
-            * `publish_mode` (`pulumi.Input[str]`) - Represents the mode in which the port is to be published: `ingress|host`
-            * `published_port` (`pulumi.Input[float]`) - The port on the swarm hosts. If not set the value of `target_port` will be used.
-            * `target_port` (`pulumi.Input[float]`) - Port inside the container.
+            * `publishMode` (`pulumi.Input[str]`) - Represents the mode in which the port is to be published: `ingress|host`
+            * `publishedPort` (`pulumi.Input[float]`) - The port on the swarm hosts. If not set the value of `target_port` will be used.
+            * `targetPort` (`pulumi.Input[float]`) - Port inside the container.
         
         The **mode** object supports the following:
         
-          * `global_` (`pulumi.Input[bool]`)
+          * `global` (`pulumi.Input[bool]`)
           * `replicated` (`pulumi.Input[dict]`)
         
             * `replicas` (`pulumi.Input[float]`)
@@ -257,26 +257,26 @@ class Service(pulumi.CustomResource):
         The **rollback_config** object supports the following:
         
           * `delay` (`pulumi.Input[str]`)
-          * `failure_action` (`pulumi.Input[str]`)
-          * `max_failure_ratio` (`pulumi.Input[str]`)
+          * `failureAction` (`pulumi.Input[str]`)
+          * `maxFailureRatio` (`pulumi.Input[str]`)
           * `monitor` (`pulumi.Input[str]`)
           * `order` (`pulumi.Input[str]`)
           * `parallelism` (`pulumi.Input[float]`)
         
         The **task_spec** object supports the following:
         
-          * `container_spec` (`pulumi.Input[dict]`)
+          * `containerSpec` (`pulumi.Input[dict]`)
         
             * `args` (`pulumi.Input[list]`)
             * `commands` (`pulumi.Input[list]`)
             * `configs` (`pulumi.Input[list]`)
         
-              * `config_id` (`pulumi.Input[str]`) - ConfigID represents the ID of the specific config.
-              * `config_name` (`pulumi.Input[str]`) - The name of the config that this references, but internally it is just provided for lookup/display purposes
-              * `file_name` (`pulumi.Input[str]`) - Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
+              * `configId` (`pulumi.Input[str]`) - ConfigID represents the ID of the specific config.
+              * `configName` (`pulumi.Input[str]`) - The name of the config that this references, but internally it is just provided for lookup/display purposes
+              * `fileName` (`pulumi.Input[str]`) - Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
         
             * `dir` (`pulumi.Input[str]`)
-            * `dns_config` (`pulumi.Input[dict]`)
+            * `dnsConfig` (`pulumi.Input[dict]`)
         
               * `nameservers` (`pulumi.Input[list]`)
               * `options` (`pulumi.Input[list]`) - The options for the logging driver, e.g.
@@ -288,7 +288,7 @@ class Service(pulumi.CustomResource):
         
               * `interval` (`pulumi.Input[str]`)
               * `retries` (`pulumi.Input[float]`)
-              * `start_period` (`pulumi.Input[str]`)
+              * `startPeriod` (`pulumi.Input[str]`)
               * `tests` (`pulumi.Input[list]`)
               * `timeout` (`pulumi.Input[str]`)
         
@@ -303,34 +303,34 @@ class Service(pulumi.CustomResource):
             * `labels` (`pulumi.Input[dict]`)
             * `mounts` (`pulumi.Input[list]`)
         
-              * `bind_options` (`pulumi.Input[dict]`)
+              * `bindOptions` (`pulumi.Input[dict]`)
         
                 * `propagation` (`pulumi.Input[str]`)
         
-              * `read_only` (`pulumi.Input[bool]`)
+              * `readOnly` (`pulumi.Input[bool]`)
               * `source` (`pulumi.Input[str]`)
               * `target` (`pulumi.Input[str]`)
-              * `tmpfs_options` (`pulumi.Input[dict]`)
+              * `tmpfsOptions` (`pulumi.Input[dict]`)
         
                 * `mode` (`pulumi.Input[float]`) - The mode of resolution to use for internal load balancing between tasks. `(vip|dnsrr)`. Default: `vip`.
-                * `size_bytes` (`pulumi.Input[float]`)
+                * `sizeBytes` (`pulumi.Input[float]`)
         
               * `type` (`pulumi.Input[str]`)
-              * `volume_options` (`pulumi.Input[dict]`)
+              * `volumeOptions` (`pulumi.Input[dict]`)
         
-                * `driver_name` (`pulumi.Input[str]`)
-                * `driver_options` (`pulumi.Input[dict]`)
+                * `driverName` (`pulumi.Input[str]`)
+                * `driverOptions` (`pulumi.Input[dict]`)
                 * `labels` (`pulumi.Input[dict]`)
-                * `no_copy` (`pulumi.Input[bool]`)
+                * `noCopy` (`pulumi.Input[bool]`)
         
             * `privileges` (`pulumi.Input[dict]`)
         
-              * `credential_spec` (`pulumi.Input[dict]`)
+              * `credentialSpec` (`pulumi.Input[dict]`)
         
                 * `file` (`pulumi.Input[str]`)
                 * `registry` (`pulumi.Input[str]`)
         
-              * `se_linux_context` (`pulumi.Input[dict]`)
+              * `seLinuxContext` (`pulumi.Input[dict]`)
         
                 * `disable` (`pulumi.Input[bool]`)
                 * `level` (`pulumi.Input[str]`)
@@ -338,18 +338,18 @@ class Service(pulumi.CustomResource):
                 * `type` (`pulumi.Input[str]`)
                 * `user` (`pulumi.Input[str]`)
         
-            * `read_only` (`pulumi.Input[bool]`)
+            * `readOnly` (`pulumi.Input[bool]`)
             * `secrets` (`pulumi.Input[list]`)
         
-              * `file_name` (`pulumi.Input[str]`) - Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
-              * `secret_id` (`pulumi.Input[str]`)
-              * `secret_name` (`pulumi.Input[str]`)
+              * `fileName` (`pulumi.Input[str]`) - Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
+              * `secretId` (`pulumi.Input[str]`)
+              * `secretName` (`pulumi.Input[str]`)
         
-            * `stop_grace_period` (`pulumi.Input[str]`)
-            * `stop_signal` (`pulumi.Input[str]`)
+            * `stopGracePeriod` (`pulumi.Input[str]`)
+            * `stopSignal` (`pulumi.Input[str]`)
             * `user` (`pulumi.Input[str]`)
         
-          * `force_update` (`pulumi.Input[float]`)
+          * `forceUpdate` (`pulumi.Input[float]`)
           * `log_driver` (`pulumi.Input[dict]`)
         
             * `name` (`pulumi.Input[str]`) - A random name for the port.
@@ -370,29 +370,29 @@ class Service(pulumi.CustomResource):
         
             * `limits` (`pulumi.Input[dict]`)
         
-              * `generic_resources` (`pulumi.Input[dict]`)
+              * `genericResources` (`pulumi.Input[dict]`)
         
-                * `discrete_resources_specs` (`pulumi.Input[list]`)
-                * `named_resources_specs` (`pulumi.Input[list]`)
+                * `discreteResourcesSpecs` (`pulumi.Input[list]`)
+                * `namedResourcesSpecs` (`pulumi.Input[list]`)
         
-              * `memory_bytes` (`pulumi.Input[float]`)
-              * `nano_cpus` (`pulumi.Input[float]`)
+              * `memoryBytes` (`pulumi.Input[float]`)
+              * `nanoCpus` (`pulumi.Input[float]`)
         
             * `reservation` (`pulumi.Input[dict]`)
         
-              * `generic_resources` (`pulumi.Input[dict]`)
+              * `genericResources` (`pulumi.Input[dict]`)
         
-                * `discrete_resources_specs` (`pulumi.Input[list]`)
-                * `named_resources_specs` (`pulumi.Input[list]`)
+                * `discreteResourcesSpecs` (`pulumi.Input[list]`)
+                * `namedResourcesSpecs` (`pulumi.Input[list]`)
         
-              * `memory_bytes` (`pulumi.Input[float]`)
-              * `nano_cpus` (`pulumi.Input[float]`)
+              * `memoryBytes` (`pulumi.Input[float]`)
+              * `nanoCpus` (`pulumi.Input[float]`)
         
-          * `restart_policy` (`pulumi.Input[dict]`)
+          * `restartPolicy` (`pulumi.Input[dict]`)
         
             * `condition` (`pulumi.Input[str]`)
             * `delay` (`pulumi.Input[str]`)
-            * `max_attempts` (`pulumi.Input[float]`)
+            * `maxAttempts` (`pulumi.Input[float]`)
             * `window` (`pulumi.Input[str]`)
         
           * `runtime` (`pulumi.Input[str]`)
@@ -400,8 +400,8 @@ class Service(pulumi.CustomResource):
         The **update_config** object supports the following:
         
           * `delay` (`pulumi.Input[str]`)
-          * `failure_action` (`pulumi.Input[str]`)
-          * `max_failure_ratio` (`pulumi.Input[str]`)
+          * `failureAction` (`pulumi.Input[str]`)
+          * `maxFailureRatio` (`pulumi.Input[str]`)
           * `monitor` (`pulumi.Input[str]`)
           * `order` (`pulumi.Input[str]`)
           * `parallelism` (`pulumi.Input[float]`)
@@ -478,13 +478,13 @@ class Service(pulumi.CustomResource):
         
             * `name` (`pulumi.Input[str]`) - A random name for the port.
             * `protocol` (`pulumi.Input[str]`) - Protocol that can be used over this port: `tcp|udp|sctp`. Default: `tcp`.
-            * `publish_mode` (`pulumi.Input[str]`) - Represents the mode in which the port is to be published: `ingress|host`
-            * `published_port` (`pulumi.Input[float]`) - The port on the swarm hosts. If not set the value of `target_port` will be used.
-            * `target_port` (`pulumi.Input[float]`) - Port inside the container.
+            * `publishMode` (`pulumi.Input[str]`) - Represents the mode in which the port is to be published: `ingress|host`
+            * `publishedPort` (`pulumi.Input[float]`) - The port on the swarm hosts. If not set the value of `target_port` will be used.
+            * `targetPort` (`pulumi.Input[float]`) - Port inside the container.
         
         The **mode** object supports the following:
         
-          * `global_` (`pulumi.Input[bool]`)
+          * `global` (`pulumi.Input[bool]`)
           * `replicated` (`pulumi.Input[dict]`)
         
             * `replicas` (`pulumi.Input[float]`)
@@ -492,26 +492,26 @@ class Service(pulumi.CustomResource):
         The **rollback_config** object supports the following:
         
           * `delay` (`pulumi.Input[str]`)
-          * `failure_action` (`pulumi.Input[str]`)
-          * `max_failure_ratio` (`pulumi.Input[str]`)
+          * `failureAction` (`pulumi.Input[str]`)
+          * `maxFailureRatio` (`pulumi.Input[str]`)
           * `monitor` (`pulumi.Input[str]`)
           * `order` (`pulumi.Input[str]`)
           * `parallelism` (`pulumi.Input[float]`)
         
         The **task_spec** object supports the following:
         
-          * `container_spec` (`pulumi.Input[dict]`)
+          * `containerSpec` (`pulumi.Input[dict]`)
         
             * `args` (`pulumi.Input[list]`)
             * `commands` (`pulumi.Input[list]`)
             * `configs` (`pulumi.Input[list]`)
         
-              * `config_id` (`pulumi.Input[str]`) - ConfigID represents the ID of the specific config.
-              * `config_name` (`pulumi.Input[str]`) - The name of the config that this references, but internally it is just provided for lookup/display purposes
-              * `file_name` (`pulumi.Input[str]`) - Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
+              * `configId` (`pulumi.Input[str]`) - ConfigID represents the ID of the specific config.
+              * `configName` (`pulumi.Input[str]`) - The name of the config that this references, but internally it is just provided for lookup/display purposes
+              * `fileName` (`pulumi.Input[str]`) - Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
         
             * `dir` (`pulumi.Input[str]`)
-            * `dns_config` (`pulumi.Input[dict]`)
+            * `dnsConfig` (`pulumi.Input[dict]`)
         
               * `nameservers` (`pulumi.Input[list]`)
               * `options` (`pulumi.Input[list]`) - The options for the logging driver, e.g.
@@ -523,7 +523,7 @@ class Service(pulumi.CustomResource):
         
               * `interval` (`pulumi.Input[str]`)
               * `retries` (`pulumi.Input[float]`)
-              * `start_period` (`pulumi.Input[str]`)
+              * `startPeriod` (`pulumi.Input[str]`)
               * `tests` (`pulumi.Input[list]`)
               * `timeout` (`pulumi.Input[str]`)
         
@@ -538,34 +538,34 @@ class Service(pulumi.CustomResource):
             * `labels` (`pulumi.Input[dict]`)
             * `mounts` (`pulumi.Input[list]`)
         
-              * `bind_options` (`pulumi.Input[dict]`)
+              * `bindOptions` (`pulumi.Input[dict]`)
         
                 * `propagation` (`pulumi.Input[str]`)
         
-              * `read_only` (`pulumi.Input[bool]`)
+              * `readOnly` (`pulumi.Input[bool]`)
               * `source` (`pulumi.Input[str]`)
               * `target` (`pulumi.Input[str]`)
-              * `tmpfs_options` (`pulumi.Input[dict]`)
+              * `tmpfsOptions` (`pulumi.Input[dict]`)
         
                 * `mode` (`pulumi.Input[float]`) - The mode of resolution to use for internal load balancing between tasks. `(vip|dnsrr)`. Default: `vip`.
-                * `size_bytes` (`pulumi.Input[float]`)
+                * `sizeBytes` (`pulumi.Input[float]`)
         
               * `type` (`pulumi.Input[str]`)
-              * `volume_options` (`pulumi.Input[dict]`)
+              * `volumeOptions` (`pulumi.Input[dict]`)
         
-                * `driver_name` (`pulumi.Input[str]`)
-                * `driver_options` (`pulumi.Input[dict]`)
+                * `driverName` (`pulumi.Input[str]`)
+                * `driverOptions` (`pulumi.Input[dict]`)
                 * `labels` (`pulumi.Input[dict]`)
-                * `no_copy` (`pulumi.Input[bool]`)
+                * `noCopy` (`pulumi.Input[bool]`)
         
             * `privileges` (`pulumi.Input[dict]`)
         
-              * `credential_spec` (`pulumi.Input[dict]`)
+              * `credentialSpec` (`pulumi.Input[dict]`)
         
                 * `file` (`pulumi.Input[str]`)
                 * `registry` (`pulumi.Input[str]`)
         
-              * `se_linux_context` (`pulumi.Input[dict]`)
+              * `seLinuxContext` (`pulumi.Input[dict]`)
         
                 * `disable` (`pulumi.Input[bool]`)
                 * `level` (`pulumi.Input[str]`)
@@ -573,18 +573,18 @@ class Service(pulumi.CustomResource):
                 * `type` (`pulumi.Input[str]`)
                 * `user` (`pulumi.Input[str]`)
         
-            * `read_only` (`pulumi.Input[bool]`)
+            * `readOnly` (`pulumi.Input[bool]`)
             * `secrets` (`pulumi.Input[list]`)
         
-              * `file_name` (`pulumi.Input[str]`) - Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
-              * `secret_id` (`pulumi.Input[str]`)
-              * `secret_name` (`pulumi.Input[str]`)
+              * `fileName` (`pulumi.Input[str]`) - Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
+              * `secretId` (`pulumi.Input[str]`)
+              * `secretName` (`pulumi.Input[str]`)
         
-            * `stop_grace_period` (`pulumi.Input[str]`)
-            * `stop_signal` (`pulumi.Input[str]`)
+            * `stopGracePeriod` (`pulumi.Input[str]`)
+            * `stopSignal` (`pulumi.Input[str]`)
             * `user` (`pulumi.Input[str]`)
         
-          * `force_update` (`pulumi.Input[float]`)
+          * `forceUpdate` (`pulumi.Input[float]`)
           * `log_driver` (`pulumi.Input[dict]`)
         
             * `name` (`pulumi.Input[str]`) - A random name for the port.
@@ -605,29 +605,29 @@ class Service(pulumi.CustomResource):
         
             * `limits` (`pulumi.Input[dict]`)
         
-              * `generic_resources` (`pulumi.Input[dict]`)
+              * `genericResources` (`pulumi.Input[dict]`)
         
-                * `discrete_resources_specs` (`pulumi.Input[list]`)
-                * `named_resources_specs` (`pulumi.Input[list]`)
+                * `discreteResourcesSpecs` (`pulumi.Input[list]`)
+                * `namedResourcesSpecs` (`pulumi.Input[list]`)
         
-              * `memory_bytes` (`pulumi.Input[float]`)
-              * `nano_cpus` (`pulumi.Input[float]`)
+              * `memoryBytes` (`pulumi.Input[float]`)
+              * `nanoCpus` (`pulumi.Input[float]`)
         
             * `reservation` (`pulumi.Input[dict]`)
         
-              * `generic_resources` (`pulumi.Input[dict]`)
+              * `genericResources` (`pulumi.Input[dict]`)
         
-                * `discrete_resources_specs` (`pulumi.Input[list]`)
-                * `named_resources_specs` (`pulumi.Input[list]`)
+                * `discreteResourcesSpecs` (`pulumi.Input[list]`)
+                * `namedResourcesSpecs` (`pulumi.Input[list]`)
         
-              * `memory_bytes` (`pulumi.Input[float]`)
-              * `nano_cpus` (`pulumi.Input[float]`)
+              * `memoryBytes` (`pulumi.Input[float]`)
+              * `nanoCpus` (`pulumi.Input[float]`)
         
-          * `restart_policy` (`pulumi.Input[dict]`)
+          * `restartPolicy` (`pulumi.Input[dict]`)
         
             * `condition` (`pulumi.Input[str]`)
             * `delay` (`pulumi.Input[str]`)
-            * `max_attempts` (`pulumi.Input[float]`)
+            * `maxAttempts` (`pulumi.Input[float]`)
             * `window` (`pulumi.Input[str]`)
         
           * `runtime` (`pulumi.Input[str]`)
@@ -635,8 +635,8 @@ class Service(pulumi.CustomResource):
         The **update_config** object supports the following:
         
           * `delay` (`pulumi.Input[str]`)
-          * `failure_action` (`pulumi.Input[str]`)
-          * `max_failure_ratio` (`pulumi.Input[str]`)
+          * `failureAction` (`pulumi.Input[str]`)
+          * `maxFailureRatio` (`pulumi.Input[str]`)
           * `monitor` (`pulumi.Input[str]`)
           * `order` (`pulumi.Input[str]`)
           * `parallelism` (`pulumi.Input[float]`)

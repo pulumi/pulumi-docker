@@ -23,7 +23,7 @@ class Provider(pulumi.ProviderResource):
         The **registry_auth** object supports the following:
         
           * `address` (`pulumi.Input[str]`)
-          * `config_file` (`pulumi.Input[str]`)
+          * `configFile` (`pulumi.Input[str]`)
           * `password` (`pulumi.Input[str]`)
           * `username` (`pulumi.Input[str]`)
 
