@@ -2,6 +2,8 @@
 // *** Do not edit by hand unless you're certain you know what you are doing! ***
 
 import * as pulumi from "@pulumi/pulumi";
+import * as inputs from "./types/input";
+import * as outputs from "./types/output";
 import * as utilities from "./utilities";
 
 /**
@@ -15,9 +17,11 @@ import * as utilities from "./utilities";
  * import * as pulumi from "@pulumi/pulumi";
  * import * as docker from "@pulumi/docker";
  * 
- * // Creates a docker volume "shared_volume".
- * const sharedVolume = new docker.Volume("shared_volume", {});
+ * // Creates a docker volume "sharedVolume".
+ * const sharedVolume = new docker.Volume("sharedVolume", {});
  * ```
+ *
+ * > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/volume.html.markdown.
  */
 export class Volume extends pulumi.CustomResource {
     /**
@@ -32,24 +36,38 @@ export class Volume extends pulumi.CustomResource {
         return new Volume(name, <any>state, { ...opts, id: id });
     }
 
+    /** @internal */
+    public static readonly __pulumiType = 'docker:index/volume:Volume';
+
+    /**
+     * Returns true if the given object is an instance of Volume.  This is designed to work even
+     * when multiple copies of the Pulumi SDK have been loaded into the same process.
+     */
+    public static isInstance(obj: any): obj is Volume {
+        if (obj === undefined || obj === null) {
+            return false;
+        }
+        return obj['__pulumiType'] === Volume.__pulumiType;
+    }
+
     /**
      * Driver type for the volume (defaults to local).
      */
-    public readonly driver: pulumi.Output<string>;
+    public readonly driver!: pulumi.Output<string>;
     /**
      * Options specific to the driver.
      */
-    public readonly driverOpts: pulumi.Output<{[key: string]: any} | undefined>;
+    public readonly driverOpts!: pulumi.Output<{[key: string]: any} | undefined>;
     /**
      * User-defined key/value metadata.
      */
-    public readonly labels: pulumi.Output<{[key: string]: any} | undefined>;
-    public /*out*/ readonly mountpoint: pulumi.Output<string>;
+    public readonly labels!: pulumi.Output<{[key: string]: any} | undefined>;
+    public /*out*/ readonly mountpoint!: pulumi.Output<string>;
     /**
      * The name of the Docker volume (generated if not
      * provided).
      */
-    public readonly name: pulumi.Output<string>;
+    public readonly name!: pulumi.Output<string>;
 
     /**
      * Create a Volume resource with the given unique name, arguments, and options.
@@ -62,7 +80,7 @@ export class Volume extends pulumi.CustomResource {
     constructor(name: string, argsOrState?: VolumeArgs | VolumeState, opts?: pulumi.CustomResourceOptions) {
         let inputs: pulumi.Inputs = {};
         if (opts && opts.id) {
-            const state: VolumeState = argsOrState as VolumeState | undefined;
+            const state = argsOrState as VolumeState | undefined;
             inputs["driver"] = state ? state.driver : undefined;
             inputs["driverOpts"] = state ? state.driverOpts : undefined;
             inputs["labels"] = state ? state.labels : undefined;
@@ -76,7 +94,14 @@ export class Volume extends pulumi.CustomResource {
             inputs["name"] = args ? args.name : undefined;
             inputs["mountpoint"] = undefined /*out*/;
         }
-        super("docker:index/volume:Volume", name, inputs, opts);
+        if (!opts) {
+            opts = {}
+        }
+
+        if (!opts.version) {
+            opts.version = utilities.getVersion();
+        }
+        super(Volume.__pulumiType, name, inputs, opts);
     }
 }
 

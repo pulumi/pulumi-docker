@@ -6,3 +6,5 @@ vendor/
 **/yarn-error.log
 yarn.lock
 venv/
+.idea/
+*.iml

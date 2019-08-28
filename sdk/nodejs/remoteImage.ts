@@ -2,14 +2,16 @@
 // *** Do not edit by hand unless you're certain you know what you are doing! ***
 
 import * as pulumi from "@pulumi/pulumi";
+import * as inputs from "./types/input";
+import * as outputs from "./types/output";
 import * as utilities from "./utilities";
 
 /**
  * Pulls a Docker image to a given Docker host from a Docker Registry.
  * 
  * This resource will *not* pull new layers of the image automatically unless used in
- * conjunction with [`docker_registry_image`](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
- * data source to update the `pull_triggers` field.
+ * conjunction with [`docker..getRegistryImage`](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
+ * data source to update the `pullTriggers` field.
  * 
  * ## Example Usage
  * 
@@ -18,7 +20,9 @@ import * as utilities from "./utilities";
  * import * as docker from "@pulumi/docker";
  * 
  * // Find the latest Ubuntu precise image.
- * const ubuntu = new docker.RemoteImage("ubuntu", {});
+ * const ubuntu = new docker.RemoteImage("ubuntu", {
+ *     name: "ubuntu:precise",
+ * });
  * ```
  * 
  * ### Dynamic image
@@ -27,13 +31,16 @@ import * as utilities from "./utilities";
  * import * as pulumi from "@pulumi/pulumi";
  * import * as docker from "@pulumi/docker";
  * 
- * const ubuntuRegistryImage = pulumi.output(docker.RegistryImage({
+ * const ubuntuRegistryImage = docker.getRegistryImage({
  *     name: "ubuntu:precise",
- * }));
+ * });
  * const ubuntuRemoteImage = new docker.RemoteImage("ubuntu", {
+ *     name: ubuntuRegistryImage.name,
  *     pullTriggers: [ubuntuRegistryImage.sha256Digest],
  * });
  * ```
+ *
+ * > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/image.html.markdown.
  */
 export class RemoteImage extends pulumi.CustomResource {
     /**
@@ -48,28 +55,42 @@ export class RemoteImage extends pulumi.CustomResource {
         return new RemoteImage(name, <any>state, { ...opts, id: id });
     }
 
+    /** @internal */
+    public static readonly __pulumiType = 'docker:index/remoteImage:RemoteImage';
+
+    /**
+     * Returns true if the given object is an instance of RemoteImage.  This is designed to work even
+     * when multiple copies of the Pulumi SDK have been loaded into the same process.
+     */
+    public static isInstance(obj: any): obj is RemoteImage {
+        if (obj === undefined || obj === null) {
+            return false;
+        }
+        return obj['__pulumiType'] === RemoteImage.__pulumiType;
+    }
+
     /**
      * If true, then the Docker image won't be
      * deleted on destroy operation. If this is false, it will delete the image from
      * the docker local storage on destroy operation.
      */
-    public readonly keepLocally: pulumi.Output<boolean | undefined>;
-    public /*out*/ readonly latest: pulumi.Output<string>;
+    public readonly keepLocally!: pulumi.Output<boolean | undefined>;
+    public /*out*/ readonly latest!: pulumi.Output<string>;
     /**
      * The name of the Docker image, including any tags or SHA256 repo digests.
      */
-    public readonly name: pulumi.Output<string>;
+    public readonly name!: pulumi.Output<string>;
     /**
-     * **Deprecated**, use `pull_triggers` instead.
+     * **Deprecated**, use `pullTriggers` instead.
      */
-    public readonly pullTrigger: pulumi.Output<string | undefined>;
+    public readonly pullTrigger!: pulumi.Output<string | undefined>;
     /**
      * List of values which cause an
      * image pull when changed. This is used to store the image digest from the
-     * registry when using the `docker_registry_image` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
+     * registry when using the `docker..getRegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
      * to trigger an image update.
      */
-    public readonly pullTriggers: pulumi.Output<string[] | undefined>;
+    public readonly pullTriggers!: pulumi.Output<string[] | undefined>;
 
     /**
      * Create a RemoteImage resource with the given unique name, arguments, and options.
@@ -82,7 +103,7 @@ export class RemoteImage extends pulumi.CustomResource {
     constructor(name: string, argsOrState?: RemoteImageArgs | RemoteImageState, opts?: pulumi.CustomResourceOptions) {
         let inputs: pulumi.Inputs = {};
         if (opts && opts.id) {
-            const state: RemoteImageState = argsOrState as RemoteImageState | undefined;
+            const state = argsOrState as RemoteImageState | undefined;
             inputs["keepLocally"] = state ? state.keepLocally : undefined;
             inputs["latest"] = state ? state.latest : undefined;
             inputs["name"] = state ? state.name : undefined;
@@ -99,7 +120,14 @@ export class RemoteImage extends pulumi.CustomResource {
             inputs["pullTriggers"] = args ? args.pullTriggers : undefined;
             inputs["latest"] = undefined /*out*/;
         }
-        super("docker:index/remoteImage:RemoteImage", name, inputs, opts);
+        if (!opts) {
+            opts = {}
+        }
+
+        if (!opts.version) {
+            opts.version = utilities.getVersion();
+        }
+        super(RemoteImage.__pulumiType, name, inputs, opts);
     }
 }
 
@@ -119,13 +147,13 @@ export interface RemoteImageState {
      */
     readonly name?: pulumi.Input<string>;
     /**
-     * **Deprecated**, use `pull_triggers` instead.
+     * **Deprecated**, use `pullTriggers` instead.
      */
     readonly pullTrigger?: pulumi.Input<string>;
     /**
      * List of values which cause an
      * image pull when changed. This is used to store the image digest from the
-     * registry when using the `docker_registry_image` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
+     * registry when using the `docker..getRegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
      * to trigger an image update.
      */
     readonly pullTriggers?: pulumi.Input<pulumi.Input<string>[]>;
@@ -146,13 +174,13 @@ export interface RemoteImageArgs {
      */
     readonly name: pulumi.Input<string>;
     /**
-     * **Deprecated**, use `pull_triggers` instead.
+     * **Deprecated**, use `pullTriggers` instead.
      */
     readonly pullTrigger?: pulumi.Input<string>;
     /**
      * List of values which cause an
      * image pull when changed. This is used to store the image digest from the
-     * registry when using the `docker_registry_image` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
+     * registry when using the `docker..getRegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
      * to trigger an image update.
      */
     readonly pullTriggers?: pulumi.Input<pulumi.Input<string>[]>;

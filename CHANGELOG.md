@@ -1,8 +1,10 @@
 ## 0.17.4 (Unreleased)
 
+- Update to commit 8a5b696b491c of the Docker Terraform Provider.
+
 ## 0.17.3 (Released August 20, 2019)
 
-- Fix image tag name collission during build time (https://github.com/pulumi/pulumi-docker/pull/90)
+- Fix image tag name collision during build time (https://github.com/pulumi/pulumi-docker/pull/90)
 - Update dependency to latest version of `pulumi`
 
 ## 0.17.2 (Released July 19, 2019)

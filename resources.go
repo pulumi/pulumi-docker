@@ -49,6 +49,12 @@ func dockerResource(mod string, res string) tokens.Type {
 	return dockerType(mod+"/"+fn, res)
 }
 
+// dockerDataSource manufactures a data source toeken given a module and resource name.
+func dockerDataSource(mod string, res string) tokens.ModuleMember {
+	fn := string(unicode.ToLower(rune(res[0]))) + res[1:]
+	return dockerMember(mod+"/"+fn, res)
+}
+
 func Provider() tfbridge.ProviderInfo {
 	p := docker.Provider().(*schema.Provider)
 	prov := tfbridge.ProviderInfo{
@@ -91,6 +97,7 @@ func Provider() tfbridge.ProviderInfo {
 			},
 		},
 		Resources: map[string]*tfbridge.ResourceInfo{
+			"docker_config": {Tok: dockerResource(dockerMod, "Config")},
 			"docker_container": {
 				Tok:                 dockerResource(dockerMod, "Container"),
 				DeleteBeforeReplace: true,
@@ -108,7 +115,13 @@ func Provider() tfbridge.ProviderInfo {
 			},
 			"docker_image":   {Tok: dockerResource(dockerMod, "RemoteImage")},
 			"docker_network": {Tok: dockerResource(dockerMod, "Network")},
+			"docker_secret":  {Tok: dockerResource(dockerMod, "Secret")},
+			"docker_service": {Tok: dockerResource(dockerMod, "Service")},
 			"docker_volume":  {Tok: dockerResource(dockerMod, "Volume")},
+		},
+		DataSources: map[string]*tfbridge.DataSourceInfo{
+			"docker_network":        {Tok: dockerDataSource(dockerMod, "getNetwork")},
+			"docker_registry_image": {Tok: dockerDataSource(dockerMod, "getRegistryImage")},
 		},
 		JavaScript: &tfbridge.JavaScriptInfo{
 			Dependencies: map[string]string{
@@ -128,7 +141,7 @@ func Provider() tfbridge.ProviderInfo {
 		},
 		Python: &tfbridge.PythonInfo{
 			Requires: map[string]string{
-				"pulumi": ">=0.17.1,<2.0.0",
+				"pulumi": ">=1.0.0b4,<1.0.1",
 			},
 		},
 	}

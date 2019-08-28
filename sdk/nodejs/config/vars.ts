@@ -21,7 +21,7 @@ export let certPath: string | undefined = __config.get("certPath") || utilities.
 /**
  * The Docker daemon address
  */
-export let host: string = utilities.requireWithDefault(() => __config.require("host"), (utilities.getEnv("DOCKER_HOST") || "unix:///var/run/docker.sock"));
+export let host: string | undefined = __config.get("host") || (utilities.getEnv("DOCKER_HOST") || "unix:///var/run/docker.sock");
 /**
  * PEM-encoded content of Docker client private key
  */

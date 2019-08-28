@@ -53,7 +53,6 @@ func GetHost(ctx *pulumi.Context) string {
 	if dv, ok := getEnvOrDefault("unix:///var/run/docker.sock", nil, "DOCKER_HOST").(string); ok {
 		return dv
 	}
-	panic(err.Error())
 	return v
 }
 

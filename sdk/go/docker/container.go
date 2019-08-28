@@ -9,6 +9,8 @@ import (
 )
 
 // Manages the lifecycle of a Docker container.
+//
+// > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/container.html.markdown.
 type Container struct {
 	s *pulumi.ResourceState
 }
@@ -46,6 +48,7 @@ func NewContainer(ctx *pulumi.Context,
 		inputs["maxRetryCount"] = nil
 		inputs["memory"] = nil
 		inputs["memorySwap"] = nil
+		inputs["mounts"] = nil
 		inputs["mustRun"] = nil
 		inputs["name"] = nil
 		inputs["networkAliases"] = nil
@@ -59,6 +62,8 @@ func NewContainer(ctx *pulumi.Context,
 		inputs["restart"] = nil
 		inputs["rm"] = nil
 		inputs["start"] = nil
+		inputs["sysctls"] = nil
+		inputs["tmpfs"] = nil
 		inputs["ulimits"] = nil
 		inputs["uploads"] = nil
 		inputs["user"] = nil
@@ -90,6 +95,7 @@ func NewContainer(ctx *pulumi.Context,
 		inputs["maxRetryCount"] = args.MaxRetryCount
 		inputs["memory"] = args.Memory
 		inputs["memorySwap"] = args.MemorySwap
+		inputs["mounts"] = args.Mounts
 		inputs["mustRun"] = args.MustRun
 		inputs["name"] = args.Name
 		inputs["networkAliases"] = args.NetworkAliases
@@ -103,6 +109,8 @@ func NewContainer(ctx *pulumi.Context,
 		inputs["restart"] = args.Restart
 		inputs["rm"] = args.Rm
 		inputs["start"] = args.Start
+		inputs["sysctls"] = args.Sysctls
+		inputs["tmpfs"] = args.Tmpfs
 		inputs["ulimits"] = args.Ulimits
 		inputs["uploads"] = args.Uploads
 		inputs["user"] = args.User
@@ -160,6 +168,7 @@ func GetContainer(ctx *pulumi.Context,
 		inputs["maxRetryCount"] = state.MaxRetryCount
 		inputs["memory"] = state.Memory
 		inputs["memorySwap"] = state.MemorySwap
+		inputs["mounts"] = state.Mounts
 		inputs["mustRun"] = state.MustRun
 		inputs["name"] = state.Name
 		inputs["networkAliases"] = state.NetworkAliases
@@ -174,6 +183,8 @@ func GetContainer(ctx *pulumi.Context,
 		inputs["restart"] = state.Restart
 		inputs["rm"] = state.Rm
 		inputs["start"] = state.Start
+		inputs["sysctls"] = state.Sysctls
+		inputs["tmpfs"] = state.Tmpfs
 		inputs["ulimits"] = state.Ulimits
 		inputs["uploads"] = state.Uploads
 		inputs["user"] = state.User
@@ -278,12 +289,12 @@ func (r *Container) Envs() *pulumi.ArrayOutput {
 	return (*pulumi.ArrayOutput)(r.s.State["envs"])
 }
 
-// The exit code of the container if its execution is done (`must_run` must be disabled).
+// The exit code of the container if its execution is done (`mustRun` must be disabled).
 func (r *Container) ExitCode() *pulumi.IntOutput {
 	return (*pulumi.IntOutput)(r.s.State["exitCode"])
 }
 
-// *Deprecated:* Use `network_data` instead. The network gateway of the container as read from its
+// *Deprecated:* Use `networkData` instead. The network gateway of the container as read from its
 // NetworkSettings.
 func (r *Container) Gateway() *pulumi.StringOutput {
 	return (*pulumi.StringOutput)(r.s.State["gateway"])
@@ -305,25 +316,24 @@ func (r *Container) Hostname() *pulumi.StringOutput {
 }
 
 // The ID of the image to back this container.
-// The easiest way to get this value is to use the `docker_image` resource
+// The easiest way to get this value is to use the `.RemoteImage` resource
 // as is shown in the example above.
 func (r *Container) Image() *pulumi.StringOutput {
 	return (*pulumi.StringOutput)(r.s.State["image"])
 }
 
-// *Deprecated:* Use `network_data` instead. The IP address of the container's first network it.
+// *Deprecated:* Use `networkData` instead. The IP address of the container's first network it.
 func (r *Container) IpAddress() *pulumi.StringOutput {
 	return (*pulumi.StringOutput)(r.s.State["ipAddress"])
 }
 
-// *Deprecated:* Use `network_data` instead. The IP prefix length of the container as read from its
+// *Deprecated:* Use `networkData` instead. The IP prefix length of the container as read from its
 // NetworkSettings.
 func (r *Container) IpPrefixLength() *pulumi.IntOutput {
 	return (*pulumi.IntOutput)(r.s.State["ipPrefixLength"])
 }
 
-// Key/value pairs to set as labels on the
-// container.
+// Adding labels.
 func (r *Container) Labels() *pulumi.MapOutput {
 	return (*pulumi.MapOutput)(r.s.State["labels"])
 }
@@ -362,15 +372,15 @@ func (r *Container) Memory() *pulumi.IntOutput {
 	return (*pulumi.IntOutput)(r.s.State["memory"])
 }
 
-// The total memory limit (memory + swap) for the
-// container in MBs. This setting may compute to `-1` after `terraform apply` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
 func (r *Container) MemorySwap() *pulumi.IntOutput {
 	return (*pulumi.IntOutput)(r.s.State["memorySwap"])
 }
 
-// If true, then the Docker container will be
-// kept running. If false, then as long as the container exists, Terraform
-// assumes it is successful.
+// See Mounts below for details.
+func (r *Container) Mounts() *pulumi.ArrayOutput {
+	return (*pulumi.ArrayOutput)(r.s.State["mounts"])
+}
+
 func (r *Container) MustRun() *pulumi.BoolOutput {
 	return (*pulumi.BoolOutput)(r.s.State["mustRun"])
 }
@@ -379,7 +389,7 @@ func (r *Container) Name() *pulumi.StringOutput {
 	return (*pulumi.StringOutput)(r.s.State["name"])
 }
 
-// Network aliases of the container for user-defined networks only. *Deprecated:* use `networks_advanced` instead.
+// Network aliases of the container for user-defined networks only. *Deprecated:* use `networksAdvanced` instead.
 func (r *Container) NetworkAliases() *pulumi.ArrayOutput {
 	return (*pulumi.ArrayOutput)(r.s.State["networkAliases"])
 }
@@ -396,12 +406,12 @@ func (r *Container) NetworkMode() *pulumi.StringOutput {
 }
 
 // Id of the networks in which the
-// container is. *Deprecated:* use `networks_advanced` instead.
+// container is. *Deprecated:* use `networksAdvanced` instead.
 func (r *Container) Networks() *pulumi.ArrayOutput {
 	return (*pulumi.ArrayOutput)(r.s.State["networks"])
 }
 
-// See Networks Advanced below for details. If this block has priority to the deprecated `network_alias` and `network` properties.
+// See Networks Advanced below for details. If this block has priority to the deprecated `networkAlias` and `network` properties.
 func (r *Container) NetworksAdvanced() *pulumi.ArrayOutput {
 	return (*pulumi.ArrayOutput)(r.s.State["networksAdvanced"])
 }
@@ -432,8 +442,6 @@ func (r *Container) Restart() *pulumi.StringOutput {
 	return (*pulumi.StringOutput)(r.s.State["restart"])
 }
 
-// If true, then the container will be automatically removed after his execution. Terraform
-// won't check this container after creation.
 func (r *Container) Rm() *pulumi.BoolOutput {
 	return (*pulumi.BoolOutput)(r.s.State["rm"])
 }
@@ -442,6 +450,16 @@ func (r *Container) Rm() *pulumi.BoolOutput {
 // started after creation. If false, then the container is only created.
 func (r *Container) Start() *pulumi.BoolOutput {
 	return (*pulumi.BoolOutput)(r.s.State["start"])
+}
+
+// A map of kernel parameters (sysctls) to set in the container.
+func (r *Container) Sysctls() *pulumi.MapOutput {
+	return (*pulumi.MapOutput)(r.s.State["sysctls"])
+}
+
+// A map of container directories which should be replaced by `tmpfs mounts`, and their corresponding mount options.
+func (r *Container) Tmpfs() *pulumi.MapOutput {
+	return (*pulumi.MapOutput)(r.s.State["tmpfs"])
 }
 
 // See Ulimits below for
@@ -510,9 +528,9 @@ type ContainerState struct {
 	Entrypoints interface{}
 	// Environment variables to set.
 	Envs interface{}
-	// The exit code of the container if its execution is done (`must_run` must be disabled).
+	// The exit code of the container if its execution is done (`mustRun` must be disabled).
 	ExitCode interface{}
-	// *Deprecated:* Use `network_data` instead. The network gateway of the container as read from its
+	// *Deprecated:* Use `networkData` instead. The network gateway of the container as read from its
 	// NetworkSettings.
 	Gateway interface{}
 	// See Healthcheck below for details.
@@ -522,16 +540,15 @@ type ContainerState struct {
 	// Hostname of the container.
 	Hostname interface{}
 	// The ID of the image to back this container.
-	// The easiest way to get this value is to use the `docker_image` resource
+	// The easiest way to get this value is to use the `.RemoteImage` resource
 	// as is shown in the example above.
 	Image interface{}
-	// *Deprecated:* Use `network_data` instead. The IP address of the container's first network it.
+	// *Deprecated:* Use `networkData` instead. The IP address of the container's first network it.
 	IpAddress interface{}
-	// *Deprecated:* Use `network_data` instead. The IP prefix length of the container as read from its
+	// *Deprecated:* Use `networkData` instead. The IP prefix length of the container as read from its
 	// NetworkSettings.
 	IpPrefixLength interface{}
-	// Key/value pairs to set as labels on the
-	// container.
+	// Adding labels.
 	Labels interface{}
 	// Set of links for link based
 	// connectivity between containers that are running on the same host.
@@ -549,15 +566,12 @@ type ContainerState struct {
 	MaxRetryCount interface{}
 	// The memory limit for the container in MBs.
 	Memory interface{}
-	// The total memory limit (memory + swap) for the
-	// container in MBs. This setting may compute to `-1` after `terraform apply` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
 	MemorySwap interface{}
-	// If true, then the Docker container will be
-	// kept running. If false, then as long as the container exists, Terraform
-	// assumes it is successful.
+	// See Mounts below for details.
+	Mounts interface{}
 	MustRun interface{}
 	Name interface{}
-	// Network aliases of the container for user-defined networks only. *Deprecated:* use `networks_advanced` instead.
+	// Network aliases of the container for user-defined networks only. *Deprecated:* use `networksAdvanced` instead.
 	NetworkAliases interface{}
 	// (Map of a block) The IP addresses of the container on each
 	// network. Key are the network names, values are the IP addresses.
@@ -565,9 +579,9 @@ type ContainerState struct {
 	// Network mode of the container.
 	NetworkMode interface{}
 	// Id of the networks in which the
-	// container is. *Deprecated:* use `networks_advanced` instead.
+	// container is. *Deprecated:* use `networksAdvanced` instead.
 	Networks interface{}
-	// See Networks Advanced below for details. If this block has priority to the deprecated `network_alias` and `network` properties.
+	// See Networks Advanced below for details. If this block has priority to the deprecated `networkAlias` and `network` properties.
 	NetworksAdvanced interface{}
 	// The PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
 	PidMode interface{}
@@ -580,12 +594,14 @@ type ContainerState struct {
 	// The restart policy for the container. Must be
 	// one of "no", "on-failure", "always", "unless-stopped".
 	Restart interface{}
-	// If true, then the container will be automatically removed after his execution. Terraform
-	// won't check this container after creation.
 	Rm interface{}
 	// If true, then the Docker container will be
 	// started after creation. If false, then the container is only created.
 	Start interface{}
+	// A map of kernel parameters (sysctls) to set in the container.
+	Sysctls interface{}
+	// A map of container directories which should be replaced by `tmpfs mounts`, and their corresponding mount options.
+	Tmpfs interface{}
 	// See Ulimits below for
 	// details.
 	Ulimits interface{}
@@ -642,11 +658,10 @@ type ContainerArgs struct {
 	// Hostname of the container.
 	Hostname interface{}
 	// The ID of the image to back this container.
-	// The easiest way to get this value is to use the `docker_image` resource
+	// The easiest way to get this value is to use the `.RemoteImage` resource
 	// as is shown in the example above.
 	Image interface{}
-	// Key/value pairs to set as labels on the
-	// container.
+	// Adding labels.
 	Labels interface{}
 	// Set of links for link based
 	// connectivity between containers that are running on the same host.
@@ -664,22 +679,19 @@ type ContainerArgs struct {
 	MaxRetryCount interface{}
 	// The memory limit for the container in MBs.
 	Memory interface{}
-	// The total memory limit (memory + swap) for the
-	// container in MBs. This setting may compute to `-1` after `terraform apply` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
 	MemorySwap interface{}
-	// If true, then the Docker container will be
-	// kept running. If false, then as long as the container exists, Terraform
-	// assumes it is successful.
+	// See Mounts below for details.
+	Mounts interface{}
 	MustRun interface{}
 	Name interface{}
-	// Network aliases of the container for user-defined networks only. *Deprecated:* use `networks_advanced` instead.
+	// Network aliases of the container for user-defined networks only. *Deprecated:* use `networksAdvanced` instead.
 	NetworkAliases interface{}
 	// Network mode of the container.
 	NetworkMode interface{}
 	// Id of the networks in which the
-	// container is. *Deprecated:* use `networks_advanced` instead.
+	// container is. *Deprecated:* use `networksAdvanced` instead.
 	Networks interface{}
-	// See Networks Advanced below for details. If this block has priority to the deprecated `network_alias` and `network` properties.
+	// See Networks Advanced below for details. If this block has priority to the deprecated `networkAlias` and `network` properties.
 	NetworksAdvanced interface{}
 	// The PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
 	PidMode interface{}
@@ -692,12 +704,14 @@ type ContainerArgs struct {
 	// The restart policy for the container. Must be
 	// one of "no", "on-failure", "always", "unless-stopped".
 	Restart interface{}
-	// If true, then the container will be automatically removed after his execution. Terraform
-	// won't check this container after creation.
 	Rm interface{}
 	// If true, then the Docker container will be
 	// started after creation. If false, then the container is only created.
 	Start interface{}
+	// A map of kernel parameters (sysctls) to set in the container.
+	Sysctls interface{}
+	// A map of container directories which should be replaced by `tmpfs mounts`, and their corresponding mount options.
+	Tmpfs interface{}
 	// See Ulimits below for
 	// details.
 	Ulimits interface{}

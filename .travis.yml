@@ -1,7 +1,7 @@
 # It may be tempting to add parens around each individual clause in this expression, but Travis then builds pushes anyway
 if: branch = master OR branch =~ ^features/ OR branch =~ ^release/ OR tag IS present
 language: go
-go: 1.11
+go: 1.12
 sudo: true # give us 7.5GB and >2 bursted cores.
 git:
     depth: false
@@ -26,5 +26,3 @@ after_failure:
     - ${PULUMI_SCRIPTS}/ci/upload-failed-tests
 notifications:
     webhooks: https://ufci1w66n3.execute-api.us-west-2.amazonaws.com/stage/travis
-env:
-    - TF2PULUMI_VERSION=0.5.0

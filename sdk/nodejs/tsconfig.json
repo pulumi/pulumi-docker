@@ -5,18 +5,31 @@
         "module": "commonjs",
         "moduleResolution": "node",
         "declaration": true,
-        "sourceMap": true
+        "sourceMap": true,
+        "stripInternal": true,
+        "experimentalDecorators": true,
+        "noFallthroughCasesInSwitch": true,
+        "forceConsistentCasingInFileNames": true,
+        "strict": true
     },
     "files": [
+        "config.ts",
         "config/index.ts",
         "config/vars.ts",
         "container.ts",
         "docker.ts",
+        "getNetwork.ts",
+        "getRegistryImage.ts",
         "image.ts",
         "index.ts",
         "network.ts",
         "provider.ts",
         "remoteImage.ts",
+        "secret.ts",
+        "service.ts",
+        "types/index.ts",
+        "types/input.ts",
+        "types/output.ts",
         "utilities.ts",
         "volume.ts"
     ]

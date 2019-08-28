@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import * as pulumi from "@pulumi/pulumi";
-import { ResourceError } from "@pulumi/pulumi/errors";
+import {ResourceError} from "@pulumi/pulumi/errors";
 import * as utils from "./utils";
 
 import * as child_process from "child_process";
@@ -105,8 +105,7 @@ function useDockerPasswordStdin(logResource: pulumi.Resource) {
             // features we want to use.
 
             pulumi.log.debug(`'docker version' => ${dockerVersionString}`, logResource);
-        }
-        catch (err) {
+        } catch (err) {
             throw new ResourceError("No 'docker' command available on PATH: Please install to use container 'build' mode.", logResource);
         }
 
@@ -115,8 +114,7 @@ function useDockerPasswordStdin(logResource: pulumi.Resource) {
             const versionData: any = JSON.parse(dockerVersionString!);
             const clientVersion: string = versionData.Client.Version;
             return semver.gte(clientVersion, "17.07.0", true);
-        }
-        catch (err) {
+        } catch (err) {
             pulumi.log.info(`Could not process Docker version (${err})`, logResource);
         }
 
@@ -158,22 +156,22 @@ export function buildAndPushImage(
     connectToRegistry?: () => pulumi.Input<Registry>): pulumi.Output<string> {
 
     return pulumi.all([pathOrBuild, repositoryUrl])
-                 .apply(async ([pathOrBuildVal, repositoryUrlVal]) => {
+        .apply(async ([pathOrBuildVal, repositoryUrlVal]) => {
 
-        // Give an initial message indicating what we're about to do.  That way, if anything
-        // takes a while, the user has an idea about what's going on.
-        logEphemeral("Starting docker build and push...", logResource);
+            // Give an initial message indicating what we're about to do.  That way, if anything
+            // takes a while, the user has an idea about what's going on.
+            logEphemeral("Starting docker build and push...", logResource);
 
-        const result = await buildAndPushImageWorkerAsync(
-            imageName, pathOrBuildVal, repositoryUrlVal, logResource, connectToRegistry);
+            const result = await buildAndPushImageWorkerAsync(
+                imageName, pathOrBuildVal, repositoryUrlVal, logResource, connectToRegistry);
 
-        // If we got here, then building/pushing didn't throw any errors.  Update the status bar
-        // indicating that things worked properly.  That way, the info bar isn't stuck showing the very
-        // last thing printed by some subcommand we launched.
-        logEphemeral("Successfully pushed to docker", logResource);
+            // If we got here, then building/pushing didn't throw any errors.  Update the status bar
+            // indicating that things worked properly.  That way, the info bar isn't stuck showing the very
+            // last thing printed by some subcommand we launched.
+            logEphemeral("Successfully pushed to docker", logResource);
 
-        return result;
-    });
+            return result;
+        });
 }
 
 function logEphemeral(message: string, logResource: pulumi.Resource) {
@@ -187,7 +185,7 @@ async function buildAndPushImageWorkerAsync(
     logResource: pulumi.Resource,
     connectToRegistry: (() => pulumi.Input<Registry>) | undefined): Promise<string> {
 
-    const { tag: repositoryUrlTag } = utils.getImageNameAndTag(repositoryUrl);
+    const {tag: repositoryUrlTag} = utils.getImageNameAndTag(repositoryUrl);
     if (repositoryUrlTag) {
         throw new Error(`[repositoryUrl] should not contain a tag: ${repositoryUrlTag}`);
     }
@@ -226,12 +224,12 @@ async function buildAndPushImageWorkerAsync(
     let cacheFrom = Promise.resolve<string[] | undefined>(undefined);
     if (pullFromCache) {
         const dockerBuild = <pulumi.UnwrappedObject<DockerBuild>>pathOrBuild;
-        const cacheFromParam = typeof dockerBuild.cacheFrom === "boolean" ? {} : dockerBuild.cacheFrom;
+        const cacheFromParam = (typeof dockerBuild.cacheFrom === "boolean" ? {} : dockerBuild.cacheFrom) || {};
         cacheFrom = pullCacheAsync(baseImageName, cacheFromParam, repositoryUrl, logResource);
     }
 
     // Next, build the image.
-    const { imageId, stages } = await buildImageAsync(baseImageName, pathOrBuild, logResource, cacheFrom);
+    const {imageId, stages} = await buildImageAsync(baseImageName, pathOrBuild, logResource, cacheFrom);
     if (imageId === undefined) {
         throw new Error("Internal error: docker build did not produce an imageId.");
     }
@@ -314,7 +312,7 @@ async function pullCacheAsync(
         // That's fine, just move onto the next stage.  Also, pass along a flag saying that we
         // should print that error as a warning instead.  We don't want the update to succeed but
         // the user to then get a nasty "error:" message at the end.
-        const { code } = await runCommandThatCanFail(
+        const {code} = await runCommandThatCanFail(
             "docker", ["pull", image], logResource,
             /*reportFullCommand:*/ true, /*reportErrorAsWarning:*/ true);
         if (code) {
@@ -356,8 +354,8 @@ async function buildImageAsync(
 
     logEphemeral(
         `Building container image '${imageName}': context=${build.context}` +
-            (build.dockerfile ? `, dockerfile=${build.dockerfile}` : "") +
-            (build.args ? `, args=${JSON.stringify(build.args)}` : ""), logResource);
+        (build.dockerfile ? `, dockerfile=${build.dockerfile}` : "") +
+        (build.args ? `, args=${JSON.stringify(build.args)}` : ""), logResource);
 
     // If the container build specified build stages to cache, build each in turn.
     const stages = [];
@@ -377,8 +375,8 @@ async function buildImageAsync(
     const inspectResult = await runCommandThatMustSucceed(
         "docker", ["image", "inspect", "-f", "{{.Id}}", imageName], logResource);
     if (!inspectResult) {
-       throw new ResourceError(
-           `No digest available for image ${imageName}`, logResource);
+        throw new ResourceError(
+            `No digest available for image ${imageName}`, logResource);
     }
 
     // From https://docs.docker.com/registry/spec/api/#content-digests
@@ -392,7 +390,7 @@ async function buildImageAsync(
     const colonIndex = imageId.lastIndexOf(":");
     imageId = colonIndex < 0 ? imageId : imageId.substr(colonIndex + 1);
 
-    return { imageId, stages };
+    return {imageId, stages};
 }
 
 async function dockerBuild(
@@ -403,19 +401,19 @@ async function dockerBuild(
     target?: string): Promise<void> {
 
     // Prepare the build arguments.
-    const buildArgs: string[] = [ "build" ];
+    const buildArgs: string[] = ["build"];
     if (build.dockerfile) {
-        buildArgs.push(...[ "-f", build.dockerfile ]); // add a custom Dockerfile location.
+        buildArgs.push(...["-f", build.dockerfile]); // add a custom Dockerfile location.
     }
     if (build.args) {
         for (const arg of Object.keys(build.args)) {
-            buildArgs.push(...[ "--build-arg", `${arg}=${build.args[arg]}` ]);
+            buildArgs.push(...["--build-arg", `${arg}=${build.args[arg]}`]);
         }
     }
     if (build.cacheFrom) {
         const cacheFromImages = await cacheFrom;
         if (cacheFromImages && cacheFromImages.length) {
-            buildArgs.push(...[ "--cache-from", cacheFromImages.join() ]);
+            buildArgs.push(...["--cache-from", cacheFromImages.join()]);
         }
     }
     if (build.extraOptions) {
@@ -423,9 +421,9 @@ async function dockerBuild(
     }
     buildArgs.push(build.context!); // push the docker build context onto the path.
 
-    buildArgs.push(...[ "-t", imageName ]); // tag the image with the chosen name.
+    buildArgs.push(...["-t", imageName]); // tag the image with the chosen name.
     if (target) {
-        buildArgs.push(...[ "--target", target ]);
+        buildArgs.push(...["--target", target]);
     }
 
     await runCommandThatMustSucceed("docker", buildArgs, logResource, undefined, undefined, build.env);
@@ -443,7 +441,7 @@ interface LoginResult {
 const loginResults: LoginResult[] = [];
 
 function loginToRegistry(registry: pulumi.Unwrap<Registry>, logResource: pulumi.Resource): Promise<void> {
-    const { registry: registryName, username, password } = registry;
+    const {registry: registryName, username, password} = registry;
 
     // See if we've issued an outstanding requests to login into this registry.  If so, just
     // await the results of that login request.  Otherwise, create a new request and keep it
@@ -455,10 +453,9 @@ function loginToRegistry(registry: pulumi.Unwrap<Registry>, logResource: pulumi.
         // to relinquish control of this thread-of-execution yet.  We want to ensure that
         // we first update `loginResults` with our record object so that any future executions
         // through this method see that the login was kicked off and can wait on that.
-        loginResult = { registryName, username, loginCommand: loginAsync() };
+        loginResult = {registryName, username, loginCommand: loginAsync()};
         loginResults.push(loginResult);
-    }
-    else {
+    } else {
         logEphemeral(`Reusing existing login for ${username}@${registryName}`, logResource);
     }
 
@@ -473,8 +470,7 @@ function loginToRegistry(registry: pulumi.Unwrap<Registry>, logResource: pulumi.
             await runCommandThatMustSucceed(
                 "docker", ["login", "-u", username, "--password-stdin", registryName],
                 logResource, /*reportFullCommandLine*/ false, password);
-        }
-        else {
+        } else {
             await runCommandThatMustSucceed(
                 "docker", ["login", "-u", username, "-p", password, registryName],
                 logResource, /*reportFullCommandLine*/ false);
@@ -483,9 +479,9 @@ function loginToRegistry(registry: pulumi.Unwrap<Registry>, logResource: pulumi.
 }
 
 async function tagAndPushImageAsync(
-        imageName: string, repositoryUrl: string,
-        tag: string | undefined, imageId: string | undefined,
-        logResource: pulumi.Resource): Promise<void> {
+    imageName: string, repositoryUrl: string,
+    tag: string | undefined, imageId: string | undefined,
+    logResource: pulumi.Resource): Promise<void> {
 
     // Ensure we have a unique target name for this image, and tag and push to that unique target.
     await doTagAndPushAsync(createTaggedImageName(repositoryUrl, tag, imageId));
@@ -517,7 +513,7 @@ function getCommandLineMessage(
     cmd: string, args: string[], reportFullCommandLine: boolean, env?: Record<string, string>) {
 
     const argString = reportFullCommandLine ? args.join(" ") : args[0];
-    const envString = Object.keys(env || {}).map(k => `${k}=${env[k]}`).join(" ");
+    const envString = env === undefined ? "" : Object.keys(env).map(k => `${k}=${env[k]}`).join(" ");
     return `'${envString} ${cmd} ${argString}'`;
 }
 
@@ -536,9 +532,9 @@ async function runCommandThatMustSucceed(
     logResource: pulumi.Resource,
     reportFullCommandLine: boolean = true,
     stdin?: string,
-    env?: {[name: string]: string}): Promise<string> {
+    env?: { [name: string]: string }): Promise<string> {
 
-    const { code, stdout } = await runCommandThatCanFail(
+    const {code, stdout} = await runCommandThatCanFail(
         cmd, args, logResource, reportFullCommandLine, /*reportErrorAsWarning:*/ false, stdin, env);
 
     if (code !== 0) {
@@ -575,7 +571,7 @@ async function runCommandThatCanFail(
     reportFullCommandLine: boolean,
     reportErrorAsWarning: boolean,
     stdin?: string,
-    env?: {[name: string]: string}): Promise<CommandResult> {
+    env?: { [name: string]: string }): Promise<CommandResult> {
 
     // Let the user ephemerally know the command we're going to execute.
     logEphemeral(`Executing ${getCommandLineMessage(cmd, args, reportFullCommandLine, env)}`, logResource);
@@ -596,7 +592,7 @@ async function runCommandThatCanFail(
     const streamID = Math.floor(Math.random() * (1 << 30));
 
     return new Promise<CommandResult>((resolve, reject) => {
-        const p = child_process.spawn(cmd, args, { env });
+        const p = child_process.spawn(cmd, args, {env});
 
         // We store the results from stdout in memory and will return them as a string.
         let stdOutChunks: Buffer[] = [];
@@ -675,8 +671,7 @@ async function runCommandThatCanFail(
                 if (code && !reportErrorAsWarning) {
                     // Command returned non-zero code.  Treat these stderr messages as an error.
                     pulumi.log.error(stderr, logResource, streamID);
-                }
-                else {
+                } else {
                     // command succeeded.  These were just warning.
                     pulumi.log.warn(stderr, logResource, streamID);
                 }
@@ -690,7 +685,7 @@ async function runCommandThatCanFail(
                 logEphemeral(getFailureMessage(cmd, args, reportFullCommandLine, code), logResource);
             }
 
-            resolve({ code, stdout });
+            resolve({code, stdout});
         }
     });
 }

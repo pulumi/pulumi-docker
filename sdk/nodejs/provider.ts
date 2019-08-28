@@ -2,15 +2,33 @@
 // *** Do not edit by hand unless you're certain you know what you are doing! ***
 
 import * as pulumi from "@pulumi/pulumi";
+import * as inputs from "./types/input";
+import * as outputs from "./types/output";
 import * as utilities from "./utilities";
 
 /**
  * The provider type for the docker package. By default, resources use package-wide configuration
  * settings, however an explicit `Provider` instance may be created and passed during resource
  * construction to achieve fine-grained programmatic control over provider settings. See the
- * [documentation](https://pulumi.io/reference/programming-model.html#providers) for more information.
+ * [documentation](https://www.pulumi.com/docs/reference/programming-model/#providers) for more information.
+ *
+ * > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/index.html.markdown.
  */
 export class Provider extends pulumi.ProviderResource {
+    /** @internal */
+    public static readonly __pulumiType = 'docker';
+
+    /**
+     * Returns true if the given object is an instance of Provider.  This is designed to work even
+     * when multiple copies of the Pulumi SDK have been loaded into the same process.
+     */
+    public static isInstance(obj: any): obj is Provider {
+        if (obj === undefined || obj === null) {
+            return false;
+        }
+        return obj['__pulumiType'] === Provider.__pulumiType;
+    }
+
 
     /**
      * Create a Provider resource with the given unique name, arguments, and options.
@@ -29,7 +47,14 @@ export class Provider extends pulumi.ProviderResource {
             inputs["keyMaterial"] = (args ? args.keyMaterial : undefined) || utilities.getEnv("DOCKER_KEY_MATERIAL");
             inputs["registryAuth"] = pulumi.output(args ? args.registryAuth : undefined).apply(JSON.stringify);
         }
-        super("docker", name, inputs, opts);
+        if (!opts) {
+            opts = {}
+        }
+
+        if (!opts.version) {
+            opts.version = utilities.getVersion();
+        }
+        super(Provider.__pulumiType, name, inputs, opts);
     }
 }
 
@@ -57,5 +82,5 @@ export interface ProviderArgs {
      * PEM-encoded content of Docker client private key
      */
     readonly keyMaterial?: pulumi.Input<string>;
-    readonly registryAuth?: pulumi.Input<pulumi.Input<{ address: pulumi.Input<string>, configFile?: pulumi.Input<string>, password?: pulumi.Input<string>, username?: pulumi.Input<string> }>[]>;
+    readonly registryAuth?: pulumi.Input<pulumi.Input<inputs.ProviderRegistryAuth>[]>;
 }
