@@ -40,9 +40,9 @@ class Network(pulumi.CustomResource):
     See IPAM config below for
     details.
     
-      * `aux_address` (`dict`)
+      * `auxAddress` (`dict`)
       * `gateway` (`str`)
-      * `ip_range` (`str`)
+      * `ipRange` (`str`)
       * `subnet` (`str`)
     """
     ipam_driver: pulumi.Output[str]
@@ -100,9 +100,9 @@ class Network(pulumi.CustomResource):
         
         The **ipam_configs** object supports the following:
         
-          * `aux_address` (`pulumi.Input[dict]`)
+          * `auxAddress` (`pulumi.Input[dict]`)
           * `gateway` (`pulumi.Input[str]`)
-          * `ip_range` (`pulumi.Input[str]`)
+          * `ipRange` (`pulumi.Input[str]`)
           * `subnet` (`pulumi.Input[str]`)
 
         > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/network.html.markdown.
@@ -174,9 +174,9 @@ class Network(pulumi.CustomResource):
         
         The **ipam_configs** object supports the following:
         
-          * `aux_address` (`pulumi.Input[dict]`)
+          * `auxAddress` (`pulumi.Input[dict]`)
           * `gateway` (`pulumi.Input[str]`)
-          * `ip_range` (`pulumi.Input[str]`)
+          * `ipRange` (`pulumi.Input[str]`)
           * `subnet` (`pulumi.Input[str]`)
 
         > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/network.html.markdown.

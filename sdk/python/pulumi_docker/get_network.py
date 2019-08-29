@@ -70,9 +70,9 @@ def get_network(id=None,ipam_configs=None,name=None,opts=None):
     
     The **ipam_configs** object supports the following:
     
-      * `aux_address` (`dict`)
+      * `auxAddress` (`dict`)
       * `gateway` (`str`)
-      * `ip_range` (`str`)
+      * `ipRange` (`str`)
       * `subnet` (`str`)
 
     > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/d/network.html.markdown.
@@ -83,7 +83,7 @@ def get_network(id=None,ipam_configs=None,name=None,opts=None):
     __args__['ipamConfigs'] = ipam_configs
     __args__['name'] = name
     if opts is None:
-        opts = pulumi.ResourceOptions()
+        opts = pulumi.InvokeOptions()
     if opts.version is None:
         opts.version = utilities.get_version()
     __ret__ = pulumi.runtime.invoke('docker:index/getNetwork:getNetwork', __args__, opts=opts).value
