@@ -2,6 +2,7 @@
 
 - Update to commit 8a5b696b491c of the Docker Terraform Provider.
 - Upgrade pulumi-terraform to 3f206601e7
+- Upgrade to Pulumi v1.0.0
 
 ## 0.17.3 (Released August 20, 2019)
 
