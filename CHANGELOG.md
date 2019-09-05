@@ -1,4 +1,6 @@
-## 0.17.4 (Unreleased)
+## 0.17.5 (Unreleased)
+
+## 0.17.4 (Released September 5, 2019)
 
 - Update to commit 8a5b696b491c of the Docker Terraform Provider.
 - Upgrade pulumi-terraform to 3f206601e7
