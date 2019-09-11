@@ -16,7 +16,6 @@ import * as utilities from "./utilities";
  * // Creates a config
  * const fooConfig = new docker.Config("fooConfig", {
  *     data: "ewogICJzZXJIfQo=",
- *     name: "fooConfig",
  * });
  * ```
  *
