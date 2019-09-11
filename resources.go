@@ -129,7 +129,7 @@ func Provider() tfbridge.ProviderInfo {
 				"semver":         "^5.4.0",
 			},
 			DevDependencies: map[string]string{
-				"@types/node":   "^10.0.0",
+				"@types/node":   "^8.0.0",
 				"@types/semver": "^5.4.0",
 			},
 			Overlay: &tfbridge.OverlayInfo{
