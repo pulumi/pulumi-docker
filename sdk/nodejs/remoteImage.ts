@@ -31,7 +31,7 @@ import * as utilities from "./utilities";
  * import * as pulumi from "@pulumi/pulumi";
  * import * as docker from "@pulumi/docker";
  * 
- * const ubuntuRegistryImage = docker.getRegistryImage({
+ * const ubuntuRegistryImage = docker.RegistryImage({
  *     name: "ubuntu:precise",
  * });
  * const ubuntuRemoteImage = new docker.RemoteImage("ubuntu", {
