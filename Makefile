@@ -54,10 +54,14 @@ install::
 		(yarn unlink > /dev/null 2>&1 || true) && \
 		yarn link
 
-test_fast::
+istanbul_tests::
+	cd sdk/nodejs/tests && yarn && yarn run build
+	cd sdk/nodejs/tests && yarn run mocha $$(find bin -name '*.spec.js')
+
+test_fast:: istanbul_tests
 	$(GO_TEST_FAST) ./examples/...
 
-test_all::
+test_all:: istanbul_tests
 	$(GO_TEST) ./examples/...
 
 .PHONY: publish_tgz
