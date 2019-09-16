@@ -178,6 +178,40 @@ function logEphemeral(message: string, logResource: pulumi.Resource) {
     pulumi.log.info(message, logResource, /*streamId:*/ undefined, /*ephemeral:*/ true);
 }
 
+/** @internal for testing purposes */
+export function checkRepositoryUrl(repositoryUrl: string) {
+    const { tag } = utils.getImageNameAndTag(repositoryUrl);
+
+    // We want to report an advisory error to users so that they don't accidentally include a 'tag'
+    // in the repo url they supply.  i.e. their repo url can be:
+    //
+    //      docker.mycompany.com/namespace/myimage
+    //
+    // but should not be:
+    //
+    //      docker.mycompany.com/namespace/myimage:latest
+    //
+    // We could consider removing this check entirely.  However, it is likely valuable to catch
+    // clear mistakes where a tag was included in a repo url inappropriately.
+    //
+    // However, since we do have the check, we need to ensure that we do allow the user to specify
+    // a *port* on their repository that the are communicating with.  i.e. it's fine to have:
+    //
+    //      docker.mycompany.com:5000 or
+    //      docker.mycompany.com:5000/namespace/myimage
+    //
+    // So check if this actually does look like a port, and don't report an error in that case.
+    //
+    // From: https://www.w3.org/Addressing/URL/url-spec.txt
+    //
+    //      port        digits
+    //
+    // Regex = any number of digits, optionally followed by / and any remainder.
+    if (tag && !/^\d+(\/.*)?/g.test(tag)) {
+        throw new Error(`[repositoryUrl] should not contain a tag: ${tag}`);
+    }
+}
+
 async function buildAndPushImageWorkerAsync(
     baseImageName: string,
     pathOrBuild: string | pulumi.Unwrap<DockerBuild>,
@@ -185,10 +219,7 @@ async function buildAndPushImageWorkerAsync(
     logResource: pulumi.Resource,
     connectToRegistry: (() => pulumi.Input<Registry>) | undefined): Promise<string> {
 
-    const {tag: repositoryUrlTag} = utils.getImageNameAndTag(repositoryUrl);
-    if (repositoryUrlTag) {
-        throw new Error(`[repositoryUrl] should not contain a tag: ${repositoryUrlTag}`);
-    }
+    checkRepositoryUrl(repositoryUrl);
 
     const tag = utils.getImageNameAndTag(baseImageName).tag;
 
