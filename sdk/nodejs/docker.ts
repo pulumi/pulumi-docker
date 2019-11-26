@@ -132,7 +132,7 @@ export function buildAndPushImageAsync(
     pathOrBuild: pulumi.Input<string | DockerBuild>,
     repositoryUrl: pulumi.Input<string>,
     logResource: pulumi.Resource,
-    skipPush: pulumi.Input<boolean>,
+    skipPush: boolean,
     connectToRegistry?: () => pulumi.Input<Registry>): Promise<string> {
 
     const output = buildAndPushImage(baseImageName, pathOrBuild, repositoryUrl, logResource, skipPush, connectToRegistry);
@@ -154,7 +154,7 @@ export function buildAndPushImage(
     pathOrBuild: pulumi.Input<string | DockerBuild>,
     repositoryUrl: pulumi.Input<string>,
     logResource: pulumi.Resource,
-    skipPush: pulumi.Input<boolean>,
+    skipPush: boolean,
     connectToRegistry?: () => pulumi.Input<Registry>): pulumi.Output<string> {
 
     return pulumi.all([pathOrBuild, repositoryUrl])
@@ -219,7 +219,7 @@ async function buildAndPushImageWorkerAsync(
     pathOrBuild: string | pulumi.Unwrap<DockerBuild>,
     repositoryUrl: string,
     logResource: pulumi.Resource,
-    skipPush: pulumi.Input<boolean>,
+    skipPush: boolean,
     connectToRegistry: (() => pulumi.Input<Registry>) | undefined): Promise<string> {
 
     checkRepositoryUrl(repositoryUrl);
