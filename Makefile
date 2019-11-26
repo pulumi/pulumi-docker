@@ -52,6 +52,7 @@ build::
 	cd ${PACKDIR}/dotnet/&& \
 		echo "${VERSION:v%=%}" >version.txt && \
 		dotnet build /p:Version=${DOTNET_VERSION}
+
 lint::
 	golangci-lint run
 

@@ -498,8 +498,6 @@ namespace Pulumi.Docker
                 await doTagAndPushAsync(CreateTaggedImageName(repositoryUrl, tag, imageId: null));
             }
 
-            return;
-
             async Task doTagAndPushAsync(string targetName)
             {
                 await RunCommandThatMustSucceed("docker", new[] { "tag", imageName, targetName }, logResource);
