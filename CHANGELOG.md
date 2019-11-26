@@ -1,5 +1,6 @@
 ## 0.17.5 (Unreleased)
-* Regenerate SDK against tf2pulumi 0.6.0
+- Regenerate SDK against tf2pulumi 0.6.0
+- Add support for .NET (https://github.com/pulumi/pulumi-docker/pull/115)
 
 ## 0.17.4 (Released September 5, 2019)
 
