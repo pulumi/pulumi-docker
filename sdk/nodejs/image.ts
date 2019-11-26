@@ -46,6 +46,10 @@ export interface ImageArgs {
      * Credentials for the docker registry to push to.
      */
     registry?: pulumi.Input<ImageRegistry>;
+    /**
+     * Skip push flag.
+     */
+    skipPush?: boolean;
 }
 
 export interface ImageRegistry {
@@ -110,6 +114,9 @@ export class Image extends pulumi.ComponentResource {
             // that if imageName contains a tag, localImageName will contain the same tag.
             const localImageName = imageArgs.localImageName || imageName;
 
+            // Skip push
+            const skipPush = (imageArgs.skipPush && imageArgs.skipPush === true) ? true : false;
+
             // Now break both the localImageName and the imageName into the untagged part and the
             // optional tag.  If both have tags, they must match.  If one or the other has a tag, we
             // just use that as the tag to use.  This allows users to flexibly provide a tag on one
@@ -137,6 +144,7 @@ export class Image extends pulumi.ComponentResource {
                 imageArgs.build,
                 repositoryUrl,
                 /*logResource:*/ this,
+                skipPush,
                 registry && (async () => {
                     return {
                         registry: registry.server,
