@@ -49,7 +49,7 @@ export interface ImageArgs {
     /**
      * Skip push flag.
      */
-    skipPush?: pulumi.Input<boolean>;
+    skipPush?: boolean;
 }
 
 export interface ImageRegistry {
