@@ -132,9 +132,10 @@ export function buildAndPushImageAsync(
     pathOrBuild: pulumi.Input<string | DockerBuild>,
     repositoryUrl: pulumi.Input<string>,
     logResource: pulumi.Resource,
+    skipPush: boolean,
     connectToRegistry?: () => pulumi.Input<Registry>): Promise<string> {
 
-    const output = buildAndPushImage(baseImageName, pathOrBuild, repositoryUrl, logResource, connectToRegistry);
+    const output = buildAndPushImage(baseImageName, pathOrBuild, repositoryUrl, logResource, skipPush, connectToRegistry);
 
     // Ugly, but necessary to bridge between the proper Output-returning function and this
     // Promise-returning one.
@@ -153,6 +154,7 @@ export function buildAndPushImage(
     pathOrBuild: pulumi.Input<string | DockerBuild>,
     repositoryUrl: pulumi.Input<string>,
     logResource: pulumi.Resource,
+    skipPush: boolean,
     connectToRegistry?: () => pulumi.Input<Registry>): pulumi.Output<string> {
 
     return pulumi.all([pathOrBuild, repositoryUrl])
@@ -163,7 +165,7 @@ export function buildAndPushImage(
             logEphemeral("Starting docker build and push...", logResource);
 
             const result = await buildAndPushImageWorkerAsync(
-                imageName, pathOrBuildVal, repositoryUrlVal, logResource, connectToRegistry);
+                imageName, pathOrBuildVal, repositoryUrlVal, logResource, skipPush, connectToRegistry);
 
             // If we got here, then building/pushing didn't throw any errors.  Update the status bar
             // indicating that things worked properly.  That way, the info bar isn't stuck showing the very
@@ -217,6 +219,7 @@ async function buildAndPushImageWorkerAsync(
     pathOrBuild: string | pulumi.Unwrap<DockerBuild>,
     repositoryUrl: string,
     logResource: pulumi.Resource,
+    skipPush: boolean,
     connectToRegistry: (() => pulumi.Input<Registry>) | undefined): Promise<string> {
 
     checkRepositoryUrl(repositoryUrl);
@@ -275,7 +278,7 @@ async function buildAndPushImageWorkerAsync(
 
     // Use those to push the image.  Then just return the unique target name. as the final result
     // for our caller to use. Only push the image during an update, do not push during a preview.
-    if (!pulumi.runtime.isDryRun()) {
+    if (!pulumi.runtime.isDryRun() && !skipPush) {
         // Push the final image first, then push the stage images to use for caching.
 
         // First, push with both the optionally-requested-tag *and* imageId (which is guaranteed to
