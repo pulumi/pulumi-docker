@@ -65,42 +65,42 @@ func GetRemoteImage(ctx *pulumi.Context,
 }
 
 // URN is this resource's unique name assigned by Pulumi.
-func (r *RemoteImage) URN() *pulumi.URNOutput {
+func (r *RemoteImage) URN() pulumi.URNOutput {
 	return r.s.URN()
 }
 
 // ID is this resource's unique identifier assigned by its provider.
-func (r *RemoteImage) ID() *pulumi.IDOutput {
+func (r *RemoteImage) ID() pulumi.IDOutput {
 	return r.s.ID()
 }
 
 // If true, then the Docker image won't be
 // deleted on destroy operation. If this is false, it will delete the image from
 // the docker local storage on destroy operation.
-func (r *RemoteImage) KeepLocally() *pulumi.BoolOutput {
-	return (*pulumi.BoolOutput)(r.s.State["keepLocally"])
+func (r *RemoteImage) KeepLocally() pulumi.BoolOutput {
+	return (pulumi.BoolOutput)(r.s.State["keepLocally"])
 }
 
-func (r *RemoteImage) Latest() *pulumi.StringOutput {
-	return (*pulumi.StringOutput)(r.s.State["latest"])
+func (r *RemoteImage) Latest() pulumi.StringOutput {
+	return (pulumi.StringOutput)(r.s.State["latest"])
 }
 
 // The name of the Docker image, including any tags or SHA256 repo digests.
-func (r *RemoteImage) Name() *pulumi.StringOutput {
-	return (*pulumi.StringOutput)(r.s.State["name"])
+func (r *RemoteImage) Name() pulumi.StringOutput {
+	return (pulumi.StringOutput)(r.s.State["name"])
 }
 
 // **Deprecated**, use `pullTriggers` instead.
-func (r *RemoteImage) PullTrigger() *pulumi.StringOutput {
-	return (*pulumi.StringOutput)(r.s.State["pullTrigger"])
+func (r *RemoteImage) PullTrigger() pulumi.StringOutput {
+	return (pulumi.StringOutput)(r.s.State["pullTrigger"])
 }
 
 // List of values which cause an
 // image pull when changed. This is used to store the image digest from the
 // registry when using the `.getRegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
 // to trigger an image update.
-func (r *RemoteImage) PullTriggers() *pulumi.ArrayOutput {
-	return (*pulumi.ArrayOutput)(r.s.State["pullTriggers"])
+func (r *RemoteImage) PullTriggers() pulumi.ArrayOutput {
+	return (pulumi.ArrayOutput)(r.s.State["pullTriggers"])
 }
 
 // Input properties used for looking up and filtering RemoteImage resources.
