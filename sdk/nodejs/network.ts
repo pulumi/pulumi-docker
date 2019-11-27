@@ -64,7 +64,7 @@ export class Network extends pulumi.CustomResource {
      * Name of the network driver to use. Defaults to
      * `bridge` driver.
      */
-    public readonly driver!: pulumi.Output<string>;
+    public readonly driver!: pulumi.Output<string | undefined>;
     /**
      * Create swarm routing-mesh network.
      * Defaults to `false`.
@@ -79,7 +79,7 @@ export class Network extends pulumi.CustomResource {
      * See IPAM config below for
      * details.
      */
-    public readonly ipamConfigs!: pulumi.Output<outputs.NetworkIpamConfig[] | undefined>;
+    public readonly ipamConfigs!: pulumi.Output<outputs.NetworkIpamConfig[]>;
     /**
      * Driver used by the custom IP scheme of the
      * network.

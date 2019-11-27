@@ -72,57 +72,57 @@ func GetService(ctx *pulumi.Context,
 }
 
 // URN is this resource's unique name assigned by Pulumi.
-func (r *Service) URN() *pulumi.URNOutput {
+func (r *Service) URN() pulumi.URNOutput {
 	return r.s.URN()
 }
 
 // ID is this resource's unique identifier assigned by its provider.
-func (r *Service) ID() *pulumi.IDOutput {
+func (r *Service) ID() pulumi.IDOutput {
 	return r.s.ID()
 }
 
 // See Auth below for details.
-func (r *Service) Auth() *pulumi.Output {
+func (r *Service) Auth() pulumi.Output {
 	return r.s.State["auth"]
 }
 
 // See Converge Config below for details.
-func (r *Service) ConvergeConfig() *pulumi.Output {
+func (r *Service) ConvergeConfig() pulumi.Output {
 	return r.s.State["convergeConfig"]
 }
 
 // See EndpointSpec below for details.
-func (r *Service) EndpointSpec() *pulumi.Output {
+func (r *Service) EndpointSpec() pulumi.Output {
 	return r.s.State["endpointSpec"]
 }
 
 // User-defined key/value metadata
-func (r *Service) Labels() *pulumi.MapOutput {
-	return (*pulumi.MapOutput)(r.s.State["labels"])
+func (r *Service) Labels() pulumi.MapOutput {
+	return (pulumi.MapOutput)(r.s.State["labels"])
 }
 
 // The mode of resolution to use for internal load balancing between tasks. `(vip|dnsrr)`. Default: `vip`.
-func (r *Service) Mode() *pulumi.Output {
+func (r *Service) Mode() pulumi.Output {
 	return r.s.State["mode"]
 }
 
 // A random name for the port.
-func (r *Service) Name() *pulumi.StringOutput {
-	return (*pulumi.StringOutput)(r.s.State["name"])
+func (r *Service) Name() pulumi.StringOutput {
+	return (pulumi.StringOutput)(r.s.State["name"])
 }
 
 // See RollbackConfig below for details.
-func (r *Service) RollbackConfig() *pulumi.Output {
+func (r *Service) RollbackConfig() pulumi.Output {
 	return r.s.State["rollbackConfig"]
 }
 
 // See TaskSpec below for details.
-func (r *Service) TaskSpec() *pulumi.Output {
+func (r *Service) TaskSpec() pulumi.Output {
 	return r.s.State["taskSpec"]
 }
 
 // See UpdateConfig below for details.
-func (r *Service) UpdateConfig() *pulumi.Output {
+func (r *Service) UpdateConfig() pulumi.Output {
 	return r.s.State["updateConfig"]
 }
 
