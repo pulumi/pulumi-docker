@@ -59,14 +59,14 @@ namespace Pulumi.Docker
         /// For example, use to specify `--network host`.
         /// </summary>
         [Input("extraOptions")]
-        public Input<Input<string>[]>? ExtraOptions { get; set; }
+        public InputList<string>? ExtraOptions { get; set; }
 
         /// <summary>
         /// Environment variables to set on the invocation of `docker build`, for example to support
         /// `DOCKER_BUILDKIT=1 docker build`.
         /// </summary>
         [Input("env")]
-        public Dictionary<string, string>? Env { get; set; }
+        public InputMap<string>? Env { get; set; }
     }
 
     /// <summary>
@@ -79,7 +79,7 @@ namespace Pulumi.Docker
         public ImmutableDictionary<string, string>? Args { get; set; }
         public CacheFromUnwrap? CacheFrom { get; set; }
         public ImmutableArray<string>? ExtraOptions { get; set; }
-        public Dictionary<string, string>? Env { get; set; }
+        public ImmutableDictionary<string, string>? Env { get; set; }
     }
 
     /// <summary>
@@ -94,7 +94,7 @@ namespace Pulumi.Docker
         /// "[stage-name]".
         /// </summary>
         [Input("stages")]
-        public Input<Input<string>[]>? Stages { get; set; }
+        public InputList<string>? Stages { get; set; }
     }
 
     /// <summary>
@@ -134,7 +134,7 @@ namespace Pulumi.Docker
                 Log.Info("Starting docker build and push...", logResource, ephemeral: true);
 
                 var result = await BuildAndPushImageWorkerAsync(
-                    imageName, buildVal, repositoryUrlVal, logResource, registryVal);
+                    imageName, buildVal, repositoryUrlVal, logResource, registryVal).ConfigureAwait(false);
 
                 // If we got here, then building/pushing didn't throw any errors.  update the status bar
                 // indicating that things worked properly.  that way, the info bar isn't stuck showing the very
@@ -176,7 +176,7 @@ namespace Pulumi.Docker
             // Regex = any number of digits, optionally followed by / and any remainder.
             if (tag != null && !Regex.IsMatch(tag, @"^\d+(\/.*)?"))
             {
-                throw new Exception($"[{nameof(repositoryUrl)}] should not contain a tag: {tag}");
+                throw new ArgumentException($"[{nameof(repositoryUrl)}] should not contain a tag: {tag}");
             }
         }
 
@@ -206,7 +206,7 @@ namespace Pulumi.Docker
                 if (!Deployment.Instance.IsDryRun || pullFromCache)
                 {
                     Log.Info("Logging in to registry...", logResource, ephemeral: true);
-                    await LoginToRegistry(registry, logResource);
+                    await LoginToRegistry(registry, logResource).ConfigureAwait(false);
                 }
             }
 
@@ -215,11 +215,11 @@ namespace Pulumi.Docker
             if (pullFromCache)
             {
                 var cacheFromParam = pathOrBuild.AsT1.CacheFrom;
-                cacheFrom = await PullCacheAsync(baseImageName, cacheFromParam, repositoryUrl, logResource);
+                cacheFrom = await PullCacheAsync(baseImageName, cacheFromParam, repositoryUrl, logResource).ConfigureAwait(false);
             }
 
             // Next, build the image.
-            (string imageId, string[] stages) = await BuildImageAsync(baseImageName, pathOrBuild, logResource, cacheFrom);
+            (string imageId, string[] stages) = await BuildImageAsync(baseImageName, pathOrBuild, logResource, cacheFrom).ConfigureAwait(false);
             if (imageId == null)
             {
                 throw new Exception("Internal error: docker build did not produce an imageId.");
@@ -247,13 +247,13 @@ namespace Pulumi.Docker
                 // nice and simple url that they can reach this image at, without having the explicit imageId
                 // hash added to it.  Note: this location is not guaranteed to be idempotent.  For example,
                 // pushes on other machines might overwrite that location.
-                await TagAndPushImageAsync(baseImageName, repositoryUrl, tag, imageId, logResource);
-                await TagAndPushImageAsync(baseImageName, repositoryUrl, tag, imageId: null, logResource);
+                await TagAndPushImageAsync(baseImageName, repositoryUrl, tag, imageId, logResource).ConfigureAwait(false);
+                await TagAndPushImageAsync(baseImageName, repositoryUrl, tag, imageId: null, logResource).ConfigureAwait(false);
 
                 foreach (var stage in stages)
                 {
                     await TagAndPushImageAsync(
-                        LocalStageImageName(baseImageName, stage), repositoryUrl, stage, imageId: null, logResource);
+                        LocalStageImageName(baseImageName, stage), repositoryUrl, stage, imageId: null, logResource).ConfigureAwait(false);
                 }
             }
 
@@ -308,7 +308,7 @@ namespace Pulumi.Docker
                 // should print that error as a warning instead.  We don't want the update to succeed but
                 // the user to then get a nasty "error:" message at the end.
                 (int code, _) = await RunCommandThatCanFail("docker", new[] { "pull", image }, logResource,
-                     reportFullCommandLine: true, reportErrorAsWarning: true);
+                     reportFullCommandLine: true, reportErrorAsWarning: true).ConfigureAwait(false);
                 if (code > 0)
                 {
                     continue;
@@ -343,18 +343,19 @@ namespace Pulumi.Docker
             {
                 foreach (var stage in build.CacheFrom.Stages)
                 {
-                    await RunDockerBuild(LocalStageImageName(imageName, stage), build, cacheFrom, logResource, stage);
+                    await RunDockerBuild(LocalStageImageName(imageName, stage),
+                        build, cacheFrom, logResource, stage).ConfigureAwait(false);
                     stages.Add(stage);
                 }
             }
 
             //// Invoke Docker CLI commands to build.
-            await RunDockerBuild(imageName, build, cacheFrom, logResource);
+            await RunDockerBuild(imageName, build, cacheFrom, logResource).ConfigureAwait(false);
 
             // Finally, inspect the image so we can return the SHA digest. Do not forward the output of this
             // command this to the CLI to show the user.
             var inspectResult = await RunCommandThatMustSucceed(
-                "docker", new[] { "image", "inspect", "-f", "{{.Id}}", imageName }, logResource);
+                "docker", new[] { "image", "inspect", "-f", "{{.Id}}", imageName }, logResource).ConfigureAwait(false);
             if (string.IsNullOrEmpty(inspectResult))
             {
                 throw new ResourceException($"No digest available for image {imageName}", logResource);
@@ -410,7 +411,8 @@ namespace Pulumi.Docker
                 buildArgs.AddRange(new[] { "--target", target });
             }
 
-            await RunCommandThatMustSucceed("docker", buildArgs.ToArray(), logResource, true, null, build.Env);
+            await RunCommandThatMustSucceed("docker", buildArgs.ToArray(), logResource,
+                reportFullCommandLine: true, stdin: null, build.Env).ConfigureAwait(false);
         }
 
         private static readonly ConcurrentDictionary<(string, string), Task> loginResults = new ConcurrentDictionary<(string, string), Task>();
@@ -423,7 +425,7 @@ namespace Pulumi.Docker
 
             return loginResults.GetOrAdd((registryName, username), async _ =>
             {
-                var dockerPasswordStdin = await UseDockerPasswordStdin(logResource);
+                var dockerPasswordStdin = await UseDockerPasswordStdin(logResource).ConfigureAwait(false);
 
                 // pass 'reportFullCommandLine: false' here so that if we fail to login we don't emit the
                 // username/password in our logs.  Instead, we'll just say "'docker login' failed with code ..."
@@ -431,13 +433,13 @@ namespace Pulumi.Docker
                 {
                     await RunCommandThatMustSucceed(
                         "docker", new[] { "login", "-u", username, "--password-stdin", registryName },
-                        logResource, reportFullCommandLine: false, password);
+                        logResource, reportFullCommandLine: false, password).ConfigureAwait(false);
                 }
                 else
                 {
                     await RunCommandThatMustSucceed(
                         "docker", new[] { "login", "-u", username, "-p", password, registryName },
-                        logResource, reportFullCommandLine: false);
+                        logResource, reportFullCommandLine: false).ConfigureAwait(false);
                 }
             });
         }
@@ -455,7 +457,7 @@ namespace Pulumi.Docker
                 try
                 {
                     dockerVersionString = await RunCommandThatMustSucceed(
-                        "docker", new[] { "version", "-f", "{{json .}}" }, logResource);
+                        "docker", new[] { "version", "-f", "{{json .}}" }, logResource).ConfigureAwait(false);
                     // IDEA: In the future we could warn here on out-of-date versions of Docker which may not support key
                     // features we want to use.
                     Log.Debug($"'docker version' => {dockerVersionString}", logResource);
@@ -485,7 +487,7 @@ namespace Pulumi.Docker
             string imageName, string repositoryUrl, string? tag, string? imageId, Resource logResource)
         {
             // Ensure we have a unique target name for this image, and tag and push to that unique target.
-            await doTagAndPushAsync(CreateTaggedImageName(repositoryUrl, tag, imageId));
+            await doTagAndPushAsync(CreateTaggedImageName(repositoryUrl, tag, imageId)).ConfigureAwait(false);
 
             // If the user provided a tag themselves (like "x/y:dev") then also tag and push directly to
             // that 'dev' tag.  This is not going to be a unique location, and future pushes will overwrite
@@ -495,18 +497,18 @@ namespace Pulumi.Docker
             // taken care of things for us.
             if (tag != null && imageId != null)
             {
-                await doTagAndPushAsync(CreateTaggedImageName(repositoryUrl, tag, imageId: null));
+                await doTagAndPushAsync(CreateTaggedImageName(repositoryUrl, tag, imageId: null)).ConfigureAwait(false);
             }
 
             async Task doTagAndPushAsync(string targetName)
             {
-                await RunCommandThatMustSucceed("docker", new[] { "tag", imageName, targetName }, logResource);
-                await RunCommandThatMustSucceed("docker", new[] { "push", targetName }, logResource);
+                await RunCommandThatMustSucceed("docker", new[] { "tag", imageName, targetName }, logResource).ConfigureAwait(false);
+                await RunCommandThatMustSucceed("docker", new[] { "push", targetName }, logResource).ConfigureAwait(false);
             }
         }
 
         private static string GetCommandLineMessage(
-            string cmd, string[] args, bool reportFullCommandLine, Dictionary<string, string>? env)
+            string cmd, string[] args, bool reportFullCommandLine, ImmutableDictionary<string, string>? env)
         {
             var argString = reportFullCommandLine ? string.Join(" ", args) : args[0];
             var envString = env == null ? "" : string.Join(" ", env.Keys.Select(k => $"{k}={env[k]}"));
@@ -514,7 +516,7 @@ namespace Pulumi.Docker
         }
 
         private static string GetFailureMessage(
-            string cmd, string[] args, bool reportFullCommandLine, int code, Dictionary<string, string>? env = null)
+            string cmd, string[] args, bool reportFullCommandLine, int code, ImmutableDictionary<string, string>? env = null)
             => $"{GetCommandLineMessage(cmd, args, reportFullCommandLine, env)} failed with exit code {code}";
 
         /// <summary>
@@ -528,10 +530,10 @@ namespace Pulumi.Docker
             Resource logResource,
             bool reportFullCommandLine = true,
             string? stdin = null,
-            Dictionary<string, string>? env = null)
+            ImmutableDictionary<string, string>? env = null)
         {
             (int code, string stdout) = await RunCommandThatCanFail(
-             cmd, args, logResource, reportFullCommandLine, reportErrorAsWarning: false, stdin, env);
+                cmd, args, logResource, reportFullCommandLine, reportErrorAsWarning: false, stdin, env).ConfigureAwait(false);
 
             if (code != 0)
             {
@@ -547,7 +549,7 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// Runs a CLI command in a child process, returning a promise for the process's exit. Both stdout
+        /// Runs a CLI command in a child process, returning a task for the process's exit. Both stdout
         /// and stderr are redirected to process.stdout and process.stder by default.
         /// </summary>
         /// <param name="cmd">Command name to run.</param>
@@ -569,25 +571,10 @@ namespace Pulumi.Docker
             bool reportFullCommandLine,
             bool reportErrorAsWarning,
             string? stdin = null,
-            Dictionary<string, string>? env = null)
+            ImmutableDictionary<string, string>? env = null)
         {
             // Let the user ephemerally know the command we're going to execute.
             Log.Info($"Executing {GetCommandLineMessage(cmd, args, reportFullCommandLine, env)}", logResource, ephemeral: true);
-
-            // Generate a unique stream-ID that we'll associate all the docker output with. This will allow
-            // each spawned CLI command's output to associated with 'resource' and also streamed to the UI
-            // in pieces so that it can be displayed live.  The stream-ID is so that the UI knows these
-            // messages are all related and should be considered as one large message (just one that was
-            // sent over in chunks).
-            //
-            // We use Math.random here in case our package is loaded multiple times in memory (i.e. because
-            // different downstream dependencies depend on different versions of us).  By being random we
-            // effectively make it completely unlikely that any two cli outputs could map to the same stream
-            // id.
-            //
-            // Pick a reasonably distributed number between 0 and 2^30.  This will fit as an int32
-            // which the grpc layer needs.
-            var streamID = (int)Math.Floor(new Random().NextDouble() * (1 << 30));
 
             var process = new Process();
             process.StartInfo.FileName = cmd;
@@ -595,50 +582,60 @@ namespace Pulumi.Docker
             process.StartInfo.RedirectStandardInput = stdin != null;
             process.StartInfo.RedirectStandardOutput = true;
             process.StartInfo.RedirectStandardError = true;
-            process.Start();
 
-            if (stdin != null)
+            try
             {
-                process.StandardInput.Write(stdin);
-                process.StandardInput.Close();
-            }
+                process.Start();
 
-            var stdout = await process.StandardOutput.ReadToEndAsync();
-
-            // We can't stream these stderr messages as we receive them because we don't knows at
-            // this point because Docker uses stderr for both errors and warnings.  So, instead, we
-            // just collect the messages, and wait for the process to end to decide how to report
-            // them.
-            var stderr = await process.StandardError.ReadToEndAsync();
-
-            var code = process.ExitCode;
-
-            // If we got any stderr messages, report them as an error/warning depending on the
-            // result of the operation.
-            if (stderr.Length > 0)
-            {
-                if (code > 0 && !reportErrorAsWarning)
+                if (stdin != null)
                 {
-                    // Command returned non-zero code.  Treat these stderr messages as an error.
-                    Log.Error(stderr, logResource, streamID);
+                    process.StandardInput.Write(stdin);
+                    process.StandardInput.Close();
                 }
-                else
+
+                var stdout = await process.StandardOutput.ReadToEndAsync().ConfigureAwait(false);
+
+                // We can't stream these stderr messages as we receive them because we don't knows at
+                // this point because Docker uses stderr for both errors and warnings.  So, instead, we
+                // just collect the messages, and wait for the process to end to decide how to report
+                // them.
+                var stderr = await process.StandardError.ReadToEndAsync().ConfigureAwait(false);
+
+                var code = process.ExitCode;
+
+                // If we got any stderr messages, report them as an error/warning depending on the
+                // result of the operation.
+                if (stderr.Length > 0)
                 {
-                    // command succeeded.  These were just warning.
-                    Log.Warn(stderr, logResource, streamID);
+                    if (code > 0 && !reportErrorAsWarning)
+                    {
+                        // Command returned non-zero code.  Treat these stderr messages as an error.
+                        Log.Error(stderr, logResource);
+                    }
+                    else
+                    {
+                        // command succeeded.  These were just warning.
+                        Log.Warn(stderr, logResource);
+                    }
                 }
-            }
 
-            // If the command failed report an ephemeral message indicating which command it was.
-            // That way the user can immediately see something went wrong in the info bar.  The
-            // caller (normally runCommandThatMustSucceed) can choose to also report this
-            // non-ephemerally.
-            if (code > 0)
+                // If the command failed report an ephemeral message indicating which command it was.
+                // That way the user can immediately see something went wrong in the info bar.  The
+                // caller (normally runCommandThatMustSucceed) can choose to also report this
+                // non-ephemerally.
+                if (code > 0)
+                {
+                    Log.Info(GetFailureMessage(cmd, args, reportFullCommandLine, code), logResource, ephemeral: true);
+                }
+
+                return (code, stdout);
+            }
+            catch (Exception ex)
             {
-                Log.Info(GetFailureMessage(cmd, args, reportFullCommandLine, code), logResource, ephemeral: true);
+                // This shouldn't normally happen, but we want to be sure Process doesn't throw.
+                // In case it does, return an error with the exception printout.
+                return (1, ex.ToString());
             }
-
-            return (code, stdout);
         }
     }
 }

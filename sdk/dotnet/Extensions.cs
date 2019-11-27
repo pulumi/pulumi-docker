@@ -8,27 +8,9 @@ namespace Pulumi.Docker
 {
     internal static class UnwrapExtensions
     {
-        public static Input<ImmutableDictionary<TKey, TValue>?> Unwrap<TKey, TValue>(this Input<Dictionary<TKey, Input<TValue>>>? dict) where TKey : notnull
+        public static Input<ImmutableArray<T>?> Unwrap<T>(this InputList<T>? items)
         {
-            if (dict == null)
-                return Output.Create((ImmutableDictionary<TKey, TValue>?)null);
-
-            return dict.Apply(d =>
-            {
-                var keyValues = d
-                    .Select(kv => kv.Value.Apply(v => new KeyValuePair<TKey, TValue>(kv.Key, v)))
-                    .Select(v => (Input<KeyValuePair<TKey, TValue>>)v)
-                    .ToArray();
-                return Output.All(keyValues).Apply(vs => vs.ToImmutableDictionary());
-            }).Apply(v => (ImmutableDictionary<TKey, TValue>?)v);
-        }
-
-        public static Input<ImmutableArray<T>?> Unwrap<T>(this Input<Input<T>[]>? items)
-        {
-            if (items == null)
-                return Output.Create((ImmutableArray<T>?)null);
-
-            return items.Apply(v => Output.All(v)).Apply(v => (ImmutableArray<T>?)v);
+            return items == null ? Output.Create((ImmutableArray<T>?)null) : items.Apply(v => (ImmutableArray<T>?)v);
         }
 
         public static Input<T?> Unwrap<T>(this Input<T>? input) where T : class
@@ -54,7 +36,7 @@ namespace Pulumi.Docker
                     return Output.Create((Union<string, DockerBuildUnwrap>)b.AsT0);
 
                 var v = b.AsT1;
-                return Output.Tuple(v.Args.Unwrap(), v.CacheFrom.Unwrap(), v.Context.Unwrap(), v.Dockerfile.Unwrap(), v.ExtraOptions.Unwrap()).Apply(vs =>
+                return Output.Tuple(v.Args.Unwrap(), v.CacheFrom.Unwrap(), v.Context.Unwrap(), v.Dockerfile.Unwrap(), v.Env.Unwrap(), v.ExtraOptions.Unwrap()).Apply(vs =>
                 {
                     return (Union<string, DockerBuildUnwrap>)new DockerBuildUnwrap
                     {
@@ -62,8 +44,8 @@ namespace Pulumi.Docker
                         CacheFrom = vs.Item2,
                         Context = vs.Item3,
                         Dockerfile = vs.Item4,
-                        Env = v.Env,
-                        ExtraOptions = vs.Item5,
+                        Env = vs.Item5,
+                        ExtraOptions = vs.Item6,
                     };
                 });
             });

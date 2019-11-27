@@ -1,5 +1,6 @@
 ﻿// Copyright 2016-2019, Pulumi Corporation.
 
+using System;
 using System.Text;
 
 namespace Pulumi.Docker
