@@ -80,81 +80,81 @@ func GetNetwork(ctx *pulumi.Context,
 }
 
 // URN is this resource's unique name assigned by Pulumi.
-func (r *Network) URN() *pulumi.URNOutput {
+func (r *Network) URN() pulumi.URNOutput {
 	return r.s.URN()
 }
 
 // ID is this resource's unique identifier assigned by its provider.
-func (r *Network) ID() *pulumi.IDOutput {
+func (r *Network) ID() pulumi.IDOutput {
 	return r.s.ID()
 }
 
 // Enable manual container attachment to the network.
 // Defaults to `false`.
-func (r *Network) Attachable() *pulumi.BoolOutput {
-	return (*pulumi.BoolOutput)(r.s.State["attachable"])
+func (r *Network) Attachable() pulumi.BoolOutput {
+	return (pulumi.BoolOutput)(r.s.State["attachable"])
 }
 
 // Requests daemon to check for networks
 // with same name.
-func (r *Network) CheckDuplicate() *pulumi.BoolOutput {
-	return (*pulumi.BoolOutput)(r.s.State["checkDuplicate"])
+func (r *Network) CheckDuplicate() pulumi.BoolOutput {
+	return (pulumi.BoolOutput)(r.s.State["checkDuplicate"])
 }
 
 // Name of the network driver to use. Defaults to
 // `bridge` driver.
-func (r *Network) Driver() *pulumi.StringOutput {
-	return (*pulumi.StringOutput)(r.s.State["driver"])
+func (r *Network) Driver() pulumi.StringOutput {
+	return (pulumi.StringOutput)(r.s.State["driver"])
 }
 
 // Create swarm routing-mesh network.
 // Defaults to `false`.
-func (r *Network) Ingress() *pulumi.BoolOutput {
-	return (*pulumi.BoolOutput)(r.s.State["ingress"])
+func (r *Network) Ingress() pulumi.BoolOutput {
+	return (pulumi.BoolOutput)(r.s.State["ingress"])
 }
 
 // Restrict external access to the network.
 // Defaults to `false`.
-func (r *Network) Internal() *pulumi.BoolOutput {
-	return (*pulumi.BoolOutput)(r.s.State["internal"])
+func (r *Network) Internal() pulumi.BoolOutput {
+	return (pulumi.BoolOutput)(r.s.State["internal"])
 }
 
 // See IPAM config below for
 // details.
-func (r *Network) IpamConfigs() *pulumi.ArrayOutput {
-	return (*pulumi.ArrayOutput)(r.s.State["ipamConfigs"])
+func (r *Network) IpamConfigs() pulumi.ArrayOutput {
+	return (pulumi.ArrayOutput)(r.s.State["ipamConfigs"])
 }
 
 // Driver used by the custom IP scheme of the
 // network.
-func (r *Network) IpamDriver() *pulumi.StringOutput {
-	return (*pulumi.StringOutput)(r.s.State["ipamDriver"])
+func (r *Network) IpamDriver() pulumi.StringOutput {
+	return (pulumi.StringOutput)(r.s.State["ipamDriver"])
 }
 
 // Enable IPv6 networking.
 // Defaults to `false`.
-func (r *Network) Ipv6() *pulumi.BoolOutput {
-	return (*pulumi.BoolOutput)(r.s.State["ipv6"])
+func (r *Network) Ipv6() pulumi.BoolOutput {
+	return (pulumi.BoolOutput)(r.s.State["ipv6"])
 }
 
 // User-defined key/value metadata.
-func (r *Network) Labels() *pulumi.MapOutput {
-	return (*pulumi.MapOutput)(r.s.State["labels"])
+func (r *Network) Labels() pulumi.MapOutput {
+	return (pulumi.MapOutput)(r.s.State["labels"])
 }
 
 // The name of the Docker network.
-func (r *Network) Name() *pulumi.StringOutput {
-	return (*pulumi.StringOutput)(r.s.State["name"])
+func (r *Network) Name() pulumi.StringOutput {
+	return (pulumi.StringOutput)(r.s.State["name"])
 }
 
 // Network specific options to be used by
 // the drivers.
-func (r *Network) Options() *pulumi.MapOutput {
-	return (*pulumi.MapOutput)(r.s.State["options"])
+func (r *Network) Options() pulumi.MapOutput {
+	return (pulumi.MapOutput)(r.s.State["options"])
 }
 
-func (r *Network) Scope() *pulumi.StringOutput {
-	return (*pulumi.StringOutput)(r.s.State["scope"])
+func (r *Network) Scope() pulumi.StringOutput {
+	return (pulumi.StringOutput)(r.s.State["scope"])
 }
 
 // Input properties used for looking up and filtering Network resources.

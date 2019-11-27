@@ -130,6 +130,10 @@ export class Container extends pulumi.CustomResource {
      */
     public /*out*/ readonly gateway!: pulumi.Output<string>;
     /**
+     * Add additional groups to run as.
+     */
+    public readonly groupAdds!: pulumi.Output<string[] | undefined>;
+    /**
      * See Healthcheck below for details.
      */
     public readonly healthcheck!: pulumi.Output<outputs.ContainerHealthcheck | undefined>;
@@ -157,6 +161,10 @@ export class Container extends pulumi.CustomResource {
      */
     public /*out*/ readonly ipPrefixLength!: pulumi.Output<number>;
     /**
+     * IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
+     */
+    public readonly ipcMode!: pulumi.Output<string | undefined>;
+    /**
      * Adding labels.
      */
     public readonly labels!: pulumi.Output<{[key: string]: any} | undefined>;
@@ -182,6 +190,7 @@ export class Container extends pulumi.CustomResource {
     /**
      * The maximum amount of times to an attempt
      * a restart when `restart` is set to "on-failure"
+     * * `workingDir`- (Optional, string) The working directory for commands to run in
      */
     public readonly maxRetryCount!: pulumi.Output<number | undefined>;
     /**
@@ -234,11 +243,20 @@ export class Container extends pulumi.CustomResource {
      */
     public readonly publishAllPorts!: pulumi.Output<boolean | undefined>;
     /**
+     * If true, this volume will be readonly.
+     * Defaults to false.
+     */
+    public readonly readOnly!: pulumi.Output<boolean | undefined>;
+    /**
      * The restart policy for the container. Must be
      * one of "no", "on-failure", "always", "unless-stopped".
      */
     public readonly restart!: pulumi.Output<string | undefined>;
     public readonly rm!: pulumi.Output<boolean | undefined>;
+    /**
+     * Size of `/dev/shm` in MBs.
+     */
+    public readonly shmSize!: pulumi.Output<number | undefined>;
     /**
      * If true, then the Docker container will be
      * started after creation. If false, then the container is only created.
@@ -275,6 +293,7 @@ export class Container extends pulumi.CustomResource {
      * See Volumes below for details.
      */
     public readonly volumes!: pulumi.Output<outputs.ContainerVolume[] | undefined>;
+    public readonly workingDir!: pulumi.Output<string | undefined>;
 
     /**
      * Create a Container resource with the given unique name, arguments, and options.
@@ -305,12 +324,14 @@ export class Container extends pulumi.CustomResource {
             inputs["envs"] = state ? state.envs : undefined;
             inputs["exitCode"] = state ? state.exitCode : undefined;
             inputs["gateway"] = state ? state.gateway : undefined;
+            inputs["groupAdds"] = state ? state.groupAdds : undefined;
             inputs["healthcheck"] = state ? state.healthcheck : undefined;
             inputs["hosts"] = state ? state.hosts : undefined;
             inputs["hostname"] = state ? state.hostname : undefined;
             inputs["image"] = state ? state.image : undefined;
             inputs["ipAddress"] = state ? state.ipAddress : undefined;
             inputs["ipPrefixLength"] = state ? state.ipPrefixLength : undefined;
+            inputs["ipcMode"] = state ? state.ipcMode : undefined;
             inputs["labels"] = state ? state.labels : undefined;
             inputs["links"] = state ? state.links : undefined;
             inputs["logDriver"] = state ? state.logDriver : undefined;
@@ -331,8 +352,10 @@ export class Container extends pulumi.CustomResource {
             inputs["ports"] = state ? state.ports : undefined;
             inputs["privileged"] = state ? state.privileged : undefined;
             inputs["publishAllPorts"] = state ? state.publishAllPorts : undefined;
+            inputs["readOnly"] = state ? state.readOnly : undefined;
             inputs["restart"] = state ? state.restart : undefined;
             inputs["rm"] = state ? state.rm : undefined;
+            inputs["shmSize"] = state ? state.shmSize : undefined;
             inputs["start"] = state ? state.start : undefined;
             inputs["sysctls"] = state ? state.sysctls : undefined;
             inputs["tmpfs"] = state ? state.tmpfs : undefined;
@@ -341,6 +364,7 @@ export class Container extends pulumi.CustomResource {
             inputs["user"] = state ? state.user : undefined;
             inputs["usernsMode"] = state ? state.usernsMode : undefined;
             inputs["volumes"] = state ? state.volumes : undefined;
+            inputs["workingDir"] = state ? state.workingDir : undefined;
         } else {
             const args = argsOrState as ContainerArgs | undefined;
             if (!args || args.image === undefined) {
@@ -359,10 +383,12 @@ export class Container extends pulumi.CustomResource {
             inputs["domainname"] = args ? args.domainname : undefined;
             inputs["entrypoints"] = args ? args.entrypoints : undefined;
             inputs["envs"] = args ? args.envs : undefined;
+            inputs["groupAdds"] = args ? args.groupAdds : undefined;
             inputs["healthcheck"] = args ? args.healthcheck : undefined;
             inputs["hosts"] = args ? args.hosts : undefined;
             inputs["hostname"] = args ? args.hostname : undefined;
             inputs["image"] = args ? args.image : undefined;
+            inputs["ipcMode"] = args ? args.ipcMode : undefined;
             inputs["labels"] = args ? args.labels : undefined;
             inputs["links"] = args ? args.links : undefined;
             inputs["logDriver"] = args ? args.logDriver : undefined;
@@ -382,8 +408,10 @@ export class Container extends pulumi.CustomResource {
             inputs["ports"] = args ? args.ports : undefined;
             inputs["privileged"] = args ? args.privileged : undefined;
             inputs["publishAllPorts"] = args ? args.publishAllPorts : undefined;
+            inputs["readOnly"] = args ? args.readOnly : undefined;
             inputs["restart"] = args ? args.restart : undefined;
             inputs["rm"] = args ? args.rm : undefined;
+            inputs["shmSize"] = args ? args.shmSize : undefined;
             inputs["start"] = args ? args.start : undefined;
             inputs["sysctls"] = args ? args.sysctls : undefined;
             inputs["tmpfs"] = args ? args.tmpfs : undefined;
@@ -392,6 +420,7 @@ export class Container extends pulumi.CustomResource {
             inputs["user"] = args ? args.user : undefined;
             inputs["usernsMode"] = args ? args.usernsMode : undefined;
             inputs["volumes"] = args ? args.volumes : undefined;
+            inputs["workingDir"] = args ? args.workingDir : undefined;
             inputs["bridge"] = undefined /*out*/;
             inputs["containerLogs"] = undefined /*out*/;
             inputs["exitCode"] = undefined /*out*/;
@@ -491,6 +520,10 @@ export interface ContainerState {
      */
     readonly gateway?: pulumi.Input<string>;
     /**
+     * Add additional groups to run as.
+     */
+    readonly groupAdds?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
      * See Healthcheck below for details.
      */
     readonly healthcheck?: pulumi.Input<inputs.ContainerHealthcheck>;
@@ -518,6 +551,10 @@ export interface ContainerState {
      */
     readonly ipPrefixLength?: pulumi.Input<number>;
     /**
+     * IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
+     */
+    readonly ipcMode?: pulumi.Input<string>;
+    /**
      * Adding labels.
      */
     readonly labels?: pulumi.Input<{[key: string]: any}>;
@@ -543,6 +580,7 @@ export interface ContainerState {
     /**
      * The maximum amount of times to an attempt
      * a restart when `restart` is set to "on-failure"
+     * * `workingDir`- (Optional, string) The working directory for commands to run in
      */
     readonly maxRetryCount?: pulumi.Input<number>;
     /**
@@ -595,11 +633,20 @@ export interface ContainerState {
      */
     readonly publishAllPorts?: pulumi.Input<boolean>;
     /**
+     * If true, this volume will be readonly.
+     * Defaults to false.
+     */
+    readonly readOnly?: pulumi.Input<boolean>;
+    /**
      * The restart policy for the container. Must be
      * one of "no", "on-failure", "always", "unless-stopped".
      */
     readonly restart?: pulumi.Input<string>;
     readonly rm?: pulumi.Input<boolean>;
+    /**
+     * Size of `/dev/shm` in MBs.
+     */
+    readonly shmSize?: pulumi.Input<number>;
     /**
      * If true, then the Docker container will be
      * started after creation. If false, then the container is only created.
@@ -636,6 +683,7 @@ export interface ContainerState {
      * See Volumes below for details.
      */
     readonly volumes?: pulumi.Input<pulumi.Input<inputs.ContainerVolume>[]>;
+    readonly workingDir?: pulumi.Input<string>;
 }
 
 /**
@@ -701,6 +749,10 @@ export interface ContainerArgs {
      */
     readonly envs?: pulumi.Input<pulumi.Input<string>[]>;
     /**
+     * Add additional groups to run as.
+     */
+    readonly groupAdds?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
      * See Healthcheck below for details.
      */
     readonly healthcheck?: pulumi.Input<inputs.ContainerHealthcheck>;
@@ -718,6 +770,10 @@ export interface ContainerArgs {
      * as is shown in the example above.
      */
     readonly image: pulumi.Input<string>;
+    /**
+     * IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
+     */
+    readonly ipcMode?: pulumi.Input<string>;
     /**
      * Adding labels.
      */
@@ -744,6 +800,7 @@ export interface ContainerArgs {
     /**
      * The maximum amount of times to an attempt
      * a restart when `restart` is set to "on-failure"
+     * * `workingDir`- (Optional, string) The working directory for commands to run in
      */
     readonly maxRetryCount?: pulumi.Input<number>;
     /**
@@ -791,11 +848,20 @@ export interface ContainerArgs {
      */
     readonly publishAllPorts?: pulumi.Input<boolean>;
     /**
+     * If true, this volume will be readonly.
+     * Defaults to false.
+     */
+    readonly readOnly?: pulumi.Input<boolean>;
+    /**
      * The restart policy for the container. Must be
      * one of "no", "on-failure", "always", "unless-stopped".
      */
     readonly restart?: pulumi.Input<string>;
     readonly rm?: pulumi.Input<boolean>;
+    /**
+     * Size of `/dev/shm` in MBs.
+     */
+    readonly shmSize?: pulumi.Input<number>;
     /**
      * If true, then the Docker container will be
      * started after creation. If false, then the container is only created.
@@ -832,4 +898,5 @@ export interface ContainerArgs {
      * See Volumes below for details.
      */
     readonly volumes?: pulumi.Input<pulumi.Input<inputs.ContainerVolume>[]>;
+    readonly workingDir?: pulumi.Input<string>;
 }

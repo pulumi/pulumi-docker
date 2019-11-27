@@ -1,6 +1,8 @@
 ## 0.17.5 (Unreleased)
 * Regenerate SDK against tf2pulumi 0.6.0
 * Add ability to skip push on image build
+* Upgrade to v2.6.0 of the Docker Terraform Provider
+* Upgrade to go1.13
 
 ## 0.17.4 (Released September 5, 2019)
 

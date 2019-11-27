@@ -109,7 +109,7 @@ class Service(pulumi.CustomResource):
     
             * `propagation` (`str`)
     
-          * `readOnly` (`bool`)
+          * `read_only` (`bool`)
           * `source` (`str`)
           * `target` (`str`)
           * `tmpfsOptions` (`dict`)
@@ -140,7 +140,7 @@ class Service(pulumi.CustomResource):
             * `type` (`str`)
             * `user` (`str`)
     
-        * `readOnly` (`bool`)
+        * `read_only` (`bool`)
         * `secrets` (`list`)
     
           * `fileName` (`str`) - Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
@@ -307,7 +307,7 @@ class Service(pulumi.CustomResource):
         
                 * `propagation` (`pulumi.Input[str]`)
         
-              * `readOnly` (`pulumi.Input[bool]`)
+              * `read_only` (`pulumi.Input[bool]`)
               * `source` (`pulumi.Input[str]`)
               * `target` (`pulumi.Input[str]`)
               * `tmpfsOptions` (`pulumi.Input[dict]`)
@@ -338,7 +338,7 @@ class Service(pulumi.CustomResource):
                 * `type` (`pulumi.Input[str]`)
                 * `user` (`pulumi.Input[str]`)
         
-            * `readOnly` (`pulumi.Input[bool]`)
+            * `read_only` (`pulumi.Input[bool]`)
             * `secrets` (`pulumi.Input[list]`)
         
               * `fileName` (`pulumi.Input[str]`) - Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
@@ -542,7 +542,7 @@ class Service(pulumi.CustomResource):
         
                 * `propagation` (`pulumi.Input[str]`)
         
-              * `readOnly` (`pulumi.Input[bool]`)
+              * `read_only` (`pulumi.Input[bool]`)
               * `source` (`pulumi.Input[str]`)
               * `target` (`pulumi.Input[str]`)
               * `tmpfsOptions` (`pulumi.Input[dict]`)
@@ -573,7 +573,7 @@ class Service(pulumi.CustomResource):
                 * `type` (`pulumi.Input[str]`)
                 * `user` (`pulumi.Input[str]`)
         
-            * `readOnly` (`pulumi.Input[bool]`)
+            * `read_only` (`pulumi.Input[bool]`)
             * `secrets` (`pulumi.Input[list]`)
         
               * `fileName` (`pulumi.Input[str]`) - Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`

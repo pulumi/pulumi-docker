@@ -98,7 +98,7 @@ export interface ContainerMountTmpfsOptions {
      */
     mode?: number;
     /**
-     * The size for the tmpfs mount in bytes. 
+     * The size for the tmpfs mount in bytes.
      */
     sizeBytes?: number;
 }
@@ -181,9 +181,13 @@ export interface ContainerUlimit {
 
 export interface ContainerUpload {
     /**
-     * A content of a file to upload.
+     * Literal string value to use as the object content, which will be uploaded as UTF-8-encoded text.
      */
-    content: string;
+    content?: string;
+    /**
+     * <elided>
+     */
+    contentBase64?: string;
     /**
      * If true, the file will be uploaded with user
      * executable permission.

@@ -24,13 +24,14 @@ class InstallPluginCommand(install):
                 raise
 
 def readme():
-    with open('README.rst') as f:
+    with open('README.md', encoding='utf-8') as f:
         return f.read()
 
 setup(name='pulumi_docker',
       version='${VERSION}',
       description='A Pulumi package for interacting with Docker in Pulumi programs',
       long_description=readme(),
+      long_description_content_type='text/markdown',
       cmdclass={
           'install': InstallPluginCommand,
       },
