@@ -4,23 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "./utilities";
 
-/**
- * Manages the configuration of a Docker service in a swarm.
- * 
- * ## Basic
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as docker from "@pulumi/docker";
- * 
- * // Creates a config
- * const fooConfig = new docker.Config("fooConfig", {
- *     data: "ewogICJzZXJIfQo=",
- * });
- * ```
- *
- * > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/config.html.markdown.
- */
 export class Config extends pulumi.CustomResource {
     /**
      * Get an existing Config resource's state with the given name, ID, and optional extra
@@ -49,11 +32,11 @@ export class Config extends pulumi.CustomResource {
     }
 
     /**
-     * The base64 encoded data of the config.
+     * Base64-url-safe-encoded config data
      */
     public readonly data!: pulumi.Output<string>;
     /**
-     * The name of the Docker config.
+     * User-defined name of the config
      */
     public readonly name!: pulumi.Output<string>;
 
@@ -95,11 +78,11 @@ export class Config extends pulumi.CustomResource {
  */
 export interface ConfigState {
     /**
-     * The base64 encoded data of the config.
+     * Base64-url-safe-encoded config data
      */
     readonly data?: pulumi.Input<string>;
     /**
-     * The name of the Docker config.
+     * User-defined name of the config
      */
     readonly name?: pulumi.Input<string>;
 }
@@ -109,11 +92,11 @@ export interface ConfigState {
  */
 export interface ConfigArgs {
     /**
-     * The base64 encoded data of the config.
+     * Base64-url-safe-encoded config data
      */
     readonly data: pulumi.Input<string>;
     /**
-     * The name of the Docker config.
+     * User-defined name of the config
      */
     readonly name?: pulumi.Input<string>;
 }

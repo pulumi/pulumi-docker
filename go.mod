@@ -8,7 +8,7 @@ require (
 	github.com/pulumi/pulumi v1.6.1
 	github.com/pulumi/pulumi-terraform-bridge v1.4.2
 	github.com/stretchr/testify v1.4.1-0.20191106224347-f1bd0923b832
-	github.com/terraform-providers/terraform-provider-docker v1.2.0
+	github.com/terraform-providers/terraform-provider-docker v1.2.1-0.20191125182715-0de84e769ddc
 )
 
 replace (

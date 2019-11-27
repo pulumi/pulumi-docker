@@ -5,32 +5,13 @@ import * as pulumi from "@pulumi/pulumi";
 import * as outputs from "../types/output";
 
 export interface ContainerCapabilities {
-    /**
-     * list of linux capabilities to add.
-     */
     adds?: string[];
-    /**
-     * list of linux capabilities to drop.
-     */
     drops?: string[];
 }
 
 export interface ContainerDevice {
-    /**
-     * The path in the container where the
-     * device will be binded.
-     */
     containerPath?: string;
-    /**
-     * The path on the host where the device
-     * is located.
-     */
     hostPath: string;
-    /**
-     * The cgroup permissions given to the
-     * container to access the device.
-     * Defaults to `rwm`.
-     */
     permissions?: string;
 }
 
@@ -43,133 +24,54 @@ export interface ContainerHealthcheck {
 }
 
 export interface ContainerHost {
-    /**
-     * Hostname to add.
-     */
     host: string;
-    /**
-     * IP address this hostname should resolve to.
-     */
     ip: string;
 }
 
 export interface ContainerMount {
-    /**
-     * Optional configuration for the `bind` type.
-     */
     bindOptions?: outputs.ContainerMountBindOptions;
-    /**
-     * If true, this volume will be readonly.
-     * Defaults to false.
-     */
     readOnly?: boolean;
-    /**
-     * The mount source (e.g., a volume name, a host path)
-     */
     source?: string;
-    /**
-     * The container path.
-     */
     target: string;
-    /**
-     * Optional configuration for the `tmpf` type.
-     */
     tmpfsOptions?: outputs.ContainerMountTmpfsOptions;
-    /**
-     * The mount type: valid values are `bind|volume|tmpfs`.
-     */
     type: string;
-    /**
-     * Optional configuration for the `volume` type.
-     */
     volumeOptions?: outputs.ContainerMountVolumeOptions;
 }
 
 export interface ContainerMountBindOptions {
-    /**
-     * A propagation mode with the value.
-     */
     propagation?: string;
 }
 
 export interface ContainerMountTmpfsOptions {
-    /**
-     * The permission mode for the tmpfs mount in an integer.
-     */
     mode?: number;
-    /**
-     * The size for the tmpfs mount in bytes. 
-     */
     sizeBytes?: number;
 }
 
 export interface ContainerMountVolumeOptions {
     driverName?: string;
-    /**
-     * Options for the driver.
-     */
     driverOptions?: {[key: string]: string};
-    /**
-     * Adding labels.
-     */
     labels?: {[key: string]: string};
-    /**
-     * Whether to populate volume with data from the target.
-     */
     noCopy?: boolean;
 }
 
 export interface ContainerNetworkData {
-    /**
-     * *Deprecated:* Use `networkData` instead. The network gateway of the container as read from its
-     * NetworkSettings.
-     */
     gateway: string;
-    /**
-     * *Deprecated:* Use `networkData` instead. The IP address of the container's first network it.
-     */
     ipAddress: string;
-    /**
-     * *Deprecated:* Use `networkData` instead. The IP prefix length of the container as read from its
-     * NetworkSettings.
-     */
     ipPrefixLength: number;
     networkName: string;
 }
 
 export interface ContainerNetworksAdvanced {
-    /**
-     * The network aliases of the container in the specific network.
-     */
     aliases?: string[];
-    /**
-     * The IPV4 address of the container in the specific network.
-     */
     ipv4Address?: string;
-    /**
-     * The IPV6 address of the container in the specific network.
-     */
     ipv6Address?: string;
     name: string;
 }
 
 export interface ContainerPort {
-    /**
-     * Port exposed out of the container. If not given a free random port `>= 32768` will be used.
-     */
     external: number;
-    /**
-     * Port within the container.
-     */
     internal: number;
-    /**
-     * IP address this hostname should resolve to.
-     */
     ip?: string;
-    /**
-     * Protocol that can be used over this port,
-     * defaults to `tcp`.
-     */
     protocol?: string;
 }
 
@@ -180,47 +82,17 @@ export interface ContainerUlimit {
 }
 
 export interface ContainerUpload {
-    /**
-     * A content of a file to upload.
-     */
-    content: string;
-    /**
-     * If true, the file will be uploaded with user
-     * executable permission.
-     * Defaults to false.
-     */
+    content?: string;
+    contentBase64?: string;
     executable?: boolean;
-    /**
-     * path to a file in the container.
-     */
     file: string;
 }
 
 export interface ContainerVolume {
-    /**
-     * The path in the container where the
-     * device will be binded.
-     */
     containerPath?: string;
-    /**
-     * The container where the volume is
-     * coming from.
-     */
     fromContainer?: string;
-    /**
-     * The path on the host where the device
-     * is located.
-     */
     hostPath?: string;
-    /**
-     * If true, this volume will be readonly.
-     * Defaults to false.
-     */
     readOnly?: boolean;
-    /**
-     * The name of the docker volume which
-     * should be mounted.
-     */
     volumeName?: string;
 }
 
@@ -239,17 +111,8 @@ export interface NetworkIpamConfig {
 }
 
 export interface ServiceAuth {
-    /**
-     * The password to use for authenticating to the registry. If this is blank, the `DOCKER_REGISTRY_PASS` is also be checked.
-     */
     password?: string;
-    /**
-     * The address of the registry server
-     */
     serverAddress: string;
-    /**
-     * The username to use for authenticating to the registry. If this is blank, the `DOCKER_REGISTRY_USER` is also be checked. 
-     */
     username?: string;
 }
 
@@ -259,36 +122,15 @@ export interface ServiceConvergeConfig {
 }
 
 export interface ServiceEndpointSpec {
-    /**
-     * The mode of resolution to use for internal load balancing between tasks. `(vip|dnsrr)`. Default: `vip`.
-     */
     mode: string;
-    /**
-     * See Ports below for details.
-     */
     ports?: outputs.ServiceEndpointSpecPort[];
 }
 
 export interface ServiceEndpointSpecPort {
-    /**
-     * A random name for the port.
-     */
     name?: string;
-    /**
-     * Protocol that can be used over this port: `tcp|udp|sctp`. Default: `tcp`.
-     */
     protocol?: string;
-    /**
-     * Represents the mode in which the port is to be published: `ingress|host`
-     */
     publishMode?: string;
-    /**
-     * The port on the swarm hosts. If not set the value of `targetPort` will be used.
-     */
     publishedPort?: number;
-    /**
-     * Port inside the container.
-     */
     targetPort: number;
 }
 
@@ -345,25 +187,13 @@ export interface ServiceTaskSpecContainerSpec {
 }
 
 export interface ServiceTaskSpecContainerSpecConfig {
-    /**
-     * ConfigID represents the ID of the specific config.
-     */
     configId: string;
-    /**
-     * The name of the config that this references, but internally it is just provided for lookup/display purposes
-     */
     configName?: string;
-    /**
-     * Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
-     */
     fileName: string;
 }
 
 export interface ServiceTaskSpecContainerSpecDnsConfig {
     nameservers: string[];
-    /**
-     * The options for the logging driver, e.g.
-     */
     options?: string[];
     searches?: string[];
 }
@@ -396,9 +226,6 @@ export interface ServiceTaskSpecContainerSpecMountBindOptions {
 }
 
 export interface ServiceTaskSpecContainerSpecMountTmpfsOptions {
-    /**
-     * The mode of resolution to use for internal load balancing between tasks. `(vip|dnsrr)`. Default: `vip`.
-     */
     mode?: number;
     sizeBytes?: number;
 }
@@ -429,22 +256,13 @@ export interface ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext {
 }
 
 export interface ServiceTaskSpecContainerSpecSecret {
-    /**
-     * Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
-     */
     fileName: string;
     secretId: string;
     secretName?: string;
 }
 
 export interface ServiceTaskSpecLogDriver {
-    /**
-     * A random name for the port.
-     */
     name: string;
-    /**
-     * The options for the logging driver, e.g.
-     */
     options?: {[key: string]: string};
 }
 

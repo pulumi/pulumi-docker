@@ -6,9 +6,6 @@ import * as inputs from "./types/input";
 import * as outputs from "./types/output";
 import * as utilities from "./utilities";
 
-/**
- * > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/secret.html.markdown.
- */
 export class Secret extends pulumi.CustomResource {
     /**
      * Get an existing Secret resource's state with the given name, ID, and optional extra
@@ -37,15 +34,12 @@ export class Secret extends pulumi.CustomResource {
     }
 
     /**
-     * The base64 encoded data of the secret.
+     * Base64-url-safe-encoded secret data
      */
     public readonly data!: pulumi.Output<string>;
-    /**
-     * User-defined key/value metadata.
-     */
     public readonly labels!: pulumi.Output<{[key: string]: any} | undefined>;
     /**
-     * The name of the Docker secret.
+     * User-defined name of the secret
      */
     public readonly name!: pulumi.Output<string>;
 
@@ -89,15 +83,12 @@ export class Secret extends pulumi.CustomResource {
  */
 export interface SecretState {
     /**
-     * The base64 encoded data of the secret.
+     * Base64-url-safe-encoded secret data
      */
     readonly data?: pulumi.Input<string>;
-    /**
-     * User-defined key/value metadata.
-     */
     readonly labels?: pulumi.Input<{[key: string]: any}>;
     /**
-     * The name of the Docker secret.
+     * User-defined name of the secret
      */
     readonly name?: pulumi.Input<string>;
 }
@@ -107,15 +98,12 @@ export interface SecretState {
  */
 export interface SecretArgs {
     /**
-     * The base64 encoded data of the secret.
+     * Base64-url-safe-encoded secret data
      */
     readonly data: pulumi.Input<string>;
-    /**
-     * User-defined key/value metadata.
-     */
     readonly labels?: pulumi.Input<{[key: string]: any}>;
     /**
-     * The name of the Docker secret.
+     * User-defined name of the secret
      */
     readonly name?: pulumi.Input<string>;
 }

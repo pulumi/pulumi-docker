@@ -53,23 +53,23 @@ func GetConfig(ctx *pulumi.Context,
 }
 
 // URN is this resource's unique name assigned by Pulumi.
-func (r *Config) URN() *pulumi.URNOutput {
+func (r *Config) URN() pulumi.URNOutput {
 	return r.s.URN()
 }
 
 // ID is this resource's unique identifier assigned by its provider.
-func (r *Config) ID() *pulumi.IDOutput {
+func (r *Config) ID() pulumi.IDOutput {
 	return r.s.ID()
 }
 
 // The base64 encoded data of the config.
-func (r *Config) Data() *pulumi.StringOutput {
-	return (*pulumi.StringOutput)(r.s.State["data"])
+func (r *Config) Data() pulumi.StringOutput {
+	return (pulumi.StringOutput)(r.s.State["data"])
 }
 
 // The name of the Docker config.
-func (r *Config) Name() *pulumi.StringOutput {
-	return (*pulumi.StringOutput)(r.s.State["name"])
+func (r *Config) Name() pulumi.StringOutput {
+	return (pulumi.StringOutput)(r.s.State["name"])
 }
 
 // Input properties used for looking up and filtering Config resources.

@@ -36,10 +36,12 @@ func NewContainer(ctx *pulumi.Context,
 		inputs["domainname"] = nil
 		inputs["entrypoints"] = nil
 		inputs["envs"] = nil
+		inputs["groupAdds"] = nil
 		inputs["healthcheck"] = nil
 		inputs["hosts"] = nil
 		inputs["hostname"] = nil
 		inputs["image"] = nil
+		inputs["ipcMode"] = nil
 		inputs["labels"] = nil
 		inputs["links"] = nil
 		inputs["logDriver"] = nil
@@ -59,8 +61,10 @@ func NewContainer(ctx *pulumi.Context,
 		inputs["ports"] = nil
 		inputs["privileged"] = nil
 		inputs["publishAllPorts"] = nil
+		inputs["readOnly"] = nil
 		inputs["restart"] = nil
 		inputs["rm"] = nil
+		inputs["shmSize"] = nil
 		inputs["start"] = nil
 		inputs["sysctls"] = nil
 		inputs["tmpfs"] = nil
@@ -69,6 +73,7 @@ func NewContainer(ctx *pulumi.Context,
 		inputs["user"] = nil
 		inputs["usernsMode"] = nil
 		inputs["volumes"] = nil
+		inputs["workingDir"] = nil
 	} else {
 		inputs["attach"] = args.Attach
 		inputs["capabilities"] = args.Capabilities
@@ -83,10 +88,12 @@ func NewContainer(ctx *pulumi.Context,
 		inputs["domainname"] = args.Domainname
 		inputs["entrypoints"] = args.Entrypoints
 		inputs["envs"] = args.Envs
+		inputs["groupAdds"] = args.GroupAdds
 		inputs["healthcheck"] = args.Healthcheck
 		inputs["hosts"] = args.Hosts
 		inputs["hostname"] = args.Hostname
 		inputs["image"] = args.Image
+		inputs["ipcMode"] = args.IpcMode
 		inputs["labels"] = args.Labels
 		inputs["links"] = args.Links
 		inputs["logDriver"] = args.LogDriver
@@ -106,8 +113,10 @@ func NewContainer(ctx *pulumi.Context,
 		inputs["ports"] = args.Ports
 		inputs["privileged"] = args.Privileged
 		inputs["publishAllPorts"] = args.PublishAllPorts
+		inputs["readOnly"] = args.ReadOnly
 		inputs["restart"] = args.Restart
 		inputs["rm"] = args.Rm
+		inputs["shmSize"] = args.ShmSize
 		inputs["start"] = args.Start
 		inputs["sysctls"] = args.Sysctls
 		inputs["tmpfs"] = args.Tmpfs
@@ -116,6 +125,7 @@ func NewContainer(ctx *pulumi.Context,
 		inputs["user"] = args.User
 		inputs["usernsMode"] = args.UsernsMode
 		inputs["volumes"] = args.Volumes
+		inputs["workingDir"] = args.WorkingDir
 	}
 	inputs["bridge"] = nil
 	inputs["containerLogs"] = nil
@@ -154,12 +164,14 @@ func GetContainer(ctx *pulumi.Context,
 		inputs["envs"] = state.Envs
 		inputs["exitCode"] = state.ExitCode
 		inputs["gateway"] = state.Gateway
+		inputs["groupAdds"] = state.GroupAdds
 		inputs["healthcheck"] = state.Healthcheck
 		inputs["hosts"] = state.Hosts
 		inputs["hostname"] = state.Hostname
 		inputs["image"] = state.Image
 		inputs["ipAddress"] = state.IpAddress
 		inputs["ipPrefixLength"] = state.IpPrefixLength
+		inputs["ipcMode"] = state.IpcMode
 		inputs["labels"] = state.Labels
 		inputs["links"] = state.Links
 		inputs["logDriver"] = state.LogDriver
@@ -180,8 +192,10 @@ func GetContainer(ctx *pulumi.Context,
 		inputs["ports"] = state.Ports
 		inputs["privileged"] = state.Privileged
 		inputs["publishAllPorts"] = state.PublishAllPorts
+		inputs["readOnly"] = state.ReadOnly
 		inputs["restart"] = state.Restart
 		inputs["rm"] = state.Rm
+		inputs["shmSize"] = state.ShmSize
 		inputs["start"] = state.Start
 		inputs["sysctls"] = state.Sysctls
 		inputs["tmpfs"] = state.Tmpfs
@@ -190,6 +204,7 @@ func GetContainer(ctx *pulumi.Context,
 		inputs["user"] = state.User
 		inputs["usernsMode"] = state.UsernsMode
 		inputs["volumes"] = state.Volumes
+		inputs["workingDir"] = state.WorkingDir
 	}
 	s, err := ctx.ReadResource("docker:index/container:Container", name, id, inputs, opts...)
 	if err != nil {
@@ -199,80 +214,80 @@ func GetContainer(ctx *pulumi.Context,
 }
 
 // URN is this resource's unique name assigned by Pulumi.
-func (r *Container) URN() *pulumi.URNOutput {
+func (r *Container) URN() pulumi.URNOutput {
 	return r.s.URN()
 }
 
 // ID is this resource's unique identifier assigned by its provider.
-func (r *Container) ID() *pulumi.IDOutput {
+func (r *Container) ID() pulumi.IDOutput {
 	return r.s.ID()
 }
 
 // If true attach to the container after its creation and waits the end of his execution.
-func (r *Container) Attach() *pulumi.BoolOutput {
-	return (*pulumi.BoolOutput)(r.s.State["attach"])
+func (r *Container) Attach() pulumi.BoolOutput {
+	return (pulumi.BoolOutput)(r.s.State["attach"])
 }
 
 // The network bridge of the container as read from its NetworkSettings.
-func (r *Container) Bridge() *pulumi.StringOutput {
-	return (*pulumi.StringOutput)(r.s.State["bridge"])
+func (r *Container) Bridge() pulumi.StringOutput {
+	return (pulumi.StringOutput)(r.s.State["bridge"])
 }
 
 // See Capabilities below for details.
-func (r *Container) Capabilities() *pulumi.Output {
+func (r *Container) Capabilities() pulumi.Output {
 	return r.s.State["capabilities"]
 }
 
 // The command to use to start the
 // container. For example, to run `/usr/bin/myprogram -f baz.conf` set the
 // command to be `["/usr/bin/myprogram", "-f", "baz.conf"]`.
-func (r *Container) Command() *pulumi.ArrayOutput {
-	return (*pulumi.ArrayOutput)(r.s.State["command"])
+func (r *Container) Command() pulumi.ArrayOutput {
+	return (pulumi.ArrayOutput)(r.s.State["command"])
 }
 
 // The logs of the container if its execution is done (`attach` must be disabled).
-func (r *Container) ContainerLogs() *pulumi.StringOutput {
-	return (*pulumi.StringOutput)(r.s.State["containerLogs"])
+func (r *Container) ContainerLogs() pulumi.StringOutput {
+	return (pulumi.StringOutput)(r.s.State["containerLogs"])
 }
 
 // A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
-func (r *Container) CpuSet() *pulumi.StringOutput {
-	return (*pulumi.StringOutput)(r.s.State["cpuSet"])
+func (r *Container) CpuSet() pulumi.StringOutput {
+	return (pulumi.StringOutput)(r.s.State["cpuSet"])
 }
 
 // CPU shares (relative weight) for the container.
-func (r *Container) CpuShares() *pulumi.IntOutput {
-	return (*pulumi.IntOutput)(r.s.State["cpuShares"])
+func (r *Container) CpuShares() pulumi.IntOutput {
+	return (pulumi.IntOutput)(r.s.State["cpuShares"])
 }
 
 // If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
-func (r *Container) DestroyGraceSeconds() *pulumi.IntOutput {
-	return (*pulumi.IntOutput)(r.s.State["destroyGraceSeconds"])
+func (r *Container) DestroyGraceSeconds() pulumi.IntOutput {
+	return (pulumi.IntOutput)(r.s.State["destroyGraceSeconds"])
 }
 
 // See Devices below for details.
-func (r *Container) Devices() *pulumi.ArrayOutput {
-	return (*pulumi.ArrayOutput)(r.s.State["devices"])
+func (r *Container) Devices() pulumi.ArrayOutput {
+	return (pulumi.ArrayOutput)(r.s.State["devices"])
 }
 
 // Set of DNS servers.
-func (r *Container) Dns() *pulumi.ArrayOutput {
-	return (*pulumi.ArrayOutput)(r.s.State["dns"])
+func (r *Container) Dns() pulumi.ArrayOutput {
+	return (pulumi.ArrayOutput)(r.s.State["dns"])
 }
 
 // Set of DNS options used by the DNS provider(s), see `resolv.conf` documentation for valid list of options.
-func (r *Container) DnsOpts() *pulumi.ArrayOutput {
-	return (*pulumi.ArrayOutput)(r.s.State["dnsOpts"])
+func (r *Container) DnsOpts() pulumi.ArrayOutput {
+	return (pulumi.ArrayOutput)(r.s.State["dnsOpts"])
 }
 
 // Set of DNS search domains that are used when bare unqualified hostnames are used inside of the container.
-func (r *Container) DnsSearches() *pulumi.ArrayOutput {
-	return (*pulumi.ArrayOutput)(r.s.State["dnsSearches"])
+func (r *Container) DnsSearches() pulumi.ArrayOutput {
+	return (pulumi.ArrayOutput)(r.s.State["dnsSearches"])
 }
 
 // Domain name of the container.
-func (r *Container) Domainname() *pulumi.StringOutput {
-	return (*pulumi.StringOutput)(r.s.State["domainname"])
+func (r *Container) Domainname() pulumi.StringOutput {
+	return (pulumi.StringOutput)(r.s.State["domainname"])
 }
 
 // The command to use as the
@@ -280,214 +295,240 @@ func (r *Container) Domainname() *pulumi.StringOutput {
 // container to run as an executable. For example, to run `/usr/bin/myprogram`
 // when starting a container, set the entrypoint to be
 // `["/usr/bin/myprogram"]`.
-func (r *Container) Entrypoints() *pulumi.ArrayOutput {
-	return (*pulumi.ArrayOutput)(r.s.State["entrypoints"])
+func (r *Container) Entrypoints() pulumi.ArrayOutput {
+	return (pulumi.ArrayOutput)(r.s.State["entrypoints"])
 }
 
 // Environment variables to set.
-func (r *Container) Envs() *pulumi.ArrayOutput {
-	return (*pulumi.ArrayOutput)(r.s.State["envs"])
+func (r *Container) Envs() pulumi.ArrayOutput {
+	return (pulumi.ArrayOutput)(r.s.State["envs"])
 }
 
 // The exit code of the container if its execution is done (`mustRun` must be disabled).
-func (r *Container) ExitCode() *pulumi.IntOutput {
-	return (*pulumi.IntOutput)(r.s.State["exitCode"])
+func (r *Container) ExitCode() pulumi.IntOutput {
+	return (pulumi.IntOutput)(r.s.State["exitCode"])
 }
 
 // *Deprecated:* Use `networkData` instead. The network gateway of the container as read from its
 // NetworkSettings.
-func (r *Container) Gateway() *pulumi.StringOutput {
-	return (*pulumi.StringOutput)(r.s.State["gateway"])
+func (r *Container) Gateway() pulumi.StringOutput {
+	return (pulumi.StringOutput)(r.s.State["gateway"])
+}
+
+// Add additional groups to run as.
+func (r *Container) GroupAdds() pulumi.ArrayOutput {
+	return (pulumi.ArrayOutput)(r.s.State["groupAdds"])
 }
 
 // See Healthcheck below for details.
-func (r *Container) Healthcheck() *pulumi.Output {
+func (r *Container) Healthcheck() pulumi.Output {
 	return r.s.State["healthcheck"]
 }
 
 // Hostname to add.
-func (r *Container) Hosts() *pulumi.ArrayOutput {
-	return (*pulumi.ArrayOutput)(r.s.State["hosts"])
+func (r *Container) Hosts() pulumi.ArrayOutput {
+	return (pulumi.ArrayOutput)(r.s.State["hosts"])
 }
 
 // Hostname of the container.
-func (r *Container) Hostname() *pulumi.StringOutput {
-	return (*pulumi.StringOutput)(r.s.State["hostname"])
+func (r *Container) Hostname() pulumi.StringOutput {
+	return (pulumi.StringOutput)(r.s.State["hostname"])
 }
 
 // The ID of the image to back this container.
 // The easiest way to get this value is to use the `.RemoteImage` resource
 // as is shown in the example above.
-func (r *Container) Image() *pulumi.StringOutput {
-	return (*pulumi.StringOutput)(r.s.State["image"])
+func (r *Container) Image() pulumi.StringOutput {
+	return (pulumi.StringOutput)(r.s.State["image"])
 }
 
 // *Deprecated:* Use `networkData` instead. The IP address of the container's first network it.
-func (r *Container) IpAddress() *pulumi.StringOutput {
-	return (*pulumi.StringOutput)(r.s.State["ipAddress"])
+func (r *Container) IpAddress() pulumi.StringOutput {
+	return (pulumi.StringOutput)(r.s.State["ipAddress"])
 }
 
 // *Deprecated:* Use `networkData` instead. The IP prefix length of the container as read from its
 // NetworkSettings.
-func (r *Container) IpPrefixLength() *pulumi.IntOutput {
-	return (*pulumi.IntOutput)(r.s.State["ipPrefixLength"])
+func (r *Container) IpPrefixLength() pulumi.IntOutput {
+	return (pulumi.IntOutput)(r.s.State["ipPrefixLength"])
+}
+
+// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
+func (r *Container) IpcMode() pulumi.StringOutput {
+	return (pulumi.StringOutput)(r.s.State["ipcMode"])
 }
 
 // Adding labels.
-func (r *Container) Labels() *pulumi.MapOutput {
-	return (*pulumi.MapOutput)(r.s.State["labels"])
+func (r *Container) Labels() pulumi.MapOutput {
+	return (pulumi.MapOutput)(r.s.State["labels"])
 }
 
 // Set of links for link based
 // connectivity between containers that are running on the same host.
-func (r *Container) Links() *pulumi.ArrayOutput {
-	return (*pulumi.ArrayOutput)(r.s.State["links"])
+func (r *Container) Links() pulumi.ArrayOutput {
+	return (pulumi.ArrayOutput)(r.s.State["links"])
 }
 
 // The logging driver to use for the container.
 // Defaults to "json-file".
-func (r *Container) LogDriver() *pulumi.StringOutput {
-	return (*pulumi.StringOutput)(r.s.State["logDriver"])
+func (r *Container) LogDriver() pulumi.StringOutput {
+	return (pulumi.StringOutput)(r.s.State["logDriver"])
 }
 
 // Key/value pairs to use as options for
 // the logging driver.
-func (r *Container) LogOpts() *pulumi.MapOutput {
-	return (*pulumi.MapOutput)(r.s.State["logOpts"])
+func (r *Container) LogOpts() pulumi.MapOutput {
+	return (pulumi.MapOutput)(r.s.State["logOpts"])
 }
 
 // Save the container logs (`attach` must be enabled).
-func (r *Container) Logs() *pulumi.BoolOutput {
-	return (*pulumi.BoolOutput)(r.s.State["logs"])
+func (r *Container) Logs() pulumi.BoolOutput {
+	return (pulumi.BoolOutput)(r.s.State["logs"])
 }
 
 // The maximum amount of times to an attempt
 // a restart when `restart` is set to "on-failure"
-func (r *Container) MaxRetryCount() *pulumi.IntOutput {
-	return (*pulumi.IntOutput)(r.s.State["maxRetryCount"])
+// * `workingDir`- (Optional, string) The working directory for commands to run in
+func (r *Container) MaxRetryCount() pulumi.IntOutput {
+	return (pulumi.IntOutput)(r.s.State["maxRetryCount"])
 }
 
 // The memory limit for the container in MBs.
-func (r *Container) Memory() *pulumi.IntOutput {
-	return (*pulumi.IntOutput)(r.s.State["memory"])
+func (r *Container) Memory() pulumi.IntOutput {
+	return (pulumi.IntOutput)(r.s.State["memory"])
 }
 
-func (r *Container) MemorySwap() *pulumi.IntOutput {
-	return (*pulumi.IntOutput)(r.s.State["memorySwap"])
+func (r *Container) MemorySwap() pulumi.IntOutput {
+	return (pulumi.IntOutput)(r.s.State["memorySwap"])
 }
 
 // See Mounts below for details.
-func (r *Container) Mounts() *pulumi.ArrayOutput {
-	return (*pulumi.ArrayOutput)(r.s.State["mounts"])
+func (r *Container) Mounts() pulumi.ArrayOutput {
+	return (pulumi.ArrayOutput)(r.s.State["mounts"])
 }
 
-func (r *Container) MustRun() *pulumi.BoolOutput {
-	return (*pulumi.BoolOutput)(r.s.State["mustRun"])
+func (r *Container) MustRun() pulumi.BoolOutput {
+	return (pulumi.BoolOutput)(r.s.State["mustRun"])
 }
 
-func (r *Container) Name() *pulumi.StringOutput {
-	return (*pulumi.StringOutput)(r.s.State["name"])
+func (r *Container) Name() pulumi.StringOutput {
+	return (pulumi.StringOutput)(r.s.State["name"])
 }
 
 // Network aliases of the container for user-defined networks only. *Deprecated:* use `networksAdvanced` instead.
-func (r *Container) NetworkAliases() *pulumi.ArrayOutput {
-	return (*pulumi.ArrayOutput)(r.s.State["networkAliases"])
+func (r *Container) NetworkAliases() pulumi.ArrayOutput {
+	return (pulumi.ArrayOutput)(r.s.State["networkAliases"])
 }
 
 // (Map of a block) The IP addresses of the container on each
 // network. Key are the network names, values are the IP addresses.
-func (r *Container) NetworkDatas() *pulumi.ArrayOutput {
-	return (*pulumi.ArrayOutput)(r.s.State["networkDatas"])
+func (r *Container) NetworkDatas() pulumi.ArrayOutput {
+	return (pulumi.ArrayOutput)(r.s.State["networkDatas"])
 }
 
 // Network mode of the container.
-func (r *Container) NetworkMode() *pulumi.StringOutput {
-	return (*pulumi.StringOutput)(r.s.State["networkMode"])
+func (r *Container) NetworkMode() pulumi.StringOutput {
+	return (pulumi.StringOutput)(r.s.State["networkMode"])
 }
 
 // Id of the networks in which the
 // container is. *Deprecated:* use `networksAdvanced` instead.
-func (r *Container) Networks() *pulumi.ArrayOutput {
-	return (*pulumi.ArrayOutput)(r.s.State["networks"])
+func (r *Container) Networks() pulumi.ArrayOutput {
+	return (pulumi.ArrayOutput)(r.s.State["networks"])
 }
 
 // See Networks Advanced below for details. If this block has priority to the deprecated `networkAlias` and `network` properties.
-func (r *Container) NetworksAdvanced() *pulumi.ArrayOutput {
-	return (*pulumi.ArrayOutput)(r.s.State["networksAdvanced"])
+func (r *Container) NetworksAdvanced() pulumi.ArrayOutput {
+	return (pulumi.ArrayOutput)(r.s.State["networksAdvanced"])
 }
 
 // The PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
-func (r *Container) PidMode() *pulumi.StringOutput {
-	return (*pulumi.StringOutput)(r.s.State["pidMode"])
+func (r *Container) PidMode() pulumi.StringOutput {
+	return (pulumi.StringOutput)(r.s.State["pidMode"])
 }
 
 // See Ports below for details.
-func (r *Container) Ports() *pulumi.ArrayOutput {
-	return (*pulumi.ArrayOutput)(r.s.State["ports"])
+func (r *Container) Ports() pulumi.ArrayOutput {
+	return (pulumi.ArrayOutput)(r.s.State["ports"])
 }
 
 // Run container in privileged mode.
-func (r *Container) Privileged() *pulumi.BoolOutput {
-	return (*pulumi.BoolOutput)(r.s.State["privileged"])
+func (r *Container) Privileged() pulumi.BoolOutput {
+	return (pulumi.BoolOutput)(r.s.State["privileged"])
 }
 
 // Publish all ports of the container.
-func (r *Container) PublishAllPorts() *pulumi.BoolOutput {
-	return (*pulumi.BoolOutput)(r.s.State["publishAllPorts"])
+func (r *Container) PublishAllPorts() pulumi.BoolOutput {
+	return (pulumi.BoolOutput)(r.s.State["publishAllPorts"])
+}
+
+// If true, this volume will be readonly.
+// Defaults to false.
+func (r *Container) ReadOnly() pulumi.BoolOutput {
+	return (pulumi.BoolOutput)(r.s.State["readOnly"])
 }
 
 // The restart policy for the container. Must be
 // one of "no", "on-failure", "always", "unless-stopped".
-func (r *Container) Restart() *pulumi.StringOutput {
-	return (*pulumi.StringOutput)(r.s.State["restart"])
+func (r *Container) Restart() pulumi.StringOutput {
+	return (pulumi.StringOutput)(r.s.State["restart"])
 }
 
-func (r *Container) Rm() *pulumi.BoolOutput {
-	return (*pulumi.BoolOutput)(r.s.State["rm"])
+func (r *Container) Rm() pulumi.BoolOutput {
+	return (pulumi.BoolOutput)(r.s.State["rm"])
+}
+
+// Size of `/dev/shm` in MBs.
+func (r *Container) ShmSize() pulumi.IntOutput {
+	return (pulumi.IntOutput)(r.s.State["shmSize"])
 }
 
 // If true, then the Docker container will be
 // started after creation. If false, then the container is only created.
-func (r *Container) Start() *pulumi.BoolOutput {
-	return (*pulumi.BoolOutput)(r.s.State["start"])
+func (r *Container) Start() pulumi.BoolOutput {
+	return (pulumi.BoolOutput)(r.s.State["start"])
 }
 
 // A map of kernel parameters (sysctls) to set in the container.
-func (r *Container) Sysctls() *pulumi.MapOutput {
-	return (*pulumi.MapOutput)(r.s.State["sysctls"])
+func (r *Container) Sysctls() pulumi.MapOutput {
+	return (pulumi.MapOutput)(r.s.State["sysctls"])
 }
 
 // A map of container directories which should be replaced by `tmpfs mounts`, and their corresponding mount options.
-func (r *Container) Tmpfs() *pulumi.MapOutput {
-	return (*pulumi.MapOutput)(r.s.State["tmpfs"])
+func (r *Container) Tmpfs() pulumi.MapOutput {
+	return (pulumi.MapOutput)(r.s.State["tmpfs"])
 }
 
 // See Ulimits below for
 // details.
-func (r *Container) Ulimits() *pulumi.ArrayOutput {
-	return (*pulumi.ArrayOutput)(r.s.State["ulimits"])
+func (r *Container) Ulimits() pulumi.ArrayOutput {
+	return (pulumi.ArrayOutput)(r.s.State["ulimits"])
 }
 
 // See File Upload below for details.
-func (r *Container) Uploads() *pulumi.ArrayOutput {
-	return (*pulumi.ArrayOutput)(r.s.State["uploads"])
+func (r *Container) Uploads() pulumi.ArrayOutput {
+	return (pulumi.ArrayOutput)(r.s.State["uploads"])
 }
 
 // User used for run the first process. Format is
 // `user` or `user:group` which user and group can be passed literraly or
 // by name.
-func (r *Container) User() *pulumi.StringOutput {
-	return (*pulumi.StringOutput)(r.s.State["user"])
+func (r *Container) User() pulumi.StringOutput {
+	return (pulumi.StringOutput)(r.s.State["user"])
 }
 
 // Sets the usernamespace mode for the container when usernamespace remapping option is enabled.
-func (r *Container) UsernsMode() *pulumi.StringOutput {
-	return (*pulumi.StringOutput)(r.s.State["usernsMode"])
+func (r *Container) UsernsMode() pulumi.StringOutput {
+	return (pulumi.StringOutput)(r.s.State["usernsMode"])
 }
 
 // See Volumes below for details.
-func (r *Container) Volumes() *pulumi.ArrayOutput {
-	return (*pulumi.ArrayOutput)(r.s.State["volumes"])
+func (r *Container) Volumes() pulumi.ArrayOutput {
+	return (pulumi.ArrayOutput)(r.s.State["volumes"])
+}
+
+func (r *Container) WorkingDir() pulumi.StringOutput {
+	return (pulumi.StringOutput)(r.s.State["workingDir"])
 }
 
 // Input properties used for looking up and filtering Container resources.
@@ -533,6 +574,8 @@ type ContainerState struct {
 	// *Deprecated:* Use `networkData` instead. The network gateway of the container as read from its
 	// NetworkSettings.
 	Gateway interface{}
+	// Add additional groups to run as.
+	GroupAdds interface{}
 	// See Healthcheck below for details.
 	Healthcheck interface{}
 	// Hostname to add.
@@ -548,6 +591,8 @@ type ContainerState struct {
 	// *Deprecated:* Use `networkData` instead. The IP prefix length of the container as read from its
 	// NetworkSettings.
 	IpPrefixLength interface{}
+	// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
+	IpcMode interface{}
 	// Adding labels.
 	Labels interface{}
 	// Set of links for link based
@@ -563,6 +608,7 @@ type ContainerState struct {
 	Logs interface{}
 	// The maximum amount of times to an attempt
 	// a restart when `restart` is set to "on-failure"
+	// * `workingDir`- (Optional, string) The working directory for commands to run in
 	MaxRetryCount interface{}
 	// The memory limit for the container in MBs.
 	Memory interface{}
@@ -591,10 +637,15 @@ type ContainerState struct {
 	Privileged interface{}
 	// Publish all ports of the container.
 	PublishAllPorts interface{}
+	// If true, this volume will be readonly.
+	// Defaults to false.
+	ReadOnly interface{}
 	// The restart policy for the container. Must be
 	// one of "no", "on-failure", "always", "unless-stopped".
 	Restart interface{}
 	Rm interface{}
+	// Size of `/dev/shm` in MBs.
+	ShmSize interface{}
 	// If true, then the Docker container will be
 	// started after creation. If false, then the container is only created.
 	Start interface{}
@@ -615,6 +666,7 @@ type ContainerState struct {
 	UsernsMode interface{}
 	// See Volumes below for details.
 	Volumes interface{}
+	WorkingDir interface{}
 }
 
 // The set of arguments for constructing a Container resource.
@@ -651,6 +703,8 @@ type ContainerArgs struct {
 	Entrypoints interface{}
 	// Environment variables to set.
 	Envs interface{}
+	// Add additional groups to run as.
+	GroupAdds interface{}
 	// See Healthcheck below for details.
 	Healthcheck interface{}
 	// Hostname to add.
@@ -661,6 +715,8 @@ type ContainerArgs struct {
 	// The easiest way to get this value is to use the `.RemoteImage` resource
 	// as is shown in the example above.
 	Image interface{}
+	// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
+	IpcMode interface{}
 	// Adding labels.
 	Labels interface{}
 	// Set of links for link based
@@ -676,6 +732,7 @@ type ContainerArgs struct {
 	Logs interface{}
 	// The maximum amount of times to an attempt
 	// a restart when `restart` is set to "on-failure"
+	// * `workingDir`- (Optional, string) The working directory for commands to run in
 	MaxRetryCount interface{}
 	// The memory limit for the container in MBs.
 	Memory interface{}
@@ -701,10 +758,15 @@ type ContainerArgs struct {
 	Privileged interface{}
 	// Publish all ports of the container.
 	PublishAllPorts interface{}
+	// If true, this volume will be readonly.
+	// Defaults to false.
+	ReadOnly interface{}
 	// The restart policy for the container. Must be
 	// one of "no", "on-failure", "always", "unless-stopped".
 	Restart interface{}
 	Rm interface{}
+	// Size of `/dev/shm` in MBs.
+	ShmSize interface{}
 	// If true, then the Docker container will be
 	// started after creation. If false, then the container is only created.
 	Start interface{}
@@ -725,4 +787,5 @@ type ContainerArgs struct {
 	UsernsMode interface{}
 	// See Volumes below for details.
 	Volumes interface{}
+	WorkingDir interface{}
 }

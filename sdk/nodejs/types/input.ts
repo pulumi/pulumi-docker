@@ -5,32 +5,13 @@ import * as pulumi from "@pulumi/pulumi";
 import * as inputs from "../types/input";
 
 export interface ContainerCapabilities {
-    /**
-     * list of linux capabilities to add.
-     */
     adds?: pulumi.Input<pulumi.Input<string>[]>;
-    /**
-     * list of linux capabilities to drop.
-     */
     drops?: pulumi.Input<pulumi.Input<string>[]>;
 }
 
 export interface ContainerDevice {
-    /**
-     * The path in the container where the
-     * device will be binded.
-     */
     containerPath?: pulumi.Input<string>;
-    /**
-     * The path on the host where the device
-     * is located.
-     */
     hostPath: pulumi.Input<string>;
-    /**
-     * The cgroup permissions given to the
-     * container to access the device.
-     * Defaults to `rwm`.
-     */
     permissions?: pulumi.Input<string>;
 }
 
@@ -43,133 +24,54 @@ export interface ContainerHealthcheck {
 }
 
 export interface ContainerHost {
-    /**
-     * Hostname to add.
-     */
     host: pulumi.Input<string>;
-    /**
-     * IP address this hostname should resolve to.
-     */
     ip: pulumi.Input<string>;
 }
 
 export interface ContainerMount {
-    /**
-     * Optional configuration for the `bind` type.
-     */
     bindOptions?: pulumi.Input<inputs.ContainerMountBindOptions>;
-    /**
-     * If true, this volume will be readonly.
-     * Defaults to false.
-     */
     readOnly?: pulumi.Input<boolean>;
-    /**
-     * The mount source (e.g., a volume name, a host path)
-     */
     source?: pulumi.Input<string>;
-    /**
-     * The container path.
-     */
     target: pulumi.Input<string>;
-    /**
-     * Optional configuration for the `tmpf` type.
-     */
     tmpfsOptions?: pulumi.Input<inputs.ContainerMountTmpfsOptions>;
-    /**
-     * The mount type: valid values are `bind|volume|tmpfs`.
-     */
     type: pulumi.Input<string>;
-    /**
-     * Optional configuration for the `volume` type.
-     */
     volumeOptions?: pulumi.Input<inputs.ContainerMountVolumeOptions>;
 }
 
 export interface ContainerMountBindOptions {
-    /**
-     * A propagation mode with the value.
-     */
     propagation?: pulumi.Input<string>;
 }
 
 export interface ContainerMountTmpfsOptions {
-    /**
-     * The permission mode for the tmpfs mount in an integer.
-     */
     mode?: pulumi.Input<number>;
-    /**
-     * The size for the tmpfs mount in bytes. 
-     */
     sizeBytes?: pulumi.Input<number>;
 }
 
 export interface ContainerMountVolumeOptions {
     driverName?: pulumi.Input<string>;
-    /**
-     * Options for the driver.
-     */
     driverOptions?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
-    /**
-     * Adding labels.
-     */
     labels?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
-    /**
-     * Whether to populate volume with data from the target.
-     */
     noCopy?: pulumi.Input<boolean>;
 }
 
 export interface ContainerNetworkData {
-    /**
-     * *Deprecated:* Use `networkData` instead. The network gateway of the container as read from its
-     * NetworkSettings.
-     */
     gateway?: pulumi.Input<string>;
-    /**
-     * *Deprecated:* Use `networkData` instead. The IP address of the container's first network it.
-     */
     ipAddress?: pulumi.Input<string>;
-    /**
-     * *Deprecated:* Use `networkData` instead. The IP prefix length of the container as read from its
-     * NetworkSettings.
-     */
     ipPrefixLength?: pulumi.Input<number>;
     networkName?: pulumi.Input<string>;
 }
 
 export interface ContainerNetworksAdvanced {
-    /**
-     * The network aliases of the container in the specific network.
-     */
     aliases?: pulumi.Input<pulumi.Input<string>[]>;
-    /**
-     * The IPV4 address of the container in the specific network.
-     */
     ipv4Address?: pulumi.Input<string>;
-    /**
-     * The IPV6 address of the container in the specific network.
-     */
     ipv6Address?: pulumi.Input<string>;
     name: pulumi.Input<string>;
 }
 
 export interface ContainerPort {
-    /**
-     * Port exposed out of the container. If not given a free random port `>= 32768` will be used.
-     */
     external?: pulumi.Input<number>;
-    /**
-     * Port within the container.
-     */
     internal: pulumi.Input<number>;
-    /**
-     * IP address this hostname should resolve to.
-     */
     ip?: pulumi.Input<string>;
-    /**
-     * Protocol that can be used over this port,
-     * defaults to `tcp`.
-     */
     protocol?: pulumi.Input<string>;
 }
 
@@ -180,47 +82,17 @@ export interface ContainerUlimit {
 }
 
 export interface ContainerUpload {
-    /**
-     * A content of a file to upload.
-     */
-    content: pulumi.Input<string>;
-    /**
-     * If true, the file will be uploaded with user
-     * executable permission.
-     * Defaults to false.
-     */
+    content?: pulumi.Input<string>;
+    contentBase64?: pulumi.Input<string>;
     executable?: pulumi.Input<boolean>;
-    /**
-     * path to a file in the container.
-     */
     file: pulumi.Input<string>;
 }
 
 export interface ContainerVolume {
-    /**
-     * The path in the container where the
-     * device will be binded.
-     */
     containerPath?: pulumi.Input<string>;
-    /**
-     * The container where the volume is
-     * coming from.
-     */
     fromContainer?: pulumi.Input<string>;
-    /**
-     * The path on the host where the device
-     * is located.
-     */
     hostPath?: pulumi.Input<string>;
-    /**
-     * If true, this volume will be readonly.
-     * Defaults to false.
-     */
     readOnly?: pulumi.Input<boolean>;
-    /**
-     * The name of the docker volume which
-     * should be mounted.
-     */
     volumeName?: pulumi.Input<string>;
 }
 
@@ -246,17 +118,8 @@ export interface ProviderRegistryAuth {
 }
 
 export interface ServiceAuth {
-    /**
-     * The password to use for authenticating to the registry. If this is blank, the `DOCKER_REGISTRY_PASS` is also be checked.
-     */
     password?: pulumi.Input<string>;
-    /**
-     * The address of the registry server
-     */
     serverAddress: pulumi.Input<string>;
-    /**
-     * The username to use for authenticating to the registry. If this is blank, the `DOCKER_REGISTRY_USER` is also be checked. 
-     */
     username?: pulumi.Input<string>;
 }
 
@@ -266,36 +129,15 @@ export interface ServiceConvergeConfig {
 }
 
 export interface ServiceEndpointSpec {
-    /**
-     * The mode of resolution to use for internal load balancing between tasks. `(vip|dnsrr)`. Default: `vip`.
-     */
     mode?: pulumi.Input<string>;
-    /**
-     * See Ports below for details.
-     */
     ports?: pulumi.Input<pulumi.Input<inputs.ServiceEndpointSpecPort>[]>;
 }
 
 export interface ServiceEndpointSpecPort {
-    /**
-     * A random name for the port.
-     */
     name?: pulumi.Input<string>;
-    /**
-     * Protocol that can be used over this port: `tcp|udp|sctp`. Default: `tcp`.
-     */
     protocol?: pulumi.Input<string>;
-    /**
-     * Represents the mode in which the port is to be published: `ingress|host`
-     */
     publishMode?: pulumi.Input<string>;
-    /**
-     * The port on the swarm hosts. If not set the value of `targetPort` will be used.
-     */
     publishedPort?: pulumi.Input<number>;
-    /**
-     * Port inside the container.
-     */
     targetPort: pulumi.Input<number>;
 }
 
@@ -352,25 +194,13 @@ export interface ServiceTaskSpecContainerSpec {
 }
 
 export interface ServiceTaskSpecContainerSpecConfig {
-    /**
-     * ConfigID represents the ID of the specific config.
-     */
     configId: pulumi.Input<string>;
-    /**
-     * The name of the config that this references, but internally it is just provided for lookup/display purposes
-     */
     configName?: pulumi.Input<string>;
-    /**
-     * Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
-     */
     fileName: pulumi.Input<string>;
 }
 
 export interface ServiceTaskSpecContainerSpecDnsConfig {
     nameservers: pulumi.Input<pulumi.Input<string>[]>;
-    /**
-     * The options for the logging driver, e.g.
-     */
     options?: pulumi.Input<pulumi.Input<string>[]>;
     searches?: pulumi.Input<pulumi.Input<string>[]>;
 }
@@ -403,9 +233,6 @@ export interface ServiceTaskSpecContainerSpecMountBindOptions {
 }
 
 export interface ServiceTaskSpecContainerSpecMountTmpfsOptions {
-    /**
-     * The mode of resolution to use for internal load balancing between tasks. `(vip|dnsrr)`. Default: `vip`.
-     */
     mode?: pulumi.Input<number>;
     sizeBytes?: pulumi.Input<number>;
 }
@@ -436,22 +263,13 @@ export interface ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext {
 }
 
 export interface ServiceTaskSpecContainerSpecSecret {
-    /**
-     * Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
-     */
     fileName: pulumi.Input<string>;
     secretId: pulumi.Input<string>;
     secretName?: pulumi.Input<string>;
 }
 
 export interface ServiceTaskSpecLogDriver {
-    /**
-     * A random name for the port.
-     */
     name: pulumi.Input<string>;
-    /**
-     * The options for the logging driver, e.g.
-     */
     options?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
 }
 

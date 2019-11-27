@@ -6,28 +6,6 @@ import * as inputs from "./types/input";
 import * as outputs from "./types/output";
 import * as utilities from "./utilities";
 
-/**
- * Reads the image metadata from a Docker Registry. Used in conjunction with the
- * [docker\_image](https://www.terraform.io/docs/providers/docker/r/image.html) resource to keep an image up
- * to date on the latest available version of the tag.
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as docker from "@pulumi/docker";
- * 
- * const ubuntuRegistryImage = docker.getRegistryImage({
- *     name: "ubuntu:precise",
- * });
- * const ubuntuRemoteImage = new docker.RemoteImage("ubuntu", {
- *     name: ubuntuRegistryImage.name!,
- *     pullTriggers: [ubuntuRegistryImage.sha256Digest],
- * });
- * ```
- *
- * > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/d/registry_image.html.markdown.
- */
 export function getRegistryImage(args?: GetRegistryImageArgs, opts?: pulumi.InvokeOptions): Promise<GetRegistryImageResult> & GetRegistryImageResult {
     args = args || {};
     if (!opts) {
@@ -48,9 +26,6 @@ export function getRegistryImage(args?: GetRegistryImageArgs, opts?: pulumi.Invo
  * A collection of arguments for invoking getRegistryImage.
  */
 export interface GetRegistryImageArgs {
-    /**
-     * The name of the Docker image, including any tags. e.g. `alpine:latest`
-     */
     readonly name?: string;
 }
 

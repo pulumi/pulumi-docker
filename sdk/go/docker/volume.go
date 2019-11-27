@@ -59,38 +59,38 @@ func GetVolume(ctx *pulumi.Context,
 }
 
 // URN is this resource's unique name assigned by Pulumi.
-func (r *Volume) URN() *pulumi.URNOutput {
+func (r *Volume) URN() pulumi.URNOutput {
 	return r.s.URN()
 }
 
 // ID is this resource's unique identifier assigned by its provider.
-func (r *Volume) ID() *pulumi.IDOutput {
+func (r *Volume) ID() pulumi.IDOutput {
 	return r.s.ID()
 }
 
 // Driver type for the volume (defaults to local).
-func (r *Volume) Driver() *pulumi.StringOutput {
-	return (*pulumi.StringOutput)(r.s.State["driver"])
+func (r *Volume) Driver() pulumi.StringOutput {
+	return (pulumi.StringOutput)(r.s.State["driver"])
 }
 
 // Options specific to the driver.
-func (r *Volume) DriverOpts() *pulumi.MapOutput {
-	return (*pulumi.MapOutput)(r.s.State["driverOpts"])
+func (r *Volume) DriverOpts() pulumi.MapOutput {
+	return (pulumi.MapOutput)(r.s.State["driverOpts"])
 }
 
 // User-defined key/value metadata.
-func (r *Volume) Labels() *pulumi.MapOutput {
-	return (*pulumi.MapOutput)(r.s.State["labels"])
+func (r *Volume) Labels() pulumi.MapOutput {
+	return (pulumi.MapOutput)(r.s.State["labels"])
 }
 
-func (r *Volume) Mountpoint() *pulumi.StringOutput {
-	return (*pulumi.StringOutput)(r.s.State["mountpoint"])
+func (r *Volume) Mountpoint() pulumi.StringOutput {
+	return (pulumi.StringOutput)(r.s.State["mountpoint"])
 }
 
 // The name of the Docker volume (generated if not
 // provided).
-func (r *Volume) Name() *pulumi.StringOutput {
-	return (*pulumi.StringOutput)(r.s.State["name"])
+func (r *Volume) Name() pulumi.StringOutput {
+	return (pulumi.StringOutput)(r.s.State["name"])
 }
 
 // Input properties used for looking up and filtering Volume resources.

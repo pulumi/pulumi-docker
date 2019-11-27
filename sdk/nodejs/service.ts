@@ -6,9 +6,6 @@ import * as inputs from "./types/input";
 import * as outputs from "./types/output";
 import * as utilities from "./utilities";
 
-/**
- * > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/service.html.markdown.
- */
 export class Service extends pulumi.CustomResource {
     /**
      * Get an existing Service resource's state with the given name, ID, and optional extra
@@ -36,16 +33,13 @@ export class Service extends pulumi.CustomResource {
         return obj['__pulumiType'] === Service.__pulumiType;
     }
 
-    /**
-     * See Auth below for details.
-     */
     public readonly auth!: pulumi.Output<outputs.ServiceAuth | undefined>;
     /**
-     * See Converge Config below for details.
+     * A configuration to ensure that a service converges aka reaches the desired that of all task up and running
      */
     public readonly convergeConfig!: pulumi.Output<outputs.ServiceConvergeConfig | undefined>;
     /**
-     * See EndpointSpec below for details.
+     * Properties that can be configured to access and load balance a service
      */
     public readonly endpointSpec!: pulumi.Output<outputs.ServiceEndpointSpec>;
     /**
@@ -53,23 +47,23 @@ export class Service extends pulumi.CustomResource {
      */
     public readonly labels!: pulumi.Output<{[key: string]: string}>;
     /**
-     * The mode of resolution to use for internal load balancing between tasks. `(vip|dnsrr)`. Default: `vip`.
+     * Scheduling mode for the service
      */
     public readonly mode!: pulumi.Output<outputs.ServiceMode>;
     /**
-     * A random name for the port.
+     * Name of the service
      */
     public readonly name!: pulumi.Output<string>;
     /**
-     * See RollbackConfig below for details.
+     * Specification for the rollback strategy of the service
      */
     public readonly rollbackConfig!: pulumi.Output<outputs.ServiceRollbackConfig | undefined>;
     /**
-     * See TaskSpec below for details.
+     * User modifiable task configuration
      */
     public readonly taskSpec!: pulumi.Output<outputs.ServiceTaskSpec>;
     /**
-     * See UpdateConfig below for details.
+     * Specification for the update strategy of the service
      */
     public readonly updateConfig!: pulumi.Output<outputs.ServiceUpdateConfig | undefined>;
 
@@ -124,16 +118,13 @@ export class Service extends pulumi.CustomResource {
  * Input properties used for looking up and filtering Service resources.
  */
 export interface ServiceState {
-    /**
-     * See Auth below for details.
-     */
     readonly auth?: pulumi.Input<inputs.ServiceAuth>;
     /**
-     * See Converge Config below for details.
+     * A configuration to ensure that a service converges aka reaches the desired that of all task up and running
      */
     readonly convergeConfig?: pulumi.Input<inputs.ServiceConvergeConfig>;
     /**
-     * See EndpointSpec below for details.
+     * Properties that can be configured to access and load balance a service
      */
     readonly endpointSpec?: pulumi.Input<inputs.ServiceEndpointSpec>;
     /**
@@ -141,23 +132,23 @@ export interface ServiceState {
      */
     readonly labels?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
     /**
-     * The mode of resolution to use for internal load balancing between tasks. `(vip|dnsrr)`. Default: `vip`.
+     * Scheduling mode for the service
      */
     readonly mode?: pulumi.Input<inputs.ServiceMode>;
     /**
-     * A random name for the port.
+     * Name of the service
      */
     readonly name?: pulumi.Input<string>;
     /**
-     * See RollbackConfig below for details.
+     * Specification for the rollback strategy of the service
      */
     readonly rollbackConfig?: pulumi.Input<inputs.ServiceRollbackConfig>;
     /**
-     * See TaskSpec below for details.
+     * User modifiable task configuration
      */
     readonly taskSpec?: pulumi.Input<inputs.ServiceTaskSpec>;
     /**
-     * See UpdateConfig below for details.
+     * Specification for the update strategy of the service
      */
     readonly updateConfig?: pulumi.Input<inputs.ServiceUpdateConfig>;
 }
@@ -166,16 +157,13 @@ export interface ServiceState {
  * The set of arguments for constructing a Service resource.
  */
 export interface ServiceArgs {
-    /**
-     * See Auth below for details.
-     */
     readonly auth?: pulumi.Input<inputs.ServiceAuth>;
     /**
-     * See Converge Config below for details.
+     * A configuration to ensure that a service converges aka reaches the desired that of all task up and running
      */
     readonly convergeConfig?: pulumi.Input<inputs.ServiceConvergeConfig>;
     /**
-     * See EndpointSpec below for details.
+     * Properties that can be configured to access and load balance a service
      */
     readonly endpointSpec?: pulumi.Input<inputs.ServiceEndpointSpec>;
     /**
@@ -183,23 +171,23 @@ export interface ServiceArgs {
      */
     readonly labels?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
     /**
-     * The mode of resolution to use for internal load balancing between tasks. `(vip|dnsrr)`. Default: `vip`.
+     * Scheduling mode for the service
      */
     readonly mode?: pulumi.Input<inputs.ServiceMode>;
     /**
-     * A random name for the port.
+     * Name of the service
      */
     readonly name?: pulumi.Input<string>;
     /**
-     * See RollbackConfig below for details.
+     * Specification for the rollback strategy of the service
      */
     readonly rollbackConfig?: pulumi.Input<inputs.ServiceRollbackConfig>;
     /**
-     * See TaskSpec below for details.
+     * User modifiable task configuration
      */
     readonly taskSpec: pulumi.Input<inputs.ServiceTaskSpec>;
     /**
-     * See UpdateConfig below for details.
+     * Specification for the update strategy of the service
      */
     readonly updateConfig?: pulumi.Input<inputs.ServiceUpdateConfig>;
 }
