@@ -1,6 +1,7 @@
 ﻿// Copyright 2016-2019, Pulumi Corporation.
 
 using System;
+using System.Linq;
 using System.Text;
 
 namespace Pulumi.Docker
@@ -29,39 +30,20 @@ namespace Pulumi.Docker
         /// Convert an argument array to an argument string for using with Process.StartInfo.Arguments.
         /// </summary>
         public static string EscapeArguments(params string[] args)
-        {
-            var argEnumerator = args.GetEnumerator();
-            var arguments = new StringBuilder();
-
-            if (!argEnumerator.MoveNext())
-            {
-                return string.Empty;
-            }
-
-            arguments.Append(EscapeArguments((string)argEnumerator.Current!));
-
-            while (argEnumerator.MoveNext())
-            {
-                arguments.Append(' ');
-                arguments.Append(EscapeArguments((string)argEnumerator.Current!));
-            }
-
-            return arguments.ToString();
-        }
+            => string.Join(" ", args.Select(EscapeArguments));
 
         /// <summary>
         /// Convert an argument array to an argument string for using with Process.StartInfo.Arguments.
         /// </summary>
         private static string EscapeArguments(string argument)
         {
-            using var characterEnumerator = argument.GetEnumerator();
             var escapedArgument = new StringBuilder();
             var backslashCount = 0;
             var needsQuotes = false;
 
-            while (characterEnumerator.MoveNext())
+            foreach (var character in argument)
             {
-                switch (characterEnumerator.Current)
+                switch (character)
                 {
                     case '\\':
                         // Backslashes are simply passed through, except when they need
@@ -93,7 +75,7 @@ namespace Pulumi.Docker
                         needsQuotes = true;
 
                         // Append the whitespace
-                        escapedArgument.Append(characterEnumerator.Current);
+                        escapedArgument.Append(character);
 
                         // Reset the backslash counter.
                         backslashCount = 0;
@@ -104,7 +86,7 @@ namespace Pulumi.Docker
                         backslashCount = 0;
 
                         // Append the current character
-                        escapedArgument.Append(characterEnumerator.Current);
+                        escapedArgument.Append(character);
                         break;
                 }
             }
@@ -129,5 +111,16 @@ namespace Pulumi.Docker
 
             return escapedArgument.ToString();
         }
+
+        public static int RandomInt()
+        {
+            lock (syncLock)
+            {
+                return random.Next();
+            }
+        }
+
+        private static readonly Random random = new Random();
+        private static readonly object syncLock = new object();
     }
 }

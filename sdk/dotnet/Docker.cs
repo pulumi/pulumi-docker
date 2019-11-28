@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -575,25 +576,35 @@ namespace Pulumi.Docker
         {
             // Let the user ephemerally know the command we're going to execute.
             Log.Info($"Executing {GetCommandLineMessage(cmd, args, reportFullCommandLine, env)}", logResource, ephemeral: true);
+            var streamId = Utils.RandomInt();
 
-            var process = new Process();
+            using var process = new Process();
             process.StartInfo.FileName = cmd;
             process.StartInfo.Arguments = Utils.EscapeArguments(args);
             process.StartInfo.RedirectStandardInput = stdin != null;
-            process.StartInfo.RedirectStandardOutput = true;
             process.StartInfo.RedirectStandardError = true;
+
+            var stdout = new StringBuilder();
+            process.StartInfo.RedirectStandardOutput = true;
+            process.OutputDataReceived += new DataReceivedEventHandler((object sender, DataReceivedEventArgs e) =>
+            {
+                if (e.Data != null) // null would indicate the end of stream
+                {
+                    Log.Info(e.Data, logResource, streamId, ephemeral: true);
+                    stdout.Append(e.Data);
+                }
+            });
 
             try
             {
                 process.Start();
+                process.BeginOutputReadLine();
 
                 if (stdin != null)
                 {
                     process.StandardInput.Write(stdin);
                     process.StandardInput.Close();
                 }
-
-                var stdout = await process.StandardOutput.ReadToEndAsync().ConfigureAwait(false);
 
                 // We can't stream these stderr messages as we receive them because we don't knows at
                 // this point because Docker uses stderr for both errors and warnings.  So, instead, we
@@ -628,7 +639,7 @@ namespace Pulumi.Docker
                     Log.Info(GetFailureMessage(cmd, args, reportFullCommandLine, code), logResource, ephemeral: true);
                 }
 
-                return (code, stdout);
+                return (code, stdout.ToString());
             }
             catch (Exception ex)
             {
