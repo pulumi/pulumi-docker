@@ -55,10 +55,7 @@ namespace Pulumi.Docker
 
                     case '\"':
                         // Escape any preceding backslashes
-                        for (var c = 0; c < backslashCount; c++)
-                        {
-                            escapedArgument.Append('\\');
-                        }
+                        escapedArgument.Append(new string('\\', backslashCount));
 
                         // Append an escaped double quote.
                         escapedArgument.Append("\\\"");
@@ -101,10 +98,7 @@ namespace Pulumi.Docker
             escapedArgument.Insert(0, '"');
 
             // Escape any preceding backslashes before appending the "
-            for (var c = 0; c < backslashCount; c++)
-            {
-                escapedArgument.Append('\\');
-            }
+            escapedArgument.Append(new string('\\', backslashCount));
 
             // Append the final "
             escapedArgument.Append('\"');

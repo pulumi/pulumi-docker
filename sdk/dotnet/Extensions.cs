@@ -9,62 +9,61 @@ namespace Pulumi.Docker
 {
     internal static class UnwrapExtensions
     {
-        public static Input<ImmutableArray<T>?> Unwrap<T>(this InputList<T>? items)
-            => items == null ? Output.Create((ImmutableArray<T>?)null) : items.Apply(v => (ImmutableArray<T>?)v);
+        public static Output<T?> ToOutputNullable<T>(this Input<T>? input) where T : class
+            => input == null ? Output.Create((T?)null) : input.Apply(v => (T?)v);
 
-        public static Input<TUnwrapped?> Unwrap<T, TUnwrapped>(this Input<T>? input, Func<T, Input<TUnwrapped?>> convert) where TUnwrapped : class
-            => input == null ? Output.Create((TUnwrapped?)null) : input.Apply(convert);
+        public static Output<Union<T0, T1>?> ToOutputNullable<T0, T1>(this InputUnion<T0, T1>? items)
+            => items == null ? Output.Create((Union<T0, T1>?)null) : items.Apply(v => (Union<T0, T1>?)v);
 
-        public static Input<TUnwrapped?> Unwrap<T, TUnwrapped>(this Input<T>? input, Func<T, Input<TUnwrapped?>> convert) where TUnwrapped : struct
-            => input == null ? Output.Create((TUnwrapped?)null) : input.Apply(convert);
+        public static Output<U?> ApplyNullable<T, U>(this Output<T?> output, Func<T, Output<U>> func) where T : class where U : class
+            => output.Apply(v => v != null ? func(v).Apply(v => (U?)v) : Output.Create((U?)null));
 
-        public static Input<T?> Unwrap<T>(this Input<T>? input) where T : class
-            => input.Unwrap<T, T>(v => v);
+        public static Output<U?> ApplyNullable<T, U>(this Output<T?> output, Func<T, Output<U>> func) where T : struct where U : class
+            => output.Apply(v => v.HasValue ? func(v.Value).Apply(v => (U?)v) : Output.Create((U?)null));
 
-        public static Input<Union<T0Unwrapped, T1Unwrapped>?> Unwrap<T0, T1, T0Unwrapped, T1Unwrapped>
-            (this InputUnion<T0, T1>? input, Func<T0, Output<T0Unwrapped>> unwrapT0, Func<T1, Output<T1Unwrapped>> unwrapT1)
-        {
-            if (input == null)
-                Output.Create((Union<T0Unwrapped, T1Unwrapped>?)null);
+        public static Output<Union<U, T1>> ApplyT0<T0, T1, U>(this Output<Union<T0, T1>> union, Func<T0, Output<U>> func)
+            => union.Apply(v => v.IsT0 ? func(v.AsT0).Apply(v => Union<U, T1>.FromT0(v)) : Output.Create(Union<U, T1>.FromT1(v.AsT1)));
 
-            return input.Apply(value =>
-            {
-                return value.IsT0
-                    ? unwrapT0(value.AsT0).Apply(Union<T0Unwrapped, T1Unwrapped>.FromT0)
-                    : unwrapT1(value.AsT1).Apply(Union<T0Unwrapped, T1Unwrapped>.FromT1);
-            }).Apply(v => (Union<T0Unwrapped, T1Unwrapped>?)v);
-        }
+        public static Output<Union<T0, U>> ApplyT1<T0, T1, U>(this Output<Union<T0, T1>> union, Func<T1, Output<U>> func)
+            => union.Apply(v => v.IsT1 ? func(v.AsT1).Apply(v => Union<T0, U>.FromT1(v)) : Output.Create(Union<T0, U>.FromT0(v.AsT0)));
     }
 
     internal static class DockerExtensions
     { 
-        public static Input<CacheFromUnwrap?> Unwrap(this InputUnion<bool, CacheFrom>? build)
+        public static Output<CacheFromUnwrap?> Unwrap(this InputUnion<bool, CacheFrom>? build)
         {
-            return build.Unwrap(v => v.IsT0 ? new ImmutableArray<string>() : v.AsT1.Stages.Unwrap())
-                .Apply(v => v != null ? new CacheFromUnwrap { Stages = v } : null);
+            return build.ToOutputNullable().ApplyNullable(v =>
+            {
+                if (v.IsT0)
+                    return Output.Create(new CacheFromUnwrap { Stages = new ImmutableArray<string>() });
+
+                return v.AsT1.Stages.ToOutput().Apply(b => new CacheFromUnwrap { Stages = b });
+            });
         }
 
-        public static Input<Union<string, DockerBuildUnwrap>> Unwrap(this InputUnion<string, DockerBuild> build)
+        public static Output<Union<string, DockerBuildUnwrap>> Unwrap(this InputUnion<string, DockerBuild> build)
         {
-            var a = build.Unwrap(
-                x => Output.Create(x),
-                v => Output.Tuple(v.Args.Unwrap(), v.CacheFrom.Unwrap(), v.Context.Unwrap(), v.Dockerfile.Unwrap(), v.Env.Unwrap(), v.ExtraOptions.Unwrap())
-                           .Apply(vs => new DockerBuildUnwrap
-                           {
-                               Args = vs.Item1,
-                               CacheFrom = vs.Item2,
-                               Context = vs.Item3,
-                               Dockerfile = vs.Item4,
-                               Env = vs.Item5,
-                               ExtraOptions = vs.Item6,
-                           }));
-            return a.Apply(v => v ?? throw new InvalidOperationException($"[{nameof(build)}] is never never, so unwrapped value is expected to be never null either"));
+            return build
+                .ToOutput()
+                .ApplyT1(v => 
+                    Output.Tuple(v.Args.ToOutput(), v.CacheFrom.Unwrap(), v.Context.ToOutput(), v.Dockerfile.ToOutput(), v.Env.ToOutput(), v.ExtraOptions.ToOutput())
+                          .Apply(vs => new DockerBuildUnwrap
+                          {
+                              Args = vs.Item1,
+                              CacheFrom = vs.Item2,
+                              Context = vs.Item3,
+                              Dockerfile = vs.Item4,
+                              Env = vs.Item5,
+                              ExtraOptions = vs.Item6,
+                          }));
         }
 
-        public static Input<ImageRegistryUnwrap?> Unwrap(this Input<ImageRegistry>? registry)
-            => registry
-                .Unwrap<ImageRegistry, ImageRegistryUnwrap>(v => 
-                    Output.Tuple(v.Password, v.Server, v.Username)
-                          .Apply(v => (ImageRegistryUnwrap?)new ImageRegistryUnwrap { Password = v.Item1, Server = v.Item2, Username = v.Item3 }));
+        public static Output<ImageRegistryUnwrap?> Unwrap(this Input<ImageRegistry>? registry)
+        {
+            return registry
+                .ToOutputNullable()
+                .ApplyNullable(v => Output.Tuple(v.Password, v.Server, v.Username)
+                                          .Apply(v => new ImageRegistryUnwrap { Password = v.Item1, Server = v.Item2, Username = v.Item3 }));
+        }
     }
 }

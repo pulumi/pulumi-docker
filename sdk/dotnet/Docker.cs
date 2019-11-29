@@ -124,7 +124,7 @@ namespace Pulumi.Docker
         public static Output<string> BuildAndPushImageAsync(string imageName, InputUnion<string, DockerBuild> pathOrBuild,
             Input<string> repositoryUrl, Resource logResource, Input<ImageRegistry>? registry)
         {
-            return Output.Tuple(pathOrBuild.Unwrap(), repositoryUrl, registry.Unwrap()).Apply(async v =>
+            return Output.Tuple(pathOrBuild.Unwrap(), repositoryUrl.ToOutput(), registry.Unwrap()).Apply(async v =>
             {
                 var buildVal = v.Item1;
                 var repositoryUrlVal = v.Item2;

@@ -118,7 +118,7 @@ namespace Pulumi.Docker
         public Image(string name, ImageArgs args, ComponentResourceOptions? options = null)
             : base("docker:image:Image", name, options)
         {
-            this.ImageName = Output.Tuple(args.ImageName, args.LocalImageName.Unwrap()).Apply(imageArgs =>
+            this.ImageName = Output.Tuple(args.ImageName.ToOutput(), args.LocalImageName.ToOutputNullable()).Apply(imageArgs =>
             {
                 var imageName = imageArgs.Item1;
 
