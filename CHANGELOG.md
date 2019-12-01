@@ -4,6 +4,7 @@
 * Upgrade to v2.6.0 of the Docker Terraform Provider
 * Upgrade to go1.13
 * Add support for .NET (https://github.com/pulumi/pulumi-docker/pull/115)
+* Allow users to pass `target` in image.Image when using multi-target Dockerfiles
 
 ## 0.17.4 (Released September 5, 2019)
 
