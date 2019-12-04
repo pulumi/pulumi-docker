@@ -68,6 +68,12 @@ namespace Pulumi.Docker
         /// </summary>
         [Input("env")]
         public InputMap<string>? Env { get; set; }
+
+        /// <summary>
+        /// The target of the dockerfile to build.
+        /// </summary>
+        [Input("target")]
+        public Input<string>? Target { get; set; }
     }
 
     /// <summary>
@@ -81,6 +87,7 @@ namespace Pulumi.Docker
         public CacheFromUnwrap? CacheFrom { get; set; }
         public ImmutableArray<string>? ExtraOptions { get; set; }
         public ImmutableDictionary<string, string>? Env { get; set; }
+        public string? Target { get; set; }
     }
 
     /// <summary>
@@ -335,7 +342,8 @@ namespace Pulumi.Docker
             Log.Info(
                 $"Building container image '{imageName}': context={build.Context}" +
                 (build.Dockerfile != null ? $", dockerfile={build.Dockerfile}" : "") +
-                (build.Args != null ? $", args={JsonSerializer.Serialize(build.Args)}" : ""),
+                (build.Args != null ? $", args={JsonSerializer.Serialize(build.Args)}" : "") +
+                (build.Target != null ? $", target={build.Target}" : ""),
                 logResource, ephemeral: true);
 
             // If the container build specified build stages to cache, build each in turn.
@@ -391,6 +399,10 @@ namespace Pulumi.Docker
                 {
                     buildArgs.AddRange(new[] { "--build-arg", $"{arg}={build.Args[arg]}" });
                 }
+            }
+            if (build.Target != null)
+            {
+                buildArgs.AddRange(new[] { "--target", build.Target });
             }
             if (build.CacheFrom != null)
             {

@@ -46,7 +46,9 @@ namespace Pulumi.Docker
             return build
                 .ToOutput()
                 .ApplyT1(v => 
-                    Output.Tuple(v.Args.ToOutput(), v.CacheFrom.Unwrap(), v.Context.ToOutput(), v.Dockerfile.ToOutput(), v.Env.ToOutput(), v.ExtraOptions.ToOutput())
+                    Output.Tuple(v.Args.ToOutput(), v.CacheFrom.Unwrap(), v.Context.ToOutput(),
+                                 v.Dockerfile.ToOutput(), v.Env.ToOutput(),
+                                 v.ExtraOptions.ToOutput(), v.Target.ToOutput())
                           .Apply(vs => new DockerBuildUnwrap
                           {
                               Args = vs.Item1,
@@ -55,6 +57,7 @@ namespace Pulumi.Docker
                               Dockerfile = vs.Item4,
                               Env = vs.Item5,
                               ExtraOptions = vs.Item6,
+                              Target = vs.Item7,
                           }));
         }
 
