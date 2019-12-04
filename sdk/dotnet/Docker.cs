@@ -582,7 +582,6 @@ namespace Pulumi.Docker
             process.StartInfo.FileName = cmd;
             process.StartInfo.Arguments = Utils.EscapeArguments(args);
             process.StartInfo.RedirectStandardInput = stdin != null;
-            process.StartInfo.RedirectStandardError = true;
 
             var stdout = new StringBuilder();
             process.StartInfo.RedirectStandardOutput = true;
@@ -595,10 +594,21 @@ namespace Pulumi.Docker
                 }
             });
 
+            var stderr = new StringBuilder();
+            process.StartInfo.RedirectStandardError = true;
+            process.ErrorDataReceived += new DataReceivedEventHandler((object sender, DataReceivedEventArgs e) =>
+            {
+                // We can't stream these stderr messages as we receive them because we don't knows at
+                // this point because Docker uses stderr for both errors and warnings.  So, instead, we
+                // just collect the messages, and wait for the process to end to decide how to report them.
+                stderr.Append(e.Data ?? "");
+            });
+
             try
             {
                 process.Start();
                 process.BeginOutputReadLine();
+                process.BeginErrorReadLine();
 
                 if (stdin != null)
                 {
@@ -606,12 +616,7 @@ namespace Pulumi.Docker
                     process.StandardInput.Close();
                 }
 
-                // We can't stream these stderr messages as we receive them because we don't knows at
-                // this point because Docker uses stderr for both errors and warnings.  So, instead, we
-                // just collect the messages, and wait for the process to end to decide how to report
-                // them.
-                var stderr = await process.StandardError.ReadToEndAsync().ConfigureAwait(false);
-
+                process.WaitForExit();
                 var code = process.ExitCode;
 
                 // If we got any stderr messages, report them as an error/warning depending on the
@@ -621,12 +626,12 @@ namespace Pulumi.Docker
                     if (code > 0 && !reportErrorAsWarning)
                     {
                         // Command returned non-zero code.  Treat these stderr messages as an error.
-                        Log.Error(stderr, logResource);
+                        Log.Error(stderr.ToString(), logResource);
                     }
                     else
                     {
                         // command succeeded.  These were just warning.
-                        Log.Warn(stderr, logResource);
+                        Log.Warn(stderr.ToString(), logResource);
                     }
                 }
 
