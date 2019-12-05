@@ -1,5 +1,7 @@
+**/.vs
 .pulumi
 **/bin/
+**/obj/
 **/node_modules/
 vendor/
 **/Pulumi.*.yaml

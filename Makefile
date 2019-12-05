@@ -5,11 +5,21 @@ PACK             := docker
 PACKDIR          := sdk
 PROJECT          := github.com/pulumi/pulumi-docker
 NODE_MODULE_NAME := @pulumi/docker
+NUGET_PKG_NAME   := Pulumi.Docker
 
 TFGEN           := pulumi-tfgen-${PACK}
 PROVIDER        := pulumi-resource-${PACK}
 VERSION         := $(shell scripts/get-version)
 PYPI_VERSION    := $(shell scripts/get-py-version)
+
+DOTNET_PREFIX  := $(firstword $(subst -, ,${VERSION:v%=%})) # e.g. 1.5.0
+DOTNET_SUFFIX  := $(word 2,$(subst -, ,${VERSION:v%=%}))    # e.g. alpha.1
+
+ifeq ($(strip ${DOTNET_SUFFIX}),)
+	DOTNET_VERSION := $(strip ${DOTNET_PREFIX})-preview
+else
+	DOTNET_VERSION := $(strip ${DOTNET_PREFIX})-preview-$(strip ${DOTNET_SUFFIX})
+endif
 
 TESTPARALLELISM := 4
 
@@ -34,6 +44,9 @@ build::
 		sed -i.bak -e "s/\$${VERSION}/$(PYPI_VERSION)/g" -e "s/\$${PLUGIN_VERSION}/$(VERSION)/g" ./bin/setup.py && \
 		rm ./bin/setup.py.bak && \
 		cd ./bin && $(PYTHON) setup.py build sdist
+	cd ${PACKDIR}/dotnet/&& \
+		echo "${VERSION:v%=%}" >version.txt && \
+		dotnet build /p:Version=${DOTNET_VERSION}
 
 lint::
 	golangci-lint run
@@ -48,6 +61,8 @@ install::
 		yarn install --offline --production && \
 		(yarn unlink > /dev/null 2>&1 || true) && \
 		yarn link
+	[ ! -e "$(PULUMI_NUGET)" ] || rm -rf "$(PULUMI_NUGET)/*"
+	find . -name '$(NUGET_PKG_NAME).*.nupkg' -exec cp -p {} ${PULUMI_NUGET} \;
 
 istanbul_tests::
 	cd sdk/nodejs/tests && yarn && yarn run build

@@ -3,6 +3,7 @@
 * Add ability to skip push on image build
 * Upgrade to v2.6.0 of the Docker Terraform Provider
 * Upgrade to go1.13
+* Add support for .NET (https://github.com/pulumi/pulumi-docker/pull/115)
 
 ## 0.17.4 (Released September 5, 2019)
 
