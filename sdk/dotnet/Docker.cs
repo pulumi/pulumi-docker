@@ -669,31 +669,27 @@ namespace Pulumi.Docker
             }
         }
 
-        private static async Task WaitForExitAsync(Process process, CancellationToken cancellationToken = default)
+        private static async Task WaitForExitAsync(Process process)
         {
             var tcs = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
-
-            void ProcessExited(object? sender, EventArgs e) => tcs.TrySetResult(true);
 
             process.EnableRaisingEvents = true;
             process.Exited += ProcessExited;
 
             try
             {
-                if (process.HasExited)
-                {
-                    return;
-                }
+                if (process.HasExited) return;
 
-                using (cancellationToken.Register(() => tcs.TrySetCanceled()))
-                {
-                    await tcs.Task.ConfigureAwait(false);
-                }
+                await tcs.Task.ConfigureAwait(false);
             }
             finally
             {
                 process.Exited -= ProcessExited;
             }
+
+            return;
+
+            void ProcessExited(object? sender, EventArgs e) => tcs.TrySetResult(true);
         }
     }
 }
