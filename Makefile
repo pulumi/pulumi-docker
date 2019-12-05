@@ -61,9 +61,7 @@ install::
 		yarn install --offline --production && \
 		(yarn unlink > /dev/null 2>&1 || true) && \
 		yarn link
-	echo "Copying ${NUGET_PKG_NAME} NuGet packages to ${PULUMI_NUGET}"
-	mkdir -p $(PULUMI_NUGET)
-	rm -rf "$(PULUMI_NUGET)/$(NUGET_PKG_NAME).*.nupkg"
+	[ ! -e "$(PULUMI_NUGET)" ] || rm -rf "$(PULUMI_NUGET)/*"
 	find . -name '$(NUGET_PKG_NAME).*.nupkg' -exec cp -p {} ${PULUMI_NUGET} \;
 
 istanbul_tests::

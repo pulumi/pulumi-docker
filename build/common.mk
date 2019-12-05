@@ -172,6 +172,7 @@ install::
 	$(call STEP_MESSAGE)
 	@mkdir -p $(PULUMI_BIN)
 	@mkdir -p $(PULUMI_NODE_MODULES)
+	@mkdir -p $(PULUMI_NUGET)
 
 test_all::
 	$(call STEP_MESSAGE)

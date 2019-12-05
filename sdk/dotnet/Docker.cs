@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Pulumi.Serialization;
@@ -126,10 +127,11 @@ namespace Pulumi.Docker
         /// <param name="pathOrBuild">Image build parameters.</param>
         /// <param name="repositoryUrl">Target repository URL.</param>
         /// <param name="logResource">Associated Pulumi resource.</param>
+        /// <param name="skipPush">Skip pushing the image.</param>
         /// <param name="registry">Optional image registry properties.</param>
         /// <returns></returns>
         public static Output<string> BuildAndPushImageAsync(string imageName, InputUnion<string, DockerBuild> pathOrBuild,
-            Input<string> repositoryUrl, Resource logResource, Input<ImageRegistry>? registry)
+            Input<string> repositoryUrl, Resource logResource, bool skipPush, Input<ImageRegistry>? registry)
         {
             return Output.Tuple(pathOrBuild.Unwrap(), repositoryUrl.ToOutput(), registry.Unwrap()).Apply(async v =>
             {
@@ -142,7 +144,7 @@ namespace Pulumi.Docker
                 Log.Info("Starting docker build and push...", logResource, ephemeral: true);
 
                 var result = await BuildAndPushImageWorkerAsync(
-                    imageName, buildVal, repositoryUrlVal, logResource, registryVal).ConfigureAwait(false);
+                    imageName, buildVal, repositoryUrlVal, logResource, skipPush, registryVal).ConfigureAwait(false);
 
                 // If we got here, then building/pushing didn't throw any errors.  update the status bar
                 // indicating that things worked properly.  that way, the info bar isn't stuck showing the very
@@ -189,7 +191,8 @@ namespace Pulumi.Docker
         }
 
         private async static Task<string> BuildAndPushImageWorkerAsync(string baseImageName,
-            Union<string, DockerBuildUnwrap> pathOrBuild, string repositoryUrl, Resource logResource, ImageRegistryUnwrap? registry)
+            Union<string, DockerBuildUnwrap> pathOrBuild, string repositoryUrl, Resource logResource,
+            bool skipPush, ImageRegistryUnwrap? registry)
         {
             CheckRepositoryUrl(repositoryUrl);
 
@@ -243,7 +246,7 @@ namespace Pulumi.Docker
 
             // Use those to push the image.  Then just return the unique target name. as the final result
             // for our caller to use. Only push the image during an update, do not push during a preview.
-            if (!Deployment.Instance.IsDryRun)
+            if (!Deployment.Instance.IsDryRun && !skipPush)
             {
                 // Push the final image first, then push the stage images to use for caching.
 
@@ -628,7 +631,7 @@ namespace Pulumi.Docker
                     process.StandardInput.Close();
                 }
 
-                process.WaitForExit();
+                await WaitForExitAsync(process);
                 var code = process.ExitCode;
 
                 // If we got any stderr messages, report them as an error/warning depending on the
@@ -663,6 +666,33 @@ namespace Pulumi.Docker
                 // This shouldn't normally happen, but we want to be sure Process doesn't throw.
                 // In case it does, return an error with the exception printout.
                 return (1, ex.ToString());
+            }
+        }
+
+        private static async Task WaitForExitAsync(Process process, CancellationToken cancellationToken = default)
+        {
+            var tcs = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+
+            void ProcessExited(object? sender, EventArgs e) => tcs.TrySetResult(true);
+
+            process.EnableRaisingEvents = true;
+            process.Exited += ProcessExited;
+
+            try
+            {
+                if (process.HasExited)
+                {
+                    return;
+                }
+
+                using (cancellationToken.Register(() => tcs.TrySetCanceled()))
+                {
+                    await tcs.Task.ConfigureAwait(false);
+                }
+            }
+            finally
+            {
+                process.Exited -= ProcessExited;
             }
         }
     }

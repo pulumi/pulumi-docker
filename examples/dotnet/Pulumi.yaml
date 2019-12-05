@@ -1,0 +1,3 @@
+name: docker-cs
+description: "A minimal C# Pulumi program using Docker image."
+runtime: dotnet

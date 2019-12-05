@@ -20,13 +20,13 @@ namespace Pulumi.Docker
         /// Either <see cref="ImageName"/> or <see cref="LocalImageName"/> can have a tag.  However, 
         /// if both have a tag, then those tags must match.
         /// </summary>
-        [Input("imageName")]
+        [Input("imageName", required: true)]
         public Input<string> ImageName { get; set; } = null!;
 
         /// <summary>
         /// The Docker build context, as a folder path or a detailed DockerBuild object.
         /// </summary>
-        [Input("build")]
+        [Input("build", required: true)]
         public InputUnion<string, DockerBuild> Build { get; set; } = null!;
 
         /// <summary>
@@ -45,6 +45,12 @@ namespace Pulumi.Docker
         /// </summary>
         [Input("registry")]
         public Input<ImageRegistry>? Registry { get; set; }
+
+        /// <summary>
+        /// Skip push flag.
+        /// </summary>
+        [Input("skipPush")]
+        public Input<bool>? SkipPush { get; set; }
     }
 
     public class ImageRegistry : ResourceArgs
@@ -118,13 +124,16 @@ namespace Pulumi.Docker
         public Image(string name, ImageArgs args, ComponentResourceOptions? options = null)
             : base("docker:image:Image", name, options)
         {
-            this.ImageName = Output.Tuple(args.ImageName.ToOutput(), args.LocalImageName.ToOutputNullable()).Apply(imageArgs =>
+            this.ImageName = Output.Tuple(args.ImageName.ToOutput(), args.LocalImageName.ToOutputNullable(), 
+                                          args.SkipPush.ToOutput()).Apply(imageArgs =>
             {
                 var imageName = imageArgs.Item1;
 
                 // If there is no localImageName set it equal to imageName.  Note: this means
                 // that if imageName contains a tag, localImageName will contain the same tag.
                 var localImageName = imageArgs.Item2 ?? imageName;
+
+                var skipPush = imageArgs.Item3;
 
                 // Now break both the localImageName and the imageName into the untagged part and the
                 // optional tag.  If both have tags, they must match.  If one or the other has a tag, we
@@ -152,6 +161,7 @@ namespace Pulumi.Docker
                     args.Build,
                     repositoryUrl,
                     this,
+                    skipPush,
                     args.Registry);
             });
 
