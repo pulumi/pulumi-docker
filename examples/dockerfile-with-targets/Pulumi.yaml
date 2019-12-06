@@ -1,0 +1,3 @@
+name: dockerfile-with-multiple-targets
+runtime: nodejs
+description: A pulumi application that has a dockerfile with multiple targets

@@ -84,6 +84,11 @@ export interface DockerBuild {
      * `DOCKER_BUILDKIT=1 docker build`.
      */
     env?: Record<string, string>;
+
+    /***
+     * The target of the dockerfile to build
+     */
+    target?: pulumi.Input<string>;
 }
 
 let dockerPasswordPromise: Promise<boolean> | undefined;
@@ -389,7 +394,8 @@ async function buildImageAsync(
     logEphemeral(
         `Building container image '${imageName}': context=${build.context}` +
         (build.dockerfile ? `, dockerfile=${build.dockerfile}` : "") +
-        (build.args ? `, args=${JSON.stringify(build.args)}` : ""), logResource);
+        (build.args ? `, args=${JSON.stringify(build.args)}` : "") +
+        (build.target ? `, target=${build.target}` : ""), logResource);
 
     // If the container build specified build stages to cache, build each in turn.
     const stages = [];
@@ -443,6 +449,9 @@ async function dockerBuild(
         for (const arg of Object.keys(build.args)) {
             buildArgs.push(...["--build-arg", `${arg}=${build.args[arg]}`]);
         }
+    }
+    if (build.target) {
+        buildArgs.push(...["--target", build.target]);
     }
     if (build.cacheFrom) {
         const cacheFromImages = await cacheFrom;
