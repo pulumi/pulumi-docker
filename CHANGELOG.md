@@ -1,4 +1,6 @@
-## 0.17.5 (Unreleased)
+## HEAD (Unreleased)
+
+## 1.0.0 (2019-12-06)
 * Regenerate SDK against tf2pulumi 0.6.0
 * Add ability to skip push on image build
 * Upgrade to v2.6.0 of the Docker Terraform Provider
