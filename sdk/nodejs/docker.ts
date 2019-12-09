@@ -137,10 +137,10 @@ export function buildAndPushImageAsync(
     pathOrBuild: pulumi.Input<string | DockerBuild>,
     repositoryUrl: pulumi.Input<string>,
     logResource: pulumi.Resource,
-    skipPush: boolean,
-    connectToRegistry?: () => pulumi.Input<Registry>): Promise<string> {
+    connectToRegistry?: () => pulumi.Input<Registry>,
+    skipPush: boolean = false): Promise<string> {
 
-    const output = buildAndPushImage(baseImageName, pathOrBuild, repositoryUrl, logResource, skipPush, connectToRegistry);
+    const output = buildAndPushImage(baseImageName, pathOrBuild, repositoryUrl, logResource, connectToRegistry, skipPush);
 
     // Ugly, but necessary to bridge between the proper Output-returning function and this
     // Promise-returning one.
@@ -159,8 +159,8 @@ export function buildAndPushImage(
     pathOrBuild: pulumi.Input<string | DockerBuild>,
     repositoryUrl: pulumi.Input<string>,
     logResource: pulumi.Resource,
-    skipPush: boolean,
-    connectToRegistry?: () => pulumi.Input<Registry>): pulumi.Output<string> {
+    connectToRegistry?: () => pulumi.Input<Registry>,
+    skipPush: boolean = false): pulumi.Output<string> {
 
     return pulumi.all([pathOrBuild, repositoryUrl])
         .apply(async ([pathOrBuildVal, repositoryUrlVal]) => {
@@ -170,7 +170,7 @@ export function buildAndPushImage(
             logEphemeral("Starting docker build and push...", logResource);
 
             const result = await buildAndPushImageWorkerAsync(
-                imageName, pathOrBuildVal, repositoryUrlVal, logResource, skipPush, connectToRegistry);
+                imageName, pathOrBuildVal, repositoryUrlVal, logResource, connectToRegistry, skipPush);
 
             // If we got here, then building/pushing didn't throw any errors.  Update the status bar
             // indicating that things worked properly.  That way, the info bar isn't stuck showing the very
@@ -224,8 +224,8 @@ async function buildAndPushImageWorkerAsync(
     pathOrBuild: string | pulumi.Unwrap<DockerBuild>,
     repositoryUrl: string,
     logResource: pulumi.Resource,
-    skipPush: boolean,
-    connectToRegistry: (() => pulumi.Input<Registry>) | undefined): Promise<string> {
+    connectToRegistry: (() => pulumi.Input<Registry>) | undefined,
+    skipPush: boolean): Promise<string> {
 
     checkRepositoryUrl(repositoryUrl);
 
