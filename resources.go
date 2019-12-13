@@ -97,7 +97,10 @@ func Provider() tfbridge.ProviderInfo {
 			},
 		},
 		Resources: map[string]*tfbridge.ResourceInfo{
-			"docker_config": {Tok: dockerResource(dockerMod, "Config")},
+			"docker_config": {
+				Tok: dockerResource(dockerMod, "Config"),
+				CSharpName: "ServiceConfig",
+			},
 			"docker_container": {
 				Tok:                 dockerResource(dockerMod, "Container"),
 				DeleteBeforeReplace: true,
@@ -146,11 +149,18 @@ func Provider() tfbridge.ProviderInfo {
 		},
 		CSharp: &tfbridge.CSharpInfo{
 			PackageReferences: map[string]string{
-				"Pulumi":                       "1.5.0-*",
+				"Pulumi":                       "1.7.0-preview",
+				"Semver":                       "2.0.5",
 				"System.Collections.Immutable": "1.6.0",
 			},
 			Namespaces: map[string]string{
 				dockerPkg: "Docker",
+			},
+			Overlay: &tfbridge.OverlayInfo{
+				DestFiles: []string{
+					"Docker.cs",
+					"Image.cs",
+				},
 			},
 		},
 	}
