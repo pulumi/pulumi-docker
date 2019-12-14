@@ -1,5 +1,7 @@
 ## HEAD (Unreleased)
 
+* Add Terraform resources to .NET SDK ([#121](https://github.com/pulumi/pulumi-docker/pull/121)).
+
 ## 1.0.0 (2019-12-06)
 * Regenerate SDK against tf2pulumi 0.6.0
 * Add ability to skip push on image build

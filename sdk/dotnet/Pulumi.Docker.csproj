@@ -4,7 +4,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Pulumi Corp.</Authors>
     <Company>Pulumi Corp.</Company>
-    <Description>A Pulumi package for interacting with Docker in Pulumi programs.</Description>
+    <Description>A Pulumi package for interacting with Docker in Pulumi programs</Description>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://pulumi.io</PackageProjectUrl>
     <RepositoryUrl>https://github.com/pulumi/pulumi-docker</RepositoryUrl>
@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Pulumi" Version="1.6.1-preview" />
+    <PackageReference Include="Pulumi" Version="1.7.0-preview" />
     <PackageReference Include="Semver" Version="2.0.5" />
     <PackageReference Include="System.Collections.Immutable" Version="1.6.0" />
   </ItemGroup>
