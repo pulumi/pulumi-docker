@@ -22,7 +22,7 @@ import * as utilities from "./utilities";
  *
  * > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/d/network.html.markdown.
  */
-export function getNetwork(args?: GetNetworkArgs, opts?: pulumi.InvokeOptions): Promise<GetNetworkResult> & GetNetworkResult {
+export function getNetwork(args?: GetNetworkArgs, opts?: pulumi.InvokeOptions): Promise<GetNetworkResult> {
     args = args || {};
     if (!opts) {
         opts = {}
@@ -31,13 +31,11 @@ export function getNetwork(args?: GetNetworkArgs, opts?: pulumi.InvokeOptions): 
     if (!opts.version) {
         opts.version = utilities.getVersion();
     }
-    const promise: Promise<GetNetworkResult> = pulumi.runtime.invoke("docker:index/getNetwork:getNetwork", {
+    return pulumi.runtime.invoke("docker:index/getNetwork:getNetwork", {
         "id": args.id,
         "ipamConfigs": args.ipamConfigs,
         "name": args.name,
     }, opts);
-
-    return pulumi.utils.liftProperties(promise, opts);
 }
 
 /**

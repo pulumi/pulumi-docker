@@ -4,6 +4,6 @@
         "@types/node": "^8.0.0"
     },
     "dependencies": {
-        "@pulumi/pulumi": "dev"
+        "@pulumi/pulumi": "feature-2.0"
     }
 }

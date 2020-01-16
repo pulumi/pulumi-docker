@@ -28,7 +28,7 @@ import * as utilities from "./utilities";
  *
  * > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/d/registry_image.html.markdown.
  */
-export function getRegistryImage(args?: GetRegistryImageArgs, opts?: pulumi.InvokeOptions): Promise<GetRegistryImageResult> & GetRegistryImageResult {
+export function getRegistryImage(args?: GetRegistryImageArgs, opts?: pulumi.InvokeOptions): Promise<GetRegistryImageResult> {
     args = args || {};
     if (!opts) {
         opts = {}
@@ -37,11 +37,9 @@ export function getRegistryImage(args?: GetRegistryImageArgs, opts?: pulumi.Invo
     if (!opts.version) {
         opts.version = utilities.getVersion();
     }
-    const promise: Promise<GetRegistryImageResult> = pulumi.runtime.invoke("docker:index/getRegistryImage:getRegistryImage", {
+    return pulumi.runtime.invoke("docker:index/getRegistryImage:getRegistryImage", {
         "name": args.name,
     }, opts);
-
-    return pulumi.utils.liftProperties(promise, opts);
 }
 
 /**
