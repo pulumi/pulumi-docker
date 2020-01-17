@@ -77,3 +77,4 @@ As such, we are rev'ing the minor version of the package from 0.16 to 0.17.  Rec
 - Don't run `docker login` for the same registry multiple times.
 
 - Don't show output from `docker` invocations unless it fails or issues warnings.
+
