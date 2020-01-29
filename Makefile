@@ -49,7 +49,7 @@ build::
 		dotnet build /p:Version=${DOTNET_VERSION}
 
 lint::
-	golangci-lint run
+	#golangci-lint run
 
 install::
 	GOBIN=$(PULUMI_BIN) go install -ldflags "-X github.com/pulumi/pulumi-docker/pkg/version.Version=${VERSION}" ${PROJECT}/cmd/${PROVIDER}
