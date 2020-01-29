@@ -1,8 +1,8 @@
 ## HEAD (Unreleased)
 
 ## 1.1.0 (2019-12-18)
-
 * Add Terraform resources to .NET SDK ([#121](https://github.com/pulumi/pulumi-docker/pull/121)).
+* Upgrade to pulumi-terraform-bridge v1.6.4
 
 ## 1.0.0 (2019-12-06)
 * Regenerate SDK against tf2pulumi 0.6.0
