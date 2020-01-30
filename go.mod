@@ -12,7 +12,7 @@ require (
 	github.com/opencontainers/image-spec v1.0.1 // indirect
 	github.com/pkg/errors v0.8.1
 	github.com/pulumi/pulumi v1.9.1
-	github.com/pulumi/pulumi-terraform-bridge v1.6.4
+	github.com/pulumi/pulumi-terraform-bridge v1.6.5
 	github.com/stretchr/testify v1.4.1-0.20191106224347-f1bd0923b832
 	github.com/terraform-providers/terraform-provider-docker v1.2.1-0.20191125182715-0de84e769ddc
 	github.com/vmihailenco/msgpack v4.0.1+incompatible // indirect
