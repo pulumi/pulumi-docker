@@ -162,23 +162,50 @@ export function buildAndPushImage(
     connectToRegistry?: () => pulumi.Input<Registry>,
     skipPush: boolean = false): pulumi.Output<string> {
 
-    return pulumi.all([pathOrBuild, repositoryUrl])
-        .apply(async ([pathOrBuildVal, repositoryUrlVal]) => {
+    // We do something rather interesting here.  We do not want to proceed if we don't actually have
+    // a value yet for `pathOrBuild`.  So we do a normal `ouput(...).apply(...)`.  However, we *do*
+    // want proceed if we don't have a value yet for `repositoryUrl`.  In that case, we'll just
+    // build without actually pushing.  To support that, we run `.apply` on the repoUrl, but we pass
+    // in `runWithUnknowns:true` to actually continue on in that case.
+    return pulumi.output(pathOrBuild).apply(pathOrBuild => {
+        const op = pulumi.output(repositoryUrl);
+        const res: pulumi.Output<string> = (<any>op).apply(
+            (u: string | undefined) => buildAndPushImageImpl(pathOrBuild, u),
+            /*runWithUnknowns:*/ true);
 
-            // Give an initial message indicating what we're about to do.  That way, if anything
-            // takes a while, the user has an idea about what's going on.
-            logEphemeral("Starting docker build and push...", logResource);
+        return res;
+    });
 
-            const result = await buildAndPushImageWorkerAsync(
-                imageName, pathOrBuildVal, repositoryUrlVal, logResource, connectToRegistry, skipPush);
+    async function buildAndPushImageImpl(
+            pathOrBuild: string | pulumi.Unwrap<DockerBuild>,
+            repositoryUrl: string | undefined): Promise<string> {
 
-            // If we got here, then building/pushing didn't throw any errors.  Update the status bar
-            // indicating that things worked properly.  That way, the info bar isn't stuck showing the very
-            // last thing printed by some subcommand we launched.
-            logEphemeral("Successfully pushed to docker", logResource);
+        // if we got an unknown repository url, just set to undefined for the remainder of
+        // processing. The rest of the code can handle that.
+        if (pulumi.containsUnknowns(repositoryUrl)) {
+            repositoryUrl = undefined;
+        }
 
-            return result;
-        });
+        if (repositoryUrl) {
+            checkRepositoryUrl(repositoryUrl);
+        }
+
+        logEphemeral("Starting docker build...", logResource);
+        const buildResult = await buildImage(imageName, pathOrBuild, repositoryUrl, logResource, connectToRegistry);
+        logEphemeral("Completed docker build", logResource);
+
+        // If we have no repository url, then we definitely can't push our build result. Same if
+        // we're in preview.
+        if (skipPush || !repositoryUrl || pulumi.runtime.isDryRun()) {
+            return imageName;
+        }
+
+        logEphemeral("Starting docker push...", logResource);
+        const result = await pushImage(repositoryUrl, buildResult, logResource);
+        logEphemeral("Completed docker build", logResource);
+
+        return result;
+    }
 }
 
 function logEphemeral(message: string, logResource: pulumi.Resource) {
@@ -219,17 +246,12 @@ export function checkRepositoryUrl(repositoryUrl: string) {
     }
 }
 
-async function buildAndPushImageWorkerAsync(
-    baseImageName: string,
-    pathOrBuild: string | pulumi.Unwrap<DockerBuild>,
-    repositoryUrl: string,
-    logResource: pulumi.Resource,
-    connectToRegistry: (() => pulumi.Input<Registry>) | undefined,
-    skipPush: boolean): Promise<string> {
-
-    checkRepositoryUrl(repositoryUrl);
-
-    const tag = utils.getImageNameAndTag(baseImageName).tag;
+async function buildImage(
+        baseImageName: string,
+        pathOrBuild: string | pulumi.Unwrap<DockerBuild>,
+        repositoryUrl: string | undefined,
+        logResource: pulumi.Resource,
+        connectToRegistry: (() => pulumi.Input<Registry>) | undefined): Promise<BuildResult> {
 
     // login immediately if we're going to have to actually communicate with a remote registry.
     //
@@ -264,14 +286,24 @@ async function buildAndPushImageWorkerAsync(
     if (pullFromCache) {
         const dockerBuild = <pulumi.UnwrappedObject<DockerBuild>>pathOrBuild;
         const cacheFromParam = (typeof dockerBuild.cacheFrom === "boolean" ? {} : dockerBuild.cacheFrom) || {};
-        cacheFrom = pullCacheAsync(baseImageName, cacheFromParam, repositoryUrl, logResource);
+
+        // pullFromCache is only true if repositoryUrl is present.
+        cacheFrom = pullCacheAsync(baseImageName, cacheFromParam, repositoryUrl!, logResource);
     }
 
     // Next, build the image.
-    const {imageId, stages} = await buildImageAsync(baseImageName, pathOrBuild, logResource, cacheFrom);
-    if (imageId === undefined) {
+    const buildResult = await buildImageAsync(baseImageName, pathOrBuild, logResource, cacheFrom);
+    if (buildResult.imageId === undefined) {
         throw new Error("Internal error: docker build did not produce an imageId.");
     }
+
+    return buildResult;
+}
+
+async function pushImage(repositoryUrl: string, buildResult: BuildResult, logResource: pulumi.Resource): Promise<string> {
+    const { imageName: baseImageName, imageId, stages } = buildResult;
+
+    const tag = utils.getImageNameAndTag(baseImageName).tag;
 
     // Generate a name that uniquely will identify this built image.  This is similar in purpose to
     // the name@digest form that can be normally be retrieved from a docker repository.  However,
@@ -283,24 +315,24 @@ async function buildAndPushImageWorkerAsync(
 
     // Use those to push the image.  Then just return the unique target name. as the final result
     // for our caller to use. Only push the image during an update, do not push during a preview.
-    if (!pulumi.runtime.isDryRun() && !skipPush) {
-        // Push the final image first, then push the stage images to use for caching.
 
-        // First, push with both the optionally-requested-tag *and* imageId (which is guaranteed to
-        // be defined).  By using the imageId we give the image a fully unique location that we can
-        // successfully pull regardless of whatever else has happened at this repositoryUrl.
 
-        // Next, push only with the optionally-requested-tag.  Users of this API still want to get a
-        // nice and simple url that they can reach this image at, without having the explicit imageId
-        // hash added to it.  Note: this location is not guaranteed to be idempotent.  For example,
-        // pushes on other machines might overwrite that location.
-        await tagAndPushImageAsync(baseImageName, repositoryUrl, tag, imageId, logResource);
-        await tagAndPushImageAsync(baseImageName, repositoryUrl, tag, /*imageId:*/ undefined, logResource);
+    // Push the final image first, then push the stage images to use for caching.
 
-        for (const stage of stages) {
-            await tagAndPushImageAsync(
-                localStageImageName(baseImageName, stage), repositoryUrl, stage, /*imageId:*/ undefined, logResource);
-        }
+    // First, push with both the optionally-requested-tag *and* imageId (which is guaranteed to
+    // be defined).  By using the imageId we give the image a fully unique location that we can
+    // successfully pull regardless of whatever else has happened at this repositoryUrl.
+
+    // Next, push only with the optionally-requested-tag.  Users of this API still want to get a
+    // nice and simple url that they can reach this image at, without having the explicit imageId
+    // hash added to it.  Note: this location is not guaranteed to be idempotent.  For example,
+    // pushes on other machines might overwrite that location.
+    await tagAndPushImageAsync(baseImageName, repositoryUrl, tag, imageId, logResource);
+    await tagAndPushImageAsync(baseImageName, repositoryUrl, tag, /*imageId:*/ undefined, logResource);
+
+    for (const stage of stages) {
+        await tagAndPushImageAsync(
+            localStageImageName(baseImageName, stage), repositoryUrl, stage, /*imageId:*/ undefined, logResource);
     }
 
     return uniqueTaggedImageName;
@@ -365,6 +397,7 @@ async function pullCacheAsync(
 }
 
 interface BuildResult {
+    imageName: string;
     imageId: string;
     stages: string[];
 }
@@ -430,7 +463,7 @@ async function buildImageAsync(
     const colonIndex = imageId.lastIndexOf(":");
     imageId = colonIndex < 0 ? imageId : imageId.substr(colonIndex + 1);
 
-    return {imageId, stages};
+    return { imageName, imageId, stages };
 }
 
 async function dockerBuild(
