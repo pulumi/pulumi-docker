@@ -239,7 +239,7 @@ async function buildAndPushImageWorkerAsync(
 
     // Then actually kick off the build.
     logEphemeral("Starting docker build...", logResource);
-    const buildResult = await buildImageAsync(baseImageName, pathOrBuild, cacheFrom, logResource);
+    const buildResult = await buildImageAsync(baseImageName, pathOrBuild, logResource, cacheFrom);
 
     // If we have no repository url, then we definitely can't push our build result. Same if
     // we're in preview.
@@ -408,8 +408,8 @@ interface BuildResult {
 async function buildImageAsync(
     imageName: string,
     pathOrBuild: string | pulumi.Unwrap<DockerBuild>,
-    cacheFrom: string[],
-    logResource: pulumi.Resource): Promise<BuildResult> {
+    logResource: pulumi.Resource,
+    cacheFrom: string[]): Promise<BuildResult> {
 
     let build: pulumi.Unwrap<DockerBuild>;
     if (typeof pathOrBuild === "string") {
