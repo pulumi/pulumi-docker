@@ -14,5 +14,6 @@
 
 import * as docker from "@pulumi/docker";
 
+// This should fail during preview as ./app points at a broken docker file.
 export const imageName = docker.buildAndPushImage(
     "test-name", "./app", /*repositoryUrl:*/ undefined, /*logResource:*/ undefined!);
