@@ -171,36 +171,14 @@ export function buildAndPushImage(
         const op = pulumi.output(repositoryUrl);
 
         // @ts-ignore Allow calling the 'runWithUnknowns' overload.
-        const res: pulumi.Output<string> = op.apply(u => buildAndPushImageImpl(pathOrBuild, u), /*runWithUnknowns:*/ true);
+        const res: pulumi.Output<string> = op.apply(u => helper(pathOrBuild, u), /*runWithUnknowns:*/ true);
 
         return res;
     });
 
-    async function buildAndPushImageImpl(
-            pathOrBuild: string | pulumi.Unwrap<DockerBuild>,
-            repositoryUrl: string | undefined): Promise<string> {
-
-        // if we got an unknown repository url, just set to undefined for the remainder of
-        // processing. The rest of the code can handle that.
-        if (pulumi.containsUnknowns(repositoryUrl)) {
-            repositoryUrl = undefined;
-        }
-
-        logEphemeral("Starting docker build...", logResource);
-        const buildResult = await buildImage(imageName, pathOrBuild, repositoryUrl, logResource, connectToRegistry);
-        logEphemeral("Completed docker build", logResource);
-
-        // If we have no repository url, then we definitely can't push our build result. Same if
-        // we're in preview.
-        if (skipPush || !repositoryUrl || pulumi.runtime.isDryRun()) {
-            return imageName;
-        }
-
-        logEphemeral("Starting docker push...", logResource);
-        const result = await pushImage(repositoryUrl, buildResult, logResource);
-        logEphemeral("Completed docker build", logResource);
-
-        return result;
+    function helper(pathOrBuild: string | pulumi.Unwrap<DockerBuild>,
+                    repositoryUrl: string | undefined) {
+        return buildAndPushImageWorker(imageName, pathOrBuild, repositoryUrl, logResource, connectToRegistry, skipPush);
     }
 }
 
@@ -242,16 +220,51 @@ export function checkRepositoryUrl(repositoryUrl: string) {
     }
 }
 
-async function buildImage(
-        baseImageName: string,
+async function buildAndPushImageWorker(
+        imageName: string,
         pathOrBuild: string | pulumi.Unwrap<DockerBuild>,
         repositoryUrl: string | undefined,
         logResource: pulumi.Resource,
-        connectToRegistry: (() => pulumi.Input<Registry>) | undefined): Promise<BuildResult> {
+        connectToRegistry: (() => pulumi.Input<Registry>) | undefined,
+        skipPush: boolean): Promise<string> {
+
+    // if we got an unknown repository url, just set to undefined for the remainder of
+    // processing. The rest of the code can handle that.
+    if (pulumi.containsUnknowns(repositoryUrl)) {
+        repositoryUrl = undefined;
+    }
 
     if (repositoryUrl) {
         checkRepositoryUrl(repositoryUrl);
     }
+
+    // Immediately start pulling from docker if we can.
+    const cacheFrom = await pullFromCache(imageName, pathOrBuild, repositoryUrl, logResource, connectToRegistry);
+
+    // Then
+    logEphemeral("Starting docker build...", logResource);
+    const buildResult = await buildImage(imageName, pathOrBuild, cacheFrom, logResource);
+    logEphemeral("Completed docker build", logResource);
+
+    // If we have no repository url, then we definitely can't push our build result. Same if
+    // we're in preview.
+    if (skipPush || !repositoryUrl || pulumi.runtime.isDryRun()) {
+        return imageName;
+    }
+
+    logEphemeral("Starting docker push...", logResource);
+    const result = await pushImage(repositoryUrl, buildResult, logResource);
+    logEphemeral("Completed docker build", logResource);
+
+    return result;
+}
+
+async function pullFromCache(
+        baseImageName: string,
+        pathOrBuild: string | pulumi.Unwrap<DockerBuild>,
+        repositoryUrl: string | undefined,
+        logResource: pulumi.Resource,
+        connectToRegistry: (() => pulumi.Input<Registry>) | undefined) {
 
     // login immediately if we're going to have to actually communicate with a remote registry.
     //
@@ -282,22 +295,15 @@ async function buildImage(
     }
 
     // If the container specified a cacheFrom parameter, first set up the cached stages.
-    let cacheFrom = Promise.resolve<string[] | undefined>(undefined);
-    if (pullFromCache) {
-        const dockerBuild = <pulumi.UnwrappedObject<DockerBuild>>pathOrBuild;
-        const cacheFromParam = (typeof dockerBuild.cacheFrom === "boolean" ? {} : dockerBuild.cacheFrom) || {};
-
-        // pullFromCache is only true if repositoryUrl is present.
-        cacheFrom = pullCacheAsync(baseImageName, cacheFromParam, repositoryUrl!, logResource);
+    if (!pullFromCache) {
+        return undefined;
     }
 
-    // Next, build the image.
-    const buildResult = await buildImageAsync(baseImageName, pathOrBuild, logResource, cacheFrom);
-    if (buildResult.imageId === undefined) {
-        throw new Error("Internal error: docker build did not produce an imageId.");
-    }
+    const dockerBuild = <pulumi.UnwrappedObject<DockerBuild>>pathOrBuild;
+    const cacheFromParam = (typeof dockerBuild.cacheFrom === "boolean" ? {} : dockerBuild.cacheFrom) || {};
 
-    return buildResult;
+    // pullFromCache is only true if repositoryUrl is present.
+    return await pullCacheAsync(baseImageName, cacheFromParam, repositoryUrl!, logResource);
 }
 
 async function pushImage(repositoryUrl: string, buildResult: BuildResult, logResource: pulumi.Resource): Promise<string> {
@@ -402,11 +408,11 @@ interface BuildResult {
     stages: string[];
 }
 
-async function buildImageAsync(
+async function buildImage(
     imageName: string,
     pathOrBuild: string | pulumi.Unwrap<DockerBuild>,
-    logResource: pulumi.Resource,
-    cacheFrom: Promise<string[] | undefined>): Promise<BuildResult> {
+    cacheFrom: string[] | undefined,
+    logResource: pulumi.Resource): Promise<BuildResult> {
 
     let build: pulumi.Unwrap<DockerBuild>;
     if (typeof pathOrBuild === "string") {
@@ -469,7 +475,7 @@ async function buildImageAsync(
 async function dockerBuild(
     imageName: string,
     build: pulumi.Unwrap<DockerBuild>,
-    cacheFrom: Promise<string[] | undefined>,
+    cacheFrom: string[] | undefined,
     logResource: pulumi.Resource,
     target?: string): Promise<void> {
 
@@ -487,7 +493,7 @@ async function dockerBuild(
         buildArgs.push(...["--target", build.target]);
     }
     if (build.cacheFrom) {
-        const cacheFromImages = await cacheFrom;
+        const cacheFromImages = cacheFrom;
         if (cacheFromImages && cacheFromImages.length) {
             buildArgs.push(...["--cache-from", cacheFromImages.join()]);
         }
