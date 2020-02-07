@@ -15,4 +15,4 @@
 import * as docker from "@pulumi/docker";
 
 export const imageName = docker.buildAndPushImage(
-    "test-name", "./app", /*repositoryUrl:*/ undefined, /*logResource:*/ undefined);
+    "test-name", "./app", /*repositoryUrl:*/ undefined, /*logResource:*/ undefined!);
