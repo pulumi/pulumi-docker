@@ -237,10 +237,10 @@ async function buildAndPushImageWorkerAsync(
         checkRepositoryUrl(repositoryUrl);
     }
 
-    // Immediately start pulling from docker if we can.
-    const cacheFrom = await pullFromCache(imageName, pathOrBuild, repositoryUrl, logResource, connectToRegistry);
+    // First, login and pulling from docker if we can.
+    const cacheFrom = await loginAndPullFromCache(imageName, pathOrBuild, repositoryUrl, logResource, connectToRegistry);
 
-    // Then
+    // Then actually kick off the build.
     logEphemeral("Starting docker build...", logResource);
     const buildResult = await buildImage(imageName, pathOrBuild, cacheFrom, logResource);
     logEphemeral("Completed docker build", logResource);
@@ -251,6 +251,7 @@ async function buildAndPushImageWorkerAsync(
         return imageName;
     }
 
+    // Finally, if this a real update, push the built images to docker.
     logEphemeral("Starting docker push...", logResource);
     const result = await pushImage(repositoryUrl, buildResult, logResource);
     logEphemeral("Completed docker build", logResource);
@@ -258,7 +259,7 @@ async function buildAndPushImageWorkerAsync(
     return result;
 }
 
-async function pullFromCache(
+async function loginAndPullFromCache(
         baseImageName: string,
         pathOrBuild: string | pulumi.Unwrap<DockerBuild>,
         repositoryUrl: string | undefined,
