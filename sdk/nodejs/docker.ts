@@ -238,11 +238,11 @@ async function buildAndPushImageWorkerAsync(
     }
 
     // First, login and pulling from docker if we can.
-    const cacheFrom = await loginAndPullFromCache(imageName, pathOrBuild, repositoryUrl, logResource, connectToRegistry);
+    const cacheFrom = await loginAndPullFromCacheAsync(imageName, pathOrBuild, repositoryUrl, logResource, connectToRegistry);
 
     // Then actually kick off the build.
     logEphemeral("Starting docker build...", logResource);
-    const buildResult = await buildImage(imageName, pathOrBuild, cacheFrom, logResource);
+    const buildResult = await buildImageAsync(imageName, pathOrBuild, cacheFrom, logResource);
     logEphemeral("Completed docker build", logResource);
 
     // If we have no repository url, then we definitely can't push our build result. Same if
@@ -253,13 +253,13 @@ async function buildAndPushImageWorkerAsync(
 
     // Finally, if this a real update, push the built images to docker.
     logEphemeral("Starting docker push...", logResource);
-    const result = await pushImage(repositoryUrl, buildResult, logResource);
+    const result = await pushImageAsync(repositoryUrl, buildResult, logResource);
     logEphemeral("Completed docker build", logResource);
 
     return result;
 }
 
-async function loginAndPullFromCache(
+async function loginAndPullFromCacheAsync(
         baseImageName: string,
         pathOrBuild: string | pulumi.Unwrap<DockerBuild>,
         repositoryUrl: string | undefined,
@@ -306,7 +306,7 @@ async function loginAndPullFromCache(
     return [];
 }
 
-async function pushImage(repositoryUrl: string, buildResult: BuildResult, logResource: pulumi.Resource): Promise<string> {
+async function pushImageAsync(repositoryUrl: string, buildResult: BuildResult, logResource: pulumi.Resource): Promise<string> {
     const { imageName: baseImageName, imageId, stages } = buildResult;
 
     const tag = utils.getImageNameAndTag(baseImageName).tag;
@@ -408,7 +408,7 @@ interface BuildResult {
     stages: string[];
 }
 
-async function buildImage(
+async function buildImageAsync(
     imageName: string,
     pathOrBuild: string | pulumi.Unwrap<DockerBuild>,
     cacheFrom: string[],
