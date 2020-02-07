@@ -269,9 +269,6 @@ async function buildAndPushImageWorkerAsync(
 
     // Next, build the image.
     const {imageId, stages} = await buildImageAsync(baseImageName, pathOrBuild, logResource, cacheFrom);
-    if (imageId === undefined) {
-        throw new Error("Internal error: docker build did not produce an imageId.");
-    }
 
     // Generate a name that uniquely will identify this built image.  This is similar in purpose to
     // the name@digest form that can be normally be retrieved from a docker repository.  However,
