@@ -1,5 +1,8 @@
 ## HEAD (Unreleased)
 
+* `docker.buildAndPushImage` will now build images during a `preview`, not just during an `update`.
+  This allows docker errors to be found earlier and more safely in the development cycle.
+
 ## 1.2.0 (2020-01-29)
 * Upgrade to pulumi-terraform-bridge v1.6.4
 
