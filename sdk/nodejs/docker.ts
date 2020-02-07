@@ -177,6 +177,9 @@ export function buildAndPushImage(
     });
 
     function helper(pathOrBuild: string | pulumi.Unwrap<DockerBuild>, repositoryUrl: string | undefined) {
+        // if we got an unknown repository url, just set to undefined for the remainder of
+        // processing. The rest of the code can handle that.
+        repositoryUrl = pulumi.containsUnknowns(repositoryUrl) ? undefined : repositoryUrl;
         return buildAndPushImageWorkerAsync(imageName, pathOrBuild, repositoryUrl, logResource, connectToRegistry, skipPush);
     }
 }
@@ -226,12 +229,6 @@ async function buildAndPushImageWorkerAsync(
     logResource: pulumi.Resource,
     connectToRegistry: (() => pulumi.Input<Registry>) | undefined,
     skipPush: boolean): Promise<string> {
-
-    // if we got an unknown repository url, just set to undefined for the remainder of
-    // processing. The rest of the code can handle that.
-    if (pulumi.containsUnknowns(repositoryUrl)) {
-        repositoryUrl = undefined;
-    }
 
     if (repositoryUrl) {
         checkRepositoryUrl(repositoryUrl);
