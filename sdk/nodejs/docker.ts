@@ -138,9 +138,10 @@ export function buildAndPushImageAsync(
     repositoryUrl: pulumi.Input<string>,
     logResource: pulumi.Resource,
     connectToRegistry?: () => pulumi.Input<Registry>,
-    skipPush: boolean = false): Promise<string> {
+    skipPush: boolean = false,
+    runDuringPreview: boolean = true): Promise<string> {
 
-    const output = buildAndPushImage(baseImageName, pathOrBuild, repositoryUrl, logResource, connectToRegistry, skipPush);
+    const output = buildAndPushImage(baseImageName, pathOrBuild, repositoryUrl, logResource, connectToRegistry, skipPush, runDuringPreview);
 
     // Ugly, but necessary to bridge between the proper Output-returning function and this
     // Promise-returning one.
@@ -160,7 +161,8 @@ export function buildAndPushImage(
     repositoryUrl: pulumi.Input<string> | undefined,
     logResource: pulumi.Resource,
     connectToRegistry?: () => pulumi.Input<Registry>,
-    skipPush: boolean = false): pulumi.Output<string> {
+    skipPush: boolean = false,
+    runDuringPreview: boolean = true): pulumi.Output<string> {
 
     // We do something rather interesting here.  We do not want to proceed if we don't actually have
     // a value yet for `pathOrBuild`.  So we do a normal `ouput(...).apply(...)`.  However, we *do*
@@ -171,7 +173,7 @@ export function buildAndPushImage(
         const op = pulumi.output(repositoryUrl);
 
         // @ts-ignore Allow calling the 'runWithUnknowns' overload.
-        const res: pulumi.Output<string> = op.apply(u => helper(pathOrBuild, u), /*runWithUnknowns:*/ true);
+        const res: pulumi.Output<string> = op.apply(u => helper(pathOrBuild, u), /*runWithUnknowns:*/ runDuringPreview);
 
         return res;
     });
@@ -180,7 +182,7 @@ export function buildAndPushImage(
         // if we got an unknown repository url, just set to undefined for the remainder of
         // processing. The rest of the code can handle that.
         repositoryUrl = pulumi.containsUnknowns(repositoryUrl) ? undefined : repositoryUrl;
-        return buildAndPushImageWorkerAsync(imageName, pathOrBuild, repositoryUrl, logResource, connectToRegistry, skipPush);
+        return buildAndPushImageWorkerAsync(imageName, pathOrBuild, repositoryUrl, logResource, connectToRegistry, skipPush, runDuringPreview);
     }
 }
 
@@ -228,7 +230,14 @@ async function buildAndPushImageWorkerAsync(
     repositoryUrl: string | undefined,
     logResource: pulumi.Resource,
     connectToRegistry: (() => pulumi.Input<Registry>) | undefined,
-    skipPush: boolean): Promise<string> {
+    skipPush: boolean,
+    runDuringPreview: boolean): Promise<string> {
+
+    const isPreview = pulumi.runtime.isDryRun()
+    if (!runDuringPreview && isPreview) {
+        logEphemeral("Skipping docker build during preview", logResource);
+        return baseImageName;
+    }
 
     if (repositoryUrl) {
         checkRepositoryUrl(repositoryUrl);
@@ -243,7 +252,7 @@ async function buildAndPushImageWorkerAsync(
 
     // If we have no repository url, then we definitely can't push our build result. Same if
     // we're in preview.
-    if (skipPush || !repositoryUrl || pulumi.runtime.isDryRun()) {
+    if (skipPush || !repositoryUrl || isPreview) {
         logEphemeral("Completed docker build (without pushing)", logResource);
         return baseImageName;
     }
