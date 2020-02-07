@@ -66,3 +66,6 @@ const image3 = new docker.Image("path-example", {
 export const image1Name = image1.imageName;
 export const image2Name = image2.imageName;
 export const image3Name = image3.imageName;
+
+export const image4Name = docker.buildAndPushImage(
+    "test-name", "./app", /*repositoryUrl:*/ undefined, /*logResource:*/ undefined);

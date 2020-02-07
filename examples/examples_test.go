@@ -66,6 +66,23 @@ func TestAws(t *testing.T) {
 	}
 }
 
+func TestBrokenDockerfile(t *testing.T) {
+	cwd, err := os.Getwd()
+	if !assert.NoError(t, err) {
+		t.FailNow()
+	}
+
+	opts := base.With(integration.ProgramTestOptions{
+		Dependencies: []string{
+			"@pulumi/docker",
+		},
+		Dir: path.Join(cwd, "broken_dockerfile"),
+		ExpectFailure: true,
+		SkipRefresh: true,
+	})
+	integration.ProgramTest(t, &opts)
+}
+
 func TestNginx(t *testing.T) {
 	cwd, err := os.Getwd()
 	if !assert.NoError(t, err) {

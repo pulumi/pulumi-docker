@@ -93,7 +93,7 @@ export interface DockerBuild {
 
 let dockerPasswordPromise: Promise<boolean> | undefined;
 
-function useDockerPasswordStdin(logResource: pulumi.Resource) {
+function useDockerPasswordStdin(logResource: pulumi.Resource| undefined) {
     if (!dockerPasswordPromise) {
         dockerPasswordPromise = useDockerPasswordStdinWorker();
     }
@@ -157,8 +157,8 @@ export function buildAndPushImageAsync(
 export function buildAndPushImage(
     imageName: string,
     pathOrBuild: pulumi.Input<string | DockerBuild>,
-    repositoryUrl: pulumi.Input<string>,
-    logResource: pulumi.Resource,
+    repositoryUrl: pulumi.Input<string> | undefined,
+    logResource: pulumi.Resource | undefined,
     connectToRegistry?: () => pulumi.Input<Registry>,
     skipPush: boolean = false): pulumi.Output<string> {
 
@@ -169,9 +169,9 @@ export function buildAndPushImage(
     // in `runWithUnknowns:true` to actually continue on in that case.
     return pulumi.output(pathOrBuild).apply(pathOrBuild => {
         const op = pulumi.output(repositoryUrl);
-        const res: pulumi.Output<string> = (<any>op).apply(
-            (u: string | undefined) => buildAndPushImageImpl(pathOrBuild, u),
-            /*runWithUnknowns:*/ true);
+
+        // @ts-ignore Allow calling the 'runWithUnknowns' overload.
+        const res: pulumi.Output<string> = op.apply(u => buildAndPushImageImpl(pathOrBuild, u), /*runWithUnknowns:*/ true);
 
         return res;
     });
@@ -208,7 +208,7 @@ export function buildAndPushImage(
     }
 }
 
-function logEphemeral(message: string, logResource: pulumi.Resource) {
+function logEphemeral(message: string, logResource: pulumi.Resource | undefined) {
     pulumi.log.info(message, logResource, /*streamId:*/ undefined, /*ephemeral:*/ true);
 }
 
@@ -250,7 +250,7 @@ async function buildImage(
         baseImageName: string,
         pathOrBuild: string | pulumi.Unwrap<DockerBuild>,
         repositoryUrl: string | undefined,
-        logResource: pulumi.Resource,
+        logResource: pulumi.Resource | undefined,
         connectToRegistry: (() => pulumi.Input<Registry>) | undefined): Promise<BuildResult> {
 
     // login immediately if we're going to have to actually communicate with a remote registry.
@@ -300,7 +300,7 @@ async function buildImage(
     return buildResult;
 }
 
-async function pushImage(repositoryUrl: string, buildResult: BuildResult, logResource: pulumi.Resource): Promise<string> {
+async function pushImage(repositoryUrl: string, buildResult: BuildResult, logResource: pulumi.Resource | undefined): Promise<string> {
     const { imageName: baseImageName, imageId, stages } = buildResult;
 
     const tag = utils.getImageNameAndTag(baseImageName).tag;
@@ -364,7 +364,7 @@ async function pullCacheAsync(
     imageName: string,
     cacheFrom: pulumi.Unwrap<CacheFrom>,
     repoUrl: string,
-    logResource: pulumi.Resource): Promise<string[] | undefined> {
+    logResource: pulumi.Resource | undefined): Promise<string[] | undefined> {
 
     // Ensure that we have a repository URL. If we don't, we won't be able to pull anything.
     if (!repoUrl) {
@@ -405,7 +405,7 @@ interface BuildResult {
 async function buildImageAsync(
     imageName: string,
     pathOrBuild: string | pulumi.Unwrap<DockerBuild>,
-    logResource: pulumi.Resource,
+    logResource: pulumi.Resource | undefined,
     cacheFrom: Promise<string[] | undefined>): Promise<BuildResult> {
 
     let build: pulumi.Unwrap<DockerBuild>;
@@ -470,7 +470,7 @@ async function dockerBuild(
     imageName: string,
     build: pulumi.Unwrap<DockerBuild>,
     cacheFrom: Promise<string[] | undefined>,
-    logResource: pulumi.Resource,
+    logResource: pulumi.Resource | undefined,
     target?: string): Promise<void> {
 
     // Prepare the build arguments.
@@ -516,7 +516,7 @@ interface LoginResult {
 // registry with that user, there's no need to do it again.
 const loginResults: LoginResult[] = [];
 
-function loginToRegistry(registry: pulumi.Unwrap<Registry>, logResource: pulumi.Resource): Promise<void> {
+function loginToRegistry(registry: pulumi.Unwrap<Registry>, logResource: pulumi.Resource| undefined): Promise<void> {
     const {registry: registryName, username, password} = registry;
 
     // See if we've issued an outstanding requests to login into this registry.  If so, just
@@ -557,7 +557,7 @@ function loginToRegistry(registry: pulumi.Unwrap<Registry>, logResource: pulumi.
 async function tagAndPushImageAsync(
     imageName: string, repositoryUrl: string,
     tag: string | undefined, imageId: string | undefined,
-    logResource: pulumi.Resource): Promise<void> {
+    logResource: pulumi.Resource | undefined): Promise<void> {
 
     // Ensure we have a unique target name for this image, and tag and push to that unique target.
     await doTagAndPushAsync(createTaggedImageName(repositoryUrl, tag, imageId));
@@ -605,7 +605,7 @@ function getFailureMessage(
 async function runCommandThatMustSucceed(
     cmd: string,
     args: string[],
-    logResource: pulumi.Resource,
+    logResource: pulumi.Resource | undefined,
     reportFullCommandLine: boolean = true,
     stdin?: string,
     env?: { [name: string]: string }): Promise<string> {
@@ -643,7 +643,7 @@ async function runCommandThatMustSucceed(
 async function runCommandThatCanFail(
     cmd: string,
     args: string[],
-    logResource: pulumi.Resource,
+    logResource: pulumi.Resource | undefined,
     reportFullCommandLine: boolean,
     reportErrorAsWarning: boolean,
     stdin?: string,
