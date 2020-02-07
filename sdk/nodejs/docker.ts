@@ -220,7 +220,7 @@ export function checkRepositoryUrl(repositoryUrl: string) {
 }
 
 async function buildAndPushImageWorkerAsync(
-    imageName: string,
+    baseImageName: string,
     pathOrBuild: string | pulumi.Unwrap<DockerBuild>,
     repositoryUrl: string | undefined,
     logResource: pulumi.Resource,
@@ -238,17 +238,17 @@ async function buildAndPushImageWorkerAsync(
     }
 
     // First, login and pulling from docker if we can.
-    const cacheFrom = await loginAndPullFromCacheAsync(imageName, pathOrBuild, repositoryUrl, logResource, connectToRegistry);
+    const cacheFrom = await loginAndPullFromCacheAsync(baseImageName, pathOrBuild, repositoryUrl, logResource, connectToRegistry);
 
     // Then actually kick off the build.
     logEphemeral("Starting docker build...", logResource);
-    const buildResult = await buildImageAsync(imageName, pathOrBuild, cacheFrom, logResource);
+    const buildResult = await buildImageAsync(baseImageName, pathOrBuild, cacheFrom, logResource);
     logEphemeral("Completed docker build", logResource);
 
     // If we have no repository url, then we definitely can't push our build result. Same if
     // we're in preview.
     if (skipPush || !repositoryUrl || pulumi.runtime.isDryRun()) {
-        return imageName;
+        return baseImageName;
     }
 
     // Finally, if this a real update, push the built images to docker.
