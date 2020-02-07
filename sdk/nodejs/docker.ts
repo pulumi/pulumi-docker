@@ -186,10 +186,6 @@ export function buildAndPushImage(
             repositoryUrl = undefined;
         }
 
-        if (repositoryUrl) {
-            checkRepositoryUrl(repositoryUrl);
-        }
-
         logEphemeral("Starting docker build...", logResource);
         const buildResult = await buildImage(imageName, pathOrBuild, repositoryUrl, logResource, connectToRegistry);
         logEphemeral("Completed docker build", logResource);
@@ -252,6 +248,10 @@ async function buildImage(
         repositoryUrl: string | undefined,
         logResource: pulumi.Resource,
         connectToRegistry: (() => pulumi.Input<Registry>) | undefined): Promise<BuildResult> {
+
+    if (repositoryUrl) {
+        checkRepositoryUrl(repositoryUrl);
+    }
 
     // login immediately if we're going to have to actually communicate with a remote registry.
     //
