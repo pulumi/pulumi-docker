@@ -250,7 +250,7 @@ async function buildAndPushImageWorkerAsync(
 
     // Finally, if this a real update, push the built images to docker.
     logEphemeral("Starting docker push...", logResource);
-    const result = await pushImageAsync(repositoryUrl, buildResult, logResource);
+    const result = await pushImageAsync(baseImageName, repositoryUrl, buildResult, logResource);
     logEphemeral("Completed docker build and push", logResource);
 
     return result;
@@ -303,8 +303,8 @@ async function loginAndPullFromCacheAsync(
     return [];
 }
 
-async function pushImageAsync(repositoryUrl: string, buildResult: BuildResult, logResource: pulumi.Resource): Promise<string> {
-    const { imageName: baseImageName, imageId, stages } = buildResult;
+async function pushImageAsync(baseImageName: string, repositoryUrl: string, buildResult: BuildResult, logResource: pulumi.Resource): Promise<string> {
+    const { imageId, stages } = buildResult;
 
     const tag = utils.getImageNameAndTag(baseImageName).tag;
 
@@ -400,7 +400,6 @@ async function pullCacheAsync(
 }
 
 interface BuildResult {
-    imageName: string;
     imageId: string;
     stages: string[];
 }
@@ -466,7 +465,7 @@ async function buildImageAsync(
     const colonIndex = imageId.lastIndexOf(":");
     imageId = colonIndex < 0 ? imageId : imageId.substr(colonIndex + 1);
 
-    return { imageName, imageId, stages };
+    return { imageId, stages };
 }
 
 async function dockerBuild(
