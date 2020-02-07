@@ -177,7 +177,7 @@ export function buildAndPushImage(
     });
 
     function helper(pathOrBuild: string | pulumi.Unwrap<DockerBuild>, repositoryUrl: string | undefined) {
-        return buildAndPushImageWorker(imageName, pathOrBuild, repositoryUrl, logResource, connectToRegistry, skipPush);
+        return buildAndPushImageWorkerAsync(imageName, pathOrBuild, repositoryUrl, logResource, connectToRegistry, skipPush);
     }
 }
 
@@ -219,13 +219,13 @@ export function checkRepositoryUrl(repositoryUrl: string) {
     }
 }
 
-async function buildAndPushImageWorker(
-        imageName: string,
-        pathOrBuild: string | pulumi.Unwrap<DockerBuild>,
-        repositoryUrl: string | undefined,
-        logResource: pulumi.Resource,
-        connectToRegistry: (() => pulumi.Input<Registry>) | undefined,
-        skipPush: boolean): Promise<string> {
+async function buildAndPushImageWorkerAsync(
+    imageName: string,
+    pathOrBuild: string | pulumi.Unwrap<DockerBuild>,
+    repositoryUrl: string | undefined,
+    logResource: pulumi.Resource,
+    connectToRegistry: (() => pulumi.Input<Registry>) | undefined,
+    skipPush: boolean): Promise<string> {
 
     // if we got an unknown repository url, just set to undefined for the remainder of
     // processing. The rest of the code can handle that.
