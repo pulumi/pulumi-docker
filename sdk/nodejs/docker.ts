@@ -176,8 +176,7 @@ export function buildAndPushImage(
         return res;
     });
 
-    function helper(pathOrBuild: string | pulumi.Unwrap<DockerBuild>,
-                    repositoryUrl: string | undefined) {
+    function helper(pathOrBuild: string | pulumi.Unwrap<DockerBuild>, repositoryUrl: string | undefined) {
         return buildAndPushImageWorker(imageName, pathOrBuild, repositoryUrl, logResource, connectToRegistry, skipPush);
     }
 }
