@@ -492,10 +492,8 @@ async function dockerBuild(
     if (build.target) {
         buildArgs.push(...["--target", build.target]);
     }
-    if (build.cacheFrom) {
-        if (cacheFrom.length) {
-            buildArgs.push(...["--cache-from", cacheFrom.join()]);
-        }
+    if (cacheFrom.length) {
+        buildArgs.push(...["--cache-from", cacheFrom.join()]);
     }
     if (build.extraOptions) {
         buildArgs.push(...build.extraOptions);
