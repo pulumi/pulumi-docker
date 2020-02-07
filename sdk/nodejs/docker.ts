@@ -295,15 +295,15 @@ async function loginAndPullFromCache(
     }
 
     // If the container specified a cacheFrom parameter, first set up the cached stages.
-    if (!pullFromCache) {
-        return [];
+    if (pullFromCache) {
+        const dockerBuild = <pulumi.UnwrappedObject<DockerBuild>>pathOrBuild;
+        const cacheFromParam = (typeof dockerBuild.cacheFrom === "boolean" ? {} : dockerBuild.cacheFrom) || {};
+
+        // pullFromCache is only true if repositoryUrl is present.
+        return await pullCacheAsync(baseImageName, cacheFromParam, repositoryUrl!, logResource);
     }
 
-    const dockerBuild = <pulumi.UnwrappedObject<DockerBuild>>pathOrBuild;
-    const cacheFromParam = (typeof dockerBuild.cacheFrom === "boolean" ? {} : dockerBuild.cacheFrom) || {};
-
-    // pullFromCache is only true if repositoryUrl is present.
-    return await pullCacheAsync(baseImageName, cacheFromParam, repositoryUrl!, logResource);
+    return [];
 }
 
 async function pushImage(repositoryUrl: string, buildResult: BuildResult, logResource: pulumi.Resource): Promise<string> {
