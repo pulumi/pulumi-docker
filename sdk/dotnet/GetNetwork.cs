@@ -27,14 +27,6 @@ namespace Pulumi.Docker
         [Input("id")]
         public string? Id { get; set; }
 
-        [Input("ipamConfigs")]
-        private List<Inputs.GetNetworkIpamConfigsArgs>? _ipamConfigs;
-        public List<Inputs.GetNetworkIpamConfigsArgs> IpamConfigs
-        {
-            get => _ipamConfigs ?? (_ipamConfigs = new List<Inputs.GetNetworkIpamConfigsArgs>());
-            set => _ipamConfigs = value;
-        }
-
         /// <summary>
         /// The name of the Docker network.
         /// </summary>
@@ -87,34 +79,6 @@ namespace Pulumi.Docker
             Options = options;
             Scope = scope;
         }
-    }
-
-    namespace Inputs
-    {
-
-    public sealed class GetNetworkIpamConfigsArgs : Pulumi.InvokeArgs
-    {
-        [Input("auxAddress")]
-        private Dictionary<string, object>? _auxAddress;
-        public Dictionary<string, object> AuxAddress
-        {
-            get => _auxAddress ?? (_auxAddress = new Dictionary<string, object>());
-            set => _auxAddress = value;
-        }
-
-        [Input("gateway")]
-        public string? Gateway { get; set; }
-
-        [Input("ipRange")]
-        public string? IpRange { get; set; }
-
-        [Input("subnet")]
-        public string? Subnet { get; set; }
-
-        public GetNetworkIpamConfigsArgs()
-        {
-        }
-    }
     }
 
     namespace Outputs

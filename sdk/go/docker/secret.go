@@ -19,8 +19,8 @@ type Secret struct {
 
 	// The base64 encoded data of the secret.
 	Data pulumi.StringOutput `pulumi:"data"`
-	// User-defined key/value metadata.
-	Labels pulumi.MapOutput `pulumi:"labels"`
+	// See Labels below for details.
+	Labels SecretLabelArrayOutput `pulumi:"labels"`
 	// The name of the Docker secret.
 	Name pulumi.StringOutput `pulumi:"name"`
 }
@@ -58,8 +58,8 @@ func GetSecret(ctx *pulumi.Context,
 type secretState struct {
 	// The base64 encoded data of the secret.
 	Data *string `pulumi:"data"`
-	// User-defined key/value metadata.
-	Labels map[string]interface{} `pulumi:"labels"`
+	// See Labels below for details.
+	Labels []SecretLabel `pulumi:"labels"`
 	// The name of the Docker secret.
 	Name *string `pulumi:"name"`
 }
@@ -67,8 +67,8 @@ type secretState struct {
 type SecretState struct {
 	// The base64 encoded data of the secret.
 	Data pulumi.StringPtrInput
-	// User-defined key/value metadata.
-	Labels pulumi.MapInput
+	// See Labels below for details.
+	Labels SecretLabelArrayInput
 	// The name of the Docker secret.
 	Name pulumi.StringPtrInput
 }
@@ -80,8 +80,8 @@ func (SecretState) ElementType() reflect.Type {
 type secretArgs struct {
 	// The base64 encoded data of the secret.
 	Data string `pulumi:"data"`
-	// User-defined key/value metadata.
-	Labels map[string]interface{} `pulumi:"labels"`
+	// See Labels below for details.
+	Labels []SecretLabel `pulumi:"labels"`
 	// The name of the Docker secret.
 	Name *string `pulumi:"name"`
 }
@@ -90,8 +90,8 @@ type secretArgs struct {
 type SecretArgs struct {
 	// The base64 encoded data of the secret.
 	Data pulumi.StringInput
-	// User-defined key/value metadata.
-	Labels pulumi.MapInput
+	// See Labels below for details.
+	Labels SecretLabelArrayInput
 	// The name of the Docker secret.
 	Name pulumi.StringPtrInput
 }

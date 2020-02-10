@@ -64,7 +64,7 @@ export class Network extends pulumi.CustomResource {
      * Name of the network driver to use. Defaults to
      * `bridge` driver.
      */
-    public readonly driver!: pulumi.Output<string | undefined>;
+    public readonly driver!: pulumi.Output<string>;
     /**
      * Create swarm routing-mesh network.
      * Defaults to `false`.
@@ -91,9 +91,9 @@ export class Network extends pulumi.CustomResource {
      */
     public readonly ipv6!: pulumi.Output<boolean | undefined>;
     /**
-     * User-defined key/value metadata.
+     * See Labels below for details.
      */
-    public readonly labels!: pulumi.Output<{[key: string]: any} | undefined>;
+    public readonly labels!: pulumi.Output<outputs.NetworkLabel[] | undefined>;
     /**
      * The name of the Docker network.
      */
@@ -200,9 +200,9 @@ export interface NetworkState {
      */
     readonly ipv6?: pulumi.Input<boolean>;
     /**
-     * User-defined key/value metadata.
+     * See Labels below for details.
      */
-    readonly labels?: pulumi.Input<{[key: string]: any}>;
+    readonly labels?: pulumi.Input<pulumi.Input<inputs.NetworkLabel>[]>;
     /**
      * The name of the Docker network.
      */
@@ -260,9 +260,9 @@ export interface NetworkArgs {
      */
     readonly ipv6?: pulumi.Input<boolean>;
     /**
-     * User-defined key/value metadata.
+     * See Labels below for details.
      */
-    readonly labels?: pulumi.Input<{[key: string]: any}>;
+    readonly labels?: pulumi.Input<pulumi.Input<inputs.NetworkLabel>[]>;
     /**
      * The name of the Docker network.
      */

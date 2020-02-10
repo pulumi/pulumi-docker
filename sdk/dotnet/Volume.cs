@@ -33,7 +33,7 @@ namespace Pulumi.Docker
         /// User-defined key/value metadata.
         /// </summary>
         [Output("labels")]
-        public Output<ImmutableDictionary<string, object>?> Labels { get; private set; } = null!;
+        public Output<ImmutableArray<Outputs.VolumeLabels>> Labels { get; private set; } = null!;
 
         [Output("mountpoint")]
         public Output<string> Mountpoint { get; private set; } = null!;
@@ -110,14 +110,14 @@ namespace Pulumi.Docker
         }
 
         [Input("labels")]
-        private InputMap<object>? _labels;
+        private InputList<Inputs.VolumeLabelsArgs>? _labels;
 
         /// <summary>
         /// User-defined key/value metadata.
         /// </summary>
-        public InputMap<object> Labels
+        public InputList<Inputs.VolumeLabelsArgs> Labels
         {
-            get => _labels ?? (_labels = new InputMap<object>());
+            get => _labels ?? (_labels = new InputList<Inputs.VolumeLabelsArgs>());
             set => _labels = value;
         }
 
@@ -154,14 +154,14 @@ namespace Pulumi.Docker
         }
 
         [Input("labels")]
-        private InputMap<object>? _labels;
+        private InputList<Inputs.VolumeLabelsGetArgs>? _labels;
 
         /// <summary>
         /// User-defined key/value metadata.
         /// </summary>
-        public InputMap<object> Labels
+        public InputList<Inputs.VolumeLabelsGetArgs> Labels
         {
-            get => _labels ?? (_labels = new InputMap<object>());
+            get => _labels ?? (_labels = new InputList<Inputs.VolumeLabelsGetArgs>());
             set => _labels = value;
         }
 
@@ -178,5 +178,55 @@ namespace Pulumi.Docker
         public VolumeState()
         {
         }
+    }
+
+    namespace Inputs
+    {
+
+    public sealed class VolumeLabelsArgs : Pulumi.ResourceArgs
+    {
+        [Input("label", required: true)]
+        public Input<string> Label { get; set; } = null!;
+
+        [Input("value", required: true)]
+        public Input<string> Value { get; set; } = null!;
+
+        public VolumeLabelsArgs()
+        {
+        }
+    }
+
+    public sealed class VolumeLabelsGetArgs : Pulumi.ResourceArgs
+    {
+        [Input("label", required: true)]
+        public Input<string> Label { get; set; } = null!;
+
+        [Input("value", required: true)]
+        public Input<string> Value { get; set; } = null!;
+
+        public VolumeLabelsGetArgs()
+        {
+        }
+    }
+    }
+
+    namespace Outputs
+    {
+
+    [OutputType]
+    public sealed class VolumeLabels
+    {
+        public readonly string Label;
+        public readonly string Value;
+
+        [OutputConstructor]
+        private VolumeLabels(
+            string label,
+            string value)
+        {
+            Label = label;
+            Value = value;
+        }
+    }
     }
 }

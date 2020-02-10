@@ -33,7 +33,6 @@ export function getNetwork(args?: GetNetworkArgs, opts?: pulumi.InvokeOptions): 
     }
     const promise: Promise<GetNetworkResult> = pulumi.runtime.invoke("docker:index/getNetwork:getNetwork", {
         "id": args.id,
-        "ipamConfigs": args.ipamConfigs,
         "name": args.name,
     }, opts);
 
@@ -48,7 +47,6 @@ export interface GetNetworkArgs {
      * The id of the Docker network.
      */
     readonly id?: string;
-    readonly ipamConfigs?: inputs.GetNetworkIpamConfig[];
     /**
      * The name of the Docker network.
      */
@@ -67,7 +65,7 @@ export interface GetNetworkResult {
     readonly driver: string;
     readonly id?: string;
     readonly internal: boolean;
-    readonly ipamConfigs?: outputs.GetNetworkIpamConfig[];
+    readonly ipamConfigs: outputs.GetNetworkIpamConfig[];
     readonly name?: string;
     /**
      * (Optional, map) Only available with bridge networks. See

@@ -14,9 +14,13 @@ class Secret(pulumi.CustomResource):
     """
     The base64 encoded data of the secret.
     """
-    labels: pulumi.Output[dict]
+    labels: pulumi.Output[list]
     """
-    User-defined key/value metadata.
+    See Labels below for details.
+    
+      * `label` (`str`) - Name of the label
+        * `value` (Required, string) Value of the label
+      * `value` (`str`)
     """
     name: pulumi.Output[str]
     """
@@ -29,8 +33,14 @@ class Secret(pulumi.CustomResource):
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[str] data: The base64 encoded data of the secret.
-        :param pulumi.Input[dict] labels: User-defined key/value metadata.
+        :param pulumi.Input[list] labels: See Labels below for details.
         :param pulumi.Input[str] name: The name of the Docker secret.
+        
+        The **labels** object supports the following:
+        
+          * `label` (`pulumi.Input[str]`) - Name of the label
+            * `value` (Required, string) Value of the label
+          * `value` (`pulumi.Input[str]`)
 
         > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/secret.html.markdown.
         """
@@ -72,8 +82,14 @@ class Secret(pulumi.CustomResource):
         :param str id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[str] data: The base64 encoded data of the secret.
-        :param pulumi.Input[dict] labels: User-defined key/value metadata.
+        :param pulumi.Input[list] labels: See Labels below for details.
         :param pulumi.Input[str] name: The name of the Docker secret.
+        
+        The **labels** object supports the following:
+        
+          * `label` (`pulumi.Input[str]`) - Name of the label
+            * `value` (Required, string) Value of the label
+          * `value` (`pulumi.Input[str]`)
 
         > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/secret.html.markdown.
         """

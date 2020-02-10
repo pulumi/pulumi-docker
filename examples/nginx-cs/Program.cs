@@ -15,14 +15,14 @@ class Program
             // try to download it from the public Docker Hub.
             var remoteImage = new RemoteImage("nginx-image", new RemoteImageArgs
             {
-                Name = "nginx:1.15.6",
+                Name = "nginx",
                 KeepLocally = true, // don't delete the image from the local cache when deleting this resource
             });
 
             // Launch a container using the nginx image we just downloaded.
             var container = new Container("nginx", new ContainerArgs
             {
-                Image = remoteImage.Name,
+                Image = remoteImage.Latest,
                 Ports =
                 {
                     new ContainerPortsArgs

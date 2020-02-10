@@ -18,9 +18,12 @@ class Volume(pulumi.CustomResource):
     """
     Options specific to the driver.
     """
-    labels: pulumi.Output[dict]
+    labels: pulumi.Output[list]
     """
     User-defined key/value metadata.
+    
+      * `label` (`str`)
+      * `value` (`str`)
     """
     mountpoint: pulumi.Output[str]
     name: pulumi.Output[str]
@@ -38,9 +41,14 @@ class Volume(pulumi.CustomResource):
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[str] driver: Driver type for the volume (defaults to local).
         :param pulumi.Input[dict] driver_opts: Options specific to the driver.
-        :param pulumi.Input[dict] labels: User-defined key/value metadata.
+        :param pulumi.Input[list] labels: User-defined key/value metadata.
         :param pulumi.Input[str] name: The name of the Docker volume (generated if not
                provided).
+        
+        The **labels** object supports the following:
+        
+          * `label` (`pulumi.Input[str]`)
+          * `value` (`pulumi.Input[str]`)
 
         > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/volume.html.markdown.
         """
@@ -83,9 +91,14 @@ class Volume(pulumi.CustomResource):
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[str] driver: Driver type for the volume (defaults to local).
         :param pulumi.Input[dict] driver_opts: Options specific to the driver.
-        :param pulumi.Input[dict] labels: User-defined key/value metadata.
+        :param pulumi.Input[list] labels: User-defined key/value metadata.
         :param pulumi.Input[str] name: The name of the Docker volume (generated if not
                provided).
+        
+        The **labels** object supports the following:
+        
+          * `label` (`pulumi.Input[str]`)
+          * `value` (`pulumi.Input[str]`)
 
         > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/volume.html.markdown.
         """

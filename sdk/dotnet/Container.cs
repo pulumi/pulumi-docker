@@ -146,7 +146,7 @@ namespace Pulumi.Docker
         /// Hostname of the container.
         /// </summary>
         [Output("hostname")]
-        public Output<string?> Hostname { get; private set; } = null!;
+        public Output<string> Hostname { get; private set; } = null!;
 
         /// <summary>
         /// The ID of the image to back this container.
@@ -173,13 +173,13 @@ namespace Pulumi.Docker
         /// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:&lt;name|id&gt;` or `host`.
         /// </summary>
         [Output("ipcMode")]
-        public Output<string?> IpcMode { get; private set; } = null!;
+        public Output<string> IpcMode { get; private set; } = null!;
 
         /// <summary>
         /// Adding labels.
         /// </summary>
         [Output("labels")]
-        public Output<ImmutableDictionary<string, object>?> Labels { get; private set; } = null!;
+        public Output<ImmutableArray<Outputs.ContainerLabels>> Labels { get; private set; } = null!;
 
         /// <summary>
         /// Set of links for link based
@@ -314,7 +314,7 @@ namespace Pulumi.Docker
         /// Size of `/dev/shm` in MBs.
         /// </summary>
         [Output("shmSize")]
-        public Output<int?> ShmSize { get; private set; } = null!;
+        public Output<int> ShmSize { get; private set; } = null!;
 
         /// <summary>
         /// If true, then the Docker container will be
@@ -594,14 +594,14 @@ namespace Pulumi.Docker
         public Input<string>? IpcMode { get; set; }
 
         [Input("labels")]
-        private InputMap<object>? _labels;
+        private InputList<Inputs.ContainerLabelsArgs>? _labels;
 
         /// <summary>
         /// Adding labels.
         /// </summary>
-        public InputMap<object> Labels
+        public InputList<Inputs.ContainerLabelsArgs> Labels
         {
-            get => _labels ?? (_labels = new InputMap<object>());
+            get => _labels ?? (_labels = new InputList<Inputs.ContainerLabelsArgs>());
             set => _labels = value;
         }
 
@@ -1082,14 +1082,14 @@ namespace Pulumi.Docker
         public Input<string>? IpcMode { get; set; }
 
         [Input("labels")]
-        private InputMap<object>? _labels;
+        private InputList<Inputs.ContainerLabelsGetArgs>? _labels;
 
         /// <summary>
         /// Adding labels.
         /// </summary>
-        public InputMap<object> Labels
+        public InputList<Inputs.ContainerLabelsGetArgs> Labels
         {
-            get => _labels ?? (_labels = new InputMap<object>());
+            get => _labels ?? (_labels = new InputList<Inputs.ContainerLabelsGetArgs>());
             set => _labels = value;
         }
 
@@ -1581,6 +1581,40 @@ namespace Pulumi.Docker
         }
     }
 
+    public sealed class ContainerLabelsArgs : Pulumi.ResourceArgs
+    {
+        /// <summary>
+        /// Name of the label
+        /// * `value` (Required, string) Value of the label
+        /// </summary>
+        [Input("label", required: true)]
+        public Input<string> Label { get; set; } = null!;
+
+        [Input("value", required: true)]
+        public Input<string> Value { get; set; } = null!;
+
+        public ContainerLabelsArgs()
+        {
+        }
+    }
+
+    public sealed class ContainerLabelsGetArgs : Pulumi.ResourceArgs
+    {
+        /// <summary>
+        /// Name of the label
+        /// * `value` (Required, string) Value of the label
+        /// </summary>
+        [Input("label", required: true)]
+        public Input<string> Label { get; set; } = null!;
+
+        [Input("value", required: true)]
+        public Input<string> Value { get; set; } = null!;
+
+        public ContainerLabelsGetArgs()
+        {
+        }
+    }
+
     public sealed class ContainerMountsArgs : Pulumi.ResourceArgs
     {
         /// <summary>
@@ -1597,7 +1631,7 @@ namespace Pulumi.Docker
         public Input<bool>? ReadOnly { get; set; }
 
         /// <summary>
-        /// The mount source (e.g., a volume name, a host path)
+        /// A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state.
         /// </summary>
         [Input("source")]
         public Input<string>? Source { get; set; }
@@ -1673,7 +1707,7 @@ namespace Pulumi.Docker
         public Input<bool>? ReadOnly { get; set; }
 
         /// <summary>
-        /// The mount source (e.g., a volume name, a host path)
+        /// A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state.
         /// </summary>
         [Input("source")]
         public Input<string>? Source { get; set; }
@@ -1763,14 +1797,14 @@ namespace Pulumi.Docker
         }
 
         [Input("labels")]
-        private InputMap<string>? _labels;
+        private InputList<ContainerMountsVolumeOptionsLabelsArgs>? _labels;
 
         /// <summary>
         /// Adding labels.
         /// </summary>
-        public InputMap<string> Labels
+        public InputList<ContainerMountsVolumeOptionsLabelsArgs> Labels
         {
-            get => _labels ?? (_labels = new InputMap<string>());
+            get => _labels ?? (_labels = new InputList<ContainerMountsVolumeOptionsLabelsArgs>());
             set => _labels = value;
         }
 
@@ -1803,14 +1837,14 @@ namespace Pulumi.Docker
         }
 
         [Input("labels")]
-        private InputMap<string>? _labels;
+        private InputList<ContainerMountsVolumeOptionsLabelsGetArgs>? _labels;
 
         /// <summary>
         /// Adding labels.
         /// </summary>
-        public InputMap<string> Labels
+        public InputList<ContainerMountsVolumeOptionsLabelsGetArgs> Labels
         {
-            get => _labels ?? (_labels = new InputMap<string>());
+            get => _labels ?? (_labels = new InputList<ContainerMountsVolumeOptionsLabelsGetArgs>());
             set => _labels = value;
         }
 
@@ -1821,6 +1855,40 @@ namespace Pulumi.Docker
         public Input<bool>? NoCopy { get; set; }
 
         public ContainerMountsVolumeOptionsGetArgs()
+        {
+        }
+    }
+
+    public sealed class ContainerMountsVolumeOptionsLabelsArgs : Pulumi.ResourceArgs
+    {
+        /// <summary>
+        /// Name of the label
+        /// * `value` (Required, string) Value of the label
+        /// </summary>
+        [Input("label", required: true)]
+        public Input<string> Label { get; set; } = null!;
+
+        [Input("value", required: true)]
+        public Input<string> Value { get; set; } = null!;
+
+        public ContainerMountsVolumeOptionsLabelsArgs()
+        {
+        }
+    }
+
+    public sealed class ContainerMountsVolumeOptionsLabelsGetArgs : Pulumi.ResourceArgs
+    {
+        /// <summary>
+        /// Name of the label
+        /// * `value` (Required, string) Value of the label
+        /// </summary>
+        [Input("label", required: true)]
+        public Input<string> Label { get; set; } = null!;
+
+        [Input("value", required: true)]
+        public Input<string> Value { get; set; } = null!;
+
+        public ContainerMountsVolumeOptionsLabelsGetArgs()
         {
         }
     }
@@ -2044,6 +2112,18 @@ namespace Pulumi.Docker
         [Input("file", required: true)]
         public Input<string> File { get; set; } = null!;
 
+        /// <summary>
+        /// A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state.
+        /// </summary>
+        [Input("source")]
+        public Input<string>? Source { get; set; }
+
+        /// <summary>
+        /// If using `source`, this will force an update if the file content has updated but the filename has not. 
+        /// </summary>
+        [Input("sourceHash")]
+        public Input<string>? SourceHash { get; set; }
+
         public ContainerUploadsArgs()
         {
         }
@@ -2073,6 +2153,18 @@ namespace Pulumi.Docker
         /// </summary>
         [Input("file", required: true)]
         public Input<string> File { get; set; } = null!;
+
+        /// <summary>
+        /// A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state.
+        /// </summary>
+        [Input("source")]
+        public Input<string>? Source { get; set; }
+
+        /// <summary>
+        /// If using `source`, this will force an update if the file content has updated but the filename has not. 
+        /// </summary>
+        [Input("sourceHash")]
+        public Input<string>? SourceHash { get; set; }
 
         public ContainerUploadsGetArgs()
         {
@@ -2269,6 +2361,26 @@ namespace Pulumi.Docker
     }
 
     [OutputType]
+    public sealed class ContainerLabels
+    {
+        /// <summary>
+        /// Name of the label
+        /// * `value` (Required, string) Value of the label
+        /// </summary>
+        public readonly string Label;
+        public readonly string Value;
+
+        [OutputConstructor]
+        private ContainerLabels(
+            string label,
+            string value)
+        {
+            Label = label;
+            Value = value;
+        }
+    }
+
+    [OutputType]
     public sealed class ContainerMounts
     {
         /// <summary>
@@ -2281,7 +2393,7 @@ namespace Pulumi.Docker
         /// </summary>
         public readonly bool? ReadOnly;
         /// <summary>
-        /// The mount source (e.g., a volume name, a host path)
+        /// A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state.
         /// </summary>
         public readonly string? Source;
         /// <summary>
@@ -2369,7 +2481,7 @@ namespace Pulumi.Docker
         /// <summary>
         /// Adding labels.
         /// </summary>
-        public readonly ImmutableDictionary<string, string>? Labels;
+        public readonly ImmutableArray<ContainerMountsVolumeOptionsLabels> Labels;
         /// <summary>
         /// Whether to populate volume with data from the target.
         /// </summary>
@@ -2379,13 +2491,33 @@ namespace Pulumi.Docker
         private ContainerMountsVolumeOptions(
             string? driverName,
             ImmutableDictionary<string, string>? driverOptions,
-            ImmutableDictionary<string, string>? labels,
+            ImmutableArray<ContainerMountsVolumeOptionsLabels> labels,
             bool? noCopy)
         {
             DriverName = driverName;
             DriverOptions = driverOptions;
             Labels = labels;
             NoCopy = noCopy;
+        }
+    }
+
+    [OutputType]
+    public sealed class ContainerMountsVolumeOptionsLabels
+    {
+        /// <summary>
+        /// Name of the label
+        /// * `value` (Required, string) Value of the label
+        /// </summary>
+        public readonly string Label;
+        public readonly string Value;
+
+        [OutputConstructor]
+        private ContainerMountsVolumeOptionsLabels(
+            string label,
+            string value)
+        {
+            Label = label;
+            Value = value;
         }
     }
 
@@ -2525,18 +2657,30 @@ namespace Pulumi.Docker
         /// path to a file in the container.
         /// </summary>
         public readonly string File;
+        /// <summary>
+        /// A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state.
+        /// </summary>
+        public readonly string? Source;
+        /// <summary>
+        /// If using `source`, this will force an update if the file content has updated but the filename has not. 
+        /// </summary>
+        public readonly string? SourceHash;
 
         [OutputConstructor]
         private ContainerUploads(
             string? content,
             string? contentBase64,
             bool? executable,
-            string file)
+            string file,
+            string? source,
+            string? sourceHash)
         {
             Content = content;
             ContentBase64 = contentBase64;
             Executable = executable;
             File = file;
+            Source = source;
+            SourceHash = sourceHash;
         }
     }
 

@@ -26,7 +26,7 @@ type Network struct {
 	CheckDuplicate pulumi.BoolPtrOutput `pulumi:"checkDuplicate"`
 	// Name of the network driver to use. Defaults to
 	// `bridge` driver.
-	Driver pulumi.StringPtrOutput `pulumi:"driver"`
+	Driver pulumi.StringOutput `pulumi:"driver"`
 	// Create swarm routing-mesh network.
 	// Defaults to `false`.
 	Ingress pulumi.BoolPtrOutput `pulumi:"ingress"`
@@ -42,8 +42,8 @@ type Network struct {
 	// Enable IPv6 networking.
 	// Defaults to `false`.
 	Ipv6 pulumi.BoolPtrOutput `pulumi:"ipv6"`
-	// User-defined key/value metadata.
-	Labels pulumi.MapOutput `pulumi:"labels"`
+	// See Labels below for details.
+	Labels NetworkLabelArrayOutput `pulumi:"labels"`
 	// The name of the Docker network.
 	Name pulumi.StringOutput `pulumi:"name"`
 	// Network specific options to be used by
@@ -104,8 +104,8 @@ type networkState struct {
 	// Enable IPv6 networking.
 	// Defaults to `false`.
 	Ipv6 *bool `pulumi:"ipv6"`
-	// User-defined key/value metadata.
-	Labels map[string]interface{} `pulumi:"labels"`
+	// See Labels below for details.
+	Labels []NetworkLabel `pulumi:"labels"`
 	// The name of the Docker network.
 	Name *string `pulumi:"name"`
 	// Network specific options to be used by
@@ -139,8 +139,8 @@ type NetworkState struct {
 	// Enable IPv6 networking.
 	// Defaults to `false`.
 	Ipv6 pulumi.BoolPtrInput
-	// User-defined key/value metadata.
-	Labels pulumi.MapInput
+	// See Labels below for details.
+	Labels NetworkLabelArrayInput
 	// The name of the Docker network.
 	Name pulumi.StringPtrInput
 	// Network specific options to be used by
@@ -178,8 +178,8 @@ type networkArgs struct {
 	// Enable IPv6 networking.
 	// Defaults to `false`.
 	Ipv6 *bool `pulumi:"ipv6"`
-	// User-defined key/value metadata.
-	Labels map[string]interface{} `pulumi:"labels"`
+	// See Labels below for details.
+	Labels []NetworkLabel `pulumi:"labels"`
 	// The name of the Docker network.
 	Name *string `pulumi:"name"`
 	// Network specific options to be used by
@@ -213,8 +213,8 @@ type NetworkArgs struct {
 	// Enable IPv6 networking.
 	// Defaults to `false`.
 	Ipv6 pulumi.BoolPtrInput
-	// User-defined key/value metadata.
-	Labels pulumi.MapInput
+	// See Labels below for details.
+	Labels NetworkLabelArrayInput
 	// The name of the Docker network.
 	Name pulumi.StringPtrInput
 	// Network specific options to be used by

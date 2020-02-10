@@ -24,6 +24,7 @@ class Provider(pulumi.ProviderResource):
         
           * `address` (`pulumi.Input[str]`)
           * `configFile` (`pulumi.Input[str]`)
+          * `configFileContent` (`pulumi.Input[str]`)
           * `password` (`pulumi.Input[str]`)
           * `username` (`pulumi.Input[str]`)
 
