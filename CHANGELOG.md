@@ -1,4 +1,5 @@
 ## HEAD (Unreleased)
+* Upgrade to v2.7.0 of the Docker Terraform Provider
 
 ## 1.2.0 (2020-01-29)
 * Upgrade to pulumi-terraform-bridge v1.6.4
