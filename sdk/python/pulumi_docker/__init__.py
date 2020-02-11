@@ -20,3 +20,5 @@ from .volume import *
 from .get_network import *
 from .get_registry_image import *
 from .provider import *
+from .docker import *
+from .image import *
