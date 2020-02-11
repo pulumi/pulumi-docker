@@ -69,6 +69,8 @@ install::
 		yarn install --offline --production && \
 		(yarn unlink > /dev/null 2>&1 || true) && \
 		yarn link
+	cd ${PACKDIR}/python/bin && $(PIP) install --user -e .
+	echo "Copying NuGet packages to ${PULUMI_NUGET}"
 	[ ! -e "$(PULUMI_NUGET)" ] || rm -rf "$(PULUMI_NUGET)/*"
 	find . -name '$(NUGET_PKG_NAME).*.nupkg' -exec cp -p {} ${PULUMI_NUGET} \;
 
@@ -77,10 +79,10 @@ istanbul_tests::
 	cd sdk/nodejs/tests && yarn run mocha $$(find bin -name '*.spec.js')
 
 test_fast:: istanbul_tests
-	$(GO_TEST_FAST) ./examples/...
+	$(GO_TEST_FAST) ./examples/
 
 test_all:: istanbul_tests
-	$(GO_TEST) ./examples/...
+	$(GO_TEST) ./examples/
 
 .PHONY: publish_tgz
 publish_tgz:

@@ -1,5 +1,5 @@
 ## HEAD (Unreleased)
-_(none)_
+* Implemented the docker image build in the Python SDK, ported from the Javascript SDK
 
 ---
 ## 1.4.0 (2020-03-16)

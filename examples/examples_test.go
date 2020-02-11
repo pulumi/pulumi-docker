@@ -140,3 +140,18 @@ func TestDockerfileWithMultipleTargets(t *testing.T) {
 	})
 	integration.ProgramTest(t, &opts)
 }
+
+func TestDockerfilePy(t *testing.T) {
+	cwd, err := os.Getwd()
+	if !assert.NoError(t, err) {
+		t.FailNow()
+	}
+
+	opts := base.With(integration.ProgramTestOptions{
+		Dependencies: []string{
+			path.Join("..", "sdk", "python", "bin"),
+		},
+		Dir: path.Join(cwd, "dockerfile-py"),
+	})
+	integration.ProgramTest(t, &opts)
+}
