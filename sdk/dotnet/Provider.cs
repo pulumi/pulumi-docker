@@ -104,6 +104,9 @@ namespace Pulumi.Docker
         [Input("configFile")]
         public Input<string>? ConfigFile { get; set; }
 
+        [Input("configFileContent")]
+        public Input<string>? ConfigFileContent { get; set; }
+
         [Input("password")]
         public Input<string>? Password { get; set; }
 

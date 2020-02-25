@@ -24,7 +24,6 @@ func LookupNetwork(ctx *pulumi.Context, args *LookupNetworkArgs, opts ...pulumi.
 type LookupNetworkArgs struct {
 	// The id of the Docker network.
 	Id *string `pulumi:"id"`
-	IpamConfigs []GetNetworkIpamConfig `pulumi:"ipamConfigs"`
 	// The name of the Docker network.
 	Name *string `pulumi:"name"`
 }

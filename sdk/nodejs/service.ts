@@ -51,7 +51,7 @@ export class Service extends pulumi.CustomResource {
     /**
      * User-defined key/value metadata
      */
-    public readonly labels!: pulumi.Output<{[key: string]: string}>;
+    public readonly labels!: pulumi.Output<outputs.ServiceLabel[]>;
     /**
      * The mode of resolution to use for internal load balancing between tasks. `(vip|dnsrr)`. Default: `vip`.
      */
@@ -139,7 +139,7 @@ export interface ServiceState {
     /**
      * User-defined key/value metadata
      */
-    readonly labels?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    readonly labels?: pulumi.Input<pulumi.Input<inputs.ServiceLabel>[]>;
     /**
      * The mode of resolution to use for internal load balancing between tasks. `(vip|dnsrr)`. Default: `vip`.
      */
@@ -181,7 +181,7 @@ export interface ServiceArgs {
     /**
      * User-defined key/value metadata
      */
-    readonly labels?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    readonly labels?: pulumi.Input<pulumi.Input<inputs.ServiceLabel>[]>;
     /**
      * The mode of resolution to use for internal load balancing between tasks. `(vip|dnsrr)`. Default: `vip`.
      */

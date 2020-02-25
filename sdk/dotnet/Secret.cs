@@ -22,10 +22,10 @@ namespace Pulumi.Docker
         public Output<string> Data { get; private set; } = null!;
 
         /// <summary>
-        /// User-defined key/value metadata.
+        /// See Labels below for details.
         /// </summary>
         [Output("labels")]
-        public Output<ImmutableDictionary<string, object>?> Labels { get; private set; } = null!;
+        public Output<ImmutableArray<Outputs.SecretLabels>> Labels { get; private set; } = null!;
 
         /// <summary>
         /// The name of the Docker secret.
@@ -86,14 +86,14 @@ namespace Pulumi.Docker
         public Input<string> Data { get; set; } = null!;
 
         [Input("labels")]
-        private InputMap<object>? _labels;
+        private InputList<Inputs.SecretLabelsArgs>? _labels;
 
         /// <summary>
-        /// User-defined key/value metadata.
+        /// See Labels below for details.
         /// </summary>
-        public InputMap<object> Labels
+        public InputList<Inputs.SecretLabelsArgs> Labels
         {
-            get => _labels ?? (_labels = new InputMap<object>());
+            get => _labels ?? (_labels = new InputList<Inputs.SecretLabelsArgs>());
             set => _labels = value;
         }
 
@@ -117,14 +117,14 @@ namespace Pulumi.Docker
         public Input<string>? Data { get; set; }
 
         [Input("labels")]
-        private InputMap<object>? _labels;
+        private InputList<Inputs.SecretLabelsGetArgs>? _labels;
 
         /// <summary>
-        /// User-defined key/value metadata.
+        /// See Labels below for details.
         /// </summary>
-        public InputMap<object> Labels
+        public InputList<Inputs.SecretLabelsGetArgs> Labels
         {
-            get => _labels ?? (_labels = new InputMap<object>());
+            get => _labels ?? (_labels = new InputList<Inputs.SecretLabelsGetArgs>());
             set => _labels = value;
         }
 
@@ -137,5 +137,67 @@ namespace Pulumi.Docker
         public SecretState()
         {
         }
+    }
+
+    namespace Inputs
+    {
+
+    public sealed class SecretLabelsArgs : Pulumi.ResourceArgs
+    {
+        /// <summary>
+        /// Name of the label
+        /// * `value` (Required, string) Value of the label
+        /// </summary>
+        [Input("label", required: true)]
+        public Input<string> Label { get; set; } = null!;
+
+        [Input("value", required: true)]
+        public Input<string> Value { get; set; } = null!;
+
+        public SecretLabelsArgs()
+        {
+        }
+    }
+
+    public sealed class SecretLabelsGetArgs : Pulumi.ResourceArgs
+    {
+        /// <summary>
+        /// Name of the label
+        /// * `value` (Required, string) Value of the label
+        /// </summary>
+        [Input("label", required: true)]
+        public Input<string> Label { get; set; } = null!;
+
+        [Input("value", required: true)]
+        public Input<string> Value { get; set; } = null!;
+
+        public SecretLabelsGetArgs()
+        {
+        }
+    }
+    }
+
+    namespace Outputs
+    {
+
+    [OutputType]
+    public sealed class SecretLabels
+    {
+        /// <summary>
+        /// Name of the label
+        /// * `value` (Required, string) Value of the label
+        /// </summary>
+        public readonly string Label;
+        public readonly string Value;
+
+        [OutputConstructor]
+        private SecretLabels(
+            string label,
+            string value)
+        {
+            Label = label;
+            Value = value;
+        }
+    }
     }
 }

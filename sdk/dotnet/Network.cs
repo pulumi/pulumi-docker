@@ -36,7 +36,7 @@ namespace Pulumi.Docker
         /// `bridge` driver.
         /// </summary>
         [Output("driver")]
-        public Output<string?> Driver { get; private set; } = null!;
+        public Output<string> Driver { get; private set; } = null!;
 
         /// <summary>
         /// Create swarm routing-mesh network.
@@ -74,10 +74,10 @@ namespace Pulumi.Docker
         public Output<bool?> Ipv6 { get; private set; } = null!;
 
         /// <summary>
-        /// User-defined key/value metadata.
+        /// See Labels below for details.
         /// </summary>
         [Output("labels")]
-        public Output<ImmutableDictionary<string, object>?> Labels { get; private set; } = null!;
+        public Output<ImmutableArray<Outputs.NetworkLabels>> Labels { get; private set; } = null!;
 
         /// <summary>
         /// The name of the Docker network.
@@ -204,14 +204,14 @@ namespace Pulumi.Docker
         public Input<bool>? Ipv6 { get; set; }
 
         [Input("labels")]
-        private InputMap<object>? _labels;
+        private InputList<Inputs.NetworkLabelsArgs>? _labels;
 
         /// <summary>
-        /// User-defined key/value metadata.
+        /// See Labels below for details.
         /// </summary>
-        public InputMap<object> Labels
+        public InputList<Inputs.NetworkLabelsArgs> Labels
         {
-            get => _labels ?? (_labels = new InputMap<object>());
+            get => _labels ?? (_labels = new InputList<Inputs.NetworkLabelsArgs>());
             set => _labels = value;
         }
 
@@ -304,14 +304,14 @@ namespace Pulumi.Docker
         public Input<bool>? Ipv6 { get; set; }
 
         [Input("labels")]
-        private InputMap<object>? _labels;
+        private InputList<Inputs.NetworkLabelsGetArgs>? _labels;
 
         /// <summary>
-        /// User-defined key/value metadata.
+        /// See Labels below for details.
         /// </summary>
-        public InputMap<object> Labels
+        public InputList<Inputs.NetworkLabelsGetArgs> Labels
         {
-            get => _labels ?? (_labels = new InputMap<object>());
+            get => _labels ?? (_labels = new InputList<Inputs.NetworkLabelsGetArgs>());
             set => _labels = value;
         }
 
@@ -392,6 +392,40 @@ namespace Pulumi.Docker
         {
         }
     }
+
+    public sealed class NetworkLabelsArgs : Pulumi.ResourceArgs
+    {
+        /// <summary>
+        /// Name of the label
+        /// * `value` (Required, string) Value of the label
+        /// </summary>
+        [Input("label", required: true)]
+        public Input<string> Label { get; set; } = null!;
+
+        [Input("value", required: true)]
+        public Input<string> Value { get; set; } = null!;
+
+        public NetworkLabelsArgs()
+        {
+        }
+    }
+
+    public sealed class NetworkLabelsGetArgs : Pulumi.ResourceArgs
+    {
+        /// <summary>
+        /// Name of the label
+        /// * `value` (Required, string) Value of the label
+        /// </summary>
+        [Input("label", required: true)]
+        public Input<string> Label { get; set; } = null!;
+
+        [Input("value", required: true)]
+        public Input<string> Value { get; set; } = null!;
+
+        public NetworkLabelsGetArgs()
+        {
+        }
+    }
     }
 
     namespace Outputs
@@ -416,6 +450,26 @@ namespace Pulumi.Docker
             Gateway = gateway;
             IpRange = ipRange;
             Subnet = subnet;
+        }
+    }
+
+    [OutputType]
+    public sealed class NetworkLabels
+    {
+        /// <summary>
+        /// Name of the label
+        /// * `value` (Required, string) Value of the label
+        /// </summary>
+        public readonly string Label;
+        public readonly string Value;
+
+        [OutputConstructor]
+        private NetworkLabels(
+            string label,
+            string value)
+        {
+            Label = label;
+            Value = value;
         }
     }
     }

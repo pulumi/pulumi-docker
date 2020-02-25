@@ -55,9 +55,13 @@ class Network(pulumi.CustomResource):
     Enable IPv6 networking.
     Defaults to `false`.
     """
-    labels: pulumi.Output[dict]
+    labels: pulumi.Output[list]
     """
-    User-defined key/value metadata.
+    See Labels below for details.
+    
+      * `label` (`str`) - Name of the label
+        * `value` (Required, string) Value of the label
+      * `value` (`str`)
     """
     name: pulumi.Output[str]
     """
@@ -93,7 +97,7 @@ class Network(pulumi.CustomResource):
                network.
         :param pulumi.Input[bool] ipv6: Enable IPv6 networking.
                Defaults to `false`.
-        :param pulumi.Input[dict] labels: User-defined key/value metadata.
+        :param pulumi.Input[list] labels: See Labels below for details.
         :param pulumi.Input[str] name: The name of the Docker network.
         :param pulumi.Input[dict] options: Network specific options to be used by
                the drivers.
@@ -104,6 +108,12 @@ class Network(pulumi.CustomResource):
           * `gateway` (`pulumi.Input[str]`)
           * `ipRange` (`pulumi.Input[str]`)
           * `subnet` (`pulumi.Input[str]`)
+        
+        The **labels** object supports the following:
+        
+          * `label` (`pulumi.Input[str]`) - Name of the label
+            * `value` (Required, string) Value of the label
+          * `value` (`pulumi.Input[str]`)
 
         > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/network.html.markdown.
         """
@@ -167,7 +177,7 @@ class Network(pulumi.CustomResource):
                network.
         :param pulumi.Input[bool] ipv6: Enable IPv6 networking.
                Defaults to `false`.
-        :param pulumi.Input[dict] labels: User-defined key/value metadata.
+        :param pulumi.Input[list] labels: See Labels below for details.
         :param pulumi.Input[str] name: The name of the Docker network.
         :param pulumi.Input[dict] options: Network specific options to be used by
                the drivers.
@@ -178,6 +188,12 @@ class Network(pulumi.CustomResource):
           * `gateway` (`pulumi.Input[str]`)
           * `ipRange` (`pulumi.Input[str]`)
           * `subnet` (`pulumi.Input[str]`)
+        
+        The **labels** object supports the following:
+        
+          * `label` (`pulumi.Input[str]`) - Name of the label
+            * `value` (Required, string) Value of the label
+          * `value` (`pulumi.Input[str]`)
 
         > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/network.html.markdown.
         """

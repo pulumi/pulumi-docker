@@ -71,7 +71,7 @@ export class Container extends pulumi.CustomResource {
      * container. For example, to run `/usr/bin/myprogram -f baz.conf` set the
      * command to be `["/usr/bin/myprogram", "-f", "baz.conf"]`.
      */
-    public readonly command!: pulumi.Output<string[] | undefined>;
+    public readonly command!: pulumi.Output<string[]>;
     /**
      * The logs of the container if its execution is done (`attach` must be disabled).
      */
@@ -115,11 +115,11 @@ export class Container extends pulumi.CustomResource {
      * when starting a container, set the entrypoint to be
      * `["/usr/bin/myprogram"]`.
      */
-    public readonly entrypoints!: pulumi.Output<string[] | undefined>;
+    public readonly entrypoints!: pulumi.Output<string[]>;
     /**
      * Environment variables to set.
      */
-    public readonly envs!: pulumi.Output<string[] | undefined>;
+    public readonly envs!: pulumi.Output<string[]>;
     /**
      * The exit code of the container if its execution is done (`mustRun` must be disabled).
      */
@@ -144,7 +144,7 @@ export class Container extends pulumi.CustomResource {
     /**
      * Hostname of the container.
      */
-    public readonly hostname!: pulumi.Output<string | undefined>;
+    public readonly hostname!: pulumi.Output<string>;
     /**
      * The ID of the image to back this container.
      * The easiest way to get this value is to use the `docker..RemoteImage` resource
@@ -163,11 +163,11 @@ export class Container extends pulumi.CustomResource {
     /**
      * IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
      */
-    public readonly ipcMode!: pulumi.Output<string | undefined>;
+    public readonly ipcMode!: pulumi.Output<string>;
     /**
      * Adding labels.
      */
-    public readonly labels!: pulumi.Output<{[key: string]: any} | undefined>;
+    public readonly labels!: pulumi.Output<outputs.ContainerLabel[]>;
     /**
      * Set of links for link based
      * connectivity between containers that are running on the same host.
@@ -256,7 +256,7 @@ export class Container extends pulumi.CustomResource {
     /**
      * Size of `/dev/shm` in MBs.
      */
-    public readonly shmSize!: pulumi.Output<number | undefined>;
+    public readonly shmSize!: pulumi.Output<number>;
     /**
      * If true, then the Docker container will be
      * started after creation. If false, then the container is only created.
@@ -557,7 +557,7 @@ export interface ContainerState {
     /**
      * Adding labels.
      */
-    readonly labels?: pulumi.Input<{[key: string]: any}>;
+    readonly labels?: pulumi.Input<pulumi.Input<inputs.ContainerLabel>[]>;
     /**
      * Set of links for link based
      * connectivity between containers that are running on the same host.
@@ -777,7 +777,7 @@ export interface ContainerArgs {
     /**
      * Adding labels.
      */
-    readonly labels?: pulumi.Input<{[key: string]: any}>;
+    readonly labels?: pulumi.Input<pulumi.Input<inputs.ContainerLabel>[]>;
     /**
      * Set of links for link based
      * connectivity between containers that are running on the same host.

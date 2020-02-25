@@ -44,6 +44,7 @@ namespace Pulumi.Docker
     {
         public string Address { get; set; } = null!;
         public string? ConfigFile { get; set; }
+        public string? ConfigFileContent { get; set; }
         public string? Password { get; set; }
         public string? Username { get; set; }
     }

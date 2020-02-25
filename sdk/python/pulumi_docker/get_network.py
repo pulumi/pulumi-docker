@@ -61,26 +61,18 @@ class AwaitableGetNetworkResult(GetNetworkResult):
             options=self.options,
             scope=self.scope)
 
-def get_network(id=None,ipam_configs=None,name=None,opts=None):
+def get_network(id=None,name=None,opts=None):
     """
     Finds a specific docker network and returns information about it.
     
     :param str id: The id of the Docker network.
     :param str name: The name of the Docker network.
-    
-    The **ipam_configs** object supports the following:
-    
-      * `auxAddress` (`dict`)
-      * `gateway` (`str`)
-      * `ipRange` (`str`)
-      * `subnet` (`str`)
 
     > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/d/network.html.markdown.
     """
     __args__ = dict()
 
     __args__['id'] = id
-    __args__['ipamConfigs'] = ipam_configs
     __args__['name'] = name
     if opts is None:
         opts = pulumi.InvokeOptions()

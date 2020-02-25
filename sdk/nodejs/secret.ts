@@ -41,9 +41,9 @@ export class Secret extends pulumi.CustomResource {
      */
     public readonly data!: pulumi.Output<string>;
     /**
-     * User-defined key/value metadata.
+     * See Labels below for details.
      */
-    public readonly labels!: pulumi.Output<{[key: string]: any} | undefined>;
+    public readonly labels!: pulumi.Output<outputs.SecretLabel[] | undefined>;
     /**
      * The name of the Docker secret.
      */
@@ -93,9 +93,9 @@ export interface SecretState {
      */
     readonly data?: pulumi.Input<string>;
     /**
-     * User-defined key/value metadata.
+     * See Labels below for details.
      */
-    readonly labels?: pulumi.Input<{[key: string]: any}>;
+    readonly labels?: pulumi.Input<pulumi.Input<inputs.SecretLabel>[]>;
     /**
      * The name of the Docker secret.
      */
@@ -111,9 +111,9 @@ export interface SecretArgs {
      */
     readonly data: pulumi.Input<string>;
     /**
-     * User-defined key/value metadata.
+     * See Labels below for details.
      */
-    readonly labels?: pulumi.Input<{[key: string]: any}>;
+    readonly labels?: pulumi.Input<pulumi.Input<inputs.SecretLabel>[]>;
     /**
      * The name of the Docker secret.
      */

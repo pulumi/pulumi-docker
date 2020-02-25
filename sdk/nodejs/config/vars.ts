@@ -26,4 +26,4 @@ export let host: string | undefined = __config.get("host") || (utilities.getEnv(
  * PEM-encoded content of Docker client private key
  */
 export let keyMaterial: string | undefined = __config.get("keyMaterial") || utilities.getEnv("DOCKER_KEY_MATERIAL");
-export let registryAuth: { address: string, configFile?: string, password?: string, username?: string }[] | undefined = __config.getObject<{ address: string, configFile?: string, password?: string, username?: string }[]>("registryAuth");
+export let registryAuth: { address: string, configFile?: string, configFileContent?: string, password?: string, username?: string }[] | undefined = __config.getObject<{ address: string, configFile?: string, configFileContent?: string, password?: string, username?: string }[]>("registryAuth");

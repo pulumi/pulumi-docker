@@ -23,7 +23,7 @@ type Volume struct {
 	// Options specific to the driver.
 	DriverOpts pulumi.MapOutput `pulumi:"driverOpts"`
 	// User-defined key/value metadata.
-	Labels pulumi.MapOutput `pulumi:"labels"`
+	Labels VolumeLabelArrayOutput `pulumi:"labels"`
 	Mountpoint pulumi.StringOutput `pulumi:"mountpoint"`
 	// The name of the Docker volume (generated if not
 	// provided).
@@ -63,7 +63,7 @@ type volumeState struct {
 	// Options specific to the driver.
 	DriverOpts map[string]interface{} `pulumi:"driverOpts"`
 	// User-defined key/value metadata.
-	Labels map[string]interface{} `pulumi:"labels"`
+	Labels []VolumeLabel `pulumi:"labels"`
 	Mountpoint *string `pulumi:"mountpoint"`
 	// The name of the Docker volume (generated if not
 	// provided).
@@ -76,7 +76,7 @@ type VolumeState struct {
 	// Options specific to the driver.
 	DriverOpts pulumi.MapInput
 	// User-defined key/value metadata.
-	Labels pulumi.MapInput
+	Labels VolumeLabelArrayInput
 	Mountpoint pulumi.StringPtrInput
 	// The name of the Docker volume (generated if not
 	// provided).
@@ -93,7 +93,7 @@ type volumeArgs struct {
 	// Options specific to the driver.
 	DriverOpts map[string]interface{} `pulumi:"driverOpts"`
 	// User-defined key/value metadata.
-	Labels map[string]interface{} `pulumi:"labels"`
+	Labels []VolumeLabel `pulumi:"labels"`
 	// The name of the Docker volume (generated if not
 	// provided).
 	Name *string `pulumi:"name"`
@@ -106,7 +106,7 @@ type VolumeArgs struct {
 	// Options specific to the driver.
 	DriverOpts pulumi.MapInput
 	// User-defined key/value metadata.
-	Labels pulumi.MapInput
+	Labels VolumeLabelArrayInput
 	// The name of the Docker volume (generated if not
 	// provided).
 	Name pulumi.StringPtrInput
