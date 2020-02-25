@@ -16,6 +16,7 @@ import math
 import re
 import subprocess
 import threading
+from asyncio import new_event_loop, set_event_loop
 from random import random
 from typing import Optional, Union, Callable, Awaitable, List, Mapping
 
@@ -362,8 +363,8 @@ def create_tagged_image_name(repositoryUrl: str, tag: Optional[str], imageId: Op
     # https:#docs.docker.com/engine/reference/commandline/tag
     #
     # If there are any issues with it, we'll just let docker report the problem.
-    fullTag = "-".join(pieces)
-    return f'{repositoryUrl}:{fullTag}' if fullTag else repositoryUrl
+    full_tag = "-".join(pieces)
+    return f'{repositoryUrl}:{full_tag}' if full_tag else repositoryUrl
 
 
 async def pull_cache_async(
@@ -460,7 +461,7 @@ async def build_image_async(
 
     image_id = inspect_result.strip()
     colon_index = image_id.rfind(":")
-    image_id = image_id if colon_index < 0 else image_id.substr(colon_index + 1)
+    image_id = image_id if colon_index < 0 else image_id[colon_index + 1:]
 
     return BuildResult(image_id, stages)
 
@@ -471,7 +472,7 @@ async def docker_build(
     log_resource: pulumi.Resource,
     cache_from: Awaitable[Optional[str]],
     target: Optional[str] = None
-) -> Awaitable:
+) -> str:
     # Prepare the build arguments.
     build_args: List[str] = ["build"]
     if build.dockerfile:
@@ -488,14 +489,15 @@ async def docker_build(
             build_args.extend(["--cache-from", ''.join(cache_from_images)])
     if build.extra_options:
         build_args.extend(build.extra_options)
-    if build.context:
-        build_args.append(build.context)  # push the docker build context onto the path.
 
     build_args.extend(["-t", image_name])  # tag the image with the chosen name.
     if target:
         build_args.extend(["--target", target])
 
-    return run_command_that_must_succeed("docker", build_args, log_resource, env=build.env)
+    if build.context:
+        build_args.append(build.context)  # push the docker build context onto the path.
+
+    return await run_command_that_must_succeed("docker", build_args, log_resource, env=build.env)
 
 
 class LoginResult:
@@ -669,13 +671,16 @@ async def run_command_that_can_fail(
     stream_id = math.floor(random() * (1 << 30))
     _stdin = stdin
 
-    process = subprocess.Popen(executable=cmd, args=args, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    popen = [cmd]
+    popen.extend(args)
+
+    process = subprocess.Popen(popen, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
     # We store the results from stdout in memory and will return them as a str.
-    stdOutChunks: List[str] = []
-    stdErrChunks: List[str] = []
+    stdout_chunks: List[str] = []
+    stderr_chunks: List[str] = []
 
-    def std_stream(stream, loggercb):
+    async def do_std_stream(stream, loggercb):
         while True:
             out = stream.readline().decode('utf-8')
             if out:
@@ -683,19 +688,26 @@ async def run_command_that_can_fail(
             else:
                 break
 
+    def std_stream(stream, loggercb):
+        loop = new_event_loop()
+        set_event_loop(loop)
+
+        loop.run_until_complete(do_std_stream(stream, loggercb))
+        loop.close()
+
     def stdout_chunk(chunk):
         # Report all stdout messages as ephemeral messages.  That way they show up in the
         # info bar as they're happening.  But they do not overwhelm the user as the end
         # of the run.
         log_ephemeral(chunk, log_resource)
-        stdOutChunks.append(chunk)
+        stdout_chunks.append(chunk)
 
     def stderr_chunk(chunk):
         # We can't stream these stderr messages as we receive them because we don't knows at
         # this point because Docker uses stderr for both errors and warnings.  So, instead, we
         # just collect the messages, and wait for the process to end to decide how to report
         # them.
-        stdErrChunks.append(chunk)
+        stderr_chunks.append(chunk)
 
     stdout_thread = threading.Thread(target=std_stream,
                                      args=(process.stdout, stdout_chunk))
@@ -709,41 +721,18 @@ async def run_command_that_can_fail(
     while stdout_thread.is_alive() and stderr_thread.is_alive():
         pass
 
-    # In both cases of 'error' or 'close' we execute the same 'finish up' codepath. This
-    # codepath effectively flushes (and clears) the stdout and stderr streams we've been
-    # buffering.  We'll also return the stdout stream to the caller, and we'll appropriately
-    # return if we failed or not depending on if we got an actual exception, or if the spawned
-    # process returned a non-0 error code.
-    #
-    # Effectively, we are ensuring that we never reject the promise we're returning.  It will
-    # always 'resolve', and we will always have the behaviors that:
-    #
-    # 1. all stderr information is flushed (including the message of an exception if we got one).
-    # 2. an ephemeral info message is printed stating if there were any exceptions/status-codes
-    # 3. all stdout information is returned to the caller.
-    # 4. the caller gets a 0-code on success, and a non-0-code for either an exception or an
-    #    error status code.
-    #
-    # The caller can then decide what to do with this.  Nearly all callers will will be coming
-    # through runCommandThatMustSucceed, which will see a non-0 code and will then throw with
-    # a full message.
-
-    # Moves our promise to the resolved state, after appropriately dealing with any errors
-    # we've encountered.  Importantly, this function can be called multiple times safely.
-    # It will clean up after itself so that multiple calls don't end up causing any issues.
-
     process.communicate()
     code = process.returncode
 
     # Collapse our stored stdout/stderr messages into single strs.
 
-    stderr = ''.join(stdErrChunks)
-    stdout = ''.join(stdOutChunks)
+    stderr = ''.join(stderr_chunks)
+    stdout = ''.join(stdout_chunks)
 
     # Clear out our output buffers.  This ensures that if we get called again, we don't
     # double print these messages.
-    stdOutChunks = []
-    stdErrChunks = []
+    stdout_chunks = []
+    stderr_chunks = []
 
     # If we got any stderr messages, report them as an error/warning depending on the
     # result of the operation.
@@ -755,11 +744,9 @@ async def run_command_that_can_fail(
             # command succeeded.  These were just warning.
             pulumi.log.warn(stderr, log_resource, stream_id)
 
-    print(stdout)
-
     # If the command failed report an ephemeral message indicating which command it was.
     # That way the user can immediately see something went wrong in the info bar.  The
-    # caller (normally runCommandThatMustSucceed) can choose to also report this
+    # caller (normally run_command_that_can_succeed) can choose to also report this
     # non-ephemerally.
     if code:
         log_ephemeral(get_failure_message(cmd, args, report_full_command_line, code), log_resource)
