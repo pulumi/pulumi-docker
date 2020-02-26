@@ -1,5 +1,6 @@
 ## HEAD (Unreleased)
 * Upgrade to v2.7.0 of the Docker Terraform Provider
+* Rename `docker.Config` to `docker.ServiceConfig` to avoid collisions with `Config` package.
 
 ## 1.2.0 (2020-01-29)
 * Upgrade to pulumi-terraform-bridge v1.6.4

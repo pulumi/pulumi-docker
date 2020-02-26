@@ -14,38 +14,38 @@ import * as utilities from "./utilities";
  * import * as docker from "@pulumi/docker";
  * 
  * // Creates a config
- * const fooConfig = new docker.Config("fooConfig", {
+ * const fooConfig = new docker.ServiceConfig("fooConfig", {
  *     data: "ewogICJzZXJIfQo=",
  * });
  * ```
  *
  * > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/config.html.markdown.
  */
-export class Config extends pulumi.CustomResource {
+export class ServiceConfig extends pulumi.CustomResource {
     /**
-     * Get an existing Config resource's state with the given name, ID, and optional extra
+     * Get an existing ServiceConfig resource's state with the given name, ID, and optional extra
      * properties used to qualify the lookup.
      *
      * @param name The _unique_ name of the resulting resource.
      * @param id The _unique_ provider ID of the resource to lookup.
      * @param state Any extra arguments used during the lookup.
      */
-    public static get(name: string, id: pulumi.Input<pulumi.ID>, state?: ConfigState, opts?: pulumi.CustomResourceOptions): Config {
-        return new Config(name, <any>state, { ...opts, id: id });
+    public static get(name: string, id: pulumi.Input<pulumi.ID>, state?: ServiceConfigState, opts?: pulumi.CustomResourceOptions): ServiceConfig {
+        return new ServiceConfig(name, <any>state, { ...opts, id: id });
     }
 
     /** @internal */
-    public static readonly __pulumiType = 'docker:index/config:Config';
+    public static readonly __pulumiType = 'docker:index/serviceConfig:ServiceConfig';
 
     /**
-     * Returns true if the given object is an instance of Config.  This is designed to work even
+     * Returns true if the given object is an instance of ServiceConfig.  This is designed to work even
      * when multiple copies of the Pulumi SDK have been loaded into the same process.
      */
-    public static isInstance(obj: any): obj is Config {
+    public static isInstance(obj: any): obj is ServiceConfig {
         if (obj === undefined || obj === null) {
             return false;
         }
-        return obj['__pulumiType'] === Config.__pulumiType;
+        return obj['__pulumiType'] === ServiceConfig.__pulumiType;
     }
 
     /**
@@ -58,21 +58,21 @@ export class Config extends pulumi.CustomResource {
     public readonly name!: pulumi.Output<string>;
 
     /**
-     * Create a Config resource with the given unique name, arguments, and options.
+     * Create a ServiceConfig resource with the given unique name, arguments, and options.
      *
      * @param name The _unique_ name of the resource.
      * @param args The arguments to use to populate this resource's properties.
      * @param opts A bag of options that control this resource's behavior.
      */
-    constructor(name: string, args: ConfigArgs, opts?: pulumi.CustomResourceOptions)
-    constructor(name: string, argsOrState?: ConfigArgs | ConfigState, opts?: pulumi.CustomResourceOptions) {
+    constructor(name: string, args: ServiceConfigArgs, opts?: pulumi.CustomResourceOptions)
+    constructor(name: string, argsOrState?: ServiceConfigArgs | ServiceConfigState, opts?: pulumi.CustomResourceOptions) {
         let inputs: pulumi.Inputs = {};
         if (opts && opts.id) {
-            const state = argsOrState as ConfigState | undefined;
+            const state = argsOrState as ServiceConfigState | undefined;
             inputs["data"] = state ? state.data : undefined;
             inputs["name"] = state ? state.name : undefined;
         } else {
-            const args = argsOrState as ConfigArgs | undefined;
+            const args = argsOrState as ServiceConfigArgs | undefined;
             if (!args || args.data === undefined) {
                 throw new Error("Missing required property 'data'");
             }
@@ -86,14 +86,14 @@ export class Config extends pulumi.CustomResource {
         if (!opts.version) {
             opts.version = utilities.getVersion();
         }
-        super(Config.__pulumiType, name, inputs, opts);
+        super(ServiceConfig.__pulumiType, name, inputs, opts);
     }
 }
 
 /**
- * Input properties used for looking up and filtering Config resources.
+ * Input properties used for looking up and filtering ServiceConfig resources.
  */
-export interface ConfigState {
+export interface ServiceConfigState {
     /**
      * The base64 encoded data of the config.
      */
@@ -105,9 +105,9 @@ export interface ConfigState {
 }
 
 /**
- * The set of arguments for constructing a Config resource.
+ * The set of arguments for constructing a ServiceConfig resource.
  */
-export interface ConfigArgs {
+export interface ServiceConfigArgs {
     /**
      * The base64 encoded data of the config.
      */

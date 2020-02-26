@@ -36,12 +36,12 @@ namespace Pulumi.Docker
         /// <param name="args">The arguments used to populate this resource's properties</param>
         /// <param name="options">A bag of options that control this resource's behavior</param>
         public ServiceConfig(string name, ServiceConfigArgs args, CustomResourceOptions? options = null)
-            : base("docker:index/config:Config", name, args ?? ResourceArgs.Empty, MakeResourceOptions(options, ""))
+            : base("docker:index/serviceConfig:ServiceConfig", name, args ?? ResourceArgs.Empty, MakeResourceOptions(options, ""))
         {
         }
 
         private ServiceConfig(string name, Input<string> id, ServiceConfigState? state = null, CustomResourceOptions? options = null)
-            : base("docker:index/config:Config", name, state, MakeResourceOptions(options, id))
+            : base("docker:index/serviceConfig:ServiceConfig", name, state, MakeResourceOptions(options, id))
         {
         }
 

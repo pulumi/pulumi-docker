@@ -9,7 +9,7 @@ import pulumi.runtime
 from typing import Union
 from . import utilities, tables
 
-class Config(pulumi.CustomResource):
+class ServiceConfig(pulumi.CustomResource):
     data: pulumi.Output[str]
     """
     The base64 encoded data of the config.
@@ -50,8 +50,8 @@ class Config(pulumi.CustomResource):
                 raise TypeError("Missing required property 'data'")
             __props__['data'] = data
             __props__['name'] = name
-        super(Config, __self__).__init__(
-            'docker:index/config:Config',
+        super(ServiceConfig, __self__).__init__(
+            'docker:index/serviceConfig:ServiceConfig',
             resource_name,
             __props__,
             opts)
@@ -59,7 +59,7 @@ class Config(pulumi.CustomResource):
     @staticmethod
     def get(resource_name, id, opts=None, data=None, name=None):
         """
-        Get an existing Config resource's state with the given name, id, and optional extra
+        Get an existing ServiceConfig resource's state with the given name, id, and optional extra
         properties used to qualify the lookup.
         
         :param str resource_name: The unique name of the resulting resource.
@@ -75,7 +75,7 @@ class Config(pulumi.CustomResource):
         __props__ = dict()
         __props__["data"] = data
         __props__["name"] = name
-        return Config(resource_name, opts=opts, __props__=__props__)
+        return ServiceConfig(resource_name, opts=opts, __props__=__props__)
     def translate_output_property(self, prop):
         return tables._CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
 

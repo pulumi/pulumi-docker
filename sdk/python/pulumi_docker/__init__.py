@@ -10,7 +10,7 @@ for pkg in __all__:
         importlib.import_module(f'{__name__}.{pkg}')
 
 # Export this package's modules as members:
-from .config import *
+from .service_config import *
 from .container import *
 from .remote_image import *
 from .network import *
