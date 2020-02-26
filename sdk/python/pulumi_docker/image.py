@@ -108,7 +108,7 @@ class Image(pulumi.ComponentResource):
                  opts: Optional[pulumi.ResourceOptions] = None):
         super().__init__("docker:image:Image", name, {}, opts)
 
-        async def get_image_data(image_args: ImageArgs):
+        def get_image_data(image_args: ImageArgs):
             image_name = image_args.image_name
 
             # If there is no local_image_name set it equal to image_name.  Note: this means
@@ -126,7 +126,8 @@ class Image(pulumi.ComponentResource):
 
             def check_tag(t: Optional[str]):
                 if t and (t != tag):
-                    raise Exception(f'[localImageName] and [imageName] had mismatched tags. {local_image_name_tag} != {image_name_tag}')
+                    raise Exception(f'[local_image_name_tag] and [image_name]'
+                                    ' had mismatched tags. {local_image_name_tag} != {image_name_tag}')
 
             check_tag(local_image_name_tag)
             check_tag(image_name_tag)
@@ -145,7 +146,7 @@ class Image(pulumi.ComponentResource):
             async def get_registry(r):
                 return ImageRegistry(r.server, r.username, r.password)
 
-            unique_target_name = await build_and_push_image_async(
+            unique_target_name = build_and_push_image_async(
                 base_image_name,
                 image_args.build,
                 repository_url,
@@ -153,23 +154,21 @@ class Image(pulumi.ComponentResource):
                 get_registry if registry else None,
                 image_args.skip_push,
             )
-            print(unique_target_name)
 
-            return unique_target_name, registry.server if registry else None
+            return {
+                'image_name': unique_target_name,
+                'registry_server': registry.server if registry else None
+            }
 
         image_args = ImageArgs(image_name, build, local_image_name, registry, skip_push)
-        self.image_name, self.registry_server = pulumi.Output.from_input(image_args).apply(get_image_data)
+        image_data = pulumi.Output.from_input(image_args).apply(get_image_data)
+
+        self.image_name, self.registry_server = image_data['image_name'], image_data['registry_server']
 
         self.base_image_name = pulumi.Output.from_input(image_name)
 
-        print({
-            'base_image_name': self.base_image_name,
-            'image_name': self.image_name,
-            'registry_server': self.registry_server,
-        })
-
         self.register_outputs({
-            'base_image_name': self.base_image_name,
+            'base_image_name': self.image_name,
             'image_name': self.image_name,
             'registry_server': self.registry_server,
         })

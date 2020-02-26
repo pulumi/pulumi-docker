@@ -108,37 +108,8 @@ class ResourceError(Error):
         super().__init__(message)
 
 
-# [report_full_command_line] is used to determine if the full command line should be reported
-# when an error happens.  In general reporting the full command line is fine.  But it should be set
-# to false if it might contain sensitive information (like a username/password)
-async def runCommandThatMustSucceed(
-    cmd: str,
-    args: List[str],
-    log_resource: pulumi.Resource,
-    report_full_command_line: bool = True,
-    stdin: Optional[str] = None,
-    env: Optional[Mapping] = None
-):
-    command_result = await run_command_that_can_fail(
-        cmd, args, log_resource, report_full_command_line, False, stdin, env)
-
-    code = command_result.code
-    stdout = command_result.stdout
-
-    if code != 0:
-        # Fail the entire build and push.  This includes the full output of the command so that at
-        # the end the user can review the full docker message about what the problem was.
-        #
-        # Note: a message about the command failing will have already been ephemerally reported to
-        # the status column.
-        raise ResourceError(
-            f'{get_failure_message(cmd, args, report_full_command_line, code)}\n{stdout}', log_resource)
-
-    return stdout
-
-
 async def use_docker_password_stdin(log_resource: pulumi.Resource):
-    async def useDockerPasswordStdinWorker():
+    async def use_docker_password_stdin_worker():
         # Verify that 'docker' is on the PATH and get the client/server versions
         try:
             docker_version_str = await run_command_that_must_succeed(
@@ -146,7 +117,7 @@ async def use_docker_password_stdin(log_resource: pulumi.Resource):
             # IDEA: In the future we could warn here on out-of-date versions of Docker which may not support key
             # features we want to use.
 
-            pulumi.log.debug(f'\'docker version\' => ${docker_version_str}', log_resource)
+            pulumi.log.debug(f'\'docker version\' => {docker_version_str}', log_resource)
         except Exception:
             raise ResourceError("No 'docker' command available on PATH: Please install to use container 'build' mode.",
                                 log_resource)
@@ -157,10 +128,10 @@ async def use_docker_password_stdin(log_resource: pulumi.Resource):
             client_version: str = version_data.Client.Version
             return semver.compare(client_version, "17.07.0") == 1
         except Exception as err:
-            pulumi.log.info(f'Could not process Docker version (${err})', log_resource)
+            pulumi.log.info(f'Could not process Docker version ({err})', log_resource)
         return False
 
-    return useDockerPasswordStdinWorker
+    return use_docker_password_stdin_worker
 
 
 # @deprecated Use [build_and_push_image] instead.  This function loses the Output resource tracking
@@ -266,7 +237,7 @@ async def build_and_push_image_worker_async(
     base_image_name: str,
     path_or_build: Union[str, DockerBuild],
     repository_url: str,
-    logResource: pulumi.Resource,
+    log_resource: pulumi.Resource,
     connect_to_registry: Optional[Callable[[], pulumi.Input[Registry]]],
     skip_push: bool
 ) -> str:
@@ -283,11 +254,6 @@ async def build_and_push_image_worker_async(
     #
     # 2. We're in preview or update and the build information contains 'cache from' information. In
     #    that case, we'll want want to pull from the registry and will need to login for that.
-    #
-    # Logging in immediately also helps us side-step a strange issue we've seen downstream where
-    # Node can be unhappy if we try to call connectToRegistry (which may end up calling deasync'ed
-    # invoke calls) *after* we've spawned some calls to docker builds.  Front-loading this step
-    # seems to avoid all those issues.
 
     pull_from_cache = not isinstance(path_or_build,
                                      str) and path_or_build and path_or_build.cache_from and repository_url is None
@@ -296,20 +262,20 @@ async def build_and_push_image_worker_async(
     # logged-in to the correct registry (or uses auto-login via credential helpers).
     if connect_to_registry:
         if not pulumi.runtime.is_dry_run() or pull_from_cache:
-            log_ephemeral("Logging in to registry...", logResource)
+            log_ephemeral("Logging in to registry...", log_resource)
             registry_output = pulumi.Output.from_input(connect_to_registry())
             registry = await registry_output.future()
-            await login_to_registry(registry, logResource)
+            await login_to_registry(registry, log_resource)
 
     # If the container specified a cache_from parameter, first set up the cached stages.
     cache_from = None
     if pull_from_cache:
         _cache_from_param = CacheFrom() if isinstance(path_or_build.cache_from, bool) else path_or_build.cache_from
         cache_from_param = _cache_from_param if _cache_from_param else CacheFrom()
-        cache_from = pull_cache_async(base_image_name, cache_from_param, repository_url, logResource)
+        cache_from = pull_cache_async(base_image_name, cache_from_param, repository_url, log_resource)
 
     # Next, build the image.
-    build_result = await build_image_async(base_image_name, path_or_build, logResource, cache_from)
+    build_result = await build_image_async(base_image_name, path_or_build, log_resource, cache_from)
     image_id, stages = build_result.image_id, build_result.stages
 
     if image_id is None:
@@ -336,35 +302,35 @@ async def build_and_push_image_worker_async(
         # nice and simple url that they can reach this image at, without having the explicit imageId
         # hash added to it.  Note: this location is not guaranteed to be idempotent.  For example,
         # pushes on other machines might overwrite that location.
-        await tag_and_push_image_async(base_image_name, repository_url, tag, image_id, log_resource=logResource)
-        await tag_and_push_image_async(base_image_name, repository_url, tag, imageId=None, log_resource=logResource)
+        await tag_and_push_image_async(base_image_name, repository_url, tag, image_id, log_resource=log_resource)
+        await tag_and_push_image_async(base_image_name, repository_url, tag, image_id=None, log_resource=log_resource)
 
         for stage in stages:
             await tag_and_push_image_async(
-                local_stage_image_name(base_image_name, stage), repository_url, stage, imageId=None,
-                log_resource=logResource)
+                local_stage_image_name(base_image_name, stage), repository_url, stage, image_id=None,
+                log_resource=log_resource)
 
     return unique_tagged_image_name
 
 
-def local_stage_image_name(imageName: str, stage: str):
-    return f'{imageName}-{stage}'
+def local_stage_image_name(image_name: str, stage: str):
+    return f'{image_name}-{stage}'
 
 
-def create_tagged_image_name(repositoryUrl: str, tag: Optional[str], imageId: Optional[str]) -> str:
+def create_tagged_image_name(repository_url: str, tag: Optional[str], image_id: Optional[str]) -> str:
     pieces: List = []
     if tag:
         pieces.append(tag)
 
-    if imageId:
-        pieces.append(imageId)
+    if image_id:
+        pieces.append(image_id)
 
     # Note: we don't do any validation that the tag is well formed, as per:
-    # https:#docs.docker.com/engine/reference/commandline/tag
+    # https://docs.docker.com/engine/reference/commandline/tag
     #
     # If there are any issues with it, we'll just let docker report the problem.
     full_tag = "-".join(pieces)
-    return f'{repositoryUrl}:{full_tag}' if full_tag else repositoryUrl
+    return f'{repository_url}:{full_tag}' if full_tag else repository_url
 
 
 async def pull_cache_async(
@@ -377,7 +343,7 @@ async def pull_cache_async(
     if not repo_url:
         return None
 
-    pulumi.log.debug(f'pulling cache for ${image_name} from ${repo_url}', log_resource)
+    pulumi.log.debug(f'pulling cache for {image_name} from {repo_url}', log_resource)
 
     cache_from_images: List = []
     stages = (cache_from.stages if cache_from.stages else []).concat([""])
@@ -429,16 +395,17 @@ async def build_image_async(
 
     log_ephemeral(
         f'Building container image \'{image_name}\': context={build.context}' +
-        (f', dockerfile=${build.dockerfile}' if build.dockerfile else "") +
-        (f', args=${json.dumps(build.args)}' if build.args else "") +
-        (f', target=${build.target}' if build.target else ""), log_resource)
+        (f', dockerfile={build.dockerfile}' if build.dockerfile else "") +
+        (f', args={json.dumps(build.args)}' if build.args else "") +
+        (f', target={build.target}' if build.target else ""), log_resource)
 
     # If the container build specified build stages to cache, build each in turn.
     stages = []
     if build.cache_from and not isinstance(build.cache_from, bool) and build.cache_from.stages:
         for stage in build.cache_from.stages:
             await docker_build(
-                local_stage_image_name(image_name, stage), build, cache_from=cache_from, log_resource=log_resource, target=stage)
+                local_stage_image_name(image_name, stage), build,
+                cache_from=cache_from, log_resource=log_resource, target=stage)
             stages.append(stage)
 
     # Invoke Docker CLI commands to build.
@@ -450,7 +417,7 @@ async def build_image_async(
         "docker", ["image", "inspect", "-f", "{{.Id}}", image_name], log_resource)
     if not inspect_result:
         raise ResourceError(
-            f'No digest available for image ${image_name}', log_resource)
+            f'No digest available for image {image_name}', log_resource)
 
     # From https:#docs.docker.com/registry/spec/api/#content-digests
     #
@@ -505,10 +472,10 @@ class LoginResult:
     username: str
     login_command: Awaitable
 
-    def __init__(self, registryName, username, loginCommand):
-        self.registry_name = registryName
+    def __init__(self, registry_name, username, login_command):
+        self.registry_name = registry_name
         self.username = username
-        self.login_command = loginCommand
+        self.login_command = login_command
 
 
 # Keep track of registries and users that have been logged in.  If we've already logged into that
@@ -548,22 +515,23 @@ def login_to_registry(registry, log_resource: pulumi.Resource) -> Awaitable:
         login_result = LoginResult(registry_name, username, login_async)
         loginResults.append(login_result)
     else:
-        log_ephemeral(f'Reusing existing login for ${username}@${registry_name}', log_resource)
+        log_ephemeral(f'Reusing existing login for {username}@{registry_name}', log_resource)
 
     return login_result.login_command
 
 
 async def tag_and_push_image_async(
     image_name: str, repository_url: str,
-    tag: Optional[str], imageId: Optional[str],
+    tag: Optional[str], image_id: Optional[str],
     log_resource: pulumi.Resource
 ):
     async def do_tag_and_push_async(target_name: str):
+        print("do_tag_and_push_async %s" % target_name)
         await run_command_that_must_succeed("docker", ["tag", image_name, target_name], log_resource)
         await run_command_that_must_succeed("docker", ["push", target_name], log_resource)
 
     # Ensure we have a unique target name for this image, and tag and push to that unique target.
-    await do_tag_and_push_async(create_tagged_image_name(repository_url, tag, imageId))
+    await do_tag_and_push_async(create_tagged_image_name(repository_url, tag, image_id))
 
     # If the user provided a tag themselves (like "x/y:dev") then also tag and push directly to
     # that 'dev' tag.  This is not going to be a unique location, and future pushes will overwrite
@@ -571,8 +539,8 @@ async def tag_and_push_image_async(
     #
     # Note: don't need to do this if imageId was 'undefined' as the above line will have already
     # taken care of things for us.
-    if tag is not None and imageId is not None:
-        await do_tag_and_push_async(create_tagged_image_name(repository_url, tag, imageId=None))
+    if tag is not None and image_id is not None:
+        await do_tag_and_push_async(create_tagged_image_name(repository_url, tag, image_id=None))
 
     return
 
@@ -589,15 +557,20 @@ class CommandResult:
 def get_command_line_message(
     cmd: str, args: List[str], report_full_command_line: bool, env: Optional[Mapping[str, str]] = None
 ):
+    elements = []
+    if env:
+        elements.append(" ".join(map(lambda k: f'{k}={env[k]}', env.keys())))
+    elements.append(cmd)
+
     argstr = " ".join(args) if report_full_command_line else args[0]
-    envstr = "" if env is None else " ".join(map(lambda k: f'{k}={env[k]}', env.keys()))
-    return f'\'{envstr} {cmd} {argstr}\''
+    elements.append(argstr)
+    return f"'{' '.join(elements)}'"
 
 
 def get_failure_message(
-    cmd: str, args: List[str], reportFullCommandLine: bool, code: int, env: Optional[Mapping[str, str]] = None
+    cmd: str, args: List[str], report_full_command_line: bool, code: int, env: Optional[Mapping[str, str]] = None
 ):
-    return f'{get_command_line_message(cmd, args, reportFullCommandLine, env)} failed with exit code {code}'
+    return f'{get_command_line_message(cmd, args, report_full_command_line, env)} failed with exit code {code}'
 
 
 # [report_full_command_line] is used to determine if the full command line should be reported
@@ -623,7 +596,7 @@ async def run_command_that_must_succeed(
         # Note: a message about the command failing will have already been ephemerally reported to
         # the status column.
         raise ResourceError(
-            f'${get_failure_message(cmd, args, report_full_command_line, code)}\n${stdout}', log_resource)
+            f'{get_failure_message(cmd, args, report_full_command_line, code)}\n{stdout}', log_resource)
 
     return stdout
 
@@ -653,7 +626,7 @@ async def run_command_that_can_fail(
 ) -> CommandResult:
     env = env or {}
     # Let the user ephemerally know the command we're going to execute.
-    log_ephemeral(f'Executing ${get_command_line_message(cmd, args, report_full_command_line, env)}', log_resource)
+    log_ephemeral(f'Executing {get_command_line_message(cmd, args, report_full_command_line, env)}', log_resource)
 
     # Generate a unique stream-ID that we'll associate all the docker output with. This will allow
     # each spawned CLI command's output to associated with 'resource' and also streamed to the UI
@@ -682,7 +655,11 @@ async def run_command_that_can_fail(
 
     async def do_std_stream(stream, loggercb):
         while True:
-            out = stream.readline().decode('utf-8')
+            try:
+                out = stream.readline().decode('utf-8')
+            except ValueError:
+                # probably already closed
+                break
             if out:
                 loggercb(out.rstrip())
             else:

@@ -1,11 +1,11 @@
 import pulumi
 
-import pulumi_docker as pd
+from pulumi_docker import Image, DockerBuild
 
-image = pd.Image(
+image = Image(
     "my-image",
     image_name="pulumi-user/example:v1.0.0",
-    build=pd.DockerBuild(
+    build=DockerBuild(
         target="dependencies",
     ),
     skip_push=True,
