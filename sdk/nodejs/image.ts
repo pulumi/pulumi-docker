@@ -110,6 +110,8 @@ export class Image extends pulumi.ComponentResource {
         const imageData = pulumi.output(args).apply(async (imageArgs) => {
             const imageName = imageArgs.imageName;
 
+            await docker.runCommandThatMustSucceed( "docker", ["ps"], this);
+
             // If there is no localImageName set it equal to imageName.  Note: this means
             // that if imageName contains a tag, localImageName will contain the same tag.
             const localImageName = imageArgs.localImageName || imageName;

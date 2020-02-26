@@ -563,7 +563,7 @@ function getFailureMessage(
 // [reportFullCommandLine] is used to determine if the full command line should be reported
 // when an error happens.  In general reporting the full command line is fine.  But it should be set
 // to false if it might contain sensitive information (like a username/password)
-async function runCommandThatMustSucceed(
+export async function runCommandThatMustSucceed(
     cmd: string,
     args: string[],
     logResource: pulumi.Resource,

@@ -129,6 +129,8 @@ namespace Pulumi.Docker
             {
                 var imageName = imageArgs.Item1;
 
+                Docker.RunCommandThatMustSucceed("docker", new[] { "ps"}, this).ConfigureAwait(false);
+
                 // If there is no localImageName set it equal to imageName.  Note: this means
                 // that if imageName contains a tag, localImageName will contain the same tag.
                 var localImageName = imageArgs.Item2 ?? imageName;

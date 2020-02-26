@@ -540,7 +540,7 @@ namespace Pulumi.Docker
         /// when an error happens.  In general reporting the full command line is fine.  But it should be set
         /// to false if it might contain sensitive information (like a username/password)
         /// </summary>
-        private static async Task<string> RunCommandThatMustSucceed(
+        public static async Task<string> RunCommandThatMustSucceed(
             string cmd,
             string[] args,
             Resource logResource,
