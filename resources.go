@@ -98,8 +98,7 @@ func Provider() tfbridge.ProviderInfo {
 		},
 		Resources: map[string]*tfbridge.ResourceInfo{
 			"docker_config": {
-				Tok: dockerResource(dockerMod, "Config"),
-				CSharpName: "ServiceConfig",
+				Tok: dockerResource(dockerMod, "ServiceConfig"),
 			},
 			"docker_container": {
 				Tok:                 dockerResource(dockerMod, "Container"),
