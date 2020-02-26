@@ -22,7 +22,7 @@ type Service struct {
 	// See EndpointSpec below for details.
 	EndpointSpec ServiceEndpointSpecOutput `pulumi:"endpointSpec"`
 	// User-defined key/value metadata
-	Labels pulumi.StringMapOutput `pulumi:"labels"`
+	Labels ServiceLabelArrayOutput `pulumi:"labels"`
 	// The mode of resolution to use for internal load balancing between tasks. `(vip|dnsrr)`. Default: `vip`.
 	Mode ServiceModeOutput `pulumi:"mode"`
 	// A random name for the port.
@@ -73,7 +73,7 @@ type serviceState struct {
 	// See EndpointSpec below for details.
 	EndpointSpec *ServiceEndpointSpec `pulumi:"endpointSpec"`
 	// User-defined key/value metadata
-	Labels map[string]string `pulumi:"labels"`
+	Labels []ServiceLabel `pulumi:"labels"`
 	// The mode of resolution to use for internal load balancing between tasks. `(vip|dnsrr)`. Default: `vip`.
 	Mode *ServiceMode `pulumi:"mode"`
 	// A random name for the port.
@@ -94,7 +94,7 @@ type ServiceState struct {
 	// See EndpointSpec below for details.
 	EndpointSpec ServiceEndpointSpecPtrInput
 	// User-defined key/value metadata
-	Labels pulumi.StringMapInput
+	Labels ServiceLabelArrayInput
 	// The mode of resolution to use for internal load balancing between tasks. `(vip|dnsrr)`. Default: `vip`.
 	Mode ServiceModePtrInput
 	// A random name for the port.
@@ -119,7 +119,7 @@ type serviceArgs struct {
 	// See EndpointSpec below for details.
 	EndpointSpec *ServiceEndpointSpec `pulumi:"endpointSpec"`
 	// User-defined key/value metadata
-	Labels map[string]string `pulumi:"labels"`
+	Labels []ServiceLabel `pulumi:"labels"`
 	// The mode of resolution to use for internal load balancing between tasks. `(vip|dnsrr)`. Default: `vip`.
 	Mode *ServiceMode `pulumi:"mode"`
 	// A random name for the port.
@@ -141,7 +141,7 @@ type ServiceArgs struct {
 	// See EndpointSpec below for details.
 	EndpointSpec ServiceEndpointSpecPtrInput
 	// User-defined key/value metadata
-	Labels pulumi.StringMapInput
+	Labels ServiceLabelArrayInput
 	// The mode of resolution to use for internal load balancing between tasks. `(vip|dnsrr)`. Default: `vip`.
 	Mode ServiceModePtrInput
 	// A random name for the port.

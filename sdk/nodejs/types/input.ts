@@ -53,6 +53,15 @@ export interface ContainerHost {
     ip: pulumi.Input<string>;
 }
 
+export interface ContainerLabel {
+    /**
+     * Name of the label
+     * * `value` (Required, string) Value of the label
+     */
+    label: pulumi.Input<string>;
+    value: pulumi.Input<string>;
+}
+
 export interface ContainerMount {
     /**
      * Optional configuration for the `bind` type.
@@ -64,7 +73,7 @@ export interface ContainerMount {
      */
     readOnly?: pulumi.Input<boolean>;
     /**
-     * The mount source (e.g., a volume name, a host path)
+     * A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state.
      */
     source?: pulumi.Input<string>;
     /**
@@ -112,11 +121,20 @@ export interface ContainerMountVolumeOptions {
     /**
      * Adding labels.
      */
-    labels?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    labels?: pulumi.Input<pulumi.Input<inputs.ContainerMountVolumeOptionsLabel>[]>;
     /**
      * Whether to populate volume with data from the target.
      */
     noCopy?: pulumi.Input<boolean>;
+}
+
+export interface ContainerMountVolumeOptionsLabel {
+    /**
+     * Name of the label
+     * * `value` (Required, string) Value of the label
+     */
+    label: pulumi.Input<string>;
+    value: pulumi.Input<string>;
 }
 
 export interface ContainerNetworkData {
@@ -198,6 +216,14 @@ export interface ContainerUpload {
      * path to a file in the container.
      */
     file: pulumi.Input<string>;
+    /**
+     * A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state.
+     */
+    source?: pulumi.Input<string>;
+    /**
+     * If using `source`, this will force an update if the file content has updated but the filename has not. 
+     */
+    sourceHash?: pulumi.Input<string>;
 }
 
 export interface ContainerVolume {
@@ -228,13 +254,6 @@ export interface ContainerVolume {
     volumeName?: pulumi.Input<string>;
 }
 
-export interface GetNetworkIpamConfig {
-    auxAddress?: {[key: string]: any};
-    gateway?: string;
-    ipRange?: string;
-    subnet?: string;
-}
-
 export interface NetworkIpamConfig {
     auxAddress?: pulumi.Input<{[key: string]: any}>;
     gateway?: pulumi.Input<string>;
@@ -242,11 +261,30 @@ export interface NetworkIpamConfig {
     subnet?: pulumi.Input<string>;
 }
 
+export interface NetworkLabel {
+    /**
+     * Name of the label
+     * * `value` (Required, string) Value of the label
+     */
+    label: pulumi.Input<string>;
+    value: pulumi.Input<string>;
+}
+
 export interface ProviderRegistryAuth {
     address: pulumi.Input<string>;
     configFile?: pulumi.Input<string>;
+    configFileContent?: pulumi.Input<string>;
     password?: pulumi.Input<string>;
     username?: pulumi.Input<string>;
+}
+
+export interface SecretLabel {
+    /**
+     * Name of the label
+     * * `value` (Required, string) Value of the label
+     */
+    label: pulumi.Input<string>;
+    value: pulumi.Input<string>;
 }
 
 export interface ServiceAuth {
@@ -303,6 +341,11 @@ export interface ServiceEndpointSpecPort {
     targetPort: pulumi.Input<number>;
 }
 
+export interface ServiceLabel {
+    label: pulumi.Input<string>;
+    value: pulumi.Input<string>;
+}
+
 export interface ServiceMode {
     global?: pulumi.Input<boolean>;
     replicated?: pulumi.Input<inputs.ServiceModeReplicated>;
@@ -345,7 +388,7 @@ export interface ServiceTaskSpecContainerSpec {
     hosts?: pulumi.Input<pulumi.Input<inputs.ServiceTaskSpecContainerSpecHost>[]>;
     image: pulumi.Input<string>;
     isolation?: pulumi.Input<string>;
-    labels?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    labels?: pulumi.Input<pulumi.Input<inputs.ServiceTaskSpecContainerSpecLabel>[]>;
     mounts?: pulumi.Input<pulumi.Input<inputs.ServiceTaskSpecContainerSpecMount>[]>;
     privileges?: pulumi.Input<inputs.ServiceTaskSpecContainerSpecPrivileges>;
     readOnly?: pulumi.Input<boolean>;
@@ -365,9 +408,21 @@ export interface ServiceTaskSpecContainerSpecConfig {
      */
     configName?: pulumi.Input<string>;
     /**
+     * Represents the file GID. Defaults: `0`
+     */
+    fileGid?: pulumi.Input<string>;
+    /**
+     * Represents the FileMode of the file. Defaults: `0444`
+     */
+    fileMode?: pulumi.Input<number>;
+    /**
      * Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
      */
     fileName: pulumi.Input<string>;
+    /**
+     * Represents the file UID. Defaults: `0`
+     */
+    fileUid?: pulumi.Input<string>;
 }
 
 export interface ServiceTaskSpecContainerSpecDnsConfig {
@@ -390,6 +445,11 @@ export interface ServiceTaskSpecContainerSpecHealthcheck {
 export interface ServiceTaskSpecContainerSpecHost {
     host: pulumi.Input<string>;
     ip: pulumi.Input<string>;
+}
+
+export interface ServiceTaskSpecContainerSpecLabel {
+    label: pulumi.Input<string>;
+    value: pulumi.Input<string>;
 }
 
 export interface ServiceTaskSpecContainerSpecMount {
@@ -417,8 +477,13 @@ export interface ServiceTaskSpecContainerSpecMountTmpfsOptions {
 export interface ServiceTaskSpecContainerSpecMountVolumeOptions {
     driverName?: pulumi.Input<string>;
     driverOptions?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
-    labels?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    labels?: pulumi.Input<pulumi.Input<inputs.ServiceTaskSpecContainerSpecMountVolumeOptionsLabel>[]>;
     noCopy?: pulumi.Input<boolean>;
+}
+
+export interface ServiceTaskSpecContainerSpecMountVolumeOptionsLabel {
+    label: pulumi.Input<string>;
+    value: pulumi.Input<string>;
 }
 
 export interface ServiceTaskSpecContainerSpecPrivileges {
@@ -441,9 +506,21 @@ export interface ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext {
 
 export interface ServiceTaskSpecContainerSpecSecret {
     /**
+     * Represents the file GID. Defaults: `0`
+     */
+    fileGid?: pulumi.Input<string>;
+    /**
+     * Represents the FileMode of the file. Defaults: `0444`
+     */
+    fileMode?: pulumi.Input<number>;
+    /**
      * Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
      */
     fileName: pulumi.Input<string>;
+    /**
+     * Represents the file UID. Defaults: `0`
+     */
+    fileUid?: pulumi.Input<string>;
     secretId: pulumi.Input<string>;
     secretName?: pulumi.Input<string>;
 }
@@ -511,4 +588,9 @@ export interface ServiceUpdateConfig {
     monitor?: pulumi.Input<string>;
     order?: pulumi.Input<string>;
     parallelism?: pulumi.Input<number>;
+}
+
+export interface VolumeLabel {
+    label: pulumi.Input<string>;
+    value: pulumi.Input<string>;
 }

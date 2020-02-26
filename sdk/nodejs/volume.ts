@@ -61,7 +61,7 @@ export class Volume extends pulumi.CustomResource {
     /**
      * User-defined key/value metadata.
      */
-    public readonly labels!: pulumi.Output<{[key: string]: any} | undefined>;
+    public readonly labels!: pulumi.Output<outputs.VolumeLabel[] | undefined>;
     public /*out*/ readonly mountpoint!: pulumi.Output<string>;
     /**
      * The name of the Docker volume (generated if not
@@ -120,7 +120,7 @@ export interface VolumeState {
     /**
      * User-defined key/value metadata.
      */
-    readonly labels?: pulumi.Input<{[key: string]: any}>;
+    readonly labels?: pulumi.Input<pulumi.Input<inputs.VolumeLabel>[]>;
     readonly mountpoint?: pulumi.Input<string>;
     /**
      * The name of the Docker volume (generated if not
@@ -144,7 +144,7 @@ export interface VolumeArgs {
     /**
      * User-defined key/value metadata.
      */
-    readonly labels?: pulumi.Input<{[key: string]: any}>;
+    readonly labels?: pulumi.Input<pulumi.Input<inputs.VolumeLabel>[]>;
     /**
      * The name of the Docker volume (generated if not
      * provided).

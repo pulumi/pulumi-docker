@@ -53,6 +53,15 @@ export interface ContainerHost {
     ip: string;
 }
 
+export interface ContainerLabel {
+    /**
+     * Name of the label
+     * * `value` (Required, string) Value of the label
+     */
+    label: string;
+    value: string;
+}
+
 export interface ContainerMount {
     /**
      * Optional configuration for the `bind` type.
@@ -64,7 +73,7 @@ export interface ContainerMount {
      */
     readOnly?: boolean;
     /**
-     * The mount source (e.g., a volume name, a host path)
+     * A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state.
      */
     source?: string;
     /**
@@ -112,11 +121,20 @@ export interface ContainerMountVolumeOptions {
     /**
      * Adding labels.
      */
-    labels?: {[key: string]: string};
+    labels?: outputs.ContainerMountVolumeOptionsLabel[];
     /**
      * Whether to populate volume with data from the target.
      */
     noCopy?: boolean;
+}
+
+export interface ContainerMountVolumeOptionsLabel {
+    /**
+     * Name of the label
+     * * `value` (Required, string) Value of the label
+     */
+    label: string;
+    value: string;
 }
 
 export interface ContainerNetworkData {
@@ -198,6 +216,14 @@ export interface ContainerUpload {
      * path to a file in the container.
      */
     file: string;
+    /**
+     * A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state.
+     */
+    source?: string;
+    /**
+     * If using `source`, this will force an update if the file content has updated but the filename has not. 
+     */
+    sourceHash?: string;
 }
 
 export interface ContainerVolume {
@@ -240,6 +266,24 @@ export interface NetworkIpamConfig {
     gateway?: string;
     ipRange?: string;
     subnet?: string;
+}
+
+export interface NetworkLabel {
+    /**
+     * Name of the label
+     * * `value` (Required, string) Value of the label
+     */
+    label: string;
+    value: string;
+}
+
+export interface SecretLabel {
+    /**
+     * Name of the label
+     * * `value` (Required, string) Value of the label
+     */
+    label: string;
+    value: string;
 }
 
 export interface ServiceAuth {
@@ -289,11 +333,16 @@ export interface ServiceEndpointSpecPort {
     /**
      * The port on the swarm hosts. If not set the value of `targetPort` will be used.
      */
-    publishedPort?: number;
+    publishedPort: number;
     /**
      * Port inside the container.
      */
     targetPort: number;
+}
+
+export interface ServiceLabel {
+    label: string;
+    value: string;
 }
 
 export interface ServiceMode {
@@ -338,7 +387,7 @@ export interface ServiceTaskSpecContainerSpec {
     hosts?: outputs.ServiceTaskSpecContainerSpecHost[];
     image: string;
     isolation?: string;
-    labels?: {[key: string]: string};
+    labels?: outputs.ServiceTaskSpecContainerSpecLabel[];
     mounts?: outputs.ServiceTaskSpecContainerSpecMount[];
     privileges?: outputs.ServiceTaskSpecContainerSpecPrivileges;
     readOnly?: boolean;
@@ -358,9 +407,21 @@ export interface ServiceTaskSpecContainerSpecConfig {
      */
     configName?: string;
     /**
+     * Represents the file GID. Defaults: `0`
+     */
+    fileGid?: string;
+    /**
+     * Represents the FileMode of the file. Defaults: `0444`
+     */
+    fileMode?: number;
+    /**
      * Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
      */
     fileName: string;
+    /**
+     * Represents the file UID. Defaults: `0`
+     */
+    fileUid?: string;
 }
 
 export interface ServiceTaskSpecContainerSpecDnsConfig {
@@ -383,6 +444,11 @@ export interface ServiceTaskSpecContainerSpecHealthcheck {
 export interface ServiceTaskSpecContainerSpecHost {
     host: string;
     ip: string;
+}
+
+export interface ServiceTaskSpecContainerSpecLabel {
+    label: string;
+    value: string;
 }
 
 export interface ServiceTaskSpecContainerSpecMount {
@@ -410,8 +476,13 @@ export interface ServiceTaskSpecContainerSpecMountTmpfsOptions {
 export interface ServiceTaskSpecContainerSpecMountVolumeOptions {
     driverName?: string;
     driverOptions?: {[key: string]: string};
-    labels?: {[key: string]: string};
+    labels?: outputs.ServiceTaskSpecContainerSpecMountVolumeOptionsLabel[];
     noCopy?: boolean;
+}
+
+export interface ServiceTaskSpecContainerSpecMountVolumeOptionsLabel {
+    label: string;
+    value: string;
 }
 
 export interface ServiceTaskSpecContainerSpecPrivileges {
@@ -434,9 +505,21 @@ export interface ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext {
 
 export interface ServiceTaskSpecContainerSpecSecret {
     /**
+     * Represents the file GID. Defaults: `0`
+     */
+    fileGid?: string;
+    /**
+     * Represents the FileMode of the file. Defaults: `0444`
+     */
+    fileMode?: number;
+    /**
      * Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
      */
     fileName: string;
+    /**
+     * Represents the file UID. Defaults: `0`
+     */
+    fileUid?: string;
     secretId: string;
     secretName?: string;
 }
@@ -504,4 +587,9 @@ export interface ServiceUpdateConfig {
     monitor?: string;
     order?: string;
     parallelism?: number;
+}
+
+export interface VolumeLabel {
+    label: string;
+    value: string;
 }

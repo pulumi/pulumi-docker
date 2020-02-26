@@ -140,9 +140,13 @@ class Container(pulumi.CustomResource):
     """
     IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
     """
-    labels: pulumi.Output[dict]
+    labels: pulumi.Output[list]
     """
     Adding labels.
+    
+      * `label` (`str`) - Name of the label
+        * `value` (Required, string) Value of the label
+      * `value` (`str`)
     """
     links: pulumi.Output[list]
     """
@@ -184,7 +188,7 @@ class Container(pulumi.CustomResource):
     
       * `read_only` (`bool`) - If true, this volume will be readonly.
         Defaults to false.
-      * `source` (`str`) - The mount source (e.g., a volume name, a host path)
+      * `source` (`str`) - A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state.
       * `target` (`str`) - The container path.
       * `tmpfsOptions` (`dict`) - Optional configuration for the `tmpf` type.
     
@@ -196,7 +200,12 @@ class Container(pulumi.CustomResource):
     
         * `driverName` (`str`)
         * `driverOptions` (`dict`) - Options for the driver.
-        * `labels` (`dict`) - Adding labels.
+        * `labels` (`list`) - Adding labels.
+    
+          * `label` (`str`) - Name of the label
+            * `value` (Required, string) Value of the label
+          * `value` (`str`)
+    
         * `noCopy` (`bool`) - Whether to populate volume with data from the target.
     """
     must_run: pulumi.Output[bool]
@@ -304,6 +313,8 @@ class Container(pulumi.CustomResource):
         executable permission.
         Defaults to false.
       * `file` (`str`) - path to a file in the container.
+      * `source` (`str`) - A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state.
+      * `sourceHash` (`str`) - If using `source`, this will force an update if the file content has updated but the filename has not. 
     """
     user: pulumi.Output[str]
     """
@@ -364,7 +375,7 @@ class Container(pulumi.CustomResource):
                The easiest way to get this value is to use the `.RemoteImage` resource
                as is shown in the example above.
         :param pulumi.Input[str] ipc_mode: IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
-        :param pulumi.Input[dict] labels: Adding labels.
+        :param pulumi.Input[list] labels: Adding labels.
         :param pulumi.Input[list] links: Set of links for link based
                connectivity between containers that are running on the same host.
         :param pulumi.Input[str] log_driver: The logging driver to use for the container.
@@ -432,6 +443,12 @@ class Container(pulumi.CustomResource):
           * `host` (`pulumi.Input[str]`) - Hostname to add.
           * `ip` (`pulumi.Input[str]`) - IP address this hostname should resolve to.
         
+        The **labels** object supports the following:
+        
+          * `label` (`pulumi.Input[str]`) - Name of the label
+            * `value` (Required, string) Value of the label
+          * `value` (`pulumi.Input[str]`)
+        
         The **mounts** object supports the following:
         
           * `bindOptions` (`pulumi.Input[dict]`) - Optional configuration for the `bind` type.
@@ -440,7 +457,7 @@ class Container(pulumi.CustomResource):
         
           * `read_only` (`pulumi.Input[bool]`) - If true, this volume will be readonly.
             Defaults to false.
-          * `source` (`pulumi.Input[str]`) - The mount source (e.g., a volume name, a host path)
+          * `source` (`pulumi.Input[str]`) - A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state.
           * `target` (`pulumi.Input[str]`) - The container path.
           * `tmpfsOptions` (`pulumi.Input[dict]`) - Optional configuration for the `tmpf` type.
         
@@ -452,7 +469,12 @@ class Container(pulumi.CustomResource):
         
             * `driverName` (`pulumi.Input[str]`)
             * `driverOptions` (`pulumi.Input[dict]`) - Options for the driver.
-            * `labels` (`pulumi.Input[dict]`) - Adding labels.
+            * `labels` (`pulumi.Input[list]`) - Adding labels.
+        
+              * `label` (`pulumi.Input[str]`) - Name of the label
+                * `value` (Required, string) Value of the label
+              * `value` (`pulumi.Input[str]`)
+        
             * `noCopy` (`pulumi.Input[bool]`) - Whether to populate volume with data from the target.
         
         The **networks_advanced** object supports the following:
@@ -484,6 +506,8 @@ class Container(pulumi.CustomResource):
             executable permission.
             Defaults to false.
           * `file` (`pulumi.Input[str]`) - path to a file in the container.
+          * `source` (`pulumi.Input[str]`) - A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state.
+          * `sourceHash` (`pulumi.Input[str]`) - If using `source`, this will force an update if the file content has updated but the filename has not. 
         
         The **volumes** object supports the following:
         
@@ -627,7 +651,7 @@ class Container(pulumi.CustomResource):
         :param pulumi.Input[float] ip_prefix_length: *Deprecated:* Use `network_data` instead. The IP prefix length of the container as read from its
                NetworkSettings.
         :param pulumi.Input[str] ipc_mode: IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
-        :param pulumi.Input[dict] labels: Adding labels.
+        :param pulumi.Input[list] labels: Adding labels.
         :param pulumi.Input[list] links: Set of links for link based
                connectivity between containers that are running on the same host.
         :param pulumi.Input[str] log_driver: The logging driver to use for the container.
@@ -697,6 +721,12 @@ class Container(pulumi.CustomResource):
           * `host` (`pulumi.Input[str]`) - Hostname to add.
           * `ip` (`pulumi.Input[str]`) - IP address this hostname should resolve to.
         
+        The **labels** object supports the following:
+        
+          * `label` (`pulumi.Input[str]`) - Name of the label
+            * `value` (Required, string) Value of the label
+          * `value` (`pulumi.Input[str]`)
+        
         The **mounts** object supports the following:
         
           * `bindOptions` (`pulumi.Input[dict]`) - Optional configuration for the `bind` type.
@@ -705,7 +735,7 @@ class Container(pulumi.CustomResource):
         
           * `read_only` (`pulumi.Input[bool]`) - If true, this volume will be readonly.
             Defaults to false.
-          * `source` (`pulumi.Input[str]`) - The mount source (e.g., a volume name, a host path)
+          * `source` (`pulumi.Input[str]`) - A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state.
           * `target` (`pulumi.Input[str]`) - The container path.
           * `tmpfsOptions` (`pulumi.Input[dict]`) - Optional configuration for the `tmpf` type.
         
@@ -717,7 +747,12 @@ class Container(pulumi.CustomResource):
         
             * `driverName` (`pulumi.Input[str]`)
             * `driverOptions` (`pulumi.Input[dict]`) - Options for the driver.
-            * `labels` (`pulumi.Input[dict]`) - Adding labels.
+            * `labels` (`pulumi.Input[list]`) - Adding labels.
+        
+              * `label` (`pulumi.Input[str]`) - Name of the label
+                * `value` (Required, string) Value of the label
+              * `value` (`pulumi.Input[str]`)
+        
             * `noCopy` (`pulumi.Input[bool]`) - Whether to populate volume with data from the target.
         
         The **network_datas** object supports the following:
@@ -758,6 +793,8 @@ class Container(pulumi.CustomResource):
             executable permission.
             Defaults to false.
           * `file` (`pulumi.Input[str]`) - path to a file in the container.
+          * `source` (`pulumi.Input[str]`) - A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state.
+          * `sourceHash` (`pulumi.Input[str]`) - If using `source`, this will force an update if the file content has updated but the filename has not. 
         
         The **volumes** object supports the following:
         

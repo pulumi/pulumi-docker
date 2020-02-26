@@ -1,4 +1,5 @@
 ## HEAD (Unreleased)
+* Upgrade to v2.7.0 of the Docker Terraform Provider
 * Implemented the docker image build in the Python SDK, ported from the Javascript SDK
 
 ## 1.2.0 (2020-01-29)

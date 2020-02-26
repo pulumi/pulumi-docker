@@ -502,13 +502,111 @@ func (o ContainerHostArrayOutput) Index(i pulumi.IntInput) ContainerHostOutput {
 	}).(ContainerHostOutput)
 }
 
+type ContainerLabel struct {
+	// Name of the label
+	// * `value` (Required, string) Value of the label
+	Label string `pulumi:"label"`
+	Value string `pulumi:"value"`
+}
+
+type ContainerLabelInput interface {
+	pulumi.Input
+
+	ToContainerLabelOutput() ContainerLabelOutput
+	ToContainerLabelOutputWithContext(context.Context) ContainerLabelOutput
+}
+
+type ContainerLabelArgs struct {
+	// Name of the label
+	// * `value` (Required, string) Value of the label
+	Label pulumi.StringInput `pulumi:"label"`
+	Value pulumi.StringInput `pulumi:"value"`
+}
+
+func (ContainerLabelArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*ContainerLabel)(nil)).Elem()
+}
+
+func (i ContainerLabelArgs) ToContainerLabelOutput() ContainerLabelOutput {
+	return i.ToContainerLabelOutputWithContext(context.Background())
+}
+
+func (i ContainerLabelArgs) ToContainerLabelOutputWithContext(ctx context.Context) ContainerLabelOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ContainerLabelOutput)
+}
+
+type ContainerLabelArrayInput interface {
+	pulumi.Input
+
+	ToContainerLabelArrayOutput() ContainerLabelArrayOutput
+	ToContainerLabelArrayOutputWithContext(context.Context) ContainerLabelArrayOutput
+}
+
+type ContainerLabelArray []ContainerLabelInput
+
+func (ContainerLabelArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]ContainerLabel)(nil)).Elem()
+}
+
+func (i ContainerLabelArray) ToContainerLabelArrayOutput() ContainerLabelArrayOutput {
+	return i.ToContainerLabelArrayOutputWithContext(context.Background())
+}
+
+func (i ContainerLabelArray) ToContainerLabelArrayOutputWithContext(ctx context.Context) ContainerLabelArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ContainerLabelArrayOutput)
+}
+
+type ContainerLabelOutput struct { *pulumi.OutputState }
+
+func (ContainerLabelOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*ContainerLabel)(nil)).Elem()
+}
+
+func (o ContainerLabelOutput) ToContainerLabelOutput() ContainerLabelOutput {
+	return o
+}
+
+func (o ContainerLabelOutput) ToContainerLabelOutputWithContext(ctx context.Context) ContainerLabelOutput {
+	return o
+}
+
+// Name of the label
+// * `value` (Required, string) Value of the label
+func (o ContainerLabelOutput) Label() pulumi.StringOutput {
+	return o.ApplyT(func (v ContainerLabel) string { return v.Label }).(pulumi.StringOutput)
+}
+
+func (o ContainerLabelOutput) Value() pulumi.StringOutput {
+	return o.ApplyT(func (v ContainerLabel) string { return v.Value }).(pulumi.StringOutput)
+}
+
+type ContainerLabelArrayOutput struct { *pulumi.OutputState}
+
+func (ContainerLabelArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]ContainerLabel)(nil)).Elem()
+}
+
+func (o ContainerLabelArrayOutput) ToContainerLabelArrayOutput() ContainerLabelArrayOutput {
+	return o
+}
+
+func (o ContainerLabelArrayOutput) ToContainerLabelArrayOutputWithContext(ctx context.Context) ContainerLabelArrayOutput {
+	return o
+}
+
+func (o ContainerLabelArrayOutput) Index(i pulumi.IntInput) ContainerLabelOutput {
+	return pulumi.All(o, i).ApplyT(func (vs []interface{}) ContainerLabel {
+		return vs[0].([]ContainerLabel)[vs[1].(int)]
+	}).(ContainerLabelOutput)
+}
+
 type ContainerMount struct {
 	// Optional configuration for the `bind` type.
 	BindOptions *ContainerMountBindOptions `pulumi:"bindOptions"`
 	// If true, this volume will be readonly.
 	// Defaults to false.
 	ReadOnly *bool `pulumi:"readOnly"`
-	// The mount source (e.g., a volume name, a host path)
+	// A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state.
 	Source *string `pulumi:"source"`
 	// The container path.
 	Target string `pulumi:"target"`
@@ -533,7 +631,7 @@ type ContainerMountArgs struct {
 	// If true, this volume will be readonly.
 	// Defaults to false.
 	ReadOnly pulumi.BoolPtrInput `pulumi:"readOnly"`
-	// The mount source (e.g., a volume name, a host path)
+	// A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state.
 	Source pulumi.StringPtrInput `pulumi:"source"`
 	// The container path.
 	Target pulumi.StringInput `pulumi:"target"`
@@ -603,7 +701,7 @@ func (o ContainerMountOutput) ReadOnly() pulumi.BoolPtrOutput {
 	return o.ApplyT(func (v ContainerMount) *bool { return v.ReadOnly }).(pulumi.BoolPtrOutput)
 }
 
-// The mount source (e.g., a volume name, a host path)
+// A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state.
 func (o ContainerMountOutput) Source() pulumi.StringPtrOutput {
 	return o.ApplyT(func (v ContainerMount) *string { return v.Source }).(pulumi.StringPtrOutput)
 }
@@ -891,7 +989,7 @@ type ContainerMountVolumeOptions struct {
 	// Options for the driver.
 	DriverOptions map[string]string `pulumi:"driverOptions"`
 	// Adding labels.
-	Labels map[string]string `pulumi:"labels"`
+	Labels []ContainerMountVolumeOptionsLabel `pulumi:"labels"`
 	// Whether to populate volume with data from the target.
 	NoCopy *bool `pulumi:"noCopy"`
 }
@@ -908,7 +1006,7 @@ type ContainerMountVolumeOptionsArgs struct {
 	// Options for the driver.
 	DriverOptions pulumi.StringMapInput `pulumi:"driverOptions"`
 	// Adding labels.
-	Labels pulumi.StringMapInput `pulumi:"labels"`
+	Labels ContainerMountVolumeOptionsLabelArrayInput `pulumi:"labels"`
 	// Whether to populate volume with data from the target.
 	NoCopy pulumi.BoolPtrInput `pulumi:"noCopy"`
 }
@@ -990,8 +1088,8 @@ func (o ContainerMountVolumeOptionsOutput) DriverOptions() pulumi.StringMapOutpu
 }
 
 // Adding labels.
-func (o ContainerMountVolumeOptionsOutput) Labels() pulumi.StringMapOutput {
-	return o.ApplyT(func (v ContainerMountVolumeOptions) map[string]string { return v.Labels }).(pulumi.StringMapOutput)
+func (o ContainerMountVolumeOptionsOutput) Labels() ContainerMountVolumeOptionsLabelArrayOutput {
+	return o.ApplyT(func (v ContainerMountVolumeOptions) []ContainerMountVolumeOptionsLabel { return v.Labels }).(ContainerMountVolumeOptionsLabelArrayOutput)
 }
 
 // Whether to populate volume with data from the target.
@@ -1027,13 +1125,111 @@ func (o ContainerMountVolumeOptionsPtrOutput) DriverOptions() pulumi.StringMapOu
 }
 
 // Adding labels.
-func (o ContainerMountVolumeOptionsPtrOutput) Labels() pulumi.StringMapOutput {
-	return o.ApplyT(func (v ContainerMountVolumeOptions) map[string]string { return v.Labels }).(pulumi.StringMapOutput)
+func (o ContainerMountVolumeOptionsPtrOutput) Labels() ContainerMountVolumeOptionsLabelArrayOutput {
+	return o.ApplyT(func (v ContainerMountVolumeOptions) []ContainerMountVolumeOptionsLabel { return v.Labels }).(ContainerMountVolumeOptionsLabelArrayOutput)
 }
 
 // Whether to populate volume with data from the target.
 func (o ContainerMountVolumeOptionsPtrOutput) NoCopy() pulumi.BoolPtrOutput {
 	return o.ApplyT(func (v ContainerMountVolumeOptions) *bool { return v.NoCopy }).(pulumi.BoolPtrOutput)
+}
+
+type ContainerMountVolumeOptionsLabel struct {
+	// Name of the label
+	// * `value` (Required, string) Value of the label
+	Label string `pulumi:"label"`
+	Value string `pulumi:"value"`
+}
+
+type ContainerMountVolumeOptionsLabelInput interface {
+	pulumi.Input
+
+	ToContainerMountVolumeOptionsLabelOutput() ContainerMountVolumeOptionsLabelOutput
+	ToContainerMountVolumeOptionsLabelOutputWithContext(context.Context) ContainerMountVolumeOptionsLabelOutput
+}
+
+type ContainerMountVolumeOptionsLabelArgs struct {
+	// Name of the label
+	// * `value` (Required, string) Value of the label
+	Label pulumi.StringInput `pulumi:"label"`
+	Value pulumi.StringInput `pulumi:"value"`
+}
+
+func (ContainerMountVolumeOptionsLabelArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*ContainerMountVolumeOptionsLabel)(nil)).Elem()
+}
+
+func (i ContainerMountVolumeOptionsLabelArgs) ToContainerMountVolumeOptionsLabelOutput() ContainerMountVolumeOptionsLabelOutput {
+	return i.ToContainerMountVolumeOptionsLabelOutputWithContext(context.Background())
+}
+
+func (i ContainerMountVolumeOptionsLabelArgs) ToContainerMountVolumeOptionsLabelOutputWithContext(ctx context.Context) ContainerMountVolumeOptionsLabelOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ContainerMountVolumeOptionsLabelOutput)
+}
+
+type ContainerMountVolumeOptionsLabelArrayInput interface {
+	pulumi.Input
+
+	ToContainerMountVolumeOptionsLabelArrayOutput() ContainerMountVolumeOptionsLabelArrayOutput
+	ToContainerMountVolumeOptionsLabelArrayOutputWithContext(context.Context) ContainerMountVolumeOptionsLabelArrayOutput
+}
+
+type ContainerMountVolumeOptionsLabelArray []ContainerMountVolumeOptionsLabelInput
+
+func (ContainerMountVolumeOptionsLabelArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]ContainerMountVolumeOptionsLabel)(nil)).Elem()
+}
+
+func (i ContainerMountVolumeOptionsLabelArray) ToContainerMountVolumeOptionsLabelArrayOutput() ContainerMountVolumeOptionsLabelArrayOutput {
+	return i.ToContainerMountVolumeOptionsLabelArrayOutputWithContext(context.Background())
+}
+
+func (i ContainerMountVolumeOptionsLabelArray) ToContainerMountVolumeOptionsLabelArrayOutputWithContext(ctx context.Context) ContainerMountVolumeOptionsLabelArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ContainerMountVolumeOptionsLabelArrayOutput)
+}
+
+type ContainerMountVolumeOptionsLabelOutput struct { *pulumi.OutputState }
+
+func (ContainerMountVolumeOptionsLabelOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*ContainerMountVolumeOptionsLabel)(nil)).Elem()
+}
+
+func (o ContainerMountVolumeOptionsLabelOutput) ToContainerMountVolumeOptionsLabelOutput() ContainerMountVolumeOptionsLabelOutput {
+	return o
+}
+
+func (o ContainerMountVolumeOptionsLabelOutput) ToContainerMountVolumeOptionsLabelOutputWithContext(ctx context.Context) ContainerMountVolumeOptionsLabelOutput {
+	return o
+}
+
+// Name of the label
+// * `value` (Required, string) Value of the label
+func (o ContainerMountVolumeOptionsLabelOutput) Label() pulumi.StringOutput {
+	return o.ApplyT(func (v ContainerMountVolumeOptionsLabel) string { return v.Label }).(pulumi.StringOutput)
+}
+
+func (o ContainerMountVolumeOptionsLabelOutput) Value() pulumi.StringOutput {
+	return o.ApplyT(func (v ContainerMountVolumeOptionsLabel) string { return v.Value }).(pulumi.StringOutput)
+}
+
+type ContainerMountVolumeOptionsLabelArrayOutput struct { *pulumi.OutputState}
+
+func (ContainerMountVolumeOptionsLabelArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]ContainerMountVolumeOptionsLabel)(nil)).Elem()
+}
+
+func (o ContainerMountVolumeOptionsLabelArrayOutput) ToContainerMountVolumeOptionsLabelArrayOutput() ContainerMountVolumeOptionsLabelArrayOutput {
+	return o
+}
+
+func (o ContainerMountVolumeOptionsLabelArrayOutput) ToContainerMountVolumeOptionsLabelArrayOutputWithContext(ctx context.Context) ContainerMountVolumeOptionsLabelArrayOutput {
+	return o
+}
+
+func (o ContainerMountVolumeOptionsLabelArrayOutput) Index(i pulumi.IntInput) ContainerMountVolumeOptionsLabelOutput {
+	return pulumi.All(o, i).ApplyT(func (vs []interface{}) ContainerMountVolumeOptionsLabel {
+		return vs[0].([]ContainerMountVolumeOptionsLabel)[vs[1].(int)]
+	}).(ContainerMountVolumeOptionsLabelOutput)
 }
 
 type ContainerNetworkData struct {
@@ -1495,6 +1691,10 @@ type ContainerUpload struct {
 	Executable *bool `pulumi:"executable"`
 	// path to a file in the container.
 	File string `pulumi:"file"`
+	// A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state.
+	Source *string `pulumi:"source"`
+	// If using `source`, this will force an update if the file content has updated but the filename has not. 
+	SourceHash *string `pulumi:"sourceHash"`
 }
 
 type ContainerUploadInput interface {
@@ -1514,6 +1714,10 @@ type ContainerUploadArgs struct {
 	Executable pulumi.BoolPtrInput `pulumi:"executable"`
 	// path to a file in the container.
 	File pulumi.StringInput `pulumi:"file"`
+	// A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state.
+	Source pulumi.StringPtrInput `pulumi:"source"`
+	// If using `source`, this will force an update if the file content has updated but the filename has not. 
+	SourceHash pulumi.StringPtrInput `pulumi:"sourceHash"`
 }
 
 func (ContainerUploadArgs) ElementType() reflect.Type {
@@ -1582,6 +1786,16 @@ func (o ContainerUploadOutput) Executable() pulumi.BoolPtrOutput {
 // path to a file in the container.
 func (o ContainerUploadOutput) File() pulumi.StringOutput {
 	return o.ApplyT(func (v ContainerUpload) string { return v.File }).(pulumi.StringOutput)
+}
+
+// A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state.
+func (o ContainerUploadOutput) Source() pulumi.StringPtrOutput {
+	return o.ApplyT(func (v ContainerUpload) *string { return v.Source }).(pulumi.StringPtrOutput)
+}
+
+// If using `source`, this will force an update if the file content has updated but the filename has not. 
+func (o ContainerUploadOutput) SourceHash() pulumi.StringPtrOutput {
+	return o.ApplyT(func (v ContainerUpload) *string { return v.SourceHash }).(pulumi.StringPtrOutput)
 }
 
 type ContainerUploadArrayOutput struct { *pulumi.OutputState}
@@ -1846,6 +2060,202 @@ func (o NetworkIpamConfigArrayOutput) Index(i pulumi.IntInput) NetworkIpamConfig
 	return pulumi.All(o, i).ApplyT(func (vs []interface{}) NetworkIpamConfig {
 		return vs[0].([]NetworkIpamConfig)[vs[1].(int)]
 	}).(NetworkIpamConfigOutput)
+}
+
+type NetworkLabel struct {
+	// Name of the label
+	// * `value` (Required, string) Value of the label
+	Label string `pulumi:"label"`
+	Value string `pulumi:"value"`
+}
+
+type NetworkLabelInput interface {
+	pulumi.Input
+
+	ToNetworkLabelOutput() NetworkLabelOutput
+	ToNetworkLabelOutputWithContext(context.Context) NetworkLabelOutput
+}
+
+type NetworkLabelArgs struct {
+	// Name of the label
+	// * `value` (Required, string) Value of the label
+	Label pulumi.StringInput `pulumi:"label"`
+	Value pulumi.StringInput `pulumi:"value"`
+}
+
+func (NetworkLabelArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*NetworkLabel)(nil)).Elem()
+}
+
+func (i NetworkLabelArgs) ToNetworkLabelOutput() NetworkLabelOutput {
+	return i.ToNetworkLabelOutputWithContext(context.Background())
+}
+
+func (i NetworkLabelArgs) ToNetworkLabelOutputWithContext(ctx context.Context) NetworkLabelOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(NetworkLabelOutput)
+}
+
+type NetworkLabelArrayInput interface {
+	pulumi.Input
+
+	ToNetworkLabelArrayOutput() NetworkLabelArrayOutput
+	ToNetworkLabelArrayOutputWithContext(context.Context) NetworkLabelArrayOutput
+}
+
+type NetworkLabelArray []NetworkLabelInput
+
+func (NetworkLabelArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]NetworkLabel)(nil)).Elem()
+}
+
+func (i NetworkLabelArray) ToNetworkLabelArrayOutput() NetworkLabelArrayOutput {
+	return i.ToNetworkLabelArrayOutputWithContext(context.Background())
+}
+
+func (i NetworkLabelArray) ToNetworkLabelArrayOutputWithContext(ctx context.Context) NetworkLabelArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(NetworkLabelArrayOutput)
+}
+
+type NetworkLabelOutput struct { *pulumi.OutputState }
+
+func (NetworkLabelOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*NetworkLabel)(nil)).Elem()
+}
+
+func (o NetworkLabelOutput) ToNetworkLabelOutput() NetworkLabelOutput {
+	return o
+}
+
+func (o NetworkLabelOutput) ToNetworkLabelOutputWithContext(ctx context.Context) NetworkLabelOutput {
+	return o
+}
+
+// Name of the label
+// * `value` (Required, string) Value of the label
+func (o NetworkLabelOutput) Label() pulumi.StringOutput {
+	return o.ApplyT(func (v NetworkLabel) string { return v.Label }).(pulumi.StringOutput)
+}
+
+func (o NetworkLabelOutput) Value() pulumi.StringOutput {
+	return o.ApplyT(func (v NetworkLabel) string { return v.Value }).(pulumi.StringOutput)
+}
+
+type NetworkLabelArrayOutput struct { *pulumi.OutputState}
+
+func (NetworkLabelArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]NetworkLabel)(nil)).Elem()
+}
+
+func (o NetworkLabelArrayOutput) ToNetworkLabelArrayOutput() NetworkLabelArrayOutput {
+	return o
+}
+
+func (o NetworkLabelArrayOutput) ToNetworkLabelArrayOutputWithContext(ctx context.Context) NetworkLabelArrayOutput {
+	return o
+}
+
+func (o NetworkLabelArrayOutput) Index(i pulumi.IntInput) NetworkLabelOutput {
+	return pulumi.All(o, i).ApplyT(func (vs []interface{}) NetworkLabel {
+		return vs[0].([]NetworkLabel)[vs[1].(int)]
+	}).(NetworkLabelOutput)
+}
+
+type SecretLabel struct {
+	// Name of the label
+	// * `value` (Required, string) Value of the label
+	Label string `pulumi:"label"`
+	Value string `pulumi:"value"`
+}
+
+type SecretLabelInput interface {
+	pulumi.Input
+
+	ToSecretLabelOutput() SecretLabelOutput
+	ToSecretLabelOutputWithContext(context.Context) SecretLabelOutput
+}
+
+type SecretLabelArgs struct {
+	// Name of the label
+	// * `value` (Required, string) Value of the label
+	Label pulumi.StringInput `pulumi:"label"`
+	Value pulumi.StringInput `pulumi:"value"`
+}
+
+func (SecretLabelArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*SecretLabel)(nil)).Elem()
+}
+
+func (i SecretLabelArgs) ToSecretLabelOutput() SecretLabelOutput {
+	return i.ToSecretLabelOutputWithContext(context.Background())
+}
+
+func (i SecretLabelArgs) ToSecretLabelOutputWithContext(ctx context.Context) SecretLabelOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(SecretLabelOutput)
+}
+
+type SecretLabelArrayInput interface {
+	pulumi.Input
+
+	ToSecretLabelArrayOutput() SecretLabelArrayOutput
+	ToSecretLabelArrayOutputWithContext(context.Context) SecretLabelArrayOutput
+}
+
+type SecretLabelArray []SecretLabelInput
+
+func (SecretLabelArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]SecretLabel)(nil)).Elem()
+}
+
+func (i SecretLabelArray) ToSecretLabelArrayOutput() SecretLabelArrayOutput {
+	return i.ToSecretLabelArrayOutputWithContext(context.Background())
+}
+
+func (i SecretLabelArray) ToSecretLabelArrayOutputWithContext(ctx context.Context) SecretLabelArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(SecretLabelArrayOutput)
+}
+
+type SecretLabelOutput struct { *pulumi.OutputState }
+
+func (SecretLabelOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*SecretLabel)(nil)).Elem()
+}
+
+func (o SecretLabelOutput) ToSecretLabelOutput() SecretLabelOutput {
+	return o
+}
+
+func (o SecretLabelOutput) ToSecretLabelOutputWithContext(ctx context.Context) SecretLabelOutput {
+	return o
+}
+
+// Name of the label
+// * `value` (Required, string) Value of the label
+func (o SecretLabelOutput) Label() pulumi.StringOutput {
+	return o.ApplyT(func (v SecretLabel) string { return v.Label }).(pulumi.StringOutput)
+}
+
+func (o SecretLabelOutput) Value() pulumi.StringOutput {
+	return o.ApplyT(func (v SecretLabel) string { return v.Value }).(pulumi.StringOutput)
+}
+
+type SecretLabelArrayOutput struct { *pulumi.OutputState}
+
+func (SecretLabelArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]SecretLabel)(nil)).Elem()
+}
+
+func (o SecretLabelArrayOutput) ToSecretLabelArrayOutput() SecretLabelArrayOutput {
+	return o
+}
+
+func (o SecretLabelArrayOutput) ToSecretLabelArrayOutputWithContext(ctx context.Context) SecretLabelArrayOutput {
+	return o
+}
+
+func (o SecretLabelArrayOutput) Index(i pulumi.IntInput) SecretLabelOutput {
+	return pulumi.All(o, i).ApplyT(func (vs []interface{}) SecretLabel {
+		return vs[0].([]SecretLabel)[vs[1].(int)]
+	}).(SecretLabelOutput)
 }
 
 type ServiceAuth struct {
@@ -2355,6 +2765,98 @@ func (o ServiceEndpointSpecPortArrayOutput) Index(i pulumi.IntInput) ServiceEndp
 	return pulumi.All(o, i).ApplyT(func (vs []interface{}) ServiceEndpointSpecPort {
 		return vs[0].([]ServiceEndpointSpecPort)[vs[1].(int)]
 	}).(ServiceEndpointSpecPortOutput)
+}
+
+type ServiceLabel struct {
+	Label string `pulumi:"label"`
+	Value string `pulumi:"value"`
+}
+
+type ServiceLabelInput interface {
+	pulumi.Input
+
+	ToServiceLabelOutput() ServiceLabelOutput
+	ToServiceLabelOutputWithContext(context.Context) ServiceLabelOutput
+}
+
+type ServiceLabelArgs struct {
+	Label pulumi.StringInput `pulumi:"label"`
+	Value pulumi.StringInput `pulumi:"value"`
+}
+
+func (ServiceLabelArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*ServiceLabel)(nil)).Elem()
+}
+
+func (i ServiceLabelArgs) ToServiceLabelOutput() ServiceLabelOutput {
+	return i.ToServiceLabelOutputWithContext(context.Background())
+}
+
+func (i ServiceLabelArgs) ToServiceLabelOutputWithContext(ctx context.Context) ServiceLabelOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ServiceLabelOutput)
+}
+
+type ServiceLabelArrayInput interface {
+	pulumi.Input
+
+	ToServiceLabelArrayOutput() ServiceLabelArrayOutput
+	ToServiceLabelArrayOutputWithContext(context.Context) ServiceLabelArrayOutput
+}
+
+type ServiceLabelArray []ServiceLabelInput
+
+func (ServiceLabelArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]ServiceLabel)(nil)).Elem()
+}
+
+func (i ServiceLabelArray) ToServiceLabelArrayOutput() ServiceLabelArrayOutput {
+	return i.ToServiceLabelArrayOutputWithContext(context.Background())
+}
+
+func (i ServiceLabelArray) ToServiceLabelArrayOutputWithContext(ctx context.Context) ServiceLabelArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ServiceLabelArrayOutput)
+}
+
+type ServiceLabelOutput struct { *pulumi.OutputState }
+
+func (ServiceLabelOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*ServiceLabel)(nil)).Elem()
+}
+
+func (o ServiceLabelOutput) ToServiceLabelOutput() ServiceLabelOutput {
+	return o
+}
+
+func (o ServiceLabelOutput) ToServiceLabelOutputWithContext(ctx context.Context) ServiceLabelOutput {
+	return o
+}
+
+func (o ServiceLabelOutput) Label() pulumi.StringOutput {
+	return o.ApplyT(func (v ServiceLabel) string { return v.Label }).(pulumi.StringOutput)
+}
+
+func (o ServiceLabelOutput) Value() pulumi.StringOutput {
+	return o.ApplyT(func (v ServiceLabel) string { return v.Value }).(pulumi.StringOutput)
+}
+
+type ServiceLabelArrayOutput struct { *pulumi.OutputState}
+
+func (ServiceLabelArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]ServiceLabel)(nil)).Elem()
+}
+
+func (o ServiceLabelArrayOutput) ToServiceLabelArrayOutput() ServiceLabelArrayOutput {
+	return o
+}
+
+func (o ServiceLabelArrayOutput) ToServiceLabelArrayOutputWithContext(ctx context.Context) ServiceLabelArrayOutput {
+	return o
+}
+
+func (o ServiceLabelArrayOutput) Index(i pulumi.IntInput) ServiceLabelOutput {
+	return pulumi.All(o, i).ApplyT(func (vs []interface{}) ServiceLabel {
+		return vs[0].([]ServiceLabel)[vs[1].(int)]
+	}).(ServiceLabelOutput)
 }
 
 type ServiceMode struct {
@@ -2932,7 +3434,7 @@ type ServiceTaskSpecContainerSpec struct {
 	Hosts []ServiceTaskSpecContainerSpecHost `pulumi:"hosts"`
 	Image string `pulumi:"image"`
 	Isolation *string `pulumi:"isolation"`
-	Labels map[string]string `pulumi:"labels"`
+	Labels []ServiceTaskSpecContainerSpecLabel `pulumi:"labels"`
 	Mounts []ServiceTaskSpecContainerSpecMount `pulumi:"mounts"`
 	Privileges *ServiceTaskSpecContainerSpecPrivileges `pulumi:"privileges"`
 	ReadOnly *bool `pulumi:"readOnly"`
@@ -2962,7 +3464,7 @@ type ServiceTaskSpecContainerSpecArgs struct {
 	Hosts ServiceTaskSpecContainerSpecHostArrayInput `pulumi:"hosts"`
 	Image pulumi.StringInput `pulumi:"image"`
 	Isolation pulumi.StringPtrInput `pulumi:"isolation"`
-	Labels pulumi.StringMapInput `pulumi:"labels"`
+	Labels ServiceTaskSpecContainerSpecLabelArrayInput `pulumi:"labels"`
 	Mounts ServiceTaskSpecContainerSpecMountArrayInput `pulumi:"mounts"`
 	Privileges ServiceTaskSpecContainerSpecPrivilegesPtrInput `pulumi:"privileges"`
 	ReadOnly pulumi.BoolPtrInput `pulumi:"readOnly"`
@@ -3046,8 +3548,8 @@ func (o ServiceTaskSpecContainerSpecOutput) Isolation() pulumi.StringPtrOutput {
 	return o.ApplyT(func (v ServiceTaskSpecContainerSpec) *string { return v.Isolation }).(pulumi.StringPtrOutput)
 }
 
-func (o ServiceTaskSpecContainerSpecOutput) Labels() pulumi.StringMapOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpec) map[string]string { return v.Labels }).(pulumi.StringMapOutput)
+func (o ServiceTaskSpecContainerSpecOutput) Labels() ServiceTaskSpecContainerSpecLabelArrayOutput {
+	return o.ApplyT(func (v ServiceTaskSpecContainerSpec) []ServiceTaskSpecContainerSpecLabel { return v.Labels }).(ServiceTaskSpecContainerSpecLabelArrayOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecOutput) Mounts() ServiceTaskSpecContainerSpecMountArrayOutput {
@@ -3083,8 +3585,14 @@ type ServiceTaskSpecContainerSpecConfig struct {
 	ConfigId string `pulumi:"configId"`
 	// The name of the config that this references, but internally it is just provided for lookup/display purposes
 	ConfigName *string `pulumi:"configName"`
+	// Represents the file GID. Defaults: `0`
+	FileGid *string `pulumi:"fileGid"`
+	// Represents the FileMode of the file. Defaults: `0444`
+	FileMode *int `pulumi:"fileMode"`
 	// Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
 	FileName string `pulumi:"fileName"`
+	// Represents the file UID. Defaults: `0`
+	FileUid *string `pulumi:"fileUid"`
 }
 
 type ServiceTaskSpecContainerSpecConfigInput interface {
@@ -3099,8 +3607,14 @@ type ServiceTaskSpecContainerSpecConfigArgs struct {
 	ConfigId pulumi.StringInput `pulumi:"configId"`
 	// The name of the config that this references, but internally it is just provided for lookup/display purposes
 	ConfigName pulumi.StringPtrInput `pulumi:"configName"`
+	// Represents the file GID. Defaults: `0`
+	FileGid pulumi.StringPtrInput `pulumi:"fileGid"`
+	// Represents the FileMode of the file. Defaults: `0444`
+	FileMode pulumi.IntPtrInput `pulumi:"fileMode"`
 	// Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
 	FileName pulumi.StringInput `pulumi:"fileName"`
+	// Represents the file UID. Defaults: `0`
+	FileUid pulumi.StringPtrInput `pulumi:"fileUid"`
 }
 
 func (ServiceTaskSpecContainerSpecConfigArgs) ElementType() reflect.Type {
@@ -3160,9 +3674,24 @@ func (o ServiceTaskSpecContainerSpecConfigOutput) ConfigName() pulumi.StringPtrO
 	return o.ApplyT(func (v ServiceTaskSpecContainerSpecConfig) *string { return v.ConfigName }).(pulumi.StringPtrOutput)
 }
 
+// Represents the file GID. Defaults: `0`
+func (o ServiceTaskSpecContainerSpecConfigOutput) FileGid() pulumi.StringPtrOutput {
+	return o.ApplyT(func (v ServiceTaskSpecContainerSpecConfig) *string { return v.FileGid }).(pulumi.StringPtrOutput)
+}
+
+// Represents the FileMode of the file. Defaults: `0444`
+func (o ServiceTaskSpecContainerSpecConfigOutput) FileMode() pulumi.IntPtrOutput {
+	return o.ApplyT(func (v ServiceTaskSpecContainerSpecConfig) *int { return v.FileMode }).(pulumi.IntPtrOutput)
+}
+
 // Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
 func (o ServiceTaskSpecContainerSpecConfigOutput) FileName() pulumi.StringOutput {
 	return o.ApplyT(func (v ServiceTaskSpecContainerSpecConfig) string { return v.FileName }).(pulumi.StringOutput)
+}
+
+// Represents the file UID. Defaults: `0`
+func (o ServiceTaskSpecContainerSpecConfigOutput) FileUid() pulumi.StringPtrOutput {
+	return o.ApplyT(func (v ServiceTaskSpecContainerSpecConfig) *string { return v.FileUid }).(pulumi.StringPtrOutput)
 }
 
 type ServiceTaskSpecContainerSpecConfigArrayOutput struct { *pulumi.OutputState}
@@ -3557,6 +4086,98 @@ func (o ServiceTaskSpecContainerSpecHostArrayOutput) Index(i pulumi.IntInput) Se
 	}).(ServiceTaskSpecContainerSpecHostOutput)
 }
 
+type ServiceTaskSpecContainerSpecLabel struct {
+	Label string `pulumi:"label"`
+	Value string `pulumi:"value"`
+}
+
+type ServiceTaskSpecContainerSpecLabelInput interface {
+	pulumi.Input
+
+	ToServiceTaskSpecContainerSpecLabelOutput() ServiceTaskSpecContainerSpecLabelOutput
+	ToServiceTaskSpecContainerSpecLabelOutputWithContext(context.Context) ServiceTaskSpecContainerSpecLabelOutput
+}
+
+type ServiceTaskSpecContainerSpecLabelArgs struct {
+	Label pulumi.StringInput `pulumi:"label"`
+	Value pulumi.StringInput `pulumi:"value"`
+}
+
+func (ServiceTaskSpecContainerSpecLabelArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*ServiceTaskSpecContainerSpecLabel)(nil)).Elem()
+}
+
+func (i ServiceTaskSpecContainerSpecLabelArgs) ToServiceTaskSpecContainerSpecLabelOutput() ServiceTaskSpecContainerSpecLabelOutput {
+	return i.ToServiceTaskSpecContainerSpecLabelOutputWithContext(context.Background())
+}
+
+func (i ServiceTaskSpecContainerSpecLabelArgs) ToServiceTaskSpecContainerSpecLabelOutputWithContext(ctx context.Context) ServiceTaskSpecContainerSpecLabelOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecContainerSpecLabelOutput)
+}
+
+type ServiceTaskSpecContainerSpecLabelArrayInput interface {
+	pulumi.Input
+
+	ToServiceTaskSpecContainerSpecLabelArrayOutput() ServiceTaskSpecContainerSpecLabelArrayOutput
+	ToServiceTaskSpecContainerSpecLabelArrayOutputWithContext(context.Context) ServiceTaskSpecContainerSpecLabelArrayOutput
+}
+
+type ServiceTaskSpecContainerSpecLabelArray []ServiceTaskSpecContainerSpecLabelInput
+
+func (ServiceTaskSpecContainerSpecLabelArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]ServiceTaskSpecContainerSpecLabel)(nil)).Elem()
+}
+
+func (i ServiceTaskSpecContainerSpecLabelArray) ToServiceTaskSpecContainerSpecLabelArrayOutput() ServiceTaskSpecContainerSpecLabelArrayOutput {
+	return i.ToServiceTaskSpecContainerSpecLabelArrayOutputWithContext(context.Background())
+}
+
+func (i ServiceTaskSpecContainerSpecLabelArray) ToServiceTaskSpecContainerSpecLabelArrayOutputWithContext(ctx context.Context) ServiceTaskSpecContainerSpecLabelArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecContainerSpecLabelArrayOutput)
+}
+
+type ServiceTaskSpecContainerSpecLabelOutput struct { *pulumi.OutputState }
+
+func (ServiceTaskSpecContainerSpecLabelOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*ServiceTaskSpecContainerSpecLabel)(nil)).Elem()
+}
+
+func (o ServiceTaskSpecContainerSpecLabelOutput) ToServiceTaskSpecContainerSpecLabelOutput() ServiceTaskSpecContainerSpecLabelOutput {
+	return o
+}
+
+func (o ServiceTaskSpecContainerSpecLabelOutput) ToServiceTaskSpecContainerSpecLabelOutputWithContext(ctx context.Context) ServiceTaskSpecContainerSpecLabelOutput {
+	return o
+}
+
+func (o ServiceTaskSpecContainerSpecLabelOutput) Label() pulumi.StringOutput {
+	return o.ApplyT(func (v ServiceTaskSpecContainerSpecLabel) string { return v.Label }).(pulumi.StringOutput)
+}
+
+func (o ServiceTaskSpecContainerSpecLabelOutput) Value() pulumi.StringOutput {
+	return o.ApplyT(func (v ServiceTaskSpecContainerSpecLabel) string { return v.Value }).(pulumi.StringOutput)
+}
+
+type ServiceTaskSpecContainerSpecLabelArrayOutput struct { *pulumi.OutputState}
+
+func (ServiceTaskSpecContainerSpecLabelArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]ServiceTaskSpecContainerSpecLabel)(nil)).Elem()
+}
+
+func (o ServiceTaskSpecContainerSpecLabelArrayOutput) ToServiceTaskSpecContainerSpecLabelArrayOutput() ServiceTaskSpecContainerSpecLabelArrayOutput {
+	return o
+}
+
+func (o ServiceTaskSpecContainerSpecLabelArrayOutput) ToServiceTaskSpecContainerSpecLabelArrayOutputWithContext(ctx context.Context) ServiceTaskSpecContainerSpecLabelArrayOutput {
+	return o
+}
+
+func (o ServiceTaskSpecContainerSpecLabelArrayOutput) Index(i pulumi.IntInput) ServiceTaskSpecContainerSpecLabelOutput {
+	return pulumi.All(o, i).ApplyT(func (vs []interface{}) ServiceTaskSpecContainerSpecLabel {
+		return vs[0].([]ServiceTaskSpecContainerSpecLabel)[vs[1].(int)]
+	}).(ServiceTaskSpecContainerSpecLabelOutput)
+}
+
 type ServiceTaskSpecContainerSpecMount struct {
 	BindOptions *ServiceTaskSpecContainerSpecMountBindOptions `pulumi:"bindOptions"`
 	ReadOnly *bool `pulumi:"readOnly"`
@@ -3912,7 +4533,7 @@ func (o ServiceTaskSpecContainerSpecMountTmpfsOptionsPtrOutput) SizeBytes() pulu
 type ServiceTaskSpecContainerSpecMountVolumeOptions struct {
 	DriverName *string `pulumi:"driverName"`
 	DriverOptions map[string]string `pulumi:"driverOptions"`
-	Labels map[string]string `pulumi:"labels"`
+	Labels []ServiceTaskSpecContainerSpecMountVolumeOptionsLabel `pulumi:"labels"`
 	NoCopy *bool `pulumi:"noCopy"`
 }
 
@@ -3926,7 +4547,7 @@ type ServiceTaskSpecContainerSpecMountVolumeOptionsInput interface {
 type ServiceTaskSpecContainerSpecMountVolumeOptionsArgs struct {
 	DriverName pulumi.StringPtrInput `pulumi:"driverName"`
 	DriverOptions pulumi.StringMapInput `pulumi:"driverOptions"`
-	Labels pulumi.StringMapInput `pulumi:"labels"`
+	Labels ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayInput `pulumi:"labels"`
 	NoCopy pulumi.BoolPtrInput `pulumi:"noCopy"`
 }
 
@@ -4005,8 +4626,8 @@ func (o ServiceTaskSpecContainerSpecMountVolumeOptionsOutput) DriverOptions() pu
 	return o.ApplyT(func (v ServiceTaskSpecContainerSpecMountVolumeOptions) map[string]string { return v.DriverOptions }).(pulumi.StringMapOutput)
 }
 
-func (o ServiceTaskSpecContainerSpecMountVolumeOptionsOutput) Labels() pulumi.StringMapOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecMountVolumeOptions) map[string]string { return v.Labels }).(pulumi.StringMapOutput)
+func (o ServiceTaskSpecContainerSpecMountVolumeOptionsOutput) Labels() ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayOutput {
+	return o.ApplyT(func (v ServiceTaskSpecContainerSpecMountVolumeOptions) []ServiceTaskSpecContainerSpecMountVolumeOptionsLabel { return v.Labels }).(ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecMountVolumeOptionsOutput) NoCopy() pulumi.BoolPtrOutput {
@@ -4039,12 +4660,104 @@ func (o ServiceTaskSpecContainerSpecMountVolumeOptionsPtrOutput) DriverOptions()
 	return o.ApplyT(func (v ServiceTaskSpecContainerSpecMountVolumeOptions) map[string]string { return v.DriverOptions }).(pulumi.StringMapOutput)
 }
 
-func (o ServiceTaskSpecContainerSpecMountVolumeOptionsPtrOutput) Labels() pulumi.StringMapOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecMountVolumeOptions) map[string]string { return v.Labels }).(pulumi.StringMapOutput)
+func (o ServiceTaskSpecContainerSpecMountVolumeOptionsPtrOutput) Labels() ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayOutput {
+	return o.ApplyT(func (v ServiceTaskSpecContainerSpecMountVolumeOptions) []ServiceTaskSpecContainerSpecMountVolumeOptionsLabel { return v.Labels }).(ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecMountVolumeOptionsPtrOutput) NoCopy() pulumi.BoolPtrOutput {
 	return o.ApplyT(func (v ServiceTaskSpecContainerSpecMountVolumeOptions) *bool { return v.NoCopy }).(pulumi.BoolPtrOutput)
+}
+
+type ServiceTaskSpecContainerSpecMountVolumeOptionsLabel struct {
+	Label string `pulumi:"label"`
+	Value string `pulumi:"value"`
+}
+
+type ServiceTaskSpecContainerSpecMountVolumeOptionsLabelInput interface {
+	pulumi.Input
+
+	ToServiceTaskSpecContainerSpecMountVolumeOptionsLabelOutput() ServiceTaskSpecContainerSpecMountVolumeOptionsLabelOutput
+	ToServiceTaskSpecContainerSpecMountVolumeOptionsLabelOutputWithContext(context.Context) ServiceTaskSpecContainerSpecMountVolumeOptionsLabelOutput
+}
+
+type ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArgs struct {
+	Label pulumi.StringInput `pulumi:"label"`
+	Value pulumi.StringInput `pulumi:"value"`
+}
+
+func (ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*ServiceTaskSpecContainerSpecMountVolumeOptionsLabel)(nil)).Elem()
+}
+
+func (i ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArgs) ToServiceTaskSpecContainerSpecMountVolumeOptionsLabelOutput() ServiceTaskSpecContainerSpecMountVolumeOptionsLabelOutput {
+	return i.ToServiceTaskSpecContainerSpecMountVolumeOptionsLabelOutputWithContext(context.Background())
+}
+
+func (i ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArgs) ToServiceTaskSpecContainerSpecMountVolumeOptionsLabelOutputWithContext(ctx context.Context) ServiceTaskSpecContainerSpecMountVolumeOptionsLabelOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecContainerSpecMountVolumeOptionsLabelOutput)
+}
+
+type ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayInput interface {
+	pulumi.Input
+
+	ToServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayOutput() ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayOutput
+	ToServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayOutputWithContext(context.Context) ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayOutput
+}
+
+type ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArray []ServiceTaskSpecContainerSpecMountVolumeOptionsLabelInput
+
+func (ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]ServiceTaskSpecContainerSpecMountVolumeOptionsLabel)(nil)).Elem()
+}
+
+func (i ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArray) ToServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayOutput() ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayOutput {
+	return i.ToServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayOutputWithContext(context.Background())
+}
+
+func (i ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArray) ToServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayOutputWithContext(ctx context.Context) ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayOutput)
+}
+
+type ServiceTaskSpecContainerSpecMountVolumeOptionsLabelOutput struct { *pulumi.OutputState }
+
+func (ServiceTaskSpecContainerSpecMountVolumeOptionsLabelOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*ServiceTaskSpecContainerSpecMountVolumeOptionsLabel)(nil)).Elem()
+}
+
+func (o ServiceTaskSpecContainerSpecMountVolumeOptionsLabelOutput) ToServiceTaskSpecContainerSpecMountVolumeOptionsLabelOutput() ServiceTaskSpecContainerSpecMountVolumeOptionsLabelOutput {
+	return o
+}
+
+func (o ServiceTaskSpecContainerSpecMountVolumeOptionsLabelOutput) ToServiceTaskSpecContainerSpecMountVolumeOptionsLabelOutputWithContext(ctx context.Context) ServiceTaskSpecContainerSpecMountVolumeOptionsLabelOutput {
+	return o
+}
+
+func (o ServiceTaskSpecContainerSpecMountVolumeOptionsLabelOutput) Label() pulumi.StringOutput {
+	return o.ApplyT(func (v ServiceTaskSpecContainerSpecMountVolumeOptionsLabel) string { return v.Label }).(pulumi.StringOutput)
+}
+
+func (o ServiceTaskSpecContainerSpecMountVolumeOptionsLabelOutput) Value() pulumi.StringOutput {
+	return o.ApplyT(func (v ServiceTaskSpecContainerSpecMountVolumeOptionsLabel) string { return v.Value }).(pulumi.StringOutput)
+}
+
+type ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayOutput struct { *pulumi.OutputState}
+
+func (ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]ServiceTaskSpecContainerSpecMountVolumeOptionsLabel)(nil)).Elem()
+}
+
+func (o ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayOutput) ToServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayOutput() ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayOutput {
+	return o
+}
+
+func (o ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayOutput) ToServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayOutputWithContext(ctx context.Context) ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayOutput {
+	return o
+}
+
+func (o ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayOutput) Index(i pulumi.IntInput) ServiceTaskSpecContainerSpecMountVolumeOptionsLabelOutput {
+	return pulumi.All(o, i).ApplyT(func (vs []interface{}) ServiceTaskSpecContainerSpecMountVolumeOptionsLabel {
+		return vs[0].([]ServiceTaskSpecContainerSpecMountVolumeOptionsLabel)[vs[1].(int)]
+	}).(ServiceTaskSpecContainerSpecMountVolumeOptionsLabelOutput)
 }
 
 type ServiceTaskSpecContainerSpecPrivileges struct {
@@ -4432,8 +5145,14 @@ func (o ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrOutput) User() pu
 }
 
 type ServiceTaskSpecContainerSpecSecret struct {
+	// Represents the file GID. Defaults: `0`
+	FileGid *string `pulumi:"fileGid"`
+	// Represents the FileMode of the file. Defaults: `0444`
+	FileMode *int `pulumi:"fileMode"`
 	// Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
 	FileName string `pulumi:"fileName"`
+	// Represents the file UID. Defaults: `0`
+	FileUid *string `pulumi:"fileUid"`
 	SecretId string `pulumi:"secretId"`
 	SecretName *string `pulumi:"secretName"`
 }
@@ -4446,8 +5165,14 @@ type ServiceTaskSpecContainerSpecSecretInput interface {
 }
 
 type ServiceTaskSpecContainerSpecSecretArgs struct {
+	// Represents the file GID. Defaults: `0`
+	FileGid pulumi.StringPtrInput `pulumi:"fileGid"`
+	// Represents the FileMode of the file. Defaults: `0444`
+	FileMode pulumi.IntPtrInput `pulumi:"fileMode"`
 	// Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
 	FileName pulumi.StringInput `pulumi:"fileName"`
+	// Represents the file UID. Defaults: `0`
+	FileUid pulumi.StringPtrInput `pulumi:"fileUid"`
 	SecretId pulumi.StringInput `pulumi:"secretId"`
 	SecretName pulumi.StringPtrInput `pulumi:"secretName"`
 }
@@ -4499,9 +5224,24 @@ func (o ServiceTaskSpecContainerSpecSecretOutput) ToServiceTaskSpecContainerSpec
 	return o
 }
 
+// Represents the file GID. Defaults: `0`
+func (o ServiceTaskSpecContainerSpecSecretOutput) FileGid() pulumi.StringPtrOutput {
+	return o.ApplyT(func (v ServiceTaskSpecContainerSpecSecret) *string { return v.FileGid }).(pulumi.StringPtrOutput)
+}
+
+// Represents the FileMode of the file. Defaults: `0444`
+func (o ServiceTaskSpecContainerSpecSecretOutput) FileMode() pulumi.IntPtrOutput {
+	return o.ApplyT(func (v ServiceTaskSpecContainerSpecSecret) *int { return v.FileMode }).(pulumi.IntPtrOutput)
+}
+
 // Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
 func (o ServiceTaskSpecContainerSpecSecretOutput) FileName() pulumi.StringOutput {
 	return o.ApplyT(func (v ServiceTaskSpecContainerSpecSecret) string { return v.FileName }).(pulumi.StringOutput)
+}
+
+// Represents the file UID. Defaults: `0`
+func (o ServiceTaskSpecContainerSpecSecretOutput) FileUid() pulumi.StringPtrOutput {
+	return o.ApplyT(func (v ServiceTaskSpecContainerSpecSecret) *string { return v.FileUid }).(pulumi.StringPtrOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecSecretOutput) SecretId() pulumi.StringOutput {
@@ -5784,6 +6524,98 @@ func (o ServiceUpdateConfigPtrOutput) Parallelism() pulumi.IntPtrOutput {
 	return o.ApplyT(func (v ServiceUpdateConfig) *int { return v.Parallelism }).(pulumi.IntPtrOutput)
 }
 
+type VolumeLabel struct {
+	Label string `pulumi:"label"`
+	Value string `pulumi:"value"`
+}
+
+type VolumeLabelInput interface {
+	pulumi.Input
+
+	ToVolumeLabelOutput() VolumeLabelOutput
+	ToVolumeLabelOutputWithContext(context.Context) VolumeLabelOutput
+}
+
+type VolumeLabelArgs struct {
+	Label pulumi.StringInput `pulumi:"label"`
+	Value pulumi.StringInput `pulumi:"value"`
+}
+
+func (VolumeLabelArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*VolumeLabel)(nil)).Elem()
+}
+
+func (i VolumeLabelArgs) ToVolumeLabelOutput() VolumeLabelOutput {
+	return i.ToVolumeLabelOutputWithContext(context.Background())
+}
+
+func (i VolumeLabelArgs) ToVolumeLabelOutputWithContext(ctx context.Context) VolumeLabelOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(VolumeLabelOutput)
+}
+
+type VolumeLabelArrayInput interface {
+	pulumi.Input
+
+	ToVolumeLabelArrayOutput() VolumeLabelArrayOutput
+	ToVolumeLabelArrayOutputWithContext(context.Context) VolumeLabelArrayOutput
+}
+
+type VolumeLabelArray []VolumeLabelInput
+
+func (VolumeLabelArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]VolumeLabel)(nil)).Elem()
+}
+
+func (i VolumeLabelArray) ToVolumeLabelArrayOutput() VolumeLabelArrayOutput {
+	return i.ToVolumeLabelArrayOutputWithContext(context.Background())
+}
+
+func (i VolumeLabelArray) ToVolumeLabelArrayOutputWithContext(ctx context.Context) VolumeLabelArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(VolumeLabelArrayOutput)
+}
+
+type VolumeLabelOutput struct { *pulumi.OutputState }
+
+func (VolumeLabelOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*VolumeLabel)(nil)).Elem()
+}
+
+func (o VolumeLabelOutput) ToVolumeLabelOutput() VolumeLabelOutput {
+	return o
+}
+
+func (o VolumeLabelOutput) ToVolumeLabelOutputWithContext(ctx context.Context) VolumeLabelOutput {
+	return o
+}
+
+func (o VolumeLabelOutput) Label() pulumi.StringOutput {
+	return o.ApplyT(func (v VolumeLabel) string { return v.Label }).(pulumi.StringOutput)
+}
+
+func (o VolumeLabelOutput) Value() pulumi.StringOutput {
+	return o.ApplyT(func (v VolumeLabel) string { return v.Value }).(pulumi.StringOutput)
+}
+
+type VolumeLabelArrayOutput struct { *pulumi.OutputState}
+
+func (VolumeLabelArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]VolumeLabel)(nil)).Elem()
+}
+
+func (o VolumeLabelArrayOutput) ToVolumeLabelArrayOutput() VolumeLabelArrayOutput {
+	return o
+}
+
+func (o VolumeLabelArrayOutput) ToVolumeLabelArrayOutputWithContext(ctx context.Context) VolumeLabelArrayOutput {
+	return o
+}
+
+func (o VolumeLabelArrayOutput) Index(i pulumi.IntInput) VolumeLabelOutput {
+	return pulumi.All(o, i).ApplyT(func (vs []interface{}) VolumeLabel {
+		return vs[0].([]VolumeLabel)[vs[1].(int)]
+	}).(VolumeLabelOutput)
+}
+
 type GetNetworkIpamConfig struct {
 	AuxAddress map[string]interface{} `pulumi:"auxAddress"`
 	Gateway *string `pulumi:"gateway"`
@@ -5891,6 +6723,7 @@ func (o GetNetworkIpamConfigArrayOutput) Index(i pulumi.IntInput) GetNetworkIpam
 type ProviderRegistryAuth struct {
 	Address string `pulumi:"address"`
 	ConfigFile *string `pulumi:"configFile"`
+	ConfigFileContent *string `pulumi:"configFileContent"`
 	Password *string `pulumi:"password"`
 	Username *string `pulumi:"username"`
 }
@@ -5905,6 +6738,7 @@ type ProviderRegistryAuthInput interface {
 type ProviderRegistryAuthArgs struct {
 	Address pulumi.StringInput `pulumi:"address"`
 	ConfigFile pulumi.StringPtrInput `pulumi:"configFile"`
+	ConfigFileContent pulumi.StringPtrInput `pulumi:"configFileContent"`
 	Password pulumi.StringPtrInput `pulumi:"password"`
 	Username pulumi.StringPtrInput `pulumi:"username"`
 }
@@ -5964,6 +6798,10 @@ func (o ProviderRegistryAuthOutput) ConfigFile() pulumi.StringPtrOutput {
 	return o.ApplyT(func (v ProviderRegistryAuth) *string { return v.ConfigFile }).(pulumi.StringPtrOutput)
 }
 
+func (o ProviderRegistryAuthOutput) ConfigFileContent() pulumi.StringPtrOutput {
+	return o.ApplyT(func (v ProviderRegistryAuth) *string { return v.ConfigFileContent }).(pulumi.StringPtrOutput)
+}
+
 func (o ProviderRegistryAuthOutput) Password() pulumi.StringPtrOutput {
 	return o.ApplyT(func (v ProviderRegistryAuth) *string { return v.Password }).(pulumi.StringPtrOutput)
 }
@@ -6001,6 +6839,8 @@ func init() {
 	pulumi.RegisterOutputType(ContainerHealthcheckPtrOutput{})
 	pulumi.RegisterOutputType(ContainerHostOutput{})
 	pulumi.RegisterOutputType(ContainerHostArrayOutput{})
+	pulumi.RegisterOutputType(ContainerLabelOutput{})
+	pulumi.RegisterOutputType(ContainerLabelArrayOutput{})
 	pulumi.RegisterOutputType(ContainerMountOutput{})
 	pulumi.RegisterOutputType(ContainerMountArrayOutput{})
 	pulumi.RegisterOutputType(ContainerMountBindOptionsOutput{})
@@ -6009,6 +6849,8 @@ func init() {
 	pulumi.RegisterOutputType(ContainerMountTmpfsOptionsPtrOutput{})
 	pulumi.RegisterOutputType(ContainerMountVolumeOptionsOutput{})
 	pulumi.RegisterOutputType(ContainerMountVolumeOptionsPtrOutput{})
+	pulumi.RegisterOutputType(ContainerMountVolumeOptionsLabelOutput{})
+	pulumi.RegisterOutputType(ContainerMountVolumeOptionsLabelArrayOutput{})
 	pulumi.RegisterOutputType(ContainerNetworkDataOutput{})
 	pulumi.RegisterOutputType(ContainerNetworkDataArrayOutput{})
 	pulumi.RegisterOutputType(ContainerNetworksAdvancedOutput{})
@@ -6023,6 +6865,10 @@ func init() {
 	pulumi.RegisterOutputType(ContainerVolumeArrayOutput{})
 	pulumi.RegisterOutputType(NetworkIpamConfigOutput{})
 	pulumi.RegisterOutputType(NetworkIpamConfigArrayOutput{})
+	pulumi.RegisterOutputType(NetworkLabelOutput{})
+	pulumi.RegisterOutputType(NetworkLabelArrayOutput{})
+	pulumi.RegisterOutputType(SecretLabelOutput{})
+	pulumi.RegisterOutputType(SecretLabelArrayOutput{})
 	pulumi.RegisterOutputType(ServiceAuthOutput{})
 	pulumi.RegisterOutputType(ServiceAuthPtrOutput{})
 	pulumi.RegisterOutputType(ServiceConvergeConfigOutput{})
@@ -6031,6 +6877,8 @@ func init() {
 	pulumi.RegisterOutputType(ServiceEndpointSpecPtrOutput{})
 	pulumi.RegisterOutputType(ServiceEndpointSpecPortOutput{})
 	pulumi.RegisterOutputType(ServiceEndpointSpecPortArrayOutput{})
+	pulumi.RegisterOutputType(ServiceLabelOutput{})
+	pulumi.RegisterOutputType(ServiceLabelArrayOutput{})
 	pulumi.RegisterOutputType(ServiceModeOutput{})
 	pulumi.RegisterOutputType(ServiceModePtrOutput{})
 	pulumi.RegisterOutputType(ServiceModeReplicatedOutput{})
@@ -6048,6 +6896,8 @@ func init() {
 	pulumi.RegisterOutputType(ServiceTaskSpecContainerSpecHealthcheckPtrOutput{})
 	pulumi.RegisterOutputType(ServiceTaskSpecContainerSpecHostOutput{})
 	pulumi.RegisterOutputType(ServiceTaskSpecContainerSpecHostArrayOutput{})
+	pulumi.RegisterOutputType(ServiceTaskSpecContainerSpecLabelOutput{})
+	pulumi.RegisterOutputType(ServiceTaskSpecContainerSpecLabelArrayOutput{})
 	pulumi.RegisterOutputType(ServiceTaskSpecContainerSpecMountOutput{})
 	pulumi.RegisterOutputType(ServiceTaskSpecContainerSpecMountArrayOutput{})
 	pulumi.RegisterOutputType(ServiceTaskSpecContainerSpecMountBindOptionsOutput{})
@@ -6056,6 +6906,8 @@ func init() {
 	pulumi.RegisterOutputType(ServiceTaskSpecContainerSpecMountTmpfsOptionsPtrOutput{})
 	pulumi.RegisterOutputType(ServiceTaskSpecContainerSpecMountVolumeOptionsOutput{})
 	pulumi.RegisterOutputType(ServiceTaskSpecContainerSpecMountVolumeOptionsPtrOutput{})
+	pulumi.RegisterOutputType(ServiceTaskSpecContainerSpecMountVolumeOptionsLabelOutput{})
+	pulumi.RegisterOutputType(ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayOutput{})
 	pulumi.RegisterOutputType(ServiceTaskSpecContainerSpecPrivilegesOutput{})
 	pulumi.RegisterOutputType(ServiceTaskSpecContainerSpecPrivilegesPtrOutput{})
 	pulumi.RegisterOutputType(ServiceTaskSpecContainerSpecPrivilegesCredentialSpecOutput{})
@@ -6084,6 +6936,8 @@ func init() {
 	pulumi.RegisterOutputType(ServiceTaskSpecRestartPolicyPtrOutput{})
 	pulumi.RegisterOutputType(ServiceUpdateConfigOutput{})
 	pulumi.RegisterOutputType(ServiceUpdateConfigPtrOutput{})
+	pulumi.RegisterOutputType(VolumeLabelOutput{})
+	pulumi.RegisterOutputType(VolumeLabelArrayOutput{})
 	pulumi.RegisterOutputType(GetNetworkIpamConfigOutput{})
 	pulumi.RegisterOutputType(GetNetworkIpamConfigArrayOutput{})
 	pulumi.RegisterOutputType(ProviderRegistryAuthOutput{})

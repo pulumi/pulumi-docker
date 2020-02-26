@@ -260,18 +260,15 @@ async function buildAndPushImageWorkerAsync(
     }
 
     // If the container specified a cacheFrom parameter, first set up the cached stages.
-    let cacheFrom = Promise.resolve<string[] | undefined>(undefined);
+    let cacheFrom: string[] = [];
     if (pullFromCache) {
         const dockerBuild = <pulumi.UnwrappedObject<DockerBuild>>pathOrBuild;
         const cacheFromParam = (typeof dockerBuild.cacheFrom === "boolean" ? {} : dockerBuild.cacheFrom) || {};
-        cacheFrom = pullCacheAsync(baseImageName, cacheFromParam, repositoryUrl, logResource);
+        cacheFrom = await pullCacheAsync(baseImageName, cacheFromParam, repositoryUrl, logResource);
     }
 
     // Next, build the image.
     const {imageId, stages} = await buildImageAsync(baseImageName, pathOrBuild, logResource, cacheFrom);
-    if (imageId === undefined) {
-        throw new Error("Internal error: docker build did not produce an imageId.");
-    }
 
     // Generate a name that uniquely will identify this built image.  This is similar in purpose to
     // the name@digest form that can be normally be retrieved from a docker repository.  However,
@@ -332,11 +329,11 @@ async function pullCacheAsync(
     imageName: string,
     cacheFrom: pulumi.Unwrap<CacheFrom>,
     repoUrl: string,
-    logResource: pulumi.Resource): Promise<string[] | undefined> {
+    logResource: pulumi.Resource): Promise<string[]> {
 
     // Ensure that we have a repository URL. If we don't, we won't be able to pull anything.
     if (!repoUrl) {
-        return undefined;
+        return [];
     }
 
     pulumi.log.debug(`pulling cache for ${imageName} from ${repoUrl}`, logResource);
@@ -373,7 +370,7 @@ async function buildImageAsync(
     imageName: string,
     pathOrBuild: string | pulumi.Unwrap<DockerBuild>,
     logResource: pulumi.Resource,
-    cacheFrom: Promise<string[] | undefined>): Promise<BuildResult> {
+    cacheFrom: string[]): Promise<BuildResult> {
 
     let build: pulumi.Unwrap<DockerBuild>;
     if (typeof pathOrBuild === "string") {
@@ -436,7 +433,7 @@ async function buildImageAsync(
 async function dockerBuild(
     imageName: string,
     build: pulumi.Unwrap<DockerBuild>,
-    cacheFrom: Promise<string[] | undefined>,
+    cacheFrom: string[],
     logResource: pulumi.Resource,
     target?: string): Promise<void> {
 
@@ -453,11 +450,8 @@ async function dockerBuild(
     if (build.target) {
         buildArgs.push(...["--target", build.target]);
     }
-    if (build.cacheFrom) {
-        const cacheFromImages = await cacheFrom;
-        if (cacheFromImages && cacheFromImages.length) {
-            buildArgs.push(...["--cache-from", cacheFromImages.join()]);
-        }
+    if (cacheFrom.length) {
+        buildArgs.push(...["--cache-from", cacheFrom.join()]);
     }
     if (build.extraOptions) {
         buildArgs.push(...build.extraOptions);

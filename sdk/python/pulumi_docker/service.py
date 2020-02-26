@@ -38,7 +38,7 @@ class Service(pulumi.CustomResource):
         * `publishedPort` (`float`) - The port on the swarm hosts. If not set the value of `target_port` will be used.
         * `targetPort` (`float`) - Port inside the container.
     """
-    labels: pulumi.Output[dict]
+    labels: pulumi.Output[list]
     mode: pulumi.Output[dict]
     """
     The mode of resolution to use for internal load balancing between tasks. `(vip|dnsrr)`. Default: `vip`.
@@ -75,7 +75,10 @@ class Service(pulumi.CustomResource):
     
           * `configId` (`str`) - ConfigID represents the ID of the specific config.
           * `configName` (`str`) - The name of the config that this references, but internally it is just provided for lookup/display purposes
+          * `fileGid` (`str`) - Represents the file GID. Defaults: `0`
+          * `fileMode` (`float`) - Represents the FileMode of the file. Defaults: `0444`
           * `fileName` (`str`) - Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
+          * `fileUid` (`str`) - Represents the file UID. Defaults: `0`
     
         * `dir` (`str`)
         * `dnsConfig` (`dict`)
@@ -102,7 +105,11 @@ class Service(pulumi.CustomResource):
     
         * `image` (`str`)
         * `isolation` (`str`)
-        * `labels` (`dict`)
+        * `labels` (`list`)
+    
+          * `label` (`str`)
+          * `value` (`str`)
+    
         * `mounts` (`list`)
     
           * `bindOptions` (`dict`)
@@ -122,7 +129,11 @@ class Service(pulumi.CustomResource):
     
             * `driverName` (`str`)
             * `driverOptions` (`dict`)
-            * `labels` (`dict`)
+            * `labels` (`list`)
+    
+              * `label` (`str`)
+              * `value` (`str`)
+    
             * `noCopy` (`bool`)
     
         * `privileges` (`dict`)
@@ -143,7 +154,10 @@ class Service(pulumi.CustomResource):
         * `read_only` (`bool`)
         * `secrets` (`list`)
     
+          * `fileGid` (`str`) - Represents the file GID. Defaults: `0`
+          * `fileMode` (`float`) - Represents the FileMode of the file. Defaults: `0444`
           * `fileName` (`str`) - Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
+          * `fileUid` (`str`) - Represents the file UID. Defaults: `0`
           * `secretId` (`str`)
           * `secretName` (`str`)
     
@@ -247,6 +261,11 @@ class Service(pulumi.CustomResource):
             * `publishedPort` (`pulumi.Input[float]`) - The port on the swarm hosts. If not set the value of `target_port` will be used.
             * `targetPort` (`pulumi.Input[float]`) - Port inside the container.
         
+        The **labels** object supports the following:
+        
+          * `label` (`pulumi.Input[str]`)
+          * `value` (`pulumi.Input[str]`)
+        
         The **mode** object supports the following:
         
           * `global` (`pulumi.Input[bool]`)
@@ -273,7 +292,10 @@ class Service(pulumi.CustomResource):
         
               * `configId` (`pulumi.Input[str]`) - ConfigID represents the ID of the specific config.
               * `configName` (`pulumi.Input[str]`) - The name of the config that this references, but internally it is just provided for lookup/display purposes
+              * `fileGid` (`pulumi.Input[str]`) - Represents the file GID. Defaults: `0`
+              * `fileMode` (`pulumi.Input[float]`) - Represents the FileMode of the file. Defaults: `0444`
               * `fileName` (`pulumi.Input[str]`) - Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
+              * `fileUid` (`pulumi.Input[str]`) - Represents the file UID. Defaults: `0`
         
             * `dir` (`pulumi.Input[str]`)
             * `dnsConfig` (`pulumi.Input[dict]`)
@@ -300,7 +322,11 @@ class Service(pulumi.CustomResource):
         
             * `image` (`pulumi.Input[str]`)
             * `isolation` (`pulumi.Input[str]`)
-            * `labels` (`pulumi.Input[dict]`)
+            * `labels` (`pulumi.Input[list]`)
+        
+              * `label` (`pulumi.Input[str]`)
+              * `value` (`pulumi.Input[str]`)
+        
             * `mounts` (`pulumi.Input[list]`)
         
               * `bindOptions` (`pulumi.Input[dict]`)
@@ -320,7 +346,11 @@ class Service(pulumi.CustomResource):
         
                 * `driverName` (`pulumi.Input[str]`)
                 * `driverOptions` (`pulumi.Input[dict]`)
-                * `labels` (`pulumi.Input[dict]`)
+                * `labels` (`pulumi.Input[list]`)
+        
+                  * `label` (`pulumi.Input[str]`)
+                  * `value` (`pulumi.Input[str]`)
+        
                 * `noCopy` (`pulumi.Input[bool]`)
         
             * `privileges` (`pulumi.Input[dict]`)
@@ -341,7 +371,10 @@ class Service(pulumi.CustomResource):
             * `read_only` (`pulumi.Input[bool]`)
             * `secrets` (`pulumi.Input[list]`)
         
+              * `fileGid` (`pulumi.Input[str]`) - Represents the file GID. Defaults: `0`
+              * `fileMode` (`pulumi.Input[float]`) - Represents the FileMode of the file. Defaults: `0444`
               * `fileName` (`pulumi.Input[str]`) - Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
+              * `fileUid` (`pulumi.Input[str]`) - Represents the file UID. Defaults: `0`
               * `secretId` (`pulumi.Input[str]`)
               * `secretName` (`pulumi.Input[str]`)
         
@@ -482,6 +515,11 @@ class Service(pulumi.CustomResource):
             * `publishedPort` (`pulumi.Input[float]`) - The port on the swarm hosts. If not set the value of `target_port` will be used.
             * `targetPort` (`pulumi.Input[float]`) - Port inside the container.
         
+        The **labels** object supports the following:
+        
+          * `label` (`pulumi.Input[str]`)
+          * `value` (`pulumi.Input[str]`)
+        
         The **mode** object supports the following:
         
           * `global` (`pulumi.Input[bool]`)
@@ -508,7 +546,10 @@ class Service(pulumi.CustomResource):
         
               * `configId` (`pulumi.Input[str]`) - ConfigID represents the ID of the specific config.
               * `configName` (`pulumi.Input[str]`) - The name of the config that this references, but internally it is just provided for lookup/display purposes
+              * `fileGid` (`pulumi.Input[str]`) - Represents the file GID. Defaults: `0`
+              * `fileMode` (`pulumi.Input[float]`) - Represents the FileMode of the file. Defaults: `0444`
               * `fileName` (`pulumi.Input[str]`) - Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
+              * `fileUid` (`pulumi.Input[str]`) - Represents the file UID. Defaults: `0`
         
             * `dir` (`pulumi.Input[str]`)
             * `dnsConfig` (`pulumi.Input[dict]`)
@@ -535,7 +576,11 @@ class Service(pulumi.CustomResource):
         
             * `image` (`pulumi.Input[str]`)
             * `isolation` (`pulumi.Input[str]`)
-            * `labels` (`pulumi.Input[dict]`)
+            * `labels` (`pulumi.Input[list]`)
+        
+              * `label` (`pulumi.Input[str]`)
+              * `value` (`pulumi.Input[str]`)
+        
             * `mounts` (`pulumi.Input[list]`)
         
               * `bindOptions` (`pulumi.Input[dict]`)
@@ -555,7 +600,11 @@ class Service(pulumi.CustomResource):
         
                 * `driverName` (`pulumi.Input[str]`)
                 * `driverOptions` (`pulumi.Input[dict]`)
-                * `labels` (`pulumi.Input[dict]`)
+                * `labels` (`pulumi.Input[list]`)
+        
+                  * `label` (`pulumi.Input[str]`)
+                  * `value` (`pulumi.Input[str]`)
+        
                 * `noCopy` (`pulumi.Input[bool]`)
         
             * `privileges` (`pulumi.Input[dict]`)
@@ -576,7 +625,10 @@ class Service(pulumi.CustomResource):
             * `read_only` (`pulumi.Input[bool]`)
             * `secrets` (`pulumi.Input[list]`)
         
+              * `fileGid` (`pulumi.Input[str]`) - Represents the file GID. Defaults: `0`
+              * `fileMode` (`pulumi.Input[float]`) - Represents the FileMode of the file. Defaults: `0444`
               * `fileName` (`pulumi.Input[str]`) - Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
+              * `fileUid` (`pulumi.Input[str]`) - Represents the file UID. Defaults: `0`
               * `secretId` (`pulumi.Input[str]`)
               * `secretName` (`pulumi.Input[str]`)
         

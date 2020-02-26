@@ -63,7 +63,7 @@ type Container struct {
 	// See Healthcheck below for details.
 	Healthcheck ContainerHealthcheckPtrOutput `pulumi:"healthcheck"`
 	// Hostname of the container.
-	Hostname pulumi.StringPtrOutput `pulumi:"hostname"`
+	Hostname pulumi.StringOutput `pulumi:"hostname"`
 	// Hostname to add.
 	Hosts ContainerHostArrayOutput `pulumi:"hosts"`
 	// The ID of the image to back this container.
@@ -76,9 +76,9 @@ type Container struct {
 	// NetworkSettings.
 	IpPrefixLength pulumi.IntOutput `pulumi:"ipPrefixLength"`
 	// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
-	IpcMode pulumi.StringPtrOutput `pulumi:"ipcMode"`
+	IpcMode pulumi.StringOutput `pulumi:"ipcMode"`
 	// Adding labels.
-	Labels pulumi.MapOutput `pulumi:"labels"`
+	Labels ContainerLabelArrayOutput `pulumi:"labels"`
 	// Set of links for link based
 	// connectivity between containers that are running on the same host.
 	Links pulumi.StringArrayOutput `pulumi:"links"`
@@ -129,7 +129,7 @@ type Container struct {
 	Restart pulumi.StringPtrOutput `pulumi:"restart"`
 	Rm pulumi.BoolPtrOutput `pulumi:"rm"`
 	// Size of `/dev/shm` in MBs.
-	ShmSize pulumi.IntPtrOutput `pulumi:"shmSize"`
+	ShmSize pulumi.IntOutput `pulumi:"shmSize"`
 	// If true, then the Docker container will be
 	// started after creation. If false, then the container is only created.
 	Start pulumi.BoolPtrOutput `pulumi:"start"`
@@ -245,7 +245,7 @@ type containerState struct {
 	// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
 	IpcMode *string `pulumi:"ipcMode"`
 	// Adding labels.
-	Labels map[string]interface{} `pulumi:"labels"`
+	Labels []ContainerLabel `pulumi:"labels"`
 	// Set of links for link based
 	// connectivity between containers that are running on the same host.
 	Links []string `pulumi:"links"`
@@ -382,7 +382,7 @@ type ContainerState struct {
 	// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
 	IpcMode pulumi.StringPtrInput
 	// Adding labels.
-	Labels pulumi.MapInput
+	Labels ContainerLabelArrayInput
 	// Set of links for link based
 	// connectivity between containers that are running on the same host.
 	Links pulumi.StringArrayInput
@@ -509,7 +509,7 @@ type containerArgs struct {
 	// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
 	IpcMode *string `pulumi:"ipcMode"`
 	// Adding labels.
-	Labels map[string]interface{} `pulumi:"labels"`
+	Labels []ContainerLabel `pulumi:"labels"`
 	// Set of links for link based
 	// connectivity between containers that are running on the same host.
 	Links []string `pulumi:"links"`
@@ -630,7 +630,7 @@ type ContainerArgs struct {
 	// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
 	IpcMode pulumi.StringPtrInput
 	// Adding labels.
-	Labels pulumi.MapInput
+	Labels ContainerLabelArrayInput
 	// Set of links for link based
 	// connectivity between containers that are running on the same host.
 	Links pulumi.StringArrayInput

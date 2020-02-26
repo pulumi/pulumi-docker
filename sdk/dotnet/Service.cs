@@ -35,7 +35,7 @@ namespace Pulumi.Docker
         /// User-defined key/value metadata
         /// </summary>
         [Output("labels")]
-        public Output<ImmutableDictionary<string, string>> Labels { get; private set; } = null!;
+        public Output<ImmutableArray<Outputs.ServiceLabels>> Labels { get; private set; } = null!;
 
         /// <summary>
         /// The mode of resolution to use for internal load balancing between tasks. `(vip|dnsrr)`. Default: `vip`.
@@ -132,14 +132,14 @@ namespace Pulumi.Docker
         public Input<Inputs.ServiceEndpointSpecArgs>? EndpointSpec { get; set; }
 
         [Input("labels")]
-        private InputMap<string>? _labels;
+        private InputList<Inputs.ServiceLabelsArgs>? _labels;
 
         /// <summary>
         /// User-defined key/value metadata
         /// </summary>
-        public InputMap<string> Labels
+        public InputList<Inputs.ServiceLabelsArgs> Labels
         {
-            get => _labels ?? (_labels = new InputMap<string>());
+            get => _labels ?? (_labels = new InputList<Inputs.ServiceLabelsArgs>());
             set => _labels = value;
         }
 
@@ -199,14 +199,14 @@ namespace Pulumi.Docker
         public Input<Inputs.ServiceEndpointSpecGetArgs>? EndpointSpec { get; set; }
 
         [Input("labels")]
-        private InputMap<string>? _labels;
+        private InputList<Inputs.ServiceLabelsGetArgs>? _labels;
 
         /// <summary>
         /// User-defined key/value metadata
         /// </summary>
-        public InputMap<string> Labels
+        public InputList<Inputs.ServiceLabelsGetArgs> Labels
         {
-            get => _labels ?? (_labels = new InputMap<string>());
+            get => _labels ?? (_labels = new InputList<Inputs.ServiceLabelsGetArgs>());
             set => _labels = value;
         }
 
@@ -448,6 +448,32 @@ namespace Pulumi.Docker
         }
     }
 
+    public sealed class ServiceLabelsArgs : Pulumi.ResourceArgs
+    {
+        [Input("label", required: true)]
+        public Input<string> Label { get; set; } = null!;
+
+        [Input("value", required: true)]
+        public Input<string> Value { get; set; } = null!;
+
+        public ServiceLabelsArgs()
+        {
+        }
+    }
+
+    public sealed class ServiceLabelsGetArgs : Pulumi.ResourceArgs
+    {
+        [Input("label", required: true)]
+        public Input<string> Label { get; set; } = null!;
+
+        [Input("value", required: true)]
+        public Input<string> Value { get; set; } = null!;
+
+        public ServiceLabelsGetArgs()
+        {
+        }
+    }
+
     public sealed class ServiceModeArgs : Pulumi.ResourceArgs
     {
         [Input("global")]
@@ -649,10 +675,10 @@ namespace Pulumi.Docker
         public Input<string>? Isolation { get; set; }
 
         [Input("labels")]
-        private InputMap<string>? _labels;
-        public InputMap<string> Labels
+        private InputList<ServiceTaskSpecContainerSpecLabelsArgs>? _labels;
+        public InputList<ServiceTaskSpecContainerSpecLabelsArgs> Labels
         {
-            get => _labels ?? (_labels = new InputMap<string>());
+            get => _labels ?? (_labels = new InputList<ServiceTaskSpecContainerSpecLabelsArgs>());
             set => _labels = value;
         }
 
@@ -707,10 +733,28 @@ namespace Pulumi.Docker
         public Input<string>? ConfigName { get; set; }
 
         /// <summary>
+        /// Represents the file GID. Defaults: `0`
+        /// </summary>
+        [Input("fileGid")]
+        public Input<string>? FileGid { get; set; }
+
+        /// <summary>
+        /// Represents the FileMode of the file. Defaults: `0444`
+        /// </summary>
+        [Input("fileMode")]
+        public Input<int>? FileMode { get; set; }
+
+        /// <summary>
         /// Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
         /// </summary>
         [Input("fileName", required: true)]
         public Input<string> FileName { get; set; } = null!;
+
+        /// <summary>
+        /// Represents the file UID. Defaults: `0`
+        /// </summary>
+        [Input("fileUid")]
+        public Input<string>? FileUid { get; set; }
 
         public ServiceTaskSpecContainerSpecConfigsArgs()
         {
@@ -732,10 +776,28 @@ namespace Pulumi.Docker
         public Input<string>? ConfigName { get; set; }
 
         /// <summary>
+        /// Represents the file GID. Defaults: `0`
+        /// </summary>
+        [Input("fileGid")]
+        public Input<string>? FileGid { get; set; }
+
+        /// <summary>
+        /// Represents the FileMode of the file. Defaults: `0444`
+        /// </summary>
+        [Input("fileMode")]
+        public Input<int>? FileMode { get; set; }
+
+        /// <summary>
         /// Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
         /// </summary>
         [Input("fileName", required: true)]
         public Input<string> FileName { get; set; } = null!;
+
+        /// <summary>
+        /// Represents the file UID. Defaults: `0`
+        /// </summary>
+        [Input("fileUid")]
+        public Input<string>? FileUid { get; set; }
 
         public ServiceTaskSpecContainerSpecConfigsGetArgs()
         {
@@ -881,10 +943,10 @@ namespace Pulumi.Docker
         public Input<string>? Isolation { get; set; }
 
         [Input("labels")]
-        private InputMap<string>? _labels;
-        public InputMap<string> Labels
+        private InputList<ServiceTaskSpecContainerSpecLabelsGetArgs>? _labels;
+        public InputList<ServiceTaskSpecContainerSpecLabelsGetArgs> Labels
         {
-            get => _labels ?? (_labels = new InputMap<string>());
+            get => _labels ?? (_labels = new InputList<ServiceTaskSpecContainerSpecLabelsGetArgs>());
             set => _labels = value;
         }
 
@@ -1000,6 +1062,32 @@ namespace Pulumi.Docker
         public Input<string> Ip { get; set; } = null!;
 
         public ServiceTaskSpecContainerSpecHostsGetArgs()
+        {
+        }
+    }
+
+    public sealed class ServiceTaskSpecContainerSpecLabelsArgs : Pulumi.ResourceArgs
+    {
+        [Input("label", required: true)]
+        public Input<string> Label { get; set; } = null!;
+
+        [Input("value", required: true)]
+        public Input<string> Value { get; set; } = null!;
+
+        public ServiceTaskSpecContainerSpecLabelsArgs()
+        {
+        }
+    }
+
+    public sealed class ServiceTaskSpecContainerSpecLabelsGetArgs : Pulumi.ResourceArgs
+    {
+        [Input("label", required: true)]
+        public Input<string> Label { get; set; } = null!;
+
+        [Input("value", required: true)]
+        public Input<string> Value { get; set; } = null!;
+
+        public ServiceTaskSpecContainerSpecLabelsGetArgs()
         {
         }
     }
@@ -1126,10 +1214,10 @@ namespace Pulumi.Docker
         }
 
         [Input("labels")]
-        private InputMap<string>? _labels;
-        public InputMap<string> Labels
+        private InputList<ServiceTaskSpecContainerSpecMountsVolumeOptionsLabelsArgs>? _labels;
+        public InputList<ServiceTaskSpecContainerSpecMountsVolumeOptionsLabelsArgs> Labels
         {
-            get => _labels ?? (_labels = new InputMap<string>());
+            get => _labels ?? (_labels = new InputList<ServiceTaskSpecContainerSpecMountsVolumeOptionsLabelsArgs>());
             set => _labels = value;
         }
 
@@ -1155,10 +1243,10 @@ namespace Pulumi.Docker
         }
 
         [Input("labels")]
-        private InputMap<string>? _labels;
-        public InputMap<string> Labels
+        private InputList<ServiceTaskSpecContainerSpecMountsVolumeOptionsLabelsGetArgs>? _labels;
+        public InputList<ServiceTaskSpecContainerSpecMountsVolumeOptionsLabelsGetArgs> Labels
         {
-            get => _labels ?? (_labels = new InputMap<string>());
+            get => _labels ?? (_labels = new InputList<ServiceTaskSpecContainerSpecMountsVolumeOptionsLabelsGetArgs>());
             set => _labels = value;
         }
 
@@ -1166,6 +1254,32 @@ namespace Pulumi.Docker
         public Input<bool>? NoCopy { get; set; }
 
         public ServiceTaskSpecContainerSpecMountsVolumeOptionsGetArgs()
+        {
+        }
+    }
+
+    public sealed class ServiceTaskSpecContainerSpecMountsVolumeOptionsLabelsArgs : Pulumi.ResourceArgs
+    {
+        [Input("label", required: true)]
+        public Input<string> Label { get; set; } = null!;
+
+        [Input("value", required: true)]
+        public Input<string> Value { get; set; } = null!;
+
+        public ServiceTaskSpecContainerSpecMountsVolumeOptionsLabelsArgs()
+        {
+        }
+    }
+
+    public sealed class ServiceTaskSpecContainerSpecMountsVolumeOptionsLabelsGetArgs : Pulumi.ResourceArgs
+    {
+        [Input("label", required: true)]
+        public Input<string> Label { get; set; } = null!;
+
+        [Input("value", required: true)]
+        public Input<string> Value { get; set; } = null!;
+
+        public ServiceTaskSpecContainerSpecMountsVolumeOptionsLabelsGetArgs()
         {
         }
     }
@@ -1269,10 +1383,28 @@ namespace Pulumi.Docker
     public sealed class ServiceTaskSpecContainerSpecSecretsArgs : Pulumi.ResourceArgs
     {
         /// <summary>
+        /// Represents the file GID. Defaults: `0`
+        /// </summary>
+        [Input("fileGid")]
+        public Input<string>? FileGid { get; set; }
+
+        /// <summary>
+        /// Represents the FileMode of the file. Defaults: `0444`
+        /// </summary>
+        [Input("fileMode")]
+        public Input<int>? FileMode { get; set; }
+
+        /// <summary>
         /// Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
         /// </summary>
         [Input("fileName", required: true)]
         public Input<string> FileName { get; set; } = null!;
+
+        /// <summary>
+        /// Represents the file UID. Defaults: `0`
+        /// </summary>
+        [Input("fileUid")]
+        public Input<string>? FileUid { get; set; }
 
         [Input("secretId", required: true)]
         public Input<string> SecretId { get; set; } = null!;
@@ -1288,10 +1420,28 @@ namespace Pulumi.Docker
     public sealed class ServiceTaskSpecContainerSpecSecretsGetArgs : Pulumi.ResourceArgs
     {
         /// <summary>
+        /// Represents the file GID. Defaults: `0`
+        /// </summary>
+        [Input("fileGid")]
+        public Input<string>? FileGid { get; set; }
+
+        /// <summary>
+        /// Represents the FileMode of the file. Defaults: `0444`
+        /// </summary>
+        [Input("fileMode")]
+        public Input<int>? FileMode { get; set; }
+
+        /// <summary>
         /// Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
         /// </summary>
         [Input("fileName", required: true)]
         public Input<string> FileName { get; set; } = null!;
+
+        /// <summary>
+        /// Represents the file UID. Defaults: `0`
+        /// </summary>
+        [Input("fileUid")]
+        public Input<string>? FileUid { get; set; }
 
         [Input("secretId", required: true)]
         public Input<string> SecretId { get; set; } = null!;
@@ -1836,7 +1986,7 @@ namespace Pulumi.Docker
         /// <summary>
         /// The port on the swarm hosts. If not set the value of `target_port` will be used.
         /// </summary>
-        public readonly int? PublishedPort;
+        public readonly int PublishedPort;
         /// <summary>
         /// Port inside the container.
         /// </summary>
@@ -1847,7 +1997,7 @@ namespace Pulumi.Docker
             string? name,
             string? protocol,
             string? publishMode,
-            int? publishedPort,
+            int publishedPort,
             int targetPort)
         {
             Name = name;
@@ -1855,6 +2005,22 @@ namespace Pulumi.Docker
             PublishMode = publishMode;
             PublishedPort = publishedPort;
             TargetPort = targetPort;
+        }
+    }
+
+    [OutputType]
+    public sealed class ServiceLabels
+    {
+        public readonly string Label;
+        public readonly string Value;
+
+        [OutputConstructor]
+        private ServiceLabels(
+            string label,
+            string value)
+        {
+            Label = label;
+            Value = value;
         }
     }
 
@@ -1963,7 +2129,7 @@ namespace Pulumi.Docker
         public readonly ImmutableArray<ServiceTaskSpecContainerSpecHosts> Hosts;
         public readonly string Image;
         public readonly string? Isolation;
-        public readonly ImmutableDictionary<string, string>? Labels;
+        public readonly ImmutableArray<ServiceTaskSpecContainerSpecLabels> Labels;
         public readonly ImmutableArray<ServiceTaskSpecContainerSpecMounts> Mounts;
         public readonly ServiceTaskSpecContainerSpecPrivileges? Privileges;
         public readonly bool? ReadOnly;
@@ -1986,7 +2152,7 @@ namespace Pulumi.Docker
             ImmutableArray<ServiceTaskSpecContainerSpecHosts> hosts,
             string image,
             string? isolation,
-            ImmutableDictionary<string, string>? labels,
+            ImmutableArray<ServiceTaskSpecContainerSpecLabels> labels,
             ImmutableArray<ServiceTaskSpecContainerSpecMounts> mounts,
             ServiceTaskSpecContainerSpecPrivileges? privileges,
             bool? readOnly,
@@ -2030,19 +2196,37 @@ namespace Pulumi.Docker
         /// </summary>
         public readonly string? ConfigName;
         /// <summary>
+        /// Represents the file GID. Defaults: `0`
+        /// </summary>
+        public readonly string? FileGid;
+        /// <summary>
+        /// Represents the FileMode of the file. Defaults: `0444`
+        /// </summary>
+        public readonly int? FileMode;
+        /// <summary>
         /// Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
         /// </summary>
         public readonly string FileName;
+        /// <summary>
+        /// Represents the file UID. Defaults: `0`
+        /// </summary>
+        public readonly string? FileUid;
 
         [OutputConstructor]
         private ServiceTaskSpecContainerSpecConfigs(
             string configId,
             string? configName,
-            string fileName)
+            string? fileGid,
+            int? fileMode,
+            string fileName,
+            string? fileUid)
         {
             ConfigId = configId;
             ConfigName = configName;
+            FileGid = fileGid;
+            FileMode = fileMode;
             FileName = fileName;
+            FileUid = fileUid;
         }
     }
 
@@ -2106,6 +2290,22 @@ namespace Pulumi.Docker
         {
             Host = host;
             Ip = ip;
+        }
+    }
+
+    [OutputType]
+    public sealed class ServiceTaskSpecContainerSpecLabels
+    {
+        public readonly string Label;
+        public readonly string Value;
+
+        [OutputConstructor]
+        private ServiceTaskSpecContainerSpecLabels(
+            string label,
+            string value)
+        {
+            Label = label;
+            Value = value;
         }
     }
 
@@ -2176,20 +2376,36 @@ namespace Pulumi.Docker
     {
         public readonly string? DriverName;
         public readonly ImmutableDictionary<string, string>? DriverOptions;
-        public readonly ImmutableDictionary<string, string>? Labels;
+        public readonly ImmutableArray<ServiceTaskSpecContainerSpecMountsVolumeOptionsLabels> Labels;
         public readonly bool? NoCopy;
 
         [OutputConstructor]
         private ServiceTaskSpecContainerSpecMountsVolumeOptions(
             string? driverName,
             ImmutableDictionary<string, string>? driverOptions,
-            ImmutableDictionary<string, string>? labels,
+            ImmutableArray<ServiceTaskSpecContainerSpecMountsVolumeOptionsLabels> labels,
             bool? noCopy)
         {
             DriverName = driverName;
             DriverOptions = driverOptions;
             Labels = labels;
             NoCopy = noCopy;
+        }
+    }
+
+    [OutputType]
+    public sealed class ServiceTaskSpecContainerSpecMountsVolumeOptionsLabels
+    {
+        public readonly string Label;
+        public readonly string Value;
+
+        [OutputConstructor]
+        private ServiceTaskSpecContainerSpecMountsVolumeOptionsLabels(
+            string label,
+            string value)
+        {
+            Label = label;
+            Value = value;
         }
     }
 
@@ -2254,19 +2470,37 @@ namespace Pulumi.Docker
     public sealed class ServiceTaskSpecContainerSpecSecrets
     {
         /// <summary>
+        /// Represents the file GID. Defaults: `0`
+        /// </summary>
+        public readonly string? FileGid;
+        /// <summary>
+        /// Represents the FileMode of the file. Defaults: `0444`
+        /// </summary>
+        public readonly int? FileMode;
+        /// <summary>
         /// Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
         /// </summary>
         public readonly string FileName;
+        /// <summary>
+        /// Represents the file UID. Defaults: `0`
+        /// </summary>
+        public readonly string? FileUid;
         public readonly string SecretId;
         public readonly string? SecretName;
 
         [OutputConstructor]
         private ServiceTaskSpecContainerSpecSecrets(
+            string? fileGid,
+            int? fileMode,
             string fileName,
+            string? fileUid,
             string secretId,
             string? secretName)
         {
+            FileGid = fileGid;
+            FileMode = fileMode;
             FileName = fileName;
+            FileUid = fileUid;
             SecretId = secretId;
             SecretName = secretName;
         }

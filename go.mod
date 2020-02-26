@@ -14,7 +14,7 @@ require (
 	github.com/pulumi/pulumi v1.9.1
 	github.com/pulumi/pulumi-terraform-bridge v1.6.5
 	github.com/stretchr/testify v1.4.1-0.20191106224347-f1bd0923b832
-	github.com/terraform-providers/terraform-provider-docker v1.2.1-0.20191125182715-0de84e769ddc
+	github.com/terraform-providers/terraform-provider-docker v1.2.1-0.20200210195100-e2a14e7e7cc6
 	github.com/vmihailenco/msgpack v4.0.1+incompatible // indirect
 	github.com/xanzy/ssh-agent v0.2.1 // indirect
 	golang.org/x/net v0.0.0-20191009170851-d66e71096ffb // indirect
