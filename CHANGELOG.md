@@ -1,4 +1,5 @@
 ## HEAD (Unreleased)
+* Implemented the docker image build in the Python SDK, ported from the Javascript SDK
 
 ## 1.2.0 (2020-01-29)
 * Upgrade to pulumi-terraform-bridge v1.6.4
