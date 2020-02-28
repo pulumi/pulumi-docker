@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/pulumi/pulumi-docker/sdk/go/docker"
 	"github.com/pulumi/pulumi/sdk/go/pulumi"
 )
@@ -36,8 +38,13 @@ func main() {
 
 		// Since the provider picked a random ephemeral port for this container, export the port.
 		port := container.Ports.Index(pulumi.Int(0))
-		ctx.Export("port", port)
-		ctx.Export("endpoint", pulumi.Sprintf("%s:%d", port.Ip().Elem(), port.External().Elem()))
+		endpoint := port.ApplyT(func(port docker.ContainerPort) string {
+			if port.Ip == nil || port.External == nil {
+				return ""
+			}
+			return fmt.Sprintf("%s:%d", *port.Ip, *port.External)
+		})
+		ctx.Export("endpoint", endpoint)
 
 		return nil
 	})
