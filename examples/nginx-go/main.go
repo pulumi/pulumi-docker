@@ -19,12 +19,12 @@ func main() {
 		}
 
 		// Launch a container using the nginx image we just downloaded.
-		port := docker.ContainerPortArgs{
+		portArgs := docker.ContainerPortArgs{
 			Internal: pulumi.Int(80),
 		}
 		containerArgs := &docker.ContainerArgs{
 			Image: image.Latest,
-			Ports: docker.ContainerPortArray([]docker.ContainerPortInput{port}),
+			Ports: docker.ContainerPortArray([]docker.ContainerPortInput{portArgs}),
 		}
 		container, err := docker.NewContainer(ctx, "nginx", containerArgs)
 		if err != nil {
@@ -35,7 +35,9 @@ func main() {
 		ctx.Export("name", container.Name)
 
 		// Since the provider picked a random ephemeral port for this container, export the port.
-		ctx.Export("port", container.Ports.Index(pulumi.Int(0)))
+		port := container.Ports.Index(pulumi.Int(0))
+		ctx.Export("port", port)
+		ctx.Export("endpoint", pulumi.Sprintf("%s:%d", port.Ip().Elem(), port.External().Elem()))
 
 		return nil
 	})
