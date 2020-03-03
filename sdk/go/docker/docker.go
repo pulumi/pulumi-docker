@@ -12,6 +12,89 @@ import (
 	"github.com/pulumi/pulumi/sdk/go/pulumi"
 )
 
+// DockerBuild may be used to specify detailed instructions about how to build a container.
+type DockerBuild struct {
+	// Context is a path to a directory to use for the Docker build context, usually the directory
+	// in which the Dockerfile resides (although dockerfile may be used to choose a custom location
+	// independent of this choice). If not specified, the context defaults to the current working
+	// directory; if a relative path is used, it is relative to the current working directory that
+	// Pulumi is evaluating.
+	Context pulumi.StringInput
+
+	// Dockerfile may be used to override the default Dockerfile name and/or location.
+	// By default, it is assumed to be a file named Dockerfile in the root of the build context.
+	Dockerfile pulumi.StringInput
+
+	// An optional map of named build-time argument variables to set during the Docker build.
+	// This flag allows you to pass built-time variables that can be accessed like environment variables
+	// inside the `RUN` instruction.
+	Args pulumi.MapInput
+
+	// An optional CacheFrom object with information about the build stages to use for the Docker
+	// build cache.  This parameter maps to the --cache-from argument to the Docker CLI. If this
+	// parameter is `true`, only the final image will be pulled and passed to --cache-from; if it is
+	// a CacheFrom object, the stages named therein will also be pulled and passed to --cache-from.
+	CacheFrom pulumi.Input
+
+	// An optional catch-all string to provide extra CLI options to the docker build command.
+	// For example, use to specify `--network host`.
+	ExtraOptions pulumi.StringArrayInput
+
+	// Environment variables to set on the invocation of `docker build`, for example to support
+	// `DOCKER_BUILDKIT=1 docker build`.
+	Env pulumi.MapInput
+
+	// The target of the dockerfile to build.
+	Target pulumi.StringInput
+}
+
+type dockerBuild struct {
+	Context      string
+	Dockerfile   string
+	Args         map[string]string
+	CacheFrom    interface{}
+	ExtraOptions []string
+	Env          map[string]string
+	Target       string
+}
+
+func runDockerBuild(imageName string, build *dockerBuild, cacheFrom []string,
+	logResource pulumi.Resource, target string) error {
+
+	// Prepare the build arguments.
+	buildArgs := []string{"build"}
+	if build != nil {
+		// Add a custom Dockerfile location.
+		buildArgs = append(buildArgs, "-f", build.Dockerfile)
+	}
+	if build.Args != nil {
+		for k, v := range build.Args {
+			buildArgs = append(buildArgs, "--build-arg", fmt.Sprintf("%s=%s", k, v))
+		}
+	}
+	if len(build.Target) > 0 {
+		buildArgs = append(buildArgs, "--target", build.Target)
+	}
+	if build.CacheFrom != nil {
+		if cacheFrom != nil && len(cacheFrom) > 0 {
+			buildArgs = append(buildArgs, "--cache-from", strings.Join(cacheFrom, ""))
+		}
+	}
+	if build.ExtraOptions != nil {
+		buildArgs = append(buildArgs, build.ExtraOptions...)
+	}
+	// Push the docker build context onto the path.
+	buildArgs = append(buildArgs, build.Context)
+
+	buildArgs = append(buildArgs, "-t", imageName)
+	if len(target) > 0 {
+		buildArgs = append(buildArgs, "--target", target)
+	}
+
+	_, err := RunCommandThatMustSucceed("docker", buildArgs, logResource, true, build.Env)
+	return err
+}
+
 // RunCommandThatMustSucceed is used to determine if the full command line should be reported
 // when an error happens.  In general reporting the full command line is fine.  But it should be set
 // to false if it might contain sensitive information (like a username/password)

@@ -19,3 +19,14 @@ func TestRunCommandThatMustSucceed(t *testing.T) {
 		assert.Equal(t, err.Error(), "cat not-a-real-file failed with error: exit status 1")
 	})
 }
+
+func TestRunDockerBuild(t *testing.T) {
+	t.Run("basic", func(t *testing.T) {
+		build := &dockerBuild{
+			Context:    ".",
+			Dockerfile: "./tests/Dockerfile",
+		}
+		err := runDockerBuild("test", build, nil, nil, "")
+		assert.Nil(t, err)
+	})
+}
