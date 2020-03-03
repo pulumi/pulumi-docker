@@ -16,14 +16,30 @@ import (
 	"os/exec"
 	"strings"
 
+	"github.com/pkg/errors"
 	"github.com/pulumi/pulumi/pkg/util/logging"
 	"github.com/pulumi/pulumi/sdk/go/pulumi"
 )
 
 type commandResult struct {
-	code   int
 	stdout string
 	err    error
+}
+
+// RunCommandThatMustSucceed is used to determine if the full command line should be reported
+// when an error happens.  In general reporting the full command line is fine.  But it should be set
+// to false if it might contain sensitive information (like a username/password)
+func RunCommandThatMustSucceed(cmd string, args []string, logResource pulumi.Resource,
+	reportFullCommandLine bool, env map[string]string) (string, error) {
+
+	res := <-runCommandThatCanFail(cmd, args, logResource, reportFullCommandLine, false, env)
+
+	if res.err != nil {
+		return "", errors.Wrapf(res.err, "%s failed with error",
+			getCommandLineMessage(cmd, args, reportFullCommandLine, env))
+	}
+
+	return res.stdout, nil
 }
 
 // Runs a CLI command in a child process, returning a promise for the process's exit. Both stdout
@@ -87,13 +103,20 @@ func runCommandThatCanFail(cmdName string, args []string, logResource pulumi.Res
 			return
 		}
 
-		// We store the results from stdout and stderr and will return them as a string.
 		stderrBytes, err := ioutil.ReadAll(stderr)
 		if err != nil {
 			logging.Errorf("Error reading from stderr: %v", err)
 			r <- commandResult{err: err}
 			return
 		}
+
+		// We can't stream these stderr messages as we receive them because we don't knows at
+		// this point because Docker uses stderr for both errors and warnings.  So, instead, we
+		// just collect the messages, and wait for the process to end to decide how to report
+		// them.
+		stderrString := string(stderrBytes)
+
+		// We store the results from stdout and will return them as a string.
 		stdoutBytes, err := ioutil.ReadAll(stdout)
 		if err != nil {
 			logging.Errorf("Error reading from stdout: %v", err)
@@ -101,37 +124,47 @@ func runCommandThatCanFail(cmdName string, args []string, logResource pulumi.Res
 			return
 		}
 
-		err = cmd.Wait()
-		var code int = 0
-		// If err is not nil, then there was a non-zero exit code.
-		if err != nil {
-			code = err.(*exec.ExitError).ExitCode()
-		}
-
-		stderrString := string(stderrBytes)
+		// Report all stdout messages as ephemeral messages.  That way they show up in the
+		// info bar as they're happening.  But they do not overwhelm the user as the end
+		// of the run.
 		stdoutString := string(stdoutBytes)
+		logging.Infof(stdoutString)
+
+		err = cmd.Wait()
 
 		// If we got any stderr messages, report them as an error/warning depending on the
 		// result of the operation.
 		if len(stderrString) > 0 {
-			if code != 0 && !reportErrorAsWarning {
+			if err != nil && !reportErrorAsWarning {
+				// Command returned non-zero code.  Treat these stderr messages as an error.
 				logging.Errorf("%s (%d)", stderrString, streamID)
 			} else {
+				// Command succeeded.  These were just a warning.
 				logging.Warningf("%s (%d)", stderrString, streamID)
 			}
 		}
 
-		r <- commandResult{code: code, stdout: stdoutString}
+		// If the command failed report an ephemeral message indicating which command it was.
+		// That way the user can immediately see something went wrong in the info bar.  The
+		// caller (normally runCommandThatMustSucceed) can choose to also report this
+		// non-ephemerally.
+		if err != nil {
+			logging.Infof("%s failed", getCommandLineMessage(cmdName, args, reportFullCommandLine, env))
+		}
 
+		r <- commandResult{stdout: stdoutString, err: err}
 	}()
 
 	return r
 }
 
 func getCommandLineMessage(cmd string, args []string, reportFullCommandLine bool, env map[string]string) string {
-	var argString string
-	if reportFullCommandLine {
-		argString = strings.Join(args, " ")
+	argString := ""
+	if len(args) > 0 {
+		argString = args[0]
+		if reportFullCommandLine {
+			argString = strings.Join(args, " ")
+		}
 	}
 
 	if env != nil {
