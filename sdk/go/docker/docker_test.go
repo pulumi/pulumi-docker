@@ -8,13 +8,13 @@ import (
 
 func TestRunCommandThatMustSucceed(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
-		stdout, err := runCommandThatMustSucceed("echo", []string{"-n", "test"}, nil, true, "", nil)
+		stdout, err := runBasicCommandThatMustSucceed("echo", []string{"-n", "test"}, nil)
 		assert.Nil(t, err)
 		assert.Equal(t, "test", stdout)
 	})
 
 	t.Run("fail", func(t *testing.T) {
-		_, err := runCommandThatMustSucceed("cat", []string{"not-a-real-file"}, nil, true, "", nil)
+		_, err := runBasicCommandThatMustSucceed("cat", []string{"not-a-real-file"}, nil)
 		assert.NotNil(t, err)
 		assert.Equal(t, err.Error(), "cat not-a-real-file failed with error: exit status 1")
 	})

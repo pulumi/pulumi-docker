@@ -74,6 +74,58 @@ type cacheFrom struct {
 	Stages []string
 }
 
+func tagAndPushImageAsync(imageName string, repositoryURL string, tag string,
+	imageID string, logResource pulumi.Resource) error {
+
+	doTagAndPushAsync := func(targetName string) error {
+		_, err := runBasicCommandThatMustSucceed("docker", []string{"tag", imageName, targetName}, logResource)
+		if err != nil {
+			return err
+		}
+		_, err = runBasicCommandThatMustSucceed("docker", []string{"push", targetName}, logResource)
+		return err
+	}
+
+	// Ensure we have a unique target name for this image, and tag and push to that unique target.
+	err := doTagAndPushAsync(createTaggedImageName(repositoryURL, tag, imageID))
+	if err != nil {
+		return err
+	}
+
+	// If the user provided a tag themselves (like "x/y:dev") then also tag and push directly to
+	// that 'dev' tag.  This is not going to be a unique location, and future pushes will overwrite
+	// this location.  However, that's ok as there's still the unique target we generated above.
+	//
+	// Note: don't need to do this if imageId was 'undefined' as the above line will have already
+	// taken care of things for us.
+	if len(tag) > 0 && len(imageID) > 0 {
+		err := doTagAndPushAsync(createTaggedImageName(repositoryURL, tag, ""))
+		return err
+	}
+
+	return nil
+}
+
+func createTaggedImageName(repositroyURL string, tag string, imageID string) string {
+	var pieces []string
+	if len(tag) > 0 {
+		pieces = append(pieces, tag)
+	}
+	if len(imageID) > 0 {
+		pieces = append(pieces, imageID)
+	}
+
+	// Note: we don't do any validation that the tag is well formed, as per:
+	// https://docs.docker.com/engine/reference/commandline/tag
+	//
+	// If there are any issues with it, we'll just let docker report the problem.
+	fullTag := strings.Join(pieces, "-")
+	if len(fullTag) > 0 {
+		return fmt.Sprintf("%s:%s", repositroyURL, fullTag)
+	}
+	return repositroyURL
+}
+
 // Note: unlike the Typescript and Dotnet implementations, you must pass in a dockerBuild here.
 // If you have just the path, `build = &dockerBuild{Context: path}`.
 func buildImageAsync(imageName string, build dockerBuild,
@@ -118,7 +170,7 @@ func buildImageAsync(imageName string, build dockerBuild,
 
 	// Finally, inspect the image so we can return the SHA digest. Do not forward the output of this
 	// command this to the CLI to show the user.
-	inspectResult, err := runCommandThatMustSucceed("docker", []string{"image", "inspect", "-f", "{{.Id}}", imageName}, logResource, true, "", nil)
+	inspectResult, err := runBasicCommandThatMustSucceed("docker", []string{"image", "inspect", "-f", "{{.Id}}", imageName}, logResource)
 	if err != nil {
 		return "", nil, err
 	}
@@ -204,7 +256,7 @@ func useDockerPasswordStdin(logResource pulumi.Resource) (bool, error) {
 	}
 
 	// Verify that 'docker' is on the PATH and get the client/server versions
-	dockerVersionString, err := runCommandThatMustSucceed("docker", []string{"version", "-f", "{{json .}}"}, logResource, true, "", nil)
+	dockerVersionString, err := runBasicCommandThatMustSucceed("docker", []string{"version", "-f", "{{json .}}"}, logResource)
 	if err != nil {
 		return false, errors.Wrap(err, "No 'docker' command available on PATH: Please install to use container 'build' mode.")
 	}
@@ -284,6 +336,10 @@ func runCommandThatMustSucceed(cmd string, args []string, logResource pulumi.Res
 	}
 
 	return stdout, nil
+}
+
+func runBasicCommandThatMustSucceed(cmd string, args []string, logResource pulumi.Resource) (string, error) {
+	return runCommandThatMustSucceed(cmd, args, logResource, true, "", nil)
 }
 
 // Runs a CLI command in a child process, returning a promise for the process's exit. Both stdout
