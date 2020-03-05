@@ -1,11 +1,17 @@
+// Copyright 2016-2020, Pulumi Corporation.
+
 package docker
 
 import (
+	"encoding/json"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"math/rand"
 	"os/exec"
 	"strings"
+
+	"github.com/Masterminds/semver"
 
 	"github.com/pkg/errors"
 	"github.com/pulumi/pulumi/pkg/util/logging"
@@ -19,33 +25,33 @@ type DockerBuild struct {
 	// independent of this choice). If not specified, the context defaults to the current working
 	// directory; if a relative path is used, it is relative to the current working directory that
 	// Pulumi is evaluating.
-	Context pulumi.StringInput
+	Context pulumi.StringInput `pulumi:"context"`
 
 	// Dockerfile may be used to override the default Dockerfile name and/or location.
 	// By default, it is assumed to be a file named Dockerfile in the root of the build context.
-	Dockerfile pulumi.StringInput
+	Dockerfile pulumi.StringInput `pulumi:"dockerfile"`
 
 	// An optional map of named build-time argument variables to set during the Docker build.
 	// This flag allows you to pass built-time variables that can be accessed like environment variables
 	// inside the `RUN` instruction.
-	Args pulumi.MapInput
+	Args pulumi.MapInput `pulumi:"args"`
 
 	// An optional CacheFrom object with information about the build stages to use for the Docker
 	// build cache.  This parameter maps to the --cache-from argument to the Docker CLI. If this
 	// parameter is `true`, only the final image will be pulled and passed to --cache-from; if it is
 	// a CacheFrom object, the stages named therein will also be pulled and passed to --cache-from.
-	CacheFrom pulumi.Input
+	CacheFrom pulumi.Input `pulumi:"cacheFrom"`
 
 	// An optional catch-all string to provide extra CLI options to the docker build command.
 	// For example, use to specify `--network host`.
-	ExtraOptions pulumi.StringArrayInput
+	ExtraOptions pulumi.StringArrayInput `pulumi:"extraOptions"`
 
 	// Environment variables to set on the invocation of `docker build`, for example to support
 	// `DOCKER_BUILDKIT=1 docker build`.
-	Env pulumi.MapInput
+	Env pulumi.MapInput `pulumi:"env"`
 
 	// The target of the dockerfile to build.
-	Target pulumi.StringInput
+	Target pulumi.StringInput `pulumi:"target"`
 }
 
 type dockerBuild struct {
@@ -56,6 +62,94 @@ type dockerBuild struct {
 	ExtraOptions []string
 	Env          map[string]string
 	Target       string
+}
+
+type loginResult struct {
+	registryName string
+	username     string
+}
+
+var loginResults []loginResult = nil
+
+func loginToRegistry(registry imageRegistry, logResource pulumi.Resource) error {
+	registryName := registry.Server
+	username := registry.Username
+	password := registry.Password
+
+	// See if we've issued an outstanding requests to login into this registry.  If so, just
+	// await the results of that login request.  Otherwise, create a new request and keep it
+	// around so that future login requests will see it.
+	for _, loginResult := range loginResults {
+		if loginResult.registryName == registryName && loginResult.username == username {
+			logging.Infof("Reusing existing login for %s@%s", username, registryName)
+			return nil
+		}
+	}
+
+	dockerPasswordStdin, err := useDockerPasswordStdin(logResource)
+	if err != nil {
+		return err
+	}
+
+	// pass 'reportFullCommandLine: false' here so that if we fail to login we don't emit the
+	// username/password in our logs.  Instead, we'll just say "'docker login' failed with code ..."
+	if dockerPasswordStdin {
+		_, err := RunCommandThatMustSucceed("docker", []string{"login", "-u", username,
+			"--password-stdin", registryName}, logResource, false, password, nil)
+		if err != nil {
+			return err
+		}
+
+	} else {
+		_, err := RunCommandThatMustSucceed("docker", []string{"login", "-u", username,
+			"-p", password, registryName}, logResource, false, "", nil)
+		if err != nil {
+			return err
+		}
+	}
+
+	loginResults = append(loginResults, loginResult{
+		registryName: registryName,
+		username:     username,
+	})
+	return nil
+}
+
+var dockerPassword *bool = nil
+
+func useDockerPasswordStdin(logResource pulumi.Resource) (bool, error) {
+	if dockerPassword != nil {
+		return *dockerPassword, nil
+	}
+
+	// Verify that 'docker' is on the PATH and get the client/server versions
+	dockerVersionString, err := RunCommandThatMustSucceed("docker", []string{"version", "-f", "{{json .}}"}, logResource, true, "", nil)
+	if err != nil {
+		return false, errors.Wrap(err, "No 'docker' command available on PATH: Please install to use container 'build' mode.")
+	}
+	logging.Infof("dockerVersion => %s", dockerVersionString)
+
+	// Decide whether to use --password or --password-stdin based on the client version.
+	var versionInterface interface{}
+	err = json.Unmarshal([]byte(dockerVersionString), &versionInterface)
+	if err != nil {
+		return false, err
+	}
+
+	versionData := versionInterface.(map[string]interface{})
+	clientData := versionData["Client"].(map[string]interface{})
+	version := clientData["Version"].(string)
+	clientVersion, err := semver.NewVersion(version)
+	if err != nil {
+		return false, err
+	}
+
+	constraint, err := semver.NewConstraint(">= 17.07.0")
+	if err != nil {
+		return false, err
+	}
+
+	return constraint.Check(clientVersion), nil
 }
 
 func runDockerBuild(imageName string, build *dockerBuild, cacheFrom []string,
@@ -91,7 +185,7 @@ func runDockerBuild(imageName string, build *dockerBuild, cacheFrom []string,
 		buildArgs = append(buildArgs, "--target", target)
 	}
 
-	_, err := RunCommandThatMustSucceed("docker", buildArgs, logResource, true, build.Env)
+	_, err := RunCommandThatMustSucceed("docker", buildArgs, logResource, true, "", build.Env)
 	return err
 }
 
@@ -99,9 +193,9 @@ func runDockerBuild(imageName string, build *dockerBuild, cacheFrom []string,
 // when an error happens.  In general reporting the full command line is fine.  But it should be set
 // to false if it might contain sensitive information (like a username/password)
 func RunCommandThatMustSucceed(cmd string, args []string, logResource pulumi.Resource,
-	reportFullCommandLine bool, env map[string]string) (string, error) {
+	reportFullCommandLine bool, stdin string, env map[string]string) (string, error) {
 
-	stdout, err := runCommandThatCanFail(cmd, args, logResource, reportFullCommandLine, false, env)
+	stdout, err := runCommandThatCanFail(cmd, args, logResource, reportFullCommandLine, false, stdin, env)
 
 	if err != nil {
 		return "", errors.Wrapf(err, "%s failed with error",
@@ -126,7 +220,7 @@ func RunCommandThatMustSucceed(cmd string, args []string, logResource pulumi.Res
 // underlying spawned command has a problem, this will result in a resolved promise with the
 // [CommandResult.code] value set to a non-zero value.
 func runCommandThatCanFail(cmdName string, args []string, logResource pulumi.Resource, reportFullCommandLine bool,
-	reportErrorAsWarning bool, env map[string]string) (string, error) {
+	reportErrorAsWarning bool, stdinInput string, env map[string]string) (string, error) {
 
 	logging.InitLogging(true, 7, false)
 
@@ -155,10 +249,23 @@ func runCommandThatCanFail(cmdName string, args []string, logResource pulumi.Res
 		logging.Errorf("Error retrieving stderr: %v", err)
 		return "", err
 	}
+
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
 		logging.Errorf("Error retrieving stdout: %v", err)
 		return "", err
+	}
+
+	if len(stdinInput) > 0 {
+		stdin, err := cmd.StdinPipe()
+		if err != nil {
+			logging.Errorf("Error retreiving stdin: %v", err)
+			return "", err
+		}
+		go func() {
+			defer stdin.Close()
+			io.WriteString(stdin, stdinInput)
+		}()
 	}
 
 	err = cmd.Start()
