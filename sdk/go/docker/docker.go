@@ -74,6 +74,124 @@ type cacheFrom struct {
 	Stages []string
 }
 
+func buildAndPushImageWorkerAsync(ctx *pulumi.Context, baseImageName string, build dockerBuild,
+	repositoryURL string, logResource pulumi.Resource, skipPush bool, registry *imageRegistry) (string, error) {
+
+	err := checkRepositoryURL(repositoryURL)
+	if err != nil {
+		return "", err
+	}
+
+	_, tag := getImageNameAndTag(baseImageName)
+
+	// login immediately if we're going to have to actually communicate with a remote registry.
+	//
+	// We know we have to login if:
+	//
+	//  1. We're doing an update.  In that case, we'll always want to login so we can push our
+	//     images to the remote registry.
+	//
+	// 2. We're in preview or update and the build information contains 'cache from' information. In
+	//    that case, we'll want want to pull from the registry and will need to login for that.
+	pullFromCache := build.CacheFrom != nil && len(repositoryURL) > 0
+
+	// If no `registry` info was passed in we simply assume docker is already
+	// logged-in to the correct registry (or uses auto-login via credential helpers).
+	if registry != nil {
+		if !ctx.DryRun() || pullFromCache {
+			logging.Infof("Logging into registry...")
+			err := loginToRegistry(*registry, logResource)
+			if err != nil {
+				return "", err
+			}
+		}
+	}
+
+	// If the container specified a cacheFrom parameter, first set up the cached stages.
+	var cacheFrom []string
+	if pullFromCache {
+		cacheFrom = pullCacheAsync(baseImageName, *build.CacheFrom, repositoryURL, logResource)
+	}
+
+	// Next, build the image.
+	imageID, stages, err := buildImageAsync(baseImageName, build, logResource, cacheFrom)
+	if err != nil {
+		return "", err
+	}
+
+	// Generate a name that uniquely will identify this built image.  This is similar in purpose to
+	// the name@digest form that can be normally be retrieved from a docker repository.  However,
+	// this tag doesn't require actually pushing the image, nor does it require communicating with
+	// some external system, making it suitable for unique identification, even during preview.
+	// This also means that if docker produces a new imageId, we'll get a new name here, ensuring that
+	// resources (like docker.Image and cloud.Service) will be appropriately replaced.
+	uniqueTaggedImageName := createTaggedImageName(repositoryURL, tag, imageID)
+
+	// Use those to push the image.  Then just return the unique target name. as the final result
+	// for our caller to use. Only push the image during an update, do not push during a preview.
+	if !ctx.DryRun() && !skipPush {
+		// Push the final image first, then push the stage images to use for caching.
+
+		// First, push with both the optionally-requested-tag *and* imageId (which is guaranteed to
+		// be defined).  By using the imageId we give the image a fully unique location that we can
+		// successfully pull regardless of whatever else has happened at this repositoryUrl.
+		err := tagAndPushImageAsync(baseImageName, repositoryURL, tag, imageID, logResource)
+		if err != nil {
+			return "", err
+		}
+
+		// Next, push only with the optionally-requested-tag.  Users of this API still want to get a
+		// nice and simple url that they can reach this image at, without having the explicit imageId
+		// hash added to it.  Note: this location is not guaranteed to be idempotent.  For example,
+		// pushes on other machines might overwrite that location.
+		err = tagAndPushImageAsync(baseImageName, repositoryURL, tag, "", logResource)
+		if err != nil {
+			return "", err
+		}
+
+		for _, stage := range stages {
+			err = tagAndPushImageAsync(localStageImageName(baseImageName, stage),
+				repositoryURL, stage, "", logResource)
+			if err != nil {
+				return "", err
+			}
+		}
+	}
+
+	return uniqueTaggedImageName, nil
+}
+
+func pullCacheAsync(imageName string, cacheFrom cacheFrom, repoURL string, logResource pulumi.Resource) []string {
+	if len(repoURL) == 0 {
+		return nil
+	}
+
+	logging.Infof("Pulling cache for %s from %s", imageName, repoURL)
+
+	var cacheFromImages []string
+	stages := append(cacheFrom.Stages, "")
+	for _, stage := range stages {
+		tag := stage
+		if len(stage) > 0 {
+			tag = ":" + stage
+		}
+		image := repoURL + tag
+
+		// Try to pull the existing image if it exists.  This may fail if the image does not exist.
+		// That's fine, just move onto the next stage.  Also, pass along a flag saying that we
+		// should print that error as a warning instead.  We don't want the update to succeed but
+		// the user to then get a nasty "error:" message at the end.
+		_, err := runCommandThatCanFail("docker", []string{"pull", image}, logResource, true, true, "", nil)
+		if err == nil {
+			continue
+		}
+
+		cacheFromImages = append(cacheFromImages, image)
+	}
+
+	return cacheFromImages
+}
+
 func tagAndPushImageAsync(imageName string, repositoryURL string, tag string,
 	imageID string, logResource pulumi.Resource) error {
 
@@ -106,7 +224,7 @@ func tagAndPushImageAsync(imageName string, repositoryURL string, tag string,
 	return nil
 }
 
-func createTaggedImageName(repositroyURL string, tag string, imageID string) string {
+func createTaggedImageName(repositoryURL string, tag string, imageID string) string {
 	var pieces []string
 	if len(tag) > 0 {
 		pieces = append(pieces, tag)
@@ -121,9 +239,9 @@ func createTaggedImageName(repositroyURL string, tag string, imageID string) str
 	// If there are any issues with it, we'll just let docker report the problem.
 	fullTag := strings.Join(pieces, "-")
 	if len(fullTag) > 0 {
-		return fmt.Sprintf("%s:%s", repositroyURL, fullTag)
+		return fmt.Sprintf("%s:%s", repositoryURL, fullTag)
 	}
-	return repositroyURL
+	return repositoryURL
 }
 
 // Note: unlike the Typescript and Dotnet implementations, you must pass in a dockerBuild here.
@@ -191,10 +309,6 @@ func buildImageAsync(imageName string, build dockerBuild,
 	}
 
 	return imageID, stages, nil
-}
-
-func localStageImageName(imageName string, stage string) string {
-	return fmt.Sprintf("%s-%s", imageName, stage)
 }
 
 type loginResult struct {
