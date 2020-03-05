@@ -40,7 +40,7 @@ type DockerBuild struct {
 	// build cache.  This parameter maps to the --cache-from argument to the Docker CLI. If this
 	// parameter is `true`, only the final image will be pulled and passed to --cache-from; if it is
 	// a CacheFrom object, the stages named therein will also be pulled and passed to --cache-from.
-	CacheFrom pulumi.Input `pulumi:"cacheFrom"`
+	CacheFrom *CacheFrom `pulumi:"cacheFrom"`
 
 	// An optional catch-all string to provide extra CLI options to the docker build command.
 	// For example, use to specify `--network host`.
@@ -58,10 +58,91 @@ type dockerBuild struct {
 	Context      string
 	Dockerfile   string
 	Args         map[string]string
-	CacheFrom    interface{}
+	CacheFrom    *cacheFrom
 	ExtraOptions []string
 	Env          map[string]string
 	Target       string
+}
+
+// CacheFrom may be used to specify build stages to use for the Docker build cache.
+// The final image is always implicitly included
+type CacheFrom struct {
+	Stages pulumi.StringArrayInput `pulumi:"stages"`
+}
+
+type cacheFrom struct {
+	Stages []string
+}
+
+// Note: unlike the Typescript and Dotnet implementations, you must pass in a dockerBuild here.
+// If you have just the path, `build = &dockerBuild{Context: path}`.
+func buildImageAsync(imageName string, build dockerBuild,
+	logResource pulumi.Resource, cacheFrom []string) (string, []string, error) {
+
+	// If the build context is missing, default it to the working directory.
+	if len(build.Context) == 0 {
+		build.Context = "."
+	}
+
+	buildInfo := fmt.Sprintf("Building container image %s: context=%s", imageName, build.Context)
+	if len(build.Dockerfile) > 0 {
+		buildInfo = fmt.Sprintf("%s, dockerfile=%s", buildInfo, build.Dockerfile)
+	}
+	if len(build.Args) > 0 {
+		args, err := json.Marshal(build.Args)
+		if err != nil {
+			return "", nil, err
+		}
+		buildInfo = fmt.Sprintf("%s, args=%s", buildInfo, args)
+	}
+	if len(build.Target) > 0 {
+		buildInfo = fmt.Sprintf("%s, target=%s", buildInfo, build.Target)
+	}
+	logging.InitLogging(true, 7, false)
+	logging.Infof(buildInfo)
+
+	// If the container build specified build stages to cache, build each in turn.
+	var stages []string
+	if build.CacheFrom != nil && build.CacheFrom.Stages != nil {
+		for _, stage := range stages {
+			err := runDockerBuild(localStageImageName(imageName, stage), &build, cacheFrom, logResource, stage)
+			if err != nil {
+				return "", nil, err
+			}
+			stages = append(stages, stage)
+		}
+	}
+
+	// Invoke Docker CLI commands to build.
+	err := runDockerBuild(imageName, &build, cacheFrom, logResource, "")
+
+	// Finally, inspect the image so we can return the SHA digest. Do not forward the output of this
+	// command this to the CLI to show the user.
+	inspectResult, err := runCommandThatMustSucceed("docker", []string{"image", "inspect", "-f", "{{.Id}}", imageName}, logResource, true, "", nil)
+	if err != nil {
+		return "", nil, err
+	}
+	if len(inspectResult) == 0 {
+		return "", nil, errors.Errorf("No digest available for image %s", imageName)
+	}
+
+	// From https://docs.docker.com/registry/spec/api/#content-digests
+	//
+	// the image id will be a "algorithm:hex" pair.  We don't care about the algorithm part.  All we
+	// want is the unique portion we can use elsewhere.  Since we are also going to place this in an
+	// image tag, we also don't want the colon, as that's not legal there.  So simply grab the hex
+	// portion after the colon and return that.
+	imageID := strings.TrimSpace(inspectResult)
+	colonIndex := strings.LastIndex(imageID, ":")
+	if colonIndex > 0 {
+		imageID = imageID[colonIndex+1:]
+	}
+
+	return imageID, stages, nil
+}
+
+func localStageImageName(imageName string, stage string) string {
+	return fmt.Sprintf("%s-%s", imageName, stage)
 }
 
 type loginResult struct {
@@ -94,14 +175,14 @@ func loginToRegistry(registry imageRegistry, logResource pulumi.Resource) error 
 	// pass 'reportFullCommandLine: false' here so that if we fail to login we don't emit the
 	// username/password in our logs.  Instead, we'll just say "'docker login' failed with code ..."
 	if dockerPasswordStdin {
-		_, err := RunCommandThatMustSucceed("docker", []string{"login", "-u", username,
+		_, err := runCommandThatMustSucceed("docker", []string{"login", "-u", username,
 			"--password-stdin", registryName}, logResource, false, password, nil)
 		if err != nil {
 			return err
 		}
 
 	} else {
-		_, err := RunCommandThatMustSucceed("docker", []string{"login", "-u", username,
+		_, err := runCommandThatMustSucceed("docker", []string{"login", "-u", username,
 			"-p", password, registryName}, logResource, false, "", nil)
 		if err != nil {
 			return err
@@ -123,7 +204,7 @@ func useDockerPasswordStdin(logResource pulumi.Resource) (bool, error) {
 	}
 
 	// Verify that 'docker' is on the PATH and get the client/server versions
-	dockerVersionString, err := RunCommandThatMustSucceed("docker", []string{"version", "-f", "{{json .}}"}, logResource, true, "", nil)
+	dockerVersionString, err := runCommandThatMustSucceed("docker", []string{"version", "-f", "{{json .}}"}, logResource, true, "", nil)
 	if err != nil {
 		return false, errors.Wrap(err, "No 'docker' command available on PATH: Please install to use container 'build' mode.")
 	}
@@ -185,14 +266,14 @@ func runDockerBuild(imageName string, build *dockerBuild, cacheFrom []string,
 		buildArgs = append(buildArgs, "--target", target)
 	}
 
-	_, err := RunCommandThatMustSucceed("docker", buildArgs, logResource, true, "", build.Env)
+	_, err := runCommandThatMustSucceed("docker", buildArgs, logResource, true, "", build.Env)
 	return err
 }
 
-// RunCommandThatMustSucceed is used to determine if the full command line should be reported
+// runCommandThatMustSucceed is used to determine if the full command line should be reported
 // when an error happens.  In general reporting the full command line is fine.  But it should be set
 // to false if it might contain sensitive information (like a username/password)
-func RunCommandThatMustSucceed(cmd string, args []string, logResource pulumi.Resource,
+func runCommandThatMustSucceed(cmd string, args []string, logResource pulumi.Resource,
 	reportFullCommandLine bool, stdin string, env map[string]string) (string, error) {
 
 	stdout, err := runCommandThatCanFail(cmd, args, logResource, reportFullCommandLine, false, stdin, env)

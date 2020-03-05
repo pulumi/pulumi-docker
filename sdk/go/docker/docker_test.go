@@ -8,13 +8,13 @@ import (
 
 func TestRunCommandThatMustSucceed(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
-		stdout, err := RunCommandThatMustSucceed("echo", []string{"-n", "test"}, nil, true, "", nil)
+		stdout, err := runCommandThatMustSucceed("echo", []string{"-n", "test"}, nil, true, "", nil)
 		assert.Nil(t, err)
 		assert.Equal(t, "test", stdout)
 	})
 
 	t.Run("fail", func(t *testing.T) {
-		_, err := RunCommandThatMustSucceed("cat", []string{"not-a-real-file"}, nil, true, "", nil)
+		_, err := runCommandThatMustSucceed("cat", []string{"not-a-real-file"}, nil, true, "", nil)
 		assert.NotNil(t, err)
 		assert.Equal(t, err.Error(), "cat not-a-real-file failed with error: exit status 1")
 	})
@@ -48,3 +48,16 @@ func TestLoginToRegistry(t *testing.T) {
 	})
 }
 */
+
+func TestBuildImageAsync(t *testing.T) {
+	t.Run("basic", func(t *testing.T) {
+		build := dockerBuild{
+			Dockerfile: "./tests/Dockerfile",
+		}
+		output, stages, err := buildImageAsync("test", build, nil, nil)
+		assert.Nil(t, err)
+		assert.NotContains(t, output, ":")
+		assert.Len(t, output, 64)
+		assert.Empty(t, stages)
+	})
+}
