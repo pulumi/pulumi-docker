@@ -1,8 +1,10 @@
 package docker
 
 import (
+	"context"
 	"testing"
 
+	"github.com/pulumi/pulumi/sdk/go/pulumi"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -60,4 +62,39 @@ func TestBuildImageAsync(t *testing.T) {
 		assert.Len(t, output, 64)
 		assert.Empty(t, stages)
 	})
+}
+
+func TestNewImage(t *testing.T) {
+	t.Run("basic", func(t *testing.T) {
+		ctx, err := pulumi.NewContext(context.Background(), pulumi.RunInfo{
+			DryRun: true,
+		})
+		assert.Nil(t, err)
+
+		// Create the docker image.
+		imageArgs := ImageArgs{
+			ImageName: pulumi.String("registry3ac31be0.azurecr.io/mynodeapp:v1.0.0"),
+			Build: DockerBuild{
+				Context: pulumi.String("./app"),
+			},
+			Registry: &ImageRegistry{},
+		}
+		image, err := NewImage(ctx, "node-app", &imageArgs)
+		assert.Nil(t, err)
+		t.Log(image.ImageName)
+	})
+}
+
+func TestNewRemoteImage(t *testing.T) {
+	ctx, err := pulumi.NewContext(context.Background(), pulumi.RunInfo{
+		DryRun: true,
+	})
+	assert.Nil(t, err)
+
+	imageArgs := &RemoteImageArgs{
+		Name:        pulumi.String("nginx"),
+		KeepLocally: pulumi.Bool(true),
+	}
+	_, err = NewRemoteImage(ctx, "nginx-image", imageArgs)
+	assert.Nil(t, err)
 }

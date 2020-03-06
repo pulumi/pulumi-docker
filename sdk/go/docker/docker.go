@@ -74,6 +74,25 @@ type cacheFrom struct {
 	Stages []string
 }
 
+func buildAndPushImageAsync(ctx *pulumi.Context, imageName string, build dockerBuild, repositoryURL string,
+	logResource pulumi.Resource, skipPush bool, registry imageRegistry) (string, error) {
+
+	// Give an initial message indicating what we're about to do.  That way, if anything
+	// takes a while, the user has an idea about what's going on.
+	logging.Infof("Starting docker build and push...")
+
+	res, err := buildAndPushImageWorkerAsync(ctx, imageName, build, repositoryURL, logResource, skipPush, &registry)
+	if err != nil {
+		return "", err
+	}
+
+	// If we got here, then building/pushing didn't throw any errors.  update the status bar
+	// indicating that things worked properly.  that way, the info bar isn't stuck showing the very
+	// last thing printed by some subcommand we launched.
+	logging.Infof("Successfully pushed to docker.")
+	return res, nil
+}
+
 func buildAndPushImageWorkerAsync(ctx *pulumi.Context, baseImageName string, build dockerBuild,
 	repositoryURL string, logResource pulumi.Resource, skipPush bool, registry *imageRegistry) (string, error) {
 
