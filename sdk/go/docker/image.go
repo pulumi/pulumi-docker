@@ -82,7 +82,7 @@ func NewImage(ctx *pulumi.Context,
 	}
 
 	resource.ImageName = pulumi.All(args).ApplyT(func(inputArgs []interface{}) (string, error) {
-		imageArgs := inputArgs[0].(*imageArgs)
+		imageArgs := inputArgs[0].(imageArgs)
 		imageName := imageArgs.ImageName
 
 		// If there is no localImageName set it equal to imageName.  Note: this means
@@ -119,7 +119,7 @@ func NewImage(ctx *pulumi.Context,
 		if len(tag) == 0 {
 			baseImageName = localImageName
 		} else {
-			baseImageName = fmt.Sprintf("%s:%s", localImageNameWithoutTag, localImageName)
+			baseImageName = fmt.Sprintf("%s:%s", localImageNameWithoutTag, tag)
 		}
 
 		return buildAndPushImageAsync(ctx, baseImageName, imageArgs.Build,
