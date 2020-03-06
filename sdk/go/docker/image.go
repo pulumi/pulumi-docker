@@ -10,28 +10,6 @@ import (
 	"github.com/pulumi/pulumi/sdk/go/pulumi"
 )
 
-// ImageRegistry contains credentials for the docker registry.
-type ImageRegistry struct {
-	// Docker registry server URL to push to.  Some common values include:
-	// DockerHub: `docker.io` or `https://index.docker.io/v1`
-	// Azure Container Registry: `<name>.azurecr.io`
-	// AWS Elastic Container Registry: `<account>.dkr.ecr.us-east-2.amazonaws.com`
-	// Google Container Registry: `<name>.gcr.io`
-	Server pulumi.StringInput `pulumi:"server"`
-
-	// Username for login to the target Docker registry.
-	Username pulumi.StringInput `pulumi:"username"`
-
-	// Password for login to the target Docker registry.
-	Password pulumi.StringInput `pulumi:"password"`
-}
-
-type imageRegistry struct {
-	Server   string
-	Username string
-	Password string
-}
-
 // ImageArgs are the arguments are constructing an Image resource.
 type ImageArgs struct {
 
@@ -44,7 +22,7 @@ type ImageArgs struct {
 	ImageName pulumi.StringInput
 
 	// The Docker build context, as a folder path or a detailed DockerBuild object.
-	Build DockerBuild
+	Build DockerBuildInput
 
 	// The docker image name to build locally before tagging with imageName.  If not provided, it
 	// will be given the value of to [imageName].  This name can include a tag at the end.  If
@@ -55,7 +33,7 @@ type ImageArgs struct {
 	LocalImageName pulumi.StringInput
 
 	// Credentials for the docker registry to push to.
-	Registry *ImageRegistry
+	Registry ImageRegistryInput
 
 	// Skip push flag.
 	SkipPush pulumi.BoolInput
@@ -63,9 +41,9 @@ type ImageArgs struct {
 
 type imageArgs struct {
 	ImageName      string        `pulumi:"imageName"`
-	Build          dockerBuild   `pulumi:"build"`
+	Build          DockerBuild   `pulumi:"build"`
 	LocalImageName string        `pulumi:"localImageName"`
-	Registry       imageRegistry `pulumi:"registry"`
+	Registry       ImageRegistry `pulumi:"registry"`
 	SkipPush       bool          `pulumi:"skipPush"`
 }
 
@@ -148,7 +126,10 @@ func NewImage(ctx *pulumi.Context,
 			imageNameWithoutTag, resource, skipPush, imageArgs.Registry)
 	}).(pulumi.StringOutput)
 
-	resource.RegistryServer = args.Registry.Server.ToStringOutput()
+	resource.RegistryServer = pulumi.All(args.Registry).ApplyT(func(args []interface{}) (string, error) {
+		registry := args[0].(ImageRegistry)
+		return registry.Server, nil
+	}).(pulumi.StringOutput)
 	resource.BaseImageName = args.ImageName.ToStringOutput()
 
 	outputs := pulumi.Map(map[string]pulumi.Input{

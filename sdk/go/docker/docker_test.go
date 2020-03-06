@@ -77,7 +77,11 @@ func TestNewImage(t *testing.T) {
 			Build: DockerBuild{
 				Context: pulumi.String("./app"),
 			},
-			Registry: &ImageRegistry{},
+			Registry: &ImageRegistry{
+				Password: pulumi.String("jS=jDd/P+fhP39YTlwIhMVpQ9udCPmQ0"),
+				Server:   pulumi.String("registry3ac31be0.azurecr.io"),
+				Username: pulumi.String("registry3ac31be0"),
+			},
 		}
 		image, err := NewImage(ctx, "node-app", &imageArgs)
 		assert.Nil(t, err)

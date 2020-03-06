@@ -61,7 +61,8 @@ type ContainerCapabilitiesPtrInput interface {
 
 type containerCapabilitiesPtrType ContainerCapabilitiesArgs
 
-func ContainerCapabilitiesPtr(v *ContainerCapabilitiesArgs) ContainerCapabilitiesPtrInput {	return (*containerCapabilitiesPtrType)(v)
+func ContainerCapabilitiesPtr(v *ContainerCapabilitiesArgs) ContainerCapabilitiesPtrInput {
+	return (*containerCapabilitiesPtrType)(v)
 }
 
 func (*containerCapabilitiesPtrType) ElementType() reflect.Type {
@@ -76,7 +77,7 @@ func (i *containerCapabilitiesPtrType) ToContainerCapabilitiesPtrOutputWithConte
 	return pulumi.ToOutputWithContext(ctx, i).(ContainerCapabilitiesPtrOutput)
 }
 
-type ContainerCapabilitiesOutput struct { *pulumi.OutputState }
+type ContainerCapabilitiesOutput struct{ *pulumi.OutputState }
 
 func (ContainerCapabilitiesOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*ContainerCapabilities)(nil)).Elem()
@@ -99,17 +100,18 @@ func (o ContainerCapabilitiesOutput) ToContainerCapabilitiesPtrOutputWithContext
 		return &v
 	}).(ContainerCapabilitiesPtrOutput)
 }
+
 // list of linux capabilities to add.
 func (o ContainerCapabilitiesOutput) Adds() pulumi.StringArrayOutput {
-	return o.ApplyT(func (v ContainerCapabilities) []string { return v.Adds }).(pulumi.StringArrayOutput)
+	return o.ApplyT(func(v ContainerCapabilities) []string { return v.Adds }).(pulumi.StringArrayOutput)
 }
 
 // list of linux capabilities to drop.
 func (o ContainerCapabilitiesOutput) Drops() pulumi.StringArrayOutput {
-	return o.ApplyT(func (v ContainerCapabilities) []string { return v.Drops }).(pulumi.StringArrayOutput)
+	return o.ApplyT(func(v ContainerCapabilities) []string { return v.Drops }).(pulumi.StringArrayOutput)
 }
 
-type ContainerCapabilitiesPtrOutput struct { *pulumi.OutputState}
+type ContainerCapabilitiesPtrOutput struct{ *pulumi.OutputState }
 
 func (ContainerCapabilitiesPtrOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((**ContainerCapabilities)(nil)).Elem()
@@ -124,17 +126,17 @@ func (o ContainerCapabilitiesPtrOutput) ToContainerCapabilitiesPtrOutputWithCont
 }
 
 func (o ContainerCapabilitiesPtrOutput) Elem() ContainerCapabilitiesOutput {
-	return o.ApplyT(func (v *ContainerCapabilities) ContainerCapabilities { return *v }).(ContainerCapabilitiesOutput)
+	return o.ApplyT(func(v *ContainerCapabilities) ContainerCapabilities { return *v }).(ContainerCapabilitiesOutput)
 }
 
 // list of linux capabilities to add.
 func (o ContainerCapabilitiesPtrOutput) Adds() pulumi.StringArrayOutput {
-	return o.ApplyT(func (v ContainerCapabilities) []string { return v.Adds }).(pulumi.StringArrayOutput)
+	return o.ApplyT(func(v ContainerCapabilities) []string { return v.Adds }).(pulumi.StringArrayOutput)
 }
 
 // list of linux capabilities to drop.
 func (o ContainerCapabilitiesPtrOutput) Drops() pulumi.StringArrayOutput {
-	return o.ApplyT(func (v ContainerCapabilities) []string { return v.Drops }).(pulumi.StringArrayOutput)
+	return o.ApplyT(func(v ContainerCapabilities) []string { return v.Drops }).(pulumi.StringArrayOutput)
 }
 
 type ContainerDevice struct {
@@ -203,7 +205,7 @@ func (i ContainerDeviceArray) ToContainerDeviceArrayOutputWithContext(ctx contex
 	return pulumi.ToOutputWithContext(ctx, i).(ContainerDeviceArrayOutput)
 }
 
-type ContainerDeviceOutput struct { *pulumi.OutputState }
+type ContainerDeviceOutput struct{ *pulumi.OutputState }
 
 func (ContainerDeviceOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*ContainerDevice)(nil)).Elem()
@@ -220,23 +222,23 @@ func (o ContainerDeviceOutput) ToContainerDeviceOutputWithContext(ctx context.Co
 // The path in the container where the
 // device will be binded.
 func (o ContainerDeviceOutput) ContainerPath() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ContainerDevice) *string { return v.ContainerPath }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ContainerDevice) *string { return v.ContainerPath }).(pulumi.StringPtrOutput)
 }
 
 // The path on the host where the device
 // is located.
 func (o ContainerDeviceOutput) HostPath() pulumi.StringOutput {
-	return o.ApplyT(func (v ContainerDevice) string { return v.HostPath }).(pulumi.StringOutput)
+	return o.ApplyT(func(v ContainerDevice) string { return v.HostPath }).(pulumi.StringOutput)
 }
 
 // The cgroup permissions given to the
 // container to access the device.
 // Defaults to `rwm`.
 func (o ContainerDeviceOutput) Permissions() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ContainerDevice) *string { return v.Permissions }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ContainerDevice) *string { return v.Permissions }).(pulumi.StringPtrOutput)
 }
 
-type ContainerDeviceArrayOutput struct { *pulumi.OutputState}
+type ContainerDeviceArrayOutput struct{ *pulumi.OutputState }
 
 func (ContainerDeviceArrayOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*[]ContainerDevice)(nil)).Elem()
@@ -251,17 +253,17 @@ func (o ContainerDeviceArrayOutput) ToContainerDeviceArrayOutputWithContext(ctx 
 }
 
 func (o ContainerDeviceArrayOutput) Index(i pulumi.IntInput) ContainerDeviceOutput {
-	return pulumi.All(o, i).ApplyT(func (vs []interface{}) ContainerDevice {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) ContainerDevice {
 		return vs[0].([]ContainerDevice)[vs[1].(int)]
 	}).(ContainerDeviceOutput)
 }
 
 type ContainerHealthcheck struct {
-	Interval *string `pulumi:"interval"`
-	Retries *int `pulumi:"retries"`
-	StartPeriod *string `pulumi:"startPeriod"`
-	Tests []string `pulumi:"tests"`
-	Timeout *string `pulumi:"timeout"`
+	Interval    *string  `pulumi:"interval"`
+	Retries     *int     `pulumi:"retries"`
+	StartPeriod *string  `pulumi:"startPeriod"`
+	Tests       []string `pulumi:"tests"`
+	Timeout     *string  `pulumi:"timeout"`
 }
 
 type ContainerHealthcheckInput interface {
@@ -272,11 +274,11 @@ type ContainerHealthcheckInput interface {
 }
 
 type ContainerHealthcheckArgs struct {
-	Interval pulumi.StringPtrInput `pulumi:"interval"`
-	Retries pulumi.IntPtrInput `pulumi:"retries"`
-	StartPeriod pulumi.StringPtrInput `pulumi:"startPeriod"`
-	Tests pulumi.StringArrayInput `pulumi:"tests"`
-	Timeout pulumi.StringPtrInput `pulumi:"timeout"`
+	Interval    pulumi.StringPtrInput   `pulumi:"interval"`
+	Retries     pulumi.IntPtrInput      `pulumi:"retries"`
+	StartPeriod pulumi.StringPtrInput   `pulumi:"startPeriod"`
+	Tests       pulumi.StringArrayInput `pulumi:"tests"`
+	Timeout     pulumi.StringPtrInput   `pulumi:"timeout"`
 }
 
 func (ContainerHealthcheckArgs) ElementType() reflect.Type {
@@ -308,7 +310,8 @@ type ContainerHealthcheckPtrInput interface {
 
 type containerHealthcheckPtrType ContainerHealthcheckArgs
 
-func ContainerHealthcheckPtr(v *ContainerHealthcheckArgs) ContainerHealthcheckPtrInput {	return (*containerHealthcheckPtrType)(v)
+func ContainerHealthcheckPtr(v *ContainerHealthcheckArgs) ContainerHealthcheckPtrInput {
+	return (*containerHealthcheckPtrType)(v)
 }
 
 func (*containerHealthcheckPtrType) ElementType() reflect.Type {
@@ -323,7 +326,7 @@ func (i *containerHealthcheckPtrType) ToContainerHealthcheckPtrOutputWithContext
 	return pulumi.ToOutputWithContext(ctx, i).(ContainerHealthcheckPtrOutput)
 }
 
-type ContainerHealthcheckOutput struct { *pulumi.OutputState }
+type ContainerHealthcheckOutput struct{ *pulumi.OutputState }
 
 func (ContainerHealthcheckOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*ContainerHealthcheck)(nil)).Elem()
@@ -347,26 +350,26 @@ func (o ContainerHealthcheckOutput) ToContainerHealthcheckPtrOutputWithContext(c
 	}).(ContainerHealthcheckPtrOutput)
 }
 func (o ContainerHealthcheckOutput) Interval() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ContainerHealthcheck) *string { return v.Interval }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ContainerHealthcheck) *string { return v.Interval }).(pulumi.StringPtrOutput)
 }
 
 func (o ContainerHealthcheckOutput) Retries() pulumi.IntPtrOutput {
-	return o.ApplyT(func (v ContainerHealthcheck) *int { return v.Retries }).(pulumi.IntPtrOutput)
+	return o.ApplyT(func(v ContainerHealthcheck) *int { return v.Retries }).(pulumi.IntPtrOutput)
 }
 
 func (o ContainerHealthcheckOutput) StartPeriod() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ContainerHealthcheck) *string { return v.StartPeriod }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ContainerHealthcheck) *string { return v.StartPeriod }).(pulumi.StringPtrOutput)
 }
 
 func (o ContainerHealthcheckOutput) Tests() pulumi.StringArrayOutput {
-	return o.ApplyT(func (v ContainerHealthcheck) []string { return v.Tests }).(pulumi.StringArrayOutput)
+	return o.ApplyT(func(v ContainerHealthcheck) []string { return v.Tests }).(pulumi.StringArrayOutput)
 }
 
 func (o ContainerHealthcheckOutput) Timeout() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ContainerHealthcheck) *string { return v.Timeout }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ContainerHealthcheck) *string { return v.Timeout }).(pulumi.StringPtrOutput)
 }
 
-type ContainerHealthcheckPtrOutput struct { *pulumi.OutputState}
+type ContainerHealthcheckPtrOutput struct{ *pulumi.OutputState }
 
 func (ContainerHealthcheckPtrOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((**ContainerHealthcheck)(nil)).Elem()
@@ -381,27 +384,27 @@ func (o ContainerHealthcheckPtrOutput) ToContainerHealthcheckPtrOutputWithContex
 }
 
 func (o ContainerHealthcheckPtrOutput) Elem() ContainerHealthcheckOutput {
-	return o.ApplyT(func (v *ContainerHealthcheck) ContainerHealthcheck { return *v }).(ContainerHealthcheckOutput)
+	return o.ApplyT(func(v *ContainerHealthcheck) ContainerHealthcheck { return *v }).(ContainerHealthcheckOutput)
 }
 
 func (o ContainerHealthcheckPtrOutput) Interval() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ContainerHealthcheck) *string { return v.Interval }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ContainerHealthcheck) *string { return v.Interval }).(pulumi.StringPtrOutput)
 }
 
 func (o ContainerHealthcheckPtrOutput) Retries() pulumi.IntPtrOutput {
-	return o.ApplyT(func (v ContainerHealthcheck) *int { return v.Retries }).(pulumi.IntPtrOutput)
+	return o.ApplyT(func(v ContainerHealthcheck) *int { return v.Retries }).(pulumi.IntPtrOutput)
 }
 
 func (o ContainerHealthcheckPtrOutput) StartPeriod() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ContainerHealthcheck) *string { return v.StartPeriod }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ContainerHealthcheck) *string { return v.StartPeriod }).(pulumi.StringPtrOutput)
 }
 
 func (o ContainerHealthcheckPtrOutput) Tests() pulumi.StringArrayOutput {
-	return o.ApplyT(func (v ContainerHealthcheck) []string { return v.Tests }).(pulumi.StringArrayOutput)
+	return o.ApplyT(func(v ContainerHealthcheck) []string { return v.Tests }).(pulumi.StringArrayOutput)
 }
 
 func (o ContainerHealthcheckPtrOutput) Timeout() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ContainerHealthcheck) *string { return v.Timeout }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ContainerHealthcheck) *string { return v.Timeout }).(pulumi.StringPtrOutput)
 }
 
 type ContainerHost struct {
@@ -458,7 +461,7 @@ func (i ContainerHostArray) ToContainerHostArrayOutputWithContext(ctx context.Co
 	return pulumi.ToOutputWithContext(ctx, i).(ContainerHostArrayOutput)
 }
 
-type ContainerHostOutput struct { *pulumi.OutputState }
+type ContainerHostOutput struct{ *pulumi.OutputState }
 
 func (ContainerHostOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*ContainerHost)(nil)).Elem()
@@ -474,15 +477,15 @@ func (o ContainerHostOutput) ToContainerHostOutputWithContext(ctx context.Contex
 
 // Hostname to add.
 func (o ContainerHostOutput) Host() pulumi.StringOutput {
-	return o.ApplyT(func (v ContainerHost) string { return v.Host }).(pulumi.StringOutput)
+	return o.ApplyT(func(v ContainerHost) string { return v.Host }).(pulumi.StringOutput)
 }
 
 // IP address this hostname should resolve to.
 func (o ContainerHostOutput) Ip() pulumi.StringOutput {
-	return o.ApplyT(func (v ContainerHost) string { return v.Ip }).(pulumi.StringOutput)
+	return o.ApplyT(func(v ContainerHost) string { return v.Ip }).(pulumi.StringOutput)
 }
 
-type ContainerHostArrayOutput struct { *pulumi.OutputState}
+type ContainerHostArrayOutput struct{ *pulumi.OutputState }
 
 func (ContainerHostArrayOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*[]ContainerHost)(nil)).Elem()
@@ -497,7 +500,7 @@ func (o ContainerHostArrayOutput) ToContainerHostArrayOutputWithContext(ctx cont
 }
 
 func (o ContainerHostArrayOutput) Index(i pulumi.IntInput) ContainerHostOutput {
-	return pulumi.All(o, i).ApplyT(func (vs []interface{}) ContainerHost {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) ContainerHost {
 		return vs[0].([]ContainerHost)[vs[1].(int)]
 	}).(ContainerHostOutput)
 }
@@ -556,7 +559,7 @@ func (i ContainerLabelArray) ToContainerLabelArrayOutputWithContext(ctx context.
 	return pulumi.ToOutputWithContext(ctx, i).(ContainerLabelArrayOutput)
 }
 
-type ContainerLabelOutput struct { *pulumi.OutputState }
+type ContainerLabelOutput struct{ *pulumi.OutputState }
 
 func (ContainerLabelOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*ContainerLabel)(nil)).Elem()
@@ -573,14 +576,14 @@ func (o ContainerLabelOutput) ToContainerLabelOutputWithContext(ctx context.Cont
 // Name of the label
 // * `value` (Required, string) Value of the label
 func (o ContainerLabelOutput) Label() pulumi.StringOutput {
-	return o.ApplyT(func (v ContainerLabel) string { return v.Label }).(pulumi.StringOutput)
+	return o.ApplyT(func(v ContainerLabel) string { return v.Label }).(pulumi.StringOutput)
 }
 
 func (o ContainerLabelOutput) Value() pulumi.StringOutput {
-	return o.ApplyT(func (v ContainerLabel) string { return v.Value }).(pulumi.StringOutput)
+	return o.ApplyT(func(v ContainerLabel) string { return v.Value }).(pulumi.StringOutput)
 }
 
-type ContainerLabelArrayOutput struct { *pulumi.OutputState}
+type ContainerLabelArrayOutput struct{ *pulumi.OutputState }
 
 func (ContainerLabelArrayOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*[]ContainerLabel)(nil)).Elem()
@@ -595,7 +598,7 @@ func (o ContainerLabelArrayOutput) ToContainerLabelArrayOutputWithContext(ctx co
 }
 
 func (o ContainerLabelArrayOutput) Index(i pulumi.IntInput) ContainerLabelOutput {
-	return pulumi.All(o, i).ApplyT(func (vs []interface{}) ContainerLabel {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) ContainerLabel {
 		return vs[0].([]ContainerLabel)[vs[1].(int)]
 	}).(ContainerLabelOutput)
 }
@@ -676,7 +679,7 @@ func (i ContainerMountArray) ToContainerMountArrayOutputWithContext(ctx context.
 	return pulumi.ToOutputWithContext(ctx, i).(ContainerMountArrayOutput)
 }
 
-type ContainerMountOutput struct { *pulumi.OutputState }
+type ContainerMountOutput struct{ *pulumi.OutputState }
 
 func (ContainerMountOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*ContainerMount)(nil)).Elem()
@@ -692,41 +695,41 @@ func (o ContainerMountOutput) ToContainerMountOutputWithContext(ctx context.Cont
 
 // Optional configuration for the `bind` type.
 func (o ContainerMountOutput) BindOptions() ContainerMountBindOptionsPtrOutput {
-	return o.ApplyT(func (v ContainerMount) *ContainerMountBindOptions { return v.BindOptions }).(ContainerMountBindOptionsPtrOutput)
+	return o.ApplyT(func(v ContainerMount) *ContainerMountBindOptions { return v.BindOptions }).(ContainerMountBindOptionsPtrOutput)
 }
 
 // If true, this volume will be readonly.
 // Defaults to false.
 func (o ContainerMountOutput) ReadOnly() pulumi.BoolPtrOutput {
-	return o.ApplyT(func (v ContainerMount) *bool { return v.ReadOnly }).(pulumi.BoolPtrOutput)
+	return o.ApplyT(func(v ContainerMount) *bool { return v.ReadOnly }).(pulumi.BoolPtrOutput)
 }
 
 // A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state.
 func (o ContainerMountOutput) Source() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ContainerMount) *string { return v.Source }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ContainerMount) *string { return v.Source }).(pulumi.StringPtrOutput)
 }
 
 // The container path.
 func (o ContainerMountOutput) Target() pulumi.StringOutput {
-	return o.ApplyT(func (v ContainerMount) string { return v.Target }).(pulumi.StringOutput)
+	return o.ApplyT(func(v ContainerMount) string { return v.Target }).(pulumi.StringOutput)
 }
 
 // Optional configuration for the `tmpf` type.
 func (o ContainerMountOutput) TmpfsOptions() ContainerMountTmpfsOptionsPtrOutput {
-	return o.ApplyT(func (v ContainerMount) *ContainerMountTmpfsOptions { return v.TmpfsOptions }).(ContainerMountTmpfsOptionsPtrOutput)
+	return o.ApplyT(func(v ContainerMount) *ContainerMountTmpfsOptions { return v.TmpfsOptions }).(ContainerMountTmpfsOptionsPtrOutput)
 }
 
 // The mount type: valid values are `bind|volume|tmpfs`.
 func (o ContainerMountOutput) Type() pulumi.StringOutput {
-	return o.ApplyT(func (v ContainerMount) string { return v.Type }).(pulumi.StringOutput)
+	return o.ApplyT(func(v ContainerMount) string { return v.Type }).(pulumi.StringOutput)
 }
 
 // Optional configuration for the `volume` type.
 func (o ContainerMountOutput) VolumeOptions() ContainerMountVolumeOptionsPtrOutput {
-	return o.ApplyT(func (v ContainerMount) *ContainerMountVolumeOptions { return v.VolumeOptions }).(ContainerMountVolumeOptionsPtrOutput)
+	return o.ApplyT(func(v ContainerMount) *ContainerMountVolumeOptions { return v.VolumeOptions }).(ContainerMountVolumeOptionsPtrOutput)
 }
 
-type ContainerMountArrayOutput struct { *pulumi.OutputState}
+type ContainerMountArrayOutput struct{ *pulumi.OutputState }
 
 func (ContainerMountArrayOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*[]ContainerMount)(nil)).Elem()
@@ -741,7 +744,7 @@ func (o ContainerMountArrayOutput) ToContainerMountArrayOutputWithContext(ctx co
 }
 
 func (o ContainerMountArrayOutput) Index(i pulumi.IntInput) ContainerMountOutput {
-	return pulumi.All(o, i).ApplyT(func (vs []interface{}) ContainerMount {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) ContainerMount {
 		return vs[0].([]ContainerMount)[vs[1].(int)]
 	}).(ContainerMountOutput)
 }
@@ -792,7 +795,8 @@ type ContainerMountBindOptionsPtrInput interface {
 
 type containerMountBindOptionsPtrType ContainerMountBindOptionsArgs
 
-func ContainerMountBindOptionsPtr(v *ContainerMountBindOptionsArgs) ContainerMountBindOptionsPtrInput {	return (*containerMountBindOptionsPtrType)(v)
+func ContainerMountBindOptionsPtr(v *ContainerMountBindOptionsArgs) ContainerMountBindOptionsPtrInput {
+	return (*containerMountBindOptionsPtrType)(v)
 }
 
 func (*containerMountBindOptionsPtrType) ElementType() reflect.Type {
@@ -807,7 +811,7 @@ func (i *containerMountBindOptionsPtrType) ToContainerMountBindOptionsPtrOutputW
 	return pulumi.ToOutputWithContext(ctx, i).(ContainerMountBindOptionsPtrOutput)
 }
 
-type ContainerMountBindOptionsOutput struct { *pulumi.OutputState }
+type ContainerMountBindOptionsOutput struct{ *pulumi.OutputState }
 
 func (ContainerMountBindOptionsOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*ContainerMountBindOptions)(nil)).Elem()
@@ -830,12 +834,13 @@ func (o ContainerMountBindOptionsOutput) ToContainerMountBindOptionsPtrOutputWit
 		return &v
 	}).(ContainerMountBindOptionsPtrOutput)
 }
+
 // A propagation mode with the value.
 func (o ContainerMountBindOptionsOutput) Propagation() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ContainerMountBindOptions) *string { return v.Propagation }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ContainerMountBindOptions) *string { return v.Propagation }).(pulumi.StringPtrOutput)
 }
 
-type ContainerMountBindOptionsPtrOutput struct { *pulumi.OutputState}
+type ContainerMountBindOptionsPtrOutput struct{ *pulumi.OutputState }
 
 func (ContainerMountBindOptionsPtrOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((**ContainerMountBindOptions)(nil)).Elem()
@@ -850,12 +855,12 @@ func (o ContainerMountBindOptionsPtrOutput) ToContainerMountBindOptionsPtrOutput
 }
 
 func (o ContainerMountBindOptionsPtrOutput) Elem() ContainerMountBindOptionsOutput {
-	return o.ApplyT(func (v *ContainerMountBindOptions) ContainerMountBindOptions { return *v }).(ContainerMountBindOptionsOutput)
+	return o.ApplyT(func(v *ContainerMountBindOptions) ContainerMountBindOptions { return *v }).(ContainerMountBindOptionsOutput)
 }
 
 // A propagation mode with the value.
 func (o ContainerMountBindOptionsPtrOutput) Propagation() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ContainerMountBindOptions) *string { return v.Propagation }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ContainerMountBindOptions) *string { return v.Propagation }).(pulumi.StringPtrOutput)
 }
 
 type ContainerMountTmpfsOptions struct {
@@ -908,7 +913,8 @@ type ContainerMountTmpfsOptionsPtrInput interface {
 
 type containerMountTmpfsOptionsPtrType ContainerMountTmpfsOptionsArgs
 
-func ContainerMountTmpfsOptionsPtr(v *ContainerMountTmpfsOptionsArgs) ContainerMountTmpfsOptionsPtrInput {	return (*containerMountTmpfsOptionsPtrType)(v)
+func ContainerMountTmpfsOptionsPtr(v *ContainerMountTmpfsOptionsArgs) ContainerMountTmpfsOptionsPtrInput {
+	return (*containerMountTmpfsOptionsPtrType)(v)
 }
 
 func (*containerMountTmpfsOptionsPtrType) ElementType() reflect.Type {
@@ -923,7 +929,7 @@ func (i *containerMountTmpfsOptionsPtrType) ToContainerMountTmpfsOptionsPtrOutpu
 	return pulumi.ToOutputWithContext(ctx, i).(ContainerMountTmpfsOptionsPtrOutput)
 }
 
-type ContainerMountTmpfsOptionsOutput struct { *pulumi.OutputState }
+type ContainerMountTmpfsOptionsOutput struct{ *pulumi.OutputState }
 
 func (ContainerMountTmpfsOptionsOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*ContainerMountTmpfsOptions)(nil)).Elem()
@@ -946,17 +952,18 @@ func (o ContainerMountTmpfsOptionsOutput) ToContainerMountTmpfsOptionsPtrOutputW
 		return &v
 	}).(ContainerMountTmpfsOptionsPtrOutput)
 }
+
 // The permission mode for the tmpfs mount in an integer.
 func (o ContainerMountTmpfsOptionsOutput) Mode() pulumi.IntPtrOutput {
-	return o.ApplyT(func (v ContainerMountTmpfsOptions) *int { return v.Mode }).(pulumi.IntPtrOutput)
+	return o.ApplyT(func(v ContainerMountTmpfsOptions) *int { return v.Mode }).(pulumi.IntPtrOutput)
 }
 
 // The size for the tmpfs mount in bytes.
 func (o ContainerMountTmpfsOptionsOutput) SizeBytes() pulumi.IntPtrOutput {
-	return o.ApplyT(func (v ContainerMountTmpfsOptions) *int { return v.SizeBytes }).(pulumi.IntPtrOutput)
+	return o.ApplyT(func(v ContainerMountTmpfsOptions) *int { return v.SizeBytes }).(pulumi.IntPtrOutput)
 }
 
-type ContainerMountTmpfsOptionsPtrOutput struct { *pulumi.OutputState}
+type ContainerMountTmpfsOptionsPtrOutput struct{ *pulumi.OutputState }
 
 func (ContainerMountTmpfsOptionsPtrOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((**ContainerMountTmpfsOptions)(nil)).Elem()
@@ -971,17 +978,17 @@ func (o ContainerMountTmpfsOptionsPtrOutput) ToContainerMountTmpfsOptionsPtrOutp
 }
 
 func (o ContainerMountTmpfsOptionsPtrOutput) Elem() ContainerMountTmpfsOptionsOutput {
-	return o.ApplyT(func (v *ContainerMountTmpfsOptions) ContainerMountTmpfsOptions { return *v }).(ContainerMountTmpfsOptionsOutput)
+	return o.ApplyT(func(v *ContainerMountTmpfsOptions) ContainerMountTmpfsOptions { return *v }).(ContainerMountTmpfsOptionsOutput)
 }
 
 // The permission mode for the tmpfs mount in an integer.
 func (o ContainerMountTmpfsOptionsPtrOutput) Mode() pulumi.IntPtrOutput {
-	return o.ApplyT(func (v ContainerMountTmpfsOptions) *int { return v.Mode }).(pulumi.IntPtrOutput)
+	return o.ApplyT(func(v ContainerMountTmpfsOptions) *int { return v.Mode }).(pulumi.IntPtrOutput)
 }
 
 // The size for the tmpfs mount in bytes.
 func (o ContainerMountTmpfsOptionsPtrOutput) SizeBytes() pulumi.IntPtrOutput {
-	return o.ApplyT(func (v ContainerMountTmpfsOptions) *int { return v.SizeBytes }).(pulumi.IntPtrOutput)
+	return o.ApplyT(func(v ContainerMountTmpfsOptions) *int { return v.SizeBytes }).(pulumi.IntPtrOutput)
 }
 
 type ContainerMountVolumeOptions struct {
@@ -1040,7 +1047,8 @@ type ContainerMountVolumeOptionsPtrInput interface {
 
 type containerMountVolumeOptionsPtrType ContainerMountVolumeOptionsArgs
 
-func ContainerMountVolumeOptionsPtr(v *ContainerMountVolumeOptionsArgs) ContainerMountVolumeOptionsPtrInput {	return (*containerMountVolumeOptionsPtrType)(v)
+func ContainerMountVolumeOptionsPtr(v *ContainerMountVolumeOptionsArgs) ContainerMountVolumeOptionsPtrInput {
+	return (*containerMountVolumeOptionsPtrType)(v)
 }
 
 func (*containerMountVolumeOptionsPtrType) ElementType() reflect.Type {
@@ -1055,7 +1063,7 @@ func (i *containerMountVolumeOptionsPtrType) ToContainerMountVolumeOptionsPtrOut
 	return pulumi.ToOutputWithContext(ctx, i).(ContainerMountVolumeOptionsPtrOutput)
 }
 
-type ContainerMountVolumeOptionsOutput struct { *pulumi.OutputState }
+type ContainerMountVolumeOptionsOutput struct{ *pulumi.OutputState }
 
 func (ContainerMountVolumeOptionsOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*ContainerMountVolumeOptions)(nil)).Elem()
@@ -1079,25 +1087,25 @@ func (o ContainerMountVolumeOptionsOutput) ToContainerMountVolumeOptionsPtrOutpu
 	}).(ContainerMountVolumeOptionsPtrOutput)
 }
 func (o ContainerMountVolumeOptionsOutput) DriverName() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ContainerMountVolumeOptions) *string { return v.DriverName }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ContainerMountVolumeOptions) *string { return v.DriverName }).(pulumi.StringPtrOutput)
 }
 
 // Options for the driver.
 func (o ContainerMountVolumeOptionsOutput) DriverOptions() pulumi.StringMapOutput {
-	return o.ApplyT(func (v ContainerMountVolumeOptions) map[string]string { return v.DriverOptions }).(pulumi.StringMapOutput)
+	return o.ApplyT(func(v ContainerMountVolumeOptions) map[string]string { return v.DriverOptions }).(pulumi.StringMapOutput)
 }
 
 // Adding labels.
 func (o ContainerMountVolumeOptionsOutput) Labels() ContainerMountVolumeOptionsLabelArrayOutput {
-	return o.ApplyT(func (v ContainerMountVolumeOptions) []ContainerMountVolumeOptionsLabel { return v.Labels }).(ContainerMountVolumeOptionsLabelArrayOutput)
+	return o.ApplyT(func(v ContainerMountVolumeOptions) []ContainerMountVolumeOptionsLabel { return v.Labels }).(ContainerMountVolumeOptionsLabelArrayOutput)
 }
 
 // Whether to populate volume with data from the target.
 func (o ContainerMountVolumeOptionsOutput) NoCopy() pulumi.BoolPtrOutput {
-	return o.ApplyT(func (v ContainerMountVolumeOptions) *bool { return v.NoCopy }).(pulumi.BoolPtrOutput)
+	return o.ApplyT(func(v ContainerMountVolumeOptions) *bool { return v.NoCopy }).(pulumi.BoolPtrOutput)
 }
 
-type ContainerMountVolumeOptionsPtrOutput struct { *pulumi.OutputState}
+type ContainerMountVolumeOptionsPtrOutput struct{ *pulumi.OutputState }
 
 func (ContainerMountVolumeOptionsPtrOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((**ContainerMountVolumeOptions)(nil)).Elem()
@@ -1112,26 +1120,26 @@ func (o ContainerMountVolumeOptionsPtrOutput) ToContainerMountVolumeOptionsPtrOu
 }
 
 func (o ContainerMountVolumeOptionsPtrOutput) Elem() ContainerMountVolumeOptionsOutput {
-	return o.ApplyT(func (v *ContainerMountVolumeOptions) ContainerMountVolumeOptions { return *v }).(ContainerMountVolumeOptionsOutput)
+	return o.ApplyT(func(v *ContainerMountVolumeOptions) ContainerMountVolumeOptions { return *v }).(ContainerMountVolumeOptionsOutput)
 }
 
 func (o ContainerMountVolumeOptionsPtrOutput) DriverName() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ContainerMountVolumeOptions) *string { return v.DriverName }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ContainerMountVolumeOptions) *string { return v.DriverName }).(pulumi.StringPtrOutput)
 }
 
 // Options for the driver.
 func (o ContainerMountVolumeOptionsPtrOutput) DriverOptions() pulumi.StringMapOutput {
-	return o.ApplyT(func (v ContainerMountVolumeOptions) map[string]string { return v.DriverOptions }).(pulumi.StringMapOutput)
+	return o.ApplyT(func(v ContainerMountVolumeOptions) map[string]string { return v.DriverOptions }).(pulumi.StringMapOutput)
 }
 
 // Adding labels.
 func (o ContainerMountVolumeOptionsPtrOutput) Labels() ContainerMountVolumeOptionsLabelArrayOutput {
-	return o.ApplyT(func (v ContainerMountVolumeOptions) []ContainerMountVolumeOptionsLabel { return v.Labels }).(ContainerMountVolumeOptionsLabelArrayOutput)
+	return o.ApplyT(func(v ContainerMountVolumeOptions) []ContainerMountVolumeOptionsLabel { return v.Labels }).(ContainerMountVolumeOptionsLabelArrayOutput)
 }
 
 // Whether to populate volume with data from the target.
 func (o ContainerMountVolumeOptionsPtrOutput) NoCopy() pulumi.BoolPtrOutput {
-	return o.ApplyT(func (v ContainerMountVolumeOptions) *bool { return v.NoCopy }).(pulumi.BoolPtrOutput)
+	return o.ApplyT(func(v ContainerMountVolumeOptions) *bool { return v.NoCopy }).(pulumi.BoolPtrOutput)
 }
 
 type ContainerMountVolumeOptionsLabel struct {
@@ -1188,7 +1196,7 @@ func (i ContainerMountVolumeOptionsLabelArray) ToContainerMountVolumeOptionsLabe
 	return pulumi.ToOutputWithContext(ctx, i).(ContainerMountVolumeOptionsLabelArrayOutput)
 }
 
-type ContainerMountVolumeOptionsLabelOutput struct { *pulumi.OutputState }
+type ContainerMountVolumeOptionsLabelOutput struct{ *pulumi.OutputState }
 
 func (ContainerMountVolumeOptionsLabelOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*ContainerMountVolumeOptionsLabel)(nil)).Elem()
@@ -1205,14 +1213,14 @@ func (o ContainerMountVolumeOptionsLabelOutput) ToContainerMountVolumeOptionsLab
 // Name of the label
 // * `value` (Required, string) Value of the label
 func (o ContainerMountVolumeOptionsLabelOutput) Label() pulumi.StringOutput {
-	return o.ApplyT(func (v ContainerMountVolumeOptionsLabel) string { return v.Label }).(pulumi.StringOutput)
+	return o.ApplyT(func(v ContainerMountVolumeOptionsLabel) string { return v.Label }).(pulumi.StringOutput)
 }
 
 func (o ContainerMountVolumeOptionsLabelOutput) Value() pulumi.StringOutput {
-	return o.ApplyT(func (v ContainerMountVolumeOptionsLabel) string { return v.Value }).(pulumi.StringOutput)
+	return o.ApplyT(func(v ContainerMountVolumeOptionsLabel) string { return v.Value }).(pulumi.StringOutput)
 }
 
-type ContainerMountVolumeOptionsLabelArrayOutput struct { *pulumi.OutputState}
+type ContainerMountVolumeOptionsLabelArrayOutput struct{ *pulumi.OutputState }
 
 func (ContainerMountVolumeOptionsLabelArrayOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*[]ContainerMountVolumeOptionsLabel)(nil)).Elem()
@@ -1227,7 +1235,7 @@ func (o ContainerMountVolumeOptionsLabelArrayOutput) ToContainerMountVolumeOptio
 }
 
 func (o ContainerMountVolumeOptionsLabelArrayOutput) Index(i pulumi.IntInput) ContainerMountVolumeOptionsLabelOutput {
-	return pulumi.All(o, i).ApplyT(func (vs []interface{}) ContainerMountVolumeOptionsLabel {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) ContainerMountVolumeOptionsLabel {
 		return vs[0].([]ContainerMountVolumeOptionsLabel)[vs[1].(int)]
 	}).(ContainerMountVolumeOptionsLabelOutput)
 }
@@ -1240,8 +1248,8 @@ type ContainerNetworkData struct {
 	IpAddress *string `pulumi:"ipAddress"`
 	// *Deprecated:* Use `networkData` instead. The IP prefix length of the container as read from its
 	// NetworkSettings.
-	IpPrefixLength *int `pulumi:"ipPrefixLength"`
-	NetworkName *string `pulumi:"networkName"`
+	IpPrefixLength *int    `pulumi:"ipPrefixLength"`
+	NetworkName    *string `pulumi:"networkName"`
 }
 
 type ContainerNetworkDataInput interface {
@@ -1259,8 +1267,8 @@ type ContainerNetworkDataArgs struct {
 	IpAddress pulumi.StringPtrInput `pulumi:"ipAddress"`
 	// *Deprecated:* Use `networkData` instead. The IP prefix length of the container as read from its
 	// NetworkSettings.
-	IpPrefixLength pulumi.IntPtrInput `pulumi:"ipPrefixLength"`
-	NetworkName pulumi.StringPtrInput `pulumi:"networkName"`
+	IpPrefixLength pulumi.IntPtrInput    `pulumi:"ipPrefixLength"`
+	NetworkName    pulumi.StringPtrInput `pulumi:"networkName"`
 }
 
 func (ContainerNetworkDataArgs) ElementType() reflect.Type {
@@ -1296,7 +1304,7 @@ func (i ContainerNetworkDataArray) ToContainerNetworkDataArrayOutputWithContext(
 	return pulumi.ToOutputWithContext(ctx, i).(ContainerNetworkDataArrayOutput)
 }
 
-type ContainerNetworkDataOutput struct { *pulumi.OutputState }
+type ContainerNetworkDataOutput struct{ *pulumi.OutputState }
 
 func (ContainerNetworkDataOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*ContainerNetworkData)(nil)).Elem()
@@ -1313,25 +1321,25 @@ func (o ContainerNetworkDataOutput) ToContainerNetworkDataOutputWithContext(ctx 
 // *Deprecated:* Use `networkData` instead. The network gateway of the container as read from its
 // NetworkSettings.
 func (o ContainerNetworkDataOutput) Gateway() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ContainerNetworkData) *string { return v.Gateway }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ContainerNetworkData) *string { return v.Gateway }).(pulumi.StringPtrOutput)
 }
 
 // *Deprecated:* Use `networkData` instead. The IP address of the container's first network it.
 func (o ContainerNetworkDataOutput) IpAddress() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ContainerNetworkData) *string { return v.IpAddress }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ContainerNetworkData) *string { return v.IpAddress }).(pulumi.StringPtrOutput)
 }
 
 // *Deprecated:* Use `networkData` instead. The IP prefix length of the container as read from its
 // NetworkSettings.
 func (o ContainerNetworkDataOutput) IpPrefixLength() pulumi.IntPtrOutput {
-	return o.ApplyT(func (v ContainerNetworkData) *int { return v.IpPrefixLength }).(pulumi.IntPtrOutput)
+	return o.ApplyT(func(v ContainerNetworkData) *int { return v.IpPrefixLength }).(pulumi.IntPtrOutput)
 }
 
 func (o ContainerNetworkDataOutput) NetworkName() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ContainerNetworkData) *string { return v.NetworkName }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ContainerNetworkData) *string { return v.NetworkName }).(pulumi.StringPtrOutput)
 }
 
-type ContainerNetworkDataArrayOutput struct { *pulumi.OutputState}
+type ContainerNetworkDataArrayOutput struct{ *pulumi.OutputState }
 
 func (ContainerNetworkDataArrayOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*[]ContainerNetworkData)(nil)).Elem()
@@ -1346,7 +1354,7 @@ func (o ContainerNetworkDataArrayOutput) ToContainerNetworkDataArrayOutputWithCo
 }
 
 func (o ContainerNetworkDataArrayOutput) Index(i pulumi.IntInput) ContainerNetworkDataOutput {
-	return pulumi.All(o, i).ApplyT(func (vs []interface{}) ContainerNetworkData {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) ContainerNetworkData {
 		return vs[0].([]ContainerNetworkData)[vs[1].(int)]
 	}).(ContainerNetworkDataOutput)
 }
@@ -1358,7 +1366,7 @@ type ContainerNetworksAdvanced struct {
 	Ipv4Address *string `pulumi:"ipv4Address"`
 	// The IPV6 address of the container in the specific network.
 	Ipv6Address *string `pulumi:"ipv6Address"`
-	Name string `pulumi:"name"`
+	Name        string  `pulumi:"name"`
 }
 
 type ContainerNetworksAdvancedInput interface {
@@ -1375,7 +1383,7 @@ type ContainerNetworksAdvancedArgs struct {
 	Ipv4Address pulumi.StringPtrInput `pulumi:"ipv4Address"`
 	// The IPV6 address of the container in the specific network.
 	Ipv6Address pulumi.StringPtrInput `pulumi:"ipv6Address"`
-	Name pulumi.StringInput `pulumi:"name"`
+	Name        pulumi.StringInput    `pulumi:"name"`
 }
 
 func (ContainerNetworksAdvancedArgs) ElementType() reflect.Type {
@@ -1411,7 +1419,7 @@ func (i ContainerNetworksAdvancedArray) ToContainerNetworksAdvancedArrayOutputWi
 	return pulumi.ToOutputWithContext(ctx, i).(ContainerNetworksAdvancedArrayOutput)
 }
 
-type ContainerNetworksAdvancedOutput struct { *pulumi.OutputState }
+type ContainerNetworksAdvancedOutput struct{ *pulumi.OutputState }
 
 func (ContainerNetworksAdvancedOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*ContainerNetworksAdvanced)(nil)).Elem()
@@ -1427,24 +1435,24 @@ func (o ContainerNetworksAdvancedOutput) ToContainerNetworksAdvancedOutputWithCo
 
 // The network aliases of the container in the specific network.
 func (o ContainerNetworksAdvancedOutput) Aliases() pulumi.StringArrayOutput {
-	return o.ApplyT(func (v ContainerNetworksAdvanced) []string { return v.Aliases }).(pulumi.StringArrayOutput)
+	return o.ApplyT(func(v ContainerNetworksAdvanced) []string { return v.Aliases }).(pulumi.StringArrayOutput)
 }
 
 // The IPV4 address of the container in the specific network.
 func (o ContainerNetworksAdvancedOutput) Ipv4Address() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ContainerNetworksAdvanced) *string { return v.Ipv4Address }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ContainerNetworksAdvanced) *string { return v.Ipv4Address }).(pulumi.StringPtrOutput)
 }
 
 // The IPV6 address of the container in the specific network.
 func (o ContainerNetworksAdvancedOutput) Ipv6Address() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ContainerNetworksAdvanced) *string { return v.Ipv6Address }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ContainerNetworksAdvanced) *string { return v.Ipv6Address }).(pulumi.StringPtrOutput)
 }
 
 func (o ContainerNetworksAdvancedOutput) Name() pulumi.StringOutput {
-	return o.ApplyT(func (v ContainerNetworksAdvanced) string { return v.Name }).(pulumi.StringOutput)
+	return o.ApplyT(func(v ContainerNetworksAdvanced) string { return v.Name }).(pulumi.StringOutput)
 }
 
-type ContainerNetworksAdvancedArrayOutput struct { *pulumi.OutputState}
+type ContainerNetworksAdvancedArrayOutput struct{ *pulumi.OutputState }
 
 func (ContainerNetworksAdvancedArrayOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*[]ContainerNetworksAdvanced)(nil)).Elem()
@@ -1459,7 +1467,7 @@ func (o ContainerNetworksAdvancedArrayOutput) ToContainerNetworksAdvancedArrayOu
 }
 
 func (o ContainerNetworksAdvancedArrayOutput) Index(i pulumi.IntInput) ContainerNetworksAdvancedOutput {
-	return pulumi.All(o, i).ApplyT(func (vs []interface{}) ContainerNetworksAdvanced {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) ContainerNetworksAdvanced {
 		return vs[0].([]ContainerNetworksAdvanced)[vs[1].(int)]
 	}).(ContainerNetworksAdvancedOutput)
 }
@@ -1528,7 +1536,7 @@ func (i ContainerPortArray) ToContainerPortArrayOutputWithContext(ctx context.Co
 	return pulumi.ToOutputWithContext(ctx, i).(ContainerPortArrayOutput)
 }
 
-type ContainerPortOutput struct { *pulumi.OutputState }
+type ContainerPortOutput struct{ *pulumi.OutputState }
 
 func (ContainerPortOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*ContainerPort)(nil)).Elem()
@@ -1544,26 +1552,26 @@ func (o ContainerPortOutput) ToContainerPortOutputWithContext(ctx context.Contex
 
 // Port exposed out of the container. If not given a free random port `>= 32768` will be used.
 func (o ContainerPortOutput) External() pulumi.IntPtrOutput {
-	return o.ApplyT(func (v ContainerPort) *int { return v.External }).(pulumi.IntPtrOutput)
+	return o.ApplyT(func(v ContainerPort) *int { return v.External }).(pulumi.IntPtrOutput)
 }
 
 // Port within the container.
 func (o ContainerPortOutput) Internal() pulumi.IntOutput {
-	return o.ApplyT(func (v ContainerPort) int { return v.Internal }).(pulumi.IntOutput)
+	return o.ApplyT(func(v ContainerPort) int { return v.Internal }).(pulumi.IntOutput)
 }
 
 // IP address this hostname should resolve to.
 func (o ContainerPortOutput) Ip() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ContainerPort) *string { return v.Ip }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ContainerPort) *string { return v.Ip }).(pulumi.StringPtrOutput)
 }
 
 // Protocol that can be used over this port,
 // defaults to `tcp`.
 func (o ContainerPortOutput) Protocol() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ContainerPort) *string { return v.Protocol }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ContainerPort) *string { return v.Protocol }).(pulumi.StringPtrOutput)
 }
 
-type ContainerPortArrayOutput struct { *pulumi.OutputState}
+type ContainerPortArrayOutput struct{ *pulumi.OutputState }
 
 func (ContainerPortArrayOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*[]ContainerPort)(nil)).Elem()
@@ -1578,15 +1586,15 @@ func (o ContainerPortArrayOutput) ToContainerPortArrayOutputWithContext(ctx cont
 }
 
 func (o ContainerPortArrayOutput) Index(i pulumi.IntInput) ContainerPortOutput {
-	return pulumi.All(o, i).ApplyT(func (vs []interface{}) ContainerPort {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) ContainerPort {
 		return vs[0].([]ContainerPort)[vs[1].(int)]
 	}).(ContainerPortOutput)
 }
 
 type ContainerUlimit struct {
-	Hard int `pulumi:"hard"`
+	Hard int    `pulumi:"hard"`
 	Name string `pulumi:"name"`
-	Soft int `pulumi:"soft"`
+	Soft int    `pulumi:"soft"`
 }
 
 type ContainerUlimitInput interface {
@@ -1597,9 +1605,9 @@ type ContainerUlimitInput interface {
 }
 
 type ContainerUlimitArgs struct {
-	Hard pulumi.IntInput `pulumi:"hard"`
+	Hard pulumi.IntInput    `pulumi:"hard"`
 	Name pulumi.StringInput `pulumi:"name"`
-	Soft pulumi.IntInput `pulumi:"soft"`
+	Soft pulumi.IntInput    `pulumi:"soft"`
 }
 
 func (ContainerUlimitArgs) ElementType() reflect.Type {
@@ -1635,7 +1643,7 @@ func (i ContainerUlimitArray) ToContainerUlimitArrayOutputWithContext(ctx contex
 	return pulumi.ToOutputWithContext(ctx, i).(ContainerUlimitArrayOutput)
 }
 
-type ContainerUlimitOutput struct { *pulumi.OutputState }
+type ContainerUlimitOutput struct{ *pulumi.OutputState }
 
 func (ContainerUlimitOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*ContainerUlimit)(nil)).Elem()
@@ -1650,18 +1658,18 @@ func (o ContainerUlimitOutput) ToContainerUlimitOutputWithContext(ctx context.Co
 }
 
 func (o ContainerUlimitOutput) Hard() pulumi.IntOutput {
-	return o.ApplyT(func (v ContainerUlimit) int { return v.Hard }).(pulumi.IntOutput)
+	return o.ApplyT(func(v ContainerUlimit) int { return v.Hard }).(pulumi.IntOutput)
 }
 
 func (o ContainerUlimitOutput) Name() pulumi.StringOutput {
-	return o.ApplyT(func (v ContainerUlimit) string { return v.Name }).(pulumi.StringOutput)
+	return o.ApplyT(func(v ContainerUlimit) string { return v.Name }).(pulumi.StringOutput)
 }
 
 func (o ContainerUlimitOutput) Soft() pulumi.IntOutput {
-	return o.ApplyT(func (v ContainerUlimit) int { return v.Soft }).(pulumi.IntOutput)
+	return o.ApplyT(func(v ContainerUlimit) int { return v.Soft }).(pulumi.IntOutput)
 }
 
-type ContainerUlimitArrayOutput struct { *pulumi.OutputState}
+type ContainerUlimitArrayOutput struct{ *pulumi.OutputState }
 
 func (ContainerUlimitArrayOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*[]ContainerUlimit)(nil)).Elem()
@@ -1676,14 +1684,14 @@ func (o ContainerUlimitArrayOutput) ToContainerUlimitArrayOutputWithContext(ctx 
 }
 
 func (o ContainerUlimitArrayOutput) Index(i pulumi.IntInput) ContainerUlimitOutput {
-	return pulumi.All(o, i).ApplyT(func (vs []interface{}) ContainerUlimit {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) ContainerUlimit {
 		return vs[0].([]ContainerUlimit)[vs[1].(int)]
 	}).(ContainerUlimitOutput)
 }
 
 type ContainerUpload struct {
 	// Literal string value to use as the object content, which will be uploaded as UTF-8-encoded text.
-	Content *string `pulumi:"content"`
+	Content       *string `pulumi:"content"`
 	ContentBase64 *string `pulumi:"contentBase64"`
 	// If true, the file will be uploaded with user
 	// executable permission.
@@ -1693,7 +1701,7 @@ type ContainerUpload struct {
 	File string `pulumi:"file"`
 	// A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state.
 	Source *string `pulumi:"source"`
-	// If using `source`, this will force an update if the file content has updated but the filename has not. 
+	// If using `source`, this will force an update if the file content has updated but the filename has not.
 	SourceHash *string `pulumi:"sourceHash"`
 }
 
@@ -1706,7 +1714,7 @@ type ContainerUploadInput interface {
 
 type ContainerUploadArgs struct {
 	// Literal string value to use as the object content, which will be uploaded as UTF-8-encoded text.
-	Content pulumi.StringPtrInput `pulumi:"content"`
+	Content       pulumi.StringPtrInput `pulumi:"content"`
 	ContentBase64 pulumi.StringPtrInput `pulumi:"contentBase64"`
 	// If true, the file will be uploaded with user
 	// executable permission.
@@ -1716,7 +1724,7 @@ type ContainerUploadArgs struct {
 	File pulumi.StringInput `pulumi:"file"`
 	// A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state.
 	Source pulumi.StringPtrInput `pulumi:"source"`
-	// If using `source`, this will force an update if the file content has updated but the filename has not. 
+	// If using `source`, this will force an update if the file content has updated but the filename has not.
 	SourceHash pulumi.StringPtrInput `pulumi:"sourceHash"`
 }
 
@@ -1753,7 +1761,7 @@ func (i ContainerUploadArray) ToContainerUploadArrayOutputWithContext(ctx contex
 	return pulumi.ToOutputWithContext(ctx, i).(ContainerUploadArrayOutput)
 }
 
-type ContainerUploadOutput struct { *pulumi.OutputState }
+type ContainerUploadOutput struct{ *pulumi.OutputState }
 
 func (ContainerUploadOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*ContainerUpload)(nil)).Elem()
@@ -1769,36 +1777,36 @@ func (o ContainerUploadOutput) ToContainerUploadOutputWithContext(ctx context.Co
 
 // Literal string value to use as the object content, which will be uploaded as UTF-8-encoded text.
 func (o ContainerUploadOutput) Content() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ContainerUpload) *string { return v.Content }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ContainerUpload) *string { return v.Content }).(pulumi.StringPtrOutput)
 }
 
 func (o ContainerUploadOutput) ContentBase64() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ContainerUpload) *string { return v.ContentBase64 }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ContainerUpload) *string { return v.ContentBase64 }).(pulumi.StringPtrOutput)
 }
 
 // If true, the file will be uploaded with user
 // executable permission.
 // Defaults to false.
 func (o ContainerUploadOutput) Executable() pulumi.BoolPtrOutput {
-	return o.ApplyT(func (v ContainerUpload) *bool { return v.Executable }).(pulumi.BoolPtrOutput)
+	return o.ApplyT(func(v ContainerUpload) *bool { return v.Executable }).(pulumi.BoolPtrOutput)
 }
 
 // path to a file in the container.
 func (o ContainerUploadOutput) File() pulumi.StringOutput {
-	return o.ApplyT(func (v ContainerUpload) string { return v.File }).(pulumi.StringOutput)
+	return o.ApplyT(func(v ContainerUpload) string { return v.File }).(pulumi.StringOutput)
 }
 
 // A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state.
 func (o ContainerUploadOutput) Source() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ContainerUpload) *string { return v.Source }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ContainerUpload) *string { return v.Source }).(pulumi.StringPtrOutput)
 }
 
-// If using `source`, this will force an update if the file content has updated but the filename has not. 
+// If using `source`, this will force an update if the file content has updated but the filename has not.
 func (o ContainerUploadOutput) SourceHash() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ContainerUpload) *string { return v.SourceHash }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ContainerUpload) *string { return v.SourceHash }).(pulumi.StringPtrOutput)
 }
 
-type ContainerUploadArrayOutput struct { *pulumi.OutputState}
+type ContainerUploadArrayOutput struct{ *pulumi.OutputState }
 
 func (ContainerUploadArrayOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*[]ContainerUpload)(nil)).Elem()
@@ -1813,7 +1821,7 @@ func (o ContainerUploadArrayOutput) ToContainerUploadArrayOutputWithContext(ctx 
 }
 
 func (o ContainerUploadArrayOutput) Index(i pulumi.IntInput) ContainerUploadOutput {
-	return pulumi.All(o, i).ApplyT(func (vs []interface{}) ContainerUpload {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) ContainerUpload {
 		return vs[0].([]ContainerUpload)[vs[1].(int)]
 	}).(ContainerUploadOutput)
 }
@@ -1894,7 +1902,7 @@ func (i ContainerVolumeArray) ToContainerVolumeArrayOutputWithContext(ctx contex
 	return pulumi.ToOutputWithContext(ctx, i).(ContainerVolumeArrayOutput)
 }
 
-type ContainerVolumeOutput struct { *pulumi.OutputState }
+type ContainerVolumeOutput struct{ *pulumi.OutputState }
 
 func (ContainerVolumeOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*ContainerVolume)(nil)).Elem()
@@ -1911,34 +1919,34 @@ func (o ContainerVolumeOutput) ToContainerVolumeOutputWithContext(ctx context.Co
 // The path in the container where the
 // device will be binded.
 func (o ContainerVolumeOutput) ContainerPath() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ContainerVolume) *string { return v.ContainerPath }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ContainerVolume) *string { return v.ContainerPath }).(pulumi.StringPtrOutput)
 }
 
 // The container where the volume is
 // coming from.
 func (o ContainerVolumeOutput) FromContainer() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ContainerVolume) *string { return v.FromContainer }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ContainerVolume) *string { return v.FromContainer }).(pulumi.StringPtrOutput)
 }
 
 // The path on the host where the device
 // is located.
 func (o ContainerVolumeOutput) HostPath() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ContainerVolume) *string { return v.HostPath }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ContainerVolume) *string { return v.HostPath }).(pulumi.StringPtrOutput)
 }
 
 // If true, this volume will be readonly.
 // Defaults to false.
 func (o ContainerVolumeOutput) ReadOnly() pulumi.BoolPtrOutput {
-	return o.ApplyT(func (v ContainerVolume) *bool { return v.ReadOnly }).(pulumi.BoolPtrOutput)
+	return o.ApplyT(func(v ContainerVolume) *bool { return v.ReadOnly }).(pulumi.BoolPtrOutput)
 }
 
 // The name of the docker volume which
 // should be mounted.
 func (o ContainerVolumeOutput) VolumeName() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ContainerVolume) *string { return v.VolumeName }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ContainerVolume) *string { return v.VolumeName }).(pulumi.StringPtrOutput)
 }
 
-type ContainerVolumeArrayOutput struct { *pulumi.OutputState}
+type ContainerVolumeArrayOutput struct{ *pulumi.OutputState }
 
 func (ContainerVolumeArrayOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*[]ContainerVolume)(nil)).Elem()
@@ -1953,16 +1961,16 @@ func (o ContainerVolumeArrayOutput) ToContainerVolumeArrayOutputWithContext(ctx 
 }
 
 func (o ContainerVolumeArrayOutput) Index(i pulumi.IntInput) ContainerVolumeOutput {
-	return pulumi.All(o, i).ApplyT(func (vs []interface{}) ContainerVolume {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) ContainerVolume {
 		return vs[0].([]ContainerVolume)[vs[1].(int)]
 	}).(ContainerVolumeOutput)
 }
 
 type NetworkIpamConfig struct {
 	AuxAddress map[string]interface{} `pulumi:"auxAddress"`
-	Gateway *string `pulumi:"gateway"`
-	IpRange *string `pulumi:"ipRange"`
-	Subnet *string `pulumi:"subnet"`
+	Gateway    *string                `pulumi:"gateway"`
+	IpRange    *string                `pulumi:"ipRange"`
+	Subnet     *string                `pulumi:"subnet"`
 }
 
 type NetworkIpamConfigInput interface {
@@ -1973,10 +1981,10 @@ type NetworkIpamConfigInput interface {
 }
 
 type NetworkIpamConfigArgs struct {
-	AuxAddress pulumi.MapInput `pulumi:"auxAddress"`
-	Gateway pulumi.StringPtrInput `pulumi:"gateway"`
-	IpRange pulumi.StringPtrInput `pulumi:"ipRange"`
-	Subnet pulumi.StringPtrInput `pulumi:"subnet"`
+	AuxAddress pulumi.MapInput       `pulumi:"auxAddress"`
+	Gateway    pulumi.StringPtrInput `pulumi:"gateway"`
+	IpRange    pulumi.StringPtrInput `pulumi:"ipRange"`
+	Subnet     pulumi.StringPtrInput `pulumi:"subnet"`
 }
 
 func (NetworkIpamConfigArgs) ElementType() reflect.Type {
@@ -2012,7 +2020,7 @@ func (i NetworkIpamConfigArray) ToNetworkIpamConfigArrayOutputWithContext(ctx co
 	return pulumi.ToOutputWithContext(ctx, i).(NetworkIpamConfigArrayOutput)
 }
 
-type NetworkIpamConfigOutput struct { *pulumi.OutputState }
+type NetworkIpamConfigOutput struct{ *pulumi.OutputState }
 
 func (NetworkIpamConfigOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*NetworkIpamConfig)(nil)).Elem()
@@ -2027,22 +2035,22 @@ func (o NetworkIpamConfigOutput) ToNetworkIpamConfigOutputWithContext(ctx contex
 }
 
 func (o NetworkIpamConfigOutput) AuxAddress() pulumi.MapOutput {
-	return o.ApplyT(func (v NetworkIpamConfig) map[string]interface{} { return v.AuxAddress }).(pulumi.MapOutput)
+	return o.ApplyT(func(v NetworkIpamConfig) map[string]interface{} { return v.AuxAddress }).(pulumi.MapOutput)
 }
 
 func (o NetworkIpamConfigOutput) Gateway() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v NetworkIpamConfig) *string { return v.Gateway }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v NetworkIpamConfig) *string { return v.Gateway }).(pulumi.StringPtrOutput)
 }
 
 func (o NetworkIpamConfigOutput) IpRange() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v NetworkIpamConfig) *string { return v.IpRange }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v NetworkIpamConfig) *string { return v.IpRange }).(pulumi.StringPtrOutput)
 }
 
 func (o NetworkIpamConfigOutput) Subnet() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v NetworkIpamConfig) *string { return v.Subnet }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v NetworkIpamConfig) *string { return v.Subnet }).(pulumi.StringPtrOutput)
 }
 
-type NetworkIpamConfigArrayOutput struct { *pulumi.OutputState}
+type NetworkIpamConfigArrayOutput struct{ *pulumi.OutputState }
 
 func (NetworkIpamConfigArrayOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*[]NetworkIpamConfig)(nil)).Elem()
@@ -2057,7 +2065,7 @@ func (o NetworkIpamConfigArrayOutput) ToNetworkIpamConfigArrayOutputWithContext(
 }
 
 func (o NetworkIpamConfigArrayOutput) Index(i pulumi.IntInput) NetworkIpamConfigOutput {
-	return pulumi.All(o, i).ApplyT(func (vs []interface{}) NetworkIpamConfig {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) NetworkIpamConfig {
 		return vs[0].([]NetworkIpamConfig)[vs[1].(int)]
 	}).(NetworkIpamConfigOutput)
 }
@@ -2116,7 +2124,7 @@ func (i NetworkLabelArray) ToNetworkLabelArrayOutputWithContext(ctx context.Cont
 	return pulumi.ToOutputWithContext(ctx, i).(NetworkLabelArrayOutput)
 }
 
-type NetworkLabelOutput struct { *pulumi.OutputState }
+type NetworkLabelOutput struct{ *pulumi.OutputState }
 
 func (NetworkLabelOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*NetworkLabel)(nil)).Elem()
@@ -2133,14 +2141,14 @@ func (o NetworkLabelOutput) ToNetworkLabelOutputWithContext(ctx context.Context)
 // Name of the label
 // * `value` (Required, string) Value of the label
 func (o NetworkLabelOutput) Label() pulumi.StringOutput {
-	return o.ApplyT(func (v NetworkLabel) string { return v.Label }).(pulumi.StringOutput)
+	return o.ApplyT(func(v NetworkLabel) string { return v.Label }).(pulumi.StringOutput)
 }
 
 func (o NetworkLabelOutput) Value() pulumi.StringOutput {
-	return o.ApplyT(func (v NetworkLabel) string { return v.Value }).(pulumi.StringOutput)
+	return o.ApplyT(func(v NetworkLabel) string { return v.Value }).(pulumi.StringOutput)
 }
 
-type NetworkLabelArrayOutput struct { *pulumi.OutputState}
+type NetworkLabelArrayOutput struct{ *pulumi.OutputState }
 
 func (NetworkLabelArrayOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*[]NetworkLabel)(nil)).Elem()
@@ -2155,7 +2163,7 @@ func (o NetworkLabelArrayOutput) ToNetworkLabelArrayOutputWithContext(ctx contex
 }
 
 func (o NetworkLabelArrayOutput) Index(i pulumi.IntInput) NetworkLabelOutput {
-	return pulumi.All(o, i).ApplyT(func (vs []interface{}) NetworkLabel {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) NetworkLabel {
 		return vs[0].([]NetworkLabel)[vs[1].(int)]
 	}).(NetworkLabelOutput)
 }
@@ -2214,7 +2222,7 @@ func (i SecretLabelArray) ToSecretLabelArrayOutputWithContext(ctx context.Contex
 	return pulumi.ToOutputWithContext(ctx, i).(SecretLabelArrayOutput)
 }
 
-type SecretLabelOutput struct { *pulumi.OutputState }
+type SecretLabelOutput struct{ *pulumi.OutputState }
 
 func (SecretLabelOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*SecretLabel)(nil)).Elem()
@@ -2231,14 +2239,14 @@ func (o SecretLabelOutput) ToSecretLabelOutputWithContext(ctx context.Context) S
 // Name of the label
 // * `value` (Required, string) Value of the label
 func (o SecretLabelOutput) Label() pulumi.StringOutput {
-	return o.ApplyT(func (v SecretLabel) string { return v.Label }).(pulumi.StringOutput)
+	return o.ApplyT(func(v SecretLabel) string { return v.Label }).(pulumi.StringOutput)
 }
 
 func (o SecretLabelOutput) Value() pulumi.StringOutput {
-	return o.ApplyT(func (v SecretLabel) string { return v.Value }).(pulumi.StringOutput)
+	return o.ApplyT(func(v SecretLabel) string { return v.Value }).(pulumi.StringOutput)
 }
 
-type SecretLabelArrayOutput struct { *pulumi.OutputState}
+type SecretLabelArrayOutput struct{ *pulumi.OutputState }
 
 func (SecretLabelArrayOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*[]SecretLabel)(nil)).Elem()
@@ -2253,7 +2261,7 @@ func (o SecretLabelArrayOutput) ToSecretLabelArrayOutputWithContext(ctx context.
 }
 
 func (o SecretLabelArrayOutput) Index(i pulumi.IntInput) SecretLabelOutput {
-	return pulumi.All(o, i).ApplyT(func (vs []interface{}) SecretLabel {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) SecretLabel {
 		return vs[0].([]SecretLabel)[vs[1].(int)]
 	}).(SecretLabelOutput)
 }
@@ -2263,7 +2271,7 @@ type ServiceAuth struct {
 	Password *string `pulumi:"password"`
 	// The address of the registry server
 	ServerAddress string `pulumi:"serverAddress"`
-	// The username to use for authenticating to the registry. If this is blank, the `DOCKER_REGISTRY_USER` is also be checked. 
+	// The username to use for authenticating to the registry. If this is blank, the `DOCKER_REGISTRY_USER` is also be checked.
 	Username *string `pulumi:"username"`
 }
 
@@ -2279,7 +2287,7 @@ type ServiceAuthArgs struct {
 	Password pulumi.StringPtrInput `pulumi:"password"`
 	// The address of the registry server
 	ServerAddress pulumi.StringInput `pulumi:"serverAddress"`
-	// The username to use for authenticating to the registry. If this is blank, the `DOCKER_REGISTRY_USER` is also be checked. 
+	// The username to use for authenticating to the registry. If this is blank, the `DOCKER_REGISTRY_USER` is also be checked.
 	Username pulumi.StringPtrInput `pulumi:"username"`
 }
 
@@ -2312,7 +2320,8 @@ type ServiceAuthPtrInput interface {
 
 type serviceAuthPtrType ServiceAuthArgs
 
-func ServiceAuthPtr(v *ServiceAuthArgs) ServiceAuthPtrInput {	return (*serviceAuthPtrType)(v)
+func ServiceAuthPtr(v *ServiceAuthArgs) ServiceAuthPtrInput {
+	return (*serviceAuthPtrType)(v)
 }
 
 func (*serviceAuthPtrType) ElementType() reflect.Type {
@@ -2327,7 +2336,7 @@ func (i *serviceAuthPtrType) ToServiceAuthPtrOutputWithContext(ctx context.Conte
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceAuthPtrOutput)
 }
 
-type ServiceAuthOutput struct { *pulumi.OutputState }
+type ServiceAuthOutput struct{ *pulumi.OutputState }
 
 func (ServiceAuthOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*ServiceAuth)(nil)).Elem()
@@ -2350,22 +2359,23 @@ func (o ServiceAuthOutput) ToServiceAuthPtrOutputWithContext(ctx context.Context
 		return &v
 	}).(ServiceAuthPtrOutput)
 }
+
 // The password to use for authenticating to the registry. If this is blank, the `DOCKER_REGISTRY_PASS` is also be checked.
 func (o ServiceAuthOutput) Password() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceAuth) *string { return v.Password }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceAuth) *string { return v.Password }).(pulumi.StringPtrOutput)
 }
 
 // The address of the registry server
 func (o ServiceAuthOutput) ServerAddress() pulumi.StringOutput {
-	return o.ApplyT(func (v ServiceAuth) string { return v.ServerAddress }).(pulumi.StringOutput)
+	return o.ApplyT(func(v ServiceAuth) string { return v.ServerAddress }).(pulumi.StringOutput)
 }
 
-// The username to use for authenticating to the registry. If this is blank, the `DOCKER_REGISTRY_USER` is also be checked. 
+// The username to use for authenticating to the registry. If this is blank, the `DOCKER_REGISTRY_USER` is also be checked.
 func (o ServiceAuthOutput) Username() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceAuth) *string { return v.Username }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceAuth) *string { return v.Username }).(pulumi.StringPtrOutput)
 }
 
-type ServiceAuthPtrOutput struct { *pulumi.OutputState}
+type ServiceAuthPtrOutput struct{ *pulumi.OutputState }
 
 func (ServiceAuthPtrOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((**ServiceAuth)(nil)).Elem()
@@ -2380,26 +2390,26 @@ func (o ServiceAuthPtrOutput) ToServiceAuthPtrOutputWithContext(ctx context.Cont
 }
 
 func (o ServiceAuthPtrOutput) Elem() ServiceAuthOutput {
-	return o.ApplyT(func (v *ServiceAuth) ServiceAuth { return *v }).(ServiceAuthOutput)
+	return o.ApplyT(func(v *ServiceAuth) ServiceAuth { return *v }).(ServiceAuthOutput)
 }
 
 // The password to use for authenticating to the registry. If this is blank, the `DOCKER_REGISTRY_PASS` is also be checked.
 func (o ServiceAuthPtrOutput) Password() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceAuth) *string { return v.Password }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceAuth) *string { return v.Password }).(pulumi.StringPtrOutput)
 }
 
 // The address of the registry server
 func (o ServiceAuthPtrOutput) ServerAddress() pulumi.StringOutput {
-	return o.ApplyT(func (v ServiceAuth) string { return v.ServerAddress }).(pulumi.StringOutput)
+	return o.ApplyT(func(v ServiceAuth) string { return v.ServerAddress }).(pulumi.StringOutput)
 }
 
-// The username to use for authenticating to the registry. If this is blank, the `DOCKER_REGISTRY_USER` is also be checked. 
+// The username to use for authenticating to the registry. If this is blank, the `DOCKER_REGISTRY_USER` is also be checked.
 func (o ServiceAuthPtrOutput) Username() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceAuth) *string { return v.Username }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceAuth) *string { return v.Username }).(pulumi.StringPtrOutput)
 }
 
 type ServiceConvergeConfig struct {
-	Delay *string `pulumi:"delay"`
+	Delay   *string `pulumi:"delay"`
 	Timeout *string `pulumi:"timeout"`
 }
 
@@ -2411,7 +2421,7 @@ type ServiceConvergeConfigInput interface {
 }
 
 type ServiceConvergeConfigArgs struct {
-	Delay pulumi.StringPtrInput `pulumi:"delay"`
+	Delay   pulumi.StringPtrInput `pulumi:"delay"`
 	Timeout pulumi.StringPtrInput `pulumi:"timeout"`
 }
 
@@ -2444,7 +2454,8 @@ type ServiceConvergeConfigPtrInput interface {
 
 type serviceConvergeConfigPtrType ServiceConvergeConfigArgs
 
-func ServiceConvergeConfigPtr(v *ServiceConvergeConfigArgs) ServiceConvergeConfigPtrInput {	return (*serviceConvergeConfigPtrType)(v)
+func ServiceConvergeConfigPtr(v *ServiceConvergeConfigArgs) ServiceConvergeConfigPtrInput {
+	return (*serviceConvergeConfigPtrType)(v)
 }
 
 func (*serviceConvergeConfigPtrType) ElementType() reflect.Type {
@@ -2459,7 +2470,7 @@ func (i *serviceConvergeConfigPtrType) ToServiceConvergeConfigPtrOutputWithConte
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceConvergeConfigPtrOutput)
 }
 
-type ServiceConvergeConfigOutput struct { *pulumi.OutputState }
+type ServiceConvergeConfigOutput struct{ *pulumi.OutputState }
 
 func (ServiceConvergeConfigOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*ServiceConvergeConfig)(nil)).Elem()
@@ -2483,14 +2494,14 @@ func (o ServiceConvergeConfigOutput) ToServiceConvergeConfigPtrOutputWithContext
 	}).(ServiceConvergeConfigPtrOutput)
 }
 func (o ServiceConvergeConfigOutput) Delay() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceConvergeConfig) *string { return v.Delay }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceConvergeConfig) *string { return v.Delay }).(pulumi.StringPtrOutput)
 }
 
 func (o ServiceConvergeConfigOutput) Timeout() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceConvergeConfig) *string { return v.Timeout }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceConvergeConfig) *string { return v.Timeout }).(pulumi.StringPtrOutput)
 }
 
-type ServiceConvergeConfigPtrOutput struct { *pulumi.OutputState}
+type ServiceConvergeConfigPtrOutput struct{ *pulumi.OutputState }
 
 func (ServiceConvergeConfigPtrOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((**ServiceConvergeConfig)(nil)).Elem()
@@ -2505,15 +2516,15 @@ func (o ServiceConvergeConfigPtrOutput) ToServiceConvergeConfigPtrOutputWithCont
 }
 
 func (o ServiceConvergeConfigPtrOutput) Elem() ServiceConvergeConfigOutput {
-	return o.ApplyT(func (v *ServiceConvergeConfig) ServiceConvergeConfig { return *v }).(ServiceConvergeConfigOutput)
+	return o.ApplyT(func(v *ServiceConvergeConfig) ServiceConvergeConfig { return *v }).(ServiceConvergeConfigOutput)
 }
 
 func (o ServiceConvergeConfigPtrOutput) Delay() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceConvergeConfig) *string { return v.Delay }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceConvergeConfig) *string { return v.Delay }).(pulumi.StringPtrOutput)
 }
 
 func (o ServiceConvergeConfigPtrOutput) Timeout() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceConvergeConfig) *string { return v.Timeout }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceConvergeConfig) *string { return v.Timeout }).(pulumi.StringPtrOutput)
 }
 
 type ServiceEndpointSpec struct {
@@ -2566,7 +2577,8 @@ type ServiceEndpointSpecPtrInput interface {
 
 type serviceEndpointSpecPtrType ServiceEndpointSpecArgs
 
-func ServiceEndpointSpecPtr(v *ServiceEndpointSpecArgs) ServiceEndpointSpecPtrInput {	return (*serviceEndpointSpecPtrType)(v)
+func ServiceEndpointSpecPtr(v *ServiceEndpointSpecArgs) ServiceEndpointSpecPtrInput {
+	return (*serviceEndpointSpecPtrType)(v)
 }
 
 func (*serviceEndpointSpecPtrType) ElementType() reflect.Type {
@@ -2581,7 +2593,7 @@ func (i *serviceEndpointSpecPtrType) ToServiceEndpointSpecPtrOutputWithContext(c
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceEndpointSpecPtrOutput)
 }
 
-type ServiceEndpointSpecOutput struct { *pulumi.OutputState }
+type ServiceEndpointSpecOutput struct{ *pulumi.OutputState }
 
 func (ServiceEndpointSpecOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*ServiceEndpointSpec)(nil)).Elem()
@@ -2604,17 +2616,18 @@ func (o ServiceEndpointSpecOutput) ToServiceEndpointSpecPtrOutputWithContext(ctx
 		return &v
 	}).(ServiceEndpointSpecPtrOutput)
 }
+
 // The mode of resolution to use for internal load balancing between tasks. `(vip|dnsrr)`. Default: `vip`.
 func (o ServiceEndpointSpecOutput) Mode() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceEndpointSpec) *string { return v.Mode }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceEndpointSpec) *string { return v.Mode }).(pulumi.StringPtrOutput)
 }
 
 // See Ports below for details.
 func (o ServiceEndpointSpecOutput) Ports() ServiceEndpointSpecPortArrayOutput {
-	return o.ApplyT(func (v ServiceEndpointSpec) []ServiceEndpointSpecPort { return v.Ports }).(ServiceEndpointSpecPortArrayOutput)
+	return o.ApplyT(func(v ServiceEndpointSpec) []ServiceEndpointSpecPort { return v.Ports }).(ServiceEndpointSpecPortArrayOutput)
 }
 
-type ServiceEndpointSpecPtrOutput struct { *pulumi.OutputState}
+type ServiceEndpointSpecPtrOutput struct{ *pulumi.OutputState }
 
 func (ServiceEndpointSpecPtrOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((**ServiceEndpointSpec)(nil)).Elem()
@@ -2629,17 +2642,17 @@ func (o ServiceEndpointSpecPtrOutput) ToServiceEndpointSpecPtrOutputWithContext(
 }
 
 func (o ServiceEndpointSpecPtrOutput) Elem() ServiceEndpointSpecOutput {
-	return o.ApplyT(func (v *ServiceEndpointSpec) ServiceEndpointSpec { return *v }).(ServiceEndpointSpecOutput)
+	return o.ApplyT(func(v *ServiceEndpointSpec) ServiceEndpointSpec { return *v }).(ServiceEndpointSpecOutput)
 }
 
 // The mode of resolution to use for internal load balancing between tasks. `(vip|dnsrr)`. Default: `vip`.
 func (o ServiceEndpointSpecPtrOutput) Mode() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceEndpointSpec) *string { return v.Mode }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceEndpointSpec) *string { return v.Mode }).(pulumi.StringPtrOutput)
 }
 
 // See Ports below for details.
 func (o ServiceEndpointSpecPtrOutput) Ports() ServiceEndpointSpecPortArrayOutput {
-	return o.ApplyT(func (v ServiceEndpointSpec) []ServiceEndpointSpecPort { return v.Ports }).(ServiceEndpointSpecPortArrayOutput)
+	return o.ApplyT(func(v ServiceEndpointSpec) []ServiceEndpointSpecPort { return v.Ports }).(ServiceEndpointSpecPortArrayOutput)
 }
 
 type ServiceEndpointSpecPort struct {
@@ -2708,7 +2721,7 @@ func (i ServiceEndpointSpecPortArray) ToServiceEndpointSpecPortArrayOutputWithCo
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceEndpointSpecPortArrayOutput)
 }
 
-type ServiceEndpointSpecPortOutput struct { *pulumi.OutputState }
+type ServiceEndpointSpecPortOutput struct{ *pulumi.OutputState }
 
 func (ServiceEndpointSpecPortOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*ServiceEndpointSpecPort)(nil)).Elem()
@@ -2724,30 +2737,30 @@ func (o ServiceEndpointSpecPortOutput) ToServiceEndpointSpecPortOutputWithContex
 
 // A random name for the port.
 func (o ServiceEndpointSpecPortOutput) Name() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceEndpointSpecPort) *string { return v.Name }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceEndpointSpecPort) *string { return v.Name }).(pulumi.StringPtrOutput)
 }
 
 // Protocol that can be used over this port: `tcp|udp|sctp`. Default: `tcp`.
 func (o ServiceEndpointSpecPortOutput) Protocol() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceEndpointSpecPort) *string { return v.Protocol }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceEndpointSpecPort) *string { return v.Protocol }).(pulumi.StringPtrOutput)
 }
 
 // Represents the mode in which the port is to be published: `ingress|host`
 func (o ServiceEndpointSpecPortOutput) PublishMode() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceEndpointSpecPort) *string { return v.PublishMode }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceEndpointSpecPort) *string { return v.PublishMode }).(pulumi.StringPtrOutput)
 }
 
 // The port on the swarm hosts. If not set the value of `targetPort` will be used.
 func (o ServiceEndpointSpecPortOutput) PublishedPort() pulumi.IntPtrOutput {
-	return o.ApplyT(func (v ServiceEndpointSpecPort) *int { return v.PublishedPort }).(pulumi.IntPtrOutput)
+	return o.ApplyT(func(v ServiceEndpointSpecPort) *int { return v.PublishedPort }).(pulumi.IntPtrOutput)
 }
 
 // Port inside the container.
 func (o ServiceEndpointSpecPortOutput) TargetPort() pulumi.IntOutput {
-	return o.ApplyT(func (v ServiceEndpointSpecPort) int { return v.TargetPort }).(pulumi.IntOutput)
+	return o.ApplyT(func(v ServiceEndpointSpecPort) int { return v.TargetPort }).(pulumi.IntOutput)
 }
 
-type ServiceEndpointSpecPortArrayOutput struct { *pulumi.OutputState}
+type ServiceEndpointSpecPortArrayOutput struct{ *pulumi.OutputState }
 
 func (ServiceEndpointSpecPortArrayOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*[]ServiceEndpointSpecPort)(nil)).Elem()
@@ -2762,7 +2775,7 @@ func (o ServiceEndpointSpecPortArrayOutput) ToServiceEndpointSpecPortArrayOutput
 }
 
 func (o ServiceEndpointSpecPortArrayOutput) Index(i pulumi.IntInput) ServiceEndpointSpecPortOutput {
-	return pulumi.All(o, i).ApplyT(func (vs []interface{}) ServiceEndpointSpecPort {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) ServiceEndpointSpecPort {
 		return vs[0].([]ServiceEndpointSpecPort)[vs[1].(int)]
 	}).(ServiceEndpointSpecPortOutput)
 }
@@ -2817,7 +2830,7 @@ func (i ServiceLabelArray) ToServiceLabelArrayOutputWithContext(ctx context.Cont
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceLabelArrayOutput)
 }
 
-type ServiceLabelOutput struct { *pulumi.OutputState }
+type ServiceLabelOutput struct{ *pulumi.OutputState }
 
 func (ServiceLabelOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*ServiceLabel)(nil)).Elem()
@@ -2832,14 +2845,14 @@ func (o ServiceLabelOutput) ToServiceLabelOutputWithContext(ctx context.Context)
 }
 
 func (o ServiceLabelOutput) Label() pulumi.StringOutput {
-	return o.ApplyT(func (v ServiceLabel) string { return v.Label }).(pulumi.StringOutput)
+	return o.ApplyT(func(v ServiceLabel) string { return v.Label }).(pulumi.StringOutput)
 }
 
 func (o ServiceLabelOutput) Value() pulumi.StringOutput {
-	return o.ApplyT(func (v ServiceLabel) string { return v.Value }).(pulumi.StringOutput)
+	return o.ApplyT(func(v ServiceLabel) string { return v.Value }).(pulumi.StringOutput)
 }
 
-type ServiceLabelArrayOutput struct { *pulumi.OutputState}
+type ServiceLabelArrayOutput struct{ *pulumi.OutputState }
 
 func (ServiceLabelArrayOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*[]ServiceLabel)(nil)).Elem()
@@ -2854,13 +2867,13 @@ func (o ServiceLabelArrayOutput) ToServiceLabelArrayOutputWithContext(ctx contex
 }
 
 func (o ServiceLabelArrayOutput) Index(i pulumi.IntInput) ServiceLabelOutput {
-	return pulumi.All(o, i).ApplyT(func (vs []interface{}) ServiceLabel {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) ServiceLabel {
 		return vs[0].([]ServiceLabel)[vs[1].(int)]
 	}).(ServiceLabelOutput)
 }
 
 type ServiceMode struct {
-	Global *bool `pulumi:"global"`
+	Global     *bool                  `pulumi:"global"`
 	Replicated *ServiceModeReplicated `pulumi:"replicated"`
 }
 
@@ -2872,7 +2885,7 @@ type ServiceModeInput interface {
 }
 
 type ServiceModeArgs struct {
-	Global pulumi.BoolPtrInput `pulumi:"global"`
+	Global     pulumi.BoolPtrInput           `pulumi:"global"`
 	Replicated ServiceModeReplicatedPtrInput `pulumi:"replicated"`
 }
 
@@ -2905,7 +2918,8 @@ type ServiceModePtrInput interface {
 
 type serviceModePtrType ServiceModeArgs
 
-func ServiceModePtr(v *ServiceModeArgs) ServiceModePtrInput {	return (*serviceModePtrType)(v)
+func ServiceModePtr(v *ServiceModeArgs) ServiceModePtrInput {
+	return (*serviceModePtrType)(v)
 }
 
 func (*serviceModePtrType) ElementType() reflect.Type {
@@ -2920,7 +2934,7 @@ func (i *serviceModePtrType) ToServiceModePtrOutputWithContext(ctx context.Conte
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceModePtrOutput)
 }
 
-type ServiceModeOutput struct { *pulumi.OutputState }
+type ServiceModeOutput struct{ *pulumi.OutputState }
 
 func (ServiceModeOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*ServiceMode)(nil)).Elem()
@@ -2944,14 +2958,14 @@ func (o ServiceModeOutput) ToServiceModePtrOutputWithContext(ctx context.Context
 	}).(ServiceModePtrOutput)
 }
 func (o ServiceModeOutput) Global() pulumi.BoolPtrOutput {
-	return o.ApplyT(func (v ServiceMode) *bool { return v.Global }).(pulumi.BoolPtrOutput)
+	return o.ApplyT(func(v ServiceMode) *bool { return v.Global }).(pulumi.BoolPtrOutput)
 }
 
 func (o ServiceModeOutput) Replicated() ServiceModeReplicatedPtrOutput {
-	return o.ApplyT(func (v ServiceMode) *ServiceModeReplicated { return v.Replicated }).(ServiceModeReplicatedPtrOutput)
+	return o.ApplyT(func(v ServiceMode) *ServiceModeReplicated { return v.Replicated }).(ServiceModeReplicatedPtrOutput)
 }
 
-type ServiceModePtrOutput struct { *pulumi.OutputState}
+type ServiceModePtrOutput struct{ *pulumi.OutputState }
 
 func (ServiceModePtrOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((**ServiceMode)(nil)).Elem()
@@ -2966,15 +2980,15 @@ func (o ServiceModePtrOutput) ToServiceModePtrOutputWithContext(ctx context.Cont
 }
 
 func (o ServiceModePtrOutput) Elem() ServiceModeOutput {
-	return o.ApplyT(func (v *ServiceMode) ServiceMode { return *v }).(ServiceModeOutput)
+	return o.ApplyT(func(v *ServiceMode) ServiceMode { return *v }).(ServiceModeOutput)
 }
 
 func (o ServiceModePtrOutput) Global() pulumi.BoolPtrOutput {
-	return o.ApplyT(func (v ServiceMode) *bool { return v.Global }).(pulumi.BoolPtrOutput)
+	return o.ApplyT(func(v ServiceMode) *bool { return v.Global }).(pulumi.BoolPtrOutput)
 }
 
 func (o ServiceModePtrOutput) Replicated() ServiceModeReplicatedPtrOutput {
-	return o.ApplyT(func (v ServiceMode) *ServiceModeReplicated { return v.Replicated }).(ServiceModeReplicatedPtrOutput)
+	return o.ApplyT(func(v ServiceMode) *ServiceModeReplicated { return v.Replicated }).(ServiceModeReplicatedPtrOutput)
 }
 
 type ServiceModeReplicated struct {
@@ -3021,7 +3035,8 @@ type ServiceModeReplicatedPtrInput interface {
 
 type serviceModeReplicatedPtrType ServiceModeReplicatedArgs
 
-func ServiceModeReplicatedPtr(v *ServiceModeReplicatedArgs) ServiceModeReplicatedPtrInput {	return (*serviceModeReplicatedPtrType)(v)
+func ServiceModeReplicatedPtr(v *ServiceModeReplicatedArgs) ServiceModeReplicatedPtrInput {
+	return (*serviceModeReplicatedPtrType)(v)
 }
 
 func (*serviceModeReplicatedPtrType) ElementType() reflect.Type {
@@ -3036,7 +3051,7 @@ func (i *serviceModeReplicatedPtrType) ToServiceModeReplicatedPtrOutputWithConte
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceModeReplicatedPtrOutput)
 }
 
-type ServiceModeReplicatedOutput struct { *pulumi.OutputState }
+type ServiceModeReplicatedOutput struct{ *pulumi.OutputState }
 
 func (ServiceModeReplicatedOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*ServiceModeReplicated)(nil)).Elem()
@@ -3060,10 +3075,10 @@ func (o ServiceModeReplicatedOutput) ToServiceModeReplicatedPtrOutputWithContext
 	}).(ServiceModeReplicatedPtrOutput)
 }
 func (o ServiceModeReplicatedOutput) Replicas() pulumi.IntPtrOutput {
-	return o.ApplyT(func (v ServiceModeReplicated) *int { return v.Replicas }).(pulumi.IntPtrOutput)
+	return o.ApplyT(func(v ServiceModeReplicated) *int { return v.Replicas }).(pulumi.IntPtrOutput)
 }
 
-type ServiceModeReplicatedPtrOutput struct { *pulumi.OutputState}
+type ServiceModeReplicatedPtrOutput struct{ *pulumi.OutputState }
 
 func (ServiceModeReplicatedPtrOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((**ServiceModeReplicated)(nil)).Elem()
@@ -3078,20 +3093,20 @@ func (o ServiceModeReplicatedPtrOutput) ToServiceModeReplicatedPtrOutputWithCont
 }
 
 func (o ServiceModeReplicatedPtrOutput) Elem() ServiceModeReplicatedOutput {
-	return o.ApplyT(func (v *ServiceModeReplicated) ServiceModeReplicated { return *v }).(ServiceModeReplicatedOutput)
+	return o.ApplyT(func(v *ServiceModeReplicated) ServiceModeReplicated { return *v }).(ServiceModeReplicatedOutput)
 }
 
 func (o ServiceModeReplicatedPtrOutput) Replicas() pulumi.IntPtrOutput {
-	return o.ApplyT(func (v ServiceModeReplicated) *int { return v.Replicas }).(pulumi.IntPtrOutput)
+	return o.ApplyT(func(v ServiceModeReplicated) *int { return v.Replicas }).(pulumi.IntPtrOutput)
 }
 
 type ServiceRollbackConfig struct {
-	Delay *string `pulumi:"delay"`
-	FailureAction *string `pulumi:"failureAction"`
+	Delay           *string `pulumi:"delay"`
+	FailureAction   *string `pulumi:"failureAction"`
 	MaxFailureRatio *string `pulumi:"maxFailureRatio"`
-	Monitor *string `pulumi:"monitor"`
-	Order *string `pulumi:"order"`
-	Parallelism *int `pulumi:"parallelism"`
+	Monitor         *string `pulumi:"monitor"`
+	Order           *string `pulumi:"order"`
+	Parallelism     *int    `pulumi:"parallelism"`
 }
 
 type ServiceRollbackConfigInput interface {
@@ -3102,12 +3117,12 @@ type ServiceRollbackConfigInput interface {
 }
 
 type ServiceRollbackConfigArgs struct {
-	Delay pulumi.StringPtrInput `pulumi:"delay"`
-	FailureAction pulumi.StringPtrInput `pulumi:"failureAction"`
+	Delay           pulumi.StringPtrInput `pulumi:"delay"`
+	FailureAction   pulumi.StringPtrInput `pulumi:"failureAction"`
 	MaxFailureRatio pulumi.StringPtrInput `pulumi:"maxFailureRatio"`
-	Monitor pulumi.StringPtrInput `pulumi:"monitor"`
-	Order pulumi.StringPtrInput `pulumi:"order"`
-	Parallelism pulumi.IntPtrInput `pulumi:"parallelism"`
+	Monitor         pulumi.StringPtrInput `pulumi:"monitor"`
+	Order           pulumi.StringPtrInput `pulumi:"order"`
+	Parallelism     pulumi.IntPtrInput    `pulumi:"parallelism"`
 }
 
 func (ServiceRollbackConfigArgs) ElementType() reflect.Type {
@@ -3139,7 +3154,8 @@ type ServiceRollbackConfigPtrInput interface {
 
 type serviceRollbackConfigPtrType ServiceRollbackConfigArgs
 
-func ServiceRollbackConfigPtr(v *ServiceRollbackConfigArgs) ServiceRollbackConfigPtrInput {	return (*serviceRollbackConfigPtrType)(v)
+func ServiceRollbackConfigPtr(v *ServiceRollbackConfigArgs) ServiceRollbackConfigPtrInput {
+	return (*serviceRollbackConfigPtrType)(v)
 }
 
 func (*serviceRollbackConfigPtrType) ElementType() reflect.Type {
@@ -3154,7 +3170,7 @@ func (i *serviceRollbackConfigPtrType) ToServiceRollbackConfigPtrOutputWithConte
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceRollbackConfigPtrOutput)
 }
 
-type ServiceRollbackConfigOutput struct { *pulumi.OutputState }
+type ServiceRollbackConfigOutput struct{ *pulumi.OutputState }
 
 func (ServiceRollbackConfigOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*ServiceRollbackConfig)(nil)).Elem()
@@ -3178,30 +3194,30 @@ func (o ServiceRollbackConfigOutput) ToServiceRollbackConfigPtrOutputWithContext
 	}).(ServiceRollbackConfigPtrOutput)
 }
 func (o ServiceRollbackConfigOutput) Delay() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceRollbackConfig) *string { return v.Delay }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceRollbackConfig) *string { return v.Delay }).(pulumi.StringPtrOutput)
 }
 
 func (o ServiceRollbackConfigOutput) FailureAction() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceRollbackConfig) *string { return v.FailureAction }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceRollbackConfig) *string { return v.FailureAction }).(pulumi.StringPtrOutput)
 }
 
 func (o ServiceRollbackConfigOutput) MaxFailureRatio() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceRollbackConfig) *string { return v.MaxFailureRatio }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceRollbackConfig) *string { return v.MaxFailureRatio }).(pulumi.StringPtrOutput)
 }
 
 func (o ServiceRollbackConfigOutput) Monitor() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceRollbackConfig) *string { return v.Monitor }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceRollbackConfig) *string { return v.Monitor }).(pulumi.StringPtrOutput)
 }
 
 func (o ServiceRollbackConfigOutput) Order() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceRollbackConfig) *string { return v.Order }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceRollbackConfig) *string { return v.Order }).(pulumi.StringPtrOutput)
 }
 
 func (o ServiceRollbackConfigOutput) Parallelism() pulumi.IntPtrOutput {
-	return o.ApplyT(func (v ServiceRollbackConfig) *int { return v.Parallelism }).(pulumi.IntPtrOutput)
+	return o.ApplyT(func(v ServiceRollbackConfig) *int { return v.Parallelism }).(pulumi.IntPtrOutput)
 }
 
-type ServiceRollbackConfigPtrOutput struct { *pulumi.OutputState}
+type ServiceRollbackConfigPtrOutput struct{ *pulumi.OutputState }
 
 func (ServiceRollbackConfigPtrOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((**ServiceRollbackConfig)(nil)).Elem()
@@ -3216,42 +3232,42 @@ func (o ServiceRollbackConfigPtrOutput) ToServiceRollbackConfigPtrOutputWithCont
 }
 
 func (o ServiceRollbackConfigPtrOutput) Elem() ServiceRollbackConfigOutput {
-	return o.ApplyT(func (v *ServiceRollbackConfig) ServiceRollbackConfig { return *v }).(ServiceRollbackConfigOutput)
+	return o.ApplyT(func(v *ServiceRollbackConfig) ServiceRollbackConfig { return *v }).(ServiceRollbackConfigOutput)
 }
 
 func (o ServiceRollbackConfigPtrOutput) Delay() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceRollbackConfig) *string { return v.Delay }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceRollbackConfig) *string { return v.Delay }).(pulumi.StringPtrOutput)
 }
 
 func (o ServiceRollbackConfigPtrOutput) FailureAction() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceRollbackConfig) *string { return v.FailureAction }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceRollbackConfig) *string { return v.FailureAction }).(pulumi.StringPtrOutput)
 }
 
 func (o ServiceRollbackConfigPtrOutput) MaxFailureRatio() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceRollbackConfig) *string { return v.MaxFailureRatio }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceRollbackConfig) *string { return v.MaxFailureRatio }).(pulumi.StringPtrOutput)
 }
 
 func (o ServiceRollbackConfigPtrOutput) Monitor() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceRollbackConfig) *string { return v.Monitor }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceRollbackConfig) *string { return v.Monitor }).(pulumi.StringPtrOutput)
 }
 
 func (o ServiceRollbackConfigPtrOutput) Order() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceRollbackConfig) *string { return v.Order }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceRollbackConfig) *string { return v.Order }).(pulumi.StringPtrOutput)
 }
 
 func (o ServiceRollbackConfigPtrOutput) Parallelism() pulumi.IntPtrOutput {
-	return o.ApplyT(func (v ServiceRollbackConfig) *int { return v.Parallelism }).(pulumi.IntPtrOutput)
+	return o.ApplyT(func(v ServiceRollbackConfig) *int { return v.Parallelism }).(pulumi.IntPtrOutput)
 }
 
 type ServiceTaskSpec struct {
-	ContainerSpec ServiceTaskSpecContainerSpec `pulumi:"containerSpec"`
-	ForceUpdate *int `pulumi:"forceUpdate"`
-	LogDriver *ServiceTaskSpecLogDriver `pulumi:"logDriver"`
-	Networks []string `pulumi:"networks"`
-	Placement *ServiceTaskSpecPlacement `pulumi:"placement"`
-	Resources *ServiceTaskSpecResources `pulumi:"resources"`
+	ContainerSpec ServiceTaskSpecContainerSpec  `pulumi:"containerSpec"`
+	ForceUpdate   *int                          `pulumi:"forceUpdate"`
+	LogDriver     *ServiceTaskSpecLogDriver     `pulumi:"logDriver"`
+	Networks      []string                      `pulumi:"networks"`
+	Placement     *ServiceTaskSpecPlacement     `pulumi:"placement"`
+	Resources     *ServiceTaskSpecResources     `pulumi:"resources"`
 	RestartPolicy *ServiceTaskSpecRestartPolicy `pulumi:"restartPolicy"`
-	Runtime *string `pulumi:"runtime"`
+	Runtime       *string                       `pulumi:"runtime"`
 }
 
 type ServiceTaskSpecInput interface {
@@ -3262,14 +3278,14 @@ type ServiceTaskSpecInput interface {
 }
 
 type ServiceTaskSpecArgs struct {
-	ContainerSpec ServiceTaskSpecContainerSpecInput `pulumi:"containerSpec"`
-	ForceUpdate pulumi.IntPtrInput `pulumi:"forceUpdate"`
-	LogDriver ServiceTaskSpecLogDriverPtrInput `pulumi:"logDriver"`
-	Networks pulumi.StringArrayInput `pulumi:"networks"`
-	Placement ServiceTaskSpecPlacementPtrInput `pulumi:"placement"`
-	Resources ServiceTaskSpecResourcesPtrInput `pulumi:"resources"`
+	ContainerSpec ServiceTaskSpecContainerSpecInput    `pulumi:"containerSpec"`
+	ForceUpdate   pulumi.IntPtrInput                   `pulumi:"forceUpdate"`
+	LogDriver     ServiceTaskSpecLogDriverPtrInput     `pulumi:"logDriver"`
+	Networks      pulumi.StringArrayInput              `pulumi:"networks"`
+	Placement     ServiceTaskSpecPlacementPtrInput     `pulumi:"placement"`
+	Resources     ServiceTaskSpecResourcesPtrInput     `pulumi:"resources"`
 	RestartPolicy ServiceTaskSpecRestartPolicyPtrInput `pulumi:"restartPolicy"`
-	Runtime pulumi.StringPtrInput `pulumi:"runtime"`
+	Runtime       pulumi.StringPtrInput                `pulumi:"runtime"`
 }
 
 func (ServiceTaskSpecArgs) ElementType() reflect.Type {
@@ -3301,7 +3317,8 @@ type ServiceTaskSpecPtrInput interface {
 
 type serviceTaskSpecPtrType ServiceTaskSpecArgs
 
-func ServiceTaskSpecPtr(v *ServiceTaskSpecArgs) ServiceTaskSpecPtrInput {	return (*serviceTaskSpecPtrType)(v)
+func ServiceTaskSpecPtr(v *ServiceTaskSpecArgs) ServiceTaskSpecPtrInput {
+	return (*serviceTaskSpecPtrType)(v)
 }
 
 func (*serviceTaskSpecPtrType) ElementType() reflect.Type {
@@ -3316,7 +3333,7 @@ func (i *serviceTaskSpecPtrType) ToServiceTaskSpecPtrOutputWithContext(ctx conte
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecPtrOutput)
 }
 
-type ServiceTaskSpecOutput struct { *pulumi.OutputState }
+type ServiceTaskSpecOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*ServiceTaskSpec)(nil)).Elem()
@@ -3340,38 +3357,38 @@ func (o ServiceTaskSpecOutput) ToServiceTaskSpecPtrOutputWithContext(ctx context
 	}).(ServiceTaskSpecPtrOutput)
 }
 func (o ServiceTaskSpecOutput) ContainerSpec() ServiceTaskSpecContainerSpecOutput {
-	return o.ApplyT(func (v ServiceTaskSpec) ServiceTaskSpecContainerSpec { return v.ContainerSpec }).(ServiceTaskSpecContainerSpecOutput)
+	return o.ApplyT(func(v ServiceTaskSpec) ServiceTaskSpecContainerSpec { return v.ContainerSpec }).(ServiceTaskSpecContainerSpecOutput)
 }
 
 func (o ServiceTaskSpecOutput) ForceUpdate() pulumi.IntPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpec) *int { return v.ForceUpdate }).(pulumi.IntPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpec) *int { return v.ForceUpdate }).(pulumi.IntPtrOutput)
 }
 
 func (o ServiceTaskSpecOutput) LogDriver() ServiceTaskSpecLogDriverPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpec) *ServiceTaskSpecLogDriver { return v.LogDriver }).(ServiceTaskSpecLogDriverPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpec) *ServiceTaskSpecLogDriver { return v.LogDriver }).(ServiceTaskSpecLogDriverPtrOutput)
 }
 
 func (o ServiceTaskSpecOutput) Networks() pulumi.StringArrayOutput {
-	return o.ApplyT(func (v ServiceTaskSpec) []string { return v.Networks }).(pulumi.StringArrayOutput)
+	return o.ApplyT(func(v ServiceTaskSpec) []string { return v.Networks }).(pulumi.StringArrayOutput)
 }
 
 func (o ServiceTaskSpecOutput) Placement() ServiceTaskSpecPlacementPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpec) *ServiceTaskSpecPlacement { return v.Placement }).(ServiceTaskSpecPlacementPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpec) *ServiceTaskSpecPlacement { return v.Placement }).(ServiceTaskSpecPlacementPtrOutput)
 }
 
 func (o ServiceTaskSpecOutput) Resources() ServiceTaskSpecResourcesPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpec) *ServiceTaskSpecResources { return v.Resources }).(ServiceTaskSpecResourcesPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpec) *ServiceTaskSpecResources { return v.Resources }).(ServiceTaskSpecResourcesPtrOutput)
 }
 
 func (o ServiceTaskSpecOutput) RestartPolicy() ServiceTaskSpecRestartPolicyPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpec) *ServiceTaskSpecRestartPolicy { return v.RestartPolicy }).(ServiceTaskSpecRestartPolicyPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpec) *ServiceTaskSpecRestartPolicy { return v.RestartPolicy }).(ServiceTaskSpecRestartPolicyPtrOutput)
 }
 
 func (o ServiceTaskSpecOutput) Runtime() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpec) *string { return v.Runtime }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpec) *string { return v.Runtime }).(pulumi.StringPtrOutput)
 }
 
-type ServiceTaskSpecPtrOutput struct { *pulumi.OutputState}
+type ServiceTaskSpecPtrOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecPtrOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((**ServiceTaskSpec)(nil)).Elem()
@@ -3386,62 +3403,62 @@ func (o ServiceTaskSpecPtrOutput) ToServiceTaskSpecPtrOutputWithContext(ctx cont
 }
 
 func (o ServiceTaskSpecPtrOutput) Elem() ServiceTaskSpecOutput {
-	return o.ApplyT(func (v *ServiceTaskSpec) ServiceTaskSpec { return *v }).(ServiceTaskSpecOutput)
+	return o.ApplyT(func(v *ServiceTaskSpec) ServiceTaskSpec { return *v }).(ServiceTaskSpecOutput)
 }
 
 func (o ServiceTaskSpecPtrOutput) ContainerSpec() ServiceTaskSpecContainerSpecOutput {
-	return o.ApplyT(func (v ServiceTaskSpec) ServiceTaskSpecContainerSpec { return v.ContainerSpec }).(ServiceTaskSpecContainerSpecOutput)
+	return o.ApplyT(func(v ServiceTaskSpec) ServiceTaskSpecContainerSpec { return v.ContainerSpec }).(ServiceTaskSpecContainerSpecOutput)
 }
 
 func (o ServiceTaskSpecPtrOutput) ForceUpdate() pulumi.IntPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpec) *int { return v.ForceUpdate }).(pulumi.IntPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpec) *int { return v.ForceUpdate }).(pulumi.IntPtrOutput)
 }
 
 func (o ServiceTaskSpecPtrOutput) LogDriver() ServiceTaskSpecLogDriverPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpec) *ServiceTaskSpecLogDriver { return v.LogDriver }).(ServiceTaskSpecLogDriverPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpec) *ServiceTaskSpecLogDriver { return v.LogDriver }).(ServiceTaskSpecLogDriverPtrOutput)
 }
 
 func (o ServiceTaskSpecPtrOutput) Networks() pulumi.StringArrayOutput {
-	return o.ApplyT(func (v ServiceTaskSpec) []string { return v.Networks }).(pulumi.StringArrayOutput)
+	return o.ApplyT(func(v ServiceTaskSpec) []string { return v.Networks }).(pulumi.StringArrayOutput)
 }
 
 func (o ServiceTaskSpecPtrOutput) Placement() ServiceTaskSpecPlacementPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpec) *ServiceTaskSpecPlacement { return v.Placement }).(ServiceTaskSpecPlacementPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpec) *ServiceTaskSpecPlacement { return v.Placement }).(ServiceTaskSpecPlacementPtrOutput)
 }
 
 func (o ServiceTaskSpecPtrOutput) Resources() ServiceTaskSpecResourcesPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpec) *ServiceTaskSpecResources { return v.Resources }).(ServiceTaskSpecResourcesPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpec) *ServiceTaskSpecResources { return v.Resources }).(ServiceTaskSpecResourcesPtrOutput)
 }
 
 func (o ServiceTaskSpecPtrOutput) RestartPolicy() ServiceTaskSpecRestartPolicyPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpec) *ServiceTaskSpecRestartPolicy { return v.RestartPolicy }).(ServiceTaskSpecRestartPolicyPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpec) *ServiceTaskSpecRestartPolicy { return v.RestartPolicy }).(ServiceTaskSpecRestartPolicyPtrOutput)
 }
 
 func (o ServiceTaskSpecPtrOutput) Runtime() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpec) *string { return v.Runtime }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpec) *string { return v.Runtime }).(pulumi.StringPtrOutput)
 }
 
 type ServiceTaskSpecContainerSpec struct {
-	Args []string `pulumi:"args"`
-	Commands []string `pulumi:"commands"`
-	Configs []ServiceTaskSpecContainerSpecConfig `pulumi:"configs"`
-	Dir *string `pulumi:"dir"`
-	DnsConfig *ServiceTaskSpecContainerSpecDnsConfig `pulumi:"dnsConfig"`
-	Env map[string]string `pulumi:"env"`
-	Groups []string `pulumi:"groups"`
-	Healthcheck *ServiceTaskSpecContainerSpecHealthcheck `pulumi:"healthcheck"`
-	Hostname *string `pulumi:"hostname"`
-	Hosts []ServiceTaskSpecContainerSpecHost `pulumi:"hosts"`
-	Image string `pulumi:"image"`
-	Isolation *string `pulumi:"isolation"`
-	Labels []ServiceTaskSpecContainerSpecLabel `pulumi:"labels"`
-	Mounts []ServiceTaskSpecContainerSpecMount `pulumi:"mounts"`
-	Privileges *ServiceTaskSpecContainerSpecPrivileges `pulumi:"privileges"`
-	ReadOnly *bool `pulumi:"readOnly"`
-	Secrets []ServiceTaskSpecContainerSpecSecret `pulumi:"secrets"`
-	StopGracePeriod *string `pulumi:"stopGracePeriod"`
-	StopSignal *string `pulumi:"stopSignal"`
-	User *string `pulumi:"user"`
+	Args            []string                                 `pulumi:"args"`
+	Commands        []string                                 `pulumi:"commands"`
+	Configs         []ServiceTaskSpecContainerSpecConfig     `pulumi:"configs"`
+	Dir             *string                                  `pulumi:"dir"`
+	DnsConfig       *ServiceTaskSpecContainerSpecDnsConfig   `pulumi:"dnsConfig"`
+	Env             map[string]string                        `pulumi:"env"`
+	Groups          []string                                 `pulumi:"groups"`
+	Healthcheck     *ServiceTaskSpecContainerSpecHealthcheck `pulumi:"healthcheck"`
+	Hostname        *string                                  `pulumi:"hostname"`
+	Hosts           []ServiceTaskSpecContainerSpecHost       `pulumi:"hosts"`
+	Image           string                                   `pulumi:"image"`
+	Isolation       *string                                  `pulumi:"isolation"`
+	Labels          []ServiceTaskSpecContainerSpecLabel      `pulumi:"labels"`
+	Mounts          []ServiceTaskSpecContainerSpecMount      `pulumi:"mounts"`
+	Privileges      *ServiceTaskSpecContainerSpecPrivileges  `pulumi:"privileges"`
+	ReadOnly        *bool                                    `pulumi:"readOnly"`
+	Secrets         []ServiceTaskSpecContainerSpecSecret     `pulumi:"secrets"`
+	StopGracePeriod *string                                  `pulumi:"stopGracePeriod"`
+	StopSignal      *string                                  `pulumi:"stopSignal"`
+	User            *string                                  `pulumi:"user"`
 }
 
 type ServiceTaskSpecContainerSpecInput interface {
@@ -3452,26 +3469,26 @@ type ServiceTaskSpecContainerSpecInput interface {
 }
 
 type ServiceTaskSpecContainerSpecArgs struct {
-	Args pulumi.StringArrayInput `pulumi:"args"`
-	Commands pulumi.StringArrayInput `pulumi:"commands"`
-	Configs ServiceTaskSpecContainerSpecConfigArrayInput `pulumi:"configs"`
-	Dir pulumi.StringPtrInput `pulumi:"dir"`
-	DnsConfig ServiceTaskSpecContainerSpecDnsConfigPtrInput `pulumi:"dnsConfig"`
-	Env pulumi.StringMapInput `pulumi:"env"`
-	Groups pulumi.StringArrayInput `pulumi:"groups"`
-	Healthcheck ServiceTaskSpecContainerSpecHealthcheckPtrInput `pulumi:"healthcheck"`
-	Hostname pulumi.StringPtrInput `pulumi:"hostname"`
-	Hosts ServiceTaskSpecContainerSpecHostArrayInput `pulumi:"hosts"`
-	Image pulumi.StringInput `pulumi:"image"`
-	Isolation pulumi.StringPtrInput `pulumi:"isolation"`
-	Labels ServiceTaskSpecContainerSpecLabelArrayInput `pulumi:"labels"`
-	Mounts ServiceTaskSpecContainerSpecMountArrayInput `pulumi:"mounts"`
-	Privileges ServiceTaskSpecContainerSpecPrivilegesPtrInput `pulumi:"privileges"`
-	ReadOnly pulumi.BoolPtrInput `pulumi:"readOnly"`
-	Secrets ServiceTaskSpecContainerSpecSecretArrayInput `pulumi:"secrets"`
-	StopGracePeriod pulumi.StringPtrInput `pulumi:"stopGracePeriod"`
-	StopSignal pulumi.StringPtrInput `pulumi:"stopSignal"`
-	User pulumi.StringPtrInput `pulumi:"user"`
+	Args            pulumi.StringArrayInput                         `pulumi:"args"`
+	Commands        pulumi.StringArrayInput                         `pulumi:"commands"`
+	Configs         ServiceTaskSpecContainerSpecConfigArrayInput    `pulumi:"configs"`
+	Dir             pulumi.StringPtrInput                           `pulumi:"dir"`
+	DnsConfig       ServiceTaskSpecContainerSpecDnsConfigPtrInput   `pulumi:"dnsConfig"`
+	Env             pulumi.StringMapInput                           `pulumi:"env"`
+	Groups          pulumi.StringArrayInput                         `pulumi:"groups"`
+	Healthcheck     ServiceTaskSpecContainerSpecHealthcheckPtrInput `pulumi:"healthcheck"`
+	Hostname        pulumi.StringPtrInput                           `pulumi:"hostname"`
+	Hosts           ServiceTaskSpecContainerSpecHostArrayInput      `pulumi:"hosts"`
+	Image           pulumi.StringInput                              `pulumi:"image"`
+	Isolation       pulumi.StringPtrInput                           `pulumi:"isolation"`
+	Labels          ServiceTaskSpecContainerSpecLabelArrayInput     `pulumi:"labels"`
+	Mounts          ServiceTaskSpecContainerSpecMountArrayInput     `pulumi:"mounts"`
+	Privileges      ServiceTaskSpecContainerSpecPrivilegesPtrInput  `pulumi:"privileges"`
+	ReadOnly        pulumi.BoolPtrInput                             `pulumi:"readOnly"`
+	Secrets         ServiceTaskSpecContainerSpecSecretArrayInput    `pulumi:"secrets"`
+	StopGracePeriod pulumi.StringPtrInput                           `pulumi:"stopGracePeriod"`
+	StopSignal      pulumi.StringPtrInput                           `pulumi:"stopSignal"`
+	User            pulumi.StringPtrInput                           `pulumi:"user"`
 }
 
 func (ServiceTaskSpecContainerSpecArgs) ElementType() reflect.Type {
@@ -3486,7 +3503,7 @@ func (i ServiceTaskSpecContainerSpecArgs) ToServiceTaskSpecContainerSpecOutputWi
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecContainerSpecOutput)
 }
 
-type ServiceTaskSpecContainerSpecOutput struct { *pulumi.OutputState }
+type ServiceTaskSpecContainerSpecOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecContainerSpecOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*ServiceTaskSpecContainerSpec)(nil)).Elem()
@@ -3501,83 +3518,83 @@ func (o ServiceTaskSpecContainerSpecOutput) ToServiceTaskSpecContainerSpecOutput
 }
 
 func (o ServiceTaskSpecContainerSpecOutput) Args() pulumi.StringArrayOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpec) []string { return v.Args }).(pulumi.StringArrayOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpec) []string { return v.Args }).(pulumi.StringArrayOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecOutput) Commands() pulumi.StringArrayOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpec) []string { return v.Commands }).(pulumi.StringArrayOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpec) []string { return v.Commands }).(pulumi.StringArrayOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecOutput) Configs() ServiceTaskSpecContainerSpecConfigArrayOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpec) []ServiceTaskSpecContainerSpecConfig { return v.Configs }).(ServiceTaskSpecContainerSpecConfigArrayOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpec) []ServiceTaskSpecContainerSpecConfig { return v.Configs }).(ServiceTaskSpecContainerSpecConfigArrayOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecOutput) Dir() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpec) *string { return v.Dir }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpec) *string { return v.Dir }).(pulumi.StringPtrOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecOutput) DnsConfig() ServiceTaskSpecContainerSpecDnsConfigPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpec) *ServiceTaskSpecContainerSpecDnsConfig { return v.DnsConfig }).(ServiceTaskSpecContainerSpecDnsConfigPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpec) *ServiceTaskSpecContainerSpecDnsConfig { return v.DnsConfig }).(ServiceTaskSpecContainerSpecDnsConfigPtrOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecOutput) Env() pulumi.StringMapOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpec) map[string]string { return v.Env }).(pulumi.StringMapOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpec) map[string]string { return v.Env }).(pulumi.StringMapOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecOutput) Groups() pulumi.StringArrayOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpec) []string { return v.Groups }).(pulumi.StringArrayOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpec) []string { return v.Groups }).(pulumi.StringArrayOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecOutput) Healthcheck() ServiceTaskSpecContainerSpecHealthcheckPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpec) *ServiceTaskSpecContainerSpecHealthcheck { return v.Healthcheck }).(ServiceTaskSpecContainerSpecHealthcheckPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpec) *ServiceTaskSpecContainerSpecHealthcheck { return v.Healthcheck }).(ServiceTaskSpecContainerSpecHealthcheckPtrOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecOutput) Hostname() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpec) *string { return v.Hostname }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpec) *string { return v.Hostname }).(pulumi.StringPtrOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecOutput) Hosts() ServiceTaskSpecContainerSpecHostArrayOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpec) []ServiceTaskSpecContainerSpecHost { return v.Hosts }).(ServiceTaskSpecContainerSpecHostArrayOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpec) []ServiceTaskSpecContainerSpecHost { return v.Hosts }).(ServiceTaskSpecContainerSpecHostArrayOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecOutput) Image() pulumi.StringOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpec) string { return v.Image }).(pulumi.StringOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpec) string { return v.Image }).(pulumi.StringOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecOutput) Isolation() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpec) *string { return v.Isolation }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpec) *string { return v.Isolation }).(pulumi.StringPtrOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecOutput) Labels() ServiceTaskSpecContainerSpecLabelArrayOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpec) []ServiceTaskSpecContainerSpecLabel { return v.Labels }).(ServiceTaskSpecContainerSpecLabelArrayOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpec) []ServiceTaskSpecContainerSpecLabel { return v.Labels }).(ServiceTaskSpecContainerSpecLabelArrayOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecOutput) Mounts() ServiceTaskSpecContainerSpecMountArrayOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpec) []ServiceTaskSpecContainerSpecMount { return v.Mounts }).(ServiceTaskSpecContainerSpecMountArrayOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpec) []ServiceTaskSpecContainerSpecMount { return v.Mounts }).(ServiceTaskSpecContainerSpecMountArrayOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecOutput) Privileges() ServiceTaskSpecContainerSpecPrivilegesPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpec) *ServiceTaskSpecContainerSpecPrivileges { return v.Privileges }).(ServiceTaskSpecContainerSpecPrivilegesPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpec) *ServiceTaskSpecContainerSpecPrivileges { return v.Privileges }).(ServiceTaskSpecContainerSpecPrivilegesPtrOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecOutput) ReadOnly() pulumi.BoolPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpec) *bool { return v.ReadOnly }).(pulumi.BoolPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpec) *bool { return v.ReadOnly }).(pulumi.BoolPtrOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecOutput) Secrets() ServiceTaskSpecContainerSpecSecretArrayOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpec) []ServiceTaskSpecContainerSpecSecret { return v.Secrets }).(ServiceTaskSpecContainerSpecSecretArrayOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpec) []ServiceTaskSpecContainerSpecSecret { return v.Secrets }).(ServiceTaskSpecContainerSpecSecretArrayOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecOutput) StopGracePeriod() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpec) *string { return v.StopGracePeriod }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpec) *string { return v.StopGracePeriod }).(pulumi.StringPtrOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecOutput) StopSignal() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpec) *string { return v.StopSignal }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpec) *string { return v.StopSignal }).(pulumi.StringPtrOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecOutput) User() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpec) *string { return v.User }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpec) *string { return v.User }).(pulumi.StringPtrOutput)
 }
 
 type ServiceTaskSpecContainerSpecConfig struct {
@@ -3650,7 +3667,7 @@ func (i ServiceTaskSpecContainerSpecConfigArray) ToServiceTaskSpecContainerSpecC
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecContainerSpecConfigArrayOutput)
 }
 
-type ServiceTaskSpecContainerSpecConfigOutput struct { *pulumi.OutputState }
+type ServiceTaskSpecContainerSpecConfigOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecContainerSpecConfigOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*ServiceTaskSpecContainerSpecConfig)(nil)).Elem()
@@ -3666,35 +3683,35 @@ func (o ServiceTaskSpecContainerSpecConfigOutput) ToServiceTaskSpecContainerSpec
 
 // ConfigID represents the ID of the specific config.
 func (o ServiceTaskSpecContainerSpecConfigOutput) ConfigId() pulumi.StringOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecConfig) string { return v.ConfigId }).(pulumi.StringOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecConfig) string { return v.ConfigId }).(pulumi.StringOutput)
 }
 
 // The name of the config that this references, but internally it is just provided for lookup/display purposes
 func (o ServiceTaskSpecContainerSpecConfigOutput) ConfigName() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecConfig) *string { return v.ConfigName }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecConfig) *string { return v.ConfigName }).(pulumi.StringPtrOutput)
 }
 
 // Represents the file GID. Defaults: `0`
 func (o ServiceTaskSpecContainerSpecConfigOutput) FileGid() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecConfig) *string { return v.FileGid }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecConfig) *string { return v.FileGid }).(pulumi.StringPtrOutput)
 }
 
 // Represents the FileMode of the file. Defaults: `0444`
 func (o ServiceTaskSpecContainerSpecConfigOutput) FileMode() pulumi.IntPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecConfig) *int { return v.FileMode }).(pulumi.IntPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecConfig) *int { return v.FileMode }).(pulumi.IntPtrOutput)
 }
 
 // Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
 func (o ServiceTaskSpecContainerSpecConfigOutput) FileName() pulumi.StringOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecConfig) string { return v.FileName }).(pulumi.StringOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecConfig) string { return v.FileName }).(pulumi.StringOutput)
 }
 
 // Represents the file UID. Defaults: `0`
 func (o ServiceTaskSpecContainerSpecConfigOutput) FileUid() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecConfig) *string { return v.FileUid }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecConfig) *string { return v.FileUid }).(pulumi.StringPtrOutput)
 }
 
-type ServiceTaskSpecContainerSpecConfigArrayOutput struct { *pulumi.OutputState}
+type ServiceTaskSpecContainerSpecConfigArrayOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecContainerSpecConfigArrayOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*[]ServiceTaskSpecContainerSpecConfig)(nil)).Elem()
@@ -3709,7 +3726,7 @@ func (o ServiceTaskSpecContainerSpecConfigArrayOutput) ToServiceTaskSpecContaine
 }
 
 func (o ServiceTaskSpecContainerSpecConfigArrayOutput) Index(i pulumi.IntInput) ServiceTaskSpecContainerSpecConfigOutput {
-	return pulumi.All(o, i).ApplyT(func (vs []interface{}) ServiceTaskSpecContainerSpecConfig {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) ServiceTaskSpecContainerSpecConfig {
 		return vs[0].([]ServiceTaskSpecContainerSpecConfig)[vs[1].(int)]
 	}).(ServiceTaskSpecContainerSpecConfigOutput)
 }
@@ -3717,7 +3734,7 @@ func (o ServiceTaskSpecContainerSpecConfigArrayOutput) Index(i pulumi.IntInput) 
 type ServiceTaskSpecContainerSpecDnsConfig struct {
 	Nameservers []string `pulumi:"nameservers"`
 	// The options for the logging driver, e.g.
-	Options []string `pulumi:"options"`
+	Options  []string `pulumi:"options"`
 	Searches []string `pulumi:"searches"`
 }
 
@@ -3731,7 +3748,7 @@ type ServiceTaskSpecContainerSpecDnsConfigInput interface {
 type ServiceTaskSpecContainerSpecDnsConfigArgs struct {
 	Nameservers pulumi.StringArrayInput `pulumi:"nameservers"`
 	// The options for the logging driver, e.g.
-	Options pulumi.StringArrayInput `pulumi:"options"`
+	Options  pulumi.StringArrayInput `pulumi:"options"`
 	Searches pulumi.StringArrayInput `pulumi:"searches"`
 }
 
@@ -3764,7 +3781,8 @@ type ServiceTaskSpecContainerSpecDnsConfigPtrInput interface {
 
 type serviceTaskSpecContainerSpecDnsConfigPtrType ServiceTaskSpecContainerSpecDnsConfigArgs
 
-func ServiceTaskSpecContainerSpecDnsConfigPtr(v *ServiceTaskSpecContainerSpecDnsConfigArgs) ServiceTaskSpecContainerSpecDnsConfigPtrInput {	return (*serviceTaskSpecContainerSpecDnsConfigPtrType)(v)
+func ServiceTaskSpecContainerSpecDnsConfigPtr(v *ServiceTaskSpecContainerSpecDnsConfigArgs) ServiceTaskSpecContainerSpecDnsConfigPtrInput {
+	return (*serviceTaskSpecContainerSpecDnsConfigPtrType)(v)
 }
 
 func (*serviceTaskSpecContainerSpecDnsConfigPtrType) ElementType() reflect.Type {
@@ -3779,7 +3797,7 @@ func (i *serviceTaskSpecContainerSpecDnsConfigPtrType) ToServiceTaskSpecContaine
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecContainerSpecDnsConfigPtrOutput)
 }
 
-type ServiceTaskSpecContainerSpecDnsConfigOutput struct { *pulumi.OutputState }
+type ServiceTaskSpecContainerSpecDnsConfigOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecContainerSpecDnsConfigOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*ServiceTaskSpecContainerSpecDnsConfig)(nil)).Elem()
@@ -3803,19 +3821,19 @@ func (o ServiceTaskSpecContainerSpecDnsConfigOutput) ToServiceTaskSpecContainerS
 	}).(ServiceTaskSpecContainerSpecDnsConfigPtrOutput)
 }
 func (o ServiceTaskSpecContainerSpecDnsConfigOutput) Nameservers() pulumi.StringArrayOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecDnsConfig) []string { return v.Nameservers }).(pulumi.StringArrayOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecDnsConfig) []string { return v.Nameservers }).(pulumi.StringArrayOutput)
 }
 
 // The options for the logging driver, e.g.
 func (o ServiceTaskSpecContainerSpecDnsConfigOutput) Options() pulumi.StringArrayOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecDnsConfig) []string { return v.Options }).(pulumi.StringArrayOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecDnsConfig) []string { return v.Options }).(pulumi.StringArrayOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecDnsConfigOutput) Searches() pulumi.StringArrayOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecDnsConfig) []string { return v.Searches }).(pulumi.StringArrayOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecDnsConfig) []string { return v.Searches }).(pulumi.StringArrayOutput)
 }
 
-type ServiceTaskSpecContainerSpecDnsConfigPtrOutput struct { *pulumi.OutputState}
+type ServiceTaskSpecContainerSpecDnsConfigPtrOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecContainerSpecDnsConfigPtrOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((**ServiceTaskSpecContainerSpecDnsConfig)(nil)).Elem()
@@ -3830,28 +3848,28 @@ func (o ServiceTaskSpecContainerSpecDnsConfigPtrOutput) ToServiceTaskSpecContain
 }
 
 func (o ServiceTaskSpecContainerSpecDnsConfigPtrOutput) Elem() ServiceTaskSpecContainerSpecDnsConfigOutput {
-	return o.ApplyT(func (v *ServiceTaskSpecContainerSpecDnsConfig) ServiceTaskSpecContainerSpecDnsConfig { return *v }).(ServiceTaskSpecContainerSpecDnsConfigOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpecDnsConfig) ServiceTaskSpecContainerSpecDnsConfig { return *v }).(ServiceTaskSpecContainerSpecDnsConfigOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecDnsConfigPtrOutput) Nameservers() pulumi.StringArrayOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecDnsConfig) []string { return v.Nameservers }).(pulumi.StringArrayOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecDnsConfig) []string { return v.Nameservers }).(pulumi.StringArrayOutput)
 }
 
 // The options for the logging driver, e.g.
 func (o ServiceTaskSpecContainerSpecDnsConfigPtrOutput) Options() pulumi.StringArrayOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecDnsConfig) []string { return v.Options }).(pulumi.StringArrayOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecDnsConfig) []string { return v.Options }).(pulumi.StringArrayOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecDnsConfigPtrOutput) Searches() pulumi.StringArrayOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecDnsConfig) []string { return v.Searches }).(pulumi.StringArrayOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecDnsConfig) []string { return v.Searches }).(pulumi.StringArrayOutput)
 }
 
 type ServiceTaskSpecContainerSpecHealthcheck struct {
-	Interval *string `pulumi:"interval"`
-	Retries *int `pulumi:"retries"`
-	StartPeriod *string `pulumi:"startPeriod"`
-	Tests []string `pulumi:"tests"`
-	Timeout *string `pulumi:"timeout"`
+	Interval    *string  `pulumi:"interval"`
+	Retries     *int     `pulumi:"retries"`
+	StartPeriod *string  `pulumi:"startPeriod"`
+	Tests       []string `pulumi:"tests"`
+	Timeout     *string  `pulumi:"timeout"`
 }
 
 type ServiceTaskSpecContainerSpecHealthcheckInput interface {
@@ -3862,11 +3880,11 @@ type ServiceTaskSpecContainerSpecHealthcheckInput interface {
 }
 
 type ServiceTaskSpecContainerSpecHealthcheckArgs struct {
-	Interval pulumi.StringPtrInput `pulumi:"interval"`
-	Retries pulumi.IntPtrInput `pulumi:"retries"`
-	StartPeriod pulumi.StringPtrInput `pulumi:"startPeriod"`
-	Tests pulumi.StringArrayInput `pulumi:"tests"`
-	Timeout pulumi.StringPtrInput `pulumi:"timeout"`
+	Interval    pulumi.StringPtrInput   `pulumi:"interval"`
+	Retries     pulumi.IntPtrInput      `pulumi:"retries"`
+	StartPeriod pulumi.StringPtrInput   `pulumi:"startPeriod"`
+	Tests       pulumi.StringArrayInput `pulumi:"tests"`
+	Timeout     pulumi.StringPtrInput   `pulumi:"timeout"`
 }
 
 func (ServiceTaskSpecContainerSpecHealthcheckArgs) ElementType() reflect.Type {
@@ -3898,7 +3916,8 @@ type ServiceTaskSpecContainerSpecHealthcheckPtrInput interface {
 
 type serviceTaskSpecContainerSpecHealthcheckPtrType ServiceTaskSpecContainerSpecHealthcheckArgs
 
-func ServiceTaskSpecContainerSpecHealthcheckPtr(v *ServiceTaskSpecContainerSpecHealthcheckArgs) ServiceTaskSpecContainerSpecHealthcheckPtrInput {	return (*serviceTaskSpecContainerSpecHealthcheckPtrType)(v)
+func ServiceTaskSpecContainerSpecHealthcheckPtr(v *ServiceTaskSpecContainerSpecHealthcheckArgs) ServiceTaskSpecContainerSpecHealthcheckPtrInput {
+	return (*serviceTaskSpecContainerSpecHealthcheckPtrType)(v)
 }
 
 func (*serviceTaskSpecContainerSpecHealthcheckPtrType) ElementType() reflect.Type {
@@ -3913,7 +3932,7 @@ func (i *serviceTaskSpecContainerSpecHealthcheckPtrType) ToServiceTaskSpecContai
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecContainerSpecHealthcheckPtrOutput)
 }
 
-type ServiceTaskSpecContainerSpecHealthcheckOutput struct { *pulumi.OutputState }
+type ServiceTaskSpecContainerSpecHealthcheckOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecContainerSpecHealthcheckOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*ServiceTaskSpecContainerSpecHealthcheck)(nil)).Elem()
@@ -3937,26 +3956,26 @@ func (o ServiceTaskSpecContainerSpecHealthcheckOutput) ToServiceTaskSpecContaine
 	}).(ServiceTaskSpecContainerSpecHealthcheckPtrOutput)
 }
 func (o ServiceTaskSpecContainerSpecHealthcheckOutput) Interval() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecHealthcheck) *string { return v.Interval }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecHealthcheck) *string { return v.Interval }).(pulumi.StringPtrOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecHealthcheckOutput) Retries() pulumi.IntPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecHealthcheck) *int { return v.Retries }).(pulumi.IntPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecHealthcheck) *int { return v.Retries }).(pulumi.IntPtrOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecHealthcheckOutput) StartPeriod() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecHealthcheck) *string { return v.StartPeriod }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecHealthcheck) *string { return v.StartPeriod }).(pulumi.StringPtrOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecHealthcheckOutput) Tests() pulumi.StringArrayOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecHealthcheck) []string { return v.Tests }).(pulumi.StringArrayOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecHealthcheck) []string { return v.Tests }).(pulumi.StringArrayOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecHealthcheckOutput) Timeout() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecHealthcheck) *string { return v.Timeout }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecHealthcheck) *string { return v.Timeout }).(pulumi.StringPtrOutput)
 }
 
-type ServiceTaskSpecContainerSpecHealthcheckPtrOutput struct { *pulumi.OutputState}
+type ServiceTaskSpecContainerSpecHealthcheckPtrOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecContainerSpecHealthcheckPtrOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((**ServiceTaskSpecContainerSpecHealthcheck)(nil)).Elem()
@@ -3971,32 +3990,32 @@ func (o ServiceTaskSpecContainerSpecHealthcheckPtrOutput) ToServiceTaskSpecConta
 }
 
 func (o ServiceTaskSpecContainerSpecHealthcheckPtrOutput) Elem() ServiceTaskSpecContainerSpecHealthcheckOutput {
-	return o.ApplyT(func (v *ServiceTaskSpecContainerSpecHealthcheck) ServiceTaskSpecContainerSpecHealthcheck { return *v }).(ServiceTaskSpecContainerSpecHealthcheckOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpecHealthcheck) ServiceTaskSpecContainerSpecHealthcheck { return *v }).(ServiceTaskSpecContainerSpecHealthcheckOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecHealthcheckPtrOutput) Interval() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecHealthcheck) *string { return v.Interval }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecHealthcheck) *string { return v.Interval }).(pulumi.StringPtrOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecHealthcheckPtrOutput) Retries() pulumi.IntPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecHealthcheck) *int { return v.Retries }).(pulumi.IntPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecHealthcheck) *int { return v.Retries }).(pulumi.IntPtrOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecHealthcheckPtrOutput) StartPeriod() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecHealthcheck) *string { return v.StartPeriod }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecHealthcheck) *string { return v.StartPeriod }).(pulumi.StringPtrOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecHealthcheckPtrOutput) Tests() pulumi.StringArrayOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecHealthcheck) []string { return v.Tests }).(pulumi.StringArrayOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecHealthcheck) []string { return v.Tests }).(pulumi.StringArrayOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecHealthcheckPtrOutput) Timeout() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecHealthcheck) *string { return v.Timeout }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecHealthcheck) *string { return v.Timeout }).(pulumi.StringPtrOutput)
 }
 
 type ServiceTaskSpecContainerSpecHost struct {
 	Host string `pulumi:"host"`
-	Ip string `pulumi:"ip"`
+	Ip   string `pulumi:"ip"`
 }
 
 type ServiceTaskSpecContainerSpecHostInput interface {
@@ -4008,7 +4027,7 @@ type ServiceTaskSpecContainerSpecHostInput interface {
 
 type ServiceTaskSpecContainerSpecHostArgs struct {
 	Host pulumi.StringInput `pulumi:"host"`
-	Ip pulumi.StringInput `pulumi:"ip"`
+	Ip   pulumi.StringInput `pulumi:"ip"`
 }
 
 func (ServiceTaskSpecContainerSpecHostArgs) ElementType() reflect.Type {
@@ -4044,7 +4063,7 @@ func (i ServiceTaskSpecContainerSpecHostArray) ToServiceTaskSpecContainerSpecHos
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecContainerSpecHostArrayOutput)
 }
 
-type ServiceTaskSpecContainerSpecHostOutput struct { *pulumi.OutputState }
+type ServiceTaskSpecContainerSpecHostOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecContainerSpecHostOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*ServiceTaskSpecContainerSpecHost)(nil)).Elem()
@@ -4059,14 +4078,14 @@ func (o ServiceTaskSpecContainerSpecHostOutput) ToServiceTaskSpecContainerSpecHo
 }
 
 func (o ServiceTaskSpecContainerSpecHostOutput) Host() pulumi.StringOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecHost) string { return v.Host }).(pulumi.StringOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecHost) string { return v.Host }).(pulumi.StringOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecHostOutput) Ip() pulumi.StringOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecHost) string { return v.Ip }).(pulumi.StringOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecHost) string { return v.Ip }).(pulumi.StringOutput)
 }
 
-type ServiceTaskSpecContainerSpecHostArrayOutput struct { *pulumi.OutputState}
+type ServiceTaskSpecContainerSpecHostArrayOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecContainerSpecHostArrayOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*[]ServiceTaskSpecContainerSpecHost)(nil)).Elem()
@@ -4081,7 +4100,7 @@ func (o ServiceTaskSpecContainerSpecHostArrayOutput) ToServiceTaskSpecContainerS
 }
 
 func (o ServiceTaskSpecContainerSpecHostArrayOutput) Index(i pulumi.IntInput) ServiceTaskSpecContainerSpecHostOutput {
-	return pulumi.All(o, i).ApplyT(func (vs []interface{}) ServiceTaskSpecContainerSpecHost {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) ServiceTaskSpecContainerSpecHost {
 		return vs[0].([]ServiceTaskSpecContainerSpecHost)[vs[1].(int)]
 	}).(ServiceTaskSpecContainerSpecHostOutput)
 }
@@ -4136,7 +4155,7 @@ func (i ServiceTaskSpecContainerSpecLabelArray) ToServiceTaskSpecContainerSpecLa
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecContainerSpecLabelArrayOutput)
 }
 
-type ServiceTaskSpecContainerSpecLabelOutput struct { *pulumi.OutputState }
+type ServiceTaskSpecContainerSpecLabelOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecContainerSpecLabelOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*ServiceTaskSpecContainerSpecLabel)(nil)).Elem()
@@ -4151,14 +4170,14 @@ func (o ServiceTaskSpecContainerSpecLabelOutput) ToServiceTaskSpecContainerSpecL
 }
 
 func (o ServiceTaskSpecContainerSpecLabelOutput) Label() pulumi.StringOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecLabel) string { return v.Label }).(pulumi.StringOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecLabel) string { return v.Label }).(pulumi.StringOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecLabelOutput) Value() pulumi.StringOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecLabel) string { return v.Value }).(pulumi.StringOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecLabel) string { return v.Value }).(pulumi.StringOutput)
 }
 
-type ServiceTaskSpecContainerSpecLabelArrayOutput struct { *pulumi.OutputState}
+type ServiceTaskSpecContainerSpecLabelArrayOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecContainerSpecLabelArrayOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*[]ServiceTaskSpecContainerSpecLabel)(nil)).Elem()
@@ -4173,18 +4192,18 @@ func (o ServiceTaskSpecContainerSpecLabelArrayOutput) ToServiceTaskSpecContainer
 }
 
 func (o ServiceTaskSpecContainerSpecLabelArrayOutput) Index(i pulumi.IntInput) ServiceTaskSpecContainerSpecLabelOutput {
-	return pulumi.All(o, i).ApplyT(func (vs []interface{}) ServiceTaskSpecContainerSpecLabel {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) ServiceTaskSpecContainerSpecLabel {
 		return vs[0].([]ServiceTaskSpecContainerSpecLabel)[vs[1].(int)]
 	}).(ServiceTaskSpecContainerSpecLabelOutput)
 }
 
 type ServiceTaskSpecContainerSpecMount struct {
-	BindOptions *ServiceTaskSpecContainerSpecMountBindOptions `pulumi:"bindOptions"`
-	ReadOnly *bool `pulumi:"readOnly"`
-	Source *string `pulumi:"source"`
-	Target string `pulumi:"target"`
-	TmpfsOptions *ServiceTaskSpecContainerSpecMountTmpfsOptions `pulumi:"tmpfsOptions"`
-	Type string `pulumi:"type"`
+	BindOptions   *ServiceTaskSpecContainerSpecMountBindOptions   `pulumi:"bindOptions"`
+	ReadOnly      *bool                                           `pulumi:"readOnly"`
+	Source        *string                                         `pulumi:"source"`
+	Target        string                                          `pulumi:"target"`
+	TmpfsOptions  *ServiceTaskSpecContainerSpecMountTmpfsOptions  `pulumi:"tmpfsOptions"`
+	Type          string                                          `pulumi:"type"`
 	VolumeOptions *ServiceTaskSpecContainerSpecMountVolumeOptions `pulumi:"volumeOptions"`
 }
 
@@ -4196,12 +4215,12 @@ type ServiceTaskSpecContainerSpecMountInput interface {
 }
 
 type ServiceTaskSpecContainerSpecMountArgs struct {
-	BindOptions ServiceTaskSpecContainerSpecMountBindOptionsPtrInput `pulumi:"bindOptions"`
-	ReadOnly pulumi.BoolPtrInput `pulumi:"readOnly"`
-	Source pulumi.StringPtrInput `pulumi:"source"`
-	Target pulumi.StringInput `pulumi:"target"`
-	TmpfsOptions ServiceTaskSpecContainerSpecMountTmpfsOptionsPtrInput `pulumi:"tmpfsOptions"`
-	Type pulumi.StringInput `pulumi:"type"`
+	BindOptions   ServiceTaskSpecContainerSpecMountBindOptionsPtrInput   `pulumi:"bindOptions"`
+	ReadOnly      pulumi.BoolPtrInput                                    `pulumi:"readOnly"`
+	Source        pulumi.StringPtrInput                                  `pulumi:"source"`
+	Target        pulumi.StringInput                                     `pulumi:"target"`
+	TmpfsOptions  ServiceTaskSpecContainerSpecMountTmpfsOptionsPtrInput  `pulumi:"tmpfsOptions"`
+	Type          pulumi.StringInput                                     `pulumi:"type"`
 	VolumeOptions ServiceTaskSpecContainerSpecMountVolumeOptionsPtrInput `pulumi:"volumeOptions"`
 }
 
@@ -4238,7 +4257,7 @@ func (i ServiceTaskSpecContainerSpecMountArray) ToServiceTaskSpecContainerSpecMo
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecContainerSpecMountArrayOutput)
 }
 
-type ServiceTaskSpecContainerSpecMountOutput struct { *pulumi.OutputState }
+type ServiceTaskSpecContainerSpecMountOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecContainerSpecMountOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*ServiceTaskSpecContainerSpecMount)(nil)).Elem()
@@ -4253,34 +4272,40 @@ func (o ServiceTaskSpecContainerSpecMountOutput) ToServiceTaskSpecContainerSpecM
 }
 
 func (o ServiceTaskSpecContainerSpecMountOutput) BindOptions() ServiceTaskSpecContainerSpecMountBindOptionsPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecMount) *ServiceTaskSpecContainerSpecMountBindOptions { return v.BindOptions }).(ServiceTaskSpecContainerSpecMountBindOptionsPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecMount) *ServiceTaskSpecContainerSpecMountBindOptions {
+		return v.BindOptions
+	}).(ServiceTaskSpecContainerSpecMountBindOptionsPtrOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecMountOutput) ReadOnly() pulumi.BoolPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecMount) *bool { return v.ReadOnly }).(pulumi.BoolPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecMount) *bool { return v.ReadOnly }).(pulumi.BoolPtrOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecMountOutput) Source() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecMount) *string { return v.Source }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecMount) *string { return v.Source }).(pulumi.StringPtrOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecMountOutput) Target() pulumi.StringOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecMount) string { return v.Target }).(pulumi.StringOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecMount) string { return v.Target }).(pulumi.StringOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecMountOutput) TmpfsOptions() ServiceTaskSpecContainerSpecMountTmpfsOptionsPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecMount) *ServiceTaskSpecContainerSpecMountTmpfsOptions { return v.TmpfsOptions }).(ServiceTaskSpecContainerSpecMountTmpfsOptionsPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecMount) *ServiceTaskSpecContainerSpecMountTmpfsOptions {
+		return v.TmpfsOptions
+	}).(ServiceTaskSpecContainerSpecMountTmpfsOptionsPtrOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecMountOutput) Type() pulumi.StringOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecMount) string { return v.Type }).(pulumi.StringOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecMount) string { return v.Type }).(pulumi.StringOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecMountOutput) VolumeOptions() ServiceTaskSpecContainerSpecMountVolumeOptionsPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecMount) *ServiceTaskSpecContainerSpecMountVolumeOptions { return v.VolumeOptions }).(ServiceTaskSpecContainerSpecMountVolumeOptionsPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecMount) *ServiceTaskSpecContainerSpecMountVolumeOptions {
+		return v.VolumeOptions
+	}).(ServiceTaskSpecContainerSpecMountVolumeOptionsPtrOutput)
 }
 
-type ServiceTaskSpecContainerSpecMountArrayOutput struct { *pulumi.OutputState}
+type ServiceTaskSpecContainerSpecMountArrayOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecContainerSpecMountArrayOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*[]ServiceTaskSpecContainerSpecMount)(nil)).Elem()
@@ -4295,7 +4320,7 @@ func (o ServiceTaskSpecContainerSpecMountArrayOutput) ToServiceTaskSpecContainer
 }
 
 func (o ServiceTaskSpecContainerSpecMountArrayOutput) Index(i pulumi.IntInput) ServiceTaskSpecContainerSpecMountOutput {
-	return pulumi.All(o, i).ApplyT(func (vs []interface{}) ServiceTaskSpecContainerSpecMount {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) ServiceTaskSpecContainerSpecMount {
 		return vs[0].([]ServiceTaskSpecContainerSpecMount)[vs[1].(int)]
 	}).(ServiceTaskSpecContainerSpecMountOutput)
 }
@@ -4344,7 +4369,8 @@ type ServiceTaskSpecContainerSpecMountBindOptionsPtrInput interface {
 
 type serviceTaskSpecContainerSpecMountBindOptionsPtrType ServiceTaskSpecContainerSpecMountBindOptionsArgs
 
-func ServiceTaskSpecContainerSpecMountBindOptionsPtr(v *ServiceTaskSpecContainerSpecMountBindOptionsArgs) ServiceTaskSpecContainerSpecMountBindOptionsPtrInput {	return (*serviceTaskSpecContainerSpecMountBindOptionsPtrType)(v)
+func ServiceTaskSpecContainerSpecMountBindOptionsPtr(v *ServiceTaskSpecContainerSpecMountBindOptionsArgs) ServiceTaskSpecContainerSpecMountBindOptionsPtrInput {
+	return (*serviceTaskSpecContainerSpecMountBindOptionsPtrType)(v)
 }
 
 func (*serviceTaskSpecContainerSpecMountBindOptionsPtrType) ElementType() reflect.Type {
@@ -4359,7 +4385,7 @@ func (i *serviceTaskSpecContainerSpecMountBindOptionsPtrType) ToServiceTaskSpecC
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecContainerSpecMountBindOptionsPtrOutput)
 }
 
-type ServiceTaskSpecContainerSpecMountBindOptionsOutput struct { *pulumi.OutputState }
+type ServiceTaskSpecContainerSpecMountBindOptionsOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecContainerSpecMountBindOptionsOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*ServiceTaskSpecContainerSpecMountBindOptions)(nil)).Elem()
@@ -4383,10 +4409,10 @@ func (o ServiceTaskSpecContainerSpecMountBindOptionsOutput) ToServiceTaskSpecCon
 	}).(ServiceTaskSpecContainerSpecMountBindOptionsPtrOutput)
 }
 func (o ServiceTaskSpecContainerSpecMountBindOptionsOutput) Propagation() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecMountBindOptions) *string { return v.Propagation }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecMountBindOptions) *string { return v.Propagation }).(pulumi.StringPtrOutput)
 }
 
-type ServiceTaskSpecContainerSpecMountBindOptionsPtrOutput struct { *pulumi.OutputState}
+type ServiceTaskSpecContainerSpecMountBindOptionsPtrOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecContainerSpecMountBindOptionsPtrOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((**ServiceTaskSpecContainerSpecMountBindOptions)(nil)).Elem()
@@ -4401,16 +4427,18 @@ func (o ServiceTaskSpecContainerSpecMountBindOptionsPtrOutput) ToServiceTaskSpec
 }
 
 func (o ServiceTaskSpecContainerSpecMountBindOptionsPtrOutput) Elem() ServiceTaskSpecContainerSpecMountBindOptionsOutput {
-	return o.ApplyT(func (v *ServiceTaskSpecContainerSpecMountBindOptions) ServiceTaskSpecContainerSpecMountBindOptions { return *v }).(ServiceTaskSpecContainerSpecMountBindOptionsOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpecMountBindOptions) ServiceTaskSpecContainerSpecMountBindOptions {
+		return *v
+	}).(ServiceTaskSpecContainerSpecMountBindOptionsOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecMountBindOptionsPtrOutput) Propagation() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecMountBindOptions) *string { return v.Propagation }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecMountBindOptions) *string { return v.Propagation }).(pulumi.StringPtrOutput)
 }
 
 type ServiceTaskSpecContainerSpecMountTmpfsOptions struct {
 	// The mode of resolution to use for internal load balancing between tasks. `(vip|dnsrr)`. Default: `vip`.
-	Mode *int `pulumi:"mode"`
+	Mode      *int `pulumi:"mode"`
 	SizeBytes *int `pulumi:"sizeBytes"`
 }
 
@@ -4423,7 +4451,7 @@ type ServiceTaskSpecContainerSpecMountTmpfsOptionsInput interface {
 
 type ServiceTaskSpecContainerSpecMountTmpfsOptionsArgs struct {
 	// The mode of resolution to use for internal load balancing between tasks. `(vip|dnsrr)`. Default: `vip`.
-	Mode pulumi.IntPtrInput `pulumi:"mode"`
+	Mode      pulumi.IntPtrInput `pulumi:"mode"`
 	SizeBytes pulumi.IntPtrInput `pulumi:"sizeBytes"`
 }
 
@@ -4456,7 +4484,8 @@ type ServiceTaskSpecContainerSpecMountTmpfsOptionsPtrInput interface {
 
 type serviceTaskSpecContainerSpecMountTmpfsOptionsPtrType ServiceTaskSpecContainerSpecMountTmpfsOptionsArgs
 
-func ServiceTaskSpecContainerSpecMountTmpfsOptionsPtr(v *ServiceTaskSpecContainerSpecMountTmpfsOptionsArgs) ServiceTaskSpecContainerSpecMountTmpfsOptionsPtrInput {	return (*serviceTaskSpecContainerSpecMountTmpfsOptionsPtrType)(v)
+func ServiceTaskSpecContainerSpecMountTmpfsOptionsPtr(v *ServiceTaskSpecContainerSpecMountTmpfsOptionsArgs) ServiceTaskSpecContainerSpecMountTmpfsOptionsPtrInput {
+	return (*serviceTaskSpecContainerSpecMountTmpfsOptionsPtrType)(v)
 }
 
 func (*serviceTaskSpecContainerSpecMountTmpfsOptionsPtrType) ElementType() reflect.Type {
@@ -4471,7 +4500,7 @@ func (i *serviceTaskSpecContainerSpecMountTmpfsOptionsPtrType) ToServiceTaskSpec
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecContainerSpecMountTmpfsOptionsPtrOutput)
 }
 
-type ServiceTaskSpecContainerSpecMountTmpfsOptionsOutput struct { *pulumi.OutputState }
+type ServiceTaskSpecContainerSpecMountTmpfsOptionsOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecContainerSpecMountTmpfsOptionsOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*ServiceTaskSpecContainerSpecMountTmpfsOptions)(nil)).Elem()
@@ -4494,16 +4523,17 @@ func (o ServiceTaskSpecContainerSpecMountTmpfsOptionsOutput) ToServiceTaskSpecCo
 		return &v
 	}).(ServiceTaskSpecContainerSpecMountTmpfsOptionsPtrOutput)
 }
+
 // The mode of resolution to use for internal load balancing between tasks. `(vip|dnsrr)`. Default: `vip`.
 func (o ServiceTaskSpecContainerSpecMountTmpfsOptionsOutput) Mode() pulumi.IntPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecMountTmpfsOptions) *int { return v.Mode }).(pulumi.IntPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecMountTmpfsOptions) *int { return v.Mode }).(pulumi.IntPtrOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecMountTmpfsOptionsOutput) SizeBytes() pulumi.IntPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecMountTmpfsOptions) *int { return v.SizeBytes }).(pulumi.IntPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecMountTmpfsOptions) *int { return v.SizeBytes }).(pulumi.IntPtrOutput)
 }
 
-type ServiceTaskSpecContainerSpecMountTmpfsOptionsPtrOutput struct { *pulumi.OutputState}
+type ServiceTaskSpecContainerSpecMountTmpfsOptionsPtrOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecContainerSpecMountTmpfsOptionsPtrOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((**ServiceTaskSpecContainerSpecMountTmpfsOptions)(nil)).Elem()
@@ -4518,23 +4548,25 @@ func (o ServiceTaskSpecContainerSpecMountTmpfsOptionsPtrOutput) ToServiceTaskSpe
 }
 
 func (o ServiceTaskSpecContainerSpecMountTmpfsOptionsPtrOutput) Elem() ServiceTaskSpecContainerSpecMountTmpfsOptionsOutput {
-	return o.ApplyT(func (v *ServiceTaskSpecContainerSpecMountTmpfsOptions) ServiceTaskSpecContainerSpecMountTmpfsOptions { return *v }).(ServiceTaskSpecContainerSpecMountTmpfsOptionsOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpecMountTmpfsOptions) ServiceTaskSpecContainerSpecMountTmpfsOptions {
+		return *v
+	}).(ServiceTaskSpecContainerSpecMountTmpfsOptionsOutput)
 }
 
 // The mode of resolution to use for internal load balancing between tasks. `(vip|dnsrr)`. Default: `vip`.
 func (o ServiceTaskSpecContainerSpecMountTmpfsOptionsPtrOutput) Mode() pulumi.IntPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecMountTmpfsOptions) *int { return v.Mode }).(pulumi.IntPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecMountTmpfsOptions) *int { return v.Mode }).(pulumi.IntPtrOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecMountTmpfsOptionsPtrOutput) SizeBytes() pulumi.IntPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecMountTmpfsOptions) *int { return v.SizeBytes }).(pulumi.IntPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecMountTmpfsOptions) *int { return v.SizeBytes }).(pulumi.IntPtrOutput)
 }
 
 type ServiceTaskSpecContainerSpecMountVolumeOptions struct {
-	DriverName *string `pulumi:"driverName"`
-	DriverOptions map[string]string `pulumi:"driverOptions"`
-	Labels []ServiceTaskSpecContainerSpecMountVolumeOptionsLabel `pulumi:"labels"`
-	NoCopy *bool `pulumi:"noCopy"`
+	DriverName    *string                                               `pulumi:"driverName"`
+	DriverOptions map[string]string                                     `pulumi:"driverOptions"`
+	Labels        []ServiceTaskSpecContainerSpecMountVolumeOptionsLabel `pulumi:"labels"`
+	NoCopy        *bool                                                 `pulumi:"noCopy"`
 }
 
 type ServiceTaskSpecContainerSpecMountVolumeOptionsInput interface {
@@ -4545,10 +4577,10 @@ type ServiceTaskSpecContainerSpecMountVolumeOptionsInput interface {
 }
 
 type ServiceTaskSpecContainerSpecMountVolumeOptionsArgs struct {
-	DriverName pulumi.StringPtrInput `pulumi:"driverName"`
-	DriverOptions pulumi.StringMapInput `pulumi:"driverOptions"`
-	Labels ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayInput `pulumi:"labels"`
-	NoCopy pulumi.BoolPtrInput `pulumi:"noCopy"`
+	DriverName    pulumi.StringPtrInput                                         `pulumi:"driverName"`
+	DriverOptions pulumi.StringMapInput                                         `pulumi:"driverOptions"`
+	Labels        ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayInput `pulumi:"labels"`
+	NoCopy        pulumi.BoolPtrInput                                           `pulumi:"noCopy"`
 }
 
 func (ServiceTaskSpecContainerSpecMountVolumeOptionsArgs) ElementType() reflect.Type {
@@ -4580,7 +4612,8 @@ type ServiceTaskSpecContainerSpecMountVolumeOptionsPtrInput interface {
 
 type serviceTaskSpecContainerSpecMountVolumeOptionsPtrType ServiceTaskSpecContainerSpecMountVolumeOptionsArgs
 
-func ServiceTaskSpecContainerSpecMountVolumeOptionsPtr(v *ServiceTaskSpecContainerSpecMountVolumeOptionsArgs) ServiceTaskSpecContainerSpecMountVolumeOptionsPtrInput {	return (*serviceTaskSpecContainerSpecMountVolumeOptionsPtrType)(v)
+func ServiceTaskSpecContainerSpecMountVolumeOptionsPtr(v *ServiceTaskSpecContainerSpecMountVolumeOptionsArgs) ServiceTaskSpecContainerSpecMountVolumeOptionsPtrInput {
+	return (*serviceTaskSpecContainerSpecMountVolumeOptionsPtrType)(v)
 }
 
 func (*serviceTaskSpecContainerSpecMountVolumeOptionsPtrType) ElementType() reflect.Type {
@@ -4595,7 +4628,7 @@ func (i *serviceTaskSpecContainerSpecMountVolumeOptionsPtrType) ToServiceTaskSpe
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecContainerSpecMountVolumeOptionsPtrOutput)
 }
 
-type ServiceTaskSpecContainerSpecMountVolumeOptionsOutput struct { *pulumi.OutputState }
+type ServiceTaskSpecContainerSpecMountVolumeOptionsOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecContainerSpecMountVolumeOptionsOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*ServiceTaskSpecContainerSpecMountVolumeOptions)(nil)).Elem()
@@ -4619,22 +4652,24 @@ func (o ServiceTaskSpecContainerSpecMountVolumeOptionsOutput) ToServiceTaskSpecC
 	}).(ServiceTaskSpecContainerSpecMountVolumeOptionsPtrOutput)
 }
 func (o ServiceTaskSpecContainerSpecMountVolumeOptionsOutput) DriverName() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecMountVolumeOptions) *string { return v.DriverName }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecMountVolumeOptions) *string { return v.DriverName }).(pulumi.StringPtrOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecMountVolumeOptionsOutput) DriverOptions() pulumi.StringMapOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecMountVolumeOptions) map[string]string { return v.DriverOptions }).(pulumi.StringMapOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecMountVolumeOptions) map[string]string { return v.DriverOptions }).(pulumi.StringMapOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecMountVolumeOptionsOutput) Labels() ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecMountVolumeOptions) []ServiceTaskSpecContainerSpecMountVolumeOptionsLabel { return v.Labels }).(ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecMountVolumeOptions) []ServiceTaskSpecContainerSpecMountVolumeOptionsLabel {
+		return v.Labels
+	}).(ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecMountVolumeOptionsOutput) NoCopy() pulumi.BoolPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecMountVolumeOptions) *bool { return v.NoCopy }).(pulumi.BoolPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecMountVolumeOptions) *bool { return v.NoCopy }).(pulumi.BoolPtrOutput)
 }
 
-type ServiceTaskSpecContainerSpecMountVolumeOptionsPtrOutput struct { *pulumi.OutputState}
+type ServiceTaskSpecContainerSpecMountVolumeOptionsPtrOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecContainerSpecMountVolumeOptionsPtrOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((**ServiceTaskSpecContainerSpecMountVolumeOptions)(nil)).Elem()
@@ -4649,23 +4684,27 @@ func (o ServiceTaskSpecContainerSpecMountVolumeOptionsPtrOutput) ToServiceTaskSp
 }
 
 func (o ServiceTaskSpecContainerSpecMountVolumeOptionsPtrOutput) Elem() ServiceTaskSpecContainerSpecMountVolumeOptionsOutput {
-	return o.ApplyT(func (v *ServiceTaskSpecContainerSpecMountVolumeOptions) ServiceTaskSpecContainerSpecMountVolumeOptions { return *v }).(ServiceTaskSpecContainerSpecMountVolumeOptionsOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpecMountVolumeOptions) ServiceTaskSpecContainerSpecMountVolumeOptions {
+		return *v
+	}).(ServiceTaskSpecContainerSpecMountVolumeOptionsOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecMountVolumeOptionsPtrOutput) DriverName() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecMountVolumeOptions) *string { return v.DriverName }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecMountVolumeOptions) *string { return v.DriverName }).(pulumi.StringPtrOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecMountVolumeOptionsPtrOutput) DriverOptions() pulumi.StringMapOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecMountVolumeOptions) map[string]string { return v.DriverOptions }).(pulumi.StringMapOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecMountVolumeOptions) map[string]string { return v.DriverOptions }).(pulumi.StringMapOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecMountVolumeOptionsPtrOutput) Labels() ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecMountVolumeOptions) []ServiceTaskSpecContainerSpecMountVolumeOptionsLabel { return v.Labels }).(ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecMountVolumeOptions) []ServiceTaskSpecContainerSpecMountVolumeOptionsLabel {
+		return v.Labels
+	}).(ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecMountVolumeOptionsPtrOutput) NoCopy() pulumi.BoolPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecMountVolumeOptions) *bool { return v.NoCopy }).(pulumi.BoolPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecMountVolumeOptions) *bool { return v.NoCopy }).(pulumi.BoolPtrOutput)
 }
 
 type ServiceTaskSpecContainerSpecMountVolumeOptionsLabel struct {
@@ -4718,7 +4757,7 @@ func (i ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArray) ToServiceTaskS
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayOutput)
 }
 
-type ServiceTaskSpecContainerSpecMountVolumeOptionsLabelOutput struct { *pulumi.OutputState }
+type ServiceTaskSpecContainerSpecMountVolumeOptionsLabelOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecContainerSpecMountVolumeOptionsLabelOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*ServiceTaskSpecContainerSpecMountVolumeOptionsLabel)(nil)).Elem()
@@ -4733,14 +4772,14 @@ func (o ServiceTaskSpecContainerSpecMountVolumeOptionsLabelOutput) ToServiceTask
 }
 
 func (o ServiceTaskSpecContainerSpecMountVolumeOptionsLabelOutput) Label() pulumi.StringOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecMountVolumeOptionsLabel) string { return v.Label }).(pulumi.StringOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecMountVolumeOptionsLabel) string { return v.Label }).(pulumi.StringOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecMountVolumeOptionsLabelOutput) Value() pulumi.StringOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecMountVolumeOptionsLabel) string { return v.Value }).(pulumi.StringOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecMountVolumeOptionsLabel) string { return v.Value }).(pulumi.StringOutput)
 }
 
-type ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayOutput struct { *pulumi.OutputState}
+type ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*[]ServiceTaskSpecContainerSpecMountVolumeOptionsLabel)(nil)).Elem()
@@ -4755,7 +4794,7 @@ func (o ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayOutput) ToServic
 }
 
 func (o ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayOutput) Index(i pulumi.IntInput) ServiceTaskSpecContainerSpecMountVolumeOptionsLabelOutput {
-	return pulumi.All(o, i).ApplyT(func (vs []interface{}) ServiceTaskSpecContainerSpecMountVolumeOptionsLabel {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) ServiceTaskSpecContainerSpecMountVolumeOptionsLabel {
 		return vs[0].([]ServiceTaskSpecContainerSpecMountVolumeOptionsLabel)[vs[1].(int)]
 	}).(ServiceTaskSpecContainerSpecMountVolumeOptionsLabelOutput)
 }
@@ -4806,7 +4845,8 @@ type ServiceTaskSpecContainerSpecPrivilegesPtrInput interface {
 
 type serviceTaskSpecContainerSpecPrivilegesPtrType ServiceTaskSpecContainerSpecPrivilegesArgs
 
-func ServiceTaskSpecContainerSpecPrivilegesPtr(v *ServiceTaskSpecContainerSpecPrivilegesArgs) ServiceTaskSpecContainerSpecPrivilegesPtrInput {	return (*serviceTaskSpecContainerSpecPrivilegesPtrType)(v)
+func ServiceTaskSpecContainerSpecPrivilegesPtr(v *ServiceTaskSpecContainerSpecPrivilegesArgs) ServiceTaskSpecContainerSpecPrivilegesPtrInput {
+	return (*serviceTaskSpecContainerSpecPrivilegesPtrType)(v)
 }
 
 func (*serviceTaskSpecContainerSpecPrivilegesPtrType) ElementType() reflect.Type {
@@ -4821,7 +4861,7 @@ func (i *serviceTaskSpecContainerSpecPrivilegesPtrType) ToServiceTaskSpecContain
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecContainerSpecPrivilegesPtrOutput)
 }
 
-type ServiceTaskSpecContainerSpecPrivilegesOutput struct { *pulumi.OutputState }
+type ServiceTaskSpecContainerSpecPrivilegesOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecContainerSpecPrivilegesOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*ServiceTaskSpecContainerSpecPrivileges)(nil)).Elem()
@@ -4845,14 +4885,18 @@ func (o ServiceTaskSpecContainerSpecPrivilegesOutput) ToServiceTaskSpecContainer
 	}).(ServiceTaskSpecContainerSpecPrivilegesPtrOutput)
 }
 func (o ServiceTaskSpecContainerSpecPrivilegesOutput) CredentialSpec() ServiceTaskSpecContainerSpecPrivilegesCredentialSpecPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecPrivileges) *ServiceTaskSpecContainerSpecPrivilegesCredentialSpec { return v.CredentialSpec }).(ServiceTaskSpecContainerSpecPrivilegesCredentialSpecPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecPrivileges) *ServiceTaskSpecContainerSpecPrivilegesCredentialSpec {
+		return v.CredentialSpec
+	}).(ServiceTaskSpecContainerSpecPrivilegesCredentialSpecPtrOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecPrivilegesOutput) SeLinuxContext() ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecPrivileges) *ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext { return v.SeLinuxContext }).(ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecPrivileges) *ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext {
+		return v.SeLinuxContext
+	}).(ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrOutput)
 }
 
-type ServiceTaskSpecContainerSpecPrivilegesPtrOutput struct { *pulumi.OutputState}
+type ServiceTaskSpecContainerSpecPrivilegesPtrOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecContainerSpecPrivilegesPtrOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((**ServiceTaskSpecContainerSpecPrivileges)(nil)).Elem()
@@ -4867,19 +4911,23 @@ func (o ServiceTaskSpecContainerSpecPrivilegesPtrOutput) ToServiceTaskSpecContai
 }
 
 func (o ServiceTaskSpecContainerSpecPrivilegesPtrOutput) Elem() ServiceTaskSpecContainerSpecPrivilegesOutput {
-	return o.ApplyT(func (v *ServiceTaskSpecContainerSpecPrivileges) ServiceTaskSpecContainerSpecPrivileges { return *v }).(ServiceTaskSpecContainerSpecPrivilegesOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpecPrivileges) ServiceTaskSpecContainerSpecPrivileges { return *v }).(ServiceTaskSpecContainerSpecPrivilegesOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecPrivilegesPtrOutput) CredentialSpec() ServiceTaskSpecContainerSpecPrivilegesCredentialSpecPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecPrivileges) *ServiceTaskSpecContainerSpecPrivilegesCredentialSpec { return v.CredentialSpec }).(ServiceTaskSpecContainerSpecPrivilegesCredentialSpecPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecPrivileges) *ServiceTaskSpecContainerSpecPrivilegesCredentialSpec {
+		return v.CredentialSpec
+	}).(ServiceTaskSpecContainerSpecPrivilegesCredentialSpecPtrOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecPrivilegesPtrOutput) SeLinuxContext() ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecPrivileges) *ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext { return v.SeLinuxContext }).(ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecPrivileges) *ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext {
+		return v.SeLinuxContext
+	}).(ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrOutput)
 }
 
 type ServiceTaskSpecContainerSpecPrivilegesCredentialSpec struct {
-	File *string `pulumi:"file"`
+	File     *string `pulumi:"file"`
 	Registry *string `pulumi:"registry"`
 }
 
@@ -4891,7 +4939,7 @@ type ServiceTaskSpecContainerSpecPrivilegesCredentialSpecInput interface {
 }
 
 type ServiceTaskSpecContainerSpecPrivilegesCredentialSpecArgs struct {
-	File pulumi.StringPtrInput `pulumi:"file"`
+	File     pulumi.StringPtrInput `pulumi:"file"`
 	Registry pulumi.StringPtrInput `pulumi:"registry"`
 }
 
@@ -4924,7 +4972,8 @@ type ServiceTaskSpecContainerSpecPrivilegesCredentialSpecPtrInput interface {
 
 type serviceTaskSpecContainerSpecPrivilegesCredentialSpecPtrType ServiceTaskSpecContainerSpecPrivilegesCredentialSpecArgs
 
-func ServiceTaskSpecContainerSpecPrivilegesCredentialSpecPtr(v *ServiceTaskSpecContainerSpecPrivilegesCredentialSpecArgs) ServiceTaskSpecContainerSpecPrivilegesCredentialSpecPtrInput {	return (*serviceTaskSpecContainerSpecPrivilegesCredentialSpecPtrType)(v)
+func ServiceTaskSpecContainerSpecPrivilegesCredentialSpecPtr(v *ServiceTaskSpecContainerSpecPrivilegesCredentialSpecArgs) ServiceTaskSpecContainerSpecPrivilegesCredentialSpecPtrInput {
+	return (*serviceTaskSpecContainerSpecPrivilegesCredentialSpecPtrType)(v)
 }
 
 func (*serviceTaskSpecContainerSpecPrivilegesCredentialSpecPtrType) ElementType() reflect.Type {
@@ -4939,7 +4988,7 @@ func (i *serviceTaskSpecContainerSpecPrivilegesCredentialSpecPtrType) ToServiceT
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecContainerSpecPrivilegesCredentialSpecPtrOutput)
 }
 
-type ServiceTaskSpecContainerSpecPrivilegesCredentialSpecOutput struct { *pulumi.OutputState }
+type ServiceTaskSpecContainerSpecPrivilegesCredentialSpecOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecContainerSpecPrivilegesCredentialSpecOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*ServiceTaskSpecContainerSpecPrivilegesCredentialSpec)(nil)).Elem()
@@ -4963,14 +5012,14 @@ func (o ServiceTaskSpecContainerSpecPrivilegesCredentialSpecOutput) ToServiceTas
 	}).(ServiceTaskSpecContainerSpecPrivilegesCredentialSpecPtrOutput)
 }
 func (o ServiceTaskSpecContainerSpecPrivilegesCredentialSpecOutput) File() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecPrivilegesCredentialSpec) *string { return v.File }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecPrivilegesCredentialSpec) *string { return v.File }).(pulumi.StringPtrOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecPrivilegesCredentialSpecOutput) Registry() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecPrivilegesCredentialSpec) *string { return v.Registry }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecPrivilegesCredentialSpec) *string { return v.Registry }).(pulumi.StringPtrOutput)
 }
 
-type ServiceTaskSpecContainerSpecPrivilegesCredentialSpecPtrOutput struct { *pulumi.OutputState}
+type ServiceTaskSpecContainerSpecPrivilegesCredentialSpecPtrOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecContainerSpecPrivilegesCredentialSpecPtrOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((**ServiceTaskSpecContainerSpecPrivilegesCredentialSpec)(nil)).Elem()
@@ -4985,23 +5034,25 @@ func (o ServiceTaskSpecContainerSpecPrivilegesCredentialSpecPtrOutput) ToService
 }
 
 func (o ServiceTaskSpecContainerSpecPrivilegesCredentialSpecPtrOutput) Elem() ServiceTaskSpecContainerSpecPrivilegesCredentialSpecOutput {
-	return o.ApplyT(func (v *ServiceTaskSpecContainerSpecPrivilegesCredentialSpec) ServiceTaskSpecContainerSpecPrivilegesCredentialSpec { return *v }).(ServiceTaskSpecContainerSpecPrivilegesCredentialSpecOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpecPrivilegesCredentialSpec) ServiceTaskSpecContainerSpecPrivilegesCredentialSpec {
+		return *v
+	}).(ServiceTaskSpecContainerSpecPrivilegesCredentialSpecOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecPrivilegesCredentialSpecPtrOutput) File() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecPrivilegesCredentialSpec) *string { return v.File }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecPrivilegesCredentialSpec) *string { return v.File }).(pulumi.StringPtrOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecPrivilegesCredentialSpecPtrOutput) Registry() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecPrivilegesCredentialSpec) *string { return v.Registry }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecPrivilegesCredentialSpec) *string { return v.Registry }).(pulumi.StringPtrOutput)
 }
 
 type ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext struct {
-	Disable *bool `pulumi:"disable"`
-	Level *string `pulumi:"level"`
-	Role *string `pulumi:"role"`
-	Type *string `pulumi:"type"`
-	User *string `pulumi:"user"`
+	Disable *bool   `pulumi:"disable"`
+	Level   *string `pulumi:"level"`
+	Role    *string `pulumi:"role"`
+	Type    *string `pulumi:"type"`
+	User    *string `pulumi:"user"`
 }
 
 type ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextInput interface {
@@ -5012,11 +5063,11 @@ type ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextInput interface {
 }
 
 type ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgs struct {
-	Disable pulumi.BoolPtrInput `pulumi:"disable"`
-	Level pulumi.StringPtrInput `pulumi:"level"`
-	Role pulumi.StringPtrInput `pulumi:"role"`
-	Type pulumi.StringPtrInput `pulumi:"type"`
-	User pulumi.StringPtrInput `pulumi:"user"`
+	Disable pulumi.BoolPtrInput   `pulumi:"disable"`
+	Level   pulumi.StringPtrInput `pulumi:"level"`
+	Role    pulumi.StringPtrInput `pulumi:"role"`
+	Type    pulumi.StringPtrInput `pulumi:"type"`
+	User    pulumi.StringPtrInput `pulumi:"user"`
 }
 
 func (ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgs) ElementType() reflect.Type {
@@ -5048,7 +5099,8 @@ type ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrInput interface {
 
 type serviceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrType ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgs
 
-func ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextPtr(v *ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgs) ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrInput {	return (*serviceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrType)(v)
+func ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextPtr(v *ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgs) ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrInput {
+	return (*serviceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrType)(v)
 }
 
 func (*serviceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrType) ElementType() reflect.Type {
@@ -5063,7 +5115,7 @@ func (i *serviceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrType) ToServiceT
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrOutput)
 }
 
-type ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextOutput struct { *pulumi.OutputState }
+type ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext)(nil)).Elem()
@@ -5087,26 +5139,26 @@ func (o ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextOutput) ToServiceTas
 	}).(ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrOutput)
 }
 func (o ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextOutput) Disable() pulumi.BoolPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext) *bool { return v.Disable }).(pulumi.BoolPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext) *bool { return v.Disable }).(pulumi.BoolPtrOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextOutput) Level() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext) *string { return v.Level }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext) *string { return v.Level }).(pulumi.StringPtrOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextOutput) Role() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext) *string { return v.Role }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext) *string { return v.Role }).(pulumi.StringPtrOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextOutput) Type() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext) *string { return v.Type }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext) *string { return v.Type }).(pulumi.StringPtrOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextOutput) User() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext) *string { return v.User }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext) *string { return v.User }).(pulumi.StringPtrOutput)
 }
 
-type ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrOutput struct { *pulumi.OutputState}
+type ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((**ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext)(nil)).Elem()
@@ -5121,27 +5173,29 @@ func (o ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrOutput) ToService
 }
 
 func (o ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrOutput) Elem() ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextOutput {
-	return o.ApplyT(func (v *ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext) ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext { return *v }).(ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext) ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext {
+		return *v
+	}).(ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrOutput) Disable() pulumi.BoolPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext) *bool { return v.Disable }).(pulumi.BoolPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext) *bool { return v.Disable }).(pulumi.BoolPtrOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrOutput) Level() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext) *string { return v.Level }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext) *string { return v.Level }).(pulumi.StringPtrOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrOutput) Role() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext) *string { return v.Role }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext) *string { return v.Role }).(pulumi.StringPtrOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrOutput) Type() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext) *string { return v.Type }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext) *string { return v.Type }).(pulumi.StringPtrOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrOutput) User() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext) *string { return v.User }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext) *string { return v.User }).(pulumi.StringPtrOutput)
 }
 
 type ServiceTaskSpecContainerSpecSecret struct {
@@ -5152,8 +5206,8 @@ type ServiceTaskSpecContainerSpecSecret struct {
 	// Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
 	FileName string `pulumi:"fileName"`
 	// Represents the file UID. Defaults: `0`
-	FileUid *string `pulumi:"fileUid"`
-	SecretId string `pulumi:"secretId"`
+	FileUid    *string `pulumi:"fileUid"`
+	SecretId   string  `pulumi:"secretId"`
 	SecretName *string `pulumi:"secretName"`
 }
 
@@ -5172,8 +5226,8 @@ type ServiceTaskSpecContainerSpecSecretArgs struct {
 	// Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
 	FileName pulumi.StringInput `pulumi:"fileName"`
 	// Represents the file UID. Defaults: `0`
-	FileUid pulumi.StringPtrInput `pulumi:"fileUid"`
-	SecretId pulumi.StringInput `pulumi:"secretId"`
+	FileUid    pulumi.StringPtrInput `pulumi:"fileUid"`
+	SecretId   pulumi.StringInput    `pulumi:"secretId"`
 	SecretName pulumi.StringPtrInput `pulumi:"secretName"`
 }
 
@@ -5210,7 +5264,7 @@ func (i ServiceTaskSpecContainerSpecSecretArray) ToServiceTaskSpecContainerSpecS
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecContainerSpecSecretArrayOutput)
 }
 
-type ServiceTaskSpecContainerSpecSecretOutput struct { *pulumi.OutputState }
+type ServiceTaskSpecContainerSpecSecretOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecContainerSpecSecretOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*ServiceTaskSpecContainerSpecSecret)(nil)).Elem()
@@ -5226,33 +5280,33 @@ func (o ServiceTaskSpecContainerSpecSecretOutput) ToServiceTaskSpecContainerSpec
 
 // Represents the file GID. Defaults: `0`
 func (o ServiceTaskSpecContainerSpecSecretOutput) FileGid() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecSecret) *string { return v.FileGid }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecSecret) *string { return v.FileGid }).(pulumi.StringPtrOutput)
 }
 
 // Represents the FileMode of the file. Defaults: `0444`
 func (o ServiceTaskSpecContainerSpecSecretOutput) FileMode() pulumi.IntPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecSecret) *int { return v.FileMode }).(pulumi.IntPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecSecret) *int { return v.FileMode }).(pulumi.IntPtrOutput)
 }
 
 // Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
 func (o ServiceTaskSpecContainerSpecSecretOutput) FileName() pulumi.StringOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecSecret) string { return v.FileName }).(pulumi.StringOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecSecret) string { return v.FileName }).(pulumi.StringOutput)
 }
 
 // Represents the file UID. Defaults: `0`
 func (o ServiceTaskSpecContainerSpecSecretOutput) FileUid() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecSecret) *string { return v.FileUid }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecSecret) *string { return v.FileUid }).(pulumi.StringPtrOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecSecretOutput) SecretId() pulumi.StringOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecSecret) string { return v.SecretId }).(pulumi.StringOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecSecret) string { return v.SecretId }).(pulumi.StringOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecSecretOutput) SecretName() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecContainerSpecSecret) *string { return v.SecretName }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpecSecret) *string { return v.SecretName }).(pulumi.StringPtrOutput)
 }
 
-type ServiceTaskSpecContainerSpecSecretArrayOutput struct { *pulumi.OutputState}
+type ServiceTaskSpecContainerSpecSecretArrayOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecContainerSpecSecretArrayOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*[]ServiceTaskSpecContainerSpecSecret)(nil)).Elem()
@@ -5267,7 +5321,7 @@ func (o ServiceTaskSpecContainerSpecSecretArrayOutput) ToServiceTaskSpecContaine
 }
 
 func (o ServiceTaskSpecContainerSpecSecretArrayOutput) Index(i pulumi.IntInput) ServiceTaskSpecContainerSpecSecretOutput {
-	return pulumi.All(o, i).ApplyT(func (vs []interface{}) ServiceTaskSpecContainerSpecSecret {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) ServiceTaskSpecContainerSpecSecret {
 		return vs[0].([]ServiceTaskSpecContainerSpecSecret)[vs[1].(int)]
 	}).(ServiceTaskSpecContainerSpecSecretOutput)
 }
@@ -5322,7 +5376,8 @@ type ServiceTaskSpecLogDriverPtrInput interface {
 
 type serviceTaskSpecLogDriverPtrType ServiceTaskSpecLogDriverArgs
 
-func ServiceTaskSpecLogDriverPtr(v *ServiceTaskSpecLogDriverArgs) ServiceTaskSpecLogDriverPtrInput {	return (*serviceTaskSpecLogDriverPtrType)(v)
+func ServiceTaskSpecLogDriverPtr(v *ServiceTaskSpecLogDriverArgs) ServiceTaskSpecLogDriverPtrInput {
+	return (*serviceTaskSpecLogDriverPtrType)(v)
 }
 
 func (*serviceTaskSpecLogDriverPtrType) ElementType() reflect.Type {
@@ -5337,7 +5392,7 @@ func (i *serviceTaskSpecLogDriverPtrType) ToServiceTaskSpecLogDriverPtrOutputWit
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecLogDriverPtrOutput)
 }
 
-type ServiceTaskSpecLogDriverOutput struct { *pulumi.OutputState }
+type ServiceTaskSpecLogDriverOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecLogDriverOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*ServiceTaskSpecLogDriver)(nil)).Elem()
@@ -5360,17 +5415,18 @@ func (o ServiceTaskSpecLogDriverOutput) ToServiceTaskSpecLogDriverPtrOutputWithC
 		return &v
 	}).(ServiceTaskSpecLogDriverPtrOutput)
 }
+
 // A random name for the port.
 func (o ServiceTaskSpecLogDriverOutput) Name() pulumi.StringOutput {
-	return o.ApplyT(func (v ServiceTaskSpecLogDriver) string { return v.Name }).(pulumi.StringOutput)
+	return o.ApplyT(func(v ServiceTaskSpecLogDriver) string { return v.Name }).(pulumi.StringOutput)
 }
 
 // The options for the logging driver, e.g.
 func (o ServiceTaskSpecLogDriverOutput) Options() pulumi.StringMapOutput {
-	return o.ApplyT(func (v ServiceTaskSpecLogDriver) map[string]string { return v.Options }).(pulumi.StringMapOutput)
+	return o.ApplyT(func(v ServiceTaskSpecLogDriver) map[string]string { return v.Options }).(pulumi.StringMapOutput)
 }
 
-type ServiceTaskSpecLogDriverPtrOutput struct { *pulumi.OutputState}
+type ServiceTaskSpecLogDriverPtrOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecLogDriverPtrOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((**ServiceTaskSpecLogDriver)(nil)).Elem()
@@ -5385,23 +5441,23 @@ func (o ServiceTaskSpecLogDriverPtrOutput) ToServiceTaskSpecLogDriverPtrOutputWi
 }
 
 func (o ServiceTaskSpecLogDriverPtrOutput) Elem() ServiceTaskSpecLogDriverOutput {
-	return o.ApplyT(func (v *ServiceTaskSpecLogDriver) ServiceTaskSpecLogDriver { return *v }).(ServiceTaskSpecLogDriverOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecLogDriver) ServiceTaskSpecLogDriver { return *v }).(ServiceTaskSpecLogDriverOutput)
 }
 
 // A random name for the port.
 func (o ServiceTaskSpecLogDriverPtrOutput) Name() pulumi.StringOutput {
-	return o.ApplyT(func (v ServiceTaskSpecLogDriver) string { return v.Name }).(pulumi.StringOutput)
+	return o.ApplyT(func(v ServiceTaskSpecLogDriver) string { return v.Name }).(pulumi.StringOutput)
 }
 
 // The options for the logging driver, e.g.
 func (o ServiceTaskSpecLogDriverPtrOutput) Options() pulumi.StringMapOutput {
-	return o.ApplyT(func (v ServiceTaskSpecLogDriver) map[string]string { return v.Options }).(pulumi.StringMapOutput)
+	return o.ApplyT(func(v ServiceTaskSpecLogDriver) map[string]string { return v.Options }).(pulumi.StringMapOutput)
 }
 
 type ServiceTaskSpecPlacement struct {
-	Constraints []string `pulumi:"constraints"`
-	Platforms []ServiceTaskSpecPlacementPlatform `pulumi:"platforms"`
-	Prefs []string `pulumi:"prefs"`
+	Constraints []string                           `pulumi:"constraints"`
+	Platforms   []ServiceTaskSpecPlacementPlatform `pulumi:"platforms"`
+	Prefs       []string                           `pulumi:"prefs"`
 }
 
 type ServiceTaskSpecPlacementInput interface {
@@ -5412,9 +5468,9 @@ type ServiceTaskSpecPlacementInput interface {
 }
 
 type ServiceTaskSpecPlacementArgs struct {
-	Constraints pulumi.StringArrayInput `pulumi:"constraints"`
-	Platforms ServiceTaskSpecPlacementPlatformArrayInput `pulumi:"platforms"`
-	Prefs pulumi.StringArrayInput `pulumi:"prefs"`
+	Constraints pulumi.StringArrayInput                    `pulumi:"constraints"`
+	Platforms   ServiceTaskSpecPlacementPlatformArrayInput `pulumi:"platforms"`
+	Prefs       pulumi.StringArrayInput                    `pulumi:"prefs"`
 }
 
 func (ServiceTaskSpecPlacementArgs) ElementType() reflect.Type {
@@ -5446,7 +5502,8 @@ type ServiceTaskSpecPlacementPtrInput interface {
 
 type serviceTaskSpecPlacementPtrType ServiceTaskSpecPlacementArgs
 
-func ServiceTaskSpecPlacementPtr(v *ServiceTaskSpecPlacementArgs) ServiceTaskSpecPlacementPtrInput {	return (*serviceTaskSpecPlacementPtrType)(v)
+func ServiceTaskSpecPlacementPtr(v *ServiceTaskSpecPlacementArgs) ServiceTaskSpecPlacementPtrInput {
+	return (*serviceTaskSpecPlacementPtrType)(v)
 }
 
 func (*serviceTaskSpecPlacementPtrType) ElementType() reflect.Type {
@@ -5461,7 +5518,7 @@ func (i *serviceTaskSpecPlacementPtrType) ToServiceTaskSpecPlacementPtrOutputWit
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecPlacementPtrOutput)
 }
 
-type ServiceTaskSpecPlacementOutput struct { *pulumi.OutputState }
+type ServiceTaskSpecPlacementOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecPlacementOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*ServiceTaskSpecPlacement)(nil)).Elem()
@@ -5485,18 +5542,18 @@ func (o ServiceTaskSpecPlacementOutput) ToServiceTaskSpecPlacementPtrOutputWithC
 	}).(ServiceTaskSpecPlacementPtrOutput)
 }
 func (o ServiceTaskSpecPlacementOutput) Constraints() pulumi.StringArrayOutput {
-	return o.ApplyT(func (v ServiceTaskSpecPlacement) []string { return v.Constraints }).(pulumi.StringArrayOutput)
+	return o.ApplyT(func(v ServiceTaskSpecPlacement) []string { return v.Constraints }).(pulumi.StringArrayOutput)
 }
 
 func (o ServiceTaskSpecPlacementOutput) Platforms() ServiceTaskSpecPlacementPlatformArrayOutput {
-	return o.ApplyT(func (v ServiceTaskSpecPlacement) []ServiceTaskSpecPlacementPlatform { return v.Platforms }).(ServiceTaskSpecPlacementPlatformArrayOutput)
+	return o.ApplyT(func(v ServiceTaskSpecPlacement) []ServiceTaskSpecPlacementPlatform { return v.Platforms }).(ServiceTaskSpecPlacementPlatformArrayOutput)
 }
 
 func (o ServiceTaskSpecPlacementOutput) Prefs() pulumi.StringArrayOutput {
-	return o.ApplyT(func (v ServiceTaskSpecPlacement) []string { return v.Prefs }).(pulumi.StringArrayOutput)
+	return o.ApplyT(func(v ServiceTaskSpecPlacement) []string { return v.Prefs }).(pulumi.StringArrayOutput)
 }
 
-type ServiceTaskSpecPlacementPtrOutput struct { *pulumi.OutputState}
+type ServiceTaskSpecPlacementPtrOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecPlacementPtrOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((**ServiceTaskSpecPlacement)(nil)).Elem()
@@ -5511,24 +5568,24 @@ func (o ServiceTaskSpecPlacementPtrOutput) ToServiceTaskSpecPlacementPtrOutputWi
 }
 
 func (o ServiceTaskSpecPlacementPtrOutput) Elem() ServiceTaskSpecPlacementOutput {
-	return o.ApplyT(func (v *ServiceTaskSpecPlacement) ServiceTaskSpecPlacement { return *v }).(ServiceTaskSpecPlacementOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecPlacement) ServiceTaskSpecPlacement { return *v }).(ServiceTaskSpecPlacementOutput)
 }
 
 func (o ServiceTaskSpecPlacementPtrOutput) Constraints() pulumi.StringArrayOutput {
-	return o.ApplyT(func (v ServiceTaskSpecPlacement) []string { return v.Constraints }).(pulumi.StringArrayOutput)
+	return o.ApplyT(func(v ServiceTaskSpecPlacement) []string { return v.Constraints }).(pulumi.StringArrayOutput)
 }
 
 func (o ServiceTaskSpecPlacementPtrOutput) Platforms() ServiceTaskSpecPlacementPlatformArrayOutput {
-	return o.ApplyT(func (v ServiceTaskSpecPlacement) []ServiceTaskSpecPlacementPlatform { return v.Platforms }).(ServiceTaskSpecPlacementPlatformArrayOutput)
+	return o.ApplyT(func(v ServiceTaskSpecPlacement) []ServiceTaskSpecPlacementPlatform { return v.Platforms }).(ServiceTaskSpecPlacementPlatformArrayOutput)
 }
 
 func (o ServiceTaskSpecPlacementPtrOutput) Prefs() pulumi.StringArrayOutput {
-	return o.ApplyT(func (v ServiceTaskSpecPlacement) []string { return v.Prefs }).(pulumi.StringArrayOutput)
+	return o.ApplyT(func(v ServiceTaskSpecPlacement) []string { return v.Prefs }).(pulumi.StringArrayOutput)
 }
 
 type ServiceTaskSpecPlacementPlatform struct {
 	Architecture string `pulumi:"architecture"`
-	Os string `pulumi:"os"`
+	Os           string `pulumi:"os"`
 }
 
 type ServiceTaskSpecPlacementPlatformInput interface {
@@ -5540,7 +5597,7 @@ type ServiceTaskSpecPlacementPlatformInput interface {
 
 type ServiceTaskSpecPlacementPlatformArgs struct {
 	Architecture pulumi.StringInput `pulumi:"architecture"`
-	Os pulumi.StringInput `pulumi:"os"`
+	Os           pulumi.StringInput `pulumi:"os"`
 }
 
 func (ServiceTaskSpecPlacementPlatformArgs) ElementType() reflect.Type {
@@ -5576,7 +5633,7 @@ func (i ServiceTaskSpecPlacementPlatformArray) ToServiceTaskSpecPlacementPlatfor
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecPlacementPlatformArrayOutput)
 }
 
-type ServiceTaskSpecPlacementPlatformOutput struct { *pulumi.OutputState }
+type ServiceTaskSpecPlacementPlatformOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecPlacementPlatformOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*ServiceTaskSpecPlacementPlatform)(nil)).Elem()
@@ -5591,14 +5648,14 @@ func (o ServiceTaskSpecPlacementPlatformOutput) ToServiceTaskSpecPlacementPlatfo
 }
 
 func (o ServiceTaskSpecPlacementPlatformOutput) Architecture() pulumi.StringOutput {
-	return o.ApplyT(func (v ServiceTaskSpecPlacementPlatform) string { return v.Architecture }).(pulumi.StringOutput)
+	return o.ApplyT(func(v ServiceTaskSpecPlacementPlatform) string { return v.Architecture }).(pulumi.StringOutput)
 }
 
 func (o ServiceTaskSpecPlacementPlatformOutput) Os() pulumi.StringOutput {
-	return o.ApplyT(func (v ServiceTaskSpecPlacementPlatform) string { return v.Os }).(pulumi.StringOutput)
+	return o.ApplyT(func(v ServiceTaskSpecPlacementPlatform) string { return v.Os }).(pulumi.StringOutput)
 }
 
-type ServiceTaskSpecPlacementPlatformArrayOutput struct { *pulumi.OutputState}
+type ServiceTaskSpecPlacementPlatformArrayOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecPlacementPlatformArrayOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*[]ServiceTaskSpecPlacementPlatform)(nil)).Elem()
@@ -5613,13 +5670,13 @@ func (o ServiceTaskSpecPlacementPlatformArrayOutput) ToServiceTaskSpecPlacementP
 }
 
 func (o ServiceTaskSpecPlacementPlatformArrayOutput) Index(i pulumi.IntInput) ServiceTaskSpecPlacementPlatformOutput {
-	return pulumi.All(o, i).ApplyT(func (vs []interface{}) ServiceTaskSpecPlacementPlatform {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) ServiceTaskSpecPlacementPlatform {
 		return vs[0].([]ServiceTaskSpecPlacementPlatform)[vs[1].(int)]
 	}).(ServiceTaskSpecPlacementPlatformOutput)
 }
 
 type ServiceTaskSpecResources struct {
-	Limits *ServiceTaskSpecResourcesLimits `pulumi:"limits"`
+	Limits      *ServiceTaskSpecResourcesLimits      `pulumi:"limits"`
 	Reservation *ServiceTaskSpecResourcesReservation `pulumi:"reservation"`
 }
 
@@ -5631,7 +5688,7 @@ type ServiceTaskSpecResourcesInput interface {
 }
 
 type ServiceTaskSpecResourcesArgs struct {
-	Limits ServiceTaskSpecResourcesLimitsPtrInput `pulumi:"limits"`
+	Limits      ServiceTaskSpecResourcesLimitsPtrInput      `pulumi:"limits"`
 	Reservation ServiceTaskSpecResourcesReservationPtrInput `pulumi:"reservation"`
 }
 
@@ -5664,7 +5721,8 @@ type ServiceTaskSpecResourcesPtrInput interface {
 
 type serviceTaskSpecResourcesPtrType ServiceTaskSpecResourcesArgs
 
-func ServiceTaskSpecResourcesPtr(v *ServiceTaskSpecResourcesArgs) ServiceTaskSpecResourcesPtrInput {	return (*serviceTaskSpecResourcesPtrType)(v)
+func ServiceTaskSpecResourcesPtr(v *ServiceTaskSpecResourcesArgs) ServiceTaskSpecResourcesPtrInput {
+	return (*serviceTaskSpecResourcesPtrType)(v)
 }
 
 func (*serviceTaskSpecResourcesPtrType) ElementType() reflect.Type {
@@ -5679,7 +5737,7 @@ func (i *serviceTaskSpecResourcesPtrType) ToServiceTaskSpecResourcesPtrOutputWit
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecResourcesPtrOutput)
 }
 
-type ServiceTaskSpecResourcesOutput struct { *pulumi.OutputState }
+type ServiceTaskSpecResourcesOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecResourcesOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*ServiceTaskSpecResources)(nil)).Elem()
@@ -5703,14 +5761,14 @@ func (o ServiceTaskSpecResourcesOutput) ToServiceTaskSpecResourcesPtrOutputWithC
 	}).(ServiceTaskSpecResourcesPtrOutput)
 }
 func (o ServiceTaskSpecResourcesOutput) Limits() ServiceTaskSpecResourcesLimitsPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecResources) *ServiceTaskSpecResourcesLimits { return v.Limits }).(ServiceTaskSpecResourcesLimitsPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecResources) *ServiceTaskSpecResourcesLimits { return v.Limits }).(ServiceTaskSpecResourcesLimitsPtrOutput)
 }
 
 func (o ServiceTaskSpecResourcesOutput) Reservation() ServiceTaskSpecResourcesReservationPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecResources) *ServiceTaskSpecResourcesReservation { return v.Reservation }).(ServiceTaskSpecResourcesReservationPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecResources) *ServiceTaskSpecResourcesReservation { return v.Reservation }).(ServiceTaskSpecResourcesReservationPtrOutput)
 }
 
-type ServiceTaskSpecResourcesPtrOutput struct { *pulumi.OutputState}
+type ServiceTaskSpecResourcesPtrOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecResourcesPtrOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((**ServiceTaskSpecResources)(nil)).Elem()
@@ -5725,21 +5783,21 @@ func (o ServiceTaskSpecResourcesPtrOutput) ToServiceTaskSpecResourcesPtrOutputWi
 }
 
 func (o ServiceTaskSpecResourcesPtrOutput) Elem() ServiceTaskSpecResourcesOutput {
-	return o.ApplyT(func (v *ServiceTaskSpecResources) ServiceTaskSpecResources { return *v }).(ServiceTaskSpecResourcesOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecResources) ServiceTaskSpecResources { return *v }).(ServiceTaskSpecResourcesOutput)
 }
 
 func (o ServiceTaskSpecResourcesPtrOutput) Limits() ServiceTaskSpecResourcesLimitsPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecResources) *ServiceTaskSpecResourcesLimits { return v.Limits }).(ServiceTaskSpecResourcesLimitsPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecResources) *ServiceTaskSpecResourcesLimits { return v.Limits }).(ServiceTaskSpecResourcesLimitsPtrOutput)
 }
 
 func (o ServiceTaskSpecResourcesPtrOutput) Reservation() ServiceTaskSpecResourcesReservationPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecResources) *ServiceTaskSpecResourcesReservation { return v.Reservation }).(ServiceTaskSpecResourcesReservationPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecResources) *ServiceTaskSpecResourcesReservation { return v.Reservation }).(ServiceTaskSpecResourcesReservationPtrOutput)
 }
 
 type ServiceTaskSpecResourcesLimits struct {
 	GenericResources *ServiceTaskSpecResourcesLimitsGenericResources `pulumi:"genericResources"`
-	MemoryBytes *int `pulumi:"memoryBytes"`
-	NanoCpus *int `pulumi:"nanoCpus"`
+	MemoryBytes      *int                                            `pulumi:"memoryBytes"`
+	NanoCpus         *int                                            `pulumi:"nanoCpus"`
 }
 
 type ServiceTaskSpecResourcesLimitsInput interface {
@@ -5751,8 +5809,8 @@ type ServiceTaskSpecResourcesLimitsInput interface {
 
 type ServiceTaskSpecResourcesLimitsArgs struct {
 	GenericResources ServiceTaskSpecResourcesLimitsGenericResourcesPtrInput `pulumi:"genericResources"`
-	MemoryBytes pulumi.IntPtrInput `pulumi:"memoryBytes"`
-	NanoCpus pulumi.IntPtrInput `pulumi:"nanoCpus"`
+	MemoryBytes      pulumi.IntPtrInput                                     `pulumi:"memoryBytes"`
+	NanoCpus         pulumi.IntPtrInput                                     `pulumi:"nanoCpus"`
 }
 
 func (ServiceTaskSpecResourcesLimitsArgs) ElementType() reflect.Type {
@@ -5784,7 +5842,8 @@ type ServiceTaskSpecResourcesLimitsPtrInput interface {
 
 type serviceTaskSpecResourcesLimitsPtrType ServiceTaskSpecResourcesLimitsArgs
 
-func ServiceTaskSpecResourcesLimitsPtr(v *ServiceTaskSpecResourcesLimitsArgs) ServiceTaskSpecResourcesLimitsPtrInput {	return (*serviceTaskSpecResourcesLimitsPtrType)(v)
+func ServiceTaskSpecResourcesLimitsPtr(v *ServiceTaskSpecResourcesLimitsArgs) ServiceTaskSpecResourcesLimitsPtrInput {
+	return (*serviceTaskSpecResourcesLimitsPtrType)(v)
 }
 
 func (*serviceTaskSpecResourcesLimitsPtrType) ElementType() reflect.Type {
@@ -5799,7 +5858,7 @@ func (i *serviceTaskSpecResourcesLimitsPtrType) ToServiceTaskSpecResourcesLimits
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecResourcesLimitsPtrOutput)
 }
 
-type ServiceTaskSpecResourcesLimitsOutput struct { *pulumi.OutputState }
+type ServiceTaskSpecResourcesLimitsOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecResourcesLimitsOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*ServiceTaskSpecResourcesLimits)(nil)).Elem()
@@ -5823,18 +5882,20 @@ func (o ServiceTaskSpecResourcesLimitsOutput) ToServiceTaskSpecResourcesLimitsPt
 	}).(ServiceTaskSpecResourcesLimitsPtrOutput)
 }
 func (o ServiceTaskSpecResourcesLimitsOutput) GenericResources() ServiceTaskSpecResourcesLimitsGenericResourcesPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecResourcesLimits) *ServiceTaskSpecResourcesLimitsGenericResources { return v.GenericResources }).(ServiceTaskSpecResourcesLimitsGenericResourcesPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecResourcesLimits) *ServiceTaskSpecResourcesLimitsGenericResources {
+		return v.GenericResources
+	}).(ServiceTaskSpecResourcesLimitsGenericResourcesPtrOutput)
 }
 
 func (o ServiceTaskSpecResourcesLimitsOutput) MemoryBytes() pulumi.IntPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecResourcesLimits) *int { return v.MemoryBytes }).(pulumi.IntPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecResourcesLimits) *int { return v.MemoryBytes }).(pulumi.IntPtrOutput)
 }
 
 func (o ServiceTaskSpecResourcesLimitsOutput) NanoCpus() pulumi.IntPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecResourcesLimits) *int { return v.NanoCpus }).(pulumi.IntPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecResourcesLimits) *int { return v.NanoCpus }).(pulumi.IntPtrOutput)
 }
 
-type ServiceTaskSpecResourcesLimitsPtrOutput struct { *pulumi.OutputState}
+type ServiceTaskSpecResourcesLimitsPtrOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecResourcesLimitsPtrOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((**ServiceTaskSpecResourcesLimits)(nil)).Elem()
@@ -5849,24 +5910,26 @@ func (o ServiceTaskSpecResourcesLimitsPtrOutput) ToServiceTaskSpecResourcesLimit
 }
 
 func (o ServiceTaskSpecResourcesLimitsPtrOutput) Elem() ServiceTaskSpecResourcesLimitsOutput {
-	return o.ApplyT(func (v *ServiceTaskSpecResourcesLimits) ServiceTaskSpecResourcesLimits { return *v }).(ServiceTaskSpecResourcesLimitsOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecResourcesLimits) ServiceTaskSpecResourcesLimits { return *v }).(ServiceTaskSpecResourcesLimitsOutput)
 }
 
 func (o ServiceTaskSpecResourcesLimitsPtrOutput) GenericResources() ServiceTaskSpecResourcesLimitsGenericResourcesPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecResourcesLimits) *ServiceTaskSpecResourcesLimitsGenericResources { return v.GenericResources }).(ServiceTaskSpecResourcesLimitsGenericResourcesPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecResourcesLimits) *ServiceTaskSpecResourcesLimitsGenericResources {
+		return v.GenericResources
+	}).(ServiceTaskSpecResourcesLimitsGenericResourcesPtrOutput)
 }
 
 func (o ServiceTaskSpecResourcesLimitsPtrOutput) MemoryBytes() pulumi.IntPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecResourcesLimits) *int { return v.MemoryBytes }).(pulumi.IntPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecResourcesLimits) *int { return v.MemoryBytes }).(pulumi.IntPtrOutput)
 }
 
 func (o ServiceTaskSpecResourcesLimitsPtrOutput) NanoCpus() pulumi.IntPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecResourcesLimits) *int { return v.NanoCpus }).(pulumi.IntPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecResourcesLimits) *int { return v.NanoCpus }).(pulumi.IntPtrOutput)
 }
 
 type ServiceTaskSpecResourcesLimitsGenericResources struct {
 	DiscreteResourcesSpecs []string `pulumi:"discreteResourcesSpecs"`
-	NamedResourcesSpecs []string `pulumi:"namedResourcesSpecs"`
+	NamedResourcesSpecs    []string `pulumi:"namedResourcesSpecs"`
 }
 
 type ServiceTaskSpecResourcesLimitsGenericResourcesInput interface {
@@ -5878,7 +5941,7 @@ type ServiceTaskSpecResourcesLimitsGenericResourcesInput interface {
 
 type ServiceTaskSpecResourcesLimitsGenericResourcesArgs struct {
 	DiscreteResourcesSpecs pulumi.StringArrayInput `pulumi:"discreteResourcesSpecs"`
-	NamedResourcesSpecs pulumi.StringArrayInput `pulumi:"namedResourcesSpecs"`
+	NamedResourcesSpecs    pulumi.StringArrayInput `pulumi:"namedResourcesSpecs"`
 }
 
 func (ServiceTaskSpecResourcesLimitsGenericResourcesArgs) ElementType() reflect.Type {
@@ -5910,7 +5973,8 @@ type ServiceTaskSpecResourcesLimitsGenericResourcesPtrInput interface {
 
 type serviceTaskSpecResourcesLimitsGenericResourcesPtrType ServiceTaskSpecResourcesLimitsGenericResourcesArgs
 
-func ServiceTaskSpecResourcesLimitsGenericResourcesPtr(v *ServiceTaskSpecResourcesLimitsGenericResourcesArgs) ServiceTaskSpecResourcesLimitsGenericResourcesPtrInput {	return (*serviceTaskSpecResourcesLimitsGenericResourcesPtrType)(v)
+func ServiceTaskSpecResourcesLimitsGenericResourcesPtr(v *ServiceTaskSpecResourcesLimitsGenericResourcesArgs) ServiceTaskSpecResourcesLimitsGenericResourcesPtrInput {
+	return (*serviceTaskSpecResourcesLimitsGenericResourcesPtrType)(v)
 }
 
 func (*serviceTaskSpecResourcesLimitsGenericResourcesPtrType) ElementType() reflect.Type {
@@ -5925,7 +5989,7 @@ func (i *serviceTaskSpecResourcesLimitsGenericResourcesPtrType) ToServiceTaskSpe
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecResourcesLimitsGenericResourcesPtrOutput)
 }
 
-type ServiceTaskSpecResourcesLimitsGenericResourcesOutput struct { *pulumi.OutputState }
+type ServiceTaskSpecResourcesLimitsGenericResourcesOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecResourcesLimitsGenericResourcesOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*ServiceTaskSpecResourcesLimitsGenericResources)(nil)).Elem()
@@ -5949,14 +6013,14 @@ func (o ServiceTaskSpecResourcesLimitsGenericResourcesOutput) ToServiceTaskSpecR
 	}).(ServiceTaskSpecResourcesLimitsGenericResourcesPtrOutput)
 }
 func (o ServiceTaskSpecResourcesLimitsGenericResourcesOutput) DiscreteResourcesSpecs() pulumi.StringArrayOutput {
-	return o.ApplyT(func (v ServiceTaskSpecResourcesLimitsGenericResources) []string { return v.DiscreteResourcesSpecs }).(pulumi.StringArrayOutput)
+	return o.ApplyT(func(v ServiceTaskSpecResourcesLimitsGenericResources) []string { return v.DiscreteResourcesSpecs }).(pulumi.StringArrayOutput)
 }
 
 func (o ServiceTaskSpecResourcesLimitsGenericResourcesOutput) NamedResourcesSpecs() pulumi.StringArrayOutput {
-	return o.ApplyT(func (v ServiceTaskSpecResourcesLimitsGenericResources) []string { return v.NamedResourcesSpecs }).(pulumi.StringArrayOutput)
+	return o.ApplyT(func(v ServiceTaskSpecResourcesLimitsGenericResources) []string { return v.NamedResourcesSpecs }).(pulumi.StringArrayOutput)
 }
 
-type ServiceTaskSpecResourcesLimitsGenericResourcesPtrOutput struct { *pulumi.OutputState}
+type ServiceTaskSpecResourcesLimitsGenericResourcesPtrOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecResourcesLimitsGenericResourcesPtrOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((**ServiceTaskSpecResourcesLimitsGenericResources)(nil)).Elem()
@@ -5971,21 +6035,23 @@ func (o ServiceTaskSpecResourcesLimitsGenericResourcesPtrOutput) ToServiceTaskSp
 }
 
 func (o ServiceTaskSpecResourcesLimitsGenericResourcesPtrOutput) Elem() ServiceTaskSpecResourcesLimitsGenericResourcesOutput {
-	return o.ApplyT(func (v *ServiceTaskSpecResourcesLimitsGenericResources) ServiceTaskSpecResourcesLimitsGenericResources { return *v }).(ServiceTaskSpecResourcesLimitsGenericResourcesOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecResourcesLimitsGenericResources) ServiceTaskSpecResourcesLimitsGenericResources {
+		return *v
+	}).(ServiceTaskSpecResourcesLimitsGenericResourcesOutput)
 }
 
 func (o ServiceTaskSpecResourcesLimitsGenericResourcesPtrOutput) DiscreteResourcesSpecs() pulumi.StringArrayOutput {
-	return o.ApplyT(func (v ServiceTaskSpecResourcesLimitsGenericResources) []string { return v.DiscreteResourcesSpecs }).(pulumi.StringArrayOutput)
+	return o.ApplyT(func(v ServiceTaskSpecResourcesLimitsGenericResources) []string { return v.DiscreteResourcesSpecs }).(pulumi.StringArrayOutput)
 }
 
 func (o ServiceTaskSpecResourcesLimitsGenericResourcesPtrOutput) NamedResourcesSpecs() pulumi.StringArrayOutput {
-	return o.ApplyT(func (v ServiceTaskSpecResourcesLimitsGenericResources) []string { return v.NamedResourcesSpecs }).(pulumi.StringArrayOutput)
+	return o.ApplyT(func(v ServiceTaskSpecResourcesLimitsGenericResources) []string { return v.NamedResourcesSpecs }).(pulumi.StringArrayOutput)
 }
 
 type ServiceTaskSpecResourcesReservation struct {
 	GenericResources *ServiceTaskSpecResourcesReservationGenericResources `pulumi:"genericResources"`
-	MemoryBytes *int `pulumi:"memoryBytes"`
-	NanoCpus *int `pulumi:"nanoCpus"`
+	MemoryBytes      *int                                                 `pulumi:"memoryBytes"`
+	NanoCpus         *int                                                 `pulumi:"nanoCpus"`
 }
 
 type ServiceTaskSpecResourcesReservationInput interface {
@@ -5997,8 +6063,8 @@ type ServiceTaskSpecResourcesReservationInput interface {
 
 type ServiceTaskSpecResourcesReservationArgs struct {
 	GenericResources ServiceTaskSpecResourcesReservationGenericResourcesPtrInput `pulumi:"genericResources"`
-	MemoryBytes pulumi.IntPtrInput `pulumi:"memoryBytes"`
-	NanoCpus pulumi.IntPtrInput `pulumi:"nanoCpus"`
+	MemoryBytes      pulumi.IntPtrInput                                          `pulumi:"memoryBytes"`
+	NanoCpus         pulumi.IntPtrInput                                          `pulumi:"nanoCpus"`
 }
 
 func (ServiceTaskSpecResourcesReservationArgs) ElementType() reflect.Type {
@@ -6030,7 +6096,8 @@ type ServiceTaskSpecResourcesReservationPtrInput interface {
 
 type serviceTaskSpecResourcesReservationPtrType ServiceTaskSpecResourcesReservationArgs
 
-func ServiceTaskSpecResourcesReservationPtr(v *ServiceTaskSpecResourcesReservationArgs) ServiceTaskSpecResourcesReservationPtrInput {	return (*serviceTaskSpecResourcesReservationPtrType)(v)
+func ServiceTaskSpecResourcesReservationPtr(v *ServiceTaskSpecResourcesReservationArgs) ServiceTaskSpecResourcesReservationPtrInput {
+	return (*serviceTaskSpecResourcesReservationPtrType)(v)
 }
 
 func (*serviceTaskSpecResourcesReservationPtrType) ElementType() reflect.Type {
@@ -6045,7 +6112,7 @@ func (i *serviceTaskSpecResourcesReservationPtrType) ToServiceTaskSpecResourcesR
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecResourcesReservationPtrOutput)
 }
 
-type ServiceTaskSpecResourcesReservationOutput struct { *pulumi.OutputState }
+type ServiceTaskSpecResourcesReservationOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecResourcesReservationOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*ServiceTaskSpecResourcesReservation)(nil)).Elem()
@@ -6069,18 +6136,20 @@ func (o ServiceTaskSpecResourcesReservationOutput) ToServiceTaskSpecResourcesRes
 	}).(ServiceTaskSpecResourcesReservationPtrOutput)
 }
 func (o ServiceTaskSpecResourcesReservationOutput) GenericResources() ServiceTaskSpecResourcesReservationGenericResourcesPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecResourcesReservation) *ServiceTaskSpecResourcesReservationGenericResources { return v.GenericResources }).(ServiceTaskSpecResourcesReservationGenericResourcesPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecResourcesReservation) *ServiceTaskSpecResourcesReservationGenericResources {
+		return v.GenericResources
+	}).(ServiceTaskSpecResourcesReservationGenericResourcesPtrOutput)
 }
 
 func (o ServiceTaskSpecResourcesReservationOutput) MemoryBytes() pulumi.IntPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecResourcesReservation) *int { return v.MemoryBytes }).(pulumi.IntPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecResourcesReservation) *int { return v.MemoryBytes }).(pulumi.IntPtrOutput)
 }
 
 func (o ServiceTaskSpecResourcesReservationOutput) NanoCpus() pulumi.IntPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecResourcesReservation) *int { return v.NanoCpus }).(pulumi.IntPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecResourcesReservation) *int { return v.NanoCpus }).(pulumi.IntPtrOutput)
 }
 
-type ServiceTaskSpecResourcesReservationPtrOutput struct { *pulumi.OutputState}
+type ServiceTaskSpecResourcesReservationPtrOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecResourcesReservationPtrOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((**ServiceTaskSpecResourcesReservation)(nil)).Elem()
@@ -6095,24 +6164,26 @@ func (o ServiceTaskSpecResourcesReservationPtrOutput) ToServiceTaskSpecResources
 }
 
 func (o ServiceTaskSpecResourcesReservationPtrOutput) Elem() ServiceTaskSpecResourcesReservationOutput {
-	return o.ApplyT(func (v *ServiceTaskSpecResourcesReservation) ServiceTaskSpecResourcesReservation { return *v }).(ServiceTaskSpecResourcesReservationOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecResourcesReservation) ServiceTaskSpecResourcesReservation { return *v }).(ServiceTaskSpecResourcesReservationOutput)
 }
 
 func (o ServiceTaskSpecResourcesReservationPtrOutput) GenericResources() ServiceTaskSpecResourcesReservationGenericResourcesPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecResourcesReservation) *ServiceTaskSpecResourcesReservationGenericResources { return v.GenericResources }).(ServiceTaskSpecResourcesReservationGenericResourcesPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecResourcesReservation) *ServiceTaskSpecResourcesReservationGenericResources {
+		return v.GenericResources
+	}).(ServiceTaskSpecResourcesReservationGenericResourcesPtrOutput)
 }
 
 func (o ServiceTaskSpecResourcesReservationPtrOutput) MemoryBytes() pulumi.IntPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecResourcesReservation) *int { return v.MemoryBytes }).(pulumi.IntPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecResourcesReservation) *int { return v.MemoryBytes }).(pulumi.IntPtrOutput)
 }
 
 func (o ServiceTaskSpecResourcesReservationPtrOutput) NanoCpus() pulumi.IntPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecResourcesReservation) *int { return v.NanoCpus }).(pulumi.IntPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecResourcesReservation) *int { return v.NanoCpus }).(pulumi.IntPtrOutput)
 }
 
 type ServiceTaskSpecResourcesReservationGenericResources struct {
 	DiscreteResourcesSpecs []string `pulumi:"discreteResourcesSpecs"`
-	NamedResourcesSpecs []string `pulumi:"namedResourcesSpecs"`
+	NamedResourcesSpecs    []string `pulumi:"namedResourcesSpecs"`
 }
 
 type ServiceTaskSpecResourcesReservationGenericResourcesInput interface {
@@ -6124,7 +6195,7 @@ type ServiceTaskSpecResourcesReservationGenericResourcesInput interface {
 
 type ServiceTaskSpecResourcesReservationGenericResourcesArgs struct {
 	DiscreteResourcesSpecs pulumi.StringArrayInput `pulumi:"discreteResourcesSpecs"`
-	NamedResourcesSpecs pulumi.StringArrayInput `pulumi:"namedResourcesSpecs"`
+	NamedResourcesSpecs    pulumi.StringArrayInput `pulumi:"namedResourcesSpecs"`
 }
 
 func (ServiceTaskSpecResourcesReservationGenericResourcesArgs) ElementType() reflect.Type {
@@ -6156,7 +6227,8 @@ type ServiceTaskSpecResourcesReservationGenericResourcesPtrInput interface {
 
 type serviceTaskSpecResourcesReservationGenericResourcesPtrType ServiceTaskSpecResourcesReservationGenericResourcesArgs
 
-func ServiceTaskSpecResourcesReservationGenericResourcesPtr(v *ServiceTaskSpecResourcesReservationGenericResourcesArgs) ServiceTaskSpecResourcesReservationGenericResourcesPtrInput {	return (*serviceTaskSpecResourcesReservationGenericResourcesPtrType)(v)
+func ServiceTaskSpecResourcesReservationGenericResourcesPtr(v *ServiceTaskSpecResourcesReservationGenericResourcesArgs) ServiceTaskSpecResourcesReservationGenericResourcesPtrInput {
+	return (*serviceTaskSpecResourcesReservationGenericResourcesPtrType)(v)
 }
 
 func (*serviceTaskSpecResourcesReservationGenericResourcesPtrType) ElementType() reflect.Type {
@@ -6171,7 +6243,7 @@ func (i *serviceTaskSpecResourcesReservationGenericResourcesPtrType) ToServiceTa
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecResourcesReservationGenericResourcesPtrOutput)
 }
 
-type ServiceTaskSpecResourcesReservationGenericResourcesOutput struct { *pulumi.OutputState }
+type ServiceTaskSpecResourcesReservationGenericResourcesOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecResourcesReservationGenericResourcesOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*ServiceTaskSpecResourcesReservationGenericResources)(nil)).Elem()
@@ -6195,14 +6267,14 @@ func (o ServiceTaskSpecResourcesReservationGenericResourcesOutput) ToServiceTask
 	}).(ServiceTaskSpecResourcesReservationGenericResourcesPtrOutput)
 }
 func (o ServiceTaskSpecResourcesReservationGenericResourcesOutput) DiscreteResourcesSpecs() pulumi.StringArrayOutput {
-	return o.ApplyT(func (v ServiceTaskSpecResourcesReservationGenericResources) []string { return v.DiscreteResourcesSpecs }).(pulumi.StringArrayOutput)
+	return o.ApplyT(func(v ServiceTaskSpecResourcesReservationGenericResources) []string { return v.DiscreteResourcesSpecs }).(pulumi.StringArrayOutput)
 }
 
 func (o ServiceTaskSpecResourcesReservationGenericResourcesOutput) NamedResourcesSpecs() pulumi.StringArrayOutput {
-	return o.ApplyT(func (v ServiceTaskSpecResourcesReservationGenericResources) []string { return v.NamedResourcesSpecs }).(pulumi.StringArrayOutput)
+	return o.ApplyT(func(v ServiceTaskSpecResourcesReservationGenericResources) []string { return v.NamedResourcesSpecs }).(pulumi.StringArrayOutput)
 }
 
-type ServiceTaskSpecResourcesReservationGenericResourcesPtrOutput struct { *pulumi.OutputState}
+type ServiceTaskSpecResourcesReservationGenericResourcesPtrOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecResourcesReservationGenericResourcesPtrOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((**ServiceTaskSpecResourcesReservationGenericResources)(nil)).Elem()
@@ -6217,22 +6289,24 @@ func (o ServiceTaskSpecResourcesReservationGenericResourcesPtrOutput) ToServiceT
 }
 
 func (o ServiceTaskSpecResourcesReservationGenericResourcesPtrOutput) Elem() ServiceTaskSpecResourcesReservationGenericResourcesOutput {
-	return o.ApplyT(func (v *ServiceTaskSpecResourcesReservationGenericResources) ServiceTaskSpecResourcesReservationGenericResources { return *v }).(ServiceTaskSpecResourcesReservationGenericResourcesOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecResourcesReservationGenericResources) ServiceTaskSpecResourcesReservationGenericResources {
+		return *v
+	}).(ServiceTaskSpecResourcesReservationGenericResourcesOutput)
 }
 
 func (o ServiceTaskSpecResourcesReservationGenericResourcesPtrOutput) DiscreteResourcesSpecs() pulumi.StringArrayOutput {
-	return o.ApplyT(func (v ServiceTaskSpecResourcesReservationGenericResources) []string { return v.DiscreteResourcesSpecs }).(pulumi.StringArrayOutput)
+	return o.ApplyT(func(v ServiceTaskSpecResourcesReservationGenericResources) []string { return v.DiscreteResourcesSpecs }).(pulumi.StringArrayOutput)
 }
 
 func (o ServiceTaskSpecResourcesReservationGenericResourcesPtrOutput) NamedResourcesSpecs() pulumi.StringArrayOutput {
-	return o.ApplyT(func (v ServiceTaskSpecResourcesReservationGenericResources) []string { return v.NamedResourcesSpecs }).(pulumi.StringArrayOutput)
+	return o.ApplyT(func(v ServiceTaskSpecResourcesReservationGenericResources) []string { return v.NamedResourcesSpecs }).(pulumi.StringArrayOutput)
 }
 
 type ServiceTaskSpecRestartPolicy struct {
-	Condition *string `pulumi:"condition"`
-	Delay *string `pulumi:"delay"`
-	MaxAttempts *int `pulumi:"maxAttempts"`
-	Window *string `pulumi:"window"`
+	Condition   *string `pulumi:"condition"`
+	Delay       *string `pulumi:"delay"`
+	MaxAttempts *int    `pulumi:"maxAttempts"`
+	Window      *string `pulumi:"window"`
 }
 
 type ServiceTaskSpecRestartPolicyInput interface {
@@ -6243,10 +6317,10 @@ type ServiceTaskSpecRestartPolicyInput interface {
 }
 
 type ServiceTaskSpecRestartPolicyArgs struct {
-	Condition pulumi.StringPtrInput `pulumi:"condition"`
-	Delay pulumi.StringPtrInput `pulumi:"delay"`
-	MaxAttempts pulumi.IntPtrInput `pulumi:"maxAttempts"`
-	Window pulumi.StringPtrInput `pulumi:"window"`
+	Condition   pulumi.StringPtrInput `pulumi:"condition"`
+	Delay       pulumi.StringPtrInput `pulumi:"delay"`
+	MaxAttempts pulumi.IntPtrInput    `pulumi:"maxAttempts"`
+	Window      pulumi.StringPtrInput `pulumi:"window"`
 }
 
 func (ServiceTaskSpecRestartPolicyArgs) ElementType() reflect.Type {
@@ -6278,7 +6352,8 @@ type ServiceTaskSpecRestartPolicyPtrInput interface {
 
 type serviceTaskSpecRestartPolicyPtrType ServiceTaskSpecRestartPolicyArgs
 
-func ServiceTaskSpecRestartPolicyPtr(v *ServiceTaskSpecRestartPolicyArgs) ServiceTaskSpecRestartPolicyPtrInput {	return (*serviceTaskSpecRestartPolicyPtrType)(v)
+func ServiceTaskSpecRestartPolicyPtr(v *ServiceTaskSpecRestartPolicyArgs) ServiceTaskSpecRestartPolicyPtrInput {
+	return (*serviceTaskSpecRestartPolicyPtrType)(v)
 }
 
 func (*serviceTaskSpecRestartPolicyPtrType) ElementType() reflect.Type {
@@ -6293,7 +6368,7 @@ func (i *serviceTaskSpecRestartPolicyPtrType) ToServiceTaskSpecRestartPolicyPtrO
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecRestartPolicyPtrOutput)
 }
 
-type ServiceTaskSpecRestartPolicyOutput struct { *pulumi.OutputState }
+type ServiceTaskSpecRestartPolicyOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecRestartPolicyOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*ServiceTaskSpecRestartPolicy)(nil)).Elem()
@@ -6317,22 +6392,22 @@ func (o ServiceTaskSpecRestartPolicyOutput) ToServiceTaskSpecRestartPolicyPtrOut
 	}).(ServiceTaskSpecRestartPolicyPtrOutput)
 }
 func (o ServiceTaskSpecRestartPolicyOutput) Condition() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecRestartPolicy) *string { return v.Condition }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecRestartPolicy) *string { return v.Condition }).(pulumi.StringPtrOutput)
 }
 
 func (o ServiceTaskSpecRestartPolicyOutput) Delay() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecRestartPolicy) *string { return v.Delay }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecRestartPolicy) *string { return v.Delay }).(pulumi.StringPtrOutput)
 }
 
 func (o ServiceTaskSpecRestartPolicyOutput) MaxAttempts() pulumi.IntPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecRestartPolicy) *int { return v.MaxAttempts }).(pulumi.IntPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecRestartPolicy) *int { return v.MaxAttempts }).(pulumi.IntPtrOutput)
 }
 
 func (o ServiceTaskSpecRestartPolicyOutput) Window() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecRestartPolicy) *string { return v.Window }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecRestartPolicy) *string { return v.Window }).(pulumi.StringPtrOutput)
 }
 
-type ServiceTaskSpecRestartPolicyPtrOutput struct { *pulumi.OutputState}
+type ServiceTaskSpecRestartPolicyPtrOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecRestartPolicyPtrOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((**ServiceTaskSpecRestartPolicy)(nil)).Elem()
@@ -6347,32 +6422,32 @@ func (o ServiceTaskSpecRestartPolicyPtrOutput) ToServiceTaskSpecRestartPolicyPtr
 }
 
 func (o ServiceTaskSpecRestartPolicyPtrOutput) Elem() ServiceTaskSpecRestartPolicyOutput {
-	return o.ApplyT(func (v *ServiceTaskSpecRestartPolicy) ServiceTaskSpecRestartPolicy { return *v }).(ServiceTaskSpecRestartPolicyOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecRestartPolicy) ServiceTaskSpecRestartPolicy { return *v }).(ServiceTaskSpecRestartPolicyOutput)
 }
 
 func (o ServiceTaskSpecRestartPolicyPtrOutput) Condition() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecRestartPolicy) *string { return v.Condition }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecRestartPolicy) *string { return v.Condition }).(pulumi.StringPtrOutput)
 }
 
 func (o ServiceTaskSpecRestartPolicyPtrOutput) Delay() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecRestartPolicy) *string { return v.Delay }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecRestartPolicy) *string { return v.Delay }).(pulumi.StringPtrOutput)
 }
 
 func (o ServiceTaskSpecRestartPolicyPtrOutput) MaxAttempts() pulumi.IntPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecRestartPolicy) *int { return v.MaxAttempts }).(pulumi.IntPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecRestartPolicy) *int { return v.MaxAttempts }).(pulumi.IntPtrOutput)
 }
 
 func (o ServiceTaskSpecRestartPolicyPtrOutput) Window() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceTaskSpecRestartPolicy) *string { return v.Window }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceTaskSpecRestartPolicy) *string { return v.Window }).(pulumi.StringPtrOutput)
 }
 
 type ServiceUpdateConfig struct {
-	Delay *string `pulumi:"delay"`
-	FailureAction *string `pulumi:"failureAction"`
+	Delay           *string `pulumi:"delay"`
+	FailureAction   *string `pulumi:"failureAction"`
 	MaxFailureRatio *string `pulumi:"maxFailureRatio"`
-	Monitor *string `pulumi:"monitor"`
-	Order *string `pulumi:"order"`
-	Parallelism *int `pulumi:"parallelism"`
+	Monitor         *string `pulumi:"monitor"`
+	Order           *string `pulumi:"order"`
+	Parallelism     *int    `pulumi:"parallelism"`
 }
 
 type ServiceUpdateConfigInput interface {
@@ -6383,12 +6458,12 @@ type ServiceUpdateConfigInput interface {
 }
 
 type ServiceUpdateConfigArgs struct {
-	Delay pulumi.StringPtrInput `pulumi:"delay"`
-	FailureAction pulumi.StringPtrInput `pulumi:"failureAction"`
+	Delay           pulumi.StringPtrInput `pulumi:"delay"`
+	FailureAction   pulumi.StringPtrInput `pulumi:"failureAction"`
 	MaxFailureRatio pulumi.StringPtrInput `pulumi:"maxFailureRatio"`
-	Monitor pulumi.StringPtrInput `pulumi:"monitor"`
-	Order pulumi.StringPtrInput `pulumi:"order"`
-	Parallelism pulumi.IntPtrInput `pulumi:"parallelism"`
+	Monitor         pulumi.StringPtrInput `pulumi:"monitor"`
+	Order           pulumi.StringPtrInput `pulumi:"order"`
+	Parallelism     pulumi.IntPtrInput    `pulumi:"parallelism"`
 }
 
 func (ServiceUpdateConfigArgs) ElementType() reflect.Type {
@@ -6420,7 +6495,8 @@ type ServiceUpdateConfigPtrInput interface {
 
 type serviceUpdateConfigPtrType ServiceUpdateConfigArgs
 
-func ServiceUpdateConfigPtr(v *ServiceUpdateConfigArgs) ServiceUpdateConfigPtrInput {	return (*serviceUpdateConfigPtrType)(v)
+func ServiceUpdateConfigPtr(v *ServiceUpdateConfigArgs) ServiceUpdateConfigPtrInput {
+	return (*serviceUpdateConfigPtrType)(v)
 }
 
 func (*serviceUpdateConfigPtrType) ElementType() reflect.Type {
@@ -6435,7 +6511,7 @@ func (i *serviceUpdateConfigPtrType) ToServiceUpdateConfigPtrOutputWithContext(c
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceUpdateConfigPtrOutput)
 }
 
-type ServiceUpdateConfigOutput struct { *pulumi.OutputState }
+type ServiceUpdateConfigOutput struct{ *pulumi.OutputState }
 
 func (ServiceUpdateConfigOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*ServiceUpdateConfig)(nil)).Elem()
@@ -6459,30 +6535,30 @@ func (o ServiceUpdateConfigOutput) ToServiceUpdateConfigPtrOutputWithContext(ctx
 	}).(ServiceUpdateConfigPtrOutput)
 }
 func (o ServiceUpdateConfigOutput) Delay() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceUpdateConfig) *string { return v.Delay }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceUpdateConfig) *string { return v.Delay }).(pulumi.StringPtrOutput)
 }
 
 func (o ServiceUpdateConfigOutput) FailureAction() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceUpdateConfig) *string { return v.FailureAction }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceUpdateConfig) *string { return v.FailureAction }).(pulumi.StringPtrOutput)
 }
 
 func (o ServiceUpdateConfigOutput) MaxFailureRatio() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceUpdateConfig) *string { return v.MaxFailureRatio }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceUpdateConfig) *string { return v.MaxFailureRatio }).(pulumi.StringPtrOutput)
 }
 
 func (o ServiceUpdateConfigOutput) Monitor() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceUpdateConfig) *string { return v.Monitor }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceUpdateConfig) *string { return v.Monitor }).(pulumi.StringPtrOutput)
 }
 
 func (o ServiceUpdateConfigOutput) Order() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceUpdateConfig) *string { return v.Order }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceUpdateConfig) *string { return v.Order }).(pulumi.StringPtrOutput)
 }
 
 func (o ServiceUpdateConfigOutput) Parallelism() pulumi.IntPtrOutput {
-	return o.ApplyT(func (v ServiceUpdateConfig) *int { return v.Parallelism }).(pulumi.IntPtrOutput)
+	return o.ApplyT(func(v ServiceUpdateConfig) *int { return v.Parallelism }).(pulumi.IntPtrOutput)
 }
 
-type ServiceUpdateConfigPtrOutput struct { *pulumi.OutputState}
+type ServiceUpdateConfigPtrOutput struct{ *pulumi.OutputState }
 
 func (ServiceUpdateConfigPtrOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((**ServiceUpdateConfig)(nil)).Elem()
@@ -6497,31 +6573,31 @@ func (o ServiceUpdateConfigPtrOutput) ToServiceUpdateConfigPtrOutputWithContext(
 }
 
 func (o ServiceUpdateConfigPtrOutput) Elem() ServiceUpdateConfigOutput {
-	return o.ApplyT(func (v *ServiceUpdateConfig) ServiceUpdateConfig { return *v }).(ServiceUpdateConfigOutput)
+	return o.ApplyT(func(v *ServiceUpdateConfig) ServiceUpdateConfig { return *v }).(ServiceUpdateConfigOutput)
 }
 
 func (o ServiceUpdateConfigPtrOutput) Delay() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceUpdateConfig) *string { return v.Delay }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceUpdateConfig) *string { return v.Delay }).(pulumi.StringPtrOutput)
 }
 
 func (o ServiceUpdateConfigPtrOutput) FailureAction() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceUpdateConfig) *string { return v.FailureAction }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceUpdateConfig) *string { return v.FailureAction }).(pulumi.StringPtrOutput)
 }
 
 func (o ServiceUpdateConfigPtrOutput) MaxFailureRatio() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceUpdateConfig) *string { return v.MaxFailureRatio }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceUpdateConfig) *string { return v.MaxFailureRatio }).(pulumi.StringPtrOutput)
 }
 
 func (o ServiceUpdateConfigPtrOutput) Monitor() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceUpdateConfig) *string { return v.Monitor }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceUpdateConfig) *string { return v.Monitor }).(pulumi.StringPtrOutput)
 }
 
 func (o ServiceUpdateConfigPtrOutput) Order() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ServiceUpdateConfig) *string { return v.Order }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ServiceUpdateConfig) *string { return v.Order }).(pulumi.StringPtrOutput)
 }
 
 func (o ServiceUpdateConfigPtrOutput) Parallelism() pulumi.IntPtrOutput {
-	return o.ApplyT(func (v ServiceUpdateConfig) *int { return v.Parallelism }).(pulumi.IntPtrOutput)
+	return o.ApplyT(func(v ServiceUpdateConfig) *int { return v.Parallelism }).(pulumi.IntPtrOutput)
 }
 
 type VolumeLabel struct {
@@ -6574,7 +6650,7 @@ func (i VolumeLabelArray) ToVolumeLabelArrayOutputWithContext(ctx context.Contex
 	return pulumi.ToOutputWithContext(ctx, i).(VolumeLabelArrayOutput)
 }
 
-type VolumeLabelOutput struct { *pulumi.OutputState }
+type VolumeLabelOutput struct{ *pulumi.OutputState }
 
 func (VolumeLabelOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*VolumeLabel)(nil)).Elem()
@@ -6589,14 +6665,14 @@ func (o VolumeLabelOutput) ToVolumeLabelOutputWithContext(ctx context.Context) V
 }
 
 func (o VolumeLabelOutput) Label() pulumi.StringOutput {
-	return o.ApplyT(func (v VolumeLabel) string { return v.Label }).(pulumi.StringOutput)
+	return o.ApplyT(func(v VolumeLabel) string { return v.Label }).(pulumi.StringOutput)
 }
 
 func (o VolumeLabelOutput) Value() pulumi.StringOutput {
-	return o.ApplyT(func (v VolumeLabel) string { return v.Value }).(pulumi.StringOutput)
+	return o.ApplyT(func(v VolumeLabel) string { return v.Value }).(pulumi.StringOutput)
 }
 
-type VolumeLabelArrayOutput struct { *pulumi.OutputState}
+type VolumeLabelArrayOutput struct{ *pulumi.OutputState }
 
 func (VolumeLabelArrayOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*[]VolumeLabel)(nil)).Elem()
@@ -6611,16 +6687,16 @@ func (o VolumeLabelArrayOutput) ToVolumeLabelArrayOutputWithContext(ctx context.
 }
 
 func (o VolumeLabelArrayOutput) Index(i pulumi.IntInput) VolumeLabelOutput {
-	return pulumi.All(o, i).ApplyT(func (vs []interface{}) VolumeLabel {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) VolumeLabel {
 		return vs[0].([]VolumeLabel)[vs[1].(int)]
 	}).(VolumeLabelOutput)
 }
 
 type GetNetworkIpamConfig struct {
 	AuxAddress map[string]interface{} `pulumi:"auxAddress"`
-	Gateway *string `pulumi:"gateway"`
-	IpRange *string `pulumi:"ipRange"`
-	Subnet *string `pulumi:"subnet"`
+	Gateway    *string                `pulumi:"gateway"`
+	IpRange    *string                `pulumi:"ipRange"`
+	Subnet     *string                `pulumi:"subnet"`
 }
 
 type GetNetworkIpamConfigInput interface {
@@ -6631,10 +6707,10 @@ type GetNetworkIpamConfigInput interface {
 }
 
 type GetNetworkIpamConfigArgs struct {
-	AuxAddress pulumi.MapInput `pulumi:"auxAddress"`
-	Gateway pulumi.StringPtrInput `pulumi:"gateway"`
-	IpRange pulumi.StringPtrInput `pulumi:"ipRange"`
-	Subnet pulumi.StringPtrInput `pulumi:"subnet"`
+	AuxAddress pulumi.MapInput       `pulumi:"auxAddress"`
+	Gateway    pulumi.StringPtrInput `pulumi:"gateway"`
+	IpRange    pulumi.StringPtrInput `pulumi:"ipRange"`
+	Subnet     pulumi.StringPtrInput `pulumi:"subnet"`
 }
 
 func (GetNetworkIpamConfigArgs) ElementType() reflect.Type {
@@ -6670,7 +6746,7 @@ func (i GetNetworkIpamConfigArray) ToGetNetworkIpamConfigArrayOutputWithContext(
 	return pulumi.ToOutputWithContext(ctx, i).(GetNetworkIpamConfigArrayOutput)
 }
 
-type GetNetworkIpamConfigOutput struct { *pulumi.OutputState }
+type GetNetworkIpamConfigOutput struct{ *pulumi.OutputState }
 
 func (GetNetworkIpamConfigOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*GetNetworkIpamConfig)(nil)).Elem()
@@ -6685,22 +6761,22 @@ func (o GetNetworkIpamConfigOutput) ToGetNetworkIpamConfigOutputWithContext(ctx 
 }
 
 func (o GetNetworkIpamConfigOutput) AuxAddress() pulumi.MapOutput {
-	return o.ApplyT(func (v GetNetworkIpamConfig) map[string]interface{} { return v.AuxAddress }).(pulumi.MapOutput)
+	return o.ApplyT(func(v GetNetworkIpamConfig) map[string]interface{} { return v.AuxAddress }).(pulumi.MapOutput)
 }
 
 func (o GetNetworkIpamConfigOutput) Gateway() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v GetNetworkIpamConfig) *string { return v.Gateway }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v GetNetworkIpamConfig) *string { return v.Gateway }).(pulumi.StringPtrOutput)
 }
 
 func (o GetNetworkIpamConfigOutput) IpRange() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v GetNetworkIpamConfig) *string { return v.IpRange }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v GetNetworkIpamConfig) *string { return v.IpRange }).(pulumi.StringPtrOutput)
 }
 
 func (o GetNetworkIpamConfigOutput) Subnet() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v GetNetworkIpamConfig) *string { return v.Subnet }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v GetNetworkIpamConfig) *string { return v.Subnet }).(pulumi.StringPtrOutput)
 }
 
-type GetNetworkIpamConfigArrayOutput struct { *pulumi.OutputState}
+type GetNetworkIpamConfigArrayOutput struct{ *pulumi.OutputState }
 
 func (GetNetworkIpamConfigArrayOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*[]GetNetworkIpamConfig)(nil)).Elem()
@@ -6715,17 +6791,17 @@ func (o GetNetworkIpamConfigArrayOutput) ToGetNetworkIpamConfigArrayOutputWithCo
 }
 
 func (o GetNetworkIpamConfigArrayOutput) Index(i pulumi.IntInput) GetNetworkIpamConfigOutput {
-	return pulumi.All(o, i).ApplyT(func (vs []interface{}) GetNetworkIpamConfig {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) GetNetworkIpamConfig {
 		return vs[0].([]GetNetworkIpamConfig)[vs[1].(int)]
 	}).(GetNetworkIpamConfigOutput)
 }
 
 type ProviderRegistryAuth struct {
-	Address string `pulumi:"address"`
-	ConfigFile *string `pulumi:"configFile"`
+	Address           string  `pulumi:"address"`
+	ConfigFile        *string `pulumi:"configFile"`
 	ConfigFileContent *string `pulumi:"configFileContent"`
-	Password *string `pulumi:"password"`
-	Username *string `pulumi:"username"`
+	Password          *string `pulumi:"password"`
+	Username          *string `pulumi:"username"`
 }
 
 type ProviderRegistryAuthInput interface {
@@ -6736,11 +6812,11 @@ type ProviderRegistryAuthInput interface {
 }
 
 type ProviderRegistryAuthArgs struct {
-	Address pulumi.StringInput `pulumi:"address"`
-	ConfigFile pulumi.StringPtrInput `pulumi:"configFile"`
+	Address           pulumi.StringInput    `pulumi:"address"`
+	ConfigFile        pulumi.StringPtrInput `pulumi:"configFile"`
 	ConfigFileContent pulumi.StringPtrInput `pulumi:"configFileContent"`
-	Password pulumi.StringPtrInput `pulumi:"password"`
-	Username pulumi.StringPtrInput `pulumi:"username"`
+	Password          pulumi.StringPtrInput `pulumi:"password"`
+	Username          pulumi.StringPtrInput `pulumi:"username"`
 }
 
 func (ProviderRegistryAuthArgs) ElementType() reflect.Type {
@@ -6776,7 +6852,7 @@ func (i ProviderRegistryAuthArray) ToProviderRegistryAuthArrayOutputWithContext(
 	return pulumi.ToOutputWithContext(ctx, i).(ProviderRegistryAuthArrayOutput)
 }
 
-type ProviderRegistryAuthOutput struct { *pulumi.OutputState }
+type ProviderRegistryAuthOutput struct{ *pulumi.OutputState }
 
 func (ProviderRegistryAuthOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*ProviderRegistryAuth)(nil)).Elem()
@@ -6791,26 +6867,26 @@ func (o ProviderRegistryAuthOutput) ToProviderRegistryAuthOutputWithContext(ctx 
 }
 
 func (o ProviderRegistryAuthOutput) Address() pulumi.StringOutput {
-	return o.ApplyT(func (v ProviderRegistryAuth) string { return v.Address }).(pulumi.StringOutput)
+	return o.ApplyT(func(v ProviderRegistryAuth) string { return v.Address }).(pulumi.StringOutput)
 }
 
 func (o ProviderRegistryAuthOutput) ConfigFile() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ProviderRegistryAuth) *string { return v.ConfigFile }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ProviderRegistryAuth) *string { return v.ConfigFile }).(pulumi.StringPtrOutput)
 }
 
 func (o ProviderRegistryAuthOutput) ConfigFileContent() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ProviderRegistryAuth) *string { return v.ConfigFileContent }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ProviderRegistryAuth) *string { return v.ConfigFileContent }).(pulumi.StringPtrOutput)
 }
 
 func (o ProviderRegistryAuthOutput) Password() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ProviderRegistryAuth) *string { return v.Password }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ProviderRegistryAuth) *string { return v.Password }).(pulumi.StringPtrOutput)
 }
 
 func (o ProviderRegistryAuthOutput) Username() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v ProviderRegistryAuth) *string { return v.Username }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v ProviderRegistryAuth) *string { return v.Username }).(pulumi.StringPtrOutput)
 }
 
-type ProviderRegistryAuthArrayOutput struct { *pulumi.OutputState}
+type ProviderRegistryAuthArrayOutput struct{ *pulumi.OutputState }
 
 func (ProviderRegistryAuthArrayOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*[]ProviderRegistryAuth)(nil)).Elem()
@@ -6825,7 +6901,7 @@ func (o ProviderRegistryAuthArrayOutput) ToProviderRegistryAuthArrayOutputWithCo
 }
 
 func (o ProviderRegistryAuthArrayOutput) Index(i pulumi.IntInput) ProviderRegistryAuthOutput {
-	return pulumi.All(o, i).ApplyT(func (vs []interface{}) ProviderRegistryAuth {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) ProviderRegistryAuth {
 		return vs[0].([]ProviderRegistryAuth)[vs[1].(int)]
 	}).(ProviderRegistryAuthOutput)
 }

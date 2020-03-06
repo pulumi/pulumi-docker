@@ -18,64 +18,8 @@ import (
 	"github.com/pulumi/pulumi/sdk/go/pulumi"
 )
 
-// DockerBuild may be used to specify detailed instructions about how to build a container.
-type DockerBuild struct {
-	// Context is a path to a directory to use for the Docker build context, usually the directory
-	// in which the Dockerfile resides (although dockerfile may be used to choose a custom location
-	// independent of this choice). If not specified, the context defaults to the current working
-	// directory; if a relative path is used, it is relative to the current working directory that
-	// Pulumi is evaluating.
-	Context pulumi.StringInput `pulumi:"context"`
-
-	// Dockerfile may be used to override the default Dockerfile name and/or location.
-	// By default, it is assumed to be a file named Dockerfile in the root of the build context.
-	Dockerfile pulumi.StringInput `pulumi:"dockerfile"`
-
-	// An optional map of named build-time argument variables to set during the Docker build.
-	// This flag allows you to pass built-time variables that can be accessed like environment variables
-	// inside the `RUN` instruction.
-	Args pulumi.MapInput `pulumi:"args"`
-
-	// An optional CacheFrom object with information about the build stages to use for the Docker
-	// build cache.  This parameter maps to the --cache-from argument to the Docker CLI. If this
-	// parameter is `true`, only the final image will be pulled and passed to --cache-from; if it is
-	// a CacheFrom object, the stages named therein will also be pulled and passed to --cache-from.
-	CacheFrom *CacheFrom `pulumi:"cacheFrom"`
-
-	// An optional catch-all string to provide extra CLI options to the docker build command.
-	// For example, use to specify `--network host`.
-	ExtraOptions pulumi.StringArrayInput `pulumi:"extraOptions"`
-
-	// Environment variables to set on the invocation of `docker build`, for example to support
-	// `DOCKER_BUILDKIT=1 docker build`.
-	Env pulumi.MapInput `pulumi:"env"`
-
-	// The target of the dockerfile to build.
-	Target pulumi.StringInput `pulumi:"target"`
-}
-
-type dockerBuild struct {
-	Context      string
-	Dockerfile   string
-	Args         map[string]string
-	CacheFrom    *cacheFrom
-	ExtraOptions []string
-	Env          map[string]string
-	Target       string
-}
-
-// CacheFrom may be used to specify build stages to use for the Docker build cache.
-// The final image is always implicitly included
-type CacheFrom struct {
-	Stages pulumi.StringArrayInput `pulumi:"stages"`
-}
-
-type cacheFrom struct {
-	Stages []string
-}
-
-func buildAndPushImageAsync(ctx *pulumi.Context, imageName string, build dockerBuild, repositoryURL string,
-	logResource pulumi.Resource, skipPush bool, registry imageRegistry) (string, error) {
+func buildAndPushImageAsync(ctx *pulumi.Context, imageName string, build DockerBuild, repositoryURL string,
+	logResource pulumi.Resource, skipPush bool, registry ImageRegistry) (string, error) {
 
 	// Give an initial message indicating what we're about to do.  That way, if anything
 	// takes a while, the user has an idea about what's going on.
@@ -93,8 +37,8 @@ func buildAndPushImageAsync(ctx *pulumi.Context, imageName string, build dockerB
 	return res, nil
 }
 
-func buildAndPushImageWorkerAsync(ctx *pulumi.Context, baseImageName string, build dockerBuild,
-	repositoryURL string, logResource pulumi.Resource, skipPush bool, registry *imageRegistry) (string, error) {
+func buildAndPushImageWorkerAsync(ctx *pulumi.Context, baseImageName string, build DockerBuild,
+	repositoryURL string, logResource pulumi.Resource, skipPush bool, registry *ImageRegistry) (string, error) {
 
 	err := checkRepositoryURL(repositoryURL)
 	if err != nil {
@@ -180,7 +124,7 @@ func buildAndPushImageWorkerAsync(ctx *pulumi.Context, baseImageName string, bui
 	return uniqueTaggedImageName, nil
 }
 
-func pullCacheAsync(imageName string, cacheFrom cacheFrom, repoURL string, logResource pulumi.Resource) []string {
+func pullCacheAsync(imageName string, cacheFrom CacheFrom, repoURL string, logResource pulumi.Resource) []string {
 	if len(repoURL) == 0 {
 		return nil
 	}
@@ -265,7 +209,7 @@ func createTaggedImageName(repositoryURL string, tag string, imageID string) str
 
 // Note: unlike the Typescript and Dotnet implementations, you must pass in a dockerBuild here.
 // If you have just the path, `build = &dockerBuild{Context: path}`.
-func buildImageAsync(imageName string, build dockerBuild,
+func buildImageAsync(imageName string, build DockerBuild,
 	logResource pulumi.Resource, cacheFrom []string) (string, []string, error) {
 
 	// If the build context is missing, default it to the working directory.
@@ -337,7 +281,7 @@ type loginResult struct {
 
 var loginResults []loginResult = nil
 
-func loginToRegistry(registry imageRegistry, logResource pulumi.Resource) error {
+func loginToRegistry(registry ImageRegistry, logResource pulumi.Resource) error {
 	registryName := registry.Server
 	username := registry.Username
 	password := registry.Password
@@ -418,7 +362,7 @@ func useDockerPasswordStdin(logResource pulumi.Resource) (bool, error) {
 	return constraint.Check(clientVersion), nil
 }
 
-func runDockerBuild(imageName string, build *dockerBuild, cacheFrom []string,
+func runDockerBuild(imageName string, build *DockerBuild, cacheFrom []string,
 	logResource pulumi.Resource, target string) error {
 
 	// Prepare the build arguments.
