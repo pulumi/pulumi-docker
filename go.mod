@@ -3,6 +3,7 @@ module github.com/pulumi/pulumi-docker
 go 1.13
 
 require (
+	github.com/Masterminds/semver v1.5.0
 	github.com/apparentlymart/go-dump v0.0.0-20190214190832-042adf3cf4a0 // indirect
 	github.com/aws/aws-sdk-go v1.25.3 // indirect
 	github.com/docker/go-units v0.3.3 // indirect
