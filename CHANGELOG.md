@@ -1,5 +1,5 @@
 ## HEAD (Unreleased)
-_(none)_
+* Add support for Go (https://github.com/pulumi/pulumi-docker/pull/147)
 
 ## 1.3.0 (2020-02-27)
 * Upgrade to v2.7.0 of the Docker Terraform Provider
