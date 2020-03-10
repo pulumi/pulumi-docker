@@ -2,7 +2,6 @@
 // *** Do not edit by hand unless you're certain you know what you are doing! ***
 
 // Export members:
-export * from "./config";
 export * from "./container";
 export * from "./docker";
 export * from "./getNetwork";
@@ -13,6 +12,7 @@ export * from "./provider";
 export * from "./remoteImage";
 export * from "./secret";
 export * from "./service";
+export * from "./serviceConfig";
 export * from "./volume";
 
 // Export sub-modules:

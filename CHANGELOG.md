@@ -1,5 +1,9 @@
 ## HEAD (Unreleased)
+_(none)_
+
+## 1.3.0 (2020-02-27)
 * Upgrade to v2.7.0 of the Docker Terraform Provider
+* Rename `docker.Config` to `docker.ServiceConfig` to avoid collisions with `Config` package.
 * Implemented the docker image build in the Python SDK, ported from the Javascript SDK
 
 ## 1.2.0 (2020-01-29)
