@@ -58,11 +58,11 @@ func buildAndPushImage(ctx *pulumi.Context, baseImageName string, build *DockerB
 	// If the container specified a cacheFrom parameter, first set up the cached stages.
 	var cacheFrom []string
 	if pullFromCache {
-		cacheFrom = pullCacheAsync(baseImageName, *build.CacheFrom, repositoryURL, logResource)
+		cacheFrom = pullCache(baseImageName, *build.CacheFrom, repositoryURL, logResource)
 	}
 
 	// Next, build the image.
-	imageID, stages, err := buildImageAsync(baseImageName, build, logResource, cacheFrom)
+	imageID, stages, err := buildImage(baseImageName, build, logResource, cacheFrom)
 	if err != nil {
 		return "", err
 	}
@@ -83,7 +83,7 @@ func buildAndPushImage(ctx *pulumi.Context, baseImageName string, build *DockerB
 		// First, push with both the optionally-requested-tag *and* imageId (which is guaranteed to
 		// be defined).  By using the imageId we give the image a fully unique location that we can
 		// successfully pull regardless of whatever else has happened at this repositoryUrl.
-		err := tagAndPushImageAsync(baseImageName, repositoryURL, tag, imageID, logResource)
+		err := tagAndPushImage(baseImageName, repositoryURL, tag, imageID, logResource)
 		if err != nil {
 			return "", err
 		}
@@ -92,13 +92,13 @@ func buildAndPushImage(ctx *pulumi.Context, baseImageName string, build *DockerB
 		// nice and simple url that they can reach this image at, without having the explicit imageId
 		// hash added to it.  Note: this location is not guaranteed to be idempotent.  For example,
 		// pushes on other machines might overwrite that location.
-		err = tagAndPushImageAsync(baseImageName, repositoryURL, tag, "", logResource)
+		err = tagAndPushImage(baseImageName, repositoryURL, tag, "", logResource)
 		if err != nil {
 			return "", err
 		}
 
 		for _, stage := range stages {
-			err = tagAndPushImageAsync(localStageImageName(baseImageName, stage),
+			err = tagAndPushImage(localStageImageName(baseImageName, stage),
 				repositoryURL, stage, "", logResource)
 			if err != nil {
 				return "", err
@@ -114,7 +114,7 @@ func buildAndPushImage(ctx *pulumi.Context, baseImageName string, build *DockerB
 	return uniqueTaggedImageName, nil
 }
 
-func pullCacheAsync(imageName string, cacheFrom CacheFrom, repoURL string, logResource pulumi.Resource) []string {
+func pullCache(imageName string, cacheFrom CacheFrom, repoURL string, logResource pulumi.Resource) []string {
 	if len(repoURL) == 0 {
 		return nil
 	}
@@ -145,10 +145,10 @@ func pullCacheAsync(imageName string, cacheFrom CacheFrom, repoURL string, logRe
 	return cacheFromImages
 }
 
-func tagAndPushImageAsync(imageName string, repositoryURL string, tag string,
+func tagAndPushImage(imageName string, repositoryURL string, tag string,
 	imageID string, logResource pulumi.Resource) error {
 
-	doTagAndPushAsync := func(targetName string) error {
+	doTagAndPush := func(targetName string) error {
 		_, err := runBasicCommandThatMustSucceed("docker", []string{"tag", imageName, targetName}, logResource)
 		if err != nil {
 			return err
@@ -158,7 +158,7 @@ func tagAndPushImageAsync(imageName string, repositoryURL string, tag string,
 	}
 
 	// Ensure we have a unique target name for this image, and tag and push to that unique target.
-	err := doTagAndPushAsync(createTaggedImageName(repositoryURL, tag, imageID))
+	err := doTagAndPush(createTaggedImageName(repositoryURL, tag, imageID))
 	if err != nil {
 		return err
 	}
@@ -170,7 +170,7 @@ func tagAndPushImageAsync(imageName string, repositoryURL string, tag string,
 	// Note: don't need to do this if imageId was 'undefined' as the above line will have already
 	// taken care of things for us.
 	if len(tag) > 0 && len(imageID) > 0 {
-		err := doTagAndPushAsync(createTaggedImageName(repositoryURL, tag, ""))
+		err := doTagAndPush(createTaggedImageName(repositoryURL, tag, ""))
 		return err
 	}
 
@@ -199,7 +199,7 @@ func createTaggedImageName(repositoryURL string, tag string, imageID string) str
 
 // Note: unlike the Typescript and Dotnet implementations, you must pass in a DockerBuild here.
 // If you have just the path, `build = &DockerBuild{Context: path}`.
-func buildImageAsync(imageName string, build *DockerBuild,
+func buildImage(imageName string, build *DockerBuild,
 	logResource pulumi.Resource, cacheFrom []string) (string, []string, error) {
 
 	// If the build context is missing, default it to the working directory.
