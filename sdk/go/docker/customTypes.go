@@ -254,6 +254,6 @@ func (o ImageArgsOutput) ToImageArgsOutput() ImageArgsOutput {
 	return o
 }
 
-func (o ImageArgsOutput) ToImageArgsOutputWithContext() ImageArgsOutput {
+func (o ImageArgsOutput) ToImageArgsOutputWithContext(ctx context.Context) ImageArgsOutput {
 	return o
 }
