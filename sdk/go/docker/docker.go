@@ -18,27 +18,12 @@ import (
 	"github.com/pulumi/pulumi/sdk/go/pulumi"
 )
 
-func buildAndPushImageAsync(ctx *pulumi.Context, imageName string, build DockerBuild, repositoryURL string,
-	logResource pulumi.Resource, skipPush bool, registry ImageRegistry) (string, error) {
+func buildAndPushImage(ctx *pulumi.Context, baseImageName string, build *DockerBuild,
+	repositoryURL string, logResource pulumi.Resource, skipPush bool, registry *ImageRegistry) (string, error) {
 
 	// Give an initial message indicating what we're about to do.  That way, if anything
 	// takes a while, the user has an idea about what's going on.
 	logging.Infof("Starting docker build and push...")
-
-	res, err := buildAndPushImageWorkerAsync(ctx, imageName, build, repositoryURL, logResource, skipPush, &registry)
-	if err != nil {
-		return "", err
-	}
-
-	// If we got here, then building/pushing didn't throw any errors.  update the status bar
-	// indicating that things worked properly.  that way, the info bar isn't stuck showing the very
-	// last thing printed by some subcommand we launched.
-	logging.Infof("Successfully pushed to docker.")
-	return res, nil
-}
-
-func buildAndPushImageWorkerAsync(ctx *pulumi.Context, baseImageName string, build DockerBuild,
-	repositoryURL string, logResource pulumi.Resource, skipPush bool, registry *ImageRegistry) (string, error) {
 
 	err := checkRepositoryURL(repositoryURL)
 	if err != nil {
@@ -120,6 +105,11 @@ func buildAndPushImageWorkerAsync(ctx *pulumi.Context, baseImageName string, bui
 			}
 		}
 	}
+
+	// If we got here, then building/pushing didn't throw any errors.  update the status bar
+	// indicating that things worked properly.  that way, the info bar isn't stuck showing the very
+	// last thing printed by some subcommand we launched.
+	logging.Infof("Successfully pushed to docker.")
 
 	return uniqueTaggedImageName, nil
 }
@@ -207,18 +197,18 @@ func createTaggedImageName(repositoryURL string, tag string, imageID string) str
 	return repositoryURL
 }
 
-// Note: unlike the Typescript and Dotnet implementations, you must pass in a dockerBuild here.
-// If you have just the path, `build = &dockerBuild{Context: path}`.
-func buildImageAsync(imageName string, build DockerBuild,
+// Note: unlike the Typescript and Dotnet implementations, you must pass in a DockerBuild here.
+// If you have just the path, `build = &DockerBuild{Context: path}`.
+func buildImageAsync(imageName string, build *DockerBuild,
 	logResource pulumi.Resource, cacheFrom []string) (string, []string, error) {
 
 	// If the build context is missing, default it to the working directory.
-	if len(build.Context) == 0 {
+	if build.Context == "" {
 		build.Context = "."
 	}
 
 	buildInfo := fmt.Sprintf("Building container image %s: context=%s", imageName, build.Context)
-	if len(build.Dockerfile) > 0 {
+	if build.Dockerfile != "" {
 		buildInfo = fmt.Sprintf("%s, dockerfile=%s", buildInfo, build.Dockerfile)
 	}
 	if len(build.Args) > 0 {
@@ -228,7 +218,7 @@ func buildImageAsync(imageName string, build DockerBuild,
 		}
 		buildInfo = fmt.Sprintf("%s, args=%s", buildInfo, args)
 	}
-	if len(build.Target) > 0 {
+	if build.Target != "" {
 		buildInfo = fmt.Sprintf("%s, target=%s", buildInfo, build.Target)
 	}
 	logging.InitLogging(true, 7, false)
@@ -238,7 +228,7 @@ func buildImageAsync(imageName string, build DockerBuild,
 	var stages []string
 	if build.CacheFrom != nil && build.CacheFrom.Stages != nil {
 		for _, stage := range stages {
-			err := runDockerBuild(localStageImageName(imageName, stage), &build, cacheFrom, logResource, stage)
+			err := runDockerBuild(localStageImageName(imageName, stage), build, cacheFrom, logResource, stage)
 			if err != nil {
 				return "", nil, err
 			}
@@ -247,7 +237,7 @@ func buildImageAsync(imageName string, build DockerBuild,
 	}
 
 	// Invoke Docker CLI commands to build.
-	err := runDockerBuild(imageName, &build, cacheFrom, logResource, "")
+	err := runDockerBuild(imageName, build, cacheFrom, logResource, "")
 
 	// Finally, inspect the image so we can return the SHA digest. Do not forward the output of this
 	// command this to the CLI to show the user.
@@ -255,7 +245,7 @@ func buildImageAsync(imageName string, build DockerBuild,
 	if err != nil {
 		return "", nil, err
 	}
-	if len(inspectResult) == 0 {
+	if inspectResult == "" {
 		return "", nil, errors.Errorf("No digest available for image %s", imageName)
 	}
 
@@ -376,11 +366,11 @@ func runDockerBuild(imageName string, build *DockerBuild, cacheFrom []string,
 			buildArgs = append(buildArgs, "--build-arg", fmt.Sprintf("%s=%s", k, v))
 		}
 	}
-	if len(build.Target) > 0 {
+	if build.Target != "" {
 		buildArgs = append(buildArgs, "--target", build.Target)
 	}
 	if build.CacheFrom != nil {
-		if cacheFrom != nil && len(cacheFrom) > 0 {
+		if len(cacheFrom) > 0 {
 			buildArgs = append(buildArgs, "--cache-from", strings.Join(cacheFrom, ""))
 		}
 	}
@@ -391,7 +381,7 @@ func runDockerBuild(imageName string, build *DockerBuild, cacheFrom []string,
 	buildArgs = append(buildArgs, build.Context)
 
 	buildArgs = append(buildArgs, "-t", imageName)
-	if len(target) > 0 {
+	if target != "" {
 		buildArgs = append(buildArgs, "--target", target)
 	}
 
@@ -470,7 +460,7 @@ func runCommandThatCanFail(cmdName string, args []string, logResource pulumi.Res
 		return "", err
 	}
 
-	if len(stdinInput) > 0 {
+	if stdinInput != "" {
 		stdin, err := cmd.StdinPipe()
 		if err != nil {
 			logging.Errorf("Error retreiving stdin: %v", err)
@@ -517,7 +507,7 @@ func runCommandThatCanFail(cmdName string, args []string, logResource pulumi.Res
 
 	// If we got any stderr messages, report them as an error/warning depending on the
 	// result of the operation.
-	if len(stderrString) > 0 {
+	if stderrString != "" {
 		if err != nil && !reportErrorAsWarning {
 			// Command returned non-zero code.  Treat these stderr messages as an error.
 			logging.Errorf("%s (%d)", stderrString, streamID)

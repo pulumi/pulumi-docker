@@ -88,7 +88,7 @@ func NewImage(ctx *pulumi.Context,
 		// If there is no localImageName set it equal to imageName.  Note: this means
 		// that if imageName contains a tag, localImageName will contain the same tag.
 		localImageName := imageArgs.LocalImageName
-		if len(localImageName) == 0 {
+		if localImageName == "" {
 			localImageName = imageName
 		}
 
@@ -101,29 +101,29 @@ func NewImage(ctx *pulumi.Context,
 		localImageNameWithoutTag, localImageNameTag := getImageNameAndTag(localImageName)
 		imageNameWithoutTag, imageNameTag := getImageNameAndTag(imageName)
 
-		if len(localImageNameTag) > 0 && len(imageNameTag) > 0 && localImageNameTag != imageNameTag {
+		if localImageNameTag != "" && imageNameTag != "" && localImageNameTag != imageNameTag {
 			return "", errors.Errorf("%v and %v had mismatched tags. %s != %s",
 				args.LocalImageName, args.ImageName, localImageNameTag, imageNameTag)
 		}
 
 		var tag string
-		if len(localImageNameTag) == 0 {
+		if localImageNameTag == "" {
 			tag = imageNameTag
 		} else {
 			tag = localImageNameTag
 		}
 
-		// BuildAndPushImageAsync expects only the baseImageName to have a tag.  So build that
+		// BuildAndPushImage expects only the baseImageName to have a tag.  So build that
 		// name appropriately if we were given a tag.
 		var baseImageName string
-		if len(tag) == 0 {
+		if tag != "" {
 			baseImageName = localImageName
 		} else {
 			baseImageName = fmt.Sprintf("%s:%s", localImageNameWithoutTag, tag)
 		}
 
-		return buildAndPushImageAsync(ctx, baseImageName, imageArgs.Build,
-			imageNameWithoutTag, resource, skipPush, imageArgs.Registry)
+		return buildAndPushImage(ctx, baseImageName, &imageArgs.Build,
+			imageNameWithoutTag, resource, skipPush, &imageArgs.Registry)
 	}).(pulumi.StringOutput)
 
 	resource.RegistryServer = pulumi.All(args.Registry).ApplyT(func(args []interface{}) (string, error) {
