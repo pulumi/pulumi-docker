@@ -4,52 +4,10 @@ package docker
 
 import (
 	"fmt"
-	"reflect"
 
 	"github.com/pkg/errors"
 	"github.com/pulumi/pulumi/sdk/go/pulumi"
 )
-
-// ImageArgs are the arguments are constructing an Image resource.
-type ImageArgs struct {
-
-	// The qualified image name that will be pushed to the remote registry.  Must be a supported
-	// image name for the target registry user.  This name can include a tag at the end.  If
-	// provided all pushed image resources will contain that tag as well.
-	//
-	// Either [imageName] or [localImageName] can have a tag.  However, if both have a tag, then
-	// those tags must match.
-	ImageName pulumi.StringInput
-
-	// The Docker build context, as a folder path or a detailed DockerBuild object.
-	Build DockerBuildInput
-
-	// The docker image name to build locally before tagging with imageName.  If not provided, it
-	// will be given the value of to [imageName].  This name can include a tag at the end.  If
-	// provided all pushed image resources will contain that tag as well.
-	//
-	// Either [imageName] or [localImageName] can have a tag.  However, if both have a tag, then
-	// those tags must match.
-	LocalImageName pulumi.StringInput
-
-	// Credentials for the docker registry to push to.
-	Registry ImageRegistryInput
-
-	// Skip push flag.
-	SkipPush pulumi.BoolInput
-}
-
-type imageArgs struct {
-	ImageName      string        `pulumi:"imageName"`
-	Build          DockerBuild   `pulumi:"build"`
-	LocalImageName string        `pulumi:"localImageName"`
-	Registry       ImageRegistry `pulumi:"registry"`
-	SkipPush       bool          `pulumi:"skipPush"`
-}
-
-func (ImageArgs) ElementType() reflect.Type {
-	return reflect.TypeOf((*imageArgs)(nil)).Elem()
-}
 
 // Image is a resource represents a Docker image built locally which is published and made
 // available via a remote Docker registry.  This can be used to ensure that a Docker source
@@ -81,8 +39,7 @@ func NewImage(ctx *pulumi.Context,
 		return nil, err
 	}
 
-	resource.ImageName = pulumi.All(args).ApplyT(func(inputArgs []interface{}) (string, error) {
-		imageArgs := inputArgs[0].(imageArgs)
+	resource.ImageName = args.ToImageArgsOutput().ApplyString(func(imageArgs imageArgs) (string, error) {
 		imageName := imageArgs.ImageName
 
 		// If there is no localImageName set it equal to imageName.  Note: this means
@@ -124,12 +81,11 @@ func NewImage(ctx *pulumi.Context,
 
 		return buildAndPushImage(ctx, baseImageName, &imageArgs.Build,
 			imageNameWithoutTag, resource, skipPush, &imageArgs.Registry)
-	}).(pulumi.StringOutput)
+	})
 
-	resource.RegistryServer = pulumi.All(args.Registry).ApplyT(func(args []interface{}) (string, error) {
-		registry := args[0].(ImageRegistry)
+	resource.RegistryServer = args.Registry.ToImageRegistryOutput().ApplyString(func(registry ImageRegistry) (string, error) {
 		return registry.Server, nil
-	}).(pulumi.StringOutput)
+	})
 	resource.BaseImageName = args.ImageName.ToStringOutput()
 
 	outputs := pulumi.Map(map[string]pulumi.Input{

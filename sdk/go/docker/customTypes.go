@@ -187,3 +187,80 @@ func (o ImageRegistryOutput) ToImageRegistryOutputWithContext(ctx context.Contex
 func (o ImageRegistryOutput) Server() pulumi.StringOutput {
 	return o.ApplyT(func(v ImageRegistry) string { return v.Server }).(pulumi.StringOutput)
 }
+
+// ImageArgs are the arguments are constructing an Image resource.
+type ImageArgs struct {
+
+	// The qualified image name that will be pushed to the remote registry.  Must be a supported
+	// image name for the target registry user.  This name can include a tag at the end.  If
+	// provided all pushed image resources will contain that tag as well.
+	//
+	// Either [imageName] or [localImageName] can have a tag.  However, if both have a tag, then
+	// those tags must match.
+	ImageName pulumi.StringInput
+
+	// The Docker build context, as a folder path or a detailed DockerBuild object.
+	Build DockerBuildInput
+
+	// The docker image name to build locally before tagging with imageName.  If not provided, it
+	// will be given the value of to [imageName].  This name can include a tag at the end.  If
+	// provided all pushed image resources will contain that tag as well.
+	//
+	// Either [imageName] or [localImageName] can have a tag.  However, if both have a tag, then
+	// those tags must match.
+	LocalImageName pulumi.StringInput
+
+	// Credentials for the docker registry to push to.
+	Registry ImageRegistryInput
+
+	// Skip push flag.
+	SkipPush pulumi.BoolInput
+}
+
+type imageArgs struct {
+	ImageName      string        `pulumi:"imageName"`
+	Build          DockerBuild   `pulumi:"build"`
+	LocalImageName string        `pulumi:"localImageName"`
+	Registry       ImageRegistry `pulumi:"registry"`
+	SkipPush       bool          `pulumi:"skipPush"`
+}
+
+type ImageArgsInput interface {
+	pulumi.Input
+
+	ToImageArgsOutput() ImageArgsOutput
+	ToImageArgsOutputWithContext(context.Context) ImageArgsOutput
+}
+
+func (ImageArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*imageArgs)(nil)).Elem()
+}
+
+func (i ImageArgs) ToImageArgsOutput() ImageArgsOutput {
+	return i.ToImageArgsOutputWithContext(context.Background())
+}
+
+func (i ImageArgs) ToImageArgsOutputWithContext(ctx context.Context) ImageArgsOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ImageArgsOutput)
+}
+
+type ImageArgsOutput struct{ *pulumi.OutputState }
+
+func (ImageArgsOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*imageArgs)(nil)).Elem()
+}
+
+func (o ImageArgsOutput) ToImageArgsOutput() ImageArgsOutput {
+	return o
+}
+
+func (o ImageArgsOutput) ToImageArgsOutputWithContext(ctx context.Context) ImageArgsOutput {
+	return o
+}
+
+func init() {
+	pulumi.RegisterOutputType(CacheFromOutput{})
+	pulumi.RegisterOutputType(DockerBuildOutput{})
+	pulumi.RegisterOutputType(ImageRegistryOutput{})
+	pulumi.RegisterOutputType(ImageArgsOutput{})
+}
