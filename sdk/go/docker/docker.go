@@ -336,9 +336,21 @@ func useDockerPasswordStdin(logResource pulumi.Resource) (bool, error) {
 		return false, err
 	}
 
-	versionData := versionInterface.(map[string]interface{})
-	clientData := versionData["Client"].(map[string]interface{})
-	version := clientData["Version"].(string)
+	versionData, ok := versionInterface.(map[string]interface{})
+	if !ok {
+		return false, errors.New("unable to extract the docker version")
+	}
+
+	clientData, ok := versionData["Client"].(map[string]interface{})
+	if !ok {
+		return false, errors.New("unable to extract the docker client version")
+	}
+
+	version, ok := clientData["Version"].(string)
+	if !ok {
+		return false, errors.New("unable to extract the docker client version")
+	}
+
 	clientVersion, err := semver.NewVersion(version)
 	if err != nil {
 		return false, err
@@ -419,10 +431,6 @@ func runBasicCommandThatMustSucceed(cmd string, args []string, logResource pulum
 // Stdout messages will be logged ephemerally to this resource.  This lets the user know there is
 // progress, without having that dumped on them at the end.  If an error occurs though, the stdout
 // content will be printed.
-//
-// The promise returned by this function should never reach the rejected state.  Even if the
-// underlying spawned command has a problem, this will result in a resolved promise with the
-// [CommandResult.code] value set to a non-zero value.
 func runCommandThatCanFail(cmdName string, args []string, logResource pulumi.Resource, reportFullCommandLine bool,
 	reportErrorAsWarning bool, stdinInput string, env map[string]string) (string, error) {
 

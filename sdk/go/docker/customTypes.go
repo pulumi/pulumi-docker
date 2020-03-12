@@ -9,8 +9,9 @@ import (
 	"github.com/pulumi/pulumi/sdk/go/pulumi"
 )
 
+// CacheFrom is a copy of CacheFromArgs but without using TInput in types.
 type CacheFrom struct {
-	Stages []string `pulumi:"stages`
+	Stages []string `pulumi:"stages"`
 }
 
 type CacheFromInput interface {
@@ -20,8 +21,10 @@ type CacheFromInput interface {
 	ToCacheFromOutputWithContext(context.Context) CacheFromOutput
 }
 
+// CacheFromArgs may be used to specify build stages to use for the Docker build cache.
+// The final image is always implicitly included.
 type CacheFromArgs struct {
-	Stages pulumi.StringArrayInput `pulumi:"stages`
+	Stages pulumi.StringArrayInput `pulumi:"stages"`
 }
 
 func (CacheFromArgs) ElementType() reflect.Type {
@@ -50,6 +53,7 @@ func (o CacheFromOutput) ToCacheFromOutputWithContext(ctx context.Context) Cache
 	return o
 }
 
+// DockerBuild is a copy of DockerBuildArgs but without using TInput in types.
 type DockerBuild struct {
 	Context      string            `pulumi:"context"`
 	Dockerfile   string            `pulumi:"dockerfile"`
@@ -60,7 +64,7 @@ type DockerBuild struct {
 	Target       string            `pulumi:"target"`
 }
 
-// DockerBuild may be used to specify detailed instructions about how to build a container.
+// DockerBuildArgs may be used to specify detailed instructions about how to build a container.
 type DockerBuildArgs struct {
 	// Context is a path to a directory to use for the Docker build context, usually the directory
 	// in which the Dockerfile resides (although dockerfile may be used to choose a custom location
@@ -145,6 +149,7 @@ type ImageRegistryArgs struct {
 	Password pulumi.StringInput `pulumi:"password"`
 }
 
+// ImageRegistry is a copy of ImageRegistryArgs but without using TInput in types.
 type ImageRegistry struct {
 	Server   string
 	Username string
@@ -217,6 +222,7 @@ type ImageArgs struct {
 	SkipPush pulumi.BoolInput
 }
 
+// imageArgs is a copy of ImageArgs but without using TInput in types.
 type imageArgs struct {
 	ImageName      string        `pulumi:"imageName"`
 	Build          DockerBuild   `pulumi:"build"`
