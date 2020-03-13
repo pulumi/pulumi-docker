@@ -17,7 +17,7 @@ class Secret(pulumi.CustomResource):
     labels: pulumi.Output[list]
     """
     See Labels below for details.
-    
+
       * `label` (`str`) - Name of the label
         * `value` (Required, string) Value of the label
       * `value` (`str`)
@@ -29,20 +29,20 @@ class Secret(pulumi.CustomResource):
     def __init__(__self__, resource_name, opts=None, data=None, labels=None, name=None, __props__=None, __name__=None, __opts__=None):
         """
         Manages the secrets of a Docker service in a swarm.
-        
+
+        > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/secret.html.markdown.
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[str] data: The base64 encoded data of the secret.
         :param pulumi.Input[list] labels: See Labels below for details.
         :param pulumi.Input[str] name: The name of the Docker secret.
-        
+
         The **labels** object supports the following:
-        
+
           * `label` (`pulumi.Input[str]`) - Name of the label
             * `value` (Required, string) Value of the label
           * `value` (`pulumi.Input[str]`)
-
-        > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/secret.html.markdown.
         """
         if __name__ is not None:
             warnings.warn("explicit use of __name__ is deprecated", DeprecationWarning)
@@ -77,25 +77,24 @@ class Secret(pulumi.CustomResource):
         """
         Get an existing Secret resource's state with the given name, id, and optional extra
         properties used to qualify the lookup.
-        
+
         :param str resource_name: The unique name of the resulting resource.
         :param str id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[str] data: The base64 encoded data of the secret.
         :param pulumi.Input[list] labels: See Labels below for details.
         :param pulumi.Input[str] name: The name of the Docker secret.
-        
+
         The **labels** object supports the following:
-        
+
           * `label` (`pulumi.Input[str]`) - Name of the label
             * `value` (Required, string) Value of the label
           * `value` (`pulumi.Input[str]`)
-
-        > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/secret.html.markdown.
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
 
         __props__ = dict()
+
         __props__["data"] = data
         __props__["labels"] = labels
         __props__["name"] = name

@@ -148,6 +148,8 @@ export interface RemoteImageState {
     readonly name?: pulumi.Input<string>;
     /**
      * **Deprecated**, use `pullTriggers` instead.
+     * 
+     * @deprecated Use field pull_triggers instead
      */
     readonly pullTrigger?: pulumi.Input<string>;
     /**
@@ -175,6 +177,8 @@ export interface RemoteImageArgs {
     readonly name: pulumi.Input<string>;
     /**
      * **Deprecated**, use `pullTriggers` instead.
+     * 
+     * @deprecated Use field pull_triggers instead
      */
     readonly pullTrigger?: pulumi.Input<string>;
     /**

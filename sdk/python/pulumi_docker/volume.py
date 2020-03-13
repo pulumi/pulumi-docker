@@ -21,7 +21,7 @@ class Volume(pulumi.CustomResource):
     labels: pulumi.Output[list]
     """
     User-defined key/value metadata.
-    
+
       * `label` (`str`)
       * `value` (`str`)
     """
@@ -36,7 +36,9 @@ class Volume(pulumi.CustomResource):
         Creates and destroys a volume in Docker. This can be used alongside
         [docker\_container](https://www.terraform.io/docs/providers/docker/r/container.html)
         to prepare volumes that can be shared across containers.
-        
+
+        > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/volume.html.markdown.
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[str] driver: Driver type for the volume (defaults to local).
@@ -44,13 +46,11 @@ class Volume(pulumi.CustomResource):
         :param pulumi.Input[list] labels: User-defined key/value metadata.
         :param pulumi.Input[str] name: The name of the Docker volume (generated if not
                provided).
-        
+
         The **labels** object supports the following:
-        
+
           * `label` (`pulumi.Input[str]`)
           * `value` (`pulumi.Input[str]`)
-
-        > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/volume.html.markdown.
         """
         if __name__ is not None:
             warnings.warn("explicit use of __name__ is deprecated", DeprecationWarning)
@@ -85,7 +85,7 @@ class Volume(pulumi.CustomResource):
         """
         Get an existing Volume resource's state with the given name, id, and optional extra
         properties used to qualify the lookup.
-        
+
         :param str resource_name: The unique name of the resulting resource.
         :param str id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
@@ -94,17 +94,16 @@ class Volume(pulumi.CustomResource):
         :param pulumi.Input[list] labels: User-defined key/value metadata.
         :param pulumi.Input[str] name: The name of the Docker volume (generated if not
                provided).
-        
+
         The **labels** object supports the following:
-        
+
           * `label` (`pulumi.Input[str]`)
           * `value` (`pulumi.Input[str]`)
-
-        > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/volume.html.markdown.
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
 
         __props__ = dict()
+
         __props__["driver"] = driver
         __props__["driver_opts"] = driver_opts
         __props__["labels"] = labels

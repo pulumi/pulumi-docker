@@ -13,7 +13,7 @@ import (
 // Manages a Docker Network. This can be used alongside
 // [docker\_container](https://www.terraform.io/docs/providers/docker/r/container.html)
 // to create virtual networks within the docker environment.
-// 
+//
 // > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/network.html.markdown.
 type Network struct {
 	pulumi.CustomResourceState
