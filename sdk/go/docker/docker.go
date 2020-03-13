@@ -14,7 +14,6 @@ import (
 	"github.com/Masterminds/semver"
 
 	"github.com/pkg/errors"
-	"github.com/pulumi/pulumi/pkg/util/logging"
 	"github.com/pulumi/pulumi/sdk/go/pulumi"
 )
 
@@ -23,7 +22,7 @@ func buildAndPushImage(ctx *pulumi.Context, baseImageName string, build *DockerB
 
 	// Give an initial message indicating what we're about to do.  That way, if anything
 	// takes a while, the user has an idea about what's going on.
-	logging.Infof("Starting docker build and push...")
+	logEphemeral(ctx, "Starting docker build and push...", logResource)
 
 	err := checkRepositoryURL(repositoryURL)
 	if err != nil {
@@ -47,8 +46,8 @@ func buildAndPushImage(ctx *pulumi.Context, baseImageName string, build *DockerB
 	// logged-in to the correct registry (or uses auto-login via credential helpers).
 	if registry != nil {
 		if !ctx.DryRun() || pullFromCache {
-			logging.Infof("Logging into registry...")
-			err := loginToRegistry(*registry, logResource)
+			logEphemeral(ctx, "Logging into registry...", logResource)
+			err := loginToRegistry(ctx, *registry, logResource)
 			if err != nil {
 				return "", err
 			}
@@ -58,11 +57,11 @@ func buildAndPushImage(ctx *pulumi.Context, baseImageName string, build *DockerB
 	// If the container specified a cacheFrom parameter, first set up the cached stages.
 	var cacheFrom []string
 	if pullFromCache {
-		cacheFrom = pullCache(baseImageName, *build.CacheFrom, repositoryURL, logResource)
+		cacheFrom = pullCache(ctx, baseImageName, *build.CacheFrom, repositoryURL, logResource)
 	}
 
 	// Next, build the image.
-	imageID, stages, err := buildImage(baseImageName, build, logResource, cacheFrom)
+	imageID, stages, err := buildImage(ctx, baseImageName, build, logResource, cacheFrom)
 	if err != nil {
 		return "", err
 	}
@@ -83,7 +82,7 @@ func buildAndPushImage(ctx *pulumi.Context, baseImageName string, build *DockerB
 		// First, push with both the optionally-requested-tag *and* imageId (which is guaranteed to
 		// be defined).  By using the imageId we give the image a fully unique location that we can
 		// successfully pull regardless of whatever else has happened at this repositoryUrl.
-		err := tagAndPushImage(baseImageName, repositoryURL, tag, imageID, logResource)
+		err := tagAndPushImage(ctx, baseImageName, repositoryURL, tag, imageID, logResource)
 		if err != nil {
 			return "", err
 		}
@@ -92,13 +91,13 @@ func buildAndPushImage(ctx *pulumi.Context, baseImageName string, build *DockerB
 		// nice and simple url that they can reach this image at, without having the explicit imageId
 		// hash added to it.  Note: this location is not guaranteed to be idempotent.  For example,
 		// pushes on other machines might overwrite that location.
-		err = tagAndPushImage(baseImageName, repositoryURL, tag, "", logResource)
+		err = tagAndPushImage(ctx, baseImageName, repositoryURL, tag, "", logResource)
 		if err != nil {
 			return "", err
 		}
 
 		for _, stage := range stages {
-			err = tagAndPushImage(localStageImageName(baseImageName, stage),
+			err = tagAndPushImage(ctx, localStageImageName(baseImageName, stage),
 				repositoryURL, stage, "", logResource)
 			if err != nil {
 				return "", err
@@ -109,17 +108,17 @@ func buildAndPushImage(ctx *pulumi.Context, baseImageName string, build *DockerB
 	// If we got here, then building/pushing didn't throw any errors.  update the status bar
 	// indicating that things worked properly.  that way, the info bar isn't stuck showing the very
 	// last thing printed by some subcommand we launched.
-	logging.Infof("Successfully pushed to docker.")
+	logEphemeral(ctx, "Successfully pushed to docker.", logResource)
 
 	return uniqueTaggedImageName, nil
 }
 
-func pullCache(imageName string, cacheFrom CacheFrom, repoURL string, logResource pulumi.Resource) []string {
+func pullCache(ctx *pulumi.Context, imageName string, cacheFrom CacheFrom, repoURL string, logResource pulumi.Resource) []string {
 	if len(repoURL) == 0 {
 		return nil
 	}
 
-	logging.Infof("Pulling cache for %s from %s", imageName, repoURL)
+	logDebug(ctx, fmt.Sprintf("Pulling cache for %s from %s", imageName, repoURL), logResource)
 
 	var cacheFromImages []string
 	stages := append(cacheFrom.Stages, "")
@@ -134,7 +133,7 @@ func pullCache(imageName string, cacheFrom CacheFrom, repoURL string, logResourc
 		// That's fine, just move onto the next stage.  Also, pass along a flag saying that we
 		// should print that error as a warning instead.  We don't want the update to succeed but
 		// the user to then get a nasty "error:" message at the end.
-		_, err := runCommandThatCanFail("docker", []string{"pull", image}, logResource, true, true, "", nil)
+		_, err := runCommandThatCanFail(ctx, "docker", []string{"pull", image}, logResource, true, true, "", nil)
 		if err == nil {
 			continue
 		}
@@ -145,15 +144,15 @@ func pullCache(imageName string, cacheFrom CacheFrom, repoURL string, logResourc
 	return cacheFromImages
 }
 
-func tagAndPushImage(imageName string, repositoryURL string, tag string,
+func tagAndPushImage(ctx *pulumi.Context, imageName string, repositoryURL string, tag string,
 	imageID string, logResource pulumi.Resource) error {
 
 	doTagAndPush := func(targetName string) error {
-		_, err := runBasicCommandThatMustSucceed("docker", []string{"tag", imageName, targetName}, logResource)
+		_, err := runBasicCommandThatMustSucceed(ctx, "docker", []string{"tag", imageName, targetName}, logResource)
 		if err != nil {
 			return err
 		}
-		_, err = runBasicCommandThatMustSucceed("docker", []string{"push", targetName}, logResource)
+		_, err = runBasicCommandThatMustSucceed(ctx, "docker", []string{"push", targetName}, logResource)
 		return err
 	}
 
@@ -199,7 +198,7 @@ func createTaggedImageName(repositoryURL string, tag string, imageID string) str
 
 // Note: unlike the Typescript and Dotnet implementations, you must pass in a DockerBuild here.
 // If you have just the path, `build = &DockerBuild{Context: path}`.
-func buildImage(imageName string, build *DockerBuild,
+func buildImage(ctx *pulumi.Context, imageName string, build *DockerBuild,
 	logResource pulumi.Resource, cacheFrom []string) (string, []string, error) {
 
 	// If the build context is missing, default it to the working directory.
@@ -221,14 +220,13 @@ func buildImage(imageName string, build *DockerBuild,
 	if build.Target != "" {
 		buildInfo = fmt.Sprintf("%s, target=%s", buildInfo, build.Target)
 	}
-	logging.InitLogging(true, 7, false)
-	logging.Infof(buildInfo)
+	logEphemeral(ctx, buildInfo, logResource)
 
 	// If the container build specified build stages to cache, build each in turn.
 	var stages []string
 	if build.CacheFrom != nil && build.CacheFrom.Stages != nil {
 		for _, stage := range stages {
-			err := runDockerBuild(localStageImageName(imageName, stage), build, cacheFrom, logResource, stage)
+			err := runDockerBuild(ctx, localStageImageName(imageName, stage), build, cacheFrom, logResource, stage)
 			if err != nil {
 				return "", nil, err
 			}
@@ -237,11 +235,12 @@ func buildImage(imageName string, build *DockerBuild,
 	}
 
 	// Invoke Docker CLI commands to build.
-	err := runDockerBuild(imageName, build, cacheFrom, logResource, "")
+	err := runDockerBuild(ctx, imageName, build, cacheFrom, logResource, "")
 
 	// Finally, inspect the image so we can return the SHA digest. Do not forward the output of this
 	// command this to the CLI to show the user.
-	inspectResult, err := runBasicCommandThatMustSucceed("docker", []string{"image", "inspect", "-f", "{{.Id}}", imageName}, logResource)
+	inspectResult, err := runBasicCommandThatMustSucceed(ctx, "docker",
+		[]string{"image", "inspect", "-f", "{{.Id}}", imageName}, logResource)
 	if err != nil {
 		return "", nil, err
 	}
@@ -271,7 +270,7 @@ type loginResult struct {
 
 var loginResults []loginResult = nil
 
-func loginToRegistry(registry ImageRegistry, logResource pulumi.Resource) error {
+func loginToRegistry(ctx *pulumi.Context, registry ImageRegistry, logResource pulumi.Resource) error {
 	registryName := registry.Server
 	username := registry.Username
 	password := registry.Password
@@ -281,12 +280,12 @@ func loginToRegistry(registry ImageRegistry, logResource pulumi.Resource) error 
 	// around so that future login requests will see it.
 	for _, loginResult := range loginResults {
 		if loginResult.registryName == registryName && loginResult.username == username {
-			logging.Infof("Reusing existing login for %s@%s", username, registryName)
+			logEphemeral(ctx, fmt.Sprintf("Reusing existing login for %s@%s", username, registryName), logResource)
 			return nil
 		}
 	}
 
-	dockerPasswordStdin, err := useDockerPasswordStdin(logResource)
+	dockerPasswordStdin, err := useDockerPasswordStdin(ctx, logResource)
 	if err != nil {
 		return err
 	}
@@ -294,14 +293,14 @@ func loginToRegistry(registry ImageRegistry, logResource pulumi.Resource) error 
 	// pass 'reportFullCommandLine: false' here so that if we fail to login we don't emit the
 	// username/password in our logs.  Instead, we'll just say "'docker login' failed with code ..."
 	if dockerPasswordStdin {
-		_, err := runCommandThatMustSucceed("docker", []string{"login", "-u", username,
+		_, err := runCommandThatMustSucceed(ctx, "docker", []string{"login", "-u", username,
 			"--password-stdin", registryName}, logResource, false, password, nil)
 		if err != nil {
 			return err
 		}
 
 	} else {
-		_, err := runCommandThatMustSucceed("docker", []string{"login", "-u", username,
+		_, err := runCommandThatMustSucceed(ctx, "docker", []string{"login", "-u", username,
 			"-p", password, registryName}, logResource, false, "", nil)
 		if err != nil {
 			return err
@@ -317,17 +316,18 @@ func loginToRegistry(registry ImageRegistry, logResource pulumi.Resource) error 
 
 var dockerPassword *bool = nil
 
-func useDockerPasswordStdin(logResource pulumi.Resource) (bool, error) {
+func useDockerPasswordStdin(ctx *pulumi.Context, logResource pulumi.Resource) (bool, error) {
 	if dockerPassword != nil {
 		return *dockerPassword, nil
 	}
 
 	// Verify that 'docker' is on the PATH and get the client/server versions
-	dockerVersionString, err := runBasicCommandThatMustSucceed("docker", []string{"version", "-f", "{{json .}}"}, logResource)
+	dockerVersionString, err := runBasicCommandThatMustSucceed(ctx, "docker",
+		[]string{"version", "-f", "{{json .}}"}, logResource)
 	if err != nil {
 		return false, errors.Wrap(err, "No 'docker' command available on PATH: Please install to use container 'build' mode.")
 	}
-	logging.Infof("dockerVersion => %s", dockerVersionString)
+	logDebug(ctx, fmt.Sprintf("'docker version' => %s", dockerVersionString), logResource)
 
 	// Decide whether to use --password or --password-stdin based on the client version.
 	var versionInterface interface{}
@@ -364,7 +364,7 @@ func useDockerPasswordStdin(logResource pulumi.Resource) (bool, error) {
 	return constraint.Check(clientVersion), nil
 }
 
-func runDockerBuild(imageName string, build *DockerBuild, cacheFrom []string,
+func runDockerBuild(ctx *pulumi.Context, imageName string, build *DockerBuild, cacheFrom []string,
 	logResource pulumi.Resource, target string) error {
 
 	// Prepare the build arguments.
@@ -397,17 +397,17 @@ func runDockerBuild(imageName string, build *DockerBuild, cacheFrom []string,
 		buildArgs = append(buildArgs, "--target", target)
 	}
 
-	_, err := runCommandThatMustSucceed("docker", buildArgs, logResource, true, "", build.Env)
+	_, err := runCommandThatMustSucceed(ctx, "docker", buildArgs, logResource, true, "", build.Env)
 	return err
 }
 
 // runCommandThatMustSucceed is used to determine if the full command line should be reported
 // when an error happens.  In general reporting the full command line is fine.  But it should be set
 // to false if it might contain sensitive information (like a username/password)
-func runCommandThatMustSucceed(cmd string, args []string, logResource pulumi.Resource,
+func runCommandThatMustSucceed(ctx *pulumi.Context, cmd string, args []string, logResource pulumi.Resource,
 	reportFullCommandLine bool, stdin string, env map[string]string) (string, error) {
 
-	stdout, err := runCommandThatCanFail(cmd, args, logResource, reportFullCommandLine, false, stdin, env)
+	stdout, err := runCommandThatCanFail(ctx, cmd, args, logResource, reportFullCommandLine, false, stdin, env)
 
 	if err != nil {
 		return "", errors.Wrapf(err, "%s failed with error",
@@ -417,8 +417,10 @@ func runCommandThatMustSucceed(cmd string, args []string, logResource pulumi.Res
 	return stdout, nil
 }
 
-func runBasicCommandThatMustSucceed(cmd string, args []string, logResource pulumi.Resource) (string, error) {
-	return runCommandThatMustSucceed(cmd, args, logResource, true, "", nil)
+func runBasicCommandThatMustSucceed(ctx *pulumi.Context, cmd string, args []string,
+	logResource pulumi.Resource) (string, error) {
+
+	return runCommandThatMustSucceed(ctx, cmd, args, logResource, true, "", nil)
 }
 
 // Runs a CLI command in a child process, returning a promise for the process's exit. Both stdout
@@ -431,13 +433,11 @@ func runBasicCommandThatMustSucceed(cmd string, args []string, logResource pulum
 // Stdout messages will be logged ephemerally to this resource.  This lets the user know there is
 // progress, without having that dumped on them at the end.  If an error occurs though, the stdout
 // content will be printed.
-func runCommandThatCanFail(cmdName string, args []string, logResource pulumi.Resource, reportFullCommandLine bool,
-	reportErrorAsWarning bool, stdinInput string, env map[string]string) (string, error) {
-
-	logging.InitLogging(true, 7, false)
+func runCommandThatCanFail(ctx *pulumi.Context, cmdName string, args []string, logResource pulumi.Resource,
+	reportFullCommandLine bool, reportErrorAsWarning bool, stdinInput string, env map[string]string) (string, error) {
 
 	// Let the user ephemerally know the command we're going to execute.
-	logging.Infof("Executing " + getCommandLineMessage(cmdName, args, reportFullCommandLine, env))
+	logEphemeral(ctx, "Executing "+getCommandLineMessage(cmdName, args, reportFullCommandLine, env), logResource)
 
 	// Generate a unique stream-ID that we'll associate all the docker output with. This will allow
 	// each spawned CLI command's output to associated with 'resource' and also streamed to the UI
@@ -452,26 +452,33 @@ func runCommandThatCanFail(cmdName string, args []string, logResource pulumi.Res
 	//
 	// Pick a reasonably distributed number between 0 and 2^30.  This will fit as an int32
 	// which the grpc layer needs.
-	streamID := rand.Int()
+	streamID := rand.Int31()
+
+	logErrorf := func(format string, a ...interface{}) {
+		ctx.Log.Error(fmt.Sprintf(format, a...), &pulumi.LogArgs{
+			Resource: logResource,
+			StreamID: streamID,
+		})
+	}
 
 	cmd := exec.Command(cmdName, args...)
 
 	stderr, err := cmd.StderrPipe()
 	if err != nil {
-		logging.Errorf("Error retrieving stderr: %v", err)
+		logErrorf("Error retrieving stderr: %v", err)
 		return "", err
 	}
 
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
-		logging.Errorf("Error retrieving stdout: %v", err)
+		logErrorf("Error retrieving stdout: %v", err)
 		return "", err
 	}
 
 	if stdinInput != "" {
 		stdin, err := cmd.StdinPipe()
 		if err != nil {
-			logging.Errorf("Error retreiving stdin: %v", err)
+			logErrorf("Error retrieving stdin: %v", err)
 			return "", err
 		}
 		go func() {
@@ -482,13 +489,13 @@ func runCommandThatCanFail(cmdName string, args []string, logResource pulumi.Res
 
 	err = cmd.Start()
 	if err != nil {
-		logging.Errorf("Error starting command: %v", err)
+		logErrorf("Error starting command: %v", err)
 		return "", err
 	}
 
 	stderrBytes, err := ioutil.ReadAll(stderr)
 	if err != nil {
-		logging.Errorf("Error reading from stderr: %v", err)
+		logErrorf("Error reading from stderr: %v", err)
 		return "", err
 	}
 
@@ -501,7 +508,7 @@ func runCommandThatCanFail(cmdName string, args []string, logResource pulumi.Res
 	// We store the results from stdout and will return them as a string.
 	stdoutBytes, err := ioutil.ReadAll(stdout)
 	if err != nil {
-		logging.Errorf("Error reading from stdout: %v", err)
+		logErrorf("Error reading from stdout: %v", err)
 		return "", err
 	}
 
@@ -509,7 +516,7 @@ func runCommandThatCanFail(cmdName string, args []string, logResource pulumi.Res
 	// info bar as they're happening.  But they do not overwhelm the user as the end
 	// of the run.
 	stdoutString := string(stdoutBytes)
-	logging.Infof(stdoutString)
+	logEphemeral(ctx, stdoutString, logResource)
 
 	err = cmd.Wait()
 
@@ -518,10 +525,14 @@ func runCommandThatCanFail(cmdName string, args []string, logResource pulumi.Res
 	if stderrString != "" {
 		if err != nil && !reportErrorAsWarning {
 			// Command returned non-zero code.  Treat these stderr messages as an error.
-			logging.Errorf("%s (%d)", stderrString, streamID)
+			logErrorf(stderrString)
 		} else {
 			// Command succeeded.  These were just a warning.
-			logging.Warningf("%s (%d)", stderrString, streamID)
+			ctx.Log.Warn(stderrString, &pulumi.LogArgs{
+				Resource:  logResource,
+				StreamID:  streamID,
+				Ephemeral: true,
+			})
 		}
 	}
 
@@ -530,7 +541,7 @@ func runCommandThatCanFail(cmdName string, args []string, logResource pulumi.Res
 	// caller (normally runCommandThatMustSucceed) can choose to also report this
 	// non-ephemerally.
 	if err != nil {
-		logging.Infof("%s failed", getCommandLineMessage(cmdName, args, reportFullCommandLine, env))
+		logEphemeral(ctx, getCommandLineMessage(cmdName, args, reportFullCommandLine, env)+" failed", logResource)
 	}
 
 	return stdoutString, err
@@ -553,4 +564,18 @@ func getCommandLineMessage(cmd string, args []string, reportFullCommandLine bool
 		return fmt.Sprintf("%s %s %s", envString, cmd, argString)
 	}
 	return fmt.Sprintf("%s %s", cmd, argString)
+}
+
+func logEphemeral(ctx *pulumi.Context, msg string, logResource pulumi.Resource) {
+	ctx.Log.Info(msg, &pulumi.LogArgs{
+		Resource:  logResource,
+		Ephemeral: true,
+	})
+}
+
+func logDebug(ctx *pulumi.Context, msg string, logResource pulumi.Resource) {
+	ctx.Log.Debug(msg, &pulumi.LogArgs{
+		Resource:  logResource,
+		Ephemeral: true,
+	})
 }
