@@ -455,7 +455,10 @@ func runCommandThatCanFail(ctx *pulumi.Context, cmdName string, args []string, l
 	streamID := rand.Int31()
 
 	logErrorf := func(format string, a ...interface{}) {
-		ctx.Log.Error(fmt.Sprintf(format, a...), logResource, streamID, false)
+		ctx.Log.Error(fmt.Sprintf(format, a...), &pulumi.LogArgs{
+			Resource: logResource,
+			StreamID: streamID,
+		})
 	}
 
 	cmd := exec.Command(cmdName, args...)
@@ -475,7 +478,7 @@ func runCommandThatCanFail(ctx *pulumi.Context, cmdName string, args []string, l
 	if stdinInput != "" {
 		stdin, err := cmd.StdinPipe()
 		if err != nil {
-			ctx.Log.Error(fmt.Sprintf("Error retrieving stdin: %v", err), logResource, streamID, true)
+			logErrorf("Error retrieving stdin: %v", err)
 			return "", err
 		}
 		go func() {
@@ -525,7 +528,11 @@ func runCommandThatCanFail(ctx *pulumi.Context, cmdName string, args []string, l
 			logErrorf(stderrString)
 		} else {
 			// Command succeeded.  These were just a warning.
-			ctx.Log.Warn(stderrString, logResource, streamID, true)
+			ctx.Log.Warn(stderrString, &pulumi.LogArgs{
+				Resource:  logResource,
+				StreamID:  streamID,
+				Ephemeral: true,
+			})
 		}
 	}
 
@@ -560,9 +567,15 @@ func getCommandLineMessage(cmd string, args []string, reportFullCommandLine bool
 }
 
 func logEphemeral(ctx *pulumi.Context, msg string, logResource pulumi.Resource) {
-	ctx.Log.Info(msg, logResource, 0, true)
+	ctx.Log.Info(msg, &pulumi.LogArgs{
+		Resource:  logResource,
+		Ephemeral: true,
+	})
 }
 
 func logDebug(ctx *pulumi.Context, msg string, logResource pulumi.Resource) {
-	ctx.Log.Debug(msg, logResource, 0, true)
+	ctx.Log.Debug(msg, &pulumi.LogArgs{
+		Resource:  logResource,
+		Ephemeral: true,
+	})
 }
