@@ -7,7 +7,6 @@ require (
 	github.com/apparentlymart/go-dump v0.0.0-20190214190832-042adf3cf4a0 // indirect
 	github.com/aws/aws-sdk-go v1.25.3 // indirect
 	github.com/docker/go-units v0.3.3 // indirect
-	github.com/google/go-cmp v0.3.1 // indirect
 	github.com/hashicorp/terraform-plugin-sdk v1.0.0
 	github.com/hashicorp/vault/api v1.0.5-0.20190730042357-746c0b111519 // indirect
 	github.com/opencontainers/image-spec v1.0.1 // indirect
