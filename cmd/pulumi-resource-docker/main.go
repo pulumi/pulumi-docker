@@ -17,10 +17,10 @@ package main
 import (
 	"github.com/pulumi/pulumi-terraform-bridge/pkg/tfbridge"
 
-	"github.com/pulumi/pulumi-docker"
+	docker "github.com/pulumi/pulumi-docker"
 	"github.com/pulumi/pulumi-docker/pkg/version"
 )
 
 func main() {
-	tfbridge.Main("docker", version.Version, docker.Provider())
+	tfbridge.Main("docker", version.Version, docker.Provider(), nil)
 }
