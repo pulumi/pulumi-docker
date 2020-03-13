@@ -517,6 +517,8 @@ export interface ContainerState {
     /**
      * *Deprecated:* Use `networkData` instead. The network gateway of the container as read from its
      * NetworkSettings.
+     * 
+     * @deprecated Use gateway from ip_adresses_data instead. This field exposes the data of the container's first network.
      */
     readonly gateway?: pulumi.Input<string>;
     /**
@@ -543,11 +545,15 @@ export interface ContainerState {
     readonly image?: pulumi.Input<string>;
     /**
      * *Deprecated:* Use `networkData` instead. The IP address of the container's first network it.
+     * 
+     * @deprecated Use ip_adresses_data instead. This field exposes the data of the container's first network.
      */
     readonly ipAddress?: pulumi.Input<string>;
     /**
      * *Deprecated:* Use `networkData` instead. The IP prefix length of the container as read from its
      * NetworkSettings.
+     * 
+     * @deprecated Use ip_prefix_length from ip_adresses_data instead. This field exposes the data of the container's first network.
      */
     readonly ipPrefixLength?: pulumi.Input<number>;
     /**
@@ -561,6 +567,8 @@ export interface ContainerState {
     /**
      * Set of links for link based
      * connectivity between containers that are running on the same host.
+     * 
+     * @deprecated The --link flag is a legacy feature of Docker. It may eventually be removed.
      */
     readonly links?: pulumi.Input<pulumi.Input<string>[]>;
     /**
@@ -596,6 +604,8 @@ export interface ContainerState {
     readonly name?: pulumi.Input<string>;
     /**
      * Network aliases of the container for user-defined networks only. *Deprecated:* use `networksAdvanced` instead.
+     * 
+     * @deprecated Use networks_advanced instead. Will be removed in v2.0.0
      */
     readonly networkAliases?: pulumi.Input<pulumi.Input<string>[]>;
     /**
@@ -610,6 +620,8 @@ export interface ContainerState {
     /**
      * Id of the networks in which the
      * container is. *Deprecated:* use `networksAdvanced` instead.
+     * 
+     * @deprecated Use networks_advanced instead. Will be removed in v2.0.0
      */
     readonly networks?: pulumi.Input<pulumi.Input<string>[]>;
     /**
@@ -781,6 +793,8 @@ export interface ContainerArgs {
     /**
      * Set of links for link based
      * connectivity between containers that are running on the same host.
+     * 
+     * @deprecated The --link flag is a legacy feature of Docker. It may eventually be removed.
      */
     readonly links?: pulumi.Input<pulumi.Input<string>[]>;
     /**
@@ -816,6 +830,8 @@ export interface ContainerArgs {
     readonly name?: pulumi.Input<string>;
     /**
      * Network aliases of the container for user-defined networks only. *Deprecated:* use `networksAdvanced` instead.
+     * 
+     * @deprecated Use networks_advanced instead. Will be removed in v2.0.0
      */
     readonly networkAliases?: pulumi.Input<pulumi.Input<string>[]>;
     /**
@@ -825,6 +841,8 @@ export interface ContainerArgs {
     /**
      * Id of the networks in which the
      * container is. *Deprecated:* use `networksAdvanced` instead.
+     * 
+     * @deprecated Use networks_advanced instead. Will be removed in v2.0.0
      */
     readonly networks?: pulumi.Input<pulumi.Input<string>[]>;
     /**

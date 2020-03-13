@@ -35,11 +35,13 @@ class RemoteImage(pulumi.CustomResource):
     def __init__(__self__, resource_name, opts=None, keep_locally=None, name=None, pull_trigger=None, pull_triggers=None, __props__=None, __name__=None, __opts__=None):
         """
         Pulls a Docker image to a given Docker host from a Docker Registry.
-        
+
         This resource will *not* pull new layers of the image automatically unless used in
         conjunction with [`.getRegistryImage`](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
         data source to update the `pull_triggers` field.
-        
+
+        > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/image.html.markdown.
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[bool] keep_locally: If true, then the Docker image won't be
@@ -51,8 +53,6 @@ class RemoteImage(pulumi.CustomResource):
                image pull when changed. This is used to store the image digest from the
                registry when using the `.getRegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
                to trigger an image update.
-
-        > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/image.html.markdown.
         """
         if __name__ is not None:
             warnings.warn("explicit use of __name__ is deprecated", DeprecationWarning)
@@ -89,7 +89,7 @@ class RemoteImage(pulumi.CustomResource):
         """
         Get an existing RemoteImage resource's state with the given name, id, and optional extra
         properties used to qualify the lookup.
-        
+
         :param str resource_name: The unique name of the resulting resource.
         :param str id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
@@ -102,12 +102,11 @@ class RemoteImage(pulumi.CustomResource):
                image pull when changed. This is used to store the image digest from the
                registry when using the `.getRegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
                to trigger an image update.
-
-        > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/image.html.markdown.
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
 
         __props__ = dict()
+
         __props__["keep_locally"] = keep_locally
         __props__["latest"] = latest
         __props__["name"] = name

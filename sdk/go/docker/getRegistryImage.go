@@ -11,7 +11,7 @@ import (
 // Reads the image metadata from a Docker Registry. Used in conjunction with the
 // [docker\_image](https://www.terraform.io/docs/providers/docker/r/image.html) resource to keep an image up
 // to date on the latest available version of the tag.
-// 
+//
 // > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/d/registry_image.html.markdown.
 func GetRegistryImage(ctx *pulumi.Context, args *GetRegistryImageArgs, opts ...pulumi.InvokeOption) (*GetRegistryImageResult, error) {
 	var rv GetRegistryImageResult

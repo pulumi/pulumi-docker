@@ -39,7 +39,7 @@ class Network(pulumi.CustomResource):
     """
     See IPAM config below for
     details.
-    
+
       * `auxAddress` (`dict`)
       * `gateway` (`str`)
       * `ipRange` (`str`)
@@ -58,7 +58,7 @@ class Network(pulumi.CustomResource):
     labels: pulumi.Output[list]
     """
     See Labels below for details.
-    
+
       * `label` (`str`) - Name of the label
         * `value` (Required, string) Value of the label
       * `value` (`str`)
@@ -78,7 +78,9 @@ class Network(pulumi.CustomResource):
         Manages a Docker Network. This can be used alongside
         [docker\_container](https://www.terraform.io/docs/providers/docker/r/container.html)
         to create virtual networks within the docker environment.
-        
+
+        > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/network.html.markdown.
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[bool] attachable: Enable manual container attachment to the network.
@@ -101,21 +103,19 @@ class Network(pulumi.CustomResource):
         :param pulumi.Input[str] name: The name of the Docker network.
         :param pulumi.Input[dict] options: Network specific options to be used by
                the drivers.
-        
+
         The **ipam_configs** object supports the following:
-        
+
           * `auxAddress` (`pulumi.Input[dict]`)
           * `gateway` (`pulumi.Input[str]`)
           * `ipRange` (`pulumi.Input[str]`)
           * `subnet` (`pulumi.Input[str]`)
-        
+
         The **labels** object supports the following:
-        
+
           * `label` (`pulumi.Input[str]`) - Name of the label
             * `value` (Required, string) Value of the label
           * `value` (`pulumi.Input[str]`)
-
-        > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/network.html.markdown.
         """
         if __name__ is not None:
             warnings.warn("explicit use of __name__ is deprecated", DeprecationWarning)
@@ -157,7 +157,7 @@ class Network(pulumi.CustomResource):
         """
         Get an existing Network resource's state with the given name, id, and optional extra
         properties used to qualify the lookup.
-        
+
         :param str resource_name: The unique name of the resulting resource.
         :param str id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
@@ -181,25 +181,24 @@ class Network(pulumi.CustomResource):
         :param pulumi.Input[str] name: The name of the Docker network.
         :param pulumi.Input[dict] options: Network specific options to be used by
                the drivers.
-        
+
         The **ipam_configs** object supports the following:
-        
+
           * `auxAddress` (`pulumi.Input[dict]`)
           * `gateway` (`pulumi.Input[str]`)
           * `ipRange` (`pulumi.Input[str]`)
           * `subnet` (`pulumi.Input[str]`)
-        
+
         The **labels** object supports the following:
-        
+
           * `label` (`pulumi.Input[str]`) - Name of the label
             * `value` (Required, string) Value of the label
           * `value` (`pulumi.Input[str]`)
-
-        > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/network.html.markdown.
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
 
         __props__ = dict()
+
         __props__["attachable"] = attachable
         __props__["check_duplicate"] = check_duplicate
         __props__["driver"] = driver

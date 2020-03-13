@@ -202,9 +202,6 @@ export interface ContainerUpload {
      * Literal string value to use as the object content, which will be uploaded as UTF-8-encoded text.
      */
     content?: string;
-    /**
-     * <elided>
-     */
     contentBase64?: string;
     /**
      * If true, the file will be uploaded with user
