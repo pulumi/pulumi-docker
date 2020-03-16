@@ -26,9 +26,7 @@ TESTPARALLELISM := 4
 # NOTE: Since the plugin is published using the nodejs style semver version
 # We set the PLUGIN_VERSION to be the same as the version we use when building
 # the provider (e.g. x.y.z-dev-... instead of x.y.zdev...)
-build::
-	go install -ldflags "-X github.com/pulumi/pulumi-docker/pkg/version.Version=${VERSION}" ${PROJECT}/cmd/${TFGEN}
-	go install -ldflags "-X github.com/pulumi/pulumi-docker/pkg/version.Version=${VERSION}" ${PROJECT}/cmd/${PROVIDER}
+build:: provider tfgen
 	for LANGUAGE in "nodejs" "python" "go" "dotnet" ; do \
 		$(TFGEN) $$LANGUAGE --overlays overlays/$$LANGUAGE/ --out ${PACKDIR}/$$LANGUAGE/ || exit 3 ; \
 	done
@@ -47,6 +45,16 @@ build::
 	cd ${PACKDIR}/dotnet/&& \
 		echo "${VERSION:v%=%}" >version.txt && \
 		dotnet build /p:Version=${DOTNET_VERSION}
+
+generate_schema:: tfgen
+	$(TFGEN) schema --out ./cmd/${PROVIDER}
+
+provider::
+	go generate ${PROJECT}/cmd/${PROVIDER}
+	go install -ldflags "-X github.com/pulumi/pulumi-tls/pkg/version.Version=${VERSION}" ${PROJECT}/cmd/${PROVIDER}
+
+tfgen::
+	go install -ldflags "-X github.com/pulumi/pulumi-tls/pkg/version.Version=${VERSION}" ${PROJECT}/cmd/${TFGEN}
 
 lint::
 	#golangci-lint run
