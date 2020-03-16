@@ -64,13 +64,15 @@ class AwaitableGetNetworkResult(GetNetworkResult):
 def get_network(id=None,name=None,opts=None):
     """
     Finds a specific docker network and returns information about it.
-    
+
+    > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/d/docker_network.html.markdown.
+
+
     :param str id: The id of the Docker network.
     :param str name: The name of the Docker network.
-
-    > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/d/network.html.markdown.
     """
     __args__ = dict()
+
 
     __args__['id'] = id
     __args__['name'] = name

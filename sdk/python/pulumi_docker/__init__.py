@@ -10,12 +10,15 @@ for pkg in __all__:
         importlib.import_module(f'{__name__}.{pkg}')
 
 # Export this package's modules as members:
-from .service_config import *
 from .container import *
-from .remote_image import *
+from .get_network import *
+from .get_registry_image import *
 from .network import *
+from .provider import *
+from .remote_image import *
 from .secret import *
 from .service import *
+from .service_config import *
 from .volume import *
 from .get_network import *
 from .get_registry_image import *

@@ -9,8 +9,8 @@ import (
 )
 
 // Finds a specific docker network and returns information about it.
-// 
-// > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/d/network.html.markdown.
+//
+// > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/d/docker_network.html.markdown.
 func LookupNetwork(ctx *pulumi.Context, args *LookupNetworkArgs, opts ...pulumi.InvokeOption) (*LookupNetworkResult, error) {
 	var rv LookupNetworkResult
 	err := ctx.Invoke("docker:index/getNetwork:getNetwork", args, &rv, opts...)

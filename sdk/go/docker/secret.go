@@ -12,7 +12,7 @@ import (
 )
 
 // Manages the secrets of a Docker service in a swarm.
-// 
+//
 // > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/secret.html.markdown.
 type Secret struct {
 	pulumi.CustomResourceState

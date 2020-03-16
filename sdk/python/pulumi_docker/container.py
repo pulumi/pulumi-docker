@@ -21,7 +21,7 @@ class Container(pulumi.CustomResource):
     capabilities: pulumi.Output[dict]
     """
     See Capabilities below for details.
-    
+
       * `adds` (`list`) - list of linux capabilities to add.
       * `drops` (`list`) - list of linux capabilities to drop.
     """
@@ -50,7 +50,7 @@ class Container(pulumi.CustomResource):
     devices: pulumi.Output[list]
     """
     See Devices below for details.
-    
+
       * `containerPath` (`str`) - The path in the container where the
         device will be binded.
       * `hostPath` (`str`) - The path on the host where the device
@@ -103,23 +103,23 @@ class Container(pulumi.CustomResource):
     healthcheck: pulumi.Output[dict]
     """
     See Healthcheck below for details.
-    
+
       * `interval` (`str`)
       * `retries` (`float`)
       * `startPeriod` (`str`)
       * `tests` (`list`)
       * `timeout` (`str`)
     """
-    hosts: pulumi.Output[list]
-    """
-    Hostname to add.
-    
-      * `host` (`str`) - Hostname to add.
-      * `ip` (`str`) - IP address this hostname should resolve to.
-    """
     hostname: pulumi.Output[str]
     """
     Hostname of the container.
+    """
+    hosts: pulumi.Output[list]
+    """
+    Hostname to add.
+
+      * `host` (`str`) - Hostname to add.
+      * `ip` (`str`) - IP address this hostname should resolve to.
     """
     image: pulumi.Output[str]
     """
@@ -143,7 +143,7 @@ class Container(pulumi.CustomResource):
     labels: pulumi.Output[list]
     """
     Adding labels.
-    
+
       * `label` (`str`) - Name of the label
         * `value` (Required, string) Value of the label
       * `value` (`str`)
@@ -181,31 +181,27 @@ class Container(pulumi.CustomResource):
     mounts: pulumi.Output[list]
     """
     See Mounts below for details.
-    
+
       * `bindOptions` (`dict`) - Optional configuration for the `bind` type.
-    
         * `propagation` (`str`) - A propagation mode with the value.
-    
+
       * `read_only` (`bool`) - If true, this volume will be readonly.
         Defaults to false.
       * `source` (`str`) - A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state.
       * `target` (`str`) - The container path.
       * `tmpfsOptions` (`dict`) - Optional configuration for the `tmpf` type.
-    
         * `mode` (`float`) - The permission mode for the tmpfs mount in an integer.
         * `sizeBytes` (`float`) - The size for the tmpfs mount in bytes.
-    
+
       * `type` (`str`) - The mount type: valid values are `bind|volume|tmpfs`.
       * `volumeOptions` (`dict`) - Optional configuration for the `volume` type.
-    
         * `driverName` (`str`)
         * `driverOptions` (`dict`) - Options for the driver.
         * `labels` (`list`) - Adding labels.
-    
           * `label` (`str`) - Name of the label
             * `value` (Required, string) Value of the label
           * `value` (`str`)
-    
+
         * `noCopy` (`bool`) - Whether to populate volume with data from the target.
     """
     must_run: pulumi.Output[bool]
@@ -218,7 +214,7 @@ class Container(pulumi.CustomResource):
     """
     (Map of a block) The IP addresses of the container on each
     network. Key are the network names, values are the IP addresses.
-    
+
       * `gateway` (`str`) - *Deprecated:* Use `network_data` instead. The network gateway of the container as read from its
         NetworkSettings.
       * `ip_address` (`str`) - *Deprecated:* Use `network_data` instead. The IP address of the container's first network it.
@@ -238,7 +234,7 @@ class Container(pulumi.CustomResource):
     networks_advanced: pulumi.Output[list]
     """
     See Networks Advanced below for details. If this block has priority to the deprecated `network_alias` and `network` properties.
-    
+
       * `aliases` (`list`) - The network aliases of the container in the specific network.
       * `ipv4Address` (`str`) - The IPV4 address of the container in the specific network.
       * `ipv6Address` (`str`) - The IPV6 address of the container in the specific network.
@@ -251,7 +247,7 @@ class Container(pulumi.CustomResource):
     ports: pulumi.Output[list]
     """
     See Ports below for details.
-    
+
       * `external` (`float`) - Port exposed out of the container. If not given a free random port `>= 32768` will be used.
       * `internal` (`float`) - Port within the container.
       * `ip` (`str`) - IP address this hostname should resolve to.
@@ -298,7 +294,7 @@ class Container(pulumi.CustomResource):
     """
     See Ulimits below for
     details.
-    
+
       * `hard` (`float`)
       * `name` (`str`)
       * `soft` (`float`)
@@ -306,9 +302,9 @@ class Container(pulumi.CustomResource):
     uploads: pulumi.Output[list]
     """
     See File Upload below for details.
-    
+
       * `content` (`str`) - Literal string value to use as the object content, which will be uploaded as UTF-8-encoded text.
-      * `contentBase64` (`str`) - <elided>
+      * `contentBase64` (`str`)
       * `executable` (`bool`) - If true, the file will be uploaded with user
         executable permission.
         Defaults to false.
@@ -329,7 +325,7 @@ class Container(pulumi.CustomResource):
     volumes: pulumi.Output[list]
     """
     See Volumes below for details.
-    
+
       * `containerPath` (`str`) - The path in the container where the
         device will be binded.
       * `fromContainer` (`str`) - The container where the volume is
@@ -342,10 +338,12 @@ class Container(pulumi.CustomResource):
         should be mounted.
     """
     working_dir: pulumi.Output[str]
-    def __init__(__self__, resource_name, opts=None, attach=None, capabilities=None, command=None, cpu_set=None, cpu_shares=None, destroy_grace_seconds=None, devices=None, dns=None, dns_opts=None, dns_searches=None, domainname=None, entrypoints=None, envs=None, group_adds=None, healthcheck=None, hosts=None, hostname=None, image=None, ipc_mode=None, labels=None, links=None, log_driver=None, log_opts=None, logs=None, max_retry_count=None, memory=None, memory_swap=None, mounts=None, must_run=None, name=None, network_aliases=None, network_mode=None, networks=None, networks_advanced=None, pid_mode=None, ports=None, privileged=None, publish_all_ports=None, read_only=None, restart=None, rm=None, shm_size=None, start=None, sysctls=None, tmpfs=None, ulimits=None, uploads=None, user=None, userns_mode=None, volumes=None, working_dir=None, __props__=None, __name__=None, __opts__=None):
+    def __init__(__self__, resource_name, opts=None, attach=None, capabilities=None, command=None, cpu_set=None, cpu_shares=None, destroy_grace_seconds=None, devices=None, dns=None, dns_opts=None, dns_searches=None, domainname=None, entrypoints=None, envs=None, group_adds=None, healthcheck=None, hostname=None, hosts=None, image=None, ipc_mode=None, labels=None, links=None, log_driver=None, log_opts=None, logs=None, max_retry_count=None, memory=None, memory_swap=None, mounts=None, must_run=None, name=None, network_aliases=None, network_mode=None, networks=None, networks_advanced=None, pid_mode=None, ports=None, privileged=None, publish_all_ports=None, read_only=None, restart=None, rm=None, shm_size=None, start=None, sysctls=None, tmpfs=None, ulimits=None, uploads=None, user=None, userns_mode=None, volumes=None, working_dir=None, __props__=None, __name__=None, __opts__=None):
         """
         Manages the lifecycle of a Docker container.
-        
+
+        > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/container.html.markdown.
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[bool] attach: If true attach to the container after its creation and waits the end of his execution.
@@ -369,8 +367,8 @@ class Container(pulumi.CustomResource):
         :param pulumi.Input[list] envs: Environment variables to set.
         :param pulumi.Input[list] group_adds: Add additional groups to run as.
         :param pulumi.Input[dict] healthcheck: See Healthcheck below for details.
-        :param pulumi.Input[list] hosts: Hostname to add.
         :param pulumi.Input[str] hostname: Hostname of the container.
+        :param pulumi.Input[list] hosts: Hostname to add.
         :param pulumi.Input[str] image: The ID of the image to back this container.
                The easiest way to get this value is to use the `.RemoteImage` resource
                as is shown in the example above.
@@ -414,14 +412,14 @@ class Container(pulumi.CustomResource):
                by name.
         :param pulumi.Input[str] userns_mode: Sets the usernamespace mode for the container when usernamespace remapping option is enabled.
         :param pulumi.Input[list] volumes: See Volumes below for details.
-        
+
         The **capabilities** object supports the following:
-        
+
           * `adds` (`pulumi.Input[list]`) - list of linux capabilities to add.
           * `drops` (`pulumi.Input[list]`) - list of linux capabilities to drop.
-        
+
         The **devices** object supports the following:
-        
+
           * `containerPath` (`pulumi.Input[str]`) - The path in the container where the
             device will be binded.
           * `hostPath` (`pulumi.Input[str]`) - The path on the host where the device
@@ -429,88 +427,84 @@ class Container(pulumi.CustomResource):
           * `permissions` (`pulumi.Input[str]`) - The cgroup permissions given to the
             container to access the device.
             Defaults to `rwm`.
-        
+
         The **healthcheck** object supports the following:
-        
+
           * `interval` (`pulumi.Input[str]`)
           * `retries` (`pulumi.Input[float]`)
           * `startPeriod` (`pulumi.Input[str]`)
           * `tests` (`pulumi.Input[list]`)
           * `timeout` (`pulumi.Input[str]`)
-        
+
         The **hosts** object supports the following:
-        
+
           * `host` (`pulumi.Input[str]`) - Hostname to add.
           * `ip` (`pulumi.Input[str]`) - IP address this hostname should resolve to.
-        
+
         The **labels** object supports the following:
-        
+
           * `label` (`pulumi.Input[str]`) - Name of the label
             * `value` (Required, string) Value of the label
           * `value` (`pulumi.Input[str]`)
-        
+
         The **mounts** object supports the following:
-        
+
           * `bindOptions` (`pulumi.Input[dict]`) - Optional configuration for the `bind` type.
-        
             * `propagation` (`pulumi.Input[str]`) - A propagation mode with the value.
-        
+
           * `read_only` (`pulumi.Input[bool]`) - If true, this volume will be readonly.
             Defaults to false.
           * `source` (`pulumi.Input[str]`) - A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state.
           * `target` (`pulumi.Input[str]`) - The container path.
           * `tmpfsOptions` (`pulumi.Input[dict]`) - Optional configuration for the `tmpf` type.
-        
             * `mode` (`pulumi.Input[float]`) - The permission mode for the tmpfs mount in an integer.
             * `sizeBytes` (`pulumi.Input[float]`) - The size for the tmpfs mount in bytes.
-        
+
           * `type` (`pulumi.Input[str]`) - The mount type: valid values are `bind|volume|tmpfs`.
           * `volumeOptions` (`pulumi.Input[dict]`) - Optional configuration for the `volume` type.
-        
             * `driverName` (`pulumi.Input[str]`)
             * `driverOptions` (`pulumi.Input[dict]`) - Options for the driver.
             * `labels` (`pulumi.Input[list]`) - Adding labels.
-        
               * `label` (`pulumi.Input[str]`) - Name of the label
                 * `value` (Required, string) Value of the label
               * `value` (`pulumi.Input[str]`)
-        
+
             * `noCopy` (`pulumi.Input[bool]`) - Whether to populate volume with data from the target.
-        
+
         The **networks_advanced** object supports the following:
-        
+
           * `aliases` (`pulumi.Input[list]`) - The network aliases of the container in the specific network.
           * `ipv4Address` (`pulumi.Input[str]`) - The IPV4 address of the container in the specific network.
           * `ipv6Address` (`pulumi.Input[str]`) - The IPV6 address of the container in the specific network.
           * `name` (`pulumi.Input[str]`)
-        
+
         The **ports** object supports the following:
-        
+
           * `external` (`pulumi.Input[float]`) - Port exposed out of the container. If not given a free random port `>= 32768` will be used.
           * `internal` (`pulumi.Input[float]`) - Port within the container.
           * `ip` (`pulumi.Input[str]`) - IP address this hostname should resolve to.
           * `protocol` (`pulumi.Input[str]`) - Protocol that can be used over this port,
             defaults to `tcp`.
-        
+
         The **ulimits** object supports the following:
-        
+
           * `hard` (`pulumi.Input[float]`)
           * `name` (`pulumi.Input[str]`)
           * `soft` (`pulumi.Input[float]`)
-        
+
         The **uploads** object supports the following:
-        
+
           * `content` (`pulumi.Input[str]`) - Literal string value to use as the object content, which will be uploaded as UTF-8-encoded text.
-          * `contentBase64` (`pulumi.Input[str]`) - <elided>
+          * `contentBase64` (`pulumi.Input[str]`)
           * `executable` (`pulumi.Input[bool]`) - If true, the file will be uploaded with user
             executable permission.
             Defaults to false.
           * `file` (`pulumi.Input[str]`) - path to a file in the container.
           * `source` (`pulumi.Input[str]`) - A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state.
           * `sourceHash` (`pulumi.Input[str]`) - If using `source`, this will force an update if the file content has updated but the filename has not. 
-        
+
         The **volumes** object supports the following:
-        
+
           * `containerPath` (`pulumi.Input[str]`) - The path in the container where the
             device will be binded.
           * `fromContainer` (`pulumi.Input[str]`) - The container where the volume is
@@ -521,8 +515,6 @@ class Container(pulumi.CustomResource):
             Defaults to false.
           * `volumeName` (`pulumi.Input[str]`) - The name of the docker volume which
             should be mounted.
-
-        > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/container.html.markdown.
         """
         if __name__ is not None:
             warnings.warn("explicit use of __name__ is deprecated", DeprecationWarning)
@@ -556,8 +548,8 @@ class Container(pulumi.CustomResource):
             __props__['envs'] = envs
             __props__['group_adds'] = group_adds
             __props__['healthcheck'] = healthcheck
-            __props__['hosts'] = hosts
             __props__['hostname'] = hostname
+            __props__['hosts'] = hosts
             if image is None:
                 raise TypeError("Missing required property 'image'")
             __props__['image'] = image
@@ -608,11 +600,11 @@ class Container(pulumi.CustomResource):
             opts)
 
     @staticmethod
-    def get(resource_name, id, opts=None, attach=None, bridge=None, capabilities=None, command=None, container_logs=None, cpu_set=None, cpu_shares=None, destroy_grace_seconds=None, devices=None, dns=None, dns_opts=None, dns_searches=None, domainname=None, entrypoints=None, envs=None, exit_code=None, gateway=None, group_adds=None, healthcheck=None, hosts=None, hostname=None, image=None, ip_address=None, ip_prefix_length=None, ipc_mode=None, labels=None, links=None, log_driver=None, log_opts=None, logs=None, max_retry_count=None, memory=None, memory_swap=None, mounts=None, must_run=None, name=None, network_aliases=None, network_datas=None, network_mode=None, networks=None, networks_advanced=None, pid_mode=None, ports=None, privileged=None, publish_all_ports=None, read_only=None, restart=None, rm=None, shm_size=None, start=None, sysctls=None, tmpfs=None, ulimits=None, uploads=None, user=None, userns_mode=None, volumes=None, working_dir=None):
+    def get(resource_name, id, opts=None, attach=None, bridge=None, capabilities=None, command=None, container_logs=None, cpu_set=None, cpu_shares=None, destroy_grace_seconds=None, devices=None, dns=None, dns_opts=None, dns_searches=None, domainname=None, entrypoints=None, envs=None, exit_code=None, gateway=None, group_adds=None, healthcheck=None, hostname=None, hosts=None, image=None, ip_address=None, ip_prefix_length=None, ipc_mode=None, labels=None, links=None, log_driver=None, log_opts=None, logs=None, max_retry_count=None, memory=None, memory_swap=None, mounts=None, must_run=None, name=None, network_aliases=None, network_datas=None, network_mode=None, networks=None, networks_advanced=None, pid_mode=None, ports=None, privileged=None, publish_all_ports=None, read_only=None, restart=None, rm=None, shm_size=None, start=None, sysctls=None, tmpfs=None, ulimits=None, uploads=None, user=None, userns_mode=None, volumes=None, working_dir=None):
         """
         Get an existing Container resource's state with the given name, id, and optional extra
         properties used to qualify the lookup.
-        
+
         :param str resource_name: The unique name of the resulting resource.
         :param str id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
@@ -642,8 +634,8 @@ class Container(pulumi.CustomResource):
                NetworkSettings.
         :param pulumi.Input[list] group_adds: Add additional groups to run as.
         :param pulumi.Input[dict] healthcheck: See Healthcheck below for details.
-        :param pulumi.Input[list] hosts: Hostname to add.
         :param pulumi.Input[str] hostname: Hostname of the container.
+        :param pulumi.Input[list] hosts: Hostname to add.
         :param pulumi.Input[str] image: The ID of the image to back this container.
                The easiest way to get this value is to use the `.RemoteImage` resource
                as is shown in the example above.
@@ -692,14 +684,14 @@ class Container(pulumi.CustomResource):
                by name.
         :param pulumi.Input[str] userns_mode: Sets the usernamespace mode for the container when usernamespace remapping option is enabled.
         :param pulumi.Input[list] volumes: See Volumes below for details.
-        
+
         The **capabilities** object supports the following:
-        
+
           * `adds` (`pulumi.Input[list]`) - list of linux capabilities to add.
           * `drops` (`pulumi.Input[list]`) - list of linux capabilities to drop.
-        
+
         The **devices** object supports the following:
-        
+
           * `containerPath` (`pulumi.Input[str]`) - The path in the container where the
             device will be binded.
           * `hostPath` (`pulumi.Input[str]`) - The path on the host where the device
@@ -707,97 +699,93 @@ class Container(pulumi.CustomResource):
           * `permissions` (`pulumi.Input[str]`) - The cgroup permissions given to the
             container to access the device.
             Defaults to `rwm`.
-        
+
         The **healthcheck** object supports the following:
-        
+
           * `interval` (`pulumi.Input[str]`)
           * `retries` (`pulumi.Input[float]`)
           * `startPeriod` (`pulumi.Input[str]`)
           * `tests` (`pulumi.Input[list]`)
           * `timeout` (`pulumi.Input[str]`)
-        
+
         The **hosts** object supports the following:
-        
+
           * `host` (`pulumi.Input[str]`) - Hostname to add.
           * `ip` (`pulumi.Input[str]`) - IP address this hostname should resolve to.
-        
+
         The **labels** object supports the following:
-        
+
           * `label` (`pulumi.Input[str]`) - Name of the label
             * `value` (Required, string) Value of the label
           * `value` (`pulumi.Input[str]`)
-        
+
         The **mounts** object supports the following:
-        
+
           * `bindOptions` (`pulumi.Input[dict]`) - Optional configuration for the `bind` type.
-        
             * `propagation` (`pulumi.Input[str]`) - A propagation mode with the value.
-        
+
           * `read_only` (`pulumi.Input[bool]`) - If true, this volume will be readonly.
             Defaults to false.
           * `source` (`pulumi.Input[str]`) - A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state.
           * `target` (`pulumi.Input[str]`) - The container path.
           * `tmpfsOptions` (`pulumi.Input[dict]`) - Optional configuration for the `tmpf` type.
-        
             * `mode` (`pulumi.Input[float]`) - The permission mode for the tmpfs mount in an integer.
             * `sizeBytes` (`pulumi.Input[float]`) - The size for the tmpfs mount in bytes.
-        
+
           * `type` (`pulumi.Input[str]`) - The mount type: valid values are `bind|volume|tmpfs`.
           * `volumeOptions` (`pulumi.Input[dict]`) - Optional configuration for the `volume` type.
-        
             * `driverName` (`pulumi.Input[str]`)
             * `driverOptions` (`pulumi.Input[dict]`) - Options for the driver.
             * `labels` (`pulumi.Input[list]`) - Adding labels.
-        
               * `label` (`pulumi.Input[str]`) - Name of the label
                 * `value` (Required, string) Value of the label
               * `value` (`pulumi.Input[str]`)
-        
+
             * `noCopy` (`pulumi.Input[bool]`) - Whether to populate volume with data from the target.
-        
+
         The **network_datas** object supports the following:
-        
+
           * `gateway` (`pulumi.Input[str]`) - *Deprecated:* Use `network_data` instead. The network gateway of the container as read from its
             NetworkSettings.
           * `ip_address` (`pulumi.Input[str]`) - *Deprecated:* Use `network_data` instead. The IP address of the container's first network it.
           * `ip_prefix_length` (`pulumi.Input[float]`) - *Deprecated:* Use `network_data` instead. The IP prefix length of the container as read from its
             NetworkSettings.
           * `networkName` (`pulumi.Input[str]`)
-        
+
         The **networks_advanced** object supports the following:
-        
+
           * `aliases` (`pulumi.Input[list]`) - The network aliases of the container in the specific network.
           * `ipv4Address` (`pulumi.Input[str]`) - The IPV4 address of the container in the specific network.
           * `ipv6Address` (`pulumi.Input[str]`) - The IPV6 address of the container in the specific network.
           * `name` (`pulumi.Input[str]`)
-        
+
         The **ports** object supports the following:
-        
+
           * `external` (`pulumi.Input[float]`) - Port exposed out of the container. If not given a free random port `>= 32768` will be used.
           * `internal` (`pulumi.Input[float]`) - Port within the container.
           * `ip` (`pulumi.Input[str]`) - IP address this hostname should resolve to.
           * `protocol` (`pulumi.Input[str]`) - Protocol that can be used over this port,
             defaults to `tcp`.
-        
+
         The **ulimits** object supports the following:
-        
+
           * `hard` (`pulumi.Input[float]`)
           * `name` (`pulumi.Input[str]`)
           * `soft` (`pulumi.Input[float]`)
-        
+
         The **uploads** object supports the following:
-        
+
           * `content` (`pulumi.Input[str]`) - Literal string value to use as the object content, which will be uploaded as UTF-8-encoded text.
-          * `contentBase64` (`pulumi.Input[str]`) - <elided>
+          * `contentBase64` (`pulumi.Input[str]`)
           * `executable` (`pulumi.Input[bool]`) - If true, the file will be uploaded with user
             executable permission.
             Defaults to false.
           * `file` (`pulumi.Input[str]`) - path to a file in the container.
           * `source` (`pulumi.Input[str]`) - A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state.
           * `sourceHash` (`pulumi.Input[str]`) - If using `source`, this will force an update if the file content has updated but the filename has not. 
-        
+
         The **volumes** object supports the following:
-        
+
           * `containerPath` (`pulumi.Input[str]`) - The path in the container where the
             device will be binded.
           * `fromContainer` (`pulumi.Input[str]`) - The container where the volume is
@@ -808,12 +796,11 @@ class Container(pulumi.CustomResource):
             Defaults to false.
           * `volumeName` (`pulumi.Input[str]`) - The name of the docker volume which
             should be mounted.
-
-        > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/container.html.markdown.
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
 
         __props__ = dict()
+
         __props__["attach"] = attach
         __props__["bridge"] = bridge
         __props__["capabilities"] = capabilities
@@ -833,8 +820,8 @@ class Container(pulumi.CustomResource):
         __props__["gateway"] = gateway
         __props__["group_adds"] = group_adds
         __props__["healthcheck"] = healthcheck
-        __props__["hosts"] = hosts
         __props__["hostname"] = hostname
+        __props__["hosts"] = hosts
         __props__["image"] = image
         __props__["ip_address"] = ip_address
         __props__["ip_prefix_length"] = ip_prefix_length

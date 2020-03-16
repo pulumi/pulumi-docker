@@ -148,7 +148,7 @@ func Provider() tfbridge.ProviderInfo {
 		},
 		CSharp: &tfbridge.CSharpInfo{
 			PackageReferences: map[string]string{
-				"Pulumi":                       "1.11.0-preview",
+				"Pulumi":                       "1.12.1-preview",
 				"Semver":                       "2.0.5",
 				"System.Collections.Immutable": "1.6.0",
 			},
