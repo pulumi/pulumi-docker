@@ -22,5 +22,3 @@ from .secret import *
 from .service import *
 from .service_config import *
 from .volume import *
-from .docker import *
-from .image import *
