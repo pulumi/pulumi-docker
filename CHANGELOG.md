@@ -1,7 +1,11 @@
 ## HEAD (Unreleased)
-* Implemented the docker image build in the Python SDK, ported from the Javascript SDK
+_(none)_
 
 ---
+
+## 1.5.0 (2020-03-25)
+* Add Docker Image build suport for Python
+
 ## 1.4.0 (2020-03-16)
 * Add support for Go (https://github.com/pulumi/pulumi-docker/pull/147)
 * Upgrade to Pulumi v1.12.1
