@@ -13,6 +13,7 @@
 # limitations under the License.
 import json
 import math
+import os
 import re
 import subprocess
 import threading
@@ -625,8 +626,9 @@ async def run_command_that_can_fail(
     env: Optional[Mapping[str, str]] = None
 ) -> CommandResult:
     env = env or {}
-    # Let the user ephemerally know the command we're going to execute.
     log_ephemeral(f'Executing {get_command_line_message(cmd, args, report_full_command_line, env)}', log_resource)
+    env = dict(os.environ, **env)
+    # Let the user ephemerally know the command we're going to execute.
 
     # Generate a unique stream-ID that we'll associate all the docker output with. This will allow
     # each spawned CLI command's output to associated with 'resource' and also streamed to the UI
