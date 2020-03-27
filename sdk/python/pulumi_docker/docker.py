@@ -20,8 +20,7 @@ import threading
 from asyncio import new_event_loop, set_event_loop
 from random import random
 from typing import Optional, Union, Callable, Awaitable, List, Mapping
-
-import semver
+from distutils.version import LooseVersion
 
 import pulumi
 from .utils import get_image_name_and_tag
@@ -32,7 +31,10 @@ class Registry:
     registry: pulumi.Input[str]
     username: pulumi.Input[str]
     password: pulumi.Input[str]
-
+    def __init__(self, registry: pulumi.Input[str], username: pulumi.Input[str], password: pulumi.Input[str]):
+        self.registry = registry
+        self.username = username
+        self.password = password
 
 # CacheFrom may be used to specify build stages to use for the Docker build cache. The final image
 # is always implicitly included.
@@ -110,30 +112,26 @@ class ResourceError(Error):
 
 
 async def use_docker_password_stdin(log_resource: pulumi.Resource):
-    async def use_docker_password_stdin_worker():
-        # Verify that 'docker' is on the PATH and get the client/server versions
-        try:
-            docker_version_str = await run_command_that_must_succeed(
-                "docker", ["version", "-f", "{{json .}}"], log_resource)
-            # IDEA: In the future we could warn here on out-of-date versions of Docker which may not support key
-            # features we want to use.
+    # Verify that 'docker' is on the PATH and get the client/server versions
+    try:
+        docker_version_str = await run_command_that_must_succeed(
+            "docker", ["version", "-f", "{{json .}}"], log_resource)
+        # IDEA: In the future we could warn here on out-of-date versions of Docker which may not support key
+        # features we want to use.
 
-            pulumi.log.debug(f'\'docker version\' => {docker_version_str}', log_resource)
-        except Exception:
-            raise ResourceError("No 'docker' command available on PATH: Please install to use container 'build' mode.",
-                                log_resource)
+        pulumi.log.debug(f'\'docker version\' => {docker_version_str}', log_resource)
+    except Exception:
+        raise ResourceError("No 'docker' command available on PATH: Please install to use container 'build' mode.",
+                            log_resource)
 
-        # Decide whether to use --password or --password-stdin based on the client version.
-        try:
-            version_data: any = json.loads(docker_version_str)
-            client_version: str = version_data.Client.Version
-            return semver.compare(client_version, "17.07.0") == 1
-        except Exception as err:
-            pulumi.log.info(f'Could not process Docker version ({err})', log_resource)
-        return False
-
-    return use_docker_password_stdin_worker
-
+    # Decide whether to use --password or --password-stdin based on the client version.
+    try:
+        version_data: any = json.loads(docker_version_str)
+        client_version: str = version_data['Client']['Version']
+        return LooseVersion(client_version) >= LooseVersion("17.07.0")
+    except Exception as err:
+        pulumi.log.info(f'Could not process Docker version ({err})', log_resource)
+    return False
 
 # @deprecated Use [build_and_push_image] instead.  This function loses the Output resource tracking
 # information from [path_or_build] and [repository_url].  [buildAndPushImage] properly keeps track of
@@ -264,7 +262,7 @@ async def build_and_push_image_worker_async(
     if connect_to_registry:
         if not pulumi.runtime.is_dry_run() or pull_from_cache:
             log_ephemeral("Logging in to registry...", log_resource)
-            registry_output = pulumi.Output.from_input(connect_to_registry())
+            registry_output: pulumi.Output[Registry] = pulumi.Output.from_input(connect_to_registry())
             registry = await registry_output.future()
             await login_to_registry(registry, log_resource)
 
@@ -471,9 +469,9 @@ async def docker_build(
 class LoginResult:
     registry_name: str
     username: str
-    login_command: Awaitable
+    login_command: Callable[[], Awaitable]
 
-    def __init__(self, registry_name, username, login_command):
+    def __init__(self, registry_name: str, username: str, login_command: Callable[[], Awaitable]):
         self.registry_name = registry_name
         self.username = username
         self.login_command = login_command
@@ -484,10 +482,10 @@ class LoginResult:
 loginResults: List[LoginResult] = []
 
 
-def login_to_registry(registry, log_resource: pulumi.Resource) -> Awaitable:
+def login_to_registry(registry: Registry, log_resource: pulumi.Resource) -> Awaitable:
     registry_name = registry.registry
     username = registry.username
-    password = registry_name.password
+    password = registry.password
 
     # See if we've issued an outstanding requests to login into this registry.  If so, just
     # await the results of that login request.  Otherwise, create a new request and keep it
@@ -518,7 +516,7 @@ def login_to_registry(registry, log_resource: pulumi.Resource) -> Awaitable:
     else:
         log_ephemeral(f'Reusing existing login for {username}@{registry_name}', log_resource)
 
-    return login_result.login_command
+    return login_result.login_command()
 
 
 async def tag_and_push_image_async(
@@ -644,12 +642,11 @@ async def run_command_that_can_fail(
     # Pick a reasonably distributed number between 0 and 2^30.  This will fit as an int32
     # which the grpc layer needs.
     stream_id = math.floor(random() * (1 << 30))
-    _stdin = stdin
 
     popen = [cmd]
     popen.extend(args)
 
-    process = subprocess.Popen(popen, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    process = subprocess.Popen(popen, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
 
     # We store the results from stdout in memory and will return them as a str.
     stdout_chunks: List[str] = []
@@ -697,10 +694,15 @@ async def run_command_that_can_fail(
     stdout_thread.start()
     stderr_thread.start()
 
+    stdin_bytes = None
+    if stdin is not None:
+        stdin_bytes = stdin.encode()
+
+    process.communicate(stdin_bytes)
+
     while stdout_thread.is_alive() and stderr_thread.is_alive():
         pass
 
-    process.communicate()
     code = process.returncode
 
     # Collapse our stored stdout/stderr messages into single strs.
