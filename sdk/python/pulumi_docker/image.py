@@ -102,7 +102,7 @@ class Image(pulumi.ComponentResource):
     image_name: pulumi.Output[str]
 
     # The server the image is located at.
-    registry_server: Optional[str]
+    registry_server: pulumi.Output[Optional[str]]
 
     def __init__(self, name: str,
                  image_name: pulumi.Input[str],
