@@ -15,7 +15,7 @@
 import pulumi
 from typing import Optional, Union
 
-from . import build_and_push_image_async, DockerBuild
+from .docker import build_and_push_image_async, DockerBuild, Registry
 from .utils import get_image_name_and_tag
 
 
@@ -33,14 +33,14 @@ class ImageRegistry:
     # Password for login to the target Docker registry.
     password: pulumi.Input[str]
 
-    def __init__(self, server, username, password):
+    def __init__(self, server: pulumi.Input[str], username: pulumi.Input[str], password: pulumi.Input[str]):
         self.server = server
         self.username = username
         self.password = password
 
 
 # Arguments for constructing an Image resource.
-class ImageArgs:
+class _ImageArgs:
 
     # The qualified image name that will be pushed to the remote registry.  Must be a supported
     # image name for the target registry user.  This name can include a tag at the end.  If
@@ -49,11 +49,11 @@ class ImageArgs:
     # Either [image_name] or [localImageName] can have a tag.  However, if both have a tag, then
     # those tags must match.
 
-    image_name: pulumi.Input[str]
+    image_name: str
 
     # The Docker build context, as a folder path or a detailed DockerBuild object.
 
-    build: Union[pulumi.Input[str], DockerBuild]
+    build: Union[str, DockerBuild]
 
     # The docker image name to build locally before tagging with image_name.  If not provided, it
     # will be given the value of to [image_name].  This name can include a tag at the end.  If
@@ -62,16 +62,21 @@ class ImageArgs:
     # Either [image_name] or [localImageName] can have a tag.  However, if both have a tag, then
     # those tags must match.
 
-    local_image_name: pulumi.Input[str]
+    local_image_name: str
 
     # Credentials for the docker registry to push to.
-
-    registry: Optional[pulumi.Input[ImageRegistry]]
+    registry: Optional[ImageRegistry]
 
     # Skip push flag.
     skip_push: Optional[bool]
 
-    def __init__(self, image_name, build, local_image_name, registry, skip_push):
+    def __init__(self,
+        image_name: str,
+        build: Union[str, DockerBuild],
+        local_image_name: str,
+        registry: Optional[ImageRegistry],
+        skip_push: Optional[bool]):
+
         self.image_name = image_name
         self.build = build
         self.local_image_name = local_image_name
@@ -97,7 +102,7 @@ class Image(pulumi.ComponentResource):
     image_name: pulumi.Output[str]
 
     # The server the image is located at.
-    registry_server: Optional[str]
+    registry_server: pulumi.Output[Optional[str]]
 
     def __init__(self, name: str,
                  image_name: pulumi.Input[str],
@@ -108,7 +113,7 @@ class Image(pulumi.ComponentResource):
                  opts: Optional[pulumi.ResourceOptions] = None):
         super().__init__("docker:image:Image", name, {}, opts)
 
-        def get_image_data(image_args: ImageArgs):
+        def get_image_data(image_args: _ImageArgs):
             image_name = image_args.image_name
 
             # If there is no local_image_name set it equal to image_name.  Note: this means
@@ -143,8 +148,8 @@ class Image(pulumi.ComponentResource):
 
             registry = image_args.registry
 
-            async def get_registry(r):
-                return ImageRegistry(r.server, r.username, r.password)
+            async def get_registry():
+                return Registry(registry.server, registry.username, registry.password)
 
             unique_target_name = build_and_push_image_async(
                 base_image_name,
@@ -160,8 +165,9 @@ class Image(pulumi.ComponentResource):
                 'registry_server': registry.server if registry else None
             }
 
-        image_args = ImageArgs(image_name, build, local_image_name, registry, skip_push)
-        image_data = pulumi.Output.from_input(image_args).apply(get_image_data)
+        image_data = pulumi.Output.all(image_name, build, local_image_name, registry, skip_push).apply(
+            lambda args: get_image_data(_ImageArgs(*args))
+        )
 
         self.image_name, self.registry_server = image_data['image_name'], image_data['registry_server']
 

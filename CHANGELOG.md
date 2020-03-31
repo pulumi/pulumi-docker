@@ -1,5 +1,5 @@
 ## HEAD (Unreleased)
-_(none)_
+* Fix Python Docker Image build suport for registries
 
 ---
 
