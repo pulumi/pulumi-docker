@@ -31,10 +31,12 @@ class Registry:
     registry: pulumi.Input[str]
     username: pulumi.Input[str]
     password: pulumi.Input[str]
+
     def __init__(self, registry: pulumi.Input[str], username: pulumi.Input[str], password: pulumi.Input[str]):
         self.registry = registry
         self.username = username
         self.password = password
+
 
 # CacheFrom may be used to specify build stages to use for the Docker build cache. The final image
 # is always implicitly included.
@@ -479,7 +481,7 @@ class LoginResult:
 
 # Keep track of registries and users that have been logged in.  If we've already logged into that
 # registry with that user, there's no need to do it again.
-loginResults: List[LoginResult] = []
+login_results: List[LoginResult] = []
 
 
 def login_to_registry(registry: Registry, log_resource: pulumi.Resource) -> Awaitable:
@@ -490,8 +492,6 @@ def login_to_registry(registry: Registry, log_resource: pulumi.Resource) -> Awai
     # See if we've issued an outstanding requests to login into this registry.  If so, just
     # await the results of that login request.  Otherwise, create a new request and keep it
     # around so that future login requests will see it.
-    login_result = any(filter(lambda r: r.registryName == registry_name and r.username == username, loginResults))
-
     async def login_async():
         docker_password_stdin = await use_docker_password_stdin(log_resource)
 
@@ -506,15 +506,16 @@ def login_to_registry(registry: Registry, log_resource: pulumi.Resource) -> Awai
                 "docker", ["login", "-u", username, "-p", password, registry_name],
                 log_resource, report_full_command_line=False)
 
-    if not login_result:
+    try:
+        login_result = next(r for r in login_results if r.registry_name == registry_name and r.username == username)
+        log_ephemeral(f'Reusing existing login for {username}@{registry_name}', log_resource)
+    except StopIteration:
         # Note: we explicitly do not 'await' the 'loginAsync' call here.  We do not want
         # to relinquish control of this thread-of-execution yet.  We want to ensure that
         # we first update `loginResults` with our record object so that any future executions
         # through this method see that the login was kicked off and can wait on that.
         login_result = LoginResult(registry_name, username, login_async)
-        loginResults.append(login_result)
-    else:
-        log_ephemeral(f'Reusing existing login for {username}@{registry_name}', log_resource)
+        login_results.append(login_result)
 
     return login_result.login_command()
 
