@@ -89,4 +89,3 @@ type ServiceConfigArgs struct {
 func (ServiceConfigArgs) ElementType() reflect.Type {
 	return reflect.TypeOf((*serviceConfigArgs)(nil)).Elem()
 }
-

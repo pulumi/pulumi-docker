@@ -18,7 +18,6 @@ import (
 // > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/index.html.markdown.
 type Provider struct {
 	pulumi.ProviderResourceState
-
 }
 
 // NewProvider registers a new resource with the given unique name, arguments, and options.
@@ -60,7 +59,7 @@ type providerArgs struct {
 	// The Docker daemon address
 	Host *string `pulumi:"host"`
 	// PEM-encoded content of Docker client private key
-	KeyMaterial *string `pulumi:"keyMaterial"`
+	KeyMaterial  *string                `pulumi:"keyMaterial"`
 	RegistryAuth []ProviderRegistryAuth `pulumi:"registryAuth"`
 }
 
@@ -75,11 +74,10 @@ type ProviderArgs struct {
 	// The Docker daemon address
 	Host pulumi.StringPtrInput
 	// PEM-encoded content of Docker client private key
-	KeyMaterial pulumi.StringPtrInput
+	KeyMaterial  pulumi.StringPtrInput
 	RegistryAuth ProviderRegistryAuthArrayInput
 }
 
 func (ProviderArgs) ElementType() reflect.Type {
 	return reflect.TypeOf((*providerArgs)(nil)).Elem()
 }
-

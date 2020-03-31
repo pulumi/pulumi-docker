@@ -21,7 +21,7 @@ import (
 	"github.com/terraform-providers/terraform-provider-docker/docker"
 
 	"github.com/pulumi/pulumi-terraform-bridge/pkg/tfbridge"
-	"github.com/pulumi/pulumi/pkg/tokens"
+	"github.com/pulumi/pulumi/sdk/go/common/tokens"
 )
 
 const (
@@ -145,12 +145,12 @@ func Provider() tfbridge.ProviderInfo {
 			Requires: map[string]string{
 				"pulumi": ">=1.0.0,<2.0.0",
 			},
-            Overlay: &tfbridge.OverlayInfo{
-                    DestFiles: []string{
-                            "pulumi_docker/docker.py",
-                            "pulumi_docker/image.py",
-                    },
-            },
+			Overlay: &tfbridge.OverlayInfo{
+				DestFiles: []string{
+					"pulumi_docker/docker.py",
+					"pulumi_docker/image.py",
+				},
+			},
 		},
 		CSharp: &tfbridge.CSharpInfo{
 			PackageReferences: map[string]string{

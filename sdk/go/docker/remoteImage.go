@@ -25,7 +25,7 @@ type RemoteImage struct {
 	// deleted on destroy operation. If this is false, it will delete the image from
 	// the docker local storage on destroy operation.
 	KeepLocally pulumi.BoolPtrOutput `pulumi:"keepLocally"`
-	Latest pulumi.StringOutput `pulumi:"latest"`
+	Latest      pulumi.StringOutput  `pulumi:"latest"`
 	// The name of the Docker image, including any tags or SHA256 repo digests.
 	Name pulumi.StringOutput `pulumi:"name"`
 	// **Deprecated**, use `pullTriggers` instead.
@@ -71,8 +71,8 @@ type remoteImageState struct {
 	// If true, then the Docker image won't be
 	// deleted on destroy operation. If this is false, it will delete the image from
 	// the docker local storage on destroy operation.
-	KeepLocally *bool `pulumi:"keepLocally"`
-	Latest *string `pulumi:"latest"`
+	KeepLocally *bool   `pulumi:"keepLocally"`
+	Latest      *string `pulumi:"latest"`
 	// The name of the Docker image, including any tags or SHA256 repo digests.
 	Name *string `pulumi:"name"`
 	// **Deprecated**, use `pullTriggers` instead.
@@ -89,7 +89,7 @@ type RemoteImageState struct {
 	// deleted on destroy operation. If this is false, it will delete the image from
 	// the docker local storage on destroy operation.
 	KeepLocally pulumi.BoolPtrInput
-	Latest pulumi.StringPtrInput
+	Latest      pulumi.StringPtrInput
 	// The name of the Docker image, including any tags or SHA256 repo digests.
 	Name pulumi.StringPtrInput
 	// **Deprecated**, use `pullTriggers` instead.
@@ -141,4 +141,3 @@ type RemoteImageArgs struct {
 func (RemoteImageArgs) ElementType() reflect.Type {
 	return reflect.TypeOf((*remoteImageArgs)(nil)).Elem()
 }
-

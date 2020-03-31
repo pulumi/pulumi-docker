@@ -95,12 +95,12 @@ type Container struct {
 	// * `workingDir`- (Optional, string) The working directory for commands to run in
 	MaxRetryCount pulumi.IntPtrOutput `pulumi:"maxRetryCount"`
 	// The memory limit for the container in MBs.
-	Memory pulumi.IntPtrOutput `pulumi:"memory"`
+	Memory     pulumi.IntPtrOutput `pulumi:"memory"`
 	MemorySwap pulumi.IntPtrOutput `pulumi:"memorySwap"`
 	// See Mounts below for details.
-	Mounts ContainerMountArrayOutput `pulumi:"mounts"`
-	MustRun pulumi.BoolPtrOutput `pulumi:"mustRun"`
-	Name pulumi.StringOutput `pulumi:"name"`
+	Mounts  ContainerMountArrayOutput `pulumi:"mounts"`
+	MustRun pulumi.BoolPtrOutput      `pulumi:"mustRun"`
+	Name    pulumi.StringOutput       `pulumi:"name"`
 	// Network aliases of the container for user-defined networks only. *Deprecated:* use `networksAdvanced` instead.
 	NetworkAliases pulumi.StringArrayOutput `pulumi:"networkAliases"`
 	// (Map of a block) The IP addresses of the container on each
@@ -127,7 +127,7 @@ type Container struct {
 	// The restart policy for the container. Must be
 	// one of "no", "on-failure", "always", "unless-stopped".
 	Restart pulumi.StringPtrOutput `pulumi:"restart"`
-	Rm pulumi.BoolPtrOutput `pulumi:"rm"`
+	Rm      pulumi.BoolPtrOutput   `pulumi:"rm"`
 	// Size of `/dev/shm` in MBs.
 	ShmSize pulumi.IntOutput `pulumi:"shmSize"`
 	// If true, then the Docker container will be
@@ -149,8 +149,8 @@ type Container struct {
 	// Sets the usernamespace mode for the container when usernamespace remapping option is enabled.
 	UsernsMode pulumi.StringPtrOutput `pulumi:"usernsMode"`
 	// See Volumes below for details.
-	Volumes ContainerVolumeArrayOutput `pulumi:"volumes"`
-	WorkingDir pulumi.StringPtrOutput `pulumi:"workingDir"`
+	Volumes    ContainerVolumeArrayOutput `pulumi:"volumes"`
+	WorkingDir pulumi.StringPtrOutput     `pulumi:"workingDir"`
 }
 
 // NewContainer registers a new resource with the given unique name, arguments, and options.
@@ -262,12 +262,12 @@ type containerState struct {
 	// * `workingDir`- (Optional, string) The working directory for commands to run in
 	MaxRetryCount *int `pulumi:"maxRetryCount"`
 	// The memory limit for the container in MBs.
-	Memory *int `pulumi:"memory"`
+	Memory     *int `pulumi:"memory"`
 	MemorySwap *int `pulumi:"memorySwap"`
 	// See Mounts below for details.
-	Mounts []ContainerMount `pulumi:"mounts"`
-	MustRun *bool `pulumi:"mustRun"`
-	Name *string `pulumi:"name"`
+	Mounts  []ContainerMount `pulumi:"mounts"`
+	MustRun *bool            `pulumi:"mustRun"`
+	Name    *string          `pulumi:"name"`
 	// Network aliases of the container for user-defined networks only. *Deprecated:* use `networksAdvanced` instead.
 	NetworkAliases []string `pulumi:"networkAliases"`
 	// (Map of a block) The IP addresses of the container on each
@@ -294,7 +294,7 @@ type containerState struct {
 	// The restart policy for the container. Must be
 	// one of "no", "on-failure", "always", "unless-stopped".
 	Restart *string `pulumi:"restart"`
-	Rm *bool `pulumi:"rm"`
+	Rm      *bool   `pulumi:"rm"`
 	// Size of `/dev/shm` in MBs.
 	ShmSize *int `pulumi:"shmSize"`
 	// If true, then the Docker container will be
@@ -316,8 +316,8 @@ type containerState struct {
 	// Sets the usernamespace mode for the container when usernamespace remapping option is enabled.
 	UsernsMode *string `pulumi:"usernsMode"`
 	// See Volumes below for details.
-	Volumes []ContainerVolume `pulumi:"volumes"`
-	WorkingDir *string `pulumi:"workingDir"`
+	Volumes    []ContainerVolume `pulumi:"volumes"`
+	WorkingDir *string           `pulumi:"workingDir"`
 }
 
 type ContainerState struct {
@@ -399,12 +399,12 @@ type ContainerState struct {
 	// * `workingDir`- (Optional, string) The working directory for commands to run in
 	MaxRetryCount pulumi.IntPtrInput
 	// The memory limit for the container in MBs.
-	Memory pulumi.IntPtrInput
+	Memory     pulumi.IntPtrInput
 	MemorySwap pulumi.IntPtrInput
 	// See Mounts below for details.
-	Mounts ContainerMountArrayInput
+	Mounts  ContainerMountArrayInput
 	MustRun pulumi.BoolPtrInput
-	Name pulumi.StringPtrInput
+	Name    pulumi.StringPtrInput
 	// Network aliases of the container for user-defined networks only. *Deprecated:* use `networksAdvanced` instead.
 	NetworkAliases pulumi.StringArrayInput
 	// (Map of a block) The IP addresses of the container on each
@@ -431,7 +431,7 @@ type ContainerState struct {
 	// The restart policy for the container. Must be
 	// one of "no", "on-failure", "always", "unless-stopped".
 	Restart pulumi.StringPtrInput
-	Rm pulumi.BoolPtrInput
+	Rm      pulumi.BoolPtrInput
 	// Size of `/dev/shm` in MBs.
 	ShmSize pulumi.IntPtrInput
 	// If true, then the Docker container will be
@@ -453,7 +453,7 @@ type ContainerState struct {
 	// Sets the usernamespace mode for the container when usernamespace remapping option is enabled.
 	UsernsMode pulumi.StringPtrInput
 	// See Volumes below for details.
-	Volumes ContainerVolumeArrayInput
+	Volumes    ContainerVolumeArrayInput
 	WorkingDir pulumi.StringPtrInput
 }
 
@@ -526,12 +526,12 @@ type containerArgs struct {
 	// * `workingDir`- (Optional, string) The working directory for commands to run in
 	MaxRetryCount *int `pulumi:"maxRetryCount"`
 	// The memory limit for the container in MBs.
-	Memory *int `pulumi:"memory"`
+	Memory     *int `pulumi:"memory"`
 	MemorySwap *int `pulumi:"memorySwap"`
 	// See Mounts below for details.
-	Mounts []ContainerMount `pulumi:"mounts"`
-	MustRun *bool `pulumi:"mustRun"`
-	Name *string `pulumi:"name"`
+	Mounts  []ContainerMount `pulumi:"mounts"`
+	MustRun *bool            `pulumi:"mustRun"`
+	Name    *string          `pulumi:"name"`
 	// Network aliases of the container for user-defined networks only. *Deprecated:* use `networksAdvanced` instead.
 	NetworkAliases []string `pulumi:"networkAliases"`
 	// Network mode of the container.
@@ -555,7 +555,7 @@ type containerArgs struct {
 	// The restart policy for the container. Must be
 	// one of "no", "on-failure", "always", "unless-stopped".
 	Restart *string `pulumi:"restart"`
-	Rm *bool `pulumi:"rm"`
+	Rm      *bool   `pulumi:"rm"`
 	// Size of `/dev/shm` in MBs.
 	ShmSize *int `pulumi:"shmSize"`
 	// If true, then the Docker container will be
@@ -577,8 +577,8 @@ type containerArgs struct {
 	// Sets the usernamespace mode for the container when usernamespace remapping option is enabled.
 	UsernsMode *string `pulumi:"usernsMode"`
 	// See Volumes below for details.
-	Volumes []ContainerVolume `pulumi:"volumes"`
-	WorkingDir *string `pulumi:"workingDir"`
+	Volumes    []ContainerVolume `pulumi:"volumes"`
+	WorkingDir *string           `pulumi:"workingDir"`
 }
 
 // The set of arguments for constructing a Container resource.
@@ -647,12 +647,12 @@ type ContainerArgs struct {
 	// * `workingDir`- (Optional, string) The working directory for commands to run in
 	MaxRetryCount pulumi.IntPtrInput
 	// The memory limit for the container in MBs.
-	Memory pulumi.IntPtrInput
+	Memory     pulumi.IntPtrInput
 	MemorySwap pulumi.IntPtrInput
 	// See Mounts below for details.
-	Mounts ContainerMountArrayInput
+	Mounts  ContainerMountArrayInput
 	MustRun pulumi.BoolPtrInput
-	Name pulumi.StringPtrInput
+	Name    pulumi.StringPtrInput
 	// Network aliases of the container for user-defined networks only. *Deprecated:* use `networksAdvanced` instead.
 	NetworkAliases pulumi.StringArrayInput
 	// Network mode of the container.
@@ -676,7 +676,7 @@ type ContainerArgs struct {
 	// The restart policy for the container. Must be
 	// one of "no", "on-failure", "always", "unless-stopped".
 	Restart pulumi.StringPtrInput
-	Rm pulumi.BoolPtrInput
+	Rm      pulumi.BoolPtrInput
 	// Size of `/dev/shm` in MBs.
 	ShmSize pulumi.IntPtrInput
 	// If true, then the Docker container will be
@@ -698,11 +698,10 @@ type ContainerArgs struct {
 	// Sets the usernamespace mode for the container when usernamespace remapping option is enabled.
 	UsernsMode pulumi.StringPtrInput
 	// See Volumes below for details.
-	Volumes ContainerVolumeArrayInput
+	Volumes    ContainerVolumeArrayInput
 	WorkingDir pulumi.StringPtrInput
 }
 
 func (ContainerArgs) ElementType() reflect.Type {
 	return reflect.TypeOf((*containerArgs)(nil)).Elem()
 }
-

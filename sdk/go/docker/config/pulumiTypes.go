@@ -12,11 +12,11 @@ import (
 )
 
 type RegistryAuth struct {
-	Address string `pulumi:"address"`
-	ConfigFile *string `pulumi:"configFile"`
+	Address           string  `pulumi:"address"`
+	ConfigFile        *string `pulumi:"configFile"`
 	ConfigFileContent *string `pulumi:"configFileContent"`
-	Password *string `pulumi:"password"`
-	Username *string `pulumi:"username"`
+	Password          *string `pulumi:"password"`
+	Username          *string `pulumi:"username"`
 }
 
 type RegistryAuthInput interface {
@@ -27,11 +27,11 @@ type RegistryAuthInput interface {
 }
 
 type RegistryAuthArgs struct {
-	Address pulumi.StringInput `pulumi:"address"`
-	ConfigFile pulumi.StringPtrInput `pulumi:"configFile"`
+	Address           pulumi.StringInput    `pulumi:"address"`
+	ConfigFile        pulumi.StringPtrInput `pulumi:"configFile"`
 	ConfigFileContent pulumi.StringPtrInput `pulumi:"configFileContent"`
-	Password pulumi.StringPtrInput `pulumi:"password"`
-	Username pulumi.StringPtrInput `pulumi:"username"`
+	Password          pulumi.StringPtrInput `pulumi:"password"`
+	Username          pulumi.StringPtrInput `pulumi:"username"`
 }
 
 func (RegistryAuthArgs) ElementType() reflect.Type {
@@ -67,7 +67,7 @@ func (i RegistryAuthArray) ToRegistryAuthArrayOutputWithContext(ctx context.Cont
 	return pulumi.ToOutputWithContext(ctx, i).(RegistryAuthArrayOutput)
 }
 
-type RegistryAuthOutput struct { *pulumi.OutputState }
+type RegistryAuthOutput struct{ *pulumi.OutputState }
 
 func (RegistryAuthOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*RegistryAuth)(nil)).Elem()
@@ -82,26 +82,26 @@ func (o RegistryAuthOutput) ToRegistryAuthOutputWithContext(ctx context.Context)
 }
 
 func (o RegistryAuthOutput) Address() pulumi.StringOutput {
-	return o.ApplyT(func (v RegistryAuth) string { return v.Address }).(pulumi.StringOutput)
+	return o.ApplyT(func(v RegistryAuth) string { return v.Address }).(pulumi.StringOutput)
 }
 
 func (o RegistryAuthOutput) ConfigFile() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v RegistryAuth) *string { return v.ConfigFile }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v RegistryAuth) *string { return v.ConfigFile }).(pulumi.StringPtrOutput)
 }
 
 func (o RegistryAuthOutput) ConfigFileContent() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v RegistryAuth) *string { return v.ConfigFileContent }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v RegistryAuth) *string { return v.ConfigFileContent }).(pulumi.StringPtrOutput)
 }
 
 func (o RegistryAuthOutput) Password() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v RegistryAuth) *string { return v.Password }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v RegistryAuth) *string { return v.Password }).(pulumi.StringPtrOutput)
 }
 
 func (o RegistryAuthOutput) Username() pulumi.StringPtrOutput {
-	return o.ApplyT(func (v RegistryAuth) *string { return v.Username }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v RegistryAuth) *string { return v.Username }).(pulumi.StringPtrOutput)
 }
 
-type RegistryAuthArrayOutput struct { *pulumi.OutputState}
+type RegistryAuthArrayOutput struct{ *pulumi.OutputState }
 
 func (RegistryAuthArrayOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*[]RegistryAuth)(nil)).Elem()
@@ -116,7 +116,7 @@ func (o RegistryAuthArrayOutput) ToRegistryAuthArrayOutputWithContext(ctx contex
 }
 
 func (o RegistryAuthArrayOutput) Index(i pulumi.IntInput) RegistryAuthOutput {
-	return pulumi.All(o, i).ApplyT(func (vs []interface{}) RegistryAuth {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) RegistryAuth {
 		return vs[0].([]RegistryAuth)[vs[1].(int)]
 	}).(RegistryAuthOutput)
 }

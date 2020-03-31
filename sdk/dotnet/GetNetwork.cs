@@ -16,7 +16,18 @@ namespace Pulumi.Docker
         /// 
         /// &gt; This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/d/docker_network.html.markdown.
         /// </summary>
+        [Obsolete("Use GetNetwork.InvokeAsync() instead")]
         public static Task<GetNetworkResult> GetNetwork(GetNetworkArgs? args = null, InvokeOptions? options = null)
+            => Pulumi.Deployment.Instance.InvokeAsync<GetNetworkResult>("docker:index/getNetwork:getNetwork", args ?? InvokeArgs.Empty, options.WithVersion());
+    }
+    public static class GetNetwork
+    {
+        /// <summary>
+        /// Finds a specific docker network and returns information about it.
+        /// 
+        /// &gt; This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/d/docker_network.html.markdown.
+        /// </summary>
+        public static Task<GetNetworkResult> InvokeAsync(GetNetworkArgs? args = null, InvokeOptions? options = null)
             => Pulumi.Deployment.Instance.InvokeAsync<GetNetworkResult>("docker:index/getNetwork:getNetwork", args ?? InvokeArgs.Empty, options.WithVersion());
     }
 

@@ -104,11 +104,12 @@ class Container(pulumi.CustomResource):
     """
     See Healthcheck below for details.
 
-      * `interval` (`str`)
-      * `retries` (`float`)
-      * `startPeriod` (`str`)
-      * `tests` (`list`)
-      * `timeout` (`str`)
+      * `interval` (`str`) - Time between running the check `(ms|s|m|h)`. Default: `0s`.
+      * `retries` (`float`) - Consecutive failures needed to report unhealthy. Default: `0`.
+      * `startPeriod` (`str`) - Start period for the container to initialize before counting retries towards unstable `(ms|s|m|h)`. Default: `0s`.
+      * `tests` (`list`) - Command to run to check health. For example, to run `curl -f http://localhost/health` set the
+        command to be `["CMD", "curl", "-f", "http://localhost/health"]`.
+      * `timeout` (`str`) - Maximum time to allow one check to run `(ms|s|m|h)`. Default: `0s`.
     """
     hostname: pulumi.Output[str]
     """
@@ -187,7 +188,7 @@ class Container(pulumi.CustomResource):
 
       * `read_only` (`bool`) - If true, this volume will be readonly.
         Defaults to false.
-      * `source` (`str`) - A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state.
+      * `source` (`str`) - The mount source (e.g., a volume name, a host path)
       * `target` (`str`) - The container path.
       * `tmpfsOptions` (`dict`) - Optional configuration for the `tmpf` type.
         * `mode` (`float`) - The permission mode for the tmpfs mount in an integer.
@@ -238,7 +239,7 @@ class Container(pulumi.CustomResource):
       * `aliases` (`list`) - The network aliases of the container in the specific network.
       * `ipv4Address` (`str`) - The IPV4 address of the container in the specific network.
       * `ipv6Address` (`str`) - The IPV6 address of the container in the specific network.
-      * `name` (`str`)
+      * `name` (`str`) - The name of the network.
     """
     pid_mode: pulumi.Output[str]
     """
@@ -430,11 +431,12 @@ class Container(pulumi.CustomResource):
 
         The **healthcheck** object supports the following:
 
-          * `interval` (`pulumi.Input[str]`)
-          * `retries` (`pulumi.Input[float]`)
-          * `startPeriod` (`pulumi.Input[str]`)
-          * `tests` (`pulumi.Input[list]`)
-          * `timeout` (`pulumi.Input[str]`)
+          * `interval` (`pulumi.Input[str]`) - Time between running the check `(ms|s|m|h)`. Default: `0s`.
+          * `retries` (`pulumi.Input[float]`) - Consecutive failures needed to report unhealthy. Default: `0`.
+          * `startPeriod` (`pulumi.Input[str]`) - Start period for the container to initialize before counting retries towards unstable `(ms|s|m|h)`. Default: `0s`.
+          * `tests` (`pulumi.Input[list]`) - Command to run to check health. For example, to run `curl -f http://localhost/health` set the
+            command to be `["CMD", "curl", "-f", "http://localhost/health"]`.
+          * `timeout` (`pulumi.Input[str]`) - Maximum time to allow one check to run `(ms|s|m|h)`. Default: `0s`.
 
         The **hosts** object supports the following:
 
@@ -454,7 +456,7 @@ class Container(pulumi.CustomResource):
 
           * `read_only` (`pulumi.Input[bool]`) - If true, this volume will be readonly.
             Defaults to false.
-          * `source` (`pulumi.Input[str]`) - A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state.
+          * `source` (`pulumi.Input[str]`) - The mount source (e.g., a volume name, a host path)
           * `target` (`pulumi.Input[str]`) - The container path.
           * `tmpfsOptions` (`pulumi.Input[dict]`) - Optional configuration for the `tmpf` type.
             * `mode` (`pulumi.Input[float]`) - The permission mode for the tmpfs mount in an integer.
@@ -476,7 +478,7 @@ class Container(pulumi.CustomResource):
           * `aliases` (`pulumi.Input[list]`) - The network aliases of the container in the specific network.
           * `ipv4Address` (`pulumi.Input[str]`) - The IPV4 address of the container in the specific network.
           * `ipv6Address` (`pulumi.Input[str]`) - The IPV6 address of the container in the specific network.
-          * `name` (`pulumi.Input[str]`)
+          * `name` (`pulumi.Input[str]`) - The name of the network.
 
         The **ports** object supports the following:
 
@@ -702,11 +704,12 @@ class Container(pulumi.CustomResource):
 
         The **healthcheck** object supports the following:
 
-          * `interval` (`pulumi.Input[str]`)
-          * `retries` (`pulumi.Input[float]`)
-          * `startPeriod` (`pulumi.Input[str]`)
-          * `tests` (`pulumi.Input[list]`)
-          * `timeout` (`pulumi.Input[str]`)
+          * `interval` (`pulumi.Input[str]`) - Time between running the check `(ms|s|m|h)`. Default: `0s`.
+          * `retries` (`pulumi.Input[float]`) - Consecutive failures needed to report unhealthy. Default: `0`.
+          * `startPeriod` (`pulumi.Input[str]`) - Start period for the container to initialize before counting retries towards unstable `(ms|s|m|h)`. Default: `0s`.
+          * `tests` (`pulumi.Input[list]`) - Command to run to check health. For example, to run `curl -f http://localhost/health` set the
+            command to be `["CMD", "curl", "-f", "http://localhost/health"]`.
+          * `timeout` (`pulumi.Input[str]`) - Maximum time to allow one check to run `(ms|s|m|h)`. Default: `0s`.
 
         The **hosts** object supports the following:
 
@@ -726,7 +729,7 @@ class Container(pulumi.CustomResource):
 
           * `read_only` (`pulumi.Input[bool]`) - If true, this volume will be readonly.
             Defaults to false.
-          * `source` (`pulumi.Input[str]`) - A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state.
+          * `source` (`pulumi.Input[str]`) - The mount source (e.g., a volume name, a host path)
           * `target` (`pulumi.Input[str]`) - The container path.
           * `tmpfsOptions` (`pulumi.Input[dict]`) - Optional configuration for the `tmpf` type.
             * `mode` (`pulumi.Input[float]`) - The permission mode for the tmpfs mount in an integer.
@@ -757,7 +760,7 @@ class Container(pulumi.CustomResource):
           * `aliases` (`pulumi.Input[list]`) - The network aliases of the container in the specific network.
           * `ipv4Address` (`pulumi.Input[str]`) - The IPV4 address of the container in the specific network.
           * `ipv6Address` (`pulumi.Input[str]`) - The IPV6 address of the container in the specific network.
-          * `name` (`pulumi.Input[str]`)
+          * `name` (`pulumi.Input[str]`) - The name of the network.
 
         The **ports** object supports the following:
 

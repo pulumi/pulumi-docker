@@ -18,7 +18,20 @@ namespace Pulumi.Docker
         /// 
         /// &gt; This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/d/registry_image.html.markdown.
         /// </summary>
+        [Obsolete("Use GetRegistryImage.InvokeAsync() instead")]
         public static Task<GetRegistryImageResult> GetRegistryImage(GetRegistryImageArgs? args = null, InvokeOptions? options = null)
+            => Pulumi.Deployment.Instance.InvokeAsync<GetRegistryImageResult>("docker:index/getRegistryImage:getRegistryImage", args ?? InvokeArgs.Empty, options.WithVersion());
+    }
+    public static class GetRegistryImage
+    {
+        /// <summary>
+        /// Reads the image metadata from a Docker Registry. Used in conjunction with the
+        /// [docker\_image](https://www.terraform.io/docs/providers/docker/r/image.html) resource to keep an image up
+        /// to date on the latest available version of the tag.
+        /// 
+        /// &gt; This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/d/registry_image.html.markdown.
+        /// </summary>
+        public static Task<GetRegistryImageResult> InvokeAsync(GetRegistryImageArgs? args = null, InvokeOptions? options = null)
             => Pulumi.Deployment.Instance.InvokeAsync<GetRegistryImageResult>("docker:index/getRegistryImage:getRegistryImage", args ?? InvokeArgs.Empty, options.WithVersion());
     }
 
