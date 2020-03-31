@@ -48,8 +48,8 @@ type Network struct {
 	Name pulumi.StringOutput `pulumi:"name"`
 	// Network specific options to be used by
 	// the drivers.
-	Options pulumi.MapOutput `pulumi:"options"`
-	Scope pulumi.StringOutput `pulumi:"scope"`
+	Options pulumi.MapOutput    `pulumi:"options"`
+	Scope   pulumi.StringOutput `pulumi:"scope"`
 }
 
 // NewNetwork registers a new resource with the given unique name, arguments, and options.
@@ -111,7 +111,7 @@ type networkState struct {
 	// Network specific options to be used by
 	// the drivers.
 	Options map[string]interface{} `pulumi:"options"`
-	Scope *string `pulumi:"scope"`
+	Scope   *string                `pulumi:"scope"`
 }
 
 type NetworkState struct {
@@ -146,7 +146,7 @@ type NetworkState struct {
 	// Network specific options to be used by
 	// the drivers.
 	Options pulumi.MapInput
-	Scope pulumi.StringPtrInput
+	Scope   pulumi.StringPtrInput
 }
 
 func (NetworkState) ElementType() reflect.Type {
@@ -225,4 +225,3 @@ type NetworkArgs struct {
 func (NetworkArgs) ElementType() reflect.Type {
 	return reflect.TypeOf((*networkArgs)(nil)).Elem()
 }
-

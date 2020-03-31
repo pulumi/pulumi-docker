@@ -28,12 +28,10 @@ type GetRegistryImageArgs struct {
 	Name *string `pulumi:"name"`
 }
 
-
 // A collection of values returned by getRegistryImage.
 type GetRegistryImageResult struct {
 	// id is the provider-assigned unique ID for this managed resource.
-	Id string `pulumi:"id"`
-	Name *string `pulumi:"name"`
-	Sha256Digest string `pulumi:"sha256Digest"`
+	Id           string  `pulumi:"id"`
+	Name         *string `pulumi:"name"`
+	Sha256Digest string  `pulumi:"sha256Digest"`
 }
-

@@ -20,11 +20,11 @@ type Service struct {
 	ConvergeConfig ServiceConvergeConfigPtrOutput `pulumi:"convergeConfig"`
 	// See EndpointSpec below for details.
 	EndpointSpec ServiceEndpointSpecOutput `pulumi:"endpointSpec"`
-	// User-defined key/value metadata
+	// See Labels below for details.
 	Labels ServiceLabelArrayOutput `pulumi:"labels"`
-	// The mode of resolution to use for internal load balancing between tasks. `(vip|dnsrr)`. Default: `vip`.
+	// See Mode below for details.
 	Mode ServiceModeOutput `pulumi:"mode"`
-	// A random name for the port.
+	// The name of the Docker service.
 	Name pulumi.StringOutput `pulumi:"name"`
 	// See RollbackConfig below for details.
 	RollbackConfig ServiceRollbackConfigPtrOutput `pulumi:"rollbackConfig"`
@@ -71,11 +71,11 @@ type serviceState struct {
 	ConvergeConfig *ServiceConvergeConfig `pulumi:"convergeConfig"`
 	// See EndpointSpec below for details.
 	EndpointSpec *ServiceEndpointSpec `pulumi:"endpointSpec"`
-	// User-defined key/value metadata
+	// See Labels below for details.
 	Labels []ServiceLabel `pulumi:"labels"`
-	// The mode of resolution to use for internal load balancing between tasks. `(vip|dnsrr)`. Default: `vip`.
+	// See Mode below for details.
 	Mode *ServiceMode `pulumi:"mode"`
-	// A random name for the port.
+	// The name of the Docker service.
 	Name *string `pulumi:"name"`
 	// See RollbackConfig below for details.
 	RollbackConfig *ServiceRollbackConfig `pulumi:"rollbackConfig"`
@@ -92,11 +92,11 @@ type ServiceState struct {
 	ConvergeConfig ServiceConvergeConfigPtrInput
 	// See EndpointSpec below for details.
 	EndpointSpec ServiceEndpointSpecPtrInput
-	// User-defined key/value metadata
+	// See Labels below for details.
 	Labels ServiceLabelArrayInput
-	// The mode of resolution to use for internal load balancing between tasks. `(vip|dnsrr)`. Default: `vip`.
+	// See Mode below for details.
 	Mode ServiceModePtrInput
-	// A random name for the port.
+	// The name of the Docker service.
 	Name pulumi.StringPtrInput
 	// See RollbackConfig below for details.
 	RollbackConfig ServiceRollbackConfigPtrInput
@@ -117,11 +117,11 @@ type serviceArgs struct {
 	ConvergeConfig *ServiceConvergeConfig `pulumi:"convergeConfig"`
 	// See EndpointSpec below for details.
 	EndpointSpec *ServiceEndpointSpec `pulumi:"endpointSpec"`
-	// User-defined key/value metadata
+	// See Labels below for details.
 	Labels []ServiceLabel `pulumi:"labels"`
-	// The mode of resolution to use for internal load balancing between tasks. `(vip|dnsrr)`. Default: `vip`.
+	// See Mode below for details.
 	Mode *ServiceMode `pulumi:"mode"`
-	// A random name for the port.
+	// The name of the Docker service.
 	Name *string `pulumi:"name"`
 	// See RollbackConfig below for details.
 	RollbackConfig *ServiceRollbackConfig `pulumi:"rollbackConfig"`
@@ -139,11 +139,11 @@ type ServiceArgs struct {
 	ConvergeConfig ServiceConvergeConfigPtrInput
 	// See EndpointSpec below for details.
 	EndpointSpec ServiceEndpointSpecPtrInput
-	// User-defined key/value metadata
+	// See Labels below for details.
 	Labels ServiceLabelArrayInput
-	// The mode of resolution to use for internal load balancing between tasks. `(vip|dnsrr)`. Default: `vip`.
+	// See Mode below for details.
 	Mode ServiceModePtrInput
-	// A random name for the port.
+	// The name of the Docker service.
 	Name pulumi.StringPtrInput
 	// See RollbackConfig below for details.
 	RollbackConfig ServiceRollbackConfigPtrInput
@@ -156,4 +156,3 @@ type ServiceArgs struct {
 func (ServiceArgs) ElementType() reflect.Type {
 	return reflect.TypeOf((*serviceArgs)(nil)).Elem()
 }
-

@@ -28,23 +28,21 @@ type LookupNetworkArgs struct {
 	Name *string `pulumi:"name"`
 }
 
-
 // A collection of values returned by getNetwork.
 type LookupNetworkResult struct {
-	// (Optional, string) The driver of the Docker network. 
+	// (Optional, string) The driver of the Docker network.
 	// Possible values are `bridge`, `host`, `overlay`, `macvlan`.
 	// See [docker docs][networkdocs] for more details.
-	Driver string `pulumi:"driver"`
-	Id *string `pulumi:"id"`
-	Internal bool `pulumi:"internal"`
+	Driver      string                 `pulumi:"driver"`
+	Id          *string                `pulumi:"id"`
+	Internal    bool                   `pulumi:"internal"`
 	IpamConfigs []GetNetworkIpamConfig `pulumi:"ipamConfigs"`
-	Name *string `pulumi:"name"`
+	Name        *string                `pulumi:"name"`
 	// (Optional, map) Only available with bridge networks. See
 	// [docker docs][bridgeoptionsdocs] for more details.
 	// * `internal` (Optional, bool) Boolean flag for whether the network is internal.
 	// * `ipamConfig` (Optional, map) See IPAM below for details.
 	// * `scope` (Optional, string) Scope of the network. One of `swarm`, `global`, or `local`.
 	Options map[string]interface{} `pulumi:"options"`
-	Scope string `pulumi:"scope"`
+	Scope   string                 `pulumi:"scope"`
 }
-

@@ -1498,23 +1498,40 @@ namespace Pulumi.Docker
 
     public sealed class ContainerHealthcheckArgs : Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Time between running the check `(ms|s|m|h)`. Default: `0s`.
+        /// </summary>
         [Input("interval")]
         public Input<string>? Interval { get; set; }
 
+        /// <summary>
+        /// Consecutive failures needed to report unhealthy. Default: `0`.
+        /// </summary>
         [Input("retries")]
         public Input<int>? Retries { get; set; }
 
+        /// <summary>
+        /// Start period for the container to initialize before counting retries towards unstable `(ms|s|m|h)`. Default: `0s`.
+        /// </summary>
         [Input("startPeriod")]
         public Input<string>? StartPeriod { get; set; }
 
         [Input("tests", required: true)]
         private InputList<string>? _tests;
+
+        /// <summary>
+        /// Command to run to check health. For example, to run `curl -f http://localhost/health` set the
+        /// command to be `["CMD", "curl", "-f", "http://localhost/health"]`.
+        /// </summary>
         public InputList<string> Tests
         {
             get => _tests ?? (_tests = new InputList<string>());
             set => _tests = value;
         }
 
+        /// <summary>
+        /// Maximum time to allow one check to run `(ms|s|m|h)`. Default: `0s`.
+        /// </summary>
         [Input("timeout")]
         public Input<string>? Timeout { get; set; }
 
@@ -1525,23 +1542,40 @@ namespace Pulumi.Docker
 
     public sealed class ContainerHealthcheckGetArgs : Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Time between running the check `(ms|s|m|h)`. Default: `0s`.
+        /// </summary>
         [Input("interval")]
         public Input<string>? Interval { get; set; }
 
+        /// <summary>
+        /// Consecutive failures needed to report unhealthy. Default: `0`.
+        /// </summary>
         [Input("retries")]
         public Input<int>? Retries { get; set; }
 
+        /// <summary>
+        /// Start period for the container to initialize before counting retries towards unstable `(ms|s|m|h)`. Default: `0s`.
+        /// </summary>
         [Input("startPeriod")]
         public Input<string>? StartPeriod { get; set; }
 
         [Input("tests", required: true)]
         private InputList<string>? _tests;
+
+        /// <summary>
+        /// Command to run to check health. For example, to run `curl -f http://localhost/health` set the
+        /// command to be `["CMD", "curl", "-f", "http://localhost/health"]`.
+        /// </summary>
         public InputList<string> Tests
         {
             get => _tests ?? (_tests = new InputList<string>());
             set => _tests = value;
         }
 
+        /// <summary>
+        /// Maximum time to allow one check to run `(ms|s|m|h)`. Default: `0s`.
+        /// </summary>
         [Input("timeout")]
         public Input<string>? Timeout { get; set; }
 
@@ -1638,7 +1672,7 @@ namespace Pulumi.Docker
         public Input<bool>? ReadOnly { get; set; }
 
         /// <summary>
-        /// A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state.
+        /// The mount source (e.g., a volume name, a host path)
         /// </summary>
         [Input("source")]
         public Input<string>? Source { get; set; }
@@ -1714,7 +1748,7 @@ namespace Pulumi.Docker
         public Input<bool>? ReadOnly { get; set; }
 
         /// <summary>
-        /// A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state.
+        /// The mount source (e.g., a volume name, a host path)
         /// </summary>
         [Input("source")]
         public Input<string>? Source { get; set; }
@@ -1956,6 +1990,9 @@ namespace Pulumi.Docker
         [Input("ipv6Address")]
         public Input<string>? Ipv6Address { get; set; }
 
+        /// <summary>
+        /// The name of the network.
+        /// </summary>
         [Input("name", required: true)]
         public Input<string> Name { get; set; } = null!;
 
@@ -1990,6 +2027,9 @@ namespace Pulumi.Docker
         [Input("ipv6Address")]
         public Input<string>? Ipv6Address { get; set; }
 
+        /// <summary>
+        /// The name of the network.
+        /// </summary>
         [Input("name", required: true)]
         public Input<string> Name { get; set; } = null!;
 
@@ -2323,10 +2363,26 @@ namespace Pulumi.Docker
     [OutputType]
     public sealed class ContainerHealthcheck
     {
+        /// <summary>
+        /// Time between running the check `(ms|s|m|h)`. Default: `0s`.
+        /// </summary>
         public readonly string? Interval;
+        /// <summary>
+        /// Consecutive failures needed to report unhealthy. Default: `0`.
+        /// </summary>
         public readonly int? Retries;
+        /// <summary>
+        /// Start period for the container to initialize before counting retries towards unstable `(ms|s|m|h)`. Default: `0s`.
+        /// </summary>
         public readonly string? StartPeriod;
+        /// <summary>
+        /// Command to run to check health. For example, to run `curl -f http://localhost/health` set the
+        /// command to be `["CMD", "curl", "-f", "http://localhost/health"]`.
+        /// </summary>
         public readonly ImmutableArray<string> Tests;
+        /// <summary>
+        /// Maximum time to allow one check to run `(ms|s|m|h)`. Default: `0s`.
+        /// </summary>
         public readonly string? Timeout;
 
         [OutputConstructor]
@@ -2400,7 +2456,7 @@ namespace Pulumi.Docker
         /// </summary>
         public readonly bool? ReadOnly;
         /// <summary>
-        /// A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state.
+        /// The mount source (e.g., a volume name, a host path)
         /// </summary>
         public readonly string? Source;
         /// <summary>
@@ -2576,6 +2632,9 @@ namespace Pulumi.Docker
         /// The IPV6 address of the container in the specific network.
         /// </summary>
         public readonly string? Ipv6Address;
+        /// <summary>
+        /// The name of the network.
+        /// </summary>
         public readonly string Name;
 
         [OutputConstructor]

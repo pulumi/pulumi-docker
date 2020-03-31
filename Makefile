@@ -51,10 +51,10 @@ generate_schema:: tfgen
 
 provider::
 	go generate ${PROJECT}/cmd/${PROVIDER}
-	go install -ldflags "-X github.com/pulumi/pulumi-tls/pkg/version.Version=${VERSION}" ${PROJECT}/cmd/${PROVIDER}
+	go install -ldflags "-X github.com/pulumi/pulumi-docker/pkg/version.Version=${VERSION}" ${PROJECT}/cmd/${PROVIDER}
 
 tfgen::
-	go install -ldflags "-X github.com/pulumi/pulumi-tls/pkg/version.Version=${VERSION}" ${PROJECT}/cmd/${TFGEN}
+	go install -ldflags "-X github.com/pulumi/pulumi-docker/pkg/version.Version=${VERSION}" ${PROJECT}/cmd/${TFGEN}
 
 lint::
 	#golangci-lint run

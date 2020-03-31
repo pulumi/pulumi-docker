@@ -46,15 +46,15 @@ export class Service extends pulumi.CustomResource {
      */
     public readonly endpointSpec!: pulumi.Output<outputs.ServiceEndpointSpec>;
     /**
-     * User-defined key/value metadata
+     * See Labels below for details.
      */
     public readonly labels!: pulumi.Output<outputs.ServiceLabel[]>;
     /**
-     * The mode of resolution to use for internal load balancing between tasks. `(vip|dnsrr)`. Default: `vip`.
+     * See Mode below for details.
      */
     public readonly mode!: pulumi.Output<outputs.ServiceMode>;
     /**
-     * A random name for the port.
+     * The name of the Docker service.
      */
     public readonly name!: pulumi.Output<string>;
     /**
@@ -134,15 +134,15 @@ export interface ServiceState {
      */
     readonly endpointSpec?: pulumi.Input<inputs.ServiceEndpointSpec>;
     /**
-     * User-defined key/value metadata
+     * See Labels below for details.
      */
     readonly labels?: pulumi.Input<pulumi.Input<inputs.ServiceLabel>[]>;
     /**
-     * The mode of resolution to use for internal load balancing between tasks. `(vip|dnsrr)`. Default: `vip`.
+     * See Mode below for details.
      */
     readonly mode?: pulumi.Input<inputs.ServiceMode>;
     /**
-     * A random name for the port.
+     * The name of the Docker service.
      */
     readonly name?: pulumi.Input<string>;
     /**
@@ -176,15 +176,15 @@ export interface ServiceArgs {
      */
     readonly endpointSpec?: pulumi.Input<inputs.ServiceEndpointSpec>;
     /**
-     * User-defined key/value metadata
+     * See Labels below for details.
      */
     readonly labels?: pulumi.Input<pulumi.Input<inputs.ServiceLabel>[]>;
     /**
-     * The mode of resolution to use for internal load balancing between tasks. `(vip|dnsrr)`. Default: `vip`.
+     * See Mode below for details.
      */
     readonly mode?: pulumi.Input<inputs.ServiceMode>;
     /**
-     * A random name for the port.
+     * The name of the Docker service.
      */
     readonly name?: pulumi.Input<string>;
     /**

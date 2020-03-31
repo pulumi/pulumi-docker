@@ -35,10 +35,26 @@ export interface ContainerDevice {
 }
 
 export interface ContainerHealthcheck {
+    /**
+     * Time between running the check `(ms|s|m|h)`. Default: `0s`.
+     */
     interval?: pulumi.Input<string>;
+    /**
+     * Consecutive failures needed to report unhealthy. Default: `0`.
+     */
     retries?: pulumi.Input<number>;
+    /**
+     * Start period for the container to initialize before counting retries towards unstable `(ms|s|m|h)`. Default: `0s`.
+     */
     startPeriod?: pulumi.Input<string>;
+    /**
+     * Command to run to check health. For example, to run `curl -f http://localhost/health` set the
+     * command to be `["CMD", "curl", "-f", "http://localhost/health"]`.
+     */
     tests: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * Maximum time to allow one check to run `(ms|s|m|h)`. Default: `0s`.
+     */
     timeout?: pulumi.Input<string>;
 }
 
@@ -73,7 +89,7 @@ export interface ContainerMount {
      */
     readOnly?: pulumi.Input<boolean>;
     /**
-     * A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state.
+     * The mount source (e.g., a volume name, a host path)
      */
     source?: pulumi.Input<string>;
     /**
@@ -168,6 +184,9 @@ export interface ContainerNetworksAdvanced {
      * The IPV6 address of the container in the specific network.
      */
     ipv6Address?: pulumi.Input<string>;
+    /**
+     * The name of the network.
+     */
     name: pulumi.Input<string>;
 }
 
@@ -300,7 +319,14 @@ export interface ServiceAuth {
 }
 
 export interface ServiceConvergeConfig {
+    /**
+     * Time between each the check to check docker endpoint `(ms|s|m|h)`. For example, to check if
+     * all tasks are up when a service is created, or to check if all tasks are successfully updated on an update. Default: `7s`.
+     */
     delay?: pulumi.Input<string>;
+    /**
+     * The timeout of the service to reach the desired state `(s|m)`. Default: `3m`.
+     */
     timeout?: pulumi.Input<string>;
 }
 
@@ -317,7 +343,7 @@ export interface ServiceEndpointSpec {
 
 export interface ServiceEndpointSpecPort {
     /**
-     * A random name for the port.
+     * The name of the Docker service.
      */
     name?: pulumi.Input<string>;
     /**
@@ -339,12 +365,22 @@ export interface ServiceEndpointSpecPort {
 }
 
 export interface ServiceLabel {
+    /**
+     * Name of the label
+     * * `value` (Required, string) Value of the label
+     */
     label: pulumi.Input<string>;
     value: pulumi.Input<string>;
 }
 
 export interface ServiceMode {
+    /**
+     * set it to `true` to run the service in the global mode
+     */
     global?: pulumi.Input<boolean>;
+    /**
+     * , which contains atm only the amount of `replicas`
+     */
     replicated?: pulumi.Input<inputs.ServiceModeReplicated>;
 }
 
@@ -353,18 +389,44 @@ export interface ServiceModeReplicated {
 }
 
 export interface ServiceRollbackConfig {
+    /**
+     * Delay between updates `(ns|us|ms|s|m|h)`, e.g. `5s`.
+     * all tasks are up when a service is created, or to check if all tasks are successfully updated on an update. Default: `7s`.
+     */
     delay?: pulumi.Input<string>;
+    /**
+     * Action on update failure: `pause|continue|rollback`.
+     */
     failureAction?: pulumi.Input<string>;
+    /**
+     * The failure rate to tolerate during an update as `float`. **Important:** the `float`need to be wrapped in a `string` to avoid internal
+     * casting and precision errors.
+     */
     maxFailureRatio?: pulumi.Input<string>;
+    /**
+     * Duration after each task update to monitor for failure `(ns|us|ms|s|m|h)`
+     */
     monitor?: pulumi.Input<string>;
+    /**
+     * Update order either 'stop-first' or 'start-first'.
+     */
     order?: pulumi.Input<string>;
+    /**
+     * The maximum number of tasks to be updated in one iteration simultaneously (0 to update all at once).
+     */
     parallelism?: pulumi.Input<number>;
 }
 
 export interface ServiceTaskSpec {
     containerSpec: pulumi.Input<inputs.ServiceTaskSpecContainerSpec>;
     forceUpdate?: pulumi.Input<number>;
+    /**
+     * See Log Driver below for details.
+     */
     logDriver?: pulumi.Input<inputs.ServiceTaskSpecLogDriver>;
+    /**
+     * Ids of the networks in which the container will be put in.
+     */
     networks?: pulumi.Input<pulumi.Input<string>[]>;
     placement?: pulumi.Input<inputs.ServiceTaskSpecPlacement>;
     resources?: pulumi.Input<inputs.ServiceTaskSpecResources>;
@@ -373,25 +435,80 @@ export interface ServiceTaskSpec {
 }
 
 export interface ServiceTaskSpecContainerSpec {
+    /**
+     * Arguments to the command.
+     */
     args?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * The command to be run in the image.
+     */
     commands?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * See Configs below for details.
+     */
     configs?: pulumi.Input<pulumi.Input<inputs.ServiceTaskSpecContainerSpecConfig>[]>;
+    /**
+     * The working directory for commands to run in.
+     */
     dir?: pulumi.Input<string>;
+    /**
+     * See DNS Config below for details.
+     */
     dnsConfig?: pulumi.Input<inputs.ServiceTaskSpecContainerSpecDnsConfig>;
+    /**
+     * A list of environment variables in the form VAR=value.
+     */
     env?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    /**
+     * A list of additional groups that the container process will run as.
+     * * `privileges` (Optional, block) See Privileges below for details.
+     */
     groups?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * See Healthcheck below for details.
+     */
     healthcheck?: pulumi.Input<inputs.ServiceTaskSpecContainerSpecHealthcheck>;
+    /**
+     * The hostname to use for the container, as a valid RFC 1123 hostname.
+     */
     hostname?: pulumi.Input<string>;
     hosts?: pulumi.Input<pulumi.Input<inputs.ServiceTaskSpecContainerSpecHost>[]>;
+    /**
+     * The image used to create the Docker service.
+     */
     image: pulumi.Input<string>;
+    /**
+     * Isolation technology of the containers running the service. (Windows only). Valid values are: `default|process|hyperv`
+     */
     isolation?: pulumi.Input<string>;
+    /**
+     * See Labels below for details.
+     */
     labels?: pulumi.Input<pulumi.Input<inputs.ServiceTaskSpecContainerSpecLabel>[]>;
+    /**
+     * See Mounts below for details.
+     */
     mounts?: pulumi.Input<pulumi.Input<inputs.ServiceTaskSpecContainerSpecMount>[]>;
     privileges?: pulumi.Input<inputs.ServiceTaskSpecContainerSpecPrivileges>;
+    /**
+     * Mount the container's root filesystem as read only.
+     */
     readOnly?: pulumi.Input<boolean>;
+    /**
+     * See Secrets below for details.
+     */
     secrets?: pulumi.Input<pulumi.Input<inputs.ServiceTaskSpecContainerSpecSecret>[]>;
+    /**
+     * Amount of time to wait for the container to terminate before forcefully removing it `(ms|s|m|h)`.
+     */
     stopGracePeriod?: pulumi.Input<string>;
+    /**
+     * Signal to stop the container.
+     */
     stopSignal?: pulumi.Input<string>;
+    /**
+     * The user inside the container.
+     */
     user?: pulumi.Input<string>;
 }
 
@@ -423,81 +540,177 @@ export interface ServiceTaskSpecContainerSpecConfig {
 }
 
 export interface ServiceTaskSpecContainerSpecDnsConfig {
+    /**
+     * The IP addresses of the name servers, for example, `8.8.8.8`
+     */
     nameservers: pulumi.Input<pulumi.Input<string>[]>;
     /**
-     * The options for the logging driver, e.g.
+     * A list of internal resolver variables to be modified, for example, `debug`, `ndots:3`
      */
     options?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * A search list for host-name lookup.
+     */
     searches?: pulumi.Input<pulumi.Input<string>[]>;
 }
 
 export interface ServiceTaskSpecContainerSpecHealthcheck {
+    /**
+     * Time between running the check `(ms|s|m|h)`. Default: `0s`.
+     */
     interval?: pulumi.Input<string>;
+    /**
+     * Consecutive failures needed to report unhealthy. Default: `0`.
+     */
     retries?: pulumi.Input<number>;
+    /**
+     * Start period for the container to initialize before counting retries towards unstable `(ms|s|m|h)`. Default: `0s`.
+     */
     startPeriod?: pulumi.Input<string>;
+    /**
+     * Command to run to check health. For example, to run `curl -f http://localhost/health` set the
+     * command to be `["CMD", "curl", "-f", "http://localhost/health"]`.
+     */
     tests: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * Maximum time to allow one check to run `(ms|s|m|h)`. Default: `0s`.
+     */
     timeout?: pulumi.Input<string>;
 }
 
 export interface ServiceTaskSpecContainerSpecHost {
+    /**
+     * A list of hostname/IP mappings to add to the container's hosts file.
+     */
     host: pulumi.Input<string>;
+    /**
+     * The ip
+     */
     ip: pulumi.Input<string>;
 }
 
 export interface ServiceTaskSpecContainerSpecLabel {
+    /**
+     * Name of the label
+     * * `value` (Required, string) Value of the label
+     */
     label: pulumi.Input<string>;
     value: pulumi.Input<string>;
 }
 
 export interface ServiceTaskSpecContainerSpecMount {
+    /**
+     * Optional configuration for the `bind` type.
+     */
     bindOptions?: pulumi.Input<inputs.ServiceTaskSpecContainerSpecMountBindOptions>;
+    /**
+     * Mount the container's root filesystem as read only.
+     */
     readOnly?: pulumi.Input<boolean>;
+    /**
+     * The mount source (e.g., a volume name, a host path)
+     */
     source?: pulumi.Input<string>;
+    /**
+     * The container path.
+     */
     target: pulumi.Input<string>;
+    /**
+     * Optional configuration for the `tmpf` type.
+     */
     tmpfsOptions?: pulumi.Input<inputs.ServiceTaskSpecContainerSpecMountTmpfsOptions>;
+    /**
+     * SELinux type label
+     */
     type: pulumi.Input<string>;
+    /**
+     * Optional configuration for the `volume` type.
+     */
     volumeOptions?: pulumi.Input<inputs.ServiceTaskSpecContainerSpecMountVolumeOptions>;
 }
 
 export interface ServiceTaskSpecContainerSpecMountBindOptions {
+    /**
+     * A propagation mode with the value.
+     */
     propagation?: pulumi.Input<string>;
 }
 
 export interface ServiceTaskSpecContainerSpecMountTmpfsOptions {
     /**
-     * The mode of resolution to use for internal load balancing between tasks. `(vip|dnsrr)`. Default: `vip`.
+     * See Mode below for details.
      */
     mode?: pulumi.Input<number>;
+    /**
+     * The size for the tmpfs mount in bytes. 
+     */
     sizeBytes?: pulumi.Input<number>;
 }
 
 export interface ServiceTaskSpecContainerSpecMountVolumeOptions {
     driverName?: pulumi.Input<string>;
     driverOptions?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    /**
+     * See Labels below for details.
+     */
     labels?: pulumi.Input<pulumi.Input<inputs.ServiceTaskSpecContainerSpecMountVolumeOptionsLabel>[]>;
+    /**
+     * Whether to populate volume with data from the target.
+     */
     noCopy?: pulumi.Input<boolean>;
 }
 
 export interface ServiceTaskSpecContainerSpecMountVolumeOptionsLabel {
+    /**
+     * Name of the label
+     * * `value` (Required, string) Value of the label
+     */
     label: pulumi.Input<string>;
     value: pulumi.Input<string>;
 }
 
 export interface ServiceTaskSpecContainerSpecPrivileges {
+    /**
+     * For managed service account (Windows only)
+     */
     credentialSpec?: pulumi.Input<inputs.ServiceTaskSpecContainerSpecPrivilegesCredentialSpec>;
+    /**
+     * SELinux labels of the container
+     */
     seLinuxContext?: pulumi.Input<inputs.ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext>;
 }
 
 export interface ServiceTaskSpecContainerSpecPrivilegesCredentialSpec {
+    /**
+     * Load credential spec from this file.
+     */
     file?: pulumi.Input<string>;
+    /**
+     * Load credential spec from this value in the Windows registry.
+     */
     registry?: pulumi.Input<string>;
 }
 
 export interface ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext {
+    /**
+     * Disable SELinux
+     */
     disable?: pulumi.Input<boolean>;
+    /**
+     * SELinux level label
+     */
     level?: pulumi.Input<string>;
+    /**
+     * SELinux role label
+     */
     role?: pulumi.Input<string>;
+    /**
+     * SELinux type label
+     */
     type?: pulumi.Input<string>;
+    /**
+     * The user inside the container.
+     */
     user?: pulumi.Input<string>;
 }
 
@@ -511,20 +724,26 @@ export interface ServiceTaskSpecContainerSpecSecret {
      */
     fileMode?: pulumi.Input<number>;
     /**
-     * Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
+     * Represents the final filename in the filesystem. The specific target file that the secret data is written within the docker container, e.g. `/root/secret/secret.json`
      */
     fileName: pulumi.Input<string>;
     /**
      * Represents the file UID. Defaults: `0`
      */
     fileUid?: pulumi.Input<string>;
+    /**
+     * ConfigID represents the ID of the specific secret.
+     */
     secretId: pulumi.Input<string>;
+    /**
+     * The name of the secret that this references, but internally it is just provided for lookup/display purposes
+     */
     secretName?: pulumi.Input<string>;
 }
 
 export interface ServiceTaskSpecLogDriver {
     /**
-     * A random name for the port.
+     * The logging driver to use. Either `(none|json-file|syslog|journald|gelf|fluentd|awslogs|splunk|etwlogs|gcplogs)`.
      */
     name: pulumi.Input<string>;
     /**
@@ -545,7 +764,23 @@ export interface ServiceTaskSpecPlacementPlatform {
 }
 
 export interface ServiceTaskSpecResources {
+    /**
+     * Describes the resources which can be advertised by a node and requested by a task.
+     * * `nanoCpus` (Optional, int) CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
+     * * `memoryBytes` (Optional, int) The amount of memory in bytes the container allocates
+     * * `genericResources` (Optional, map) User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
+     * * `namedResourcesSpec` (Optional, set of string) The String resources, delimited by `=`
+     * * `discreteResourcesSpec` (Optional, set of string) The Integer resources, delimited by `=`
+     */
     limits?: pulumi.Input<inputs.ServiceTaskSpecResourcesLimits>;
+    /**
+     * An object describing the resources which can be advertised by a node and requested by a task.
+     * * `nanoCpus` (Optional, int) CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
+     * * `memoryBytes` (Optional, int) The amount of memory in bytes the container allocates
+     * * `genericResources` (Optional, map) User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
+     * * `namedResourcesSpec` (Optional, set of string) The String resources
+     * * `discreteResourcesSpec` (Optional, set of string) The Integer resources
+     */
     reservation?: pulumi.Input<inputs.ServiceTaskSpecResourcesReservation>;
 }
 
@@ -573,17 +808,40 @@ export interface ServiceTaskSpecResourcesReservationGenericResources {
 
 export interface ServiceTaskSpecRestartPolicy {
     condition?: pulumi.Input<string>;
+    /**
+     * Delay between updates `(ns|us|ms|s|m|h)`, e.g. `5s`.
+     * all tasks are up when a service is created, or to check if all tasks are successfully updated on an update. Default: `7s`.
+     */
     delay?: pulumi.Input<string>;
     maxAttempts?: pulumi.Input<number>;
     window?: pulumi.Input<string>;
 }
 
 export interface ServiceUpdateConfig {
+    /**
+     * Delay between updates `(ns|us|ms|s|m|h)`, e.g. `5s`.
+     */
     delay?: pulumi.Input<string>;
+    /**
+     * Action on update failure: `pause|continue|rollback`.
+     */
     failureAction?: pulumi.Input<string>;
+    /**
+     * The failure rate to tolerate during an update as `float`. **Important:** the `float`need to be wrapped in a `string` to avoid internal
+     * casting and precision errors.
+     */
     maxFailureRatio?: pulumi.Input<string>;
+    /**
+     * Duration after each task update to monitor for failure `(ns|us|ms|s|m|h)`
+     */
     monitor?: pulumi.Input<string>;
+    /**
+     * Update order either 'stop-first' or 'start-first'.
+     */
     order?: pulumi.Input<string>;
+    /**
+     * The maximum number of tasks to be updated in one iteration simultaneously (0 to update all at once).
+     */
     parallelism?: pulumi.Input<number>;
 }
 

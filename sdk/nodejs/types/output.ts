@@ -35,10 +35,26 @@ export interface ContainerDevice {
 }
 
 export interface ContainerHealthcheck {
+    /**
+     * Time between running the check `(ms|s|m|h)`. Default: `0s`.
+     */
     interval?: string;
+    /**
+     * Consecutive failures needed to report unhealthy. Default: `0`.
+     */
     retries?: number;
+    /**
+     * Start period for the container to initialize before counting retries towards unstable `(ms|s|m|h)`. Default: `0s`.
+     */
     startPeriod?: string;
+    /**
+     * Command to run to check health. For example, to run `curl -f http://localhost/health` set the
+     * command to be `["CMD", "curl", "-f", "http://localhost/health"]`.
+     */
     tests: string[];
+    /**
+     * Maximum time to allow one check to run `(ms|s|m|h)`. Default: `0s`.
+     */
     timeout?: string;
 }
 
@@ -73,7 +89,7 @@ export interface ContainerMount {
      */
     readOnly?: boolean;
     /**
-     * A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state.
+     * The mount source (e.g., a volume name, a host path)
      */
     source?: string;
     /**
@@ -168,6 +184,9 @@ export interface ContainerNetworksAdvanced {
      * The IPV6 address of the container in the specific network.
      */
     ipv6Address?: string;
+    /**
+     * The name of the network.
+     */
     name: string;
 }
 
@@ -299,7 +318,14 @@ export interface ServiceAuth {
 }
 
 export interface ServiceConvergeConfig {
+    /**
+     * Time between each the check to check docker endpoint `(ms|s|m|h)`. For example, to check if
+     * all tasks are up when a service is created, or to check if all tasks are successfully updated on an update. Default: `7s`.
+     */
     delay?: string;
+    /**
+     * The timeout of the service to reach the desired state `(s|m)`. Default: `3m`.
+     */
     timeout?: string;
 }
 
@@ -316,7 +342,7 @@ export interface ServiceEndpointSpec {
 
 export interface ServiceEndpointSpecPort {
     /**
-     * A random name for the port.
+     * The name of the Docker service.
      */
     name?: string;
     /**
@@ -338,12 +364,22 @@ export interface ServiceEndpointSpecPort {
 }
 
 export interface ServiceLabel {
+    /**
+     * Name of the label
+     * * `value` (Required, string) Value of the label
+     */
     label: string;
     value: string;
 }
 
 export interface ServiceMode {
+    /**
+     * set it to `true` to run the service in the global mode
+     */
     global?: boolean;
+    /**
+     * , which contains atm only the amount of `replicas`
+     */
     replicated: outputs.ServiceModeReplicated;
 }
 
@@ -352,18 +388,44 @@ export interface ServiceModeReplicated {
 }
 
 export interface ServiceRollbackConfig {
+    /**
+     * Delay between updates `(ns|us|ms|s|m|h)`, e.g. `5s`.
+     * all tasks are up when a service is created, or to check if all tasks are successfully updated on an update. Default: `7s`.
+     */
     delay?: string;
+    /**
+     * Action on update failure: `pause|continue|rollback`.
+     */
     failureAction?: string;
+    /**
+     * The failure rate to tolerate during an update as `float`. **Important:** the `float`need to be wrapped in a `string` to avoid internal
+     * casting and precision errors.
+     */
     maxFailureRatio?: string;
+    /**
+     * Duration after each task update to monitor for failure `(ns|us|ms|s|m|h)`
+     */
     monitor?: string;
+    /**
+     * Update order either 'stop-first' or 'start-first'.
+     */
     order?: string;
+    /**
+     * The maximum number of tasks to be updated in one iteration simultaneously (0 to update all at once).
+     */
     parallelism?: number;
 }
 
 export interface ServiceTaskSpec {
     containerSpec: outputs.ServiceTaskSpecContainerSpec;
     forceUpdate: number;
+    /**
+     * See Log Driver below for details.
+     */
     logDriver?: outputs.ServiceTaskSpecLogDriver;
+    /**
+     * Ids of the networks in which the container will be put in.
+     */
     networks?: string[];
     placement: outputs.ServiceTaskSpecPlacement;
     resources: outputs.ServiceTaskSpecResources;
@@ -372,25 +434,80 @@ export interface ServiceTaskSpec {
 }
 
 export interface ServiceTaskSpecContainerSpec {
+    /**
+     * Arguments to the command.
+     */
     args?: string[];
+    /**
+     * The command to be run in the image.
+     */
     commands?: string[];
+    /**
+     * See Configs below for details.
+     */
     configs?: outputs.ServiceTaskSpecContainerSpecConfig[];
+    /**
+     * The working directory for commands to run in.
+     */
     dir?: string;
+    /**
+     * See DNS Config below for details.
+     */
     dnsConfig: outputs.ServiceTaskSpecContainerSpecDnsConfig;
+    /**
+     * A list of environment variables in the form VAR=value.
+     */
     env?: {[key: string]: string};
+    /**
+     * A list of additional groups that the container process will run as.
+     * * `privileges` (Optional, block) See Privileges below for details.
+     */
     groups?: string[];
+    /**
+     * See Healthcheck below for details.
+     */
     healthcheck: outputs.ServiceTaskSpecContainerSpecHealthcheck;
+    /**
+     * The hostname to use for the container, as a valid RFC 1123 hostname.
+     */
     hostname?: string;
     hosts?: outputs.ServiceTaskSpecContainerSpecHost[];
+    /**
+     * The image used to create the Docker service.
+     */
     image: string;
+    /**
+     * Isolation technology of the containers running the service. (Windows only). Valid values are: `default|process|hyperv`
+     */
     isolation?: string;
+    /**
+     * See Labels below for details.
+     */
     labels?: outputs.ServiceTaskSpecContainerSpecLabel[];
+    /**
+     * See Mounts below for details.
+     */
     mounts?: outputs.ServiceTaskSpecContainerSpecMount[];
     privileges?: outputs.ServiceTaskSpecContainerSpecPrivileges;
+    /**
+     * Mount the container's root filesystem as read only.
+     */
     readOnly?: boolean;
+    /**
+     * See Secrets below for details.
+     */
     secrets?: outputs.ServiceTaskSpecContainerSpecSecret[];
+    /**
+     * Amount of time to wait for the container to terminate before forcefully removing it `(ms|s|m|h)`.
+     */
     stopGracePeriod: string;
+    /**
+     * Signal to stop the container.
+     */
     stopSignal?: string;
+    /**
+     * The user inside the container.
+     */
     user?: string;
 }
 
@@ -422,81 +539,177 @@ export interface ServiceTaskSpecContainerSpecConfig {
 }
 
 export interface ServiceTaskSpecContainerSpecDnsConfig {
+    /**
+     * The IP addresses of the name servers, for example, `8.8.8.8`
+     */
     nameservers: string[];
     /**
-     * The options for the logging driver, e.g.
+     * A list of internal resolver variables to be modified, for example, `debug`, `ndots:3`
      */
     options?: string[];
+    /**
+     * A search list for host-name lookup.
+     */
     searches?: string[];
 }
 
 export interface ServiceTaskSpecContainerSpecHealthcheck {
+    /**
+     * Time between running the check `(ms|s|m|h)`. Default: `0s`.
+     */
     interval?: string;
+    /**
+     * Consecutive failures needed to report unhealthy. Default: `0`.
+     */
     retries?: number;
+    /**
+     * Start period for the container to initialize before counting retries towards unstable `(ms|s|m|h)`. Default: `0s`.
+     */
     startPeriod?: string;
+    /**
+     * Command to run to check health. For example, to run `curl -f http://localhost/health` set the
+     * command to be `["CMD", "curl", "-f", "http://localhost/health"]`.
+     */
     tests: string[];
+    /**
+     * Maximum time to allow one check to run `(ms|s|m|h)`. Default: `0s`.
+     */
     timeout?: string;
 }
 
 export interface ServiceTaskSpecContainerSpecHost {
+    /**
+     * A list of hostname/IP mappings to add to the container's hosts file.
+     */
     host: string;
+    /**
+     * The ip
+     */
     ip: string;
 }
 
 export interface ServiceTaskSpecContainerSpecLabel {
+    /**
+     * Name of the label
+     * * `value` (Required, string) Value of the label
+     */
     label: string;
     value: string;
 }
 
 export interface ServiceTaskSpecContainerSpecMount {
+    /**
+     * Optional configuration for the `bind` type.
+     */
     bindOptions?: outputs.ServiceTaskSpecContainerSpecMountBindOptions;
+    /**
+     * Mount the container's root filesystem as read only.
+     */
     readOnly?: boolean;
+    /**
+     * The mount source (e.g., a volume name, a host path)
+     */
     source?: string;
+    /**
+     * The container path.
+     */
     target: string;
+    /**
+     * Optional configuration for the `tmpf` type.
+     */
     tmpfsOptions?: outputs.ServiceTaskSpecContainerSpecMountTmpfsOptions;
+    /**
+     * SELinux type label
+     */
     type: string;
+    /**
+     * Optional configuration for the `volume` type.
+     */
     volumeOptions?: outputs.ServiceTaskSpecContainerSpecMountVolumeOptions;
 }
 
 export interface ServiceTaskSpecContainerSpecMountBindOptions {
+    /**
+     * A propagation mode with the value.
+     */
     propagation?: string;
 }
 
 export interface ServiceTaskSpecContainerSpecMountTmpfsOptions {
     /**
-     * The mode of resolution to use for internal load balancing between tasks. `(vip|dnsrr)`. Default: `vip`.
+     * See Mode below for details.
      */
     mode?: number;
+    /**
+     * The size for the tmpfs mount in bytes. 
+     */
     sizeBytes?: number;
 }
 
 export interface ServiceTaskSpecContainerSpecMountVolumeOptions {
     driverName?: string;
     driverOptions?: {[key: string]: string};
+    /**
+     * See Labels below for details.
+     */
     labels?: outputs.ServiceTaskSpecContainerSpecMountVolumeOptionsLabel[];
+    /**
+     * Whether to populate volume with data from the target.
+     */
     noCopy?: boolean;
 }
 
 export interface ServiceTaskSpecContainerSpecMountVolumeOptionsLabel {
+    /**
+     * Name of the label
+     * * `value` (Required, string) Value of the label
+     */
     label: string;
     value: string;
 }
 
 export interface ServiceTaskSpecContainerSpecPrivileges {
+    /**
+     * For managed service account (Windows only)
+     */
     credentialSpec?: outputs.ServiceTaskSpecContainerSpecPrivilegesCredentialSpec;
+    /**
+     * SELinux labels of the container
+     */
     seLinuxContext?: outputs.ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext;
 }
 
 export interface ServiceTaskSpecContainerSpecPrivilegesCredentialSpec {
+    /**
+     * Load credential spec from this file.
+     */
     file?: string;
+    /**
+     * Load credential spec from this value in the Windows registry.
+     */
     registry?: string;
 }
 
 export interface ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext {
+    /**
+     * Disable SELinux
+     */
     disable?: boolean;
+    /**
+     * SELinux level label
+     */
     level?: string;
+    /**
+     * SELinux role label
+     */
     role?: string;
+    /**
+     * SELinux type label
+     */
     type?: string;
+    /**
+     * The user inside the container.
+     */
     user?: string;
 }
 
@@ -510,20 +723,26 @@ export interface ServiceTaskSpecContainerSpecSecret {
      */
     fileMode?: number;
     /**
-     * Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
+     * Represents the final filename in the filesystem. The specific target file that the secret data is written within the docker container, e.g. `/root/secret/secret.json`
      */
     fileName: string;
     /**
      * Represents the file UID. Defaults: `0`
      */
     fileUid?: string;
+    /**
+     * ConfigID represents the ID of the specific secret.
+     */
     secretId: string;
+    /**
+     * The name of the secret that this references, but internally it is just provided for lookup/display purposes
+     */
     secretName?: string;
 }
 
 export interface ServiceTaskSpecLogDriver {
     /**
-     * A random name for the port.
+     * The logging driver to use. Either `(none|json-file|syslog|journald|gelf|fluentd|awslogs|splunk|etwlogs|gcplogs)`.
      */
     name: string;
     /**
@@ -544,7 +763,23 @@ export interface ServiceTaskSpecPlacementPlatform {
 }
 
 export interface ServiceTaskSpecResources {
+    /**
+     * Describes the resources which can be advertised by a node and requested by a task.
+     * * `nanoCpus` (Optional, int) CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
+     * * `memoryBytes` (Optional, int) The amount of memory in bytes the container allocates
+     * * `genericResources` (Optional, map) User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
+     * * `namedResourcesSpec` (Optional, set of string) The String resources, delimited by `=`
+     * * `discreteResourcesSpec` (Optional, set of string) The Integer resources, delimited by `=`
+     */
     limits?: outputs.ServiceTaskSpecResourcesLimits;
+    /**
+     * An object describing the resources which can be advertised by a node and requested by a task.
+     * * `nanoCpus` (Optional, int) CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
+     * * `memoryBytes` (Optional, int) The amount of memory in bytes the container allocates
+     * * `genericResources` (Optional, map) User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
+     * * `namedResourcesSpec` (Optional, set of string) The String resources
+     * * `discreteResourcesSpec` (Optional, set of string) The Integer resources
+     */
     reservation?: outputs.ServiceTaskSpecResourcesReservation;
 }
 
@@ -572,17 +807,40 @@ export interface ServiceTaskSpecResourcesReservationGenericResources {
 
 export interface ServiceTaskSpecRestartPolicy {
     condition?: string;
+    /**
+     * Delay between updates `(ns|us|ms|s|m|h)`, e.g. `5s`.
+     * all tasks are up when a service is created, or to check if all tasks are successfully updated on an update. Default: `7s`.
+     */
     delay?: string;
     maxAttempts?: number;
     window?: string;
 }
 
 export interface ServiceUpdateConfig {
+    /**
+     * Delay between updates `(ns|us|ms|s|m|h)`, e.g. `5s`.
+     */
     delay?: string;
+    /**
+     * Action on update failure: `pause|continue|rollback`.
+     */
     failureAction?: string;
+    /**
+     * The failure rate to tolerate during an update as `float`. **Important:** the `float`need to be wrapped in a `string` to avoid internal
+     * casting and precision errors.
+     */
     maxFailureRatio?: string;
+    /**
+     * Duration after each task update to monitor for failure `(ns|us|ms|s|m|h)`
+     */
     monitor?: string;
+    /**
+     * Update order either 'stop-first' or 'start-first'.
+     */
     order?: string;
+    /**
+     * The maximum number of tasks to be updated in one iteration simultaneously (0 to update all at once).
+     */
     parallelism?: number;
 }
 

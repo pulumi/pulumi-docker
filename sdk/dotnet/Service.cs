@@ -30,19 +30,19 @@ namespace Pulumi.Docker
         public Output<Outputs.ServiceEndpointSpec> EndpointSpec { get; private set; } = null!;
 
         /// <summary>
-        /// User-defined key/value metadata
+        /// See Labels below for details.
         /// </summary>
         [Output("labels")]
         public Output<ImmutableArray<Outputs.ServiceLabels>> Labels { get; private set; } = null!;
 
         /// <summary>
-        /// The mode of resolution to use for internal load balancing between tasks. `(vip|dnsrr)`. Default: `vip`.
+        /// See Mode below for details.
         /// </summary>
         [Output("mode")]
         public Output<Outputs.ServiceMode> Mode { get; private set; } = null!;
 
         /// <summary>
-        /// A random name for the port.
+        /// The name of the Docker service.
         /// </summary>
         [Output("name")]
         public Output<string> Name { get; private set; } = null!;
@@ -133,7 +133,7 @@ namespace Pulumi.Docker
         private InputList<Inputs.ServiceLabelsArgs>? _labels;
 
         /// <summary>
-        /// User-defined key/value metadata
+        /// See Labels below for details.
         /// </summary>
         public InputList<Inputs.ServiceLabelsArgs> Labels
         {
@@ -142,13 +142,13 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// The mode of resolution to use for internal load balancing between tasks. `(vip|dnsrr)`. Default: `vip`.
+        /// See Mode below for details.
         /// </summary>
         [Input("mode")]
         public Input<Inputs.ServiceModeArgs>? Mode { get; set; }
 
         /// <summary>
-        /// A random name for the port.
+        /// The name of the Docker service.
         /// </summary>
         [Input("name")]
         public Input<string>? Name { get; set; }
@@ -200,7 +200,7 @@ namespace Pulumi.Docker
         private InputList<Inputs.ServiceLabelsGetArgs>? _labels;
 
         /// <summary>
-        /// User-defined key/value metadata
+        /// See Labels below for details.
         /// </summary>
         public InputList<Inputs.ServiceLabelsGetArgs> Labels
         {
@@ -209,13 +209,13 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// The mode of resolution to use for internal load balancing between tasks. `(vip|dnsrr)`. Default: `vip`.
+        /// See Mode below for details.
         /// </summary>
         [Input("mode")]
         public Input<Inputs.ServiceModeGetArgs>? Mode { get; set; }
 
         /// <summary>
-        /// A random name for the port.
+        /// The name of the Docker service.
         /// </summary>
         [Input("name")]
         public Input<string>? Name { get; set; }
@@ -298,9 +298,16 @@ namespace Pulumi.Docker
 
     public sealed class ServiceConvergeConfigArgs : Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Time between each the check to check docker endpoint `(ms|s|m|h)`. For example, to check if
+        /// all tasks are up when a service is created, or to check if all tasks are successfully updated on an update. Default: `7s`.
+        /// </summary>
         [Input("delay")]
         public Input<string>? Delay { get; set; }
 
+        /// <summary>
+        /// The timeout of the service to reach the desired state `(s|m)`. Default: `3m`.
+        /// </summary>
         [Input("timeout")]
         public Input<string>? Timeout { get; set; }
 
@@ -311,9 +318,16 @@ namespace Pulumi.Docker
 
     public sealed class ServiceConvergeConfigGetArgs : Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Time between each the check to check docker endpoint `(ms|s|m|h)`. For example, to check if
+        /// all tasks are up when a service is created, or to check if all tasks are successfully updated on an update. Default: `7s`.
+        /// </summary>
         [Input("delay")]
         public Input<string>? Delay { get; set; }
 
+        /// <summary>
+        /// The timeout of the service to reach the desired state `(s|m)`. Default: `3m`.
+        /// </summary>
         [Input("timeout")]
         public Input<string>? Timeout { get; set; }
 
@@ -375,7 +389,7 @@ namespace Pulumi.Docker
     public sealed class ServiceEndpointSpecPortsArgs : Pulumi.ResourceArgs
     {
         /// <summary>
-        /// A random name for the port.
+        /// The name of the Docker service.
         /// </summary>
         [Input("name")]
         public Input<string>? Name { get; set; }
@@ -412,7 +426,7 @@ namespace Pulumi.Docker
     public sealed class ServiceEndpointSpecPortsGetArgs : Pulumi.ResourceArgs
     {
         /// <summary>
-        /// A random name for the port.
+        /// The name of the Docker service.
         /// </summary>
         [Input("name")]
         public Input<string>? Name { get; set; }
@@ -448,6 +462,10 @@ namespace Pulumi.Docker
 
     public sealed class ServiceLabelsArgs : Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Name of the label
+        /// * `value` (Required, string) Value of the label
+        /// </summary>
         [Input("label", required: true)]
         public Input<string> Label { get; set; } = null!;
 
@@ -461,6 +479,10 @@ namespace Pulumi.Docker
 
     public sealed class ServiceLabelsGetArgs : Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Name of the label
+        /// * `value` (Required, string) Value of the label
+        /// </summary>
         [Input("label", required: true)]
         public Input<string> Label { get; set; } = null!;
 
@@ -474,9 +496,15 @@ namespace Pulumi.Docker
 
     public sealed class ServiceModeArgs : Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// set it to `true` to run the service in the global mode
+        /// </summary>
         [Input("global")]
         public Input<bool>? Global { get; set; }
 
+        /// <summary>
+        /// , which contains atm only the amount of `replicas`
+        /// </summary>
         [Input("replicated")]
         public Input<ServiceModeReplicatedArgs>? Replicated { get; set; }
 
@@ -487,9 +515,15 @@ namespace Pulumi.Docker
 
     public sealed class ServiceModeGetArgs : Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// set it to `true` to run the service in the global mode
+        /// </summary>
         [Input("global")]
         public Input<bool>? Global { get; set; }
 
+        /// <summary>
+        /// , which contains atm only the amount of `replicas`
+        /// </summary>
         [Input("replicated")]
         public Input<ServiceModeReplicatedGetArgs>? Replicated { get; set; }
 
@@ -520,21 +554,41 @@ namespace Pulumi.Docker
 
     public sealed class ServiceRollbackConfigArgs : Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Delay between updates `(ns|us|ms|s|m|h)`, e.g. `5s`.
+        /// all tasks are up when a service is created, or to check if all tasks are successfully updated on an update. Default: `7s`.
+        /// </summary>
         [Input("delay")]
         public Input<string>? Delay { get; set; }
 
+        /// <summary>
+        /// Action on update failure: `pause|continue|rollback`.
+        /// </summary>
         [Input("failureAction")]
         public Input<string>? FailureAction { get; set; }
 
+        /// <summary>
+        /// The failure rate to tolerate during an update as `float`. **Important:** the `float`need to be wrapped in a `string` to avoid internal
+        /// casting and precision errors.
+        /// </summary>
         [Input("maxFailureRatio")]
         public Input<string>? MaxFailureRatio { get; set; }
 
+        /// <summary>
+        /// Duration after each task update to monitor for failure `(ns|us|ms|s|m|h)`
+        /// </summary>
         [Input("monitor")]
         public Input<string>? Monitor { get; set; }
 
+        /// <summary>
+        /// Update order either 'stop-first' or 'start-first'.
+        /// </summary>
         [Input("order")]
         public Input<string>? Order { get; set; }
 
+        /// <summary>
+        /// The maximum number of tasks to be updated in one iteration simultaneously (0 to update all at once).
+        /// </summary>
         [Input("parallelism")]
         public Input<int>? Parallelism { get; set; }
 
@@ -545,21 +599,41 @@ namespace Pulumi.Docker
 
     public sealed class ServiceRollbackConfigGetArgs : Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Delay between updates `(ns|us|ms|s|m|h)`, e.g. `5s`.
+        /// all tasks are up when a service is created, or to check if all tasks are successfully updated on an update. Default: `7s`.
+        /// </summary>
         [Input("delay")]
         public Input<string>? Delay { get; set; }
 
+        /// <summary>
+        /// Action on update failure: `pause|continue|rollback`.
+        /// </summary>
         [Input("failureAction")]
         public Input<string>? FailureAction { get; set; }
 
+        /// <summary>
+        /// The failure rate to tolerate during an update as `float`. **Important:** the `float`need to be wrapped in a `string` to avoid internal
+        /// casting and precision errors.
+        /// </summary>
         [Input("maxFailureRatio")]
         public Input<string>? MaxFailureRatio { get; set; }
 
+        /// <summary>
+        /// Duration after each task update to monitor for failure `(ns|us|ms|s|m|h)`
+        /// </summary>
         [Input("monitor")]
         public Input<string>? Monitor { get; set; }
 
+        /// <summary>
+        /// Update order either 'stop-first' or 'start-first'.
+        /// </summary>
         [Input("order")]
         public Input<string>? Order { get; set; }
 
+        /// <summary>
+        /// The maximum number of tasks to be updated in one iteration simultaneously (0 to update all at once).
+        /// </summary>
         [Input("parallelism")]
         public Input<int>? Parallelism { get; set; }
 
@@ -576,11 +650,18 @@ namespace Pulumi.Docker
         [Input("forceUpdate")]
         public Input<int>? ForceUpdate { get; set; }
 
+        /// <summary>
+        /// See Log Driver below for details.
+        /// </summary>
         [Input("logDriver")]
         public Input<ServiceTaskSpecLogDriverArgs>? LogDriver { get; set; }
 
         [Input("networks")]
         private InputList<string>? _networks;
+
+        /// <summary>
+        /// Ids of the networks in which the container will be put in.
+        /// </summary>
         public InputList<string> Networks
         {
             get => _networks ?? (_networks = new InputList<string>());
@@ -608,6 +689,10 @@ namespace Pulumi.Docker
     {
         [Input("args")]
         private InputList<string>? _args;
+
+        /// <summary>
+        /// Arguments to the command.
+        /// </summary>
         public InputList<string> Args
         {
             get => _args ?? (_args = new InputList<string>());
@@ -616,6 +701,10 @@ namespace Pulumi.Docker
 
         [Input("commands")]
         private InputList<string>? _commands;
+
+        /// <summary>
+        /// The command to be run in the image.
+        /// </summary>
         public InputList<string> Commands
         {
             get => _commands ?? (_commands = new InputList<string>());
@@ -624,20 +713,34 @@ namespace Pulumi.Docker
 
         [Input("configs")]
         private InputList<ServiceTaskSpecContainerSpecConfigsArgs>? _configs;
+
+        /// <summary>
+        /// See Configs below for details.
+        /// </summary>
         public InputList<ServiceTaskSpecContainerSpecConfigsArgs> Configs
         {
             get => _configs ?? (_configs = new InputList<ServiceTaskSpecContainerSpecConfigsArgs>());
             set => _configs = value;
         }
 
+        /// <summary>
+        /// The working directory for commands to run in.
+        /// </summary>
         [Input("dir")]
         public Input<string>? Dir { get; set; }
 
+        /// <summary>
+        /// See DNS Config below for details.
+        /// </summary>
         [Input("dnsConfig")]
         public Input<ServiceTaskSpecContainerSpecDnsConfigArgs>? DnsConfig { get; set; }
 
         [Input("env")]
         private InputMap<string>? _env;
+
+        /// <summary>
+        /// A list of environment variables in the form VAR=value.
+        /// </summary>
         public InputMap<string> Env
         {
             get => _env ?? (_env = new InputMap<string>());
@@ -646,15 +749,26 @@ namespace Pulumi.Docker
 
         [Input("groups")]
         private InputList<string>? _groups;
+
+        /// <summary>
+        /// A list of additional groups that the container process will run as.
+        /// * `privileges` (Optional, block) See Privileges below for details.
+        /// </summary>
         public InputList<string> Groups
         {
             get => _groups ?? (_groups = new InputList<string>());
             set => _groups = value;
         }
 
+        /// <summary>
+        /// See Healthcheck below for details.
+        /// </summary>
         [Input("healthcheck")]
         public Input<ServiceTaskSpecContainerSpecHealthcheckArgs>? Healthcheck { get; set; }
 
+        /// <summary>
+        /// The hostname to use for the container, as a valid RFC 1123 hostname.
+        /// </summary>
         [Input("hostname")]
         public Input<string>? Hostname { get; set; }
 
@@ -666,14 +780,24 @@ namespace Pulumi.Docker
             set => _hosts = value;
         }
 
+        /// <summary>
+        /// The image used to create the Docker service.
+        /// </summary>
         [Input("image", required: true)]
         public Input<string> Image { get; set; } = null!;
 
+        /// <summary>
+        /// Isolation technology of the containers running the service. (Windows only). Valid values are: `default|process|hyperv`
+        /// </summary>
         [Input("isolation")]
         public Input<string>? Isolation { get; set; }
 
         [Input("labels")]
         private InputList<ServiceTaskSpecContainerSpecLabelsArgs>? _labels;
+
+        /// <summary>
+        /// See Labels below for details.
+        /// </summary>
         public InputList<ServiceTaskSpecContainerSpecLabelsArgs> Labels
         {
             get => _labels ?? (_labels = new InputList<ServiceTaskSpecContainerSpecLabelsArgs>());
@@ -682,6 +806,10 @@ namespace Pulumi.Docker
 
         [Input("mounts")]
         private InputList<ServiceTaskSpecContainerSpecMountsArgs>? _mounts;
+
+        /// <summary>
+        /// See Mounts below for details.
+        /// </summary>
         public InputList<ServiceTaskSpecContainerSpecMountsArgs> Mounts
         {
             get => _mounts ?? (_mounts = new InputList<ServiceTaskSpecContainerSpecMountsArgs>());
@@ -691,23 +819,39 @@ namespace Pulumi.Docker
         [Input("privileges")]
         public Input<ServiceTaskSpecContainerSpecPrivilegesArgs>? Privileges { get; set; }
 
+        /// <summary>
+        /// Mount the container's root filesystem as read only.
+        /// </summary>
         [Input("readOnly")]
         public Input<bool>? ReadOnly { get; set; }
 
         [Input("secrets")]
         private InputList<ServiceTaskSpecContainerSpecSecretsArgs>? _secrets;
+
+        /// <summary>
+        /// See Secrets below for details.
+        /// </summary>
         public InputList<ServiceTaskSpecContainerSpecSecretsArgs> Secrets
         {
             get => _secrets ?? (_secrets = new InputList<ServiceTaskSpecContainerSpecSecretsArgs>());
             set => _secrets = value;
         }
 
+        /// <summary>
+        /// Amount of time to wait for the container to terminate before forcefully removing it `(ms|s|m|h)`.
+        /// </summary>
         [Input("stopGracePeriod")]
         public Input<string>? StopGracePeriod { get; set; }
 
+        /// <summary>
+        /// Signal to stop the container.
+        /// </summary>
         [Input("stopSignal")]
         public Input<string>? StopSignal { get; set; }
 
+        /// <summary>
+        /// The user inside the container.
+        /// </summary>
         [Input("user")]
         public Input<string>? User { get; set; }
 
@@ -806,6 +950,10 @@ namespace Pulumi.Docker
     {
         [Input("nameservers", required: true)]
         private InputList<string>? _nameservers;
+
+        /// <summary>
+        /// The IP addresses of the name servers, for example, `8.8.8.8`
+        /// </summary>
         public InputList<string> Nameservers
         {
             get => _nameservers ?? (_nameservers = new InputList<string>());
@@ -816,7 +964,7 @@ namespace Pulumi.Docker
         private InputList<string>? _options;
 
         /// <summary>
-        /// The options for the logging driver, e.g.
+        /// A list of internal resolver variables to be modified, for example, `debug`, `ndots:3`
         /// </summary>
         public InputList<string> Options
         {
@@ -826,6 +974,10 @@ namespace Pulumi.Docker
 
         [Input("searches")]
         private InputList<string>? _searches;
+
+        /// <summary>
+        /// A search list for host-name lookup.
+        /// </summary>
         public InputList<string> Searches
         {
             get => _searches ?? (_searches = new InputList<string>());
@@ -841,6 +993,10 @@ namespace Pulumi.Docker
     {
         [Input("nameservers", required: true)]
         private InputList<string>? _nameservers;
+
+        /// <summary>
+        /// The IP addresses of the name servers, for example, `8.8.8.8`
+        /// </summary>
         public InputList<string> Nameservers
         {
             get => _nameservers ?? (_nameservers = new InputList<string>());
@@ -851,7 +1007,7 @@ namespace Pulumi.Docker
         private InputList<string>? _options;
 
         /// <summary>
-        /// The options for the logging driver, e.g.
+        /// A list of internal resolver variables to be modified, for example, `debug`, `ndots:3`
         /// </summary>
         public InputList<string> Options
         {
@@ -861,6 +1017,10 @@ namespace Pulumi.Docker
 
         [Input("searches")]
         private InputList<string>? _searches;
+
+        /// <summary>
+        /// A search list for host-name lookup.
+        /// </summary>
         public InputList<string> Searches
         {
             get => _searches ?? (_searches = new InputList<string>());
@@ -876,6 +1036,10 @@ namespace Pulumi.Docker
     {
         [Input("args")]
         private InputList<string>? _args;
+
+        /// <summary>
+        /// Arguments to the command.
+        /// </summary>
         public InputList<string> Args
         {
             get => _args ?? (_args = new InputList<string>());
@@ -884,6 +1048,10 @@ namespace Pulumi.Docker
 
         [Input("commands")]
         private InputList<string>? _commands;
+
+        /// <summary>
+        /// The command to be run in the image.
+        /// </summary>
         public InputList<string> Commands
         {
             get => _commands ?? (_commands = new InputList<string>());
@@ -892,20 +1060,34 @@ namespace Pulumi.Docker
 
         [Input("configs")]
         private InputList<ServiceTaskSpecContainerSpecConfigsGetArgs>? _configs;
+
+        /// <summary>
+        /// See Configs below for details.
+        /// </summary>
         public InputList<ServiceTaskSpecContainerSpecConfigsGetArgs> Configs
         {
             get => _configs ?? (_configs = new InputList<ServiceTaskSpecContainerSpecConfigsGetArgs>());
             set => _configs = value;
         }
 
+        /// <summary>
+        /// The working directory for commands to run in.
+        /// </summary>
         [Input("dir")]
         public Input<string>? Dir { get; set; }
 
+        /// <summary>
+        /// See DNS Config below for details.
+        /// </summary>
         [Input("dnsConfig")]
         public Input<ServiceTaskSpecContainerSpecDnsConfigGetArgs>? DnsConfig { get; set; }
 
         [Input("env")]
         private InputMap<string>? _env;
+
+        /// <summary>
+        /// A list of environment variables in the form VAR=value.
+        /// </summary>
         public InputMap<string> Env
         {
             get => _env ?? (_env = new InputMap<string>());
@@ -914,15 +1096,26 @@ namespace Pulumi.Docker
 
         [Input("groups")]
         private InputList<string>? _groups;
+
+        /// <summary>
+        /// A list of additional groups that the container process will run as.
+        /// * `privileges` (Optional, block) See Privileges below for details.
+        /// </summary>
         public InputList<string> Groups
         {
             get => _groups ?? (_groups = new InputList<string>());
             set => _groups = value;
         }
 
+        /// <summary>
+        /// See Healthcheck below for details.
+        /// </summary>
         [Input("healthcheck")]
         public Input<ServiceTaskSpecContainerSpecHealthcheckGetArgs>? Healthcheck { get; set; }
 
+        /// <summary>
+        /// The hostname to use for the container, as a valid RFC 1123 hostname.
+        /// </summary>
         [Input("hostname")]
         public Input<string>? Hostname { get; set; }
 
@@ -934,14 +1127,24 @@ namespace Pulumi.Docker
             set => _hosts = value;
         }
 
+        /// <summary>
+        /// The image used to create the Docker service.
+        /// </summary>
         [Input("image", required: true)]
         public Input<string> Image { get; set; } = null!;
 
+        /// <summary>
+        /// Isolation technology of the containers running the service. (Windows only). Valid values are: `default|process|hyperv`
+        /// </summary>
         [Input("isolation")]
         public Input<string>? Isolation { get; set; }
 
         [Input("labels")]
         private InputList<ServiceTaskSpecContainerSpecLabelsGetArgs>? _labels;
+
+        /// <summary>
+        /// See Labels below for details.
+        /// </summary>
         public InputList<ServiceTaskSpecContainerSpecLabelsGetArgs> Labels
         {
             get => _labels ?? (_labels = new InputList<ServiceTaskSpecContainerSpecLabelsGetArgs>());
@@ -950,6 +1153,10 @@ namespace Pulumi.Docker
 
         [Input("mounts")]
         private InputList<ServiceTaskSpecContainerSpecMountsGetArgs>? _mounts;
+
+        /// <summary>
+        /// See Mounts below for details.
+        /// </summary>
         public InputList<ServiceTaskSpecContainerSpecMountsGetArgs> Mounts
         {
             get => _mounts ?? (_mounts = new InputList<ServiceTaskSpecContainerSpecMountsGetArgs>());
@@ -959,23 +1166,39 @@ namespace Pulumi.Docker
         [Input("privileges")]
         public Input<ServiceTaskSpecContainerSpecPrivilegesGetArgs>? Privileges { get; set; }
 
+        /// <summary>
+        /// Mount the container's root filesystem as read only.
+        /// </summary>
         [Input("readOnly")]
         public Input<bool>? ReadOnly { get; set; }
 
         [Input("secrets")]
         private InputList<ServiceTaskSpecContainerSpecSecretsGetArgs>? _secrets;
+
+        /// <summary>
+        /// See Secrets below for details.
+        /// </summary>
         public InputList<ServiceTaskSpecContainerSpecSecretsGetArgs> Secrets
         {
             get => _secrets ?? (_secrets = new InputList<ServiceTaskSpecContainerSpecSecretsGetArgs>());
             set => _secrets = value;
         }
 
+        /// <summary>
+        /// Amount of time to wait for the container to terminate before forcefully removing it `(ms|s|m|h)`.
+        /// </summary>
         [Input("stopGracePeriod")]
         public Input<string>? StopGracePeriod { get; set; }
 
+        /// <summary>
+        /// Signal to stop the container.
+        /// </summary>
         [Input("stopSignal")]
         public Input<string>? StopSignal { get; set; }
 
+        /// <summary>
+        /// The user inside the container.
+        /// </summary>
         [Input("user")]
         public Input<string>? User { get; set; }
 
@@ -986,23 +1209,40 @@ namespace Pulumi.Docker
 
     public sealed class ServiceTaskSpecContainerSpecHealthcheckArgs : Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Time between running the check `(ms|s|m|h)`. Default: `0s`.
+        /// </summary>
         [Input("interval")]
         public Input<string>? Interval { get; set; }
 
+        /// <summary>
+        /// Consecutive failures needed to report unhealthy. Default: `0`.
+        /// </summary>
         [Input("retries")]
         public Input<int>? Retries { get; set; }
 
+        /// <summary>
+        /// Start period for the container to initialize before counting retries towards unstable `(ms|s|m|h)`. Default: `0s`.
+        /// </summary>
         [Input("startPeriod")]
         public Input<string>? StartPeriod { get; set; }
 
         [Input("tests", required: true)]
         private InputList<string>? _tests;
+
+        /// <summary>
+        /// Command to run to check health. For example, to run `curl -f http://localhost/health` set the
+        /// command to be `["CMD", "curl", "-f", "http://localhost/health"]`.
+        /// </summary>
         public InputList<string> Tests
         {
             get => _tests ?? (_tests = new InputList<string>());
             set => _tests = value;
         }
 
+        /// <summary>
+        /// Maximum time to allow one check to run `(ms|s|m|h)`. Default: `0s`.
+        /// </summary>
         [Input("timeout")]
         public Input<string>? Timeout { get; set; }
 
@@ -1013,23 +1253,40 @@ namespace Pulumi.Docker
 
     public sealed class ServiceTaskSpecContainerSpecHealthcheckGetArgs : Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Time between running the check `(ms|s|m|h)`. Default: `0s`.
+        /// </summary>
         [Input("interval")]
         public Input<string>? Interval { get; set; }
 
+        /// <summary>
+        /// Consecutive failures needed to report unhealthy. Default: `0`.
+        /// </summary>
         [Input("retries")]
         public Input<int>? Retries { get; set; }
 
+        /// <summary>
+        /// Start period for the container to initialize before counting retries towards unstable `(ms|s|m|h)`. Default: `0s`.
+        /// </summary>
         [Input("startPeriod")]
         public Input<string>? StartPeriod { get; set; }
 
         [Input("tests", required: true)]
         private InputList<string>? _tests;
+
+        /// <summary>
+        /// Command to run to check health. For example, to run `curl -f http://localhost/health` set the
+        /// command to be `["CMD", "curl", "-f", "http://localhost/health"]`.
+        /// </summary>
         public InputList<string> Tests
         {
             get => _tests ?? (_tests = new InputList<string>());
             set => _tests = value;
         }
 
+        /// <summary>
+        /// Maximum time to allow one check to run `(ms|s|m|h)`. Default: `0s`.
+        /// </summary>
         [Input("timeout")]
         public Input<string>? Timeout { get; set; }
 
@@ -1040,9 +1297,15 @@ namespace Pulumi.Docker
 
     public sealed class ServiceTaskSpecContainerSpecHostsArgs : Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// A list of hostname/IP mappings to add to the container's hosts file.
+        /// </summary>
         [Input("host", required: true)]
         public Input<string> Host { get; set; } = null!;
 
+        /// <summary>
+        /// The ip
+        /// </summary>
         [Input("ip", required: true)]
         public Input<string> Ip { get; set; } = null!;
 
@@ -1053,9 +1316,15 @@ namespace Pulumi.Docker
 
     public sealed class ServiceTaskSpecContainerSpecHostsGetArgs : Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// A list of hostname/IP mappings to add to the container's hosts file.
+        /// </summary>
         [Input("host", required: true)]
         public Input<string> Host { get; set; } = null!;
 
+        /// <summary>
+        /// The ip
+        /// </summary>
         [Input("ip", required: true)]
         public Input<string> Ip { get; set; } = null!;
 
@@ -1066,6 +1335,10 @@ namespace Pulumi.Docker
 
     public sealed class ServiceTaskSpecContainerSpecLabelsArgs : Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Name of the label
+        /// * `value` (Required, string) Value of the label
+        /// </summary>
         [Input("label", required: true)]
         public Input<string> Label { get; set; } = null!;
 
@@ -1079,6 +1352,10 @@ namespace Pulumi.Docker
 
     public sealed class ServiceTaskSpecContainerSpecLabelsGetArgs : Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Name of the label
+        /// * `value` (Required, string) Value of the label
+        /// </summary>
         [Input("label", required: true)]
         public Input<string> Label { get; set; } = null!;
 
@@ -1092,24 +1369,45 @@ namespace Pulumi.Docker
 
     public sealed class ServiceTaskSpecContainerSpecMountsArgs : Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Optional configuration for the `bind` type.
+        /// </summary>
         [Input("bindOptions")]
         public Input<ServiceTaskSpecContainerSpecMountsBindOptionsArgs>? BindOptions { get; set; }
 
+        /// <summary>
+        /// Mount the container's root filesystem as read only.
+        /// </summary>
         [Input("readOnly")]
         public Input<bool>? ReadOnly { get; set; }
 
+        /// <summary>
+        /// The mount source (e.g., a volume name, a host path)
+        /// </summary>
         [Input("source")]
         public Input<string>? Source { get; set; }
 
+        /// <summary>
+        /// The container path.
+        /// </summary>
         [Input("target", required: true)]
         public Input<string> Target { get; set; } = null!;
 
+        /// <summary>
+        /// Optional configuration for the `tmpf` type.
+        /// </summary>
         [Input("tmpfsOptions")]
         public Input<ServiceTaskSpecContainerSpecMountsTmpfsOptionsArgs>? TmpfsOptions { get; set; }
 
+        /// <summary>
+        /// SELinux type label
+        /// </summary>
         [Input("type", required: true)]
         public Input<string> Type { get; set; } = null!;
 
+        /// <summary>
+        /// Optional configuration for the `volume` type.
+        /// </summary>
         [Input("volumeOptions")]
         public Input<ServiceTaskSpecContainerSpecMountsVolumeOptionsArgs>? VolumeOptions { get; set; }
 
@@ -1120,6 +1418,9 @@ namespace Pulumi.Docker
 
     public sealed class ServiceTaskSpecContainerSpecMountsBindOptionsArgs : Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// A propagation mode with the value.
+        /// </summary>
         [Input("propagation")]
         public Input<string>? Propagation { get; set; }
 
@@ -1130,6 +1431,9 @@ namespace Pulumi.Docker
 
     public sealed class ServiceTaskSpecContainerSpecMountsBindOptionsGetArgs : Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// A propagation mode with the value.
+        /// </summary>
         [Input("propagation")]
         public Input<string>? Propagation { get; set; }
 
@@ -1140,24 +1444,45 @@ namespace Pulumi.Docker
 
     public sealed class ServiceTaskSpecContainerSpecMountsGetArgs : Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Optional configuration for the `bind` type.
+        /// </summary>
         [Input("bindOptions")]
         public Input<ServiceTaskSpecContainerSpecMountsBindOptionsGetArgs>? BindOptions { get; set; }
 
+        /// <summary>
+        /// Mount the container's root filesystem as read only.
+        /// </summary>
         [Input("readOnly")]
         public Input<bool>? ReadOnly { get; set; }
 
+        /// <summary>
+        /// The mount source (e.g., a volume name, a host path)
+        /// </summary>
         [Input("source")]
         public Input<string>? Source { get; set; }
 
+        /// <summary>
+        /// The container path.
+        /// </summary>
         [Input("target", required: true)]
         public Input<string> Target { get; set; } = null!;
 
+        /// <summary>
+        /// Optional configuration for the `tmpf` type.
+        /// </summary>
         [Input("tmpfsOptions")]
         public Input<ServiceTaskSpecContainerSpecMountsTmpfsOptionsGetArgs>? TmpfsOptions { get; set; }
 
+        /// <summary>
+        /// SELinux type label
+        /// </summary>
         [Input("type", required: true)]
         public Input<string> Type { get; set; } = null!;
 
+        /// <summary>
+        /// Optional configuration for the `volume` type.
+        /// </summary>
         [Input("volumeOptions")]
         public Input<ServiceTaskSpecContainerSpecMountsVolumeOptionsGetArgs>? VolumeOptions { get; set; }
 
@@ -1169,11 +1494,14 @@ namespace Pulumi.Docker
     public sealed class ServiceTaskSpecContainerSpecMountsTmpfsOptionsArgs : Pulumi.ResourceArgs
     {
         /// <summary>
-        /// The mode of resolution to use for internal load balancing between tasks. `(vip|dnsrr)`. Default: `vip`.
+        /// See Mode below for details.
         /// </summary>
         [Input("mode")]
         public Input<int>? Mode { get; set; }
 
+        /// <summary>
+        /// The size for the tmpfs mount in bytes. 
+        /// </summary>
         [Input("sizeBytes")]
         public Input<int>? SizeBytes { get; set; }
 
@@ -1185,11 +1513,14 @@ namespace Pulumi.Docker
     public sealed class ServiceTaskSpecContainerSpecMountsTmpfsOptionsGetArgs : Pulumi.ResourceArgs
     {
         /// <summary>
-        /// The mode of resolution to use for internal load balancing between tasks. `(vip|dnsrr)`. Default: `vip`.
+        /// See Mode below for details.
         /// </summary>
         [Input("mode")]
         public Input<int>? Mode { get; set; }
 
+        /// <summary>
+        /// The size for the tmpfs mount in bytes. 
+        /// </summary>
         [Input("sizeBytes")]
         public Input<int>? SizeBytes { get; set; }
 
@@ -1213,12 +1544,19 @@ namespace Pulumi.Docker
 
         [Input("labels")]
         private InputList<ServiceTaskSpecContainerSpecMountsVolumeOptionsLabelsArgs>? _labels;
+
+        /// <summary>
+        /// See Labels below for details.
+        /// </summary>
         public InputList<ServiceTaskSpecContainerSpecMountsVolumeOptionsLabelsArgs> Labels
         {
             get => _labels ?? (_labels = new InputList<ServiceTaskSpecContainerSpecMountsVolumeOptionsLabelsArgs>());
             set => _labels = value;
         }
 
+        /// <summary>
+        /// Whether to populate volume with data from the target.
+        /// </summary>
         [Input("noCopy")]
         public Input<bool>? NoCopy { get; set; }
 
@@ -1242,12 +1580,19 @@ namespace Pulumi.Docker
 
         [Input("labels")]
         private InputList<ServiceTaskSpecContainerSpecMountsVolumeOptionsLabelsGetArgs>? _labels;
+
+        /// <summary>
+        /// See Labels below for details.
+        /// </summary>
         public InputList<ServiceTaskSpecContainerSpecMountsVolumeOptionsLabelsGetArgs> Labels
         {
             get => _labels ?? (_labels = new InputList<ServiceTaskSpecContainerSpecMountsVolumeOptionsLabelsGetArgs>());
             set => _labels = value;
         }
 
+        /// <summary>
+        /// Whether to populate volume with data from the target.
+        /// </summary>
         [Input("noCopy")]
         public Input<bool>? NoCopy { get; set; }
 
@@ -1258,6 +1603,10 @@ namespace Pulumi.Docker
 
     public sealed class ServiceTaskSpecContainerSpecMountsVolumeOptionsLabelsArgs : Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Name of the label
+        /// * `value` (Required, string) Value of the label
+        /// </summary>
         [Input("label", required: true)]
         public Input<string> Label { get; set; } = null!;
 
@@ -1271,6 +1620,10 @@ namespace Pulumi.Docker
 
     public sealed class ServiceTaskSpecContainerSpecMountsVolumeOptionsLabelsGetArgs : Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Name of the label
+        /// * `value` (Required, string) Value of the label
+        /// </summary>
         [Input("label", required: true)]
         public Input<string> Label { get; set; } = null!;
 
@@ -1284,9 +1637,15 @@ namespace Pulumi.Docker
 
     public sealed class ServiceTaskSpecContainerSpecPrivilegesArgs : Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// For managed service account (Windows only)
+        /// </summary>
         [Input("credentialSpec")]
         public Input<ServiceTaskSpecContainerSpecPrivilegesCredentialSpecArgs>? CredentialSpec { get; set; }
 
+        /// <summary>
+        /// SELinux labels of the container
+        /// </summary>
         [Input("seLinuxContext")]
         public Input<ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgs>? SeLinuxContext { get; set; }
 
@@ -1297,9 +1656,15 @@ namespace Pulumi.Docker
 
     public sealed class ServiceTaskSpecContainerSpecPrivilegesCredentialSpecArgs : Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Load credential spec from this file.
+        /// </summary>
         [Input("file")]
         public Input<string>? File { get; set; }
 
+        /// <summary>
+        /// Load credential spec from this value in the Windows registry.
+        /// </summary>
         [Input("registry")]
         public Input<string>? Registry { get; set; }
 
@@ -1310,9 +1675,15 @@ namespace Pulumi.Docker
 
     public sealed class ServiceTaskSpecContainerSpecPrivilegesCredentialSpecGetArgs : Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Load credential spec from this file.
+        /// </summary>
         [Input("file")]
         public Input<string>? File { get; set; }
 
+        /// <summary>
+        /// Load credential spec from this value in the Windows registry.
+        /// </summary>
         [Input("registry")]
         public Input<string>? Registry { get; set; }
 
@@ -1323,9 +1694,15 @@ namespace Pulumi.Docker
 
     public sealed class ServiceTaskSpecContainerSpecPrivilegesGetArgs : Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// For managed service account (Windows only)
+        /// </summary>
         [Input("credentialSpec")]
         public Input<ServiceTaskSpecContainerSpecPrivilegesCredentialSpecGetArgs>? CredentialSpec { get; set; }
 
+        /// <summary>
+        /// SELinux labels of the container
+        /// </summary>
         [Input("seLinuxContext")]
         public Input<ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextGetArgs>? SeLinuxContext { get; set; }
 
@@ -1336,18 +1713,33 @@ namespace Pulumi.Docker
 
     public sealed class ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgs : Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Disable SELinux
+        /// </summary>
         [Input("disable")]
         public Input<bool>? Disable { get; set; }
 
+        /// <summary>
+        /// SELinux level label
+        /// </summary>
         [Input("level")]
         public Input<string>? Level { get; set; }
 
+        /// <summary>
+        /// SELinux role label
+        /// </summary>
         [Input("role")]
         public Input<string>? Role { get; set; }
 
+        /// <summary>
+        /// SELinux type label
+        /// </summary>
         [Input("type")]
         public Input<string>? Type { get; set; }
 
+        /// <summary>
+        /// The user inside the container.
+        /// </summary>
         [Input("user")]
         public Input<string>? User { get; set; }
 
@@ -1358,18 +1750,33 @@ namespace Pulumi.Docker
 
     public sealed class ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextGetArgs : Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Disable SELinux
+        /// </summary>
         [Input("disable")]
         public Input<bool>? Disable { get; set; }
 
+        /// <summary>
+        /// SELinux level label
+        /// </summary>
         [Input("level")]
         public Input<string>? Level { get; set; }
 
+        /// <summary>
+        /// SELinux role label
+        /// </summary>
         [Input("role")]
         public Input<string>? Role { get; set; }
 
+        /// <summary>
+        /// SELinux type label
+        /// </summary>
         [Input("type")]
         public Input<string>? Type { get; set; }
 
+        /// <summary>
+        /// The user inside the container.
+        /// </summary>
         [Input("user")]
         public Input<string>? User { get; set; }
 
@@ -1393,7 +1800,7 @@ namespace Pulumi.Docker
         public Input<int>? FileMode { get; set; }
 
         /// <summary>
-        /// Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
+        /// Represents the final filename in the filesystem. The specific target file that the secret data is written within the docker container, e.g. `/root/secret/secret.json`
         /// </summary>
         [Input("fileName", required: true)]
         public Input<string> FileName { get; set; } = null!;
@@ -1404,9 +1811,15 @@ namespace Pulumi.Docker
         [Input("fileUid")]
         public Input<string>? FileUid { get; set; }
 
+        /// <summary>
+        /// ConfigID represents the ID of the specific secret.
+        /// </summary>
         [Input("secretId", required: true)]
         public Input<string> SecretId { get; set; } = null!;
 
+        /// <summary>
+        /// The name of the secret that this references, but internally it is just provided for lookup/display purposes
+        /// </summary>
         [Input("secretName")]
         public Input<string>? SecretName { get; set; }
 
@@ -1430,7 +1843,7 @@ namespace Pulumi.Docker
         public Input<int>? FileMode { get; set; }
 
         /// <summary>
-        /// Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
+        /// Represents the final filename in the filesystem. The specific target file that the secret data is written within the docker container, e.g. `/root/secret/secret.json`
         /// </summary>
         [Input("fileName", required: true)]
         public Input<string> FileName { get; set; } = null!;
@@ -1441,9 +1854,15 @@ namespace Pulumi.Docker
         [Input("fileUid")]
         public Input<string>? FileUid { get; set; }
 
+        /// <summary>
+        /// ConfigID represents the ID of the specific secret.
+        /// </summary>
         [Input("secretId", required: true)]
         public Input<string> SecretId { get; set; } = null!;
 
+        /// <summary>
+        /// The name of the secret that this references, but internally it is just provided for lookup/display purposes
+        /// </summary>
         [Input("secretName")]
         public Input<string>? SecretName { get; set; }
 
@@ -1460,11 +1879,18 @@ namespace Pulumi.Docker
         [Input("forceUpdate")]
         public Input<int>? ForceUpdate { get; set; }
 
+        /// <summary>
+        /// See Log Driver below for details.
+        /// </summary>
         [Input("logDriver")]
         public Input<ServiceTaskSpecLogDriverGetArgs>? LogDriver { get; set; }
 
         [Input("networks")]
         private InputList<string>? _networks;
+
+        /// <summary>
+        /// Ids of the networks in which the container will be put in.
+        /// </summary>
         public InputList<string> Networks
         {
             get => _networks ?? (_networks = new InputList<string>());
@@ -1491,7 +1917,7 @@ namespace Pulumi.Docker
     public sealed class ServiceTaskSpecLogDriverArgs : Pulumi.ResourceArgs
     {
         /// <summary>
-        /// A random name for the port.
+        /// The logging driver to use. Either `(none|json-file|syslog|journald|gelf|fluentd|awslogs|splunk|etwlogs|gcplogs)`.
         /// </summary>
         [Input("name", required: true)]
         public Input<string> Name { get; set; } = null!;
@@ -1516,7 +1942,7 @@ namespace Pulumi.Docker
     public sealed class ServiceTaskSpecLogDriverGetArgs : Pulumi.ResourceArgs
     {
         /// <summary>
-        /// A random name for the port.
+        /// The logging driver to use. Either `(none|json-file|syslog|journald|gelf|fluentd|awslogs|splunk|etwlogs|gcplogs)`.
         /// </summary>
         [Input("name", required: true)]
         public Input<string> Name { get; set; } = null!;
@@ -1628,9 +2054,25 @@ namespace Pulumi.Docker
 
     public sealed class ServiceTaskSpecResourcesArgs : Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Describes the resources which can be advertised by a node and requested by a task.
+        /// * `nano_cpus` (Optional, int) CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
+        /// * `memory_bytes` (Optional, int) The amount of memory in bytes the container allocates
+        /// * `generic_resources` (Optional, map) User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
+        /// * `named_resources_spec` (Optional, set of string) The String resources, delimited by `=`
+        /// * `discrete_resources_spec` (Optional, set of string) The Integer resources, delimited by `=`
+        /// </summary>
         [Input("limits")]
         public Input<ServiceTaskSpecResourcesLimitsArgs>? Limits { get; set; }
 
+        /// <summary>
+        /// An object describing the resources which can be advertised by a node and requested by a task.
+        /// * `nano_cpus` (Optional, int) CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
+        /// * `memory_bytes` (Optional, int) The amount of memory in bytes the container allocates
+        /// * `generic_resources` (Optional, map) User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
+        /// * `named_resources_spec` (Optional, set of string) The String resources
+        /// * `discrete_resources_spec` (Optional, set of string) The Integer resources
+        /// </summary>
         [Input("reservation")]
         public Input<ServiceTaskSpecResourcesReservationArgs>? Reservation { get; set; }
 
@@ -1641,9 +2083,25 @@ namespace Pulumi.Docker
 
     public sealed class ServiceTaskSpecResourcesGetArgs : Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Describes the resources which can be advertised by a node and requested by a task.
+        /// * `nano_cpus` (Optional, int) CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
+        /// * `memory_bytes` (Optional, int) The amount of memory in bytes the container allocates
+        /// * `generic_resources` (Optional, map) User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
+        /// * `named_resources_spec` (Optional, set of string) The String resources, delimited by `=`
+        /// * `discrete_resources_spec` (Optional, set of string) The Integer resources, delimited by `=`
+        /// </summary>
         [Input("limits")]
         public Input<ServiceTaskSpecResourcesLimitsGetArgs>? Limits { get; set; }
 
+        /// <summary>
+        /// An object describing the resources which can be advertised by a node and requested by a task.
+        /// * `nano_cpus` (Optional, int) CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
+        /// * `memory_bytes` (Optional, int) The amount of memory in bytes the container allocates
+        /// * `generic_resources` (Optional, map) User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
+        /// * `named_resources_spec` (Optional, set of string) The String resources
+        /// * `discrete_resources_spec` (Optional, set of string) The Integer resources
+        /// </summary>
         [Input("reservation")]
         public Input<ServiceTaskSpecResourcesReservationGetArgs>? Reservation { get; set; }
 
@@ -1813,6 +2271,10 @@ namespace Pulumi.Docker
         [Input("condition")]
         public Input<string>? Condition { get; set; }
 
+        /// <summary>
+        /// Delay between updates `(ns|us|ms|s|m|h)`, e.g. `5s`.
+        /// all tasks are up when a service is created, or to check if all tasks are successfully updated on an update. Default: `7s`.
+        /// </summary>
         [Input("delay")]
         public Input<string>? Delay { get; set; }
 
@@ -1832,6 +2294,10 @@ namespace Pulumi.Docker
         [Input("condition")]
         public Input<string>? Condition { get; set; }
 
+        /// <summary>
+        /// Delay between updates `(ns|us|ms|s|m|h)`, e.g. `5s`.
+        /// all tasks are up when a service is created, or to check if all tasks are successfully updated on an update. Default: `7s`.
+        /// </summary>
         [Input("delay")]
         public Input<string>? Delay { get; set; }
 
@@ -1848,21 +2314,40 @@ namespace Pulumi.Docker
 
     public sealed class ServiceUpdateConfigArgs : Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Delay between updates `(ns|us|ms|s|m|h)`, e.g. `5s`.
+        /// </summary>
         [Input("delay")]
         public Input<string>? Delay { get; set; }
 
+        /// <summary>
+        /// Action on update failure: `pause|continue|rollback`.
+        /// </summary>
         [Input("failureAction")]
         public Input<string>? FailureAction { get; set; }
 
+        /// <summary>
+        /// The failure rate to tolerate during an update as `float`. **Important:** the `float`need to be wrapped in a `string` to avoid internal
+        /// casting and precision errors.
+        /// </summary>
         [Input("maxFailureRatio")]
         public Input<string>? MaxFailureRatio { get; set; }
 
+        /// <summary>
+        /// Duration after each task update to monitor for failure `(ns|us|ms|s|m|h)`
+        /// </summary>
         [Input("monitor")]
         public Input<string>? Monitor { get; set; }
 
+        /// <summary>
+        /// Update order either 'stop-first' or 'start-first'.
+        /// </summary>
         [Input("order")]
         public Input<string>? Order { get; set; }
 
+        /// <summary>
+        /// The maximum number of tasks to be updated in one iteration simultaneously (0 to update all at once).
+        /// </summary>
         [Input("parallelism")]
         public Input<int>? Parallelism { get; set; }
 
@@ -1873,21 +2358,40 @@ namespace Pulumi.Docker
 
     public sealed class ServiceUpdateConfigGetArgs : Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Delay between updates `(ns|us|ms|s|m|h)`, e.g. `5s`.
+        /// </summary>
         [Input("delay")]
         public Input<string>? Delay { get; set; }
 
+        /// <summary>
+        /// Action on update failure: `pause|continue|rollback`.
+        /// </summary>
         [Input("failureAction")]
         public Input<string>? FailureAction { get; set; }
 
+        /// <summary>
+        /// The failure rate to tolerate during an update as `float`. **Important:** the `float`need to be wrapped in a `string` to avoid internal
+        /// casting and precision errors.
+        /// </summary>
         [Input("maxFailureRatio")]
         public Input<string>? MaxFailureRatio { get; set; }
 
+        /// <summary>
+        /// Duration after each task update to monitor for failure `(ns|us|ms|s|m|h)`
+        /// </summary>
         [Input("monitor")]
         public Input<string>? Monitor { get; set; }
 
+        /// <summary>
+        /// Update order either 'stop-first' or 'start-first'.
+        /// </summary>
         [Input("order")]
         public Input<string>? Order { get; set; }
 
+        /// <summary>
+        /// The maximum number of tasks to be updated in one iteration simultaneously (0 to update all at once).
+        /// </summary>
         [Input("parallelism")]
         public Input<int>? Parallelism { get; set; }
 
@@ -1931,7 +2435,14 @@ namespace Pulumi.Docker
     [OutputType]
     public sealed class ServiceConvergeConfig
     {
+        /// <summary>
+        /// Time between each the check to check docker endpoint `(ms|s|m|h)`. For example, to check if
+        /// all tasks are up when a service is created, or to check if all tasks are successfully updated on an update. Default: `7s`.
+        /// </summary>
         public readonly string? Delay;
+        /// <summary>
+        /// The timeout of the service to reach the desired state `(s|m)`. Default: `3m`.
+        /// </summary>
         public readonly string? Timeout;
 
         [OutputConstructor]
@@ -1970,7 +2481,7 @@ namespace Pulumi.Docker
     public sealed class ServiceEndpointSpecPorts
     {
         /// <summary>
-        /// A random name for the port.
+        /// The name of the Docker service.
         /// </summary>
         public readonly string? Name;
         /// <summary>
@@ -2009,6 +2520,10 @@ namespace Pulumi.Docker
     [OutputType]
     public sealed class ServiceLabels
     {
+        /// <summary>
+        /// Name of the label
+        /// * `value` (Required, string) Value of the label
+        /// </summary>
         public readonly string Label;
         public readonly string Value;
 
@@ -2025,7 +2540,13 @@ namespace Pulumi.Docker
     [OutputType]
     public sealed class ServiceMode
     {
+        /// <summary>
+        /// set it to `true` to run the service in the global mode
+        /// </summary>
         public readonly bool? Global;
+        /// <summary>
+        /// , which contains atm only the amount of `replicas`
+        /// </summary>
         public readonly ServiceModeReplicated Replicated;
 
         [OutputConstructor]
@@ -2053,11 +2574,31 @@ namespace Pulumi.Docker
     [OutputType]
     public sealed class ServiceRollbackConfig
     {
+        /// <summary>
+        /// Delay between updates `(ns|us|ms|s|m|h)`, e.g. `5s`.
+        /// all tasks are up when a service is created, or to check if all tasks are successfully updated on an update. Default: `7s`.
+        /// </summary>
         public readonly string? Delay;
+        /// <summary>
+        /// Action on update failure: `pause|continue|rollback`.
+        /// </summary>
         public readonly string? FailureAction;
+        /// <summary>
+        /// The failure rate to tolerate during an update as `float`. **Important:** the `float`need to be wrapped in a `string` to avoid internal
+        /// casting and precision errors.
+        /// </summary>
         public readonly string? MaxFailureRatio;
+        /// <summary>
+        /// Duration after each task update to monitor for failure `(ns|us|ms|s|m|h)`
+        /// </summary>
         public readonly string? Monitor;
+        /// <summary>
+        /// Update order either 'stop-first' or 'start-first'.
+        /// </summary>
         public readonly string? Order;
+        /// <summary>
+        /// The maximum number of tasks to be updated in one iteration simultaneously (0 to update all at once).
+        /// </summary>
         public readonly int? Parallelism;
 
         [OutputConstructor]
@@ -2083,7 +2624,13 @@ namespace Pulumi.Docker
     {
         public readonly ServiceTaskSpecContainerSpec ContainerSpec;
         public readonly int ForceUpdate;
+        /// <summary>
+        /// See Log Driver below for details.
+        /// </summary>
         public readonly ServiceTaskSpecLogDriver? LogDriver;
+        /// <summary>
+        /// Ids of the networks in which the container will be put in.
+        /// </summary>
         public readonly ImmutableArray<string> Networks;
         public readonly ServiceTaskSpecPlacement Placement;
         public readonly ServiceTaskSpecResources Resources;
@@ -2115,25 +2662,80 @@ namespace Pulumi.Docker
     [OutputType]
     public sealed class ServiceTaskSpecContainerSpec
     {
+        /// <summary>
+        /// Arguments to the command.
+        /// </summary>
         public readonly ImmutableArray<string> Args;
+        /// <summary>
+        /// The command to be run in the image.
+        /// </summary>
         public readonly ImmutableArray<string> Commands;
+        /// <summary>
+        /// See Configs below for details.
+        /// </summary>
         public readonly ImmutableArray<ServiceTaskSpecContainerSpecConfigs> Configs;
+        /// <summary>
+        /// The working directory for commands to run in.
+        /// </summary>
         public readonly string? Dir;
+        /// <summary>
+        /// See DNS Config below for details.
+        /// </summary>
         public readonly ServiceTaskSpecContainerSpecDnsConfig DnsConfig;
+        /// <summary>
+        /// A list of environment variables in the form VAR=value.
+        /// </summary>
         public readonly ImmutableDictionary<string, string>? Env;
+        /// <summary>
+        /// A list of additional groups that the container process will run as.
+        /// * `privileges` (Optional, block) See Privileges below for details.
+        /// </summary>
         public readonly ImmutableArray<string> Groups;
+        /// <summary>
+        /// See Healthcheck below for details.
+        /// </summary>
         public readonly ServiceTaskSpecContainerSpecHealthcheck Healthcheck;
+        /// <summary>
+        /// The hostname to use for the container, as a valid RFC 1123 hostname.
+        /// </summary>
         public readonly string? Hostname;
         public readonly ImmutableArray<ServiceTaskSpecContainerSpecHosts> Hosts;
+        /// <summary>
+        /// The image used to create the Docker service.
+        /// </summary>
         public readonly string Image;
+        /// <summary>
+        /// Isolation technology of the containers running the service. (Windows only). Valid values are: `default|process|hyperv`
+        /// </summary>
         public readonly string? Isolation;
+        /// <summary>
+        /// See Labels below for details.
+        /// </summary>
         public readonly ImmutableArray<ServiceTaskSpecContainerSpecLabels> Labels;
+        /// <summary>
+        /// See Mounts below for details.
+        /// </summary>
         public readonly ImmutableArray<ServiceTaskSpecContainerSpecMounts> Mounts;
         public readonly ServiceTaskSpecContainerSpecPrivileges? Privileges;
+        /// <summary>
+        /// Mount the container's root filesystem as read only.
+        /// </summary>
         public readonly bool? ReadOnly;
+        /// <summary>
+        /// See Secrets below for details.
+        /// </summary>
         public readonly ImmutableArray<ServiceTaskSpecContainerSpecSecrets> Secrets;
+        /// <summary>
+        /// Amount of time to wait for the container to terminate before forcefully removing it `(ms|s|m|h)`.
+        /// </summary>
         public readonly string StopGracePeriod;
+        /// <summary>
+        /// Signal to stop the container.
+        /// </summary>
         public readonly string? StopSignal;
+        /// <summary>
+        /// The user inside the container.
+        /// </summary>
         public readonly string? User;
 
         [OutputConstructor]
@@ -2231,11 +2833,17 @@ namespace Pulumi.Docker
     [OutputType]
     public sealed class ServiceTaskSpecContainerSpecDnsConfig
     {
+        /// <summary>
+        /// The IP addresses of the name servers, for example, `8.8.8.8`
+        /// </summary>
         public readonly ImmutableArray<string> Nameservers;
         /// <summary>
-        /// The options for the logging driver, e.g.
+        /// A list of internal resolver variables to be modified, for example, `debug`, `ndots:3`
         /// </summary>
         public readonly ImmutableArray<string> Options;
+        /// <summary>
+        /// A search list for host-name lookup.
+        /// </summary>
         public readonly ImmutableArray<string> Searches;
 
         [OutputConstructor]
@@ -2253,10 +2861,26 @@ namespace Pulumi.Docker
     [OutputType]
     public sealed class ServiceTaskSpecContainerSpecHealthcheck
     {
+        /// <summary>
+        /// Time between running the check `(ms|s|m|h)`. Default: `0s`.
+        /// </summary>
         public readonly string? Interval;
+        /// <summary>
+        /// Consecutive failures needed to report unhealthy. Default: `0`.
+        /// </summary>
         public readonly int? Retries;
+        /// <summary>
+        /// Start period for the container to initialize before counting retries towards unstable `(ms|s|m|h)`. Default: `0s`.
+        /// </summary>
         public readonly string? StartPeriod;
+        /// <summary>
+        /// Command to run to check health. For example, to run `curl -f http://localhost/health` set the
+        /// command to be `["CMD", "curl", "-f", "http://localhost/health"]`.
+        /// </summary>
         public readonly ImmutableArray<string> Tests;
+        /// <summary>
+        /// Maximum time to allow one check to run `(ms|s|m|h)`. Default: `0s`.
+        /// </summary>
         public readonly string? Timeout;
 
         [OutputConstructor]
@@ -2278,7 +2902,13 @@ namespace Pulumi.Docker
     [OutputType]
     public sealed class ServiceTaskSpecContainerSpecHosts
     {
+        /// <summary>
+        /// A list of hostname/IP mappings to add to the container's hosts file.
+        /// </summary>
         public readonly string Host;
+        /// <summary>
+        /// The ip
+        /// </summary>
         public readonly string Ip;
 
         [OutputConstructor]
@@ -2294,6 +2924,10 @@ namespace Pulumi.Docker
     [OutputType]
     public sealed class ServiceTaskSpecContainerSpecLabels
     {
+        /// <summary>
+        /// Name of the label
+        /// * `value` (Required, string) Value of the label
+        /// </summary>
         public readonly string Label;
         public readonly string Value;
 
@@ -2310,12 +2944,33 @@ namespace Pulumi.Docker
     [OutputType]
     public sealed class ServiceTaskSpecContainerSpecMounts
     {
+        /// <summary>
+        /// Optional configuration for the `bind` type.
+        /// </summary>
         public readonly ServiceTaskSpecContainerSpecMountsBindOptions? BindOptions;
+        /// <summary>
+        /// Mount the container's root filesystem as read only.
+        /// </summary>
         public readonly bool? ReadOnly;
+        /// <summary>
+        /// The mount source (e.g., a volume name, a host path)
+        /// </summary>
         public readonly string? Source;
+        /// <summary>
+        /// The container path.
+        /// </summary>
         public readonly string Target;
+        /// <summary>
+        /// Optional configuration for the `tmpf` type.
+        /// </summary>
         public readonly ServiceTaskSpecContainerSpecMountsTmpfsOptions? TmpfsOptions;
+        /// <summary>
+        /// SELinux type label
+        /// </summary>
         public readonly string Type;
+        /// <summary>
+        /// Optional configuration for the `volume` type.
+        /// </summary>
         public readonly ServiceTaskSpecContainerSpecMountsVolumeOptions? VolumeOptions;
 
         [OutputConstructor]
@@ -2341,6 +2996,9 @@ namespace Pulumi.Docker
     [OutputType]
     public sealed class ServiceTaskSpecContainerSpecMountsBindOptions
     {
+        /// <summary>
+        /// A propagation mode with the value.
+        /// </summary>
         public readonly string? Propagation;
 
         [OutputConstructor]
@@ -2354,9 +3012,12 @@ namespace Pulumi.Docker
     public sealed class ServiceTaskSpecContainerSpecMountsTmpfsOptions
     {
         /// <summary>
-        /// The mode of resolution to use for internal load balancing between tasks. `(vip|dnsrr)`. Default: `vip`.
+        /// See Mode below for details.
         /// </summary>
         public readonly int? Mode;
+        /// <summary>
+        /// The size for the tmpfs mount in bytes. 
+        /// </summary>
         public readonly int? SizeBytes;
 
         [OutputConstructor]
@@ -2374,7 +3035,13 @@ namespace Pulumi.Docker
     {
         public readonly string? DriverName;
         public readonly ImmutableDictionary<string, string>? DriverOptions;
+        /// <summary>
+        /// See Labels below for details.
+        /// </summary>
         public readonly ImmutableArray<ServiceTaskSpecContainerSpecMountsVolumeOptionsLabels> Labels;
+        /// <summary>
+        /// Whether to populate volume with data from the target.
+        /// </summary>
         public readonly bool? NoCopy;
 
         [OutputConstructor]
@@ -2394,6 +3061,10 @@ namespace Pulumi.Docker
     [OutputType]
     public sealed class ServiceTaskSpecContainerSpecMountsVolumeOptionsLabels
     {
+        /// <summary>
+        /// Name of the label
+        /// * `value` (Required, string) Value of the label
+        /// </summary>
         public readonly string Label;
         public readonly string Value;
 
@@ -2410,7 +3081,13 @@ namespace Pulumi.Docker
     [OutputType]
     public sealed class ServiceTaskSpecContainerSpecPrivileges
     {
+        /// <summary>
+        /// For managed service account (Windows only)
+        /// </summary>
         public readonly ServiceTaskSpecContainerSpecPrivilegesCredentialSpec? CredentialSpec;
+        /// <summary>
+        /// SELinux labels of the container
+        /// </summary>
         public readonly ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext? SeLinuxContext;
 
         [OutputConstructor]
@@ -2426,7 +3103,13 @@ namespace Pulumi.Docker
     [OutputType]
     public sealed class ServiceTaskSpecContainerSpecPrivilegesCredentialSpec
     {
+        /// <summary>
+        /// Load credential spec from this file.
+        /// </summary>
         public readonly string? File;
+        /// <summary>
+        /// Load credential spec from this value in the Windows registry.
+        /// </summary>
         public readonly string? Registry;
 
         [OutputConstructor]
@@ -2442,10 +3125,25 @@ namespace Pulumi.Docker
     [OutputType]
     public sealed class ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext
     {
+        /// <summary>
+        /// Disable SELinux
+        /// </summary>
         public readonly bool? Disable;
+        /// <summary>
+        /// SELinux level label
+        /// </summary>
         public readonly string? Level;
+        /// <summary>
+        /// SELinux role label
+        /// </summary>
         public readonly string? Role;
+        /// <summary>
+        /// SELinux type label
+        /// </summary>
         public readonly string? Type;
+        /// <summary>
+        /// The user inside the container.
+        /// </summary>
         public readonly string? User;
 
         [OutputConstructor]
@@ -2476,14 +3174,20 @@ namespace Pulumi.Docker
         /// </summary>
         public readonly int? FileMode;
         /// <summary>
-        /// Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
+        /// Represents the final filename in the filesystem. The specific target file that the secret data is written within the docker container, e.g. `/root/secret/secret.json`
         /// </summary>
         public readonly string FileName;
         /// <summary>
         /// Represents the file UID. Defaults: `0`
         /// </summary>
         public readonly string? FileUid;
+        /// <summary>
+        /// ConfigID represents the ID of the specific secret.
+        /// </summary>
         public readonly string SecretId;
+        /// <summary>
+        /// The name of the secret that this references, but internally it is just provided for lookup/display purposes
+        /// </summary>
         public readonly string? SecretName;
 
         [OutputConstructor]
@@ -2508,7 +3212,7 @@ namespace Pulumi.Docker
     public sealed class ServiceTaskSpecLogDriver
     {
         /// <summary>
-        /// A random name for the port.
+        /// The logging driver to use. Either `(none|json-file|syslog|journald|gelf|fluentd|awslogs|splunk|etwlogs|gcplogs)`.
         /// </summary>
         public readonly string Name;
         /// <summary>
@@ -2564,7 +3268,23 @@ namespace Pulumi.Docker
     [OutputType]
     public sealed class ServiceTaskSpecResources
     {
+        /// <summary>
+        /// Describes the resources which can be advertised by a node and requested by a task.
+        /// * `nano_cpus` (Optional, int) CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
+        /// * `memory_bytes` (Optional, int) The amount of memory in bytes the container allocates
+        /// * `generic_resources` (Optional, map) User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
+        /// * `named_resources_spec` (Optional, set of string) The String resources, delimited by `=`
+        /// * `discrete_resources_spec` (Optional, set of string) The Integer resources, delimited by `=`
+        /// </summary>
         public readonly ServiceTaskSpecResourcesLimits? Limits;
+        /// <summary>
+        /// An object describing the resources which can be advertised by a node and requested by a task.
+        /// * `nano_cpus` (Optional, int) CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
+        /// * `memory_bytes` (Optional, int) The amount of memory in bytes the container allocates
+        /// * `generic_resources` (Optional, map) User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
+        /// * `named_resources_spec` (Optional, set of string) The String resources
+        /// * `discrete_resources_spec` (Optional, set of string) The Integer resources
+        /// </summary>
         public readonly ServiceTaskSpecResourcesReservation? Reservation;
 
         [OutputConstructor]
@@ -2651,6 +3371,10 @@ namespace Pulumi.Docker
     public sealed class ServiceTaskSpecRestartPolicy
     {
         public readonly string? Condition;
+        /// <summary>
+        /// Delay between updates `(ns|us|ms|s|m|h)`, e.g. `5s`.
+        /// all tasks are up when a service is created, or to check if all tasks are successfully updated on an update. Default: `7s`.
+        /// </summary>
         public readonly string? Delay;
         public readonly int? MaxAttempts;
         public readonly string? Window;
@@ -2672,11 +3396,30 @@ namespace Pulumi.Docker
     [OutputType]
     public sealed class ServiceUpdateConfig
     {
+        /// <summary>
+        /// Delay between updates `(ns|us|ms|s|m|h)`, e.g. `5s`.
+        /// </summary>
         public readonly string? Delay;
+        /// <summary>
+        /// Action on update failure: `pause|continue|rollback`.
+        /// </summary>
         public readonly string? FailureAction;
+        /// <summary>
+        /// The failure rate to tolerate during an update as `float`. **Important:** the `float`need to be wrapped in a `string` to avoid internal
+        /// casting and precision errors.
+        /// </summary>
         public readonly string? MaxFailureRatio;
+        /// <summary>
+        /// Duration after each task update to monitor for failure `(ns|us|ms|s|m|h)`
+        /// </summary>
         public readonly string? Monitor;
+        /// <summary>
+        /// Update order either 'stop-first' or 'start-first'.
+        /// </summary>
         public readonly string? Order;
+        /// <summary>
+        /// The maximum number of tasks to be updated in one iteration simultaneously (0 to update all at once).
+        /// </summary>
         public readonly int? Parallelism;
 
         [OutputConstructor]

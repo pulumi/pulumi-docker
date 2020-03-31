@@ -23,8 +23,8 @@ type Volume struct {
 	// Options specific to the driver.
 	DriverOpts pulumi.MapOutput `pulumi:"driverOpts"`
 	// User-defined key/value metadata.
-	Labels VolumeLabelArrayOutput `pulumi:"labels"`
-	Mountpoint pulumi.StringOutput `pulumi:"mountpoint"`
+	Labels     VolumeLabelArrayOutput `pulumi:"labels"`
+	Mountpoint pulumi.StringOutput    `pulumi:"mountpoint"`
 	// The name of the Docker volume (generated if not
 	// provided).
 	Name pulumi.StringOutput `pulumi:"name"`
@@ -63,8 +63,8 @@ type volumeState struct {
 	// Options specific to the driver.
 	DriverOpts map[string]interface{} `pulumi:"driverOpts"`
 	// User-defined key/value metadata.
-	Labels []VolumeLabel `pulumi:"labels"`
-	Mountpoint *string `pulumi:"mountpoint"`
+	Labels     []VolumeLabel `pulumi:"labels"`
+	Mountpoint *string       `pulumi:"mountpoint"`
 	// The name of the Docker volume (generated if not
 	// provided).
 	Name *string `pulumi:"name"`
@@ -76,7 +76,7 @@ type VolumeState struct {
 	// Options specific to the driver.
 	DriverOpts pulumi.MapInput
 	// User-defined key/value metadata.
-	Labels VolumeLabelArrayInput
+	Labels     VolumeLabelArrayInput
 	Mountpoint pulumi.StringPtrInput
 	// The name of the Docker volume (generated if not
 	// provided).
@@ -115,4 +115,3 @@ type VolumeArgs struct {
 func (VolumeArgs) ElementType() reflect.Type {
 	return reflect.TypeOf((*volumeArgs)(nil)).Elem()
 }
-
