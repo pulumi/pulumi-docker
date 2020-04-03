@@ -13,14 +13,10 @@
 # limitations under the License.
 
 import base64
-import pulumi
+
 import pulumi_aws as aws
+
 import pulumi_docker as docker
-
-# Create a private ECR registry.
-
-
-repo = aws.ecr.Repository('my-repo')
 
 
 # Get registry info (creds and endpoint) so we can build/publish to it.
@@ -33,13 +29,17 @@ def get_registry_info(rid):
     return docker.ImageRegistry(creds.proxy_endpoint, parts[0], parts[1])
 
 
-registry = repo.registry_id.apply(get_registry_info)
-
-# Build and publish the image.
 for i in range(10):
+    # Create a private ECR registry.
+    repo = aws.ecr.Repository('my-repo-%i' % i, name='image-%i' % i)
+
+    registry = repo.registry_id.apply(get_registry_info)
+
+    # Build and publish the image.
+
     docker.Image(
         'my-image-%i' % i,
         build=docker.DockerBuild(context='app', args={'parameter': str(i)}),
-        image_name=repo.repository_url.apply(lambda u: u + '/image-%i' % i),
+        image_name=repo.repository_url,
         registry=registry,
     )
