@@ -73,7 +73,8 @@ func TestAwsPy(t *testing.T) {
 		Dependencies: []string{
 			path.Join("..", "sdk", "python", "bin"),
 		},
-		Dir: path.Join(cwd, "aws-py"),
+		Dir:     path.Join(cwd, "aws-py"),
+		Verbose: true,
 	})
 	integration.ProgramTest(t, &opts)
 }
@@ -163,7 +164,8 @@ func TestDockerfilePy(t *testing.T) {
 		Dependencies: []string{
 			path.Join("..", "sdk", "python", "bin"),
 		},
-		Dir: path.Join(cwd, "dockerfile-py"),
+		Dir:     path.Join(cwd, "dockerfile-py"),
+		Verbose: true,
 	})
 	integration.ProgramTest(t, &opts)
 }
