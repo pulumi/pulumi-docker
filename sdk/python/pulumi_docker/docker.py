@@ -121,7 +121,7 @@ async def use_docker_password_stdin(log_resource: pulumi.Resource):
         # IDEA: In the future we could warn here on out-of-date versions of Docker which may not support key
         # features we want to use.
 
-        pulumi.log.debug(f'\'docker version\' => {docker_version_str}', log_resource)
+        log_ephemeral(f'\'docker version\' => {docker_version_str}', log_resource)
     except Exception:
         raise ResourceError("No 'docker' command available on PATH: Please install to use container 'build' mode.",
                             log_resource)
