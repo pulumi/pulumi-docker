@@ -40,6 +40,6 @@ for i in range(10):
     docker.Image(
         'my-image-%i' % i,
         build=docker.DockerBuild(context='app', args={'parameter': str(i)}),
-        image_name=repo.repository_url,
+        image_name=repo.repository_url.apply(lambda u: u + '/image-%i' % i),
         registry=registry,
     )
