@@ -676,7 +676,7 @@ async def run_command_that_can_fail(
         # Report all stdout messages as ephemeral messages.  That way they show up in the
         # info bar as they're happening.  But they do not overwhelm the user as the end
         # of the run.
-        log_ephemeral(chunk, log_resource)
+        print(chunk)
         stdout_chunks.append(chunk)
 
     def stderr_chunk(chunk):
