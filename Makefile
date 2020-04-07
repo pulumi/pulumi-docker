@@ -26,9 +26,9 @@ TESTPARALLELISM := 4
 # NOTE: Since the plugin is published using the nodejs style semver version
 # We set the PLUGIN_VERSION to be the same as the version we use when building
 # the provider (e.g. x.y.z-dev-... instead of x.y.zdev...)
-build:: provider tfgen
-	for LANGUAGE in "nodejs" "python" "go" "dotnet" ; do \
-		$(TFGEN) $$LANGUAGE --overlays overlays/$$LANGUAGE/ --out ${PACKDIR}/$$LANGUAGE/ || exit 3 ; \
+build:: provider
+	cd provider && for LANGUAGE in "nodejs" "python" "go" "dotnet" ; do \
+		$(TFGEN) $$LANGUAGE --overlays overlays/$$LANGUAGE/ --out ../${PACKDIR}/$$LANGUAGE/ || exit 3 ; \
 	done
 	cd ${PACKDIR}/nodejs/ && \
 		yarn install && \
@@ -47,20 +47,19 @@ build:: provider tfgen
 		dotnet build /p:Version=${DOTNET_VERSION}
 
 generate_schema:: tfgen
-	$(TFGEN) schema --out ./cmd/${PROVIDER}
+	$(TFGEN) schema --out ./provider/cmd/${PROVIDER}
 
-provider::
-	go generate ${PROJECT}/cmd/${PROVIDER}
-	go install -ldflags "-X github.com/pulumi/pulumi-docker/pkg/version.Version=${VERSION}" ${PROJECT}/cmd/${PROVIDER}
+provider:: generate_schema
+	cd provider && go generate cmd/${PROVIDER}/main.go
+	cd provider && go install -ldflags "-X github.com/pulumi/pulumi-docker/provider/pkg/version.Version=${VERSION}" ${PROJECT}/provider/cmd/${PROVIDER}
 
 tfgen::
-	go install -ldflags "-X github.com/pulumi/pulumi-docker/pkg/version.Version=${VERSION}" ${PROJECT}/cmd/${TFGEN}
+	cd provider && go install -ldflags "-X github.com/pulumi/pulumi-docker/provider/pkg/version.Version=${VERSION}" ${PROJECT}/provider/cmd/${TFGEN}
 
 lint::
 	#golangci-lint run
 
-install::
-	GOBIN=$(PULUMI_BIN) go install -ldflags "-X github.com/pulumi/pulumi-docker/pkg/version.Version=${VERSION}" ${PROJECT}/cmd/${PROVIDER}
+install:: provider
 	[ ! -e "$(PULUMI_NODE_MODULES)/$(NODE_MODULE_NAME)" ] || rm -rf "$(PULUMI_NODE_MODULES)/$(NODE_MODULE_NAME)"
 	mkdir -p "$(PULUMI_NODE_MODULES)/$(NODE_MODULE_NAME)"
 	cp -r ${PACKDIR}/nodejs/bin/. "$(PULUMI_NODE_MODULES)/$(NODE_MODULE_NAME)"
@@ -79,10 +78,10 @@ istanbul_tests::
 	cd sdk/nodejs/tests && yarn run mocha $$(find bin -name '*.spec.js')
 
 test_fast:: istanbul_tests
-	$(GO_TEST_FAST) ./examples/
+	cd examples && $(GO_TEST_FAST) .
 
 test_all:: istanbul_tests
-	$(GO_TEST) ./examples/
+	cd examples && $(GO_TEST) .
 
 .PHONY: publish_tgz
 publish_tgz:
