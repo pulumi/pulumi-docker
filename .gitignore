@@ -3,7 +3,7 @@
 **/bin/
 **/obj/
 **/node_modules/
-vendor/
+**/vendor/
 **/Pulumi.*.yaml
 **/yarn-error.log
 yarn.lock
