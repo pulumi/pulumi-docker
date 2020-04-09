@@ -8,10 +8,12 @@ import (
 	"reflect"
 
 	"github.com/pkg/errors"
-	"github.com/pulumi/pulumi/sdk/go/pulumi"
+	"github.com/pulumi/pulumi/sdk/v2/go/pulumi"
 )
 
 // Manages the lifecycle of a Docker container.
+//
+//
 //
 // > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/container.html.markdown.
 type Container struct {

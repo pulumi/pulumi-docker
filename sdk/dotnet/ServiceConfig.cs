@@ -12,6 +12,8 @@ namespace Pulumi.Docker
     /// <summary>
     /// Manages the configuration of a Docker service in a swarm.
     /// 
+    /// 
+    /// 
     /// &gt; This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/config.html.markdown.
     /// </summary>
     public partial class ServiceConfig : Pulumi.CustomResource

@@ -343,6 +343,8 @@ class Container(pulumi.CustomResource):
         """
         Manages the lifecycle of a Docker container.
 
+
+
         > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/container.html.markdown.
 
         :param str resource_name: The name of the resource.

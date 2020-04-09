@@ -7,7 +7,7 @@ package docker
 import (
 	"reflect"
 
-	"github.com/pulumi/pulumi/sdk/go/pulumi"
+	"github.com/pulumi/pulumi/sdk/v2/go/pulumi"
 )
 
 // The provider type for the docker package. By default, resources use package-wide configuration

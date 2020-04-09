@@ -8,7 +8,7 @@ import (
 	"reflect"
 
 	"github.com/pkg/errors"
-	"github.com/pulumi/pulumi/sdk/go/pulumi"
+	"github.com/pulumi/pulumi/sdk/v2/go/pulumi"
 )
 
 // Pulls a Docker image to a given Docker host from a Docker Registry.
@@ -16,6 +16,8 @@ import (
 // This resource will *not* pull new layers of the image automatically unless used in
 // conjunction with [`.getRegistryImage`](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
 // data source to update the `pullTriggers` field.
+//
+//
 //
 // > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/image.html.markdown.
 type RemoteImage struct {

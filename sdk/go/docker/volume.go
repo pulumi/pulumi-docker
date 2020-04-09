@@ -7,12 +7,14 @@ package docker
 import (
 	"reflect"
 
-	"github.com/pulumi/pulumi/sdk/go/pulumi"
+	"github.com/pulumi/pulumi/sdk/v2/go/pulumi"
 )
 
 // Creates and destroys a volume in Docker. This can be used alongside
 // [docker\_container](https://www.terraform.io/docs/providers/docker/r/container.html)
 // to prepare volumes that can be shared across containers.
+//
+//
 //
 // > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/volume.html.markdown.
 type Volume struct {

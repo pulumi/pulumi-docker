@@ -14,6 +14,8 @@ namespace Pulumi.Docker
     /// [docker\_container](https://www.terraform.io/docs/providers/docker/r/container.html)
     /// to prepare volumes that can be shared across containers.
     /// 
+    /// 
+    /// 
     /// &gt; This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/volume.html.markdown.
     /// </summary>
     public partial class Volume : Pulumi.CustomResource

@@ -16,6 +16,8 @@ namespace Pulumi.Docker
     /// conjunction with [`docker..getRegistryImage`](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
     /// data source to update the `pull_triggers` field.
     /// 
+    /// 
+    /// 
     /// &gt; This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/image.html.markdown.
     /// </summary>
     public partial class RemoteImage : Pulumi.CustomResource

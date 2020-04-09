@@ -12,6 +12,8 @@ namespace Pulumi.Docker
     /// <summary>
     /// Manages the secrets of a Docker service in a swarm.
     /// 
+    /// 
+    /// 
     /// &gt; This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/secret.html.markdown.
     /// </summary>
     public partial class Secret : Pulumi.CustomResource

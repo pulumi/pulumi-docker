@@ -15,9 +15,9 @@
 package main
 
 import (
-	docker "github.com/pulumi/pulumi-docker/provider"
-	"github.com/pulumi/pulumi-docker/provider/pkg/version"
-	"github.com/pulumi/pulumi-terraform-bridge/pkg/tfgen"
+	docker "github.com/pulumi/pulumi-docker/provider/v2"
+	"github.com/pulumi/pulumi-docker/provider/v2/pkg/version"
+	"github.com/pulumi/pulumi-terraform-bridge/v2/pkg/tfgen"
 )
 
 func main() {

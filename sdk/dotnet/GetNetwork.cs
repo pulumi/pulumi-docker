@@ -14,6 +14,8 @@ namespace Pulumi.Docker
         /// <summary>
         /// Finds a specific docker network and returns information about it.
         /// 
+        /// 
+        /// 
         /// &gt; This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/d/docker_network.html.markdown.
         /// </summary>
         [Obsolete("Use GetNetwork.InvokeAsync() instead")]
@@ -24,6 +26,8 @@ namespace Pulumi.Docker
     {
         /// <summary>
         /// Finds a specific docker network and returns information about it.
+        /// 
+        /// 
         /// 
         /// &gt; This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/d/docker_network.html.markdown.
         /// </summary>

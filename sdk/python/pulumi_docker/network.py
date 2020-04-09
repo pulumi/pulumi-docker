@@ -79,6 +79,8 @@ class Network(pulumi.CustomResource):
         [docker\_container](https://www.terraform.io/docs/providers/docker/r/container.html)
         to create virtual networks within the docker environment.
 
+
+
         > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/network.html.markdown.
 
         :param str resource_name: The name of the resource.
