@@ -1,8 +1,8 @@
 ## HEAD (Unreleased)
-* Fix Python Docker Image build suport for registries
 * Refactor layout to support Go modules
 * Upgrade to Pulumi v1.13.1
 * Upgrade to pulumi-terraform-bridge v1.8.4
+* Revert Python Docker Image build support (we will bring this back soon!)
 
 ---
 
