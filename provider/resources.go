@@ -144,6 +144,12 @@ func Provider() tfbridge.ProviderInfo {
 			Requires: map[string]string{
 				"pulumi": ">=2.0.0,<3.0.0",
 			},
+			Overlay: &tfbridge.OverlayInfo{
+				DestFiles: []string{
+					"pulumi_docker/docker.py",
+					"pulumi_docker/image.py",
+				},
+			},
 		},
 		CSharp: &tfbridge.CSharpInfo{
 			PackageReferences: map[string]string{
