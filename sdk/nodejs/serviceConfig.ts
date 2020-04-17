@@ -7,6 +7,7 @@ import * as utilities from "./utilities";
 /**
  * Manages the configuration of a Docker service in a swarm.
  * 
+ * 
  * ## Basic
  * 
  * ```typescript
