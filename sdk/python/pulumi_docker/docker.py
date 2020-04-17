@@ -17,8 +17,6 @@ import math
 import os
 import re
 import subprocess
-import threading
-from asyncio import new_event_loop, set_event_loop
 from random import random
 from typing import Optional, Union, Callable, Awaitable, List, Mapping
 from distutils.version import LooseVersion
@@ -656,17 +654,14 @@ async def run_command_that_can_fail(
         cmd, *args, env=env,
         stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
 
-    if stdin:
-        stdout, stderr = await process.communicate(input=stdin.encode('utf-8'))
-
-        print(stdout)
-        print(stderr)
-
-    loop = asyncio.events.get_event_loop()
-
     # We store the results from stdout in memory and will return them as a str.
     stdout_chunks: List[str] = []
     stderr_chunks: List[str] = []
+    if stdin:
+        stdout, stderr = await process.communicate(input=stdin.encode('utf-8'))
+
+        stdout_chunks.append(stdout.decode('utf-8'))
+        stderr_chunks.append(stdout.decode('utf-8'))
 
     async def do_std_stream(stream, loggercb):
         while True:
