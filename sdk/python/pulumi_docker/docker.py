@@ -199,7 +199,11 @@ def build_and_push_image(
 
 
 def log_ephemeral(message: str, log_resource: pulumi.Resource):
-    pulumi.log.info(message, log_resource, stream_id=None)
+    try:
+        pulumi.log.info(message, log_resource, stream_id=None, ephemeral=True)
+    except TypeError:
+        # that pulumi version does not support ephemeral
+        pulumi.log.info(message, log_resource, stream_id=None)
 
 
 def check_repository_url(repository_url: str):
