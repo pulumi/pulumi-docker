@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import asyncio
 import json
 import math
 import os
@@ -647,7 +648,17 @@ async def run_command_that_can_fail(
     popen = [cmd]
     popen.extend(args)
 
-    process = subprocess.Popen(popen, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
+    process = await asyncio.create_subprocess_exec(
+        cmd, *args, env=env,
+        stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
+
+    if stdin:
+        stdout, stderr = await process.communicate(input=stdin.encode('utf-8'))
+
+        print(stdout)
+        print(stderr)
+
+    loop = asyncio.events.get_event_loop()
 
     # We store the results from stdout in memory and will return them as a str.
     stdout_chunks: List[str] = []
@@ -656,7 +667,7 @@ async def run_command_that_can_fail(
     async def do_std_stream(stream, loggercb):
         while True:
             try:
-                out = stream.readline().decode('utf-8')
+                out = (await stream.readline()).decode('utf-8')
             except ValueError:
                 # probably already closed
                 break
@@ -664,13 +675,6 @@ async def run_command_that_can_fail(
                 loggercb(out.rstrip())
             else:
                 break
-
-    def std_stream(stream, loggercb):
-        loop = new_event_loop()
-        set_event_loop(loop)
-
-        loop.run_until_complete(do_std_stream(stream, loggercb))
-        loop.close()
 
     def stdout_chunk(chunk):
         # Report all stdout messages as ephemeral messages.  That way they show up in the
@@ -686,23 +690,10 @@ async def run_command_that_can_fail(
         # them.
         stderr_chunks.append(chunk)
 
-    stdout_thread = threading.Thread(target=std_stream,
-                                     args=(process.stdout, stdout_chunk))
+    await do_std_stream(process.stdout, stdout_chunk)
+    await do_std_stream(process.stderr, stderr_chunk)
 
-    stderr_thread = threading.Thread(target=std_stream,
-                                     args=(process.stderr, stderr_chunk))
-
-    stdout_thread.start()
-    stderr_thread.start()
-
-    stdin_bytes = None
-    if stdin is not None:
-        stdin_bytes = stdin.encode()
-
-    process.communicate(stdin_bytes)
-
-    while stdout_thread.is_alive() and stderr_thread.is_alive():
-        pass
+    await process.wait()
 
     code = process.returncode
 
