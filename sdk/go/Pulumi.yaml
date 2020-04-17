@@ -1,3 +1,0 @@
-name: docker
-description: A Pulumi resource provider for docker.
-language: go
