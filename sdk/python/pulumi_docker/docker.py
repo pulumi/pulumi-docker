@@ -447,7 +447,7 @@ async def docker_build(
         build_args.extend(["-f", build.dockerfile])  # add a custom Dockerfile location.
 
     if build.args:
-        for arg, build_arg in build.args.values():
+        for arg, build_arg in build.args.items():
             build_args.extend(["--build-arg", f'{arg}={build_arg}'])
     if build.target:
         build_args.extend(["--target", build.target])
