@@ -11,10 +11,6 @@ namespace Pulumi.Docker
 {
     /// <summary>
     /// Manages the lifecycle of a Docker container.
-    /// 
-    /// 
-    /// 
-    /// &gt; This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/container.html.markdown.
     /// </summary>
     public partial class Container : Pulumi.CustomResource
     {
@@ -72,7 +68,7 @@ namespace Pulumi.Docker
         /// See Devices below for details.
         /// </summary>
         [Output("devices")]
-        public Output<ImmutableArray<Outputs.ContainerDevices>> Devices { get; private set; } = null!;
+        public Output<ImmutableArray<Outputs.ContainerDevice>> Devices { get; private set; } = null!;
 
         /// <summary>
         /// Set of DNS servers.
@@ -140,16 +136,16 @@ namespace Pulumi.Docker
         public Output<Outputs.ContainerHealthcheck?> Healthcheck { get; private set; } = null!;
 
         /// <summary>
-        /// Hostname to add.
-        /// </summary>
-        [Output("hosts")]
-        public Output<ImmutableArray<Outputs.ContainerHosts>> Hosts { get; private set; } = null!;
-
-        /// <summary>
         /// Hostname of the container.
         /// </summary>
         [Output("hostname")]
         public Output<string> Hostname { get; private set; } = null!;
+
+        /// <summary>
+        /// Hostname to add.
+        /// </summary>
+        [Output("hosts")]
+        public Output<ImmutableArray<Outputs.ContainerHost>> Hosts { get; private set; } = null!;
 
         /// <summary>
         /// The ID of the image to back this container.
@@ -182,7 +178,7 @@ namespace Pulumi.Docker
         /// Adding labels.
         /// </summary>
         [Output("labels")]
-        public Output<ImmutableArray<Outputs.ContainerLabels>> Labels { get; private set; } = null!;
+        public Output<ImmutableArray<Outputs.ContainerLabel>> Labels { get; private set; } = null!;
 
         /// <summary>
         /// Set of links for link based
@@ -232,7 +228,7 @@ namespace Pulumi.Docker
         /// See Mounts below for details.
         /// </summary>
         [Output("mounts")]
-        public Output<ImmutableArray<Outputs.ContainerMounts>> Mounts { get; private set; } = null!;
+        public Output<ImmutableArray<Outputs.ContainerMount>> Mounts { get; private set; } = null!;
 
         [Output("mustRun")]
         public Output<bool?> MustRun { get; private set; } = null!;
@@ -251,7 +247,7 @@ namespace Pulumi.Docker
         /// network. Key are the network names, values are the IP addresses.
         /// </summary>
         [Output("networkDatas")]
-        public Output<ImmutableArray<Outputs.ContainerNetworkDatas>> NetworkDatas { get; private set; } = null!;
+        public Output<ImmutableArray<Outputs.ContainerNetworkData>> NetworkDatas { get; private set; } = null!;
 
         /// <summary>
         /// Network mode of the container.
@@ -282,7 +278,7 @@ namespace Pulumi.Docker
         /// See Ports below for details.
         /// </summary>
         [Output("ports")]
-        public Output<ImmutableArray<Outputs.ContainerPorts>> Ports { get; private set; } = null!;
+        public Output<ImmutableArray<Outputs.ContainerPort>> Ports { get; private set; } = null!;
 
         /// <summary>
         /// Run container in privileged mode.
@@ -343,13 +339,13 @@ namespace Pulumi.Docker
         /// details.
         /// </summary>
         [Output("ulimits")]
-        public Output<ImmutableArray<Outputs.ContainerUlimits>> Ulimits { get; private set; } = null!;
+        public Output<ImmutableArray<Outputs.ContainerUlimit>> Ulimits { get; private set; } = null!;
 
         /// <summary>
         /// See File Upload below for details.
         /// </summary>
         [Output("uploads")]
-        public Output<ImmutableArray<Outputs.ContainerUploads>> Uploads { get; private set; } = null!;
+        public Output<ImmutableArray<Outputs.ContainerUpload>> Uploads { get; private set; } = null!;
 
         /// <summary>
         /// User used for run the first process. Format is
@@ -369,7 +365,7 @@ namespace Pulumi.Docker
         /// See Volumes below for details.
         /// </summary>
         [Output("volumes")]
-        public Output<ImmutableArray<Outputs.ContainerVolumes>> Volumes { get; private set; } = null!;
+        public Output<ImmutableArray<Outputs.ContainerVolume>> Volumes { get; private set; } = null!;
 
         [Output("workingDir")]
         public Output<string?> WorkingDir { get; private set; } = null!;
@@ -383,7 +379,7 @@ namespace Pulumi.Docker
         /// <param name="args">The arguments used to populate this resource's properties</param>
         /// <param name="options">A bag of options that control this resource's behavior</param>
         public Container(string name, ContainerArgs args, CustomResourceOptions? options = null)
-            : base("docker:index/container:Container", name, args ?? ResourceArgs.Empty, MakeResourceOptions(options, ""))
+            : base("docker:index/container:Container", name, args ?? new ContainerArgs(), MakeResourceOptions(options, ""))
         {
         }
 
@@ -465,14 +461,14 @@ namespace Pulumi.Docker
         public Input<int>? DestroyGraceSeconds { get; set; }
 
         [Input("devices")]
-        private InputList<Inputs.ContainerDevicesArgs>? _devices;
+        private InputList<Inputs.ContainerDeviceArgs>? _devices;
 
         /// <summary>
         /// See Devices below for details.
         /// </summary>
-        public InputList<Inputs.ContainerDevicesArgs> Devices
+        public InputList<Inputs.ContainerDeviceArgs> Devices
         {
-            get => _devices ?? (_devices = new InputList<Inputs.ContainerDevicesArgs>());
+            get => _devices ?? (_devices = new InputList<Inputs.ContainerDeviceArgs>());
             set => _devices = value;
         }
 
@@ -564,23 +560,23 @@ namespace Pulumi.Docker
         [Input("healthcheck")]
         public Input<Inputs.ContainerHealthcheckArgs>? Healthcheck { get; set; }
 
-        [Input("hosts")]
-        private InputList<Inputs.ContainerHostsArgs>? _hosts;
-
-        /// <summary>
-        /// Hostname to add.
-        /// </summary>
-        public InputList<Inputs.ContainerHostsArgs> Hosts
-        {
-            get => _hosts ?? (_hosts = new InputList<Inputs.ContainerHostsArgs>());
-            set => _hosts = value;
-        }
-
         /// <summary>
         /// Hostname of the container.
         /// </summary>
         [Input("hostname")]
         public Input<string>? Hostname { get; set; }
+
+        [Input("hosts")]
+        private InputList<Inputs.ContainerHostArgs>? _hosts;
+
+        /// <summary>
+        /// Hostname to add.
+        /// </summary>
+        public InputList<Inputs.ContainerHostArgs> Hosts
+        {
+            get => _hosts ?? (_hosts = new InputList<Inputs.ContainerHostArgs>());
+            set => _hosts = value;
+        }
 
         /// <summary>
         /// The ID of the image to back this container.
@@ -597,14 +593,14 @@ namespace Pulumi.Docker
         public Input<string>? IpcMode { get; set; }
 
         [Input("labels")]
-        private InputList<Inputs.ContainerLabelsArgs>? _labels;
+        private InputList<Inputs.ContainerLabelArgs>? _labels;
 
         /// <summary>
         /// Adding labels.
         /// </summary>
-        public InputList<Inputs.ContainerLabelsArgs> Labels
+        public InputList<Inputs.ContainerLabelArgs> Labels
         {
-            get => _labels ?? (_labels = new InputList<Inputs.ContainerLabelsArgs>());
+            get => _labels ?? (_labels = new InputList<Inputs.ContainerLabelArgs>());
             set => _labels = value;
         }
 
@@ -666,14 +662,14 @@ namespace Pulumi.Docker
         public Input<int>? MemorySwap { get; set; }
 
         [Input("mounts")]
-        private InputList<Inputs.ContainerMountsArgs>? _mounts;
+        private InputList<Inputs.ContainerMountArgs>? _mounts;
 
         /// <summary>
         /// See Mounts below for details.
         /// </summary>
-        public InputList<Inputs.ContainerMountsArgs> Mounts
+        public InputList<Inputs.ContainerMountArgs> Mounts
         {
-            get => _mounts ?? (_mounts = new InputList<Inputs.ContainerMountsArgs>());
+            get => _mounts ?? (_mounts = new InputList<Inputs.ContainerMountArgs>());
             set => _mounts = value;
         }
 
@@ -735,14 +731,14 @@ namespace Pulumi.Docker
         public Input<string>? PidMode { get; set; }
 
         [Input("ports")]
-        private InputList<Inputs.ContainerPortsArgs>? _ports;
+        private InputList<Inputs.ContainerPortArgs>? _ports;
 
         /// <summary>
         /// See Ports below for details.
         /// </summary>
-        public InputList<Inputs.ContainerPortsArgs> Ports
+        public InputList<Inputs.ContainerPortArgs> Ports
         {
-            get => _ports ?? (_ports = new InputList<Inputs.ContainerPortsArgs>());
+            get => _ports ?? (_ports = new InputList<Inputs.ContainerPortArgs>());
             set => _ports = value;
         }
 
@@ -813,27 +809,27 @@ namespace Pulumi.Docker
         }
 
         [Input("ulimits")]
-        private InputList<Inputs.ContainerUlimitsArgs>? _ulimits;
+        private InputList<Inputs.ContainerUlimitArgs>? _ulimits;
 
         /// <summary>
         /// See Ulimits below for
         /// details.
         /// </summary>
-        public InputList<Inputs.ContainerUlimitsArgs> Ulimits
+        public InputList<Inputs.ContainerUlimitArgs> Ulimits
         {
-            get => _ulimits ?? (_ulimits = new InputList<Inputs.ContainerUlimitsArgs>());
+            get => _ulimits ?? (_ulimits = new InputList<Inputs.ContainerUlimitArgs>());
             set => _ulimits = value;
         }
 
         [Input("uploads")]
-        private InputList<Inputs.ContainerUploadsArgs>? _uploads;
+        private InputList<Inputs.ContainerUploadArgs>? _uploads;
 
         /// <summary>
         /// See File Upload below for details.
         /// </summary>
-        public InputList<Inputs.ContainerUploadsArgs> Uploads
+        public InputList<Inputs.ContainerUploadArgs> Uploads
         {
-            get => _uploads ?? (_uploads = new InputList<Inputs.ContainerUploadsArgs>());
+            get => _uploads ?? (_uploads = new InputList<Inputs.ContainerUploadArgs>());
             set => _uploads = value;
         }
 
@@ -852,14 +848,14 @@ namespace Pulumi.Docker
         public Input<string>? UsernsMode { get; set; }
 
         [Input("volumes")]
-        private InputList<Inputs.ContainerVolumesArgs>? _volumes;
+        private InputList<Inputs.ContainerVolumeArgs>? _volumes;
 
         /// <summary>
         /// See Volumes below for details.
         /// </summary>
-        public InputList<Inputs.ContainerVolumesArgs> Volumes
+        public InputList<Inputs.ContainerVolumeArgs> Volumes
         {
-            get => _volumes ?? (_volumes = new InputList<Inputs.ContainerVolumesArgs>());
+            get => _volumes ?? (_volumes = new InputList<Inputs.ContainerVolumeArgs>());
             set => _volumes = value;
         }
 
@@ -930,14 +926,14 @@ namespace Pulumi.Docker
         public Input<int>? DestroyGraceSeconds { get; set; }
 
         [Input("devices")]
-        private InputList<Inputs.ContainerDevicesGetArgs>? _devices;
+        private InputList<Inputs.ContainerDeviceGetArgs>? _devices;
 
         /// <summary>
         /// See Devices below for details.
         /// </summary>
-        public InputList<Inputs.ContainerDevicesGetArgs> Devices
+        public InputList<Inputs.ContainerDeviceGetArgs> Devices
         {
-            get => _devices ?? (_devices = new InputList<Inputs.ContainerDevicesGetArgs>());
+            get => _devices ?? (_devices = new InputList<Inputs.ContainerDeviceGetArgs>());
             set => _devices = value;
         }
 
@@ -1042,23 +1038,23 @@ namespace Pulumi.Docker
         [Input("healthcheck")]
         public Input<Inputs.ContainerHealthcheckGetArgs>? Healthcheck { get; set; }
 
-        [Input("hosts")]
-        private InputList<Inputs.ContainerHostsGetArgs>? _hosts;
-
-        /// <summary>
-        /// Hostname to add.
-        /// </summary>
-        public InputList<Inputs.ContainerHostsGetArgs> Hosts
-        {
-            get => _hosts ?? (_hosts = new InputList<Inputs.ContainerHostsGetArgs>());
-            set => _hosts = value;
-        }
-
         /// <summary>
         /// Hostname of the container.
         /// </summary>
         [Input("hostname")]
         public Input<string>? Hostname { get; set; }
+
+        [Input("hosts")]
+        private InputList<Inputs.ContainerHostGetArgs>? _hosts;
+
+        /// <summary>
+        /// Hostname to add.
+        /// </summary>
+        public InputList<Inputs.ContainerHostGetArgs> Hosts
+        {
+            get => _hosts ?? (_hosts = new InputList<Inputs.ContainerHostGetArgs>());
+            set => _hosts = value;
+        }
 
         /// <summary>
         /// The ID of the image to back this container.
@@ -1088,14 +1084,14 @@ namespace Pulumi.Docker
         public Input<string>? IpcMode { get; set; }
 
         [Input("labels")]
-        private InputList<Inputs.ContainerLabelsGetArgs>? _labels;
+        private InputList<Inputs.ContainerLabelGetArgs>? _labels;
 
         /// <summary>
         /// Adding labels.
         /// </summary>
-        public InputList<Inputs.ContainerLabelsGetArgs> Labels
+        public InputList<Inputs.ContainerLabelGetArgs> Labels
         {
-            get => _labels ?? (_labels = new InputList<Inputs.ContainerLabelsGetArgs>());
+            get => _labels ?? (_labels = new InputList<Inputs.ContainerLabelGetArgs>());
             set => _labels = value;
         }
 
@@ -1157,14 +1153,14 @@ namespace Pulumi.Docker
         public Input<int>? MemorySwap { get; set; }
 
         [Input("mounts")]
-        private InputList<Inputs.ContainerMountsGetArgs>? _mounts;
+        private InputList<Inputs.ContainerMountGetArgs>? _mounts;
 
         /// <summary>
         /// See Mounts below for details.
         /// </summary>
-        public InputList<Inputs.ContainerMountsGetArgs> Mounts
+        public InputList<Inputs.ContainerMountGetArgs> Mounts
         {
-            get => _mounts ?? (_mounts = new InputList<Inputs.ContainerMountsGetArgs>());
+            get => _mounts ?? (_mounts = new InputList<Inputs.ContainerMountGetArgs>());
             set => _mounts = value;
         }
 
@@ -1188,15 +1184,15 @@ namespace Pulumi.Docker
         }
 
         [Input("networkDatas")]
-        private InputList<Inputs.ContainerNetworkDatasGetArgs>? _networkDatas;
+        private InputList<Inputs.ContainerNetworkDataGetArgs>? _networkDatas;
 
         /// <summary>
         /// (Map of a block) The IP addresses of the container on each
         /// network. Key are the network names, values are the IP addresses.
         /// </summary>
-        public InputList<Inputs.ContainerNetworkDatasGetArgs> NetworkDatas
+        public InputList<Inputs.ContainerNetworkDataGetArgs> NetworkDatas
         {
-            get => _networkDatas ?? (_networkDatas = new InputList<Inputs.ContainerNetworkDatasGetArgs>());
+            get => _networkDatas ?? (_networkDatas = new InputList<Inputs.ContainerNetworkDataGetArgs>());
             set => _networkDatas = value;
         }
 
@@ -1239,14 +1235,14 @@ namespace Pulumi.Docker
         public Input<string>? PidMode { get; set; }
 
         [Input("ports")]
-        private InputList<Inputs.ContainerPortsGetArgs>? _ports;
+        private InputList<Inputs.ContainerPortGetArgs>? _ports;
 
         /// <summary>
         /// See Ports below for details.
         /// </summary>
-        public InputList<Inputs.ContainerPortsGetArgs> Ports
+        public InputList<Inputs.ContainerPortGetArgs> Ports
         {
-            get => _ports ?? (_ports = new InputList<Inputs.ContainerPortsGetArgs>());
+            get => _ports ?? (_ports = new InputList<Inputs.ContainerPortGetArgs>());
             set => _ports = value;
         }
 
@@ -1317,27 +1313,27 @@ namespace Pulumi.Docker
         }
 
         [Input("ulimits")]
-        private InputList<Inputs.ContainerUlimitsGetArgs>? _ulimits;
+        private InputList<Inputs.ContainerUlimitGetArgs>? _ulimits;
 
         /// <summary>
         /// See Ulimits below for
         /// details.
         /// </summary>
-        public InputList<Inputs.ContainerUlimitsGetArgs> Ulimits
+        public InputList<Inputs.ContainerUlimitGetArgs> Ulimits
         {
-            get => _ulimits ?? (_ulimits = new InputList<Inputs.ContainerUlimitsGetArgs>());
+            get => _ulimits ?? (_ulimits = new InputList<Inputs.ContainerUlimitGetArgs>());
             set => _ulimits = value;
         }
 
         [Input("uploads")]
-        private InputList<Inputs.ContainerUploadsGetArgs>? _uploads;
+        private InputList<Inputs.ContainerUploadGetArgs>? _uploads;
 
         /// <summary>
         /// See File Upload below for details.
         /// </summary>
-        public InputList<Inputs.ContainerUploadsGetArgs> Uploads
+        public InputList<Inputs.ContainerUploadGetArgs> Uploads
         {
-            get => _uploads ?? (_uploads = new InputList<Inputs.ContainerUploadsGetArgs>());
+            get => _uploads ?? (_uploads = new InputList<Inputs.ContainerUploadGetArgs>());
             set => _uploads = value;
         }
 
@@ -1356,14 +1352,14 @@ namespace Pulumi.Docker
         public Input<string>? UsernsMode { get; set; }
 
         [Input("volumes")]
-        private InputList<Inputs.ContainerVolumesGetArgs>? _volumes;
+        private InputList<Inputs.ContainerVolumeGetArgs>? _volumes;
 
         /// <summary>
         /// See Volumes below for details.
         /// </summary>
-        public InputList<Inputs.ContainerVolumesGetArgs> Volumes
+        public InputList<Inputs.ContainerVolumeGetArgs> Volumes
         {
-            get => _volumes ?? (_volumes = new InputList<Inputs.ContainerVolumesGetArgs>());
+            get => _volumes ?? (_volumes = new InputList<Inputs.ContainerVolumeGetArgs>());
             set => _volumes = value;
         }
 
@@ -1373,1428 +1369,5 @@ namespace Pulumi.Docker
         public ContainerState()
         {
         }
-    }
-
-    namespace Inputs
-    {
-
-    public sealed class ContainerCapabilitiesArgs : Pulumi.ResourceArgs
-    {
-        [Input("adds")]
-        private InputList<string>? _adds;
-
-        /// <summary>
-        /// list of linux capabilities to add.
-        /// </summary>
-        public InputList<string> Adds
-        {
-            get => _adds ?? (_adds = new InputList<string>());
-            set => _adds = value;
-        }
-
-        [Input("drops")]
-        private InputList<string>? _drops;
-
-        /// <summary>
-        /// list of linux capabilities to drop.
-        /// </summary>
-        public InputList<string> Drops
-        {
-            get => _drops ?? (_drops = new InputList<string>());
-            set => _drops = value;
-        }
-
-        public ContainerCapabilitiesArgs()
-        {
-        }
-    }
-
-    public sealed class ContainerCapabilitiesGetArgs : Pulumi.ResourceArgs
-    {
-        [Input("adds")]
-        private InputList<string>? _adds;
-
-        /// <summary>
-        /// list of linux capabilities to add.
-        /// </summary>
-        public InputList<string> Adds
-        {
-            get => _adds ?? (_adds = new InputList<string>());
-            set => _adds = value;
-        }
-
-        [Input("drops")]
-        private InputList<string>? _drops;
-
-        /// <summary>
-        /// list of linux capabilities to drop.
-        /// </summary>
-        public InputList<string> Drops
-        {
-            get => _drops ?? (_drops = new InputList<string>());
-            set => _drops = value;
-        }
-
-        public ContainerCapabilitiesGetArgs()
-        {
-        }
-    }
-
-    public sealed class ContainerDevicesArgs : Pulumi.ResourceArgs
-    {
-        /// <summary>
-        /// The path in the container where the
-        /// device will be binded.
-        /// </summary>
-        [Input("containerPath")]
-        public Input<string>? ContainerPath { get; set; }
-
-        /// <summary>
-        /// The path on the host where the device
-        /// is located.
-        /// </summary>
-        [Input("hostPath", required: true)]
-        public Input<string> HostPath { get; set; } = null!;
-
-        /// <summary>
-        /// The cgroup permissions given to the
-        /// container to access the device.
-        /// Defaults to `rwm`.
-        /// </summary>
-        [Input("permissions")]
-        public Input<string>? Permissions { get; set; }
-
-        public ContainerDevicesArgs()
-        {
-        }
-    }
-
-    public sealed class ContainerDevicesGetArgs : Pulumi.ResourceArgs
-    {
-        /// <summary>
-        /// The path in the container where the
-        /// device will be binded.
-        /// </summary>
-        [Input("containerPath")]
-        public Input<string>? ContainerPath { get; set; }
-
-        /// <summary>
-        /// The path on the host where the device
-        /// is located.
-        /// </summary>
-        [Input("hostPath", required: true)]
-        public Input<string> HostPath { get; set; } = null!;
-
-        /// <summary>
-        /// The cgroup permissions given to the
-        /// container to access the device.
-        /// Defaults to `rwm`.
-        /// </summary>
-        [Input("permissions")]
-        public Input<string>? Permissions { get; set; }
-
-        public ContainerDevicesGetArgs()
-        {
-        }
-    }
-
-    public sealed class ContainerHealthcheckArgs : Pulumi.ResourceArgs
-    {
-        /// <summary>
-        /// Time between running the check `(ms|s|m|h)`. Default: `0s`.
-        /// </summary>
-        [Input("interval")]
-        public Input<string>? Interval { get; set; }
-
-        /// <summary>
-        /// Consecutive failures needed to report unhealthy. Default: `0`.
-        /// </summary>
-        [Input("retries")]
-        public Input<int>? Retries { get; set; }
-
-        /// <summary>
-        /// Start period for the container to initialize before counting retries towards unstable `(ms|s|m|h)`. Default: `0s`.
-        /// </summary>
-        [Input("startPeriod")]
-        public Input<string>? StartPeriod { get; set; }
-
-        [Input("tests", required: true)]
-        private InputList<string>? _tests;
-
-        /// <summary>
-        /// Command to run to check health. For example, to run `curl -f http://localhost/health` set the
-        /// command to be `["CMD", "curl", "-f", "http://localhost/health"]`.
-        /// </summary>
-        public InputList<string> Tests
-        {
-            get => _tests ?? (_tests = new InputList<string>());
-            set => _tests = value;
-        }
-
-        /// <summary>
-        /// Maximum time to allow one check to run `(ms|s|m|h)`. Default: `0s`.
-        /// </summary>
-        [Input("timeout")]
-        public Input<string>? Timeout { get; set; }
-
-        public ContainerHealthcheckArgs()
-        {
-        }
-    }
-
-    public sealed class ContainerHealthcheckGetArgs : Pulumi.ResourceArgs
-    {
-        /// <summary>
-        /// Time between running the check `(ms|s|m|h)`. Default: `0s`.
-        /// </summary>
-        [Input("interval")]
-        public Input<string>? Interval { get; set; }
-
-        /// <summary>
-        /// Consecutive failures needed to report unhealthy. Default: `0`.
-        /// </summary>
-        [Input("retries")]
-        public Input<int>? Retries { get; set; }
-
-        /// <summary>
-        /// Start period for the container to initialize before counting retries towards unstable `(ms|s|m|h)`. Default: `0s`.
-        /// </summary>
-        [Input("startPeriod")]
-        public Input<string>? StartPeriod { get; set; }
-
-        [Input("tests", required: true)]
-        private InputList<string>? _tests;
-
-        /// <summary>
-        /// Command to run to check health. For example, to run `curl -f http://localhost/health` set the
-        /// command to be `["CMD", "curl", "-f", "http://localhost/health"]`.
-        /// </summary>
-        public InputList<string> Tests
-        {
-            get => _tests ?? (_tests = new InputList<string>());
-            set => _tests = value;
-        }
-
-        /// <summary>
-        /// Maximum time to allow one check to run `(ms|s|m|h)`. Default: `0s`.
-        /// </summary>
-        [Input("timeout")]
-        public Input<string>? Timeout { get; set; }
-
-        public ContainerHealthcheckGetArgs()
-        {
-        }
-    }
-
-    public sealed class ContainerHostsArgs : Pulumi.ResourceArgs
-    {
-        /// <summary>
-        /// Hostname to add.
-        /// </summary>
-        [Input("host", required: true)]
-        public Input<string> Host { get; set; } = null!;
-
-        /// <summary>
-        /// IP address this hostname should resolve to.
-        /// </summary>
-        [Input("ip", required: true)]
-        public Input<string> Ip { get; set; } = null!;
-
-        public ContainerHostsArgs()
-        {
-        }
-    }
-
-    public sealed class ContainerHostsGetArgs : Pulumi.ResourceArgs
-    {
-        /// <summary>
-        /// Hostname to add.
-        /// </summary>
-        [Input("host", required: true)]
-        public Input<string> Host { get; set; } = null!;
-
-        /// <summary>
-        /// IP address this hostname should resolve to.
-        /// </summary>
-        [Input("ip", required: true)]
-        public Input<string> Ip { get; set; } = null!;
-
-        public ContainerHostsGetArgs()
-        {
-        }
-    }
-
-    public sealed class ContainerLabelsArgs : Pulumi.ResourceArgs
-    {
-        /// <summary>
-        /// Name of the label
-        /// * `value` (Required, string) Value of the label
-        /// </summary>
-        [Input("label", required: true)]
-        public Input<string> Label { get; set; } = null!;
-
-        [Input("value", required: true)]
-        public Input<string> Value { get; set; } = null!;
-
-        public ContainerLabelsArgs()
-        {
-        }
-    }
-
-    public sealed class ContainerLabelsGetArgs : Pulumi.ResourceArgs
-    {
-        /// <summary>
-        /// Name of the label
-        /// * `value` (Required, string) Value of the label
-        /// </summary>
-        [Input("label", required: true)]
-        public Input<string> Label { get; set; } = null!;
-
-        [Input("value", required: true)]
-        public Input<string> Value { get; set; } = null!;
-
-        public ContainerLabelsGetArgs()
-        {
-        }
-    }
-
-    public sealed class ContainerMountsArgs : Pulumi.ResourceArgs
-    {
-        /// <summary>
-        /// Optional configuration for the `bind` type.
-        /// </summary>
-        [Input("bindOptions")]
-        public Input<ContainerMountsBindOptionsArgs>? BindOptions { get; set; }
-
-        /// <summary>
-        /// If true, this volume will be readonly.
-        /// Defaults to false.
-        /// </summary>
-        [Input("readOnly")]
-        public Input<bool>? ReadOnly { get; set; }
-
-        /// <summary>
-        /// The mount source (e.g., a volume name, a host path)
-        /// </summary>
-        [Input("source")]
-        public Input<string>? Source { get; set; }
-
-        /// <summary>
-        /// The container path.
-        /// </summary>
-        [Input("target", required: true)]
-        public Input<string> Target { get; set; } = null!;
-
-        /// <summary>
-        /// Optional configuration for the `tmpf` type.
-        /// </summary>
-        [Input("tmpfsOptions")]
-        public Input<ContainerMountsTmpfsOptionsArgs>? TmpfsOptions { get; set; }
-
-        /// <summary>
-        /// The mount type: valid values are `bind|volume|tmpfs`.
-        /// </summary>
-        [Input("type", required: true)]
-        public Input<string> Type { get; set; } = null!;
-
-        /// <summary>
-        /// Optional configuration for the `volume` type.
-        /// </summary>
-        [Input("volumeOptions")]
-        public Input<ContainerMountsVolumeOptionsArgs>? VolumeOptions { get; set; }
-
-        public ContainerMountsArgs()
-        {
-        }
-    }
-
-    public sealed class ContainerMountsBindOptionsArgs : Pulumi.ResourceArgs
-    {
-        /// <summary>
-        /// A propagation mode with the value.
-        /// </summary>
-        [Input("propagation")]
-        public Input<string>? Propagation { get; set; }
-
-        public ContainerMountsBindOptionsArgs()
-        {
-        }
-    }
-
-    public sealed class ContainerMountsBindOptionsGetArgs : Pulumi.ResourceArgs
-    {
-        /// <summary>
-        /// A propagation mode with the value.
-        /// </summary>
-        [Input("propagation")]
-        public Input<string>? Propagation { get; set; }
-
-        public ContainerMountsBindOptionsGetArgs()
-        {
-        }
-    }
-
-    public sealed class ContainerMountsGetArgs : Pulumi.ResourceArgs
-    {
-        /// <summary>
-        /// Optional configuration for the `bind` type.
-        /// </summary>
-        [Input("bindOptions")]
-        public Input<ContainerMountsBindOptionsGetArgs>? BindOptions { get; set; }
-
-        /// <summary>
-        /// If true, this volume will be readonly.
-        /// Defaults to false.
-        /// </summary>
-        [Input("readOnly")]
-        public Input<bool>? ReadOnly { get; set; }
-
-        /// <summary>
-        /// The mount source (e.g., a volume name, a host path)
-        /// </summary>
-        [Input("source")]
-        public Input<string>? Source { get; set; }
-
-        /// <summary>
-        /// The container path.
-        /// </summary>
-        [Input("target", required: true)]
-        public Input<string> Target { get; set; } = null!;
-
-        /// <summary>
-        /// Optional configuration for the `tmpf` type.
-        /// </summary>
-        [Input("tmpfsOptions")]
-        public Input<ContainerMountsTmpfsOptionsGetArgs>? TmpfsOptions { get; set; }
-
-        /// <summary>
-        /// The mount type: valid values are `bind|volume|tmpfs`.
-        /// </summary>
-        [Input("type", required: true)]
-        public Input<string> Type { get; set; } = null!;
-
-        /// <summary>
-        /// Optional configuration for the `volume` type.
-        /// </summary>
-        [Input("volumeOptions")]
-        public Input<ContainerMountsVolumeOptionsGetArgs>? VolumeOptions { get; set; }
-
-        public ContainerMountsGetArgs()
-        {
-        }
-    }
-
-    public sealed class ContainerMountsTmpfsOptionsArgs : Pulumi.ResourceArgs
-    {
-        /// <summary>
-        /// The permission mode for the tmpfs mount in an integer.
-        /// </summary>
-        [Input("mode")]
-        public Input<int>? Mode { get; set; }
-
-        /// <summary>
-        /// The size for the tmpfs mount in bytes.
-        /// </summary>
-        [Input("sizeBytes")]
-        public Input<int>? SizeBytes { get; set; }
-
-        public ContainerMountsTmpfsOptionsArgs()
-        {
-        }
-    }
-
-    public sealed class ContainerMountsTmpfsOptionsGetArgs : Pulumi.ResourceArgs
-    {
-        /// <summary>
-        /// The permission mode for the tmpfs mount in an integer.
-        /// </summary>
-        [Input("mode")]
-        public Input<int>? Mode { get; set; }
-
-        /// <summary>
-        /// The size for the tmpfs mount in bytes.
-        /// </summary>
-        [Input("sizeBytes")]
-        public Input<int>? SizeBytes { get; set; }
-
-        public ContainerMountsTmpfsOptionsGetArgs()
-        {
-        }
-    }
-
-    public sealed class ContainerMountsVolumeOptionsArgs : Pulumi.ResourceArgs
-    {
-        [Input("driverName")]
-        public Input<string>? DriverName { get; set; }
-
-        [Input("driverOptions")]
-        private InputMap<string>? _driverOptions;
-
-        /// <summary>
-        /// Options for the driver.
-        /// </summary>
-        public InputMap<string> DriverOptions
-        {
-            get => _driverOptions ?? (_driverOptions = new InputMap<string>());
-            set => _driverOptions = value;
-        }
-
-        [Input("labels")]
-        private InputList<ContainerMountsVolumeOptionsLabelsArgs>? _labels;
-
-        /// <summary>
-        /// Adding labels.
-        /// </summary>
-        public InputList<ContainerMountsVolumeOptionsLabelsArgs> Labels
-        {
-            get => _labels ?? (_labels = new InputList<ContainerMountsVolumeOptionsLabelsArgs>());
-            set => _labels = value;
-        }
-
-        /// <summary>
-        /// Whether to populate volume with data from the target.
-        /// </summary>
-        [Input("noCopy")]
-        public Input<bool>? NoCopy { get; set; }
-
-        public ContainerMountsVolumeOptionsArgs()
-        {
-        }
-    }
-
-    public sealed class ContainerMountsVolumeOptionsGetArgs : Pulumi.ResourceArgs
-    {
-        [Input("driverName")]
-        public Input<string>? DriverName { get; set; }
-
-        [Input("driverOptions")]
-        private InputMap<string>? _driverOptions;
-
-        /// <summary>
-        /// Options for the driver.
-        /// </summary>
-        public InputMap<string> DriverOptions
-        {
-            get => _driverOptions ?? (_driverOptions = new InputMap<string>());
-            set => _driverOptions = value;
-        }
-
-        [Input("labels")]
-        private InputList<ContainerMountsVolumeOptionsLabelsGetArgs>? _labels;
-
-        /// <summary>
-        /// Adding labels.
-        /// </summary>
-        public InputList<ContainerMountsVolumeOptionsLabelsGetArgs> Labels
-        {
-            get => _labels ?? (_labels = new InputList<ContainerMountsVolumeOptionsLabelsGetArgs>());
-            set => _labels = value;
-        }
-
-        /// <summary>
-        /// Whether to populate volume with data from the target.
-        /// </summary>
-        [Input("noCopy")]
-        public Input<bool>? NoCopy { get; set; }
-
-        public ContainerMountsVolumeOptionsGetArgs()
-        {
-        }
-    }
-
-    public sealed class ContainerMountsVolumeOptionsLabelsArgs : Pulumi.ResourceArgs
-    {
-        /// <summary>
-        /// Name of the label
-        /// * `value` (Required, string) Value of the label
-        /// </summary>
-        [Input("label", required: true)]
-        public Input<string> Label { get; set; } = null!;
-
-        [Input("value", required: true)]
-        public Input<string> Value { get; set; } = null!;
-
-        public ContainerMountsVolumeOptionsLabelsArgs()
-        {
-        }
-    }
-
-    public sealed class ContainerMountsVolumeOptionsLabelsGetArgs : Pulumi.ResourceArgs
-    {
-        /// <summary>
-        /// Name of the label
-        /// * `value` (Required, string) Value of the label
-        /// </summary>
-        [Input("label", required: true)]
-        public Input<string> Label { get; set; } = null!;
-
-        [Input("value", required: true)]
-        public Input<string> Value { get; set; } = null!;
-
-        public ContainerMountsVolumeOptionsLabelsGetArgs()
-        {
-        }
-    }
-
-    public sealed class ContainerNetworkDatasGetArgs : Pulumi.ResourceArgs
-    {
-        /// <summary>
-        /// *Deprecated:* Use `network_data` instead. The network gateway of the container as read from its
-        /// NetworkSettings.
-        /// </summary>
-        [Input("gateway")]
-        public Input<string>? Gateway { get; set; }
-
-        /// <summary>
-        /// *Deprecated:* Use `network_data` instead. The IP address of the container's first network it.
-        /// </summary>
-        [Input("ipAddress")]
-        public Input<string>? IpAddress { get; set; }
-
-        /// <summary>
-        /// *Deprecated:* Use `network_data` instead. The IP prefix length of the container as read from its
-        /// NetworkSettings.
-        /// </summary>
-        [Input("ipPrefixLength")]
-        public Input<int>? IpPrefixLength { get; set; }
-
-        [Input("networkName")]
-        public Input<string>? NetworkName { get; set; }
-
-        public ContainerNetworkDatasGetArgs()
-        {
-        }
-    }
-
-    public sealed class ContainerNetworksAdvancedArgs : Pulumi.ResourceArgs
-    {
-        [Input("aliases")]
-        private InputList<string>? _aliases;
-
-        /// <summary>
-        /// The network aliases of the container in the specific network.
-        /// </summary>
-        public InputList<string> Aliases
-        {
-            get => _aliases ?? (_aliases = new InputList<string>());
-            set => _aliases = value;
-        }
-
-        /// <summary>
-        /// The IPV4 address of the container in the specific network.
-        /// </summary>
-        [Input("ipv4Address")]
-        public Input<string>? Ipv4Address { get; set; }
-
-        /// <summary>
-        /// The IPV6 address of the container in the specific network.
-        /// </summary>
-        [Input("ipv6Address")]
-        public Input<string>? Ipv6Address { get; set; }
-
-        /// <summary>
-        /// The name of the network.
-        /// </summary>
-        [Input("name", required: true)]
-        public Input<string> Name { get; set; } = null!;
-
-        public ContainerNetworksAdvancedArgs()
-        {
-        }
-    }
-
-    public sealed class ContainerNetworksAdvancedGetArgs : Pulumi.ResourceArgs
-    {
-        [Input("aliases")]
-        private InputList<string>? _aliases;
-
-        /// <summary>
-        /// The network aliases of the container in the specific network.
-        /// </summary>
-        public InputList<string> Aliases
-        {
-            get => _aliases ?? (_aliases = new InputList<string>());
-            set => _aliases = value;
-        }
-
-        /// <summary>
-        /// The IPV4 address of the container in the specific network.
-        /// </summary>
-        [Input("ipv4Address")]
-        public Input<string>? Ipv4Address { get; set; }
-
-        /// <summary>
-        /// The IPV6 address of the container in the specific network.
-        /// </summary>
-        [Input("ipv6Address")]
-        public Input<string>? Ipv6Address { get; set; }
-
-        /// <summary>
-        /// The name of the network.
-        /// </summary>
-        [Input("name", required: true)]
-        public Input<string> Name { get; set; } = null!;
-
-        public ContainerNetworksAdvancedGetArgs()
-        {
-        }
-    }
-
-    public sealed class ContainerPortsArgs : Pulumi.ResourceArgs
-    {
-        /// <summary>
-        /// Port exposed out of the container. If not given a free random port `&gt;= 32768` will be used.
-        /// </summary>
-        [Input("external")]
-        public Input<int>? External { get; set; }
-
-        /// <summary>
-        /// Port within the container.
-        /// </summary>
-        [Input("internal", required: true)]
-        public Input<int> Internal { get; set; } = null!;
-
-        /// <summary>
-        /// IP address this hostname should resolve to.
-        /// </summary>
-        [Input("ip")]
-        public Input<string>? Ip { get; set; }
-
-        /// <summary>
-        /// Protocol that can be used over this port,
-        /// defaults to `tcp`.
-        /// </summary>
-        [Input("protocol")]
-        public Input<string>? Protocol { get; set; }
-
-        public ContainerPortsArgs()
-        {
-        }
-    }
-
-    public sealed class ContainerPortsGetArgs : Pulumi.ResourceArgs
-    {
-        /// <summary>
-        /// Port exposed out of the container. If not given a free random port `&gt;= 32768` will be used.
-        /// </summary>
-        [Input("external")]
-        public Input<int>? External { get; set; }
-
-        /// <summary>
-        /// Port within the container.
-        /// </summary>
-        [Input("internal", required: true)]
-        public Input<int> Internal { get; set; } = null!;
-
-        /// <summary>
-        /// IP address this hostname should resolve to.
-        /// </summary>
-        [Input("ip")]
-        public Input<string>? Ip { get; set; }
-
-        /// <summary>
-        /// Protocol that can be used over this port,
-        /// defaults to `tcp`.
-        /// </summary>
-        [Input("protocol")]
-        public Input<string>? Protocol { get; set; }
-
-        public ContainerPortsGetArgs()
-        {
-        }
-    }
-
-    public sealed class ContainerUlimitsArgs : Pulumi.ResourceArgs
-    {
-        [Input("hard", required: true)]
-        public Input<int> Hard { get; set; } = null!;
-
-        [Input("name", required: true)]
-        public Input<string> Name { get; set; } = null!;
-
-        [Input("soft", required: true)]
-        public Input<int> Soft { get; set; } = null!;
-
-        public ContainerUlimitsArgs()
-        {
-        }
-    }
-
-    public sealed class ContainerUlimitsGetArgs : Pulumi.ResourceArgs
-    {
-        [Input("hard", required: true)]
-        public Input<int> Hard { get; set; } = null!;
-
-        [Input("name", required: true)]
-        public Input<string> Name { get; set; } = null!;
-
-        [Input("soft", required: true)]
-        public Input<int> Soft { get; set; } = null!;
-
-        public ContainerUlimitsGetArgs()
-        {
-        }
-    }
-
-    public sealed class ContainerUploadsArgs : Pulumi.ResourceArgs
-    {
-        /// <summary>
-        /// Literal string value to use as the object content, which will be uploaded as UTF-8-encoded text.
-        /// </summary>
-        [Input("content")]
-        public Input<string>? Content { get; set; }
-
-        [Input("contentBase64")]
-        public Input<string>? ContentBase64 { get; set; }
-
-        /// <summary>
-        /// If true, the file will be uploaded with user
-        /// executable permission.
-        /// Defaults to false.
-        /// </summary>
-        [Input("executable")]
-        public Input<bool>? Executable { get; set; }
-
-        /// <summary>
-        /// path to a file in the container.
-        /// </summary>
-        [Input("file", required: true)]
-        public Input<string> File { get; set; } = null!;
-
-        /// <summary>
-        /// A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state.
-        /// </summary>
-        [Input("source")]
-        public Input<string>? Source { get; set; }
-
-        /// <summary>
-        /// If using `source`, this will force an update if the file content has updated but the filename has not. 
-        /// </summary>
-        [Input("sourceHash")]
-        public Input<string>? SourceHash { get; set; }
-
-        public ContainerUploadsArgs()
-        {
-        }
-    }
-
-    public sealed class ContainerUploadsGetArgs : Pulumi.ResourceArgs
-    {
-        /// <summary>
-        /// Literal string value to use as the object content, which will be uploaded as UTF-8-encoded text.
-        /// </summary>
-        [Input("content")]
-        public Input<string>? Content { get; set; }
-
-        [Input("contentBase64")]
-        public Input<string>? ContentBase64 { get; set; }
-
-        /// <summary>
-        /// If true, the file will be uploaded with user
-        /// executable permission.
-        /// Defaults to false.
-        /// </summary>
-        [Input("executable")]
-        public Input<bool>? Executable { get; set; }
-
-        /// <summary>
-        /// path to a file in the container.
-        /// </summary>
-        [Input("file", required: true)]
-        public Input<string> File { get; set; } = null!;
-
-        /// <summary>
-        /// A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state.
-        /// </summary>
-        [Input("source")]
-        public Input<string>? Source { get; set; }
-
-        /// <summary>
-        /// If using `source`, this will force an update if the file content has updated but the filename has not. 
-        /// </summary>
-        [Input("sourceHash")]
-        public Input<string>? SourceHash { get; set; }
-
-        public ContainerUploadsGetArgs()
-        {
-        }
-    }
-
-    public sealed class ContainerVolumesArgs : Pulumi.ResourceArgs
-    {
-        /// <summary>
-        /// The path in the container where the
-        /// device will be binded.
-        /// </summary>
-        [Input("containerPath")]
-        public Input<string>? ContainerPath { get; set; }
-
-        /// <summary>
-        /// The container where the volume is
-        /// coming from.
-        /// </summary>
-        [Input("fromContainer")]
-        public Input<string>? FromContainer { get; set; }
-
-        /// <summary>
-        /// The path on the host where the device
-        /// is located.
-        /// </summary>
-        [Input("hostPath")]
-        public Input<string>? HostPath { get; set; }
-
-        /// <summary>
-        /// If true, this volume will be readonly.
-        /// Defaults to false.
-        /// </summary>
-        [Input("readOnly")]
-        public Input<bool>? ReadOnly { get; set; }
-
-        /// <summary>
-        /// The name of the docker volume which
-        /// should be mounted.
-        /// </summary>
-        [Input("volumeName")]
-        public Input<string>? VolumeName { get; set; }
-
-        public ContainerVolumesArgs()
-        {
-        }
-    }
-
-    public sealed class ContainerVolumesGetArgs : Pulumi.ResourceArgs
-    {
-        /// <summary>
-        /// The path in the container where the
-        /// device will be binded.
-        /// </summary>
-        [Input("containerPath")]
-        public Input<string>? ContainerPath { get; set; }
-
-        /// <summary>
-        /// The container where the volume is
-        /// coming from.
-        /// </summary>
-        [Input("fromContainer")]
-        public Input<string>? FromContainer { get; set; }
-
-        /// <summary>
-        /// The path on the host where the device
-        /// is located.
-        /// </summary>
-        [Input("hostPath")]
-        public Input<string>? HostPath { get; set; }
-
-        /// <summary>
-        /// If true, this volume will be readonly.
-        /// Defaults to false.
-        /// </summary>
-        [Input("readOnly")]
-        public Input<bool>? ReadOnly { get; set; }
-
-        /// <summary>
-        /// The name of the docker volume which
-        /// should be mounted.
-        /// </summary>
-        [Input("volumeName")]
-        public Input<string>? VolumeName { get; set; }
-
-        public ContainerVolumesGetArgs()
-        {
-        }
-    }
-    }
-
-    namespace Outputs
-    {
-
-    [OutputType]
-    public sealed class ContainerCapabilities
-    {
-        /// <summary>
-        /// list of linux capabilities to add.
-        /// </summary>
-        public readonly ImmutableArray<string> Adds;
-        /// <summary>
-        /// list of linux capabilities to drop.
-        /// </summary>
-        public readonly ImmutableArray<string> Drops;
-
-        [OutputConstructor]
-        private ContainerCapabilities(
-            ImmutableArray<string> adds,
-            ImmutableArray<string> drops)
-        {
-            Adds = adds;
-            Drops = drops;
-        }
-    }
-
-    [OutputType]
-    public sealed class ContainerDevices
-    {
-        /// <summary>
-        /// The path in the container where the
-        /// device will be binded.
-        /// </summary>
-        public readonly string? ContainerPath;
-        /// <summary>
-        /// The path on the host where the device
-        /// is located.
-        /// </summary>
-        public readonly string HostPath;
-        /// <summary>
-        /// The cgroup permissions given to the
-        /// container to access the device.
-        /// Defaults to `rwm`.
-        /// </summary>
-        public readonly string? Permissions;
-
-        [OutputConstructor]
-        private ContainerDevices(
-            string? containerPath,
-            string hostPath,
-            string? permissions)
-        {
-            ContainerPath = containerPath;
-            HostPath = hostPath;
-            Permissions = permissions;
-        }
-    }
-
-    [OutputType]
-    public sealed class ContainerHealthcheck
-    {
-        /// <summary>
-        /// Time between running the check `(ms|s|m|h)`. Default: `0s`.
-        /// </summary>
-        public readonly string? Interval;
-        /// <summary>
-        /// Consecutive failures needed to report unhealthy. Default: `0`.
-        /// </summary>
-        public readonly int? Retries;
-        /// <summary>
-        /// Start period for the container to initialize before counting retries towards unstable `(ms|s|m|h)`. Default: `0s`.
-        /// </summary>
-        public readonly string? StartPeriod;
-        /// <summary>
-        /// Command to run to check health. For example, to run `curl -f http://localhost/health` set the
-        /// command to be `["CMD", "curl", "-f", "http://localhost/health"]`.
-        /// </summary>
-        public readonly ImmutableArray<string> Tests;
-        /// <summary>
-        /// Maximum time to allow one check to run `(ms|s|m|h)`. Default: `0s`.
-        /// </summary>
-        public readonly string? Timeout;
-
-        [OutputConstructor]
-        private ContainerHealthcheck(
-            string? interval,
-            int? retries,
-            string? startPeriod,
-            ImmutableArray<string> tests,
-            string? timeout)
-        {
-            Interval = interval;
-            Retries = retries;
-            StartPeriod = startPeriod;
-            Tests = tests;
-            Timeout = timeout;
-        }
-    }
-
-    [OutputType]
-    public sealed class ContainerHosts
-    {
-        /// <summary>
-        /// Hostname to add.
-        /// </summary>
-        public readonly string Host;
-        /// <summary>
-        /// IP address this hostname should resolve to.
-        /// </summary>
-        public readonly string Ip;
-
-        [OutputConstructor]
-        private ContainerHosts(
-            string host,
-            string ip)
-        {
-            Host = host;
-            Ip = ip;
-        }
-    }
-
-    [OutputType]
-    public sealed class ContainerLabels
-    {
-        /// <summary>
-        /// Name of the label
-        /// * `value` (Required, string) Value of the label
-        /// </summary>
-        public readonly string Label;
-        public readonly string Value;
-
-        [OutputConstructor]
-        private ContainerLabels(
-            string label,
-            string value)
-        {
-            Label = label;
-            Value = value;
-        }
-    }
-
-    [OutputType]
-    public sealed class ContainerMounts
-    {
-        /// <summary>
-        /// Optional configuration for the `bind` type.
-        /// </summary>
-        public readonly ContainerMountsBindOptions? BindOptions;
-        /// <summary>
-        /// If true, this volume will be readonly.
-        /// Defaults to false.
-        /// </summary>
-        public readonly bool? ReadOnly;
-        /// <summary>
-        /// The mount source (e.g., a volume name, a host path)
-        /// </summary>
-        public readonly string? Source;
-        /// <summary>
-        /// The container path.
-        /// </summary>
-        public readonly string Target;
-        /// <summary>
-        /// Optional configuration for the `tmpf` type.
-        /// </summary>
-        public readonly ContainerMountsTmpfsOptions? TmpfsOptions;
-        /// <summary>
-        /// The mount type: valid values are `bind|volume|tmpfs`.
-        /// </summary>
-        public readonly string Type;
-        /// <summary>
-        /// Optional configuration for the `volume` type.
-        /// </summary>
-        public readonly ContainerMountsVolumeOptions? VolumeOptions;
-
-        [OutputConstructor]
-        private ContainerMounts(
-            ContainerMountsBindOptions? bindOptions,
-            bool? readOnly,
-            string? source,
-            string target,
-            ContainerMountsTmpfsOptions? tmpfsOptions,
-            string type,
-            ContainerMountsVolumeOptions? volumeOptions)
-        {
-            BindOptions = bindOptions;
-            ReadOnly = readOnly;
-            Source = source;
-            Target = target;
-            TmpfsOptions = tmpfsOptions;
-            Type = type;
-            VolumeOptions = volumeOptions;
-        }
-    }
-
-    [OutputType]
-    public sealed class ContainerMountsBindOptions
-    {
-        /// <summary>
-        /// A propagation mode with the value.
-        /// </summary>
-        public readonly string? Propagation;
-
-        [OutputConstructor]
-        private ContainerMountsBindOptions(string? propagation)
-        {
-            Propagation = propagation;
-        }
-    }
-
-    [OutputType]
-    public sealed class ContainerMountsTmpfsOptions
-    {
-        /// <summary>
-        /// The permission mode for the tmpfs mount in an integer.
-        /// </summary>
-        public readonly int? Mode;
-        /// <summary>
-        /// The size for the tmpfs mount in bytes.
-        /// </summary>
-        public readonly int? SizeBytes;
-
-        [OutputConstructor]
-        private ContainerMountsTmpfsOptions(
-            int? mode,
-            int? sizeBytes)
-        {
-            Mode = mode;
-            SizeBytes = sizeBytes;
-        }
-    }
-
-    [OutputType]
-    public sealed class ContainerMountsVolumeOptions
-    {
-        public readonly string? DriverName;
-        /// <summary>
-        /// Options for the driver.
-        /// </summary>
-        public readonly ImmutableDictionary<string, string>? DriverOptions;
-        /// <summary>
-        /// Adding labels.
-        /// </summary>
-        public readonly ImmutableArray<ContainerMountsVolumeOptionsLabels> Labels;
-        /// <summary>
-        /// Whether to populate volume with data from the target.
-        /// </summary>
-        public readonly bool? NoCopy;
-
-        [OutputConstructor]
-        private ContainerMountsVolumeOptions(
-            string? driverName,
-            ImmutableDictionary<string, string>? driverOptions,
-            ImmutableArray<ContainerMountsVolumeOptionsLabels> labels,
-            bool? noCopy)
-        {
-            DriverName = driverName;
-            DriverOptions = driverOptions;
-            Labels = labels;
-            NoCopy = noCopy;
-        }
-    }
-
-    [OutputType]
-    public sealed class ContainerMountsVolumeOptionsLabels
-    {
-        /// <summary>
-        /// Name of the label
-        /// * `value` (Required, string) Value of the label
-        /// </summary>
-        public readonly string Label;
-        public readonly string Value;
-
-        [OutputConstructor]
-        private ContainerMountsVolumeOptionsLabels(
-            string label,
-            string value)
-        {
-            Label = label;
-            Value = value;
-        }
-    }
-
-    [OutputType]
-    public sealed class ContainerNetworkDatas
-    {
-        /// <summary>
-        /// *Deprecated:* Use `network_data` instead. The network gateway of the container as read from its
-        /// NetworkSettings.
-        /// </summary>
-        public readonly string Gateway;
-        /// <summary>
-        /// *Deprecated:* Use `network_data` instead. The IP address of the container's first network it.
-        /// </summary>
-        public readonly string IpAddress;
-        /// <summary>
-        /// *Deprecated:* Use `network_data` instead. The IP prefix length of the container as read from its
-        /// NetworkSettings.
-        /// </summary>
-        public readonly int IpPrefixLength;
-        public readonly string NetworkName;
-
-        [OutputConstructor]
-        private ContainerNetworkDatas(
-            string gateway,
-            string ipAddress,
-            int ipPrefixLength,
-            string networkName)
-        {
-            Gateway = gateway;
-            IpAddress = ipAddress;
-            IpPrefixLength = ipPrefixLength;
-            NetworkName = networkName;
-        }
-    }
-
-    [OutputType]
-    public sealed class ContainerNetworksAdvanced
-    {
-        /// <summary>
-        /// The network aliases of the container in the specific network.
-        /// </summary>
-        public readonly ImmutableArray<string> Aliases;
-        /// <summary>
-        /// The IPV4 address of the container in the specific network.
-        /// </summary>
-        public readonly string? Ipv4Address;
-        /// <summary>
-        /// The IPV6 address of the container in the specific network.
-        /// </summary>
-        public readonly string? Ipv6Address;
-        /// <summary>
-        /// The name of the network.
-        /// </summary>
-        public readonly string Name;
-
-        [OutputConstructor]
-        private ContainerNetworksAdvanced(
-            ImmutableArray<string> aliases,
-            string? ipv4Address,
-            string? ipv6Address,
-            string name)
-        {
-            Aliases = aliases;
-            Ipv4Address = ipv4Address;
-            Ipv6Address = ipv6Address;
-            Name = name;
-        }
-    }
-
-    [OutputType]
-    public sealed class ContainerPorts
-    {
-        /// <summary>
-        /// Port exposed out of the container. If not given a free random port `&gt;= 32768` will be used.
-        /// </summary>
-        public readonly int External;
-        /// <summary>
-        /// Port within the container.
-        /// </summary>
-        public readonly int Internal;
-        /// <summary>
-        /// IP address this hostname should resolve to.
-        /// </summary>
-        public readonly string? Ip;
-        /// <summary>
-        /// Protocol that can be used over this port,
-        /// defaults to `tcp`.
-        /// </summary>
-        public readonly string? Protocol;
-
-        [OutputConstructor]
-        private ContainerPorts(
-            int external,
-            int @internal,
-            string? ip,
-            string? protocol)
-        {
-            External = external;
-            Internal = @internal;
-            Ip = ip;
-            Protocol = protocol;
-        }
-    }
-
-    [OutputType]
-    public sealed class ContainerUlimits
-    {
-        public readonly int Hard;
-        public readonly string Name;
-        public readonly int Soft;
-
-        [OutputConstructor]
-        private ContainerUlimits(
-            int hard,
-            string name,
-            int soft)
-        {
-            Hard = hard;
-            Name = name;
-            Soft = soft;
-        }
-    }
-
-    [OutputType]
-    public sealed class ContainerUploads
-    {
-        /// <summary>
-        /// Literal string value to use as the object content, which will be uploaded as UTF-8-encoded text.
-        /// </summary>
-        public readonly string? Content;
-        public readonly string? ContentBase64;
-        /// <summary>
-        /// If true, the file will be uploaded with user
-        /// executable permission.
-        /// Defaults to false.
-        /// </summary>
-        public readonly bool? Executable;
-        /// <summary>
-        /// path to a file in the container.
-        /// </summary>
-        public readonly string File;
-        /// <summary>
-        /// A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state.
-        /// </summary>
-        public readonly string? Source;
-        /// <summary>
-        /// If using `source`, this will force an update if the file content has updated but the filename has not. 
-        /// </summary>
-        public readonly string? SourceHash;
-
-        [OutputConstructor]
-        private ContainerUploads(
-            string? content,
-            string? contentBase64,
-            bool? executable,
-            string file,
-            string? source,
-            string? sourceHash)
-        {
-            Content = content;
-            ContentBase64 = contentBase64;
-            Executable = executable;
-            File = file;
-            Source = source;
-            SourceHash = sourceHash;
-        }
-    }
-
-    [OutputType]
-    public sealed class ContainerVolumes
-    {
-        /// <summary>
-        /// The path in the container where the
-        /// device will be binded.
-        /// </summary>
-        public readonly string? ContainerPath;
-        /// <summary>
-        /// The container where the volume is
-        /// coming from.
-        /// </summary>
-        public readonly string? FromContainer;
-        /// <summary>
-        /// The path on the host where the device
-        /// is located.
-        /// </summary>
-        public readonly string? HostPath;
-        /// <summary>
-        /// If true, this volume will be readonly.
-        /// Defaults to false.
-        /// </summary>
-        public readonly bool? ReadOnly;
-        /// <summary>
-        /// The name of the docker volume which
-        /// should be mounted.
-        /// </summary>
-        public readonly string? VolumeName;
-
-        [OutputConstructor]
-        private ContainerVolumes(
-            string? containerPath,
-            string? fromContainer,
-            string? hostPath,
-            bool? readOnly,
-            string? volumeName)
-        {
-            ContainerPath = containerPath;
-            FromContainer = fromContainer;
-            HostPath = hostPath;
-            ReadOnly = readOnly;
-            VolumeName = volumeName;
-        }
-    }
     }
 }

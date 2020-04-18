@@ -25,7 +25,7 @@ class Program
                 Image = remoteImage.Latest,
                 Ports =
                 {
-                    new ContainerPortsArgs
+                    new ContainerPortArgs
                     {
                         Internal = 80,
                         // external: defaults to an open ephemeral port

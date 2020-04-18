@@ -127,7 +127,7 @@ func Provider() tfbridge.ProviderInfo {
 		JavaScript: &tfbridge.JavaScriptInfo{
 			AsyncDataSources: true,
 			Dependencies: map[string]string{
-				"@pulumi/pulumi": "^2.0.0-beta.2",
+				"@pulumi/pulumi": "^2.0.0",
 				"semver":         "^5.4.0",
 			},
 			DevDependencies: map[string]string{
@@ -143,12 +143,12 @@ func Provider() tfbridge.ProviderInfo {
 		},
 		Python: &tfbridge.PythonInfo{
 			Requires: map[string]string{
-				"pulumi": ">=2.0.0b2,<3.0.0",
+				"pulumi": ">=2.0.0,<3.0.0",
 			},
 		},
 		CSharp: &tfbridge.CSharpInfo{
 			PackageReferences: map[string]string{
-				"Pulumi":                       "2.0.0-beta.2",
+				"Pulumi":                       "2.*",
 				"Semver":                       "2.0.5",
 				"System.Collections.Immutable": "1.6.0",
 			},

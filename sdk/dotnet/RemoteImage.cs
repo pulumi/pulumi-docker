@@ -15,10 +15,6 @@ namespace Pulumi.Docker
     /// This resource will *not* pull new layers of the image automatically unless used in
     /// conjunction with [`docker..getRegistryImage`](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
     /// data source to update the `pull_triggers` field.
-    /// 
-    /// 
-    /// 
-    /// &gt; This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/image.html.markdown.
     /// </summary>
     public partial class RemoteImage : Pulumi.CustomResource
     {
@@ -63,7 +59,7 @@ namespace Pulumi.Docker
         /// <param name="args">The arguments used to populate this resource's properties</param>
         /// <param name="options">A bag of options that control this resource's behavior</param>
         public RemoteImage(string name, RemoteImageArgs args, CustomResourceOptions? options = null)
-            : base("docker:index/remoteImage:RemoteImage", name, args ?? ResourceArgs.Empty, MakeResourceOptions(options, ""))
+            : base("docker:index/remoteImage:RemoteImage", name, args ?? new RemoteImageArgs(), MakeResourceOptions(options, ""))
         {
         }
 

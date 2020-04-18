@@ -44,8 +44,6 @@ def get_registry_image(name=None,opts=None):
 
 
 
-    > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/d/registry_image.html.markdown.
-
 
     :param str name: The name of the Docker image, including any tags. e.g. `alpine:latest`
     """

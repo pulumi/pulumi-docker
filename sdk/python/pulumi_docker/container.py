@@ -345,8 +345,6 @@ class Container(pulumi.CustomResource):
 
 
 
-        > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/container.html.markdown.
-
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[bool] attach: If true attach to the container after its creation and waits the end of his execution.

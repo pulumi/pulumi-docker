@@ -11,10 +11,6 @@ namespace Pulumi.Docker
 {
     /// <summary>
     /// Manages the secrets of a Docker service in a swarm.
-    /// 
-    /// 
-    /// 
-    /// &gt; This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/secret.html.markdown.
     /// </summary>
     public partial class Secret : Pulumi.CustomResource
     {
@@ -28,7 +24,7 @@ namespace Pulumi.Docker
         /// See Labels below for details.
         /// </summary>
         [Output("labels")]
-        public Output<ImmutableArray<Outputs.SecretLabels>> Labels { get; private set; } = null!;
+        public Output<ImmutableArray<Outputs.SecretLabel>> Labels { get; private set; } = null!;
 
         /// <summary>
         /// The name of the Docker secret.
@@ -45,7 +41,7 @@ namespace Pulumi.Docker
         /// <param name="args">The arguments used to populate this resource's properties</param>
         /// <param name="options">A bag of options that control this resource's behavior</param>
         public Secret(string name, SecretArgs args, CustomResourceOptions? options = null)
-            : base("docker:index/secret:Secret", name, args ?? ResourceArgs.Empty, MakeResourceOptions(options, ""))
+            : base("docker:index/secret:Secret", name, args ?? new SecretArgs(), MakeResourceOptions(options, ""))
         {
         }
 
@@ -89,14 +85,14 @@ namespace Pulumi.Docker
         public Input<string> Data { get; set; } = null!;
 
         [Input("labels")]
-        private InputList<Inputs.SecretLabelsArgs>? _labels;
+        private InputList<Inputs.SecretLabelArgs>? _labels;
 
         /// <summary>
         /// See Labels below for details.
         /// </summary>
-        public InputList<Inputs.SecretLabelsArgs> Labels
+        public InputList<Inputs.SecretLabelArgs> Labels
         {
-            get => _labels ?? (_labels = new InputList<Inputs.SecretLabelsArgs>());
+            get => _labels ?? (_labels = new InputList<Inputs.SecretLabelArgs>());
             set => _labels = value;
         }
 
@@ -120,14 +116,14 @@ namespace Pulumi.Docker
         public Input<string>? Data { get; set; }
 
         [Input("labels")]
-        private InputList<Inputs.SecretLabelsGetArgs>? _labels;
+        private InputList<Inputs.SecretLabelGetArgs>? _labels;
 
         /// <summary>
         /// See Labels below for details.
         /// </summary>
-        public InputList<Inputs.SecretLabelsGetArgs> Labels
+        public InputList<Inputs.SecretLabelGetArgs> Labels
         {
-            get => _labels ?? (_labels = new InputList<Inputs.SecretLabelsGetArgs>());
+            get => _labels ?? (_labels = new InputList<Inputs.SecretLabelGetArgs>());
             set => _labels = value;
         }
 
@@ -140,67 +136,5 @@ namespace Pulumi.Docker
         public SecretState()
         {
         }
-    }
-
-    namespace Inputs
-    {
-
-    public sealed class SecretLabelsArgs : Pulumi.ResourceArgs
-    {
-        /// <summary>
-        /// Name of the label
-        /// * `value` (Required, string) Value of the label
-        /// </summary>
-        [Input("label", required: true)]
-        public Input<string> Label { get; set; } = null!;
-
-        [Input("value", required: true)]
-        public Input<string> Value { get; set; } = null!;
-
-        public SecretLabelsArgs()
-        {
-        }
-    }
-
-    public sealed class SecretLabelsGetArgs : Pulumi.ResourceArgs
-    {
-        /// <summary>
-        /// Name of the label
-        /// * `value` (Required, string) Value of the label
-        /// </summary>
-        [Input("label", required: true)]
-        public Input<string> Label { get; set; } = null!;
-
-        [Input("value", required: true)]
-        public Input<string> Value { get; set; } = null!;
-
-        public SecretLabelsGetArgs()
-        {
-        }
-    }
-    }
-
-    namespace Outputs
-    {
-
-    [OutputType]
-    public sealed class SecretLabels
-    {
-        /// <summary>
-        /// Name of the label
-        /// * `value` (Required, string) Value of the label
-        /// </summary>
-        public readonly string Label;
-        public readonly string Value;
-
-        [OutputConstructor]
-        private SecretLabels(
-            string label,
-            string value)
-        {
-            Label = label;
-            Value = value;
-        }
-    }
     }
 }

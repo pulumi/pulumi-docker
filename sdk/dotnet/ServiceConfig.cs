@@ -11,10 +11,6 @@ namespace Pulumi.Docker
 {
     /// <summary>
     /// Manages the configuration of a Docker service in a swarm.
-    /// 
-    /// 
-    /// 
-    /// &gt; This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/config.html.markdown.
     /// </summary>
     public partial class ServiceConfig : Pulumi.CustomResource
     {
@@ -39,7 +35,7 @@ namespace Pulumi.Docker
         /// <param name="args">The arguments used to populate this resource's properties</param>
         /// <param name="options">A bag of options that control this resource's behavior</param>
         public ServiceConfig(string name, ServiceConfigArgs args, CustomResourceOptions? options = null)
-            : base("docker:index/serviceConfig:ServiceConfig", name, args ?? ResourceArgs.Empty, MakeResourceOptions(options, ""))
+            : base("docker:index/serviceConfig:ServiceConfig", name, args ?? new ServiceConfigArgs(), MakeResourceOptions(options, ""))
         {
         }
 

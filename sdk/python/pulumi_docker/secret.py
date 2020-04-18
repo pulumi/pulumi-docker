@@ -32,8 +32,6 @@ class Secret(pulumi.CustomResource):
 
 
 
-        > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/secret.html.markdown.
-
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[str] data: The base64 encoded data of the secret.

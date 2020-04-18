@@ -6,8 +6,8 @@ require (
 	github.com/docker/go-units v0.3.3 // indirect
 	github.com/hashicorp/terraform-plugin-sdk v1.7.0
 	github.com/opencontainers/image-spec v1.0.1 // indirect
-	github.com/pulumi/pulumi-terraform-bridge/v2 v2.0.0-20200402101519-95d9d3e2b896
-	github.com/pulumi/pulumi/sdk/v2 v2.0.0-beta.2.0.20200402101052-1dbf088db686
+	github.com/pulumi/pulumi-terraform-bridge/v2 v2.0.0
+	github.com/pulumi/pulumi/sdk/v2 v2.0.0
 	github.com/terraform-providers/terraform-provider-docker v1.2.1-0.20200210195100-e2a14e7e7cc6
 )
 

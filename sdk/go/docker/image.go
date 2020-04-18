@@ -6,7 +6,7 @@ import (
 	"fmt"
 
 	"github.com/pkg/errors"
-	"github.com/pulumi/pulumi/sdk/go/pulumi"
+	"github.com/pulumi/pulumi/sdk/v2/go/pulumi"
 )
 
 // Image is a resource represents a Docker image built locally which is published and made

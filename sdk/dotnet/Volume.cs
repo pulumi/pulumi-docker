@@ -13,10 +13,6 @@ namespace Pulumi.Docker
     /// Creates and destroys a volume in Docker. This can be used alongside
     /// [docker\_container](https://www.terraform.io/docs/providers/docker/r/container.html)
     /// to prepare volumes that can be shared across containers.
-    /// 
-    /// 
-    /// 
-    /// &gt; This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/volume.html.markdown.
     /// </summary>
     public partial class Volume : Pulumi.CustomResource
     {
@@ -36,7 +32,7 @@ namespace Pulumi.Docker
         /// User-defined key/value metadata.
         /// </summary>
         [Output("labels")]
-        public Output<ImmutableArray<Outputs.VolumeLabels>> Labels { get; private set; } = null!;
+        public Output<ImmutableArray<Outputs.VolumeLabel>> Labels { get; private set; } = null!;
 
         [Output("mountpoint")]
         public Output<string> Mountpoint { get; private set; } = null!;
@@ -57,7 +53,7 @@ namespace Pulumi.Docker
         /// <param name="args">The arguments used to populate this resource's properties</param>
         /// <param name="options">A bag of options that control this resource's behavior</param>
         public Volume(string name, VolumeArgs? args = null, CustomResourceOptions? options = null)
-            : base("docker:index/volume:Volume", name, args ?? ResourceArgs.Empty, MakeResourceOptions(options, ""))
+            : base("docker:index/volume:Volume", name, args ?? new VolumeArgs(), MakeResourceOptions(options, ""))
         {
         }
 
@@ -113,14 +109,14 @@ namespace Pulumi.Docker
         }
 
         [Input("labels")]
-        private InputList<Inputs.VolumeLabelsArgs>? _labels;
+        private InputList<Inputs.VolumeLabelArgs>? _labels;
 
         /// <summary>
         /// User-defined key/value metadata.
         /// </summary>
-        public InputList<Inputs.VolumeLabelsArgs> Labels
+        public InputList<Inputs.VolumeLabelArgs> Labels
         {
-            get => _labels ?? (_labels = new InputList<Inputs.VolumeLabelsArgs>());
+            get => _labels ?? (_labels = new InputList<Inputs.VolumeLabelArgs>());
             set => _labels = value;
         }
 
@@ -157,14 +153,14 @@ namespace Pulumi.Docker
         }
 
         [Input("labels")]
-        private InputList<Inputs.VolumeLabelsGetArgs>? _labels;
+        private InputList<Inputs.VolumeLabelGetArgs>? _labels;
 
         /// <summary>
         /// User-defined key/value metadata.
         /// </summary>
-        public InputList<Inputs.VolumeLabelsGetArgs> Labels
+        public InputList<Inputs.VolumeLabelGetArgs> Labels
         {
-            get => _labels ?? (_labels = new InputList<Inputs.VolumeLabelsGetArgs>());
+            get => _labels ?? (_labels = new InputList<Inputs.VolumeLabelGetArgs>());
             set => _labels = value;
         }
 
@@ -181,55 +177,5 @@ namespace Pulumi.Docker
         public VolumeState()
         {
         }
-    }
-
-    namespace Inputs
-    {
-
-    public sealed class VolumeLabelsArgs : Pulumi.ResourceArgs
-    {
-        [Input("label", required: true)]
-        public Input<string> Label { get; set; } = null!;
-
-        [Input("value", required: true)]
-        public Input<string> Value { get; set; } = null!;
-
-        public VolumeLabelsArgs()
-        {
-        }
-    }
-
-    public sealed class VolumeLabelsGetArgs : Pulumi.ResourceArgs
-    {
-        [Input("label", required: true)]
-        public Input<string> Label { get; set; } = null!;
-
-        [Input("value", required: true)]
-        public Input<string> Value { get; set; } = null!;
-
-        public VolumeLabelsGetArgs()
-        {
-        }
-    }
-    }
-
-    namespace Outputs
-    {
-
-    [OutputType]
-    public sealed class VolumeLabels
-    {
-        public readonly string Label;
-        public readonly string Value;
-
-        [OutputConstructor]
-        private VolumeLabels(
-            string label,
-            string value)
-        {
-            Label = label;
-            Value = value;
-        }
-    }
     }
 }

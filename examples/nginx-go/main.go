@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/pulumi/pulumi-docker/sdk/go/docker"
-	"github.com/pulumi/pulumi/sdk/go/pulumi"
+	"github.com/pulumi/pulumi/sdk/v2/go/pulumi"
 )
 
 func main() {

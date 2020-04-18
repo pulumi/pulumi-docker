@@ -4,6 +4,7 @@ SCRIPT_DIR="$( cd "$( dirname "$0" )" && pwd )"
 COMMITISH=${1:-HEAD}
 DIRTY_TAG=""
 EXACT=0
+
 # Figure out if the worktree is dirty, we run update-index first
 # as we've seen cases in Travis where not doing so causes git to
 # treat the worktree as dirty when it is not.

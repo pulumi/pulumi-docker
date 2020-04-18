@@ -14,8 +14,6 @@ namespace Pulumi.Docker
     /// settings, however an explicit `Provider` instance may be created and passed during resource
     /// construction to achieve fine-grained programmatic control over provider settings. See the
     /// [documentation](https://www.pulumi.com/docs/reference/programming-model/#providers) for more information.
-    /// 
-    /// &gt; This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/index.html.markdown.
     /// </summary>
     public partial class Provider : Pulumi.ProviderResource
     {
@@ -27,7 +25,7 @@ namespace Pulumi.Docker
         /// <param name="args">The arguments used to populate this resource's properties</param>
         /// <param name="options">A bag of options that control this resource's behavior</param>
         public Provider(string name, ProviderArgs? args = null, CustomResourceOptions? options = null)
-            : base("docker", name, args ?? ResourceArgs.Empty, MakeResourceOptions(options, ""))
+            : base("docker", name, args ?? new ProviderArgs(), MakeResourceOptions(options, ""))
         {
         }
 
@@ -92,31 +90,5 @@ namespace Pulumi.Docker
             Host = Utilities.GetEnv("DOCKER_HOST") ?? "unix:///var/run/docker.sock";
             KeyMaterial = Utilities.GetEnv("DOCKER_KEY_MATERIAL");
         }
-    }
-
-    namespace Inputs
-    {
-
-    public sealed class ProviderRegistryAuthArgs : Pulumi.ResourceArgs
-    {
-        [Input("address", required: true)]
-        public Input<string> Address { get; set; } = null!;
-
-        [Input("configFile")]
-        public Input<string>? ConfigFile { get; set; }
-
-        [Input("configFileContent")]
-        public Input<string>? ConfigFileContent { get; set; }
-
-        [Input("password")]
-        public Input<string>? Password { get; set; }
-
-        [Input("username")]
-        public Input<string>? Username { get; set; }
-
-        public ProviderRegistryAuthArgs()
-        {
-        }
-    }
     }
 }
