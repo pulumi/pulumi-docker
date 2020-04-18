@@ -9,27 +9,18 @@ using Pulumi.Serialization;
 
 namespace Pulumi.Docker
 {
-    public static partial class Invokes
-    {
-        /// <summary>
-        /// Finds a specific docker network and returns information about it.
-        /// 
-        /// &gt; This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/d/docker_network.html.markdown.
-        /// </summary>
-        [Obsolete("Use GetNetwork.InvokeAsync() instead")]
-        public static Task<GetNetworkResult> GetNetwork(GetNetworkArgs? args = null, InvokeOptions? options = null)
-            => Pulumi.Deployment.Instance.InvokeAsync<GetNetworkResult>("docker:index/getNetwork:getNetwork", args ?? InvokeArgs.Empty, options.WithVersion());
-    }
     public static class GetNetwork
     {
         /// <summary>
         /// Finds a specific docker network and returns information about it.
         /// 
-        /// &gt; This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/d/docker_network.html.markdown.
+        /// {{% examples %}}
+        /// {{% /examples %}}
         /// </summary>
         public static Task<GetNetworkResult> InvokeAsync(GetNetworkArgs? args = null, InvokeOptions? options = null)
-            => Pulumi.Deployment.Instance.InvokeAsync<GetNetworkResult>("docker:index/getNetwork:getNetwork", args ?? InvokeArgs.Empty, options.WithVersion());
+            => Pulumi.Deployment.Instance.InvokeAsync<GetNetworkResult>("docker:index/getNetwork:getNetwork", args ?? new GetNetworkArgs(), options.WithVersion());
     }
+
 
     public sealed class GetNetworkArgs : Pulumi.InvokeArgs
     {
@@ -50,6 +41,7 @@ namespace Pulumi.Docker
         }
     }
 
+
     [OutputType]
     public sealed class GetNetworkResult
     {
@@ -61,7 +53,7 @@ namespace Pulumi.Docker
         public readonly string Driver;
         public readonly string? Id;
         public readonly bool Internal;
-        public readonly ImmutableArray<Outputs.GetNetworkIpamConfigsResult> IpamConfigs;
+        public readonly ImmutableArray<Outputs.GetNetworkIpamConfigResult> IpamConfigs;
         public readonly string? Name;
         /// <summary>
         /// (Optional, map) Only available with bridge networks. See
@@ -76,11 +68,17 @@ namespace Pulumi.Docker
         [OutputConstructor]
         private GetNetworkResult(
             string driver,
+
             string? id,
+
             bool @internal,
-            ImmutableArray<Outputs.GetNetworkIpamConfigsResult> ipamConfigs,
+
+            ImmutableArray<Outputs.GetNetworkIpamConfigResult> ipamConfigs,
+
             string? name,
+
             ImmutableDictionary<string, object> options,
+
             string scope)
         {
             Driver = driver;
@@ -91,31 +89,5 @@ namespace Pulumi.Docker
             Options = options;
             Scope = scope;
         }
-    }
-
-    namespace Outputs
-    {
-
-    [OutputType]
-    public sealed class GetNetworkIpamConfigsResult
-    {
-        public readonly ImmutableDictionary<string, object>? AuxAddress;
-        public readonly string? Gateway;
-        public readonly string? IpRange;
-        public readonly string? Subnet;
-
-        [OutputConstructor]
-        private GetNetworkIpamConfigsResult(
-            ImmutableDictionary<string, object>? auxAddress,
-            string? gateway,
-            string? ipRange,
-            string? subnet)
-        {
-            AuxAddress = auxAddress;
-            Gateway = gateway;
-            IpRange = ipRange;
-            Subnet = subnet;
-        }
-    }
     }
 }

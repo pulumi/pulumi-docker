@@ -13,8 +13,6 @@ namespace Pulumi.Docker
     /// Manages a Docker Network. This can be used alongside
     /// [docker\_container](https://www.terraform.io/docs/providers/docker/r/container.html)
     /// to create virtual networks within the docker environment.
-    /// 
-    /// &gt; This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/network.html.markdown.
     /// </summary>
     public partial class Network : Pulumi.CustomResource
     {
@@ -58,7 +56,7 @@ namespace Pulumi.Docker
         /// details.
         /// </summary>
         [Output("ipamConfigs")]
-        public Output<ImmutableArray<Outputs.NetworkIpamConfigs>> IpamConfigs { get; private set; } = null!;
+        public Output<ImmutableArray<Outputs.NetworkIpamConfig>> IpamConfigs { get; private set; } = null!;
 
         /// <summary>
         /// Driver used by the custom IP scheme of the
@@ -78,7 +76,7 @@ namespace Pulumi.Docker
         /// See Labels below for details.
         /// </summary>
         [Output("labels")]
-        public Output<ImmutableArray<Outputs.NetworkLabels>> Labels { get; private set; } = null!;
+        public Output<ImmutableArray<Outputs.NetworkLabel>> Labels { get; private set; } = null!;
 
         /// <summary>
         /// The name of the Docker network.
@@ -105,7 +103,7 @@ namespace Pulumi.Docker
         /// <param name="args">The arguments used to populate this resource's properties</param>
         /// <param name="options">A bag of options that control this resource's behavior</param>
         public Network(string name, NetworkArgs? args = null, CustomResourceOptions? options = null)
-            : base("docker:index/network:Network", name, args ?? ResourceArgs.Empty, MakeResourceOptions(options, ""))
+            : base("docker:index/network:Network", name, args ?? new NetworkArgs(), MakeResourceOptions(options, ""))
         {
         }
 
@@ -178,15 +176,15 @@ namespace Pulumi.Docker
         public Input<bool>? Internal { get; set; }
 
         [Input("ipamConfigs")]
-        private InputList<Inputs.NetworkIpamConfigsArgs>? _ipamConfigs;
+        private InputList<Inputs.NetworkIpamConfigArgs>? _ipamConfigs;
 
         /// <summary>
         /// See IPAM config below for
         /// details.
         /// </summary>
-        public InputList<Inputs.NetworkIpamConfigsArgs> IpamConfigs
+        public InputList<Inputs.NetworkIpamConfigArgs> IpamConfigs
         {
-            get => _ipamConfigs ?? (_ipamConfigs = new InputList<Inputs.NetworkIpamConfigsArgs>());
+            get => _ipamConfigs ?? (_ipamConfigs = new InputList<Inputs.NetworkIpamConfigArgs>());
             set => _ipamConfigs = value;
         }
 
@@ -205,14 +203,14 @@ namespace Pulumi.Docker
         public Input<bool>? Ipv6 { get; set; }
 
         [Input("labels")]
-        private InputList<Inputs.NetworkLabelsArgs>? _labels;
+        private InputList<Inputs.NetworkLabelArgs>? _labels;
 
         /// <summary>
         /// See Labels below for details.
         /// </summary>
-        public InputList<Inputs.NetworkLabelsArgs> Labels
+        public InputList<Inputs.NetworkLabelArgs> Labels
         {
-            get => _labels ?? (_labels = new InputList<Inputs.NetworkLabelsArgs>());
+            get => _labels ?? (_labels = new InputList<Inputs.NetworkLabelArgs>());
             set => _labels = value;
         }
 
@@ -278,15 +276,15 @@ namespace Pulumi.Docker
         public Input<bool>? Internal { get; set; }
 
         [Input("ipamConfigs")]
-        private InputList<Inputs.NetworkIpamConfigsGetArgs>? _ipamConfigs;
+        private InputList<Inputs.NetworkIpamConfigGetArgs>? _ipamConfigs;
 
         /// <summary>
         /// See IPAM config below for
         /// details.
         /// </summary>
-        public InputList<Inputs.NetworkIpamConfigsGetArgs> IpamConfigs
+        public InputList<Inputs.NetworkIpamConfigGetArgs> IpamConfigs
         {
-            get => _ipamConfigs ?? (_ipamConfigs = new InputList<Inputs.NetworkIpamConfigsGetArgs>());
+            get => _ipamConfigs ?? (_ipamConfigs = new InputList<Inputs.NetworkIpamConfigGetArgs>());
             set => _ipamConfigs = value;
         }
 
@@ -305,14 +303,14 @@ namespace Pulumi.Docker
         public Input<bool>? Ipv6 { get; set; }
 
         [Input("labels")]
-        private InputList<Inputs.NetworkLabelsGetArgs>? _labels;
+        private InputList<Inputs.NetworkLabelGetArgs>? _labels;
 
         /// <summary>
         /// See Labels below for details.
         /// </summary>
-        public InputList<Inputs.NetworkLabelsGetArgs> Labels
+        public InputList<Inputs.NetworkLabelGetArgs> Labels
         {
-            get => _labels ?? (_labels = new InputList<Inputs.NetworkLabelsGetArgs>());
+            get => _labels ?? (_labels = new InputList<Inputs.NetworkLabelGetArgs>());
             set => _labels = value;
         }
 
@@ -341,137 +339,5 @@ namespace Pulumi.Docker
         public NetworkState()
         {
         }
-    }
-
-    namespace Inputs
-    {
-
-    public sealed class NetworkIpamConfigsArgs : Pulumi.ResourceArgs
-    {
-        [Input("auxAddress")]
-        private InputMap<object>? _auxAddress;
-        public InputMap<object> AuxAddress
-        {
-            get => _auxAddress ?? (_auxAddress = new InputMap<object>());
-            set => _auxAddress = value;
-        }
-
-        [Input("gateway")]
-        public Input<string>? Gateway { get; set; }
-
-        [Input("ipRange")]
-        public Input<string>? IpRange { get; set; }
-
-        [Input("subnet")]
-        public Input<string>? Subnet { get; set; }
-
-        public NetworkIpamConfigsArgs()
-        {
-        }
-    }
-
-    public sealed class NetworkIpamConfigsGetArgs : Pulumi.ResourceArgs
-    {
-        [Input("auxAddress")]
-        private InputMap<object>? _auxAddress;
-        public InputMap<object> AuxAddress
-        {
-            get => _auxAddress ?? (_auxAddress = new InputMap<object>());
-            set => _auxAddress = value;
-        }
-
-        [Input("gateway")]
-        public Input<string>? Gateway { get; set; }
-
-        [Input("ipRange")]
-        public Input<string>? IpRange { get; set; }
-
-        [Input("subnet")]
-        public Input<string>? Subnet { get; set; }
-
-        public NetworkIpamConfigsGetArgs()
-        {
-        }
-    }
-
-    public sealed class NetworkLabelsArgs : Pulumi.ResourceArgs
-    {
-        /// <summary>
-        /// Name of the label
-        /// * `value` (Required, string) Value of the label
-        /// </summary>
-        [Input("label", required: true)]
-        public Input<string> Label { get; set; } = null!;
-
-        [Input("value", required: true)]
-        public Input<string> Value { get; set; } = null!;
-
-        public NetworkLabelsArgs()
-        {
-        }
-    }
-
-    public sealed class NetworkLabelsGetArgs : Pulumi.ResourceArgs
-    {
-        /// <summary>
-        /// Name of the label
-        /// * `value` (Required, string) Value of the label
-        /// </summary>
-        [Input("label", required: true)]
-        public Input<string> Label { get; set; } = null!;
-
-        [Input("value", required: true)]
-        public Input<string> Value { get; set; } = null!;
-
-        public NetworkLabelsGetArgs()
-        {
-        }
-    }
-    }
-
-    namespace Outputs
-    {
-
-    [OutputType]
-    public sealed class NetworkIpamConfigs
-    {
-        public readonly ImmutableDictionary<string, object>? AuxAddress;
-        public readonly string? Gateway;
-        public readonly string? IpRange;
-        public readonly string? Subnet;
-
-        [OutputConstructor]
-        private NetworkIpamConfigs(
-            ImmutableDictionary<string, object>? auxAddress,
-            string? gateway,
-            string? ipRange,
-            string? subnet)
-        {
-            AuxAddress = auxAddress;
-            Gateway = gateway;
-            IpRange = ipRange;
-            Subnet = subnet;
-        }
-    }
-
-    [OutputType]
-    public sealed class NetworkLabels
-    {
-        /// <summary>
-        /// Name of the label
-        /// * `value` (Required, string) Value of the label
-        /// </summary>
-        public readonly string Label;
-        public readonly string Value;
-
-        [OutputConstructor]
-        private NetworkLabels(
-            string label,
-            string value)
-        {
-            Label = label;
-            Value = value;
-        }
-    }
     }
 }

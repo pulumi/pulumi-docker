@@ -8,7 +8,6 @@ namespace Pulumi.Docker
     public static class Config
     {
         private static readonly Pulumi.Config __config = new Pulumi.Config("docker");
-
         /// <summary>
         /// PEM-encoded content of Docker host CA certificate
         /// </summary>
@@ -34,19 +33,19 @@ namespace Pulumi.Docker
         /// </summary>
         public static string? KeyMaterial { get; set; } = __config.Get("keyMaterial") ?? Utilities.GetEnv("DOCKER_KEY_MATERIAL");
 
-        public static ImmutableArray<ConfigTypes.RegistryAuth> RegistryAuth { get; set; } = __config.GetObject<ImmutableArray<ConfigTypes.RegistryAuth>>("registryAuth");
+        public static ImmutableArray<Pulumi.Docker.Config.Types.RegistryAuth> RegistryAuth { get; set; } = __config.GetObject<ImmutableArray<Pulumi.Docker.Config.Types.RegistryAuth>>("registryAuth");
 
-    }
-    namespace ConfigTypes
-    {
+        public static class Types
+        {
 
-    public class RegistryAuth
-    {
-        public string Address { get; set; } = null!;
-        public string? ConfigFile { get; set; }
-        public string? ConfigFileContent { get; set; }
-        public string? Password { get; set; }
-        public string? Username { get; set; }
-    }
+             public class RegistryAuth
+             {
+                public string Address { get; set; }
+                public string? ConfigFile { get; set; } = null!;
+                public string? ConfigFileContent { get; set; } = null!;
+                public string? Password { get; set; } = null!;
+                public string? Username { get; set; } = null!;
+            }
+        }
     }
 }
