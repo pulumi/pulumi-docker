@@ -11,10 +11,8 @@ for pkg in __all__:
 
 # Export this package's modules as members:
 from .container import *
-from .docker import *
 from .get_network import *
 from .get_registry_image import *
-from .image import *
 from .network import *
 from .provider import *
 from .remote_image import *
