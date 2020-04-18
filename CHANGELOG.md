@@ -1,10 +1,13 @@
 ## HEAD (Unreleased)
-* Refactor layout to support Go modules
-* Upgrade to Pulumi v1.13.1
-* Upgrade to pulumi-terraform-bridge v1.8.4
-* Revert Python Docker Image build support (we will bring this back soon!)
+_(none)_
 
 ---
+
+## 2.0.0 (2020-04-18)
+* Upgrade to Pulumi v2.0.0
+* Upgrade to pulumi-terraform-bridge v2.0.0
+* Refactor layout to support Go modules
+* Revert Python Docker Image build support (we will bring this back soon!)
 
 ## 1.5.0 (2020-03-25)
 * Add Docker Image build suport for Python
