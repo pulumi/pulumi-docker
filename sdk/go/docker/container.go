@@ -89,7 +89,6 @@ type Container struct {
 	Logs pulumi.BoolPtrOutput `pulumi:"logs"`
 	// The maximum amount of times to an attempt
 	// a restart when `restart` is set to "on-failure"
-	// * `workingDir`- (Optional, string) The working directory for commands to run in
 	MaxRetryCount pulumi.IntPtrOutput `pulumi:"maxRetryCount"`
 	// The memory limit for the container in MBs.
 	Memory     pulumi.IntPtrOutput `pulumi:"memory"`
@@ -146,8 +145,9 @@ type Container struct {
 	// Sets the usernamespace mode for the container when usernamespace remapping option is enabled.
 	UsernsMode pulumi.StringPtrOutput `pulumi:"usernsMode"`
 	// See Volumes below for details.
-	Volumes    ContainerVolumeArrayOutput `pulumi:"volumes"`
-	WorkingDir pulumi.StringPtrOutput     `pulumi:"workingDir"`
+	Volumes ContainerVolumeArrayOutput `pulumi:"volumes"`
+	// The working directory for commands to run in
+	WorkingDir pulumi.StringPtrOutput `pulumi:"workingDir"`
 }
 
 // NewContainer registers a new resource with the given unique name, arguments, and options.
@@ -256,7 +256,6 @@ type containerState struct {
 	Logs *bool `pulumi:"logs"`
 	// The maximum amount of times to an attempt
 	// a restart when `restart` is set to "on-failure"
-	// * `workingDir`- (Optional, string) The working directory for commands to run in
 	MaxRetryCount *int `pulumi:"maxRetryCount"`
 	// The memory limit for the container in MBs.
 	Memory     *int `pulumi:"memory"`
@@ -313,8 +312,9 @@ type containerState struct {
 	// Sets the usernamespace mode for the container when usernamespace remapping option is enabled.
 	UsernsMode *string `pulumi:"usernsMode"`
 	// See Volumes below for details.
-	Volumes    []ContainerVolume `pulumi:"volumes"`
-	WorkingDir *string           `pulumi:"workingDir"`
+	Volumes []ContainerVolume `pulumi:"volumes"`
+	// The working directory for commands to run in
+	WorkingDir *string `pulumi:"workingDir"`
 }
 
 type ContainerState struct {
@@ -393,7 +393,6 @@ type ContainerState struct {
 	Logs pulumi.BoolPtrInput
 	// The maximum amount of times to an attempt
 	// a restart when `restart` is set to "on-failure"
-	// * `workingDir`- (Optional, string) The working directory for commands to run in
 	MaxRetryCount pulumi.IntPtrInput
 	// The memory limit for the container in MBs.
 	Memory     pulumi.IntPtrInput
@@ -450,7 +449,8 @@ type ContainerState struct {
 	// Sets the usernamespace mode for the container when usernamespace remapping option is enabled.
 	UsernsMode pulumi.StringPtrInput
 	// See Volumes below for details.
-	Volumes    ContainerVolumeArrayInput
+	Volumes ContainerVolumeArrayInput
+	// The working directory for commands to run in
 	WorkingDir pulumi.StringPtrInput
 }
 
@@ -520,7 +520,6 @@ type containerArgs struct {
 	Logs *bool `pulumi:"logs"`
 	// The maximum amount of times to an attempt
 	// a restart when `restart` is set to "on-failure"
-	// * `workingDir`- (Optional, string) The working directory for commands to run in
 	MaxRetryCount *int `pulumi:"maxRetryCount"`
 	// The memory limit for the container in MBs.
 	Memory     *int `pulumi:"memory"`
@@ -574,8 +573,9 @@ type containerArgs struct {
 	// Sets the usernamespace mode for the container when usernamespace remapping option is enabled.
 	UsernsMode *string `pulumi:"usernsMode"`
 	// See Volumes below for details.
-	Volumes    []ContainerVolume `pulumi:"volumes"`
-	WorkingDir *string           `pulumi:"workingDir"`
+	Volumes []ContainerVolume `pulumi:"volumes"`
+	// The working directory for commands to run in
+	WorkingDir *string `pulumi:"workingDir"`
 }
 
 // The set of arguments for constructing a Container resource.
@@ -641,7 +641,6 @@ type ContainerArgs struct {
 	Logs pulumi.BoolPtrInput
 	// The maximum amount of times to an attempt
 	// a restart when `restart` is set to "on-failure"
-	// * `workingDir`- (Optional, string) The working directory for commands to run in
 	MaxRetryCount pulumi.IntPtrInput
 	// The memory limit for the container in MBs.
 	Memory     pulumi.IntPtrInput
@@ -695,7 +694,8 @@ type ContainerArgs struct {
 	// Sets the usernamespace mode for the container when usernamespace remapping option is enabled.
 	UsernsMode pulumi.StringPtrInput
 	// See Volumes below for details.
-	Volumes    ContainerVolumeArrayInput
+	Volumes ContainerVolumeArrayInput
+	// The working directory for commands to run in
 	WorkingDir pulumi.StringPtrInput
 }
 

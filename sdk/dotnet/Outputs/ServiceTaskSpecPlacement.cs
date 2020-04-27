@@ -13,8 +13,17 @@ namespace Pulumi.Docker.Outputs
     [OutputType]
     public sealed class ServiceTaskSpecPlacement
     {
+        /// <summary>
+        /// An array of constraints. e.g.: `node.role==manager`
+        /// </summary>
         public readonly ImmutableArray<string> Constraints;
+        /// <summary>
+        /// Platforms stores all the platforms that the service's image can run on
+        /// </summary>
         public readonly ImmutableArray<Outputs.ServiceTaskSpecPlacementPlatform> Platforms;
+        /// <summary>
+        /// Preferences provide a way to make the scheduler aware of factors such as topology. They are provided in order from highest to lowest precedence, e.g.: `spread=node.role.manager`
+        /// </summary>
         public readonly ImmutableArray<string> Prefs;
 
         [OutputConstructor]

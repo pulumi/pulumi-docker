@@ -72,9 +72,11 @@ export interface ContainerHost {
 export interface ContainerLabel {
     /**
      * Name of the label
-     * * `value` (Required, string) Value of the label
      */
     label: pulumi.Input<string>;
+    /**
+     * Value of the label
+     */
     value: pulumi.Input<string>;
 }
 
@@ -147,9 +149,11 @@ export interface ContainerMountVolumeOptions {
 export interface ContainerMountVolumeOptionsLabel {
     /**
      * Name of the label
-     * * `value` (Required, string) Value of the label
      */
     label: pulumi.Input<string>;
+    /**
+     * Value of the label
+     */
     value: pulumi.Input<string>;
 }
 
@@ -280,9 +284,11 @@ export interface NetworkIpamConfig {
 export interface NetworkLabel {
     /**
      * Name of the label
-     * * `value` (Required, string) Value of the label
      */
     label: pulumi.Input<string>;
+    /**
+     * Value of the label
+     */
     value: pulumi.Input<string>;
 }
 
@@ -297,9 +303,11 @@ export interface ProviderRegistryAuth {
 export interface SecretLabel {
     /**
      * Name of the label
-     * * `value` (Required, string) Value of the label
      */
     label: pulumi.Input<string>;
+    /**
+     * Value of the label
+     */
     value: pulumi.Input<string>;
 }
 
@@ -367,9 +375,11 @@ export interface ServiceEndpointSpecPort {
 export interface ServiceLabel {
     /**
      * Name of the label
-     * * `value` (Required, string) Value of the label
      */
     label: pulumi.Input<string>;
+    /**
+     * Value of the label
+     */
     value: pulumi.Input<string>;
 }
 
@@ -390,7 +400,7 @@ export interface ServiceModeReplicated {
 
 export interface ServiceRollbackConfig {
     /**
-     * Delay between updates `(ns|us|ms|s|m|h)`, e.g. `5s`.
+     * Delay between restart attempts `(ms|s|m|h)`
      * all tasks are up when a service is created, or to check if all tasks are successfully updated on an update. Default: `7s`.
      */
     delay?: pulumi.Input<string>;
@@ -418,7 +428,13 @@ export interface ServiceRollbackConfig {
 }
 
 export interface ServiceTaskSpec {
+    /**
+     * See ContainerSpec below for details.
+     */
     containerSpec: pulumi.Input<inputs.ServiceTaskSpecContainerSpec>;
+    /**
+     * A counter that triggers an update even if no relevant parameters have been changed. See [Docker Spec](https://github.com/docker/swarmkit/blob/master/api/specs.proto#L126).
+     */
     forceUpdate?: pulumi.Input<number>;
     /**
      * See Log Driver below for details.
@@ -428,9 +444,21 @@ export interface ServiceTaskSpec {
      * Ids of the networks in which the container will be put in.
      */
     networks?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * See Placement below for details.
+     */
     placement?: pulumi.Input<inputs.ServiceTaskSpecPlacement>;
+    /**
+     * See Resources below for details.
+     */
     resources?: pulumi.Input<inputs.ServiceTaskSpecResources>;
+    /**
+     * See Restart Policy below for details.
+     */
     restartPolicy?: pulumi.Input<inputs.ServiceTaskSpecRestartPolicy>;
+    /**
+     * Runtime is the type of runtime specified for the task executor. See [Docker Runtime](https://github.com/moby/moby/blob/master/api/types/swarm/runtime.go).
+     */
     runtime?: pulumi.Input<string>;
 }
 
@@ -461,7 +489,6 @@ export interface ServiceTaskSpecContainerSpec {
     env?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
     /**
      * A list of additional groups that the container process will run as.
-     * * `privileges` (Optional, block) See Privileges below for details.
      */
     groups?: pulumi.Input<pulumi.Input<string>[]>;
     /**
@@ -489,6 +516,9 @@ export interface ServiceTaskSpecContainerSpec {
      * See Mounts below for details.
      */
     mounts?: pulumi.Input<pulumi.Input<inputs.ServiceTaskSpecContainerSpecMount>[]>;
+    /**
+     * See Privileges below for details.
+     */
     privileges?: pulumi.Input<inputs.ServiceTaskSpecContainerSpecPrivileges>;
     /**
      * Mount the container's root filesystem as read only.
@@ -592,9 +622,11 @@ export interface ServiceTaskSpecContainerSpecHost {
 export interface ServiceTaskSpecContainerSpecLabel {
     /**
      * Name of the label
-     * * `value` (Required, string) Value of the label
      */
     label: pulumi.Input<string>;
+    /**
+     * Value of the label
+     */
     value: pulumi.Input<string>;
 }
 
@@ -663,9 +695,11 @@ export interface ServiceTaskSpecContainerSpecMountVolumeOptions {
 export interface ServiceTaskSpecContainerSpecMountVolumeOptionsLabel {
     /**
      * Name of the label
-     * * `value` (Required, string) Value of the label
      */
     label: pulumi.Input<string>;
+    /**
+     * Value of the label
+     */
     value: pulumi.Input<string>;
 }
 
@@ -753,67 +787,110 @@ export interface ServiceTaskSpecLogDriver {
 }
 
 export interface ServiceTaskSpecPlacement {
+    /**
+     * An array of constraints. e.g.: `node.role==manager`
+     */
     constraints?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * Platforms stores all the platforms that the service's image can run on
+     */
     platforms?: pulumi.Input<pulumi.Input<inputs.ServiceTaskSpecPlacementPlatform>[]>;
+    /**
+     * Preferences provide a way to make the scheduler aware of factors such as topology. They are provided in order from highest to lowest precedence, e.g.: `spread=node.role.manager`
+     */
     prefs?: pulumi.Input<pulumi.Input<string>[]>;
 }
 
 export interface ServiceTaskSpecPlacementPlatform {
+    /**
+     * The architecture, e.g., `amd64`
+     */
     architecture: pulumi.Input<string>;
+    /**
+     * The operation system, e.g., `linux`
+     */
     os: pulumi.Input<string>;
 }
 
 export interface ServiceTaskSpecResources {
     /**
      * Describes the resources which can be advertised by a node and requested by a task.
-     * * `nanoCpus` (Optional, int) CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
-     * * `memoryBytes` (Optional, int) The amount of memory in bytes the container allocates
-     * * `genericResources` (Optional, map) User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
-     * * `namedResourcesSpec` (Optional, set of string) The String resources, delimited by `=`
-     * * `discreteResourcesSpec` (Optional, set of string) The Integer resources, delimited by `=`
      */
     limits?: pulumi.Input<inputs.ServiceTaskSpecResourcesLimits>;
     /**
      * An object describing the resources which can be advertised by a node and requested by a task.
-     * * `nanoCpus` (Optional, int) CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
-     * * `memoryBytes` (Optional, int) The amount of memory in bytes the container allocates
-     * * `genericResources` (Optional, map) User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
-     * * `namedResourcesSpec` (Optional, set of string) The String resources
-     * * `discreteResourcesSpec` (Optional, set of string) The Integer resources
      */
     reservation?: pulumi.Input<inputs.ServiceTaskSpecResourcesReservation>;
 }
 
 export interface ServiceTaskSpecResourcesLimits {
+    /**
+     * User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
+     */
     genericResources?: pulumi.Input<inputs.ServiceTaskSpecResourcesLimitsGenericResources>;
+    /**
+     * The amount of memory in bytes the container allocates
+     */
     memoryBytes?: pulumi.Input<number>;
+    /**
+     * CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
+     */
     nanoCpus?: pulumi.Input<number>;
 }
 
 export interface ServiceTaskSpecResourcesLimitsGenericResources {
+    /**
+     * The Integer resources, delimited by `=`
+     */
     discreteResourcesSpecs?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * The String resources, delimited by `=`
+     */
     namedResourcesSpecs?: pulumi.Input<pulumi.Input<string>[]>;
 }
 
 export interface ServiceTaskSpecResourcesReservation {
+    /**
+     * User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
+     */
     genericResources?: pulumi.Input<inputs.ServiceTaskSpecResourcesReservationGenericResources>;
+    /**
+     * The amount of memory in bytes the container allocates
+     */
     memoryBytes?: pulumi.Input<number>;
+    /**
+     * CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
+     */
     nanoCpus?: pulumi.Input<number>;
 }
 
 export interface ServiceTaskSpecResourcesReservationGenericResources {
+    /**
+     * The Integer resources, delimited by `=`
+     */
     discreteResourcesSpecs?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * The String resources, delimited by `=`
+     */
     namedResourcesSpecs?: pulumi.Input<pulumi.Input<string>[]>;
 }
 
 export interface ServiceTaskSpecRestartPolicy {
+    /**
+     * Condition for restart: `(none|on-failure|any)`
+     */
     condition?: pulumi.Input<string>;
     /**
-     * Delay between updates `(ns|us|ms|s|m|h)`, e.g. `5s`.
-     * all tasks are up when a service is created, or to check if all tasks are successfully updated on an update. Default: `7s`.
+     * Delay between restart attempts `(ms|s|m|h)`
      */
     delay?: pulumi.Input<string>;
+    /**
+     * Maximum attempts to restart a given container before giving up (default value is `0`, which is ignored)
+     */
     maxAttempts?: pulumi.Input<number>;
+    /**
+     * The time window used to evaluate the restart policy (default value is `0`, which is unbounded) `(ms|s|m|h)`
+     */
     window?: pulumi.Input<string>;
 }
 

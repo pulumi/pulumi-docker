@@ -19,8 +19,7 @@ class Secret(pulumi.CustomResource):
     See Labels below for details.
 
       * `label` (`str`) - Name of the label
-        * `value` (Required, string) Value of the label
-      * `value` (`str`)
+      * `value` (`str`) - Value of the label
     """
     name: pulumi.Output[str]
     """
@@ -41,8 +40,7 @@ class Secret(pulumi.CustomResource):
         The **labels** object supports the following:
 
           * `label` (`pulumi.Input[str]`) - Name of the label
-            * `value` (Required, string) Value of the label
-          * `value` (`pulumi.Input[str]`)
+          * `value` (`pulumi.Input[str]`) - Value of the label
         """
         if __name__ is not None:
             warnings.warn("explicit use of __name__ is deprecated", DeprecationWarning)
@@ -88,8 +86,7 @@ class Secret(pulumi.CustomResource):
         The **labels** object supports the following:
 
           * `label` (`pulumi.Input[str]`) - Name of the label
-            * `value` (Required, string) Value of the label
-          * `value` (`pulumi.Input[str]`)
+          * `value` (`pulumi.Input[str]`) - Value of the label
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
 

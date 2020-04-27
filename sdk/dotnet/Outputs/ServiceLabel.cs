@@ -15,9 +15,11 @@ namespace Pulumi.Docker.Outputs
     {
         /// <summary>
         /// Name of the label
-        /// * `value` (Required, string) Value of the label
         /// </summary>
         public readonly string Label;
+        /// <summary>
+        /// Value of the label
+        /// </summary>
         public readonly string Value;
 
         [OutputConstructor]

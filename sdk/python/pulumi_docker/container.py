@@ -146,8 +146,7 @@ class Container(pulumi.CustomResource):
     Adding labels.
 
       * `label` (`str`) - Name of the label
-        * `value` (Required, string) Value of the label
-      * `value` (`str`)
+      * `value` (`str`) - Value of the label
     """
     links: pulumi.Output[list]
     """
@@ -172,7 +171,6 @@ class Container(pulumi.CustomResource):
     """
     The maximum amount of times to an attempt
     a restart when `restart` is set to "on-failure"
-    * `working_dir`- (Optional, string) The working directory for commands to run in
     """
     memory: pulumi.Output[float]
     """
@@ -200,8 +198,7 @@ class Container(pulumi.CustomResource):
         * `driverOptions` (`dict`) - Options for the driver.
         * `labels` (`list`) - Adding labels.
           * `label` (`str`) - Name of the label
-            * `value` (Required, string) Value of the label
-          * `value` (`str`)
+          * `value` (`str`) - Value of the label
 
         * `noCopy` (`bool`) - Whether to populate volume with data from the target.
     """
@@ -339,6 +336,9 @@ class Container(pulumi.CustomResource):
         should be mounted.
     """
     working_dir: pulumi.Output[str]
+    """
+    The working directory for commands to run in
+    """
     def __init__(__self__, resource_name, opts=None, attach=None, capabilities=None, command=None, cpu_set=None, cpu_shares=None, destroy_grace_seconds=None, devices=None, dns=None, dns_opts=None, dns_searches=None, domainname=None, entrypoints=None, envs=None, group_adds=None, healthcheck=None, hostname=None, hosts=None, image=None, ipc_mode=None, labels=None, links=None, log_driver=None, log_opts=None, logs=None, max_retry_count=None, memory=None, memory_swap=None, mounts=None, must_run=None, name=None, network_aliases=None, network_mode=None, networks=None, networks_advanced=None, pid_mode=None, ports=None, privileged=None, publish_all_ports=None, read_only=None, restart=None, rm=None, shm_size=None, start=None, sysctls=None, tmpfs=None, ulimits=None, uploads=None, user=None, userns_mode=None, volumes=None, working_dir=None, __props__=None, __name__=None, __opts__=None):
         """
         Manages the lifecycle of a Docker container.
@@ -384,7 +384,6 @@ class Container(pulumi.CustomResource):
         :param pulumi.Input[bool] logs: Save the container logs (`attach` must be enabled).
         :param pulumi.Input[float] max_retry_count: The maximum amount of times to an attempt
                a restart when `restart` is set to "on-failure"
-               * `working_dir`- (Optional, string) The working directory for commands to run in
         :param pulumi.Input[float] memory: The memory limit for the container in MBs.
         :param pulumi.Input[list] mounts: See Mounts below for details.
         :param pulumi.Input[list] network_aliases: Network aliases of the container for user-defined networks only. *Deprecated:* use `networks_advanced` instead.
@@ -413,6 +412,7 @@ class Container(pulumi.CustomResource):
                by name.
         :param pulumi.Input[str] userns_mode: Sets the usernamespace mode for the container when usernamespace remapping option is enabled.
         :param pulumi.Input[list] volumes: See Volumes below for details.
+        :param pulumi.Input[str] working_dir: The working directory for commands to run in
 
         The **capabilities** object supports the following:
 
@@ -446,8 +446,7 @@ class Container(pulumi.CustomResource):
         The **labels** object supports the following:
 
           * `label` (`pulumi.Input[str]`) - Name of the label
-            * `value` (Required, string) Value of the label
-          * `value` (`pulumi.Input[str]`)
+          * `value` (`pulumi.Input[str]`) - Value of the label
 
         The **mounts** object supports the following:
 
@@ -468,8 +467,7 @@ class Container(pulumi.CustomResource):
             * `driverOptions` (`pulumi.Input[dict]`) - Options for the driver.
             * `labels` (`pulumi.Input[list]`) - Adding labels.
               * `label` (`pulumi.Input[str]`) - Name of the label
-                * `value` (Required, string) Value of the label
-              * `value` (`pulumi.Input[str]`)
+              * `value` (`pulumi.Input[str]`) - Value of the label
 
             * `noCopy` (`pulumi.Input[bool]`) - Whether to populate volume with data from the target.
 
@@ -655,7 +653,6 @@ class Container(pulumi.CustomResource):
         :param pulumi.Input[bool] logs: Save the container logs (`attach` must be enabled).
         :param pulumi.Input[float] max_retry_count: The maximum amount of times to an attempt
                a restart when `restart` is set to "on-failure"
-               * `working_dir`- (Optional, string) The working directory for commands to run in
         :param pulumi.Input[float] memory: The memory limit for the container in MBs.
         :param pulumi.Input[list] mounts: See Mounts below for details.
         :param pulumi.Input[list] network_aliases: Network aliases of the container for user-defined networks only. *Deprecated:* use `networks_advanced` instead.
@@ -686,6 +683,7 @@ class Container(pulumi.CustomResource):
                by name.
         :param pulumi.Input[str] userns_mode: Sets the usernamespace mode for the container when usernamespace remapping option is enabled.
         :param pulumi.Input[list] volumes: See Volumes below for details.
+        :param pulumi.Input[str] working_dir: The working directory for commands to run in
 
         The **capabilities** object supports the following:
 
@@ -719,8 +717,7 @@ class Container(pulumi.CustomResource):
         The **labels** object supports the following:
 
           * `label` (`pulumi.Input[str]`) - Name of the label
-            * `value` (Required, string) Value of the label
-          * `value` (`pulumi.Input[str]`)
+          * `value` (`pulumi.Input[str]`) - Value of the label
 
         The **mounts** object supports the following:
 
@@ -741,8 +738,7 @@ class Container(pulumi.CustomResource):
             * `driverOptions` (`pulumi.Input[dict]`) - Options for the driver.
             * `labels` (`pulumi.Input[list]`) - Adding labels.
               * `label` (`pulumi.Input[str]`) - Name of the label
-                * `value` (Required, string) Value of the label
-              * `value` (`pulumi.Input[str]`)
+              * `value` (`pulumi.Input[str]`) - Value of the label
 
             * `noCopy` (`pulumi.Input[bool]`) - Whether to populate volume with data from the target.
 

@@ -14,11 +14,13 @@ namespace Pulumi.Docker.Inputs
     {
         /// <summary>
         /// Name of the label
-        /// * `value` (Required, string) Value of the label
         /// </summary>
         [Input("label", required: true)]
         public Input<string> Label { get; set; } = null!;
 
+        /// <summary>
+        /// Value of the label
+        /// </summary>
         [Input("value", required: true)]
         public Input<string> Value { get; set; } = null!;
 
