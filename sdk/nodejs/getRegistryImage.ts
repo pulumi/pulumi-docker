@@ -19,9 +19,9 @@ import * as utilities from "./utilities";
  * import * as pulumi from "@pulumi/pulumi";
  * import * as docker from "@pulumi/docker";
  * 
- * const ubuntuRegistryImage = docker.getRegistryImage({
+ * const ubuntuRegistryImage = pulumi.output(docker.getRegistryImage({
  *     name: "ubuntu:precise",
- * });
+ * }, { async: true }));
  * const ubuntuRemoteImage = new docker.RemoteImage("ubuntu", {
  *     name: ubuntuRegistryImage.name!,
  *     pullTriggers: [ubuntuRegistryImage.sha256Digest],
@@ -61,7 +61,7 @@ export interface GetRegistryImageResult {
     readonly name?: string;
     readonly sha256Digest: string;
     /**
-     * id is the provider-assigned unique ID for this managed resource.
+     * The provider-assigned unique ID for this managed resource.
      */
     readonly id: string;
 }

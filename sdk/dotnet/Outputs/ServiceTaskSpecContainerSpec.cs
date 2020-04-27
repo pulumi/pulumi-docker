@@ -39,7 +39,6 @@ namespace Pulumi.Docker.Outputs
         public readonly ImmutableDictionary<string, string>? Env;
         /// <summary>
         /// A list of additional groups that the container process will run as.
-        /// * `privileges` (Optional, block) See Privileges below for details.
         /// </summary>
         public readonly ImmutableArray<string> Groups;
         /// <summary>
@@ -67,6 +66,9 @@ namespace Pulumi.Docker.Outputs
         /// See Mounts below for details.
         /// </summary>
         public readonly ImmutableArray<Outputs.ServiceTaskSpecContainerSpecMount> Mounts;
+        /// <summary>
+        /// See Privileges below for details.
+        /// </summary>
         public readonly Outputs.ServiceTaskSpecContainerSpecPrivileges? Privileges;
         /// <summary>
         /// Mount the container's root filesystem as read only.

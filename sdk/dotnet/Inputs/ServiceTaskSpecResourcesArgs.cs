@@ -14,22 +14,12 @@ namespace Pulumi.Docker.Inputs
     {
         /// <summary>
         /// Describes the resources which can be advertised by a node and requested by a task.
-        /// * `nano_cpus` (Optional, int) CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
-        /// * `memory_bytes` (Optional, int) The amount of memory in bytes the container allocates
-        /// * `generic_resources` (Optional, map) User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
-        /// * `named_resources_spec` (Optional, set of string) The String resources, delimited by `=`
-        /// * `discrete_resources_spec` (Optional, set of string) The Integer resources, delimited by `=`
         /// </summary>
         [Input("limits")]
         public Input<Inputs.ServiceTaskSpecResourcesLimitsArgs>? Limits { get; set; }
 
         /// <summary>
         /// An object describing the resources which can be advertised by a node and requested by a task.
-        /// * `nano_cpus` (Optional, int) CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
-        /// * `memory_bytes` (Optional, int) The amount of memory in bytes the container allocates
-        /// * `generic_resources` (Optional, map) User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
-        /// * `named_resources_spec` (Optional, set of string) The String resources
-        /// * `discrete_resources_spec` (Optional, set of string) The Integer resources
         /// </summary>
         [Input("reservation")]
         public Input<Inputs.ServiceTaskSpecResourcesReservationArgs>? Reservation { get; set; }

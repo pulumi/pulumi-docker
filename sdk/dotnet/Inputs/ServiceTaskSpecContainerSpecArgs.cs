@@ -77,7 +77,6 @@ namespace Pulumi.Docker.Inputs
 
         /// <summary>
         /// A list of additional groups that the container process will run as.
-        /// * `privileges` (Optional, block) See Privileges below for details.
         /// </summary>
         public InputList<string> Groups
         {
@@ -141,6 +140,9 @@ namespace Pulumi.Docker.Inputs
             set => _mounts = value;
         }
 
+        /// <summary>
+        /// See Privileges below for details.
+        /// </summary>
         [Input("privileges")]
         public Input<Inputs.ServiceTaskSpecContainerSpecPrivilegesArgs>? Privileges { get; set; }
 

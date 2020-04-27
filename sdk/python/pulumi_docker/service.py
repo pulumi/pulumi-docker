@@ -43,8 +43,7 @@ class Service(pulumi.CustomResource):
     See Labels below for details.
 
       * `label` (`str`) - Name of the label
-        * `value` (Required, string) Value of the label
-      * `value` (`str`)
+      * `value` (`str`) - Value of the label
     """
     mode: pulumi.Output[dict]
     """
@@ -62,7 +61,7 @@ class Service(pulumi.CustomResource):
     """
     See RollbackConfig below for details.
 
-      * `delay` (`str`) - Delay between updates `(ns|us|ms|s|m|h)`, e.g. `5s`.
+      * `delay` (`str`) - Delay between restart attempts `(ms|s|m|h)`
         all tasks are up when a service is created, or to check if all tasks are successfully updated on an update. Default: `7s`.
       * `failureAction` (`str`) - Action on update failure: `pause|continue|rollback`.
       * `maxFailureRatio` (`str`) - The failure rate to tolerate during an update as `float`. **Important:** the `float`need to be wrapped in a `string` to avoid internal
@@ -75,7 +74,7 @@ class Service(pulumi.CustomResource):
     """
     See TaskSpec below for details.
 
-      * `containerSpec` (`dict`)
+      * `containerSpec` (`dict`) - See ContainerSpec below for details.
         * `args` (`list`) - Arguments to the command.
         * `commands` (`list`) - The command to be run in the image.
         * `configs` (`list`) - See Configs below for details.
@@ -94,7 +93,6 @@ class Service(pulumi.CustomResource):
 
         * `env` (`dict`) - A list of environment variables in the form VAR=value.
         * `groups` (`list`) - A list of additional groups that the container process will run as.
-          * `privileges` (Optional, block) See Privileges below for details.
         * `healthcheck` (`dict`) - See Healthcheck below for details.
           * `interval` (`str`) - Time between running the check `(ms|s|m|h)`. Default: `0s`.
           * `retries` (`float`) - Consecutive failures needed to report unhealthy. Default: `0`.
@@ -112,8 +110,7 @@ class Service(pulumi.CustomResource):
         * `isolation` (`str`) - Isolation technology of the containers running the service. (Windows only). Valid values are: `default|process|hyperv`
         * `labels` (`list`) - See Labels below for details.
           * `label` (`str`) - Name of the label
-            * `value` (Required, string) Value of the label
-          * `value` (`str`)
+          * `value` (`str`) - Value of the label
 
         * `mounts` (`list`) - See Mounts below for details.
           * `bindOptions` (`dict`) - Optional configuration for the `bind` type.
@@ -132,12 +129,11 @@ class Service(pulumi.CustomResource):
             * `driverOptions` (`dict`)
             * `labels` (`list`) - See Labels below for details.
               * `label` (`str`) - Name of the label
-                * `value` (Required, string) Value of the label
-              * `value` (`str`)
+              * `value` (`str`) - Value of the label
 
             * `noCopy` (`bool`) - Whether to populate volume with data from the target.
 
-        * `privileges` (`dict`)
+        * `privileges` (`dict`) - See Privileges below for details.
           * `credentialSpec` (`dict`) - For managed service account (Windows only)
             * `file` (`str`) - Load credential spec from this file.
             * `registry` (`str`) - Load credential spec from this value in the Windows registry.
@@ -162,55 +158,44 @@ class Service(pulumi.CustomResource):
         * `stopSignal` (`str`) - Signal to stop the container.
         * `user` (`str`) - The user inside the container.
 
-      * `forceUpdate` (`float`)
+      * `forceUpdate` (`float`) - A counter that triggers an update even if no relevant parameters have been changed. See [Docker Spec](https://github.com/docker/swarmkit/blob/master/api/specs.proto#L126).
       * `log_driver` (`dict`) - See Log Driver below for details.
         * `name` (`str`) - The logging driver to use. Either `(none|json-file|syslog|journald|gelf|fluentd|awslogs|splunk|etwlogs|gcplogs)`.
         * `options` (`dict`) - The options for the logging driver, e.g.
 
       * `networks` (`list`) - Ids of the networks in which the container will be put in.
-      * `placement` (`dict`)
-        * `constraints` (`list`)
-        * `platforms` (`list`)
-          * `architecture` (`str`)
-          * `os` (`str`)
+      * `placement` (`dict`) - See Placement below for details.
+        * `constraints` (`list`) - An array of constraints. e.g.: `node.role==manager`
+        * `platforms` (`list`) - Platforms stores all the platforms that the service's image can run on
+          * `architecture` (`str`) - The architecture, e.g., `amd64`
+          * `os` (`str`) - The operation system, e.g., `linux`
 
-        * `prefs` (`list`)
+        * `prefs` (`list`) - Preferences provide a way to make the scheduler aware of factors such as topology. They are provided in order from highest to lowest precedence, e.g.: `spread=node.role.manager`
 
-      * `resources` (`dict`)
+      * `resources` (`dict`) - See Resources below for details.
         * `limits` (`dict`) - Describes the resources which can be advertised by a node and requested by a task.
-          * `nano_cpus` (Optional, int) CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
-          * `memory_bytes` (Optional, int) The amount of memory in bytes the container allocates
-          * `generic_resources` (Optional, map) User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
-          * `named_resources_spec` (Optional, set of string) The String resources, delimited by `=`
-          * `discrete_resources_spec` (Optional, set of string) The Integer resources, delimited by `=`
-          * `genericResources` (`dict`)
-            * `discreteResourcesSpecs` (`list`)
-            * `namedResourcesSpecs` (`list`)
+          * `genericResources` (`dict`) - User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
+            * `discreteResourcesSpecs` (`list`) - The Integer resources, delimited by `=`
+            * `namedResourcesSpecs` (`list`) - The String resources, delimited by `=`
 
-          * `memoryBytes` (`float`)
-          * `nanoCpus` (`float`)
+          * `memoryBytes` (`float`) - The amount of memory in bytes the container allocates
+          * `nanoCpus` (`float`) - CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
 
         * `reservation` (`dict`) - An object describing the resources which can be advertised by a node and requested by a task.
-          * `nano_cpus` (Optional, int) CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
-          * `memory_bytes` (Optional, int) The amount of memory in bytes the container allocates
-          * `generic_resources` (Optional, map) User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
-          * `named_resources_spec` (Optional, set of string) The String resources
-          * `discrete_resources_spec` (Optional, set of string) The Integer resources
-          * `genericResources` (`dict`)
-            * `discreteResourcesSpecs` (`list`)
-            * `namedResourcesSpecs` (`list`)
+          * `genericResources` (`dict`) - User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
+            * `discreteResourcesSpecs` (`list`) - The Integer resources, delimited by `=`
+            * `namedResourcesSpecs` (`list`) - The String resources, delimited by `=`
 
-          * `memoryBytes` (`float`)
-          * `nanoCpus` (`float`)
+          * `memoryBytes` (`float`) - The amount of memory in bytes the container allocates
+          * `nanoCpus` (`float`) - CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
 
-      * `restartPolicy` (`dict`)
-        * `condition` (`str`)
-        * `delay` (`str`) - Delay between updates `(ns|us|ms|s|m|h)`, e.g. `5s`.
-          all tasks are up when a service is created, or to check if all tasks are successfully updated on an update. Default: `7s`.
-        * `maxAttempts` (`float`)
-        * `window` (`str`)
+      * `restartPolicy` (`dict`) - See Restart Policy below for details.
+        * `condition` (`str`) - Condition for restart: `(none|on-failure|any)`
+        * `delay` (`str`) - Delay between restart attempts `(ms|s|m|h)`
+        * `maxAttempts` (`float`) - Maximum attempts to restart a given container before giving up (default value is `0`, which is ignored)
+        * `window` (`str`) - The time window used to evaluate the restart policy (default value is `0`, which is unbounded) `(ms|s|m|h)`
 
-      * `runtime` (`str`)
+      * `runtime` (`str`) - Runtime is the type of runtime specified for the task executor. See [Docker Runtime](https://github.com/moby/moby/blob/master/api/types/swarm/runtime.go).
     """
     update_config: pulumi.Output[dict]
     """
@@ -264,8 +249,7 @@ class Service(pulumi.CustomResource):
         The **labels** object supports the following:
 
           * `label` (`pulumi.Input[str]`) - Name of the label
-            * `value` (Required, string) Value of the label
-          * `value` (`pulumi.Input[str]`)
+          * `value` (`pulumi.Input[str]`) - Value of the label
 
         The **mode** object supports the following:
 
@@ -275,7 +259,7 @@ class Service(pulumi.CustomResource):
 
         The **rollback_config** object supports the following:
 
-          * `delay` (`pulumi.Input[str]`) - Delay between updates `(ns|us|ms|s|m|h)`, e.g. `5s`.
+          * `delay` (`pulumi.Input[str]`) - Delay between restart attempts `(ms|s|m|h)`
             all tasks are up when a service is created, or to check if all tasks are successfully updated on an update. Default: `7s`.
           * `failureAction` (`pulumi.Input[str]`) - Action on update failure: `pause|continue|rollback`.
           * `maxFailureRatio` (`pulumi.Input[str]`) - The failure rate to tolerate during an update as `float`. **Important:** the `float`need to be wrapped in a `string` to avoid internal
@@ -286,7 +270,7 @@ class Service(pulumi.CustomResource):
 
         The **task_spec** object supports the following:
 
-          * `containerSpec` (`pulumi.Input[dict]`)
+          * `containerSpec` (`pulumi.Input[dict]`) - See ContainerSpec below for details.
             * `args` (`pulumi.Input[list]`) - Arguments to the command.
             * `commands` (`pulumi.Input[list]`) - The command to be run in the image.
             * `configs` (`pulumi.Input[list]`) - See Configs below for details.
@@ -305,7 +289,6 @@ class Service(pulumi.CustomResource):
 
             * `env` (`pulumi.Input[dict]`) - A list of environment variables in the form VAR=value.
             * `groups` (`pulumi.Input[list]`) - A list of additional groups that the container process will run as.
-              * `privileges` (Optional, block) See Privileges below for details.
             * `healthcheck` (`pulumi.Input[dict]`) - See Healthcheck below for details.
               * `interval` (`pulumi.Input[str]`) - Time between running the check `(ms|s|m|h)`. Default: `0s`.
               * `retries` (`pulumi.Input[float]`) - Consecutive failures needed to report unhealthy. Default: `0`.
@@ -323,8 +306,7 @@ class Service(pulumi.CustomResource):
             * `isolation` (`pulumi.Input[str]`) - Isolation technology of the containers running the service. (Windows only). Valid values are: `default|process|hyperv`
             * `labels` (`pulumi.Input[list]`) - See Labels below for details.
               * `label` (`pulumi.Input[str]`) - Name of the label
-                * `value` (Required, string) Value of the label
-              * `value` (`pulumi.Input[str]`)
+              * `value` (`pulumi.Input[str]`) - Value of the label
 
             * `mounts` (`pulumi.Input[list]`) - See Mounts below for details.
               * `bindOptions` (`pulumi.Input[dict]`) - Optional configuration for the `bind` type.
@@ -343,12 +325,11 @@ class Service(pulumi.CustomResource):
                 * `driverOptions` (`pulumi.Input[dict]`)
                 * `labels` (`pulumi.Input[list]`) - See Labels below for details.
                   * `label` (`pulumi.Input[str]`) - Name of the label
-                    * `value` (Required, string) Value of the label
-                  * `value` (`pulumi.Input[str]`)
+                  * `value` (`pulumi.Input[str]`) - Value of the label
 
                 * `noCopy` (`pulumi.Input[bool]`) - Whether to populate volume with data from the target.
 
-            * `privileges` (`pulumi.Input[dict]`)
+            * `privileges` (`pulumi.Input[dict]`) - See Privileges below for details.
               * `credentialSpec` (`pulumi.Input[dict]`) - For managed service account (Windows only)
                 * `file` (`pulumi.Input[str]`) - Load credential spec from this file.
                 * `registry` (`pulumi.Input[str]`) - Load credential spec from this value in the Windows registry.
@@ -373,55 +354,44 @@ class Service(pulumi.CustomResource):
             * `stopSignal` (`pulumi.Input[str]`) - Signal to stop the container.
             * `user` (`pulumi.Input[str]`) - The user inside the container.
 
-          * `forceUpdate` (`pulumi.Input[float]`)
+          * `forceUpdate` (`pulumi.Input[float]`) - A counter that triggers an update even if no relevant parameters have been changed. See [Docker Spec](https://github.com/docker/swarmkit/blob/master/api/specs.proto#L126).
           * `log_driver` (`pulumi.Input[dict]`) - See Log Driver below for details.
             * `name` (`pulumi.Input[str]`) - The logging driver to use. Either `(none|json-file|syslog|journald|gelf|fluentd|awslogs|splunk|etwlogs|gcplogs)`.
             * `options` (`pulumi.Input[dict]`) - The options for the logging driver, e.g.
 
           * `networks` (`pulumi.Input[list]`) - Ids of the networks in which the container will be put in.
-          * `placement` (`pulumi.Input[dict]`)
-            * `constraints` (`pulumi.Input[list]`)
-            * `platforms` (`pulumi.Input[list]`)
-              * `architecture` (`pulumi.Input[str]`)
-              * `os` (`pulumi.Input[str]`)
+          * `placement` (`pulumi.Input[dict]`) - See Placement below for details.
+            * `constraints` (`pulumi.Input[list]`) - An array of constraints. e.g.: `node.role==manager`
+            * `platforms` (`pulumi.Input[list]`) - Platforms stores all the platforms that the service's image can run on
+              * `architecture` (`pulumi.Input[str]`) - The architecture, e.g., `amd64`
+              * `os` (`pulumi.Input[str]`) - The operation system, e.g., `linux`
 
-            * `prefs` (`pulumi.Input[list]`)
+            * `prefs` (`pulumi.Input[list]`) - Preferences provide a way to make the scheduler aware of factors such as topology. They are provided in order from highest to lowest precedence, e.g.: `spread=node.role.manager`
 
-          * `resources` (`pulumi.Input[dict]`)
+          * `resources` (`pulumi.Input[dict]`) - See Resources below for details.
             * `limits` (`pulumi.Input[dict]`) - Describes the resources which can be advertised by a node and requested by a task.
-              * `nano_cpus` (Optional, int) CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
-              * `memory_bytes` (Optional, int) The amount of memory in bytes the container allocates
-              * `generic_resources` (Optional, map) User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
-              * `named_resources_spec` (Optional, set of string) The String resources, delimited by `=`
-              * `discrete_resources_spec` (Optional, set of string) The Integer resources, delimited by `=`
-              * `genericResources` (`pulumi.Input[dict]`)
-                * `discreteResourcesSpecs` (`pulumi.Input[list]`)
-                * `namedResourcesSpecs` (`pulumi.Input[list]`)
+              * `genericResources` (`pulumi.Input[dict]`) - User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
+                * `discreteResourcesSpecs` (`pulumi.Input[list]`) - The Integer resources, delimited by `=`
+                * `namedResourcesSpecs` (`pulumi.Input[list]`) - The String resources, delimited by `=`
 
-              * `memoryBytes` (`pulumi.Input[float]`)
-              * `nanoCpus` (`pulumi.Input[float]`)
+              * `memoryBytes` (`pulumi.Input[float]`) - The amount of memory in bytes the container allocates
+              * `nanoCpus` (`pulumi.Input[float]`) - CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
 
             * `reservation` (`pulumi.Input[dict]`) - An object describing the resources which can be advertised by a node and requested by a task.
-              * `nano_cpus` (Optional, int) CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
-              * `memory_bytes` (Optional, int) The amount of memory in bytes the container allocates
-              * `generic_resources` (Optional, map) User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
-              * `named_resources_spec` (Optional, set of string) The String resources
-              * `discrete_resources_spec` (Optional, set of string) The Integer resources
-              * `genericResources` (`pulumi.Input[dict]`)
-                * `discreteResourcesSpecs` (`pulumi.Input[list]`)
-                * `namedResourcesSpecs` (`pulumi.Input[list]`)
+              * `genericResources` (`pulumi.Input[dict]`) - User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
+                * `discreteResourcesSpecs` (`pulumi.Input[list]`) - The Integer resources, delimited by `=`
+                * `namedResourcesSpecs` (`pulumi.Input[list]`) - The String resources, delimited by `=`
 
-              * `memoryBytes` (`pulumi.Input[float]`)
-              * `nanoCpus` (`pulumi.Input[float]`)
+              * `memoryBytes` (`pulumi.Input[float]`) - The amount of memory in bytes the container allocates
+              * `nanoCpus` (`pulumi.Input[float]`) - CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
 
-          * `restartPolicy` (`pulumi.Input[dict]`)
-            * `condition` (`pulumi.Input[str]`)
-            * `delay` (`pulumi.Input[str]`) - Delay between updates `(ns|us|ms|s|m|h)`, e.g. `5s`.
-              all tasks are up when a service is created, or to check if all tasks are successfully updated on an update. Default: `7s`.
-            * `maxAttempts` (`pulumi.Input[float]`)
-            * `window` (`pulumi.Input[str]`)
+          * `restartPolicy` (`pulumi.Input[dict]`) - See Restart Policy below for details.
+            * `condition` (`pulumi.Input[str]`) - Condition for restart: `(none|on-failure|any)`
+            * `delay` (`pulumi.Input[str]`) - Delay between restart attempts `(ms|s|m|h)`
+            * `maxAttempts` (`pulumi.Input[float]`) - Maximum attempts to restart a given container before giving up (default value is `0`, which is ignored)
+            * `window` (`pulumi.Input[str]`) - The time window used to evaluate the restart policy (default value is `0`, which is unbounded) `(ms|s|m|h)`
 
-          * `runtime` (`pulumi.Input[str]`)
+          * `runtime` (`pulumi.Input[str]`) - Runtime is the type of runtime specified for the task executor. See [Docker Runtime](https://github.com/moby/moby/blob/master/api/types/swarm/runtime.go).
 
         The **update_config** object supports the following:
 
@@ -511,8 +481,7 @@ class Service(pulumi.CustomResource):
         The **labels** object supports the following:
 
           * `label` (`pulumi.Input[str]`) - Name of the label
-            * `value` (Required, string) Value of the label
-          * `value` (`pulumi.Input[str]`)
+          * `value` (`pulumi.Input[str]`) - Value of the label
 
         The **mode** object supports the following:
 
@@ -522,7 +491,7 @@ class Service(pulumi.CustomResource):
 
         The **rollback_config** object supports the following:
 
-          * `delay` (`pulumi.Input[str]`) - Delay between updates `(ns|us|ms|s|m|h)`, e.g. `5s`.
+          * `delay` (`pulumi.Input[str]`) - Delay between restart attempts `(ms|s|m|h)`
             all tasks are up when a service is created, or to check if all tasks are successfully updated on an update. Default: `7s`.
           * `failureAction` (`pulumi.Input[str]`) - Action on update failure: `pause|continue|rollback`.
           * `maxFailureRatio` (`pulumi.Input[str]`) - The failure rate to tolerate during an update as `float`. **Important:** the `float`need to be wrapped in a `string` to avoid internal
@@ -533,7 +502,7 @@ class Service(pulumi.CustomResource):
 
         The **task_spec** object supports the following:
 
-          * `containerSpec` (`pulumi.Input[dict]`)
+          * `containerSpec` (`pulumi.Input[dict]`) - See ContainerSpec below for details.
             * `args` (`pulumi.Input[list]`) - Arguments to the command.
             * `commands` (`pulumi.Input[list]`) - The command to be run in the image.
             * `configs` (`pulumi.Input[list]`) - See Configs below for details.
@@ -552,7 +521,6 @@ class Service(pulumi.CustomResource):
 
             * `env` (`pulumi.Input[dict]`) - A list of environment variables in the form VAR=value.
             * `groups` (`pulumi.Input[list]`) - A list of additional groups that the container process will run as.
-              * `privileges` (Optional, block) See Privileges below for details.
             * `healthcheck` (`pulumi.Input[dict]`) - See Healthcheck below for details.
               * `interval` (`pulumi.Input[str]`) - Time between running the check `(ms|s|m|h)`. Default: `0s`.
               * `retries` (`pulumi.Input[float]`) - Consecutive failures needed to report unhealthy. Default: `0`.
@@ -570,8 +538,7 @@ class Service(pulumi.CustomResource):
             * `isolation` (`pulumi.Input[str]`) - Isolation technology of the containers running the service. (Windows only). Valid values are: `default|process|hyperv`
             * `labels` (`pulumi.Input[list]`) - See Labels below for details.
               * `label` (`pulumi.Input[str]`) - Name of the label
-                * `value` (Required, string) Value of the label
-              * `value` (`pulumi.Input[str]`)
+              * `value` (`pulumi.Input[str]`) - Value of the label
 
             * `mounts` (`pulumi.Input[list]`) - See Mounts below for details.
               * `bindOptions` (`pulumi.Input[dict]`) - Optional configuration for the `bind` type.
@@ -590,12 +557,11 @@ class Service(pulumi.CustomResource):
                 * `driverOptions` (`pulumi.Input[dict]`)
                 * `labels` (`pulumi.Input[list]`) - See Labels below for details.
                   * `label` (`pulumi.Input[str]`) - Name of the label
-                    * `value` (Required, string) Value of the label
-                  * `value` (`pulumi.Input[str]`)
+                  * `value` (`pulumi.Input[str]`) - Value of the label
 
                 * `noCopy` (`pulumi.Input[bool]`) - Whether to populate volume with data from the target.
 
-            * `privileges` (`pulumi.Input[dict]`)
+            * `privileges` (`pulumi.Input[dict]`) - See Privileges below for details.
               * `credentialSpec` (`pulumi.Input[dict]`) - For managed service account (Windows only)
                 * `file` (`pulumi.Input[str]`) - Load credential spec from this file.
                 * `registry` (`pulumi.Input[str]`) - Load credential spec from this value in the Windows registry.
@@ -620,55 +586,44 @@ class Service(pulumi.CustomResource):
             * `stopSignal` (`pulumi.Input[str]`) - Signal to stop the container.
             * `user` (`pulumi.Input[str]`) - The user inside the container.
 
-          * `forceUpdate` (`pulumi.Input[float]`)
+          * `forceUpdate` (`pulumi.Input[float]`) - A counter that triggers an update even if no relevant parameters have been changed. See [Docker Spec](https://github.com/docker/swarmkit/blob/master/api/specs.proto#L126).
           * `log_driver` (`pulumi.Input[dict]`) - See Log Driver below for details.
             * `name` (`pulumi.Input[str]`) - The logging driver to use. Either `(none|json-file|syslog|journald|gelf|fluentd|awslogs|splunk|etwlogs|gcplogs)`.
             * `options` (`pulumi.Input[dict]`) - The options for the logging driver, e.g.
 
           * `networks` (`pulumi.Input[list]`) - Ids of the networks in which the container will be put in.
-          * `placement` (`pulumi.Input[dict]`)
-            * `constraints` (`pulumi.Input[list]`)
-            * `platforms` (`pulumi.Input[list]`)
-              * `architecture` (`pulumi.Input[str]`)
-              * `os` (`pulumi.Input[str]`)
+          * `placement` (`pulumi.Input[dict]`) - See Placement below for details.
+            * `constraints` (`pulumi.Input[list]`) - An array of constraints. e.g.: `node.role==manager`
+            * `platforms` (`pulumi.Input[list]`) - Platforms stores all the platforms that the service's image can run on
+              * `architecture` (`pulumi.Input[str]`) - The architecture, e.g., `amd64`
+              * `os` (`pulumi.Input[str]`) - The operation system, e.g., `linux`
 
-            * `prefs` (`pulumi.Input[list]`)
+            * `prefs` (`pulumi.Input[list]`) - Preferences provide a way to make the scheduler aware of factors such as topology. They are provided in order from highest to lowest precedence, e.g.: `spread=node.role.manager`
 
-          * `resources` (`pulumi.Input[dict]`)
+          * `resources` (`pulumi.Input[dict]`) - See Resources below for details.
             * `limits` (`pulumi.Input[dict]`) - Describes the resources which can be advertised by a node and requested by a task.
-              * `nano_cpus` (Optional, int) CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
-              * `memory_bytes` (Optional, int) The amount of memory in bytes the container allocates
-              * `generic_resources` (Optional, map) User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
-              * `named_resources_spec` (Optional, set of string) The String resources, delimited by `=`
-              * `discrete_resources_spec` (Optional, set of string) The Integer resources, delimited by `=`
-              * `genericResources` (`pulumi.Input[dict]`)
-                * `discreteResourcesSpecs` (`pulumi.Input[list]`)
-                * `namedResourcesSpecs` (`pulumi.Input[list]`)
+              * `genericResources` (`pulumi.Input[dict]`) - User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
+                * `discreteResourcesSpecs` (`pulumi.Input[list]`) - The Integer resources, delimited by `=`
+                * `namedResourcesSpecs` (`pulumi.Input[list]`) - The String resources, delimited by `=`
 
-              * `memoryBytes` (`pulumi.Input[float]`)
-              * `nanoCpus` (`pulumi.Input[float]`)
+              * `memoryBytes` (`pulumi.Input[float]`) - The amount of memory in bytes the container allocates
+              * `nanoCpus` (`pulumi.Input[float]`) - CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
 
             * `reservation` (`pulumi.Input[dict]`) - An object describing the resources which can be advertised by a node and requested by a task.
-              * `nano_cpus` (Optional, int) CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
-              * `memory_bytes` (Optional, int) The amount of memory in bytes the container allocates
-              * `generic_resources` (Optional, map) User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
-              * `named_resources_spec` (Optional, set of string) The String resources
-              * `discrete_resources_spec` (Optional, set of string) The Integer resources
-              * `genericResources` (`pulumi.Input[dict]`)
-                * `discreteResourcesSpecs` (`pulumi.Input[list]`)
-                * `namedResourcesSpecs` (`pulumi.Input[list]`)
+              * `genericResources` (`pulumi.Input[dict]`) - User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
+                * `discreteResourcesSpecs` (`pulumi.Input[list]`) - The Integer resources, delimited by `=`
+                * `namedResourcesSpecs` (`pulumi.Input[list]`) - The String resources, delimited by `=`
 
-              * `memoryBytes` (`pulumi.Input[float]`)
-              * `nanoCpus` (`pulumi.Input[float]`)
+              * `memoryBytes` (`pulumi.Input[float]`) - The amount of memory in bytes the container allocates
+              * `nanoCpus` (`pulumi.Input[float]`) - CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
 
-          * `restartPolicy` (`pulumi.Input[dict]`)
-            * `condition` (`pulumi.Input[str]`)
-            * `delay` (`pulumi.Input[str]`) - Delay between updates `(ns|us|ms|s|m|h)`, e.g. `5s`.
-              all tasks are up when a service is created, or to check if all tasks are successfully updated on an update. Default: `7s`.
-            * `maxAttempts` (`pulumi.Input[float]`)
-            * `window` (`pulumi.Input[str]`)
+          * `restartPolicy` (`pulumi.Input[dict]`) - See Restart Policy below for details.
+            * `condition` (`pulumi.Input[str]`) - Condition for restart: `(none|on-failure|any)`
+            * `delay` (`pulumi.Input[str]`) - Delay between restart attempts `(ms|s|m|h)`
+            * `maxAttempts` (`pulumi.Input[float]`) - Maximum attempts to restart a given container before giving up (default value is `0`, which is ignored)
+            * `window` (`pulumi.Input[str]`) - The time window used to evaluate the restart policy (default value is `0`, which is unbounded) `(ms|s|m|h)`
 
-          * `runtime` (`pulumi.Input[str]`)
+          * `runtime` (`pulumi.Input[str]`) - Runtime is the type of runtime specified for the task executor. See [Docker Runtime](https://github.com/moby/moby/blob/master/api/types/swarm/runtime.go).
 
         The **update_config** object supports the following:
 

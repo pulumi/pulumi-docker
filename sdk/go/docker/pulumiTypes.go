@@ -144,12 +144,22 @@ func (o ContainerCapabilitiesPtrOutput) Elem() ContainerCapabilitiesOutput {
 
 // list of linux capabilities to add.
 func (o ContainerCapabilitiesPtrOutput) Adds() pulumi.StringArrayOutput {
-	return o.ApplyT(func(v ContainerCapabilities) []string { return v.Adds }).(pulumi.StringArrayOutput)
+	return o.ApplyT(func(v *ContainerCapabilities) []string {
+		if v == nil {
+			return nil
+		}
+		return v.Adds
+	}).(pulumi.StringArrayOutput)
 }
 
 // list of linux capabilities to drop.
 func (o ContainerCapabilitiesPtrOutput) Drops() pulumi.StringArrayOutput {
-	return o.ApplyT(func(v ContainerCapabilities) []string { return v.Drops }).(pulumi.StringArrayOutput)
+	return o.ApplyT(func(v *ContainerCapabilities) []string {
+		if v == nil {
+			return nil
+		}
+		return v.Drops
+	}).(pulumi.StringArrayOutput)
 }
 
 type ContainerDevice struct {
@@ -445,28 +455,53 @@ func (o ContainerHealthcheckPtrOutput) Elem() ContainerHealthcheckOutput {
 
 // Time between running the check `(ms|s|m|h)`. Default: `0s`.
 func (o ContainerHealthcheckPtrOutput) Interval() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v ContainerHealthcheck) *string { return v.Interval }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v *ContainerHealthcheck) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Interval
+	}).(pulumi.StringPtrOutput)
 }
 
 // Consecutive failures needed to report unhealthy. Default: `0`.
 func (o ContainerHealthcheckPtrOutput) Retries() pulumi.IntPtrOutput {
-	return o.ApplyT(func(v ContainerHealthcheck) *int { return v.Retries }).(pulumi.IntPtrOutput)
+	return o.ApplyT(func(v *ContainerHealthcheck) *int {
+		if v == nil {
+			return nil
+		}
+		return v.Retries
+	}).(pulumi.IntPtrOutput)
 }
 
 // Start period for the container to initialize before counting retries towards unstable `(ms|s|m|h)`. Default: `0s`.
 func (o ContainerHealthcheckPtrOutput) StartPeriod() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v ContainerHealthcheck) *string { return v.StartPeriod }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v *ContainerHealthcheck) *string {
+		if v == nil {
+			return nil
+		}
+		return v.StartPeriod
+	}).(pulumi.StringPtrOutput)
 }
 
 // Command to run to check health. For example, to run `curl -f http://localhost/health` set the
 // command to be `["CMD", "curl", "-f", "http://localhost/health"]`.
 func (o ContainerHealthcheckPtrOutput) Tests() pulumi.StringArrayOutput {
-	return o.ApplyT(func(v ContainerHealthcheck) []string { return v.Tests }).(pulumi.StringArrayOutput)
+	return o.ApplyT(func(v *ContainerHealthcheck) []string {
+		if v == nil {
+			return nil
+		}
+		return v.Tests
+	}).(pulumi.StringArrayOutput)
 }
 
 // Maximum time to allow one check to run `(ms|s|m|h)`. Default: `0s`.
 func (o ContainerHealthcheckPtrOutput) Timeout() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v ContainerHealthcheck) *string { return v.Timeout }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v *ContainerHealthcheck) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Timeout
+	}).(pulumi.StringPtrOutput)
 }
 
 type ContainerHost struct {
@@ -579,8 +614,8 @@ func (o ContainerHostArrayOutput) Index(i pulumi.IntInput) ContainerHostOutput {
 
 type ContainerLabel struct {
 	// Name of the label
-	// * `value` (Required, string) Value of the label
 	Label string `pulumi:"label"`
+	// Value of the label
 	Value string `pulumi:"value"`
 }
 
@@ -598,8 +633,8 @@ type ContainerLabelInput interface {
 
 type ContainerLabelArgs struct {
 	// Name of the label
-	// * `value` (Required, string) Value of the label
 	Label pulumi.StringInput `pulumi:"label"`
+	// Value of the label
 	Value pulumi.StringInput `pulumi:"value"`
 }
 
@@ -656,11 +691,11 @@ func (o ContainerLabelOutput) ToContainerLabelOutputWithContext(ctx context.Cont
 }
 
 // Name of the label
-// * `value` (Required, string) Value of the label
 func (o ContainerLabelOutput) Label() pulumi.StringOutput {
 	return o.ApplyT(func(v ContainerLabel) string { return v.Label }).(pulumi.StringOutput)
 }
 
+// Value of the label
 func (o ContainerLabelOutput) Value() pulumi.StringOutput {
 	return o.ApplyT(func(v ContainerLabel) string { return v.Value }).(pulumi.StringOutput)
 }
@@ -966,7 +1001,12 @@ func (o ContainerMountBindOptionsPtrOutput) Elem() ContainerMountBindOptionsOutp
 
 // A propagation mode with the value.
 func (o ContainerMountBindOptionsPtrOutput) Propagation() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v ContainerMountBindOptions) *string { return v.Propagation }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v *ContainerMountBindOptions) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Propagation
+	}).(pulumi.StringPtrOutput)
 }
 
 type ContainerMountTmpfsOptions struct {
@@ -1103,12 +1143,22 @@ func (o ContainerMountTmpfsOptionsPtrOutput) Elem() ContainerMountTmpfsOptionsOu
 
 // The permission mode for the tmpfs mount in an integer.
 func (o ContainerMountTmpfsOptionsPtrOutput) Mode() pulumi.IntPtrOutput {
-	return o.ApplyT(func(v ContainerMountTmpfsOptions) *int { return v.Mode }).(pulumi.IntPtrOutput)
+	return o.ApplyT(func(v *ContainerMountTmpfsOptions) *int {
+		if v == nil {
+			return nil
+		}
+		return v.Mode
+	}).(pulumi.IntPtrOutput)
 }
 
 // The size for the tmpfs mount in bytes.
 func (o ContainerMountTmpfsOptionsPtrOutput) SizeBytes() pulumi.IntPtrOutput {
-	return o.ApplyT(func(v ContainerMountTmpfsOptions) *int { return v.SizeBytes }).(pulumi.IntPtrOutput)
+	return o.ApplyT(func(v *ContainerMountTmpfsOptions) *int {
+		if v == nil {
+			return nil
+		}
+		return v.SizeBytes
+	}).(pulumi.IntPtrOutput)
 }
 
 type ContainerMountVolumeOptions struct {
@@ -1258,28 +1308,48 @@ func (o ContainerMountVolumeOptionsPtrOutput) Elem() ContainerMountVolumeOptions
 }
 
 func (o ContainerMountVolumeOptionsPtrOutput) DriverName() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v ContainerMountVolumeOptions) *string { return v.DriverName }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v *ContainerMountVolumeOptions) *string {
+		if v == nil {
+			return nil
+		}
+		return v.DriverName
+	}).(pulumi.StringPtrOutput)
 }
 
 // Options for the driver.
 func (o ContainerMountVolumeOptionsPtrOutput) DriverOptions() pulumi.StringMapOutput {
-	return o.ApplyT(func(v ContainerMountVolumeOptions) map[string]string { return v.DriverOptions }).(pulumi.StringMapOutput)
+	return o.ApplyT(func(v *ContainerMountVolumeOptions) map[string]string {
+		if v == nil {
+			return nil
+		}
+		return v.DriverOptions
+	}).(pulumi.StringMapOutput)
 }
 
 // Adding labels.
 func (o ContainerMountVolumeOptionsPtrOutput) Labels() ContainerMountVolumeOptionsLabelArrayOutput {
-	return o.ApplyT(func(v ContainerMountVolumeOptions) []ContainerMountVolumeOptionsLabel { return v.Labels }).(ContainerMountVolumeOptionsLabelArrayOutput)
+	return o.ApplyT(func(v *ContainerMountVolumeOptions) []ContainerMountVolumeOptionsLabel {
+		if v == nil {
+			return nil
+		}
+		return v.Labels
+	}).(ContainerMountVolumeOptionsLabelArrayOutput)
 }
 
 // Whether to populate volume with data from the target.
 func (o ContainerMountVolumeOptionsPtrOutput) NoCopy() pulumi.BoolPtrOutput {
-	return o.ApplyT(func(v ContainerMountVolumeOptions) *bool { return v.NoCopy }).(pulumi.BoolPtrOutput)
+	return o.ApplyT(func(v *ContainerMountVolumeOptions) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.NoCopy
+	}).(pulumi.BoolPtrOutput)
 }
 
 type ContainerMountVolumeOptionsLabel struct {
 	// Name of the label
-	// * `value` (Required, string) Value of the label
 	Label string `pulumi:"label"`
+	// Value of the label
 	Value string `pulumi:"value"`
 }
 
@@ -1297,8 +1367,8 @@ type ContainerMountVolumeOptionsLabelInput interface {
 
 type ContainerMountVolumeOptionsLabelArgs struct {
 	// Name of the label
-	// * `value` (Required, string) Value of the label
 	Label pulumi.StringInput `pulumi:"label"`
+	// Value of the label
 	Value pulumi.StringInput `pulumi:"value"`
 }
 
@@ -1355,11 +1425,11 @@ func (o ContainerMountVolumeOptionsLabelOutput) ToContainerMountVolumeOptionsLab
 }
 
 // Name of the label
-// * `value` (Required, string) Value of the label
 func (o ContainerMountVolumeOptionsLabelOutput) Label() pulumi.StringOutput {
 	return o.ApplyT(func(v ContainerMountVolumeOptionsLabel) string { return v.Label }).(pulumi.StringOutput)
 }
 
+// Value of the label
 func (o ContainerMountVolumeOptionsLabelOutput) Value() pulumi.StringOutput {
 	return o.ApplyT(func(v ContainerMountVolumeOptionsLabel) string { return v.Value }).(pulumi.StringOutput)
 }
@@ -2289,8 +2359,8 @@ func (o NetworkIpamConfigArrayOutput) Index(i pulumi.IntInput) NetworkIpamConfig
 
 type NetworkLabel struct {
 	// Name of the label
-	// * `value` (Required, string) Value of the label
 	Label string `pulumi:"label"`
+	// Value of the label
 	Value string `pulumi:"value"`
 }
 
@@ -2308,8 +2378,8 @@ type NetworkLabelInput interface {
 
 type NetworkLabelArgs struct {
 	// Name of the label
-	// * `value` (Required, string) Value of the label
 	Label pulumi.StringInput `pulumi:"label"`
+	// Value of the label
 	Value pulumi.StringInput `pulumi:"value"`
 }
 
@@ -2366,11 +2436,11 @@ func (o NetworkLabelOutput) ToNetworkLabelOutputWithContext(ctx context.Context)
 }
 
 // Name of the label
-// * `value` (Required, string) Value of the label
 func (o NetworkLabelOutput) Label() pulumi.StringOutput {
 	return o.ApplyT(func(v NetworkLabel) string { return v.Label }).(pulumi.StringOutput)
 }
 
+// Value of the label
 func (o NetworkLabelOutput) Value() pulumi.StringOutput {
 	return o.ApplyT(func(v NetworkLabel) string { return v.Value }).(pulumi.StringOutput)
 }
@@ -2397,8 +2467,8 @@ func (o NetworkLabelArrayOutput) Index(i pulumi.IntInput) NetworkLabelOutput {
 
 type SecretLabel struct {
 	// Name of the label
-	// * `value` (Required, string) Value of the label
 	Label string `pulumi:"label"`
+	// Value of the label
 	Value string `pulumi:"value"`
 }
 
@@ -2416,8 +2486,8 @@ type SecretLabelInput interface {
 
 type SecretLabelArgs struct {
 	// Name of the label
-	// * `value` (Required, string) Value of the label
 	Label pulumi.StringInput `pulumi:"label"`
+	// Value of the label
 	Value pulumi.StringInput `pulumi:"value"`
 }
 
@@ -2474,11 +2544,11 @@ func (o SecretLabelOutput) ToSecretLabelOutputWithContext(ctx context.Context) S
 }
 
 // Name of the label
-// * `value` (Required, string) Value of the label
 func (o SecretLabelOutput) Label() pulumi.StringOutput {
 	return o.ApplyT(func(v SecretLabel) string { return v.Label }).(pulumi.StringOutput)
 }
 
+// Value of the label
 func (o SecretLabelOutput) Value() pulumi.StringOutput {
 	return o.ApplyT(func(v SecretLabel) string { return v.Value }).(pulumi.StringOutput)
 }
@@ -2646,17 +2716,32 @@ func (o ServiceAuthPtrOutput) Elem() ServiceAuthOutput {
 
 // The password to use for authenticating to the registry. If this is blank, the `DOCKER_REGISTRY_PASS` is also be checked.
 func (o ServiceAuthPtrOutput) Password() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v ServiceAuth) *string { return v.Password }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v *ServiceAuth) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Password
+	}).(pulumi.StringPtrOutput)
 }
 
 // The address of the registry server
-func (o ServiceAuthPtrOutput) ServerAddress() pulumi.StringOutput {
-	return o.ApplyT(func(v ServiceAuth) string { return v.ServerAddress }).(pulumi.StringOutput)
+func (o ServiceAuthPtrOutput) ServerAddress() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *ServiceAuth) *string {
+		if v == nil {
+			return nil
+		}
+		return &v.ServerAddress
+	}).(pulumi.StringPtrOutput)
 }
 
 // The username to use for authenticating to the registry. If this is blank, the `DOCKER_REGISTRY_USER` is also be checked.
 func (o ServiceAuthPtrOutput) Username() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v ServiceAuth) *string { return v.Username }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v *ServiceAuth) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Username
+	}).(pulumi.StringPtrOutput)
 }
 
 type ServiceConvergeConfig struct {
@@ -2797,12 +2882,22 @@ func (o ServiceConvergeConfigPtrOutput) Elem() ServiceConvergeConfigOutput {
 // Time between each the check to check docker endpoint `(ms|s|m|h)`. For example, to check if
 // all tasks are up when a service is created, or to check if all tasks are successfully updated on an update. Default: `7s`.
 func (o ServiceConvergeConfigPtrOutput) Delay() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v ServiceConvergeConfig) *string { return v.Delay }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v *ServiceConvergeConfig) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Delay
+	}).(pulumi.StringPtrOutput)
 }
 
 // The timeout of the service to reach the desired state `(s|m)`. Default: `3m`.
 func (o ServiceConvergeConfigPtrOutput) Timeout() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v ServiceConvergeConfig) *string { return v.Timeout }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v *ServiceConvergeConfig) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Timeout
+	}).(pulumi.StringPtrOutput)
 }
 
 type ServiceEndpointSpec struct {
@@ -2939,12 +3034,22 @@ func (o ServiceEndpointSpecPtrOutput) Elem() ServiceEndpointSpecOutput {
 
 // The mode of resolution to use for internal load balancing between tasks. `(vip|dnsrr)`. Default: `vip`.
 func (o ServiceEndpointSpecPtrOutput) Mode() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v ServiceEndpointSpec) *string { return v.Mode }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v *ServiceEndpointSpec) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Mode
+	}).(pulumi.StringPtrOutput)
 }
 
 // See Ports below for details.
 func (o ServiceEndpointSpecPtrOutput) Ports() ServiceEndpointSpecPortArrayOutput {
-	return o.ApplyT(func(v ServiceEndpointSpec) []ServiceEndpointSpecPort { return v.Ports }).(ServiceEndpointSpecPortArrayOutput)
+	return o.ApplyT(func(v *ServiceEndpointSpec) []ServiceEndpointSpecPort {
+		if v == nil {
+			return nil
+		}
+		return v.Ports
+	}).(ServiceEndpointSpecPortArrayOutput)
 }
 
 type ServiceEndpointSpecPort struct {
@@ -3084,8 +3189,8 @@ func (o ServiceEndpointSpecPortArrayOutput) Index(i pulumi.IntInput) ServiceEndp
 
 type ServiceLabel struct {
 	// Name of the label
-	// * `value` (Required, string) Value of the label
 	Label string `pulumi:"label"`
+	// Value of the label
 	Value string `pulumi:"value"`
 }
 
@@ -3103,8 +3208,8 @@ type ServiceLabelInput interface {
 
 type ServiceLabelArgs struct {
 	// Name of the label
-	// * `value` (Required, string) Value of the label
 	Label pulumi.StringInput `pulumi:"label"`
+	// Value of the label
 	Value pulumi.StringInput `pulumi:"value"`
 }
 
@@ -3161,11 +3266,11 @@ func (o ServiceLabelOutput) ToServiceLabelOutputWithContext(ctx context.Context)
 }
 
 // Name of the label
-// * `value` (Required, string) Value of the label
 func (o ServiceLabelOutput) Label() pulumi.StringOutput {
 	return o.ApplyT(func(v ServiceLabel) string { return v.Label }).(pulumi.StringOutput)
 }
 
+// Value of the label
 func (o ServiceLabelOutput) Value() pulumi.StringOutput {
 	return o.ApplyT(func(v ServiceLabel) string { return v.Value }).(pulumi.StringOutput)
 }
@@ -3324,12 +3429,22 @@ func (o ServiceModePtrOutput) Elem() ServiceModeOutput {
 
 // set it to `true` to run the service in the global mode
 func (o ServiceModePtrOutput) Global() pulumi.BoolPtrOutput {
-	return o.ApplyT(func(v ServiceMode) *bool { return v.Global }).(pulumi.BoolPtrOutput)
+	return o.ApplyT(func(v *ServiceMode) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.Global
+	}).(pulumi.BoolPtrOutput)
 }
 
 // , which contains atm only the amount of `replicas`
 func (o ServiceModePtrOutput) Replicated() ServiceModeReplicatedPtrOutput {
-	return o.ApplyT(func(v ServiceMode) *ServiceModeReplicated { return v.Replicated }).(ServiceModeReplicatedPtrOutput)
+	return o.ApplyT(func(v *ServiceMode) *ServiceModeReplicated {
+		if v == nil {
+			return nil
+		}
+		return v.Replicated
+	}).(ServiceModeReplicatedPtrOutput)
 }
 
 type ServiceModeReplicated struct {
@@ -3452,11 +3567,16 @@ func (o ServiceModeReplicatedPtrOutput) Elem() ServiceModeReplicatedOutput {
 }
 
 func (o ServiceModeReplicatedPtrOutput) Replicas() pulumi.IntPtrOutput {
-	return o.ApplyT(func(v ServiceModeReplicated) *int { return v.Replicas }).(pulumi.IntPtrOutput)
+	return o.ApplyT(func(v *ServiceModeReplicated) *int {
+		if v == nil {
+			return nil
+		}
+		return v.Replicas
+	}).(pulumi.IntPtrOutput)
 }
 
 type ServiceRollbackConfig struct {
-	// Delay between updates `(ns|us|ms|s|m|h)`, e.g. `5s`.
+	// Delay between restart attempts `(ms|s|m|h)`
 	// all tasks are up when a service is created, or to check if all tasks are successfully updated on an update. Default: `7s`.
 	Delay *string `pulumi:"delay"`
 	// Action on update failure: `pause|continue|rollback`.
@@ -3485,7 +3605,7 @@ type ServiceRollbackConfigInput interface {
 }
 
 type ServiceRollbackConfigArgs struct {
-	// Delay between updates `(ns|us|ms|s|m|h)`, e.g. `5s`.
+	// Delay between restart attempts `(ms|s|m|h)`
 	// all tasks are up when a service is created, or to check if all tasks are successfully updated on an update. Default: `7s`.
 	Delay pulumi.StringPtrInput `pulumi:"delay"`
 	// Action on update failure: `pause|continue|rollback`.
@@ -3579,7 +3699,7 @@ func (o ServiceRollbackConfigOutput) ToServiceRollbackConfigPtrOutputWithContext
 	}).(ServiceRollbackConfigPtrOutput)
 }
 
-// Delay between updates `(ns|us|ms|s|m|h)`, e.g. `5s`.
+// Delay between restart attempts `(ms|s|m|h)`
 // all tasks are up when a service is created, or to check if all tasks are successfully updated on an update. Default: `7s`.
 func (o ServiceRollbackConfigOutput) Delay() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ServiceRollbackConfig) *string { return v.Delay }).(pulumi.StringPtrOutput)
@@ -3629,49 +3749,85 @@ func (o ServiceRollbackConfigPtrOutput) Elem() ServiceRollbackConfigOutput {
 	return o.ApplyT(func(v *ServiceRollbackConfig) ServiceRollbackConfig { return *v }).(ServiceRollbackConfigOutput)
 }
 
-// Delay between updates `(ns|us|ms|s|m|h)`, e.g. `5s`.
+// Delay between restart attempts `(ms|s|m|h)`
 // all tasks are up when a service is created, or to check if all tasks are successfully updated on an update. Default: `7s`.
 func (o ServiceRollbackConfigPtrOutput) Delay() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v ServiceRollbackConfig) *string { return v.Delay }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v *ServiceRollbackConfig) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Delay
+	}).(pulumi.StringPtrOutput)
 }
 
 // Action on update failure: `pause|continue|rollback`.
 func (o ServiceRollbackConfigPtrOutput) FailureAction() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v ServiceRollbackConfig) *string { return v.FailureAction }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v *ServiceRollbackConfig) *string {
+		if v == nil {
+			return nil
+		}
+		return v.FailureAction
+	}).(pulumi.StringPtrOutput)
 }
 
 // The failure rate to tolerate during an update as `float`. **Important:** the `float`need to be wrapped in a `string` to avoid internal
 // casting and precision errors.
 func (o ServiceRollbackConfigPtrOutput) MaxFailureRatio() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v ServiceRollbackConfig) *string { return v.MaxFailureRatio }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v *ServiceRollbackConfig) *string {
+		if v == nil {
+			return nil
+		}
+		return v.MaxFailureRatio
+	}).(pulumi.StringPtrOutput)
 }
 
 // Duration after each task update to monitor for failure `(ns|us|ms|s|m|h)`
 func (o ServiceRollbackConfigPtrOutput) Monitor() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v ServiceRollbackConfig) *string { return v.Monitor }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v *ServiceRollbackConfig) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Monitor
+	}).(pulumi.StringPtrOutput)
 }
 
 // Update order either 'stop-first' or 'start-first'.
 func (o ServiceRollbackConfigPtrOutput) Order() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v ServiceRollbackConfig) *string { return v.Order }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v *ServiceRollbackConfig) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Order
+	}).(pulumi.StringPtrOutput)
 }
 
 // The maximum number of tasks to be updated in one iteration simultaneously (0 to update all at once).
 func (o ServiceRollbackConfigPtrOutput) Parallelism() pulumi.IntPtrOutput {
-	return o.ApplyT(func(v ServiceRollbackConfig) *int { return v.Parallelism }).(pulumi.IntPtrOutput)
+	return o.ApplyT(func(v *ServiceRollbackConfig) *int {
+		if v == nil {
+			return nil
+		}
+		return v.Parallelism
+	}).(pulumi.IntPtrOutput)
 }
 
 type ServiceTaskSpec struct {
+	// See ContainerSpec below for details.
 	ContainerSpec ServiceTaskSpecContainerSpec `pulumi:"containerSpec"`
-	ForceUpdate   *int                         `pulumi:"forceUpdate"`
+	// A counter that triggers an update even if no relevant parameters have been changed. See [Docker Spec](https://github.com/docker/swarmkit/blob/master/api/specs.proto#L126).
+	ForceUpdate *int `pulumi:"forceUpdate"`
 	// See Log Driver below for details.
 	LogDriver *ServiceTaskSpecLogDriver `pulumi:"logDriver"`
 	// Ids of the networks in which the container will be put in.
-	Networks      []string                      `pulumi:"networks"`
-	Placement     *ServiceTaskSpecPlacement     `pulumi:"placement"`
-	Resources     *ServiceTaskSpecResources     `pulumi:"resources"`
+	Networks []string `pulumi:"networks"`
+	// See Placement below for details.
+	Placement *ServiceTaskSpecPlacement `pulumi:"placement"`
+	// See Resources below for details.
+	Resources *ServiceTaskSpecResources `pulumi:"resources"`
+	// See Restart Policy below for details.
 	RestartPolicy *ServiceTaskSpecRestartPolicy `pulumi:"restartPolicy"`
-	Runtime       *string                       `pulumi:"runtime"`
+	// Runtime is the type of runtime specified for the task executor. See [Docker Runtime](https://github.com/moby/moby/blob/master/api/types/swarm/runtime.go).
+	Runtime *string `pulumi:"runtime"`
 }
 
 // ServiceTaskSpecInput is an input type that accepts ServiceTaskSpecArgs and ServiceTaskSpecOutput values.
@@ -3687,16 +3843,22 @@ type ServiceTaskSpecInput interface {
 }
 
 type ServiceTaskSpecArgs struct {
+	// See ContainerSpec below for details.
 	ContainerSpec ServiceTaskSpecContainerSpecInput `pulumi:"containerSpec"`
-	ForceUpdate   pulumi.IntPtrInput                `pulumi:"forceUpdate"`
+	// A counter that triggers an update even if no relevant parameters have been changed. See [Docker Spec](https://github.com/docker/swarmkit/blob/master/api/specs.proto#L126).
+	ForceUpdate pulumi.IntPtrInput `pulumi:"forceUpdate"`
 	// See Log Driver below for details.
 	LogDriver ServiceTaskSpecLogDriverPtrInput `pulumi:"logDriver"`
 	// Ids of the networks in which the container will be put in.
-	Networks      pulumi.StringArrayInput              `pulumi:"networks"`
-	Placement     ServiceTaskSpecPlacementPtrInput     `pulumi:"placement"`
-	Resources     ServiceTaskSpecResourcesPtrInput     `pulumi:"resources"`
+	Networks pulumi.StringArrayInput `pulumi:"networks"`
+	// See Placement below for details.
+	Placement ServiceTaskSpecPlacementPtrInput `pulumi:"placement"`
+	// See Resources below for details.
+	Resources ServiceTaskSpecResourcesPtrInput `pulumi:"resources"`
+	// See Restart Policy below for details.
 	RestartPolicy ServiceTaskSpecRestartPolicyPtrInput `pulumi:"restartPolicy"`
-	Runtime       pulumi.StringPtrInput                `pulumi:"runtime"`
+	// Runtime is the type of runtime specified for the task executor. See [Docker Runtime](https://github.com/moby/moby/blob/master/api/types/swarm/runtime.go).
+	Runtime pulumi.StringPtrInput `pulumi:"runtime"`
 }
 
 func (ServiceTaskSpecArgs) ElementType() reflect.Type {
@@ -3776,10 +3938,13 @@ func (o ServiceTaskSpecOutput) ToServiceTaskSpecPtrOutputWithContext(ctx context
 		return &v
 	}).(ServiceTaskSpecPtrOutput)
 }
+
+// See ContainerSpec below for details.
 func (o ServiceTaskSpecOutput) ContainerSpec() ServiceTaskSpecContainerSpecOutput {
 	return o.ApplyT(func(v ServiceTaskSpec) ServiceTaskSpecContainerSpec { return v.ContainerSpec }).(ServiceTaskSpecContainerSpecOutput)
 }
 
+// A counter that triggers an update even if no relevant parameters have been changed. See [Docker Spec](https://github.com/docker/swarmkit/blob/master/api/specs.proto#L126).
 func (o ServiceTaskSpecOutput) ForceUpdate() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v ServiceTaskSpec) *int { return v.ForceUpdate }).(pulumi.IntPtrOutput)
 }
@@ -3794,18 +3959,22 @@ func (o ServiceTaskSpecOutput) Networks() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v ServiceTaskSpec) []string { return v.Networks }).(pulumi.StringArrayOutput)
 }
 
+// See Placement below for details.
 func (o ServiceTaskSpecOutput) Placement() ServiceTaskSpecPlacementPtrOutput {
 	return o.ApplyT(func(v ServiceTaskSpec) *ServiceTaskSpecPlacement { return v.Placement }).(ServiceTaskSpecPlacementPtrOutput)
 }
 
+// See Resources below for details.
 func (o ServiceTaskSpecOutput) Resources() ServiceTaskSpecResourcesPtrOutput {
 	return o.ApplyT(func(v ServiceTaskSpec) *ServiceTaskSpecResources { return v.Resources }).(ServiceTaskSpecResourcesPtrOutput)
 }
 
+// See Restart Policy below for details.
 func (o ServiceTaskSpecOutput) RestartPolicy() ServiceTaskSpecRestartPolicyPtrOutput {
 	return o.ApplyT(func(v ServiceTaskSpec) *ServiceTaskSpecRestartPolicy { return v.RestartPolicy }).(ServiceTaskSpecRestartPolicyPtrOutput)
 }
 
+// Runtime is the type of runtime specified for the task executor. See [Docker Runtime](https://github.com/moby/moby/blob/master/api/types/swarm/runtime.go).
 func (o ServiceTaskSpecOutput) Runtime() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ServiceTaskSpec) *string { return v.Runtime }).(pulumi.StringPtrOutput)
 }
@@ -3828,38 +3997,84 @@ func (o ServiceTaskSpecPtrOutput) Elem() ServiceTaskSpecOutput {
 	return o.ApplyT(func(v *ServiceTaskSpec) ServiceTaskSpec { return *v }).(ServiceTaskSpecOutput)
 }
 
-func (o ServiceTaskSpecPtrOutput) ContainerSpec() ServiceTaskSpecContainerSpecOutput {
-	return o.ApplyT(func(v ServiceTaskSpec) ServiceTaskSpecContainerSpec { return v.ContainerSpec }).(ServiceTaskSpecContainerSpecOutput)
+// See ContainerSpec below for details.
+func (o ServiceTaskSpecPtrOutput) ContainerSpec() ServiceTaskSpecContainerSpecPtrOutput {
+	return o.ApplyT(func(v *ServiceTaskSpec) *ServiceTaskSpecContainerSpec {
+		if v == nil {
+			return nil
+		}
+		return &v.ContainerSpec
+	}).(ServiceTaskSpecContainerSpecPtrOutput)
 }
 
+// A counter that triggers an update even if no relevant parameters have been changed. See [Docker Spec](https://github.com/docker/swarmkit/blob/master/api/specs.proto#L126).
 func (o ServiceTaskSpecPtrOutput) ForceUpdate() pulumi.IntPtrOutput {
-	return o.ApplyT(func(v ServiceTaskSpec) *int { return v.ForceUpdate }).(pulumi.IntPtrOutput)
+	return o.ApplyT(func(v *ServiceTaskSpec) *int {
+		if v == nil {
+			return nil
+		}
+		return v.ForceUpdate
+	}).(pulumi.IntPtrOutput)
 }
 
 // See Log Driver below for details.
 func (o ServiceTaskSpecPtrOutput) LogDriver() ServiceTaskSpecLogDriverPtrOutput {
-	return o.ApplyT(func(v ServiceTaskSpec) *ServiceTaskSpecLogDriver { return v.LogDriver }).(ServiceTaskSpecLogDriverPtrOutput)
+	return o.ApplyT(func(v *ServiceTaskSpec) *ServiceTaskSpecLogDriver {
+		if v == nil {
+			return nil
+		}
+		return v.LogDriver
+	}).(ServiceTaskSpecLogDriverPtrOutput)
 }
 
 // Ids of the networks in which the container will be put in.
 func (o ServiceTaskSpecPtrOutput) Networks() pulumi.StringArrayOutput {
-	return o.ApplyT(func(v ServiceTaskSpec) []string { return v.Networks }).(pulumi.StringArrayOutput)
+	return o.ApplyT(func(v *ServiceTaskSpec) []string {
+		if v == nil {
+			return nil
+		}
+		return v.Networks
+	}).(pulumi.StringArrayOutput)
 }
 
+// See Placement below for details.
 func (o ServiceTaskSpecPtrOutput) Placement() ServiceTaskSpecPlacementPtrOutput {
-	return o.ApplyT(func(v ServiceTaskSpec) *ServiceTaskSpecPlacement { return v.Placement }).(ServiceTaskSpecPlacementPtrOutput)
+	return o.ApplyT(func(v *ServiceTaskSpec) *ServiceTaskSpecPlacement {
+		if v == nil {
+			return nil
+		}
+		return v.Placement
+	}).(ServiceTaskSpecPlacementPtrOutput)
 }
 
+// See Resources below for details.
 func (o ServiceTaskSpecPtrOutput) Resources() ServiceTaskSpecResourcesPtrOutput {
-	return o.ApplyT(func(v ServiceTaskSpec) *ServiceTaskSpecResources { return v.Resources }).(ServiceTaskSpecResourcesPtrOutput)
+	return o.ApplyT(func(v *ServiceTaskSpec) *ServiceTaskSpecResources {
+		if v == nil {
+			return nil
+		}
+		return v.Resources
+	}).(ServiceTaskSpecResourcesPtrOutput)
 }
 
+// See Restart Policy below for details.
 func (o ServiceTaskSpecPtrOutput) RestartPolicy() ServiceTaskSpecRestartPolicyPtrOutput {
-	return o.ApplyT(func(v ServiceTaskSpec) *ServiceTaskSpecRestartPolicy { return v.RestartPolicy }).(ServiceTaskSpecRestartPolicyPtrOutput)
+	return o.ApplyT(func(v *ServiceTaskSpec) *ServiceTaskSpecRestartPolicy {
+		if v == nil {
+			return nil
+		}
+		return v.RestartPolicy
+	}).(ServiceTaskSpecRestartPolicyPtrOutput)
 }
 
+// Runtime is the type of runtime specified for the task executor. See [Docker Runtime](https://github.com/moby/moby/blob/master/api/types/swarm/runtime.go).
 func (o ServiceTaskSpecPtrOutput) Runtime() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v ServiceTaskSpec) *string { return v.Runtime }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v *ServiceTaskSpec) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Runtime
+	}).(pulumi.StringPtrOutput)
 }
 
 type ServiceTaskSpecContainerSpec struct {
@@ -3876,7 +4091,6 @@ type ServiceTaskSpecContainerSpec struct {
 	// A list of environment variables in the form VAR=value.
 	Env map[string]string `pulumi:"env"`
 	// A list of additional groups that the container process will run as.
-	// * `privileges` (Optional, block) See Privileges below for details.
 	Groups []string `pulumi:"groups"`
 	// See Healthcheck below for details.
 	Healthcheck *ServiceTaskSpecContainerSpecHealthcheck `pulumi:"healthcheck"`
@@ -3890,7 +4104,8 @@ type ServiceTaskSpecContainerSpec struct {
 	// See Labels below for details.
 	Labels []ServiceTaskSpecContainerSpecLabel `pulumi:"labels"`
 	// See Mounts below for details.
-	Mounts     []ServiceTaskSpecContainerSpecMount     `pulumi:"mounts"`
+	Mounts []ServiceTaskSpecContainerSpecMount `pulumi:"mounts"`
+	// See Privileges below for details.
 	Privileges *ServiceTaskSpecContainerSpecPrivileges `pulumi:"privileges"`
 	// Mount the container's root filesystem as read only.
 	ReadOnly *bool `pulumi:"readOnly"`
@@ -3930,7 +4145,6 @@ type ServiceTaskSpecContainerSpecArgs struct {
 	// A list of environment variables in the form VAR=value.
 	Env pulumi.StringMapInput `pulumi:"env"`
 	// A list of additional groups that the container process will run as.
-	// * `privileges` (Optional, block) See Privileges below for details.
 	Groups pulumi.StringArrayInput `pulumi:"groups"`
 	// See Healthcheck below for details.
 	Healthcheck ServiceTaskSpecContainerSpecHealthcheckPtrInput `pulumi:"healthcheck"`
@@ -3944,7 +4158,8 @@ type ServiceTaskSpecContainerSpecArgs struct {
 	// See Labels below for details.
 	Labels ServiceTaskSpecContainerSpecLabelArrayInput `pulumi:"labels"`
 	// See Mounts below for details.
-	Mounts     ServiceTaskSpecContainerSpecMountArrayInput    `pulumi:"mounts"`
+	Mounts ServiceTaskSpecContainerSpecMountArrayInput `pulumi:"mounts"`
+	// See Privileges below for details.
 	Privileges ServiceTaskSpecContainerSpecPrivilegesPtrInput `pulumi:"privileges"`
 	// Mount the container's root filesystem as read only.
 	ReadOnly pulumi.BoolPtrInput `pulumi:"readOnly"`
@@ -3970,6 +4185,48 @@ func (i ServiceTaskSpecContainerSpecArgs) ToServiceTaskSpecContainerSpecOutputWi
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecContainerSpecOutput)
 }
 
+func (i ServiceTaskSpecContainerSpecArgs) ToServiceTaskSpecContainerSpecPtrOutput() ServiceTaskSpecContainerSpecPtrOutput {
+	return i.ToServiceTaskSpecContainerSpecPtrOutputWithContext(context.Background())
+}
+
+func (i ServiceTaskSpecContainerSpecArgs) ToServiceTaskSpecContainerSpecPtrOutputWithContext(ctx context.Context) ServiceTaskSpecContainerSpecPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecContainerSpecOutput).ToServiceTaskSpecContainerSpecPtrOutputWithContext(ctx)
+}
+
+// ServiceTaskSpecContainerSpecPtrInput is an input type that accepts ServiceTaskSpecContainerSpecArgs, ServiceTaskSpecContainerSpecPtr and ServiceTaskSpecContainerSpecPtrOutput values.
+// You can construct a concrete instance of `ServiceTaskSpecContainerSpecPtrInput` via:
+//
+// 		 ServiceTaskSpecContainerSpecArgs{...}
+//
+//  or:
+//
+// 		 nil
+//
+type ServiceTaskSpecContainerSpecPtrInput interface {
+	pulumi.Input
+
+	ToServiceTaskSpecContainerSpecPtrOutput() ServiceTaskSpecContainerSpecPtrOutput
+	ToServiceTaskSpecContainerSpecPtrOutputWithContext(context.Context) ServiceTaskSpecContainerSpecPtrOutput
+}
+
+type serviceTaskSpecContainerSpecPtrType ServiceTaskSpecContainerSpecArgs
+
+func ServiceTaskSpecContainerSpecPtr(v *ServiceTaskSpecContainerSpecArgs) ServiceTaskSpecContainerSpecPtrInput {
+	return (*serviceTaskSpecContainerSpecPtrType)(v)
+}
+
+func (*serviceTaskSpecContainerSpecPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**ServiceTaskSpecContainerSpec)(nil)).Elem()
+}
+
+func (i *serviceTaskSpecContainerSpecPtrType) ToServiceTaskSpecContainerSpecPtrOutput() ServiceTaskSpecContainerSpecPtrOutput {
+	return i.ToServiceTaskSpecContainerSpecPtrOutputWithContext(context.Background())
+}
+
+func (i *serviceTaskSpecContainerSpecPtrType) ToServiceTaskSpecContainerSpecPtrOutputWithContext(ctx context.Context) ServiceTaskSpecContainerSpecPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecContainerSpecPtrOutput)
+}
+
 type ServiceTaskSpecContainerSpecOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecContainerSpecOutput) ElementType() reflect.Type {
@@ -3982,6 +4239,16 @@ func (o ServiceTaskSpecContainerSpecOutput) ToServiceTaskSpecContainerSpecOutput
 
 func (o ServiceTaskSpecContainerSpecOutput) ToServiceTaskSpecContainerSpecOutputWithContext(ctx context.Context) ServiceTaskSpecContainerSpecOutput {
 	return o
+}
+
+func (o ServiceTaskSpecContainerSpecOutput) ToServiceTaskSpecContainerSpecPtrOutput() ServiceTaskSpecContainerSpecPtrOutput {
+	return o.ToServiceTaskSpecContainerSpecPtrOutputWithContext(context.Background())
+}
+
+func (o ServiceTaskSpecContainerSpecOutput) ToServiceTaskSpecContainerSpecPtrOutputWithContext(ctx context.Context) ServiceTaskSpecContainerSpecPtrOutput {
+	return o.ApplyT(func(v ServiceTaskSpecContainerSpec) *ServiceTaskSpecContainerSpec {
+		return &v
+	}).(ServiceTaskSpecContainerSpecPtrOutput)
 }
 
 // Arguments to the command.
@@ -4015,7 +4282,6 @@ func (o ServiceTaskSpecContainerSpecOutput) Env() pulumi.StringMapOutput {
 }
 
 // A list of additional groups that the container process will run as.
-// * `privileges` (Optional, block) See Privileges below for details.
 func (o ServiceTaskSpecContainerSpecOutput) Groups() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v ServiceTaskSpecContainerSpec) []string { return v.Groups }).(pulumi.StringArrayOutput)
 }
@@ -4054,6 +4320,7 @@ func (o ServiceTaskSpecContainerSpecOutput) Mounts() ServiceTaskSpecContainerSpe
 	return o.ApplyT(func(v ServiceTaskSpecContainerSpec) []ServiceTaskSpecContainerSpecMount { return v.Mounts }).(ServiceTaskSpecContainerSpecMountArrayOutput)
 }
 
+// See Privileges below for details.
 func (o ServiceTaskSpecContainerSpecOutput) Privileges() ServiceTaskSpecContainerSpecPrivilegesPtrOutput {
 	return o.ApplyT(func(v ServiceTaskSpecContainerSpec) *ServiceTaskSpecContainerSpecPrivileges { return v.Privileges }).(ServiceTaskSpecContainerSpecPrivilegesPtrOutput)
 }
@@ -4081,6 +4348,223 @@ func (o ServiceTaskSpecContainerSpecOutput) StopSignal() pulumi.StringPtrOutput 
 // The user inside the container.
 func (o ServiceTaskSpecContainerSpecOutput) User() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ServiceTaskSpecContainerSpec) *string { return v.User }).(pulumi.StringPtrOutput)
+}
+
+type ServiceTaskSpecContainerSpecPtrOutput struct{ *pulumi.OutputState }
+
+func (ServiceTaskSpecContainerSpecPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**ServiceTaskSpecContainerSpec)(nil)).Elem()
+}
+
+func (o ServiceTaskSpecContainerSpecPtrOutput) ToServiceTaskSpecContainerSpecPtrOutput() ServiceTaskSpecContainerSpecPtrOutput {
+	return o
+}
+
+func (o ServiceTaskSpecContainerSpecPtrOutput) ToServiceTaskSpecContainerSpecPtrOutputWithContext(ctx context.Context) ServiceTaskSpecContainerSpecPtrOutput {
+	return o
+}
+
+func (o ServiceTaskSpecContainerSpecPtrOutput) Elem() ServiceTaskSpecContainerSpecOutput {
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpec) ServiceTaskSpecContainerSpec { return *v }).(ServiceTaskSpecContainerSpecOutput)
+}
+
+// Arguments to the command.
+func (o ServiceTaskSpecContainerSpecPtrOutput) Args() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpec) []string {
+		if v == nil {
+			return nil
+		}
+		return v.Args
+	}).(pulumi.StringArrayOutput)
+}
+
+// The command to be run in the image.
+func (o ServiceTaskSpecContainerSpecPtrOutput) Commands() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpec) []string {
+		if v == nil {
+			return nil
+		}
+		return v.Commands
+	}).(pulumi.StringArrayOutput)
+}
+
+// See Configs below for details.
+func (o ServiceTaskSpecContainerSpecPtrOutput) Configs() ServiceTaskSpecContainerSpecConfigArrayOutput {
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpec) []ServiceTaskSpecContainerSpecConfig {
+		if v == nil {
+			return nil
+		}
+		return v.Configs
+	}).(ServiceTaskSpecContainerSpecConfigArrayOutput)
+}
+
+// The working directory for commands to run in.
+func (o ServiceTaskSpecContainerSpecPtrOutput) Dir() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpec) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Dir
+	}).(pulumi.StringPtrOutput)
+}
+
+// See DNS Config below for details.
+func (o ServiceTaskSpecContainerSpecPtrOutput) DnsConfig() ServiceTaskSpecContainerSpecDnsConfigPtrOutput {
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpec) *ServiceTaskSpecContainerSpecDnsConfig {
+		if v == nil {
+			return nil
+		}
+		return v.DnsConfig
+	}).(ServiceTaskSpecContainerSpecDnsConfigPtrOutput)
+}
+
+// A list of environment variables in the form VAR=value.
+func (o ServiceTaskSpecContainerSpecPtrOutput) Env() pulumi.StringMapOutput {
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpec) map[string]string {
+		if v == nil {
+			return nil
+		}
+		return v.Env
+	}).(pulumi.StringMapOutput)
+}
+
+// A list of additional groups that the container process will run as.
+func (o ServiceTaskSpecContainerSpecPtrOutput) Groups() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpec) []string {
+		if v == nil {
+			return nil
+		}
+		return v.Groups
+	}).(pulumi.StringArrayOutput)
+}
+
+// See Healthcheck below for details.
+func (o ServiceTaskSpecContainerSpecPtrOutput) Healthcheck() ServiceTaskSpecContainerSpecHealthcheckPtrOutput {
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpec) *ServiceTaskSpecContainerSpecHealthcheck {
+		if v == nil {
+			return nil
+		}
+		return v.Healthcheck
+	}).(ServiceTaskSpecContainerSpecHealthcheckPtrOutput)
+}
+
+// The hostname to use for the container, as a valid RFC 1123 hostname.
+func (o ServiceTaskSpecContainerSpecPtrOutput) Hostname() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpec) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Hostname
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o ServiceTaskSpecContainerSpecPtrOutput) Hosts() ServiceTaskSpecContainerSpecHostArrayOutput {
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpec) []ServiceTaskSpecContainerSpecHost {
+		if v == nil {
+			return nil
+		}
+		return v.Hosts
+	}).(ServiceTaskSpecContainerSpecHostArrayOutput)
+}
+
+// The image used to create the Docker service.
+func (o ServiceTaskSpecContainerSpecPtrOutput) Image() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpec) *string {
+		if v == nil {
+			return nil
+		}
+		return &v.Image
+	}).(pulumi.StringPtrOutput)
+}
+
+// Isolation technology of the containers running the service. (Windows only). Valid values are: `default|process|hyperv`
+func (o ServiceTaskSpecContainerSpecPtrOutput) Isolation() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpec) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Isolation
+	}).(pulumi.StringPtrOutput)
+}
+
+// See Labels below for details.
+func (o ServiceTaskSpecContainerSpecPtrOutput) Labels() ServiceTaskSpecContainerSpecLabelArrayOutput {
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpec) []ServiceTaskSpecContainerSpecLabel {
+		if v == nil {
+			return nil
+		}
+		return v.Labels
+	}).(ServiceTaskSpecContainerSpecLabelArrayOutput)
+}
+
+// See Mounts below for details.
+func (o ServiceTaskSpecContainerSpecPtrOutput) Mounts() ServiceTaskSpecContainerSpecMountArrayOutput {
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpec) []ServiceTaskSpecContainerSpecMount {
+		if v == nil {
+			return nil
+		}
+		return v.Mounts
+	}).(ServiceTaskSpecContainerSpecMountArrayOutput)
+}
+
+// See Privileges below for details.
+func (o ServiceTaskSpecContainerSpecPtrOutput) Privileges() ServiceTaskSpecContainerSpecPrivilegesPtrOutput {
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpec) *ServiceTaskSpecContainerSpecPrivileges {
+		if v == nil {
+			return nil
+		}
+		return v.Privileges
+	}).(ServiceTaskSpecContainerSpecPrivilegesPtrOutput)
+}
+
+// Mount the container's root filesystem as read only.
+func (o ServiceTaskSpecContainerSpecPtrOutput) ReadOnly() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpec) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.ReadOnly
+	}).(pulumi.BoolPtrOutput)
+}
+
+// See Secrets below for details.
+func (o ServiceTaskSpecContainerSpecPtrOutput) Secrets() ServiceTaskSpecContainerSpecSecretArrayOutput {
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpec) []ServiceTaskSpecContainerSpecSecret {
+		if v == nil {
+			return nil
+		}
+		return v.Secrets
+	}).(ServiceTaskSpecContainerSpecSecretArrayOutput)
+}
+
+// Amount of time to wait for the container to terminate before forcefully removing it `(ms|s|m|h)`.
+func (o ServiceTaskSpecContainerSpecPtrOutput) StopGracePeriod() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpec) *string {
+		if v == nil {
+			return nil
+		}
+		return v.StopGracePeriod
+	}).(pulumi.StringPtrOutput)
+}
+
+// Signal to stop the container.
+func (o ServiceTaskSpecContainerSpecPtrOutput) StopSignal() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpec) *string {
+		if v == nil {
+			return nil
+		}
+		return v.StopSignal
+	}).(pulumi.StringPtrOutput)
+}
+
+// The user inside the container.
+func (o ServiceTaskSpecContainerSpecPtrOutput) User() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpec) *string {
+		if v == nil {
+			return nil
+		}
+		return v.User
+	}).(pulumi.StringPtrOutput)
 }
 
 type ServiceTaskSpecContainerSpecConfig struct {
@@ -4370,17 +4854,32 @@ func (o ServiceTaskSpecContainerSpecDnsConfigPtrOutput) Elem() ServiceTaskSpecCo
 
 // The IP addresses of the name servers, for example, `8.8.8.8`
 func (o ServiceTaskSpecContainerSpecDnsConfigPtrOutput) Nameservers() pulumi.StringArrayOutput {
-	return o.ApplyT(func(v ServiceTaskSpecContainerSpecDnsConfig) []string { return v.Nameservers }).(pulumi.StringArrayOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpecDnsConfig) []string {
+		if v == nil {
+			return nil
+		}
+		return v.Nameservers
+	}).(pulumi.StringArrayOutput)
 }
 
 // A list of internal resolver variables to be modified, for example, `debug`, `ndots:3`
 func (o ServiceTaskSpecContainerSpecDnsConfigPtrOutput) Options() pulumi.StringArrayOutput {
-	return o.ApplyT(func(v ServiceTaskSpecContainerSpecDnsConfig) []string { return v.Options }).(pulumi.StringArrayOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpecDnsConfig) []string {
+		if v == nil {
+			return nil
+		}
+		return v.Options
+	}).(pulumi.StringArrayOutput)
 }
 
 // A search list for host-name lookup.
 func (o ServiceTaskSpecContainerSpecDnsConfigPtrOutput) Searches() pulumi.StringArrayOutput {
-	return o.ApplyT(func(v ServiceTaskSpecContainerSpecDnsConfig) []string { return v.Searches }).(pulumi.StringArrayOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpecDnsConfig) []string {
+		if v == nil {
+			return nil
+		}
+		return v.Searches
+	}).(pulumi.StringArrayOutput)
 }
 
 type ServiceTaskSpecContainerSpecHealthcheck struct {
@@ -4547,28 +5046,53 @@ func (o ServiceTaskSpecContainerSpecHealthcheckPtrOutput) Elem() ServiceTaskSpec
 
 // Time between running the check `(ms|s|m|h)`. Default: `0s`.
 func (o ServiceTaskSpecContainerSpecHealthcheckPtrOutput) Interval() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v ServiceTaskSpecContainerSpecHealthcheck) *string { return v.Interval }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpecHealthcheck) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Interval
+	}).(pulumi.StringPtrOutput)
 }
 
 // Consecutive failures needed to report unhealthy. Default: `0`.
 func (o ServiceTaskSpecContainerSpecHealthcheckPtrOutput) Retries() pulumi.IntPtrOutput {
-	return o.ApplyT(func(v ServiceTaskSpecContainerSpecHealthcheck) *int { return v.Retries }).(pulumi.IntPtrOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpecHealthcheck) *int {
+		if v == nil {
+			return nil
+		}
+		return v.Retries
+	}).(pulumi.IntPtrOutput)
 }
 
 // Start period for the container to initialize before counting retries towards unstable `(ms|s|m|h)`. Default: `0s`.
 func (o ServiceTaskSpecContainerSpecHealthcheckPtrOutput) StartPeriod() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v ServiceTaskSpecContainerSpecHealthcheck) *string { return v.StartPeriod }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpecHealthcheck) *string {
+		if v == nil {
+			return nil
+		}
+		return v.StartPeriod
+	}).(pulumi.StringPtrOutput)
 }
 
 // Command to run to check health. For example, to run `curl -f http://localhost/health` set the
 // command to be `["CMD", "curl", "-f", "http://localhost/health"]`.
 func (o ServiceTaskSpecContainerSpecHealthcheckPtrOutput) Tests() pulumi.StringArrayOutput {
-	return o.ApplyT(func(v ServiceTaskSpecContainerSpecHealthcheck) []string { return v.Tests }).(pulumi.StringArrayOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpecHealthcheck) []string {
+		if v == nil {
+			return nil
+		}
+		return v.Tests
+	}).(pulumi.StringArrayOutput)
 }
 
 // Maximum time to allow one check to run `(ms|s|m|h)`. Default: `0s`.
 func (o ServiceTaskSpecContainerSpecHealthcheckPtrOutput) Timeout() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v ServiceTaskSpecContainerSpecHealthcheck) *string { return v.Timeout }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpecHealthcheck) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Timeout
+	}).(pulumi.StringPtrOutput)
 }
 
 type ServiceTaskSpecContainerSpecHost struct {
@@ -4681,8 +5205,8 @@ func (o ServiceTaskSpecContainerSpecHostArrayOutput) Index(i pulumi.IntInput) Se
 
 type ServiceTaskSpecContainerSpecLabel struct {
 	// Name of the label
-	// * `value` (Required, string) Value of the label
 	Label string `pulumi:"label"`
+	// Value of the label
 	Value string `pulumi:"value"`
 }
 
@@ -4700,8 +5224,8 @@ type ServiceTaskSpecContainerSpecLabelInput interface {
 
 type ServiceTaskSpecContainerSpecLabelArgs struct {
 	// Name of the label
-	// * `value` (Required, string) Value of the label
 	Label pulumi.StringInput `pulumi:"label"`
+	// Value of the label
 	Value pulumi.StringInput `pulumi:"value"`
 }
 
@@ -4758,11 +5282,11 @@ func (o ServiceTaskSpecContainerSpecLabelOutput) ToServiceTaskSpecContainerSpecL
 }
 
 // Name of the label
-// * `value` (Required, string) Value of the label
 func (o ServiceTaskSpecContainerSpecLabelOutput) Label() pulumi.StringOutput {
 	return o.ApplyT(func(v ServiceTaskSpecContainerSpecLabel) string { return v.Label }).(pulumi.StringOutput)
 }
 
+// Value of the label
 func (o ServiceTaskSpecContainerSpecLabelOutput) Value() pulumi.StringOutput {
 	return o.ApplyT(func(v ServiceTaskSpecContainerSpecLabel) string { return v.Value }).(pulumi.StringOutput)
 }
@@ -5073,7 +5597,12 @@ func (o ServiceTaskSpecContainerSpecMountBindOptionsPtrOutput) Elem() ServiceTas
 
 // A propagation mode with the value.
 func (o ServiceTaskSpecContainerSpecMountBindOptionsPtrOutput) Propagation() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v ServiceTaskSpecContainerSpecMountBindOptions) *string { return v.Propagation }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpecMountBindOptions) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Propagation
+	}).(pulumi.StringPtrOutput)
 }
 
 type ServiceTaskSpecContainerSpecMountTmpfsOptions struct {
@@ -5212,12 +5741,22 @@ func (o ServiceTaskSpecContainerSpecMountTmpfsOptionsPtrOutput) Elem() ServiceTa
 
 // See Mode below for details.
 func (o ServiceTaskSpecContainerSpecMountTmpfsOptionsPtrOutput) Mode() pulumi.IntPtrOutput {
-	return o.ApplyT(func(v ServiceTaskSpecContainerSpecMountTmpfsOptions) *int { return v.Mode }).(pulumi.IntPtrOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpecMountTmpfsOptions) *int {
+		if v == nil {
+			return nil
+		}
+		return v.Mode
+	}).(pulumi.IntPtrOutput)
 }
 
 // The size for the tmpfs mount in bytes.
 func (o ServiceTaskSpecContainerSpecMountTmpfsOptionsPtrOutput) SizeBytes() pulumi.IntPtrOutput {
-	return o.ApplyT(func(v ServiceTaskSpecContainerSpecMountTmpfsOptions) *int { return v.SizeBytes }).(pulumi.IntPtrOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpecMountTmpfsOptions) *int {
+		if v == nil {
+			return nil
+		}
+		return v.SizeBytes
+	}).(pulumi.IntPtrOutput)
 }
 
 type ServiceTaskSpecContainerSpecMountVolumeOptions struct {
@@ -5368,29 +5907,47 @@ func (o ServiceTaskSpecContainerSpecMountVolumeOptionsPtrOutput) Elem() ServiceT
 }
 
 func (o ServiceTaskSpecContainerSpecMountVolumeOptionsPtrOutput) DriverName() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v ServiceTaskSpecContainerSpecMountVolumeOptions) *string { return v.DriverName }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpecMountVolumeOptions) *string {
+		if v == nil {
+			return nil
+		}
+		return v.DriverName
+	}).(pulumi.StringPtrOutput)
 }
 
 func (o ServiceTaskSpecContainerSpecMountVolumeOptionsPtrOutput) DriverOptions() pulumi.StringMapOutput {
-	return o.ApplyT(func(v ServiceTaskSpecContainerSpecMountVolumeOptions) map[string]string { return v.DriverOptions }).(pulumi.StringMapOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpecMountVolumeOptions) map[string]string {
+		if v == nil {
+			return nil
+		}
+		return v.DriverOptions
+	}).(pulumi.StringMapOutput)
 }
 
 // See Labels below for details.
 func (o ServiceTaskSpecContainerSpecMountVolumeOptionsPtrOutput) Labels() ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayOutput {
-	return o.ApplyT(func(v ServiceTaskSpecContainerSpecMountVolumeOptions) []ServiceTaskSpecContainerSpecMountVolumeOptionsLabel {
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpecMountVolumeOptions) []ServiceTaskSpecContainerSpecMountVolumeOptionsLabel {
+		if v == nil {
+			return nil
+		}
 		return v.Labels
 	}).(ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayOutput)
 }
 
 // Whether to populate volume with data from the target.
 func (o ServiceTaskSpecContainerSpecMountVolumeOptionsPtrOutput) NoCopy() pulumi.BoolPtrOutput {
-	return o.ApplyT(func(v ServiceTaskSpecContainerSpecMountVolumeOptions) *bool { return v.NoCopy }).(pulumi.BoolPtrOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpecMountVolumeOptions) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.NoCopy
+	}).(pulumi.BoolPtrOutput)
 }
 
 type ServiceTaskSpecContainerSpecMountVolumeOptionsLabel struct {
 	// Name of the label
-	// * `value` (Required, string) Value of the label
 	Label string `pulumi:"label"`
+	// Value of the label
 	Value string `pulumi:"value"`
 }
 
@@ -5408,8 +5965,8 @@ type ServiceTaskSpecContainerSpecMountVolumeOptionsLabelInput interface {
 
 type ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArgs struct {
 	// Name of the label
-	// * `value` (Required, string) Value of the label
 	Label pulumi.StringInput `pulumi:"label"`
+	// Value of the label
 	Value pulumi.StringInput `pulumi:"value"`
 }
 
@@ -5466,11 +6023,11 @@ func (o ServiceTaskSpecContainerSpecMountVolumeOptionsLabelOutput) ToServiceTask
 }
 
 // Name of the label
-// * `value` (Required, string) Value of the label
 func (o ServiceTaskSpecContainerSpecMountVolumeOptionsLabelOutput) Label() pulumi.StringOutput {
 	return o.ApplyT(func(v ServiceTaskSpecContainerSpecMountVolumeOptionsLabel) string { return v.Label }).(pulumi.StringOutput)
 }
 
+// Value of the label
 func (o ServiceTaskSpecContainerSpecMountVolumeOptionsLabelOutput) Value() pulumi.StringOutput {
 	return o.ApplyT(func(v ServiceTaskSpecContainerSpecMountVolumeOptionsLabel) string { return v.Value }).(pulumi.StringOutput)
 }
@@ -5633,14 +6190,20 @@ func (o ServiceTaskSpecContainerSpecPrivilegesPtrOutput) Elem() ServiceTaskSpecC
 
 // For managed service account (Windows only)
 func (o ServiceTaskSpecContainerSpecPrivilegesPtrOutput) CredentialSpec() ServiceTaskSpecContainerSpecPrivilegesCredentialSpecPtrOutput {
-	return o.ApplyT(func(v ServiceTaskSpecContainerSpecPrivileges) *ServiceTaskSpecContainerSpecPrivilegesCredentialSpec {
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpecPrivileges) *ServiceTaskSpecContainerSpecPrivilegesCredentialSpec {
+		if v == nil {
+			return nil
+		}
 		return v.CredentialSpec
 	}).(ServiceTaskSpecContainerSpecPrivilegesCredentialSpecPtrOutput)
 }
 
 // SELinux labels of the container
 func (o ServiceTaskSpecContainerSpecPrivilegesPtrOutput) SeLinuxContext() ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrOutput {
-	return o.ApplyT(func(v ServiceTaskSpecContainerSpecPrivileges) *ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext {
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpecPrivileges) *ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext {
+		if v == nil {
+			return nil
+		}
 		return v.SeLinuxContext
 	}).(ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrOutput)
 }
@@ -5781,12 +6344,22 @@ func (o ServiceTaskSpecContainerSpecPrivilegesCredentialSpecPtrOutput) Elem() Se
 
 // Load credential spec from this file.
 func (o ServiceTaskSpecContainerSpecPrivilegesCredentialSpecPtrOutput) File() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v ServiceTaskSpecContainerSpecPrivilegesCredentialSpec) *string { return v.File }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpecPrivilegesCredentialSpec) *string {
+		if v == nil {
+			return nil
+		}
+		return v.File
+	}).(pulumi.StringPtrOutput)
 }
 
 // Load credential spec from this value in the Windows registry.
 func (o ServiceTaskSpecContainerSpecPrivilegesCredentialSpecPtrOutput) Registry() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v ServiceTaskSpecContainerSpecPrivilegesCredentialSpec) *string { return v.Registry }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpecPrivilegesCredentialSpec) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Registry
+	}).(pulumi.StringPtrOutput)
 }
 
 type ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext struct {
@@ -5952,27 +6525,52 @@ func (o ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrOutput) Elem() Se
 
 // Disable SELinux
 func (o ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrOutput) Disable() pulumi.BoolPtrOutput {
-	return o.ApplyT(func(v ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext) *bool { return v.Disable }).(pulumi.BoolPtrOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.Disable
+	}).(pulumi.BoolPtrOutput)
 }
 
 // SELinux level label
 func (o ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrOutput) Level() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext) *string { return v.Level }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Level
+	}).(pulumi.StringPtrOutput)
 }
 
 // SELinux role label
 func (o ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrOutput) Role() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext) *string { return v.Role }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Role
+	}).(pulumi.StringPtrOutput)
 }
 
 // SELinux type label
 func (o ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrOutput) Type() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext) *string { return v.Type }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Type
+	}).(pulumi.StringPtrOutput)
 }
 
 // The user inside the container.
 func (o ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrOutput) User() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext) *string { return v.User }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext) *string {
+		if v == nil {
+			return nil
+		}
+		return v.User
+	}).(pulumi.StringPtrOutput)
 }
 
 type ServiceTaskSpecContainerSpecSecret struct {
@@ -6252,19 +6850,32 @@ func (o ServiceTaskSpecLogDriverPtrOutput) Elem() ServiceTaskSpecLogDriverOutput
 }
 
 // The logging driver to use. Either `(none|json-file|syslog|journald|gelf|fluentd|awslogs|splunk|etwlogs|gcplogs)`.
-func (o ServiceTaskSpecLogDriverPtrOutput) Name() pulumi.StringOutput {
-	return o.ApplyT(func(v ServiceTaskSpecLogDriver) string { return v.Name }).(pulumi.StringOutput)
+func (o ServiceTaskSpecLogDriverPtrOutput) Name() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *ServiceTaskSpecLogDriver) *string {
+		if v == nil {
+			return nil
+		}
+		return &v.Name
+	}).(pulumi.StringPtrOutput)
 }
 
 // The options for the logging driver, e.g.
 func (o ServiceTaskSpecLogDriverPtrOutput) Options() pulumi.StringMapOutput {
-	return o.ApplyT(func(v ServiceTaskSpecLogDriver) map[string]string { return v.Options }).(pulumi.StringMapOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecLogDriver) map[string]string {
+		if v == nil {
+			return nil
+		}
+		return v.Options
+	}).(pulumi.StringMapOutput)
 }
 
 type ServiceTaskSpecPlacement struct {
-	Constraints []string                           `pulumi:"constraints"`
-	Platforms   []ServiceTaskSpecPlacementPlatform `pulumi:"platforms"`
-	Prefs       []string                           `pulumi:"prefs"`
+	// An array of constraints. e.g.: `node.role==manager`
+	Constraints []string `pulumi:"constraints"`
+	// Platforms stores all the platforms that the service's image can run on
+	Platforms []ServiceTaskSpecPlacementPlatform `pulumi:"platforms"`
+	// Preferences provide a way to make the scheduler aware of factors such as topology. They are provided in order from highest to lowest precedence, e.g.: `spread=node.role.manager`
+	Prefs []string `pulumi:"prefs"`
 }
 
 // ServiceTaskSpecPlacementInput is an input type that accepts ServiceTaskSpecPlacementArgs and ServiceTaskSpecPlacementOutput values.
@@ -6280,9 +6891,12 @@ type ServiceTaskSpecPlacementInput interface {
 }
 
 type ServiceTaskSpecPlacementArgs struct {
-	Constraints pulumi.StringArrayInput                    `pulumi:"constraints"`
-	Platforms   ServiceTaskSpecPlacementPlatformArrayInput `pulumi:"platforms"`
-	Prefs       pulumi.StringArrayInput                    `pulumi:"prefs"`
+	// An array of constraints. e.g.: `node.role==manager`
+	Constraints pulumi.StringArrayInput `pulumi:"constraints"`
+	// Platforms stores all the platforms that the service's image can run on
+	Platforms ServiceTaskSpecPlacementPlatformArrayInput `pulumi:"platforms"`
+	// Preferences provide a way to make the scheduler aware of factors such as topology. They are provided in order from highest to lowest precedence, e.g.: `spread=node.role.manager`
+	Prefs pulumi.StringArrayInput `pulumi:"prefs"`
 }
 
 func (ServiceTaskSpecPlacementArgs) ElementType() reflect.Type {
@@ -6362,14 +6976,18 @@ func (o ServiceTaskSpecPlacementOutput) ToServiceTaskSpecPlacementPtrOutputWithC
 		return &v
 	}).(ServiceTaskSpecPlacementPtrOutput)
 }
+
+// An array of constraints. e.g.: `node.role==manager`
 func (o ServiceTaskSpecPlacementOutput) Constraints() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v ServiceTaskSpecPlacement) []string { return v.Constraints }).(pulumi.StringArrayOutput)
 }
 
+// Platforms stores all the platforms that the service's image can run on
 func (o ServiceTaskSpecPlacementOutput) Platforms() ServiceTaskSpecPlacementPlatformArrayOutput {
 	return o.ApplyT(func(v ServiceTaskSpecPlacement) []ServiceTaskSpecPlacementPlatform { return v.Platforms }).(ServiceTaskSpecPlacementPlatformArrayOutput)
 }
 
+// Preferences provide a way to make the scheduler aware of factors such as topology. They are provided in order from highest to lowest precedence, e.g.: `spread=node.role.manager`
 func (o ServiceTaskSpecPlacementOutput) Prefs() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v ServiceTaskSpecPlacement) []string { return v.Prefs }).(pulumi.StringArrayOutput)
 }
@@ -6392,21 +7010,41 @@ func (o ServiceTaskSpecPlacementPtrOutput) Elem() ServiceTaskSpecPlacementOutput
 	return o.ApplyT(func(v *ServiceTaskSpecPlacement) ServiceTaskSpecPlacement { return *v }).(ServiceTaskSpecPlacementOutput)
 }
 
+// An array of constraints. e.g.: `node.role==manager`
 func (o ServiceTaskSpecPlacementPtrOutput) Constraints() pulumi.StringArrayOutput {
-	return o.ApplyT(func(v ServiceTaskSpecPlacement) []string { return v.Constraints }).(pulumi.StringArrayOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecPlacement) []string {
+		if v == nil {
+			return nil
+		}
+		return v.Constraints
+	}).(pulumi.StringArrayOutput)
 }
 
+// Platforms stores all the platforms that the service's image can run on
 func (o ServiceTaskSpecPlacementPtrOutput) Platforms() ServiceTaskSpecPlacementPlatformArrayOutput {
-	return o.ApplyT(func(v ServiceTaskSpecPlacement) []ServiceTaskSpecPlacementPlatform { return v.Platforms }).(ServiceTaskSpecPlacementPlatformArrayOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecPlacement) []ServiceTaskSpecPlacementPlatform {
+		if v == nil {
+			return nil
+		}
+		return v.Platforms
+	}).(ServiceTaskSpecPlacementPlatformArrayOutput)
 }
 
+// Preferences provide a way to make the scheduler aware of factors such as topology. They are provided in order from highest to lowest precedence, e.g.: `spread=node.role.manager`
 func (o ServiceTaskSpecPlacementPtrOutput) Prefs() pulumi.StringArrayOutput {
-	return o.ApplyT(func(v ServiceTaskSpecPlacement) []string { return v.Prefs }).(pulumi.StringArrayOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecPlacement) []string {
+		if v == nil {
+			return nil
+		}
+		return v.Prefs
+	}).(pulumi.StringArrayOutput)
 }
 
 type ServiceTaskSpecPlacementPlatform struct {
+	// The architecture, e.g., `amd64`
 	Architecture string `pulumi:"architecture"`
-	Os           string `pulumi:"os"`
+	// The operation system, e.g., `linux`
+	Os string `pulumi:"os"`
 }
 
 // ServiceTaskSpecPlacementPlatformInput is an input type that accepts ServiceTaskSpecPlacementPlatformArgs and ServiceTaskSpecPlacementPlatformOutput values.
@@ -6422,8 +7060,10 @@ type ServiceTaskSpecPlacementPlatformInput interface {
 }
 
 type ServiceTaskSpecPlacementPlatformArgs struct {
+	// The architecture, e.g., `amd64`
 	Architecture pulumi.StringInput `pulumi:"architecture"`
-	Os           pulumi.StringInput `pulumi:"os"`
+	// The operation system, e.g., `linux`
+	Os pulumi.StringInput `pulumi:"os"`
 }
 
 func (ServiceTaskSpecPlacementPlatformArgs) ElementType() reflect.Type {
@@ -6478,10 +7118,12 @@ func (o ServiceTaskSpecPlacementPlatformOutput) ToServiceTaskSpecPlacementPlatfo
 	return o
 }
 
+// The architecture, e.g., `amd64`
 func (o ServiceTaskSpecPlacementPlatformOutput) Architecture() pulumi.StringOutput {
 	return o.ApplyT(func(v ServiceTaskSpecPlacementPlatform) string { return v.Architecture }).(pulumi.StringOutput)
 }
 
+// The operation system, e.g., `linux`
 func (o ServiceTaskSpecPlacementPlatformOutput) Os() pulumi.StringOutput {
 	return o.ApplyT(func(v ServiceTaskSpecPlacementPlatform) string { return v.Os }).(pulumi.StringOutput)
 }
@@ -6508,18 +7150,8 @@ func (o ServiceTaskSpecPlacementPlatformArrayOutput) Index(i pulumi.IntInput) Se
 
 type ServiceTaskSpecResources struct {
 	// Describes the resources which can be advertised by a node and requested by a task.
-	// * `nanoCpus` (Optional, int) CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
-	// * `memoryBytes` (Optional, int) The amount of memory in bytes the container allocates
-	// * `genericResources` (Optional, map) User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
-	// * `namedResourcesSpec` (Optional, set of string) The String resources, delimited by `=`
-	// * `discreteResourcesSpec` (Optional, set of string) The Integer resources, delimited by `=`
 	Limits *ServiceTaskSpecResourcesLimits `pulumi:"limits"`
 	// An object describing the resources which can be advertised by a node and requested by a task.
-	// * `nanoCpus` (Optional, int) CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
-	// * `memoryBytes` (Optional, int) The amount of memory in bytes the container allocates
-	// * `genericResources` (Optional, map) User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
-	// * `namedResourcesSpec` (Optional, set of string) The String resources
-	// * `discreteResourcesSpec` (Optional, set of string) The Integer resources
 	Reservation *ServiceTaskSpecResourcesReservation `pulumi:"reservation"`
 }
 
@@ -6537,18 +7169,8 @@ type ServiceTaskSpecResourcesInput interface {
 
 type ServiceTaskSpecResourcesArgs struct {
 	// Describes the resources which can be advertised by a node and requested by a task.
-	// * `nanoCpus` (Optional, int) CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
-	// * `memoryBytes` (Optional, int) The amount of memory in bytes the container allocates
-	// * `genericResources` (Optional, map) User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
-	// * `namedResourcesSpec` (Optional, set of string) The String resources, delimited by `=`
-	// * `discreteResourcesSpec` (Optional, set of string) The Integer resources, delimited by `=`
 	Limits ServiceTaskSpecResourcesLimitsPtrInput `pulumi:"limits"`
 	// An object describing the resources which can be advertised by a node and requested by a task.
-	// * `nanoCpus` (Optional, int) CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
-	// * `memoryBytes` (Optional, int) The amount of memory in bytes the container allocates
-	// * `genericResources` (Optional, map) User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
-	// * `namedResourcesSpec` (Optional, set of string) The String resources
-	// * `discreteResourcesSpec` (Optional, set of string) The Integer resources
 	Reservation ServiceTaskSpecResourcesReservationPtrInput `pulumi:"reservation"`
 }
 
@@ -6631,21 +7253,11 @@ func (o ServiceTaskSpecResourcesOutput) ToServiceTaskSpecResourcesPtrOutputWithC
 }
 
 // Describes the resources which can be advertised by a node and requested by a task.
-// * `nanoCpus` (Optional, int) CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
-// * `memoryBytes` (Optional, int) The amount of memory in bytes the container allocates
-// * `genericResources` (Optional, map) User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
-// * `namedResourcesSpec` (Optional, set of string) The String resources, delimited by `=`
-// * `discreteResourcesSpec` (Optional, set of string) The Integer resources, delimited by `=`
 func (o ServiceTaskSpecResourcesOutput) Limits() ServiceTaskSpecResourcesLimitsPtrOutput {
 	return o.ApplyT(func(v ServiceTaskSpecResources) *ServiceTaskSpecResourcesLimits { return v.Limits }).(ServiceTaskSpecResourcesLimitsPtrOutput)
 }
 
 // An object describing the resources which can be advertised by a node and requested by a task.
-// * `nanoCpus` (Optional, int) CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
-// * `memoryBytes` (Optional, int) The amount of memory in bytes the container allocates
-// * `genericResources` (Optional, map) User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
-// * `namedResourcesSpec` (Optional, set of string) The String resources
-// * `discreteResourcesSpec` (Optional, set of string) The Integer resources
 func (o ServiceTaskSpecResourcesOutput) Reservation() ServiceTaskSpecResourcesReservationPtrOutput {
 	return o.ApplyT(func(v ServiceTaskSpecResources) *ServiceTaskSpecResourcesReservation { return v.Reservation }).(ServiceTaskSpecResourcesReservationPtrOutput)
 }
@@ -6669,29 +7281,32 @@ func (o ServiceTaskSpecResourcesPtrOutput) Elem() ServiceTaskSpecResourcesOutput
 }
 
 // Describes the resources which can be advertised by a node and requested by a task.
-// * `nanoCpus` (Optional, int) CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
-// * `memoryBytes` (Optional, int) The amount of memory in bytes the container allocates
-// * `genericResources` (Optional, map) User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
-// * `namedResourcesSpec` (Optional, set of string) The String resources, delimited by `=`
-// * `discreteResourcesSpec` (Optional, set of string) The Integer resources, delimited by `=`
 func (o ServiceTaskSpecResourcesPtrOutput) Limits() ServiceTaskSpecResourcesLimitsPtrOutput {
-	return o.ApplyT(func(v ServiceTaskSpecResources) *ServiceTaskSpecResourcesLimits { return v.Limits }).(ServiceTaskSpecResourcesLimitsPtrOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecResources) *ServiceTaskSpecResourcesLimits {
+		if v == nil {
+			return nil
+		}
+		return v.Limits
+	}).(ServiceTaskSpecResourcesLimitsPtrOutput)
 }
 
 // An object describing the resources which can be advertised by a node and requested by a task.
-// * `nanoCpus` (Optional, int) CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
-// * `memoryBytes` (Optional, int) The amount of memory in bytes the container allocates
-// * `genericResources` (Optional, map) User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
-// * `namedResourcesSpec` (Optional, set of string) The String resources
-// * `discreteResourcesSpec` (Optional, set of string) The Integer resources
 func (o ServiceTaskSpecResourcesPtrOutput) Reservation() ServiceTaskSpecResourcesReservationPtrOutput {
-	return o.ApplyT(func(v ServiceTaskSpecResources) *ServiceTaskSpecResourcesReservation { return v.Reservation }).(ServiceTaskSpecResourcesReservationPtrOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecResources) *ServiceTaskSpecResourcesReservation {
+		if v == nil {
+			return nil
+		}
+		return v.Reservation
+	}).(ServiceTaskSpecResourcesReservationPtrOutput)
 }
 
 type ServiceTaskSpecResourcesLimits struct {
+	// User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
 	GenericResources *ServiceTaskSpecResourcesLimitsGenericResources `pulumi:"genericResources"`
-	MemoryBytes      *int                                            `pulumi:"memoryBytes"`
-	NanoCpus         *int                                            `pulumi:"nanoCpus"`
+	// The amount of memory in bytes the container allocates
+	MemoryBytes *int `pulumi:"memoryBytes"`
+	// CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
+	NanoCpus *int `pulumi:"nanoCpus"`
 }
 
 // ServiceTaskSpecResourcesLimitsInput is an input type that accepts ServiceTaskSpecResourcesLimitsArgs and ServiceTaskSpecResourcesLimitsOutput values.
@@ -6707,9 +7322,12 @@ type ServiceTaskSpecResourcesLimitsInput interface {
 }
 
 type ServiceTaskSpecResourcesLimitsArgs struct {
+	// User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
 	GenericResources ServiceTaskSpecResourcesLimitsGenericResourcesPtrInput `pulumi:"genericResources"`
-	MemoryBytes      pulumi.IntPtrInput                                     `pulumi:"memoryBytes"`
-	NanoCpus         pulumi.IntPtrInput                                     `pulumi:"nanoCpus"`
+	// The amount of memory in bytes the container allocates
+	MemoryBytes pulumi.IntPtrInput `pulumi:"memoryBytes"`
+	// CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
+	NanoCpus pulumi.IntPtrInput `pulumi:"nanoCpus"`
 }
 
 func (ServiceTaskSpecResourcesLimitsArgs) ElementType() reflect.Type {
@@ -6789,16 +7407,20 @@ func (o ServiceTaskSpecResourcesLimitsOutput) ToServiceTaskSpecResourcesLimitsPt
 		return &v
 	}).(ServiceTaskSpecResourcesLimitsPtrOutput)
 }
+
+// User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
 func (o ServiceTaskSpecResourcesLimitsOutput) GenericResources() ServiceTaskSpecResourcesLimitsGenericResourcesPtrOutput {
 	return o.ApplyT(func(v ServiceTaskSpecResourcesLimits) *ServiceTaskSpecResourcesLimitsGenericResources {
 		return v.GenericResources
 	}).(ServiceTaskSpecResourcesLimitsGenericResourcesPtrOutput)
 }
 
+// The amount of memory in bytes the container allocates
 func (o ServiceTaskSpecResourcesLimitsOutput) MemoryBytes() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v ServiceTaskSpecResourcesLimits) *int { return v.MemoryBytes }).(pulumi.IntPtrOutput)
 }
 
+// CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
 func (o ServiceTaskSpecResourcesLimitsOutput) NanoCpus() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v ServiceTaskSpecResourcesLimits) *int { return v.NanoCpus }).(pulumi.IntPtrOutput)
 }
@@ -6821,23 +7443,41 @@ func (o ServiceTaskSpecResourcesLimitsPtrOutput) Elem() ServiceTaskSpecResources
 	return o.ApplyT(func(v *ServiceTaskSpecResourcesLimits) ServiceTaskSpecResourcesLimits { return *v }).(ServiceTaskSpecResourcesLimitsOutput)
 }
 
+// User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
 func (o ServiceTaskSpecResourcesLimitsPtrOutput) GenericResources() ServiceTaskSpecResourcesLimitsGenericResourcesPtrOutput {
-	return o.ApplyT(func(v ServiceTaskSpecResourcesLimits) *ServiceTaskSpecResourcesLimitsGenericResources {
+	return o.ApplyT(func(v *ServiceTaskSpecResourcesLimits) *ServiceTaskSpecResourcesLimitsGenericResources {
+		if v == nil {
+			return nil
+		}
 		return v.GenericResources
 	}).(ServiceTaskSpecResourcesLimitsGenericResourcesPtrOutput)
 }
 
+// The amount of memory in bytes the container allocates
 func (o ServiceTaskSpecResourcesLimitsPtrOutput) MemoryBytes() pulumi.IntPtrOutput {
-	return o.ApplyT(func(v ServiceTaskSpecResourcesLimits) *int { return v.MemoryBytes }).(pulumi.IntPtrOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecResourcesLimits) *int {
+		if v == nil {
+			return nil
+		}
+		return v.MemoryBytes
+	}).(pulumi.IntPtrOutput)
 }
 
+// CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
 func (o ServiceTaskSpecResourcesLimitsPtrOutput) NanoCpus() pulumi.IntPtrOutput {
-	return o.ApplyT(func(v ServiceTaskSpecResourcesLimits) *int { return v.NanoCpus }).(pulumi.IntPtrOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecResourcesLimits) *int {
+		if v == nil {
+			return nil
+		}
+		return v.NanoCpus
+	}).(pulumi.IntPtrOutput)
 }
 
 type ServiceTaskSpecResourcesLimitsGenericResources struct {
+	// The Integer resources, delimited by `=`
 	DiscreteResourcesSpecs []string `pulumi:"discreteResourcesSpecs"`
-	NamedResourcesSpecs    []string `pulumi:"namedResourcesSpecs"`
+	// The String resources, delimited by `=`
+	NamedResourcesSpecs []string `pulumi:"namedResourcesSpecs"`
 }
 
 // ServiceTaskSpecResourcesLimitsGenericResourcesInput is an input type that accepts ServiceTaskSpecResourcesLimitsGenericResourcesArgs and ServiceTaskSpecResourcesLimitsGenericResourcesOutput values.
@@ -6853,8 +7493,10 @@ type ServiceTaskSpecResourcesLimitsGenericResourcesInput interface {
 }
 
 type ServiceTaskSpecResourcesLimitsGenericResourcesArgs struct {
+	// The Integer resources, delimited by `=`
 	DiscreteResourcesSpecs pulumi.StringArrayInput `pulumi:"discreteResourcesSpecs"`
-	NamedResourcesSpecs    pulumi.StringArrayInput `pulumi:"namedResourcesSpecs"`
+	// The String resources, delimited by `=`
+	NamedResourcesSpecs pulumi.StringArrayInput `pulumi:"namedResourcesSpecs"`
 }
 
 func (ServiceTaskSpecResourcesLimitsGenericResourcesArgs) ElementType() reflect.Type {
@@ -6934,10 +7576,13 @@ func (o ServiceTaskSpecResourcesLimitsGenericResourcesOutput) ToServiceTaskSpecR
 		return &v
 	}).(ServiceTaskSpecResourcesLimitsGenericResourcesPtrOutput)
 }
+
+// The Integer resources, delimited by `=`
 func (o ServiceTaskSpecResourcesLimitsGenericResourcesOutput) DiscreteResourcesSpecs() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v ServiceTaskSpecResourcesLimitsGenericResources) []string { return v.DiscreteResourcesSpecs }).(pulumi.StringArrayOutput)
 }
 
+// The String resources, delimited by `=`
 func (o ServiceTaskSpecResourcesLimitsGenericResourcesOutput) NamedResourcesSpecs() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v ServiceTaskSpecResourcesLimitsGenericResources) []string { return v.NamedResourcesSpecs }).(pulumi.StringArrayOutput)
 }
@@ -6962,18 +7607,33 @@ func (o ServiceTaskSpecResourcesLimitsGenericResourcesPtrOutput) Elem() ServiceT
 	}).(ServiceTaskSpecResourcesLimitsGenericResourcesOutput)
 }
 
+// The Integer resources, delimited by `=`
 func (o ServiceTaskSpecResourcesLimitsGenericResourcesPtrOutput) DiscreteResourcesSpecs() pulumi.StringArrayOutput {
-	return o.ApplyT(func(v ServiceTaskSpecResourcesLimitsGenericResources) []string { return v.DiscreteResourcesSpecs }).(pulumi.StringArrayOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecResourcesLimitsGenericResources) []string {
+		if v == nil {
+			return nil
+		}
+		return v.DiscreteResourcesSpecs
+	}).(pulumi.StringArrayOutput)
 }
 
+// The String resources, delimited by `=`
 func (o ServiceTaskSpecResourcesLimitsGenericResourcesPtrOutput) NamedResourcesSpecs() pulumi.StringArrayOutput {
-	return o.ApplyT(func(v ServiceTaskSpecResourcesLimitsGenericResources) []string { return v.NamedResourcesSpecs }).(pulumi.StringArrayOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecResourcesLimitsGenericResources) []string {
+		if v == nil {
+			return nil
+		}
+		return v.NamedResourcesSpecs
+	}).(pulumi.StringArrayOutput)
 }
 
 type ServiceTaskSpecResourcesReservation struct {
+	// User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
 	GenericResources *ServiceTaskSpecResourcesReservationGenericResources `pulumi:"genericResources"`
-	MemoryBytes      *int                                                 `pulumi:"memoryBytes"`
-	NanoCpus         *int                                                 `pulumi:"nanoCpus"`
+	// The amount of memory in bytes the container allocates
+	MemoryBytes *int `pulumi:"memoryBytes"`
+	// CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
+	NanoCpus *int `pulumi:"nanoCpus"`
 }
 
 // ServiceTaskSpecResourcesReservationInput is an input type that accepts ServiceTaskSpecResourcesReservationArgs and ServiceTaskSpecResourcesReservationOutput values.
@@ -6989,9 +7649,12 @@ type ServiceTaskSpecResourcesReservationInput interface {
 }
 
 type ServiceTaskSpecResourcesReservationArgs struct {
+	// User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
 	GenericResources ServiceTaskSpecResourcesReservationGenericResourcesPtrInput `pulumi:"genericResources"`
-	MemoryBytes      pulumi.IntPtrInput                                          `pulumi:"memoryBytes"`
-	NanoCpus         pulumi.IntPtrInput                                          `pulumi:"nanoCpus"`
+	// The amount of memory in bytes the container allocates
+	MemoryBytes pulumi.IntPtrInput `pulumi:"memoryBytes"`
+	// CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
+	NanoCpus pulumi.IntPtrInput `pulumi:"nanoCpus"`
 }
 
 func (ServiceTaskSpecResourcesReservationArgs) ElementType() reflect.Type {
@@ -7071,16 +7734,20 @@ func (o ServiceTaskSpecResourcesReservationOutput) ToServiceTaskSpecResourcesRes
 		return &v
 	}).(ServiceTaskSpecResourcesReservationPtrOutput)
 }
+
+// User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
 func (o ServiceTaskSpecResourcesReservationOutput) GenericResources() ServiceTaskSpecResourcesReservationGenericResourcesPtrOutput {
 	return o.ApplyT(func(v ServiceTaskSpecResourcesReservation) *ServiceTaskSpecResourcesReservationGenericResources {
 		return v.GenericResources
 	}).(ServiceTaskSpecResourcesReservationGenericResourcesPtrOutput)
 }
 
+// The amount of memory in bytes the container allocates
 func (o ServiceTaskSpecResourcesReservationOutput) MemoryBytes() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v ServiceTaskSpecResourcesReservation) *int { return v.MemoryBytes }).(pulumi.IntPtrOutput)
 }
 
+// CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
 func (o ServiceTaskSpecResourcesReservationOutput) NanoCpus() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v ServiceTaskSpecResourcesReservation) *int { return v.NanoCpus }).(pulumi.IntPtrOutput)
 }
@@ -7103,23 +7770,41 @@ func (o ServiceTaskSpecResourcesReservationPtrOutput) Elem() ServiceTaskSpecReso
 	return o.ApplyT(func(v *ServiceTaskSpecResourcesReservation) ServiceTaskSpecResourcesReservation { return *v }).(ServiceTaskSpecResourcesReservationOutput)
 }
 
+// User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
 func (o ServiceTaskSpecResourcesReservationPtrOutput) GenericResources() ServiceTaskSpecResourcesReservationGenericResourcesPtrOutput {
-	return o.ApplyT(func(v ServiceTaskSpecResourcesReservation) *ServiceTaskSpecResourcesReservationGenericResources {
+	return o.ApplyT(func(v *ServiceTaskSpecResourcesReservation) *ServiceTaskSpecResourcesReservationGenericResources {
+		if v == nil {
+			return nil
+		}
 		return v.GenericResources
 	}).(ServiceTaskSpecResourcesReservationGenericResourcesPtrOutput)
 }
 
+// The amount of memory in bytes the container allocates
 func (o ServiceTaskSpecResourcesReservationPtrOutput) MemoryBytes() pulumi.IntPtrOutput {
-	return o.ApplyT(func(v ServiceTaskSpecResourcesReservation) *int { return v.MemoryBytes }).(pulumi.IntPtrOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecResourcesReservation) *int {
+		if v == nil {
+			return nil
+		}
+		return v.MemoryBytes
+	}).(pulumi.IntPtrOutput)
 }
 
+// CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
 func (o ServiceTaskSpecResourcesReservationPtrOutput) NanoCpus() pulumi.IntPtrOutput {
-	return o.ApplyT(func(v ServiceTaskSpecResourcesReservation) *int { return v.NanoCpus }).(pulumi.IntPtrOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecResourcesReservation) *int {
+		if v == nil {
+			return nil
+		}
+		return v.NanoCpus
+	}).(pulumi.IntPtrOutput)
 }
 
 type ServiceTaskSpecResourcesReservationGenericResources struct {
+	// The Integer resources, delimited by `=`
 	DiscreteResourcesSpecs []string `pulumi:"discreteResourcesSpecs"`
-	NamedResourcesSpecs    []string `pulumi:"namedResourcesSpecs"`
+	// The String resources, delimited by `=`
+	NamedResourcesSpecs []string `pulumi:"namedResourcesSpecs"`
 }
 
 // ServiceTaskSpecResourcesReservationGenericResourcesInput is an input type that accepts ServiceTaskSpecResourcesReservationGenericResourcesArgs and ServiceTaskSpecResourcesReservationGenericResourcesOutput values.
@@ -7135,8 +7820,10 @@ type ServiceTaskSpecResourcesReservationGenericResourcesInput interface {
 }
 
 type ServiceTaskSpecResourcesReservationGenericResourcesArgs struct {
+	// The Integer resources, delimited by `=`
 	DiscreteResourcesSpecs pulumi.StringArrayInput `pulumi:"discreteResourcesSpecs"`
-	NamedResourcesSpecs    pulumi.StringArrayInput `pulumi:"namedResourcesSpecs"`
+	// The String resources, delimited by `=`
+	NamedResourcesSpecs pulumi.StringArrayInput `pulumi:"namedResourcesSpecs"`
 }
 
 func (ServiceTaskSpecResourcesReservationGenericResourcesArgs) ElementType() reflect.Type {
@@ -7216,10 +7903,13 @@ func (o ServiceTaskSpecResourcesReservationGenericResourcesOutput) ToServiceTask
 		return &v
 	}).(ServiceTaskSpecResourcesReservationGenericResourcesPtrOutput)
 }
+
+// The Integer resources, delimited by `=`
 func (o ServiceTaskSpecResourcesReservationGenericResourcesOutput) DiscreteResourcesSpecs() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v ServiceTaskSpecResourcesReservationGenericResources) []string { return v.DiscreteResourcesSpecs }).(pulumi.StringArrayOutput)
 }
 
+// The String resources, delimited by `=`
 func (o ServiceTaskSpecResourcesReservationGenericResourcesOutput) NamedResourcesSpecs() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v ServiceTaskSpecResourcesReservationGenericResources) []string { return v.NamedResourcesSpecs }).(pulumi.StringArrayOutput)
 }
@@ -7244,21 +7934,35 @@ func (o ServiceTaskSpecResourcesReservationGenericResourcesPtrOutput) Elem() Ser
 	}).(ServiceTaskSpecResourcesReservationGenericResourcesOutput)
 }
 
+// The Integer resources, delimited by `=`
 func (o ServiceTaskSpecResourcesReservationGenericResourcesPtrOutput) DiscreteResourcesSpecs() pulumi.StringArrayOutput {
-	return o.ApplyT(func(v ServiceTaskSpecResourcesReservationGenericResources) []string { return v.DiscreteResourcesSpecs }).(pulumi.StringArrayOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecResourcesReservationGenericResources) []string {
+		if v == nil {
+			return nil
+		}
+		return v.DiscreteResourcesSpecs
+	}).(pulumi.StringArrayOutput)
 }
 
+// The String resources, delimited by `=`
 func (o ServiceTaskSpecResourcesReservationGenericResourcesPtrOutput) NamedResourcesSpecs() pulumi.StringArrayOutput {
-	return o.ApplyT(func(v ServiceTaskSpecResourcesReservationGenericResources) []string { return v.NamedResourcesSpecs }).(pulumi.StringArrayOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecResourcesReservationGenericResources) []string {
+		if v == nil {
+			return nil
+		}
+		return v.NamedResourcesSpecs
+	}).(pulumi.StringArrayOutput)
 }
 
 type ServiceTaskSpecRestartPolicy struct {
+	// Condition for restart: `(none|on-failure|any)`
 	Condition *string `pulumi:"condition"`
-	// Delay between updates `(ns|us|ms|s|m|h)`, e.g. `5s`.
-	// all tasks are up when a service is created, or to check if all tasks are successfully updated on an update. Default: `7s`.
-	Delay       *string `pulumi:"delay"`
-	MaxAttempts *int    `pulumi:"maxAttempts"`
-	Window      *string `pulumi:"window"`
+	// Delay between restart attempts `(ms|s|m|h)`
+	Delay *string `pulumi:"delay"`
+	// Maximum attempts to restart a given container before giving up (default value is `0`, which is ignored)
+	MaxAttempts *int `pulumi:"maxAttempts"`
+	// The time window used to evaluate the restart policy (default value is `0`, which is unbounded) `(ms|s|m|h)`
+	Window *string `pulumi:"window"`
 }
 
 // ServiceTaskSpecRestartPolicyInput is an input type that accepts ServiceTaskSpecRestartPolicyArgs and ServiceTaskSpecRestartPolicyOutput values.
@@ -7274,12 +7978,14 @@ type ServiceTaskSpecRestartPolicyInput interface {
 }
 
 type ServiceTaskSpecRestartPolicyArgs struct {
+	// Condition for restart: `(none|on-failure|any)`
 	Condition pulumi.StringPtrInput `pulumi:"condition"`
-	// Delay between updates `(ns|us|ms|s|m|h)`, e.g. `5s`.
-	// all tasks are up when a service is created, or to check if all tasks are successfully updated on an update. Default: `7s`.
-	Delay       pulumi.StringPtrInput `pulumi:"delay"`
-	MaxAttempts pulumi.IntPtrInput    `pulumi:"maxAttempts"`
-	Window      pulumi.StringPtrInput `pulumi:"window"`
+	// Delay between restart attempts `(ms|s|m|h)`
+	Delay pulumi.StringPtrInput `pulumi:"delay"`
+	// Maximum attempts to restart a given container before giving up (default value is `0`, which is ignored)
+	MaxAttempts pulumi.IntPtrInput `pulumi:"maxAttempts"`
+	// The time window used to evaluate the restart policy (default value is `0`, which is unbounded) `(ms|s|m|h)`
+	Window pulumi.StringPtrInput `pulumi:"window"`
 }
 
 func (ServiceTaskSpecRestartPolicyArgs) ElementType() reflect.Type {
@@ -7359,20 +8065,23 @@ func (o ServiceTaskSpecRestartPolicyOutput) ToServiceTaskSpecRestartPolicyPtrOut
 		return &v
 	}).(ServiceTaskSpecRestartPolicyPtrOutput)
 }
+
+// Condition for restart: `(none|on-failure|any)`
 func (o ServiceTaskSpecRestartPolicyOutput) Condition() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ServiceTaskSpecRestartPolicy) *string { return v.Condition }).(pulumi.StringPtrOutput)
 }
 
-// Delay between updates `(ns|us|ms|s|m|h)`, e.g. `5s`.
-// all tasks are up when a service is created, or to check if all tasks are successfully updated on an update. Default: `7s`.
+// Delay between restart attempts `(ms|s|m|h)`
 func (o ServiceTaskSpecRestartPolicyOutput) Delay() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ServiceTaskSpecRestartPolicy) *string { return v.Delay }).(pulumi.StringPtrOutput)
 }
 
+// Maximum attempts to restart a given container before giving up (default value is `0`, which is ignored)
 func (o ServiceTaskSpecRestartPolicyOutput) MaxAttempts() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v ServiceTaskSpecRestartPolicy) *int { return v.MaxAttempts }).(pulumi.IntPtrOutput)
 }
 
+// The time window used to evaluate the restart policy (default value is `0`, which is unbounded) `(ms|s|m|h)`
 func (o ServiceTaskSpecRestartPolicyOutput) Window() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ServiceTaskSpecRestartPolicy) *string { return v.Window }).(pulumi.StringPtrOutput)
 }
@@ -7395,22 +8104,44 @@ func (o ServiceTaskSpecRestartPolicyPtrOutput) Elem() ServiceTaskSpecRestartPoli
 	return o.ApplyT(func(v *ServiceTaskSpecRestartPolicy) ServiceTaskSpecRestartPolicy { return *v }).(ServiceTaskSpecRestartPolicyOutput)
 }
 
+// Condition for restart: `(none|on-failure|any)`
 func (o ServiceTaskSpecRestartPolicyPtrOutput) Condition() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v ServiceTaskSpecRestartPolicy) *string { return v.Condition }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecRestartPolicy) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Condition
+	}).(pulumi.StringPtrOutput)
 }
 
-// Delay between updates `(ns|us|ms|s|m|h)`, e.g. `5s`.
-// all tasks are up when a service is created, or to check if all tasks are successfully updated on an update. Default: `7s`.
+// Delay between restart attempts `(ms|s|m|h)`
 func (o ServiceTaskSpecRestartPolicyPtrOutput) Delay() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v ServiceTaskSpecRestartPolicy) *string { return v.Delay }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecRestartPolicy) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Delay
+	}).(pulumi.StringPtrOutput)
 }
 
+// Maximum attempts to restart a given container before giving up (default value is `0`, which is ignored)
 func (o ServiceTaskSpecRestartPolicyPtrOutput) MaxAttempts() pulumi.IntPtrOutput {
-	return o.ApplyT(func(v ServiceTaskSpecRestartPolicy) *int { return v.MaxAttempts }).(pulumi.IntPtrOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecRestartPolicy) *int {
+		if v == nil {
+			return nil
+		}
+		return v.MaxAttempts
+	}).(pulumi.IntPtrOutput)
 }
 
+// The time window used to evaluate the restart policy (default value is `0`, which is unbounded) `(ms|s|m|h)`
 func (o ServiceTaskSpecRestartPolicyPtrOutput) Window() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v ServiceTaskSpecRestartPolicy) *string { return v.Window }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v *ServiceTaskSpecRestartPolicy) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Window
+	}).(pulumi.StringPtrOutput)
 }
 
 type ServiceUpdateConfig struct {
@@ -7586,33 +8317,63 @@ func (o ServiceUpdateConfigPtrOutput) Elem() ServiceUpdateConfigOutput {
 
 // Delay between updates `(ns|us|ms|s|m|h)`, e.g. `5s`.
 func (o ServiceUpdateConfigPtrOutput) Delay() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v ServiceUpdateConfig) *string { return v.Delay }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v *ServiceUpdateConfig) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Delay
+	}).(pulumi.StringPtrOutput)
 }
 
 // Action on update failure: `pause|continue|rollback`.
 func (o ServiceUpdateConfigPtrOutput) FailureAction() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v ServiceUpdateConfig) *string { return v.FailureAction }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v *ServiceUpdateConfig) *string {
+		if v == nil {
+			return nil
+		}
+		return v.FailureAction
+	}).(pulumi.StringPtrOutput)
 }
 
 // The failure rate to tolerate during an update as `float`. **Important:** the `float`need to be wrapped in a `string` to avoid internal
 // casting and precision errors.
 func (o ServiceUpdateConfigPtrOutput) MaxFailureRatio() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v ServiceUpdateConfig) *string { return v.MaxFailureRatio }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v *ServiceUpdateConfig) *string {
+		if v == nil {
+			return nil
+		}
+		return v.MaxFailureRatio
+	}).(pulumi.StringPtrOutput)
 }
 
 // Duration after each task update to monitor for failure `(ns|us|ms|s|m|h)`
 func (o ServiceUpdateConfigPtrOutput) Monitor() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v ServiceUpdateConfig) *string { return v.Monitor }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v *ServiceUpdateConfig) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Monitor
+	}).(pulumi.StringPtrOutput)
 }
 
 // Update order either 'stop-first' or 'start-first'.
 func (o ServiceUpdateConfigPtrOutput) Order() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v ServiceUpdateConfig) *string { return v.Order }).(pulumi.StringPtrOutput)
+	return o.ApplyT(func(v *ServiceUpdateConfig) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Order
+	}).(pulumi.StringPtrOutput)
 }
 
 // The maximum number of tasks to be updated in one iteration simultaneously (0 to update all at once).
 func (o ServiceUpdateConfigPtrOutput) Parallelism() pulumi.IntPtrOutput {
-	return o.ApplyT(func(v ServiceUpdateConfig) *int { return v.Parallelism }).(pulumi.IntPtrOutput)
+	return o.ApplyT(func(v *ServiceUpdateConfig) *int {
+		if v == nil {
+			return nil
+		}
+		return v.Parallelism
+	}).(pulumi.IntPtrOutput)
 }
 
 type VolumeLabel struct {
@@ -8009,6 +8770,7 @@ func init() {
 	pulumi.RegisterOutputType(ServiceTaskSpecOutput{})
 	pulumi.RegisterOutputType(ServiceTaskSpecPtrOutput{})
 	pulumi.RegisterOutputType(ServiceTaskSpecContainerSpecOutput{})
+	pulumi.RegisterOutputType(ServiceTaskSpecContainerSpecPtrOutput{})
 	pulumi.RegisterOutputType(ServiceTaskSpecContainerSpecConfigOutput{})
 	pulumi.RegisterOutputType(ServiceTaskSpecContainerSpecConfigArrayOutput{})
 	pulumi.RegisterOutputType(ServiceTaskSpecContainerSpecDnsConfigOutput{})

@@ -192,7 +192,6 @@ export class Container extends pulumi.CustomResource {
     /**
      * The maximum amount of times to an attempt
      * a restart when `restart` is set to "on-failure"
-     * * `workingDir`- (Optional, string) The working directory for commands to run in
      */
     public readonly maxRetryCount!: pulumi.Output<number | undefined>;
     /**
@@ -295,6 +294,9 @@ export class Container extends pulumi.CustomResource {
      * See Volumes below for details.
      */
     public readonly volumes!: pulumi.Output<outputs.ContainerVolume[] | undefined>;
+    /**
+     * The working directory for commands to run in
+     */
     public readonly workingDir!: pulumi.Output<string | undefined>;
 
     /**
@@ -590,7 +592,6 @@ export interface ContainerState {
     /**
      * The maximum amount of times to an attempt
      * a restart when `restart` is set to "on-failure"
-     * * `workingDir`- (Optional, string) The working directory for commands to run in
      */
     readonly maxRetryCount?: pulumi.Input<number>;
     /**
@@ -697,6 +698,9 @@ export interface ContainerState {
      * See Volumes below for details.
      */
     readonly volumes?: pulumi.Input<pulumi.Input<inputs.ContainerVolume>[]>;
+    /**
+     * The working directory for commands to run in
+     */
     readonly workingDir?: pulumi.Input<string>;
 }
 
@@ -816,7 +820,6 @@ export interface ContainerArgs {
     /**
      * The maximum amount of times to an attempt
      * a restart when `restart` is set to "on-failure"
-     * * `workingDir`- (Optional, string) The working directory for commands to run in
      */
     readonly maxRetryCount?: pulumi.Input<number>;
     /**
@@ -918,5 +921,8 @@ export interface ContainerArgs {
      * See Volumes below for details.
      */
     readonly volumes?: pulumi.Input<pulumi.Input<inputs.ContainerVolume>[]>;
+    /**
+     * The working directory for commands to run in
+     */
     readonly workingDir?: pulumi.Input<string>;
 }

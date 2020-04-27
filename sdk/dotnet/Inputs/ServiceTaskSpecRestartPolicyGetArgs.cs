@@ -12,19 +12,27 @@ namespace Pulumi.Docker.Inputs
 
     public sealed class ServiceTaskSpecRestartPolicyGetArgs : Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Condition for restart: `(none|on-failure|any)`
+        /// </summary>
         [Input("condition")]
         public Input<string>? Condition { get; set; }
 
         /// <summary>
-        /// Delay between updates `(ns|us|ms|s|m|h)`, e.g. `5s`.
-        /// all tasks are up when a service is created, or to check if all tasks are successfully updated on an update. Default: `7s`.
+        /// Delay between restart attempts `(ms|s|m|h)`
         /// </summary>
         [Input("delay")]
         public Input<string>? Delay { get; set; }
 
+        /// <summary>
+        /// Maximum attempts to restart a given container before giving up (default value is `0`, which is ignored)
+        /// </summary>
         [Input("maxAttempts")]
         public Input<int>? MaxAttempts { get; set; }
 
+        /// <summary>
+        /// The time window used to evaluate the restart policy (default value is `0`, which is unbounded) `(ms|s|m|h)`
+        /// </summary>
         [Input("window")]
         public Input<string>? Window { get; set; }
 

@@ -210,7 +210,6 @@ namespace Pulumi.Docker
         /// <summary>
         /// The maximum amount of times to an attempt
         /// a restart when `restart` is set to "on-failure"
-        /// * `working_dir`- (Optional, string) The working directory for commands to run in
         /// </summary>
         [Output("maxRetryCount")]
         public Output<int?> MaxRetryCount { get; private set; } = null!;
@@ -367,6 +366,9 @@ namespace Pulumi.Docker
         [Output("volumes")]
         public Output<ImmutableArray<Outputs.ContainerVolume>> Volumes { get; private set; } = null!;
 
+        /// <summary>
+        /// The working directory for commands to run in
+        /// </summary>
         [Output("workingDir")]
         public Output<string?> WorkingDir { get; private set; } = null!;
 
@@ -647,7 +649,6 @@ namespace Pulumi.Docker
         /// <summary>
         /// The maximum amount of times to an attempt
         /// a restart when `restart` is set to "on-failure"
-        /// * `working_dir`- (Optional, string) The working directory for commands to run in
         /// </summary>
         [Input("maxRetryCount")]
         public Input<int>? MaxRetryCount { get; set; }
@@ -859,6 +860,9 @@ namespace Pulumi.Docker
             set => _volumes = value;
         }
 
+        /// <summary>
+        /// The working directory for commands to run in
+        /// </summary>
         [Input("workingDir")]
         public Input<string>? WorkingDir { get; set; }
 
@@ -1138,7 +1142,6 @@ namespace Pulumi.Docker
         /// <summary>
         /// The maximum amount of times to an attempt
         /// a restart when `restart` is set to "on-failure"
-        /// * `working_dir`- (Optional, string) The working directory for commands to run in
         /// </summary>
         [Input("maxRetryCount")]
         public Input<int>? MaxRetryCount { get; set; }
@@ -1363,6 +1366,9 @@ namespace Pulumi.Docker
             set => _volumes = value;
         }
 
+        /// <summary>
+        /// The working directory for commands to run in
+        /// </summary>
         [Input("workingDir")]
         public Input<string>? WorkingDir { get; set; }
 

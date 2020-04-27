@@ -13,7 +13,7 @@ namespace Pulumi.Docker.Inputs
     public sealed class ServiceRollbackConfigGetArgs : Pulumi.ResourceArgs
     {
         /// <summary>
-        /// Delay between updates `(ns|us|ms|s|m|h)`, e.g. `5s`.
+        /// Delay between restart attempts `(ms|s|m|h)`
         /// all tasks are up when a service is created, or to check if all tasks are successfully updated on an update. Default: `7s`.
         /// </summary>
         [Input("delay")]

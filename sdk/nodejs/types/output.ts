@@ -72,9 +72,11 @@ export interface ContainerHost {
 export interface ContainerLabel {
     /**
      * Name of the label
-     * * `value` (Required, string) Value of the label
      */
     label: string;
+    /**
+     * Value of the label
+     */
     value: string;
 }
 
@@ -147,9 +149,11 @@ export interface ContainerMountVolumeOptions {
 export interface ContainerMountVolumeOptionsLabel {
     /**
      * Name of the label
-     * * `value` (Required, string) Value of the label
      */
     label: string;
+    /**
+     * Value of the label
+     */
     value: string;
 }
 
@@ -287,18 +291,22 @@ export interface NetworkIpamConfig {
 export interface NetworkLabel {
     /**
      * Name of the label
-     * * `value` (Required, string) Value of the label
      */
     label: string;
+    /**
+     * Value of the label
+     */
     value: string;
 }
 
 export interface SecretLabel {
     /**
      * Name of the label
-     * * `value` (Required, string) Value of the label
      */
     label: string;
+    /**
+     * Value of the label
+     */
     value: string;
 }
 
@@ -366,9 +374,11 @@ export interface ServiceEndpointSpecPort {
 export interface ServiceLabel {
     /**
      * Name of the label
-     * * `value` (Required, string) Value of the label
      */
     label: string;
+    /**
+     * Value of the label
+     */
     value: string;
 }
 
@@ -389,7 +399,7 @@ export interface ServiceModeReplicated {
 
 export interface ServiceRollbackConfig {
     /**
-     * Delay between updates `(ns|us|ms|s|m|h)`, e.g. `5s`.
+     * Delay between restart attempts `(ms|s|m|h)`
      * all tasks are up when a service is created, or to check if all tasks are successfully updated on an update. Default: `7s`.
      */
     delay?: string;
@@ -417,7 +427,13 @@ export interface ServiceRollbackConfig {
 }
 
 export interface ServiceTaskSpec {
+    /**
+     * See ContainerSpec below for details.
+     */
     containerSpec: outputs.ServiceTaskSpecContainerSpec;
+    /**
+     * A counter that triggers an update even if no relevant parameters have been changed. See [Docker Spec](https://github.com/docker/swarmkit/blob/master/api/specs.proto#L126).
+     */
     forceUpdate: number;
     /**
      * See Log Driver below for details.
@@ -427,9 +443,21 @@ export interface ServiceTaskSpec {
      * Ids of the networks in which the container will be put in.
      */
     networks?: string[];
+    /**
+     * See Placement below for details.
+     */
     placement: outputs.ServiceTaskSpecPlacement;
+    /**
+     * See Resources below for details.
+     */
     resources: outputs.ServiceTaskSpecResources;
+    /**
+     * See Restart Policy below for details.
+     */
     restartPolicy: outputs.ServiceTaskSpecRestartPolicy;
+    /**
+     * Runtime is the type of runtime specified for the task executor. See [Docker Runtime](https://github.com/moby/moby/blob/master/api/types/swarm/runtime.go).
+     */
     runtime: string;
 }
 
@@ -460,7 +488,6 @@ export interface ServiceTaskSpecContainerSpec {
     env?: {[key: string]: string};
     /**
      * A list of additional groups that the container process will run as.
-     * * `privileges` (Optional, block) See Privileges below for details.
      */
     groups?: string[];
     /**
@@ -488,6 +515,9 @@ export interface ServiceTaskSpecContainerSpec {
      * See Mounts below for details.
      */
     mounts?: outputs.ServiceTaskSpecContainerSpecMount[];
+    /**
+     * See Privileges below for details.
+     */
     privileges?: outputs.ServiceTaskSpecContainerSpecPrivileges;
     /**
      * Mount the container's root filesystem as read only.
@@ -591,9 +621,11 @@ export interface ServiceTaskSpecContainerSpecHost {
 export interface ServiceTaskSpecContainerSpecLabel {
     /**
      * Name of the label
-     * * `value` (Required, string) Value of the label
      */
     label: string;
+    /**
+     * Value of the label
+     */
     value: string;
 }
 
@@ -662,9 +694,11 @@ export interface ServiceTaskSpecContainerSpecMountVolumeOptions {
 export interface ServiceTaskSpecContainerSpecMountVolumeOptionsLabel {
     /**
      * Name of the label
-     * * `value` (Required, string) Value of the label
      */
     label: string;
+    /**
+     * Value of the label
+     */
     value: string;
 }
 
@@ -752,67 +786,110 @@ export interface ServiceTaskSpecLogDriver {
 }
 
 export interface ServiceTaskSpecPlacement {
+    /**
+     * An array of constraints. e.g.: `node.role==manager`
+     */
     constraints?: string[];
+    /**
+     * Platforms stores all the platforms that the service's image can run on
+     */
     platforms?: outputs.ServiceTaskSpecPlacementPlatform[];
+    /**
+     * Preferences provide a way to make the scheduler aware of factors such as topology. They are provided in order from highest to lowest precedence, e.g.: `spread=node.role.manager`
+     */
     prefs?: string[];
 }
 
 export interface ServiceTaskSpecPlacementPlatform {
+    /**
+     * The architecture, e.g., `amd64`
+     */
     architecture: string;
+    /**
+     * The operation system, e.g., `linux`
+     */
     os: string;
 }
 
 export interface ServiceTaskSpecResources {
     /**
      * Describes the resources which can be advertised by a node and requested by a task.
-     * * `nanoCpus` (Optional, int) CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
-     * * `memoryBytes` (Optional, int) The amount of memory in bytes the container allocates
-     * * `genericResources` (Optional, map) User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
-     * * `namedResourcesSpec` (Optional, set of string) The String resources, delimited by `=`
-     * * `discreteResourcesSpec` (Optional, set of string) The Integer resources, delimited by `=`
      */
     limits?: outputs.ServiceTaskSpecResourcesLimits;
     /**
      * An object describing the resources which can be advertised by a node and requested by a task.
-     * * `nanoCpus` (Optional, int) CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
-     * * `memoryBytes` (Optional, int) The amount of memory in bytes the container allocates
-     * * `genericResources` (Optional, map) User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
-     * * `namedResourcesSpec` (Optional, set of string) The String resources
-     * * `discreteResourcesSpec` (Optional, set of string) The Integer resources
      */
     reservation?: outputs.ServiceTaskSpecResourcesReservation;
 }
 
 export interface ServiceTaskSpecResourcesLimits {
+    /**
+     * User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
+     */
     genericResources?: outputs.ServiceTaskSpecResourcesLimitsGenericResources;
+    /**
+     * The amount of memory in bytes the container allocates
+     */
     memoryBytes?: number;
+    /**
+     * CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
+     */
     nanoCpus?: number;
 }
 
 export interface ServiceTaskSpecResourcesLimitsGenericResources {
+    /**
+     * The Integer resources, delimited by `=`
+     */
     discreteResourcesSpecs?: string[];
+    /**
+     * The String resources, delimited by `=`
+     */
     namedResourcesSpecs?: string[];
 }
 
 export interface ServiceTaskSpecResourcesReservation {
+    /**
+     * User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
+     */
     genericResources?: outputs.ServiceTaskSpecResourcesReservationGenericResources;
+    /**
+     * The amount of memory in bytes the container allocates
+     */
     memoryBytes?: number;
+    /**
+     * CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
+     */
     nanoCpus?: number;
 }
 
 export interface ServiceTaskSpecResourcesReservationGenericResources {
+    /**
+     * The Integer resources, delimited by `=`
+     */
     discreteResourcesSpecs?: string[];
+    /**
+     * The String resources, delimited by `=`
+     */
     namedResourcesSpecs?: string[];
 }
 
 export interface ServiceTaskSpecRestartPolicy {
+    /**
+     * Condition for restart: `(none|on-failure|any)`
+     */
     condition?: string;
     /**
-     * Delay between updates `(ns|us|ms|s|m|h)`, e.g. `5s`.
-     * all tasks are up when a service is created, or to check if all tasks are successfully updated on an update. Default: `7s`.
+     * Delay between restart attempts `(ms|s|m|h)`
      */
     delay?: string;
+    /**
+     * Maximum attempts to restart a given container before giving up (default value is `0`, which is ignored)
+     */
     maxAttempts?: number;
+    /**
+     * The time window used to evaluate the restart policy (default value is `0`, which is unbounded) `(ms|s|m|h)`
+     */
     window?: string;
 }
 

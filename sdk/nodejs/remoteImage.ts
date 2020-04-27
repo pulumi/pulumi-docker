@@ -33,9 +33,9 @@ import * as utilities from "./utilities";
  * import * as pulumi from "@pulumi/pulumi";
  * import * as docker from "@pulumi/docker";
  * 
- * const ubuntuRegistryImage = docker.getRegistryImage({
+ * const ubuntuRegistryImage = pulumi.output(docker.getRegistryImage({
  *     name: "ubuntu:precise",
- * });
+ * }, { async: true }));
  * const ubuntuRemoteImage = new docker.RemoteImage("ubuntu", {
  *     name: ubuntuRegistryImage.name!,
  *     pullTriggers: [ubuntuRegistryImage.sha256Digest],

@@ -14,7 +14,7 @@ namespace Pulumi.Docker.Outputs
     public sealed class ServiceRollbackConfig
     {
         /// <summary>
-        /// Delay between updates `(ns|us|ms|s|m|h)`, e.g. `5s`.
+        /// Delay between restart attempts `(ms|s|m|h)`
         /// all tasks are up when a service is created, or to check if all tasks are successfully updated on an update. Default: `7s`.
         /// </summary>
         public readonly string? Delay;

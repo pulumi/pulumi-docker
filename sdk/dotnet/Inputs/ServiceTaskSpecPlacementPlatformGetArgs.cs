@@ -12,9 +12,15 @@ namespace Pulumi.Docker.Inputs
 
     public sealed class ServiceTaskSpecPlacementPlatformGetArgs : Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// The architecture, e.g., `amd64`
+        /// </summary>
         [Input("architecture", required: true)]
         public Input<string> Architecture { get; set; } = null!;
 
+        /// <summary>
+        /// The operation system, e.g., `linux`
+        /// </summary>
         [Input("os", required: true)]
         public Input<string> Os { get; set; } = null!;
 
