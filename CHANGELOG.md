@@ -1,5 +1,5 @@
 ## HEAD (Unreleased)
-_(none)_
+* Regenerate datasource examples to be async
 
 ---
 
