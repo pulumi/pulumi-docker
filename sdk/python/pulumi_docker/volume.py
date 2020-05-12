@@ -37,6 +37,17 @@ class Volume(pulumi.CustomResource):
         [docker\_container](https://www.terraform.io/docs/providers/docker/r/container.html)
         to prepare volumes that can be shared across containers.
 
+        ## Example Usage
+
+
+
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        # Creates a docker volume "shared_volume".
+        shared_volume = docker.Volume("sharedVolume")
+        ```
 
 
         :param str resource_name: The name of the resource.

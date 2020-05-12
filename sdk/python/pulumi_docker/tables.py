@@ -3,9 +3,6 @@
 # *** Do not edit by hand unless you're certain you know what you are doing! ***
 
 _SNAKE_TO_CAMEL_CASE_TABLE = {
-    "ca_material": "caMaterial",
-    "cert_material": "certMaterial",
-    "cert_path": "certPath",
     "check_duplicate": "checkDuplicate",
     "container_logs": "containerLogs",
     "converge_config": "convergeConfig",
@@ -24,7 +21,6 @@ _SNAKE_TO_CAMEL_CASE_TABLE = {
     "ipam_driver": "ipamDriver",
     "ipc_mode": "ipcMode",
     "keep_locally": "keepLocally",
-    "key_material": "keyMaterial",
     "log_driver": "logDriver",
     "log_opts": "logOpts",
     "max_retry_count": "maxRetryCount",
@@ -39,7 +35,6 @@ _SNAKE_TO_CAMEL_CASE_TABLE = {
     "pull_trigger": "pullTrigger",
     "pull_triggers": "pullTriggers",
     "read_only": "readOnly",
-    "registry_auth": "registryAuth",
     "rollback_config": "rollbackConfig",
     "server_address": "serverAddress",
     "shm_size": "shmSize",
@@ -50,9 +45,6 @@ _SNAKE_TO_CAMEL_CASE_TABLE = {
 }
 
 _CAMEL_TO_SNAKE_CASE_TABLE = {
-    "caMaterial": "ca_material",
-    "certMaterial": "cert_material",
-    "certPath": "cert_path",
     "checkDuplicate": "check_duplicate",
     "containerLogs": "container_logs",
     "convergeConfig": "converge_config",
@@ -71,7 +63,6 @@ _CAMEL_TO_SNAKE_CASE_TABLE = {
     "ipamDriver": "ipam_driver",
     "ipcMode": "ipc_mode",
     "keepLocally": "keep_locally",
-    "keyMaterial": "key_material",
     "logDriver": "log_driver",
     "logOpts": "log_opts",
     "maxRetryCount": "max_retry_count",
@@ -86,7 +77,6 @@ _CAMEL_TO_SNAKE_CASE_TABLE = {
     "pullTrigger": "pull_trigger",
     "pullTriggers": "pull_triggers",
     "readOnly": "read_only",
-    "registryAuth": "registry_auth",
     "rollbackConfig": "rollback_config",
     "serverAddress": "server_address",
     "shmSize": "shm_size",

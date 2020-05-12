@@ -125,7 +125,6 @@ func Provider() tfbridge.ProviderInfo {
 			"docker_registry_image": {Tok: dockerDataSource(dockerMod, "getRegistryImage")},
 		},
 		JavaScript: &tfbridge.JavaScriptInfo{
-			AsyncDataSources: true,
 			Dependencies: map[string]string{
 				"@pulumi/pulumi": "^2.0.0",
 				"semver":         "^5.4.0",

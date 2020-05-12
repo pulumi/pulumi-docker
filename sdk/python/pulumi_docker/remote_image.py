@@ -40,6 +40,29 @@ class RemoteImage(pulumi.CustomResource):
         conjunction with [`.getRegistryImage`](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
         data source to update the `pull_triggers` field.
 
+        ## Example Usage
+
+
+
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        # Find the latest Ubuntu precise image.
+        ubuntu = docker.RemoteImage("ubuntu", name="ubuntu:precise")
+        ```
+
+        ### Dynamic image
+
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        ubuntu_registry_image = docker.get_registry_image(name="ubuntu:precise")
+        ubuntu_remote_image = docker.RemoteImage("ubuntuRemoteImage",
+            name=ubuntu_registry_image.name,
+            pull_triggers=[ubuntu_registry_image.sha256_digest])
+        ```
 
 
         :param str resource_name: The name of the resource.

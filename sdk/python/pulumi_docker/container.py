@@ -343,6 +343,19 @@ class Container(pulumi.CustomResource):
         """
         Manages the lifecycle of a Docker container.
 
+        ## Example Usage
+
+
+
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        # Find the latest Ubuntu precise image.
+        ubuntu_remote_image = docker.RemoteImage("ubuntuRemoteImage", name="ubuntu:precise")
+        # Start a container
+        ubuntu_container = docker.Container("ubuntuContainer", image=ubuntu_remote_image.latest)
+        ```
 
 
         :param str resource_name: The name of the resource.

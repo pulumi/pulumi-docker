@@ -29,6 +29,17 @@ class Secret(pulumi.CustomResource):
         """
         Manages the secrets of a Docker service in a swarm.
 
+        ## Example Usage
+
+        ### Basic
+
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        # Creates a secret
+        foo_secret = docker.Secret("fooSecret", data="ewogICJzZXJsaasIfQo=")
+        ```
 
 
         :param str resource_name: The name of the resource.

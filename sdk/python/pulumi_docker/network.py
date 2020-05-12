@@ -78,6 +78,17 @@ class Network(pulumi.CustomResource):
         [docker\_container](https://www.terraform.io/docs/providers/docker/r/container.html)
         to create virtual networks within the docker environment.
 
+        ## Example Usage
+
+
+
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        # Create a new docker network
+        private_network = docker.Network("privateNetwork")
+        ```
 
 
         :param str resource_name: The name of the resource.
