@@ -42,6 +42,19 @@ def get_registry_image(name=None,opts=None):
     [docker\_image](https://www.terraform.io/docs/providers/docker/r/image.html) resource to keep an image up
     to date on the latest available version of the tag.
 
+    ## Example Usage
+
+
+
+    ```python
+    import pulumi
+    import pulumi_docker as docker
+
+    ubuntu_registry_image = docker.get_registry_image(name="ubuntu:precise")
+    ubuntu_remote_image = docker.RemoteImage("ubuntuRemoteImage",
+        name=ubuntu_registry_image.name,
+        pull_triggers=[ubuntu_registry_image.sha256_digest])
+    ```
 
 
 

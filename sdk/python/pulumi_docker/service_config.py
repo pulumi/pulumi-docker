@@ -23,6 +23,15 @@ class ServiceConfig(pulumi.CustomResource):
         Manages the configuration of a Docker service in a swarm.
 
 
+        ## Basic
+
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        # Creates a config
+        foo_config = docker.ServiceConfig("fooConfig", data="ewogICJzZXJIfQo=")
+        ```
 
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.

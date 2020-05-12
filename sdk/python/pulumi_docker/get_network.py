@@ -65,6 +65,16 @@ def get_network(id=None,name=None,opts=None):
     """
     Finds a specific docker network and returns information about it.
 
+    ## Example Usage
+
+
+
+    ```python
+    import pulumi
+    import pulumi_docker as docker
+
+    main = docker.get_network(name="main")
+    ```
 
 
 
