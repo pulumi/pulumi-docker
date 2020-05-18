@@ -15,7 +15,7 @@
 import pulumi
 from typing import Optional, Union
 
-from .docker import build_and_push_image_async, DockerBuild, Registry
+from .docker import build_and_push_image, DockerBuild, Registry
 from .utils import get_image_name_and_tag
 
 
@@ -127,36 +127,36 @@ class Image(pulumi.ComponentResource):
             local_image_name_without_tag, local_image_name_tag = get_image_name_and_tag(local_image_name)
             image_name_without_tag, image_name_tag = get_image_name_and_tag(image_name)
 
-            tag = local_image_name_tag if local_image_name_tag else image_name_tag
+            tag = local_image_name_tag or image_name_tag
 
             def check_tag(t: Optional[str]):
                 if t and (t != tag):
-                    raise Exception(f'[local_image_name_tag] and [image_name]'
+                    raise Exception(f'[local_image_name] and [image_name]'
                                     ' had mismatched tags. {local_image_name_tag} != {image_name_tag}')
 
             check_tag(local_image_name_tag)
             check_tag(image_name_tag)
 
-            # buildAndPushImageAsync expects only the base_image_name to have a tag.  So build that
+            # buildAndPushImage expects only the base_image_name to have a tag.  So build that
             # name appropriately if we were given a tag.
             base_image_name = f'{local_image_name_without_tag}:{tag}' if tag else local_image_name
 
-            # buildAndPushImageAsync does not want the repository_url to have a tag.  This is just
+            # buildAndPushImage does not want the repository_url to have a tag.  This is just
             # the base url where the images will be pushed to.  All tagging will be taken care of
             # inside that api.
             repository_url = image_name_without_tag
 
             registry = image_args.registry
 
-            async def get_registry():
+            def get_registry():
                 return Registry(registry.server, registry.username, registry.password)
 
-            unique_target_name = build_and_push_image_async(
+            unique_target_name = build_and_push_image(
                 base_image_name,
                 image_args.build,
                 repository_url,
                 self,
-                get_registry if registry else None,
+                get_registry() if registry else None,
                 image_args.skip_push,
             )
 
