@@ -1,37 +1,17 @@
 package main
 
 import (
-	"encoding/base64"
 	"fmt"
-	"strings"
-
-	"github.com/pkg/errors"
 
 	"github.com/pulumi/pulumi-aws/sdk/v2/go/aws/ecr"
 	"github.com/pulumi/pulumi-docker/sdk/v2/go/docker"
 	"github.com/pulumi/pulumi/sdk/v2/go/pulumi"
 )
 
-func getRegistryInfo(ctx *pulumi.Context, rid string) (pulumi.Map, error) {
+func getRegistryInfo(ctx *pulumi.Context, rid string) (map[string]pulumi.Input, error) {
 	creds, err := ecr.GetCredentials(ctx, &ecr.GetCredentialsArgs{
 		RegistryId: rid,
 	})
-	if err != nil {
-		return nil, err
-	}
-	decoded, err := base64.StdEncoding.DecodeString(creds.AuthorizationToken)
-	if err != nil {
-		return nil, err
-	}
-	parts := strings.Split(string(decoded), ":")
-	if len(parts) != 2 {
-		return nil, errors.Errorf("Invalid credentials")
-	}
-	return map[string]pulumi.Input{
-		"server":   pulumi.String(creds.ProxyEndpoint),
-		"username": pulumi.String(parts[0]),
-		"password": pulumi.String(parts[1]),
-	}, nil
 }
 
 func main() {
@@ -47,7 +27,13 @@ func main() {
 				return err
 			}
 
-			registry := repo.RegistryId.ApplyString(getRegistryInfo)
+			registry := repo.RegistryId.ApplyT(func(rid string) map[string]pulumi.Input {
+				registryInfo, err := getRegistryInfo(ctx, rid)
+				if err != nil {
+					return map[string]pulumi.Input{}
+				}
+				return registryInfo
+			})
 
 			_, err = docker.NewImage(
 				ctx,
@@ -61,9 +47,9 @@ func main() {
 						},
 					},
 					Registry: docker.ImageRegistryArgs{
-						Server:   registry.MapIndex(pulumi.String("Server")),
-						Username: registry.MapIndex(pulumi.String("Username")),
-						Password: registry.MapIndex(pulumi.String("Password")),
+						Server:   registry["server"],
+						Username: registry["username"],
+						Password: registry["password"],
 					},
 				},
 			)
