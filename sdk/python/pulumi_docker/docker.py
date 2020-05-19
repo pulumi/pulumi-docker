@@ -15,7 +15,6 @@ import json
 import math
 import re
 import subprocess
-import threading
 from random import random
 from typing import Optional, Union, List, Mapping
 from distutils.version import LooseVersion
@@ -534,7 +533,6 @@ def run_command_that_must_succeed(
     command_result = run_command_that_can_fail(
         cmd, args, log_resource, report_full_command_line, False, stdin, env)
     code, stdout = command_result.code, command_result.stdout
-    print(code, stdout)
 
     if code != 0:
         # Fail the entire build and push.  This includes the full output of the command so that at
