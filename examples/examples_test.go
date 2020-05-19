@@ -42,28 +42,40 @@ func TestAws(t *testing.T) {
 		t.FailNow()
 	}
 
-	shortTests := []integration.ProgramTestOptions{
-		base.With(integration.ProgramTestOptions{
-			Config: map[string]string{
-				"aws:region": region,
-			},
-			Dependencies: []string{
-				"@pulumi/docker",
-			},
-			Dir: path.Join(cwd, "aws"),
-		}),
+	opts := base.With(integration.ProgramTestOptions{
+		Config: map[string]string{
+			"aws:region": region,
+		},
+		Dependencies: []string{
+			"@pulumi/docker",
+		},
+		Dir: path.Join(cwd, "aws"),
+	})
+	integration.ProgramTest(t, &opts)
+}
+
+func TestAwsPy(t *testing.T) {
+	region := os.Getenv("AWS_REGION")
+	if region == "" {
+		t.Skipf("Skipping test due to missing AWS_REGION environment variable")
+	}
+	fmt.Printf("AWS Region: %v\n", region)
+
+	cwd, err := os.Getwd()
+	if !assert.NoError(t, err) {
+		t.FailNow()
 	}
 
-	longTests := []integration.ProgramTestOptions{}
-
-	tests := shortTests
-	if !testing.Short() {
-		tests = append(tests, longTests...)
-	}
-
-	for _, ex := range tests {
-		integration.ProgramTest(t, &ex)
-	}
+	opts := base.With(integration.ProgramTestOptions{
+		Config: map[string]string{
+			"aws:region": region,
+		},
+		Dependencies: []string{
+			path.Join("..", "sdk", "python", "bin"),
+		},
+		Dir: path.Join(cwd, "aws-py"),
+	})
+	integration.ProgramTest(t, &opts)
 }
 
 func TestNginx(t *testing.T) {
@@ -152,6 +164,21 @@ func TestDockerfileWithMultipleTargets(t *testing.T) {
 			"@pulumi/docker",
 		},
 		Dir: path.Join(cwd, "dockerfile-with-targets"),
+	})
+	integration.ProgramTest(t, &opts)
+}
+
+func TestDockerfilePy(t *testing.T) {
+	cwd, err := os.Getwd()
+	if !assert.NoError(t, err) {
+		t.FailNow()
+	}
+
+	opts := base.With(integration.ProgramTestOptions{
+		Dependencies: []string{
+			path.Join("..", "sdk", "python", "bin"),
+		},
+		Dir: path.Join(cwd, "dockerfile-py"),
 	})
 	integration.ProgramTest(t, &opts)
 }
