@@ -20,63 +20,106 @@ from .utils import get_image_name_and_tag
 
 
 class ImageRegistry:
-    # Docker registry server URL to push to.  Some common values include:
-    # DockerHub: `docker.io` or `https://index.docker.io/v1`
-    # Azure Container Registry: `<name>.azurecr.io`
-    # AWS Elastic Container Registry: `<account>.dkr.ecr.us-east-2.amazonaws.com`
-    # Google Container Registry: `<name>.gcr.io`
     server: pulumi.Input[str]
+    """
+    Docker registry server URL to push to. 
+    
+    Some common values include:
+        - DockerHub: `docker.io` or `https://index.docker.io/v1`
+        - Azure Container Registry: `<name>.azurecr.io`
+        - AWS Elastic Container Registry: `<account>.dkr.ecr.us-east-2.amazonaws.com`
+        - Google Container Registry: `<name>.gcr.io`
+    """
 
-    # Username for login to the target Docker registry.
     username: pulumi.Input[str]
+    """
+    Username for login to the target Docker registry.
+    """
 
-    # Password for login to the target Docker registry.
     password: pulumi.Input[str]
+    """
+    Password for login to the target Docker registry.
+    """
 
     def __init__(self, server: pulumi.Input[str], username: pulumi.Input[str], password: pulumi.Input[str]):
+        """
+        Image is a resource that represents a Docker image built locally which is published and made
+        available via a remote Docker registry.  This can be used to ensure that a Docker source
+        directory from a local deployment environment is built and pushed to a cloud-hosted Docker
+        registry as part of a Pulumi deployment, so that it can be referenced as an image input from
+        other cloud services that reference Docker images - including Kubernetes Pods, AWS ECS Tasks, and
+        Azure Container Instances.
+
+
+        :param pulumi.Input[str] server: Docker registry server URL to push to.
+        :param pulumi.Input[str] username: Username for login to the target Docker registry.
+        :param pulumi.Input[str] password: Password for login to the target Docker registry.
+        """
         self.server = server
         self.username = username
         self.password = password
 
 
-# Arguments for constructing an Image resource.
 class _ImageArgs:
-
-    # The qualified image name that will be pushed to the remote registry.  Must be a supported
-    # image name for the target registry user.  This name can include a tag at the end.  If
-    # provided all pushed image resources will contain that tag as well.
-    #
-    # Either [image_name] or [localImageName] can have a tag.  However, if both have a tag, then
-    # those tags must match.
-
     image_name: str
+    """
+    The qualified image name that will be pushed to the remote registry.  Must be a supported
+    image name for the target registry user.  This name can include a tag at the end.  If
+    provided all pushed image resources will contain that tag as well.
 
-    # The Docker build context, as a folder path or a detailed DockerBuild object.
+    Either [image_name] or [localImageName] can have a tag.  However, if both have a tag, then
+    those tags must match.
+    """
 
     build: Union[str, DockerBuild]
-
-    # The docker image name to build locally before tagging with image_name.  If not provided, it
-    # will be given the value of to [image_name].  This name can include a tag at the end.  If
-    # provided all pushed image resources will contain that tag as well.
-    #
-    # Either [image_name] or [localImageName] can have a tag.  However, if both have a tag, then
-    # those tags must match.
+    """
+    The Docker build context, as a folder path or a detailed DockerBuild object.
+    """
 
     local_image_name: str
+    """
+    The docker image name to build locally before tagging with image_name.  If not provided, it
+    will be given the value of to [image_name].  This name can include a tag at the end.  If
+    provided all pushed image resources will contain that tag as well.
 
-    # Credentials for the docker registry to push to.
+    Either [image_name] or [localImageName] can have a tag.  However, if both have a tag, then
+    those tags must match.
+    """
+
     registry: Optional[ImageRegistry]
+    """
+    Credentials for the docker registry to push to.
+    """
 
-    # Skip push flag.
     skip_push: Optional[bool]
+    """
+    Skip push flag.
+    """
 
     def __init__(self,
-        image_name: str,
-        build: Union[str, DockerBuild],
-        local_image_name: str,
-        registry: Optional[ImageRegistry],
-        skip_push: Optional[bool]):
+                 image_name: str,
+                 build: Union[str, DockerBuild],
+                 local_image_name: str,
+                 registry: Optional[ImageRegistry],
+                 skip_push: Optional[bool]):
+        """
+        Arguments for constructing an Image resource.
 
+
+        :param str image_name: The qualified image name that will be pushed to the remote registry.  Must be a supported
+            image name for the target registry user.  This name can include a tag at the end.  If
+            provided all pushed image resources will contain that tag as well.
+            Either [image_name] or [localImageName] can have a tag.  However, if both have a tag, then
+            those tags must match.
+        :param Union[str, DockerBuild] build: The Docker build context, as a folder path or a detailed DockerBuild object.
+        :param str local_image_name: The docker image name to build locally before tagging with image_name.  If not provided, it
+            will be given the value of to [image_name].  This name can include a tag at the end.  If
+            provided all pushed image resources will contain that tag as well.
+            Either [image_name] or [localImageName] can have a tag.  However, if both have a tag, then
+            those tags must match.
+        :param Optional[ImageRegistry] registry: Credentials for the docker registry to push to.
+        :param Optional[bool]) skip_push: Skip push flag.
+        """
         self.image_name = image_name
         self.build = build
         self.local_image_name = local_image_name
@@ -85,24 +128,20 @@ class _ImageArgs:
 
 
 class Image(pulumi.ComponentResource):
-    """
-     A docker.Image resource represents a Docker image built locally which is published and made
-     available via a remote Docker registry.  This can be used to ensure that a Docker source
-     directory from a local deployment environment is built and pushed to a cloud-hosted Docker
-     registry as part of a Pulumi deployment, so that it can be referenced as an image input from
-     other cloud services that reference Docker images - including Kubernetes Pods, AWS ECS Tasks, and
-     Azure Container Instances.
-    """
-
-    # The base image name that was built and pushed.  This does not include the id annotation, so
-    # is not pinned to the specific build performed by this docker.Image.
     base_image_name: pulumi.Output[str]
+    """
+    The base image name that was built and pushed.  This does not include the id annotation, so
+    is not pinned to the specific build performed by this docker.Image.
+    """
 
-    # The unique pinned image name on the remote repository.
     image_name: pulumi.Output[str]
+    """
+    The unique pinned image name on the remote repository."""
 
-    # The server the image is located at.
     registry_server: pulumi.Output[Optional[str]]
+    """
+    The server the image is located at.
+    """
 
     def __init__(self, name: str,
                  image_name: pulumi.Input[str],
@@ -111,6 +150,32 @@ class Image(pulumi.ComponentResource):
                  registry: Optional[pulumi.Input[ImageRegistry]] = None,
                  skip_push: Optional[bool] = None,
                  opts: Optional[pulumi.ResourceOptions] = None):
+        """
+        A docker.Image resource represents a Docker image built locally which is published and made
+        available via a remote Docker registry.  This can be used to ensure that a Docker source
+        directory from a local deployment environment is built and pushed to a cloud-hosted Docker
+        registry as part of a Pulumi deployment, so that it can be referenced as an image input from
+        other cloud services that reference Docker images - including Kubernetes Pods, AWS ECS Tasks, and
+        Azure Container Instances.
+
+
+        :param str name: The name of the resource.
+        :param pulumi.Input[str] image_name: The qualified image name that will be pushed to the remote registry.
+            Must be a supported image name for the target registry user.  This name can include a tag at the end.  If
+            provided all pushed image resources will contain that tag as well.
+            Either [imageName] or [localImageName] can have a tag.  However, if both have a tag, then
+            those tags must match.
+        :param Union[pulumi.Input[str], DockerBuild] build: The Docker build context, as a folder path or a detailed
+            DockerBuild object.
+        :param Optional[pulumi.Input[str]] local_image_name: The docker image name to build locally before tagging with
+            imageName.  If not provided, it will be given the value of to [imageName].  This name can include a tag at
+            the end.  If provided all pushed image resources will contain that tag as well.
+            Either [imageName] or [localImageName] can have a tag.  However, if both have a tag, then
+            those tags must match.
+        :param Optional[pulumi.Input[ImageRegistry]] registry: Credentials for the docker registry to push to.
+        :param Optional[bool] skip_push: Skip push flag.
+        :param Optional[pulumi.ResourceOptions] opts: Options for the resource.
+        """
         super().__init__("docker:image:Image", name, {}, opts)
 
         def get_image_data(image_args: _ImageArgs):

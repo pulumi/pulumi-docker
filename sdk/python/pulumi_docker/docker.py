@@ -23,73 +23,123 @@ import pulumi
 from .utils import get_image_name_and_tag
 
 
-# Registry is the information required to login to a Docker registry.
 class Registry:
     registry: pulumi.Input[str]
+    """
+    Registry server url
+    """
     username: pulumi.Input[str]
+    """
+    Username for the registry
+    """
     password: pulumi.Input[str]
+    """
+    Password for the registry
+    """
 
     def __init__(self, registry: pulumi.Input[str], username: pulumi.Input[str], password: pulumi.Input[str]):
+        """
+        Registry is the information required to login to a Docker registry.
+
+
+        :param pulumi.Input[str] registry: Registry server url
+        :param pulumi.Input[str] username: Username for the registry
+        :param pulumi.Input[str] password: Password for the registry
+        """
         self.registry = registry
         self.username = username
         self.password = password
 
 
-# CacheFrom may be used to specify build stages to use for the Docker build cache. The final image
-# is always implicitly included.
-
 class CacheFrom:
-    # An optional list of build stages to use for caching. Each build stage in this list will be
-    # built explicitly and pushed to the target repository. A given stage's image will be tagged as
-    # "[stage-name]".
+    """
+    CacheFrom may be used to specify build stages to use for the Docker build cache. The final image
+    is always implicitly included.
+    """
 
     stages: Optional[List[pulumi.Input[pulumi.Input[str]]]]
+    """
+    An optional list of build stages to use for caching. Each build stage in this list will be
+    built explicitly and pushed to the target repository. A given stage's image will be tagged as
+    "[stage-name]".
+    """
 
 
-# DockerBuild may be used to specify detailed instructions about how to build a container.
 class DockerBuild:
-    # context is a path to a directory to use for the Docker build context, usually the directory
-    # in which the Dockerfile resides (although dockerfile may be used to choose a custom location
-    # independent of this choice). If not specified, the context defaults to the current working
-    # directory if a relative path is used, it is relative to the current working directory that
-    # Pulumi is evaluating.
-
     context: Optional[pulumi.Input[str]]
-
-    # dockerfile may be used to override the default Dockerfile name and/or location.  By default,
-    # it is assumed to be a file named Dockerfile in the root of the build context.
+    """
+    context is a path to a directory to use for the Docker build context, usually the directory
+    in which the Dockerfile resides (although dockerfile may be used to choose a custom location
+    independent of this choice). If not specified, the context defaults to the current working
+    directory if a relative path is used, it is relative to the current working directory that
+    Pulumi is evaluating.
+    """
 
     dockerfile: Optional[pulumi.Input[str]]
-
-    # An optional map of named build-time argument variables to set during the Docker build.  This
-    # flag allows you to pass built-time variables that can be accessed like environment variables
-    # inside the `RUN` instruction.
+    """
+    dockerfile may be used to override the default Dockerfile name and/or location.  By default,
+    it is assumed to be a file named Dockerfile in the root of the build context.
+    """
 
     args: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]
-
-    # An optional CacheFrom object with information about the build stages to use for the Docker
-    # build cache. This parameter maps to the --cache-from argument to the Docker CLI. If this
-    # parameter is `true`, only the final image will be pulled and passed to --cache-from if it is
-    # a CacheFrom object, the stages named therein will also be pulled and passed to --cache-from.
+    """
+    An optional map of named build-time argument variables to set during the Docker build.  This
+    flag allows you to pass built-time variables that can be accessed like environment variables
+    inside the `RUN` instruction.
+    """
 
     cache_from: Optional[pulumi.Input[Union[bool, CacheFrom]]]
-
-    # An optional catch-all str to provide extra CLI options to the docker build command.  For
-    # example, use to specify `--network host`.
+    """
+    An optional CacheFrom object with information about the build stages to use for the Docker
+    build cache. This parameter maps to the --cache-from argument to the Docker CLI. If this
+    parameter is `true`, only the final image will be pulled and passed to --cache-from if it is
+    a CacheFrom object, the stages named therein will also be pulled and passed to --cache-from.
+    """
 
     extra_options: Optional[List[pulumi.Input[pulumi.Input[str]]]]
-
-    # Environment variables to set on the invocation of `docker build`, for example to support
-    # `DOCKER_BUILDKIT=1 docker build`.
+    """
+    An optional catch-all str to provide extra CLI options to the docker build command.  For
+    example, use to specify `--network host`.
+    """
 
     env: Optional[Mapping[str, str]]
-
-    # The target of the dockerfile to build
+    """
+    Environment variables to set on the invocation of `docker build`, for example to support
+    `DOCKER_BUILDKIT=1 docker build`.
+    """
 
     target: Optional[pulumi.Input[str]]
+    """
+    The target of the dockerfile to build
+    """
 
     def __init__(self, context=None, dockerfile=None, args=None, cache_from=None, extra_options=None, env=None,
                  target=None):
+        """
+        DockerBuild may be used to specify detailed instructions about how to build a container.
+
+
+        :param Optional[pulumi.Input[str]] context: context is a path to a directory to use for the Docker build
+            context, usually the directory in which the Dockerfile resides (although dockerfile may be used to choose
+            a custom location independent of this choice). If not specified, the context defaults to the current working
+            directory if a relative path is used, it is relative to the current working directory that
+            Pulumi is evaluating.
+        :param Optional[pulumi.Input[str]] dockerfile: dockerfile may be used to override the default Dockerfile name
+            and/or location.  By default, it is assumed to be a file named Dockerfile in the root of the build context.
+        :param Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] args: An optional map of named build-time
+            argument variables to set during the Docker build.  This flag allows you to pass built-time variables that
+            can be accessed like environment variables inside the `RUN` instruction.
+        :param Optional[pulumi.Input[Union[bool, CacheFrom]]] cache_from: An optional CacheFrom object with information
+            about the build stages to use for the Docker build cache. This parameter maps to the --cache-from argument
+            to the Docker CLI. If this parameter is `true`, only the final image will be pulled and passed to
+            --cache-from if it is a CacheFrom object, the stages named therein will also be pulled and passed to
+            --cache-from.
+        :param Optional[List[pulumi.Input[pulumi.Input[str]]]] extra_options: An optional catch-all str to provide
+            extra CLI options to the docker build command.  For example, use to specify `--network host`.
+        :param Optional[Mapping[str, str]] env: Environment variables to set on the invocation of `docker build`, for
+         example to support `DOCKER_BUILDKIT=1 docker build`.
+        :param Optional[pulumi.Input[str]] target: The target of the dockerfile to build
+        """
         self.context = context
         self.dockerfile = dockerfile
         self.args = args
@@ -133,12 +183,6 @@ def use_docker_password_stdin(log_resource: pulumi.Resource):
     return False
 
 
-# build_and_push_image will build and push the Dockerfile and context from [pathOrBuild] into the
-# requested docker repo [repository_url].  It returns the unique target image name for the image in
-# the docker repository.  During preview this will build the image, and return the target image
-# name, without pushing. During a normal update, it will do the same, as well as tag and push the
-# image.
-
 def build_and_push_image(
     base_image_name: str,
     path_or_build: pulumi.Input[Union[str, DockerBuild]],
@@ -147,6 +191,13 @@ def build_and_push_image(
     registry: Optional[Registry],
     skip_push: bool = False
 ) -> str:
+    """
+    build_and_push_image will build and push the Dockerfile and context from [pathOrBuild] into the
+    requested docker repo [repository_url].  It returns the unique target image name for the image in
+    the docker repository.  During preview this will build the image, and return the target image
+    name, without pushing. During a normal update, it will do the same, as well as tag and push the
+    image.
+    """
 
     # Give an initial message indicating what we're about to do.  That way, if anything
     # takes a while, the user has an idea about what's going on.
@@ -546,16 +597,6 @@ def run_command_that_must_succeed(
     return stdout
 
 
-# Runs a CLI command in a child process, returning a future for the process's exit. Both stdout
-# and stderr are redirected to process.stdout and process.stderr by default.
-#
-# If the [stdin] argument is defined, its contents are piped into stdin for the child process.
-#
-# [log_resource] is used to specify the resource to associate command output with. Stderr messages
-# are always sent (since they may contain important information about something that's gone wrong).
-# Stdout messages will be logged ephemerally to this resource.  This lets the user know there is
-# progress, without having that dumped on them at the end.  If an error occurs though, the stdout
-# content will be printed.
 def run_command_that_can_fail(
     cmd_name: str,
     args: List[str],
@@ -565,6 +606,18 @@ def run_command_that_can_fail(
     stdin: Optional[str] = None,
     env: Optional[Mapping[str, str]] = None
 ) -> CommandResult:
+    """
+    Runs a CLI command in a child process, returning a future for the process's exit. Both stdout
+    and stderr are redirected to process.stdout and process.stderr by default.
+
+    If the [stdin] argument is defined, its contents are piped into stdin for the child process.
+
+    [log_resource] is used to specify the resource to associate command output with. Stderr messages
+    are always sent (since they may contain important information about something that's gone wrong).
+    Stdout messages will be logged ephemerally to this resource.  This lets the user know there is
+    progress, without having that dumped on them at the end.  If an error occurs though, the stdout
+    content will be printed.
+    """
 
     # Let the user ephemerally know the command we're going to execute.
     log_ephemeral(f"Executing {get_command_line_message(cmd_name, args, report_full_command_line, env)}", log_resource)
