@@ -29,7 +29,7 @@ def get_registry_info(rid):
     return docker.ImageRegistry(creds.proxy_endpoint, parts[0], parts[1])
 
 
-for i in range(10):
+for i in range(3):
     # Create a private ECR registry.
     repo = aws.ecr.Repository('my-repo-%i' % i, name='image-%i' % i)
 
