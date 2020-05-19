@@ -16,6 +16,7 @@ before_install:
     - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
 install:
     - source ${PULUMI_SCRIPTS}/ci/install-common-toolchain.sh
+    - source ${PULUMI_SCRIPTS}/ci/configure-aws.sh
     - curl -L https://get.pulumi.com/ | bash
     - export PATH=$HOME/.pulumi/bin:$PATH
 before_script:
