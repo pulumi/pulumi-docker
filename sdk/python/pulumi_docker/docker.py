@@ -15,6 +15,7 @@ import json
 import math
 import re
 import subprocess
+import threading
 from random import random
 from typing import Optional, Union, List, Mapping
 from distutils.version import LooseVersion
@@ -533,6 +534,7 @@ def run_command_that_must_succeed(
     command_result = run_command_that_can_fail(
         cmd, args, log_resource, report_full_command_line, False, stdin, env)
     code, stdout = command_result.code, command_result.stdout
+    print(code, stdout)
 
     if code != 0:
         # Fail the entire build and push.  This includes the full output of the command so that at
@@ -549,7 +551,7 @@ def run_command_that_must_succeed(
 # Runs a CLI command in a child process, returning a future for the process's exit. Both stdout
 # and stderr are redirected to process.stdout and process.stderr by default.
 #
-# If the [stdin] argument is defined, it's contents are piped into stdin for the child process.
+# If the [stdin] argument is defined, its contents are piped into stdin for the child process.
 #
 # [log_resource] is used to specify the resource to associate command output with. Stderr messages
 # are always sent (since they may contain important information about something that's gone wrong).
@@ -586,9 +588,34 @@ def run_command_that_can_fail(
 
     cmd = [cmd_name] + args
 
-    process = subprocess.run(cmd, env=env, input=stdin, encoding="utf-8", capture_output=True)
+    process = subprocess.Popen(cmd, env=env, stdout=subprocess.PIPE,
+                               stderr=subprocess.PIPE, stdin=subprocess.PIPE, encoding="utf-8")
 
-    code, stderr, stdout = process.returncode, process.stderr, process.stdout
+    # We store the results from stdout in memory and will return them as a str.
+    stdout_chunks: List[str] = []
+    stderr_chunks: List[str] = []
+
+    # A None value for process.returncode indicates that the process hasn't terminated yet
+    while process.returncode is None:
+        outs, errs = process.communicate(input=stdin)
+        if outs:
+            # Report all stdout messages as ephemeral messages.  That way they show up in the
+            # info bar as they're happening.  But they do not overwhelm the user as the end
+            # of the run.
+            log_ephemeral(outs, log_resource)
+            stdout_chunks.append(outs.rstrip())
+        if errs:
+            # We can't stream these stderr messages as we receive them because we don't knows at
+            # this point because Docker uses stderr for both errors and warnings.  So, instead, we
+            # just collect the messages, and wait for the process to end to decide how to report
+            # them.
+            stderr_chunks.append(errs.rstrip())
+
+    code = process.returncode
+
+    # Collapse our stored stdout/stderr messages into single strings.
+    stderr = ''.join(stderr_chunks)
+    stdout = ''.join(stdout_chunks)
 
     # If we got any stderr messages, report them as an error/warning depending on the
     # result of the operation.
