@@ -83,8 +83,11 @@ func NewImage(ctx *pulumi.Context,
 			imageNameWithoutTag, resource, skipPush, &imageArgs.Registry)
 	})
 
-	resource.RegistryServer = args.Registry.ToImageRegistryOutput().ApplyString(func(registry ImageRegistry) (string, error) {
-		return registry.Server, nil
+	resource.RegistryServer = args.Registry.ToImageRegistryOutput().ApplyString(func(registry *ImageRegistry) (string, error) {
+		if registry != nil {
+			return registry.Server, nil
+		}
+		return "", nil
 	})
 	resource.BaseImageName = args.ImageName.ToStringOutput()
 
