@@ -111,6 +111,21 @@ func TestNginxCs(t *testing.T) {
 	integration.ProgramTest(t, &opts)
 }
 
+func TestNginxGo(t *testing.T) {
+	cwd, err := os.Getwd()
+	if !assert.NoError(t, err) {
+		t.FailNow()
+	}
+
+	opts := base.With(integration.ProgramTestOptions{
+		Dependencies: []string{
+			"github.com/pulumi/pulumi-docker",
+		},
+		Dir: path.Join(cwd, "nginx-go"),
+	})
+	integration.ProgramTest(t, &opts)
+}
+
 func TestDotNet(t *testing.T) {
 	cwd, err := os.Getwd()
 	if !assert.NoError(t, err) {

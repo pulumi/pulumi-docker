@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/pulumi/pulumi-docker/sdk/go/docker"
+	"github.com/pulumi/pulumi-docker/sdk/v2/go/docker"
 	"github.com/pulumi/pulumi/sdk/v2/go/pulumi"
 )
 
