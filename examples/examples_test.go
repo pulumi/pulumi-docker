@@ -182,3 +182,18 @@ func TestDockerfilePy(t *testing.T) {
 	})
 	integration.ProgramTest(t, &opts)
 }
+
+func TestDockerfileGo(t *testing.T) {
+	cwd, err := os.Getwd()
+	if !assert.NoError(t, err) {
+		t.FailNow()
+	}
+
+	opts := base.With(integration.ProgramTestOptions{
+		Dependencies: []string{
+			"github.com/pulumi/pulumi-docker",
+		},
+		Dir: path.Join(cwd, "dockerfile-go"),
+	})
+	integration.ProgramTest(t, &opts)
+}
