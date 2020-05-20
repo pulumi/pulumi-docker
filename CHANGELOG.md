@@ -1,5 +1,6 @@
 ## HEAD (Unreleased)
 * Fix Python Docker Image build support for registries
+* Fix Go Docker Image implementation [#175](https://github.com/pulumi/pulumi-docker/pull/175)
 
 ---
 
