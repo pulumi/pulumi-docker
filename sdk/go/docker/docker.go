@@ -43,7 +43,7 @@ func buildAndPushImage(ctx *pulumi.Context, baseImageName string, build *DockerB
 
 	// If no `registry` info was passed in we simply assume docker is already
 	// logged-in to the correct registry (or uses auto-login via credential helpers).
-	if registry != nil {
+	if registry.Server != "" {
 		if !ctx.DryRun() || pullFromCache {
 			logEphemeral(ctx, "Logging into registry...", logResource)
 			err := loginToRegistry(ctx, *registry, logResource)
