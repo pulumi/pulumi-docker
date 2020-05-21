@@ -10,20 +10,18 @@ import * as utilities from "./utilities";
  * Manages a Docker Network. This can be used alongside
  * [docker\_container](https://www.terraform.io/docs/providers/docker/r/container.html)
  * to create virtual networks within the docker environment.
- * 
+ *
  * ## Example Usage
- * 
- * 
- * 
+ *
+ *
+ *
  * ```typescript
  * import * as pulumi from "@pulumi/pulumi";
  * import * as docker from "@pulumi/docker";
- * 
+ *
  * // Create a new docker network
  * const privateNetwork = new docker.Network("privateNetwork", {});
  * ```
- *
- * > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/network.html.markdown.
  */
 export class Network extends pulumi.CustomResource {
     /**

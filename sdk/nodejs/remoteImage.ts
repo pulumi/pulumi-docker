@@ -8,31 +8,31 @@ import * as utilities from "./utilities";
 
 /**
  * Pulls a Docker image to a given Docker host from a Docker Registry.
- * 
+ *
  * This resource will *not* pull new layers of the image automatically unless used in
  * conjunction with [`docker..getRegistryImage`](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
  * data source to update the `pullTriggers` field.
- * 
+ *
  * ## Example Usage
- * 
- * 
- * 
+ *
+ *
+ *
  * ```typescript
  * import * as pulumi from "@pulumi/pulumi";
  * import * as docker from "@pulumi/docker";
- * 
+ *
  * // Find the latest Ubuntu precise image.
  * const ubuntu = new docker.RemoteImage("ubuntu", {
  *     name: "ubuntu:precise",
  * });
  * ```
- * 
+ *
  * ### Dynamic image
- * 
+ *
  * ```typescript
  * import * as pulumi from "@pulumi/pulumi";
  * import * as docker from "@pulumi/docker";
- * 
+ *
  * const ubuntuRegistryImage = pulumi.output(docker.getRegistryImage({
  *     name: "ubuntu:precise",
  * }, { async: true }));
@@ -41,8 +41,6 @@ import * as utilities from "./utilities";
  *     pullTriggers: [ubuntuRegistryImage.sha256Digest],
  * });
  * ```
- *
- * > This content is derived from https://github.com/terraform-providers/terraform-provider-docker/blob/master/website/docs/r/image.html.markdown.
  */
 export class RemoteImage extends pulumi.CustomResource {
     /**
@@ -150,7 +148,6 @@ export interface RemoteImageState {
     readonly name?: pulumi.Input<string>;
     /**
      * **Deprecated**, use `pullTriggers` instead.
-     * 
      * @deprecated Use field pull_triggers instead
      */
     readonly pullTrigger?: pulumi.Input<string>;
@@ -179,7 +176,6 @@ export interface RemoteImageArgs {
     readonly name: pulumi.Input<string>;
     /**
      * **Deprecated**, use `pullTriggers` instead.
-     * 
      * @deprecated Use field pull_triggers instead
      */
     readonly pullTrigger?: pulumi.Input<string>;

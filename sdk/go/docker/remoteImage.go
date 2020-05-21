@@ -26,6 +26,8 @@ type RemoteImage struct {
 	// The name of the Docker image, including any tags or SHA256 repo digests.
 	Name pulumi.StringOutput `pulumi:"name"`
 	// **Deprecated**, use `pullTriggers` instead.
+	//
+	// Deprecated: Use field pull_triggers instead
 	PullTrigger pulumi.StringPtrOutput `pulumi:"pullTrigger"`
 	// List of values which cause an
 	// image pull when changed. This is used to store the image digest from the
@@ -73,6 +75,8 @@ type remoteImageState struct {
 	// The name of the Docker image, including any tags or SHA256 repo digests.
 	Name *string `pulumi:"name"`
 	// **Deprecated**, use `pullTriggers` instead.
+	//
+	// Deprecated: Use field pull_triggers instead
 	PullTrigger *string `pulumi:"pullTrigger"`
 	// List of values which cause an
 	// image pull when changed. This is used to store the image digest from the
@@ -90,6 +94,8 @@ type RemoteImageState struct {
 	// The name of the Docker image, including any tags or SHA256 repo digests.
 	Name pulumi.StringPtrInput
 	// **Deprecated**, use `pullTriggers` instead.
+	//
+	// Deprecated: Use field pull_triggers instead
 	PullTrigger pulumi.StringPtrInput
 	// List of values which cause an
 	// image pull when changed. This is used to store the image digest from the
@@ -110,6 +116,8 @@ type remoteImageArgs struct {
 	// The name of the Docker image, including any tags or SHA256 repo digests.
 	Name string `pulumi:"name"`
 	// **Deprecated**, use `pullTriggers` instead.
+	//
+	// Deprecated: Use field pull_triggers instead
 	PullTrigger *string `pulumi:"pullTrigger"`
 	// List of values which cause an
 	// image pull when changed. This is used to store the image digest from the
@@ -127,6 +135,8 @@ type RemoteImageArgs struct {
 	// The name of the Docker image, including any tags or SHA256 repo digests.
 	Name pulumi.StringInput
 	// **Deprecated**, use `pullTriggers` instead.
+	//
+	// Deprecated: Use field pull_triggers instead
 	PullTrigger pulumi.StringPtrInput
 	// List of values which cause an
 	// image pull when changed. This is used to store the image digest from the
