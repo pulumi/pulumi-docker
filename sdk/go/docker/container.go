@@ -54,6 +54,8 @@ type Container struct {
 	ExitCode pulumi.IntOutput `pulumi:"exitCode"`
 	// *Deprecated:* Use `networkData` instead. The network gateway of the container as read from its
 	// NetworkSettings.
+	//
+	// Deprecated: Use gateway from ip_adresses_data instead. This field exposes the data of the container's first network.
 	Gateway pulumi.StringOutput `pulumi:"gateway"`
 	// Add additional groups to run as.
 	GroupAdds pulumi.StringArrayOutput `pulumi:"groupAdds"`
@@ -68,9 +70,13 @@ type Container struct {
 	// as is shown in the example above.
 	Image pulumi.StringOutput `pulumi:"image"`
 	// *Deprecated:* Use `networkData` instead. The IP address of the container's first network it.
+	//
+	// Deprecated: Use ip_adresses_data instead. This field exposes the data of the container's first network.
 	IpAddress pulumi.StringOutput `pulumi:"ipAddress"`
 	// *Deprecated:* Use `networkData` instead. The IP prefix length of the container as read from its
 	// NetworkSettings.
+	//
+	// Deprecated: Use ip_prefix_length from ip_adresses_data instead. This field exposes the data of the container's first network.
 	IpPrefixLength pulumi.IntOutput `pulumi:"ipPrefixLength"`
 	// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
 	IpcMode pulumi.StringOutput `pulumi:"ipcMode"`
@@ -78,6 +84,8 @@ type Container struct {
 	Labels ContainerLabelArrayOutput `pulumi:"labels"`
 	// Set of links for link based
 	// connectivity between containers that are running on the same host.
+	//
+	// Deprecated: The --link flag is a legacy feature of Docker. It may eventually be removed.
 	Links pulumi.StringArrayOutput `pulumi:"links"`
 	// The logging driver to use for the container.
 	// Defaults to "json-file".
@@ -98,6 +106,8 @@ type Container struct {
 	MustRun pulumi.BoolPtrOutput      `pulumi:"mustRun"`
 	Name    pulumi.StringOutput       `pulumi:"name"`
 	// Network aliases of the container for user-defined networks only. *Deprecated:* use `networksAdvanced` instead.
+	//
+	// Deprecated: Use networks_advanced instead. Will be removed in v2.0.0
 	NetworkAliases pulumi.StringArrayOutput `pulumi:"networkAliases"`
 	// (Map of a block) The IP addresses of the container on each
 	// network. Key are the network names, values are the IP addresses.
@@ -106,6 +116,8 @@ type Container struct {
 	NetworkMode pulumi.StringPtrOutput `pulumi:"networkMode"`
 	// Id of the networks in which the
 	// container is. *Deprecated:* use `networksAdvanced` instead.
+	//
+	// Deprecated: Use networks_advanced instead. Will be removed in v2.0.0
 	Networks pulumi.StringArrayOutput `pulumi:"networks"`
 	// See Networks Advanced below for details. If this block has priority to the deprecated `networkAlias` and `network` properties.
 	NetworksAdvanced ContainerNetworksAdvancedArrayOutput `pulumi:"networksAdvanced"`
@@ -221,6 +233,8 @@ type containerState struct {
 	ExitCode *int `pulumi:"exitCode"`
 	// *Deprecated:* Use `networkData` instead. The network gateway of the container as read from its
 	// NetworkSettings.
+	//
+	// Deprecated: Use gateway from ip_adresses_data instead. This field exposes the data of the container's first network.
 	Gateway *string `pulumi:"gateway"`
 	// Add additional groups to run as.
 	GroupAdds []string `pulumi:"groupAdds"`
@@ -235,9 +249,13 @@ type containerState struct {
 	// as is shown in the example above.
 	Image *string `pulumi:"image"`
 	// *Deprecated:* Use `networkData` instead. The IP address of the container's first network it.
+	//
+	// Deprecated: Use ip_adresses_data instead. This field exposes the data of the container's first network.
 	IpAddress *string `pulumi:"ipAddress"`
 	// *Deprecated:* Use `networkData` instead. The IP prefix length of the container as read from its
 	// NetworkSettings.
+	//
+	// Deprecated: Use ip_prefix_length from ip_adresses_data instead. This field exposes the data of the container's first network.
 	IpPrefixLength *int `pulumi:"ipPrefixLength"`
 	// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
 	IpcMode *string `pulumi:"ipcMode"`
@@ -245,6 +263,8 @@ type containerState struct {
 	Labels []ContainerLabel `pulumi:"labels"`
 	// Set of links for link based
 	// connectivity between containers that are running on the same host.
+	//
+	// Deprecated: The --link flag is a legacy feature of Docker. It may eventually be removed.
 	Links []string `pulumi:"links"`
 	// The logging driver to use for the container.
 	// Defaults to "json-file".
@@ -265,6 +285,8 @@ type containerState struct {
 	MustRun *bool            `pulumi:"mustRun"`
 	Name    *string          `pulumi:"name"`
 	// Network aliases of the container for user-defined networks only. *Deprecated:* use `networksAdvanced` instead.
+	//
+	// Deprecated: Use networks_advanced instead. Will be removed in v2.0.0
 	NetworkAliases []string `pulumi:"networkAliases"`
 	// (Map of a block) The IP addresses of the container on each
 	// network. Key are the network names, values are the IP addresses.
@@ -273,6 +295,8 @@ type containerState struct {
 	NetworkMode *string `pulumi:"networkMode"`
 	// Id of the networks in which the
 	// container is. *Deprecated:* use `networksAdvanced` instead.
+	//
+	// Deprecated: Use networks_advanced instead. Will be removed in v2.0.0
 	Networks []string `pulumi:"networks"`
 	// See Networks Advanced below for details. If this block has priority to the deprecated `networkAlias` and `network` properties.
 	NetworksAdvanced []ContainerNetworksAdvanced `pulumi:"networksAdvanced"`
@@ -358,6 +382,8 @@ type ContainerState struct {
 	ExitCode pulumi.IntPtrInput
 	// *Deprecated:* Use `networkData` instead. The network gateway of the container as read from its
 	// NetworkSettings.
+	//
+	// Deprecated: Use gateway from ip_adresses_data instead. This field exposes the data of the container's first network.
 	Gateway pulumi.StringPtrInput
 	// Add additional groups to run as.
 	GroupAdds pulumi.StringArrayInput
@@ -372,9 +398,13 @@ type ContainerState struct {
 	// as is shown in the example above.
 	Image pulumi.StringPtrInput
 	// *Deprecated:* Use `networkData` instead. The IP address of the container's first network it.
+	//
+	// Deprecated: Use ip_adresses_data instead. This field exposes the data of the container's first network.
 	IpAddress pulumi.StringPtrInput
 	// *Deprecated:* Use `networkData` instead. The IP prefix length of the container as read from its
 	// NetworkSettings.
+	//
+	// Deprecated: Use ip_prefix_length from ip_adresses_data instead. This field exposes the data of the container's first network.
 	IpPrefixLength pulumi.IntPtrInput
 	// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
 	IpcMode pulumi.StringPtrInput
@@ -382,6 +412,8 @@ type ContainerState struct {
 	Labels ContainerLabelArrayInput
 	// Set of links for link based
 	// connectivity between containers that are running on the same host.
+	//
+	// Deprecated: The --link flag is a legacy feature of Docker. It may eventually be removed.
 	Links pulumi.StringArrayInput
 	// The logging driver to use for the container.
 	// Defaults to "json-file".
@@ -402,6 +434,8 @@ type ContainerState struct {
 	MustRun pulumi.BoolPtrInput
 	Name    pulumi.StringPtrInput
 	// Network aliases of the container for user-defined networks only. *Deprecated:* use `networksAdvanced` instead.
+	//
+	// Deprecated: Use networks_advanced instead. Will be removed in v2.0.0
 	NetworkAliases pulumi.StringArrayInput
 	// (Map of a block) The IP addresses of the container on each
 	// network. Key are the network names, values are the IP addresses.
@@ -410,6 +444,8 @@ type ContainerState struct {
 	NetworkMode pulumi.StringPtrInput
 	// Id of the networks in which the
 	// container is. *Deprecated:* use `networksAdvanced` instead.
+	//
+	// Deprecated: Use networks_advanced instead. Will be removed in v2.0.0
 	Networks pulumi.StringArrayInput
 	// See Networks Advanced below for details. If this block has priority to the deprecated `networkAlias` and `network` properties.
 	NetworksAdvanced ContainerNetworksAdvancedArrayInput
@@ -509,6 +545,8 @@ type containerArgs struct {
 	Labels []ContainerLabel `pulumi:"labels"`
 	// Set of links for link based
 	// connectivity between containers that are running on the same host.
+	//
+	// Deprecated: The --link flag is a legacy feature of Docker. It may eventually be removed.
 	Links []string `pulumi:"links"`
 	// The logging driver to use for the container.
 	// Defaults to "json-file".
@@ -529,11 +567,15 @@ type containerArgs struct {
 	MustRun *bool            `pulumi:"mustRun"`
 	Name    *string          `pulumi:"name"`
 	// Network aliases of the container for user-defined networks only. *Deprecated:* use `networksAdvanced` instead.
+	//
+	// Deprecated: Use networks_advanced instead. Will be removed in v2.0.0
 	NetworkAliases []string `pulumi:"networkAliases"`
 	// Network mode of the container.
 	NetworkMode *string `pulumi:"networkMode"`
 	// Id of the networks in which the
 	// container is. *Deprecated:* use `networksAdvanced` instead.
+	//
+	// Deprecated: Use networks_advanced instead. Will be removed in v2.0.0
 	Networks []string `pulumi:"networks"`
 	// See Networks Advanced below for details. If this block has priority to the deprecated `networkAlias` and `network` properties.
 	NetworksAdvanced []ContainerNetworksAdvanced `pulumi:"networksAdvanced"`
@@ -630,6 +672,8 @@ type ContainerArgs struct {
 	Labels ContainerLabelArrayInput
 	// Set of links for link based
 	// connectivity between containers that are running on the same host.
+	//
+	// Deprecated: The --link flag is a legacy feature of Docker. It may eventually be removed.
 	Links pulumi.StringArrayInput
 	// The logging driver to use for the container.
 	// Defaults to "json-file".
@@ -650,11 +694,15 @@ type ContainerArgs struct {
 	MustRun pulumi.BoolPtrInput
 	Name    pulumi.StringPtrInput
 	// Network aliases of the container for user-defined networks only. *Deprecated:* use `networksAdvanced` instead.
+	//
+	// Deprecated: Use networks_advanced instead. Will be removed in v2.0.0
 	NetworkAliases pulumi.StringArrayInput
 	// Network mode of the container.
 	NetworkMode pulumi.StringPtrInput
 	// Id of the networks in which the
 	// container is. *Deprecated:* use `networksAdvanced` instead.
+	//
+	// Deprecated: Use networks_advanced instead. Will be removed in v2.0.0
 	Networks pulumi.StringArrayInput
 	// See Networks Advanced below for details. If this block has priority to the deprecated `networkAlias` and `network` properties.
 	NetworksAdvanced ContainerNetworksAdvancedArrayInput
