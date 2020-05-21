@@ -1,8 +1,11 @@
 ## HEAD (Unreleased)
-* Fix Python Docker Image build support for registries
-* Fix Go Docker Image implementation [#175](https://github.com/pulumi/pulumi-docker/pull/175)
+_(none)_
 
 ---
+
+## 2.2.0 (2020-05-21)
+* Fix Python Docker Image build support for registries
+* Fix Go Docker Image implementation [#175](https://github.com/pulumi/pulumi-docker/pull/175)
 
 ## 2.1.1 (2020-05-12)
 * Upgrade to pulumi-terraform-bridge v2.3.1
