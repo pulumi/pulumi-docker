@@ -1,6 +1,6 @@
 module github.com/pulumi/pulumi-docker/provider/v2
 
-go 1.13
+go 1.14
 
 require (
 	github.com/docker/go-units v0.3.3 // indirect
