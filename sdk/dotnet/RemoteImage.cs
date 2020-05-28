@@ -15,6 +15,55 @@ namespace Pulumi.Docker
     /// This resource will *not* pull new layers of the image automatically unless used in
     /// conjunction with [`docker..getRegistryImage`](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
     /// data source to update the `pull_triggers` field.
+    /// 
+    /// ## Example Usage
+    /// 
+    /// 
+    /// 
+    /// ```csharp
+    /// using Pulumi;
+    /// using Docker = Pulumi.Docker;
+    /// 
+    /// class MyStack : Stack
+    /// {
+    ///     public MyStack()
+    ///     {
+    ///         // Find the latest Ubuntu precise image.
+    ///         var ubuntu = new Docker.RemoteImage("ubuntu", new Docker.RemoteImageArgs
+    ///         {
+    ///             Name = "ubuntu:precise",
+    ///         });
+    ///     }
+    /// 
+    /// }
+    /// ```
+    /// 
+    /// ### Dynamic image
+    /// 
+    /// ```csharp
+    /// using Pulumi;
+    /// using Docker = Pulumi.Docker;
+    /// 
+    /// class MyStack : Stack
+    /// {
+    ///     public MyStack()
+    ///     {
+    ///         var ubuntuRegistryImage = Output.Create(Docker.GetRegistryImage.InvokeAsync(new Docker.GetRegistryImageArgs
+    ///         {
+    ///             Name = "ubuntu:precise",
+    ///         }));
+    ///         var ubuntuRemoteImage = new Docker.RemoteImage("ubuntuRemoteImage", new Docker.RemoteImageArgs
+    ///         {
+    ///             Name = ubuntuRegistryImage.Apply(ubuntuRegistryImage =&gt; ubuntuRegistryImage.Name),
+    ///             PullTriggers = 
+    ///             {
+    ///                 ubuntuRegistryImage.Apply(ubuntuRegistryImage =&gt; ubuntuRegistryImage.Sha256Digest),
+    ///             },
+    ///         });
+    ///     }
+    /// 
+    /// }
+    /// ```
     /// </summary>
     public partial class RemoteImage : Pulumi.CustomResource
     {

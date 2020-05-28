@@ -13,6 +13,27 @@ namespace Pulumi.Docker
     /// Manages a Docker Network. This can be used alongside
     /// [docker\_container](https://www.terraform.io/docs/providers/docker/r/container.html)
     /// to create virtual networks within the docker environment.
+    /// 
+    /// ## Example Usage
+    /// 
+    /// 
+    /// 
+    /// ```csharp
+    /// using Pulumi;
+    /// using Docker = Pulumi.Docker;
+    /// 
+    /// class MyStack : Stack
+    /// {
+    ///     public MyStack()
+    ///     {
+    ///         // Create a new docker network
+    ///         var privateNetwork = new Docker.Network("privateNetwork", new Docker.NetworkArgs
+    ///         {
+    ///         });
+    ///     }
+    /// 
+    /// }
+    /// ```
     /// </summary>
     public partial class Network : Pulumi.CustomResource
     {
