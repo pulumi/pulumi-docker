@@ -15,6 +15,27 @@ namespace Pulumi.Docker
         /// Finds a specific docker network and returns information about it.
         /// 
         /// {{% examples %}}
+        /// ## Example Usage
+        /// {{% example %}}
+        /// 
+        /// ```csharp
+        /// using Pulumi;
+        /// using Docker = Pulumi.Docker;
+        /// 
+        /// class MyStack : Stack
+        /// {
+        ///     public MyStack()
+        ///     {
+        ///         var main = Output.Create(Docker.GetNetwork.InvokeAsync(new Docker.GetNetworkArgs
+        ///         {
+        ///             Name = "main",
+        ///         }));
+        ///     }
+        /// 
+        /// }
+        /// ```
+        /// 
+        /// {{% /example %}}
         /// {{% /examples %}}
         /// </summary>
         public static Task<GetNetworkResult> InvokeAsync(GetNetworkArgs? args = null, InvokeOptions? options = null)

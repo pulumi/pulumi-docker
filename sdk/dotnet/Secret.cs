@@ -11,6 +11,28 @@ namespace Pulumi.Docker
 {
     /// <summary>
     /// Manages the secrets of a Docker service in a swarm.
+    /// 
+    /// ## Example Usage
+    /// 
+    /// ### Basic
+    /// 
+    /// ```csharp
+    /// using Pulumi;
+    /// using Docker = Pulumi.Docker;
+    /// 
+    /// class MyStack : Stack
+    /// {
+    ///     public MyStack()
+    ///     {
+    ///         // Creates a secret
+    ///         var fooSecret = new Docker.Secret("fooSecret", new Docker.SecretArgs
+    ///         {
+    ///             Data = "ewogICJzZXJsaasIfQo=",
+    ///         });
+    ///     }
+    /// 
+    /// }
+    /// ```
     /// </summary>
     public partial class Secret : Pulumi.CustomResource
     {

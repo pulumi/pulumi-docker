@@ -13,6 +13,27 @@ namespace Pulumi.Docker
     /// Creates and destroys a volume in Docker. This can be used alongside
     /// [docker\_container](https://www.terraform.io/docs/providers/docker/r/container.html)
     /// to prepare volumes that can be shared across containers.
+    /// 
+    /// ## Example Usage
+    /// 
+    /// 
+    /// 
+    /// ```csharp
+    /// using Pulumi;
+    /// using Docker = Pulumi.Docker;
+    /// 
+    /// class MyStack : Stack
+    /// {
+    ///     public MyStack()
+    ///     {
+    ///         // Creates a docker volume "shared_volume".
+    ///         var sharedVolume = new Docker.Volume("sharedVolume", new Docker.VolumeArgs
+    ///         {
+    ///         });
+    ///     }
+    /// 
+    /// }
+    /// ```
     /// </summary>
     public partial class Volume : Pulumi.CustomResource
     {
