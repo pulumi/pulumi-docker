@@ -9,7 +9,7 @@ require (
 	github.com/pulumi/pulumi-terraform-bridge/v2 v2.4.0
 	github.com/pulumi/pulumi/pkg/v2 v2.3.0 // indirect
 	github.com/pulumi/pulumi/sdk/v2 v2.3.0
-	github.com/terraform-providers/terraform-provider-docker v1.2.1-0.20200210195100-e2a14e7e7cc6
+	github.com/terraform-providers/terraform-provider-docker v1.2.1-0.20200605152511-20f46355e94e
 )
 
 replace (
