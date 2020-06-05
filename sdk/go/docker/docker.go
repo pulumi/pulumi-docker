@@ -235,6 +235,9 @@ func buildImage(ctx *pulumi.Context, imageName string, build *DockerBuild,
 
 	// Invoke Docker CLI commands to build.
 	err := runDockerBuild(ctx, imageName, build, cacheFrom, logResource, "")
+	if err != nil {
+		return "", nil, err
+	}
 
 	// Finally, inspect the image so we can return the SHA digest. Do not forward the output of this
 	// command this to the CLI to show the user.
