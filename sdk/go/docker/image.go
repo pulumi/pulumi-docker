@@ -74,9 +74,9 @@ func NewImage(ctx *pulumi.Context,
 		// name appropriately if we were given a tag.
 		var baseImageName string
 		if tag != "" {
-			baseImageName = localImageName
-		} else {
 			baseImageName = fmt.Sprintf("%s:%s", localImageNameWithoutTag, tag)
+		} else {
+			baseImageName = localImageName
 		}
 
 		return buildAndPushImage(ctx, baseImageName, &imageArgs.Build,
