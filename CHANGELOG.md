@@ -1,7 +1,10 @@
 ## HEAD (Unreleased)
-* Upgrade to v2.7.1 of the Docker Terraform Provider
+_(none)_
 
 ---
+
+## 2.2.2 (2020-06-05)
+* Upgrade to v2.7.1 of the Docker Terraform Provider
 
 ## 2.2.1 (2020-05-28)
 * Upgrade to Pulumi v2.3.0
