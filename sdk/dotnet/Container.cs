@@ -219,14 +219,14 @@ namespace Pulumi.Docker
         /// Defaults to "json-file".
         /// </summary>
         [Output("logDriver")]
-        public Output<string?> LogDriver { get; private set; } = null!;
+        public Output<string> LogDriver { get; private set; } = null!;
 
         /// <summary>
         /// Key/value pairs to use as options for
         /// the logging driver.
         /// </summary>
         [Output("logOpts")]
-        public Output<ImmutableDictionary<string, object>?> LogOpts { get; private set; } = null!;
+        public Output<ImmutableDictionary<string, object>> LogOpts { get; private set; } = null!;
 
         /// <summary>
         /// Save the container logs (`attach` must be enabled).
@@ -379,7 +379,7 @@ namespace Pulumi.Docker
         /// by name.
         /// </summary>
         [Output("user")]
-        public Output<string?> User { get; private set; } = null!;
+        public Output<string> User { get; private set; } = null!;
 
         /// <summary>
         /// Sets the usernamespace mode for the container when usernamespace remapping option is enabled.

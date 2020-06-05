@@ -89,7 +89,7 @@ type Container struct {
 	Links pulumi.StringArrayOutput `pulumi:"links"`
 	// The logging driver to use for the container.
 	// Defaults to "json-file".
-	LogDriver pulumi.StringPtrOutput `pulumi:"logDriver"`
+	LogDriver pulumi.StringOutput `pulumi:"logDriver"`
 	// Key/value pairs to use as options for
 	// the logging driver.
 	LogOpts pulumi.MapOutput `pulumi:"logOpts"`
@@ -153,7 +153,7 @@ type Container struct {
 	// User used for run the first process. Format is
 	// `user` or `user:group` which user and group can be passed literraly or
 	// by name.
-	User pulumi.StringPtrOutput `pulumi:"user"`
+	User pulumi.StringOutput `pulumi:"user"`
 	// Sets the usernamespace mode for the container when usernamespace remapping option is enabled.
 	UsernsMode pulumi.StringPtrOutput `pulumi:"usernsMode"`
 	// See Volumes below for details.
