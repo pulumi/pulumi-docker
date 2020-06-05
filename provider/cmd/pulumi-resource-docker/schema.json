@@ -2754,9 +2754,12 @@
                 "ipPrefixLength",
                 "ipcMode",
                 "labels",
+                "logDriver",
+                "logOpts",
                 "name",
                 "networkDatas",
-                "shmSize"
+                "shmSize",
+                "user"
             ],
             "inputProperties": {
                 "attach": {

@@ -177,12 +177,12 @@ export class Container extends pulumi.CustomResource {
      * The logging driver to use for the container.
      * Defaults to "json-file".
      */
-    public readonly logDriver!: pulumi.Output<string | undefined>;
+    public readonly logDriver!: pulumi.Output<string>;
     /**
      * Key/value pairs to use as options for
      * the logging driver.
      */
-    public readonly logOpts!: pulumi.Output<{[key: string]: any} | undefined>;
+    public readonly logOpts!: pulumi.Output<{[key: string]: any}>;
     /**
      * Save the container logs (`attach` must be enabled).
      */
@@ -283,7 +283,7 @@ export class Container extends pulumi.CustomResource {
      * `user` or `user:group` which user and group can be passed literraly or
      * by name.
      */
-    public readonly user!: pulumi.Output<string | undefined>;
+    public readonly user!: pulumi.Output<string>;
     /**
      * Sets the usernamespace mode for the container when usernamespace remapping option is enabled.
      */
