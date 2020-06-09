@@ -466,7 +466,17 @@
                     }
                 }
             },
-            "type": "object"
+            "type": "object",
+            "language": {
+                "nodejs": {
+                    "requiredOutputs": [
+                        "gateway",
+                        "ipAddress",
+                        "ipPrefixLength",
+                        "networkName"
+                    ]
+                }
+            }
         },
         "docker:/ContainerNetworksAdvanced:ContainerNetworksAdvanced": {
             "properties": {
@@ -557,7 +567,15 @@
             "type": "object",
             "required": [
                 "internal"
-            ]
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredOutputs": [
+                        "external",
+                        "internal"
+                    ]
+                }
+            }
         },
         "docker:/ContainerUlimit:ContainerUlimit": {
             "properties": {
@@ -865,7 +883,14 @@
                     }
                 }
             },
-            "type": "object"
+            "type": "object",
+            "language": {
+                "nodejs": {
+                    "requiredOutputs": [
+                        "mode"
+                    ]
+                }
+            }
         },
         "docker:/ServiceEndpointSpecPort:ServiceEndpointSpecPort": {
             "properties": {
@@ -918,7 +943,15 @@
             "type": "object",
             "required": [
                 "targetPort"
-            ]
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredOutputs": [
+                        "publishedPort",
+                        "targetPort"
+                    ]
+                }
+            }
         },
         "docker:/ServiceLabel:ServiceLabel": {
             "properties": {
@@ -968,7 +1001,14 @@
                     }
                 }
             },
-            "type": "object"
+            "type": "object",
+            "language": {
+                "nodejs": {
+                    "requiredOutputs": [
+                        "replicated"
+                    ]
+                }
+            }
         },
         "docker:/ServiceModeReplicated:ServiceModeReplicated": {
             "properties": {
@@ -1123,7 +1163,19 @@
             "type": "object",
             "required": [
                 "containerSpec"
-            ]
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredOutputs": [
+                        "containerSpec",
+                        "forceUpdate",
+                        "placement",
+                        "resources",
+                        "restartPolicy",
+                        "runtime"
+                    ]
+                }
+            }
         },
         "docker:/ServiceTaskSpecContainerSpec:ServiceTaskSpecContainerSpec": {
             "properties": {
@@ -1337,7 +1389,17 @@
             "type": "object",
             "required": [
                 "image"
-            ]
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredOutputs": [
+                        "dnsConfig",
+                        "healthcheck",
+                        "image",
+                        "stopGracePeriod"
+                    ]
+                }
+            }
         },
         "docker:/ServiceTaskSpecContainerSpecConfig:ServiceTaskSpecContainerSpecConfig": {
             "properties": {
@@ -2324,7 +2386,12 @@
             "type": "object",
             "required": [
                 "address"
-            ]
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
         },
         "docker:index/ProviderRegistryAuth:ProviderRegistryAuth": {
             "properties": {
@@ -2372,7 +2439,12 @@
             "type": "object",
             "required": [
                 "address"
-            ]
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredOutputs": []
+                }
+            }
         }
     },
     "provider": {
@@ -4070,8 +4142,10 @@
                 "@types/node": "^8.0.0",
                 "@types/semver": "^5.4.0"
             },
+            "disableUnionOutputTypes": true,
             "packageDescription": "A Pulumi package for interacting with Docker in Pulumi programs",
             "packageName": "",
+            "readme": "\u003e This provider is a derived work of the [Terraform Provider](https://github.com/terraform-providers/terraform-provider-docker)\n\u003e distributed under [MPL 2.0](https://www.mozilla.org/en-US/MPL/2.0/). If you encounter a bug or missing feature,\n\u003e first check the [`pulumi/pulumi-docker` repo](https://github.com/pulumi/pulumi-docker/issues); however, if that doesn't turn up anything,\n\u003e please consult the source [`terraform-providers/terraform-provider-docker` repo](https://github.com/terraform-providers/terraform-provider-docker/issues).",
             "typescriptVersion": ""
         },
         "python": {

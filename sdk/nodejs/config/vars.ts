@@ -2,6 +2,8 @@
 // *** Do not edit by hand unless you're certain you know what you are doing! ***
 
 import * as pulumi from "@pulumi/pulumi";
+import * as inputs from "../types/input";
+import * as outputs from "../types/output";
 import * as utilities from "../utilities";
 
 let __config = new pulumi.Config("docker");
@@ -26,4 +28,4 @@ export let host: string | undefined = __config.get("host") || (utilities.getEnv(
  * PEM-encoded content of Docker client private key
  */
 export let keyMaterial: string | undefined = __config.get("keyMaterial") || utilities.getEnv("DOCKER_KEY_MATERIAL");
-export let registryAuth: { address: string, configFile?: string, configFileContent?: string, password?: string, username?: string }[] | undefined = __config.getObject<{ address: string, configFile?: string, configFileContent?: string, password?: string, username?: string }[]>("registryAuth");
+export let registryAuth: outputs.config.RegistryAuth[] | undefined = __config.getObject<outputs.config.RegistryAuth[]>("registryAuth");

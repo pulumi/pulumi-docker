@@ -3,6 +3,7 @@
 
 import * as pulumi from "@pulumi/pulumi";
 import * as inputs from "../types/input";
+import * as outputs from "../types/output";
 
 export interface ContainerCapabilities {
     /**
@@ -926,3 +927,6 @@ export interface VolumeLabel {
     label: pulumi.Input<string>;
     value: pulumi.Input<string>;
 }
+export namespace config {
+}
+

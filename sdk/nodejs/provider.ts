@@ -37,14 +37,12 @@ export class Provider extends pulumi.ProviderResource {
      */
     constructor(name: string, args?: ProviderArgs, opts?: pulumi.ResourceOptions) {
         let inputs: pulumi.Inputs = {};
-        {
-            inputs["caMaterial"] = (args ? args.caMaterial : undefined) || utilities.getEnv("DOCKER_CA_MATERIAL");
-            inputs["certMaterial"] = (args ? args.certMaterial : undefined) || utilities.getEnv("DOCKER_CERT_MATERIAL");
-            inputs["certPath"] = (args ? args.certPath : undefined) || utilities.getEnv("DOCKER_CERT_PATH");
-            inputs["host"] = (args ? args.host : undefined) || (utilities.getEnv("DOCKER_HOST") || "unix:///var/run/docker.sock");
-            inputs["keyMaterial"] = (args ? args.keyMaterial : undefined) || utilities.getEnv("DOCKER_KEY_MATERIAL");
-            inputs["registryAuth"] = pulumi.output(args ? args.registryAuth : undefined).apply(JSON.stringify);
-        }
+        inputs["caMaterial"] = (args ? args.caMaterial : undefined) || utilities.getEnv("DOCKER_CA_MATERIAL");
+        inputs["certMaterial"] = (args ? args.certMaterial : undefined) || utilities.getEnv("DOCKER_CERT_MATERIAL");
+        inputs["certPath"] = (args ? args.certPath : undefined) || utilities.getEnv("DOCKER_CERT_PATH");
+        inputs["host"] = (args ? args.host : undefined) || (utilities.getEnv("DOCKER_HOST") || "unix:///var/run/docker.sock");
+        inputs["keyMaterial"] = (args ? args.keyMaterial : undefined) || utilities.getEnv("DOCKER_KEY_MATERIAL");
+        inputs["registryAuth"] = pulumi.output(args ? args.registryAuth : undefined).apply(JSON.stringify);
         if (!opts) {
             opts = {}
         }
