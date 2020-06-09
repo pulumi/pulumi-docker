@@ -2,6 +2,7 @@
 // *** Do not edit by hand unless you're certain you know what you are doing! ***
 
 import * as pulumi from "@pulumi/pulumi";
+import * as inputs from "../types/input";
 import * as outputs from "../types/output";
 
 export interface ContainerCapabilities {
@@ -297,6 +298,14 @@ export interface NetworkLabel {
      * Value of the label
      */
     value: string;
+}
+
+export interface ProviderRegistryAuth {
+    address?: string;
+    configFile?: string;
+    configFileContent?: string;
+    password?: string;
+    username?: string;
 }
 
 export interface SecretLabel {
@@ -925,3 +934,13 @@ export interface VolumeLabel {
     label: string;
     value: string;
 }
+export namespace config {
+    export interface RegistryAuth {
+        address: string;
+        configFile?: string;
+        configFileContent?: string;
+        password?: string;
+        username?: string;
+    }
+}
+

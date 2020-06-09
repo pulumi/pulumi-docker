@@ -56,10 +56,10 @@ export interface GetRegistryImageArgs {
  * A collection of values returned by getRegistryImage.
  */
 export interface GetRegistryImageResult {
-    readonly name?: string;
-    readonly sha256Digest: string;
     /**
      * The provider-assigned unique ID for this managed resource.
      */
     readonly id: string;
+    readonly name?: string;
+    readonly sha256Digest: string;
 }

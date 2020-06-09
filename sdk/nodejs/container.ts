@@ -35,6 +35,7 @@ export class Container extends pulumi.CustomResource {
      * @param name The _unique_ name of the resulting resource.
      * @param id The _unique_ provider ID of the resource to lookup.
      * @param state Any extra arguments used during the lookup.
+     * @param opts Optional settings to control the behavior of the CustomResource.
      */
     public static get(name: string, id: pulumi.Input<pulumi.ID>, state?: ContainerState, opts?: pulumi.CustomResourceOptions): Container {
         return new Container(name, <any>state, { ...opts, id: id });
@@ -127,6 +128,8 @@ export class Container extends pulumi.CustomResource {
     /**
      * *Deprecated:* Use `networkData` instead. The network gateway of the container as read from its
      * NetworkSettings.
+     *
+     * @deprecated Use gateway from ip_adresses_data instead. This field exposes the data of the container's first network.
      */
     public /*out*/ readonly gateway!: pulumi.Output<string>;
     /**
@@ -138,13 +141,13 @@ export class Container extends pulumi.CustomResource {
      */
     public readonly healthcheck!: pulumi.Output<outputs.ContainerHealthcheck | undefined>;
     /**
-     * Hostname to add.
-     */
-    public readonly hosts!: pulumi.Output<outputs.ContainerHost[] | undefined>;
-    /**
      * Hostname of the container.
      */
     public readonly hostname!: pulumi.Output<string>;
+    /**
+     * Hostname to add.
+     */
+    public readonly hosts!: pulumi.Output<outputs.ContainerHost[] | undefined>;
     /**
      * The ID of the image to back this container.
      * The easiest way to get this value is to use the `docker..RemoteImage` resource
@@ -153,11 +156,15 @@ export class Container extends pulumi.CustomResource {
     public readonly image!: pulumi.Output<string>;
     /**
      * *Deprecated:* Use `networkData` instead. The IP address of the container's first network it.
+     *
+     * @deprecated Use ip_adresses_data instead. This field exposes the data of the container's first network.
      */
     public /*out*/ readonly ipAddress!: pulumi.Output<string>;
     /**
      * *Deprecated:* Use `networkData` instead. The IP prefix length of the container as read from its
      * NetworkSettings.
+     *
+     * @deprecated Use ip_prefix_length from ip_adresses_data instead. This field exposes the data of the container's first network.
      */
     public /*out*/ readonly ipPrefixLength!: pulumi.Output<number>;
     /**
@@ -171,6 +178,8 @@ export class Container extends pulumi.CustomResource {
     /**
      * Set of links for link based
      * connectivity between containers that are running on the same host.
+     *
+     * @deprecated The --link flag is a legacy feature of Docker. It may eventually be removed.
      */
     public readonly links!: pulumi.Output<string[] | undefined>;
     /**
@@ -205,6 +214,8 @@ export class Container extends pulumi.CustomResource {
     public readonly name!: pulumi.Output<string>;
     /**
      * Network aliases of the container for user-defined networks only. *Deprecated:* use `networksAdvanced` instead.
+     *
+     * @deprecated Use networks_advanced instead. Will be removed in v2.0.0
      */
     public readonly networkAliases!: pulumi.Output<string[] | undefined>;
     /**
@@ -219,6 +230,8 @@ export class Container extends pulumi.CustomResource {
     /**
      * Id of the networks in which the
      * container is. *Deprecated:* use `networksAdvanced` instead.
+     *
+     * @deprecated Use networks_advanced instead. Will be removed in v2.0.0
      */
     public readonly networks!: pulumi.Output<string[] | undefined>;
     /**
@@ -328,8 +341,8 @@ export class Container extends pulumi.CustomResource {
             inputs["gateway"] = state ? state.gateway : undefined;
             inputs["groupAdds"] = state ? state.groupAdds : undefined;
             inputs["healthcheck"] = state ? state.healthcheck : undefined;
-            inputs["hosts"] = state ? state.hosts : undefined;
             inputs["hostname"] = state ? state.hostname : undefined;
+            inputs["hosts"] = state ? state.hosts : undefined;
             inputs["image"] = state ? state.image : undefined;
             inputs["ipAddress"] = state ? state.ipAddress : undefined;
             inputs["ipPrefixLength"] = state ? state.ipPrefixLength : undefined;
@@ -387,8 +400,8 @@ export class Container extends pulumi.CustomResource {
             inputs["envs"] = args ? args.envs : undefined;
             inputs["groupAdds"] = args ? args.groupAdds : undefined;
             inputs["healthcheck"] = args ? args.healthcheck : undefined;
-            inputs["hosts"] = args ? args.hosts : undefined;
             inputs["hostname"] = args ? args.hostname : undefined;
+            inputs["hosts"] = args ? args.hosts : undefined;
             inputs["image"] = args ? args.image : undefined;
             inputs["ipcMode"] = args ? args.ipcMode : undefined;
             inputs["labels"] = args ? args.labels : undefined;
@@ -519,6 +532,7 @@ export interface ContainerState {
     /**
      * *Deprecated:* Use `networkData` instead. The network gateway of the container as read from its
      * NetworkSettings.
+     *
      * @deprecated Use gateway from ip_adresses_data instead. This field exposes the data of the container's first network.
      */
     readonly gateway?: pulumi.Input<string>;
@@ -531,13 +545,13 @@ export interface ContainerState {
      */
     readonly healthcheck?: pulumi.Input<inputs.ContainerHealthcheck>;
     /**
-     * Hostname to add.
-     */
-    readonly hosts?: pulumi.Input<pulumi.Input<inputs.ContainerHost>[]>;
-    /**
      * Hostname of the container.
      */
     readonly hostname?: pulumi.Input<string>;
+    /**
+     * Hostname to add.
+     */
+    readonly hosts?: pulumi.Input<pulumi.Input<inputs.ContainerHost>[]>;
     /**
      * The ID of the image to back this container.
      * The easiest way to get this value is to use the `docker..RemoteImage` resource
@@ -546,12 +560,14 @@ export interface ContainerState {
     readonly image?: pulumi.Input<string>;
     /**
      * *Deprecated:* Use `networkData` instead. The IP address of the container's first network it.
+     *
      * @deprecated Use ip_adresses_data instead. This field exposes the data of the container's first network.
      */
     readonly ipAddress?: pulumi.Input<string>;
     /**
      * *Deprecated:* Use `networkData` instead. The IP prefix length of the container as read from its
      * NetworkSettings.
+     *
      * @deprecated Use ip_prefix_length from ip_adresses_data instead. This field exposes the data of the container's first network.
      */
     readonly ipPrefixLength?: pulumi.Input<number>;
@@ -566,6 +582,7 @@ export interface ContainerState {
     /**
      * Set of links for link based
      * connectivity between containers that are running on the same host.
+     *
      * @deprecated The --link flag is a legacy feature of Docker. It may eventually be removed.
      */
     readonly links?: pulumi.Input<pulumi.Input<string>[]>;
@@ -601,6 +618,7 @@ export interface ContainerState {
     readonly name?: pulumi.Input<string>;
     /**
      * Network aliases of the container for user-defined networks only. *Deprecated:* use `networksAdvanced` instead.
+     *
      * @deprecated Use networks_advanced instead. Will be removed in v2.0.0
      */
     readonly networkAliases?: pulumi.Input<pulumi.Input<string>[]>;
@@ -616,6 +634,7 @@ export interface ContainerState {
     /**
      * Id of the networks in which the
      * container is. *Deprecated:* use `networksAdvanced` instead.
+     *
      * @deprecated Use networks_advanced instead. Will be removed in v2.0.0
      */
     readonly networks?: pulumi.Input<pulumi.Input<string>[]>;
@@ -767,13 +786,13 @@ export interface ContainerArgs {
      */
     readonly healthcheck?: pulumi.Input<inputs.ContainerHealthcheck>;
     /**
-     * Hostname to add.
-     */
-    readonly hosts?: pulumi.Input<pulumi.Input<inputs.ContainerHost>[]>;
-    /**
      * Hostname of the container.
      */
     readonly hostname?: pulumi.Input<string>;
+    /**
+     * Hostname to add.
+     */
+    readonly hosts?: pulumi.Input<pulumi.Input<inputs.ContainerHost>[]>;
     /**
      * The ID of the image to back this container.
      * The easiest way to get this value is to use the `docker..RemoteImage` resource
@@ -791,6 +810,7 @@ export interface ContainerArgs {
     /**
      * Set of links for link based
      * connectivity between containers that are running on the same host.
+     *
      * @deprecated The --link flag is a legacy feature of Docker. It may eventually be removed.
      */
     readonly links?: pulumi.Input<pulumi.Input<string>[]>;
@@ -826,6 +846,7 @@ export interface ContainerArgs {
     readonly name?: pulumi.Input<string>;
     /**
      * Network aliases of the container for user-defined networks only. *Deprecated:* use `networksAdvanced` instead.
+     *
      * @deprecated Use networks_advanced instead. Will be removed in v2.0.0
      */
     readonly networkAliases?: pulumi.Input<pulumi.Input<string>[]>;
@@ -836,6 +857,7 @@ export interface ContainerArgs {
     /**
      * Id of the networks in which the
      * container is. *Deprecated:* use `networksAdvanced` instead.
+     *
      * @deprecated Use networks_advanced instead. Will be removed in v2.0.0
      */
     readonly networks?: pulumi.Input<pulumi.Input<string>[]>;
