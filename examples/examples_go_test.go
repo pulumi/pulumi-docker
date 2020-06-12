@@ -15,6 +15,15 @@
 
 package examples
 
+import (
+	"os"
+	"path"
+	"testing"
+
+	"github.com/pulumi/pulumi/pkg/v2/testing/integration"
+	"github.com/stretchr/testify/assert"
+)
+
 func TestNginxGo(t *testing.T) {
 	cwd, err := os.Getwd()
 	if !assert.NoError(t, err) {
