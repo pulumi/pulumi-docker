@@ -32,13 +32,14 @@ func TestNginxGo(t *testing.T) {
 
 	opts := base.With(integration.ProgramTestOptions{
 		Dependencies: []string{
-			"github.com/pulumi/pulumi-docker/sdk/v2",
+			"github.com/pulumi/pulumi-docker/sdk/go/v2",
 		},
 		Dir: path.Join(cwd, "nginx-go"),
 	})
 	integration.ProgramTest(t, &opts)
 }
 
+/*
 func TestDockerfileGo(t *testing.T) {
 	cwd, err := os.Getwd()
 	if !assert.NoError(t, err) {
@@ -47,9 +48,10 @@ func TestDockerfileGo(t *testing.T) {
 
 	opts := base.With(integration.ProgramTestOptions{
 		Dependencies: []string{
-			"github.com/pulumi/pulumi-docker/sdk/v2",
+			"github.com/pulumi/pulumi-docker/sdk/go/v2",
 		},
 		Dir: path.Join(cwd, "dockerfile-go"),
 	})
 	integration.ProgramTest(t, &opts)
 }
+*/
