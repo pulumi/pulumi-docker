@@ -3,6 +3,9 @@ _(none)_
 
 ---
 
+## 2.2.3 (2020-06-17)
+* Switch to GitHub actions for build
+
 ## 2.2.2 (2020-06-05)
 * Upgrade to v2.7.1 of the Docker Terraform Provider
 
