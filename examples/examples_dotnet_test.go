@@ -11,14 +11,45 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+// +build dotnet all
 
 package examples
 
 import (
+	"os"
+	"path"
+	"testing"
+
 	"github.com/pulumi/pulumi/pkg/v2/testing/integration"
+	"github.com/stretchr/testify/assert"
 )
 
-var base = integration.ProgramTestOptions{
-	ExpectRefreshChanges: true, // Docker resources generally see changes when refreshed.
-	// Note: no Config! This package should be usable without any config.
+func TestNginxCs(t *testing.T) {
+	cwd, err := os.Getwd()
+	if !assert.NoError(t, err) {
+		t.FailNow()
+	}
+
+	opts := base.With(integration.ProgramTestOptions{
+		Dependencies: []string{
+			"Pulumi.Docker",
+		},
+		Dir: path.Join(cwd, "nginx-cs"),
+	})
+	integration.ProgramTest(t, &opts)
+}
+
+func TestDotNet(t *testing.T) {
+	cwd, err := os.Getwd()
+	if !assert.NoError(t, err) {
+		t.FailNow()
+	}
+
+	opts := base.With(integration.ProgramTestOptions{
+		Dependencies: []string{
+			"Pulumi.Docker",
+		},
+		Dir: path.Join(cwd, "dotnet"),
+	})
+	integration.ProgramTest(t, &opts)
 }

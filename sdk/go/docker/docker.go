@@ -112,7 +112,7 @@ func buildAndPushImage(ctx *pulumi.Context, baseImageName string, build *DockerB
 	return uniqueTaggedImageName, nil
 }
 
-func pullCache(ctx *pulumi.Context, imageName string, cacheFrom CacheFrom, repoURL string, logResource pulumi.Resource) []string {
+func pullCache(ctx *pulumi.Context, imageName string, cacheFrom CacheFrom, repoURL string, logResource pulumi.Resource) []string { // nolint[:lll]
 	if len(repoURL) == 0 {
 		return nil
 	}
@@ -456,6 +456,7 @@ func runCommandThatCanFail(ctx *pulumi.Context, cmdName string, args []string, l
 	// which the grpc layer needs.
 	streamID := rand.Int31()
 
+	// nolint[:errcheck]
 	logErrorf := func(format string, a ...interface{}) {
 		ctx.Log.Error(fmt.Sprintf(format, a...), &pulumi.LogArgs{
 			Resource: logResource,
@@ -485,6 +486,7 @@ func runCommandThatCanFail(ctx *pulumi.Context, cmdName string, args []string, l
 		}
 		go func() {
 			defer stdin.Close()
+			// nolint[:errcheck]
 			io.WriteString(stdin, stdinInput)
 		}()
 	}
@@ -530,6 +532,7 @@ func runCommandThatCanFail(ctx *pulumi.Context, cmdName string, args []string, l
 			logErrorf(stderrString)
 		} else {
 			// Command succeeded.  These were just a warning.
+			// nolint[:errcheck]
 			ctx.Log.Warn(stderrString, &pulumi.LogArgs{
 				Resource:  logResource,
 				StreamID:  streamID,
@@ -568,6 +571,7 @@ func getCommandLineMessage(cmd string, args []string, reportFullCommandLine bool
 	return fmt.Sprintf("%s %s", cmd, argString)
 }
 
+// nolint[:errcheck]
 func logEphemeral(ctx *pulumi.Context, msg string, logResource pulumi.Resource) {
 	ctx.Log.Info(msg, &pulumi.LogArgs{
 		Resource:  logResource,
@@ -575,6 +579,7 @@ func logEphemeral(ctx *pulumi.Context, msg string, logResource pulumi.Resource) 
 	})
 }
 
+// nolint[:errcheck]
 func logDebug(ctx *pulumi.Context, msg string, logResource pulumi.Resource) {
 	ctx.Log.Debug(msg, &pulumi.LogArgs{
 		Resource:  logResource,
