@@ -1,5 +1,4 @@
 import pulumi
-
 from pulumi_docker import Image, DockerBuild
 
 image = Image(
