@@ -1,5 +1,3 @@
 name: aws-py
 runtime: python
 description: A minimal Python Pulumi program
-template:
-  description: A minimal Python Pulumi program

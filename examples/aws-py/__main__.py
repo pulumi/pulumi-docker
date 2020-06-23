@@ -13,10 +13,9 @@
 # limitations under the License.
 
 import base64
-
 import pulumi_aws as aws
-
 import pulumi_docker as docker
+import pulumi
 
 
 # Get registry info (creds and endpoint) so we can build/publish to it.
