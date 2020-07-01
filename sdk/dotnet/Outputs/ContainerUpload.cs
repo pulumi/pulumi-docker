@@ -33,7 +33,7 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly string? Source;
         /// <summary>
-        /// If using `source`, this will force an update if the file content has updated but the filename has not. 
+        /// If using `source`, this will force an update if the file content has updated but the filename has not.
         /// </summary>
         public readonly string? SourceHash;
 

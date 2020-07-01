@@ -13,8 +13,63 @@ import (
 // Pulls a Docker image to a given Docker host from a Docker Registry.
 //
 // This resource will *not* pull new layers of the image automatically unless used in
-// conjunction with [`.getRegistryImage`](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
+// conjunction with [`getRegistryImage`](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
 // data source to update the `pullTriggers` field.
+//
+// ## Example Usage
+//
+// ```go
+// package main
+//
+// import (
+// 	"github.com/pulumi/pulumi-docker/sdk/v2/go/docker"
+// 	"github.com/pulumi/pulumi/sdk/v2/go/pulumi"
+// )
+//
+// func main() {
+// 	pulumi.Run(func(ctx *pulumi.Context) error {
+// 		_, err := docker.NewRemoteImage(ctx, "ubuntu", &docker.RemoteImageArgs{
+// 			Name: pulumi.String("ubuntu:precise"),
+// 		})
+// 		if err != nil {
+// 			return err
+// 		}
+// 		return nil
+// 	})
+// }
+// ```
+// ### Dynamic image
+//
+// ```go
+// package main
+//
+// import (
+// 	"github.com/pulumi/pulumi-docker/sdk/v2/go/docker"
+// 	"github.com/pulumi/pulumi/sdk/v2/go/pulumi"
+// )
+//
+// func main() {
+// 	pulumi.Run(func(ctx *pulumi.Context) error {
+// 		opt0 := "ubuntu:precise"
+// 		ubuntuRegistryImage, err := docker.GetRegistryImage(ctx, &docker.GetRegistryImageArgs{
+// 			Name: &opt0,
+// 		}, nil)
+// 		if err != nil {
+// 			return err
+// 		}
+// 		_, err = docker.NewRemoteImage(ctx, "ubuntuRemoteImage", &docker.RemoteImageArgs{
+// 			Name: pulumi.String(ubuntuRegistryImage.Name),
+// 			PullTriggers: pulumi.StringArray{
+// 				pulumi.String(ubuntuRegistryImage.Sha256Digest),
+// 			},
+// 		})
+// 		if err != nil {
+// 			return err
+// 		}
+// 		return nil
+// 	})
+// }
+// ```
 type RemoteImage struct {
 	pulumi.CustomResourceState
 
@@ -31,7 +86,7 @@ type RemoteImage struct {
 	PullTrigger pulumi.StringPtrOutput `pulumi:"pullTrigger"`
 	// List of values which cause an
 	// image pull when changed. This is used to store the image digest from the
-	// registry when using the `.getRegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
+	// registry when using the `getRegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
 	// to trigger an image update.
 	PullTriggers pulumi.StringArrayOutput `pulumi:"pullTriggers"`
 }
@@ -80,7 +135,7 @@ type remoteImageState struct {
 	PullTrigger *string `pulumi:"pullTrigger"`
 	// List of values which cause an
 	// image pull when changed. This is used to store the image digest from the
-	// registry when using the `.getRegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
+	// registry when using the `getRegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
 	// to trigger an image update.
 	PullTriggers []string `pulumi:"pullTriggers"`
 }
@@ -99,7 +154,7 @@ type RemoteImageState struct {
 	PullTrigger pulumi.StringPtrInput
 	// List of values which cause an
 	// image pull when changed. This is used to store the image digest from the
-	// registry when using the `.getRegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
+	// registry when using the `getRegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
 	// to trigger an image update.
 	PullTriggers pulumi.StringArrayInput
 }
@@ -121,7 +176,7 @@ type remoteImageArgs struct {
 	PullTrigger *string `pulumi:"pullTrigger"`
 	// List of values which cause an
 	// image pull when changed. This is used to store the image digest from the
-	// registry when using the `.getRegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
+	// registry when using the `getRegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
 	// to trigger an image update.
 	PullTriggers []string `pulumi:"pullTriggers"`
 }
@@ -140,7 +195,7 @@ type RemoteImageArgs struct {
 	PullTrigger pulumi.StringPtrInput
 	// List of values which cause an
 	// image pull when changed. This is used to store the image digest from the
-	// registry when using the `.getRegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
+	// registry when using the `getRegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
 	// to trigger an image update.
 	PullTriggers pulumi.StringArrayInput
 }

@@ -19,7 +19,7 @@ namespace Pulumi.Docker.Inputs
         public Input<int>? Mode { get; set; }
 
         /// <summary>
-        /// The size for the tmpfs mount in bytes. 
+        /// The size for the tmpfs mount in bytes.
         /// </summary>
         [Input("sizeBytes")]
         public Input<int>? SizeBytes { get; set; }

@@ -4,6 +4,8 @@
 
 _SNAKE_TO_CAMEL_CASE_TABLE = {
     "check_duplicate": "checkDuplicate",
+    "config_file": "configFile",
+    "config_file_content": "configFileContent",
     "container_logs": "containerLogs",
     "converge_config": "convergeConfig",
     "cpu_set": "cpuSet",
@@ -46,6 +48,8 @@ _SNAKE_TO_CAMEL_CASE_TABLE = {
 
 _CAMEL_TO_SNAKE_CASE_TABLE = {
     "checkDuplicate": "check_duplicate",
+    "configFile": "config_file",
+    "configFileContent": "config_file_content",
     "containerLogs": "container_logs",
     "convergeConfig": "converge_config",
     "cpuSet": "cpu_set",

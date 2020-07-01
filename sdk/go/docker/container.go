@@ -11,6 +11,35 @@ import (
 )
 
 // Manages the lifecycle of a Docker container.
+//
+// ## Example Usage
+//
+// ```go
+// package main
+//
+// import (
+// 	"github.com/pulumi/pulumi-docker/sdk/v2/go/docker"
+// 	"github.com/pulumi/pulumi/sdk/v2/go/pulumi"
+// )
+//
+// func main() {
+// 	pulumi.Run(func(ctx *pulumi.Context) error {
+// 		ubuntuRemoteImage, err := docker.NewRemoteImage(ctx, "ubuntuRemoteImage", &docker.RemoteImageArgs{
+// 			Name: pulumi.String("ubuntu:precise"),
+// 		})
+// 		if err != nil {
+// 			return err
+// 		}
+// 		_, err = docker.NewContainer(ctx, "ubuntuContainer", &docker.ContainerArgs{
+// 			Image: ubuntuRemoteImage.Latest,
+// 		})
+// 		if err != nil {
+// 			return err
+// 		}
+// 		return nil
+// 	})
+// }
+// ```
 type Container struct {
 	pulumi.CustomResourceState
 
@@ -66,7 +95,7 @@ type Container struct {
 	// Hostname to add.
 	Hosts ContainerHostArrayOutput `pulumi:"hosts"`
 	// The ID of the image to back this container.
-	// The easiest way to get this value is to use the `.RemoteImage` resource
+	// The easiest way to get this value is to use the `RemoteImage` resource
 	// as is shown in the example above.
 	Image pulumi.StringOutput `pulumi:"image"`
 	// *Deprecated:* Use `networkData` instead. The IP address of the container's first network it.
@@ -245,7 +274,7 @@ type containerState struct {
 	// Hostname to add.
 	Hosts []ContainerHost `pulumi:"hosts"`
 	// The ID of the image to back this container.
-	// The easiest way to get this value is to use the `.RemoteImage` resource
+	// The easiest way to get this value is to use the `RemoteImage` resource
 	// as is shown in the example above.
 	Image *string `pulumi:"image"`
 	// *Deprecated:* Use `networkData` instead. The IP address of the container's first network it.
@@ -394,7 +423,7 @@ type ContainerState struct {
 	// Hostname to add.
 	Hosts ContainerHostArrayInput
 	// The ID of the image to back this container.
-	// The easiest way to get this value is to use the `.RemoteImage` resource
+	// The easiest way to get this value is to use the `RemoteImage` resource
 	// as is shown in the example above.
 	Image pulumi.StringPtrInput
 	// *Deprecated:* Use `networkData` instead. The IP address of the container's first network it.
@@ -536,7 +565,7 @@ type containerArgs struct {
 	// Hostname to add.
 	Hosts []ContainerHost `pulumi:"hosts"`
 	// The ID of the image to back this container.
-	// The easiest way to get this value is to use the `.RemoteImage` resource
+	// The easiest way to get this value is to use the `RemoteImage` resource
 	// as is shown in the example above.
 	Image string `pulumi:"image"`
 	// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
@@ -663,7 +692,7 @@ type ContainerArgs struct {
 	// Hostname to add.
 	Hosts ContainerHostArrayInput
 	// The ID of the image to back this container.
-	// The easiest way to get this value is to use the `.RemoteImage` resource
+	// The easiest way to get this value is to use the `RemoteImage` resource
 	// as is shown in the example above.
 	Image pulumi.StringInput
 	// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.

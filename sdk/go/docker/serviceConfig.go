@@ -10,7 +10,6 @@ import (
 	"github.com/pulumi/pulumi/sdk/v2/go/pulumi"
 )
 
-// Manages the configuration of a Docker service in a swarm.
 type ServiceConfig struct {
 	pulumi.CustomResourceState
 

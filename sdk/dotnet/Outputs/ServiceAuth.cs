@@ -22,7 +22,7 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly string ServerAddress;
         /// <summary>
-        /// The username to use for authenticating to the registry. If this is blank, the `DOCKER_REGISTRY_USER` is also be checked. 
+        /// The username to use for authenticating to the registry. If this is blank, the `DOCKER_REGISTRY_USER` is also be checked.
         /// </summary>
         public readonly string? Username;
 

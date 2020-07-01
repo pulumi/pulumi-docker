@@ -9,6 +9,7 @@ import pulumi.runtime
 from typing import Union
 from . import utilities, tables
 
+
 class Provider(pulumi.ProviderResource):
     def __init__(__self__, resource_name, opts=None, ca_material=None, cert_material=None, cert_path=None, host=None, key_material=None, registry_auth=None, __props__=None, __name__=None, __opts__=None):
         """
@@ -28,8 +29,8 @@ class Provider(pulumi.ProviderResource):
         The **registry_auth** object supports the following:
 
           * `address` (`pulumi.Input[str]`)
-          * `configFile` (`pulumi.Input[str]`)
-          * `configFileContent` (`pulumi.Input[str]`)
+          * `config_file` (`pulumi.Input[str]`)
+          * `config_file_content` (`pulumi.Input[str]`)
           * `password` (`pulumi.Input[str]`)
           * `username` (`pulumi.Input[str]`)
         """
@@ -77,4 +78,3 @@ class Provider(pulumi.ProviderResource):
 
     def translate_input_property(self, prop):
         return tables._SNAKE_TO_CAMEL_CASE_TABLE.get(prop) or prop
-

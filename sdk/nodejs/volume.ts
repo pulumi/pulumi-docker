@@ -13,14 +13,12 @@ import * as utilities from "./utilities";
  *
  * ## Example Usage
  *
- *
- *
  * ```typescript
  * import * as pulumi from "@pulumi/pulumi";
  * import * as docker from "@pulumi/docker";
  *
- * // Creates a docker volume "sharedVolume".
- * const sharedVolume = new docker.Volume("sharedVolume", {});
+ * // Creates a docker volume "shared_volume".
+ * const sharedVolume = new docker.Volume("shared_volume", {});
  * ```
  */
 export class Volume extends pulumi.CustomResource {

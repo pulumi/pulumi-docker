@@ -34,7 +34,6 @@ namespace Pulumi.Docker
         /// 
         /// }
         /// ```
-        /// 
         /// {{% /example %}}
         /// {{% /examples %}}
         /// </summary>

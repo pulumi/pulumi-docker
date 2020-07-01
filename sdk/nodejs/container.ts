@@ -11,8 +11,6 @@ import * as utilities from "./utilities";
  *
  * ## Example Usage
  *
- *
- *
  * ```typescript
  * import * as pulumi from "@pulumi/pulumi";
  * import * as docker from "@pulumi/docker";
@@ -150,7 +148,7 @@ export class Container extends pulumi.CustomResource {
     public readonly hosts!: pulumi.Output<outputs.ContainerHost[] | undefined>;
     /**
      * The ID of the image to back this container.
-     * The easiest way to get this value is to use the `docker..RemoteImage` resource
+     * The easiest way to get this value is to use the `docker.RemoteImage` resource
      * as is shown in the example above.
      */
     public readonly image!: pulumi.Output<string>;
@@ -554,7 +552,7 @@ export interface ContainerState {
     readonly hosts?: pulumi.Input<pulumi.Input<inputs.ContainerHost>[]>;
     /**
      * The ID of the image to back this container.
-     * The easiest way to get this value is to use the `docker..RemoteImage` resource
+     * The easiest way to get this value is to use the `docker.RemoteImage` resource
      * as is shown in the example above.
      */
     readonly image?: pulumi.Input<string>;
@@ -795,7 +793,7 @@ export interface ContainerArgs {
     readonly hosts?: pulumi.Input<pulumi.Input<inputs.ContainerHost>[]>;
     /**
      * The ID of the image to back this container.
-     * The easiest way to get this value is to use the `docker..RemoteImage` resource
+     * The easiest way to get this value is to use the `docker.RemoteImage` resource
      * as is shown in the example above.
      */
     readonly image: pulumi.Input<string>;

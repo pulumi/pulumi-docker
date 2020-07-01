@@ -12,6 +12,27 @@ import (
 // Manages a Docker Network. This can be used alongside
 // [docker\_container](https://www.terraform.io/docs/providers/docker/r/container.html)
 // to create virtual networks within the docker environment.
+//
+// ## Example Usage
+//
+// ```go
+// package main
+//
+// import (
+// 	"github.com/pulumi/pulumi-docker/sdk/v2/go/docker"
+// 	"github.com/pulumi/pulumi/sdk/v2/go/pulumi"
+// )
+//
+// func main() {
+// 	pulumi.Run(func(ctx *pulumi.Context) error {
+// 		_, err := docker.NewNetwork(ctx, "privateNetwork", nil)
+// 		if err != nil {
+// 			return err
+// 		}
+// 		return nil
+// 	})
+// }
+// ```
 type Network struct {
 	pulumi.CustomResourceState
 

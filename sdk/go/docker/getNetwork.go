@@ -8,6 +8,30 @@ import (
 )
 
 // Finds a specific docker network and returns information about it.
+//
+// ## Example Usage
+//
+// ```go
+// package main
+//
+// import (
+// 	"github.com/pulumi/pulumi-docker/sdk/v2/go/docker"
+// 	"github.com/pulumi/pulumi/sdk/v2/go/pulumi"
+// )
+//
+// func main() {
+// 	pulumi.Run(func(ctx *pulumi.Context) error {
+// 		opt0 := "main"
+// 		_, err := docker.LookupNetwork(ctx, &docker.LookupNetworkArgs{
+// 			Name: &opt0,
+// 		}, nil)
+// 		if err != nil {
+// 			return err
+// 		}
+// 		return nil
+// 	})
+// }
+// ```
 func LookupNetwork(ctx *pulumi.Context, args *LookupNetworkArgs, opts ...pulumi.InvokeOption) (*LookupNetworkResult, error) {
 	var rv LookupNetworkResult
 	err := ctx.Invoke("docker:index/getNetwork:getNetwork", args, &rv, opts...)

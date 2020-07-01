@@ -4,22 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "./utilities";
 
-/**
- * Manages the configuration of a Docker service in a swarm.
- *
- *
- * ## Basic
- *
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as docker from "@pulumi/docker";
- *
- * // Creates a config
- * const fooConfig = new docker.ServiceConfig("fooConfig", {
- *     data: "ewogICJzZXJIfQo=",
- * });
- * ```
- */
 export class ServiceConfig extends pulumi.CustomResource {
     /**
      * Get an existing ServiceConfig resource's state with the given name, ID, and optional extra

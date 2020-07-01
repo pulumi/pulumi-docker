@@ -13,12 +13,10 @@ namespace Pulumi.Docker
     /// Pulls a Docker image to a given Docker host from a Docker Registry.
     /// 
     /// This resource will *not* pull new layers of the image automatically unless used in
-    /// conjunction with [`docker..getRegistryImage`](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
+    /// conjunction with [`docker.getRegistryImage`](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
     /// data source to update the `pull_triggers` field.
     /// 
     /// ## Example Usage
-    /// 
-    /// 
     /// 
     /// ```csharp
     /// using Pulumi;
@@ -37,7 +35,6 @@ namespace Pulumi.Docker
     /// 
     /// }
     /// ```
-    /// 
     /// ### Dynamic image
     /// 
     /// ```csharp
@@ -93,7 +90,7 @@ namespace Pulumi.Docker
         /// <summary>
         /// List of values which cause an
         /// image pull when changed. This is used to store the image digest from the
-        /// registry when using the `docker..getRegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
+        /// registry when using the `docker.getRegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
         /// to trigger an image update.
         /// </summary>
         [Output("pullTriggers")]
@@ -171,7 +168,7 @@ namespace Pulumi.Docker
         /// <summary>
         /// List of values which cause an
         /// image pull when changed. This is used to store the image digest from the
-        /// registry when using the `docker..getRegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
+        /// registry when using the `docker.getRegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
         /// to trigger an image update.
         /// </summary>
         public InputList<string> PullTriggers
@@ -216,7 +213,7 @@ namespace Pulumi.Docker
         /// <summary>
         /// List of values which cause an
         /// image pull when changed. This is used to store the image digest from the
-        /// registry when using the `docker..getRegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
+        /// registry when using the `docker.getRegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
         /// to trigger an image update.
         /// </summary>
         public InputList<string> PullTriggers
