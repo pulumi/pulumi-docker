@@ -659,7 +659,7 @@
                 },
                 "sourceHash": {
                     "type": "string",
-                    "description": "If using `source`, this will force an update if the file content has updated but the filename has not. \n",
+                    "description": "If using `source`, this will force an update if the file content has updated but the filename has not.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -828,7 +828,7 @@
                 },
                 "username": {
                     "type": "string",
-                    "description": "The username to use for authenticating to the registry. If this is blank, the `DOCKER_REGISTRY_USER` is also be checked. \n"
+                    "description": "The username to use for authenticating to the registry. If this is blank, the `DOCKER_REGISTRY_USER` is also be checked.\n"
                 }
             },
             "type": "object",
@@ -1717,7 +1717,7 @@
                 },
                 "sizeBytes": {
                     "type": "integer",
-                    "description": "The size for the tmpfs mount in bytes. \n",
+                    "description": "The size for the tmpfs mount in bytes.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -2506,7 +2506,7 @@
     },
     "resources": {
         "docker:index/container:Container": {
-            "description": "Manages the lifecycle of a Docker container.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\n// Find the latest Ubuntu precise image.\nconst ubuntuRemoteImage = new docker.RemoteImage(\"ubuntu\", {\n    name: \"ubuntu:precise\",\n});\n// Start a container\nconst ubuntuContainer = new docker.Container(\"ubuntu\", {\n    image: ubuntuRemoteImage.latest,\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\n# Find the latest Ubuntu precise image.\nubuntu_remote_image = docker.RemoteImage(\"ubuntuRemoteImage\", name=\"ubuntu:precise\")\n# Start a container\nubuntu_container = docker.Container(\"ubuntuContainer\", image=ubuntu_remote_image.latest)\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        // Find the latest Ubuntu precise image.\n        var ubuntuRemoteImage = new Docker.RemoteImage(\"ubuntuRemoteImage\", new Docker.RemoteImageArgs\n        {\n            Name = \"ubuntu:precise\",\n        });\n        // Start a container\n        var ubuntuContainer = new Docker.Container(\"ubuntuContainer\", new Docker.ContainerArgs\n        {\n            Image = ubuntuRemoteImage.Latest,\n        });\n    }\n\n}\n```\n\n{{% /example %}}\n{{% /examples %}}\n",
+            "description": "Manages the lifecycle of a Docker container.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\n// Find the latest Ubuntu precise image.\nconst ubuntuRemoteImage = new docker.RemoteImage(\"ubuntu\", {\n    name: \"ubuntu:precise\",\n});\n// Start a container\nconst ubuntuContainer = new docker.Container(\"ubuntu\", {\n    image: ubuntuRemoteImage.latest,\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\n# Find the latest Ubuntu precise image.\nubuntu_remote_image = docker.RemoteImage(\"ubuntuRemoteImage\", name=\"ubuntu:precise\")\n# Start a container\nubuntu_container = docker.Container(\"ubuntuContainer\", image=ubuntu_remote_image.latest)\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        // Find the latest Ubuntu precise image.\n        var ubuntuRemoteImage = new Docker.RemoteImage(\"ubuntuRemoteImage\", new Docker.RemoteImageArgs\n        {\n            Name = \"ubuntu:precise\",\n        });\n        // Start a container\n        var ubuntuContainer = new Docker.Container(\"ubuntuContainer\", new Docker.ContainerArgs\n        {\n            Image = ubuntuRemoteImage.Latest,\n        });\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v2/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v2/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\tubuntuRemoteImage, err := docker.NewRemoteImage(ctx, \"ubuntuRemoteImage\", \u0026docker.RemoteImageArgs{\n\t\t\tName: pulumi.String(\"ubuntu:precise\"),\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\t_, err = docker.NewContainer(ctx, \"ubuntuContainer\", \u0026docker.ContainerArgs{\n\t\t\tImage: ubuntuRemoteImage.Latest,\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n{{% /example %}}\n{{% /examples %}}",
             "properties": {
                 "attach": {
                     "type": "boolean",
@@ -2622,7 +2622,7 @@
                 },
                 "image": {
                     "type": "string",
-                    "description": "The ID of the image to back this container.\nThe easiest way to get this value is to use the `docker..RemoteImage` resource\nas is shown in the example above.\n"
+                    "description": "The ID of the image to back this container.\nThe easiest way to get this value is to use the `docker.RemoteImage` resource\nas is shown in the example above.\n"
                 },
                 "ipAddress": {
                     "type": "string",
@@ -2931,7 +2931,7 @@
                 },
                 "image": {
                     "type": "string",
-                    "description": "The ID of the image to back this container.\nThe easiest way to get this value is to use the `docker..RemoteImage` resource\nas is shown in the example above.\n"
+                    "description": "The ID of the image to back this container.\nThe easiest way to get this value is to use the `docker.RemoteImage` resource\nas is shown in the example above.\n"
                 },
                 "ipcMode": {
                     "type": "string",
@@ -3224,7 +3224,7 @@
                     },
                     "image": {
                         "type": "string",
-                        "description": "The ID of the image to back this container.\nThe easiest way to get this value is to use the `docker..RemoteImage` resource\nas is shown in the example above.\n"
+                        "description": "The ID of the image to back this container.\nThe easiest way to get this value is to use the `docker.RemoteImage` resource\nas is shown in the example above.\n"
                     },
                     "ipAddress": {
                         "type": "string",
@@ -3418,7 +3418,7 @@
             }
         },
         "docker:index/network:Network": {
-            "description": "Manages a Docker Network. This can be used alongside\n[docker\\_container](https://www.terraform.io/docs/providers/docker/r/container.html)\nto create virtual networks within the docker environment.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\n// Create a new docker network\nconst privateNetwork = new docker.Network(\"private_network\", {});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\n# Create a new docker network\nprivate_network = docker.Network(\"privateNetwork\")\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        // Create a new docker network\n        var privateNetwork = new Docker.Network(\"privateNetwork\", new Docker.NetworkArgs\n        {\n        });\n    }\n\n}\n```\n\n{{% /example %}}\n{{% /examples %}}\n",
+            "description": "Manages a Docker Network. This can be used alongside\n[docker\\_container](https://www.terraform.io/docs/providers/docker/r/container.html)\nto create virtual networks within the docker environment.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\n// Create a new docker network\nconst privateNetwork = new docker.Network(\"private_network\", {});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\n# Create a new docker network\nprivate_network = docker.Network(\"privateNetwork\")\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        // Create a new docker network\n        var privateNetwork = new Docker.Network(\"privateNetwork\", new Docker.NetworkArgs\n        {\n        });\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v2/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v2/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := docker.NewNetwork(ctx, \"privateNetwork\", nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n{{% /example %}}\n{{% /examples %}}",
             "properties": {
                 "attachable": {
                     "type": "boolean",
@@ -3604,7 +3604,7 @@
             }
         },
         "docker:index/remoteImage:RemoteImage": {
-            "description": "Pulls a Docker image to a given Docker host from a Docker Registry.\n\nThis resource will *not* pull new layers of the image automatically unless used in\nconjunction with [`docker..getRegistryImage`](https://www.terraform.io/docs/providers/docker/d/registry_image.html)\ndata source to update the `pull_triggers` field.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\n// Find the latest Ubuntu precise image.\nconst ubuntu = new docker.RemoteImage(\"ubuntu\", {\n    name: \"ubuntu:precise\",\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\n# Find the latest Ubuntu precise image.\nubuntu = docker.RemoteImage(\"ubuntu\", name=\"ubuntu:precise\")\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        // Find the latest Ubuntu precise image.\n        var ubuntu = new Docker.RemoteImage(\"ubuntu\", new Docker.RemoteImageArgs\n        {\n            Name = \"ubuntu:precise\",\n        });\n    }\n\n}\n```\n\n{{% /example %}}\n{{% example %}}\n### Dynamic image\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst ubuntuRegistryImage = pulumi.output(docker.getRegistryImage({\n    name: \"ubuntu:precise\",\n}, { async: true }));\nconst ubuntuRemoteImage = new docker.RemoteImage(\"ubuntu\", {\n    name: ubuntuRegistryImage.name!,\n    pullTriggers: [ubuntuRegistryImage.sha256Digest],\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nubuntu_registry_image = docker.get_registry_image(name=\"ubuntu:precise\")\nubuntu_remote_image = docker.RemoteImage(\"ubuntuRemoteImage\",\n    name=ubuntu_registry_image.name,\n    pull_triggers=[ubuntu_registry_image.sha256_digest])\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        var ubuntuRegistryImage = Output.Create(Docker.GetRegistryImage.InvokeAsync(new Docker.GetRegistryImageArgs\n        {\n            Name = \"ubuntu:precise\",\n        }));\n        var ubuntuRemoteImage = new Docker.RemoteImage(\"ubuntuRemoteImage\", new Docker.RemoteImageArgs\n        {\n            Name = ubuntuRegistryImage.Apply(ubuntuRegistryImage =\u003e ubuntuRegistryImage.Name),\n            PullTriggers = \n            {\n                ubuntuRegistryImage.Apply(ubuntuRegistryImage =\u003e ubuntuRegistryImage.Sha256Digest),\n            },\n        });\n    }\n\n}\n```\n\n{{% /example %}}\n{{% /examples %}}\n",
+            "description": "Pulls a Docker image to a given Docker host from a Docker Registry.\n\nThis resource will *not* pull new layers of the image automatically unless used in\nconjunction with [`docker.getRegistryImage`](https://www.terraform.io/docs/providers/docker/d/registry_image.html)\ndata source to update the `pull_triggers` field.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\n// Find the latest Ubuntu precise image.\nconst ubuntu = new docker.RemoteImage(\"ubuntu\", {\n    name: \"ubuntu:precise\",\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\n# Find the latest Ubuntu precise image.\nubuntu = docker.RemoteImage(\"ubuntu\", name=\"ubuntu:precise\")\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        // Find the latest Ubuntu precise image.\n        var ubuntu = new Docker.RemoteImage(\"ubuntu\", new Docker.RemoteImageArgs\n        {\n            Name = \"ubuntu:precise\",\n        });\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v2/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v2/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := docker.NewRemoteImage(ctx, \"ubuntu\", \u0026docker.RemoteImageArgs{\n\t\t\tName: pulumi.String(\"ubuntu:precise\"),\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n{{% /example %}}\n{{% example %}}\n### Dynamic image\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst ubuntuRegistryImage = pulumi.output(docker.getRegistryImage({\n    name: \"ubuntu:precise\",\n}, { async: true }));\nconst ubuntuRemoteImage = new docker.RemoteImage(\"ubuntu\", {\n    name: ubuntuRegistryImage.name!,\n    pullTriggers: [ubuntuRegistryImage.sha256Digest],\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nubuntu_registry_image = docker.get_registry_image(name=\"ubuntu:precise\")\nubuntu_remote_image = docker.RemoteImage(\"ubuntuRemoteImage\",\n    name=ubuntu_registry_image.name,\n    pull_triggers=[ubuntu_registry_image.sha256_digest])\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        var ubuntuRegistryImage = Output.Create(Docker.GetRegistryImage.InvokeAsync(new Docker.GetRegistryImageArgs\n        {\n            Name = \"ubuntu:precise\",\n        }));\n        var ubuntuRemoteImage = new Docker.RemoteImage(\"ubuntuRemoteImage\", new Docker.RemoteImageArgs\n        {\n            Name = ubuntuRegistryImage.Apply(ubuntuRegistryImage =\u003e ubuntuRegistryImage.Name),\n            PullTriggers = \n            {\n                ubuntuRegistryImage.Apply(ubuntuRegistryImage =\u003e ubuntuRegistryImage.Sha256Digest),\n            },\n        });\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v2/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v2/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\topt0 := \"ubuntu:precise\"\n\t\tubuntuRegistryImage, err := docker.GetRegistryImage(ctx, \u0026docker.GetRegistryImageArgs{\n\t\t\tName: \u0026opt0,\n\t\t}, nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\t_, err = docker.NewRemoteImage(ctx, \"ubuntuRemoteImage\", \u0026docker.RemoteImageArgs{\n\t\t\tName: pulumi.String(ubuntuRegistryImage.Name),\n\t\t\tPullTriggers: pulumi.StringArray{\n\t\t\t\tpulumi.String(ubuntuRegistryImage.Sha256Digest),\n\t\t\t},\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n{{% /example %}}\n{{% /examples %}}",
             "properties": {
                 "keepLocally": {
                     "type": "boolean",
@@ -3627,7 +3627,7 @@
                     "items": {
                         "type": "string"
                     },
-                    "description": "List of values which cause an\nimage pull when changed. This is used to store the image digest from the\nregistry when using the `docker..getRegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)\nto trigger an image update.\n"
+                    "description": "List of values which cause an\nimage pull when changed. This is used to store the image digest from the\nregistry when using the `docker.getRegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)\nto trigger an image update.\n"
                 }
             },
             "required": [
@@ -3653,7 +3653,7 @@
                     "items": {
                         "type": "string"
                     },
-                    "description": "List of values which cause an\nimage pull when changed. This is used to store the image digest from the\nregistry when using the `docker..getRegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)\nto trigger an image update.\n"
+                    "description": "List of values which cause an\nimage pull when changed. This is used to store the image digest from the\nregistry when using the `docker.getRegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)\nto trigger an image update.\n"
                 }
             },
             "requiredInputs": [
@@ -3683,14 +3683,13 @@
                         "items": {
                             "type": "string"
                         },
-                        "description": "List of values which cause an\nimage pull when changed. This is used to store the image digest from the\nregistry when using the `docker..getRegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)\nto trigger an image update.\n"
+                        "description": "List of values which cause an\nimage pull when changed. This is used to store the image digest from the\nregistry when using the `docker.getRegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)\nto trigger an image update.\n"
                     }
                 },
                 "type": "object"
             }
         },
         "docker:index/secret:Secret": {
-            "description": "Manages the secrets of a Docker service in a swarm.\n\n{{% examples %}}\n## Example Usage\n\n{{% example %}}\n### Basic\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\n// Creates a secret\nconst fooSecret = new docker.Secret(\"foo_secret\", {\n    data: \"ewogICJzZXJsaasIfQo=\",\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\n# Creates a secret\nfoo_secret = docker.Secret(\"fooSecret\", data=\"ewogICJzZXJsaasIfQo=\")\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        // Creates a secret\n        var fooSecret = new Docker.Secret(\"fooSecret\", new Docker.SecretArgs\n        {\n            Data = \"ewogICJzZXJsaasIfQo=\",\n        });\n    }\n\n}\n```\n\n{{% /example %}}\n{{% /examples %}}\n",
             "properties": {
                 "data": {
                     "type": "string",
@@ -3894,7 +3893,6 @@
             }
         },
         "docker:index/serviceConfig:ServiceConfig": {
-            "description": "Manages the configuration of a Docker service in a swarm.\n\n{{% examples %}}\n{{% /examples %}}\n## Basic\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\n// Creates a config\nconst fooConfig = new docker.ServiceConfig(\"foo_config\", {\n    data: \"ewogICJzZXJIfQo=\",\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\n# Creates a config\nfoo_config = docker.ServiceConfig(\"fooConfig\", data=\"ewogICJzZXJIfQo=\")\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        // Creates a config\n        var fooConfig = new Docker.ServiceConfig(\"fooConfig\", new Docker.ServiceConfigArgs\n        {\n            Data = \"ewogICJzZXJIfQo=\",\n        });\n    }\n\n}\n```\n",
             "properties": {
                 "data": {
                     "type": "string",
@@ -3938,7 +3936,7 @@
             }
         },
         "docker:index/volume:Volume": {
-            "description": "Creates and destroys a volume in Docker. This can be used alongside\n[docker\\_container](https://www.terraform.io/docs/providers/docker/r/container.html)\nto prepare volumes that can be shared across containers.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\n// Creates a docker volume \"shared_volume\".\nconst sharedVolume = new docker.Volume(\"shared_volume\", {});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\n# Creates a docker volume \"shared_volume\".\nshared_volume = docker.Volume(\"sharedVolume\")\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        // Creates a docker volume \"shared_volume\".\n        var sharedVolume = new Docker.Volume(\"sharedVolume\", new Docker.VolumeArgs\n        {\n        });\n    }\n\n}\n```\n\n{{% /example %}}\n{{% /examples %}}\n",
+            "description": "Creates and destroys a volume in Docker. This can be used alongside\n[docker\\_container](https://www.terraform.io/docs/providers/docker/r/container.html)\nto prepare volumes that can be shared across containers.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\n// Creates a docker volume \"shared_volume\".\nconst sharedVolume = new docker.Volume(\"shared_volume\", {});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\n# Creates a docker volume \"shared_volume\".\nshared_volume = docker.Volume(\"sharedVolume\")\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        // Creates a docker volume \"shared_volume\".\n        var sharedVolume = new Docker.Volume(\"sharedVolume\", new Docker.VolumeArgs\n        {\n        });\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v2/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v2/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := docker.NewVolume(ctx, \"sharedVolume\", nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n{{% /example %}}\n{{% /examples %}}",
             "properties": {
                 "driver": {
                     "type": "string",
@@ -4030,7 +4028,7 @@
     },
     "functions": {
         "docker:index/getNetwork:getNetwork": {
-            "description": "Finds a specific docker network and returns information about it.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst main = pulumi.output(docker.getNetwork({\n    name: \"main\",\n}, { async: true }));\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nmain = docker.get_network(name=\"main\")\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        var main = Output.Create(Docker.GetNetwork.InvokeAsync(new Docker.GetNetworkArgs\n        {\n            Name = \"main\",\n        }));\n    }\n\n}\n```\n\n{{% /example %}}\n{{% /examples %}}\n",
+            "description": "Finds a specific docker network and returns information about it.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst main = pulumi.output(docker.getNetwork({\n    name: \"main\",\n}, { async: true }));\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nmain = docker.get_network(name=\"main\")\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        var main = Output.Create(Docker.GetNetwork.InvokeAsync(new Docker.GetNetworkArgs\n        {\n            Name = \"main\",\n        }));\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v2/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v2/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\topt0 := \"main\"\n\t\t_, err := docker.LookupNetwork(ctx, \u0026docker.LookupNetworkArgs{\n\t\t\tName: \u0026opt0,\n\t\t}, nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n{{% /example %}}\n{{% /examples %}}",
             "inputs": {
                 "description": "A collection of arguments for invoking getNetwork.\n",
                 "properties": {
@@ -4089,7 +4087,7 @@
             }
         },
         "docker:index/getRegistryImage:getRegistryImage": {
-            "description": "Reads the image metadata from a Docker Registry. Used in conjunction with the\n[docker\\_image](https://www.terraform.io/docs/providers/docker/r/image.html) resource to keep an image up\nto date on the latest available version of the tag.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst ubuntuRegistryImage = pulumi.output(docker.getRegistryImage({\n    name: \"ubuntu:precise\",\n}, { async: true }));\nconst ubuntuRemoteImage = new docker.RemoteImage(\"ubuntu\", {\n    name: ubuntuRegistryImage.name!,\n    pullTriggers: [ubuntuRegistryImage.sha256Digest],\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nubuntu_registry_image = docker.get_registry_image(name=\"ubuntu:precise\")\nubuntu_remote_image = docker.RemoteImage(\"ubuntuRemoteImage\",\n    name=ubuntu_registry_image.name,\n    pull_triggers=[ubuntu_registry_image.sha256_digest])\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        var ubuntuRegistryImage = Output.Create(Docker.GetRegistryImage.InvokeAsync(new Docker.GetRegistryImageArgs\n        {\n            Name = \"ubuntu:precise\",\n        }));\n        var ubuntuRemoteImage = new Docker.RemoteImage(\"ubuntuRemoteImage\", new Docker.RemoteImageArgs\n        {\n            Name = ubuntuRegistryImage.Apply(ubuntuRegistryImage =\u003e ubuntuRegistryImage.Name),\n            PullTriggers = \n            {\n                ubuntuRegistryImage.Apply(ubuntuRegistryImage =\u003e ubuntuRegistryImage.Sha256Digest),\n            },\n        });\n    }\n\n}\n```\n\n{{% /example %}}\n{{% /examples %}}\n",
+            "description": "Reads the image metadata from a Docker Registry. Used in conjunction with the\n[docker\\_image](https://www.terraform.io/docs/providers/docker/r/image.html) resource to keep an image up\nto date on the latest available version of the tag.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst ubuntuRegistryImage = pulumi.output(docker.getRegistryImage({\n    name: \"ubuntu:precise\",\n}, { async: true }));\nconst ubuntuRemoteImage = new docker.RemoteImage(\"ubuntu\", {\n    name: ubuntuRegistryImage.name!,\n    pullTriggers: [ubuntuRegistryImage.sha256Digest],\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nubuntu_registry_image = docker.get_registry_image(name=\"ubuntu:precise\")\nubuntu_remote_image = docker.RemoteImage(\"ubuntuRemoteImage\",\n    name=ubuntu_registry_image.name,\n    pull_triggers=[ubuntu_registry_image.sha256_digest])\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        var ubuntuRegistryImage = Output.Create(Docker.GetRegistryImage.InvokeAsync(new Docker.GetRegistryImageArgs\n        {\n            Name = \"ubuntu:precise\",\n        }));\n        var ubuntuRemoteImage = new Docker.RemoteImage(\"ubuntuRemoteImage\", new Docker.RemoteImageArgs\n        {\n            Name = ubuntuRegistryImage.Apply(ubuntuRegistryImage =\u003e ubuntuRegistryImage.Name),\n            PullTriggers = \n            {\n                ubuntuRegistryImage.Apply(ubuntuRegistryImage =\u003e ubuntuRegistryImage.Sha256Digest),\n            },\n        });\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v2/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v2/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\topt0 := \"ubuntu:precise\"\n\t\tubuntuRegistryImage, err := docker.GetRegistryImage(ctx, \u0026docker.GetRegistryImageArgs{\n\t\t\tName: \u0026opt0,\n\t\t}, nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\t_, err = docker.NewRemoteImage(ctx, \"ubuntuRemoteImage\", \u0026docker.RemoteImageArgs{\n\t\t\tName: pulumi.String(ubuntuRegistryImage.Name),\n\t\t\tPullTriggers: pulumi.StringArray{\n\t\t\t\tpulumi.String(ubuntuRegistryImage.Sha256Digest),\n\t\t\t},\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n{{% /example %}}\n{{% /examples %}}",
             "inputs": {
                 "description": "A collection of arguments for invoking getRegistryImage.\n",
                 "properties": {
@@ -4149,6 +4147,7 @@
             "typescriptVersion": ""
         },
         "python": {
+            "readme": "\u003e This provider is a derived work of the [Terraform Provider](https://github.com/terraform-providers/terraform-provider-docker)\n\u003e distributed under [MPL 2.0](https://www.mozilla.org/en-US/MPL/2.0/). If you encounter a bug or missing feature,\n\u003e first check the [`pulumi/pulumi-docker` repo](https://github.com/pulumi/pulumi-docker/issues); however, if that doesn't turn up anything,\n\u003e please consult the source [`terraform-providers/terraform-provider-docker` repo](https://github.com/terraform-providers/terraform-provider-docker/issues).",
             "requires": {
                 "pulumi": "\u003e=2.0.0,\u003c3.0.0"
             }

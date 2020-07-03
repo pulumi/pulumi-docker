@@ -8,12 +8,10 @@ import * as utilities from "./utilities";
  * Pulls a Docker image to a given Docker host from a Docker Registry.
  *
  * This resource will *not* pull new layers of the image automatically unless used in
- * conjunction with [`docker..getRegistryImage`](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
+ * conjunction with [`docker.getRegistryImage`](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
  * data source to update the `pullTriggers` field.
  *
  * ## Example Usage
- *
- *
  *
  * ```typescript
  * import * as pulumi from "@pulumi/pulumi";
@@ -24,7 +22,6 @@ import * as utilities from "./utilities";
  *     name: "ubuntu:precise",
  * });
  * ```
- *
  * ### Dynamic image
  *
  * ```typescript
@@ -88,7 +85,7 @@ export class RemoteImage extends pulumi.CustomResource {
     /**
      * List of values which cause an
      * image pull when changed. This is used to store the image digest from the
-     * registry when using the `docker..getRegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
+     * registry when using the `docker.getRegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
      * to trigger an image update.
      */
     public readonly pullTriggers!: pulumi.Output<string[] | undefined>;
@@ -156,7 +153,7 @@ export interface RemoteImageState {
     /**
      * List of values which cause an
      * image pull when changed. This is used to store the image digest from the
-     * registry when using the `docker..getRegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
+     * registry when using the `docker.getRegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
      * to trigger an image update.
      */
     readonly pullTriggers?: pulumi.Input<pulumi.Input<string>[]>;
@@ -185,7 +182,7 @@ export interface RemoteImageArgs {
     /**
      * List of values which cause an
      * image pull when changed. This is used to store the image digest from the
-     * registry when using the `docker..getRegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
+     * registry when using the `docker.getRegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
      * to trigger an image update.
      */
     readonly pullTriggers?: pulumi.Input<pulumi.Input<string>[]>;

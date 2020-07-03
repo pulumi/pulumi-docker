@@ -18,7 +18,7 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly int? Mode;
         /// <summary>
-        /// The size for the tmpfs mount in bytes. 
+        /// The size for the tmpfs mount in bytes.
         /// </summary>
         public readonly int? SizeBytes;
 

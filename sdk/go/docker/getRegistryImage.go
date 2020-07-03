@@ -10,6 +10,39 @@ import (
 // Reads the image metadata from a Docker Registry. Used in conjunction with the
 // [docker\_image](https://www.terraform.io/docs/providers/docker/r/image.html) resource to keep an image up
 // to date on the latest available version of the tag.
+//
+// ## Example Usage
+//
+// ```go
+// package main
+//
+// import (
+// 	"github.com/pulumi/pulumi-docker/sdk/v2/go/docker"
+// 	"github.com/pulumi/pulumi/sdk/v2/go/pulumi"
+// )
+//
+// func main() {
+// 	pulumi.Run(func(ctx *pulumi.Context) error {
+// 		opt0 := "ubuntu:precise"
+// 		ubuntuRegistryImage, err := docker.GetRegistryImage(ctx, &docker.GetRegistryImageArgs{
+// 			Name: &opt0,
+// 		}, nil)
+// 		if err != nil {
+// 			return err
+// 		}
+// 		_, err = docker.NewRemoteImage(ctx, "ubuntuRemoteImage", &docker.RemoteImageArgs{
+// 			Name: pulumi.String(ubuntuRegistryImage.Name),
+// 			PullTriggers: pulumi.StringArray{
+// 				pulumi.String(ubuntuRegistryImage.Sha256Digest),
+// 			},
+// 		})
+// 		if err != nil {
+// 			return err
+// 		}
+// 		return nil
+// 	})
+// }
+// ```
 func GetRegistryImage(ctx *pulumi.Context, args *GetRegistryImageArgs, opts ...pulumi.InvokeOption) (*GetRegistryImageResult, error) {
 	var rv GetRegistryImageResult
 	err := ctx.Invoke("docker:index/getRegistryImage:getRegistryImage", args, &rv, opts...)

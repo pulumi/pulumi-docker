@@ -242,7 +242,7 @@ export interface ContainerUpload {
      */
     source?: string;
     /**
-     * If using `source`, this will force an update if the file content has updated but the filename has not. 
+     * If using `source`, this will force an update if the file content has updated but the filename has not.
      */
     sourceHash?: string;
 }
@@ -329,7 +329,7 @@ export interface ServiceAuth {
      */
     serverAddress: string;
     /**
-     * The username to use for authenticating to the registry. If this is blank, the `DOCKER_REGISTRY_USER` is also be checked. 
+     * The username to use for authenticating to the registry. If this is blank, the `DOCKER_REGISTRY_USER` is also be checked.
      */
     username?: string;
 }
@@ -682,7 +682,7 @@ export interface ServiceTaskSpecContainerSpecMountTmpfsOptions {
      */
     mode?: number;
     /**
-     * The size for the tmpfs mount in bytes. 
+     * The size for the tmpfs mount in bytes.
      */
     sizeBytes?: number;
 }

@@ -13,14 +13,12 @@ import * as utilities from "./utilities";
  *
  * ## Example Usage
  *
- *
- *
  * ```typescript
  * import * as pulumi from "@pulumi/pulumi";
  * import * as docker from "@pulumi/docker";
  *
  * // Create a new docker network
- * const privateNetwork = new docker.Network("privateNetwork", {});
+ * const privateNetwork = new docker.Network("private_network", {});
  * ```
  */
 export class Network extends pulumi.CustomResource {

@@ -9,30 +9,6 @@ using Pulumi.Serialization;
 
 namespace Pulumi.Docker
 {
-    /// <summary>
-    /// Manages the configuration of a Docker service in a swarm.
-    /// 
-    /// 
-    /// ## Basic
-    /// 
-    /// ```csharp
-    /// using Pulumi;
-    /// using Docker = Pulumi.Docker;
-    /// 
-    /// class MyStack : Stack
-    /// {
-    ///     public MyStack()
-    ///     {
-    ///         // Creates a config
-    ///         var fooConfig = new Docker.ServiceConfig("fooConfig", new Docker.ServiceConfigArgs
-    ///         {
-    ///             Data = "ewogICJzZXJIfQo=",
-    ///         });
-    ///     }
-    /// 
-    /// }
-    /// ```
-    /// </summary>
     public partial class ServiceConfig : Pulumi.CustomResource
     {
         /// <summary>

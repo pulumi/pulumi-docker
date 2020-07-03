@@ -10,7 +10,6 @@ import (
 	"github.com/pulumi/pulumi/sdk/v2/go/pulumi"
 )
 
-// Manages the secrets of a Docker service in a swarm.
 type Secret struct {
 	pulumi.CustomResourceState
 

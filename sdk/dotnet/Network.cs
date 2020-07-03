@@ -16,8 +16,6 @@ namespace Pulumi.Docker
     /// 
     /// ## Example Usage
     /// 
-    /// 
-    /// 
     /// ```csharp
     /// using Pulumi;
     /// using Docker = Pulumi.Docker;

@@ -42,7 +42,7 @@ namespace Pulumi.Docker.Inputs
         public Input<string>? Source { get; set; }
 
         /// <summary>
-        /// If using `source`, this will force an update if the file content has updated but the filename has not. 
+        /// If using `source`, this will force an update if the file content has updated but the filename has not.
         /// </summary>
         [Input("sourceHash")]
         public Input<string>? SourceHash { get; set; }

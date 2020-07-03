@@ -20,8 +20,7 @@ type ContainerCapabilities struct {
 // ContainerCapabilitiesInput is an input type that accepts ContainerCapabilitiesArgs and ContainerCapabilitiesOutput values.
 // You can construct a concrete instance of `ContainerCapabilitiesInput` via:
 //
-// 		 ContainerCapabilitiesArgs{...}
-//
+//          ContainerCapabilitiesArgs{...}
 type ContainerCapabilitiesInput interface {
 	pulumi.Input
 
@@ -59,12 +58,11 @@ func (i ContainerCapabilitiesArgs) ToContainerCapabilitiesPtrOutputWithContext(c
 // ContainerCapabilitiesPtrInput is an input type that accepts ContainerCapabilitiesArgs, ContainerCapabilitiesPtr and ContainerCapabilitiesPtrOutput values.
 // You can construct a concrete instance of `ContainerCapabilitiesPtrInput` via:
 //
-// 		 ContainerCapabilitiesArgs{...}
+//          ContainerCapabilitiesArgs{...}
 //
 //  or:
 //
-// 		 nil
-//
+//          nil
 type ContainerCapabilitiesPtrInput interface {
 	pulumi.Input
 
@@ -178,8 +176,7 @@ type ContainerDevice struct {
 // ContainerDeviceInput is an input type that accepts ContainerDeviceArgs and ContainerDeviceOutput values.
 // You can construct a concrete instance of `ContainerDeviceInput` via:
 //
-// 		 ContainerDeviceArgs{...}
-//
+//          ContainerDeviceArgs{...}
 type ContainerDeviceInput interface {
 	pulumi.Input
 
@@ -215,8 +212,7 @@ func (i ContainerDeviceArgs) ToContainerDeviceOutputWithContext(ctx context.Cont
 // ContainerDeviceArrayInput is an input type that accepts ContainerDeviceArray and ContainerDeviceArrayOutput values.
 // You can construct a concrete instance of `ContainerDeviceArrayInput` via:
 //
-// 		 ContainerDeviceArray{ ContainerDeviceArgs{...} }
-//
+//          ContainerDeviceArray{ ContainerDeviceArgs{...} }
 type ContainerDeviceArrayInput interface {
 	pulumi.Input
 
@@ -308,8 +304,7 @@ type ContainerHealthcheck struct {
 // ContainerHealthcheckInput is an input type that accepts ContainerHealthcheckArgs and ContainerHealthcheckOutput values.
 // You can construct a concrete instance of `ContainerHealthcheckInput` via:
 //
-// 		 ContainerHealthcheckArgs{...}
-//
+//          ContainerHealthcheckArgs{...}
 type ContainerHealthcheckInput interface {
 	pulumi.Input
 
@@ -354,12 +349,11 @@ func (i ContainerHealthcheckArgs) ToContainerHealthcheckPtrOutputWithContext(ctx
 // ContainerHealthcheckPtrInput is an input type that accepts ContainerHealthcheckArgs, ContainerHealthcheckPtr and ContainerHealthcheckPtrOutput values.
 // You can construct a concrete instance of `ContainerHealthcheckPtrInput` via:
 //
-// 		 ContainerHealthcheckArgs{...}
+//          ContainerHealthcheckArgs{...}
 //
 //  or:
 //
-// 		 nil
-//
+//          nil
 type ContainerHealthcheckPtrInput interface {
 	pulumi.Input
 
@@ -514,8 +508,7 @@ type ContainerHost struct {
 // ContainerHostInput is an input type that accepts ContainerHostArgs and ContainerHostOutput values.
 // You can construct a concrete instance of `ContainerHostInput` via:
 //
-// 		 ContainerHostArgs{...}
-//
+//          ContainerHostArgs{...}
 type ContainerHostInput interface {
 	pulumi.Input
 
@@ -545,8 +538,7 @@ func (i ContainerHostArgs) ToContainerHostOutputWithContext(ctx context.Context)
 // ContainerHostArrayInput is an input type that accepts ContainerHostArray and ContainerHostArrayOutput values.
 // You can construct a concrete instance of `ContainerHostArrayInput` via:
 //
-// 		 ContainerHostArray{ ContainerHostArgs{...} }
-//
+//          ContainerHostArray{ ContainerHostArgs{...} }
 type ContainerHostArrayInput interface {
 	pulumi.Input
 
@@ -622,8 +614,7 @@ type ContainerLabel struct {
 // ContainerLabelInput is an input type that accepts ContainerLabelArgs and ContainerLabelOutput values.
 // You can construct a concrete instance of `ContainerLabelInput` via:
 //
-// 		 ContainerLabelArgs{...}
-//
+//          ContainerLabelArgs{...}
 type ContainerLabelInput interface {
 	pulumi.Input
 
@@ -653,8 +644,7 @@ func (i ContainerLabelArgs) ToContainerLabelOutputWithContext(ctx context.Contex
 // ContainerLabelArrayInput is an input type that accepts ContainerLabelArray and ContainerLabelArrayOutput values.
 // You can construct a concrete instance of `ContainerLabelArrayInput` via:
 //
-// 		 ContainerLabelArray{ ContainerLabelArgs{...} }
-//
+//          ContainerLabelArray{ ContainerLabelArgs{...} }
 type ContainerLabelArrayInput interface {
 	pulumi.Input
 
@@ -741,8 +731,7 @@ type ContainerMount struct {
 // ContainerMountInput is an input type that accepts ContainerMountArgs and ContainerMountOutput values.
 // You can construct a concrete instance of `ContainerMountInput` via:
 //
-// 		 ContainerMountArgs{...}
-//
+//          ContainerMountArgs{...}
 type ContainerMountInput interface {
 	pulumi.Input
 
@@ -783,8 +772,7 @@ func (i ContainerMountArgs) ToContainerMountOutputWithContext(ctx context.Contex
 // ContainerMountArrayInput is an input type that accepts ContainerMountArray and ContainerMountArrayOutput values.
 // You can construct a concrete instance of `ContainerMountArrayInput` via:
 //
-// 		 ContainerMountArray{ ContainerMountArgs{...} }
-//
+//          ContainerMountArray{ ContainerMountArgs{...} }
 type ContainerMountArrayInput interface {
 	pulumi.Input
 
@@ -884,8 +872,7 @@ type ContainerMountBindOptions struct {
 // ContainerMountBindOptionsInput is an input type that accepts ContainerMountBindOptionsArgs and ContainerMountBindOptionsOutput values.
 // You can construct a concrete instance of `ContainerMountBindOptionsInput` via:
 //
-// 		 ContainerMountBindOptionsArgs{...}
-//
+//          ContainerMountBindOptionsArgs{...}
 type ContainerMountBindOptionsInput interface {
 	pulumi.Input
 
@@ -921,12 +908,11 @@ func (i ContainerMountBindOptionsArgs) ToContainerMountBindOptionsPtrOutputWithC
 // ContainerMountBindOptionsPtrInput is an input type that accepts ContainerMountBindOptionsArgs, ContainerMountBindOptionsPtr and ContainerMountBindOptionsPtrOutput values.
 // You can construct a concrete instance of `ContainerMountBindOptionsPtrInput` via:
 //
-// 		 ContainerMountBindOptionsArgs{...}
+//          ContainerMountBindOptionsArgs{...}
 //
 //  or:
 //
-// 		 nil
-//
+//          nil
 type ContainerMountBindOptionsPtrInput interface {
 	pulumi.Input
 
@@ -1019,8 +1005,7 @@ type ContainerMountTmpfsOptions struct {
 // ContainerMountTmpfsOptionsInput is an input type that accepts ContainerMountTmpfsOptionsArgs and ContainerMountTmpfsOptionsOutput values.
 // You can construct a concrete instance of `ContainerMountTmpfsOptionsInput` via:
 //
-// 		 ContainerMountTmpfsOptionsArgs{...}
-//
+//          ContainerMountTmpfsOptionsArgs{...}
 type ContainerMountTmpfsOptionsInput interface {
 	pulumi.Input
 
@@ -1058,12 +1043,11 @@ func (i ContainerMountTmpfsOptionsArgs) ToContainerMountTmpfsOptionsPtrOutputWit
 // ContainerMountTmpfsOptionsPtrInput is an input type that accepts ContainerMountTmpfsOptionsArgs, ContainerMountTmpfsOptionsPtr and ContainerMountTmpfsOptionsPtrOutput values.
 // You can construct a concrete instance of `ContainerMountTmpfsOptionsPtrInput` via:
 //
-// 		 ContainerMountTmpfsOptionsArgs{...}
+//          ContainerMountTmpfsOptionsArgs{...}
 //
 //  or:
 //
-// 		 nil
-//
+//          nil
 type ContainerMountTmpfsOptionsPtrInput interface {
 	pulumi.Input
 
@@ -1174,8 +1158,7 @@ type ContainerMountVolumeOptions struct {
 // ContainerMountVolumeOptionsInput is an input type that accepts ContainerMountVolumeOptionsArgs and ContainerMountVolumeOptionsOutput values.
 // You can construct a concrete instance of `ContainerMountVolumeOptionsInput` via:
 //
-// 		 ContainerMountVolumeOptionsArgs{...}
-//
+//          ContainerMountVolumeOptionsArgs{...}
 type ContainerMountVolumeOptionsInput interface {
 	pulumi.Input
 
@@ -1216,12 +1199,11 @@ func (i ContainerMountVolumeOptionsArgs) ToContainerMountVolumeOptionsPtrOutputW
 // ContainerMountVolumeOptionsPtrInput is an input type that accepts ContainerMountVolumeOptionsArgs, ContainerMountVolumeOptionsPtr and ContainerMountVolumeOptionsPtrOutput values.
 // You can construct a concrete instance of `ContainerMountVolumeOptionsPtrInput` via:
 //
-// 		 ContainerMountVolumeOptionsArgs{...}
+//          ContainerMountVolumeOptionsArgs{...}
 //
 //  or:
 //
-// 		 nil
-//
+//          nil
 type ContainerMountVolumeOptionsPtrInput interface {
 	pulumi.Input
 
@@ -1356,8 +1338,7 @@ type ContainerMountVolumeOptionsLabel struct {
 // ContainerMountVolumeOptionsLabelInput is an input type that accepts ContainerMountVolumeOptionsLabelArgs and ContainerMountVolumeOptionsLabelOutput values.
 // You can construct a concrete instance of `ContainerMountVolumeOptionsLabelInput` via:
 //
-// 		 ContainerMountVolumeOptionsLabelArgs{...}
-//
+//          ContainerMountVolumeOptionsLabelArgs{...}
 type ContainerMountVolumeOptionsLabelInput interface {
 	pulumi.Input
 
@@ -1387,8 +1368,7 @@ func (i ContainerMountVolumeOptionsLabelArgs) ToContainerMountVolumeOptionsLabel
 // ContainerMountVolumeOptionsLabelArrayInput is an input type that accepts ContainerMountVolumeOptionsLabelArray and ContainerMountVolumeOptionsLabelArrayOutput values.
 // You can construct a concrete instance of `ContainerMountVolumeOptionsLabelArrayInput` via:
 //
-// 		 ContainerMountVolumeOptionsLabelArray{ ContainerMountVolumeOptionsLabelArgs{...} }
-//
+//          ContainerMountVolumeOptionsLabelArray{ ContainerMountVolumeOptionsLabelArgs{...} }
 type ContainerMountVolumeOptionsLabelArrayInput interface {
 	pulumi.Input
 
@@ -1469,8 +1449,7 @@ type ContainerNetworkData struct {
 // ContainerNetworkDataInput is an input type that accepts ContainerNetworkDataArgs and ContainerNetworkDataOutput values.
 // You can construct a concrete instance of `ContainerNetworkDataInput` via:
 //
-// 		 ContainerNetworkDataArgs{...}
-//
+//          ContainerNetworkDataArgs{...}
 type ContainerNetworkDataInput interface {
 	pulumi.Input
 
@@ -1505,8 +1484,7 @@ func (i ContainerNetworkDataArgs) ToContainerNetworkDataOutputWithContext(ctx co
 // ContainerNetworkDataArrayInput is an input type that accepts ContainerNetworkDataArray and ContainerNetworkDataArrayOutput values.
 // You can construct a concrete instance of `ContainerNetworkDataArrayInput` via:
 //
-// 		 ContainerNetworkDataArray{ ContainerNetworkDataArgs{...} }
-//
+//          ContainerNetworkDataArray{ ContainerNetworkDataArgs{...} }
 type ContainerNetworkDataArrayInput interface {
 	pulumi.Input
 
@@ -1597,8 +1575,7 @@ type ContainerNetworksAdvanced struct {
 // ContainerNetworksAdvancedInput is an input type that accepts ContainerNetworksAdvancedArgs and ContainerNetworksAdvancedOutput values.
 // You can construct a concrete instance of `ContainerNetworksAdvancedInput` via:
 //
-// 		 ContainerNetworksAdvancedArgs{...}
-//
+//          ContainerNetworksAdvancedArgs{...}
 type ContainerNetworksAdvancedInput interface {
 	pulumi.Input
 
@@ -1632,8 +1609,7 @@ func (i ContainerNetworksAdvancedArgs) ToContainerNetworksAdvancedOutputWithCont
 // ContainerNetworksAdvancedArrayInput is an input type that accepts ContainerNetworksAdvancedArray and ContainerNetworksAdvancedArrayOutput values.
 // You can construct a concrete instance of `ContainerNetworksAdvancedArrayInput` via:
 //
-// 		 ContainerNetworksAdvancedArray{ ContainerNetworksAdvancedArgs{...} }
-//
+//          ContainerNetworksAdvancedArray{ ContainerNetworksAdvancedArgs{...} }
 type ContainerNetworksAdvancedArrayInput interface {
 	pulumi.Input
 
@@ -1724,8 +1700,7 @@ type ContainerPort struct {
 // ContainerPortInput is an input type that accepts ContainerPortArgs and ContainerPortOutput values.
 // You can construct a concrete instance of `ContainerPortInput` via:
 //
-// 		 ContainerPortArgs{...}
-//
+//          ContainerPortArgs{...}
 type ContainerPortInput interface {
 	pulumi.Input
 
@@ -1760,8 +1735,7 @@ func (i ContainerPortArgs) ToContainerPortOutputWithContext(ctx context.Context)
 // ContainerPortArrayInput is an input type that accepts ContainerPortArray and ContainerPortArrayOutput values.
 // You can construct a concrete instance of `ContainerPortArrayInput` via:
 //
-// 		 ContainerPortArray{ ContainerPortArgs{...} }
-//
+//          ContainerPortArray{ ContainerPortArgs{...} }
 type ContainerPortArrayInput interface {
 	pulumi.Input
 
@@ -1847,8 +1821,7 @@ type ContainerUlimit struct {
 // ContainerUlimitInput is an input type that accepts ContainerUlimitArgs and ContainerUlimitOutput values.
 // You can construct a concrete instance of `ContainerUlimitInput` via:
 //
-// 		 ContainerUlimitArgs{...}
-//
+//          ContainerUlimitArgs{...}
 type ContainerUlimitInput interface {
 	pulumi.Input
 
@@ -1877,8 +1850,7 @@ func (i ContainerUlimitArgs) ToContainerUlimitOutputWithContext(ctx context.Cont
 // ContainerUlimitArrayInput is an input type that accepts ContainerUlimitArray and ContainerUlimitArrayOutput values.
 // You can construct a concrete instance of `ContainerUlimitArrayInput` via:
 //
-// 		 ContainerUlimitArray{ ContainerUlimitArgs{...} }
-//
+//          ContainerUlimitArray{ ContainerUlimitArgs{...} }
 type ContainerUlimitArrayInput interface {
 	pulumi.Input
 
@@ -1965,8 +1937,7 @@ type ContainerUpload struct {
 // ContainerUploadInput is an input type that accepts ContainerUploadArgs and ContainerUploadOutput values.
 // You can construct a concrete instance of `ContainerUploadInput` via:
 //
-// 		 ContainerUploadArgs{...}
-//
+//          ContainerUploadArgs{...}
 type ContainerUploadInput interface {
 	pulumi.Input
 
@@ -2005,8 +1976,7 @@ func (i ContainerUploadArgs) ToContainerUploadOutputWithContext(ctx context.Cont
 // ContainerUploadArrayInput is an input type that accepts ContainerUploadArray and ContainerUploadArrayOutput values.
 // You can construct a concrete instance of `ContainerUploadArrayInput` via:
 //
-// 		 ContainerUploadArray{ ContainerUploadArgs{...} }
-//
+//          ContainerUploadArray{ ContainerUploadArgs{...} }
 type ContainerUploadArrayInput interface {
 	pulumi.Input
 
@@ -2114,8 +2084,7 @@ type ContainerVolume struct {
 // ContainerVolumeInput is an input type that accepts ContainerVolumeArgs and ContainerVolumeOutput values.
 // You can construct a concrete instance of `ContainerVolumeInput` via:
 //
-// 		 ContainerVolumeArgs{...}
-//
+//          ContainerVolumeArgs{...}
 type ContainerVolumeInput interface {
 	pulumi.Input
 
@@ -2156,8 +2125,7 @@ func (i ContainerVolumeArgs) ToContainerVolumeOutputWithContext(ctx context.Cont
 // ContainerVolumeArrayInput is an input type that accepts ContainerVolumeArray and ContainerVolumeArrayOutput values.
 // You can construct a concrete instance of `ContainerVolumeArrayInput` via:
 //
-// 		 ContainerVolumeArray{ ContainerVolumeArgs{...} }
-//
+//          ContainerVolumeArray{ ContainerVolumeArgs{...} }
 type ContainerVolumeArrayInput interface {
 	pulumi.Input
 
@@ -2253,8 +2221,7 @@ type NetworkIpamConfig struct {
 // NetworkIpamConfigInput is an input type that accepts NetworkIpamConfigArgs and NetworkIpamConfigOutput values.
 // You can construct a concrete instance of `NetworkIpamConfigInput` via:
 //
-// 		 NetworkIpamConfigArgs{...}
-//
+//          NetworkIpamConfigArgs{...}
 type NetworkIpamConfigInput interface {
 	pulumi.Input
 
@@ -2284,8 +2251,7 @@ func (i NetworkIpamConfigArgs) ToNetworkIpamConfigOutputWithContext(ctx context.
 // NetworkIpamConfigArrayInput is an input type that accepts NetworkIpamConfigArray and NetworkIpamConfigArrayOutput values.
 // You can construct a concrete instance of `NetworkIpamConfigArrayInput` via:
 //
-// 		 NetworkIpamConfigArray{ NetworkIpamConfigArgs{...} }
-//
+//          NetworkIpamConfigArray{ NetworkIpamConfigArgs{...} }
 type NetworkIpamConfigArrayInput interface {
 	pulumi.Input
 
@@ -2367,8 +2333,7 @@ type NetworkLabel struct {
 // NetworkLabelInput is an input type that accepts NetworkLabelArgs and NetworkLabelOutput values.
 // You can construct a concrete instance of `NetworkLabelInput` via:
 //
-// 		 NetworkLabelArgs{...}
-//
+//          NetworkLabelArgs{...}
 type NetworkLabelInput interface {
 	pulumi.Input
 
@@ -2398,8 +2363,7 @@ func (i NetworkLabelArgs) ToNetworkLabelOutputWithContext(ctx context.Context) N
 // NetworkLabelArrayInput is an input type that accepts NetworkLabelArray and NetworkLabelArrayOutput values.
 // You can construct a concrete instance of `NetworkLabelArrayInput` via:
 //
-// 		 NetworkLabelArray{ NetworkLabelArgs{...} }
-//
+//          NetworkLabelArray{ NetworkLabelArgs{...} }
 type NetworkLabelArrayInput interface {
 	pulumi.Input
 
@@ -2475,8 +2439,7 @@ type SecretLabel struct {
 // SecretLabelInput is an input type that accepts SecretLabelArgs and SecretLabelOutput values.
 // You can construct a concrete instance of `SecretLabelInput` via:
 //
-// 		 SecretLabelArgs{...}
-//
+//          SecretLabelArgs{...}
 type SecretLabelInput interface {
 	pulumi.Input
 
@@ -2506,8 +2469,7 @@ func (i SecretLabelArgs) ToSecretLabelOutputWithContext(ctx context.Context) Sec
 // SecretLabelArrayInput is an input type that accepts SecretLabelArray and SecretLabelArrayOutput values.
 // You can construct a concrete instance of `SecretLabelArrayInput` via:
 //
-// 		 SecretLabelArray{ SecretLabelArgs{...} }
-//
+//          SecretLabelArray{ SecretLabelArgs{...} }
 type SecretLabelArrayInput interface {
 	pulumi.Input
 
@@ -2585,8 +2547,7 @@ type ServiceAuth struct {
 // ServiceAuthInput is an input type that accepts ServiceAuthArgs and ServiceAuthOutput values.
 // You can construct a concrete instance of `ServiceAuthInput` via:
 //
-// 		 ServiceAuthArgs{...}
-//
+//          ServiceAuthArgs{...}
 type ServiceAuthInput interface {
 	pulumi.Input
 
@@ -2626,12 +2587,11 @@ func (i ServiceAuthArgs) ToServiceAuthPtrOutputWithContext(ctx context.Context) 
 // ServiceAuthPtrInput is an input type that accepts ServiceAuthArgs, ServiceAuthPtr and ServiceAuthPtrOutput values.
 // You can construct a concrete instance of `ServiceAuthPtrInput` via:
 //
-// 		 ServiceAuthArgs{...}
+//          ServiceAuthArgs{...}
 //
 //  or:
 //
-// 		 nil
-//
+//          nil
 type ServiceAuthPtrInput interface {
 	pulumi.Input
 
@@ -2755,8 +2715,7 @@ type ServiceConvergeConfig struct {
 // ServiceConvergeConfigInput is an input type that accepts ServiceConvergeConfigArgs and ServiceConvergeConfigOutput values.
 // You can construct a concrete instance of `ServiceConvergeConfigInput` via:
 //
-// 		 ServiceConvergeConfigArgs{...}
-//
+//          ServiceConvergeConfigArgs{...}
 type ServiceConvergeConfigInput interface {
 	pulumi.Input
 
@@ -2795,12 +2754,11 @@ func (i ServiceConvergeConfigArgs) ToServiceConvergeConfigPtrOutputWithContext(c
 // ServiceConvergeConfigPtrInput is an input type that accepts ServiceConvergeConfigArgs, ServiceConvergeConfigPtr and ServiceConvergeConfigPtrOutput values.
 // You can construct a concrete instance of `ServiceConvergeConfigPtrInput` via:
 //
-// 		 ServiceConvergeConfigArgs{...}
+//          ServiceConvergeConfigArgs{...}
 //
 //  or:
 //
-// 		 nil
-//
+//          nil
 type ServiceConvergeConfigPtrInput interface {
 	pulumi.Input
 
@@ -2910,8 +2868,7 @@ type ServiceEndpointSpec struct {
 // ServiceEndpointSpecInput is an input type that accepts ServiceEndpointSpecArgs and ServiceEndpointSpecOutput values.
 // You can construct a concrete instance of `ServiceEndpointSpecInput` via:
 //
-// 		 ServiceEndpointSpecArgs{...}
-//
+//          ServiceEndpointSpecArgs{...}
 type ServiceEndpointSpecInput interface {
 	pulumi.Input
 
@@ -2949,12 +2906,11 @@ func (i ServiceEndpointSpecArgs) ToServiceEndpointSpecPtrOutputWithContext(ctx c
 // ServiceEndpointSpecPtrInput is an input type that accepts ServiceEndpointSpecArgs, ServiceEndpointSpecPtr and ServiceEndpointSpecPtrOutput values.
 // You can construct a concrete instance of `ServiceEndpointSpecPtrInput` via:
 //
-// 		 ServiceEndpointSpecArgs{...}
+//          ServiceEndpointSpecArgs{...}
 //
 //  or:
 //
-// 		 nil
-//
+//          nil
 type ServiceEndpointSpecPtrInput interface {
 	pulumi.Input
 
@@ -3068,8 +3024,7 @@ type ServiceEndpointSpecPort struct {
 // ServiceEndpointSpecPortInput is an input type that accepts ServiceEndpointSpecPortArgs and ServiceEndpointSpecPortOutput values.
 // You can construct a concrete instance of `ServiceEndpointSpecPortInput` via:
 //
-// 		 ServiceEndpointSpecPortArgs{...}
-//
+//          ServiceEndpointSpecPortArgs{...}
 type ServiceEndpointSpecPortInput interface {
 	pulumi.Input
 
@@ -3105,8 +3060,7 @@ func (i ServiceEndpointSpecPortArgs) ToServiceEndpointSpecPortOutputWithContext(
 // ServiceEndpointSpecPortArrayInput is an input type that accepts ServiceEndpointSpecPortArray and ServiceEndpointSpecPortArrayOutput values.
 // You can construct a concrete instance of `ServiceEndpointSpecPortArrayInput` via:
 //
-// 		 ServiceEndpointSpecPortArray{ ServiceEndpointSpecPortArgs{...} }
-//
+//          ServiceEndpointSpecPortArray{ ServiceEndpointSpecPortArgs{...} }
 type ServiceEndpointSpecPortArrayInput interface {
 	pulumi.Input
 
@@ -3197,8 +3151,7 @@ type ServiceLabel struct {
 // ServiceLabelInput is an input type that accepts ServiceLabelArgs and ServiceLabelOutput values.
 // You can construct a concrete instance of `ServiceLabelInput` via:
 //
-// 		 ServiceLabelArgs{...}
-//
+//          ServiceLabelArgs{...}
 type ServiceLabelInput interface {
 	pulumi.Input
 
@@ -3228,8 +3181,7 @@ func (i ServiceLabelArgs) ToServiceLabelOutputWithContext(ctx context.Context) S
 // ServiceLabelArrayInput is an input type that accepts ServiceLabelArray and ServiceLabelArrayOutput values.
 // You can construct a concrete instance of `ServiceLabelArrayInput` via:
 //
-// 		 ServiceLabelArray{ ServiceLabelArgs{...} }
-//
+//          ServiceLabelArray{ ServiceLabelArgs{...} }
 type ServiceLabelArrayInput interface {
 	pulumi.Input
 
@@ -3305,8 +3257,7 @@ type ServiceMode struct {
 // ServiceModeInput is an input type that accepts ServiceModeArgs and ServiceModeOutput values.
 // You can construct a concrete instance of `ServiceModeInput` via:
 //
-// 		 ServiceModeArgs{...}
-//
+//          ServiceModeArgs{...}
 type ServiceModeInput interface {
 	pulumi.Input
 
@@ -3344,12 +3295,11 @@ func (i ServiceModeArgs) ToServiceModePtrOutputWithContext(ctx context.Context) 
 // ServiceModePtrInput is an input type that accepts ServiceModeArgs, ServiceModePtr and ServiceModePtrOutput values.
 // You can construct a concrete instance of `ServiceModePtrInput` via:
 //
-// 		 ServiceModeArgs{...}
+//          ServiceModeArgs{...}
 //
 //  or:
 //
-// 		 nil
-//
+//          nil
 type ServiceModePtrInput interface {
 	pulumi.Input
 
@@ -3454,8 +3404,7 @@ type ServiceModeReplicated struct {
 // ServiceModeReplicatedInput is an input type that accepts ServiceModeReplicatedArgs and ServiceModeReplicatedOutput values.
 // You can construct a concrete instance of `ServiceModeReplicatedInput` via:
 //
-// 		 ServiceModeReplicatedArgs{...}
-//
+//          ServiceModeReplicatedArgs{...}
 type ServiceModeReplicatedInput interface {
 	pulumi.Input
 
@@ -3490,12 +3439,11 @@ func (i ServiceModeReplicatedArgs) ToServiceModeReplicatedPtrOutputWithContext(c
 // ServiceModeReplicatedPtrInput is an input type that accepts ServiceModeReplicatedArgs, ServiceModeReplicatedPtr and ServiceModeReplicatedPtrOutput values.
 // You can construct a concrete instance of `ServiceModeReplicatedPtrInput` via:
 //
-// 		 ServiceModeReplicatedArgs{...}
+//          ServiceModeReplicatedArgs{...}
 //
 //  or:
 //
-// 		 nil
-//
+//          nil
 type ServiceModeReplicatedPtrInput interface {
 	pulumi.Input
 
@@ -3595,8 +3543,7 @@ type ServiceRollbackConfig struct {
 // ServiceRollbackConfigInput is an input type that accepts ServiceRollbackConfigArgs and ServiceRollbackConfigOutput values.
 // You can construct a concrete instance of `ServiceRollbackConfigInput` via:
 //
-// 		 ServiceRollbackConfigArgs{...}
-//
+//          ServiceRollbackConfigArgs{...}
 type ServiceRollbackConfigInput interface {
 	pulumi.Input
 
@@ -3644,12 +3591,11 @@ func (i ServiceRollbackConfigArgs) ToServiceRollbackConfigPtrOutputWithContext(c
 // ServiceRollbackConfigPtrInput is an input type that accepts ServiceRollbackConfigArgs, ServiceRollbackConfigPtr and ServiceRollbackConfigPtrOutput values.
 // You can construct a concrete instance of `ServiceRollbackConfigPtrInput` via:
 //
-// 		 ServiceRollbackConfigArgs{...}
+//          ServiceRollbackConfigArgs{...}
 //
 //  or:
 //
-// 		 nil
-//
+//          nil
 type ServiceRollbackConfigPtrInput interface {
 	pulumi.Input
 
@@ -3833,8 +3779,7 @@ type ServiceTaskSpec struct {
 // ServiceTaskSpecInput is an input type that accepts ServiceTaskSpecArgs and ServiceTaskSpecOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecInput` via:
 //
-// 		 ServiceTaskSpecArgs{...}
-//
+//          ServiceTaskSpecArgs{...}
 type ServiceTaskSpecInput interface {
 	pulumi.Input
 
@@ -3884,12 +3829,11 @@ func (i ServiceTaskSpecArgs) ToServiceTaskSpecPtrOutputWithContext(ctx context.C
 // ServiceTaskSpecPtrInput is an input type that accepts ServiceTaskSpecArgs, ServiceTaskSpecPtr and ServiceTaskSpecPtrOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecPtrInput` via:
 //
-// 		 ServiceTaskSpecArgs{...}
+//          ServiceTaskSpecArgs{...}
 //
 //  or:
 //
-// 		 nil
-//
+//          nil
 type ServiceTaskSpecPtrInput interface {
 	pulumi.Input
 
@@ -4122,8 +4066,7 @@ type ServiceTaskSpecContainerSpec struct {
 // ServiceTaskSpecContainerSpecInput is an input type that accepts ServiceTaskSpecContainerSpecArgs and ServiceTaskSpecContainerSpecOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecContainerSpecInput` via:
 //
-// 		 ServiceTaskSpecContainerSpecArgs{...}
-//
+//          ServiceTaskSpecContainerSpecArgs{...}
 type ServiceTaskSpecContainerSpecInput interface {
 	pulumi.Input
 
@@ -4196,12 +4139,11 @@ func (i ServiceTaskSpecContainerSpecArgs) ToServiceTaskSpecContainerSpecPtrOutpu
 // ServiceTaskSpecContainerSpecPtrInput is an input type that accepts ServiceTaskSpecContainerSpecArgs, ServiceTaskSpecContainerSpecPtr and ServiceTaskSpecContainerSpecPtrOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecContainerSpecPtrInput` via:
 //
-// 		 ServiceTaskSpecContainerSpecArgs{...}
+//          ServiceTaskSpecContainerSpecArgs{...}
 //
 //  or:
 //
-// 		 nil
-//
+//          nil
 type ServiceTaskSpecContainerSpecPtrInput interface {
 	pulumi.Input
 
@@ -4585,8 +4527,7 @@ type ServiceTaskSpecContainerSpecConfig struct {
 // ServiceTaskSpecContainerSpecConfigInput is an input type that accepts ServiceTaskSpecContainerSpecConfigArgs and ServiceTaskSpecContainerSpecConfigOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecContainerSpecConfigInput` via:
 //
-// 		 ServiceTaskSpecContainerSpecConfigArgs{...}
-//
+//          ServiceTaskSpecContainerSpecConfigArgs{...}
 type ServiceTaskSpecContainerSpecConfigInput interface {
 	pulumi.Input
 
@@ -4624,8 +4565,7 @@ func (i ServiceTaskSpecContainerSpecConfigArgs) ToServiceTaskSpecContainerSpecCo
 // ServiceTaskSpecContainerSpecConfigArrayInput is an input type that accepts ServiceTaskSpecContainerSpecConfigArray and ServiceTaskSpecContainerSpecConfigArrayOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecContainerSpecConfigArrayInput` via:
 //
-// 		 ServiceTaskSpecContainerSpecConfigArray{ ServiceTaskSpecContainerSpecConfigArgs{...} }
-//
+//          ServiceTaskSpecContainerSpecConfigArray{ ServiceTaskSpecContainerSpecConfigArgs{...} }
 type ServiceTaskSpecContainerSpecConfigArrayInput interface {
 	pulumi.Input
 
@@ -4723,8 +4663,7 @@ type ServiceTaskSpecContainerSpecDnsConfig struct {
 // ServiceTaskSpecContainerSpecDnsConfigInput is an input type that accepts ServiceTaskSpecContainerSpecDnsConfigArgs and ServiceTaskSpecContainerSpecDnsConfigOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecContainerSpecDnsConfigInput` via:
 //
-// 		 ServiceTaskSpecContainerSpecDnsConfigArgs{...}
-//
+//          ServiceTaskSpecContainerSpecDnsConfigArgs{...}
 type ServiceTaskSpecContainerSpecDnsConfigInput interface {
 	pulumi.Input
 
@@ -4764,12 +4703,11 @@ func (i ServiceTaskSpecContainerSpecDnsConfigArgs) ToServiceTaskSpecContainerSpe
 // ServiceTaskSpecContainerSpecDnsConfigPtrInput is an input type that accepts ServiceTaskSpecContainerSpecDnsConfigArgs, ServiceTaskSpecContainerSpecDnsConfigPtr and ServiceTaskSpecContainerSpecDnsConfigPtrOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecContainerSpecDnsConfigPtrInput` via:
 //
-// 		 ServiceTaskSpecContainerSpecDnsConfigArgs{...}
+//          ServiceTaskSpecContainerSpecDnsConfigArgs{...}
 //
 //  or:
 //
-// 		 nil
-//
+//          nil
 type ServiceTaskSpecContainerSpecDnsConfigPtrInput interface {
 	pulumi.Input
 
@@ -4899,8 +4837,7 @@ type ServiceTaskSpecContainerSpecHealthcheck struct {
 // ServiceTaskSpecContainerSpecHealthcheckInput is an input type that accepts ServiceTaskSpecContainerSpecHealthcheckArgs and ServiceTaskSpecContainerSpecHealthcheckOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecContainerSpecHealthcheckInput` via:
 //
-// 		 ServiceTaskSpecContainerSpecHealthcheckArgs{...}
-//
+//          ServiceTaskSpecContainerSpecHealthcheckArgs{...}
 type ServiceTaskSpecContainerSpecHealthcheckInput interface {
 	pulumi.Input
 
@@ -4945,12 +4882,11 @@ func (i ServiceTaskSpecContainerSpecHealthcheckArgs) ToServiceTaskSpecContainerS
 // ServiceTaskSpecContainerSpecHealthcheckPtrInput is an input type that accepts ServiceTaskSpecContainerSpecHealthcheckArgs, ServiceTaskSpecContainerSpecHealthcheckPtr and ServiceTaskSpecContainerSpecHealthcheckPtrOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecContainerSpecHealthcheckPtrInput` via:
 //
-// 		 ServiceTaskSpecContainerSpecHealthcheckArgs{...}
+//          ServiceTaskSpecContainerSpecHealthcheckArgs{...}
 //
 //  or:
 //
-// 		 nil
-//
+//          nil
 type ServiceTaskSpecContainerSpecHealthcheckPtrInput interface {
 	pulumi.Input
 
@@ -5105,8 +5041,7 @@ type ServiceTaskSpecContainerSpecHost struct {
 // ServiceTaskSpecContainerSpecHostInput is an input type that accepts ServiceTaskSpecContainerSpecHostArgs and ServiceTaskSpecContainerSpecHostOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecContainerSpecHostInput` via:
 //
-// 		 ServiceTaskSpecContainerSpecHostArgs{...}
-//
+//          ServiceTaskSpecContainerSpecHostArgs{...}
 type ServiceTaskSpecContainerSpecHostInput interface {
 	pulumi.Input
 
@@ -5136,8 +5071,7 @@ func (i ServiceTaskSpecContainerSpecHostArgs) ToServiceTaskSpecContainerSpecHost
 // ServiceTaskSpecContainerSpecHostArrayInput is an input type that accepts ServiceTaskSpecContainerSpecHostArray and ServiceTaskSpecContainerSpecHostArrayOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecContainerSpecHostArrayInput` via:
 //
-// 		 ServiceTaskSpecContainerSpecHostArray{ ServiceTaskSpecContainerSpecHostArgs{...} }
-//
+//          ServiceTaskSpecContainerSpecHostArray{ ServiceTaskSpecContainerSpecHostArgs{...} }
 type ServiceTaskSpecContainerSpecHostArrayInput interface {
 	pulumi.Input
 
@@ -5213,8 +5147,7 @@ type ServiceTaskSpecContainerSpecLabel struct {
 // ServiceTaskSpecContainerSpecLabelInput is an input type that accepts ServiceTaskSpecContainerSpecLabelArgs and ServiceTaskSpecContainerSpecLabelOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecContainerSpecLabelInput` via:
 //
-// 		 ServiceTaskSpecContainerSpecLabelArgs{...}
-//
+//          ServiceTaskSpecContainerSpecLabelArgs{...}
 type ServiceTaskSpecContainerSpecLabelInput interface {
 	pulumi.Input
 
@@ -5244,8 +5177,7 @@ func (i ServiceTaskSpecContainerSpecLabelArgs) ToServiceTaskSpecContainerSpecLab
 // ServiceTaskSpecContainerSpecLabelArrayInput is an input type that accepts ServiceTaskSpecContainerSpecLabelArray and ServiceTaskSpecContainerSpecLabelArrayOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecContainerSpecLabelArrayInput` via:
 //
-// 		 ServiceTaskSpecContainerSpecLabelArray{ ServiceTaskSpecContainerSpecLabelArgs{...} }
-//
+//          ServiceTaskSpecContainerSpecLabelArray{ ServiceTaskSpecContainerSpecLabelArgs{...} }
 type ServiceTaskSpecContainerSpecLabelArrayInput interface {
 	pulumi.Input
 
@@ -5331,8 +5263,7 @@ type ServiceTaskSpecContainerSpecMount struct {
 // ServiceTaskSpecContainerSpecMountInput is an input type that accepts ServiceTaskSpecContainerSpecMountArgs and ServiceTaskSpecContainerSpecMountOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecContainerSpecMountInput` via:
 //
-// 		 ServiceTaskSpecContainerSpecMountArgs{...}
-//
+//          ServiceTaskSpecContainerSpecMountArgs{...}
 type ServiceTaskSpecContainerSpecMountInput interface {
 	pulumi.Input
 
@@ -5372,8 +5303,7 @@ func (i ServiceTaskSpecContainerSpecMountArgs) ToServiceTaskSpecContainerSpecMou
 // ServiceTaskSpecContainerSpecMountArrayInput is an input type that accepts ServiceTaskSpecContainerSpecMountArray and ServiceTaskSpecContainerSpecMountArrayOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecContainerSpecMountArrayInput` via:
 //
-// 		 ServiceTaskSpecContainerSpecMountArray{ ServiceTaskSpecContainerSpecMountArgs{...} }
-//
+//          ServiceTaskSpecContainerSpecMountArray{ ServiceTaskSpecContainerSpecMountArgs{...} }
 type ServiceTaskSpecContainerSpecMountArrayInput interface {
 	pulumi.Input
 
@@ -5478,8 +5408,7 @@ type ServiceTaskSpecContainerSpecMountBindOptions struct {
 // ServiceTaskSpecContainerSpecMountBindOptionsInput is an input type that accepts ServiceTaskSpecContainerSpecMountBindOptionsArgs and ServiceTaskSpecContainerSpecMountBindOptionsOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecContainerSpecMountBindOptionsInput` via:
 //
-// 		 ServiceTaskSpecContainerSpecMountBindOptionsArgs{...}
-//
+//          ServiceTaskSpecContainerSpecMountBindOptionsArgs{...}
 type ServiceTaskSpecContainerSpecMountBindOptionsInput interface {
 	pulumi.Input
 
@@ -5515,12 +5444,11 @@ func (i ServiceTaskSpecContainerSpecMountBindOptionsArgs) ToServiceTaskSpecConta
 // ServiceTaskSpecContainerSpecMountBindOptionsPtrInput is an input type that accepts ServiceTaskSpecContainerSpecMountBindOptionsArgs, ServiceTaskSpecContainerSpecMountBindOptionsPtr and ServiceTaskSpecContainerSpecMountBindOptionsPtrOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecContainerSpecMountBindOptionsPtrInput` via:
 //
-// 		 ServiceTaskSpecContainerSpecMountBindOptionsArgs{...}
+//          ServiceTaskSpecContainerSpecMountBindOptionsArgs{...}
 //
 //  or:
 //
-// 		 nil
-//
+//          nil
 type ServiceTaskSpecContainerSpecMountBindOptionsPtrInput interface {
 	pulumi.Input
 
@@ -5615,8 +5543,7 @@ type ServiceTaskSpecContainerSpecMountTmpfsOptions struct {
 // ServiceTaskSpecContainerSpecMountTmpfsOptionsInput is an input type that accepts ServiceTaskSpecContainerSpecMountTmpfsOptionsArgs and ServiceTaskSpecContainerSpecMountTmpfsOptionsOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecContainerSpecMountTmpfsOptionsInput` via:
 //
-// 		 ServiceTaskSpecContainerSpecMountTmpfsOptionsArgs{...}
-//
+//          ServiceTaskSpecContainerSpecMountTmpfsOptionsArgs{...}
 type ServiceTaskSpecContainerSpecMountTmpfsOptionsInput interface {
 	pulumi.Input
 
@@ -5654,12 +5581,11 @@ func (i ServiceTaskSpecContainerSpecMountTmpfsOptionsArgs) ToServiceTaskSpecCont
 // ServiceTaskSpecContainerSpecMountTmpfsOptionsPtrInput is an input type that accepts ServiceTaskSpecContainerSpecMountTmpfsOptionsArgs, ServiceTaskSpecContainerSpecMountTmpfsOptionsPtr and ServiceTaskSpecContainerSpecMountTmpfsOptionsPtrOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecContainerSpecMountTmpfsOptionsPtrInput` via:
 //
-// 		 ServiceTaskSpecContainerSpecMountTmpfsOptionsArgs{...}
+//          ServiceTaskSpecContainerSpecMountTmpfsOptionsArgs{...}
 //
 //  or:
 //
-// 		 nil
-//
+//          nil
 type ServiceTaskSpecContainerSpecMountTmpfsOptionsPtrInput interface {
 	pulumi.Input
 
@@ -5771,8 +5697,7 @@ type ServiceTaskSpecContainerSpecMountVolumeOptions struct {
 // ServiceTaskSpecContainerSpecMountVolumeOptionsInput is an input type that accepts ServiceTaskSpecContainerSpecMountVolumeOptionsArgs and ServiceTaskSpecContainerSpecMountVolumeOptionsOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecContainerSpecMountVolumeOptionsInput` via:
 //
-// 		 ServiceTaskSpecContainerSpecMountVolumeOptionsArgs{...}
-//
+//          ServiceTaskSpecContainerSpecMountVolumeOptionsArgs{...}
 type ServiceTaskSpecContainerSpecMountVolumeOptionsInput interface {
 	pulumi.Input
 
@@ -5812,12 +5737,11 @@ func (i ServiceTaskSpecContainerSpecMountVolumeOptionsArgs) ToServiceTaskSpecCon
 // ServiceTaskSpecContainerSpecMountVolumeOptionsPtrInput is an input type that accepts ServiceTaskSpecContainerSpecMountVolumeOptionsArgs, ServiceTaskSpecContainerSpecMountVolumeOptionsPtr and ServiceTaskSpecContainerSpecMountVolumeOptionsPtrOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecContainerSpecMountVolumeOptionsPtrInput` via:
 //
-// 		 ServiceTaskSpecContainerSpecMountVolumeOptionsArgs{...}
+//          ServiceTaskSpecContainerSpecMountVolumeOptionsArgs{...}
 //
 //  or:
 //
-// 		 nil
-//
+//          nil
 type ServiceTaskSpecContainerSpecMountVolumeOptionsPtrInput interface {
 	pulumi.Input
 
@@ -5954,8 +5878,7 @@ type ServiceTaskSpecContainerSpecMountVolumeOptionsLabel struct {
 // ServiceTaskSpecContainerSpecMountVolumeOptionsLabelInput is an input type that accepts ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArgs and ServiceTaskSpecContainerSpecMountVolumeOptionsLabelOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecContainerSpecMountVolumeOptionsLabelInput` via:
 //
-// 		 ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArgs{...}
-//
+//          ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArgs{...}
 type ServiceTaskSpecContainerSpecMountVolumeOptionsLabelInput interface {
 	pulumi.Input
 
@@ -5985,8 +5908,7 @@ func (i ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArgs) ToServiceTaskSp
 // ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayInput is an input type that accepts ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArray and ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayInput` via:
 //
-// 		 ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArray{ ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArgs{...} }
-//
+//          ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArray{ ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArgs{...} }
 type ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayInput interface {
 	pulumi.Input
 
@@ -6062,8 +5984,7 @@ type ServiceTaskSpecContainerSpecPrivileges struct {
 // ServiceTaskSpecContainerSpecPrivilegesInput is an input type that accepts ServiceTaskSpecContainerSpecPrivilegesArgs and ServiceTaskSpecContainerSpecPrivilegesOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecContainerSpecPrivilegesInput` via:
 //
-// 		 ServiceTaskSpecContainerSpecPrivilegesArgs{...}
-//
+//          ServiceTaskSpecContainerSpecPrivilegesArgs{...}
 type ServiceTaskSpecContainerSpecPrivilegesInput interface {
 	pulumi.Input
 
@@ -6101,12 +6022,11 @@ func (i ServiceTaskSpecContainerSpecPrivilegesArgs) ToServiceTaskSpecContainerSp
 // ServiceTaskSpecContainerSpecPrivilegesPtrInput is an input type that accepts ServiceTaskSpecContainerSpecPrivilegesArgs, ServiceTaskSpecContainerSpecPrivilegesPtr and ServiceTaskSpecContainerSpecPrivilegesPtrOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecContainerSpecPrivilegesPtrInput` via:
 //
-// 		 ServiceTaskSpecContainerSpecPrivilegesArgs{...}
+//          ServiceTaskSpecContainerSpecPrivilegesArgs{...}
 //
 //  or:
 //
-// 		 nil
-//
+//          nil
 type ServiceTaskSpecContainerSpecPrivilegesPtrInput interface {
 	pulumi.Input
 
@@ -6218,8 +6138,7 @@ type ServiceTaskSpecContainerSpecPrivilegesCredentialSpec struct {
 // ServiceTaskSpecContainerSpecPrivilegesCredentialSpecInput is an input type that accepts ServiceTaskSpecContainerSpecPrivilegesCredentialSpecArgs and ServiceTaskSpecContainerSpecPrivilegesCredentialSpecOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecContainerSpecPrivilegesCredentialSpecInput` via:
 //
-// 		 ServiceTaskSpecContainerSpecPrivilegesCredentialSpecArgs{...}
-//
+//          ServiceTaskSpecContainerSpecPrivilegesCredentialSpecArgs{...}
 type ServiceTaskSpecContainerSpecPrivilegesCredentialSpecInput interface {
 	pulumi.Input
 
@@ -6257,12 +6176,11 @@ func (i ServiceTaskSpecContainerSpecPrivilegesCredentialSpecArgs) ToServiceTaskS
 // ServiceTaskSpecContainerSpecPrivilegesCredentialSpecPtrInput is an input type that accepts ServiceTaskSpecContainerSpecPrivilegesCredentialSpecArgs, ServiceTaskSpecContainerSpecPrivilegesCredentialSpecPtr and ServiceTaskSpecContainerSpecPrivilegesCredentialSpecPtrOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecContainerSpecPrivilegesCredentialSpecPtrInput` via:
 //
-// 		 ServiceTaskSpecContainerSpecPrivilegesCredentialSpecArgs{...}
+//          ServiceTaskSpecContainerSpecPrivilegesCredentialSpecArgs{...}
 //
 //  or:
 //
-// 		 nil
-//
+//          nil
 type ServiceTaskSpecContainerSpecPrivilegesCredentialSpecPtrInput interface {
 	pulumi.Input
 
@@ -6378,8 +6296,7 @@ type ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext struct {
 // ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextInput is an input type that accepts ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgs and ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextInput` via:
 //
-// 		 ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgs{...}
-//
+//          ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgs{...}
 type ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextInput interface {
 	pulumi.Input
 
@@ -6423,12 +6340,11 @@ func (i ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgs) ToServiceTaskS
 // ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrInput is an input type that accepts ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgs, ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextPtr and ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrInput` via:
 //
-// 		 ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgs{...}
+//          ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgs{...}
 //
 //  or:
 //
-// 		 nil
-//
+//          nil
 type ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrInput interface {
 	pulumi.Input
 
@@ -6591,8 +6507,7 @@ type ServiceTaskSpecContainerSpecSecret struct {
 // ServiceTaskSpecContainerSpecSecretInput is an input type that accepts ServiceTaskSpecContainerSpecSecretArgs and ServiceTaskSpecContainerSpecSecretOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecContainerSpecSecretInput` via:
 //
-// 		 ServiceTaskSpecContainerSpecSecretArgs{...}
-//
+//          ServiceTaskSpecContainerSpecSecretArgs{...}
 type ServiceTaskSpecContainerSpecSecretInput interface {
 	pulumi.Input
 
@@ -6630,8 +6545,7 @@ func (i ServiceTaskSpecContainerSpecSecretArgs) ToServiceTaskSpecContainerSpecSe
 // ServiceTaskSpecContainerSpecSecretArrayInput is an input type that accepts ServiceTaskSpecContainerSpecSecretArray and ServiceTaskSpecContainerSpecSecretArrayOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecContainerSpecSecretArrayInput` via:
 //
-// 		 ServiceTaskSpecContainerSpecSecretArray{ ServiceTaskSpecContainerSpecSecretArgs{...} }
-//
+//          ServiceTaskSpecContainerSpecSecretArray{ ServiceTaskSpecContainerSpecSecretArgs{...} }
 type ServiceTaskSpecContainerSpecSecretArrayInput interface {
 	pulumi.Input
 
@@ -6727,8 +6641,7 @@ type ServiceTaskSpecLogDriver struct {
 // ServiceTaskSpecLogDriverInput is an input type that accepts ServiceTaskSpecLogDriverArgs and ServiceTaskSpecLogDriverOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecLogDriverInput` via:
 //
-// 		 ServiceTaskSpecLogDriverArgs{...}
-//
+//          ServiceTaskSpecLogDriverArgs{...}
 type ServiceTaskSpecLogDriverInput interface {
 	pulumi.Input
 
@@ -6766,12 +6679,11 @@ func (i ServiceTaskSpecLogDriverArgs) ToServiceTaskSpecLogDriverPtrOutputWithCon
 // ServiceTaskSpecLogDriverPtrInput is an input type that accepts ServiceTaskSpecLogDriverArgs, ServiceTaskSpecLogDriverPtr and ServiceTaskSpecLogDriverPtrOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecLogDriverPtrInput` via:
 //
-// 		 ServiceTaskSpecLogDriverArgs{...}
+//          ServiceTaskSpecLogDriverArgs{...}
 //
 //  or:
 //
-// 		 nil
-//
+//          nil
 type ServiceTaskSpecLogDriverPtrInput interface {
 	pulumi.Input
 
@@ -6881,8 +6793,7 @@ type ServiceTaskSpecPlacement struct {
 // ServiceTaskSpecPlacementInput is an input type that accepts ServiceTaskSpecPlacementArgs and ServiceTaskSpecPlacementOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecPlacementInput` via:
 //
-// 		 ServiceTaskSpecPlacementArgs{...}
-//
+//          ServiceTaskSpecPlacementArgs{...}
 type ServiceTaskSpecPlacementInput interface {
 	pulumi.Input
 
@@ -6922,12 +6833,11 @@ func (i ServiceTaskSpecPlacementArgs) ToServiceTaskSpecPlacementPtrOutputWithCon
 // ServiceTaskSpecPlacementPtrInput is an input type that accepts ServiceTaskSpecPlacementArgs, ServiceTaskSpecPlacementPtr and ServiceTaskSpecPlacementPtrOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecPlacementPtrInput` via:
 //
-// 		 ServiceTaskSpecPlacementArgs{...}
+//          ServiceTaskSpecPlacementArgs{...}
 //
 //  or:
 //
-// 		 nil
-//
+//          nil
 type ServiceTaskSpecPlacementPtrInput interface {
 	pulumi.Input
 
@@ -7050,8 +6960,7 @@ type ServiceTaskSpecPlacementPlatform struct {
 // ServiceTaskSpecPlacementPlatformInput is an input type that accepts ServiceTaskSpecPlacementPlatformArgs and ServiceTaskSpecPlacementPlatformOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecPlacementPlatformInput` via:
 //
-// 		 ServiceTaskSpecPlacementPlatformArgs{...}
-//
+//          ServiceTaskSpecPlacementPlatformArgs{...}
 type ServiceTaskSpecPlacementPlatformInput interface {
 	pulumi.Input
 
@@ -7081,8 +6990,7 @@ func (i ServiceTaskSpecPlacementPlatformArgs) ToServiceTaskSpecPlacementPlatform
 // ServiceTaskSpecPlacementPlatformArrayInput is an input type that accepts ServiceTaskSpecPlacementPlatformArray and ServiceTaskSpecPlacementPlatformArrayOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecPlacementPlatformArrayInput` via:
 //
-// 		 ServiceTaskSpecPlacementPlatformArray{ ServiceTaskSpecPlacementPlatformArgs{...} }
-//
+//          ServiceTaskSpecPlacementPlatformArray{ ServiceTaskSpecPlacementPlatformArgs{...} }
 type ServiceTaskSpecPlacementPlatformArrayInput interface {
 	pulumi.Input
 
@@ -7158,8 +7066,7 @@ type ServiceTaskSpecResources struct {
 // ServiceTaskSpecResourcesInput is an input type that accepts ServiceTaskSpecResourcesArgs and ServiceTaskSpecResourcesOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecResourcesInput` via:
 //
-// 		 ServiceTaskSpecResourcesArgs{...}
-//
+//          ServiceTaskSpecResourcesArgs{...}
 type ServiceTaskSpecResourcesInput interface {
 	pulumi.Input
 
@@ -7197,12 +7104,11 @@ func (i ServiceTaskSpecResourcesArgs) ToServiceTaskSpecResourcesPtrOutputWithCon
 // ServiceTaskSpecResourcesPtrInput is an input type that accepts ServiceTaskSpecResourcesArgs, ServiceTaskSpecResourcesPtr and ServiceTaskSpecResourcesPtrOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecResourcesPtrInput` via:
 //
-// 		 ServiceTaskSpecResourcesArgs{...}
+//          ServiceTaskSpecResourcesArgs{...}
 //
 //  or:
 //
-// 		 nil
-//
+//          nil
 type ServiceTaskSpecResourcesPtrInput interface {
 	pulumi.Input
 
@@ -7312,8 +7218,7 @@ type ServiceTaskSpecResourcesLimits struct {
 // ServiceTaskSpecResourcesLimitsInput is an input type that accepts ServiceTaskSpecResourcesLimitsArgs and ServiceTaskSpecResourcesLimitsOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecResourcesLimitsInput` via:
 //
-// 		 ServiceTaskSpecResourcesLimitsArgs{...}
-//
+//          ServiceTaskSpecResourcesLimitsArgs{...}
 type ServiceTaskSpecResourcesLimitsInput interface {
 	pulumi.Input
 
@@ -7353,12 +7258,11 @@ func (i ServiceTaskSpecResourcesLimitsArgs) ToServiceTaskSpecResourcesLimitsPtrO
 // ServiceTaskSpecResourcesLimitsPtrInput is an input type that accepts ServiceTaskSpecResourcesLimitsArgs, ServiceTaskSpecResourcesLimitsPtr and ServiceTaskSpecResourcesLimitsPtrOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecResourcesLimitsPtrInput` via:
 //
-// 		 ServiceTaskSpecResourcesLimitsArgs{...}
+//          ServiceTaskSpecResourcesLimitsArgs{...}
 //
 //  or:
 //
-// 		 nil
-//
+//          nil
 type ServiceTaskSpecResourcesLimitsPtrInput interface {
 	pulumi.Input
 
@@ -7483,8 +7387,7 @@ type ServiceTaskSpecResourcesLimitsGenericResources struct {
 // ServiceTaskSpecResourcesLimitsGenericResourcesInput is an input type that accepts ServiceTaskSpecResourcesLimitsGenericResourcesArgs and ServiceTaskSpecResourcesLimitsGenericResourcesOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecResourcesLimitsGenericResourcesInput` via:
 //
-// 		 ServiceTaskSpecResourcesLimitsGenericResourcesArgs{...}
-//
+//          ServiceTaskSpecResourcesLimitsGenericResourcesArgs{...}
 type ServiceTaskSpecResourcesLimitsGenericResourcesInput interface {
 	pulumi.Input
 
@@ -7522,12 +7425,11 @@ func (i ServiceTaskSpecResourcesLimitsGenericResourcesArgs) ToServiceTaskSpecRes
 // ServiceTaskSpecResourcesLimitsGenericResourcesPtrInput is an input type that accepts ServiceTaskSpecResourcesLimitsGenericResourcesArgs, ServiceTaskSpecResourcesLimitsGenericResourcesPtr and ServiceTaskSpecResourcesLimitsGenericResourcesPtrOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecResourcesLimitsGenericResourcesPtrInput` via:
 //
-// 		 ServiceTaskSpecResourcesLimitsGenericResourcesArgs{...}
+//          ServiceTaskSpecResourcesLimitsGenericResourcesArgs{...}
 //
 //  or:
 //
-// 		 nil
-//
+//          nil
 type ServiceTaskSpecResourcesLimitsGenericResourcesPtrInput interface {
 	pulumi.Input
 
@@ -7639,8 +7541,7 @@ type ServiceTaskSpecResourcesReservation struct {
 // ServiceTaskSpecResourcesReservationInput is an input type that accepts ServiceTaskSpecResourcesReservationArgs and ServiceTaskSpecResourcesReservationOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecResourcesReservationInput` via:
 //
-// 		 ServiceTaskSpecResourcesReservationArgs{...}
-//
+//          ServiceTaskSpecResourcesReservationArgs{...}
 type ServiceTaskSpecResourcesReservationInput interface {
 	pulumi.Input
 
@@ -7680,12 +7581,11 @@ func (i ServiceTaskSpecResourcesReservationArgs) ToServiceTaskSpecResourcesReser
 // ServiceTaskSpecResourcesReservationPtrInput is an input type that accepts ServiceTaskSpecResourcesReservationArgs, ServiceTaskSpecResourcesReservationPtr and ServiceTaskSpecResourcesReservationPtrOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecResourcesReservationPtrInput` via:
 //
-// 		 ServiceTaskSpecResourcesReservationArgs{...}
+//          ServiceTaskSpecResourcesReservationArgs{...}
 //
 //  or:
 //
-// 		 nil
-//
+//          nil
 type ServiceTaskSpecResourcesReservationPtrInput interface {
 	pulumi.Input
 
@@ -7810,8 +7710,7 @@ type ServiceTaskSpecResourcesReservationGenericResources struct {
 // ServiceTaskSpecResourcesReservationGenericResourcesInput is an input type that accepts ServiceTaskSpecResourcesReservationGenericResourcesArgs and ServiceTaskSpecResourcesReservationGenericResourcesOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecResourcesReservationGenericResourcesInput` via:
 //
-// 		 ServiceTaskSpecResourcesReservationGenericResourcesArgs{...}
-//
+//          ServiceTaskSpecResourcesReservationGenericResourcesArgs{...}
 type ServiceTaskSpecResourcesReservationGenericResourcesInput interface {
 	pulumi.Input
 
@@ -7849,12 +7748,11 @@ func (i ServiceTaskSpecResourcesReservationGenericResourcesArgs) ToServiceTaskSp
 // ServiceTaskSpecResourcesReservationGenericResourcesPtrInput is an input type that accepts ServiceTaskSpecResourcesReservationGenericResourcesArgs, ServiceTaskSpecResourcesReservationGenericResourcesPtr and ServiceTaskSpecResourcesReservationGenericResourcesPtrOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecResourcesReservationGenericResourcesPtrInput` via:
 //
-// 		 ServiceTaskSpecResourcesReservationGenericResourcesArgs{...}
+//          ServiceTaskSpecResourcesReservationGenericResourcesArgs{...}
 //
 //  or:
 //
-// 		 nil
-//
+//          nil
 type ServiceTaskSpecResourcesReservationGenericResourcesPtrInput interface {
 	pulumi.Input
 
@@ -7968,8 +7866,7 @@ type ServiceTaskSpecRestartPolicy struct {
 // ServiceTaskSpecRestartPolicyInput is an input type that accepts ServiceTaskSpecRestartPolicyArgs and ServiceTaskSpecRestartPolicyOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecRestartPolicyInput` via:
 //
-// 		 ServiceTaskSpecRestartPolicyArgs{...}
-//
+//          ServiceTaskSpecRestartPolicyArgs{...}
 type ServiceTaskSpecRestartPolicyInput interface {
 	pulumi.Input
 
@@ -8011,12 +7908,11 @@ func (i ServiceTaskSpecRestartPolicyArgs) ToServiceTaskSpecRestartPolicyPtrOutpu
 // ServiceTaskSpecRestartPolicyPtrInput is an input type that accepts ServiceTaskSpecRestartPolicyArgs, ServiceTaskSpecRestartPolicyPtr and ServiceTaskSpecRestartPolicyPtrOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecRestartPolicyPtrInput` via:
 //
-// 		 ServiceTaskSpecRestartPolicyArgs{...}
+//          ServiceTaskSpecRestartPolicyArgs{...}
 //
 //  or:
 //
-// 		 nil
-//
+//          nil
 type ServiceTaskSpecRestartPolicyPtrInput interface {
 	pulumi.Input
 
@@ -8163,8 +8059,7 @@ type ServiceUpdateConfig struct {
 // ServiceUpdateConfigInput is an input type that accepts ServiceUpdateConfigArgs and ServiceUpdateConfigOutput values.
 // You can construct a concrete instance of `ServiceUpdateConfigInput` via:
 //
-// 		 ServiceUpdateConfigArgs{...}
-//
+//          ServiceUpdateConfigArgs{...}
 type ServiceUpdateConfigInput interface {
 	pulumi.Input
 
@@ -8211,12 +8106,11 @@ func (i ServiceUpdateConfigArgs) ToServiceUpdateConfigPtrOutputWithContext(ctx c
 // ServiceUpdateConfigPtrInput is an input type that accepts ServiceUpdateConfigArgs, ServiceUpdateConfigPtr and ServiceUpdateConfigPtrOutput values.
 // You can construct a concrete instance of `ServiceUpdateConfigPtrInput` via:
 //
-// 		 ServiceUpdateConfigArgs{...}
+//          ServiceUpdateConfigArgs{...}
 //
 //  or:
 //
-// 		 nil
-//
+//          nil
 type ServiceUpdateConfigPtrInput interface {
 	pulumi.Input
 
@@ -8384,8 +8278,7 @@ type VolumeLabel struct {
 // VolumeLabelInput is an input type that accepts VolumeLabelArgs and VolumeLabelOutput values.
 // You can construct a concrete instance of `VolumeLabelInput` via:
 //
-// 		 VolumeLabelArgs{...}
-//
+//          VolumeLabelArgs{...}
 type VolumeLabelInput interface {
 	pulumi.Input
 
@@ -8413,8 +8306,7 @@ func (i VolumeLabelArgs) ToVolumeLabelOutputWithContext(ctx context.Context) Vol
 // VolumeLabelArrayInput is an input type that accepts VolumeLabelArray and VolumeLabelArrayOutput values.
 // You can construct a concrete instance of `VolumeLabelArrayInput` via:
 //
-// 		 VolumeLabelArray{ VolumeLabelArgs{...} }
-//
+//          VolumeLabelArray{ VolumeLabelArgs{...} }
 type VolumeLabelArrayInput interface {
 	pulumi.Input
 
@@ -8488,8 +8380,7 @@ type GetNetworkIpamConfig struct {
 // GetNetworkIpamConfigInput is an input type that accepts GetNetworkIpamConfigArgs and GetNetworkIpamConfigOutput values.
 // You can construct a concrete instance of `GetNetworkIpamConfigInput` via:
 //
-// 		 GetNetworkIpamConfigArgs{...}
-//
+//          GetNetworkIpamConfigArgs{...}
 type GetNetworkIpamConfigInput interface {
 	pulumi.Input
 
@@ -8519,8 +8410,7 @@ func (i GetNetworkIpamConfigArgs) ToGetNetworkIpamConfigOutputWithContext(ctx co
 // GetNetworkIpamConfigArrayInput is an input type that accepts GetNetworkIpamConfigArray and GetNetworkIpamConfigArrayOutput values.
 // You can construct a concrete instance of `GetNetworkIpamConfigArrayInput` via:
 //
-// 		 GetNetworkIpamConfigArray{ GetNetworkIpamConfigArgs{...} }
-//
+//          GetNetworkIpamConfigArray{ GetNetworkIpamConfigArgs{...} }
 type GetNetworkIpamConfigArrayInput interface {
 	pulumi.Input
 
@@ -8603,8 +8493,7 @@ type ProviderRegistryAuth struct {
 // ProviderRegistryAuthInput is an input type that accepts ProviderRegistryAuthArgs and ProviderRegistryAuthOutput values.
 // You can construct a concrete instance of `ProviderRegistryAuthInput` via:
 //
-// 		 ProviderRegistryAuthArgs{...}
-//
+//          ProviderRegistryAuthArgs{...}
 type ProviderRegistryAuthInput interface {
 	pulumi.Input
 
@@ -8635,8 +8524,7 @@ func (i ProviderRegistryAuthArgs) ToProviderRegistryAuthOutputWithContext(ctx co
 // ProviderRegistryAuthArrayInput is an input type that accepts ProviderRegistryAuthArray and ProviderRegistryAuthArrayOutput values.
 // You can construct a concrete instance of `ProviderRegistryAuthArrayInput` via:
 //
-// 		 ProviderRegistryAuthArray{ ProviderRegistryAuthArgs{...} }
-//
+//          ProviderRegistryAuthArray{ ProviderRegistryAuthArgs{...} }
 type ProviderRegistryAuthArrayInput interface {
 	pulumi.Input
 

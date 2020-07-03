@@ -14,8 +14,6 @@ namespace Pulumi.Docker
     /// 
     /// ## Example Usage
     /// 
-    /// 
-    /// 
     /// ```csharp
     /// using Pulumi;
     /// using Docker = Pulumi.Docker;
@@ -176,7 +174,7 @@ namespace Pulumi.Docker
 
         /// <summary>
         /// The ID of the image to back this container.
-        /// The easiest way to get this value is to use the `docker..RemoteImage` resource
+        /// The easiest way to get this value is to use the `docker.RemoteImage` resource
         /// as is shown in the example above.
         /// </summary>
         [Output("image")]
@@ -609,7 +607,7 @@ namespace Pulumi.Docker
 
         /// <summary>
         /// The ID of the image to back this container.
-        /// The easiest way to get this value is to use the `docker..RemoteImage` resource
+        /// The easiest way to get this value is to use the `docker.RemoteImage` resource
         /// as is shown in the example above.
         /// </summary>
         [Input("image", required: true)]
@@ -1089,7 +1087,7 @@ namespace Pulumi.Docker
 
         /// <summary>
         /// The ID of the image to back this container.
-        /// The easiest way to get this value is to use the `docker..RemoteImage` resource
+        /// The easiest way to get this value is to use the `docker.RemoteImage` resource
         /// as is shown in the example above.
         /// </summary>
         [Input("image")]

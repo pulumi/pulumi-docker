@@ -242,7 +242,7 @@ export interface ContainerUpload {
      */
     source?: pulumi.Input<string>;
     /**
-     * If using `source`, this will force an update if the file content has updated but the filename has not. 
+     * If using `source`, this will force an update if the file content has updated but the filename has not.
      */
     sourceHash?: pulumi.Input<string>;
 }
@@ -322,7 +322,7 @@ export interface ServiceAuth {
      */
     serverAddress: pulumi.Input<string>;
     /**
-     * The username to use for authenticating to the registry. If this is blank, the `DOCKER_REGISTRY_USER` is also be checked. 
+     * The username to use for authenticating to the registry. If this is blank, the `DOCKER_REGISTRY_USER` is also be checked.
      */
     username?: pulumi.Input<string>;
 }
@@ -675,7 +675,7 @@ export interface ServiceTaskSpecContainerSpecMountTmpfsOptions {
      */
     mode?: pulumi.Input<number>;
     /**
-     * The size for the tmpfs mount in bytes. 
+     * The size for the tmpfs mount in bytes.
      */
     sizeBytes?: pulumi.Input<number>;
 }

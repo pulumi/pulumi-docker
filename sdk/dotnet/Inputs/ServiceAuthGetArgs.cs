@@ -25,7 +25,7 @@ namespace Pulumi.Docker.Inputs
         public Input<string> ServerAddress { get; set; } = null!;
 
         /// <summary>
-        /// The username to use for authenticating to the registry. If this is blank, the `DOCKER_REGISTRY_USER` is also be checked. 
+        /// The username to use for authenticating to the registry. If this is blank, the `DOCKER_REGISTRY_USER` is also be checked.
         /// </summary>
         [Input("username")]
         public Input<string>? Username { get; set; }
