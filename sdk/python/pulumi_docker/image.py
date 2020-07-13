@@ -100,7 +100,9 @@ class _ImageArgs:
                  image_name: str,
                  build: Union[str, DockerBuild],
                  local_image_name: str,
-                 registry: Optional[ImageRegistry],
+                 registry_server: Optional[str],
+                 registry_username: Optional[str],
+                 registry_password: Optional[str],
                  skip_push: Optional[bool]):
         """
         Arguments for constructing an Image resource.
@@ -111,19 +113,24 @@ class _ImageArgs:
             provided all pushed image resources will contain that tag as well.
             Either [image_name] or [localImageName] can have a tag.  However, if both have a tag, then
             those tags must match.
-        :param Union[str, DockerBuild] build: The Docker build context, as a folder path or a detailed DockerBuild object.
-        :param str local_image_name: The docker image name to build locally before tagging with image_name.  If not provided, it
-            will be given the value of to [image_name].  This name can include a tag at the end.  If
+        :param Union[str, DockerBuild] build: The Docker build context, as a folder path or a detailed DockerBuild
+            object.
+        :param str local_image_name: The docker image name to build locally before tagging with image_name.  If not
+            provided, it will be given the value of to [image_name].  This name can include a tag at the end.  If
             provided all pushed image resources will contain that tag as well.
             Either [image_name] or [localImageName] can have a tag.  However, if both have a tag, then
             those tags must match.
-        :param Optional[ImageRegistry] registry: Credentials for the docker registry to push to.
+        :param Optional[str] registry_server: Docker registry to push to.
+        :param Optional[str] registry_username:  Username for the registry.
+        :param Optional[str] registry_password: Password for the registry.
         :param Optional[bool]) skip_push: Skip push flag.
         """
         self.image_name = image_name
         self.build = build
         self.local_image_name = local_image_name
-        self.registry = registry
+        self.registry_server = registry_server
+        self.registry_username = registry_username
+        self.registry_password = registry_password
         self.skip_push = skip_push
 
 
@@ -202,35 +209,48 @@ class Image(pulumi.ComponentResource):
             check_tag(local_image_name_tag)
             check_tag(image_name_tag)
 
-            # buildAndPushImage expects only the base_image_name to have a tag.  So build that
+            # build_and_push_image expects only the base_image_name to have a tag.  So build that
             # name appropriately if we were given a tag.
             base_image_name = f'{local_image_name_without_tag}:{tag}' if tag else local_image_name
 
-            # buildAndPushImage does not want the repository_url to have a tag.  This is just
+            # build_and_push_image does not want the repository_url to have a tag.  This is just
             # the base url where the images will be pushed to.  All tagging will be taken care of
             # inside that api.
             repository_url = image_name_without_tag
 
-            registry = image_args.registry
-
             def get_registry():
-                return Registry(registry.server, registry.username, registry.password)
+                registry_server = image_args.registry_server
+                registry_password = image_args.registry_password
+                registry_username = image_args.registry_username
+
+                if registry_server and registry_username and registry_password:
+                    return Registry(registry_server, registry_username, registry_password)
+                else:
+                    return None
 
             unique_target_name = build_and_push_image(
                 base_image_name,
                 image_args.build,
                 repository_url,
                 self,
-                get_registry() if registry else None,
+                get_registry(),
                 image_args.skip_push,
             )
 
             return {
                 'image_name': unique_target_name,
-                'registry_server': registry.server if registry else None
+                'registry_server': image_args.registry_server or None
             }
 
-        image_data = pulumi.Output.all(image_name, build, local_image_name, registry, skip_push).apply(
+        image_data = pulumi.Output.all(
+            image_name,
+            build,
+            local_image_name,
+            registry.server if registry else None,
+            registry.username if registry else None,
+            registry.password if registry else None,
+            skip_push,
+        ).apply(
             lambda args: get_image_data(_ImageArgs(*args))
         )
 
