@@ -25,18 +25,14 @@ def get_registry_info(rid):
     parts = decoded.split(':')
     if len(parts) != 2:
         raise Exception("Invalid credentials")
-    registry_server = creds.proxy_endpoint
-    registry_username = parts[0]
-    registry_password = parts[1]
-
-    return registry_server, registry_username, registry_password
+    return docker.ImageRegistry(creds.proxy_endpoint, parts[0], parts[1])
 
 
 for i in range(3):
     # Create a private ECR registry.
     repo = aws.ecr.Repository('my-repo-%i' % i, name='image-%i' % i)
 
-    server, username, password = repo.registry_id.apply(get_registry_info)
+    registry = repo.registry_id.apply(get_registry_info)
 
     # Build and publish the image.
 
@@ -44,9 +40,5 @@ for i in range(3):
         'my-image-%i' % i,
         build=docker.DockerBuild(context='app', args={'parameter': str(i)}),
         image_name=repo.repository_url,
-        registry=docker.ImageRegistry(
-            server=server,
-            username=username,
-            password=password,
-        ),
+        registry=registry,
     )
