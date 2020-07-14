@@ -1,5 +1,5 @@
 ## HEAD (Unreleased)
-_(none)_
+* Fix bug in python Image implementation [#190](https://github.com/pulumi/pulumi-docker/issues/190)
 
 ---
 
