@@ -13,6 +13,7 @@ export * from "./remoteImage";
 export * from "./secret";
 export * from "./service";
 export * from "./serviceConfig";
+export * from "./utils";
 export * from "./volume";
 
 // Export sub-modules:
