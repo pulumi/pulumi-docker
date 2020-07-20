@@ -14,4 +14,5 @@ from .remote_image import *
 from .secret import *
 from .service import *
 from .service_config import *
+from .utils import *
 from .volume import *

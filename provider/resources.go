@@ -137,6 +137,7 @@ func Provider() tfbridge.ProviderInfo {
 				DestFiles: []string{
 					"docker.ts",
 					"image.ts",
+					"utils.ts",
 				},
 			},
 		},
@@ -148,6 +149,7 @@ func Provider() tfbridge.ProviderInfo {
 				DestFiles: []string{
 					"pulumi_docker/docker.py",
 					"pulumi_docker/image.py",
+					"pulumi_docker/utils.py",
 				},
 			},
 		},
@@ -164,6 +166,8 @@ func Provider() tfbridge.ProviderInfo {
 				DestFiles: []string{
 					"Docker.cs",
 					"Image.cs",
+					"Extensions.cs",
+					"Utils.cs",
 				},
 			},
 		},
