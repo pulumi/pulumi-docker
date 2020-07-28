@@ -49,6 +49,29 @@ func TestAwsPy(t *testing.T) {
 	integration.ProgramTest(t, &opts)
 }
 
+func TestAzurePy(t *testing.T) {
+	location := os.Getenv("AZURE_LOCATION")
+	if location == "" {
+		t.Skipf("Skipping test due to missing AZURE_LOCATION environment variable")
+	}
+	cwd, err := os.Getwd()
+	if !assert.NoError(t, err) {
+		t.FailNow()
+	}
+
+	opts := base.With(integration.ProgramTestOptions{
+		Config: map[string]string{
+			"azure:environment": "public",
+			"azure:location": location,
+		},
+		Dependencies: []string{
+			path.Join("..", "sdk", "python", "bin"),
+		},
+		Dir: path.Join(cwd, "azure-py"),
+	})
+	integration.ProgramTest(t, &opts)
+}
+
 func TestNginxPy(t *testing.T) {
 	cwd, err := os.Getwd()
 	if !assert.NoError(t, err) {
