@@ -7,7 +7,7 @@ import warnings
 import pulumi
 import pulumi.runtime
 from typing import Union
-from . import utilities, tables
+from . import _utilities, _tables
 
 
 class Provider(pulumi.ProviderResource):
@@ -45,26 +45,18 @@ class Provider(pulumi.ProviderResource):
         if not isinstance(opts, pulumi.ResourceOptions):
             raise TypeError('Expected resource options to be a ResourceOptions instance')
         if opts.version is None:
-            opts.version = utilities.get_version()
+            opts.version = _utilities.get_version()
         if opts.id is None:
             if __props__ is not None:
                 raise TypeError('__props__ is only valid when passed in combination with a valid opts.id to get an existing resource')
             __props__ = dict()
 
-            if ca_material is None:
-                ca_material = utilities.get_env('DOCKER_CA_MATERIAL')
             __props__['ca_material'] = ca_material
-            if cert_material is None:
-                cert_material = utilities.get_env('DOCKER_CERT_MATERIAL')
             __props__['cert_material'] = cert_material
-            if cert_path is None:
-                cert_path = utilities.get_env('DOCKER_CERT_PATH')
             __props__['cert_path'] = cert_path
             if host is None:
-                host = (utilities.get_env('DOCKER_HOST') or 'unix:///var/run/docker.sock')
+                host = (_utilities.get_env('DOCKER_HOST') or 'unix:///var/run/docker.sock')
             __props__['host'] = host
-            if key_material is None:
-                key_material = utilities.get_env('DOCKER_KEY_MATERIAL')
             __props__['key_material'] = key_material
             __props__['registry_auth'] = pulumi.Output.from_input(registry_auth).apply(json.dumps) if registry_auth is not None else None
         super(Provider, __self__).__init__(
@@ -74,7 +66,7 @@ class Provider(pulumi.ProviderResource):
             opts)
 
     def translate_output_property(self, prop):
-        return tables._CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
+        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
 
     def translate_input_property(self, prop):
-        return tables._SNAKE_TO_CAMEL_CASE_TABLE.get(prop) or prop
+        return _tables.SNAKE_TO_CAMEL_CASE_TABLE.get(prop) or prop

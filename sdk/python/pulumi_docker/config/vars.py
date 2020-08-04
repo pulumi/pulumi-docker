@@ -6,31 +6,31 @@ import warnings
 import pulumi
 import pulumi.runtime
 from typing import Union
-from .. import utilities, tables
+from .. import _utilities, _tables
 
 __config__ = pulumi.Config('docker')
 
-ca_material = __config__.get('caMaterial') or utilities.get_env('DOCKER_CA_MATERIAL')
+ca_material = __config__.get('caMaterial')
 """
 PEM-encoded content of Docker host CA certificate
 """
 
-cert_material = __config__.get('certMaterial') or utilities.get_env('DOCKER_CERT_MATERIAL')
+cert_material = __config__.get('certMaterial')
 """
 PEM-encoded content of Docker client certificate
 """
 
-cert_path = __config__.get('certPath') or utilities.get_env('DOCKER_CERT_PATH')
+cert_path = __config__.get('certPath')
 """
 Path to directory with Docker TLS config
 """
 
-host = __config__.get('host') or (utilities.get_env('DOCKER_HOST') or 'unix:///var/run/docker.sock')
+host = __config__.get('host') or (_utilities.get_env('DOCKER_HOST') or 'unix:///var/run/docker.sock')
 """
 The Docker daemon address
 """
 
-key_material = __config__.get('keyMaterial') or utilities.get_env('DOCKER_KEY_MATERIAL')
+key_material = __config__.get('keyMaterial')
 """
 PEM-encoded content of Docker client private key
 """

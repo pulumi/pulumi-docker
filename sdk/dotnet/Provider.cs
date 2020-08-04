@@ -84,11 +84,7 @@ namespace Pulumi.Docker
 
         public ProviderArgs()
         {
-            CaMaterial = Utilities.GetEnv("DOCKER_CA_MATERIAL");
-            CertMaterial = Utilities.GetEnv("DOCKER_CERT_MATERIAL");
-            CertPath = Utilities.GetEnv("DOCKER_CERT_PATH");
             Host = Utilities.GetEnv("DOCKER_HOST") ?? "unix:///var/run/docker.sock";
-            KeyMaterial = Utilities.GetEnv("DOCKER_KEY_MATERIAL");
         }
     }
 }

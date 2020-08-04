@@ -6,7 +6,8 @@ import warnings
 import pulumi
 import pulumi.runtime
 from typing import Union
-from . import utilities, tables
+from . import _utilities, _tables
+
 
 class GetRegistryImageResult:
     """
@@ -25,6 +26,8 @@ class GetRegistryImageResult:
         if sha256_digest and not isinstance(sha256_digest, str):
             raise TypeError("Expected argument 'sha256_digest' to be a str")
         __self__.sha256_digest = sha256_digest
+
+
 class AwaitableGetRegistryImageResult(GetRegistryImageResult):
     # pylint: disable=using-constant-test
     def __await__(self):
@@ -35,7 +38,8 @@ class AwaitableGetRegistryImageResult(GetRegistryImageResult):
             name=self.name,
             sha256_digest=self.sha256_digest)
 
-def get_registry_image(name=None,opts=None):
+
+def get_registry_image(name=None, opts=None):
     """
     Reads the image metadata from a Docker Registry. Used in conjunction with the
     [docker\_image](https://www.terraform.io/docs/providers/docker/r/image.html) resource to keep an image up
@@ -57,13 +61,11 @@ def get_registry_image(name=None,opts=None):
     :param str name: The name of the Docker image, including any tags. e.g. `alpine:latest`
     """
     __args__ = dict()
-
-
     __args__['name'] = name
     if opts is None:
         opts = pulumi.InvokeOptions()
     if opts.version is None:
-        opts.version = utilities.get_version()
+        opts.version = _utilities.get_version()
     __ret__ = pulumi.runtime.invoke('docker:index/getRegistryImage:getRegistryImage', __args__, opts=opts).value
 
     return AwaitableGetRegistryImageResult(

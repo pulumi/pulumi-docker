@@ -71,26 +71,6 @@ func Provider() tfbridge.ProviderInfo {
 					EnvVars: []string{"DOCKER_HOST"},
 				},
 			},
-			"ca_material": {
-				Default: &tfbridge.DefaultInfo{
-					EnvVars: []string{"DOCKER_CA_MATERIAL"},
-				},
-			},
-			"cert_material": {
-				Default: &tfbridge.DefaultInfo{
-					EnvVars: []string{"DOCKER_CERT_MATERIAL"},
-				},
-			},
-			"key_material": {
-				Default: &tfbridge.DefaultInfo{
-					EnvVars: []string{"DOCKER_KEY_MATERIAL"},
-				},
-			},
-			"cert_path": {
-				Default: &tfbridge.DefaultInfo{
-					EnvVars: []string{"DOCKER_CERT_PATH"},
-				},
-			},
 			"registry_auth": {
 				Name: "registryAuth", // not plural
 			},

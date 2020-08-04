@@ -454,7 +454,7 @@ func runCommandThatCanFail(ctx *pulumi.Context, cmdName string, args []string, l
 	//
 	// Pick a reasonably distributed number between 0 and 2^30.  This will fit as an int32
 	// which the grpc layer needs.
-	streamID := rand.Int31()
+	streamID := rand.Int31() // #nosec
 
 	// nolint[:errcheck]
 	logErrorf := func(format string, a ...interface{}) {

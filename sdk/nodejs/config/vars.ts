@@ -11,15 +11,15 @@ let __config = new pulumi.Config("docker");
 /**
  * PEM-encoded content of Docker host CA certificate
  */
-export let caMaterial: string | undefined = __config.get("caMaterial") || utilities.getEnv("DOCKER_CA_MATERIAL");
+export let caMaterial: string | undefined = __config.get("caMaterial");
 /**
  * PEM-encoded content of Docker client certificate
  */
-export let certMaterial: string | undefined = __config.get("certMaterial") || utilities.getEnv("DOCKER_CERT_MATERIAL");
+export let certMaterial: string | undefined = __config.get("certMaterial");
 /**
  * Path to directory with Docker TLS config
  */
-export let certPath: string | undefined = __config.get("certPath") || utilities.getEnv("DOCKER_CERT_PATH");
+export let certPath: string | undefined = __config.get("certPath");
 /**
  * The Docker daemon address
  */
@@ -27,5 +27,5 @@ export let host: string | undefined = __config.get("host") || (utilities.getEnv(
 /**
  * PEM-encoded content of Docker client private key
  */
-export let keyMaterial: string | undefined = __config.get("keyMaterial") || utilities.getEnv("DOCKER_KEY_MATERIAL");
+export let keyMaterial: string | undefined = __config.get("keyMaterial");
 export let registryAuth: outputs.config.RegistryAuth[] | undefined = __config.getObject<outputs.config.RegistryAuth[]>("registryAuth");
