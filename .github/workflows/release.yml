@@ -1,5 +1,10 @@
 env:
+  ARM_CLIENT_ID: 30e520fa-12b4-4e21-b473-9426c5ac2e1e
+  ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+  ARM_SUBSCRIPTION_ID: 0282681f-7a9e-424b-80b2-96babd57a8a1
+  ARM_TENANT_ID: 706143bc-e1d4-4593-aee2-c9dc60ab9be7
   AWS_REGION: us-west-2
+  AZURE_LOCATION: westus
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   GO111MODULE: "on"
   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -12,11 +17,6 @@ env:
   PYPI_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
   SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
   TRAVIS_OS_NAME: linux
-  ARM_CLIENT_ID: 30e520fa-12b4-4e21-b473-9426c5ac2e1e
-  ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-  ARM_SUBSCRIPTION_ID: 0282681f-7a9e-424b-80b2-96babd57a8a1
-  ARM_TENANT_ID: 706143bc-e1d4-4593-aee2-c9dc60ab9be7
-  AZURE_LOCATION: westus
 jobs:
   build_sdk:
     name: build_sdk
@@ -31,7 +31,7 @@ jobs:
         path: ci-scripts
         repository: pulumi/scripts
     - name: Unshallow clone for tags
-      run: git fetch --prune --unshallow
+      run: git fetch --prune --unshallow --tags
     - name: Install Go
       uses: actions/setup-go@v2
       with:
@@ -121,7 +121,7 @@ jobs:
         path: ci-scripts
         repository: pulumi/scripts
     - name: Unshallow clone for tags
-      run: git fetch --prune --unshallow
+      run: git fetch --prune --unshallow --tags
     - name: Install Go
       uses: actions/setup-go@v2
       with:
@@ -155,7 +155,7 @@ jobs:
         path: ci-scripts
         repository: pulumi/scripts
     - name: Unshallow clone for tags
-      run: git fetch --prune --unshallow
+      run: git fetch --prune --unshallow --tags
     - name: Install Go
       uses: actions/setup-go@v2
       with:
@@ -187,7 +187,7 @@ jobs:
         path: ci-scripts
         repository: pulumi/scripts
     - name: Unshallow clone for tags
-      run: git fetch --prune --unshallow
+      run: git fetch --prune --unshallow --tags
     - name: Install Go
       uses: actions/setup-go@v2
       with:
@@ -262,7 +262,7 @@ jobs:
         path: ci-scripts
         repository: pulumi/scripts
     - name: Unshallow clone for tags
-      run: git fetch --prune --unshallow
+      run: git fetch --prune --unshallow --tags
     - name: Install Go
       uses: actions/setup-go@v2
       with:
@@ -323,7 +323,7 @@ jobs:
         path: ci-scripts
         repository: pulumi/scripts
     - name: Unshallow clone for tags
-      run: git fetch --prune --unshallow
+      run: git fetch --prune --unshallow --tags
     - name: Install Go
       uses: actions/setup-go@v2
       with:
