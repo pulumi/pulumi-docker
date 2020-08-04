@@ -1,5 +1,6 @@
 ## HEAD (Unreleased)
 * Fix bug in python Image implementation [#190](https://github.com/pulumi/pulumi-docker/issues/190)
+* Upgrade to v2.7.2 of the Docker Terraform Provider
 
 ---
 

@@ -2816,8 +2816,9 @@
                 "bridge",
                 "command",
                 "containerLogs",
+                "dns",
+                "dnsOpts",
                 "entrypoints",
-                "envs",
                 "exitCode",
                 "gateway",
                 "hostname",
@@ -2825,13 +2826,13 @@
                 "ipAddress",
                 "ipPrefixLength",
                 "ipcMode",
-                "labels",
                 "logDriver",
                 "logOpts",
                 "name",
                 "networkDatas",
                 "shmSize",
-                "user"
+                "user",
+                "workingDir"
             ],
             "inputProperties": {
                 "attach": {

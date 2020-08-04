@@ -8,7 +8,7 @@ require (
 	github.com/opencontainers/image-spec v1.0.1 // indirect
 	github.com/pulumi/pulumi-terraform-bridge/v2 v2.5.4
 	github.com/pulumi/pulumi/sdk/v2 v2.5.1-0.20200701223250-45d2fa95d60b
-	github.com/terraform-providers/terraform-provider-docker v1.2.1-0.20200605152511-20f46355e94e
+	github.com/terraform-providers/terraform-provider-docker v1.2.1-0.20200803235045-85aa923d5041
 )
 
 replace (
