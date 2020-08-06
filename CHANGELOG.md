@@ -1,5 +1,9 @@
 ## HEAD (Unreleased)
 * Fix bug in python Image implementation [#190](https://github.com/pulumi/pulumi-docker/issues/190)
+* Upgrade to v2.7.2 of the Docker Terraform Provider
+* Upgrade to pulumi-terraform-bridge v2.6.0
+* Upgrade to Pulumi v2.7.1
+* Avoid storing transient config from environment into the statefile
 
 ---
 

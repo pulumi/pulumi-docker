@@ -16,30 +16,15 @@
         "variables": {
             "caMaterial": {
                 "type": "string",
-                "description": "PEM-encoded content of Docker host CA certificate\n",
-                "defaultInfo": {
-                    "environment": [
-                        "DOCKER_CA_MATERIAL"
-                    ]
-                }
+                "description": "PEM-encoded content of Docker host CA certificate\n"
             },
             "certMaterial": {
                 "type": "string",
-                "description": "PEM-encoded content of Docker client certificate\n",
-                "defaultInfo": {
-                    "environment": [
-                        "DOCKER_CERT_MATERIAL"
-                    ]
-                }
+                "description": "PEM-encoded content of Docker client certificate\n"
             },
             "certPath": {
                 "type": "string",
-                "description": "Path to directory with Docker TLS config\n",
-                "defaultInfo": {
-                    "environment": [
-                        "DOCKER_CERT_PATH"
-                    ]
-                }
+                "description": "Path to directory with Docker TLS config\n"
             },
             "host": {
                 "type": "string",
@@ -53,12 +38,7 @@
             },
             "keyMaterial": {
                 "type": "string",
-                "description": "PEM-encoded content of Docker client private key\n",
-                "defaultInfo": {
-                    "environment": [
-                        "DOCKER_KEY_MATERIAL"
-                    ]
-                }
+                "description": "PEM-encoded content of Docker client private key\n"
             },
             "registryAuth": {
                 "type": "array",
@@ -2452,30 +2432,15 @@
         "inputProperties": {
             "caMaterial": {
                 "type": "string",
-                "description": "PEM-encoded content of Docker host CA certificate\n",
-                "defaultInfo": {
-                    "environment": [
-                        "DOCKER_CA_MATERIAL"
-                    ]
-                }
+                "description": "PEM-encoded content of Docker host CA certificate\n"
             },
             "certMaterial": {
                 "type": "string",
-                "description": "PEM-encoded content of Docker client certificate\n",
-                "defaultInfo": {
-                    "environment": [
-                        "DOCKER_CERT_MATERIAL"
-                    ]
-                }
+                "description": "PEM-encoded content of Docker client certificate\n"
             },
             "certPath": {
                 "type": "string",
-                "description": "Path to directory with Docker TLS config\n",
-                "defaultInfo": {
-                    "environment": [
-                        "DOCKER_CERT_PATH"
-                    ]
-                }
+                "description": "Path to directory with Docker TLS config\n"
             },
             "host": {
                 "type": "string",
@@ -2489,12 +2454,7 @@
             },
             "keyMaterial": {
                 "type": "string",
-                "description": "PEM-encoded content of Docker client private key\n",
-                "defaultInfo": {
-                    "environment": [
-                        "DOCKER_KEY_MATERIAL"
-                    ]
-                }
+                "description": "PEM-encoded content of Docker client private key\n"
             },
             "registryAuth": {
                 "type": "array",
@@ -2816,8 +2776,9 @@
                 "bridge",
                 "command",
                 "containerLogs",
+                "dns",
+                "dnsOpts",
                 "entrypoints",
-                "envs",
                 "exitCode",
                 "gateway",
                 "hostname",
@@ -2825,13 +2786,13 @@
                 "ipAddress",
                 "ipPrefixLength",
                 "ipcMode",
-                "labels",
                 "logDriver",
                 "logOpts",
                 "name",
                 "networkDatas",
                 "shmSize",
-                "user"
+                "user",
+                "workingDir"
             ],
             "inputProperties": {
                 "attach": {

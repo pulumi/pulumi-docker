@@ -6,7 +6,8 @@ import warnings
 import pulumi
 import pulumi.runtime
 from typing import Union
-from . import utilities, tables
+from . import _utilities, _tables
+
 
 class GetNetworkResult:
     """
@@ -46,6 +47,8 @@ class GetNetworkResult:
         if scope and not isinstance(scope, str):
             raise TypeError("Expected argument 'scope' to be a str")
         __self__.scope = scope
+
+
 class AwaitableGetNetworkResult(GetNetworkResult):
     # pylint: disable=using-constant-test
     def __await__(self):
@@ -60,7 +63,8 @@ class AwaitableGetNetworkResult(GetNetworkResult):
             options=self.options,
             scope=self.scope)
 
-def get_network(id=None,name=None,opts=None):
+
+def get_network(id=None, name=None, opts=None):
     """
     Finds a specific docker network and returns information about it.
 
@@ -78,14 +82,12 @@ def get_network(id=None,name=None,opts=None):
     :param str name: The name of the Docker network.
     """
     __args__ = dict()
-
-
     __args__['id'] = id
     __args__['name'] = name
     if opts is None:
         opts = pulumi.InvokeOptions()
     if opts.version is None:
-        opts.version = utilities.get_version()
+        opts.version = _utilities.get_version()
     __ret__ = pulumi.runtime.invoke('docker:index/getNetwork:getNetwork', __args__, opts=opts).value
 
     return AwaitableGetNetworkResult(

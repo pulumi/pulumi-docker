@@ -395,7 +395,7 @@ namespace Pulumi.Docker
         /// The working directory for commands to run in
         /// </summary>
         [Output("workingDir")]
-        public Output<string?> WorkingDir { get; private set; } = null!;
+        public Output<string> WorkingDir { get; private set; } = null!;
 
 
         /// <summary>

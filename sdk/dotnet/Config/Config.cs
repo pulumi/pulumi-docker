@@ -11,17 +11,17 @@ namespace Pulumi.Docker
         /// <summary>
         /// PEM-encoded content of Docker host CA certificate
         /// </summary>
-        public static string? CaMaterial { get; set; } = __config.Get("caMaterial") ?? Utilities.GetEnv("DOCKER_CA_MATERIAL");
+        public static string? CaMaterial { get; set; } = __config.Get("caMaterial");
 
         /// <summary>
         /// PEM-encoded content of Docker client certificate
         /// </summary>
-        public static string? CertMaterial { get; set; } = __config.Get("certMaterial") ?? Utilities.GetEnv("DOCKER_CERT_MATERIAL");
+        public static string? CertMaterial { get; set; } = __config.Get("certMaterial");
 
         /// <summary>
         /// Path to directory with Docker TLS config
         /// </summary>
-        public static string? CertPath { get; set; } = __config.Get("certPath") ?? Utilities.GetEnv("DOCKER_CERT_PATH");
+        public static string? CertPath { get; set; } = __config.Get("certPath");
 
         /// <summary>
         /// The Docker daemon address
@@ -31,7 +31,7 @@ namespace Pulumi.Docker
         /// <summary>
         /// PEM-encoded content of Docker client private key
         /// </summary>
-        public static string? KeyMaterial { get; set; } = __config.Get("keyMaterial") ?? Utilities.GetEnv("DOCKER_KEY_MATERIAL");
+        public static string? KeyMaterial { get; set; } = __config.Get("keyMaterial");
 
         public static ImmutableArray<Pulumi.Docker.Config.Types.RegistryAuth> RegistryAuth { get; set; } = __config.GetObject<ImmutableArray<Pulumi.Docker.Config.Types.RegistryAuth>>("registryAuth");
 

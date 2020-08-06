@@ -188,7 +188,7 @@ type Container struct {
 	// See Volumes below for details.
 	Volumes ContainerVolumeArrayOutput `pulumi:"volumes"`
 	// The working directory for commands to run in
-	WorkingDir pulumi.StringPtrOutput `pulumi:"workingDir"`
+	WorkingDir pulumi.StringOutput `pulumi:"workingDir"`
 }
 
 // NewContainer registers a new resource with the given unique name, arguments, and options.

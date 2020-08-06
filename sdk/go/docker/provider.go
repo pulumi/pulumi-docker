@@ -23,20 +23,8 @@ func NewProvider(ctx *pulumi.Context,
 	if args == nil {
 		args = &ProviderArgs{}
 	}
-	if args.CaMaterial == nil {
-		args.CaMaterial = pulumi.StringPtr(getEnvOrDefault("", nil, "DOCKER_CA_MATERIAL").(string))
-	}
-	if args.CertMaterial == nil {
-		args.CertMaterial = pulumi.StringPtr(getEnvOrDefault("", nil, "DOCKER_CERT_MATERIAL").(string))
-	}
-	if args.CertPath == nil {
-		args.CertPath = pulumi.StringPtr(getEnvOrDefault("", nil, "DOCKER_CERT_PATH").(string))
-	}
 	if args.Host == nil {
 		args.Host = pulumi.StringPtr(getEnvOrDefault("unix:///var/run/docker.sock", nil, "DOCKER_HOST").(string))
-	}
-	if args.KeyMaterial == nil {
-		args.KeyMaterial = pulumi.StringPtr(getEnvOrDefault("", nil, "DOCKER_KEY_MATERIAL").(string))
 	}
 	var resource Provider
 	err := ctx.RegisterResource("pulumi:providers:docker", name, args, &resource, opts...)

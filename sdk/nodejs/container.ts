@@ -94,11 +94,11 @@ export class Container extends pulumi.CustomResource {
     /**
      * Set of DNS servers.
      */
-    public readonly dns!: pulumi.Output<string[] | undefined>;
+    public readonly dns!: pulumi.Output<string[]>;
     /**
      * Set of DNS options used by the DNS provider(s), see `resolv.conf` documentation for valid list of options.
      */
-    public readonly dnsOpts!: pulumi.Output<string[] | undefined>;
+    public readonly dnsOpts!: pulumi.Output<string[]>;
     /**
      * Set of DNS search domains that are used when bare unqualified hostnames are used inside of the container.
      */
@@ -118,7 +118,7 @@ export class Container extends pulumi.CustomResource {
     /**
      * Environment variables to set.
      */
-    public readonly envs!: pulumi.Output<string[]>;
+    public readonly envs!: pulumi.Output<string[] | undefined>;
     /**
      * The exit code of the container if its execution is done (`mustRun` must be disabled).
      */
@@ -172,7 +172,7 @@ export class Container extends pulumi.CustomResource {
     /**
      * Adding labels.
      */
-    public readonly labels!: pulumi.Output<outputs.ContainerLabel[]>;
+    public readonly labels!: pulumi.Output<outputs.ContainerLabel[] | undefined>;
     /**
      * Set of links for link based
      * connectivity between containers that are running on the same host.
@@ -306,7 +306,7 @@ export class Container extends pulumi.CustomResource {
     /**
      * The working directory for commands to run in
      */
-    public readonly workingDir!: pulumi.Output<string | undefined>;
+    public readonly workingDir!: pulumi.Output<string>;
 
     /**
      * Create a Container resource with the given unique name, arguments, and options.
