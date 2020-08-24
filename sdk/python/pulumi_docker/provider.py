@@ -6,12 +6,26 @@ import json
 import warnings
 import pulumi
 import pulumi.runtime
-from typing import Union
+from typing import Any, Dict, List, Mapping, Optional, Tuple, Union
 from . import _utilities, _tables
+from . import outputs
+
+__all__ = ['Provider']
 
 
 class Provider(pulumi.ProviderResource):
-    def __init__(__self__, resource_name, opts=None, ca_material=None, cert_material=None, cert_path=None, host=None, key_material=None, registry_auth=None, __props__=None, __name__=None, __opts__=None):
+    def __init__(__self__,
+                 resource_name,
+                 opts: Optional[pulumi.ResourceOptions] = None,
+                 ca_material: Optional[pulumi.Input[str]] = None,
+                 cert_material: Optional[pulumi.Input[str]] = None,
+                 cert_path: Optional[pulumi.Input[str]] = None,
+                 host: Optional[pulumi.Input[str]] = None,
+                 key_material: Optional[pulumi.Input[str]] = None,
+                 registry_auth: Optional[pulumi.Input[List[pulumi.Input[pulumi.InputType['ProviderRegistryAuthArgs']]]]] = None,
+                 __props__=None,
+                 __name__=None,
+                 __opts__=None):
         """
         The provider type for the docker package. By default, resources use package-wide configuration
         settings, however an explicit `Provider` instance may be created and passed during resource
@@ -25,14 +39,6 @@ class Provider(pulumi.ProviderResource):
         :param pulumi.Input[str] cert_path: Path to directory with Docker TLS config
         :param pulumi.Input[str] host: The Docker daemon address
         :param pulumi.Input[str] key_material: PEM-encoded content of Docker client private key
-
-        The **registry_auth** object supports the following:
-
-          * `address` (`pulumi.Input[str]`)
-          * `config_file` (`pulumi.Input[str]`)
-          * `config_file_content` (`pulumi.Input[str]`)
-          * `password` (`pulumi.Input[str]`)
-          * `username` (`pulumi.Input[str]`)
         """
         if __name__ is not None:
             warnings.warn("explicit use of __name__ is deprecated", DeprecationWarning)
@@ -70,3 +76,4 @@ class Provider(pulumi.ProviderResource):
 
     def translate_input_property(self, prop):
         return _tables.SNAKE_TO_CAMEL_CASE_TABLE.get(prop) or prop
+
