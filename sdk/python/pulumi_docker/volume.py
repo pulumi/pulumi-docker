@@ -5,33 +5,25 @@
 import warnings
 import pulumi
 import pulumi.runtime
-from typing import Union
+from typing import Any, Dict, List, Mapping, Optional, Tuple, Union
 from . import _utilities, _tables
+from . import outputs
+from ._inputs import *
+
+__all__ = ['Volume']
 
 
 class Volume(pulumi.CustomResource):
-    driver: pulumi.Output[str]
-    """
-    Driver type for the volume (defaults to local).
-    """
-    driver_opts: pulumi.Output[dict]
-    """
-    Options specific to the driver.
-    """
-    labels: pulumi.Output[list]
-    """
-    User-defined key/value metadata.
-
-      * `label` (`str`)
-      * `value` (`str`)
-    """
-    mountpoint: pulumi.Output[str]
-    name: pulumi.Output[str]
-    """
-    The name of the Docker volume (generated if not
-    provided).
-    """
-    def __init__(__self__, resource_name, opts=None, driver=None, driver_opts=None, labels=None, name=None, __props__=None, __name__=None, __opts__=None):
+    def __init__(__self__,
+                 resource_name,
+                 opts: Optional[pulumi.ResourceOptions] = None,
+                 driver: Optional[pulumi.Input[str]] = None,
+                 driver_opts: Optional[pulumi.Input[Mapping[str, Any]]] = None,
+                 labels: Optional[pulumi.Input[List[pulumi.Input[pulumi.InputType['VolumeLabelArgs']]]]] = None,
+                 name: Optional[pulumi.Input[str]] = None,
+                 __props__=None,
+                 __name__=None,
+                 __opts__=None):
         """
         Creates and destroys a volume in Docker. This can be used alongside
         [docker\_container](https://www.terraform.io/docs/providers/docker/r/container.html)
@@ -50,15 +42,10 @@ class Volume(pulumi.CustomResource):
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[str] driver: Driver type for the volume (defaults to local).
-        :param pulumi.Input[dict] driver_opts: Options specific to the driver.
-        :param pulumi.Input[list] labels: User-defined key/value metadata.
+        :param pulumi.Input[Mapping[str, Any]] driver_opts: Options specific to the driver.
+        :param pulumi.Input[List[pulumi.Input[pulumi.InputType['VolumeLabelArgs']]]] labels: User-defined key/value metadata.
         :param pulumi.Input[str] name: The name of the Docker volume (generated if not
                provided).
-
-        The **labels** object supports the following:
-
-          * `label` (`pulumi.Input[str]`)
-          * `value` (`pulumi.Input[str]`)
         """
         if __name__ is not None:
             warnings.warn("explicit use of __name__ is deprecated", DeprecationWarning)
@@ -89,24 +76,26 @@ class Volume(pulumi.CustomResource):
             opts)
 
     @staticmethod
-    def get(resource_name, id, opts=None, driver=None, driver_opts=None, labels=None, mountpoint=None, name=None):
+    def get(resource_name: str,
+            id: pulumi.Input[str],
+            opts: Optional[pulumi.ResourceOptions] = None,
+            driver: Optional[pulumi.Input[str]] = None,
+            driver_opts: Optional[pulumi.Input[Mapping[str, Any]]] = None,
+            labels: Optional[pulumi.Input[List[pulumi.Input[pulumi.InputType['VolumeLabelArgs']]]]] = None,
+            mountpoint: Optional[pulumi.Input[str]] = None,
+            name: Optional[pulumi.Input[str]] = None) -> 'Volume':
         """
         Get an existing Volume resource's state with the given name, id, and optional extra
         properties used to qualify the lookup.
 
         :param str resource_name: The unique name of the resulting resource.
-        :param str id: The unique provider ID of the resource to lookup.
+        :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[str] driver: Driver type for the volume (defaults to local).
-        :param pulumi.Input[dict] driver_opts: Options specific to the driver.
-        :param pulumi.Input[list] labels: User-defined key/value metadata.
+        :param pulumi.Input[Mapping[str, Any]] driver_opts: Options specific to the driver.
+        :param pulumi.Input[List[pulumi.Input[pulumi.InputType['VolumeLabelArgs']]]] labels: User-defined key/value metadata.
         :param pulumi.Input[str] name: The name of the Docker volume (generated if not
                provided).
-
-        The **labels** object supports the following:
-
-          * `label` (`pulumi.Input[str]`)
-          * `value` (`pulumi.Input[str]`)
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
 
@@ -119,8 +108,47 @@ class Volume(pulumi.CustomResource):
         __props__["name"] = name
         return Volume(resource_name, opts=opts, __props__=__props__)
 
+    @property
+    @pulumi.getter
+    def driver(self) -> str:
+        """
+        Driver type for the volume (defaults to local).
+        """
+        return pulumi.get(self, "driver")
+
+    @property
+    @pulumi.getter(name="driverOpts")
+    def driver_opts(self) -> Optional[Mapping[str, Any]]:
+        """
+        Options specific to the driver.
+        """
+        return pulumi.get(self, "driver_opts")
+
+    @property
+    @pulumi.getter
+    def labels(self) -> Optional[List['outputs.VolumeLabel']]:
+        """
+        User-defined key/value metadata.
+        """
+        return pulumi.get(self, "labels")
+
+    @property
+    @pulumi.getter
+    def mountpoint(self) -> str:
+        return pulumi.get(self, "mountpoint")
+
+    @property
+    @pulumi.getter
+    def name(self) -> str:
+        """
+        The name of the Docker volume (generated if not
+        provided).
+        """
+        return pulumi.get(self, "name")
+
     def translate_output_property(self, prop):
         return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
 
     def translate_input_property(self, prop):
         return _tables.SNAKE_TO_CAMEL_CASE_TABLE.get(prop) or prop
+

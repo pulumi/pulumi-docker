@@ -5,39 +5,31 @@
 import warnings
 import pulumi
 import pulumi.runtime
-from typing import Union
+from typing import Any, Dict, List, Mapping, Optional, Tuple, Union
 from . import _utilities, _tables
+from . import outputs
+from ._inputs import *
+
+__all__ = ['Secret']
 
 
 class Secret(pulumi.CustomResource):
-    data: pulumi.Output[str]
-    """
-    The base64 encoded data of the secret.
-    """
-    labels: pulumi.Output[list]
-    """
-    See Labels below for details.
-
-      * `label` (`str`) - Name of the label
-      * `value` (`str`) - Value of the label
-    """
-    name: pulumi.Output[str]
-    """
-    The name of the Docker secret.
-    """
-    def __init__(__self__, resource_name, opts=None, data=None, labels=None, name=None, __props__=None, __name__=None, __opts__=None):
+    def __init__(__self__,
+                 resource_name,
+                 opts: Optional[pulumi.ResourceOptions] = None,
+                 data: Optional[pulumi.Input[str]] = None,
+                 labels: Optional[pulumi.Input[List[pulumi.Input[pulumi.InputType['SecretLabelArgs']]]]] = None,
+                 name: Optional[pulumi.Input[str]] = None,
+                 __props__=None,
+                 __name__=None,
+                 __opts__=None):
         """
         Create a Secret resource with the given unique name, props, and options.
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[str] data: The base64 encoded data of the secret.
-        :param pulumi.Input[list] labels: See Labels below for details.
+        :param pulumi.Input[List[pulumi.Input[pulumi.InputType['SecretLabelArgs']]]] labels: See Labels below for details.
         :param pulumi.Input[str] name: The name of the Docker secret.
-
-        The **labels** object supports the following:
-
-          * `label` (`pulumi.Input[str]`) - Name of the label
-          * `value` (`pulumi.Input[str]`) - Value of the label
         """
         if __name__ is not None:
             warnings.warn("explicit use of __name__ is deprecated", DeprecationWarning)
@@ -68,22 +60,22 @@ class Secret(pulumi.CustomResource):
             opts)
 
     @staticmethod
-    def get(resource_name, id, opts=None, data=None, labels=None, name=None):
+    def get(resource_name: str,
+            id: pulumi.Input[str],
+            opts: Optional[pulumi.ResourceOptions] = None,
+            data: Optional[pulumi.Input[str]] = None,
+            labels: Optional[pulumi.Input[List[pulumi.Input[pulumi.InputType['SecretLabelArgs']]]]] = None,
+            name: Optional[pulumi.Input[str]] = None) -> 'Secret':
         """
         Get an existing Secret resource's state with the given name, id, and optional extra
         properties used to qualify the lookup.
 
         :param str resource_name: The unique name of the resulting resource.
-        :param str id: The unique provider ID of the resource to lookup.
+        :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[str] data: The base64 encoded data of the secret.
-        :param pulumi.Input[list] labels: See Labels below for details.
+        :param pulumi.Input[List[pulumi.Input[pulumi.InputType['SecretLabelArgs']]]] labels: See Labels below for details.
         :param pulumi.Input[str] name: The name of the Docker secret.
-
-        The **labels** object supports the following:
-
-          * `label` (`pulumi.Input[str]`) - Name of the label
-          * `value` (`pulumi.Input[str]`) - Value of the label
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
 
@@ -94,8 +86,33 @@ class Secret(pulumi.CustomResource):
         __props__["name"] = name
         return Secret(resource_name, opts=opts, __props__=__props__)
 
+    @property
+    @pulumi.getter
+    def data(self) -> str:
+        """
+        The base64 encoded data of the secret.
+        """
+        return pulumi.get(self, "data")
+
+    @property
+    @pulumi.getter
+    def labels(self) -> Optional[List['outputs.SecretLabel']]:
+        """
+        See Labels below for details.
+        """
+        return pulumi.get(self, "labels")
+
+    @property
+    @pulumi.getter
+    def name(self) -> str:
+        """
+        The name of the Docker secret.
+        """
+        return pulumi.get(self, "name")
+
     def translate_output_property(self, prop):
         return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
 
     def translate_input_property(self, prop):
         return _tables.SNAKE_TO_CAMEL_CASE_TABLE.get(prop) or prop
+

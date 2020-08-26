@@ -5,10 +5,17 @@
 import warnings
 import pulumi
 import pulumi.runtime
-from typing import Union
+from typing import Any, Dict, List, Mapping, Optional, Tuple, Union
 from . import _utilities, _tables
+from . import outputs
 
+__all__ = [
+    'GetNetworkResult',
+    'AwaitableGetNetworkResult',
+    'get_network',
+]
 
+@pulumi.output_type
 class GetNetworkResult:
     """
     A collection of values returned by getNetwork.
@@ -16,27 +23,59 @@ class GetNetworkResult:
     def __init__(__self__, driver=None, id=None, internal=None, ipam_configs=None, name=None, options=None, scope=None):
         if driver and not isinstance(driver, str):
             raise TypeError("Expected argument 'driver' to be a str")
-        __self__.driver = driver
+        pulumi.set(__self__, "driver", driver)
+        if id and not isinstance(id, str):
+            raise TypeError("Expected argument 'id' to be a str")
+        pulumi.set(__self__, "id", id)
+        if internal and not isinstance(internal, bool):
+            raise TypeError("Expected argument 'internal' to be a bool")
+        pulumi.set(__self__, "internal", internal)
+        if ipam_configs and not isinstance(ipam_configs, list):
+            raise TypeError("Expected argument 'ipam_configs' to be a list")
+        pulumi.set(__self__, "ipam_configs", ipam_configs)
+        if name and not isinstance(name, str):
+            raise TypeError("Expected argument 'name' to be a str")
+        pulumi.set(__self__, "name", name)
+        if options and not isinstance(options, dict):
+            raise TypeError("Expected argument 'options' to be a dict")
+        pulumi.set(__self__, "options", options)
+        if scope and not isinstance(scope, str):
+            raise TypeError("Expected argument 'scope' to be a str")
+        pulumi.set(__self__, "scope", scope)
+
+    @property
+    @pulumi.getter
+    def driver(self) -> str:
         """
         (Optional, string) The driver of the Docker network. 
         Possible values are `bridge`, `host`, `overlay`, `macvlan`.
         See [docker docs][networkdocs] for more details.
         """
-        if id and not isinstance(id, str):
-            raise TypeError("Expected argument 'id' to be a str")
-        __self__.id = id
-        if internal and not isinstance(internal, bool):
-            raise TypeError("Expected argument 'internal' to be a bool")
-        __self__.internal = internal
-        if ipam_configs and not isinstance(ipam_configs, list):
-            raise TypeError("Expected argument 'ipam_configs' to be a list")
-        __self__.ipam_configs = ipam_configs
-        if name and not isinstance(name, str):
-            raise TypeError("Expected argument 'name' to be a str")
-        __self__.name = name
-        if options and not isinstance(options, dict):
-            raise TypeError("Expected argument 'options' to be a dict")
-        __self__.options = options
+        return pulumi.get(self, "driver")
+
+    @property
+    @pulumi.getter
+    def id(self) -> Optional[str]:
+        return pulumi.get(self, "id")
+
+    @property
+    @pulumi.getter
+    def internal(self) -> bool:
+        return pulumi.get(self, "internal")
+
+    @property
+    @pulumi.getter(name="ipamConfigs")
+    def ipam_configs(self) -> List['outputs.GetNetworkIpamConfigResult']:
+        return pulumi.get(self, "ipam_configs")
+
+    @property
+    @pulumi.getter
+    def name(self) -> Optional[str]:
+        return pulumi.get(self, "name")
+
+    @property
+    @pulumi.getter
+    def options(self) -> Mapping[str, Any]:
         """
         (Optional, map) Only available with bridge networks. See
         [docker docs][bridgeoptionsdocs] for more details.
@@ -44,9 +83,12 @@ class GetNetworkResult:
         * `ipam_config` (Optional, map) See IPAM below for details.
         * `scope` (Optional, string) Scope of the network. One of `swarm`, `global`, or `local`.
         """
-        if scope and not isinstance(scope, str):
-            raise TypeError("Expected argument 'scope' to be a str")
-        __self__.scope = scope
+        return pulumi.get(self, "options")
+
+    @property
+    @pulumi.getter
+    def scope(self) -> str:
+        return pulumi.get(self, "scope")
 
 
 class AwaitableGetNetworkResult(GetNetworkResult):
@@ -64,7 +106,9 @@ class AwaitableGetNetworkResult(GetNetworkResult):
             scope=self.scope)
 
 
-def get_network(id=None, name=None, opts=None):
+def get_network(id: Optional[str] = None,
+                name: Optional[str] = None,
+                opts: Optional[pulumi.InvokeOptions] = None) -> AwaitableGetNetworkResult:
     """
     Finds a specific docker network and returns information about it.
 
@@ -88,13 +132,13 @@ def get_network(id=None, name=None, opts=None):
         opts = pulumi.InvokeOptions()
     if opts.version is None:
         opts.version = _utilities.get_version()
-    __ret__ = pulumi.runtime.invoke('docker:index/getNetwork:getNetwork', __args__, opts=opts).value
+    __ret__ = pulumi.runtime.invoke('docker:index/getNetwork:getNetwork', __args__, opts=opts, typ=GetNetworkResult).value
 
     return AwaitableGetNetworkResult(
-        driver=__ret__.get('driver'),
-        id=__ret__.get('id'),
-        internal=__ret__.get('internal'),
-        ipam_configs=__ret__.get('ipamConfigs'),
-        name=__ret__.get('name'),
-        options=__ret__.get('options'),
-        scope=__ret__.get('scope'))
+        driver=__ret__.driver,
+        id=__ret__.id,
+        internal=__ret__.internal,
+        ipam_configs=__ret__.ipam_configs,
+        name=__ret__.name,
+        options=__ret__.options,
+        scope=__ret__.scope)

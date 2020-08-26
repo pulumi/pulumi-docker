@@ -5,403 +5,43 @@
 import warnings
 import pulumi
 import pulumi.runtime
-from typing import Union
+from typing import Any, Dict, List, Mapping, Optional, Tuple, Union
 from . import _utilities, _tables
+from . import outputs
+from ._inputs import *
+
+__all__ = ['Service']
 
 
 class Service(pulumi.CustomResource):
-    auth: pulumi.Output[dict]
-    """
-    See Auth below for details.
-
-      * `password` (`str`) - The password to use for authenticating to the registry. If this is blank, the `DOCKER_REGISTRY_PASS` is also be checked.
-      * `server_address` (`str`) - The address of the registry server
-      * `username` (`str`) - The username to use for authenticating to the registry. If this is blank, the `DOCKER_REGISTRY_USER` is also be checked.
-    """
-    converge_config: pulumi.Output[dict]
-    """
-    See Converge Config below for details.
-
-      * `delay` (`str`) - Time between each the check to check docker endpoint `(ms|s|m|h)`. For example, to check if
-        all tasks are up when a service is created, or to check if all tasks are successfully updated on an update. Default: `7s`.
-      * `timeout` (`str`) - The timeout of the service to reach the desired state `(s|m)`. Default: `3m`.
-    """
-    endpoint_spec: pulumi.Output[dict]
-    """
-    See EndpointSpec below for details.
-
-      * `mode` (`str`) - The mode of resolution to use for internal load balancing between tasks. `(vip|dnsrr)`. Default: `vip`.
-      * `ports` (`list`) - See Ports below for details.
-        * `name` (`str`) - The name of the Docker service.
-        * `protocol` (`str`) - Protocol that can be used over this port: `tcp|udp|sctp`. Default: `tcp`.
-        * `publishMode` (`str`) - Represents the mode in which the port is to be published: `ingress|host`
-        * `publishedPort` (`float`) - The port on the swarm hosts. If not set the value of `target_port` will be used.
-        * `targetPort` (`float`) - Port inside the container.
-    """
-    labels: pulumi.Output[list]
-    """
-    See Labels below for details.
-
-      * `label` (`str`) - Name of the label
-      * `value` (`str`) - Value of the label
-    """
-    mode: pulumi.Output[dict]
-    """
-    See Mode below for details.
-
-      * `global` (`bool`) - set it to `true` to run the service in the global mode
-      * `replicated` (`dict`) - , which contains atm only the amount of `replicas`
-        * `replicas` (`float`)
-    """
-    name: pulumi.Output[str]
-    """
-    The name of the Docker service.
-    """
-    rollback_config: pulumi.Output[dict]
-    """
-    See RollbackConfig below for details.
-
-      * `delay` (`str`) - Delay between restart attempts `(ms|s|m|h)`
-        all tasks are up when a service is created, or to check if all tasks are successfully updated on an update. Default: `7s`.
-      * `failureAction` (`str`) - Action on update failure: `pause|continue|rollback`.
-      * `maxFailureRatio` (`str`) - The failure rate to tolerate during an update as `float`. **Important:** the `float`need to be wrapped in a `string` to avoid internal
-        casting and precision errors.
-      * `monitor` (`str`) - Duration after each task update to monitor for failure `(ns|us|ms|s|m|h)`
-      * `order` (`str`) - Update order either 'stop-first' or 'start-first'.
-      * `parallelism` (`float`) - The maximum number of tasks to be updated in one iteration simultaneously (0 to update all at once).
-    """
-    task_spec: pulumi.Output[dict]
-    """
-    See TaskSpec below for details.
-
-      * `containerSpec` (`dict`) - See ContainerSpec below for details.
-        * `args` (`list`) - Arguments to the command.
-        * `commands` (`list`) - The command to be run in the image.
-        * `configs` (`list`) - See Configs below for details.
-          * `configId` (`str`) - ConfigID represents the ID of the specific config.
-          * `configName` (`str`) - The name of the config that this references, but internally it is just provided for lookup/display purposes
-          * `fileGid` (`str`) - Represents the file GID. Defaults: `0`
-          * `fileMode` (`float`) - Represents the FileMode of the file. Defaults: `0444`
-          * `fileName` (`str`) - Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
-          * `fileUid` (`str`) - Represents the file UID. Defaults: `0`
-
-        * `dir` (`str`) - The working directory for commands to run in.
-        * `dnsConfig` (`dict`) - See DNS Config below for details.
-          * `nameservers` (`list`) - The IP addresses of the name servers, for example, `8.8.8.8`
-          * `options` (`list`) - A list of internal resolver variables to be modified, for example, `debug`, `ndots:3`
-          * `searches` (`list`) - A search list for host-name lookup.
-
-        * `env` (`dict`) - A list of environment variables in the form VAR=value.
-        * `groups` (`list`) - A list of additional groups that the container process will run as.
-        * `healthcheck` (`dict`) - See Healthcheck below for details.
-          * `interval` (`str`) - Time between running the check `(ms|s|m|h)`. Default: `0s`.
-          * `retries` (`float`) - Consecutive failures needed to report unhealthy. Default: `0`.
-          * `startPeriod` (`str`) - Start period for the container to initialize before counting retries towards unstable `(ms|s|m|h)`. Default: `0s`.
-          * `tests` (`list`) - Command to run to check health. For example, to run `curl -f http://localhost/health` set the
-            command to be `["CMD", "curl", "-f", "http://localhost/health"]`.
-          * `timeout` (`str`) - Maximum time to allow one check to run `(ms|s|m|h)`. Default: `0s`.
-
-        * `hostname` (`str`) - The hostname to use for the container, as a valid RFC 1123 hostname.
-        * `hosts` (`list`)
-          * `host` (`str`) - A list of hostname/IP mappings to add to the container's hosts file.
-          * `ip` (`str`) - The ip
-
-        * `image` (`str`) - The image used to create the Docker service.
-        * `isolation` (`str`) - Isolation technology of the containers running the service. (Windows only). Valid values are: `default|process|hyperv`
-        * `labels` (`list`) - See Labels below for details.
-          * `label` (`str`) - Name of the label
-          * `value` (`str`) - Value of the label
-
-        * `mounts` (`list`) - See Mounts below for details.
-          * `bindOptions` (`dict`) - Optional configuration for the `bind` type.
-            * `propagation` (`str`) - A propagation mode with the value.
-
-          * `read_only` (`bool`) - Mount the container's root filesystem as read only.
-          * `source` (`str`) - The mount source (e.g., a volume name, a host path)
-          * `target` (`str`) - The container path.
-          * `tmpfsOptions` (`dict`) - Optional configuration for the `tmpf` type.
-            * `mode` (`float`) - See Mode below for details.
-            * `sizeBytes` (`float`) - The size for the tmpfs mount in bytes.
-
-          * `type` (`str`) - SELinux type label
-          * `volumeOptions` (`dict`) - Optional configuration for the `volume` type.
-            * `driverName` (`str`)
-            * `driverOptions` (`dict`)
-            * `labels` (`list`) - See Labels below for details.
-              * `label` (`str`) - Name of the label
-              * `value` (`str`) - Value of the label
-
-            * `noCopy` (`bool`) - Whether to populate volume with data from the target.
-
-        * `privileges` (`dict`) - See Privileges below for details.
-          * `credentialSpec` (`dict`) - For managed service account (Windows only)
-            * `file` (`str`) - Load credential spec from this file.
-            * `registry` (`str`) - Load credential spec from this value in the Windows registry.
-
-          * `seLinuxContext` (`dict`) - SELinux labels of the container
-            * `disable` (`bool`) - Disable SELinux
-            * `level` (`str`) - SELinux level label
-            * `role` (`str`) - SELinux role label
-            * `type` (`str`) - SELinux type label
-            * `user` (`str`) - The user inside the container.
-
-        * `read_only` (`bool`) - Mount the container's root filesystem as read only.
-        * `secrets` (`list`) - See Secrets below for details.
-          * `fileGid` (`str`) - Represents the file GID. Defaults: `0`
-          * `fileMode` (`float`) - Represents the FileMode of the file. Defaults: `0444`
-          * `fileName` (`str`) - Represents the final filename in the filesystem. The specific target file that the secret data is written within the docker container, e.g. `/root/secret/secret.json`
-          * `fileUid` (`str`) - Represents the file UID. Defaults: `0`
-          * `secretId` (`str`) - ConfigID represents the ID of the specific secret.
-          * `secretName` (`str`) - The name of the secret that this references, but internally it is just provided for lookup/display purposes
-
-        * `stopGracePeriod` (`str`) - Amount of time to wait for the container to terminate before forcefully removing it `(ms|s|m|h)`.
-        * `stopSignal` (`str`) - Signal to stop the container.
-        * `user` (`str`) - The user inside the container.
-
-      * `forceUpdate` (`float`) - A counter that triggers an update even if no relevant parameters have been changed. See [Docker Spec](https://github.com/docker/swarmkit/blob/master/api/specs.proto#L126).
-      * `log_driver` (`dict`) - See Log Driver below for details.
-        * `name` (`str`) - The logging driver to use. Either `(none|json-file|syslog|journald|gelf|fluentd|awslogs|splunk|etwlogs|gcplogs)`.
-        * `options` (`dict`) - The options for the logging driver, e.g.
-
-      * `networks` (`list`) - Ids of the networks in which the container will be put in.
-      * `placement` (`dict`) - See Placement below for details.
-        * `constraints` (`list`) - An array of constraints. e.g.: `node.role==manager`
-        * `platforms` (`list`) - Platforms stores all the platforms that the service's image can run on
-          * `architecture` (`str`) - The architecture, e.g., `amd64`
-          * `os` (`str`) - The operation system, e.g., `linux`
-
-        * `prefs` (`list`) - Preferences provide a way to make the scheduler aware of factors such as topology. They are provided in order from highest to lowest precedence, e.g.: `spread=node.role.manager`
-
-      * `resources` (`dict`) - See Resources below for details.
-        * `limits` (`dict`) - Describes the resources which can be advertised by a node and requested by a task.
-          * `genericResources` (`dict`) - User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
-            * `discreteResourcesSpecs` (`list`) - The Integer resources, delimited by `=`
-            * `namedResourcesSpecs` (`list`) - The String resources, delimited by `=`
-
-          * `memoryBytes` (`float`) - The amount of memory in bytes the container allocates
-          * `nanoCpus` (`float`) - CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
-
-        * `reservation` (`dict`) - An object describing the resources which can be advertised by a node and requested by a task.
-          * `genericResources` (`dict`) - User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
-            * `discreteResourcesSpecs` (`list`) - The Integer resources, delimited by `=`
-            * `namedResourcesSpecs` (`list`) - The String resources, delimited by `=`
-
-          * `memoryBytes` (`float`) - The amount of memory in bytes the container allocates
-          * `nanoCpus` (`float`) - CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
-
-      * `restartPolicy` (`dict`) - See Restart Policy below for details.
-        * `condition` (`str`) - Condition for restart: `(none|on-failure|any)`
-        * `delay` (`str`) - Delay between restart attempts `(ms|s|m|h)`
-        * `maxAttempts` (`float`) - Maximum attempts to restart a given container before giving up (default value is `0`, which is ignored)
-        * `window` (`str`) - The time window used to evaluate the restart policy (default value is `0`, which is unbounded) `(ms|s|m|h)`
-
-      * `runtime` (`str`) - Runtime is the type of runtime specified for the task executor. See [Docker Runtime](https://github.com/moby/moby/blob/master/api/types/swarm/runtime.go).
-    """
-    update_config: pulumi.Output[dict]
-    """
-    See UpdateConfig below for details.
-
-      * `delay` (`str`) - Delay between updates `(ns|us|ms|s|m|h)`, e.g. `5s`.
-      * `failureAction` (`str`) - Action on update failure: `pause|continue|rollback`.
-      * `maxFailureRatio` (`str`) - The failure rate to tolerate during an update as `float`. **Important:** the `float`need to be wrapped in a `string` to avoid internal
-        casting and precision errors.
-      * `monitor` (`str`) - Duration after each task update to monitor for failure `(ns|us|ms|s|m|h)`
-      * `order` (`str`) - Update order either 'stop-first' or 'start-first'.
-      * `parallelism` (`float`) - The maximum number of tasks to be updated in one iteration simultaneously (0 to update all at once).
-    """
-    def __init__(__self__, resource_name, opts=None, auth=None, converge_config=None, endpoint_spec=None, labels=None, mode=None, name=None, rollback_config=None, task_spec=None, update_config=None, __props__=None, __name__=None, __opts__=None):
+    def __init__(__self__,
+                 resource_name,
+                 opts: Optional[pulumi.ResourceOptions] = None,
+                 auth: Optional[pulumi.Input[pulumi.InputType['ServiceAuthArgs']]] = None,
+                 converge_config: Optional[pulumi.Input[pulumi.InputType['ServiceConvergeConfigArgs']]] = None,
+                 endpoint_spec: Optional[pulumi.Input[pulumi.InputType['ServiceEndpointSpecArgs']]] = None,
+                 labels: Optional[pulumi.Input[List[pulumi.Input[pulumi.InputType['ServiceLabelArgs']]]]] = None,
+                 mode: Optional[pulumi.Input[pulumi.InputType['ServiceModeArgs']]] = None,
+                 name: Optional[pulumi.Input[str]] = None,
+                 rollback_config: Optional[pulumi.Input[pulumi.InputType['ServiceRollbackConfigArgs']]] = None,
+                 task_spec: Optional[pulumi.Input[pulumi.InputType['ServiceTaskSpecArgs']]] = None,
+                 update_config: Optional[pulumi.Input[pulumi.InputType['ServiceUpdateConfigArgs']]] = None,
+                 __props__=None,
+                 __name__=None,
+                 __opts__=None):
         """
         Create a Service resource with the given unique name, props, and options.
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
-        :param pulumi.Input[dict] auth: See Auth below for details.
-        :param pulumi.Input[dict] converge_config: See Converge Config below for details.
-        :param pulumi.Input[dict] endpoint_spec: See EndpointSpec below for details.
-        :param pulumi.Input[list] labels: See Labels below for details.
-        :param pulumi.Input[dict] mode: See Mode below for details.
+        :param pulumi.Input[pulumi.InputType['ServiceAuthArgs']] auth: See Auth below for details.
+        :param pulumi.Input[pulumi.InputType['ServiceConvergeConfigArgs']] converge_config: See Converge Config below for details.
+        :param pulumi.Input[pulumi.InputType['ServiceEndpointSpecArgs']] endpoint_spec: See EndpointSpec below for details.
+        :param pulumi.Input[List[pulumi.Input[pulumi.InputType['ServiceLabelArgs']]]] labels: See Labels below for details.
+        :param pulumi.Input[pulumi.InputType['ServiceModeArgs']] mode: See Mode below for details.
         :param pulumi.Input[str] name: The name of the Docker service.
-        :param pulumi.Input[dict] rollback_config: See RollbackConfig below for details.
-        :param pulumi.Input[dict] task_spec: See TaskSpec below for details.
-        :param pulumi.Input[dict] update_config: See UpdateConfig below for details.
-
-        The **auth** object supports the following:
-
-          * `password` (`pulumi.Input[str]`) - The password to use for authenticating to the registry. If this is blank, the `DOCKER_REGISTRY_PASS` is also be checked.
-          * `server_address` (`pulumi.Input[str]`) - The address of the registry server
-          * `username` (`pulumi.Input[str]`) - The username to use for authenticating to the registry. If this is blank, the `DOCKER_REGISTRY_USER` is also be checked.
-
-        The **converge_config** object supports the following:
-
-          * `delay` (`pulumi.Input[str]`) - Time between each the check to check docker endpoint `(ms|s|m|h)`. For example, to check if
-            all tasks are up when a service is created, or to check if all tasks are successfully updated on an update. Default: `7s`.
-          * `timeout` (`pulumi.Input[str]`) - The timeout of the service to reach the desired state `(s|m)`. Default: `3m`.
-
-        The **endpoint_spec** object supports the following:
-
-          * `mode` (`pulumi.Input[str]`) - The mode of resolution to use for internal load balancing between tasks. `(vip|dnsrr)`. Default: `vip`.
-          * `ports` (`pulumi.Input[list]`) - See Ports below for details.
-            * `name` (`pulumi.Input[str]`) - The name of the Docker service.
-            * `protocol` (`pulumi.Input[str]`) - Protocol that can be used over this port: `tcp|udp|sctp`. Default: `tcp`.
-            * `publishMode` (`pulumi.Input[str]`) - Represents the mode in which the port is to be published: `ingress|host`
-            * `publishedPort` (`pulumi.Input[float]`) - The port on the swarm hosts. If not set the value of `target_port` will be used.
-            * `targetPort` (`pulumi.Input[float]`) - Port inside the container.
-
-        The **labels** object supports the following:
-
-          * `label` (`pulumi.Input[str]`) - Name of the label
-          * `value` (`pulumi.Input[str]`) - Value of the label
-
-        The **mode** object supports the following:
-
-          * `global` (`pulumi.Input[bool]`) - set it to `true` to run the service in the global mode
-          * `replicated` (`pulumi.Input[dict]`) - , which contains atm only the amount of `replicas`
-            * `replicas` (`pulumi.Input[float]`)
-
-        The **rollback_config** object supports the following:
-
-          * `delay` (`pulumi.Input[str]`) - Delay between restart attempts `(ms|s|m|h)`
-            all tasks are up when a service is created, or to check if all tasks are successfully updated on an update. Default: `7s`.
-          * `failureAction` (`pulumi.Input[str]`) - Action on update failure: `pause|continue|rollback`.
-          * `maxFailureRatio` (`pulumi.Input[str]`) - The failure rate to tolerate during an update as `float`. **Important:** the `float`need to be wrapped in a `string` to avoid internal
-            casting and precision errors.
-          * `monitor` (`pulumi.Input[str]`) - Duration after each task update to monitor for failure `(ns|us|ms|s|m|h)`
-          * `order` (`pulumi.Input[str]`) - Update order either 'stop-first' or 'start-first'.
-          * `parallelism` (`pulumi.Input[float]`) - The maximum number of tasks to be updated in one iteration simultaneously (0 to update all at once).
-
-        The **task_spec** object supports the following:
-
-          * `containerSpec` (`pulumi.Input[dict]`) - See ContainerSpec below for details.
-            * `args` (`pulumi.Input[list]`) - Arguments to the command.
-            * `commands` (`pulumi.Input[list]`) - The command to be run in the image.
-            * `configs` (`pulumi.Input[list]`) - See Configs below for details.
-              * `configId` (`pulumi.Input[str]`) - ConfigID represents the ID of the specific config.
-              * `configName` (`pulumi.Input[str]`) - The name of the config that this references, but internally it is just provided for lookup/display purposes
-              * `fileGid` (`pulumi.Input[str]`) - Represents the file GID. Defaults: `0`
-              * `fileMode` (`pulumi.Input[float]`) - Represents the FileMode of the file. Defaults: `0444`
-              * `fileName` (`pulumi.Input[str]`) - Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
-              * `fileUid` (`pulumi.Input[str]`) - Represents the file UID. Defaults: `0`
-
-            * `dir` (`pulumi.Input[str]`) - The working directory for commands to run in.
-            * `dnsConfig` (`pulumi.Input[dict]`) - See DNS Config below for details.
-              * `nameservers` (`pulumi.Input[list]`) - The IP addresses of the name servers, for example, `8.8.8.8`
-              * `options` (`pulumi.Input[list]`) - A list of internal resolver variables to be modified, for example, `debug`, `ndots:3`
-              * `searches` (`pulumi.Input[list]`) - A search list for host-name lookup.
-
-            * `env` (`pulumi.Input[dict]`) - A list of environment variables in the form VAR=value.
-            * `groups` (`pulumi.Input[list]`) - A list of additional groups that the container process will run as.
-            * `healthcheck` (`pulumi.Input[dict]`) - See Healthcheck below for details.
-              * `interval` (`pulumi.Input[str]`) - Time between running the check `(ms|s|m|h)`. Default: `0s`.
-              * `retries` (`pulumi.Input[float]`) - Consecutive failures needed to report unhealthy. Default: `0`.
-              * `startPeriod` (`pulumi.Input[str]`) - Start period for the container to initialize before counting retries towards unstable `(ms|s|m|h)`. Default: `0s`.
-              * `tests` (`pulumi.Input[list]`) - Command to run to check health. For example, to run `curl -f http://localhost/health` set the
-                command to be `["CMD", "curl", "-f", "http://localhost/health"]`.
-              * `timeout` (`pulumi.Input[str]`) - Maximum time to allow one check to run `(ms|s|m|h)`. Default: `0s`.
-
-            * `hostname` (`pulumi.Input[str]`) - The hostname to use for the container, as a valid RFC 1123 hostname.
-            * `hosts` (`pulumi.Input[list]`)
-              * `host` (`pulumi.Input[str]`) - A list of hostname/IP mappings to add to the container's hosts file.
-              * `ip` (`pulumi.Input[str]`) - The ip
-
-            * `image` (`pulumi.Input[str]`) - The image used to create the Docker service.
-            * `isolation` (`pulumi.Input[str]`) - Isolation technology of the containers running the service. (Windows only). Valid values are: `default|process|hyperv`
-            * `labels` (`pulumi.Input[list]`) - See Labels below for details.
-              * `label` (`pulumi.Input[str]`) - Name of the label
-              * `value` (`pulumi.Input[str]`) - Value of the label
-
-            * `mounts` (`pulumi.Input[list]`) - See Mounts below for details.
-              * `bindOptions` (`pulumi.Input[dict]`) - Optional configuration for the `bind` type.
-                * `propagation` (`pulumi.Input[str]`) - A propagation mode with the value.
-
-              * `read_only` (`pulumi.Input[bool]`) - Mount the container's root filesystem as read only.
-              * `source` (`pulumi.Input[str]`) - The mount source (e.g., a volume name, a host path)
-              * `target` (`pulumi.Input[str]`) - The container path.
-              * `tmpfsOptions` (`pulumi.Input[dict]`) - Optional configuration for the `tmpf` type.
-                * `mode` (`pulumi.Input[float]`) - See Mode below for details.
-                * `sizeBytes` (`pulumi.Input[float]`) - The size for the tmpfs mount in bytes.
-
-              * `type` (`pulumi.Input[str]`) - SELinux type label
-              * `volumeOptions` (`pulumi.Input[dict]`) - Optional configuration for the `volume` type.
-                * `driverName` (`pulumi.Input[str]`)
-                * `driverOptions` (`pulumi.Input[dict]`)
-                * `labels` (`pulumi.Input[list]`) - See Labels below for details.
-                  * `label` (`pulumi.Input[str]`) - Name of the label
-                  * `value` (`pulumi.Input[str]`) - Value of the label
-
-                * `noCopy` (`pulumi.Input[bool]`) - Whether to populate volume with data from the target.
-
-            * `privileges` (`pulumi.Input[dict]`) - See Privileges below for details.
-              * `credentialSpec` (`pulumi.Input[dict]`) - For managed service account (Windows only)
-                * `file` (`pulumi.Input[str]`) - Load credential spec from this file.
-                * `registry` (`pulumi.Input[str]`) - Load credential spec from this value in the Windows registry.
-
-              * `seLinuxContext` (`pulumi.Input[dict]`) - SELinux labels of the container
-                * `disable` (`pulumi.Input[bool]`) - Disable SELinux
-                * `level` (`pulumi.Input[str]`) - SELinux level label
-                * `role` (`pulumi.Input[str]`) - SELinux role label
-                * `type` (`pulumi.Input[str]`) - SELinux type label
-                * `user` (`pulumi.Input[str]`) - The user inside the container.
-
-            * `read_only` (`pulumi.Input[bool]`) - Mount the container's root filesystem as read only.
-            * `secrets` (`pulumi.Input[list]`) - See Secrets below for details.
-              * `fileGid` (`pulumi.Input[str]`) - Represents the file GID. Defaults: `0`
-              * `fileMode` (`pulumi.Input[float]`) - Represents the FileMode of the file. Defaults: `0444`
-              * `fileName` (`pulumi.Input[str]`) - Represents the final filename in the filesystem. The specific target file that the secret data is written within the docker container, e.g. `/root/secret/secret.json`
-              * `fileUid` (`pulumi.Input[str]`) - Represents the file UID. Defaults: `0`
-              * `secretId` (`pulumi.Input[str]`) - ConfigID represents the ID of the specific secret.
-              * `secretName` (`pulumi.Input[str]`) - The name of the secret that this references, but internally it is just provided for lookup/display purposes
-
-            * `stopGracePeriod` (`pulumi.Input[str]`) - Amount of time to wait for the container to terminate before forcefully removing it `(ms|s|m|h)`.
-            * `stopSignal` (`pulumi.Input[str]`) - Signal to stop the container.
-            * `user` (`pulumi.Input[str]`) - The user inside the container.
-
-          * `forceUpdate` (`pulumi.Input[float]`) - A counter that triggers an update even if no relevant parameters have been changed. See [Docker Spec](https://github.com/docker/swarmkit/blob/master/api/specs.proto#L126).
-          * `log_driver` (`pulumi.Input[dict]`) - See Log Driver below for details.
-            * `name` (`pulumi.Input[str]`) - The logging driver to use. Either `(none|json-file|syslog|journald|gelf|fluentd|awslogs|splunk|etwlogs|gcplogs)`.
-            * `options` (`pulumi.Input[dict]`) - The options for the logging driver, e.g.
-
-          * `networks` (`pulumi.Input[list]`) - Ids of the networks in which the container will be put in.
-          * `placement` (`pulumi.Input[dict]`) - See Placement below for details.
-            * `constraints` (`pulumi.Input[list]`) - An array of constraints. e.g.: `node.role==manager`
-            * `platforms` (`pulumi.Input[list]`) - Platforms stores all the platforms that the service's image can run on
-              * `architecture` (`pulumi.Input[str]`) - The architecture, e.g., `amd64`
-              * `os` (`pulumi.Input[str]`) - The operation system, e.g., `linux`
-
-            * `prefs` (`pulumi.Input[list]`) - Preferences provide a way to make the scheduler aware of factors such as topology. They are provided in order from highest to lowest precedence, e.g.: `spread=node.role.manager`
-
-          * `resources` (`pulumi.Input[dict]`) - See Resources below for details.
-            * `limits` (`pulumi.Input[dict]`) - Describes the resources which can be advertised by a node and requested by a task.
-              * `genericResources` (`pulumi.Input[dict]`) - User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
-                * `discreteResourcesSpecs` (`pulumi.Input[list]`) - The Integer resources, delimited by `=`
-                * `namedResourcesSpecs` (`pulumi.Input[list]`) - The String resources, delimited by `=`
-
-              * `memoryBytes` (`pulumi.Input[float]`) - The amount of memory in bytes the container allocates
-              * `nanoCpus` (`pulumi.Input[float]`) - CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
-
-            * `reservation` (`pulumi.Input[dict]`) - An object describing the resources which can be advertised by a node and requested by a task.
-              * `genericResources` (`pulumi.Input[dict]`) - User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
-                * `discreteResourcesSpecs` (`pulumi.Input[list]`) - The Integer resources, delimited by `=`
-                * `namedResourcesSpecs` (`pulumi.Input[list]`) - The String resources, delimited by `=`
-
-              * `memoryBytes` (`pulumi.Input[float]`) - The amount of memory in bytes the container allocates
-              * `nanoCpus` (`pulumi.Input[float]`) - CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
-
-          * `restartPolicy` (`pulumi.Input[dict]`) - See Restart Policy below for details.
-            * `condition` (`pulumi.Input[str]`) - Condition for restart: `(none|on-failure|any)`
-            * `delay` (`pulumi.Input[str]`) - Delay between restart attempts `(ms|s|m|h)`
-            * `maxAttempts` (`pulumi.Input[float]`) - Maximum attempts to restart a given container before giving up (default value is `0`, which is ignored)
-            * `window` (`pulumi.Input[str]`) - The time window used to evaluate the restart policy (default value is `0`, which is unbounded) `(ms|s|m|h)`
-
-          * `runtime` (`pulumi.Input[str]`) - Runtime is the type of runtime specified for the task executor. See [Docker Runtime](https://github.com/moby/moby/blob/master/api/types/swarm/runtime.go).
-
-        The **update_config** object supports the following:
-
-          * `delay` (`pulumi.Input[str]`) - Delay between updates `(ns|us|ms|s|m|h)`, e.g. `5s`.
-          * `failureAction` (`pulumi.Input[str]`) - Action on update failure: `pause|continue|rollback`.
-          * `maxFailureRatio` (`pulumi.Input[str]`) - The failure rate to tolerate during an update as `float`. **Important:** the `float`need to be wrapped in a `string` to avoid internal
-            casting and precision errors.
-          * `monitor` (`pulumi.Input[str]`) - Duration after each task update to monitor for failure `(ns|us|ms|s|m|h)`
-          * `order` (`pulumi.Input[str]`) - Update order either 'stop-first' or 'start-first'.
-          * `parallelism` (`pulumi.Input[float]`) - The maximum number of tasks to be updated in one iteration simultaneously (0 to update all at once).
+        :param pulumi.Input[pulumi.InputType['ServiceRollbackConfigArgs']] rollback_config: See RollbackConfig below for details.
+        :param pulumi.Input[pulumi.InputType['ServiceTaskSpecArgs']] task_spec: See TaskSpec below for details.
+        :param pulumi.Input[pulumi.InputType['ServiceUpdateConfigArgs']] update_config: See UpdateConfig below for details.
         """
         if __name__ is not None:
             warnings.warn("explicit use of __name__ is deprecated", DeprecationWarning)
@@ -438,202 +78,34 @@ class Service(pulumi.CustomResource):
             opts)
 
     @staticmethod
-    def get(resource_name, id, opts=None, auth=None, converge_config=None, endpoint_spec=None, labels=None, mode=None, name=None, rollback_config=None, task_spec=None, update_config=None):
+    def get(resource_name: str,
+            id: pulumi.Input[str],
+            opts: Optional[pulumi.ResourceOptions] = None,
+            auth: Optional[pulumi.Input[pulumi.InputType['ServiceAuthArgs']]] = None,
+            converge_config: Optional[pulumi.Input[pulumi.InputType['ServiceConvergeConfigArgs']]] = None,
+            endpoint_spec: Optional[pulumi.Input[pulumi.InputType['ServiceEndpointSpecArgs']]] = None,
+            labels: Optional[pulumi.Input[List[pulumi.Input[pulumi.InputType['ServiceLabelArgs']]]]] = None,
+            mode: Optional[pulumi.Input[pulumi.InputType['ServiceModeArgs']]] = None,
+            name: Optional[pulumi.Input[str]] = None,
+            rollback_config: Optional[pulumi.Input[pulumi.InputType['ServiceRollbackConfigArgs']]] = None,
+            task_spec: Optional[pulumi.Input[pulumi.InputType['ServiceTaskSpecArgs']]] = None,
+            update_config: Optional[pulumi.Input[pulumi.InputType['ServiceUpdateConfigArgs']]] = None) -> 'Service':
         """
         Get an existing Service resource's state with the given name, id, and optional extra
         properties used to qualify the lookup.
 
         :param str resource_name: The unique name of the resulting resource.
-        :param str id: The unique provider ID of the resource to lookup.
+        :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
-        :param pulumi.Input[dict] auth: See Auth below for details.
-        :param pulumi.Input[dict] converge_config: See Converge Config below for details.
-        :param pulumi.Input[dict] endpoint_spec: See EndpointSpec below for details.
-        :param pulumi.Input[list] labels: See Labels below for details.
-        :param pulumi.Input[dict] mode: See Mode below for details.
+        :param pulumi.Input[pulumi.InputType['ServiceAuthArgs']] auth: See Auth below for details.
+        :param pulumi.Input[pulumi.InputType['ServiceConvergeConfigArgs']] converge_config: See Converge Config below for details.
+        :param pulumi.Input[pulumi.InputType['ServiceEndpointSpecArgs']] endpoint_spec: See EndpointSpec below for details.
+        :param pulumi.Input[List[pulumi.Input[pulumi.InputType['ServiceLabelArgs']]]] labels: See Labels below for details.
+        :param pulumi.Input[pulumi.InputType['ServiceModeArgs']] mode: See Mode below for details.
         :param pulumi.Input[str] name: The name of the Docker service.
-        :param pulumi.Input[dict] rollback_config: See RollbackConfig below for details.
-        :param pulumi.Input[dict] task_spec: See TaskSpec below for details.
-        :param pulumi.Input[dict] update_config: See UpdateConfig below for details.
-
-        The **auth** object supports the following:
-
-          * `password` (`pulumi.Input[str]`) - The password to use for authenticating to the registry. If this is blank, the `DOCKER_REGISTRY_PASS` is also be checked.
-          * `server_address` (`pulumi.Input[str]`) - The address of the registry server
-          * `username` (`pulumi.Input[str]`) - The username to use for authenticating to the registry. If this is blank, the `DOCKER_REGISTRY_USER` is also be checked.
-
-        The **converge_config** object supports the following:
-
-          * `delay` (`pulumi.Input[str]`) - Time between each the check to check docker endpoint `(ms|s|m|h)`. For example, to check if
-            all tasks are up when a service is created, or to check if all tasks are successfully updated on an update. Default: `7s`.
-          * `timeout` (`pulumi.Input[str]`) - The timeout of the service to reach the desired state `(s|m)`. Default: `3m`.
-
-        The **endpoint_spec** object supports the following:
-
-          * `mode` (`pulumi.Input[str]`) - The mode of resolution to use for internal load balancing between tasks. `(vip|dnsrr)`. Default: `vip`.
-          * `ports` (`pulumi.Input[list]`) - See Ports below for details.
-            * `name` (`pulumi.Input[str]`) - The name of the Docker service.
-            * `protocol` (`pulumi.Input[str]`) - Protocol that can be used over this port: `tcp|udp|sctp`. Default: `tcp`.
-            * `publishMode` (`pulumi.Input[str]`) - Represents the mode in which the port is to be published: `ingress|host`
-            * `publishedPort` (`pulumi.Input[float]`) - The port on the swarm hosts. If not set the value of `target_port` will be used.
-            * `targetPort` (`pulumi.Input[float]`) - Port inside the container.
-
-        The **labels** object supports the following:
-
-          * `label` (`pulumi.Input[str]`) - Name of the label
-          * `value` (`pulumi.Input[str]`) - Value of the label
-
-        The **mode** object supports the following:
-
-          * `global` (`pulumi.Input[bool]`) - set it to `true` to run the service in the global mode
-          * `replicated` (`pulumi.Input[dict]`) - , which contains atm only the amount of `replicas`
-            * `replicas` (`pulumi.Input[float]`)
-
-        The **rollback_config** object supports the following:
-
-          * `delay` (`pulumi.Input[str]`) - Delay between restart attempts `(ms|s|m|h)`
-            all tasks are up when a service is created, or to check if all tasks are successfully updated on an update. Default: `7s`.
-          * `failureAction` (`pulumi.Input[str]`) - Action on update failure: `pause|continue|rollback`.
-          * `maxFailureRatio` (`pulumi.Input[str]`) - The failure rate to tolerate during an update as `float`. **Important:** the `float`need to be wrapped in a `string` to avoid internal
-            casting and precision errors.
-          * `monitor` (`pulumi.Input[str]`) - Duration after each task update to monitor for failure `(ns|us|ms|s|m|h)`
-          * `order` (`pulumi.Input[str]`) - Update order either 'stop-first' or 'start-first'.
-          * `parallelism` (`pulumi.Input[float]`) - The maximum number of tasks to be updated in one iteration simultaneously (0 to update all at once).
-
-        The **task_spec** object supports the following:
-
-          * `containerSpec` (`pulumi.Input[dict]`) - See ContainerSpec below for details.
-            * `args` (`pulumi.Input[list]`) - Arguments to the command.
-            * `commands` (`pulumi.Input[list]`) - The command to be run in the image.
-            * `configs` (`pulumi.Input[list]`) - See Configs below for details.
-              * `configId` (`pulumi.Input[str]`) - ConfigID represents the ID of the specific config.
-              * `configName` (`pulumi.Input[str]`) - The name of the config that this references, but internally it is just provided for lookup/display purposes
-              * `fileGid` (`pulumi.Input[str]`) - Represents the file GID. Defaults: `0`
-              * `fileMode` (`pulumi.Input[float]`) - Represents the FileMode of the file. Defaults: `0444`
-              * `fileName` (`pulumi.Input[str]`) - Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
-              * `fileUid` (`pulumi.Input[str]`) - Represents the file UID. Defaults: `0`
-
-            * `dir` (`pulumi.Input[str]`) - The working directory for commands to run in.
-            * `dnsConfig` (`pulumi.Input[dict]`) - See DNS Config below for details.
-              * `nameservers` (`pulumi.Input[list]`) - The IP addresses of the name servers, for example, `8.8.8.8`
-              * `options` (`pulumi.Input[list]`) - A list of internal resolver variables to be modified, for example, `debug`, `ndots:3`
-              * `searches` (`pulumi.Input[list]`) - A search list for host-name lookup.
-
-            * `env` (`pulumi.Input[dict]`) - A list of environment variables in the form VAR=value.
-            * `groups` (`pulumi.Input[list]`) - A list of additional groups that the container process will run as.
-            * `healthcheck` (`pulumi.Input[dict]`) - See Healthcheck below for details.
-              * `interval` (`pulumi.Input[str]`) - Time between running the check `(ms|s|m|h)`. Default: `0s`.
-              * `retries` (`pulumi.Input[float]`) - Consecutive failures needed to report unhealthy. Default: `0`.
-              * `startPeriod` (`pulumi.Input[str]`) - Start period for the container to initialize before counting retries towards unstable `(ms|s|m|h)`. Default: `0s`.
-              * `tests` (`pulumi.Input[list]`) - Command to run to check health. For example, to run `curl -f http://localhost/health` set the
-                command to be `["CMD", "curl", "-f", "http://localhost/health"]`.
-              * `timeout` (`pulumi.Input[str]`) - Maximum time to allow one check to run `(ms|s|m|h)`. Default: `0s`.
-
-            * `hostname` (`pulumi.Input[str]`) - The hostname to use for the container, as a valid RFC 1123 hostname.
-            * `hosts` (`pulumi.Input[list]`)
-              * `host` (`pulumi.Input[str]`) - A list of hostname/IP mappings to add to the container's hosts file.
-              * `ip` (`pulumi.Input[str]`) - The ip
-
-            * `image` (`pulumi.Input[str]`) - The image used to create the Docker service.
-            * `isolation` (`pulumi.Input[str]`) - Isolation technology of the containers running the service. (Windows only). Valid values are: `default|process|hyperv`
-            * `labels` (`pulumi.Input[list]`) - See Labels below for details.
-              * `label` (`pulumi.Input[str]`) - Name of the label
-              * `value` (`pulumi.Input[str]`) - Value of the label
-
-            * `mounts` (`pulumi.Input[list]`) - See Mounts below for details.
-              * `bindOptions` (`pulumi.Input[dict]`) - Optional configuration for the `bind` type.
-                * `propagation` (`pulumi.Input[str]`) - A propagation mode with the value.
-
-              * `read_only` (`pulumi.Input[bool]`) - Mount the container's root filesystem as read only.
-              * `source` (`pulumi.Input[str]`) - The mount source (e.g., a volume name, a host path)
-              * `target` (`pulumi.Input[str]`) - The container path.
-              * `tmpfsOptions` (`pulumi.Input[dict]`) - Optional configuration for the `tmpf` type.
-                * `mode` (`pulumi.Input[float]`) - See Mode below for details.
-                * `sizeBytes` (`pulumi.Input[float]`) - The size for the tmpfs mount in bytes.
-
-              * `type` (`pulumi.Input[str]`) - SELinux type label
-              * `volumeOptions` (`pulumi.Input[dict]`) - Optional configuration for the `volume` type.
-                * `driverName` (`pulumi.Input[str]`)
-                * `driverOptions` (`pulumi.Input[dict]`)
-                * `labels` (`pulumi.Input[list]`) - See Labels below for details.
-                  * `label` (`pulumi.Input[str]`) - Name of the label
-                  * `value` (`pulumi.Input[str]`) - Value of the label
-
-                * `noCopy` (`pulumi.Input[bool]`) - Whether to populate volume with data from the target.
-
-            * `privileges` (`pulumi.Input[dict]`) - See Privileges below for details.
-              * `credentialSpec` (`pulumi.Input[dict]`) - For managed service account (Windows only)
-                * `file` (`pulumi.Input[str]`) - Load credential spec from this file.
-                * `registry` (`pulumi.Input[str]`) - Load credential spec from this value in the Windows registry.
-
-              * `seLinuxContext` (`pulumi.Input[dict]`) - SELinux labels of the container
-                * `disable` (`pulumi.Input[bool]`) - Disable SELinux
-                * `level` (`pulumi.Input[str]`) - SELinux level label
-                * `role` (`pulumi.Input[str]`) - SELinux role label
-                * `type` (`pulumi.Input[str]`) - SELinux type label
-                * `user` (`pulumi.Input[str]`) - The user inside the container.
-
-            * `read_only` (`pulumi.Input[bool]`) - Mount the container's root filesystem as read only.
-            * `secrets` (`pulumi.Input[list]`) - See Secrets below for details.
-              * `fileGid` (`pulumi.Input[str]`) - Represents the file GID. Defaults: `0`
-              * `fileMode` (`pulumi.Input[float]`) - Represents the FileMode of the file. Defaults: `0444`
-              * `fileName` (`pulumi.Input[str]`) - Represents the final filename in the filesystem. The specific target file that the secret data is written within the docker container, e.g. `/root/secret/secret.json`
-              * `fileUid` (`pulumi.Input[str]`) - Represents the file UID. Defaults: `0`
-              * `secretId` (`pulumi.Input[str]`) - ConfigID represents the ID of the specific secret.
-              * `secretName` (`pulumi.Input[str]`) - The name of the secret that this references, but internally it is just provided for lookup/display purposes
-
-            * `stopGracePeriod` (`pulumi.Input[str]`) - Amount of time to wait for the container to terminate before forcefully removing it `(ms|s|m|h)`.
-            * `stopSignal` (`pulumi.Input[str]`) - Signal to stop the container.
-            * `user` (`pulumi.Input[str]`) - The user inside the container.
-
-          * `forceUpdate` (`pulumi.Input[float]`) - A counter that triggers an update even if no relevant parameters have been changed. See [Docker Spec](https://github.com/docker/swarmkit/blob/master/api/specs.proto#L126).
-          * `log_driver` (`pulumi.Input[dict]`) - See Log Driver below for details.
-            * `name` (`pulumi.Input[str]`) - The logging driver to use. Either `(none|json-file|syslog|journald|gelf|fluentd|awslogs|splunk|etwlogs|gcplogs)`.
-            * `options` (`pulumi.Input[dict]`) - The options for the logging driver, e.g.
-
-          * `networks` (`pulumi.Input[list]`) - Ids of the networks in which the container will be put in.
-          * `placement` (`pulumi.Input[dict]`) - See Placement below for details.
-            * `constraints` (`pulumi.Input[list]`) - An array of constraints. e.g.: `node.role==manager`
-            * `platforms` (`pulumi.Input[list]`) - Platforms stores all the platforms that the service's image can run on
-              * `architecture` (`pulumi.Input[str]`) - The architecture, e.g., `amd64`
-              * `os` (`pulumi.Input[str]`) - The operation system, e.g., `linux`
-
-            * `prefs` (`pulumi.Input[list]`) - Preferences provide a way to make the scheduler aware of factors such as topology. They are provided in order from highest to lowest precedence, e.g.: `spread=node.role.manager`
-
-          * `resources` (`pulumi.Input[dict]`) - See Resources below for details.
-            * `limits` (`pulumi.Input[dict]`) - Describes the resources which can be advertised by a node and requested by a task.
-              * `genericResources` (`pulumi.Input[dict]`) - User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
-                * `discreteResourcesSpecs` (`pulumi.Input[list]`) - The Integer resources, delimited by `=`
-                * `namedResourcesSpecs` (`pulumi.Input[list]`) - The String resources, delimited by `=`
-
-              * `memoryBytes` (`pulumi.Input[float]`) - The amount of memory in bytes the container allocates
-              * `nanoCpus` (`pulumi.Input[float]`) - CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
-
-            * `reservation` (`pulumi.Input[dict]`) - An object describing the resources which can be advertised by a node and requested by a task.
-              * `genericResources` (`pulumi.Input[dict]`) - User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
-                * `discreteResourcesSpecs` (`pulumi.Input[list]`) - The Integer resources, delimited by `=`
-                * `namedResourcesSpecs` (`pulumi.Input[list]`) - The String resources, delimited by `=`
-
-              * `memoryBytes` (`pulumi.Input[float]`) - The amount of memory in bytes the container allocates
-              * `nanoCpus` (`pulumi.Input[float]`) - CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
-
-          * `restartPolicy` (`pulumi.Input[dict]`) - See Restart Policy below for details.
-            * `condition` (`pulumi.Input[str]`) - Condition for restart: `(none|on-failure|any)`
-            * `delay` (`pulumi.Input[str]`) - Delay between restart attempts `(ms|s|m|h)`
-            * `maxAttempts` (`pulumi.Input[float]`) - Maximum attempts to restart a given container before giving up (default value is `0`, which is ignored)
-            * `window` (`pulumi.Input[str]`) - The time window used to evaluate the restart policy (default value is `0`, which is unbounded) `(ms|s|m|h)`
-
-          * `runtime` (`pulumi.Input[str]`) - Runtime is the type of runtime specified for the task executor. See [Docker Runtime](https://github.com/moby/moby/blob/master/api/types/swarm/runtime.go).
-
-        The **update_config** object supports the following:
-
-          * `delay` (`pulumi.Input[str]`) - Delay between updates `(ns|us|ms|s|m|h)`, e.g. `5s`.
-          * `failureAction` (`pulumi.Input[str]`) - Action on update failure: `pause|continue|rollback`.
-          * `maxFailureRatio` (`pulumi.Input[str]`) - The failure rate to tolerate during an update as `float`. **Important:** the `float`need to be wrapped in a `string` to avoid internal
-            casting and precision errors.
-          * `monitor` (`pulumi.Input[str]`) - Duration after each task update to monitor for failure `(ns|us|ms|s|m|h)`
-          * `order` (`pulumi.Input[str]`) - Update order either 'stop-first' or 'start-first'.
-          * `parallelism` (`pulumi.Input[float]`) - The maximum number of tasks to be updated in one iteration simultaneously (0 to update all at once).
+        :param pulumi.Input[pulumi.InputType['ServiceRollbackConfigArgs']] rollback_config: See RollbackConfig below for details.
+        :param pulumi.Input[pulumi.InputType['ServiceTaskSpecArgs']] task_spec: See TaskSpec below for details.
+        :param pulumi.Input[pulumi.InputType['ServiceUpdateConfigArgs']] update_config: See UpdateConfig below for details.
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
 
@@ -650,8 +122,81 @@ class Service(pulumi.CustomResource):
         __props__["update_config"] = update_config
         return Service(resource_name, opts=opts, __props__=__props__)
 
+    @property
+    @pulumi.getter
+    def auth(self) -> Optional['outputs.ServiceAuth']:
+        """
+        See Auth below for details.
+        """
+        return pulumi.get(self, "auth")
+
+    @property
+    @pulumi.getter(name="convergeConfig")
+    def converge_config(self) -> Optional['outputs.ServiceConvergeConfig']:
+        """
+        See Converge Config below for details.
+        """
+        return pulumi.get(self, "converge_config")
+
+    @property
+    @pulumi.getter(name="endpointSpec")
+    def endpoint_spec(self) -> 'outputs.ServiceEndpointSpec':
+        """
+        See EndpointSpec below for details.
+        """
+        return pulumi.get(self, "endpoint_spec")
+
+    @property
+    @pulumi.getter
+    def labels(self) -> List['outputs.ServiceLabel']:
+        """
+        See Labels below for details.
+        """
+        return pulumi.get(self, "labels")
+
+    @property
+    @pulumi.getter
+    def mode(self) -> 'outputs.ServiceMode':
+        """
+        See Mode below for details.
+        """
+        return pulumi.get(self, "mode")
+
+    @property
+    @pulumi.getter
+    def name(self) -> str:
+        """
+        The name of the Docker service.
+        """
+        return pulumi.get(self, "name")
+
+    @property
+    @pulumi.getter(name="rollbackConfig")
+    def rollback_config(self) -> Optional['outputs.ServiceRollbackConfig']:
+        """
+        See RollbackConfig below for details.
+        """
+        return pulumi.get(self, "rollback_config")
+
+    @property
+    @pulumi.getter(name="taskSpec")
+    def task_spec(self) -> 'outputs.ServiceTaskSpec':
+        """
+        See TaskSpec below for details.
+        """
+        return pulumi.get(self, "task_spec")
+
+    @property
+    @pulumi.getter(name="updateConfig")
+    def update_config(self) -> Optional['outputs.ServiceUpdateConfig']:
+        """
+        See UpdateConfig below for details.
+        """
+        return pulumi.get(self, "update_config")
+
     def translate_output_property(self, prop):
         return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
 
     def translate_input_property(self, prop):
         return _tables.SNAKE_TO_CAMEL_CASE_TABLE.get(prop) or prop
+

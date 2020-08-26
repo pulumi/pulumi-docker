@@ -16,6 +16,8 @@ from .service import *
 from .service_config import *
 from .utils import *
 from .volume import *
+from ._inputs import *
+from . import outputs
 
 # Make subpackages available:
 from . import (

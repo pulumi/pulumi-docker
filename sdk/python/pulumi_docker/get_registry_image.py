@@ -5,10 +5,16 @@
 import warnings
 import pulumi
 import pulumi.runtime
-from typing import Union
+from typing import Any, Dict, List, Mapping, Optional, Tuple, Union
 from . import _utilities, _tables
 
+__all__ = [
+    'GetRegistryImageResult',
+    'AwaitableGetRegistryImageResult',
+    'get_registry_image',
+]
 
+@pulumi.output_type
 class GetRegistryImageResult:
     """
     A collection of values returned by getRegistryImage.
@@ -16,16 +22,31 @@ class GetRegistryImageResult:
     def __init__(__self__, id=None, name=None, sha256_digest=None):
         if id and not isinstance(id, str):
             raise TypeError("Expected argument 'id' to be a str")
-        __self__.id = id
+        pulumi.set(__self__, "id", id)
+        if name and not isinstance(name, str):
+            raise TypeError("Expected argument 'name' to be a str")
+        pulumi.set(__self__, "name", name)
+        if sha256_digest and not isinstance(sha256_digest, str):
+            raise TypeError("Expected argument 'sha256_digest' to be a str")
+        pulumi.set(__self__, "sha256_digest", sha256_digest)
+
+    @property
+    @pulumi.getter
+    def id(self) -> str:
         """
         The provider-assigned unique ID for this managed resource.
         """
-        if name and not isinstance(name, str):
-            raise TypeError("Expected argument 'name' to be a str")
-        __self__.name = name
-        if sha256_digest and not isinstance(sha256_digest, str):
-            raise TypeError("Expected argument 'sha256_digest' to be a str")
-        __self__.sha256_digest = sha256_digest
+        return pulumi.get(self, "id")
+
+    @property
+    @pulumi.getter
+    def name(self) -> Optional[str]:
+        return pulumi.get(self, "name")
+
+    @property
+    @pulumi.getter(name="sha256Digest")
+    def sha256_digest(self) -> str:
+        return pulumi.get(self, "sha256_digest")
 
 
 class AwaitableGetRegistryImageResult(GetRegistryImageResult):
@@ -39,7 +60,8 @@ class AwaitableGetRegistryImageResult(GetRegistryImageResult):
             sha256_digest=self.sha256_digest)
 
 
-def get_registry_image(name=None, opts=None):
+def get_registry_image(name: Optional[str] = None,
+                       opts: Optional[pulumi.InvokeOptions] = None) -> AwaitableGetRegistryImageResult:
     """
     Reads the image metadata from a Docker Registry. Used in conjunction with the
     [docker\_image](https://www.terraform.io/docs/providers/docker/r/image.html) resource to keep an image up
@@ -66,9 +88,9 @@ def get_registry_image(name=None, opts=None):
         opts = pulumi.InvokeOptions()
     if opts.version is None:
         opts.version = _utilities.get_version()
-    __ret__ = pulumi.runtime.invoke('docker:index/getRegistryImage:getRegistryImage', __args__, opts=opts).value
+    __ret__ = pulumi.runtime.invoke('docker:index/getRegistryImage:getRegistryImage', __args__, opts=opts, typ=GetRegistryImageResult).value
 
     return AwaitableGetRegistryImageResult(
-        id=__ret__.get('id'),
-        name=__ret__.get('name'),
-        sha256_digest=__ret__.get('sha256Digest'))
+        id=__ret__.id,
+        name=__ret__.name,
+        sha256_digest=__ret__.sha256_digest)
