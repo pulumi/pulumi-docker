@@ -25,16 +25,14 @@ jobs:
     steps:
     - name: Checkout Repo
       uses: actions/checkout@v2
-      with:
-        path: ./src/github.com/${{ github.repository }}
     - name: Checkout Scripts Repo
       uses: actions/checkout@v2
       with:
         path: ci-scripts
         repository: pulumi/scripts
     - name: Unshallow clone for tags
-      run: cd ${{ github.workspace}}/src && git fetch --prune --unshallow --tags
-    - name: Setup Go
+      run: git fetch --prune --unshallow --tags
+    - name: Install Go
       uses: actions/setup-go@v2
       with:
         go-version: ${{ matrix.goversion }}
@@ -104,16 +102,14 @@ jobs:
     steps:
     - name: Checkout Repo
       uses: actions/checkout@v2
-      with:
-        path: ./src/github.com/${{ github.repository }}
     - name: Checkout Scripts Repo
       uses: actions/checkout@v2
       with:
         path: ci-scripts
         repository: pulumi/scripts
     - name: Unshallow clone for tags
-      run: cd ${{ github.workspace}}/src && git fetch --prune --unshallow --tags
-    - name: Setup Go
+      run: git fetch --prune --unshallow --tags
+    - name: Install Go
       uses: actions/setup-go@v2
       with:
         go-version: ${{ matrix.goversion }}
@@ -140,16 +136,14 @@ jobs:
     steps:
     - name: Checkout Repo
       uses: actions/checkout@v2
-      with:
-        path: ./src/github.com/${{ github.repository }}
     - name: Checkout Scripts Repo
       uses: actions/checkout@v2
       with:
         path: ci-scripts
         repository: pulumi/scripts
     - name: Unshallow clone for tags
-      run: cd ${{ github.workspace}}/src && git fetch --prune --unshallow --tags
-    - name: Setup Go
+      run: git fetch --prune --unshallow --tags
+    - name: Install Go
       uses: actions/setup-go@v2
       with:
         go-version: ${{ matrix.goversion }}
@@ -174,16 +168,14 @@ jobs:
     steps:
     - name: Checkout Repo
       uses: actions/checkout@v2
-      with:
-        path: ./src/github.com/${{ github.repository }}
     - name: Checkout Scripts Repo
       uses: actions/checkout@v2
       with:
         path: ci-scripts
         repository: pulumi/scripts
     - name: Unshallow clone for tags
-      run: cd ${{ github.workspace}}/src && git fetch --prune --unshallow --tags
-    - name: Setup Go
+      run: git fetch --prune --unshallow --tags
+    - name: Install Go
       uses: actions/setup-go@v2
       with:
         go-version: ${{ matrix.goversion }}
@@ -215,7 +207,7 @@ jobs:
     - name: Checkout Repo
       uses: actions/checkout@v2
     - name: Unshallow clone for tags
-      run: cd ${{ github.workspace}}/src && git fetch --prune --unshallow --tags
+      run: git fetch --prune --unshallow --tags
     - name: Checkout Scripts Repo
       uses: actions/checkout@v2
       with:
@@ -256,16 +248,14 @@ jobs:
     steps:
     - name: Checkout Repo
       uses: actions/checkout@v2
-      with:
-        path: ./src/github.com/${{ github.repository }}
     - name: Checkout Scripts Repo
       uses: actions/checkout@v2
       with:
         path: ci-scripts
         repository: pulumi/scripts
     - name: Unshallow clone for tags
-      run: cd ${{ github.workspace}}/src && git fetch --prune --unshallow --tags
-    - name: Setup Go
+      run: git fetch --prune --unshallow --tags
+    - name: Install Go
       uses: actions/setup-go@v2
       with:
         go-version: ${{ matrix.goversion }}
@@ -319,16 +309,14 @@ jobs:
     steps:
     - name: Checkout Repo
       uses: actions/checkout@v2
-      with:
-        path: ./src/github.com/${{ github.repository }}
     - name: Checkout Scripts Repo
       uses: actions/checkout@v2
       with:
         path: ci-scripts
         repository: pulumi/scripts
     - name: Unshallow clone for tags
-      run: cd ${{ github.workspace}}/src && git fetch --prune --unshallow --tags
-    - name: Setup Go
+      run: git fetch --prune --unshallow --tags
+    - name: Install Go
       uses: actions/setup-go@v2
       with:
         go-version: ${{ matrix.goversion }}
@@ -381,9 +369,7 @@ jobs:
         role-duration-seconds: 3600
         role-session-name: ${{ env.PROVIDER }}@githubActions
         role-to-assume: ${{ secrets.AWS_CI_ROLE_ARN }}
-    - env:
-        GOPATH: ${{ runner.workspace }}
-      name: Run tests
+    - name: Run tests
       run: cd examples && go test -v -count=1 -cover -timeout 2h -tags=${{ matrix.language
         }} -parallel 4 .
     - if: failure() && github.event_name == 'push'
