@@ -7,6 +7,7 @@ env:
   AZURE_LOCATION: westus
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   GO111MODULE: "on"
+  GOPATH: ${{ runner.workspace }}
   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
   NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
   NUGET_PUBLISH_KEY: ${{ secrets.NUGET_PUBLISH_KEY }}
@@ -23,14 +24,10 @@ jobs:
     needs: prerequisites
     runs-on: ubuntu-latest
     steps:
-    - name: Install Go
-      uses: actions/setup-go@v2
-      with:
-        go-version: ${{ matrix.goversion }}
     - name: Checkout Repo
       uses: actions/checkout@v2
       with:
-        path: ${{ env.GOPATH }}/src/github.com/${{ env.GITHUB_REPOSITORY}}
+        path: ./src/github.com/${{ github.repository }}
     - name: Checkout Scripts Repo
       uses: actions/checkout@v2
       with:
@@ -38,6 +35,10 @@ jobs:
         repository: pulumi/scripts
     - name: Unshallow clone for tags
       run: git fetch --prune --unshallow --tags
+    - name: Setup Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: ${{ matrix.goversion }}
     - name: Install pulumictl
       uses: jaxxstorm/action-install-gh-release@release/v1-alpha
       with:
@@ -115,14 +116,10 @@ jobs:
     name: lint
     runs-on: ubuntu-latest
     steps:
-    - name: Install Go
-      uses: actions/setup-go@v2
-      with:
-        go-version: ${{ matrix.goversion }}
     - name: Checkout Repo
       uses: actions/checkout@v2
       with:
-        path: ${{ env.GOPATH }}/src/github.com/${{ env.GITHUB_REPOSITORY}}
+        path: ./src/github.com/${{ github.repository }}
     - name: Checkout Scripts Repo
       uses: actions/checkout@v2
       with:
@@ -130,6 +127,10 @@ jobs:
         repository: pulumi/scripts
     - name: Unshallow clone for tags
       run: git fetch --prune --unshallow --tags
+    - name: Setup Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: ${{ matrix.goversion }}
     - name: Install pulumictl
       uses: jaxxstorm/action-install-gh-release@release/v1-alpha
       with:
@@ -151,14 +152,10 @@ jobs:
     needs: build_sdk
     runs-on: ubuntu-latest
     steps:
-    - name: Install Go
-      uses: actions/setup-go@v2
-      with:
-        go-version: ${{ matrix.goversion }}
     - name: Checkout Repo
       uses: actions/checkout@v2
       with:
-        path: ${{ env.GOPATH }}/src/github.com/${{ env.GITHUB_REPOSITORY}}
+        path: ./src/github.com/${{ github.repository }}
     - name: Checkout Scripts Repo
       uses: actions/checkout@v2
       with:
@@ -166,6 +163,10 @@ jobs:
         repository: pulumi/scripts
     - name: Unshallow clone for tags
       run: git fetch --prune --unshallow --tags
+    - name: Setup Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: ${{ matrix.goversion }}
     - name: Install pulumictl
       uses: jaxxstorm/action-install-gh-release@release/v1-alpha
       with:
@@ -185,14 +186,10 @@ jobs:
     name: prerequisites
     runs-on: ubuntu-latest
     steps:
-    - name: Install Go
-      uses: actions/setup-go@v2
-      with:
-        go-version: ${{ matrix.goversion }}
     - name: Checkout Repo
       uses: actions/checkout@v2
       with:
-        path: ${{ env.GOPATH }}/src/github.com/${{ env.GITHUB_REPOSITORY}}
+        path: ./src/github.com/${{ github.repository }}
     - name: Checkout Scripts Repo
       uses: actions/checkout@v2
       with:
@@ -200,6 +197,10 @@ jobs:
         repository: pulumi/scripts
     - name: Unshallow clone for tags
       run: git fetch --prune --unshallow --tags
+    - name: Setup Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: ${{ matrix.goversion }}
     - name: Install pulumictl
       uses: jaxxstorm/action-install-gh-release@release/v1-alpha
       with:
@@ -262,14 +263,10 @@ jobs:
     needs: publish
     runs-on: ubuntu-latest
     steps:
-    - name: Install Go
-      uses: actions/setup-go@v2
-      with:
-        go-version: ${{ matrix.goversion }}
     - name: Checkout Repo
       uses: actions/checkout@v2
       with:
-        path: ${{ env.GOPATH }}/src/github.com/${{ env.GITHUB_REPOSITORY}}
+        path: ./src/github.com/${{ github.repository }}
     - name: Checkout Scripts Repo
       uses: actions/checkout@v2
       with:
@@ -277,6 +274,10 @@ jobs:
         repository: pulumi/scripts
     - name: Unshallow clone for tags
       run: git fetch --prune --unshallow --tags
+    - name: Setup Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: ${{ matrix.goversion }}
     - name: Install pulumictl
       uses: jaxxstorm/action-install-gh-release@release/v1-alpha
       with:
@@ -325,14 +326,10 @@ jobs:
     needs: build_sdk
     runs-on: ubuntu-latest
     steps:
-    - name: Install Go
-      uses: actions/setup-go@v2
-      with:
-        go-version: ${{ matrix.goversion }}
     - name: Checkout Repo
       uses: actions/checkout@v2
       with:
-        path: ${{ env.GOPATH }}/src/github.com/${{ env.GITHUB_REPOSITORY}}
+        path: ./src/github.com/${{ github.repository }}
     - name: Checkout Scripts Repo
       uses: actions/checkout@v2
       with:
@@ -340,6 +337,10 @@ jobs:
         repository: pulumi/scripts
     - name: Unshallow clone for tags
       run: git fetch --prune --unshallow --tags
+    - name: Setup Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: ${{ matrix.goversion }}
     - name: Install pulumictl
       uses: jaxxstorm/action-install-gh-release@release/v1-alpha
       with:
