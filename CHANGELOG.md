@@ -1,4 +1,5 @@
 ## HEAD (Unreleased)
+* Always append specified environment variables to the current OS environment variable set [#212](https://github.com/pulumi/pulumi-docker/pull/212)
 * Fix bug in python Image implementation [#190](https://github.com/pulumi/pulumi-docker/issues/190)
 * Upgrade to v2.7.2 of the Docker Terraform Provider
 * Upgrade to pulumi-terraform-bridge v2.7.0
