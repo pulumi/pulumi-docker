@@ -215,7 +215,7 @@ jobs:
     - name: Checkout Repo
       uses: actions/checkout@v2
     - name: Unshallow clone for tags
-      run: git fetch --prune --unshallow --tags
+      run: cd ${{ github.workspace}}/src && git fetch --prune --unshallow --tags
     - name: Checkout Scripts Repo
       uses: actions/checkout@v2
       with:
