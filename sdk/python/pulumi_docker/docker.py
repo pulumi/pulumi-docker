@@ -13,6 +13,7 @@
 # limitations under the License.
 import json
 import math
+import os
 import re
 import subprocess
 from random import random
@@ -638,6 +639,9 @@ def run_command_that_can_fail(
     stream_id = math.floor(random() * (1 << 30))
 
     cmd = [cmd_name] + args
+
+    if env is not None:
+        env = os.environ.copy().update(env)
 
     process = subprocess.Popen(cmd, env=env, stdout=subprocess.PIPE,
                                stderr=subprocess.PIPE, stdin=subprocess.PIPE, encoding="utf-8")

@@ -82,7 +82,7 @@ type DockerBuildArgs struct {
 	// An optional map of named build-time argument variables to set during the Docker build.
 	// This flag allows you to pass built-time variables that can be accessed like environment variables
 	// inside the `RUN` instruction.
-	Args pulumi.MapInput `pulumi:"args"`
+	Args pulumi.StringMap `pulumi:"args"`
 
 	// An optional CacheFrom object with information about the build stages to use for the Docker
 	// build cache.  This parameter maps to the --cache-from argument to the Docker CLI. If this
@@ -96,7 +96,7 @@ type DockerBuildArgs struct {
 
 	// Environment variables to set on the invocation of `docker build`, for example to support
 	// `DOCKER_BUILDKIT=1 docker build`.
-	Env pulumi.MapInput `pulumi:"env"`
+	Env pulumi.StringMapInput `pulumi:"env"`
 
 	// The target of the dockerfile to build.
 	Target pulumi.StringInput `pulumi:"target"`

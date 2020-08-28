@@ -629,6 +629,8 @@ async function runCommandThatCanFail(
     const streamID = Math.floor(Math.random() * (1 << 30));
 
     return new Promise<CommandResult>((resolve, reject) => {
+        const osEnv = Object.assign({}, process.env);
+        env = Object.assign(osEnv, env)
         const p = child_process.spawn(cmd, args, {env});
 
         // We store the results from stdout in memory and will return them as a string.
