@@ -32,7 +32,7 @@ func TestNginxGo(t *testing.T) {
 
 	opts := base.With(integration.ProgramTestOptions{
 		Dependencies: []string{
-			"github.com/pulumi/pulumi-docker/sdk/v2/go",
+			"github.com/pulumi/pulumi-docker/sdk/v2",
 		},
 		Dir: path.Join(cwd, "nginx-go"),
 	})
@@ -47,7 +47,7 @@ func TestDockerfileGo(t *testing.T) {
 
 	opts := base.With(integration.ProgramTestOptions{
 		Dependencies: []string{
-			"github.com/pulumi/pulumi-docker/sdk/v2/go",
+			"github.com/pulumi/pulumi-docker/sdk/v2",
 		},
 		Dir: path.Join(cwd, "dockerfile-go"),
 	})

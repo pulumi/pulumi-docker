@@ -206,6 +206,9 @@ jobs:
     steps:
     - name: Checkout Repo
       uses: actions/checkout@v2
+      with:
+        path: "/home/runner/go/src/github.com/pulumi-docker"
+      set-env::GITHUB_WORKSPACE=/home/runner/go/src/github.com/pulumi-docker
     - name: Checkout Scripts Repo
       uses: actions/checkout@v2
       with:
@@ -269,6 +272,8 @@ jobs:
     - name: Run tests
       run: cd examples && go test -v -count=1 -cover -timeout 2h -tags=${{ matrix.language
         }} -parallel 4 .
+      env:
+        PULUMI_GO_DEP_ROOT: ${{ github.workspace }}
     - if: failure() && github.event_name == 'push'
       name: Notify Slack
       uses: 8398a7/action-slack@v3

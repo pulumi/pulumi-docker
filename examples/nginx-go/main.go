@@ -10,7 +10,6 @@ import (
 func main() {
 	pulumi.Run(func(ctx *pulumi.Context) error {
 
-        panic("intentionally panic")
 		// Get a reference to the remote image "nginx:1.15.6". Without specifying the repository, the Docker provider will
 		// try to download it from the public Docker Hub.
 		imageArgs := &docker.RemoteImageArgs{
