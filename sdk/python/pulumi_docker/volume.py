@@ -15,7 +15,7 @@ __all__ = ['Volume']
 
 class Volume(pulumi.CustomResource):
     def __init__(__self__,
-                 resource_name,
+                 resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
                  driver: Optional[pulumi.Input[str]] = None,
                  driver_opts: Optional[pulumi.Input[Mapping[str, Any]]] = None,
@@ -110,7 +110,7 @@ class Volume(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def driver(self) -> str:
+    def driver(self) -> pulumi.Output[str]:
         """
         Driver type for the volume (defaults to local).
         """
@@ -118,7 +118,7 @@ class Volume(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="driverOpts")
-    def driver_opts(self) -> Optional[Mapping[str, Any]]:
+    def driver_opts(self) -> pulumi.Output[Optional[Mapping[str, Any]]]:
         """
         Options specific to the driver.
         """
@@ -126,7 +126,7 @@ class Volume(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def labels(self) -> Optional[List['outputs.VolumeLabel']]:
+    def labels(self) -> pulumi.Output[Optional[List['outputs.VolumeLabel']]]:
         """
         User-defined key/value metadata.
         """
@@ -134,12 +134,12 @@ class Volume(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def mountpoint(self) -> str:
+    def mountpoint(self) -> pulumi.Output[str]:
         return pulumi.get(self, "mountpoint")
 
     @property
     @pulumi.getter
-    def name(self) -> str:
+    def name(self) -> pulumi.Output[str]:
         """
         The name of the Docker volume (generated if not
         provided).

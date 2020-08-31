@@ -13,7 +13,7 @@ __all__ = ['ServiceConfig']
 
 class ServiceConfig(pulumi.CustomResource):
     def __init__(__self__,
-                 resource_name,
+                 resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
                  data: Optional[pulumi.Input[str]] = None,
                  name: Optional[pulumi.Input[str]] = None,
@@ -80,7 +80,7 @@ class ServiceConfig(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def data(self) -> str:
+    def data(self) -> pulumi.Output[str]:
         """
         The base64 encoded data of the config.
         """
@@ -88,7 +88,7 @@ class ServiceConfig(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def name(self) -> str:
+    def name(self) -> pulumi.Output[str]:
         """
         The name of the Docker config.
         """

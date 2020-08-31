@@ -15,7 +15,7 @@ __all__ = ['Service']
 
 class Service(pulumi.CustomResource):
     def __init__(__self__,
-                 resource_name,
+                 resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
                  auth: Optional[pulumi.Input[pulumi.InputType['ServiceAuthArgs']]] = None,
                  converge_config: Optional[pulumi.Input[pulumi.InputType['ServiceConvergeConfigArgs']]] = None,
@@ -124,7 +124,7 @@ class Service(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def auth(self) -> Optional['outputs.ServiceAuth']:
+    def auth(self) -> pulumi.Output[Optional['outputs.ServiceAuth']]:
         """
         See Auth below for details.
         """
@@ -132,7 +132,7 @@ class Service(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="convergeConfig")
-    def converge_config(self) -> Optional['outputs.ServiceConvergeConfig']:
+    def converge_config(self) -> pulumi.Output[Optional['outputs.ServiceConvergeConfig']]:
         """
         See Converge Config below for details.
         """
@@ -140,7 +140,7 @@ class Service(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="endpointSpec")
-    def endpoint_spec(self) -> 'outputs.ServiceEndpointSpec':
+    def endpoint_spec(self) -> pulumi.Output['outputs.ServiceEndpointSpec']:
         """
         See EndpointSpec below for details.
         """
@@ -148,7 +148,7 @@ class Service(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def labels(self) -> List['outputs.ServiceLabel']:
+    def labels(self) -> pulumi.Output[List['outputs.ServiceLabel']]:
         """
         See Labels below for details.
         """
@@ -156,7 +156,7 @@ class Service(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def mode(self) -> 'outputs.ServiceMode':
+    def mode(self) -> pulumi.Output['outputs.ServiceMode']:
         """
         See Mode below for details.
         """
@@ -164,7 +164,7 @@ class Service(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def name(self) -> str:
+    def name(self) -> pulumi.Output[str]:
         """
         The name of the Docker service.
         """
@@ -172,7 +172,7 @@ class Service(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="rollbackConfig")
-    def rollback_config(self) -> Optional['outputs.ServiceRollbackConfig']:
+    def rollback_config(self) -> pulumi.Output[Optional['outputs.ServiceRollbackConfig']]:
         """
         See RollbackConfig below for details.
         """
@@ -180,7 +180,7 @@ class Service(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="taskSpec")
-    def task_spec(self) -> 'outputs.ServiceTaskSpec':
+    def task_spec(self) -> pulumi.Output['outputs.ServiceTaskSpec']:
         """
         See TaskSpec below for details.
         """
@@ -188,7 +188,7 @@ class Service(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="updateConfig")
-    def update_config(self) -> Optional['outputs.ServiceUpdateConfig']:
+    def update_config(self) -> pulumi.Output[Optional['outputs.ServiceUpdateConfig']]:
         """
         See UpdateConfig below for details.
         """

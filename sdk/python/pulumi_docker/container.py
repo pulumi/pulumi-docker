@@ -15,7 +15,7 @@ __all__ = ['Container']
 
 class Container(pulumi.CustomResource):
     def __init__(__self__,
-                 resource_name,
+                 resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
                  attach: Optional[pulumi.Input[bool]] = None,
                  capabilities: Optional[pulumi.Input[pulumi.InputType['ContainerCapabilitiesArgs']]] = None,
@@ -459,7 +459,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def attach(self) -> Optional[bool]:
+    def attach(self) -> pulumi.Output[Optional[bool]]:
         """
         If true attach to the container after its creation and waits the end of his execution.
         """
@@ -467,7 +467,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def bridge(self) -> str:
+    def bridge(self) -> pulumi.Output[str]:
         """
         The network bridge of the container as read from its NetworkSettings.
         """
@@ -475,7 +475,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def capabilities(self) -> Optional['outputs.ContainerCapabilities']:
+    def capabilities(self) -> pulumi.Output[Optional['outputs.ContainerCapabilities']]:
         """
         See Capabilities below for details.
         """
@@ -483,7 +483,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def command(self) -> List[str]:
+    def command(self) -> pulumi.Output[List[str]]:
         """
         The command to use to start the
         container. For example, to run `/usr/bin/myprogram -f baz.conf` set the
@@ -493,7 +493,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="containerLogs")
-    def container_logs(self) -> str:
+    def container_logs(self) -> pulumi.Output[str]:
         """
         The logs of the container if its execution is done (`attach` must be disabled).
         """
@@ -501,7 +501,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="cpuSet")
-    def cpu_set(self) -> Optional[str]:
+    def cpu_set(self) -> pulumi.Output[Optional[str]]:
         """
         A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
         """
@@ -509,7 +509,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="cpuShares")
-    def cpu_shares(self) -> Optional[float]:
+    def cpu_shares(self) -> pulumi.Output[Optional[float]]:
         """
         CPU shares (relative weight) for the container.
         """
@@ -517,7 +517,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="destroyGraceSeconds")
-    def destroy_grace_seconds(self) -> Optional[float]:
+    def destroy_grace_seconds(self) -> pulumi.Output[Optional[float]]:
         """
         If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
         """
@@ -525,7 +525,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def devices(self) -> Optional[List['outputs.ContainerDevice']]:
+    def devices(self) -> pulumi.Output[Optional[List['outputs.ContainerDevice']]]:
         """
         See Devices below for details.
         """
@@ -533,7 +533,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def dns(self) -> List[str]:
+    def dns(self) -> pulumi.Output[List[str]]:
         """
         Set of DNS servers.
         """
@@ -541,7 +541,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="dnsOpts")
-    def dns_opts(self) -> List[str]:
+    def dns_opts(self) -> pulumi.Output[List[str]]:
         """
         Set of DNS options used by the DNS provider(s), see `resolv.conf` documentation for valid list of options.
         """
@@ -549,7 +549,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="dnsSearches")
-    def dns_searches(self) -> Optional[List[str]]:
+    def dns_searches(self) -> pulumi.Output[Optional[List[str]]]:
         """
         Set of DNS search domains that are used when bare unqualified hostnames are used inside of the container.
         """
@@ -557,7 +557,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def domainname(self) -> Optional[str]:
+    def domainname(self) -> pulumi.Output[Optional[str]]:
         """
         Domain name of the container.
         """
@@ -565,7 +565,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def entrypoints(self) -> List[str]:
+    def entrypoints(self) -> pulumi.Output[List[str]]:
         """
         The command to use as the
         Entrypoint for the container. The Entrypoint allows you to configure a
@@ -577,7 +577,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def envs(self) -> Optional[List[str]]:
+    def envs(self) -> pulumi.Output[Optional[List[str]]]:
         """
         Environment variables to set.
         """
@@ -585,7 +585,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="exitCode")
-    def exit_code(self) -> float:
+    def exit_code(self) -> pulumi.Output[float]:
         """
         The exit code of the container if its execution is done (`must_run` must be disabled).
         """
@@ -593,7 +593,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def gateway(self) -> str:
+    def gateway(self) -> pulumi.Output[str]:
         """
         *Deprecated:* Use `network_data` instead. The network gateway of the container as read from its
         NetworkSettings.
@@ -602,7 +602,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="groupAdds")
-    def group_adds(self) -> Optional[List[str]]:
+    def group_adds(self) -> pulumi.Output[Optional[List[str]]]:
         """
         Add additional groups to run as.
         """
@@ -610,7 +610,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def healthcheck(self) -> Optional['outputs.ContainerHealthcheck']:
+    def healthcheck(self) -> pulumi.Output[Optional['outputs.ContainerHealthcheck']]:
         """
         See Healthcheck below for details.
         """
@@ -618,7 +618,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def hostname(self) -> str:
+    def hostname(self) -> pulumi.Output[str]:
         """
         Hostname of the container.
         """
@@ -626,7 +626,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def hosts(self) -> Optional[List['outputs.ContainerHost']]:
+    def hosts(self) -> pulumi.Output[Optional[List['outputs.ContainerHost']]]:
         """
         Hostname to add.
         """
@@ -634,7 +634,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def image(self) -> str:
+    def image(self) -> pulumi.Output[str]:
         """
         The ID of the image to back this container.
         The easiest way to get this value is to use the `RemoteImage` resource
@@ -644,7 +644,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="ipAddress")
-    def ip_address(self) -> str:
+    def ip_address(self) -> pulumi.Output[str]:
         """
         *Deprecated:* Use `network_data` instead. The IP address of the container's first network it.
         """
@@ -652,7 +652,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="ipPrefixLength")
-    def ip_prefix_length(self) -> float:
+    def ip_prefix_length(self) -> pulumi.Output[float]:
         """
         *Deprecated:* Use `network_data` instead. The IP prefix length of the container as read from its
         NetworkSettings.
@@ -661,7 +661,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="ipcMode")
-    def ipc_mode(self) -> str:
+    def ipc_mode(self) -> pulumi.Output[str]:
         """
         IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
         """
@@ -669,7 +669,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def labels(self) -> Optional[List['outputs.ContainerLabel']]:
+    def labels(self) -> pulumi.Output[Optional[List['outputs.ContainerLabel']]]:
         """
         Adding labels.
         """
@@ -677,7 +677,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def links(self) -> Optional[List[str]]:
+    def links(self) -> pulumi.Output[Optional[List[str]]]:
         """
         Set of links for link based
         connectivity between containers that are running on the same host.
@@ -686,7 +686,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="logDriver")
-    def log_driver(self) -> str:
+    def log_driver(self) -> pulumi.Output[str]:
         """
         The logging driver to use for the container.
         Defaults to "json-file".
@@ -695,7 +695,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="logOpts")
-    def log_opts(self) -> Mapping[str, Any]:
+    def log_opts(self) -> pulumi.Output[Mapping[str, Any]]:
         """
         Key/value pairs to use as options for
         the logging driver.
@@ -704,7 +704,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def logs(self) -> Optional[bool]:
+    def logs(self) -> pulumi.Output[Optional[bool]]:
         """
         Save the container logs (`attach` must be enabled).
         """
@@ -712,7 +712,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="maxRetryCount")
-    def max_retry_count(self) -> Optional[float]:
+    def max_retry_count(self) -> pulumi.Output[Optional[float]]:
         """
         The maximum amount of times to an attempt
         a restart when `restart` is set to "on-failure"
@@ -721,7 +721,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def memory(self) -> Optional[float]:
+    def memory(self) -> pulumi.Output[Optional[float]]:
         """
         The memory limit for the container in MBs.
         """
@@ -729,12 +729,12 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="memorySwap")
-    def memory_swap(self) -> Optional[float]:
+    def memory_swap(self) -> pulumi.Output[Optional[float]]:
         return pulumi.get(self, "memory_swap")
 
     @property
     @pulumi.getter
-    def mounts(self) -> Optional[List['outputs.ContainerMount']]:
+    def mounts(self) -> pulumi.Output[Optional[List['outputs.ContainerMount']]]:
         """
         See Mounts below for details.
         """
@@ -742,17 +742,17 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="mustRun")
-    def must_run(self) -> Optional[bool]:
+    def must_run(self) -> pulumi.Output[Optional[bool]]:
         return pulumi.get(self, "must_run")
 
     @property
     @pulumi.getter
-    def name(self) -> str:
+    def name(self) -> pulumi.Output[str]:
         return pulumi.get(self, "name")
 
     @property
     @pulumi.getter(name="networkAliases")
-    def network_aliases(self) -> Optional[List[str]]:
+    def network_aliases(self) -> pulumi.Output[Optional[List[str]]]:
         """
         Network aliases of the container for user-defined networks only. *Deprecated:* use `networks_advanced` instead.
         """
@@ -760,7 +760,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="networkDatas")
-    def network_datas(self) -> List['outputs.ContainerNetworkData']:
+    def network_datas(self) -> pulumi.Output[List['outputs.ContainerNetworkData']]:
         """
         (Map of a block) The IP addresses of the container on each
         network. Key are the network names, values are the IP addresses.
@@ -769,7 +769,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="networkMode")
-    def network_mode(self) -> Optional[str]:
+    def network_mode(self) -> pulumi.Output[Optional[str]]:
         """
         Network mode of the container.
         """
@@ -777,7 +777,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def networks(self) -> Optional[List[str]]:
+    def networks(self) -> pulumi.Output[Optional[List[str]]]:
         """
         Id of the networks in which the
         container is. *Deprecated:* use `networks_advanced` instead.
@@ -786,7 +786,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="networksAdvanced")
-    def networks_advanced(self) -> Optional[List['outputs.ContainerNetworksAdvanced']]:
+    def networks_advanced(self) -> pulumi.Output[Optional[List['outputs.ContainerNetworksAdvanced']]]:
         """
         See Networks Advanced below for details. If this block has priority to the deprecated `network_alias` and `network` properties.
         """
@@ -794,7 +794,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="pidMode")
-    def pid_mode(self) -> Optional[str]:
+    def pid_mode(self) -> pulumi.Output[Optional[str]]:
         """
         The PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
         """
@@ -802,7 +802,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def ports(self) -> Optional[List['outputs.ContainerPort']]:
+    def ports(self) -> pulumi.Output[Optional[List['outputs.ContainerPort']]]:
         """
         See Ports below for details.
         """
@@ -810,7 +810,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def privileged(self) -> Optional[bool]:
+    def privileged(self) -> pulumi.Output[Optional[bool]]:
         """
         Run container in privileged mode.
         """
@@ -818,7 +818,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="publishAllPorts")
-    def publish_all_ports(self) -> Optional[bool]:
+    def publish_all_ports(self) -> pulumi.Output[Optional[bool]]:
         """
         Publish all ports of the container.
         """
@@ -826,7 +826,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="readOnly")
-    def read_only(self) -> Optional[bool]:
+    def read_only(self) -> pulumi.Output[Optional[bool]]:
         """
         If true, this volume will be readonly.
         Defaults to false.
@@ -835,7 +835,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def restart(self) -> Optional[str]:
+    def restart(self) -> pulumi.Output[Optional[str]]:
         """
         The restart policy for the container. Must be
         one of "no", "on-failure", "always", "unless-stopped".
@@ -844,12 +844,12 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def rm(self) -> Optional[bool]:
+    def rm(self) -> pulumi.Output[Optional[bool]]:
         return pulumi.get(self, "rm")
 
     @property
     @pulumi.getter(name="shmSize")
-    def shm_size(self) -> float:
+    def shm_size(self) -> pulumi.Output[float]:
         """
         Size of `/dev/shm` in MBs.
         """
@@ -857,7 +857,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def start(self) -> Optional[bool]:
+    def start(self) -> pulumi.Output[Optional[bool]]:
         """
         If true, then the Docker container will be
         started after creation. If false, then the container is only created.
@@ -866,7 +866,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def sysctls(self) -> Optional[Mapping[str, Any]]:
+    def sysctls(self) -> pulumi.Output[Optional[Mapping[str, Any]]]:
         """
         A map of kernel parameters (sysctls) to set in the container.
         """
@@ -874,7 +874,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def tmpfs(self) -> Optional[Mapping[str, Any]]:
+    def tmpfs(self) -> pulumi.Output[Optional[Mapping[str, Any]]]:
         """
         A map of container directories which should be replaced by `tmpfs mounts`, and their corresponding mount options.
         """
@@ -882,7 +882,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def ulimits(self) -> Optional[List['outputs.ContainerUlimit']]:
+    def ulimits(self) -> pulumi.Output[Optional[List['outputs.ContainerUlimit']]]:
         """
         See Ulimits below for
         details.
@@ -891,7 +891,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def uploads(self) -> Optional[List['outputs.ContainerUpload']]:
+    def uploads(self) -> pulumi.Output[Optional[List['outputs.ContainerUpload']]]:
         """
         See File Upload below for details.
         """
@@ -899,7 +899,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def user(self) -> str:
+    def user(self) -> pulumi.Output[str]:
         """
         User used for run the first process. Format is
         `user` or `user:group` which user and group can be passed literraly or
@@ -909,7 +909,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="usernsMode")
-    def userns_mode(self) -> Optional[str]:
+    def userns_mode(self) -> pulumi.Output[Optional[str]]:
         """
         Sets the usernamespace mode for the container when usernamespace remapping option is enabled.
         """
@@ -917,7 +917,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def volumes(self) -> Optional[List['outputs.ContainerVolume']]:
+    def volumes(self) -> pulumi.Output[Optional[List['outputs.ContainerVolume']]]:
         """
         See Volumes below for details.
         """
@@ -925,7 +925,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="workingDir")
-    def working_dir(self) -> str:
+    def working_dir(self) -> pulumi.Output[str]:
         """
         The working directory for commands to run in
         """
