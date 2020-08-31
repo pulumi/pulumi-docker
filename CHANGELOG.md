@@ -1,11 +1,14 @@
 ## HEAD (Unreleased)
+_(none)_
+
+---
+
+## 2.3.0 (2020-08-31)
 * Fix bug in python Image implementation [#190](https://github.com/pulumi/pulumi-docker/issues/190)
 * Upgrade to v2.7.2 of the Docker Terraform Provider
 * Upgrade to pulumi-terraform-bridge v2.7.3
 * Upgrade to Pulumi v2.9.0, which adds type annotations and input/output classes to Python
 * Avoid storing transient config from environment into the statefile
-
----
 
 ## 2.2.3 (2020-06-17)
 * Switch to GitHub actions for build
