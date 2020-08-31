@@ -206,9 +206,6 @@ jobs:
     steps:
     - name: Checkout Repo
       uses: actions/checkout@v2
-      with:
-        path: "/home/runner/go/src/github.com/pulumi-docker"
-      set-env::GITHUB_WORKSPACE=/home/runner/go/src/github.com/pulumi-docker
     - name: Checkout Scripts Repo
       uses: actions/checkout@v2
       with:
