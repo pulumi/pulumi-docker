@@ -20,7 +20,6 @@ type Provider struct {
 // NewProvider registers a new resource with the given unique name, arguments, and options.
 func NewProvider(ctx *pulumi.Context,
 	name string, args *ProviderArgs, opts ...pulumi.ResourceOption) (*Provider, error) {
-
 	if args == nil {
 		args = &ProviderArgs{}
 	}
