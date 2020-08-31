@@ -15,7 +15,7 @@ __all__ = ['Network']
 
 class Network(pulumi.CustomResource):
     def __init__(__self__,
-                 resource_name,
+                 resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
                  attachable: Optional[pulumi.Input[bool]] = None,
                  check_duplicate: Optional[pulumi.Input[bool]] = None,
@@ -168,7 +168,7 @@ class Network(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def attachable(self) -> Optional[bool]:
+    def attachable(self) -> pulumi.Output[Optional[bool]]:
         """
         Enable manual container attachment to the network.
         Defaults to `false`.
@@ -177,7 +177,7 @@ class Network(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="checkDuplicate")
-    def check_duplicate(self) -> Optional[bool]:
+    def check_duplicate(self) -> pulumi.Output[Optional[bool]]:
         """
         Requests daemon to check for networks
         with same name.
@@ -186,7 +186,7 @@ class Network(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def driver(self) -> str:
+    def driver(self) -> pulumi.Output[str]:
         """
         Name of the network driver to use. Defaults to
         `bridge` driver.
@@ -195,7 +195,7 @@ class Network(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def ingress(self) -> Optional[bool]:
+    def ingress(self) -> pulumi.Output[Optional[bool]]:
         """
         Create swarm routing-mesh network.
         Defaults to `false`.
@@ -204,7 +204,7 @@ class Network(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def internal(self) -> bool:
+    def internal(self) -> pulumi.Output[bool]:
         """
         Restrict external access to the network.
         Defaults to `false`.
@@ -213,7 +213,7 @@ class Network(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="ipamConfigs")
-    def ipam_configs(self) -> List['outputs.NetworkIpamConfig']:
+    def ipam_configs(self) -> pulumi.Output[List['outputs.NetworkIpamConfig']]:
         """
         See IPAM config below for
         details.
@@ -222,7 +222,7 @@ class Network(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="ipamDriver")
-    def ipam_driver(self) -> Optional[str]:
+    def ipam_driver(self) -> pulumi.Output[Optional[str]]:
         """
         Driver used by the custom IP scheme of the
         network.
@@ -231,7 +231,7 @@ class Network(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def ipv6(self) -> Optional[bool]:
+    def ipv6(self) -> pulumi.Output[Optional[bool]]:
         """
         Enable IPv6 networking.
         Defaults to `false`.
@@ -240,7 +240,7 @@ class Network(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def labels(self) -> Optional[List['outputs.NetworkLabel']]:
+    def labels(self) -> pulumi.Output[Optional[List['outputs.NetworkLabel']]]:
         """
         See Labels below for details.
         """
@@ -248,7 +248,7 @@ class Network(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def name(self) -> str:
+    def name(self) -> pulumi.Output[str]:
         """
         The name of the Docker network.
         """
@@ -256,7 +256,7 @@ class Network(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def options(self) -> Mapping[str, Any]:
+    def options(self) -> pulumi.Output[Mapping[str, Any]]:
         """
         Network specific options to be used by
         the drivers.
@@ -265,7 +265,7 @@ class Network(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def scope(self) -> str:
+    def scope(self) -> pulumi.Output[str]:
         return pulumi.get(self, "scope")
 
     def translate_output_property(self, prop):

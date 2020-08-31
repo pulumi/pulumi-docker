@@ -15,7 +15,7 @@ __all__ = ['Secret']
 
 class Secret(pulumi.CustomResource):
     def __init__(__self__,
-                 resource_name,
+                 resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
                  data: Optional[pulumi.Input[str]] = None,
                  labels: Optional[pulumi.Input[List[pulumi.Input[pulumi.InputType['SecretLabelArgs']]]]] = None,
@@ -88,7 +88,7 @@ class Secret(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def data(self) -> str:
+    def data(self) -> pulumi.Output[str]:
         """
         The base64 encoded data of the secret.
         """
@@ -96,7 +96,7 @@ class Secret(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def labels(self) -> Optional[List['outputs.SecretLabel']]:
+    def labels(self) -> pulumi.Output[Optional[List['outputs.SecretLabel']]]:
         """
         See Labels below for details.
         """
@@ -104,7 +104,7 @@ class Secret(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def name(self) -> str:
+    def name(self) -> pulumi.Output[str]:
         """
         The name of the Docker secret.
         """

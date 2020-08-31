@@ -524,6 +524,8 @@ github.com/pulumi/pulumi-terraform-bridge/v2 v2.6.0 h1:VSg0nVCf/IdslwOlHmoVQcAmI
 github.com/pulumi/pulumi-terraform-bridge/v2 v2.6.0/go.mod h1:+OsFzDf6+9dY73x6icyXR8NasSnTXx7F1x/B6LBAlZI=
 github.com/pulumi/pulumi-terraform-bridge/v2 v2.7.2 h1:ZgBUEz1zPN1p8el+YDXoRlOPSPcBz8ytfZH6Ncj/PN4=
 github.com/pulumi/pulumi-terraform-bridge/v2 v2.7.2/go.mod h1:UvbLRW8+YFluKwRZjzP3coPYWQPPYh/q9e2NN2GPbxg=
+github.com/pulumi/pulumi-terraform-bridge/v2 v2.7.3 h1:XZxl0fsf9vO45FM+tKPYE9f30fM+q2s6lHsEzkdnBNs=
+github.com/pulumi/pulumi-terraform-bridge/v2 v2.7.3/go.mod h1:TW+CNCZHzlH42y0vmRA9gOzeTFh3Cp7MN9DoGcRDLvo=
 github.com/pulumi/pulumi/pkg/v2 v2.0.0/go.mod h1:kNG9MBTdKP9AzMgkETumR3fmX9gUYB+HpQL767K6jXc=
 github.com/pulumi/pulumi/pkg/v2 v2.3.1-0.20200610172153-45a901d3e77c/go.mod h1:aqo0wBboEEdy+T5EYKUB6YnzbL80VPjgJPwjttuHqT0=
 github.com/pulumi/pulumi/pkg/v2 v2.5.1-0.20200701223250-45d2fa95d60b h1:77hcUu0l5O2mG7Q8OGdIrimdguwpFe8yuMSZXg8NWSM=
@@ -532,6 +534,8 @@ github.com/pulumi/pulumi/pkg/v2 v2.6.2-0.20200715231137-1a10e06588f6 h1:3AvdiZZW
 github.com/pulumi/pulumi/pkg/v2 v2.6.2-0.20200715231137-1a10e06588f6/go.mod h1:zfUm4/GH2dVRlHZ3Yeb9bRweCQM7icVBdplu6MUDRrQ=
 github.com/pulumi/pulumi/pkg/v2 v2.9.1-0.20200821035132-629254334213 h1:c8UQ842Zg6XzX4sPeGhBo8hiGFzoU23vaMmxk64V8eU=
 github.com/pulumi/pulumi/pkg/v2 v2.9.1-0.20200821035132-629254334213/go.mod h1:Yq1q3nwy/KeU08DyyX0QsMyc6SqPs0jGJb8ev5f45AU=
+github.com/pulumi/pulumi/pkg/v2 v2.9.1-0.20200825190708-910aa96016cd h1:e4nK2jqLm6g7qMW0BInHR3ZM55y1NblvgOlkfNGT2F4=
+github.com/pulumi/pulumi/pkg/v2 v2.9.1-0.20200825190708-910aa96016cd/go.mod h1:Yq1q3nwy/KeU08DyyX0QsMyc6SqPs0jGJb8ev5f45AU=
 github.com/pulumi/pulumi/sdk/v2 v2.0.0 h1:3VMXbEo3bqeaU+YDt8ufVBLD0WhLYE3tG3t/nIZ3Iac=
 github.com/pulumi/pulumi/sdk/v2 v2.0.0/go.mod h1:W7k1UDYerc5o97mHnlHHp5iQZKEby+oQrQefWt+2RF4=
 github.com/pulumi/pulumi/sdk/v2 v2.3.1-0.20200610172153-45a901d3e77c/go.mod h1:llk6tmXss8kJrt3vEXAkwiwgZOuINEFmKIfMveVIwO8=
@@ -542,6 +546,8 @@ github.com/pulumi/pulumi/sdk/v2 v2.7.1 h1:nv/bgZ4Q55Pvv2OVqAJ8wSKL4Fo8/oqK4WrKjZ
 github.com/pulumi/pulumi/sdk/v2 v2.7.1/go.mod h1:uZynzlmQbvvoNLuB7H7RQV9l4+eEpKI+J1UI1qqeuUM=
 github.com/pulumi/pulumi/sdk/v2 v2.9.1-0.20200821035132-629254334213 h1:h4hBtS6/S0a1deLtJuUuYAIZGOCIJY9OVSdmC4VRk+M=
 github.com/pulumi/pulumi/sdk/v2 v2.9.1-0.20200821035132-629254334213/go.mod h1:x84WPiFiuE+G4kJ5jUYkOxmnQJlWoJaHNeEYdqnCKA4=
+github.com/pulumi/pulumi/sdk/v2 v2.9.1-0.20200825190708-910aa96016cd h1:m5jEWpbr/Q94vCqA/7fw5US7cHZLeQiMQXrnSblZzdU=
+github.com/pulumi/pulumi/sdk/v2 v2.9.1-0.20200825190708-910aa96016cd/go.mod h1:x84WPiFiuE+G4kJ5jUYkOxmnQJlWoJaHNeEYdqnCKA4=
 github.com/pulumi/tf2pulumi v0.8.1-0.20200701212620-1e7538fb9a34 h1:u1NyO0NXvl+b6kXq2iuQgU95U3O1muXMZLEglS/k+zM=
 github.com/pulumi/tf2pulumi v0.8.1-0.20200701212620-1e7538fb9a34/go.mod h1:lE39suxXfTqjNHg8PxtPUdek3wnTTdnoYXVpQdFGmEo=
 github.com/rjeczalik/notify v0.9.2/go.mod h1:aErll2f0sUX9PXZnVNyeiObbmTlk5jnMoCa4QEjJeqM=

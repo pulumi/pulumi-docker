@@ -13,7 +13,7 @@ __all__ = ['RemoteImage']
 
 class RemoteImage(pulumi.CustomResource):
     def __init__(__self__,
-                 resource_name,
+                 resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
                  keep_locally: Optional[pulumi.Input[bool]] = None,
                  name: Optional[pulumi.Input[str]] = None,
@@ -134,7 +134,7 @@ class RemoteImage(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="keepLocally")
-    def keep_locally(self) -> Optional[bool]:
+    def keep_locally(self) -> pulumi.Output[Optional[bool]]:
         """
         If true, then the Docker image won't be
         deleted on destroy operation. If this is false, it will delete the image from
@@ -144,12 +144,12 @@ class RemoteImage(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def latest(self) -> str:
+    def latest(self) -> pulumi.Output[str]:
         return pulumi.get(self, "latest")
 
     @property
     @pulumi.getter
-    def name(self) -> str:
+    def name(self) -> pulumi.Output[str]:
         """
         The name of the Docker image, including any tags or SHA256 repo digests.
         """
@@ -157,7 +157,7 @@ class RemoteImage(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="pullTrigger")
-    def pull_trigger(self) -> Optional[str]:
+    def pull_trigger(self) -> pulumi.Output[Optional[str]]:
         """
         **Deprecated**, use `pull_triggers` instead.
         """
@@ -165,7 +165,7 @@ class RemoteImage(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="pullTriggers")
-    def pull_triggers(self) -> Optional[List[str]]:
+    def pull_triggers(self) -> pulumi.Output[Optional[List[str]]]:
         """
         List of values which cause an
         image pull when changed. This is used to store the image digest from the
