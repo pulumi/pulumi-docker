@@ -14,6 +14,10 @@ class Program
                 ImageName = "pulumi-user/example:v1.0.0",
                 Build = new DockerBuild
                 {
+                    Env = new Dictionary<string, string>
+                    { 
+                        {"TEST_ENV", "42"}, 
+                    },
                     Target = "dependencies",
                 },
                 SkipPush = true,

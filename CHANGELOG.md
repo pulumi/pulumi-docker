@@ -1,5 +1,6 @@
 ## HEAD (Unreleased)
-_(none)_
+
+* Always append specified environment variables to the current OS environment variable set [#212](https://github.com/pulumi/pulumi-docker/pull/212)
 
 ---
 
