@@ -1,6 +1,7 @@
 ## HEAD (Unreleased)
 
 * Always append specified environment variables to the current OS environment variable set [#212](https://github.com/pulumi/pulumi-docker/pull/212)
+* Fix Python type hints for lists [#225](https://github.com/pulumi/pulumi-docker/pull/225)
 
 ---
 
