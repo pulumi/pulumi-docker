@@ -17,7 +17,7 @@ import os
 import re
 import subprocess
 from random import random
-from typing import Optional, Union, List, Mapping
+from typing import Optional, Union, List, Mapping, Sequence
 from distutils.version import LooseVersion
 
 import pulumi
@@ -58,7 +58,7 @@ class CacheFrom:
     is always implicitly included.
     """
 
-    stages: Optional[List[pulumi.Input[pulumi.Input[str]]]]
+    stages: Optional[Sequence[pulumi.Input[pulumi.Input[str]]]]
     """
     An optional list of build stages to use for caching. Each build stage in this list will be
     built explicitly and pushed to the target repository. A given stage's image will be tagged as
@@ -97,7 +97,7 @@ class DockerBuild:
     a CacheFrom object, the stages named therein will also be pulled and passed to --cache-from.
     """
 
-    extra_options: Optional[List[pulumi.Input[pulumi.Input[str]]]]
+    extra_options: Optional[Sequence[pulumi.Input[pulumi.Input[str]]]]
     """
     An optional catch-all str to provide extra CLI options to the docker build command.  For
     example, use to specify `--network host`.
@@ -135,7 +135,7 @@ class DockerBuild:
             to the Docker CLI. If this parameter is `true`, only the final image will be pulled and passed to
             --cache-from if it is a CacheFrom object, the stages named therein will also be pulled and passed to
             --cache-from.
-        :param Optional[List[pulumi.Input[pulumi.Input[str]]]] extra_options: An optional catch-all str to provide
+        :param Optional[Sequence[pulumi.Input[pulumi.Input[str]]]] extra_options: An optional catch-all str to provide
             extra CLI options to the docker build command.  For example, use to specify `--network host`.
         :param Optional[Mapping[str, str]] env: Environment variables to set on the invocation of `docker build`, for
          example to support `DOCKER_BUILDKIT=1 docker build`.
@@ -349,7 +349,7 @@ def pull_cache(
     cache_from,
     repo_url: str,
     log_resource: pulumi.Resource
-) -> Optional[List[str]]:
+) -> Optional[Sequence[str]]:
     # Ensure that we have a repository URL. If we don't, we won't be able to pull anything.
     if not repo_url:
         return None
@@ -380,7 +380,7 @@ def pull_cache(
 
 class BuildResult:
     image_id: str
-    stages: List[str]
+    stages: Sequence[str]
 
     def __init__(self, image_id, stages):
         self.image_id = image_id
@@ -553,7 +553,7 @@ class CommandResult:
 
 
 def get_command_line_message(
-    cmd: str, args: List[str], report_full_command_line: bool, env: Optional[Mapping[str, str]] = None
+    cmd: str, args: Sequence[str], report_full_command_line: bool, env: Optional[Mapping[str, str]] = None
 ):
     elements = []
     if env:
@@ -566,7 +566,7 @@ def get_command_line_message(
 
 
 def get_failure_message(
-    cmd: str, args: List[str], report_full_command_line: bool, code: int, env: Optional[Mapping[str, str]] = None
+    cmd: str, args: Sequence[str], report_full_command_line: bool, code: int, env: Optional[Mapping[str, str]] = None
 ):
     return f'{get_command_line_message(cmd, args, report_full_command_line, env)} failed with exit code {code}'
 
@@ -576,7 +576,7 @@ def get_failure_message(
 # to false if it might contain sensitive information (like a username/password)
 def run_command_that_must_succeed(
     cmd: str,
-    args: List[str],
+    args: Sequence[str],
     log_resource: pulumi.Resource,
     report_full_command_line: bool = True,
     stdin: Optional[str] = None,
@@ -600,7 +600,7 @@ def run_command_that_must_succeed(
 
 def run_command_that_can_fail(
     cmd_name: str,
-    args: List[str],
+    args: Sequence[str],
     log_resource: pulumi.Resource,
     report_full_command_line: bool,
     report_error_as_warning: bool,
@@ -638,7 +638,8 @@ def run_command_that_can_fail(
     # which the grpc layer needs.
     stream_id = math.floor(random() * (1 << 30))
 
-    cmd = [cmd_name] + args
+    cmd = [cmd_name]
+    cmd.extend(args)
 
     if env is not None:
         env = os.environ.copy().update(env)
