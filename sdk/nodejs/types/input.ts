@@ -929,4 +929,3 @@ export interface VolumeLabel {
 }
 export namespace config {
 }
-

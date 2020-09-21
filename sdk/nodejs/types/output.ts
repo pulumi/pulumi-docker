@@ -943,4 +943,3 @@ export namespace config {
         username?: string;
     }
 }
-
