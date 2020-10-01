@@ -689,7 +689,11 @@ namespace Pulumi.Docker
 
             return;
 
-            void ProcessExited(object? sender, EventArgs e) => tcs.TrySetResult(true);
+            void ProcessExited(object? sender, EventArgs e)
+            {
+                process.WaitForExit();
+                tcs.TrySetResult(true);
+            }
         }
     }
 }
