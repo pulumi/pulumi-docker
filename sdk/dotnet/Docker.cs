@@ -621,17 +621,7 @@ namespace Pulumi.Docker
 
             try
             {
-                process.Start();
-                process.BeginOutputReadLine();
-                process.BeginErrorReadLine();
-
-                if (stdin != null)
-                {
-                    process.StandardInput.Write(stdin);
-                    process.StandardInput.Close();
-                }
-
-                await WaitForExitAsync(process);
+                await StartAndWaitForExitAsync(process, stdin);
                 var code = process.ExitCode;
 
                 // If we got any stderr messages, report them as an error/warning depending on the
@@ -669,7 +659,7 @@ namespace Pulumi.Docker
             }
         }
 
-        private static async Task WaitForExitAsync(Process process)
+        private static async Task StartAndWaitForExitAsync(Process process, string stdin)
         {
             var tcs = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
 
@@ -678,6 +668,16 @@ namespace Pulumi.Docker
 
             try
             {
+                process.Start();
+                process.BeginOutputReadLine();
+                process.BeginErrorReadLine();
+
+                if (stdin != null)
+                {
+                    process.StandardInput.Write(stdin);
+                    process.StandardInput.Close();
+                }
+
                 if (process.HasExited) return;
 
                 await tcs.Task.ConfigureAwait(false);
@@ -689,7 +689,11 @@ namespace Pulumi.Docker
 
             return;
 
-            void ProcessExited(object? sender, EventArgs e) => tcs.TrySetResult(true);
+            void ProcessExited(object? sender, EventArgs e)
+            {
+                process.WaitForExit();
+                tcs.TrySetResult(true);
+            }
         }
     }
 }

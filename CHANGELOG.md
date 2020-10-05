@@ -4,6 +4,8 @@
 * Fix Python type hints for lists [#225](https://github.com/pulumi/pulumi-docker/pull/225)
 * Upgrade to pulumi-terraform-bridge v2.8.0
 * Upgrade to Pulumi v2.10.0
+* Fix .NET concurrency issue leading to "No digest available for image" while building an image
+  [#229](https://github.com/pulumi/pulumi-docker/pull/229)
 
 ---
 
