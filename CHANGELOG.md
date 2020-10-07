@@ -1,4 +1,9 @@
 ## HEAD (Unreleased)
+_(none)_
+
+---
+
+## 2.3.1 (2020-10-07)
 
 * Always append specified environment variables to the current OS environment variable set [#212](https://github.com/pulumi/pulumi-docker/pull/212)
 * Fix Python type hints for lists [#225](https://github.com/pulumi/pulumi-docker/pull/225)
@@ -6,8 +11,6 @@
 * Upgrade to Pulumi v2.10.0
 * Fix .NET concurrency issue leading to "No digest available for image" while building an image
   [#229](https://github.com/pulumi/pulumi-docker/pull/229)
-
----
 
 ## 2.3.0 (2020-08-31)
 * Fix bug in python Image implementation [#190](https://github.com/pulumi/pulumi-docker/issues/190)
