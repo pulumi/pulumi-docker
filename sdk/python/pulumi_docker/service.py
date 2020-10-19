@@ -5,7 +5,7 @@
 import warnings
 import pulumi
 import pulumi.runtime
-from typing import Any, Dict, List, Mapping, Optional, Tuple, Union
+from typing import Any, Mapping, Optional, Sequence, Union
 from . import _utilities, _tables
 from . import outputs
 from ._inputs import *
@@ -20,7 +20,7 @@ class Service(pulumi.CustomResource):
                  auth: Optional[pulumi.Input[pulumi.InputType['ServiceAuthArgs']]] = None,
                  converge_config: Optional[pulumi.Input[pulumi.InputType['ServiceConvergeConfigArgs']]] = None,
                  endpoint_spec: Optional[pulumi.Input[pulumi.InputType['ServiceEndpointSpecArgs']]] = None,
-                 labels: Optional[pulumi.Input[List[pulumi.Input[pulumi.InputType['ServiceLabelArgs']]]]] = None,
+                 labels: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ServiceLabelArgs']]]]] = None,
                  mode: Optional[pulumi.Input[pulumi.InputType['ServiceModeArgs']]] = None,
                  name: Optional[pulumi.Input[str]] = None,
                  rollback_config: Optional[pulumi.Input[pulumi.InputType['ServiceRollbackConfigArgs']]] = None,
@@ -36,7 +36,7 @@ class Service(pulumi.CustomResource):
         :param pulumi.Input[pulumi.InputType['ServiceAuthArgs']] auth: See Auth below for details.
         :param pulumi.Input[pulumi.InputType['ServiceConvergeConfigArgs']] converge_config: See Converge Config below for details.
         :param pulumi.Input[pulumi.InputType['ServiceEndpointSpecArgs']] endpoint_spec: See EndpointSpec below for details.
-        :param pulumi.Input[List[pulumi.Input[pulumi.InputType['ServiceLabelArgs']]]] labels: See Labels below for details.
+        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ServiceLabelArgs']]]] labels: See Labels below for details.
         :param pulumi.Input[pulumi.InputType['ServiceModeArgs']] mode: See Mode below for details.
         :param pulumi.Input[str] name: The name of the Docker service.
         :param pulumi.Input[pulumi.InputType['ServiceRollbackConfigArgs']] rollback_config: See RollbackConfig below for details.
@@ -84,7 +84,7 @@ class Service(pulumi.CustomResource):
             auth: Optional[pulumi.Input[pulumi.InputType['ServiceAuthArgs']]] = None,
             converge_config: Optional[pulumi.Input[pulumi.InputType['ServiceConvergeConfigArgs']]] = None,
             endpoint_spec: Optional[pulumi.Input[pulumi.InputType['ServiceEndpointSpecArgs']]] = None,
-            labels: Optional[pulumi.Input[List[pulumi.Input[pulumi.InputType['ServiceLabelArgs']]]]] = None,
+            labels: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ServiceLabelArgs']]]]] = None,
             mode: Optional[pulumi.Input[pulumi.InputType['ServiceModeArgs']]] = None,
             name: Optional[pulumi.Input[str]] = None,
             rollback_config: Optional[pulumi.Input[pulumi.InputType['ServiceRollbackConfigArgs']]] = None,
@@ -100,7 +100,7 @@ class Service(pulumi.CustomResource):
         :param pulumi.Input[pulumi.InputType['ServiceAuthArgs']] auth: See Auth below for details.
         :param pulumi.Input[pulumi.InputType['ServiceConvergeConfigArgs']] converge_config: See Converge Config below for details.
         :param pulumi.Input[pulumi.InputType['ServiceEndpointSpecArgs']] endpoint_spec: See EndpointSpec below for details.
-        :param pulumi.Input[List[pulumi.Input[pulumi.InputType['ServiceLabelArgs']]]] labels: See Labels below for details.
+        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ServiceLabelArgs']]]] labels: See Labels below for details.
         :param pulumi.Input[pulumi.InputType['ServiceModeArgs']] mode: See Mode below for details.
         :param pulumi.Input[str] name: The name of the Docker service.
         :param pulumi.Input[pulumi.InputType['ServiceRollbackConfigArgs']] rollback_config: See RollbackConfig below for details.
@@ -148,7 +148,7 @@ class Service(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def labels(self) -> pulumi.Output[List['outputs.ServiceLabel']]:
+    def labels(self) -> pulumi.Output[Sequence['outputs.ServiceLabel']]:
         """
         See Labels below for details.
         """

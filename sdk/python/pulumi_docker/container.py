@@ -5,7 +5,7 @@
 import warnings
 import pulumi
 import pulumi.runtime
-from typing import Any, Dict, List, Mapping, Optional, Tuple, Union
+from typing import Any, Mapping, Optional, Sequence, Union
 from . import _utilities, _tables
 from . import outputs
 from ._inputs import *
@@ -19,54 +19,54 @@ class Container(pulumi.CustomResource):
                  opts: Optional[pulumi.ResourceOptions] = None,
                  attach: Optional[pulumi.Input[bool]] = None,
                  capabilities: Optional[pulumi.Input[pulumi.InputType['ContainerCapabilitiesArgs']]] = None,
-                 command: Optional[pulumi.Input[List[pulumi.Input[str]]]] = None,
+                 command: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  cpu_set: Optional[pulumi.Input[str]] = None,
-                 cpu_shares: Optional[pulumi.Input[float]] = None,
-                 destroy_grace_seconds: Optional[pulumi.Input[float]] = None,
-                 devices: Optional[pulumi.Input[List[pulumi.Input[pulumi.InputType['ContainerDeviceArgs']]]]] = None,
-                 dns: Optional[pulumi.Input[List[pulumi.Input[str]]]] = None,
-                 dns_opts: Optional[pulumi.Input[List[pulumi.Input[str]]]] = None,
-                 dns_searches: Optional[pulumi.Input[List[pulumi.Input[str]]]] = None,
+                 cpu_shares: Optional[pulumi.Input[int]] = None,
+                 destroy_grace_seconds: Optional[pulumi.Input[int]] = None,
+                 devices: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerDeviceArgs']]]]] = None,
+                 dns: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 dns_opts: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 dns_searches: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  domainname: Optional[pulumi.Input[str]] = None,
-                 entrypoints: Optional[pulumi.Input[List[pulumi.Input[str]]]] = None,
-                 envs: Optional[pulumi.Input[List[pulumi.Input[str]]]] = None,
-                 group_adds: Optional[pulumi.Input[List[pulumi.Input[str]]]] = None,
+                 entrypoints: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 envs: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 group_adds: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  healthcheck: Optional[pulumi.Input[pulumi.InputType['ContainerHealthcheckArgs']]] = None,
                  hostname: Optional[pulumi.Input[str]] = None,
-                 hosts: Optional[pulumi.Input[List[pulumi.Input[pulumi.InputType['ContainerHostArgs']]]]] = None,
+                 hosts: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerHostArgs']]]]] = None,
                  image: Optional[pulumi.Input[str]] = None,
                  ipc_mode: Optional[pulumi.Input[str]] = None,
-                 labels: Optional[pulumi.Input[List[pulumi.Input[pulumi.InputType['ContainerLabelArgs']]]]] = None,
-                 links: Optional[pulumi.Input[List[pulumi.Input[str]]]] = None,
+                 labels: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerLabelArgs']]]]] = None,
+                 links: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  log_driver: Optional[pulumi.Input[str]] = None,
                  log_opts: Optional[pulumi.Input[Mapping[str, Any]]] = None,
                  logs: Optional[pulumi.Input[bool]] = None,
-                 max_retry_count: Optional[pulumi.Input[float]] = None,
-                 memory: Optional[pulumi.Input[float]] = None,
-                 memory_swap: Optional[pulumi.Input[float]] = None,
-                 mounts: Optional[pulumi.Input[List[pulumi.Input[pulumi.InputType['ContainerMountArgs']]]]] = None,
+                 max_retry_count: Optional[pulumi.Input[int]] = None,
+                 memory: Optional[pulumi.Input[int]] = None,
+                 memory_swap: Optional[pulumi.Input[int]] = None,
+                 mounts: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerMountArgs']]]]] = None,
                  must_run: Optional[pulumi.Input[bool]] = None,
                  name: Optional[pulumi.Input[str]] = None,
-                 network_aliases: Optional[pulumi.Input[List[pulumi.Input[str]]]] = None,
+                 network_aliases: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  network_mode: Optional[pulumi.Input[str]] = None,
-                 networks: Optional[pulumi.Input[List[pulumi.Input[str]]]] = None,
-                 networks_advanced: Optional[pulumi.Input[List[pulumi.Input[pulumi.InputType['ContainerNetworksAdvancedArgs']]]]] = None,
+                 networks: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 networks_advanced: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerNetworksAdvancedArgs']]]]] = None,
                  pid_mode: Optional[pulumi.Input[str]] = None,
-                 ports: Optional[pulumi.Input[List[pulumi.Input[pulumi.InputType['ContainerPortArgs']]]]] = None,
+                 ports: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerPortArgs']]]]] = None,
                  privileged: Optional[pulumi.Input[bool]] = None,
                  publish_all_ports: Optional[pulumi.Input[bool]] = None,
                  read_only: Optional[pulumi.Input[bool]] = None,
                  restart: Optional[pulumi.Input[str]] = None,
                  rm: Optional[pulumi.Input[bool]] = None,
-                 shm_size: Optional[pulumi.Input[float]] = None,
+                 shm_size: Optional[pulumi.Input[int]] = None,
                  start: Optional[pulumi.Input[bool]] = None,
                  sysctls: Optional[pulumi.Input[Mapping[str, Any]]] = None,
                  tmpfs: Optional[pulumi.Input[Mapping[str, Any]]] = None,
-                 ulimits: Optional[pulumi.Input[List[pulumi.Input[pulumi.InputType['ContainerUlimitArgs']]]]] = None,
-                 uploads: Optional[pulumi.Input[List[pulumi.Input[pulumi.InputType['ContainerUploadArgs']]]]] = None,
+                 ulimits: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerUlimitArgs']]]]] = None,
+                 uploads: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerUploadArgs']]]]] = None,
                  user: Optional[pulumi.Input[str]] = None,
                  userns_mode: Optional[pulumi.Input[str]] = None,
-                 volumes: Optional[pulumi.Input[List[pulumi.Input[pulumi.InputType['ContainerVolumeArgs']]]]] = None,
+                 volumes: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerVolumeArgs']]]]] = None,
                  working_dir: Optional[pulumi.Input[str]] = None,
                  __props__=None,
                  __name__=None,
@@ -90,69 +90,69 @@ class Container(pulumi.CustomResource):
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[bool] attach: If true attach to the container after its creation and waits the end of his execution.
         :param pulumi.Input[pulumi.InputType['ContainerCapabilitiesArgs']] capabilities: See Capabilities below for details.
-        :param pulumi.Input[List[pulumi.Input[str]]] command: The command to use to start the
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] command: The command to use to start the
                container. For example, to run `/usr/bin/myprogram -f baz.conf` set the
                command to be `["/usr/bin/myprogram", "-f", "baz.conf"]`.
         :param pulumi.Input[str] cpu_set: A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
-        :param pulumi.Input[float] cpu_shares: CPU shares (relative weight) for the container.
-        :param pulumi.Input[float] destroy_grace_seconds: If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
-        :param pulumi.Input[List[pulumi.Input[pulumi.InputType['ContainerDeviceArgs']]]] devices: See Devices below for details.
-        :param pulumi.Input[List[pulumi.Input[str]]] dns: Set of DNS servers.
-        :param pulumi.Input[List[pulumi.Input[str]]] dns_opts: Set of DNS options used by the DNS provider(s), see `resolv.conf` documentation for valid list of options.
-        :param pulumi.Input[List[pulumi.Input[str]]] dns_searches: Set of DNS search domains that are used when bare unqualified hostnames are used inside of the container.
+        :param pulumi.Input[int] cpu_shares: CPU shares (relative weight) for the container.
+        :param pulumi.Input[int] destroy_grace_seconds: If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
+        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerDeviceArgs']]]] devices: See Devices below for details.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] dns: Set of DNS servers.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] dns_opts: Set of DNS options used by the DNS provider(s), see `resolv.conf` documentation for valid list of options.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] dns_searches: Set of DNS search domains that are used when bare unqualified hostnames are used inside of the container.
         :param pulumi.Input[str] domainname: Domain name of the container.
-        :param pulumi.Input[List[pulumi.Input[str]]] entrypoints: The command to use as the
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] entrypoints: The command to use as the
                Entrypoint for the container. The Entrypoint allows you to configure a
                container to run as an executable. For example, to run `/usr/bin/myprogram`
                when starting a container, set the entrypoint to be
                `["/usr/bin/myprogram"]`.
-        :param pulumi.Input[List[pulumi.Input[str]]] envs: Environment variables to set.
-        :param pulumi.Input[List[pulumi.Input[str]]] group_adds: Add additional groups to run as.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] envs: Environment variables to set.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] group_adds: Add additional groups to run as.
         :param pulumi.Input[pulumi.InputType['ContainerHealthcheckArgs']] healthcheck: See Healthcheck below for details.
         :param pulumi.Input[str] hostname: Hostname of the container.
-        :param pulumi.Input[List[pulumi.Input[pulumi.InputType['ContainerHostArgs']]]] hosts: Hostname to add.
+        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerHostArgs']]]] hosts: Hostname to add.
         :param pulumi.Input[str] image: The ID of the image to back this container.
                The easiest way to get this value is to use the `RemoteImage` resource
                as is shown in the example above.
         :param pulumi.Input[str] ipc_mode: IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
-        :param pulumi.Input[List[pulumi.Input[pulumi.InputType['ContainerLabelArgs']]]] labels: Adding labels.
-        :param pulumi.Input[List[pulumi.Input[str]]] links: Set of links for link based
+        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerLabelArgs']]]] labels: Adding labels.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] links: Set of links for link based
                connectivity between containers that are running on the same host.
         :param pulumi.Input[str] log_driver: The logging driver to use for the container.
                Defaults to "json-file".
         :param pulumi.Input[Mapping[str, Any]] log_opts: Key/value pairs to use as options for
                the logging driver.
         :param pulumi.Input[bool] logs: Save the container logs (`attach` must be enabled).
-        :param pulumi.Input[float] max_retry_count: The maximum amount of times to an attempt
+        :param pulumi.Input[int] max_retry_count: The maximum amount of times to an attempt
                a restart when `restart` is set to "on-failure"
-        :param pulumi.Input[float] memory: The memory limit for the container in MBs.
-        :param pulumi.Input[List[pulumi.Input[pulumi.InputType['ContainerMountArgs']]]] mounts: See Mounts below for details.
-        :param pulumi.Input[List[pulumi.Input[str]]] network_aliases: Network aliases of the container for user-defined networks only. *Deprecated:* use `networks_advanced` instead.
+        :param pulumi.Input[int] memory: The memory limit for the container in MBs.
+        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerMountArgs']]]] mounts: See Mounts below for details.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] network_aliases: Network aliases of the container for user-defined networks only. *Deprecated:* use `networks_advanced` instead.
         :param pulumi.Input[str] network_mode: Network mode of the container.
-        :param pulumi.Input[List[pulumi.Input[str]]] networks: Id of the networks in which the
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] networks: Id of the networks in which the
                container is. *Deprecated:* use `networks_advanced` instead.
-        :param pulumi.Input[List[pulumi.Input[pulumi.InputType['ContainerNetworksAdvancedArgs']]]] networks_advanced: See Networks Advanced below for details. If this block has priority to the deprecated `network_alias` and `network` properties.
+        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerNetworksAdvancedArgs']]]] networks_advanced: See Networks Advanced below for details. If this block has priority to the deprecated `network_alias` and `network` properties.
         :param pulumi.Input[str] pid_mode: The PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
-        :param pulumi.Input[List[pulumi.Input[pulumi.InputType['ContainerPortArgs']]]] ports: See Ports below for details.
+        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerPortArgs']]]] ports: See Ports below for details.
         :param pulumi.Input[bool] privileged: Run container in privileged mode.
         :param pulumi.Input[bool] publish_all_ports: Publish all ports of the container.
         :param pulumi.Input[bool] read_only: If true, this volume will be readonly.
                Defaults to false.
         :param pulumi.Input[str] restart: The restart policy for the container. Must be
                one of "no", "on-failure", "always", "unless-stopped".
-        :param pulumi.Input[float] shm_size: Size of `/dev/shm` in MBs.
+        :param pulumi.Input[int] shm_size: Size of `/dev/shm` in MBs.
         :param pulumi.Input[bool] start: If true, then the Docker container will be
                started after creation. If false, then the container is only created.
         :param pulumi.Input[Mapping[str, Any]] sysctls: A map of kernel parameters (sysctls) to set in the container.
         :param pulumi.Input[Mapping[str, Any]] tmpfs: A map of container directories which should be replaced by `tmpfs mounts`, and their corresponding mount options.
-        :param pulumi.Input[List[pulumi.Input[pulumi.InputType['ContainerUlimitArgs']]]] ulimits: See Ulimits below for
+        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerUlimitArgs']]]] ulimits: See Ulimits below for
                details.
-        :param pulumi.Input[List[pulumi.Input[pulumi.InputType['ContainerUploadArgs']]]] uploads: See File Upload below for details.
+        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerUploadArgs']]]] uploads: See File Upload below for details.
         :param pulumi.Input[str] user: User used for run the first process. Format is
                `user` or `user:group` which user and group can be passed literraly or
                by name.
         :param pulumi.Input[str] userns_mode: Sets the usernamespace mode for the container when usernamespace remapping option is enabled.
-        :param pulumi.Input[List[pulumi.Input[pulumi.InputType['ContainerVolumeArgs']]]] volumes: See Volumes below for details.
+        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerVolumeArgs']]]] volumes: See Volumes below for details.
         :param pulumi.Input[str] working_dir: The working directory for commands to run in
         """
         if __name__ is not None:
@@ -254,60 +254,60 @@ class Container(pulumi.CustomResource):
             attach: Optional[pulumi.Input[bool]] = None,
             bridge: Optional[pulumi.Input[str]] = None,
             capabilities: Optional[pulumi.Input[pulumi.InputType['ContainerCapabilitiesArgs']]] = None,
-            command: Optional[pulumi.Input[List[pulumi.Input[str]]]] = None,
+            command: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
             container_logs: Optional[pulumi.Input[str]] = None,
             cpu_set: Optional[pulumi.Input[str]] = None,
-            cpu_shares: Optional[pulumi.Input[float]] = None,
-            destroy_grace_seconds: Optional[pulumi.Input[float]] = None,
-            devices: Optional[pulumi.Input[List[pulumi.Input[pulumi.InputType['ContainerDeviceArgs']]]]] = None,
-            dns: Optional[pulumi.Input[List[pulumi.Input[str]]]] = None,
-            dns_opts: Optional[pulumi.Input[List[pulumi.Input[str]]]] = None,
-            dns_searches: Optional[pulumi.Input[List[pulumi.Input[str]]]] = None,
+            cpu_shares: Optional[pulumi.Input[int]] = None,
+            destroy_grace_seconds: Optional[pulumi.Input[int]] = None,
+            devices: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerDeviceArgs']]]]] = None,
+            dns: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+            dns_opts: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+            dns_searches: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
             domainname: Optional[pulumi.Input[str]] = None,
-            entrypoints: Optional[pulumi.Input[List[pulumi.Input[str]]]] = None,
-            envs: Optional[pulumi.Input[List[pulumi.Input[str]]]] = None,
-            exit_code: Optional[pulumi.Input[float]] = None,
+            entrypoints: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+            envs: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+            exit_code: Optional[pulumi.Input[int]] = None,
             gateway: Optional[pulumi.Input[str]] = None,
-            group_adds: Optional[pulumi.Input[List[pulumi.Input[str]]]] = None,
+            group_adds: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
             healthcheck: Optional[pulumi.Input[pulumi.InputType['ContainerHealthcheckArgs']]] = None,
             hostname: Optional[pulumi.Input[str]] = None,
-            hosts: Optional[pulumi.Input[List[pulumi.Input[pulumi.InputType['ContainerHostArgs']]]]] = None,
+            hosts: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerHostArgs']]]]] = None,
             image: Optional[pulumi.Input[str]] = None,
             ip_address: Optional[pulumi.Input[str]] = None,
-            ip_prefix_length: Optional[pulumi.Input[float]] = None,
+            ip_prefix_length: Optional[pulumi.Input[int]] = None,
             ipc_mode: Optional[pulumi.Input[str]] = None,
-            labels: Optional[pulumi.Input[List[pulumi.Input[pulumi.InputType['ContainerLabelArgs']]]]] = None,
-            links: Optional[pulumi.Input[List[pulumi.Input[str]]]] = None,
+            labels: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerLabelArgs']]]]] = None,
+            links: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
             log_driver: Optional[pulumi.Input[str]] = None,
             log_opts: Optional[pulumi.Input[Mapping[str, Any]]] = None,
             logs: Optional[pulumi.Input[bool]] = None,
-            max_retry_count: Optional[pulumi.Input[float]] = None,
-            memory: Optional[pulumi.Input[float]] = None,
-            memory_swap: Optional[pulumi.Input[float]] = None,
-            mounts: Optional[pulumi.Input[List[pulumi.Input[pulumi.InputType['ContainerMountArgs']]]]] = None,
+            max_retry_count: Optional[pulumi.Input[int]] = None,
+            memory: Optional[pulumi.Input[int]] = None,
+            memory_swap: Optional[pulumi.Input[int]] = None,
+            mounts: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerMountArgs']]]]] = None,
             must_run: Optional[pulumi.Input[bool]] = None,
             name: Optional[pulumi.Input[str]] = None,
-            network_aliases: Optional[pulumi.Input[List[pulumi.Input[str]]]] = None,
-            network_datas: Optional[pulumi.Input[List[pulumi.Input[pulumi.InputType['ContainerNetworkDataArgs']]]]] = None,
+            network_aliases: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+            network_datas: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerNetworkDataArgs']]]]] = None,
             network_mode: Optional[pulumi.Input[str]] = None,
-            networks: Optional[pulumi.Input[List[pulumi.Input[str]]]] = None,
-            networks_advanced: Optional[pulumi.Input[List[pulumi.Input[pulumi.InputType['ContainerNetworksAdvancedArgs']]]]] = None,
+            networks: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+            networks_advanced: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerNetworksAdvancedArgs']]]]] = None,
             pid_mode: Optional[pulumi.Input[str]] = None,
-            ports: Optional[pulumi.Input[List[pulumi.Input[pulumi.InputType['ContainerPortArgs']]]]] = None,
+            ports: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerPortArgs']]]]] = None,
             privileged: Optional[pulumi.Input[bool]] = None,
             publish_all_ports: Optional[pulumi.Input[bool]] = None,
             read_only: Optional[pulumi.Input[bool]] = None,
             restart: Optional[pulumi.Input[str]] = None,
             rm: Optional[pulumi.Input[bool]] = None,
-            shm_size: Optional[pulumi.Input[float]] = None,
+            shm_size: Optional[pulumi.Input[int]] = None,
             start: Optional[pulumi.Input[bool]] = None,
             sysctls: Optional[pulumi.Input[Mapping[str, Any]]] = None,
             tmpfs: Optional[pulumi.Input[Mapping[str, Any]]] = None,
-            ulimits: Optional[pulumi.Input[List[pulumi.Input[pulumi.InputType['ContainerUlimitArgs']]]]] = None,
-            uploads: Optional[pulumi.Input[List[pulumi.Input[pulumi.InputType['ContainerUploadArgs']]]]] = None,
+            ulimits: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerUlimitArgs']]]]] = None,
+            uploads: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerUploadArgs']]]]] = None,
             user: Optional[pulumi.Input[str]] = None,
             userns_mode: Optional[pulumi.Input[str]] = None,
-            volumes: Optional[pulumi.Input[List[pulumi.Input[pulumi.InputType['ContainerVolumeArgs']]]]] = None,
+            volumes: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerVolumeArgs']]]]] = None,
             working_dir: Optional[pulumi.Input[str]] = None) -> 'Container':
         """
         Get an existing Container resource's state with the given name, id, and optional extra
@@ -319,78 +319,78 @@ class Container(pulumi.CustomResource):
         :param pulumi.Input[bool] attach: If true attach to the container after its creation and waits the end of his execution.
         :param pulumi.Input[str] bridge: The network bridge of the container as read from its NetworkSettings.
         :param pulumi.Input[pulumi.InputType['ContainerCapabilitiesArgs']] capabilities: See Capabilities below for details.
-        :param pulumi.Input[List[pulumi.Input[str]]] command: The command to use to start the
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] command: The command to use to start the
                container. For example, to run `/usr/bin/myprogram -f baz.conf` set the
                command to be `["/usr/bin/myprogram", "-f", "baz.conf"]`.
         :param pulumi.Input[str] container_logs: The logs of the container if its execution is done (`attach` must be disabled).
         :param pulumi.Input[str] cpu_set: A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
-        :param pulumi.Input[float] cpu_shares: CPU shares (relative weight) for the container.
-        :param pulumi.Input[float] destroy_grace_seconds: If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
-        :param pulumi.Input[List[pulumi.Input[pulumi.InputType['ContainerDeviceArgs']]]] devices: See Devices below for details.
-        :param pulumi.Input[List[pulumi.Input[str]]] dns: Set of DNS servers.
-        :param pulumi.Input[List[pulumi.Input[str]]] dns_opts: Set of DNS options used by the DNS provider(s), see `resolv.conf` documentation for valid list of options.
-        :param pulumi.Input[List[pulumi.Input[str]]] dns_searches: Set of DNS search domains that are used when bare unqualified hostnames are used inside of the container.
+        :param pulumi.Input[int] cpu_shares: CPU shares (relative weight) for the container.
+        :param pulumi.Input[int] destroy_grace_seconds: If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
+        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerDeviceArgs']]]] devices: See Devices below for details.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] dns: Set of DNS servers.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] dns_opts: Set of DNS options used by the DNS provider(s), see `resolv.conf` documentation for valid list of options.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] dns_searches: Set of DNS search domains that are used when bare unqualified hostnames are used inside of the container.
         :param pulumi.Input[str] domainname: Domain name of the container.
-        :param pulumi.Input[List[pulumi.Input[str]]] entrypoints: The command to use as the
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] entrypoints: The command to use as the
                Entrypoint for the container. The Entrypoint allows you to configure a
                container to run as an executable. For example, to run `/usr/bin/myprogram`
                when starting a container, set the entrypoint to be
                `["/usr/bin/myprogram"]`.
-        :param pulumi.Input[List[pulumi.Input[str]]] envs: Environment variables to set.
-        :param pulumi.Input[float] exit_code: The exit code of the container if its execution is done (`must_run` must be disabled).
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] envs: Environment variables to set.
+        :param pulumi.Input[int] exit_code: The exit code of the container if its execution is done (`must_run` must be disabled).
         :param pulumi.Input[str] gateway: *Deprecated:* Use `network_data` instead. The network gateway of the container as read from its
                NetworkSettings.
-        :param pulumi.Input[List[pulumi.Input[str]]] group_adds: Add additional groups to run as.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] group_adds: Add additional groups to run as.
         :param pulumi.Input[pulumi.InputType['ContainerHealthcheckArgs']] healthcheck: See Healthcheck below for details.
         :param pulumi.Input[str] hostname: Hostname of the container.
-        :param pulumi.Input[List[pulumi.Input[pulumi.InputType['ContainerHostArgs']]]] hosts: Hostname to add.
+        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerHostArgs']]]] hosts: Hostname to add.
         :param pulumi.Input[str] image: The ID of the image to back this container.
                The easiest way to get this value is to use the `RemoteImage` resource
                as is shown in the example above.
         :param pulumi.Input[str] ip_address: *Deprecated:* Use `network_data` instead. The IP address of the container's first network it.
-        :param pulumi.Input[float] ip_prefix_length: *Deprecated:* Use `network_data` instead. The IP prefix length of the container as read from its
+        :param pulumi.Input[int] ip_prefix_length: *Deprecated:* Use `network_data` instead. The IP prefix length of the container as read from its
                NetworkSettings.
         :param pulumi.Input[str] ipc_mode: IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
-        :param pulumi.Input[List[pulumi.Input[pulumi.InputType['ContainerLabelArgs']]]] labels: Adding labels.
-        :param pulumi.Input[List[pulumi.Input[str]]] links: Set of links for link based
+        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerLabelArgs']]]] labels: Adding labels.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] links: Set of links for link based
                connectivity between containers that are running on the same host.
         :param pulumi.Input[str] log_driver: The logging driver to use for the container.
                Defaults to "json-file".
         :param pulumi.Input[Mapping[str, Any]] log_opts: Key/value pairs to use as options for
                the logging driver.
         :param pulumi.Input[bool] logs: Save the container logs (`attach` must be enabled).
-        :param pulumi.Input[float] max_retry_count: The maximum amount of times to an attempt
+        :param pulumi.Input[int] max_retry_count: The maximum amount of times to an attempt
                a restart when `restart` is set to "on-failure"
-        :param pulumi.Input[float] memory: The memory limit for the container in MBs.
-        :param pulumi.Input[List[pulumi.Input[pulumi.InputType['ContainerMountArgs']]]] mounts: See Mounts below for details.
-        :param pulumi.Input[List[pulumi.Input[str]]] network_aliases: Network aliases of the container for user-defined networks only. *Deprecated:* use `networks_advanced` instead.
-        :param pulumi.Input[List[pulumi.Input[pulumi.InputType['ContainerNetworkDataArgs']]]] network_datas: (Map of a block) The IP addresses of the container on each
+        :param pulumi.Input[int] memory: The memory limit for the container in MBs.
+        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerMountArgs']]]] mounts: See Mounts below for details.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] network_aliases: Network aliases of the container for user-defined networks only. *Deprecated:* use `networks_advanced` instead.
+        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerNetworkDataArgs']]]] network_datas: (Map of a block) The IP addresses of the container on each
                network. Key are the network names, values are the IP addresses.
         :param pulumi.Input[str] network_mode: Network mode of the container.
-        :param pulumi.Input[List[pulumi.Input[str]]] networks: Id of the networks in which the
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] networks: Id of the networks in which the
                container is. *Deprecated:* use `networks_advanced` instead.
-        :param pulumi.Input[List[pulumi.Input[pulumi.InputType['ContainerNetworksAdvancedArgs']]]] networks_advanced: See Networks Advanced below for details. If this block has priority to the deprecated `network_alias` and `network` properties.
+        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerNetworksAdvancedArgs']]]] networks_advanced: See Networks Advanced below for details. If this block has priority to the deprecated `network_alias` and `network` properties.
         :param pulumi.Input[str] pid_mode: The PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
-        :param pulumi.Input[List[pulumi.Input[pulumi.InputType['ContainerPortArgs']]]] ports: See Ports below for details.
+        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerPortArgs']]]] ports: See Ports below for details.
         :param pulumi.Input[bool] privileged: Run container in privileged mode.
         :param pulumi.Input[bool] publish_all_ports: Publish all ports of the container.
         :param pulumi.Input[bool] read_only: If true, this volume will be readonly.
                Defaults to false.
         :param pulumi.Input[str] restart: The restart policy for the container. Must be
                one of "no", "on-failure", "always", "unless-stopped".
-        :param pulumi.Input[float] shm_size: Size of `/dev/shm` in MBs.
+        :param pulumi.Input[int] shm_size: Size of `/dev/shm` in MBs.
         :param pulumi.Input[bool] start: If true, then the Docker container will be
                started after creation. If false, then the container is only created.
         :param pulumi.Input[Mapping[str, Any]] sysctls: A map of kernel parameters (sysctls) to set in the container.
         :param pulumi.Input[Mapping[str, Any]] tmpfs: A map of container directories which should be replaced by `tmpfs mounts`, and their corresponding mount options.
-        :param pulumi.Input[List[pulumi.Input[pulumi.InputType['ContainerUlimitArgs']]]] ulimits: See Ulimits below for
+        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerUlimitArgs']]]] ulimits: See Ulimits below for
                details.
-        :param pulumi.Input[List[pulumi.Input[pulumi.InputType['ContainerUploadArgs']]]] uploads: See File Upload below for details.
+        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerUploadArgs']]]] uploads: See File Upload below for details.
         :param pulumi.Input[str] user: User used for run the first process. Format is
                `user` or `user:group` which user and group can be passed literraly or
                by name.
         :param pulumi.Input[str] userns_mode: Sets the usernamespace mode for the container when usernamespace remapping option is enabled.
-        :param pulumi.Input[List[pulumi.Input[pulumi.InputType['ContainerVolumeArgs']]]] volumes: See Volumes below for details.
+        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerVolumeArgs']]]] volumes: See Volumes below for details.
         :param pulumi.Input[str] working_dir: The working directory for commands to run in
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
@@ -483,7 +483,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def command(self) -> pulumi.Output[List[str]]:
+    def command(self) -> pulumi.Output[Sequence[str]]:
         """
         The command to use to start the
         container. For example, to run `/usr/bin/myprogram -f baz.conf` set the
@@ -509,7 +509,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="cpuShares")
-    def cpu_shares(self) -> pulumi.Output[Optional[float]]:
+    def cpu_shares(self) -> pulumi.Output[Optional[int]]:
         """
         CPU shares (relative weight) for the container.
         """
@@ -517,7 +517,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="destroyGraceSeconds")
-    def destroy_grace_seconds(self) -> pulumi.Output[Optional[float]]:
+    def destroy_grace_seconds(self) -> pulumi.Output[Optional[int]]:
         """
         If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
         """
@@ -525,7 +525,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def devices(self) -> pulumi.Output[Optional[List['outputs.ContainerDevice']]]:
+    def devices(self) -> pulumi.Output[Optional[Sequence['outputs.ContainerDevice']]]:
         """
         See Devices below for details.
         """
@@ -533,7 +533,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def dns(self) -> pulumi.Output[List[str]]:
+    def dns(self) -> pulumi.Output[Sequence[str]]:
         """
         Set of DNS servers.
         """
@@ -541,7 +541,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="dnsOpts")
-    def dns_opts(self) -> pulumi.Output[List[str]]:
+    def dns_opts(self) -> pulumi.Output[Sequence[str]]:
         """
         Set of DNS options used by the DNS provider(s), see `resolv.conf` documentation for valid list of options.
         """
@@ -549,7 +549,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="dnsSearches")
-    def dns_searches(self) -> pulumi.Output[Optional[List[str]]]:
+    def dns_searches(self) -> pulumi.Output[Optional[Sequence[str]]]:
         """
         Set of DNS search domains that are used when bare unqualified hostnames are used inside of the container.
         """
@@ -565,7 +565,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def entrypoints(self) -> pulumi.Output[List[str]]:
+    def entrypoints(self) -> pulumi.Output[Sequence[str]]:
         """
         The command to use as the
         Entrypoint for the container. The Entrypoint allows you to configure a
@@ -577,7 +577,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def envs(self) -> pulumi.Output[Optional[List[str]]]:
+    def envs(self) -> pulumi.Output[Optional[Sequence[str]]]:
         """
         Environment variables to set.
         """
@@ -585,7 +585,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="exitCode")
-    def exit_code(self) -> pulumi.Output[float]:
+    def exit_code(self) -> pulumi.Output[int]:
         """
         The exit code of the container if its execution is done (`must_run` must be disabled).
         """
@@ -602,7 +602,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="groupAdds")
-    def group_adds(self) -> pulumi.Output[Optional[List[str]]]:
+    def group_adds(self) -> pulumi.Output[Optional[Sequence[str]]]:
         """
         Add additional groups to run as.
         """
@@ -626,7 +626,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def hosts(self) -> pulumi.Output[Optional[List['outputs.ContainerHost']]]:
+    def hosts(self) -> pulumi.Output[Optional[Sequence['outputs.ContainerHost']]]:
         """
         Hostname to add.
         """
@@ -652,7 +652,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="ipPrefixLength")
-    def ip_prefix_length(self) -> pulumi.Output[float]:
+    def ip_prefix_length(self) -> pulumi.Output[int]:
         """
         *Deprecated:* Use `network_data` instead. The IP prefix length of the container as read from its
         NetworkSettings.
@@ -669,7 +669,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def labels(self) -> pulumi.Output[Optional[List['outputs.ContainerLabel']]]:
+    def labels(self) -> pulumi.Output[Optional[Sequence['outputs.ContainerLabel']]]:
         """
         Adding labels.
         """
@@ -677,7 +677,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def links(self) -> pulumi.Output[Optional[List[str]]]:
+    def links(self) -> pulumi.Output[Optional[Sequence[str]]]:
         """
         Set of links for link based
         connectivity between containers that are running on the same host.
@@ -712,7 +712,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="maxRetryCount")
-    def max_retry_count(self) -> pulumi.Output[Optional[float]]:
+    def max_retry_count(self) -> pulumi.Output[Optional[int]]:
         """
         The maximum amount of times to an attempt
         a restart when `restart` is set to "on-failure"
@@ -721,7 +721,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def memory(self) -> pulumi.Output[Optional[float]]:
+    def memory(self) -> pulumi.Output[Optional[int]]:
         """
         The memory limit for the container in MBs.
         """
@@ -729,12 +729,12 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="memorySwap")
-    def memory_swap(self) -> pulumi.Output[Optional[float]]:
+    def memory_swap(self) -> pulumi.Output[Optional[int]]:
         return pulumi.get(self, "memory_swap")
 
     @property
     @pulumi.getter
-    def mounts(self) -> pulumi.Output[Optional[List['outputs.ContainerMount']]]:
+    def mounts(self) -> pulumi.Output[Optional[Sequence['outputs.ContainerMount']]]:
         """
         See Mounts below for details.
         """
@@ -752,7 +752,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="networkAliases")
-    def network_aliases(self) -> pulumi.Output[Optional[List[str]]]:
+    def network_aliases(self) -> pulumi.Output[Optional[Sequence[str]]]:
         """
         Network aliases of the container for user-defined networks only. *Deprecated:* use `networks_advanced` instead.
         """
@@ -760,7 +760,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="networkDatas")
-    def network_datas(self) -> pulumi.Output[List['outputs.ContainerNetworkData']]:
+    def network_datas(self) -> pulumi.Output[Sequence['outputs.ContainerNetworkData']]:
         """
         (Map of a block) The IP addresses of the container on each
         network. Key are the network names, values are the IP addresses.
@@ -777,7 +777,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def networks(self) -> pulumi.Output[Optional[List[str]]]:
+    def networks(self) -> pulumi.Output[Optional[Sequence[str]]]:
         """
         Id of the networks in which the
         container is. *Deprecated:* use `networks_advanced` instead.
@@ -786,7 +786,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="networksAdvanced")
-    def networks_advanced(self) -> pulumi.Output[Optional[List['outputs.ContainerNetworksAdvanced']]]:
+    def networks_advanced(self) -> pulumi.Output[Optional[Sequence['outputs.ContainerNetworksAdvanced']]]:
         """
         See Networks Advanced below for details. If this block has priority to the deprecated `network_alias` and `network` properties.
         """
@@ -802,7 +802,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def ports(self) -> pulumi.Output[Optional[List['outputs.ContainerPort']]]:
+    def ports(self) -> pulumi.Output[Optional[Sequence['outputs.ContainerPort']]]:
         """
         See Ports below for details.
         """
@@ -849,7 +849,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="shmSize")
-    def shm_size(self) -> pulumi.Output[float]:
+    def shm_size(self) -> pulumi.Output[int]:
         """
         Size of `/dev/shm` in MBs.
         """
@@ -882,7 +882,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def ulimits(self) -> pulumi.Output[Optional[List['outputs.ContainerUlimit']]]:
+    def ulimits(self) -> pulumi.Output[Optional[Sequence['outputs.ContainerUlimit']]]:
         """
         See Ulimits below for
         details.
@@ -891,7 +891,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def uploads(self) -> pulumi.Output[Optional[List['outputs.ContainerUpload']]]:
+    def uploads(self) -> pulumi.Output[Optional[Sequence['outputs.ContainerUpload']]]:
         """
         See File Upload below for details.
         """
@@ -917,7 +917,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def volumes(self) -> pulumi.Output[Optional[List['outputs.ContainerVolume']]]:
+    def volumes(self) -> pulumi.Output[Optional[Sequence['outputs.ContainerVolume']]]:
         """
         See Volumes below for details.
         """

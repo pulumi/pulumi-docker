@@ -52,7 +52,35 @@
         ]
     },
     "types": {
-        "docker:/ContainerCapabilities:ContainerCapabilities": {
+        "docker:config/registryAuth:registryAuth": {
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "configFile": {
+                    "type": "string"
+                },
+                "configFileContent": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            },
+            "type": "object",
+            "required": [
+                "address"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "docker:index/ContainerCapabilities:ContainerCapabilities": {
             "properties": {
                 "adds": {
                     "type": "array",
@@ -81,7 +109,7 @@
             },
             "type": "object"
         },
-        "docker:/ContainerDevice:ContainerDevice": {
+        "docker:index/ContainerDevice:ContainerDevice": {
             "properties": {
                 "containerPath": {
                     "type": "string",
@@ -116,7 +144,7 @@
                 "hostPath"
             ]
         },
-        "docker:/ContainerHealthcheck:ContainerHealthcheck": {
+        "docker:index/ContainerHealthcheck:ContainerHealthcheck": {
             "properties": {
                 "interval": {
                     "type": "string",
@@ -172,7 +200,7 @@
                 "tests"
             ]
         },
-        "docker:/ContainerHost:ContainerHost": {
+        "docker:index/ContainerHost:ContainerHost": {
             "properties": {
                 "host": {
                     "type": "string",
@@ -199,7 +227,7 @@
                 "ip"
             ]
         },
-        "docker:/ContainerLabel:ContainerLabel": {
+        "docker:index/ContainerLabel:ContainerLabel": {
             "properties": {
                 "label": {
                     "type": "string",
@@ -226,10 +254,10 @@
                 "value"
             ]
         },
-        "docker:/ContainerMount:ContainerMount": {
+        "docker:index/ContainerMount:ContainerMount": {
             "properties": {
                 "bindOptions": {
-                    "$ref": "#/types/docker:/ContainerMountBindOptions:ContainerMountBindOptions",
+                    "$ref": "#/types/docker:index/ContainerMountBindOptions:ContainerMountBindOptions",
                     "description": "Optional configuration for the `bind` type.\n",
                     "language": {
                         "python": {
@@ -265,7 +293,7 @@
                     }
                 },
                 "tmpfsOptions": {
-                    "$ref": "#/types/docker:/ContainerMountTmpfsOptions:ContainerMountTmpfsOptions",
+                    "$ref": "#/types/docker:index/ContainerMountTmpfsOptions:ContainerMountTmpfsOptions",
                     "description": "Optional configuration for the `tmpf` type.\n",
                     "language": {
                         "python": {
@@ -283,7 +311,7 @@
                     }
                 },
                 "volumeOptions": {
-                    "$ref": "#/types/docker:/ContainerMountVolumeOptions:ContainerMountVolumeOptions",
+                    "$ref": "#/types/docker:index/ContainerMountVolumeOptions:ContainerMountVolumeOptions",
                     "description": "Optional configuration for the `volume` type.\n",
                     "language": {
                         "python": {
@@ -298,7 +326,7 @@
                 "type"
             ]
         },
-        "docker:/ContainerMountBindOptions:ContainerMountBindOptions": {
+        "docker:index/ContainerMountBindOptions:ContainerMountBindOptions": {
             "properties": {
                 "propagation": {
                     "type": "string",
@@ -312,7 +340,7 @@
             },
             "type": "object"
         },
-        "docker:/ContainerMountTmpfsOptions:ContainerMountTmpfsOptions": {
+        "docker:index/ContainerMountTmpfsOptions:ContainerMountTmpfsOptions": {
             "properties": {
                 "mode": {
                     "type": "integer",
@@ -335,7 +363,7 @@
             },
             "type": "object"
         },
-        "docker:/ContainerMountVolumeOptions:ContainerMountVolumeOptions": {
+        "docker:index/ContainerMountVolumeOptions:ContainerMountVolumeOptions": {
             "properties": {
                 "driverName": {
                     "type": "string",
@@ -360,7 +388,7 @@
                 "labels": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/types/docker:/ContainerMountVolumeOptionsLabel:ContainerMountVolumeOptionsLabel"
+                        "$ref": "#/types/docker:index/ContainerMountVolumeOptionsLabel:ContainerMountVolumeOptionsLabel"
                     },
                     "description": "Adding labels.\n",
                     "language": {
@@ -381,7 +409,7 @@
             },
             "type": "object"
         },
-        "docker:/ContainerMountVolumeOptionsLabel:ContainerMountVolumeOptionsLabel": {
+        "docker:index/ContainerMountVolumeOptionsLabel:ContainerMountVolumeOptionsLabel": {
             "properties": {
                 "label": {
                     "type": "string",
@@ -408,7 +436,7 @@
                 "value"
             ]
         },
-        "docker:/ContainerNetworkData:ContainerNetworkData": {
+        "docker:index/ContainerNetworkData:ContainerNetworkData": {
             "properties": {
                 "gateway": {
                     "type": "string",
@@ -458,7 +486,7 @@
                 }
             }
         },
-        "docker:/ContainerNetworksAdvanced:ContainerNetworksAdvanced": {
+        "docker:index/ContainerNetworksAdvanced:ContainerNetworksAdvanced": {
             "properties": {
                 "aliases": {
                     "type": "array",
@@ -505,7 +533,7 @@
                 "name"
             ]
         },
-        "docker:/ContainerPort:ContainerPort": {
+        "docker:index/ContainerPort:ContainerPort": {
             "properties": {
                 "external": {
                     "type": "integer",
@@ -557,7 +585,7 @@
                 }
             }
         },
-        "docker:/ContainerUlimit:ContainerUlimit": {
+        "docker:index/ContainerUlimit:ContainerUlimit": {
             "properties": {
                 "hard": {
                     "type": "integer",
@@ -591,7 +619,7 @@
                 "soft"
             ]
         },
-        "docker:/ContainerUpload:ContainerUpload": {
+        "docker:index/ContainerUpload:ContainerUpload": {
             "properties": {
                 "content": {
                     "type": "string",
@@ -652,7 +680,7 @@
                 "file"
             ]
         },
-        "docker:/ContainerVolume:ContainerVolume": {
+        "docker:index/ContainerVolume:ContainerVolume": {
             "properties": {
                 "containerPath": {
                     "type": "string",
@@ -702,7 +730,7 @@
             },
             "type": "object"
         },
-        "docker:/NetworkIpamConfig:NetworkIpamConfig": {
+        "docker:index/NetworkIpamConfig:NetworkIpamConfig": {
             "properties": {
                 "auxAddress": {
                     "type": "object",
@@ -742,7 +770,7 @@
             },
             "type": "object"
         },
-        "docker:/NetworkLabel:NetworkLabel": {
+        "docker:index/NetworkLabel:NetworkLabel": {
             "properties": {
                 "label": {
                     "type": "string",
@@ -769,7 +797,60 @@
                 "value"
             ]
         },
-        "docker:/SecretLabel:SecretLabel": {
+        "docker:index/ProviderRegistryAuth:ProviderRegistryAuth": {
+            "properties": {
+                "address": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "configFile": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "configFileContent": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "password": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "username": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                }
+            },
+            "type": "object",
+            "required": [
+                "address"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredOutputs": []
+                }
+            }
+        },
+        "docker:index/SecretLabel:SecretLabel": {
             "properties": {
                 "label": {
                     "type": "string",
@@ -796,7 +877,7 @@
                 "value"
             ]
         },
-        "docker:/ServiceAuth:ServiceAuth": {
+        "docker:index/ServiceAuth:ServiceAuth": {
             "properties": {
                 "password": {
                     "type": "string",
@@ -816,7 +897,7 @@
                 "serverAddress"
             ]
         },
-        "docker:/ServiceConvergeConfig:ServiceConvergeConfig": {
+        "docker:index/ServiceConvergeConfig:ServiceConvergeConfig": {
             "properties": {
                 "delay": {
                     "type": "string",
@@ -839,7 +920,7 @@
             },
             "type": "object"
         },
-        "docker:/ServiceEndpointSpec:ServiceEndpointSpec": {
+        "docker:index/ServiceEndpointSpec:ServiceEndpointSpec": {
             "properties": {
                 "mode": {
                     "type": "string",
@@ -853,7 +934,7 @@
                 "ports": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/types/docker:/ServiceEndpointSpecPort:ServiceEndpointSpecPort"
+                        "$ref": "#/types/docker:index/ServiceEndpointSpecPort:ServiceEndpointSpecPort"
                     },
                     "description": "See Ports below for details.\n",
                     "language": {
@@ -872,7 +953,7 @@
                 }
             }
         },
-        "docker:/ServiceEndpointSpecPort:ServiceEndpointSpecPort": {
+        "docker:index/ServiceEndpointSpecPort:ServiceEndpointSpecPort": {
             "properties": {
                 "name": {
                     "type": "string",
@@ -933,7 +1014,7 @@
                 }
             }
         },
-        "docker:/ServiceLabel:ServiceLabel": {
+        "docker:index/ServiceLabel:ServiceLabel": {
             "properties": {
                 "label": {
                     "type": "string",
@@ -960,7 +1041,7 @@
                 "value"
             ]
         },
-        "docker:/ServiceMode:ServiceMode": {
+        "docker:index/ServiceMode:ServiceMode": {
             "properties": {
                 "global": {
                     "type": "boolean",
@@ -972,7 +1053,7 @@
                     }
                 },
                 "replicated": {
-                    "$ref": "#/types/docker:/ServiceModeReplicated:ServiceModeReplicated",
+                    "$ref": "#/types/docker:index/ServiceModeReplicated:ServiceModeReplicated",
                     "description": ", which contains atm only the amount of `replicas`\n",
                     "language": {
                         "python": {
@@ -990,7 +1071,7 @@
                 }
             }
         },
-        "docker:/ServiceModeReplicated:ServiceModeReplicated": {
+        "docker:index/ServiceModeReplicated:ServiceModeReplicated": {
             "properties": {
                 "replicas": {
                     "type": "integer",
@@ -1003,7 +1084,7 @@
             },
             "type": "object"
         },
-        "docker:/ServiceRollbackConfig:ServiceRollbackConfig": {
+        "docker:index/ServiceRollbackConfig:ServiceRollbackConfig": {
             "properties": {
                 "delay": {
                     "type": "string",
@@ -1062,10 +1143,10 @@
             },
             "type": "object"
         },
-        "docker:/ServiceTaskSpec:ServiceTaskSpec": {
+        "docker:index/ServiceTaskSpec:ServiceTaskSpec": {
             "properties": {
                 "containerSpec": {
-                    "$ref": "#/types/docker:/ServiceTaskSpecContainerSpec:ServiceTaskSpecContainerSpec",
+                    "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpec:ServiceTaskSpecContainerSpec",
                     "description": "See ContainerSpec below for details.\n",
                     "language": {
                         "python": {
@@ -1083,7 +1164,7 @@
                     }
                 },
                 "logDriver": {
-                    "$ref": "#/types/docker:/ServiceTaskSpecLogDriver:ServiceTaskSpecLogDriver",
+                    "$ref": "#/types/docker:index/ServiceTaskSpecLogDriver:ServiceTaskSpecLogDriver",
                     "description": "See Log Driver below for details.\n",
                     "language": {
                         "python": {
@@ -1104,7 +1185,7 @@
                     }
                 },
                 "placement": {
-                    "$ref": "#/types/docker:/ServiceTaskSpecPlacement:ServiceTaskSpecPlacement",
+                    "$ref": "#/types/docker:index/ServiceTaskSpecPlacement:ServiceTaskSpecPlacement",
                     "description": "See Placement below for details.\n",
                     "language": {
                         "python": {
@@ -1113,7 +1194,7 @@
                     }
                 },
                 "resources": {
-                    "$ref": "#/types/docker:/ServiceTaskSpecResources:ServiceTaskSpecResources",
+                    "$ref": "#/types/docker:index/ServiceTaskSpecResources:ServiceTaskSpecResources",
                     "description": "See Resources below for details.\n",
                     "language": {
                         "python": {
@@ -1122,7 +1203,7 @@
                     }
                 },
                 "restartPolicy": {
-                    "$ref": "#/types/docker:/ServiceTaskSpecRestartPolicy:ServiceTaskSpecRestartPolicy",
+                    "$ref": "#/types/docker:index/ServiceTaskSpecRestartPolicy:ServiceTaskSpecRestartPolicy",
                     "description": "See Restart Policy below for details.\n",
                     "language": {
                         "python": {
@@ -1157,7 +1238,7 @@
                 }
             }
         },
-        "docker:/ServiceTaskSpecContainerSpec:ServiceTaskSpecContainerSpec": {
+        "docker:index/ServiceTaskSpecContainerSpec:ServiceTaskSpecContainerSpec": {
             "properties": {
                 "args": {
                     "type": "array",
@@ -1186,7 +1267,7 @@
                 "configs": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/types/docker:/ServiceTaskSpecContainerSpecConfig:ServiceTaskSpecContainerSpecConfig"
+                        "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecConfig:ServiceTaskSpecContainerSpecConfig"
                     },
                     "description": "See Configs below for details.\n",
                     "language": {
@@ -1205,7 +1286,7 @@
                     }
                 },
                 "dnsConfig": {
-                    "$ref": "#/types/docker:/ServiceTaskSpecContainerSpecDnsConfig:ServiceTaskSpecContainerSpecDnsConfig",
+                    "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecDnsConfig:ServiceTaskSpecContainerSpecDnsConfig",
                     "description": "See DNS Config below for details.\n",
                     "language": {
                         "python": {
@@ -1238,7 +1319,7 @@
                     }
                 },
                 "healthcheck": {
-                    "$ref": "#/types/docker:/ServiceTaskSpecContainerSpecHealthcheck:ServiceTaskSpecContainerSpecHealthcheck",
+                    "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecHealthcheck:ServiceTaskSpecContainerSpecHealthcheck",
                     "description": "See Healthcheck below for details.\n",
                     "language": {
                         "python": {
@@ -1258,7 +1339,7 @@
                 "hosts": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/types/docker:/ServiceTaskSpecContainerSpecHost:ServiceTaskSpecContainerSpecHost"
+                        "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecHost:ServiceTaskSpecContainerSpecHost"
                     },
                     "language": {
                         "python": {
@@ -1287,7 +1368,7 @@
                 "labels": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/types/docker:/ServiceTaskSpecContainerSpecLabel:ServiceTaskSpecContainerSpecLabel"
+                        "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecLabel:ServiceTaskSpecContainerSpecLabel"
                     },
                     "description": "See Labels below for details.\n",
                     "language": {
@@ -1299,7 +1380,7 @@
                 "mounts": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/types/docker:/ServiceTaskSpecContainerSpecMount:ServiceTaskSpecContainerSpecMount"
+                        "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecMount:ServiceTaskSpecContainerSpecMount"
                     },
                     "description": "See Mounts below for details.\n",
                     "language": {
@@ -1309,7 +1390,7 @@
                     }
                 },
                 "privileges": {
-                    "$ref": "#/types/docker:/ServiceTaskSpecContainerSpecPrivileges:ServiceTaskSpecContainerSpecPrivileges",
+                    "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecPrivileges:ServiceTaskSpecContainerSpecPrivileges",
                     "description": "See Privileges below for details.\n",
                     "language": {
                         "python": {
@@ -1329,7 +1410,7 @@
                 "secrets": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/types/docker:/ServiceTaskSpecContainerSpecSecret:ServiceTaskSpecContainerSpecSecret"
+                        "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecSecret:ServiceTaskSpecContainerSpecSecret"
                     },
                     "description": "See Secrets below for details.\n",
                     "language": {
@@ -1381,7 +1462,7 @@
                 }
             }
         },
-        "docker:/ServiceTaskSpecContainerSpecConfig:ServiceTaskSpecContainerSpecConfig": {
+        "docker:index/ServiceTaskSpecContainerSpecConfig:ServiceTaskSpecContainerSpecConfig": {
             "properties": {
                 "configId": {
                     "type": "string",
@@ -1444,7 +1525,7 @@
                 "fileName"
             ]
         },
-        "docker:/ServiceTaskSpecContainerSpecDnsConfig:ServiceTaskSpecContainerSpecDnsConfig": {
+        "docker:index/ServiceTaskSpecContainerSpecDnsConfig:ServiceTaskSpecContainerSpecDnsConfig": {
             "properties": {
                 "nameservers": {
                     "type": "array",
@@ -1488,7 +1569,7 @@
                 "nameservers"
             ]
         },
-        "docker:/ServiceTaskSpecContainerSpecHealthcheck:ServiceTaskSpecContainerSpecHealthcheck": {
+        "docker:index/ServiceTaskSpecContainerSpecHealthcheck:ServiceTaskSpecContainerSpecHealthcheck": {
             "properties": {
                 "interval": {
                     "type": "string",
@@ -1544,7 +1625,7 @@
                 "tests"
             ]
         },
-        "docker:/ServiceTaskSpecContainerSpecHost:ServiceTaskSpecContainerSpecHost": {
+        "docker:index/ServiceTaskSpecContainerSpecHost:ServiceTaskSpecContainerSpecHost": {
             "properties": {
                 "host": {
                     "type": "string",
@@ -1571,7 +1652,7 @@
                 "ip"
             ]
         },
-        "docker:/ServiceTaskSpecContainerSpecLabel:ServiceTaskSpecContainerSpecLabel": {
+        "docker:index/ServiceTaskSpecContainerSpecLabel:ServiceTaskSpecContainerSpecLabel": {
             "properties": {
                 "label": {
                     "type": "string",
@@ -1598,10 +1679,10 @@
                 "value"
             ]
         },
-        "docker:/ServiceTaskSpecContainerSpecMount:ServiceTaskSpecContainerSpecMount": {
+        "docker:index/ServiceTaskSpecContainerSpecMount:ServiceTaskSpecContainerSpecMount": {
             "properties": {
                 "bindOptions": {
-                    "$ref": "#/types/docker:/ServiceTaskSpecContainerSpecMountBindOptions:ServiceTaskSpecContainerSpecMountBindOptions",
+                    "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecMountBindOptions:ServiceTaskSpecContainerSpecMountBindOptions",
                     "description": "Optional configuration for the `bind` type.\n",
                     "language": {
                         "python": {
@@ -1637,7 +1718,7 @@
                     }
                 },
                 "tmpfsOptions": {
-                    "$ref": "#/types/docker:/ServiceTaskSpecContainerSpecMountTmpfsOptions:ServiceTaskSpecContainerSpecMountTmpfsOptions",
+                    "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecMountTmpfsOptions:ServiceTaskSpecContainerSpecMountTmpfsOptions",
                     "description": "Optional configuration for the `tmpf` type.\n",
                     "language": {
                         "python": {
@@ -1655,7 +1736,7 @@
                     }
                 },
                 "volumeOptions": {
-                    "$ref": "#/types/docker:/ServiceTaskSpecContainerSpecMountVolumeOptions:ServiceTaskSpecContainerSpecMountVolumeOptions",
+                    "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecMountVolumeOptions:ServiceTaskSpecContainerSpecMountVolumeOptions",
                     "description": "Optional configuration for the `volume` type.\n",
                     "language": {
                         "python": {
@@ -1670,7 +1751,7 @@
                 "type"
             ]
         },
-        "docker:/ServiceTaskSpecContainerSpecMountBindOptions:ServiceTaskSpecContainerSpecMountBindOptions": {
+        "docker:index/ServiceTaskSpecContainerSpecMountBindOptions:ServiceTaskSpecContainerSpecMountBindOptions": {
             "properties": {
                 "propagation": {
                     "type": "string",
@@ -1684,7 +1765,7 @@
             },
             "type": "object"
         },
-        "docker:/ServiceTaskSpecContainerSpecMountTmpfsOptions:ServiceTaskSpecContainerSpecMountTmpfsOptions": {
+        "docker:index/ServiceTaskSpecContainerSpecMountTmpfsOptions:ServiceTaskSpecContainerSpecMountTmpfsOptions": {
             "properties": {
                 "mode": {
                     "type": "integer",
@@ -1707,7 +1788,7 @@
             },
             "type": "object"
         },
-        "docker:/ServiceTaskSpecContainerSpecMountVolumeOptions:ServiceTaskSpecContainerSpecMountVolumeOptions": {
+        "docker:index/ServiceTaskSpecContainerSpecMountVolumeOptions:ServiceTaskSpecContainerSpecMountVolumeOptions": {
             "properties": {
                 "driverName": {
                     "type": "string",
@@ -1731,7 +1812,7 @@
                 "labels": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/types/docker:/ServiceTaskSpecContainerSpecMountVolumeOptionsLabel:ServiceTaskSpecContainerSpecMountVolumeOptionsLabel"
+                        "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecMountVolumeOptionsLabel:ServiceTaskSpecContainerSpecMountVolumeOptionsLabel"
                     },
                     "description": "See Labels below for details.\n",
                     "language": {
@@ -1752,7 +1833,7 @@
             },
             "type": "object"
         },
-        "docker:/ServiceTaskSpecContainerSpecMountVolumeOptionsLabel:ServiceTaskSpecContainerSpecMountVolumeOptionsLabel": {
+        "docker:index/ServiceTaskSpecContainerSpecMountVolumeOptionsLabel:ServiceTaskSpecContainerSpecMountVolumeOptionsLabel": {
             "properties": {
                 "label": {
                     "type": "string",
@@ -1779,10 +1860,10 @@
                 "value"
             ]
         },
-        "docker:/ServiceTaskSpecContainerSpecPrivileges:ServiceTaskSpecContainerSpecPrivileges": {
+        "docker:index/ServiceTaskSpecContainerSpecPrivileges:ServiceTaskSpecContainerSpecPrivileges": {
             "properties": {
                 "credentialSpec": {
-                    "$ref": "#/types/docker:/ServiceTaskSpecContainerSpecPrivilegesCredentialSpec:ServiceTaskSpecContainerSpecPrivilegesCredentialSpec",
+                    "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecPrivilegesCredentialSpec:ServiceTaskSpecContainerSpecPrivilegesCredentialSpec",
                     "description": "For managed service account (Windows only)\n",
                     "language": {
                         "python": {
@@ -1791,7 +1872,7 @@
                     }
                 },
                 "seLinuxContext": {
-                    "$ref": "#/types/docker:/ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext:ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext",
+                    "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext:ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext",
                     "description": "SELinux labels of the container\n",
                     "language": {
                         "python": {
@@ -1802,7 +1883,7 @@
             },
             "type": "object"
         },
-        "docker:/ServiceTaskSpecContainerSpecPrivilegesCredentialSpec:ServiceTaskSpecContainerSpecPrivilegesCredentialSpec": {
+        "docker:index/ServiceTaskSpecContainerSpecPrivilegesCredentialSpec:ServiceTaskSpecContainerSpecPrivilegesCredentialSpec": {
             "properties": {
                 "file": {
                     "type": "string",
@@ -1825,7 +1906,7 @@
             },
             "type": "object"
         },
-        "docker:/ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext:ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext": {
+        "docker:index/ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext:ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext": {
             "properties": {
                 "disable": {
                     "type": "boolean",
@@ -1875,7 +1956,7 @@
             },
             "type": "object"
         },
-        "docker:/ServiceTaskSpecContainerSpecSecret:ServiceTaskSpecContainerSpecSecret": {
+        "docker:index/ServiceTaskSpecContainerSpecSecret:ServiceTaskSpecContainerSpecSecret": {
             "properties": {
                 "fileGid": {
                     "type": "string",
@@ -1938,7 +2019,7 @@
                 "secretId"
             ]
         },
-        "docker:/ServiceTaskSpecLogDriver:ServiceTaskSpecLogDriver": {
+        "docker:index/ServiceTaskSpecLogDriver:ServiceTaskSpecLogDriver": {
             "properties": {
                 "name": {
                     "type": "string",
@@ -1967,7 +2048,7 @@
                 "name"
             ]
         },
-        "docker:/ServiceTaskSpecPlacement:ServiceTaskSpecPlacement": {
+        "docker:index/ServiceTaskSpecPlacement:ServiceTaskSpecPlacement": {
             "properties": {
                 "constraints": {
                     "type": "array",
@@ -1984,7 +2065,7 @@
                 "platforms": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/types/docker:/ServiceTaskSpecPlacementPlatform:ServiceTaskSpecPlacementPlatform"
+                        "$ref": "#/types/docker:index/ServiceTaskSpecPlacementPlatform:ServiceTaskSpecPlacementPlatform"
                     },
                     "description": "Platforms stores all the platforms that the service's image can run on\n",
                     "language": {
@@ -2008,7 +2089,7 @@
             },
             "type": "object"
         },
-        "docker:/ServiceTaskSpecPlacementPlatform:ServiceTaskSpecPlacementPlatform": {
+        "docker:index/ServiceTaskSpecPlacementPlatform:ServiceTaskSpecPlacementPlatform": {
             "properties": {
                 "architecture": {
                     "type": "string",
@@ -2035,10 +2116,10 @@
                 "os"
             ]
         },
-        "docker:/ServiceTaskSpecResources:ServiceTaskSpecResources": {
+        "docker:index/ServiceTaskSpecResources:ServiceTaskSpecResources": {
             "properties": {
                 "limits": {
-                    "$ref": "#/types/docker:/ServiceTaskSpecResourcesLimits:ServiceTaskSpecResourcesLimits",
+                    "$ref": "#/types/docker:index/ServiceTaskSpecResourcesLimits:ServiceTaskSpecResourcesLimits",
                     "description": "Describes the resources which can be advertised by a node and requested by a task.\n",
                     "language": {
                         "python": {
@@ -2047,7 +2128,7 @@
                     }
                 },
                 "reservation": {
-                    "$ref": "#/types/docker:/ServiceTaskSpecResourcesReservation:ServiceTaskSpecResourcesReservation",
+                    "$ref": "#/types/docker:index/ServiceTaskSpecResourcesReservation:ServiceTaskSpecResourcesReservation",
                     "description": "An object describing the resources which can be advertised by a node and requested by a task.\n",
                     "language": {
                         "python": {
@@ -2058,10 +2139,10 @@
             },
             "type": "object"
         },
-        "docker:/ServiceTaskSpecResourcesLimits:ServiceTaskSpecResourcesLimits": {
+        "docker:index/ServiceTaskSpecResourcesLimits:ServiceTaskSpecResourcesLimits": {
             "properties": {
                 "genericResources": {
-                    "$ref": "#/types/docker:/ServiceTaskSpecResourcesLimitsGenericResources:ServiceTaskSpecResourcesLimitsGenericResources",
+                    "$ref": "#/types/docker:index/ServiceTaskSpecResourcesLimitsGenericResources:ServiceTaskSpecResourcesLimitsGenericResources",
                     "description": "User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)\n",
                     "language": {
                         "python": {
@@ -2090,7 +2171,7 @@
             },
             "type": "object"
         },
-        "docker:/ServiceTaskSpecResourcesLimitsGenericResources:ServiceTaskSpecResourcesLimitsGenericResources": {
+        "docker:index/ServiceTaskSpecResourcesLimitsGenericResources:ServiceTaskSpecResourcesLimitsGenericResources": {
             "properties": {
                 "discreteResourcesSpecs": {
                     "type": "array",
@@ -2119,10 +2200,10 @@
             },
             "type": "object"
         },
-        "docker:/ServiceTaskSpecResourcesReservation:ServiceTaskSpecResourcesReservation": {
+        "docker:index/ServiceTaskSpecResourcesReservation:ServiceTaskSpecResourcesReservation": {
             "properties": {
                 "genericResources": {
-                    "$ref": "#/types/docker:/ServiceTaskSpecResourcesReservationGenericResources:ServiceTaskSpecResourcesReservationGenericResources",
+                    "$ref": "#/types/docker:index/ServiceTaskSpecResourcesReservationGenericResources:ServiceTaskSpecResourcesReservationGenericResources",
                     "description": "User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)\n",
                     "language": {
                         "python": {
@@ -2151,7 +2232,7 @@
             },
             "type": "object"
         },
-        "docker:/ServiceTaskSpecResourcesReservationGenericResources:ServiceTaskSpecResourcesReservationGenericResources": {
+        "docker:index/ServiceTaskSpecResourcesReservationGenericResources:ServiceTaskSpecResourcesReservationGenericResources": {
             "properties": {
                 "discreteResourcesSpecs": {
                     "type": "array",
@@ -2180,7 +2261,7 @@
             },
             "type": "object"
         },
-        "docker:/ServiceTaskSpecRestartPolicy:ServiceTaskSpecRestartPolicy": {
+        "docker:index/ServiceTaskSpecRestartPolicy:ServiceTaskSpecRestartPolicy": {
             "properties": {
                 "condition": {
                     "type": "string",
@@ -2221,7 +2302,7 @@
             },
             "type": "object"
         },
-        "docker:/ServiceUpdateConfig:ServiceUpdateConfig": {
+        "docker:index/ServiceUpdateConfig:ServiceUpdateConfig": {
             "properties": {
                 "delay": {
                     "type": "string",
@@ -2280,7 +2361,7 @@
             },
             "type": "object"
         },
-        "docker:/VolumeLabel:VolumeLabel": {
+        "docker:index/VolumeLabel:VolumeLabel": {
             "properties": {
                 "label": {
                     "type": "string",
@@ -2305,7 +2386,7 @@
                 "value"
             ]
         },
-        "docker:/getNetworkIpamConfig:getNetworkIpamConfig": {
+        "docker:index/getNetworkIpamConfig:getNetworkIpamConfig": {
             "properties": {
                 "auxAddress": {
                     "type": "object",
@@ -2344,87 +2425,6 @@
                 }
             },
             "type": "object"
-        },
-        "docker:config/registryAuth:registryAuth": {
-            "properties": {
-                "address": {
-                    "type": "string"
-                },
-                "configFile": {
-                    "type": "string"
-                },
-                "configFileContent": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
-                },
-                "username": {
-                    "type": "string"
-                }
-            },
-            "type": "object",
-            "required": [
-                "address"
-            ],
-            "language": {
-                "nodejs": {
-                    "requiredInputs": []
-                }
-            }
-        },
-        "docker:index/ProviderRegistryAuth:ProviderRegistryAuth": {
-            "properties": {
-                "address": {
-                    "type": "string",
-                    "language": {
-                        "python": {
-                            "mapCase": false
-                        }
-                    }
-                },
-                "configFile": {
-                    "type": "string",
-                    "language": {
-                        "python": {
-                            "mapCase": false
-                        }
-                    }
-                },
-                "configFileContent": {
-                    "type": "string",
-                    "language": {
-                        "python": {
-                            "mapCase": false
-                        }
-                    }
-                },
-                "password": {
-                    "type": "string",
-                    "language": {
-                        "python": {
-                            "mapCase": false
-                        }
-                    }
-                },
-                "username": {
-                    "type": "string",
-                    "language": {
-                        "python": {
-                            "mapCase": false
-                        }
-                    }
-                }
-            },
-            "type": "object",
-            "required": [
-                "address"
-            ],
-            "language": {
-                "nodejs": {
-                    "requiredOutputs": []
-                }
-            }
         }
     },
     "provider": {
@@ -2477,7 +2477,7 @@
                     "description": "The network bridge of the container as read from its NetworkSettings.\n"
                 },
                 "capabilities": {
-                    "$ref": "#/types/docker:/ContainerCapabilities:ContainerCapabilities",
+                    "$ref": "#/types/docker:index/ContainerCapabilities:ContainerCapabilities",
                     "description": "See Capabilities below for details.\n"
                 },
                 "command": {
@@ -2506,7 +2506,7 @@
                 "devices": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/types/docker:/ContainerDevice:ContainerDevice"
+                        "$ref": "#/types/docker:index/ContainerDevice:ContainerDevice"
                     },
                     "description": "See Devices below for details.\n"
                 },
@@ -2566,7 +2566,7 @@
                     "description": "Add additional groups to run as.\n"
                 },
                 "healthcheck": {
-                    "$ref": "#/types/docker:/ContainerHealthcheck:ContainerHealthcheck",
+                    "$ref": "#/types/docker:index/ContainerHealthcheck:ContainerHealthcheck",
                     "description": "See Healthcheck below for details.\n"
                 },
                 "hostname": {
@@ -2576,7 +2576,7 @@
                 "hosts": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/types/docker:/ContainerHost:ContainerHost"
+                        "$ref": "#/types/docker:index/ContainerHost:ContainerHost"
                     },
                     "description": "Hostname to add.\n"
                 },
@@ -2601,7 +2601,7 @@
                 "labels": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/types/docker:/ContainerLabel:ContainerLabel"
+                        "$ref": "#/types/docker:index/ContainerLabel:ContainerLabel"
                     },
                     "description": "Adding labels.\n"
                 },
@@ -2642,7 +2642,7 @@
                 "mounts": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/types/docker:/ContainerMount:ContainerMount"
+                        "$ref": "#/types/docker:index/ContainerMount:ContainerMount"
                     },
                     "description": "See Mounts below for details.\n"
                 },
@@ -2663,7 +2663,7 @@
                 "networkDatas": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/types/docker:/ContainerNetworkData:ContainerNetworkData"
+                        "$ref": "#/types/docker:index/ContainerNetworkData:ContainerNetworkData"
                     },
                     "description": "(Map of a block) The IP addresses of the container on each\nnetwork. Key are the network names, values are the IP addresses.\n"
                 },
@@ -2682,7 +2682,7 @@
                 "networksAdvanced": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/types/docker:/ContainerNetworksAdvanced:ContainerNetworksAdvanced"
+                        "$ref": "#/types/docker:index/ContainerNetworksAdvanced:ContainerNetworksAdvanced"
                     },
                     "description": "See Networks Advanced below for details. If this block has priority to the deprecated `network_alias` and `network` properties.\n"
                 },
@@ -2693,7 +2693,7 @@
                 "ports": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/types/docker:/ContainerPort:ContainerPort"
+                        "$ref": "#/types/docker:index/ContainerPort:ContainerPort"
                     },
                     "description": "See Ports below for details.\n"
                 },
@@ -2741,14 +2741,14 @@
                 "ulimits": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/types/docker:/ContainerUlimit:ContainerUlimit"
+                        "$ref": "#/types/docker:index/ContainerUlimit:ContainerUlimit"
                     },
                     "description": "See Ulimits below for\ndetails.\n"
                 },
                 "uploads": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/types/docker:/ContainerUpload:ContainerUpload"
+                        "$ref": "#/types/docker:index/ContainerUpload:ContainerUpload"
                     },
                     "description": "See File Upload below for details.\n"
                 },
@@ -2763,7 +2763,7 @@
                 "volumes": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/types/docker:/ContainerVolume:ContainerVolume"
+                        "$ref": "#/types/docker:index/ContainerVolume:ContainerVolume"
                     },
                     "description": "See Volumes below for details.\n"
                 },
@@ -2800,7 +2800,7 @@
                     "description": "If true attach to the container after its creation and waits the end of his execution.\n"
                 },
                 "capabilities": {
-                    "$ref": "#/types/docker:/ContainerCapabilities:ContainerCapabilities",
+                    "$ref": "#/types/docker:index/ContainerCapabilities:ContainerCapabilities",
                     "description": "See Capabilities below for details.\n"
                 },
                 "command": {
@@ -2825,7 +2825,7 @@
                 "devices": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/types/docker:/ContainerDevice:ContainerDevice"
+                        "$ref": "#/types/docker:index/ContainerDevice:ContainerDevice"
                     },
                     "description": "See Devices below for details.\n"
                 },
@@ -2876,7 +2876,7 @@
                     "description": "Add additional groups to run as.\n"
                 },
                 "healthcheck": {
-                    "$ref": "#/types/docker:/ContainerHealthcheck:ContainerHealthcheck",
+                    "$ref": "#/types/docker:index/ContainerHealthcheck:ContainerHealthcheck",
                     "description": "See Healthcheck below for details.\n"
                 },
                 "hostname": {
@@ -2886,7 +2886,7 @@
                 "hosts": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/types/docker:/ContainerHost:ContainerHost"
+                        "$ref": "#/types/docker:index/ContainerHost:ContainerHost"
                     },
                     "description": "Hostname to add.\n"
                 },
@@ -2901,7 +2901,7 @@
                 "labels": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/types/docker:/ContainerLabel:ContainerLabel"
+                        "$ref": "#/types/docker:index/ContainerLabel:ContainerLabel"
                     },
                     "description": "Adding labels.\n"
                 },
@@ -2942,7 +2942,7 @@
                 "mounts": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/types/docker:/ContainerMount:ContainerMount"
+                        "$ref": "#/types/docker:index/ContainerMount:ContainerMount"
                     },
                     "description": "See Mounts below for details.\n"
                 },
@@ -2975,7 +2975,7 @@
                 "networksAdvanced": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/types/docker:/ContainerNetworksAdvanced:ContainerNetworksAdvanced"
+                        "$ref": "#/types/docker:index/ContainerNetworksAdvanced:ContainerNetworksAdvanced"
                     },
                     "description": "See Networks Advanced below for details. If this block has priority to the deprecated `network_alias` and `network` properties.\n"
                 },
@@ -2986,7 +2986,7 @@
                 "ports": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/types/docker:/ContainerPort:ContainerPort"
+                        "$ref": "#/types/docker:index/ContainerPort:ContainerPort"
                     },
                     "description": "See Ports below for details.\n"
                 },
@@ -3034,14 +3034,14 @@
                 "ulimits": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/types/docker:/ContainerUlimit:ContainerUlimit"
+                        "$ref": "#/types/docker:index/ContainerUlimit:ContainerUlimit"
                     },
                     "description": "See Ulimits below for\ndetails.\n"
                 },
                 "uploads": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/types/docker:/ContainerUpload:ContainerUpload"
+                        "$ref": "#/types/docker:index/ContainerUpload:ContainerUpload"
                     },
                     "description": "See File Upload below for details.\n"
                 },
@@ -3056,7 +3056,7 @@
                 "volumes": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/types/docker:/ContainerVolume:ContainerVolume"
+                        "$ref": "#/types/docker:index/ContainerVolume:ContainerVolume"
                     },
                     "description": "See Volumes below for details.\n"
                 },
@@ -3080,7 +3080,7 @@
                         "description": "The network bridge of the container as read from its NetworkSettings.\n"
                     },
                     "capabilities": {
-                        "$ref": "#/types/docker:/ContainerCapabilities:ContainerCapabilities",
+                        "$ref": "#/types/docker:index/ContainerCapabilities:ContainerCapabilities",
                         "description": "See Capabilities below for details.\n"
                     },
                     "command": {
@@ -3109,7 +3109,7 @@
                     "devices": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/types/docker:/ContainerDevice:ContainerDevice"
+                            "$ref": "#/types/docker:index/ContainerDevice:ContainerDevice"
                         },
                         "description": "See Devices below for details.\n"
                     },
@@ -3169,7 +3169,7 @@
                         "description": "Add additional groups to run as.\n"
                     },
                     "healthcheck": {
-                        "$ref": "#/types/docker:/ContainerHealthcheck:ContainerHealthcheck",
+                        "$ref": "#/types/docker:index/ContainerHealthcheck:ContainerHealthcheck",
                         "description": "See Healthcheck below for details.\n"
                     },
                     "hostname": {
@@ -3179,7 +3179,7 @@
                     "hosts": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/types/docker:/ContainerHost:ContainerHost"
+                            "$ref": "#/types/docker:index/ContainerHost:ContainerHost"
                         },
                         "description": "Hostname to add.\n"
                     },
@@ -3204,7 +3204,7 @@
                     "labels": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/types/docker:/ContainerLabel:ContainerLabel"
+                            "$ref": "#/types/docker:index/ContainerLabel:ContainerLabel"
                         },
                         "description": "Adding labels.\n"
                     },
@@ -3245,7 +3245,7 @@
                     "mounts": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/types/docker:/ContainerMount:ContainerMount"
+                            "$ref": "#/types/docker:index/ContainerMount:ContainerMount"
                         },
                         "description": "See Mounts below for details.\n"
                     },
@@ -3266,7 +3266,7 @@
                     "networkDatas": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/types/docker:/ContainerNetworkData:ContainerNetworkData"
+                            "$ref": "#/types/docker:index/ContainerNetworkData:ContainerNetworkData"
                         },
                         "description": "(Map of a block) The IP addresses of the container on each\nnetwork. Key are the network names, values are the IP addresses.\n"
                     },
@@ -3285,7 +3285,7 @@
                     "networksAdvanced": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/types/docker:/ContainerNetworksAdvanced:ContainerNetworksAdvanced"
+                            "$ref": "#/types/docker:index/ContainerNetworksAdvanced:ContainerNetworksAdvanced"
                         },
                         "description": "See Networks Advanced below for details. If this block has priority to the deprecated `network_alias` and `network` properties.\n"
                     },
@@ -3296,7 +3296,7 @@
                     "ports": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/types/docker:/ContainerPort:ContainerPort"
+                            "$ref": "#/types/docker:index/ContainerPort:ContainerPort"
                         },
                         "description": "See Ports below for details.\n"
                     },
@@ -3344,14 +3344,14 @@
                     "ulimits": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/types/docker:/ContainerUlimit:ContainerUlimit"
+                            "$ref": "#/types/docker:index/ContainerUlimit:ContainerUlimit"
                         },
                         "description": "See Ulimits below for\ndetails.\n"
                     },
                     "uploads": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/types/docker:/ContainerUpload:ContainerUpload"
+                            "$ref": "#/types/docker:index/ContainerUpload:ContainerUpload"
                         },
                         "description": "See File Upload below for details.\n"
                     },
@@ -3366,7 +3366,7 @@
                     "volumes": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/types/docker:/ContainerVolume:ContainerVolume"
+                            "$ref": "#/types/docker:index/ContainerVolume:ContainerVolume"
                         },
                         "description": "See Volumes below for details.\n"
                     },
@@ -3404,7 +3404,7 @@
                 "ipamConfigs": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/types/docker:/NetworkIpamConfig:NetworkIpamConfig"
+                        "$ref": "#/types/docker:index/NetworkIpamConfig:NetworkIpamConfig"
                     },
                     "description": "See IPAM config below for\ndetails.\n"
                 },
@@ -3419,7 +3419,7 @@
                 "labels": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/types/docker:/NetworkLabel:NetworkLabel"
+                        "$ref": "#/types/docker:index/NetworkLabel:NetworkLabel"
                     },
                     "description": "See Labels below for details.\n"
                 },
@@ -3470,7 +3470,7 @@
                 "ipamConfigs": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/types/docker:/NetworkIpamConfig:NetworkIpamConfig"
+                        "$ref": "#/types/docker:index/NetworkIpamConfig:NetworkIpamConfig"
                     },
                     "description": "See IPAM config below for\ndetails.\n"
                 },
@@ -3485,7 +3485,7 @@
                 "labels": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/types/docker:/NetworkLabel:NetworkLabel"
+                        "$ref": "#/types/docker:index/NetworkLabel:NetworkLabel"
                     },
                     "description": "See Labels below for details.\n"
                 },
@@ -3527,7 +3527,7 @@
                     "ipamConfigs": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/types/docker:/NetworkIpamConfig:NetworkIpamConfig"
+                            "$ref": "#/types/docker:index/NetworkIpamConfig:NetworkIpamConfig"
                         },
                         "description": "See IPAM config below for\ndetails.\n"
                     },
@@ -3542,7 +3542,7 @@
                     "labels": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/types/docker:/NetworkLabel:NetworkLabel"
+                            "$ref": "#/types/docker:index/NetworkLabel:NetworkLabel"
                         },
                         "description": "See Labels below for details.\n"
                     },
@@ -3659,7 +3659,7 @@
                 "labels": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/types/docker:/SecretLabel:SecretLabel"
+                        "$ref": "#/types/docker:index/SecretLabel:SecretLabel"
                     },
                     "description": "See Labels below for details.\n"
                 },
@@ -3680,7 +3680,7 @@
                 "labels": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/types/docker:/SecretLabel:SecretLabel"
+                        "$ref": "#/types/docker:index/SecretLabel:SecretLabel"
                     },
                     "description": "See Labels below for details.\n"
                 },
@@ -3702,7 +3702,7 @@
                     "labels": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/types/docker:/SecretLabel:SecretLabel"
+                            "$ref": "#/types/docker:index/SecretLabel:SecretLabel"
                         },
                         "description": "See Labels below for details.\n"
                     },
@@ -3717,26 +3717,26 @@
         "docker:index/service:Service": {
             "properties": {
                 "auth": {
-                    "$ref": "#/types/docker:/ServiceAuth:ServiceAuth",
+                    "$ref": "#/types/docker:index/ServiceAuth:ServiceAuth",
                     "description": "See Auth below for details.\n"
                 },
                 "convergeConfig": {
-                    "$ref": "#/types/docker:/ServiceConvergeConfig:ServiceConvergeConfig",
+                    "$ref": "#/types/docker:index/ServiceConvergeConfig:ServiceConvergeConfig",
                     "description": "See Converge Config below for details.\n"
                 },
                 "endpointSpec": {
-                    "$ref": "#/types/docker:/ServiceEndpointSpec:ServiceEndpointSpec",
+                    "$ref": "#/types/docker:index/ServiceEndpointSpec:ServiceEndpointSpec",
                     "description": "See EndpointSpec below for details.\n"
                 },
                 "labels": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/types/docker:/ServiceLabel:ServiceLabel"
+                        "$ref": "#/types/docker:index/ServiceLabel:ServiceLabel"
                     },
                     "description": "See Labels below for details.\n"
                 },
                 "mode": {
-                    "$ref": "#/types/docker:/ServiceMode:ServiceMode",
+                    "$ref": "#/types/docker:index/ServiceMode:ServiceMode",
                     "description": "See Mode below for details.\n"
                 },
                 "name": {
@@ -3744,15 +3744,15 @@
                     "description": "The name of the Docker service.\n"
                 },
                 "rollbackConfig": {
-                    "$ref": "#/types/docker:/ServiceRollbackConfig:ServiceRollbackConfig",
+                    "$ref": "#/types/docker:index/ServiceRollbackConfig:ServiceRollbackConfig",
                     "description": "See RollbackConfig below for details.\n"
                 },
                 "taskSpec": {
-                    "$ref": "#/types/docker:/ServiceTaskSpec:ServiceTaskSpec",
+                    "$ref": "#/types/docker:index/ServiceTaskSpec:ServiceTaskSpec",
                     "description": "See TaskSpec below for details.\n"
                 },
                 "updateConfig": {
-                    "$ref": "#/types/docker:/ServiceUpdateConfig:ServiceUpdateConfig",
+                    "$ref": "#/types/docker:index/ServiceUpdateConfig:ServiceUpdateConfig",
                     "description": "See UpdateConfig below for details.\n"
                 }
             },
@@ -3765,26 +3765,26 @@
             ],
             "inputProperties": {
                 "auth": {
-                    "$ref": "#/types/docker:/ServiceAuth:ServiceAuth",
+                    "$ref": "#/types/docker:index/ServiceAuth:ServiceAuth",
                     "description": "See Auth below for details.\n"
                 },
                 "convergeConfig": {
-                    "$ref": "#/types/docker:/ServiceConvergeConfig:ServiceConvergeConfig",
+                    "$ref": "#/types/docker:index/ServiceConvergeConfig:ServiceConvergeConfig",
                     "description": "See Converge Config below for details.\n"
                 },
                 "endpointSpec": {
-                    "$ref": "#/types/docker:/ServiceEndpointSpec:ServiceEndpointSpec",
+                    "$ref": "#/types/docker:index/ServiceEndpointSpec:ServiceEndpointSpec",
                     "description": "See EndpointSpec below for details.\n"
                 },
                 "labels": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/types/docker:/ServiceLabel:ServiceLabel"
+                        "$ref": "#/types/docker:index/ServiceLabel:ServiceLabel"
                     },
                     "description": "See Labels below for details.\n"
                 },
                 "mode": {
-                    "$ref": "#/types/docker:/ServiceMode:ServiceMode",
+                    "$ref": "#/types/docker:index/ServiceMode:ServiceMode",
                     "description": "See Mode below for details.\n"
                 },
                 "name": {
@@ -3792,15 +3792,15 @@
                     "description": "The name of the Docker service.\n"
                 },
                 "rollbackConfig": {
-                    "$ref": "#/types/docker:/ServiceRollbackConfig:ServiceRollbackConfig",
+                    "$ref": "#/types/docker:index/ServiceRollbackConfig:ServiceRollbackConfig",
                     "description": "See RollbackConfig below for details.\n"
                 },
                 "taskSpec": {
-                    "$ref": "#/types/docker:/ServiceTaskSpec:ServiceTaskSpec",
+                    "$ref": "#/types/docker:index/ServiceTaskSpec:ServiceTaskSpec",
                     "description": "See TaskSpec below for details.\n"
                 },
                 "updateConfig": {
-                    "$ref": "#/types/docker:/ServiceUpdateConfig:ServiceUpdateConfig",
+                    "$ref": "#/types/docker:index/ServiceUpdateConfig:ServiceUpdateConfig",
                     "description": "See UpdateConfig below for details.\n"
                 }
             },
@@ -3811,26 +3811,26 @@
                 "description": "Input properties used for looking up and filtering Service resources.\n",
                 "properties": {
                     "auth": {
-                        "$ref": "#/types/docker:/ServiceAuth:ServiceAuth",
+                        "$ref": "#/types/docker:index/ServiceAuth:ServiceAuth",
                         "description": "See Auth below for details.\n"
                     },
                     "convergeConfig": {
-                        "$ref": "#/types/docker:/ServiceConvergeConfig:ServiceConvergeConfig",
+                        "$ref": "#/types/docker:index/ServiceConvergeConfig:ServiceConvergeConfig",
                         "description": "See Converge Config below for details.\n"
                     },
                     "endpointSpec": {
-                        "$ref": "#/types/docker:/ServiceEndpointSpec:ServiceEndpointSpec",
+                        "$ref": "#/types/docker:index/ServiceEndpointSpec:ServiceEndpointSpec",
                         "description": "See EndpointSpec below for details.\n"
                     },
                     "labels": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/types/docker:/ServiceLabel:ServiceLabel"
+                            "$ref": "#/types/docker:index/ServiceLabel:ServiceLabel"
                         },
                         "description": "See Labels below for details.\n"
                     },
                     "mode": {
-                        "$ref": "#/types/docker:/ServiceMode:ServiceMode",
+                        "$ref": "#/types/docker:index/ServiceMode:ServiceMode",
                         "description": "See Mode below for details.\n"
                     },
                     "name": {
@@ -3838,15 +3838,15 @@
                         "description": "The name of the Docker service.\n"
                     },
                     "rollbackConfig": {
-                        "$ref": "#/types/docker:/ServiceRollbackConfig:ServiceRollbackConfig",
+                        "$ref": "#/types/docker:index/ServiceRollbackConfig:ServiceRollbackConfig",
                         "description": "See RollbackConfig below for details.\n"
                     },
                     "taskSpec": {
-                        "$ref": "#/types/docker:/ServiceTaskSpec:ServiceTaskSpec",
+                        "$ref": "#/types/docker:index/ServiceTaskSpec:ServiceTaskSpec",
                         "description": "See TaskSpec below for details.\n"
                     },
                     "updateConfig": {
-                        "$ref": "#/types/docker:/ServiceUpdateConfig:ServiceUpdateConfig",
+                        "$ref": "#/types/docker:index/ServiceUpdateConfig:ServiceUpdateConfig",
                         "description": "See UpdateConfig below for details.\n"
                     }
                 },
@@ -3913,7 +3913,7 @@
                 "labels": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/types/docker:/VolumeLabel:VolumeLabel"
+                        "$ref": "#/types/docker:index/VolumeLabel:VolumeLabel"
                     },
                     "description": "User-defined key/value metadata.\n"
                 },
@@ -3945,7 +3945,7 @@
                 "labels": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/types/docker:/VolumeLabel:VolumeLabel"
+                        "$ref": "#/types/docker:index/VolumeLabel:VolumeLabel"
                     },
                     "description": "User-defined key/value metadata.\n"
                 },
@@ -3971,7 +3971,7 @@
                     "labels": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/types/docker:/VolumeLabel:VolumeLabel"
+                            "$ref": "#/types/docker:index/VolumeLabel:VolumeLabel"
                         },
                         "description": "User-defined key/value metadata.\n"
                     },
@@ -4020,7 +4020,7 @@
                     "ipamConfigs": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/types/docker:/getNetworkIpamConfig:getNetworkIpamConfig"
+                            "$ref": "#/types/docker:index/getNetworkIpamConfig:getNetworkIpamConfig"
                         }
                     },
                     "name": {

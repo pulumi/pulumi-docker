@@ -2429,6 +2429,124 @@ func (o NetworkLabelArrayOutput) Index(i pulumi.IntInput) NetworkLabelOutput {
 	}).(NetworkLabelOutput)
 }
 
+type ProviderRegistryAuth struct {
+	Address           string  `pulumi:"address"`
+	ConfigFile        *string `pulumi:"configFile"`
+	ConfigFileContent *string `pulumi:"configFileContent"`
+	Password          *string `pulumi:"password"`
+	Username          *string `pulumi:"username"`
+}
+
+// ProviderRegistryAuthInput is an input type that accepts ProviderRegistryAuthArgs and ProviderRegistryAuthOutput values.
+// You can construct a concrete instance of `ProviderRegistryAuthInput` via:
+//
+//          ProviderRegistryAuthArgs{...}
+type ProviderRegistryAuthInput interface {
+	pulumi.Input
+
+	ToProviderRegistryAuthOutput() ProviderRegistryAuthOutput
+	ToProviderRegistryAuthOutputWithContext(context.Context) ProviderRegistryAuthOutput
+}
+
+type ProviderRegistryAuthArgs struct {
+	Address           pulumi.StringInput    `pulumi:"address"`
+	ConfigFile        pulumi.StringPtrInput `pulumi:"configFile"`
+	ConfigFileContent pulumi.StringPtrInput `pulumi:"configFileContent"`
+	Password          pulumi.StringPtrInput `pulumi:"password"`
+	Username          pulumi.StringPtrInput `pulumi:"username"`
+}
+
+func (ProviderRegistryAuthArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*ProviderRegistryAuth)(nil)).Elem()
+}
+
+func (i ProviderRegistryAuthArgs) ToProviderRegistryAuthOutput() ProviderRegistryAuthOutput {
+	return i.ToProviderRegistryAuthOutputWithContext(context.Background())
+}
+
+func (i ProviderRegistryAuthArgs) ToProviderRegistryAuthOutputWithContext(ctx context.Context) ProviderRegistryAuthOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ProviderRegistryAuthOutput)
+}
+
+// ProviderRegistryAuthArrayInput is an input type that accepts ProviderRegistryAuthArray and ProviderRegistryAuthArrayOutput values.
+// You can construct a concrete instance of `ProviderRegistryAuthArrayInput` via:
+//
+//          ProviderRegistryAuthArray{ ProviderRegistryAuthArgs{...} }
+type ProviderRegistryAuthArrayInput interface {
+	pulumi.Input
+
+	ToProviderRegistryAuthArrayOutput() ProviderRegistryAuthArrayOutput
+	ToProviderRegistryAuthArrayOutputWithContext(context.Context) ProviderRegistryAuthArrayOutput
+}
+
+type ProviderRegistryAuthArray []ProviderRegistryAuthInput
+
+func (ProviderRegistryAuthArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]ProviderRegistryAuth)(nil)).Elem()
+}
+
+func (i ProviderRegistryAuthArray) ToProviderRegistryAuthArrayOutput() ProviderRegistryAuthArrayOutput {
+	return i.ToProviderRegistryAuthArrayOutputWithContext(context.Background())
+}
+
+func (i ProviderRegistryAuthArray) ToProviderRegistryAuthArrayOutputWithContext(ctx context.Context) ProviderRegistryAuthArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ProviderRegistryAuthArrayOutput)
+}
+
+type ProviderRegistryAuthOutput struct{ *pulumi.OutputState }
+
+func (ProviderRegistryAuthOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*ProviderRegistryAuth)(nil)).Elem()
+}
+
+func (o ProviderRegistryAuthOutput) ToProviderRegistryAuthOutput() ProviderRegistryAuthOutput {
+	return o
+}
+
+func (o ProviderRegistryAuthOutput) ToProviderRegistryAuthOutputWithContext(ctx context.Context) ProviderRegistryAuthOutput {
+	return o
+}
+
+func (o ProviderRegistryAuthOutput) Address() pulumi.StringOutput {
+	return o.ApplyT(func(v ProviderRegistryAuth) string { return v.Address }).(pulumi.StringOutput)
+}
+
+func (o ProviderRegistryAuthOutput) ConfigFile() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v ProviderRegistryAuth) *string { return v.ConfigFile }).(pulumi.StringPtrOutput)
+}
+
+func (o ProviderRegistryAuthOutput) ConfigFileContent() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v ProviderRegistryAuth) *string { return v.ConfigFileContent }).(pulumi.StringPtrOutput)
+}
+
+func (o ProviderRegistryAuthOutput) Password() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v ProviderRegistryAuth) *string { return v.Password }).(pulumi.StringPtrOutput)
+}
+
+func (o ProviderRegistryAuthOutput) Username() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v ProviderRegistryAuth) *string { return v.Username }).(pulumi.StringPtrOutput)
+}
+
+type ProviderRegistryAuthArrayOutput struct{ *pulumi.OutputState }
+
+func (ProviderRegistryAuthArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]ProviderRegistryAuth)(nil)).Elem()
+}
+
+func (o ProviderRegistryAuthArrayOutput) ToProviderRegistryAuthArrayOutput() ProviderRegistryAuthArrayOutput {
+	return o
+}
+
+func (o ProviderRegistryAuthArrayOutput) ToProviderRegistryAuthArrayOutputWithContext(ctx context.Context) ProviderRegistryAuthArrayOutput {
+	return o
+}
+
+func (o ProviderRegistryAuthArrayOutput) Index(i pulumi.IntInput) ProviderRegistryAuthOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) ProviderRegistryAuth {
+		return vs[0].([]ProviderRegistryAuth)[vs[1].(int)]
+	}).(ProviderRegistryAuthOutput)
+}
+
 type SecretLabel struct {
 	// Name of the label
 	Label string `pulumi:"label"`
@@ -8482,124 +8600,6 @@ func (o GetNetworkIpamConfigArrayOutput) Index(i pulumi.IntInput) GetNetworkIpam
 	}).(GetNetworkIpamConfigOutput)
 }
 
-type ProviderRegistryAuth struct {
-	Address           string  `pulumi:"address"`
-	ConfigFile        *string `pulumi:"configFile"`
-	ConfigFileContent *string `pulumi:"configFileContent"`
-	Password          *string `pulumi:"password"`
-	Username          *string `pulumi:"username"`
-}
-
-// ProviderRegistryAuthInput is an input type that accepts ProviderRegistryAuthArgs and ProviderRegistryAuthOutput values.
-// You can construct a concrete instance of `ProviderRegistryAuthInput` via:
-//
-//          ProviderRegistryAuthArgs{...}
-type ProviderRegistryAuthInput interface {
-	pulumi.Input
-
-	ToProviderRegistryAuthOutput() ProviderRegistryAuthOutput
-	ToProviderRegistryAuthOutputWithContext(context.Context) ProviderRegistryAuthOutput
-}
-
-type ProviderRegistryAuthArgs struct {
-	Address           pulumi.StringInput    `pulumi:"address"`
-	ConfigFile        pulumi.StringPtrInput `pulumi:"configFile"`
-	ConfigFileContent pulumi.StringPtrInput `pulumi:"configFileContent"`
-	Password          pulumi.StringPtrInput `pulumi:"password"`
-	Username          pulumi.StringPtrInput `pulumi:"username"`
-}
-
-func (ProviderRegistryAuthArgs) ElementType() reflect.Type {
-	return reflect.TypeOf((*ProviderRegistryAuth)(nil)).Elem()
-}
-
-func (i ProviderRegistryAuthArgs) ToProviderRegistryAuthOutput() ProviderRegistryAuthOutput {
-	return i.ToProviderRegistryAuthOutputWithContext(context.Background())
-}
-
-func (i ProviderRegistryAuthArgs) ToProviderRegistryAuthOutputWithContext(ctx context.Context) ProviderRegistryAuthOutput {
-	return pulumi.ToOutputWithContext(ctx, i).(ProviderRegistryAuthOutput)
-}
-
-// ProviderRegistryAuthArrayInput is an input type that accepts ProviderRegistryAuthArray and ProviderRegistryAuthArrayOutput values.
-// You can construct a concrete instance of `ProviderRegistryAuthArrayInput` via:
-//
-//          ProviderRegistryAuthArray{ ProviderRegistryAuthArgs{...} }
-type ProviderRegistryAuthArrayInput interface {
-	pulumi.Input
-
-	ToProviderRegistryAuthArrayOutput() ProviderRegistryAuthArrayOutput
-	ToProviderRegistryAuthArrayOutputWithContext(context.Context) ProviderRegistryAuthArrayOutput
-}
-
-type ProviderRegistryAuthArray []ProviderRegistryAuthInput
-
-func (ProviderRegistryAuthArray) ElementType() reflect.Type {
-	return reflect.TypeOf((*[]ProviderRegistryAuth)(nil)).Elem()
-}
-
-func (i ProviderRegistryAuthArray) ToProviderRegistryAuthArrayOutput() ProviderRegistryAuthArrayOutput {
-	return i.ToProviderRegistryAuthArrayOutputWithContext(context.Background())
-}
-
-func (i ProviderRegistryAuthArray) ToProviderRegistryAuthArrayOutputWithContext(ctx context.Context) ProviderRegistryAuthArrayOutput {
-	return pulumi.ToOutputWithContext(ctx, i).(ProviderRegistryAuthArrayOutput)
-}
-
-type ProviderRegistryAuthOutput struct{ *pulumi.OutputState }
-
-func (ProviderRegistryAuthOutput) ElementType() reflect.Type {
-	return reflect.TypeOf((*ProviderRegistryAuth)(nil)).Elem()
-}
-
-func (o ProviderRegistryAuthOutput) ToProviderRegistryAuthOutput() ProviderRegistryAuthOutput {
-	return o
-}
-
-func (o ProviderRegistryAuthOutput) ToProviderRegistryAuthOutputWithContext(ctx context.Context) ProviderRegistryAuthOutput {
-	return o
-}
-
-func (o ProviderRegistryAuthOutput) Address() pulumi.StringOutput {
-	return o.ApplyT(func(v ProviderRegistryAuth) string { return v.Address }).(pulumi.StringOutput)
-}
-
-func (o ProviderRegistryAuthOutput) ConfigFile() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v ProviderRegistryAuth) *string { return v.ConfigFile }).(pulumi.StringPtrOutput)
-}
-
-func (o ProviderRegistryAuthOutput) ConfigFileContent() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v ProviderRegistryAuth) *string { return v.ConfigFileContent }).(pulumi.StringPtrOutput)
-}
-
-func (o ProviderRegistryAuthOutput) Password() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v ProviderRegistryAuth) *string { return v.Password }).(pulumi.StringPtrOutput)
-}
-
-func (o ProviderRegistryAuthOutput) Username() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v ProviderRegistryAuth) *string { return v.Username }).(pulumi.StringPtrOutput)
-}
-
-type ProviderRegistryAuthArrayOutput struct{ *pulumi.OutputState }
-
-func (ProviderRegistryAuthArrayOutput) ElementType() reflect.Type {
-	return reflect.TypeOf((*[]ProviderRegistryAuth)(nil)).Elem()
-}
-
-func (o ProviderRegistryAuthArrayOutput) ToProviderRegistryAuthArrayOutput() ProviderRegistryAuthArrayOutput {
-	return o
-}
-
-func (o ProviderRegistryAuthArrayOutput) ToProviderRegistryAuthArrayOutputWithContext(ctx context.Context) ProviderRegistryAuthArrayOutput {
-	return o
-}
-
-func (o ProviderRegistryAuthArrayOutput) Index(i pulumi.IntInput) ProviderRegistryAuthOutput {
-	return pulumi.All(o, i).ApplyT(func(vs []interface{}) ProviderRegistryAuth {
-		return vs[0].([]ProviderRegistryAuth)[vs[1].(int)]
-	}).(ProviderRegistryAuthOutput)
-}
-
 func init() {
 	pulumi.RegisterOutputType(ContainerCapabilitiesOutput{})
 	pulumi.RegisterOutputType(ContainerCapabilitiesPtrOutput{})
@@ -8637,6 +8637,8 @@ func init() {
 	pulumi.RegisterOutputType(NetworkIpamConfigArrayOutput{})
 	pulumi.RegisterOutputType(NetworkLabelOutput{})
 	pulumi.RegisterOutputType(NetworkLabelArrayOutput{})
+	pulumi.RegisterOutputType(ProviderRegistryAuthOutput{})
+	pulumi.RegisterOutputType(ProviderRegistryAuthArrayOutput{})
 	pulumi.RegisterOutputType(SecretLabelOutput{})
 	pulumi.RegisterOutputType(SecretLabelArrayOutput{})
 	pulumi.RegisterOutputType(ServiceAuthOutput{})
@@ -8711,6 +8713,4 @@ func init() {
 	pulumi.RegisterOutputType(VolumeLabelArrayOutput{})
 	pulumi.RegisterOutputType(GetNetworkIpamConfigOutput{})
 	pulumi.RegisterOutputType(GetNetworkIpamConfigArrayOutput{})
-	pulumi.RegisterOutputType(ProviderRegistryAuthOutput{})
-	pulumi.RegisterOutputType(ProviderRegistryAuthArrayOutput{})
 }
