@@ -5,7 +5,7 @@
 import warnings
 import pulumi
 import pulumi.runtime
-from typing import Any, Dict, List, Mapping, Optional, Tuple, Union
+from typing import Any, Mapping, Optional, Sequence, Union
 from . import _utilities, _tables
 
 __all__ = ['RemoteImage']
@@ -18,7 +18,7 @@ class RemoteImage(pulumi.CustomResource):
                  keep_locally: Optional[pulumi.Input[bool]] = None,
                  name: Optional[pulumi.Input[str]] = None,
                  pull_trigger: Optional[pulumi.Input[str]] = None,
-                 pull_triggers: Optional[pulumi.Input[List[pulumi.Input[str]]]] = None,
+                 pull_triggers: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  __props__=None,
                  __name__=None,
                  __opts__=None):
@@ -57,7 +57,7 @@ class RemoteImage(pulumi.CustomResource):
                the docker local storage on destroy operation.
         :param pulumi.Input[str] name: The name of the Docker image, including any tags or SHA256 repo digests.
         :param pulumi.Input[str] pull_trigger: **Deprecated**, use `pull_triggers` instead.
-        :param pulumi.Input[List[pulumi.Input[str]]] pull_triggers: List of values which cause an
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] pull_triggers: List of values which cause an
                image pull when changed. This is used to store the image digest from the
                registry when using the `getRegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
                to trigger an image update.
@@ -103,7 +103,7 @@ class RemoteImage(pulumi.CustomResource):
             latest: Optional[pulumi.Input[str]] = None,
             name: Optional[pulumi.Input[str]] = None,
             pull_trigger: Optional[pulumi.Input[str]] = None,
-            pull_triggers: Optional[pulumi.Input[List[pulumi.Input[str]]]] = None) -> 'RemoteImage':
+            pull_triggers: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None) -> 'RemoteImage':
         """
         Get an existing RemoteImage resource's state with the given name, id, and optional extra
         properties used to qualify the lookup.
@@ -116,7 +116,7 @@ class RemoteImage(pulumi.CustomResource):
                the docker local storage on destroy operation.
         :param pulumi.Input[str] name: The name of the Docker image, including any tags or SHA256 repo digests.
         :param pulumi.Input[str] pull_trigger: **Deprecated**, use `pull_triggers` instead.
-        :param pulumi.Input[List[pulumi.Input[str]]] pull_triggers: List of values which cause an
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] pull_triggers: List of values which cause an
                image pull when changed. This is used to store the image digest from the
                registry when using the `getRegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
                to trigger an image update.
@@ -165,7 +165,7 @@ class RemoteImage(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="pullTriggers")
-    def pull_triggers(self) -> pulumi.Output[Optional[List[str]]]:
+    def pull_triggers(self) -> pulumi.Output[Optional[Sequence[str]]]:
         """
         List of values which cause an
         image pull when changed. This is used to store the image digest from the

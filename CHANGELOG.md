@@ -1,5 +1,6 @@
 ## HEAD (Unreleased)
-_(none)_
+* Upgrade to Pulumi v2.12.0 and pulumi-terraform-bridge v2.11.0
+* Upgrade to Pulumi v2.12.0 and pulumi-terraform-bridge v2.11.0
 
 ---
 

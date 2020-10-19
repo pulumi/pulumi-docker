@@ -5,7 +5,7 @@
 import warnings
 import pulumi
 import pulumi.runtime
-from typing import Any, Dict, List, Mapping, Optional, Tuple, Union
+from typing import Any, Mapping, Optional, Sequence, Union
 from . import _utilities, _tables
 
 __all__ = [
@@ -27,6 +27,7 @@ __all__ = [
     'ContainerVolumeArgs',
     'NetworkIpamConfigArgs',
     'NetworkLabelArgs',
+    'ProviderRegistryAuthArgs',
     'SecretLabelArgs',
     'ServiceAuthArgs',
     'ServiceConvergeConfigArgs',
@@ -63,17 +64,16 @@ __all__ = [
     'ServiceTaskSpecRestartPolicyArgs',
     'ServiceUpdateConfigArgs',
     'VolumeLabelArgs',
-    'ProviderRegistryAuthArgs',
 ]
 
 @pulumi.input_type
 class ContainerCapabilitiesArgs:
     def __init__(__self__, *,
-                 adds: Optional[pulumi.Input[List[pulumi.Input[str]]]] = None,
-                 drops: Optional[pulumi.Input[List[pulumi.Input[str]]]] = None):
+                 adds: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 drops: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None):
         """
-        :param pulumi.Input[List[pulumi.Input[str]]] adds: list of linux capabilities to add.
-        :param pulumi.Input[List[pulumi.Input[str]]] drops: list of linux capabilities to drop.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] adds: list of linux capabilities to add.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] drops: list of linux capabilities to drop.
         """
         if adds is not None:
             pulumi.set(__self__, "adds", adds)
@@ -82,26 +82,26 @@ class ContainerCapabilitiesArgs:
 
     @property
     @pulumi.getter
-    def adds(self) -> Optional[pulumi.Input[List[pulumi.Input[str]]]]:
+    def adds(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
         """
         list of linux capabilities to add.
         """
         return pulumi.get(self, "adds")
 
     @adds.setter
-    def adds(self, value: Optional[pulumi.Input[List[pulumi.Input[str]]]]):
+    def adds(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
         pulumi.set(self, "adds", value)
 
     @property
     @pulumi.getter
-    def drops(self) -> Optional[pulumi.Input[List[pulumi.Input[str]]]]:
+    def drops(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
         """
         list of linux capabilities to drop.
         """
         return pulumi.get(self, "drops")
 
     @drops.setter
-    def drops(self, value: Optional[pulumi.Input[List[pulumi.Input[str]]]]):
+    def drops(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
         pulumi.set(self, "drops", value)
 
 
@@ -170,16 +170,16 @@ class ContainerDeviceArgs:
 @pulumi.input_type
 class ContainerHealthcheckArgs:
     def __init__(__self__, *,
-                 tests: pulumi.Input[List[pulumi.Input[str]]],
+                 tests: pulumi.Input[Sequence[pulumi.Input[str]]],
                  interval: Optional[pulumi.Input[str]] = None,
-                 retries: Optional[pulumi.Input[float]] = None,
+                 retries: Optional[pulumi.Input[int]] = None,
                  start_period: Optional[pulumi.Input[str]] = None,
                  timeout: Optional[pulumi.Input[str]] = None):
         """
-        :param pulumi.Input[List[pulumi.Input[str]]] tests: Command to run to check health. For example, to run `curl -f http://localhost/health` set the
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] tests: Command to run to check health. For example, to run `curl -f http://localhost/health` set the
                command to be `["CMD", "curl", "-f", "http://localhost/health"]`.
         :param pulumi.Input[str] interval: Time between running the check `(ms|s|m|h)`. Default: `0s`.
-        :param pulumi.Input[float] retries: Consecutive failures needed to report unhealthy. Default: `0`.
+        :param pulumi.Input[int] retries: Consecutive failures needed to report unhealthy. Default: `0`.
         :param pulumi.Input[str] start_period: Start period for the container to initialize before counting retries towards unstable `(ms|s|m|h)`. Default: `0s`.
         :param pulumi.Input[str] timeout: Maximum time to allow one check to run `(ms|s|m|h)`. Default: `0s`.
         """
@@ -195,7 +195,7 @@ class ContainerHealthcheckArgs:
 
     @property
     @pulumi.getter
-    def tests(self) -> pulumi.Input[List[pulumi.Input[str]]]:
+    def tests(self) -> pulumi.Input[Sequence[pulumi.Input[str]]]:
         """
         Command to run to check health. For example, to run `curl -f http://localhost/health` set the
         command to be `["CMD", "curl", "-f", "http://localhost/health"]`.
@@ -203,7 +203,7 @@ class ContainerHealthcheckArgs:
         return pulumi.get(self, "tests")
 
     @tests.setter
-    def tests(self, value: pulumi.Input[List[pulumi.Input[str]]]):
+    def tests(self, value: pulumi.Input[Sequence[pulumi.Input[str]]]):
         pulumi.set(self, "tests", value)
 
     @property
@@ -220,14 +220,14 @@ class ContainerHealthcheckArgs:
 
     @property
     @pulumi.getter
-    def retries(self) -> Optional[pulumi.Input[float]]:
+    def retries(self) -> Optional[pulumi.Input[int]]:
         """
         Consecutive failures needed to report unhealthy. Default: `0`.
         """
         return pulumi.get(self, "retries")
 
     @retries.setter
-    def retries(self, value: Optional[pulumi.Input[float]]):
+    def retries(self, value: Optional[pulumi.Input[int]]):
         pulumi.set(self, "retries", value)
 
     @property
@@ -474,11 +474,11 @@ class ContainerMountBindOptionsArgs:
 @pulumi.input_type
 class ContainerMountTmpfsOptionsArgs:
     def __init__(__self__, *,
-                 mode: Optional[pulumi.Input[float]] = None,
-                 size_bytes: Optional[pulumi.Input[float]] = None):
+                 mode: Optional[pulumi.Input[int]] = None,
+                 size_bytes: Optional[pulumi.Input[int]] = None):
         """
-        :param pulumi.Input[float] mode: The permission mode for the tmpfs mount in an integer.
-        :param pulumi.Input[float] size_bytes: The size for the tmpfs mount in bytes.
+        :param pulumi.Input[int] mode: The permission mode for the tmpfs mount in an integer.
+        :param pulumi.Input[int] size_bytes: The size for the tmpfs mount in bytes.
         """
         if mode is not None:
             pulumi.set(__self__, "mode", mode)
@@ -487,26 +487,26 @@ class ContainerMountTmpfsOptionsArgs:
 
     @property
     @pulumi.getter
-    def mode(self) -> Optional[pulumi.Input[float]]:
+    def mode(self) -> Optional[pulumi.Input[int]]:
         """
         The permission mode for the tmpfs mount in an integer.
         """
         return pulumi.get(self, "mode")
 
     @mode.setter
-    def mode(self, value: Optional[pulumi.Input[float]]):
+    def mode(self, value: Optional[pulumi.Input[int]]):
         pulumi.set(self, "mode", value)
 
     @property
     @pulumi.getter(name="sizeBytes")
-    def size_bytes(self) -> Optional[pulumi.Input[float]]:
+    def size_bytes(self) -> Optional[pulumi.Input[int]]:
         """
         The size for the tmpfs mount in bytes.
         """
         return pulumi.get(self, "size_bytes")
 
     @size_bytes.setter
-    def size_bytes(self, value: Optional[pulumi.Input[float]]):
+    def size_bytes(self, value: Optional[pulumi.Input[int]]):
         pulumi.set(self, "size_bytes", value)
 
 
@@ -515,11 +515,11 @@ class ContainerMountVolumeOptionsArgs:
     def __init__(__self__, *,
                  driver_name: Optional[pulumi.Input[str]] = None,
                  driver_options: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
-                 labels: Optional[pulumi.Input[List[pulumi.Input['ContainerMountVolumeOptionsLabelArgs']]]] = None,
+                 labels: Optional[pulumi.Input[Sequence[pulumi.Input['ContainerMountVolumeOptionsLabelArgs']]]] = None,
                  no_copy: Optional[pulumi.Input[bool]] = None):
         """
         :param pulumi.Input[Mapping[str, pulumi.Input[str]]] driver_options: Options for the driver.
-        :param pulumi.Input[List[pulumi.Input['ContainerMountVolumeOptionsLabelArgs']]] labels: Adding labels.
+        :param pulumi.Input[Sequence[pulumi.Input['ContainerMountVolumeOptionsLabelArgs']]] labels: Adding labels.
         :param pulumi.Input[bool] no_copy: Whether to populate volume with data from the target.
         """
         if driver_name is not None:
@@ -554,14 +554,14 @@ class ContainerMountVolumeOptionsArgs:
 
     @property
     @pulumi.getter
-    def labels(self) -> Optional[pulumi.Input[List[pulumi.Input['ContainerMountVolumeOptionsLabelArgs']]]]:
+    def labels(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['ContainerMountVolumeOptionsLabelArgs']]]]:
         """
         Adding labels.
         """
         return pulumi.get(self, "labels")
 
     @labels.setter
-    def labels(self, value: Optional[pulumi.Input[List[pulumi.Input['ContainerMountVolumeOptionsLabelArgs']]]]):
+    def labels(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['ContainerMountVolumeOptionsLabelArgs']]]]):
         pulumi.set(self, "labels", value)
 
     @property
@@ -619,13 +619,13 @@ class ContainerNetworkDataArgs:
     def __init__(__self__, *,
                  gateway: Optional[pulumi.Input[str]] = None,
                  ip_address: Optional[pulumi.Input[str]] = None,
-                 ip_prefix_length: Optional[pulumi.Input[float]] = None,
+                 ip_prefix_length: Optional[pulumi.Input[int]] = None,
                  network_name: Optional[pulumi.Input[str]] = None):
         """
         :param pulumi.Input[str] gateway: *Deprecated:* Use `network_data` instead. The network gateway of the container as read from its
                NetworkSettings.
         :param pulumi.Input[str] ip_address: *Deprecated:* Use `network_data` instead. The IP address of the container's first network it.
-        :param pulumi.Input[float] ip_prefix_length: *Deprecated:* Use `network_data` instead. The IP prefix length of the container as read from its
+        :param pulumi.Input[int] ip_prefix_length: *Deprecated:* Use `network_data` instead. The IP prefix length of the container as read from its
                NetworkSettings.
         """
         if gateway is not None:
@@ -664,7 +664,7 @@ class ContainerNetworkDataArgs:
 
     @property
     @pulumi.getter(name="ipPrefixLength")
-    def ip_prefix_length(self) -> Optional[pulumi.Input[float]]:
+    def ip_prefix_length(self) -> Optional[pulumi.Input[int]]:
         """
         *Deprecated:* Use `network_data` instead. The IP prefix length of the container as read from its
         NetworkSettings.
@@ -672,7 +672,7 @@ class ContainerNetworkDataArgs:
         return pulumi.get(self, "ip_prefix_length")
 
     @ip_prefix_length.setter
-    def ip_prefix_length(self, value: Optional[pulumi.Input[float]]):
+    def ip_prefix_length(self, value: Optional[pulumi.Input[int]]):
         pulumi.set(self, "ip_prefix_length", value)
 
     @property
@@ -689,12 +689,12 @@ class ContainerNetworkDataArgs:
 class ContainerNetworksAdvancedArgs:
     def __init__(__self__, *,
                  name: pulumi.Input[str],
-                 aliases: Optional[pulumi.Input[List[pulumi.Input[str]]]] = None,
+                 aliases: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  ipv4_address: Optional[pulumi.Input[str]] = None,
                  ipv6_address: Optional[pulumi.Input[str]] = None):
         """
         :param pulumi.Input[str] name: The name of the network.
-        :param pulumi.Input[List[pulumi.Input[str]]] aliases: The network aliases of the container in the specific network.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] aliases: The network aliases of the container in the specific network.
         :param pulumi.Input[str] ipv4_address: The IPV4 address of the container in the specific network.
         :param pulumi.Input[str] ipv6_address: The IPV6 address of the container in the specific network.
         """
@@ -720,14 +720,14 @@ class ContainerNetworksAdvancedArgs:
 
     @property
     @pulumi.getter
-    def aliases(self) -> Optional[pulumi.Input[List[pulumi.Input[str]]]]:
+    def aliases(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
         """
         The network aliases of the container in the specific network.
         """
         return pulumi.get(self, "aliases")
 
     @aliases.setter
-    def aliases(self, value: Optional[pulumi.Input[List[pulumi.Input[str]]]]):
+    def aliases(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
         pulumi.set(self, "aliases", value)
 
     @property
@@ -758,13 +758,13 @@ class ContainerNetworksAdvancedArgs:
 @pulumi.input_type
 class ContainerPortArgs:
     def __init__(__self__, *,
-                 internal: pulumi.Input[float],
-                 external: Optional[pulumi.Input[float]] = None,
+                 internal: pulumi.Input[int],
+                 external: Optional[pulumi.Input[int]] = None,
                  ip: Optional[pulumi.Input[str]] = None,
                  protocol: Optional[pulumi.Input[str]] = None):
         """
-        :param pulumi.Input[float] internal: Port within the container.
-        :param pulumi.Input[float] external: Port exposed out of the container. If not given a free random port `>= 32768` will be used.
+        :param pulumi.Input[int] internal: Port within the container.
+        :param pulumi.Input[int] external: Port exposed out of the container. If not given a free random port `>= 32768` will be used.
         :param pulumi.Input[str] ip: IP address this hostname should resolve to.
         :param pulumi.Input[str] protocol: Protocol that can be used over this port,
                defaults to `tcp`.
@@ -779,26 +779,26 @@ class ContainerPortArgs:
 
     @property
     @pulumi.getter
-    def internal(self) -> pulumi.Input[float]:
+    def internal(self) -> pulumi.Input[int]:
         """
         Port within the container.
         """
         return pulumi.get(self, "internal")
 
     @internal.setter
-    def internal(self, value: pulumi.Input[float]):
+    def internal(self, value: pulumi.Input[int]):
         pulumi.set(self, "internal", value)
 
     @property
     @pulumi.getter
-    def external(self) -> Optional[pulumi.Input[float]]:
+    def external(self) -> Optional[pulumi.Input[int]]:
         """
         Port exposed out of the container. If not given a free random port `>= 32768` will be used.
         """
         return pulumi.get(self, "external")
 
     @external.setter
-    def external(self, value: Optional[pulumi.Input[float]]):
+    def external(self, value: Optional[pulumi.Input[int]]):
         pulumi.set(self, "external", value)
 
     @property
@@ -830,20 +830,20 @@ class ContainerPortArgs:
 @pulumi.input_type
 class ContainerUlimitArgs:
     def __init__(__self__, *,
-                 hard: pulumi.Input[float],
+                 hard: pulumi.Input[int],
                  name: pulumi.Input[str],
-                 soft: pulumi.Input[float]):
+                 soft: pulumi.Input[int]):
         pulumi.set(__self__, "hard", hard)
         pulumi.set(__self__, "name", name)
         pulumi.set(__self__, "soft", soft)
 
     @property
     @pulumi.getter
-    def hard(self) -> pulumi.Input[float]:
+    def hard(self) -> pulumi.Input[int]:
         return pulumi.get(self, "hard")
 
     @hard.setter
-    def hard(self, value: pulumi.Input[float]):
+    def hard(self, value: pulumi.Input[int]):
         pulumi.set(self, "hard", value)
 
     @property
@@ -857,11 +857,11 @@ class ContainerUlimitArgs:
 
     @property
     @pulumi.getter
-    def soft(self) -> pulumi.Input[float]:
+    def soft(self) -> pulumi.Input[int]:
         return pulumi.get(self, "soft")
 
     @soft.setter
-    def soft(self, value: pulumi.Input[float]):
+    def soft(self, value: pulumi.Input[int]):
         pulumi.set(self, "soft", value)
 
 
@@ -1155,6 +1155,70 @@ class NetworkLabelArgs:
 
 
 @pulumi.input_type
+class ProviderRegistryAuthArgs:
+    def __init__(__self__, *,
+                 address: pulumi.Input[str],
+                 config_file: Optional[pulumi.Input[str]] = None,
+                 config_file_content: Optional[pulumi.Input[str]] = None,
+                 password: Optional[pulumi.Input[str]] = None,
+                 username: Optional[pulumi.Input[str]] = None):
+        pulumi.set(__self__, "address", address)
+        if config_file is not None:
+            pulumi.set(__self__, "config_file", config_file)
+        if config_file_content is not None:
+            pulumi.set(__self__, "config_file_content", config_file_content)
+        if password is not None:
+            pulumi.set(__self__, "password", password)
+        if username is not None:
+            pulumi.set(__self__, "username", username)
+
+    @property
+    @pulumi.getter
+    def address(self) -> pulumi.Input[str]:
+        return pulumi.get(self, "address")
+
+    @address.setter
+    def address(self, value: pulumi.Input[str]):
+        pulumi.set(self, "address", value)
+
+    @property
+    @pulumi.getter(name="configFile")
+    def config_file(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "config_file")
+
+    @config_file.setter
+    def config_file(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "config_file", value)
+
+    @property
+    @pulumi.getter(name="configFileContent")
+    def config_file_content(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "config_file_content")
+
+    @config_file_content.setter
+    def config_file_content(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "config_file_content", value)
+
+    @property
+    @pulumi.getter
+    def password(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "password")
+
+    @password.setter
+    def password(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "password", value)
+
+    @property
+    @pulumi.getter
+    def username(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "username")
+
+    @username.setter
+    def username(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "username", value)
+
+
+@pulumi.input_type
 class SecretLabelArgs:
     def __init__(__self__, *,
                  label: pulumi.Input[str],
@@ -1290,10 +1354,10 @@ class ServiceConvergeConfigArgs:
 class ServiceEndpointSpecArgs:
     def __init__(__self__, *,
                  mode: Optional[pulumi.Input[str]] = None,
-                 ports: Optional[pulumi.Input[List[pulumi.Input['ServiceEndpointSpecPortArgs']]]] = None):
+                 ports: Optional[pulumi.Input[Sequence[pulumi.Input['ServiceEndpointSpecPortArgs']]]] = None):
         """
         :param pulumi.Input[str] mode: The mode of resolution to use for internal load balancing between tasks. `(vip|dnsrr)`. Default: `vip`.
-        :param pulumi.Input[List[pulumi.Input['ServiceEndpointSpecPortArgs']]] ports: See Ports below for details.
+        :param pulumi.Input[Sequence[pulumi.Input['ServiceEndpointSpecPortArgs']]] ports: See Ports below for details.
         """
         if mode is not None:
             pulumi.set(__self__, "mode", mode)
@@ -1314,31 +1378,31 @@ class ServiceEndpointSpecArgs:
 
     @property
     @pulumi.getter
-    def ports(self) -> Optional[pulumi.Input[List[pulumi.Input['ServiceEndpointSpecPortArgs']]]]:
+    def ports(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['ServiceEndpointSpecPortArgs']]]]:
         """
         See Ports below for details.
         """
         return pulumi.get(self, "ports")
 
     @ports.setter
-    def ports(self, value: Optional[pulumi.Input[List[pulumi.Input['ServiceEndpointSpecPortArgs']]]]):
+    def ports(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['ServiceEndpointSpecPortArgs']]]]):
         pulumi.set(self, "ports", value)
 
 
 @pulumi.input_type
 class ServiceEndpointSpecPortArgs:
     def __init__(__self__, *,
-                 target_port: pulumi.Input[float],
+                 target_port: pulumi.Input[int],
                  name: Optional[pulumi.Input[str]] = None,
                  protocol: Optional[pulumi.Input[str]] = None,
                  publish_mode: Optional[pulumi.Input[str]] = None,
-                 published_port: Optional[pulumi.Input[float]] = None):
+                 published_port: Optional[pulumi.Input[int]] = None):
         """
-        :param pulumi.Input[float] target_port: Port inside the container.
+        :param pulumi.Input[int] target_port: Port inside the container.
         :param pulumi.Input[str] name: The name of the Docker service.
         :param pulumi.Input[str] protocol: Protocol that can be used over this port: `tcp|udp|sctp`. Default: `tcp`.
         :param pulumi.Input[str] publish_mode: Represents the mode in which the port is to be published: `ingress|host`
-        :param pulumi.Input[float] published_port: The port on the swarm hosts. If not set the value of `target_port` will be used.
+        :param pulumi.Input[int] published_port: The port on the swarm hosts. If not set the value of `target_port` will be used.
         """
         pulumi.set(__self__, "target_port", target_port)
         if name is not None:
@@ -1352,14 +1416,14 @@ class ServiceEndpointSpecPortArgs:
 
     @property
     @pulumi.getter(name="targetPort")
-    def target_port(self) -> pulumi.Input[float]:
+    def target_port(self) -> pulumi.Input[int]:
         """
         Port inside the container.
         """
         return pulumi.get(self, "target_port")
 
     @target_port.setter
-    def target_port(self, value: pulumi.Input[float]):
+    def target_port(self, value: pulumi.Input[int]):
         pulumi.set(self, "target_port", value)
 
     @property
@@ -1400,14 +1464,14 @@ class ServiceEndpointSpecPortArgs:
 
     @property
     @pulumi.getter(name="publishedPort")
-    def published_port(self) -> Optional[pulumi.Input[float]]:
+    def published_port(self) -> Optional[pulumi.Input[int]]:
         """
         The port on the swarm hosts. If not set the value of `target_port` will be used.
         """
         return pulumi.get(self, "published_port")
 
     @published_port.setter
-    def published_port(self, value: Optional[pulumi.Input[float]]):
+    def published_port(self, value: Optional[pulumi.Input[int]]):
         pulumi.set(self, "published_port", value)
 
 
@@ -1490,17 +1554,17 @@ class ServiceModeArgs:
 @pulumi.input_type
 class ServiceModeReplicatedArgs:
     def __init__(__self__, *,
-                 replicas: Optional[pulumi.Input[float]] = None):
+                 replicas: Optional[pulumi.Input[int]] = None):
         if replicas is not None:
             pulumi.set(__self__, "replicas", replicas)
 
     @property
     @pulumi.getter
-    def replicas(self) -> Optional[pulumi.Input[float]]:
+    def replicas(self) -> Optional[pulumi.Input[int]]:
         return pulumi.get(self, "replicas")
 
     @replicas.setter
-    def replicas(self, value: Optional[pulumi.Input[float]]):
+    def replicas(self, value: Optional[pulumi.Input[int]]):
         pulumi.set(self, "replicas", value)
 
 
@@ -1512,7 +1576,7 @@ class ServiceRollbackConfigArgs:
                  max_failure_ratio: Optional[pulumi.Input[str]] = None,
                  monitor: Optional[pulumi.Input[str]] = None,
                  order: Optional[pulumi.Input[str]] = None,
-                 parallelism: Optional[pulumi.Input[float]] = None):
+                 parallelism: Optional[pulumi.Input[int]] = None):
         """
         :param pulumi.Input[str] delay: Delay between restart attempts `(ms|s|m|h)`
                all tasks are up when a service is created, or to check if all tasks are successfully updated on an update. Default: `7s`.
@@ -1521,7 +1585,7 @@ class ServiceRollbackConfigArgs:
                casting and precision errors.
         :param pulumi.Input[str] monitor: Duration after each task update to monitor for failure `(ns|us|ms|s|m|h)`
         :param pulumi.Input[str] order: Update order either 'stop-first' or 'start-first'.
-        :param pulumi.Input[float] parallelism: The maximum number of tasks to be updated in one iteration simultaneously (0 to update all at once).
+        :param pulumi.Input[int] parallelism: The maximum number of tasks to be updated in one iteration simultaneously (0 to update all at once).
         """
         if delay is not None:
             pulumi.set(__self__, "delay", delay)
@@ -1600,14 +1664,14 @@ class ServiceRollbackConfigArgs:
 
     @property
     @pulumi.getter
-    def parallelism(self) -> Optional[pulumi.Input[float]]:
+    def parallelism(self) -> Optional[pulumi.Input[int]]:
         """
         The maximum number of tasks to be updated in one iteration simultaneously (0 to update all at once).
         """
         return pulumi.get(self, "parallelism")
 
     @parallelism.setter
-    def parallelism(self, value: Optional[pulumi.Input[float]]):
+    def parallelism(self, value: Optional[pulumi.Input[int]]):
         pulumi.set(self, "parallelism", value)
 
 
@@ -1615,18 +1679,18 @@ class ServiceRollbackConfigArgs:
 class ServiceTaskSpecArgs:
     def __init__(__self__, *,
                  container_spec: pulumi.Input['ServiceTaskSpecContainerSpecArgs'],
-                 force_update: Optional[pulumi.Input[float]] = None,
+                 force_update: Optional[pulumi.Input[int]] = None,
                  log_driver: Optional[pulumi.Input['ServiceTaskSpecLogDriverArgs']] = None,
-                 networks: Optional[pulumi.Input[List[pulumi.Input[str]]]] = None,
+                 networks: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  placement: Optional[pulumi.Input['ServiceTaskSpecPlacementArgs']] = None,
                  resources: Optional[pulumi.Input['ServiceTaskSpecResourcesArgs']] = None,
                  restart_policy: Optional[pulumi.Input['ServiceTaskSpecRestartPolicyArgs']] = None,
                  runtime: Optional[pulumi.Input[str]] = None):
         """
         :param pulumi.Input['ServiceTaskSpecContainerSpecArgs'] container_spec: See ContainerSpec below for details.
-        :param pulumi.Input[float] force_update: A counter that triggers an update even if no relevant parameters have been changed. See [Docker Spec](https://github.com/docker/swarmkit/blob/master/api/specs.proto#L126).
+        :param pulumi.Input[int] force_update: A counter that triggers an update even if no relevant parameters have been changed. See [Docker Spec](https://github.com/docker/swarmkit/blob/master/api/specs.proto#L126).
         :param pulumi.Input['ServiceTaskSpecLogDriverArgs'] log_driver: See Log Driver below for details.
-        :param pulumi.Input[List[pulumi.Input[str]]] networks: Ids of the networks in which the container will be put in.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] networks: Ids of the networks in which the container will be put in.
         :param pulumi.Input['ServiceTaskSpecPlacementArgs'] placement: See Placement below for details.
         :param pulumi.Input['ServiceTaskSpecResourcesArgs'] resources: See Resources below for details.
         :param pulumi.Input['ServiceTaskSpecRestartPolicyArgs'] restart_policy: See Restart Policy below for details.
@@ -1662,14 +1726,14 @@ class ServiceTaskSpecArgs:
 
     @property
     @pulumi.getter(name="forceUpdate")
-    def force_update(self) -> Optional[pulumi.Input[float]]:
+    def force_update(self) -> Optional[pulumi.Input[int]]:
         """
         A counter that triggers an update even if no relevant parameters have been changed. See [Docker Spec](https://github.com/docker/swarmkit/blob/master/api/specs.proto#L126).
         """
         return pulumi.get(self, "force_update")
 
     @force_update.setter
-    def force_update(self, value: Optional[pulumi.Input[float]]):
+    def force_update(self, value: Optional[pulumi.Input[int]]):
         pulumi.set(self, "force_update", value)
 
     @property
@@ -1686,14 +1750,14 @@ class ServiceTaskSpecArgs:
 
     @property
     @pulumi.getter
-    def networks(self) -> Optional[pulumi.Input[List[pulumi.Input[str]]]]:
+    def networks(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
         """
         Ids of the networks in which the container will be put in.
         """
         return pulumi.get(self, "networks")
 
     @networks.setter
-    def networks(self, value: Optional[pulumi.Input[List[pulumi.Input[str]]]]):
+    def networks(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
         pulumi.set(self, "networks", value)
 
     @property
@@ -1749,42 +1813,42 @@ class ServiceTaskSpecArgs:
 class ServiceTaskSpecContainerSpecArgs:
     def __init__(__self__, *,
                  image: pulumi.Input[str],
-                 args: Optional[pulumi.Input[List[pulumi.Input[str]]]] = None,
-                 commands: Optional[pulumi.Input[List[pulumi.Input[str]]]] = None,
-                 configs: Optional[pulumi.Input[List[pulumi.Input['ServiceTaskSpecContainerSpecConfigArgs']]]] = None,
+                 args: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 commands: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 configs: Optional[pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecConfigArgs']]]] = None,
                  dir: Optional[pulumi.Input[str]] = None,
                  dns_config: Optional[pulumi.Input['ServiceTaskSpecContainerSpecDnsConfigArgs']] = None,
                  env: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
-                 groups: Optional[pulumi.Input[List[pulumi.Input[str]]]] = None,
+                 groups: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  healthcheck: Optional[pulumi.Input['ServiceTaskSpecContainerSpecHealthcheckArgs']] = None,
                  hostname: Optional[pulumi.Input[str]] = None,
-                 hosts: Optional[pulumi.Input[List[pulumi.Input['ServiceTaskSpecContainerSpecHostArgs']]]] = None,
+                 hosts: Optional[pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecHostArgs']]]] = None,
                  isolation: Optional[pulumi.Input[str]] = None,
-                 labels: Optional[pulumi.Input[List[pulumi.Input['ServiceTaskSpecContainerSpecLabelArgs']]]] = None,
-                 mounts: Optional[pulumi.Input[List[pulumi.Input['ServiceTaskSpecContainerSpecMountArgs']]]] = None,
+                 labels: Optional[pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecLabelArgs']]]] = None,
+                 mounts: Optional[pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecMountArgs']]]] = None,
                  privileges: Optional[pulumi.Input['ServiceTaskSpecContainerSpecPrivilegesArgs']] = None,
                  read_only: Optional[pulumi.Input[bool]] = None,
-                 secrets: Optional[pulumi.Input[List[pulumi.Input['ServiceTaskSpecContainerSpecSecretArgs']]]] = None,
+                 secrets: Optional[pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecSecretArgs']]]] = None,
                  stop_grace_period: Optional[pulumi.Input[str]] = None,
                  stop_signal: Optional[pulumi.Input[str]] = None,
                  user: Optional[pulumi.Input[str]] = None):
         """
         :param pulumi.Input[str] image: The image used to create the Docker service.
-        :param pulumi.Input[List[pulumi.Input[str]]] args: Arguments to the command.
-        :param pulumi.Input[List[pulumi.Input[str]]] commands: The command to be run in the image.
-        :param pulumi.Input[List[pulumi.Input['ServiceTaskSpecContainerSpecConfigArgs']]] configs: See Configs below for details.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] args: Arguments to the command.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] commands: The command to be run in the image.
+        :param pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecConfigArgs']]] configs: See Configs below for details.
         :param pulumi.Input[str] dir: The working directory for commands to run in.
         :param pulumi.Input['ServiceTaskSpecContainerSpecDnsConfigArgs'] dns_config: See DNS Config below for details.
         :param pulumi.Input[Mapping[str, pulumi.Input[str]]] env: A list of environment variables in the form VAR=value.
-        :param pulumi.Input[List[pulumi.Input[str]]] groups: A list of additional groups that the container process will run as.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] groups: A list of additional groups that the container process will run as.
         :param pulumi.Input['ServiceTaskSpecContainerSpecHealthcheckArgs'] healthcheck: See Healthcheck below for details.
         :param pulumi.Input[str] hostname: The hostname to use for the container, as a valid RFC 1123 hostname.
         :param pulumi.Input[str] isolation: Isolation technology of the containers running the service. (Windows only). Valid values are: `default|process|hyperv`
-        :param pulumi.Input[List[pulumi.Input['ServiceTaskSpecContainerSpecLabelArgs']]] labels: See Labels below for details.
-        :param pulumi.Input[List[pulumi.Input['ServiceTaskSpecContainerSpecMountArgs']]] mounts: See Mounts below for details.
+        :param pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecLabelArgs']]] labels: See Labels below for details.
+        :param pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecMountArgs']]] mounts: See Mounts below for details.
         :param pulumi.Input['ServiceTaskSpecContainerSpecPrivilegesArgs'] privileges: See Privileges below for details.
         :param pulumi.Input[bool] read_only: Mount the container's root filesystem as read only.
-        :param pulumi.Input[List[pulumi.Input['ServiceTaskSpecContainerSpecSecretArgs']]] secrets: See Secrets below for details.
+        :param pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecSecretArgs']]] secrets: See Secrets below for details.
         :param pulumi.Input[str] stop_grace_period: Amount of time to wait for the container to terminate before forcefully removing it `(ms|s|m|h)`.
         :param pulumi.Input[str] stop_signal: Signal to stop the container.
         :param pulumi.Input[str] user: The user inside the container.
@@ -1843,38 +1907,38 @@ class ServiceTaskSpecContainerSpecArgs:
 
     @property
     @pulumi.getter
-    def args(self) -> Optional[pulumi.Input[List[pulumi.Input[str]]]]:
+    def args(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
         """
         Arguments to the command.
         """
         return pulumi.get(self, "args")
 
     @args.setter
-    def args(self, value: Optional[pulumi.Input[List[pulumi.Input[str]]]]):
+    def args(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
         pulumi.set(self, "args", value)
 
     @property
     @pulumi.getter
-    def commands(self) -> Optional[pulumi.Input[List[pulumi.Input[str]]]]:
+    def commands(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
         """
         The command to be run in the image.
         """
         return pulumi.get(self, "commands")
 
     @commands.setter
-    def commands(self, value: Optional[pulumi.Input[List[pulumi.Input[str]]]]):
+    def commands(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
         pulumi.set(self, "commands", value)
 
     @property
     @pulumi.getter
-    def configs(self) -> Optional[pulumi.Input[List[pulumi.Input['ServiceTaskSpecContainerSpecConfigArgs']]]]:
+    def configs(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecConfigArgs']]]]:
         """
         See Configs below for details.
         """
         return pulumi.get(self, "configs")
 
     @configs.setter
-    def configs(self, value: Optional[pulumi.Input[List[pulumi.Input['ServiceTaskSpecContainerSpecConfigArgs']]]]):
+    def configs(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecConfigArgs']]]]):
         pulumi.set(self, "configs", value)
 
     @property
@@ -1915,14 +1979,14 @@ class ServiceTaskSpecContainerSpecArgs:
 
     @property
     @pulumi.getter
-    def groups(self) -> Optional[pulumi.Input[List[pulumi.Input[str]]]]:
+    def groups(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
         """
         A list of additional groups that the container process will run as.
         """
         return pulumi.get(self, "groups")
 
     @groups.setter
-    def groups(self, value: Optional[pulumi.Input[List[pulumi.Input[str]]]]):
+    def groups(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
         pulumi.set(self, "groups", value)
 
     @property
@@ -1951,11 +2015,11 @@ class ServiceTaskSpecContainerSpecArgs:
 
     @property
     @pulumi.getter
-    def hosts(self) -> Optional[pulumi.Input[List[pulumi.Input['ServiceTaskSpecContainerSpecHostArgs']]]]:
+    def hosts(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecHostArgs']]]]:
         return pulumi.get(self, "hosts")
 
     @hosts.setter
-    def hosts(self, value: Optional[pulumi.Input[List[pulumi.Input['ServiceTaskSpecContainerSpecHostArgs']]]]):
+    def hosts(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecHostArgs']]]]):
         pulumi.set(self, "hosts", value)
 
     @property
@@ -1972,26 +2036,26 @@ class ServiceTaskSpecContainerSpecArgs:
 
     @property
     @pulumi.getter
-    def labels(self) -> Optional[pulumi.Input[List[pulumi.Input['ServiceTaskSpecContainerSpecLabelArgs']]]]:
+    def labels(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecLabelArgs']]]]:
         """
         See Labels below for details.
         """
         return pulumi.get(self, "labels")
 
     @labels.setter
-    def labels(self, value: Optional[pulumi.Input[List[pulumi.Input['ServiceTaskSpecContainerSpecLabelArgs']]]]):
+    def labels(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecLabelArgs']]]]):
         pulumi.set(self, "labels", value)
 
     @property
     @pulumi.getter
-    def mounts(self) -> Optional[pulumi.Input[List[pulumi.Input['ServiceTaskSpecContainerSpecMountArgs']]]]:
+    def mounts(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecMountArgs']]]]:
         """
         See Mounts below for details.
         """
         return pulumi.get(self, "mounts")
 
     @mounts.setter
-    def mounts(self, value: Optional[pulumi.Input[List[pulumi.Input['ServiceTaskSpecContainerSpecMountArgs']]]]):
+    def mounts(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecMountArgs']]]]):
         pulumi.set(self, "mounts", value)
 
     @property
@@ -2020,14 +2084,14 @@ class ServiceTaskSpecContainerSpecArgs:
 
     @property
     @pulumi.getter
-    def secrets(self) -> Optional[pulumi.Input[List[pulumi.Input['ServiceTaskSpecContainerSpecSecretArgs']]]]:
+    def secrets(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecSecretArgs']]]]:
         """
         See Secrets below for details.
         """
         return pulumi.get(self, "secrets")
 
     @secrets.setter
-    def secrets(self, value: Optional[pulumi.Input[List[pulumi.Input['ServiceTaskSpecContainerSpecSecretArgs']]]]):
+    def secrets(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecSecretArgs']]]]):
         pulumi.set(self, "secrets", value)
 
     @property
@@ -2074,14 +2138,14 @@ class ServiceTaskSpecContainerSpecConfigArgs:
                  file_name: pulumi.Input[str],
                  config_name: Optional[pulumi.Input[str]] = None,
                  file_gid: Optional[pulumi.Input[str]] = None,
-                 file_mode: Optional[pulumi.Input[float]] = None,
+                 file_mode: Optional[pulumi.Input[int]] = None,
                  file_uid: Optional[pulumi.Input[str]] = None):
         """
         :param pulumi.Input[str] config_id: ConfigID represents the ID of the specific config.
         :param pulumi.Input[str] file_name: Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
         :param pulumi.Input[str] config_name: The name of the config that this references, but internally it is just provided for lookup/display purposes
         :param pulumi.Input[str] file_gid: Represents the file GID. Defaults: `0`
-        :param pulumi.Input[float] file_mode: Represents the FileMode of the file. Defaults: `0444`
+        :param pulumi.Input[int] file_mode: Represents the FileMode of the file. Defaults: `0444`
         :param pulumi.Input[str] file_uid: Represents the file UID. Defaults: `0`
         """
         pulumi.set(__self__, "config_id", config_id)
@@ -2145,14 +2209,14 @@ class ServiceTaskSpecContainerSpecConfigArgs:
 
     @property
     @pulumi.getter(name="fileMode")
-    def file_mode(self) -> Optional[pulumi.Input[float]]:
+    def file_mode(self) -> Optional[pulumi.Input[int]]:
         """
         Represents the FileMode of the file. Defaults: `0444`
         """
         return pulumi.get(self, "file_mode")
 
     @file_mode.setter
-    def file_mode(self, value: Optional[pulumi.Input[float]]):
+    def file_mode(self, value: Optional[pulumi.Input[int]]):
         pulumi.set(self, "file_mode", value)
 
     @property
@@ -2171,13 +2235,13 @@ class ServiceTaskSpecContainerSpecConfigArgs:
 @pulumi.input_type
 class ServiceTaskSpecContainerSpecDnsConfigArgs:
     def __init__(__self__, *,
-                 nameservers: pulumi.Input[List[pulumi.Input[str]]],
-                 options: Optional[pulumi.Input[List[pulumi.Input[str]]]] = None,
-                 searches: Optional[pulumi.Input[List[pulumi.Input[str]]]] = None):
+                 nameservers: pulumi.Input[Sequence[pulumi.Input[str]]],
+                 options: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 searches: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None):
         """
-        :param pulumi.Input[List[pulumi.Input[str]]] nameservers: The IP addresses of the name servers, for example, `8.8.8.8`
-        :param pulumi.Input[List[pulumi.Input[str]]] options: A list of internal resolver variables to be modified, for example, `debug`, `ndots:3`
-        :param pulumi.Input[List[pulumi.Input[str]]] searches: A search list for host-name lookup.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] nameservers: The IP addresses of the name servers, for example, `8.8.8.8`
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] options: A list of internal resolver variables to be modified, for example, `debug`, `ndots:3`
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] searches: A search list for host-name lookup.
         """
         pulumi.set(__self__, "nameservers", nameservers)
         if options is not None:
@@ -2187,54 +2251,54 @@ class ServiceTaskSpecContainerSpecDnsConfigArgs:
 
     @property
     @pulumi.getter
-    def nameservers(self) -> pulumi.Input[List[pulumi.Input[str]]]:
+    def nameservers(self) -> pulumi.Input[Sequence[pulumi.Input[str]]]:
         """
         The IP addresses of the name servers, for example, `8.8.8.8`
         """
         return pulumi.get(self, "nameservers")
 
     @nameservers.setter
-    def nameservers(self, value: pulumi.Input[List[pulumi.Input[str]]]):
+    def nameservers(self, value: pulumi.Input[Sequence[pulumi.Input[str]]]):
         pulumi.set(self, "nameservers", value)
 
     @property
     @pulumi.getter
-    def options(self) -> Optional[pulumi.Input[List[pulumi.Input[str]]]]:
+    def options(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
         """
         A list of internal resolver variables to be modified, for example, `debug`, `ndots:3`
         """
         return pulumi.get(self, "options")
 
     @options.setter
-    def options(self, value: Optional[pulumi.Input[List[pulumi.Input[str]]]]):
+    def options(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
         pulumi.set(self, "options", value)
 
     @property
     @pulumi.getter
-    def searches(self) -> Optional[pulumi.Input[List[pulumi.Input[str]]]]:
+    def searches(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
         """
         A search list for host-name lookup.
         """
         return pulumi.get(self, "searches")
 
     @searches.setter
-    def searches(self, value: Optional[pulumi.Input[List[pulumi.Input[str]]]]):
+    def searches(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
         pulumi.set(self, "searches", value)
 
 
 @pulumi.input_type
 class ServiceTaskSpecContainerSpecHealthcheckArgs:
     def __init__(__self__, *,
-                 tests: pulumi.Input[List[pulumi.Input[str]]],
+                 tests: pulumi.Input[Sequence[pulumi.Input[str]]],
                  interval: Optional[pulumi.Input[str]] = None,
-                 retries: Optional[pulumi.Input[float]] = None,
+                 retries: Optional[pulumi.Input[int]] = None,
                  start_period: Optional[pulumi.Input[str]] = None,
                  timeout: Optional[pulumi.Input[str]] = None):
         """
-        :param pulumi.Input[List[pulumi.Input[str]]] tests: Command to run to check health. For example, to run `curl -f http://localhost/health` set the
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] tests: Command to run to check health. For example, to run `curl -f http://localhost/health` set the
                command to be `["CMD", "curl", "-f", "http://localhost/health"]`.
         :param pulumi.Input[str] interval: Time between running the check `(ms|s|m|h)`. Default: `0s`.
-        :param pulumi.Input[float] retries: Consecutive failures needed to report unhealthy. Default: `0`.
+        :param pulumi.Input[int] retries: Consecutive failures needed to report unhealthy. Default: `0`.
         :param pulumi.Input[str] start_period: Start period for the container to initialize before counting retries towards unstable `(ms|s|m|h)`. Default: `0s`.
         :param pulumi.Input[str] timeout: Maximum time to allow one check to run `(ms|s|m|h)`. Default: `0s`.
         """
@@ -2250,7 +2314,7 @@ class ServiceTaskSpecContainerSpecHealthcheckArgs:
 
     @property
     @pulumi.getter
-    def tests(self) -> pulumi.Input[List[pulumi.Input[str]]]:
+    def tests(self) -> pulumi.Input[Sequence[pulumi.Input[str]]]:
         """
         Command to run to check health. For example, to run `curl -f http://localhost/health` set the
         command to be `["CMD", "curl", "-f", "http://localhost/health"]`.
@@ -2258,7 +2322,7 @@ class ServiceTaskSpecContainerSpecHealthcheckArgs:
         return pulumi.get(self, "tests")
 
     @tests.setter
-    def tests(self, value: pulumi.Input[List[pulumi.Input[str]]]):
+    def tests(self, value: pulumi.Input[Sequence[pulumi.Input[str]]]):
         pulumi.set(self, "tests", value)
 
     @property
@@ -2275,14 +2339,14 @@ class ServiceTaskSpecContainerSpecHealthcheckArgs:
 
     @property
     @pulumi.getter
-    def retries(self) -> Optional[pulumi.Input[float]]:
+    def retries(self) -> Optional[pulumi.Input[int]]:
         """
         Consecutive failures needed to report unhealthy. Default: `0`.
         """
         return pulumi.get(self, "retries")
 
     @retries.setter
-    def retries(self, value: Optional[pulumi.Input[float]]):
+    def retries(self, value: Optional[pulumi.Input[int]]):
         pulumi.set(self, "retries", value)
 
     @property
@@ -2527,11 +2591,11 @@ class ServiceTaskSpecContainerSpecMountBindOptionsArgs:
 @pulumi.input_type
 class ServiceTaskSpecContainerSpecMountTmpfsOptionsArgs:
     def __init__(__self__, *,
-                 mode: Optional[pulumi.Input[float]] = None,
-                 size_bytes: Optional[pulumi.Input[float]] = None):
+                 mode: Optional[pulumi.Input[int]] = None,
+                 size_bytes: Optional[pulumi.Input[int]] = None):
         """
-        :param pulumi.Input[float] mode: See Mode below for details.
-        :param pulumi.Input[float] size_bytes: The size for the tmpfs mount in bytes.
+        :param pulumi.Input[int] mode: See Mode below for details.
+        :param pulumi.Input[int] size_bytes: The size for the tmpfs mount in bytes.
         """
         if mode is not None:
             pulumi.set(__self__, "mode", mode)
@@ -2540,26 +2604,26 @@ class ServiceTaskSpecContainerSpecMountTmpfsOptionsArgs:
 
     @property
     @pulumi.getter
-    def mode(self) -> Optional[pulumi.Input[float]]:
+    def mode(self) -> Optional[pulumi.Input[int]]:
         """
         See Mode below for details.
         """
         return pulumi.get(self, "mode")
 
     @mode.setter
-    def mode(self, value: Optional[pulumi.Input[float]]):
+    def mode(self, value: Optional[pulumi.Input[int]]):
         pulumi.set(self, "mode", value)
 
     @property
     @pulumi.getter(name="sizeBytes")
-    def size_bytes(self) -> Optional[pulumi.Input[float]]:
+    def size_bytes(self) -> Optional[pulumi.Input[int]]:
         """
         The size for the tmpfs mount in bytes.
         """
         return pulumi.get(self, "size_bytes")
 
     @size_bytes.setter
-    def size_bytes(self, value: Optional[pulumi.Input[float]]):
+    def size_bytes(self, value: Optional[pulumi.Input[int]]):
         pulumi.set(self, "size_bytes", value)
 
 
@@ -2568,10 +2632,10 @@ class ServiceTaskSpecContainerSpecMountVolumeOptionsArgs:
     def __init__(__self__, *,
                  driver_name: Optional[pulumi.Input[str]] = None,
                  driver_options: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
-                 labels: Optional[pulumi.Input[List[pulumi.Input['ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArgs']]]] = None,
+                 labels: Optional[pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArgs']]]] = None,
                  no_copy: Optional[pulumi.Input[bool]] = None):
         """
-        :param pulumi.Input[List[pulumi.Input['ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArgs']]] labels: See Labels below for details.
+        :param pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArgs']]] labels: See Labels below for details.
         :param pulumi.Input[bool] no_copy: Whether to populate volume with data from the target.
         """
         if driver_name is not None:
@@ -2603,14 +2667,14 @@ class ServiceTaskSpecContainerSpecMountVolumeOptionsArgs:
 
     @property
     @pulumi.getter
-    def labels(self) -> Optional[pulumi.Input[List[pulumi.Input['ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArgs']]]]:
+    def labels(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArgs']]]]:
         """
         See Labels below for details.
         """
         return pulumi.get(self, "labels")
 
     @labels.setter
-    def labels(self, value: Optional[pulumi.Input[List[pulumi.Input['ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArgs']]]]):
+    def labels(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArgs']]]]):
         pulumi.set(self, "labels", value)
 
     @property
@@ -2834,14 +2898,14 @@ class ServiceTaskSpecContainerSpecSecretArgs:
                  file_name: pulumi.Input[str],
                  secret_id: pulumi.Input[str],
                  file_gid: Optional[pulumi.Input[str]] = None,
-                 file_mode: Optional[pulumi.Input[float]] = None,
+                 file_mode: Optional[pulumi.Input[int]] = None,
                  file_uid: Optional[pulumi.Input[str]] = None,
                  secret_name: Optional[pulumi.Input[str]] = None):
         """
         :param pulumi.Input[str] file_name: Represents the final filename in the filesystem. The specific target file that the secret data is written within the docker container, e.g. `/root/secret/secret.json`
         :param pulumi.Input[str] secret_id: ConfigID represents the ID of the specific secret.
         :param pulumi.Input[str] file_gid: Represents the file GID. Defaults: `0`
-        :param pulumi.Input[float] file_mode: Represents the FileMode of the file. Defaults: `0444`
+        :param pulumi.Input[int] file_mode: Represents the FileMode of the file. Defaults: `0444`
         :param pulumi.Input[str] file_uid: Represents the file UID. Defaults: `0`
         :param pulumi.Input[str] secret_name: The name of the secret that this references, but internally it is just provided for lookup/display purposes
         """
@@ -2894,14 +2958,14 @@ class ServiceTaskSpecContainerSpecSecretArgs:
 
     @property
     @pulumi.getter(name="fileMode")
-    def file_mode(self) -> Optional[pulumi.Input[float]]:
+    def file_mode(self) -> Optional[pulumi.Input[int]]:
         """
         Represents the FileMode of the file. Defaults: `0444`
         """
         return pulumi.get(self, "file_mode")
 
     @file_mode.setter
-    def file_mode(self, value: Optional[pulumi.Input[float]]):
+    def file_mode(self, value: Optional[pulumi.Input[int]]):
         pulumi.set(self, "file_mode", value)
 
     @property
@@ -2970,13 +3034,13 @@ class ServiceTaskSpecLogDriverArgs:
 @pulumi.input_type
 class ServiceTaskSpecPlacementArgs:
     def __init__(__self__, *,
-                 constraints: Optional[pulumi.Input[List[pulumi.Input[str]]]] = None,
-                 platforms: Optional[pulumi.Input[List[pulumi.Input['ServiceTaskSpecPlacementPlatformArgs']]]] = None,
-                 prefs: Optional[pulumi.Input[List[pulumi.Input[str]]]] = None):
+                 constraints: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 platforms: Optional[pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecPlacementPlatformArgs']]]] = None,
+                 prefs: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None):
         """
-        :param pulumi.Input[List[pulumi.Input[str]]] constraints: An array of constraints. e.g.: `node.role==manager`
-        :param pulumi.Input[List[pulumi.Input['ServiceTaskSpecPlacementPlatformArgs']]] platforms: Platforms stores all the platforms that the service's image can run on
-        :param pulumi.Input[List[pulumi.Input[str]]] prefs: Preferences provide a way to make the scheduler aware of factors such as topology. They are provided in order from highest to lowest precedence, e.g.: `spread=node.role.manager`
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] constraints: An array of constraints. e.g.: `node.role==manager`
+        :param pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecPlacementPlatformArgs']]] platforms: Platforms stores all the platforms that the service's image can run on
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] prefs: Preferences provide a way to make the scheduler aware of factors such as topology. They are provided in order from highest to lowest precedence, e.g.: `spread=node.role.manager`
         """
         if constraints is not None:
             pulumi.set(__self__, "constraints", constraints)
@@ -2987,38 +3051,38 @@ class ServiceTaskSpecPlacementArgs:
 
     @property
     @pulumi.getter
-    def constraints(self) -> Optional[pulumi.Input[List[pulumi.Input[str]]]]:
+    def constraints(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
         """
         An array of constraints. e.g.: `node.role==manager`
         """
         return pulumi.get(self, "constraints")
 
     @constraints.setter
-    def constraints(self, value: Optional[pulumi.Input[List[pulumi.Input[str]]]]):
+    def constraints(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
         pulumi.set(self, "constraints", value)
 
     @property
     @pulumi.getter
-    def platforms(self) -> Optional[pulumi.Input[List[pulumi.Input['ServiceTaskSpecPlacementPlatformArgs']]]]:
+    def platforms(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecPlacementPlatformArgs']]]]:
         """
         Platforms stores all the platforms that the service's image can run on
         """
         return pulumi.get(self, "platforms")
 
     @platforms.setter
-    def platforms(self, value: Optional[pulumi.Input[List[pulumi.Input['ServiceTaskSpecPlacementPlatformArgs']]]]):
+    def platforms(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecPlacementPlatformArgs']]]]):
         pulumi.set(self, "platforms", value)
 
     @property
     @pulumi.getter
-    def prefs(self) -> Optional[pulumi.Input[List[pulumi.Input[str]]]]:
+    def prefs(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
         """
         Preferences provide a way to make the scheduler aware of factors such as topology. They are provided in order from highest to lowest precedence, e.g.: `spread=node.role.manager`
         """
         return pulumi.get(self, "prefs")
 
     @prefs.setter
-    def prefs(self, value: Optional[pulumi.Input[List[pulumi.Input[str]]]]):
+    def prefs(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
         pulumi.set(self, "prefs", value)
 
 
@@ -3102,12 +3166,12 @@ class ServiceTaskSpecResourcesArgs:
 class ServiceTaskSpecResourcesLimitsArgs:
     def __init__(__self__, *,
                  generic_resources: Optional[pulumi.Input['ServiceTaskSpecResourcesLimitsGenericResourcesArgs']] = None,
-                 memory_bytes: Optional[pulumi.Input[float]] = None,
-                 nano_cpus: Optional[pulumi.Input[float]] = None):
+                 memory_bytes: Optional[pulumi.Input[int]] = None,
+                 nano_cpus: Optional[pulumi.Input[int]] = None):
         """
         :param pulumi.Input['ServiceTaskSpecResourcesLimitsGenericResourcesArgs'] generic_resources: User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
-        :param pulumi.Input[float] memory_bytes: The amount of memory in bytes the container allocates
-        :param pulumi.Input[float] nano_cpus: CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
+        :param pulumi.Input[int] memory_bytes: The amount of memory in bytes the container allocates
+        :param pulumi.Input[int] nano_cpus: CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
         """
         if generic_resources is not None:
             pulumi.set(__self__, "generic_resources", generic_resources)
@@ -3130,37 +3194,37 @@ class ServiceTaskSpecResourcesLimitsArgs:
 
     @property
     @pulumi.getter(name="memoryBytes")
-    def memory_bytes(self) -> Optional[pulumi.Input[float]]:
+    def memory_bytes(self) -> Optional[pulumi.Input[int]]:
         """
         The amount of memory in bytes the container allocates
         """
         return pulumi.get(self, "memory_bytes")
 
     @memory_bytes.setter
-    def memory_bytes(self, value: Optional[pulumi.Input[float]]):
+    def memory_bytes(self, value: Optional[pulumi.Input[int]]):
         pulumi.set(self, "memory_bytes", value)
 
     @property
     @pulumi.getter(name="nanoCpus")
-    def nano_cpus(self) -> Optional[pulumi.Input[float]]:
+    def nano_cpus(self) -> Optional[pulumi.Input[int]]:
         """
         CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
         """
         return pulumi.get(self, "nano_cpus")
 
     @nano_cpus.setter
-    def nano_cpus(self, value: Optional[pulumi.Input[float]]):
+    def nano_cpus(self, value: Optional[pulumi.Input[int]]):
         pulumi.set(self, "nano_cpus", value)
 
 
 @pulumi.input_type
 class ServiceTaskSpecResourcesLimitsGenericResourcesArgs:
     def __init__(__self__, *,
-                 discrete_resources_specs: Optional[pulumi.Input[List[pulumi.Input[str]]]] = None,
-                 named_resources_specs: Optional[pulumi.Input[List[pulumi.Input[str]]]] = None):
+                 discrete_resources_specs: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 named_resources_specs: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None):
         """
-        :param pulumi.Input[List[pulumi.Input[str]]] discrete_resources_specs: The Integer resources, delimited by `=`
-        :param pulumi.Input[List[pulumi.Input[str]]] named_resources_specs: The String resources, delimited by `=`
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] discrete_resources_specs: The Integer resources, delimited by `=`
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] named_resources_specs: The String resources, delimited by `=`
         """
         if discrete_resources_specs is not None:
             pulumi.set(__self__, "discrete_resources_specs", discrete_resources_specs)
@@ -3169,26 +3233,26 @@ class ServiceTaskSpecResourcesLimitsGenericResourcesArgs:
 
     @property
     @pulumi.getter(name="discreteResourcesSpecs")
-    def discrete_resources_specs(self) -> Optional[pulumi.Input[List[pulumi.Input[str]]]]:
+    def discrete_resources_specs(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
         """
         The Integer resources, delimited by `=`
         """
         return pulumi.get(self, "discrete_resources_specs")
 
     @discrete_resources_specs.setter
-    def discrete_resources_specs(self, value: Optional[pulumi.Input[List[pulumi.Input[str]]]]):
+    def discrete_resources_specs(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
         pulumi.set(self, "discrete_resources_specs", value)
 
     @property
     @pulumi.getter(name="namedResourcesSpecs")
-    def named_resources_specs(self) -> Optional[pulumi.Input[List[pulumi.Input[str]]]]:
+    def named_resources_specs(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
         """
         The String resources, delimited by `=`
         """
         return pulumi.get(self, "named_resources_specs")
 
     @named_resources_specs.setter
-    def named_resources_specs(self, value: Optional[pulumi.Input[List[pulumi.Input[str]]]]):
+    def named_resources_specs(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
         pulumi.set(self, "named_resources_specs", value)
 
 
@@ -3196,12 +3260,12 @@ class ServiceTaskSpecResourcesLimitsGenericResourcesArgs:
 class ServiceTaskSpecResourcesReservationArgs:
     def __init__(__self__, *,
                  generic_resources: Optional[pulumi.Input['ServiceTaskSpecResourcesReservationGenericResourcesArgs']] = None,
-                 memory_bytes: Optional[pulumi.Input[float]] = None,
-                 nano_cpus: Optional[pulumi.Input[float]] = None):
+                 memory_bytes: Optional[pulumi.Input[int]] = None,
+                 nano_cpus: Optional[pulumi.Input[int]] = None):
         """
         :param pulumi.Input['ServiceTaskSpecResourcesReservationGenericResourcesArgs'] generic_resources: User-defined resources can be either Integer resources (e.g, SSD=3) or String resources (e.g, GPU=UUID1)
-        :param pulumi.Input[float] memory_bytes: The amount of memory in bytes the container allocates
-        :param pulumi.Input[float] nano_cpus: CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
+        :param pulumi.Input[int] memory_bytes: The amount of memory in bytes the container allocates
+        :param pulumi.Input[int] nano_cpus: CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
         """
         if generic_resources is not None:
             pulumi.set(__self__, "generic_resources", generic_resources)
@@ -3224,37 +3288,37 @@ class ServiceTaskSpecResourcesReservationArgs:
 
     @property
     @pulumi.getter(name="memoryBytes")
-    def memory_bytes(self) -> Optional[pulumi.Input[float]]:
+    def memory_bytes(self) -> Optional[pulumi.Input[int]]:
         """
         The amount of memory in bytes the container allocates
         """
         return pulumi.get(self, "memory_bytes")
 
     @memory_bytes.setter
-    def memory_bytes(self, value: Optional[pulumi.Input[float]]):
+    def memory_bytes(self, value: Optional[pulumi.Input[int]]):
         pulumi.set(self, "memory_bytes", value)
 
     @property
     @pulumi.getter(name="nanoCpus")
-    def nano_cpus(self) -> Optional[pulumi.Input[float]]:
+    def nano_cpus(self) -> Optional[pulumi.Input[int]]:
         """
         CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least 1000000
         """
         return pulumi.get(self, "nano_cpus")
 
     @nano_cpus.setter
-    def nano_cpus(self, value: Optional[pulumi.Input[float]]):
+    def nano_cpus(self, value: Optional[pulumi.Input[int]]):
         pulumi.set(self, "nano_cpus", value)
 
 
 @pulumi.input_type
 class ServiceTaskSpecResourcesReservationGenericResourcesArgs:
     def __init__(__self__, *,
-                 discrete_resources_specs: Optional[pulumi.Input[List[pulumi.Input[str]]]] = None,
-                 named_resources_specs: Optional[pulumi.Input[List[pulumi.Input[str]]]] = None):
+                 discrete_resources_specs: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 named_resources_specs: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None):
         """
-        :param pulumi.Input[List[pulumi.Input[str]]] discrete_resources_specs: The Integer resources, delimited by `=`
-        :param pulumi.Input[List[pulumi.Input[str]]] named_resources_specs: The String resources, delimited by `=`
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] discrete_resources_specs: The Integer resources, delimited by `=`
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] named_resources_specs: The String resources, delimited by `=`
         """
         if discrete_resources_specs is not None:
             pulumi.set(__self__, "discrete_resources_specs", discrete_resources_specs)
@@ -3263,26 +3327,26 @@ class ServiceTaskSpecResourcesReservationGenericResourcesArgs:
 
     @property
     @pulumi.getter(name="discreteResourcesSpecs")
-    def discrete_resources_specs(self) -> Optional[pulumi.Input[List[pulumi.Input[str]]]]:
+    def discrete_resources_specs(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
         """
         The Integer resources, delimited by `=`
         """
         return pulumi.get(self, "discrete_resources_specs")
 
     @discrete_resources_specs.setter
-    def discrete_resources_specs(self, value: Optional[pulumi.Input[List[pulumi.Input[str]]]]):
+    def discrete_resources_specs(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
         pulumi.set(self, "discrete_resources_specs", value)
 
     @property
     @pulumi.getter(name="namedResourcesSpecs")
-    def named_resources_specs(self) -> Optional[pulumi.Input[List[pulumi.Input[str]]]]:
+    def named_resources_specs(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
         """
         The String resources, delimited by `=`
         """
         return pulumi.get(self, "named_resources_specs")
 
     @named_resources_specs.setter
-    def named_resources_specs(self, value: Optional[pulumi.Input[List[pulumi.Input[str]]]]):
+    def named_resources_specs(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
         pulumi.set(self, "named_resources_specs", value)
 
 
@@ -3291,12 +3355,12 @@ class ServiceTaskSpecRestartPolicyArgs:
     def __init__(__self__, *,
                  condition: Optional[pulumi.Input[str]] = None,
                  delay: Optional[pulumi.Input[str]] = None,
-                 max_attempts: Optional[pulumi.Input[float]] = None,
+                 max_attempts: Optional[pulumi.Input[int]] = None,
                  window: Optional[pulumi.Input[str]] = None):
         """
         :param pulumi.Input[str] condition: Condition for restart: `(none|on-failure|any)`
         :param pulumi.Input[str] delay: Delay between restart attempts `(ms|s|m|h)`
-        :param pulumi.Input[float] max_attempts: Maximum attempts to restart a given container before giving up (default value is `0`, which is ignored)
+        :param pulumi.Input[int] max_attempts: Maximum attempts to restart a given container before giving up (default value is `0`, which is ignored)
         :param pulumi.Input[str] window: The time window used to evaluate the restart policy (default value is `0`, which is unbounded) `(ms|s|m|h)`
         """
         if condition is not None:
@@ -3334,14 +3398,14 @@ class ServiceTaskSpecRestartPolicyArgs:
 
     @property
     @pulumi.getter(name="maxAttempts")
-    def max_attempts(self) -> Optional[pulumi.Input[float]]:
+    def max_attempts(self) -> Optional[pulumi.Input[int]]:
         """
         Maximum attempts to restart a given container before giving up (default value is `0`, which is ignored)
         """
         return pulumi.get(self, "max_attempts")
 
     @max_attempts.setter
-    def max_attempts(self, value: Optional[pulumi.Input[float]]):
+    def max_attempts(self, value: Optional[pulumi.Input[int]]):
         pulumi.set(self, "max_attempts", value)
 
     @property
@@ -3365,7 +3429,7 @@ class ServiceUpdateConfigArgs:
                  max_failure_ratio: Optional[pulumi.Input[str]] = None,
                  monitor: Optional[pulumi.Input[str]] = None,
                  order: Optional[pulumi.Input[str]] = None,
-                 parallelism: Optional[pulumi.Input[float]] = None):
+                 parallelism: Optional[pulumi.Input[int]] = None):
         """
         :param pulumi.Input[str] delay: Delay between updates `(ns|us|ms|s|m|h)`, e.g. `5s`.
         :param pulumi.Input[str] failure_action: Action on update failure: `pause|continue|rollback`.
@@ -3373,7 +3437,7 @@ class ServiceUpdateConfigArgs:
                casting and precision errors.
         :param pulumi.Input[str] monitor: Duration after each task update to monitor for failure `(ns|us|ms|s|m|h)`
         :param pulumi.Input[str] order: Update order either 'stop-first' or 'start-first'.
-        :param pulumi.Input[float] parallelism: The maximum number of tasks to be updated in one iteration simultaneously (0 to update all at once).
+        :param pulumi.Input[int] parallelism: The maximum number of tasks to be updated in one iteration simultaneously (0 to update all at once).
         """
         if delay is not None:
             pulumi.set(__self__, "delay", delay)
@@ -3451,14 +3515,14 @@ class ServiceUpdateConfigArgs:
 
     @property
     @pulumi.getter
-    def parallelism(self) -> Optional[pulumi.Input[float]]:
+    def parallelism(self) -> Optional[pulumi.Input[int]]:
         """
         The maximum number of tasks to be updated in one iteration simultaneously (0 to update all at once).
         """
         return pulumi.get(self, "parallelism")
 
     @parallelism.setter
-    def parallelism(self, value: Optional[pulumi.Input[float]]):
+    def parallelism(self, value: Optional[pulumi.Input[int]]):
         pulumi.set(self, "parallelism", value)
 
 
@@ -3487,69 +3551,5 @@ class VolumeLabelArgs:
     @value.setter
     def value(self, value: pulumi.Input[str]):
         pulumi.set(self, "value", value)
-
-
-@pulumi.input_type
-class ProviderRegistryAuthArgs:
-    def __init__(__self__, *,
-                 address: pulumi.Input[str],
-                 config_file: Optional[pulumi.Input[str]] = None,
-                 config_file_content: Optional[pulumi.Input[str]] = None,
-                 password: Optional[pulumi.Input[str]] = None,
-                 username: Optional[pulumi.Input[str]] = None):
-        pulumi.set(__self__, "address", address)
-        if config_file is not None:
-            pulumi.set(__self__, "config_file", config_file)
-        if config_file_content is not None:
-            pulumi.set(__self__, "config_file_content", config_file_content)
-        if password is not None:
-            pulumi.set(__self__, "password", password)
-        if username is not None:
-            pulumi.set(__self__, "username", username)
-
-    @property
-    @pulumi.getter
-    def address(self) -> pulumi.Input[str]:
-        return pulumi.get(self, "address")
-
-    @address.setter
-    def address(self, value: pulumi.Input[str]):
-        pulumi.set(self, "address", value)
-
-    @property
-    @pulumi.getter(name="configFile")
-    def config_file(self) -> Optional[pulumi.Input[str]]:
-        return pulumi.get(self, "config_file")
-
-    @config_file.setter
-    def config_file(self, value: Optional[pulumi.Input[str]]):
-        pulumi.set(self, "config_file", value)
-
-    @property
-    @pulumi.getter(name="configFileContent")
-    def config_file_content(self) -> Optional[pulumi.Input[str]]:
-        return pulumi.get(self, "config_file_content")
-
-    @config_file_content.setter
-    def config_file_content(self, value: Optional[pulumi.Input[str]]):
-        pulumi.set(self, "config_file_content", value)
-
-    @property
-    @pulumi.getter
-    def password(self) -> Optional[pulumi.Input[str]]:
-        return pulumi.get(self, "password")
-
-    @password.setter
-    def password(self, value: Optional[pulumi.Input[str]]):
-        pulumi.set(self, "password", value)
-
-    @property
-    @pulumi.getter
-    def username(self) -> Optional[pulumi.Input[str]]:
-        return pulumi.get(self, "username")
-
-    @username.setter
-    def username(self, value: Optional[pulumi.Input[str]]):
-        pulumi.set(self, "username", value)
 
 
