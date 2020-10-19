@@ -19,6 +19,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/pulumi/pulumi-terraform-bridge/v2/pkg/tfbridge"
+	shimv1 "github.com/pulumi/pulumi-terraform-bridge/v2/pkg/tfshim/sdk-v1"
 	"github.com/pulumi/pulumi/sdk/v2/go/common/tokens"
 	"github.com/terraform-providers/terraform-provider-docker/docker"
 )
@@ -55,7 +56,7 @@ func dockerDataSource(mod string, res string) tokens.ModuleMember {
 }
 
 func Provider() tfbridge.ProviderInfo {
-	p := docker.Provider().(*schema.Provider)
+	p := shimv1.NewProvider(docker.Provider().(*schema.Provider))
 	prov := tfbridge.ProviderInfo{
 		P:           p,
 		Name:        "docker",
@@ -94,7 +95,12 @@ func Provider() tfbridge.ProviderInfo {
 					},
 				},
 			},
-			"docker_image":   {Tok: dockerResource(dockerMod, "RemoteImage")},
+			"docker_image": {
+				Tok: dockerResource(dockerMod, "RemoteImage"),
+				Fields: map[string]*tfbridge.SchemaInfo{
+					"name": {Name: "name"},
+				},
+			},
 			"docker_network": {Tok: dockerResource(dockerMod, "Network")},
 			"docker_secret":  {Tok: dockerResource(dockerMod, "Secret")},
 			"docker_service": {Tok: dockerResource(dockerMod, "Service")},
@@ -154,27 +160,7 @@ func Provider() tfbridge.ProviderInfo {
 		},
 	}
 
-	// For all resources with name properties, we will add an auto-name property.  Make sure to skip those that
-	// already have a name mapping entry, since those may have custom overrides set above (e.g., for length).
-	const dockerName = "name"
-	for resname, res := range prov.Resources {
-		// Don't autoname "docker_image". docker_image uses the "name" property to refer to an image that is going to be
-		// downloaded, so it's crucial that we don't try to make up a random name whenever a user omits it.
-		if resname == "docker_image" {
-			continue
-		}
-		if schema := p.ResourcesMap[resname]; schema != nil {
-			// Only apply auto-name to input properties (Optional || Required) named `name`
-			if tfs, has := schema.Schema[dockerName]; has && (tfs.Optional || tfs.Required) {
-				if _, hasfield := res.Fields[dockerName]; !hasfield {
-					if res.Fields == nil {
-						res.Fields = make(map[string]*tfbridge.SchemaInfo)
-					}
-					res.Fields[dockerName] = tfbridge.AutoName(dockerName, 255)
-				}
-			}
-		}
-	}
+	prov.SetAutonaming(255, "-")
 
 	return prov
 }
