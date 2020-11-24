@@ -46,6 +46,14 @@ class Network(pulumi.CustomResource):
         private_network = docker.Network("privateNetwork")
         ```
 
+        ## Import
+
+        Docker networks can be imported using the long id, e.g. for a network with the short id `p73jelnrme5f`
+
+        ```sh
+         $ pulumi import docker:index/network:Network foo $(docker network inspect -f {{.ID}} p73)
+        ```
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[bool] attachable: Enable manual container attachment to the network.

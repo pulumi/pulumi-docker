@@ -24,7 +24,10 @@ class Secret(pulumi.CustomResource):
                  __name__=None,
                  __opts__=None):
         """
-        Create a Secret resource with the given unique name, props, and options.
+        ## Import
+
+        Docker secret cannot be imported as the secret data, once set, is never exposed again.
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[str] data: The base64 encoded data of the secret.

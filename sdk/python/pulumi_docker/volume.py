@@ -39,6 +39,14 @@ class Volume(pulumi.CustomResource):
         shared_volume = docker.Volume("sharedVolume")
         ```
 
+        ## Import
+
+        Docker volume can be imported using the long id, e.g. for a volume with the short id `ecae276c5`
+
+        ```sh
+         $ pulumi import docker:index/volume:Volume foo $(docker volume inspect -f {{.ID}} eca)
+        ```
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[str] driver: Driver type for the volume (defaults to local).

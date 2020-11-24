@@ -21,7 +21,14 @@ class ServiceConfig(pulumi.CustomResource):
                  __name__=None,
                  __opts__=None):
         """
-        Create a ServiceConfig resource with the given unique name, props, and options.
+        ## Import
+
+        Docker config can be imported using the long id, e.g. for a config with the short id `p73jelnrme5f`
+
+        ```sh
+         $ pulumi import docker:index/serviceConfig:ServiceConfig foo $(docker config inspect -f {{.ID}} p73)
+        ```
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[str] data: The base64 encoded data of the config.

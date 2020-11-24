@@ -30,7 +30,14 @@ class Service(pulumi.CustomResource):
                  __name__=None,
                  __opts__=None):
         """
-        Create a Service resource with the given unique name, props, and options.
+        ## Import
+
+        Docker service can be imported using the long id, e.g. for a service with the short id `55ba873dd`
+
+        ```sh
+         $ pulumi import docker:index/service:Service foo $(docker service inspect -f {{.ID}} 55b)
+        ```
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[pulumi.InputType['ServiceAuthArgs']] auth: See Auth below for details.

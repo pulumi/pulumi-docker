@@ -2,8 +2,7 @@
 // *** Do not edit by hand unless you're certain you know what you are doing! ***
 
 import * as pulumi from "@pulumi/pulumi";
-import * as inputs from "./types/input";
-import * as outputs from "./types/output";
+import { input as inputs, output as outputs } from "./types";
 import * as utilities from "./utilities";
 
 /**
@@ -19,6 +18,14 @@ import * as utilities from "./utilities";
  *
  * // Creates a docker volume "shared_volume".
  * const sharedVolume = new docker.Volume("shared_volume", {});
+ * ```
+ *
+ * ## Import
+ *
+ * Docker volume can be imported using the long id, e.g. for a volume with the short id `ecae276c5`
+ *
+ * ```sh
+ *  $ pulumi import docker:index/volume:Volume foo $(docker volume inspect -f {{.ID}} eca)
  * ```
  */
 export class Volume extends pulumi.CustomResource {

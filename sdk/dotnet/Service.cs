@@ -9,6 +9,15 @@ using Pulumi.Serialization;
 
 namespace Pulumi.Docker
 {
+    /// <summary>
+    /// ## Import
+    /// 
+    /// Docker service can be imported using the long id, e.g. for a service with the short id `55ba873dd`
+    /// 
+    /// ```sh
+    ///  $ pulumi import docker:index/service:Service foo $(docker service inspect -f {{.ID}} 55b)
+    /// ```
+    /// </summary>
     public partial class Service : Pulumi.CustomResource
     {
         /// <summary>
