@@ -9,6 +9,15 @@ using Pulumi.Serialization;
 
 namespace Pulumi.Docker
 {
+    /// <summary>
+    /// ## Import
+    /// 
+    /// Docker config can be imported using the long id, e.g. for a config with the short id `p73jelnrme5f`
+    /// 
+    /// ```sh
+    ///  $ pulumi import docker:index/serviceConfig:ServiceConfig foo $(docker config inspect -f {{.ID}} p73)
+    /// ```
+    /// </summary>
     public partial class ServiceConfig : Pulumi.CustomResource
     {
         /// <summary>

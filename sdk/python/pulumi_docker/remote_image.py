@@ -84,7 +84,7 @@ class RemoteImage(pulumi.CustomResource):
                 raise TypeError("Missing required property 'name'")
             __props__['name'] = name
             if pull_trigger is not None:
-                warnings.warn("Use field pull_triggers instead", DeprecationWarning)
+                warnings.warn("""Use field pull_triggers instead""", DeprecationWarning)
                 pulumi.log.warn("pull_trigger is deprecated: Use field pull_triggers instead")
             __props__['pull_trigger'] = pull_trigger
             __props__['pull_triggers'] = pull_triggers

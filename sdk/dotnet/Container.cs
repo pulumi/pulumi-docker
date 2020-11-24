@@ -36,6 +36,16 @@ namespace Pulumi.Docker
     /// 
     /// }
     /// ```
+    /// 
+    /// ## Import
+    /// 
+    /// Docker containers can be imported using the long id, e.g. for a container named `foo`
+    /// 
+    /// ```sh
+    ///  $ pulumi import docker:index/container:Container foo $(docker inspect -f {{.ID}} foo)
+    /// ```
+    /// 
+    ///  [linkdoc] https://docs.docker.com/network/links/
     /// </summary>
     public partial class Container : Pulumi.CustomResource
     {

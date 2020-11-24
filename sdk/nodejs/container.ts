@@ -2,8 +2,7 @@
 // *** Do not edit by hand unless you're certain you know what you are doing! ***
 
 import * as pulumi from "@pulumi/pulumi";
-import * as inputs from "./types/input";
-import * as outputs from "./types/output";
+import { input as inputs, output as outputs } from "./types";
 import * as utilities from "./utilities";
 
 /**
@@ -24,6 +23,16 @@ import * as utilities from "./utilities";
  *     image: ubuntuRemoteImage.latest,
  * });
  * ```
+ *
+ * ## Import
+ *
+ * Docker containers can be imported using the long id, e.g. for a container named `foo`
+ *
+ * ```sh
+ *  $ pulumi import docker:index/container:Container foo $(docker inspect -f {{.ID}} foo)
+ * ```
+ *
+ *  [linkdoc] https://docs.docker.com/network/links/
  */
 export class Container extends pulumi.CustomResource {
     /**

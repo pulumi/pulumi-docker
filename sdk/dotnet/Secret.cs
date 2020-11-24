@@ -9,6 +9,11 @@ using Pulumi.Serialization;
 
 namespace Pulumi.Docker
 {
+    /// <summary>
+    /// ## Import
+    /// 
+    /// Docker secret cannot be imported as the secret data, once set, is never exposed again.
+    /// </summary>
     public partial class Secret : Pulumi.CustomResource
     {
         /// <summary>

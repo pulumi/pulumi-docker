@@ -4,12 +4,20 @@
 package docker
 
 import (
+	"context"
 	"reflect"
 
 	"github.com/pkg/errors"
 	"github.com/pulumi/pulumi/sdk/v2/go/pulumi"
 )
 
+// ## Import
+//
+// Docker config can be imported using the long id, e.g. for a config with the short id `p73jelnrme5f`
+//
+// ```sh
+//  $ pulumi import docker:index/serviceConfig:ServiceConfig foo $(docker config inspect -f {{.ID}} p73)
+// ```
 type ServiceConfig struct {
 	pulumi.CustomResourceState
 
@@ -84,4 +92,43 @@ type ServiceConfigArgs struct {
 
 func (ServiceConfigArgs) ElementType() reflect.Type {
 	return reflect.TypeOf((*serviceConfigArgs)(nil)).Elem()
+}
+
+type ServiceConfigInput interface {
+	pulumi.Input
+
+	ToServiceConfigOutput() ServiceConfigOutput
+	ToServiceConfigOutputWithContext(ctx context.Context) ServiceConfigOutput
+}
+
+func (ServiceConfig) ElementType() reflect.Type {
+	return reflect.TypeOf((*ServiceConfig)(nil)).Elem()
+}
+
+func (i ServiceConfig) ToServiceConfigOutput() ServiceConfigOutput {
+	return i.ToServiceConfigOutputWithContext(context.Background())
+}
+
+func (i ServiceConfig) ToServiceConfigOutputWithContext(ctx context.Context) ServiceConfigOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ServiceConfigOutput)
+}
+
+type ServiceConfigOutput struct {
+	*pulumi.OutputState
+}
+
+func (ServiceConfigOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*ServiceConfigOutput)(nil)).Elem()
+}
+
+func (o ServiceConfigOutput) ToServiceConfigOutput() ServiceConfigOutput {
+	return o
+}
+
+func (o ServiceConfigOutput) ToServiceConfigOutputWithContext(ctx context.Context) ServiceConfigOutput {
+	return o
+}
+
+func init() {
+	pulumi.RegisterOutputType(ServiceConfigOutput{})
 }

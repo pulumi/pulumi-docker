@@ -32,6 +32,14 @@ namespace Pulumi.Docker
     /// 
     /// }
     /// ```
+    /// 
+    /// ## Import
+    /// 
+    /// Docker volume can be imported using the long id, e.g. for a volume with the short id `ecae276c5`
+    /// 
+    /// ```sh
+    ///  $ pulumi import docker:index/volume:Volume foo $(docker volume inspect -f {{.ID}} eca)
+    /// ```
     /// </summary>
     public partial class Volume : Pulumi.CustomResource
     {

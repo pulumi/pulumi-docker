@@ -4,6 +4,15 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "./utilities";
 
+/**
+ * ## Import
+ *
+ * Docker config can be imported using the long id, e.g. for a config with the short id `p73jelnrme5f`
+ *
+ * ```sh
+ *  $ pulumi import docker:index/serviceConfig:ServiceConfig foo $(docker config inspect -f {{.ID}} p73)
+ * ```
+ */
 export class ServiceConfig extends pulumi.CustomResource {
     /**
      * Get an existing ServiceConfig resource's state with the given name, ID, and optional extra

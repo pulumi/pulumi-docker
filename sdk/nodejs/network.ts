@@ -2,8 +2,7 @@
 // *** Do not edit by hand unless you're certain you know what you are doing! ***
 
 import * as pulumi from "@pulumi/pulumi";
-import * as inputs from "./types/input";
-import * as outputs from "./types/output";
+import { input as inputs, output as outputs } from "./types";
 import * as utilities from "./utilities";
 
 /**
@@ -19,6 +18,14 @@ import * as utilities from "./utilities";
  *
  * // Create a new docker network
  * const privateNetwork = new docker.Network("private_network", {});
+ * ```
+ *
+ * ## Import
+ *
+ * Docker networks can be imported using the long id, e.g. for a network with the short id `p73jelnrme5f`
+ *
+ * ```sh
+ *  $ pulumi import docker:index/network:Network foo $(docker network inspect -f {{.ID}} p73)
  * ```
  */
 export class Network extends pulumi.CustomResource {

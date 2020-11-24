@@ -86,6 +86,16 @@ class Container(pulumi.CustomResource):
         ubuntu_container = docker.Container("ubuntuContainer", image=ubuntu_remote_image.latest)
         ```
 
+        ## Import
+
+        Docker containers can be imported using the long id, e.g. for a container named `foo`
+
+        ```sh
+         $ pulumi import docker:index/container:Container foo $(docker inspect -f {{.ID}} foo)
+        ```
+
+         [linkdoc] https://docs.docker.com/network/links/
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[bool] attach: If true attach to the container after its creation and waits the end of his execution.
@@ -195,7 +205,7 @@ class Container(pulumi.CustomResource):
             __props__['ipc_mode'] = ipc_mode
             __props__['labels'] = labels
             if links is not None:
-                warnings.warn("The --link flag is a legacy feature of Docker. It may eventually be removed.", DeprecationWarning)
+                warnings.warn("""The --link flag is a legacy feature of Docker. It may eventually be removed.""", DeprecationWarning)
                 pulumi.log.warn("links is deprecated: The --link flag is a legacy feature of Docker. It may eventually be removed.")
             __props__['links'] = links
             __props__['log_driver'] = log_driver
@@ -208,12 +218,12 @@ class Container(pulumi.CustomResource):
             __props__['must_run'] = must_run
             __props__['name'] = name
             if network_aliases is not None:
-                warnings.warn("Use networks_advanced instead. Will be removed in v2.0.0", DeprecationWarning)
+                warnings.warn("""Use networks_advanced instead. Will be removed in v2.0.0""", DeprecationWarning)
                 pulumi.log.warn("network_aliases is deprecated: Use networks_advanced instead. Will be removed in v2.0.0")
             __props__['network_aliases'] = network_aliases
             __props__['network_mode'] = network_mode
             if networks is not None:
-                warnings.warn("Use networks_advanced instead. Will be removed in v2.0.0", DeprecationWarning)
+                warnings.warn("""Use networks_advanced instead. Will be removed in v2.0.0""", DeprecationWarning)
                 pulumi.log.warn("networks is deprecated: Use networks_advanced instead. Will be removed in v2.0.0")
             __props__['networks'] = networks
             __props__['networks_advanced'] = networks_advanced

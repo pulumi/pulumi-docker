@@ -4,6 +4,7 @@
 package docker
 
 import (
+	"context"
 	"reflect"
 
 	"github.com/pkg/errors"
@@ -202,4 +203,43 @@ type RemoteImageArgs struct {
 
 func (RemoteImageArgs) ElementType() reflect.Type {
 	return reflect.TypeOf((*remoteImageArgs)(nil)).Elem()
+}
+
+type RemoteImageInput interface {
+	pulumi.Input
+
+	ToRemoteImageOutput() RemoteImageOutput
+	ToRemoteImageOutputWithContext(ctx context.Context) RemoteImageOutput
+}
+
+func (RemoteImage) ElementType() reflect.Type {
+	return reflect.TypeOf((*RemoteImage)(nil)).Elem()
+}
+
+func (i RemoteImage) ToRemoteImageOutput() RemoteImageOutput {
+	return i.ToRemoteImageOutputWithContext(context.Background())
+}
+
+func (i RemoteImage) ToRemoteImageOutputWithContext(ctx context.Context) RemoteImageOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(RemoteImageOutput)
+}
+
+type RemoteImageOutput struct {
+	*pulumi.OutputState
+}
+
+func (RemoteImageOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*RemoteImageOutput)(nil)).Elem()
+}
+
+func (o RemoteImageOutput) ToRemoteImageOutput() RemoteImageOutput {
+	return o
+}
+
+func (o RemoteImageOutput) ToRemoteImageOutputWithContext(ctx context.Context) RemoteImageOutput {
+	return o
+}
+
+func init() {
+	pulumi.RegisterOutputType(RemoteImageOutput{})
 }
