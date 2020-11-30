@@ -1,0 +1,3 @@
+name: cbp-gcp-js
+runtime: nodejs
+description: An example of building/publishing a Docker container image to Google Cloud GCP

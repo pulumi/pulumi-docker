@@ -1,0 +1,4 @@
+name: cbp-gcp-k8s-py
+runtime:
+    name: python
+description: An example of building/publishing a Docker container image to Google Cloud GCR

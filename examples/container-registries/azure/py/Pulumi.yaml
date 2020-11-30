@@ -1,0 +1,6 @@
+name: cbp-azure-py
+runtime:
+    name: python
+    options:
+        virtualenv: venv
+description: An example of building/publishing a Docker container image to Azure ACR

@@ -1,0 +1,3 @@
+name: cbp-kubernetes-ts-dev
+runtime: nodejs
+description: A program to build/publish to the Docker Hub.

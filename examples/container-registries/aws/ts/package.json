@@ -1,0 +1,11 @@
+{
+    "name": "cbp-aws-ts",
+    "devDependencies": {
+        "@types/node": "^8.0.0"
+    },
+    "dependencies": {
+        "@pulumi/pulumi": "^2.0.0",
+        "@pulumi/aws": "^2.0.0",
+        "@pulumi/docker": "^2.0.0"
+    }
+}

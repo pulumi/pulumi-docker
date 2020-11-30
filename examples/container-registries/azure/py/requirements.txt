@@ -1,0 +1,5 @@
+pulumi>=2.0.0
+pulumi-azure>=2.0.0
+pulumi-azuread>=2.0.0
+pulumi-docker>=2.2.0
+pulumi-random>=2.0.0
