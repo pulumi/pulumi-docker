@@ -13,7 +13,7 @@ namespace Pulumi.Docker
     /// Pulls a Docker image to a given Docker host from a Docker Registry.
     /// 
     /// This resource will *not* pull new layers of the image automatically unless used in
-    /// conjunction with [`docker.getRegistryImage`](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
+    /// conjunction with [`docker.RegistryImage`](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
     /// data source to update the `pull_triggers` field.
     /// 
     /// ## Example Usage
@@ -65,6 +65,12 @@ namespace Pulumi.Docker
     public partial class RemoteImage : Pulumi.CustomResource
     {
         /// <summary>
+        /// See Build below for details.
+        /// </summary>
+        [Output("build")]
+        public Output<Outputs.RemoteImageBuild?> Build { get; private set; } = null!;
+
+        /// <summary>
         /// If true, then the Docker image won't be
         /// deleted on destroy operation. If this is false, it will delete the image from
         /// the docker local storage on destroy operation.
@@ -81,6 +87,9 @@ namespace Pulumi.Docker
         [Output("name")]
         public Output<string> Name { get; private set; } = null!;
 
+        [Output("output")]
+        public Output<string> Output { get; private set; } = null!;
+
         /// <summary>
         /// **Deprecated**, use `pull_triggers` instead.
         /// </summary>
@@ -90,7 +99,7 @@ namespace Pulumi.Docker
         /// <summary>
         /// List of values which cause an
         /// image pull when changed. This is used to store the image digest from the
-        /// registry when using the `docker.getRegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
+        /// registry when using the `docker.RegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
         /// to trigger an image update.
         /// </summary>
         [Output("pullTriggers")]
@@ -143,6 +152,12 @@ namespace Pulumi.Docker
     public sealed class RemoteImageArgs : Pulumi.ResourceArgs
     {
         /// <summary>
+        /// See Build below for details.
+        /// </summary>
+        [Input("build")]
+        public Input<Inputs.RemoteImageBuildArgs>? Build { get; set; }
+
+        /// <summary>
         /// If true, then the Docker image won't be
         /// deleted on destroy operation. If this is false, it will delete the image from
         /// the docker local storage on destroy operation.
@@ -168,7 +183,7 @@ namespace Pulumi.Docker
         /// <summary>
         /// List of values which cause an
         /// image pull when changed. This is used to store the image digest from the
-        /// registry when using the `docker.getRegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
+        /// registry when using the `docker.RegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
         /// to trigger an image update.
         /// </summary>
         public InputList<string> PullTriggers
@@ -184,6 +199,12 @@ namespace Pulumi.Docker
 
     public sealed class RemoteImageState : Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// See Build below for details.
+        /// </summary>
+        [Input("build")]
+        public Input<Inputs.RemoteImageBuildGetArgs>? Build { get; set; }
+
         /// <summary>
         /// If true, then the Docker image won't be
         /// deleted on destroy operation. If this is false, it will delete the image from
@@ -201,6 +222,9 @@ namespace Pulumi.Docker
         [Input("name")]
         public Input<string>? Name { get; set; }
 
+        [Input("output")]
+        public Input<string>? Output { get; set; }
+
         /// <summary>
         /// **Deprecated**, use `pull_triggers` instead.
         /// </summary>
@@ -213,7 +237,7 @@ namespace Pulumi.Docker
         /// <summary>
         /// List of values which cause an
         /// image pull when changed. This is used to store the image digest from the
-        /// registry when using the `docker.getRegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
+        /// registry when using the `docker.RegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
         /// to trigger an image update.
         /// </summary>
         public InputList<string> PullTriggers

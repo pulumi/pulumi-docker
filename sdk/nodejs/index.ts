@@ -9,6 +9,7 @@ export * from "./getRegistryImage";
 export * from "./image";
 export * from "./network";
 export * from "./provider";
+export * from "./registryImage";
 export * from "./remoteImage";
 export * from "./secret";
 export * from "./service";

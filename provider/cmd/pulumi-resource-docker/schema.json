@@ -447,6 +447,22 @@
                         }
                     }
                 },
+                "globalIpv6Address": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "globalIpv6PrefixLength": {
+                    "type": "integer",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
                 "ipAddress": {
                     "type": "string",
                     "description": "*Deprecated:* Use `network_data` instead. The IP address of the container's first network it.\n",
@@ -459,6 +475,14 @@
                 "ipPrefixLength": {
                     "type": "integer",
                     "description": "*Deprecated:* Use `network_data` instead. The IP prefix length of the container as read from its\nNetworkSettings.\n",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "ipv6Gateway": {
+                    "type": "string",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -479,8 +503,11 @@
                 "nodejs": {
                     "requiredOutputs": [
                         "gateway",
+                        "globalIpv6Address",
+                        "globalIpv6PrefixLength",
                         "ipAddress",
                         "ipPrefixLength",
+                        "ipv6Gateway",
                         "networkName"
                     ]
                 }
@@ -849,6 +876,530 @@
                     "requiredOutputs": []
                 }
             }
+        },
+        "docker:index/RegistryImageBuild:RegistryImageBuild": {
+            "properties": {
+                "authConfigs": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/docker:index/RegistryImageBuildAuthConfig:RegistryImageBuildAuthConfig"
+                    },
+                    "description": "- See AuthConfig below for details\n",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "buildArgs": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "string pairs for build-time variables\n",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "buildId": {
+                    "type": "string",
+                    "description": "- BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request\n",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "cacheFroms": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "- Images to consider as cache sources\n",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "cgroupParent": {
+                    "type": "string",
+                    "description": "- Optional parent cgroup for the container\n",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "context": {
+                    "type": "string",
+                    "description": "- The path to the context folder\n",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "cpuPeriod": {
+                    "type": "integer",
+                    "description": "- The length of a CPU period in microseconds\n",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "cpuQuota": {
+                    "type": "integer",
+                    "description": "- Microseconds of CPU time that the container can get in a CPU period\n",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "cpuSetCpus": {
+                    "type": "string",
+                    "description": "- CPUs in which to allow execution (e.g., 0-3, 0,1)\n",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "cpuSetMems": {
+                    "type": "string",
+                    "description": "- MEMs in which to allow execution (0-3, 0,1)\n",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "cpuShares": {
+                    "type": "integer",
+                    "description": "- CPU shares (relative weight)\n",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "dockerfile": {
+                    "type": "string",
+                    "description": "- Dockerfile file. Default is \"Dockerfile\"\n",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "extraHosts": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "- A list of hostnames/IP mappings to add to the container’s /etc/hosts file. Specified in the form [\"hostname:IP\"]\n",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "forceRemove": {
+                    "type": "boolean",
+                    "description": "- Always remove intermediate containers\n",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "isolation": {
+                    "type": "string",
+                    "description": "- Isolation represents the isolation technology of a container. The supported values are platform specific\n",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "labels": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "string pairs for labels\n",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "memory": {
+                    "type": "integer",
+                    "description": "- Set memory limit for build\n",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "memorySwap": {
+                    "type": "integer",
+                    "description": "- Total memory (memory + swap), -1 to enable unlimited swap\n",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "networkMode": {
+                    "type": "string",
+                    "description": "- Set the networking mode for the RUN instructions during build\n",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "noCache": {
+                    "type": "boolean",
+                    "description": "- Do not use the cache when building the image\n",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "platform": {
+                    "type": "string",
+                    "description": "- Set platform if server is multi-platform capable\n",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "pullParent": {
+                    "type": "boolean",
+                    "description": "- Attempt to pull the image even if an older image exists locally\n",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "remoteContext": {
+                    "type": "string",
+                    "description": "- A Git repository URI or HTTP/HTTPS context URI\n",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "remove": {
+                    "type": "boolean",
+                    "description": "- Remove intermediate containers after a successful build (default behavior)\n",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "securityOpts": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "- Security options\n",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "sessionId": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "shmSize": {
+                    "type": "integer",
+                    "description": "- Size of /dev/shm in bytes. The size must be greater than 0\n",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "squash": {
+                    "type": "boolean",
+                    "description": "- squash the new layers into a new image with a single new layer\n",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "suppressOutput": {
+                    "type": "boolean",
+                    "description": "- Suppress the build output and print image ID on success\n",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "target": {
+                    "type": "string",
+                    "description": "- Set the target build stage to build\n",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "ulimits": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/docker:index/RegistryImageBuildUlimit:RegistryImageBuildUlimit"
+                    },
+                    "description": "- See Ulimit below for details\n",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "version": {
+                    "type": "string",
+                    "description": "- Version of the unerlying builder to use\n",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                }
+            },
+            "type": "object",
+            "required": [
+                "context"
+            ]
+        },
+        "docker:index/RegistryImageBuildAuthConfig:RegistryImageBuildAuthConfig": {
+            "properties": {
+                "auth": {
+                    "type": "string",
+                    "description": "the auth token\n",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "email": {
+                    "type": "string",
+                    "description": "the user emal\n",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "hostName": {
+                    "type": "string",
+                    "description": "hostname of the registry\n",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "identityToken": {
+                    "type": "string",
+                    "description": "the identity token\n",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "password": {
+                    "type": "string",
+                    "description": "the registry password\n",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "registryToken": {
+                    "type": "string",
+                    "description": "the registry token\n",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "serverAddress": {
+                    "type": "string",
+                    "description": "the server address\n",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "userName": {
+                    "type": "string",
+                    "description": "the registry user name\n",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                }
+            },
+            "type": "object",
+            "required": [
+                "hostName"
+            ]
+        },
+        "docker:index/RegistryImageBuildUlimit:RegistryImageBuildUlimit": {
+            "properties": {
+                "hard": {
+                    "type": "integer",
+                    "description": "- hard limit\n",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "name": {
+                    "type": "string",
+                    "description": "type of ulimit, e.g. nofile\n",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "soft": {
+                    "type": "integer",
+                    "description": "- soft limit\n",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                }
+            },
+            "type": "object",
+            "required": [
+                "hard",
+                "name",
+                "soft"
+            ]
+        },
+        "docker:index/RemoteImageBuild:RemoteImageBuild": {
+            "properties": {
+                "buildArg": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "dockerfile": {
+                    "type": "string",
+                    "description": "default Dockerfile\n",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "forceRemove": {
+                    "type": "boolean",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "label": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "noCache": {
+                    "type": "boolean",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "path": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "remove": {
+                    "type": "boolean",
+                    "description": "default true\n",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "tags": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "target": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                }
+            },
+            "type": "object",
+            "required": [
+                "path"
+            ]
         },
         "docker:index/SecretLabel:SecretLabel": {
             "properties": {
@@ -2466,7 +3017,7 @@
     },
     "resources": {
         "docker:index/container:Container": {
-            "description": "Manages the lifecycle of a Docker container.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\n// Find the latest Ubuntu precise image.\nconst ubuntuRemoteImage = new docker.RemoteImage(\"ubuntu\", {\n    name: \"ubuntu:precise\",\n});\n// Start a container\nconst ubuntuContainer = new docker.Container(\"ubuntu\", {\n    image: ubuntuRemoteImage.latest,\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\n# Find the latest Ubuntu precise image.\nubuntu_remote_image = docker.RemoteImage(\"ubuntuRemoteImage\", name=\"ubuntu:precise\")\n# Start a container\nubuntu_container = docker.Container(\"ubuntuContainer\", image=ubuntu_remote_image.latest)\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        // Find the latest Ubuntu precise image.\n        var ubuntuRemoteImage = new Docker.RemoteImage(\"ubuntuRemoteImage\", new Docker.RemoteImageArgs\n        {\n            Name = \"ubuntu:precise\",\n        });\n        // Start a container\n        var ubuntuContainer = new Docker.Container(\"ubuntuContainer\", new Docker.ContainerArgs\n        {\n            Image = ubuntuRemoteImage.Latest,\n        });\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v2/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v2/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\tubuntuRemoteImage, err := docker.NewRemoteImage(ctx, \"ubuntuRemoteImage\", \u0026docker.RemoteImageArgs{\n\t\t\tName: pulumi.String(\"ubuntu:precise\"),\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\t_, err = docker.NewContainer(ctx, \"ubuntuContainer\", \u0026docker.ContainerArgs{\n\t\t\tImage: ubuntuRemoteImage.Latest,\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n{{% /example %}}\n{{% /examples %}}\n\n## Import\n\nDocker containers can be imported using the long id, e.g. for a container named `foo`\n\n```sh\n $ pulumi import docker:index/container:Container foo $(docker inspect -f {{.ID}} foo)\n```\n\n [linkdoc] https://docs.docker.com/network/links/ ",
+            "description": "Manages the lifecycle of a Docker container.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\n// Find the latest Ubuntu precise image.\nconst ubuntuRemoteImage = new docker.RemoteImage(\"ubuntu\", {\n    name: \"ubuntu:precise\",\n});\n// Start a container\nconst ubuntuContainer = new docker.Container(\"ubuntu\", {\n    image: ubuntuRemoteImage.latest,\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\n# Find the latest Ubuntu precise image.\nubuntu_remote_image = docker.RemoteImage(\"ubuntuRemoteImage\", name=\"ubuntu:precise\")\n# Start a container\nubuntu_container = docker.Container(\"ubuntuContainer\", image=ubuntu_remote_image.latest)\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        // Find the latest Ubuntu precise image.\n        var ubuntuRemoteImage = new Docker.RemoteImage(\"ubuntuRemoteImage\", new Docker.RemoteImageArgs\n        {\n            Name = \"ubuntu:precise\",\n        });\n        // Start a container\n        var ubuntuContainer = new Docker.Container(\"ubuntuContainer\", new Docker.ContainerArgs\n        {\n            Image = ubuntuRemoteImage.Latest,\n        });\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v2/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v2/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\tubuntuRemoteImage, err := docker.NewRemoteImage(ctx, \"ubuntuRemoteImage\", \u0026docker.RemoteImageArgs{\n\t\t\tName: pulumi.String(\"ubuntu:precise\"),\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\t_, err = docker.NewContainer(ctx, \"ubuntuContainer\", \u0026docker.ContainerArgs{\n\t\t\tImage: ubuntuRemoteImage.Latest,\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n{{% /example %}}\n{{% /examples %}}\n\n## Import\n\nDocker containers can be imported using the long id, e.g. for a container named `foo`\n\n```sh\n $ pulumi import docker:index/container:Container foo $(docker inspect -f {{.ID}} foo)\n```\n\n ",
             "properties": {
                 "attach": {
                     "type": "boolean",
@@ -2709,6 +3260,9 @@
                     "type": "boolean",
                     "description": "If true, this volume will be readonly.\nDefaults to false.\n"
                 },
+                "removeVolumes": {
+                    "type": "boolean"
+                },
                 "restart": {
                     "type": "string",
                     "description": "The restart policy for the container. Must be\none of \"no\", \"on-failure\", \"always\", \"unless-stopped\".\n"
@@ -2776,9 +3330,8 @@
                 "bridge",
                 "command",
                 "containerLogs",
-                "dns",
-                "dnsOpts",
                 "entrypoints",
+                "envs",
                 "exitCode",
                 "gateway",
                 "hostname",
@@ -2786,13 +3339,10 @@
                 "ipAddress",
                 "ipPrefixLength",
                 "ipcMode",
-                "logDriver",
-                "logOpts",
+                "labels",
                 "name",
                 "networkDatas",
-                "shmSize",
-                "user",
-                "workingDir"
+                "shmSize"
             ],
             "inputProperties": {
                 "attach": {
@@ -3001,6 +3551,9 @@
                 "readOnly": {
                     "type": "boolean",
                     "description": "If true, this volume will be readonly.\nDefaults to false.\n"
+                },
+                "removeVolumes": {
+                    "type": "boolean"
                 },
                 "restart": {
                     "type": "string",
@@ -3312,6 +3865,9 @@
                         "type": "boolean",
                         "description": "If true, this volume will be readonly.\nDefaults to false.\n"
                     },
+                    "removeVolumes": {
+                        "type": "boolean"
+                    },
                     "restart": {
                         "type": "string",
                         "description": "The restart policy for the container. Must be\none of \"no\", \"on-failure\", \"always\", \"unless-stopped\".\n"
@@ -3564,9 +4120,72 @@
                 "type": "object"
             }
         },
-        "docker:index/remoteImage:RemoteImage": {
-            "description": "Pulls a Docker image to a given Docker host from a Docker Registry.\n\nThis resource will *not* pull new layers of the image automatically unless used in\nconjunction with [`docker.getRegistryImage`](https://www.terraform.io/docs/providers/docker/d/registry_image.html)\ndata source to update the `pull_triggers` field.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\n// Find the latest Ubuntu precise image.\nconst ubuntu = new docker.RemoteImage(\"ubuntu\", {\n    name: \"ubuntu:precise\",\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\n# Find the latest Ubuntu precise image.\nubuntu = docker.RemoteImage(\"ubuntu\", name=\"ubuntu:precise\")\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        // Find the latest Ubuntu precise image.\n        var ubuntu = new Docker.RemoteImage(\"ubuntu\", new Docker.RemoteImageArgs\n        {\n            Name = \"ubuntu:precise\",\n        });\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v2/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v2/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := docker.NewRemoteImage(ctx, \"ubuntu\", \u0026docker.RemoteImageArgs{\n\t\t\tName: pulumi.String(\"ubuntu:precise\"),\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n{{% /example %}}\n{{% example %}}\n### Dynamic image\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst ubuntuRegistryImage = pulumi.output(docker.getRegistryImage({\n    name: \"ubuntu:precise\",\n}, { async: true }));\nconst ubuntuRemoteImage = new docker.RemoteImage(\"ubuntu\", {\n    name: ubuntuRegistryImage.name!,\n    pullTriggers: [ubuntuRegistryImage.sha256Digest],\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nubuntu_registry_image = docker.get_registry_image(name=\"ubuntu:precise\")\nubuntu_remote_image = docker.RemoteImage(\"ubuntuRemoteImage\",\n    name=ubuntu_registry_image.name,\n    pull_triggers=[ubuntu_registry_image.sha256_digest])\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        var ubuntuRegistryImage = Output.Create(Docker.GetRegistryImage.InvokeAsync(new Docker.GetRegistryImageArgs\n        {\n            Name = \"ubuntu:precise\",\n        }));\n        var ubuntuRemoteImage = new Docker.RemoteImage(\"ubuntuRemoteImage\", new Docker.RemoteImageArgs\n        {\n            Name = ubuntuRegistryImage.Apply(ubuntuRegistryImage =\u003e ubuntuRegistryImage.Name),\n            PullTriggers = \n            {\n                ubuntuRegistryImage.Apply(ubuntuRegistryImage =\u003e ubuntuRegistryImage.Sha256Digest),\n            },\n        });\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v2/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v2/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\topt0 := \"ubuntu:precise\"\n\t\tubuntuRegistryImage, err := docker.GetRegistryImage(ctx, \u0026docker.GetRegistryImageArgs{\n\t\t\tName: \u0026opt0,\n\t\t}, nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\t_, err = docker.NewRemoteImage(ctx, \"ubuntuRemoteImage\", \u0026docker.RemoteImageArgs{\n\t\t\tName: pulumi.String(ubuntuRegistryImage.Name),\n\t\t\tPullTriggers: pulumi.StringArray{\n\t\t\t\tpulumi.String(ubuntuRegistryImage.Sha256Digest),\n\t\t\t},\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n{{% /example %}}\n{{% /examples %}}",
+        "docker:index/registryImage:RegistryImage": {
+            "description": "Provides an image/tag in a Docker registry.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst helloworld = new docker.RegistryImage(\"helloworld\", {\n    build: {\n        context: \"pathToContextFolder\",\n    },\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nhelloworld = docker.RegistryImage(\"helloworld\", build=docker.RegistryImageBuildArgs(\n    context=\"pathToContextFolder\",\n))\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        var helloworld = new Docker.RegistryImage(\"helloworld\", new Docker.RegistryImageArgs\n        {\n            Build = new Docker.Inputs.RegistryImageBuildArgs\n            {\n                Context = \"pathToContextFolder\",\n            },\n        });\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v2/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v2/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := docker.NewRegistryImage(ctx, \"helloworld\", \u0026docker.RegistryImageArgs{\n\t\t\tBuild: \u0026docker.RegistryImageBuildArgs{\n\t\t\t\tContext: pulumi.String(\"pathToContextFolder\"),\n\t\t\t},\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n{{% /example %}}\n{{% /examples %}}",
             "properties": {
+                "build": {
+                    "$ref": "#/types/docker:index/RegistryImageBuild:RegistryImageBuild",
+                    "description": "See Build below for details.\n"
+                },
+                "keepRemotely": {
+                    "type": "boolean",
+                    "description": "If true, then the Docker image won't be\ndeleted on destroy operation. If this is false, it will delete the image from\nthe docker registry on destroy operation.\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "type of ulimit, e.g. nofile\n"
+                },
+                "sha256Digest": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "name",
+                "sha256Digest"
+            ],
+            "inputProperties": {
+                "build": {
+                    "$ref": "#/types/docker:index/RegistryImageBuild:RegistryImageBuild",
+                    "description": "See Build below for details.\n"
+                },
+                "keepRemotely": {
+                    "type": "boolean",
+                    "description": "If true, then the Docker image won't be\ndeleted on destroy operation. If this is false, it will delete the image from\nthe docker registry on destroy operation.\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "type of ulimit, e.g. nofile\n"
+                }
+            },
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering RegistryImage resources.\n",
+                "properties": {
+                    "build": {
+                        "$ref": "#/types/docker:index/RegistryImageBuild:RegistryImageBuild",
+                        "description": "See Build below for details.\n"
+                    },
+                    "keepRemotely": {
+                        "type": "boolean",
+                        "description": "If true, then the Docker image won't be\ndeleted on destroy operation. If this is false, it will delete the image from\nthe docker registry on destroy operation.\n"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "type of ulimit, e.g. nofile\n"
+                    },
+                    "sha256Digest": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "docker:index/remoteImage:RemoteImage": {
+            "description": "Pulls a Docker image to a given Docker host from a Docker Registry.\n\nThis resource will *not* pull new layers of the image automatically unless used in\nconjunction with [`docker.RegistryImage`](https://www.terraform.io/docs/providers/docker/d/registry_image.html)\ndata source to update the `pull_triggers` field.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\n// Find the latest Ubuntu precise image.\nconst ubuntu = new docker.RemoteImage(\"ubuntu\", {\n    name: \"ubuntu:precise\",\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\n# Find the latest Ubuntu precise image.\nubuntu = docker.RemoteImage(\"ubuntu\", name=\"ubuntu:precise\")\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        // Find the latest Ubuntu precise image.\n        var ubuntu = new Docker.RemoteImage(\"ubuntu\", new Docker.RemoteImageArgs\n        {\n            Name = \"ubuntu:precise\",\n        });\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v2/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v2/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := docker.NewRemoteImage(ctx, \"ubuntu\", \u0026docker.RemoteImageArgs{\n\t\t\tName: pulumi.String(\"ubuntu:precise\"),\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n{{% /example %}}\n{{% example %}}\n### Dynamic image\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst ubuntuRegistryImage = pulumi.output(docker.getRegistryImage({\n    name: \"ubuntu:precise\",\n}, { async: true }));\nconst ubuntuRemoteImage = new docker.RemoteImage(\"ubuntu\", {\n    name: ubuntuRegistryImage.name!,\n    pullTriggers: [ubuntuRegistryImage.sha256Digest],\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nubuntu_registry_image = docker.get_registry_image(name=\"ubuntu:precise\")\nubuntu_remote_image = docker.RemoteImage(\"ubuntuRemoteImage\",\n    name=ubuntu_registry_image.name,\n    pull_triggers=[ubuntu_registry_image.sha256_digest])\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        var ubuntuRegistryImage = Output.Create(Docker.GetRegistryImage.InvokeAsync(new Docker.GetRegistryImageArgs\n        {\n            Name = \"ubuntu:precise\",\n        }));\n        var ubuntuRemoteImage = new Docker.RemoteImage(\"ubuntuRemoteImage\", new Docker.RemoteImageArgs\n        {\n            Name = ubuntuRegistryImage.Apply(ubuntuRegistryImage =\u003e ubuntuRegistryImage.Name),\n            PullTriggers = \n            {\n                ubuntuRegistryImage.Apply(ubuntuRegistryImage =\u003e ubuntuRegistryImage.Sha256Digest),\n            },\n        });\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v2/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v2/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\topt0 := \"ubuntu:precise\"\n\t\tubuntuRegistryImage, err := docker.LookupRegistryImage(ctx, \u0026docker.LookupRegistryImageArgs{\n\t\t\tName: \u0026opt0,\n\t\t}, nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\t_, err = docker.NewRemoteImage(ctx, \"ubuntuRemoteImage\", \u0026docker.RemoteImageArgs{\n\t\t\tName: pulumi.String(ubuntuRegistryImage.Name),\n\t\t\tPullTriggers: pulumi.StringArray{\n\t\t\t\tpulumi.String(ubuntuRegistryImage.Sha256Digest),\n\t\t\t},\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n{{% /example %}}\n{{% /examples %}}",
+            "properties": {
+                "build": {
+                    "$ref": "#/types/docker:index/RemoteImageBuild:RemoteImageBuild",
+                    "description": "See Build below for details.\n"
+                },
                 "keepLocally": {
                     "type": "boolean",
                     "description": "If true, then the Docker image won't be\ndeleted on destroy operation. If this is false, it will delete the image from\nthe docker local storage on destroy operation.\n"
@@ -3578,6 +4197,9 @@
                     "type": "string",
                     "description": "The name of the Docker image, including any tags or SHA256 repo digests.\n"
                 },
+                "output": {
+                    "type": "string"
+                },
                 "pullTrigger": {
                     "type": "string",
                     "description": "**Deprecated**, use `pull_triggers` instead.\n",
@@ -3588,14 +4210,19 @@
                     "items": {
                         "type": "string"
                     },
-                    "description": "List of values which cause an\nimage pull when changed. This is used to store the image digest from the\nregistry when using the `docker.getRegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)\nto trigger an image update.\n"
+                    "description": "List of values which cause an\nimage pull when changed. This is used to store the image digest from the\nregistry when using the `docker.RegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)\nto trigger an image update.\n"
                 }
             },
             "required": [
                 "latest",
-                "name"
+                "name",
+                "output"
             ],
             "inputProperties": {
+                "build": {
+                    "$ref": "#/types/docker:index/RemoteImageBuild:RemoteImageBuild",
+                    "description": "See Build below for details.\n"
+                },
                 "keepLocally": {
                     "type": "boolean",
                     "description": "If true, then the Docker image won't be\ndeleted on destroy operation. If this is false, it will delete the image from\nthe docker local storage on destroy operation.\n"
@@ -3614,7 +4241,7 @@
                     "items": {
                         "type": "string"
                     },
-                    "description": "List of values which cause an\nimage pull when changed. This is used to store the image digest from the\nregistry when using the `docker.getRegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)\nto trigger an image update.\n"
+                    "description": "List of values which cause an\nimage pull when changed. This is used to store the image digest from the\nregistry when using the `docker.RegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)\nto trigger an image update.\n"
                 }
             },
             "requiredInputs": [
@@ -3623,6 +4250,10 @@
             "stateInputs": {
                 "description": "Input properties used for looking up and filtering RemoteImage resources.\n",
                 "properties": {
+                    "build": {
+                        "$ref": "#/types/docker:index/RemoteImageBuild:RemoteImageBuild",
+                        "description": "See Build below for details.\n"
+                    },
                     "keepLocally": {
                         "type": "boolean",
                         "description": "If true, then the Docker image won't be\ndeleted on destroy operation. If this is false, it will delete the image from\nthe docker local storage on destroy operation.\n"
@@ -3634,6 +4265,9 @@
                         "type": "string",
                         "description": "The name of the Docker image, including any tags or SHA256 repo digests.\n"
                     },
+                    "output": {
+                        "type": "string"
+                    },
                     "pullTrigger": {
                         "type": "string",
                         "description": "**Deprecated**, use `pull_triggers` instead.\n",
@@ -3644,7 +4278,7 @@
                         "items": {
                             "type": "string"
                         },
-                        "description": "List of values which cause an\nimage pull when changed. This is used to store the image digest from the\nregistry when using the `docker.getRegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)\nto trigger an image update.\n"
+                        "description": "List of values which cause an\nimage pull when changed. This is used to store the image digest from the\nregistry when using the `docker.RegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)\nto trigger an image update.\n"
                     }
                 },
                 "type": "object"
@@ -4051,7 +4685,7 @@
             }
         },
         "docker:index/getRegistryImage:getRegistryImage": {
-            "description": "Reads the image metadata from a Docker Registry. Used in conjunction with the\n[docker\\_image](https://www.terraform.io/docs/providers/docker/r/image.html) resource to keep an image up\nto date on the latest available version of the tag.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst ubuntuRegistryImage = pulumi.output(docker.getRegistryImage({\n    name: \"ubuntu:precise\",\n}, { async: true }));\nconst ubuntuRemoteImage = new docker.RemoteImage(\"ubuntu\", {\n    name: ubuntuRegistryImage.name!,\n    pullTriggers: [ubuntuRegistryImage.sha256Digest],\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nubuntu_registry_image = docker.get_registry_image(name=\"ubuntu:precise\")\nubuntu_remote_image = docker.RemoteImage(\"ubuntuRemoteImage\",\n    name=ubuntu_registry_image.name,\n    pull_triggers=[ubuntu_registry_image.sha256_digest])\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        var ubuntuRegistryImage = Output.Create(Docker.GetRegistryImage.InvokeAsync(new Docker.GetRegistryImageArgs\n        {\n            Name = \"ubuntu:precise\",\n        }));\n        var ubuntuRemoteImage = new Docker.RemoteImage(\"ubuntuRemoteImage\", new Docker.RemoteImageArgs\n        {\n            Name = ubuntuRegistryImage.Apply(ubuntuRegistryImage =\u003e ubuntuRegistryImage.Name),\n            PullTriggers = \n            {\n                ubuntuRegistryImage.Apply(ubuntuRegistryImage =\u003e ubuntuRegistryImage.Sha256Digest),\n            },\n        });\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v2/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v2/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\topt0 := \"ubuntu:precise\"\n\t\tubuntuRegistryImage, err := docker.GetRegistryImage(ctx, \u0026docker.GetRegistryImageArgs{\n\t\t\tName: \u0026opt0,\n\t\t}, nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\t_, err = docker.NewRemoteImage(ctx, \"ubuntuRemoteImage\", \u0026docker.RemoteImageArgs{\n\t\t\tName: pulumi.String(ubuntuRegistryImage.Name),\n\t\t\tPullTriggers: pulumi.StringArray{\n\t\t\t\tpulumi.String(ubuntuRegistryImage.Sha256Digest),\n\t\t\t},\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n{{% /example %}}\n{{% /examples %}}",
+            "description": "Reads the image metadata from a Docker Registry. Used in conjunction with the\n[docker\\_image](https://www.terraform.io/docs/providers/docker/r/image.html) resource to keep an image up\nto date on the latest available version of the tag.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst ubuntuRegistryImage = pulumi.output(docker.getRegistryImage({\n    name: \"ubuntu:precise\",\n}, { async: true }));\nconst ubuntuRemoteImage = new docker.RemoteImage(\"ubuntu\", {\n    name: ubuntuRegistryImage.name!,\n    pullTriggers: [ubuntuRegistryImage.sha256Digest],\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nubuntu_registry_image = docker.get_registry_image(name=\"ubuntu:precise\")\nubuntu_remote_image = docker.RemoteImage(\"ubuntuRemoteImage\",\n    name=ubuntu_registry_image.name,\n    pull_triggers=[ubuntu_registry_image.sha256_digest])\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        var ubuntuRegistryImage = Output.Create(Docker.GetRegistryImage.InvokeAsync(new Docker.GetRegistryImageArgs\n        {\n            Name = \"ubuntu:precise\",\n        }));\n        var ubuntuRemoteImage = new Docker.RemoteImage(\"ubuntuRemoteImage\", new Docker.RemoteImageArgs\n        {\n            Name = ubuntuRegistryImage.Apply(ubuntuRegistryImage =\u003e ubuntuRegistryImage.Name),\n            PullTriggers = \n            {\n                ubuntuRegistryImage.Apply(ubuntuRegistryImage =\u003e ubuntuRegistryImage.Sha256Digest),\n            },\n        });\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v2/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v2/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\topt0 := \"ubuntu:precise\"\n\t\tubuntuRegistryImage, err := docker.LookupRegistryImage(ctx, \u0026docker.LookupRegistryImageArgs{\n\t\t\tName: \u0026opt0,\n\t\t}, nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\t_, err = docker.NewRemoteImage(ctx, \"ubuntuRemoteImage\", \u0026docker.RemoteImageArgs{\n\t\t\tName: pulumi.String(ubuntuRegistryImage.Name),\n\t\t\tPullTriggers: pulumi.StringArray{\n\t\t\t\tpulumi.String(ubuntuRegistryImage.Sha256Digest),\n\t\t\t},\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n{{% /example %}}\n{{% /examples %}}",
             "inputs": {
                 "description": "A collection of arguments for invoking getRegistryImage.\n",
                 "properties": {

@@ -44,8 +44,6 @@ namespace Pulumi.Docker
     /// ```sh
     ///  $ pulumi import docker:index/container:Container foo $(docker inspect -f {{.ID}} foo)
     /// ```
-    /// 
-    ///  [linkdoc] https://docs.docker.com/network/links/
     /// </summary>
     public partial class Container : Pulumi.CustomResource
     {
@@ -227,14 +225,14 @@ namespace Pulumi.Docker
         /// Defaults to "json-file".
         /// </summary>
         [Output("logDriver")]
-        public Output<string> LogDriver { get; private set; } = null!;
+        public Output<string?> LogDriver { get; private set; } = null!;
 
         /// <summary>
         /// Key/value pairs to use as options for
         /// the logging driver.
         /// </summary>
         [Output("logOpts")]
-        public Output<ImmutableDictionary<string, object>> LogOpts { get; private set; } = null!;
+        public Output<ImmutableDictionary<string, object>?> LogOpts { get; private set; } = null!;
 
         /// <summary>
         /// Save the container logs (`attach` must be enabled).
@@ -333,6 +331,9 @@ namespace Pulumi.Docker
         [Output("readOnly")]
         public Output<bool?> ReadOnly { get; private set; } = null!;
 
+        [Output("removeVolumes")]
+        public Output<bool?> RemoveVolumes { get; private set; } = null!;
+
         /// <summary>
         /// The restart policy for the container. Must be
         /// one of "no", "on-failure", "always", "unless-stopped".
@@ -387,7 +388,7 @@ namespace Pulumi.Docker
         /// by name.
         /// </summary>
         [Output("user")]
-        public Output<string> User { get; private set; } = null!;
+        public Output<string?> User { get; private set; } = null!;
 
         /// <summary>
         /// Sets the usernamespace mode for the container when usernamespace remapping option is enabled.
@@ -405,7 +406,7 @@ namespace Pulumi.Docker
         /// The working directory for commands to run in
         /// </summary>
         [Output("workingDir")]
-        public Output<string> WorkingDir { get; private set; } = null!;
+        public Output<string?> WorkingDir { get; private set; } = null!;
 
 
         /// <summary>
@@ -796,6 +797,9 @@ namespace Pulumi.Docker
         /// </summary>
         [Input("readOnly")]
         public Input<bool>? ReadOnly { get; set; }
+
+        [Input("removeVolumes")]
+        public Input<bool>? RemoveVolumes { get; set; }
 
         /// <summary>
         /// The restart policy for the container. Must be
@@ -1302,6 +1306,9 @@ namespace Pulumi.Docker
         /// </summary>
         [Input("readOnly")]
         public Input<bool>? ReadOnly { get; set; }
+
+        [Input("removeVolumes")]
+        public Input<bool>? RemoveVolumes { get; set; }
 
         /// <summary>
         /// The restart policy for the container. Must be

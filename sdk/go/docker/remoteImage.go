@@ -14,7 +14,7 @@ import (
 // Pulls a Docker image to a given Docker host from a Docker Registry.
 //
 // This resource will *not* pull new layers of the image automatically unless used in
-// conjunction with [`getRegistryImage`](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
+// conjunction with [`RegistryImage`](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
 // data source to update the `pullTriggers` field.
 //
 // ## Example Usage
@@ -52,7 +52,7 @@ import (
 // func main() {
 // 	pulumi.Run(func(ctx *pulumi.Context) error {
 // 		opt0 := "ubuntu:precise"
-// 		ubuntuRegistryImage, err := docker.GetRegistryImage(ctx, &docker.GetRegistryImageArgs{
+// 		ubuntuRegistryImage, err := docker.LookupRegistryImage(ctx, &docker.LookupRegistryImageArgs{
 // 			Name: &opt0,
 // 		}, nil)
 // 		if err != nil {
@@ -74,20 +74,23 @@ import (
 type RemoteImage struct {
 	pulumi.CustomResourceState
 
+	// See Build below for details.
+	Build RemoteImageBuildPtrOutput `pulumi:"build"`
 	// If true, then the Docker image won't be
 	// deleted on destroy operation. If this is false, it will delete the image from
 	// the docker local storage on destroy operation.
 	KeepLocally pulumi.BoolPtrOutput `pulumi:"keepLocally"`
 	Latest      pulumi.StringOutput  `pulumi:"latest"`
 	// The name of the Docker image, including any tags or SHA256 repo digests.
-	Name pulumi.StringOutput `pulumi:"name"`
+	Name   pulumi.StringOutput `pulumi:"name"`
+	Output pulumi.StringOutput `pulumi:"output"`
 	// **Deprecated**, use `pullTriggers` instead.
 	//
 	// Deprecated: Use field pull_triggers instead
 	PullTrigger pulumi.StringPtrOutput `pulumi:"pullTrigger"`
 	// List of values which cause an
 	// image pull when changed. This is used to store the image digest from the
-	// registry when using the `getRegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
+	// registry when using the `RegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
 	// to trigger an image update.
 	PullTriggers pulumi.StringArrayOutput `pulumi:"pullTriggers"`
 }
@@ -123,39 +126,45 @@ func GetRemoteImage(ctx *pulumi.Context,
 
 // Input properties used for looking up and filtering RemoteImage resources.
 type remoteImageState struct {
+	// See Build below for details.
+	Build *RemoteImageBuild `pulumi:"build"`
 	// If true, then the Docker image won't be
 	// deleted on destroy operation. If this is false, it will delete the image from
 	// the docker local storage on destroy operation.
 	KeepLocally *bool   `pulumi:"keepLocally"`
 	Latest      *string `pulumi:"latest"`
 	// The name of the Docker image, including any tags or SHA256 repo digests.
-	Name *string `pulumi:"name"`
+	Name   *string `pulumi:"name"`
+	Output *string `pulumi:"output"`
 	// **Deprecated**, use `pullTriggers` instead.
 	//
 	// Deprecated: Use field pull_triggers instead
 	PullTrigger *string `pulumi:"pullTrigger"`
 	// List of values which cause an
 	// image pull when changed. This is used to store the image digest from the
-	// registry when using the `getRegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
+	// registry when using the `RegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
 	// to trigger an image update.
 	PullTriggers []string `pulumi:"pullTriggers"`
 }
 
 type RemoteImageState struct {
+	// See Build below for details.
+	Build RemoteImageBuildPtrInput
 	// If true, then the Docker image won't be
 	// deleted on destroy operation. If this is false, it will delete the image from
 	// the docker local storage on destroy operation.
 	KeepLocally pulumi.BoolPtrInput
 	Latest      pulumi.StringPtrInput
 	// The name of the Docker image, including any tags or SHA256 repo digests.
-	Name pulumi.StringPtrInput
+	Name   pulumi.StringPtrInput
+	Output pulumi.StringPtrInput
 	// **Deprecated**, use `pullTriggers` instead.
 	//
 	// Deprecated: Use field pull_triggers instead
 	PullTrigger pulumi.StringPtrInput
 	// List of values which cause an
 	// image pull when changed. This is used to store the image digest from the
-	// registry when using the `getRegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
+	// registry when using the `RegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
 	// to trigger an image update.
 	PullTriggers pulumi.StringArrayInput
 }
@@ -165,6 +174,8 @@ func (RemoteImageState) ElementType() reflect.Type {
 }
 
 type remoteImageArgs struct {
+	// See Build below for details.
+	Build *RemoteImageBuild `pulumi:"build"`
 	// If true, then the Docker image won't be
 	// deleted on destroy operation. If this is false, it will delete the image from
 	// the docker local storage on destroy operation.
@@ -177,13 +188,15 @@ type remoteImageArgs struct {
 	PullTrigger *string `pulumi:"pullTrigger"`
 	// List of values which cause an
 	// image pull when changed. This is used to store the image digest from the
-	// registry when using the `getRegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
+	// registry when using the `RegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
 	// to trigger an image update.
 	PullTriggers []string `pulumi:"pullTriggers"`
 }
 
 // The set of arguments for constructing a RemoteImage resource.
 type RemoteImageArgs struct {
+	// See Build below for details.
+	Build RemoteImageBuildPtrInput
 	// If true, then the Docker image won't be
 	// deleted on destroy operation. If this is false, it will delete the image from
 	// the docker local storage on destroy operation.
@@ -196,7 +209,7 @@ type RemoteImageArgs struct {
 	PullTrigger pulumi.StringPtrInput
 	// List of values which cause an
 	// image pull when changed. This is used to store the image digest from the
-	// registry when using the `getRegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
+	// registry when using the `RegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
 	// to trigger an image update.
 	PullTriggers pulumi.StringArrayInput
 }

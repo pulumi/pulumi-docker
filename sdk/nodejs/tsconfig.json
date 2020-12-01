@@ -23,6 +23,7 @@
         "index.ts",
         "network.ts",
         "provider.ts",
+        "registryImage.ts",
         "remoteImage.ts",
         "secret.ts",
         "service.ts",

@@ -56,6 +56,7 @@ class Container(pulumi.CustomResource):
                  privileged: Optional[pulumi.Input[bool]] = None,
                  publish_all_ports: Optional[pulumi.Input[bool]] = None,
                  read_only: Optional[pulumi.Input[bool]] = None,
+                 remove_volumes: Optional[pulumi.Input[bool]] = None,
                  restart: Optional[pulumi.Input[str]] = None,
                  rm: Optional[pulumi.Input[bool]] = None,
                  shm_size: Optional[pulumi.Input[int]] = None,
@@ -93,8 +94,6 @@ class Container(pulumi.CustomResource):
         ```sh
          $ pulumi import docker:index/container:Container foo $(docker inspect -f {{.ID}} foo)
         ```
-
-         [linkdoc] https://docs.docker.com/network/links/
 
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
@@ -232,6 +231,7 @@ class Container(pulumi.CustomResource):
             __props__['privileged'] = privileged
             __props__['publish_all_ports'] = publish_all_ports
             __props__['read_only'] = read_only
+            __props__['remove_volumes'] = remove_volumes
             __props__['restart'] = restart
             __props__['rm'] = rm
             __props__['shm_size'] = shm_size
@@ -307,6 +307,7 @@ class Container(pulumi.CustomResource):
             privileged: Optional[pulumi.Input[bool]] = None,
             publish_all_ports: Optional[pulumi.Input[bool]] = None,
             read_only: Optional[pulumi.Input[bool]] = None,
+            remove_volumes: Optional[pulumi.Input[bool]] = None,
             restart: Optional[pulumi.Input[str]] = None,
             rm: Optional[pulumi.Input[bool]] = None,
             shm_size: Optional[pulumi.Input[int]] = None,
@@ -453,6 +454,7 @@ class Container(pulumi.CustomResource):
         __props__["privileged"] = privileged
         __props__["publish_all_ports"] = publish_all_ports
         __props__["read_only"] = read_only
+        __props__["remove_volumes"] = remove_volumes
         __props__["restart"] = restart
         __props__["rm"] = rm
         __props__["shm_size"] = shm_size
@@ -543,7 +545,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def dns(self) -> pulumi.Output[Sequence[str]]:
+    def dns(self) -> pulumi.Output[Optional[Sequence[str]]]:
         """
         Set of DNS servers.
         """
@@ -551,7 +553,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="dnsOpts")
-    def dns_opts(self) -> pulumi.Output[Sequence[str]]:
+    def dns_opts(self) -> pulumi.Output[Optional[Sequence[str]]]:
         """
         Set of DNS options used by the DNS provider(s), see `resolv.conf` documentation for valid list of options.
         """
@@ -587,7 +589,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def envs(self) -> pulumi.Output[Optional[Sequence[str]]]:
+    def envs(self) -> pulumi.Output[Sequence[str]]:
         """
         Environment variables to set.
         """
@@ -679,7 +681,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def labels(self) -> pulumi.Output[Optional[Sequence['outputs.ContainerLabel']]]:
+    def labels(self) -> pulumi.Output[Sequence['outputs.ContainerLabel']]:
         """
         Adding labels.
         """
@@ -696,7 +698,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="logDriver")
-    def log_driver(self) -> pulumi.Output[str]:
+    def log_driver(self) -> pulumi.Output[Optional[str]]:
         """
         The logging driver to use for the container.
         Defaults to "json-file".
@@ -705,7 +707,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="logOpts")
-    def log_opts(self) -> pulumi.Output[Mapping[str, Any]]:
+    def log_opts(self) -> pulumi.Output[Optional[Mapping[str, Any]]]:
         """
         Key/value pairs to use as options for
         the logging driver.
@@ -844,6 +846,11 @@ class Container(pulumi.CustomResource):
         return pulumi.get(self, "read_only")
 
     @property
+    @pulumi.getter(name="removeVolumes")
+    def remove_volumes(self) -> pulumi.Output[Optional[bool]]:
+        return pulumi.get(self, "remove_volumes")
+
+    @property
     @pulumi.getter
     def restart(self) -> pulumi.Output[Optional[str]]:
         """
@@ -909,7 +916,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def user(self) -> pulumi.Output[str]:
+    def user(self) -> pulumi.Output[Optional[str]]:
         """
         User used for run the first process. Format is
         `user` or `user:group` which user and group can be passed literraly or
@@ -935,7 +942,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="workingDir")
-    def working_dir(self) -> pulumi.Output[str]:
+    def working_dir(self) -> pulumi.Output[Optional[str]]:
         """
         The working directory for commands to run in
         """

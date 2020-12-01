@@ -10,6 +10,7 @@ from .get_registry_image import *
 from .image import *
 from .network import *
 from .provider import *
+from .registry_image import *
 from .remote_image import *
 from .secret import *
 from .service import *

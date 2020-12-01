@@ -18,6 +18,8 @@ namespace Pulumi.Docker.Outputs
         /// NetworkSettings.
         /// </summary>
         public readonly string? Gateway;
+        public readonly string? GlobalIpv6Address;
+        public readonly int? GlobalIpv6PrefixLength;
         /// <summary>
         /// *Deprecated:* Use `network_data` instead. The IP address of the container's first network it.
         /// </summary>
@@ -27,21 +29,31 @@ namespace Pulumi.Docker.Outputs
         /// NetworkSettings.
         /// </summary>
         public readonly int? IpPrefixLength;
+        public readonly string? Ipv6Gateway;
         public readonly string? NetworkName;
 
         [OutputConstructor]
         private ContainerNetworkData(
             string? gateway,
 
+            string? globalIpv6Address,
+
+            int? globalIpv6PrefixLength,
+
             string? ipAddress,
 
             int? ipPrefixLength,
 
+            string? ipv6Gateway,
+
             string? networkName)
         {
             Gateway = gateway;
+            GlobalIpv6Address = globalIpv6Address;
+            GlobalIpv6PrefixLength = globalIpv6PrefixLength;
             IpAddress = ipAddress;
             IpPrefixLength = ipPrefixLength;
+            Ipv6Gateway = ipv6Gateway;
             NetworkName = networkName;
         }
     }
