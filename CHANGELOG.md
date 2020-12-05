@@ -1,5 +1,7 @@
 ## HEAD (Unreleased)
-_(none)_
+
+* [Add examples for building and publishing Docker container images](/tree/master/examples/container-registries) to
+  private registries on AWS, Azure, GCP, DigitalOcean, and Docker Hub, across C#, JavaScript, Go, Python, and TypeScript.
 
 ---
 
