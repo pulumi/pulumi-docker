@@ -49,8 +49,6 @@ import (
 // ```sh
 //  $ pulumi import docker:index/container:Container foo $(docker inspect -f {{.ID}} foo)
 // ```
-//
-//  [linkdoc] https://docs.docker.com/network/links/
 type Container struct {
 	pulumi.CustomResourceState
 
@@ -129,7 +127,7 @@ type Container struct {
 	Links pulumi.StringArrayOutput `pulumi:"links"`
 	// The logging driver to use for the container.
 	// Defaults to "json-file".
-	LogDriver pulumi.StringOutput `pulumi:"logDriver"`
+	LogDriver pulumi.StringPtrOutput `pulumi:"logDriver"`
 	// Key/value pairs to use as options for
 	// the logging driver.
 	LogOpts pulumi.MapOutput `pulumi:"logOpts"`
@@ -171,7 +169,8 @@ type Container struct {
 	PublishAllPorts pulumi.BoolPtrOutput `pulumi:"publishAllPorts"`
 	// If true, this volume will be readonly.
 	// Defaults to false.
-	ReadOnly pulumi.BoolPtrOutput `pulumi:"readOnly"`
+	ReadOnly      pulumi.BoolPtrOutput `pulumi:"readOnly"`
+	RemoveVolumes pulumi.BoolPtrOutput `pulumi:"removeVolumes"`
 	// The restart policy for the container. Must be
 	// one of "no", "on-failure", "always", "unless-stopped".
 	Restart pulumi.StringPtrOutput `pulumi:"restart"`
@@ -193,13 +192,13 @@ type Container struct {
 	// User used for run the first process. Format is
 	// `user` or `user:group` which user and group can be passed literraly or
 	// by name.
-	User pulumi.StringOutput `pulumi:"user"`
+	User pulumi.StringPtrOutput `pulumi:"user"`
 	// Sets the usernamespace mode for the container when usernamespace remapping option is enabled.
 	UsernsMode pulumi.StringPtrOutput `pulumi:"usernsMode"`
 	// See Volumes below for details.
 	Volumes ContainerVolumeArrayOutput `pulumi:"volumes"`
 	// The working directory for commands to run in
-	WorkingDir pulumi.StringOutput `pulumi:"workingDir"`
+	WorkingDir pulumi.StringPtrOutput `pulumi:"workingDir"`
 }
 
 // NewContainer registers a new resource with the given unique name, arguments, and options.
@@ -350,7 +349,8 @@ type containerState struct {
 	PublishAllPorts *bool `pulumi:"publishAllPorts"`
 	// If true, this volume will be readonly.
 	// Defaults to false.
-	ReadOnly *bool `pulumi:"readOnly"`
+	ReadOnly      *bool `pulumi:"readOnly"`
+	RemoveVolumes *bool `pulumi:"removeVolumes"`
 	// The restart policy for the container. Must be
 	// one of "no", "on-failure", "always", "unless-stopped".
 	Restart *string `pulumi:"restart"`
@@ -499,7 +499,8 @@ type ContainerState struct {
 	PublishAllPorts pulumi.BoolPtrInput
 	// If true, this volume will be readonly.
 	// Defaults to false.
-	ReadOnly pulumi.BoolPtrInput
+	ReadOnly      pulumi.BoolPtrInput
+	RemoveVolumes pulumi.BoolPtrInput
 	// The restart policy for the container. Must be
 	// one of "no", "on-failure", "always", "unless-stopped".
 	Restart pulumi.StringPtrInput
@@ -629,7 +630,8 @@ type containerArgs struct {
 	PublishAllPorts *bool `pulumi:"publishAllPorts"`
 	// If true, this volume will be readonly.
 	// Defaults to false.
-	ReadOnly *bool `pulumi:"readOnly"`
+	ReadOnly      *bool `pulumi:"readOnly"`
+	RemoveVolumes *bool `pulumi:"removeVolumes"`
 	// The restart policy for the container. Must be
 	// one of "no", "on-failure", "always", "unless-stopped".
 	Restart *string `pulumi:"restart"`
@@ -756,7 +758,8 @@ type ContainerArgs struct {
 	PublishAllPorts pulumi.BoolPtrInput
 	// If true, this volume will be readonly.
 	// Defaults to false.
-	ReadOnly pulumi.BoolPtrInput
+	ReadOnly      pulumi.BoolPtrInput
+	RemoveVolumes pulumi.BoolPtrInput
 	// The restart policy for the container. Must be
 	// one of "no", "on-failure", "always", "unless-stopped".
 	Restart pulumi.StringPtrInput

@@ -2,13 +2,14 @@
 // *** Do not edit by hand unless you're certain you know what you are doing! ***
 
 import * as pulumi from "@pulumi/pulumi";
+import { input as inputs, output as outputs } from "./types";
 import * as utilities from "./utilities";
 
 /**
  * Pulls a Docker image to a given Docker host from a Docker Registry.
  *
  * This resource will *not* pull new layers of the image automatically unless used in
- * conjunction with [`docker.getRegistryImage`](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
+ * conjunction with [`docker.RegistryImage`](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
  * data source to update the `pullTriggers` field.
  *
  * ## Example Usage
@@ -66,6 +67,10 @@ export class RemoteImage extends pulumi.CustomResource {
     }
 
     /**
+     * See Build below for details.
+     */
+    public readonly build!: pulumi.Output<outputs.RemoteImageBuild | undefined>;
+    /**
      * If true, then the Docker image won't be
      * deleted on destroy operation. If this is false, it will delete the image from
      * the docker local storage on destroy operation.
@@ -76,6 +81,7 @@ export class RemoteImage extends pulumi.CustomResource {
      * The name of the Docker image, including any tags or SHA256 repo digests.
      */
     public readonly name!: pulumi.Output<string>;
+    public /*out*/ readonly output!: pulumi.Output<string>;
     /**
      * **Deprecated**, use `pullTriggers` instead.
      *
@@ -85,7 +91,7 @@ export class RemoteImage extends pulumi.CustomResource {
     /**
      * List of values which cause an
      * image pull when changed. This is used to store the image digest from the
-     * registry when using the `docker.getRegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
+     * registry when using the `docker.RegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
      * to trigger an image update.
      */
     public readonly pullTriggers!: pulumi.Output<string[] | undefined>;
@@ -102,9 +108,11 @@ export class RemoteImage extends pulumi.CustomResource {
         let inputs: pulumi.Inputs = {};
         if (opts && opts.id) {
             const state = argsOrState as RemoteImageState | undefined;
+            inputs["build"] = state ? state.build : undefined;
             inputs["keepLocally"] = state ? state.keepLocally : undefined;
             inputs["latest"] = state ? state.latest : undefined;
             inputs["name"] = state ? state.name : undefined;
+            inputs["output"] = state ? state.output : undefined;
             inputs["pullTrigger"] = state ? state.pullTrigger : undefined;
             inputs["pullTriggers"] = state ? state.pullTriggers : undefined;
         } else {
@@ -112,11 +120,13 @@ export class RemoteImage extends pulumi.CustomResource {
             if (!args || args.name === undefined) {
                 throw new Error("Missing required property 'name'");
             }
+            inputs["build"] = args ? args.build : undefined;
             inputs["keepLocally"] = args ? args.keepLocally : undefined;
             inputs["name"] = args ? args.name : undefined;
             inputs["pullTrigger"] = args ? args.pullTrigger : undefined;
             inputs["pullTriggers"] = args ? args.pullTriggers : undefined;
             inputs["latest"] = undefined /*out*/;
+            inputs["output"] = undefined /*out*/;
         }
         if (!opts) {
             opts = {}
@@ -134,6 +144,10 @@ export class RemoteImage extends pulumi.CustomResource {
  */
 export interface RemoteImageState {
     /**
+     * See Build below for details.
+     */
+    readonly build?: pulumi.Input<inputs.RemoteImageBuild>;
+    /**
      * If true, then the Docker image won't be
      * deleted on destroy operation. If this is false, it will delete the image from
      * the docker local storage on destroy operation.
@@ -144,6 +158,7 @@ export interface RemoteImageState {
      * The name of the Docker image, including any tags or SHA256 repo digests.
      */
     readonly name?: pulumi.Input<string>;
+    readonly output?: pulumi.Input<string>;
     /**
      * **Deprecated**, use `pullTriggers` instead.
      *
@@ -153,7 +168,7 @@ export interface RemoteImageState {
     /**
      * List of values which cause an
      * image pull when changed. This is used to store the image digest from the
-     * registry when using the `docker.getRegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
+     * registry when using the `docker.RegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
      * to trigger an image update.
      */
     readonly pullTriggers?: pulumi.Input<pulumi.Input<string>[]>;
@@ -163,6 +178,10 @@ export interface RemoteImageState {
  * The set of arguments for constructing a RemoteImage resource.
  */
 export interface RemoteImageArgs {
+    /**
+     * See Build below for details.
+     */
+    readonly build?: pulumi.Input<inputs.RemoteImageBuild>;
     /**
      * If true, then the Docker image won't be
      * deleted on destroy operation. If this is false, it will delete the image from
@@ -182,7 +201,7 @@ export interface RemoteImageArgs {
     /**
      * List of values which cause an
      * image pull when changed. This is used to store the image digest from the
-     * registry when using the `docker.getRegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
+     * registry when using the `docker.RegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
      * to trigger an image update.
      */
     readonly pullTriggers?: pulumi.Input<pulumi.Input<string>[]>;

@@ -31,8 +31,6 @@ import * as utilities from "./utilities";
  * ```sh
  *  $ pulumi import docker:index/container:Container foo $(docker inspect -f {{.ID}} foo)
  * ```
- *
- *  [linkdoc] https://docs.docker.com/network/links/
  */
 export class Container extends pulumi.CustomResource {
     /**
@@ -103,11 +101,11 @@ export class Container extends pulumi.CustomResource {
     /**
      * Set of DNS servers.
      */
-    public readonly dns!: pulumi.Output<string[]>;
+    public readonly dns!: pulumi.Output<string[] | undefined>;
     /**
      * Set of DNS options used by the DNS provider(s), see `resolv.conf` documentation for valid list of options.
      */
-    public readonly dnsOpts!: pulumi.Output<string[]>;
+    public readonly dnsOpts!: pulumi.Output<string[] | undefined>;
     /**
      * Set of DNS search domains that are used when bare unqualified hostnames are used inside of the container.
      */
@@ -127,7 +125,7 @@ export class Container extends pulumi.CustomResource {
     /**
      * Environment variables to set.
      */
-    public readonly envs!: pulumi.Output<string[] | undefined>;
+    public readonly envs!: pulumi.Output<string[]>;
     /**
      * The exit code of the container if its execution is done (`mustRun` must be disabled).
      */
@@ -181,7 +179,7 @@ export class Container extends pulumi.CustomResource {
     /**
      * Adding labels.
      */
-    public readonly labels!: pulumi.Output<outputs.ContainerLabel[] | undefined>;
+    public readonly labels!: pulumi.Output<outputs.ContainerLabel[]>;
     /**
      * Set of links for link based
      * connectivity between containers that are running on the same host.
@@ -193,12 +191,12 @@ export class Container extends pulumi.CustomResource {
      * The logging driver to use for the container.
      * Defaults to "json-file".
      */
-    public readonly logDriver!: pulumi.Output<string>;
+    public readonly logDriver!: pulumi.Output<string | undefined>;
     /**
      * Key/value pairs to use as options for
      * the logging driver.
      */
-    public readonly logOpts!: pulumi.Output<{[key: string]: any}>;
+    public readonly logOpts!: pulumi.Output<{[key: string]: any} | undefined>;
     /**
      * Save the container logs (`attach` must be enabled).
      */
@@ -266,6 +264,7 @@ export class Container extends pulumi.CustomResource {
      * Defaults to false.
      */
     public readonly readOnly!: pulumi.Output<boolean | undefined>;
+    public readonly removeVolumes!: pulumi.Output<boolean | undefined>;
     /**
      * The restart policy for the container. Must be
      * one of "no", "on-failure", "always", "unless-stopped".
@@ -303,7 +302,7 @@ export class Container extends pulumi.CustomResource {
      * `user` or `user:group` which user and group can be passed literraly or
      * by name.
      */
-    public readonly user!: pulumi.Output<string>;
+    public readonly user!: pulumi.Output<string | undefined>;
     /**
      * Sets the usernamespace mode for the container when usernamespace remapping option is enabled.
      */
@@ -315,7 +314,7 @@ export class Container extends pulumi.CustomResource {
     /**
      * The working directory for commands to run in
      */
-    public readonly workingDir!: pulumi.Output<string>;
+    public readonly workingDir!: pulumi.Output<string | undefined>;
 
     /**
      * Create a Container resource with the given unique name, arguments, and options.
@@ -375,6 +374,7 @@ export class Container extends pulumi.CustomResource {
             inputs["privileged"] = state ? state.privileged : undefined;
             inputs["publishAllPorts"] = state ? state.publishAllPorts : undefined;
             inputs["readOnly"] = state ? state.readOnly : undefined;
+            inputs["removeVolumes"] = state ? state.removeVolumes : undefined;
             inputs["restart"] = state ? state.restart : undefined;
             inputs["rm"] = state ? state.rm : undefined;
             inputs["shmSize"] = state ? state.shmSize : undefined;
@@ -431,6 +431,7 @@ export class Container extends pulumi.CustomResource {
             inputs["privileged"] = args ? args.privileged : undefined;
             inputs["publishAllPorts"] = args ? args.publishAllPorts : undefined;
             inputs["readOnly"] = args ? args.readOnly : undefined;
+            inputs["removeVolumes"] = args ? args.removeVolumes : undefined;
             inputs["restart"] = args ? args.restart : undefined;
             inputs["rm"] = args ? args.rm : undefined;
             inputs["shmSize"] = args ? args.shmSize : undefined;
@@ -670,6 +671,7 @@ export interface ContainerState {
      * Defaults to false.
      */
     readonly readOnly?: pulumi.Input<boolean>;
+    readonly removeVolumes?: pulumi.Input<boolean>;
     /**
      * The restart policy for the container. Must be
      * one of "no", "on-failure", "always", "unless-stopped".
@@ -893,6 +895,7 @@ export interface ContainerArgs {
      * Defaults to false.
      */
     readonly readOnly?: pulumi.Input<boolean>;
+    readonly removeVolumes?: pulumi.Input<boolean>;
     /**
      * The restart policy for the container. Must be
      * one of "no", "on-failure", "always", "unless-stopped".

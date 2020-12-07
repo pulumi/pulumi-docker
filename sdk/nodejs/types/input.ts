@@ -163,6 +163,8 @@ export interface ContainerNetworkData {
      * NetworkSettings.
      */
     gateway?: pulumi.Input<string>;
+    globalIpv6Address?: pulumi.Input<string>;
+    globalIpv6PrefixLength?: pulumi.Input<number>;
     /**
      * *Deprecated:* Use `networkData` instead. The IP address of the container's first network it.
      */
@@ -172,6 +174,7 @@ export interface ContainerNetworkData {
      * NetworkSettings.
      */
     ipPrefixLength?: pulumi.Input<number>;
+    ipv6Gateway?: pulumi.Input<string>;
     networkName?: pulumi.Input<string>;
 }
 
@@ -298,6 +301,202 @@ export interface ProviderRegistryAuth {
     configFileContent?: pulumi.Input<string>;
     password?: pulumi.Input<string>;
     username?: pulumi.Input<string>;
+}
+
+export interface RegistryImageBuild {
+    /**
+     * - See AuthConfig below for details
+     */
+    authConfigs?: pulumi.Input<pulumi.Input<inputs.RegistryImageBuildAuthConfig>[]>;
+    /**
+     * string pairs for build-time variables
+     */
+    buildArgs?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    /**
+     * - BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request
+     */
+    buildId?: pulumi.Input<string>;
+    /**
+     * - Images to consider as cache sources
+     */
+    cacheFroms?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * - Optional parent cgroup for the container
+     */
+    cgroupParent?: pulumi.Input<string>;
+    /**
+     * - The path to the context folder
+     */
+    context: pulumi.Input<string>;
+    /**
+     * - The length of a CPU period in microseconds
+     */
+    cpuPeriod?: pulumi.Input<number>;
+    /**
+     * - Microseconds of CPU time that the container can get in a CPU period
+     */
+    cpuQuota?: pulumi.Input<number>;
+    /**
+     * - CPUs in which to allow execution (e.g., 0-3, 0,1)
+     */
+    cpuSetCpus?: pulumi.Input<string>;
+    /**
+     * - MEMs in which to allow execution (0-3, 0,1)
+     */
+    cpuSetMems?: pulumi.Input<string>;
+    /**
+     * - CPU shares (relative weight)
+     */
+    cpuShares?: pulumi.Input<number>;
+    /**
+     * - Dockerfile file. Default is "Dockerfile"
+     */
+    dockerfile?: pulumi.Input<string>;
+    /**
+     * - A list of hostnames/IP mappings to add to the container’s /etc/hosts file. Specified in the form ["hostname:IP"]
+     */
+    extraHosts?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * - Always remove intermediate containers
+     */
+    forceRemove?: pulumi.Input<boolean>;
+    /**
+     * - Isolation represents the isolation technology of a container. The supported values are platform specific
+     */
+    isolation?: pulumi.Input<string>;
+    /**
+     * string pairs for labels
+     */
+    labels?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    /**
+     * - Set memory limit for build
+     */
+    memory?: pulumi.Input<number>;
+    /**
+     * - Total memory (memory + swap), -1 to enable unlimited swap
+     */
+    memorySwap?: pulumi.Input<number>;
+    /**
+     * - Set the networking mode for the RUN instructions during build
+     */
+    networkMode?: pulumi.Input<string>;
+    /**
+     * - Do not use the cache when building the image
+     */
+    noCache?: pulumi.Input<boolean>;
+    /**
+     * - Set platform if server is multi-platform capable
+     */
+    platform?: pulumi.Input<string>;
+    /**
+     * - Attempt to pull the image even if an older image exists locally
+     */
+    pullParent?: pulumi.Input<boolean>;
+    /**
+     * - A Git repository URI or HTTP/HTTPS context URI
+     */
+    remoteContext?: pulumi.Input<string>;
+    /**
+     * - Remove intermediate containers after a successful build (default behavior)
+     */
+    remove?: pulumi.Input<boolean>;
+    /**
+     * - Security options
+     */
+    securityOpts?: pulumi.Input<pulumi.Input<string>[]>;
+    sessionId?: pulumi.Input<string>;
+    /**
+     * - Size of /dev/shm in bytes. The size must be greater than 0
+     */
+    shmSize?: pulumi.Input<number>;
+    /**
+     * - squash the new layers into a new image with a single new layer
+     */
+    squash?: pulumi.Input<boolean>;
+    /**
+     * - Suppress the build output and print image ID on success
+     */
+    suppressOutput?: pulumi.Input<boolean>;
+    /**
+     * - Set the target build stage to build
+     */
+    target?: pulumi.Input<string>;
+    /**
+     * - See Ulimit below for details
+     */
+    ulimits?: pulumi.Input<pulumi.Input<inputs.RegistryImageBuildUlimit>[]>;
+    /**
+     * - Version of the unerlying builder to use
+     */
+    version?: pulumi.Input<string>;
+}
+
+export interface RegistryImageBuildAuthConfig {
+    /**
+     * the auth token
+     */
+    auth?: pulumi.Input<string>;
+    /**
+     * the user emal
+     */
+    email?: pulumi.Input<string>;
+    /**
+     * hostname of the registry
+     */
+    hostName: pulumi.Input<string>;
+    /**
+     * the identity token
+     */
+    identityToken?: pulumi.Input<string>;
+    /**
+     * the registry password
+     */
+    password?: pulumi.Input<string>;
+    /**
+     * the registry token
+     */
+    registryToken?: pulumi.Input<string>;
+    /**
+     * the server address
+     */
+    serverAddress?: pulumi.Input<string>;
+    /**
+     * the registry user name
+     */
+    userName?: pulumi.Input<string>;
+}
+
+export interface RegistryImageBuildUlimit {
+    /**
+     * - hard limit
+     */
+    hard: pulumi.Input<number>;
+    /**
+     * type of ulimit, e.g. nofile
+     */
+    name: pulumi.Input<string>;
+    /**
+     * - soft limit
+     */
+    soft: pulumi.Input<number>;
+}
+
+export interface RemoteImageBuild {
+    buildArg?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    /**
+     * default Dockerfile
+     */
+    dockerfile?: pulumi.Input<string>;
+    forceRemove?: pulumi.Input<boolean>;
+    label?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    noCache?: pulumi.Input<boolean>;
+    path: pulumi.Input<string>;
+    /**
+     * default true
+     */
+    remove?: pulumi.Input<boolean>;
+    tags?: pulumi.Input<pulumi.Input<string>[]>;
+    target?: pulumi.Input<string>;
 }
 
 export interface SecretLabel {

@@ -163,6 +163,8 @@ export interface ContainerNetworkData {
      * NetworkSettings.
      */
     gateway: string;
+    globalIpv6Address: string;
+    globalIpv6PrefixLength: number;
     /**
      * *Deprecated:* Use `networkData` instead. The IP address of the container's first network it.
      */
@@ -172,6 +174,7 @@ export interface ContainerNetworkData {
      * NetworkSettings.
      */
     ipPrefixLength: number;
+    ipv6Gateway: string;
     networkName: string;
 }
 
@@ -305,6 +308,202 @@ export interface ProviderRegistryAuth {
     configFileContent?: string;
     password?: string;
     username?: string;
+}
+
+export interface RegistryImageBuild {
+    /**
+     * - See AuthConfig below for details
+     */
+    authConfigs?: outputs.RegistryImageBuildAuthConfig[];
+    /**
+     * string pairs for build-time variables
+     */
+    buildArgs?: {[key: string]: string};
+    /**
+     * - BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request
+     */
+    buildId?: string;
+    /**
+     * - Images to consider as cache sources
+     */
+    cacheFroms?: string[];
+    /**
+     * - Optional parent cgroup for the container
+     */
+    cgroupParent?: string;
+    /**
+     * - The path to the context folder
+     */
+    context: string;
+    /**
+     * - The length of a CPU period in microseconds
+     */
+    cpuPeriod?: number;
+    /**
+     * - Microseconds of CPU time that the container can get in a CPU period
+     */
+    cpuQuota?: number;
+    /**
+     * - CPUs in which to allow execution (e.g., 0-3, 0,1)
+     */
+    cpuSetCpus?: string;
+    /**
+     * - MEMs in which to allow execution (0-3, 0,1)
+     */
+    cpuSetMems?: string;
+    /**
+     * - CPU shares (relative weight)
+     */
+    cpuShares?: number;
+    /**
+     * - Dockerfile file. Default is "Dockerfile"
+     */
+    dockerfile?: string;
+    /**
+     * - A list of hostnames/IP mappings to add to the container’s /etc/hosts file. Specified in the form ["hostname:IP"]
+     */
+    extraHosts?: string[];
+    /**
+     * - Always remove intermediate containers
+     */
+    forceRemove?: boolean;
+    /**
+     * - Isolation represents the isolation technology of a container. The supported values are platform specific
+     */
+    isolation?: string;
+    /**
+     * string pairs for labels
+     */
+    labels?: {[key: string]: string};
+    /**
+     * - Set memory limit for build
+     */
+    memory?: number;
+    /**
+     * - Total memory (memory + swap), -1 to enable unlimited swap
+     */
+    memorySwap?: number;
+    /**
+     * - Set the networking mode for the RUN instructions during build
+     */
+    networkMode?: string;
+    /**
+     * - Do not use the cache when building the image
+     */
+    noCache?: boolean;
+    /**
+     * - Set platform if server is multi-platform capable
+     */
+    platform?: string;
+    /**
+     * - Attempt to pull the image even if an older image exists locally
+     */
+    pullParent?: boolean;
+    /**
+     * - A Git repository URI or HTTP/HTTPS context URI
+     */
+    remoteContext?: string;
+    /**
+     * - Remove intermediate containers after a successful build (default behavior)
+     */
+    remove?: boolean;
+    /**
+     * - Security options
+     */
+    securityOpts?: string[];
+    sessionId?: string;
+    /**
+     * - Size of /dev/shm in bytes. The size must be greater than 0
+     */
+    shmSize?: number;
+    /**
+     * - squash the new layers into a new image with a single new layer
+     */
+    squash?: boolean;
+    /**
+     * - Suppress the build output and print image ID on success
+     */
+    suppressOutput?: boolean;
+    /**
+     * - Set the target build stage to build
+     */
+    target?: string;
+    /**
+     * - See Ulimit below for details
+     */
+    ulimits?: outputs.RegistryImageBuildUlimit[];
+    /**
+     * - Version of the unerlying builder to use
+     */
+    version?: string;
+}
+
+export interface RegistryImageBuildAuthConfig {
+    /**
+     * the auth token
+     */
+    auth?: string;
+    /**
+     * the user emal
+     */
+    email?: string;
+    /**
+     * hostname of the registry
+     */
+    hostName: string;
+    /**
+     * the identity token
+     */
+    identityToken?: string;
+    /**
+     * the registry password
+     */
+    password?: string;
+    /**
+     * the registry token
+     */
+    registryToken?: string;
+    /**
+     * the server address
+     */
+    serverAddress?: string;
+    /**
+     * the registry user name
+     */
+    userName?: string;
+}
+
+export interface RegistryImageBuildUlimit {
+    /**
+     * - hard limit
+     */
+    hard: number;
+    /**
+     * type of ulimit, e.g. nofile
+     */
+    name: string;
+    /**
+     * - soft limit
+     */
+    soft: number;
+}
+
+export interface RemoteImageBuild {
+    buildArg?: {[key: string]: string};
+    /**
+     * default Dockerfile
+     */
+    dockerfile?: string;
+    forceRemove?: boolean;
+    label?: {[key: string]: string};
+    noCache?: boolean;
+    path: string;
+    /**
+     * default true
+     */
+    remove?: boolean;
+    tags?: string[];
+    target?: string;
 }
 
 export interface SecretLabel {

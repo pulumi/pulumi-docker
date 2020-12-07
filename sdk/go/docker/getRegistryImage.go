@@ -24,7 +24,7 @@ import (
 // func main() {
 // 	pulumi.Run(func(ctx *pulumi.Context) error {
 // 		opt0 := "ubuntu:precise"
-// 		ubuntuRegistryImage, err := docker.GetRegistryImage(ctx, &docker.GetRegistryImageArgs{
+// 		ubuntuRegistryImage, err := docker.LookupRegistryImage(ctx, &docker.LookupRegistryImageArgs{
 // 			Name: &opt0,
 // 		}, nil)
 // 		if err != nil {
@@ -43,8 +43,8 @@ import (
 // 	})
 // }
 // ```
-func GetRegistryImage(ctx *pulumi.Context, args *GetRegistryImageArgs, opts ...pulumi.InvokeOption) (*GetRegistryImageResult, error) {
-	var rv GetRegistryImageResult
+func LookupRegistryImage(ctx *pulumi.Context, args *LookupRegistryImageArgs, opts ...pulumi.InvokeOption) (*LookupRegistryImageResult, error) {
+	var rv LookupRegistryImageResult
 	err := ctx.Invoke("docker:index/getRegistryImage:getRegistryImage", args, &rv, opts...)
 	if err != nil {
 		return nil, err
@@ -53,13 +53,13 @@ func GetRegistryImage(ctx *pulumi.Context, args *GetRegistryImageArgs, opts ...p
 }
 
 // A collection of arguments for invoking getRegistryImage.
-type GetRegistryImageArgs struct {
+type LookupRegistryImageArgs struct {
 	// The name of the Docker image, including any tags. e.g. `alpine:latest`
 	Name *string `pulumi:"name"`
 }
 
 // A collection of values returned by getRegistryImage.
-type GetRegistryImageResult struct {
+type LookupRegistryImageResult struct {
 	// The provider-assigned unique ID for this managed resource.
 	Id           string  `pulumi:"id"`
 	Name         *string `pulumi:"name"`
