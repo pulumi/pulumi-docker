@@ -1,0 +1,3 @@
+name: cbp-azure-js
+runtime: nodejs
+description: An example of building/publishing a Docker container image to Azure ACR

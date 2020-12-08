@@ -1,0 +1,3 @@
+name: cbp-k8s-csharp
+runtime: dotnet
+description: A minimal AWS C# Pulumi program

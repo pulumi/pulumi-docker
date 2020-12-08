@@ -1,0 +1,6 @@
+name: cbp-gcp-py
+runtime:
+    name: python
+    options:
+        virtualenv: venv
+description: An example of building/publishing a Docker container image to Google Cloud GCR

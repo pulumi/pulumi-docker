@@ -1,0 +1,12 @@
+{
+    "name": "cbp-gcp-k8s-js",
+    "devDependencies": {
+        "@types/node": "^8.0.0"
+    },
+    "dependencies": {
+        "@pulumi/docker": "^2.2.0",
+        "@pulumi/gcp": "^2.0.0",
+        "@pulumi/kubernetes": "^2.7.2",
+        "@pulumi/pulumi": "^2.0.0"
+    }
+}
