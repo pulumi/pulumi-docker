@@ -54,3 +54,27 @@ func TestDockerfileGo(t *testing.T) {
 	})
 	integration.ProgramTest(t, &opts)
 }
+
+func TestAwsContainerRegistryGo(t *testing.T) {
+	region := os.Getenv("AWS_REGION")
+	if region == "" {
+		t.Skipf("Skipping test due to missing AWS_REGION environment variable")
+	}
+	fmt.Printf("AWS Region: %v\n", region)
+
+	cwd, err := os.Getwd()
+	if !assert.NoError(t, err) {
+		t.FailNow()
+	}
+
+	opts := base.With(integration.ProgramTestOptions{
+		Config: map[string]string{
+			"aws:region": region,
+		},
+		Dependencies: []string{
+			"github.com/pulumi/pulumi-docker/sdk/v2",
+		},
+		Dir: path.Join(cwd, "container-registries", "aws", "go"),
+	})
+	integration.ProgramTest(t, &opts)
+}
