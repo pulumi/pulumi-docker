@@ -102,3 +102,18 @@ func TestAzureContainerRegistryGo(t *testing.T) {
 	})
 	integration.ProgramTest(t, &opts)
 }
+
+func TestDigitalOceanContainerRegistryGo(t *testing.T) {
+	cwd, err := os.Getwd()
+	if !assert.NoError(t, err) {
+		t.FailNow()
+	}
+
+	opts := base.With(integration.ProgramTestOptions{
+		Dependencies: []string{
+			"github.com/pulumi/pulumi-docker/sdk/v2",
+		},
+		Dir: path.Join(cwd, "container-registries", "digitalocean", "go"),
+	})
+	integration.ProgramTest(t, &opts)
+}

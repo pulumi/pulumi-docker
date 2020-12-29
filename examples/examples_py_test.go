@@ -149,3 +149,18 @@ func TestAzureContainerRegistryPy(t *testing.T) {
 	})
 	integration.ProgramTest(t, &opts)
 }
+
+func TestDigitalOceanContainerRegistryPy(t *testing.T) {
+	cwd, err := os.Getwd()
+	if !assert.NoError(t, err) {
+		t.FailNow()
+	}
+
+	opts := base.With(integration.ProgramTestOptions{
+		Dependencies: []string{
+			path.Join("..", "sdk", "python", "bin"),
+		},
+		Dir: path.Join(cwd, "container-registries", "digitalocean", "py"),
+	})
+	integration.ProgramTest(t, &opts)
+}

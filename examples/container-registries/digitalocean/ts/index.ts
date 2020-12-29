@@ -2,19 +2,19 @@ import * as digitalocean from "@pulumi/digitalocean";
 import * as docker from "@pulumi/docker";
 import * as pulumi from "@pulumi/pulumi";
 
-// Create a private DigitalOcean Container Registry.
-const registry = new digitalocean.ContainerRegistry("my-reg", {
-    subscriptionTierSlug: "starter",
-});
+// Get the Container Registry
+const registry = digitalocean.getContainerRegistry({
+    name: "development-pulumi-provider"
+})
 
 // Get registry info (creds and endpoint) so we can build/publish to it.
-const imageName = registry.endpoint.apply(s => `${s}/myapp`);
+const imageName = pulumi.interpolate`${registry.then( x => x.endpoint)}/myapp`
 const creds = new digitalocean.ContainerRegistryDockerCredentials("my-reg-creds", {
-    registryName: registry.name,
+    registryName: registry.then(x => x.name),
     write: true,
 });
 const registryInfo = pulumi.all(
-    [creds.dockerCredentials, registry.serverUrl]
+    [creds.dockerCredentials, registry.then( x => x.serverUrl)]
 ).apply(([authJson, serverUrl]) => {
     // We are given a Docker creds file; parse it to find the temp username/password.
     const auths = JSON.parse(authJson);

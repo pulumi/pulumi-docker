@@ -102,3 +102,18 @@ func TestAzureContainerRegistryCsharp(t *testing.T) {
 	})
 	integration.ProgramTest(t, &opts)
 }
+
+func TestDigitalOceanContainerRegistryCsharp(t *testing.T) {
+	cwd, err := os.Getwd()
+	if !assert.NoError(t, err) {
+		t.FailNow()
+	}
+
+	opts := base.With(integration.ProgramTestOptions{
+		Dependencies: []string{
+			"Pulumi.Docker",
+		},
+		Dir: path.Join(cwd, "container-registries", "digitalocean", "csharp"),
+	})
+	integration.ProgramTest(t, &opts)
+}

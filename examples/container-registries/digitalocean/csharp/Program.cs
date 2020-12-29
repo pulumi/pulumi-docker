@@ -10,30 +10,35 @@ using Pulumi.Docker;
 class Program
 {
     static Task<int> Main() => Deployment.RunAsync(async () => {
-        // Create a private DigitalOcean Container Registry.
-        var registry = new ContainerRegistry("my-reg", new ContainerRegistryArgs
+        // Lookup the DigitalOcean Container Registry.
+        var registry = Output.Create(GetContainerRegistry.InvokeAsync(new GetContainerRegistryArgs()
         {
-            SubscriptionTierSlug = "starter"
-        });
+            Name = "development-pulumi-provider"
+        }));
+        var endpoint = registry.Apply(x => x.Endpoint);
+        var serverUrl = registry.Apply(x => x.ServerUrl);
+        var registryName = registry.Apply(x => x.Name);
 
         // Get registry info (creds and endpoint).
-        var imageName = Output.Format($"{registry.Endpoint}/myapp");
+        var imageName = Output.Format($"{endpoint}/myapp");
         var registryCreds = new ContainerRegistryDockerCredentials("my-reg-creds",
             new ContainerRegistryDockerCredentialsArgs
             {
-                RegistryName = registry.Name,
+                RegistryName = registryName,
                 Write = true,
             });
         var registryInfo = Output.All(
-            registryCreds.DockerCredentials, registry.ServerUrl).
+            registryCreds.DockerCredentials, serverUrl).
             Apply(args =>
             {
                 var authJson = args[0];
                 var serverUrl = args[1];
                 dynamic auths = JsonConvert.DeserializeObject(authJson);
-                var authToken = auths["auths"][serverUrl]["auth"];
-                var decoded = ASCIIEncoding.ASCII.GetString(authToken);
-
+                var authToken = auths["auths"][serverUrl]["auth"].ToString();
+                
+                var decodedBytes = Convert.FromBase64String(authToken);
+                var decoded = Encoding.UTF8.GetString(decodedBytes);
+                
                 var parts = decoded.Split(':');
                 if (parts.Length != 2)
                 {
@@ -43,8 +48,8 @@ class Program
                 return new ImageRegistry
                 {
                     Server = serverUrl,
-                    Username = parts[0],
-                    Password = parts[1],
+                    Password = parts[0],
+                    Username = parts[1],
                 };
             });
 

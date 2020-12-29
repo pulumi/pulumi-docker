@@ -18,6 +18,7 @@ env:
   SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
   TRAVIS_OS_NAME: linux
   PULUMI_GO_DEP_ROOT: /home/runner/work/pulumi-docker
+  DIGITALOCEAN_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
 jobs:
   build_sdk:
     name: build_sdk

@@ -4,13 +4,11 @@ import pulumi
 import pulumi_digitalocean as digitalocean
 import pulumi_docker as docker
 
-# Create a private DigitalOcean Container Registry.
-registry = digitalocean.ContainerRegistry('my-reg',
-    subscription_tier_slug='starter',
-)
+# Get the Container Registry
+registry = digitalocean.get_container_registry(name = "development-pulumi-provider")
 
 # Get registry info (creds and endpoint).
-image_name = registry.endpoint.apply(lambda s: f'{s}/myapp')
+image_name = "%s/myapp" % registry.endpoint
 registry_creds = digitalocean.ContainerRegistryDockerCredentials('my-reg-creds',
     registry_name=registry.name,
     write=True,
