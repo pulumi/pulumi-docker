@@ -79,3 +79,26 @@ func TestAwsContainerRegistryCSharp(t *testing.T) {
 	})
 	integration.ProgramTest(t, &opts)
 }
+
+func TestAzureContainerRegistryCsharp(t *testing.T) {
+	location := os.Getenv("AZURE_LOCATION")
+	if location == "" {
+		t.Skipf("Skipping test due to missing AZURE_LOCATION environment variable")
+	}
+	cwd, err := os.Getwd()
+	if !assert.NoError(t, err) {
+		t.FailNow()
+	}
+
+	opts := base.With(integration.ProgramTestOptions{
+		Config: map[string]string{
+			"azure:environment": "public",
+			"azure:location":    location,
+		},
+		Dependencies: []string{
+			"Pulumi.Docker",
+		},
+		Dir: path.Join(cwd, "container-registries", "azure", "csharp"),
+	})
+	integration.ProgramTest(t, &opts)
+}

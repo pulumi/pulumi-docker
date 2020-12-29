@@ -126,3 +126,26 @@ func TestAwsContainerRegistryPy(t *testing.T) {
 	})
 	integration.ProgramTest(t, &opts)
 }
+
+func TestAzureContainerRegistryPy(t *testing.T) {
+	location := os.Getenv("AZURE_LOCATION")
+	if location == "" {
+		t.Skipf("Skipping test due to missing AZURE_LOCATION environment variable")
+	}
+	cwd, err := os.Getwd()
+	if !assert.NoError(t, err) {
+		t.FailNow()
+	}
+
+	opts := base.With(integration.ProgramTestOptions{
+		Config: map[string]string{
+			"azure:environment": "public",
+			"azure:location":    location,
+		},
+		Dependencies: []string{
+			path.Join("..", "sdk", "python", "bin"),
+		},
+		Dir: path.Join(cwd, "container-registries", "azure", "py"),
+	})
+	integration.ProgramTest(t, &opts)
+}

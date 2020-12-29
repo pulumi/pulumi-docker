@@ -79,3 +79,26 @@ func TestAwsContainerRegistryGo(t *testing.T) {
 	})
 	integration.ProgramTest(t, &opts)
 }
+
+func TestAzureContainerRegistryGo(t *testing.T) {
+	location := os.Getenv("AZURE_LOCATION")
+	if location == "" {
+		t.Skipf("Skipping test due to missing AZURE_LOCATION environment variable")
+	}
+	cwd, err := os.Getwd()
+	if !assert.NoError(t, err) {
+		t.FailNow()
+	}
+
+	opts := base.With(integration.ProgramTestOptions{
+		Config: map[string]string{
+			"azure:environment": "public",
+			"azure:location":    location,
+		},
+		Dependencies: []string{
+			"github.com/pulumi/pulumi-docker/sdk/v2",
+		},
+		Dir: path.Join(cwd, "container-registries", "azure", "go"),
+	})
+	integration.ProgramTest(t, &opts)
+}

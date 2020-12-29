@@ -127,3 +127,49 @@ func TestAwsContainerRegistryJs(t *testing.T) {
 	})
 	integration.ProgramTest(t, &opts)
 }
+
+func TestAzureContainerRegistryTs(t *testing.T) {
+	location := os.Getenv("AZURE_LOCATION")
+	if location == "" {
+		t.Skipf("Skipping test due to missing AZURE_LOCATION environment variable")
+	}
+	cwd, err := os.Getwd()
+	if !assert.NoError(t, err) {
+		t.FailNow()
+	}
+
+	opts := base.With(integration.ProgramTestOptions{
+		Config: map[string]string{
+			"azure:environment": "public",
+			"azure:location":    location,
+		},
+		Dependencies: []string{
+			"@pulumi/docker",
+		},
+		Dir: path.Join(cwd, "container-registries", "azure", "ts"),
+	})
+	integration.ProgramTest(t, &opts)
+}
+
+func TestAzureContainerRegistryJs(t *testing.T) {
+	location := os.Getenv("AZURE_LOCATION")
+	if location == "" {
+		t.Skipf("Skipping test due to missing AZURE_LOCATION environment variable")
+	}
+	cwd, err := os.Getwd()
+	if !assert.NoError(t, err) {
+		t.FailNow()
+	}
+
+	opts := base.With(integration.ProgramTestOptions{
+		Config: map[string]string{
+			"azure:environment": "public",
+			"azure:location":    location,
+		},
+		Dependencies: []string{
+			"@pulumi/docker",
+		},
+		Dir: path.Join(cwd, "container-registries", "azure", "js"),
+	})
+	integration.ProgramTest(t, &opts)
+}
