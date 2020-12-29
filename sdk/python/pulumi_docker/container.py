@@ -35,6 +35,7 @@ class Container(pulumi.CustomResource):
                  hostname: Optional[pulumi.Input[str]] = None,
                  hosts: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerHostArgs']]]]] = None,
                  image: Optional[pulumi.Input[str]] = None,
+                 init: Optional[pulumi.Input[bool]] = None,
                  ipc_mode: Optional[pulumi.Input[str]] = None,
                  labels: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerLabelArgs']]]]] = None,
                  links: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
@@ -59,6 +60,7 @@ class Container(pulumi.CustomResource):
                  remove_volumes: Optional[pulumi.Input[bool]] = None,
                  restart: Optional[pulumi.Input[str]] = None,
                  rm: Optional[pulumi.Input[bool]] = None,
+                 security_opts: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  shm_size: Optional[pulumi.Input[int]] = None,
                  start: Optional[pulumi.Input[bool]] = None,
                  sysctls: Optional[pulumi.Input[Mapping[str, Any]]] = None,
@@ -123,6 +125,7 @@ class Container(pulumi.CustomResource):
         :param pulumi.Input[str] image: The ID of the image to back this container.
                The easiest way to get this value is to use the `RemoteImage` resource
                as is shown in the example above.
+        :param pulumi.Input[bool] init: Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
         :param pulumi.Input[str] ipc_mode: IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
         :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerLabelArgs']]]] labels: Adding labels.
         :param pulumi.Input[Sequence[pulumi.Input[str]]] links: Set of links for link based
@@ -149,6 +152,7 @@ class Container(pulumi.CustomResource):
                Defaults to false.
         :param pulumi.Input[str] restart: The restart policy for the container. Must be
                one of "no", "on-failure", "always", "unless-stopped".
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] security_opts: Set of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
         :param pulumi.Input[int] shm_size: Size of `/dev/shm` in MBs.
         :param pulumi.Input[bool] start: If true, then the Docker container will be
                started after creation. If false, then the container is only created.
@@ -201,6 +205,7 @@ class Container(pulumi.CustomResource):
             if image is None:
                 raise TypeError("Missing required property 'image'")
             __props__['image'] = image
+            __props__['init'] = init
             __props__['ipc_mode'] = ipc_mode
             __props__['labels'] = labels
             if links is not None:
@@ -234,6 +239,7 @@ class Container(pulumi.CustomResource):
             __props__['remove_volumes'] = remove_volumes
             __props__['restart'] = restart
             __props__['rm'] = rm
+            __props__['security_opts'] = security_opts
             __props__['shm_size'] = shm_size
             __props__['start'] = start
             __props__['sysctls'] = sysctls
@@ -283,6 +289,7 @@ class Container(pulumi.CustomResource):
             hostname: Optional[pulumi.Input[str]] = None,
             hosts: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerHostArgs']]]]] = None,
             image: Optional[pulumi.Input[str]] = None,
+            init: Optional[pulumi.Input[bool]] = None,
             ip_address: Optional[pulumi.Input[str]] = None,
             ip_prefix_length: Optional[pulumi.Input[int]] = None,
             ipc_mode: Optional[pulumi.Input[str]] = None,
@@ -310,6 +317,7 @@ class Container(pulumi.CustomResource):
             remove_volumes: Optional[pulumi.Input[bool]] = None,
             restart: Optional[pulumi.Input[str]] = None,
             rm: Optional[pulumi.Input[bool]] = None,
+            security_opts: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
             shm_size: Optional[pulumi.Input[int]] = None,
             start: Optional[pulumi.Input[bool]] = None,
             sysctls: Optional[pulumi.Input[Mapping[str, Any]]] = None,
@@ -358,6 +366,7 @@ class Container(pulumi.CustomResource):
         :param pulumi.Input[str] image: The ID of the image to back this container.
                The easiest way to get this value is to use the `RemoteImage` resource
                as is shown in the example above.
+        :param pulumi.Input[bool] init: Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
         :param pulumi.Input[str] ip_address: *Deprecated:* Use `network_data` instead. The IP address of the container's first network it.
         :param pulumi.Input[int] ip_prefix_length: *Deprecated:* Use `network_data` instead. The IP prefix length of the container as read from its
                NetworkSettings.
@@ -389,6 +398,7 @@ class Container(pulumi.CustomResource):
                Defaults to false.
         :param pulumi.Input[str] restart: The restart policy for the container. Must be
                one of "no", "on-failure", "always", "unless-stopped".
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] security_opts: Set of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
         :param pulumi.Input[int] shm_size: Size of `/dev/shm` in MBs.
         :param pulumi.Input[bool] start: If true, then the Docker container will be
                started after creation. If false, then the container is only created.
@@ -430,6 +440,7 @@ class Container(pulumi.CustomResource):
         __props__["hostname"] = hostname
         __props__["hosts"] = hosts
         __props__["image"] = image
+        __props__["init"] = init
         __props__["ip_address"] = ip_address
         __props__["ip_prefix_length"] = ip_prefix_length
         __props__["ipc_mode"] = ipc_mode
@@ -457,6 +468,7 @@ class Container(pulumi.CustomResource):
         __props__["remove_volumes"] = remove_volumes
         __props__["restart"] = restart
         __props__["rm"] = rm
+        __props__["security_opts"] = security_opts
         __props__["shm_size"] = shm_size
         __props__["start"] = start
         __props__["sysctls"] = sysctls
@@ -622,7 +634,7 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def healthcheck(self) -> pulumi.Output[Optional['outputs.ContainerHealthcheck']]:
+    def healthcheck(self) -> pulumi.Output['outputs.ContainerHealthcheck']:
         """
         See Healthcheck below for details.
         """
@@ -653,6 +665,14 @@ class Container(pulumi.CustomResource):
         as is shown in the example above.
         """
         return pulumi.get(self, "image")
+
+    @property
+    @pulumi.getter
+    def init(self) -> pulumi.Output[bool]:
+        """
+        Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
+        """
+        return pulumi.get(self, "init")
 
     @property
     @pulumi.getter(name="ipAddress")
@@ -863,6 +883,14 @@ class Container(pulumi.CustomResource):
     @pulumi.getter
     def rm(self) -> pulumi.Output[Optional[bool]]:
         return pulumi.get(self, "rm")
+
+    @property
+    @pulumi.getter(name="securityOpts")
+    def security_opts(self) -> pulumi.Output[Sequence[str]]:
+        """
+        Set of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
+        """
+        return pulumi.get(self, "security_opts")
 
     @property
     @pulumi.getter(name="shmSize")
