@@ -3135,6 +3135,10 @@
                     "type": "string",
                     "description": "The ID of the image to back this container.\nThe easiest way to get this value is to use the `docker.RemoteImage` resource\nas is shown in the example above.\n"
                 },
+                "init": {
+                    "type": "boolean",
+                    "description": "Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.\n"
+                },
                 "ipAddress": {
                     "type": "string",
                     "description": "*Deprecated:* Use `network_data` instead. The IP address of the container's first network it.\n",
@@ -3270,6 +3274,13 @@
                 "rm": {
                     "type": "boolean"
                 },
+                "securityOpts": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Set of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.\n"
+                },
                 "shmSize": {
                     "type": "integer",
                     "description": "Size of `/dev/shm` in MBs.\n"
@@ -3334,14 +3345,17 @@
                 "envs",
                 "exitCode",
                 "gateway",
+                "healthcheck",
                 "hostname",
                 "image",
+                "init",
                 "ipAddress",
                 "ipPrefixLength",
                 "ipcMode",
                 "labels",
                 "name",
                 "networkDatas",
+                "securityOpts",
                 "shmSize"
             ],
             "inputProperties": {
@@ -3443,6 +3457,10 @@
                 "image": {
                     "type": "string",
                     "description": "The ID of the image to back this container.\nThe easiest way to get this value is to use the `docker.RemoteImage` resource\nas is shown in the example above.\n"
+                },
+                "init": {
+                    "type": "boolean",
+                    "description": "Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.\n"
                 },
                 "ipcMode": {
                     "type": "string",
@@ -3561,6 +3579,13 @@
                 },
                 "rm": {
                     "type": "boolean"
+                },
+                "securityOpts": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Set of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.\n"
                 },
                 "shmSize": {
                     "type": "integer",
@@ -3740,6 +3765,10 @@
                         "type": "string",
                         "description": "The ID of the image to back this container.\nThe easiest way to get this value is to use the `docker.RemoteImage` resource\nas is shown in the example above.\n"
                     },
+                    "init": {
+                        "type": "boolean",
+                        "description": "Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.\n"
+                    },
                     "ipAddress": {
                         "type": "string",
                         "description": "*Deprecated:* Use `network_data` instead. The IP address of the container's first network it.\n",
@@ -3874,6 +3903,13 @@
                     },
                     "rm": {
                         "type": "boolean"
+                    },
+                    "securityOpts": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Set of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.\n"
                     },
                     "shmSize": {
                         "type": "integer",
@@ -4725,7 +4761,7 @@
             },
             "packageReferences": {
                 "Pulumi": "2.*",
-                "Semver": "2.0.5",
+                "Semver": "2.0.6",
                 "System.Collections.Immutable": "1.6.0"
             }
         },

@@ -144,7 +144,7 @@ export class Container extends pulumi.CustomResource {
     /**
      * See Healthcheck below for details.
      */
-    public readonly healthcheck!: pulumi.Output<outputs.ContainerHealthcheck | undefined>;
+    public readonly healthcheck!: pulumi.Output<outputs.ContainerHealthcheck>;
     /**
      * Hostname of the container.
      */
@@ -159,6 +159,10 @@ export class Container extends pulumi.CustomResource {
      * as is shown in the example above.
      */
     public readonly image!: pulumi.Output<string>;
+    /**
+     * Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
+     */
+    public readonly init!: pulumi.Output<boolean>;
     /**
      * *Deprecated:* Use `networkData` instead. The IP address of the container's first network it.
      *
@@ -272,6 +276,10 @@ export class Container extends pulumi.CustomResource {
     public readonly restart!: pulumi.Output<string | undefined>;
     public readonly rm!: pulumi.Output<boolean | undefined>;
     /**
+     * Set of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
+     */
+    public readonly securityOpts!: pulumi.Output<string[]>;
+    /**
      * Size of `/dev/shm` in MBs.
      */
     public readonly shmSize!: pulumi.Output<number>;
@@ -350,6 +358,7 @@ export class Container extends pulumi.CustomResource {
             inputs["hostname"] = state ? state.hostname : undefined;
             inputs["hosts"] = state ? state.hosts : undefined;
             inputs["image"] = state ? state.image : undefined;
+            inputs["init"] = state ? state.init : undefined;
             inputs["ipAddress"] = state ? state.ipAddress : undefined;
             inputs["ipPrefixLength"] = state ? state.ipPrefixLength : undefined;
             inputs["ipcMode"] = state ? state.ipcMode : undefined;
@@ -377,6 +386,7 @@ export class Container extends pulumi.CustomResource {
             inputs["removeVolumes"] = state ? state.removeVolumes : undefined;
             inputs["restart"] = state ? state.restart : undefined;
             inputs["rm"] = state ? state.rm : undefined;
+            inputs["securityOpts"] = state ? state.securityOpts : undefined;
             inputs["shmSize"] = state ? state.shmSize : undefined;
             inputs["start"] = state ? state.start : undefined;
             inputs["sysctls"] = state ? state.sysctls : undefined;
@@ -410,6 +420,7 @@ export class Container extends pulumi.CustomResource {
             inputs["hostname"] = args ? args.hostname : undefined;
             inputs["hosts"] = args ? args.hosts : undefined;
             inputs["image"] = args ? args.image : undefined;
+            inputs["init"] = args ? args.init : undefined;
             inputs["ipcMode"] = args ? args.ipcMode : undefined;
             inputs["labels"] = args ? args.labels : undefined;
             inputs["links"] = args ? args.links : undefined;
@@ -434,6 +445,7 @@ export class Container extends pulumi.CustomResource {
             inputs["removeVolumes"] = args ? args.removeVolumes : undefined;
             inputs["restart"] = args ? args.restart : undefined;
             inputs["rm"] = args ? args.rm : undefined;
+            inputs["securityOpts"] = args ? args.securityOpts : undefined;
             inputs["shmSize"] = args ? args.shmSize : undefined;
             inputs["start"] = args ? args.start : undefined;
             inputs["sysctls"] = args ? args.sysctls : undefined;
@@ -567,6 +579,10 @@ export interface ContainerState {
      */
     readonly image?: pulumi.Input<string>;
     /**
+     * Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
+     */
+    readonly init?: pulumi.Input<boolean>;
+    /**
      * *Deprecated:* Use `networkData` instead. The IP address of the container's first network it.
      *
      * @deprecated Use ip_adresses_data instead. This field exposes the data of the container's first network.
@@ -678,6 +694,10 @@ export interface ContainerState {
      */
     readonly restart?: pulumi.Input<string>;
     readonly rm?: pulumi.Input<boolean>;
+    /**
+     * Set of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
+     */
+    readonly securityOpts?: pulumi.Input<pulumi.Input<string>[]>;
     /**
      * Size of `/dev/shm` in MBs.
      */
@@ -809,6 +829,10 @@ export interface ContainerArgs {
      */
     readonly image: pulumi.Input<string>;
     /**
+     * Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
+     */
+    readonly init?: pulumi.Input<boolean>;
+    /**
      * IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
      */
     readonly ipcMode?: pulumi.Input<string>;
@@ -902,6 +926,10 @@ export interface ContainerArgs {
      */
     readonly restart?: pulumi.Input<string>;
     readonly rm?: pulumi.Input<boolean>;
+    /**
+     * Set of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
+     */
+    readonly securityOpts?: pulumi.Input<pulumi.Input<string>[]>;
     /**
      * Size of `/dev/shm` in MBs.
      */

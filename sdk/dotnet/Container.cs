@@ -166,7 +166,7 @@ namespace Pulumi.Docker
         /// See Healthcheck below for details.
         /// </summary>
         [Output("healthcheck")]
-        public Output<Outputs.ContainerHealthcheck?> Healthcheck { get; private set; } = null!;
+        public Output<Outputs.ContainerHealthcheck> Healthcheck { get; private set; } = null!;
 
         /// <summary>
         /// Hostname of the container.
@@ -187,6 +187,12 @@ namespace Pulumi.Docker
         /// </summary>
         [Output("image")]
         public Output<string> Image { get; private set; } = null!;
+
+        /// <summary>
+        /// Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
+        /// </summary>
+        [Output("init")]
+        public Output<bool> Init { get; private set; } = null!;
 
         /// <summary>
         /// *Deprecated:* Use `network_data` instead. The IP address of the container's first network it.
@@ -343,6 +349,12 @@ namespace Pulumi.Docker
 
         [Output("rm")]
         public Output<bool?> Rm { get; private set; } = null!;
+
+        /// <summary>
+        /// Set of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
+        /// </summary>
+        [Output("securityOpts")]
+        public Output<ImmutableArray<string>> SecurityOpts { get; private set; } = null!;
 
         /// <summary>
         /// Size of `/dev/shm` in MBs.
@@ -625,6 +637,12 @@ namespace Pulumi.Docker
         public Input<string> Image { get; set; } = null!;
 
         /// <summary>
+        /// Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
+        /// </summary>
+        [Input("init")]
+        public Input<bool>? Init { get; set; }
+
+        /// <summary>
         /// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:&lt;name|id&gt;` or `host`.
         /// </summary>
         [Input("ipcMode")]
@@ -810,6 +828,18 @@ namespace Pulumi.Docker
 
         [Input("rm")]
         public Input<bool>? Rm { get; set; }
+
+        [Input("securityOpts")]
+        private InputList<string>? _securityOpts;
+
+        /// <summary>
+        /// Set of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
+        /// </summary>
+        public InputList<string> SecurityOpts
+        {
+            get => _securityOpts ?? (_securityOpts = new InputList<string>());
+            set => _securityOpts = value;
+        }
 
         /// <summary>
         /// Size of `/dev/shm` in MBs.
@@ -1108,6 +1138,12 @@ namespace Pulumi.Docker
         public Input<string>? Image { get; set; }
 
         /// <summary>
+        /// Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
+        /// </summary>
+        [Input("init")]
+        public Input<bool>? Init { get; set; }
+
+        /// <summary>
         /// *Deprecated:* Use `network_data` instead. The IP address of the container's first network it.
         /// </summary>
         [Input("ipAddress")]
@@ -1319,6 +1355,18 @@ namespace Pulumi.Docker
 
         [Input("rm")]
         public Input<bool>? Rm { get; set; }
+
+        [Input("securityOpts")]
+        private InputList<string>? _securityOpts;
+
+        /// <summary>
+        /// Set of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
+        /// </summary>
+        public InputList<string> SecurityOpts
+        {
+            get => _securityOpts ?? (_securityOpts = new InputList<string>());
+            set => _securityOpts = value;
+        }
 
         /// <summary>
         /// Size of `/dev/shm` in MBs.

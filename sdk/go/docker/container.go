@@ -98,7 +98,7 @@ type Container struct {
 	// Add additional groups to run as.
 	GroupAdds pulumi.StringArrayOutput `pulumi:"groupAdds"`
 	// See Healthcheck below for details.
-	Healthcheck ContainerHealthcheckPtrOutput `pulumi:"healthcheck"`
+	Healthcheck ContainerHealthcheckOutput `pulumi:"healthcheck"`
 	// Hostname of the container.
 	Hostname pulumi.StringOutput `pulumi:"hostname"`
 	// Hostname to add.
@@ -107,6 +107,8 @@ type Container struct {
 	// The easiest way to get this value is to use the `RemoteImage` resource
 	// as is shown in the example above.
 	Image pulumi.StringOutput `pulumi:"image"`
+	// Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
+	Init pulumi.BoolOutput `pulumi:"init"`
 	// *Deprecated:* Use `networkData` instead. The IP address of the container's first network it.
 	//
 	// Deprecated: Use ip_adresses_data instead. This field exposes the data of the container's first network.
@@ -175,6 +177,8 @@ type Container struct {
 	// one of "no", "on-failure", "always", "unless-stopped".
 	Restart pulumi.StringPtrOutput `pulumi:"restart"`
 	Rm      pulumi.BoolPtrOutput   `pulumi:"rm"`
+	// Set of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
+	SecurityOpts pulumi.StringArrayOutput `pulumi:"securityOpts"`
 	// Size of `/dev/shm` in MBs.
 	ShmSize pulumi.IntOutput `pulumi:"shmSize"`
 	// If true, then the Docker container will be
@@ -287,6 +291,8 @@ type containerState struct {
 	// The easiest way to get this value is to use the `RemoteImage` resource
 	// as is shown in the example above.
 	Image *string `pulumi:"image"`
+	// Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
+	Init *bool `pulumi:"init"`
 	// *Deprecated:* Use `networkData` instead. The IP address of the container's first network it.
 	//
 	// Deprecated: Use ip_adresses_data instead. This field exposes the data of the container's first network.
@@ -355,6 +361,8 @@ type containerState struct {
 	// one of "no", "on-failure", "always", "unless-stopped".
 	Restart *string `pulumi:"restart"`
 	Rm      *bool   `pulumi:"rm"`
+	// Set of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
+	SecurityOpts []string `pulumi:"securityOpts"`
 	// Size of `/dev/shm` in MBs.
 	ShmSize *int `pulumi:"shmSize"`
 	// If true, then the Docker container will be
@@ -437,6 +445,8 @@ type ContainerState struct {
 	// The easiest way to get this value is to use the `RemoteImage` resource
 	// as is shown in the example above.
 	Image pulumi.StringPtrInput
+	// Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
+	Init pulumi.BoolPtrInput
 	// *Deprecated:* Use `networkData` instead. The IP address of the container's first network it.
 	//
 	// Deprecated: Use ip_adresses_data instead. This field exposes the data of the container's first network.
@@ -505,6 +515,8 @@ type ContainerState struct {
 	// one of "no", "on-failure", "always", "unless-stopped".
 	Restart pulumi.StringPtrInput
 	Rm      pulumi.BoolPtrInput
+	// Set of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
+	SecurityOpts pulumi.StringArrayInput
 	// Size of `/dev/shm` in MBs.
 	ShmSize pulumi.IntPtrInput
 	// If true, then the Docker container will be
@@ -580,6 +592,8 @@ type containerArgs struct {
 	// The easiest way to get this value is to use the `RemoteImage` resource
 	// as is shown in the example above.
 	Image string `pulumi:"image"`
+	// Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
+	Init *bool `pulumi:"init"`
 	// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
 	IpcMode *string `pulumi:"ipcMode"`
 	// Adding labels.
@@ -636,6 +650,8 @@ type containerArgs struct {
 	// one of "no", "on-failure", "always", "unless-stopped".
 	Restart *string `pulumi:"restart"`
 	Rm      *bool   `pulumi:"rm"`
+	// Set of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
+	SecurityOpts []string `pulumi:"securityOpts"`
 	// Size of `/dev/shm` in MBs.
 	ShmSize *int `pulumi:"shmSize"`
 	// If true, then the Docker container will be
@@ -708,6 +724,8 @@ type ContainerArgs struct {
 	// The easiest way to get this value is to use the `RemoteImage` resource
 	// as is shown in the example above.
 	Image pulumi.StringInput
+	// Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
+	Init pulumi.BoolPtrInput
 	// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
 	IpcMode pulumi.StringPtrInput
 	// Adding labels.
@@ -764,6 +782,8 @@ type ContainerArgs struct {
 	// one of "no", "on-failure", "always", "unless-stopped".
 	Restart pulumi.StringPtrInput
 	Rm      pulumi.BoolPtrInput
+	// Set of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
+	SecurityOpts pulumi.StringArrayInput
 	// Size of `/dev/shm` in MBs.
 	ShmSize pulumi.IntPtrInput
 	// If true, then the Docker container will be
