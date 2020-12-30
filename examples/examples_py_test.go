@@ -62,7 +62,7 @@ func TestAzurePy(t *testing.T) {
 	opts := base.With(integration.ProgramTestOptions{
 		Config: map[string]string{
 			"azure:environment": "public",
-			"azure:location": location,
+			"azure:location":    location,
 		},
 		Dependencies: []string{
 			path.Join("..", "sdk", "python", "bin"),
@@ -97,7 +97,8 @@ func TestDockerfilePy(t *testing.T) {
 		Dependencies: []string{
 			path.Join("..", "sdk", "python", "bin"),
 		},
-		Dir: path.Join(cwd, "dockerfile-py"),
+		Dir:                    path.Join(cwd, "dockerfile-py"),
+		ExtraRuntimeValidation: dockerFileWithDependenciesOutputValidation,
 	})
 	integration.ProgramTest(t, &opts)
 }

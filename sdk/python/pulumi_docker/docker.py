@@ -202,7 +202,7 @@ def build_and_push_image(
 
     # Give an initial message indicating what we're about to do.  That way, if anything
     # takes a while, the user has an idea about what's going on.
-    log_ephemeral("Starting docker build and push...", log_resource)
+    log_debug("Starting docker build and push...", log_resource)
 
     check_repository_url(repository_url)
 
@@ -225,7 +225,7 @@ def build_and_push_image(
     # logged-in to the correct registry (or uses auto-login via credential helpers).
     if registry:
         if not pulumi.runtime.is_dry_run() or pull_from_cache:
-            log_ephemeral("Logging in to registry...", log_resource)
+            log_debug("Logging in to registry...", log_resource)
             login_to_registry(registry, log_resource)
 
     # If the container specified a cache_from parameter, first set up the cached stages.
@@ -236,8 +236,10 @@ def build_and_push_image(
         cache_from = pull_cache(base_image_name, cache_from_param, repository_url, log_resource)
 
     # Next, build the image.
+    log_ephemeral(f"Building image '{ path_or_build if isinstance(path_or_build, str) else path_or_build.context or '.'}'...", log_resource)
     build_result = build_image(base_image_name, path_or_build, log_resource, cache_from)
     image_id, stages = build_result.image_id, build_result.stages
+    log_ephemeral("Image build succeeded.", log_resource)
 
     if image_id is None:
         raise Error("Internal error: docker build did not produce an imageId.")
@@ -254,6 +256,7 @@ def build_and_push_image(
     # for our caller to use. Only push the image during an update, do not push during a preview.
     if not pulumi.runtime.is_dry_run() and not skip_push:
         # Push the final image first, then push the stage images to use for caching.
+        log_ephemeral(f"Pushing image '{base_image_name}'...", log_resource)
 
         # First, push with both the optionally-requested-tag *and* imageId (which is guaranteed to
         # be defined).  By using the imageId we give the image a fully unique location that we can
@@ -274,11 +277,13 @@ def build_and_push_image(
                 image_id=None,
                 log_resource=log_resource
             )
+        
+        log_ephemeral("Image push succeeded.", log_resource)
 
     # If we got here, then building/pushing didn't throw any errors.  Update the status bar
     # indicating that things worked properly.  That way, the info bar isn't stuck showing the very
     # last thing printed by some subcommand we launched.
-    log_ephemeral("Successfully pushed to docker", log_resource)
+    log_debug("Successfully pushed to docker", log_resource)
 
     return unique_tagged_image_name
 
@@ -290,6 +295,12 @@ def log_ephemeral(message: str, log_resource: pulumi.Resource):
         # that pulumi version does not support ephemeral
         pulumi.log.info(message, log_resource, stream_id=None)
 
+def log_debug(message: str, log_resource: pulumi.Resource):
+    try:
+        pulumi.log.debug(message, log_resource, stream_id=None, ephemeral=True)
+    except TypeError:
+        # that pulumi version does not support ephemeral
+        pulumi.log.info(message, log_resource, stream_id=None)
 
 def check_repository_url(repository_url: str):
     _, tag = get_image_name_and_tag(repository_url)
@@ -404,7 +415,7 @@ def build_image(
     if not build.context:
         build.context = "."
 
-    log_ephemeral(
+    log_debug(
         f'Building container image \'{image_name}\': context={build.context}' +
         (f', dockerfile={build.dockerfile}' if build.dockerfile else "") +
         (f', args={json.dumps(build.args)}' if build.args else "") +
@@ -502,7 +513,7 @@ def login_to_registry(registry: Registry, log_resource: pulumi.Resource):
     # around so that future login requests will see it.
     for result in login_results:
         if result.registry_name == registry_name and result.username == username:
-            log_ephemeral(f'Reusing existing login for {username}@{registry_name}', log_resource)
+            log_debug(f'Reusing existing login for {username}@{registry_name}', log_resource)
             return
 
     docker_password_stdin = use_docker_password_stdin(log_resource)
@@ -621,7 +632,7 @@ def run_command_that_can_fail(
     """
 
     # Let the user ephemerally know the command we're going to execute.
-    log_ephemeral(f"Executing {get_command_line_message(cmd_name, args, report_full_command_line, env)}", log_resource)
+    log_debug(f"Executing {get_command_line_message(cmd_name, args, report_full_command_line, env)}", log_resource)
 
     # Generate a unique stream-ID that we'll associate all the docker output with. This will allow
     # each spawned CLI command's output to associated with 'resource' and also streamed to the UI
@@ -658,7 +669,9 @@ def run_command_that_can_fail(
             # Report all stdout messages as ephemeral messages.  That way they show up in the
             # info bar as they're happening.  But they do not overwhelm the user as the end
             # of the run.
-            log_ephemeral(outs, log_resource)
+            for line in outs.splitlines():
+                log_ephemeral(line, log_resource)
+            
             stdout_chunks.append(outs.rstrip())
         if errs:
             # We can't stream these stderr messages as we receive them because we don't knows at

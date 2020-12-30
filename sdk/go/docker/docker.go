@@ -3,10 +3,11 @@
 package docker
 
 import (
+	"bufio"
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"math/rand"
 	"os/exec"
 	"strings"
@@ -21,7 +22,7 @@ func buildAndPushImage(ctx *pulumi.Context, baseImageName string, build *DockerB
 
 	// Give an initial message indicating what we're about to do.  That way, if anything
 	// takes a while, the user has an idea about what's going on.
-	logEphemeral(ctx, "Starting docker build and push...", logResource)
+	logDebug(ctx, "Starting docker build and push...", logResource)
 
 	err := checkRepositoryURL(repositoryURL)
 	if err != nil {
@@ -45,7 +46,7 @@ func buildAndPushImage(ctx *pulumi.Context, baseImageName string, build *DockerB
 	// logged-in to the correct registry (or uses auto-login via credential helpers).
 	if registry.Server != "" {
 		if !ctx.DryRun() || pullFromCache {
-			logEphemeral(ctx, "Logging into registry...", logResource)
+			logDebug(ctx, "Logging into registry...", logResource)
 			err := loginToRegistry(ctx, *registry, logResource)
 			if err != nil {
 				return "", err
@@ -59,11 +60,18 @@ func buildAndPushImage(ctx *pulumi.Context, baseImageName string, build *DockerB
 		cacheFrom = pullCache(ctx, baseImageName, *build.CacheFrom, repositoryURL, logResource)
 	}
 
+	// If the build context is missing, default it to the working directory.
+	if build.Context == "" {
+		build.Context = "."
+	}
+
 	// Next, build the image.
+	logEphemeral(ctx, fmt.Sprintf("Building image '%s'...", build.Context), logResource)
 	imageID, stages, err := buildImage(ctx, baseImageName, build, logResource, cacheFrom)
 	if err != nil {
 		return "", err
 	}
+	logEphemeral(ctx, "Image build succeeded.", logResource)
 
 	// Generate a name that uniquely will identify this built image.  This is similar in purpose to
 	// the name@digest form that can be normally be retrieved from a docker repository.  However,
@@ -77,6 +85,7 @@ func buildAndPushImage(ctx *pulumi.Context, baseImageName string, build *DockerB
 	// for our caller to use. Only push the image during an update, do not push during a preview.
 	if !ctx.DryRun() && !skipPush {
 		// Push the final image first, then push the stage images to use for caching.
+		logEphemeral(ctx, fmt.Sprintf("Pushing image '%s'...", baseImageName), logResource)
 
 		// First, push with both the optionally-requested-tag *and* imageId (which is guaranteed to
 		// be defined).  By using the imageId we give the image a fully unique location that we can
@@ -102,12 +111,9 @@ func buildAndPushImage(ctx *pulumi.Context, baseImageName string, build *DockerB
 				return "", err
 			}
 		}
-	}
 
-	// If we got here, then building/pushing didn't throw any errors.  update the status bar
-	// indicating that things worked properly.  that way, the info bar isn't stuck showing the very
-	// last thing printed by some subcommand we launched.
-	logEphemeral(ctx, "Successfully pushed to docker.", logResource)
+		logEphemeral(ctx, "Image push succeeded.", logResource)
+	}
 
 	return uniqueTaggedImageName, nil
 }
@@ -200,11 +206,6 @@ func createTaggedImageName(repositoryURL string, tag string, imageID string) str
 func buildImage(ctx *pulumi.Context, imageName string, build *DockerBuild,
 	logResource pulumi.Resource, cacheFrom []string) (string, []string, error) {
 
-	// If the build context is missing, default it to the working directory.
-	if build.Context == "" {
-		build.Context = "."
-	}
-
 	buildInfo := fmt.Sprintf("Building container image %s: context=%s", imageName, build.Context)
 	if build.Dockerfile != "" {
 		buildInfo = fmt.Sprintf("%s, dockerfile=%s", buildInfo, build.Dockerfile)
@@ -219,7 +220,7 @@ func buildImage(ctx *pulumi.Context, imageName string, build *DockerBuild,
 	if build.Target != "" {
 		buildInfo = fmt.Sprintf("%s, target=%s", buildInfo, build.Target)
 	}
-	logEphemeral(ctx, buildInfo, logResource)
+	logDebug(ctx, buildInfo, logResource)
 
 	// If the container build specified build stages to cache, build each in turn.
 	var stages []string
@@ -282,7 +283,7 @@ func loginToRegistry(ctx *pulumi.Context, registry ImageRegistry, logResource pu
 	// around so that future login requests will see it.
 	for _, loginResult := range loginResults {
 		if loginResult.registryName == registryName && loginResult.username == username {
-			logEphemeral(ctx, fmt.Sprintf("Reusing existing login for %s@%s", username, registryName), logResource)
+			logDebug(ctx, fmt.Sprintf("Reusing existing login for %s@%s", username, registryName), logResource)
 			return nil
 		}
 	}
@@ -327,7 +328,7 @@ func useDockerPasswordStdin(ctx *pulumi.Context, logResource pulumi.Resource) (b
 	dockerVersionString, err := runBasicCommandThatMustSucceed(ctx, "docker",
 		[]string{"version", "-f", "{{json .}}"}, logResource)
 	if err != nil {
-		return false, errors.Wrap(err, "No 'docker' command available on PATH: Please install to use container 'build' mode.")
+		return false, errors.Wrap(err, "no 'docker' command available on PATH: Please install to use container 'build' mode.")
 	}
 	logDebug(ctx, fmt.Sprintf("'docker version' => %s", dockerVersionString), logResource)
 
@@ -335,7 +336,7 @@ func useDockerPasswordStdin(ctx *pulumi.Context, logResource pulumi.Resource) (b
 	var versionInterface interface{}
 	err = json.Unmarshal([]byte(dockerVersionString), &versionInterface)
 	if err != nil {
-		return false, err
+		return false, errors.Wrapf(err, "unable to parse docker version output '%s'", dockerVersionString)
 	}
 
 	versionData, ok := versionInterface.(map[string]interface{})
@@ -439,7 +440,7 @@ func runCommandThatCanFail(ctx *pulumi.Context, cmdName string, args []string, l
 	reportFullCommandLine bool, reportErrorAsWarning bool, stdinInput string, env map[string]string) (string, error) {
 
 	// Let the user ephemerally know the command we're going to execute.
-	logEphemeral(ctx, "Executing "+getCommandLineMessage(cmdName, args, reportFullCommandLine, env), logResource)
+	logDebug(ctx, "Executing "+getCommandLineMessage(cmdName, args, reportFullCommandLine, env), logResource)
 
 	// Generate a unique stream-ID that we'll associate all the docker output with. This will allow
 	// each spawned CLI command's output to associated with 'resource' and also streamed to the UI
@@ -497,35 +498,36 @@ func runCommandThatCanFail(ctx *pulumi.Context, cmdName string, args []string, l
 		return "", err
 	}
 
-	stderrBytes, err := ioutil.ReadAll(stderr)
-	if err != nil {
-		logErrorf("Error reading from stderr: %v", err)
-		return "", err
-	}
+	// Kick off some goroutines to stream the output asynchronously. We store the results from stdout in
+	// memory and will return them as a string.
+	var stdoutBuffer bytes.Buffer
+	var stderrBuffer bytes.Buffer
+	go func() {
+		outs := bufio.NewScanner(stdout)
+		for outs.Scan() {
+			text := outs.Text()
+			stdoutBuffer.WriteString(text + "\n")
+			// Also report all stdout messages as ephemeral messages.  That way they show up in the
+			// info bar as they're happening.  But they do not overwhelm the user as the end
+			// of the run.
+			logEphemeral(ctx, text, logResource)
 
-	// We can't stream these stderr messages as we receive them because we don't knows at
-	// this point because Docker uses stderr for both errors and warnings.  So, instead, we
-	// just collect the messages, and wait for the process to end to decide how to report
-	// them.
-	stderrString := string(stderrBytes)
+		}
+	}()
+	go func() {
+		errs := bufio.NewScanner(stderr)
+		for errs.Scan() {
+			text := errs.Text()
+			stderrBuffer.WriteString(text + "\n")
+		}
+	}()
 
-	// We store the results from stdout and will return them as a string.
-	stdoutBytes, err := ioutil.ReadAll(stdout)
-	if err != nil {
-		logErrorf("Error reading from stdout: %v", err)
-		return "", err
-	}
-
-	// Report all stdout messages as ephemeral messages.  That way they show up in the
-	// info bar as they're happening.  But they do not overwhelm the user as the end
-	// of the run.
-	stdoutString := string(stdoutBytes)
-	logEphemeral(ctx, stdoutString, logResource)
-
+	// Wait for the command to exit
 	err = cmd.Wait()
 
 	// If we got any stderr messages, report them as an error/warning depending on the
 	// result of the operation.
+	stderrString := stderrBuffer.String()
 	if stderrString != "" {
 		if err != nil && !reportErrorAsWarning {
 			// Command returned non-zero code.  Treat these stderr messages as an error.
@@ -549,6 +551,7 @@ func runCommandThatCanFail(ctx *pulumi.Context, cmdName string, args []string, l
 		logEphemeral(ctx, getCommandLineMessage(cmdName, args, reportFullCommandLine, env)+" failed", logResource)
 	}
 
+	stdoutString := stdoutBuffer.String()
 	return stdoutString, err
 }
 
