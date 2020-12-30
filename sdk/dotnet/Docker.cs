@@ -141,7 +141,7 @@ namespace Pulumi.Docker
 
                 // Give an initial message indicating what we're about to do.  That way, if anything
                 // takes a while, the user has an idea about what's going on.
-                Log.Info("Starting docker build and push...", logResource, ephemeral: true);
+                Log.Debug("Starting docker build and push...", logResource, ephemeral: true);
 
                 var result = await BuildAndPushImageWorkerAsync(
                     imageName, buildVal, repositoryUrlVal, logResource, skipPush, registryVal).ConfigureAwait(false);
@@ -149,7 +149,7 @@ namespace Pulumi.Docker
                 // If we got here, then building/pushing didn't throw any errors.  update the status bar
                 // indicating that things worked properly.  that way, the info bar isn't stuck showing the very
                 // last thing printed by some subcommand we launched.
-                Log.Info("successfully pushed to docker", logResource, ephemeral: true);
+                Log.Debug("successfully pushed to docker", logResource, ephemeral: true);
 
                 return result;
             });
@@ -216,7 +216,7 @@ namespace Pulumi.Docker
             {
                 if (!Deployment.Instance.IsDryRun || pullFromCache)
                 {
-                    Log.Info("Logging in to registry...", logResource, ephemeral: true);
+                    Log.Debug("Logging in to registry...", logResource, ephemeral: true);
                     await LoginToRegistry(registry, logResource).ConfigureAwait(false);
                 }
             }
@@ -230,11 +230,13 @@ namespace Pulumi.Docker
             }
 
             // Next, build the image.
+            Log.Info($"Building image '{(pathOrBuild.IsT0 ? pathOrBuild.AsT0 : pathOrBuild.AsT1.Context ?? ".")}'...", logResource, ephemeral: true);
             (string imageId, string[] stages) = await BuildImageAsync(baseImageName, pathOrBuild, logResource, cacheFrom).ConfigureAwait(false);
             if (imageId == null)
             {
                 throw new Exception("Internal error: docker build did not produce an imageId.");
             }
+            Log.Info("Image build succeeded.", logResource, ephemeral: true);
 
             // Generate a name that uniquely will identify this built image.  This is similar in purpose to
             // the name@digest form that can be normally be retrieved from a docker repository.  However,
@@ -249,6 +251,7 @@ namespace Pulumi.Docker
             if (!Deployment.Instance.IsDryRun && !skipPush)
             {
                 // Push the final image first, then push the stage images to use for caching.
+                Log.Info($"Pushing image '{baseImageName}'...", logResource, ephemeral: true);
 
                 // First, push with both the optionally-requested-tag *and* imageId (which is guaranteed to
                 // be defined).  By using the imageId we give the image a fully unique location that we can
@@ -266,6 +269,7 @@ namespace Pulumi.Docker
                     await TagAndPushImageAsync(
                         LocalStageImageName(baseImageName, stage), repositoryUrl, stage, imageId: null, logResource).ConfigureAwait(false);
                 }
+                Log.Info("Image push succeeded.", logResource, ephemeral: true);
             }
 
             return uniqueTaggedImageName;
@@ -342,7 +346,7 @@ namespace Pulumi.Docker
                 build.Context = ".";
             }
 
-            Log.Info(
+            Log.Debug(
                 $"Building container image '{imageName}': context={build.Context}" +
                 (build.Dockerfile != null ? $", dockerfile={build.Dockerfile}" : "") +
                 (build.Args != null ? $", args={JsonSerializer.Serialize(build.Args)}" : "") +
@@ -492,7 +496,7 @@ namespace Pulumi.Docker
                 }
                 catch (Exception ex)
                 {
-                    Log.Info($"Could not process Docker version({ex})", logResource);
+                    Log.Debug($"Could not process Docker version({ex})", logResource);
                 }
 
                 return false;
@@ -590,7 +594,7 @@ namespace Pulumi.Docker
             ImmutableDictionary<string, string>? env = null)
         {
             // Let the user ephemerally know the command we're going to execute.
-            Log.Info($"Executing {GetCommandLineMessage(cmd, args, reportFullCommandLine, env)}", logResource, ephemeral: true);
+            Log.Debug($"Executing {GetCommandLineMessage(cmd, args, reportFullCommandLine, env)}", logResource, ephemeral: true);
             var streamId = Utils.RandomInt();
 
             using var process = new Process();

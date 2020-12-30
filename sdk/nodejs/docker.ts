@@ -13,10 +13,11 @@
 // limitations under the License.
 
 import * as pulumi from "@pulumi/pulumi";
-import {ResourceError} from "@pulumi/pulumi/errors";
+import { ResourceError } from "@pulumi/pulumi/errors";
 import * as utils from "./utils";
 
 import * as child_process from "child_process";
+import * as readline from "readline";
 import * as semver from "semver";
 
 // Registry is the information required to login to a Docker registry.
@@ -167,7 +168,7 @@ export function buildAndPushImage(
 
             // Give an initial message indicating what we're about to do.  That way, if anything
             // takes a while, the user has an idea about what's going on.
-            logEphemeral("Starting docker build and push...", logResource);
+            logDebug("Starting docker build and push...", logResource);
 
             const result = await buildAndPushImageWorkerAsync(
                 imageName, pathOrBuildVal, repositoryUrlVal, logResource, connectToRegistry, skipPush);
@@ -175,7 +176,7 @@ export function buildAndPushImage(
             // If we got here, then building/pushing didn't throw any errors.  Update the status bar
             // indicating that things worked properly.  That way, the info bar isn't stuck showing the very
             // last thing printed by some subcommand we launched.
-            logEphemeral("Successfully pushed to docker", logResource);
+            logDebug("Successfully pushed to docker", logResource);
 
             return result;
         });
@@ -183,6 +184,10 @@ export function buildAndPushImage(
 
 function logEphemeral(message: string, logResource: pulumi.Resource) {
     pulumi.log.info(message, logResource, /*streamId:*/ undefined, /*ephemeral:*/ true);
+}
+
+function logDebug(message: string, logResource: pulumi.Resource) {
+    pulumi.log.debug(message, logResource, /*streamId:*/ undefined, /*ephemeral:*/ true);
 }
 
 /** @internal for testing purposes */
@@ -252,7 +257,7 @@ async function buildAndPushImageWorkerAsync(
     // logged-in to the correct registry (or uses auto-login via credential helpers).
     if (connectToRegistry) {
         if (!pulumi.runtime.isDryRun() || pullFromCache) {
-            logEphemeral("Logging in to registry...", logResource);
+            logDebug("Logging in to registry...", logResource);
             const registryOutput = pulumi.output(connectToRegistry());
             const registry: pulumi.Unwrap<Registry> = await (<any>registryOutput).promise();
             await loginToRegistry(registry, logResource);
@@ -268,7 +273,9 @@ async function buildAndPushImageWorkerAsync(
     }
 
     // Next, build the image.
-    const {imageId, stages} = await buildImageAsync(baseImageName, pathOrBuild, logResource, cacheFrom);
+    logEphemeral(`Building image '${ typeof pathOrBuild == "string" ? pathOrBuild : pathOrBuild.context || "." }'...`, logResource)
+    const { imageId, stages } = await buildImageAsync(baseImageName, pathOrBuild, logResource, cacheFrom);
+    logEphemeral("Image build succeeded.", logResource)
 
     // Generate a name that uniquely will identify this built image.  This is similar in purpose to
     // the name@digest form that can be normally be retrieved from a docker repository.  However,
@@ -282,6 +289,7 @@ async function buildAndPushImageWorkerAsync(
     // for our caller to use. Only push the image during an update, do not push during a preview.
     if (!pulumi.runtime.isDryRun() && !skipPush) {
         // Push the final image first, then push the stage images to use for caching.
+        logEphemeral(`Pushing image '${baseImageName}'...`, logResource)
 
         // First, push with both the optionally-requested-tag *and* imageId (which is guaranteed to
         // be defined).  By using the imageId we give the image a fully unique location that we can
@@ -298,6 +306,7 @@ async function buildAndPushImageWorkerAsync(
             await tagAndPushImageAsync(
                 localStageImageName(baseImageName, stage), repositoryUrl, stage, /*imageId:*/ undefined, logResource);
         }
+        logEphemeral("Image push succeeded.", logResource)
     }
 
     return uniqueTaggedImageName;
@@ -348,7 +357,7 @@ async function pullCacheAsync(
         // That's fine, just move onto the next stage.  Also, pass along a flag saying that we
         // should print that error as a warning instead.  We don't want the update to succeed but
         // the user to then get a nasty "error:" message at the end.
-        const {code} = await runCommandThatCanFail(
+        const { code } = await runCommandThatCanFail(
             "docker", ["pull", image], logResource,
             /*reportFullCommand:*/ true, /*reportErrorAsWarning:*/ true);
         if (code) {
@@ -388,7 +397,7 @@ async function buildImageAsync(
         build.context = ".";
     }
 
-    logEphemeral(
+    logDebug(
         `Building container image '${imageName}': context=${build.context}` +
         (build.dockerfile ? `, dockerfile=${build.dockerfile}` : "") +
         (build.args ? `, args=${JSON.stringify(build.args)}` : "") +
@@ -427,7 +436,7 @@ async function buildImageAsync(
     const colonIndex = imageId.lastIndexOf(":");
     imageId = colonIndex < 0 ? imageId : imageId.substr(colonIndex + 1);
 
-    return {imageId, stages};
+    return { imageId, stages };
 }
 
 async function dockerBuild(
@@ -478,7 +487,7 @@ interface LoginResult {
 const loginResults: LoginResult[] = [];
 
 function loginToRegistry(registry: pulumi.Unwrap<Registry>, logResource: pulumi.Resource): Promise<void> {
-    const {registry: registryName, username, password} = registry;
+    const { registry: registryName, username, password } = registry;
 
     // See if we've issued an outstanding requests to login into this registry.  If so, just
     // await the results of that login request.  Otherwise, create a new request and keep it
@@ -490,10 +499,10 @@ function loginToRegistry(registry: pulumi.Unwrap<Registry>, logResource: pulumi.
         // to relinquish control of this thread-of-execution yet.  We want to ensure that
         // we first update `loginResults` with our record object so that any future executions
         // through this method see that the login was kicked off and can wait on that.
-        loginResult = {registryName, username, loginCommand: loginAsync()};
+        loginResult = { registryName, username, loginCommand: loginAsync() };
         loginResults.push(loginResult);
     } else {
-        logEphemeral(`Reusing existing login for ${username}@${registryName}`, logResource);
+        logDebug(`Reusing existing login for ${username}@${registryName}`, logResource);
     }
 
     return loginResult.loginCommand;
@@ -571,7 +580,7 @@ async function runCommandThatMustSucceed(
     stdin?: string,
     env?: { [name: string]: string }): Promise<string> {
 
-    const {code, stdout} = await runCommandThatCanFail(
+    const { code, stdout } = await runCommandThatCanFail(
         cmd, args, logResource, reportFullCommandLine, /*reportErrorAsWarning:*/ false, stdin, env);
 
     if (code !== 0) {
@@ -611,7 +620,7 @@ async function runCommandThatCanFail(
     env?: { [name: string]: string }): Promise<CommandResult> {
 
     // Let the user ephemerally know the command we're going to execute.
-    logEphemeral(`Executing ${getCommandLineMessage(cmd, args, reportFullCommandLine, env)}`, logResource);
+    logDebug(`Executing ${getCommandLineMessage(cmd, args, reportFullCommandLine, env)}`, logResource);
 
     // Generate a unique stream-ID that we'll associate all the docker output with. This will allow
     // each spawned CLI command's output to associated with 'resource' and also streamed to the UI
@@ -631,27 +640,19 @@ async function runCommandThatCanFail(
     return new Promise<CommandResult>((resolve, reject) => {
         const osEnv = Object.assign({}, process.env);
         env = Object.assign(osEnv, env)
-        const p = child_process.spawn(cmd, args, {env});
+        const p = child_process.spawn(cmd, args, { env });
 
         // We store the results from stdout in memory and will return them as a string.
         let stdOutChunks: Buffer[] = [];
         let stdErrChunks: Buffer[] = [];
+        p.stdout.on("data", (chunk: Buffer) => stdOutChunks.push(chunk));
+        p.stderr.on("data", (chunk: Buffer) => stdErrChunks.push(chunk));
 
-        p.stdout.on("data", (chunk: Buffer) => {
-            // Report all stdout messages as ephemeral messages.  That way they show up in the
-            // info bar as they're happening.  But they do not overwhelm the user as the end
-            // of the run.
-            logEphemeral(chunk.toString(), logResource);
-            stdOutChunks.push(chunk);
-        });
-
-        p.stderr.on("data", (chunk: Buffer) => {
-            // We can't stream these stderr messages as we receive them because we don't knows at
-            // this point because Docker uses stderr for both errors and warnings.  So, instead, we
-            // just collect the messages, and wait for the process to end to decide how to report
-            // them.
-            stdErrChunks.push(chunk);
-        });
+        // Also report all stdout messages as ephemeral messages.  That way they show up in the
+        // info bar as they're happening.  But they do not overwhelm the user as the end
+        // of the run.
+        const rl = readline.createInterface({ input: p.stdout });
+        rl.on("line", line => logEphemeral(line, logResource));
 
         // In both cases of 'error' or 'close' we execute the same 'finish up' codepath. This
         // codepath effectively flushes (and clears) the stdout and stderr streams we've been
@@ -724,7 +725,7 @@ async function runCommandThatCanFail(
                 logEphemeral(getFailureMessage(cmd, args, reportFullCommandLine, code), logResource);
             }
 
-            resolve({code, stdout});
+            resolve({ code, stdout });
         }
     });
 }

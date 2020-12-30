@@ -74,7 +74,8 @@ func TestDockerfileWithMultipleTargets(t *testing.T) {
 		Dependencies: []string{
 			"@pulumi/docker",
 		},
-		Dir: path.Join(cwd, "dockerfile-with-targets"),
+		Dir:                    path.Join(cwd, "dockerfile-with-targets"),
+		ExtraRuntimeValidation: dockerFileWithDependenciesOutputValidation,
 	})
 	integration.ProgramTest(t, &opts)
 }

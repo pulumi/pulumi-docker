@@ -49,7 +49,8 @@ func TestDotNet(t *testing.T) {
 		Dependencies: []string{
 			"Pulumi.Docker",
 		},
-		Dir: path.Join(cwd, "dotnet"),
+		Dir:                    path.Join(cwd, "dotnet"),
+		ExtraRuntimeValidation: dockerFileWithDependenciesOutputValidation,
 	})
 	integration.ProgramTest(t, &opts)
 }

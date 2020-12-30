@@ -49,7 +49,8 @@ func TestDockerfileGo(t *testing.T) {
 		Dependencies: []string{
 			"github.com/pulumi/pulumi-docker/sdk/v2",
 		},
-		Dir: path.Join(cwd, "dockerfile-go"),
+		Dir:                    path.Join(cwd, "dockerfile-go"),
+		ExtraRuntimeValidation: dockerFileWithDependenciesOutputValidation,
 	})
 	integration.ProgramTest(t, &opts)
 }
