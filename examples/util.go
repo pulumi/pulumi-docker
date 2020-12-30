@@ -22,6 +22,9 @@ import (
 )
 
 func dockerFileWithDependenciesOutputValidation(t *testing.T, stack integration.RuntimeValidationStackInfo) {
+	// The full set of lines that are currently produced  are below, but some are commented out as they may not be
+	// stable going forward in case of changes to Docker.  To be safe, we just test a subset of this output that is
+	// enough to verify no structural regressions in the output.
 	expectedEphemeralDiagnosticsLines := []string{
 		"<{%reset%}>Building image '.'...<{%reset%}>\n",
 		//"<{%reset%}>Sending build context to Docker daemon  66.88MB<{%reset%}>\n",
