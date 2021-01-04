@@ -13,11 +13,10 @@ import (
 
 func main() {
 	pulumi.Run(func(ctx *pulumi.Context) error {
-		// Create a private DigitalOcean Container Registry.
-		registry, err := digitalocean.NewContainerRegistry(ctx, "my-reg",
-			&digitalocean.ContainerRegistryArgs{
-				// SubscriptionTierSlug: pulumi.String("starter"),
-			})
+		// Get the Container Registry
+		registry, err := digitalocean.LookupContainerRegistry(ctx, &digitalocean.LookupContainerRegistryArgs{
+			Name: "development-pulumi-provider",
+		})
 		if err != nil {
 			return err
 		}
@@ -26,7 +25,7 @@ func main() {
 		imageName := pulumi.Sprintf("%s/myapp", registry.Endpoint)
 		creds, err := digitalocean.NewContainerRegistryDockerCredentials(ctx, "my-reg-creds",
 			&digitalocean.ContainerRegistryDockerCredentialsArgs{
-				RegistryName: registry.Name,
+				RegistryName: pulumi.String(registry.Name),
 				Write:        pulumi.Bool(true),
 			},
 		)
@@ -59,7 +58,7 @@ func main() {
 					Password: parts[1],
 				}, nil
 			},
-		).(docker.ImageRegistryOutput)
+		).(docker.ImageRegistryInput)
 
 		// Build and publish the app image.
 		image, err := docker.NewImage(ctx, "my-image", &docker.ImageArgs{
