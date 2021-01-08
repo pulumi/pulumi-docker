@@ -1,8 +1,11 @@
 ## HEAD (Unreleased)
-* Upgrade to v2.10.0 of the Docker Terraform Provider
-* Improve build and push output [#251](https://github.com/pulumi/pulumi-docker/pull/251)
+_(none)_
 
 ---
+
+## 2.6.0 (2021-01-08)
+* Upgrade to v2.10.0 of the Docker Terraform Provider
+* Improve build and push output [#251](https://github.com/pulumi/pulumi-docker/pull/251)
 
 ## 2.5.0 (2020-12-07)
 * Upgrade to v2.8.0 of the Docker Terraform Provider
