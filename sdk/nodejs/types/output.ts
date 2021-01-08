@@ -302,6 +302,11 @@ export interface NetworkLabel {
     value: string;
 }
 
+export interface PluginGrantPermission {
+    name: string;
+    values: string[];
+}
+
 export interface ProviderRegistryAuth {
     address?: string;
     configFile?: string;
@@ -997,6 +1002,10 @@ export interface ServiceTaskSpecPlacement {
      * An array of constraints. e.g.: `node.role==manager`
      */
     constraints?: string[];
+    /**
+     * Maximum number of replicas for per node (default value is 0, which is unlimited)
+     */
+    maxReplicas?: number;
     /**
      * Platforms stores all the platforms that the service's image can run on
      */

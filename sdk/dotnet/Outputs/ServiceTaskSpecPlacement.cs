@@ -18,6 +18,10 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly ImmutableArray<string> Constraints;
         /// <summary>
+        /// Maximum number of replicas for per node (default value is 0, which is unlimited)
+        /// </summary>
+        public readonly int? MaxReplicas;
+        /// <summary>
         /// Platforms stores all the platforms that the service's image can run on
         /// </summary>
         public readonly ImmutableArray<Outputs.ServiceTaskSpecPlacementPlatform> Platforms;
@@ -30,11 +34,14 @@ namespace Pulumi.Docker.Outputs
         private ServiceTaskSpecPlacement(
             ImmutableArray<string> constraints,
 
+            int? maxReplicas,
+
             ImmutableArray<Outputs.ServiceTaskSpecPlacementPlatform> platforms,
 
             ImmutableArray<string> prefs)
         {
             Constraints = constraints;
+            MaxReplicas = maxReplicas;
             Platforms = platforms;
             Prefs = prefs;
         }

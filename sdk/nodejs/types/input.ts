@@ -295,6 +295,11 @@ export interface NetworkLabel {
     value: pulumi.Input<string>;
 }
 
+export interface PluginGrantPermission {
+    name: pulumi.Input<string>;
+    values: pulumi.Input<pulumi.Input<string>[]>;
+}
+
 export interface ProviderRegistryAuth {
     address: pulumi.Input<string>;
     configFile?: pulumi.Input<string>;
@@ -990,6 +995,10 @@ export interface ServiceTaskSpecPlacement {
      * An array of constraints. e.g.: `node.role==manager`
      */
     constraints?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * Maximum number of replicas for per node (default value is 0, which is unlimited)
+     */
+    maxReplicas?: pulumi.Input<number>;
     /**
      * Platforms stores all the platforms that the service's image can run on
      */

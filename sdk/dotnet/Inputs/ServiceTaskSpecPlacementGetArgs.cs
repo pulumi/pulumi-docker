@@ -24,6 +24,12 @@ namespace Pulumi.Docker.Inputs
             set => _constraints = value;
         }
 
+        /// <summary>
+        /// Maximum number of replicas for per node (default value is 0, which is unlimited)
+        /// </summary>
+        [Input("maxReplicas")]
+        public Input<int>? MaxReplicas { get; set; }
+
         [Input("platforms")]
         private InputList<Inputs.ServiceTaskSpecPlacementPlatformGetArgs>? _platforms;
 

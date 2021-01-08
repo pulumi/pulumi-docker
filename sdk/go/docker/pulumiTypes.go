@@ -2447,6 +2447,106 @@ func (o NetworkLabelArrayOutput) Index(i pulumi.IntInput) NetworkLabelOutput {
 	}).(NetworkLabelOutput)
 }
 
+type PluginGrantPermission struct {
+	Name   string   `pulumi:"name"`
+	Values []string `pulumi:"values"`
+}
+
+// PluginGrantPermissionInput is an input type that accepts PluginGrantPermissionArgs and PluginGrantPermissionOutput values.
+// You can construct a concrete instance of `PluginGrantPermissionInput` via:
+//
+//          PluginGrantPermissionArgs{...}
+type PluginGrantPermissionInput interface {
+	pulumi.Input
+
+	ToPluginGrantPermissionOutput() PluginGrantPermissionOutput
+	ToPluginGrantPermissionOutputWithContext(context.Context) PluginGrantPermissionOutput
+}
+
+type PluginGrantPermissionArgs struct {
+	Name   pulumi.StringInput      `pulumi:"name"`
+	Values pulumi.StringArrayInput `pulumi:"values"`
+}
+
+func (PluginGrantPermissionArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*PluginGrantPermission)(nil)).Elem()
+}
+
+func (i PluginGrantPermissionArgs) ToPluginGrantPermissionOutput() PluginGrantPermissionOutput {
+	return i.ToPluginGrantPermissionOutputWithContext(context.Background())
+}
+
+func (i PluginGrantPermissionArgs) ToPluginGrantPermissionOutputWithContext(ctx context.Context) PluginGrantPermissionOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(PluginGrantPermissionOutput)
+}
+
+// PluginGrantPermissionArrayInput is an input type that accepts PluginGrantPermissionArray and PluginGrantPermissionArrayOutput values.
+// You can construct a concrete instance of `PluginGrantPermissionArrayInput` via:
+//
+//          PluginGrantPermissionArray{ PluginGrantPermissionArgs{...} }
+type PluginGrantPermissionArrayInput interface {
+	pulumi.Input
+
+	ToPluginGrantPermissionArrayOutput() PluginGrantPermissionArrayOutput
+	ToPluginGrantPermissionArrayOutputWithContext(context.Context) PluginGrantPermissionArrayOutput
+}
+
+type PluginGrantPermissionArray []PluginGrantPermissionInput
+
+func (PluginGrantPermissionArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]PluginGrantPermission)(nil)).Elem()
+}
+
+func (i PluginGrantPermissionArray) ToPluginGrantPermissionArrayOutput() PluginGrantPermissionArrayOutput {
+	return i.ToPluginGrantPermissionArrayOutputWithContext(context.Background())
+}
+
+func (i PluginGrantPermissionArray) ToPluginGrantPermissionArrayOutputWithContext(ctx context.Context) PluginGrantPermissionArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(PluginGrantPermissionArrayOutput)
+}
+
+type PluginGrantPermissionOutput struct{ *pulumi.OutputState }
+
+func (PluginGrantPermissionOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*PluginGrantPermission)(nil)).Elem()
+}
+
+func (o PluginGrantPermissionOutput) ToPluginGrantPermissionOutput() PluginGrantPermissionOutput {
+	return o
+}
+
+func (o PluginGrantPermissionOutput) ToPluginGrantPermissionOutputWithContext(ctx context.Context) PluginGrantPermissionOutput {
+	return o
+}
+
+func (o PluginGrantPermissionOutput) Name() pulumi.StringOutput {
+	return o.ApplyT(func(v PluginGrantPermission) string { return v.Name }).(pulumi.StringOutput)
+}
+
+func (o PluginGrantPermissionOutput) Values() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v PluginGrantPermission) []string { return v.Values }).(pulumi.StringArrayOutput)
+}
+
+type PluginGrantPermissionArrayOutput struct{ *pulumi.OutputState }
+
+func (PluginGrantPermissionArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]PluginGrantPermission)(nil)).Elem()
+}
+
+func (o PluginGrantPermissionArrayOutput) ToPluginGrantPermissionArrayOutput() PluginGrantPermissionArrayOutput {
+	return o
+}
+
+func (o PluginGrantPermissionArrayOutput) ToPluginGrantPermissionArrayOutputWithContext(ctx context.Context) PluginGrantPermissionArrayOutput {
+	return o
+}
+
+func (o PluginGrantPermissionArrayOutput) Index(i pulumi.IntInput) PluginGrantPermissionOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) PluginGrantPermission {
+		return vs[0].([]PluginGrantPermission)[vs[1].(int)]
+	}).(PluginGrantPermissionOutput)
+}
+
 type ProviderRegistryAuth struct {
 	Address           string  `pulumi:"address"`
 	ConfigFile        *string `pulumi:"configFile"`
@@ -8165,6 +8265,8 @@ func (o ServiceTaskSpecLogDriverPtrOutput) Options() pulumi.StringMapOutput {
 type ServiceTaskSpecPlacement struct {
 	// An array of constraints. e.g.: `node.role==manager`
 	Constraints []string `pulumi:"constraints"`
+	// Maximum number of replicas for per node (default value is 0, which is unlimited)
+	MaxReplicas *int `pulumi:"maxReplicas"`
 	// Platforms stores all the platforms that the service's image can run on
 	Platforms []ServiceTaskSpecPlacementPlatform `pulumi:"platforms"`
 	// Preferences provide a way to make the scheduler aware of factors such as topology. They are provided in order from highest to lowest precedence, e.g.: `spread=node.role.manager`
@@ -8185,6 +8287,8 @@ type ServiceTaskSpecPlacementInput interface {
 type ServiceTaskSpecPlacementArgs struct {
 	// An array of constraints. e.g.: `node.role==manager`
 	Constraints pulumi.StringArrayInput `pulumi:"constraints"`
+	// Maximum number of replicas for per node (default value is 0, which is unlimited)
+	MaxReplicas pulumi.IntPtrInput `pulumi:"maxReplicas"`
 	// Platforms stores all the platforms that the service's image can run on
 	Platforms ServiceTaskSpecPlacementPlatformArrayInput `pulumi:"platforms"`
 	// Preferences provide a way to make the scheduler aware of factors such as topology. They are provided in order from highest to lowest precedence, e.g.: `spread=node.role.manager`
@@ -8273,6 +8377,11 @@ func (o ServiceTaskSpecPlacementOutput) Constraints() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v ServiceTaskSpecPlacement) []string { return v.Constraints }).(pulumi.StringArrayOutput)
 }
 
+// Maximum number of replicas for per node (default value is 0, which is unlimited)
+func (o ServiceTaskSpecPlacementOutput) MaxReplicas() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v ServiceTaskSpecPlacement) *int { return v.MaxReplicas }).(pulumi.IntPtrOutput)
+}
+
 // Platforms stores all the platforms that the service's image can run on
 func (o ServiceTaskSpecPlacementOutput) Platforms() ServiceTaskSpecPlacementPlatformArrayOutput {
 	return o.ApplyT(func(v ServiceTaskSpecPlacement) []ServiceTaskSpecPlacementPlatform { return v.Platforms }).(ServiceTaskSpecPlacementPlatformArrayOutput)
@@ -8309,6 +8418,16 @@ func (o ServiceTaskSpecPlacementPtrOutput) Constraints() pulumi.StringArrayOutpu
 		}
 		return v.Constraints
 	}).(pulumi.StringArrayOutput)
+}
+
+// Maximum number of replicas for per node (default value is 0, which is unlimited)
+func (o ServiceTaskSpecPlacementPtrOutput) MaxReplicas() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v *ServiceTaskSpecPlacement) *int {
+		if v == nil {
+			return nil
+		}
+		return v.MaxReplicas
+	}).(pulumi.IntPtrOutput)
 }
 
 // Platforms stores all the platforms that the service's image can run on
@@ -9900,6 +10019,8 @@ func init() {
 	pulumi.RegisterOutputType(NetworkIpamConfigArrayOutput{})
 	pulumi.RegisterOutputType(NetworkLabelOutput{})
 	pulumi.RegisterOutputType(NetworkLabelArrayOutput{})
+	pulumi.RegisterOutputType(PluginGrantPermissionOutput{})
+	pulumi.RegisterOutputType(PluginGrantPermissionArrayOutput{})
 	pulumi.RegisterOutputType(ProviderRegistryAuthOutput{})
 	pulumi.RegisterOutputType(ProviderRegistryAuthArrayOutput{})
 	pulumi.RegisterOutputType(RegistryImageBuildOutput{})

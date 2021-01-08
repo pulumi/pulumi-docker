@@ -71,6 +71,10 @@ export class RemoteImage extends pulumi.CustomResource {
      */
     public readonly build!: pulumi.Output<outputs.RemoteImageBuild | undefined>;
     /**
+     * Force remove the image when the resource is destroyed
+     */
+    public readonly forceRemove!: pulumi.Output<boolean | undefined>;
+    /**
      * If true, then the Docker image won't be
      * deleted on destroy operation. If this is false, it will delete the image from
      * the docker local storage on destroy operation.
@@ -109,6 +113,7 @@ export class RemoteImage extends pulumi.CustomResource {
         if (opts && opts.id) {
             const state = argsOrState as RemoteImageState | undefined;
             inputs["build"] = state ? state.build : undefined;
+            inputs["forceRemove"] = state ? state.forceRemove : undefined;
             inputs["keepLocally"] = state ? state.keepLocally : undefined;
             inputs["latest"] = state ? state.latest : undefined;
             inputs["name"] = state ? state.name : undefined;
@@ -121,6 +126,7 @@ export class RemoteImage extends pulumi.CustomResource {
                 throw new Error("Missing required property 'name'");
             }
             inputs["build"] = args ? args.build : undefined;
+            inputs["forceRemove"] = args ? args.forceRemove : undefined;
             inputs["keepLocally"] = args ? args.keepLocally : undefined;
             inputs["name"] = args ? args.name : undefined;
             inputs["pullTrigger"] = args ? args.pullTrigger : undefined;
@@ -147,6 +153,10 @@ export interface RemoteImageState {
      * See Build below for details.
      */
     readonly build?: pulumi.Input<inputs.RemoteImageBuild>;
+    /**
+     * Force remove the image when the resource is destroyed
+     */
+    readonly forceRemove?: pulumi.Input<boolean>;
     /**
      * If true, then the Docker image won't be
      * deleted on destroy operation. If this is false, it will delete the image from
@@ -182,6 +192,10 @@ export interface RemoteImageArgs {
      * See Build below for details.
      */
     readonly build?: pulumi.Input<inputs.RemoteImageBuild>;
+    /**
+     * Force remove the image when the resource is destroyed
+     */
+    readonly forceRemove?: pulumi.Input<boolean>;
     /**
      * If true, then the Docker image won't be
      * deleted on destroy operation. If this is false, it will delete the image from

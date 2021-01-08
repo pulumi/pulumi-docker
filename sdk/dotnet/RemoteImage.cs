@@ -71,6 +71,12 @@ namespace Pulumi.Docker
         public Output<Outputs.RemoteImageBuild?> Build { get; private set; } = null!;
 
         /// <summary>
+        /// Force remove the image when the resource is destroyed
+        /// </summary>
+        [Output("forceRemove")]
+        public Output<bool?> ForceRemove { get; private set; } = null!;
+
+        /// <summary>
         /// If true, then the Docker image won't be
         /// deleted on destroy operation. If this is false, it will delete the image from
         /// the docker local storage on destroy operation.
@@ -158,6 +164,12 @@ namespace Pulumi.Docker
         public Input<Inputs.RemoteImageBuildArgs>? Build { get; set; }
 
         /// <summary>
+        /// Force remove the image when the resource is destroyed
+        /// </summary>
+        [Input("forceRemove")]
+        public Input<bool>? ForceRemove { get; set; }
+
+        /// <summary>
         /// If true, then the Docker image won't be
         /// deleted on destroy operation. If this is false, it will delete the image from
         /// the docker local storage on destroy operation.
@@ -204,6 +216,12 @@ namespace Pulumi.Docker
         /// </summary>
         [Input("build")]
         public Input<Inputs.RemoteImageBuildGetArgs>? Build { get; set; }
+
+        /// <summary>
+        /// Force remove the image when the resource is destroyed
+        /// </summary>
+        [Input("forceRemove")]
+        public Input<bool>? ForceRemove { get; set; }
 
         /// <summary>
         /// If true, then the Docker image won't be

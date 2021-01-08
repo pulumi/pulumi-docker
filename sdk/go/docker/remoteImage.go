@@ -76,6 +76,8 @@ type RemoteImage struct {
 
 	// See Build below for details.
 	Build RemoteImageBuildPtrOutput `pulumi:"build"`
+	// Force remove the image when the resource is destroyed
+	ForceRemove pulumi.BoolPtrOutput `pulumi:"forceRemove"`
 	// If true, then the Docker image won't be
 	// deleted on destroy operation. If this is false, it will delete the image from
 	// the docker local storage on destroy operation.
@@ -128,6 +130,8 @@ func GetRemoteImage(ctx *pulumi.Context,
 type remoteImageState struct {
 	// See Build below for details.
 	Build *RemoteImageBuild `pulumi:"build"`
+	// Force remove the image when the resource is destroyed
+	ForceRemove *bool `pulumi:"forceRemove"`
 	// If true, then the Docker image won't be
 	// deleted on destroy operation. If this is false, it will delete the image from
 	// the docker local storage on destroy operation.
@@ -150,6 +154,8 @@ type remoteImageState struct {
 type RemoteImageState struct {
 	// See Build below for details.
 	Build RemoteImageBuildPtrInput
+	// Force remove the image when the resource is destroyed
+	ForceRemove pulumi.BoolPtrInput
 	// If true, then the Docker image won't be
 	// deleted on destroy operation. If this is false, it will delete the image from
 	// the docker local storage on destroy operation.
@@ -176,6 +182,8 @@ func (RemoteImageState) ElementType() reflect.Type {
 type remoteImageArgs struct {
 	// See Build below for details.
 	Build *RemoteImageBuild `pulumi:"build"`
+	// Force remove the image when the resource is destroyed
+	ForceRemove *bool `pulumi:"forceRemove"`
 	// If true, then the Docker image won't be
 	// deleted on destroy operation. If this is false, it will delete the image from
 	// the docker local storage on destroy operation.
@@ -197,6 +205,8 @@ type remoteImageArgs struct {
 type RemoteImageArgs struct {
 	// See Build below for details.
 	Build RemoteImageBuildPtrInput
+	// Force remove the image when the resource is destroyed
+	ForceRemove pulumi.BoolPtrInput
 	// If true, then the Docker image won't be
 	// deleted on destroy operation. If this is false, it will delete the image from
 	// the docker local storage on destroy operation.
