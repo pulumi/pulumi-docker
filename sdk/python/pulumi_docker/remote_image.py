@@ -18,6 +18,7 @@ class RemoteImage(pulumi.CustomResource):
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
                  build: Optional[pulumi.Input[pulumi.InputType['RemoteImageBuildArgs']]] = None,
+                 force_remove: Optional[pulumi.Input[bool]] = None,
                  keep_locally: Optional[pulumi.Input[bool]] = None,
                  name: Optional[pulumi.Input[str]] = None,
                  pull_trigger: Optional[pulumi.Input[str]] = None,
@@ -56,6 +57,7 @@ class RemoteImage(pulumi.CustomResource):
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[pulumi.InputType['RemoteImageBuildArgs']] build: See Build below for details.
+        :param pulumi.Input[bool] force_remove: Force remove the image when the resource is destroyed
         :param pulumi.Input[bool] keep_locally: If true, then the Docker image won't be
                deleted on destroy operation. If this is false, it will delete the image from
                the docker local storage on destroy operation.
@@ -84,6 +86,7 @@ class RemoteImage(pulumi.CustomResource):
             __props__ = dict()
 
             __props__['build'] = build
+            __props__['force_remove'] = force_remove
             __props__['keep_locally'] = keep_locally
             if name is None:
                 raise TypeError("Missing required property 'name'")
@@ -106,6 +109,7 @@ class RemoteImage(pulumi.CustomResource):
             id: pulumi.Input[str],
             opts: Optional[pulumi.ResourceOptions] = None,
             build: Optional[pulumi.Input[pulumi.InputType['RemoteImageBuildArgs']]] = None,
+            force_remove: Optional[pulumi.Input[bool]] = None,
             keep_locally: Optional[pulumi.Input[bool]] = None,
             latest: Optional[pulumi.Input[str]] = None,
             name: Optional[pulumi.Input[str]] = None,
@@ -120,6 +124,7 @@ class RemoteImage(pulumi.CustomResource):
         :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[pulumi.InputType['RemoteImageBuildArgs']] build: See Build below for details.
+        :param pulumi.Input[bool] force_remove: Force remove the image when the resource is destroyed
         :param pulumi.Input[bool] keep_locally: If true, then the Docker image won't be
                deleted on destroy operation. If this is false, it will delete the image from
                the docker local storage on destroy operation.
@@ -135,6 +140,7 @@ class RemoteImage(pulumi.CustomResource):
         __props__ = dict()
 
         __props__["build"] = build
+        __props__["force_remove"] = force_remove
         __props__["keep_locally"] = keep_locally
         __props__["latest"] = latest
         __props__["name"] = name
@@ -150,6 +156,14 @@ class RemoteImage(pulumi.CustomResource):
         See Build below for details.
         """
         return pulumi.get(self, "build")
+
+    @property
+    @pulumi.getter(name="forceRemove")
+    def force_remove(self) -> pulumi.Output[Optional[bool]]:
+        """
+        Force remove the image when the resource is destroyed
+        """
+        return pulumi.get(self, "force_remove")
 
     @property
     @pulumi.getter(name="keepLocally")

@@ -27,6 +27,7 @@ __all__ = [
     'ContainerVolumeArgs',
     'NetworkIpamConfigArgs',
     'NetworkLabelArgs',
+    'PluginGrantPermissionArgs',
     'ProviderRegistryAuthArgs',
     'RegistryImageBuildArgs',
     'RegistryImageBuildAuthConfigArgs',
@@ -1192,6 +1193,33 @@ class NetworkLabelArgs:
     @value.setter
     def value(self, value: pulumi.Input[str]):
         pulumi.set(self, "value", value)
+
+
+@pulumi.input_type
+class PluginGrantPermissionArgs:
+    def __init__(__self__, *,
+                 name: pulumi.Input[str],
+                 values: pulumi.Input[Sequence[pulumi.Input[str]]]):
+        pulumi.set(__self__, "name", name)
+        pulumi.set(__self__, "values", values)
+
+    @property
+    @pulumi.getter
+    def name(self) -> pulumi.Input[str]:
+        return pulumi.get(self, "name")
+
+    @name.setter
+    def name(self, value: pulumi.Input[str]):
+        pulumi.set(self, "name", value)
+
+    @property
+    @pulumi.getter
+    def values(self) -> pulumi.Input[Sequence[pulumi.Input[str]]]:
+        return pulumi.get(self, "values")
+
+    @values.setter
+    def values(self, value: pulumi.Input[Sequence[pulumi.Input[str]]]):
+        pulumi.set(self, "values", value)
 
 
 @pulumi.input_type
@@ -3897,15 +3925,19 @@ class ServiceTaskSpecLogDriverArgs:
 class ServiceTaskSpecPlacementArgs:
     def __init__(__self__, *,
                  constraints: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 max_replicas: Optional[pulumi.Input[int]] = None,
                  platforms: Optional[pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecPlacementPlatformArgs']]]] = None,
                  prefs: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None):
         """
         :param pulumi.Input[Sequence[pulumi.Input[str]]] constraints: An array of constraints. e.g.: `node.role==manager`
+        :param pulumi.Input[int] max_replicas: Maximum number of replicas for per node (default value is 0, which is unlimited)
         :param pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecPlacementPlatformArgs']]] platforms: Platforms stores all the platforms that the service's image can run on
         :param pulumi.Input[Sequence[pulumi.Input[str]]] prefs: Preferences provide a way to make the scheduler aware of factors such as topology. They are provided in order from highest to lowest precedence, e.g.: `spread=node.role.manager`
         """
         if constraints is not None:
             pulumi.set(__self__, "constraints", constraints)
+        if max_replicas is not None:
+            pulumi.set(__self__, "max_replicas", max_replicas)
         if platforms is not None:
             pulumi.set(__self__, "platforms", platforms)
         if prefs is not None:
@@ -3922,6 +3954,18 @@ class ServiceTaskSpecPlacementArgs:
     @constraints.setter
     def constraints(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
         pulumi.set(self, "constraints", value)
+
+    @property
+    @pulumi.getter(name="maxReplicas")
+    def max_replicas(self) -> Optional[pulumi.Input[int]]:
+        """
+        Maximum number of replicas for per node (default value is 0, which is unlimited)
+        """
+        return pulumi.get(self, "max_replicas")
+
+    @max_replicas.setter
+    def max_replicas(self, value: Optional[pulumi.Input[int]]):
+        pulumi.set(self, "max_replicas", value)
 
     @property
     @pulumi.getter

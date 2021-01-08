@@ -824,6 +824,34 @@
                 "value"
             ]
         },
+        "docker:index/PluginGrantPermission:PluginGrantPermission": {
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "values": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                }
+            },
+            "type": "object",
+            "required": [
+                "name",
+                "values"
+            ]
+        },
         "docker:index/ProviderRegistryAuth:ProviderRegistryAuth": {
             "properties": {
                 "address": {
@@ -2613,6 +2641,15 @@
                         }
                     }
                 },
+                "maxReplicas": {
+                    "type": "integer",
+                    "description": "Maximum number of replicas for per node (default value is 0, which is unlimited)\n",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
                 "platforms": {
                     "type": "array",
                     "items": {
@@ -4156,6 +4193,159 @@
                 "type": "object"
             }
         },
+        "docker:index/plugin:Plugin": {
+            "description": "Manages the lifecycle of a Docker plugin.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst sample_volume_plugin = new docker.Plugin(\"sample-volume-plugin\", {});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nsample_volume_plugin = docker.Plugin(\"sample-volume-plugin\")\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        var sample_volume_plugin = new Docker.Plugin(\"sample-volume-plugin\", new Docker.PluginArgs\n        {\n        });\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v2/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v2/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := docker.NewPlugin(ctx, \"sample_volume_plugin\", nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst sample_volume_plugin = new docker.Plugin(\"sample-volume-plugin\", {\n    alias: \"sample-volume-plugin\",\n    enableTimeout: 60,\n    enabled: false,\n    envs: [\"DEBUG=1\"],\n    forceDestroy: true,\n    forceDisable: true,\n    grantAllPermissions: true,\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nsample_volume_plugin = docker.Plugin(\"sample-volume-plugin\",\n    alias=\"sample-volume-plugin\",\n    enable_timeout=60,\n    enabled=False,\n    envs=[\"DEBUG=1\"],\n    force_destroy=True,\n    force_disable=True,\n    grant_all_permissions=True)\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        var sample_volume_plugin = new Docker.Plugin(\"sample-volume-plugin\", new Docker.PluginArgs\n        {\n            Alias = \"sample-volume-plugin\",\n            EnableTimeout = 60,\n            Enabled = false,\n            Envs = \n            {\n                \"DEBUG=1\",\n            },\n            ForceDestroy = true,\n            ForceDisable = true,\n            GrantAllPermissions = true,\n        });\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v2/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v2/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := docker.NewPlugin(ctx, \"sample_volume_plugin\", \u0026docker.PluginArgs{\n\t\t\tAlias:         pulumi.String(\"sample-volume-plugin\"),\n\t\t\tEnableTimeout: pulumi.Int(60),\n\t\t\tEnabled:       pulumi.Bool(false),\n\t\t\tEnvs: pulumi.StringArray{\n\t\t\t\tpulumi.String(\"DEBUG=1\"),\n\t\t\t},\n\t\t\tForceDestroy:        pulumi.Bool(true),\n\t\t\tForceDisable:        pulumi.Bool(true),\n\t\t\tGrantAllPermissions: pulumi.Bool(true),\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n{{% /example %}}\n{{% /examples %}}\n\n## Import\n\nDocker plugins can be imported using the long id, e.g. for a plugin `tiborvass/sample-volume-plugin:latest`\n\n```sh\n $ pulumi import docker:index/plugin:Plugin sample-volume-plugin $(docker plugin inspect -f \"{{.ID}}\" tiborvass/sample-volume-plugin:latest)\n```\n\n ",
+            "properties": {
+                "alias": {
+                    "type": "string",
+                    "description": "The alias of the Docker plugin. If the tag is omitted, `:latest` is complemented to the attribute value.\n"
+                },
+                "enableTimeout": {
+                    "type": "integer",
+                    "description": "HTTP client timeout to enable the plugin.\n"
+                },
+                "enabled": {
+                    "type": "boolean",
+                    "description": "If true, the plugin is enabled. The default value is `true`.\n"
+                },
+                "envs": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": ". The environment variables.\n"
+                },
+                "forceDestroy": {
+                    "type": "boolean",
+                    "description": "If true, the plugin is removed forcibly when the plugin is removed.\n"
+                },
+                "forceDisable": {
+                    "type": "boolean",
+                    "description": "If true, then the plugin is disabled forcibly when the plugin is disabled.\n"
+                },
+                "grantAllPermissions": {
+                    "type": "boolean",
+                    "description": "If true, grant all permissions necessary to run the plugin. This attribute conflicts with `grant_permissions`.\n"
+                },
+                "grantPermissions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/docker:index/PluginGrantPermission:PluginGrantPermission"
+                    },
+                    "description": "grant permissions necessary to run the plugin. This attribute conflicts with `grant_all_permissions`. See grant_permissions below for details.\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Docker Plugin name\n"
+                },
+                "pluginReference": {
+                    "type": "string",
+                    "description": "(string) The plugin reference.\n"
+                }
+            },
+            "required": [
+                "alias",
+                "envs",
+                "name",
+                "pluginReference"
+            ],
+            "inputProperties": {
+                "alias": {
+                    "type": "string",
+                    "description": "The alias of the Docker plugin. If the tag is omitted, `:latest` is complemented to the attribute value.\n"
+                },
+                "enableTimeout": {
+                    "type": "integer",
+                    "description": "HTTP client timeout to enable the plugin.\n"
+                },
+                "enabled": {
+                    "type": "boolean",
+                    "description": "If true, the plugin is enabled. The default value is `true`.\n"
+                },
+                "envs": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": ". The environment variables.\n"
+                },
+                "forceDestroy": {
+                    "type": "boolean",
+                    "description": "If true, the plugin is removed forcibly when the plugin is removed.\n"
+                },
+                "forceDisable": {
+                    "type": "boolean",
+                    "description": "If true, then the plugin is disabled forcibly when the plugin is disabled.\n"
+                },
+                "grantAllPermissions": {
+                    "type": "boolean",
+                    "description": "If true, grant all permissions necessary to run the plugin. This attribute conflicts with `grant_permissions`.\n"
+                },
+                "grantPermissions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/docker:index/PluginGrantPermission:PluginGrantPermission"
+                    },
+                    "description": "grant permissions necessary to run the plugin. This attribute conflicts with `grant_all_permissions`. See grant_permissions below for details.\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Docker Plugin name\n"
+                }
+            },
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering Plugin resources.\n",
+                "properties": {
+                    "alias": {
+                        "type": "string",
+                        "description": "The alias of the Docker plugin. If the tag is omitted, `:latest` is complemented to the attribute value.\n"
+                    },
+                    "enableTimeout": {
+                        "type": "integer",
+                        "description": "HTTP client timeout to enable the plugin.\n"
+                    },
+                    "enabled": {
+                        "type": "boolean",
+                        "description": "If true, the plugin is enabled. The default value is `true`.\n"
+                    },
+                    "envs": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": ". The environment variables.\n"
+                    },
+                    "forceDestroy": {
+                        "type": "boolean",
+                        "description": "If true, the plugin is removed forcibly when the plugin is removed.\n"
+                    },
+                    "forceDisable": {
+                        "type": "boolean",
+                        "description": "If true, then the plugin is disabled forcibly when the plugin is disabled.\n"
+                    },
+                    "grantAllPermissions": {
+                        "type": "boolean",
+                        "description": "If true, grant all permissions necessary to run the plugin. This attribute conflicts with `grant_permissions`.\n"
+                    },
+                    "grantPermissions": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/types/docker:index/PluginGrantPermission:PluginGrantPermission"
+                        },
+                        "description": "grant permissions necessary to run the plugin. This attribute conflicts with `grant_all_permissions`. See grant_permissions below for details.\n"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Docker Plugin name\n"
+                    },
+                    "pluginReference": {
+                        "type": "string",
+                        "description": "(string) The plugin reference.\n"
+                    }
+                },
+                "type": "object"
+            }
+        },
         "docker:index/registryImage:RegistryImage": {
             "description": "Provides an image/tag in a Docker registry.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst helloworld = new docker.RegistryImage(\"helloworld\", {\n    build: {\n        context: \"pathToContextFolder\",\n    },\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nhelloworld = docker.RegistryImage(\"helloworld\", build=docker.RegistryImageBuildArgs(\n    context=\"pathToContextFolder\",\n))\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        var helloworld = new Docker.RegistryImage(\"helloworld\", new Docker.RegistryImageArgs\n        {\n            Build = new Docker.Inputs.RegistryImageBuildArgs\n            {\n                Context = \"pathToContextFolder\",\n            },\n        });\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v2/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v2/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := docker.NewRegistryImage(ctx, \"helloworld\", \u0026docker.RegistryImageArgs{\n\t\t\tBuild: \u0026docker.RegistryImageBuildArgs{\n\t\t\t\tContext: pulumi.String(\"pathToContextFolder\"),\n\t\t\t},\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n{{% /example %}}\n{{% /examples %}}",
             "properties": {
@@ -4222,6 +4412,10 @@
                     "$ref": "#/types/docker:index/RemoteImageBuild:RemoteImageBuild",
                     "description": "See Build below for details.\n"
                 },
+                "forceRemove": {
+                    "type": "boolean",
+                    "description": "Force remove the image when the resource is destroyed\n"
+                },
                 "keepLocally": {
                     "type": "boolean",
                     "description": "If true, then the Docker image won't be\ndeleted on destroy operation. If this is false, it will delete the image from\nthe docker local storage on destroy operation.\n"
@@ -4259,6 +4453,10 @@
                     "$ref": "#/types/docker:index/RemoteImageBuild:RemoteImageBuild",
                     "description": "See Build below for details.\n"
                 },
+                "forceRemove": {
+                    "type": "boolean",
+                    "description": "Force remove the image when the resource is destroyed\n"
+                },
                 "keepLocally": {
                     "type": "boolean",
                     "description": "If true, then the Docker image won't be\ndeleted on destroy operation. If this is false, it will delete the image from\nthe docker local storage on destroy operation.\n"
@@ -4289,6 +4487,10 @@
                     "build": {
                         "$ref": "#/types/docker:index/RemoteImageBuild:RemoteImageBuild",
                         "description": "See Build below for details.\n"
+                    },
+                    "forceRemove": {
+                        "type": "boolean",
+                        "description": "Force remove the image when the resource is destroyed\n"
                     },
                     "keepLocally": {
                         "type": "boolean",
@@ -4717,6 +4919,58 @@
                     "ipamConfigs",
                     "options",
                     "scope"
+                ]
+            }
+        },
+        "docker:index/getPlugin:getPlugin": {
+            "description": "Reads the local Docker plugin. The plugin must be installed locally.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst sample_volume_plugin = pulumi.output(docker.getPlugin({\n    alias: \"sample-volume-plugin:latest\",\n}, { async: true }));\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nsample_volume_plugin = docker.get_plugin(alias=\"sample-volume-plugin:latest\")\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        var sample_volume_plugin = Output.Create(Docker.GetPlugin.InvokeAsync(new Docker.GetPluginArgs\n        {\n            Alias = \"sample-volume-plugin:latest\",\n        }));\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v2/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v2/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\topt0 := \"sample-volume-plugin:latest\"\n\t\t_, err := docker.LookupPlugin(ctx, \u0026docker.LookupPluginArgs{\n\t\t\tAlias: \u0026opt0,\n\t\t}, nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n{{% /example %}}\n{{% /examples %}}",
+            "inputs": {
+                "description": "A collection of arguments for invoking getPlugin.\n",
+                "properties": {
+                    "alias": {
+                        "type": "string",
+                        "description": "The alias of the Docker plugin.\n"
+                    },
+                    "id": {
+                        "type": "string",
+                        "description": "The Docker plugin ID.\n"
+                    }
+                },
+                "type": "object"
+            },
+            "outputs": {
+                "description": "A collection of values returned by getPlugin.\n",
+                "properties": {
+                    "alias": {
+                        "type": "string"
+                    },
+                    "enabled": {
+                        "type": "boolean"
+                    },
+                    "envs": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "grantAllPermissions": {
+                        "type": "boolean",
+                        "description": "(Optional, boolean) If true, grant all permissions necessary to run the plugin.\n"
+                    },
+                    "id": {
+                        "type": "string"
+                    },
+                    "pluginReference": {
+                        "type": "string",
+                        "description": "(Optional, string, Forces new resource) The plugin reference.\n"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "enabled",
+                    "envs",
+                    "grantAllPermissions",
+                    "pluginReference"
                 ]
             }
         },
