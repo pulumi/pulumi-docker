@@ -84,7 +84,7 @@ export interface DockerBuild {
      * Environment variables to set on the invocation of `docker build`, for example to support
      * `DOCKER_BUILDKIT=1 docker build`.
      */
-    env?: Record<string, string>;
+    env?: pulumi.Input<Record<string, pulumi.Input<string>>>;
 
     /***
      * The target of the dockerfile to build
