@@ -399,7 +399,7 @@ export class Container extends pulumi.CustomResource {
             inputs["workingDir"] = state ? state.workingDir : undefined;
         } else {
             const args = argsOrState as ContainerArgs | undefined;
-            if (!args || args.image === undefined) {
+            if ((!args || args.image === undefined) && !(opts && opts.urn)) {
                 throw new Error("Missing required property 'image'");
             }
             inputs["attach"] = args ? args.attach : undefined;

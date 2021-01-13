@@ -30,11 +30,12 @@ type ServiceConfig struct {
 // NewServiceConfig registers a new resource with the given unique name, arguments, and options.
 func NewServiceConfig(ctx *pulumi.Context,
 	name string, args *ServiceConfigArgs, opts ...pulumi.ResourceOption) (*ServiceConfig, error) {
-	if args == nil || args.Data == nil {
-		return nil, errors.New("missing required argument 'Data'")
-	}
 	if args == nil {
-		args = &ServiceConfigArgs{}
+		return nil, errors.New("missing one or more required arguments")
+	}
+
+	if args.Data == nil {
+		return nil, errors.New("invalid value for required argument 'Data'")
 	}
 	var resource ServiceConfig
 	err := ctx.RegisterResource("docker:index/serviceConfig:ServiceConfig", name, args, &resource, opts...)

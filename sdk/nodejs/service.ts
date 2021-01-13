@@ -102,7 +102,7 @@ export class Service extends pulumi.CustomResource {
             inputs["updateConfig"] = state ? state.updateConfig : undefined;
         } else {
             const args = argsOrState as ServiceArgs | undefined;
-            if (!args || args.taskSpec === undefined) {
+            if ((!args || args.taskSpec === undefined) && !(opts && opts.urn)) {
                 throw new Error("Missing required property 'taskSpec'");
             }
             inputs["auth"] = args ? args.auth : undefined;

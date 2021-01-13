@@ -26,3 +26,65 @@ from . import outputs
 from . import (
     config,
 )
+
+def _register_module():
+    import pulumi
+    from . import _utilities
+
+
+    class Module(pulumi.runtime.ResourceModule):
+        _version = _utilities.get_semver_version()
+
+        def version(self):
+            return Module._version
+
+        def construct(self, name: str, typ: str, urn: str) -> pulumi.Resource:
+            if typ == "docker:index/container:Container":
+                return Container(name, pulumi.ResourceOptions(urn=urn))
+            elif typ == "docker:index/network:Network":
+                return Network(name, pulumi.ResourceOptions(urn=urn))
+            elif typ == "docker:index/plugin:Plugin":
+                return Plugin(name, pulumi.ResourceOptions(urn=urn))
+            elif typ == "docker:index/registryImage:RegistryImage":
+                return RegistryImage(name, pulumi.ResourceOptions(urn=urn))
+            elif typ == "docker:index/remoteImage:RemoteImage":
+                return RemoteImage(name, pulumi.ResourceOptions(urn=urn))
+            elif typ == "docker:index/secret:Secret":
+                return Secret(name, pulumi.ResourceOptions(urn=urn))
+            elif typ == "docker:index/service:Service":
+                return Service(name, pulumi.ResourceOptions(urn=urn))
+            elif typ == "docker:index/serviceConfig:ServiceConfig":
+                return ServiceConfig(name, pulumi.ResourceOptions(urn=urn))
+            elif typ == "docker:index/volume:Volume":
+                return Volume(name, pulumi.ResourceOptions(urn=urn))
+            else:
+                raise Exception(f"unknown resource type {typ}")
+
+
+    _module_instance = Module()
+    pulumi.runtime.register_resource_module("docker", "index/container", _module_instance)
+    pulumi.runtime.register_resource_module("docker", "index/network", _module_instance)
+    pulumi.runtime.register_resource_module("docker", "index/plugin", _module_instance)
+    pulumi.runtime.register_resource_module("docker", "index/registryImage", _module_instance)
+    pulumi.runtime.register_resource_module("docker", "index/remoteImage", _module_instance)
+    pulumi.runtime.register_resource_module("docker", "index/secret", _module_instance)
+    pulumi.runtime.register_resource_module("docker", "index/service", _module_instance)
+    pulumi.runtime.register_resource_module("docker", "index/serviceConfig", _module_instance)
+    pulumi.runtime.register_resource_module("docker", "index/volume", _module_instance)
+
+
+    class Package(pulumi.runtime.ResourcePackage):
+        _version = _utilities.get_semver_version()
+
+        def version(self):
+            return Package._version
+
+        def construct_provider(self, name: str, typ: str, urn: str) -> pulumi.ProviderResource:
+            if typ != "pulumi:providers:docker":
+                raise Exception(f"unknown provider type {typ}")
+            return Provider(name, pulumi.ResourceOptions(urn=urn))
+
+
+    pulumi.runtime.register_resource_package("docker", Package())
+
+_register_module()

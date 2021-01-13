@@ -208,11 +208,12 @@ type Container struct {
 // NewContainer registers a new resource with the given unique name, arguments, and options.
 func NewContainer(ctx *pulumi.Context,
 	name string, args *ContainerArgs, opts ...pulumi.ResourceOption) (*Container, error) {
-	if args == nil || args.Image == nil {
-		return nil, errors.New("missing required argument 'Image'")
-	}
 	if args == nil {
-		args = &ContainerArgs{}
+		return nil, errors.New("missing one or more required arguments")
+	}
+
+	if args.Image == nil {
+		return nil, errors.New("invalid value for required argument 'Image'")
 	}
 	var resource Container
 	err := ctx.RegisterResource("docker:index/container:Container", name, args, &resource, opts...)

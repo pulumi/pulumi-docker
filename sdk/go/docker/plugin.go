@@ -100,6 +100,7 @@ func NewPlugin(ctx *pulumi.Context,
 	if args == nil {
 		args = &PluginArgs{}
 	}
+
 	var resource Plugin
 	err := ctx.RegisterResource("docker:index/plugin:Plugin", name, args, &resource, opts...)
 	if err != nil {

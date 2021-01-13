@@ -115,7 +115,7 @@ func Provider() tfbridge.ProviderInfo {
 		},
 		JavaScript: &tfbridge.JavaScriptInfo{
 			Dependencies: map[string]string{
-				"@pulumi/pulumi": "^2.0.0",
+				"@pulumi/pulumi": "^2.15.0",
 				"semver":         "^5.4.0",
 			},
 			DevDependencies: map[string]string{
@@ -132,9 +132,8 @@ func Provider() tfbridge.ProviderInfo {
 		},
 		Python: &tfbridge.PythonInfo{
 			Requires: map[string]string{
-				"pulumi": ">=2.9.0,<3.0.0",
+				"pulumi": ">=2.15.0,<3.0.0",
 			},
-			UsesIOClasses: true,
 			Overlay: &tfbridge.OverlayInfo{
 				DestFiles: []string{
 					"pulumi_docker/docker.py",
