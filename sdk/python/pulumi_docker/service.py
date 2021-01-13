@@ -74,7 +74,7 @@ class Service(pulumi.CustomResource):
             __props__['mode'] = mode
             __props__['name'] = name
             __props__['rollback_config'] = rollback_config
-            if task_spec is None:
+            if task_spec is None and not opts.urn:
                 raise TypeError("Missing required property 'task_spec'")
             __props__['task_spec'] = task_spec
             __props__['update_config'] = update_config

@@ -122,7 +122,7 @@ export class RemoteImage extends pulumi.CustomResource {
             inputs["pullTriggers"] = state ? state.pullTriggers : undefined;
         } else {
             const args = argsOrState as RemoteImageArgs | undefined;
-            if (!args || args.name === undefined) {
+            if ((!args || args.name === undefined) && !(opts && opts.urn)) {
                 throw new Error("Missing required property 'name'");
             }
             inputs["build"] = args ? args.build : undefined;

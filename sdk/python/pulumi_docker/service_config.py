@@ -51,7 +51,7 @@ class ServiceConfig(pulumi.CustomResource):
                 raise TypeError('__props__ is only valid when passed in combination with a valid opts.id to get an existing resource')
             __props__ = dict()
 
-            if data is None:
+            if data is None and not opts.urn:
                 raise TypeError("Missing required property 'data'")
             __props__['data'] = data
             __props__['name'] = name

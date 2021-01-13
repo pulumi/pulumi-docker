@@ -24,6 +24,7 @@ func NewProvider(ctx *pulumi.Context,
 	if args == nil {
 		args = &ProviderArgs{}
 	}
+
 	if args.Host == nil {
 		args.Host = pulumi.StringPtr(getEnvOrDefault("unix:///var/run/docker.sock", nil, "DOCKER_HOST").(string))
 	}

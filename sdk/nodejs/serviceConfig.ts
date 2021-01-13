@@ -66,7 +66,7 @@ export class ServiceConfig extends pulumi.CustomResource {
             inputs["name"] = state ? state.name : undefined;
         } else {
             const args = argsOrState as ServiceConfigArgs | undefined;
-            if (!args || args.data === undefined) {
+            if ((!args || args.data === undefined) && !(opts && opts.urn)) {
                 throw new Error("Missing required property 'data'");
             }
             inputs["data"] = args ? args.data : undefined;

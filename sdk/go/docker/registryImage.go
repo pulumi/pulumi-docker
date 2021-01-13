@@ -56,6 +56,7 @@ func NewRegistryImage(ctx *pulumi.Context,
 	if args == nil {
 		args = &RegistryImageArgs{}
 	}
+
 	var resource RegistryImage
 	err := ctx.RegisterResource("docker:index/registryImage:RegistryImage", name, args, &resource, opts...)
 	if err != nil {

@@ -202,13 +202,13 @@ class Container(pulumi.CustomResource):
             __props__['healthcheck'] = healthcheck
             __props__['hostname'] = hostname
             __props__['hosts'] = hosts
-            if image is None:
+            if image is None and not opts.urn:
                 raise TypeError("Missing required property 'image'")
             __props__['image'] = image
             __props__['init'] = init
             __props__['ipc_mode'] = ipc_mode
             __props__['labels'] = labels
-            if links is not None:
+            if links is not None and not opts.urn:
                 warnings.warn("""The --link flag is a legacy feature of Docker. It may eventually be removed.""", DeprecationWarning)
                 pulumi.log.warn("links is deprecated: The --link flag is a legacy feature of Docker. It may eventually be removed.")
             __props__['links'] = links
@@ -221,12 +221,12 @@ class Container(pulumi.CustomResource):
             __props__['mounts'] = mounts
             __props__['must_run'] = must_run
             __props__['name'] = name
-            if network_aliases is not None:
+            if network_aliases is not None and not opts.urn:
                 warnings.warn("""Use networks_advanced instead. Will be removed in v2.0.0""", DeprecationWarning)
                 pulumi.log.warn("network_aliases is deprecated: Use networks_advanced instead. Will be removed in v2.0.0")
             __props__['network_aliases'] = network_aliases
             __props__['network_mode'] = network_mode
-            if networks is not None:
+            if networks is not None and not opts.urn:
                 warnings.warn("""Use networks_advanced instead. Will be removed in v2.0.0""", DeprecationWarning)
                 pulumi.log.warn("networks is deprecated: Use networks_advanced instead. Will be removed in v2.0.0")
             __props__['networks'] = networks

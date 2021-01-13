@@ -100,11 +100,12 @@ type RemoteImage struct {
 // NewRemoteImage registers a new resource with the given unique name, arguments, and options.
 func NewRemoteImage(ctx *pulumi.Context,
 	name string, args *RemoteImageArgs, opts ...pulumi.ResourceOption) (*RemoteImage, error) {
-	if args == nil || args.Name == nil {
-		return nil, errors.New("missing required argument 'Name'")
-	}
 	if args == nil {
-		args = &RemoteImageArgs{}
+		return nil, errors.New("missing one or more required arguments")
+	}
+
+	if args.Name == nil {
+		return nil, errors.New("invalid value for required argument 'Name'")
 	}
 	var resource RemoteImage
 	err := ctx.RegisterResource("docker:index/remoteImage:RemoteImage", name, args, &resource, opts...)
