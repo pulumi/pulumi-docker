@@ -99,8 +99,8 @@ class DockerBuild:
 
     extra_options: Optional[Sequence[pulumi.Input[pulumi.Input[str]]]]
     """
-    An optional catch-all str to provide extra CLI options to the docker build command.  For
-    example, use to specify `--network host`.
+    An optional catch-all list of arguments to provide extra CLI options to the docker build command.  For
+    example `['--network', 'host']`.
     """
 
     env: Optional[Mapping[str, str]]
@@ -135,8 +135,8 @@ class DockerBuild:
             to the Docker CLI. If this parameter is `true`, only the final image will be pulled and passed to
             --cache-from if it is a CacheFrom object, the stages named therein will also be pulled and passed to
             --cache-from.
-        :param Optional[Sequence[pulumi.Input[pulumi.Input[str]]]] extra_options: An optional catch-all str to provide
-            extra CLI options to the docker build command.  For example, use to specify `--network host`.
+        :param Optional[Sequence[pulumi.Input[pulumi.Input[str]]]] extra_options: An optional catch-all list of arguments 
+            to provide extra CLI options to the docker build command.  For example `['--network', 'host']`.
         :param Optional[Mapping[str, str]] env: Environment variables to set on the invocation of `docker build`, for
          example to support `DOCKER_BUILDKIT=1 docker build`.
         :param Optional[pulumi.Input[str]] target: The target of the dockerfile to build

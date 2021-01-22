@@ -75,8 +75,8 @@ export interface DockerBuild {
     cacheFrom?: pulumi.Input<boolean | CacheFrom>;
 
     /**
-     * An optional catch-all string to provide extra CLI options to the docker build command.  For
-     * example, use to specify `--network host`.
+     * An optional catch-all list of arguments to provide extra CLI options to the docker build command.  For
+     * example `['--network', 'host']`.
      */
     extraOptions?: pulumi.Input<pulumi.Input<string>[]>;
 
