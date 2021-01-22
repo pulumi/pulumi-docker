@@ -90,8 +90,8 @@ type DockerBuildArgs struct {
 	// a CacheFrom object, the stages named therein will also be pulled and passed to --cache-from.
 	CacheFrom CacheFromInput `pulumi:"cacheFrom"`
 
-	// An optional catch-all string to provide extra CLI options to the docker build command.
-	// For example, use to specify `--network host`.
+	// An optional catch-all list of arguments to provide extra CLI options to the docker build command.
+	// For example `{'--network', 'host'}`.
 	ExtraOptions pulumi.StringArrayInput `pulumi:"extraOptions"`
 
 	// Environment variables to set on the invocation of `docker build`, for example to support

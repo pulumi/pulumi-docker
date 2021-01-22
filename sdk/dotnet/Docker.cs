@@ -57,8 +57,8 @@ namespace Pulumi.Docker
         public InputUnion<bool, CacheFrom>? CacheFrom { get; set; }
 
         /// <summary>
-        /// An optional catch-all string to provide extra CLI options to the docker build command.
-        /// For example, use to specify `--network host`.
+        /// An optional catch-all list of arguments to provide extra CLI options to the docker build command.  For
+        /// example `{'--network', 'host'}`.
         /// </summary>
         [Input("extraOptions")]
         public InputList<string>? ExtraOptions { get; set; }
