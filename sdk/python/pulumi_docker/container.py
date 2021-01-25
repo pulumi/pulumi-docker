@@ -63,8 +63,10 @@ class Container(pulumi.CustomResource):
                  security_opts: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  shm_size: Optional[pulumi.Input[int]] = None,
                  start: Optional[pulumi.Input[bool]] = None,
+                 stdin_open: Optional[pulumi.Input[bool]] = None,
                  sysctls: Optional[pulumi.Input[Mapping[str, Any]]] = None,
                  tmpfs: Optional[pulumi.Input[Mapping[str, Any]]] = None,
+                 tty: Optional[pulumi.Input[bool]] = None,
                  ulimits: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerUlimitArgs']]]]] = None,
                  uploads: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerUploadArgs']]]]] = None,
                  user: Optional[pulumi.Input[str]] = None,
@@ -156,8 +158,10 @@ class Container(pulumi.CustomResource):
         :param pulumi.Input[int] shm_size: Size of `/dev/shm` in MBs.
         :param pulumi.Input[bool] start: If true, then the Docker container will be
                started after creation. If false, then the container is only created.
+        :param pulumi.Input[bool] stdin_open: if true, keep STDIN open even if not attached (docker run -i)
         :param pulumi.Input[Mapping[str, Any]] sysctls: A map of kernel parameters (sysctls) to set in the container.
         :param pulumi.Input[Mapping[str, Any]] tmpfs: A map of container directories which should be replaced by `tmpfs mounts`, and their corresponding mount options.
+        :param pulumi.Input[bool] tty: if true, allocate a pseudo-tty (docker run -t)
         :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerUlimitArgs']]]] ulimits: See Ulimits below for
                details.
         :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerUploadArgs']]]] uploads: See File Upload below for details.
@@ -242,8 +246,10 @@ class Container(pulumi.CustomResource):
             __props__['security_opts'] = security_opts
             __props__['shm_size'] = shm_size
             __props__['start'] = start
+            __props__['stdin_open'] = stdin_open
             __props__['sysctls'] = sysctls
             __props__['tmpfs'] = tmpfs
+            __props__['tty'] = tty
             __props__['ulimits'] = ulimits
             __props__['uploads'] = uploads
             __props__['user'] = user
@@ -320,8 +326,10 @@ class Container(pulumi.CustomResource):
             security_opts: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
             shm_size: Optional[pulumi.Input[int]] = None,
             start: Optional[pulumi.Input[bool]] = None,
+            stdin_open: Optional[pulumi.Input[bool]] = None,
             sysctls: Optional[pulumi.Input[Mapping[str, Any]]] = None,
             tmpfs: Optional[pulumi.Input[Mapping[str, Any]]] = None,
+            tty: Optional[pulumi.Input[bool]] = None,
             ulimits: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerUlimitArgs']]]]] = None,
             uploads: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerUploadArgs']]]]] = None,
             user: Optional[pulumi.Input[str]] = None,
@@ -402,8 +410,10 @@ class Container(pulumi.CustomResource):
         :param pulumi.Input[int] shm_size: Size of `/dev/shm` in MBs.
         :param pulumi.Input[bool] start: If true, then the Docker container will be
                started after creation. If false, then the container is only created.
+        :param pulumi.Input[bool] stdin_open: if true, keep STDIN open even if not attached (docker run -i)
         :param pulumi.Input[Mapping[str, Any]] sysctls: A map of kernel parameters (sysctls) to set in the container.
         :param pulumi.Input[Mapping[str, Any]] tmpfs: A map of container directories which should be replaced by `tmpfs mounts`, and their corresponding mount options.
+        :param pulumi.Input[bool] tty: if true, allocate a pseudo-tty (docker run -t)
         :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerUlimitArgs']]]] ulimits: See Ulimits below for
                details.
         :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerUploadArgs']]]] uploads: See File Upload below for details.
@@ -471,8 +481,10 @@ class Container(pulumi.CustomResource):
         __props__["security_opts"] = security_opts
         __props__["shm_size"] = shm_size
         __props__["start"] = start
+        __props__["stdin_open"] = stdin_open
         __props__["sysctls"] = sysctls
         __props__["tmpfs"] = tmpfs
+        __props__["tty"] = tty
         __props__["ulimits"] = ulimits
         __props__["uploads"] = uploads
         __props__["user"] = user
@@ -910,6 +922,14 @@ class Container(pulumi.CustomResource):
         return pulumi.get(self, "start")
 
     @property
+    @pulumi.getter(name="stdinOpen")
+    def stdin_open(self) -> pulumi.Output[Optional[bool]]:
+        """
+        if true, keep STDIN open even if not attached (docker run -i)
+        """
+        return pulumi.get(self, "stdin_open")
+
+    @property
     @pulumi.getter
     def sysctls(self) -> pulumi.Output[Optional[Mapping[str, Any]]]:
         """
@@ -924,6 +944,14 @@ class Container(pulumi.CustomResource):
         A map of container directories which should be replaced by `tmpfs mounts`, and their corresponding mount options.
         """
         return pulumi.get(self, "tmpfs")
+
+    @property
+    @pulumi.getter
+    def tty(self) -> pulumi.Output[Optional[bool]]:
+        """
+        if true, allocate a pseudo-tty (docker run -t)
+        """
+        return pulumi.get(self, "tty")
 
     @property
     @pulumi.getter

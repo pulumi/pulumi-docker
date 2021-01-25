@@ -370,6 +370,12 @@ namespace Pulumi.Docker
         public Output<bool?> Start { get; private set; } = null!;
 
         /// <summary>
+        /// if true, keep STDIN open even if not attached (docker run -i)
+        /// </summary>
+        [Output("stdinOpen")]
+        public Output<bool?> StdinOpen { get; private set; } = null!;
+
+        /// <summary>
         /// A map of kernel parameters (sysctls) to set in the container.
         /// </summary>
         [Output("sysctls")]
@@ -380,6 +386,12 @@ namespace Pulumi.Docker
         /// </summary>
         [Output("tmpfs")]
         public Output<ImmutableDictionary<string, object>?> Tmpfs { get; private set; } = null!;
+
+        /// <summary>
+        /// if true, allocate a pseudo-tty (docker run -t)
+        /// </summary>
+        [Output("tty")]
+        public Output<bool?> Tty { get; private set; } = null!;
 
         /// <summary>
         /// See Ulimits below for
@@ -854,6 +866,12 @@ namespace Pulumi.Docker
         [Input("start")]
         public Input<bool>? Start { get; set; }
 
+        /// <summary>
+        /// if true, keep STDIN open even if not attached (docker run -i)
+        /// </summary>
+        [Input("stdinOpen")]
+        public Input<bool>? StdinOpen { get; set; }
+
         [Input("sysctls")]
         private InputMap<object>? _sysctls;
 
@@ -877,6 +895,12 @@ namespace Pulumi.Docker
             get => _tmpfs ?? (_tmpfs = new InputMap<object>());
             set => _tmpfs = value;
         }
+
+        /// <summary>
+        /// if true, allocate a pseudo-tty (docker run -t)
+        /// </summary>
+        [Input("tty")]
+        public Input<bool>? Tty { get; set; }
 
         [Input("ulimits")]
         private InputList<Inputs.ContainerUlimitArgs>? _ulimits;
@@ -1381,6 +1405,12 @@ namespace Pulumi.Docker
         [Input("start")]
         public Input<bool>? Start { get; set; }
 
+        /// <summary>
+        /// if true, keep STDIN open even if not attached (docker run -i)
+        /// </summary>
+        [Input("stdinOpen")]
+        public Input<bool>? StdinOpen { get; set; }
+
         [Input("sysctls")]
         private InputMap<object>? _sysctls;
 
@@ -1404,6 +1434,12 @@ namespace Pulumi.Docker
             get => _tmpfs ?? (_tmpfs = new InputMap<object>());
             set => _tmpfs = value;
         }
+
+        /// <summary>
+        /// if true, allocate a pseudo-tty (docker run -t)
+        /// </summary>
+        [Input("tty")]
+        public Input<bool>? Tty { get; set; }
 
         [Input("ulimits")]
         private InputList<Inputs.ContainerUlimitGetArgs>? _ulimits;
