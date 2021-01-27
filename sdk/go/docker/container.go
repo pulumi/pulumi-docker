@@ -184,10 +184,14 @@ type Container struct {
 	// If true, then the Docker container will be
 	// started after creation. If false, then the container is only created.
 	Start pulumi.BoolPtrOutput `pulumi:"start"`
+	// if true, keep STDIN open even if not attached (docker run -i)
+	StdinOpen pulumi.BoolPtrOutput `pulumi:"stdinOpen"`
 	// A map of kernel parameters (sysctls) to set in the container.
 	Sysctls pulumi.MapOutput `pulumi:"sysctls"`
 	// A map of container directories which should be replaced by `tmpfs mounts`, and their corresponding mount options.
 	Tmpfs pulumi.MapOutput `pulumi:"tmpfs"`
+	// if true, allocate a pseudo-tty (docker run -t)
+	Tty pulumi.BoolPtrOutput `pulumi:"tty"`
 	// See Ulimits below for
 	// details.
 	Ulimits ContainerUlimitArrayOutput `pulumi:"ulimits"`
@@ -369,10 +373,14 @@ type containerState struct {
 	// If true, then the Docker container will be
 	// started after creation. If false, then the container is only created.
 	Start *bool `pulumi:"start"`
+	// if true, keep STDIN open even if not attached (docker run -i)
+	StdinOpen *bool `pulumi:"stdinOpen"`
 	// A map of kernel parameters (sysctls) to set in the container.
 	Sysctls map[string]interface{} `pulumi:"sysctls"`
 	// A map of container directories which should be replaced by `tmpfs mounts`, and their corresponding mount options.
 	Tmpfs map[string]interface{} `pulumi:"tmpfs"`
+	// if true, allocate a pseudo-tty (docker run -t)
+	Tty *bool `pulumi:"tty"`
 	// See Ulimits below for
 	// details.
 	Ulimits []ContainerUlimit `pulumi:"ulimits"`
@@ -523,10 +531,14 @@ type ContainerState struct {
 	// If true, then the Docker container will be
 	// started after creation. If false, then the container is only created.
 	Start pulumi.BoolPtrInput
+	// if true, keep STDIN open even if not attached (docker run -i)
+	StdinOpen pulumi.BoolPtrInput
 	// A map of kernel parameters (sysctls) to set in the container.
 	Sysctls pulumi.MapInput
 	// A map of container directories which should be replaced by `tmpfs mounts`, and their corresponding mount options.
 	Tmpfs pulumi.MapInput
+	// if true, allocate a pseudo-tty (docker run -t)
+	Tty pulumi.BoolPtrInput
 	// See Ulimits below for
 	// details.
 	Ulimits ContainerUlimitArrayInput
@@ -658,10 +670,14 @@ type containerArgs struct {
 	// If true, then the Docker container will be
 	// started after creation. If false, then the container is only created.
 	Start *bool `pulumi:"start"`
+	// if true, keep STDIN open even if not attached (docker run -i)
+	StdinOpen *bool `pulumi:"stdinOpen"`
 	// A map of kernel parameters (sysctls) to set in the container.
 	Sysctls map[string]interface{} `pulumi:"sysctls"`
 	// A map of container directories which should be replaced by `tmpfs mounts`, and their corresponding mount options.
 	Tmpfs map[string]interface{} `pulumi:"tmpfs"`
+	// if true, allocate a pseudo-tty (docker run -t)
+	Tty *bool `pulumi:"tty"`
 	// See Ulimits below for
 	// details.
 	Ulimits []ContainerUlimit `pulumi:"ulimits"`
@@ -790,10 +806,14 @@ type ContainerArgs struct {
 	// If true, then the Docker container will be
 	// started after creation. If false, then the container is only created.
 	Start pulumi.BoolPtrInput
+	// if true, keep STDIN open even if not attached (docker run -i)
+	StdinOpen pulumi.BoolPtrInput
 	// A map of kernel parameters (sysctls) to set in the container.
 	Sysctls pulumi.MapInput
 	// A map of container directories which should be replaced by `tmpfs mounts`, and their corresponding mount options.
 	Tmpfs pulumi.MapInput
+	// if true, allocate a pseudo-tty (docker run -t)
+	Tty pulumi.BoolPtrInput
 	// See Ulimits below for
 	// details.
 	Ulimits ContainerUlimitArrayInput

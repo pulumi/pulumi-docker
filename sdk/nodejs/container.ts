@@ -15,13 +15,9 @@ import * as utilities from "./utilities";
  * import * as docker from "@pulumi/docker";
  *
  * // Find the latest Ubuntu precise image.
- * const ubuntuRemoteImage = new docker.RemoteImage("ubuntu", {
- *     name: "ubuntu:precise",
- * });
+ * const ubuntuRemoteImage = new docker.RemoteImage("ubuntuRemoteImage", {name: "ubuntu:precise"});
  * // Start a container
- * const ubuntuContainer = new docker.Container("ubuntu", {
- *     image: ubuntuRemoteImage.latest,
- * });
+ * const ubuntuContainer = new docker.Container("ubuntuContainer", {image: ubuntuRemoteImage.latest});
  * ```
  *
  * ## Import
@@ -289,6 +285,10 @@ export class Container extends pulumi.CustomResource {
      */
     public readonly start!: pulumi.Output<boolean | undefined>;
     /**
+     * if true, keep STDIN open even if not attached (docker run -i)
+     */
+    public readonly stdinOpen!: pulumi.Output<boolean | undefined>;
+    /**
      * A map of kernel parameters (sysctls) to set in the container.
      */
     public readonly sysctls!: pulumi.Output<{[key: string]: any} | undefined>;
@@ -296,6 +296,10 @@ export class Container extends pulumi.CustomResource {
      * A map of container directories which should be replaced by `tmpfs mounts`, and their corresponding mount options.
      */
     public readonly tmpfs!: pulumi.Output<{[key: string]: any} | undefined>;
+    /**
+     * if true, allocate a pseudo-tty (docker run -t)
+     */
+    public readonly tty!: pulumi.Output<boolean | undefined>;
     /**
      * See Ulimits below for
      * details.
@@ -389,8 +393,10 @@ export class Container extends pulumi.CustomResource {
             inputs["securityOpts"] = state ? state.securityOpts : undefined;
             inputs["shmSize"] = state ? state.shmSize : undefined;
             inputs["start"] = state ? state.start : undefined;
+            inputs["stdinOpen"] = state ? state.stdinOpen : undefined;
             inputs["sysctls"] = state ? state.sysctls : undefined;
             inputs["tmpfs"] = state ? state.tmpfs : undefined;
+            inputs["tty"] = state ? state.tty : undefined;
             inputs["ulimits"] = state ? state.ulimits : undefined;
             inputs["uploads"] = state ? state.uploads : undefined;
             inputs["user"] = state ? state.user : undefined;
@@ -448,8 +454,10 @@ export class Container extends pulumi.CustomResource {
             inputs["securityOpts"] = args ? args.securityOpts : undefined;
             inputs["shmSize"] = args ? args.shmSize : undefined;
             inputs["start"] = args ? args.start : undefined;
+            inputs["stdinOpen"] = args ? args.stdinOpen : undefined;
             inputs["sysctls"] = args ? args.sysctls : undefined;
             inputs["tmpfs"] = args ? args.tmpfs : undefined;
+            inputs["tty"] = args ? args.tty : undefined;
             inputs["ulimits"] = args ? args.ulimits : undefined;
             inputs["uploads"] = args ? args.uploads : undefined;
             inputs["user"] = args ? args.user : undefined;
@@ -708,6 +716,10 @@ export interface ContainerState {
      */
     readonly start?: pulumi.Input<boolean>;
     /**
+     * if true, keep STDIN open even if not attached (docker run -i)
+     */
+    readonly stdinOpen?: pulumi.Input<boolean>;
+    /**
      * A map of kernel parameters (sysctls) to set in the container.
      */
     readonly sysctls?: pulumi.Input<{[key: string]: any}>;
@@ -715,6 +727,10 @@ export interface ContainerState {
      * A map of container directories which should be replaced by `tmpfs mounts`, and their corresponding mount options.
      */
     readonly tmpfs?: pulumi.Input<{[key: string]: any}>;
+    /**
+     * if true, allocate a pseudo-tty (docker run -t)
+     */
+    readonly tty?: pulumi.Input<boolean>;
     /**
      * See Ulimits below for
      * details.
@@ -940,6 +956,10 @@ export interface ContainerArgs {
      */
     readonly start?: pulumi.Input<boolean>;
     /**
+     * if true, keep STDIN open even if not attached (docker run -i)
+     */
+    readonly stdinOpen?: pulumi.Input<boolean>;
+    /**
      * A map of kernel parameters (sysctls) to set in the container.
      */
     readonly sysctls?: pulumi.Input<{[key: string]: any}>;
@@ -947,6 +967,10 @@ export interface ContainerArgs {
      * A map of container directories which should be replaced by `tmpfs mounts`, and their corresponding mount options.
      */
     readonly tmpfs?: pulumi.Input<{[key: string]: any}>;
+    /**
+     * if true, allocate a pseudo-tty (docker run -t)
+     */
+    readonly tty?: pulumi.Input<boolean>;
     /**
      * See Ulimits below for
      * details.
