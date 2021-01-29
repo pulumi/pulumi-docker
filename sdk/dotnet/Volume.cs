@@ -41,6 +41,7 @@ namespace Pulumi.Docker
     ///  $ pulumi import docker:index/volume:Volume foo $(docker volume inspect -f {{.ID}} eca)
     /// ```
     /// </summary>
+    [DockerResourceType("docker:index/volume:Volume")]
     public partial class Volume : Pulumi.CustomResource
     {
         /// <summary>

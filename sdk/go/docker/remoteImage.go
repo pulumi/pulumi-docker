@@ -23,7 +23,7 @@ import (
 // package main
 //
 // import (
-// 	"github.com/pulumi/pulumi-docker/sdk/v2/go/docker"
+// 	"github.com/pulumi/pulumi-docker/sdk/v2/go/docker/"
 // 	"github.com/pulumi/pulumi/sdk/v2/go/pulumi"
 // )
 //
@@ -46,6 +46,7 @@ import (
 //
 // import (
 // 	"github.com/pulumi/pulumi-docker/sdk/v2/go/docker"
+// 	"github.com/pulumi/pulumi-docker/sdk/v2/go/docker/"
 // 	"github.com/pulumi/pulumi/sdk/v2/go/pulumi"
 // )
 //
@@ -236,15 +237,15 @@ type RemoteImageInput interface {
 	ToRemoteImageOutputWithContext(ctx context.Context) RemoteImageOutput
 }
 
-func (RemoteImage) ElementType() reflect.Type {
-	return reflect.TypeOf((*RemoteImage)(nil)).Elem()
+func (*RemoteImage) ElementType() reflect.Type {
+	return reflect.TypeOf((*RemoteImage)(nil))
 }
 
-func (i RemoteImage) ToRemoteImageOutput() RemoteImageOutput {
+func (i *RemoteImage) ToRemoteImageOutput() RemoteImageOutput {
 	return i.ToRemoteImageOutputWithContext(context.Background())
 }
 
-func (i RemoteImage) ToRemoteImageOutputWithContext(ctx context.Context) RemoteImageOutput {
+func (i *RemoteImage) ToRemoteImageOutputWithContext(ctx context.Context) RemoteImageOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(RemoteImageOutput)
 }
 
@@ -253,7 +254,7 @@ type RemoteImageOutput struct {
 }
 
 func (RemoteImageOutput) ElementType() reflect.Type {
-	return reflect.TypeOf((*RemoteImageOutput)(nil)).Elem()
+	return reflect.TypeOf((*RemoteImage)(nil))
 }
 
 func (o RemoteImageOutput) ToRemoteImageOutput() RemoteImageOutput {

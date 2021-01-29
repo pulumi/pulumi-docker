@@ -41,6 +41,7 @@ namespace Pulumi.Docker
     ///  $ pulumi import docker:index/network:Network foo $(docker network inspect -f {{.ID}} p73)
     /// ```
     /// </summary>
+    [DockerResourceType("docker:index/network:Network")]
     public partial class Network : Pulumi.CustomResource
     {
         /// <summary>

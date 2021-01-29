@@ -18,6 +18,7 @@ namespace Pulumi.Docker
     ///  $ pulumi import docker:index/service:Service foo $(docker service inspect -f {{.ID}} 55b)
     /// ```
     /// </summary>
+    [DockerResourceType("docker:index/service:Service")]
     public partial class Service : Pulumi.CustomResource
     {
         /// <summary>

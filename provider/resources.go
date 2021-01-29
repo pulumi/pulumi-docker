@@ -15,9 +15,12 @@
 package provider
 
 import (
+	"fmt"
+	"path/filepath"
 	"unicode"
 
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/pulumi/pulumi-docker/provider/v2/pkg/version"
 	"github.com/pulumi/pulumi-terraform-bridge/v2/pkg/tfbridge"
 	shimv1 "github.com/pulumi/pulumi-terraform-bridge/v2/pkg/tfshim/sdk-v1"
 	"github.com/pulumi/pulumi/sdk/v2/go/common/tokens"
@@ -141,6 +144,15 @@ func Provider() tfbridge.ProviderInfo {
 					"pulumi_docker/utils.py",
 				},
 			},
+		},
+		Golang: &tfbridge.GolangInfo{
+			ImportBasePath: filepath.Join(
+				fmt.Sprintf("github.com/pulumi/pulumi-%[1]s/sdk/", dockerPkg),
+				tfbridge.GetModuleMajorVersion(version.Version),
+				"go",
+				dockerPkg,
+			),
+			GenerateResourceContainerTypes: true,
 		},
 		CSharp: &tfbridge.CSharpInfo{
 			PackageReferences: map[string]string{

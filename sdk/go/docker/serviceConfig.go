@@ -102,15 +102,15 @@ type ServiceConfigInput interface {
 	ToServiceConfigOutputWithContext(ctx context.Context) ServiceConfigOutput
 }
 
-func (ServiceConfig) ElementType() reflect.Type {
-	return reflect.TypeOf((*ServiceConfig)(nil)).Elem()
+func (*ServiceConfig) ElementType() reflect.Type {
+	return reflect.TypeOf((*ServiceConfig)(nil))
 }
 
-func (i ServiceConfig) ToServiceConfigOutput() ServiceConfigOutput {
+func (i *ServiceConfig) ToServiceConfigOutput() ServiceConfigOutput {
 	return i.ToServiceConfigOutputWithContext(context.Background())
 }
 
-func (i ServiceConfig) ToServiceConfigOutputWithContext(ctx context.Context) ServiceConfigOutput {
+func (i *ServiceConfig) ToServiceConfigOutputWithContext(ctx context.Context) ServiceConfigOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceConfigOutput)
 }
 
@@ -119,7 +119,7 @@ type ServiceConfigOutput struct {
 }
 
 func (ServiceConfigOutput) ElementType() reflect.Type {
-	return reflect.TypeOf((*ServiceConfigOutput)(nil)).Elem()
+	return reflect.TypeOf((*ServiceConfig)(nil))
 }
 
 func (o ServiceConfigOutput) ToServiceConfigOutput() ServiceConfigOutput {

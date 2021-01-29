@@ -45,6 +45,7 @@ namespace Pulumi.Docker
     ///  $ pulumi import docker:index/container:Container foo $(docker inspect -f {{.ID}} foo)
     /// ```
     /// </summary>
+    [DockerResourceType("docker:index/container:Container")]
     public partial class Container : Pulumi.CustomResource
     {
         /// <summary>

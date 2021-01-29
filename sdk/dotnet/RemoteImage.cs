@@ -62,6 +62,7 @@ namespace Pulumi.Docker
     /// }
     /// ```
     /// </summary>
+    [DockerResourceType("docker:index/remoteImage:RemoteImage")]
     public partial class RemoteImage : Pulumi.CustomResource
     {
         /// <summary>
