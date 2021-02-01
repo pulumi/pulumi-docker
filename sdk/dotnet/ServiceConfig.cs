@@ -18,6 +18,7 @@ namespace Pulumi.Docker
     ///  $ pulumi import docker:index/serviceConfig:ServiceConfig foo $(docker config inspect -f {{.ID}} p73)
     /// ```
     /// </summary>
+    [DockerResourceType("docker:index/serviceConfig:ServiceConfig")]
     public partial class ServiceConfig : Pulumi.CustomResource
     {
         /// <summary>

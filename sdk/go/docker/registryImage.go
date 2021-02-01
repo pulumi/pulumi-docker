@@ -19,6 +19,7 @@ import (
 //
 // import (
 // 	"github.com/pulumi/pulumi-docker/sdk/v2/go/docker"
+// 	"github.com/pulumi/pulumi-docker/sdk/v2/go/docker/"
 // 	"github.com/pulumi/pulumi/sdk/v2/go/pulumi"
 // )
 //
@@ -140,15 +141,15 @@ type RegistryImageInput interface {
 	ToRegistryImageOutputWithContext(ctx context.Context) RegistryImageOutput
 }
 
-func (RegistryImage) ElementType() reflect.Type {
-	return reflect.TypeOf((*RegistryImage)(nil)).Elem()
+func (*RegistryImage) ElementType() reflect.Type {
+	return reflect.TypeOf((*RegistryImage)(nil))
 }
 
-func (i RegistryImage) ToRegistryImageOutput() RegistryImageOutput {
+func (i *RegistryImage) ToRegistryImageOutput() RegistryImageOutput {
 	return i.ToRegistryImageOutputWithContext(context.Background())
 }
 
-func (i RegistryImage) ToRegistryImageOutputWithContext(ctx context.Context) RegistryImageOutput {
+func (i *RegistryImage) ToRegistryImageOutputWithContext(ctx context.Context) RegistryImageOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(RegistryImageOutput)
 }
 
@@ -157,7 +158,7 @@ type RegistryImageOutput struct {
 }
 
 func (RegistryImageOutput) ElementType() reflect.Type {
-	return reflect.TypeOf((*RegistryImageOutput)(nil)).Elem()
+	return reflect.TypeOf((*RegistryImage)(nil))
 }
 
 func (o RegistryImageOutput) ToRegistryImageOutput() RegistryImageOutput {

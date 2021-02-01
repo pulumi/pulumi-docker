@@ -34,6 +34,7 @@ namespace Pulumi.Docker
     /// }
     /// ```
     /// </summary>
+    [DockerResourceType("docker:index/registryImage:RegistryImage")]
     public partial class RegistryImage : Pulumi.CustomResource
     {
         /// <summary>
