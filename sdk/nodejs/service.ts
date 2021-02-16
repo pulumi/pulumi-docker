@@ -89,7 +89,8 @@ export class Service extends pulumi.CustomResource {
     constructor(name: string, args: ServiceArgs, opts?: pulumi.CustomResourceOptions)
     constructor(name: string, argsOrState?: ServiceArgs | ServiceState, opts?: pulumi.CustomResourceOptions) {
         let inputs: pulumi.Inputs = {};
-        if (opts && opts.id) {
+        opts = opts || {};
+        if (opts.id) {
             const state = argsOrState as ServiceState | undefined;
             inputs["auth"] = state ? state.auth : undefined;
             inputs["convergeConfig"] = state ? state.convergeConfig : undefined;
@@ -102,7 +103,7 @@ export class Service extends pulumi.CustomResource {
             inputs["updateConfig"] = state ? state.updateConfig : undefined;
         } else {
             const args = argsOrState as ServiceArgs | undefined;
-            if ((!args || args.taskSpec === undefined) && !(opts && opts.urn)) {
+            if ((!args || args.taskSpec === undefined) && !opts.urn) {
                 throw new Error("Missing required property 'taskSpec'");
             }
             inputs["auth"] = args ? args.auth : undefined;
@@ -115,12 +116,8 @@ export class Service extends pulumi.CustomResource {
             inputs["taskSpec"] = args ? args.taskSpec : undefined;
             inputs["updateConfig"] = args ? args.updateConfig : undefined;
         }
-        if (!opts) {
-            opts = {}
-        }
-
         if (!opts.version) {
-            opts.version = utilities.getVersion();
+            opts = pulumi.mergeOptions(opts, { version: utilities.getVersion()});
         }
         super(Service.__pulumiType, name, inputs, opts);
     }

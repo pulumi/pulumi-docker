@@ -61,26 +61,23 @@ export class Secret extends pulumi.CustomResource {
     constructor(name: string, args: SecretArgs, opts?: pulumi.CustomResourceOptions)
     constructor(name: string, argsOrState?: SecretArgs | SecretState, opts?: pulumi.CustomResourceOptions) {
         let inputs: pulumi.Inputs = {};
-        if (opts && opts.id) {
+        opts = opts || {};
+        if (opts.id) {
             const state = argsOrState as SecretState | undefined;
             inputs["data"] = state ? state.data : undefined;
             inputs["labels"] = state ? state.labels : undefined;
             inputs["name"] = state ? state.name : undefined;
         } else {
             const args = argsOrState as SecretArgs | undefined;
-            if ((!args || args.data === undefined) && !(opts && opts.urn)) {
+            if ((!args || args.data === undefined) && !opts.urn) {
                 throw new Error("Missing required property 'data'");
             }
             inputs["data"] = args ? args.data : undefined;
             inputs["labels"] = args ? args.labels : undefined;
             inputs["name"] = args ? args.name : undefined;
         }
-        if (!opts) {
-            opts = {}
-        }
-
         if (!opts.version) {
-            opts.version = utilities.getVersion();
+            opts = pulumi.mergeOptions(opts, { version: utilities.getVersion()});
         }
         super(Secret.__pulumiType, name, inputs, opts);
     }
