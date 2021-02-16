@@ -19,7 +19,6 @@ import (
 //
 // import (
 // 	"github.com/pulumi/pulumi-docker/sdk/v2/go/docker"
-// 	"github.com/pulumi/pulumi-docker/sdk/v2/go/docker/"
 // 	"github.com/pulumi/pulumi/sdk/v2/go/pulumi"
 // )
 //
@@ -153,6 +152,85 @@ func (i *RegistryImage) ToRegistryImageOutputWithContext(ctx context.Context) Re
 	return pulumi.ToOutputWithContext(ctx, i).(RegistryImageOutput)
 }
 
+func (i *RegistryImage) ToRegistryImagePtrOutput() RegistryImagePtrOutput {
+	return i.ToRegistryImagePtrOutputWithContext(context.Background())
+}
+
+func (i *RegistryImage) ToRegistryImagePtrOutputWithContext(ctx context.Context) RegistryImagePtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(RegistryImagePtrOutput)
+}
+
+type RegistryImagePtrInput interface {
+	pulumi.Input
+
+	ToRegistryImagePtrOutput() RegistryImagePtrOutput
+	ToRegistryImagePtrOutputWithContext(ctx context.Context) RegistryImagePtrOutput
+}
+
+type registryImagePtrType RegistryImageArgs
+
+func (*registryImagePtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**RegistryImage)(nil))
+}
+
+func (i *registryImagePtrType) ToRegistryImagePtrOutput() RegistryImagePtrOutput {
+	return i.ToRegistryImagePtrOutputWithContext(context.Background())
+}
+
+func (i *registryImagePtrType) ToRegistryImagePtrOutputWithContext(ctx context.Context) RegistryImagePtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(RegistryImagePtrOutput)
+}
+
+// RegistryImageArrayInput is an input type that accepts RegistryImageArray and RegistryImageArrayOutput values.
+// You can construct a concrete instance of `RegistryImageArrayInput` via:
+//
+//          RegistryImageArray{ RegistryImageArgs{...} }
+type RegistryImageArrayInput interface {
+	pulumi.Input
+
+	ToRegistryImageArrayOutput() RegistryImageArrayOutput
+	ToRegistryImageArrayOutputWithContext(context.Context) RegistryImageArrayOutput
+}
+
+type RegistryImageArray []RegistryImageInput
+
+func (RegistryImageArray) ElementType() reflect.Type {
+	return reflect.TypeOf(([]*RegistryImage)(nil))
+}
+
+func (i RegistryImageArray) ToRegistryImageArrayOutput() RegistryImageArrayOutput {
+	return i.ToRegistryImageArrayOutputWithContext(context.Background())
+}
+
+func (i RegistryImageArray) ToRegistryImageArrayOutputWithContext(ctx context.Context) RegistryImageArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(RegistryImageArrayOutput)
+}
+
+// RegistryImageMapInput is an input type that accepts RegistryImageMap and RegistryImageMapOutput values.
+// You can construct a concrete instance of `RegistryImageMapInput` via:
+//
+//          RegistryImageMap{ "key": RegistryImageArgs{...} }
+type RegistryImageMapInput interface {
+	pulumi.Input
+
+	ToRegistryImageMapOutput() RegistryImageMapOutput
+	ToRegistryImageMapOutputWithContext(context.Context) RegistryImageMapOutput
+}
+
+type RegistryImageMap map[string]RegistryImageInput
+
+func (RegistryImageMap) ElementType() reflect.Type {
+	return reflect.TypeOf((map[string]*RegistryImage)(nil))
+}
+
+func (i RegistryImageMap) ToRegistryImageMapOutput() RegistryImageMapOutput {
+	return i.ToRegistryImageMapOutputWithContext(context.Background())
+}
+
+func (i RegistryImageMap) ToRegistryImageMapOutputWithContext(ctx context.Context) RegistryImageMapOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(RegistryImageMapOutput)
+}
+
 type RegistryImageOutput struct {
 	*pulumi.OutputState
 }
@@ -169,6 +247,75 @@ func (o RegistryImageOutput) ToRegistryImageOutputWithContext(ctx context.Contex
 	return o
 }
 
+func (o RegistryImageOutput) ToRegistryImagePtrOutput() RegistryImagePtrOutput {
+	return o.ToRegistryImagePtrOutputWithContext(context.Background())
+}
+
+func (o RegistryImageOutput) ToRegistryImagePtrOutputWithContext(ctx context.Context) RegistryImagePtrOutput {
+	return o.ApplyT(func(v RegistryImage) *RegistryImage {
+		return &v
+	}).(RegistryImagePtrOutput)
+}
+
+type RegistryImagePtrOutput struct {
+	*pulumi.OutputState
+}
+
+func (RegistryImagePtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**RegistryImage)(nil))
+}
+
+func (o RegistryImagePtrOutput) ToRegistryImagePtrOutput() RegistryImagePtrOutput {
+	return o
+}
+
+func (o RegistryImagePtrOutput) ToRegistryImagePtrOutputWithContext(ctx context.Context) RegistryImagePtrOutput {
+	return o
+}
+
+type RegistryImageArrayOutput struct{ *pulumi.OutputState }
+
+func (RegistryImageArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]RegistryImage)(nil))
+}
+
+func (o RegistryImageArrayOutput) ToRegistryImageArrayOutput() RegistryImageArrayOutput {
+	return o
+}
+
+func (o RegistryImageArrayOutput) ToRegistryImageArrayOutputWithContext(ctx context.Context) RegistryImageArrayOutput {
+	return o
+}
+
+func (o RegistryImageArrayOutput) Index(i pulumi.IntInput) RegistryImageOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) RegistryImage {
+		return vs[0].([]RegistryImage)[vs[1].(int)]
+	}).(RegistryImageOutput)
+}
+
+type RegistryImageMapOutput struct{ *pulumi.OutputState }
+
+func (RegistryImageMapOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*map[string]RegistryImage)(nil))
+}
+
+func (o RegistryImageMapOutput) ToRegistryImageMapOutput() RegistryImageMapOutput {
+	return o
+}
+
+func (o RegistryImageMapOutput) ToRegistryImageMapOutputWithContext(ctx context.Context) RegistryImageMapOutput {
+	return o
+}
+
+func (o RegistryImageMapOutput) MapIndex(k pulumi.StringInput) RegistryImageOutput {
+	return pulumi.All(o, k).ApplyT(func(vs []interface{}) RegistryImage {
+		return vs[0].(map[string]RegistryImage)[vs[1].(string)]
+	}).(RegistryImageOutput)
+}
+
 func init() {
 	pulumi.RegisterOutputType(RegistryImageOutput{})
+	pulumi.RegisterOutputType(RegistryImagePtrOutput{})
+	pulumi.RegisterOutputType(RegistryImageArrayOutput{})
+	pulumi.RegisterOutputType(RegistryImageMapOutput{})
 }

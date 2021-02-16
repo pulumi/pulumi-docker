@@ -338,7 +338,8 @@ export class Container extends pulumi.CustomResource {
     constructor(name: string, args: ContainerArgs, opts?: pulumi.CustomResourceOptions)
     constructor(name: string, argsOrState?: ContainerArgs | ContainerState, opts?: pulumi.CustomResourceOptions) {
         let inputs: pulumi.Inputs = {};
-        if (opts && opts.id) {
+        opts = opts || {};
+        if (opts.id) {
             const state = argsOrState as ContainerState | undefined;
             inputs["attach"] = state ? state.attach : undefined;
             inputs["bridge"] = state ? state.bridge : undefined;
@@ -405,7 +406,7 @@ export class Container extends pulumi.CustomResource {
             inputs["workingDir"] = state ? state.workingDir : undefined;
         } else {
             const args = argsOrState as ContainerArgs | undefined;
-            if ((!args || args.image === undefined) && !(opts && opts.urn)) {
+            if ((!args || args.image === undefined) && !opts.urn) {
                 throw new Error("Missing required property 'image'");
             }
             inputs["attach"] = args ? args.attach : undefined;
@@ -472,12 +473,8 @@ export class Container extends pulumi.CustomResource {
             inputs["ipPrefixLength"] = undefined /*out*/;
             inputs["networkDatas"] = undefined /*out*/;
         }
-        if (!opts) {
-            opts = {}
-        }
-
         if (!opts.version) {
-            opts.version = utilities.getVersion();
+            opts = pulumi.mergeOptions(opts, { version: utilities.getVersion()});
         }
         super(Container.__pulumiType, name, inputs, opts);
     }

@@ -114,6 +114,85 @@ func (i *ServiceConfig) ToServiceConfigOutputWithContext(ctx context.Context) Se
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceConfigOutput)
 }
 
+func (i *ServiceConfig) ToServiceConfigPtrOutput() ServiceConfigPtrOutput {
+	return i.ToServiceConfigPtrOutputWithContext(context.Background())
+}
+
+func (i *ServiceConfig) ToServiceConfigPtrOutputWithContext(ctx context.Context) ServiceConfigPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ServiceConfigPtrOutput)
+}
+
+type ServiceConfigPtrInput interface {
+	pulumi.Input
+
+	ToServiceConfigPtrOutput() ServiceConfigPtrOutput
+	ToServiceConfigPtrOutputWithContext(ctx context.Context) ServiceConfigPtrOutput
+}
+
+type serviceConfigPtrType ServiceConfigArgs
+
+func (*serviceConfigPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**ServiceConfig)(nil))
+}
+
+func (i *serviceConfigPtrType) ToServiceConfigPtrOutput() ServiceConfigPtrOutput {
+	return i.ToServiceConfigPtrOutputWithContext(context.Background())
+}
+
+func (i *serviceConfigPtrType) ToServiceConfigPtrOutputWithContext(ctx context.Context) ServiceConfigPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ServiceConfigPtrOutput)
+}
+
+// ServiceConfigArrayInput is an input type that accepts ServiceConfigArray and ServiceConfigArrayOutput values.
+// You can construct a concrete instance of `ServiceConfigArrayInput` via:
+//
+//          ServiceConfigArray{ ServiceConfigArgs{...} }
+type ServiceConfigArrayInput interface {
+	pulumi.Input
+
+	ToServiceConfigArrayOutput() ServiceConfigArrayOutput
+	ToServiceConfigArrayOutputWithContext(context.Context) ServiceConfigArrayOutput
+}
+
+type ServiceConfigArray []ServiceConfigInput
+
+func (ServiceConfigArray) ElementType() reflect.Type {
+	return reflect.TypeOf(([]*ServiceConfig)(nil))
+}
+
+func (i ServiceConfigArray) ToServiceConfigArrayOutput() ServiceConfigArrayOutput {
+	return i.ToServiceConfigArrayOutputWithContext(context.Background())
+}
+
+func (i ServiceConfigArray) ToServiceConfigArrayOutputWithContext(ctx context.Context) ServiceConfigArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ServiceConfigArrayOutput)
+}
+
+// ServiceConfigMapInput is an input type that accepts ServiceConfigMap and ServiceConfigMapOutput values.
+// You can construct a concrete instance of `ServiceConfigMapInput` via:
+//
+//          ServiceConfigMap{ "key": ServiceConfigArgs{...} }
+type ServiceConfigMapInput interface {
+	pulumi.Input
+
+	ToServiceConfigMapOutput() ServiceConfigMapOutput
+	ToServiceConfigMapOutputWithContext(context.Context) ServiceConfigMapOutput
+}
+
+type ServiceConfigMap map[string]ServiceConfigInput
+
+func (ServiceConfigMap) ElementType() reflect.Type {
+	return reflect.TypeOf((map[string]*ServiceConfig)(nil))
+}
+
+func (i ServiceConfigMap) ToServiceConfigMapOutput() ServiceConfigMapOutput {
+	return i.ToServiceConfigMapOutputWithContext(context.Background())
+}
+
+func (i ServiceConfigMap) ToServiceConfigMapOutputWithContext(ctx context.Context) ServiceConfigMapOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ServiceConfigMapOutput)
+}
+
 type ServiceConfigOutput struct {
 	*pulumi.OutputState
 }
@@ -130,6 +209,75 @@ func (o ServiceConfigOutput) ToServiceConfigOutputWithContext(ctx context.Contex
 	return o
 }
 
+func (o ServiceConfigOutput) ToServiceConfigPtrOutput() ServiceConfigPtrOutput {
+	return o.ToServiceConfigPtrOutputWithContext(context.Background())
+}
+
+func (o ServiceConfigOutput) ToServiceConfigPtrOutputWithContext(ctx context.Context) ServiceConfigPtrOutput {
+	return o.ApplyT(func(v ServiceConfig) *ServiceConfig {
+		return &v
+	}).(ServiceConfigPtrOutput)
+}
+
+type ServiceConfigPtrOutput struct {
+	*pulumi.OutputState
+}
+
+func (ServiceConfigPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**ServiceConfig)(nil))
+}
+
+func (o ServiceConfigPtrOutput) ToServiceConfigPtrOutput() ServiceConfigPtrOutput {
+	return o
+}
+
+func (o ServiceConfigPtrOutput) ToServiceConfigPtrOutputWithContext(ctx context.Context) ServiceConfigPtrOutput {
+	return o
+}
+
+type ServiceConfigArrayOutput struct{ *pulumi.OutputState }
+
+func (ServiceConfigArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]ServiceConfig)(nil))
+}
+
+func (o ServiceConfigArrayOutput) ToServiceConfigArrayOutput() ServiceConfigArrayOutput {
+	return o
+}
+
+func (o ServiceConfigArrayOutput) ToServiceConfigArrayOutputWithContext(ctx context.Context) ServiceConfigArrayOutput {
+	return o
+}
+
+func (o ServiceConfigArrayOutput) Index(i pulumi.IntInput) ServiceConfigOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) ServiceConfig {
+		return vs[0].([]ServiceConfig)[vs[1].(int)]
+	}).(ServiceConfigOutput)
+}
+
+type ServiceConfigMapOutput struct{ *pulumi.OutputState }
+
+func (ServiceConfigMapOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*map[string]ServiceConfig)(nil))
+}
+
+func (o ServiceConfigMapOutput) ToServiceConfigMapOutput() ServiceConfigMapOutput {
+	return o
+}
+
+func (o ServiceConfigMapOutput) ToServiceConfigMapOutputWithContext(ctx context.Context) ServiceConfigMapOutput {
+	return o
+}
+
+func (o ServiceConfigMapOutput) MapIndex(k pulumi.StringInput) ServiceConfigOutput {
+	return pulumi.All(o, k).ApplyT(func(vs []interface{}) ServiceConfig {
+		return vs[0].(map[string]ServiceConfig)[vs[1].(string)]
+	}).(ServiceConfigOutput)
+}
+
 func init() {
 	pulumi.RegisterOutputType(ServiceConfigOutput{})
+	pulumi.RegisterOutputType(ServiceConfigPtrOutput{})
+	pulumi.RegisterOutputType(ServiceConfigArrayOutput{})
+	pulumi.RegisterOutputType(ServiceConfigMapOutput{})
 }

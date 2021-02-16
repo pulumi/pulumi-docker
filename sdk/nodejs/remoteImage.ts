@@ -110,7 +110,8 @@ export class RemoteImage extends pulumi.CustomResource {
     constructor(name: string, args: RemoteImageArgs, opts?: pulumi.CustomResourceOptions)
     constructor(name: string, argsOrState?: RemoteImageArgs | RemoteImageState, opts?: pulumi.CustomResourceOptions) {
         let inputs: pulumi.Inputs = {};
-        if (opts && opts.id) {
+        opts = opts || {};
+        if (opts.id) {
             const state = argsOrState as RemoteImageState | undefined;
             inputs["build"] = state ? state.build : undefined;
             inputs["forceRemove"] = state ? state.forceRemove : undefined;
@@ -122,7 +123,7 @@ export class RemoteImage extends pulumi.CustomResource {
             inputs["pullTriggers"] = state ? state.pullTriggers : undefined;
         } else {
             const args = argsOrState as RemoteImageArgs | undefined;
-            if ((!args || args.name === undefined) && !(opts && opts.urn)) {
+            if ((!args || args.name === undefined) && !opts.urn) {
                 throw new Error("Missing required property 'name'");
             }
             inputs["build"] = args ? args.build : undefined;
@@ -134,12 +135,8 @@ export class RemoteImage extends pulumi.CustomResource {
             inputs["latest"] = undefined /*out*/;
             inputs["output"] = undefined /*out*/;
         }
-        if (!opts) {
-            opts = {}
-        }
-
         if (!opts.version) {
-            opts.version = utilities.getVersion();
+            opts = pulumi.mergeOptions(opts, { version: utilities.getVersion()});
         }
         super(RemoteImage.__pulumiType, name, inputs, opts);
     }

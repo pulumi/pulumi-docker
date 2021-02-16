@@ -23,7 +23,7 @@ import (
 // package main
 //
 // import (
-// 	"github.com/pulumi/pulumi-docker/sdk/v2/go/docker/"
+// 	"github.com/pulumi/pulumi-docker/sdk/v2/go/docker"
 // 	"github.com/pulumi/pulumi/sdk/v2/go/pulumi"
 // )
 //
@@ -46,7 +46,6 @@ import (
 //
 // import (
 // 	"github.com/pulumi/pulumi-docker/sdk/v2/go/docker"
-// 	"github.com/pulumi/pulumi-docker/sdk/v2/go/docker/"
 // 	"github.com/pulumi/pulumi/sdk/v2/go/pulumi"
 // )
 //
@@ -249,6 +248,85 @@ func (i *RemoteImage) ToRemoteImageOutputWithContext(ctx context.Context) Remote
 	return pulumi.ToOutputWithContext(ctx, i).(RemoteImageOutput)
 }
 
+func (i *RemoteImage) ToRemoteImagePtrOutput() RemoteImagePtrOutput {
+	return i.ToRemoteImagePtrOutputWithContext(context.Background())
+}
+
+func (i *RemoteImage) ToRemoteImagePtrOutputWithContext(ctx context.Context) RemoteImagePtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(RemoteImagePtrOutput)
+}
+
+type RemoteImagePtrInput interface {
+	pulumi.Input
+
+	ToRemoteImagePtrOutput() RemoteImagePtrOutput
+	ToRemoteImagePtrOutputWithContext(ctx context.Context) RemoteImagePtrOutput
+}
+
+type remoteImagePtrType RemoteImageArgs
+
+func (*remoteImagePtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**RemoteImage)(nil))
+}
+
+func (i *remoteImagePtrType) ToRemoteImagePtrOutput() RemoteImagePtrOutput {
+	return i.ToRemoteImagePtrOutputWithContext(context.Background())
+}
+
+func (i *remoteImagePtrType) ToRemoteImagePtrOutputWithContext(ctx context.Context) RemoteImagePtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(RemoteImagePtrOutput)
+}
+
+// RemoteImageArrayInput is an input type that accepts RemoteImageArray and RemoteImageArrayOutput values.
+// You can construct a concrete instance of `RemoteImageArrayInput` via:
+//
+//          RemoteImageArray{ RemoteImageArgs{...} }
+type RemoteImageArrayInput interface {
+	pulumi.Input
+
+	ToRemoteImageArrayOutput() RemoteImageArrayOutput
+	ToRemoteImageArrayOutputWithContext(context.Context) RemoteImageArrayOutput
+}
+
+type RemoteImageArray []RemoteImageInput
+
+func (RemoteImageArray) ElementType() reflect.Type {
+	return reflect.TypeOf(([]*RemoteImage)(nil))
+}
+
+func (i RemoteImageArray) ToRemoteImageArrayOutput() RemoteImageArrayOutput {
+	return i.ToRemoteImageArrayOutputWithContext(context.Background())
+}
+
+func (i RemoteImageArray) ToRemoteImageArrayOutputWithContext(ctx context.Context) RemoteImageArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(RemoteImageArrayOutput)
+}
+
+// RemoteImageMapInput is an input type that accepts RemoteImageMap and RemoteImageMapOutput values.
+// You can construct a concrete instance of `RemoteImageMapInput` via:
+//
+//          RemoteImageMap{ "key": RemoteImageArgs{...} }
+type RemoteImageMapInput interface {
+	pulumi.Input
+
+	ToRemoteImageMapOutput() RemoteImageMapOutput
+	ToRemoteImageMapOutputWithContext(context.Context) RemoteImageMapOutput
+}
+
+type RemoteImageMap map[string]RemoteImageInput
+
+func (RemoteImageMap) ElementType() reflect.Type {
+	return reflect.TypeOf((map[string]*RemoteImage)(nil))
+}
+
+func (i RemoteImageMap) ToRemoteImageMapOutput() RemoteImageMapOutput {
+	return i.ToRemoteImageMapOutputWithContext(context.Background())
+}
+
+func (i RemoteImageMap) ToRemoteImageMapOutputWithContext(ctx context.Context) RemoteImageMapOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(RemoteImageMapOutput)
+}
+
 type RemoteImageOutput struct {
 	*pulumi.OutputState
 }
@@ -265,6 +343,75 @@ func (o RemoteImageOutput) ToRemoteImageOutputWithContext(ctx context.Context) R
 	return o
 }
 
+func (o RemoteImageOutput) ToRemoteImagePtrOutput() RemoteImagePtrOutput {
+	return o.ToRemoteImagePtrOutputWithContext(context.Background())
+}
+
+func (o RemoteImageOutput) ToRemoteImagePtrOutputWithContext(ctx context.Context) RemoteImagePtrOutput {
+	return o.ApplyT(func(v RemoteImage) *RemoteImage {
+		return &v
+	}).(RemoteImagePtrOutput)
+}
+
+type RemoteImagePtrOutput struct {
+	*pulumi.OutputState
+}
+
+func (RemoteImagePtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**RemoteImage)(nil))
+}
+
+func (o RemoteImagePtrOutput) ToRemoteImagePtrOutput() RemoteImagePtrOutput {
+	return o
+}
+
+func (o RemoteImagePtrOutput) ToRemoteImagePtrOutputWithContext(ctx context.Context) RemoteImagePtrOutput {
+	return o
+}
+
+type RemoteImageArrayOutput struct{ *pulumi.OutputState }
+
+func (RemoteImageArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]RemoteImage)(nil))
+}
+
+func (o RemoteImageArrayOutput) ToRemoteImageArrayOutput() RemoteImageArrayOutput {
+	return o
+}
+
+func (o RemoteImageArrayOutput) ToRemoteImageArrayOutputWithContext(ctx context.Context) RemoteImageArrayOutput {
+	return o
+}
+
+func (o RemoteImageArrayOutput) Index(i pulumi.IntInput) RemoteImageOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) RemoteImage {
+		return vs[0].([]RemoteImage)[vs[1].(int)]
+	}).(RemoteImageOutput)
+}
+
+type RemoteImageMapOutput struct{ *pulumi.OutputState }
+
+func (RemoteImageMapOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*map[string]RemoteImage)(nil))
+}
+
+func (o RemoteImageMapOutput) ToRemoteImageMapOutput() RemoteImageMapOutput {
+	return o
+}
+
+func (o RemoteImageMapOutput) ToRemoteImageMapOutputWithContext(ctx context.Context) RemoteImageMapOutput {
+	return o
+}
+
+func (o RemoteImageMapOutput) MapIndex(k pulumi.StringInput) RemoteImageOutput {
+	return pulumi.All(o, k).ApplyT(func(vs []interface{}) RemoteImage {
+		return vs[0].(map[string]RemoteImage)[vs[1].(string)]
+	}).(RemoteImageOutput)
+}
+
 func init() {
 	pulumi.RegisterOutputType(RemoteImageOutput{})
+	pulumi.RegisterOutputType(RemoteImagePtrOutput{})
+	pulumi.RegisterOutputType(RemoteImageArrayOutput{})
+	pulumi.RegisterOutputType(RemoteImageMapOutput{})
 }
