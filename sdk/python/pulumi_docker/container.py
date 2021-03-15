@@ -214,7 +214,7 @@ class Container(pulumi.CustomResource):
             __props__['labels'] = labels
             if links is not None and not opts.urn:
                 warnings.warn("""The --link flag is a legacy feature of Docker. It may eventually be removed.""", DeprecationWarning)
-                pulumi.log.warn("links is deprecated: The --link flag is a legacy feature of Docker. It may eventually be removed.")
+                pulumi.log.warn("""links is deprecated: The --link flag is a legacy feature of Docker. It may eventually be removed.""")
             __props__['links'] = links
             __props__['log_driver'] = log_driver
             __props__['log_opts'] = log_opts
@@ -227,12 +227,12 @@ class Container(pulumi.CustomResource):
             __props__['name'] = name
             if network_aliases is not None and not opts.urn:
                 warnings.warn("""Use networks_advanced instead. Will be removed in v2.0.0""", DeprecationWarning)
-                pulumi.log.warn("network_aliases is deprecated: Use networks_advanced instead. Will be removed in v2.0.0")
+                pulumi.log.warn("""network_aliases is deprecated: Use networks_advanced instead. Will be removed in v2.0.0""")
             __props__['network_aliases'] = network_aliases
             __props__['network_mode'] = network_mode
             if networks is not None and not opts.urn:
                 warnings.warn("""Use networks_advanced instead. Will be removed in v2.0.0""", DeprecationWarning)
-                pulumi.log.warn("networks is deprecated: Use networks_advanced instead. Will be removed in v2.0.0")
+                pulumi.log.warn("""networks is deprecated: Use networks_advanced instead. Will be removed in v2.0.0""")
             __props__['networks'] = networks
             __props__['networks_advanced'] = networks_advanced
             __props__['pid_mode'] = pid_mode
