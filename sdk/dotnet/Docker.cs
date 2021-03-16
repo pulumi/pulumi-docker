@@ -75,6 +75,13 @@ namespace Pulumi.Docker
         /// </summary>
         [Input("target")]
         public Input<string>? Target { get; set; }
+
+        /// <summary>
+        /// is the content of the dockerfile to build
+        /// example `FROM node`.
+        /// </summary>
+        [Input("dockerfileContent")]
+        public Input<string>? DockerfileContent { get; set; }
     }
 
     /// <summary>
@@ -423,7 +430,13 @@ namespace Pulumi.Docker
             {
                 buildArgs.AddRange(build.ExtraOptions);
             }
-            buildArgs.Add(build.Context!); // push the docker build context onto the path.
+
+            if (build.DockerfileContent == null)
+            {
+                buildArgs.Add(build.Context!);
+            }
+
+             // push the docker build context onto the path.
 
             buildArgs.AddRange(new[] { "-t", imageName }); // tag the image with the chosen name.
             if (target != null)
@@ -431,8 +444,13 @@ namespace Pulumi.Docker
                 buildArgs.AddRange(new[] { "--target", target });
             }
 
+            if (build.DockerfileContent != null)
+            {
+              buildArgs.Add("-");
+            }
+
             await RunCommandThatMustSucceed("docker", buildArgs.ToArray(), logResource,
-                reportFullCommandLine: true, stdin: null, build.Env).ConfigureAwait(false);
+                reportFullCommandLine: true, stdin: build.DockerfileContent, build.Env).ConfigureAwait(false);
         }
 
         private static readonly ConcurrentDictionary<(string, string), Task> loginResults = new ConcurrentDictionary<(string, string), Task>();

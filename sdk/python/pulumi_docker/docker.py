@@ -493,7 +493,7 @@ def docker_build(
       if build.context:
           build_args.append(build.context) # push the docker build context onto the path.
 
-    if build.dockerfileContent:
+    if build.dockerfile_content:
         build_args.extend(['-'])
 
     return run_command_that_must_succeed("docker", build_args, log_resource, stdin=build.dockerfile_content, env=build.env)
