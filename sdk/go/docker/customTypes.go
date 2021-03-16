@@ -100,6 +100,9 @@ type DockerBuildArgs struct {
 
 	// The target of the dockerfile to build.
 	Target pulumi.StringInput `pulumi:"target"`
+
+	// The content of the dockerfile to build.
+	DockerfileContent pulumi.StringInput `pulumi:"dockerfileContent"`
 }
 
 // nolint[:golint]

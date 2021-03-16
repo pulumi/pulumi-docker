@@ -392,12 +392,19 @@ func runDockerBuild(ctx *pulumi.Context, imageName string, build *DockerBuild, c
 	if build.ExtraOptions != nil {
 		buildArgs = append(buildArgs, build.ExtraOptions...)
 	}
-	// Push the docker build context onto the path.
-	buildArgs = append(buildArgs, build.Context)
+	if build.DockerfileContent == nil {
+		// Push the docker build context onto the path.
+		buildArgs = append(buildArgs, build.Context)
+	}
 
 	buildArgs = append(buildArgs, "-t", imageName)
 	if target != "" {
 		buildArgs = append(buildArgs, "--target", target)
+	}
+
+	if build.DockerfileContent != nil {
+		// Push the docker build context onto the path.
+		buildArgs = append(buildArgs, "-")
 	}
 
 	_, err := runCommandThatMustSucceed(ctx, "docker", buildArgs, logResource, true, "", build.Env)
