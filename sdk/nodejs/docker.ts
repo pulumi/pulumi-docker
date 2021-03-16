@@ -90,6 +90,11 @@ export interface DockerBuild {
      * The target of the dockerfile to build
      */
     target?: pulumi.Input<string>;
+
+    /***
+     * The content of the dockerfile to build
+     */
+    dockerfileContent?: pulumi.Input<string>;
 }
 
 let dockerPasswordPromise: Promise<boolean> | undefined;
@@ -465,15 +470,21 @@ async function dockerBuild(
     if (build.extraOptions) {
         buildArgs.push(...build.extraOptions);
     }
-    buildArgs.push(build.context!); // push the docker build context onto the path.
+    if(!build.dockerfileContent){
+        buildArgs.push(build.context!);
+    }
 
     buildArgs.push(...["-t", imageName]); // tag the image with the chosen name.
+
     if (target) {
         buildArgs.push(...["--target", target]);
     }
 
-    await runCommandThatMustSucceed("docker", buildArgs, logResource, undefined, undefined, build.env);
+    if(build.dockerfileContent){
+        buildArgs.push('-');
+    }
 
+    await runCommandThatMustSucceed("docker", buildArgs, logResource, undefined, build.dockerfileContent, build.env);
 }
 
 interface LoginResult {
