@@ -114,8 +114,13 @@ class DockerBuild:
     The target of the dockerfile to build
     """
 
+    dockerfile_content: Optional[pulumi.Input[str]]
+    """
+    The content of the dockerfile to build
+    """
+
     def __init__(self, context=None, dockerfile=None, args=None, cache_from=None, extra_options=None, env=None,
-                 target=None):
+                 target=None, dockerfile_content=None):
         """
         DockerBuild may be used to specify detailed instructions about how to build a container.
 
@@ -140,6 +145,7 @@ class DockerBuild:
         :param Optional[Mapping[str, str]] env: Environment variables to set on the invocation of `docker build`, for
          example to support `DOCKER_BUILDKIT=1 docker build`.
         :param Optional[pulumi.Input[str]] target: The target of the dockerfile to build
+        :param Optional[pulumi.Input[str]] dockerfile_content is the content of the dockerfile to build
         """
         self.context = context
         self.dockerfile = dockerfile
@@ -483,10 +489,14 @@ def docker_build(
     if target:
         build_args.extend(["--target", target])
 
-    if build.context:
-        build_args.append(build.context)  # push the docker build context onto the path.
+    if not build.dockerfile_content:
+      if build.context:
+          build_args.append(build.context) # push the docker build context onto the path.
 
-    return run_command_that_must_succeed("docker", build_args, log_resource, env=build.env)
+    if build.dockerfileContent:
+        build_args.extend(['-'])
+
+    return run_command_that_must_succeed("docker", build_args, log_resource, stdin=build.dockerfile_content, env=build.env)
 
 
 class LoginResult:
