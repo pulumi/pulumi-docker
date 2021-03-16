@@ -41,7 +41,7 @@ export class Provider extends pulumi.ProviderResource {
             inputs["caMaterial"] = args ? args.caMaterial : undefined;
             inputs["certMaterial"] = args ? args.certMaterial : undefined;
             inputs["certPath"] = args ? args.certPath : undefined;
-            inputs["host"] = (args ? args.host : undefined) || (utilities.getEnv("DOCKER_HOST") || "unix:///var/run/docker.sock");
+            inputs["host"] = (args ? args.host : undefined) ?? (utilities.getEnv("DOCKER_HOST") || "unix:///var/run/docker.sock");
             inputs["keyMaterial"] = args ? args.keyMaterial : undefined;
             inputs["registryAuth"] = pulumi.output(args ? args.registryAuth : undefined).apply(JSON.stringify);
         }
