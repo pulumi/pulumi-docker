@@ -1,8 +1,11 @@
 ## HEAD (Unreleased)
-* Upgrade to pulumi-terraform-bridge v2.22.1  
-  **Please Note:** This includes a bug fix to the refresh operation regarding arrays
+_(none)_
 
 ---
+
+## 2.9.1 (2021-03-23)
+* Upgrade to pulumi-terraform-bridge v2.22.1  
+  **Please Note:** This includes a bug fix to the refresh operation regarding arrays
 
 ## 2.9.0 (2021-03-16)
 * Upgrade to pulumi-terraform-bridge v2.21.0
