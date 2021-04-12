@@ -21,27 +21,28 @@ func (m *module) Version() semver.Version {
 func (m *module) Construct(ctx *pulumi.Context, name, typ, urn string) (r pulumi.Resource, err error) {
 	switch typ {
 	case "docker:index/container:Container":
-		r, err = NewContainer(ctx, name, nil, pulumi.URN_(urn))
+		r = &Container{}
 	case "docker:index/network:Network":
-		r, err = NewNetwork(ctx, name, nil, pulumi.URN_(urn))
+		r = &Network{}
 	case "docker:index/plugin:Plugin":
-		r, err = NewPlugin(ctx, name, nil, pulumi.URN_(urn))
+		r = &Plugin{}
 	case "docker:index/registryImage:RegistryImage":
-		r, err = NewRegistryImage(ctx, name, nil, pulumi.URN_(urn))
+		r = &RegistryImage{}
 	case "docker:index/remoteImage:RemoteImage":
-		r, err = NewRemoteImage(ctx, name, nil, pulumi.URN_(urn))
+		r = &RemoteImage{}
 	case "docker:index/secret:Secret":
-		r, err = NewSecret(ctx, name, nil, pulumi.URN_(urn))
+		r = &Secret{}
 	case "docker:index/service:Service":
-		r, err = NewService(ctx, name, nil, pulumi.URN_(urn))
+		r = &Service{}
 	case "docker:index/serviceConfig:ServiceConfig":
-		r, err = NewServiceConfig(ctx, name, nil, pulumi.URN_(urn))
+		r = &ServiceConfig{}
 	case "docker:index/volume:Volume":
-		r, err = NewVolume(ctx, name, nil, pulumi.URN_(urn))
+		r = &Volume{}
 	default:
 		return nil, fmt.Errorf("unknown resource type: %s", typ)
 	}
 
+	err = ctx.RegisterResource(typ, name, nil, r, pulumi.URN_(urn))
 	return
 }
 
@@ -58,7 +59,9 @@ func (p *pkg) ConstructProvider(ctx *pulumi.Context, name, typ, urn string) (pul
 		return nil, fmt.Errorf("unknown provider type: %s", typ)
 	}
 
-	return NewProvider(ctx, name, nil, pulumi.URN_(urn))
+	r := &Provider{}
+	err := ctx.RegisterResource(typ, name, nil, r, pulumi.URN_(urn))
+	return r, err
 }
 
 func init() {

@@ -5,15 +5,89 @@
 import warnings
 import pulumi
 import pulumi.runtime
-from typing import Any, Mapping, Optional, Sequence, Union
+from typing import Any, Mapping, Optional, Sequence, Union, overload
 from . import _utilities, _tables
 from . import outputs
 from ._inputs import *
 
-__all__ = ['Volume']
+__all__ = ['VolumeArgs', 'Volume']
+
+@pulumi.input_type
+class VolumeArgs:
+    def __init__(__self__, *,
+                 driver: Optional[pulumi.Input[str]] = None,
+                 driver_opts: Optional[pulumi.Input[Mapping[str, Any]]] = None,
+                 labels: Optional[pulumi.Input[Sequence[pulumi.Input['VolumeLabelArgs']]]] = None,
+                 name: Optional[pulumi.Input[str]] = None):
+        """
+        The set of arguments for constructing a Volume resource.
+        :param pulumi.Input[str] driver: Driver type for the volume (defaults to local).
+        :param pulumi.Input[Mapping[str, Any]] driver_opts: Options specific to the driver.
+        :param pulumi.Input[Sequence[pulumi.Input['VolumeLabelArgs']]] labels: User-defined key/value metadata.
+        :param pulumi.Input[str] name: The name of the Docker volume (generated if not
+               provided).
+        """
+        if driver is not None:
+            pulumi.set(__self__, "driver", driver)
+        if driver_opts is not None:
+            pulumi.set(__self__, "driver_opts", driver_opts)
+        if labels is not None:
+            pulumi.set(__self__, "labels", labels)
+        if name is not None:
+            pulumi.set(__self__, "name", name)
+
+    @property
+    @pulumi.getter
+    def driver(self) -> Optional[pulumi.Input[str]]:
+        """
+        Driver type for the volume (defaults to local).
+        """
+        return pulumi.get(self, "driver")
+
+    @driver.setter
+    def driver(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "driver", value)
+
+    @property
+    @pulumi.getter(name="driverOpts")
+    def driver_opts(self) -> Optional[pulumi.Input[Mapping[str, Any]]]:
+        """
+        Options specific to the driver.
+        """
+        return pulumi.get(self, "driver_opts")
+
+    @driver_opts.setter
+    def driver_opts(self, value: Optional[pulumi.Input[Mapping[str, Any]]]):
+        pulumi.set(self, "driver_opts", value)
+
+    @property
+    @pulumi.getter
+    def labels(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['VolumeLabelArgs']]]]:
+        """
+        User-defined key/value metadata.
+        """
+        return pulumi.get(self, "labels")
+
+    @labels.setter
+    def labels(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['VolumeLabelArgs']]]]):
+        pulumi.set(self, "labels", value)
+
+    @property
+    @pulumi.getter
+    def name(self) -> Optional[pulumi.Input[str]]:
+        """
+        The name of the Docker volume (generated if not
+        provided).
+        """
+        return pulumi.get(self, "name")
+
+    @name.setter
+    def name(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "name", value)
 
 
 class Volume(pulumi.CustomResource):
+    @overload
     def __init__(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
@@ -55,6 +129,57 @@ class Volume(pulumi.CustomResource):
         :param pulumi.Input[str] name: The name of the Docker volume (generated if not
                provided).
         """
+        ...
+    @overload
+    def __init__(__self__,
+                 resource_name: str,
+                 args: Optional[VolumeArgs] = None,
+                 opts: Optional[pulumi.ResourceOptions] = None):
+        """
+        Creates and destroys a volume in Docker. This can be used alongside
+        [docker\_container](https://www.terraform.io/docs/providers/docker/r/container.html)
+        to prepare volumes that can be shared across containers.
+
+        ## Example Usage
+
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        # Creates a docker volume "shared_volume".
+        shared_volume = docker.Volume("sharedVolume")
+        ```
+
+        ## Import
+
+        Docker volume can be imported using the long id, e.g. for a volume with the short id `ecae276c5`
+
+        ```sh
+         $ pulumi import docker:index/volume:Volume foo $(docker volume inspect -f {{.ID}} eca)
+        ```
+
+        :param str resource_name: The name of the resource.
+        :param VolumeArgs args: The arguments to use to populate this resource's properties.
+        :param pulumi.ResourceOptions opts: Options for the resource.
+        """
+        ...
+    def __init__(__self__, resource_name: str, *args, **kwargs):
+        resource_args, opts = _utilities.get_resource_args_opts(VolumeArgs, pulumi.ResourceOptions, *args, **kwargs)
+        if resource_args is not None:
+            __self__._internal_init(resource_name, opts, **resource_args.__dict__)
+        else:
+            __self__._internal_init(resource_name, *args, **kwargs)
+
+    def _internal_init(__self__,
+                 resource_name: str,
+                 opts: Optional[pulumi.ResourceOptions] = None,
+                 driver: Optional[pulumi.Input[str]] = None,
+                 driver_opts: Optional[pulumi.Input[Mapping[str, Any]]] = None,
+                 labels: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['VolumeLabelArgs']]]]] = None,
+                 name: Optional[pulumi.Input[str]] = None,
+                 __props__=None,
+                 __name__=None,
+                 __opts__=None):
         if __name__ is not None:
             warnings.warn("explicit use of __name__ is deprecated", DeprecationWarning)
             resource_name = __name__

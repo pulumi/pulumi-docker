@@ -5,15 +5,131 @@
 import warnings
 import pulumi
 import pulumi.runtime
-from typing import Any, Mapping, Optional, Sequence, Union
+from typing import Any, Mapping, Optional, Sequence, Union, overload
 from . import _utilities, _tables
 from . import outputs
 from ._inputs import *
 
-__all__ = ['RemoteImage']
+__all__ = ['RemoteImageArgs', 'RemoteImage']
+
+@pulumi.input_type
+class RemoteImageArgs:
+    def __init__(__self__, *,
+                 name: pulumi.Input[str],
+                 build: Optional[pulumi.Input['RemoteImageBuildArgs']] = None,
+                 force_remove: Optional[pulumi.Input[bool]] = None,
+                 keep_locally: Optional[pulumi.Input[bool]] = None,
+                 pull_trigger: Optional[pulumi.Input[str]] = None,
+                 pull_triggers: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None):
+        """
+        The set of arguments for constructing a RemoteImage resource.
+        :param pulumi.Input[str] name: The name of the Docker image, including any tags or SHA256 repo digests.
+        :param pulumi.Input['RemoteImageBuildArgs'] build: See Build below for details.
+        :param pulumi.Input[bool] force_remove: Force remove the image when the resource is destroyed
+        :param pulumi.Input[bool] keep_locally: If true, then the Docker image won't be
+               deleted on destroy operation. If this is false, it will delete the image from
+               the docker local storage on destroy operation.
+        :param pulumi.Input[str] pull_trigger: **Deprecated**, use `pull_triggers` instead.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] pull_triggers: List of values which cause an
+               image pull when changed. This is used to store the image digest from the
+               registry when using the `RegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
+               to trigger an image update.
+        """
+        pulumi.set(__self__, "name", name)
+        if build is not None:
+            pulumi.set(__self__, "build", build)
+        if force_remove is not None:
+            pulumi.set(__self__, "force_remove", force_remove)
+        if keep_locally is not None:
+            pulumi.set(__self__, "keep_locally", keep_locally)
+        if pull_trigger is not None:
+            warnings.warn("""Use field pull_triggers instead""", DeprecationWarning)
+            pulumi.log.warn("""pull_trigger is deprecated: Use field pull_triggers instead""")
+        if pull_trigger is not None:
+            pulumi.set(__self__, "pull_trigger", pull_trigger)
+        if pull_triggers is not None:
+            pulumi.set(__self__, "pull_triggers", pull_triggers)
+
+    @property
+    @pulumi.getter
+    def name(self) -> pulumi.Input[str]:
+        """
+        The name of the Docker image, including any tags or SHA256 repo digests.
+        """
+        return pulumi.get(self, "name")
+
+    @name.setter
+    def name(self, value: pulumi.Input[str]):
+        pulumi.set(self, "name", value)
+
+    @property
+    @pulumi.getter
+    def build(self) -> Optional[pulumi.Input['RemoteImageBuildArgs']]:
+        """
+        See Build below for details.
+        """
+        return pulumi.get(self, "build")
+
+    @build.setter
+    def build(self, value: Optional[pulumi.Input['RemoteImageBuildArgs']]):
+        pulumi.set(self, "build", value)
+
+    @property
+    @pulumi.getter(name="forceRemove")
+    def force_remove(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Force remove the image when the resource is destroyed
+        """
+        return pulumi.get(self, "force_remove")
+
+    @force_remove.setter
+    def force_remove(self, value: Optional[pulumi.Input[bool]]):
+        pulumi.set(self, "force_remove", value)
+
+    @property
+    @pulumi.getter(name="keepLocally")
+    def keep_locally(self) -> Optional[pulumi.Input[bool]]:
+        """
+        If true, then the Docker image won't be
+        deleted on destroy operation. If this is false, it will delete the image from
+        the docker local storage on destroy operation.
+        """
+        return pulumi.get(self, "keep_locally")
+
+    @keep_locally.setter
+    def keep_locally(self, value: Optional[pulumi.Input[bool]]):
+        pulumi.set(self, "keep_locally", value)
+
+    @property
+    @pulumi.getter(name="pullTrigger")
+    def pull_trigger(self) -> Optional[pulumi.Input[str]]:
+        """
+        **Deprecated**, use `pull_triggers` instead.
+        """
+        return pulumi.get(self, "pull_trigger")
+
+    @pull_trigger.setter
+    def pull_trigger(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "pull_trigger", value)
+
+    @property
+    @pulumi.getter(name="pullTriggers")
+    def pull_triggers(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+        """
+        List of values which cause an
+        image pull when changed. This is used to store the image digest from the
+        registry when using the `RegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
+        to trigger an image update.
+        """
+        return pulumi.get(self, "pull_triggers")
+
+    @pull_triggers.setter
+    def pull_triggers(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
+        pulumi.set(self, "pull_triggers", value)
 
 
 class RemoteImage(pulumi.CustomResource):
+    @overload
     def __init__(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
@@ -68,6 +184,64 @@ class RemoteImage(pulumi.CustomResource):
                registry when using the `RegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
                to trigger an image update.
         """
+        ...
+    @overload
+    def __init__(__self__,
+                 resource_name: str,
+                 args: RemoteImageArgs,
+                 opts: Optional[pulumi.ResourceOptions] = None):
+        """
+        Pulls a Docker image to a given Docker host from a Docker Registry.
+
+        This resource will *not* pull new layers of the image automatically unless used in
+        conjunction with [`RegistryImage`](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
+        data source to update the `pull_triggers` field.
+
+        ## Example Usage
+
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        # Find the latest Ubuntu precise image.
+        ubuntu = docker.RemoteImage("ubuntu", name="ubuntu:precise")
+        ```
+        ### Dynamic image
+
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        ubuntu_registry_image = docker.get_registry_image(name="ubuntu:precise")
+        ubuntu_remote_image = docker.RemoteImage("ubuntuRemoteImage",
+            name=ubuntu_registry_image.name,
+            pull_triggers=[ubuntu_registry_image.sha256_digest])
+        ```
+
+        :param str resource_name: The name of the resource.
+        :param RemoteImageArgs args: The arguments to use to populate this resource's properties.
+        :param pulumi.ResourceOptions opts: Options for the resource.
+        """
+        ...
+    def __init__(__self__, resource_name: str, *args, **kwargs):
+        resource_args, opts = _utilities.get_resource_args_opts(RemoteImageArgs, pulumi.ResourceOptions, *args, **kwargs)
+        if resource_args is not None:
+            __self__._internal_init(resource_name, opts, **resource_args.__dict__)
+        else:
+            __self__._internal_init(resource_name, *args, **kwargs)
+
+    def _internal_init(__self__,
+                 resource_name: str,
+                 opts: Optional[pulumi.ResourceOptions] = None,
+                 build: Optional[pulumi.Input[pulumi.InputType['RemoteImageBuildArgs']]] = None,
+                 force_remove: Optional[pulumi.Input[bool]] = None,
+                 keep_locally: Optional[pulumi.Input[bool]] = None,
+                 name: Optional[pulumi.Input[str]] = None,
+                 pull_trigger: Optional[pulumi.Input[str]] = None,
+                 pull_triggers: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 __props__=None,
+                 __name__=None,
+                 __opts__=None):
         if __name__ is not None:
             warnings.warn("explicit use of __name__ is deprecated", DeprecationWarning)
             resource_name = __name__
