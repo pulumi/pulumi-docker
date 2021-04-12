@@ -5,15 +5,75 @@
 import warnings
 import pulumi
 import pulumi.runtime
-from typing import Any, Mapping, Optional, Sequence, Union
+from typing import Any, Mapping, Optional, Sequence, Union, overload
 from . import _utilities, _tables
 from . import outputs
 from ._inputs import *
 
-__all__ = ['RegistryImage']
+__all__ = ['RegistryImageArgs', 'RegistryImage']
+
+@pulumi.input_type
+class RegistryImageArgs:
+    def __init__(__self__, *,
+                 build: Optional[pulumi.Input['RegistryImageBuildArgs']] = None,
+                 keep_remotely: Optional[pulumi.Input[bool]] = None,
+                 name: Optional[pulumi.Input[str]] = None):
+        """
+        The set of arguments for constructing a RegistryImage resource.
+        :param pulumi.Input['RegistryImageBuildArgs'] build: See Build below for details.
+        :param pulumi.Input[bool] keep_remotely: If true, then the Docker image won't be
+               deleted on destroy operation. If this is false, it will delete the image from
+               the docker registry on destroy operation.
+        :param pulumi.Input[str] name: type of ulimit, e.g. nofile
+        """
+        if build is not None:
+            pulumi.set(__self__, "build", build)
+        if keep_remotely is not None:
+            pulumi.set(__self__, "keep_remotely", keep_remotely)
+        if name is not None:
+            pulumi.set(__self__, "name", name)
+
+    @property
+    @pulumi.getter
+    def build(self) -> Optional[pulumi.Input['RegistryImageBuildArgs']]:
+        """
+        See Build below for details.
+        """
+        return pulumi.get(self, "build")
+
+    @build.setter
+    def build(self, value: Optional[pulumi.Input['RegistryImageBuildArgs']]):
+        pulumi.set(self, "build", value)
+
+    @property
+    @pulumi.getter(name="keepRemotely")
+    def keep_remotely(self) -> Optional[pulumi.Input[bool]]:
+        """
+        If true, then the Docker image won't be
+        deleted on destroy operation. If this is false, it will delete the image from
+        the docker registry on destroy operation.
+        """
+        return pulumi.get(self, "keep_remotely")
+
+    @keep_remotely.setter
+    def keep_remotely(self, value: Optional[pulumi.Input[bool]]):
+        pulumi.set(self, "keep_remotely", value)
+
+    @property
+    @pulumi.getter
+    def name(self) -> Optional[pulumi.Input[str]]:
+        """
+        type of ulimit, e.g. nofile
+        """
+        return pulumi.get(self, "name")
+
+    @name.setter
+    def name(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "name", value)
 
 
 class RegistryImage(pulumi.CustomResource):
+    @overload
     def __init__(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
@@ -45,6 +105,47 @@ class RegistryImage(pulumi.CustomResource):
                the docker registry on destroy operation.
         :param pulumi.Input[str] name: type of ulimit, e.g. nofile
         """
+        ...
+    @overload
+    def __init__(__self__,
+                 resource_name: str,
+                 args: Optional[RegistryImageArgs] = None,
+                 opts: Optional[pulumi.ResourceOptions] = None):
+        """
+        Provides an image/tag in a Docker registry.
+
+        ## Example Usage
+
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        helloworld = docker.RegistryImage("helloworld", build=docker.RegistryImageBuildArgs(
+            context="pathToContextFolder",
+        ))
+        ```
+
+        :param str resource_name: The name of the resource.
+        :param RegistryImageArgs args: The arguments to use to populate this resource's properties.
+        :param pulumi.ResourceOptions opts: Options for the resource.
+        """
+        ...
+    def __init__(__self__, resource_name: str, *args, **kwargs):
+        resource_args, opts = _utilities.get_resource_args_opts(RegistryImageArgs, pulumi.ResourceOptions, *args, **kwargs)
+        if resource_args is not None:
+            __self__._internal_init(resource_name, opts, **resource_args.__dict__)
+        else:
+            __self__._internal_init(resource_name, *args, **kwargs)
+
+    def _internal_init(__self__,
+                 resource_name: str,
+                 opts: Optional[pulumi.ResourceOptions] = None,
+                 build: Optional[pulumi.Input[pulumi.InputType['RegistryImageBuildArgs']]] = None,
+                 keep_remotely: Optional[pulumi.Input[bool]] = None,
+                 name: Optional[pulumi.Input[str]] = None,
+                 __props__=None,
+                 __name__=None,
+                 __opts__=None):
         if __name__ is not None:
             warnings.warn("explicit use of __name__ is deprecated", DeprecationWarning)
             resource_name = __name__
