@@ -6,7 +6,7 @@ import warnings
 import pulumi
 import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
-from . import _utilities, _tables
+from . import _utilities
 from . import outputs
 from ._inputs import *
 
@@ -164,6 +164,174 @@ class PluginArgs:
         pulumi.set(self, "name", value)
 
 
+@pulumi.input_type
+class _PluginState:
+    def __init__(__self__, *,
+                 alias: Optional[pulumi.Input[str]] = None,
+                 enable_timeout: Optional[pulumi.Input[int]] = None,
+                 enabled: Optional[pulumi.Input[bool]] = None,
+                 envs: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 force_destroy: Optional[pulumi.Input[bool]] = None,
+                 force_disable: Optional[pulumi.Input[bool]] = None,
+                 grant_all_permissions: Optional[pulumi.Input[bool]] = None,
+                 grant_permissions: Optional[pulumi.Input[Sequence[pulumi.Input['PluginGrantPermissionArgs']]]] = None,
+                 name: Optional[pulumi.Input[str]] = None,
+                 plugin_reference: Optional[pulumi.Input[str]] = None):
+        """
+        Input properties used for looking up and filtering Plugin resources.
+        :param pulumi.Input[str] alias: The alias of the Docker plugin. If the tag is omitted, `:latest` is complemented to the attribute value.
+        :param pulumi.Input[int] enable_timeout: HTTP client timeout to enable the plugin.
+        :param pulumi.Input[bool] enabled: If true, the plugin is enabled. The default value is `true`.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] envs: . The environment variables.
+        :param pulumi.Input[bool] force_destroy: If true, the plugin is removed forcibly when the plugin is removed.
+        :param pulumi.Input[bool] force_disable: If true, then the plugin is disabled forcibly when the plugin is disabled.
+        :param pulumi.Input[bool] grant_all_permissions: If true, grant all permissions necessary to run the plugin. This attribute conflicts with `grant_permissions`.
+        :param pulumi.Input[Sequence[pulumi.Input['PluginGrantPermissionArgs']]] grant_permissions: grant permissions necessary to run the plugin. This attribute conflicts with `grant_all_permissions`. See grant_permissions below for details.
+        :param pulumi.Input[str] name: Docker Plugin name
+        :param pulumi.Input[str] plugin_reference: (string) The plugin reference.
+        """
+        if alias is not None:
+            pulumi.set(__self__, "alias", alias)
+        if enable_timeout is not None:
+            pulumi.set(__self__, "enable_timeout", enable_timeout)
+        if enabled is not None:
+            pulumi.set(__self__, "enabled", enabled)
+        if envs is not None:
+            pulumi.set(__self__, "envs", envs)
+        if force_destroy is not None:
+            pulumi.set(__self__, "force_destroy", force_destroy)
+        if force_disable is not None:
+            pulumi.set(__self__, "force_disable", force_disable)
+        if grant_all_permissions is not None:
+            pulumi.set(__self__, "grant_all_permissions", grant_all_permissions)
+        if grant_permissions is not None:
+            pulumi.set(__self__, "grant_permissions", grant_permissions)
+        if name is not None:
+            pulumi.set(__self__, "name", name)
+        if plugin_reference is not None:
+            pulumi.set(__self__, "plugin_reference", plugin_reference)
+
+    @property
+    @pulumi.getter
+    def alias(self) -> Optional[pulumi.Input[str]]:
+        """
+        The alias of the Docker plugin. If the tag is omitted, `:latest` is complemented to the attribute value.
+        """
+        return pulumi.get(self, "alias")
+
+    @alias.setter
+    def alias(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "alias", value)
+
+    @property
+    @pulumi.getter(name="enableTimeout")
+    def enable_timeout(self) -> Optional[pulumi.Input[int]]:
+        """
+        HTTP client timeout to enable the plugin.
+        """
+        return pulumi.get(self, "enable_timeout")
+
+    @enable_timeout.setter
+    def enable_timeout(self, value: Optional[pulumi.Input[int]]):
+        pulumi.set(self, "enable_timeout", value)
+
+    @property
+    @pulumi.getter
+    def enabled(self) -> Optional[pulumi.Input[bool]]:
+        """
+        If true, the plugin is enabled. The default value is `true`.
+        """
+        return pulumi.get(self, "enabled")
+
+    @enabled.setter
+    def enabled(self, value: Optional[pulumi.Input[bool]]):
+        pulumi.set(self, "enabled", value)
+
+    @property
+    @pulumi.getter
+    def envs(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+        """
+        . The environment variables.
+        """
+        return pulumi.get(self, "envs")
+
+    @envs.setter
+    def envs(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
+        pulumi.set(self, "envs", value)
+
+    @property
+    @pulumi.getter(name="forceDestroy")
+    def force_destroy(self) -> Optional[pulumi.Input[bool]]:
+        """
+        If true, the plugin is removed forcibly when the plugin is removed.
+        """
+        return pulumi.get(self, "force_destroy")
+
+    @force_destroy.setter
+    def force_destroy(self, value: Optional[pulumi.Input[bool]]):
+        pulumi.set(self, "force_destroy", value)
+
+    @property
+    @pulumi.getter(name="forceDisable")
+    def force_disable(self) -> Optional[pulumi.Input[bool]]:
+        """
+        If true, then the plugin is disabled forcibly when the plugin is disabled.
+        """
+        return pulumi.get(self, "force_disable")
+
+    @force_disable.setter
+    def force_disable(self, value: Optional[pulumi.Input[bool]]):
+        pulumi.set(self, "force_disable", value)
+
+    @property
+    @pulumi.getter(name="grantAllPermissions")
+    def grant_all_permissions(self) -> Optional[pulumi.Input[bool]]:
+        """
+        If true, grant all permissions necessary to run the plugin. This attribute conflicts with `grant_permissions`.
+        """
+        return pulumi.get(self, "grant_all_permissions")
+
+    @grant_all_permissions.setter
+    def grant_all_permissions(self, value: Optional[pulumi.Input[bool]]):
+        pulumi.set(self, "grant_all_permissions", value)
+
+    @property
+    @pulumi.getter(name="grantPermissions")
+    def grant_permissions(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['PluginGrantPermissionArgs']]]]:
+        """
+        grant permissions necessary to run the plugin. This attribute conflicts with `grant_all_permissions`. See grant_permissions below for details.
+        """
+        return pulumi.get(self, "grant_permissions")
+
+    @grant_permissions.setter
+    def grant_permissions(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['PluginGrantPermissionArgs']]]]):
+        pulumi.set(self, "grant_permissions", value)
+
+    @property
+    @pulumi.getter
+    def name(self) -> Optional[pulumi.Input[str]]:
+        """
+        Docker Plugin name
+        """
+        return pulumi.get(self, "name")
+
+    @name.setter
+    def name(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "name", value)
+
+    @property
+    @pulumi.getter(name="pluginReference")
+    def plugin_reference(self) -> Optional[pulumi.Input[str]]:
+        """
+        (string) The plugin reference.
+        """
+        return pulumi.get(self, "plugin_reference")
+
+    @plugin_reference.setter
+    def plugin_reference(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "plugin_reference", value)
+
+
 class Plugin(pulumi.CustomResource):
     @overload
     def __init__(__self__,
@@ -309,18 +477,18 @@ class Plugin(pulumi.CustomResource):
         if opts.id is None:
             if __props__ is not None:
                 raise TypeError('__props__ is only valid when passed in combination with a valid opts.id to get an existing resource')
-            __props__ = dict()
+            __props__ = PluginArgs.__new__(PluginArgs)
 
-            __props__['alias'] = alias
-            __props__['enable_timeout'] = enable_timeout
-            __props__['enabled'] = enabled
-            __props__['envs'] = envs
-            __props__['force_destroy'] = force_destroy
-            __props__['force_disable'] = force_disable
-            __props__['grant_all_permissions'] = grant_all_permissions
-            __props__['grant_permissions'] = grant_permissions
-            __props__['name'] = name
-            __props__['plugin_reference'] = None
+            __props__.__dict__["alias"] = alias
+            __props__.__dict__["enable_timeout"] = enable_timeout
+            __props__.__dict__["enabled"] = enabled
+            __props__.__dict__["envs"] = envs
+            __props__.__dict__["force_destroy"] = force_destroy
+            __props__.__dict__["force_disable"] = force_disable
+            __props__.__dict__["grant_all_permissions"] = grant_all_permissions
+            __props__.__dict__["grant_permissions"] = grant_permissions
+            __props__.__dict__["name"] = name
+            __props__.__dict__["plugin_reference"] = None
         super(Plugin, __self__).__init__(
             'docker:index/plugin:Plugin',
             resource_name,
@@ -361,18 +529,18 @@ class Plugin(pulumi.CustomResource):
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
 
-        __props__ = dict()
+        __props__ = _PluginState.__new__(_PluginState)
 
-        __props__["alias"] = alias
-        __props__["enable_timeout"] = enable_timeout
-        __props__["enabled"] = enabled
-        __props__["envs"] = envs
-        __props__["force_destroy"] = force_destroy
-        __props__["force_disable"] = force_disable
-        __props__["grant_all_permissions"] = grant_all_permissions
-        __props__["grant_permissions"] = grant_permissions
-        __props__["name"] = name
-        __props__["plugin_reference"] = plugin_reference
+        __props__.__dict__["alias"] = alias
+        __props__.__dict__["enable_timeout"] = enable_timeout
+        __props__.__dict__["enabled"] = enabled
+        __props__.__dict__["envs"] = envs
+        __props__.__dict__["force_destroy"] = force_destroy
+        __props__.__dict__["force_disable"] = force_disable
+        __props__.__dict__["grant_all_permissions"] = grant_all_permissions
+        __props__.__dict__["grant_permissions"] = grant_permissions
+        __props__.__dict__["name"] = name
+        __props__.__dict__["plugin_reference"] = plugin_reference
         return Plugin(resource_name, opts=opts, __props__=__props__)
 
     @property
@@ -454,10 +622,4 @@ class Plugin(pulumi.CustomResource):
         (string) The plugin reference.
         """
         return pulumi.get(self, "plugin_reference")
-
-    def translate_output_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
-    def translate_input_property(self, prop):
-        return _tables.SNAKE_TO_CAMEL_CASE_TABLE.get(prop) or prop
 

@@ -14,7 +14,7 @@ import (
 
 	"github.com/Masterminds/semver"
 	"github.com/pkg/errors"
-	"github.com/pulumi/pulumi/sdk/v2/go/pulumi"
+	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
 func buildAndPushImage(ctx *pulumi.Context, baseImageName string, build *DockerBuild,

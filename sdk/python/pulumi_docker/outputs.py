@@ -6,7 +6,7 @@ import warnings
 import pulumi
 import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
-from . import _utilities, _tables
+from . import _utilities
 from . import outputs
 
 __all__ = [
@@ -103,12 +103,28 @@ class ContainerCapabilities(dict):
         """
         return pulumi.get(self, "drops")
 
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
 
 @pulumi.output_type
 class ContainerDevice(dict):
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "hostPath":
+            suggest = "host_path"
+        elif key == "containerPath":
+            suggest = "container_path"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in ContainerDevice. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        ContainerDevice.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        ContainerDevice.__key_warning(key)
+        return super().get(key, default)
+
     def __init__(__self__, *,
                  host_path: str,
                  container_path: Optional[str] = None,
@@ -156,12 +172,26 @@ class ContainerDevice(dict):
         """
         return pulumi.get(self, "permissions")
 
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
 
 @pulumi.output_type
 class ContainerHealthcheck(dict):
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "startPeriod":
+            suggest = "start_period"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in ContainerHealthcheck. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        ContainerHealthcheck.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        ContainerHealthcheck.__key_warning(key)
+        return super().get(key, default)
+
     def __init__(__self__, *,
                  tests: Sequence[str],
                  interval: Optional[str] = None,
@@ -227,9 +257,6 @@ class ContainerHealthcheck(dict):
         """
         return pulumi.get(self, "timeout")
 
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
 
 @pulumi.output_type
 class ContainerHost(dict):
@@ -258,9 +285,6 @@ class ContainerHost(dict):
         IP address this hostname should resolve to.
         """
         return pulumi.get(self, "ip")
-
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
 
 
 @pulumi.output_type
@@ -291,12 +315,32 @@ class ContainerLabel(dict):
         """
         return pulumi.get(self, "value")
 
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
 
 @pulumi.output_type
 class ContainerMount(dict):
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "bindOptions":
+            suggest = "bind_options"
+        elif key == "readOnly":
+            suggest = "read_only"
+        elif key == "tmpfsOptions":
+            suggest = "tmpfs_options"
+        elif key == "volumeOptions":
+            suggest = "volume_options"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in ContainerMount. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        ContainerMount.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        ContainerMount.__key_warning(key)
+        return super().get(key, default)
+
     def __init__(__self__, *,
                  target: str,
                  type: str,
@@ -385,9 +429,6 @@ class ContainerMount(dict):
         """
         return pulumi.get(self, "volume_options")
 
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
 
 @pulumi.output_type
 class ContainerMountBindOptions(dict):
@@ -407,12 +448,26 @@ class ContainerMountBindOptions(dict):
         """
         return pulumi.get(self, "propagation")
 
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
 
 @pulumi.output_type
 class ContainerMountTmpfsOptions(dict):
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "sizeBytes":
+            suggest = "size_bytes"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in ContainerMountTmpfsOptions. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        ContainerMountTmpfsOptions.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        ContainerMountTmpfsOptions.__key_warning(key)
+        return super().get(key, default)
+
     def __init__(__self__, *,
                  mode: Optional[int] = None,
                  size_bytes: Optional[int] = None):
@@ -441,12 +496,30 @@ class ContainerMountTmpfsOptions(dict):
         """
         return pulumi.get(self, "size_bytes")
 
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
 
 @pulumi.output_type
 class ContainerMountVolumeOptions(dict):
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "driverName":
+            suggest = "driver_name"
+        elif key == "driverOptions":
+            suggest = "driver_options"
+        elif key == "noCopy":
+            suggest = "no_copy"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in ContainerMountVolumeOptions. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        ContainerMountVolumeOptions.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        ContainerMountVolumeOptions.__key_warning(key)
+        return super().get(key, default)
+
     def __init__(__self__, *,
                  driver_name: Optional[str] = None,
                  driver_options: Optional[Mapping[str, str]] = None,
@@ -495,9 +568,6 @@ class ContainerMountVolumeOptions(dict):
         """
         return pulumi.get(self, "no_copy")
 
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
 
 @pulumi.output_type
 class ContainerMountVolumeOptionsLabel(dict):
@@ -527,12 +597,36 @@ class ContainerMountVolumeOptionsLabel(dict):
         """
         return pulumi.get(self, "value")
 
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
 
 @pulumi.output_type
 class ContainerNetworkData(dict):
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "globalIpv6Address":
+            suggest = "global_ipv6_address"
+        elif key == "globalIpv6PrefixLength":
+            suggest = "global_ipv6_prefix_length"
+        elif key == "ipAddress":
+            suggest = "ip_address"
+        elif key == "ipPrefixLength":
+            suggest = "ip_prefix_length"
+        elif key == "ipv6Gateway":
+            suggest = "ipv6_gateway"
+        elif key == "networkName":
+            suggest = "network_name"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in ContainerNetworkData. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        ContainerNetworkData.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        ContainerNetworkData.__key_warning(key)
+        return super().get(key, default)
+
     def __init__(__self__, *,
                  gateway: Optional[str] = None,
                  global_ipv6_address: Optional[str] = None,
@@ -609,12 +703,28 @@ class ContainerNetworkData(dict):
     def network_name(self) -> Optional[str]:
         return pulumi.get(self, "network_name")
 
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
 
 @pulumi.output_type
 class ContainerNetworksAdvanced(dict):
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "ipv4Address":
+            suggest = "ipv4_address"
+        elif key == "ipv6Address":
+            suggest = "ipv6_address"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in ContainerNetworksAdvanced. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        ContainerNetworksAdvanced.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        ContainerNetworksAdvanced.__key_warning(key)
+        return super().get(key, default)
+
     def __init__(__self__, *,
                  name: str,
                  aliases: Optional[Sequence[str]] = None,
@@ -665,9 +775,6 @@ class ContainerNetworksAdvanced(dict):
         The IPV6 address of the container in the specific network.
         """
         return pulumi.get(self, "ipv6_address")
-
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
 
 
 @pulumi.output_type
@@ -725,9 +832,6 @@ class ContainerPort(dict):
         """
         return pulumi.get(self, "protocol")
 
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
 
 @pulumi.output_type
 class ContainerUlimit(dict):
@@ -754,12 +858,28 @@ class ContainerUlimit(dict):
     def soft(self) -> int:
         return pulumi.get(self, "soft")
 
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
 
 @pulumi.output_type
 class ContainerUpload(dict):
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "contentBase64":
+            suggest = "content_base64"
+        elif key == "sourceHash":
+            suggest = "source_hash"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in ContainerUpload. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        ContainerUpload.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        ContainerUpload.__key_warning(key)
+        return super().get(key, default)
+
     def __init__(__self__, *,
                  file: str,
                  content: Optional[str] = None,
@@ -835,12 +955,34 @@ class ContainerUpload(dict):
         """
         return pulumi.get(self, "source_hash")
 
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
 
 @pulumi.output_type
 class ContainerVolume(dict):
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "containerPath":
+            suggest = "container_path"
+        elif key == "fromContainer":
+            suggest = "from_container"
+        elif key == "hostPath":
+            suggest = "host_path"
+        elif key == "readOnly":
+            suggest = "read_only"
+        elif key == "volumeName":
+            suggest = "volume_name"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in ContainerVolume. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        ContainerVolume.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        ContainerVolume.__key_warning(key)
+        return super().get(key, default)
+
     def __init__(__self__, *,
                  container_path: Optional[str] = None,
                  from_container: Optional[str] = None,
@@ -915,12 +1057,28 @@ class ContainerVolume(dict):
         """
         return pulumi.get(self, "volume_name")
 
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
 
 @pulumi.output_type
 class NetworkIpamConfig(dict):
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "auxAddress":
+            suggest = "aux_address"
+        elif key == "ipRange":
+            suggest = "ip_range"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in NetworkIpamConfig. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        NetworkIpamConfig.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        NetworkIpamConfig.__key_warning(key)
+        return super().get(key, default)
+
     def __init__(__self__, *,
                  aux_address: Optional[Mapping[str, Any]] = None,
                  gateway: Optional[str] = None,
@@ -955,9 +1113,6 @@ class NetworkIpamConfig(dict):
     def subnet(self) -> Optional[str]:
         return pulumi.get(self, "subnet")
 
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
 
 @pulumi.output_type
 class NetworkLabel(dict):
@@ -987,9 +1142,6 @@ class NetworkLabel(dict):
         """
         return pulumi.get(self, "value")
 
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
 
 @pulumi.output_type
 class PluginGrantPermission(dict):
@@ -1009,12 +1161,28 @@ class PluginGrantPermission(dict):
     def values(self) -> Sequence[str]:
         return pulumi.get(self, "values")
 
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
 
 @pulumi.output_type
 class ProviderRegistryAuth(dict):
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "configFile":
+            suggest = "config_file"
+        elif key == "configFileContent":
+            suggest = "config_file_content"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in ProviderRegistryAuth. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        ProviderRegistryAuth.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        ProviderRegistryAuth.__key_warning(key)
+        return super().get(key, default)
+
     def __init__(__self__, *,
                  address: str,
                  config_file: Optional[str] = None,
@@ -1056,12 +1224,66 @@ class ProviderRegistryAuth(dict):
     def username(self) -> Optional[str]:
         return pulumi.get(self, "username")
 
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
 
 @pulumi.output_type
 class RegistryImageBuild(dict):
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "authConfigs":
+            suggest = "auth_configs"
+        elif key == "buildArgs":
+            suggest = "build_args"
+        elif key == "buildId":
+            suggest = "build_id"
+        elif key == "cacheFroms":
+            suggest = "cache_froms"
+        elif key == "cgroupParent":
+            suggest = "cgroup_parent"
+        elif key == "cpuPeriod":
+            suggest = "cpu_period"
+        elif key == "cpuQuota":
+            suggest = "cpu_quota"
+        elif key == "cpuSetCpus":
+            suggest = "cpu_set_cpus"
+        elif key == "cpuSetMems":
+            suggest = "cpu_set_mems"
+        elif key == "cpuShares":
+            suggest = "cpu_shares"
+        elif key == "extraHosts":
+            suggest = "extra_hosts"
+        elif key == "forceRemove":
+            suggest = "force_remove"
+        elif key == "memorySwap":
+            suggest = "memory_swap"
+        elif key == "networkMode":
+            suggest = "network_mode"
+        elif key == "noCache":
+            suggest = "no_cache"
+        elif key == "pullParent":
+            suggest = "pull_parent"
+        elif key == "remoteContext":
+            suggest = "remote_context"
+        elif key == "securityOpts":
+            suggest = "security_opts"
+        elif key == "sessionId":
+            suggest = "session_id"
+        elif key == "shmSize":
+            suggest = "shm_size"
+        elif key == "suppressOutput":
+            suggest = "suppress_output"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in RegistryImageBuild. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        RegistryImageBuild.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        RegistryImageBuild.__key_warning(key)
+        return super().get(key, default)
+
     def __init__(__self__, *,
                  context: str,
                  auth_configs: Optional[Sequence['outputs.RegistryImageBuildAuthConfig']] = None,
@@ -1445,12 +1667,34 @@ class RegistryImageBuild(dict):
         """
         return pulumi.get(self, "version")
 
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
 
 @pulumi.output_type
 class RegistryImageBuildAuthConfig(dict):
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "hostName":
+            suggest = "host_name"
+        elif key == "identityToken":
+            suggest = "identity_token"
+        elif key == "registryToken":
+            suggest = "registry_token"
+        elif key == "serverAddress":
+            suggest = "server_address"
+        elif key == "userName":
+            suggest = "user_name"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in RegistryImageBuildAuthConfig. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        RegistryImageBuildAuthConfig.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        RegistryImageBuildAuthConfig.__key_warning(key)
+        return super().get(key, default)
+
     def __init__(__self__, *,
                  host_name: str,
                  auth: Optional[str] = None,
@@ -1550,9 +1794,6 @@ class RegistryImageBuildAuthConfig(dict):
         """
         return pulumi.get(self, "user_name")
 
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
 
 @pulumi.output_type
 class RegistryImageBuildUlimit(dict):
@@ -1593,12 +1834,30 @@ class RegistryImageBuildUlimit(dict):
         """
         return pulumi.get(self, "soft")
 
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
 
 @pulumi.output_type
 class RemoteImageBuild(dict):
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "buildArg":
+            suggest = "build_arg"
+        elif key == "forceRemove":
+            suggest = "force_remove"
+        elif key == "noCache":
+            suggest = "no_cache"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in RemoteImageBuild. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        RemoteImageBuild.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        RemoteImageBuild.__key_warning(key)
+        return super().get(key, default)
+
     def __init__(__self__, *,
                  path: str,
                  build_arg: Optional[Mapping[str, str]] = None,
@@ -1682,9 +1941,6 @@ class RemoteImageBuild(dict):
     def target(self) -> Optional[str]:
         return pulumi.get(self, "target")
 
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
 
 @pulumi.output_type
 class SecretLabel(dict):
@@ -1714,12 +1970,26 @@ class SecretLabel(dict):
         """
         return pulumi.get(self, "value")
 
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
 
 @pulumi.output_type
 class ServiceAuth(dict):
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "serverAddress":
+            suggest = "server_address"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in ServiceAuth. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        ServiceAuth.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        ServiceAuth.__key_warning(key)
+        return super().get(key, default)
+
     def __init__(__self__, *,
                  server_address: str,
                  password: Optional[str] = None,
@@ -1759,9 +2029,6 @@ class ServiceAuth(dict):
         """
         return pulumi.get(self, "username")
 
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
 
 @pulumi.output_type
 class ServiceConvergeConfig(dict):
@@ -1795,9 +2062,6 @@ class ServiceConvergeConfig(dict):
         """
         return pulumi.get(self, "timeout")
 
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
 
 @pulumi.output_type
 class ServiceEndpointSpec(dict):
@@ -1829,12 +2093,30 @@ class ServiceEndpointSpec(dict):
         """
         return pulumi.get(self, "ports")
 
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
 
 @pulumi.output_type
 class ServiceEndpointSpecPort(dict):
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "targetPort":
+            suggest = "target_port"
+        elif key == "publishMode":
+            suggest = "publish_mode"
+        elif key == "publishedPort":
+            suggest = "published_port"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in ServiceEndpointSpecPort. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        ServiceEndpointSpecPort.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        ServiceEndpointSpecPort.__key_warning(key)
+        return super().get(key, default)
+
     def __init__(__self__, *,
                  target_port: int,
                  name: Optional[str] = None,
@@ -1898,9 +2180,6 @@ class ServiceEndpointSpecPort(dict):
         """
         return pulumi.get(self, "published_port")
 
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
 
 @pulumi.output_type
 class ServiceLabel(dict):
@@ -1930,12 +2209,26 @@ class ServiceLabel(dict):
         """
         return pulumi.get(self, "value")
 
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
 
 @pulumi.output_type
 class ServiceMode(dict):
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "global":
+            suggest = "global_"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in ServiceMode. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        ServiceMode.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        ServiceMode.__key_warning(key)
+        return super().get(key, default)
+
     def __init__(__self__, *,
                  global_: Optional[bool] = None,
                  replicated: Optional['outputs.ServiceModeReplicated'] = None):
@@ -1964,9 +2257,6 @@ class ServiceMode(dict):
         """
         return pulumi.get(self, "replicated")
 
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
 
 @pulumi.output_type
 class ServiceModeReplicated(dict):
@@ -1980,12 +2270,28 @@ class ServiceModeReplicated(dict):
     def replicas(self) -> Optional[int]:
         return pulumi.get(self, "replicas")
 
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
 
 @pulumi.output_type
 class ServiceRollbackConfig(dict):
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "failureAction":
+            suggest = "failure_action"
+        elif key == "maxFailureRatio":
+            suggest = "max_failure_ratio"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in ServiceRollbackConfig. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        ServiceRollbackConfig.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        ServiceRollbackConfig.__key_warning(key)
+        return super().get(key, default)
+
     def __init__(__self__, *,
                  delay: Optional[str] = None,
                  failure_action: Optional[str] = None,
@@ -2066,12 +2372,32 @@ class ServiceRollbackConfig(dict):
         """
         return pulumi.get(self, "parallelism")
 
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
 
 @pulumi.output_type
 class ServiceTaskSpec(dict):
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "containerSpec":
+            suggest = "container_spec"
+        elif key == "forceUpdate":
+            suggest = "force_update"
+        elif key == "logDriver":
+            suggest = "log_driver"
+        elif key == "restartPolicy":
+            suggest = "restart_policy"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in ServiceTaskSpec. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        ServiceTaskSpec.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        ServiceTaskSpec.__key_warning(key)
+        return super().get(key, default)
+
     def __init__(__self__, *,
                  container_spec: 'outputs.ServiceTaskSpecContainerSpec',
                  force_update: Optional[int] = None,
@@ -2171,12 +2497,32 @@ class ServiceTaskSpec(dict):
         """
         return pulumi.get(self, "runtime")
 
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
 
 @pulumi.output_type
 class ServiceTaskSpecContainerSpec(dict):
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "dnsConfig":
+            suggest = "dns_config"
+        elif key == "readOnly":
+            suggest = "read_only"
+        elif key == "stopGracePeriod":
+            suggest = "stop_grace_period"
+        elif key == "stopSignal":
+            suggest = "stop_signal"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in ServiceTaskSpecContainerSpec. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        ServiceTaskSpecContainerSpec.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        ServiceTaskSpecContainerSpec.__key_warning(key)
+        return super().get(key, default)
+
     def __init__(__self__, *,
                  image: str,
                  args: Optional[Sequence[str]] = None,
@@ -2416,12 +2762,36 @@ class ServiceTaskSpecContainerSpec(dict):
         """
         return pulumi.get(self, "user")
 
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
 
 @pulumi.output_type
 class ServiceTaskSpecContainerSpecConfig(dict):
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "configId":
+            suggest = "config_id"
+        elif key == "fileName":
+            suggest = "file_name"
+        elif key == "configName":
+            suggest = "config_name"
+        elif key == "fileGid":
+            suggest = "file_gid"
+        elif key == "fileMode":
+            suggest = "file_mode"
+        elif key == "fileUid":
+            suggest = "file_uid"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in ServiceTaskSpecContainerSpecConfig. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        ServiceTaskSpecContainerSpecConfig.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        ServiceTaskSpecContainerSpecConfig.__key_warning(key)
+        return super().get(key, default)
+
     def __init__(__self__, *,
                  config_id: str,
                  file_name: str,
@@ -2496,9 +2866,6 @@ class ServiceTaskSpecContainerSpecConfig(dict):
         """
         return pulumi.get(self, "file_uid")
 
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
 
 @pulumi.output_type
 class ServiceTaskSpecContainerSpecDnsConfig(dict):
@@ -2541,12 +2908,26 @@ class ServiceTaskSpecContainerSpecDnsConfig(dict):
         """
         return pulumi.get(self, "searches")
 
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
 
 @pulumi.output_type
 class ServiceTaskSpecContainerSpecHealthcheck(dict):
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "startPeriod":
+            suggest = "start_period"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in ServiceTaskSpecContainerSpecHealthcheck. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        ServiceTaskSpecContainerSpecHealthcheck.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        ServiceTaskSpecContainerSpecHealthcheck.__key_warning(key)
+        return super().get(key, default)
+
     def __init__(__self__, *,
                  tests: Sequence[str],
                  interval: Optional[str] = None,
@@ -2612,9 +2993,6 @@ class ServiceTaskSpecContainerSpecHealthcheck(dict):
         """
         return pulumi.get(self, "timeout")
 
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
 
 @pulumi.output_type
 class ServiceTaskSpecContainerSpecHost(dict):
@@ -2643,9 +3021,6 @@ class ServiceTaskSpecContainerSpecHost(dict):
         The ip
         """
         return pulumi.get(self, "ip")
-
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
 
 
 @pulumi.output_type
@@ -2676,12 +3051,32 @@ class ServiceTaskSpecContainerSpecLabel(dict):
         """
         return pulumi.get(self, "value")
 
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
 
 @pulumi.output_type
 class ServiceTaskSpecContainerSpecMount(dict):
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "bindOptions":
+            suggest = "bind_options"
+        elif key == "readOnly":
+            suggest = "read_only"
+        elif key == "tmpfsOptions":
+            suggest = "tmpfs_options"
+        elif key == "volumeOptions":
+            suggest = "volume_options"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in ServiceTaskSpecContainerSpecMount. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        ServiceTaskSpecContainerSpecMount.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        ServiceTaskSpecContainerSpecMount.__key_warning(key)
+        return super().get(key, default)
+
     def __init__(__self__, *,
                  target: str,
                  type: str,
@@ -2768,9 +3163,6 @@ class ServiceTaskSpecContainerSpecMount(dict):
         """
         return pulumi.get(self, "volume_options")
 
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
 
 @pulumi.output_type
 class ServiceTaskSpecContainerSpecMountBindOptions(dict):
@@ -2790,12 +3182,26 @@ class ServiceTaskSpecContainerSpecMountBindOptions(dict):
         """
         return pulumi.get(self, "propagation")
 
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
 
 @pulumi.output_type
 class ServiceTaskSpecContainerSpecMountTmpfsOptions(dict):
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "sizeBytes":
+            suggest = "size_bytes"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in ServiceTaskSpecContainerSpecMountTmpfsOptions. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        ServiceTaskSpecContainerSpecMountTmpfsOptions.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        ServiceTaskSpecContainerSpecMountTmpfsOptions.__key_warning(key)
+        return super().get(key, default)
+
     def __init__(__self__, *,
                  mode: Optional[int] = None,
                  size_bytes: Optional[int] = None):
@@ -2824,12 +3230,30 @@ class ServiceTaskSpecContainerSpecMountTmpfsOptions(dict):
         """
         return pulumi.get(self, "size_bytes")
 
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
 
 @pulumi.output_type
 class ServiceTaskSpecContainerSpecMountVolumeOptions(dict):
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "driverName":
+            suggest = "driver_name"
+        elif key == "driverOptions":
+            suggest = "driver_options"
+        elif key == "noCopy":
+            suggest = "no_copy"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in ServiceTaskSpecContainerSpecMountVolumeOptions. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        ServiceTaskSpecContainerSpecMountVolumeOptions.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        ServiceTaskSpecContainerSpecMountVolumeOptions.__key_warning(key)
+        return super().get(key, default)
+
     def __init__(__self__, *,
                  driver_name: Optional[str] = None,
                  driver_options: Optional[Mapping[str, str]] = None,
@@ -2874,9 +3298,6 @@ class ServiceTaskSpecContainerSpecMountVolumeOptions(dict):
         """
         return pulumi.get(self, "no_copy")
 
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
 
 @pulumi.output_type
 class ServiceTaskSpecContainerSpecMountVolumeOptionsLabel(dict):
@@ -2906,12 +3327,28 @@ class ServiceTaskSpecContainerSpecMountVolumeOptionsLabel(dict):
         """
         return pulumi.get(self, "value")
 
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
 
 @pulumi.output_type
 class ServiceTaskSpecContainerSpecPrivileges(dict):
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "credentialSpec":
+            suggest = "credential_spec"
+        elif key == "seLinuxContext":
+            suggest = "se_linux_context"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in ServiceTaskSpecContainerSpecPrivileges. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        ServiceTaskSpecContainerSpecPrivileges.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        ServiceTaskSpecContainerSpecPrivileges.__key_warning(key)
+        return super().get(key, default)
+
     def __init__(__self__, *,
                  credential_spec: Optional['outputs.ServiceTaskSpecContainerSpecPrivilegesCredentialSpec'] = None,
                  se_linux_context: Optional['outputs.ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext'] = None):
@@ -2939,9 +3376,6 @@ class ServiceTaskSpecContainerSpecPrivileges(dict):
         SELinux labels of the container
         """
         return pulumi.get(self, "se_linux_context")
-
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
 
 
 @pulumi.output_type
@@ -2973,9 +3407,6 @@ class ServiceTaskSpecContainerSpecPrivilegesCredentialSpec(dict):
         Load credential spec from this value in the Windows registry.
         """
         return pulumi.get(self, "registry")
-
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
 
 
 @pulumi.output_type
@@ -3044,12 +3475,36 @@ class ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext(dict):
         """
         return pulumi.get(self, "user")
 
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
 
 @pulumi.output_type
 class ServiceTaskSpecContainerSpecSecret(dict):
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "fileName":
+            suggest = "file_name"
+        elif key == "secretId":
+            suggest = "secret_id"
+        elif key == "fileGid":
+            suggest = "file_gid"
+        elif key == "fileMode":
+            suggest = "file_mode"
+        elif key == "fileUid":
+            suggest = "file_uid"
+        elif key == "secretName":
+            suggest = "secret_name"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in ServiceTaskSpecContainerSpecSecret. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        ServiceTaskSpecContainerSpecSecret.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        ServiceTaskSpecContainerSpecSecret.__key_warning(key)
+        return super().get(key, default)
+
     def __init__(__self__, *,
                  file_name: str,
                  secret_id: str,
@@ -3124,9 +3579,6 @@ class ServiceTaskSpecContainerSpecSecret(dict):
         """
         return pulumi.get(self, "secret_name")
 
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
 
 @pulumi.output_type
 class ServiceTaskSpecLogDriver(dict):
@@ -3157,12 +3609,26 @@ class ServiceTaskSpecLogDriver(dict):
         """
         return pulumi.get(self, "options")
 
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
 
 @pulumi.output_type
 class ServiceTaskSpecPlacement(dict):
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "maxReplicas":
+            suggest = "max_replicas"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in ServiceTaskSpecPlacement. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        ServiceTaskSpecPlacement.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        ServiceTaskSpecPlacement.__key_warning(key)
+        return super().get(key, default)
+
     def __init__(__self__, *,
                  constraints: Optional[Sequence[str]] = None,
                  max_replicas: Optional[int] = None,
@@ -3215,9 +3681,6 @@ class ServiceTaskSpecPlacement(dict):
         """
         return pulumi.get(self, "prefs")
 
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
 
 @pulumi.output_type
 class ServiceTaskSpecPlacementPlatform(dict):
@@ -3246,9 +3709,6 @@ class ServiceTaskSpecPlacementPlatform(dict):
         The operation system, e.g., `linux`
         """
         return pulumi.get(self, "os")
-
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
 
 
 @pulumi.output_type
@@ -3281,12 +3741,30 @@ class ServiceTaskSpecResources(dict):
         """
         return pulumi.get(self, "reservation")
 
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
 
 @pulumi.output_type
 class ServiceTaskSpecResourcesLimits(dict):
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "genericResources":
+            suggest = "generic_resources"
+        elif key == "memoryBytes":
+            suggest = "memory_bytes"
+        elif key == "nanoCpus":
+            suggest = "nano_cpus"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in ServiceTaskSpecResourcesLimits. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        ServiceTaskSpecResourcesLimits.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        ServiceTaskSpecResourcesLimits.__key_warning(key)
+        return super().get(key, default)
+
     def __init__(__self__, *,
                  generic_resources: Optional['outputs.ServiceTaskSpecResourcesLimitsGenericResources'] = None,
                  memory_bytes: Optional[int] = None,
@@ -3327,12 +3805,28 @@ class ServiceTaskSpecResourcesLimits(dict):
         """
         return pulumi.get(self, "nano_cpus")
 
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
 
 @pulumi.output_type
 class ServiceTaskSpecResourcesLimitsGenericResources(dict):
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "discreteResourcesSpecs":
+            suggest = "discrete_resources_specs"
+        elif key == "namedResourcesSpecs":
+            suggest = "named_resources_specs"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in ServiceTaskSpecResourcesLimitsGenericResources. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        ServiceTaskSpecResourcesLimitsGenericResources.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        ServiceTaskSpecResourcesLimitsGenericResources.__key_warning(key)
+        return super().get(key, default)
+
     def __init__(__self__, *,
                  discrete_resources_specs: Optional[Sequence[str]] = None,
                  named_resources_specs: Optional[Sequence[str]] = None):
@@ -3361,12 +3855,30 @@ class ServiceTaskSpecResourcesLimitsGenericResources(dict):
         """
         return pulumi.get(self, "named_resources_specs")
 
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
 
 @pulumi.output_type
 class ServiceTaskSpecResourcesReservation(dict):
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "genericResources":
+            suggest = "generic_resources"
+        elif key == "memoryBytes":
+            suggest = "memory_bytes"
+        elif key == "nanoCpus":
+            suggest = "nano_cpus"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in ServiceTaskSpecResourcesReservation. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        ServiceTaskSpecResourcesReservation.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        ServiceTaskSpecResourcesReservation.__key_warning(key)
+        return super().get(key, default)
+
     def __init__(__self__, *,
                  generic_resources: Optional['outputs.ServiceTaskSpecResourcesReservationGenericResources'] = None,
                  memory_bytes: Optional[int] = None,
@@ -3407,12 +3919,28 @@ class ServiceTaskSpecResourcesReservation(dict):
         """
         return pulumi.get(self, "nano_cpus")
 
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
 
 @pulumi.output_type
 class ServiceTaskSpecResourcesReservationGenericResources(dict):
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "discreteResourcesSpecs":
+            suggest = "discrete_resources_specs"
+        elif key == "namedResourcesSpecs":
+            suggest = "named_resources_specs"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in ServiceTaskSpecResourcesReservationGenericResources. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        ServiceTaskSpecResourcesReservationGenericResources.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        ServiceTaskSpecResourcesReservationGenericResources.__key_warning(key)
+        return super().get(key, default)
+
     def __init__(__self__, *,
                  discrete_resources_specs: Optional[Sequence[str]] = None,
                  named_resources_specs: Optional[Sequence[str]] = None):
@@ -3441,12 +3969,26 @@ class ServiceTaskSpecResourcesReservationGenericResources(dict):
         """
         return pulumi.get(self, "named_resources_specs")
 
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
 
 @pulumi.output_type
 class ServiceTaskSpecRestartPolicy(dict):
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "maxAttempts":
+            suggest = "max_attempts"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in ServiceTaskSpecRestartPolicy. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        ServiceTaskSpecRestartPolicy.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        ServiceTaskSpecRestartPolicy.__key_warning(key)
+        return super().get(key, default)
+
     def __init__(__self__, *,
                  condition: Optional[str] = None,
                  delay: Optional[str] = None,
@@ -3499,12 +4041,28 @@ class ServiceTaskSpecRestartPolicy(dict):
         """
         return pulumi.get(self, "window")
 
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
 
 @pulumi.output_type
 class ServiceUpdateConfig(dict):
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "failureAction":
+            suggest = "failure_action"
+        elif key == "maxFailureRatio":
+            suggest = "max_failure_ratio"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in ServiceUpdateConfig. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        ServiceUpdateConfig.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        ServiceUpdateConfig.__key_warning(key)
+        return super().get(key, default)
+
     def __init__(__self__, *,
                  delay: Optional[str] = None,
                  failure_action: Optional[str] = None,
@@ -3583,9 +4141,6 @@ class ServiceUpdateConfig(dict):
         """
         return pulumi.get(self, "parallelism")
 
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
 
 @pulumi.output_type
 class VolumeLabel(dict):
@@ -3604,9 +4159,6 @@ class VolumeLabel(dict):
     @pulumi.getter
     def value(self) -> str:
         return pulumi.get(self, "value")
-
-    def _translate_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
 
 
 @pulumi.output_type
