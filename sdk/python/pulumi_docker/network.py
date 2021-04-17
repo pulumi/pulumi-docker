@@ -6,7 +6,7 @@ import warnings
 import pulumi
 import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
-from . import _utilities, _tables
+from . import _utilities
 from . import outputs
 from ._inputs import *
 
@@ -214,6 +214,220 @@ class NetworkArgs:
         pulumi.set(self, "options", value)
 
 
+@pulumi.input_type
+class _NetworkState:
+    def __init__(__self__, *,
+                 attachable: Optional[pulumi.Input[bool]] = None,
+                 check_duplicate: Optional[pulumi.Input[bool]] = None,
+                 driver: Optional[pulumi.Input[str]] = None,
+                 ingress: Optional[pulumi.Input[bool]] = None,
+                 internal: Optional[pulumi.Input[bool]] = None,
+                 ipam_configs: Optional[pulumi.Input[Sequence[pulumi.Input['NetworkIpamConfigArgs']]]] = None,
+                 ipam_driver: Optional[pulumi.Input[str]] = None,
+                 ipv6: Optional[pulumi.Input[bool]] = None,
+                 labels: Optional[pulumi.Input[Sequence[pulumi.Input['NetworkLabelArgs']]]] = None,
+                 name: Optional[pulumi.Input[str]] = None,
+                 options: Optional[pulumi.Input[Mapping[str, Any]]] = None,
+                 scope: Optional[pulumi.Input[str]] = None):
+        """
+        Input properties used for looking up and filtering Network resources.
+        :param pulumi.Input[bool] attachable: Enable manual container attachment to the network.
+               Defaults to `false`.
+        :param pulumi.Input[bool] check_duplicate: Requests daemon to check for networks
+               with same name.
+        :param pulumi.Input[str] driver: Name of the network driver to use. Defaults to
+               `bridge` driver.
+        :param pulumi.Input[bool] ingress: Create swarm routing-mesh network.
+               Defaults to `false`.
+        :param pulumi.Input[bool] internal: Restrict external access to the network.
+               Defaults to `false`.
+        :param pulumi.Input[Sequence[pulumi.Input['NetworkIpamConfigArgs']]] ipam_configs: See IPAM config below for
+               details.
+        :param pulumi.Input[str] ipam_driver: Driver used by the custom IP scheme of the
+               network.
+        :param pulumi.Input[bool] ipv6: Enable IPv6 networking.
+               Defaults to `false`.
+        :param pulumi.Input[Sequence[pulumi.Input['NetworkLabelArgs']]] labels: See Labels below for details.
+        :param pulumi.Input[str] name: The name of the Docker network.
+        :param pulumi.Input[Mapping[str, Any]] options: Network specific options to be used by
+               the drivers.
+        """
+        if attachable is not None:
+            pulumi.set(__self__, "attachable", attachable)
+        if check_duplicate is not None:
+            pulumi.set(__self__, "check_duplicate", check_duplicate)
+        if driver is not None:
+            pulumi.set(__self__, "driver", driver)
+        if ingress is not None:
+            pulumi.set(__self__, "ingress", ingress)
+        if internal is not None:
+            pulumi.set(__self__, "internal", internal)
+        if ipam_configs is not None:
+            pulumi.set(__self__, "ipam_configs", ipam_configs)
+        if ipam_driver is not None:
+            pulumi.set(__self__, "ipam_driver", ipam_driver)
+        if ipv6 is not None:
+            pulumi.set(__self__, "ipv6", ipv6)
+        if labels is not None:
+            pulumi.set(__self__, "labels", labels)
+        if name is not None:
+            pulumi.set(__self__, "name", name)
+        if options is not None:
+            pulumi.set(__self__, "options", options)
+        if scope is not None:
+            pulumi.set(__self__, "scope", scope)
+
+    @property
+    @pulumi.getter
+    def attachable(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Enable manual container attachment to the network.
+        Defaults to `false`.
+        """
+        return pulumi.get(self, "attachable")
+
+    @attachable.setter
+    def attachable(self, value: Optional[pulumi.Input[bool]]):
+        pulumi.set(self, "attachable", value)
+
+    @property
+    @pulumi.getter(name="checkDuplicate")
+    def check_duplicate(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Requests daemon to check for networks
+        with same name.
+        """
+        return pulumi.get(self, "check_duplicate")
+
+    @check_duplicate.setter
+    def check_duplicate(self, value: Optional[pulumi.Input[bool]]):
+        pulumi.set(self, "check_duplicate", value)
+
+    @property
+    @pulumi.getter
+    def driver(self) -> Optional[pulumi.Input[str]]:
+        """
+        Name of the network driver to use. Defaults to
+        `bridge` driver.
+        """
+        return pulumi.get(self, "driver")
+
+    @driver.setter
+    def driver(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "driver", value)
+
+    @property
+    @pulumi.getter
+    def ingress(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Create swarm routing-mesh network.
+        Defaults to `false`.
+        """
+        return pulumi.get(self, "ingress")
+
+    @ingress.setter
+    def ingress(self, value: Optional[pulumi.Input[bool]]):
+        pulumi.set(self, "ingress", value)
+
+    @property
+    @pulumi.getter
+    def internal(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Restrict external access to the network.
+        Defaults to `false`.
+        """
+        return pulumi.get(self, "internal")
+
+    @internal.setter
+    def internal(self, value: Optional[pulumi.Input[bool]]):
+        pulumi.set(self, "internal", value)
+
+    @property
+    @pulumi.getter(name="ipamConfigs")
+    def ipam_configs(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['NetworkIpamConfigArgs']]]]:
+        """
+        See IPAM config below for
+        details.
+        """
+        return pulumi.get(self, "ipam_configs")
+
+    @ipam_configs.setter
+    def ipam_configs(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['NetworkIpamConfigArgs']]]]):
+        pulumi.set(self, "ipam_configs", value)
+
+    @property
+    @pulumi.getter(name="ipamDriver")
+    def ipam_driver(self) -> Optional[pulumi.Input[str]]:
+        """
+        Driver used by the custom IP scheme of the
+        network.
+        """
+        return pulumi.get(self, "ipam_driver")
+
+    @ipam_driver.setter
+    def ipam_driver(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "ipam_driver", value)
+
+    @property
+    @pulumi.getter
+    def ipv6(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Enable IPv6 networking.
+        Defaults to `false`.
+        """
+        return pulumi.get(self, "ipv6")
+
+    @ipv6.setter
+    def ipv6(self, value: Optional[pulumi.Input[bool]]):
+        pulumi.set(self, "ipv6", value)
+
+    @property
+    @pulumi.getter
+    def labels(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['NetworkLabelArgs']]]]:
+        """
+        See Labels below for details.
+        """
+        return pulumi.get(self, "labels")
+
+    @labels.setter
+    def labels(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['NetworkLabelArgs']]]]):
+        pulumi.set(self, "labels", value)
+
+    @property
+    @pulumi.getter
+    def name(self) -> Optional[pulumi.Input[str]]:
+        """
+        The name of the Docker network.
+        """
+        return pulumi.get(self, "name")
+
+    @name.setter
+    def name(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "name", value)
+
+    @property
+    @pulumi.getter
+    def options(self) -> Optional[pulumi.Input[Mapping[str, Any]]]:
+        """
+        Network specific options to be used by
+        the drivers.
+        """
+        return pulumi.get(self, "options")
+
+    @options.setter
+    def options(self, value: Optional[pulumi.Input[Mapping[str, Any]]]):
+        pulumi.set(self, "options", value)
+
+    @property
+    @pulumi.getter
+    def scope(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "scope")
+
+    @scope.setter
+    def scope(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "scope", value)
+
+
 class Network(pulumi.CustomResource):
     @overload
     def __init__(__self__,
@@ -352,20 +566,20 @@ class Network(pulumi.CustomResource):
         if opts.id is None:
             if __props__ is not None:
                 raise TypeError('__props__ is only valid when passed in combination with a valid opts.id to get an existing resource')
-            __props__ = dict()
+            __props__ = NetworkArgs.__new__(NetworkArgs)
 
-            __props__['attachable'] = attachable
-            __props__['check_duplicate'] = check_duplicate
-            __props__['driver'] = driver
-            __props__['ingress'] = ingress
-            __props__['internal'] = internal
-            __props__['ipam_configs'] = ipam_configs
-            __props__['ipam_driver'] = ipam_driver
-            __props__['ipv6'] = ipv6
-            __props__['labels'] = labels
-            __props__['name'] = name
-            __props__['options'] = options
-            __props__['scope'] = None
+            __props__.__dict__["attachable"] = attachable
+            __props__.__dict__["check_duplicate"] = check_duplicate
+            __props__.__dict__["driver"] = driver
+            __props__.__dict__["ingress"] = ingress
+            __props__.__dict__["internal"] = internal
+            __props__.__dict__["ipam_configs"] = ipam_configs
+            __props__.__dict__["ipam_driver"] = ipam_driver
+            __props__.__dict__["ipv6"] = ipv6
+            __props__.__dict__["labels"] = labels
+            __props__.__dict__["name"] = name
+            __props__.__dict__["options"] = options
+            __props__.__dict__["scope"] = None
         super(Network, __self__).__init__(
             'docker:index/network:Network',
             resource_name,
@@ -418,20 +632,20 @@ class Network(pulumi.CustomResource):
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
 
-        __props__ = dict()
+        __props__ = _NetworkState.__new__(_NetworkState)
 
-        __props__["attachable"] = attachable
-        __props__["check_duplicate"] = check_duplicate
-        __props__["driver"] = driver
-        __props__["ingress"] = ingress
-        __props__["internal"] = internal
-        __props__["ipam_configs"] = ipam_configs
-        __props__["ipam_driver"] = ipam_driver
-        __props__["ipv6"] = ipv6
-        __props__["labels"] = labels
-        __props__["name"] = name
-        __props__["options"] = options
-        __props__["scope"] = scope
+        __props__.__dict__["attachable"] = attachable
+        __props__.__dict__["check_duplicate"] = check_duplicate
+        __props__.__dict__["driver"] = driver
+        __props__.__dict__["ingress"] = ingress
+        __props__.__dict__["internal"] = internal
+        __props__.__dict__["ipam_configs"] = ipam_configs
+        __props__.__dict__["ipam_driver"] = ipam_driver
+        __props__.__dict__["ipv6"] = ipv6
+        __props__.__dict__["labels"] = labels
+        __props__.__dict__["name"] = name
+        __props__.__dict__["options"] = options
+        __props__.__dict__["scope"] = scope
         return Network(resource_name, opts=opts, __props__=__props__)
 
     @property
@@ -535,10 +749,4 @@ class Network(pulumi.CustomResource):
     @pulumi.getter
     def scope(self) -> pulumi.Output[str]:
         return pulumi.get(self, "scope")
-
-    def translate_output_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
-    def translate_input_property(self, prop):
-        return _tables.SNAKE_TO_CAMEL_CASE_TABLE.get(prop) or prop
 

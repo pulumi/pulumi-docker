@@ -6,7 +6,7 @@ import warnings
 import pulumi
 import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
-from . import _utilities, _tables
+from . import _utilities
 
 __all__ = ['ServiceConfigArgs', 'ServiceConfig']
 
@@ -34,6 +34,46 @@ class ServiceConfigArgs:
 
     @data.setter
     def data(self, value: pulumi.Input[str]):
+        pulumi.set(self, "data", value)
+
+    @property
+    @pulumi.getter
+    def name(self) -> Optional[pulumi.Input[str]]:
+        """
+        The name of the Docker config.
+        """
+        return pulumi.get(self, "name")
+
+    @name.setter
+    def name(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "name", value)
+
+
+@pulumi.input_type
+class _ServiceConfigState:
+    def __init__(__self__, *,
+                 data: Optional[pulumi.Input[str]] = None,
+                 name: Optional[pulumi.Input[str]] = None):
+        """
+        Input properties used for looking up and filtering ServiceConfig resources.
+        :param pulumi.Input[str] data: The base64 encoded data of the config.
+        :param pulumi.Input[str] name: The name of the Docker config.
+        """
+        if data is not None:
+            pulumi.set(__self__, "data", data)
+        if name is not None:
+            pulumi.set(__self__, "name", name)
+
+    @property
+    @pulumi.getter
+    def data(self) -> Optional[pulumi.Input[str]]:
+        """
+        The base64 encoded data of the config.
+        """
+        return pulumi.get(self, "data")
+
+    @data.setter
+    def data(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "data", value)
 
     @property
@@ -123,12 +163,12 @@ class ServiceConfig(pulumi.CustomResource):
         if opts.id is None:
             if __props__ is not None:
                 raise TypeError('__props__ is only valid when passed in combination with a valid opts.id to get an existing resource')
-            __props__ = dict()
+            __props__ = ServiceConfigArgs.__new__(ServiceConfigArgs)
 
             if data is None and not opts.urn:
                 raise TypeError("Missing required property 'data'")
-            __props__['data'] = data
-            __props__['name'] = name
+            __props__.__dict__["data"] = data
+            __props__.__dict__["name"] = name
         super(ServiceConfig, __self__).__init__(
             'docker:index/serviceConfig:ServiceConfig',
             resource_name,
@@ -153,10 +193,10 @@ class ServiceConfig(pulumi.CustomResource):
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
 
-        __props__ = dict()
+        __props__ = _ServiceConfigState.__new__(_ServiceConfigState)
 
-        __props__["data"] = data
-        __props__["name"] = name
+        __props__.__dict__["data"] = data
+        __props__.__dict__["name"] = name
         return ServiceConfig(resource_name, opts=opts, __props__=__props__)
 
     @property
@@ -174,10 +214,4 @@ class ServiceConfig(pulumi.CustomResource):
         The name of the Docker config.
         """
         return pulumi.get(self, "name")
-
-    def translate_output_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
-    def translate_input_property(self, prop):
-        return _tables.SNAKE_TO_CAMEL_CASE_TABLE.get(prop) or prop
 

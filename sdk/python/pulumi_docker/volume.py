@@ -6,7 +6,7 @@ import warnings
 import pulumi
 import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
-from . import _utilities, _tables
+from . import _utilities
 from . import outputs
 from ._inputs import *
 
@@ -71,6 +71,92 @@ class VolumeArgs:
     @labels.setter
     def labels(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['VolumeLabelArgs']]]]):
         pulumi.set(self, "labels", value)
+
+    @property
+    @pulumi.getter
+    def name(self) -> Optional[pulumi.Input[str]]:
+        """
+        The name of the Docker volume (generated if not
+        provided).
+        """
+        return pulumi.get(self, "name")
+
+    @name.setter
+    def name(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "name", value)
+
+
+@pulumi.input_type
+class _VolumeState:
+    def __init__(__self__, *,
+                 driver: Optional[pulumi.Input[str]] = None,
+                 driver_opts: Optional[pulumi.Input[Mapping[str, Any]]] = None,
+                 labels: Optional[pulumi.Input[Sequence[pulumi.Input['VolumeLabelArgs']]]] = None,
+                 mountpoint: Optional[pulumi.Input[str]] = None,
+                 name: Optional[pulumi.Input[str]] = None):
+        """
+        Input properties used for looking up and filtering Volume resources.
+        :param pulumi.Input[str] driver: Driver type for the volume (defaults to local).
+        :param pulumi.Input[Mapping[str, Any]] driver_opts: Options specific to the driver.
+        :param pulumi.Input[Sequence[pulumi.Input['VolumeLabelArgs']]] labels: User-defined key/value metadata.
+        :param pulumi.Input[str] name: The name of the Docker volume (generated if not
+               provided).
+        """
+        if driver is not None:
+            pulumi.set(__self__, "driver", driver)
+        if driver_opts is not None:
+            pulumi.set(__self__, "driver_opts", driver_opts)
+        if labels is not None:
+            pulumi.set(__self__, "labels", labels)
+        if mountpoint is not None:
+            pulumi.set(__self__, "mountpoint", mountpoint)
+        if name is not None:
+            pulumi.set(__self__, "name", name)
+
+    @property
+    @pulumi.getter
+    def driver(self) -> Optional[pulumi.Input[str]]:
+        """
+        Driver type for the volume (defaults to local).
+        """
+        return pulumi.get(self, "driver")
+
+    @driver.setter
+    def driver(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "driver", value)
+
+    @property
+    @pulumi.getter(name="driverOpts")
+    def driver_opts(self) -> Optional[pulumi.Input[Mapping[str, Any]]]:
+        """
+        Options specific to the driver.
+        """
+        return pulumi.get(self, "driver_opts")
+
+    @driver_opts.setter
+    def driver_opts(self, value: Optional[pulumi.Input[Mapping[str, Any]]]):
+        pulumi.set(self, "driver_opts", value)
+
+    @property
+    @pulumi.getter
+    def labels(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['VolumeLabelArgs']]]]:
+        """
+        User-defined key/value metadata.
+        """
+        return pulumi.get(self, "labels")
+
+    @labels.setter
+    def labels(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['VolumeLabelArgs']]]]):
+        pulumi.set(self, "labels", value)
+
+    @property
+    @pulumi.getter
+    def mountpoint(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "mountpoint")
+
+    @mountpoint.setter
+    def mountpoint(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "mountpoint", value)
 
     @property
     @pulumi.getter
@@ -195,13 +281,13 @@ class Volume(pulumi.CustomResource):
         if opts.id is None:
             if __props__ is not None:
                 raise TypeError('__props__ is only valid when passed in combination with a valid opts.id to get an existing resource')
-            __props__ = dict()
+            __props__ = VolumeArgs.__new__(VolumeArgs)
 
-            __props__['driver'] = driver
-            __props__['driver_opts'] = driver_opts
-            __props__['labels'] = labels
-            __props__['name'] = name
-            __props__['mountpoint'] = None
+            __props__.__dict__["driver"] = driver
+            __props__.__dict__["driver_opts"] = driver_opts
+            __props__.__dict__["labels"] = labels
+            __props__.__dict__["name"] = name
+            __props__.__dict__["mountpoint"] = None
         super(Volume, __self__).__init__(
             'docker:index/volume:Volume',
             resource_name,
@@ -232,13 +318,13 @@ class Volume(pulumi.CustomResource):
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
 
-        __props__ = dict()
+        __props__ = _VolumeState.__new__(_VolumeState)
 
-        __props__["driver"] = driver
-        __props__["driver_opts"] = driver_opts
-        __props__["labels"] = labels
-        __props__["mountpoint"] = mountpoint
-        __props__["name"] = name
+        __props__.__dict__["driver"] = driver
+        __props__.__dict__["driver_opts"] = driver_opts
+        __props__.__dict__["labels"] = labels
+        __props__.__dict__["mountpoint"] = mountpoint
+        __props__.__dict__["name"] = name
         return Volume(resource_name, opts=opts, __props__=__props__)
 
     @property
@@ -278,10 +364,4 @@ class Volume(pulumi.CustomResource):
         provided).
         """
         return pulumi.get(self, "name")
-
-    def translate_output_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
-    def translate_input_property(self, prop):
-        return _tables.SNAKE_TO_CAMEL_CASE_TABLE.get(prop) or prop
 
