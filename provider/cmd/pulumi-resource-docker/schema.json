@@ -5034,11 +5034,12 @@
     },
     "language": {
         "csharp": {
+            "compatibility": "tfbridge20",
             "namespaces": {
                 "docker": "Docker"
             },
             "packageReferences": {
-                "Pulumi": "3.*-*",
+                "Pulumi": "3.*",
                 "Semver": "2.0.6",
                 "System.Collections.Immutable": "1.6.0"
             }
@@ -5048,8 +5049,9 @@
             "importBasePath": "github.com/pulumi/pulumi-docker/sdk/v3/go/docker"
         },
         "nodejs": {
+            "compatibility": "tfbridge20",
             "dependencies": {
-                "@pulumi/pulumi": "^3.0.0-alpha.0",
+                "@pulumi/pulumi": "^3.0.0",
                 "semver": "^5.4.0"
             },
             "devDependencies": {
@@ -5063,9 +5065,10 @@
             "typescriptVersion": ""
         },
         "python": {
+            "compatibility": "tfbridge20",
             "readme": "\u003e This provider is a derived work of the [Terraform Provider](https://github.com/terraform-providers/terraform-provider-docker)\n\u003e distributed under [MPL 2.0](https://www.mozilla.org/en-US/MPL/2.0/). If you encounter a bug or missing feature,\n\u003e first check the [`pulumi/pulumi-docker` repo](https://github.com/pulumi/pulumi-docker/issues); however, if that doesn't turn up anything,\n\u003e please consult the source [`terraform-providers/terraform-provider-docker` repo](https://github.com/terraform-providers/terraform-provider-docker/issues).",
             "requires": {
-                "pulumi": "\u003e=3.0.0a1,\u003c4.0.0"
+                "pulumi": "\u003e=3.0.0,\u003c4.0.0"
             }
         }
     }
