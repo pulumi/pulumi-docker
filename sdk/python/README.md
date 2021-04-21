@@ -3,7 +3,7 @@
 [![NPM version](https://badge.fury.io/js/%40pulumi%2Fdocker.svg)](https://www.npmjs.com/package/@pulumi/docker)
 [![Python version](https://badge.fury.io/py/pulumi-docker.svg)](https://pypi.org/project/pulumi-docker)
 [![NuGet version](https://badge.fury.io/nu/pulumi.docker.svg)](https://badge.fury.io/nu/pulumi.docker)
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/pulumi/pulumi-docker/sdk/v2/go)](https://pkg.go.dev/github.com/pulumi/pulumi-docker/sdk/v2/go)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/pulumi/pulumi-docker/sdk/v3/go)](https://pkg.go.dev/github.com/pulumi/pulumi-docker/sdk/v3/go)
 [![License](https://img.shields.io/npm/l/%40pulumi%2Fpulumi.svg)](https://github.com/pulumi/pulumi-docker/blob/master/LICENSE)
 
 # Docker Resource Provider
@@ -35,7 +35,7 @@ To use from Python, install using `pip`:
 
 To use from Go, use `go get` to grab the latest version of the library
 
-    $ go get github.com/pulumi/pulumi-docker/sdk/v2/go/...
+    $ go get github.com/pulumi/pulumi-docker/sdk/v3/go/...
 
 ### .NET
 
