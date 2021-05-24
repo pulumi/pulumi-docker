@@ -13,21 +13,9 @@ namespace Pulumi.Docker.Outputs
     [OutputType]
     public sealed class ContainerNetworksAdvanced
     {
-        /// <summary>
-        /// The network aliases of the container in the specific network.
-        /// </summary>
         public readonly ImmutableArray<string> Aliases;
-        /// <summary>
-        /// The IPV4 address of the container in the specific network.
-        /// </summary>
         public readonly string? Ipv4Address;
-        /// <summary>
-        /// The IPV6 address of the container in the specific network.
-        /// </summary>
         public readonly string? Ipv6Address;
-        /// <summary>
-        /// The name of the network.
-        /// </summary>
         public readonly string Name;
 
         [OutputConstructor]

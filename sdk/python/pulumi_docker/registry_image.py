@@ -20,11 +20,10 @@ class RegistryImageArgs:
                  name: Optional[pulumi.Input[str]] = None):
         """
         The set of arguments for constructing a RegistryImage resource.
-        :param pulumi.Input['RegistryImageBuildArgs'] build: See Build below for details.
-        :param pulumi.Input[bool] keep_remotely: If true, then the Docker image won't be
-               deleted on destroy operation. If this is false, it will delete the image from
-               the docker registry on destroy operation.
-        :param pulumi.Input[str] name: type of ulimit, e.g. nofile
+        :param pulumi.Input['RegistryImageBuildArgs'] build: Definition for building the image
+        :param pulumi.Input[bool] keep_remotely: If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from
+               the docker registry on destroy operation. Defaults to `false`
+        :param pulumi.Input[str] name: The name of the Docker image.
         """
         if build is not None:
             pulumi.set(__self__, "build", build)
@@ -37,7 +36,7 @@ class RegistryImageArgs:
     @pulumi.getter
     def build(self) -> Optional[pulumi.Input['RegistryImageBuildArgs']]:
         """
-        See Build below for details.
+        Definition for building the image
         """
         return pulumi.get(self, "build")
 
@@ -49,9 +48,8 @@ class RegistryImageArgs:
     @pulumi.getter(name="keepRemotely")
     def keep_remotely(self) -> Optional[pulumi.Input[bool]]:
         """
-        If true, then the Docker image won't be
-        deleted on destroy operation. If this is false, it will delete the image from
-        the docker registry on destroy operation.
+        If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from
+        the docker registry on destroy operation. Defaults to `false`
         """
         return pulumi.get(self, "keep_remotely")
 
@@ -63,7 +61,7 @@ class RegistryImageArgs:
     @pulumi.getter
     def name(self) -> Optional[pulumi.Input[str]]:
         """
-        type of ulimit, e.g. nofile
+        The name of the Docker image.
         """
         return pulumi.get(self, "name")
 
@@ -81,11 +79,11 @@ class _RegistryImageState:
                  sha256_digest: Optional[pulumi.Input[str]] = None):
         """
         Input properties used for looking up and filtering RegistryImage resources.
-        :param pulumi.Input['RegistryImageBuildArgs'] build: See Build below for details.
-        :param pulumi.Input[bool] keep_remotely: If true, then the Docker image won't be
-               deleted on destroy operation. If this is false, it will delete the image from
-               the docker registry on destroy operation.
-        :param pulumi.Input[str] name: type of ulimit, e.g. nofile
+        :param pulumi.Input['RegistryImageBuildArgs'] build: Definition for building the image
+        :param pulumi.Input[bool] keep_remotely: If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from
+               the docker registry on destroy operation. Defaults to `false`
+        :param pulumi.Input[str] name: The name of the Docker image.
+        :param pulumi.Input[str] sha256_digest: The sha256 digest of the image.
         """
         if build is not None:
             pulumi.set(__self__, "build", build)
@@ -100,7 +98,7 @@ class _RegistryImageState:
     @pulumi.getter
     def build(self) -> Optional[pulumi.Input['RegistryImageBuildArgs']]:
         """
-        See Build below for details.
+        Definition for building the image
         """
         return pulumi.get(self, "build")
 
@@ -112,9 +110,8 @@ class _RegistryImageState:
     @pulumi.getter(name="keepRemotely")
     def keep_remotely(self) -> Optional[pulumi.Input[bool]]:
         """
-        If true, then the Docker image won't be
-        deleted on destroy operation. If this is false, it will delete the image from
-        the docker registry on destroy operation.
+        If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from
+        the docker registry on destroy operation. Defaults to `false`
         """
         return pulumi.get(self, "keep_remotely")
 
@@ -126,7 +123,7 @@ class _RegistryImageState:
     @pulumi.getter
     def name(self) -> Optional[pulumi.Input[str]]:
         """
-        type of ulimit, e.g. nofile
+        The name of the Docker image.
         """
         return pulumi.get(self, "name")
 
@@ -137,6 +134,9 @@ class _RegistryImageState:
     @property
     @pulumi.getter(name="sha256Digest")
     def sha256_digest(self) -> Optional[pulumi.Input[str]]:
+        """
+        The sha256 digest of the image.
+        """
         return pulumi.get(self, "sha256_digest")
 
     @sha256_digest.setter
@@ -154,7 +154,8 @@ class RegistryImage(pulumi.CustomResource):
                  name: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         """
-        Provides an image/tag in a Docker registry.
+        <!-- Bug: Type and Name are switched -->
+        Manages the lifecycle of docker image/tag in a registry.
 
         ## Example Usage
 
@@ -167,13 +168,96 @@ class RegistryImage(pulumi.CustomResource):
         ))
         ```
 
+        <!-- schema generated by tfplugindocs -->
+        ## Schema
+
+        ### Required
+
+        - **name** (String) The name of the Docker image.
+
+        ### Optional
+
+        - **build** (Block List, Max: 1) Definition for building the image (see below for nested schema)
+        - **id** (String) The ID of this resource.
+        - **keep_remotely** (Boolean) If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
+
+        ### Read-Only
+
+        - **sha256_digest** (String) The sha256 digest of the image.
+
+        <a id="nestedblock--build"></a>
+        ### Nested Schema for `build`
+
+        Required:
+
+        - **context** (String) The path to the context folder
+
+        Optional:
+
+        - **auth_config** (Block List) The configuration for the autentication (see below for nested schema)
+        - **build_args** (Map of String) Pairs for build-time variables in the form TODO
+        - **build_id** (String) BuildID is an optional identifier that can be passed together with the build request. The
+        - **cache_from** (List of String) Images to consider as cache sources
+        - **cgroup_parent** (String) Optional parent cgroup for the container
+        - **cpu_period** (Number) The length of a CPU period in microseconds
+        - **cpu_quota** (Number) Microseconds of CPU time that the container can get in a CPU period
+        - **cpu_set_cpus** (String) CPUs in which to allow execution (e.g., `0-3`, `0`, `1`)
+        - **cpu_set_mems** (String) MEMs in which to allow execution (`0-3`, `0`, `1`)
+        - **cpu_shares** (Number) CPU shares (relative weight)
+        - **dockerfile** (String) Dockerfile file. Defaults to `Dockerfile`
+        - **extra_hosts** (List of String) A list of hostnames/IP mappings to add to the container’s /etc/hosts file. Specified in the form ["hostname:IP"]
+        - **force_remove** (Boolean) Always remove intermediate containers
+        - **isolation** (String) Isolation represents the isolation technology of a container. The supported values are
+        - **labels** (Map of String) User-defined key/value metadata
+        - **memory** (Number) Set memory limit for build
+        - **memory_swap** (Number) Total memory (memory + swap), -1 to enable unlimited swap
+        - **network_mode** (String) Set the networking mode for the RUN instructions during build
+        - **no_cache** (Boolean) Do not use the cache when building the image
+        - **platform** (String) Set platform if server is multi-platform capable
+        - **pull_parent** (Boolean) Attempt to pull the image even if an older image exists locally
+        - **remote_context** (String) A Git repository URI or HTTP/HTTPS context URI
+        - **remove** (Boolean) Remove intermediate containers after a successful build (default behavior)
+        - **security_opt** (List of String) The security options
+        - **session_id** (String) Set an ID for the build session
+        - **shm_size** (Number) Size of /dev/shm in bytes. The size must be greater than 0
+        - **squash** (Boolean) If true the new layers are squashed into a new image with a single new layer
+        - **suppress_output** (Boolean) Suppress the build output and print image ID on success
+        - **target** (String) Set the target build stage to build
+        - **ulimit** (Block List) Configuration for ulimits (see below for nested schema)
+        - **version** (String) Version of the unerlying builder to use
+
+        <a id="nestedblock--build--auth_config"></a>
+        ### Nested Schema for `build.auth_config`
+
+        Required:
+
+        - **host_name** (String) hostname of the registry
+
+        Optional:
+
+        - **auth** (String) the auth token
+        - **email** (String) the user emal
+        - **identity_token** (String) the identity token
+        - **password** (String) the registry password
+        - **registry_token** (String) the registry token
+        - **server_address** (String) the server address
+        - **user_name** (String) the registry user name
+
+        <a id="nestedblock--build--ulimit"></a>
+        ### Nested Schema for `build.ulimit`
+
+        Required:
+
+        - **hard** (Number) soft limit
+        - **name** (String) type of ulimit, e.g. `nofile`
+        - **soft** (Number) hard limit
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
-        :param pulumi.Input[pulumi.InputType['RegistryImageBuildArgs']] build: See Build below for details.
-        :param pulumi.Input[bool] keep_remotely: If true, then the Docker image won't be
-               deleted on destroy operation. If this is false, it will delete the image from
-               the docker registry on destroy operation.
-        :param pulumi.Input[str] name: type of ulimit, e.g. nofile
+        :param pulumi.Input[pulumi.InputType['RegistryImageBuildArgs']] build: Definition for building the image
+        :param pulumi.Input[bool] keep_remotely: If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from
+               the docker registry on destroy operation. Defaults to `false`
+        :param pulumi.Input[str] name: The name of the Docker image.
         """
         ...
     @overload
@@ -182,7 +266,8 @@ class RegistryImage(pulumi.CustomResource):
                  args: Optional[RegistryImageArgs] = None,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
-        Provides an image/tag in a Docker registry.
+        <!-- Bug: Type and Name are switched -->
+        Manages the lifecycle of docker image/tag in a registry.
 
         ## Example Usage
 
@@ -194,6 +279,90 @@ class RegistryImage(pulumi.CustomResource):
             context="pathToContextFolder",
         ))
         ```
+
+        <!-- schema generated by tfplugindocs -->
+        ## Schema
+
+        ### Required
+
+        - **name** (String) The name of the Docker image.
+
+        ### Optional
+
+        - **build** (Block List, Max: 1) Definition for building the image (see below for nested schema)
+        - **id** (String) The ID of this resource.
+        - **keep_remotely** (Boolean) If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
+
+        ### Read-Only
+
+        - **sha256_digest** (String) The sha256 digest of the image.
+
+        <a id="nestedblock--build"></a>
+        ### Nested Schema for `build`
+
+        Required:
+
+        - **context** (String) The path to the context folder
+
+        Optional:
+
+        - **auth_config** (Block List) The configuration for the autentication (see below for nested schema)
+        - **build_args** (Map of String) Pairs for build-time variables in the form TODO
+        - **build_id** (String) BuildID is an optional identifier that can be passed together with the build request. The
+        - **cache_from** (List of String) Images to consider as cache sources
+        - **cgroup_parent** (String) Optional parent cgroup for the container
+        - **cpu_period** (Number) The length of a CPU period in microseconds
+        - **cpu_quota** (Number) Microseconds of CPU time that the container can get in a CPU period
+        - **cpu_set_cpus** (String) CPUs in which to allow execution (e.g., `0-3`, `0`, `1`)
+        - **cpu_set_mems** (String) MEMs in which to allow execution (`0-3`, `0`, `1`)
+        - **cpu_shares** (Number) CPU shares (relative weight)
+        - **dockerfile** (String) Dockerfile file. Defaults to `Dockerfile`
+        - **extra_hosts** (List of String) A list of hostnames/IP mappings to add to the container’s /etc/hosts file. Specified in the form ["hostname:IP"]
+        - **force_remove** (Boolean) Always remove intermediate containers
+        - **isolation** (String) Isolation represents the isolation technology of a container. The supported values are
+        - **labels** (Map of String) User-defined key/value metadata
+        - **memory** (Number) Set memory limit for build
+        - **memory_swap** (Number) Total memory (memory + swap), -1 to enable unlimited swap
+        - **network_mode** (String) Set the networking mode for the RUN instructions during build
+        - **no_cache** (Boolean) Do not use the cache when building the image
+        - **platform** (String) Set platform if server is multi-platform capable
+        - **pull_parent** (Boolean) Attempt to pull the image even if an older image exists locally
+        - **remote_context** (String) A Git repository URI or HTTP/HTTPS context URI
+        - **remove** (Boolean) Remove intermediate containers after a successful build (default behavior)
+        - **security_opt** (List of String) The security options
+        - **session_id** (String) Set an ID for the build session
+        - **shm_size** (Number) Size of /dev/shm in bytes. The size must be greater than 0
+        - **squash** (Boolean) If true the new layers are squashed into a new image with a single new layer
+        - **suppress_output** (Boolean) Suppress the build output and print image ID on success
+        - **target** (String) Set the target build stage to build
+        - **ulimit** (Block List) Configuration for ulimits (see below for nested schema)
+        - **version** (String) Version of the unerlying builder to use
+
+        <a id="nestedblock--build--auth_config"></a>
+        ### Nested Schema for `build.auth_config`
+
+        Required:
+
+        - **host_name** (String) hostname of the registry
+
+        Optional:
+
+        - **auth** (String) the auth token
+        - **email** (String) the user emal
+        - **identity_token** (String) the identity token
+        - **password** (String) the registry password
+        - **registry_token** (String) the registry token
+        - **server_address** (String) the server address
+        - **user_name** (String) the registry user name
+
+        <a id="nestedblock--build--ulimit"></a>
+        ### Nested Schema for `build.ulimit`
+
+        Required:
+
+        - **hard** (Number) soft limit
+        - **name** (String) type of ulimit, e.g. `nofile`
+        - **soft** (Number) hard limit
 
         :param str resource_name: The name of the resource.
         :param RegistryImageArgs args: The arguments to use to populate this resource's properties.
@@ -250,11 +419,11 @@ class RegistryImage(pulumi.CustomResource):
         :param str resource_name: The unique name of the resulting resource.
         :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
-        :param pulumi.Input[pulumi.InputType['RegistryImageBuildArgs']] build: See Build below for details.
-        :param pulumi.Input[bool] keep_remotely: If true, then the Docker image won't be
-               deleted on destroy operation. If this is false, it will delete the image from
-               the docker registry on destroy operation.
-        :param pulumi.Input[str] name: type of ulimit, e.g. nofile
+        :param pulumi.Input[pulumi.InputType['RegistryImageBuildArgs']] build: Definition for building the image
+        :param pulumi.Input[bool] keep_remotely: If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from
+               the docker registry on destroy operation. Defaults to `false`
+        :param pulumi.Input[str] name: The name of the Docker image.
+        :param pulumi.Input[str] sha256_digest: The sha256 digest of the image.
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
 
@@ -270,7 +439,7 @@ class RegistryImage(pulumi.CustomResource):
     @pulumi.getter
     def build(self) -> pulumi.Output[Optional['outputs.RegistryImageBuild']]:
         """
-        See Build below for details.
+        Definition for building the image
         """
         return pulumi.get(self, "build")
 
@@ -278,9 +447,8 @@ class RegistryImage(pulumi.CustomResource):
     @pulumi.getter(name="keepRemotely")
     def keep_remotely(self) -> pulumi.Output[Optional[bool]]:
         """
-        If true, then the Docker image won't be
-        deleted on destroy operation. If this is false, it will delete the image from
-        the docker registry on destroy operation.
+        If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from
+        the docker registry on destroy operation. Defaults to `false`
         """
         return pulumi.get(self, "keep_remotely")
 
@@ -288,12 +456,15 @@ class RegistryImage(pulumi.CustomResource):
     @pulumi.getter
     def name(self) -> pulumi.Output[str]:
         """
-        type of ulimit, e.g. nofile
+        The name of the Docker image.
         """
         return pulumi.get(self, "name")
 
     @property
     @pulumi.getter(name="sha256Digest")
     def sha256_digest(self) -> pulumi.Output[str]:
+        """
+        The sha256 digest of the image.
+        """
         return pulumi.get(self, "sha256_digest")
 

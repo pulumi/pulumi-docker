@@ -49,31 +49,6 @@ func (i RegistryAuthArgs) ToRegistryAuthOutputWithContext(ctx context.Context) R
 	return pulumi.ToOutputWithContext(ctx, i).(RegistryAuthOutput)
 }
 
-// RegistryAuthArrayInput is an input type that accepts RegistryAuthArray and RegistryAuthArrayOutput values.
-// You can construct a concrete instance of `RegistryAuthArrayInput` via:
-//
-//          RegistryAuthArray{ RegistryAuthArgs{...} }
-type RegistryAuthArrayInput interface {
-	pulumi.Input
-
-	ToRegistryAuthArrayOutput() RegistryAuthArrayOutput
-	ToRegistryAuthArrayOutputWithContext(context.Context) RegistryAuthArrayOutput
-}
-
-type RegistryAuthArray []RegistryAuthInput
-
-func (RegistryAuthArray) ElementType() reflect.Type {
-	return reflect.TypeOf((*[]RegistryAuth)(nil)).Elem()
-}
-
-func (i RegistryAuthArray) ToRegistryAuthArrayOutput() RegistryAuthArrayOutput {
-	return i.ToRegistryAuthArrayOutputWithContext(context.Background())
-}
-
-func (i RegistryAuthArray) ToRegistryAuthArrayOutputWithContext(ctx context.Context) RegistryAuthArrayOutput {
-	return pulumi.ToOutputWithContext(ctx, i).(RegistryAuthArrayOutput)
-}
-
 type RegistryAuthOutput struct{ *pulumi.OutputState }
 
 func (RegistryAuthOutput) ElementType() reflect.Type {
@@ -108,27 +83,6 @@ func (o RegistryAuthOutput) Username() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v RegistryAuth) *string { return v.Username }).(pulumi.StringPtrOutput)
 }
 
-type RegistryAuthArrayOutput struct{ *pulumi.OutputState }
-
-func (RegistryAuthArrayOutput) ElementType() reflect.Type {
-	return reflect.TypeOf((*[]RegistryAuth)(nil)).Elem()
-}
-
-func (o RegistryAuthArrayOutput) ToRegistryAuthArrayOutput() RegistryAuthArrayOutput {
-	return o
-}
-
-func (o RegistryAuthArrayOutput) ToRegistryAuthArrayOutputWithContext(ctx context.Context) RegistryAuthArrayOutput {
-	return o
-}
-
-func (o RegistryAuthArrayOutput) Index(i pulumi.IntInput) RegistryAuthOutput {
-	return pulumi.All(o, i).ApplyT(func(vs []interface{}) RegistryAuth {
-		return vs[0].([]RegistryAuth)[vs[1].(int)]
-	}).(RegistryAuthOutput)
-}
-
 func init() {
 	pulumi.RegisterOutputType(RegistryAuthOutput{})
-	pulumi.RegisterOutputType(RegistryAuthArrayOutput{})
 }

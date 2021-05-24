@@ -13,13 +13,7 @@ namespace Pulumi.Docker.Outputs
     [OutputType]
     public sealed class ServiceTaskSpecContainerSpecPrivileges
     {
-        /// <summary>
-        /// For managed service account (Windows only)
-        /// </summary>
         public readonly Outputs.ServiceTaskSpecContainerSpecPrivilegesCredentialSpec? CredentialSpec;
-        /// <summary>
-        /// SELinux labels of the container
-        /// </summary>
         public readonly Outputs.ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext? SeLinuxContext;
 
         [OutputConstructor]

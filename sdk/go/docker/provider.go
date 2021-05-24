@@ -46,8 +46,8 @@ type providerArgs struct {
 	// The Docker daemon address
 	Host *string `pulumi:"host"`
 	// PEM-encoded content of Docker client private key
-	KeyMaterial  *string                `pulumi:"keyMaterial"`
-	RegistryAuth []ProviderRegistryAuth `pulumi:"registryAuth"`
+	KeyMaterial  *string               `pulumi:"keyMaterial"`
+	RegistryAuth *ProviderRegistryAuth `pulumi:"registryAuth"`
 }
 
 // The set of arguments for constructing a Provider resource.
@@ -62,7 +62,7 @@ type ProviderArgs struct {
 	Host pulumi.StringPtrInput
 	// PEM-encoded content of Docker client private key
 	KeyMaterial  pulumi.StringPtrInput
-	RegistryAuth ProviderRegistryAuthArrayInput
+	RegistryAuth ProviderRegistryAuthPtrInput
 }
 
 func (ProviderArgs) ElementType() reflect.Type {

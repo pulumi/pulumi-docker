@@ -13,130 +13,37 @@ namespace Pulumi.Docker.Outputs
     [OutputType]
     public sealed class RegistryImageBuild
     {
-        /// <summary>
-        /// - See AuthConfig below for details
-        /// </summary>
         public readonly ImmutableArray<Outputs.RegistryImageBuildAuthConfig> AuthConfigs;
-        /// <summary>
-        /// string pairs for build-time variables
-        /// </summary>
         public readonly ImmutableDictionary<string, string>? BuildArgs;
-        /// <summary>
-        /// - BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request
-        /// </summary>
         public readonly string? BuildId;
-        /// <summary>
-        /// - Images to consider as cache sources
-        /// </summary>
         public readonly ImmutableArray<string> CacheFroms;
-        /// <summary>
-        /// - Optional parent cgroup for the container
-        /// </summary>
         public readonly string? CgroupParent;
-        /// <summary>
-        /// - The path to the context folder
-        /// </summary>
         public readonly string Context;
-        /// <summary>
-        /// - The length of a CPU period in microseconds
-        /// </summary>
         public readonly int? CpuPeriod;
-        /// <summary>
-        /// - Microseconds of CPU time that the container can get in a CPU period
-        /// </summary>
         public readonly int? CpuQuota;
-        /// <summary>
-        /// - CPUs in which to allow execution (e.g., 0-3, 0,1)
-        /// </summary>
         public readonly string? CpuSetCpus;
-        /// <summary>
-        /// - MEMs in which to allow execution (0-3, 0,1)
-        /// </summary>
         public readonly string? CpuSetMems;
-        /// <summary>
-        /// - CPU shares (relative weight)
-        /// </summary>
         public readonly int? CpuShares;
-        /// <summary>
-        /// - Dockerfile file. Default is "Dockerfile"
-        /// </summary>
         public readonly string? Dockerfile;
-        /// <summary>
-        /// - A list of hostnames/IP mappings to add to the container’s /etc/hosts file. Specified in the form ["hostname:IP"]
-        /// </summary>
         public readonly ImmutableArray<string> ExtraHosts;
-        /// <summary>
-        /// - Always remove intermediate containers
-        /// </summary>
         public readonly bool? ForceRemove;
-        /// <summary>
-        /// - Isolation represents the isolation technology of a container. The supported values are platform specific
-        /// </summary>
         public readonly string? Isolation;
-        /// <summary>
-        /// string pairs for labels
-        /// </summary>
         public readonly ImmutableDictionary<string, string>? Labels;
-        /// <summary>
-        /// - Set memory limit for build
-        /// </summary>
         public readonly int? Memory;
-        /// <summary>
-        /// - Total memory (memory + swap), -1 to enable unlimited swap
-        /// </summary>
         public readonly int? MemorySwap;
-        /// <summary>
-        /// - Set the networking mode for the RUN instructions during build
-        /// </summary>
         public readonly string? NetworkMode;
-        /// <summary>
-        /// - Do not use the cache when building the image
-        /// </summary>
         public readonly bool? NoCache;
-        /// <summary>
-        /// - Set platform if server is multi-platform capable
-        /// </summary>
         public readonly string? Platform;
-        /// <summary>
-        /// - Attempt to pull the image even if an older image exists locally
-        /// </summary>
         public readonly bool? PullParent;
-        /// <summary>
-        /// - A Git repository URI or HTTP/HTTPS context URI
-        /// </summary>
         public readonly string? RemoteContext;
-        /// <summary>
-        /// - Remove intermediate containers after a successful build (default behavior)
-        /// </summary>
         public readonly bool? Remove;
-        /// <summary>
-        /// - Security options
-        /// </summary>
         public readonly ImmutableArray<string> SecurityOpts;
         public readonly string? SessionId;
-        /// <summary>
-        /// - Size of /dev/shm in bytes. The size must be greater than 0
-        /// </summary>
         public readonly int? ShmSize;
-        /// <summary>
-        /// - squash the new layers into a new image with a single new layer
-        /// </summary>
         public readonly bool? Squash;
-        /// <summary>
-        /// - Suppress the build output and print image ID on success
-        /// </summary>
         public readonly bool? SuppressOutput;
-        /// <summary>
-        /// - Set the target build stage to build
-        /// </summary>
         public readonly string? Target;
-        /// <summary>
-        /// - See Ulimit below for details
-        /// </summary>
         public readonly ImmutableArray<Outputs.RegistryImageBuildUlimit> Ulimits;
-        /// <summary>
-        /// - Version of the unerlying builder to use
-        /// </summary>
         public readonly string? Version;
 
         [OutputConstructor]

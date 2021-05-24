@@ -13,13 +13,7 @@ namespace Pulumi.Docker.Outputs
     [OutputType]
     public sealed class ContainerCapabilities
     {
-        /// <summary>
-        /// list of linux capabilities to add.
-        /// </summary>
         public readonly ImmutableArray<string> Adds;
-        /// <summary>
-        /// list of linux capabilities to drop.
-        /// </summary>
         public readonly ImmutableArray<string> Drops;
 
         [OutputConstructor]

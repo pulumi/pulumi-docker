@@ -13,25 +13,10 @@ namespace Pulumi.Docker.Outputs
     [OutputType]
     public sealed class ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext
     {
-        /// <summary>
-        /// Disable SELinux
-        /// </summary>
         public readonly bool? Disable;
-        /// <summary>
-        /// SELinux level label
-        /// </summary>
         public readonly string? Level;
-        /// <summary>
-        /// SELinux role label
-        /// </summary>
         public readonly string? Role;
-        /// <summary>
-        /// SELinux type label
-        /// </summary>
         public readonly string? Type;
-        /// <summary>
-        /// The user inside the container.
-        /// </summary>
         public readonly string? User;
 
         [OutputConstructor]

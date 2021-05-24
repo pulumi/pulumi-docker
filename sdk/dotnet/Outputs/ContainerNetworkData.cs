@@ -13,21 +13,10 @@ namespace Pulumi.Docker.Outputs
     [OutputType]
     public sealed class ContainerNetworkData
     {
-        /// <summary>
-        /// *Deprecated:* Use `network_data` instead. The network gateway of the container as read from its
-        /// NetworkSettings.
-        /// </summary>
         public readonly string? Gateway;
         public readonly string? GlobalIpv6Address;
         public readonly int? GlobalIpv6PrefixLength;
-        /// <summary>
-        /// *Deprecated:* Use `network_data` instead. The IP address of the container's first network it.
-        /// </summary>
         public readonly string? IpAddress;
-        /// <summary>
-        /// *Deprecated:* Use `network_data` instead. The IP prefix length of the container as read from its
-        /// NetworkSettings.
-        /// </summary>
         public readonly int? IpPrefixLength;
         public readonly string? Ipv6Gateway;
         public readonly string? NetworkName;
