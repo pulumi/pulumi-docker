@@ -12,9 +12,6 @@ namespace Pulumi.Docker.Inputs
 
     public sealed class ContainerMountBindOptionsArgs : Pulumi.ResourceArgs
     {
-        /// <summary>
-        /// A propagation mode with the value.
-        /// </summary>
         [Input("propagation")]
         public Input<string>? Propagation { get; set; }
 

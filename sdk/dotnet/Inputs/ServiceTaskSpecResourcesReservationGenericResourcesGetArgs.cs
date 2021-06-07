@@ -14,10 +14,6 @@ namespace Pulumi.Docker.Inputs
     {
         [Input("discreteResourcesSpecs")]
         private InputList<string>? _discreteResourcesSpecs;
-
-        /// <summary>
-        /// The Integer resources, delimited by `=`
-        /// </summary>
         public InputList<string> DiscreteResourcesSpecs
         {
             get => _discreteResourcesSpecs ?? (_discreteResourcesSpecs = new InputList<string>());
@@ -26,10 +22,6 @@ namespace Pulumi.Docker.Inputs
 
         [Input("namedResourcesSpecs")]
         private InputList<string>? _namedResourcesSpecs;
-
-        /// <summary>
-        /// The String resources, delimited by `=`
-        /// </summary>
         public InputList<string> NamedResourcesSpecs
         {
             get => _namedResourcesSpecs ?? (_namedResourcesSpecs = new InputList<string>());

@@ -12,46 +12,24 @@ namespace Pulumi.Docker.Inputs
 
     public sealed class ContainerMountArgs : Pulumi.ResourceArgs
     {
-        /// <summary>
-        /// Optional configuration for the `bind` type.
-        /// </summary>
         [Input("bindOptions")]
         public Input<Inputs.ContainerMountBindOptionsArgs>? BindOptions { get; set; }
 
-        /// <summary>
-        /// If true, this volume will be readonly.
-        /// Defaults to false.
-        /// </summary>
         [Input("readOnly")]
         public Input<bool>? ReadOnly { get; set; }
 
-        /// <summary>
-        /// The mount source (e.g., a volume name, a host path)
-        /// </summary>
         [Input("source")]
         public Input<string>? Source { get; set; }
 
-        /// <summary>
-        /// The container path.
-        /// </summary>
         [Input("target", required: true)]
         public Input<string> Target { get; set; } = null!;
 
-        /// <summary>
-        /// Optional configuration for the `tmpf` type.
-        /// </summary>
         [Input("tmpfsOptions")]
         public Input<Inputs.ContainerMountTmpfsOptionsArgs>? TmpfsOptions { get; set; }
 
-        /// <summary>
-        /// The mount type: valid values are `bind|volume|tmpfs`.
-        /// </summary>
         [Input("type", required: true)]
         public Input<string> Type { get; set; } = null!;
 
-        /// <summary>
-        /// Optional configuration for the `volume` type.
-        /// </summary>
         [Input("volumeOptions")]
         public Input<Inputs.ContainerMountVolumeOptionsArgs>? VolumeOptions { get; set; }
 

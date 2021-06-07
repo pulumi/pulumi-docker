@@ -10,46 +10,37 @@ using Pulumi.Serialization;
 namespace Pulumi.Docker
 {
     /// <summary>
-    /// Manages the lifecycle of a Docker container.
-    /// 
-    /// ## Example Usage
-    /// 
-    /// ```csharp
-    /// using Pulumi;
-    /// using Docker = Pulumi.Docker;
-    /// 
-    /// class MyStack : Stack
-    /// {
-    ///     public MyStack()
-    ///     {
-    ///         // Find the latest Ubuntu precise image.
-    ///         var ubuntuRemoteImage = new Docker.RemoteImage("ubuntuRemoteImage", new Docker.RemoteImageArgs
-    ///         {
-    ///             Name = "ubuntu:precise",
-    ///         });
-    ///         // Start a container
-    ///         var ubuntuContainer = new Docker.Container("ubuntuContainer", new Docker.ContainerArgs
-    ///         {
-    ///             Image = ubuntuRemoteImage.Latest,
-    ///         });
-    ///     }
-    /// 
-    /// }
-    /// ```
-    /// 
     /// ## Import
     /// 
-    /// Docker containers can be imported using the long id, e.g. for a container named `foo`
+    /// ### Example Assuming you created a `container` as follows #!/bin/bash docker run --name foo -p8080:80 -d nginx
+    /// 
+    /// # prints the container ID
+    /// 
+    /// 9a550c0f0163d39d77222d3efd58701b625d47676c25c686c95b5b92d1cba6fd you provide the definition for the resource as follows terraform resource "docker_container" "foo" {
+    /// 
+    ///  name
+    /// 
+    /// = "foo"
+    /// 
+    ///  image = "nginx"
+    /// 
+    ///  ports {
+    /// 
+    ///  internal = "80"
+    /// 
+    ///  external = "8080"
+    /// 
+    ///  } } then the import command is as follows #!/bin/bash
     /// 
     /// ```sh
-    ///  $ pulumi import docker:index/container:Container foo $(docker inspect -f {{.ID}} foo)
+    ///  $ pulumi import docker:index/container:Container foo 9a550c0f0163d39d77222d3efd58701b625d47676c25c686c95b5b92d1cba6fd
     /// ```
     /// </summary>
     [DockerResourceType("docker:index/container:Container")]
     public partial class Container : Pulumi.CustomResource
     {
         /// <summary>
-        /// If true attach to the container after its creation and waits the end of his execution.
+        /// If `true` attach to the container after its creation and waits the end of its execution. Defaults to `false`.
         /// </summary>
         [Output("attach")]
         public Output<bool?> Attach { get; private set; } = null!;
@@ -61,15 +52,14 @@ namespace Pulumi.Docker
         public Output<string> Bridge { get; private set; } = null!;
 
         /// <summary>
-        /// See Capabilities below for details.
+        /// Add or drop certrain linux capabilities.
         /// </summary>
         [Output("capabilities")]
         public Output<Outputs.ContainerCapabilities?> Capabilities { get; private set; } = null!;
 
         /// <summary>
-        /// The command to use to start the
-        /// container. For example, to run `/usr/bin/myprogram -f baz.conf` set the
-        /// command to be `["/usr/bin/myprogram", "-f", "baz.conf"]`.
+        /// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be
+        /// `["/usr/bin/myprogram","-","baz.con"]`.
         /// </summary>
         [Output("command")]
         public Output<ImmutableArray<string>> Command { get; private set; } = null!;
@@ -93,31 +83,32 @@ namespace Pulumi.Docker
         public Output<int?> CpuShares { get; private set; } = null!;
 
         /// <summary>
-        /// If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
+        /// If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on
+        /// successful stop.
         /// </summary>
         [Output("destroyGraceSeconds")]
         public Output<int?> DestroyGraceSeconds { get; private set; } = null!;
 
         /// <summary>
-        /// See Devices below for details.
+        /// Bind devices to the container.
         /// </summary>
         [Output("devices")]
         public Output<ImmutableArray<Outputs.ContainerDevice>> Devices { get; private set; } = null!;
 
         /// <summary>
-        /// Set of DNS servers.
+        /// DNS servers to use.
         /// </summary>
         [Output("dns")]
         public Output<ImmutableArray<string>> Dns { get; private set; } = null!;
 
         /// <summary>
-        /// Set of DNS options used by the DNS provider(s), see `resolv.conf` documentation for valid list of options.
+        /// DNS options used by the DNS provider(s), see `resolv.conf` documentation for valid list of options.
         /// </summary>
         [Output("dnsOpts")]
         public Output<ImmutableArray<string>> DnsOpts { get; private set; } = null!;
 
         /// <summary>
-        /// Set of DNS search domains that are used when bare unqualified hostnames are used inside of the container.
+        /// DNS search domains that are used when bare unqualified hostnames are used inside of the container.
         /// </summary>
         [Output("dnsSearches")]
         public Output<ImmutableArray<string>> DnsSearches { get; private set; } = null!;
@@ -129,17 +120,15 @@ namespace Pulumi.Docker
         public Output<string?> Domainname { get; private set; } = null!;
 
         /// <summary>
-        /// The command to use as the
-        /// Entrypoint for the container. The Entrypoint allows you to configure a
-        /// container to run as an executable. For example, to run `/usr/bin/myprogram`
-        /// when starting a container, set the entrypoint to be
-        /// `["/usr/bin/myprogram"]`.
+        /// The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an
+        /// executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be
+        /// `"/usr/bin/myprogra"]`.
         /// </summary>
         [Output("entrypoints")]
         public Output<ImmutableArray<string>> Entrypoints { get; private set; } = null!;
 
         /// <summary>
-        /// Environment variables to set.
+        /// Environment variables to set in the form of `KEY=VALUE`, e.g. `DEBUG=0`
         /// </summary>
         [Output("envs")]
         public Output<ImmutableArray<string>> Envs { get; private set; } = null!;
@@ -151,20 +140,19 @@ namespace Pulumi.Docker
         public Output<int> ExitCode { get; private set; } = null!;
 
         /// <summary>
-        /// *Deprecated:* Use `network_data` instead. The network gateway of the container as read from its
-        /// NetworkSettings.
+        /// The network gateway of the container.
         /// </summary>
         [Output("gateway")]
         public Output<string> Gateway { get; private set; } = null!;
 
         /// <summary>
-        /// Add additional groups to run as.
+        /// Additional groups for the container user
         /// </summary>
         [Output("groupAdds")]
         public Output<ImmutableArray<string>> GroupAdds { get; private set; } = null!;
 
         /// <summary>
-        /// See Healthcheck below for details.
+        /// A test to perform to check that the container is healthy
         /// </summary>
         [Output("healthcheck")]
         public Output<Outputs.ContainerHealthcheck> Healthcheck { get; private set; } = null!;
@@ -176,80 +164,76 @@ namespace Pulumi.Docker
         public Output<string> Hostname { get; private set; } = null!;
 
         /// <summary>
-        /// Hostname to add.
+        /// Additional hosts to add to the container.
         /// </summary>
         [Output("hosts")]
         public Output<ImmutableArray<Outputs.ContainerHost>> Hosts { get; private set; } = null!;
 
         /// <summary>
-        /// The ID of the image to back this container.
-        /// The easiest way to get this value is to use the `docker.RemoteImage` resource
-        /// as is shown in the example above.
+        /// The ID of the image to back this container. The easiest way to get this value is to use the `docker_image` resource as
+        /// is shown in the example.
         /// </summary>
         [Output("image")]
         public Output<string> Image { get; private set; } = null!;
 
         /// <summary>
-        /// Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
+        /// Configured whether an init process should be injected for this container. If unset this will default to the `dockerd`
+        /// defaults.
         /// </summary>
         [Output("init")]
         public Output<bool> Init { get; private set; } = null!;
 
         /// <summary>
-        /// *Deprecated:* Use `network_data` instead. The IP address of the container's first network it.
+        /// The IP address of the container.
         /// </summary>
         [Output("ipAddress")]
         public Output<string> IpAddress { get; private set; } = null!;
 
         /// <summary>
-        /// *Deprecated:* Use `network_data` instead. The IP prefix length of the container as read from its
-        /// NetworkSettings.
+        /// The IP prefix length of the container.
         /// </summary>
         [Output("ipPrefixLength")]
         public Output<int> IpPrefixLength { get; private set; } = null!;
 
         /// <summary>
-        /// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:&lt;name|id&gt;` or `host`.
+        /// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:&lt;name|id&gt;` or
+        /// `host`.
         /// </summary>
         [Output("ipcMode")]
         public Output<string> IpcMode { get; private set; } = null!;
 
         /// <summary>
-        /// Adding labels.
+        /// User-defined key/value metadata
         /// </summary>
         [Output("labels")]
         public Output<ImmutableArray<Outputs.ContainerLabel>> Labels { get; private set; } = null!;
 
         /// <summary>
-        /// Set of links for link based
-        /// connectivity between containers that are running on the same host.
+        /// Set of links for link based connectivity between containers that are running on the same host.
         /// </summary>
         [Output("links")]
         public Output<ImmutableArray<string>> Links { get; private set; } = null!;
 
         /// <summary>
-        /// The logging driver to use for the container.
-        /// Defaults to "json-file".
+        /// The logging driver to use for the container. Defaults to `json-file`.
         /// </summary>
         [Output("logDriver")]
         public Output<string?> LogDriver { get; private set; } = null!;
 
         /// <summary>
-        /// Key/value pairs to use as options for
-        /// the logging driver.
+        /// Key/value pairs to use as options for the logging driver.
         /// </summary>
         [Output("logOpts")]
         public Output<ImmutableDictionary<string, object>?> LogOpts { get; private set; } = null!;
 
         /// <summary>
-        /// Save the container logs (`attach` must be enabled).
+        /// Save the container logs (`attach` must be enabled). Defaults to `false`.
         /// </summary>
         [Output("logs")]
         public Output<bool?> Logs { get; private set; } = null!;
 
         /// <summary>
-        /// The maximum amount of times to an attempt
-        /// a restart when `restart` is set to "on-failure"
+        /// The maximum amount of times to an attempt a restart when `restart` is set to 'on-failure'.
         /// </summary>
         [Output("maxRetryCount")]
         public Output<int?> MaxRetryCount { get; private set; } = null!;
@@ -260,30 +244,40 @@ namespace Pulumi.Docker
         [Output("memory")]
         public Output<int?> Memory { get; private set; } = null!;
 
+        /// <summary>
+        /// The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `terraform
+        /// apply` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
+        /// </summary>
         [Output("memorySwap")]
         public Output<int?> MemorySwap { get; private set; } = null!;
 
         /// <summary>
-        /// See Mounts below for details.
+        /// Specification for mounts to be added to containers created as part of the service.
         /// </summary>
         [Output("mounts")]
         public Output<ImmutableArray<Outputs.ContainerMount>> Mounts { get; private set; } = null!;
 
+        /// <summary>
+        /// If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform
+        /// assumes it is successful. Defaults to `true`.
+        /// </summary>
         [Output("mustRun")]
         public Output<bool?> MustRun { get; private set; } = null!;
 
+        /// <summary>
+        /// The name of the container.
+        /// </summary>
         [Output("name")]
         public Output<string> Name { get; private set; } = null!;
 
         /// <summary>
-        /// Network aliases of the container for user-defined networks only. *Deprecated:* use `networks_advanced` instead.
+        /// Set an alias for the container in all specified networks
         /// </summary>
         [Output("networkAliases")]
         public Output<ImmutableArray<string>> NetworkAliases { get; private set; } = null!;
 
         /// <summary>
-        /// (Map of a block) The IP addresses of the container on each
-        /// network. Key are the network names, values are the IP addresses.
+        /// The data of the networks the container is connected to.
         /// </summary>
         [Output("networkDatas")]
         public Output<ImmutableArray<Outputs.ContainerNetworkData>> NetworkDatas { get; private set; } = null!;
@@ -295,32 +289,31 @@ namespace Pulumi.Docker
         public Output<string?> NetworkMode { get; private set; } = null!;
 
         /// <summary>
-        /// Id of the networks in which the
-        /// container is. *Deprecated:* use `networks_advanced` instead.
+        /// ID of the networks in which the container is.
         /// </summary>
         [Output("networks")]
         public Output<ImmutableArray<string>> Networks { get; private set; } = null!;
 
         /// <summary>
-        /// See Networks Advanced below for details. If this block has priority to the deprecated `network_alias` and `network` properties.
+        /// The networks the container is attached to
         /// </summary>
         [Output("networksAdvanced")]
         public Output<ImmutableArray<Outputs.ContainerNetworksAdvanced>> NetworksAdvanced { get; private set; } = null!;
 
         /// <summary>
-        /// The PID (Process) Namespace mode for the container. Either `container:&lt;name|id&gt;` or `host`.
+        /// he PID (Process) Namespace mode for the container. Either `container:&lt;name|id&gt;` or `host`.
         /// </summary>
         [Output("pidMode")]
         public Output<string?> PidMode { get; private set; } = null!;
 
         /// <summary>
-        /// See Ports below for details.
+        /// Publish a container's port(s) to the host.
         /// </summary>
         [Output("ports")]
         public Output<ImmutableArray<Outputs.ContainerPort>> Ports { get; private set; } = null!;
 
         /// <summary>
-        /// Run container in privileged mode.
+        /// If `true`, the container runs in privileged mode.
         /// </summary>
         [Output("privileged")]
         public Output<bool?> Privileged { get; private set; } = null!;
@@ -332,27 +325,33 @@ namespace Pulumi.Docker
         public Output<bool?> PublishAllPorts { get; private set; } = null!;
 
         /// <summary>
-        /// If true, this volume will be readonly.
-        /// Defaults to false.
+        /// If `true`, the container will be started as readonly. Defaults to `false`.
         /// </summary>
         [Output("readOnly")]
         public Output<bool?> ReadOnly { get; private set; } = null!;
 
+        /// <summary>
+        /// If `true`, it will remove anonymous volumes associated with the container. Defaults to `true`.
+        /// </summary>
         [Output("removeVolumes")]
         public Output<bool?> RemoveVolumes { get; private set; } = null!;
 
         /// <summary>
-        /// The restart policy for the container. Must be
-        /// one of "no", "on-failure", "always", "unless-stopped".
+        /// The restart policy for the container. Must be one of 'no', 'on-failure', 'always', 'unless-stopped'. Defaults to `no`.
         /// </summary>
         [Output("restart")]
         public Output<string?> Restart { get; private set; } = null!;
 
+        /// <summary>
+        /// If `true`, then the container will be automatically removed after his execution. Terraform won't check this container
+        /// after creation. Defaults to `false`.
+        /// </summary>
         [Output("rm")]
         public Output<bool?> Rm { get; private set; } = null!;
 
         /// <summary>
-        /// Set of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
+        /// List of string values to customize labels for MLS systems, such as SELinux. See
+        /// https://docs.docker.com/engine/reference/run/#security-configuration.
         /// </summary>
         [Output("securityOpts")]
         public Output<ImmutableArray<string>> SecurityOpts { get; private set; } = null!;
@@ -364,14 +363,14 @@ namespace Pulumi.Docker
         public Output<int> ShmSize { get; private set; } = null!;
 
         /// <summary>
-        /// If true, then the Docker container will be
-        /// started after creation. If false, then the container is only created.
+        /// If `true`, then the Docker container will be started after creation. If `false`, then the container is only created.
+        /// Defaults to `true`.
         /// </summary>
         [Output("start")]
         public Output<bool?> Start { get; private set; } = null!;
 
         /// <summary>
-        /// if true, keep STDIN open even if not attached (docker run -i)
+        /// If `true`, keep STDIN open even if not attached (`docker run -i`). Defaults to `false`.
         /// </summary>
         [Output("stdinOpen")]
         public Output<bool?> StdinOpen { get; private set; } = null!;
@@ -389,28 +388,27 @@ namespace Pulumi.Docker
         public Output<ImmutableDictionary<string, object>?> Tmpfs { get; private set; } = null!;
 
         /// <summary>
-        /// if true, allocate a pseudo-tty (docker run -t)
+        /// If `true`, allocate a pseudo-tty (`docker run -t`). Defaults to `false`.
         /// </summary>
         [Output("tty")]
         public Output<bool?> Tty { get; private set; } = null!;
 
         /// <summary>
-        /// See Ulimits below for
-        /// details.
+        /// Ulimit options to add.
         /// </summary>
         [Output("ulimits")]
         public Output<ImmutableArray<Outputs.ContainerUlimit>> Ulimits { get; private set; } = null!;
 
         /// <summary>
-        /// See File Upload below for details.
+        /// Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and
+        /// at least one of them has to be set.
         /// </summary>
         [Output("uploads")]
         public Output<ImmutableArray<Outputs.ContainerUpload>> Uploads { get; private set; } = null!;
 
         /// <summary>
-        /// User used for run the first process. Format is
-        /// `user` or `user:group` which user and group can be passed literraly or
-        /// by name.
+        /// User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by
+        /// name.
         /// </summary>
         [Output("user")]
         public Output<string?> User { get; private set; } = null!;
@@ -422,13 +420,13 @@ namespace Pulumi.Docker
         public Output<string?> UsernsMode { get; private set; } = null!;
 
         /// <summary>
-        /// See Volumes below for details.
+        /// Spec for mounting volumes in the container.
         /// </summary>
         [Output("volumes")]
         public Output<ImmutableArray<Outputs.ContainerVolume>> Volumes { get; private set; } = null!;
 
         /// <summary>
-        /// The working directory for commands to run in
+        /// The working directory for commands to run in.
         /// </summary>
         [Output("workingDir")]
         public Output<string?> WorkingDir { get; private set; } = null!;
@@ -480,13 +478,13 @@ namespace Pulumi.Docker
     public sealed class ContainerArgs : Pulumi.ResourceArgs
     {
         /// <summary>
-        /// If true attach to the container after its creation and waits the end of his execution.
+        /// If `true` attach to the container after its creation and waits the end of its execution. Defaults to `false`.
         /// </summary>
         [Input("attach")]
         public Input<bool>? Attach { get; set; }
 
         /// <summary>
-        /// See Capabilities below for details.
+        /// Add or drop certrain linux capabilities.
         /// </summary>
         [Input("capabilities")]
         public Input<Inputs.ContainerCapabilitiesArgs>? Capabilities { get; set; }
@@ -495,9 +493,8 @@ namespace Pulumi.Docker
         private InputList<string>? _command;
 
         /// <summary>
-        /// The command to use to start the
-        /// container. For example, to run `/usr/bin/myprogram -f baz.conf` set the
-        /// command to be `["/usr/bin/myprogram", "-f", "baz.conf"]`.
+        /// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be
+        /// `["/usr/bin/myprogram","-","baz.con"]`.
         /// </summary>
         public InputList<string> Command
         {
@@ -518,7 +515,8 @@ namespace Pulumi.Docker
         public Input<int>? CpuShares { get; set; }
 
         /// <summary>
-        /// If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
+        /// If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on
+        /// successful stop.
         /// </summary>
         [Input("destroyGraceSeconds")]
         public Input<int>? DestroyGraceSeconds { get; set; }
@@ -527,7 +525,7 @@ namespace Pulumi.Docker
         private InputList<Inputs.ContainerDeviceArgs>? _devices;
 
         /// <summary>
-        /// See Devices below for details.
+        /// Bind devices to the container.
         /// </summary>
         public InputList<Inputs.ContainerDeviceArgs> Devices
         {
@@ -539,7 +537,7 @@ namespace Pulumi.Docker
         private InputList<string>? _dns;
 
         /// <summary>
-        /// Set of DNS servers.
+        /// DNS servers to use.
         /// </summary>
         public InputList<string> Dns
         {
@@ -551,7 +549,7 @@ namespace Pulumi.Docker
         private InputList<string>? _dnsOpts;
 
         /// <summary>
-        /// Set of DNS options used by the DNS provider(s), see `resolv.conf` documentation for valid list of options.
+        /// DNS options used by the DNS provider(s), see `resolv.conf` documentation for valid list of options.
         /// </summary>
         public InputList<string> DnsOpts
         {
@@ -563,7 +561,7 @@ namespace Pulumi.Docker
         private InputList<string>? _dnsSearches;
 
         /// <summary>
-        /// Set of DNS search domains that are used when bare unqualified hostnames are used inside of the container.
+        /// DNS search domains that are used when bare unqualified hostnames are used inside of the container.
         /// </summary>
         public InputList<string> DnsSearches
         {
@@ -581,11 +579,9 @@ namespace Pulumi.Docker
         private InputList<string>? _entrypoints;
 
         /// <summary>
-        /// The command to use as the
-        /// Entrypoint for the container. The Entrypoint allows you to configure a
-        /// container to run as an executable. For example, to run `/usr/bin/myprogram`
-        /// when starting a container, set the entrypoint to be
-        /// `["/usr/bin/myprogram"]`.
+        /// The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an
+        /// executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be
+        /// `"/usr/bin/myprogra"]`.
         /// </summary>
         public InputList<string> Entrypoints
         {
@@ -597,7 +593,7 @@ namespace Pulumi.Docker
         private InputList<string>? _envs;
 
         /// <summary>
-        /// Environment variables to set.
+        /// Environment variables to set in the form of `KEY=VALUE`, e.g. `DEBUG=0`
         /// </summary>
         public InputList<string> Envs
         {
@@ -609,7 +605,7 @@ namespace Pulumi.Docker
         private InputList<string>? _groupAdds;
 
         /// <summary>
-        /// Add additional groups to run as.
+        /// Additional groups for the container user
         /// </summary>
         public InputList<string> GroupAdds
         {
@@ -618,7 +614,7 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// See Healthcheck below for details.
+        /// A test to perform to check that the container is healthy
         /// </summary>
         [Input("healthcheck")]
         public Input<Inputs.ContainerHealthcheckArgs>? Healthcheck { get; set; }
@@ -633,7 +629,7 @@ namespace Pulumi.Docker
         private InputList<Inputs.ContainerHostArgs>? _hosts;
 
         /// <summary>
-        /// Hostname to add.
+        /// Additional hosts to add to the container.
         /// </summary>
         public InputList<Inputs.ContainerHostArgs> Hosts
         {
@@ -642,21 +638,22 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// The ID of the image to back this container.
-        /// The easiest way to get this value is to use the `docker.RemoteImage` resource
-        /// as is shown in the example above.
+        /// The ID of the image to back this container. The easiest way to get this value is to use the `docker_image` resource as
+        /// is shown in the example.
         /// </summary>
         [Input("image", required: true)]
         public Input<string> Image { get; set; } = null!;
 
         /// <summary>
-        /// Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
+        /// Configured whether an init process should be injected for this container. If unset this will default to the `dockerd`
+        /// defaults.
         /// </summary>
         [Input("init")]
         public Input<bool>? Init { get; set; }
 
         /// <summary>
-        /// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:&lt;name|id&gt;` or `host`.
+        /// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:&lt;name|id&gt;` or
+        /// `host`.
         /// </summary>
         [Input("ipcMode")]
         public Input<string>? IpcMode { get; set; }
@@ -665,7 +662,7 @@ namespace Pulumi.Docker
         private InputList<Inputs.ContainerLabelArgs>? _labels;
 
         /// <summary>
-        /// Adding labels.
+        /// User-defined key/value metadata
         /// </summary>
         public InputList<Inputs.ContainerLabelArgs> Labels
         {
@@ -677,8 +674,7 @@ namespace Pulumi.Docker
         private InputList<string>? _links;
 
         /// <summary>
-        /// Set of links for link based
-        /// connectivity between containers that are running on the same host.
+        /// Set of links for link based connectivity between containers that are running on the same host.
         /// </summary>
         [Obsolete(@"The --link flag is a legacy feature of Docker. It may eventually be removed.")]
         public InputList<string> Links
@@ -688,8 +684,7 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// The logging driver to use for the container.
-        /// Defaults to "json-file".
+        /// The logging driver to use for the container. Defaults to `json-file`.
         /// </summary>
         [Input("logDriver")]
         public Input<string>? LogDriver { get; set; }
@@ -698,8 +693,7 @@ namespace Pulumi.Docker
         private InputMap<object>? _logOpts;
 
         /// <summary>
-        /// Key/value pairs to use as options for
-        /// the logging driver.
+        /// Key/value pairs to use as options for the logging driver.
         /// </summary>
         public InputMap<object> LogOpts
         {
@@ -708,14 +702,13 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// Save the container logs (`attach` must be enabled).
+        /// Save the container logs (`attach` must be enabled). Defaults to `false`.
         /// </summary>
         [Input("logs")]
         public Input<bool>? Logs { get; set; }
 
         /// <summary>
-        /// The maximum amount of times to an attempt
-        /// a restart when `restart` is set to "on-failure"
+        /// The maximum amount of times to an attempt a restart when `restart` is set to 'on-failure'.
         /// </summary>
         [Input("maxRetryCount")]
         public Input<int>? MaxRetryCount { get; set; }
@@ -726,6 +719,10 @@ namespace Pulumi.Docker
         [Input("memory")]
         public Input<int>? Memory { get; set; }
 
+        /// <summary>
+        /// The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `terraform
+        /// apply` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
+        /// </summary>
         [Input("memorySwap")]
         public Input<int>? MemorySwap { get; set; }
 
@@ -733,7 +730,7 @@ namespace Pulumi.Docker
         private InputList<Inputs.ContainerMountArgs>? _mounts;
 
         /// <summary>
-        /// See Mounts below for details.
+        /// Specification for mounts to be added to containers created as part of the service.
         /// </summary>
         public InputList<Inputs.ContainerMountArgs> Mounts
         {
@@ -741,9 +738,16 @@ namespace Pulumi.Docker
             set => _mounts = value;
         }
 
+        /// <summary>
+        /// If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform
+        /// assumes it is successful. Defaults to `true`.
+        /// </summary>
         [Input("mustRun")]
         public Input<bool>? MustRun { get; set; }
 
+        /// <summary>
+        /// The name of the container.
+        /// </summary>
         [Input("name")]
         public Input<string>? Name { get; set; }
 
@@ -751,9 +755,9 @@ namespace Pulumi.Docker
         private InputList<string>? _networkAliases;
 
         /// <summary>
-        /// Network aliases of the container for user-defined networks only. *Deprecated:* use `networks_advanced` instead.
+        /// Set an alias for the container in all specified networks
         /// </summary>
-        [Obsolete(@"Use networks_advanced instead. Will be removed in v2.0.0")]
+        [Obsolete(@"Use networks_advanced instead. Will be removed in v3.0.0")]
         public InputList<string> NetworkAliases
         {
             get => _networkAliases ?? (_networkAliases = new InputList<string>());
@@ -770,10 +774,9 @@ namespace Pulumi.Docker
         private InputList<string>? _networks;
 
         /// <summary>
-        /// Id of the networks in which the
-        /// container is. *Deprecated:* use `networks_advanced` instead.
+        /// ID of the networks in which the container is.
         /// </summary>
-        [Obsolete(@"Use networks_advanced instead. Will be removed in v2.0.0")]
+        [Obsolete(@"Use networks_advanced instead. Will be removed in v3.0.0")]
         public InputList<string> Networks
         {
             get => _networks ?? (_networks = new InputList<string>());
@@ -784,7 +787,7 @@ namespace Pulumi.Docker
         private InputList<Inputs.ContainerNetworksAdvancedArgs>? _networksAdvanced;
 
         /// <summary>
-        /// See Networks Advanced below for details. If this block has priority to the deprecated `network_alias` and `network` properties.
+        /// The networks the container is attached to
         /// </summary>
         public InputList<Inputs.ContainerNetworksAdvancedArgs> NetworksAdvanced
         {
@@ -793,7 +796,7 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// The PID (Process) Namespace mode for the container. Either `container:&lt;name|id&gt;` or `host`.
+        /// he PID (Process) Namespace mode for the container. Either `container:&lt;name|id&gt;` or `host`.
         /// </summary>
         [Input("pidMode")]
         public Input<string>? PidMode { get; set; }
@@ -802,7 +805,7 @@ namespace Pulumi.Docker
         private InputList<Inputs.ContainerPortArgs>? _ports;
 
         /// <summary>
-        /// See Ports below for details.
+        /// Publish a container's port(s) to the host.
         /// </summary>
         public InputList<Inputs.ContainerPortArgs> Ports
         {
@@ -811,7 +814,7 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// Run container in privileged mode.
+        /// If `true`, the container runs in privileged mode.
         /// </summary>
         [Input("privileged")]
         public Input<bool>? Privileged { get; set; }
@@ -823,22 +826,27 @@ namespace Pulumi.Docker
         public Input<bool>? PublishAllPorts { get; set; }
 
         /// <summary>
-        /// If true, this volume will be readonly.
-        /// Defaults to false.
+        /// If `true`, the container will be started as readonly. Defaults to `false`.
         /// </summary>
         [Input("readOnly")]
         public Input<bool>? ReadOnly { get; set; }
 
+        /// <summary>
+        /// If `true`, it will remove anonymous volumes associated with the container. Defaults to `true`.
+        /// </summary>
         [Input("removeVolumes")]
         public Input<bool>? RemoveVolumes { get; set; }
 
         /// <summary>
-        /// The restart policy for the container. Must be
-        /// one of "no", "on-failure", "always", "unless-stopped".
+        /// The restart policy for the container. Must be one of 'no', 'on-failure', 'always', 'unless-stopped'. Defaults to `no`.
         /// </summary>
         [Input("restart")]
         public Input<string>? Restart { get; set; }
 
+        /// <summary>
+        /// If `true`, then the container will be automatically removed after his execution. Terraform won't check this container
+        /// after creation. Defaults to `false`.
+        /// </summary>
         [Input("rm")]
         public Input<bool>? Rm { get; set; }
 
@@ -846,7 +854,8 @@ namespace Pulumi.Docker
         private InputList<string>? _securityOpts;
 
         /// <summary>
-        /// Set of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
+        /// List of string values to customize labels for MLS systems, such as SELinux. See
+        /// https://docs.docker.com/engine/reference/run/#security-configuration.
         /// </summary>
         public InputList<string> SecurityOpts
         {
@@ -861,14 +870,14 @@ namespace Pulumi.Docker
         public Input<int>? ShmSize { get; set; }
 
         /// <summary>
-        /// If true, then the Docker container will be
-        /// started after creation. If false, then the container is only created.
+        /// If `true`, then the Docker container will be started after creation. If `false`, then the container is only created.
+        /// Defaults to `true`.
         /// </summary>
         [Input("start")]
         public Input<bool>? Start { get; set; }
 
         /// <summary>
-        /// if true, keep STDIN open even if not attached (docker run -i)
+        /// If `true`, keep STDIN open even if not attached (`docker run -i`). Defaults to `false`.
         /// </summary>
         [Input("stdinOpen")]
         public Input<bool>? StdinOpen { get; set; }
@@ -898,7 +907,7 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// if true, allocate a pseudo-tty (docker run -t)
+        /// If `true`, allocate a pseudo-tty (`docker run -t`). Defaults to `false`.
         /// </summary>
         [Input("tty")]
         public Input<bool>? Tty { get; set; }
@@ -907,8 +916,7 @@ namespace Pulumi.Docker
         private InputList<Inputs.ContainerUlimitArgs>? _ulimits;
 
         /// <summary>
-        /// See Ulimits below for
-        /// details.
+        /// Ulimit options to add.
         /// </summary>
         public InputList<Inputs.ContainerUlimitArgs> Ulimits
         {
@@ -920,7 +928,8 @@ namespace Pulumi.Docker
         private InputList<Inputs.ContainerUploadArgs>? _uploads;
 
         /// <summary>
-        /// See File Upload below for details.
+        /// Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and
+        /// at least one of them has to be set.
         /// </summary>
         public InputList<Inputs.ContainerUploadArgs> Uploads
         {
@@ -929,9 +938,8 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// User used for run the first process. Format is
-        /// `user` or `user:group` which user and group can be passed literraly or
-        /// by name.
+        /// User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by
+        /// name.
         /// </summary>
         [Input("user")]
         public Input<string>? User { get; set; }
@@ -946,7 +954,7 @@ namespace Pulumi.Docker
         private InputList<Inputs.ContainerVolumeArgs>? _volumes;
 
         /// <summary>
-        /// See Volumes below for details.
+        /// Spec for mounting volumes in the container.
         /// </summary>
         public InputList<Inputs.ContainerVolumeArgs> Volumes
         {
@@ -955,7 +963,7 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// The working directory for commands to run in
+        /// The working directory for commands to run in.
         /// </summary>
         [Input("workingDir")]
         public Input<string>? WorkingDir { get; set; }
@@ -968,7 +976,7 @@ namespace Pulumi.Docker
     public sealed class ContainerState : Pulumi.ResourceArgs
     {
         /// <summary>
-        /// If true attach to the container after its creation and waits the end of his execution.
+        /// If `true` attach to the container after its creation and waits the end of its execution. Defaults to `false`.
         /// </summary>
         [Input("attach")]
         public Input<bool>? Attach { get; set; }
@@ -980,7 +988,7 @@ namespace Pulumi.Docker
         public Input<string>? Bridge { get; set; }
 
         /// <summary>
-        /// See Capabilities below for details.
+        /// Add or drop certrain linux capabilities.
         /// </summary>
         [Input("capabilities")]
         public Input<Inputs.ContainerCapabilitiesGetArgs>? Capabilities { get; set; }
@@ -989,9 +997,8 @@ namespace Pulumi.Docker
         private InputList<string>? _command;
 
         /// <summary>
-        /// The command to use to start the
-        /// container. For example, to run `/usr/bin/myprogram -f baz.conf` set the
-        /// command to be `["/usr/bin/myprogram", "-f", "baz.conf"]`.
+        /// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be
+        /// `["/usr/bin/myprogram","-","baz.con"]`.
         /// </summary>
         public InputList<string> Command
         {
@@ -1018,7 +1025,8 @@ namespace Pulumi.Docker
         public Input<int>? CpuShares { get; set; }
 
         /// <summary>
-        /// If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
+        /// If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on
+        /// successful stop.
         /// </summary>
         [Input("destroyGraceSeconds")]
         public Input<int>? DestroyGraceSeconds { get; set; }
@@ -1027,7 +1035,7 @@ namespace Pulumi.Docker
         private InputList<Inputs.ContainerDeviceGetArgs>? _devices;
 
         /// <summary>
-        /// See Devices below for details.
+        /// Bind devices to the container.
         /// </summary>
         public InputList<Inputs.ContainerDeviceGetArgs> Devices
         {
@@ -1039,7 +1047,7 @@ namespace Pulumi.Docker
         private InputList<string>? _dns;
 
         /// <summary>
-        /// Set of DNS servers.
+        /// DNS servers to use.
         /// </summary>
         public InputList<string> Dns
         {
@@ -1051,7 +1059,7 @@ namespace Pulumi.Docker
         private InputList<string>? _dnsOpts;
 
         /// <summary>
-        /// Set of DNS options used by the DNS provider(s), see `resolv.conf` documentation for valid list of options.
+        /// DNS options used by the DNS provider(s), see `resolv.conf` documentation for valid list of options.
         /// </summary>
         public InputList<string> DnsOpts
         {
@@ -1063,7 +1071,7 @@ namespace Pulumi.Docker
         private InputList<string>? _dnsSearches;
 
         /// <summary>
-        /// Set of DNS search domains that are used when bare unqualified hostnames are used inside of the container.
+        /// DNS search domains that are used when bare unqualified hostnames are used inside of the container.
         /// </summary>
         public InputList<string> DnsSearches
         {
@@ -1081,11 +1089,9 @@ namespace Pulumi.Docker
         private InputList<string>? _entrypoints;
 
         /// <summary>
-        /// The command to use as the
-        /// Entrypoint for the container. The Entrypoint allows you to configure a
-        /// container to run as an executable. For example, to run `/usr/bin/myprogram`
-        /// when starting a container, set the entrypoint to be
-        /// `["/usr/bin/myprogram"]`.
+        /// The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an
+        /// executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be
+        /// `"/usr/bin/myprogra"]`.
         /// </summary>
         public InputList<string> Entrypoints
         {
@@ -1097,7 +1103,7 @@ namespace Pulumi.Docker
         private InputList<string>? _envs;
 
         /// <summary>
-        /// Environment variables to set.
+        /// Environment variables to set in the form of `KEY=VALUE`, e.g. `DEBUG=0`
         /// </summary>
         public InputList<string> Envs
         {
@@ -1112,8 +1118,7 @@ namespace Pulumi.Docker
         public Input<int>? ExitCode { get; set; }
 
         /// <summary>
-        /// *Deprecated:* Use `network_data` instead. The network gateway of the container as read from its
-        /// NetworkSettings.
+        /// The network gateway of the container.
         /// </summary>
         [Input("gateway")]
         public Input<string>? Gateway { get; set; }
@@ -1122,7 +1127,7 @@ namespace Pulumi.Docker
         private InputList<string>? _groupAdds;
 
         /// <summary>
-        /// Add additional groups to run as.
+        /// Additional groups for the container user
         /// </summary>
         public InputList<string> GroupAdds
         {
@@ -1131,7 +1136,7 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// See Healthcheck below for details.
+        /// A test to perform to check that the container is healthy
         /// </summary>
         [Input("healthcheck")]
         public Input<Inputs.ContainerHealthcheckGetArgs>? Healthcheck { get; set; }
@@ -1146,7 +1151,7 @@ namespace Pulumi.Docker
         private InputList<Inputs.ContainerHostGetArgs>? _hosts;
 
         /// <summary>
-        /// Hostname to add.
+        /// Additional hosts to add to the container.
         /// </summary>
         public InputList<Inputs.ContainerHostGetArgs> Hosts
         {
@@ -1155,34 +1160,34 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// The ID of the image to back this container.
-        /// The easiest way to get this value is to use the `docker.RemoteImage` resource
-        /// as is shown in the example above.
+        /// The ID of the image to back this container. The easiest way to get this value is to use the `docker_image` resource as
+        /// is shown in the example.
         /// </summary>
         [Input("image")]
         public Input<string>? Image { get; set; }
 
         /// <summary>
-        /// Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
+        /// Configured whether an init process should be injected for this container. If unset this will default to the `dockerd`
+        /// defaults.
         /// </summary>
         [Input("init")]
         public Input<bool>? Init { get; set; }
 
         /// <summary>
-        /// *Deprecated:* Use `network_data` instead. The IP address of the container's first network it.
+        /// The IP address of the container.
         /// </summary>
         [Input("ipAddress")]
         public Input<string>? IpAddress { get; set; }
 
         /// <summary>
-        /// *Deprecated:* Use `network_data` instead. The IP prefix length of the container as read from its
-        /// NetworkSettings.
+        /// The IP prefix length of the container.
         /// </summary>
         [Input("ipPrefixLength")]
         public Input<int>? IpPrefixLength { get; set; }
 
         /// <summary>
-        /// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:&lt;name|id&gt;` or `host`.
+        /// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:&lt;name|id&gt;` or
+        /// `host`.
         /// </summary>
         [Input("ipcMode")]
         public Input<string>? IpcMode { get; set; }
@@ -1191,7 +1196,7 @@ namespace Pulumi.Docker
         private InputList<Inputs.ContainerLabelGetArgs>? _labels;
 
         /// <summary>
-        /// Adding labels.
+        /// User-defined key/value metadata
         /// </summary>
         public InputList<Inputs.ContainerLabelGetArgs> Labels
         {
@@ -1203,8 +1208,7 @@ namespace Pulumi.Docker
         private InputList<string>? _links;
 
         /// <summary>
-        /// Set of links for link based
-        /// connectivity between containers that are running on the same host.
+        /// Set of links for link based connectivity between containers that are running on the same host.
         /// </summary>
         [Obsolete(@"The --link flag is a legacy feature of Docker. It may eventually be removed.")]
         public InputList<string> Links
@@ -1214,8 +1218,7 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// The logging driver to use for the container.
-        /// Defaults to "json-file".
+        /// The logging driver to use for the container. Defaults to `json-file`.
         /// </summary>
         [Input("logDriver")]
         public Input<string>? LogDriver { get; set; }
@@ -1224,8 +1227,7 @@ namespace Pulumi.Docker
         private InputMap<object>? _logOpts;
 
         /// <summary>
-        /// Key/value pairs to use as options for
-        /// the logging driver.
+        /// Key/value pairs to use as options for the logging driver.
         /// </summary>
         public InputMap<object> LogOpts
         {
@@ -1234,14 +1236,13 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// Save the container logs (`attach` must be enabled).
+        /// Save the container logs (`attach` must be enabled). Defaults to `false`.
         /// </summary>
         [Input("logs")]
         public Input<bool>? Logs { get; set; }
 
         /// <summary>
-        /// The maximum amount of times to an attempt
-        /// a restart when `restart` is set to "on-failure"
+        /// The maximum amount of times to an attempt a restart when `restart` is set to 'on-failure'.
         /// </summary>
         [Input("maxRetryCount")]
         public Input<int>? MaxRetryCount { get; set; }
@@ -1252,6 +1253,10 @@ namespace Pulumi.Docker
         [Input("memory")]
         public Input<int>? Memory { get; set; }
 
+        /// <summary>
+        /// The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `terraform
+        /// apply` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
+        /// </summary>
         [Input("memorySwap")]
         public Input<int>? MemorySwap { get; set; }
 
@@ -1259,7 +1264,7 @@ namespace Pulumi.Docker
         private InputList<Inputs.ContainerMountGetArgs>? _mounts;
 
         /// <summary>
-        /// See Mounts below for details.
+        /// Specification for mounts to be added to containers created as part of the service.
         /// </summary>
         public InputList<Inputs.ContainerMountGetArgs> Mounts
         {
@@ -1267,9 +1272,16 @@ namespace Pulumi.Docker
             set => _mounts = value;
         }
 
+        /// <summary>
+        /// If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform
+        /// assumes it is successful. Defaults to `true`.
+        /// </summary>
         [Input("mustRun")]
         public Input<bool>? MustRun { get; set; }
 
+        /// <summary>
+        /// The name of the container.
+        /// </summary>
         [Input("name")]
         public Input<string>? Name { get; set; }
 
@@ -1277,9 +1289,9 @@ namespace Pulumi.Docker
         private InputList<string>? _networkAliases;
 
         /// <summary>
-        /// Network aliases of the container for user-defined networks only. *Deprecated:* use `networks_advanced` instead.
+        /// Set an alias for the container in all specified networks
         /// </summary>
-        [Obsolete(@"Use networks_advanced instead. Will be removed in v2.0.0")]
+        [Obsolete(@"Use networks_advanced instead. Will be removed in v3.0.0")]
         public InputList<string> NetworkAliases
         {
             get => _networkAliases ?? (_networkAliases = new InputList<string>());
@@ -1290,8 +1302,7 @@ namespace Pulumi.Docker
         private InputList<Inputs.ContainerNetworkDataGetArgs>? _networkDatas;
 
         /// <summary>
-        /// (Map of a block) The IP addresses of the container on each
-        /// network. Key are the network names, values are the IP addresses.
+        /// The data of the networks the container is connected to.
         /// </summary>
         public InputList<Inputs.ContainerNetworkDataGetArgs> NetworkDatas
         {
@@ -1309,10 +1320,9 @@ namespace Pulumi.Docker
         private InputList<string>? _networks;
 
         /// <summary>
-        /// Id of the networks in which the
-        /// container is. *Deprecated:* use `networks_advanced` instead.
+        /// ID of the networks in which the container is.
         /// </summary>
-        [Obsolete(@"Use networks_advanced instead. Will be removed in v2.0.0")]
+        [Obsolete(@"Use networks_advanced instead. Will be removed in v3.0.0")]
         public InputList<string> Networks
         {
             get => _networks ?? (_networks = new InputList<string>());
@@ -1323,7 +1333,7 @@ namespace Pulumi.Docker
         private InputList<Inputs.ContainerNetworksAdvancedGetArgs>? _networksAdvanced;
 
         /// <summary>
-        /// See Networks Advanced below for details. If this block has priority to the deprecated `network_alias` and `network` properties.
+        /// The networks the container is attached to
         /// </summary>
         public InputList<Inputs.ContainerNetworksAdvancedGetArgs> NetworksAdvanced
         {
@@ -1332,7 +1342,7 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// The PID (Process) Namespace mode for the container. Either `container:&lt;name|id&gt;` or `host`.
+        /// he PID (Process) Namespace mode for the container. Either `container:&lt;name|id&gt;` or `host`.
         /// </summary>
         [Input("pidMode")]
         public Input<string>? PidMode { get; set; }
@@ -1341,7 +1351,7 @@ namespace Pulumi.Docker
         private InputList<Inputs.ContainerPortGetArgs>? _ports;
 
         /// <summary>
-        /// See Ports below for details.
+        /// Publish a container's port(s) to the host.
         /// </summary>
         public InputList<Inputs.ContainerPortGetArgs> Ports
         {
@@ -1350,7 +1360,7 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// Run container in privileged mode.
+        /// If `true`, the container runs in privileged mode.
         /// </summary>
         [Input("privileged")]
         public Input<bool>? Privileged { get; set; }
@@ -1362,22 +1372,27 @@ namespace Pulumi.Docker
         public Input<bool>? PublishAllPorts { get; set; }
 
         /// <summary>
-        /// If true, this volume will be readonly.
-        /// Defaults to false.
+        /// If `true`, the container will be started as readonly. Defaults to `false`.
         /// </summary>
         [Input("readOnly")]
         public Input<bool>? ReadOnly { get; set; }
 
+        /// <summary>
+        /// If `true`, it will remove anonymous volumes associated with the container. Defaults to `true`.
+        /// </summary>
         [Input("removeVolumes")]
         public Input<bool>? RemoveVolumes { get; set; }
 
         /// <summary>
-        /// The restart policy for the container. Must be
-        /// one of "no", "on-failure", "always", "unless-stopped".
+        /// The restart policy for the container. Must be one of 'no', 'on-failure', 'always', 'unless-stopped'. Defaults to `no`.
         /// </summary>
         [Input("restart")]
         public Input<string>? Restart { get; set; }
 
+        /// <summary>
+        /// If `true`, then the container will be automatically removed after his execution. Terraform won't check this container
+        /// after creation. Defaults to `false`.
+        /// </summary>
         [Input("rm")]
         public Input<bool>? Rm { get; set; }
 
@@ -1385,7 +1400,8 @@ namespace Pulumi.Docker
         private InputList<string>? _securityOpts;
 
         /// <summary>
-        /// Set of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
+        /// List of string values to customize labels for MLS systems, such as SELinux. See
+        /// https://docs.docker.com/engine/reference/run/#security-configuration.
         /// </summary>
         public InputList<string> SecurityOpts
         {
@@ -1400,14 +1416,14 @@ namespace Pulumi.Docker
         public Input<int>? ShmSize { get; set; }
 
         /// <summary>
-        /// If true, then the Docker container will be
-        /// started after creation. If false, then the container is only created.
+        /// If `true`, then the Docker container will be started after creation. If `false`, then the container is only created.
+        /// Defaults to `true`.
         /// </summary>
         [Input("start")]
         public Input<bool>? Start { get; set; }
 
         /// <summary>
-        /// if true, keep STDIN open even if not attached (docker run -i)
+        /// If `true`, keep STDIN open even if not attached (`docker run -i`). Defaults to `false`.
         /// </summary>
         [Input("stdinOpen")]
         public Input<bool>? StdinOpen { get; set; }
@@ -1437,7 +1453,7 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// if true, allocate a pseudo-tty (docker run -t)
+        /// If `true`, allocate a pseudo-tty (`docker run -t`). Defaults to `false`.
         /// </summary>
         [Input("tty")]
         public Input<bool>? Tty { get; set; }
@@ -1446,8 +1462,7 @@ namespace Pulumi.Docker
         private InputList<Inputs.ContainerUlimitGetArgs>? _ulimits;
 
         /// <summary>
-        /// See Ulimits below for
-        /// details.
+        /// Ulimit options to add.
         /// </summary>
         public InputList<Inputs.ContainerUlimitGetArgs> Ulimits
         {
@@ -1459,7 +1474,8 @@ namespace Pulumi.Docker
         private InputList<Inputs.ContainerUploadGetArgs>? _uploads;
 
         /// <summary>
-        /// See File Upload below for details.
+        /// Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and
+        /// at least one of them has to be set.
         /// </summary>
         public InputList<Inputs.ContainerUploadGetArgs> Uploads
         {
@@ -1468,9 +1484,8 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// User used for run the first process. Format is
-        /// `user` or `user:group` which user and group can be passed literraly or
-        /// by name.
+        /// User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by
+        /// name.
         /// </summary>
         [Input("user")]
         public Input<string>? User { get; set; }
@@ -1485,7 +1500,7 @@ namespace Pulumi.Docker
         private InputList<Inputs.ContainerVolumeGetArgs>? _volumes;
 
         /// <summary>
-        /// See Volumes below for details.
+        /// Spec for mounting volumes in the container.
         /// </summary>
         public InputList<Inputs.ContainerVolumeGetArgs> Volumes
         {
@@ -1494,7 +1509,7 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// The working directory for commands to run in
+        /// The working directory for commands to run in.
         /// </summary>
         [Input("workingDir")]
         public Input<string>? WorkingDir { get; set; }

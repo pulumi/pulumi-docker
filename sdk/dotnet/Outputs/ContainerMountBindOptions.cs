@@ -13,9 +13,6 @@ namespace Pulumi.Docker.Outputs
     [OutputType]
     public sealed class ContainerMountBindOptions
     {
-        /// <summary>
-        /// A propagation mode with the value.
-        /// </summary>
         public readonly string? Propagation;
 
         [OutputConstructor]

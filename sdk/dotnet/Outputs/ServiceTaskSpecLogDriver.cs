@@ -13,13 +13,7 @@ namespace Pulumi.Docker.Outputs
     [OutputType]
     public sealed class ServiceTaskSpecLogDriver
     {
-        /// <summary>
-        /// The logging driver to use. Either `(none|json-file|syslog|journald|gelf|fluentd|awslogs|splunk|etwlogs|gcplogs)`.
-        /// </summary>
         public readonly string Name;
-        /// <summary>
-        /// The options for the logging driver, e.g.
-        /// </summary>
         public readonly ImmutableDictionary<string, string>? Options;
 
         [OutputConstructor]

@@ -8,10 +8,36 @@ import * as utilities from "./utilities";
 /**
  * ## Import
  *
- * Docker service can be imported using the long id, e.g. for a service with the short id `55ba873dd`
+ * ### Example Assuming you created a `service` as follows #!/bin/bash docker service create --name foo -p 8080:80 nginx # prints th ID 4pcphbxkfn2rffhbhe6czytgi you provide the definition for the resource as follows terraform resource "docker_service" "foo" {
+ *
+ *  name = "foo"
+ *
+ *  task_spec {
+ *
+ *  container_spec {
+ *
+ *  image = "nginx"
+ *
+ *  }
+ *
+ *  }
+ *
+ *  endpoint_spec {
+ *
+ *  ports {
+ *
+ *  target_port
+ *
+ * = "80"
+ *
+ *  published_port = "8080"
+ *
+ *  }
+ *
+ *  } } then the import command is as follows #!/bin/bash
  *
  * ```sh
- *  $ pulumi import docker:index/service:Service foo $(docker service inspect -f {{.ID}} 55b)
+ *  $ pulumi import docker:index/service:Service foo 4pcphbxkfn2rffhbhe6czytgi
  * ```
  */
 export class Service extends pulumi.CustomResource {
@@ -43,39 +69,39 @@ export class Service extends pulumi.CustomResource {
     }
 
     /**
-     * See Auth below for details.
+     * Configuration for the authentication for pulling the images of the service
      */
     public readonly auth!: pulumi.Output<outputs.ServiceAuth | undefined>;
     /**
-     * See Converge Config below for details.
+     * A configuration to ensure that a service converges aka reaches the desired that of all task up and running
      */
     public readonly convergeConfig!: pulumi.Output<outputs.ServiceConvergeConfig | undefined>;
     /**
-     * See EndpointSpec below for details.
+     * Properties that can be configured to access and load balance a service
      */
     public readonly endpointSpec!: pulumi.Output<outputs.ServiceEndpointSpec>;
     /**
-     * See Labels below for details.
+     * User-defined key/value metadata
      */
     public readonly labels!: pulumi.Output<outputs.ServiceLabel[]>;
     /**
-     * See Mode below for details.
+     * Scheduling mode for the service
      */
     public readonly mode!: pulumi.Output<outputs.ServiceMode>;
     /**
-     * The name of the Docker service.
+     * Name of the service
      */
     public readonly name!: pulumi.Output<string>;
     /**
-     * See RollbackConfig below for details.
+     * Specification for the rollback strategy of the service
      */
     public readonly rollbackConfig!: pulumi.Output<outputs.ServiceRollbackConfig | undefined>;
     /**
-     * See TaskSpec below for details.
+     * User modifiable task configuration
      */
     public readonly taskSpec!: pulumi.Output<outputs.ServiceTaskSpec>;
     /**
-     * See UpdateConfig below for details.
+     * Specification for the update strategy of the service
      */
     public readonly updateConfig!: pulumi.Output<outputs.ServiceUpdateConfig | undefined>;
 
@@ -128,39 +154,39 @@ export class Service extends pulumi.CustomResource {
  */
 export interface ServiceState {
     /**
-     * See Auth below for details.
+     * Configuration for the authentication for pulling the images of the service
      */
     readonly auth?: pulumi.Input<inputs.ServiceAuth>;
     /**
-     * See Converge Config below for details.
+     * A configuration to ensure that a service converges aka reaches the desired that of all task up and running
      */
     readonly convergeConfig?: pulumi.Input<inputs.ServiceConvergeConfig>;
     /**
-     * See EndpointSpec below for details.
+     * Properties that can be configured to access and load balance a service
      */
     readonly endpointSpec?: pulumi.Input<inputs.ServiceEndpointSpec>;
     /**
-     * See Labels below for details.
+     * User-defined key/value metadata
      */
     readonly labels?: pulumi.Input<pulumi.Input<inputs.ServiceLabel>[]>;
     /**
-     * See Mode below for details.
+     * Scheduling mode for the service
      */
     readonly mode?: pulumi.Input<inputs.ServiceMode>;
     /**
-     * The name of the Docker service.
+     * Name of the service
      */
     readonly name?: pulumi.Input<string>;
     /**
-     * See RollbackConfig below for details.
+     * Specification for the rollback strategy of the service
      */
     readonly rollbackConfig?: pulumi.Input<inputs.ServiceRollbackConfig>;
     /**
-     * See TaskSpec below for details.
+     * User modifiable task configuration
      */
     readonly taskSpec?: pulumi.Input<inputs.ServiceTaskSpec>;
     /**
-     * See UpdateConfig below for details.
+     * Specification for the update strategy of the service
      */
     readonly updateConfig?: pulumi.Input<inputs.ServiceUpdateConfig>;
 }
@@ -170,39 +196,39 @@ export interface ServiceState {
  */
 export interface ServiceArgs {
     /**
-     * See Auth below for details.
+     * Configuration for the authentication for pulling the images of the service
      */
     readonly auth?: pulumi.Input<inputs.ServiceAuth>;
     /**
-     * See Converge Config below for details.
+     * A configuration to ensure that a service converges aka reaches the desired that of all task up and running
      */
     readonly convergeConfig?: pulumi.Input<inputs.ServiceConvergeConfig>;
     /**
-     * See EndpointSpec below for details.
+     * Properties that can be configured to access and load balance a service
      */
     readonly endpointSpec?: pulumi.Input<inputs.ServiceEndpointSpec>;
     /**
-     * See Labels below for details.
+     * User-defined key/value metadata
      */
     readonly labels?: pulumi.Input<pulumi.Input<inputs.ServiceLabel>[]>;
     /**
-     * See Mode below for details.
+     * Scheduling mode for the service
      */
     readonly mode?: pulumi.Input<inputs.ServiceMode>;
     /**
-     * The name of the Docker service.
+     * Name of the service
      */
     readonly name?: pulumi.Input<string>;
     /**
-     * See RollbackConfig below for details.
+     * Specification for the rollback strategy of the service
      */
     readonly rollbackConfig?: pulumi.Input<inputs.ServiceRollbackConfig>;
     /**
-     * See TaskSpec below for details.
+     * User modifiable task configuration
      */
     readonly taskSpec: pulumi.Input<inputs.ServiceTaskSpec>;
     /**
-     * See UpdateConfig below for details.
+     * Specification for the update strategy of the service
      */
     readonly updateConfig?: pulumi.Input<inputs.ServiceUpdateConfig>;
 }

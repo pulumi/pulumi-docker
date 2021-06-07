@@ -10,14 +10,24 @@ import * as utilities from "./utilities";
  *
  * ## Example Usage
  *
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as docker from "@pulumi/docker";
+ * ### With alias
+ * data "docker.Plugin" "byAlias" {
+ *   alias = "sample-volume-plugin:latest"
+ * }
+ * ## Schema
  *
- * const sample_volume_plugin = pulumi.output(docker.getPlugin({
- *     alias: "sample-volume-plugin:latest",
- * }, { async: true }));
- * ```
+ * ### Optional
+ *
+ * - **alias** (String) The alias of the Docker plugin. If the tag is omitted, `:latest` is complemented to the attribute value.
+ * - **id** (String) The ID of the plugin, which has precedence over the `alias` of both are given
+ *
+ * ### Read-Only
+ *
+ * - **enabled** (Boolean) If `true` the plugin is enabled
+ * - **env** (Set of String) The environment variables in the form of `KEY=VALUE`, e.g. `DEBUG=0`
+ * - **grant_all_permissions** (Boolean) If true, grant all permissions necessary to run the plugin
+ * - **name** (String) The plugin name. If the tag is omitted, `:latest` is complemented to the attribute value.
+ * - **plugin_reference** (String) The Docker Plugin Reference
  */
 export function getPlugin(args?: GetPluginArgs, opts?: pulumi.InvokeOptions): Promise<GetPluginResult> {
     args = args || {};
@@ -38,13 +48,7 @@ export function getPlugin(args?: GetPluginArgs, opts?: pulumi.InvokeOptions): Pr
  * A collection of arguments for invoking getPlugin.
  */
 export interface GetPluginArgs {
-    /**
-     * The alias of the Docker plugin.
-     */
     readonly alias?: string;
-    /**
-     * The Docker plugin ID.
-     */
     readonly id?: string;
 }
 
@@ -55,13 +59,8 @@ export interface GetPluginResult {
     readonly alias?: string;
     readonly enabled: boolean;
     readonly envs: string[];
-    /**
-     * (Optional, boolean) If true, grant all permissions necessary to run the plugin.
-     */
     readonly grantAllPermissions: boolean;
     readonly id?: string;
-    /**
-     * (Optional, string, Forces new resource) The plugin reference.
-     */
+    readonly name: string;
     readonly pluginReference: string;
 }

@@ -76,12 +76,7 @@ namespace Pulumi.Docker
         public Input<string>? KeyMaterial { get; set; }
 
         [Input("registryAuth", json: true)]
-        private InputList<Inputs.ProviderRegistryAuthArgs>? _registryAuth;
-        public InputList<Inputs.ProviderRegistryAuthArgs> RegistryAuth
-        {
-            get => _registryAuth ?? (_registryAuth = new InputList<Inputs.ProviderRegistryAuthArgs>());
-            set => _registryAuth = value;
-        }
+        public Input<Inputs.ProviderRegistryAuthArgs>? RegistryAuth { get; set; }
 
         public ProviderArgs()
         {

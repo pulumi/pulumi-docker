@@ -19,7 +19,7 @@ class ProviderArgs:
                  cert_path: Optional[pulumi.Input[str]] = None,
                  host: Optional[pulumi.Input[str]] = None,
                  key_material: Optional[pulumi.Input[str]] = None,
-                 registry_auth: Optional[pulumi.Input[Sequence[pulumi.Input['ProviderRegistryAuthArgs']]]] = None):
+                 registry_auth: Optional[pulumi.Input['ProviderRegistryAuthArgs']] = None):
         """
         The set of arguments for constructing a Provider resource.
         :param pulumi.Input[str] ca_material: PEM-encoded content of Docker host CA certificate
@@ -105,11 +105,11 @@ class ProviderArgs:
 
     @property
     @pulumi.getter(name="registryAuth")
-    def registry_auth(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['ProviderRegistryAuthArgs']]]]:
+    def registry_auth(self) -> Optional[pulumi.Input['ProviderRegistryAuthArgs']]:
         return pulumi.get(self, "registry_auth")
 
     @registry_auth.setter
-    def registry_auth(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['ProviderRegistryAuthArgs']]]]):
+    def registry_auth(self, value: Optional[pulumi.Input['ProviderRegistryAuthArgs']]):
         pulumi.set(self, "registry_auth", value)
 
 
@@ -123,7 +123,7 @@ class Provider(pulumi.ProviderResource):
                  cert_path: Optional[pulumi.Input[str]] = None,
                  host: Optional[pulumi.Input[str]] = None,
                  key_material: Optional[pulumi.Input[str]] = None,
-                 registry_auth: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ProviderRegistryAuthArgs']]]]] = None,
+                 registry_auth: Optional[pulumi.Input[pulumi.InputType['ProviderRegistryAuthArgs']]] = None,
                  __props__=None):
         """
         The provider type for the docker package. By default, resources use package-wide configuration
@@ -171,7 +171,7 @@ class Provider(pulumi.ProviderResource):
                  cert_path: Optional[pulumi.Input[str]] = None,
                  host: Optional[pulumi.Input[str]] = None,
                  key_material: Optional[pulumi.Input[str]] = None,
-                 registry_auth: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ProviderRegistryAuthArgs']]]]] = None,
+                 registry_auth: Optional[pulumi.Input[pulumi.InputType['ProviderRegistryAuthArgs']]] = None,
                  __props__=None):
         if opts is None:
             opts = pulumi.ResourceOptions()

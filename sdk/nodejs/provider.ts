@@ -76,5 +76,5 @@ export interface ProviderArgs {
      * PEM-encoded content of Docker client private key
      */
     readonly keyMaterial?: pulumi.Input<string>;
-    readonly registryAuth?: pulumi.Input<pulumi.Input<inputs.ProviderRegistryAuth>[]>;
+    readonly registryAuth?: pulumi.Input<inputs.ProviderRegistryAuth>;
 }

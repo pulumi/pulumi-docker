@@ -12,16 +12,9 @@ namespace Pulumi.Docker.Inputs
 
     public sealed class ServiceConvergeConfigArgs : Pulumi.ResourceArgs
     {
-        /// <summary>
-        /// Time between each the check to check docker endpoint `(ms|s|m|h)`. For example, to check if
-        /// all tasks are up when a service is created, or to check if all tasks are successfully updated on an update. Default: `7s`.
-        /// </summary>
         [Input("delay")]
         public Input<string>? Delay { get; set; }
 
-        /// <summary>
-        /// The timeout of the service to reach the desired state `(s|m)`. Default: `3m`.
-        /// </summary>
         [Input("timeout")]
         public Input<string>? Timeout { get; set; }
 

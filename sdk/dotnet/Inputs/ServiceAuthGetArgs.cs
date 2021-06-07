@@ -12,21 +12,12 @@ namespace Pulumi.Docker.Inputs
 
     public sealed class ServiceAuthGetArgs : Pulumi.ResourceArgs
     {
-        /// <summary>
-        /// The password to use for authenticating to the registry. If this is blank, the `DOCKER_REGISTRY_PASS` is also be checked.
-        /// </summary>
         [Input("password")]
         public Input<string>? Password { get; set; }
 
-        /// <summary>
-        /// The address of the registry server
-        /// </summary>
         [Input("serverAddress", required: true)]
         public Input<string> ServerAddress { get; set; } = null!;
 
-        /// <summary>
-        /// The username to use for authenticating to the registry. If this is blank, the `DOCKER_REGISTRY_USER` is also be checked.
-        /// </summary>
         [Input("username")]
         public Input<string>? Username { get; set; }
 

@@ -12,25 +12,25 @@ namespace Pulumi.Docker
     /// <summary>
     /// ## Import
     /// 
-    /// Docker secret cannot be imported as the secret data, once set, is never exposed again.
+    /// Import is supported using the following syntax#!/bin/bash # Docker secret cannot be imported as the secret data, once set, is never exposed again.
     /// </summary>
     [DockerResourceType("docker:index/secret:Secret")]
     public partial class Secret : Pulumi.CustomResource
     {
         /// <summary>
-        /// The base64 encoded data of the secret.
+        /// Base64-url-safe-encoded secret data
         /// </summary>
         [Output("data")]
         public Output<string> Data { get; private set; } = null!;
 
         /// <summary>
-        /// See Labels below for details.
+        /// User-defined key/value metadata
         /// </summary>
         [Output("labels")]
         public Output<ImmutableArray<Outputs.SecretLabel>> Labels { get; private set; } = null!;
 
         /// <summary>
-        /// The name of the Docker secret.
+        /// User-defined name of the secret
         /// </summary>
         [Output("name")]
         public Output<string> Name { get; private set; } = null!;
@@ -82,7 +82,7 @@ namespace Pulumi.Docker
     public sealed class SecretArgs : Pulumi.ResourceArgs
     {
         /// <summary>
-        /// The base64 encoded data of the secret.
+        /// Base64-url-safe-encoded secret data
         /// </summary>
         [Input("data", required: true)]
         public Input<string> Data { get; set; } = null!;
@@ -91,7 +91,7 @@ namespace Pulumi.Docker
         private InputList<Inputs.SecretLabelArgs>? _labels;
 
         /// <summary>
-        /// See Labels below for details.
+        /// User-defined key/value metadata
         /// </summary>
         public InputList<Inputs.SecretLabelArgs> Labels
         {
@@ -100,7 +100,7 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// The name of the Docker secret.
+        /// User-defined name of the secret
         /// </summary>
         [Input("name")]
         public Input<string>? Name { get; set; }
@@ -113,7 +113,7 @@ namespace Pulumi.Docker
     public sealed class SecretState : Pulumi.ResourceArgs
     {
         /// <summary>
-        /// The base64 encoded data of the secret.
+        /// Base64-url-safe-encoded secret data
         /// </summary>
         [Input("data")]
         public Input<string>? Data { get; set; }
@@ -122,7 +122,7 @@ namespace Pulumi.Docker
         private InputList<Inputs.SecretLabelGetArgs>? _labels;
 
         /// <summary>
-        /// See Labels below for details.
+        /// User-defined key/value metadata
         /// </summary>
         public InputList<Inputs.SecretLabelGetArgs> Labels
         {
@@ -131,7 +131,7 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// The name of the Docker secret.
+        /// User-defined name of the secret
         /// </summary>
         [Input("name")]
         public Input<string>? Name { get; set; }

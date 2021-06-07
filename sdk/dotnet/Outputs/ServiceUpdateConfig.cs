@@ -13,30 +13,11 @@ namespace Pulumi.Docker.Outputs
     [OutputType]
     public sealed class ServiceUpdateConfig
     {
-        /// <summary>
-        /// Delay between updates `(ns|us|ms|s|m|h)`, e.g. `5s`.
-        /// </summary>
         public readonly string? Delay;
-        /// <summary>
-        /// Action on update failure: `pause|continue|rollback`.
-        /// </summary>
         public readonly string? FailureAction;
-        /// <summary>
-        /// The failure rate to tolerate during an update as `float`. **Important:** the `float`need to be wrapped in a `string` to avoid internal
-        /// casting and precision errors.
-        /// </summary>
         public readonly string? MaxFailureRatio;
-        /// <summary>
-        /// Duration after each task update to monitor for failure `(ns|us|ms|s|m|h)`
-        /// </summary>
         public readonly string? Monitor;
-        /// <summary>
-        /// Update order either 'stop-first' or 'start-first'.
-        /// </summary>
         public readonly string? Order;
-        /// <summary>
-        /// The maximum number of tasks to be updated in one iteration simultaneously (0 to update all at once).
-        /// </summary>
         public readonly int? Parallelism;
 
         [OutputConstructor]

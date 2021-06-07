@@ -13,17 +13,8 @@ namespace Pulumi.Docker.Outputs
     [OutputType]
     public sealed class ServiceTaskSpecContainerSpecDnsConfig
     {
-        /// <summary>
-        /// The IP addresses of the name servers, for example, `8.8.8.8`
-        /// </summary>
         public readonly ImmutableArray<string> Nameservers;
-        /// <summary>
-        /// A list of internal resolver variables to be modified, for example, `debug`, `ndots:3`
-        /// </summary>
         public readonly ImmutableArray<string> Options;
-        /// <summary>
-        /// A search list for host-name lookup.
-        /// </summary>
         public readonly ImmutableArray<string> Searches;
 
         [OutputConstructor]

@@ -12,28 +12,15 @@ namespace Pulumi.Docker.Inputs
 
     public sealed class ContainerPortArgs : Pulumi.ResourceArgs
     {
-        /// <summary>
-        /// Port exposed out of the container. If not given a free random port `&gt;= 32768` will be used.
-        /// </summary>
         [Input("external")]
         public Input<int>? External { get; set; }
 
-        /// <summary>
-        /// Port within the container.
-        /// </summary>
         [Input("internal", required: true)]
         public Input<int> Internal { get; set; } = null!;
 
-        /// <summary>
-        /// IP address this hostname should resolve to.
-        /// </summary>
         [Input("ip")]
         public Input<string>? Ip { get; set; }
 
-        /// <summary>
-        /// Protocol that can be used over this port,
-        /// defaults to `tcp`.
-        /// </summary>
         [Input("protocol")]
         public Input<string>? Protocol { get; set; }
 

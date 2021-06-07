@@ -12,39 +12,21 @@ namespace Pulumi.Docker.Inputs
 
     public sealed class ServiceTaskSpecContainerSpecConfigArgs : Pulumi.ResourceArgs
     {
-        /// <summary>
-        /// ConfigID represents the ID of the specific config.
-        /// </summary>
         [Input("configId", required: true)]
         public Input<string> ConfigId { get; set; } = null!;
 
-        /// <summary>
-        /// The name of the config that this references, but internally it is just provided for lookup/display purposes
-        /// </summary>
         [Input("configName")]
         public Input<string>? ConfigName { get; set; }
 
-        /// <summary>
-        /// Represents the file GID. Defaults: `0`
-        /// </summary>
         [Input("fileGid")]
         public Input<string>? FileGid { get; set; }
 
-        /// <summary>
-        /// Represents the FileMode of the file. Defaults: `0444`
-        /// </summary>
         [Input("fileMode")]
         public Input<int>? FileMode { get; set; }
 
-        /// <summary>
-        /// Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
-        /// </summary>
         [Input("fileName", required: true)]
         public Input<string> FileName { get; set; } = null!;
 
-        /// <summary>
-        /// Represents the file UID. Defaults: `0`
-        /// </summary>
         [Input("fileUid")]
         public Input<string>? FileUid { get; set; }
 

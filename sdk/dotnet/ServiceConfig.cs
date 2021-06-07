@@ -12,23 +12,29 @@ namespace Pulumi.Docker
     /// <summary>
     /// ## Import
     /// 
-    /// Docker config can be imported using the long id, e.g. for a config with the short id `p73jelnrme5f`
+    /// ### Example Assuming you created a `config` as follows #!/bin/bash printf '{"a":"b"}' | docker config create foo - # prints the id
+    /// 
+    /// 08c26c477474478d971139f750984775a7f019dbe8a2e7f09d66a187c009e66d you provide the definition for the resource as follows terraform resource "docker_config" "foo" {
+    /// 
+    ///  name = "foo"
+    /// 
+    ///  data = base64encode("{\"a\"\"b\"}") } then the import command is as follows #!/bin/bash
     /// 
     /// ```sh
-    ///  $ pulumi import docker:index/serviceConfig:ServiceConfig foo $(docker config inspect -f {{.ID}} p73)
+    ///  $ pulumi import docker:index/serviceConfig:ServiceConfig foo 08c26c477474478d971139f750984775a7f019dbe8a2e7f09d66a187c009e66d
     /// ```
     /// </summary>
     [DockerResourceType("docker:index/serviceConfig:ServiceConfig")]
     public partial class ServiceConfig : Pulumi.CustomResource
     {
         /// <summary>
-        /// The base64 encoded data of the config.
+        /// Base64-url-safe-encoded config data
         /// </summary>
         [Output("data")]
         public Output<string> Data { get; private set; } = null!;
 
         /// <summary>
-        /// The name of the Docker config.
+        /// User-defined name of the config
         /// </summary>
         [Output("name")]
         public Output<string> Name { get; private set; } = null!;
@@ -80,13 +86,13 @@ namespace Pulumi.Docker
     public sealed class ServiceConfigArgs : Pulumi.ResourceArgs
     {
         /// <summary>
-        /// The base64 encoded data of the config.
+        /// Base64-url-safe-encoded config data
         /// </summary>
         [Input("data", required: true)]
         public Input<string> Data { get; set; } = null!;
 
         /// <summary>
-        /// The name of the Docker config.
+        /// User-defined name of the config
         /// </summary>
         [Input("name")]
         public Input<string>? Name { get; set; }
@@ -99,13 +105,13 @@ namespace Pulumi.Docker
     public sealed class ServiceConfigState : Pulumi.ResourceArgs
     {
         /// <summary>
-        /// The base64 encoded data of the config.
+        /// Base64-url-safe-encoded config data
         /// </summary>
         [Input("data")]
         public Input<string>? Data { get; set; }
 
         /// <summary>
-        /// The name of the Docker config.
+        /// User-defined name of the config
         /// </summary>
         [Input("name")]
         public Input<string>? Name { get; set; }

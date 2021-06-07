@@ -13,17 +13,8 @@ namespace Pulumi.Docker.Outputs
     [OutputType]
     public sealed class RegistryImageBuildUlimit
     {
-        /// <summary>
-        /// - hard limit
-        /// </summary>
         public readonly int Hard;
-        /// <summary>
-        /// type of ulimit, e.g. nofile
-        /// </summary>
         public readonly string Name;
-        /// <summary>
-        /// - soft limit
-        /// </summary>
         public readonly int Soft;
 
         [OutputConstructor]

@@ -19,12 +19,11 @@ import (
 	"path/filepath"
 	"unicode"
 
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/pulumi/pulumi-docker/provider/v3/pkg/version"
 	"github.com/pulumi/pulumi-terraform-bridge/v3/pkg/tfbridge"
-	shimv1 "github.com/pulumi/pulumi-terraform-bridge/v3/pkg/tfshim/sdk-v1"
+	shimv2 "github.com/pulumi/pulumi-terraform-bridge/v3/pkg/tfshim/sdk-v2"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/tokens"
-	"github.com/terraform-providers/terraform-provider-docker/docker"
+	"github.com/terraform-providers/terraform-provider-docker/shim"
 )
 
 const (
@@ -59,7 +58,8 @@ func dockerDataSource(mod string, res string) tokens.ModuleMember {
 }
 
 func Provider() tfbridge.ProviderInfo {
-	p := shimv1.NewProvider(docker.Provider().(*schema.Provider))
+	provider := shim.NewProvider()
+	p := shimv2.NewProvider(provider())
 	prov := tfbridge.ProviderInfo{
 		P:           p,
 		Name:        "docker",

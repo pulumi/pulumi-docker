@@ -25,19 +25,12 @@ namespace Pulumi.Docker.Inputs
 
         [Input("labels")]
         private InputList<Inputs.ServiceTaskSpecContainerSpecMountVolumeOptionsLabelGetArgs>? _labels;
-
-        /// <summary>
-        /// See Labels below for details.
-        /// </summary>
         public InputList<Inputs.ServiceTaskSpecContainerSpecMountVolumeOptionsLabelGetArgs> Labels
         {
             get => _labels ?? (_labels = new InputList<Inputs.ServiceTaskSpecContainerSpecMountVolumeOptionsLabelGetArgs>());
             set => _labels = value;
         }
 
-        /// <summary>
-        /// Whether to populate volume with data from the target.
-        /// </summary>
         [Input("noCopy")]
         public Input<bool>? NoCopy { get; set; }
 

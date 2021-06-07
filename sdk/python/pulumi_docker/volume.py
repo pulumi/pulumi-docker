@@ -21,11 +21,10 @@ class VolumeArgs:
                  name: Optional[pulumi.Input[str]] = None):
         """
         The set of arguments for constructing a Volume resource.
-        :param pulumi.Input[str] driver: Driver type for the volume (defaults to local).
+        :param pulumi.Input[str] driver: Driver type for the volume. Defaults to `local`.
         :param pulumi.Input[Mapping[str, Any]] driver_opts: Options specific to the driver.
-        :param pulumi.Input[Sequence[pulumi.Input['VolumeLabelArgs']]] labels: User-defined key/value metadata.
-        :param pulumi.Input[str] name: The name of the Docker volume (generated if not
-               provided).
+        :param pulumi.Input[Sequence[pulumi.Input['VolumeLabelArgs']]] labels: User-defined key/value metadata
+        :param pulumi.Input[str] name: The name of the Docker volume (will be generated if not provided).
         """
         if driver is not None:
             pulumi.set(__self__, "driver", driver)
@@ -40,7 +39,7 @@ class VolumeArgs:
     @pulumi.getter
     def driver(self) -> Optional[pulumi.Input[str]]:
         """
-        Driver type for the volume (defaults to local).
+        Driver type for the volume. Defaults to `local`.
         """
         return pulumi.get(self, "driver")
 
@@ -64,7 +63,7 @@ class VolumeArgs:
     @pulumi.getter
     def labels(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['VolumeLabelArgs']]]]:
         """
-        User-defined key/value metadata.
+        User-defined key/value metadata
         """
         return pulumi.get(self, "labels")
 
@@ -76,8 +75,7 @@ class VolumeArgs:
     @pulumi.getter
     def name(self) -> Optional[pulumi.Input[str]]:
         """
-        The name of the Docker volume (generated if not
-        provided).
+        The name of the Docker volume (will be generated if not provided).
         """
         return pulumi.get(self, "name")
 
@@ -96,11 +94,11 @@ class _VolumeState:
                  name: Optional[pulumi.Input[str]] = None):
         """
         Input properties used for looking up and filtering Volume resources.
-        :param pulumi.Input[str] driver: Driver type for the volume (defaults to local).
+        :param pulumi.Input[str] driver: Driver type for the volume. Defaults to `local`.
         :param pulumi.Input[Mapping[str, Any]] driver_opts: Options specific to the driver.
-        :param pulumi.Input[Sequence[pulumi.Input['VolumeLabelArgs']]] labels: User-defined key/value metadata.
-        :param pulumi.Input[str] name: The name of the Docker volume (generated if not
-               provided).
+        :param pulumi.Input[Sequence[pulumi.Input['VolumeLabelArgs']]] labels: User-defined key/value metadata
+        :param pulumi.Input[str] mountpoint: The mountpoint of the volume.
+        :param pulumi.Input[str] name: The name of the Docker volume (will be generated if not provided).
         """
         if driver is not None:
             pulumi.set(__self__, "driver", driver)
@@ -117,7 +115,7 @@ class _VolumeState:
     @pulumi.getter
     def driver(self) -> Optional[pulumi.Input[str]]:
         """
-        Driver type for the volume (defaults to local).
+        Driver type for the volume. Defaults to `local`.
         """
         return pulumi.get(self, "driver")
 
@@ -141,7 +139,7 @@ class _VolumeState:
     @pulumi.getter
     def labels(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['VolumeLabelArgs']]]]:
         """
-        User-defined key/value metadata.
+        User-defined key/value metadata
         """
         return pulumi.get(self, "labels")
 
@@ -152,6 +150,9 @@ class _VolumeState:
     @property
     @pulumi.getter
     def mountpoint(self) -> Optional[pulumi.Input[str]]:
+        """
+        The mountpoint of the volume.
+        """
         return pulumi.get(self, "mountpoint")
 
     @mountpoint.setter
@@ -162,8 +163,7 @@ class _VolumeState:
     @pulumi.getter
     def name(self) -> Optional[pulumi.Input[str]]:
         """
-        The name of the Docker volume (generated if not
-        provided).
+        The name of the Docker volume (will be generated if not provided).
         """
         return pulumi.get(self, "name")
 
@@ -183,9 +183,8 @@ class Volume(pulumi.CustomResource):
                  name: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         """
-        Creates and destroys a volume in Docker. This can be used alongside
-        [docker\_container](https://www.terraform.io/docs/providers/docker/r/container.html)
-        to prepare volumes that can be shared across containers.
+        <!-- Bug: Type and Name are switched -->
+        Creates and destroys a volume in Docker. This can be used alongside Container to prepare volumes that can be shared across containers.
 
         ## Example Usage
 
@@ -193,25 +192,48 @@ class Volume(pulumi.CustomResource):
         import pulumi
         import pulumi_docker as docker
 
-        # Creates a docker volume "shared_volume".
         shared_volume = docker.Volume("sharedVolume")
         ```
 
+        <!-- schema generated by tfplugindocs -->
+        ## Schema
+
+        ### Optional
+
+        - **driver** (String) Driver type for the volume. Defaults to `local`.
+        - **driver_opts** (Map of String) Options specific to the driver.
+        - **id** (String) The ID of this resource.
+        - **labels** (Block Set) User-defined key/value metadata (see below for nested schema)
+        - **name** (String) The name of the Docker volume (will be generated if not provided).
+
+        ### Read-Only
+
+        - **mountpoint** (String) The mountpoint of the volume.
+
+        <a id="nestedblock--labels"></a>
+        ### Nested Schema for `labels`
+
+        Required:
+
+        - **label** (String) Name of the label
+        - **value** (String) Value of the label
+
         ## Import
 
-        Docker volume can be imported using the long id, e.g. for a volume with the short id `ecae276c5`
+        ### Example Assuming you created a `volume` as follows #!/bin/bash docker volume create # prints the long ID 524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d you provide the definition for the resource as follows terraform resource "docker_volume" "foo" {
+
+         name = "524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d" } then the import command is as follows #!/bin/bash
 
         ```sh
-         $ pulumi import docker:index/volume:Volume foo $(docker volume inspect -f {{.ID}} eca)
+         $ pulumi import docker:index/volume:Volume foo 524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d
         ```
 
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
-        :param pulumi.Input[str] driver: Driver type for the volume (defaults to local).
+        :param pulumi.Input[str] driver: Driver type for the volume. Defaults to `local`.
         :param pulumi.Input[Mapping[str, Any]] driver_opts: Options specific to the driver.
-        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['VolumeLabelArgs']]]] labels: User-defined key/value metadata.
-        :param pulumi.Input[str] name: The name of the Docker volume (generated if not
-               provided).
+        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['VolumeLabelArgs']]]] labels: User-defined key/value metadata
+        :param pulumi.Input[str] name: The name of the Docker volume (will be generated if not provided).
         """
         ...
     @overload
@@ -220,9 +242,8 @@ class Volume(pulumi.CustomResource):
                  args: Optional[VolumeArgs] = None,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
-        Creates and destroys a volume in Docker. This can be used alongside
-        [docker\_container](https://www.terraform.io/docs/providers/docker/r/container.html)
-        to prepare volumes that can be shared across containers.
+        <!-- Bug: Type and Name are switched -->
+        Creates and destroys a volume in Docker. This can be used alongside Container to prepare volumes that can be shared across containers.
 
         ## Example Usage
 
@@ -230,16 +251,40 @@ class Volume(pulumi.CustomResource):
         import pulumi
         import pulumi_docker as docker
 
-        # Creates a docker volume "shared_volume".
         shared_volume = docker.Volume("sharedVolume")
         ```
 
+        <!-- schema generated by tfplugindocs -->
+        ## Schema
+
+        ### Optional
+
+        - **driver** (String) Driver type for the volume. Defaults to `local`.
+        - **driver_opts** (Map of String) Options specific to the driver.
+        - **id** (String) The ID of this resource.
+        - **labels** (Block Set) User-defined key/value metadata (see below for nested schema)
+        - **name** (String) The name of the Docker volume (will be generated if not provided).
+
+        ### Read-Only
+
+        - **mountpoint** (String) The mountpoint of the volume.
+
+        <a id="nestedblock--labels"></a>
+        ### Nested Schema for `labels`
+
+        Required:
+
+        - **label** (String) Name of the label
+        - **value** (String) Value of the label
+
         ## Import
 
-        Docker volume can be imported using the long id, e.g. for a volume with the short id `ecae276c5`
+        ### Example Assuming you created a `volume` as follows #!/bin/bash docker volume create # prints the long ID 524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d you provide the definition for the resource as follows terraform resource "docker_volume" "foo" {
+
+         name = "524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d" } then the import command is as follows #!/bin/bash
 
         ```sh
-         $ pulumi import docker:index/volume:Volume foo $(docker volume inspect -f {{.ID}} eca)
+         $ pulumi import docker:index/volume:Volume foo 524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d
         ```
 
         :param str resource_name: The name of the resource.
@@ -300,11 +345,11 @@ class Volume(pulumi.CustomResource):
         :param str resource_name: The unique name of the resulting resource.
         :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
-        :param pulumi.Input[str] driver: Driver type for the volume (defaults to local).
+        :param pulumi.Input[str] driver: Driver type for the volume. Defaults to `local`.
         :param pulumi.Input[Mapping[str, Any]] driver_opts: Options specific to the driver.
-        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['VolumeLabelArgs']]]] labels: User-defined key/value metadata.
-        :param pulumi.Input[str] name: The name of the Docker volume (generated if not
-               provided).
+        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['VolumeLabelArgs']]]] labels: User-defined key/value metadata
+        :param pulumi.Input[str] mountpoint: The mountpoint of the volume.
+        :param pulumi.Input[str] name: The name of the Docker volume (will be generated if not provided).
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
 
@@ -321,7 +366,7 @@ class Volume(pulumi.CustomResource):
     @pulumi.getter
     def driver(self) -> pulumi.Output[str]:
         """
-        Driver type for the volume (defaults to local).
+        Driver type for the volume. Defaults to `local`.
         """
         return pulumi.get(self, "driver")
 
@@ -337,21 +382,23 @@ class Volume(pulumi.CustomResource):
     @pulumi.getter
     def labels(self) -> pulumi.Output[Optional[Sequence['outputs.VolumeLabel']]]:
         """
-        User-defined key/value metadata.
+        User-defined key/value metadata
         """
         return pulumi.get(self, "labels")
 
     @property
     @pulumi.getter
     def mountpoint(self) -> pulumi.Output[str]:
+        """
+        The mountpoint of the volume.
+        """
         return pulumi.get(self, "mountpoint")
 
     @property
     @pulumi.getter
     def name(self) -> pulumi.Output[str]:
         """
-        The name of the Docker volume (generated if not
-        provided).
+        The name of the Docker volume (will be generated if not provided).
         """
         return pulumi.get(self, "name")
 

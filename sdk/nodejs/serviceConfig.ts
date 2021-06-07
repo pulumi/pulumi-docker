@@ -7,10 +7,16 @@ import * as utilities from "./utilities";
 /**
  * ## Import
  *
- * Docker config can be imported using the long id, e.g. for a config with the short id `p73jelnrme5f`
+ * ### Example Assuming you created a `config` as follows #!/bin/bash printf '{"a":"b"}' | docker config create foo - # prints the id
+ *
+ * 08c26c477474478d971139f750984775a7f019dbe8a2e7f09d66a187c009e66d you provide the definition for the resource as follows terraform resource "docker_config" "foo" {
+ *
+ *  name = "foo"
+ *
+ *  data = base64encode("{\"a\"\"b\"}") } then the import command is as follows #!/bin/bash
  *
  * ```sh
- *  $ pulumi import docker:index/serviceConfig:ServiceConfig foo $(docker config inspect -f {{.ID}} p73)
+ *  $ pulumi import docker:index/serviceConfig:ServiceConfig foo 08c26c477474478d971139f750984775a7f019dbe8a2e7f09d66a187c009e66d
  * ```
  */
 export class ServiceConfig extends pulumi.CustomResource {
@@ -42,11 +48,11 @@ export class ServiceConfig extends pulumi.CustomResource {
     }
 
     /**
-     * The base64 encoded data of the config.
+     * Base64-url-safe-encoded config data
      */
     public readonly data!: pulumi.Output<string>;
     /**
-     * The name of the Docker config.
+     * User-defined name of the config
      */
     public readonly name!: pulumi.Output<string>;
 
@@ -85,11 +91,11 @@ export class ServiceConfig extends pulumi.CustomResource {
  */
 export interface ServiceConfigState {
     /**
-     * The base64 encoded data of the config.
+     * Base64-url-safe-encoded config data
      */
     readonly data?: pulumi.Input<string>;
     /**
-     * The name of the Docker config.
+     * User-defined name of the config
      */
     readonly name?: pulumi.Input<string>;
 }
@@ -99,11 +105,11 @@ export interface ServiceConfigState {
  */
 export interface ServiceConfigArgs {
     /**
-     * The base64 encoded data of the config.
+     * Base64-url-safe-encoded config data
      */
     readonly data: pulumi.Input<string>;
     /**
-     * The name of the Docker config.
+     * User-defined name of the config
      */
     readonly name?: pulumi.Input<string>;
 }

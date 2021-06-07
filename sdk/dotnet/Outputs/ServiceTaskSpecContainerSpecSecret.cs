@@ -13,29 +13,11 @@ namespace Pulumi.Docker.Outputs
     [OutputType]
     public sealed class ServiceTaskSpecContainerSpecSecret
     {
-        /// <summary>
-        /// Represents the file GID. Defaults: `0`
-        /// </summary>
         public readonly string? FileGid;
-        /// <summary>
-        /// Represents the FileMode of the file. Defaults: `0444`
-        /// </summary>
         public readonly int? FileMode;
-        /// <summary>
-        /// Represents the final filename in the filesystem. The specific target file that the secret data is written within the docker container, e.g. `/root/secret/secret.json`
-        /// </summary>
         public readonly string FileName;
-        /// <summary>
-        /// Represents the file UID. Defaults: `0`
-        /// </summary>
         public readonly string? FileUid;
-        /// <summary>
-        /// ConfigID represents the ID of the specific secret.
-        /// </summary>
         public readonly string SecretId;
-        /// <summary>
-        /// The name of the secret that this references, but internally it is just provided for lookup/display purposes
-        /// </summary>
         public readonly string? SecretName;
 
         [OutputConstructor]

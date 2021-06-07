@@ -13,25 +13,10 @@ namespace Pulumi.Docker.Outputs
     [OutputType]
     public sealed class ServiceEndpointSpecPort
     {
-        /// <summary>
-        /// The name of the Docker service.
-        /// </summary>
         public readonly string? Name;
-        /// <summary>
-        /// Protocol that can be used over this port: `tcp|udp|sctp`. Default: `tcp`.
-        /// </summary>
         public readonly string? Protocol;
-        /// <summary>
-        /// Represents the mode in which the port is to be published: `ingress|host`
-        /// </summary>
         public readonly string? PublishMode;
-        /// <summary>
-        /// The port on the swarm hosts. If not set the value of `target_port` will be used.
-        /// </summary>
         public readonly int? PublishedPort;
-        /// <summary>
-        /// Port inside the container.
-        /// </summary>
         public readonly int TargetPort;
 
         [OutputConstructor]

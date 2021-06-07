@@ -12,18 +12,11 @@ namespace Pulumi.Docker.Inputs
 
     public sealed class ServiceEndpointSpecGetArgs : Pulumi.ResourceArgs
     {
-        /// <summary>
-        /// The mode of resolution to use for internal load balancing between tasks. `(vip|dnsrr)`. Default: `vip`.
-        /// </summary>
         [Input("mode")]
         public Input<string>? Mode { get; set; }
 
         [Input("ports")]
         private InputList<Inputs.ServiceEndpointSpecPortGetArgs>? _ports;
-
-        /// <summary>
-        /// See Ports below for details.
-        /// </summary>
         public InputList<Inputs.ServiceEndpointSpecPortGetArgs> Ports
         {
             get => _ports ?? (_ports = new InputList<Inputs.ServiceEndpointSpecPortGetArgs>());

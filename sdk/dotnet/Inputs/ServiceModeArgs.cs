@@ -12,15 +12,9 @@ namespace Pulumi.Docker.Inputs
 
     public sealed class ServiceModeArgs : Pulumi.ResourceArgs
     {
-        /// <summary>
-        /// set it to `true` to run the service in the global mode
-        /// </summary>
         [Input("global")]
         public Input<bool>? Global { get; set; }
 
-        /// <summary>
-        /// , which contains atm only the amount of `replicas`
-        /// </summary>
         [Input("replicated")]
         public Input<Inputs.ServiceModeReplicatedArgs>? Replicated { get; set; }
 

@@ -14,10 +14,6 @@ namespace Pulumi.Docker.Inputs
     {
         [Input("args")]
         private InputList<string>? _args;
-
-        /// <summary>
-        /// Arguments to the command.
-        /// </summary>
         public InputList<string> Args
         {
             get => _args ?? (_args = new InputList<string>());
@@ -26,10 +22,6 @@ namespace Pulumi.Docker.Inputs
 
         [Input("commands")]
         private InputList<string>? _commands;
-
-        /// <summary>
-        /// The command to be run in the image.
-        /// </summary>
         public InputList<string> Commands
         {
             get => _commands ?? (_commands = new InputList<string>());
@@ -38,34 +30,20 @@ namespace Pulumi.Docker.Inputs
 
         [Input("configs")]
         private InputList<Inputs.ServiceTaskSpecContainerSpecConfigArgs>? _configs;
-
-        /// <summary>
-        /// See Configs below for details.
-        /// </summary>
         public InputList<Inputs.ServiceTaskSpecContainerSpecConfigArgs> Configs
         {
             get => _configs ?? (_configs = new InputList<Inputs.ServiceTaskSpecContainerSpecConfigArgs>());
             set => _configs = value;
         }
 
-        /// <summary>
-        /// The working directory for commands to run in.
-        /// </summary>
         [Input("dir")]
         public Input<string>? Dir { get; set; }
 
-        /// <summary>
-        /// See DNS Config below for details.
-        /// </summary>
         [Input("dnsConfig")]
         public Input<Inputs.ServiceTaskSpecContainerSpecDnsConfigArgs>? DnsConfig { get; set; }
 
         [Input("env")]
         private InputMap<string>? _env;
-
-        /// <summary>
-        /// A list of environment variables in the form VAR=value.
-        /// </summary>
         public InputMap<string> Env
         {
             get => _env ?? (_env = new InputMap<string>());
@@ -74,25 +52,15 @@ namespace Pulumi.Docker.Inputs
 
         [Input("groups")]
         private InputList<string>? _groups;
-
-        /// <summary>
-        /// A list of additional groups that the container process will run as.
-        /// </summary>
         public InputList<string> Groups
         {
             get => _groups ?? (_groups = new InputList<string>());
             set => _groups = value;
         }
 
-        /// <summary>
-        /// See Healthcheck below for details.
-        /// </summary>
         [Input("healthcheck")]
         public Input<Inputs.ServiceTaskSpecContainerSpecHealthcheckArgs>? Healthcheck { get; set; }
 
-        /// <summary>
-        /// The hostname to use for the container, as a valid RFC 1123 hostname.
-        /// </summary>
         [Input("hostname")]
         public Input<string>? Hostname { get; set; }
 
@@ -104,24 +72,14 @@ namespace Pulumi.Docker.Inputs
             set => _hosts = value;
         }
 
-        /// <summary>
-        /// The image used to create the Docker service.
-        /// </summary>
         [Input("image", required: true)]
         public Input<string> Image { get; set; } = null!;
 
-        /// <summary>
-        /// Isolation technology of the containers running the service. (Windows only). Valid values are: `default|process|hyperv`
-        /// </summary>
         [Input("isolation")]
         public Input<string>? Isolation { get; set; }
 
         [Input("labels")]
         private InputList<Inputs.ServiceTaskSpecContainerSpecLabelArgs>? _labels;
-
-        /// <summary>
-        /// See Labels below for details.
-        /// </summary>
         public InputList<Inputs.ServiceTaskSpecContainerSpecLabelArgs> Labels
         {
             get => _labels ?? (_labels = new InputList<Inputs.ServiceTaskSpecContainerSpecLabelArgs>());
@@ -130,55 +88,32 @@ namespace Pulumi.Docker.Inputs
 
         [Input("mounts")]
         private InputList<Inputs.ServiceTaskSpecContainerSpecMountArgs>? _mounts;
-
-        /// <summary>
-        /// See Mounts below for details.
-        /// </summary>
         public InputList<Inputs.ServiceTaskSpecContainerSpecMountArgs> Mounts
         {
             get => _mounts ?? (_mounts = new InputList<Inputs.ServiceTaskSpecContainerSpecMountArgs>());
             set => _mounts = value;
         }
 
-        /// <summary>
-        /// See Privileges below for details.
-        /// </summary>
         [Input("privileges")]
         public Input<Inputs.ServiceTaskSpecContainerSpecPrivilegesArgs>? Privileges { get; set; }
 
-        /// <summary>
-        /// Mount the container's root filesystem as read only.
-        /// </summary>
         [Input("readOnly")]
         public Input<bool>? ReadOnly { get; set; }
 
         [Input("secrets")]
         private InputList<Inputs.ServiceTaskSpecContainerSpecSecretArgs>? _secrets;
-
-        /// <summary>
-        /// See Secrets below for details.
-        /// </summary>
         public InputList<Inputs.ServiceTaskSpecContainerSpecSecretArgs> Secrets
         {
             get => _secrets ?? (_secrets = new InputList<Inputs.ServiceTaskSpecContainerSpecSecretArgs>());
             set => _secrets = value;
         }
 
-        /// <summary>
-        /// Amount of time to wait for the container to terminate before forcefully removing it `(ms|s|m|h)`.
-        /// </summary>
         [Input("stopGracePeriod")]
         public Input<string>? StopGracePeriod { get; set; }
 
-        /// <summary>
-        /// Signal to stop the container.
-        /// </summary>
         [Input("stopSignal")]
         public Input<string>? StopSignal { get; set; }
 
-        /// <summary>
-        /// The user inside the container.
-        /// </summary>
         [Input("user")]
         public Input<string>? User { get; set; }
 

@@ -8,7 +8,7 @@ import * as utilities from "./utilities";
 /**
  * ## Import
  *
- * Docker secret cannot be imported as the secret data, once set, is never exposed again.
+ * Import is supported using the following syntax#!/bin/bash # Docker secret cannot be imported as the secret data, once set, is never exposed again.
  */
 export class Secret extends pulumi.CustomResource {
     /**
@@ -39,15 +39,15 @@ export class Secret extends pulumi.CustomResource {
     }
 
     /**
-     * The base64 encoded data of the secret.
+     * Base64-url-safe-encoded secret data
      */
     public readonly data!: pulumi.Output<string>;
     /**
-     * See Labels below for details.
+     * User-defined key/value metadata
      */
     public readonly labels!: pulumi.Output<outputs.SecretLabel[] | undefined>;
     /**
-     * The name of the Docker secret.
+     * User-defined name of the secret
      */
     public readonly name!: pulumi.Output<string>;
 
@@ -88,15 +88,15 @@ export class Secret extends pulumi.CustomResource {
  */
 export interface SecretState {
     /**
-     * The base64 encoded data of the secret.
+     * Base64-url-safe-encoded secret data
      */
     readonly data?: pulumi.Input<string>;
     /**
-     * See Labels below for details.
+     * User-defined key/value metadata
      */
     readonly labels?: pulumi.Input<pulumi.Input<inputs.SecretLabel>[]>;
     /**
-     * The name of the Docker secret.
+     * User-defined name of the secret
      */
     readonly name?: pulumi.Input<string>;
 }
@@ -106,15 +106,15 @@ export interface SecretState {
  */
 export interface SecretArgs {
     /**
-     * The base64 encoded data of the secret.
+     * Base64-url-safe-encoded secret data
      */
     readonly data: pulumi.Input<string>;
     /**
-     * See Labels below for details.
+     * User-defined key/value metadata
      */
     readonly labels?: pulumi.Input<pulumi.Input<inputs.SecretLabel>[]>;
     /**
-     * The name of the Docker secret.
+     * User-defined name of the secret
      */
     readonly name?: pulumi.Input<string>;
 }

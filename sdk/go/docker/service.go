@@ -13,31 +13,57 @@ import (
 
 // ## Import
 //
-// Docker service can be imported using the long id, e.g. for a service with the short id `55ba873dd`
+// ### Example Assuming you created a `service` as follows #!/bin/bash docker service create --name foo -p 8080:80 nginx # prints th ID 4pcphbxkfn2rffhbhe6czytgi you provide the definition for the resource as follows terraform resource "docker_service" "foo" {
+//
+//  name = "foo"
+//
+//  task_spec {
+//
+//  container_spec {
+//
+//  image = "nginx"
+//
+//  }
+//
+//  }
+//
+//  endpoint_spec {
+//
+//  ports {
+//
+//  target_port
+//
+// = "80"
+//
+//  published_port = "8080"
+//
+//  }
+//
+//  } } then the import command is as follows #!/bin/bash
 //
 // ```sh
-//  $ pulumi import docker:index/service:Service foo $(docker service inspect -f {{.ID}} 55b)
+//  $ pulumi import docker:index/service:Service foo 4pcphbxkfn2rffhbhe6czytgi
 // ```
 type Service struct {
 	pulumi.CustomResourceState
 
-	// See Auth below for details.
+	// Configuration for the authentication for pulling the images of the service
 	Auth ServiceAuthPtrOutput `pulumi:"auth"`
-	// See Converge Config below for details.
+	// A configuration to ensure that a service converges aka reaches the desired that of all task up and running
 	ConvergeConfig ServiceConvergeConfigPtrOutput `pulumi:"convergeConfig"`
-	// See EndpointSpec below for details.
+	// Properties that can be configured to access and load balance a service
 	EndpointSpec ServiceEndpointSpecOutput `pulumi:"endpointSpec"`
-	// See Labels below for details.
+	// User-defined key/value metadata
 	Labels ServiceLabelArrayOutput `pulumi:"labels"`
-	// See Mode below for details.
+	// Scheduling mode for the service
 	Mode ServiceModeOutput `pulumi:"mode"`
-	// The name of the Docker service.
+	// Name of the service
 	Name pulumi.StringOutput `pulumi:"name"`
-	// See RollbackConfig below for details.
+	// Specification for the rollback strategy of the service
 	RollbackConfig ServiceRollbackConfigPtrOutput `pulumi:"rollbackConfig"`
-	// See TaskSpec below for details.
+	// User modifiable task configuration
 	TaskSpec ServiceTaskSpecOutput `pulumi:"taskSpec"`
-	// See UpdateConfig below for details.
+	// Specification for the update strategy of the service
 	UpdateConfig ServiceUpdateConfigPtrOutput `pulumi:"updateConfig"`
 }
 
@@ -73,44 +99,44 @@ func GetService(ctx *pulumi.Context,
 
 // Input properties used for looking up and filtering Service resources.
 type serviceState struct {
-	// See Auth below for details.
+	// Configuration for the authentication for pulling the images of the service
 	Auth *ServiceAuth `pulumi:"auth"`
-	// See Converge Config below for details.
+	// A configuration to ensure that a service converges aka reaches the desired that of all task up and running
 	ConvergeConfig *ServiceConvergeConfig `pulumi:"convergeConfig"`
-	// See EndpointSpec below for details.
+	// Properties that can be configured to access and load balance a service
 	EndpointSpec *ServiceEndpointSpec `pulumi:"endpointSpec"`
-	// See Labels below for details.
+	// User-defined key/value metadata
 	Labels []ServiceLabel `pulumi:"labels"`
-	// See Mode below for details.
+	// Scheduling mode for the service
 	Mode *ServiceMode `pulumi:"mode"`
-	// The name of the Docker service.
+	// Name of the service
 	Name *string `pulumi:"name"`
-	// See RollbackConfig below for details.
+	// Specification for the rollback strategy of the service
 	RollbackConfig *ServiceRollbackConfig `pulumi:"rollbackConfig"`
-	// See TaskSpec below for details.
+	// User modifiable task configuration
 	TaskSpec *ServiceTaskSpec `pulumi:"taskSpec"`
-	// See UpdateConfig below for details.
+	// Specification for the update strategy of the service
 	UpdateConfig *ServiceUpdateConfig `pulumi:"updateConfig"`
 }
 
 type ServiceState struct {
-	// See Auth below for details.
+	// Configuration for the authentication for pulling the images of the service
 	Auth ServiceAuthPtrInput
-	// See Converge Config below for details.
+	// A configuration to ensure that a service converges aka reaches the desired that of all task up and running
 	ConvergeConfig ServiceConvergeConfigPtrInput
-	// See EndpointSpec below for details.
+	// Properties that can be configured to access and load balance a service
 	EndpointSpec ServiceEndpointSpecPtrInput
-	// See Labels below for details.
+	// User-defined key/value metadata
 	Labels ServiceLabelArrayInput
-	// See Mode below for details.
+	// Scheduling mode for the service
 	Mode ServiceModePtrInput
-	// The name of the Docker service.
+	// Name of the service
 	Name pulumi.StringPtrInput
-	// See RollbackConfig below for details.
+	// Specification for the rollback strategy of the service
 	RollbackConfig ServiceRollbackConfigPtrInput
-	// See TaskSpec below for details.
+	// User modifiable task configuration
 	TaskSpec ServiceTaskSpecPtrInput
-	// See UpdateConfig below for details.
+	// Specification for the update strategy of the service
 	UpdateConfig ServiceUpdateConfigPtrInput
 }
 
@@ -119,45 +145,45 @@ func (ServiceState) ElementType() reflect.Type {
 }
 
 type serviceArgs struct {
-	// See Auth below for details.
+	// Configuration for the authentication for pulling the images of the service
 	Auth *ServiceAuth `pulumi:"auth"`
-	// See Converge Config below for details.
+	// A configuration to ensure that a service converges aka reaches the desired that of all task up and running
 	ConvergeConfig *ServiceConvergeConfig `pulumi:"convergeConfig"`
-	// See EndpointSpec below for details.
+	// Properties that can be configured to access and load balance a service
 	EndpointSpec *ServiceEndpointSpec `pulumi:"endpointSpec"`
-	// See Labels below for details.
+	// User-defined key/value metadata
 	Labels []ServiceLabel `pulumi:"labels"`
-	// See Mode below for details.
+	// Scheduling mode for the service
 	Mode *ServiceMode `pulumi:"mode"`
-	// The name of the Docker service.
+	// Name of the service
 	Name *string `pulumi:"name"`
-	// See RollbackConfig below for details.
+	// Specification for the rollback strategy of the service
 	RollbackConfig *ServiceRollbackConfig `pulumi:"rollbackConfig"`
-	// See TaskSpec below for details.
+	// User modifiable task configuration
 	TaskSpec ServiceTaskSpec `pulumi:"taskSpec"`
-	// See UpdateConfig below for details.
+	// Specification for the update strategy of the service
 	UpdateConfig *ServiceUpdateConfig `pulumi:"updateConfig"`
 }
 
 // The set of arguments for constructing a Service resource.
 type ServiceArgs struct {
-	// See Auth below for details.
+	// Configuration for the authentication for pulling the images of the service
 	Auth ServiceAuthPtrInput
-	// See Converge Config below for details.
+	// A configuration to ensure that a service converges aka reaches the desired that of all task up and running
 	ConvergeConfig ServiceConvergeConfigPtrInput
-	// See EndpointSpec below for details.
+	// Properties that can be configured to access and load balance a service
 	EndpointSpec ServiceEndpointSpecPtrInput
-	// See Labels below for details.
+	// User-defined key/value metadata
 	Labels ServiceLabelArrayInput
-	// See Mode below for details.
+	// Scheduling mode for the service
 	Mode ServiceModePtrInput
-	// The name of the Docker service.
+	// Name of the service
 	Name pulumi.StringPtrInput
-	// See RollbackConfig below for details.
+	// Specification for the rollback strategy of the service
 	RollbackConfig ServiceRollbackConfigPtrInput
-	// See TaskSpec below for details.
+	// User modifiable task configuration
 	TaskSpec ServiceTaskSpecInput
-	// See UpdateConfig below for details.
+	// Specification for the update strategy of the service
 	UpdateConfig ServiceUpdateConfigPtrInput
 }
 

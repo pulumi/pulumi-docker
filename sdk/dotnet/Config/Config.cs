@@ -33,7 +33,7 @@ namespace Pulumi.Docker
         /// </summary>
         public static string? KeyMaterial { get; set; } = __config.Get("keyMaterial");
 
-        public static ImmutableArray<Pulumi.Docker.Config.Types.RegistryAuth> RegistryAuth { get; set; } = __config.GetObject<ImmutableArray<Pulumi.Docker.Config.Types.RegistryAuth>>("registryAuth");
+        public static Pulumi.Docker.Config.Types.RegistryAuth? RegistryAuth { get; set; } = __config.GetObject<Pulumi.Docker.Config.Types.RegistryAuth>("registryAuth");
 
         public static class Types
         {

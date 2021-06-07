@@ -17,10 +17,6 @@ namespace Pulumi.Docker.Inputs
 
         [Input("driverOptions")]
         private InputMap<string>? _driverOptions;
-
-        /// <summary>
-        /// Options for the driver.
-        /// </summary>
         public InputMap<string> DriverOptions
         {
             get => _driverOptions ?? (_driverOptions = new InputMap<string>());
@@ -29,19 +25,12 @@ namespace Pulumi.Docker.Inputs
 
         [Input("labels")]
         private InputList<Inputs.ContainerMountVolumeOptionsLabelArgs>? _labels;
-
-        /// <summary>
-        /// Adding labels.
-        /// </summary>
         public InputList<Inputs.ContainerMountVolumeOptionsLabelArgs> Labels
         {
             get => _labels ?? (_labels = new InputList<Inputs.ContainerMountVolumeOptionsLabelArgs>());
             set => _labels = value;
         }
 
-        /// <summary>
-        /// Whether to populate volume with data from the target.
-        /// </summary>
         [Input("noCopy")]
         public Input<bool>? NoCopy { get; set; }
 

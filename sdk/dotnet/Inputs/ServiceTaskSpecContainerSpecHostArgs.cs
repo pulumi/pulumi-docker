@@ -12,15 +12,9 @@ namespace Pulumi.Docker.Inputs
 
     public sealed class ServiceTaskSpecContainerSpecHostArgs : Pulumi.ResourceArgs
     {
-        /// <summary>
-        /// A list of hostname/IP mappings to add to the container's hosts file.
-        /// </summary>
         [Input("host", required: true)]
         public Input<string> Host { get; set; } = null!;
 
-        /// <summary>
-        /// The ip
-        /// </summary>
         [Input("ip", required: true)]
         public Input<string> Ip { get; set; } = null!;
 

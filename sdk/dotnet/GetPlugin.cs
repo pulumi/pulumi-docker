@@ -16,26 +16,26 @@ namespace Pulumi.Docker
         /// 
         /// {{% examples %}}
         /// ## Example Usage
-        /// {{% example %}}
         /// 
-        /// ```csharp
-        /// using Pulumi;
-        /// using Docker = Pulumi.Docker;
-        /// 
-        /// class MyStack : Stack
-        /// {
-        ///     public MyStack()
-        ///     {
-        ///         var sample_volume_plugin = Output.Create(Docker.GetPlugin.InvokeAsync(new Docker.GetPluginArgs
-        ///         {
-        ///             Alias = "sample-volume-plugin:latest",
-        ///         }));
-        ///     }
-        /// 
+        /// ### With alias
+        /// data "docker.Plugin" "by_alias" {
+        ///   alias = "sample-volume-plugin:latest"
         /// }
-        /// ```
-        /// {{% /example %}}
         /// {{% /examples %}}
+        /// ## Schema
+        /// 
+        /// ### Optional
+        /// 
+        /// - **alias** (String) The alias of the Docker plugin. If the tag is omitted, `:latest` is complemented to the attribute value.
+        /// - **id** (String) The ID of the plugin, which has precedence over the `alias` of both are given
+        /// 
+        /// ### Read-Only
+        /// 
+        /// - **enabled** (Boolean) If `true` the plugin is enabled
+        /// - **env** (Set of String) The environment variables in the form of `KEY=VALUE`, e.g. `DEBUG=0`
+        /// - **grant_all_permissions** (Boolean) If true, grant all permissions necessary to run the plugin
+        /// - **name** (String) The plugin name. If the tag is omitted, `:latest` is complemented to the attribute value.
+        /// - **plugin_reference** (String) The Docker Plugin Reference
         /// </summary>
         public static Task<GetPluginResult> InvokeAsync(GetPluginArgs? args = null, InvokeOptions? options = null)
             => Pulumi.Deployment.Instance.InvokeAsync<GetPluginResult>("docker:index/getPlugin:getPlugin", args ?? new GetPluginArgs(), options.WithVersion());
@@ -44,15 +44,9 @@ namespace Pulumi.Docker
 
     public sealed class GetPluginArgs : Pulumi.InvokeArgs
     {
-        /// <summary>
-        /// The alias of the Docker plugin.
-        /// </summary>
         [Input("alias")]
         public string? Alias { get; set; }
 
-        /// <summary>
-        /// The Docker plugin ID.
-        /// </summary>
         [Input("id")]
         public string? Id { get; set; }
 
@@ -68,14 +62,9 @@ namespace Pulumi.Docker
         public readonly string? Alias;
         public readonly bool Enabled;
         public readonly ImmutableArray<string> Envs;
-        /// <summary>
-        /// (Optional, boolean) If true, grant all permissions necessary to run the plugin.
-        /// </summary>
         public readonly bool GrantAllPermissions;
         public readonly string? Id;
-        /// <summary>
-        /// (Optional, string, Forces new resource) The plugin reference.
-        /// </summary>
+        public readonly string Name;
         public readonly string PluginReference;
 
         [OutputConstructor]
@@ -90,6 +79,8 @@ namespace Pulumi.Docker
 
             string? id,
 
+            string name,
+
             string pluginReference)
         {
             Alias = alias;
@@ -97,6 +88,7 @@ namespace Pulumi.Docker
             Envs = envs;
             GrantAllPermissions = grantAllPermissions;
             Id = id;
+            Name = name;
             PluginReference = pluginReference;
         }
     }

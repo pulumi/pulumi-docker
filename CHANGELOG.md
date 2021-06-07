@@ -1,5 +1,5 @@
 ## HEAD (Unreleased)
-_(none)_
+* Upgrade to v2.12.2 of the Docker Terraform Provider
 
 ---
 

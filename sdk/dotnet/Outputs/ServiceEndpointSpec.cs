@@ -13,13 +13,7 @@ namespace Pulumi.Docker.Outputs
     [OutputType]
     public sealed class ServiceEndpointSpec
     {
-        /// <summary>
-        /// The mode of resolution to use for internal load balancing between tasks. `(vip|dnsrr)`. Default: `vip`.
-        /// </summary>
         public readonly string? Mode;
-        /// <summary>
-        /// See Ports below for details.
-        /// </summary>
         public readonly ImmutableArray<Outputs.ServiceEndpointSpecPort> Ports;
 
         [OutputConstructor]

@@ -12,21 +12,12 @@ namespace Pulumi.Docker.Inputs
 
     public sealed class RegistryImageBuildUlimitArgs : Pulumi.ResourceArgs
     {
-        /// <summary>
-        /// - hard limit
-        /// </summary>
         [Input("hard", required: true)]
         public Input<int> Hard { get; set; } = null!;
 
-        /// <summary>
-        /// type of ulimit, e.g. nofile
-        /// </summary>
         [Input("name", required: true)]
         public Input<string> Name { get; set; } = null!;
 
-        /// <summary>
-        /// - soft limit
-        /// </summary>
         [Input("soft", required: true)]
         public Input<int> Soft { get; set; } = null!;
 

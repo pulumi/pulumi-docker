@@ -12,57 +12,32 @@ namespace Pulumi.Docker.Inputs
 
     public sealed class ServiceTaskSpecArgs : Pulumi.ResourceArgs
     {
-        /// <summary>
-        /// See ContainerSpec below for details.
-        /// </summary>
         [Input("containerSpec", required: true)]
         public Input<Inputs.ServiceTaskSpecContainerSpecArgs> ContainerSpec { get; set; } = null!;
 
-        /// <summary>
-        /// A counter that triggers an update even if no relevant parameters have been changed. See [Docker Spec](https://github.com/docker/swarmkit/blob/master/api/specs.proto#L126).
-        /// </summary>
         [Input("forceUpdate")]
         public Input<int>? ForceUpdate { get; set; }
 
-        /// <summary>
-        /// See Log Driver below for details.
-        /// </summary>
         [Input("logDriver")]
         public Input<Inputs.ServiceTaskSpecLogDriverArgs>? LogDriver { get; set; }
 
         [Input("networks")]
         private InputList<string>? _networks;
-
-        /// <summary>
-        /// Ids of the networks in which the container will be put in.
-        /// </summary>
         public InputList<string> Networks
         {
             get => _networks ?? (_networks = new InputList<string>());
             set => _networks = value;
         }
 
-        /// <summary>
-        /// See Placement below for details.
-        /// </summary>
         [Input("placement")]
         public Input<Inputs.ServiceTaskSpecPlacementArgs>? Placement { get; set; }
 
-        /// <summary>
-        /// See Resources below for details.
-        /// </summary>
         [Input("resources")]
         public Input<Inputs.ServiceTaskSpecResourcesArgs>? Resources { get; set; }
 
-        /// <summary>
-        /// See Restart Policy below for details.
-        /// </summary>
         [Input("restartPolicy")]
         public Input<Inputs.ServiceTaskSpecRestartPolicyArgs>? RestartPolicy { get; set; }
 
-        /// <summary>
-        /// Runtime is the type of runtime specified for the task executor. See [Docker Runtime](https://github.com/moby/moby/blob/master/api/types/swarm/runtime.go).
-        /// </summary>
         [Input("runtime")]
         public Input<string>? Runtime { get; set; }
 

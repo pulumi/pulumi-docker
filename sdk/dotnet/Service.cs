@@ -12,65 +12,91 @@ namespace Pulumi.Docker
     /// <summary>
     /// ## Import
     /// 
-    /// Docker service can be imported using the long id, e.g. for a service with the short id `55ba873dd`
+    /// ### Example Assuming you created a `service` as follows #!/bin/bash docker service create --name foo -p 8080:80 nginx # prints th ID 4pcphbxkfn2rffhbhe6czytgi you provide the definition for the resource as follows terraform resource "docker_service" "foo" {
+    /// 
+    ///  name = "foo"
+    /// 
+    ///  task_spec {
+    /// 
+    ///  container_spec {
+    /// 
+    ///  image = "nginx"
+    /// 
+    ///  }
+    /// 
+    ///  }
+    /// 
+    ///  endpoint_spec {
+    /// 
+    ///  ports {
+    /// 
+    ///  target_port
+    /// 
+    /// = "80"
+    /// 
+    ///  published_port = "8080"
+    /// 
+    ///  }
+    /// 
+    ///  } } then the import command is as follows #!/bin/bash
     /// 
     /// ```sh
-    ///  $ pulumi import docker:index/service:Service foo $(docker service inspect -f {{.ID}} 55b)
+    ///  $ pulumi import docker:index/service:Service foo 4pcphbxkfn2rffhbhe6czytgi
     /// ```
     /// </summary>
     [DockerResourceType("docker:index/service:Service")]
     public partial class Service : Pulumi.CustomResource
     {
         /// <summary>
-        /// See Auth below for details.
+        /// Configuration for the authentication for pulling the images of the service
         /// </summary>
         [Output("auth")]
         public Output<Outputs.ServiceAuth?> Auth { get; private set; } = null!;
 
         /// <summary>
-        /// See Converge Config below for details.
+        /// A configuration to ensure that a service converges aka reaches the desired that of all task up and running
         /// </summary>
         [Output("convergeConfig")]
         public Output<Outputs.ServiceConvergeConfig?> ConvergeConfig { get; private set; } = null!;
 
         /// <summary>
-        /// See EndpointSpec below for details.
+        /// Properties that can be configured to access and load balance a service
         /// </summary>
         [Output("endpointSpec")]
         public Output<Outputs.ServiceEndpointSpec> EndpointSpec { get; private set; } = null!;
 
         /// <summary>
-        /// See Labels below for details.
+        /// User-defined key/value metadata
         /// </summary>
         [Output("labels")]
         public Output<ImmutableArray<Outputs.ServiceLabel>> Labels { get; private set; } = null!;
 
         /// <summary>
-        /// See Mode below for details.
+        /// Scheduling mode for the service
         /// </summary>
         [Output("mode")]
         public Output<Outputs.ServiceMode> Mode { get; private set; } = null!;
 
         /// <summary>
-        /// The name of the Docker service.
+        /// Name of the service
         /// </summary>
         [Output("name")]
         public Output<string> Name { get; private set; } = null!;
 
         /// <summary>
-        /// See RollbackConfig below for details.
+        /// Specification for the rollback strategy of the service
         /// </summary>
         [Output("rollbackConfig")]
         public Output<Outputs.ServiceRollbackConfig?> RollbackConfig { get; private set; } = null!;
 
         /// <summary>
-        /// See TaskSpec below for details.
+        /// User modifiable task configuration
         /// </summary>
         [Output("taskSpec")]
         public Output<Outputs.ServiceTaskSpec> TaskSpec { get; private set; } = null!;
 
         /// <summary>
-        /// See UpdateConfig below for details.
+        /// Specification for the update strategy of the service
         /// </summary>
         [Output("updateConfig")]
         public Output<Outputs.ServiceUpdateConfig?> UpdateConfig { get; private set; } = null!;
@@ -122,19 +148,19 @@ namespace Pulumi.Docker
     public sealed class ServiceArgs : Pulumi.ResourceArgs
     {
         /// <summary>
-        /// See Auth below for details.
+        /// Configuration for the authentication for pulling the images of the service
         /// </summary>
         [Input("auth")]
         public Input<Inputs.ServiceAuthArgs>? Auth { get; set; }
 
         /// <summary>
-        /// See Converge Config below for details.
+        /// A configuration to ensure that a service converges aka reaches the desired that of all task up and running
         /// </summary>
         [Input("convergeConfig")]
         public Input<Inputs.ServiceConvergeConfigArgs>? ConvergeConfig { get; set; }
 
         /// <summary>
-        /// See EndpointSpec below for details.
+        /// Properties that can be configured to access and load balance a service
         /// </summary>
         [Input("endpointSpec")]
         public Input<Inputs.ServiceEndpointSpecArgs>? EndpointSpec { get; set; }
@@ -143,7 +169,7 @@ namespace Pulumi.Docker
         private InputList<Inputs.ServiceLabelArgs>? _labels;
 
         /// <summary>
-        /// See Labels below for details.
+        /// User-defined key/value metadata
         /// </summary>
         public InputList<Inputs.ServiceLabelArgs> Labels
         {
@@ -152,31 +178,31 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// See Mode below for details.
+        /// Scheduling mode for the service
         /// </summary>
         [Input("mode")]
         public Input<Inputs.ServiceModeArgs>? Mode { get; set; }
 
         /// <summary>
-        /// The name of the Docker service.
+        /// Name of the service
         /// </summary>
         [Input("name")]
         public Input<string>? Name { get; set; }
 
         /// <summary>
-        /// See RollbackConfig below for details.
+        /// Specification for the rollback strategy of the service
         /// </summary>
         [Input("rollbackConfig")]
         public Input<Inputs.ServiceRollbackConfigArgs>? RollbackConfig { get; set; }
 
         /// <summary>
-        /// See TaskSpec below for details.
+        /// User modifiable task configuration
         /// </summary>
         [Input("taskSpec", required: true)]
         public Input<Inputs.ServiceTaskSpecArgs> TaskSpec { get; set; } = null!;
 
         /// <summary>
-        /// See UpdateConfig below for details.
+        /// Specification for the update strategy of the service
         /// </summary>
         [Input("updateConfig")]
         public Input<Inputs.ServiceUpdateConfigArgs>? UpdateConfig { get; set; }
@@ -189,19 +215,19 @@ namespace Pulumi.Docker
     public sealed class ServiceState : Pulumi.ResourceArgs
     {
         /// <summary>
-        /// See Auth below for details.
+        /// Configuration for the authentication for pulling the images of the service
         /// </summary>
         [Input("auth")]
         public Input<Inputs.ServiceAuthGetArgs>? Auth { get; set; }
 
         /// <summary>
-        /// See Converge Config below for details.
+        /// A configuration to ensure that a service converges aka reaches the desired that of all task up and running
         /// </summary>
         [Input("convergeConfig")]
         public Input<Inputs.ServiceConvergeConfigGetArgs>? ConvergeConfig { get; set; }
 
         /// <summary>
-        /// See EndpointSpec below for details.
+        /// Properties that can be configured to access and load balance a service
         /// </summary>
         [Input("endpointSpec")]
         public Input<Inputs.ServiceEndpointSpecGetArgs>? EndpointSpec { get; set; }
@@ -210,7 +236,7 @@ namespace Pulumi.Docker
         private InputList<Inputs.ServiceLabelGetArgs>? _labels;
 
         /// <summary>
-        /// See Labels below for details.
+        /// User-defined key/value metadata
         /// </summary>
         public InputList<Inputs.ServiceLabelGetArgs> Labels
         {
@@ -219,31 +245,31 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// See Mode below for details.
+        /// Scheduling mode for the service
         /// </summary>
         [Input("mode")]
         public Input<Inputs.ServiceModeGetArgs>? Mode { get; set; }
 
         /// <summary>
-        /// The name of the Docker service.
+        /// Name of the service
         /// </summary>
         [Input("name")]
         public Input<string>? Name { get; set; }
 
         /// <summary>
-        /// See RollbackConfig below for details.
+        /// Specification for the rollback strategy of the service
         /// </summary>
         [Input("rollbackConfig")]
         public Input<Inputs.ServiceRollbackConfigGetArgs>? RollbackConfig { get; set; }
 
         /// <summary>
-        /// See TaskSpec below for details.
+        /// User modifiable task configuration
         /// </summary>
         [Input("taskSpec")]
         public Input<Inputs.ServiceTaskSpecGetArgs>? TaskSpec { get; set; }
 
         /// <summary>
-        /// See UpdateConfig below for details.
+        /// Specification for the update strategy of the service
         /// </summary>
         [Input("updateConfig")]
         public Input<Inputs.ServiceUpdateConfigGetArgs>? UpdateConfig { get; set; }

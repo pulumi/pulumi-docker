@@ -13,13 +13,7 @@ namespace Pulumi.Docker.Outputs
     [OutputType]
     public sealed class ContainerMountVolumeOptionsLabel
     {
-        /// <summary>
-        /// Name of the label
-        /// </summary>
         public readonly string Label;
-        /// <summary>
-        /// Value of the label
-        /// </summary>
         public readonly string Value;
 
         [OutputConstructor]

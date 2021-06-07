@@ -13,13 +13,7 @@ namespace Pulumi.Docker.Outputs
     [OutputType]
     public sealed class ServiceTaskSpecContainerSpecMountTmpfsOptions
     {
-        /// <summary>
-        /// See Mode below for details.
-        /// </summary>
         public readonly int? Mode;
-        /// <summary>
-        /// The size for the tmpfs mount in bytes.
-        /// </summary>
         public readonly int? SizeBytes;
 
         [OutputConstructor]
