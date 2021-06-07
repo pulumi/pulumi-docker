@@ -7,4 +7,4 @@ require (
 	github.com/terraform-providers/terraform-provider-docker v0.0.0-20201111135144-b8d28d67e632
 )
 
-replace github.com/terraform-providers/terraform-provider-docker => github.com/kreuzwerker/terraform-provider-docker v0.0.0-20210523100431-e73a0578496b
+replace github.com/terraform-providers/terraform-provider-docker => github.com/kreuzwerker/terraform-provider-docker v0.0.0-20210526070551-22c490336c7b

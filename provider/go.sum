@@ -1255,6 +1255,8 @@ github.com/kreuzwerker/terraform-provider-docker v0.0.0-20210122201038-8da701db2
 github.com/kreuzwerker/terraform-provider-docker v0.0.0-20210122201038-8da701db26ba/go.mod h1:OU67fWggT6BoY/lr5sceTR8H1t6852xnThNU3jfyR2s=
 github.com/kreuzwerker/terraform-provider-docker v0.0.0-20210523100431-e73a0578496b h1:HmUOCjG2nxGQ5FCt4wP9ldBrTkVVOH9m9bwGnUzKH+4=
 github.com/kreuzwerker/terraform-provider-docker v0.0.0-20210523100431-e73a0578496b/go.mod h1:2TvH984+4uCM8BvyTz1cQXHoxBlXh+eLmTNkOCLrZ0Q=
+github.com/kreuzwerker/terraform-provider-docker v0.0.0-20210526070551-22c490336c7b h1:kah11rXqB1eTRMKIYf/ySzYsb5/tt0BdcbnF0WRqftA=
+github.com/kreuzwerker/terraform-provider-docker v0.0.0-20210526070551-22c490336c7b/go.mod h1:2TvH984+4uCM8BvyTz1cQXHoxBlXh+eLmTNkOCLrZ0Q=
 github.com/kylelemons/godebug v0.0.0-20170820004349-d65d576e9348/go.mod h1:B69LEHPfb2qLo0BaaOLcbitczOKLWTsrBG9LczfCD4k=
 github.com/kylelemons/godebug v1.1.0 h1:RPNrshWIDI6G2gRW9EHilWtl7Z6Sb1BR0xunSBf0SNc=
 github.com/kylelemons/godebug v1.1.0/go.mod h1:9/0rRGxNHcop5bhtWyNeEfOS8JIWk580+fNqagV/RAw=
