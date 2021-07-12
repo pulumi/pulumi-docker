@@ -39,8 +39,23 @@ func TestNginxGo(t *testing.T) {
 	integration.ProgramTest(t, &opts)
 }
 
+func TestAwsGo(t *testing.T) {
+	cwd, err := os.Getwd()
+	if !assert.NoError(t, err) {
+		t.FailNow()
+	}
+
+	opts := base.With(integration.ProgramTestOptions{
+		Dependencies: []string{
+			"github.com/pulumi/pulumi-docker/sdk/v3",
+			"github.com/pulumi/pulumi-aws/sdk/v4",
+		},
+		Dir: path.Join(cwd, "aws-go"),
+	})
+	integration.ProgramTest(t, &opts)
+}
+
 func TestBuildCacheFromGo(t *testing.T) {
-	t.Skip("ignoring due to major version change")
 	cwd, err := os.Getwd()
 	if !assert.NoError(t, err) {
 		t.FailNow()
