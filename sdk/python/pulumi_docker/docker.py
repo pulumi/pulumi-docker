@@ -65,6 +65,9 @@ class CacheFrom:
     "[stage-name]".
     """
 
+    def __init__(self, stages: Optional[Sequence[pulumi.Input[pulumi.Input[str]]]] = None):
+        self.stages = stages
+
 
 class DockerBuild:
     context: Optional[pulumi.Input[str]]
@@ -135,7 +138,7 @@ class DockerBuild:
             to the Docker CLI. If this parameter is `true`, only the final image will be pulled and passed to
             --cache-from if it is a CacheFrom object, the stages named therein will also be pulled and passed to
             --cache-from.
-        :param Optional[Sequence[pulumi.Input[pulumi.Input[str]]]] extra_options: An optional catch-all list of arguments 
+        :param Optional[Sequence[pulumi.Input[pulumi.Input[str]]]] extra_options: An optional catch-all list of arguments
             to provide extra CLI options to the docker build command.  For example `['--network', 'host']`.
         :param Optional[Mapping[str, str]] env: Environment variables to set on the invocation of `docker build`, for
          example to support `DOCKER_BUILDKIT=1 docker build`.
@@ -219,7 +222,7 @@ def build_and_push_image(
     #    that case, we'll want want to pull from the registry and will need to login for that.
 
     pull_from_cache = not isinstance(path_or_build,
-                                     str) and path_or_build and path_or_build.cache_from and repository_url is None
+                                     str) and path_or_build and path_or_build.cache_from and repository_url is not None
 
     # If no `registry` info was passed in we simply assume docker is already
     # logged-in to the correct registry (or uses auto-login via credential helpers).
@@ -277,7 +280,7 @@ def build_and_push_image(
                 image_id=None,
                 log_resource=log_resource
             )
-        
+
         log_ephemeral("Image push succeeded.", log_resource)
 
     # If we got here, then building/pushing didn't throw any errors.  Update the status bar
@@ -368,7 +371,7 @@ def pull_cache(
     pulumi.log.debug(f'pulling cache for {image_name} from {repo_url}', log_resource)
 
     cache_from_images: List = []
-    stages = (cache_from.stages if cache_from.stages else []).concat([""])
+    stages = (cache_from.stages if cache_from.stages else []) + [""]
     for stage in stages:
         tag = f':{stage}' if stage else ""
         image = f'{repo_url}{tag}'
@@ -377,11 +380,11 @@ def pull_cache(
         # That's fine, just move onto the next stage.  Also, pass along a flag saying that we
         # should print that error as a warning instead.  We don't want the update to succeed but
         # the user to then get a nasty "error:" message at the end.
-        code, _ = run_command_that_can_fail(
+        command_result = run_command_that_can_fail(
             "docker", ["pull", image], log_resource,
             report_full_command_line=True, report_error_as_warning=True
         )
-        if code:
+        if command_result.code:
             continue
 
         cache_from_images.append(image)
@@ -402,7 +405,7 @@ def build_image(
     image_name: str,
     path_or_build: Union[str, DockerBuild],
     log_resource: pulumi.Resource,
-    cache_from: Optional[str]
+    cache_from: Optional[Sequence[str]]
 ) -> BuildResult:
     if isinstance(path_or_build, str):
         build = DockerBuild(context=path_or_build)
@@ -459,7 +462,7 @@ def docker_build(
     image_name: str,
     build: DockerBuild,
     log_resource: pulumi.Resource,
-    cache_from: Optional[str],
+    cache_from: Optional[Sequence[str]],
     target: Optional[str] = None
 ) -> str:
     # Prepare the build arguments.
@@ -472,10 +475,9 @@ def docker_build(
             build_args.extend(["--build-arg", f'{arg}={build_arg}'])
     if build.target:
         build_args.extend(["--target", build.target])
-    if build.cache_from:
-        cache_from_images = cache_from
-        if cache_from_images and cache_from_images.length:
-            build_args.extend(["--cache-from", ''.join(cache_from_images)])
+    if cache_from:
+        for image in cache_from:
+            build_args.extend(["--cache-from", image])
     if build.extra_options:
         build_args.extend(build.extra_options)
 
@@ -671,7 +673,7 @@ def run_command_that_can_fail(
             # of the run.
             for line in outs.splitlines():
                 log_ephemeral(line, log_resource)
-            
+
             stdout_chunks.append(outs.rstrip())
         if errs:
             # We can't stream these stderr messages as we receive them because we don't knows at
