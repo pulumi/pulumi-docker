@@ -1,5 +1,5 @@
 ## HEAD (Unreleased)
-_(none)_
+* Fix handling of the `cache_from` parameter in `docker.Image` in the Python SDK.
 
 ---
 
