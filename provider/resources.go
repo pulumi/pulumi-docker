@@ -156,9 +156,8 @@ func Provider() tfbridge.ProviderInfo {
 		},
 		CSharp: &tfbridge.CSharpInfo{
 			PackageReferences: map[string]string{
-				"Pulumi":                       "3.*",
-				"Semver":                       "2.0.6",
-				"System.Collections.Immutable": "1.6.0",
+				"Pulumi": "3.*",
+				"Semver": "2.0.6",
 			},
 			Namespaces: map[string]string{
 				dockerPkg: "Docker",
