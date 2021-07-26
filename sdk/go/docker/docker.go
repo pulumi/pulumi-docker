@@ -118,7 +118,7 @@ func buildAndPushImage(ctx *pulumi.Context, baseImageName string, build *DockerB
 	return uniqueTaggedImageName, nil
 }
 
-func pullCache(ctx *pulumi.Context, imageName string, cacheFrom CacheFrom, repoURL string, logResource pulumi.Resource) []string { // nolint[:lll]
+func pullCache(ctx *pulumi.Context, imageName string, cacheFrom CacheFrom, repoURL string, logResource pulumi.Resource) []string { // nolint:lll
 	if len(repoURL) == 0 {
 		return nil
 	}
@@ -225,7 +225,7 @@ func buildImage(ctx *pulumi.Context, imageName string, build *DockerBuild,
 	// If the container build specified build stages to cache, build each in turn.
 	var stages []string
 	if build.CacheFrom != nil && build.CacheFrom.Stages != nil {
-		for _, stage := range stages {
+		for _, stage := range build.CacheFrom.Stages {
 			err := runDockerBuild(ctx, localStageImageName(imageName, stage), build, cacheFrom, logResource, stage)
 			if err != nil {
 				return "", nil, err
@@ -369,13 +369,12 @@ func useDockerPasswordStdin(ctx *pulumi.Context, logResource pulumi.Resource) (b
 
 func runDockerBuild(ctx *pulumi.Context, imageName string, build *DockerBuild, cacheFrom []string,
 	logResource pulumi.Resource, target string) error {
-
+	if build == nil {
+		return fmt.Errorf("build field required for running docker build")
+	}
 	// Prepare the build arguments.
 	buildArgs := []string{"build"}
-	if build != nil {
-		// Add a custom Dockerfile location.
-		buildArgs = append(buildArgs, "-f", build.Dockerfile)
-	}
+	buildArgs = append(buildArgs, "-f", build.Dockerfile)
 	if build.Args != nil {
 		for k, v := range build.Args {
 			buildArgs = append(buildArgs, "--build-arg", fmt.Sprintf("%s=%s", k, v))
@@ -457,7 +456,7 @@ func runCommandThatCanFail(ctx *pulumi.Context, cmdName string, args []string, l
 	// which the grpc layer needs.
 	streamID := rand.Int31() // #nosec
 
-	// nolint[:errcheck]
+	// nolint:errcheck
 	logErrorf := func(format string, a ...interface{}) {
 		ctx.Log.Error(fmt.Sprintf(format, a...), &pulumi.LogArgs{
 			Resource: logResource,
@@ -487,7 +486,7 @@ func runCommandThatCanFail(ctx *pulumi.Context, cmdName string, args []string, l
 		}
 		go func() {
 			defer stdin.Close()
-			// nolint[:errcheck]
+			// nolint:errcheck
 			io.WriteString(stdin, stdinInput)
 		}()
 	}
@@ -534,7 +533,7 @@ func runCommandThatCanFail(ctx *pulumi.Context, cmdName string, args []string, l
 			logErrorf(stderrString)
 		} else {
 			// Command succeeded.  These were just a warning.
-			// nolint[:errcheck]
+			// nolint:errcheck
 			ctx.Log.Warn(stderrString, &pulumi.LogArgs{
 				Resource:  logResource,
 				StreamID:  streamID,
@@ -574,7 +573,7 @@ func getCommandLineMessage(cmd string, args []string, reportFullCommandLine bool
 	return fmt.Sprintf("%s %s", cmd, argString)
 }
 
-// nolint[:errcheck]
+// nolint:errcheck
 func logEphemeral(ctx *pulumi.Context, msg string, logResource pulumi.Resource) {
 	ctx.Log.Info(msg, &pulumi.LogArgs{
 		Resource:  logResource,
@@ -582,7 +581,7 @@ func logEphemeral(ctx *pulumi.Context, msg string, logResource pulumi.Resource) 
 	})
 }
 
-// nolint[:errcheck]
+// nolint:errcheck
 func logDebug(ctx *pulumi.Context, msg string, logResource pulumi.Resource) {
 	ctx.Log.Debug(msg, &pulumi.LogArgs{
 		Resource:  logResource,

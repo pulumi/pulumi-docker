@@ -84,7 +84,7 @@ func NewImage(ctx *pulumi.Context,
 	}).(pulumi.StringOutput)
 
 	if args != nil && args.Registry != nil {
-		resource.RegistryServer = args.Registry.ToImageRegistryOutput().ApplyT(func(registry ImageRegistry) (string, error) { // nolint[:lll]
+		resource.RegistryServer = args.Registry.ToImageRegistryOutput().ApplyT(func(registry ImageRegistry) (string, error) { // nolint:lll
 			return registry.Server, nil
 		}).(pulumi.StringOutput)
 	}

@@ -54,7 +54,7 @@ func (o CacheFromOutput) ToCacheFromOutputWithContext(ctx context.Context) Cache
 }
 
 // DockerBuild is a copy of DockerBuildArgs but without using TInput in types.
-// nolint[:golint]
+// nolint:golint
 type DockerBuild struct {
 	Context      string            `pulumi:"context"`
 	Dockerfile   string            `pulumi:"dockerfile"`
@@ -66,7 +66,7 @@ type DockerBuild struct {
 }
 
 // DockerBuildArgs may be used to specify detailed instructions about how to build a container.
-// nolint[:golint]
+// nolint:golint
 type DockerBuildArgs struct {
 	// Context is a path to a directory to use for the Docker build context, usually the directory
 	// in which the Dockerfile resides (although dockerfile may be used to choose a custom location
@@ -102,7 +102,7 @@ type DockerBuildArgs struct {
 	Target pulumi.StringInput `pulumi:"target"`
 }
 
-// nolint[:golint]
+// nolint:golint
 type DockerBuildInput interface {
 	pulumi.Input
 
@@ -122,7 +122,7 @@ func (i DockerBuildArgs) ToDockerBuildOutputWithContext(ctx context.Context) Doc
 	return pulumi.ToOutputWithContext(ctx, i).(DockerBuildOutput)
 }
 
-// nolint[:golint]
+// nolint:golint
 type DockerBuildOutput struct{ *pulumi.OutputState }
 
 func (DockerBuildOutput) ElementType() reflect.Type {
