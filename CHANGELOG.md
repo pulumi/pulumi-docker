@@ -1,5 +1,6 @@
 ## HEAD (Unreleased)
 * Fix handling of the `cache_from` parameter in `docker.Image` in the Python SDK.
+* Fix handling of the `cache_from` parameter in `docker.Image` in the Golang SDK.
 
 ---
 
