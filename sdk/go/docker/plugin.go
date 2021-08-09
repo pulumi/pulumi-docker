@@ -281,7 +281,7 @@ type PluginArrayInput interface {
 type PluginArray []PluginInput
 
 func (PluginArray) ElementType() reflect.Type {
-	return reflect.TypeOf(([]*Plugin)(nil))
+	return reflect.TypeOf((*[]*Plugin)(nil)).Elem()
 }
 
 func (i PluginArray) ToPluginArrayOutput() PluginArrayOutput {
@@ -306,7 +306,7 @@ type PluginMapInput interface {
 type PluginMap map[string]PluginInput
 
 func (PluginMap) ElementType() reflect.Type {
-	return reflect.TypeOf((map[string]*Plugin)(nil))
+	return reflect.TypeOf((*map[string]*Plugin)(nil)).Elem()
 }
 
 func (i PluginMap) ToPluginMapOutput() PluginMapOutput {

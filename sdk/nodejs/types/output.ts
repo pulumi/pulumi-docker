@@ -307,14 +307,6 @@ export interface PluginGrantPermission {
     values: string[];
 }
 
-export interface ProviderRegistryAuth {
-    address?: string;
-    configFile?: string;
-    configFileContent?: string;
-    password?: string;
-    username?: string;
-}
-
 export interface RegistryImageBuild {
     /**
      * - See AuthConfig below for details
@@ -1141,6 +1133,7 @@ export interface VolumeLabel {
     label: string;
     value: string;
 }
+
 export namespace config {
     export interface RegistryAuth {
         address: string;
@@ -1149,4 +1142,5 @@ export namespace config {
         password?: string;
         username?: string;
     }
+
 }

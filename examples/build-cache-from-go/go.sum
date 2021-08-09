@@ -227,8 +227,6 @@ github.com/pulumi/pulumi-docker/sdk/v3 v3.0.0 h1:torA+0p0G14PaEmK9RO2/bvXsWeuko5
 github.com/pulumi/pulumi-docker/sdk/v3 v3.0.0/go.mod h1:KusFPDVt8YTZj58vpa7gJyQyXoPkrHOKyw5k06bT340=
 github.com/pulumi/pulumi/sdk/v3 v3.0.0/go.mod h1:GBHyQ7awNQSRmiKp/p8kIKrGrMOZeA/k2czoM/GOqds=
 github.com/pulumi/pulumi/sdk/v3 v3.3.1/go.mod h1:GBHyQ7awNQSRmiKp/p8kIKrGrMOZeA/k2czoM/GOqds=
-github.com/pulumi/pulumi/sdk/v3 v3.6.1 h1:ko6YqYL8qtnYzFcbLvmJQhHTQp290/MZ8i77TxX5op0=
-github.com/pulumi/pulumi/sdk/v3 v3.6.1/go.mod h1:GBHyQ7awNQSRmiKp/p8kIKrGrMOZeA/k2czoM/GOqds=
 github.com/pulumi/pulumi/sdk/v3 v3.9.1 h1:lThSiXzA9M+RjA6mquz+Oy569GSGyERPu/pGXLxA/xM=
 github.com/pulumi/pulumi/sdk/v3 v3.9.1/go.mod h1:GBHyQ7awNQSRmiKp/p8kIKrGrMOZeA/k2czoM/GOqds=
 github.com/rogpeppe/fastuuid v0.0.0-20150106093220-6724a57986af h1:gu+uRPtBe88sKxUCEXRoeCvVG90TJmwhiqRpvdhQFng=

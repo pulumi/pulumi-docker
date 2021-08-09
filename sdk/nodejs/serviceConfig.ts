@@ -87,11 +87,11 @@ export interface ServiceConfigState {
     /**
      * The base64 encoded data of the config.
      */
-    readonly data?: pulumi.Input<string>;
+    data?: pulumi.Input<string>;
     /**
      * The name of the Docker config.
      */
-    readonly name?: pulumi.Input<string>;
+    name?: pulumi.Input<string>;
 }
 
 /**
@@ -101,9 +101,9 @@ export interface ServiceConfigArgs {
     /**
      * The base64 encoded data of the config.
      */
-    readonly data: pulumi.Input<string>;
+    data: pulumi.Input<string>;
     /**
      * The name of the Docker config.
      */
-    readonly name?: pulumi.Input<string>;
+    name?: pulumi.Input<string>;
 }

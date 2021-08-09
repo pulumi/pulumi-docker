@@ -46,7 +46,7 @@ export interface GetRegistryImageArgs {
     /**
      * The name of the Docker image, including any tags. e.g. `alpine:latest`
      */
-    readonly name?: string;
+    name?: string;
 }
 
 /**

@@ -16,7 +16,7 @@ import * as utilities from "./utilities";
  *
  * const main = pulumi.output(docker.getNetwork({
  *     name: "main",
- * }, { async: true }));
+ * }));
  * ```
  */
 export function getNetwork(args?: GetNetworkArgs, opts?: pulumi.InvokeOptions): Promise<GetNetworkResult> {
@@ -41,11 +41,11 @@ export interface GetNetworkArgs {
     /**
      * The id of the Docker network.
      */
-    readonly id?: string;
+    id?: string;
     /**
      * The name of the Docker network.
      */
-    readonly name?: string;
+    name?: string;
 }
 
 /**

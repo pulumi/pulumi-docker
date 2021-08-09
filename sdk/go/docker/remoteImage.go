@@ -52,7 +52,7 @@ import (
 // func main() {
 // 	pulumi.Run(func(ctx *pulumi.Context) error {
 // 		opt0 := "ubuntu:precise"
-// 		ubuntuRegistryImage, err := docker.LookupRegistryImage(ctx, &docker.LookupRegistryImageArgs{
+// 		ubuntuRegistryImage, err := docker.LookupRegistryImage(ctx, &GetRegistryImageArgs{
 // 			Name: &opt0,
 // 		}, nil)
 // 		if err != nil {
@@ -291,7 +291,7 @@ type RemoteImageArrayInput interface {
 type RemoteImageArray []RemoteImageInput
 
 func (RemoteImageArray) ElementType() reflect.Type {
-	return reflect.TypeOf(([]*RemoteImage)(nil))
+	return reflect.TypeOf((*[]*RemoteImage)(nil)).Elem()
 }
 
 func (i RemoteImageArray) ToRemoteImageArrayOutput() RemoteImageArrayOutput {
@@ -316,7 +316,7 @@ type RemoteImageMapInput interface {
 type RemoteImageMap map[string]RemoteImageInput
 
 func (RemoteImageMap) ElementType() reflect.Type {
-	return reflect.TypeOf((map[string]*RemoteImage)(nil))
+	return reflect.TypeOf((*map[string]*RemoteImage)(nil)).Elem()
 }
 
 func (i RemoteImageMap) ToRemoteImageMapOutput() RemoteImageMapOutput {

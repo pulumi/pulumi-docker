@@ -149,36 +149,36 @@ export interface RemoteImageState {
     /**
      * See Build below for details.
      */
-    readonly build?: pulumi.Input<inputs.RemoteImageBuild>;
+    build?: pulumi.Input<inputs.RemoteImageBuild>;
     /**
      * Force remove the image when the resource is destroyed
      */
-    readonly forceRemove?: pulumi.Input<boolean>;
+    forceRemove?: pulumi.Input<boolean>;
     /**
      * If true, then the Docker image won't be
      * deleted on destroy operation. If this is false, it will delete the image from
      * the docker local storage on destroy operation.
      */
-    readonly keepLocally?: pulumi.Input<boolean>;
-    readonly latest?: pulumi.Input<string>;
+    keepLocally?: pulumi.Input<boolean>;
+    latest?: pulumi.Input<string>;
     /**
      * The name of the Docker image, including any tags or SHA256 repo digests.
      */
-    readonly name?: pulumi.Input<string>;
-    readonly output?: pulumi.Input<string>;
+    name?: pulumi.Input<string>;
+    output?: pulumi.Input<string>;
     /**
      * **Deprecated**, use `pullTriggers` instead.
      *
      * @deprecated Use field pull_triggers instead
      */
-    readonly pullTrigger?: pulumi.Input<string>;
+    pullTrigger?: pulumi.Input<string>;
     /**
      * List of values which cause an
      * image pull when changed. This is used to store the image digest from the
      * registry when using the `docker.RegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
      * to trigger an image update.
      */
-    readonly pullTriggers?: pulumi.Input<pulumi.Input<string>[]>;
+    pullTriggers?: pulumi.Input<pulumi.Input<string>[]>;
 }
 
 /**
@@ -188,32 +188,32 @@ export interface RemoteImageArgs {
     /**
      * See Build below for details.
      */
-    readonly build?: pulumi.Input<inputs.RemoteImageBuild>;
+    build?: pulumi.Input<inputs.RemoteImageBuild>;
     /**
      * Force remove the image when the resource is destroyed
      */
-    readonly forceRemove?: pulumi.Input<boolean>;
+    forceRemove?: pulumi.Input<boolean>;
     /**
      * If true, then the Docker image won't be
      * deleted on destroy operation. If this is false, it will delete the image from
      * the docker local storage on destroy operation.
      */
-    readonly keepLocally?: pulumi.Input<boolean>;
+    keepLocally?: pulumi.Input<boolean>;
     /**
      * The name of the Docker image, including any tags or SHA256 repo digests.
      */
-    readonly name: pulumi.Input<string>;
+    name: pulumi.Input<string>;
     /**
      * **Deprecated**, use `pullTriggers` instead.
      *
      * @deprecated Use field pull_triggers instead
      */
-    readonly pullTrigger?: pulumi.Input<string>;
+    pullTrigger?: pulumi.Input<string>;
     /**
      * List of values which cause an
      * image pull when changed. This is used to store the image digest from the
      * registry when using the `docker.RegistryImage` [data source](https://www.terraform.io/docs/providers/docker/d/registry_image.html)
      * to trigger an image update.
      */
-    readonly pullTriggers?: pulumi.Input<pulumi.Input<string>[]>;
+    pullTriggers?: pulumi.Input<pulumi.Input<string>[]>;
 }

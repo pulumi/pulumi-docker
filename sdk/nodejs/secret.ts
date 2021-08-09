@@ -90,15 +90,15 @@ export interface SecretState {
     /**
      * The base64 encoded data of the secret.
      */
-    readonly data?: pulumi.Input<string>;
+    data?: pulumi.Input<string>;
     /**
      * See Labels below for details.
      */
-    readonly labels?: pulumi.Input<pulumi.Input<inputs.SecretLabel>[]>;
+    labels?: pulumi.Input<pulumi.Input<inputs.SecretLabel>[]>;
     /**
      * The name of the Docker secret.
      */
-    readonly name?: pulumi.Input<string>;
+    name?: pulumi.Input<string>;
 }
 
 /**
@@ -108,13 +108,13 @@ export interface SecretArgs {
     /**
      * The base64 encoded data of the secret.
      */
-    readonly data: pulumi.Input<string>;
+    data: pulumi.Input<string>;
     /**
      * See Labels below for details.
      */
-    readonly labels?: pulumi.Input<pulumi.Input<inputs.SecretLabel>[]>;
+    labels?: pulumi.Input<pulumi.Input<inputs.SecretLabel>[]>;
     /**
      * The name of the Docker secret.
      */
-    readonly name?: pulumi.Input<string>;
+    name?: pulumi.Input<string>;
 }

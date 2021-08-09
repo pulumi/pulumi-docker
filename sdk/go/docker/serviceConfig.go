@@ -157,7 +157,7 @@ type ServiceConfigArrayInput interface {
 type ServiceConfigArray []ServiceConfigInput
 
 func (ServiceConfigArray) ElementType() reflect.Type {
-	return reflect.TypeOf(([]*ServiceConfig)(nil))
+	return reflect.TypeOf((*[]*ServiceConfig)(nil)).Elem()
 }
 
 func (i ServiceConfigArray) ToServiceConfigArrayOutput() ServiceConfigArrayOutput {
@@ -182,7 +182,7 @@ type ServiceConfigMapInput interface {
 type ServiceConfigMap map[string]ServiceConfigInput
 
 func (ServiceConfigMap) ElementType() reflect.Type {
-	return reflect.TypeOf((map[string]*ServiceConfig)(nil))
+	return reflect.TypeOf((*map[string]*ServiceConfig)(nil)).Elem()
 }
 
 func (i ServiceConfigMap) ToServiceConfigMapOutput() ServiceConfigMapOutput {

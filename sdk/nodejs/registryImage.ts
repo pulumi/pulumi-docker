@@ -103,18 +103,18 @@ export interface RegistryImageState {
     /**
      * See Build below for details.
      */
-    readonly build?: pulumi.Input<inputs.RegistryImageBuild>;
+    build?: pulumi.Input<inputs.RegistryImageBuild>;
     /**
      * If true, then the Docker image won't be
      * deleted on destroy operation. If this is false, it will delete the image from
      * the docker registry on destroy operation.
      */
-    readonly keepRemotely?: pulumi.Input<boolean>;
+    keepRemotely?: pulumi.Input<boolean>;
     /**
      * type of ulimit, e.g. nofile
      */
-    readonly name?: pulumi.Input<string>;
-    readonly sha256Digest?: pulumi.Input<string>;
+    name?: pulumi.Input<string>;
+    sha256Digest?: pulumi.Input<string>;
 }
 
 /**
@@ -124,15 +124,15 @@ export interface RegistryImageArgs {
     /**
      * See Build below for details.
      */
-    readonly build?: pulumi.Input<inputs.RegistryImageBuild>;
+    build?: pulumi.Input<inputs.RegistryImageBuild>;
     /**
      * If true, then the Docker image won't be
      * deleted on destroy operation. If this is false, it will delete the image from
      * the docker registry on destroy operation.
      */
-    readonly keepRemotely?: pulumi.Input<boolean>;
+    keepRemotely?: pulumi.Input<boolean>;
     /**
      * type of ulimit, e.g. nofile
      */
-    readonly name?: pulumi.Input<string>;
+    name?: pulumi.Input<string>;
 }

@@ -5,26 +5,69 @@ import * as pulumi from "@pulumi/pulumi";
 import { input as inputs, output as outputs } from "../types";
 import * as utilities from "../utilities";
 
-let __config = new pulumi.Config("docker");
+declare var exports: any;
+const __config = new pulumi.Config("docker");
 
 /**
  * PEM-encoded content of Docker host CA certificate
  */
-export let caMaterial: string | undefined = __config.get("caMaterial");
+export declare const caMaterial: string | undefined;
+Object.defineProperty(exports, "caMaterial", {
+    get() {
+        return __config.get("caMaterial");
+    },
+    enumerable: true,
+});
+
 /**
  * PEM-encoded content of Docker client certificate
  */
-export let certMaterial: string | undefined = __config.get("certMaterial");
+export declare const certMaterial: string | undefined;
+Object.defineProperty(exports, "certMaterial", {
+    get() {
+        return __config.get("certMaterial");
+    },
+    enumerable: true,
+});
+
 /**
  * Path to directory with Docker TLS config
  */
-export let certPath: string | undefined = __config.get("certPath");
+export declare const certPath: string | undefined;
+Object.defineProperty(exports, "certPath", {
+    get() {
+        return __config.get("certPath");
+    },
+    enumerable: true,
+});
+
 /**
  * The Docker daemon address
  */
-export let host: string | undefined = __config.get("host") || (utilities.getEnv("DOCKER_HOST") || "unix:///var/run/docker.sock");
+export declare const host: string;
+Object.defineProperty(exports, "host", {
+    get() {
+        return __config.get("host") ?? (utilities.getEnv("DOCKER_HOST") || "unix:///var/run/docker.sock");
+    },
+    enumerable: true,
+});
+
 /**
  * PEM-encoded content of Docker client private key
  */
-export let keyMaterial: string | undefined = __config.get("keyMaterial");
-export let registryAuth: outputs.config.RegistryAuth[] | undefined = __config.getObject<outputs.config.RegistryAuth[]>("registryAuth");
+export declare const keyMaterial: string | undefined;
+Object.defineProperty(exports, "keyMaterial", {
+    get() {
+        return __config.get("keyMaterial");
+    },
+    enumerable: true,
+});
+
+export declare const registryAuth: outputs.config.RegistryAuth[] | undefined;
+Object.defineProperty(exports, "registryAuth", {
+    get() {
+        return __config.getObject<outputs.config.RegistryAuth[]>("registryAuth");
+    },
+    enumerable: true,
+});
+

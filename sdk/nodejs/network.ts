@@ -166,56 +166,56 @@ export interface NetworkState {
      * Enable manual container attachment to the network.
      * Defaults to `false`.
      */
-    readonly attachable?: pulumi.Input<boolean>;
+    attachable?: pulumi.Input<boolean>;
     /**
      * Requests daemon to check for networks
      * with same name.
      */
-    readonly checkDuplicate?: pulumi.Input<boolean>;
+    checkDuplicate?: pulumi.Input<boolean>;
     /**
      * Name of the network driver to use. Defaults to
      * `bridge` driver.
      */
-    readonly driver?: pulumi.Input<string>;
+    driver?: pulumi.Input<string>;
     /**
      * Create swarm routing-mesh network.
      * Defaults to `false`.
      */
-    readonly ingress?: pulumi.Input<boolean>;
+    ingress?: pulumi.Input<boolean>;
     /**
      * Restrict external access to the network.
      * Defaults to `false`.
      */
-    readonly internal?: pulumi.Input<boolean>;
+    internal?: pulumi.Input<boolean>;
     /**
      * See IPAM config below for
      * details.
      */
-    readonly ipamConfigs?: pulumi.Input<pulumi.Input<inputs.NetworkIpamConfig>[]>;
+    ipamConfigs?: pulumi.Input<pulumi.Input<inputs.NetworkIpamConfig>[]>;
     /**
      * Driver used by the custom IP scheme of the
      * network.
      */
-    readonly ipamDriver?: pulumi.Input<string>;
+    ipamDriver?: pulumi.Input<string>;
     /**
      * Enable IPv6 networking.
      * Defaults to `false`.
      */
-    readonly ipv6?: pulumi.Input<boolean>;
+    ipv6?: pulumi.Input<boolean>;
     /**
      * See Labels below for details.
      */
-    readonly labels?: pulumi.Input<pulumi.Input<inputs.NetworkLabel>[]>;
+    labels?: pulumi.Input<pulumi.Input<inputs.NetworkLabel>[]>;
     /**
      * The name of the Docker network.
      */
-    readonly name?: pulumi.Input<string>;
+    name?: pulumi.Input<string>;
     /**
      * Network specific options to be used by
      * the drivers.
      */
-    readonly options?: pulumi.Input<{[key: string]: any}>;
-    readonly scope?: pulumi.Input<string>;
+    options?: pulumi.Input<{[key: string]: any}>;
+    scope?: pulumi.Input<string>;
 }
 
 /**
@@ -226,53 +226,53 @@ export interface NetworkArgs {
      * Enable manual container attachment to the network.
      * Defaults to `false`.
      */
-    readonly attachable?: pulumi.Input<boolean>;
+    attachable?: pulumi.Input<boolean>;
     /**
      * Requests daemon to check for networks
      * with same name.
      */
-    readonly checkDuplicate?: pulumi.Input<boolean>;
+    checkDuplicate?: pulumi.Input<boolean>;
     /**
      * Name of the network driver to use. Defaults to
      * `bridge` driver.
      */
-    readonly driver?: pulumi.Input<string>;
+    driver?: pulumi.Input<string>;
     /**
      * Create swarm routing-mesh network.
      * Defaults to `false`.
      */
-    readonly ingress?: pulumi.Input<boolean>;
+    ingress?: pulumi.Input<boolean>;
     /**
      * Restrict external access to the network.
      * Defaults to `false`.
      */
-    readonly internal?: pulumi.Input<boolean>;
+    internal?: pulumi.Input<boolean>;
     /**
      * See IPAM config below for
      * details.
      */
-    readonly ipamConfigs?: pulumi.Input<pulumi.Input<inputs.NetworkIpamConfig>[]>;
+    ipamConfigs?: pulumi.Input<pulumi.Input<inputs.NetworkIpamConfig>[]>;
     /**
      * Driver used by the custom IP scheme of the
      * network.
      */
-    readonly ipamDriver?: pulumi.Input<string>;
+    ipamDriver?: pulumi.Input<string>;
     /**
      * Enable IPv6 networking.
      * Defaults to `false`.
      */
-    readonly ipv6?: pulumi.Input<boolean>;
+    ipv6?: pulumi.Input<boolean>;
     /**
      * See Labels below for details.
      */
-    readonly labels?: pulumi.Input<pulumi.Input<inputs.NetworkLabel>[]>;
+    labels?: pulumi.Input<pulumi.Input<inputs.NetworkLabel>[]>;
     /**
      * The name of the Docker network.
      */
-    readonly name?: pulumi.Input<string>;
+    name?: pulumi.Input<string>;
     /**
      * Network specific options to be used by
      * the drivers.
      */
-    readonly options?: pulumi.Input<{[key: string]: any}>;
+    options?: pulumi.Input<{[key: string]: any}>;
 }

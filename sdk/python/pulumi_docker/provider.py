@@ -198,3 +198,43 @@ class Provider(pulumi.ProviderResource):
             __props__,
             opts)
 
+    @property
+    @pulumi.getter(name="caMaterial")
+    def ca_material(self) -> pulumi.Output[Optional[str]]:
+        """
+        PEM-encoded content of Docker host CA certificate
+        """
+        return pulumi.get(self, "ca_material")
+
+    @property
+    @pulumi.getter(name="certMaterial")
+    def cert_material(self) -> pulumi.Output[Optional[str]]:
+        """
+        PEM-encoded content of Docker client certificate
+        """
+        return pulumi.get(self, "cert_material")
+
+    @property
+    @pulumi.getter(name="certPath")
+    def cert_path(self) -> pulumi.Output[Optional[str]]:
+        """
+        Path to directory with Docker TLS config
+        """
+        return pulumi.get(self, "cert_path")
+
+    @property
+    @pulumi.getter
+    def host(self) -> pulumi.Output[Optional[str]]:
+        """
+        The Docker daemon address
+        """
+        return pulumi.get(self, "host")
+
+    @property
+    @pulumi.getter(name="keyMaterial")
+    def key_material(self) -> pulumi.Output[Optional[str]]:
+        """
+        PEM-encoded content of Docker client private key
+        """
+        return pulumi.get(self, "key_material")
+

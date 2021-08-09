@@ -897,7 +897,7 @@ type ContainerArrayInput interface {
 type ContainerArray []ContainerInput
 
 func (ContainerArray) ElementType() reflect.Type {
-	return reflect.TypeOf(([]*Container)(nil))
+	return reflect.TypeOf((*[]*Container)(nil)).Elem()
 }
 
 func (i ContainerArray) ToContainerArrayOutput() ContainerArrayOutput {
@@ -922,7 +922,7 @@ type ContainerMapInput interface {
 type ContainerMap map[string]ContainerInput
 
 func (ContainerMap) ElementType() reflect.Type {
-	return reflect.TypeOf((map[string]*Container)(nil))
+	return reflect.TypeOf((*map[string]*Container)(nil)).Elem()
 }
 
 func (i ContainerMap) ToContainerMapOutput() ContainerMapOutput {

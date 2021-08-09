@@ -40,11 +40,11 @@ func main() {
 			Build: docker.DockerBuildArgs{
 				Context:    pulumi.String("./app"),
 				Dockerfile: pulumi.String("./app/Dockerfile-multistage"),
-				CacheFrom: docker.CacheFromArgs{
+				CacheFrom: docker.CacheFromPtr(&docker.CacheFromArgs{
 					Stages: pulumi.StringArray{
-						pulumi.String("build"),
+						pulumi.String("builder"),
 					},
-				},
+				}),
 			},
 			ImageName: repo.RepositoryUrl,
 			Registry: docker.ImageRegistryArgs{

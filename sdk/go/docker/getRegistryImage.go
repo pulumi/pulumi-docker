@@ -24,7 +24,7 @@ import (
 // func main() {
 // 	pulumi.Run(func(ctx *pulumi.Context) error {
 // 		opt0 := "ubuntu:precise"
-// 		ubuntuRegistryImage, err := docker.LookupRegistryImage(ctx, &docker.LookupRegistryImageArgs{
+// 		ubuntuRegistryImage, err := docker.LookupRegistryImage(ctx, &GetRegistryImageArgs{
 // 			Name: &opt0,
 // 		}, nil)
 // 		if err != nil {

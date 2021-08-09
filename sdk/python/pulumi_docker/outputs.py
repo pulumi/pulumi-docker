@@ -29,7 +29,6 @@ __all__ = [
     'NetworkIpamConfig',
     'NetworkLabel',
     'PluginGrantPermission',
-    'ProviderRegistryAuth',
     'RegistryImageBuild',
     'RegistryImageBuildAuthConfig',
     'RegistryImageBuildUlimit',
@@ -1160,69 +1159,6 @@ class PluginGrantPermission(dict):
     @pulumi.getter
     def values(self) -> Sequence[str]:
         return pulumi.get(self, "values")
-
-
-@pulumi.output_type
-class ProviderRegistryAuth(dict):
-    @staticmethod
-    def __key_warning(key: str):
-        suggest = None
-        if key == "configFile":
-            suggest = "config_file"
-        elif key == "configFileContent":
-            suggest = "config_file_content"
-
-        if suggest:
-            pulumi.log.warn(f"Key '{key}' not found in ProviderRegistryAuth. Access the value via the '{suggest}' property getter instead.")
-
-    def __getitem__(self, key: str) -> Any:
-        ProviderRegistryAuth.__key_warning(key)
-        return super().__getitem__(key)
-
-    def get(self, key: str, default = None) -> Any:
-        ProviderRegistryAuth.__key_warning(key)
-        return super().get(key, default)
-
-    def __init__(__self__, *,
-                 address: str,
-                 config_file: Optional[str] = None,
-                 config_file_content: Optional[str] = None,
-                 password: Optional[str] = None,
-                 username: Optional[str] = None):
-        pulumi.set(__self__, "address", address)
-        if config_file is not None:
-            pulumi.set(__self__, "config_file", config_file)
-        if config_file_content is not None:
-            pulumi.set(__self__, "config_file_content", config_file_content)
-        if password is not None:
-            pulumi.set(__self__, "password", password)
-        if username is not None:
-            pulumi.set(__self__, "username", username)
-
-    @property
-    @pulumi.getter
-    def address(self) -> str:
-        return pulumi.get(self, "address")
-
-    @property
-    @pulumi.getter(name="configFile")
-    def config_file(self) -> Optional[str]:
-        return pulumi.get(self, "config_file")
-
-    @property
-    @pulumi.getter(name="configFileContent")
-    def config_file_content(self) -> Optional[str]:
-        return pulumi.get(self, "config_file_content")
-
-    @property
-    @pulumi.getter
-    def password(self) -> Optional[str]:
-        return pulumi.get(self, "password")
-
-    @property
-    @pulumi.getter
-    def username(self) -> Optional[str]:
-        return pulumi.get(self, "username")
 
 
 @pulumi.output_type

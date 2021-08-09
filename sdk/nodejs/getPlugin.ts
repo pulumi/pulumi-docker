@@ -16,7 +16,7 @@ import * as utilities from "./utilities";
  *
  * const sample_volume_plugin = pulumi.output(docker.getPlugin({
  *     alias: "sample-volume-plugin:latest",
- * }, { async: true }));
+ * }));
  * ```
  */
 export function getPlugin(args?: GetPluginArgs, opts?: pulumi.InvokeOptions): Promise<GetPluginResult> {
@@ -41,11 +41,11 @@ export interface GetPluginArgs {
     /**
      * The alias of the Docker plugin.
      */
-    readonly alias?: string;
+    alias?: string;
     /**
      * The Docker plugin ID.
      */
-    readonly id?: string;
+    id?: string;
 }
 
 /**

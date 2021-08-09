@@ -130,39 +130,39 @@ export interface ServiceState {
     /**
      * See Auth below for details.
      */
-    readonly auth?: pulumi.Input<inputs.ServiceAuth>;
+    auth?: pulumi.Input<inputs.ServiceAuth>;
     /**
      * See Converge Config below for details.
      */
-    readonly convergeConfig?: pulumi.Input<inputs.ServiceConvergeConfig>;
+    convergeConfig?: pulumi.Input<inputs.ServiceConvergeConfig>;
     /**
      * See EndpointSpec below for details.
      */
-    readonly endpointSpec?: pulumi.Input<inputs.ServiceEndpointSpec>;
+    endpointSpec?: pulumi.Input<inputs.ServiceEndpointSpec>;
     /**
      * See Labels below for details.
      */
-    readonly labels?: pulumi.Input<pulumi.Input<inputs.ServiceLabel>[]>;
+    labels?: pulumi.Input<pulumi.Input<inputs.ServiceLabel>[]>;
     /**
      * See Mode below for details.
      */
-    readonly mode?: pulumi.Input<inputs.ServiceMode>;
+    mode?: pulumi.Input<inputs.ServiceMode>;
     /**
      * The name of the Docker service.
      */
-    readonly name?: pulumi.Input<string>;
+    name?: pulumi.Input<string>;
     /**
      * See RollbackConfig below for details.
      */
-    readonly rollbackConfig?: pulumi.Input<inputs.ServiceRollbackConfig>;
+    rollbackConfig?: pulumi.Input<inputs.ServiceRollbackConfig>;
     /**
      * See TaskSpec below for details.
      */
-    readonly taskSpec?: pulumi.Input<inputs.ServiceTaskSpec>;
+    taskSpec?: pulumi.Input<inputs.ServiceTaskSpec>;
     /**
      * See UpdateConfig below for details.
      */
-    readonly updateConfig?: pulumi.Input<inputs.ServiceUpdateConfig>;
+    updateConfig?: pulumi.Input<inputs.ServiceUpdateConfig>;
 }
 
 /**
@@ -172,37 +172,37 @@ export interface ServiceArgs {
     /**
      * See Auth below for details.
      */
-    readonly auth?: pulumi.Input<inputs.ServiceAuth>;
+    auth?: pulumi.Input<inputs.ServiceAuth>;
     /**
      * See Converge Config below for details.
      */
-    readonly convergeConfig?: pulumi.Input<inputs.ServiceConvergeConfig>;
+    convergeConfig?: pulumi.Input<inputs.ServiceConvergeConfig>;
     /**
      * See EndpointSpec below for details.
      */
-    readonly endpointSpec?: pulumi.Input<inputs.ServiceEndpointSpec>;
+    endpointSpec?: pulumi.Input<inputs.ServiceEndpointSpec>;
     /**
      * See Labels below for details.
      */
-    readonly labels?: pulumi.Input<pulumi.Input<inputs.ServiceLabel>[]>;
+    labels?: pulumi.Input<pulumi.Input<inputs.ServiceLabel>[]>;
     /**
      * See Mode below for details.
      */
-    readonly mode?: pulumi.Input<inputs.ServiceMode>;
+    mode?: pulumi.Input<inputs.ServiceMode>;
     /**
      * The name of the Docker service.
      */
-    readonly name?: pulumi.Input<string>;
+    name?: pulumi.Input<string>;
     /**
      * See RollbackConfig below for details.
      */
-    readonly rollbackConfig?: pulumi.Input<inputs.ServiceRollbackConfig>;
+    rollbackConfig?: pulumi.Input<inputs.ServiceRollbackConfig>;
     /**
      * See TaskSpec below for details.
      */
-    readonly taskSpec: pulumi.Input<inputs.ServiceTaskSpec>;
+    taskSpec: pulumi.Input<inputs.ServiceTaskSpec>;
     /**
      * See UpdateConfig below for details.
      */
-    readonly updateConfig?: pulumi.Input<inputs.ServiceUpdateConfig>;
+    updateConfig?: pulumi.Input<inputs.ServiceUpdateConfig>;
 }

@@ -1,4 +1,4 @@
-module github.com/pulumi/pulumi-docker/examples/aws-go
+module github.com/pulumi/pulumi-docker/examples/build-cache-from-go
 
 go 1.14
 

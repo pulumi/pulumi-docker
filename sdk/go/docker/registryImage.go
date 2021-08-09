@@ -25,7 +25,7 @@ import (
 // func main() {
 // 	pulumi.Run(func(ctx *pulumi.Context) error {
 // 		_, err := docker.NewRegistryImage(ctx, "helloworld", &docker.RegistryImageArgs{
-// 			Build: &docker.RegistryImageBuildArgs{
+// 			Build: &RegistryImageBuildArgs{
 // 				Context: pulumi.String("pathToContextFolder"),
 // 			},
 // 		})
@@ -195,7 +195,7 @@ type RegistryImageArrayInput interface {
 type RegistryImageArray []RegistryImageInput
 
 func (RegistryImageArray) ElementType() reflect.Type {
-	return reflect.TypeOf(([]*RegistryImage)(nil))
+	return reflect.TypeOf((*[]*RegistryImage)(nil)).Elem()
 }
 
 func (i RegistryImageArray) ToRegistryImageArrayOutput() RegistryImageArrayOutput {
@@ -220,7 +220,7 @@ type RegistryImageMapInput interface {
 type RegistryImageMap map[string]RegistryImageInput
 
 func (RegistryImageMap) ElementType() reflect.Type {
-	return reflect.TypeOf((map[string]*RegistryImage)(nil))
+	return reflect.TypeOf((*map[string]*RegistryImage)(nil)).Elem()
 }
 
 func (i RegistryImageMap) ToRegistryImageMapOutput() RegistryImageMapOutput {

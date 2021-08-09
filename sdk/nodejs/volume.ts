@@ -115,21 +115,21 @@ export interface VolumeState {
     /**
      * Driver type for the volume (defaults to local).
      */
-    readonly driver?: pulumi.Input<string>;
+    driver?: pulumi.Input<string>;
     /**
      * Options specific to the driver.
      */
-    readonly driverOpts?: pulumi.Input<{[key: string]: any}>;
+    driverOpts?: pulumi.Input<{[key: string]: any}>;
     /**
      * User-defined key/value metadata.
      */
-    readonly labels?: pulumi.Input<pulumi.Input<inputs.VolumeLabel>[]>;
-    readonly mountpoint?: pulumi.Input<string>;
+    labels?: pulumi.Input<pulumi.Input<inputs.VolumeLabel>[]>;
+    mountpoint?: pulumi.Input<string>;
     /**
      * The name of the Docker volume (generated if not
      * provided).
      */
-    readonly name?: pulumi.Input<string>;
+    name?: pulumi.Input<string>;
 }
 
 /**
@@ -139,18 +139,18 @@ export interface VolumeArgs {
     /**
      * Driver type for the volume (defaults to local).
      */
-    readonly driver?: pulumi.Input<string>;
+    driver?: pulumi.Input<string>;
     /**
      * Options specific to the driver.
      */
-    readonly driverOpts?: pulumi.Input<{[key: string]: any}>;
+    driverOpts?: pulumi.Input<{[key: string]: any}>;
     /**
      * User-defined key/value metadata.
      */
-    readonly labels?: pulumi.Input<pulumi.Input<inputs.VolumeLabel>[]>;
+    labels?: pulumi.Input<pulumi.Input<inputs.VolumeLabel>[]>;
     /**
      * The name of the Docker volume (generated if not
      * provided).
      */
-    readonly name?: pulumi.Input<string>;
+    name?: pulumi.Input<string>;
 }

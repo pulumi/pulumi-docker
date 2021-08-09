@@ -1,6 +1,8 @@
 ## HEAD (Unreleased)
 * Fix handling of the `cache_from` parameter in `docker.Image` in the Python SDK.
 * Fix handling of the `cache_from` parameter in `docker.Image` in the Golang SDK.
+* Upgrade to pulumi sdk + codegen v3.9.1
+* Upgrade to pulumi-terraform-bridge v3.5.0
 
 ---
 

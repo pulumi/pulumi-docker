@@ -48,7 +48,6 @@ func TestAwsGo(t *testing.T) {
 	opts := base.With(integration.ProgramTestOptions{
 		Dependencies: []string{
 			"github.com/pulumi/pulumi-docker/sdk/v3",
-			"github.com/pulumi/pulumi-aws/sdk/v4",
 		},
 		Dir: path.Join(cwd, "aws-go"),
 	})
@@ -64,7 +63,6 @@ func TestBuildCacheFromGo(t *testing.T) {
 	opts := base.With(integration.ProgramTestOptions{
 		Dependencies: []string{
 			"github.com/pulumi/pulumi-docker/sdk/v3",
-			"github.com/pulumi/pulumi-aws/sdk/v4",
 		},
 		Dir: path.Join(cwd, "build-cache-from-go"),
 	})

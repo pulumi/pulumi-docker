@@ -16,6 +16,17 @@ import (
 // [documentation](https://www.pulumi.com/docs/reference/programming-model/#providers) for more information.
 type Provider struct {
 	pulumi.ProviderResourceState
+
+	// PEM-encoded content of Docker host CA certificate
+	CaMaterial pulumi.StringPtrOutput `pulumi:"caMaterial"`
+	// PEM-encoded content of Docker client certificate
+	CertMaterial pulumi.StringPtrOutput `pulumi:"certMaterial"`
+	// Path to directory with Docker TLS config
+	CertPath pulumi.StringPtrOutput `pulumi:"certPath"`
+	// The Docker daemon address
+	Host pulumi.StringPtrOutput `pulumi:"host"`
+	// PEM-encoded content of Docker client private key
+	KeyMaterial pulumi.StringPtrOutput `pulumi:"keyMaterial"`
 }
 
 // NewProvider registers a new resource with the given unique name, arguments, and options.

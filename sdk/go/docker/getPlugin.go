@@ -22,7 +22,7 @@ import (
 // func main() {
 // 	pulumi.Run(func(ctx *pulumi.Context) error {
 // 		opt0 := "sample-volume-plugin:latest"
-// 		_, err := docker.LookupPlugin(ctx, &docker.LookupPluginArgs{
+// 		_, err := docker.LookupPlugin(ctx, &GetPluginArgs{
 // 			Alias: &opt0,
 // 		}, nil)
 // 		if err != nil {

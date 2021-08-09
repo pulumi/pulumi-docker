@@ -159,43 +159,43 @@ export interface PluginState {
     /**
      * The alias of the Docker plugin. If the tag is omitted, `:latest` is complemented to the attribute value.
      */
-    readonly alias?: pulumi.Input<string>;
+    alias?: pulumi.Input<string>;
     /**
      * HTTP client timeout to enable the plugin.
      */
-    readonly enableTimeout?: pulumi.Input<number>;
+    enableTimeout?: pulumi.Input<number>;
     /**
      * If true, the plugin is enabled. The default value is `true`.
      */
-    readonly enabled?: pulumi.Input<boolean>;
+    enabled?: pulumi.Input<boolean>;
     /**
      * . The environment variables.
      */
-    readonly envs?: pulumi.Input<pulumi.Input<string>[]>;
+    envs?: pulumi.Input<pulumi.Input<string>[]>;
     /**
      * If true, the plugin is removed forcibly when the plugin is removed.
      */
-    readonly forceDestroy?: pulumi.Input<boolean>;
+    forceDestroy?: pulumi.Input<boolean>;
     /**
      * If true, then the plugin is disabled forcibly when the plugin is disabled.
      */
-    readonly forceDisable?: pulumi.Input<boolean>;
+    forceDisable?: pulumi.Input<boolean>;
     /**
      * If true, grant all permissions necessary to run the plugin. This attribute conflicts with `grantPermissions`.
      */
-    readonly grantAllPermissions?: pulumi.Input<boolean>;
+    grantAllPermissions?: pulumi.Input<boolean>;
     /**
      * grant permissions necessary to run the plugin. This attribute conflicts with `grantAllPermissions`. See grantPermissions below for details.
      */
-    readonly grantPermissions?: pulumi.Input<pulumi.Input<inputs.PluginGrantPermission>[]>;
+    grantPermissions?: pulumi.Input<pulumi.Input<inputs.PluginGrantPermission>[]>;
     /**
      * Docker Plugin name
      */
-    readonly name?: pulumi.Input<string>;
+    name?: pulumi.Input<string>;
     /**
      * (string) The plugin reference.
      */
-    readonly pluginReference?: pulumi.Input<string>;
+    pluginReference?: pulumi.Input<string>;
 }
 
 /**
@@ -205,37 +205,37 @@ export interface PluginArgs {
     /**
      * The alias of the Docker plugin. If the tag is omitted, `:latest` is complemented to the attribute value.
      */
-    readonly alias?: pulumi.Input<string>;
+    alias?: pulumi.Input<string>;
     /**
      * HTTP client timeout to enable the plugin.
      */
-    readonly enableTimeout?: pulumi.Input<number>;
+    enableTimeout?: pulumi.Input<number>;
     /**
      * If true, the plugin is enabled. The default value is `true`.
      */
-    readonly enabled?: pulumi.Input<boolean>;
+    enabled?: pulumi.Input<boolean>;
     /**
      * . The environment variables.
      */
-    readonly envs?: pulumi.Input<pulumi.Input<string>[]>;
+    envs?: pulumi.Input<pulumi.Input<string>[]>;
     /**
      * If true, the plugin is removed forcibly when the plugin is removed.
      */
-    readonly forceDestroy?: pulumi.Input<boolean>;
+    forceDestroy?: pulumi.Input<boolean>;
     /**
      * If true, then the plugin is disabled forcibly when the plugin is disabled.
      */
-    readonly forceDisable?: pulumi.Input<boolean>;
+    forceDisable?: pulumi.Input<boolean>;
     /**
      * If true, grant all permissions necessary to run the plugin. This attribute conflicts with `grantPermissions`.
      */
-    readonly grantAllPermissions?: pulumi.Input<boolean>;
+    grantAllPermissions?: pulumi.Input<boolean>;
     /**
      * grant permissions necessary to run the plugin. This attribute conflicts with `grantAllPermissions`. See grantPermissions below for details.
      */
-    readonly grantPermissions?: pulumi.Input<pulumi.Input<inputs.PluginGrantPermission>[]>;
+    grantPermissions?: pulumi.Input<pulumi.Input<inputs.PluginGrantPermission>[]>;
     /**
      * Docker Plugin name
      */
-    readonly name?: pulumi.Input<string>;
+    name?: pulumi.Input<string>;
 }

@@ -22,7 +22,7 @@ func main() {
 			return err
 		}
 
-		ctx.Export("deps-image", image.ImageName)
+		ctx.Export("imageName", image.ImageName)
 
 		return nil
 	})
