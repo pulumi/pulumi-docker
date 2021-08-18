@@ -17,8 +17,8 @@ class ServiceConfigArgs:
                  name: Optional[pulumi.Input[str]] = None):
         """
         The set of arguments for constructing a ServiceConfig resource.
-        :param pulumi.Input[str] data: The base64 encoded data of the config.
-        :param pulumi.Input[str] name: The name of the Docker config.
+        :param pulumi.Input[str] data: Base64-url-safe-encoded config data
+        :param pulumi.Input[str] name: User-defined name of the config
         """
         pulumi.set(__self__, "data", data)
         if name is not None:
@@ -28,7 +28,7 @@ class ServiceConfigArgs:
     @pulumi.getter
     def data(self) -> pulumi.Input[str]:
         """
-        The base64 encoded data of the config.
+        Base64-url-safe-encoded config data
         """
         return pulumi.get(self, "data")
 
@@ -40,7 +40,7 @@ class ServiceConfigArgs:
     @pulumi.getter
     def name(self) -> Optional[pulumi.Input[str]]:
         """
-        The name of the Docker config.
+        User-defined name of the config
         """
         return pulumi.get(self, "name")
 
@@ -56,8 +56,8 @@ class _ServiceConfigState:
                  name: Optional[pulumi.Input[str]] = None):
         """
         Input properties used for looking up and filtering ServiceConfig resources.
-        :param pulumi.Input[str] data: The base64 encoded data of the config.
-        :param pulumi.Input[str] name: The name of the Docker config.
+        :param pulumi.Input[str] data: Base64-url-safe-encoded config data
+        :param pulumi.Input[str] name: User-defined name of the config
         """
         if data is not None:
             pulumi.set(__self__, "data", data)
@@ -68,7 +68,7 @@ class _ServiceConfigState:
     @pulumi.getter
     def data(self) -> Optional[pulumi.Input[str]]:
         """
-        The base64 encoded data of the config.
+        Base64-url-safe-encoded config data
         """
         return pulumi.get(self, "data")
 
@@ -80,7 +80,7 @@ class _ServiceConfigState:
     @pulumi.getter
     def name(self) -> Optional[pulumi.Input[str]]:
         """
-        The name of the Docker config.
+        User-defined name of the config
         """
         return pulumi.get(self, "name")
 
@@ -100,16 +100,22 @@ class ServiceConfig(pulumi.CustomResource):
         """
         ## Import
 
-        Docker config can be imported using the long id, e.g. for a config with the short id `p73jelnrme5f`
+        ### Example Assuming you created a `config` as follows #!/bin/bash printf '{"a":"b"}' | docker config create foo - # prints the id
+
+        08c26c477474478d971139f750984775a7f019dbe8a2e7f09d66a187c009e66d you provide the definition for the resource as follows terraform resource "docker_config" "foo" {
+
+         name = "foo"
+
+         data = base64encode("{\"a\"\"b\"}") } then the import command is as follows #!/bin/bash
 
         ```sh
-         $ pulumi import docker:index/serviceConfig:ServiceConfig foo $(docker config inspect -f {{.ID}} p73)
+         $ pulumi import docker:index/serviceConfig:ServiceConfig foo 08c26c477474478d971139f750984775a7f019dbe8a2e7f09d66a187c009e66d
         ```
 
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
-        :param pulumi.Input[str] data: The base64 encoded data of the config.
-        :param pulumi.Input[str] name: The name of the Docker config.
+        :param pulumi.Input[str] data: Base64-url-safe-encoded config data
+        :param pulumi.Input[str] name: User-defined name of the config
         """
         ...
     @overload
@@ -120,10 +126,16 @@ class ServiceConfig(pulumi.CustomResource):
         """
         ## Import
 
-        Docker config can be imported using the long id, e.g. for a config with the short id `p73jelnrme5f`
+        ### Example Assuming you created a `config` as follows #!/bin/bash printf '{"a":"b"}' | docker config create foo - # prints the id
+
+        08c26c477474478d971139f750984775a7f019dbe8a2e7f09d66a187c009e66d you provide the definition for the resource as follows terraform resource "docker_config" "foo" {
+
+         name = "foo"
+
+         data = base64encode("{\"a\"\"b\"}") } then the import command is as follows #!/bin/bash
 
         ```sh
-         $ pulumi import docker:index/serviceConfig:ServiceConfig foo $(docker config inspect -f {{.ID}} p73)
+         $ pulumi import docker:index/serviceConfig:ServiceConfig foo 08c26c477474478d971139f750984775a7f019dbe8a2e7f09d66a187c009e66d
         ```
 
         :param str resource_name: The name of the resource.
@@ -178,8 +190,8 @@ class ServiceConfig(pulumi.CustomResource):
         :param str resource_name: The unique name of the resulting resource.
         :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
-        :param pulumi.Input[str] data: The base64 encoded data of the config.
-        :param pulumi.Input[str] name: The name of the Docker config.
+        :param pulumi.Input[str] data: Base64-url-safe-encoded config data
+        :param pulumi.Input[str] name: User-defined name of the config
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
 
@@ -193,7 +205,7 @@ class ServiceConfig(pulumi.CustomResource):
     @pulumi.getter
     def data(self) -> pulumi.Output[str]:
         """
-        The base64 encoded data of the config.
+        Base64-url-safe-encoded config data
         """
         return pulumi.get(self, "data")
 
@@ -201,7 +213,7 @@ class ServiceConfig(pulumi.CustomResource):
     @pulumi.getter
     def name(self) -> pulumi.Output[str]:
         """
-        The name of the Docker config.
+        User-defined name of the config
         """
         return pulumi.get(self, "name")
 

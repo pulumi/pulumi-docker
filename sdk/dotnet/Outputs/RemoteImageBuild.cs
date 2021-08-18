@@ -14,17 +14,11 @@ namespace Pulumi.Docker.Outputs
     public sealed class RemoteImageBuild
     {
         public readonly ImmutableDictionary<string, string>? BuildArg;
-        /// <summary>
-        /// default Dockerfile
-        /// </summary>
         public readonly string? Dockerfile;
         public readonly bool? ForceRemove;
         public readonly ImmutableDictionary<string, string>? Label;
         public readonly bool? NoCache;
         public readonly string Path;
-        /// <summary>
-        /// default true
-        /// </summary>
         public readonly bool? Remove;
         public readonly ImmutableArray<string> Tags;
         public readonly string? Target;

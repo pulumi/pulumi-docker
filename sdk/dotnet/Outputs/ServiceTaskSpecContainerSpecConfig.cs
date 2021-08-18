@@ -13,29 +13,11 @@ namespace Pulumi.Docker.Outputs
     [OutputType]
     public sealed class ServiceTaskSpecContainerSpecConfig
     {
-        /// <summary>
-        /// ConfigID represents the ID of the specific config.
-        /// </summary>
         public readonly string ConfigId;
-        /// <summary>
-        /// The name of the config that this references, but internally it is just provided for lookup/display purposes
-        /// </summary>
         public readonly string? ConfigName;
-        /// <summary>
-        /// Represents the file GID. Defaults: `0`
-        /// </summary>
         public readonly string? FileGid;
-        /// <summary>
-        /// Represents the FileMode of the file. Defaults: `0444`
-        /// </summary>
         public readonly int? FileMode;
-        /// <summary>
-        /// Represents the final filename in the filesystem. The specific target file that the config data is written within the docker container, e.g. `/root/config/config.json`
-        /// </summary>
         public readonly string FileName;
-        /// <summary>
-        /// Represents the file UID. Defaults: `0`
-        /// </summary>
         public readonly string? FileUid;
 
         [OutputConstructor]

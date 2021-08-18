@@ -12,40 +12,23 @@ namespace Pulumi.Docker.Inputs
 
     public sealed class ContainerHealthcheckGetArgs : Pulumi.ResourceArgs
     {
-        /// <summary>
-        /// Time between running the check `(ms|s|m|h)`. Default: `0s`.
-        /// </summary>
         [Input("interval")]
         public Input<string>? Interval { get; set; }
 
-        /// <summary>
-        /// Consecutive failures needed to report unhealthy. Default: `0`.
-        /// </summary>
         [Input("retries")]
         public Input<int>? Retries { get; set; }
 
-        /// <summary>
-        /// Start period for the container to initialize before counting retries towards unstable `(ms|s|m|h)`. Default: `0s`.
-        /// </summary>
         [Input("startPeriod")]
         public Input<string>? StartPeriod { get; set; }
 
         [Input("tests", required: true)]
         private InputList<string>? _tests;
-
-        /// <summary>
-        /// Command to run to check health. For example, to run `curl -f http://localhost/health` set the
-        /// command to be `["CMD", "curl", "-f", "http://localhost/health"]`.
-        /// </summary>
         public InputList<string> Tests
         {
             get => _tests ?? (_tests = new InputList<string>());
             set => _tests = value;
         }
 
-        /// <summary>
-        /// Maximum time to allow one check to run `(ms|s|m|h)`. Default: `0s`.
-        /// </summary>
         [Input("timeout")]
         public Input<string>? Timeout { get; set; }
 

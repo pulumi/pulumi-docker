@@ -10,6 +10,7 @@ export * from "./docker";
 export * from "./getNetwork";
 export * from "./getPlugin";
 export * from "./getRegistryImage";
+export * from "./getRemoteImage";
 export * from "./image";
 export * from "./network";
 export * from "./plugin";

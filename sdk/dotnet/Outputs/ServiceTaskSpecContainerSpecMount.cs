@@ -13,33 +13,12 @@ namespace Pulumi.Docker.Outputs
     [OutputType]
     public sealed class ServiceTaskSpecContainerSpecMount
     {
-        /// <summary>
-        /// Optional configuration for the `bind` type.
-        /// </summary>
         public readonly Outputs.ServiceTaskSpecContainerSpecMountBindOptions? BindOptions;
-        /// <summary>
-        /// Mount the container's root filesystem as read only.
-        /// </summary>
         public readonly bool? ReadOnly;
-        /// <summary>
-        /// The mount source (e.g., a volume name, a host path)
-        /// </summary>
         public readonly string? Source;
-        /// <summary>
-        /// The container path.
-        /// </summary>
         public readonly string Target;
-        /// <summary>
-        /// Optional configuration for the `tmpf` type.
-        /// </summary>
         public readonly Outputs.ServiceTaskSpecContainerSpecMountTmpfsOptions? TmpfsOptions;
-        /// <summary>
-        /// SELinux type label
-        /// </summary>
         public readonly string Type;
-        /// <summary>
-        /// Optional configuration for the `volume` type.
-        /// </summary>
         public readonly Outputs.ServiceTaskSpecContainerSpecMountVolumeOptions? VolumeOptions;
 
         [OutputConstructor]

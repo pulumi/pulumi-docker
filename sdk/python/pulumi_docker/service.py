@@ -26,15 +26,15 @@ class ServiceArgs:
                  update_config: Optional[pulumi.Input['ServiceUpdateConfigArgs']] = None):
         """
         The set of arguments for constructing a Service resource.
-        :param pulumi.Input['ServiceTaskSpecArgs'] task_spec: See TaskSpec below for details.
-        :param pulumi.Input['ServiceAuthArgs'] auth: See Auth below for details.
-        :param pulumi.Input['ServiceConvergeConfigArgs'] converge_config: See Converge Config below for details.
-        :param pulumi.Input['ServiceEndpointSpecArgs'] endpoint_spec: See EndpointSpec below for details.
-        :param pulumi.Input[Sequence[pulumi.Input['ServiceLabelArgs']]] labels: See Labels below for details.
-        :param pulumi.Input['ServiceModeArgs'] mode: See Mode below for details.
-        :param pulumi.Input[str] name: The name of the Docker service.
-        :param pulumi.Input['ServiceRollbackConfigArgs'] rollback_config: See RollbackConfig below for details.
-        :param pulumi.Input['ServiceUpdateConfigArgs'] update_config: See UpdateConfig below for details.
+        :param pulumi.Input['ServiceTaskSpecArgs'] task_spec: User modifiable task configuration
+        :param pulumi.Input['ServiceAuthArgs'] auth: Configuration for the authentication for pulling the images of the service
+        :param pulumi.Input['ServiceConvergeConfigArgs'] converge_config: A configuration to ensure that a service converges aka reaches the desired that of all task up and running
+        :param pulumi.Input['ServiceEndpointSpecArgs'] endpoint_spec: Properties that can be configured to access and load balance a service
+        :param pulumi.Input[Sequence[pulumi.Input['ServiceLabelArgs']]] labels: User-defined key/value metadata
+        :param pulumi.Input['ServiceModeArgs'] mode: Scheduling mode for the service
+        :param pulumi.Input[str] name: Name of the service
+        :param pulumi.Input['ServiceRollbackConfigArgs'] rollback_config: Specification for the rollback strategy of the service
+        :param pulumi.Input['ServiceUpdateConfigArgs'] update_config: Specification for the update strategy of the service
         """
         pulumi.set(__self__, "task_spec", task_spec)
         if auth is not None:
@@ -58,7 +58,7 @@ class ServiceArgs:
     @pulumi.getter(name="taskSpec")
     def task_spec(self) -> pulumi.Input['ServiceTaskSpecArgs']:
         """
-        See TaskSpec below for details.
+        User modifiable task configuration
         """
         return pulumi.get(self, "task_spec")
 
@@ -70,7 +70,7 @@ class ServiceArgs:
     @pulumi.getter
     def auth(self) -> Optional[pulumi.Input['ServiceAuthArgs']]:
         """
-        See Auth below for details.
+        Configuration for the authentication for pulling the images of the service
         """
         return pulumi.get(self, "auth")
 
@@ -82,7 +82,7 @@ class ServiceArgs:
     @pulumi.getter(name="convergeConfig")
     def converge_config(self) -> Optional[pulumi.Input['ServiceConvergeConfigArgs']]:
         """
-        See Converge Config below for details.
+        A configuration to ensure that a service converges aka reaches the desired that of all task up and running
         """
         return pulumi.get(self, "converge_config")
 
@@ -94,7 +94,7 @@ class ServiceArgs:
     @pulumi.getter(name="endpointSpec")
     def endpoint_spec(self) -> Optional[pulumi.Input['ServiceEndpointSpecArgs']]:
         """
-        See EndpointSpec below for details.
+        Properties that can be configured to access and load balance a service
         """
         return pulumi.get(self, "endpoint_spec")
 
@@ -106,7 +106,7 @@ class ServiceArgs:
     @pulumi.getter
     def labels(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['ServiceLabelArgs']]]]:
         """
-        See Labels below for details.
+        User-defined key/value metadata
         """
         return pulumi.get(self, "labels")
 
@@ -118,7 +118,7 @@ class ServiceArgs:
     @pulumi.getter
     def mode(self) -> Optional[pulumi.Input['ServiceModeArgs']]:
         """
-        See Mode below for details.
+        Scheduling mode for the service
         """
         return pulumi.get(self, "mode")
 
@@ -130,7 +130,7 @@ class ServiceArgs:
     @pulumi.getter
     def name(self) -> Optional[pulumi.Input[str]]:
         """
-        The name of the Docker service.
+        Name of the service
         """
         return pulumi.get(self, "name")
 
@@ -142,7 +142,7 @@ class ServiceArgs:
     @pulumi.getter(name="rollbackConfig")
     def rollback_config(self) -> Optional[pulumi.Input['ServiceRollbackConfigArgs']]:
         """
-        See RollbackConfig below for details.
+        Specification for the rollback strategy of the service
         """
         return pulumi.get(self, "rollback_config")
 
@@ -154,7 +154,7 @@ class ServiceArgs:
     @pulumi.getter(name="updateConfig")
     def update_config(self) -> Optional[pulumi.Input['ServiceUpdateConfigArgs']]:
         """
-        See UpdateConfig below for details.
+        Specification for the update strategy of the service
         """
         return pulumi.get(self, "update_config")
 
@@ -177,15 +177,15 @@ class _ServiceState:
                  update_config: Optional[pulumi.Input['ServiceUpdateConfigArgs']] = None):
         """
         Input properties used for looking up and filtering Service resources.
-        :param pulumi.Input['ServiceAuthArgs'] auth: See Auth below for details.
-        :param pulumi.Input['ServiceConvergeConfigArgs'] converge_config: See Converge Config below for details.
-        :param pulumi.Input['ServiceEndpointSpecArgs'] endpoint_spec: See EndpointSpec below for details.
-        :param pulumi.Input[Sequence[pulumi.Input['ServiceLabelArgs']]] labels: See Labels below for details.
-        :param pulumi.Input['ServiceModeArgs'] mode: See Mode below for details.
-        :param pulumi.Input[str] name: The name of the Docker service.
-        :param pulumi.Input['ServiceRollbackConfigArgs'] rollback_config: See RollbackConfig below for details.
-        :param pulumi.Input['ServiceTaskSpecArgs'] task_spec: See TaskSpec below for details.
-        :param pulumi.Input['ServiceUpdateConfigArgs'] update_config: See UpdateConfig below for details.
+        :param pulumi.Input['ServiceAuthArgs'] auth: Configuration for the authentication for pulling the images of the service
+        :param pulumi.Input['ServiceConvergeConfigArgs'] converge_config: A configuration to ensure that a service converges aka reaches the desired that of all task up and running
+        :param pulumi.Input['ServiceEndpointSpecArgs'] endpoint_spec: Properties that can be configured to access and load balance a service
+        :param pulumi.Input[Sequence[pulumi.Input['ServiceLabelArgs']]] labels: User-defined key/value metadata
+        :param pulumi.Input['ServiceModeArgs'] mode: Scheduling mode for the service
+        :param pulumi.Input[str] name: Name of the service
+        :param pulumi.Input['ServiceRollbackConfigArgs'] rollback_config: Specification for the rollback strategy of the service
+        :param pulumi.Input['ServiceTaskSpecArgs'] task_spec: User modifiable task configuration
+        :param pulumi.Input['ServiceUpdateConfigArgs'] update_config: Specification for the update strategy of the service
         """
         if auth is not None:
             pulumi.set(__self__, "auth", auth)
@@ -210,7 +210,7 @@ class _ServiceState:
     @pulumi.getter
     def auth(self) -> Optional[pulumi.Input['ServiceAuthArgs']]:
         """
-        See Auth below for details.
+        Configuration for the authentication for pulling the images of the service
         """
         return pulumi.get(self, "auth")
 
@@ -222,7 +222,7 @@ class _ServiceState:
     @pulumi.getter(name="convergeConfig")
     def converge_config(self) -> Optional[pulumi.Input['ServiceConvergeConfigArgs']]:
         """
-        See Converge Config below for details.
+        A configuration to ensure that a service converges aka reaches the desired that of all task up and running
         """
         return pulumi.get(self, "converge_config")
 
@@ -234,7 +234,7 @@ class _ServiceState:
     @pulumi.getter(name="endpointSpec")
     def endpoint_spec(self) -> Optional[pulumi.Input['ServiceEndpointSpecArgs']]:
         """
-        See EndpointSpec below for details.
+        Properties that can be configured to access and load balance a service
         """
         return pulumi.get(self, "endpoint_spec")
 
@@ -246,7 +246,7 @@ class _ServiceState:
     @pulumi.getter
     def labels(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['ServiceLabelArgs']]]]:
         """
-        See Labels below for details.
+        User-defined key/value metadata
         """
         return pulumi.get(self, "labels")
 
@@ -258,7 +258,7 @@ class _ServiceState:
     @pulumi.getter
     def mode(self) -> Optional[pulumi.Input['ServiceModeArgs']]:
         """
-        See Mode below for details.
+        Scheduling mode for the service
         """
         return pulumi.get(self, "mode")
 
@@ -270,7 +270,7 @@ class _ServiceState:
     @pulumi.getter
     def name(self) -> Optional[pulumi.Input[str]]:
         """
-        The name of the Docker service.
+        Name of the service
         """
         return pulumi.get(self, "name")
 
@@ -282,7 +282,7 @@ class _ServiceState:
     @pulumi.getter(name="rollbackConfig")
     def rollback_config(self) -> Optional[pulumi.Input['ServiceRollbackConfigArgs']]:
         """
-        See RollbackConfig below for details.
+        Specification for the rollback strategy of the service
         """
         return pulumi.get(self, "rollback_config")
 
@@ -294,7 +294,7 @@ class _ServiceState:
     @pulumi.getter(name="taskSpec")
     def task_spec(self) -> Optional[pulumi.Input['ServiceTaskSpecArgs']]:
         """
-        See TaskSpec below for details.
+        User modifiable task configuration
         """
         return pulumi.get(self, "task_spec")
 
@@ -306,7 +306,7 @@ class _ServiceState:
     @pulumi.getter(name="updateConfig")
     def update_config(self) -> Optional[pulumi.Input['ServiceUpdateConfigArgs']]:
         """
-        See UpdateConfig below for details.
+        Specification for the update strategy of the service
         """
         return pulumi.get(self, "update_config")
 
@@ -333,23 +333,49 @@ class Service(pulumi.CustomResource):
         """
         ## Import
 
-        Docker service can be imported using the long id, e.g. for a service with the short id `55ba873dd`
+        ### Example Assuming you created a `service` as follows #!/bin/bash docker service create --name foo -p 8080:80 nginx # prints th ID 4pcphbxkfn2rffhbhe6czytgi you provide the definition for the resource as follows terraform resource "docker_service" "foo" {
+
+         name = "foo"
+
+         task_spec {
+
+         container_spec {
+
+         image = "nginx"
+
+         }
+
+         }
+
+         endpoint_spec {
+
+         ports {
+
+         target_port
+
+        = "80"
+
+         published_port = "8080"
+
+         }
+
+         } } then the import command is as follows #!/bin/bash
 
         ```sh
-         $ pulumi import docker:index/service:Service foo $(docker service inspect -f {{.ID}} 55b)
+         $ pulumi import docker:index/service:Service foo 4pcphbxkfn2rffhbhe6czytgi
         ```
 
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
-        :param pulumi.Input[pulumi.InputType['ServiceAuthArgs']] auth: See Auth below for details.
-        :param pulumi.Input[pulumi.InputType['ServiceConvergeConfigArgs']] converge_config: See Converge Config below for details.
-        :param pulumi.Input[pulumi.InputType['ServiceEndpointSpecArgs']] endpoint_spec: See EndpointSpec below for details.
-        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ServiceLabelArgs']]]] labels: See Labels below for details.
-        :param pulumi.Input[pulumi.InputType['ServiceModeArgs']] mode: See Mode below for details.
-        :param pulumi.Input[str] name: The name of the Docker service.
-        :param pulumi.Input[pulumi.InputType['ServiceRollbackConfigArgs']] rollback_config: See RollbackConfig below for details.
-        :param pulumi.Input[pulumi.InputType['ServiceTaskSpecArgs']] task_spec: See TaskSpec below for details.
-        :param pulumi.Input[pulumi.InputType['ServiceUpdateConfigArgs']] update_config: See UpdateConfig below for details.
+        :param pulumi.Input[pulumi.InputType['ServiceAuthArgs']] auth: Configuration for the authentication for pulling the images of the service
+        :param pulumi.Input[pulumi.InputType['ServiceConvergeConfigArgs']] converge_config: A configuration to ensure that a service converges aka reaches the desired that of all task up and running
+        :param pulumi.Input[pulumi.InputType['ServiceEndpointSpecArgs']] endpoint_spec: Properties that can be configured to access and load balance a service
+        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ServiceLabelArgs']]]] labels: User-defined key/value metadata
+        :param pulumi.Input[pulumi.InputType['ServiceModeArgs']] mode: Scheduling mode for the service
+        :param pulumi.Input[str] name: Name of the service
+        :param pulumi.Input[pulumi.InputType['ServiceRollbackConfigArgs']] rollback_config: Specification for the rollback strategy of the service
+        :param pulumi.Input[pulumi.InputType['ServiceTaskSpecArgs']] task_spec: User modifiable task configuration
+        :param pulumi.Input[pulumi.InputType['ServiceUpdateConfigArgs']] update_config: Specification for the update strategy of the service
         """
         ...
     @overload
@@ -360,10 +386,36 @@ class Service(pulumi.CustomResource):
         """
         ## Import
 
-        Docker service can be imported using the long id, e.g. for a service with the short id `55ba873dd`
+        ### Example Assuming you created a `service` as follows #!/bin/bash docker service create --name foo -p 8080:80 nginx # prints th ID 4pcphbxkfn2rffhbhe6czytgi you provide the definition for the resource as follows terraform resource "docker_service" "foo" {
+
+         name = "foo"
+
+         task_spec {
+
+         container_spec {
+
+         image = "nginx"
+
+         }
+
+         }
+
+         endpoint_spec {
+
+         ports {
+
+         target_port
+
+        = "80"
+
+         published_port = "8080"
+
+         }
+
+         } } then the import command is as follows #!/bin/bash
 
         ```sh
-         $ pulumi import docker:index/service:Service foo $(docker service inspect -f {{.ID}} 55b)
+         $ pulumi import docker:index/service:Service foo 4pcphbxkfn2rffhbhe6czytgi
         ```
 
         :param str resource_name: The name of the resource.
@@ -439,15 +491,15 @@ class Service(pulumi.CustomResource):
         :param str resource_name: The unique name of the resulting resource.
         :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
-        :param pulumi.Input[pulumi.InputType['ServiceAuthArgs']] auth: See Auth below for details.
-        :param pulumi.Input[pulumi.InputType['ServiceConvergeConfigArgs']] converge_config: See Converge Config below for details.
-        :param pulumi.Input[pulumi.InputType['ServiceEndpointSpecArgs']] endpoint_spec: See EndpointSpec below for details.
-        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ServiceLabelArgs']]]] labels: See Labels below for details.
-        :param pulumi.Input[pulumi.InputType['ServiceModeArgs']] mode: See Mode below for details.
-        :param pulumi.Input[str] name: The name of the Docker service.
-        :param pulumi.Input[pulumi.InputType['ServiceRollbackConfigArgs']] rollback_config: See RollbackConfig below for details.
-        :param pulumi.Input[pulumi.InputType['ServiceTaskSpecArgs']] task_spec: See TaskSpec below for details.
-        :param pulumi.Input[pulumi.InputType['ServiceUpdateConfigArgs']] update_config: See UpdateConfig below for details.
+        :param pulumi.Input[pulumi.InputType['ServiceAuthArgs']] auth: Configuration for the authentication for pulling the images of the service
+        :param pulumi.Input[pulumi.InputType['ServiceConvergeConfigArgs']] converge_config: A configuration to ensure that a service converges aka reaches the desired that of all task up and running
+        :param pulumi.Input[pulumi.InputType['ServiceEndpointSpecArgs']] endpoint_spec: Properties that can be configured to access and load balance a service
+        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ServiceLabelArgs']]]] labels: User-defined key/value metadata
+        :param pulumi.Input[pulumi.InputType['ServiceModeArgs']] mode: Scheduling mode for the service
+        :param pulumi.Input[str] name: Name of the service
+        :param pulumi.Input[pulumi.InputType['ServiceRollbackConfigArgs']] rollback_config: Specification for the rollback strategy of the service
+        :param pulumi.Input[pulumi.InputType['ServiceTaskSpecArgs']] task_spec: User modifiable task configuration
+        :param pulumi.Input[pulumi.InputType['ServiceUpdateConfigArgs']] update_config: Specification for the update strategy of the service
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
 
@@ -468,7 +520,7 @@ class Service(pulumi.CustomResource):
     @pulumi.getter
     def auth(self) -> pulumi.Output[Optional['outputs.ServiceAuth']]:
         """
-        See Auth below for details.
+        Configuration for the authentication for pulling the images of the service
         """
         return pulumi.get(self, "auth")
 
@@ -476,7 +528,7 @@ class Service(pulumi.CustomResource):
     @pulumi.getter(name="convergeConfig")
     def converge_config(self) -> pulumi.Output[Optional['outputs.ServiceConvergeConfig']]:
         """
-        See Converge Config below for details.
+        A configuration to ensure that a service converges aka reaches the desired that of all task up and running
         """
         return pulumi.get(self, "converge_config")
 
@@ -484,7 +536,7 @@ class Service(pulumi.CustomResource):
     @pulumi.getter(name="endpointSpec")
     def endpoint_spec(self) -> pulumi.Output['outputs.ServiceEndpointSpec']:
         """
-        See EndpointSpec below for details.
+        Properties that can be configured to access and load balance a service
         """
         return pulumi.get(self, "endpoint_spec")
 
@@ -492,7 +544,7 @@ class Service(pulumi.CustomResource):
     @pulumi.getter
     def labels(self) -> pulumi.Output[Sequence['outputs.ServiceLabel']]:
         """
-        See Labels below for details.
+        User-defined key/value metadata
         """
         return pulumi.get(self, "labels")
 
@@ -500,7 +552,7 @@ class Service(pulumi.CustomResource):
     @pulumi.getter
     def mode(self) -> pulumi.Output['outputs.ServiceMode']:
         """
-        See Mode below for details.
+        Scheduling mode for the service
         """
         return pulumi.get(self, "mode")
 
@@ -508,7 +560,7 @@ class Service(pulumi.CustomResource):
     @pulumi.getter
     def name(self) -> pulumi.Output[str]:
         """
-        The name of the Docker service.
+        Name of the service
         """
         return pulumi.get(self, "name")
 
@@ -516,7 +568,7 @@ class Service(pulumi.CustomResource):
     @pulumi.getter(name="rollbackConfig")
     def rollback_config(self) -> pulumi.Output[Optional['outputs.ServiceRollbackConfig']]:
         """
-        See RollbackConfig below for details.
+        Specification for the rollback strategy of the service
         """
         return pulumi.get(self, "rollback_config")
 
@@ -524,7 +576,7 @@ class Service(pulumi.CustomResource):
     @pulumi.getter(name="taskSpec")
     def task_spec(self) -> pulumi.Output['outputs.ServiceTaskSpec']:
         """
-        See TaskSpec below for details.
+        User modifiable task configuration
         """
         return pulumi.get(self, "task_spec")
 
@@ -532,7 +584,7 @@ class Service(pulumi.CustomResource):
     @pulumi.getter(name="updateConfig")
     def update_config(self) -> pulumi.Output[Optional['outputs.ServiceUpdateConfig']]:
         """
-        See UpdateConfig below for details.
+        Specification for the update strategy of the service
         """
         return pulumi.get(self, "update_config")
 

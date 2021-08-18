@@ -8,6 +8,7 @@ from .docker import *
 from .get_network import *
 from .get_plugin import *
 from .get_registry_image import *
+from .get_remote_image import *
 from .image import *
 from .network import *
 from .plugin import *

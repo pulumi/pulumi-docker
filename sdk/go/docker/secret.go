@@ -13,15 +13,15 @@ import (
 
 // ## Import
 //
-// Docker secret cannot be imported as the secret data, once set, is never exposed again.
+// Import is supported using the following syntax#!/bin/bash # Docker secret cannot be imported as the secret data, once set, is never exposed again.
 type Secret struct {
 	pulumi.CustomResourceState
 
-	// The base64 encoded data of the secret.
+	// Base64-url-safe-encoded secret data
 	Data pulumi.StringOutput `pulumi:"data"`
-	// See Labels below for details.
+	// User-defined key/value metadata
 	Labels SecretLabelArrayOutput `pulumi:"labels"`
-	// The name of the Docker secret.
+	// User-defined name of the secret
 	Name pulumi.StringOutput `pulumi:"name"`
 }
 
@@ -57,20 +57,20 @@ func GetSecret(ctx *pulumi.Context,
 
 // Input properties used for looking up and filtering Secret resources.
 type secretState struct {
-	// The base64 encoded data of the secret.
+	// Base64-url-safe-encoded secret data
 	Data *string `pulumi:"data"`
-	// See Labels below for details.
+	// User-defined key/value metadata
 	Labels []SecretLabel `pulumi:"labels"`
-	// The name of the Docker secret.
+	// User-defined name of the secret
 	Name *string `pulumi:"name"`
 }
 
 type SecretState struct {
-	// The base64 encoded data of the secret.
+	// Base64-url-safe-encoded secret data
 	Data pulumi.StringPtrInput
-	// See Labels below for details.
+	// User-defined key/value metadata
 	Labels SecretLabelArrayInput
-	// The name of the Docker secret.
+	// User-defined name of the secret
 	Name pulumi.StringPtrInput
 }
 
@@ -79,21 +79,21 @@ func (SecretState) ElementType() reflect.Type {
 }
 
 type secretArgs struct {
-	// The base64 encoded data of the secret.
+	// Base64-url-safe-encoded secret data
 	Data string `pulumi:"data"`
-	// See Labels below for details.
+	// User-defined key/value metadata
 	Labels []SecretLabel `pulumi:"labels"`
-	// The name of the Docker secret.
+	// User-defined name of the secret
 	Name *string `pulumi:"name"`
 }
 
 // The set of arguments for constructing a Secret resource.
 type SecretArgs struct {
-	// The base64 encoded data of the secret.
+	// Base64-url-safe-encoded secret data
 	Data pulumi.StringInput
-	// See Labels below for details.
+	// User-defined key/value metadata
 	Labels SecretLabelArrayInput
-	// The name of the Docker secret.
+	// User-defined name of the secret
 	Name pulumi.StringPtrInput
 }
 

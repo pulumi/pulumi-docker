@@ -19,12 +19,11 @@ import (
 	"path/filepath"
 	"unicode"
 
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/pulumi/pulumi-docker/provider/v3/pkg/version"
 	"github.com/pulumi/pulumi-terraform-bridge/v3/pkg/tfbridge"
-	shimv1 "github.com/pulumi/pulumi-terraform-bridge/v3/pkg/tfshim/sdk-v1"
+	shimv2 "github.com/pulumi/pulumi-terraform-bridge/v3/pkg/tfshim/sdk-v2"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/tokens"
-	"github.com/terraform-providers/terraform-provider-docker/docker"
+	"github.com/terraform-providers/terraform-provider-docker/shim"
 )
 
 const (
@@ -59,7 +58,7 @@ func dockerDataSource(mod string, res string) tokens.ModuleMember {
 }
 
 func Provider() tfbridge.ProviderInfo {
-	p := shimv1.NewProvider(docker.Provider().(*schema.Provider))
+	p := shimv2.NewProvider(shim.NewProvider())
 	prov := tfbridge.ProviderInfo{
 		P:           p,
 		Name:        "docker",
@@ -76,7 +75,8 @@ func Provider() tfbridge.ProviderInfo {
 				},
 			},
 			"registry_auth": {
-				Name: "registryAuth", // not plural
+				Name:        "registryAuth", // not plural
+				MaxItemsOne: tfbridge.False(),
 			},
 		},
 		Resources: map[string]*tfbridge.ResourceInfo{
@@ -115,6 +115,7 @@ func Provider() tfbridge.ProviderInfo {
 			"docker_network":        {Tok: dockerDataSource(dockerMod, "getNetwork")},
 			"docker_registry_image": {Tok: dockerDataSource(dockerMod, "getRegistryImage")},
 			"docker_plugin":         {Tok: dockerDataSource(dockerMod, "getPlugin")},
+			"docker_image":          {Tok: dockerDataSource(dockerMod, "getRemoteImage")},
 		},
 		JavaScript: &tfbridge.JavaScriptInfo{
 			Dependencies: map[string]string{

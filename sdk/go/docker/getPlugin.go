@@ -11,27 +11,24 @@ import (
 //
 // ## Example Usage
 //
-// ```go
-// package main
-//
-// import (
-// 	"github.com/pulumi/pulumi-docker/sdk/v3/go/docker"
-// 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-// )
-//
-// func main() {
-// 	pulumi.Run(func(ctx *pulumi.Context) error {
-// 		opt0 := "sample-volume-plugin:latest"
-// 		_, err := docker.LookupPlugin(ctx, &docker.LookupPluginArgs{
-// 			Alias: &opt0,
-// 		}, nil)
-// 		if err != nil {
-// 			return err
-// 		}
-// 		return nil
-// 	})
+// ### With alias
+// data "Plugin" "byAlias" {
+//   alias = "sample-volume-plugin:latest"
 // }
-// ```
+// ## Schema
+//
+// ### Optional
+//
+// - **alias** (String) The alias of the Docker plugin. If the tag is omitted, `:latest` is complemented to the attribute value.
+// - **id** (String) The ID of the plugin, which has precedence over the `alias` of both are given
+//
+// ### Read-Only
+//
+// - **enabled** (Boolean) If `true` the plugin is enabled
+// - **env** (Set of String) The environment variables in the form of `KEY=VALUE`, e.g. `DEBUG=0`
+// - **grant_all_permissions** (Boolean) If true, grant all permissions necessary to run the plugin
+// - **name** (String) The plugin name. If the tag is omitted, `:latest` is complemented to the attribute value.
+// - **plugin_reference** (String) The Docker Plugin Reference
 func LookupPlugin(ctx *pulumi.Context, args *LookupPluginArgs, opts ...pulumi.InvokeOption) (*LookupPluginResult, error) {
 	var rv LookupPluginResult
 	err := ctx.Invoke("docker:index/getPlugin:getPlugin", args, &rv, opts...)
@@ -43,20 +40,17 @@ func LookupPlugin(ctx *pulumi.Context, args *LookupPluginArgs, opts ...pulumi.In
 
 // A collection of arguments for invoking getPlugin.
 type LookupPluginArgs struct {
-	// The alias of the Docker plugin.
 	Alias *string `pulumi:"alias"`
-	// The Docker plugin ID.
-	Id *string `pulumi:"id"`
+	Id    *string `pulumi:"id"`
 }
 
 // A collection of values returned by getPlugin.
 type LookupPluginResult struct {
-	Alias   *string  `pulumi:"alias"`
-	Enabled bool     `pulumi:"enabled"`
-	Envs    []string `pulumi:"envs"`
-	// (Optional, boolean) If true, grant all permissions necessary to run the plugin.
-	GrantAllPermissions bool    `pulumi:"grantAllPermissions"`
-	Id                  *string `pulumi:"id"`
-	// (Optional, string, Forces new resource) The plugin reference.
-	PluginReference string `pulumi:"pluginReference"`
+	Alias               *string  `pulumi:"alias"`
+	Enabled             bool     `pulumi:"enabled"`
+	Envs                []string `pulumi:"envs"`
+	GrantAllPermissions bool     `pulumi:"grantAllPermissions"`
+	Id                  *string  `pulumi:"id"`
+	Name                string   `pulumi:"name"`
+	PluginReference     string   `pulumi:"pluginReference"`
 }

@@ -1,6 +1,7 @@
 ## HEAD (Unreleased)
 * Fix handling of the `cache_from` parameter in `docker.Image` in the Python SDK.
 * Fix handling of the `cache_from` parameter in `docker.Image` in the Golang SDK.
+* Upgrade to v2.15.0 of the Docker Terraform Provider
 
 ---
 

@@ -13,17 +13,23 @@ import (
 
 // ## Import
 //
-// Docker config can be imported using the long id, e.g. for a config with the short id `p73jelnrme5f`
+// ### Example Assuming you created a `config` as follows #!/bin/bash printf '{"a":"b"}' | docker config create foo - # prints the id
+//
+// 08c26c477474478d971139f750984775a7f019dbe8a2e7f09d66a187c009e66d you provide the definition for the resource as follows terraform resource "docker_config" "foo" {
+//
+//  name = "foo"
+//
+//  data = base64encode("{\"a\"\"b\"}") } then the import command is as follows #!/bin/bash
 //
 // ```sh
-//  $ pulumi import docker:index/serviceConfig:ServiceConfig foo $(docker config inspect -f {{.ID}} p73)
+//  $ pulumi import docker:index/serviceConfig:ServiceConfig foo 08c26c477474478d971139f750984775a7f019dbe8a2e7f09d66a187c009e66d
 // ```
 type ServiceConfig struct {
 	pulumi.CustomResourceState
 
-	// The base64 encoded data of the config.
+	// Base64-url-safe-encoded config data
 	Data pulumi.StringOutput `pulumi:"data"`
-	// The name of the Docker config.
+	// User-defined name of the config
 	Name pulumi.StringOutput `pulumi:"name"`
 }
 
@@ -59,16 +65,16 @@ func GetServiceConfig(ctx *pulumi.Context,
 
 // Input properties used for looking up and filtering ServiceConfig resources.
 type serviceConfigState struct {
-	// The base64 encoded data of the config.
+	// Base64-url-safe-encoded config data
 	Data *string `pulumi:"data"`
-	// The name of the Docker config.
+	// User-defined name of the config
 	Name *string `pulumi:"name"`
 }
 
 type ServiceConfigState struct {
-	// The base64 encoded data of the config.
+	// Base64-url-safe-encoded config data
 	Data pulumi.StringPtrInput
-	// The name of the Docker config.
+	// User-defined name of the config
 	Name pulumi.StringPtrInput
 }
 
@@ -77,17 +83,17 @@ func (ServiceConfigState) ElementType() reflect.Type {
 }
 
 type serviceConfigArgs struct {
-	// The base64 encoded data of the config.
+	// Base64-url-safe-encoded config data
 	Data string `pulumi:"data"`
-	// The name of the Docker config.
+	// User-defined name of the config
 	Name *string `pulumi:"name"`
 }
 
 // The set of arguments for constructing a ServiceConfig resource.
 type ServiceConfigArgs struct {
-	// The base64 encoded data of the config.
+	// Base64-url-safe-encoded config data
 	Data pulumi.StringInput
-	// The name of the Docker config.
+	// User-defined name of the config
 	Name pulumi.StringPtrInput
 }
 
