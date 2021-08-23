@@ -6,7 +6,7 @@ import (
 	"fmt"
 
 	"github.com/pkg/errors"
-	"github.com/pulumi/pulumi/sdk/v2/go/pulumi"
+	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
 // Image is a resource represents a Docker image built locally which is published and made
@@ -39,7 +39,7 @@ func NewImage(ctx *pulumi.Context,
 		return nil, err
 	}
 
-	resource.ImageName = args.ToImageArgsOutput().ApplyString(func(imageArgs imageArgs) (string, error) {
+	resource.ImageName = args.ToImageArgsOutput().ApplyT(func(imageArgs imageArgs) (string, error) {
 		imageName := imageArgs.ImageName
 
 		// If there is no localImageName set it equal to imageName.  Note: this means
@@ -81,12 +81,12 @@ func NewImage(ctx *pulumi.Context,
 
 		return buildAndPushImage(ctx, baseImageName, &imageArgs.Build,
 			imageNameWithoutTag, resource, skipPush, &imageArgs.Registry)
-	})
+	}).(pulumi.StringOutput)
 
 	if args != nil && args.Registry != nil {
-		resource.RegistryServer = args.Registry.ToImageRegistryOutput().ApplyString(func(registry ImageRegistry) (string, error) { // nolint[:lll]
+		resource.RegistryServer = args.Registry.ToImageRegistryOutput().ApplyT(func(registry ImageRegistry) (string, error) { // nolint:lll
 			return registry.Server, nil
-		})
+		}).(pulumi.StringOutput)
 	}
 
 	resource.BaseImageName = args.ImageName.ToStringOutput()

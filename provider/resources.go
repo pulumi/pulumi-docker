@@ -20,10 +20,10 @@ import (
 	"unicode"
 
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"github.com/pulumi/pulumi-docker/provider/v2/pkg/version"
-	"github.com/pulumi/pulumi-terraform-bridge/v2/pkg/tfbridge"
-	shimv1 "github.com/pulumi/pulumi-terraform-bridge/v2/pkg/tfshim/sdk-v1"
-	"github.com/pulumi/pulumi/sdk/v2/go/common/tokens"
+	"github.com/pulumi/pulumi-docker/provider/v3/pkg/version"
+	"github.com/pulumi/pulumi-terraform-bridge/v3/pkg/tfbridge"
+	shimv1 "github.com/pulumi/pulumi-terraform-bridge/v3/pkg/tfshim/sdk-v1"
+	"github.com/pulumi/pulumi/sdk/v3/go/common/tokens"
 	"github.com/terraform-providers/terraform-provider-docker/docker"
 )
 
@@ -118,11 +118,11 @@ func Provider() tfbridge.ProviderInfo {
 		},
 		JavaScript: &tfbridge.JavaScriptInfo{
 			Dependencies: map[string]string{
-				"@pulumi/pulumi": "^2.15.0",
+				"@pulumi/pulumi": "^3.0.0",
 				"semver":         "^5.4.0",
 			},
 			DevDependencies: map[string]string{
-				"@types/node":   "^8.0.0",
+				"@types/node":   "^10.0.0",
 				"@types/semver": "^5.4.0",
 			},
 			Overlay: &tfbridge.OverlayInfo{
@@ -135,7 +135,7 @@ func Provider() tfbridge.ProviderInfo {
 		},
 		Python: &tfbridge.PythonInfo{
 			Requires: map[string]string{
-				"pulumi": ">=2.15.0,<3.0.0",
+				"pulumi": ">=3.0.0,<4.0.0",
 			},
 			Overlay: &tfbridge.OverlayInfo{
 				DestFiles: []string{
@@ -156,9 +156,8 @@ func Provider() tfbridge.ProviderInfo {
 		},
 		CSharp: &tfbridge.CSharpInfo{
 			PackageReferences: map[string]string{
-				"Pulumi":                       "2.*",
-				"Semver":                       "2.0.6",
-				"System.Collections.Immutable": "1.6.0",
+				"Pulumi": "3.*",
+				"Semver": "2.0.6",
 			},
 			Namespaces: map[string]string{
 				dockerPkg: "Docker",

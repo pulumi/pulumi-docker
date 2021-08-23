@@ -1,7 +1,23 @@
 ## HEAD (Unreleased)
-_(none)_
+* Fix handling of the `cache_from` parameter in `docker.Image` in the Python SDK.
+* Fix handling of the `cache_from` parameter in `docker.Image` in the Golang SDK.
 
 ---
+
+## 3.0.0 (2021-04-19)
+* Depend on Pulumi 3.0, which includes improvements to Python resource arguments and key translation, Go SDK performance,
+  Node SDK performance, general availability of Automation API, and more.
+
+## 2.10.0 (2021-04-12)
+* Upgrade to pulumi-terraform-bridge v2.23.0
+
+## 2.9.1 (2021-03-23)
+* Upgrade to pulumi-terraform-bridge v2.22.1  
+  **Please Note:** This includes a bug fix to the refresh operation regarding arrays
+
+## 2.9.0 (2021-03-16)
+* Upgrade to pulumi-terraform-bridge v2.21.0
+* Release macOS arm64 binary
 
 ## 2.8.1 (2021-02-16)
 * Upgrade to pulumi-terraform-bridge v2.19.0  

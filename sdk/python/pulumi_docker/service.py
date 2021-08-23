@@ -5,15 +5,318 @@
 import warnings
 import pulumi
 import pulumi.runtime
-from typing import Any, Mapping, Optional, Sequence, Union
-from . import _utilities, _tables
+from typing import Any, Mapping, Optional, Sequence, Union, overload
+from . import _utilities
 from . import outputs
 from ._inputs import *
 
-__all__ = ['Service']
+__all__ = ['ServiceArgs', 'Service']
+
+@pulumi.input_type
+class ServiceArgs:
+    def __init__(__self__, *,
+                 task_spec: pulumi.Input['ServiceTaskSpecArgs'],
+                 auth: Optional[pulumi.Input['ServiceAuthArgs']] = None,
+                 converge_config: Optional[pulumi.Input['ServiceConvergeConfigArgs']] = None,
+                 endpoint_spec: Optional[pulumi.Input['ServiceEndpointSpecArgs']] = None,
+                 labels: Optional[pulumi.Input[Sequence[pulumi.Input['ServiceLabelArgs']]]] = None,
+                 mode: Optional[pulumi.Input['ServiceModeArgs']] = None,
+                 name: Optional[pulumi.Input[str]] = None,
+                 rollback_config: Optional[pulumi.Input['ServiceRollbackConfigArgs']] = None,
+                 update_config: Optional[pulumi.Input['ServiceUpdateConfigArgs']] = None):
+        """
+        The set of arguments for constructing a Service resource.
+        :param pulumi.Input['ServiceTaskSpecArgs'] task_spec: See TaskSpec below for details.
+        :param pulumi.Input['ServiceAuthArgs'] auth: See Auth below for details.
+        :param pulumi.Input['ServiceConvergeConfigArgs'] converge_config: See Converge Config below for details.
+        :param pulumi.Input['ServiceEndpointSpecArgs'] endpoint_spec: See EndpointSpec below for details.
+        :param pulumi.Input[Sequence[pulumi.Input['ServiceLabelArgs']]] labels: See Labels below for details.
+        :param pulumi.Input['ServiceModeArgs'] mode: See Mode below for details.
+        :param pulumi.Input[str] name: The name of the Docker service.
+        :param pulumi.Input['ServiceRollbackConfigArgs'] rollback_config: See RollbackConfig below for details.
+        :param pulumi.Input['ServiceUpdateConfigArgs'] update_config: See UpdateConfig below for details.
+        """
+        pulumi.set(__self__, "task_spec", task_spec)
+        if auth is not None:
+            pulumi.set(__self__, "auth", auth)
+        if converge_config is not None:
+            pulumi.set(__self__, "converge_config", converge_config)
+        if endpoint_spec is not None:
+            pulumi.set(__self__, "endpoint_spec", endpoint_spec)
+        if labels is not None:
+            pulumi.set(__self__, "labels", labels)
+        if mode is not None:
+            pulumi.set(__self__, "mode", mode)
+        if name is not None:
+            pulumi.set(__self__, "name", name)
+        if rollback_config is not None:
+            pulumi.set(__self__, "rollback_config", rollback_config)
+        if update_config is not None:
+            pulumi.set(__self__, "update_config", update_config)
+
+    @property
+    @pulumi.getter(name="taskSpec")
+    def task_spec(self) -> pulumi.Input['ServiceTaskSpecArgs']:
+        """
+        See TaskSpec below for details.
+        """
+        return pulumi.get(self, "task_spec")
+
+    @task_spec.setter
+    def task_spec(self, value: pulumi.Input['ServiceTaskSpecArgs']):
+        pulumi.set(self, "task_spec", value)
+
+    @property
+    @pulumi.getter
+    def auth(self) -> Optional[pulumi.Input['ServiceAuthArgs']]:
+        """
+        See Auth below for details.
+        """
+        return pulumi.get(self, "auth")
+
+    @auth.setter
+    def auth(self, value: Optional[pulumi.Input['ServiceAuthArgs']]):
+        pulumi.set(self, "auth", value)
+
+    @property
+    @pulumi.getter(name="convergeConfig")
+    def converge_config(self) -> Optional[pulumi.Input['ServiceConvergeConfigArgs']]:
+        """
+        See Converge Config below for details.
+        """
+        return pulumi.get(self, "converge_config")
+
+    @converge_config.setter
+    def converge_config(self, value: Optional[pulumi.Input['ServiceConvergeConfigArgs']]):
+        pulumi.set(self, "converge_config", value)
+
+    @property
+    @pulumi.getter(name="endpointSpec")
+    def endpoint_spec(self) -> Optional[pulumi.Input['ServiceEndpointSpecArgs']]:
+        """
+        See EndpointSpec below for details.
+        """
+        return pulumi.get(self, "endpoint_spec")
+
+    @endpoint_spec.setter
+    def endpoint_spec(self, value: Optional[pulumi.Input['ServiceEndpointSpecArgs']]):
+        pulumi.set(self, "endpoint_spec", value)
+
+    @property
+    @pulumi.getter
+    def labels(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['ServiceLabelArgs']]]]:
+        """
+        See Labels below for details.
+        """
+        return pulumi.get(self, "labels")
+
+    @labels.setter
+    def labels(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['ServiceLabelArgs']]]]):
+        pulumi.set(self, "labels", value)
+
+    @property
+    @pulumi.getter
+    def mode(self) -> Optional[pulumi.Input['ServiceModeArgs']]:
+        """
+        See Mode below for details.
+        """
+        return pulumi.get(self, "mode")
+
+    @mode.setter
+    def mode(self, value: Optional[pulumi.Input['ServiceModeArgs']]):
+        pulumi.set(self, "mode", value)
+
+    @property
+    @pulumi.getter
+    def name(self) -> Optional[pulumi.Input[str]]:
+        """
+        The name of the Docker service.
+        """
+        return pulumi.get(self, "name")
+
+    @name.setter
+    def name(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "name", value)
+
+    @property
+    @pulumi.getter(name="rollbackConfig")
+    def rollback_config(self) -> Optional[pulumi.Input['ServiceRollbackConfigArgs']]:
+        """
+        See RollbackConfig below for details.
+        """
+        return pulumi.get(self, "rollback_config")
+
+    @rollback_config.setter
+    def rollback_config(self, value: Optional[pulumi.Input['ServiceRollbackConfigArgs']]):
+        pulumi.set(self, "rollback_config", value)
+
+    @property
+    @pulumi.getter(name="updateConfig")
+    def update_config(self) -> Optional[pulumi.Input['ServiceUpdateConfigArgs']]:
+        """
+        See UpdateConfig below for details.
+        """
+        return pulumi.get(self, "update_config")
+
+    @update_config.setter
+    def update_config(self, value: Optional[pulumi.Input['ServiceUpdateConfigArgs']]):
+        pulumi.set(self, "update_config", value)
+
+
+@pulumi.input_type
+class _ServiceState:
+    def __init__(__self__, *,
+                 auth: Optional[pulumi.Input['ServiceAuthArgs']] = None,
+                 converge_config: Optional[pulumi.Input['ServiceConvergeConfigArgs']] = None,
+                 endpoint_spec: Optional[pulumi.Input['ServiceEndpointSpecArgs']] = None,
+                 labels: Optional[pulumi.Input[Sequence[pulumi.Input['ServiceLabelArgs']]]] = None,
+                 mode: Optional[pulumi.Input['ServiceModeArgs']] = None,
+                 name: Optional[pulumi.Input[str]] = None,
+                 rollback_config: Optional[pulumi.Input['ServiceRollbackConfigArgs']] = None,
+                 task_spec: Optional[pulumi.Input['ServiceTaskSpecArgs']] = None,
+                 update_config: Optional[pulumi.Input['ServiceUpdateConfigArgs']] = None):
+        """
+        Input properties used for looking up and filtering Service resources.
+        :param pulumi.Input['ServiceAuthArgs'] auth: See Auth below for details.
+        :param pulumi.Input['ServiceConvergeConfigArgs'] converge_config: See Converge Config below for details.
+        :param pulumi.Input['ServiceEndpointSpecArgs'] endpoint_spec: See EndpointSpec below for details.
+        :param pulumi.Input[Sequence[pulumi.Input['ServiceLabelArgs']]] labels: See Labels below for details.
+        :param pulumi.Input['ServiceModeArgs'] mode: See Mode below for details.
+        :param pulumi.Input[str] name: The name of the Docker service.
+        :param pulumi.Input['ServiceRollbackConfigArgs'] rollback_config: See RollbackConfig below for details.
+        :param pulumi.Input['ServiceTaskSpecArgs'] task_spec: See TaskSpec below for details.
+        :param pulumi.Input['ServiceUpdateConfigArgs'] update_config: See UpdateConfig below for details.
+        """
+        if auth is not None:
+            pulumi.set(__self__, "auth", auth)
+        if converge_config is not None:
+            pulumi.set(__self__, "converge_config", converge_config)
+        if endpoint_spec is not None:
+            pulumi.set(__self__, "endpoint_spec", endpoint_spec)
+        if labels is not None:
+            pulumi.set(__self__, "labels", labels)
+        if mode is not None:
+            pulumi.set(__self__, "mode", mode)
+        if name is not None:
+            pulumi.set(__self__, "name", name)
+        if rollback_config is not None:
+            pulumi.set(__self__, "rollback_config", rollback_config)
+        if task_spec is not None:
+            pulumi.set(__self__, "task_spec", task_spec)
+        if update_config is not None:
+            pulumi.set(__self__, "update_config", update_config)
+
+    @property
+    @pulumi.getter
+    def auth(self) -> Optional[pulumi.Input['ServiceAuthArgs']]:
+        """
+        See Auth below for details.
+        """
+        return pulumi.get(self, "auth")
+
+    @auth.setter
+    def auth(self, value: Optional[pulumi.Input['ServiceAuthArgs']]):
+        pulumi.set(self, "auth", value)
+
+    @property
+    @pulumi.getter(name="convergeConfig")
+    def converge_config(self) -> Optional[pulumi.Input['ServiceConvergeConfigArgs']]:
+        """
+        See Converge Config below for details.
+        """
+        return pulumi.get(self, "converge_config")
+
+    @converge_config.setter
+    def converge_config(self, value: Optional[pulumi.Input['ServiceConvergeConfigArgs']]):
+        pulumi.set(self, "converge_config", value)
+
+    @property
+    @pulumi.getter(name="endpointSpec")
+    def endpoint_spec(self) -> Optional[pulumi.Input['ServiceEndpointSpecArgs']]:
+        """
+        See EndpointSpec below for details.
+        """
+        return pulumi.get(self, "endpoint_spec")
+
+    @endpoint_spec.setter
+    def endpoint_spec(self, value: Optional[pulumi.Input['ServiceEndpointSpecArgs']]):
+        pulumi.set(self, "endpoint_spec", value)
+
+    @property
+    @pulumi.getter
+    def labels(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['ServiceLabelArgs']]]]:
+        """
+        See Labels below for details.
+        """
+        return pulumi.get(self, "labels")
+
+    @labels.setter
+    def labels(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['ServiceLabelArgs']]]]):
+        pulumi.set(self, "labels", value)
+
+    @property
+    @pulumi.getter
+    def mode(self) -> Optional[pulumi.Input['ServiceModeArgs']]:
+        """
+        See Mode below for details.
+        """
+        return pulumi.get(self, "mode")
+
+    @mode.setter
+    def mode(self, value: Optional[pulumi.Input['ServiceModeArgs']]):
+        pulumi.set(self, "mode", value)
+
+    @property
+    @pulumi.getter
+    def name(self) -> Optional[pulumi.Input[str]]:
+        """
+        The name of the Docker service.
+        """
+        return pulumi.get(self, "name")
+
+    @name.setter
+    def name(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "name", value)
+
+    @property
+    @pulumi.getter(name="rollbackConfig")
+    def rollback_config(self) -> Optional[pulumi.Input['ServiceRollbackConfigArgs']]:
+        """
+        See RollbackConfig below for details.
+        """
+        return pulumi.get(self, "rollback_config")
+
+    @rollback_config.setter
+    def rollback_config(self, value: Optional[pulumi.Input['ServiceRollbackConfigArgs']]):
+        pulumi.set(self, "rollback_config", value)
+
+    @property
+    @pulumi.getter(name="taskSpec")
+    def task_spec(self) -> Optional[pulumi.Input['ServiceTaskSpecArgs']]:
+        """
+        See TaskSpec below for details.
+        """
+        return pulumi.get(self, "task_spec")
+
+    @task_spec.setter
+    def task_spec(self, value: Optional[pulumi.Input['ServiceTaskSpecArgs']]):
+        pulumi.set(self, "task_spec", value)
+
+    @property
+    @pulumi.getter(name="updateConfig")
+    def update_config(self) -> Optional[pulumi.Input['ServiceUpdateConfigArgs']]:
+        """
+        See UpdateConfig below for details.
+        """
+        return pulumi.get(self, "update_config")
+
+    @update_config.setter
+    def update_config(self, value: Optional[pulumi.Input['ServiceUpdateConfigArgs']]):
+        pulumi.set(self, "update_config", value)
 
 
 class Service(pulumi.CustomResource):
+    @overload
     def __init__(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
@@ -26,9 +329,7 @@ class Service(pulumi.CustomResource):
                  rollback_config: Optional[pulumi.Input[pulumi.InputType['ServiceRollbackConfigArgs']]] = None,
                  task_spec: Optional[pulumi.Input[pulumi.InputType['ServiceTaskSpecArgs']]] = None,
                  update_config: Optional[pulumi.Input[pulumi.InputType['ServiceUpdateConfigArgs']]] = None,
-                 __props__=None,
-                 __name__=None,
-                 __opts__=None):
+                 __props__=None):
         """
         ## Import
 
@@ -50,12 +351,46 @@ class Service(pulumi.CustomResource):
         :param pulumi.Input[pulumi.InputType['ServiceTaskSpecArgs']] task_spec: See TaskSpec below for details.
         :param pulumi.Input[pulumi.InputType['ServiceUpdateConfigArgs']] update_config: See UpdateConfig below for details.
         """
-        if __name__ is not None:
-            warnings.warn("explicit use of __name__ is deprecated", DeprecationWarning)
-            resource_name = __name__
-        if __opts__ is not None:
-            warnings.warn("explicit use of __opts__ is deprecated, use 'opts' instead", DeprecationWarning)
-            opts = __opts__
+        ...
+    @overload
+    def __init__(__self__,
+                 resource_name: str,
+                 args: ServiceArgs,
+                 opts: Optional[pulumi.ResourceOptions] = None):
+        """
+        ## Import
+
+        Docker service can be imported using the long id, e.g. for a service with the short id `55ba873dd`
+
+        ```sh
+         $ pulumi import docker:index/service:Service foo $(docker service inspect -f {{.ID}} 55b)
+        ```
+
+        :param str resource_name: The name of the resource.
+        :param ServiceArgs args: The arguments to use to populate this resource's properties.
+        :param pulumi.ResourceOptions opts: Options for the resource.
+        """
+        ...
+    def __init__(__self__, resource_name: str, *args, **kwargs):
+        resource_args, opts = _utilities.get_resource_args_opts(ServiceArgs, pulumi.ResourceOptions, *args, **kwargs)
+        if resource_args is not None:
+            __self__._internal_init(resource_name, opts, **resource_args.__dict__)
+        else:
+            __self__._internal_init(resource_name, *args, **kwargs)
+
+    def _internal_init(__self__,
+                 resource_name: str,
+                 opts: Optional[pulumi.ResourceOptions] = None,
+                 auth: Optional[pulumi.Input[pulumi.InputType['ServiceAuthArgs']]] = None,
+                 converge_config: Optional[pulumi.Input[pulumi.InputType['ServiceConvergeConfigArgs']]] = None,
+                 endpoint_spec: Optional[pulumi.Input[pulumi.InputType['ServiceEndpointSpecArgs']]] = None,
+                 labels: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ServiceLabelArgs']]]]] = None,
+                 mode: Optional[pulumi.Input[pulumi.InputType['ServiceModeArgs']]] = None,
+                 name: Optional[pulumi.Input[str]] = None,
+                 rollback_config: Optional[pulumi.Input[pulumi.InputType['ServiceRollbackConfigArgs']]] = None,
+                 task_spec: Optional[pulumi.Input[pulumi.InputType['ServiceTaskSpecArgs']]] = None,
+                 update_config: Optional[pulumi.Input[pulumi.InputType['ServiceUpdateConfigArgs']]] = None,
+                 __props__=None):
         if opts is None:
             opts = pulumi.ResourceOptions()
         if not isinstance(opts, pulumi.ResourceOptions):
@@ -65,19 +400,19 @@ class Service(pulumi.CustomResource):
         if opts.id is None:
             if __props__ is not None:
                 raise TypeError('__props__ is only valid when passed in combination with a valid opts.id to get an existing resource')
-            __props__ = dict()
+            __props__ = ServiceArgs.__new__(ServiceArgs)
 
-            __props__['auth'] = auth
-            __props__['converge_config'] = converge_config
-            __props__['endpoint_spec'] = endpoint_spec
-            __props__['labels'] = labels
-            __props__['mode'] = mode
-            __props__['name'] = name
-            __props__['rollback_config'] = rollback_config
+            __props__.__dict__["auth"] = auth
+            __props__.__dict__["converge_config"] = converge_config
+            __props__.__dict__["endpoint_spec"] = endpoint_spec
+            __props__.__dict__["labels"] = labels
+            __props__.__dict__["mode"] = mode
+            __props__.__dict__["name"] = name
+            __props__.__dict__["rollback_config"] = rollback_config
             if task_spec is None and not opts.urn:
                 raise TypeError("Missing required property 'task_spec'")
-            __props__['task_spec'] = task_spec
-            __props__['update_config'] = update_config
+            __props__.__dict__["task_spec"] = task_spec
+            __props__.__dict__["update_config"] = update_config
         super(Service, __self__).__init__(
             'docker:index/service:Service',
             resource_name,
@@ -116,17 +451,17 @@ class Service(pulumi.CustomResource):
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
 
-        __props__ = dict()
+        __props__ = _ServiceState.__new__(_ServiceState)
 
-        __props__["auth"] = auth
-        __props__["converge_config"] = converge_config
-        __props__["endpoint_spec"] = endpoint_spec
-        __props__["labels"] = labels
-        __props__["mode"] = mode
-        __props__["name"] = name
-        __props__["rollback_config"] = rollback_config
-        __props__["task_spec"] = task_spec
-        __props__["update_config"] = update_config
+        __props__.__dict__["auth"] = auth
+        __props__.__dict__["converge_config"] = converge_config
+        __props__.__dict__["endpoint_spec"] = endpoint_spec
+        __props__.__dict__["labels"] = labels
+        __props__.__dict__["mode"] = mode
+        __props__.__dict__["name"] = name
+        __props__.__dict__["rollback_config"] = rollback_config
+        __props__.__dict__["task_spec"] = task_spec
+        __props__.__dict__["update_config"] = update_config
         return Service(resource_name, opts=opts, __props__=__props__)
 
     @property
@@ -200,10 +535,4 @@ class Service(pulumi.CustomResource):
         See UpdateConfig below for details.
         """
         return pulumi.get(self, "update_config")
-
-    def translate_output_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
-    def translate_input_property(self, prop):
-        return _tables.SNAKE_TO_CAMEL_CASE_TABLE.get(prop) or prop
 

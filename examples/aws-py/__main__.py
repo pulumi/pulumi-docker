@@ -30,7 +30,7 @@ def get_registry_info(rid):
 
 for i in range(3):
     # Create a private ECR registry.
-    repo = aws.ecr.Repository('my-repo-%i' % i, name='image-%i' % i)
+    repo = aws.ecr.Repository('my-repo-%i' % i)
 
     registry = repo.registry_id.apply(get_registry_info)
 
