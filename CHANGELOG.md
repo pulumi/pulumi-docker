@@ -1,4 +1,8 @@
 ## HEAD (Unreleased)
+* Add `dockerfileContent` parameter to `docker.Image` in the Node SDK.
+* Add `DockerfileContent` parameter to `docker.Image` in the DotNet SDK.
+* Add `DockerfileContent` parameter to `docker.Image` in the Python SDK.
+* Add `dockerfile_content` parameter to `docker.Image` in the Golang SDK.
 * Fix handling of the `cache_from` parameter in `docker.Image` in the Python SDK.
 * Fix handling of the `cache_from` parameter in `docker.Image` in the Golang SDK.
 
