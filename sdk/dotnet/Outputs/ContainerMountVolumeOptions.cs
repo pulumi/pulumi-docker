@@ -14,17 +14,8 @@ namespace Pulumi.Docker.Outputs
     public sealed class ContainerMountVolumeOptions
     {
         public readonly string? DriverName;
-        /// <summary>
-        /// Options for the driver.
-        /// </summary>
         public readonly ImmutableDictionary<string, string>? DriverOptions;
-        /// <summary>
-        /// Adding labels.
-        /// </summary>
         public readonly ImmutableArray<Outputs.ContainerMountVolumeOptionsLabel> Labels;
-        /// <summary>
-        /// Whether to populate volume with data from the target.
-        /// </summary>
         public readonly bool? NoCopy;
 
         [OutputConstructor]

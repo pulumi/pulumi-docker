@@ -14,10 +14,6 @@ namespace Pulumi.Docker.Inputs
     {
         [Input("nameservers", required: true)]
         private InputList<string>? _nameservers;
-
-        /// <summary>
-        /// The IP addresses of the name servers, for example, `8.8.8.8`
-        /// </summary>
         public InputList<string> Nameservers
         {
             get => _nameservers ?? (_nameservers = new InputList<string>());
@@ -26,10 +22,6 @@ namespace Pulumi.Docker.Inputs
 
         [Input("options")]
         private InputList<string>? _options;
-
-        /// <summary>
-        /// A list of internal resolver variables to be modified, for example, `debug`, `ndots:3`
-        /// </summary>
         public InputList<string> Options
         {
             get => _options ?? (_options = new InputList<string>());
@@ -38,10 +30,6 @@ namespace Pulumi.Docker.Inputs
 
         [Input("searches")]
         private InputList<string>? _searches;
-
-        /// <summary>
-        /// A search list for host-name lookup.
-        /// </summary>
         public InputList<string> Searches
         {
             get => _searches ?? (_searches = new InputList<string>());

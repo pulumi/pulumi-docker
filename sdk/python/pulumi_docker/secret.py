@@ -20,9 +20,9 @@ class SecretArgs:
                  name: Optional[pulumi.Input[str]] = None):
         """
         The set of arguments for constructing a Secret resource.
-        :param pulumi.Input[str] data: The base64 encoded data of the secret.
-        :param pulumi.Input[Sequence[pulumi.Input['SecretLabelArgs']]] labels: See Labels below for details.
-        :param pulumi.Input[str] name: The name of the Docker secret.
+        :param pulumi.Input[str] data: Base64-url-safe-encoded secret data
+        :param pulumi.Input[Sequence[pulumi.Input['SecretLabelArgs']]] labels: User-defined key/value metadata
+        :param pulumi.Input[str] name: User-defined name of the secret
         """
         pulumi.set(__self__, "data", data)
         if labels is not None:
@@ -34,7 +34,7 @@ class SecretArgs:
     @pulumi.getter
     def data(self) -> pulumi.Input[str]:
         """
-        The base64 encoded data of the secret.
+        Base64-url-safe-encoded secret data
         """
         return pulumi.get(self, "data")
 
@@ -46,7 +46,7 @@ class SecretArgs:
     @pulumi.getter
     def labels(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['SecretLabelArgs']]]]:
         """
-        See Labels below for details.
+        User-defined key/value metadata
         """
         return pulumi.get(self, "labels")
 
@@ -58,7 +58,7 @@ class SecretArgs:
     @pulumi.getter
     def name(self) -> Optional[pulumi.Input[str]]:
         """
-        The name of the Docker secret.
+        User-defined name of the secret
         """
         return pulumi.get(self, "name")
 
@@ -75,9 +75,9 @@ class _SecretState:
                  name: Optional[pulumi.Input[str]] = None):
         """
         Input properties used for looking up and filtering Secret resources.
-        :param pulumi.Input[str] data: The base64 encoded data of the secret.
-        :param pulumi.Input[Sequence[pulumi.Input['SecretLabelArgs']]] labels: See Labels below for details.
-        :param pulumi.Input[str] name: The name of the Docker secret.
+        :param pulumi.Input[str] data: Base64-url-safe-encoded secret data
+        :param pulumi.Input[Sequence[pulumi.Input['SecretLabelArgs']]] labels: User-defined key/value metadata
+        :param pulumi.Input[str] name: User-defined name of the secret
         """
         if data is not None:
             pulumi.set(__self__, "data", data)
@@ -90,7 +90,7 @@ class _SecretState:
     @pulumi.getter
     def data(self) -> Optional[pulumi.Input[str]]:
         """
-        The base64 encoded data of the secret.
+        Base64-url-safe-encoded secret data
         """
         return pulumi.get(self, "data")
 
@@ -102,7 +102,7 @@ class _SecretState:
     @pulumi.getter
     def labels(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['SecretLabelArgs']]]]:
         """
-        See Labels below for details.
+        User-defined key/value metadata
         """
         return pulumi.get(self, "labels")
 
@@ -114,7 +114,7 @@ class _SecretState:
     @pulumi.getter
     def name(self) -> Optional[pulumi.Input[str]]:
         """
-        The name of the Docker secret.
+        User-defined name of the secret
         """
         return pulumi.get(self, "name")
 
@@ -135,13 +135,13 @@ class Secret(pulumi.CustomResource):
         """
         ## Import
 
-        Docker secret cannot be imported as the secret data, once set, is never exposed again.
+        Import is supported using the following syntax#!/bin/bash # Docker secret cannot be imported as the secret data, once set, is never exposed again.
 
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
-        :param pulumi.Input[str] data: The base64 encoded data of the secret.
-        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['SecretLabelArgs']]]] labels: See Labels below for details.
-        :param pulumi.Input[str] name: The name of the Docker secret.
+        :param pulumi.Input[str] data: Base64-url-safe-encoded secret data
+        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['SecretLabelArgs']]]] labels: User-defined key/value metadata
+        :param pulumi.Input[str] name: User-defined name of the secret
         """
         ...
     @overload
@@ -152,7 +152,7 @@ class Secret(pulumi.CustomResource):
         """
         ## Import
 
-        Docker secret cannot be imported as the secret data, once set, is never exposed again.
+        Import is supported using the following syntax#!/bin/bash # Docker secret cannot be imported as the secret data, once set, is never exposed again.
 
         :param str resource_name: The name of the resource.
         :param SecretArgs args: The arguments to use to populate this resource's properties.
@@ -209,9 +209,9 @@ class Secret(pulumi.CustomResource):
         :param str resource_name: The unique name of the resulting resource.
         :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
-        :param pulumi.Input[str] data: The base64 encoded data of the secret.
-        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['SecretLabelArgs']]]] labels: See Labels below for details.
-        :param pulumi.Input[str] name: The name of the Docker secret.
+        :param pulumi.Input[str] data: Base64-url-safe-encoded secret data
+        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['SecretLabelArgs']]]] labels: User-defined key/value metadata
+        :param pulumi.Input[str] name: User-defined name of the secret
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
 
@@ -226,7 +226,7 @@ class Secret(pulumi.CustomResource):
     @pulumi.getter
     def data(self) -> pulumi.Output[str]:
         """
-        The base64 encoded data of the secret.
+        Base64-url-safe-encoded secret data
         """
         return pulumi.get(self, "data")
 
@@ -234,7 +234,7 @@ class Secret(pulumi.CustomResource):
     @pulumi.getter
     def labels(self) -> pulumi.Output[Optional[Sequence['outputs.SecretLabel']]]:
         """
-        See Labels below for details.
+        User-defined key/value metadata
         """
         return pulumi.get(self, "labels")
 
@@ -242,7 +242,7 @@ class Secret(pulumi.CustomResource):
     @pulumi.getter
     def name(self) -> pulumi.Output[str]:
         """
-        The name of the Docker secret.
+        User-defined name of the secret
         """
         return pulumi.get(self, "name")
 

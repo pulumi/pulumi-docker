@@ -19,7 +19,7 @@ class GetPluginResult:
     """
     A collection of values returned by getPlugin.
     """
-    def __init__(__self__, alias=None, enabled=None, envs=None, grant_all_permissions=None, id=None, plugin_reference=None):
+    def __init__(__self__, alias=None, enabled=None, envs=None, grant_all_permissions=None, id=None, name=None, plugin_reference=None):
         if alias and not isinstance(alias, str):
             raise TypeError("Expected argument 'alias' to be a str")
         pulumi.set(__self__, "alias", alias)
@@ -35,6 +35,9 @@ class GetPluginResult:
         if id and not isinstance(id, str):
             raise TypeError("Expected argument 'id' to be a str")
         pulumi.set(__self__, "id", id)
+        if name and not isinstance(name, str):
+            raise TypeError("Expected argument 'name' to be a str")
+        pulumi.set(__self__, "name", name)
         if plugin_reference and not isinstance(plugin_reference, str):
             raise TypeError("Expected argument 'plugin_reference' to be a str")
         pulumi.set(__self__, "plugin_reference", plugin_reference)
@@ -57,9 +60,6 @@ class GetPluginResult:
     @property
     @pulumi.getter(name="grantAllPermissions")
     def grant_all_permissions(self) -> bool:
-        """
-        (Optional, boolean) If true, grant all permissions necessary to run the plugin.
-        """
         return pulumi.get(self, "grant_all_permissions")
 
     @property
@@ -68,11 +68,13 @@ class GetPluginResult:
         return pulumi.get(self, "id")
 
     @property
+    @pulumi.getter
+    def name(self) -> str:
+        return pulumi.get(self, "name")
+
+    @property
     @pulumi.getter(name="pluginReference")
     def plugin_reference(self) -> str:
-        """
-        (Optional, string, Forces new resource) The plugin reference.
-        """
         return pulumi.get(self, "plugin_reference")
 
 
@@ -87,6 +89,7 @@ class AwaitableGetPluginResult(GetPluginResult):
             envs=self.envs,
             grant_all_permissions=self.grant_all_permissions,
             id=self.id,
+            name=self.name,
             plugin_reference=self.plugin_reference)
 
 
@@ -98,16 +101,24 @@ def get_plugin(alias: Optional[str] = None,
 
     ## Example Usage
 
-    ```python
-    import pulumi
-    import pulumi_docker as docker
+    ### With alias
+    data "Plugin" "by_alias" {
+      alias = "sample-volume-plugin:latest"
+    }
+    ## Schema
 
-    sample_volume_plugin = docker.get_plugin(alias="sample-volume-plugin:latest")
-    ```
+    ### Optional
 
+    - **alias** (String) The alias of the Docker plugin. If the tag is omitted, `:latest` is complemented to the attribute value.
+    - **id** (String) The ID of the plugin, which has precedence over the `alias` of both are given
 
-    :param str alias: The alias of the Docker plugin.
-    :param str id: The Docker plugin ID.
+    ### Read-Only
+
+    - **enabled** (Boolean) If `true` the plugin is enabled
+    - **env** (Set of String) The environment variables in the form of `KEY=VALUE`, e.g. `DEBUG=0`
+    - **grant_all_permissions** (Boolean) If true, grant all permissions necessary to run the plugin
+    - **name** (String) The plugin name. If the tag is omitted, `:latest` is complemented to the attribute value.
+    - **plugin_reference** (String) The Docker Plugin Reference
     """
     __args__ = dict()
     __args__['alias'] = alias
@@ -124,4 +135,5 @@ def get_plugin(alias: Optional[str] = None,
         envs=__ret__.envs,
         grant_all_permissions=__ret__.grant_all_permissions,
         id=__ret__.id,
+        name=__ret__.name,
         plugin_reference=__ret__.plugin_reference)

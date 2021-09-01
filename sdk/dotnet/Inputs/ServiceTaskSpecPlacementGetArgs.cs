@@ -14,28 +14,17 @@ namespace Pulumi.Docker.Inputs
     {
         [Input("constraints")]
         private InputList<string>? _constraints;
-
-        /// <summary>
-        /// An array of constraints. e.g.: `node.role==manager`
-        /// </summary>
         public InputList<string> Constraints
         {
             get => _constraints ?? (_constraints = new InputList<string>());
             set => _constraints = value;
         }
 
-        /// <summary>
-        /// Maximum number of replicas for per node (default value is 0, which is unlimited)
-        /// </summary>
         [Input("maxReplicas")]
         public Input<int>? MaxReplicas { get; set; }
 
         [Input("platforms")]
         private InputList<Inputs.ServiceTaskSpecPlacementPlatformGetArgs>? _platforms;
-
-        /// <summary>
-        /// Platforms stores all the platforms that the service's image can run on
-        /// </summary>
         public InputList<Inputs.ServiceTaskSpecPlacementPlatformGetArgs> Platforms
         {
             get => _platforms ?? (_platforms = new InputList<Inputs.ServiceTaskSpecPlacementPlatformGetArgs>());
@@ -44,10 +33,6 @@ namespace Pulumi.Docker.Inputs
 
         [Input("prefs")]
         private InputList<string>? _prefs;
-
-        /// <summary>
-        /// Preferences provide a way to make the scheduler aware of factors such as topology. They are provided in order from highest to lowest precedence, e.g.: `spread=node.role.manager`
-        /// </summary>
         public InputList<string> Prefs
         {
             get => _prefs ?? (_prefs = new InputList<string>());

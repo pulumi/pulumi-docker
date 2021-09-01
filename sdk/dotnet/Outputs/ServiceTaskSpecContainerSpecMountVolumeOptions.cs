@@ -15,13 +15,7 @@ namespace Pulumi.Docker.Outputs
     {
         public readonly string? DriverName;
         public readonly ImmutableDictionary<string, string>? DriverOptions;
-        /// <summary>
-        /// See Labels below for details.
-        /// </summary>
         public readonly ImmutableArray<Outputs.ServiceTaskSpecContainerSpecMountVolumeOptionsLabel> Labels;
-        /// <summary>
-        /// Whether to populate volume with data from the target.
-        /// </summary>
         public readonly bool? NoCopy;
 
         [OutputConstructor]

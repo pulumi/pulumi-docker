@@ -20,9 +20,6 @@ namespace Pulumi.Docker.Inputs
             set => _buildArg = value;
         }
 
-        /// <summary>
-        /// default Dockerfile
-        /// </summary>
         [Input("dockerfile")]
         public Input<string>? Dockerfile { get; set; }
 
@@ -43,9 +40,6 @@ namespace Pulumi.Docker.Inputs
         [Input("path", required: true)]
         public Input<string> Path { get; set; } = null!;
 
-        /// <summary>
-        /// default true
-        /// </summary>
         [Input("remove")]
         public Input<bool>? Remove { get; set; }
 

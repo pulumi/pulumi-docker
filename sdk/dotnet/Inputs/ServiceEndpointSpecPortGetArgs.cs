@@ -12,33 +12,18 @@ namespace Pulumi.Docker.Inputs
 
     public sealed class ServiceEndpointSpecPortGetArgs : Pulumi.ResourceArgs
     {
-        /// <summary>
-        /// The name of the Docker service.
-        /// </summary>
         [Input("name")]
         public Input<string>? Name { get; set; }
 
-        /// <summary>
-        /// Protocol that can be used over this port: `tcp|udp|sctp`. Default: `tcp`.
-        /// </summary>
         [Input("protocol")]
         public Input<string>? Protocol { get; set; }
 
-        /// <summary>
-        /// Represents the mode in which the port is to be published: `ingress|host`
-        /// </summary>
         [Input("publishMode")]
         public Input<string>? PublishMode { get; set; }
 
-        /// <summary>
-        /// The port on the swarm hosts. If not set the value of `target_port` will be used.
-        /// </summary>
         [Input("publishedPort")]
         public Input<int>? PublishedPort { get; set; }
 
-        /// <summary>
-        /// Port inside the container.
-        /// </summary>
         [Input("targetPort", required: true)]
         public Input<int> TargetPort { get; set; } = null!;
 

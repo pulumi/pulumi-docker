@@ -13,17 +13,8 @@ namespace Pulumi.Docker.Outputs
     [OutputType]
     public sealed class ServiceAuth
     {
-        /// <summary>
-        /// The password to use for authenticating to the registry. If this is blank, the `DOCKER_REGISTRY_PASS` is also be checked.
-        /// </summary>
         public readonly string? Password;
-        /// <summary>
-        /// The address of the registry server
-        /// </summary>
         public readonly string ServerAddress;
-        /// <summary>
-        /// The username to use for authenticating to the registry. If this is blank, the `DOCKER_REGISTRY_USER` is also be checked.
-        /// </summary>
         public readonly string? Username;
 
         [OutputConstructor]

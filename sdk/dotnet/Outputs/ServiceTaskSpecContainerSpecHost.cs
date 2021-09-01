@@ -13,13 +13,7 @@ namespace Pulumi.Docker.Outputs
     [OutputType]
     public sealed class ServiceTaskSpecContainerSpecHost
     {
-        /// <summary>
-        /// A list of hostname/IP mappings to add to the container's hosts file.
-        /// </summary>
         public readonly string Host;
-        /// <summary>
-        /// The ip
-        /// </summary>
         public readonly string Ip;
 
         [OutputConstructor]
