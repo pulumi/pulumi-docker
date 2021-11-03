@@ -655,7 +655,9 @@ def run_command_that_can_fail(
     cmd.extend(args)
 
     if env is not None:
-        env = os.environ.copy().update(env)
+        environ = os.environ.copy()
+        environ.update(env)
+        env = environ
 
     process = subprocess.Popen(cmd, env=env, stdout=subprocess.PIPE,
                                stderr=subprocess.PIPE, stdin=subprocess.PIPE, encoding="utf-8")

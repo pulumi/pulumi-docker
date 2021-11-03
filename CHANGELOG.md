@@ -1,5 +1,5 @@
 ## HEAD (Unreleased)
-_(none)_
+* Fix passing of `env` parameter in `docker.DockerBuildArgs` in the Python SDK [#310](https://github.com/pulumi/pulumi-docker/issues/310)
 
 ---
 
