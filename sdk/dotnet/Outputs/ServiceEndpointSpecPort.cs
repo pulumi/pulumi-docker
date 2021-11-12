@@ -13,6 +13,9 @@ namespace Pulumi.Docker.Outputs
     [OutputType]
     public sealed class ServiceEndpointSpecPort
     {
+        /// <summary>
+        /// Name of the service
+        /// </summary>
         public readonly string? Name;
         public readonly string? Protocol;
         public readonly string? PublishMode;

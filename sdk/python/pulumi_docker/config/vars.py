@@ -9,41 +9,48 @@ from typing import Any, Mapping, Optional, Sequence, Union, overload
 from .. import _utilities
 from . import outputs
 
-__all__ = [
-    'ca_material',
-    'cert_material',
-    'cert_path',
-    'host',
-    'key_material',
-    'registry_auth',
-]
+import types
 
 __config__ = pulumi.Config('docker')
 
-ca_material = __config__.get('caMaterial')
-"""
-PEM-encoded content of Docker host CA certificate
-"""
 
-cert_material = __config__.get('certMaterial')
-"""
-PEM-encoded content of Docker client certificate
-"""
+class _ExportableConfig(types.ModuleType):
+    @property
+    def ca_material(self) -> Optional[str]:
+        """
+        PEM-encoded content of Docker host CA certificate
+        """
+        return __config__.get('caMaterial')
 
-cert_path = __config__.get('certPath')
-"""
-Path to directory with Docker TLS config
-"""
+    @property
+    def cert_material(self) -> Optional[str]:
+        """
+        PEM-encoded content of Docker client certificate
+        """
+        return __config__.get('certMaterial')
 
-host = __config__.get('host') or (_utilities.get_env('DOCKER_HOST') or 'unix:///var/run/docker.sock')
-"""
-The Docker daemon address
-"""
+    @property
+    def cert_path(self) -> Optional[str]:
+        """
+        Path to directory with Docker TLS config
+        """
+        return __config__.get('certPath')
 
-key_material = __config__.get('keyMaterial')
-"""
-PEM-encoded content of Docker client private key
-"""
+    @property
+    def host(self) -> str:
+        """
+        The Docker daemon address
+        """
+        return __config__.get('host') or (_utilities.get_env('DOCKER_HOST') or 'unix:///var/run/docker.sock')
 
-registry_auth = __config__.get('registryAuth')
+    @property
+    def key_material(self) -> Optional[str]:
+        """
+        PEM-encoded content of Docker client private key
+        """
+        return __config__.get('keyMaterial')
+
+    @property
+    def registry_auth(self) -> Optional[str]:
+        return __config__.get('registryAuth')
 

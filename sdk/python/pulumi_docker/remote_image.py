@@ -24,14 +24,11 @@ class RemoteImageArgs:
         """
         The set of arguments for constructing a RemoteImage resource.
         :param pulumi.Input[str] name: The name of the Docker image, including any tags or SHA256 repo digests.
-        :param pulumi.Input['RemoteImageBuildArgs'] build: Configuration to build an image. Please see [docker build command
-               reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+        :param pulumi.Input['RemoteImageBuildArgs'] build: Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
         :param pulumi.Input[bool] force_remove: If true, then the image is removed forcibly when the resource is destroyed.
-        :param pulumi.Input[bool] keep_locally: If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from
-               the docker local storage on destroy operation.
+        :param pulumi.Input[bool] keep_locally: If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
         :param pulumi.Input[str] pull_trigger: A value which cause an image pull when changed
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] pull_triggers: List of values which cause an image pull when changed. This is used to store the image digest from the registry when
-               using the [docker_registry_image](../data-sources/registry_image.md).
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] pull_triggers: List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
         """
         pulumi.set(__self__, "name", name)
         if build is not None:
@@ -64,8 +61,7 @@ class RemoteImageArgs:
     @pulumi.getter
     def build(self) -> Optional[pulumi.Input['RemoteImageBuildArgs']]:
         """
-        Configuration to build an image. Please see [docker build command
-        reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+        Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
         """
         return pulumi.get(self, "build")
 
@@ -89,8 +85,7 @@ class RemoteImageArgs:
     @pulumi.getter(name="keepLocally")
     def keep_locally(self) -> Optional[pulumi.Input[bool]]:
         """
-        If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from
-        the docker local storage on destroy operation.
+        If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
         """
         return pulumi.get(self, "keep_locally")
 
@@ -114,8 +109,7 @@ class RemoteImageArgs:
     @pulumi.getter(name="pullTriggers")
     def pull_triggers(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
         """
-        List of values which cause an image pull when changed. This is used to store the image digest from the registry when
-        using the [docker_registry_image](../data-sources/registry_image.md).
+        List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
         """
         return pulumi.get(self, "pull_triggers")
 
@@ -138,16 +132,13 @@ class _RemoteImageState:
                  repo_digest: Optional[pulumi.Input[str]] = None):
         """
         Input properties used for looking up and filtering RemoteImage resources.
-        :param pulumi.Input['RemoteImageBuildArgs'] build: Configuration to build an image. Please see [docker build command
-               reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+        :param pulumi.Input['RemoteImageBuildArgs'] build: Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
         :param pulumi.Input[bool] force_remove: If true, then the image is removed forcibly when the resource is destroyed.
-        :param pulumi.Input[bool] keep_locally: If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from
-               the docker local storage on destroy operation.
+        :param pulumi.Input[bool] keep_locally: If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
         :param pulumi.Input[str] latest: The ID of the image in the form of `sha256:<hash>` image digest. Do not confuse it with the default `latest` tag.
         :param pulumi.Input[str] name: The name of the Docker image, including any tags or SHA256 repo digests.
         :param pulumi.Input[str] pull_trigger: A value which cause an image pull when changed
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] pull_triggers: List of values which cause an image pull when changed. This is used to store the image digest from the registry when
-               using the [docker_registry_image](../data-sources/registry_image.md).
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] pull_triggers: List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
         :param pulumi.Input[str] repo_digest: The image sha256 digest in the form of `repo[:tag]@sha256:<hash>`.
         """
         if build is not None:
@@ -182,8 +173,7 @@ class _RemoteImageState:
     @pulumi.getter
     def build(self) -> Optional[pulumi.Input['RemoteImageBuildArgs']]:
         """
-        Configuration to build an image. Please see [docker build command
-        reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+        Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
         """
         return pulumi.get(self, "build")
 
@@ -207,8 +197,7 @@ class _RemoteImageState:
     @pulumi.getter(name="keepLocally")
     def keep_locally(self) -> Optional[pulumi.Input[bool]]:
         """
-        If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from
-        the docker local storage on destroy operation.
+        If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
         """
         return pulumi.get(self, "keep_locally")
 
@@ -265,8 +254,7 @@ class _RemoteImageState:
     @pulumi.getter(name="pullTriggers")
     def pull_triggers(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
         """
-        List of values which cause an image pull when changed. This is used to store the image digest from the registry when
-        using the [docker_registry_image](../data-sources/registry_image.md).
+        List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
         """
         return pulumi.get(self, "pull_triggers")
 
@@ -353,57 +341,14 @@ class RemoteImage(pulumi.CustomResource):
             ))
         ```
 
-        <!-- schema generated by tfplugindocs -->
-        ## Schema
-
-        ### Required
-
-        - **name** (String) The name of the Docker image, including any tags or SHA256 repo digests.
-
-        ### Optional
-
-        - **build** (Block Set, Max: 1) Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too. (see below for nested schema)
-        - **force_remove** (Boolean) If true, then the image is removed forcibly when the resource is destroyed.
-        - **id** (String) The ID of this resource.
-        - **keep_locally** (Boolean) If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
-        - **pull_trigger** (String, Deprecated) A value which cause an image pull when changed
-        - **pull_triggers** (Set of String) List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker_registry_image.
-
-        ### Read-Only
-
-        - **latest** (String, Deprecated) The ID of the image in the form of `sha256:<hash>` image digest. Do not confuse it with the default `latest` tag.
-        - **output** (String, Deprecated)
-        - **repo_digest** (String) The image sha256 digest in the form of `repo[:tag]@sha256:<hash>`.
-
-        <a id="nestedblock--build"></a>
-        ### Nested Schema for `build`
-
-        Required:
-
-        - **path** (String) Context path
-
-        Optional:
-
-        - **build_arg** (Map of String) Set build-time variables
-        - **dockerfile** (String) Name of the Dockerfile. Defaults to `Dockerfile`.
-        - **force_remove** (Boolean) Always remove intermediate containers
-        - **label** (Map of String) Set metadata for an image
-        - **no_cache** (Boolean) Do not use cache when building the image
-        - **remove** (Boolean) Remove intermediate containers after a successful build. Defaults to  `true`.
-        - **tag** (List of String) Name and optionally a tag in the 'name:tag' format
-        - **target** (String) Set the target build stage to build
-
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
-        :param pulumi.Input[pulumi.InputType['RemoteImageBuildArgs']] build: Configuration to build an image. Please see [docker build command
-               reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+        :param pulumi.Input[pulumi.InputType['RemoteImageBuildArgs']] build: Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
         :param pulumi.Input[bool] force_remove: If true, then the image is removed forcibly when the resource is destroyed.
-        :param pulumi.Input[bool] keep_locally: If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from
-               the docker local storage on destroy operation.
+        :param pulumi.Input[bool] keep_locally: If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
         :param pulumi.Input[str] name: The name of the Docker image, including any tags or SHA256 repo digests.
         :param pulumi.Input[str] pull_trigger: A value which cause an image pull when changed
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] pull_triggers: List of values which cause an image pull when changed. This is used to store the image digest from the registry when
-               using the [docker_registry_image](../data-sources/registry_image.md).
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] pull_triggers: List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
         """
         ...
     @overload
@@ -464,46 +409,6 @@ class RemoteImage(pulumi.CustomResource):
                 },
             ))
         ```
-
-        <!-- schema generated by tfplugindocs -->
-        ## Schema
-
-        ### Required
-
-        - **name** (String) The name of the Docker image, including any tags or SHA256 repo digests.
-
-        ### Optional
-
-        - **build** (Block Set, Max: 1) Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too. (see below for nested schema)
-        - **force_remove** (Boolean) If true, then the image is removed forcibly when the resource is destroyed.
-        - **id** (String) The ID of this resource.
-        - **keep_locally** (Boolean) If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
-        - **pull_trigger** (String, Deprecated) A value which cause an image pull when changed
-        - **pull_triggers** (Set of String) List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker_registry_image.
-
-        ### Read-Only
-
-        - **latest** (String, Deprecated) The ID of the image in the form of `sha256:<hash>` image digest. Do not confuse it with the default `latest` tag.
-        - **output** (String, Deprecated)
-        - **repo_digest** (String) The image sha256 digest in the form of `repo[:tag]@sha256:<hash>`.
-
-        <a id="nestedblock--build"></a>
-        ### Nested Schema for `build`
-
-        Required:
-
-        - **path** (String) Context path
-
-        Optional:
-
-        - **build_arg** (Map of String) Set build-time variables
-        - **dockerfile** (String) Name of the Dockerfile. Defaults to `Dockerfile`.
-        - **force_remove** (Boolean) Always remove intermediate containers
-        - **label** (Map of String) Set metadata for an image
-        - **no_cache** (Boolean) Do not use cache when building the image
-        - **remove** (Boolean) Remove intermediate containers after a successful build. Defaults to  `true`.
-        - **tag** (List of String) Name and optionally a tag in the 'name:tag' format
-        - **target** (String) Set the target build stage to build
 
         :param str resource_name: The name of the resource.
         :param RemoteImageArgs args: The arguments to use to populate this resource's properties.
@@ -578,16 +483,13 @@ class RemoteImage(pulumi.CustomResource):
         :param str resource_name: The unique name of the resulting resource.
         :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
-        :param pulumi.Input[pulumi.InputType['RemoteImageBuildArgs']] build: Configuration to build an image. Please see [docker build command
-               reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+        :param pulumi.Input[pulumi.InputType['RemoteImageBuildArgs']] build: Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
         :param pulumi.Input[bool] force_remove: If true, then the image is removed forcibly when the resource is destroyed.
-        :param pulumi.Input[bool] keep_locally: If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from
-               the docker local storage on destroy operation.
+        :param pulumi.Input[bool] keep_locally: If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
         :param pulumi.Input[str] latest: The ID of the image in the form of `sha256:<hash>` image digest. Do not confuse it with the default `latest` tag.
         :param pulumi.Input[str] name: The name of the Docker image, including any tags or SHA256 repo digests.
         :param pulumi.Input[str] pull_trigger: A value which cause an image pull when changed
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] pull_triggers: List of values which cause an image pull when changed. This is used to store the image digest from the registry when
-               using the [docker_registry_image](../data-sources/registry_image.md).
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] pull_triggers: List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
         :param pulumi.Input[str] repo_digest: The image sha256 digest in the form of `repo[:tag]@sha256:<hash>`.
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
@@ -609,8 +511,7 @@ class RemoteImage(pulumi.CustomResource):
     @pulumi.getter
     def build(self) -> pulumi.Output[Optional['outputs.RemoteImageBuild']]:
         """
-        Configuration to build an image. Please see [docker build command
-        reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+        Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
         """
         return pulumi.get(self, "build")
 
@@ -626,8 +527,7 @@ class RemoteImage(pulumi.CustomResource):
     @pulumi.getter(name="keepLocally")
     def keep_locally(self) -> pulumi.Output[Optional[bool]]:
         """
-        If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from
-        the docker local storage on destroy operation.
+        If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
         """
         return pulumi.get(self, "keep_locally")
 
@@ -664,8 +564,7 @@ class RemoteImage(pulumi.CustomResource):
     @pulumi.getter(name="pullTriggers")
     def pull_triggers(self) -> pulumi.Output[Optional[Sequence[str]]]:
         """
-        List of values which cause an image pull when changed. This is used to store the image digest from the registry when
-        using the [docker_registry_image](../data-sources/registry_image.md).
+        List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
         """
         return pulumi.get(self, "pull_triggers")
 

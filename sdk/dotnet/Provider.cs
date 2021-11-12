@@ -19,6 +19,37 @@ namespace Pulumi.Docker
     public partial class Provider : Pulumi.ProviderResource
     {
         /// <summary>
+        /// PEM-encoded content of Docker host CA certificate
+        /// </summary>
+        [Output("caMaterial")]
+        public Output<string?> CaMaterial { get; private set; } = null!;
+
+        /// <summary>
+        /// PEM-encoded content of Docker client certificate
+        /// </summary>
+        [Output("certMaterial")]
+        public Output<string?> CertMaterial { get; private set; } = null!;
+
+        /// <summary>
+        /// Path to directory with Docker TLS config
+        /// </summary>
+        [Output("certPath")]
+        public Output<string?> CertPath { get; private set; } = null!;
+
+        /// <summary>
+        /// The Docker daemon address
+        /// </summary>
+        [Output("host")]
+        public Output<string?> Host { get; private set; } = null!;
+
+        /// <summary>
+        /// PEM-encoded content of Docker client private key
+        /// </summary>
+        [Output("keyMaterial")]
+        public Output<string?> KeyMaterial { get; private set; } = null!;
+
+
+        /// <summary>
         /// Create a Provider resource with the given unique name, arguments, and options.
         /// </summary>
         ///

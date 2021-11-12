@@ -129,6 +129,8 @@ func (o RegistryAuthArrayOutput) Index(i pulumi.IntInput) RegistryAuthOutput {
 }
 
 func init() {
+	pulumi.RegisterInputType(reflect.TypeOf((*RegistryAuthInput)(nil)).Elem(), RegistryAuthArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*RegistryAuthArrayInput)(nil)).Elem(), RegistryAuthArray{})
 	pulumi.RegisterOutputType(RegistryAuthOutput{})
 	pulumi.RegisterOutputType(RegistryAuthArrayOutput{})
 }

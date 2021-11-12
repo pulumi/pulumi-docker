@@ -12,6 +12,9 @@ namespace Pulumi.Docker.Inputs
 
     public sealed class ServiceEndpointSpecPortArgs : Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Name of the service
+        /// </summary>
         [Input("name")]
         public Input<string>? Name { get; set; }
 

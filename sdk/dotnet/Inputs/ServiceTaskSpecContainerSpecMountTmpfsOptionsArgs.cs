@@ -12,6 +12,9 @@ namespace Pulumi.Docker.Inputs
 
     public sealed class ServiceTaskSpecContainerSpecMountTmpfsOptionsArgs : Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Scheduling mode for the service
+        /// </summary>
         [Input("mode")]
         public Input<int>? Mode { get; set; }
 

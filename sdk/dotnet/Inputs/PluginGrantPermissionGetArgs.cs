@@ -12,11 +12,18 @@ namespace Pulumi.Docker.Inputs
 
     public sealed class PluginGrantPermissionGetArgs : Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// The name of the permission
+        /// </summary>
         [Input("name", required: true)]
         public Input<string> Name { get; set; } = null!;
 
         [Input("values", required: true)]
         private InputList<string>? _values;
+
+        /// <summary>
+        /// The value of the permission
+        /// </summary>
         public InputList<string> Values
         {
             get => _values ?? (_values = new InputList<string>());

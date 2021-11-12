@@ -14,6 +14,10 @@ namespace Pulumi.Docker.Inputs
     {
         [Input("adds")]
         private InputList<string>? _adds;
+
+        /// <summary>
+        /// List of linux capabilities to add.
+        /// </summary>
         public InputList<string> Adds
         {
             get => _adds ?? (_adds = new InputList<string>());
@@ -22,6 +26,10 @@ namespace Pulumi.Docker.Inputs
 
         [Input("drops")]
         private InputList<string>? _drops;
+
+        /// <summary>
+        /// List of linux capabilities to drop.
+        /// </summary>
         public InputList<string> Drops
         {
             get => _drops ?? (_drops = new InputList<string>());

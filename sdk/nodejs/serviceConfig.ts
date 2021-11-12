@@ -93,11 +93,11 @@ export interface ServiceConfigState {
     /**
      * Base64-url-safe-encoded config data
      */
-    readonly data?: pulumi.Input<string>;
+    data?: pulumi.Input<string>;
     /**
      * User-defined name of the config
      */
-    readonly name?: pulumi.Input<string>;
+    name?: pulumi.Input<string>;
 }
 
 /**
@@ -107,9 +107,9 @@ export interface ServiceConfigArgs {
     /**
      * Base64-url-safe-encoded config data
      */
-    readonly data: pulumi.Input<string>;
+    data: pulumi.Input<string>;
     /**
      * User-defined name of the config
      */
-    readonly name?: pulumi.Input<string>;
+    name?: pulumi.Input<string>;
 }

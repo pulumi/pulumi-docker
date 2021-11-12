@@ -163,7 +163,7 @@ type ServiceConfigArrayInput interface {
 type ServiceConfigArray []ServiceConfigInput
 
 func (ServiceConfigArray) ElementType() reflect.Type {
-	return reflect.TypeOf(([]*ServiceConfig)(nil))
+	return reflect.TypeOf((*[]*ServiceConfig)(nil)).Elem()
 }
 
 func (i ServiceConfigArray) ToServiceConfigArrayOutput() ServiceConfigArrayOutput {
@@ -188,7 +188,7 @@ type ServiceConfigMapInput interface {
 type ServiceConfigMap map[string]ServiceConfigInput
 
 func (ServiceConfigMap) ElementType() reflect.Type {
-	return reflect.TypeOf((map[string]*ServiceConfig)(nil))
+	return reflect.TypeOf((*map[string]*ServiceConfig)(nil)).Elem()
 }
 
 func (i ServiceConfigMap) ToServiceConfigMapOutput() ServiceConfigMapOutput {
@@ -199,9 +199,7 @@ func (i ServiceConfigMap) ToServiceConfigMapOutputWithContext(ctx context.Contex
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceConfigMapOutput)
 }
 
-type ServiceConfigOutput struct {
-	*pulumi.OutputState
-}
+type ServiceConfigOutput struct{ *pulumi.OutputState }
 
 func (ServiceConfigOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*ServiceConfig)(nil))
@@ -220,14 +218,12 @@ func (o ServiceConfigOutput) ToServiceConfigPtrOutput() ServiceConfigPtrOutput {
 }
 
 func (o ServiceConfigOutput) ToServiceConfigPtrOutputWithContext(ctx context.Context) ServiceConfigPtrOutput {
-	return o.ApplyT(func(v ServiceConfig) *ServiceConfig {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v ServiceConfig) *ServiceConfig {
 		return &v
 	}).(ServiceConfigPtrOutput)
 }
 
-type ServiceConfigPtrOutput struct {
-	*pulumi.OutputState
-}
+type ServiceConfigPtrOutput struct{ *pulumi.OutputState }
 
 func (ServiceConfigPtrOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((**ServiceConfig)(nil))
@@ -239,6 +235,16 @@ func (o ServiceConfigPtrOutput) ToServiceConfigPtrOutput() ServiceConfigPtrOutpu
 
 func (o ServiceConfigPtrOutput) ToServiceConfigPtrOutputWithContext(ctx context.Context) ServiceConfigPtrOutput {
 	return o
+}
+
+func (o ServiceConfigPtrOutput) Elem() ServiceConfigOutput {
+	return o.ApplyT(func(v *ServiceConfig) ServiceConfig {
+		if v != nil {
+			return *v
+		}
+		var ret ServiceConfig
+		return ret
+	}).(ServiceConfigOutput)
 }
 
 type ServiceConfigArrayOutput struct{ *pulumi.OutputState }
@@ -282,6 +288,10 @@ func (o ServiceConfigMapOutput) MapIndex(k pulumi.StringInput) ServiceConfigOutp
 }
 
 func init() {
+	pulumi.RegisterInputType(reflect.TypeOf((*ServiceConfigInput)(nil)).Elem(), &ServiceConfig{})
+	pulumi.RegisterInputType(reflect.TypeOf((*ServiceConfigPtrInput)(nil)).Elem(), &ServiceConfig{})
+	pulumi.RegisterInputType(reflect.TypeOf((*ServiceConfigArrayInput)(nil)).Elem(), ServiceConfigArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*ServiceConfigMapInput)(nil)).Elem(), ServiceConfigMap{})
 	pulumi.RegisterOutputType(ServiceConfigOutput{})
 	pulumi.RegisterOutputType(ServiceConfigPtrOutput{})
 	pulumi.RegisterOutputType(ServiceConfigArrayOutput{})

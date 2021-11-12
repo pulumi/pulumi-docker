@@ -10,6 +10,34 @@ using Pulumi.Serialization;
 namespace Pulumi.Docker
 {
     /// <summary>
+    /// &lt;!-- Bug: Type and Name are switched --&gt;
+    /// Manages the lifecycle of a Docker container.
+    /// 
+    /// ## Example Usage
+    /// 
+    /// ```csharp
+    /// using Pulumi;
+    /// using Docker = Pulumi.Docker;
+    /// 
+    /// class MyStack : Stack
+    /// {
+    ///     public MyStack()
+    ///     {
+    ///         // Find the latest Ubuntu precise image.
+    ///         var ubuntuRemoteImage = new Docker.RemoteImage("ubuntuRemoteImage", new Docker.RemoteImageArgs
+    ///         {
+    ///             Name = "ubuntu:precise",
+    ///         });
+    ///         // Start a container
+    ///         var ubuntuContainer = new Docker.Container("ubuntuContainer", new Docker.ContainerArgs
+    ///         {
+    ///             Image = ubuntuRemoteImage.Latest,
+    ///         });
+    ///     }
+    /// 
+    /// }
+    /// ```
+    /// 
     /// ## Import
     /// 
     /// ### Example Assuming you created a `container` as follows #!/bin/bash docker run --name foo -p8080:80 -d nginx
@@ -58,8 +86,7 @@ namespace Pulumi.Docker
         public Output<Outputs.ContainerCapabilities?> Capabilities { get; private set; } = null!;
 
         /// <summary>
-        /// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be
-        /// `["/usr/bin/myprogram","-","baz.con"]`.
+        /// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-","baz.con"]`.
         /// </summary>
         [Output("command")]
         public Output<ImmutableArray<string>> Command { get; private set; } = null!;
@@ -83,8 +110,7 @@ namespace Pulumi.Docker
         public Output<int?> CpuShares { get; private set; } = null!;
 
         /// <summary>
-        /// If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on
-        /// successful stop.
+        /// If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
         /// </summary>
         [Output("destroyGraceSeconds")]
         public Output<int?> DestroyGraceSeconds { get; private set; } = null!;
@@ -120,9 +146,7 @@ namespace Pulumi.Docker
         public Output<string?> Domainname { get; private set; } = null!;
 
         /// <summary>
-        /// The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an
-        /// executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be
-        /// `"/usr/bin/myprogra"]`.
+        /// The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogra"]`.
         /// </summary>
         [Output("entrypoints")]
         public Output<ImmutableArray<string>> Entrypoints { get; private set; } = null!;
@@ -170,15 +194,13 @@ namespace Pulumi.Docker
         public Output<ImmutableArray<Outputs.ContainerHost>> Hosts { get; private set; } = null!;
 
         /// <summary>
-        /// The ID of the image to back this container. The easiest way to get this value is to use the `docker_image` resource as
-        /// is shown in the example.
+        /// The ID of the image to back this container. The easiest way to get this value is to use the `docker.RemoteImage` resource as is shown in the example.
         /// </summary>
         [Output("image")]
         public Output<string> Image { get; private set; } = null!;
 
         /// <summary>
-        /// Configured whether an init process should be injected for this container. If unset this will default to the `dockerd`
-        /// defaults.
+        /// Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
         /// </summary>
         [Output("init")]
         public Output<bool> Init { get; private set; } = null!;
@@ -196,8 +218,7 @@ namespace Pulumi.Docker
         public Output<int> IpPrefixLength { get; private set; } = null!;
 
         /// <summary>
-        /// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:&lt;name|id&gt;` or
-        /// `host`.
+        /// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:&lt;name|id&gt;` or `host`.
         /// </summary>
         [Output("ipcMode")]
         public Output<string> IpcMode { get; private set; } = null!;
@@ -350,8 +371,7 @@ namespace Pulumi.Docker
         public Output<bool?> Rm { get; private set; } = null!;
 
         /// <summary>
-        /// List of string values to customize labels for MLS systems, such as SELinux. See
-        /// https://docs.docker.com/engine/reference/run/#security-configuration.
+        /// List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
         /// </summary>
         [Output("securityOpts")]
         public Output<ImmutableArray<string>> SecurityOpts { get; private set; } = null!;
@@ -363,8 +383,7 @@ namespace Pulumi.Docker
         public Output<int> ShmSize { get; private set; } = null!;
 
         /// <summary>
-        /// If `true`, then the Docker container will be started after creation. If `false`, then the container is only created.
-        /// Defaults to `true`.
+        /// If `true`, then the Docker container will be started after creation. If `false`, then the container is only created. Defaults to `true`.
         /// </summary>
         [Output("start")]
         public Output<bool?> Start { get; private set; } = null!;
@@ -406,15 +425,13 @@ namespace Pulumi.Docker
         public Output<ImmutableArray<Outputs.ContainerUlimit>> Ulimits { get; private set; } = null!;
 
         /// <summary>
-        /// Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and
-        /// at least one of them has to be set.
+        /// Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and at least one of them has to be set.
         /// </summary>
         [Output("uploads")]
         public Output<ImmutableArray<Outputs.ContainerUpload>> Uploads { get; private set; } = null!;
 
         /// <summary>
-        /// User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by
-        /// name.
+        /// User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.
         /// </summary>
         [Output("user")]
         public Output<string?> User { get; private set; } = null!;
@@ -499,8 +516,7 @@ namespace Pulumi.Docker
         private InputList<string>? _command;
 
         /// <summary>
-        /// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be
-        /// `["/usr/bin/myprogram","-","baz.con"]`.
+        /// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-","baz.con"]`.
         /// </summary>
         public InputList<string> Command
         {
@@ -521,8 +537,7 @@ namespace Pulumi.Docker
         public Input<int>? CpuShares { get; set; }
 
         /// <summary>
-        /// If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on
-        /// successful stop.
+        /// If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
         /// </summary>
         [Input("destroyGraceSeconds")]
         public Input<int>? DestroyGraceSeconds { get; set; }
@@ -585,9 +600,7 @@ namespace Pulumi.Docker
         private InputList<string>? _entrypoints;
 
         /// <summary>
-        /// The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an
-        /// executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be
-        /// `"/usr/bin/myprogra"]`.
+        /// The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogra"]`.
         /// </summary>
         public InputList<string> Entrypoints
         {
@@ -644,22 +657,19 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// The ID of the image to back this container. The easiest way to get this value is to use the `docker_image` resource as
-        /// is shown in the example.
+        /// The ID of the image to back this container. The easiest way to get this value is to use the `docker.RemoteImage` resource as is shown in the example.
         /// </summary>
         [Input("image", required: true)]
         public Input<string> Image { get; set; } = null!;
 
         /// <summary>
-        /// Configured whether an init process should be injected for this container. If unset this will default to the `dockerd`
-        /// defaults.
+        /// Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
         /// </summary>
         [Input("init")]
         public Input<bool>? Init { get; set; }
 
         /// <summary>
-        /// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:&lt;name|id&gt;` or
-        /// `host`.
+        /// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:&lt;name|id&gt;` or `host`.
         /// </summary>
         [Input("ipcMode")]
         public Input<string>? IpcMode { get; set; }
@@ -860,8 +870,7 @@ namespace Pulumi.Docker
         private InputList<string>? _securityOpts;
 
         /// <summary>
-        /// List of string values to customize labels for MLS systems, such as SELinux. See
-        /// https://docs.docker.com/engine/reference/run/#security-configuration.
+        /// List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
         /// </summary>
         public InputList<string> SecurityOpts
         {
@@ -876,8 +885,7 @@ namespace Pulumi.Docker
         public Input<int>? ShmSize { get; set; }
 
         /// <summary>
-        /// If `true`, then the Docker container will be started after creation. If `false`, then the container is only created.
-        /// Defaults to `true`.
+        /// If `true`, then the Docker container will be started after creation. If `false`, then the container is only created. Defaults to `true`.
         /// </summary>
         [Input("start")]
         public Input<bool>? Start { get; set; }
@@ -946,8 +954,7 @@ namespace Pulumi.Docker
         private InputList<Inputs.ContainerUploadArgs>? _uploads;
 
         /// <summary>
-        /// Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and
-        /// at least one of them has to be set.
+        /// Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and at least one of them has to be set.
         /// </summary>
         public InputList<Inputs.ContainerUploadArgs> Uploads
         {
@@ -956,8 +963,7 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by
-        /// name.
+        /// User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.
         /// </summary>
         [Input("user")]
         public Input<string>? User { get; set; }
@@ -1015,8 +1021,7 @@ namespace Pulumi.Docker
         private InputList<string>? _command;
 
         /// <summary>
-        /// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be
-        /// `["/usr/bin/myprogram","-","baz.con"]`.
+        /// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-","baz.con"]`.
         /// </summary>
         public InputList<string> Command
         {
@@ -1043,8 +1048,7 @@ namespace Pulumi.Docker
         public Input<int>? CpuShares { get; set; }
 
         /// <summary>
-        /// If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on
-        /// successful stop.
+        /// If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
         /// </summary>
         [Input("destroyGraceSeconds")]
         public Input<int>? DestroyGraceSeconds { get; set; }
@@ -1107,9 +1111,7 @@ namespace Pulumi.Docker
         private InputList<string>? _entrypoints;
 
         /// <summary>
-        /// The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an
-        /// executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be
-        /// `"/usr/bin/myprogra"]`.
+        /// The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogra"]`.
         /// </summary>
         public InputList<string> Entrypoints
         {
@@ -1178,15 +1180,13 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// The ID of the image to back this container. The easiest way to get this value is to use the `docker_image` resource as
-        /// is shown in the example.
+        /// The ID of the image to back this container. The easiest way to get this value is to use the `docker.RemoteImage` resource as is shown in the example.
         /// </summary>
         [Input("image")]
         public Input<string>? Image { get; set; }
 
         /// <summary>
-        /// Configured whether an init process should be injected for this container. If unset this will default to the `dockerd`
-        /// defaults.
+        /// Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
         /// </summary>
         [Input("init")]
         public Input<bool>? Init { get; set; }
@@ -1204,8 +1204,7 @@ namespace Pulumi.Docker
         public Input<int>? IpPrefixLength { get; set; }
 
         /// <summary>
-        /// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:&lt;name|id&gt;` or
-        /// `host`.
+        /// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:&lt;name|id&gt;` or `host`.
         /// </summary>
         [Input("ipcMode")]
         public Input<string>? IpcMode { get; set; }
@@ -1418,8 +1417,7 @@ namespace Pulumi.Docker
         private InputList<string>? _securityOpts;
 
         /// <summary>
-        /// List of string values to customize labels for MLS systems, such as SELinux. See
-        /// https://docs.docker.com/engine/reference/run/#security-configuration.
+        /// List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
         /// </summary>
         public InputList<string> SecurityOpts
         {
@@ -1434,8 +1432,7 @@ namespace Pulumi.Docker
         public Input<int>? ShmSize { get; set; }
 
         /// <summary>
-        /// If `true`, then the Docker container will be started after creation. If `false`, then the container is only created.
-        /// Defaults to `true`.
+        /// If `true`, then the Docker container will be started after creation. If `false`, then the container is only created. Defaults to `true`.
         /// </summary>
         [Input("start")]
         public Input<bool>? Start { get; set; }
@@ -1504,8 +1501,7 @@ namespace Pulumi.Docker
         private InputList<Inputs.ContainerUploadGetArgs>? _uploads;
 
         /// <summary>
-        /// Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and
-        /// at least one of them has to be set.
+        /// Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and at least one of them has to be set.
         /// </summary>
         public InputList<Inputs.ContainerUploadGetArgs> Uploads
         {
@@ -1514,8 +1510,7 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by
-        /// name.
+        /// User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.
         /// </summary>
         [Input("user")]
         public Input<string>? User { get; set; }

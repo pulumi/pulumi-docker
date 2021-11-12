@@ -26,6 +26,26 @@ export class Provider extends pulumi.ProviderResource {
         return obj['__pulumiType'] === Provider.__pulumiType;
     }
 
+    /**
+     * PEM-encoded content of Docker host CA certificate
+     */
+    public readonly caMaterial!: pulumi.Output<string | undefined>;
+    /**
+     * PEM-encoded content of Docker client certificate
+     */
+    public readonly certMaterial!: pulumi.Output<string | undefined>;
+    /**
+     * Path to directory with Docker TLS config
+     */
+    public readonly certPath!: pulumi.Output<string | undefined>;
+    /**
+     * The Docker daemon address
+     */
+    public readonly host!: pulumi.Output<string | undefined>;
+    /**
+     * PEM-encoded content of Docker client private key
+     */
+    public readonly keyMaterial!: pulumi.Output<string | undefined>;
 
     /**
      * Create a Provider resource with the given unique name, arguments, and options.
@@ -59,22 +79,22 @@ export interface ProviderArgs {
     /**
      * PEM-encoded content of Docker host CA certificate
      */
-    readonly caMaterial?: pulumi.Input<string>;
+    caMaterial?: pulumi.Input<string>;
     /**
      * PEM-encoded content of Docker client certificate
      */
-    readonly certMaterial?: pulumi.Input<string>;
+    certMaterial?: pulumi.Input<string>;
     /**
      * Path to directory with Docker TLS config
      */
-    readonly certPath?: pulumi.Input<string>;
+    certPath?: pulumi.Input<string>;
     /**
      * The Docker daemon address
      */
-    readonly host?: pulumi.Input<string>;
+    host?: pulumi.Input<string>;
     /**
      * PEM-encoded content of Docker client private key
      */
-    readonly keyMaterial?: pulumi.Input<string>;
-    readonly registryAuth?: pulumi.Input<pulumi.Input<inputs.ProviderRegistryAuth>[]>;
+    keyMaterial?: pulumi.Input<string>;
+    registryAuth?: pulumi.Input<pulumi.Input<inputs.ProviderRegistryAuth>[]>;
 }

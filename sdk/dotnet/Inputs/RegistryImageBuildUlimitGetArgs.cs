@@ -15,6 +15,9 @@ namespace Pulumi.Docker.Inputs
         [Input("hard", required: true)]
         public Input<int> Hard { get; set; } = null!;
 
+        /// <summary>
+        /// The name of the Docker image.
+        /// </summary>
         [Input("name", required: true)]
         public Input<string> Name { get; set; } = null!;
 

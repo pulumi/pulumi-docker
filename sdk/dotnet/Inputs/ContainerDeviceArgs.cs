@@ -12,12 +12,21 @@ namespace Pulumi.Docker.Inputs
 
     public sealed class ContainerDeviceArgs : Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// The path in the container where the device will be bound.
+        /// </summary>
         [Input("containerPath")]
         public Input<string>? ContainerPath { get; set; }
 
+        /// <summary>
+        /// The path on the host where the device is located.
+        /// </summary>
         [Input("hostPath", required: true)]
         public Input<string> HostPath { get; set; } = null!;
 
+        /// <summary>
+        /// The cgroup permissions given to the container to access the device. Defaults to `rwm`.
+        /// </summary>
         [Input("permissions")]
         public Input<string>? Permissions { get; set; }
 

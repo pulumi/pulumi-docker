@@ -2,7 +2,6 @@
 // *** Do not edit by hand unless you're certain you know what you are doing! ***
 
 import * as pulumi from "@pulumi/pulumi";
-import { input as inputs, output as outputs } from "./types";
 import * as utilities from "./utilities";
 
 /**
@@ -14,20 +13,6 @@ import * as utilities from "./utilities";
  * data "docker.Plugin" "byAlias" {
  *   alias = "sample-volume-plugin:latest"
  * }
- * ## Schema
- *
- * ### Optional
- *
- * - **alias** (String) The alias of the Docker plugin. If the tag is omitted, `:latest` is complemented to the attribute value.
- * - **id** (String) The ID of the plugin, which has precedence over the `alias` of both are given
- *
- * ### Read-Only
- *
- * - **enabled** (Boolean) If `true` the plugin is enabled
- * - **env** (Set of String) The environment variables in the form of `KEY=VALUE`, e.g. `DEBUG=0`
- * - **grant_all_permissions** (Boolean) If true, grant all permissions necessary to run the plugin
- * - **name** (String) The plugin name. If the tag is omitted, `:latest` is complemented to the attribute value.
- * - **plugin_reference** (String) The Docker Plugin Reference
  */
 export function getPlugin(args?: GetPluginArgs, opts?: pulumi.InvokeOptions): Promise<GetPluginResult> {
     args = args || {};
@@ -48,19 +33,64 @@ export function getPlugin(args?: GetPluginArgs, opts?: pulumi.InvokeOptions): Pr
  * A collection of arguments for invoking getPlugin.
  */
 export interface GetPluginArgs {
-    readonly alias?: string;
-    readonly id?: string;
+    /**
+     * The alias of the Docker plugin. If the tag is omitted, `:latest` is complemented to the attribute value.
+     */
+    alias?: string;
+    /**
+     * The ID of the plugin, which has precedence over the `alias` of both are given
+     */
+    id?: string;
 }
 
 /**
  * A collection of values returned by getPlugin.
  */
 export interface GetPluginResult {
+    /**
+     * The alias of the Docker plugin. If the tag is omitted, `:latest` is complemented to the attribute value.
+     */
     readonly alias?: string;
+    /**
+     * If `true` the plugin is enabled
+     */
     readonly enabled: boolean;
+    /**
+     * The environment variables in the form of `KEY=VALUE`, e.g. `DEBUG=0`
+     */
     readonly envs: string[];
+    /**
+     * If true, grant all permissions necessary to run the plugin
+     */
     readonly grantAllPermissions: boolean;
+    /**
+     * The ID of the plugin, which has precedence over the `alias` of both are given
+     */
     readonly id?: string;
+    /**
+     * The plugin name. If the tag is omitted, `:latest` is complemented to the attribute value.
+     */
     readonly name: string;
+    /**
+     * The Docker Plugin Reference
+     */
     readonly pluginReference: string;
+}
+
+export function getPluginOutput(args?: GetPluginOutputArgs, opts?: pulumi.InvokeOptions): pulumi.Output<GetPluginResult> {
+    return pulumi.output(args).apply(a => getPlugin(a, opts))
+}
+
+/**
+ * A collection of arguments for invoking getPlugin.
+ */
+export interface GetPluginOutputArgs {
+    /**
+     * The alias of the Docker plugin. If the tag is omitted, `:latest` is complemented to the attribute value.
+     */
+    alias?: pulumi.Input<string>;
+    /**
+     * The ID of the plugin, which has precedence over the `alias` of both are given
+     */
+    id?: pulumi.Input<string>;
 }

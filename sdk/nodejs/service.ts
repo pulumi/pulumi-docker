@@ -156,39 +156,39 @@ export interface ServiceState {
     /**
      * Configuration for the authentication for pulling the images of the service
      */
-    readonly auth?: pulumi.Input<inputs.ServiceAuth>;
+    auth?: pulumi.Input<inputs.ServiceAuth>;
     /**
      * A configuration to ensure that a service converges aka reaches the desired that of all task up and running
      */
-    readonly convergeConfig?: pulumi.Input<inputs.ServiceConvergeConfig>;
+    convergeConfig?: pulumi.Input<inputs.ServiceConvergeConfig>;
     /**
      * Properties that can be configured to access and load balance a service
      */
-    readonly endpointSpec?: pulumi.Input<inputs.ServiceEndpointSpec>;
+    endpointSpec?: pulumi.Input<inputs.ServiceEndpointSpec>;
     /**
      * User-defined key/value metadata
      */
-    readonly labels?: pulumi.Input<pulumi.Input<inputs.ServiceLabel>[]>;
+    labels?: pulumi.Input<pulumi.Input<inputs.ServiceLabel>[]>;
     /**
      * Scheduling mode for the service
      */
-    readonly mode?: pulumi.Input<inputs.ServiceMode>;
+    mode?: pulumi.Input<inputs.ServiceMode>;
     /**
      * Name of the service
      */
-    readonly name?: pulumi.Input<string>;
+    name?: pulumi.Input<string>;
     /**
      * Specification for the rollback strategy of the service
      */
-    readonly rollbackConfig?: pulumi.Input<inputs.ServiceRollbackConfig>;
+    rollbackConfig?: pulumi.Input<inputs.ServiceRollbackConfig>;
     /**
      * User modifiable task configuration
      */
-    readonly taskSpec?: pulumi.Input<inputs.ServiceTaskSpec>;
+    taskSpec?: pulumi.Input<inputs.ServiceTaskSpec>;
     /**
      * Specification for the update strategy of the service
      */
-    readonly updateConfig?: pulumi.Input<inputs.ServiceUpdateConfig>;
+    updateConfig?: pulumi.Input<inputs.ServiceUpdateConfig>;
 }
 
 /**
@@ -198,37 +198,37 @@ export interface ServiceArgs {
     /**
      * Configuration for the authentication for pulling the images of the service
      */
-    readonly auth?: pulumi.Input<inputs.ServiceAuth>;
+    auth?: pulumi.Input<inputs.ServiceAuth>;
     /**
      * A configuration to ensure that a service converges aka reaches the desired that of all task up and running
      */
-    readonly convergeConfig?: pulumi.Input<inputs.ServiceConvergeConfig>;
+    convergeConfig?: pulumi.Input<inputs.ServiceConvergeConfig>;
     /**
      * Properties that can be configured to access and load balance a service
      */
-    readonly endpointSpec?: pulumi.Input<inputs.ServiceEndpointSpec>;
+    endpointSpec?: pulumi.Input<inputs.ServiceEndpointSpec>;
     /**
      * User-defined key/value metadata
      */
-    readonly labels?: pulumi.Input<pulumi.Input<inputs.ServiceLabel>[]>;
+    labels?: pulumi.Input<pulumi.Input<inputs.ServiceLabel>[]>;
     /**
      * Scheduling mode for the service
      */
-    readonly mode?: pulumi.Input<inputs.ServiceMode>;
+    mode?: pulumi.Input<inputs.ServiceMode>;
     /**
      * Name of the service
      */
-    readonly name?: pulumi.Input<string>;
+    name?: pulumi.Input<string>;
     /**
      * Specification for the rollback strategy of the service
      */
-    readonly rollbackConfig?: pulumi.Input<inputs.ServiceRollbackConfig>;
+    rollbackConfig?: pulumi.Input<inputs.ServiceRollbackConfig>;
     /**
      * User modifiable task configuration
      */
-    readonly taskSpec: pulumi.Input<inputs.ServiceTaskSpec>;
+    taskSpec: pulumi.Input<inputs.ServiceTaskSpec>;
     /**
      * Specification for the update strategy of the service
      */
-    readonly updateConfig?: pulumi.Input<inputs.ServiceUpdateConfig>;
+    updateConfig?: pulumi.Input<inputs.ServiceUpdateConfig>;
 }
