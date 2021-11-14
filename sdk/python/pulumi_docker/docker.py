@@ -652,9 +652,6 @@ async def run_command_that_can_fail(
     # which the grpc layer needs.
     stream_id = math.floor(random() * (1 << 30))
 
-    cmd = [cmd_name]
-    cmd.extend(args)
-
     if env is not None:
         env = os.environ.copy().update(env)
 
