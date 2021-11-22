@@ -11,46 +11,44 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//go:build dotnet || all
 // +build dotnet all
 
 package examples
 
 import (
-	"os"
 	"path"
 	"testing"
 
 	"github.com/pulumi/pulumi/pkg/v3/testing/integration"
-	"github.com/stretchr/testify/assert"
 )
 
 func TestNginxCs(t *testing.T) {
-	cwd, err := os.Getwd()
-	if !assert.NoError(t, err) {
-		t.FailNow()
-	}
+	test := getCsharpBaseOptions(t).
+		With(integration.ProgramTestOptions{
+			Dir: path.Join(getCwd(t), "nginx-cs"),
+		})
 
-	opts := base.With(integration.ProgramTestOptions{
-		Dependencies: []string{
-			"Pulumi.Docker",
-		},
-		Dir: path.Join(cwd, "nginx-cs"),
-	})
-	integration.ProgramTest(t, &opts)
+	integration.ProgramTest(t, &test)
 }
 
 func TestDotNet(t *testing.T) {
-	cwd, err := os.Getwd()
-	if !assert.NoError(t, err) {
-		t.FailNow()
-	}
+	test := getCsharpBaseOptions(t).
+		With(integration.ProgramTestOptions{
+			Dir:                    path.Join(getCwd(t), "dotnet"),
+			ExtraRuntimeValidation: dockerFileWithDependenciesOutputValidation,
+		})
 
-	opts := base.With(integration.ProgramTestOptions{
+	integration.ProgramTest(t, &test)
+}
+
+func getCsharpBaseOptions(t *testing.T) integration.ProgramTestOptions {
+	base := getBaseOptions()
+	baseCsharp := base.With(integration.ProgramTestOptions{
 		Dependencies: []string{
 			"Pulumi.Docker",
 		},
-		Dir:                    path.Join(cwd, "dotnet"),
-		ExtraRuntimeValidation: dockerFileWithDependenciesOutputValidation,
 	})
-	integration.ProgramTest(t, &opts)
+
+	return baseCsharp
 }

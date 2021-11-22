@@ -11,6 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//go:build nodejs || all
 // +build nodejs all
 
 package examples
@@ -22,7 +23,6 @@ import (
 	"testing"
 
 	"github.com/pulumi/pulumi/pkg/v3/testing/integration"
-	"github.com/stretchr/testify/assert"
 )
 
 func TestAws(t *testing.T) {
@@ -32,50 +32,43 @@ func TestAws(t *testing.T) {
 	}
 	fmt.Printf("AWS Region: %v\n", region)
 
-	cwd, err := os.Getwd()
-	if !assert.NoError(t, err) {
-		t.FailNow()
-	}
+	test := getJsOptions(t).
+		With(integration.ProgramTestOptions{
+			Config: map[string]string{
+				"aws:region": region,
+			},
+			Dir: path.Join(getCwd(t), "aws"),
+		})
 
-	opts := base.With(integration.ProgramTestOptions{
-		Config: map[string]string{
-			"aws:region": region,
-		},
-		Dependencies: []string{
-			"@pulumi/docker",
-		},
-		Dir: path.Join(cwd, "aws"),
-	})
-	integration.ProgramTest(t, &opts)
+	integration.ProgramTest(t, &test)
 }
 
 func TestNginx(t *testing.T) {
-	cwd, err := os.Getwd()
-	if !assert.NoError(t, err) {
-		t.FailNow()
-	}
+	test := getJsOptions(t).
+		With(integration.ProgramTestOptions{
+			Dir: path.Join(getCwd(t), "nginx"),
+		})
 
-	opts := base.With(integration.ProgramTestOptions{
-		Dependencies: []string{
-			"@pulumi/docker",
-		},
-		Dir: path.Join(cwd, "nginx"),
-	})
-	integration.ProgramTest(t, &opts)
+	integration.ProgramTest(t, &test)
 }
 
 func TestDockerfileWithMultipleTargets(t *testing.T) {
-	cwd, err := os.Getwd()
-	if !assert.NoError(t, err) {
-		t.FailNow()
-	}
+	test := getJsOptions(t).
+		With(integration.ProgramTestOptions{
+			Dir:                    path.Join(getCwd(t), "dockerfile-with-targets"),
+			ExtraRuntimeValidation: dockerFileWithDependenciesOutputValidation,
+		})
 
-	opts := base.With(integration.ProgramTestOptions{
+	integration.ProgramTest(t, &test)
+}
+
+func getJsOptions(t *testing.T) integration.ProgramTestOptions {
+	base := getBaseOptions()
+	baseJs := base.With(integration.ProgramTestOptions{
 		Dependencies: []string{
 			"@pulumi/docker",
 		},
-		Dir:                    path.Join(cwd, "dockerfile-with-targets"),
-		ExtraRuntimeValidation: dockerFileWithDependenciesOutputValidation,
 	})
-	integration.ProgramTest(t, &opts)
+
+	return baseJs
 }

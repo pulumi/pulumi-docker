@@ -26,20 +26,9 @@ func dockerFileWithDependenciesOutputValidation(t *testing.T, stack integration.
 	// stable going forward in case of changes to Docker.  To be safe, we just test a subset of this output that is
 	// enough to verify no structural regressions in the output.
 	expectedEphemeralDiagnosticsLines := []string{
-		"<{%reset%}>Building image '.'...<{%reset%}>\n",
-		//"<{%reset%}>Sending build context to Docker daemon  66.88MB<{%reset%}>\n",
-		// "<{%reset%}><{%reset%}>\n",
-		"<{%reset%}>Step 1/3 : FROM python:3.6 AS base<{%reset%}>\n",
-		// "<{%reset%}> ---> bd4a91d81d7e<{%reset%}>\n",
-		// "<{%reset%}>Step 2/3 : FROM base AS dependencies<{%reset%}>\n",
-		// "<{%reset%}> ---> bd4a91d81d7e<{%reset%}>\n",
-		// "<{%reset%}>Step 3/3 : RUN pip install gunicorn<{%reset%}>\n",
-		// "<{%reset%}> ---> Using cache<{%reset%}>\n",
-		// "<{%reset%}> ---> 584bd8f8844a<{%reset%}>\n",
-		// "<{%reset%}>Successfully built 584bd8f8844a<{%reset%}>\n",
-		"<{%reset%}>Successfully tagged pulumi-user/example:v1.0.0<{%reset%}>\n",
-		// "<{%reset%}>sha256:584bd8f8844aeb5bc815c8c416b586a4334a577d49b1a4552a93765537c39151<{%reset%}>\n",
-		"<{%reset%}>Image build succeeded.<{%reset%}>\n",
+		"Building image '.'...\n",
+		"Successfully tagged pulumi-user/example:v1.0.0\n",
+		"Image build succeeded.\n",
 	}
 
 	var actualEphemeralDiagnosticsLines []string

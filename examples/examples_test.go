@@ -16,9 +16,22 @@ package examples
 
 import (
 	"github.com/pulumi/pulumi/pkg/v3/testing/integration"
+	"os"
+	"testing"
 )
 
-var base = integration.ProgramTestOptions{
-	ExpectRefreshChanges: true, // Docker resources generally see changes when refreshed.
-	// Note: no Config! This package should be usable without any config.
+func getCwd(t *testing.T) string {
+	cwd, err := os.Getwd()
+	if err != nil {
+		t.FailNow()
+	}
+
+	return cwd
+}
+
+func getBaseOptions() integration.ProgramTestOptions {
+	return integration.ProgramTestOptions{
+		RunUpdateTest:        false,
+		ExpectRefreshChanges: true,
+	}
 }
