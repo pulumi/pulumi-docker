@@ -16,7 +16,6 @@ import json
 import math
 import os
 import re
-import subprocess
 from random import random
 from typing import Optional, Union, List, Mapping, Sequence
 from distutils.version import LooseVersion
@@ -657,7 +656,7 @@ async def run_command_that_can_fail(
 
     process = await asyncio.create_subprocess_exec(
         cmd_name, *args, env=env,
-        stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
+        stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE, stdin=asyncio.subprocess.PIPE)
 
     # We store the results from stdout in memory and will return them as a str.
     stdout_chunks: List[str] = []
