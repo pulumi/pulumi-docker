@@ -494,10 +494,12 @@ async def docker_build(
 class LoginResult:
     registry_name: str
     username: str
+    done: asyncio.Task
 
-    def __init__(self, registry_name: str, username: str):
+    def __init__(self, registry_name: str, username: str, done: asyncio.Task):
         self.registry_name = registry_name
         self.username = username
+        self.done = done
 
 
 # Keep track of registries and users that have been logged in.  If we've already logged into that
@@ -513,23 +515,34 @@ async def login_to_registry(registry: Registry, log_resource: pulumi.Resource):
     # See if we've issued an outstanding requests to login into this registry.  If so, just
     # await the results of that login request.  Otherwise, create a new request and keep it
     # around so that future login requests will see it.
-    for result in login_results:
-        if result.registry_name == registry_name and result.username == username:
+    result: LoginResult = None
+    for existing in login_results:
+        if existing.registry_name == registry_name and existing.username == username:
             log_debug(f'Reusing existing login for {username}@{registry_name}', log_resource)
-            return
+            result = existing
+            break
 
-    docker_password_stdin = use_docker_password_stdin(log_resource)
+    if not result:
+        # An existing login wasn't found; WARNING: we must not await anything between this check
+        # for existing logins, and appending our new login attempt, otherwise an async interleaving
+        # could sneak in, log into the same server, and yield a redundant login (which will error out).
+        docker_password_stdin = use_docker_password_stdin(log_resource)
 
-    # pass 'report_full_command_line: false' here so that if we fail to login we don't emit the
-    # username/password in our logs.  Instead, we'll just say "'docker login' failed with code ..."
-    if docker_password_stdin:
-        await run_command_that_must_succeed("docker", ["login", "-u", username, "--password-stdin", registry_name],
-                                      log_resource, report_full_command_line=False, stdin=password)
-    else:
-        await run_command_that_must_succeed("docker", ["login", "-u", username, "-p", password, registry_name],
-                                      log_resource, report_full_command_line=False)
+        # pass 'report_full_command_line: false' here so that if we fail to login we don't emit the
+        # username/password in our logs.  Instead, we'll just say "'docker login' failed with code ..."
+        coro: asyncio.Coroutine = None
+        if docker_password_stdin:
+            coro = run_command_that_must_succeed("docker", ["login", "-u", username, "--password-stdin", registry_name],
+                                                 log_resource, report_full_command_line=False, stdin=password)
+        else:
+            coro = run_command_that_must_succeed("docker", ["login", "-u", username, "-p", password, registry_name],
+                                                 log_resource, report_full_command_line=False)
 
-    login_results.append(LoginResult(registry_name, username))
+        done = asyncio.create_task(coro)
+        result = LoginResult(registry_name, username, done)
+        login_results.append(result)
+
+    await result.done
 
 
 async def tag_and_push_image(
@@ -657,6 +670,10 @@ async def run_command_that_can_fail(
     process = await asyncio.create_subprocess_exec(
         cmd_name, *args, env=env,
         stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE, stdin=asyncio.subprocess.PIPE)
+
+    # If stdin input is present, we need to ensure it's encoded into bytes.
+    if isinstance(stdin, str):
+        stdin = stdin.encode('utf-8')
 
     # We store the results from stdout in memory and will return them as a str.
     stdout_chunks: List[str] = []
