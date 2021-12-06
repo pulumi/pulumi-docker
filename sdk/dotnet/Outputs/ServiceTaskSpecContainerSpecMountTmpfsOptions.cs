@@ -13,6 +13,9 @@ namespace Pulumi.Docker.Outputs
     [OutputType]
     public sealed class ServiceTaskSpecContainerSpecMountTmpfsOptions
     {
+        /// <summary>
+        /// Scheduling mode for the service
+        /// </summary>
         public readonly int? Mode;
         public readonly int? SizeBytes;
 

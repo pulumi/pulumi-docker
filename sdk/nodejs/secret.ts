@@ -8,7 +8,7 @@ import * as utilities from "./utilities";
 /**
  * ## Import
  *
- * Import is supported using the following syntax#!/bin/bash # Docker secret cannot be imported as the secret data, once set, is never exposed again.
+ * #!/bin/bash # Docker secret cannot be imported as the secret data, once set, is never exposed again.
  */
 export class Secret extends pulumi.CustomResource {
     /**
@@ -90,15 +90,15 @@ export interface SecretState {
     /**
      * Base64-url-safe-encoded secret data
      */
-    readonly data?: pulumi.Input<string>;
+    data?: pulumi.Input<string>;
     /**
      * User-defined key/value metadata
      */
-    readonly labels?: pulumi.Input<pulumi.Input<inputs.SecretLabel>[]>;
+    labels?: pulumi.Input<pulumi.Input<inputs.SecretLabel>[]>;
     /**
      * User-defined name of the secret
      */
-    readonly name?: pulumi.Input<string>;
+    name?: pulumi.Input<string>;
 }
 
 /**
@@ -108,13 +108,13 @@ export interface SecretArgs {
     /**
      * Base64-url-safe-encoded secret data
      */
-    readonly data: pulumi.Input<string>;
+    data: pulumi.Input<string>;
     /**
      * User-defined key/value metadata
      */
-    readonly labels?: pulumi.Input<pulumi.Input<inputs.SecretLabel>[]>;
+    labels?: pulumi.Input<pulumi.Input<inputs.SecretLabel>[]>;
     /**
      * User-defined name of the secret
      */
-    readonly name?: pulumi.Input<string>;
+    name?: pulumi.Input<string>;
 }

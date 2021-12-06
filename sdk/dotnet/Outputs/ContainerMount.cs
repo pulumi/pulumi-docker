@@ -13,12 +13,33 @@ namespace Pulumi.Docker.Outputs
     [OutputType]
     public sealed class ContainerMount
     {
+        /// <summary>
+        /// Optional configuration for the bind type.
+        /// </summary>
         public readonly Outputs.ContainerMountBindOptions? BindOptions;
+        /// <summary>
+        /// Whether the mount should be read-only.
+        /// </summary>
         public readonly bool? ReadOnly;
+        /// <summary>
+        /// Mount source (e.g. a volume name, a host path).
+        /// </summary>
         public readonly string? Source;
+        /// <summary>
+        /// Container path
+        /// </summary>
         public readonly string Target;
+        /// <summary>
+        /// Optional configuration for the tmpfs type.
+        /// </summary>
         public readonly Outputs.ContainerMountTmpfsOptions? TmpfsOptions;
+        /// <summary>
+        /// The mount type
+        /// </summary>
         public readonly string Type;
+        /// <summary>
+        /// Optional configuration for the volume type.
+        /// </summary>
         public readonly Outputs.ContainerMountVolumeOptions? VolumeOptions;
 
         [OutputConstructor]

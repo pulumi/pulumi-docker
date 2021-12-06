@@ -12,18 +12,33 @@ namespace Pulumi.Docker.Inputs
 
     public sealed class ContainerVolumeGetArgs : Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// The path in the container where the volume will be mounted.
+        /// </summary>
         [Input("containerPath")]
         public Input<string>? ContainerPath { get; set; }
 
+        /// <summary>
+        /// The container where the volume is coming from.
+        /// </summary>
         [Input("fromContainer")]
         public Input<string>? FromContainer { get; set; }
 
+        /// <summary>
+        /// The path on the host where the volume is coming from.
+        /// </summary>
         [Input("hostPath")]
         public Input<string>? HostPath { get; set; }
 
+        /// <summary>
+        /// If `true`, this volume will be readonly. Defaults to `false`.
+        /// </summary>
         [Input("readOnly")]
         public Input<bool>? ReadOnly { get; set; }
 
+        /// <summary>
+        /// The name of the docker volume which should be mounted.
+        /// </summary>
         [Input("volumeName")]
         public Input<string>? VolumeName { get; set; }
 

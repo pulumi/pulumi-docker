@@ -12,11 +12,18 @@ namespace Pulumi.Docker.Inputs
 
     public sealed class ServiceEndpointSpecArgs : Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// The mode of resolution to use for internal load balancing between tasks
+        /// </summary>
         [Input("mode")]
         public Input<string>? Mode { get; set; }
 
         [Input("ports")]
         private InputList<Inputs.ServiceEndpointSpecPortArgs>? _ports;
+
+        /// <summary>
+        /// List of exposed ports that this service is accessible on from the outside. Ports can only be provided if 'vip' resolution mode is used
+        /// </summary>
         public InputList<Inputs.ServiceEndpointSpecPortArgs> Ports
         {
             get => _ports ?? (_ports = new InputList<Inputs.ServiceEndpointSpecPortArgs>());

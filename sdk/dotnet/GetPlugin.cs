@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Pulumi.Serialization;
+using Pulumi.Utilities;
 
 namespace Pulumi.Docker
 {
@@ -22,31 +23,38 @@ namespace Pulumi.Docker
         ///   alias = "sample-volume-plugin:latest"
         /// }
         /// {{% /examples %}}
-        /// ## Schema
-        /// 
-        /// ### Optional
-        /// 
-        /// - **alias** (String) The alias of the Docker plugin. If the tag is omitted, `:latest` is complemented to the attribute value.
-        /// - **id** (String) The ID of the plugin, which has precedence over the `alias` of both are given
-        /// 
-        /// ### Read-Only
-        /// 
-        /// - **enabled** (Boolean) If `true` the plugin is enabled
-        /// - **env** (Set of String) The environment variables in the form of `KEY=VALUE`, e.g. `DEBUG=0`
-        /// - **grant_all_permissions** (Boolean) If true, grant all permissions necessary to run the plugin
-        /// - **name** (String) The plugin name. If the tag is omitted, `:latest` is complemented to the attribute value.
-        /// - **plugin_reference** (String) The Docker Plugin Reference
         /// </summary>
         public static Task<GetPluginResult> InvokeAsync(GetPluginArgs? args = null, InvokeOptions? options = null)
             => Pulumi.Deployment.Instance.InvokeAsync<GetPluginResult>("docker:index/getPlugin:getPlugin", args ?? new GetPluginArgs(), options.WithVersion());
+
+        /// <summary>
+        /// Reads the local Docker plugin. The plugin must be installed locally.
+        /// 
+        /// {{% examples %}}
+        /// ## Example Usage
+        /// 
+        /// ### With alias
+        /// data "docker.Plugin" "by_alias" {
+        ///   alias = "sample-volume-plugin:latest"
+        /// }
+        /// {{% /examples %}}
+        /// </summary>
+        public static Output<GetPluginResult> Invoke(GetPluginInvokeArgs? args = null, InvokeOptions? options = null)
+            => Pulumi.Deployment.Instance.Invoke<GetPluginResult>("docker:index/getPlugin:getPlugin", args ?? new GetPluginInvokeArgs(), options.WithVersion());
     }
 
 
     public sealed class GetPluginArgs : Pulumi.InvokeArgs
     {
+        /// <summary>
+        /// The alias of the Docker plugin. If the tag is omitted, `:latest` is complemented to the attribute value.
+        /// </summary>
         [Input("alias")]
         public string? Alias { get; set; }
 
+        /// <summary>
+        /// The ID of the plugin, which has precedence over the `alias` of both are given
+        /// </summary>
         [Input("id")]
         public string? Id { get; set; }
 
@@ -55,16 +63,56 @@ namespace Pulumi.Docker
         }
     }
 
+    public sealed class GetPluginInvokeArgs : Pulumi.InvokeArgs
+    {
+        /// <summary>
+        /// The alias of the Docker plugin. If the tag is omitted, `:latest` is complemented to the attribute value.
+        /// </summary>
+        [Input("alias")]
+        public Input<string>? Alias { get; set; }
+
+        /// <summary>
+        /// The ID of the plugin, which has precedence over the `alias` of both are given
+        /// </summary>
+        [Input("id")]
+        public Input<string>? Id { get; set; }
+
+        public GetPluginInvokeArgs()
+        {
+        }
+    }
+
 
     [OutputType]
     public sealed class GetPluginResult
     {
+        /// <summary>
+        /// The alias of the Docker plugin. If the tag is omitted, `:latest` is complemented to the attribute value.
+        /// </summary>
         public readonly string? Alias;
+        /// <summary>
+        /// If `true` the plugin is enabled
+        /// </summary>
         public readonly bool Enabled;
+        /// <summary>
+        /// The environment variables in the form of `KEY=VALUE`, e.g. `DEBUG=0`
+        /// </summary>
         public readonly ImmutableArray<string> Envs;
+        /// <summary>
+        /// If true, grant all permissions necessary to run the plugin
+        /// </summary>
         public readonly bool GrantAllPermissions;
+        /// <summary>
+        /// The ID of the plugin, which has precedence over the `alias` of both are given
+        /// </summary>
         public readonly string? Id;
+        /// <summary>
+        /// The plugin name. If the tag is omitted, `:latest` is complemented to the attribute value.
+        /// </summary>
         public readonly string Name;
+        /// <summary>
+        /// The Docker Plugin Reference
+        /// </summary>
         public readonly string PluginReference;
 
         [OutputConstructor]

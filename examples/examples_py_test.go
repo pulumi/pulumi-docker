@@ -11,6 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//go:build python || all
 // +build python all
 
 package examples
@@ -22,7 +23,6 @@ import (
 	"testing"
 
 	"github.com/pulumi/pulumi/pkg/v3/testing/integration"
-	"github.com/stretchr/testify/assert"
 )
 
 func TestAwsPy(t *testing.T) {
@@ -32,21 +32,15 @@ func TestAwsPy(t *testing.T) {
 	}
 	fmt.Printf("AWS Region: %v\n", region)
 
-	cwd, err := os.Getwd()
-	if !assert.NoError(t, err) {
-		t.FailNow()
-	}
+	test := getPyOptions(t).
+		With(integration.ProgramTestOptions{
+			Config: map[string]string{
+				"aws:region": region,
+			},
+			Dir: path.Join(getCwd(t), "aws-py"),
+		})
 
-	opts := base.With(integration.ProgramTestOptions{
-		Config: map[string]string{
-			"aws:region": region,
-		},
-		Dependencies: []string{
-			path.Join("..", "sdk", "python", "bin"),
-		},
-		Dir: path.Join(cwd, "aws-py"),
-	})
-	integration.ProgramTest(t, &opts)
+	integration.ProgramTest(t, &test)
 }
 
 func TestAzurePy(t *testing.T) {
@@ -54,51 +48,44 @@ func TestAzurePy(t *testing.T) {
 	if location == "" {
 		t.Skipf("Skipping test due to missing AZURE_LOCATION environment variable")
 	}
-	cwd, err := os.Getwd()
-	if !assert.NoError(t, err) {
-		t.FailNow()
-	}
+	test := getPyOptions(t).
+		With(integration.ProgramTestOptions{
+			Config: map[string]string{
+				"azure:environment": "public",
+				"azure:location":    location,
+			},
+			Dir: path.Join(getCwd(t), "azure-py"),
+		})
 
-	opts := base.With(integration.ProgramTestOptions{
-		Config: map[string]string{
-			"azure:environment": "public",
-			"azure:location":    location,
-		},
-		Dependencies: []string{
-			path.Join("..", "sdk", "python", "bin"),
-		},
-		Dir: path.Join(cwd, "azure-py"),
-	})
-	integration.ProgramTest(t, &opts)
+	integration.ProgramTest(t, &test)
 }
 
 func TestNginxPy(t *testing.T) {
-	cwd, err := os.Getwd()
-	if !assert.NoError(t, err) {
-		t.FailNow()
-	}
+	test := getPyOptions(t).
+		With(integration.ProgramTestOptions{
+			Dir: path.Join(getCwd(t), "nginx-py"),
+		})
 
-	opts := base.With(integration.ProgramTestOptions{
-		Dependencies: []string{
-			path.Join("..", "sdk", "python", "bin"),
-		},
-		Dir: path.Join(cwd, "nginx-py"),
-	})
-	integration.ProgramTest(t, &opts)
+	integration.ProgramTest(t, &test)
 }
 
 func TestDockerfilePy(t *testing.T) {
-	cwd, err := os.Getwd()
-	if !assert.NoError(t, err) {
-		t.FailNow()
-	}
+	test := getPyOptions(t).
+		With(integration.ProgramTestOptions{
+			Dir:                    path.Join(getCwd(t), "dockerfile-py"),
+			ExtraRuntimeValidation: dockerFileWithDependenciesOutputValidation,
+		})
 
-	opts := base.With(integration.ProgramTestOptions{
+	integration.ProgramTest(t, &test)
+}
+
+func getPyOptions(t *testing.T) integration.ProgramTestOptions {
+	base := getBaseOptions()
+	basePy := base.With(integration.ProgramTestOptions{
 		Dependencies: []string{
 			path.Join("..", "sdk", "python", "bin"),
 		},
-		Dir:                    path.Join(cwd, "dockerfile-py"),
-		ExtraRuntimeValidation: dockerFileWithDependenciesOutputValidation,
 	})
-	integration.ProgramTest(t, &opts)
+
+	return basePy
 }

@@ -12,7 +12,7 @@ namespace Pulumi.Docker
     /// <summary>
     /// ## Import
     /// 
-    /// Import is supported using the following syntax#!/bin/bash # Docker secret cannot be imported as the secret data, once set, is never exposed again.
+    /// #!/bin/bash # Docker secret cannot be imported as the secret data, once set, is never exposed again.
     /// </summary>
     [DockerResourceType("docker:index/secret:Secret")]
     public partial class Secret : Pulumi.CustomResource

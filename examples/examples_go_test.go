@@ -11,6 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//go:build go || all
 // +build go all
 
 package examples
@@ -72,4 +73,9 @@ func TestDockerfileGo(t *testing.T) {
 		ExtraRuntimeValidation: dockerFileWithDependenciesOutputValidation,
 	})
 	integration.ProgramTest(t, &opts)
+}
+
+var base = integration.ProgramTestOptions{
+	ExpectRefreshChanges: true, // Docker resources generally see changes when refreshed.
+	// Note: no Config! This package should be usable without any config.
 }
