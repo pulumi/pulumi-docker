@@ -93,7 +93,7 @@ jobs:
         dotnetversion:
         - 3.1.301
         goversion:
-        - 1.16.x
+        - 1.17.x
         language:
         - nodejs
         - python
@@ -152,7 +152,7 @@ jobs:
       fail-fast: true
       matrix:
         goversion:
-        - 1.16.x
+        - 1.17.x
   lint_sdk:
     container: golangci/golangci-lint:latest
     name: lint-sdk
@@ -190,7 +190,7 @@ jobs:
       fail-fast: true
       matrix:
         goversion:
-        - 1.16.x
+        - 1.17.x
   prerequisites:
     name: prerequisites
     runs-on: ubuntu-latest
@@ -229,7 +229,7 @@ jobs:
         echo 'EOF' >> $GITHUB_ENV
     - if: github.event_name == 'pull_request'
       name: Comment on PR with Details of Schema Check
-      uses: thollander/actions-comment-pull-request@1.0.1
+      uses: thollander/actions-comment-pull-request@1.0.4
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         message: |
@@ -258,7 +258,7 @@ jobs:
         dotnetversion:
         - 3.1.301
         goversion:
-        - 1.16.x
+        - 1.17.x
         nodeversion:
         - 14.x
         pythonversion:
@@ -306,7 +306,7 @@ jobs:
         dotnetversion:
         - 3.1.301
         goversion:
-        - 1.16.x
+        - 1.17.x
         nodeversion:
         - 14.x
         pythonversion:
@@ -387,7 +387,7 @@ jobs:
         dotnetversion:
         - 3.1.301
         goversion:
-        - 1.16.x
+        - 1.17.x
         nodeversion:
         - 14.x
         pythonversion:
@@ -464,9 +464,13 @@ jobs:
         role-to-assume: ${{ secrets.AWS_CI_ROLE_ARN }}
     - name: Install dependencies
       run: make install_${{ matrix.language}}_sdk
+    - name: Set up gotestfmt
+      uses: haveyoudebuggedit/gotestfmt-action@v2
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
     - name: Run tests
-      run: cd examples && go test -v -count=1 -cover -timeout 2h -tags=${{ matrix.language
-        }} -parallel 4 .
+      run: cd examples && go test -v -json -count=1 -cover -timeout 2h -tags=${{ matrix.language
+        }} -parallel 4 . 2>&1 | tee /tmp/gotest.log | gotestfmt
     - if: failure() && github.event_name == 'push'
       name: Notify Slack
       uses: 8398a7/action-slack@v3
@@ -480,7 +484,7 @@ jobs:
         dotnetversion:
         - 3.1.301
         goversion:
-        - 1.16.x
+        - 1.17.x
         language:
         - nodejs
         - python
