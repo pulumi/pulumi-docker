@@ -11,11 +11,11 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import asyncio
 import json
 import math
 import os
 import re
-import subprocess
 from random import random
 from typing import Optional, Union, List, Mapping, Sequence
 from distutils.version import LooseVersion
@@ -164,10 +164,10 @@ class ResourceError(Error):
         super().__init__(message)
 
 
-def use_docker_password_stdin(log_resource: pulumi.Resource):
+async def use_docker_password_stdin(log_resource: pulumi.Resource):
     # Verify that 'docker' is on the PATH and get the client/server versions
     try:
-        docker_version_str = run_command_that_must_succeed(
+        docker_version_str = await run_command_that_must_succeed(
             "docker", ["version", "-f", "{{json .}}"], log_resource)
         # IDEA: In the future we could warn here on out-of-date versions of Docker which may not support key
         # features we want to use.
@@ -187,7 +187,7 @@ def use_docker_password_stdin(log_resource: pulumi.Resource):
     return False
 
 
-def build_and_push_image(
+async def build_and_push_image(
     base_image_name: str,
     path_or_build: pulumi.Input[Union[str, DockerBuild]],
     repository_url: pulumi.Input[str],
@@ -229,7 +229,7 @@ def build_and_push_image(
     if registry:
         if not pulumi.runtime.is_dry_run() or pull_from_cache:
             log_debug("Logging in to registry...", log_resource)
-            login_to_registry(registry, log_resource)
+            await login_to_registry(registry, log_resource)
 
     # If the container specified a cache_from parameter, first set up the cached stages.
     cache_from = None
@@ -240,7 +240,7 @@ def build_and_push_image(
 
     # Next, build the image.
     log_ephemeral(f"Building image '{ path_or_build if isinstance(path_or_build, str) else path_or_build.context or '.'}'...", log_resource)
-    build_result = build_image(base_image_name, path_or_build, log_resource, cache_from)
+    build_result = await build_image(base_image_name, path_or_build, log_resource, cache_from)
     image_id, stages = build_result.image_id, build_result.stages
     log_ephemeral("Image build succeeded.", log_resource)
 
@@ -269,11 +269,11 @@ def build_and_push_image(
         # nice and simple url that they can reach this image at, without having the explicit imageId
         # hash added to it.  Note: this location is not guaranteed to be idempotent.  For example,
         # pushes on other machines might overwrite that location.
-        tag_and_push_image(base_image_name, repository_url, tag, image_id, log_resource=log_resource)
-        tag_and_push_image(base_image_name, repository_url, tag, image_id=None, log_resource=log_resource)
+        await tag_and_push_image(base_image_name, repository_url, tag, image_id, log_resource=log_resource)
+        await tag_and_push_image(base_image_name, repository_url, tag, image_id=None, log_resource=log_resource)
 
         for stage in stages:
-            tag_and_push_image(
+            await tag_and_push_image(
                 local_stage_image_name(base_image_name, stage),
                 repository_url,
                 stage,
@@ -358,7 +358,7 @@ def create_tagged_image_name(repository_url: str, tag: Optional[str], image_id: 
     return f'{repository_url}:{full_tag}' if full_tag else repository_url
 
 
-def pull_cache(
+async def pull_cache(
     image_name: str,
     cache_from,
     repo_url: str,
@@ -380,7 +380,7 @@ def pull_cache(
         # That's fine, just move onto the next stage.  Also, pass along a flag saying that we
         # should print that error as a warning instead.  We don't want the update to succeed but
         # the user to then get a nasty "error:" message at the end.
-        command_result = run_command_that_can_fail(
+        command_result = await run_command_that_can_fail(
             "docker", ["pull", image], log_resource,
             report_full_command_line=True, report_error_as_warning=True
         )
@@ -401,7 +401,7 @@ class BuildResult:
         self.stages = stages
 
 
-def build_image(
+async def build_image(
     image_name: str,
     path_or_build: Union[str, DockerBuild],
     log_resource: pulumi.Resource,
@@ -428,17 +428,17 @@ def build_image(
     stages = []
     if build.cache_from and not isinstance(build.cache_from, bool) and build.cache_from.stages:
         for stage in build.cache_from.stages:
-            docker_build(
+            await docker_build(
                 local_stage_image_name(image_name, stage), build,
                 cache_from=cache_from, log_resource=log_resource, target=stage)
             stages.append(stage)
 
     # Invoke Docker CLI commands to build.
-    docker_build(image_name, build, log_resource, cache_from)
+    await docker_build(image_name, build, log_resource, cache_from)
 
     # Finally, inspect the image so we can return the SHA digest. Do not forward the output of this
     # command this to the CLI to show the user.
-    inspect_result = run_command_that_must_succeed(
+    inspect_result = await run_command_that_must_succeed(
         "docker", ["image", "inspect", "-f", "{{.Id}}", image_name], log_resource)
     if not inspect_result:
         raise ResourceError(
@@ -458,7 +458,7 @@ def build_image(
     return BuildResult(image_id, stages)
 
 
-def docker_build(
+async def docker_build(
     image_name: str,
     build: DockerBuild,
     log_resource: pulumi.Resource,
@@ -488,16 +488,18 @@ def docker_build(
     if build.context:
         build_args.append(build.context)  # push the docker build context onto the path.
 
-    return run_command_that_must_succeed("docker", build_args, log_resource, env=build.env)
+    return await run_command_that_must_succeed("docker", build_args, log_resource, env=build.env)
 
 
 class LoginResult:
     registry_name: str
     username: str
+    done: asyncio.Task
 
-    def __init__(self, registry_name: str, username: str):
+    def __init__(self, registry_name: str, username: str, done: asyncio.Task):
         self.registry_name = registry_name
         self.username = username
+        self.done = done
 
 
 # Keep track of registries and users that have been logged in.  If we've already logged into that
@@ -505,7 +507,7 @@ class LoginResult:
 login_results: List[LoginResult] = []
 
 
-def login_to_registry(registry: Registry, log_resource: pulumi.Resource):
+async def login_to_registry(registry: Registry, log_resource: pulumi.Resource):
     registry_name = registry.registry
     username = registry.username
     password = registry.password
@@ -513,36 +515,47 @@ def login_to_registry(registry: Registry, log_resource: pulumi.Resource):
     # See if we've issued an outstanding requests to login into this registry.  If so, just
     # await the results of that login request.  Otherwise, create a new request and keep it
     # around so that future login requests will see it.
-    for result in login_results:
-        if result.registry_name == registry_name and result.username == username:
+    result: LoginResult = None
+    for existing in login_results:
+        if existing.registry_name == registry_name and existing.username == username:
             log_debug(f'Reusing existing login for {username}@{registry_name}', log_resource)
-            return
+            result = existing
+            break
 
-    docker_password_stdin = use_docker_password_stdin(log_resource)
+    if not result:
+        # An existing login wasn't found; WARNING: we must not await anything between this check
+        # for existing logins, and appending our new login attempt, otherwise an async interleaving
+        # could sneak in, log into the same server, and yield a redundant login (which will error out).
+        docker_password_stdin = use_docker_password_stdin(log_resource)
 
-    # pass 'report_full_command_line: false' here so that if we fail to login we don't emit the
-    # username/password in our logs.  Instead, we'll just say "'docker login' failed with code ..."
-    if docker_password_stdin:
-        run_command_that_must_succeed("docker", ["login", "-u", username, "--password-stdin", registry_name],
-                                      log_resource, report_full_command_line=False, stdin=password)
-    else:
-        run_command_that_must_succeed("docker", ["login", "-u", username, "-p", password, registry_name],
-                                      log_resource, report_full_command_line=False)
+        # pass 'report_full_command_line: false' here so that if we fail to login we don't emit the
+        # username/password in our logs.  Instead, we'll just say "'docker login' failed with code ..."
+        coro: asyncio.Coroutine = None
+        if docker_password_stdin:
+            coro = run_command_that_must_succeed("docker", ["login", "-u", username, "--password-stdin", registry_name],
+                                                 log_resource, report_full_command_line=False, stdin=password)
+        else:
+            coro = run_command_that_must_succeed("docker", ["login", "-u", username, "-p", password, registry_name],
+                                                 log_resource, report_full_command_line=False)
 
-    login_results.append(LoginResult(registry_name, username))
+        done = asyncio.create_task(coro)
+        result = LoginResult(registry_name, username, done)
+        login_results.append(result)
+
+    await result.done
 
 
-def tag_and_push_image(
+async def tag_and_push_image(
     image_name: str, repository_url: str,
     tag: Optional[str], image_id: Optional[str],
     log_resource: pulumi.Resource
 ):
-    def do_tag_and_push(target_name: str):
-        run_command_that_must_succeed("docker", ["tag", image_name, target_name], log_resource)
-        run_command_that_must_succeed("docker", ["push", target_name], log_resource)
+    async def do_tag_and_push(target_name: str):
+        await run_command_that_must_succeed("docker", ["tag", image_name, target_name], log_resource)
+        await run_command_that_must_succeed("docker", ["push", target_name], log_resource)
 
     # Ensure we have a unique target name for this image, and tag and push to that unique target.
-    do_tag_and_push(create_tagged_image_name(repository_url, tag, image_id))
+    await do_tag_and_push(create_tagged_image_name(repository_url, tag, image_id))
 
     # If the user provided a tag themselves (like "x/y:dev") then also tag and push directly to
     # that 'dev' tag.  This is not going to be a unique location, and future pushes will overwrite
@@ -551,7 +564,7 @@ def tag_and_push_image(
     # Note: don't need to do this if imageId was 'undefined' as the above line will have already
     # taken care of things for us.
     if tag is not None and image_id is not None:
-        do_tag_and_push(create_tagged_image_name(repository_url, tag, image_id=None))
+        await do_tag_and_push(create_tagged_image_name(repository_url, tag, image_id=None))
 
     return
 
@@ -587,7 +600,7 @@ def get_failure_message(
 # [report_full_command_line] is used to determine if the full command line should be reported
 # when an error happens.  In general reporting the full command line is fine.  But it should be set
 # to false if it might contain sensitive information (like a username/password)
-def run_command_that_must_succeed(
+async def run_command_that_must_succeed(
     cmd: str,
     args: Sequence[str],
     log_resource: pulumi.Resource,
@@ -595,7 +608,7 @@ def run_command_that_must_succeed(
     stdin: Optional[str] = None,
     env: Optional[Mapping] = None
 ) -> str:
-    command_result = run_command_that_can_fail(
+    command_result = await run_command_that_can_fail(
         cmd, args, log_resource, report_full_command_line, False, stdin, env)
     code, stdout = command_result.code, command_result.stdout
 
@@ -611,7 +624,7 @@ def run_command_that_must_succeed(
     return stdout
 
 
-def run_command_that_can_fail(
+async def run_command_that_can_fail(
     cmd_name: str,
     args: Sequence[str],
     log_resource: pulumi.Resource,
@@ -651,14 +664,16 @@ def run_command_that_can_fail(
     # which the grpc layer needs.
     stream_id = math.floor(random() * (1 << 30))
 
-    cmd = [cmd_name]
-    cmd.extend(args)
-
     if env is not None:
         env = os.environ.copy().update(env)
 
-    process = subprocess.Popen(cmd, env=env, stdout=subprocess.PIPE,
-                               stderr=subprocess.PIPE, stdin=subprocess.PIPE, encoding="utf-8")
+    process = await asyncio.create_subprocess_exec(
+        cmd_name, *args, env=env,
+        stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE, stdin=asyncio.subprocess.PIPE)
+
+    # If stdin input is present, we need to ensure it's encoded into bytes.
+    if isinstance(stdin, str):
+        stdin = stdin.encode('utf-8')
 
     # We store the results from stdout in memory and will return them as a str.
     stdout_chunks: List[str] = []
@@ -666,7 +681,7 @@ def run_command_that_can_fail(
 
     # A None value for process.returncode indicates that the process hasn't terminated yet
     while process.returncode is None:
-        outs, errs = process.communicate(input=stdin)
+        outs, errs = await process.communicate(input=stdin)
         if outs:
             # Report all stdout messages as ephemeral messages.  That way they show up in the
             # info bar as they're happening.  But they do not overwhelm the user as the end
@@ -674,13 +689,13 @@ def run_command_that_can_fail(
             for line in outs.splitlines():
                 log_ephemeral(line, log_resource)
 
-            stdout_chunks.append(outs.rstrip())
+            stdout_chunks.append(outs.rstrip().decode('utf-8'))
         if errs:
             # We can't stream these stderr messages as we receive them because we don't knows at
             # this point because Docker uses stderr for both errors and warnings.  So, instead, we
             # just collect the messages, and wait for the process to end to decide how to report
             # them.
-            stderr_chunks.append(errs.rstrip())
+            stderr_chunks.append(errs.rstrip().decode('utf-8'))
 
     code = process.returncode
 
