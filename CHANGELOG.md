@@ -1,3 +1,7 @@
+## Notice (2022-01-06)
+
+*As of this notice, using CHANGELOG.md is DEPRECATED. We will be using [GitHub Releases](https://github.com/pulumi/pulumi-docker/releases) for this repository*
+
 ## HEAD (Unreleased)
 * Upgrade to terraform-bridge 3.11.0
 * Upgrade to pulumi 3.17.0

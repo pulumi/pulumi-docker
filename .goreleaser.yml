@@ -28,7 +28,8 @@ builds:
   - -X github.com/pulumi/pulumi-docker/provider/v3/pkg/version.Version={{.Tag}}
   main: ./cmd/pulumi-resource-docker/
 changelog:
-  skip: true
+  use: git
+  sort: asc
 release:
   disable: false
 snapshot:
