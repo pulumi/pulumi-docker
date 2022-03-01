@@ -36,9 +36,7 @@ export function getRemoteImage(args: GetRemoteImageArgs, opts?: pulumi.InvokeOpt
         opts = {}
     }
 
-    if (!opts.version) {
-        opts.version = utilities.getVersion();
-    }
+    opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
     return pulumi.runtime.invoke("docker:index/getRemoteImage:getRemoteImage", {
         "name": args.name,
     }, opts);

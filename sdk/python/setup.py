@@ -55,6 +55,7 @@ setup(name='pulumi_docker',
       package_data={
           'pulumi_docker': [
               'py.typed',
+              'pulumi-plugin.json',
           ]
       },
       install_requires=[

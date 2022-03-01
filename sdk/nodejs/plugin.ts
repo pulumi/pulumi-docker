@@ -112,37 +112,35 @@ export class Plugin extends pulumi.CustomResource {
      */
     constructor(name: string, args?: PluginArgs, opts?: pulumi.CustomResourceOptions)
     constructor(name: string, argsOrState?: PluginArgs | PluginState, opts?: pulumi.CustomResourceOptions) {
-        let inputs: pulumi.Inputs = {};
+        let resourceInputs: pulumi.Inputs = {};
         opts = opts || {};
         if (opts.id) {
             const state = argsOrState as PluginState | undefined;
-            inputs["alias"] = state ? state.alias : undefined;
-            inputs["enableTimeout"] = state ? state.enableTimeout : undefined;
-            inputs["enabled"] = state ? state.enabled : undefined;
-            inputs["envs"] = state ? state.envs : undefined;
-            inputs["forceDestroy"] = state ? state.forceDestroy : undefined;
-            inputs["forceDisable"] = state ? state.forceDisable : undefined;
-            inputs["grantAllPermissions"] = state ? state.grantAllPermissions : undefined;
-            inputs["grantPermissions"] = state ? state.grantPermissions : undefined;
-            inputs["name"] = state ? state.name : undefined;
-            inputs["pluginReference"] = state ? state.pluginReference : undefined;
+            resourceInputs["alias"] = state ? state.alias : undefined;
+            resourceInputs["enableTimeout"] = state ? state.enableTimeout : undefined;
+            resourceInputs["enabled"] = state ? state.enabled : undefined;
+            resourceInputs["envs"] = state ? state.envs : undefined;
+            resourceInputs["forceDestroy"] = state ? state.forceDestroy : undefined;
+            resourceInputs["forceDisable"] = state ? state.forceDisable : undefined;
+            resourceInputs["grantAllPermissions"] = state ? state.grantAllPermissions : undefined;
+            resourceInputs["grantPermissions"] = state ? state.grantPermissions : undefined;
+            resourceInputs["name"] = state ? state.name : undefined;
+            resourceInputs["pluginReference"] = state ? state.pluginReference : undefined;
         } else {
             const args = argsOrState as PluginArgs | undefined;
-            inputs["alias"] = args ? args.alias : undefined;
-            inputs["enableTimeout"] = args ? args.enableTimeout : undefined;
-            inputs["enabled"] = args ? args.enabled : undefined;
-            inputs["envs"] = args ? args.envs : undefined;
-            inputs["forceDestroy"] = args ? args.forceDestroy : undefined;
-            inputs["forceDisable"] = args ? args.forceDisable : undefined;
-            inputs["grantAllPermissions"] = args ? args.grantAllPermissions : undefined;
-            inputs["grantPermissions"] = args ? args.grantPermissions : undefined;
-            inputs["name"] = args ? args.name : undefined;
-            inputs["pluginReference"] = undefined /*out*/;
+            resourceInputs["alias"] = args ? args.alias : undefined;
+            resourceInputs["enableTimeout"] = args ? args.enableTimeout : undefined;
+            resourceInputs["enabled"] = args ? args.enabled : undefined;
+            resourceInputs["envs"] = args ? args.envs : undefined;
+            resourceInputs["forceDestroy"] = args ? args.forceDestroy : undefined;
+            resourceInputs["forceDisable"] = args ? args.forceDisable : undefined;
+            resourceInputs["grantAllPermissions"] = args ? args.grantAllPermissions : undefined;
+            resourceInputs["grantPermissions"] = args ? args.grantPermissions : undefined;
+            resourceInputs["name"] = args ? args.name : undefined;
+            resourceInputs["pluginReference"] = undefined /*out*/;
         }
-        if (!opts.version) {
-            opts = pulumi.mergeOptions(opts, { version: utilities.getVersion()});
-        }
-        super(Plugin.__pulumiType, name, inputs, opts);
+        opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
+        super(Plugin.__pulumiType, name, resourceInputs, opts);
     }
 }
 

@@ -81,27 +81,25 @@ export class RegistryImage extends pulumi.CustomResource {
      */
     constructor(name: string, args?: RegistryImageArgs, opts?: pulumi.CustomResourceOptions)
     constructor(name: string, argsOrState?: RegistryImageArgs | RegistryImageState, opts?: pulumi.CustomResourceOptions) {
-        let inputs: pulumi.Inputs = {};
+        let resourceInputs: pulumi.Inputs = {};
         opts = opts || {};
         if (opts.id) {
             const state = argsOrState as RegistryImageState | undefined;
-            inputs["build"] = state ? state.build : undefined;
-            inputs["insecureSkipVerify"] = state ? state.insecureSkipVerify : undefined;
-            inputs["keepRemotely"] = state ? state.keepRemotely : undefined;
-            inputs["name"] = state ? state.name : undefined;
-            inputs["sha256Digest"] = state ? state.sha256Digest : undefined;
+            resourceInputs["build"] = state ? state.build : undefined;
+            resourceInputs["insecureSkipVerify"] = state ? state.insecureSkipVerify : undefined;
+            resourceInputs["keepRemotely"] = state ? state.keepRemotely : undefined;
+            resourceInputs["name"] = state ? state.name : undefined;
+            resourceInputs["sha256Digest"] = state ? state.sha256Digest : undefined;
         } else {
             const args = argsOrState as RegistryImageArgs | undefined;
-            inputs["build"] = args ? args.build : undefined;
-            inputs["insecureSkipVerify"] = args ? args.insecureSkipVerify : undefined;
-            inputs["keepRemotely"] = args ? args.keepRemotely : undefined;
-            inputs["name"] = args ? args.name : undefined;
-            inputs["sha256Digest"] = undefined /*out*/;
+            resourceInputs["build"] = args ? args.build : undefined;
+            resourceInputs["insecureSkipVerify"] = args ? args.insecureSkipVerify : undefined;
+            resourceInputs["keepRemotely"] = args ? args.keepRemotely : undefined;
+            resourceInputs["name"] = args ? args.name : undefined;
+            resourceInputs["sha256Digest"] = undefined /*out*/;
         }
-        if (!opts.version) {
-            opts = pulumi.mergeOptions(opts, { version: utilities.getVersion()});
-        }
-        super(RegistryImage.__pulumiType, name, inputs, opts);
+        opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
+        super(RegistryImage.__pulumiType, name, resourceInputs, opts);
     }
 }
 

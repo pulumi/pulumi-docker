@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Pulumi.Serialization;
-using Pulumi.Utilities;
 
 namespace Pulumi.Docker
 {
@@ -25,7 +24,7 @@ namespace Pulumi.Docker
         /// {{% /examples %}}
         /// </summary>
         public static Task<GetPluginResult> InvokeAsync(GetPluginArgs? args = null, InvokeOptions? options = null)
-            => Pulumi.Deployment.Instance.InvokeAsync<GetPluginResult>("docker:index/getPlugin:getPlugin", args ?? new GetPluginArgs(), options.WithVersion());
+            => Pulumi.Deployment.Instance.InvokeAsync<GetPluginResult>("docker:index/getPlugin:getPlugin", args ?? new GetPluginArgs(), options.WithDefaults());
 
         /// <summary>
         /// Reads the local Docker plugin. The plugin must be installed locally.
@@ -40,7 +39,7 @@ namespace Pulumi.Docker
         /// {{% /examples %}}
         /// </summary>
         public static Output<GetPluginResult> Invoke(GetPluginInvokeArgs? args = null, InvokeOptions? options = null)
-            => Pulumi.Deployment.Instance.Invoke<GetPluginResult>("docker:index/getPlugin:getPlugin", args ?? new GetPluginInvokeArgs(), options.WithVersion());
+            => Pulumi.Deployment.Instance.Invoke<GetPluginResult>("docker:index/getPlugin:getPlugin", args ?? new GetPluginInvokeArgs(), options.WithDefaults());
     }
 
 
