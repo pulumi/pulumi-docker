@@ -65,24 +65,22 @@ export class ServiceConfig extends pulumi.CustomResource {
      */
     constructor(name: string, args: ServiceConfigArgs, opts?: pulumi.CustomResourceOptions)
     constructor(name: string, argsOrState?: ServiceConfigArgs | ServiceConfigState, opts?: pulumi.CustomResourceOptions) {
-        let inputs: pulumi.Inputs = {};
+        let resourceInputs: pulumi.Inputs = {};
         opts = opts || {};
         if (opts.id) {
             const state = argsOrState as ServiceConfigState | undefined;
-            inputs["data"] = state ? state.data : undefined;
-            inputs["name"] = state ? state.name : undefined;
+            resourceInputs["data"] = state ? state.data : undefined;
+            resourceInputs["name"] = state ? state.name : undefined;
         } else {
             const args = argsOrState as ServiceConfigArgs | undefined;
             if ((!args || args.data === undefined) && !opts.urn) {
                 throw new Error("Missing required property 'data'");
             }
-            inputs["data"] = args ? args.data : undefined;
-            inputs["name"] = args ? args.name : undefined;
+            resourceInputs["data"] = args ? args.data : undefined;
+            resourceInputs["name"] = args ? args.name : undefined;
         }
-        if (!opts.version) {
-            opts = pulumi.mergeOptions(opts, { version: utilities.getVersion()});
-        }
-        super(ServiceConfig.__pulumiType, name, inputs, opts);
+        opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
+        super(ServiceConfig.__pulumiType, name, resourceInputs, opts);
     }
 }
 

@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Pulumi.Serialization;
-using Pulumi.Utilities;
 
 namespace Pulumi.Docker
 {
@@ -51,7 +50,7 @@ namespace Pulumi.Docker
         /// {{% /examples %}}
         /// </summary>
         public static Task<GetRemoteImageResult> InvokeAsync(GetRemoteImageArgs args, InvokeOptions? options = null)
-            => Pulumi.Deployment.Instance.InvokeAsync<GetRemoteImageResult>("docker:index/getRemoteImage:getRemoteImage", args ?? new GetRemoteImageArgs(), options.WithVersion());
+            => Pulumi.Deployment.Instance.InvokeAsync<GetRemoteImageResult>("docker:index/getRemoteImage:getRemoteImage", args ?? new GetRemoteImageArgs(), options.WithDefaults());
 
         /// <summary>
         /// `docker.RemoteImage` provides details about a specific Docker Image which need to be presend on the Docker Host
@@ -92,7 +91,7 @@ namespace Pulumi.Docker
         /// {{% /examples %}}
         /// </summary>
         public static Output<GetRemoteImageResult> Invoke(GetRemoteImageInvokeArgs args, InvokeOptions? options = null)
-            => Pulumi.Deployment.Instance.Invoke<GetRemoteImageResult>("docker:index/getRemoteImage:getRemoteImage", args ?? new GetRemoteImageInvokeArgs(), options.WithVersion());
+            => Pulumi.Deployment.Instance.Invoke<GetRemoteImageResult>("docker:index/getRemoteImage:getRemoteImage", args ?? new GetRemoteImageInvokeArgs(), options.WithDefaults());
     }
 
 

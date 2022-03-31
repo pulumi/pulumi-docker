@@ -143,38 +143,36 @@ export class RemoteImage extends pulumi.CustomResource {
      */
     constructor(name: string, args: RemoteImageArgs, opts?: pulumi.CustomResourceOptions)
     constructor(name: string, argsOrState?: RemoteImageArgs | RemoteImageState, opts?: pulumi.CustomResourceOptions) {
-        let inputs: pulumi.Inputs = {};
+        let resourceInputs: pulumi.Inputs = {};
         opts = opts || {};
         if (opts.id) {
             const state = argsOrState as RemoteImageState | undefined;
-            inputs["build"] = state ? state.build : undefined;
-            inputs["forceRemove"] = state ? state.forceRemove : undefined;
-            inputs["keepLocally"] = state ? state.keepLocally : undefined;
-            inputs["latest"] = state ? state.latest : undefined;
-            inputs["name"] = state ? state.name : undefined;
-            inputs["output"] = state ? state.output : undefined;
-            inputs["pullTrigger"] = state ? state.pullTrigger : undefined;
-            inputs["pullTriggers"] = state ? state.pullTriggers : undefined;
-            inputs["repoDigest"] = state ? state.repoDigest : undefined;
+            resourceInputs["build"] = state ? state.build : undefined;
+            resourceInputs["forceRemove"] = state ? state.forceRemove : undefined;
+            resourceInputs["keepLocally"] = state ? state.keepLocally : undefined;
+            resourceInputs["latest"] = state ? state.latest : undefined;
+            resourceInputs["name"] = state ? state.name : undefined;
+            resourceInputs["output"] = state ? state.output : undefined;
+            resourceInputs["pullTrigger"] = state ? state.pullTrigger : undefined;
+            resourceInputs["pullTriggers"] = state ? state.pullTriggers : undefined;
+            resourceInputs["repoDigest"] = state ? state.repoDigest : undefined;
         } else {
             const args = argsOrState as RemoteImageArgs | undefined;
             if ((!args || args.name === undefined) && !opts.urn) {
                 throw new Error("Missing required property 'name'");
             }
-            inputs["build"] = args ? args.build : undefined;
-            inputs["forceRemove"] = args ? args.forceRemove : undefined;
-            inputs["keepLocally"] = args ? args.keepLocally : undefined;
-            inputs["name"] = args ? args.name : undefined;
-            inputs["pullTrigger"] = args ? args.pullTrigger : undefined;
-            inputs["pullTriggers"] = args ? args.pullTriggers : undefined;
-            inputs["latest"] = undefined /*out*/;
-            inputs["output"] = undefined /*out*/;
-            inputs["repoDigest"] = undefined /*out*/;
+            resourceInputs["build"] = args ? args.build : undefined;
+            resourceInputs["forceRemove"] = args ? args.forceRemove : undefined;
+            resourceInputs["keepLocally"] = args ? args.keepLocally : undefined;
+            resourceInputs["name"] = args ? args.name : undefined;
+            resourceInputs["pullTrigger"] = args ? args.pullTrigger : undefined;
+            resourceInputs["pullTriggers"] = args ? args.pullTriggers : undefined;
+            resourceInputs["latest"] = undefined /*out*/;
+            resourceInputs["output"] = undefined /*out*/;
+            resourceInputs["repoDigest"] = undefined /*out*/;
         }
-        if (!opts.version) {
-            opts = pulumi.mergeOptions(opts, { version: utilities.getVersion()});
-        }
-        super(RemoteImage.__pulumiType, name, inputs, opts);
+        opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
+        super(RemoteImage.__pulumiType, name, resourceInputs, opts);
     }
 }
 

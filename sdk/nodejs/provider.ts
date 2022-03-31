@@ -55,20 +55,18 @@ export class Provider extends pulumi.ProviderResource {
      * @param opts A bag of options that control this resource's behavior.
      */
     constructor(name: string, args?: ProviderArgs, opts?: pulumi.ResourceOptions) {
-        let inputs: pulumi.Inputs = {};
+        let resourceInputs: pulumi.Inputs = {};
         opts = opts || {};
         {
-            inputs["caMaterial"] = args ? args.caMaterial : undefined;
-            inputs["certMaterial"] = args ? args.certMaterial : undefined;
-            inputs["certPath"] = args ? args.certPath : undefined;
-            inputs["host"] = (args ? args.host : undefined) ?? (utilities.getEnv("DOCKER_HOST") || "unix:///var/run/docker.sock");
-            inputs["keyMaterial"] = args ? args.keyMaterial : undefined;
-            inputs["registryAuth"] = pulumi.output(args ? args.registryAuth : undefined).apply(JSON.stringify);
+            resourceInputs["caMaterial"] = args ? args.caMaterial : undefined;
+            resourceInputs["certMaterial"] = args ? args.certMaterial : undefined;
+            resourceInputs["certPath"] = args ? args.certPath : undefined;
+            resourceInputs["host"] = (args ? args.host : undefined) ?? (utilities.getEnv("DOCKER_HOST") || "unix:///var/run/docker.sock");
+            resourceInputs["keyMaterial"] = args ? args.keyMaterial : undefined;
+            resourceInputs["registryAuth"] = pulumi.output(args ? args.registryAuth : undefined).apply(JSON.stringify);
         }
-        if (!opts.version) {
-            opts = pulumi.mergeOptions(opts, { version: utilities.getVersion()});
-        }
-        super(Provider.__pulumiType, name, inputs, opts);
+        opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
+        super(Provider.__pulumiType, name, resourceInputs, opts);
     }
 }
 

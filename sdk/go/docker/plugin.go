@@ -25,7 +25,7 @@ import (
 //
 // func main() {
 // 	pulumi.Run(func(ctx *pulumi.Context) error {
-// 		_, err := docker.NewPlugin(ctx, "sample_volume_plugin", &docker.PluginArgs{
+// 		_, err := docker.NewPlugin(ctx, "sample-volume-plugin", &docker.PluginArgs{
 // 			Alias:         pulumi.String("sample-volume-plugin"),
 // 			EnableTimeout: pulumi.Int(60),
 // 			Enabled:       pulumi.Bool(false),
@@ -209,7 +209,7 @@ type PluginInput interface {
 }
 
 func (*Plugin) ElementType() reflect.Type {
-	return reflect.TypeOf((*Plugin)(nil))
+	return reflect.TypeOf((**Plugin)(nil)).Elem()
 }
 
 func (i *Plugin) ToPluginOutput() PluginOutput {
@@ -218,35 +218,6 @@ func (i *Plugin) ToPluginOutput() PluginOutput {
 
 func (i *Plugin) ToPluginOutputWithContext(ctx context.Context) PluginOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(PluginOutput)
-}
-
-func (i *Plugin) ToPluginPtrOutput() PluginPtrOutput {
-	return i.ToPluginPtrOutputWithContext(context.Background())
-}
-
-func (i *Plugin) ToPluginPtrOutputWithContext(ctx context.Context) PluginPtrOutput {
-	return pulumi.ToOutputWithContext(ctx, i).(PluginPtrOutput)
-}
-
-type PluginPtrInput interface {
-	pulumi.Input
-
-	ToPluginPtrOutput() PluginPtrOutput
-	ToPluginPtrOutputWithContext(ctx context.Context) PluginPtrOutput
-}
-
-type pluginPtrType PluginArgs
-
-func (*pluginPtrType) ElementType() reflect.Type {
-	return reflect.TypeOf((**Plugin)(nil))
-}
-
-func (i *pluginPtrType) ToPluginPtrOutput() PluginPtrOutput {
-	return i.ToPluginPtrOutputWithContext(context.Background())
-}
-
-func (i *pluginPtrType) ToPluginPtrOutputWithContext(ctx context.Context) PluginPtrOutput {
-	return pulumi.ToOutputWithContext(ctx, i).(PluginPtrOutput)
 }
 
 // PluginArrayInput is an input type that accepts PluginArray and PluginArrayOutput values.
@@ -302,7 +273,7 @@ func (i PluginMap) ToPluginMapOutputWithContext(ctx context.Context) PluginMapOu
 type PluginOutput struct{ *pulumi.OutputState }
 
 func (PluginOutput) ElementType() reflect.Type {
-	return reflect.TypeOf((*Plugin)(nil))
+	return reflect.TypeOf((**Plugin)(nil)).Elem()
 }
 
 func (o PluginOutput) ToPluginOutput() PluginOutput {
@@ -313,44 +284,10 @@ func (o PluginOutput) ToPluginOutputWithContext(ctx context.Context) PluginOutpu
 	return o
 }
 
-func (o PluginOutput) ToPluginPtrOutput() PluginPtrOutput {
-	return o.ToPluginPtrOutputWithContext(context.Background())
-}
-
-func (o PluginOutput) ToPluginPtrOutputWithContext(ctx context.Context) PluginPtrOutput {
-	return o.ApplyTWithContext(ctx, func(_ context.Context, v Plugin) *Plugin {
-		return &v
-	}).(PluginPtrOutput)
-}
-
-type PluginPtrOutput struct{ *pulumi.OutputState }
-
-func (PluginPtrOutput) ElementType() reflect.Type {
-	return reflect.TypeOf((**Plugin)(nil))
-}
-
-func (o PluginPtrOutput) ToPluginPtrOutput() PluginPtrOutput {
-	return o
-}
-
-func (o PluginPtrOutput) ToPluginPtrOutputWithContext(ctx context.Context) PluginPtrOutput {
-	return o
-}
-
-func (o PluginPtrOutput) Elem() PluginOutput {
-	return o.ApplyT(func(v *Plugin) Plugin {
-		if v != nil {
-			return *v
-		}
-		var ret Plugin
-		return ret
-	}).(PluginOutput)
-}
-
 type PluginArrayOutput struct{ *pulumi.OutputState }
 
 func (PluginArrayOutput) ElementType() reflect.Type {
-	return reflect.TypeOf((*[]Plugin)(nil))
+	return reflect.TypeOf((*[]*Plugin)(nil)).Elem()
 }
 
 func (o PluginArrayOutput) ToPluginArrayOutput() PluginArrayOutput {
@@ -362,15 +299,15 @@ func (o PluginArrayOutput) ToPluginArrayOutputWithContext(ctx context.Context) P
 }
 
 func (o PluginArrayOutput) Index(i pulumi.IntInput) PluginOutput {
-	return pulumi.All(o, i).ApplyT(func(vs []interface{}) Plugin {
-		return vs[0].([]Plugin)[vs[1].(int)]
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) *Plugin {
+		return vs[0].([]*Plugin)[vs[1].(int)]
 	}).(PluginOutput)
 }
 
 type PluginMapOutput struct{ *pulumi.OutputState }
 
 func (PluginMapOutput) ElementType() reflect.Type {
-	return reflect.TypeOf((*map[string]Plugin)(nil))
+	return reflect.TypeOf((*map[string]*Plugin)(nil)).Elem()
 }
 
 func (o PluginMapOutput) ToPluginMapOutput() PluginMapOutput {
@@ -382,18 +319,16 @@ func (o PluginMapOutput) ToPluginMapOutputWithContext(ctx context.Context) Plugi
 }
 
 func (o PluginMapOutput) MapIndex(k pulumi.StringInput) PluginOutput {
-	return pulumi.All(o, k).ApplyT(func(vs []interface{}) Plugin {
-		return vs[0].(map[string]Plugin)[vs[1].(string)]
+	return pulumi.All(o, k).ApplyT(func(vs []interface{}) *Plugin {
+		return vs[0].(map[string]*Plugin)[vs[1].(string)]
 	}).(PluginOutput)
 }
 
 func init() {
 	pulumi.RegisterInputType(reflect.TypeOf((*PluginInput)(nil)).Elem(), &Plugin{})
-	pulumi.RegisterInputType(reflect.TypeOf((*PluginPtrInput)(nil)).Elem(), &Plugin{})
 	pulumi.RegisterInputType(reflect.TypeOf((*PluginArrayInput)(nil)).Elem(), PluginArray{})
 	pulumi.RegisterInputType(reflect.TypeOf((*PluginMapInput)(nil)).Elem(), PluginMap{})
 	pulumi.RegisterOutputType(PluginOutput{})
-	pulumi.RegisterOutputType(PluginPtrOutput{})
 	pulumi.RegisterOutputType(PluginArrayOutput{})
 	pulumi.RegisterOutputType(PluginMapOutput{})
 }
