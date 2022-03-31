@@ -59,6 +59,8 @@ type providerArgs struct {
 	// PEM-encoded content of Docker client private key
 	KeyMaterial  *string                `pulumi:"keyMaterial"`
 	RegistryAuth []ProviderRegistryAuth `pulumi:"registryAuth"`
+	// Additional SSH option flags to be appended when using `ssh://` protocol
+	SshOpts []string `pulumi:"sshOpts"`
 }
 
 // The set of arguments for constructing a Provider resource.
@@ -74,6 +76,8 @@ type ProviderArgs struct {
 	// PEM-encoded content of Docker client private key
 	KeyMaterial  pulumi.StringPtrInput
 	RegistryAuth ProviderRegistryAuthArrayInput
+	// Additional SSH option flags to be appended when using `ssh://` protocol
+	SshOpts pulumi.StringArrayInput
 }
 
 func (ProviderArgs) ElementType() reflect.Type {

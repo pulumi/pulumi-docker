@@ -37,7 +37,7 @@ namespace Pulumi.Docker.Inputs
         }
 
         /// <summary>
-        /// BuildID is an optional identifier that can be passed together with the build request. The
+        /// BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request.
         /// </summary>
         [Input("buildId")]
         public Input<string>? BuildId { get; set; }
@@ -241,7 +241,7 @@ namespace Pulumi.Docker.Inputs
         }
 
         /// <summary>
-        /// Version of the unerlying builder to use
+        /// Version of the underlying builder to use
         /// </summary>
         [Input("version")]
         public Input<string>? Version { get; set; }

@@ -14,11 +14,11 @@ namespace Pulumi.Docker.Outputs
     public sealed class ServiceUpdateConfig
     {
         /// <summary>
-        /// Delay between task updates (ns|us|ms|s|m|h). Defaults to `0s`.
+        /// Delay between task updates `(ns|us|ms|s|m|h)`. Defaults to `0s`.
         /// </summary>
         public readonly string? Delay;
         /// <summary>
-        /// Action on update failure: pause | continue | rollback. Defaults to `pause`.
+        /// Action on update failure: `pause`, `continue` or `rollback`. Defaults to `pause`.
         /// </summary>
         public readonly string? FailureAction;
         /// <summary>

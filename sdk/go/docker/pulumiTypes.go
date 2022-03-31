@@ -2677,7 +2677,7 @@ type RegistryImageBuild struct {
 	AuthConfigs []RegistryImageBuildAuthConfig `pulumi:"authConfigs"`
 	// Pairs for build-time variables in the form TODO
 	BuildArgs map[string]string `pulumi:"buildArgs"`
-	// BuildID is an optional identifier that can be passed together with the build request. The
+	// BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request.
 	BuildId *string `pulumi:"buildId"`
 	// Images to consider as cache sources
 	CacheFroms []string `pulumi:"cacheFroms"`
@@ -2735,7 +2735,7 @@ type RegistryImageBuild struct {
 	Target *string `pulumi:"target"`
 	// Configuration for ulimits
 	Ulimits []RegistryImageBuildUlimit `pulumi:"ulimits"`
-	// Version of the unerlying builder to use
+	// Version of the underlying builder to use
 	Version *string `pulumi:"version"`
 }
 
@@ -2755,7 +2755,7 @@ type RegistryImageBuildArgs struct {
 	AuthConfigs RegistryImageBuildAuthConfigArrayInput `pulumi:"authConfigs"`
 	// Pairs for build-time variables in the form TODO
 	BuildArgs pulumi.StringMapInput `pulumi:"buildArgs"`
-	// BuildID is an optional identifier that can be passed together with the build request. The
+	// BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request.
 	BuildId pulumi.StringPtrInput `pulumi:"buildId"`
 	// Images to consider as cache sources
 	CacheFroms pulumi.StringArrayInput `pulumi:"cacheFroms"`
@@ -2813,7 +2813,7 @@ type RegistryImageBuildArgs struct {
 	Target pulumi.StringPtrInput `pulumi:"target"`
 	// Configuration for ulimits
 	Ulimits RegistryImageBuildUlimitArrayInput `pulumi:"ulimits"`
-	// Version of the unerlying builder to use
+	// Version of the underlying builder to use
 	Version pulumi.StringPtrInput `pulumi:"version"`
 }
 
@@ -2904,7 +2904,7 @@ func (o RegistryImageBuildOutput) BuildArgs() pulumi.StringMapOutput {
 	return o.ApplyT(func(v RegistryImageBuild) map[string]string { return v.BuildArgs }).(pulumi.StringMapOutput)
 }
 
-// BuildID is an optional identifier that can be passed together with the build request. The
+// BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request.
 func (o RegistryImageBuildOutput) BuildId() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v RegistryImageBuild) *string { return v.BuildId }).(pulumi.StringPtrOutput)
 }
@@ -3049,7 +3049,7 @@ func (o RegistryImageBuildOutput) Ulimits() RegistryImageBuildUlimitArrayOutput 
 	return o.ApplyT(func(v RegistryImageBuild) []RegistryImageBuildUlimit { return v.Ulimits }).(RegistryImageBuildUlimitArrayOutput)
 }
 
-// Version of the unerlying builder to use
+// Version of the underlying builder to use
 func (o RegistryImageBuildOutput) Version() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v RegistryImageBuild) *string { return v.Version }).(pulumi.StringPtrOutput)
 }
@@ -3098,7 +3098,7 @@ func (o RegistryImageBuildPtrOutput) BuildArgs() pulumi.StringMapOutput {
 	}).(pulumi.StringMapOutput)
 }
 
-// BuildID is an optional identifier that can be passed together with the build request. The
+// BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request.
 func (o RegistryImageBuildPtrOutput) BuildId() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *RegistryImageBuild) *string {
 		if v == nil {
@@ -3388,7 +3388,7 @@ func (o RegistryImageBuildPtrOutput) Ulimits() RegistryImageBuildUlimitArrayOutp
 	}).(RegistryImageBuildUlimitArrayOutput)
 }
 
-// Version of the unerlying builder to use
+// Version of the underlying builder to use
 func (o RegistryImageBuildPtrOutput) Version() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *RegistryImageBuild) *string {
 		if v == nil {
@@ -4214,9 +4214,9 @@ func (o ServiceAuthPtrOutput) Username() pulumi.StringPtrOutput {
 }
 
 type ServiceConvergeConfig struct {
-	// The interval to check if the desired state is reached (ms|s). Defaults to `7s`.
+	// The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.
 	Delay *string `pulumi:"delay"`
-	// The timeout of the service to reach the desired state (s|m). Defaults to `3m`
+	// The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`
 	Timeout *string `pulumi:"timeout"`
 }
 
@@ -4232,9 +4232,9 @@ type ServiceConvergeConfigInput interface {
 }
 
 type ServiceConvergeConfigArgs struct {
-	// The interval to check if the desired state is reached (ms|s). Defaults to `7s`.
+	// The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.
 	Delay pulumi.StringPtrInput `pulumi:"delay"`
-	// The timeout of the service to reach the desired state (s|m). Defaults to `3m`
+	// The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`
 	Timeout pulumi.StringPtrInput `pulumi:"timeout"`
 }
 
@@ -4315,12 +4315,12 @@ func (o ServiceConvergeConfigOutput) ToServiceConvergeConfigPtrOutputWithContext
 	}).(ServiceConvergeConfigPtrOutput)
 }
 
-// The interval to check if the desired state is reached (ms|s). Defaults to `7s`.
+// The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.
 func (o ServiceConvergeConfigOutput) Delay() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ServiceConvergeConfig) *string { return v.Delay }).(pulumi.StringPtrOutput)
 }
 
-// The timeout of the service to reach the desired state (s|m). Defaults to `3m`
+// The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`
 func (o ServiceConvergeConfigOutput) Timeout() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ServiceConvergeConfig) *string { return v.Timeout }).(pulumi.StringPtrOutput)
 }
@@ -4349,7 +4349,7 @@ func (o ServiceConvergeConfigPtrOutput) Elem() ServiceConvergeConfigOutput {
 	}).(ServiceConvergeConfigOutput)
 }
 
-// The interval to check if the desired state is reached (ms|s). Defaults to `7s`.
+// The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.
 func (o ServiceConvergeConfigPtrOutput) Delay() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *ServiceConvergeConfig) *string {
 		if v == nil {
@@ -4359,7 +4359,7 @@ func (o ServiceConvergeConfigPtrOutput) Delay() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
-// The timeout of the service to reach the desired state (s|m). Defaults to `3m`
+// The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`
 func (o ServiceConvergeConfigPtrOutput) Timeout() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *ServiceConvergeConfig) *string {
 		if v == nil {
@@ -9197,9 +9197,9 @@ func (o ServiceTaskSpecRestartPolicyPtrOutput) Window() pulumi.StringPtrOutput {
 }
 
 type ServiceUpdateConfig struct {
-	// Delay between task updates (ns|us|ms|s|m|h). Defaults to `0s`.
+	// Delay between task updates `(ns|us|ms|s|m|h)`. Defaults to `0s`.
 	Delay *string `pulumi:"delay"`
-	// Action on update failure: pause | continue | rollback. Defaults to `pause`.
+	// Action on update failure: `pause`, `continue` or `rollback`. Defaults to `pause`.
 	FailureAction *string `pulumi:"failureAction"`
 	// Failure rate to tolerate during an update. Defaults to `0.0`.
 	MaxFailureRatio *string `pulumi:"maxFailureRatio"`
@@ -9223,9 +9223,9 @@ type ServiceUpdateConfigInput interface {
 }
 
 type ServiceUpdateConfigArgs struct {
-	// Delay between task updates (ns|us|ms|s|m|h). Defaults to `0s`.
+	// Delay between task updates `(ns|us|ms|s|m|h)`. Defaults to `0s`.
 	Delay pulumi.StringPtrInput `pulumi:"delay"`
-	// Action on update failure: pause | continue | rollback. Defaults to `pause`.
+	// Action on update failure: `pause`, `continue` or `rollback`. Defaults to `pause`.
 	FailureAction pulumi.StringPtrInput `pulumi:"failureAction"`
 	// Failure rate to tolerate during an update. Defaults to `0.0`.
 	MaxFailureRatio pulumi.StringPtrInput `pulumi:"maxFailureRatio"`
@@ -9314,12 +9314,12 @@ func (o ServiceUpdateConfigOutput) ToServiceUpdateConfigPtrOutputWithContext(ctx
 	}).(ServiceUpdateConfigPtrOutput)
 }
 
-// Delay between task updates (ns|us|ms|s|m|h). Defaults to `0s`.
+// Delay between task updates `(ns|us|ms|s|m|h)`. Defaults to `0s`.
 func (o ServiceUpdateConfigOutput) Delay() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ServiceUpdateConfig) *string { return v.Delay }).(pulumi.StringPtrOutput)
 }
 
-// Action on update failure: pause | continue | rollback. Defaults to `pause`.
+// Action on update failure: `pause`, `continue` or `rollback`. Defaults to `pause`.
 func (o ServiceUpdateConfigOutput) FailureAction() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ServiceUpdateConfig) *string { return v.FailureAction }).(pulumi.StringPtrOutput)
 }
@@ -9368,7 +9368,7 @@ func (o ServiceUpdateConfigPtrOutput) Elem() ServiceUpdateConfigOutput {
 	}).(ServiceUpdateConfigOutput)
 }
 
-// Delay between task updates (ns|us|ms|s|m|h). Defaults to `0s`.
+// Delay between task updates `(ns|us|ms|s|m|h)`. Defaults to `0s`.
 func (o ServiceUpdateConfigPtrOutput) Delay() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *ServiceUpdateConfig) *string {
 		if v == nil {
@@ -9378,7 +9378,7 @@ func (o ServiceUpdateConfigPtrOutput) Delay() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
-// Action on update failure: pause | continue | rollback. Defaults to `pause`.
+// Action on update failure: `pause`, `continue` or `rollback`. Defaults to `pause`.
 func (o ServiceUpdateConfigPtrOutput) FailureAction() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *ServiceUpdateConfig) *string {
 		if v == nil {

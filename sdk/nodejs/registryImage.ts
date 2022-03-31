@@ -7,9 +7,11 @@ import * as utilities from "./utilities";
 
 /**
  * <!-- Bug: Type and Name are switched -->
- * Manages the lifecycle of docker image/tag in a registry.
+ * Manages the lifecycle of docker image/tag in a registry means it can store one or more version of specific docker images and identified by their tags.
  *
  * ## Example Usage
+ *
+ * To be able to update an image itself when an updated image arrives.
  *
  * ```typescript
  * import * as pulumi from "@pulumi/pulumi";

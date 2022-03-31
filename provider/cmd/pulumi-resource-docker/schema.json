@@ -45,6 +45,13 @@
                 "items": {
                     "$ref": "#/types/docker:config/registryAuth:registryAuth"
                 }
+            },
+            "sshOpts": {
+                "type": "array",
+                "items": {
+                    "type": "string"
+                },
+                "description": "Additional SSH option flags to be appended when using `ssh://` protocol\n"
             }
         },
         "defaults": [
@@ -940,7 +947,7 @@
                 },
                 "buildId": {
                     "type": "string",
-                    "description": "BuildID is an optional identifier that can be passed together with the build request. The\n",
+                    "description": "BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1216,7 +1223,7 @@
                 },
                 "version": {
                     "type": "string",
-                    "description": "Version of the unerlying builder to use\n",
+                    "description": "Version of the underlying builder to use\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1500,7 +1507,7 @@
             "properties": {
                 "delay": {
                     "type": "string",
-                    "description": "The interval to check if the desired state is reached (ms|s). Defaults to `7s`.\n",
+                    "description": "The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1509,7 +1516,7 @@
                 },
                 "timeout": {
                     "type": "string",
-                    "description": "The timeout of the service to reach the desired state (s|m). Defaults to `3m`\n",
+                    "description": "The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -2793,7 +2800,7 @@
             "properties": {
                 "delay": {
                     "type": "string",
-                    "description": "Delay between task updates (ns|us|ms|s|m|h). Defaults to `0s`.\n",
+                    "description": "Delay between task updates `(ns|us|ms|s|m|h)`. Defaults to `0s`.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -2802,7 +2809,7 @@
                 },
                 "failureAction": {
                     "type": "string",
-                    "description": "Action on update failure: pause | continue | rollback. Defaults to `pause`.\n",
+                    "description": "Action on update failure: `pause`, `continue` or `rollback`. Defaults to `pause`.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -2944,6 +2951,13 @@
                 "items": {
                     "$ref": "#/types/docker:index/ProviderRegistryAuth:ProviderRegistryAuth"
                 }
+            },
+            "sshOpts": {
+                "type": "array",
+                "items": {
+                    "type": "string"
+                },
+                "description": "Additional SSH option flags to be appended when using `ssh://` protocol\n"
             }
         },
         "inputProperties": {
@@ -2978,6 +2992,13 @@
                 "items": {
                     "$ref": "#/types/docker:index/ProviderRegistryAuth:ProviderRegistryAuth"
                 }
+            },
+            "sshOpts": {
+                "type": "array",
+                "items": {
+                    "type": "string"
+                },
+                "description": "Additional SSH option flags to be appended when using `ssh://` protocol\n"
             }
         }
     },
@@ -3136,7 +3157,7 @@
                 },
                 "logDriver": {
                     "type": "string",
-                    "description": "The logging driver to use for the container. Defaults to `json-file`.\n"
+                    "description": "The logging driver to use for the container.\n"
                 },
                 "logOpts": {
                     "type": "object",
@@ -3243,7 +3264,7 @@
                 },
                 "rm": {
                     "type": "boolean",
-                    "description": "If `true`, then the container will be automatically removed after his execution. Terraform won't check this container\nafter creation. Defaults to `false`.\n"
+                    "description": "If `true`, then the container will be automatically removed when it exits. Defaults to `false`.\n"
                 },
                 "securityOpts": {
                     "type": "array",
@@ -3339,6 +3360,7 @@
                 "ipPrefixLength",
                 "ipcMode",
                 "labels",
+                "logDriver",
                 "name",
                 "networkDatas",
                 "securityOpts",
@@ -3469,7 +3491,7 @@
                 },
                 "logDriver": {
                     "type": "string",
-                    "description": "The logging driver to use for the container. Defaults to `json-file`.\n"
+                    "description": "The logging driver to use for the container.\n"
                 },
                 "logOpts": {
                     "type": "object",
@@ -3569,7 +3591,7 @@
                 },
                 "rm": {
                     "type": "boolean",
-                    "description": "If `true`, then the container will be automatically removed after his execution. Terraform won't check this container\nafter creation. Defaults to `false`.\n"
+                    "description": "If `true`, then the container will be automatically removed when it exits. Defaults to `false`.\n"
                 },
                 "securityOpts": {
                     "type": "array",
@@ -3806,7 +3828,7 @@
                     },
                     "logDriver": {
                         "type": "string",
-                        "description": "The logging driver to use for the container. Defaults to `json-file`.\n"
+                        "description": "The logging driver to use for the container.\n"
                     },
                     "logOpts": {
                         "type": "object",
@@ -3913,7 +3935,7 @@
                     },
                     "rm": {
                         "type": "boolean",
-                        "description": "If `true`, then the container will be automatically removed after his execution. Terraform won't check this container\nafter creation. Defaults to `false`.\n"
+                        "description": "If `true`, then the container will be automatically removed when it exits. Defaults to `false`.\n"
                     },
                     "securityOpts": {
                         "type": "array",
@@ -4338,7 +4360,7 @@
             }
         },
         "docker:index/registryImage:RegistryImage": {
-            "description": "\u003c!-- Bug: Type and Name are switched --\u003e\nManages the lifecycle of docker image/tag in a registry.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\nimport * as process from \"process\";\n\nconst helloworld = new docker.RegistryImage(\"helloworld\", {\n    build: {\n        context: `${process.cwd()}/absolutePathToContextFolder`,\n    },\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nhelloworld = docker.RegistryImage(\"helloworld\", build=docker.RegistryImageBuildArgs(\n    context=f\"{path['cwd']}/absolutePathToContextFolder\",\n))\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        var helloworld = new Docker.RegistryImage(\"helloworld\", new Docker.RegistryImageArgs\n        {\n            Build = new Docker.Inputs.RegistryImageBuildArgs\n            {\n                Context = $\"{path.Cwd}/absolutePathToContextFolder\",\n            },\n        });\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"fmt\"\n\n\t\"github.com/pulumi/pulumi-docker/sdk/v3/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := docker.NewRegistryImage(ctx, \"helloworld\", \u0026docker.RegistryImageArgs{\n\t\t\tBuild: \u0026RegistryImageBuildArgs{\n\t\t\t\tContext: pulumi.String(fmt.Sprintf(\"%v%v\", path.Cwd, \"/absolutePathToContextFolder\")),\n\t\t\t},\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n{{% /example %}}\n{{% /examples %}}",
+            "description": "\u003c!-- Bug: Type and Name are switched --\u003e\nManages the lifecycle of docker image/tag in a registry means it can store one or more version of specific docker images and identified by their tags.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\nTo be able to update an image itself when an updated image arrives.\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\nimport * as process from \"process\";\n\nconst helloworld = new docker.RegistryImage(\"helloworld\", {\n    build: {\n        context: `${process.cwd()}/absolutePathToContextFolder`,\n    },\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nhelloworld = docker.RegistryImage(\"helloworld\", build=docker.RegistryImageBuildArgs(\n    context=f\"{path['cwd']}/absolutePathToContextFolder\",\n))\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        var helloworld = new Docker.RegistryImage(\"helloworld\", new Docker.RegistryImageArgs\n        {\n            Build = new Docker.Inputs.RegistryImageBuildArgs\n            {\n                Context = $\"{path.Cwd}/absolutePathToContextFolder\",\n            },\n        });\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"fmt\"\n\n\t\"github.com/pulumi/pulumi-docker/sdk/v3/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := docker.NewRegistryImage(ctx, \"helloworld\", \u0026docker.RegistryImageArgs{\n\t\t\tBuild: \u0026RegistryImageBuildArgs{\n\t\t\t\tContext: pulumi.String(fmt.Sprintf(\"%v%v\", path.Cwd, \"/absolutePathToContextFolder\")),\n\t\t\t},\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n{{% /example %}}\n{{% /examples %}}",
             "properties": {
                 "build": {
                     "$ref": "#/types/docker:index/RegistryImageBuild:RegistryImageBuild",
