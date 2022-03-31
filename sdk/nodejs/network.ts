@@ -114,41 +114,39 @@ export class Network extends pulumi.CustomResource {
      */
     constructor(name: string, args?: NetworkArgs, opts?: pulumi.CustomResourceOptions)
     constructor(name: string, argsOrState?: NetworkArgs | NetworkState, opts?: pulumi.CustomResourceOptions) {
-        let inputs: pulumi.Inputs = {};
+        let resourceInputs: pulumi.Inputs = {};
         opts = opts || {};
         if (opts.id) {
             const state = argsOrState as NetworkState | undefined;
-            inputs["attachable"] = state ? state.attachable : undefined;
-            inputs["checkDuplicate"] = state ? state.checkDuplicate : undefined;
-            inputs["driver"] = state ? state.driver : undefined;
-            inputs["ingress"] = state ? state.ingress : undefined;
-            inputs["internal"] = state ? state.internal : undefined;
-            inputs["ipamConfigs"] = state ? state.ipamConfigs : undefined;
-            inputs["ipamDriver"] = state ? state.ipamDriver : undefined;
-            inputs["ipv6"] = state ? state.ipv6 : undefined;
-            inputs["labels"] = state ? state.labels : undefined;
-            inputs["name"] = state ? state.name : undefined;
-            inputs["options"] = state ? state.options : undefined;
-            inputs["scope"] = state ? state.scope : undefined;
+            resourceInputs["attachable"] = state ? state.attachable : undefined;
+            resourceInputs["checkDuplicate"] = state ? state.checkDuplicate : undefined;
+            resourceInputs["driver"] = state ? state.driver : undefined;
+            resourceInputs["ingress"] = state ? state.ingress : undefined;
+            resourceInputs["internal"] = state ? state.internal : undefined;
+            resourceInputs["ipamConfigs"] = state ? state.ipamConfigs : undefined;
+            resourceInputs["ipamDriver"] = state ? state.ipamDriver : undefined;
+            resourceInputs["ipv6"] = state ? state.ipv6 : undefined;
+            resourceInputs["labels"] = state ? state.labels : undefined;
+            resourceInputs["name"] = state ? state.name : undefined;
+            resourceInputs["options"] = state ? state.options : undefined;
+            resourceInputs["scope"] = state ? state.scope : undefined;
         } else {
             const args = argsOrState as NetworkArgs | undefined;
-            inputs["attachable"] = args ? args.attachable : undefined;
-            inputs["checkDuplicate"] = args ? args.checkDuplicate : undefined;
-            inputs["driver"] = args ? args.driver : undefined;
-            inputs["ingress"] = args ? args.ingress : undefined;
-            inputs["internal"] = args ? args.internal : undefined;
-            inputs["ipamConfigs"] = args ? args.ipamConfigs : undefined;
-            inputs["ipamDriver"] = args ? args.ipamDriver : undefined;
-            inputs["ipv6"] = args ? args.ipv6 : undefined;
-            inputs["labels"] = args ? args.labels : undefined;
-            inputs["name"] = args ? args.name : undefined;
-            inputs["options"] = args ? args.options : undefined;
-            inputs["scope"] = undefined /*out*/;
+            resourceInputs["attachable"] = args ? args.attachable : undefined;
+            resourceInputs["checkDuplicate"] = args ? args.checkDuplicate : undefined;
+            resourceInputs["driver"] = args ? args.driver : undefined;
+            resourceInputs["ingress"] = args ? args.ingress : undefined;
+            resourceInputs["internal"] = args ? args.internal : undefined;
+            resourceInputs["ipamConfigs"] = args ? args.ipamConfigs : undefined;
+            resourceInputs["ipamDriver"] = args ? args.ipamDriver : undefined;
+            resourceInputs["ipv6"] = args ? args.ipv6 : undefined;
+            resourceInputs["labels"] = args ? args.labels : undefined;
+            resourceInputs["name"] = args ? args.name : undefined;
+            resourceInputs["options"] = args ? args.options : undefined;
+            resourceInputs["scope"] = undefined /*out*/;
         }
-        if (!opts.version) {
-            opts = pulumi.mergeOptions(opts, { version: utilities.getVersion()});
-        }
-        super(Network.__pulumiType, name, inputs, opts);
+        opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
+        super(Network.__pulumiType, name, resourceInputs, opts);
     }
 }
 

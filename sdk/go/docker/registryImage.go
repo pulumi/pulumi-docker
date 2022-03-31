@@ -147,7 +147,7 @@ type RegistryImageInput interface {
 }
 
 func (*RegistryImage) ElementType() reflect.Type {
-	return reflect.TypeOf((*RegistryImage)(nil))
+	return reflect.TypeOf((**RegistryImage)(nil)).Elem()
 }
 
 func (i *RegistryImage) ToRegistryImageOutput() RegistryImageOutput {
@@ -156,35 +156,6 @@ func (i *RegistryImage) ToRegistryImageOutput() RegistryImageOutput {
 
 func (i *RegistryImage) ToRegistryImageOutputWithContext(ctx context.Context) RegistryImageOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(RegistryImageOutput)
-}
-
-func (i *RegistryImage) ToRegistryImagePtrOutput() RegistryImagePtrOutput {
-	return i.ToRegistryImagePtrOutputWithContext(context.Background())
-}
-
-func (i *RegistryImage) ToRegistryImagePtrOutputWithContext(ctx context.Context) RegistryImagePtrOutput {
-	return pulumi.ToOutputWithContext(ctx, i).(RegistryImagePtrOutput)
-}
-
-type RegistryImagePtrInput interface {
-	pulumi.Input
-
-	ToRegistryImagePtrOutput() RegistryImagePtrOutput
-	ToRegistryImagePtrOutputWithContext(ctx context.Context) RegistryImagePtrOutput
-}
-
-type registryImagePtrType RegistryImageArgs
-
-func (*registryImagePtrType) ElementType() reflect.Type {
-	return reflect.TypeOf((**RegistryImage)(nil))
-}
-
-func (i *registryImagePtrType) ToRegistryImagePtrOutput() RegistryImagePtrOutput {
-	return i.ToRegistryImagePtrOutputWithContext(context.Background())
-}
-
-func (i *registryImagePtrType) ToRegistryImagePtrOutputWithContext(ctx context.Context) RegistryImagePtrOutput {
-	return pulumi.ToOutputWithContext(ctx, i).(RegistryImagePtrOutput)
 }
 
 // RegistryImageArrayInput is an input type that accepts RegistryImageArray and RegistryImageArrayOutput values.
@@ -240,7 +211,7 @@ func (i RegistryImageMap) ToRegistryImageMapOutputWithContext(ctx context.Contex
 type RegistryImageOutput struct{ *pulumi.OutputState }
 
 func (RegistryImageOutput) ElementType() reflect.Type {
-	return reflect.TypeOf((*RegistryImage)(nil))
+	return reflect.TypeOf((**RegistryImage)(nil)).Elem()
 }
 
 func (o RegistryImageOutput) ToRegistryImageOutput() RegistryImageOutput {
@@ -251,44 +222,10 @@ func (o RegistryImageOutput) ToRegistryImageOutputWithContext(ctx context.Contex
 	return o
 }
 
-func (o RegistryImageOutput) ToRegistryImagePtrOutput() RegistryImagePtrOutput {
-	return o.ToRegistryImagePtrOutputWithContext(context.Background())
-}
-
-func (o RegistryImageOutput) ToRegistryImagePtrOutputWithContext(ctx context.Context) RegistryImagePtrOutput {
-	return o.ApplyTWithContext(ctx, func(_ context.Context, v RegistryImage) *RegistryImage {
-		return &v
-	}).(RegistryImagePtrOutput)
-}
-
-type RegistryImagePtrOutput struct{ *pulumi.OutputState }
-
-func (RegistryImagePtrOutput) ElementType() reflect.Type {
-	return reflect.TypeOf((**RegistryImage)(nil))
-}
-
-func (o RegistryImagePtrOutput) ToRegistryImagePtrOutput() RegistryImagePtrOutput {
-	return o
-}
-
-func (o RegistryImagePtrOutput) ToRegistryImagePtrOutputWithContext(ctx context.Context) RegistryImagePtrOutput {
-	return o
-}
-
-func (o RegistryImagePtrOutput) Elem() RegistryImageOutput {
-	return o.ApplyT(func(v *RegistryImage) RegistryImage {
-		if v != nil {
-			return *v
-		}
-		var ret RegistryImage
-		return ret
-	}).(RegistryImageOutput)
-}
-
 type RegistryImageArrayOutput struct{ *pulumi.OutputState }
 
 func (RegistryImageArrayOutput) ElementType() reflect.Type {
-	return reflect.TypeOf((*[]RegistryImage)(nil))
+	return reflect.TypeOf((*[]*RegistryImage)(nil)).Elem()
 }
 
 func (o RegistryImageArrayOutput) ToRegistryImageArrayOutput() RegistryImageArrayOutput {
@@ -300,15 +237,15 @@ func (o RegistryImageArrayOutput) ToRegistryImageArrayOutputWithContext(ctx cont
 }
 
 func (o RegistryImageArrayOutput) Index(i pulumi.IntInput) RegistryImageOutput {
-	return pulumi.All(o, i).ApplyT(func(vs []interface{}) RegistryImage {
-		return vs[0].([]RegistryImage)[vs[1].(int)]
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) *RegistryImage {
+		return vs[0].([]*RegistryImage)[vs[1].(int)]
 	}).(RegistryImageOutput)
 }
 
 type RegistryImageMapOutput struct{ *pulumi.OutputState }
 
 func (RegistryImageMapOutput) ElementType() reflect.Type {
-	return reflect.TypeOf((*map[string]RegistryImage)(nil))
+	return reflect.TypeOf((*map[string]*RegistryImage)(nil)).Elem()
 }
 
 func (o RegistryImageMapOutput) ToRegistryImageMapOutput() RegistryImageMapOutput {
@@ -320,18 +257,16 @@ func (o RegistryImageMapOutput) ToRegistryImageMapOutputWithContext(ctx context.
 }
 
 func (o RegistryImageMapOutput) MapIndex(k pulumi.StringInput) RegistryImageOutput {
-	return pulumi.All(o, k).ApplyT(func(vs []interface{}) RegistryImage {
-		return vs[0].(map[string]RegistryImage)[vs[1].(string)]
+	return pulumi.All(o, k).ApplyT(func(vs []interface{}) *RegistryImage {
+		return vs[0].(map[string]*RegistryImage)[vs[1].(string)]
 	}).(RegistryImageOutput)
 }
 
 func init() {
 	pulumi.RegisterInputType(reflect.TypeOf((*RegistryImageInput)(nil)).Elem(), &RegistryImage{})
-	pulumi.RegisterInputType(reflect.TypeOf((*RegistryImagePtrInput)(nil)).Elem(), &RegistryImage{})
 	pulumi.RegisterInputType(reflect.TypeOf((*RegistryImageArrayInput)(nil)).Elem(), RegistryImageArray{})
 	pulumi.RegisterInputType(reflect.TypeOf((*RegistryImageMapInput)(nil)).Elem(), RegistryImageMap{})
 	pulumi.RegisterOutputType(RegistryImageOutput{})
-	pulumi.RegisterOutputType(RegistryImagePtrOutput{})
 	pulumi.RegisterOutputType(RegistryImageArrayOutput{})
 	pulumi.RegisterOutputType(RegistryImageMapOutput{})
 }

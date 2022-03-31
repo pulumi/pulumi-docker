@@ -86,27 +86,25 @@ export class Volume extends pulumi.CustomResource {
      */
     constructor(name: string, args?: VolumeArgs, opts?: pulumi.CustomResourceOptions)
     constructor(name: string, argsOrState?: VolumeArgs | VolumeState, opts?: pulumi.CustomResourceOptions) {
-        let inputs: pulumi.Inputs = {};
+        let resourceInputs: pulumi.Inputs = {};
         opts = opts || {};
         if (opts.id) {
             const state = argsOrState as VolumeState | undefined;
-            inputs["driver"] = state ? state.driver : undefined;
-            inputs["driverOpts"] = state ? state.driverOpts : undefined;
-            inputs["labels"] = state ? state.labels : undefined;
-            inputs["mountpoint"] = state ? state.mountpoint : undefined;
-            inputs["name"] = state ? state.name : undefined;
+            resourceInputs["driver"] = state ? state.driver : undefined;
+            resourceInputs["driverOpts"] = state ? state.driverOpts : undefined;
+            resourceInputs["labels"] = state ? state.labels : undefined;
+            resourceInputs["mountpoint"] = state ? state.mountpoint : undefined;
+            resourceInputs["name"] = state ? state.name : undefined;
         } else {
             const args = argsOrState as VolumeArgs | undefined;
-            inputs["driver"] = args ? args.driver : undefined;
-            inputs["driverOpts"] = args ? args.driverOpts : undefined;
-            inputs["labels"] = args ? args.labels : undefined;
-            inputs["name"] = args ? args.name : undefined;
-            inputs["mountpoint"] = undefined /*out*/;
+            resourceInputs["driver"] = args ? args.driver : undefined;
+            resourceInputs["driverOpts"] = args ? args.driverOpts : undefined;
+            resourceInputs["labels"] = args ? args.labels : undefined;
+            resourceInputs["name"] = args ? args.name : undefined;
+            resourceInputs["mountpoint"] = undefined /*out*/;
         }
-        if (!opts.version) {
-            opts = pulumi.mergeOptions(opts, { version: utilities.getVersion()});
-        }
-        super(Volume.__pulumiType, name, inputs, opts);
+        opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
+        super(Volume.__pulumiType, name, resourceInputs, opts);
     }
 }
 
