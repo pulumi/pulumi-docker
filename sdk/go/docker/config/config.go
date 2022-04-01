@@ -39,3 +39,8 @@ func GetKeyMaterial(ctx *pulumi.Context) string {
 func GetRegistryAuth(ctx *pulumi.Context) string {
 	return config.Get(ctx, "docker:registryAuth")
 }
+
+// Additional SSH option flags to be appended when using `ssh://` protocol
+func GetSshOpts(ctx *pulumi.Context) string {
+	return config.Get(ctx, "docker:sshOpts")
+}

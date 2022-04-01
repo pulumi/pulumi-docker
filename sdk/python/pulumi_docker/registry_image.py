@@ -184,9 +184,11 @@ class RegistryImage(pulumi.CustomResource):
                  __props__=None):
         """
         <!-- Bug: Type and Name are switched -->
-        Manages the lifecycle of docker image/tag in a registry.
+        Manages the lifecycle of docker image/tag in a registry means it can store one or more version of specific docker images and identified by their tags.
 
         ## Example Usage
+
+        To be able to update an image itself when an updated image arrives.
 
         ```python
         import pulumi
@@ -212,9 +214,11 @@ class RegistryImage(pulumi.CustomResource):
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
         <!-- Bug: Type and Name are switched -->
-        Manages the lifecycle of docker image/tag in a registry.
+        Manages the lifecycle of docker image/tag in a registry means it can store one or more version of specific docker images and identified by their tags.
 
         ## Example Usage
+
+        To be able to update an image itself when an updated image arrives.
 
         ```python
         import pulumi

@@ -19,7 +19,8 @@ class ProviderArgs:
                  cert_path: Optional[pulumi.Input[str]] = None,
                  host: Optional[pulumi.Input[str]] = None,
                  key_material: Optional[pulumi.Input[str]] = None,
-                 registry_auth: Optional[pulumi.Input[Sequence[pulumi.Input['ProviderRegistryAuthArgs']]]] = None):
+                 registry_auth: Optional[pulumi.Input[Sequence[pulumi.Input['ProviderRegistryAuthArgs']]]] = None,
+                 ssh_opts: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None):
         """
         The set of arguments for constructing a Provider resource.
         :param pulumi.Input[str] ca_material: PEM-encoded content of Docker host CA certificate
@@ -27,6 +28,7 @@ class ProviderArgs:
         :param pulumi.Input[str] cert_path: Path to directory with Docker TLS config
         :param pulumi.Input[str] host: The Docker daemon address
         :param pulumi.Input[str] key_material: PEM-encoded content of Docker client private key
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] ssh_opts: Additional SSH option flags to be appended when using `ssh://` protocol
         """
         if ca_material is not None:
             pulumi.set(__self__, "ca_material", ca_material)
@@ -42,6 +44,8 @@ class ProviderArgs:
             pulumi.set(__self__, "key_material", key_material)
         if registry_auth is not None:
             pulumi.set(__self__, "registry_auth", registry_auth)
+        if ssh_opts is not None:
+            pulumi.set(__self__, "ssh_opts", ssh_opts)
 
     @property
     @pulumi.getter(name="caMaterial")
@@ -112,6 +116,18 @@ class ProviderArgs:
     def registry_auth(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['ProviderRegistryAuthArgs']]]]):
         pulumi.set(self, "registry_auth", value)
 
+    @property
+    @pulumi.getter(name="sshOpts")
+    def ssh_opts(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+        """
+        Additional SSH option flags to be appended when using `ssh://` protocol
+        """
+        return pulumi.get(self, "ssh_opts")
+
+    @ssh_opts.setter
+    def ssh_opts(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
+        pulumi.set(self, "ssh_opts", value)
+
 
 class Provider(pulumi.ProviderResource):
     @overload
@@ -124,6 +140,7 @@ class Provider(pulumi.ProviderResource):
                  host: Optional[pulumi.Input[str]] = None,
                  key_material: Optional[pulumi.Input[str]] = None,
                  registry_auth: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ProviderRegistryAuthArgs']]]]] = None,
+                 ssh_opts: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  __props__=None):
         """
         The provider type for the docker package. By default, resources use package-wide configuration
@@ -138,6 +155,7 @@ class Provider(pulumi.ProviderResource):
         :param pulumi.Input[str] cert_path: Path to directory with Docker TLS config
         :param pulumi.Input[str] host: The Docker daemon address
         :param pulumi.Input[str] key_material: PEM-encoded content of Docker client private key
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] ssh_opts: Additional SSH option flags to be appended when using `ssh://` protocol
         """
         ...
     @overload
@@ -172,6 +190,7 @@ class Provider(pulumi.ProviderResource):
                  host: Optional[pulumi.Input[str]] = None,
                  key_material: Optional[pulumi.Input[str]] = None,
                  registry_auth: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ProviderRegistryAuthArgs']]]]] = None,
+                 ssh_opts: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  __props__=None):
         if opts is None:
             opts = pulumi.ResourceOptions()
@@ -192,6 +211,7 @@ class Provider(pulumi.ProviderResource):
             __props__.__dict__["host"] = host
             __props__.__dict__["key_material"] = key_material
             __props__.__dict__["registry_auth"] = pulumi.Output.from_input(registry_auth).apply(pulumi.runtime.to_json) if registry_auth is not None else None
+            __props__.__dict__["ssh_opts"] = pulumi.Output.from_input(ssh_opts).apply(pulumi.runtime.to_json) if ssh_opts is not None else None
         super(Provider, __self__).__init__(
             'docker',
             resource_name,

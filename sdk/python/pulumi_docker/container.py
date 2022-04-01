@@ -96,7 +96,7 @@ class ContainerArgs:
         :param pulumi.Input[str] ipc_mode: IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerLabelArgs']]] labels: User-defined key/value metadata
         :param pulumi.Input[Sequence[pulumi.Input[str]]] links: Set of links for link based connectivity between containers that are running on the same host.
-        :param pulumi.Input[str] log_driver: The logging driver to use for the container. Defaults to `json-file`.
+        :param pulumi.Input[str] log_driver: The logging driver to use for the container.
         :param pulumi.Input[Mapping[str, Any]] log_opts: Key/value pairs to use as options for the logging driver.
         :param pulumi.Input[bool] logs: Save the container logs (`attach` must be enabled). Defaults to `false`.
         :param pulumi.Input[int] max_retry_count: The maximum amount of times to an attempt a restart when `restart` is set to 'on-failure'.
@@ -118,8 +118,7 @@ class ContainerArgs:
         :param pulumi.Input[bool] read_only: If `true`, the container will be started as readonly. Defaults to `false`.
         :param pulumi.Input[bool] remove_volumes: If `true`, it will remove anonymous volumes associated with the container. Defaults to `true`.
         :param pulumi.Input[str] restart: The restart policy for the container. Must be one of 'no', 'on-failure', 'always', 'unless-stopped'. Defaults to `no`.
-        :param pulumi.Input[bool] rm: If `true`, then the container will be automatically removed after his execution. Terraform won't check this container
-               after creation. Defaults to `false`.
+        :param pulumi.Input[bool] rm: If `true`, then the container will be automatically removed when it exits. Defaults to `false`.
         :param pulumi.Input[Sequence[pulumi.Input[str]]] security_opts: List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
         :param pulumi.Input[int] shm_size: Size of `/dev/shm` in MBs.
         :param pulumi.Input[bool] start: If `true`, then the Docker container will be started after creation. If `false`, then the container is only created. Defaults to `true`.
@@ -526,7 +525,7 @@ class ContainerArgs:
     @pulumi.getter(name="logDriver")
     def log_driver(self) -> Optional[pulumi.Input[str]]:
         """
-        The logging driver to use for the container. Defaults to `json-file`.
+        The logging driver to use for the container.
         """
         return pulumi.get(self, "log_driver")
 
@@ -768,8 +767,7 @@ class ContainerArgs:
     @pulumi.getter
     def rm(self) -> Optional[pulumi.Input[bool]]:
         """
-        If `true`, then the container will be automatically removed after his execution. Terraform won't check this container
-        after creation. Defaults to `false`.
+        If `true`, then the container will be automatically removed when it exits. Defaults to `false`.
         """
         return pulumi.get(self, "rm")
 
@@ -1043,7 +1041,7 @@ class _ContainerState:
         :param pulumi.Input[str] ipc_mode: IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerLabelArgs']]] labels: User-defined key/value metadata
         :param pulumi.Input[Sequence[pulumi.Input[str]]] links: Set of links for link based connectivity between containers that are running on the same host.
-        :param pulumi.Input[str] log_driver: The logging driver to use for the container. Defaults to `json-file`.
+        :param pulumi.Input[str] log_driver: The logging driver to use for the container.
         :param pulumi.Input[Mapping[str, Any]] log_opts: Key/value pairs to use as options for the logging driver.
         :param pulumi.Input[bool] logs: Save the container logs (`attach` must be enabled). Defaults to `false`.
         :param pulumi.Input[int] max_retry_count: The maximum amount of times to an attempt a restart when `restart` is set to 'on-failure'.
@@ -1066,8 +1064,7 @@ class _ContainerState:
         :param pulumi.Input[bool] read_only: If `true`, the container will be started as readonly. Defaults to `false`.
         :param pulumi.Input[bool] remove_volumes: If `true`, it will remove anonymous volumes associated with the container. Defaults to `true`.
         :param pulumi.Input[str] restart: The restart policy for the container. Must be one of 'no', 'on-failure', 'always', 'unless-stopped'. Defaults to `no`.
-        :param pulumi.Input[bool] rm: If `true`, then the container will be automatically removed after his execution. Terraform won't check this container
-               after creation. Defaults to `false`.
+        :param pulumi.Input[bool] rm: If `true`, then the container will be automatically removed when it exits. Defaults to `false`.
         :param pulumi.Input[Sequence[pulumi.Input[str]]] security_opts: List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
         :param pulumi.Input[int] shm_size: Size of `/dev/shm` in MBs.
         :param pulumi.Input[bool] start: If `true`, then the Docker container will be started after creation. If `false`, then the container is only created. Defaults to `true`.
@@ -1570,7 +1567,7 @@ class _ContainerState:
     @pulumi.getter(name="logDriver")
     def log_driver(self) -> Optional[pulumi.Input[str]]:
         """
-        The logging driver to use for the container. Defaults to `json-file`.
+        The logging driver to use for the container.
         """
         return pulumi.get(self, "log_driver")
 
@@ -1824,8 +1821,7 @@ class _ContainerState:
     @pulumi.getter
     def rm(self) -> Optional[pulumi.Input[bool]]:
         """
-        If `true`, then the container will be automatically removed after his execution. Terraform won't check this container
-        after creation. Defaults to `false`.
+        If `true`, then the container will be automatically removed when it exits. Defaults to `false`.
         """
         return pulumi.get(self, "rm")
 
@@ -2131,7 +2127,7 @@ class Container(pulumi.CustomResource):
         :param pulumi.Input[str] ipc_mode: IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
         :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerLabelArgs']]]] labels: User-defined key/value metadata
         :param pulumi.Input[Sequence[pulumi.Input[str]]] links: Set of links for link based connectivity between containers that are running on the same host.
-        :param pulumi.Input[str] log_driver: The logging driver to use for the container. Defaults to `json-file`.
+        :param pulumi.Input[str] log_driver: The logging driver to use for the container.
         :param pulumi.Input[Mapping[str, Any]] log_opts: Key/value pairs to use as options for the logging driver.
         :param pulumi.Input[bool] logs: Save the container logs (`attach` must be enabled). Defaults to `false`.
         :param pulumi.Input[int] max_retry_count: The maximum amount of times to an attempt a restart when `restart` is set to 'on-failure'.
@@ -2153,8 +2149,7 @@ class Container(pulumi.CustomResource):
         :param pulumi.Input[bool] read_only: If `true`, the container will be started as readonly. Defaults to `false`.
         :param pulumi.Input[bool] remove_volumes: If `true`, it will remove anonymous volumes associated with the container. Defaults to `true`.
         :param pulumi.Input[str] restart: The restart policy for the container. Must be one of 'no', 'on-failure', 'always', 'unless-stopped'. Defaults to `no`.
-        :param pulumi.Input[bool] rm: If `true`, then the container will be automatically removed after his execution. Terraform won't check this container
-               after creation. Defaults to `false`.
+        :param pulumi.Input[bool] rm: If `true`, then the container will be automatically removed when it exits. Defaults to `false`.
         :param pulumi.Input[Sequence[pulumi.Input[str]]] security_opts: List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
         :param pulumi.Input[int] shm_size: Size of `/dev/shm` in MBs.
         :param pulumi.Input[bool] start: If `true`, then the Docker container will be started after creation. If `false`, then the container is only created. Defaults to `true`.
@@ -2486,7 +2481,7 @@ class Container(pulumi.CustomResource):
         :param pulumi.Input[str] ipc_mode: IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
         :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerLabelArgs']]]] labels: User-defined key/value metadata
         :param pulumi.Input[Sequence[pulumi.Input[str]]] links: Set of links for link based connectivity between containers that are running on the same host.
-        :param pulumi.Input[str] log_driver: The logging driver to use for the container. Defaults to `json-file`.
+        :param pulumi.Input[str] log_driver: The logging driver to use for the container.
         :param pulumi.Input[Mapping[str, Any]] log_opts: Key/value pairs to use as options for the logging driver.
         :param pulumi.Input[bool] logs: Save the container logs (`attach` must be enabled). Defaults to `false`.
         :param pulumi.Input[int] max_retry_count: The maximum amount of times to an attempt a restart when `restart` is set to 'on-failure'.
@@ -2509,8 +2504,7 @@ class Container(pulumi.CustomResource):
         :param pulumi.Input[bool] read_only: If `true`, the container will be started as readonly. Defaults to `false`.
         :param pulumi.Input[bool] remove_volumes: If `true`, it will remove anonymous volumes associated with the container. Defaults to `true`.
         :param pulumi.Input[str] restart: The restart policy for the container. Must be one of 'no', 'on-failure', 'always', 'unless-stopped'. Defaults to `no`.
-        :param pulumi.Input[bool] rm: If `true`, then the container will be automatically removed after his execution. Terraform won't check this container
-               after creation. Defaults to `false`.
+        :param pulumi.Input[bool] rm: If `true`, then the container will be automatically removed when it exits. Defaults to `false`.
         :param pulumi.Input[Sequence[pulumi.Input[str]]] security_opts: List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
         :param pulumi.Input[int] shm_size: Size of `/dev/shm` in MBs.
         :param pulumi.Input[bool] start: If `true`, then the Docker container will be started after creation. If `false`, then the container is only created. Defaults to `true`.
@@ -2822,9 +2816,9 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="logDriver")
-    def log_driver(self) -> pulumi.Output[Optional[str]]:
+    def log_driver(self) -> pulumi.Output[str]:
         """
-        The logging driver to use for the container. Defaults to `json-file`.
+        The logging driver to use for the container.
         """
         return pulumi.get(self, "log_driver")
 
@@ -2994,8 +2988,7 @@ class Container(pulumi.CustomResource):
     @pulumi.getter
     def rm(self) -> pulumi.Output[Optional[bool]]:
         """
-        If `true`, then the container will be automatically removed after his execution. Terraform won't check this container
-        after creation. Defaults to `false`.
+        If `true`, then the container will be automatically removed when it exits. Defaults to `false`.
         """
         return pulumi.get(self, "rm")
 

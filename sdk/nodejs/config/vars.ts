@@ -71,3 +71,14 @@ Object.defineProperty(exports, "registryAuth", {
     enumerable: true,
 });
 
+/**
+ * Additional SSH option flags to be appended when using `ssh://` protocol
+ */
+export declare const sshOpts: string[] | undefined;
+Object.defineProperty(exports, "sshOpts", {
+    get() {
+        return __config.getObject<string[]>("sshOpts");
+    },
+    enumerable: true,
+});
+

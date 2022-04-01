@@ -14,11 +14,11 @@ namespace Pulumi.Docker.Outputs
     public sealed class ServiceConvergeConfig
     {
         /// <summary>
-        /// The interval to check if the desired state is reached (ms|s). Defaults to `7s`.
+        /// The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.
         /// </summary>
         public readonly string? Delay;
         /// <summary>
-        /// The timeout of the service to reach the desired state (s|m). Defaults to `3m`
+        /// The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`
         /// </summary>
         public readonly string? Timeout;
 

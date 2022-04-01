@@ -22,7 +22,7 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly ImmutableDictionary<string, string>? BuildArgs;
         /// <summary>
-        /// BuildID is an optional identifier that can be passed together with the build request. The
+        /// BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request.
         /// </summary>
         public readonly string? BuildId;
         /// <summary>
@@ -138,7 +138,7 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly ImmutableArray<Outputs.RegistryImageBuildUlimit> Ulimits;
         /// <summary>
-        /// Version of the unerlying builder to use
+        /// Version of the underlying builder to use
         /// </summary>
         public readonly string? Version;
 

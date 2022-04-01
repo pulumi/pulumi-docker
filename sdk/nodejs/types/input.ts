@@ -320,7 +320,7 @@ export interface RegistryImageBuild {
      */
     buildArgs?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
     /**
-     * BuildID is an optional identifier that can be passed together with the build request. The
+     * BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request.
      */
     buildId?: pulumi.Input<string>;
     /**
@@ -436,7 +436,7 @@ export interface RegistryImageBuild {
      */
     ulimits?: pulumi.Input<pulumi.Input<inputs.RegistryImageBuildUlimit>[]>;
     /**
-     * Version of the unerlying builder to use
+     * Version of the underlying builder to use
      */
     version?: pulumi.Input<string>;
 }
@@ -528,11 +528,11 @@ export interface ServiceAuth {
 
 export interface ServiceConvergeConfig {
     /**
-     * The interval to check if the desired state is reached (ms|s). Defaults to `7s`.
+     * The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.
      */
     delay?: pulumi.Input<string>;
     /**
-     * The timeout of the service to reach the desired state (s|m). Defaults to `3m`
+     * The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`
      */
     timeout?: pulumi.Input<string>;
 }
@@ -832,11 +832,11 @@ export interface ServiceTaskSpecRestartPolicy {
 
 export interface ServiceUpdateConfig {
     /**
-     * Delay between task updates (ns|us|ms|s|m|h). Defaults to `0s`.
+     * Delay between task updates `(ns|us|ms|s|m|h)`. Defaults to `0s`.
      */
     delay?: pulumi.Input<string>;
     /**
-     * Action on update failure: pause | continue | rollback. Defaults to `pause`.
+     * Action on update failure: `pause`, `continue` or `rollback`. Defaults to `pause`.
      */
     failureAction?: pulumi.Input<string>;
     /**

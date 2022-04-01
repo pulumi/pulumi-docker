@@ -236,10 +236,10 @@ namespace Pulumi.Docker
         public Output<ImmutableArray<string>> Links { get; private set; } = null!;
 
         /// <summary>
-        /// The logging driver to use for the container. Defaults to `json-file`.
+        /// The logging driver to use for the container.
         /// </summary>
         [Output("logDriver")]
-        public Output<string?> LogDriver { get; private set; } = null!;
+        public Output<string> LogDriver { get; private set; } = null!;
 
         /// <summary>
         /// Key/value pairs to use as options for the logging driver.
@@ -364,8 +364,7 @@ namespace Pulumi.Docker
         public Output<string?> Restart { get; private set; } = null!;
 
         /// <summary>
-        /// If `true`, then the container will be automatically removed after his execution. Terraform won't check this container
-        /// after creation. Defaults to `false`.
+        /// If `true`, then the container will be automatically removed when it exits. Defaults to `false`.
         /// </summary>
         [Output("rm")]
         public Output<bool?> Rm { get; private set; } = null!;
@@ -700,7 +699,7 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// The logging driver to use for the container. Defaults to `json-file`.
+        /// The logging driver to use for the container.
         /// </summary>
         [Input("logDriver")]
         public Input<string>? LogDriver { get; set; }
@@ -860,8 +859,7 @@ namespace Pulumi.Docker
         public Input<string>? Restart { get; set; }
 
         /// <summary>
-        /// If `true`, then the container will be automatically removed after his execution. Terraform won't check this container
-        /// after creation. Defaults to `false`.
+        /// If `true`, then the container will be automatically removed when it exits. Defaults to `false`.
         /// </summary>
         [Input("rm")]
         public Input<bool>? Rm { get; set; }
@@ -1235,7 +1233,7 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// The logging driver to use for the container. Defaults to `json-file`.
+        /// The logging driver to use for the container.
         /// </summary>
         [Input("logDriver")]
         public Input<string>? LogDriver { get; set; }
@@ -1407,8 +1405,7 @@ namespace Pulumi.Docker
         public Input<string>? Restart { get; set; }
 
         /// <summary>
-        /// If `true`, then the container will be automatically removed after his execution. Terraform won't check this container
-        /// after creation. Defaults to `false`.
+        /// If `true`, then the container will be automatically removed when it exits. Defaults to `false`.
         /// </summary>
         [Input("rm")]
         public Input<bool>? Rm { get; set; }

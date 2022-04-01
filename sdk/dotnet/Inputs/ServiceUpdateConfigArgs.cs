@@ -13,13 +13,13 @@ namespace Pulumi.Docker.Inputs
     public sealed class ServiceUpdateConfigArgs : Pulumi.ResourceArgs
     {
         /// <summary>
-        /// Delay between task updates (ns|us|ms|s|m|h). Defaults to `0s`.
+        /// Delay between task updates `(ns|us|ms|s|m|h)`. Defaults to `0s`.
         /// </summary>
         [Input("delay")]
         public Input<string>? Delay { get; set; }
 
         /// <summary>
-        /// Action on update failure: pause | continue | rollback. Defaults to `pause`.
+        /// Action on update failure: `pause`, `continue` or `rollback`. Defaults to `pause`.
         /// </summary>
         [Input("failureAction")]
         public Input<string>? FailureAction { get; set; }

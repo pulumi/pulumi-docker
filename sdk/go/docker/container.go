@@ -135,8 +135,8 @@ type Container struct {
 	//
 	// Deprecated: The --link flag is a legacy feature of Docker. It may eventually be removed.
 	Links pulumi.StringArrayOutput `pulumi:"links"`
-	// The logging driver to use for the container. Defaults to `json-file`.
-	LogDriver pulumi.StringPtrOutput `pulumi:"logDriver"`
+	// The logging driver to use for the container.
+	LogDriver pulumi.StringOutput `pulumi:"logDriver"`
 	// Key/value pairs to use as options for the logging driver.
 	LogOpts pulumi.MapOutput `pulumi:"logOpts"`
 	// Save the container logs (`attach` must be enabled). Defaults to `false`.
@@ -183,8 +183,7 @@ type Container struct {
 	RemoveVolumes pulumi.BoolPtrOutput `pulumi:"removeVolumes"`
 	// The restart policy for the container. Must be one of 'no', 'on-failure', 'always', 'unless-stopped'. Defaults to `no`.
 	Restart pulumi.StringPtrOutput `pulumi:"restart"`
-	// If `true`, then the container will be automatically removed after his execution. Terraform won't check this container
-	// after creation. Defaults to `false`.
+	// If `true`, then the container will be automatically removed when it exits. Defaults to `false`.
 	Rm pulumi.BoolPtrOutput `pulumi:"rm"`
 	// List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
 	SecurityOpts pulumi.StringArrayOutput `pulumi:"securityOpts"`
@@ -312,7 +311,7 @@ type containerState struct {
 	//
 	// Deprecated: The --link flag is a legacy feature of Docker. It may eventually be removed.
 	Links []string `pulumi:"links"`
-	// The logging driver to use for the container. Defaults to `json-file`.
+	// The logging driver to use for the container.
 	LogDriver *string `pulumi:"logDriver"`
 	// Key/value pairs to use as options for the logging driver.
 	LogOpts map[string]interface{} `pulumi:"logOpts"`
@@ -360,8 +359,7 @@ type containerState struct {
 	RemoveVolumes *bool `pulumi:"removeVolumes"`
 	// The restart policy for the container. Must be one of 'no', 'on-failure', 'always', 'unless-stopped'. Defaults to `no`.
 	Restart *string `pulumi:"restart"`
-	// If `true`, then the container will be automatically removed after his execution. Terraform won't check this container
-	// after creation. Defaults to `false`.
+	// If `true`, then the container will be automatically removed when it exits. Defaults to `false`.
 	Rm *bool `pulumi:"rm"`
 	// List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
 	SecurityOpts []string `pulumi:"securityOpts"`
@@ -458,7 +456,7 @@ type ContainerState struct {
 	//
 	// Deprecated: The --link flag is a legacy feature of Docker. It may eventually be removed.
 	Links pulumi.StringArrayInput
-	// The logging driver to use for the container. Defaults to `json-file`.
+	// The logging driver to use for the container.
 	LogDriver pulumi.StringPtrInput
 	// Key/value pairs to use as options for the logging driver.
 	LogOpts pulumi.MapInput
@@ -506,8 +504,7 @@ type ContainerState struct {
 	RemoveVolumes pulumi.BoolPtrInput
 	// The restart policy for the container. Must be one of 'no', 'on-failure', 'always', 'unless-stopped'. Defaults to `no`.
 	Restart pulumi.StringPtrInput
-	// If `true`, then the container will be automatically removed after his execution. Terraform won't check this container
-	// after creation. Defaults to `false`.
+	// If `true`, then the container will be automatically removed when it exits. Defaults to `false`.
 	Rm pulumi.BoolPtrInput
 	// List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
 	SecurityOpts pulumi.StringArrayInput
@@ -590,7 +587,7 @@ type containerArgs struct {
 	//
 	// Deprecated: The --link flag is a legacy feature of Docker. It may eventually be removed.
 	Links []string `pulumi:"links"`
-	// The logging driver to use for the container. Defaults to `json-file`.
+	// The logging driver to use for the container.
 	LogDriver *string `pulumi:"logDriver"`
 	// Key/value pairs to use as options for the logging driver.
 	LogOpts map[string]interface{} `pulumi:"logOpts"`
@@ -636,8 +633,7 @@ type containerArgs struct {
 	RemoveVolumes *bool `pulumi:"removeVolumes"`
 	// The restart policy for the container. Must be one of 'no', 'on-failure', 'always', 'unless-stopped'. Defaults to `no`.
 	Restart *string `pulumi:"restart"`
-	// If `true`, then the container will be automatically removed after his execution. Terraform won't check this container
-	// after creation. Defaults to `false`.
+	// If `true`, then the container will be automatically removed when it exits. Defaults to `false`.
 	Rm *bool `pulumi:"rm"`
 	// List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
 	SecurityOpts []string `pulumi:"securityOpts"`
@@ -717,7 +713,7 @@ type ContainerArgs struct {
 	//
 	// Deprecated: The --link flag is a legacy feature of Docker. It may eventually be removed.
 	Links pulumi.StringArrayInput
-	// The logging driver to use for the container. Defaults to `json-file`.
+	// The logging driver to use for the container.
 	LogDriver pulumi.StringPtrInput
 	// Key/value pairs to use as options for the logging driver.
 	LogOpts pulumi.MapInput
@@ -763,8 +759,7 @@ type ContainerArgs struct {
 	RemoveVolumes pulumi.BoolPtrInput
 	// The restart policy for the container. Must be one of 'no', 'on-failure', 'always', 'unless-stopped'. Defaults to `no`.
 	Restart pulumi.StringPtrInput
-	// If `true`, then the container will be automatically removed after his execution. Terraform won't check this container
-	// after creation. Defaults to `false`.
+	// If `true`, then the container will be automatically removed when it exits. Defaults to `false`.
 	Rm pulumi.BoolPtrInput
 	// List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
 	SecurityOpts pulumi.StringArrayInput

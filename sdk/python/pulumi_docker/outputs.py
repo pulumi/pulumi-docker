@@ -1242,7 +1242,7 @@ class RegistryImageBuild(dict):
         :param str context: The absolute path to the context folder. You can use the helper function '${path.cwd}/context-dir'.
         :param Sequence['RegistryImageBuildAuthConfigArgs'] auth_configs: The configuration for the authentication
         :param Mapping[str, str] build_args: Pairs for build-time variables in the form TODO
-        :param str build_id: BuildID is an optional identifier that can be passed together with the build request. The
+        :param str build_id: BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request.
         :param Sequence[str] cache_froms: Images to consider as cache sources
         :param str cgroup_parent: Optional parent cgroup for the container
         :param int cpu_period: The length of a CPU period in microseconds
@@ -1270,7 +1270,7 @@ class RegistryImageBuild(dict):
         :param bool suppress_output: Suppress the build output and print image ID on success
         :param str target: Set the target build stage to build
         :param Sequence['RegistryImageBuildUlimitArgs'] ulimits: Configuration for ulimits
-        :param str version: Version of the unerlying builder to use
+        :param str version: Version of the underlying builder to use
         """
         pulumi.set(__self__, "context", context)
         if auth_configs is not None:
@@ -1364,7 +1364,7 @@ class RegistryImageBuild(dict):
     @pulumi.getter(name="buildId")
     def build_id(self) -> Optional[str]:
         """
-        BuildID is an optional identifier that can be passed together with the build request. The
+        BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request.
         """
         return pulumi.get(self, "build_id")
 
@@ -1588,7 +1588,7 @@ class RegistryImageBuild(dict):
     @pulumi.getter
     def version(self) -> Optional[str]:
         """
-        Version of the unerlying builder to use
+        Version of the underlying builder to use
         """
         return pulumi.get(self, "version")
 
@@ -1947,8 +1947,8 @@ class ServiceConvergeConfig(dict):
                  delay: Optional[str] = None,
                  timeout: Optional[str] = None):
         """
-        :param str delay: The interval to check if the desired state is reached (ms|s). Defaults to `7s`.
-        :param str timeout: The timeout of the service to reach the desired state (s|m). Defaults to `3m`
+        :param str delay: The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.
+        :param str timeout: The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`
         """
         if delay is not None:
             pulumi.set(__self__, "delay", delay)
@@ -1959,7 +1959,7 @@ class ServiceConvergeConfig(dict):
     @pulumi.getter
     def delay(self) -> Optional[str]:
         """
-        The interval to check if the desired state is reached (ms|s). Defaults to `7s`.
+        The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.
         """
         return pulumi.get(self, "delay")
 
@@ -1967,7 +1967,7 @@ class ServiceConvergeConfig(dict):
     @pulumi.getter
     def timeout(self) -> Optional[str]:
         """
-        The timeout of the service to reach the desired state (s|m). Defaults to `3m`
+        The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`
         """
         return pulumi.get(self, "timeout")
 
@@ -3544,8 +3544,8 @@ class ServiceUpdateConfig(dict):
                  order: Optional[str] = None,
                  parallelism: Optional[int] = None):
         """
-        :param str delay: Delay between task updates (ns|us|ms|s|m|h). Defaults to `0s`.
-        :param str failure_action: Action on update failure: pause | continue | rollback. Defaults to `pause`.
+        :param str delay: Delay between task updates `(ns|us|ms|s|m|h)`. Defaults to `0s`.
+        :param str failure_action: Action on update failure: `pause`, `continue` or `rollback`. Defaults to `pause`.
         :param str max_failure_ratio: Failure rate to tolerate during an update. Defaults to `0.0`.
         :param str monitor: Duration after each task update to monitor for failure (ns|us|ms|s|m|h). Defaults to `5s`.
         :param str order: Update order: either 'stop-first' or 'start-first'. Defaults to `stop-first`.
@@ -3568,7 +3568,7 @@ class ServiceUpdateConfig(dict):
     @pulumi.getter
     def delay(self) -> Optional[str]:
         """
-        Delay between task updates (ns|us|ms|s|m|h). Defaults to `0s`.
+        Delay between task updates `(ns|us|ms|s|m|h)`. Defaults to `0s`.
         """
         return pulumi.get(self, "delay")
 
@@ -3576,7 +3576,7 @@ class ServiceUpdateConfig(dict):
     @pulumi.getter(name="failureAction")
     def failure_action(self) -> Optional[str]:
         """
-        Action on update failure: pause | continue | rollback. Defaults to `pause`.
+        Action on update failure: `pause`, `continue` or `rollback`. Defaults to `pause`.
         """
         return pulumi.get(self, "failure_action")
 

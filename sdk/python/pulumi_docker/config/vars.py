@@ -54,3 +54,10 @@ class _ExportableConfig(types.ModuleType):
     def registry_auth(self) -> Optional[str]:
         return __config__.get('registryAuth')
 
+    @property
+    def ssh_opts(self) -> Optional[str]:
+        """
+        Additional SSH option flags to be appended when using `ssh://` protocol
+        """
+        return __config__.get('sshOpts')
+

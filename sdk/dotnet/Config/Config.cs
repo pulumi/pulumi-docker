@@ -89,6 +89,16 @@ namespace Pulumi.Docker
             set => _registryAuth.Set(value);
         }
 
+        private static readonly __Value<ImmutableArray<string>> _sshOpts = new __Value<ImmutableArray<string>>(() => __config.GetObject<ImmutableArray<string>>("sshOpts"));
+        /// <summary>
+        /// Additional SSH option flags to be appended when using `ssh://` protocol
+        /// </summary>
+        public static ImmutableArray<string> SshOpts
+        {
+            get => _sshOpts.Get();
+            set => _sshOpts.Set(value);
+        }
+
         public static class Types
         {
 

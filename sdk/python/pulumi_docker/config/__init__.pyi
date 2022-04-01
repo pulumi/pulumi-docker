@@ -36,3 +36,8 @@ PEM-encoded content of Docker client private key
 
 registryAuth: Optional[str]
 
+sshOpts: Optional[str]
+"""
+Additional SSH option flags to be appended when using `ssh://` protocol
+"""
+

@@ -114,6 +114,18 @@ namespace Pulumi.Docker
             set => _registryAuth = value;
         }
 
+        [Input("sshOpts", json: true)]
+        private InputList<string>? _sshOpts;
+
+        /// <summary>
+        /// Additional SSH option flags to be appended when using `ssh://` protocol
+        /// </summary>
+        public InputList<string> SshOpts
+        {
+            get => _sshOpts ?? (_sshOpts = new InputList<string>());
+            set => _sshOpts = value;
+        }
+
         public ProviderArgs()
         {
             Host = Utilities.GetEnv("DOCKER_HOST") ?? "unix:///var/run/docker.sock";

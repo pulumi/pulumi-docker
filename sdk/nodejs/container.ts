@@ -196,9 +196,9 @@ export class Container extends pulumi.CustomResource {
      */
     public readonly links!: pulumi.Output<string[] | undefined>;
     /**
-     * The logging driver to use for the container. Defaults to `json-file`.
+     * The logging driver to use for the container.
      */
-    public readonly logDriver!: pulumi.Output<string | undefined>;
+    public readonly logDriver!: pulumi.Output<string>;
     /**
      * Key/value pairs to use as options for the logging driver.
      */
@@ -286,8 +286,7 @@ export class Container extends pulumi.CustomResource {
      */
     public readonly restart!: pulumi.Output<string | undefined>;
     /**
-     * If `true`, then the container will be automatically removed after his execution. Terraform won't check this container
-     * after creation. Defaults to `false`.
+     * If `true`, then the container will be automatically removed when it exits. Defaults to `false`.
      */
     public readonly rm!: pulumi.Output<boolean | undefined>;
     /**
@@ -624,7 +623,7 @@ export interface ContainerState {
      */
     links?: pulumi.Input<pulumi.Input<string>[]>;
     /**
-     * The logging driver to use for the container. Defaults to `json-file`.
+     * The logging driver to use for the container.
      */
     logDriver?: pulumi.Input<string>;
     /**
@@ -714,8 +713,7 @@ export interface ContainerState {
      */
     restart?: pulumi.Input<string>;
     /**
-     * If `true`, then the container will be automatically removed after his execution. Terraform won't check this container
-     * after creation. Defaults to `false`.
+     * If `true`, then the container will be automatically removed when it exits. Defaults to `false`.
      */
     rm?: pulumi.Input<boolean>;
     /**
@@ -871,7 +869,7 @@ export interface ContainerArgs {
      */
     links?: pulumi.Input<pulumi.Input<string>[]>;
     /**
-     * The logging driver to use for the container. Defaults to `json-file`.
+     * The logging driver to use for the container.
      */
     logDriver?: pulumi.Input<string>;
     /**
@@ -957,8 +955,7 @@ export interface ContainerArgs {
      */
     restart?: pulumi.Input<string>;
     /**
-     * If `true`, then the container will be automatically removed after his execution. Terraform won't check this container
-     * after creation. Defaults to `false`.
+     * If `true`, then the container will be automatically removed when it exits. Defaults to `false`.
      */
     rm?: pulumi.Input<boolean>;
     /**

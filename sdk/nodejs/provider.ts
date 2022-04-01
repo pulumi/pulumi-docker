@@ -64,6 +64,7 @@ export class Provider extends pulumi.ProviderResource {
             resourceInputs["host"] = (args ? args.host : undefined) ?? (utilities.getEnv("DOCKER_HOST") || "unix:///var/run/docker.sock");
             resourceInputs["keyMaterial"] = args ? args.keyMaterial : undefined;
             resourceInputs["registryAuth"] = pulumi.output(args ? args.registryAuth : undefined).apply(JSON.stringify);
+            resourceInputs["sshOpts"] = pulumi.output(args ? args.sshOpts : undefined).apply(JSON.stringify);
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
         super(Provider.__pulumiType, name, resourceInputs, opts);
@@ -95,4 +96,8 @@ export interface ProviderArgs {
      */
     keyMaterial?: pulumi.Input<string>;
     registryAuth?: pulumi.Input<pulumi.Input<inputs.ProviderRegistryAuth>[]>;
+    /**
+     * Additional SSH option flags to be appended when using `ssh://` protocol
+     */
+    sshOpts?: pulumi.Input<pulumi.Input<string>[]>;
 }
