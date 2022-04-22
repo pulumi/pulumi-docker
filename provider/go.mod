@@ -3,8 +3,8 @@ module github.com/pulumi/pulumi-docker/provider/v3
 go 1.16
 
 require (
-	github.com/pulumi/pulumi-terraform-bridge/v3 v3.20.0
-	github.com/pulumi/pulumi/sdk/v3 v3.27.0
+	github.com/pulumi/pulumi-terraform-bridge/v3 v3.21.0
+	github.com/pulumi/pulumi/sdk/v3 v3.30.0
 	github.com/terraform-providers/terraform-provider-docker/shim v0.0.0
 )
 
