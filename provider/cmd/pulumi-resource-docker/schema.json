@@ -5127,8 +5127,7 @@
                 "docker": "Docker"
             },
             "packageReferences": {
-                "Pulumi": "3.*",
-                "Semver": "2.0.6"
+                "Pulumi": "3.*"
             }
         },
         "go": {
