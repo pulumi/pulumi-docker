@@ -13,13 +13,7 @@ namespace Pulumi.Docker.Outputs
     [OutputType]
     public sealed class ServiceMode
     {
-        /// <summary>
-        /// The global service mode. Defaults to `false`
-        /// </summary>
         public readonly bool? Global;
-        /// <summary>
-        /// The replicated service mode
-        /// </summary>
         public readonly Outputs.ServiceModeReplicated? Replicated;
 
         [OutputConstructor]

@@ -62,14 +62,16 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[&#34;/usr/bin/myprogram&#34;,&#34;-&#34;,&#34;baz.con&#34;]`.
+     * The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be
+     * `[&#34;/usr/bin/myprogram&#34;,&#34;-&#34;,&#34;baz.con&#34;]`.
      * 
      */
     @Import(name="command")
     private @Nullable Output<List<String>> command;
 
     /**
-     * @return The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[&#34;/usr/bin/myprogram&#34;,&#34;-&#34;,&#34;baz.con&#34;]`.
+     * @return The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be
+     * `[&#34;/usr/bin/myprogram&#34;,&#34;-&#34;,&#34;baz.con&#34;]`.
      * 
      */
     public Optional<Output<List<String>>> command() {
@@ -107,14 +109,16 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
+     * If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on
+     * successful stop.
      * 
      */
     @Import(name="destroyGraceSeconds")
     private @Nullable Output<Integer> destroyGraceSeconds;
 
     /**
-     * @return If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
+     * @return If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on
+     * successful stop.
      * 
      */
     public Optional<Output<Integer>> destroyGraceSeconds() {
@@ -197,14 +201,18 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `&#34;/usr/bin/myprogra&#34;]`.
+     * The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an
+     * executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be
+     * `&#34;/usr/bin/myprogra&#34;]`.
      * 
      */
     @Import(name="entrypoints")
     private @Nullable Output<List<String>> entrypoints;
 
     /**
-     * @return The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `&#34;/usr/bin/myprogra&#34;]`.
+     * @return The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an
+     * executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be
+     * `&#34;/usr/bin/myprogra&#34;]`.
      * 
      */
     public Optional<Output<List<String>>> entrypoints() {
@@ -224,6 +232,23 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
      */
     public Optional<Output<List<String>>> envs() {
         return Optional.ofNullable(this.envs);
+    }
+
+    /**
+     * GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result
+     * in unexpected behavior.
+     * 
+     */
+    @Import(name="gpus")
+    private @Nullable Output<String> gpus;
+
+    /**
+     * @return GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result
+     * in unexpected behavior.
+     * 
+     */
+    public Optional<Output<String>> gpus() {
+        return Optional.ofNullable(this.gpus);
     }
 
     /**
@@ -287,14 +312,16 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * The ID of the image to back this container. The easiest way to get this value is to use the `docker.RemoteImage` resource as is shown in the example.
+     * The ID of the image to back this container. The easiest way to get this value is to use the `docker_image` resource as
+     * is shown in the example.
      * 
      */
     @Import(name="image", required=true)
     private Output<String> image;
 
     /**
-     * @return The ID of the image to back this container. The easiest way to get this value is to use the `docker.RemoteImage` resource as is shown in the example.
+     * @return The ID of the image to back this container. The easiest way to get this value is to use the `docker_image` resource as
+     * is shown in the example.
      * 
      */
     public Output<String> image() {
@@ -302,14 +329,16 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
+     * Configured whether an init process should be injected for this container. If unset this will default to the `dockerd`
+     * defaults.
      * 
      */
     @Import(name="init")
     private @Nullable Output<Boolean> init;
 
     /**
-     * @return Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
+     * @return Configured whether an init process should be injected for this container. If unset this will default to the `dockerd`
+     * defaults.
      * 
      */
     public Optional<Output<Boolean>> init() {
@@ -317,14 +346,16 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:&lt;name|id&gt;` or `host`.
+     * IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:&lt;name|id&gt;` or
+     * `host`.
      * 
      */
     @Import(name="ipcMode")
     private @Nullable Output<String> ipcMode;
 
     /**
-     * @return IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:&lt;name|id&gt;` or `host`.
+     * @return IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:&lt;name|id&gt;` or
+     * `host`.
      * 
      */
     public Optional<Output<String>> ipcMode() {
@@ -705,14 +736,31 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
+     * Runtime to use for the container.
+     * 
+     */
+    @Import(name="runtime")
+    private @Nullable Output<String> runtime;
+
+    /**
+     * @return Runtime to use for the container.
+     * 
+     */
+    public Optional<Output<String>> runtime() {
+        return Optional.ofNullable(this.runtime);
+    }
+
+    /**
+     * List of string values to customize labels for MLS systems, such as SELinux. See
+     * https://docs.docker.com/engine/reference/run/#security-configuration.
      * 
      */
     @Import(name="securityOpts")
     private @Nullable Output<List<String>> securityOpts;
 
     /**
-     * @return List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
+     * @return List of string values to customize labels for MLS systems, such as SELinux. See
+     * https://docs.docker.com/engine/reference/run/#security-configuration.
      * 
      */
     public Optional<Output<List<String>>> securityOpts() {
@@ -735,14 +783,16 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * If `true`, then the Docker container will be started after creation. If `false`, then the container is only created. Defaults to `true`.
+     * If `true`, then the Docker container will be started after creation. If `false`, then the container is only created.
+     * Defaults to `true`.
      * 
      */
     @Import(name="start")
     private @Nullable Output<Boolean> start;
 
     /**
-     * @return If `true`, then the Docker container will be started after creation. If `false`, then the container is only created. Defaults to `true`.
+     * @return If `true`, then the Docker container will be started after creation. If `false`, then the container is only created.
+     * Defaults to `true`.
      * 
      */
     public Optional<Output<Boolean>> start() {
@@ -762,6 +812,36 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
      */
     public Optional<Output<Boolean>> stdinOpen() {
         return Optional.ofNullable(this.stdinOpen);
+    }
+
+    /**
+     * Signal to stop a container (default `SIGTERM`).
+     * 
+     */
+    @Import(name="stopSignal")
+    private @Nullable Output<String> stopSignal;
+
+    /**
+     * @return Signal to stop a container (default `SIGTERM`).
+     * 
+     */
+    public Optional<Output<String>> stopSignal() {
+        return Optional.ofNullable(this.stopSignal);
+    }
+
+    /**
+     * Timeout (in seconds) to stop a container.
+     * 
+     */
+    @Import(name="stopTimeout")
+    private @Nullable Output<Integer> stopTimeout;
+
+    /**
+     * @return Timeout (in seconds) to stop a container.
+     * 
+     */
+    public Optional<Output<Integer>> stopTimeout() {
+        return Optional.ofNullable(this.stopTimeout);
     }
 
     /**
@@ -840,14 +920,16 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and at least one of them has to be set.
+     * Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and
+     * at least one of them has to be set.
      * 
      */
     @Import(name="uploads")
     private @Nullable Output<List<ContainerUploadArgs>> uploads;
 
     /**
-     * @return Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and at least one of them has to be set.
+     * @return Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and
+     * at least one of them has to be set.
      * 
      */
     public Optional<Output<List<ContainerUploadArgs>>> uploads() {
@@ -855,14 +937,16 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.
+     * User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by
+     * name.
      * 
      */
     @Import(name="user")
     private @Nullable Output<String> user;
 
     /**
-     * @return User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.
+     * @return User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by
+     * name.
      * 
      */
     public Optional<Output<String>> user() {
@@ -930,6 +1014,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         this.domainname = $.domainname;
         this.entrypoints = $.entrypoints;
         this.envs = $.envs;
+        this.gpus = $.gpus;
         this.groupAdds = $.groupAdds;
         this.healthcheck = $.healthcheck;
         this.hostname = $.hostname;
@@ -960,10 +1045,13 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         this.removeVolumes = $.removeVolumes;
         this.restart = $.restart;
         this.rm = $.rm;
+        this.runtime = $.runtime;
         this.securityOpts = $.securityOpts;
         this.shmSize = $.shmSize;
         this.start = $.start;
         this.stdinOpen = $.stdinOpen;
+        this.stopSignal = $.stopSignal;
+        this.stopTimeout = $.stopTimeout;
         this.storageOpts = $.storageOpts;
         this.sysctls = $.sysctls;
         this.tmpfs = $.tmpfs;
@@ -1037,7 +1125,8 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param command The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[&#34;/usr/bin/myprogram&#34;,&#34;-&#34;,&#34;baz.con&#34;]`.
+         * @param command The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be
+         * `[&#34;/usr/bin/myprogram&#34;,&#34;-&#34;,&#34;baz.con&#34;]`.
          * 
          * @return builder
          * 
@@ -1048,7 +1137,8 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param command The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[&#34;/usr/bin/myprogram&#34;,&#34;-&#34;,&#34;baz.con&#34;]`.
+         * @param command The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be
+         * `[&#34;/usr/bin/myprogram&#34;,&#34;-&#34;,&#34;baz.con&#34;]`.
          * 
          * @return builder
          * 
@@ -1058,7 +1148,8 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param command The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[&#34;/usr/bin/myprogram&#34;,&#34;-&#34;,&#34;baz.con&#34;]`.
+         * @param command The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be
+         * `[&#34;/usr/bin/myprogram&#34;,&#34;-&#34;,&#34;baz.con&#34;]`.
          * 
          * @return builder
          * 
@@ -1110,7 +1201,8 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param destroyGraceSeconds If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
+         * @param destroyGraceSeconds If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on
+         * successful stop.
          * 
          * @return builder
          * 
@@ -1121,7 +1213,8 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param destroyGraceSeconds If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
+         * @param destroyGraceSeconds If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on
+         * successful stop.
          * 
          * @return builder
          * 
@@ -1276,7 +1369,9 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param entrypoints The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `&#34;/usr/bin/myprogra&#34;]`.
+         * @param entrypoints The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an
+         * executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be
+         * `&#34;/usr/bin/myprogra&#34;]`.
          * 
          * @return builder
          * 
@@ -1287,7 +1382,9 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param entrypoints The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `&#34;/usr/bin/myprogra&#34;]`.
+         * @param entrypoints The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an
+         * executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be
+         * `&#34;/usr/bin/myprogra&#34;]`.
          * 
          * @return builder
          * 
@@ -1297,7 +1394,9 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param entrypoints The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `&#34;/usr/bin/myprogra&#34;]`.
+         * @param entrypoints The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an
+         * executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be
+         * `&#34;/usr/bin/myprogra&#34;]`.
          * 
          * @return builder
          * 
@@ -1335,6 +1434,29 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
          */
         public Builder envs(String... envs) {
             return envs(List.of(envs));
+        }
+
+        /**
+         * @param gpus GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result
+         * in unexpected behavior.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder gpus(@Nullable Output<String> gpus) {
+            $.gpus = gpus;
+            return this;
+        }
+
+        /**
+         * @param gpus GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result
+         * in unexpected behavior.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder gpus(String gpus) {
+            return gpus(Output.of(gpus));
         }
 
         /**
@@ -1442,7 +1564,8 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param image The ID of the image to back this container. The easiest way to get this value is to use the `docker.RemoteImage` resource as is shown in the example.
+         * @param image The ID of the image to back this container. The easiest way to get this value is to use the `docker_image` resource as
+         * is shown in the example.
          * 
          * @return builder
          * 
@@ -1453,7 +1576,8 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param image The ID of the image to back this container. The easiest way to get this value is to use the `docker.RemoteImage` resource as is shown in the example.
+         * @param image The ID of the image to back this container. The easiest way to get this value is to use the `docker_image` resource as
+         * is shown in the example.
          * 
          * @return builder
          * 
@@ -1463,7 +1587,8 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param init Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
+         * @param init Configured whether an init process should be injected for this container. If unset this will default to the `dockerd`
+         * defaults.
          * 
          * @return builder
          * 
@@ -1474,7 +1599,8 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param init Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
+         * @param init Configured whether an init process should be injected for this container. If unset this will default to the `dockerd`
+         * defaults.
          * 
          * @return builder
          * 
@@ -1484,7 +1610,8 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param ipcMode IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:&lt;name|id&gt;` or `host`.
+         * @param ipcMode IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:&lt;name|id&gt;` or
+         * `host`.
          * 
          * @return builder
          * 
@@ -1495,7 +1622,8 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param ipcMode IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:&lt;name|id&gt;` or `host`.
+         * @param ipcMode IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:&lt;name|id&gt;` or
+         * `host`.
          * 
          * @return builder
          * 
@@ -2098,7 +2226,29 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param securityOpts List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
+         * @param runtime Runtime to use for the container.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder runtime(@Nullable Output<String> runtime) {
+            $.runtime = runtime;
+            return this;
+        }
+
+        /**
+         * @param runtime Runtime to use for the container.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder runtime(String runtime) {
+            return runtime(Output.of(runtime));
+        }
+
+        /**
+         * @param securityOpts List of string values to customize labels for MLS systems, such as SELinux. See
+         * https://docs.docker.com/engine/reference/run/#security-configuration.
          * 
          * @return builder
          * 
@@ -2109,7 +2259,8 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param securityOpts List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
+         * @param securityOpts List of string values to customize labels for MLS systems, such as SELinux. See
+         * https://docs.docker.com/engine/reference/run/#security-configuration.
          * 
          * @return builder
          * 
@@ -2119,7 +2270,8 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param securityOpts List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
+         * @param securityOpts List of string values to customize labels for MLS systems, such as SELinux. See
+         * https://docs.docker.com/engine/reference/run/#security-configuration.
          * 
          * @return builder
          * 
@@ -2150,7 +2302,8 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param start If `true`, then the Docker container will be started after creation. If `false`, then the container is only created. Defaults to `true`.
+         * @param start If `true`, then the Docker container will be started after creation. If `false`, then the container is only created.
+         * Defaults to `true`.
          * 
          * @return builder
          * 
@@ -2161,7 +2314,8 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param start If `true`, then the Docker container will be started after creation. If `false`, then the container is only created. Defaults to `true`.
+         * @param start If `true`, then the Docker container will be started after creation. If `false`, then the container is only created.
+         * Defaults to `true`.
          * 
          * @return builder
          * 
@@ -2189,6 +2343,48 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
          */
         public Builder stdinOpen(Boolean stdinOpen) {
             return stdinOpen(Output.of(stdinOpen));
+        }
+
+        /**
+         * @param stopSignal Signal to stop a container (default `SIGTERM`).
+         * 
+         * @return builder
+         * 
+         */
+        public Builder stopSignal(@Nullable Output<String> stopSignal) {
+            $.stopSignal = stopSignal;
+            return this;
+        }
+
+        /**
+         * @param stopSignal Signal to stop a container (default `SIGTERM`).
+         * 
+         * @return builder
+         * 
+         */
+        public Builder stopSignal(String stopSignal) {
+            return stopSignal(Output.of(stopSignal));
+        }
+
+        /**
+         * @param stopTimeout Timeout (in seconds) to stop a container.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder stopTimeout(@Nullable Output<Integer> stopTimeout) {
+            $.stopTimeout = stopTimeout;
+            return this;
+        }
+
+        /**
+         * @param stopTimeout Timeout (in seconds) to stop a container.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder stopTimeout(Integer stopTimeout) {
+            return stopTimeout(Output.of(stopTimeout));
         }
 
         /**
@@ -2307,7 +2503,8 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param uploads Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and at least one of them has to be set.
+         * @param uploads Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and
+         * at least one of them has to be set.
          * 
          * @return builder
          * 
@@ -2318,7 +2515,8 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param uploads Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and at least one of them has to be set.
+         * @param uploads Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and
+         * at least one of them has to be set.
          * 
          * @return builder
          * 
@@ -2328,7 +2526,8 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param uploads Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and at least one of them has to be set.
+         * @param uploads Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and
+         * at least one of them has to be set.
          * 
          * @return builder
          * 
@@ -2338,7 +2537,8 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param user User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.
+         * @param user User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by
+         * name.
          * 
          * @return builder
          * 
@@ -2349,7 +2549,8 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param user User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.
+         * @param user User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by
+         * name.
          * 
          * @return builder
          * 

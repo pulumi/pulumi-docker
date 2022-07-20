@@ -38,13 +38,7 @@ export function getRegistryImage(args: GetRegistryImageArgs, opts?: pulumi.Invok
  * A collection of arguments for invoking getRegistryImage.
  */
 export interface GetRegistryImageArgs {
-    /**
-     * If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
-     */
     insecureSkipVerify?: boolean;
-    /**
-     * The name of the Docker image, including any tags. e.g. `alpine:latest`
-     */
     name: string;
 }
 
@@ -56,17 +50,8 @@ export interface GetRegistryImageResult {
      * The provider-assigned unique ID for this managed resource.
      */
     readonly id: string;
-    /**
-     * If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
-     */
     readonly insecureSkipVerify?: boolean;
-    /**
-     * The name of the Docker image, including any tags. e.g. `alpine:latest`
-     */
     readonly name: string;
-    /**
-     * The content digest of the image, as stored in the registry.
-     */
     readonly sha256Digest: string;
 }
 
@@ -78,12 +63,6 @@ export function getRegistryImageOutput(args: GetRegistryImageOutputArgs, opts?: 
  * A collection of arguments for invoking getRegistryImage.
  */
 export interface GetRegistryImageOutputArgs {
-    /**
-     * If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
-     */
     insecureSkipVerify?: pulumi.Input<boolean>;
-    /**
-     * The name of the Docker image, including any tags. e.g. `alpine:latest`
-     */
     name: pulumi.Input<string>;
 }

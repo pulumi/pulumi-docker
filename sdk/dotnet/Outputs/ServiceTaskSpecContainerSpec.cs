@@ -25,9 +25,6 @@ namespace Pulumi.Docker.Outputs
         public readonly ImmutableArray<Outputs.ServiceTaskSpecContainerSpecHost> Hosts;
         public readonly string Image;
         public readonly string? Isolation;
-        /// <summary>
-        /// User-defined key/value metadata
-        /// </summary>
         public readonly ImmutableArray<Outputs.ServiceTaskSpecContainerSpecLabel> Labels;
         public readonly ImmutableArray<Outputs.ServiceTaskSpecContainerSpecMount> Mounts;
         public readonly Outputs.ServiceTaskSpecContainerSpecPrivileges? Privileges;

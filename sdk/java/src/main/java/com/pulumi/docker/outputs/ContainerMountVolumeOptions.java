@@ -17,10 +17,6 @@ import javax.annotation.Nullable;
 public final class ContainerMountVolumeOptions {
     private final @Nullable String driverName;
     private final @Nullable Map<String,String> driverOptions;
-    /**
-     * @return User-defined key/value metadata
-     * 
-     */
     private final @Nullable List<ContainerMountVolumeOptionsLabel> labels;
     private final @Nullable Boolean noCopy;
 
@@ -42,10 +38,6 @@ public final class ContainerMountVolumeOptions {
     public Map<String,String> driverOptions() {
         return this.driverOptions == null ? Map.of() : this.driverOptions;
     }
-    /**
-     * @return User-defined key/value metadata
-     * 
-     */
     public List<ContainerMountVolumeOptionsLabel> labels() {
         return this.labels == null ? List.of() : this.labels;
     }

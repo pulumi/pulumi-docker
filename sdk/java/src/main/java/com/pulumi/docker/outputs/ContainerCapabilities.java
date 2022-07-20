@@ -11,15 +11,7 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ContainerCapabilities {
-    /**
-     * @return List of linux capabilities to add.
-     * 
-     */
     private final @Nullable List<String> adds;
-    /**
-     * @return List of linux capabilities to drop.
-     * 
-     */
     private final @Nullable List<String> drops;
 
     @CustomType.Constructor
@@ -30,17 +22,9 @@ public final class ContainerCapabilities {
         this.drops = drops;
     }
 
-    /**
-     * @return List of linux capabilities to add.
-     * 
-     */
     public List<String> adds() {
         return this.adds == null ? List.of() : this.adds;
     }
-    /**
-     * @return List of linux capabilities to drop.
-     * 
-     */
     public List<String> drops() {
         return this.drops == null ? List.of() : this.drops;
     }

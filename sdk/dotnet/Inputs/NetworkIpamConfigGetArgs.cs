@@ -14,31 +14,18 @@ namespace Pulumi.Docker.Inputs
     {
         [Input("auxAddress")]
         private InputMap<object>? _auxAddress;
-
-        /// <summary>
-        /// Auxiliary IPv4 or IPv6 addresses used by Network driver
-        /// </summary>
         public InputMap<object> AuxAddress
         {
             get => _auxAddress ?? (_auxAddress = new InputMap<object>());
             set => _auxAddress = value;
         }
 
-        /// <summary>
-        /// The IP address of the gateway
-        /// </summary>
         [Input("gateway")]
         public Input<string>? Gateway { get; set; }
 
-        /// <summary>
-        /// The ip range in CIDR form
-        /// </summary>
         [Input("ipRange")]
         public Input<string>? IpRange { get; set; }
 
-        /// <summary>
-        /// The subnet in CIDR form
-        /// </summary>
         [Input("subnet")]
         public Input<string>? Subnet { get; set; }
 

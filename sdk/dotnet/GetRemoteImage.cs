@@ -97,9 +97,6 @@ namespace Pulumi.Docker
 
     public sealed class GetRemoteImageArgs : Pulumi.InvokeArgs
     {
-        /// <summary>
-        /// The name of the Docker image, including any tags or SHA256 repo digests.
-        /// </summary>
         [Input("name", required: true)]
         public string Name { get; set; } = null!;
 
@@ -110,9 +107,6 @@ namespace Pulumi.Docker
 
     public sealed class GetRemoteImageInvokeArgs : Pulumi.InvokeArgs
     {
-        /// <summary>
-        /// The name of the Docker image, including any tags or SHA256 repo digests.
-        /// </summary>
         [Input("name", required: true)]
         public Input<string> Name { get; set; } = null!;
 
@@ -129,13 +123,7 @@ namespace Pulumi.Docker
         /// The provider-assigned unique ID for this managed resource.
         /// </summary>
         public readonly string Id;
-        /// <summary>
-        /// The name of the Docker image, including any tags or SHA256 repo digests.
-        /// </summary>
         public readonly string Name;
-        /// <summary>
-        /// The image sha256 digest in the form of `repo[:tag]@sha256:&lt;hash&gt;`. It may be empty in the edge case where the local image was pulled from a repo, tagged locally, and then referred to in the data source by that local name/tag.
-        /// </summary>
         public readonly string RepoDigest;
 
         [OutputConstructor]

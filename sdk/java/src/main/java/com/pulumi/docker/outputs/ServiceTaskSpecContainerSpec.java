@@ -34,10 +34,6 @@ public final class ServiceTaskSpecContainerSpec {
     private final @Nullable List<ServiceTaskSpecContainerSpecHost> hosts;
     private final String image;
     private final @Nullable String isolation;
-    /**
-     * @return User-defined key/value metadata
-     * 
-     */
     private final @Nullable List<ServiceTaskSpecContainerSpecLabel> labels;
     private final @Nullable List<ServiceTaskSpecContainerSpecMount> mounts;
     private final @Nullable ServiceTaskSpecContainerSpecPrivileges privileges;
@@ -127,10 +123,6 @@ public final class ServiceTaskSpecContainerSpec {
     public Optional<String> isolation() {
         return Optional.ofNullable(this.isolation);
     }
-    /**
-     * @return User-defined key/value metadata
-     * 
-     */
     public List<ServiceTaskSpecContainerSpecLabel> labels() {
         return this.labels == null ? List.of() : this.labels;
     }

@@ -65,7 +65,8 @@ export class Network extends pulumi.CustomResource {
      */
     public readonly checkDuplicate!: pulumi.Output<boolean | undefined>;
     /**
-     * The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
+     * The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network
+     * docs](https://docs.docker.com/network/#network-drivers) for more details.
      */
     public readonly driver!: pulumi.Output<string>;
     /**
@@ -97,7 +98,8 @@ export class Network extends pulumi.CustomResource {
      */
     public readonly name!: pulumi.Output<string>;
     /**
-     * Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
+     * Only available with bridge networks. See [bridge options
+     * docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
      */
     public readonly options!: pulumi.Output<{[key: string]: any}>;
     /**
@@ -163,7 +165,8 @@ export interface NetworkState {
      */
     checkDuplicate?: pulumi.Input<boolean>;
     /**
-     * The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
+     * The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network
+     * docs](https://docs.docker.com/network/#network-drivers) for more details.
      */
     driver?: pulumi.Input<string>;
     /**
@@ -195,7 +198,8 @@ export interface NetworkState {
      */
     name?: pulumi.Input<string>;
     /**
-     * Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
+     * Only available with bridge networks. See [bridge options
+     * docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
      */
     options?: pulumi.Input<{[key: string]: any}>;
     /**
@@ -217,7 +221,8 @@ export interface NetworkArgs {
      */
     checkDuplicate?: pulumi.Input<boolean>;
     /**
-     * The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
+     * The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network
+     * docs](https://docs.docker.com/network/#network-drivers) for more details.
      */
     driver?: pulumi.Input<string>;
     /**
@@ -249,7 +254,8 @@ export interface NetworkArgs {
      */
     name?: pulumi.Input<string>;
     /**
-     * Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
+     * Only available with bridge networks. See [bridge options
+     * docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
      */
     options?: pulumi.Input<{[key: string]: any}>;
 }

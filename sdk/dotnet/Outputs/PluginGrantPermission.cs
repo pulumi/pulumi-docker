@@ -13,13 +13,7 @@ namespace Pulumi.Docker.Outputs
     [OutputType]
     public sealed class PluginGrantPermission
     {
-        /// <summary>
-        /// The name of the permission
-        /// </summary>
         public readonly string Name;
-        /// <summary>
-        /// The value of the permission
-        /// </summary>
         public readonly ImmutableArray<string> Values;
 
         [OutputConstructor]

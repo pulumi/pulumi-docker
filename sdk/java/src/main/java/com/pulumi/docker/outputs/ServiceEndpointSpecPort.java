@@ -12,10 +12,6 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceEndpointSpecPort {
-    /**
-     * @return Name of the service
-     * 
-     */
     private final @Nullable String name;
     private final @Nullable String protocol;
     private final @Nullable String publishMode;
@@ -36,10 +32,6 @@ public final class ServiceEndpointSpecPort {
         this.targetPort = targetPort;
     }
 
-    /**
-     * @return Name of the service
-     * 
-     */
     public Optional<String> name() {
         return Optional.ofNullable(this.name);
     }

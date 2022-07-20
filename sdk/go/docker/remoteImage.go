@@ -115,11 +115,13 @@ import (
 type RemoteImage struct {
 	pulumi.CustomResourceState
 
-	// Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+	// Configuration to build an image. Please see [docker build command
+	// reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
 	Build RemoteImageBuildPtrOutput `pulumi:"build"`
 	// If true, then the image is removed forcibly when the resource is destroyed.
 	ForceRemove pulumi.BoolPtrOutput `pulumi:"forceRemove"`
-	// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
+	// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from
+	// the docker local storage on destroy operation.
 	KeepLocally pulumi.BoolPtrOutput `pulumi:"keepLocally"`
 	// The ID of the image in the form of `sha256:<hash>` image digest. Do not confuse it with the default `latest` tag.
 	//
@@ -133,7 +135,8 @@ type RemoteImage struct {
 	//
 	// Deprecated: Use field pull_triggers instead
 	PullTrigger pulumi.StringPtrOutput `pulumi:"pullTrigger"`
-	// List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
+	// List of values which cause an image pull when changed. This is used to store the image digest from the registry when
+	// using the [docker_registry_image](../data-sources/registry_image.md).
 	PullTriggers pulumi.StringArrayOutput `pulumi:"pullTriggers"`
 	// The image sha256 digest in the form of `repo[:tag]@sha256:<hash>`.
 	RepoDigest pulumi.StringOutput `pulumi:"repoDigest"`
@@ -171,11 +174,13 @@ func GetRemoteImage(ctx *pulumi.Context,
 
 // Input properties used for looking up and filtering RemoteImage resources.
 type remoteImageState struct {
-	// Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+	// Configuration to build an image. Please see [docker build command
+	// reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
 	Build *RemoteImageBuild `pulumi:"build"`
 	// If true, then the image is removed forcibly when the resource is destroyed.
 	ForceRemove *bool `pulumi:"forceRemove"`
-	// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
+	// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from
+	// the docker local storage on destroy operation.
 	KeepLocally *bool `pulumi:"keepLocally"`
 	// The ID of the image in the form of `sha256:<hash>` image digest. Do not confuse it with the default `latest` tag.
 	//
@@ -189,18 +194,21 @@ type remoteImageState struct {
 	//
 	// Deprecated: Use field pull_triggers instead
 	PullTrigger *string `pulumi:"pullTrigger"`
-	// List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
+	// List of values which cause an image pull when changed. This is used to store the image digest from the registry when
+	// using the [docker_registry_image](../data-sources/registry_image.md).
 	PullTriggers []string `pulumi:"pullTriggers"`
 	// The image sha256 digest in the form of `repo[:tag]@sha256:<hash>`.
 	RepoDigest *string `pulumi:"repoDigest"`
 }
 
 type RemoteImageState struct {
-	// Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+	// Configuration to build an image. Please see [docker build command
+	// reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
 	Build RemoteImageBuildPtrInput
 	// If true, then the image is removed forcibly when the resource is destroyed.
 	ForceRemove pulumi.BoolPtrInput
-	// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
+	// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from
+	// the docker local storage on destroy operation.
 	KeepLocally pulumi.BoolPtrInput
 	// The ID of the image in the form of `sha256:<hash>` image digest. Do not confuse it with the default `latest` tag.
 	//
@@ -214,7 +222,8 @@ type RemoteImageState struct {
 	//
 	// Deprecated: Use field pull_triggers instead
 	PullTrigger pulumi.StringPtrInput
-	// List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
+	// List of values which cause an image pull when changed. This is used to store the image digest from the registry when
+	// using the [docker_registry_image](../data-sources/registry_image.md).
 	PullTriggers pulumi.StringArrayInput
 	// The image sha256 digest in the form of `repo[:tag]@sha256:<hash>`.
 	RepoDigest pulumi.StringPtrInput
@@ -225,11 +234,13 @@ func (RemoteImageState) ElementType() reflect.Type {
 }
 
 type remoteImageArgs struct {
-	// Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+	// Configuration to build an image. Please see [docker build command
+	// reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
 	Build *RemoteImageBuild `pulumi:"build"`
 	// If true, then the image is removed forcibly when the resource is destroyed.
 	ForceRemove *bool `pulumi:"forceRemove"`
-	// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
+	// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from
+	// the docker local storage on destroy operation.
 	KeepLocally *bool `pulumi:"keepLocally"`
 	// The name of the Docker image, including any tags or SHA256 repo digests.
 	Name string `pulumi:"name"`
@@ -237,17 +248,20 @@ type remoteImageArgs struct {
 	//
 	// Deprecated: Use field pull_triggers instead
 	PullTrigger *string `pulumi:"pullTrigger"`
-	// List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
+	// List of values which cause an image pull when changed. This is used to store the image digest from the registry when
+	// using the [docker_registry_image](../data-sources/registry_image.md).
 	PullTriggers []string `pulumi:"pullTriggers"`
 }
 
 // The set of arguments for constructing a RemoteImage resource.
 type RemoteImageArgs struct {
-	// Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+	// Configuration to build an image. Please see [docker build command
+	// reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
 	Build RemoteImageBuildPtrInput
 	// If true, then the image is removed forcibly when the resource is destroyed.
 	ForceRemove pulumi.BoolPtrInput
-	// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
+	// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from
+	// the docker local storage on destroy operation.
 	KeepLocally pulumi.BoolPtrInput
 	// The name of the Docker image, including any tags or SHA256 repo digests.
 	Name pulumi.StringInput
@@ -255,7 +269,8 @@ type RemoteImageArgs struct {
 	//
 	// Deprecated: Use field pull_triggers instead
 	PullTrigger pulumi.StringPtrInput
-	// List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
+	// List of values which cause an image pull when changed. This is used to store the image digest from the registry when
+	// using the [docker_registry_image](../data-sources/registry_image.md).
 	PullTriggers pulumi.StringArrayInput
 }
 
@@ -346,7 +361,8 @@ func (o RemoteImageOutput) ToRemoteImageOutputWithContext(ctx context.Context) R
 	return o
 }
 
-// Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+// Configuration to build an image. Please see [docker build command
+// reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
 func (o RemoteImageOutput) Build() RemoteImageBuildPtrOutput {
 	return o.ApplyT(func(v *RemoteImage) RemoteImageBuildPtrOutput { return v.Build }).(RemoteImageBuildPtrOutput)
 }
@@ -356,7 +372,8 @@ func (o RemoteImageOutput) ForceRemove() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *RemoteImage) pulumi.BoolPtrOutput { return v.ForceRemove }).(pulumi.BoolPtrOutput)
 }
 
-// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
+// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from
+// the docker local storage on destroy operation.
 func (o RemoteImageOutput) KeepLocally() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *RemoteImage) pulumi.BoolPtrOutput { return v.KeepLocally }).(pulumi.BoolPtrOutput)
 }
@@ -385,7 +402,8 @@ func (o RemoteImageOutput) PullTrigger() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *RemoteImage) pulumi.StringPtrOutput { return v.PullTrigger }).(pulumi.StringPtrOutput)
 }
 
-// List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
+// List of values which cause an image pull when changed. This is used to store the image digest from the registry when
+// using the [docker_registry_image](../data-sources/registry_image.md).
 func (o RemoteImageOutput) PullTriggers() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v *RemoteImage) pulumi.StringArrayOutput { return v.PullTriggers }).(pulumi.StringArrayOutput)
 }

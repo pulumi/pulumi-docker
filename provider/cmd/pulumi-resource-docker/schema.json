@@ -94,7 +94,6 @@
                     "items": {
                         "type": "string"
                     },
-                    "description": "List of linux capabilities to add.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -106,7 +105,6 @@
                     "items": {
                         "type": "string"
                     },
-                    "description": "List of linux capabilities to drop.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -120,7 +118,6 @@
             "properties": {
                 "containerPath": {
                     "type": "string",
-                    "description": "The path in the container where the device will be bound.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -129,7 +126,6 @@
                 },
                 "hostPath": {
                     "type": "string",
-                    "description": "The path on the host where the device is located.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -138,7 +134,6 @@
                 },
                 "permissions": {
                     "type": "string",
-                    "description": "The cgroup permissions given to the container to access the device. Defaults to `rwm`.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -155,7 +150,6 @@
             "properties": {
                 "interval": {
                     "type": "string",
-                    "description": "Time between running the check (ms|s|m|h). Defaults to `0s`.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -164,7 +158,6 @@
                 },
                 "retries": {
                     "type": "integer",
-                    "description": "Consecutive failures needed to report unhealthy. Defaults to `0`.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -173,7 +166,6 @@
                 },
                 "startPeriod": {
                     "type": "string",
-                    "description": "Start period for the container to initialize before counting retries towards unstable (ms|s|m|h). Defaults to `0s`.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -185,7 +177,6 @@
                     "items": {
                         "type": "string"
                     },
-                    "description": "Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `[\"CMD\", \"curl\", \"-f\", \"localhost/health\"]`.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -194,7 +185,6 @@
                 },
                 "timeout": {
                     "type": "string",
-                    "description": "Maximum time to allow one check to run (ms|s|m|h). Defaults to `0s`.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -211,7 +201,6 @@
             "properties": {
                 "host": {
                     "type": "string",
-                    "description": "Hostname to add\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -220,7 +209,6 @@
                 },
                 "ip": {
                     "type": "string",
-                    "description": "IP address this hostname should resolve to.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -238,7 +226,6 @@
             "properties": {
                 "label": {
                     "type": "string",
-                    "description": "Name of the label\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -247,7 +234,6 @@
                 },
                 "value": {
                     "type": "string",
-                    "description": "Value of the label\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -265,7 +251,6 @@
             "properties": {
                 "bindOptions": {
                     "$ref": "#/types/docker:index/ContainerMountBindOptions:ContainerMountBindOptions",
-                    "description": "Optional configuration for the bind type.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -274,7 +259,6 @@
                 },
                 "readOnly": {
                     "type": "boolean",
-                    "description": "Whether the mount should be read-only.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -283,7 +267,6 @@
                 },
                 "source": {
                     "type": "string",
-                    "description": "Mount source (e.g. a volume name, a host path).\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -292,7 +275,6 @@
                 },
                 "target": {
                     "type": "string",
-                    "description": "Container path\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -301,7 +283,6 @@
                 },
                 "tmpfsOptions": {
                     "$ref": "#/types/docker:index/ContainerMountTmpfsOptions:ContainerMountTmpfsOptions",
-                    "description": "Optional configuration for the tmpfs type.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -310,7 +291,6 @@
                 },
                 "type": {
                     "type": "string",
-                    "description": "The mount type\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -319,7 +299,6 @@
                 },
                 "volumeOptions": {
                     "$ref": "#/types/docker:index/ContainerMountVolumeOptions:ContainerMountVolumeOptions",
-                    "description": "Optional configuration for the volume type.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -393,7 +372,6 @@
                     "items": {
                         "$ref": "#/types/docker:index/ContainerMountVolumeOptionsLabel:ContainerMountVolumeOptionsLabel"
                     },
-                    "description": "User-defined key/value metadata\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -415,7 +393,6 @@
             "properties": {
                 "label": {
                     "type": "string",
-                    "description": "Name of the label\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -424,7 +401,6 @@
                 },
                 "value": {
                     "type": "string",
-                    "description": "Value of the label\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -442,7 +418,6 @@
             "properties": {
                 "gateway": {
                     "type": "string",
-                    "description": "The network gateway of the container.\n",
                     "deprecationMessage": "Use `network_data` instead. The network gateway of the container as read from its NetworkSettings.",
                     "language": {
                         "python": {
@@ -468,7 +443,6 @@
                 },
                 "ipAddress": {
                     "type": "string",
-                    "description": "The IP address of the container.\n",
                     "deprecationMessage": "Use `network_data` instead. The IP address of the container's first network it.",
                     "language": {
                         "python": {
@@ -478,7 +452,6 @@
                 },
                 "ipPrefixLength": {
                     "type": "integer",
-                    "description": "The IP prefix length of the container.\n",
                     "deprecationMessage": "Use `network_data` instead. The IP prefix length of the container as read from its NetworkSettings.",
                     "language": {
                         "python": {
@@ -525,7 +498,6 @@
                     "items": {
                         "type": "string"
                     },
-                    "description": "The network aliases of the container in the specific network.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -534,7 +506,6 @@
                 },
                 "ipv4Address": {
                     "type": "string",
-                    "description": "The IPV4 address of the container in the specific network.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -543,7 +514,6 @@
                 },
                 "ipv6Address": {
                     "type": "string",
-                    "description": "The IPV6 address of the container in the specific network.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -552,7 +522,6 @@
                 },
                 "name": {
                     "type": "string",
-                    "description": "The name of the network.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -569,7 +538,6 @@
             "properties": {
                 "external": {
                     "type": "integer",
-                    "description": "Port exposed out of the container. If not given a free random port `\u003e= 32768` will be used.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -578,7 +546,6 @@
                 },
                 "internal": {
                     "type": "integer",
-                    "description": "Port within the container.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -587,7 +554,6 @@
                 },
                 "ip": {
                     "type": "string",
-                    "description": "IP address/mask that can access this port. Defaults to `0.0.0.0`.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -596,7 +562,6 @@
                 },
                 "protocol": {
                     "type": "string",
-                    "description": "Protocol that can be used over this port. Defaults to `tcp`.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -621,7 +586,6 @@
             "properties": {
                 "hard": {
                     "type": "integer",
-                    "description": "The hard limit\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -630,7 +594,6 @@
                 },
                 "name": {
                     "type": "string",
-                    "description": "The name of the ulimit\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -639,7 +602,6 @@
                 },
                 "soft": {
                     "type": "integer",
-                    "description": "The soft limit\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -658,7 +620,6 @@
             "properties": {
                 "content": {
                     "type": "string",
-                    "description": "Literal string value to use as the object content, which will be uploaded as UTF-8-encoded text. Conflicts with `content_base64` \u0026 `source`\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -675,7 +636,6 @@
                 },
                 "executable": {
                     "type": "boolean",
-                    "description": "If `true`, the file will be uploaded with user executable permission. Defaults to `false`.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -684,7 +644,6 @@
                 },
                 "file": {
                     "type": "string",
-                    "description": "Path to the file in the container where is upload goes to\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -693,7 +652,6 @@
                 },
                 "source": {
                     "type": "string",
-                    "description": "A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state. Conflicts with `content` \u0026 `content_base64`\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -702,7 +660,6 @@
                 },
                 "sourceHash": {
                     "type": "string",
-                    "description": "If using `source`, this will force an update if the file content has updated but the filename has not.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -719,7 +676,6 @@
             "properties": {
                 "containerPath": {
                     "type": "string",
-                    "description": "The path in the container where the volume will be mounted.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -728,7 +684,6 @@
                 },
                 "fromContainer": {
                     "type": "string",
-                    "description": "The container where the volume is coming from.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -737,7 +692,6 @@
                 },
                 "hostPath": {
                     "type": "string",
-                    "description": "The path on the host where the volume is coming from.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -746,7 +700,6 @@
                 },
                 "readOnly": {
                     "type": "boolean",
-                    "description": "If `true`, this volume will be readonly. Defaults to `false`.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -755,7 +708,6 @@
                 },
                 "volumeName": {
                     "type": "string",
-                    "description": "The name of the docker volume which should be mounted.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -772,7 +724,6 @@
                     "additionalProperties": {
                         "$ref": "pulumi.json#/Any"
                     },
-                    "description": "Auxiliary IPv4 or IPv6 addresses used by Network driver\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -781,7 +732,6 @@
                 },
                 "gateway": {
                     "type": "string",
-                    "description": "The IP address of the gateway\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -790,7 +740,6 @@
                 },
                 "ipRange": {
                     "type": "string",
-                    "description": "The ip range in CIDR form\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -799,7 +748,6 @@
                 },
                 "subnet": {
                     "type": "string",
-                    "description": "The subnet in CIDR form\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -813,7 +761,6 @@
             "properties": {
                 "label": {
                     "type": "string",
-                    "description": "Name of the label\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -822,7 +769,6 @@
                 },
                 "value": {
                     "type": "string",
-                    "description": "Value of the label\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -840,7 +786,6 @@
             "properties": {
                 "name": {
                     "type": "string",
-                    "description": "The name of the permission\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -852,7 +797,6 @@
                     "items": {
                         "type": "string"
                     },
-                    "description": "The value of the permission\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -926,7 +870,6 @@
                     "items": {
                         "$ref": "#/types/docker:index/RegistryImageBuildAuthConfig:RegistryImageBuildAuthConfig"
                     },
-                    "description": "The configuration for the authentication\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -938,7 +881,6 @@
                     "additionalProperties": {
                         "type": "string"
                     },
-                    "description": "Pairs for build-time variables in the form TODO\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -947,7 +889,6 @@
                 },
                 "buildId": {
                     "type": "string",
-                    "description": "BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -959,7 +900,6 @@
                     "items": {
                         "type": "string"
                     },
-                    "description": "Images to consider as cache sources\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -968,7 +908,6 @@
                 },
                 "cgroupParent": {
                     "type": "string",
-                    "description": "Optional parent cgroup for the container\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -977,7 +916,6 @@
                 },
                 "context": {
                     "type": "string",
-                    "description": "The absolute path to the context folder. You can use the helper function '${path.cwd}/context-dir'.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -986,7 +924,6 @@
                 },
                 "cpuPeriod": {
                     "type": "integer",
-                    "description": "The length of a CPU period in microseconds\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -995,7 +932,6 @@
                 },
                 "cpuQuota": {
                     "type": "integer",
-                    "description": "Microseconds of CPU time that the container can get in a CPU period\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1004,7 +940,6 @@
                 },
                 "cpuSetCpus": {
                     "type": "string",
-                    "description": "CPUs in which to allow execution (e.g., `0-3`, `0`, `1`)\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1013,7 +948,6 @@
                 },
                 "cpuSetMems": {
                     "type": "string",
-                    "description": "MEMs in which to allow execution (`0-3`, `0`, `1`)\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1022,7 +956,6 @@
                 },
                 "cpuShares": {
                     "type": "integer",
-                    "description": "CPU shares (relative weight)\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1031,7 +964,6 @@
                 },
                 "dockerfile": {
                     "type": "string",
-                    "description": "Dockerfile file. Defaults to `Dockerfile`\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1043,7 +975,6 @@
                     "items": {
                         "type": "string"
                     },
-                    "description": "A list of hostnames/IP mappings to add to the container’s /etc/hosts file. Specified in the form [\"hostname:IP\"]\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1052,7 +983,6 @@
                 },
                 "forceRemove": {
                     "type": "boolean",
-                    "description": "Always remove intermediate containers\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1061,7 +991,6 @@
                 },
                 "isolation": {
                     "type": "string",
-                    "description": "Isolation represents the isolation technology of a container. The supported values are\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1073,7 +1002,6 @@
                     "additionalProperties": {
                         "type": "string"
                     },
-                    "description": "User-defined key/value metadata\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1082,7 +1010,6 @@
                 },
                 "memory": {
                     "type": "integer",
-                    "description": "Set memory limit for build\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1091,7 +1018,6 @@
                 },
                 "memorySwap": {
                     "type": "integer",
-                    "description": "Total memory (memory + swap), -1 to enable unlimited swap\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1100,7 +1026,6 @@
                 },
                 "networkMode": {
                     "type": "string",
-                    "description": "Set the networking mode for the RUN instructions during build\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1109,7 +1034,6 @@
                 },
                 "noCache": {
                     "type": "boolean",
-                    "description": "Do not use the cache when building the image\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1118,7 +1042,6 @@
                 },
                 "platform": {
                     "type": "string",
-                    "description": "Set platform if server is multi-platform capable\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1127,7 +1050,6 @@
                 },
                 "pullParent": {
                     "type": "boolean",
-                    "description": "Attempt to pull the image even if an older image exists locally\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1136,7 +1058,6 @@
                 },
                 "remoteContext": {
                     "type": "string",
-                    "description": "A Git repository URI or HTTP/HTTPS context URI\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1145,7 +1066,6 @@
                 },
                 "remove": {
                     "type": "boolean",
-                    "description": "Remove intermediate containers after a successful build (default behavior)\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1157,7 +1077,6 @@
                     "items": {
                         "type": "string"
                     },
-                    "description": "The security options\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1166,7 +1085,6 @@
                 },
                 "sessionId": {
                     "type": "string",
-                    "description": "Set an ID for the build session\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1175,7 +1093,6 @@
                 },
                 "shmSize": {
                     "type": "integer",
-                    "description": "Size of /dev/shm in bytes. The size must be greater than 0\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1184,7 +1101,6 @@
                 },
                 "squash": {
                     "type": "boolean",
-                    "description": "If true the new layers are squashed into a new image with a single new layer\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1193,7 +1109,6 @@
                 },
                 "suppressOutput": {
                     "type": "boolean",
-                    "description": "Suppress the build output and print image ID on success\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1202,7 +1117,6 @@
                 },
                 "target": {
                     "type": "string",
-                    "description": "Set the target build stage to build\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1214,7 +1128,6 @@
                     "items": {
                         "$ref": "#/types/docker:index/RegistryImageBuildUlimit:RegistryImageBuildUlimit"
                     },
-                    "description": "Configuration for ulimits\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1223,7 +1136,6 @@
                 },
                 "version": {
                     "type": "string",
-                    "description": "Version of the underlying builder to use\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1320,7 +1232,6 @@
                 },
                 "name": {
                     "type": "string",
-                    "description": "The name of the Docker image.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1350,7 +1261,6 @@
                     "additionalProperties": {
                         "type": "string"
                     },
-                    "description": "Set build-time variables\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1359,7 +1269,6 @@
                 },
                 "dockerfile": {
                     "type": "string",
-                    "description": "Name of the Dockerfile. Defaults to `Dockerfile`.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1368,7 +1277,6 @@
                 },
                 "forceRemove": {
                     "type": "boolean",
-                    "description": "Always remove intermediate containers\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1380,7 +1288,6 @@
                     "additionalProperties": {
                         "type": "string"
                     },
-                    "description": "Set metadata for an image\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1389,7 +1296,6 @@
                 },
                 "noCache": {
                     "type": "boolean",
-                    "description": "Do not use cache when building the image\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1398,7 +1304,6 @@
                 },
                 "path": {
                     "type": "string",
-                    "description": "Context path\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1407,7 +1312,6 @@
                 },
                 "remove": {
                     "type": "boolean",
-                    "description": "Remove intermediate containers after a successful build. Defaults to  `true`.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1419,7 +1323,6 @@
                     "items": {
                         "type": "string"
                     },
-                    "description": "Name and optionally a tag in the 'name:tag' format\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1428,7 +1331,6 @@
                 },
                 "target": {
                     "type": "string",
-                    "description": "Set the target build stage to build\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1445,7 +1347,6 @@
             "properties": {
                 "label": {
                     "type": "string",
-                    "description": "Name of the label\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1454,7 +1355,6 @@
                 },
                 "value": {
                     "type": "string",
-                    "description": "Value of the label\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1472,7 +1372,6 @@
             "properties": {
                 "password": {
                     "type": "string",
-                    "description": "The password\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1481,7 +1380,6 @@
                 },
                 "serverAddress": {
                     "type": "string",
-                    "description": "The address of the server for the authentication\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1490,7 +1388,6 @@
                 },
                 "username": {
                     "type": "string",
-                    "description": "The username\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1507,7 +1404,6 @@
             "properties": {
                 "delay": {
                     "type": "string",
-                    "description": "The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1516,7 +1412,6 @@
                 },
                 "timeout": {
                     "type": "string",
-                    "description": "The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1530,7 +1425,6 @@
             "properties": {
                 "mode": {
                     "type": "string",
-                    "description": "The mode of resolution to use for internal load balancing between tasks\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1542,7 +1436,6 @@
                     "items": {
                         "$ref": "#/types/docker:index/ServiceEndpointSpecPort:ServiceEndpointSpecPort"
                     },
-                    "description": "List of exposed ports that this service is accessible on from the outside. Ports can only be provided if 'vip' resolution mode is used\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1563,7 +1456,6 @@
             "properties": {
                 "name": {
                     "type": "string",
-                    "description": "Name of the service\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1620,7 +1512,6 @@
             "properties": {
                 "label": {
                     "type": "string",
-                    "description": "Name of the label\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1629,7 +1520,6 @@
                 },
                 "value": {
                     "type": "string",
-                    "description": "Value of the label\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1647,7 +1537,6 @@
             "properties": {
                 "global": {
                     "type": "boolean",
-                    "description": "The global service mode. Defaults to `false`\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1656,7 +1545,6 @@
                 },
                 "replicated": {
                     "$ref": "#/types/docker:index/ServiceModeReplicated:ServiceModeReplicated",
-                    "description": "The replicated service mode\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1690,7 +1578,6 @@
             "properties": {
                 "delay": {
                     "type": "string",
-                    "description": "Delay between task rollbacks (ns|us|ms|s|m|h). Defaults to `0s`.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1699,7 +1586,6 @@
                 },
                 "failureAction": {
                     "type": "string",
-                    "description": "Action on rollback failure: pause | continue. Defaults to `pause`.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1708,7 +1594,6 @@
                 },
                 "maxFailureRatio": {
                     "type": "string",
-                    "description": "Failure rate to tolerate during a rollback. Defaults to `0.0`.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1717,7 +1602,6 @@
                 },
                 "monitor": {
                     "type": "string",
-                    "description": "Duration after each task rollback to monitor for failure (ns|us|ms|s|m|h). Defaults to `5s`.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1726,7 +1610,6 @@
                 },
                 "order": {
                     "type": "string",
-                    "description": "Rollback order: either 'stop-first' or 'start-first'. Defaults to `stop-first`.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1735,7 +1618,6 @@
                 },
                 "parallelism": {
                     "type": "integer",
-                    "description": "Maximum number of tasks to be rollbacked in one iteration. Defaults to `1`\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1749,7 +1631,6 @@
             "properties": {
                 "containerSpec": {
                     "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpec:ServiceTaskSpecContainerSpec",
-                    "description": "The spec for each container\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1758,7 +1639,6 @@
                 },
                 "forceUpdate": {
                     "type": "integer",
-                    "description": "A counter that triggers an update even if no relevant parameters have been changed. See the [spec](https://github.com/docker/swarmkit/blob/master/api/specs.proto#L126).\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1767,7 +1647,6 @@
                 },
                 "logDriver": {
                     "$ref": "#/types/docker:index/ServiceTaskSpecLogDriver:ServiceTaskSpecLogDriver",
-                    "description": "Specifies the log driver to use for tasks created from this spec. If not present, the default one for the swarm will be used, finally falling back to the engine default if not specified\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1779,7 +1658,6 @@
                     "items": {
                         "type": "string"
                     },
-                    "description": "Ids of the networks in which the  container will be put in\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1788,7 +1666,6 @@
                 },
                 "placement": {
                     "$ref": "#/types/docker:index/ServiceTaskSpecPlacement:ServiceTaskSpecPlacement",
-                    "description": "The placement preferences\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1797,7 +1674,6 @@
                 },
                 "resources": {
                     "$ref": "#/types/docker:index/ServiceTaskSpecResources:ServiceTaskSpecResources",
-                    "description": "Resource requirements which apply to each individual container created as part of the service\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1806,7 +1682,6 @@
                 },
                 "restartPolicy": {
                     "$ref": "#/types/docker:index/ServiceTaskSpecRestartPolicy:ServiceTaskSpecRestartPolicy",
-                    "description": "Specification for the restart policy which applies to containers created as part of this service.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1815,7 +1690,6 @@
                 },
                 "runtime": {
                     "type": "string",
-                    "description": "Runtime is the type of runtime specified for the task executor. See the [types](https://github.com/moby/moby/blob/master/api/types/swarm/runtime.go).\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1961,7 +1835,6 @@
                     "items": {
                         "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecLabel:ServiceTaskSpecContainerSpecLabel"
                     },
-                    "description": "User-defined key/value metadata\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -2224,7 +2097,6 @@
             "properties": {
                 "label": {
                     "type": "string",
-                    "description": "Name of the label\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -2233,7 +2105,6 @@
                 },
                 "value": {
                     "type": "string",
-                    "description": "Value of the label\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -2329,7 +2200,6 @@
             "properties": {
                 "mode": {
                     "type": "integer",
-                    "description": "Scheduling mode for the service\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -2373,7 +2243,6 @@
                     "items": {
                         "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecMountVolumeOptionsLabel:ServiceTaskSpecContainerSpecMountVolumeOptionsLabel"
                     },
-                    "description": "User-defined key/value metadata\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -2395,7 +2264,6 @@
             "properties": {
                 "label": {
                     "type": "string",
-                    "description": "Name of the label\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -2404,7 +2272,6 @@
                 },
                 "value": {
                     "type": "string",
-                    "description": "Value of the label\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -2566,7 +2433,6 @@
             "properties": {
                 "name": {
                     "type": "string",
-                    "description": "Name of the service\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -2800,7 +2666,6 @@
             "properties": {
                 "delay": {
                     "type": "string",
-                    "description": "Delay between task updates `(ns|us|ms|s|m|h)`. Defaults to `0s`.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -2809,7 +2674,6 @@
                 },
                 "failureAction": {
                     "type": "string",
-                    "description": "Action on update failure: `pause`, `continue` or `rollback`. Defaults to `pause`.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -2818,7 +2682,6 @@
                 },
                 "maxFailureRatio": {
                     "type": "string",
-                    "description": "Failure rate to tolerate during an update. Defaults to `0.0`.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -2827,7 +2690,6 @@
                 },
                 "monitor": {
                     "type": "string",
-                    "description": "Duration after each task update to monitor for failure (ns|us|ms|s|m|h). Defaults to `5s`.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -2836,7 +2698,6 @@
                 },
                 "order": {
                     "type": "string",
-                    "description": "Update order: either 'stop-first' or 'start-first'. Defaults to `stop-first`.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -2845,7 +2706,6 @@
                 },
                 "parallelism": {
                     "type": "integer",
-                    "description": "Maximum number of tasks to be updated in one iteration. Defaults to `1`\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -2859,7 +2719,6 @@
             "properties": {
                 "label": {
                     "type": "string",
-                    "description": "Name of the label\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -2868,7 +2727,6 @@
                 },
                 "value": {
                     "type": "string",
-                    "description": "Value of the label\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -3023,7 +2881,7 @@
                     "items": {
                         "type": "string"
                     },
-                    "description": "The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[\"/usr/bin/myprogram\",\"-\",\"baz.con\"]`.\n"
+                    "description": "The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be\n`[\"/usr/bin/myprogram\",\"-\",\"baz.con\"]`.\n"
                 },
                 "containerLogs": {
                     "type": "string",
@@ -3039,7 +2897,7 @@
                 },
                 "destroyGraceSeconds": {
                     "type": "integer",
-                    "description": "If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.\n"
+                    "description": "If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on\nsuccessful stop.\n"
                 },
                 "devices": {
                     "type": "array",
@@ -3078,7 +2936,7 @@
                     "items": {
                         "type": "string"
                     },
-                    "description": "The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `\"/usr/bin/myprogra\"]`.\n"
+                    "description": "The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an\nexecutable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be\n`\"/usr/bin/myprogra\"]`.\n"
                 },
                 "envs": {
                     "type": "array",
@@ -3095,6 +2953,10 @@
                     "type": "string",
                     "description": "The network gateway of the container.\n",
                     "deprecationMessage": "Use `network_data` instead. The network gateway of the container as read from its NetworkSettings."
+                },
+                "gpus": {
+                    "type": "string",
+                    "description": "GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result\nin unexpected behavior.\n"
                 },
                 "groupAdds": {
                     "type": "array",
@@ -3120,11 +2982,11 @@
                 },
                 "image": {
                     "type": "string",
-                    "description": "The ID of the image to back this container. The easiest way to get this value is to use the `docker.RemoteImage` resource as is shown in the example.\n"
+                    "description": "The ID of the image to back this container. The easiest way to get this value is to use the `docker_image` resource as\nis shown in the example.\n"
                 },
                 "init": {
                     "type": "boolean",
-                    "description": "Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.\n"
+                    "description": "Configured whether an init process should be injected for this container. If unset this will default to the `dockerd`\ndefaults.\n"
                 },
                 "ipAddress": {
                     "type": "string",
@@ -3138,7 +3000,7 @@
                 },
                 "ipcMode": {
                     "type": "string",
-                    "description": "IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:\u003cname|id\u003e` or `host`.\n"
+                    "description": "IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:\u003cname|id\u003e` or\n`host`.\n"
                 },
                 "labels": {
                     "type": "array",
@@ -3266,12 +3128,16 @@
                     "type": "boolean",
                     "description": "If `true`, then the container will be automatically removed when it exits. Defaults to `false`.\n"
                 },
+                "runtime": {
+                    "type": "string",
+                    "description": "Runtime to use for the container.\n"
+                },
                 "securityOpts": {
                     "type": "array",
                     "items": {
                         "type": "string"
                     },
-                    "description": "List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.\n"
+                    "description": "List of string values to customize labels for MLS systems, such as SELinux. See\nhttps://docs.docker.com/engine/reference/run/#security-configuration.\n"
                 },
                 "shmSize": {
                     "type": "integer",
@@ -3279,11 +3145,19 @@
                 },
                 "start": {
                     "type": "boolean",
-                    "description": "If `true`, then the Docker container will be started after creation. If `false`, then the container is only created. Defaults to `true`.\n"
+                    "description": "If `true`, then the Docker container will be started after creation. If `false`, then the container is only created.\nDefaults to `true`.\n"
                 },
                 "stdinOpen": {
                     "type": "boolean",
                     "description": "If `true`, keep STDIN open even if not attached (`docker run -i`). Defaults to `false`.\n"
+                },
+                "stopSignal": {
+                    "type": "string",
+                    "description": "Signal to stop a container (default `SIGTERM`).\n"
+                },
+                "stopTimeout": {
+                    "type": "integer",
+                    "description": "Timeout (in seconds) to stop a container.\n"
                 },
                 "storageOpts": {
                     "type": "object",
@@ -3322,11 +3196,11 @@
                     "items": {
                         "$ref": "#/types/docker:index/ContainerUpload:ContainerUpload"
                     },
-                    "description": "Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and at least one of them has to be set.\n"
+                    "description": "Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and\nat least one of them has to be set.\n"
                 },
                 "user": {
                     "type": "string",
-                    "description": "User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.\n"
+                    "description": "User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by\nname.\n"
                 },
                 "usernsMode": {
                     "type": "string",
@@ -3363,8 +3237,11 @@
                 "logDriver",
                 "name",
                 "networkDatas",
+                "runtime",
                 "securityOpts",
-                "shmSize"
+                "shmSize",
+                "stopSignal",
+                "stopTimeout"
             ],
             "inputProperties": {
                 "attach": {
@@ -3380,7 +3257,7 @@
                     "items": {
                         "type": "string"
                     },
-                    "description": "The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[\"/usr/bin/myprogram\",\"-\",\"baz.con\"]`.\n"
+                    "description": "The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be\n`[\"/usr/bin/myprogram\",\"-\",\"baz.con\"]`.\n"
                 },
                 "cpuSet": {
                     "type": "string",
@@ -3392,7 +3269,7 @@
                 },
                 "destroyGraceSeconds": {
                     "type": "integer",
-                    "description": "If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.\n"
+                    "description": "If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on\nsuccessful stop.\n"
                 },
                 "devices": {
                     "type": "array",
@@ -3431,7 +3308,7 @@
                     "items": {
                         "type": "string"
                     },
-                    "description": "The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `\"/usr/bin/myprogra\"]`.\n"
+                    "description": "The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an\nexecutable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be\n`\"/usr/bin/myprogra\"]`.\n"
                 },
                 "envs": {
                     "type": "array",
@@ -3439,6 +3316,10 @@
                         "type": "string"
                     },
                     "description": "Environment variables to set in the form of `KEY=VALUE`, e.g. `DEBUG=0`\n"
+                },
+                "gpus": {
+                    "type": "string",
+                    "description": "GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result\nin unexpected behavior.\n"
                 },
                 "groupAdds": {
                     "type": "array",
@@ -3464,15 +3345,15 @@
                 },
                 "image": {
                     "type": "string",
-                    "description": "The ID of the image to back this container. The easiest way to get this value is to use the `docker.RemoteImage` resource as is shown in the example.\n"
+                    "description": "The ID of the image to back this container. The easiest way to get this value is to use the `docker_image` resource as\nis shown in the example.\n"
                 },
                 "init": {
                     "type": "boolean",
-                    "description": "Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.\n"
+                    "description": "Configured whether an init process should be injected for this container. If unset this will default to the `dockerd`\ndefaults.\n"
                 },
                 "ipcMode": {
                     "type": "string",
-                    "description": "IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:\u003cname|id\u003e` or `host`.\n"
+                    "description": "IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:\u003cname|id\u003e` or\n`host`.\n"
                 },
                 "labels": {
                     "type": "array",
@@ -3593,12 +3474,16 @@
                     "type": "boolean",
                     "description": "If `true`, then the container will be automatically removed when it exits. Defaults to `false`.\n"
                 },
+                "runtime": {
+                    "type": "string",
+                    "description": "Runtime to use for the container.\n"
+                },
                 "securityOpts": {
                     "type": "array",
                     "items": {
                         "type": "string"
                     },
-                    "description": "List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.\n"
+                    "description": "List of string values to customize labels for MLS systems, such as SELinux. See\nhttps://docs.docker.com/engine/reference/run/#security-configuration.\n"
                 },
                 "shmSize": {
                     "type": "integer",
@@ -3606,11 +3491,19 @@
                 },
                 "start": {
                     "type": "boolean",
-                    "description": "If `true`, then the Docker container will be started after creation. If `false`, then the container is only created. Defaults to `true`.\n"
+                    "description": "If `true`, then the Docker container will be started after creation. If `false`, then the container is only created.\nDefaults to `true`.\n"
                 },
                 "stdinOpen": {
                     "type": "boolean",
                     "description": "If `true`, keep STDIN open even if not attached (`docker run -i`). Defaults to `false`.\n"
+                },
+                "stopSignal": {
+                    "type": "string",
+                    "description": "Signal to stop a container (default `SIGTERM`).\n"
+                },
+                "stopTimeout": {
+                    "type": "integer",
+                    "description": "Timeout (in seconds) to stop a container.\n"
                 },
                 "storageOpts": {
                     "type": "object",
@@ -3649,11 +3542,11 @@
                     "items": {
                         "$ref": "#/types/docker:index/ContainerUpload:ContainerUpload"
                     },
-                    "description": "Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and at least one of them has to be set.\n"
+                    "description": "Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and\nat least one of them has to be set.\n"
                 },
                 "user": {
                     "type": "string",
-                    "description": "User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.\n"
+                    "description": "User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by\nname.\n"
                 },
                 "usernsMode": {
                     "type": "string",
@@ -3694,7 +3587,7 @@
                         "items": {
                             "type": "string"
                         },
-                        "description": "The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[\"/usr/bin/myprogram\",\"-\",\"baz.con\"]`.\n"
+                        "description": "The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be\n`[\"/usr/bin/myprogram\",\"-\",\"baz.con\"]`.\n"
                     },
                     "containerLogs": {
                         "type": "string",
@@ -3710,7 +3603,7 @@
                     },
                     "destroyGraceSeconds": {
                         "type": "integer",
-                        "description": "If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.\n"
+                        "description": "If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on\nsuccessful stop.\n"
                     },
                     "devices": {
                         "type": "array",
@@ -3749,7 +3642,7 @@
                         "items": {
                             "type": "string"
                         },
-                        "description": "The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `\"/usr/bin/myprogra\"]`.\n"
+                        "description": "The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an\nexecutable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be\n`\"/usr/bin/myprogra\"]`.\n"
                     },
                     "envs": {
                         "type": "array",
@@ -3766,6 +3659,10 @@
                         "type": "string",
                         "description": "The network gateway of the container.\n",
                         "deprecationMessage": "Use `network_data` instead. The network gateway of the container as read from its NetworkSettings."
+                    },
+                    "gpus": {
+                        "type": "string",
+                        "description": "GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result\nin unexpected behavior.\n"
                     },
                     "groupAdds": {
                         "type": "array",
@@ -3791,11 +3688,11 @@
                     },
                     "image": {
                         "type": "string",
-                        "description": "The ID of the image to back this container. The easiest way to get this value is to use the `docker.RemoteImage` resource as is shown in the example.\n"
+                        "description": "The ID of the image to back this container. The easiest way to get this value is to use the `docker_image` resource as\nis shown in the example.\n"
                     },
                     "init": {
                         "type": "boolean",
-                        "description": "Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.\n"
+                        "description": "Configured whether an init process should be injected for this container. If unset this will default to the `dockerd`\ndefaults.\n"
                     },
                     "ipAddress": {
                         "type": "string",
@@ -3809,7 +3706,7 @@
                     },
                     "ipcMode": {
                         "type": "string",
-                        "description": "IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:\u003cname|id\u003e` or `host`.\n"
+                        "description": "IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:\u003cname|id\u003e` or\n`host`.\n"
                     },
                     "labels": {
                         "type": "array",
@@ -3937,12 +3834,16 @@
                         "type": "boolean",
                         "description": "If `true`, then the container will be automatically removed when it exits. Defaults to `false`.\n"
                     },
+                    "runtime": {
+                        "type": "string",
+                        "description": "Runtime to use for the container.\n"
+                    },
                     "securityOpts": {
                         "type": "array",
                         "items": {
                             "type": "string"
                         },
-                        "description": "List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.\n"
+                        "description": "List of string values to customize labels for MLS systems, such as SELinux. See\nhttps://docs.docker.com/engine/reference/run/#security-configuration.\n"
                     },
                     "shmSize": {
                         "type": "integer",
@@ -3950,11 +3851,19 @@
                     },
                     "start": {
                         "type": "boolean",
-                        "description": "If `true`, then the Docker container will be started after creation. If `false`, then the container is only created. Defaults to `true`.\n"
+                        "description": "If `true`, then the Docker container will be started after creation. If `false`, then the container is only created.\nDefaults to `true`.\n"
                     },
                     "stdinOpen": {
                         "type": "boolean",
                         "description": "If `true`, keep STDIN open even if not attached (`docker run -i`). Defaults to `false`.\n"
+                    },
+                    "stopSignal": {
+                        "type": "string",
+                        "description": "Signal to stop a container (default `SIGTERM`).\n"
+                    },
+                    "stopTimeout": {
+                        "type": "integer",
+                        "description": "Timeout (in seconds) to stop a container.\n"
                     },
                     "storageOpts": {
                         "type": "object",
@@ -3993,11 +3902,11 @@
                         "items": {
                             "$ref": "#/types/docker:index/ContainerUpload:ContainerUpload"
                         },
-                        "description": "Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and at least one of them has to be set.\n"
+                        "description": "Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and\nat least one of them has to be set.\n"
                     },
                     "user": {
                         "type": "string",
-                        "description": "User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.\n"
+                        "description": "User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by\nname.\n"
                     },
                     "usernsMode": {
                         "type": "string",
@@ -4031,7 +3940,7 @@
                 },
                 "driver": {
                     "type": "string",
-                    "description": "The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.\n"
+                    "description": "The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network\ndocs](https://docs.docker.com/network/#network-drivers) for more details.\n"
                 },
                 "ingress": {
                     "type": "boolean",
@@ -4072,7 +3981,7 @@
                     "additionalProperties": {
                         "$ref": "pulumi.json#/Any"
                     },
-                    "description": "Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.\n"
+                    "description": "Only available with bridge networks. See [bridge options\ndocs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.\n"
                 },
                 "scope": {
                     "type": "string",
@@ -4098,7 +4007,7 @@
                 },
                 "driver": {
                     "type": "string",
-                    "description": "The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.\n"
+                    "description": "The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network\ndocs](https://docs.docker.com/network/#network-drivers) for more details.\n"
                 },
                 "ingress": {
                     "type": "boolean",
@@ -4139,7 +4048,7 @@
                     "additionalProperties": {
                         "$ref": "pulumi.json#/Any"
                     },
-                    "description": "Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.\n"
+                    "description": "Only available with bridge networks. See [bridge options\ndocs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.\n"
                 }
             },
             "stateInputs": {
@@ -4155,7 +4064,7 @@
                     },
                     "driver": {
                         "type": "string",
-                        "description": "The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.\n"
+                        "description": "The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network\ndocs](https://docs.docker.com/network/#network-drivers) for more details.\n"
                     },
                     "ingress": {
                         "type": "boolean",
@@ -4196,7 +4105,7 @@
                         "additionalProperties": {
                             "$ref": "pulumi.json#/Any"
                         },
-                        "description": "Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.\n"
+                        "description": "Only available with bridge networks. See [bridge options\ndocs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.\n"
                     },
                     "scope": {
                         "type": "string",
@@ -4372,7 +4281,7 @@
                 },
                 "keepRemotely": {
                     "type": "boolean",
-                    "description": "If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`\n"
+                    "description": "If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from\nthe docker registry on destroy operation. Defaults to `false`\n"
                 },
                 "name": {
                     "type": "string",
@@ -4398,7 +4307,7 @@
                 },
                 "keepRemotely": {
                     "type": "boolean",
-                    "description": "If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`\n"
+                    "description": "If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from\nthe docker registry on destroy operation. Defaults to `false`\n"
                 },
                 "name": {
                     "type": "string",
@@ -4418,7 +4327,7 @@
                     },
                     "keepRemotely": {
                         "type": "boolean",
-                        "description": "If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`\n"
+                        "description": "If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from\nthe docker registry on destroy operation. Defaults to `false`\n"
                     },
                     "name": {
                         "type": "string",
@@ -4437,7 +4346,7 @@
             "properties": {
                 "build": {
                     "$ref": "#/types/docker:index/RemoteImageBuild:RemoteImageBuild",
-                    "description": "Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.\n"
+                    "description": "Configuration to build an image. Please see [docker build command\nreference](https://docs.docker.com/engine/reference/commandline/build/#options) too.\n"
                 },
                 "forceRemove": {
                     "type": "boolean",
@@ -4445,7 +4354,7 @@
                 },
                 "keepLocally": {
                     "type": "boolean",
-                    "description": "If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.\n"
+                    "description": "If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from\nthe docker local storage on destroy operation.\n"
                 },
                 "latest": {
                     "type": "string",
@@ -4470,7 +4379,7 @@
                     "items": {
                         "type": "string"
                     },
-                    "description": "List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.\n"
+                    "description": "List of values which cause an image pull when changed. This is used to store the image digest from the registry when\nusing the [docker_registry_image](../data-sources/registry_image.md).\n"
                 },
                 "repoDigest": {
                     "type": "string",
@@ -4486,7 +4395,7 @@
             "inputProperties": {
                 "build": {
                     "$ref": "#/types/docker:index/RemoteImageBuild:RemoteImageBuild",
-                    "description": "Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.\n"
+                    "description": "Configuration to build an image. Please see [docker build command\nreference](https://docs.docker.com/engine/reference/commandline/build/#options) too.\n"
                 },
                 "forceRemove": {
                     "type": "boolean",
@@ -4494,7 +4403,7 @@
                 },
                 "keepLocally": {
                     "type": "boolean",
-                    "description": "If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.\n"
+                    "description": "If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from\nthe docker local storage on destroy operation.\n"
                 },
                 "name": {
                     "type": "string",
@@ -4510,7 +4419,7 @@
                     "items": {
                         "type": "string"
                     },
-                    "description": "List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.\n"
+                    "description": "List of values which cause an image pull when changed. This is used to store the image digest from the registry when\nusing the [docker_registry_image](../data-sources/registry_image.md).\n"
                 }
             },
             "requiredInputs": [
@@ -4521,7 +4430,7 @@
                 "properties": {
                     "build": {
                         "$ref": "#/types/docker:index/RemoteImageBuild:RemoteImageBuild",
-                        "description": "Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.\n"
+                        "description": "Configuration to build an image. Please see [docker build command\nreference](https://docs.docker.com/engine/reference/commandline/build/#options) too.\n"
                     },
                     "forceRemove": {
                         "type": "boolean",
@@ -4529,7 +4438,7 @@
                     },
                     "keepLocally": {
                         "type": "boolean",
-                        "description": "If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.\n"
+                        "description": "If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from\nthe docker local storage on destroy operation.\n"
                     },
                     "latest": {
                         "type": "string",
@@ -4554,7 +4463,7 @@
                         "items": {
                             "type": "string"
                         },
-                        "description": "List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.\n"
+                        "description": "List of values which cause an image pull when changed. This is used to store the image digest from the registry when\nusing the [docker_registry_image](../data-sources/registry_image.md).\n"
                     },
                     "repoDigest": {
                         "type": "string",
@@ -4913,8 +4822,7 @@
                 "description": "A collection of arguments for invoking getNetwork.\n",
                 "properties": {
                     "name": {
-                        "type": "string",
-                        "description": "The name of the Docker network.\n"
+                        "type": "string"
                     }
                 },
                 "type": "object",
@@ -4926,38 +4834,31 @@
                 "description": "A collection of values returned by getNetwork.\n",
                 "properties": {
                     "driver": {
-                        "type": "string",
-                        "description": "The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.\n"
+                        "type": "string"
                     },
                     "id": {
-                        "type": "string",
-                        "description": "The ID of this resource.\n"
+                        "type": "string"
                     },
                     "internal": {
-                        "type": "boolean",
-                        "description": "If `true`, the network is internal.\n"
+                        "type": "boolean"
                     },
                     "ipamConfigs": {
                         "type": "array",
                         "items": {
                             "$ref": "#/types/docker:index/getNetworkIpamConfig:getNetworkIpamConfig"
-                        },
-                        "description": "The IPAM configuration options\n"
+                        }
                     },
                     "name": {
-                        "type": "string",
-                        "description": "The name of the Docker network.\n"
+                        "type": "string"
                     },
                     "options": {
                         "type": "object",
                         "additionalProperties": {
                             "$ref": "pulumi.json#/Any"
-                        },
-                        "description": "Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.\n"
+                        }
                     },
                     "scope": {
-                        "type": "string",
-                        "description": "Scope of the network. One of `swarm`, `global`, or `local`.\n"
+                        "type": "string"
                     }
                 },
                 "type": "object",
@@ -4978,12 +4879,10 @@
                 "description": "A collection of arguments for invoking getPlugin.\n",
                 "properties": {
                     "alias": {
-                        "type": "string",
-                        "description": "The alias of the Docker plugin. If the tag is omitted, `:latest` is complemented to the attribute value.\n"
+                        "type": "string"
                     },
                     "id": {
-                        "type": "string",
-                        "description": "The ID of the plugin, which has precedence over the `alias` of both are given\n"
+                        "type": "string"
                     }
                 },
                 "type": "object"
@@ -4992,35 +4891,28 @@
                 "description": "A collection of values returned by getPlugin.\n",
                 "properties": {
                     "alias": {
-                        "type": "string",
-                        "description": "The alias of the Docker plugin. If the tag is omitted, `:latest` is complemented to the attribute value.\n"
+                        "type": "string"
                     },
                     "enabled": {
-                        "type": "boolean",
-                        "description": "If `true` the plugin is enabled\n"
+                        "type": "boolean"
                     },
                     "envs": {
                         "type": "array",
                         "items": {
                             "type": "string"
-                        },
-                        "description": "The environment variables in the form of `KEY=VALUE`, e.g. `DEBUG=0`\n"
+                        }
                     },
                     "grantAllPermissions": {
-                        "type": "boolean",
-                        "description": "If true, grant all permissions necessary to run the plugin\n"
+                        "type": "boolean"
                     },
                     "id": {
-                        "type": "string",
-                        "description": "The ID of the plugin, which has precedence over the `alias` of both are given\n"
+                        "type": "string"
                     },
                     "name": {
-                        "type": "string",
-                        "description": "The plugin name. If the tag is omitted, `:latest` is complemented to the attribute value.\n"
+                        "type": "string"
                     },
                     "pluginReference": {
-                        "type": "string",
-                        "description": "The Docker Plugin Reference\n"
+                        "type": "string"
                     }
                 },
                 "type": "object",
@@ -5039,12 +4931,10 @@
                 "description": "A collection of arguments for invoking getRegistryImage.\n",
                 "properties": {
                     "insecureSkipVerify": {
-                        "type": "boolean",
-                        "description": "If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`\n"
+                        "type": "boolean"
                     },
                     "name": {
-                        "type": "string",
-                        "description": "The name of the Docker image, including any tags. e.g. `alpine:latest`\n"
+                        "type": "string"
                     }
                 },
                 "type": "object",
@@ -5060,16 +4950,13 @@
                         "description": "The provider-assigned unique ID for this managed resource.\n"
                     },
                     "insecureSkipVerify": {
-                        "type": "boolean",
-                        "description": "If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`\n"
+                        "type": "boolean"
                     },
                     "name": {
-                        "type": "string",
-                        "description": "The name of the Docker image, including any tags. e.g. `alpine:latest`\n"
+                        "type": "string"
                     },
                     "sha256Digest": {
-                        "type": "string",
-                        "description": "The content digest of the image, as stored in the registry.\n"
+                        "type": "string"
                     }
                 },
                 "type": "object",
@@ -5086,8 +4973,7 @@
                 "description": "A collection of arguments for invoking getRemoteImage.\n",
                 "properties": {
                     "name": {
-                        "type": "string",
-                        "description": "The name of the Docker image, including any tags or SHA256 repo digests.\n"
+                        "type": "string"
                     }
                 },
                 "type": "object",
@@ -5103,12 +4989,10 @@
                         "description": "The provider-assigned unique ID for this managed resource.\n"
                     },
                     "name": {
-                        "type": "string",
-                        "description": "The name of the Docker image, including any tags or SHA256 repo digests.\n"
+                        "type": "string"
                     },
                     "repoDigest": {
-                        "type": "string",
-                        "description": "The image sha256 digest in the form of `repo[:tag]@sha256:\u003chash\u003e`. It may be empty in the edge case where the local image was pulled from a repo, tagged locally, and then referred to in the data source by that local name/tag.\n"
+                        "type": "string"
                     }
                 },
                 "type": "object",

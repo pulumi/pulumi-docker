@@ -73,9 +73,6 @@ namespace Pulumi.Docker
 
     public sealed class GetNetworkArgs : Pulumi.InvokeArgs
     {
-        /// <summary>
-        /// The name of the Docker network.
-        /// </summary>
         [Input("name", required: true)]
         public string Name { get; set; } = null!;
 
@@ -86,9 +83,6 @@ namespace Pulumi.Docker
 
     public sealed class GetNetworkInvokeArgs : Pulumi.InvokeArgs
     {
-        /// <summary>
-        /// The name of the Docker network.
-        /// </summary>
         [Input("name", required: true)]
         public Input<string> Name { get; set; } = null!;
 
@@ -101,33 +95,12 @@ namespace Pulumi.Docker
     [OutputType]
     public sealed class GetNetworkResult
     {
-        /// <summary>
-        /// The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
-        /// </summary>
         public readonly string Driver;
-        /// <summary>
-        /// The ID of this resource.
-        /// </summary>
         public readonly string Id;
-        /// <summary>
-        /// If `true`, the network is internal.
-        /// </summary>
         public readonly bool Internal;
-        /// <summary>
-        /// The IPAM configuration options
-        /// </summary>
         public readonly ImmutableArray<Outputs.GetNetworkIpamConfigResult> IpamConfigs;
-        /// <summary>
-        /// The name of the Docker network.
-        /// </summary>
         public readonly string Name;
-        /// <summary>
-        /// Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
-        /// </summary>
         public readonly ImmutableDictionary<string, object> Options;
-        /// <summary>
-        /// Scope of the network. One of `swarm`, `global`, or `local`.
-        /// </summary>
         public readonly string Scope;
 
         [OutputConstructor]

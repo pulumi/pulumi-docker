@@ -13,13 +13,7 @@ namespace Pulumi.Docker.Outputs
     [OutputType]
     public sealed class ContainerHost
     {
-        /// <summary>
-        /// Hostname to add
-        /// </summary>
         public readonly string Host;
-        /// <summary>
-        /// IP address this hostname should resolve to.
-        /// </summary>
         public readonly string Ip;
 
         [OutputConstructor]

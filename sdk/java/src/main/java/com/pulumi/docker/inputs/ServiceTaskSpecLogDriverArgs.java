@@ -16,17 +16,9 @@ public final class ServiceTaskSpecLogDriverArgs extends com.pulumi.resources.Res
 
     public static final ServiceTaskSpecLogDriverArgs Empty = new ServiceTaskSpecLogDriverArgs();
 
-    /**
-     * Name of the service
-     * 
-     */
     @Import(name="name", required=true)
     private Output<String> name;
 
-    /**
-     * @return Name of the service
-     * 
-     */
     public Output<String> name() {
         return this.name;
     }
@@ -63,23 +55,11 @@ public final class ServiceTaskSpecLogDriverArgs extends com.pulumi.resources.Res
             $ = new ServiceTaskSpecLogDriverArgs(Objects.requireNonNull(defaults));
         }
 
-        /**
-         * @param name Name of the service
-         * 
-         * @return builder
-         * 
-         */
         public Builder name(Output<String> name) {
             $.name = name;
             return this;
         }
 
-        /**
-         * @param name Name of the service
-         * 
-         * @return builder
-         * 
-         */
         public Builder name(String name) {
             return name(Output.of(name));
         }
