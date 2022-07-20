@@ -54,22 +54,17 @@ func LookupRegistryImage(ctx *pulumi.Context, args *LookupRegistryImageArgs, opt
 
 // A collection of arguments for invoking getRegistryImage.
 type LookupRegistryImageArgs struct {
-	// If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
-	InsecureSkipVerify *bool `pulumi:"insecureSkipVerify"`
-	// The name of the Docker image, including any tags. e.g. `alpine:latest`
-	Name string `pulumi:"name"`
+	InsecureSkipVerify *bool  `pulumi:"insecureSkipVerify"`
+	Name               string `pulumi:"name"`
 }
 
 // A collection of values returned by getRegistryImage.
 type LookupRegistryImageResult struct {
 	// The provider-assigned unique ID for this managed resource.
-	Id string `pulumi:"id"`
-	// If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
-	InsecureSkipVerify *bool `pulumi:"insecureSkipVerify"`
-	// The name of the Docker image, including any tags. e.g. `alpine:latest`
-	Name string `pulumi:"name"`
-	// The content digest of the image, as stored in the registry.
-	Sha256Digest string `pulumi:"sha256Digest"`
+	Id                 string `pulumi:"id"`
+	InsecureSkipVerify *bool  `pulumi:"insecureSkipVerify"`
+	Name               string `pulumi:"name"`
+	Sha256Digest       string `pulumi:"sha256Digest"`
 }
 
 func LookupRegistryImageOutput(ctx *pulumi.Context, args LookupRegistryImageOutputArgs, opts ...pulumi.InvokeOption) LookupRegistryImageResultOutput {
@@ -87,10 +82,8 @@ func LookupRegistryImageOutput(ctx *pulumi.Context, args LookupRegistryImageOutp
 
 // A collection of arguments for invoking getRegistryImage.
 type LookupRegistryImageOutputArgs struct {
-	// If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
 	InsecureSkipVerify pulumi.BoolPtrInput `pulumi:"insecureSkipVerify"`
-	// The name of the Docker image, including any tags. e.g. `alpine:latest`
-	Name pulumi.StringInput `pulumi:"name"`
+	Name               pulumi.StringInput  `pulumi:"name"`
 }
 
 func (LookupRegistryImageOutputArgs) ElementType() reflect.Type {
@@ -117,17 +110,14 @@ func (o LookupRegistryImageResultOutput) Id() pulumi.StringOutput {
 	return o.ApplyT(func(v LookupRegistryImageResult) string { return v.Id }).(pulumi.StringOutput)
 }
 
-// If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
 func (o LookupRegistryImageResultOutput) InsecureSkipVerify() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v LookupRegistryImageResult) *bool { return v.InsecureSkipVerify }).(pulumi.BoolPtrOutput)
 }
 
-// The name of the Docker image, including any tags. e.g. `alpine:latest`
 func (o LookupRegistryImageResultOutput) Name() pulumi.StringOutput {
 	return o.ApplyT(func(v LookupRegistryImageResult) string { return v.Name }).(pulumi.StringOutput)
 }
 
-// The content digest of the image, as stored in the registry.
 func (o LookupRegistryImageResultOutput) Sha256Digest() pulumi.StringOutput {
 	return o.ApplyT(func(v LookupRegistryImageResult) string { return v.Sha256Digest }).(pulumi.StringOutput)
 }

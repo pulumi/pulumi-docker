@@ -114,14 +114,16 @@ import javax.annotation.Nullable;
 @ResourceType(type="docker:index/remoteImage:RemoteImage")
 public class RemoteImage extends com.pulumi.resources.CustomResource {
     /**
-     * Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+     * Configuration to build an image. Please see [docker build command
+     * reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
      * 
      */
     @Export(name="build", type=RemoteImageBuild.class, parameters={})
     private Output</* @Nullable */ RemoteImageBuild> build;
 
     /**
-     * @return Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+     * @return Configuration to build an image. Please see [docker build command
+     * reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
      * 
      */
     public Output<Optional<RemoteImageBuild>> build() {
@@ -142,14 +144,16 @@ public class RemoteImage extends com.pulumi.resources.CustomResource {
         return Codegen.optional(this.forceRemove);
     }
     /**
-     * If true, then the Docker image won&#39;t be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
+     * If true, then the Docker image won&#39;t be deleted on destroy operation. If this is false, it will delete the image from
+     * the docker local storage on destroy operation.
      * 
      */
     @Export(name="keepLocally", type=Boolean.class, parameters={})
     private Output</* @Nullable */ Boolean> keepLocally;
 
     /**
-     * @return If true, then the Docker image won&#39;t be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
+     * @return If true, then the Docker image won&#39;t be deleted on destroy operation. If this is false, it will delete the image from
+     * the docker local storage on destroy operation.
      * 
      */
     public Output<Optional<Boolean>> keepLocally() {
@@ -218,14 +222,16 @@ public class RemoteImage extends com.pulumi.resources.CustomResource {
         return Codegen.optional(this.pullTrigger);
     }
     /**
-     * List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
+     * List of values which cause an image pull when changed. This is used to store the image digest from the registry when
+     * using the [docker_registry_image](../data-sources/registry_image.md).
      * 
      */
     @Export(name="pullTriggers", type=List.class, parameters={String.class})
     private Output</* @Nullable */ List<String>> pullTriggers;
 
     /**
-     * @return List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
+     * @return List of values which cause an image pull when changed. This is used to store the image digest from the registry when
+     * using the [docker_registry_image](../data-sources/registry_image.md).
      * 
      */
     public Output<Optional<List<String>>> pullTriggers() {

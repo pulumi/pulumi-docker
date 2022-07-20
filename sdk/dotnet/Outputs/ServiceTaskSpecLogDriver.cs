@@ -13,9 +13,6 @@ namespace Pulumi.Docker.Outputs
     [OutputType]
     public sealed class ServiceTaskSpecLogDriver
     {
-        /// <summary>
-        /// Name of the service
-        /// </summary>
         public readonly string Name;
         public readonly ImmutableDictionary<string, string>? Options;
 

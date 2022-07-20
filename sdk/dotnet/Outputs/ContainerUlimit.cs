@@ -13,17 +13,8 @@ namespace Pulumi.Docker.Outputs
     [OutputType]
     public sealed class ContainerUlimit
     {
-        /// <summary>
-        /// The hard limit
-        /// </summary>
         public readonly int Hard;
-        /// <summary>
-        /// The name of the ulimit
-        /// </summary>
         public readonly string Name;
-        /// <summary>
-        /// The soft limit
-        /// </summary>
         public readonly int Soft;
 
         [OutputConstructor]

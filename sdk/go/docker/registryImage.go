@@ -48,7 +48,8 @@ type RegistryImage struct {
 	Build RegistryImageBuildPtrOutput `pulumi:"build"`
 	// If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
 	InsecureSkipVerify pulumi.BoolPtrOutput `pulumi:"insecureSkipVerify"`
-	// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
+	// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from
+	// the docker registry on destroy operation. Defaults to `false`
 	KeepRemotely pulumi.BoolPtrOutput `pulumi:"keepRemotely"`
 	// The name of the Docker image.
 	Name pulumi.StringOutput `pulumi:"name"`
@@ -89,7 +90,8 @@ type registryImageState struct {
 	Build *RegistryImageBuild `pulumi:"build"`
 	// If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
 	InsecureSkipVerify *bool `pulumi:"insecureSkipVerify"`
-	// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
+	// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from
+	// the docker registry on destroy operation. Defaults to `false`
 	KeepRemotely *bool `pulumi:"keepRemotely"`
 	// The name of the Docker image.
 	Name *string `pulumi:"name"`
@@ -102,7 +104,8 @@ type RegistryImageState struct {
 	Build RegistryImageBuildPtrInput
 	// If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
 	InsecureSkipVerify pulumi.BoolPtrInput
-	// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
+	// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from
+	// the docker registry on destroy operation. Defaults to `false`
 	KeepRemotely pulumi.BoolPtrInput
 	// The name of the Docker image.
 	Name pulumi.StringPtrInput
@@ -119,7 +122,8 @@ type registryImageArgs struct {
 	Build *RegistryImageBuild `pulumi:"build"`
 	// If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
 	InsecureSkipVerify *bool `pulumi:"insecureSkipVerify"`
-	// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
+	// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from
+	// the docker registry on destroy operation. Defaults to `false`
 	KeepRemotely *bool `pulumi:"keepRemotely"`
 	// The name of the Docker image.
 	Name *string `pulumi:"name"`
@@ -131,7 +135,8 @@ type RegistryImageArgs struct {
 	Build RegistryImageBuildPtrInput
 	// If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
 	InsecureSkipVerify pulumi.BoolPtrInput
-	// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
+	// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from
+	// the docker registry on destroy operation. Defaults to `false`
 	KeepRemotely pulumi.BoolPtrInput
 	// The name of the Docker image.
 	Name pulumi.StringPtrInput
@@ -234,7 +239,8 @@ func (o RegistryImageOutput) InsecureSkipVerify() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *RegistryImage) pulumi.BoolPtrOutput { return v.InsecureSkipVerify }).(pulumi.BoolPtrOutput)
 }
 
-// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
+// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from
+// the docker registry on destroy operation. Defaults to `false`
 func (o RegistryImageOutput) KeepRemotely() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *RegistryImage) pulumi.BoolPtrOutput { return v.KeepRemotely }).(pulumi.BoolPtrOutput)
 }

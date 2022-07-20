@@ -13,17 +13,9 @@ public final class GetNetworkArgs extends com.pulumi.resources.InvokeArgs {
 
     public static final GetNetworkArgs Empty = new GetNetworkArgs();
 
-    /**
-     * The name of the Docker network.
-     * 
-     */
     @Import(name="name", required=true)
     private Output<String> name;
 
-    /**
-     * @return The name of the Docker network.
-     * 
-     */
     public Output<String> name() {
         return this.name;
     }
@@ -52,23 +44,11 @@ public final class GetNetworkArgs extends com.pulumi.resources.InvokeArgs {
             $ = new GetNetworkArgs(Objects.requireNonNull(defaults));
         }
 
-        /**
-         * @param name The name of the Docker network.
-         * 
-         * @return builder
-         * 
-         */
         public Builder name(Output<String> name) {
             $.name = name;
             return this;
         }
 
-        /**
-         * @param name The name of the Docker network.
-         * 
-         * @return builder
-         * 
-         */
         public Builder name(String name) {
             return name(Output.of(name));
         }

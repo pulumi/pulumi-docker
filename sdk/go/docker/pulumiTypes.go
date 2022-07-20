@@ -11,9 +11,7 @@ import (
 )
 
 type ContainerCapabilities struct {
-	// List of linux capabilities to add.
-	Adds []string `pulumi:"adds"`
-	// List of linux capabilities to drop.
+	Adds  []string `pulumi:"adds"`
 	Drops []string `pulumi:"drops"`
 }
 
@@ -29,9 +27,7 @@ type ContainerCapabilitiesInput interface {
 }
 
 type ContainerCapabilitiesArgs struct {
-	// List of linux capabilities to add.
-	Adds pulumi.StringArrayInput `pulumi:"adds"`
-	// List of linux capabilities to drop.
+	Adds  pulumi.StringArrayInput `pulumi:"adds"`
 	Drops pulumi.StringArrayInput `pulumi:"drops"`
 }
 
@@ -112,12 +108,10 @@ func (o ContainerCapabilitiesOutput) ToContainerCapabilitiesPtrOutputWithContext
 	}).(ContainerCapabilitiesPtrOutput)
 }
 
-// List of linux capabilities to add.
 func (o ContainerCapabilitiesOutput) Adds() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v ContainerCapabilities) []string { return v.Adds }).(pulumi.StringArrayOutput)
 }
 
-// List of linux capabilities to drop.
 func (o ContainerCapabilitiesOutput) Drops() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v ContainerCapabilities) []string { return v.Drops }).(pulumi.StringArrayOutput)
 }
@@ -146,7 +140,6 @@ func (o ContainerCapabilitiesPtrOutput) Elem() ContainerCapabilitiesOutput {
 	}).(ContainerCapabilitiesOutput)
 }
 
-// List of linux capabilities to add.
 func (o ContainerCapabilitiesPtrOutput) Adds() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v *ContainerCapabilities) []string {
 		if v == nil {
@@ -156,7 +149,6 @@ func (o ContainerCapabilitiesPtrOutput) Adds() pulumi.StringArrayOutput {
 	}).(pulumi.StringArrayOutput)
 }
 
-// List of linux capabilities to drop.
 func (o ContainerCapabilitiesPtrOutput) Drops() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v *ContainerCapabilities) []string {
 		if v == nil {
@@ -167,12 +159,9 @@ func (o ContainerCapabilitiesPtrOutput) Drops() pulumi.StringArrayOutput {
 }
 
 type ContainerDevice struct {
-	// The path in the container where the device will be bound.
 	ContainerPath *string `pulumi:"containerPath"`
-	// The path on the host where the device is located.
-	HostPath string `pulumi:"hostPath"`
-	// The cgroup permissions given to the container to access the device. Defaults to `rwm`.
-	Permissions *string `pulumi:"permissions"`
+	HostPath      string  `pulumi:"hostPath"`
+	Permissions   *string `pulumi:"permissions"`
 }
 
 // ContainerDeviceInput is an input type that accepts ContainerDeviceArgs and ContainerDeviceOutput values.
@@ -187,12 +176,9 @@ type ContainerDeviceInput interface {
 }
 
 type ContainerDeviceArgs struct {
-	// The path in the container where the device will be bound.
 	ContainerPath pulumi.StringPtrInput `pulumi:"containerPath"`
-	// The path on the host where the device is located.
-	HostPath pulumi.StringInput `pulumi:"hostPath"`
-	// The cgroup permissions given to the container to access the device. Defaults to `rwm`.
-	Permissions pulumi.StringPtrInput `pulumi:"permissions"`
+	HostPath      pulumi.StringInput    `pulumi:"hostPath"`
+	Permissions   pulumi.StringPtrInput `pulumi:"permissions"`
 }
 
 func (ContainerDeviceArgs) ElementType() reflect.Type {
@@ -246,17 +232,14 @@ func (o ContainerDeviceOutput) ToContainerDeviceOutputWithContext(ctx context.Co
 	return o
 }
 
-// The path in the container where the device will be bound.
 func (o ContainerDeviceOutput) ContainerPath() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ContainerDevice) *string { return v.ContainerPath }).(pulumi.StringPtrOutput)
 }
 
-// The path on the host where the device is located.
 func (o ContainerDeviceOutput) HostPath() pulumi.StringOutput {
 	return o.ApplyT(func(v ContainerDevice) string { return v.HostPath }).(pulumi.StringOutput)
 }
 
-// The cgroup permissions given to the container to access the device. Defaults to `rwm`.
 func (o ContainerDeviceOutput) Permissions() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ContainerDevice) *string { return v.Permissions }).(pulumi.StringPtrOutput)
 }
@@ -282,16 +265,11 @@ func (o ContainerDeviceArrayOutput) Index(i pulumi.IntInput) ContainerDeviceOutp
 }
 
 type ContainerHealthcheck struct {
-	// Time between running the check (ms|s|m|h). Defaults to `0s`.
-	Interval *string `pulumi:"interval"`
-	// Consecutive failures needed to report unhealthy. Defaults to `0`.
-	Retries *int `pulumi:"retries"`
-	// Start period for the container to initialize before counting retries towards unstable (ms|s|m|h). Defaults to `0s`.
-	StartPeriod *string `pulumi:"startPeriod"`
-	// Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `["CMD", "curl", "-f", "localhost/health"]`.
-	Tests []string `pulumi:"tests"`
-	// Maximum time to allow one check to run (ms|s|m|h). Defaults to `0s`.
-	Timeout *string `pulumi:"timeout"`
+	Interval    *string  `pulumi:"interval"`
+	Retries     *int     `pulumi:"retries"`
+	StartPeriod *string  `pulumi:"startPeriod"`
+	Tests       []string `pulumi:"tests"`
+	Timeout     *string  `pulumi:"timeout"`
 }
 
 // ContainerHealthcheckInput is an input type that accepts ContainerHealthcheckArgs and ContainerHealthcheckOutput values.
@@ -306,16 +284,11 @@ type ContainerHealthcheckInput interface {
 }
 
 type ContainerHealthcheckArgs struct {
-	// Time between running the check (ms|s|m|h). Defaults to `0s`.
-	Interval pulumi.StringPtrInput `pulumi:"interval"`
-	// Consecutive failures needed to report unhealthy. Defaults to `0`.
-	Retries pulumi.IntPtrInput `pulumi:"retries"`
-	// Start period for the container to initialize before counting retries towards unstable (ms|s|m|h). Defaults to `0s`.
-	StartPeriod pulumi.StringPtrInput `pulumi:"startPeriod"`
-	// Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `["CMD", "curl", "-f", "localhost/health"]`.
-	Tests pulumi.StringArrayInput `pulumi:"tests"`
-	// Maximum time to allow one check to run (ms|s|m|h). Defaults to `0s`.
-	Timeout pulumi.StringPtrInput `pulumi:"timeout"`
+	Interval    pulumi.StringPtrInput   `pulumi:"interval"`
+	Retries     pulumi.IntPtrInput      `pulumi:"retries"`
+	StartPeriod pulumi.StringPtrInput   `pulumi:"startPeriod"`
+	Tests       pulumi.StringArrayInput `pulumi:"tests"`
+	Timeout     pulumi.StringPtrInput   `pulumi:"timeout"`
 }
 
 func (ContainerHealthcheckArgs) ElementType() reflect.Type {
@@ -395,27 +368,22 @@ func (o ContainerHealthcheckOutput) ToContainerHealthcheckPtrOutputWithContext(c
 	}).(ContainerHealthcheckPtrOutput)
 }
 
-// Time between running the check (ms|s|m|h). Defaults to `0s`.
 func (o ContainerHealthcheckOutput) Interval() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ContainerHealthcheck) *string { return v.Interval }).(pulumi.StringPtrOutput)
 }
 
-// Consecutive failures needed to report unhealthy. Defaults to `0`.
 func (o ContainerHealthcheckOutput) Retries() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v ContainerHealthcheck) *int { return v.Retries }).(pulumi.IntPtrOutput)
 }
 
-// Start period for the container to initialize before counting retries towards unstable (ms|s|m|h). Defaults to `0s`.
 func (o ContainerHealthcheckOutput) StartPeriod() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ContainerHealthcheck) *string { return v.StartPeriod }).(pulumi.StringPtrOutput)
 }
 
-// Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `["CMD", "curl", "-f", "localhost/health"]`.
 func (o ContainerHealthcheckOutput) Tests() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v ContainerHealthcheck) []string { return v.Tests }).(pulumi.StringArrayOutput)
 }
 
-// Maximum time to allow one check to run (ms|s|m|h). Defaults to `0s`.
 func (o ContainerHealthcheckOutput) Timeout() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ContainerHealthcheck) *string { return v.Timeout }).(pulumi.StringPtrOutput)
 }
@@ -444,7 +412,6 @@ func (o ContainerHealthcheckPtrOutput) Elem() ContainerHealthcheckOutput {
 	}).(ContainerHealthcheckOutput)
 }
 
-// Time between running the check (ms|s|m|h). Defaults to `0s`.
 func (o ContainerHealthcheckPtrOutput) Interval() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *ContainerHealthcheck) *string {
 		if v == nil {
@@ -454,7 +421,6 @@ func (o ContainerHealthcheckPtrOutput) Interval() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
-// Consecutive failures needed to report unhealthy. Defaults to `0`.
 func (o ContainerHealthcheckPtrOutput) Retries() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v *ContainerHealthcheck) *int {
 		if v == nil {
@@ -464,7 +430,6 @@ func (o ContainerHealthcheckPtrOutput) Retries() pulumi.IntPtrOutput {
 	}).(pulumi.IntPtrOutput)
 }
 
-// Start period for the container to initialize before counting retries towards unstable (ms|s|m|h). Defaults to `0s`.
 func (o ContainerHealthcheckPtrOutput) StartPeriod() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *ContainerHealthcheck) *string {
 		if v == nil {
@@ -474,7 +439,6 @@ func (o ContainerHealthcheckPtrOutput) StartPeriod() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
-// Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `["CMD", "curl", "-f", "localhost/health"]`.
 func (o ContainerHealthcheckPtrOutput) Tests() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v *ContainerHealthcheck) []string {
 		if v == nil {
@@ -484,7 +448,6 @@ func (o ContainerHealthcheckPtrOutput) Tests() pulumi.StringArrayOutput {
 	}).(pulumi.StringArrayOutput)
 }
 
-// Maximum time to allow one check to run (ms|s|m|h). Defaults to `0s`.
 func (o ContainerHealthcheckPtrOutput) Timeout() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *ContainerHealthcheck) *string {
 		if v == nil {
@@ -495,10 +458,8 @@ func (o ContainerHealthcheckPtrOutput) Timeout() pulumi.StringPtrOutput {
 }
 
 type ContainerHost struct {
-	// Hostname to add
 	Host string `pulumi:"host"`
-	// IP address this hostname should resolve to.
-	Ip string `pulumi:"ip"`
+	Ip   string `pulumi:"ip"`
 }
 
 // ContainerHostInput is an input type that accepts ContainerHostArgs and ContainerHostOutput values.
@@ -513,10 +474,8 @@ type ContainerHostInput interface {
 }
 
 type ContainerHostArgs struct {
-	// Hostname to add
 	Host pulumi.StringInput `pulumi:"host"`
-	// IP address this hostname should resolve to.
-	Ip pulumi.StringInput `pulumi:"ip"`
+	Ip   pulumi.StringInput `pulumi:"ip"`
 }
 
 func (ContainerHostArgs) ElementType() reflect.Type {
@@ -570,12 +529,10 @@ func (o ContainerHostOutput) ToContainerHostOutputWithContext(ctx context.Contex
 	return o
 }
 
-// Hostname to add
 func (o ContainerHostOutput) Host() pulumi.StringOutput {
 	return o.ApplyT(func(v ContainerHost) string { return v.Host }).(pulumi.StringOutput)
 }
 
-// IP address this hostname should resolve to.
 func (o ContainerHostOutput) Ip() pulumi.StringOutput {
 	return o.ApplyT(func(v ContainerHost) string { return v.Ip }).(pulumi.StringOutput)
 }
@@ -601,9 +558,7 @@ func (o ContainerHostArrayOutput) Index(i pulumi.IntInput) ContainerHostOutput {
 }
 
 type ContainerLabel struct {
-	// Name of the label
 	Label string `pulumi:"label"`
-	// Value of the label
 	Value string `pulumi:"value"`
 }
 
@@ -619,9 +574,7 @@ type ContainerLabelInput interface {
 }
 
 type ContainerLabelArgs struct {
-	// Name of the label
 	Label pulumi.StringInput `pulumi:"label"`
-	// Value of the label
 	Value pulumi.StringInput `pulumi:"value"`
 }
 
@@ -676,12 +629,10 @@ func (o ContainerLabelOutput) ToContainerLabelOutputWithContext(ctx context.Cont
 	return o
 }
 
-// Name of the label
 func (o ContainerLabelOutput) Label() pulumi.StringOutput {
 	return o.ApplyT(func(v ContainerLabel) string { return v.Label }).(pulumi.StringOutput)
 }
 
-// Value of the label
 func (o ContainerLabelOutput) Value() pulumi.StringOutput {
 	return o.ApplyT(func(v ContainerLabel) string { return v.Value }).(pulumi.StringOutput)
 }
@@ -707,19 +658,12 @@ func (o ContainerLabelArrayOutput) Index(i pulumi.IntInput) ContainerLabelOutput
 }
 
 type ContainerMount struct {
-	// Optional configuration for the bind type.
-	BindOptions *ContainerMountBindOptions `pulumi:"bindOptions"`
-	// Whether the mount should be read-only.
-	ReadOnly *bool `pulumi:"readOnly"`
-	// Mount source (e.g. a volume name, a host path).
-	Source *string `pulumi:"source"`
-	// Container path
-	Target string `pulumi:"target"`
-	// Optional configuration for the tmpfs type.
-	TmpfsOptions *ContainerMountTmpfsOptions `pulumi:"tmpfsOptions"`
-	// The mount type
-	Type string `pulumi:"type"`
-	// Optional configuration for the volume type.
+	BindOptions   *ContainerMountBindOptions   `pulumi:"bindOptions"`
+	ReadOnly      *bool                        `pulumi:"readOnly"`
+	Source        *string                      `pulumi:"source"`
+	Target        string                       `pulumi:"target"`
+	TmpfsOptions  *ContainerMountTmpfsOptions  `pulumi:"tmpfsOptions"`
+	Type          string                       `pulumi:"type"`
 	VolumeOptions *ContainerMountVolumeOptions `pulumi:"volumeOptions"`
 }
 
@@ -735,19 +679,12 @@ type ContainerMountInput interface {
 }
 
 type ContainerMountArgs struct {
-	// Optional configuration for the bind type.
-	BindOptions ContainerMountBindOptionsPtrInput `pulumi:"bindOptions"`
-	// Whether the mount should be read-only.
-	ReadOnly pulumi.BoolPtrInput `pulumi:"readOnly"`
-	// Mount source (e.g. a volume name, a host path).
-	Source pulumi.StringPtrInput `pulumi:"source"`
-	// Container path
-	Target pulumi.StringInput `pulumi:"target"`
-	// Optional configuration for the tmpfs type.
-	TmpfsOptions ContainerMountTmpfsOptionsPtrInput `pulumi:"tmpfsOptions"`
-	// The mount type
-	Type pulumi.StringInput `pulumi:"type"`
-	// Optional configuration for the volume type.
+	BindOptions   ContainerMountBindOptionsPtrInput   `pulumi:"bindOptions"`
+	ReadOnly      pulumi.BoolPtrInput                 `pulumi:"readOnly"`
+	Source        pulumi.StringPtrInput               `pulumi:"source"`
+	Target        pulumi.StringInput                  `pulumi:"target"`
+	TmpfsOptions  ContainerMountTmpfsOptionsPtrInput  `pulumi:"tmpfsOptions"`
+	Type          pulumi.StringInput                  `pulumi:"type"`
 	VolumeOptions ContainerMountVolumeOptionsPtrInput `pulumi:"volumeOptions"`
 }
 
@@ -802,37 +739,30 @@ func (o ContainerMountOutput) ToContainerMountOutputWithContext(ctx context.Cont
 	return o
 }
 
-// Optional configuration for the bind type.
 func (o ContainerMountOutput) BindOptions() ContainerMountBindOptionsPtrOutput {
 	return o.ApplyT(func(v ContainerMount) *ContainerMountBindOptions { return v.BindOptions }).(ContainerMountBindOptionsPtrOutput)
 }
 
-// Whether the mount should be read-only.
 func (o ContainerMountOutput) ReadOnly() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v ContainerMount) *bool { return v.ReadOnly }).(pulumi.BoolPtrOutput)
 }
 
-// Mount source (e.g. a volume name, a host path).
 func (o ContainerMountOutput) Source() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ContainerMount) *string { return v.Source }).(pulumi.StringPtrOutput)
 }
 
-// Container path
 func (o ContainerMountOutput) Target() pulumi.StringOutput {
 	return o.ApplyT(func(v ContainerMount) string { return v.Target }).(pulumi.StringOutput)
 }
 
-// Optional configuration for the tmpfs type.
 func (o ContainerMountOutput) TmpfsOptions() ContainerMountTmpfsOptionsPtrOutput {
 	return o.ApplyT(func(v ContainerMount) *ContainerMountTmpfsOptions { return v.TmpfsOptions }).(ContainerMountTmpfsOptionsPtrOutput)
 }
 
-// The mount type
 func (o ContainerMountOutput) Type() pulumi.StringOutput {
 	return o.ApplyT(func(v ContainerMount) string { return v.Type }).(pulumi.StringOutput)
 }
 
-// Optional configuration for the volume type.
 func (o ContainerMountOutput) VolumeOptions() ContainerMountVolumeOptionsPtrOutput {
 	return o.ApplyT(func(v ContainerMount) *ContainerMountVolumeOptions { return v.VolumeOptions }).(ContainerMountVolumeOptionsPtrOutput)
 }
@@ -1139,11 +1069,10 @@ func (o ContainerMountTmpfsOptionsPtrOutput) SizeBytes() pulumi.IntPtrOutput {
 }
 
 type ContainerMountVolumeOptions struct {
-	DriverName    *string           `pulumi:"driverName"`
-	DriverOptions map[string]string `pulumi:"driverOptions"`
-	// User-defined key/value metadata
-	Labels []ContainerMountVolumeOptionsLabel `pulumi:"labels"`
-	NoCopy *bool                              `pulumi:"noCopy"`
+	DriverName    *string                            `pulumi:"driverName"`
+	DriverOptions map[string]string                  `pulumi:"driverOptions"`
+	Labels        []ContainerMountVolumeOptionsLabel `pulumi:"labels"`
+	NoCopy        *bool                              `pulumi:"noCopy"`
 }
 
 // ContainerMountVolumeOptionsInput is an input type that accepts ContainerMountVolumeOptionsArgs and ContainerMountVolumeOptionsOutput values.
@@ -1158,11 +1087,10 @@ type ContainerMountVolumeOptionsInput interface {
 }
 
 type ContainerMountVolumeOptionsArgs struct {
-	DriverName    pulumi.StringPtrInput `pulumi:"driverName"`
-	DriverOptions pulumi.StringMapInput `pulumi:"driverOptions"`
-	// User-defined key/value metadata
-	Labels ContainerMountVolumeOptionsLabelArrayInput `pulumi:"labels"`
-	NoCopy pulumi.BoolPtrInput                        `pulumi:"noCopy"`
+	DriverName    pulumi.StringPtrInput                      `pulumi:"driverName"`
+	DriverOptions pulumi.StringMapInput                      `pulumi:"driverOptions"`
+	Labels        ContainerMountVolumeOptionsLabelArrayInput `pulumi:"labels"`
+	NoCopy        pulumi.BoolPtrInput                        `pulumi:"noCopy"`
 }
 
 func (ContainerMountVolumeOptionsArgs) ElementType() reflect.Type {
@@ -1250,7 +1178,6 @@ func (o ContainerMountVolumeOptionsOutput) DriverOptions() pulumi.StringMapOutpu
 	return o.ApplyT(func(v ContainerMountVolumeOptions) map[string]string { return v.DriverOptions }).(pulumi.StringMapOutput)
 }
 
-// User-defined key/value metadata
 func (o ContainerMountVolumeOptionsOutput) Labels() ContainerMountVolumeOptionsLabelArrayOutput {
 	return o.ApplyT(func(v ContainerMountVolumeOptions) []ContainerMountVolumeOptionsLabel { return v.Labels }).(ContainerMountVolumeOptionsLabelArrayOutput)
 }
@@ -1301,7 +1228,6 @@ func (o ContainerMountVolumeOptionsPtrOutput) DriverOptions() pulumi.StringMapOu
 	}).(pulumi.StringMapOutput)
 }
 
-// User-defined key/value metadata
 func (o ContainerMountVolumeOptionsPtrOutput) Labels() ContainerMountVolumeOptionsLabelArrayOutput {
 	return o.ApplyT(func(v *ContainerMountVolumeOptions) []ContainerMountVolumeOptionsLabel {
 		if v == nil {
@@ -1321,9 +1247,7 @@ func (o ContainerMountVolumeOptionsPtrOutput) NoCopy() pulumi.BoolPtrOutput {
 }
 
 type ContainerMountVolumeOptionsLabel struct {
-	// Name of the label
 	Label string `pulumi:"label"`
-	// Value of the label
 	Value string `pulumi:"value"`
 }
 
@@ -1339,9 +1263,7 @@ type ContainerMountVolumeOptionsLabelInput interface {
 }
 
 type ContainerMountVolumeOptionsLabelArgs struct {
-	// Name of the label
 	Label pulumi.StringInput `pulumi:"label"`
-	// Value of the label
 	Value pulumi.StringInput `pulumi:"value"`
 }
 
@@ -1396,12 +1318,10 @@ func (o ContainerMountVolumeOptionsLabelOutput) ToContainerMountVolumeOptionsLab
 	return o
 }
 
-// Name of the label
 func (o ContainerMountVolumeOptionsLabelOutput) Label() pulumi.StringOutput {
 	return o.ApplyT(func(v ContainerMountVolumeOptionsLabel) string { return v.Label }).(pulumi.StringOutput)
 }
 
-// Value of the label
 func (o ContainerMountVolumeOptionsLabelOutput) Value() pulumi.StringOutput {
 	return o.ApplyT(func(v ContainerMountVolumeOptionsLabel) string { return v.Value }).(pulumi.StringOutput)
 }
@@ -1427,18 +1347,12 @@ func (o ContainerMountVolumeOptionsLabelArrayOutput) Index(i pulumi.IntInput) Co
 }
 
 type ContainerNetworkData struct {
-	// The network gateway of the container.
-	//
 	// Deprecated: Use `network_data` instead. The network gateway of the container as read from its NetworkSettings.
 	Gateway                *string `pulumi:"gateway"`
 	GlobalIpv6Address      *string `pulumi:"globalIpv6Address"`
 	GlobalIpv6PrefixLength *int    `pulumi:"globalIpv6PrefixLength"`
-	// The IP address of the container.
-	//
 	// Deprecated: Use `network_data` instead. The IP address of the container's first network it.
 	IpAddress *string `pulumi:"ipAddress"`
-	// The IP prefix length of the container.
-	//
 	// Deprecated: Use `network_data` instead. The IP prefix length of the container as read from its NetworkSettings.
 	IpPrefixLength *int    `pulumi:"ipPrefixLength"`
 	Ipv6Gateway    *string `pulumi:"ipv6Gateway"`
@@ -1457,18 +1371,12 @@ type ContainerNetworkDataInput interface {
 }
 
 type ContainerNetworkDataArgs struct {
-	// The network gateway of the container.
-	//
 	// Deprecated: Use `network_data` instead. The network gateway of the container as read from its NetworkSettings.
 	Gateway                pulumi.StringPtrInput `pulumi:"gateway"`
 	GlobalIpv6Address      pulumi.StringPtrInput `pulumi:"globalIpv6Address"`
 	GlobalIpv6PrefixLength pulumi.IntPtrInput    `pulumi:"globalIpv6PrefixLength"`
-	// The IP address of the container.
-	//
 	// Deprecated: Use `network_data` instead. The IP address of the container's first network it.
 	IpAddress pulumi.StringPtrInput `pulumi:"ipAddress"`
-	// The IP prefix length of the container.
-	//
 	// Deprecated: Use `network_data` instead. The IP prefix length of the container as read from its NetworkSettings.
 	IpPrefixLength pulumi.IntPtrInput    `pulumi:"ipPrefixLength"`
 	Ipv6Gateway    pulumi.StringPtrInput `pulumi:"ipv6Gateway"`
@@ -1526,8 +1434,6 @@ func (o ContainerNetworkDataOutput) ToContainerNetworkDataOutputWithContext(ctx 
 	return o
 }
 
-// The network gateway of the container.
-//
 // Deprecated: Use `network_data` instead. The network gateway of the container as read from its NetworkSettings.
 func (o ContainerNetworkDataOutput) Gateway() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ContainerNetworkData) *string { return v.Gateway }).(pulumi.StringPtrOutput)
@@ -1541,15 +1447,11 @@ func (o ContainerNetworkDataOutput) GlobalIpv6PrefixLength() pulumi.IntPtrOutput
 	return o.ApplyT(func(v ContainerNetworkData) *int { return v.GlobalIpv6PrefixLength }).(pulumi.IntPtrOutput)
 }
 
-// The IP address of the container.
-//
 // Deprecated: Use `network_data` instead. The IP address of the container's first network it.
 func (o ContainerNetworkDataOutput) IpAddress() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ContainerNetworkData) *string { return v.IpAddress }).(pulumi.StringPtrOutput)
 }
 
-// The IP prefix length of the container.
-//
 // Deprecated: Use `network_data` instead. The IP prefix length of the container as read from its NetworkSettings.
 func (o ContainerNetworkDataOutput) IpPrefixLength() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v ContainerNetworkData) *int { return v.IpPrefixLength }).(pulumi.IntPtrOutput)
@@ -1584,14 +1486,10 @@ func (o ContainerNetworkDataArrayOutput) Index(i pulumi.IntInput) ContainerNetwo
 }
 
 type ContainerNetworksAdvanced struct {
-	// The network aliases of the container in the specific network.
-	Aliases []string `pulumi:"aliases"`
-	// The IPV4 address of the container in the specific network.
-	Ipv4Address *string `pulumi:"ipv4Address"`
-	// The IPV6 address of the container in the specific network.
-	Ipv6Address *string `pulumi:"ipv6Address"`
-	// The name of the network.
-	Name string `pulumi:"name"`
+	Aliases     []string `pulumi:"aliases"`
+	Ipv4Address *string  `pulumi:"ipv4Address"`
+	Ipv6Address *string  `pulumi:"ipv6Address"`
+	Name        string   `pulumi:"name"`
 }
 
 // ContainerNetworksAdvancedInput is an input type that accepts ContainerNetworksAdvancedArgs and ContainerNetworksAdvancedOutput values.
@@ -1606,14 +1504,10 @@ type ContainerNetworksAdvancedInput interface {
 }
 
 type ContainerNetworksAdvancedArgs struct {
-	// The network aliases of the container in the specific network.
-	Aliases pulumi.StringArrayInput `pulumi:"aliases"`
-	// The IPV4 address of the container in the specific network.
-	Ipv4Address pulumi.StringPtrInput `pulumi:"ipv4Address"`
-	// The IPV6 address of the container in the specific network.
-	Ipv6Address pulumi.StringPtrInput `pulumi:"ipv6Address"`
-	// The name of the network.
-	Name pulumi.StringInput `pulumi:"name"`
+	Aliases     pulumi.StringArrayInput `pulumi:"aliases"`
+	Ipv4Address pulumi.StringPtrInput   `pulumi:"ipv4Address"`
+	Ipv6Address pulumi.StringPtrInput   `pulumi:"ipv6Address"`
+	Name        pulumi.StringInput      `pulumi:"name"`
 }
 
 func (ContainerNetworksAdvancedArgs) ElementType() reflect.Type {
@@ -1667,22 +1561,18 @@ func (o ContainerNetworksAdvancedOutput) ToContainerNetworksAdvancedOutputWithCo
 	return o
 }
 
-// The network aliases of the container in the specific network.
 func (o ContainerNetworksAdvancedOutput) Aliases() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v ContainerNetworksAdvanced) []string { return v.Aliases }).(pulumi.StringArrayOutput)
 }
 
-// The IPV4 address of the container in the specific network.
 func (o ContainerNetworksAdvancedOutput) Ipv4Address() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ContainerNetworksAdvanced) *string { return v.Ipv4Address }).(pulumi.StringPtrOutput)
 }
 
-// The IPV6 address of the container in the specific network.
 func (o ContainerNetworksAdvancedOutput) Ipv6Address() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ContainerNetworksAdvanced) *string { return v.Ipv6Address }).(pulumi.StringPtrOutput)
 }
 
-// The name of the network.
 func (o ContainerNetworksAdvancedOutput) Name() pulumi.StringOutput {
 	return o.ApplyT(func(v ContainerNetworksAdvanced) string { return v.Name }).(pulumi.StringOutput)
 }
@@ -1708,13 +1598,9 @@ func (o ContainerNetworksAdvancedArrayOutput) Index(i pulumi.IntInput) Container
 }
 
 type ContainerPort struct {
-	// Port exposed out of the container. If not given a free random port `>= 32768` will be used.
-	External *int `pulumi:"external"`
-	// Port within the container.
-	Internal int `pulumi:"internal"`
-	// IP address/mask that can access this port. Defaults to `0.0.0.0`.
-	Ip *string `pulumi:"ip"`
-	// Protocol that can be used over this port. Defaults to `tcp`.
+	External *int    `pulumi:"external"`
+	Internal int     `pulumi:"internal"`
+	Ip       *string `pulumi:"ip"`
 	Protocol *string `pulumi:"protocol"`
 }
 
@@ -1730,13 +1616,9 @@ type ContainerPortInput interface {
 }
 
 type ContainerPortArgs struct {
-	// Port exposed out of the container. If not given a free random port `>= 32768` will be used.
-	External pulumi.IntPtrInput `pulumi:"external"`
-	// Port within the container.
-	Internal pulumi.IntInput `pulumi:"internal"`
-	// IP address/mask that can access this port. Defaults to `0.0.0.0`.
-	Ip pulumi.StringPtrInput `pulumi:"ip"`
-	// Protocol that can be used over this port. Defaults to `tcp`.
+	External pulumi.IntPtrInput    `pulumi:"external"`
+	Internal pulumi.IntInput       `pulumi:"internal"`
+	Ip       pulumi.StringPtrInput `pulumi:"ip"`
 	Protocol pulumi.StringPtrInput `pulumi:"protocol"`
 }
 
@@ -1791,22 +1673,18 @@ func (o ContainerPortOutput) ToContainerPortOutputWithContext(ctx context.Contex
 	return o
 }
 
-// Port exposed out of the container. If not given a free random port `>= 32768` will be used.
 func (o ContainerPortOutput) External() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v ContainerPort) *int { return v.External }).(pulumi.IntPtrOutput)
 }
 
-// Port within the container.
 func (o ContainerPortOutput) Internal() pulumi.IntOutput {
 	return o.ApplyT(func(v ContainerPort) int { return v.Internal }).(pulumi.IntOutput)
 }
 
-// IP address/mask that can access this port. Defaults to `0.0.0.0`.
 func (o ContainerPortOutput) Ip() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ContainerPort) *string { return v.Ip }).(pulumi.StringPtrOutput)
 }
 
-// Protocol that can be used over this port. Defaults to `tcp`.
 func (o ContainerPortOutput) Protocol() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ContainerPort) *string { return v.Protocol }).(pulumi.StringPtrOutput)
 }
@@ -1832,12 +1710,9 @@ func (o ContainerPortArrayOutput) Index(i pulumi.IntInput) ContainerPortOutput {
 }
 
 type ContainerUlimit struct {
-	// The hard limit
-	Hard int `pulumi:"hard"`
-	// The name of the ulimit
+	Hard int    `pulumi:"hard"`
 	Name string `pulumi:"name"`
-	// The soft limit
-	Soft int `pulumi:"soft"`
+	Soft int    `pulumi:"soft"`
 }
 
 // ContainerUlimitInput is an input type that accepts ContainerUlimitArgs and ContainerUlimitOutput values.
@@ -1852,12 +1727,9 @@ type ContainerUlimitInput interface {
 }
 
 type ContainerUlimitArgs struct {
-	// The hard limit
-	Hard pulumi.IntInput `pulumi:"hard"`
-	// The name of the ulimit
+	Hard pulumi.IntInput    `pulumi:"hard"`
 	Name pulumi.StringInput `pulumi:"name"`
-	// The soft limit
-	Soft pulumi.IntInput `pulumi:"soft"`
+	Soft pulumi.IntInput    `pulumi:"soft"`
 }
 
 func (ContainerUlimitArgs) ElementType() reflect.Type {
@@ -1911,17 +1783,14 @@ func (o ContainerUlimitOutput) ToContainerUlimitOutputWithContext(ctx context.Co
 	return o
 }
 
-// The hard limit
 func (o ContainerUlimitOutput) Hard() pulumi.IntOutput {
 	return o.ApplyT(func(v ContainerUlimit) int { return v.Hard }).(pulumi.IntOutput)
 }
 
-// The name of the ulimit
 func (o ContainerUlimitOutput) Name() pulumi.StringOutput {
 	return o.ApplyT(func(v ContainerUlimit) string { return v.Name }).(pulumi.StringOutput)
 }
 
-// The soft limit
 func (o ContainerUlimitOutput) Soft() pulumi.IntOutput {
 	return o.ApplyT(func(v ContainerUlimit) int { return v.Soft }).(pulumi.IntOutput)
 }
@@ -1947,17 +1816,12 @@ func (o ContainerUlimitArrayOutput) Index(i pulumi.IntInput) ContainerUlimitOutp
 }
 
 type ContainerUpload struct {
-	// Literal string value to use as the object content, which will be uploaded as UTF-8-encoded text. Conflicts with `contentBase64` & `source`
 	Content       *string `pulumi:"content"`
 	ContentBase64 *string `pulumi:"contentBase64"`
-	// If `true`, the file will be uploaded with user executable permission. Defaults to `false`.
-	Executable *bool `pulumi:"executable"`
-	// Path to the file in the container where is upload goes to
-	File string `pulumi:"file"`
-	// A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state. Conflicts with `content` & `contentBase64`
-	Source *string `pulumi:"source"`
-	// If using `source`, this will force an update if the file content has updated but the filename has not.
-	SourceHash *string `pulumi:"sourceHash"`
+	Executable    *bool   `pulumi:"executable"`
+	File          string  `pulumi:"file"`
+	Source        *string `pulumi:"source"`
+	SourceHash    *string `pulumi:"sourceHash"`
 }
 
 // ContainerUploadInput is an input type that accepts ContainerUploadArgs and ContainerUploadOutput values.
@@ -1972,17 +1836,12 @@ type ContainerUploadInput interface {
 }
 
 type ContainerUploadArgs struct {
-	// Literal string value to use as the object content, which will be uploaded as UTF-8-encoded text. Conflicts with `contentBase64` & `source`
 	Content       pulumi.StringPtrInput `pulumi:"content"`
 	ContentBase64 pulumi.StringPtrInput `pulumi:"contentBase64"`
-	// If `true`, the file will be uploaded with user executable permission. Defaults to `false`.
-	Executable pulumi.BoolPtrInput `pulumi:"executable"`
-	// Path to the file in the container where is upload goes to
-	File pulumi.StringInput `pulumi:"file"`
-	// A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state. Conflicts with `content` & `contentBase64`
-	Source pulumi.StringPtrInput `pulumi:"source"`
-	// If using `source`, this will force an update if the file content has updated but the filename has not.
-	SourceHash pulumi.StringPtrInput `pulumi:"sourceHash"`
+	Executable    pulumi.BoolPtrInput   `pulumi:"executable"`
+	File          pulumi.StringInput    `pulumi:"file"`
+	Source        pulumi.StringPtrInput `pulumi:"source"`
+	SourceHash    pulumi.StringPtrInput `pulumi:"sourceHash"`
 }
 
 func (ContainerUploadArgs) ElementType() reflect.Type {
@@ -2036,7 +1895,6 @@ func (o ContainerUploadOutput) ToContainerUploadOutputWithContext(ctx context.Co
 	return o
 }
 
-// Literal string value to use as the object content, which will be uploaded as UTF-8-encoded text. Conflicts with `contentBase64` & `source`
 func (o ContainerUploadOutput) Content() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ContainerUpload) *string { return v.Content }).(pulumi.StringPtrOutput)
 }
@@ -2045,22 +1903,18 @@ func (o ContainerUploadOutput) ContentBase64() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ContainerUpload) *string { return v.ContentBase64 }).(pulumi.StringPtrOutput)
 }
 
-// If `true`, the file will be uploaded with user executable permission. Defaults to `false`.
 func (o ContainerUploadOutput) Executable() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v ContainerUpload) *bool { return v.Executable }).(pulumi.BoolPtrOutput)
 }
 
-// Path to the file in the container where is upload goes to
 func (o ContainerUploadOutput) File() pulumi.StringOutput {
 	return o.ApplyT(func(v ContainerUpload) string { return v.File }).(pulumi.StringOutput)
 }
 
-// A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state. Conflicts with `content` & `contentBase64`
 func (o ContainerUploadOutput) Source() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ContainerUpload) *string { return v.Source }).(pulumi.StringPtrOutput)
 }
 
-// If using `source`, this will force an update if the file content has updated but the filename has not.
 func (o ContainerUploadOutput) SourceHash() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ContainerUpload) *string { return v.SourceHash }).(pulumi.StringPtrOutput)
 }
@@ -2086,16 +1940,11 @@ func (o ContainerUploadArrayOutput) Index(i pulumi.IntInput) ContainerUploadOutp
 }
 
 type ContainerVolume struct {
-	// The path in the container where the volume will be mounted.
 	ContainerPath *string `pulumi:"containerPath"`
-	// The container where the volume is coming from.
 	FromContainer *string `pulumi:"fromContainer"`
-	// The path on the host where the volume is coming from.
-	HostPath *string `pulumi:"hostPath"`
-	// If `true`, this volume will be readonly. Defaults to `false`.
-	ReadOnly *bool `pulumi:"readOnly"`
-	// The name of the docker volume which should be mounted.
-	VolumeName *string `pulumi:"volumeName"`
+	HostPath      *string `pulumi:"hostPath"`
+	ReadOnly      *bool   `pulumi:"readOnly"`
+	VolumeName    *string `pulumi:"volumeName"`
 }
 
 // ContainerVolumeInput is an input type that accepts ContainerVolumeArgs and ContainerVolumeOutput values.
@@ -2110,16 +1959,11 @@ type ContainerVolumeInput interface {
 }
 
 type ContainerVolumeArgs struct {
-	// The path in the container where the volume will be mounted.
 	ContainerPath pulumi.StringPtrInput `pulumi:"containerPath"`
-	// The container where the volume is coming from.
 	FromContainer pulumi.StringPtrInput `pulumi:"fromContainer"`
-	// The path on the host where the volume is coming from.
-	HostPath pulumi.StringPtrInput `pulumi:"hostPath"`
-	// If `true`, this volume will be readonly. Defaults to `false`.
-	ReadOnly pulumi.BoolPtrInput `pulumi:"readOnly"`
-	// The name of the docker volume which should be mounted.
-	VolumeName pulumi.StringPtrInput `pulumi:"volumeName"`
+	HostPath      pulumi.StringPtrInput `pulumi:"hostPath"`
+	ReadOnly      pulumi.BoolPtrInput   `pulumi:"readOnly"`
+	VolumeName    pulumi.StringPtrInput `pulumi:"volumeName"`
 }
 
 func (ContainerVolumeArgs) ElementType() reflect.Type {
@@ -2173,27 +2017,22 @@ func (o ContainerVolumeOutput) ToContainerVolumeOutputWithContext(ctx context.Co
 	return o
 }
 
-// The path in the container where the volume will be mounted.
 func (o ContainerVolumeOutput) ContainerPath() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ContainerVolume) *string { return v.ContainerPath }).(pulumi.StringPtrOutput)
 }
 
-// The container where the volume is coming from.
 func (o ContainerVolumeOutput) FromContainer() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ContainerVolume) *string { return v.FromContainer }).(pulumi.StringPtrOutput)
 }
 
-// The path on the host where the volume is coming from.
 func (o ContainerVolumeOutput) HostPath() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ContainerVolume) *string { return v.HostPath }).(pulumi.StringPtrOutput)
 }
 
-// If `true`, this volume will be readonly. Defaults to `false`.
 func (o ContainerVolumeOutput) ReadOnly() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v ContainerVolume) *bool { return v.ReadOnly }).(pulumi.BoolPtrOutput)
 }
 
-// The name of the docker volume which should be mounted.
 func (o ContainerVolumeOutput) VolumeName() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ContainerVolume) *string { return v.VolumeName }).(pulumi.StringPtrOutput)
 }
@@ -2219,14 +2058,10 @@ func (o ContainerVolumeArrayOutput) Index(i pulumi.IntInput) ContainerVolumeOutp
 }
 
 type NetworkIpamConfig struct {
-	// Auxiliary IPv4 or IPv6 addresses used by Network driver
 	AuxAddress map[string]interface{} `pulumi:"auxAddress"`
-	// The IP address of the gateway
-	Gateway *string `pulumi:"gateway"`
-	// The ip range in CIDR form
-	IpRange *string `pulumi:"ipRange"`
-	// The subnet in CIDR form
-	Subnet *string `pulumi:"subnet"`
+	Gateway    *string                `pulumi:"gateway"`
+	IpRange    *string                `pulumi:"ipRange"`
+	Subnet     *string                `pulumi:"subnet"`
 }
 
 // NetworkIpamConfigInput is an input type that accepts NetworkIpamConfigArgs and NetworkIpamConfigOutput values.
@@ -2241,14 +2076,10 @@ type NetworkIpamConfigInput interface {
 }
 
 type NetworkIpamConfigArgs struct {
-	// Auxiliary IPv4 or IPv6 addresses used by Network driver
-	AuxAddress pulumi.MapInput `pulumi:"auxAddress"`
-	// The IP address of the gateway
-	Gateway pulumi.StringPtrInput `pulumi:"gateway"`
-	// The ip range in CIDR form
-	IpRange pulumi.StringPtrInput `pulumi:"ipRange"`
-	// The subnet in CIDR form
-	Subnet pulumi.StringPtrInput `pulumi:"subnet"`
+	AuxAddress pulumi.MapInput       `pulumi:"auxAddress"`
+	Gateway    pulumi.StringPtrInput `pulumi:"gateway"`
+	IpRange    pulumi.StringPtrInput `pulumi:"ipRange"`
+	Subnet     pulumi.StringPtrInput `pulumi:"subnet"`
 }
 
 func (NetworkIpamConfigArgs) ElementType() reflect.Type {
@@ -2302,22 +2133,18 @@ func (o NetworkIpamConfigOutput) ToNetworkIpamConfigOutputWithContext(ctx contex
 	return o
 }
 
-// Auxiliary IPv4 or IPv6 addresses used by Network driver
 func (o NetworkIpamConfigOutput) AuxAddress() pulumi.MapOutput {
 	return o.ApplyT(func(v NetworkIpamConfig) map[string]interface{} { return v.AuxAddress }).(pulumi.MapOutput)
 }
 
-// The IP address of the gateway
 func (o NetworkIpamConfigOutput) Gateway() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v NetworkIpamConfig) *string { return v.Gateway }).(pulumi.StringPtrOutput)
 }
 
-// The ip range in CIDR form
 func (o NetworkIpamConfigOutput) IpRange() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v NetworkIpamConfig) *string { return v.IpRange }).(pulumi.StringPtrOutput)
 }
 
-// The subnet in CIDR form
 func (o NetworkIpamConfigOutput) Subnet() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v NetworkIpamConfig) *string { return v.Subnet }).(pulumi.StringPtrOutput)
 }
@@ -2343,9 +2170,7 @@ func (o NetworkIpamConfigArrayOutput) Index(i pulumi.IntInput) NetworkIpamConfig
 }
 
 type NetworkLabel struct {
-	// Name of the label
 	Label string `pulumi:"label"`
-	// Value of the label
 	Value string `pulumi:"value"`
 }
 
@@ -2361,9 +2186,7 @@ type NetworkLabelInput interface {
 }
 
 type NetworkLabelArgs struct {
-	// Name of the label
 	Label pulumi.StringInput `pulumi:"label"`
-	// Value of the label
 	Value pulumi.StringInput `pulumi:"value"`
 }
 
@@ -2418,12 +2241,10 @@ func (o NetworkLabelOutput) ToNetworkLabelOutputWithContext(ctx context.Context)
 	return o
 }
 
-// Name of the label
 func (o NetworkLabelOutput) Label() pulumi.StringOutput {
 	return o.ApplyT(func(v NetworkLabel) string { return v.Label }).(pulumi.StringOutput)
 }
 
-// Value of the label
 func (o NetworkLabelOutput) Value() pulumi.StringOutput {
 	return o.ApplyT(func(v NetworkLabel) string { return v.Value }).(pulumi.StringOutput)
 }
@@ -2449,9 +2270,7 @@ func (o NetworkLabelArrayOutput) Index(i pulumi.IntInput) NetworkLabelOutput {
 }
 
 type PluginGrantPermission struct {
-	// The name of the permission
-	Name string `pulumi:"name"`
-	// The value of the permission
+	Name   string   `pulumi:"name"`
 	Values []string `pulumi:"values"`
 }
 
@@ -2467,9 +2286,7 @@ type PluginGrantPermissionInput interface {
 }
 
 type PluginGrantPermissionArgs struct {
-	// The name of the permission
-	Name pulumi.StringInput `pulumi:"name"`
-	// The value of the permission
+	Name   pulumi.StringInput      `pulumi:"name"`
 	Values pulumi.StringArrayInput `pulumi:"values"`
 }
 
@@ -2524,12 +2341,10 @@ func (o PluginGrantPermissionOutput) ToPluginGrantPermissionOutputWithContext(ct
 	return o
 }
 
-// The name of the permission
 func (o PluginGrantPermissionOutput) Name() pulumi.StringOutput {
 	return o.ApplyT(func(v PluginGrantPermission) string { return v.Name }).(pulumi.StringOutput)
 }
 
-// The value of the permission
 func (o PluginGrantPermissionOutput) Values() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v PluginGrantPermission) []string { return v.Values }).(pulumi.StringArrayOutput)
 }
@@ -2673,70 +2488,38 @@ func (o ProviderRegistryAuthArrayOutput) Index(i pulumi.IntInput) ProviderRegist
 }
 
 type RegistryImageBuild struct {
-	// The configuration for the authentication
-	AuthConfigs []RegistryImageBuildAuthConfig `pulumi:"authConfigs"`
-	// Pairs for build-time variables in the form TODO
-	BuildArgs map[string]string `pulumi:"buildArgs"`
-	// BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request.
-	BuildId *string `pulumi:"buildId"`
-	// Images to consider as cache sources
-	CacheFroms []string `pulumi:"cacheFroms"`
-	// Optional parent cgroup for the container
-	CgroupParent *string `pulumi:"cgroupParent"`
-	// The absolute path to the context folder. You can use the helper function '${path.cwd}/context-dir'.
-	Context string `pulumi:"context"`
-	// The length of a CPU period in microseconds
-	CpuPeriod *int `pulumi:"cpuPeriod"`
-	// Microseconds of CPU time that the container can get in a CPU period
-	CpuQuota *int `pulumi:"cpuQuota"`
-	// CPUs in which to allow execution (e.g., `0-3`, `0`, `1`)
-	CpuSetCpus *string `pulumi:"cpuSetCpus"`
-	// MEMs in which to allow execution (`0-3`, `0`, `1`)
-	CpuSetMems *string `pulumi:"cpuSetMems"`
-	// CPU shares (relative weight)
-	CpuShares *int `pulumi:"cpuShares"`
-	// Dockerfile file. Defaults to `Dockerfile`
-	Dockerfile *string `pulumi:"dockerfile"`
-	// A list of hostnames/IP mappings to add to the container’s /etc/hosts file. Specified in the form ["hostname:IP"]
-	ExtraHosts []string `pulumi:"extraHosts"`
-	// Always remove intermediate containers
-	ForceRemove *bool `pulumi:"forceRemove"`
-	// Isolation represents the isolation technology of a container. The supported values are
-	Isolation *string `pulumi:"isolation"`
-	// User-defined key/value metadata
-	Labels map[string]string `pulumi:"labels"`
-	// Set memory limit for build
-	Memory *int `pulumi:"memory"`
-	// Total memory (memory + swap), -1 to enable unlimited swap
-	MemorySwap *int `pulumi:"memorySwap"`
-	// Set the networking mode for the RUN instructions during build
-	NetworkMode *string `pulumi:"networkMode"`
-	// Do not use the cache when building the image
-	NoCache *bool `pulumi:"noCache"`
-	// Set platform if server is multi-platform capable
-	Platform *string `pulumi:"platform"`
-	// Attempt to pull the image even if an older image exists locally
-	PullParent *bool `pulumi:"pullParent"`
-	// A Git repository URI or HTTP/HTTPS context URI
-	RemoteContext *string `pulumi:"remoteContext"`
-	// Remove intermediate containers after a successful build (default behavior)
-	Remove *bool `pulumi:"remove"`
-	// The security options
-	SecurityOpts []string `pulumi:"securityOpts"`
-	// Set an ID for the build session
-	SessionId *string `pulumi:"sessionId"`
-	// Size of /dev/shm in bytes. The size must be greater than 0
-	ShmSize *int `pulumi:"shmSize"`
-	// If true the new layers are squashed into a new image with a single new layer
-	Squash *bool `pulumi:"squash"`
-	// Suppress the build output and print image ID on success
-	SuppressOutput *bool `pulumi:"suppressOutput"`
-	// Set the target build stage to build
-	Target *string `pulumi:"target"`
-	// Configuration for ulimits
-	Ulimits []RegistryImageBuildUlimit `pulumi:"ulimits"`
-	// Version of the underlying builder to use
-	Version *string `pulumi:"version"`
+	AuthConfigs    []RegistryImageBuildAuthConfig `pulumi:"authConfigs"`
+	BuildArgs      map[string]string              `pulumi:"buildArgs"`
+	BuildId        *string                        `pulumi:"buildId"`
+	CacheFroms     []string                       `pulumi:"cacheFroms"`
+	CgroupParent   *string                        `pulumi:"cgroupParent"`
+	Context        string                         `pulumi:"context"`
+	CpuPeriod      *int                           `pulumi:"cpuPeriod"`
+	CpuQuota       *int                           `pulumi:"cpuQuota"`
+	CpuSetCpus     *string                        `pulumi:"cpuSetCpus"`
+	CpuSetMems     *string                        `pulumi:"cpuSetMems"`
+	CpuShares      *int                           `pulumi:"cpuShares"`
+	Dockerfile     *string                        `pulumi:"dockerfile"`
+	ExtraHosts     []string                       `pulumi:"extraHosts"`
+	ForceRemove    *bool                          `pulumi:"forceRemove"`
+	Isolation      *string                        `pulumi:"isolation"`
+	Labels         map[string]string              `pulumi:"labels"`
+	Memory         *int                           `pulumi:"memory"`
+	MemorySwap     *int                           `pulumi:"memorySwap"`
+	NetworkMode    *string                        `pulumi:"networkMode"`
+	NoCache        *bool                          `pulumi:"noCache"`
+	Platform       *string                        `pulumi:"platform"`
+	PullParent     *bool                          `pulumi:"pullParent"`
+	RemoteContext  *string                        `pulumi:"remoteContext"`
+	Remove         *bool                          `pulumi:"remove"`
+	SecurityOpts   []string                       `pulumi:"securityOpts"`
+	SessionId      *string                        `pulumi:"sessionId"`
+	ShmSize        *int                           `pulumi:"shmSize"`
+	Squash         *bool                          `pulumi:"squash"`
+	SuppressOutput *bool                          `pulumi:"suppressOutput"`
+	Target         *string                        `pulumi:"target"`
+	Ulimits        []RegistryImageBuildUlimit     `pulumi:"ulimits"`
+	Version        *string                        `pulumi:"version"`
 }
 
 // RegistryImageBuildInput is an input type that accepts RegistryImageBuildArgs and RegistryImageBuildOutput values.
@@ -2751,70 +2534,38 @@ type RegistryImageBuildInput interface {
 }
 
 type RegistryImageBuildArgs struct {
-	// The configuration for the authentication
-	AuthConfigs RegistryImageBuildAuthConfigArrayInput `pulumi:"authConfigs"`
-	// Pairs for build-time variables in the form TODO
-	BuildArgs pulumi.StringMapInput `pulumi:"buildArgs"`
-	// BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request.
-	BuildId pulumi.StringPtrInput `pulumi:"buildId"`
-	// Images to consider as cache sources
-	CacheFroms pulumi.StringArrayInput `pulumi:"cacheFroms"`
-	// Optional parent cgroup for the container
-	CgroupParent pulumi.StringPtrInput `pulumi:"cgroupParent"`
-	// The absolute path to the context folder. You can use the helper function '${path.cwd}/context-dir'.
-	Context pulumi.StringInput `pulumi:"context"`
-	// The length of a CPU period in microseconds
-	CpuPeriod pulumi.IntPtrInput `pulumi:"cpuPeriod"`
-	// Microseconds of CPU time that the container can get in a CPU period
-	CpuQuota pulumi.IntPtrInput `pulumi:"cpuQuota"`
-	// CPUs in which to allow execution (e.g., `0-3`, `0`, `1`)
-	CpuSetCpus pulumi.StringPtrInput `pulumi:"cpuSetCpus"`
-	// MEMs in which to allow execution (`0-3`, `0`, `1`)
-	CpuSetMems pulumi.StringPtrInput `pulumi:"cpuSetMems"`
-	// CPU shares (relative weight)
-	CpuShares pulumi.IntPtrInput `pulumi:"cpuShares"`
-	// Dockerfile file. Defaults to `Dockerfile`
-	Dockerfile pulumi.StringPtrInput `pulumi:"dockerfile"`
-	// A list of hostnames/IP mappings to add to the container’s /etc/hosts file. Specified in the form ["hostname:IP"]
-	ExtraHosts pulumi.StringArrayInput `pulumi:"extraHosts"`
-	// Always remove intermediate containers
-	ForceRemove pulumi.BoolPtrInput `pulumi:"forceRemove"`
-	// Isolation represents the isolation technology of a container. The supported values are
-	Isolation pulumi.StringPtrInput `pulumi:"isolation"`
-	// User-defined key/value metadata
-	Labels pulumi.StringMapInput `pulumi:"labels"`
-	// Set memory limit for build
-	Memory pulumi.IntPtrInput `pulumi:"memory"`
-	// Total memory (memory + swap), -1 to enable unlimited swap
-	MemorySwap pulumi.IntPtrInput `pulumi:"memorySwap"`
-	// Set the networking mode for the RUN instructions during build
-	NetworkMode pulumi.StringPtrInput `pulumi:"networkMode"`
-	// Do not use the cache when building the image
-	NoCache pulumi.BoolPtrInput `pulumi:"noCache"`
-	// Set platform if server is multi-platform capable
-	Platform pulumi.StringPtrInput `pulumi:"platform"`
-	// Attempt to pull the image even if an older image exists locally
-	PullParent pulumi.BoolPtrInput `pulumi:"pullParent"`
-	// A Git repository URI or HTTP/HTTPS context URI
-	RemoteContext pulumi.StringPtrInput `pulumi:"remoteContext"`
-	// Remove intermediate containers after a successful build (default behavior)
-	Remove pulumi.BoolPtrInput `pulumi:"remove"`
-	// The security options
-	SecurityOpts pulumi.StringArrayInput `pulumi:"securityOpts"`
-	// Set an ID for the build session
-	SessionId pulumi.StringPtrInput `pulumi:"sessionId"`
-	// Size of /dev/shm in bytes. The size must be greater than 0
-	ShmSize pulumi.IntPtrInput `pulumi:"shmSize"`
-	// If true the new layers are squashed into a new image with a single new layer
-	Squash pulumi.BoolPtrInput `pulumi:"squash"`
-	// Suppress the build output and print image ID on success
-	SuppressOutput pulumi.BoolPtrInput `pulumi:"suppressOutput"`
-	// Set the target build stage to build
-	Target pulumi.StringPtrInput `pulumi:"target"`
-	// Configuration for ulimits
-	Ulimits RegistryImageBuildUlimitArrayInput `pulumi:"ulimits"`
-	// Version of the underlying builder to use
-	Version pulumi.StringPtrInput `pulumi:"version"`
+	AuthConfigs    RegistryImageBuildAuthConfigArrayInput `pulumi:"authConfigs"`
+	BuildArgs      pulumi.StringMapInput                  `pulumi:"buildArgs"`
+	BuildId        pulumi.StringPtrInput                  `pulumi:"buildId"`
+	CacheFroms     pulumi.StringArrayInput                `pulumi:"cacheFroms"`
+	CgroupParent   pulumi.StringPtrInput                  `pulumi:"cgroupParent"`
+	Context        pulumi.StringInput                     `pulumi:"context"`
+	CpuPeriod      pulumi.IntPtrInput                     `pulumi:"cpuPeriod"`
+	CpuQuota       pulumi.IntPtrInput                     `pulumi:"cpuQuota"`
+	CpuSetCpus     pulumi.StringPtrInput                  `pulumi:"cpuSetCpus"`
+	CpuSetMems     pulumi.StringPtrInput                  `pulumi:"cpuSetMems"`
+	CpuShares      pulumi.IntPtrInput                     `pulumi:"cpuShares"`
+	Dockerfile     pulumi.StringPtrInput                  `pulumi:"dockerfile"`
+	ExtraHosts     pulumi.StringArrayInput                `pulumi:"extraHosts"`
+	ForceRemove    pulumi.BoolPtrInput                    `pulumi:"forceRemove"`
+	Isolation      pulumi.StringPtrInput                  `pulumi:"isolation"`
+	Labels         pulumi.StringMapInput                  `pulumi:"labels"`
+	Memory         pulumi.IntPtrInput                     `pulumi:"memory"`
+	MemorySwap     pulumi.IntPtrInput                     `pulumi:"memorySwap"`
+	NetworkMode    pulumi.StringPtrInput                  `pulumi:"networkMode"`
+	NoCache        pulumi.BoolPtrInput                    `pulumi:"noCache"`
+	Platform       pulumi.StringPtrInput                  `pulumi:"platform"`
+	PullParent     pulumi.BoolPtrInput                    `pulumi:"pullParent"`
+	RemoteContext  pulumi.StringPtrInput                  `pulumi:"remoteContext"`
+	Remove         pulumi.BoolPtrInput                    `pulumi:"remove"`
+	SecurityOpts   pulumi.StringArrayInput                `pulumi:"securityOpts"`
+	SessionId      pulumi.StringPtrInput                  `pulumi:"sessionId"`
+	ShmSize        pulumi.IntPtrInput                     `pulumi:"shmSize"`
+	Squash         pulumi.BoolPtrInput                    `pulumi:"squash"`
+	SuppressOutput pulumi.BoolPtrInput                    `pulumi:"suppressOutput"`
+	Target         pulumi.StringPtrInput                  `pulumi:"target"`
+	Ulimits        RegistryImageBuildUlimitArrayInput     `pulumi:"ulimits"`
+	Version        pulumi.StringPtrInput                  `pulumi:"version"`
 }
 
 func (RegistryImageBuildArgs) ElementType() reflect.Type {
@@ -2894,162 +2645,130 @@ func (o RegistryImageBuildOutput) ToRegistryImageBuildPtrOutputWithContext(ctx c
 	}).(RegistryImageBuildPtrOutput)
 }
 
-// The configuration for the authentication
 func (o RegistryImageBuildOutput) AuthConfigs() RegistryImageBuildAuthConfigArrayOutput {
 	return o.ApplyT(func(v RegistryImageBuild) []RegistryImageBuildAuthConfig { return v.AuthConfigs }).(RegistryImageBuildAuthConfigArrayOutput)
 }
 
-// Pairs for build-time variables in the form TODO
 func (o RegistryImageBuildOutput) BuildArgs() pulumi.StringMapOutput {
 	return o.ApplyT(func(v RegistryImageBuild) map[string]string { return v.BuildArgs }).(pulumi.StringMapOutput)
 }
 
-// BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request.
 func (o RegistryImageBuildOutput) BuildId() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v RegistryImageBuild) *string { return v.BuildId }).(pulumi.StringPtrOutput)
 }
 
-// Images to consider as cache sources
 func (o RegistryImageBuildOutput) CacheFroms() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v RegistryImageBuild) []string { return v.CacheFroms }).(pulumi.StringArrayOutput)
 }
 
-// Optional parent cgroup for the container
 func (o RegistryImageBuildOutput) CgroupParent() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v RegistryImageBuild) *string { return v.CgroupParent }).(pulumi.StringPtrOutput)
 }
 
-// The absolute path to the context folder. You can use the helper function '${path.cwd}/context-dir'.
 func (o RegistryImageBuildOutput) Context() pulumi.StringOutput {
 	return o.ApplyT(func(v RegistryImageBuild) string { return v.Context }).(pulumi.StringOutput)
 }
 
-// The length of a CPU period in microseconds
 func (o RegistryImageBuildOutput) CpuPeriod() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v RegistryImageBuild) *int { return v.CpuPeriod }).(pulumi.IntPtrOutput)
 }
 
-// Microseconds of CPU time that the container can get in a CPU period
 func (o RegistryImageBuildOutput) CpuQuota() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v RegistryImageBuild) *int { return v.CpuQuota }).(pulumi.IntPtrOutput)
 }
 
-// CPUs in which to allow execution (e.g., `0-3`, `0`, `1`)
 func (o RegistryImageBuildOutput) CpuSetCpus() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v RegistryImageBuild) *string { return v.CpuSetCpus }).(pulumi.StringPtrOutput)
 }
 
-// MEMs in which to allow execution (`0-3`, `0`, `1`)
 func (o RegistryImageBuildOutput) CpuSetMems() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v RegistryImageBuild) *string { return v.CpuSetMems }).(pulumi.StringPtrOutput)
 }
 
-// CPU shares (relative weight)
 func (o RegistryImageBuildOutput) CpuShares() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v RegistryImageBuild) *int { return v.CpuShares }).(pulumi.IntPtrOutput)
 }
 
-// Dockerfile file. Defaults to `Dockerfile`
 func (o RegistryImageBuildOutput) Dockerfile() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v RegistryImageBuild) *string { return v.Dockerfile }).(pulumi.StringPtrOutput)
 }
 
-// A list of hostnames/IP mappings to add to the container’s /etc/hosts file. Specified in the form ["hostname:IP"]
 func (o RegistryImageBuildOutput) ExtraHosts() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v RegistryImageBuild) []string { return v.ExtraHosts }).(pulumi.StringArrayOutput)
 }
 
-// Always remove intermediate containers
 func (o RegistryImageBuildOutput) ForceRemove() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v RegistryImageBuild) *bool { return v.ForceRemove }).(pulumi.BoolPtrOutput)
 }
 
-// Isolation represents the isolation technology of a container. The supported values are
 func (o RegistryImageBuildOutput) Isolation() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v RegistryImageBuild) *string { return v.Isolation }).(pulumi.StringPtrOutput)
 }
 
-// User-defined key/value metadata
 func (o RegistryImageBuildOutput) Labels() pulumi.StringMapOutput {
 	return o.ApplyT(func(v RegistryImageBuild) map[string]string { return v.Labels }).(pulumi.StringMapOutput)
 }
 
-// Set memory limit for build
 func (o RegistryImageBuildOutput) Memory() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v RegistryImageBuild) *int { return v.Memory }).(pulumi.IntPtrOutput)
 }
 
-// Total memory (memory + swap), -1 to enable unlimited swap
 func (o RegistryImageBuildOutput) MemorySwap() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v RegistryImageBuild) *int { return v.MemorySwap }).(pulumi.IntPtrOutput)
 }
 
-// Set the networking mode for the RUN instructions during build
 func (o RegistryImageBuildOutput) NetworkMode() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v RegistryImageBuild) *string { return v.NetworkMode }).(pulumi.StringPtrOutput)
 }
 
-// Do not use the cache when building the image
 func (o RegistryImageBuildOutput) NoCache() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v RegistryImageBuild) *bool { return v.NoCache }).(pulumi.BoolPtrOutput)
 }
 
-// Set platform if server is multi-platform capable
 func (o RegistryImageBuildOutput) Platform() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v RegistryImageBuild) *string { return v.Platform }).(pulumi.StringPtrOutput)
 }
 
-// Attempt to pull the image even if an older image exists locally
 func (o RegistryImageBuildOutput) PullParent() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v RegistryImageBuild) *bool { return v.PullParent }).(pulumi.BoolPtrOutput)
 }
 
-// A Git repository URI or HTTP/HTTPS context URI
 func (o RegistryImageBuildOutput) RemoteContext() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v RegistryImageBuild) *string { return v.RemoteContext }).(pulumi.StringPtrOutput)
 }
 
-// Remove intermediate containers after a successful build (default behavior)
 func (o RegistryImageBuildOutput) Remove() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v RegistryImageBuild) *bool { return v.Remove }).(pulumi.BoolPtrOutput)
 }
 
-// The security options
 func (o RegistryImageBuildOutput) SecurityOpts() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v RegistryImageBuild) []string { return v.SecurityOpts }).(pulumi.StringArrayOutput)
 }
 
-// Set an ID for the build session
 func (o RegistryImageBuildOutput) SessionId() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v RegistryImageBuild) *string { return v.SessionId }).(pulumi.StringPtrOutput)
 }
 
-// Size of /dev/shm in bytes. The size must be greater than 0
 func (o RegistryImageBuildOutput) ShmSize() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v RegistryImageBuild) *int { return v.ShmSize }).(pulumi.IntPtrOutput)
 }
 
-// If true the new layers are squashed into a new image with a single new layer
 func (o RegistryImageBuildOutput) Squash() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v RegistryImageBuild) *bool { return v.Squash }).(pulumi.BoolPtrOutput)
 }
 
-// Suppress the build output and print image ID on success
 func (o RegistryImageBuildOutput) SuppressOutput() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v RegistryImageBuild) *bool { return v.SuppressOutput }).(pulumi.BoolPtrOutput)
 }
 
-// Set the target build stage to build
 func (o RegistryImageBuildOutput) Target() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v RegistryImageBuild) *string { return v.Target }).(pulumi.StringPtrOutput)
 }
 
-// Configuration for ulimits
 func (o RegistryImageBuildOutput) Ulimits() RegistryImageBuildUlimitArrayOutput {
 	return o.ApplyT(func(v RegistryImageBuild) []RegistryImageBuildUlimit { return v.Ulimits }).(RegistryImageBuildUlimitArrayOutput)
 }
 
-// Version of the underlying builder to use
 func (o RegistryImageBuildOutput) Version() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v RegistryImageBuild) *string { return v.Version }).(pulumi.StringPtrOutput)
 }
@@ -3078,7 +2797,6 @@ func (o RegistryImageBuildPtrOutput) Elem() RegistryImageBuildOutput {
 	}).(RegistryImageBuildOutput)
 }
 
-// The configuration for the authentication
 func (o RegistryImageBuildPtrOutput) AuthConfigs() RegistryImageBuildAuthConfigArrayOutput {
 	return o.ApplyT(func(v *RegistryImageBuild) []RegistryImageBuildAuthConfig {
 		if v == nil {
@@ -3088,7 +2806,6 @@ func (o RegistryImageBuildPtrOutput) AuthConfigs() RegistryImageBuildAuthConfigA
 	}).(RegistryImageBuildAuthConfigArrayOutput)
 }
 
-// Pairs for build-time variables in the form TODO
 func (o RegistryImageBuildPtrOutput) BuildArgs() pulumi.StringMapOutput {
 	return o.ApplyT(func(v *RegistryImageBuild) map[string]string {
 		if v == nil {
@@ -3098,7 +2815,6 @@ func (o RegistryImageBuildPtrOutput) BuildArgs() pulumi.StringMapOutput {
 	}).(pulumi.StringMapOutput)
 }
 
-// BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request.
 func (o RegistryImageBuildPtrOutput) BuildId() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *RegistryImageBuild) *string {
 		if v == nil {
@@ -3108,7 +2824,6 @@ func (o RegistryImageBuildPtrOutput) BuildId() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
-// Images to consider as cache sources
 func (o RegistryImageBuildPtrOutput) CacheFroms() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v *RegistryImageBuild) []string {
 		if v == nil {
@@ -3118,7 +2833,6 @@ func (o RegistryImageBuildPtrOutput) CacheFroms() pulumi.StringArrayOutput {
 	}).(pulumi.StringArrayOutput)
 }
 
-// Optional parent cgroup for the container
 func (o RegistryImageBuildPtrOutput) CgroupParent() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *RegistryImageBuild) *string {
 		if v == nil {
@@ -3128,7 +2842,6 @@ func (o RegistryImageBuildPtrOutput) CgroupParent() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
-// The absolute path to the context folder. You can use the helper function '${path.cwd}/context-dir'.
 func (o RegistryImageBuildPtrOutput) Context() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *RegistryImageBuild) *string {
 		if v == nil {
@@ -3138,7 +2851,6 @@ func (o RegistryImageBuildPtrOutput) Context() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
-// The length of a CPU period in microseconds
 func (o RegistryImageBuildPtrOutput) CpuPeriod() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v *RegistryImageBuild) *int {
 		if v == nil {
@@ -3148,7 +2860,6 @@ func (o RegistryImageBuildPtrOutput) CpuPeriod() pulumi.IntPtrOutput {
 	}).(pulumi.IntPtrOutput)
 }
 
-// Microseconds of CPU time that the container can get in a CPU period
 func (o RegistryImageBuildPtrOutput) CpuQuota() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v *RegistryImageBuild) *int {
 		if v == nil {
@@ -3158,7 +2869,6 @@ func (o RegistryImageBuildPtrOutput) CpuQuota() pulumi.IntPtrOutput {
 	}).(pulumi.IntPtrOutput)
 }
 
-// CPUs in which to allow execution (e.g., `0-3`, `0`, `1`)
 func (o RegistryImageBuildPtrOutput) CpuSetCpus() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *RegistryImageBuild) *string {
 		if v == nil {
@@ -3168,7 +2878,6 @@ func (o RegistryImageBuildPtrOutput) CpuSetCpus() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
-// MEMs in which to allow execution (`0-3`, `0`, `1`)
 func (o RegistryImageBuildPtrOutput) CpuSetMems() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *RegistryImageBuild) *string {
 		if v == nil {
@@ -3178,7 +2887,6 @@ func (o RegistryImageBuildPtrOutput) CpuSetMems() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
-// CPU shares (relative weight)
 func (o RegistryImageBuildPtrOutput) CpuShares() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v *RegistryImageBuild) *int {
 		if v == nil {
@@ -3188,7 +2896,6 @@ func (o RegistryImageBuildPtrOutput) CpuShares() pulumi.IntPtrOutput {
 	}).(pulumi.IntPtrOutput)
 }
 
-// Dockerfile file. Defaults to `Dockerfile`
 func (o RegistryImageBuildPtrOutput) Dockerfile() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *RegistryImageBuild) *string {
 		if v == nil {
@@ -3198,7 +2905,6 @@ func (o RegistryImageBuildPtrOutput) Dockerfile() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
-// A list of hostnames/IP mappings to add to the container’s /etc/hosts file. Specified in the form ["hostname:IP"]
 func (o RegistryImageBuildPtrOutput) ExtraHosts() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v *RegistryImageBuild) []string {
 		if v == nil {
@@ -3208,7 +2914,6 @@ func (o RegistryImageBuildPtrOutput) ExtraHosts() pulumi.StringArrayOutput {
 	}).(pulumi.StringArrayOutput)
 }
 
-// Always remove intermediate containers
 func (o RegistryImageBuildPtrOutput) ForceRemove() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *RegistryImageBuild) *bool {
 		if v == nil {
@@ -3218,7 +2923,6 @@ func (o RegistryImageBuildPtrOutput) ForceRemove() pulumi.BoolPtrOutput {
 	}).(pulumi.BoolPtrOutput)
 }
 
-// Isolation represents the isolation technology of a container. The supported values are
 func (o RegistryImageBuildPtrOutput) Isolation() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *RegistryImageBuild) *string {
 		if v == nil {
@@ -3228,7 +2932,6 @@ func (o RegistryImageBuildPtrOutput) Isolation() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
-// User-defined key/value metadata
 func (o RegistryImageBuildPtrOutput) Labels() pulumi.StringMapOutput {
 	return o.ApplyT(func(v *RegistryImageBuild) map[string]string {
 		if v == nil {
@@ -3238,7 +2941,6 @@ func (o RegistryImageBuildPtrOutput) Labels() pulumi.StringMapOutput {
 	}).(pulumi.StringMapOutput)
 }
 
-// Set memory limit for build
 func (o RegistryImageBuildPtrOutput) Memory() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v *RegistryImageBuild) *int {
 		if v == nil {
@@ -3248,7 +2950,6 @@ func (o RegistryImageBuildPtrOutput) Memory() pulumi.IntPtrOutput {
 	}).(pulumi.IntPtrOutput)
 }
 
-// Total memory (memory + swap), -1 to enable unlimited swap
 func (o RegistryImageBuildPtrOutput) MemorySwap() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v *RegistryImageBuild) *int {
 		if v == nil {
@@ -3258,7 +2959,6 @@ func (o RegistryImageBuildPtrOutput) MemorySwap() pulumi.IntPtrOutput {
 	}).(pulumi.IntPtrOutput)
 }
 
-// Set the networking mode for the RUN instructions during build
 func (o RegistryImageBuildPtrOutput) NetworkMode() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *RegistryImageBuild) *string {
 		if v == nil {
@@ -3268,7 +2968,6 @@ func (o RegistryImageBuildPtrOutput) NetworkMode() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
-// Do not use the cache when building the image
 func (o RegistryImageBuildPtrOutput) NoCache() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *RegistryImageBuild) *bool {
 		if v == nil {
@@ -3278,7 +2977,6 @@ func (o RegistryImageBuildPtrOutput) NoCache() pulumi.BoolPtrOutput {
 	}).(pulumi.BoolPtrOutput)
 }
 
-// Set platform if server is multi-platform capable
 func (o RegistryImageBuildPtrOutput) Platform() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *RegistryImageBuild) *string {
 		if v == nil {
@@ -3288,7 +2986,6 @@ func (o RegistryImageBuildPtrOutput) Platform() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
-// Attempt to pull the image even if an older image exists locally
 func (o RegistryImageBuildPtrOutput) PullParent() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *RegistryImageBuild) *bool {
 		if v == nil {
@@ -3298,7 +2995,6 @@ func (o RegistryImageBuildPtrOutput) PullParent() pulumi.BoolPtrOutput {
 	}).(pulumi.BoolPtrOutput)
 }
 
-// A Git repository URI or HTTP/HTTPS context URI
 func (o RegistryImageBuildPtrOutput) RemoteContext() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *RegistryImageBuild) *string {
 		if v == nil {
@@ -3308,7 +3004,6 @@ func (o RegistryImageBuildPtrOutput) RemoteContext() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
-// Remove intermediate containers after a successful build (default behavior)
 func (o RegistryImageBuildPtrOutput) Remove() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *RegistryImageBuild) *bool {
 		if v == nil {
@@ -3318,7 +3013,6 @@ func (o RegistryImageBuildPtrOutput) Remove() pulumi.BoolPtrOutput {
 	}).(pulumi.BoolPtrOutput)
 }
 
-// The security options
 func (o RegistryImageBuildPtrOutput) SecurityOpts() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v *RegistryImageBuild) []string {
 		if v == nil {
@@ -3328,7 +3022,6 @@ func (o RegistryImageBuildPtrOutput) SecurityOpts() pulumi.StringArrayOutput {
 	}).(pulumi.StringArrayOutput)
 }
 
-// Set an ID for the build session
 func (o RegistryImageBuildPtrOutput) SessionId() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *RegistryImageBuild) *string {
 		if v == nil {
@@ -3338,7 +3031,6 @@ func (o RegistryImageBuildPtrOutput) SessionId() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
-// Size of /dev/shm in bytes. The size must be greater than 0
 func (o RegistryImageBuildPtrOutput) ShmSize() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v *RegistryImageBuild) *int {
 		if v == nil {
@@ -3348,7 +3040,6 @@ func (o RegistryImageBuildPtrOutput) ShmSize() pulumi.IntPtrOutput {
 	}).(pulumi.IntPtrOutput)
 }
 
-// If true the new layers are squashed into a new image with a single new layer
 func (o RegistryImageBuildPtrOutput) Squash() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *RegistryImageBuild) *bool {
 		if v == nil {
@@ -3358,7 +3049,6 @@ func (o RegistryImageBuildPtrOutput) Squash() pulumi.BoolPtrOutput {
 	}).(pulumi.BoolPtrOutput)
 }
 
-// Suppress the build output and print image ID on success
 func (o RegistryImageBuildPtrOutput) SuppressOutput() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *RegistryImageBuild) *bool {
 		if v == nil {
@@ -3368,7 +3058,6 @@ func (o RegistryImageBuildPtrOutput) SuppressOutput() pulumi.BoolPtrOutput {
 	}).(pulumi.BoolPtrOutput)
 }
 
-// Set the target build stage to build
 func (o RegistryImageBuildPtrOutput) Target() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *RegistryImageBuild) *string {
 		if v == nil {
@@ -3378,7 +3067,6 @@ func (o RegistryImageBuildPtrOutput) Target() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
-// Configuration for ulimits
 func (o RegistryImageBuildPtrOutput) Ulimits() RegistryImageBuildUlimitArrayOutput {
 	return o.ApplyT(func(v *RegistryImageBuild) []RegistryImageBuildUlimit {
 		if v == nil {
@@ -3388,7 +3076,6 @@ func (o RegistryImageBuildPtrOutput) Ulimits() RegistryImageBuildUlimitArrayOutp
 	}).(RegistryImageBuildUlimitArrayOutput)
 }
 
-// Version of the underlying builder to use
 func (o RegistryImageBuildPtrOutput) Version() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *RegistryImageBuild) *string {
 		if v == nil {
@@ -3535,8 +3222,7 @@ func (o RegistryImageBuildAuthConfigArrayOutput) Index(i pulumi.IntInput) Regist
 }
 
 type RegistryImageBuildUlimit struct {
-	Hard int `pulumi:"hard"`
-	// The name of the Docker image.
+	Hard int    `pulumi:"hard"`
 	Name string `pulumi:"name"`
 	Soft int    `pulumi:"soft"`
 }
@@ -3553,8 +3239,7 @@ type RegistryImageBuildUlimitInput interface {
 }
 
 type RegistryImageBuildUlimitArgs struct {
-	Hard pulumi.IntInput `pulumi:"hard"`
-	// The name of the Docker image.
+	Hard pulumi.IntInput    `pulumi:"hard"`
 	Name pulumi.StringInput `pulumi:"name"`
 	Soft pulumi.IntInput    `pulumi:"soft"`
 }
@@ -3614,7 +3299,6 @@ func (o RegistryImageBuildUlimitOutput) Hard() pulumi.IntOutput {
 	return o.ApplyT(func(v RegistryImageBuildUlimit) int { return v.Hard }).(pulumi.IntOutput)
 }
 
-// The name of the Docker image.
 func (o RegistryImageBuildUlimitOutput) Name() pulumi.StringOutput {
 	return o.ApplyT(func(v RegistryImageBuildUlimit) string { return v.Name }).(pulumi.StringOutput)
 }
@@ -3644,24 +3328,15 @@ func (o RegistryImageBuildUlimitArrayOutput) Index(i pulumi.IntInput) RegistryIm
 }
 
 type RemoteImageBuild struct {
-	// Set build-time variables
-	BuildArg map[string]string `pulumi:"buildArg"`
-	// Name of the Dockerfile. Defaults to `Dockerfile`.
-	Dockerfile *string `pulumi:"dockerfile"`
-	// Always remove intermediate containers
-	ForceRemove *bool `pulumi:"forceRemove"`
-	// Set metadata for an image
-	Label map[string]string `pulumi:"label"`
-	// Do not use cache when building the image
-	NoCache *bool `pulumi:"noCache"`
-	// Context path
-	Path string `pulumi:"path"`
-	// Remove intermediate containers after a successful build. Defaults to  `true`.
-	Remove *bool `pulumi:"remove"`
-	// Name and optionally a tag in the 'name:tag' format
-	Tags []string `pulumi:"tags"`
-	// Set the target build stage to build
-	Target *string `pulumi:"target"`
+	BuildArg    map[string]string `pulumi:"buildArg"`
+	Dockerfile  *string           `pulumi:"dockerfile"`
+	ForceRemove *bool             `pulumi:"forceRemove"`
+	Label       map[string]string `pulumi:"label"`
+	NoCache     *bool             `pulumi:"noCache"`
+	Path        string            `pulumi:"path"`
+	Remove      *bool             `pulumi:"remove"`
+	Tags        []string          `pulumi:"tags"`
+	Target      *string           `pulumi:"target"`
 }
 
 // RemoteImageBuildInput is an input type that accepts RemoteImageBuildArgs and RemoteImageBuildOutput values.
@@ -3676,24 +3351,15 @@ type RemoteImageBuildInput interface {
 }
 
 type RemoteImageBuildArgs struct {
-	// Set build-time variables
-	BuildArg pulumi.StringMapInput `pulumi:"buildArg"`
-	// Name of the Dockerfile. Defaults to `Dockerfile`.
-	Dockerfile pulumi.StringPtrInput `pulumi:"dockerfile"`
-	// Always remove intermediate containers
-	ForceRemove pulumi.BoolPtrInput `pulumi:"forceRemove"`
-	// Set metadata for an image
-	Label pulumi.StringMapInput `pulumi:"label"`
-	// Do not use cache when building the image
-	NoCache pulumi.BoolPtrInput `pulumi:"noCache"`
-	// Context path
-	Path pulumi.StringInput `pulumi:"path"`
-	// Remove intermediate containers after a successful build. Defaults to  `true`.
-	Remove pulumi.BoolPtrInput `pulumi:"remove"`
-	// Name and optionally a tag in the 'name:tag' format
-	Tags pulumi.StringArrayInput `pulumi:"tags"`
-	// Set the target build stage to build
-	Target pulumi.StringPtrInput `pulumi:"target"`
+	BuildArg    pulumi.StringMapInput   `pulumi:"buildArg"`
+	Dockerfile  pulumi.StringPtrInput   `pulumi:"dockerfile"`
+	ForceRemove pulumi.BoolPtrInput     `pulumi:"forceRemove"`
+	Label       pulumi.StringMapInput   `pulumi:"label"`
+	NoCache     pulumi.BoolPtrInput     `pulumi:"noCache"`
+	Path        pulumi.StringInput      `pulumi:"path"`
+	Remove      pulumi.BoolPtrInput     `pulumi:"remove"`
+	Tags        pulumi.StringArrayInput `pulumi:"tags"`
+	Target      pulumi.StringPtrInput   `pulumi:"target"`
 }
 
 func (RemoteImageBuildArgs) ElementType() reflect.Type {
@@ -3773,47 +3439,38 @@ func (o RemoteImageBuildOutput) ToRemoteImageBuildPtrOutputWithContext(ctx conte
 	}).(RemoteImageBuildPtrOutput)
 }
 
-// Set build-time variables
 func (o RemoteImageBuildOutput) BuildArg() pulumi.StringMapOutput {
 	return o.ApplyT(func(v RemoteImageBuild) map[string]string { return v.BuildArg }).(pulumi.StringMapOutput)
 }
 
-// Name of the Dockerfile. Defaults to `Dockerfile`.
 func (o RemoteImageBuildOutput) Dockerfile() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v RemoteImageBuild) *string { return v.Dockerfile }).(pulumi.StringPtrOutput)
 }
 
-// Always remove intermediate containers
 func (o RemoteImageBuildOutput) ForceRemove() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v RemoteImageBuild) *bool { return v.ForceRemove }).(pulumi.BoolPtrOutput)
 }
 
-// Set metadata for an image
 func (o RemoteImageBuildOutput) Label() pulumi.StringMapOutput {
 	return o.ApplyT(func(v RemoteImageBuild) map[string]string { return v.Label }).(pulumi.StringMapOutput)
 }
 
-// Do not use cache when building the image
 func (o RemoteImageBuildOutput) NoCache() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v RemoteImageBuild) *bool { return v.NoCache }).(pulumi.BoolPtrOutput)
 }
 
-// Context path
 func (o RemoteImageBuildOutput) Path() pulumi.StringOutput {
 	return o.ApplyT(func(v RemoteImageBuild) string { return v.Path }).(pulumi.StringOutput)
 }
 
-// Remove intermediate containers after a successful build. Defaults to  `true`.
 func (o RemoteImageBuildOutput) Remove() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v RemoteImageBuild) *bool { return v.Remove }).(pulumi.BoolPtrOutput)
 }
 
-// Name and optionally a tag in the 'name:tag' format
 func (o RemoteImageBuildOutput) Tags() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v RemoteImageBuild) []string { return v.Tags }).(pulumi.StringArrayOutput)
 }
 
-// Set the target build stage to build
 func (o RemoteImageBuildOutput) Target() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v RemoteImageBuild) *string { return v.Target }).(pulumi.StringPtrOutput)
 }
@@ -3842,7 +3499,6 @@ func (o RemoteImageBuildPtrOutput) Elem() RemoteImageBuildOutput {
 	}).(RemoteImageBuildOutput)
 }
 
-// Set build-time variables
 func (o RemoteImageBuildPtrOutput) BuildArg() pulumi.StringMapOutput {
 	return o.ApplyT(func(v *RemoteImageBuild) map[string]string {
 		if v == nil {
@@ -3852,7 +3508,6 @@ func (o RemoteImageBuildPtrOutput) BuildArg() pulumi.StringMapOutput {
 	}).(pulumi.StringMapOutput)
 }
 
-// Name of the Dockerfile. Defaults to `Dockerfile`.
 func (o RemoteImageBuildPtrOutput) Dockerfile() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *RemoteImageBuild) *string {
 		if v == nil {
@@ -3862,7 +3517,6 @@ func (o RemoteImageBuildPtrOutput) Dockerfile() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
-// Always remove intermediate containers
 func (o RemoteImageBuildPtrOutput) ForceRemove() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *RemoteImageBuild) *bool {
 		if v == nil {
@@ -3872,7 +3526,6 @@ func (o RemoteImageBuildPtrOutput) ForceRemove() pulumi.BoolPtrOutput {
 	}).(pulumi.BoolPtrOutput)
 }
 
-// Set metadata for an image
 func (o RemoteImageBuildPtrOutput) Label() pulumi.StringMapOutput {
 	return o.ApplyT(func(v *RemoteImageBuild) map[string]string {
 		if v == nil {
@@ -3882,7 +3535,6 @@ func (o RemoteImageBuildPtrOutput) Label() pulumi.StringMapOutput {
 	}).(pulumi.StringMapOutput)
 }
 
-// Do not use cache when building the image
 func (o RemoteImageBuildPtrOutput) NoCache() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *RemoteImageBuild) *bool {
 		if v == nil {
@@ -3892,7 +3544,6 @@ func (o RemoteImageBuildPtrOutput) NoCache() pulumi.BoolPtrOutput {
 	}).(pulumi.BoolPtrOutput)
 }
 
-// Context path
 func (o RemoteImageBuildPtrOutput) Path() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *RemoteImageBuild) *string {
 		if v == nil {
@@ -3902,7 +3553,6 @@ func (o RemoteImageBuildPtrOutput) Path() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
-// Remove intermediate containers after a successful build. Defaults to  `true`.
 func (o RemoteImageBuildPtrOutput) Remove() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *RemoteImageBuild) *bool {
 		if v == nil {
@@ -3912,7 +3562,6 @@ func (o RemoteImageBuildPtrOutput) Remove() pulumi.BoolPtrOutput {
 	}).(pulumi.BoolPtrOutput)
 }
 
-// Name and optionally a tag in the 'name:tag' format
 func (o RemoteImageBuildPtrOutput) Tags() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v *RemoteImageBuild) []string {
 		if v == nil {
@@ -3922,7 +3571,6 @@ func (o RemoteImageBuildPtrOutput) Tags() pulumi.StringArrayOutput {
 	}).(pulumi.StringArrayOutput)
 }
 
-// Set the target build stage to build
 func (o RemoteImageBuildPtrOutput) Target() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *RemoteImageBuild) *string {
 		if v == nil {
@@ -3933,9 +3581,7 @@ func (o RemoteImageBuildPtrOutput) Target() pulumi.StringPtrOutput {
 }
 
 type SecretLabel struct {
-	// Name of the label
 	Label string `pulumi:"label"`
-	// Value of the label
 	Value string `pulumi:"value"`
 }
 
@@ -3951,9 +3597,7 @@ type SecretLabelInput interface {
 }
 
 type SecretLabelArgs struct {
-	// Name of the label
 	Label pulumi.StringInput `pulumi:"label"`
-	// Value of the label
 	Value pulumi.StringInput `pulumi:"value"`
 }
 
@@ -4008,12 +3652,10 @@ func (o SecretLabelOutput) ToSecretLabelOutputWithContext(ctx context.Context) S
 	return o
 }
 
-// Name of the label
 func (o SecretLabelOutput) Label() pulumi.StringOutput {
 	return o.ApplyT(func(v SecretLabel) string { return v.Label }).(pulumi.StringOutput)
 }
 
-// Value of the label
 func (o SecretLabelOutput) Value() pulumi.StringOutput {
 	return o.ApplyT(func(v SecretLabel) string { return v.Value }).(pulumi.StringOutput)
 }
@@ -4039,12 +3681,9 @@ func (o SecretLabelArrayOutput) Index(i pulumi.IntInput) SecretLabelOutput {
 }
 
 type ServiceAuth struct {
-	// The password
-	Password *string `pulumi:"password"`
-	// The address of the server for the authentication
-	ServerAddress string `pulumi:"serverAddress"`
-	// The username
-	Username *string `pulumi:"username"`
+	Password      *string `pulumi:"password"`
+	ServerAddress string  `pulumi:"serverAddress"`
+	Username      *string `pulumi:"username"`
 }
 
 // ServiceAuthInput is an input type that accepts ServiceAuthArgs and ServiceAuthOutput values.
@@ -4059,12 +3698,9 @@ type ServiceAuthInput interface {
 }
 
 type ServiceAuthArgs struct {
-	// The password
-	Password pulumi.StringPtrInput `pulumi:"password"`
-	// The address of the server for the authentication
-	ServerAddress pulumi.StringInput `pulumi:"serverAddress"`
-	// The username
-	Username pulumi.StringPtrInput `pulumi:"username"`
+	Password      pulumi.StringPtrInput `pulumi:"password"`
+	ServerAddress pulumi.StringInput    `pulumi:"serverAddress"`
+	Username      pulumi.StringPtrInput `pulumi:"username"`
 }
 
 func (ServiceAuthArgs) ElementType() reflect.Type {
@@ -4144,17 +3780,14 @@ func (o ServiceAuthOutput) ToServiceAuthPtrOutputWithContext(ctx context.Context
 	}).(ServiceAuthPtrOutput)
 }
 
-// The password
 func (o ServiceAuthOutput) Password() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ServiceAuth) *string { return v.Password }).(pulumi.StringPtrOutput)
 }
 
-// The address of the server for the authentication
 func (o ServiceAuthOutput) ServerAddress() pulumi.StringOutput {
 	return o.ApplyT(func(v ServiceAuth) string { return v.ServerAddress }).(pulumi.StringOutput)
 }
 
-// The username
 func (o ServiceAuthOutput) Username() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ServiceAuth) *string { return v.Username }).(pulumi.StringPtrOutput)
 }
@@ -4183,7 +3816,6 @@ func (o ServiceAuthPtrOutput) Elem() ServiceAuthOutput {
 	}).(ServiceAuthOutput)
 }
 
-// The password
 func (o ServiceAuthPtrOutput) Password() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *ServiceAuth) *string {
 		if v == nil {
@@ -4193,7 +3825,6 @@ func (o ServiceAuthPtrOutput) Password() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
-// The address of the server for the authentication
 func (o ServiceAuthPtrOutput) ServerAddress() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *ServiceAuth) *string {
 		if v == nil {
@@ -4203,7 +3834,6 @@ func (o ServiceAuthPtrOutput) ServerAddress() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
-// The username
 func (o ServiceAuthPtrOutput) Username() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *ServiceAuth) *string {
 		if v == nil {
@@ -4214,9 +3844,7 @@ func (o ServiceAuthPtrOutput) Username() pulumi.StringPtrOutput {
 }
 
 type ServiceConvergeConfig struct {
-	// The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.
-	Delay *string `pulumi:"delay"`
-	// The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`
+	Delay   *string `pulumi:"delay"`
 	Timeout *string `pulumi:"timeout"`
 }
 
@@ -4232,9 +3860,7 @@ type ServiceConvergeConfigInput interface {
 }
 
 type ServiceConvergeConfigArgs struct {
-	// The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.
-	Delay pulumi.StringPtrInput `pulumi:"delay"`
-	// The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`
+	Delay   pulumi.StringPtrInput `pulumi:"delay"`
 	Timeout pulumi.StringPtrInput `pulumi:"timeout"`
 }
 
@@ -4315,12 +3941,10 @@ func (o ServiceConvergeConfigOutput) ToServiceConvergeConfigPtrOutputWithContext
 	}).(ServiceConvergeConfigPtrOutput)
 }
 
-// The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.
 func (o ServiceConvergeConfigOutput) Delay() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ServiceConvergeConfig) *string { return v.Delay }).(pulumi.StringPtrOutput)
 }
 
-// The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`
 func (o ServiceConvergeConfigOutput) Timeout() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ServiceConvergeConfig) *string { return v.Timeout }).(pulumi.StringPtrOutput)
 }
@@ -4349,7 +3973,6 @@ func (o ServiceConvergeConfigPtrOutput) Elem() ServiceConvergeConfigOutput {
 	}).(ServiceConvergeConfigOutput)
 }
 
-// The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.
 func (o ServiceConvergeConfigPtrOutput) Delay() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *ServiceConvergeConfig) *string {
 		if v == nil {
@@ -4359,7 +3982,6 @@ func (o ServiceConvergeConfigPtrOutput) Delay() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
-// The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`
 func (o ServiceConvergeConfigPtrOutput) Timeout() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *ServiceConvergeConfig) *string {
 		if v == nil {
@@ -4370,9 +3992,7 @@ func (o ServiceConvergeConfigPtrOutput) Timeout() pulumi.StringPtrOutput {
 }
 
 type ServiceEndpointSpec struct {
-	// The mode of resolution to use for internal load balancing between tasks
-	Mode *string `pulumi:"mode"`
-	// List of exposed ports that this service is accessible on from the outside. Ports can only be provided if 'vip' resolution mode is used
+	Mode  *string                   `pulumi:"mode"`
 	Ports []ServiceEndpointSpecPort `pulumi:"ports"`
 }
 
@@ -4388,9 +4008,7 @@ type ServiceEndpointSpecInput interface {
 }
 
 type ServiceEndpointSpecArgs struct {
-	// The mode of resolution to use for internal load balancing between tasks
-	Mode pulumi.StringPtrInput `pulumi:"mode"`
-	// List of exposed ports that this service is accessible on from the outside. Ports can only be provided if 'vip' resolution mode is used
+	Mode  pulumi.StringPtrInput             `pulumi:"mode"`
 	Ports ServiceEndpointSpecPortArrayInput `pulumi:"ports"`
 }
 
@@ -4471,12 +4089,10 @@ func (o ServiceEndpointSpecOutput) ToServiceEndpointSpecPtrOutputWithContext(ctx
 	}).(ServiceEndpointSpecPtrOutput)
 }
 
-// The mode of resolution to use for internal load balancing between tasks
 func (o ServiceEndpointSpecOutput) Mode() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ServiceEndpointSpec) *string { return v.Mode }).(pulumi.StringPtrOutput)
 }
 
-// List of exposed ports that this service is accessible on from the outside. Ports can only be provided if 'vip' resolution mode is used
 func (o ServiceEndpointSpecOutput) Ports() ServiceEndpointSpecPortArrayOutput {
 	return o.ApplyT(func(v ServiceEndpointSpec) []ServiceEndpointSpecPort { return v.Ports }).(ServiceEndpointSpecPortArrayOutput)
 }
@@ -4505,7 +4121,6 @@ func (o ServiceEndpointSpecPtrOutput) Elem() ServiceEndpointSpecOutput {
 	}).(ServiceEndpointSpecOutput)
 }
 
-// The mode of resolution to use for internal load balancing between tasks
 func (o ServiceEndpointSpecPtrOutput) Mode() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *ServiceEndpointSpec) *string {
 		if v == nil {
@@ -4515,7 +4130,6 @@ func (o ServiceEndpointSpecPtrOutput) Mode() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
-// List of exposed ports that this service is accessible on from the outside. Ports can only be provided if 'vip' resolution mode is used
 func (o ServiceEndpointSpecPtrOutput) Ports() ServiceEndpointSpecPortArrayOutput {
 	return o.ApplyT(func(v *ServiceEndpointSpec) []ServiceEndpointSpecPort {
 		if v == nil {
@@ -4526,7 +4140,6 @@ func (o ServiceEndpointSpecPtrOutput) Ports() ServiceEndpointSpecPortArrayOutput
 }
 
 type ServiceEndpointSpecPort struct {
-	// Name of the service
 	Name          *string `pulumi:"name"`
 	Protocol      *string `pulumi:"protocol"`
 	PublishMode   *string `pulumi:"publishMode"`
@@ -4546,7 +4159,6 @@ type ServiceEndpointSpecPortInput interface {
 }
 
 type ServiceEndpointSpecPortArgs struct {
-	// Name of the service
 	Name          pulumi.StringPtrInput `pulumi:"name"`
 	Protocol      pulumi.StringPtrInput `pulumi:"protocol"`
 	PublishMode   pulumi.StringPtrInput `pulumi:"publishMode"`
@@ -4605,7 +4217,6 @@ func (o ServiceEndpointSpecPortOutput) ToServiceEndpointSpecPortOutputWithContex
 	return o
 }
 
-// Name of the service
 func (o ServiceEndpointSpecPortOutput) Name() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ServiceEndpointSpecPort) *string { return v.Name }).(pulumi.StringPtrOutput)
 }
@@ -4647,9 +4258,7 @@ func (o ServiceEndpointSpecPortArrayOutput) Index(i pulumi.IntInput) ServiceEndp
 }
 
 type ServiceLabel struct {
-	// Name of the label
 	Label string `pulumi:"label"`
-	// Value of the label
 	Value string `pulumi:"value"`
 }
 
@@ -4665,9 +4274,7 @@ type ServiceLabelInput interface {
 }
 
 type ServiceLabelArgs struct {
-	// Name of the label
 	Label pulumi.StringInput `pulumi:"label"`
-	// Value of the label
 	Value pulumi.StringInput `pulumi:"value"`
 }
 
@@ -4722,12 +4329,10 @@ func (o ServiceLabelOutput) ToServiceLabelOutputWithContext(ctx context.Context)
 	return o
 }
 
-// Name of the label
 func (o ServiceLabelOutput) Label() pulumi.StringOutput {
 	return o.ApplyT(func(v ServiceLabel) string { return v.Label }).(pulumi.StringOutput)
 }
 
-// Value of the label
 func (o ServiceLabelOutput) Value() pulumi.StringOutput {
 	return o.ApplyT(func(v ServiceLabel) string { return v.Value }).(pulumi.StringOutput)
 }
@@ -4753,9 +4358,7 @@ func (o ServiceLabelArrayOutput) Index(i pulumi.IntInput) ServiceLabelOutput {
 }
 
 type ServiceMode struct {
-	// The global service mode. Defaults to `false`
-	Global *bool `pulumi:"global"`
-	// The replicated service mode
+	Global     *bool                  `pulumi:"global"`
 	Replicated *ServiceModeReplicated `pulumi:"replicated"`
 }
 
@@ -4771,9 +4374,7 @@ type ServiceModeInput interface {
 }
 
 type ServiceModeArgs struct {
-	// The global service mode. Defaults to `false`
-	Global pulumi.BoolPtrInput `pulumi:"global"`
-	// The replicated service mode
+	Global     pulumi.BoolPtrInput           `pulumi:"global"`
 	Replicated ServiceModeReplicatedPtrInput `pulumi:"replicated"`
 }
 
@@ -4854,12 +4455,10 @@ func (o ServiceModeOutput) ToServiceModePtrOutputWithContext(ctx context.Context
 	}).(ServiceModePtrOutput)
 }
 
-// The global service mode. Defaults to `false`
 func (o ServiceModeOutput) Global() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v ServiceMode) *bool { return v.Global }).(pulumi.BoolPtrOutput)
 }
 
-// The replicated service mode
 func (o ServiceModeOutput) Replicated() ServiceModeReplicatedPtrOutput {
 	return o.ApplyT(func(v ServiceMode) *ServiceModeReplicated { return v.Replicated }).(ServiceModeReplicatedPtrOutput)
 }
@@ -4888,7 +4487,6 @@ func (o ServiceModePtrOutput) Elem() ServiceModeOutput {
 	}).(ServiceModeOutput)
 }
 
-// The global service mode. Defaults to `false`
 func (o ServiceModePtrOutput) Global() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *ServiceMode) *bool {
 		if v == nil {
@@ -4898,7 +4496,6 @@ func (o ServiceModePtrOutput) Global() pulumi.BoolPtrOutput {
 	}).(pulumi.BoolPtrOutput)
 }
 
-// The replicated service mode
 func (o ServiceModePtrOutput) Replicated() ServiceModeReplicatedPtrOutput {
 	return o.ApplyT(func(v *ServiceMode) *ServiceModeReplicated {
 		if v == nil {
@@ -5042,18 +4639,12 @@ func (o ServiceModeReplicatedPtrOutput) Replicas() pulumi.IntPtrOutput {
 }
 
 type ServiceRollbackConfig struct {
-	// Delay between task rollbacks (ns|us|ms|s|m|h). Defaults to `0s`.
-	Delay *string `pulumi:"delay"`
-	// Action on rollback failure: pause | continue. Defaults to `pause`.
-	FailureAction *string `pulumi:"failureAction"`
-	// Failure rate to tolerate during a rollback. Defaults to `0.0`.
+	Delay           *string `pulumi:"delay"`
+	FailureAction   *string `pulumi:"failureAction"`
 	MaxFailureRatio *string `pulumi:"maxFailureRatio"`
-	// Duration after each task rollback to monitor for failure (ns|us|ms|s|m|h). Defaults to `5s`.
-	Monitor *string `pulumi:"monitor"`
-	// Rollback order: either 'stop-first' or 'start-first'. Defaults to `stop-first`.
-	Order *string `pulumi:"order"`
-	// Maximum number of tasks to be rollbacked in one iteration. Defaults to `1`
-	Parallelism *int `pulumi:"parallelism"`
+	Monitor         *string `pulumi:"monitor"`
+	Order           *string `pulumi:"order"`
+	Parallelism     *int    `pulumi:"parallelism"`
 }
 
 // ServiceRollbackConfigInput is an input type that accepts ServiceRollbackConfigArgs and ServiceRollbackConfigOutput values.
@@ -5068,18 +4659,12 @@ type ServiceRollbackConfigInput interface {
 }
 
 type ServiceRollbackConfigArgs struct {
-	// Delay between task rollbacks (ns|us|ms|s|m|h). Defaults to `0s`.
-	Delay pulumi.StringPtrInput `pulumi:"delay"`
-	// Action on rollback failure: pause | continue. Defaults to `pause`.
-	FailureAction pulumi.StringPtrInput `pulumi:"failureAction"`
-	// Failure rate to tolerate during a rollback. Defaults to `0.0`.
+	Delay           pulumi.StringPtrInput `pulumi:"delay"`
+	FailureAction   pulumi.StringPtrInput `pulumi:"failureAction"`
 	MaxFailureRatio pulumi.StringPtrInput `pulumi:"maxFailureRatio"`
-	// Duration after each task rollback to monitor for failure (ns|us|ms|s|m|h). Defaults to `5s`.
-	Monitor pulumi.StringPtrInput `pulumi:"monitor"`
-	// Rollback order: either 'stop-first' or 'start-first'. Defaults to `stop-first`.
-	Order pulumi.StringPtrInput `pulumi:"order"`
-	// Maximum number of tasks to be rollbacked in one iteration. Defaults to `1`
-	Parallelism pulumi.IntPtrInput `pulumi:"parallelism"`
+	Monitor         pulumi.StringPtrInput `pulumi:"monitor"`
+	Order           pulumi.StringPtrInput `pulumi:"order"`
+	Parallelism     pulumi.IntPtrInput    `pulumi:"parallelism"`
 }
 
 func (ServiceRollbackConfigArgs) ElementType() reflect.Type {
@@ -5159,32 +4744,26 @@ func (o ServiceRollbackConfigOutput) ToServiceRollbackConfigPtrOutputWithContext
 	}).(ServiceRollbackConfigPtrOutput)
 }
 
-// Delay between task rollbacks (ns|us|ms|s|m|h). Defaults to `0s`.
 func (o ServiceRollbackConfigOutput) Delay() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ServiceRollbackConfig) *string { return v.Delay }).(pulumi.StringPtrOutput)
 }
 
-// Action on rollback failure: pause | continue. Defaults to `pause`.
 func (o ServiceRollbackConfigOutput) FailureAction() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ServiceRollbackConfig) *string { return v.FailureAction }).(pulumi.StringPtrOutput)
 }
 
-// Failure rate to tolerate during a rollback. Defaults to `0.0`.
 func (o ServiceRollbackConfigOutput) MaxFailureRatio() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ServiceRollbackConfig) *string { return v.MaxFailureRatio }).(pulumi.StringPtrOutput)
 }
 
-// Duration after each task rollback to monitor for failure (ns|us|ms|s|m|h). Defaults to `5s`.
 func (o ServiceRollbackConfigOutput) Monitor() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ServiceRollbackConfig) *string { return v.Monitor }).(pulumi.StringPtrOutput)
 }
 
-// Rollback order: either 'stop-first' or 'start-first'. Defaults to `stop-first`.
 func (o ServiceRollbackConfigOutput) Order() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ServiceRollbackConfig) *string { return v.Order }).(pulumi.StringPtrOutput)
 }
 
-// Maximum number of tasks to be rollbacked in one iteration. Defaults to `1`
 func (o ServiceRollbackConfigOutput) Parallelism() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v ServiceRollbackConfig) *int { return v.Parallelism }).(pulumi.IntPtrOutput)
 }
@@ -5213,7 +4792,6 @@ func (o ServiceRollbackConfigPtrOutput) Elem() ServiceRollbackConfigOutput {
 	}).(ServiceRollbackConfigOutput)
 }
 
-// Delay between task rollbacks (ns|us|ms|s|m|h). Defaults to `0s`.
 func (o ServiceRollbackConfigPtrOutput) Delay() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *ServiceRollbackConfig) *string {
 		if v == nil {
@@ -5223,7 +4801,6 @@ func (o ServiceRollbackConfigPtrOutput) Delay() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
-// Action on rollback failure: pause | continue. Defaults to `pause`.
 func (o ServiceRollbackConfigPtrOutput) FailureAction() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *ServiceRollbackConfig) *string {
 		if v == nil {
@@ -5233,7 +4810,6 @@ func (o ServiceRollbackConfigPtrOutput) FailureAction() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
-// Failure rate to tolerate during a rollback. Defaults to `0.0`.
 func (o ServiceRollbackConfigPtrOutput) MaxFailureRatio() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *ServiceRollbackConfig) *string {
 		if v == nil {
@@ -5243,7 +4819,6 @@ func (o ServiceRollbackConfigPtrOutput) MaxFailureRatio() pulumi.StringPtrOutput
 	}).(pulumi.StringPtrOutput)
 }
 
-// Duration after each task rollback to monitor for failure (ns|us|ms|s|m|h). Defaults to `5s`.
 func (o ServiceRollbackConfigPtrOutput) Monitor() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *ServiceRollbackConfig) *string {
 		if v == nil {
@@ -5253,7 +4828,6 @@ func (o ServiceRollbackConfigPtrOutput) Monitor() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
-// Rollback order: either 'stop-first' or 'start-first'. Defaults to `stop-first`.
 func (o ServiceRollbackConfigPtrOutput) Order() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *ServiceRollbackConfig) *string {
 		if v == nil {
@@ -5263,7 +4837,6 @@ func (o ServiceRollbackConfigPtrOutput) Order() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
-// Maximum number of tasks to be rollbacked in one iteration. Defaults to `1`
 func (o ServiceRollbackConfigPtrOutput) Parallelism() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v *ServiceRollbackConfig) *int {
 		if v == nil {
@@ -5274,22 +4847,14 @@ func (o ServiceRollbackConfigPtrOutput) Parallelism() pulumi.IntPtrOutput {
 }
 
 type ServiceTaskSpec struct {
-	// The spec for each container
-	ContainerSpec ServiceTaskSpecContainerSpec `pulumi:"containerSpec"`
-	// A counter that triggers an update even if no relevant parameters have been changed. See the [spec](https://github.com/docker/swarmkit/blob/master/api/specs.proto#L126).
-	ForceUpdate *int `pulumi:"forceUpdate"`
-	// Specifies the log driver to use for tasks created from this spec. If not present, the default one for the swarm will be used, finally falling back to the engine default if not specified
-	LogDriver *ServiceTaskSpecLogDriver `pulumi:"logDriver"`
-	// Ids of the networks in which the  container will be put in
-	Networks []string `pulumi:"networks"`
-	// The placement preferences
-	Placement *ServiceTaskSpecPlacement `pulumi:"placement"`
-	// Resource requirements which apply to each individual container created as part of the service
-	Resources *ServiceTaskSpecResources `pulumi:"resources"`
-	// Specification for the restart policy which applies to containers created as part of this service.
+	ContainerSpec ServiceTaskSpecContainerSpec  `pulumi:"containerSpec"`
+	ForceUpdate   *int                          `pulumi:"forceUpdate"`
+	LogDriver     *ServiceTaskSpecLogDriver     `pulumi:"logDriver"`
+	Networks      []string                      `pulumi:"networks"`
+	Placement     *ServiceTaskSpecPlacement     `pulumi:"placement"`
+	Resources     *ServiceTaskSpecResources     `pulumi:"resources"`
 	RestartPolicy *ServiceTaskSpecRestartPolicy `pulumi:"restartPolicy"`
-	// Runtime is the type of runtime specified for the task executor. See the [types](https://github.com/moby/moby/blob/master/api/types/swarm/runtime.go).
-	Runtime *string `pulumi:"runtime"`
+	Runtime       *string                       `pulumi:"runtime"`
 }
 
 // ServiceTaskSpecInput is an input type that accepts ServiceTaskSpecArgs and ServiceTaskSpecOutput values.
@@ -5304,22 +4869,14 @@ type ServiceTaskSpecInput interface {
 }
 
 type ServiceTaskSpecArgs struct {
-	// The spec for each container
-	ContainerSpec ServiceTaskSpecContainerSpecInput `pulumi:"containerSpec"`
-	// A counter that triggers an update even if no relevant parameters have been changed. See the [spec](https://github.com/docker/swarmkit/blob/master/api/specs.proto#L126).
-	ForceUpdate pulumi.IntPtrInput `pulumi:"forceUpdate"`
-	// Specifies the log driver to use for tasks created from this spec. If not present, the default one for the swarm will be used, finally falling back to the engine default if not specified
-	LogDriver ServiceTaskSpecLogDriverPtrInput `pulumi:"logDriver"`
-	// Ids of the networks in which the  container will be put in
-	Networks pulumi.StringArrayInput `pulumi:"networks"`
-	// The placement preferences
-	Placement ServiceTaskSpecPlacementPtrInput `pulumi:"placement"`
-	// Resource requirements which apply to each individual container created as part of the service
-	Resources ServiceTaskSpecResourcesPtrInput `pulumi:"resources"`
-	// Specification for the restart policy which applies to containers created as part of this service.
+	ContainerSpec ServiceTaskSpecContainerSpecInput    `pulumi:"containerSpec"`
+	ForceUpdate   pulumi.IntPtrInput                   `pulumi:"forceUpdate"`
+	LogDriver     ServiceTaskSpecLogDriverPtrInput     `pulumi:"logDriver"`
+	Networks      pulumi.StringArrayInput              `pulumi:"networks"`
+	Placement     ServiceTaskSpecPlacementPtrInput     `pulumi:"placement"`
+	Resources     ServiceTaskSpecResourcesPtrInput     `pulumi:"resources"`
 	RestartPolicy ServiceTaskSpecRestartPolicyPtrInput `pulumi:"restartPolicy"`
-	// Runtime is the type of runtime specified for the task executor. See the [types](https://github.com/moby/moby/blob/master/api/types/swarm/runtime.go).
-	Runtime pulumi.StringPtrInput `pulumi:"runtime"`
+	Runtime       pulumi.StringPtrInput                `pulumi:"runtime"`
 }
 
 func (ServiceTaskSpecArgs) ElementType() reflect.Type {
@@ -5399,42 +4956,34 @@ func (o ServiceTaskSpecOutput) ToServiceTaskSpecPtrOutputWithContext(ctx context
 	}).(ServiceTaskSpecPtrOutput)
 }
 
-// The spec for each container
 func (o ServiceTaskSpecOutput) ContainerSpec() ServiceTaskSpecContainerSpecOutput {
 	return o.ApplyT(func(v ServiceTaskSpec) ServiceTaskSpecContainerSpec { return v.ContainerSpec }).(ServiceTaskSpecContainerSpecOutput)
 }
 
-// A counter that triggers an update even if no relevant parameters have been changed. See the [spec](https://github.com/docker/swarmkit/blob/master/api/specs.proto#L126).
 func (o ServiceTaskSpecOutput) ForceUpdate() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v ServiceTaskSpec) *int { return v.ForceUpdate }).(pulumi.IntPtrOutput)
 }
 
-// Specifies the log driver to use for tasks created from this spec. If not present, the default one for the swarm will be used, finally falling back to the engine default if not specified
 func (o ServiceTaskSpecOutput) LogDriver() ServiceTaskSpecLogDriverPtrOutput {
 	return o.ApplyT(func(v ServiceTaskSpec) *ServiceTaskSpecLogDriver { return v.LogDriver }).(ServiceTaskSpecLogDriverPtrOutput)
 }
 
-// Ids of the networks in which the  container will be put in
 func (o ServiceTaskSpecOutput) Networks() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v ServiceTaskSpec) []string { return v.Networks }).(pulumi.StringArrayOutput)
 }
 
-// The placement preferences
 func (o ServiceTaskSpecOutput) Placement() ServiceTaskSpecPlacementPtrOutput {
 	return o.ApplyT(func(v ServiceTaskSpec) *ServiceTaskSpecPlacement { return v.Placement }).(ServiceTaskSpecPlacementPtrOutput)
 }
 
-// Resource requirements which apply to each individual container created as part of the service
 func (o ServiceTaskSpecOutput) Resources() ServiceTaskSpecResourcesPtrOutput {
 	return o.ApplyT(func(v ServiceTaskSpec) *ServiceTaskSpecResources { return v.Resources }).(ServiceTaskSpecResourcesPtrOutput)
 }
 
-// Specification for the restart policy which applies to containers created as part of this service.
 func (o ServiceTaskSpecOutput) RestartPolicy() ServiceTaskSpecRestartPolicyPtrOutput {
 	return o.ApplyT(func(v ServiceTaskSpec) *ServiceTaskSpecRestartPolicy { return v.RestartPolicy }).(ServiceTaskSpecRestartPolicyPtrOutput)
 }
 
-// Runtime is the type of runtime specified for the task executor. See the [types](https://github.com/moby/moby/blob/master/api/types/swarm/runtime.go).
 func (o ServiceTaskSpecOutput) Runtime() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ServiceTaskSpec) *string { return v.Runtime }).(pulumi.StringPtrOutput)
 }
@@ -5463,7 +5012,6 @@ func (o ServiceTaskSpecPtrOutput) Elem() ServiceTaskSpecOutput {
 	}).(ServiceTaskSpecOutput)
 }
 
-// The spec for each container
 func (o ServiceTaskSpecPtrOutput) ContainerSpec() ServiceTaskSpecContainerSpecPtrOutput {
 	return o.ApplyT(func(v *ServiceTaskSpec) *ServiceTaskSpecContainerSpec {
 		if v == nil {
@@ -5473,7 +5021,6 @@ func (o ServiceTaskSpecPtrOutput) ContainerSpec() ServiceTaskSpecContainerSpecPt
 	}).(ServiceTaskSpecContainerSpecPtrOutput)
 }
 
-// A counter that triggers an update even if no relevant parameters have been changed. See the [spec](https://github.com/docker/swarmkit/blob/master/api/specs.proto#L126).
 func (o ServiceTaskSpecPtrOutput) ForceUpdate() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v *ServiceTaskSpec) *int {
 		if v == nil {
@@ -5483,7 +5030,6 @@ func (o ServiceTaskSpecPtrOutput) ForceUpdate() pulumi.IntPtrOutput {
 	}).(pulumi.IntPtrOutput)
 }
 
-// Specifies the log driver to use for tasks created from this spec. If not present, the default one for the swarm will be used, finally falling back to the engine default if not specified
 func (o ServiceTaskSpecPtrOutput) LogDriver() ServiceTaskSpecLogDriverPtrOutput {
 	return o.ApplyT(func(v *ServiceTaskSpec) *ServiceTaskSpecLogDriver {
 		if v == nil {
@@ -5493,7 +5039,6 @@ func (o ServiceTaskSpecPtrOutput) LogDriver() ServiceTaskSpecLogDriverPtrOutput 
 	}).(ServiceTaskSpecLogDriverPtrOutput)
 }
 
-// Ids of the networks in which the  container will be put in
 func (o ServiceTaskSpecPtrOutput) Networks() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v *ServiceTaskSpec) []string {
 		if v == nil {
@@ -5503,7 +5048,6 @@ func (o ServiceTaskSpecPtrOutput) Networks() pulumi.StringArrayOutput {
 	}).(pulumi.StringArrayOutput)
 }
 
-// The placement preferences
 func (o ServiceTaskSpecPtrOutput) Placement() ServiceTaskSpecPlacementPtrOutput {
 	return o.ApplyT(func(v *ServiceTaskSpec) *ServiceTaskSpecPlacement {
 		if v == nil {
@@ -5513,7 +5057,6 @@ func (o ServiceTaskSpecPtrOutput) Placement() ServiceTaskSpecPlacementPtrOutput 
 	}).(ServiceTaskSpecPlacementPtrOutput)
 }
 
-// Resource requirements which apply to each individual container created as part of the service
 func (o ServiceTaskSpecPtrOutput) Resources() ServiceTaskSpecResourcesPtrOutput {
 	return o.ApplyT(func(v *ServiceTaskSpec) *ServiceTaskSpecResources {
 		if v == nil {
@@ -5523,7 +5066,6 @@ func (o ServiceTaskSpecPtrOutput) Resources() ServiceTaskSpecResourcesPtrOutput 
 	}).(ServiceTaskSpecResourcesPtrOutput)
 }
 
-// Specification for the restart policy which applies to containers created as part of this service.
 func (o ServiceTaskSpecPtrOutput) RestartPolicy() ServiceTaskSpecRestartPolicyPtrOutput {
 	return o.ApplyT(func(v *ServiceTaskSpec) *ServiceTaskSpecRestartPolicy {
 		if v == nil {
@@ -5533,7 +5075,6 @@ func (o ServiceTaskSpecPtrOutput) RestartPolicy() ServiceTaskSpecRestartPolicyPt
 	}).(ServiceTaskSpecRestartPolicyPtrOutput)
 }
 
-// Runtime is the type of runtime specified for the task executor. See the [types](https://github.com/moby/moby/blob/master/api/types/swarm/runtime.go).
 func (o ServiceTaskSpecPtrOutput) Runtime() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *ServiceTaskSpec) *string {
 		if v == nil {
@@ -5544,27 +5085,26 @@ func (o ServiceTaskSpecPtrOutput) Runtime() pulumi.StringPtrOutput {
 }
 
 type ServiceTaskSpecContainerSpec struct {
-	Args        []string                                 `pulumi:"args"`
-	Commands    []string                                 `pulumi:"commands"`
-	Configs     []ServiceTaskSpecContainerSpecConfig     `pulumi:"configs"`
-	Dir         *string                                  `pulumi:"dir"`
-	DnsConfig   *ServiceTaskSpecContainerSpecDnsConfig   `pulumi:"dnsConfig"`
-	Env         map[string]string                        `pulumi:"env"`
-	Groups      []string                                 `pulumi:"groups"`
-	Healthcheck *ServiceTaskSpecContainerSpecHealthcheck `pulumi:"healthcheck"`
-	Hostname    *string                                  `pulumi:"hostname"`
-	Hosts       []ServiceTaskSpecContainerSpecHost       `pulumi:"hosts"`
-	Image       string                                   `pulumi:"image"`
-	Isolation   *string                                  `pulumi:"isolation"`
-	// User-defined key/value metadata
-	Labels          []ServiceTaskSpecContainerSpecLabel     `pulumi:"labels"`
-	Mounts          []ServiceTaskSpecContainerSpecMount     `pulumi:"mounts"`
-	Privileges      *ServiceTaskSpecContainerSpecPrivileges `pulumi:"privileges"`
-	ReadOnly        *bool                                   `pulumi:"readOnly"`
-	Secrets         []ServiceTaskSpecContainerSpecSecret    `pulumi:"secrets"`
-	StopGracePeriod *string                                 `pulumi:"stopGracePeriod"`
-	StopSignal      *string                                 `pulumi:"stopSignal"`
-	User            *string                                 `pulumi:"user"`
+	Args            []string                                 `pulumi:"args"`
+	Commands        []string                                 `pulumi:"commands"`
+	Configs         []ServiceTaskSpecContainerSpecConfig     `pulumi:"configs"`
+	Dir             *string                                  `pulumi:"dir"`
+	DnsConfig       *ServiceTaskSpecContainerSpecDnsConfig   `pulumi:"dnsConfig"`
+	Env             map[string]string                        `pulumi:"env"`
+	Groups          []string                                 `pulumi:"groups"`
+	Healthcheck     *ServiceTaskSpecContainerSpecHealthcheck `pulumi:"healthcheck"`
+	Hostname        *string                                  `pulumi:"hostname"`
+	Hosts           []ServiceTaskSpecContainerSpecHost       `pulumi:"hosts"`
+	Image           string                                   `pulumi:"image"`
+	Isolation       *string                                  `pulumi:"isolation"`
+	Labels          []ServiceTaskSpecContainerSpecLabel      `pulumi:"labels"`
+	Mounts          []ServiceTaskSpecContainerSpecMount      `pulumi:"mounts"`
+	Privileges      *ServiceTaskSpecContainerSpecPrivileges  `pulumi:"privileges"`
+	ReadOnly        *bool                                    `pulumi:"readOnly"`
+	Secrets         []ServiceTaskSpecContainerSpecSecret     `pulumi:"secrets"`
+	StopGracePeriod *string                                  `pulumi:"stopGracePeriod"`
+	StopSignal      *string                                  `pulumi:"stopSignal"`
+	User            *string                                  `pulumi:"user"`
 }
 
 // ServiceTaskSpecContainerSpecInput is an input type that accepts ServiceTaskSpecContainerSpecArgs and ServiceTaskSpecContainerSpecOutput values.
@@ -5579,27 +5119,26 @@ type ServiceTaskSpecContainerSpecInput interface {
 }
 
 type ServiceTaskSpecContainerSpecArgs struct {
-	Args        pulumi.StringArrayInput                         `pulumi:"args"`
-	Commands    pulumi.StringArrayInput                         `pulumi:"commands"`
-	Configs     ServiceTaskSpecContainerSpecConfigArrayInput    `pulumi:"configs"`
-	Dir         pulumi.StringPtrInput                           `pulumi:"dir"`
-	DnsConfig   ServiceTaskSpecContainerSpecDnsConfigPtrInput   `pulumi:"dnsConfig"`
-	Env         pulumi.StringMapInput                           `pulumi:"env"`
-	Groups      pulumi.StringArrayInput                         `pulumi:"groups"`
-	Healthcheck ServiceTaskSpecContainerSpecHealthcheckPtrInput `pulumi:"healthcheck"`
-	Hostname    pulumi.StringPtrInput                           `pulumi:"hostname"`
-	Hosts       ServiceTaskSpecContainerSpecHostArrayInput      `pulumi:"hosts"`
-	Image       pulumi.StringInput                              `pulumi:"image"`
-	Isolation   pulumi.StringPtrInput                           `pulumi:"isolation"`
-	// User-defined key/value metadata
-	Labels          ServiceTaskSpecContainerSpecLabelArrayInput    `pulumi:"labels"`
-	Mounts          ServiceTaskSpecContainerSpecMountArrayInput    `pulumi:"mounts"`
-	Privileges      ServiceTaskSpecContainerSpecPrivilegesPtrInput `pulumi:"privileges"`
-	ReadOnly        pulumi.BoolPtrInput                            `pulumi:"readOnly"`
-	Secrets         ServiceTaskSpecContainerSpecSecretArrayInput   `pulumi:"secrets"`
-	StopGracePeriod pulumi.StringPtrInput                          `pulumi:"stopGracePeriod"`
-	StopSignal      pulumi.StringPtrInput                          `pulumi:"stopSignal"`
-	User            pulumi.StringPtrInput                          `pulumi:"user"`
+	Args            pulumi.StringArrayInput                         `pulumi:"args"`
+	Commands        pulumi.StringArrayInput                         `pulumi:"commands"`
+	Configs         ServiceTaskSpecContainerSpecConfigArrayInput    `pulumi:"configs"`
+	Dir             pulumi.StringPtrInput                           `pulumi:"dir"`
+	DnsConfig       ServiceTaskSpecContainerSpecDnsConfigPtrInput   `pulumi:"dnsConfig"`
+	Env             pulumi.StringMapInput                           `pulumi:"env"`
+	Groups          pulumi.StringArrayInput                         `pulumi:"groups"`
+	Healthcheck     ServiceTaskSpecContainerSpecHealthcheckPtrInput `pulumi:"healthcheck"`
+	Hostname        pulumi.StringPtrInput                           `pulumi:"hostname"`
+	Hosts           ServiceTaskSpecContainerSpecHostArrayInput      `pulumi:"hosts"`
+	Image           pulumi.StringInput                              `pulumi:"image"`
+	Isolation       pulumi.StringPtrInput                           `pulumi:"isolation"`
+	Labels          ServiceTaskSpecContainerSpecLabelArrayInput     `pulumi:"labels"`
+	Mounts          ServiceTaskSpecContainerSpecMountArrayInput     `pulumi:"mounts"`
+	Privileges      ServiceTaskSpecContainerSpecPrivilegesPtrInput  `pulumi:"privileges"`
+	ReadOnly        pulumi.BoolPtrInput                             `pulumi:"readOnly"`
+	Secrets         ServiceTaskSpecContainerSpecSecretArrayInput    `pulumi:"secrets"`
+	StopGracePeriod pulumi.StringPtrInput                           `pulumi:"stopGracePeriod"`
+	StopSignal      pulumi.StringPtrInput                           `pulumi:"stopSignal"`
+	User            pulumi.StringPtrInput                           `pulumi:"user"`
 }
 
 func (ServiceTaskSpecContainerSpecArgs) ElementType() reflect.Type {
@@ -5727,7 +5266,6 @@ func (o ServiceTaskSpecContainerSpecOutput) Isolation() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ServiceTaskSpecContainerSpec) *string { return v.Isolation }).(pulumi.StringPtrOutput)
 }
 
-// User-defined key/value metadata
 func (o ServiceTaskSpecContainerSpecOutput) Labels() ServiceTaskSpecContainerSpecLabelArrayOutput {
 	return o.ApplyT(func(v ServiceTaskSpecContainerSpec) []ServiceTaskSpecContainerSpecLabel { return v.Labels }).(ServiceTaskSpecContainerSpecLabelArrayOutput)
 }
@@ -5892,7 +5430,6 @@ func (o ServiceTaskSpecContainerSpecPtrOutput) Isolation() pulumi.StringPtrOutpu
 	}).(pulumi.StringPtrOutput)
 }
 
-// User-defined key/value metadata
 func (o ServiceTaskSpecContainerSpecPtrOutput) Labels() ServiceTaskSpecContainerSpecLabelArrayOutput {
 	return o.ApplyT(func(v *ServiceTaskSpecContainerSpec) []ServiceTaskSpecContainerSpecLabel {
 		if v == nil {
@@ -6546,9 +6083,7 @@ func (o ServiceTaskSpecContainerSpecHostArrayOutput) Index(i pulumi.IntInput) Se
 }
 
 type ServiceTaskSpecContainerSpecLabel struct {
-	// Name of the label
 	Label string `pulumi:"label"`
-	// Value of the label
 	Value string `pulumi:"value"`
 }
 
@@ -6564,9 +6099,7 @@ type ServiceTaskSpecContainerSpecLabelInput interface {
 }
 
 type ServiceTaskSpecContainerSpecLabelArgs struct {
-	// Name of the label
 	Label pulumi.StringInput `pulumi:"label"`
-	// Value of the label
 	Value pulumi.StringInput `pulumi:"value"`
 }
 
@@ -6621,12 +6154,10 @@ func (o ServiceTaskSpecContainerSpecLabelOutput) ToServiceTaskSpecContainerSpecL
 	return o
 }
 
-// Name of the label
 func (o ServiceTaskSpecContainerSpecLabelOutput) Label() pulumi.StringOutput {
 	return o.ApplyT(func(v ServiceTaskSpecContainerSpecLabel) string { return v.Label }).(pulumi.StringOutput)
 }
 
-// Value of the label
 func (o ServiceTaskSpecContainerSpecLabelOutput) Value() pulumi.StringOutput {
 	return o.ApplyT(func(v ServiceTaskSpecContainerSpecLabel) string { return v.Value }).(pulumi.StringOutput)
 }
@@ -6921,7 +6452,6 @@ func (o ServiceTaskSpecContainerSpecMountBindOptionsPtrOutput) Propagation() pul
 }
 
 type ServiceTaskSpecContainerSpecMountTmpfsOptions struct {
-	// Scheduling mode for the service
 	Mode      *int `pulumi:"mode"`
 	SizeBytes *int `pulumi:"sizeBytes"`
 }
@@ -6938,7 +6468,6 @@ type ServiceTaskSpecContainerSpecMountTmpfsOptionsInput interface {
 }
 
 type ServiceTaskSpecContainerSpecMountTmpfsOptionsArgs struct {
-	// Scheduling mode for the service
 	Mode      pulumi.IntPtrInput `pulumi:"mode"`
 	SizeBytes pulumi.IntPtrInput `pulumi:"sizeBytes"`
 }
@@ -7020,7 +6549,6 @@ func (o ServiceTaskSpecContainerSpecMountTmpfsOptionsOutput) ToServiceTaskSpecCo
 	}).(ServiceTaskSpecContainerSpecMountTmpfsOptionsPtrOutput)
 }
 
-// Scheduling mode for the service
 func (o ServiceTaskSpecContainerSpecMountTmpfsOptionsOutput) Mode() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v ServiceTaskSpecContainerSpecMountTmpfsOptions) *int { return v.Mode }).(pulumi.IntPtrOutput)
 }
@@ -7053,7 +6581,6 @@ func (o ServiceTaskSpecContainerSpecMountTmpfsOptionsPtrOutput) Elem() ServiceTa
 	}).(ServiceTaskSpecContainerSpecMountTmpfsOptionsOutput)
 }
 
-// Scheduling mode for the service
 func (o ServiceTaskSpecContainerSpecMountTmpfsOptionsPtrOutput) Mode() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v *ServiceTaskSpecContainerSpecMountTmpfsOptions) *int {
 		if v == nil {
@@ -7073,11 +6600,10 @@ func (o ServiceTaskSpecContainerSpecMountTmpfsOptionsPtrOutput) SizeBytes() pulu
 }
 
 type ServiceTaskSpecContainerSpecMountVolumeOptions struct {
-	DriverName    *string           `pulumi:"driverName"`
-	DriverOptions map[string]string `pulumi:"driverOptions"`
-	// User-defined key/value metadata
-	Labels []ServiceTaskSpecContainerSpecMountVolumeOptionsLabel `pulumi:"labels"`
-	NoCopy *bool                                                 `pulumi:"noCopy"`
+	DriverName    *string                                               `pulumi:"driverName"`
+	DriverOptions map[string]string                                     `pulumi:"driverOptions"`
+	Labels        []ServiceTaskSpecContainerSpecMountVolumeOptionsLabel `pulumi:"labels"`
+	NoCopy        *bool                                                 `pulumi:"noCopy"`
 }
 
 // ServiceTaskSpecContainerSpecMountVolumeOptionsInput is an input type that accepts ServiceTaskSpecContainerSpecMountVolumeOptionsArgs and ServiceTaskSpecContainerSpecMountVolumeOptionsOutput values.
@@ -7092,11 +6618,10 @@ type ServiceTaskSpecContainerSpecMountVolumeOptionsInput interface {
 }
 
 type ServiceTaskSpecContainerSpecMountVolumeOptionsArgs struct {
-	DriverName    pulumi.StringPtrInput `pulumi:"driverName"`
-	DriverOptions pulumi.StringMapInput `pulumi:"driverOptions"`
-	// User-defined key/value metadata
-	Labels ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayInput `pulumi:"labels"`
-	NoCopy pulumi.BoolPtrInput                                           `pulumi:"noCopy"`
+	DriverName    pulumi.StringPtrInput                                         `pulumi:"driverName"`
+	DriverOptions pulumi.StringMapInput                                         `pulumi:"driverOptions"`
+	Labels        ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayInput `pulumi:"labels"`
+	NoCopy        pulumi.BoolPtrInput                                           `pulumi:"noCopy"`
 }
 
 func (ServiceTaskSpecContainerSpecMountVolumeOptionsArgs) ElementType() reflect.Type {
@@ -7184,7 +6709,6 @@ func (o ServiceTaskSpecContainerSpecMountVolumeOptionsOutput) DriverOptions() pu
 	return o.ApplyT(func(v ServiceTaskSpecContainerSpecMountVolumeOptions) map[string]string { return v.DriverOptions }).(pulumi.StringMapOutput)
 }
 
-// User-defined key/value metadata
 func (o ServiceTaskSpecContainerSpecMountVolumeOptionsOutput) Labels() ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayOutput {
 	return o.ApplyT(func(v ServiceTaskSpecContainerSpecMountVolumeOptions) []ServiceTaskSpecContainerSpecMountVolumeOptionsLabel {
 		return v.Labels
@@ -7237,7 +6761,6 @@ func (o ServiceTaskSpecContainerSpecMountVolumeOptionsPtrOutput) DriverOptions()
 	}).(pulumi.StringMapOutput)
 }
 
-// User-defined key/value metadata
 func (o ServiceTaskSpecContainerSpecMountVolumeOptionsPtrOutput) Labels() ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayOutput {
 	return o.ApplyT(func(v *ServiceTaskSpecContainerSpecMountVolumeOptions) []ServiceTaskSpecContainerSpecMountVolumeOptionsLabel {
 		if v == nil {
@@ -7257,9 +6780,7 @@ func (o ServiceTaskSpecContainerSpecMountVolumeOptionsPtrOutput) NoCopy() pulumi
 }
 
 type ServiceTaskSpecContainerSpecMountVolumeOptionsLabel struct {
-	// Name of the label
 	Label string `pulumi:"label"`
-	// Value of the label
 	Value string `pulumi:"value"`
 }
 
@@ -7275,9 +6796,7 @@ type ServiceTaskSpecContainerSpecMountVolumeOptionsLabelInput interface {
 }
 
 type ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArgs struct {
-	// Name of the label
 	Label pulumi.StringInput `pulumi:"label"`
-	// Value of the label
 	Value pulumi.StringInput `pulumi:"value"`
 }
 
@@ -7332,12 +6851,10 @@ func (o ServiceTaskSpecContainerSpecMountVolumeOptionsLabelOutput) ToServiceTask
 	return o
 }
 
-// Name of the label
 func (o ServiceTaskSpecContainerSpecMountVolumeOptionsLabelOutput) Label() pulumi.StringOutput {
 	return o.ApplyT(func(v ServiceTaskSpecContainerSpecMountVolumeOptionsLabel) string { return v.Label }).(pulumi.StringOutput)
 }
 
-// Value of the label
 func (o ServiceTaskSpecContainerSpecMountVolumeOptionsLabelOutput) Value() pulumi.StringOutput {
 	return o.ApplyT(func(v ServiceTaskSpecContainerSpecMountVolumeOptionsLabel) string { return v.Value }).(pulumi.StringOutput)
 }
@@ -7980,7 +7497,6 @@ func (o ServiceTaskSpecContainerSpecSecretArrayOutput) Index(i pulumi.IntInput) 
 }
 
 type ServiceTaskSpecLogDriver struct {
-	// Name of the service
 	Name    string            `pulumi:"name"`
 	Options map[string]string `pulumi:"options"`
 }
@@ -7997,7 +7513,6 @@ type ServiceTaskSpecLogDriverInput interface {
 }
 
 type ServiceTaskSpecLogDriverArgs struct {
-	// Name of the service
 	Name    pulumi.StringInput    `pulumi:"name"`
 	Options pulumi.StringMapInput `pulumi:"options"`
 }
@@ -8079,7 +7594,6 @@ func (o ServiceTaskSpecLogDriverOutput) ToServiceTaskSpecLogDriverPtrOutputWithC
 	}).(ServiceTaskSpecLogDriverPtrOutput)
 }
 
-// Name of the service
 func (o ServiceTaskSpecLogDriverOutput) Name() pulumi.StringOutput {
 	return o.ApplyT(func(v ServiceTaskSpecLogDriver) string { return v.Name }).(pulumi.StringOutput)
 }
@@ -8112,7 +7626,6 @@ func (o ServiceTaskSpecLogDriverPtrOutput) Elem() ServiceTaskSpecLogDriverOutput
 	}).(ServiceTaskSpecLogDriverOutput)
 }
 
-// Name of the service
 func (o ServiceTaskSpecLogDriverPtrOutput) Name() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *ServiceTaskSpecLogDriver) *string {
 		if v == nil {
@@ -9197,18 +8710,12 @@ func (o ServiceTaskSpecRestartPolicyPtrOutput) Window() pulumi.StringPtrOutput {
 }
 
 type ServiceUpdateConfig struct {
-	// Delay between task updates `(ns|us|ms|s|m|h)`. Defaults to `0s`.
-	Delay *string `pulumi:"delay"`
-	// Action on update failure: `pause`, `continue` or `rollback`. Defaults to `pause`.
-	FailureAction *string `pulumi:"failureAction"`
-	// Failure rate to tolerate during an update. Defaults to `0.0`.
+	Delay           *string `pulumi:"delay"`
+	FailureAction   *string `pulumi:"failureAction"`
 	MaxFailureRatio *string `pulumi:"maxFailureRatio"`
-	// Duration after each task update to monitor for failure (ns|us|ms|s|m|h). Defaults to `5s`.
-	Monitor *string `pulumi:"monitor"`
-	// Update order: either 'stop-first' or 'start-first'. Defaults to `stop-first`.
-	Order *string `pulumi:"order"`
-	// Maximum number of tasks to be updated in one iteration. Defaults to `1`
-	Parallelism *int `pulumi:"parallelism"`
+	Monitor         *string `pulumi:"monitor"`
+	Order           *string `pulumi:"order"`
+	Parallelism     *int    `pulumi:"parallelism"`
 }
 
 // ServiceUpdateConfigInput is an input type that accepts ServiceUpdateConfigArgs and ServiceUpdateConfigOutput values.
@@ -9223,18 +8730,12 @@ type ServiceUpdateConfigInput interface {
 }
 
 type ServiceUpdateConfigArgs struct {
-	// Delay between task updates `(ns|us|ms|s|m|h)`. Defaults to `0s`.
-	Delay pulumi.StringPtrInput `pulumi:"delay"`
-	// Action on update failure: `pause`, `continue` or `rollback`. Defaults to `pause`.
-	FailureAction pulumi.StringPtrInput `pulumi:"failureAction"`
-	// Failure rate to tolerate during an update. Defaults to `0.0`.
+	Delay           pulumi.StringPtrInput `pulumi:"delay"`
+	FailureAction   pulumi.StringPtrInput `pulumi:"failureAction"`
 	MaxFailureRatio pulumi.StringPtrInput `pulumi:"maxFailureRatio"`
-	// Duration after each task update to monitor for failure (ns|us|ms|s|m|h). Defaults to `5s`.
-	Monitor pulumi.StringPtrInput `pulumi:"monitor"`
-	// Update order: either 'stop-first' or 'start-first'. Defaults to `stop-first`.
-	Order pulumi.StringPtrInput `pulumi:"order"`
-	// Maximum number of tasks to be updated in one iteration. Defaults to `1`
-	Parallelism pulumi.IntPtrInput `pulumi:"parallelism"`
+	Monitor         pulumi.StringPtrInput `pulumi:"monitor"`
+	Order           pulumi.StringPtrInput `pulumi:"order"`
+	Parallelism     pulumi.IntPtrInput    `pulumi:"parallelism"`
 }
 
 func (ServiceUpdateConfigArgs) ElementType() reflect.Type {
@@ -9314,32 +8815,26 @@ func (o ServiceUpdateConfigOutput) ToServiceUpdateConfigPtrOutputWithContext(ctx
 	}).(ServiceUpdateConfigPtrOutput)
 }
 
-// Delay between task updates `(ns|us|ms|s|m|h)`. Defaults to `0s`.
 func (o ServiceUpdateConfigOutput) Delay() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ServiceUpdateConfig) *string { return v.Delay }).(pulumi.StringPtrOutput)
 }
 
-// Action on update failure: `pause`, `continue` or `rollback`. Defaults to `pause`.
 func (o ServiceUpdateConfigOutput) FailureAction() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ServiceUpdateConfig) *string { return v.FailureAction }).(pulumi.StringPtrOutput)
 }
 
-// Failure rate to tolerate during an update. Defaults to `0.0`.
 func (o ServiceUpdateConfigOutput) MaxFailureRatio() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ServiceUpdateConfig) *string { return v.MaxFailureRatio }).(pulumi.StringPtrOutput)
 }
 
-// Duration after each task update to monitor for failure (ns|us|ms|s|m|h). Defaults to `5s`.
 func (o ServiceUpdateConfigOutput) Monitor() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ServiceUpdateConfig) *string { return v.Monitor }).(pulumi.StringPtrOutput)
 }
 
-// Update order: either 'stop-first' or 'start-first'. Defaults to `stop-first`.
 func (o ServiceUpdateConfigOutput) Order() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ServiceUpdateConfig) *string { return v.Order }).(pulumi.StringPtrOutput)
 }
 
-// Maximum number of tasks to be updated in one iteration. Defaults to `1`
 func (o ServiceUpdateConfigOutput) Parallelism() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v ServiceUpdateConfig) *int { return v.Parallelism }).(pulumi.IntPtrOutput)
 }
@@ -9368,7 +8863,6 @@ func (o ServiceUpdateConfigPtrOutput) Elem() ServiceUpdateConfigOutput {
 	}).(ServiceUpdateConfigOutput)
 }
 
-// Delay between task updates `(ns|us|ms|s|m|h)`. Defaults to `0s`.
 func (o ServiceUpdateConfigPtrOutput) Delay() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *ServiceUpdateConfig) *string {
 		if v == nil {
@@ -9378,7 +8872,6 @@ func (o ServiceUpdateConfigPtrOutput) Delay() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
-// Action on update failure: `pause`, `continue` or `rollback`. Defaults to `pause`.
 func (o ServiceUpdateConfigPtrOutput) FailureAction() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *ServiceUpdateConfig) *string {
 		if v == nil {
@@ -9388,7 +8881,6 @@ func (o ServiceUpdateConfigPtrOutput) FailureAction() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
-// Failure rate to tolerate during an update. Defaults to `0.0`.
 func (o ServiceUpdateConfigPtrOutput) MaxFailureRatio() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *ServiceUpdateConfig) *string {
 		if v == nil {
@@ -9398,7 +8890,6 @@ func (o ServiceUpdateConfigPtrOutput) MaxFailureRatio() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
-// Duration after each task update to monitor for failure (ns|us|ms|s|m|h). Defaults to `5s`.
 func (o ServiceUpdateConfigPtrOutput) Monitor() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *ServiceUpdateConfig) *string {
 		if v == nil {
@@ -9408,7 +8899,6 @@ func (o ServiceUpdateConfigPtrOutput) Monitor() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
-// Update order: either 'stop-first' or 'start-first'. Defaults to `stop-first`.
 func (o ServiceUpdateConfigPtrOutput) Order() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *ServiceUpdateConfig) *string {
 		if v == nil {
@@ -9418,7 +8908,6 @@ func (o ServiceUpdateConfigPtrOutput) Order() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
-// Maximum number of tasks to be updated in one iteration. Defaults to `1`
 func (o ServiceUpdateConfigPtrOutput) Parallelism() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v *ServiceUpdateConfig) *int {
 		if v == nil {
@@ -9429,9 +8918,7 @@ func (o ServiceUpdateConfigPtrOutput) Parallelism() pulumi.IntPtrOutput {
 }
 
 type VolumeLabel struct {
-	// Name of the label
 	Label string `pulumi:"label"`
-	// Value of the label
 	Value string `pulumi:"value"`
 }
 
@@ -9447,9 +8934,7 @@ type VolumeLabelInput interface {
 }
 
 type VolumeLabelArgs struct {
-	// Name of the label
 	Label pulumi.StringInput `pulumi:"label"`
-	// Value of the label
 	Value pulumi.StringInput `pulumi:"value"`
 }
 
@@ -9504,12 +8989,10 @@ func (o VolumeLabelOutput) ToVolumeLabelOutputWithContext(ctx context.Context) V
 	return o
 }
 
-// Name of the label
 func (o VolumeLabelOutput) Label() pulumi.StringOutput {
 	return o.ApplyT(func(v VolumeLabel) string { return v.Label }).(pulumi.StringOutput)
 }
 
-// Value of the label
 func (o VolumeLabelOutput) Value() pulumi.StringOutput {
 	return o.ApplyT(func(v VolumeLabel) string { return v.Value }).(pulumi.StringOutput)
 }

@@ -12,9 +12,6 @@ namespace Pulumi.Docker.Inputs
 
     public sealed class ServiceTaskSpecLogDriverGetArgs : Pulumi.ResourceArgs
     {
-        /// <summary>
-        /// Name of the service
-        /// </summary>
         [Input("name", required: true)]
         public Input<string> Name { get; set; } = null!;
 

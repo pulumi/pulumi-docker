@@ -25,10 +25,6 @@ namespace Pulumi.Docker.Inputs
 
         [Input("labels")]
         private InputList<Inputs.ContainerMountVolumeOptionsLabelGetArgs>? _labels;
-
-        /// <summary>
-        /// User-defined key/value metadata
-        /// </summary>
         public InputList<Inputs.ContainerMountVolumeOptionsLabelGetArgs> Labels
         {
             get => _labels ?? (_labels = new InputList<Inputs.ContainerMountVolumeOptionsLabelGetArgs>());

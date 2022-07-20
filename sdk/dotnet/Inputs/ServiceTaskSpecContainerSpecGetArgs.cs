@@ -80,10 +80,6 @@ namespace Pulumi.Docker.Inputs
 
         [Input("labels")]
         private InputList<Inputs.ServiceTaskSpecContainerSpecLabelGetArgs>? _labels;
-
-        /// <summary>
-        /// User-defined key/value metadata
-        /// </summary>
         public InputList<Inputs.ServiceTaskSpecContainerSpecLabelGetArgs> Labels
         {
             get => _labels ?? (_labels = new InputList<Inputs.ServiceTaskSpecContainerSpecLabelGetArgs>());

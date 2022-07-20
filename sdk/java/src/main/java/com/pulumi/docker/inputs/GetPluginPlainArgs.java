@@ -14,32 +14,16 @@ public final class GetPluginPlainArgs extends com.pulumi.resources.InvokeArgs {
 
     public static final GetPluginPlainArgs Empty = new GetPluginPlainArgs();
 
-    /**
-     * The alias of the Docker plugin. If the tag is omitted, `:latest` is complemented to the attribute value.
-     * 
-     */
     @Import(name="alias")
     private @Nullable String alias;
 
-    /**
-     * @return The alias of the Docker plugin. If the tag is omitted, `:latest` is complemented to the attribute value.
-     * 
-     */
     public Optional<String> alias() {
         return Optional.ofNullable(this.alias);
     }
 
-    /**
-     * The ID of the plugin, which has precedence over the `alias` of both are given
-     * 
-     */
     @Import(name="id")
     private @Nullable String id;
 
-    /**
-     * @return The ID of the plugin, which has precedence over the `alias` of both are given
-     * 
-     */
     public Optional<String> id() {
         return Optional.ofNullable(this.id);
     }
@@ -69,23 +53,11 @@ public final class GetPluginPlainArgs extends com.pulumi.resources.InvokeArgs {
             $ = new GetPluginPlainArgs(Objects.requireNonNull(defaults));
         }
 
-        /**
-         * @param alias The alias of the Docker plugin. If the tag is omitted, `:latest` is complemented to the attribute value.
-         * 
-         * @return builder
-         * 
-         */
         public Builder alias(@Nullable String alias) {
             $.alias = alias;
             return this;
         }
 
-        /**
-         * @param id The ID of the plugin, which has precedence over the `alias` of both are given
-         * 
-         * @return builder
-         * 
-         */
         public Builder id(@Nullable String id) {
             $.id = id;
             return this;

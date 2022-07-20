@@ -13,25 +13,10 @@ namespace Pulumi.Docker.Outputs
     [OutputType]
     public sealed class ContainerHealthcheck
     {
-        /// <summary>
-        /// Time between running the check (ms|s|m|h). Defaults to `0s`.
-        /// </summary>
         public readonly string? Interval;
-        /// <summary>
-        /// Consecutive failures needed to report unhealthy. Defaults to `0`.
-        /// </summary>
         public readonly int? Retries;
-        /// <summary>
-        /// Start period for the container to initialize before counting retries towards unstable (ms|s|m|h). Defaults to `0s`.
-        /// </summary>
         public readonly string? StartPeriod;
-        /// <summary>
-        /// Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `["CMD", "curl", "-f", "localhost/health"]`.
-        /// </summary>
         public readonly ImmutableArray<string> Tests;
-        /// <summary>
-        /// Maximum time to allow one check to run (ms|s|m|h). Defaults to `0s`.
-        /// </summary>
         public readonly string? Timeout;
 
         [OutputConstructor]

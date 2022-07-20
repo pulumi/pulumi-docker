@@ -89,15 +89,9 @@ namespace Pulumi.Docker
 
     public sealed class GetRegistryImageArgs : Pulumi.InvokeArgs
     {
-        /// <summary>
-        /// If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
-        /// </summary>
         [Input("insecureSkipVerify")]
         public bool? InsecureSkipVerify { get; set; }
 
-        /// <summary>
-        /// The name of the Docker image, including any tags. e.g. `alpine:latest`
-        /// </summary>
         [Input("name", required: true)]
         public string Name { get; set; } = null!;
 
@@ -108,15 +102,9 @@ namespace Pulumi.Docker
 
     public sealed class GetRegistryImageInvokeArgs : Pulumi.InvokeArgs
     {
-        /// <summary>
-        /// If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
-        /// </summary>
         [Input("insecureSkipVerify")]
         public Input<bool>? InsecureSkipVerify { get; set; }
 
-        /// <summary>
-        /// The name of the Docker image, including any tags. e.g. `alpine:latest`
-        /// </summary>
         [Input("name", required: true)]
         public Input<string> Name { get; set; } = null!;
 
@@ -133,17 +121,8 @@ namespace Pulumi.Docker
         /// The provider-assigned unique ID for this managed resource.
         /// </summary>
         public readonly string Id;
-        /// <summary>
-        /// If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
-        /// </summary>
         public readonly bool? InsecureSkipVerify;
-        /// <summary>
-        /// The name of the Docker image, including any tags. e.g. `alpine:latest`
-        /// </summary>
         public readonly string Name;
-        /// <summary>
-        /// The content digest of the image, as stored in the registry.
-        /// </summary>
         public readonly string Sha256Digest;
 
         [OutputConstructor]

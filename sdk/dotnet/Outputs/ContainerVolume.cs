@@ -13,25 +13,10 @@ namespace Pulumi.Docker.Outputs
     [OutputType]
     public sealed class ContainerVolume
     {
-        /// <summary>
-        /// The path in the container where the volume will be mounted.
-        /// </summary>
         public readonly string? ContainerPath;
-        /// <summary>
-        /// The container where the volume is coming from.
-        /// </summary>
         public readonly string? FromContainer;
-        /// <summary>
-        /// The path on the host where the volume is coming from.
-        /// </summary>
         public readonly string? HostPath;
-        /// <summary>
-        /// If `true`, this volume will be readonly. Defaults to `false`.
-        /// </summary>
         public readonly bool? ReadOnly;
-        /// <summary>
-        /// The name of the docker volume which should be mounted.
-        /// </summary>
         public readonly string? VolumeName;
 
         [OutputConstructor]

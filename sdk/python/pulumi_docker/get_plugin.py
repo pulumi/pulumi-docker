@@ -46,57 +46,36 @@ class GetPluginResult:
     @property
     @pulumi.getter
     def alias(self) -> Optional[str]:
-        """
-        The alias of the Docker plugin. If the tag is omitted, `:latest` is complemented to the attribute value.
-        """
         return pulumi.get(self, "alias")
 
     @property
     @pulumi.getter
     def enabled(self) -> bool:
-        """
-        If `true` the plugin is enabled
-        """
         return pulumi.get(self, "enabled")
 
     @property
     @pulumi.getter
     def envs(self) -> Sequence[str]:
-        """
-        The environment variables in the form of `KEY=VALUE`, e.g. `DEBUG=0`
-        """
         return pulumi.get(self, "envs")
 
     @property
     @pulumi.getter(name="grantAllPermissions")
     def grant_all_permissions(self) -> bool:
-        """
-        If true, grant all permissions necessary to run the plugin
-        """
         return pulumi.get(self, "grant_all_permissions")
 
     @property
     @pulumi.getter
     def id(self) -> Optional[str]:
-        """
-        The ID of the plugin, which has precedence over the `alias` of both are given
-        """
         return pulumi.get(self, "id")
 
     @property
     @pulumi.getter
     def name(self) -> str:
-        """
-        The plugin name. If the tag is omitted, `:latest` is complemented to the attribute value.
-        """
         return pulumi.get(self, "name")
 
     @property
     @pulumi.getter(name="pluginReference")
     def plugin_reference(self) -> str:
-        """
-        The Docker Plugin Reference
-        """
         return pulumi.get(self, "plugin_reference")
 
 
@@ -127,10 +106,6 @@ def get_plugin(alias: Optional[str] = None,
     data "Plugin" "by_alias" {
       alias = "sample-volume-plugin:latest"
     }
-
-
-    :param str alias: The alias of the Docker plugin. If the tag is omitted, `:latest` is complemented to the attribute value.
-    :param str id: The ID of the plugin, which has precedence over the `alias` of both are given
     """
     __args__ = dict()
     __args__['alias'] = alias
@@ -164,9 +139,5 @@ def get_plugin_output(alias: Optional[pulumi.Input[Optional[str]]] = None,
     data "Plugin" "by_alias" {
       alias = "sample-volume-plugin:latest"
     }
-
-
-    :param str alias: The alias of the Docker plugin. If the tag is omitted, `:latest` is complemented to the attribute value.
-    :param str id: The ID of the plugin, which has precedence over the `alias` of both are given
     """
     ...

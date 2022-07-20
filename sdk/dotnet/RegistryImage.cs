@@ -53,7 +53,8 @@ namespace Pulumi.Docker
         public Output<bool?> InsecureSkipVerify { get; private set; } = null!;
 
         /// <summary>
-        /// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
+        /// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from
+        /// the docker registry on destroy operation. Defaults to `false`
         /// </summary>
         [Output("keepRemotely")]
         public Output<bool?> KeepRemotely { get; private set; } = null!;
@@ -129,7 +130,8 @@ namespace Pulumi.Docker
         public Input<bool>? InsecureSkipVerify { get; set; }
 
         /// <summary>
-        /// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
+        /// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from
+        /// the docker registry on destroy operation. Defaults to `false`
         /// </summary>
         [Input("keepRemotely")]
         public Input<bool>? KeepRemotely { get; set; }
@@ -160,7 +162,8 @@ namespace Pulumi.Docker
         public Input<bool>? InsecureSkipVerify { get; set; }
 
         /// <summary>
-        /// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
+        /// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from
+        /// the docker registry on destroy operation. Defaults to `false`
         /// </summary>
         [Input("keepRemotely")]
         public Input<bool>? KeepRemotely { get; set; }

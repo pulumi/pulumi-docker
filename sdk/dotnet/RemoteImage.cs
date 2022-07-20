@@ -107,7 +107,8 @@ namespace Pulumi.Docker
     public partial class RemoteImage : Pulumi.CustomResource
     {
         /// <summary>
-        /// Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+        /// Configuration to build an image. Please see [docker build command
+        /// reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
         /// </summary>
         [Output("build")]
         public Output<Outputs.RemoteImageBuild?> Build { get; private set; } = null!;
@@ -119,7 +120,8 @@ namespace Pulumi.Docker
         public Output<bool?> ForceRemove { get; private set; } = null!;
 
         /// <summary>
-        /// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
+        /// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from
+        /// the docker local storage on destroy operation.
         /// </summary>
         [Output("keepLocally")]
         public Output<bool?> KeepLocally { get; private set; } = null!;
@@ -146,7 +148,8 @@ namespace Pulumi.Docker
         public Output<string?> PullTrigger { get; private set; } = null!;
 
         /// <summary>
-        /// List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
+        /// List of values which cause an image pull when changed. This is used to store the image digest from the registry when
+        /// using the [docker_registry_image](../data-sources/registry_image.md).
         /// </summary>
         [Output("pullTriggers")]
         public Output<ImmutableArray<string>> PullTriggers { get; private set; } = null!;
@@ -204,7 +207,8 @@ namespace Pulumi.Docker
     public sealed class RemoteImageArgs : Pulumi.ResourceArgs
     {
         /// <summary>
-        /// Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+        /// Configuration to build an image. Please see [docker build command
+        /// reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
         /// </summary>
         [Input("build")]
         public Input<Inputs.RemoteImageBuildArgs>? Build { get; set; }
@@ -216,7 +220,8 @@ namespace Pulumi.Docker
         public Input<bool>? ForceRemove { get; set; }
 
         /// <summary>
-        /// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
+        /// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from
+        /// the docker local storage on destroy operation.
         /// </summary>
         [Input("keepLocally")]
         public Input<bool>? KeepLocally { get; set; }
@@ -237,7 +242,8 @@ namespace Pulumi.Docker
         private InputList<string>? _pullTriggers;
 
         /// <summary>
-        /// List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
+        /// List of values which cause an image pull when changed. This is used to store the image digest from the registry when
+        /// using the [docker_registry_image](../data-sources/registry_image.md).
         /// </summary>
         public InputList<string> PullTriggers
         {
@@ -253,7 +259,8 @@ namespace Pulumi.Docker
     public sealed class RemoteImageState : Pulumi.ResourceArgs
     {
         /// <summary>
-        /// Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+        /// Configuration to build an image. Please see [docker build command
+        /// reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
         /// </summary>
         [Input("build")]
         public Input<Inputs.RemoteImageBuildGetArgs>? Build { get; set; }
@@ -265,7 +272,8 @@ namespace Pulumi.Docker
         public Input<bool>? ForceRemove { get; set; }
 
         /// <summary>
-        /// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
+        /// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from
+        /// the docker local storage on destroy operation.
         /// </summary>
         [Input("keepLocally")]
         public Input<bool>? KeepLocally { get; set; }
@@ -295,7 +303,8 @@ namespace Pulumi.Docker
         private InputList<string>? _pullTriggers;
 
         /// <summary>
-        /// List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
+        /// List of values which cause an image pull when changed. This is used to store the image digest from the registry when
+        /// using the [docker_registry_image](../data-sources/registry_image.md).
         /// </summary>
         public InputList<string> PullTriggers
         {

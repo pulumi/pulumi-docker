@@ -57,7 +57,8 @@ namespace Pulumi.Docker
         public Output<bool?> CheckDuplicate { get; private set; } = null!;
 
         /// <summary>
-        /// The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
+        /// The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network
+        /// docs](https://docs.docker.com/network/#network-drivers) for more details.
         /// </summary>
         [Output("driver")]
         public Output<string> Driver { get; private set; } = null!;
@@ -105,7 +106,8 @@ namespace Pulumi.Docker
         public Output<string> Name { get; private set; } = null!;
 
         /// <summary>
-        /// Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
+        /// Only available with bridge networks. See [bridge options
+        /// docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
         /// </summary>
         [Output("options")]
         public Output<ImmutableDictionary<string, object>> Options { get; private set; } = null!;
@@ -175,7 +177,8 @@ namespace Pulumi.Docker
         public Input<bool>? CheckDuplicate { get; set; }
 
         /// <summary>
-        /// The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
+        /// The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network
+        /// docs](https://docs.docker.com/network/#network-drivers) for more details.
         /// </summary>
         [Input("driver")]
         public Input<string>? Driver { get; set; }
@@ -238,7 +241,8 @@ namespace Pulumi.Docker
         private InputMap<object>? _options;
 
         /// <summary>
-        /// Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
+        /// Only available with bridge networks. See [bridge options
+        /// docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
         /// </summary>
         public InputMap<object> Options
         {
@@ -266,7 +270,8 @@ namespace Pulumi.Docker
         public Input<bool>? CheckDuplicate { get; set; }
 
         /// <summary>
-        /// The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
+        /// The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network
+        /// docs](https://docs.docker.com/network/#network-drivers) for more details.
         /// </summary>
         [Input("driver")]
         public Input<string>? Driver { get; set; }
@@ -329,7 +334,8 @@ namespace Pulumi.Docker
         private InputMap<object>? _options;
 
         /// <summary>
-        /// Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
+        /// Only available with bridge networks. See [bridge options
+        /// docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
         /// </summary>
         public InputMap<object> Options
         {

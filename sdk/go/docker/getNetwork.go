@@ -45,26 +45,18 @@ func LookupNetwork(ctx *pulumi.Context, args *LookupNetworkArgs, opts ...pulumi.
 
 // A collection of arguments for invoking getNetwork.
 type LookupNetworkArgs struct {
-	// The name of the Docker network.
 	Name string `pulumi:"name"`
 }
 
 // A collection of values returned by getNetwork.
 type LookupNetworkResult struct {
-	// The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
-	Driver string `pulumi:"driver"`
-	// The ID of this resource.
-	Id string `pulumi:"id"`
-	// If `true`, the network is internal.
-	Internal bool `pulumi:"internal"`
-	// The IPAM configuration options
+	Driver      string                 `pulumi:"driver"`
+	Id          string                 `pulumi:"id"`
+	Internal    bool                   `pulumi:"internal"`
 	IpamConfigs []GetNetworkIpamConfig `pulumi:"ipamConfigs"`
-	// The name of the Docker network.
-	Name string `pulumi:"name"`
-	// Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
-	Options map[string]interface{} `pulumi:"options"`
-	// Scope of the network. One of `swarm`, `global`, or `local`.
-	Scope string `pulumi:"scope"`
+	Name        string                 `pulumi:"name"`
+	Options     map[string]interface{} `pulumi:"options"`
+	Scope       string                 `pulumi:"scope"`
 }
 
 func LookupNetworkOutput(ctx *pulumi.Context, args LookupNetworkOutputArgs, opts ...pulumi.InvokeOption) LookupNetworkResultOutput {
@@ -82,7 +74,6 @@ func LookupNetworkOutput(ctx *pulumi.Context, args LookupNetworkOutputArgs, opts
 
 // A collection of arguments for invoking getNetwork.
 type LookupNetworkOutputArgs struct {
-	// The name of the Docker network.
 	Name pulumi.StringInput `pulumi:"name"`
 }
 
@@ -105,37 +96,30 @@ func (o LookupNetworkResultOutput) ToLookupNetworkResultOutputWithContext(ctx co
 	return o
 }
 
-// The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
 func (o LookupNetworkResultOutput) Driver() pulumi.StringOutput {
 	return o.ApplyT(func(v LookupNetworkResult) string { return v.Driver }).(pulumi.StringOutput)
 }
 
-// The ID of this resource.
 func (o LookupNetworkResultOutput) Id() pulumi.StringOutput {
 	return o.ApplyT(func(v LookupNetworkResult) string { return v.Id }).(pulumi.StringOutput)
 }
 
-// If `true`, the network is internal.
 func (o LookupNetworkResultOutput) Internal() pulumi.BoolOutput {
 	return o.ApplyT(func(v LookupNetworkResult) bool { return v.Internal }).(pulumi.BoolOutput)
 }
 
-// The IPAM configuration options
 func (o LookupNetworkResultOutput) IpamConfigs() GetNetworkIpamConfigArrayOutput {
 	return o.ApplyT(func(v LookupNetworkResult) []GetNetworkIpamConfig { return v.IpamConfigs }).(GetNetworkIpamConfigArrayOutput)
 }
 
-// The name of the Docker network.
 func (o LookupNetworkResultOutput) Name() pulumi.StringOutput {
 	return o.ApplyT(func(v LookupNetworkResult) string { return v.Name }).(pulumi.StringOutput)
 }
 
-// Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
 func (o LookupNetworkResultOutput) Options() pulumi.MapOutput {
 	return o.ApplyT(func(v LookupNetworkResult) map[string]interface{} { return v.Options }).(pulumi.MapOutput)
 }
 
-// Scope of the network. One of `swarm`, `global`, or `local`.
 func (o LookupNetworkResultOutput) Scope() pulumi.StringOutput {
 	return o.ApplyT(func(v LookupNetworkResult) string { return v.Scope }).(pulumi.StringOutput)
 }

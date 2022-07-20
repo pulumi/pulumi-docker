@@ -19,14 +19,16 @@ public final class RemoteImageArgs extends com.pulumi.resources.ResourceArgs {
     public static final RemoteImageArgs Empty = new RemoteImageArgs();
 
     /**
-     * Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+     * Configuration to build an image. Please see [docker build command
+     * reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
      * 
      */
     @Import(name="build")
     private @Nullable Output<RemoteImageBuildArgs> build;
 
     /**
-     * @return Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+     * @return Configuration to build an image. Please see [docker build command
+     * reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
      * 
      */
     public Optional<Output<RemoteImageBuildArgs>> build() {
@@ -49,14 +51,16 @@ public final class RemoteImageArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * If true, then the Docker image won&#39;t be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
+     * If true, then the Docker image won&#39;t be deleted on destroy operation. If this is false, it will delete the image from
+     * the docker local storage on destroy operation.
      * 
      */
     @Import(name="keepLocally")
     private @Nullable Output<Boolean> keepLocally;
 
     /**
-     * @return If true, then the Docker image won&#39;t be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
+     * @return If true, then the Docker image won&#39;t be deleted on destroy operation. If this is false, it will delete the image from
+     * the docker local storage on destroy operation.
      * 
      */
     public Optional<Output<Boolean>> keepLocally() {
@@ -102,14 +106,16 @@ public final class RemoteImageArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
+     * List of values which cause an image pull when changed. This is used to store the image digest from the registry when
+     * using the [docker_registry_image](../data-sources/registry_image.md).
      * 
      */
     @Import(name="pullTriggers")
     private @Nullable Output<List<String>> pullTriggers;
 
     /**
-     * @return List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
+     * @return List of values which cause an image pull when changed. This is used to store the image digest from the registry when
+     * using the [docker_registry_image](../data-sources/registry_image.md).
      * 
      */
     public Optional<Output<List<String>>> pullTriggers() {
@@ -146,7 +152,8 @@ public final class RemoteImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param build Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+         * @param build Configuration to build an image. Please see [docker build command
+         * reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
          * 
          * @return builder
          * 
@@ -157,7 +164,8 @@ public final class RemoteImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param build Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+         * @param build Configuration to build an image. Please see [docker build command
+         * reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
          * 
          * @return builder
          * 
@@ -188,7 +196,8 @@ public final class RemoteImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param keepLocally If true, then the Docker image won&#39;t be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
+         * @param keepLocally If true, then the Docker image won&#39;t be deleted on destroy operation. If this is false, it will delete the image from
+         * the docker local storage on destroy operation.
          * 
          * @return builder
          * 
@@ -199,7 +208,8 @@ public final class RemoteImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param keepLocally If true, then the Docker image won&#39;t be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
+         * @param keepLocally If true, then the Docker image won&#39;t be deleted on destroy operation. If this is false, it will delete the image from
+         * the docker local storage on destroy operation.
          * 
          * @return builder
          * 
@@ -259,7 +269,8 @@ public final class RemoteImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param pullTriggers List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
+         * @param pullTriggers List of values which cause an image pull when changed. This is used to store the image digest from the registry when
+         * using the [docker_registry_image](../data-sources/registry_image.md).
          * 
          * @return builder
          * 
@@ -270,7 +281,8 @@ public final class RemoteImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param pullTriggers List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
+         * @param pullTriggers List of values which cause an image pull when changed. This is used to store the image digest from the registry when
+         * using the [docker_registry_image](../data-sources/registry_image.md).
          * 
          * @return builder
          * 
@@ -280,7 +292,8 @@ public final class RemoteImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param pullTriggers List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
+         * @param pullTriggers List of values which cause an image pull when changed. This is used to store the image digest from the registry when
+         * using the [docker_registry_image](../data-sources/registry_image.md).
          * 
          * @return builder
          * 

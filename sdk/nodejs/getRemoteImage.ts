@@ -46,9 +46,6 @@ export function getRemoteImage(args: GetRemoteImageArgs, opts?: pulumi.InvokeOpt
  * A collection of arguments for invoking getRemoteImage.
  */
 export interface GetRemoteImageArgs {
-    /**
-     * The name of the Docker image, including any tags or SHA256 repo digests.
-     */
     name: string;
 }
 
@@ -60,13 +57,7 @@ export interface GetRemoteImageResult {
      * The provider-assigned unique ID for this managed resource.
      */
     readonly id: string;
-    /**
-     * The name of the Docker image, including any tags or SHA256 repo digests.
-     */
     readonly name: string;
-    /**
-     * The image sha256 digest in the form of `repo[:tag]@sha256:<hash>`. It may be empty in the edge case where the local image was pulled from a repo, tagged locally, and then referred to in the data source by that local name/tag.
-     */
     readonly repoDigest: string;
 }
 
@@ -78,8 +69,5 @@ export function getRemoteImageOutput(args: GetRemoteImageOutputArgs, opts?: pulu
  * A collection of arguments for invoking getRemoteImage.
  */
 export interface GetRemoteImageOutputArgs {
-    /**
-     * The name of the Docker image, including any tags or SHA256 repo digests.
-     */
     name: pulumi.Input<string>;
 }

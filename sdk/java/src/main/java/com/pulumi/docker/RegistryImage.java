@@ -79,14 +79,16 @@ public class RegistryImage extends com.pulumi.resources.CustomResource {
         return Codegen.optional(this.insecureSkipVerify);
     }
     /**
-     * If true, then the Docker image won&#39;t be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
+     * If true, then the Docker image won&#39;t be deleted on destroy operation. If this is false, it will delete the image from
+     * the docker registry on destroy operation. Defaults to `false`
      * 
      */
     @Export(name="keepRemotely", type=Boolean.class, parameters={})
     private Output</* @Nullable */ Boolean> keepRemotely;
 
     /**
-     * @return If true, then the Docker image won&#39;t be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
+     * @return If true, then the Docker image won&#39;t be deleted on destroy operation. If this is false, it will delete the image from
+     * the docker registry on destroy operation. Defaults to `false`
      * 
      */
     public Output<Optional<Boolean>> keepRemotely() {

@@ -12,36 +12,21 @@ namespace Pulumi.Docker.Inputs
 
     public sealed class ContainerUploadGetArgs : Pulumi.ResourceArgs
     {
-        /// <summary>
-        /// Literal string value to use as the object content, which will be uploaded as UTF-8-encoded text. Conflicts with `content_base64` &amp; `source`
-        /// </summary>
         [Input("content")]
         public Input<string>? Content { get; set; }
 
         [Input("contentBase64")]
         public Input<string>? ContentBase64 { get; set; }
 
-        /// <summary>
-        /// If `true`, the file will be uploaded with user executable permission. Defaults to `false`.
-        /// </summary>
         [Input("executable")]
         public Input<bool>? Executable { get; set; }
 
-        /// <summary>
-        /// Path to the file in the container where is upload goes to
-        /// </summary>
         [Input("file", required: true)]
         public Input<string> File { get; set; } = null!;
 
-        /// <summary>
-        /// A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state. Conflicts with `content` &amp; `content_base64`
-        /// </summary>
         [Input("source")]
         public Input<string>? Source { get; set; }
 
-        /// <summary>
-        /// If using `source`, this will force an update if the file content has updated but the filename has not.
-        /// </summary>
         [Input("sourceHash")]
         public Input<string>? SourceHash { get; set; }
 

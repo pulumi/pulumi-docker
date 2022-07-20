@@ -13,8 +13,6 @@ import javax.annotation.Nullable;
 @CustomType
 public final class ContainerNetworkData {
     /**
-     * @return The network gateway of the container.
-     * 
      * @deprecated
      * Use `network_data` instead. The network gateway of the container as read from its NetworkSettings.
      * 
@@ -24,8 +22,6 @@ public final class ContainerNetworkData {
     private final @Nullable String globalIpv6Address;
     private final @Nullable Integer globalIpv6PrefixLength;
     /**
-     * @return The IP address of the container.
-     * 
      * @deprecated
      * Use `network_data` instead. The IP address of the container&#39;s first network it.
      * 
@@ -33,8 +29,6 @@ public final class ContainerNetworkData {
     @Deprecated /* Use `network_data` instead. The IP address of the container's first network it. */
     private final @Nullable String ipAddress;
     /**
-     * @return The IP prefix length of the container.
-     * 
      * @deprecated
      * Use `network_data` instead. The IP prefix length of the container as read from its NetworkSettings.
      * 
@@ -63,8 +57,6 @@ public final class ContainerNetworkData {
     }
 
     /**
-     * @return The network gateway of the container.
-     * 
      * @deprecated
      * Use `network_data` instead. The network gateway of the container as read from its NetworkSettings.
      * 
@@ -80,8 +72,6 @@ public final class ContainerNetworkData {
         return Optional.ofNullable(this.globalIpv6PrefixLength);
     }
     /**
-     * @return The IP address of the container.
-     * 
      * @deprecated
      * Use `network_data` instead. The IP address of the container&#39;s first network it.
      * 
@@ -91,8 +81,6 @@ public final class ContainerNetworkData {
         return Optional.ofNullable(this.ipAddress);
     }
     /**
-     * @return The IP prefix length of the container.
-     * 
      * @deprecated
      * Use `network_data` instead. The IP prefix length of the container as read from its NetworkSettings.
      * 

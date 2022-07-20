@@ -9,15 +9,7 @@ import java.util.Objects;
 
 @CustomType
 public final class ServiceLabel {
-    /**
-     * @return Name of the label
-     * 
-     */
     private final String label;
-    /**
-     * @return Value of the label
-     * 
-     */
     private final String value;
 
     @CustomType.Constructor
@@ -28,17 +20,9 @@ public final class ServiceLabel {
         this.value = value;
     }
 
-    /**
-     * @return Name of the label
-     * 
-     */
     public String label() {
         return this.label;
     }
-    /**
-     * @return Value of the label
-     * 
-     */
     public String value() {
         return this.value;
     }

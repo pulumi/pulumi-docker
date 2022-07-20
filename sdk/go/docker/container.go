@@ -77,7 +77,8 @@ type Container struct {
 	Bridge pulumi.StringOutput `pulumi:"bridge"`
 	// Add or drop certrain linux capabilities.
 	Capabilities ContainerCapabilitiesPtrOutput `pulumi:"capabilities"`
-	// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-","baz.con"]`.
+	// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be
+	// `["/usr/bin/myprogram","-","baz.con"]`.
 	Command pulumi.StringArrayOutput `pulumi:"command"`
 	// The logs of the container if its execution is done (`attach` must be disabled).
 	ContainerLogs pulumi.StringOutput `pulumi:"containerLogs"`
@@ -85,7 +86,8 @@ type Container struct {
 	CpuSet pulumi.StringPtrOutput `pulumi:"cpuSet"`
 	// CPU shares (relative weight) for the container.
 	CpuShares pulumi.IntPtrOutput `pulumi:"cpuShares"`
-	// If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
+	// If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on
+	// successful stop.
 	DestroyGraceSeconds pulumi.IntPtrOutput `pulumi:"destroyGraceSeconds"`
 	// Bind devices to the container.
 	Devices ContainerDeviceArrayOutput `pulumi:"devices"`
@@ -97,16 +99,21 @@ type Container struct {
 	DnsSearches pulumi.StringArrayOutput `pulumi:"dnsSearches"`
 	// Domain name of the container.
 	Domainname pulumi.StringPtrOutput `pulumi:"domainname"`
-	// The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogra"]`.
+	// The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an
+	// executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be
+	// `"/usr/bin/myprogra"]`.
 	Entrypoints pulumi.StringArrayOutput `pulumi:"entrypoints"`
 	// Environment variables to set in the form of `KEY=VALUE`, e.g. `DEBUG=0`
 	Envs pulumi.StringArrayOutput `pulumi:"envs"`
-	// The exit code of the container if its execution is done (`mustRun` must be disabled).
+	// The exit code of the container if its execution is done (`must_run` must be disabled).
 	ExitCode pulumi.IntOutput `pulumi:"exitCode"`
 	// The network gateway of the container.
 	//
 	// Deprecated: Use `network_data` instead. The network gateway of the container as read from its NetworkSettings.
 	Gateway pulumi.StringOutput `pulumi:"gateway"`
+	// GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result
+	// in unexpected behavior.
+	Gpus pulumi.StringPtrOutput `pulumi:"gpus"`
 	// Additional groups for the container user
 	GroupAdds pulumi.StringArrayOutput `pulumi:"groupAdds"`
 	// A test to perform to check that the container is healthy
@@ -115,9 +122,11 @@ type Container struct {
 	Hostname pulumi.StringOutput `pulumi:"hostname"`
 	// Additional hosts to add to the container.
 	Hosts ContainerHostArrayOutput `pulumi:"hosts"`
-	// The ID of the image to back this container. The easiest way to get this value is to use the `RemoteImage` resource as is shown in the example.
+	// The ID of the image to back this container. The easiest way to get this value is to use the `docker_image` resource as
+	// is shown in the example.
 	Image pulumi.StringOutput `pulumi:"image"`
-	// Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
+	// Configured whether an init process should be injected for this container. If unset this will default to the `dockerd`
+	// defaults.
 	Init pulumi.BoolOutput `pulumi:"init"`
 	// The IP address of the container.
 	//
@@ -127,7 +136,8 @@ type Container struct {
 	//
 	// Deprecated: Use `network_data` instead. The IP prefix length of the container as read from its NetworkSettings.
 	IpPrefixLength pulumi.IntOutput `pulumi:"ipPrefixLength"`
-	// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
+	// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or
+	// `host`.
 	IpcMode pulumi.StringOutput `pulumi:"ipcMode"`
 	// User-defined key/value metadata
 	Labels ContainerLabelArrayOutput `pulumi:"labels"`
@@ -185,14 +195,22 @@ type Container struct {
 	Restart pulumi.StringPtrOutput `pulumi:"restart"`
 	// If `true`, then the container will be automatically removed when it exits. Defaults to `false`.
 	Rm pulumi.BoolPtrOutput `pulumi:"rm"`
-	// List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
+	// Runtime to use for the container.
+	Runtime pulumi.StringOutput `pulumi:"runtime"`
+	// List of string values to customize labels for MLS systems, such as SELinux. See
+	// https://docs.docker.com/engine/reference/run/#security-configuration.
 	SecurityOpts pulumi.StringArrayOutput `pulumi:"securityOpts"`
 	// Size of `/dev/shm` in MBs.
 	ShmSize pulumi.IntOutput `pulumi:"shmSize"`
-	// If `true`, then the Docker container will be started after creation. If `false`, then the container is only created. Defaults to `true`.
+	// If `true`, then the Docker container will be started after creation. If `false`, then the container is only created.
+	// Defaults to `true`.
 	Start pulumi.BoolPtrOutput `pulumi:"start"`
 	// If `true`, keep STDIN open even if not attached (`docker run -i`). Defaults to `false`.
 	StdinOpen pulumi.BoolPtrOutput `pulumi:"stdinOpen"`
+	// Signal to stop a container (default `SIGTERM`).
+	StopSignal pulumi.StringOutput `pulumi:"stopSignal"`
+	// Timeout (in seconds) to stop a container.
+	StopTimeout pulumi.IntOutput `pulumi:"stopTimeout"`
 	// Key/value pairs for the storage driver options, e.g. `size`: `120G`
 	StorageOpts pulumi.MapOutput `pulumi:"storageOpts"`
 	// A map of kernel parameters (sysctls) to set in the container.
@@ -203,9 +221,11 @@ type Container struct {
 	Tty pulumi.BoolPtrOutput `pulumi:"tty"`
 	// Ulimit options to add.
 	Ulimits ContainerUlimitArrayOutput `pulumi:"ulimits"`
-	// Specifies files to upload to the container before starting it. Only one of `content` or `contentBase64` can be set and at least one of them has to be set.
+	// Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and
+	// at least one of them has to be set.
 	Uploads ContainerUploadArrayOutput `pulumi:"uploads"`
-	// User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.
+	// User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by
+	// name.
 	User pulumi.StringPtrOutput `pulumi:"user"`
 	// Sets the usernamespace mode for the container when usernamespace remapping option is enabled.
 	UsernsMode pulumi.StringPtrOutput `pulumi:"usernsMode"`
@@ -253,7 +273,8 @@ type containerState struct {
 	Bridge *string `pulumi:"bridge"`
 	// Add or drop certrain linux capabilities.
 	Capabilities *ContainerCapabilities `pulumi:"capabilities"`
-	// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-","baz.con"]`.
+	// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be
+	// `["/usr/bin/myprogram","-","baz.con"]`.
 	Command []string `pulumi:"command"`
 	// The logs of the container if its execution is done (`attach` must be disabled).
 	ContainerLogs *string `pulumi:"containerLogs"`
@@ -261,7 +282,8 @@ type containerState struct {
 	CpuSet *string `pulumi:"cpuSet"`
 	// CPU shares (relative weight) for the container.
 	CpuShares *int `pulumi:"cpuShares"`
-	// If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
+	// If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on
+	// successful stop.
 	DestroyGraceSeconds *int `pulumi:"destroyGraceSeconds"`
 	// Bind devices to the container.
 	Devices []ContainerDevice `pulumi:"devices"`
@@ -273,16 +295,21 @@ type containerState struct {
 	DnsSearches []string `pulumi:"dnsSearches"`
 	// Domain name of the container.
 	Domainname *string `pulumi:"domainname"`
-	// The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogra"]`.
+	// The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an
+	// executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be
+	// `"/usr/bin/myprogra"]`.
 	Entrypoints []string `pulumi:"entrypoints"`
 	// Environment variables to set in the form of `KEY=VALUE`, e.g. `DEBUG=0`
 	Envs []string `pulumi:"envs"`
-	// The exit code of the container if its execution is done (`mustRun` must be disabled).
+	// The exit code of the container if its execution is done (`must_run` must be disabled).
 	ExitCode *int `pulumi:"exitCode"`
 	// The network gateway of the container.
 	//
 	// Deprecated: Use `network_data` instead. The network gateway of the container as read from its NetworkSettings.
 	Gateway *string `pulumi:"gateway"`
+	// GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result
+	// in unexpected behavior.
+	Gpus *string `pulumi:"gpus"`
 	// Additional groups for the container user
 	GroupAdds []string `pulumi:"groupAdds"`
 	// A test to perform to check that the container is healthy
@@ -291,9 +318,11 @@ type containerState struct {
 	Hostname *string `pulumi:"hostname"`
 	// Additional hosts to add to the container.
 	Hosts []ContainerHost `pulumi:"hosts"`
-	// The ID of the image to back this container. The easiest way to get this value is to use the `RemoteImage` resource as is shown in the example.
+	// The ID of the image to back this container. The easiest way to get this value is to use the `docker_image` resource as
+	// is shown in the example.
 	Image *string `pulumi:"image"`
-	// Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
+	// Configured whether an init process should be injected for this container. If unset this will default to the `dockerd`
+	// defaults.
 	Init *bool `pulumi:"init"`
 	// The IP address of the container.
 	//
@@ -303,7 +332,8 @@ type containerState struct {
 	//
 	// Deprecated: Use `network_data` instead. The IP prefix length of the container as read from its NetworkSettings.
 	IpPrefixLength *int `pulumi:"ipPrefixLength"`
-	// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
+	// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or
+	// `host`.
 	IpcMode *string `pulumi:"ipcMode"`
 	// User-defined key/value metadata
 	Labels []ContainerLabel `pulumi:"labels"`
@@ -361,14 +391,22 @@ type containerState struct {
 	Restart *string `pulumi:"restart"`
 	// If `true`, then the container will be automatically removed when it exits. Defaults to `false`.
 	Rm *bool `pulumi:"rm"`
-	// List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
+	// Runtime to use for the container.
+	Runtime *string `pulumi:"runtime"`
+	// List of string values to customize labels for MLS systems, such as SELinux. See
+	// https://docs.docker.com/engine/reference/run/#security-configuration.
 	SecurityOpts []string `pulumi:"securityOpts"`
 	// Size of `/dev/shm` in MBs.
 	ShmSize *int `pulumi:"shmSize"`
-	// If `true`, then the Docker container will be started after creation. If `false`, then the container is only created. Defaults to `true`.
+	// If `true`, then the Docker container will be started after creation. If `false`, then the container is only created.
+	// Defaults to `true`.
 	Start *bool `pulumi:"start"`
 	// If `true`, keep STDIN open even if not attached (`docker run -i`). Defaults to `false`.
 	StdinOpen *bool `pulumi:"stdinOpen"`
+	// Signal to stop a container (default `SIGTERM`).
+	StopSignal *string `pulumi:"stopSignal"`
+	// Timeout (in seconds) to stop a container.
+	StopTimeout *int `pulumi:"stopTimeout"`
 	// Key/value pairs for the storage driver options, e.g. `size`: `120G`
 	StorageOpts map[string]interface{} `pulumi:"storageOpts"`
 	// A map of kernel parameters (sysctls) to set in the container.
@@ -379,9 +417,11 @@ type containerState struct {
 	Tty *bool `pulumi:"tty"`
 	// Ulimit options to add.
 	Ulimits []ContainerUlimit `pulumi:"ulimits"`
-	// Specifies files to upload to the container before starting it. Only one of `content` or `contentBase64` can be set and at least one of them has to be set.
+	// Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and
+	// at least one of them has to be set.
 	Uploads []ContainerUpload `pulumi:"uploads"`
-	// User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.
+	// User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by
+	// name.
 	User *string `pulumi:"user"`
 	// Sets the usernamespace mode for the container when usernamespace remapping option is enabled.
 	UsernsMode *string `pulumi:"usernsMode"`
@@ -398,7 +438,8 @@ type ContainerState struct {
 	Bridge pulumi.StringPtrInput
 	// Add or drop certrain linux capabilities.
 	Capabilities ContainerCapabilitiesPtrInput
-	// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-","baz.con"]`.
+	// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be
+	// `["/usr/bin/myprogram","-","baz.con"]`.
 	Command pulumi.StringArrayInput
 	// The logs of the container if its execution is done (`attach` must be disabled).
 	ContainerLogs pulumi.StringPtrInput
@@ -406,7 +447,8 @@ type ContainerState struct {
 	CpuSet pulumi.StringPtrInput
 	// CPU shares (relative weight) for the container.
 	CpuShares pulumi.IntPtrInput
-	// If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
+	// If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on
+	// successful stop.
 	DestroyGraceSeconds pulumi.IntPtrInput
 	// Bind devices to the container.
 	Devices ContainerDeviceArrayInput
@@ -418,16 +460,21 @@ type ContainerState struct {
 	DnsSearches pulumi.StringArrayInput
 	// Domain name of the container.
 	Domainname pulumi.StringPtrInput
-	// The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogra"]`.
+	// The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an
+	// executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be
+	// `"/usr/bin/myprogra"]`.
 	Entrypoints pulumi.StringArrayInput
 	// Environment variables to set in the form of `KEY=VALUE`, e.g. `DEBUG=0`
 	Envs pulumi.StringArrayInput
-	// The exit code of the container if its execution is done (`mustRun` must be disabled).
+	// The exit code of the container if its execution is done (`must_run` must be disabled).
 	ExitCode pulumi.IntPtrInput
 	// The network gateway of the container.
 	//
 	// Deprecated: Use `network_data` instead. The network gateway of the container as read from its NetworkSettings.
 	Gateway pulumi.StringPtrInput
+	// GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result
+	// in unexpected behavior.
+	Gpus pulumi.StringPtrInput
 	// Additional groups for the container user
 	GroupAdds pulumi.StringArrayInput
 	// A test to perform to check that the container is healthy
@@ -436,9 +483,11 @@ type ContainerState struct {
 	Hostname pulumi.StringPtrInput
 	// Additional hosts to add to the container.
 	Hosts ContainerHostArrayInput
-	// The ID of the image to back this container. The easiest way to get this value is to use the `RemoteImage` resource as is shown in the example.
+	// The ID of the image to back this container. The easiest way to get this value is to use the `docker_image` resource as
+	// is shown in the example.
 	Image pulumi.StringPtrInput
-	// Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
+	// Configured whether an init process should be injected for this container. If unset this will default to the `dockerd`
+	// defaults.
 	Init pulumi.BoolPtrInput
 	// The IP address of the container.
 	//
@@ -448,7 +497,8 @@ type ContainerState struct {
 	//
 	// Deprecated: Use `network_data` instead. The IP prefix length of the container as read from its NetworkSettings.
 	IpPrefixLength pulumi.IntPtrInput
-	// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
+	// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or
+	// `host`.
 	IpcMode pulumi.StringPtrInput
 	// User-defined key/value metadata
 	Labels ContainerLabelArrayInput
@@ -506,14 +556,22 @@ type ContainerState struct {
 	Restart pulumi.StringPtrInput
 	// If `true`, then the container will be automatically removed when it exits. Defaults to `false`.
 	Rm pulumi.BoolPtrInput
-	// List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
+	// Runtime to use for the container.
+	Runtime pulumi.StringPtrInput
+	// List of string values to customize labels for MLS systems, such as SELinux. See
+	// https://docs.docker.com/engine/reference/run/#security-configuration.
 	SecurityOpts pulumi.StringArrayInput
 	// Size of `/dev/shm` in MBs.
 	ShmSize pulumi.IntPtrInput
-	// If `true`, then the Docker container will be started after creation. If `false`, then the container is only created. Defaults to `true`.
+	// If `true`, then the Docker container will be started after creation. If `false`, then the container is only created.
+	// Defaults to `true`.
 	Start pulumi.BoolPtrInput
 	// If `true`, keep STDIN open even if not attached (`docker run -i`). Defaults to `false`.
 	StdinOpen pulumi.BoolPtrInput
+	// Signal to stop a container (default `SIGTERM`).
+	StopSignal pulumi.StringPtrInput
+	// Timeout (in seconds) to stop a container.
+	StopTimeout pulumi.IntPtrInput
 	// Key/value pairs for the storage driver options, e.g. `size`: `120G`
 	StorageOpts pulumi.MapInput
 	// A map of kernel parameters (sysctls) to set in the container.
@@ -524,9 +582,11 @@ type ContainerState struct {
 	Tty pulumi.BoolPtrInput
 	// Ulimit options to add.
 	Ulimits ContainerUlimitArrayInput
-	// Specifies files to upload to the container before starting it. Only one of `content` or `contentBase64` can be set and at least one of them has to be set.
+	// Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and
+	// at least one of them has to be set.
 	Uploads ContainerUploadArrayInput
-	// User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.
+	// User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by
+	// name.
 	User pulumi.StringPtrInput
 	// Sets the usernamespace mode for the container when usernamespace remapping option is enabled.
 	UsernsMode pulumi.StringPtrInput
@@ -545,13 +605,15 @@ type containerArgs struct {
 	Attach *bool `pulumi:"attach"`
 	// Add or drop certrain linux capabilities.
 	Capabilities *ContainerCapabilities `pulumi:"capabilities"`
-	// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-","baz.con"]`.
+	// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be
+	// `["/usr/bin/myprogram","-","baz.con"]`.
 	Command []string `pulumi:"command"`
 	// A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
 	CpuSet *string `pulumi:"cpuSet"`
 	// CPU shares (relative weight) for the container.
 	CpuShares *int `pulumi:"cpuShares"`
-	// If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
+	// If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on
+	// successful stop.
 	DestroyGraceSeconds *int `pulumi:"destroyGraceSeconds"`
 	// Bind devices to the container.
 	Devices []ContainerDevice `pulumi:"devices"`
@@ -563,10 +625,15 @@ type containerArgs struct {
 	DnsSearches []string `pulumi:"dnsSearches"`
 	// Domain name of the container.
 	Domainname *string `pulumi:"domainname"`
-	// The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogra"]`.
+	// The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an
+	// executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be
+	// `"/usr/bin/myprogra"]`.
 	Entrypoints []string `pulumi:"entrypoints"`
 	// Environment variables to set in the form of `KEY=VALUE`, e.g. `DEBUG=0`
 	Envs []string `pulumi:"envs"`
+	// GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result
+	// in unexpected behavior.
+	Gpus *string `pulumi:"gpus"`
 	// Additional groups for the container user
 	GroupAdds []string `pulumi:"groupAdds"`
 	// A test to perform to check that the container is healthy
@@ -575,11 +642,14 @@ type containerArgs struct {
 	Hostname *string `pulumi:"hostname"`
 	// Additional hosts to add to the container.
 	Hosts []ContainerHost `pulumi:"hosts"`
-	// The ID of the image to back this container. The easiest way to get this value is to use the `RemoteImage` resource as is shown in the example.
+	// The ID of the image to back this container. The easiest way to get this value is to use the `docker_image` resource as
+	// is shown in the example.
 	Image string `pulumi:"image"`
-	// Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
+	// Configured whether an init process should be injected for this container. If unset this will default to the `dockerd`
+	// defaults.
 	Init *bool `pulumi:"init"`
-	// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
+	// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or
+	// `host`.
 	IpcMode *string `pulumi:"ipcMode"`
 	// User-defined key/value metadata
 	Labels []ContainerLabel `pulumi:"labels"`
@@ -635,14 +705,22 @@ type containerArgs struct {
 	Restart *string `pulumi:"restart"`
 	// If `true`, then the container will be automatically removed when it exits. Defaults to `false`.
 	Rm *bool `pulumi:"rm"`
-	// List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
+	// Runtime to use for the container.
+	Runtime *string `pulumi:"runtime"`
+	// List of string values to customize labels for MLS systems, such as SELinux. See
+	// https://docs.docker.com/engine/reference/run/#security-configuration.
 	SecurityOpts []string `pulumi:"securityOpts"`
 	// Size of `/dev/shm` in MBs.
 	ShmSize *int `pulumi:"shmSize"`
-	// If `true`, then the Docker container will be started after creation. If `false`, then the container is only created. Defaults to `true`.
+	// If `true`, then the Docker container will be started after creation. If `false`, then the container is only created.
+	// Defaults to `true`.
 	Start *bool `pulumi:"start"`
 	// If `true`, keep STDIN open even if not attached (`docker run -i`). Defaults to `false`.
 	StdinOpen *bool `pulumi:"stdinOpen"`
+	// Signal to stop a container (default `SIGTERM`).
+	StopSignal *string `pulumi:"stopSignal"`
+	// Timeout (in seconds) to stop a container.
+	StopTimeout *int `pulumi:"stopTimeout"`
 	// Key/value pairs for the storage driver options, e.g. `size`: `120G`
 	StorageOpts map[string]interface{} `pulumi:"storageOpts"`
 	// A map of kernel parameters (sysctls) to set in the container.
@@ -653,9 +731,11 @@ type containerArgs struct {
 	Tty *bool `pulumi:"tty"`
 	// Ulimit options to add.
 	Ulimits []ContainerUlimit `pulumi:"ulimits"`
-	// Specifies files to upload to the container before starting it. Only one of `content` or `contentBase64` can be set and at least one of them has to be set.
+	// Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and
+	// at least one of them has to be set.
 	Uploads []ContainerUpload `pulumi:"uploads"`
-	// User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.
+	// User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by
+	// name.
 	User *string `pulumi:"user"`
 	// Sets the usernamespace mode for the container when usernamespace remapping option is enabled.
 	UsernsMode *string `pulumi:"usernsMode"`
@@ -671,13 +751,15 @@ type ContainerArgs struct {
 	Attach pulumi.BoolPtrInput
 	// Add or drop certrain linux capabilities.
 	Capabilities ContainerCapabilitiesPtrInput
-	// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-","baz.con"]`.
+	// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be
+	// `["/usr/bin/myprogram","-","baz.con"]`.
 	Command pulumi.StringArrayInput
 	// A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
 	CpuSet pulumi.StringPtrInput
 	// CPU shares (relative weight) for the container.
 	CpuShares pulumi.IntPtrInput
-	// If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
+	// If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on
+	// successful stop.
 	DestroyGraceSeconds pulumi.IntPtrInput
 	// Bind devices to the container.
 	Devices ContainerDeviceArrayInput
@@ -689,10 +771,15 @@ type ContainerArgs struct {
 	DnsSearches pulumi.StringArrayInput
 	// Domain name of the container.
 	Domainname pulumi.StringPtrInput
-	// The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogra"]`.
+	// The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an
+	// executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be
+	// `"/usr/bin/myprogra"]`.
 	Entrypoints pulumi.StringArrayInput
 	// Environment variables to set in the form of `KEY=VALUE`, e.g. `DEBUG=0`
 	Envs pulumi.StringArrayInput
+	// GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result
+	// in unexpected behavior.
+	Gpus pulumi.StringPtrInput
 	// Additional groups for the container user
 	GroupAdds pulumi.StringArrayInput
 	// A test to perform to check that the container is healthy
@@ -701,11 +788,14 @@ type ContainerArgs struct {
 	Hostname pulumi.StringPtrInput
 	// Additional hosts to add to the container.
 	Hosts ContainerHostArrayInput
-	// The ID of the image to back this container. The easiest way to get this value is to use the `RemoteImage` resource as is shown in the example.
+	// The ID of the image to back this container. The easiest way to get this value is to use the `docker_image` resource as
+	// is shown in the example.
 	Image pulumi.StringInput
-	// Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
+	// Configured whether an init process should be injected for this container. If unset this will default to the `dockerd`
+	// defaults.
 	Init pulumi.BoolPtrInput
-	// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
+	// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or
+	// `host`.
 	IpcMode pulumi.StringPtrInput
 	// User-defined key/value metadata
 	Labels ContainerLabelArrayInput
@@ -761,14 +851,22 @@ type ContainerArgs struct {
 	Restart pulumi.StringPtrInput
 	// If `true`, then the container will be automatically removed when it exits. Defaults to `false`.
 	Rm pulumi.BoolPtrInput
-	// List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
+	// Runtime to use for the container.
+	Runtime pulumi.StringPtrInput
+	// List of string values to customize labels for MLS systems, such as SELinux. See
+	// https://docs.docker.com/engine/reference/run/#security-configuration.
 	SecurityOpts pulumi.StringArrayInput
 	// Size of `/dev/shm` in MBs.
 	ShmSize pulumi.IntPtrInput
-	// If `true`, then the Docker container will be started after creation. If `false`, then the container is only created. Defaults to `true`.
+	// If `true`, then the Docker container will be started after creation. If `false`, then the container is only created.
+	// Defaults to `true`.
 	Start pulumi.BoolPtrInput
 	// If `true`, keep STDIN open even if not attached (`docker run -i`). Defaults to `false`.
 	StdinOpen pulumi.BoolPtrInput
+	// Signal to stop a container (default `SIGTERM`).
+	StopSignal pulumi.StringPtrInput
+	// Timeout (in seconds) to stop a container.
+	StopTimeout pulumi.IntPtrInput
 	// Key/value pairs for the storage driver options, e.g. `size`: `120G`
 	StorageOpts pulumi.MapInput
 	// A map of kernel parameters (sysctls) to set in the container.
@@ -779,9 +877,11 @@ type ContainerArgs struct {
 	Tty pulumi.BoolPtrInput
 	// Ulimit options to add.
 	Ulimits ContainerUlimitArrayInput
-	// Specifies files to upload to the container before starting it. Only one of `content` or `contentBase64` can be set and at least one of them has to be set.
+	// Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and
+	// at least one of them has to be set.
 	Uploads ContainerUploadArrayInput
-	// User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.
+	// User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by
+	// name.
 	User pulumi.StringPtrInput
 	// Sets the usernamespace mode for the container when usernamespace remapping option is enabled.
 	UsernsMode pulumi.StringPtrInput
@@ -893,7 +993,8 @@ func (o ContainerOutput) Capabilities() ContainerCapabilitiesPtrOutput {
 	return o.ApplyT(func(v *Container) ContainerCapabilitiesPtrOutput { return v.Capabilities }).(ContainerCapabilitiesPtrOutput)
 }
 
-// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-","baz.con"]`.
+// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be
+// `["/usr/bin/myprogram","-","baz.con"]`.
 func (o ContainerOutput) Command() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v *Container) pulumi.StringArrayOutput { return v.Command }).(pulumi.StringArrayOutput)
 }
@@ -913,7 +1014,8 @@ func (o ContainerOutput) CpuShares() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v *Container) pulumi.IntPtrOutput { return v.CpuShares }).(pulumi.IntPtrOutput)
 }
 
-// If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
+// If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on
+// successful stop.
 func (o ContainerOutput) DestroyGraceSeconds() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v *Container) pulumi.IntPtrOutput { return v.DestroyGraceSeconds }).(pulumi.IntPtrOutput)
 }
@@ -943,7 +1045,9 @@ func (o ContainerOutput) Domainname() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Container) pulumi.StringPtrOutput { return v.Domainname }).(pulumi.StringPtrOutput)
 }
 
-// The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogra"]`.
+// The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an
+// executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be
+// `"/usr/bin/myprogra"]`.
 func (o ContainerOutput) Entrypoints() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v *Container) pulumi.StringArrayOutput { return v.Entrypoints }).(pulumi.StringArrayOutput)
 }
@@ -953,7 +1057,7 @@ func (o ContainerOutput) Envs() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v *Container) pulumi.StringArrayOutput { return v.Envs }).(pulumi.StringArrayOutput)
 }
 
-// The exit code of the container if its execution is done (`mustRun` must be disabled).
+// The exit code of the container if its execution is done (`must_run` must be disabled).
 func (o ContainerOutput) ExitCode() pulumi.IntOutput {
 	return o.ApplyT(func(v *Container) pulumi.IntOutput { return v.ExitCode }).(pulumi.IntOutput)
 }
@@ -963,6 +1067,12 @@ func (o ContainerOutput) ExitCode() pulumi.IntOutput {
 // Deprecated: Use `network_data` instead. The network gateway of the container as read from its NetworkSettings.
 func (o ContainerOutput) Gateway() pulumi.StringOutput {
 	return o.ApplyT(func(v *Container) pulumi.StringOutput { return v.Gateway }).(pulumi.StringOutput)
+}
+
+// GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result
+// in unexpected behavior.
+func (o ContainerOutput) Gpus() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *Container) pulumi.StringPtrOutput { return v.Gpus }).(pulumi.StringPtrOutput)
 }
 
 // Additional groups for the container user
@@ -985,12 +1095,14 @@ func (o ContainerOutput) Hosts() ContainerHostArrayOutput {
 	return o.ApplyT(func(v *Container) ContainerHostArrayOutput { return v.Hosts }).(ContainerHostArrayOutput)
 }
 
-// The ID of the image to back this container. The easiest way to get this value is to use the `RemoteImage` resource as is shown in the example.
+// The ID of the image to back this container. The easiest way to get this value is to use the `docker_image` resource as
+// is shown in the example.
 func (o ContainerOutput) Image() pulumi.StringOutput {
 	return o.ApplyT(func(v *Container) pulumi.StringOutput { return v.Image }).(pulumi.StringOutput)
 }
 
-// Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
+// Configured whether an init process should be injected for this container. If unset this will default to the `dockerd`
+// defaults.
 func (o ContainerOutput) Init() pulumi.BoolOutput {
 	return o.ApplyT(func(v *Container) pulumi.BoolOutput { return v.Init }).(pulumi.BoolOutput)
 }
@@ -1009,7 +1121,8 @@ func (o ContainerOutput) IpPrefixLength() pulumi.IntOutput {
 	return o.ApplyT(func(v *Container) pulumi.IntOutput { return v.IpPrefixLength }).(pulumi.IntOutput)
 }
 
-// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
+// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or
+// `host`.
 func (o ContainerOutput) IpcMode() pulumi.StringOutput {
 	return o.ApplyT(func(v *Container) pulumi.StringOutput { return v.IpcMode }).(pulumi.StringOutput)
 }
@@ -1142,7 +1255,13 @@ func (o ContainerOutput) Rm() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *Container) pulumi.BoolPtrOutput { return v.Rm }).(pulumi.BoolPtrOutput)
 }
 
-// List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
+// Runtime to use for the container.
+func (o ContainerOutput) Runtime() pulumi.StringOutput {
+	return o.ApplyT(func(v *Container) pulumi.StringOutput { return v.Runtime }).(pulumi.StringOutput)
+}
+
+// List of string values to customize labels for MLS systems, such as SELinux. See
+// https://docs.docker.com/engine/reference/run/#security-configuration.
 func (o ContainerOutput) SecurityOpts() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v *Container) pulumi.StringArrayOutput { return v.SecurityOpts }).(pulumi.StringArrayOutput)
 }
@@ -1152,7 +1271,8 @@ func (o ContainerOutput) ShmSize() pulumi.IntOutput {
 	return o.ApplyT(func(v *Container) pulumi.IntOutput { return v.ShmSize }).(pulumi.IntOutput)
 }
 
-// If `true`, then the Docker container will be started after creation. If `false`, then the container is only created. Defaults to `true`.
+// If `true`, then the Docker container will be started after creation. If `false`, then the container is only created.
+// Defaults to `true`.
 func (o ContainerOutput) Start() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *Container) pulumi.BoolPtrOutput { return v.Start }).(pulumi.BoolPtrOutput)
 }
@@ -1160,6 +1280,16 @@ func (o ContainerOutput) Start() pulumi.BoolPtrOutput {
 // If `true`, keep STDIN open even if not attached (`docker run -i`). Defaults to `false`.
 func (o ContainerOutput) StdinOpen() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *Container) pulumi.BoolPtrOutput { return v.StdinOpen }).(pulumi.BoolPtrOutput)
+}
+
+// Signal to stop a container (default `SIGTERM`).
+func (o ContainerOutput) StopSignal() pulumi.StringOutput {
+	return o.ApplyT(func(v *Container) pulumi.StringOutput { return v.StopSignal }).(pulumi.StringOutput)
+}
+
+// Timeout (in seconds) to stop a container.
+func (o ContainerOutput) StopTimeout() pulumi.IntOutput {
+	return o.ApplyT(func(v *Container) pulumi.IntOutput { return v.StopTimeout }).(pulumi.IntOutput)
 }
 
 // Key/value pairs for the storage driver options, e.g. `size`: `120G`
@@ -1187,12 +1317,14 @@ func (o ContainerOutput) Ulimits() ContainerUlimitArrayOutput {
 	return o.ApplyT(func(v *Container) ContainerUlimitArrayOutput { return v.Ulimits }).(ContainerUlimitArrayOutput)
 }
 
-// Specifies files to upload to the container before starting it. Only one of `content` or `contentBase64` can be set and at least one of them has to be set.
+// Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and
+// at least one of them has to be set.
 func (o ContainerOutput) Uploads() ContainerUploadArrayOutput {
 	return o.ApplyT(func(v *Container) ContainerUploadArrayOutput { return v.Uploads }).(ContainerUploadArrayOutput)
 }
 
-// User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.
+// User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by
+// name.
 func (o ContainerOutput) User() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Container) pulumi.StringPtrOutput { return v.User }).(pulumi.StringPtrOutput)
 }

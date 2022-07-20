@@ -21,17 +21,9 @@ public final class RegistryImageBuildUlimitArgs extends com.pulumi.resources.Res
         return this.hard;
     }
 
-    /**
-     * The name of the Docker image.
-     * 
-     */
     @Import(name="name", required=true)
     private Output<String> name;
 
-    /**
-     * @return The name of the Docker image.
-     * 
-     */
     public Output<String> name() {
         return this.name;
     }
@@ -78,23 +70,11 @@ public final class RegistryImageBuildUlimitArgs extends com.pulumi.resources.Res
             return hard(Output.of(hard));
         }
 
-        /**
-         * @param name The name of the Docker image.
-         * 
-         * @return builder
-         * 
-         */
         public Builder name(Output<String> name) {
             $.name = name;
             return this;
         }
 
-        /**
-         * @param name The name of the Docker image.
-         * 
-         * @return builder
-         * 
-         */
         public Builder name(String name) {
             return name(Output.of(name));
         }

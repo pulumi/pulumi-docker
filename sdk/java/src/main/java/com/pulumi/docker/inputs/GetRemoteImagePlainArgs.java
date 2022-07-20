@@ -12,17 +12,9 @@ public final class GetRemoteImagePlainArgs extends com.pulumi.resources.InvokeAr
 
     public static final GetRemoteImagePlainArgs Empty = new GetRemoteImagePlainArgs();
 
-    /**
-     * The name of the Docker image, including any tags or SHA256 repo digests.
-     * 
-     */
     @Import(name="name", required=true)
     private String name;
 
-    /**
-     * @return The name of the Docker image, including any tags or SHA256 repo digests.
-     * 
-     */
     public String name() {
         return this.name;
     }
@@ -51,12 +43,6 @@ public final class GetRemoteImagePlainArgs extends com.pulumi.resources.InvokeAr
             $ = new GetRemoteImagePlainArgs(Objects.requireNonNull(defaults));
         }
 
-        /**
-         * @param name The name of the Docker image, including any tags or SHA256 repo digests.
-         * 
-         * @return builder
-         * 
-         */
         public Builder name(String name) {
             $.name = name;
             return this;

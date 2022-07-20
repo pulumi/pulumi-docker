@@ -12,21 +12,12 @@ namespace Pulumi.Docker.Inputs
 
     public sealed class ContainerUlimitArgs : Pulumi.ResourceArgs
     {
-        /// <summary>
-        /// The hard limit
-        /// </summary>
         [Input("hard", required: true)]
         public Input<int> Hard { get; set; } = null!;
 
-        /// <summary>
-        /// The name of the ulimit
-        /// </summary>
         [Input("name", required: true)]
         public Input<string> Name { get; set; } = null!;
 
-        /// <summary>
-        /// The soft limit
-        /// </summary>
         [Input("soft", required: true)]
         public Input<int> Soft { get; set; } = null!;
 

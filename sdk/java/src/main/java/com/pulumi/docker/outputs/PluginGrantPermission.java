@@ -10,15 +10,7 @@ import java.util.Objects;
 
 @CustomType
 public final class PluginGrantPermission {
-    /**
-     * @return The name of the permission
-     * 
-     */
     private final String name;
-    /**
-     * @return The value of the permission
-     * 
-     */
     private final List<String> values;
 
     @CustomType.Constructor
@@ -29,17 +21,9 @@ public final class PluginGrantPermission {
         this.values = values;
     }
 
-    /**
-     * @return The name of the permission
-     * 
-     */
     public String name() {
         return this.name;
     }
-    /**
-     * @return The value of the permission
-     * 
-     */
     public List<String> values() {
         return this.values;
     }
