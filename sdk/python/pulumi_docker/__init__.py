@@ -20,6 +20,7 @@ from .remote_image import *
 from .secret import *
 from .service import *
 from .service_config import *
+from .tag import *
 from .utils import *
 from .volume import *
 from ._inputs import *
@@ -97,6 +98,14 @@ _utilities.register(
   "fqn": "pulumi_docker",
   "classes": {
    "docker:index/serviceConfig:ServiceConfig": "ServiceConfig"
+  }
+ },
+ {
+  "pkg": "docker",
+  "mod": "index/tag",
+  "fqn": "pulumi_docker",
+  "classes": {
+   "docker:index/tag:Tag": "Tag"
   }
  },
  {

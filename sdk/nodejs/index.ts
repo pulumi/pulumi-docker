@@ -20,6 +20,7 @@ export * from "./remoteImage";
 export * from "./secret";
 export * from "./service";
 export * from "./serviceConfig";
+export * from "./tag";
 export * from "./utils";
 export * from "./volume";
 
@@ -41,6 +42,7 @@ import { RemoteImage } from "./remoteImage";
 import { Secret } from "./secret";
 import { Service } from "./service";
 import { ServiceConfig } from "./serviceConfig";
+import { Tag } from "./tag";
 import { Volume } from "./volume";
 
 const _module = {
@@ -63,6 +65,8 @@ const _module = {
                 return new Service(name, <any>undefined, { urn })
             case "docker:index/serviceConfig:ServiceConfig":
                 return new ServiceConfig(name, <any>undefined, { urn })
+            case "docker:index/tag:Tag":
+                return new Tag(name, <any>undefined, { urn })
             case "docker:index/volume:Volume":
                 return new Volume(name, <any>undefined, { urn })
             default:
@@ -78,6 +82,7 @@ pulumi.runtime.registerResourceModule("docker", "index/remoteImage", _module)
 pulumi.runtime.registerResourceModule("docker", "index/secret", _module)
 pulumi.runtime.registerResourceModule("docker", "index/service", _module)
 pulumi.runtime.registerResourceModule("docker", "index/serviceConfig", _module)
+pulumi.runtime.registerResourceModule("docker", "index/tag", _module)
 pulumi.runtime.registerResourceModule("docker", "index/volume", _module)
 
 import { Provider } from "./provider";

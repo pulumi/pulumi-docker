@@ -31,7 +31,7 @@ import (
 // 	pulumi.Run(func(ctx *pulumi.Context) error {
 // 		_, err := docker.NewRegistryImage(ctx, "helloworld", &docker.RegistryImageArgs{
 // 			Build: &RegistryImageBuildArgs{
-// 				Context: pulumi.String(fmt.Sprintf("%v%v", path.Cwd, "/absolutePathToContextFolder")),
+// 				Context: pulumi.String(fmt.Sprintf("%v/absolutePathToContextFolder", path.Cwd)),
 // 			},
 // 		})
 // 		if err != nil {
