@@ -110,6 +110,7 @@ func Provider() tfbridge.ProviderInfo {
 			"docker_volume":         {Tok: dockerResource(dockerMod, "Volume")},
 			"docker_registry_image": {Tok: dockerResource(dockerMod, "RegistryImage")},
 			"docker_plugin":         {Tok: dockerResource(dockerMod, "Plugin")},
+			"docker_tag":            {Tok: dockerResource(dockerMod, "Tag")},
 		},
 		DataSources: map[string]*tfbridge.DataSourceInfo{
 			"docker_network":        {Tok: dockerDataSource(dockerMod, "getNetwork")},

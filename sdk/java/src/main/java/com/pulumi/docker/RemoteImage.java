@@ -30,10 +30,17 @@ import javax.annotation.Nullable;
  * ```java
  * package generated_program;
  * 
- * import java.util.*;
- * import java.io.*;
- * import java.nio.*;
- * import com.pulumi.*;
+ * import com.pulumi.Context;
+ * import com.pulumi.Pulumi;
+ * import com.pulumi.core.Output;
+ * import com.pulumi.docker.RemoteImage;
+ * import com.pulumi.docker.RemoteImageArgs;
+ * import java.util.List;
+ * import java.util.ArrayList;
+ * import java.util.Map;
+ * import java.io.File;
+ * import java.nio.file.Files;
+ * import java.nio.file.Paths;
  * 
  * public class App {
  *     public static void main(String[] args) {
@@ -45,7 +52,7 @@ import javax.annotation.Nullable;
  *             .name(&#34;ubuntu:precise&#34;)
  *             .build());
  * 
- *         }
+ *     }
  * }
  * ```
  * ### Dynamic updates
@@ -55,10 +62,19 @@ import javax.annotation.Nullable;
  * ```java
  * package generated_program;
  * 
- * import java.util.*;
- * import java.io.*;
- * import java.nio.*;
- * import com.pulumi.*;
+ * import com.pulumi.Context;
+ * import com.pulumi.Pulumi;
+ * import com.pulumi.core.Output;
+ * import com.pulumi.docker.DockerFunctions;
+ * import com.pulumi.docker.inputs.GetRegistryImageArgs;
+ * import com.pulumi.docker.RemoteImage;
+ * import com.pulumi.docker.RemoteImageArgs;
+ * import java.util.List;
+ * import java.util.ArrayList;
+ * import java.util.Map;
+ * import java.io.File;
+ * import java.nio.file.Files;
+ * import java.nio.file.Paths;
  * 
  * public class App {
  *     public static void main(String[] args) {
@@ -66,16 +82,16 @@ import javax.annotation.Nullable;
  *     }
  * 
  *     public static void stack(Context ctx) {
- *         final var ubuntuRegistryImage = Output.of(DockerFunctions.getRegistryImage(GetRegistryImageArgs.builder()
+ *         final var ubuntuRegistryImage = DockerFunctions.getRegistryImage(GetRegistryImageArgs.builder()
  *             .name(&#34;ubuntu:precise&#34;)
- *             .build()));
- * 
- *         var ubuntuRemoteImage = new RemoteImage(&#34;ubuntuRemoteImage&#34;, RemoteImageArgs.builder()        
- *             .name(ubuntuRegistryImage.apply(getRegistryImageResult -&gt; getRegistryImageResult.getName()))
- *             .pullTriggers(ubuntuRegistryImage.apply(getRegistryImageResult -&gt; getRegistryImageResult.getSha256Digest()))
  *             .build());
  * 
- *         }
+ *         var ubuntuRemoteImage = new RemoteImage(&#34;ubuntuRemoteImage&#34;, RemoteImageArgs.builder()        
+ *             .name(ubuntuRegistryImage.applyValue(getRegistryImageResult -&gt; getRegistryImageResult.name()))
+ *             .pullTriggers(ubuntuRegistryImage.applyValue(getRegistryImageResult -&gt; getRegistryImageResult.sha256Digest()))
+ *             .build());
+ * 
+ *     }
  * }
  * ```
  * ### Build
@@ -85,10 +101,18 @@ import javax.annotation.Nullable;
  * ```java
  * package generated_program;
  * 
- * import java.util.*;
- * import java.io.*;
- * import java.nio.*;
- * import com.pulumi.*;
+ * import com.pulumi.Context;
+ * import com.pulumi.Pulumi;
+ * import com.pulumi.core.Output;
+ * import com.pulumi.docker.RemoteImage;
+ * import com.pulumi.docker.RemoteImageArgs;
+ * import com.pulumi.docker.inputs.RemoteImageBuildArgs;
+ * import java.util.List;
+ * import java.util.ArrayList;
+ * import java.util.Map;
+ * import java.io.File;
+ * import java.nio.file.Files;
+ * import java.nio.file.Paths;
  * 
  * public class App {
  *     public static void main(String[] args) {
@@ -98,7 +122,7 @@ import javax.annotation.Nullable;
  *     public static void stack(Context ctx) {
  *         var zoo = new RemoteImage(&#34;zoo&#34;, RemoteImageArgs.builder()        
  *             .name(&#34;zoo&#34;)
- *             .build(RemoteImageBuild.builder()
+ *             .build(RemoteImageBuildArgs.builder()
  *                 .path(&#34;.&#34;)
  *                 .tags(&#34;zoo:develop&#34;)
  *                 .buildArg(Map.of(&#34;foo&#34;, &#34;zoo&#34;))
@@ -106,7 +130,7 @@ import javax.annotation.Nullable;
  *                 .build())
  *             .build());
  * 
- *         }
+ *     }
  * }
  * ```
  * 

@@ -26,10 +26,18 @@ import javax.annotation.Nullable;
  * ```java
  * package generated_program;
  * 
- * import java.util.*;
- * import java.io.*;
- * import java.nio.*;
- * import com.pulumi.*;
+ * import com.pulumi.Context;
+ * import com.pulumi.Pulumi;
+ * import com.pulumi.core.Output;
+ * import com.pulumi.docker.RegistryImage;
+ * import com.pulumi.docker.RegistryImageArgs;
+ * import com.pulumi.docker.inputs.RegistryImageBuildArgs;
+ * import java.util.List;
+ * import java.util.ArrayList;
+ * import java.util.Map;
+ * import java.io.File;
+ * import java.nio.file.Files;
+ * import java.nio.file.Paths;
  * 
  * public class App {
  *     public static void main(String[] args) {
@@ -38,12 +46,12 @@ import javax.annotation.Nullable;
  * 
  *     public static void stack(Context ctx) {
  *         var helloworld = new RegistryImage(&#34;helloworld&#34;, RegistryImageArgs.builder()        
- *             .build(RegistryImageBuild.builder()
- *                 .context(String.format(&#34;%s/absolutePathToContextFolder&#34;, path.getCwd()))
+ *             .build(RegistryImageBuildArgs.builder()
+ *                 .context(String.format(&#34;%s/absolutePathToContextFolder&#34;, path.cwd()))
  *                 .build())
  *             .build());
  * 
- *         }
+ *     }
  * }
  * ```
  * 

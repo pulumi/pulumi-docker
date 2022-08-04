@@ -12,6 +12,45 @@
     "meta": {
         "moduleFormat": "(.*)(?:/[^/]*)"
     },
+    "language": {
+        "csharp": {
+            "compatibility": "tfbridge20",
+            "namespaces": {
+                "docker": "Docker"
+            },
+            "packageReferences": {
+                "Pulumi": "3.*"
+            }
+        },
+        "go": {
+            "generateExtraInputTypes": true,
+            "generateResourceContainerTypes": true,
+            "importBasePath": "github.com/pulumi/pulumi-docker/sdk/v3/go/docker"
+        },
+        "nodejs": {
+            "compatibility": "tfbridge20",
+            "dependencies": {
+                "@pulumi/pulumi": "^3.0.0",
+                "semver": "^5.4.0"
+            },
+            "devDependencies": {
+                "@types/node": "^10.0.0",
+                "@types/semver": "^5.4.0"
+            },
+            "disableUnionOutputTypes": true,
+            "packageDescription": "A Pulumi package for interacting with Docker in Pulumi programs",
+            "packageName": "",
+            "readme": "\u003e This provider is a derived work of the [Terraform Provider](https://github.com/terraform-providers/terraform-provider-docker)\n\u003e distributed under [MPL 2.0](https://www.mozilla.org/en-US/MPL/2.0/). If you encounter a bug or missing feature,\n\u003e first check the [`pulumi-docker` repo](https://github.com/pulumi/pulumi-docker/issues); however, if that doesn't turn up anything,\n\u003e please consult the source [`terraform-provider-docker` repo](https://github.com/terraform-providers/terraform-provider-docker/issues).",
+            "typescriptVersion": ""
+        },
+        "python": {
+            "compatibility": "tfbridge20",
+            "readme": "\u003e This provider is a derived work of the [Terraform Provider](https://github.com/terraform-providers/terraform-provider-docker)\n\u003e distributed under [MPL 2.0](https://www.mozilla.org/en-US/MPL/2.0/). If you encounter a bug or missing feature,\n\u003e first check the [`pulumi-docker` repo](https://github.com/pulumi/pulumi-docker/issues); however, if that doesn't turn up anything,\n\u003e please consult the source [`terraform-provider-docker` repo](https://github.com/terraform-providers/terraform-provider-docker/issues).",
+            "requires": {
+                "pulumi": "\u003e=3.0.0,\u003c4.0.0"
+            }
+        }
+    },
     "config": {
         "variables": {
             "caMaterial": {
@@ -98,7 +137,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "drops": {
                     "type": "array",
@@ -109,7 +149,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 }
             },
             "type": "object"
@@ -122,7 +163,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "hostPath": {
                     "type": "string",
@@ -130,7 +172,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "permissions": {
                     "type": "string",
@@ -138,7 +181,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 }
             },
             "type": "object",
@@ -205,7 +249,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "ip": {
                     "type": "string",
@@ -213,7 +258,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 }
             },
             "type": "object",
@@ -230,7 +276,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "value": {
                     "type": "string",
@@ -238,7 +285,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 }
             },
             "type": "object",
@@ -287,7 +335,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "type": {
                     "type": "string",
@@ -397,7 +446,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "value": {
                     "type": "string",
@@ -405,7 +455,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 }
             },
             "type": "object",
@@ -502,7 +553,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "ipv4Address": {
                     "type": "string",
@@ -510,7 +562,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "ipv6Address": {
                     "type": "string",
@@ -518,7 +571,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "name": {
                     "type": "string",
@@ -526,7 +580,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 }
             },
             "type": "object",
@@ -542,7 +597,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "internal": {
                     "type": "integer",
@@ -550,7 +606,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "ip": {
                     "type": "string",
@@ -558,7 +615,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "protocol": {
                     "type": "string",
@@ -566,7 +624,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 }
             },
             "type": "object",
@@ -590,7 +649,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "name": {
                     "type": "string",
@@ -598,7 +658,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "soft": {
                     "type": "integer",
@@ -606,7 +667,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 }
             },
             "type": "object",
@@ -624,7 +686,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "contentBase64": {
                     "type": "string",
@@ -632,7 +695,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "executable": {
                     "type": "boolean",
@@ -640,7 +704,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "file": {
                     "type": "string",
@@ -648,7 +713,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "source": {
                     "type": "string",
@@ -656,7 +722,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "sourceHash": {
                     "type": "string",
@@ -664,7 +731,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 }
             },
             "type": "object",
@@ -680,7 +748,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "fromContainer": {
                     "type": "string",
@@ -688,7 +757,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "hostPath": {
                     "type": "string",
@@ -696,7 +766,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "readOnly": {
                     "type": "boolean",
@@ -704,7 +775,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "volumeName": {
                     "type": "string",
@@ -712,7 +784,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 }
             },
             "type": "object"
@@ -728,7 +801,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "gateway": {
                     "type": "string",
@@ -736,7 +810,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "ipRange": {
                     "type": "string",
@@ -744,7 +819,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "subnet": {
                     "type": "string",
@@ -752,7 +828,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 }
             },
             "type": "object"
@@ -765,7 +842,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "value": {
                     "type": "string",
@@ -773,7 +851,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 }
             },
             "type": "object",
@@ -885,7 +964,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "buildId": {
                     "type": "string",
@@ -893,7 +973,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "cacheFroms": {
                     "type": "array",
@@ -904,7 +985,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "cgroupParent": {
                     "type": "string",
@@ -912,7 +994,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "context": {
                     "type": "string",
@@ -920,7 +1003,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "cpuPeriod": {
                     "type": "integer",
@@ -928,7 +1012,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "cpuQuota": {
                     "type": "integer",
@@ -936,7 +1021,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "cpuSetCpus": {
                     "type": "string",
@@ -944,7 +1030,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "cpuSetMems": {
                     "type": "string",
@@ -952,7 +1039,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "cpuShares": {
                     "type": "integer",
@@ -960,7 +1048,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "dockerfile": {
                     "type": "string",
@@ -968,7 +1057,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "extraHosts": {
                     "type": "array",
@@ -979,7 +1069,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "forceRemove": {
                     "type": "boolean",
@@ -987,7 +1078,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "isolation": {
                     "type": "string",
@@ -995,7 +1087,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "labels": {
                     "type": "object",
@@ -1006,7 +1099,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "memory": {
                     "type": "integer",
@@ -1014,7 +1108,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "memorySwap": {
                     "type": "integer",
@@ -1022,7 +1117,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "networkMode": {
                     "type": "string",
@@ -1030,7 +1126,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "noCache": {
                     "type": "boolean",
@@ -1038,7 +1135,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "platform": {
                     "type": "string",
@@ -1046,7 +1144,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "pullParent": {
                     "type": "boolean",
@@ -1054,7 +1153,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "remoteContext": {
                     "type": "string",
@@ -1062,7 +1162,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "remove": {
                     "type": "boolean",
@@ -1070,7 +1171,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "securityOpts": {
                     "type": "array",
@@ -1081,7 +1183,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "sessionId": {
                     "type": "string",
@@ -1089,7 +1192,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "shmSize": {
                     "type": "integer",
@@ -1097,7 +1201,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "squash": {
                     "type": "boolean",
@@ -1105,7 +1210,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "suppressOutput": {
                     "type": "boolean",
@@ -1113,7 +1219,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "target": {
                     "type": "string",
@@ -1121,7 +1228,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "ulimits": {
                     "type": "array",
@@ -1140,7 +1248,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 }
             },
             "type": "object",
@@ -1228,7 +1337,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "name": {
                     "type": "string",
@@ -1236,7 +1346,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "soft": {
                     "type": "integer",
@@ -1244,7 +1355,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 }
             },
             "type": "object",
@@ -1265,7 +1377,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "dockerfile": {
                     "type": "string",
@@ -1273,7 +1386,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "forceRemove": {
                     "type": "boolean",
@@ -1308,7 +1422,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "remove": {
                     "type": "boolean",
@@ -1351,7 +1466,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "value": {
                     "type": "string",
@@ -1359,7 +1475,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 }
             },
             "type": "object",
@@ -1376,7 +1493,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "serverAddress": {
                     "type": "string",
@@ -1384,7 +1502,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "username": {
                     "type": "string",
@@ -1392,7 +1511,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 }
             },
             "type": "object",
@@ -1516,7 +1636,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "value": {
                     "type": "string",
@@ -1524,7 +1645,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 }
             },
             "type": "object",
@@ -1812,7 +1934,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "image": {
                     "type": "string",
@@ -2076,7 +2199,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "ip": {
                     "type": "string",
@@ -2084,7 +2208,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 }
             },
             "type": "object",
@@ -2101,7 +2226,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "value": {
                     "type": "string",
@@ -2109,7 +2235,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 }
             },
             "type": "object",
@@ -2268,7 +2395,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "value": {
                     "type": "string",
@@ -2276,7 +2404,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 }
             },
             "type": "object",
@@ -2723,7 +2852,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "value": {
                     "type": "string",
@@ -2731,7 +2861,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "willReplaceOnChanges": true
                 }
             },
             "type": "object",
@@ -2862,7 +2993,7 @@
     },
     "resources": {
         "docker:index/container:Container": {
-            "description": "\u003c!-- Bug: Type and Name are switched --\u003e\nManages the lifecycle of a Docker container.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\n// Find the latest Ubuntu precise image.\nconst ubuntuRemoteImage = new docker.RemoteImage(\"ubuntuRemoteImage\", {name: \"ubuntu:precise\"});\n// Start a container\nconst ubuntuContainer = new docker.Container(\"ubuntuContainer\", {image: ubuntuRemoteImage.latest});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\n# Find the latest Ubuntu precise image.\nubuntu_remote_image = docker.RemoteImage(\"ubuntuRemoteImage\", name=\"ubuntu:precise\")\n# Start a container\nubuntu_container = docker.Container(\"ubuntuContainer\", image=ubuntu_remote_image.latest)\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        // Find the latest Ubuntu precise image.\n        var ubuntuRemoteImage = new Docker.RemoteImage(\"ubuntuRemoteImage\", new Docker.RemoteImageArgs\n        {\n            Name = \"ubuntu:precise\",\n        });\n        // Start a container\n        var ubuntuContainer = new Docker.Container(\"ubuntuContainer\", new Docker.ContainerArgs\n        {\n            Image = ubuntuRemoteImage.Latest,\n        });\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v3/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\tubuntuRemoteImage, err := docker.NewRemoteImage(ctx, \"ubuntuRemoteImage\", \u0026docker.RemoteImageArgs{\n\t\t\tName: pulumi.String(\"ubuntu:precise\"),\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\t_, err = docker.NewContainer(ctx, \"ubuntuContainer\", \u0026docker.ContainerArgs{\n\t\t\tImage: ubuntuRemoteImage.Latest,\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport java.util.*;\nimport java.io.*;\nimport java.nio.*;\nimport com.pulumi.*;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var ubuntuRemoteImage = new RemoteImage(\"ubuntuRemoteImage\", RemoteImageArgs.builder()        \n            .name(\"ubuntu:precise\")\n            .build());\n\n        var ubuntuContainer = new Container(\"ubuntuContainer\", ContainerArgs.builder()        \n            .image(ubuntuRemoteImage.getLatest())\n            .build());\n\n        }\n}\n```\n```yaml\nresources:\n  ubuntuContainer:\n    type: docker:Container\n    properties:\n      image: ${ubuntuRemoteImage.latest}\n  ubuntuRemoteImage:\n    type: docker:RemoteImage\n    properties:\n      name: ubuntu:precise\n```\n{{% /example %}}\n{{% /examples %}}\n\n## Import\n\n### Example Assuming you created a `container` as follows #!/bin/bash docker run --name foo -p8080:80 -d nginx\n\n# prints the container ID\n\n9a550c0f0163d39d77222d3efd58701b625d47676c25c686c95b5b92d1cba6fd you provide the definition for the resource as follows terraform resource \"docker_container\" \"foo\" {\n\n name\n\n= \"foo\"\n\n image = \"nginx\"\n\n ports {\n\n\n\n internal = \"80\"\n\n\n\n external = \"8080\"\n\n } } then the import command is as follows #!/bin/bash\n\n```sh\n $ pulumi import docker:index/container:Container foo 9a550c0f0163d39d77222d3efd58701b625d47676c25c686c95b5b92d1cba6fd\n```\n\n ",
+            "description": "\u003c!-- Bug: Type and Name are switched --\u003e\nManages the lifecycle of a Docker container.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\n// Find the latest Ubuntu precise image.\nconst ubuntuRemoteImage = new docker.RemoteImage(\"ubuntuRemoteImage\", {name: \"ubuntu:precise\"});\n// Start a container\nconst ubuntuContainer = new docker.Container(\"ubuntuContainer\", {image: ubuntuRemoteImage.latest});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\n# Find the latest Ubuntu precise image.\nubuntu_remote_image = docker.RemoteImage(\"ubuntuRemoteImage\", name=\"ubuntu:precise\")\n# Start a container\nubuntu_container = docker.Container(\"ubuntuContainer\", image=ubuntu_remote_image.latest)\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        // Find the latest Ubuntu precise image.\n        var ubuntuRemoteImage = new Docker.RemoteImage(\"ubuntuRemoteImage\", new Docker.RemoteImageArgs\n        {\n            Name = \"ubuntu:precise\",\n        });\n        // Start a container\n        var ubuntuContainer = new Docker.Container(\"ubuntuContainer\", new Docker.ContainerArgs\n        {\n            Image = ubuntuRemoteImage.Latest,\n        });\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v3/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\tubuntuRemoteImage, err := docker.NewRemoteImage(ctx, \"ubuntuRemoteImage\", \u0026docker.RemoteImageArgs{\n\t\t\tName: pulumi.String(\"ubuntu:precise\"),\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\t_, err = docker.NewContainer(ctx, \"ubuntuContainer\", \u0026docker.ContainerArgs{\n\t\t\tImage: ubuntuRemoteImage.Latest,\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.RemoteImage;\nimport com.pulumi.docker.RemoteImageArgs;\nimport com.pulumi.docker.Container;\nimport com.pulumi.docker.ContainerArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var ubuntuRemoteImage = new RemoteImage(\"ubuntuRemoteImage\", RemoteImageArgs.builder()        \n            .name(\"ubuntu:precise\")\n            .build());\n\n        var ubuntuContainer = new Container(\"ubuntuContainer\", ContainerArgs.builder()        \n            .image(ubuntuRemoteImage.latest())\n            .build());\n\n    }\n}\n```\n```yaml\nresources:\n  # Start a container\n  ubuntuContainer:\n    type: docker:Container\n    properties:\n      image: ${ubuntuRemoteImage.latest}\n  # Find the latest Ubuntu precise image.\n  ubuntuRemoteImage:\n    type: docker:RemoteImage\n    properties:\n      name: ubuntu:precise\n```\n{{% /example %}}\n{{% /examples %}}\n\n## Import\n\n### Example Assuming you created a `container` as follows #!/bin/bash docker run --name foo -p8080:80 -d nginx\n\n# prints the container ID\n\n9a550c0f0163d39d77222d3efd58701b625d47676c25c686c95b5b92d1cba6fd you provide the definition for the resource as follows terraform resource \"docker_container\" \"foo\" {\n\n name\n\n= \"foo\"\n\n image = \"nginx\"\n\n ports {\n\n\n\n internal = \"80\"\n\n\n\n external = \"8080\"\n\n } } then the import command is as follows #!/bin/bash\n\n```sh\n $ pulumi import docker:index/container:Container foo 9a550c0f0163d39d77222d3efd58701b625d47676c25c686c95b5b92d1cba6fd\n```\n\n ",
             "properties": {
                 "attach": {
                     "type": "boolean",
@@ -3250,14 +3381,16 @@
                 },
                 "capabilities": {
                     "$ref": "#/types/docker:index/ContainerCapabilities:ContainerCapabilities",
-                    "description": "Add or drop certrain linux capabilities.\n"
+                    "description": "Add or drop certrain linux capabilities.\n",
+                    "willReplaceOnChanges": true
                 },
                 "command": {
                     "type": "array",
                     "items": {
                         "type": "string"
                     },
-                    "description": "The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be\n`[\"/usr/bin/myprogram\",\"-\",\"baz.con\"]`.\n"
+                    "description": "The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be\n`[\"/usr/bin/myprogram\",\"-\",\"baz.con\"]`.\n",
+                    "willReplaceOnChanges": true
                 },
                 "cpuSet": {
                     "type": "string",
@@ -3276,57 +3409,66 @@
                     "items": {
                         "$ref": "#/types/docker:index/ContainerDevice:ContainerDevice"
                     },
-                    "description": "Bind devices to the container.\n"
+                    "description": "Bind devices to the container.\n",
+                    "willReplaceOnChanges": true
                 },
                 "dns": {
                     "type": "array",
                     "items": {
                         "type": "string"
                     },
-                    "description": "DNS servers to use.\n"
+                    "description": "DNS servers to use.\n",
+                    "willReplaceOnChanges": true
                 },
                 "dnsOpts": {
                     "type": "array",
                     "items": {
                         "type": "string"
                     },
-                    "description": "DNS options used by the DNS provider(s), see `resolv.conf` documentation for valid list of options.\n"
+                    "description": "DNS options used by the DNS provider(s), see `resolv.conf` documentation for valid list of options.\n",
+                    "willReplaceOnChanges": true
                 },
                 "dnsSearches": {
                     "type": "array",
                     "items": {
                         "type": "string"
                     },
-                    "description": "DNS search domains that are used when bare unqualified hostnames are used inside of the container.\n"
+                    "description": "DNS search domains that are used when bare unqualified hostnames are used inside of the container.\n",
+                    "willReplaceOnChanges": true
                 },
                 "domainname": {
                     "type": "string",
-                    "description": "Domain name of the container.\n"
+                    "description": "Domain name of the container.\n",
+                    "willReplaceOnChanges": true
                 },
                 "entrypoints": {
                     "type": "array",
                     "items": {
                         "type": "string"
                     },
-                    "description": "The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an\nexecutable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be\n`\"/usr/bin/myprogra\"]`.\n"
+                    "description": "The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an\nexecutable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be\n`\"/usr/bin/myprogra\"]`.\n",
+                    "willReplaceOnChanges": true
                 },
                 "envs": {
                     "type": "array",
                     "items": {
                         "type": "string"
                     },
-                    "description": "Environment variables to set in the form of `KEY=VALUE`, e.g. `DEBUG=0`\n"
+                    "description": "Environment variables to set in the form of `KEY=VALUE`, e.g. `DEBUG=0`\n",
+                    "willReplaceOnChanges": true
                 },
                 "gpus": {
                     "type": "string",
-                    "description": "GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result\nin unexpected behavior.\n"
+                    "description": "GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result\nin unexpected behavior.\n",
+                    "willReplaceOnChanges": true
                 },
                 "groupAdds": {
                     "type": "array",
                     "items": {
                         "type": "string"
                     },
-                    "description": "Additional groups for the container user\n"
+                    "description": "Additional groups for the container user\n",
+                    "willReplaceOnChanges": true
                 },
                 "healthcheck": {
                     "$ref": "#/types/docker:index/ContainerHealthcheck:ContainerHealthcheck",
@@ -3334,18 +3476,21 @@
                 },
                 "hostname": {
                     "type": "string",
-                    "description": "Hostname of the container.\n"
+                    "description": "Hostname of the container.\n",
+                    "willReplaceOnChanges": true
                 },
                 "hosts": {
                     "type": "array",
                     "items": {
                         "$ref": "#/types/docker:index/ContainerHost:ContainerHost"
                     },
-                    "description": "Additional hosts to add to the container.\n"
+                    "description": "Additional hosts to add to the container.\n",
+                    "willReplaceOnChanges": true
                 },
                 "image": {
                     "type": "string",
-                    "description": "The ID of the image to back this container. The easiest way to get this value is to use the `docker_image` resource as\nis shown in the example.\n"
+                    "description": "The ID of the image to back this container. The easiest way to get this value is to use the `docker_image` resource as\nis shown in the example.\n",
+                    "willReplaceOnChanges": true
                 },
                 "init": {
                     "type": "boolean",
@@ -3353,14 +3498,16 @@
                 },
                 "ipcMode": {
                     "type": "string",
-                    "description": "IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:\u003cname|id\u003e` or\n`host`.\n"
+                    "description": "IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:\u003cname|id\u003e` or\n`host`.\n",
+                    "willReplaceOnChanges": true
                 },
                 "labels": {
                     "type": "array",
                     "items": {
                         "$ref": "#/types/docker:index/ContainerLabel:ContainerLabel"
                     },
-                    "description": "User-defined key/value metadata\n"
+                    "description": "User-defined key/value metadata\n",
+                    "willReplaceOnChanges": true
                 },
                 "links": {
                     "type": "array",
@@ -3368,18 +3515,21 @@
                         "type": "string"
                     },
                     "description": "Set of links for link based connectivity between containers that are running on the same host.\n",
-                    "deprecationMessage": "The --link flag is a legacy feature of Docker. It may eventually be removed."
+                    "deprecationMessage": "The --link flag is a legacy feature of Docker. It may eventually be removed.",
+                    "willReplaceOnChanges": true
                 },
                 "logDriver": {
                     "type": "string",
-                    "description": "The logging driver to use for the container.\n"
+                    "description": "The logging driver to use for the container.\n",
+                    "willReplaceOnChanges": true
                 },
                 "logOpts": {
                     "type": "object",
                     "additionalProperties": {
                         "$ref": "pulumi.json#/Any"
                     },
-                    "description": "Key/value pairs to use as options for the logging driver.\n"
+                    "description": "Key/value pairs to use as options for the logging driver.\n",
+                    "willReplaceOnChanges": true
                 },
                 "logs": {
                     "type": "boolean",
@@ -3402,7 +3552,8 @@
                     "items": {
                         "$ref": "#/types/docker:index/ContainerMount:ContainerMount"
                     },
-                    "description": "Specification for mounts to be added to containers created as part of the service.\n"
+                    "description": "Specification for mounts to be added to containers created as part of the service.\n",
+                    "willReplaceOnChanges": true
                 },
                 "mustRun": {
                     "type": "boolean",
@@ -3410,7 +3561,8 @@
                 },
                 "name": {
                     "type": "string",
-                    "description": "The name of the container.\n"
+                    "description": "The name of the container.\n",
+                    "willReplaceOnChanges": true
                 },
                 "networkAliases": {
                     "type": "array",
@@ -3418,11 +3570,13 @@
                         "type": "string"
                     },
                     "description": "Set an alias for the container in all specified networks\n",
-                    "deprecationMessage": "Use networks_advanced instead. Will be removed in v3.0.0"
+                    "deprecationMessage": "Use networks_advanced instead. Will be removed in v3.0.0",
+                    "willReplaceOnChanges": true
                 },
                 "networkMode": {
                     "type": "string",
-                    "description": "Network mode of the container.\n"
+                    "description": "Network mode of the container.\n",
+                    "willReplaceOnChanges": true
                 },
                 "networks": {
                     "type": "array",
@@ -3430,37 +3584,44 @@
                         "type": "string"
                     },
                     "description": "ID of the networks in which the container is.\n",
-                    "deprecationMessage": "Use networks_advanced instead. Will be removed in v3.0.0"
+                    "deprecationMessage": "Use networks_advanced instead. Will be removed in v3.0.0",
+                    "willReplaceOnChanges": true
                 },
                 "networksAdvanced": {
                     "type": "array",
                     "items": {
                         "$ref": "#/types/docker:index/ContainerNetworksAdvanced:ContainerNetworksAdvanced"
                     },
-                    "description": "The networks the container is attached to\n"
+                    "description": "The networks the container is attached to\n",
+                    "willReplaceOnChanges": true
                 },
                 "pidMode": {
                     "type": "string",
-                    "description": "he PID (Process) Namespace mode for the container. Either `container:\u003cname|id\u003e` or `host`.\n"
+                    "description": "he PID (Process) Namespace mode for the container. Either `container:\u003cname|id\u003e` or `host`.\n",
+                    "willReplaceOnChanges": true
                 },
                 "ports": {
                     "type": "array",
                     "items": {
                         "$ref": "#/types/docker:index/ContainerPort:ContainerPort"
                     },
-                    "description": "Publish a container's port(s) to the host.\n"
+                    "description": "Publish a container's port(s) to the host.\n",
+                    "willReplaceOnChanges": true
                 },
                 "privileged": {
                     "type": "boolean",
-                    "description": "If `true`, the container runs in privileged mode.\n"
+                    "description": "If `true`, the container runs in privileged mode.\n",
+                    "willReplaceOnChanges": true
                 },
                 "publishAllPorts": {
                     "type": "boolean",
-                    "description": "Publish all ports of the container.\n"
+                    "description": "Publish all ports of the container.\n",
+                    "willReplaceOnChanges": true
                 },
                 "readOnly": {
                     "type": "boolean",
-                    "description": "If `true`, the container will be started as readonly. Defaults to `false`.\n"
+                    "description": "If `true`, the container will be started as readonly. Defaults to `false`.\n",
+                    "willReplaceOnChanges": true
                 },
                 "removeVolumes": {
                     "type": "boolean",
@@ -3476,18 +3637,21 @@
                 },
                 "runtime": {
                     "type": "string",
-                    "description": "Runtime to use for the container.\n"
+                    "description": "Runtime to use for the container.\n",
+                    "willReplaceOnChanges": true
                 },
                 "securityOpts": {
                     "type": "array",
                     "items": {
                         "type": "string"
                     },
-                    "description": "List of string values to customize labels for MLS systems, such as SELinux. See\nhttps://docs.docker.com/engine/reference/run/#security-configuration.\n"
+                    "description": "List of string values to customize labels for MLS systems, such as SELinux. See\nhttps://docs.docker.com/engine/reference/run/#security-configuration.\n",
+                    "willReplaceOnChanges": true
                 },
                 "shmSize": {
                     "type": "integer",
-                    "description": "Size of `/dev/shm` in MBs.\n"
+                    "description": "Size of `/dev/shm` in MBs.\n",
+                    "willReplaceOnChanges": true
                 },
                 "start": {
                     "type": "boolean",
@@ -3495,29 +3659,34 @@
                 },
                 "stdinOpen": {
                     "type": "boolean",
-                    "description": "If `true`, keep STDIN open even if not attached (`docker run -i`). Defaults to `false`.\n"
+                    "description": "If `true`, keep STDIN open even if not attached (`docker run -i`). Defaults to `false`.\n",
+                    "willReplaceOnChanges": true
                 },
                 "stopSignal": {
                     "type": "string",
-                    "description": "Signal to stop a container (default `SIGTERM`).\n"
+                    "description": "Signal to stop a container (default `SIGTERM`).\n",
+                    "willReplaceOnChanges": true
                 },
                 "stopTimeout": {
                     "type": "integer",
-                    "description": "Timeout (in seconds) to stop a container.\n"
+                    "description": "Timeout (in seconds) to stop a container.\n",
+                    "willReplaceOnChanges": true
                 },
                 "storageOpts": {
                     "type": "object",
                     "additionalProperties": {
                         "$ref": "pulumi.json#/Any"
                     },
-                    "description": "Key/value pairs for the storage driver options, e.g. `size`: `120G`\n"
+                    "description": "Key/value pairs for the storage driver options, e.g. `size`: `120G`\n",
+                    "willReplaceOnChanges": true
                 },
                 "sysctls": {
                     "type": "object",
                     "additionalProperties": {
                         "$ref": "pulumi.json#/Any"
                     },
-                    "description": "A map of kernel parameters (sysctls) to set in the container.\n"
+                    "description": "A map of kernel parameters (sysctls) to set in the container.\n",
+                    "willReplaceOnChanges": true
                 },
                 "tmpfs": {
                     "type": "object",
@@ -3528,40 +3697,47 @@
                 },
                 "tty": {
                     "type": "boolean",
-                    "description": "If `true`, allocate a pseudo-tty (`docker run -t`). Defaults to `false`.\n"
+                    "description": "If `true`, allocate a pseudo-tty (`docker run -t`). Defaults to `false`.\n",
+                    "willReplaceOnChanges": true
                 },
                 "ulimits": {
                     "type": "array",
                     "items": {
                         "$ref": "#/types/docker:index/ContainerUlimit:ContainerUlimit"
                     },
-                    "description": "Ulimit options to add.\n"
+                    "description": "Ulimit options to add.\n",
+                    "willReplaceOnChanges": true
                 },
                 "uploads": {
                     "type": "array",
                     "items": {
                         "$ref": "#/types/docker:index/ContainerUpload:ContainerUpload"
                     },
-                    "description": "Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and\nat least one of them has to be set.\n"
+                    "description": "Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and\nat least one of them has to be set.\n",
+                    "willReplaceOnChanges": true
                 },
                 "user": {
                     "type": "string",
-                    "description": "User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by\nname.\n"
+                    "description": "User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by\nname.\n",
+                    "willReplaceOnChanges": true
                 },
                 "usernsMode": {
                     "type": "string",
-                    "description": "Sets the usernamespace mode for the container when usernamespace remapping option is enabled.\n"
+                    "description": "Sets the usernamespace mode for the container when usernamespace remapping option is enabled.\n",
+                    "willReplaceOnChanges": true
                 },
                 "volumes": {
                     "type": "array",
                     "items": {
                         "$ref": "#/types/docker:index/ContainerVolume:ContainerVolume"
                     },
-                    "description": "Spec for mounting volumes in the container.\n"
+                    "description": "Spec for mounting volumes in the container.\n",
+                    "willReplaceOnChanges": true
                 },
                 "workingDir": {
                     "type": "string",
-                    "description": "The working directory for commands to run in.\n"
+                    "description": "The working directory for commands to run in.\n",
+                    "willReplaceOnChanges": true
                 }
             },
             "requiredInputs": [
@@ -3580,14 +3756,16 @@
                     },
                     "capabilities": {
                         "$ref": "#/types/docker:index/ContainerCapabilities:ContainerCapabilities",
-                        "description": "Add or drop certrain linux capabilities.\n"
+                        "description": "Add or drop certrain linux capabilities.\n",
+                        "willReplaceOnChanges": true
                     },
                     "command": {
                         "type": "array",
                         "items": {
                             "type": "string"
                         },
-                        "description": "The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be\n`[\"/usr/bin/myprogram\",\"-\",\"baz.con\"]`.\n"
+                        "description": "The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be\n`[\"/usr/bin/myprogram\",\"-\",\"baz.con\"]`.\n",
+                        "willReplaceOnChanges": true
                     },
                     "containerLogs": {
                         "type": "string",
@@ -3610,46 +3788,53 @@
                         "items": {
                             "$ref": "#/types/docker:index/ContainerDevice:ContainerDevice"
                         },
-                        "description": "Bind devices to the container.\n"
+                        "description": "Bind devices to the container.\n",
+                        "willReplaceOnChanges": true
                     },
                     "dns": {
                         "type": "array",
                         "items": {
                             "type": "string"
                         },
-                        "description": "DNS servers to use.\n"
+                        "description": "DNS servers to use.\n",
+                        "willReplaceOnChanges": true
                     },
                     "dnsOpts": {
                         "type": "array",
                         "items": {
                             "type": "string"
                         },
-                        "description": "DNS options used by the DNS provider(s), see `resolv.conf` documentation for valid list of options.\n"
+                        "description": "DNS options used by the DNS provider(s), see `resolv.conf` documentation for valid list of options.\n",
+                        "willReplaceOnChanges": true
                     },
                     "dnsSearches": {
                         "type": "array",
                         "items": {
                             "type": "string"
                         },
-                        "description": "DNS search domains that are used when bare unqualified hostnames are used inside of the container.\n"
+                        "description": "DNS search domains that are used when bare unqualified hostnames are used inside of the container.\n",
+                        "willReplaceOnChanges": true
                     },
                     "domainname": {
                         "type": "string",
-                        "description": "Domain name of the container.\n"
+                        "description": "Domain name of the container.\n",
+                        "willReplaceOnChanges": true
                     },
                     "entrypoints": {
                         "type": "array",
                         "items": {
                             "type": "string"
                         },
-                        "description": "The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an\nexecutable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be\n`\"/usr/bin/myprogra\"]`.\n"
+                        "description": "The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an\nexecutable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be\n`\"/usr/bin/myprogra\"]`.\n",
+                        "willReplaceOnChanges": true
                     },
                     "envs": {
                         "type": "array",
                         "items": {
                             "type": "string"
                         },
-                        "description": "Environment variables to set in the form of `KEY=VALUE`, e.g. `DEBUG=0`\n"
+                        "description": "Environment variables to set in the form of `KEY=VALUE`, e.g. `DEBUG=0`\n",
+                        "willReplaceOnChanges": true
                     },
                     "exitCode": {
                         "type": "integer",
@@ -3662,14 +3847,16 @@
                     },
                     "gpus": {
                         "type": "string",
-                        "description": "GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result\nin unexpected behavior.\n"
+                        "description": "GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result\nin unexpected behavior.\n",
+                        "willReplaceOnChanges": true
                     },
                     "groupAdds": {
                         "type": "array",
                         "items": {
                             "type": "string"
                         },
-                        "description": "Additional groups for the container user\n"
+                        "description": "Additional groups for the container user\n",
+                        "willReplaceOnChanges": true
                     },
                     "healthcheck": {
                         "$ref": "#/types/docker:index/ContainerHealthcheck:ContainerHealthcheck",
@@ -3677,18 +3864,21 @@
                     },
                     "hostname": {
                         "type": "string",
-                        "description": "Hostname of the container.\n"
+                        "description": "Hostname of the container.\n",
+                        "willReplaceOnChanges": true
                     },
                     "hosts": {
                         "type": "array",
                         "items": {
                             "$ref": "#/types/docker:index/ContainerHost:ContainerHost"
                         },
-                        "description": "Additional hosts to add to the container.\n"
+                        "description": "Additional hosts to add to the container.\n",
+                        "willReplaceOnChanges": true
                     },
                     "image": {
                         "type": "string",
-                        "description": "The ID of the image to back this container. The easiest way to get this value is to use the `docker_image` resource as\nis shown in the example.\n"
+                        "description": "The ID of the image to back this container. The easiest way to get this value is to use the `docker_image` resource as\nis shown in the example.\n",
+                        "willReplaceOnChanges": true
                     },
                     "init": {
                         "type": "boolean",
@@ -3706,14 +3896,16 @@
                     },
                     "ipcMode": {
                         "type": "string",
-                        "description": "IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:\u003cname|id\u003e` or\n`host`.\n"
+                        "description": "IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:\u003cname|id\u003e` or\n`host`.\n",
+                        "willReplaceOnChanges": true
                     },
                     "labels": {
                         "type": "array",
                         "items": {
                             "$ref": "#/types/docker:index/ContainerLabel:ContainerLabel"
                         },
-                        "description": "User-defined key/value metadata\n"
+                        "description": "User-defined key/value metadata\n",
+                        "willReplaceOnChanges": true
                     },
                     "links": {
                         "type": "array",
@@ -3721,18 +3913,21 @@
                             "type": "string"
                         },
                         "description": "Set of links for link based connectivity between containers that are running on the same host.\n",
-                        "deprecationMessage": "The --link flag is a legacy feature of Docker. It may eventually be removed."
+                        "deprecationMessage": "The --link flag is a legacy feature of Docker. It may eventually be removed.",
+                        "willReplaceOnChanges": true
                     },
                     "logDriver": {
                         "type": "string",
-                        "description": "The logging driver to use for the container.\n"
+                        "description": "The logging driver to use for the container.\n",
+                        "willReplaceOnChanges": true
                     },
                     "logOpts": {
                         "type": "object",
                         "additionalProperties": {
                             "$ref": "pulumi.json#/Any"
                         },
-                        "description": "Key/value pairs to use as options for the logging driver.\n"
+                        "description": "Key/value pairs to use as options for the logging driver.\n",
+                        "willReplaceOnChanges": true
                     },
                     "logs": {
                         "type": "boolean",
@@ -3755,7 +3950,8 @@
                         "items": {
                             "$ref": "#/types/docker:index/ContainerMount:ContainerMount"
                         },
-                        "description": "Specification for mounts to be added to containers created as part of the service.\n"
+                        "description": "Specification for mounts to be added to containers created as part of the service.\n",
+                        "willReplaceOnChanges": true
                     },
                     "mustRun": {
                         "type": "boolean",
@@ -3763,7 +3959,8 @@
                     },
                     "name": {
                         "type": "string",
-                        "description": "The name of the container.\n"
+                        "description": "The name of the container.\n",
+                        "willReplaceOnChanges": true
                     },
                     "networkAliases": {
                         "type": "array",
@@ -3771,7 +3968,8 @@
                             "type": "string"
                         },
                         "description": "Set an alias for the container in all specified networks\n",
-                        "deprecationMessage": "Use networks_advanced instead. Will be removed in v3.0.0"
+                        "deprecationMessage": "Use networks_advanced instead. Will be removed in v3.0.0",
+                        "willReplaceOnChanges": true
                     },
                     "networkDatas": {
                         "type": "array",
@@ -3782,7 +3980,8 @@
                     },
                     "networkMode": {
                         "type": "string",
-                        "description": "Network mode of the container.\n"
+                        "description": "Network mode of the container.\n",
+                        "willReplaceOnChanges": true
                     },
                     "networks": {
                         "type": "array",
@@ -3790,37 +3989,44 @@
                             "type": "string"
                         },
                         "description": "ID of the networks in which the container is.\n",
-                        "deprecationMessage": "Use networks_advanced instead. Will be removed in v3.0.0"
+                        "deprecationMessage": "Use networks_advanced instead. Will be removed in v3.0.0",
+                        "willReplaceOnChanges": true
                     },
                     "networksAdvanced": {
                         "type": "array",
                         "items": {
                             "$ref": "#/types/docker:index/ContainerNetworksAdvanced:ContainerNetworksAdvanced"
                         },
-                        "description": "The networks the container is attached to\n"
+                        "description": "The networks the container is attached to\n",
+                        "willReplaceOnChanges": true
                     },
                     "pidMode": {
                         "type": "string",
-                        "description": "he PID (Process) Namespace mode for the container. Either `container:\u003cname|id\u003e` or `host`.\n"
+                        "description": "he PID (Process) Namespace mode for the container. Either `container:\u003cname|id\u003e` or `host`.\n",
+                        "willReplaceOnChanges": true
                     },
                     "ports": {
                         "type": "array",
                         "items": {
                             "$ref": "#/types/docker:index/ContainerPort:ContainerPort"
                         },
-                        "description": "Publish a container's port(s) to the host.\n"
+                        "description": "Publish a container's port(s) to the host.\n",
+                        "willReplaceOnChanges": true
                     },
                     "privileged": {
                         "type": "boolean",
-                        "description": "If `true`, the container runs in privileged mode.\n"
+                        "description": "If `true`, the container runs in privileged mode.\n",
+                        "willReplaceOnChanges": true
                     },
                     "publishAllPorts": {
                         "type": "boolean",
-                        "description": "Publish all ports of the container.\n"
+                        "description": "Publish all ports of the container.\n",
+                        "willReplaceOnChanges": true
                     },
                     "readOnly": {
                         "type": "boolean",
-                        "description": "If `true`, the container will be started as readonly. Defaults to `false`.\n"
+                        "description": "If `true`, the container will be started as readonly. Defaults to `false`.\n",
+                        "willReplaceOnChanges": true
                     },
                     "removeVolumes": {
                         "type": "boolean",
@@ -3836,18 +4042,21 @@
                     },
                     "runtime": {
                         "type": "string",
-                        "description": "Runtime to use for the container.\n"
+                        "description": "Runtime to use for the container.\n",
+                        "willReplaceOnChanges": true
                     },
                     "securityOpts": {
                         "type": "array",
                         "items": {
                             "type": "string"
                         },
-                        "description": "List of string values to customize labels for MLS systems, such as SELinux. See\nhttps://docs.docker.com/engine/reference/run/#security-configuration.\n"
+                        "description": "List of string values to customize labels for MLS systems, such as SELinux. See\nhttps://docs.docker.com/engine/reference/run/#security-configuration.\n",
+                        "willReplaceOnChanges": true
                     },
                     "shmSize": {
                         "type": "integer",
-                        "description": "Size of `/dev/shm` in MBs.\n"
+                        "description": "Size of `/dev/shm` in MBs.\n",
+                        "willReplaceOnChanges": true
                     },
                     "start": {
                         "type": "boolean",
@@ -3855,29 +4064,34 @@
                     },
                     "stdinOpen": {
                         "type": "boolean",
-                        "description": "If `true`, keep STDIN open even if not attached (`docker run -i`). Defaults to `false`.\n"
+                        "description": "If `true`, keep STDIN open even if not attached (`docker run -i`). Defaults to `false`.\n",
+                        "willReplaceOnChanges": true
                     },
                     "stopSignal": {
                         "type": "string",
-                        "description": "Signal to stop a container (default `SIGTERM`).\n"
+                        "description": "Signal to stop a container (default `SIGTERM`).\n",
+                        "willReplaceOnChanges": true
                     },
                     "stopTimeout": {
                         "type": "integer",
-                        "description": "Timeout (in seconds) to stop a container.\n"
+                        "description": "Timeout (in seconds) to stop a container.\n",
+                        "willReplaceOnChanges": true
                     },
                     "storageOpts": {
                         "type": "object",
                         "additionalProperties": {
                             "$ref": "pulumi.json#/Any"
                         },
-                        "description": "Key/value pairs for the storage driver options, e.g. `size`: `120G`\n"
+                        "description": "Key/value pairs for the storage driver options, e.g. `size`: `120G`\n",
+                        "willReplaceOnChanges": true
                     },
                     "sysctls": {
                         "type": "object",
                         "additionalProperties": {
                             "$ref": "pulumi.json#/Any"
                         },
-                        "description": "A map of kernel parameters (sysctls) to set in the container.\n"
+                        "description": "A map of kernel parameters (sysctls) to set in the container.\n",
+                        "willReplaceOnChanges": true
                     },
                     "tmpfs": {
                         "type": "object",
@@ -3888,47 +4102,54 @@
                     },
                     "tty": {
                         "type": "boolean",
-                        "description": "If `true`, allocate a pseudo-tty (`docker run -t`). Defaults to `false`.\n"
+                        "description": "If `true`, allocate a pseudo-tty (`docker run -t`). Defaults to `false`.\n",
+                        "willReplaceOnChanges": true
                     },
                     "ulimits": {
                         "type": "array",
                         "items": {
                             "$ref": "#/types/docker:index/ContainerUlimit:ContainerUlimit"
                         },
-                        "description": "Ulimit options to add.\n"
+                        "description": "Ulimit options to add.\n",
+                        "willReplaceOnChanges": true
                     },
                     "uploads": {
                         "type": "array",
                         "items": {
                             "$ref": "#/types/docker:index/ContainerUpload:ContainerUpload"
                         },
-                        "description": "Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and\nat least one of them has to be set.\n"
+                        "description": "Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and\nat least one of them has to be set.\n",
+                        "willReplaceOnChanges": true
                     },
                     "user": {
                         "type": "string",
-                        "description": "User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by\nname.\n"
+                        "description": "User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by\nname.\n",
+                        "willReplaceOnChanges": true
                     },
                     "usernsMode": {
                         "type": "string",
-                        "description": "Sets the usernamespace mode for the container when usernamespace remapping option is enabled.\n"
+                        "description": "Sets the usernamespace mode for the container when usernamespace remapping option is enabled.\n",
+                        "willReplaceOnChanges": true
                     },
                     "volumes": {
                         "type": "array",
                         "items": {
                             "$ref": "#/types/docker:index/ContainerVolume:ContainerVolume"
                         },
-                        "description": "Spec for mounting volumes in the container.\n"
+                        "description": "Spec for mounting volumes in the container.\n",
+                        "willReplaceOnChanges": true
                     },
                     "workingDir": {
                         "type": "string",
-                        "description": "The working directory for commands to run in.\n"
+                        "description": "The working directory for commands to run in.\n",
+                        "willReplaceOnChanges": true
                     }
                 },
                 "type": "object"
             }
         },
         "docker:index/network:Network": {
-            "description": "\u003c!-- Bug: Type and Name are switched --\u003e\n`docker.Network` provides details about a specific Docker Network.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst privateNetwork = new docker.Network(\"private_network\", {});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nprivate_network = docker.Network(\"privateNetwork\")\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        var privateNetwork = new Docker.Network(\"privateNetwork\", new Docker.NetworkArgs\n        {\n        });\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v3/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := docker.NewNetwork(ctx, \"privateNetwork\", nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport java.util.*;\nimport java.io.*;\nimport java.nio.*;\nimport com.pulumi.*;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var privateNetwork = new Network(\"privateNetwork\");\n\n        }\n}\n```\n```yaml\nresources:\n  privateNetwork:\n    type: docker:Network\n```\n{{% /example %}}\n{{% /examples %}}\n\n## Import\n\n### Example Assuming you created a `network` as follows #!/bin/bash docker network create foo # prints the long ID 87b57a9b91ecab2db2a6dbf38df74c67d7c7108cbe479d6576574ec2cd8c2d73 you provide the definition for the resource as follows terraform resource \"docker_network\" \"foo\" {\n\n name = \"foo\" } then the import command is as follows #!/bin/bash\n\n```sh\n $ pulumi import docker:index/network:Network foo 87b57a9b91ecab2db2a6dbf38df74c67d7c7108cbe479d6576574ec2cd8c2d73\n```\n\n ",
+            "description": "\u003c!-- Bug: Type and Name are switched --\u003e\n`docker.Network` provides details about a specific Docker Network.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst privateNetwork = new docker.Network(\"private_network\", {});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nprivate_network = docker.Network(\"privateNetwork\")\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        var privateNetwork = new Docker.Network(\"privateNetwork\", new Docker.NetworkArgs\n        {\n        });\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v3/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := docker.NewNetwork(ctx, \"privateNetwork\", nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.Network;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var privateNetwork = new Network(\"privateNetwork\");\n\n    }\n}\n```\n```yaml\nresources:\n  privateNetwork:\n    type: docker:Network\n```\n{{% /example %}}\n{{% /examples %}}\n\n## Import\n\n### Example Assuming you created a `network` as follows #!/bin/bash docker network create foo # prints the long ID 87b57a9b91ecab2db2a6dbf38df74c67d7c7108cbe479d6576574ec2cd8c2d73 you provide the definition for the resource as follows terraform resource \"docker_network\" \"foo\" {\n\n name = \"foo\" } then the import command is as follows #!/bin/bash\n\n```sh\n $ pulumi import docker:index/network:Network foo 87b57a9b91ecab2db2a6dbf38df74c67d7c7108cbe479d6576574ec2cd8c2d73\n```\n\n ",
             "properties": {
                 "attachable": {
                     "type": "boolean",
@@ -3999,56 +4220,67 @@
             "inputProperties": {
                 "attachable": {
                     "type": "boolean",
-                    "description": "Enable manual container attachment to the network.\n"
+                    "description": "Enable manual container attachment to the network.\n",
+                    "willReplaceOnChanges": true
                 },
                 "checkDuplicate": {
                     "type": "boolean",
-                    "description": "Requests daemon to check for networks with same name.\n"
+                    "description": "Requests daemon to check for networks with same name.\n",
+                    "willReplaceOnChanges": true
                 },
                 "driver": {
                     "type": "string",
-                    "description": "The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network\ndocs](https://docs.docker.com/network/#network-drivers) for more details.\n"
+                    "description": "The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network\ndocs](https://docs.docker.com/network/#network-drivers) for more details.\n",
+                    "willReplaceOnChanges": true
                 },
                 "ingress": {
                     "type": "boolean",
-                    "description": "Create swarm routing-mesh network. Defaults to `false`.\n"
+                    "description": "Create swarm routing-mesh network. Defaults to `false`.\n",
+                    "willReplaceOnChanges": true
                 },
                 "internal": {
                     "type": "boolean",
-                    "description": "Whether the network is internal.\n"
+                    "description": "Whether the network is internal.\n",
+                    "willReplaceOnChanges": true
                 },
                 "ipamConfigs": {
                     "type": "array",
                     "items": {
                         "$ref": "#/types/docker:index/NetworkIpamConfig:NetworkIpamConfig"
                     },
-                    "description": "The IPAM configuration options\n"
+                    "description": "The IPAM configuration options\n",
+                    "willReplaceOnChanges": true
                 },
                 "ipamDriver": {
                     "type": "string",
-                    "description": "Driver used by the custom IP scheme of the network. Defaults to `default`\n"
+                    "description": "Driver used by the custom IP scheme of the network. Defaults to `default`\n",
+                    "willReplaceOnChanges": true
                 },
                 "ipv6": {
                     "type": "boolean",
-                    "description": "Enable IPv6 networking. Defaults to `false`.\n"
+                    "description": "Enable IPv6 networking. Defaults to `false`.\n",
+                    "willReplaceOnChanges": true
                 },
                 "labels": {
                     "type": "array",
                     "items": {
                         "$ref": "#/types/docker:index/NetworkLabel:NetworkLabel"
                     },
-                    "description": "User-defined key/value metadata\n"
+                    "description": "User-defined key/value metadata\n",
+                    "willReplaceOnChanges": true
                 },
                 "name": {
                     "type": "string",
-                    "description": "The name of the Docker network.\n"
+                    "description": "The name of the Docker network.\n",
+                    "willReplaceOnChanges": true
                 },
                 "options": {
                     "type": "object",
                     "additionalProperties": {
                         "$ref": "pulumi.json#/Any"
                     },
-                    "description": "Only available with bridge networks. See [bridge options\ndocs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.\n"
+                    "description": "Only available with bridge networks. See [bridge options\ndocs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.\n",
+                    "willReplaceOnChanges": true
                 }
             },
             "stateInputs": {
@@ -4056,56 +4288,67 @@
                 "properties": {
                     "attachable": {
                         "type": "boolean",
-                        "description": "Enable manual container attachment to the network.\n"
+                        "description": "Enable manual container attachment to the network.\n",
+                        "willReplaceOnChanges": true
                     },
                     "checkDuplicate": {
                         "type": "boolean",
-                        "description": "Requests daemon to check for networks with same name.\n"
+                        "description": "Requests daemon to check for networks with same name.\n",
+                        "willReplaceOnChanges": true
                     },
                     "driver": {
                         "type": "string",
-                        "description": "The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network\ndocs](https://docs.docker.com/network/#network-drivers) for more details.\n"
+                        "description": "The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network\ndocs](https://docs.docker.com/network/#network-drivers) for more details.\n",
+                        "willReplaceOnChanges": true
                     },
                     "ingress": {
                         "type": "boolean",
-                        "description": "Create swarm routing-mesh network. Defaults to `false`.\n"
+                        "description": "Create swarm routing-mesh network. Defaults to `false`.\n",
+                        "willReplaceOnChanges": true
                     },
                     "internal": {
                         "type": "boolean",
-                        "description": "Whether the network is internal.\n"
+                        "description": "Whether the network is internal.\n",
+                        "willReplaceOnChanges": true
                     },
                     "ipamConfigs": {
                         "type": "array",
                         "items": {
                             "$ref": "#/types/docker:index/NetworkIpamConfig:NetworkIpamConfig"
                         },
-                        "description": "The IPAM configuration options\n"
+                        "description": "The IPAM configuration options\n",
+                        "willReplaceOnChanges": true
                     },
                     "ipamDriver": {
                         "type": "string",
-                        "description": "Driver used by the custom IP scheme of the network. Defaults to `default`\n"
+                        "description": "Driver used by the custom IP scheme of the network. Defaults to `default`\n",
+                        "willReplaceOnChanges": true
                     },
                     "ipv6": {
                         "type": "boolean",
-                        "description": "Enable IPv6 networking. Defaults to `false`.\n"
+                        "description": "Enable IPv6 networking. Defaults to `false`.\n",
+                        "willReplaceOnChanges": true
                     },
                     "labels": {
                         "type": "array",
                         "items": {
                             "$ref": "#/types/docker:index/NetworkLabel:NetworkLabel"
                         },
-                        "description": "User-defined key/value metadata\n"
+                        "description": "User-defined key/value metadata\n",
+                        "willReplaceOnChanges": true
                     },
                     "name": {
                         "type": "string",
-                        "description": "The name of the Docker network.\n"
+                        "description": "The name of the Docker network.\n",
+                        "willReplaceOnChanges": true
                     },
                     "options": {
                         "type": "object",
                         "additionalProperties": {
                             "$ref": "pulumi.json#/Any"
                         },
-                        "description": "Only available with bridge networks. See [bridge options\ndocs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.\n"
+                        "description": "Only available with bridge networks. See [bridge options\ndocs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.\n",
+                        "willReplaceOnChanges": true
                     },
                     "scope": {
                         "type": "string",
@@ -4116,7 +4359,7 @@
             }
         },
         "docker:index/plugin:Plugin": {
-            "description": "\u003c!-- Bug: Type and Name are switched --\u003e\nManages the lifecycle of a Docker plugin.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst sample_volume_plugin = new docker.Plugin(\"sample-volume-plugin\", {\n    alias: \"sample-volume-plugin\",\n    enableTimeout: 60,\n    enabled: false,\n    envs: [\"DEBUG=1\"],\n    forceDestroy: true,\n    forceDisable: true,\n    grantAllPermissions: true,\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nsample_volume_plugin = docker.Plugin(\"sample-volume-plugin\",\n    alias=\"sample-volume-plugin\",\n    enable_timeout=60,\n    enabled=False,\n    envs=[\"DEBUG=1\"],\n    force_destroy=True,\n    force_disable=True,\n    grant_all_permissions=True)\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        var sample_volume_plugin = new Docker.Plugin(\"sample-volume-plugin\", new Docker.PluginArgs\n        {\n            Alias = \"sample-volume-plugin\",\n            EnableTimeout = 60,\n            Enabled = false,\n            Envs = \n            {\n                \"DEBUG=1\",\n            },\n            ForceDestroy = true,\n            ForceDisable = true,\n            GrantAllPermissions = true,\n        });\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v3/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := docker.NewPlugin(ctx, \"sample-volume-plugin\", \u0026docker.PluginArgs{\n\t\t\tAlias:         pulumi.String(\"sample-volume-plugin\"),\n\t\t\tEnableTimeout: pulumi.Int(60),\n\t\t\tEnabled:       pulumi.Bool(false),\n\t\t\tEnvs: pulumi.StringArray{\n\t\t\t\tpulumi.String(\"DEBUG=1\"),\n\t\t\t},\n\t\t\tForceDestroy:        pulumi.Bool(true),\n\t\t\tForceDisable:        pulumi.Bool(true),\n\t\t\tGrantAllPermissions: pulumi.Bool(true),\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport java.util.*;\nimport java.io.*;\nimport java.nio.*;\nimport com.pulumi.*;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var sample_volume_plugin = new Plugin(\"sample-volume-plugin\", PluginArgs.builder()        \n            .alias(\"sample-volume-plugin\")\n            .enableTimeout(60)\n            .enabled(false)\n            .envs(\"DEBUG=1\")\n            .forceDestroy(true)\n            .forceDisable(true)\n            .grantAllPermissions(true)\n            .build());\n\n        }\n}\n```\n```yaml\nresources:\n  sample-volume-plugin:\n    type: docker:Plugin\n    properties:\n      alias: sample-volume-plugin\n      enableTimeout: 60\n      enabled: false\n      envs:\n        - DEBUG=1\n      forceDestroy: true\n      forceDisable: true\n      grantAllPermissions: true\n```\n{{% /example %}}\n{{% /examples %}}\n\n## Import\n\n#!/bin/bash\n\n```sh\n $ pulumi import docker:index/plugin:Plugin sample-volume-plugin \"$(docker plugin inspect -f {{.ID}} tiborvass/sample-volume-plugin:latest)\"\n```\n\n ",
+            "description": "\u003c!-- Bug: Type and Name are switched --\u003e\nManages the lifecycle of a Docker plugin.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst sample_volume_plugin = new docker.Plugin(\"sample-volume-plugin\", {\n    alias: \"sample-volume-plugin\",\n    enableTimeout: 60,\n    enabled: false,\n    envs: [\"DEBUG=1\"],\n    forceDestroy: true,\n    forceDisable: true,\n    grantAllPermissions: true,\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nsample_volume_plugin = docker.Plugin(\"sample-volume-plugin\",\n    alias=\"sample-volume-plugin\",\n    enable_timeout=60,\n    enabled=False,\n    envs=[\"DEBUG=1\"],\n    force_destroy=True,\n    force_disable=True,\n    grant_all_permissions=True)\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        var sample_volume_plugin = new Docker.Plugin(\"sample-volume-plugin\", new Docker.PluginArgs\n        {\n            Alias = \"sample-volume-plugin\",\n            EnableTimeout = 60,\n            Enabled = false,\n            Envs = \n            {\n                \"DEBUG=1\",\n            },\n            ForceDestroy = true,\n            ForceDisable = true,\n            GrantAllPermissions = true,\n        });\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v3/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := docker.NewPlugin(ctx, \"sample-volume-plugin\", \u0026docker.PluginArgs{\n\t\t\tAlias:         pulumi.String(\"sample-volume-plugin\"),\n\t\t\tEnableTimeout: pulumi.Int(60),\n\t\t\tEnabled:       pulumi.Bool(false),\n\t\t\tEnvs: pulumi.StringArray{\n\t\t\t\tpulumi.String(\"DEBUG=1\"),\n\t\t\t},\n\t\t\tForceDestroy:        pulumi.Bool(true),\n\t\t\tForceDisable:        pulumi.Bool(true),\n\t\t\tGrantAllPermissions: pulumi.Bool(true),\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.Plugin;\nimport com.pulumi.docker.PluginArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var sample_volume_plugin = new Plugin(\"sample-volume-plugin\", PluginArgs.builder()        \n            .alias(\"sample-volume-plugin\")\n            .enableTimeout(60)\n            .enabled(false)\n            .envs(\"DEBUG=1\")\n            .forceDestroy(true)\n            .forceDisable(true)\n            .grantAllPermissions(true)\n            .build());\n\n    }\n}\n```\n```yaml\nresources:\n  sample-volume-plugin:\n    type: docker:Plugin\n    properties:\n      alias: sample-volume-plugin\n      enableTimeout: 60\n      enabled: false\n      envs:\n        - DEBUG=1\n      forceDestroy: true\n      forceDisable: true\n      grantAllPermissions: true\n```\n{{% /example %}}\n{{% /examples %}}\n\n## Import\n\n#!/bin/bash\n\n```sh\n $ pulumi import docker:index/plugin:Plugin sample-volume-plugin \"$(docker plugin inspect -f {{.ID}} tiborvass/sample-volume-plugin:latest)\"\n```\n\n ",
             "properties": {
                 "alias": {
                     "type": "string",
@@ -4174,7 +4417,8 @@
             "inputProperties": {
                 "alias": {
                     "type": "string",
-                    "description": "Docker Plugin alias\n"
+                    "description": "Docker Plugin alias\n",
+                    "willReplaceOnChanges": true
                 },
                 "enableTimeout": {
                     "type": "integer",
@@ -4212,7 +4456,8 @@
                 },
                 "name": {
                     "type": "string",
-                    "description": "Docker Plugin name\n"
+                    "description": "Docker Plugin name\n",
+                    "willReplaceOnChanges": true
                 }
             },
             "stateInputs": {
@@ -4220,7 +4465,8 @@
                 "properties": {
                     "alias": {
                         "type": "string",
-                        "description": "Docker Plugin alias\n"
+                        "description": "Docker Plugin alias\n",
+                        "willReplaceOnChanges": true
                     },
                     "enableTimeout": {
                         "type": "integer",
@@ -4258,7 +4504,8 @@
                     },
                     "name": {
                         "type": "string",
-                        "description": "Docker Plugin name\n"
+                        "description": "Docker Plugin name\n",
+                        "willReplaceOnChanges": true
                     },
                     "pluginReference": {
                         "type": "string",
@@ -4269,7 +4516,7 @@
             }
         },
         "docker:index/registryImage:RegistryImage": {
-            "description": "\u003c!-- Bug: Type and Name are switched --\u003e\nManages the lifecycle of docker image/tag in a registry means it can store one or more version of specific docker images and identified by their tags.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\nTo be able to update an image itself when an updated image arrives.\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\nimport * as process from \"process\";\n\nconst helloworld = new docker.RegistryImage(\"helloworld\", {\n    build: {\n        context: `${process.cwd()}/absolutePathToContextFolder`,\n    },\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nhelloworld = docker.RegistryImage(\"helloworld\", build=docker.RegistryImageBuildArgs(\n    context=f\"{path['cwd']}/absolutePathToContextFolder\",\n))\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        var helloworld = new Docker.RegistryImage(\"helloworld\", new Docker.RegistryImageArgs\n        {\n            Build = new Docker.Inputs.RegistryImageBuildArgs\n            {\n                Context = $\"{path.Cwd}/absolutePathToContextFolder\",\n            },\n        });\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"fmt\"\n\n\t\"github.com/pulumi/pulumi-docker/sdk/v3/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := docker.NewRegistryImage(ctx, \"helloworld\", \u0026docker.RegistryImageArgs{\n\t\t\tBuild: \u0026RegistryImageBuildArgs{\n\t\t\t\tContext: pulumi.String(fmt.Sprintf(\"%v%v\", path.Cwd, \"/absolutePathToContextFolder\")),\n\t\t\t},\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport java.util.*;\nimport java.io.*;\nimport java.nio.*;\nimport com.pulumi.*;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var helloworld = new RegistryImage(\"helloworld\", RegistryImageArgs.builder()        \n            .build(RegistryImageBuild.builder()\n                .context(String.format(\"%s/absolutePathToContextFolder\", path.getCwd()))\n                .build())\n            .build());\n\n        }\n}\n```\n```yaml\nresources:\n  helloworld:\n    type: docker:RegistryImage\n    properties:\n      build:\n        context: ${path.cwd}/absolutePathToContextFolder\n```\n{{% /example %}}\n{{% /examples %}}",
+            "description": "\u003c!-- Bug: Type and Name are switched --\u003e\nManages the lifecycle of docker image/tag in a registry means it can store one or more version of specific docker images and identified by their tags.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\nTo be able to update an image itself when an updated image arrives.\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\nimport * as process from \"process\";\n\nconst helloworld = new docker.RegistryImage(\"helloworld\", {\n    build: {\n        context: `${process.cwd()}/absolutePathToContextFolder`,\n    },\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nhelloworld = docker.RegistryImage(\"helloworld\", build=docker.RegistryImageBuildArgs(\n    context=f\"{path['cwd']}/absolutePathToContextFolder\",\n))\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        var helloworld = new Docker.RegistryImage(\"helloworld\", new Docker.RegistryImageArgs\n        {\n            Build = new Docker.Inputs.RegistryImageBuildArgs\n            {\n                Context = $\"{path.Cwd}/absolutePathToContextFolder\",\n            },\n        });\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"fmt\"\n\n\t\"github.com/pulumi/pulumi-docker/sdk/v3/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := docker.NewRegistryImage(ctx, \"helloworld\", \u0026docker.RegistryImageArgs{\n\t\t\tBuild: \u0026RegistryImageBuildArgs{\n\t\t\t\tContext: pulumi.String(fmt.Sprintf(\"%v/absolutePathToContextFolder\", path.Cwd)),\n\t\t\t},\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.RegistryImage;\nimport com.pulumi.docker.RegistryImageArgs;\nimport com.pulumi.docker.inputs.RegistryImageBuildArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var helloworld = new RegistryImage(\"helloworld\", RegistryImageArgs.builder()        \n            .build(RegistryImageBuildArgs.builder()\n                .context(String.format(\"%s/absolutePathToContextFolder\", path.cwd()))\n                .build())\n            .build());\n\n    }\n}\n```\n```yaml\nresources:\n  helloworld:\n    type: docker:RegistryImage\n    properties:\n      build:\n        context: ${path.cwd}/absolutePathToContextFolder\n```\n{{% /example %}}\n{{% /examples %}}",
             "properties": {
                 "build": {
                     "$ref": "#/types/docker:index/RegistryImageBuild:RegistryImageBuild",
@@ -4311,7 +4558,8 @@
                 },
                 "name": {
                     "type": "string",
-                    "description": "The name of the Docker image.\n"
+                    "description": "The name of the Docker image.\n",
+                    "willReplaceOnChanges": true
                 }
             },
             "stateInputs": {
@@ -4331,7 +4579,8 @@
                     },
                     "name": {
                         "type": "string",
-                        "description": "The name of the Docker image.\n"
+                        "description": "The name of the Docker image.\n",
+                        "willReplaceOnChanges": true
                     },
                     "sha256Digest": {
                         "type": "string",
@@ -4342,7 +4591,7 @@
             }
         },
         "docker:index/remoteImage:RemoteImage": {
-            "description": "\u003c!-- Bug: Type and Name are switched --\u003e\nPulls a Docker image to a given Docker host from a Docker Registry.\n This resource will *not* pull new layers of the image automatically unless used in conjunction with docker.RegistryImage data source to update the `pull_triggers` field.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n### Basic\n\nFinds and downloads the latest `ubuntu:precise` image but does not check\nfor further updates of the image\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst ubuntu = new docker.RemoteImage(\"ubuntu\", {\n    name: \"ubuntu:precise\",\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nubuntu = docker.RemoteImage(\"ubuntu\", name=\"ubuntu:precise\")\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        var ubuntu = new Docker.RemoteImage(\"ubuntu\", new Docker.RemoteImageArgs\n        {\n            Name = \"ubuntu:precise\",\n        });\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v3/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := docker.NewRemoteImage(ctx, \"ubuntu\", \u0026docker.RemoteImageArgs{\n\t\t\tName: pulumi.String(\"ubuntu:precise\"),\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport java.util.*;\nimport java.io.*;\nimport java.nio.*;\nimport com.pulumi.*;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var ubuntu = new RemoteImage(\"ubuntu\", RemoteImageArgs.builder()        \n            .name(\"ubuntu:precise\")\n            .build());\n\n        }\n}\n```\n```yaml\nresources:\n  ubuntu:\n    type: docker:RemoteImage\n    properties:\n      name: ubuntu:precise\n```\n{{% /example %}}\n{{% example %}}\n### Dynamic updates\n\nTo be able to update an image dynamically when the `sha256` sum changes,\nyou need to use it in combination with `docker.RegistryImage` as follows:\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst ubuntuRegistryImage = docker.getRegistryImage({\n    name: \"ubuntu:precise\",\n});\nconst ubuntuRemoteImage = new docker.RemoteImage(\"ubuntuRemoteImage\", {\n    name: ubuntuRegistryImage.then(ubuntuRegistryImage =\u003e ubuntuRegistryImage.name),\n    pullTriggers: [ubuntuRegistryImage.then(ubuntuRegistryImage =\u003e ubuntuRegistryImage.sha256Digest)],\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nubuntu_registry_image = docker.get_registry_image(name=\"ubuntu:precise\")\nubuntu_remote_image = docker.RemoteImage(\"ubuntuRemoteImage\",\n    name=ubuntu_registry_image.name,\n    pull_triggers=[ubuntu_registry_image.sha256_digest])\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        var ubuntuRegistryImage = Output.Create(Docker.GetRegistryImage.InvokeAsync(new Docker.GetRegistryImageArgs\n        {\n            Name = \"ubuntu:precise\",\n        }));\n        var ubuntuRemoteImage = new Docker.RemoteImage(\"ubuntuRemoteImage\", new Docker.RemoteImageArgs\n        {\n            Name = ubuntuRegistryImage.Apply(ubuntuRegistryImage =\u003e ubuntuRegistryImage.Name),\n            PullTriggers = \n            {\n                ubuntuRegistryImage.Apply(ubuntuRegistryImage =\u003e ubuntuRegistryImage.Sha256Digest),\n            },\n        });\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v3/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\tubuntuRegistryImage, err := docker.LookupRegistryImage(ctx, \u0026GetRegistryImageArgs{\n\t\t\tName: \"ubuntu:precise\",\n\t\t}, nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\t_, err = docker.NewRemoteImage(ctx, \"ubuntuRemoteImage\", \u0026docker.RemoteImageArgs{\n\t\t\tName: pulumi.String(ubuntuRegistryImage.Name),\n\t\t\tPullTriggers: pulumi.StringArray{\n\t\t\t\tpulumi.String(ubuntuRegistryImage.Sha256Digest),\n\t\t\t},\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport java.util.*;\nimport java.io.*;\nimport java.nio.*;\nimport com.pulumi.*;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        final var ubuntuRegistryImage = Output.of(DockerFunctions.getRegistryImage(GetRegistryImageArgs.builder()\n            .name(\"ubuntu:precise\")\n            .build()));\n\n        var ubuntuRemoteImage = new RemoteImage(\"ubuntuRemoteImage\", RemoteImageArgs.builder()        \n            .name(ubuntuRegistryImage.apply(getRegistryImageResult -\u003e getRegistryImageResult.getName()))\n            .pullTriggers(ubuntuRegistryImage.apply(getRegistryImageResult -\u003e getRegistryImageResult.getSha256Digest()))\n            .build());\n\n        }\n}\n```\n```yaml\nresources:\n  ubuntuRemoteImage:\n    type: docker:RemoteImage\n    properties:\n      name: ${ubuntuRegistryImage.name}\n      pullTriggers:\n        - ${ubuntuRegistryImage.sha256Digest}\nvariables:\n  ubuntuRegistryImage:\n    Fn::Invoke:\n      Function: docker:getRegistryImage\n      Arguments:\n        name: ubuntu:precise\n```\n{{% /example %}}\n{{% example %}}\n### Build\n\nYou can also use the resource to build an image.\nIn this case the image \"zoo\" and \"zoo:develop\" are built.\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst zoo = new docker.RemoteImage(\"zoo\", {\n    name: \"zoo\",\n    build: {\n        path: \".\",\n        tags: [\"zoo:develop\"],\n        buildArg: {\n            foo: \"zoo\",\n        },\n        label: {\n            author: \"zoo\",\n        },\n    },\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nzoo = docker.RemoteImage(\"zoo\",\n    name=\"zoo\",\n    build=docker.RemoteImageBuildArgs(\n        path=\".\",\n        tags=[\"zoo:develop\"],\n        build_arg={\n            \"foo\": \"zoo\",\n        },\n        label={\n            \"author\": \"zoo\",\n        },\n    ))\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        var zoo = new Docker.RemoteImage(\"zoo\", new Docker.RemoteImageArgs\n        {\n            Name = \"zoo\",\n            Build = new Docker.Inputs.RemoteImageBuildArgs\n            {\n                Path = \".\",\n                Tags = \n                {\n                    \"zoo:develop\",\n                },\n                BuildArg = \n                {\n                    { \"foo\", \"zoo\" },\n                },\n                Label = \n                {\n                    { \"author\", \"zoo\" },\n                },\n            },\n        });\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v3/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := docker.NewRemoteImage(ctx, \"zoo\", \u0026docker.RemoteImageArgs{\n\t\t\tName: pulumi.String(\"zoo\"),\n\t\t\tBuild: \u0026RemoteImageBuildArgs{\n\t\t\t\tPath: pulumi.String(\".\"),\n\t\t\t\tTags: pulumi.StringArray{\n\t\t\t\t\tpulumi.String(\"zoo:develop\"),\n\t\t\t\t},\n\t\t\t\tBuildArg: pulumi.StringMap{\n\t\t\t\t\t\"foo\": pulumi.String(\"zoo\"),\n\t\t\t\t},\n\t\t\t\tLabel: pulumi.StringMap{\n\t\t\t\t\t\"author\": pulumi.String(\"zoo\"),\n\t\t\t\t},\n\t\t\t},\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport java.util.*;\nimport java.io.*;\nimport java.nio.*;\nimport com.pulumi.*;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var zoo = new RemoteImage(\"zoo\", RemoteImageArgs.builder()        \n            .name(\"zoo\")\n            .build(RemoteImageBuild.builder()\n                .path(\".\")\n                .tags(\"zoo:develop\")\n                .buildArg(Map.of(\"foo\", \"zoo\"))\n                .label(Map.of(\"author\", \"zoo\"))\n                .build())\n            .build());\n\n        }\n}\n```\n```yaml\nresources:\n  zoo:\n    type: docker:RemoteImage\n    properties:\n      name: zoo\n      build:\n        path: .\n        tags:\n          - zoo:develop\n        buildArg:\n          foo: zoo\n        label:\n          author: zoo\n```\n{{% /example %}}\n{{% /examples %}}",
+            "description": "\u003c!-- Bug: Type and Name are switched --\u003e\nPulls a Docker image to a given Docker host from a Docker Registry.\n This resource will *not* pull new layers of the image automatically unless used in conjunction with docker.RegistryImage data source to update the `pull_triggers` field.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n### Basic\n\nFinds and downloads the latest `ubuntu:precise` image but does not check\nfor further updates of the image\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst ubuntu = new docker.RemoteImage(\"ubuntu\", {\n    name: \"ubuntu:precise\",\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nubuntu = docker.RemoteImage(\"ubuntu\", name=\"ubuntu:precise\")\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        var ubuntu = new Docker.RemoteImage(\"ubuntu\", new Docker.RemoteImageArgs\n        {\n            Name = \"ubuntu:precise\",\n        });\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v3/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := docker.NewRemoteImage(ctx, \"ubuntu\", \u0026docker.RemoteImageArgs{\n\t\t\tName: pulumi.String(\"ubuntu:precise\"),\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.RemoteImage;\nimport com.pulumi.docker.RemoteImageArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var ubuntu = new RemoteImage(\"ubuntu\", RemoteImageArgs.builder()        \n            .name(\"ubuntu:precise\")\n            .build());\n\n    }\n}\n```\n```yaml\nresources:\n  ubuntu:\n    type: docker:RemoteImage\n    properties:\n      name: ubuntu:precise\n```\n{{% /example %}}\n{{% example %}}\n### Dynamic updates\n\nTo be able to update an image dynamically when the `sha256` sum changes,\nyou need to use it in combination with `docker.RegistryImage` as follows:\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst ubuntuRegistryImage = docker.getRegistryImage({\n    name: \"ubuntu:precise\",\n});\nconst ubuntuRemoteImage = new docker.RemoteImage(\"ubuntuRemoteImage\", {\n    name: ubuntuRegistryImage.then(ubuntuRegistryImage =\u003e ubuntuRegistryImage.name),\n    pullTriggers: [ubuntuRegistryImage.then(ubuntuRegistryImage =\u003e ubuntuRegistryImage.sha256Digest)],\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nubuntu_registry_image = docker.get_registry_image(name=\"ubuntu:precise\")\nubuntu_remote_image = docker.RemoteImage(\"ubuntuRemoteImage\",\n    name=ubuntu_registry_image.name,\n    pull_triggers=[ubuntu_registry_image.sha256_digest])\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        var ubuntuRegistryImage = Output.Create(Docker.GetRegistryImage.InvokeAsync(new Docker.GetRegistryImageArgs\n        {\n            Name = \"ubuntu:precise\",\n        }));\n        var ubuntuRemoteImage = new Docker.RemoteImage(\"ubuntuRemoteImage\", new Docker.RemoteImageArgs\n        {\n            Name = ubuntuRegistryImage.Apply(ubuntuRegistryImage =\u003e ubuntuRegistryImage.Name),\n            PullTriggers = \n            {\n                ubuntuRegistryImage.Apply(ubuntuRegistryImage =\u003e ubuntuRegistryImage.Sha256Digest),\n            },\n        });\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v3/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\tubuntuRegistryImage, err := docker.LookupRegistryImage(ctx, \u0026GetRegistryImageArgs{\n\t\t\tName: \"ubuntu:precise\",\n\t\t}, nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\t_, err = docker.NewRemoteImage(ctx, \"ubuntuRemoteImage\", \u0026docker.RemoteImageArgs{\n\t\t\tName: pulumi.String(ubuntuRegistryImage.Name),\n\t\t\tPullTriggers: pulumi.StringArray{\n\t\t\t\tpulumi.String(ubuntuRegistryImage.Sha256Digest),\n\t\t\t},\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.DockerFunctions;\nimport com.pulumi.docker.inputs.GetRegistryImageArgs;\nimport com.pulumi.docker.RemoteImage;\nimport com.pulumi.docker.RemoteImageArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        final var ubuntuRegistryImage = DockerFunctions.getRegistryImage(GetRegistryImageArgs.builder()\n            .name(\"ubuntu:precise\")\n            .build());\n\n        var ubuntuRemoteImage = new RemoteImage(\"ubuntuRemoteImage\", RemoteImageArgs.builder()        \n            .name(ubuntuRegistryImage.applyValue(getRegistryImageResult -\u003e getRegistryImageResult.name()))\n            .pullTriggers(ubuntuRegistryImage.applyValue(getRegistryImageResult -\u003e getRegistryImageResult.sha256Digest()))\n            .build());\n\n    }\n}\n```\n```yaml\nresources:\n  ubuntuRemoteImage:\n    type: docker:RemoteImage\n    properties:\n      name: ${ubuntuRegistryImage.name}\n      pullTriggers:\n        - ${ubuntuRegistryImage.sha256Digest}\nvariables:\n  ubuntuRegistryImage:\n    Fn::Invoke:\n      Function: docker:getRegistryImage\n      Arguments:\n        name: ubuntu:precise\n```\n{{% /example %}}\n{{% example %}}\n### Build\n\nYou can also use the resource to build an image.\nIn this case the image \"zoo\" and \"zoo:develop\" are built.\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst zoo = new docker.RemoteImage(\"zoo\", {\n    name: \"zoo\",\n    build: {\n        path: \".\",\n        tags: [\"zoo:develop\"],\n        buildArg: {\n            foo: \"zoo\",\n        },\n        label: {\n            author: \"zoo\",\n        },\n    },\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nzoo = docker.RemoteImage(\"zoo\",\n    name=\"zoo\",\n    build=docker.RemoteImageBuildArgs(\n        path=\".\",\n        tags=[\"zoo:develop\"],\n        build_arg={\n            \"foo\": \"zoo\",\n        },\n        label={\n            \"author\": \"zoo\",\n        },\n    ))\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        var zoo = new Docker.RemoteImage(\"zoo\", new Docker.RemoteImageArgs\n        {\n            Name = \"zoo\",\n            Build = new Docker.Inputs.RemoteImageBuildArgs\n            {\n                Path = \".\",\n                Tags = \n                {\n                    \"zoo:develop\",\n                },\n                BuildArg = \n                {\n                    { \"foo\", \"zoo\" },\n                },\n                Label = \n                {\n                    { \"author\", \"zoo\" },\n                },\n            },\n        });\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v3/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := docker.NewRemoteImage(ctx, \"zoo\", \u0026docker.RemoteImageArgs{\n\t\t\tName: pulumi.String(\"zoo\"),\n\t\t\tBuild: \u0026RemoteImageBuildArgs{\n\t\t\t\tPath: pulumi.String(\".\"),\n\t\t\t\tTags: pulumi.StringArray{\n\t\t\t\t\tpulumi.String(\"zoo:develop\"),\n\t\t\t\t},\n\t\t\t\tBuildArg: pulumi.StringMap{\n\t\t\t\t\t\"foo\": pulumi.String(\"zoo\"),\n\t\t\t\t},\n\t\t\t\tLabel: pulumi.StringMap{\n\t\t\t\t\t\"author\": pulumi.String(\"zoo\"),\n\t\t\t\t},\n\t\t\t},\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.RemoteImage;\nimport com.pulumi.docker.RemoteImageArgs;\nimport com.pulumi.docker.inputs.RemoteImageBuildArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var zoo = new RemoteImage(\"zoo\", RemoteImageArgs.builder()        \n            .name(\"zoo\")\n            .build(RemoteImageBuildArgs.builder()\n                .path(\".\")\n                .tags(\"zoo:develop\")\n                .buildArg(Map.of(\"foo\", \"zoo\"))\n                .label(Map.of(\"author\", \"zoo\"))\n                .build())\n            .build());\n\n    }\n}\n```\n```yaml\nresources:\n  zoo:\n    type: docker:RemoteImage\n    properties:\n      name: zoo\n      build:\n        path: .\n        tags:\n          - zoo:develop\n        buildArg:\n          foo: zoo\n        label:\n          author: zoo\n```\n{{% /example %}}\n{{% /examples %}}",
             "properties": {
                 "build": {
                     "$ref": "#/types/docker:index/RemoteImageBuild:RemoteImageBuild",
@@ -4412,14 +4661,16 @@
                 "pullTrigger": {
                     "type": "string",
                     "description": "A value which cause an image pull when changed\n",
-                    "deprecationMessage": "Use field pull_triggers instead"
+                    "deprecationMessage": "Use field pull_triggers instead",
+                    "willReplaceOnChanges": true
                 },
                 "pullTriggers": {
                     "type": "array",
                     "items": {
                         "type": "string"
                     },
-                    "description": "List of values which cause an image pull when changed. This is used to store the image digest from the registry when\nusing the [docker_registry_image](../data-sources/registry_image.md).\n"
+                    "description": "List of values which cause an image pull when changed. This is used to store the image digest from the registry when\nusing the [docker_registry_image](../data-sources/registry_image.md).\n",
+                    "willReplaceOnChanges": true
                 }
             },
             "requiredInputs": [
@@ -4456,14 +4707,16 @@
                     "pullTrigger": {
                         "type": "string",
                         "description": "A value which cause an image pull when changed\n",
-                        "deprecationMessage": "Use field pull_triggers instead"
+                        "deprecationMessage": "Use field pull_triggers instead",
+                        "willReplaceOnChanges": true
                     },
                     "pullTriggers": {
                         "type": "array",
                         "items": {
                             "type": "string"
                         },
-                        "description": "List of values which cause an image pull when changed. This is used to store the image digest from the registry when\nusing the [docker_registry_image](../data-sources/registry_image.md).\n"
+                        "description": "List of values which cause an image pull when changed. This is used to store the image digest from the registry when\nusing the [docker_registry_image](../data-sources/registry_image.md).\n",
+                        "willReplaceOnChanges": true
                     },
                     "repoDigest": {
                         "type": "string",
@@ -4499,18 +4752,21 @@
             "inputProperties": {
                 "data": {
                     "type": "string",
-                    "description": "Base64-url-safe-encoded secret data\n"
+                    "description": "Base64-url-safe-encoded secret data\n",
+                    "willReplaceOnChanges": true
                 },
                 "labels": {
                     "type": "array",
                     "items": {
                         "$ref": "#/types/docker:index/SecretLabel:SecretLabel"
                     },
-                    "description": "User-defined key/value metadata\n"
+                    "description": "User-defined key/value metadata\n",
+                    "willReplaceOnChanges": true
                 },
                 "name": {
                     "type": "string",
-                    "description": "User-defined name of the secret\n"
+                    "description": "User-defined name of the secret\n",
+                    "willReplaceOnChanges": true
                 }
             },
             "requiredInputs": [
@@ -4521,18 +4777,21 @@
                 "properties": {
                     "data": {
                         "type": "string",
-                        "description": "Base64-url-safe-encoded secret data\n"
+                        "description": "Base64-url-safe-encoded secret data\n",
+                        "willReplaceOnChanges": true
                     },
                     "labels": {
                         "type": "array",
                         "items": {
                             "$ref": "#/types/docker:index/SecretLabel:SecretLabel"
                         },
-                        "description": "User-defined key/value metadata\n"
+                        "description": "User-defined key/value metadata\n",
+                        "willReplaceOnChanges": true
                     },
                     "name": {
                         "type": "string",
-                        "description": "User-defined name of the secret\n"
+                        "description": "User-defined name of the secret\n",
+                        "willReplaceOnChanges": true
                     }
                 },
                 "type": "object"
@@ -4591,7 +4850,8 @@
             "inputProperties": {
                 "auth": {
                     "$ref": "#/types/docker:index/ServiceAuth:ServiceAuth",
-                    "description": "Configuration for the authentication for pulling the images of the service\n"
+                    "description": "Configuration for the authentication for pulling the images of the service\n",
+                    "willReplaceOnChanges": true
                 },
                 "convergeConfig": {
                     "$ref": "#/types/docker:index/ServiceConvergeConfig:ServiceConvergeConfig",
@@ -4610,11 +4870,13 @@
                 },
                 "mode": {
                     "$ref": "#/types/docker:index/ServiceMode:ServiceMode",
-                    "description": "Scheduling mode for the service\n"
+                    "description": "Scheduling mode for the service\n",
+                    "willReplaceOnChanges": true
                 },
                 "name": {
                     "type": "string",
-                    "description": "Name of the service\n"
+                    "description": "Name of the service\n",
+                    "willReplaceOnChanges": true
                 },
                 "rollbackConfig": {
                     "$ref": "#/types/docker:index/ServiceRollbackConfig:ServiceRollbackConfig",
@@ -4637,7 +4899,8 @@
                 "properties": {
                     "auth": {
                         "$ref": "#/types/docker:index/ServiceAuth:ServiceAuth",
-                        "description": "Configuration for the authentication for pulling the images of the service\n"
+                        "description": "Configuration for the authentication for pulling the images of the service\n",
+                        "willReplaceOnChanges": true
                     },
                     "convergeConfig": {
                         "$ref": "#/types/docker:index/ServiceConvergeConfig:ServiceConvergeConfig",
@@ -4656,11 +4919,13 @@
                     },
                     "mode": {
                         "$ref": "#/types/docker:index/ServiceMode:ServiceMode",
-                        "description": "Scheduling mode for the service\n"
+                        "description": "Scheduling mode for the service\n",
+                        "willReplaceOnChanges": true
                     },
                     "name": {
                         "type": "string",
-                        "description": "Name of the service\n"
+                        "description": "Name of the service\n",
+                        "willReplaceOnChanges": true
                     },
                     "rollbackConfig": {
                         "$ref": "#/types/docker:index/ServiceRollbackConfig:ServiceRollbackConfig",
@@ -4697,11 +4962,13 @@
             "inputProperties": {
                 "data": {
                     "type": "string",
-                    "description": "Base64-url-safe-encoded config data\n"
+                    "description": "Base64-url-safe-encoded config data\n",
+                    "willReplaceOnChanges": true
                 },
                 "name": {
                     "type": "string",
-                    "description": "User-defined name of the config\n"
+                    "description": "User-defined name of the config\n",
+                    "willReplaceOnChanges": true
                 }
             },
             "requiredInputs": [
@@ -4712,18 +4979,78 @@
                 "properties": {
                     "data": {
                         "type": "string",
-                        "description": "Base64-url-safe-encoded config data\n"
+                        "description": "Base64-url-safe-encoded config data\n",
+                        "willReplaceOnChanges": true
                     },
                     "name": {
                         "type": "string",
-                        "description": "User-defined name of the config\n"
+                        "description": "User-defined name of the config\n",
+                        "willReplaceOnChanges": true
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "docker:index/tag:Tag": {
+            "description": "Creates a docker tag. It has the exact same functionality as the `docker tag` command. Deleting the resource will neither delete the source nor target images. The source image must exist on the machine running the docker daemon.\n",
+            "properties": {
+                "sourceImage": {
+                    "type": "string",
+                    "description": "Name of the source image.\n"
+                },
+                "sourceImageId": {
+                    "type": "string",
+                    "description": "ImageID of the source image in the format of `sha256:\u003c\u003cID\u003e\u003e`\n"
+                },
+                "targetImage": {
+                    "type": "string",
+                    "description": "Name of the target image.\n"
+                }
+            },
+            "required": [
+                "sourceImage",
+                "sourceImageId",
+                "targetImage"
+            ],
+            "inputProperties": {
+                "sourceImage": {
+                    "type": "string",
+                    "description": "Name of the source image.\n",
+                    "willReplaceOnChanges": true
+                },
+                "targetImage": {
+                    "type": "string",
+                    "description": "Name of the target image.\n",
+                    "willReplaceOnChanges": true
+                }
+            },
+            "requiredInputs": [
+                "sourceImage",
+                "targetImage"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering Tag resources.\n",
+                "properties": {
+                    "sourceImage": {
+                        "type": "string",
+                        "description": "Name of the source image.\n",
+                        "willReplaceOnChanges": true
+                    },
+                    "sourceImageId": {
+                        "type": "string",
+                        "description": "ImageID of the source image in the format of `sha256:\u003c\u003cID\u003e\u003e`\n"
+                    },
+                    "targetImage": {
+                        "type": "string",
+                        "description": "Name of the target image.\n",
+                        "willReplaceOnChanges": true
                     }
                 },
                 "type": "object"
             }
         },
         "docker:index/volume:Volume": {
-            "description": "\u003c!-- Bug: Type and Name are switched --\u003e\nCreates and destroys a volume in Docker. This can be used alongside docker.Container to prepare volumes that can be shared across containers.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst sharedVolume = new docker.Volume(\"shared_volume\", {});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nshared_volume = docker.Volume(\"sharedVolume\")\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        var sharedVolume = new Docker.Volume(\"sharedVolume\", new Docker.VolumeArgs\n        {\n        });\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v3/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := docker.NewVolume(ctx, \"sharedVolume\", nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport java.util.*;\nimport java.io.*;\nimport java.nio.*;\nimport com.pulumi.*;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var sharedVolume = new Volume(\"sharedVolume\");\n\n        }\n}\n```\n```yaml\nresources:\n  sharedVolume:\n    type: docker:Volume\n```\n{{% /example %}}\n{{% /examples %}}\n\n## Import\n\n### Example Assuming you created a `volume` as follows #!/bin/bash docker volume create # prints the long ID 524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d you provide the definition for the resource as follows terraform resource \"docker_volume\" \"foo\" {\n\n name = \"524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d\" } then the import command is as follows #!/bin/bash\n\n```sh\n $ pulumi import docker:index/volume:Volume foo 524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d\n```\n\n ",
+            "description": "\u003c!-- Bug: Type and Name are switched --\u003e\nCreates and destroys a volume in Docker. This can be used alongside docker.Container to prepare volumes that can be shared across containers.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst sharedVolume = new docker.Volume(\"shared_volume\", {});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nshared_volume = docker.Volume(\"sharedVolume\")\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        var sharedVolume = new Docker.Volume(\"sharedVolume\", new Docker.VolumeArgs\n        {\n        });\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v3/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := docker.NewVolume(ctx, \"sharedVolume\", nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.Volume;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var sharedVolume = new Volume(\"sharedVolume\");\n\n    }\n}\n```\n```yaml\nresources:\n  sharedVolume:\n    type: docker:Volume\n```\n{{% /example %}}\n{{% /examples %}}\n\n## Import\n\n### Example Assuming you created a `volume` as follows #!/bin/bash docker volume create # prints the long ID 524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d you provide the definition for the resource as follows terraform resource \"docker_volume\" \"foo\" {\n\n name = \"524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d\" } then the import command is as follows #!/bin/bash\n\n```sh\n $ pulumi import docker:index/volume:Volume foo 524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d\n```\n\n ",
             "properties": {
                 "driver": {
                     "type": "string",
@@ -4760,25 +5087,29 @@
             "inputProperties": {
                 "driver": {
                     "type": "string",
-                    "description": "Driver type for the volume. Defaults to `local`.\n"
+                    "description": "Driver type for the volume. Defaults to `local`.\n",
+                    "willReplaceOnChanges": true
                 },
                 "driverOpts": {
                     "type": "object",
                     "additionalProperties": {
                         "$ref": "pulumi.json#/Any"
                     },
-                    "description": "Options specific to the driver.\n"
+                    "description": "Options specific to the driver.\n",
+                    "willReplaceOnChanges": true
                 },
                 "labels": {
                     "type": "array",
                     "items": {
                         "$ref": "#/types/docker:index/VolumeLabel:VolumeLabel"
                     },
-                    "description": "User-defined key/value metadata\n"
+                    "description": "User-defined key/value metadata\n",
+                    "willReplaceOnChanges": true
                 },
                 "name": {
                     "type": "string",
-                    "description": "The name of the Docker volume (will be generated if not provided).\n"
+                    "description": "The name of the Docker volume (will be generated if not provided).\n",
+                    "willReplaceOnChanges": true
                 }
             },
             "stateInputs": {
@@ -4786,21 +5117,24 @@
                 "properties": {
                     "driver": {
                         "type": "string",
-                        "description": "Driver type for the volume. Defaults to `local`.\n"
+                        "description": "Driver type for the volume. Defaults to `local`.\n",
+                        "willReplaceOnChanges": true
                     },
                     "driverOpts": {
                         "type": "object",
                         "additionalProperties": {
                             "$ref": "pulumi.json#/Any"
                         },
-                        "description": "Options specific to the driver.\n"
+                        "description": "Options specific to the driver.\n",
+                        "willReplaceOnChanges": true
                     },
                     "labels": {
                         "type": "array",
                         "items": {
                             "$ref": "#/types/docker:index/VolumeLabel:VolumeLabel"
                         },
-                        "description": "User-defined key/value metadata\n"
+                        "description": "User-defined key/value metadata\n",
+                        "willReplaceOnChanges": true
                     },
                     "mountpoint": {
                         "type": "string",
@@ -4808,7 +5142,8 @@
                     },
                     "name": {
                         "type": "string",
-                        "description": "The name of the Docker volume (will be generated if not provided).\n"
+                        "description": "The name of the Docker volume (will be generated if not provided).\n",
+                        "willReplaceOnChanges": true
                     }
                 },
                 "type": "object"
@@ -4817,7 +5152,7 @@
     },
     "functions": {
         "docker:index/getNetwork:getNetwork": {
-            "description": "`docker.Network` provides details about a specific Docker Network.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst main = pulumi.output(docker.getNetwork({\n    name: \"main\",\n}));\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nmain = docker.get_network(name=\"main\")\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        var main = Output.Create(Docker.GetNetwork.InvokeAsync(new Docker.GetNetworkArgs\n        {\n            Name = \"main\",\n        }));\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v3/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := docker.LookupNetwork(ctx, \u0026GetNetworkArgs{\n\t\t\tName: \"main\",\n\t\t}, nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport java.util.*;\nimport java.io.*;\nimport java.nio.*;\nimport com.pulumi.*;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        final var main = Output.of(DockerFunctions.getNetwork(GetNetworkArgs.builder()\n            .name(\"main\")\n            .build()));\n\n        }\n}\n```\n```yaml\nvariables:\n  main:\n    Fn::Invoke:\n      Function: docker:getNetwork\n      Arguments:\n        name: main\n```\n{{% /example %}}\n{{% /examples %}}",
+            "description": "`docker.Network` provides details about a specific Docker Network.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst main = pulumi.output(docker.getNetwork({\n    name: \"main\",\n}));\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nmain = docker.get_network(name=\"main\")\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        var main = Output.Create(Docker.GetNetwork.InvokeAsync(new Docker.GetNetworkArgs\n        {\n            Name = \"main\",\n        }));\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v3/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := docker.LookupNetwork(ctx, \u0026GetNetworkArgs{\n\t\t\tName: \"main\",\n\t\t}, nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.DockerFunctions;\nimport com.pulumi.docker.inputs.GetNetworkArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        final var main = DockerFunctions.getNetwork(GetNetworkArgs.builder()\n            .name(\"main\")\n            .build());\n\n    }\n}\n```\n```yaml\nvariables:\n  main:\n    Fn::Invoke:\n      Function: docker:getNetwork\n      Arguments:\n        name: main\n```\n{{% /example %}}\n{{% /examples %}}",
             "inputs": {
                 "description": "A collection of arguments for invoking getNetwork.\n",
                 "properties": {
@@ -4926,7 +5261,7 @@
             }
         },
         "docker:index/getRegistryImage:getRegistryImage": {
-            "description": "Reads the image metadata from a Docker Registry. Used in conjunction with the docker.RemoteImage resource to keep an image up to date on the latest available version of the tag.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst ubuntuRegistryImage = docker.getRegistryImage({\n    name: \"ubuntu:precise\",\n});\nconst ubuntuRemoteImage = new docker.RemoteImage(\"ubuntuRemoteImage\", {\n    name: ubuntuRegistryImage.then(ubuntuRegistryImage =\u003e ubuntuRegistryImage.name),\n    pullTriggers: [ubuntuRegistryImage.then(ubuntuRegistryImage =\u003e ubuntuRegistryImage.sha256Digest)],\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nubuntu_registry_image = docker.get_registry_image(name=\"ubuntu:precise\")\nubuntu_remote_image = docker.RemoteImage(\"ubuntuRemoteImage\",\n    name=ubuntu_registry_image.name,\n    pull_triggers=[ubuntu_registry_image.sha256_digest])\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        var ubuntuRegistryImage = Output.Create(Docker.GetRegistryImage.InvokeAsync(new Docker.GetRegistryImageArgs\n        {\n            Name = \"ubuntu:precise\",\n        }));\n        var ubuntuRemoteImage = new Docker.RemoteImage(\"ubuntuRemoteImage\", new Docker.RemoteImageArgs\n        {\n            Name = ubuntuRegistryImage.Apply(ubuntuRegistryImage =\u003e ubuntuRegistryImage.Name),\n            PullTriggers = \n            {\n                ubuntuRegistryImage.Apply(ubuntuRegistryImage =\u003e ubuntuRegistryImage.Sha256Digest),\n            },\n        });\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v3/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\tubuntuRegistryImage, err := docker.LookupRegistryImage(ctx, \u0026GetRegistryImageArgs{\n\t\t\tName: \"ubuntu:precise\",\n\t\t}, nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\t_, err = docker.NewRemoteImage(ctx, \"ubuntuRemoteImage\", \u0026docker.RemoteImageArgs{\n\t\t\tName: pulumi.String(ubuntuRegistryImage.Name),\n\t\t\tPullTriggers: pulumi.StringArray{\n\t\t\t\tpulumi.String(ubuntuRegistryImage.Sha256Digest),\n\t\t\t},\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport java.util.*;\nimport java.io.*;\nimport java.nio.*;\nimport com.pulumi.*;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        final var ubuntuRegistryImage = Output.of(DockerFunctions.getRegistryImage(GetRegistryImageArgs.builder()\n            .name(\"ubuntu:precise\")\n            .build()));\n\n        var ubuntuRemoteImage = new RemoteImage(\"ubuntuRemoteImage\", RemoteImageArgs.builder()        \n            .name(ubuntuRegistryImage.apply(getRegistryImageResult -\u003e getRegistryImageResult.getName()))\n            .pullTriggers(ubuntuRegistryImage.apply(getRegistryImageResult -\u003e getRegistryImageResult.getSha256Digest()))\n            .build());\n\n        }\n}\n```\n```yaml\nresources:\n  ubuntuRemoteImage:\n    type: docker:RemoteImage\n    properties:\n      name: ${ubuntuRegistryImage.name}\n      pullTriggers:\n        - ${ubuntuRegistryImage.sha256Digest}\nvariables:\n  ubuntuRegistryImage:\n    Fn::Invoke:\n      Function: docker:getRegistryImage\n      Arguments:\n        name: ubuntu:precise\n```\n{{% /example %}}\n{{% /examples %}}",
+            "description": "Reads the image metadata from a Docker Registry. Used in conjunction with the docker.RemoteImage resource to keep an image up to date on the latest available version of the tag.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst ubuntuRegistryImage = docker.getRegistryImage({\n    name: \"ubuntu:precise\",\n});\nconst ubuntuRemoteImage = new docker.RemoteImage(\"ubuntuRemoteImage\", {\n    name: ubuntuRegistryImage.then(ubuntuRegistryImage =\u003e ubuntuRegistryImage.name),\n    pullTriggers: [ubuntuRegistryImage.then(ubuntuRegistryImage =\u003e ubuntuRegistryImage.sha256Digest)],\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nubuntu_registry_image = docker.get_registry_image(name=\"ubuntu:precise\")\nubuntu_remote_image = docker.RemoteImage(\"ubuntuRemoteImage\",\n    name=ubuntu_registry_image.name,\n    pull_triggers=[ubuntu_registry_image.sha256_digest])\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        var ubuntuRegistryImage = Output.Create(Docker.GetRegistryImage.InvokeAsync(new Docker.GetRegistryImageArgs\n        {\n            Name = \"ubuntu:precise\",\n        }));\n        var ubuntuRemoteImage = new Docker.RemoteImage(\"ubuntuRemoteImage\", new Docker.RemoteImageArgs\n        {\n            Name = ubuntuRegistryImage.Apply(ubuntuRegistryImage =\u003e ubuntuRegistryImage.Name),\n            PullTriggers = \n            {\n                ubuntuRegistryImage.Apply(ubuntuRegistryImage =\u003e ubuntuRegistryImage.Sha256Digest),\n            },\n        });\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v3/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\tubuntuRegistryImage, err := docker.LookupRegistryImage(ctx, \u0026GetRegistryImageArgs{\n\t\t\tName: \"ubuntu:precise\",\n\t\t}, nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\t_, err = docker.NewRemoteImage(ctx, \"ubuntuRemoteImage\", \u0026docker.RemoteImageArgs{\n\t\t\tName: pulumi.String(ubuntuRegistryImage.Name),\n\t\t\tPullTriggers: pulumi.StringArray{\n\t\t\t\tpulumi.String(ubuntuRegistryImage.Sha256Digest),\n\t\t\t},\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.DockerFunctions;\nimport com.pulumi.docker.inputs.GetRegistryImageArgs;\nimport com.pulumi.docker.RemoteImage;\nimport com.pulumi.docker.RemoteImageArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        final var ubuntuRegistryImage = DockerFunctions.getRegistryImage(GetRegistryImageArgs.builder()\n            .name(\"ubuntu:precise\")\n            .build());\n\n        var ubuntuRemoteImage = new RemoteImage(\"ubuntuRemoteImage\", RemoteImageArgs.builder()        \n            .name(ubuntuRegistryImage.applyValue(getRegistryImageResult -\u003e getRegistryImageResult.name()))\n            .pullTriggers(ubuntuRegistryImage.applyValue(getRegistryImageResult -\u003e getRegistryImageResult.sha256Digest()))\n            .build());\n\n    }\n}\n```\n```yaml\nresources:\n  ubuntuRemoteImage:\n    type: docker:RemoteImage\n    properties:\n      name: ${ubuntuRegistryImage.name}\n      pullTriggers:\n        - ${ubuntuRegistryImage.sha256Digest}\nvariables:\n  ubuntuRegistryImage:\n    Fn::Invoke:\n      Function: docker:getRegistryImage\n      Arguments:\n        name: ubuntu:precise\n```\n{{% /example %}}\n{{% /examples %}}",
             "inputs": {
                 "description": "A collection of arguments for invoking getRegistryImage.\n",
                 "properties": {
@@ -4968,7 +5303,7 @@
             }
         },
         "docker:index/getRemoteImage:getRemoteImage": {
-            "description": "`docker.RemoteImage` provides details about a specific Docker Image which need to be presend on the Docker Host\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\n// uses the 'latest' tag\nconst latest = pulumi.output(docker.getRemoteImage({\n    name: \"nginx\",\n}));\n// uses a specific tag\nconst specific = pulumi.output(docker.getRemoteImage({\n    name: \"nginx:1.17.6\",\n}));\n// use the image digest\nconst digest = pulumi.output(docker.getRemoteImage({\n    name: \"nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2\",\n}));\n// uses the tag and the image digest\nconst tagAndDigest = pulumi.output(docker.getRemoteImage({\n    name: \"nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2\",\n}));\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nlatest = docker.get_remote_image(name=\"nginx\")\nspecific = docker.get_remote_image(name=\"nginx:1.17.6\")\ndigest = docker.get_remote_image(name=\"nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2\")\ntag_and_digest = docker.get_remote_image(name=\"nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2\")\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        var latest = Output.Create(Docker.GetRemoteImage.InvokeAsync(new Docker.GetRemoteImageArgs\n        {\n            Name = \"nginx\",\n        }));\n        var specific = Output.Create(Docker.GetRemoteImage.InvokeAsync(new Docker.GetRemoteImageArgs\n        {\n            Name = \"nginx:1.17.6\",\n        }));\n        var digest = Output.Create(Docker.GetRemoteImage.InvokeAsync(new Docker.GetRemoteImageArgs\n        {\n            Name = \"nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2\",\n        }));\n        var tagAndDigest = Output.Create(Docker.GetRemoteImage.InvokeAsync(new Docker.GetRemoteImageArgs\n        {\n            Name = \"nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2\",\n        }));\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v3/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := docker.LookupRemoteImage(ctx, \u0026GetRemoteImageArgs{\n\t\t\tName: \"nginx\",\n\t\t}, nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\t_, err = docker.LookupRemoteImage(ctx, \u0026GetRemoteImageArgs{\n\t\t\tName: \"nginx:1.17.6\",\n\t\t}, nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\t_, err = docker.LookupRemoteImage(ctx, \u0026GetRemoteImageArgs{\n\t\t\tName: \"nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2\",\n\t\t}, nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\t_, err = docker.LookupRemoteImage(ctx, \u0026GetRemoteImageArgs{\n\t\t\tName: \"nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2\",\n\t\t}, nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport java.util.*;\nimport java.io.*;\nimport java.nio.*;\nimport com.pulumi.*;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        final var latest = Output.of(DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()\n            .name(\"nginx\")\n            .build()));\n\n        final var specific = Output.of(DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()\n            .name(\"nginx:1.17.6\")\n            .build()));\n\n        final var digest = Output.of(DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()\n            .name(\"nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2\")\n            .build()));\n\n        final var tagAndDigest = Output.of(DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()\n            .name(\"nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2\")\n            .build()));\n\n        }\n}\n```\n```yaml\nvariables:\n  latest:\n    Fn::Invoke:\n      Function: docker:getRemoteImage\n      Arguments:\n        name: nginx\n  specific:\n    Fn::Invoke:\n      Function: docker:getRemoteImage\n      Arguments:\n        name: nginx:1.17.6\n  digest:\n    Fn::Invoke:\n      Function: docker:getRemoteImage\n      Arguments:\n        name: nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2\n  tagAndDigest:\n    Fn::Invoke:\n      Function: docker:getRemoteImage\n      Arguments:\n        name: nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2\n```\n{{% /example %}}\n{{% /examples %}}",
+            "description": "`docker.RemoteImage` provides details about a specific Docker Image which need to be presend on the Docker Host\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\n// uses the 'latest' tag\nconst latest = pulumi.output(docker.getRemoteImage({\n    name: \"nginx\",\n}));\n// uses a specific tag\nconst specific = pulumi.output(docker.getRemoteImage({\n    name: \"nginx:1.17.6\",\n}));\n// use the image digest\nconst digest = pulumi.output(docker.getRemoteImage({\n    name: \"nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2\",\n}));\n// uses the tag and the image digest\nconst tagAndDigest = pulumi.output(docker.getRemoteImage({\n    name: \"nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2\",\n}));\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nlatest = docker.get_remote_image(name=\"nginx\")\nspecific = docker.get_remote_image(name=\"nginx:1.17.6\")\ndigest = docker.get_remote_image(name=\"nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2\")\ntag_and_digest = docker.get_remote_image(name=\"nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2\")\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        var latest = Output.Create(Docker.GetRemoteImage.InvokeAsync(new Docker.GetRemoteImageArgs\n        {\n            Name = \"nginx\",\n        }));\n        var specific = Output.Create(Docker.GetRemoteImage.InvokeAsync(new Docker.GetRemoteImageArgs\n        {\n            Name = \"nginx:1.17.6\",\n        }));\n        var digest = Output.Create(Docker.GetRemoteImage.InvokeAsync(new Docker.GetRemoteImageArgs\n        {\n            Name = \"nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2\",\n        }));\n        var tagAndDigest = Output.Create(Docker.GetRemoteImage.InvokeAsync(new Docker.GetRemoteImageArgs\n        {\n            Name = \"nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2\",\n        }));\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v3/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := docker.LookupRemoteImage(ctx, \u0026GetRemoteImageArgs{\n\t\t\tName: \"nginx\",\n\t\t}, nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\t_, err = docker.LookupRemoteImage(ctx, \u0026GetRemoteImageArgs{\n\t\t\tName: \"nginx:1.17.6\",\n\t\t}, nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\t_, err = docker.LookupRemoteImage(ctx, \u0026GetRemoteImageArgs{\n\t\t\tName: \"nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2\",\n\t\t}, nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\t_, err = docker.LookupRemoteImage(ctx, \u0026GetRemoteImageArgs{\n\t\t\tName: \"nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2\",\n\t\t}, nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.DockerFunctions;\nimport com.pulumi.docker.inputs.GetRemoteImageArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        final var latest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()\n            .name(\"nginx\")\n            .build());\n\n        final var specific = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()\n            .name(\"nginx:1.17.6\")\n            .build());\n\n        final var digest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()\n            .name(\"nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2\")\n            .build());\n\n        final var tagAndDigest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()\n            .name(\"nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2\")\n            .build());\n\n    }\n}\n```\n```yaml\nvariables:\n  latest:\n    Fn::Invoke:\n      Function: docker:getRemoteImage\n      Arguments:\n        name: nginx\n  specific:\n    Fn::Invoke:\n      Function: docker:getRemoteImage\n      Arguments:\n        name: nginx:1.17.6\n  digest:\n    Fn::Invoke:\n      Function: docker:getRemoteImage\n      Arguments:\n        name: nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2\n  tagAndDigest:\n    Fn::Invoke:\n      Function: docker:getRemoteImage\n      Arguments:\n        name: nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2\n```\n{{% /example %}}\n{{% /examples %}}",
             "inputs": {
                 "description": "A collection of arguments for invoking getRemoteImage.\n",
                 "properties": {
@@ -5001,45 +5336,6 @@
                     "repoDigest",
                     "id"
                 ]
-            }
-        }
-    },
-    "language": {
-        "csharp": {
-            "compatibility": "tfbridge20",
-            "namespaces": {
-                "docker": "Docker"
-            },
-            "packageReferences": {
-                "Pulumi": "3.*"
-            }
-        },
-        "go": {
-            "generateExtraInputTypes": true,
-            "generateResourceContainerTypes": true,
-            "importBasePath": "github.com/pulumi/pulumi-docker/sdk/v3/go/docker"
-        },
-        "nodejs": {
-            "compatibility": "tfbridge20",
-            "dependencies": {
-                "@pulumi/pulumi": "^3.0.0",
-                "semver": "^5.4.0"
-            },
-            "devDependencies": {
-                "@types/node": "^10.0.0",
-                "@types/semver": "^5.4.0"
-            },
-            "disableUnionOutputTypes": true,
-            "packageDescription": "A Pulumi package for interacting with Docker in Pulumi programs",
-            "packageName": "",
-            "readme": "\u003e This provider is a derived work of the [Terraform Provider](https://github.com/terraform-providers/terraform-provider-docker)\n\u003e distributed under [MPL 2.0](https://www.mozilla.org/en-US/MPL/2.0/). If you encounter a bug or missing feature,\n\u003e first check the [`pulumi/pulumi-docker` repo](https://github.com/pulumi/pulumi-docker/issues); however, if that doesn't turn up anything,\n\u003e please consult the source [`terraform-providers/terraform-provider-docker` repo](https://github.com/terraform-providers/terraform-provider-docker/issues).",
-            "typescriptVersion": ""
-        },
-        "python": {
-            "compatibility": "tfbridge20",
-            "readme": "\u003e This provider is a derived work of the [Terraform Provider](https://github.com/terraform-providers/terraform-provider-docker)\n\u003e distributed under [MPL 2.0](https://www.mozilla.org/en-US/MPL/2.0/). If you encounter a bug or missing feature,\n\u003e first check the [`pulumi/pulumi-docker` repo](https://github.com/pulumi/pulumi-docker/issues); however, if that doesn't turn up anything,\n\u003e please consult the source [`terraform-providers/terraform-provider-docker` repo](https://github.com/terraform-providers/terraform-provider-docker/issues).",
-            "requires": {
-                "pulumi": "\u003e=3.0.0,\u003c4.0.0"
             }
         }
     }

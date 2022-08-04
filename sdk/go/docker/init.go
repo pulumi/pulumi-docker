@@ -36,6 +36,8 @@ func (m *module) Construct(ctx *pulumi.Context, name, typ, urn string) (r pulumi
 		r = &Service{}
 	case "docker:index/serviceConfig:ServiceConfig":
 		r = &ServiceConfig{}
+	case "docker:index/tag:Tag":
+		r = &Tag{}
 	case "docker:index/volume:Volume":
 		r = &Volume{}
 	default:
@@ -104,6 +106,11 @@ func init() {
 	pulumi.RegisterResourceModule(
 		"docker",
 		"index/serviceConfig",
+		&module{version},
+	)
+	pulumi.RegisterResourceModule(
+		"docker",
+		"index/tag",
 		&module{version},
 	)
 	pulumi.RegisterResourceModule(

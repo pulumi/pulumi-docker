@@ -30,10 +30,17 @@ public final class DockerFunctions {
      * ```java
      * package generated_program;
      * 
-     * import java.util.*;
-     * import java.io.*;
-     * import java.nio.*;
-     * import com.pulumi.*;
+     * import com.pulumi.Context;
+     * import com.pulumi.Pulumi;
+     * import com.pulumi.core.Output;
+     * import com.pulumi.docker.DockerFunctions;
+     * import com.pulumi.docker.inputs.GetNetworkArgs;
+     * import java.util.List;
+     * import java.util.ArrayList;
+     * import java.util.Map;
+     * import java.io.File;
+     * import java.nio.file.Files;
+     * import java.nio.file.Paths;
      * 
      * public class App {
      *     public static void main(String[] args) {
@@ -41,11 +48,11 @@ public final class DockerFunctions {
      *     }
      * 
      *     public static void stack(Context ctx) {
-     *         final var main = Output.of(DockerFunctions.getNetwork(GetNetworkArgs.builder()
+     *         final var main = DockerFunctions.getNetwork(GetNetworkArgs.builder()
      *             .name(&#34;main&#34;)
-     *             .build()));
+     *             .build());
      * 
-     *         }
+     *     }
      * }
      * ```
      * 
@@ -60,10 +67,17 @@ public final class DockerFunctions {
      * ```java
      * package generated_program;
      * 
-     * import java.util.*;
-     * import java.io.*;
-     * import java.nio.*;
-     * import com.pulumi.*;
+     * import com.pulumi.Context;
+     * import com.pulumi.Pulumi;
+     * import com.pulumi.core.Output;
+     * import com.pulumi.docker.DockerFunctions;
+     * import com.pulumi.docker.inputs.GetNetworkArgs;
+     * import java.util.List;
+     * import java.util.ArrayList;
+     * import java.util.Map;
+     * import java.io.File;
+     * import java.nio.file.Files;
+     * import java.nio.file.Paths;
      * 
      * public class App {
      *     public static void main(String[] args) {
@@ -71,11 +85,11 @@ public final class DockerFunctions {
      *     }
      * 
      *     public static void stack(Context ctx) {
-     *         final var main = Output.of(DockerFunctions.getNetwork(GetNetworkArgs.builder()
+     *         final var main = DockerFunctions.getNetwork(GetNetworkArgs.builder()
      *             .name(&#34;main&#34;)
-     *             .build()));
+     *             .build());
      * 
-     *         }
+     *     }
      * }
      * ```
      * 
@@ -90,10 +104,17 @@ public final class DockerFunctions {
      * ```java
      * package generated_program;
      * 
-     * import java.util.*;
-     * import java.io.*;
-     * import java.nio.*;
-     * import com.pulumi.*;
+     * import com.pulumi.Context;
+     * import com.pulumi.Pulumi;
+     * import com.pulumi.core.Output;
+     * import com.pulumi.docker.DockerFunctions;
+     * import com.pulumi.docker.inputs.GetNetworkArgs;
+     * import java.util.List;
+     * import java.util.ArrayList;
+     * import java.util.Map;
+     * import java.io.File;
+     * import java.nio.file.Files;
+     * import java.nio.file.Paths;
      * 
      * public class App {
      *     public static void main(String[] args) {
@@ -101,11 +122,11 @@ public final class DockerFunctions {
      *     }
      * 
      *     public static void stack(Context ctx) {
-     *         final var main = Output.of(DockerFunctions.getNetwork(GetNetworkArgs.builder()
+     *         final var main = DockerFunctions.getNetwork(GetNetworkArgs.builder()
      *             .name(&#34;main&#34;)
-     *             .build()));
+     *             .build());
      * 
-     *         }
+     *     }
      * }
      * ```
      * 
@@ -120,10 +141,17 @@ public final class DockerFunctions {
      * ```java
      * package generated_program;
      * 
-     * import java.util.*;
-     * import java.io.*;
-     * import java.nio.*;
-     * import com.pulumi.*;
+     * import com.pulumi.Context;
+     * import com.pulumi.Pulumi;
+     * import com.pulumi.core.Output;
+     * import com.pulumi.docker.DockerFunctions;
+     * import com.pulumi.docker.inputs.GetNetworkArgs;
+     * import java.util.List;
+     * import java.util.ArrayList;
+     * import java.util.Map;
+     * import java.io.File;
+     * import java.nio.file.Files;
+     * import java.nio.file.Paths;
      * 
      * public class App {
      *     public static void main(String[] args) {
@@ -131,11 +159,11 @@ public final class DockerFunctions {
      *     }
      * 
      *     public static void stack(Context ctx) {
-     *         final var main = Output.of(DockerFunctions.getNetwork(GetNetworkArgs.builder()
+     *         final var main = DockerFunctions.getNetwork(GetNetworkArgs.builder()
      *             .name(&#34;main&#34;)
-     *             .build()));
+     *             .build());
      * 
-     *         }
+     *     }
      * }
      * ```
      * 
@@ -234,10 +262,19 @@ public final class DockerFunctions {
      * ```java
      * package generated_program;
      * 
-     * import java.util.*;
-     * import java.io.*;
-     * import java.nio.*;
-     * import com.pulumi.*;
+     * import com.pulumi.Context;
+     * import com.pulumi.Pulumi;
+     * import com.pulumi.core.Output;
+     * import com.pulumi.docker.DockerFunctions;
+     * import com.pulumi.docker.inputs.GetRegistryImageArgs;
+     * import com.pulumi.docker.RemoteImage;
+     * import com.pulumi.docker.RemoteImageArgs;
+     * import java.util.List;
+     * import java.util.ArrayList;
+     * import java.util.Map;
+     * import java.io.File;
+     * import java.nio.file.Files;
+     * import java.nio.file.Paths;
      * 
      * public class App {
      *     public static void main(String[] args) {
@@ -245,16 +282,16 @@ public final class DockerFunctions {
      *     }
      * 
      *     public static void stack(Context ctx) {
-     *         final var ubuntuRegistryImage = Output.of(DockerFunctions.getRegistryImage(GetRegistryImageArgs.builder()
+     *         final var ubuntuRegistryImage = DockerFunctions.getRegistryImage(GetRegistryImageArgs.builder()
      *             .name(&#34;ubuntu:precise&#34;)
-     *             .build()));
-     * 
-     *         var ubuntuRemoteImage = new RemoteImage(&#34;ubuntuRemoteImage&#34;, RemoteImageArgs.builder()        
-     *             .name(ubuntuRegistryImage.apply(getRegistryImageResult -&gt; getRegistryImageResult.getName()))
-     *             .pullTriggers(ubuntuRegistryImage.apply(getRegistryImageResult -&gt; getRegistryImageResult.getSha256Digest()))
      *             .build());
      * 
-     *         }
+     *         var ubuntuRemoteImage = new RemoteImage(&#34;ubuntuRemoteImage&#34;, RemoteImageArgs.builder()        
+     *             .name(ubuntuRegistryImage.applyValue(getRegistryImageResult -&gt; getRegistryImageResult.name()))
+     *             .pullTriggers(ubuntuRegistryImage.applyValue(getRegistryImageResult -&gt; getRegistryImageResult.sha256Digest()))
+     *             .build());
+     * 
+     *     }
      * }
      * ```
      * 
@@ -269,10 +306,19 @@ public final class DockerFunctions {
      * ```java
      * package generated_program;
      * 
-     * import java.util.*;
-     * import java.io.*;
-     * import java.nio.*;
-     * import com.pulumi.*;
+     * import com.pulumi.Context;
+     * import com.pulumi.Pulumi;
+     * import com.pulumi.core.Output;
+     * import com.pulumi.docker.DockerFunctions;
+     * import com.pulumi.docker.inputs.GetRegistryImageArgs;
+     * import com.pulumi.docker.RemoteImage;
+     * import com.pulumi.docker.RemoteImageArgs;
+     * import java.util.List;
+     * import java.util.ArrayList;
+     * import java.util.Map;
+     * import java.io.File;
+     * import java.nio.file.Files;
+     * import java.nio.file.Paths;
      * 
      * public class App {
      *     public static void main(String[] args) {
@@ -280,16 +326,16 @@ public final class DockerFunctions {
      *     }
      * 
      *     public static void stack(Context ctx) {
-     *         final var ubuntuRegistryImage = Output.of(DockerFunctions.getRegistryImage(GetRegistryImageArgs.builder()
+     *         final var ubuntuRegistryImage = DockerFunctions.getRegistryImage(GetRegistryImageArgs.builder()
      *             .name(&#34;ubuntu:precise&#34;)
-     *             .build()));
-     * 
-     *         var ubuntuRemoteImage = new RemoteImage(&#34;ubuntuRemoteImage&#34;, RemoteImageArgs.builder()        
-     *             .name(ubuntuRegistryImage.apply(getRegistryImageResult -&gt; getRegistryImageResult.getName()))
-     *             .pullTriggers(ubuntuRegistryImage.apply(getRegistryImageResult -&gt; getRegistryImageResult.getSha256Digest()))
      *             .build());
      * 
-     *         }
+     *         var ubuntuRemoteImage = new RemoteImage(&#34;ubuntuRemoteImage&#34;, RemoteImageArgs.builder()        
+     *             .name(ubuntuRegistryImage.applyValue(getRegistryImageResult -&gt; getRegistryImageResult.name()))
+     *             .pullTriggers(ubuntuRegistryImage.applyValue(getRegistryImageResult -&gt; getRegistryImageResult.sha256Digest()))
+     *             .build());
+     * 
+     *     }
      * }
      * ```
      * 
@@ -304,10 +350,19 @@ public final class DockerFunctions {
      * ```java
      * package generated_program;
      * 
-     * import java.util.*;
-     * import java.io.*;
-     * import java.nio.*;
-     * import com.pulumi.*;
+     * import com.pulumi.Context;
+     * import com.pulumi.Pulumi;
+     * import com.pulumi.core.Output;
+     * import com.pulumi.docker.DockerFunctions;
+     * import com.pulumi.docker.inputs.GetRegistryImageArgs;
+     * import com.pulumi.docker.RemoteImage;
+     * import com.pulumi.docker.RemoteImageArgs;
+     * import java.util.List;
+     * import java.util.ArrayList;
+     * import java.util.Map;
+     * import java.io.File;
+     * import java.nio.file.Files;
+     * import java.nio.file.Paths;
      * 
      * public class App {
      *     public static void main(String[] args) {
@@ -315,16 +370,16 @@ public final class DockerFunctions {
      *     }
      * 
      *     public static void stack(Context ctx) {
-     *         final var ubuntuRegistryImage = Output.of(DockerFunctions.getRegistryImage(GetRegistryImageArgs.builder()
+     *         final var ubuntuRegistryImage = DockerFunctions.getRegistryImage(GetRegistryImageArgs.builder()
      *             .name(&#34;ubuntu:precise&#34;)
-     *             .build()));
-     * 
-     *         var ubuntuRemoteImage = new RemoteImage(&#34;ubuntuRemoteImage&#34;, RemoteImageArgs.builder()        
-     *             .name(ubuntuRegistryImage.apply(getRegistryImageResult -&gt; getRegistryImageResult.getName()))
-     *             .pullTriggers(ubuntuRegistryImage.apply(getRegistryImageResult -&gt; getRegistryImageResult.getSha256Digest()))
      *             .build());
      * 
-     *         }
+     *         var ubuntuRemoteImage = new RemoteImage(&#34;ubuntuRemoteImage&#34;, RemoteImageArgs.builder()        
+     *             .name(ubuntuRegistryImage.applyValue(getRegistryImageResult -&gt; getRegistryImageResult.name()))
+     *             .pullTriggers(ubuntuRegistryImage.applyValue(getRegistryImageResult -&gt; getRegistryImageResult.sha256Digest()))
+     *             .build());
+     * 
+     *     }
      * }
      * ```
      * 
@@ -339,10 +394,19 @@ public final class DockerFunctions {
      * ```java
      * package generated_program;
      * 
-     * import java.util.*;
-     * import java.io.*;
-     * import java.nio.*;
-     * import com.pulumi.*;
+     * import com.pulumi.Context;
+     * import com.pulumi.Pulumi;
+     * import com.pulumi.core.Output;
+     * import com.pulumi.docker.DockerFunctions;
+     * import com.pulumi.docker.inputs.GetRegistryImageArgs;
+     * import com.pulumi.docker.RemoteImage;
+     * import com.pulumi.docker.RemoteImageArgs;
+     * import java.util.List;
+     * import java.util.ArrayList;
+     * import java.util.Map;
+     * import java.io.File;
+     * import java.nio.file.Files;
+     * import java.nio.file.Paths;
      * 
      * public class App {
      *     public static void main(String[] args) {
@@ -350,16 +414,16 @@ public final class DockerFunctions {
      *     }
      * 
      *     public static void stack(Context ctx) {
-     *         final var ubuntuRegistryImage = Output.of(DockerFunctions.getRegistryImage(GetRegistryImageArgs.builder()
+     *         final var ubuntuRegistryImage = DockerFunctions.getRegistryImage(GetRegistryImageArgs.builder()
      *             .name(&#34;ubuntu:precise&#34;)
-     *             .build()));
-     * 
-     *         var ubuntuRemoteImage = new RemoteImage(&#34;ubuntuRemoteImage&#34;, RemoteImageArgs.builder()        
-     *             .name(ubuntuRegistryImage.apply(getRegistryImageResult -&gt; getRegistryImageResult.getName()))
-     *             .pullTriggers(ubuntuRegistryImage.apply(getRegistryImageResult -&gt; getRegistryImageResult.getSha256Digest()))
      *             .build());
      * 
-     *         }
+     *         var ubuntuRemoteImage = new RemoteImage(&#34;ubuntuRemoteImage&#34;, RemoteImageArgs.builder()        
+     *             .name(ubuntuRegistryImage.applyValue(getRegistryImageResult -&gt; getRegistryImageResult.name()))
+     *             .pullTriggers(ubuntuRegistryImage.applyValue(getRegistryImageResult -&gt; getRegistryImageResult.sha256Digest()))
+     *             .build());
+     * 
+     *     }
      * }
      * ```
      * 
@@ -374,10 +438,17 @@ public final class DockerFunctions {
      * ```java
      * package generated_program;
      * 
-     * import java.util.*;
-     * import java.io.*;
-     * import java.nio.*;
-     * import com.pulumi.*;
+     * import com.pulumi.Context;
+     * import com.pulumi.Pulumi;
+     * import com.pulumi.core.Output;
+     * import com.pulumi.docker.DockerFunctions;
+     * import com.pulumi.docker.inputs.GetRemoteImageArgs;
+     * import java.util.List;
+     * import java.util.ArrayList;
+     * import java.util.Map;
+     * import java.io.File;
+     * import java.nio.file.Files;
+     * import java.nio.file.Paths;
      * 
      * public class App {
      *     public static void main(String[] args) {
@@ -385,23 +456,23 @@ public final class DockerFunctions {
      *     }
      * 
      *     public static void stack(Context ctx) {
-     *         final var latest = Output.of(DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
+     *         final var latest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
      *             .name(&#34;nginx&#34;)
-     *             .build()));
+     *             .build());
      * 
-     *         final var specific = Output.of(DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
+     *         final var specific = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
      *             .name(&#34;nginx:1.17.6&#34;)
-     *             .build()));
+     *             .build());
      * 
-     *         final var digest = Output.of(DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
+     *         final var digest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
      *             .name(&#34;nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2&#34;)
-     *             .build()));
+     *             .build());
      * 
-     *         final var tagAndDigest = Output.of(DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
+     *         final var tagAndDigest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
      *             .name(&#34;nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2&#34;)
-     *             .build()));
+     *             .build());
      * 
-     *         }
+     *     }
      * }
      * ```
      * 
@@ -416,10 +487,17 @@ public final class DockerFunctions {
      * ```java
      * package generated_program;
      * 
-     * import java.util.*;
-     * import java.io.*;
-     * import java.nio.*;
-     * import com.pulumi.*;
+     * import com.pulumi.Context;
+     * import com.pulumi.Pulumi;
+     * import com.pulumi.core.Output;
+     * import com.pulumi.docker.DockerFunctions;
+     * import com.pulumi.docker.inputs.GetRemoteImageArgs;
+     * import java.util.List;
+     * import java.util.ArrayList;
+     * import java.util.Map;
+     * import java.io.File;
+     * import java.nio.file.Files;
+     * import java.nio.file.Paths;
      * 
      * public class App {
      *     public static void main(String[] args) {
@@ -427,23 +505,23 @@ public final class DockerFunctions {
      *     }
      * 
      *     public static void stack(Context ctx) {
-     *         final var latest = Output.of(DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
+     *         final var latest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
      *             .name(&#34;nginx&#34;)
-     *             .build()));
+     *             .build());
      * 
-     *         final var specific = Output.of(DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
+     *         final var specific = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
      *             .name(&#34;nginx:1.17.6&#34;)
-     *             .build()));
+     *             .build());
      * 
-     *         final var digest = Output.of(DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
+     *         final var digest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
      *             .name(&#34;nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2&#34;)
-     *             .build()));
+     *             .build());
      * 
-     *         final var tagAndDigest = Output.of(DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
+     *         final var tagAndDigest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
      *             .name(&#34;nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2&#34;)
-     *             .build()));
+     *             .build());
      * 
-     *         }
+     *     }
      * }
      * ```
      * 
@@ -458,10 +536,17 @@ public final class DockerFunctions {
      * ```java
      * package generated_program;
      * 
-     * import java.util.*;
-     * import java.io.*;
-     * import java.nio.*;
-     * import com.pulumi.*;
+     * import com.pulumi.Context;
+     * import com.pulumi.Pulumi;
+     * import com.pulumi.core.Output;
+     * import com.pulumi.docker.DockerFunctions;
+     * import com.pulumi.docker.inputs.GetRemoteImageArgs;
+     * import java.util.List;
+     * import java.util.ArrayList;
+     * import java.util.Map;
+     * import java.io.File;
+     * import java.nio.file.Files;
+     * import java.nio.file.Paths;
      * 
      * public class App {
      *     public static void main(String[] args) {
@@ -469,23 +554,23 @@ public final class DockerFunctions {
      *     }
      * 
      *     public static void stack(Context ctx) {
-     *         final var latest = Output.of(DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
+     *         final var latest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
      *             .name(&#34;nginx&#34;)
-     *             .build()));
+     *             .build());
      * 
-     *         final var specific = Output.of(DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
+     *         final var specific = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
      *             .name(&#34;nginx:1.17.6&#34;)
-     *             .build()));
+     *             .build());
      * 
-     *         final var digest = Output.of(DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
+     *         final var digest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
      *             .name(&#34;nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2&#34;)
-     *             .build()));
+     *             .build());
      * 
-     *         final var tagAndDigest = Output.of(DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
+     *         final var tagAndDigest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
      *             .name(&#34;nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2&#34;)
-     *             .build()));
+     *             .build());
      * 
-     *         }
+     *     }
      * }
      * ```
      * 
@@ -500,10 +585,17 @@ public final class DockerFunctions {
      * ```java
      * package generated_program;
      * 
-     * import java.util.*;
-     * import java.io.*;
-     * import java.nio.*;
-     * import com.pulumi.*;
+     * import com.pulumi.Context;
+     * import com.pulumi.Pulumi;
+     * import com.pulumi.core.Output;
+     * import com.pulumi.docker.DockerFunctions;
+     * import com.pulumi.docker.inputs.GetRemoteImageArgs;
+     * import java.util.List;
+     * import java.util.ArrayList;
+     * import java.util.Map;
+     * import java.io.File;
+     * import java.nio.file.Files;
+     * import java.nio.file.Paths;
      * 
      * public class App {
      *     public static void main(String[] args) {
@@ -511,23 +603,23 @@ public final class DockerFunctions {
      *     }
      * 
      *     public static void stack(Context ctx) {
-     *         final var latest = Output.of(DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
+     *         final var latest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
      *             .name(&#34;nginx&#34;)
-     *             .build()));
+     *             .build());
      * 
-     *         final var specific = Output.of(DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
+     *         final var specific = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
      *             .name(&#34;nginx:1.17.6&#34;)
-     *             .build()));
+     *             .build());
      * 
-     *         final var digest = Output.of(DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
+     *         final var digest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
      *             .name(&#34;nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2&#34;)
-     *             .build()));
+     *             .build());
      * 
-     *         final var tagAndDigest = Output.of(DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
+     *         final var tagAndDigest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()
      *             .name(&#34;nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2&#34;)
-     *             .build()));
+     *             .build());
      * 
-     *         }
+     *     }
      * }
      * ```
      * 
