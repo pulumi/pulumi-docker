@@ -19,32 +19,33 @@ namespace Pulumi.Docker
         /// {{% example %}}
         /// 
         /// ```csharp
+        /// using System.Collections.Generic;
         /// using Pulumi;
         /// using Docker = Pulumi.Docker;
         /// 
-        /// class MyStack : Stack
+        /// return await Deployment.RunAsync(() =&gt; 
         /// {
-        ///     public MyStack()
+        ///     var latest = Docker.GetRemoteImage.Invoke(new()
         ///     {
-        ///         var latest = Output.Create(Docker.GetRemoteImage.InvokeAsync(new Docker.GetRemoteImageArgs
-        ///         {
-        ///             Name = "nginx",
-        ///         }));
-        ///         var specific = Output.Create(Docker.GetRemoteImage.InvokeAsync(new Docker.GetRemoteImageArgs
-        ///         {
-        ///             Name = "nginx:1.17.6",
-        ///         }));
-        ///         var digest = Output.Create(Docker.GetRemoteImage.InvokeAsync(new Docker.GetRemoteImageArgs
-        ///         {
-        ///             Name = "nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2",
-        ///         }));
-        ///         var tagAndDigest = Output.Create(Docker.GetRemoteImage.InvokeAsync(new Docker.GetRemoteImageArgs
-        ///         {
-        ///             Name = "nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2",
-        ///         }));
-        ///     }
+        ///         Name = "nginx",
+        ///     });
         /// 
-        /// }
+        ///     var specific = Docker.GetRemoteImage.Invoke(new()
+        ///     {
+        ///         Name = "nginx:1.17.6",
+        ///     });
+        /// 
+        ///     var digest = Docker.GetRemoteImage.Invoke(new()
+        ///     {
+        ///         Name = "nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2",
+        ///     });
+        /// 
+        ///     var tagAndDigest = Docker.GetRemoteImage.Invoke(new()
+        ///     {
+        ///         Name = "nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2",
+        ///     });
+        /// 
+        /// });
         /// ```
         /// {{% /example %}}
         /// {{% /examples %}}
@@ -60,32 +61,33 @@ namespace Pulumi.Docker
         /// {{% example %}}
         /// 
         /// ```csharp
+        /// using System.Collections.Generic;
         /// using Pulumi;
         /// using Docker = Pulumi.Docker;
         /// 
-        /// class MyStack : Stack
+        /// return await Deployment.RunAsync(() =&gt; 
         /// {
-        ///     public MyStack()
+        ///     var latest = Docker.GetRemoteImage.Invoke(new()
         ///     {
-        ///         var latest = Output.Create(Docker.GetRemoteImage.InvokeAsync(new Docker.GetRemoteImageArgs
-        ///         {
-        ///             Name = "nginx",
-        ///         }));
-        ///         var specific = Output.Create(Docker.GetRemoteImage.InvokeAsync(new Docker.GetRemoteImageArgs
-        ///         {
-        ///             Name = "nginx:1.17.6",
-        ///         }));
-        ///         var digest = Output.Create(Docker.GetRemoteImage.InvokeAsync(new Docker.GetRemoteImageArgs
-        ///         {
-        ///             Name = "nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2",
-        ///         }));
-        ///         var tagAndDigest = Output.Create(Docker.GetRemoteImage.InvokeAsync(new Docker.GetRemoteImageArgs
-        ///         {
-        ///             Name = "nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2",
-        ///         }));
-        ///     }
+        ///         Name = "nginx",
+        ///     });
         /// 
-        /// }
+        ///     var specific = Docker.GetRemoteImage.Invoke(new()
+        ///     {
+        ///         Name = "nginx:1.17.6",
+        ///     });
+        /// 
+        ///     var digest = Docker.GetRemoteImage.Invoke(new()
+        ///     {
+        ///         Name = "nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2",
+        ///     });
+        /// 
+        ///     var tagAndDigest = Docker.GetRemoteImage.Invoke(new()
+        ///     {
+        ///         Name = "nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2",
+        ///     });
+        /// 
+        /// });
         /// ```
         /// {{% /example %}}
         /// {{% /examples %}}
@@ -95,24 +97,32 @@ namespace Pulumi.Docker
     }
 
 
-    public sealed class GetRemoteImageArgs : Pulumi.InvokeArgs
+    public sealed class GetRemoteImageArgs : global::Pulumi.InvokeArgs
     {
+        /// <summary>
+        /// The name of the Docker image, including any tags or SHA256 repo digests.
+        /// </summary>
         [Input("name", required: true)]
         public string Name { get; set; } = null!;
 
         public GetRemoteImageArgs()
         {
         }
+        public static new GetRemoteImageArgs Empty => new GetRemoteImageArgs();
     }
 
-    public sealed class GetRemoteImageInvokeArgs : Pulumi.InvokeArgs
+    public sealed class GetRemoteImageInvokeArgs : global::Pulumi.InvokeArgs
     {
+        /// <summary>
+        /// The name of the Docker image, including any tags or SHA256 repo digests.
+        /// </summary>
         [Input("name", required: true)]
         public Input<string> Name { get; set; } = null!;
 
         public GetRemoteImageInvokeArgs()
         {
         }
+        public static new GetRemoteImageInvokeArgs Empty => new GetRemoteImageInvokeArgs();
     }
 
 
@@ -123,7 +133,13 @@ namespace Pulumi.Docker
         /// The provider-assigned unique ID for this managed resource.
         /// </summary>
         public readonly string Id;
+        /// <summary>
+        /// The name of the Docker image, including any tags or SHA256 repo digests.
+        /// </summary>
         public readonly string Name;
+        /// <summary>
+        /// The image sha256 digest in the form of `repo[:tag]@sha256:&lt;hash&gt;`. It may be empty in the edge case where the local image was pulled from a repo, tagged locally, and then referred to in the data source by that local name/tag.
+        /// </summary>
         public readonly string RepoDigest;
 
         [OutputConstructor]

@@ -16,19 +16,15 @@ namespace Pulumi.Docker
     /// ## Example Usage
     /// 
     /// ```csharp
+    /// using System.Collections.Generic;
     /// using Pulumi;
     /// using Docker = Pulumi.Docker;
     /// 
-    /// class MyStack : Stack
+    /// return await Deployment.RunAsync(() =&gt; 
     /// {
-    ///     public MyStack()
-    ///     {
-    ///         var sharedVolume = new Docker.Volume("sharedVolume", new Docker.VolumeArgs
-    ///         {
-    ///         });
-    ///     }
+    ///     var sharedVolume = new Docker.Volume("sharedVolume");
     /// 
-    /// }
+    /// });
     /// ```
     /// 
     /// ## Import
@@ -42,7 +38,7 @@ namespace Pulumi.Docker
     /// ```
     /// </summary>
     [DockerResourceType("docker:index/volume:Volume")]
-    public partial class Volume : Pulumi.CustomResource
+    public partial class Volume : global::Pulumi.CustomResource
     {
         /// <summary>
         /// Driver type for the volume. Defaults to `local`.
@@ -118,7 +114,7 @@ namespace Pulumi.Docker
         }
     }
 
-    public sealed class VolumeArgs : Pulumi.ResourceArgs
+    public sealed class VolumeArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
         /// Driver type for the volume. Defaults to `local`.
@@ -159,9 +155,10 @@ namespace Pulumi.Docker
         public VolumeArgs()
         {
         }
+        public static new VolumeArgs Empty => new VolumeArgs();
     }
 
-    public sealed class VolumeState : Pulumi.ResourceArgs
+    public sealed class VolumeState : global::Pulumi.ResourceArgs
     {
         /// <summary>
         /// Driver type for the volume. Defaults to `local`.
@@ -208,5 +205,6 @@ namespace Pulumi.Docker
         public VolumeState()
         {
         }
+        public static new VolumeState Empty => new VolumeState();
     }
 }

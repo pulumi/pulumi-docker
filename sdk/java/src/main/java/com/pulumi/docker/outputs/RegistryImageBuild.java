@@ -17,37 +17,165 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class RegistryImageBuild {
+    /**
+     * @return The configuration for the authentication
+     * 
+     */
     private final @Nullable List<RegistryImageBuildAuthConfig> authConfigs;
+    /**
+     * @return Pairs for build-time variables in the form TODO
+     * 
+     */
     private final @Nullable Map<String,String> buildArgs;
+    /**
+     * @return BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request.
+     * 
+     */
     private final @Nullable String buildId;
+    /**
+     * @return Images to consider as cache sources
+     * 
+     */
     private final @Nullable List<String> cacheFroms;
+    /**
+     * @return Optional parent cgroup for the container
+     * 
+     */
     private final @Nullable String cgroupParent;
+    /**
+     * @return The absolute path to the context folder. You can use the helper function &#39;${path.cwd}/context-dir&#39;.
+     * 
+     */
     private final String context;
+    /**
+     * @return The length of a CPU period in microseconds
+     * 
+     */
     private final @Nullable Integer cpuPeriod;
+    /**
+     * @return Microseconds of CPU time that the container can get in a CPU period
+     * 
+     */
     private final @Nullable Integer cpuQuota;
+    /**
+     * @return CPUs in which to allow execution (e.g., `0-3`, `0`, `1`)
+     * 
+     */
     private final @Nullable String cpuSetCpus;
+    /**
+     * @return MEMs in which to allow execution (`0-3`, `0`, `1`)
+     * 
+     */
     private final @Nullable String cpuSetMems;
+    /**
+     * @return CPU shares (relative weight)
+     * 
+     */
     private final @Nullable Integer cpuShares;
+    /**
+     * @return Dockerfile file. Defaults to `Dockerfile`
+     * 
+     */
     private final @Nullable String dockerfile;
+    /**
+     * @return A list of hostnames/IP mappings to add to the container’s /etc/hosts file. Specified in the form [&#34;hostname:IP&#34;]
+     * 
+     */
     private final @Nullable List<String> extraHosts;
+    /**
+     * @return Always remove intermediate containers
+     * 
+     */
     private final @Nullable Boolean forceRemove;
+    /**
+     * @return Isolation represents the isolation technology of a container. The supported values are
+     * 
+     */
     private final @Nullable String isolation;
+    /**
+     * @return User-defined key/value metadata
+     * 
+     */
     private final @Nullable Map<String,String> labels;
+    /**
+     * @return Set memory limit for build
+     * 
+     */
     private final @Nullable Integer memory;
+    /**
+     * @return Total memory (memory + swap), -1 to enable unlimited swap
+     * 
+     */
     private final @Nullable Integer memorySwap;
+    /**
+     * @return Set the networking mode for the RUN instructions during build
+     * 
+     */
     private final @Nullable String networkMode;
+    /**
+     * @return Do not use the cache when building the image
+     * 
+     */
     private final @Nullable Boolean noCache;
+    /**
+     * @return Set platform if server is multi-platform capable
+     * 
+     */
     private final @Nullable String platform;
+    /**
+     * @return Attempt to pull the image even if an older image exists locally
+     * 
+     */
     private final @Nullable Boolean pullParent;
+    /**
+     * @return A Git repository URI or HTTP/HTTPS context URI
+     * 
+     */
     private final @Nullable String remoteContext;
+    /**
+     * @return Remove intermediate containers after a successful build (default behavior)
+     * 
+     */
     private final @Nullable Boolean remove;
+    /**
+     * @return The security options
+     * 
+     */
     private final @Nullable List<String> securityOpts;
+    /**
+     * @return Set an ID for the build session
+     * 
+     */
     private final @Nullable String sessionId;
+    /**
+     * @return Size of /dev/shm in bytes. The size must be greater than 0
+     * 
+     */
     private final @Nullable Integer shmSize;
+    /**
+     * @return If true the new layers are squashed into a new image with a single new layer
+     * 
+     */
     private final @Nullable Boolean squash;
+    /**
+     * @return Suppress the build output and print image ID on success
+     * 
+     */
     private final @Nullable Boolean suppressOutput;
+    /**
+     * @return Set the target build stage to build
+     * 
+     */
     private final @Nullable String target;
+    /**
+     * @return Configuration for ulimits
+     * 
+     */
     private final @Nullable List<RegistryImageBuildUlimit> ulimits;
+    /**
+     * @return Version of the underlying builder to use
+     * 
+     */
     private final @Nullable String version;
 
     @CustomType.Constructor
@@ -118,99 +246,227 @@ public final class RegistryImageBuild {
         this.version = version;
     }
 
+    /**
+     * @return The configuration for the authentication
+     * 
+     */
     public List<RegistryImageBuildAuthConfig> authConfigs() {
         return this.authConfigs == null ? List.of() : this.authConfigs;
     }
+    /**
+     * @return Pairs for build-time variables in the form TODO
+     * 
+     */
     public Map<String,String> buildArgs() {
         return this.buildArgs == null ? Map.of() : this.buildArgs;
     }
+    /**
+     * @return BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request.
+     * 
+     */
     public Optional<String> buildId() {
         return Optional.ofNullable(this.buildId);
     }
+    /**
+     * @return Images to consider as cache sources
+     * 
+     */
     public List<String> cacheFroms() {
         return this.cacheFroms == null ? List.of() : this.cacheFroms;
     }
+    /**
+     * @return Optional parent cgroup for the container
+     * 
+     */
     public Optional<String> cgroupParent() {
         return Optional.ofNullable(this.cgroupParent);
     }
+    /**
+     * @return The absolute path to the context folder. You can use the helper function &#39;${path.cwd}/context-dir&#39;.
+     * 
+     */
     public String context() {
         return this.context;
     }
+    /**
+     * @return The length of a CPU period in microseconds
+     * 
+     */
     public Optional<Integer> cpuPeriod() {
         return Optional.ofNullable(this.cpuPeriod);
     }
+    /**
+     * @return Microseconds of CPU time that the container can get in a CPU period
+     * 
+     */
     public Optional<Integer> cpuQuota() {
         return Optional.ofNullable(this.cpuQuota);
     }
+    /**
+     * @return CPUs in which to allow execution (e.g., `0-3`, `0`, `1`)
+     * 
+     */
     public Optional<String> cpuSetCpus() {
         return Optional.ofNullable(this.cpuSetCpus);
     }
+    /**
+     * @return MEMs in which to allow execution (`0-3`, `0`, `1`)
+     * 
+     */
     public Optional<String> cpuSetMems() {
         return Optional.ofNullable(this.cpuSetMems);
     }
+    /**
+     * @return CPU shares (relative weight)
+     * 
+     */
     public Optional<Integer> cpuShares() {
         return Optional.ofNullable(this.cpuShares);
     }
+    /**
+     * @return Dockerfile file. Defaults to `Dockerfile`
+     * 
+     */
     public Optional<String> dockerfile() {
         return Optional.ofNullable(this.dockerfile);
     }
+    /**
+     * @return A list of hostnames/IP mappings to add to the container’s /etc/hosts file. Specified in the form [&#34;hostname:IP&#34;]
+     * 
+     */
     public List<String> extraHosts() {
         return this.extraHosts == null ? List.of() : this.extraHosts;
     }
+    /**
+     * @return Always remove intermediate containers
+     * 
+     */
     public Optional<Boolean> forceRemove() {
         return Optional.ofNullable(this.forceRemove);
     }
+    /**
+     * @return Isolation represents the isolation technology of a container. The supported values are
+     * 
+     */
     public Optional<String> isolation() {
         return Optional.ofNullable(this.isolation);
     }
+    /**
+     * @return User-defined key/value metadata
+     * 
+     */
     public Map<String,String> labels() {
         return this.labels == null ? Map.of() : this.labels;
     }
+    /**
+     * @return Set memory limit for build
+     * 
+     */
     public Optional<Integer> memory() {
         return Optional.ofNullable(this.memory);
     }
+    /**
+     * @return Total memory (memory + swap), -1 to enable unlimited swap
+     * 
+     */
     public Optional<Integer> memorySwap() {
         return Optional.ofNullable(this.memorySwap);
     }
+    /**
+     * @return Set the networking mode for the RUN instructions during build
+     * 
+     */
     public Optional<String> networkMode() {
         return Optional.ofNullable(this.networkMode);
     }
+    /**
+     * @return Do not use the cache when building the image
+     * 
+     */
     public Optional<Boolean> noCache() {
         return Optional.ofNullable(this.noCache);
     }
+    /**
+     * @return Set platform if server is multi-platform capable
+     * 
+     */
     public Optional<String> platform() {
         return Optional.ofNullable(this.platform);
     }
+    /**
+     * @return Attempt to pull the image even if an older image exists locally
+     * 
+     */
     public Optional<Boolean> pullParent() {
         return Optional.ofNullable(this.pullParent);
     }
+    /**
+     * @return A Git repository URI or HTTP/HTTPS context URI
+     * 
+     */
     public Optional<String> remoteContext() {
         return Optional.ofNullable(this.remoteContext);
     }
+    /**
+     * @return Remove intermediate containers after a successful build (default behavior)
+     * 
+     */
     public Optional<Boolean> remove() {
         return Optional.ofNullable(this.remove);
     }
+    /**
+     * @return The security options
+     * 
+     */
     public List<String> securityOpts() {
         return this.securityOpts == null ? List.of() : this.securityOpts;
     }
+    /**
+     * @return Set an ID for the build session
+     * 
+     */
     public Optional<String> sessionId() {
         return Optional.ofNullable(this.sessionId);
     }
+    /**
+     * @return Size of /dev/shm in bytes. The size must be greater than 0
+     * 
+     */
     public Optional<Integer> shmSize() {
         return Optional.ofNullable(this.shmSize);
     }
+    /**
+     * @return If true the new layers are squashed into a new image with a single new layer
+     * 
+     */
     public Optional<Boolean> squash() {
         return Optional.ofNullable(this.squash);
     }
+    /**
+     * @return Suppress the build output and print image ID on success
+     * 
+     */
     public Optional<Boolean> suppressOutput() {
         return Optional.ofNullable(this.suppressOutput);
     }
+    /**
+     * @return Set the target build stage to build
+     * 
+     */
     public Optional<String> target() {
         return Optional.ofNullable(this.target);
     }
+    /**
+     * @return Configuration for ulimits
+     * 
+     */
     public List<RegistryImageBuildUlimit> ulimits() {
         return this.ulimits == null ? List.of() : this.ulimits;
     }
+    /**
+     * @return Version of the underlying builder to use
+     * 
+     */
     public Optional<String> version() {
         return Optional.ofNullable(this.version);
     }

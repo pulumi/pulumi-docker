@@ -14,12 +14,40 @@ import java.util.Objects;
 
 @CustomType
 public final class GetNetworkResult {
+    /**
+     * @return The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
+     * 
+     */
     private final String driver;
+    /**
+     * @return The ID of this resource.
+     * 
+     */
     private final String id;
+    /**
+     * @return If `true`, the network is internal.
+     * 
+     */
     private final Boolean internal;
+    /**
+     * @return The IPAM configuration options
+     * 
+     */
     private final List<GetNetworkIpamConfig> ipamConfigs;
+    /**
+     * @return The name of the Docker network.
+     * 
+     */
     private final String name;
+    /**
+     * @return Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
+     * 
+     */
     private final Map<String,Object> options;
+    /**
+     * @return Scope of the network. One of `swarm`, `global`, or `local`.
+     * 
+     */
     private final String scope;
 
     @CustomType.Constructor
@@ -40,24 +68,52 @@ public final class GetNetworkResult {
         this.scope = scope;
     }
 
+    /**
+     * @return The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
+     * 
+     */
     public String driver() {
         return this.driver;
     }
+    /**
+     * @return The ID of this resource.
+     * 
+     */
     public String id() {
         return this.id;
     }
+    /**
+     * @return If `true`, the network is internal.
+     * 
+     */
     public Boolean internal() {
         return this.internal;
     }
+    /**
+     * @return The IPAM configuration options
+     * 
+     */
     public List<GetNetworkIpamConfig> ipamConfigs() {
         return this.ipamConfigs;
     }
+    /**
+     * @return The name of the Docker network.
+     * 
+     */
     public String name() {
         return this.name;
     }
+    /**
+     * @return Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
+     * 
+     */
     public Map<String,Object> options() {
         return this.options;
     }
+    /**
+     * @return Scope of the network. One of `swarm`, `global`, or `local`.
+     * 
+     */
     public String scope() {
         return this.scope;
     }

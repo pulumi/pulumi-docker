@@ -10,7 +10,7 @@ using Pulumi.Serialization;
 namespace Pulumi.Docker.Inputs
 {
 
-    public sealed class ServiceTaskSpecContainerSpecHostGetArgs : Pulumi.ResourceArgs
+    public sealed class ServiceTaskSpecContainerSpecHostGetArgs : global::Pulumi.ResourceArgs
     {
         [Input("host", required: true)]
         public Input<string> Host { get; set; } = null!;
@@ -21,5 +21,6 @@ namespace Pulumi.Docker.Inputs
         public ServiceTaskSpecContainerSpecHostGetArgs()
         {
         }
+        public static new ServiceTaskSpecContainerSpecHostGetArgs Empty => new ServiceTaskSpecContainerSpecHostGetArgs();
     }
 }

@@ -10,8 +10,20 @@ import java.util.Objects;
 
 @CustomType
 public final class ContainerUlimit {
+    /**
+     * @return The hard limit
+     * 
+     */
     private final Integer hard;
+    /**
+     * @return The name of the ulimit
+     * 
+     */
     private final String name;
+    /**
+     * @return The soft limit
+     * 
+     */
     private final Integer soft;
 
     @CustomType.Constructor
@@ -24,12 +36,24 @@ public final class ContainerUlimit {
         this.soft = soft;
     }
 
+    /**
+     * @return The hard limit
+     * 
+     */
     public Integer hard() {
         return this.hard;
     }
+    /**
+     * @return The name of the ulimit
+     * 
+     */
     public String name() {
         return this.name;
     }
+    /**
+     * @return The soft limit
+     * 
+     */
     public Integer soft() {
         return this.soft;
     }

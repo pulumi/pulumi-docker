@@ -10,7 +10,7 @@ using Pulumi.Serialization;
 namespace Pulumi.Docker.Inputs
 {
 
-    public sealed class ServiceTaskSpecContainerSpecMountGetArgs : Pulumi.ResourceArgs
+    public sealed class ServiceTaskSpecContainerSpecMountGetArgs : global::Pulumi.ResourceArgs
     {
         [Input("bindOptions")]
         public Input<Inputs.ServiceTaskSpecContainerSpecMountBindOptionsGetArgs>? BindOptions { get; set; }
@@ -36,5 +36,6 @@ namespace Pulumi.Docker.Inputs
         public ServiceTaskSpecContainerSpecMountGetArgs()
         {
         }
+        public static new ServiceTaskSpecContainerSpecMountGetArgs Empty => new ServiceTaskSpecContainerSpecMountGetArgs();
     }
 }

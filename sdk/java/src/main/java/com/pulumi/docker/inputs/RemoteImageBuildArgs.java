@@ -18,65 +18,137 @@ public final class RemoteImageBuildArgs extends com.pulumi.resources.ResourceArg
 
     public static final RemoteImageBuildArgs Empty = new RemoteImageBuildArgs();
 
+    /**
+     * Set build-time variables
+     * 
+     */
     @Import(name="buildArg")
     private @Nullable Output<Map<String,String>> buildArg;
 
+    /**
+     * @return Set build-time variables
+     * 
+     */
     public Optional<Output<Map<String,String>>> buildArg() {
         return Optional.ofNullable(this.buildArg);
     }
 
+    /**
+     * Name of the Dockerfile. Defaults to `Dockerfile`.
+     * 
+     */
     @Import(name="dockerfile")
     private @Nullable Output<String> dockerfile;
 
+    /**
+     * @return Name of the Dockerfile. Defaults to `Dockerfile`.
+     * 
+     */
     public Optional<Output<String>> dockerfile() {
         return Optional.ofNullable(this.dockerfile);
     }
 
+    /**
+     * Always remove intermediate containers
+     * 
+     */
     @Import(name="forceRemove")
     private @Nullable Output<Boolean> forceRemove;
 
+    /**
+     * @return Always remove intermediate containers
+     * 
+     */
     public Optional<Output<Boolean>> forceRemove() {
         return Optional.ofNullable(this.forceRemove);
     }
 
+    /**
+     * Set metadata for an image
+     * 
+     */
     @Import(name="label")
     private @Nullable Output<Map<String,String>> label;
 
+    /**
+     * @return Set metadata for an image
+     * 
+     */
     public Optional<Output<Map<String,String>>> label() {
         return Optional.ofNullable(this.label);
     }
 
+    /**
+     * Do not use cache when building the image
+     * 
+     */
     @Import(name="noCache")
     private @Nullable Output<Boolean> noCache;
 
+    /**
+     * @return Do not use cache when building the image
+     * 
+     */
     public Optional<Output<Boolean>> noCache() {
         return Optional.ofNullable(this.noCache);
     }
 
+    /**
+     * Context path
+     * 
+     */
     @Import(name="path", required=true)
     private Output<String> path;
 
+    /**
+     * @return Context path
+     * 
+     */
     public Output<String> path() {
         return this.path;
     }
 
+    /**
+     * Remove intermediate containers after a successful build. Defaults to  `true`.
+     * 
+     */
     @Import(name="remove")
     private @Nullable Output<Boolean> remove;
 
+    /**
+     * @return Remove intermediate containers after a successful build. Defaults to  `true`.
+     * 
+     */
     public Optional<Output<Boolean>> remove() {
         return Optional.ofNullable(this.remove);
     }
 
+    /**
+     * Name and optionally a tag in the &#39;name:tag&#39; format
+     * 
+     */
     @Import(name="tags")
     private @Nullable Output<List<String>> tags;
 
+    /**
+     * @return Name and optionally a tag in the &#39;name:tag&#39; format
+     * 
+     */
     public Optional<Output<List<String>>> tags() {
         return Optional.ofNullable(this.tags);
     }
 
+    /**
+     * Set the target build stage to build
+     * 
+     */
     @Import(name="target")
     private @Nullable Output<String> target;
 
+    /**
+     * @return Set the target build stage to build
+     * 
+     */
     public Optional<Output<String>> target() {
         return Optional.ofNullable(this.target);
     }
@@ -113,87 +185,201 @@ public final class RemoteImageBuildArgs extends com.pulumi.resources.ResourceArg
             $ = new RemoteImageBuildArgs(Objects.requireNonNull(defaults));
         }
 
+        /**
+         * @param buildArg Set build-time variables
+         * 
+         * @return builder
+         * 
+         */
         public Builder buildArg(@Nullable Output<Map<String,String>> buildArg) {
             $.buildArg = buildArg;
             return this;
         }
 
+        /**
+         * @param buildArg Set build-time variables
+         * 
+         * @return builder
+         * 
+         */
         public Builder buildArg(Map<String,String> buildArg) {
             return buildArg(Output.of(buildArg));
         }
 
+        /**
+         * @param dockerfile Name of the Dockerfile. Defaults to `Dockerfile`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder dockerfile(@Nullable Output<String> dockerfile) {
             $.dockerfile = dockerfile;
             return this;
         }
 
+        /**
+         * @param dockerfile Name of the Dockerfile. Defaults to `Dockerfile`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder dockerfile(String dockerfile) {
             return dockerfile(Output.of(dockerfile));
         }
 
+        /**
+         * @param forceRemove Always remove intermediate containers
+         * 
+         * @return builder
+         * 
+         */
         public Builder forceRemove(@Nullable Output<Boolean> forceRemove) {
             $.forceRemove = forceRemove;
             return this;
         }
 
+        /**
+         * @param forceRemove Always remove intermediate containers
+         * 
+         * @return builder
+         * 
+         */
         public Builder forceRemove(Boolean forceRemove) {
             return forceRemove(Output.of(forceRemove));
         }
 
+        /**
+         * @param label Set metadata for an image
+         * 
+         * @return builder
+         * 
+         */
         public Builder label(@Nullable Output<Map<String,String>> label) {
             $.label = label;
             return this;
         }
 
+        /**
+         * @param label Set metadata for an image
+         * 
+         * @return builder
+         * 
+         */
         public Builder label(Map<String,String> label) {
             return label(Output.of(label));
         }
 
+        /**
+         * @param noCache Do not use cache when building the image
+         * 
+         * @return builder
+         * 
+         */
         public Builder noCache(@Nullable Output<Boolean> noCache) {
             $.noCache = noCache;
             return this;
         }
 
+        /**
+         * @param noCache Do not use cache when building the image
+         * 
+         * @return builder
+         * 
+         */
         public Builder noCache(Boolean noCache) {
             return noCache(Output.of(noCache));
         }
 
+        /**
+         * @param path Context path
+         * 
+         * @return builder
+         * 
+         */
         public Builder path(Output<String> path) {
             $.path = path;
             return this;
         }
 
+        /**
+         * @param path Context path
+         * 
+         * @return builder
+         * 
+         */
         public Builder path(String path) {
             return path(Output.of(path));
         }
 
+        /**
+         * @param remove Remove intermediate containers after a successful build. Defaults to  `true`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder remove(@Nullable Output<Boolean> remove) {
             $.remove = remove;
             return this;
         }
 
+        /**
+         * @param remove Remove intermediate containers after a successful build. Defaults to  `true`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder remove(Boolean remove) {
             return remove(Output.of(remove));
         }
 
+        /**
+         * @param tags Name and optionally a tag in the &#39;name:tag&#39; format
+         * 
+         * @return builder
+         * 
+         */
         public Builder tags(@Nullable Output<List<String>> tags) {
             $.tags = tags;
             return this;
         }
 
+        /**
+         * @param tags Name and optionally a tag in the &#39;name:tag&#39; format
+         * 
+         * @return builder
+         * 
+         */
         public Builder tags(List<String> tags) {
             return tags(Output.of(tags));
         }
 
+        /**
+         * @param tags Name and optionally a tag in the &#39;name:tag&#39; format
+         * 
+         * @return builder
+         * 
+         */
         public Builder tags(String... tags) {
             return tags(List.of(tags));
         }
 
+        /**
+         * @param target Set the target build stage to build
+         * 
+         * @return builder
+         * 
+         */
         public Builder target(@Nullable Output<String> target) {
             $.target = target;
             return this;
         }
 
+        /**
+         * @param target Set the target build stage to build
+         * 
+         * @return builder
+         * 
+         */
         public Builder target(String target) {
             return target(Output.of(target));
         }

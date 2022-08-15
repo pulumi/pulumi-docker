@@ -15,23 +15,47 @@ public final class ServiceAuthArgs extends com.pulumi.resources.ResourceArgs {
 
     public static final ServiceAuthArgs Empty = new ServiceAuthArgs();
 
+    /**
+     * The password
+     * 
+     */
     @Import(name="password")
     private @Nullable Output<String> password;
 
+    /**
+     * @return The password
+     * 
+     */
     public Optional<Output<String>> password() {
         return Optional.ofNullable(this.password);
     }
 
+    /**
+     * The address of the server for the authentication
+     * 
+     */
     @Import(name="serverAddress", required=true)
     private Output<String> serverAddress;
 
+    /**
+     * @return The address of the server for the authentication
+     * 
+     */
     public Output<String> serverAddress() {
         return this.serverAddress;
     }
 
+    /**
+     * The username
+     * 
+     */
     @Import(name="username")
     private @Nullable Output<String> username;
 
+    /**
+     * @return The username
+     * 
+     */
     public Optional<Output<String>> username() {
         return Optional.ofNullable(this.username);
     }
@@ -62,29 +86,65 @@ public final class ServiceAuthArgs extends com.pulumi.resources.ResourceArgs {
             $ = new ServiceAuthArgs(Objects.requireNonNull(defaults));
         }
 
+        /**
+         * @param password The password
+         * 
+         * @return builder
+         * 
+         */
         public Builder password(@Nullable Output<String> password) {
             $.password = password;
             return this;
         }
 
+        /**
+         * @param password The password
+         * 
+         * @return builder
+         * 
+         */
         public Builder password(String password) {
             return password(Output.of(password));
         }
 
+        /**
+         * @param serverAddress The address of the server for the authentication
+         * 
+         * @return builder
+         * 
+         */
         public Builder serverAddress(Output<String> serverAddress) {
             $.serverAddress = serverAddress;
             return this;
         }
 
+        /**
+         * @param serverAddress The address of the server for the authentication
+         * 
+         * @return builder
+         * 
+         */
         public Builder serverAddress(String serverAddress) {
             return serverAddress(Output.of(serverAddress));
         }
 
+        /**
+         * @param username The username
+         * 
+         * @return builder
+         * 
+         */
         public Builder username(@Nullable Output<String> username) {
             $.username = username;
             return this;
         }
 
+        /**
+         * @param username The username
+         * 
+         * @return builder
+         * 
+         */
         public Builder username(String username) {
             return username(Output.of(username));
         }

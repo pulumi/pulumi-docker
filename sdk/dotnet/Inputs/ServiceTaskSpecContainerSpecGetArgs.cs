@@ -10,7 +10,7 @@ using Pulumi.Serialization;
 namespace Pulumi.Docker.Inputs
 {
 
-    public sealed class ServiceTaskSpecContainerSpecGetArgs : Pulumi.ResourceArgs
+    public sealed class ServiceTaskSpecContainerSpecGetArgs : global::Pulumi.ResourceArgs
     {
         [Input("args")]
         private InputList<string>? _args;
@@ -80,6 +80,10 @@ namespace Pulumi.Docker.Inputs
 
         [Input("labels")]
         private InputList<Inputs.ServiceTaskSpecContainerSpecLabelGetArgs>? _labels;
+
+        /// <summary>
+        /// User-defined key/value metadata
+        /// </summary>
         public InputList<Inputs.ServiceTaskSpecContainerSpecLabelGetArgs> Labels
         {
             get => _labels ?? (_labels = new InputList<Inputs.ServiceTaskSpecContainerSpecLabelGetArgs>());
@@ -120,5 +124,6 @@ namespace Pulumi.Docker.Inputs
         public ServiceTaskSpecContainerSpecGetArgs()
         {
         }
+        public static new ServiceTaskSpecContainerSpecGetArgs Empty => new ServiceTaskSpecContainerSpecGetArgs();
     }
 }

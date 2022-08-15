@@ -10,7 +10,7 @@ using Pulumi.Serialization;
 namespace Pulumi.Docker.Inputs
 {
 
-    public sealed class ServiceModeReplicatedGetArgs : Pulumi.ResourceArgs
+    public sealed class ServiceModeReplicatedGetArgs : global::Pulumi.ResourceArgs
     {
         [Input("replicas")]
         public Input<int>? Replicas { get; set; }
@@ -18,5 +18,6 @@ namespace Pulumi.Docker.Inputs
         public ServiceModeReplicatedGetArgs()
         {
         }
+        public static new ServiceModeReplicatedGetArgs Empty => new ServiceModeReplicatedGetArgs();
     }
 }

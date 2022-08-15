@@ -15,23 +15,47 @@ public final class ContainerDeviceArgs extends com.pulumi.resources.ResourceArgs
 
     public static final ContainerDeviceArgs Empty = new ContainerDeviceArgs();
 
+    /**
+     * The path in the container where the device will be bound.
+     * 
+     */
     @Import(name="containerPath")
     private @Nullable Output<String> containerPath;
 
+    /**
+     * @return The path in the container where the device will be bound.
+     * 
+     */
     public Optional<Output<String>> containerPath() {
         return Optional.ofNullable(this.containerPath);
     }
 
+    /**
+     * The path on the host where the device is located.
+     * 
+     */
     @Import(name="hostPath", required=true)
     private Output<String> hostPath;
 
+    /**
+     * @return The path on the host where the device is located.
+     * 
+     */
     public Output<String> hostPath() {
         return this.hostPath;
     }
 
+    /**
+     * The cgroup permissions given to the container to access the device. Defaults to `rwm`.
+     * 
+     */
     @Import(name="permissions")
     private @Nullable Output<String> permissions;
 
+    /**
+     * @return The cgroup permissions given to the container to access the device. Defaults to `rwm`.
+     * 
+     */
     public Optional<Output<String>> permissions() {
         return Optional.ofNullable(this.permissions);
     }
@@ -62,29 +86,65 @@ public final class ContainerDeviceArgs extends com.pulumi.resources.ResourceArgs
             $ = new ContainerDeviceArgs(Objects.requireNonNull(defaults));
         }
 
+        /**
+         * @param containerPath The path in the container where the device will be bound.
+         * 
+         * @return builder
+         * 
+         */
         public Builder containerPath(@Nullable Output<String> containerPath) {
             $.containerPath = containerPath;
             return this;
         }
 
+        /**
+         * @param containerPath The path in the container where the device will be bound.
+         * 
+         * @return builder
+         * 
+         */
         public Builder containerPath(String containerPath) {
             return containerPath(Output.of(containerPath));
         }
 
+        /**
+         * @param hostPath The path on the host where the device is located.
+         * 
+         * @return builder
+         * 
+         */
         public Builder hostPath(Output<String> hostPath) {
             $.hostPath = hostPath;
             return this;
         }
 
+        /**
+         * @param hostPath The path on the host where the device is located.
+         * 
+         * @return builder
+         * 
+         */
         public Builder hostPath(String hostPath) {
             return hostPath(Output.of(hostPath));
         }
 
+        /**
+         * @param permissions The cgroup permissions given to the container to access the device. Defaults to `rwm`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder permissions(@Nullable Output<String> permissions) {
             $.permissions = permissions;
             return this;
         }
 
+        /**
+         * @param permissions The cgroup permissions given to the container to access the device. Defaults to `rwm`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder permissions(String permissions) {
             return permissions(Output.of(permissions));
         }

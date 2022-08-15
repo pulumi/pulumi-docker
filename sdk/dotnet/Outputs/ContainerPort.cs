@@ -13,9 +13,21 @@ namespace Pulumi.Docker.Outputs
     [OutputType]
     public sealed class ContainerPort
     {
+        /// <summary>
+        /// Port exposed out of the container. If not given a free random port `&gt;= 32768` will be used.
+        /// </summary>
         public readonly int? External;
+        /// <summary>
+        /// Port within the container.
+        /// </summary>
         public readonly int Internal;
+        /// <summary>
+        /// IP address/mask that can access this port. Defaults to `0.0.0.0`.
+        /// </summary>
         public readonly string? Ip;
+        /// <summary>
+        /// Protocol that can be used over this port. Defaults to `tcp`.
+        /// </summary>
         public readonly string? Protocol;
 
         [OutputConstructor]

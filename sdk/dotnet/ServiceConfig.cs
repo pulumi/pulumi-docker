@@ -25,7 +25,7 @@ namespace Pulumi.Docker
     /// ```
     /// </summary>
     [DockerResourceType("docker:index/serviceConfig:ServiceConfig")]
-    public partial class ServiceConfig : Pulumi.CustomResource
+    public partial class ServiceConfig : global::Pulumi.CustomResource
     {
         /// <summary>
         /// Base64-url-safe-encoded config data
@@ -83,7 +83,7 @@ namespace Pulumi.Docker
         }
     }
 
-    public sealed class ServiceConfigArgs : Pulumi.ResourceArgs
+    public sealed class ServiceConfigArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
         /// Base64-url-safe-encoded config data
@@ -100,9 +100,10 @@ namespace Pulumi.Docker
         public ServiceConfigArgs()
         {
         }
+        public static new ServiceConfigArgs Empty => new ServiceConfigArgs();
     }
 
-    public sealed class ServiceConfigState : Pulumi.ResourceArgs
+    public sealed class ServiceConfigState : global::Pulumi.ResourceArgs
     {
         /// <summary>
         /// Base64-url-safe-encoded config data
@@ -119,5 +120,6 @@ namespace Pulumi.Docker
         public ServiceConfigState()
         {
         }
+        public static new ServiceConfigState Empty => new ServiceConfigState();
     }
 }

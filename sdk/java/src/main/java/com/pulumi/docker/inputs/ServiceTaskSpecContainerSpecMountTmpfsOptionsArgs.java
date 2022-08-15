@@ -15,9 +15,17 @@ public final class ServiceTaskSpecContainerSpecMountTmpfsOptionsArgs extends com
 
     public static final ServiceTaskSpecContainerSpecMountTmpfsOptionsArgs Empty = new ServiceTaskSpecContainerSpecMountTmpfsOptionsArgs();
 
+    /**
+     * Scheduling mode for the service
+     * 
+     */
     @Import(name="mode")
     private @Nullable Output<Integer> mode;
 
+    /**
+     * @return Scheduling mode for the service
+     * 
+     */
     public Optional<Output<Integer>> mode() {
         return Optional.ofNullable(this.mode);
     }
@@ -54,11 +62,23 @@ public final class ServiceTaskSpecContainerSpecMountTmpfsOptionsArgs extends com
             $ = new ServiceTaskSpecContainerSpecMountTmpfsOptionsArgs(Objects.requireNonNull(defaults));
         }
 
+        /**
+         * @param mode Scheduling mode for the service
+         * 
+         * @return builder
+         * 
+         */
         public Builder mode(@Nullable Output<Integer> mode) {
             $.mode = mode;
             return this;
         }
 
+        /**
+         * @param mode Scheduling mode for the service
+         * 
+         * @return builder
+         * 
+         */
         public Builder mode(Integer mode) {
             return mode(Output.of(mode));
         }

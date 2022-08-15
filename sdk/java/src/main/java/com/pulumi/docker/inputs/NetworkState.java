@@ -52,16 +52,14 @@ public final class NetworkState extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network
-     * docs](https://docs.docker.com/network/#network-drivers) for more details.
+     * The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
      * 
      */
     @Import(name="driver")
     private @Nullable Output<String> driver;
 
     /**
-     * @return The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network
-     * docs](https://docs.docker.com/network/#network-drivers) for more details.
+     * @return The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
      * 
      */
     public Optional<Output<String>> driver() {
@@ -174,16 +172,14 @@ public final class NetworkState extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * Only available with bridge networks. See [bridge options
-     * docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
+     * Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
      * 
      */
     @Import(name="options")
     private @Nullable Output<Map<String,Object>> options;
 
     /**
-     * @return Only available with bridge networks. See [bridge options
-     * docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
+     * @return Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
      * 
      */
     public Optional<Output<Map<String,Object>>> options() {
@@ -283,8 +279,7 @@ public final class NetworkState extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param driver The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network
-         * docs](https://docs.docker.com/network/#network-drivers) for more details.
+         * @param driver The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
          * 
          * @return builder
          * 
@@ -295,8 +290,7 @@ public final class NetworkState extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param driver The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network
-         * docs](https://docs.docker.com/network/#network-drivers) for more details.
+         * @param driver The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
          * 
          * @return builder
          * 
@@ -473,8 +467,7 @@ public final class NetworkState extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param options Only available with bridge networks. See [bridge options
-         * docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
+         * @param options Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
          * 
          * @return builder
          * 
@@ -485,8 +478,7 @@ public final class NetworkState extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param options Only available with bridge networks. See [bridge options
-         * docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
+         * @param options Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
          * 
          * @return builder
          * 

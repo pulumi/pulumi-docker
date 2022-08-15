@@ -24,8 +24,7 @@ class RegistryImageArgs:
         The set of arguments for constructing a RegistryImage resource.
         :param pulumi.Input['RegistryImageBuildArgs'] build: Definition for building the image
         :param pulumi.Input[bool] insecure_skip_verify: If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
-        :param pulumi.Input[bool] keep_remotely: If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from
-               the docker registry on destroy operation. Defaults to `false`
+        :param pulumi.Input[bool] keep_remotely: If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
         :param pulumi.Input[str] name: The name of the Docker image.
         """
         if build is not None:
@@ -65,8 +64,7 @@ class RegistryImageArgs:
     @pulumi.getter(name="keepRemotely")
     def keep_remotely(self) -> Optional[pulumi.Input[bool]]:
         """
-        If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from
-        the docker registry on destroy operation. Defaults to `false`
+        If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
         """
         return pulumi.get(self, "keep_remotely")
 
@@ -99,8 +97,7 @@ class _RegistryImageState:
         Input properties used for looking up and filtering RegistryImage resources.
         :param pulumi.Input['RegistryImageBuildArgs'] build: Definition for building the image
         :param pulumi.Input[bool] insecure_skip_verify: If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
-        :param pulumi.Input[bool] keep_remotely: If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from
-               the docker registry on destroy operation. Defaults to `false`
+        :param pulumi.Input[bool] keep_remotely: If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
         :param pulumi.Input[str] name: The name of the Docker image.
         :param pulumi.Input[str] sha256_digest: The sha256 digest of the image.
         """
@@ -143,8 +140,7 @@ class _RegistryImageState:
     @pulumi.getter(name="keepRemotely")
     def keep_remotely(self) -> Optional[pulumi.Input[bool]]:
         """
-        If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from
-        the docker registry on destroy operation. Defaults to `false`
+        If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
         """
         return pulumi.get(self, "keep_remotely")
 
@@ -208,8 +204,7 @@ class RegistryImage(pulumi.CustomResource):
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[pulumi.InputType['RegistryImageBuildArgs']] build: Definition for building the image
         :param pulumi.Input[bool] insecure_skip_verify: If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
-        :param pulumi.Input[bool] keep_remotely: If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from
-               the docker registry on destroy operation. Defaults to `false`
+        :param pulumi.Input[bool] keep_remotely: If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
         :param pulumi.Input[str] name: The name of the Docker image.
         """
         ...
@@ -292,8 +287,7 @@ class RegistryImage(pulumi.CustomResource):
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[pulumi.InputType['RegistryImageBuildArgs']] build: Definition for building the image
         :param pulumi.Input[bool] insecure_skip_verify: If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
-        :param pulumi.Input[bool] keep_remotely: If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from
-               the docker registry on destroy operation. Defaults to `false`
+        :param pulumi.Input[bool] keep_remotely: If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
         :param pulumi.Input[str] name: The name of the Docker image.
         :param pulumi.Input[str] sha256_digest: The sha256 digest of the image.
         """
@@ -328,8 +322,7 @@ class RegistryImage(pulumi.CustomResource):
     @pulumi.getter(name="keepRemotely")
     def keep_remotely(self) -> pulumi.Output[Optional[bool]]:
         """
-        If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from
-        the docker registry on destroy operation. Defaults to `false`
+        If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
         """
         return pulumi.get(self, "keep_remotely")
 

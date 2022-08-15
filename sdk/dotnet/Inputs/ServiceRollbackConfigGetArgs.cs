@@ -10,28 +10,47 @@ using Pulumi.Serialization;
 namespace Pulumi.Docker.Inputs
 {
 
-    public sealed class ServiceRollbackConfigGetArgs : Pulumi.ResourceArgs
+    public sealed class ServiceRollbackConfigGetArgs : global::Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Delay between task rollbacks (ns|us|ms|s|m|h). Defaults to `0s`.
+        /// </summary>
         [Input("delay")]
         public Input<string>? Delay { get; set; }
 
+        /// <summary>
+        /// Action on rollback failure: pause | continue. Defaults to `pause`.
+        /// </summary>
         [Input("failureAction")]
         public Input<string>? FailureAction { get; set; }
 
+        /// <summary>
+        /// Failure rate to tolerate during a rollback. Defaults to `0.0`.
+        /// </summary>
         [Input("maxFailureRatio")]
         public Input<string>? MaxFailureRatio { get; set; }
 
+        /// <summary>
+        /// Duration after each task rollback to monitor for failure (ns|us|ms|s|m|h). Defaults to `5s`.
+        /// </summary>
         [Input("monitor")]
         public Input<string>? Monitor { get; set; }
 
+        /// <summary>
+        /// Rollback order: either 'stop-first' or 'start-first'. Defaults to `stop-first`.
+        /// </summary>
         [Input("order")]
         public Input<string>? Order { get; set; }
 
+        /// <summary>
+        /// Maximum number of tasks to be rollbacked in one iteration. Defaults to `1`
+        /// </summary>
         [Input("parallelism")]
         public Input<int>? Parallelism { get; set; }
 
         public ServiceRollbackConfigGetArgs()
         {
         }
+        public static new ServiceRollbackConfigGetArgs Empty => new ServiceRollbackConfigGetArgs();
     }
 }

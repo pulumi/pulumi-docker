@@ -14,23 +14,47 @@ public final class ContainerUlimitArgs extends com.pulumi.resources.ResourceArgs
 
     public static final ContainerUlimitArgs Empty = new ContainerUlimitArgs();
 
+    /**
+     * The hard limit
+     * 
+     */
     @Import(name="hard", required=true)
     private Output<Integer> hard;
 
+    /**
+     * @return The hard limit
+     * 
+     */
     public Output<Integer> hard() {
         return this.hard;
     }
 
+    /**
+     * The name of the ulimit
+     * 
+     */
     @Import(name="name", required=true)
     private Output<String> name;
 
+    /**
+     * @return The name of the ulimit
+     * 
+     */
     public Output<String> name() {
         return this.name;
     }
 
+    /**
+     * The soft limit
+     * 
+     */
     @Import(name="soft", required=true)
     private Output<Integer> soft;
 
+    /**
+     * @return The soft limit
+     * 
+     */
     public Output<Integer> soft() {
         return this.soft;
     }
@@ -61,29 +85,65 @@ public final class ContainerUlimitArgs extends com.pulumi.resources.ResourceArgs
             $ = new ContainerUlimitArgs(Objects.requireNonNull(defaults));
         }
 
+        /**
+         * @param hard The hard limit
+         * 
+         * @return builder
+         * 
+         */
         public Builder hard(Output<Integer> hard) {
             $.hard = hard;
             return this;
         }
 
+        /**
+         * @param hard The hard limit
+         * 
+         * @return builder
+         * 
+         */
         public Builder hard(Integer hard) {
             return hard(Output.of(hard));
         }
 
+        /**
+         * @param name The name of the ulimit
+         * 
+         * @return builder
+         * 
+         */
         public Builder name(Output<String> name) {
             $.name = name;
             return this;
         }
 
+        /**
+         * @param name The name of the ulimit
+         * 
+         * @return builder
+         * 
+         */
         public Builder name(String name) {
             return name(Output.of(name));
         }
 
+        /**
+         * @param soft The soft limit
+         * 
+         * @return builder
+         * 
+         */
         public Builder soft(Output<Integer> soft) {
             $.soft = soft;
             return this;
         }
 
+        /**
+         * @param soft The soft limit
+         * 
+         * @return builder
+         * 
+         */
         public Builder soft(Integer soft) {
             return soft(Output.of(soft));
         }

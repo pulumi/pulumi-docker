@@ -19,29 +19,32 @@ import (
 // package main
 //
 // import (
-// 	"github.com/pulumi/pulumi-docker/sdk/v3/go/docker"
-// 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//
+//	"github.com/pulumi/pulumi-docker/sdk/v3/go/docker"
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//
 // )
 //
-// func main() {
-// 	pulumi.Run(func(ctx *pulumi.Context) error {
-// 		_, err := docker.NewPlugin(ctx, "sample-volume-plugin", &docker.PluginArgs{
-// 			Alias:         pulumi.String("sample-volume-plugin"),
-// 			EnableTimeout: pulumi.Int(60),
-// 			Enabled:       pulumi.Bool(false),
-// 			Envs: pulumi.StringArray{
-// 				pulumi.String("DEBUG=1"),
-// 			},
-// 			ForceDestroy:        pulumi.Bool(true),
-// 			ForceDisable:        pulumi.Bool(true),
-// 			GrantAllPermissions: pulumi.Bool(true),
-// 		})
-// 		if err != nil {
-// 			return err
-// 		}
-// 		return nil
-// 	})
-// }
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := docker.NewPlugin(ctx, "sample-volume-plugin", &docker.PluginArgs{
+//				Alias:         pulumi.String("sample-volume-plugin"),
+//				EnableTimeout: pulumi.Int(60),
+//				Enabled:       pulumi.Bool(false),
+//				Envs: pulumi.StringArray{
+//					pulumi.String("DEBUG=1"),
+//				},
+//				ForceDestroy:        pulumi.Bool(true),
+//				ForceDisable:        pulumi.Bool(true),
+//				GrantAllPermissions: pulumi.Bool(true),
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
 // ```
 //
 // ## Import
@@ -49,7 +52,9 @@ import (
 // #!/bin/bash
 //
 // ```sh
-//  $ pulumi import docker:index/plugin:Plugin sample-volume-plugin "$(docker plugin inspect -f {{.ID}} tiborvass/sample-volume-plugin:latest)"
+//
+//	$ pulumi import docker:index/plugin:Plugin sample-volume-plugin "$(docker plugin inspect -f {{.ID}} tiborvass/sample-volume-plugin:latest)"
+//
 // ```
 type Plugin struct {
 	pulumi.CustomResourceState
@@ -223,7 +228,7 @@ func (i *Plugin) ToPluginOutputWithContext(ctx context.Context) PluginOutput {
 // PluginArrayInput is an input type that accepts PluginArray and PluginArrayOutput values.
 // You can construct a concrete instance of `PluginArrayInput` via:
 //
-//          PluginArray{ PluginArgs{...} }
+//	PluginArray{ PluginArgs{...} }
 type PluginArrayInput interface {
 	pulumi.Input
 
@@ -248,7 +253,7 @@ func (i PluginArray) ToPluginArrayOutputWithContext(ctx context.Context) PluginA
 // PluginMapInput is an input type that accepts PluginMap and PluginMapOutput values.
 // You can construct a concrete instance of `PluginMapInput` via:
 //
-//          PluginMap{ "key": PluginArgs{...} }
+//	PluginMap{ "key": PluginArgs{...} }
 type PluginMapInput interface {
 	pulumi.Input
 

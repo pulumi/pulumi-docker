@@ -17,30 +17,62 @@ public final class NetworkIpamConfigArgs extends com.pulumi.resources.ResourceAr
 
     public static final NetworkIpamConfigArgs Empty = new NetworkIpamConfigArgs();
 
+    /**
+     * Auxiliary IPv4 or IPv6 addresses used by Network driver
+     * 
+     */
     @Import(name="auxAddress")
     private @Nullable Output<Map<String,Object>> auxAddress;
 
+    /**
+     * @return Auxiliary IPv4 or IPv6 addresses used by Network driver
+     * 
+     */
     public Optional<Output<Map<String,Object>>> auxAddress() {
         return Optional.ofNullable(this.auxAddress);
     }
 
+    /**
+     * The IP address of the gateway
+     * 
+     */
     @Import(name="gateway")
     private @Nullable Output<String> gateway;
 
+    /**
+     * @return The IP address of the gateway
+     * 
+     */
     public Optional<Output<String>> gateway() {
         return Optional.ofNullable(this.gateway);
     }
 
+    /**
+     * The ip range in CIDR form
+     * 
+     */
     @Import(name="ipRange")
     private @Nullable Output<String> ipRange;
 
+    /**
+     * @return The ip range in CIDR form
+     * 
+     */
     public Optional<Output<String>> ipRange() {
         return Optional.ofNullable(this.ipRange);
     }
 
+    /**
+     * The subnet in CIDR form
+     * 
+     */
     @Import(name="subnet")
     private @Nullable Output<String> subnet;
 
+    /**
+     * @return The subnet in CIDR form
+     * 
+     */
     public Optional<Output<String>> subnet() {
         return Optional.ofNullable(this.subnet);
     }
@@ -72,38 +104,86 @@ public final class NetworkIpamConfigArgs extends com.pulumi.resources.ResourceAr
             $ = new NetworkIpamConfigArgs(Objects.requireNonNull(defaults));
         }
 
+        /**
+         * @param auxAddress Auxiliary IPv4 or IPv6 addresses used by Network driver
+         * 
+         * @return builder
+         * 
+         */
         public Builder auxAddress(@Nullable Output<Map<String,Object>> auxAddress) {
             $.auxAddress = auxAddress;
             return this;
         }
 
+        /**
+         * @param auxAddress Auxiliary IPv4 or IPv6 addresses used by Network driver
+         * 
+         * @return builder
+         * 
+         */
         public Builder auxAddress(Map<String,Object> auxAddress) {
             return auxAddress(Output.of(auxAddress));
         }
 
+        /**
+         * @param gateway The IP address of the gateway
+         * 
+         * @return builder
+         * 
+         */
         public Builder gateway(@Nullable Output<String> gateway) {
             $.gateway = gateway;
             return this;
         }
 
+        /**
+         * @param gateway The IP address of the gateway
+         * 
+         * @return builder
+         * 
+         */
         public Builder gateway(String gateway) {
             return gateway(Output.of(gateway));
         }
 
+        /**
+         * @param ipRange The ip range in CIDR form
+         * 
+         * @return builder
+         * 
+         */
         public Builder ipRange(@Nullable Output<String> ipRange) {
             $.ipRange = ipRange;
             return this;
         }
 
+        /**
+         * @param ipRange The ip range in CIDR form
+         * 
+         * @return builder
+         * 
+         */
         public Builder ipRange(String ipRange) {
             return ipRange(Output.of(ipRange));
         }
 
+        /**
+         * @param subnet The subnet in CIDR form
+         * 
+         * @return builder
+         * 
+         */
         public Builder subnet(@Nullable Output<String> subnet) {
             $.subnet = subnet;
             return this;
         }
 
+        /**
+         * @param subnet The subnet in CIDR form
+         * 
+         * @return builder
+         * 
+         */
         public Builder subnet(String subnet) {
             return subnet(Output.of(subnet));
         }

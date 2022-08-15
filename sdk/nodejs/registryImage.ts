@@ -62,8 +62,7 @@ export class RegistryImage extends pulumi.CustomResource {
      */
     public readonly insecureSkipVerify!: pulumi.Output<boolean | undefined>;
     /**
-     * If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from
-     * the docker registry on destroy operation. Defaults to `false`
+     * If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
      */
     public readonly keepRemotely!: pulumi.Output<boolean | undefined>;
     /**
@@ -119,8 +118,7 @@ export interface RegistryImageState {
      */
     insecureSkipVerify?: pulumi.Input<boolean>;
     /**
-     * If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from
-     * the docker registry on destroy operation. Defaults to `false`
+     * If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
      */
     keepRemotely?: pulumi.Input<boolean>;
     /**
@@ -146,8 +144,7 @@ export interface RegistryImageArgs {
      */
     insecureSkipVerify?: pulumi.Input<boolean>;
     /**
-     * If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from
-     * the docker registry on destroy operation. Defaults to `false`
+     * If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
      */
     keepRemotely?: pulumi.Input<boolean>;
     /**

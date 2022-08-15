@@ -10,19 +10,29 @@ using Pulumi.Serialization;
 namespace Pulumi.Docker.Inputs
 {
 
-    public sealed class ServiceAuthArgs : Pulumi.ResourceArgs
+    public sealed class ServiceAuthArgs : global::Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// The password
+        /// </summary>
         [Input("password")]
         public Input<string>? Password { get; set; }
 
+        /// <summary>
+        /// The address of the server for the authentication
+        /// </summary>
         [Input("serverAddress", required: true)]
         public Input<string> ServerAddress { get; set; } = null!;
 
+        /// <summary>
+        /// The username
+        /// </summary>
         [Input("username")]
         public Input<string>? Username { get; set; }
 
         public ServiceAuthArgs()
         {
         }
+        public static new ServiceAuthArgs Empty => new ServiceAuthArgs();
     }
 }

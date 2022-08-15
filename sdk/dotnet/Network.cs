@@ -11,24 +11,20 @@ namespace Pulumi.Docker
 {
     /// <summary>
     /// &lt;!-- Bug: Type and Name are switched --&gt;
-    /// `docker.Network` provides details about a specific Docker Network.
+    /// `docker.Network` provides a docker network resource.
     /// 
     /// ## Example Usage
     /// 
     /// ```csharp
+    /// using System.Collections.Generic;
     /// using Pulumi;
     /// using Docker = Pulumi.Docker;
     /// 
-    /// class MyStack : Stack
+    /// return await Deployment.RunAsync(() =&gt; 
     /// {
-    ///     public MyStack()
-    ///     {
-    ///         var privateNetwork = new Docker.Network("privateNetwork", new Docker.NetworkArgs
-    ///         {
-    ///         });
-    ///     }
+    ///     var privateNetwork = new Docker.Network("privateNetwork");
     /// 
-    /// }
+    /// });
     /// ```
     /// 
     /// ## Import
@@ -42,7 +38,7 @@ namespace Pulumi.Docker
     /// ```
     /// </summary>
     [DockerResourceType("docker:index/network:Network")]
-    public partial class Network : Pulumi.CustomResource
+    public partial class Network : global::Pulumi.CustomResource
     {
         /// <summary>
         /// Enable manual container attachment to the network.
@@ -57,8 +53,7 @@ namespace Pulumi.Docker
         public Output<bool?> CheckDuplicate { get; private set; } = null!;
 
         /// <summary>
-        /// The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network
-        /// docs](https://docs.docker.com/network/#network-drivers) for more details.
+        /// The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
         /// </summary>
         [Output("driver")]
         public Output<string> Driver { get; private set; } = null!;
@@ -106,8 +101,7 @@ namespace Pulumi.Docker
         public Output<string> Name { get; private set; } = null!;
 
         /// <summary>
-        /// Only available with bridge networks. See [bridge options
-        /// docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
+        /// Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
         /// </summary>
         [Output("options")]
         public Output<ImmutableDictionary<string, object>> Options { get; private set; } = null!;
@@ -162,7 +156,7 @@ namespace Pulumi.Docker
         }
     }
 
-    public sealed class NetworkArgs : Pulumi.ResourceArgs
+    public sealed class NetworkArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
         /// Enable manual container attachment to the network.
@@ -177,8 +171,7 @@ namespace Pulumi.Docker
         public Input<bool>? CheckDuplicate { get; set; }
 
         /// <summary>
-        /// The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network
-        /// docs](https://docs.docker.com/network/#network-drivers) for more details.
+        /// The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
         /// </summary>
         [Input("driver")]
         public Input<string>? Driver { get; set; }
@@ -241,8 +234,7 @@ namespace Pulumi.Docker
         private InputMap<object>? _options;
 
         /// <summary>
-        /// Only available with bridge networks. See [bridge options
-        /// docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
+        /// Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
         /// </summary>
         public InputMap<object> Options
         {
@@ -253,9 +245,10 @@ namespace Pulumi.Docker
         public NetworkArgs()
         {
         }
+        public static new NetworkArgs Empty => new NetworkArgs();
     }
 
-    public sealed class NetworkState : Pulumi.ResourceArgs
+    public sealed class NetworkState : global::Pulumi.ResourceArgs
     {
         /// <summary>
         /// Enable manual container attachment to the network.
@@ -270,8 +263,7 @@ namespace Pulumi.Docker
         public Input<bool>? CheckDuplicate { get; set; }
 
         /// <summary>
-        /// The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network
-        /// docs](https://docs.docker.com/network/#network-drivers) for more details.
+        /// The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
         /// </summary>
         [Input("driver")]
         public Input<string>? Driver { get; set; }
@@ -334,8 +326,7 @@ namespace Pulumi.Docker
         private InputMap<object>? _options;
 
         /// <summary>
-        /// Only available with bridge networks. See [bridge options
-        /// docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
+        /// Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
         /// </summary>
         public InputMap<object> Options
         {
@@ -352,5 +343,6 @@ namespace Pulumi.Docker
         public NetworkState()
         {
         }
+        public static new NetworkState Empty => new NetworkState();
     }
 }

@@ -10,8 +10,11 @@ using Pulumi.Serialization;
 namespace Pulumi.Docker.Inputs
 {
 
-    public sealed class ServiceTaskSpecLogDriverArgs : Pulumi.ResourceArgs
+    public sealed class ServiceTaskSpecLogDriverArgs : global::Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Name of the service
+        /// </summary>
         [Input("name", required: true)]
         public Input<string> Name { get; set; } = null!;
 
@@ -26,5 +29,6 @@ namespace Pulumi.Docker.Inputs
         public ServiceTaskSpecLogDriverArgs()
         {
         }
+        public static new ServiceTaskSpecLogDriverArgs Empty => new ServiceTaskSpecLogDriverArgs();
     }
 }

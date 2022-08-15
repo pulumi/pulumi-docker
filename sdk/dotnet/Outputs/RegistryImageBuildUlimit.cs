@@ -14,6 +14,9 @@ namespace Pulumi.Docker.Outputs
     public sealed class RegistryImageBuildUlimit
     {
         public readonly int Hard;
+        /// <summary>
+        /// The name of the Docker image.
+        /// </summary>
         public readonly string Name;
         public readonly int Soft;
 

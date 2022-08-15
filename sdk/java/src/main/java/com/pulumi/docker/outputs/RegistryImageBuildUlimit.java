@@ -11,6 +11,10 @@ import java.util.Objects;
 @CustomType
 public final class RegistryImageBuildUlimit {
     private final Integer hard;
+    /**
+     * @return The name of the Docker image.
+     * 
+     */
     private final String name;
     private final Integer soft;
 
@@ -27,6 +31,10 @@ public final class RegistryImageBuildUlimit {
     public Integer hard() {
         return this.hard;
     }
+    /**
+     * @return The name of the Docker image.
+     * 
+     */
     public String name() {
         return this.name;
     }

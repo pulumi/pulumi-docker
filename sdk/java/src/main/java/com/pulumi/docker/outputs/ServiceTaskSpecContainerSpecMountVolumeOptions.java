@@ -17,6 +17,10 @@ import javax.annotation.Nullable;
 public final class ServiceTaskSpecContainerSpecMountVolumeOptions {
     private final @Nullable String driverName;
     private final @Nullable Map<String,String> driverOptions;
+    /**
+     * @return User-defined key/value metadata
+     * 
+     */
     private final @Nullable List<ServiceTaskSpecContainerSpecMountVolumeOptionsLabel> labels;
     private final @Nullable Boolean noCopy;
 
@@ -38,6 +42,10 @@ public final class ServiceTaskSpecContainerSpecMountVolumeOptions {
     public Map<String,String> driverOptions() {
         return this.driverOptions == null ? Map.of() : this.driverOptions;
     }
+    /**
+     * @return User-defined key/value metadata
+     * 
+     */
     public List<ServiceTaskSpecContainerSpecMountVolumeOptionsLabel> labels() {
         return this.labels == null ? List.of() : this.labels;
     }

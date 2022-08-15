@@ -12,9 +12,25 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ContainerPort {
+    /**
+     * @return Port exposed out of the container. If not given a free random port `&gt;= 32768` will be used.
+     * 
+     */
     private final @Nullable Integer external;
+    /**
+     * @return Port within the container.
+     * 
+     */
     private final Integer internal;
+    /**
+     * @return IP address/mask that can access this port. Defaults to `0.0.0.0`.
+     * 
+     */
     private final @Nullable String ip;
+    /**
+     * @return Protocol that can be used over this port. Defaults to `tcp`.
+     * 
+     */
     private final @Nullable String protocol;
 
     @CustomType.Constructor
@@ -29,15 +45,31 @@ public final class ContainerPort {
         this.protocol = protocol;
     }
 
+    /**
+     * @return Port exposed out of the container. If not given a free random port `&gt;= 32768` will be used.
+     * 
+     */
     public Optional<Integer> external() {
         return Optional.ofNullable(this.external);
     }
+    /**
+     * @return Port within the container.
+     * 
+     */
     public Integer internal() {
         return this.internal;
     }
+    /**
+     * @return IP address/mask that can access this port. Defaults to `0.0.0.0`.
+     * 
+     */
     public Optional<String> ip() {
         return Optional.ofNullable(this.ip);
     }
+    /**
+     * @return Protocol that can be used over this port. Defaults to `tcp`.
+     * 
+     */
     public Optional<String> protocol() {
         return Optional.ofNullable(this.protocol);
     }

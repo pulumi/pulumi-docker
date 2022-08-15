@@ -12,11 +12,35 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceRollbackConfig {
+    /**
+     * @return Delay between task rollbacks (ns|us|ms|s|m|h). Defaults to `0s`.
+     * 
+     */
     private final @Nullable String delay;
+    /**
+     * @return Action on rollback failure: pause | continue. Defaults to `pause`.
+     * 
+     */
     private final @Nullable String failureAction;
+    /**
+     * @return Failure rate to tolerate during a rollback. Defaults to `0.0`.
+     * 
+     */
     private final @Nullable String maxFailureRatio;
+    /**
+     * @return Duration after each task rollback to monitor for failure (ns|us|ms|s|m|h). Defaults to `5s`.
+     * 
+     */
     private final @Nullable String monitor;
+    /**
+     * @return Rollback order: either &#39;stop-first&#39; or &#39;start-first&#39;. Defaults to `stop-first`.
+     * 
+     */
     private final @Nullable String order;
+    /**
+     * @return Maximum number of tasks to be rollbacked in one iteration. Defaults to `1`
+     * 
+     */
     private final @Nullable Integer parallelism;
 
     @CustomType.Constructor
@@ -35,21 +59,45 @@ public final class ServiceRollbackConfig {
         this.parallelism = parallelism;
     }
 
+    /**
+     * @return Delay between task rollbacks (ns|us|ms|s|m|h). Defaults to `0s`.
+     * 
+     */
     public Optional<String> delay() {
         return Optional.ofNullable(this.delay);
     }
+    /**
+     * @return Action on rollback failure: pause | continue. Defaults to `pause`.
+     * 
+     */
     public Optional<String> failureAction() {
         return Optional.ofNullable(this.failureAction);
     }
+    /**
+     * @return Failure rate to tolerate during a rollback. Defaults to `0.0`.
+     * 
+     */
     public Optional<String> maxFailureRatio() {
         return Optional.ofNullable(this.maxFailureRatio);
     }
+    /**
+     * @return Duration after each task rollback to monitor for failure (ns|us|ms|s|m|h). Defaults to `5s`.
+     * 
+     */
     public Optional<String> monitor() {
         return Optional.ofNullable(this.monitor);
     }
+    /**
+     * @return Rollback order: either &#39;stop-first&#39; or &#39;start-first&#39;. Defaults to `stop-first`.
+     * 
+     */
     public Optional<String> order() {
         return Optional.ofNullable(this.order);
     }
+    /**
+     * @return Maximum number of tasks to be rollbacked in one iteration. Defaults to `1`
+     * 
+     */
     public Optional<Integer> parallelism() {
         return Optional.ofNullable(this.parallelism);
     }

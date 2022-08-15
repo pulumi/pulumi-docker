@@ -17,37 +17,77 @@ public final class ContainerHealthcheckArgs extends com.pulumi.resources.Resourc
 
     public static final ContainerHealthcheckArgs Empty = new ContainerHealthcheckArgs();
 
+    /**
+     * Time between running the check (ms|s|m|h). Defaults to `0s`.
+     * 
+     */
     @Import(name="interval")
     private @Nullable Output<String> interval;
 
+    /**
+     * @return Time between running the check (ms|s|m|h). Defaults to `0s`.
+     * 
+     */
     public Optional<Output<String>> interval() {
         return Optional.ofNullable(this.interval);
     }
 
+    /**
+     * Consecutive failures needed to report unhealthy. Defaults to `0`.
+     * 
+     */
     @Import(name="retries")
     private @Nullable Output<Integer> retries;
 
+    /**
+     * @return Consecutive failures needed to report unhealthy. Defaults to `0`.
+     * 
+     */
     public Optional<Output<Integer>> retries() {
         return Optional.ofNullable(this.retries);
     }
 
+    /**
+     * Start period for the container to initialize before counting retries towards unstable (ms|s|m|h). Defaults to `0s`.
+     * 
+     */
     @Import(name="startPeriod")
     private @Nullable Output<String> startPeriod;
 
+    /**
+     * @return Start period for the container to initialize before counting retries towards unstable (ms|s|m|h). Defaults to `0s`.
+     * 
+     */
     public Optional<Output<String>> startPeriod() {
         return Optional.ofNullable(this.startPeriod);
     }
 
+    /**
+     * Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `[&#34;CMD&#34;, &#34;curl&#34;, &#34;-f&#34;, &#34;localhost/health&#34;]`.
+     * 
+     */
     @Import(name="tests", required=true)
     private Output<List<String>> tests;
 
+    /**
+     * @return Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `[&#34;CMD&#34;, &#34;curl&#34;, &#34;-f&#34;, &#34;localhost/health&#34;]`.
+     * 
+     */
     public Output<List<String>> tests() {
         return this.tests;
     }
 
+    /**
+     * Maximum time to allow one check to run (ms|s|m|h). Defaults to `0s`.
+     * 
+     */
     @Import(name="timeout")
     private @Nullable Output<String> timeout;
 
+    /**
+     * @return Maximum time to allow one check to run (ms|s|m|h). Defaults to `0s`.
+     * 
+     */
     public Optional<Output<String>> timeout() {
         return Optional.ofNullable(this.timeout);
     }
@@ -80,51 +120,117 @@ public final class ContainerHealthcheckArgs extends com.pulumi.resources.Resourc
             $ = new ContainerHealthcheckArgs(Objects.requireNonNull(defaults));
         }
 
+        /**
+         * @param interval Time between running the check (ms|s|m|h). Defaults to `0s`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder interval(@Nullable Output<String> interval) {
             $.interval = interval;
             return this;
         }
 
+        /**
+         * @param interval Time between running the check (ms|s|m|h). Defaults to `0s`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder interval(String interval) {
             return interval(Output.of(interval));
         }
 
+        /**
+         * @param retries Consecutive failures needed to report unhealthy. Defaults to `0`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder retries(@Nullable Output<Integer> retries) {
             $.retries = retries;
             return this;
         }
 
+        /**
+         * @param retries Consecutive failures needed to report unhealthy. Defaults to `0`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder retries(Integer retries) {
             return retries(Output.of(retries));
         }
 
+        /**
+         * @param startPeriod Start period for the container to initialize before counting retries towards unstable (ms|s|m|h). Defaults to `0s`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder startPeriod(@Nullable Output<String> startPeriod) {
             $.startPeriod = startPeriod;
             return this;
         }
 
+        /**
+         * @param startPeriod Start period for the container to initialize before counting retries towards unstable (ms|s|m|h). Defaults to `0s`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder startPeriod(String startPeriod) {
             return startPeriod(Output.of(startPeriod));
         }
 
+        /**
+         * @param tests Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `[&#34;CMD&#34;, &#34;curl&#34;, &#34;-f&#34;, &#34;localhost/health&#34;]`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder tests(Output<List<String>> tests) {
             $.tests = tests;
             return this;
         }
 
+        /**
+         * @param tests Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `[&#34;CMD&#34;, &#34;curl&#34;, &#34;-f&#34;, &#34;localhost/health&#34;]`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder tests(List<String> tests) {
             return tests(Output.of(tests));
         }
 
+        /**
+         * @param tests Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `[&#34;CMD&#34;, &#34;curl&#34;, &#34;-f&#34;, &#34;localhost/health&#34;]`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder tests(String... tests) {
             return tests(List.of(tests));
         }
 
+        /**
+         * @param timeout Maximum time to allow one check to run (ms|s|m|h). Defaults to `0s`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder timeout(@Nullable Output<String> timeout) {
             $.timeout = timeout;
             return this;
         }
 
+        /**
+         * @param timeout Maximum time to allow one check to run (ms|s|m|h). Defaults to `0s`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder timeout(String timeout) {
             return timeout(Output.of(timeout));
         }

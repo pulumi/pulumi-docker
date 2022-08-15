@@ -18,27 +18,25 @@ namespace Pulumi.Docker
     /// To be able to update an image itself when an updated image arrives.
     /// 
     /// ```csharp
+    /// using System.Collections.Generic;
     /// using Pulumi;
     /// using Docker = Pulumi.Docker;
     /// 
-    /// class MyStack : Stack
+    /// return await Deployment.RunAsync(() =&gt; 
     /// {
-    ///     public MyStack()
+    ///     var helloworld = new Docker.RegistryImage("helloworld", new()
     ///     {
-    ///         var helloworld = new Docker.RegistryImage("helloworld", new Docker.RegistryImageArgs
+    ///         Build = new Docker.Inputs.RegistryImageBuildArgs
     ///         {
-    ///             Build = new Docker.Inputs.RegistryImageBuildArgs
-    ///             {
-    ///                 Context = $"{path.Cwd}/absolutePathToContextFolder",
-    ///             },
-    ///         });
-    ///     }
+    ///             Context = $"{path.Cwd}/absolutePathToContextFolder",
+    ///         },
+    ///     });
     /// 
-    /// }
+    /// });
     /// ```
     /// </summary>
     [DockerResourceType("docker:index/registryImage:RegistryImage")]
-    public partial class RegistryImage : Pulumi.CustomResource
+    public partial class RegistryImage : global::Pulumi.CustomResource
     {
         /// <summary>
         /// Definition for building the image
@@ -53,8 +51,7 @@ namespace Pulumi.Docker
         public Output<bool?> InsecureSkipVerify { get; private set; } = null!;
 
         /// <summary>
-        /// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from
-        /// the docker registry on destroy operation. Defaults to `false`
+        /// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
         /// </summary>
         [Output("keepRemotely")]
         public Output<bool?> KeepRemotely { get; private set; } = null!;
@@ -115,7 +112,7 @@ namespace Pulumi.Docker
         }
     }
 
-    public sealed class RegistryImageArgs : Pulumi.ResourceArgs
+    public sealed class RegistryImageArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
         /// Definition for building the image
@@ -130,8 +127,7 @@ namespace Pulumi.Docker
         public Input<bool>? InsecureSkipVerify { get; set; }
 
         /// <summary>
-        /// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from
-        /// the docker registry on destroy operation. Defaults to `false`
+        /// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
         /// </summary>
         [Input("keepRemotely")]
         public Input<bool>? KeepRemotely { get; set; }
@@ -145,9 +141,10 @@ namespace Pulumi.Docker
         public RegistryImageArgs()
         {
         }
+        public static new RegistryImageArgs Empty => new RegistryImageArgs();
     }
 
-    public sealed class RegistryImageState : Pulumi.ResourceArgs
+    public sealed class RegistryImageState : global::Pulumi.ResourceArgs
     {
         /// <summary>
         /// Definition for building the image
@@ -162,8 +159,7 @@ namespace Pulumi.Docker
         public Input<bool>? InsecureSkipVerify { get; set; }
 
         /// <summary>
-        /// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from
-        /// the docker registry on destroy operation. Defaults to `false`
+        /// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
         /// </summary>
         [Input("keepRemotely")]
         public Input<bool>? KeepRemotely { get; set; }
@@ -183,5 +179,6 @@ namespace Pulumi.Docker
         public RegistryImageState()
         {
         }
+        public static new RegistryImageState Empty => new RegistryImageState();
     }
 }

@@ -10,7 +10,7 @@ using Pulumi.Serialization;
 namespace Pulumi.Docker.Inputs
 {
 
-    public sealed class ServiceTaskSpecContainerSpecConfigGetArgs : Pulumi.ResourceArgs
+    public sealed class ServiceTaskSpecContainerSpecConfigGetArgs : global::Pulumi.ResourceArgs
     {
         [Input("configId", required: true)]
         public Input<string> ConfigId { get; set; } = null!;
@@ -33,5 +33,6 @@ namespace Pulumi.Docker.Inputs
         public ServiceTaskSpecContainerSpecConfigGetArgs()
         {
         }
+        public static new ServiceTaskSpecContainerSpecConfigGetArgs Empty => new ServiceTaskSpecContainerSpecConfigGetArgs();
     }
 }

@@ -12,11 +12,31 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ContainerUpload {
+    /**
+     * @return Literal string value to use as the object content, which will be uploaded as UTF-8-encoded text. Conflicts with `content_base64` &amp; `source`
+     * 
+     */
     private final @Nullable String content;
     private final @Nullable String contentBase64;
+    /**
+     * @return If `true`, the file will be uploaded with user executable permission. Defaults to `false`.
+     * 
+     */
     private final @Nullable Boolean executable;
+    /**
+     * @return Path to the file in the container where is upload goes to
+     * 
+     */
     private final String file;
+    /**
+     * @return A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state. Conflicts with `content` &amp; `content_base64`
+     * 
+     */
     private final @Nullable String source;
+    /**
+     * @return If using `source`, this will force an update if the file content has updated but the filename has not.
+     * 
+     */
     private final @Nullable String sourceHash;
 
     @CustomType.Constructor
@@ -35,21 +55,41 @@ public final class ContainerUpload {
         this.sourceHash = sourceHash;
     }
 
+    /**
+     * @return Literal string value to use as the object content, which will be uploaded as UTF-8-encoded text. Conflicts with `content_base64` &amp; `source`
+     * 
+     */
     public Optional<String> content() {
         return Optional.ofNullable(this.content);
     }
     public Optional<String> contentBase64() {
         return Optional.ofNullable(this.contentBase64);
     }
+    /**
+     * @return If `true`, the file will be uploaded with user executable permission. Defaults to `false`.
+     * 
+     */
     public Optional<Boolean> executable() {
         return Optional.ofNullable(this.executable);
     }
+    /**
+     * @return Path to the file in the container where is upload goes to
+     * 
+     */
     public String file() {
         return this.file;
     }
+    /**
+     * @return A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state. Conflicts with `content` &amp; `content_base64`
+     * 
+     */
     public Optional<String> source() {
         return Optional.ofNullable(this.source);
     }
+    /**
+     * @return If using `source`, this will force an update if the file content has updated but the filename has not.
+     * 
+     */
     public Optional<String> sourceHash() {
         return Optional.ofNullable(this.sourceHash);
     }

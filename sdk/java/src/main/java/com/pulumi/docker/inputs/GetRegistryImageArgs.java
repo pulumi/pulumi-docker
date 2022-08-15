@@ -16,16 +16,32 @@ public final class GetRegistryImageArgs extends com.pulumi.resources.InvokeArgs 
 
     public static final GetRegistryImageArgs Empty = new GetRegistryImageArgs();
 
+    /**
+     * If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
+     * 
+     */
     @Import(name="insecureSkipVerify")
     private @Nullable Output<Boolean> insecureSkipVerify;
 
+    /**
+     * @return If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
+     * 
+     */
     public Optional<Output<Boolean>> insecureSkipVerify() {
         return Optional.ofNullable(this.insecureSkipVerify);
     }
 
+    /**
+     * The name of the Docker image, including any tags. e.g. `alpine:latest`
+     * 
+     */
     @Import(name="name", required=true)
     private Output<String> name;
 
+    /**
+     * @return The name of the Docker image, including any tags. e.g. `alpine:latest`
+     * 
+     */
     public Output<String> name() {
         return this.name;
     }
@@ -55,20 +71,44 @@ public final class GetRegistryImageArgs extends com.pulumi.resources.InvokeArgs 
             $ = new GetRegistryImageArgs(Objects.requireNonNull(defaults));
         }
 
+        /**
+         * @param insecureSkipVerify If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
+         * 
+         * @return builder
+         * 
+         */
         public Builder insecureSkipVerify(@Nullable Output<Boolean> insecureSkipVerify) {
             $.insecureSkipVerify = insecureSkipVerify;
             return this;
         }
 
+        /**
+         * @param insecureSkipVerify If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
+         * 
+         * @return builder
+         * 
+         */
         public Builder insecureSkipVerify(Boolean insecureSkipVerify) {
             return insecureSkipVerify(Output.of(insecureSkipVerify));
         }
 
+        /**
+         * @param name The name of the Docker image, including any tags. e.g. `alpine:latest`
+         * 
+         * @return builder
+         * 
+         */
         public Builder name(Output<String> name) {
             $.name = name;
             return this;
         }
 
+        /**
+         * @param name The name of the Docker image, including any tags. e.g. `alpine:latest`
+         * 
+         * @return builder
+         * 
+         */
         public Builder name(String name) {
             return name(Output.of(name));
         }

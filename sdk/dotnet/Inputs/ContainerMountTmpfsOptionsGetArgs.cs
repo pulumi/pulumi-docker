@@ -10,7 +10,7 @@ using Pulumi.Serialization;
 namespace Pulumi.Docker.Inputs
 {
 
-    public sealed class ContainerMountTmpfsOptionsGetArgs : Pulumi.ResourceArgs
+    public sealed class ContainerMountTmpfsOptionsGetArgs : global::Pulumi.ResourceArgs
     {
         [Input("mode")]
         public Input<int>? Mode { get; set; }
@@ -21,5 +21,6 @@ namespace Pulumi.Docker.Inputs
         public ContainerMountTmpfsOptionsGetArgs()
         {
         }
+        public static new ContainerMountTmpfsOptionsGetArgs Empty => new ContainerMountTmpfsOptionsGetArgs();
     }
 }

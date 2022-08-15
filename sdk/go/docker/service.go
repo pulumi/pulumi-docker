@@ -15,34 +15,36 @@ import (
 //
 // ### Example Assuming you created a `service` as follows #!/bin/bash docker service create --name foo -p 8080:80 nginx # prints th ID 4pcphbxkfn2rffhbhe6czytgi you provide the definition for the resource as follows terraform resource "docker_service" "foo" {
 //
-//  name = "foo"
+//	name = "foo"
 //
-//  task_spec {
+//	task_spec {
 //
-//  container_spec {
+//	container_spec {
 //
-//  image = "nginx"
+//	image = "nginx"
 //
-//  }
+//	}
 //
-//  }
+//	}
 //
-//  endpoint_spec {
+//	endpoint_spec {
 //
-//  ports {
+//	ports {
 //
-//  target_port
+//	target_port
 //
 // = "80"
 //
-//  published_port = "8080"
+//	published_port = "8080"
 //
-//  }
+//	}
 //
-//  } } then the import command is as follows #!/bin/bash
+//	} } then the import command is as follows #!/bin/bash
 //
 // ```sh
-//  $ pulumi import docker:index/service:Service foo 4pcphbxkfn2rffhbhe6czytgi
+//
+//	$ pulumi import docker:index/service:Service foo 4pcphbxkfn2rffhbhe6czytgi
+//
 // ```
 type Service struct {
 	pulumi.CustomResourceState
@@ -213,7 +215,7 @@ func (i *Service) ToServiceOutputWithContext(ctx context.Context) ServiceOutput 
 // ServiceArrayInput is an input type that accepts ServiceArray and ServiceArrayOutput values.
 // You can construct a concrete instance of `ServiceArrayInput` via:
 //
-//          ServiceArray{ ServiceArgs{...} }
+//	ServiceArray{ ServiceArgs{...} }
 type ServiceArrayInput interface {
 	pulumi.Input
 
@@ -238,7 +240,7 @@ func (i ServiceArray) ToServiceArrayOutputWithContext(ctx context.Context) Servi
 // ServiceMapInput is an input type that accepts ServiceMap and ServiceMapOutput values.
 // You can construct a concrete instance of `ServiceMapInput` via:
 //
-//          ServiceMap{ "key": ServiceArgs{...} }
+//	ServiceMap{ "key": ServiceArgs{...} }
 type ServiceMapInput interface {
 	pulumi.Input
 

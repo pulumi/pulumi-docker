@@ -17,16 +17,32 @@ public final class ServiceEndpointSpecArgs extends com.pulumi.resources.Resource
 
     public static final ServiceEndpointSpecArgs Empty = new ServiceEndpointSpecArgs();
 
+    /**
+     * The mode of resolution to use for internal load balancing between tasks
+     * 
+     */
     @Import(name="mode")
     private @Nullable Output<String> mode;
 
+    /**
+     * @return The mode of resolution to use for internal load balancing between tasks
+     * 
+     */
     public Optional<Output<String>> mode() {
         return Optional.ofNullable(this.mode);
     }
 
+    /**
+     * List of exposed ports that this service is accessible on from the outside. Ports can only be provided if &#39;vip&#39; resolution mode is used
+     * 
+     */
     @Import(name="ports")
     private @Nullable Output<List<ServiceEndpointSpecPortArgs>> ports;
 
+    /**
+     * @return List of exposed ports that this service is accessible on from the outside. Ports can only be provided if &#39;vip&#39; resolution mode is used
+     * 
+     */
     public Optional<Output<List<ServiceEndpointSpecPortArgs>>> ports() {
         return Optional.ofNullable(this.ports);
     }
@@ -56,24 +72,54 @@ public final class ServiceEndpointSpecArgs extends com.pulumi.resources.Resource
             $ = new ServiceEndpointSpecArgs(Objects.requireNonNull(defaults));
         }
 
+        /**
+         * @param mode The mode of resolution to use for internal load balancing between tasks
+         * 
+         * @return builder
+         * 
+         */
         public Builder mode(@Nullable Output<String> mode) {
             $.mode = mode;
             return this;
         }
 
+        /**
+         * @param mode The mode of resolution to use for internal load balancing between tasks
+         * 
+         * @return builder
+         * 
+         */
         public Builder mode(String mode) {
             return mode(Output.of(mode));
         }
 
+        /**
+         * @param ports List of exposed ports that this service is accessible on from the outside. Ports can only be provided if &#39;vip&#39; resolution mode is used
+         * 
+         * @return builder
+         * 
+         */
         public Builder ports(@Nullable Output<List<ServiceEndpointSpecPortArgs>> ports) {
             $.ports = ports;
             return this;
         }
 
+        /**
+         * @param ports List of exposed ports that this service is accessible on from the outside. Ports can only be provided if &#39;vip&#39; resolution mode is used
+         * 
+         * @return builder
+         * 
+         */
         public Builder ports(List<ServiceEndpointSpecPortArgs> ports) {
             return ports(Output.of(ports));
         }
 
+        /**
+         * @param ports List of exposed ports that this service is accessible on from the outside. Ports can only be provided if &#39;vip&#39; resolution mode is used
+         * 
+         * @return builder
+         * 
+         */
         public Builder ports(ServiceEndpointSpecPortArgs... ports) {
             return ports(List.of(ports));
         }

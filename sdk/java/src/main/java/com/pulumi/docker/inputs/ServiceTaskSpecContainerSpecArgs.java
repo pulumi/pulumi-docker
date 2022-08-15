@@ -110,9 +110,17 @@ public final class ServiceTaskSpecContainerSpecArgs extends com.pulumi.resources
         return Optional.ofNullable(this.isolation);
     }
 
+    /**
+     * User-defined key/value metadata
+     * 
+     */
     @Import(name="labels")
     private @Nullable Output<List<ServiceTaskSpecContainerSpecLabelArgs>> labels;
 
+    /**
+     * @return User-defined key/value metadata
+     * 
+     */
     public Optional<Output<List<ServiceTaskSpecContainerSpecLabelArgs>>> labels() {
         return Optional.ofNullable(this.labels);
     }
@@ -337,15 +345,33 @@ public final class ServiceTaskSpecContainerSpecArgs extends com.pulumi.resources
             return isolation(Output.of(isolation));
         }
 
+        /**
+         * @param labels User-defined key/value metadata
+         * 
+         * @return builder
+         * 
+         */
         public Builder labels(@Nullable Output<List<ServiceTaskSpecContainerSpecLabelArgs>> labels) {
             $.labels = labels;
             return this;
         }
 
+        /**
+         * @param labels User-defined key/value metadata
+         * 
+         * @return builder
+         * 
+         */
         public Builder labels(List<ServiceTaskSpecContainerSpecLabelArgs> labels) {
             return labels(Output.of(labels));
         }
 
+        /**
+         * @param labels User-defined key/value metadata
+         * 
+         * @return builder
+         * 
+         */
         public Builder labels(ServiceTaskSpecContainerSpecLabelArgs... labels) {
             return labels(List.of(labels));
         }

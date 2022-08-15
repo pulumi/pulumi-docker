@@ -33,9 +33,17 @@ public final class ServiceTaskSpecContainerSpecMountVolumeOptionsArgs extends co
         return Optional.ofNullable(this.driverOptions);
     }
 
+    /**
+     * User-defined key/value metadata
+     * 
+     */
     @Import(name="labels")
     private @Nullable Output<List<ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArgs>> labels;
 
+    /**
+     * @return User-defined key/value metadata
+     * 
+     */
     public Optional<Output<List<ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArgs>>> labels() {
         return Optional.ofNullable(this.labels);
     }
@@ -92,15 +100,33 @@ public final class ServiceTaskSpecContainerSpecMountVolumeOptionsArgs extends co
             return driverOptions(Output.of(driverOptions));
         }
 
+        /**
+         * @param labels User-defined key/value metadata
+         * 
+         * @return builder
+         * 
+         */
         public Builder labels(@Nullable Output<List<ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArgs>> labels) {
             $.labels = labels;
             return this;
         }
 
+        /**
+         * @param labels User-defined key/value metadata
+         * 
+         * @return builder
+         * 
+         */
         public Builder labels(List<ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArgs> labels) {
             return labels(Output.of(labels));
         }
 
+        /**
+         * @param labels User-defined key/value metadata
+         * 
+         * @return builder
+         * 
+         */
         public Builder labels(ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArgs... labels) {
             return labels(List.of(labels));
         }

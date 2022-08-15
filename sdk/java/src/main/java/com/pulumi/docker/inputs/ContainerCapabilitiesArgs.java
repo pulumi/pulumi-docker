@@ -16,16 +16,32 @@ public final class ContainerCapabilitiesArgs extends com.pulumi.resources.Resour
 
     public static final ContainerCapabilitiesArgs Empty = new ContainerCapabilitiesArgs();
 
+    /**
+     * List of linux capabilities to add.
+     * 
+     */
     @Import(name="adds")
     private @Nullable Output<List<String>> adds;
 
+    /**
+     * @return List of linux capabilities to add.
+     * 
+     */
     public Optional<Output<List<String>>> adds() {
         return Optional.ofNullable(this.adds);
     }
 
+    /**
+     * List of linux capabilities to drop.
+     * 
+     */
     @Import(name="drops")
     private @Nullable Output<List<String>> drops;
 
+    /**
+     * @return List of linux capabilities to drop.
+     * 
+     */
     public Optional<Output<List<String>>> drops() {
         return Optional.ofNullable(this.drops);
     }
@@ -55,28 +71,64 @@ public final class ContainerCapabilitiesArgs extends com.pulumi.resources.Resour
             $ = new ContainerCapabilitiesArgs(Objects.requireNonNull(defaults));
         }
 
+        /**
+         * @param adds List of linux capabilities to add.
+         * 
+         * @return builder
+         * 
+         */
         public Builder adds(@Nullable Output<List<String>> adds) {
             $.adds = adds;
             return this;
         }
 
+        /**
+         * @param adds List of linux capabilities to add.
+         * 
+         * @return builder
+         * 
+         */
         public Builder adds(List<String> adds) {
             return adds(Output.of(adds));
         }
 
+        /**
+         * @param adds List of linux capabilities to add.
+         * 
+         * @return builder
+         * 
+         */
         public Builder adds(String... adds) {
             return adds(List.of(adds));
         }
 
+        /**
+         * @param drops List of linux capabilities to drop.
+         * 
+         * @return builder
+         * 
+         */
         public Builder drops(@Nullable Output<List<String>> drops) {
             $.drops = drops;
             return this;
         }
 
+        /**
+         * @param drops List of linux capabilities to drop.
+         * 
+         * @return builder
+         * 
+         */
         public Builder drops(List<String> drops) {
             return drops(Output.of(drops));
         }
 
+        /**
+         * @param drops List of linux capabilities to drop.
+         * 
+         * @return builder
+         * 
+         */
         public Builder drops(String... drops) {
             return drops(List.of(drops));
         }

@@ -12,9 +12,25 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ContainerNetworksAdvanced {
+    /**
+     * @return The network aliases of the container in the specific network.
+     * 
+     */
     private final @Nullable List<String> aliases;
+    /**
+     * @return The IPV4 address of the container in the specific network.
+     * 
+     */
     private final @Nullable String ipv4Address;
+    /**
+     * @return The IPV6 address of the container in the specific network.
+     * 
+     */
     private final @Nullable String ipv6Address;
+    /**
+     * @return The name or id of the network to use. You can use `name` or `id` attribute from a `docker.Network` resource.
+     * 
+     */
     private final String name;
 
     @CustomType.Constructor
@@ -29,15 +45,31 @@ public final class ContainerNetworksAdvanced {
         this.name = name;
     }
 
+    /**
+     * @return The network aliases of the container in the specific network.
+     * 
+     */
     public List<String> aliases() {
         return this.aliases == null ? List.of() : this.aliases;
     }
+    /**
+     * @return The IPV4 address of the container in the specific network.
+     * 
+     */
     public Optional<String> ipv4Address() {
         return Optional.ofNullable(this.ipv4Address);
     }
+    /**
+     * @return The IPV6 address of the container in the specific network.
+     * 
+     */
     public Optional<String> ipv6Address() {
         return Optional.ofNullable(this.ipv6Address);
     }
+    /**
+     * @return The name or id of the network to use. You can use `name` or `id` attribute from a `docker.Network` resource.
+     * 
+     */
     public String name() {
         return this.name;
     }

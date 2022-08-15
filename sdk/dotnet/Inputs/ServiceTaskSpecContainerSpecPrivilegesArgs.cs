@@ -10,7 +10,7 @@ using Pulumi.Serialization;
 namespace Pulumi.Docker.Inputs
 {
 
-    public sealed class ServiceTaskSpecContainerSpecPrivilegesArgs : Pulumi.ResourceArgs
+    public sealed class ServiceTaskSpecContainerSpecPrivilegesArgs : global::Pulumi.ResourceArgs
     {
         [Input("credentialSpec")]
         public Input<Inputs.ServiceTaskSpecContainerSpecPrivilegesCredentialSpecArgs>? CredentialSpec { get; set; }
@@ -21,5 +21,6 @@ namespace Pulumi.Docker.Inputs
         public ServiceTaskSpecContainerSpecPrivilegesArgs()
         {
         }
+        public static new ServiceTaskSpecContainerSpecPrivilegesArgs Empty => new ServiceTaskSpecContainerSpecPrivilegesArgs();
     }
 }

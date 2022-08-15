@@ -10,7 +10,7 @@ using Pulumi.Serialization;
 namespace Pulumi.Docker.Inputs
 {
 
-    public sealed class ProviderRegistryAuthArgs : Pulumi.ResourceArgs
+    public sealed class ProviderRegistryAuthArgs : global::Pulumi.ResourceArgs
     {
         [Input("address", required: true)]
         public Input<string> Address { get; set; } = null!;
@@ -30,5 +30,6 @@ namespace Pulumi.Docker.Inputs
         public ProviderRegistryAuthArgs()
         {
         }
+        public static new ProviderRegistryAuthArgs Empty => new ProviderRegistryAuthArgs();
     }
 }

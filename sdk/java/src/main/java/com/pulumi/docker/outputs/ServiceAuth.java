@@ -11,8 +11,20 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceAuth {
+    /**
+     * @return The password
+     * 
+     */
     private final @Nullable String password;
+    /**
+     * @return The address of the server for the authentication
+     * 
+     */
     private final String serverAddress;
+    /**
+     * @return The username
+     * 
+     */
     private final @Nullable String username;
 
     @CustomType.Constructor
@@ -25,12 +37,24 @@ public final class ServiceAuth {
         this.username = username;
     }
 
+    /**
+     * @return The password
+     * 
+     */
     public Optional<String> password() {
         return Optional.ofNullable(this.password);
     }
+    /**
+     * @return The address of the server for the authentication
+     * 
+     */
     public String serverAddress() {
         return this.serverAddress;
     }
+    /**
+     * @return The username
+     * 
+     */
     public Optional<String> username() {
         return Optional.ofNullable(this.username);
     }

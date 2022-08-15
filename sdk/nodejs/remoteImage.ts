@@ -41,29 +41,6 @@ import * as utilities from "./utilities";
  *     pullTriggers: [ubuntuRegistryImage.then(ubuntuRegistryImage => ubuntuRegistryImage.sha256Digest)],
  * });
  * ```
- * ### Build
- *
- * You can also use the resource to build an image.
- * In this case the image "zoo" and "zoo:develop" are built.
- *
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as docker from "@pulumi/docker";
- *
- * const zoo = new docker.RemoteImage("zoo", {
- *     name: "zoo",
- *     build: {
- *         path: ".",
- *         tags: ["zoo:develop"],
- *         buildArg: {
- *             foo: "zoo",
- *         },
- *         label: {
- *             author: "zoo",
- *         },
- *     },
- * });
- * ```
  */
 export class RemoteImage extends pulumi.CustomResource {
     /**
@@ -94,8 +71,7 @@ export class RemoteImage extends pulumi.CustomResource {
     }
 
     /**
-     * Configuration to build an image. Please see [docker build command
-     * reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+     * Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
      */
     public readonly build!: pulumi.Output<outputs.RemoteImageBuild | undefined>;
     /**
@@ -103,8 +79,7 @@ export class RemoteImage extends pulumi.CustomResource {
      */
     public readonly forceRemove!: pulumi.Output<boolean | undefined>;
     /**
-     * If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from
-     * the docker local storage on destroy operation.
+     * If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
      */
     public readonly keepLocally!: pulumi.Output<boolean | undefined>;
     /**
@@ -128,14 +103,17 @@ export class RemoteImage extends pulumi.CustomResource {
      */
     public readonly pullTrigger!: pulumi.Output<string | undefined>;
     /**
-     * List of values which cause an image pull when changed. This is used to store the image digest from the registry when
-     * using the [docker_registry_image](../data-sources/registry_image.md).
+     * List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
      */
     public readonly pullTriggers!: pulumi.Output<string[] | undefined>;
     /**
      * The image sha256 digest in the form of `repo[:tag]@sha256:<hash>`.
      */
     public /*out*/ readonly repoDigest!: pulumi.Output<string>;
+    /**
+     * A map of arbitrary strings that, when changed, will force the `docker.RemoteImage` resource to be replaced. This can be used to rebuild an image when contents of source code folders change
+     */
+    public readonly triggers!: pulumi.Output<{[key: string]: any} | undefined>;
 
     /**
      * Create a RemoteImage resource with the given unique name, arguments, and options.
@@ -159,6 +137,7 @@ export class RemoteImage extends pulumi.CustomResource {
             resourceInputs["pullTrigger"] = state ? state.pullTrigger : undefined;
             resourceInputs["pullTriggers"] = state ? state.pullTriggers : undefined;
             resourceInputs["repoDigest"] = state ? state.repoDigest : undefined;
+            resourceInputs["triggers"] = state ? state.triggers : undefined;
         } else {
             const args = argsOrState as RemoteImageArgs | undefined;
             if ((!args || args.name === undefined) && !opts.urn) {
@@ -170,6 +149,7 @@ export class RemoteImage extends pulumi.CustomResource {
             resourceInputs["name"] = args ? args.name : undefined;
             resourceInputs["pullTrigger"] = args ? args.pullTrigger : undefined;
             resourceInputs["pullTriggers"] = args ? args.pullTriggers : undefined;
+            resourceInputs["triggers"] = args ? args.triggers : undefined;
             resourceInputs["latest"] = undefined /*out*/;
             resourceInputs["output"] = undefined /*out*/;
             resourceInputs["repoDigest"] = undefined /*out*/;
@@ -184,8 +164,7 @@ export class RemoteImage extends pulumi.CustomResource {
  */
 export interface RemoteImageState {
     /**
-     * Configuration to build an image. Please see [docker build command
-     * reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+     * Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
      */
     build?: pulumi.Input<inputs.RemoteImageBuild>;
     /**
@@ -193,8 +172,7 @@ export interface RemoteImageState {
      */
     forceRemove?: pulumi.Input<boolean>;
     /**
-     * If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from
-     * the docker local storage on destroy operation.
+     * If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
      */
     keepLocally?: pulumi.Input<boolean>;
     /**
@@ -218,14 +196,17 @@ export interface RemoteImageState {
      */
     pullTrigger?: pulumi.Input<string>;
     /**
-     * List of values which cause an image pull when changed. This is used to store the image digest from the registry when
-     * using the [docker_registry_image](../data-sources/registry_image.md).
+     * List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
      */
     pullTriggers?: pulumi.Input<pulumi.Input<string>[]>;
     /**
      * The image sha256 digest in the form of `repo[:tag]@sha256:<hash>`.
      */
     repoDigest?: pulumi.Input<string>;
+    /**
+     * A map of arbitrary strings that, when changed, will force the `docker.RemoteImage` resource to be replaced. This can be used to rebuild an image when contents of source code folders change
+     */
+    triggers?: pulumi.Input<{[key: string]: any}>;
 }
 
 /**
@@ -233,8 +214,7 @@ export interface RemoteImageState {
  */
 export interface RemoteImageArgs {
     /**
-     * Configuration to build an image. Please see [docker build command
-     * reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+     * Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
      */
     build?: pulumi.Input<inputs.RemoteImageBuild>;
     /**
@@ -242,8 +222,7 @@ export interface RemoteImageArgs {
      */
     forceRemove?: pulumi.Input<boolean>;
     /**
-     * If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from
-     * the docker local storage on destroy operation.
+     * If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
      */
     keepLocally?: pulumi.Input<boolean>;
     /**
@@ -257,8 +236,11 @@ export interface RemoteImageArgs {
      */
     pullTrigger?: pulumi.Input<string>;
     /**
-     * List of values which cause an image pull when changed. This is used to store the image digest from the registry when
-     * using the [docker_registry_image](../data-sources/registry_image.md).
+     * List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
      */
     pullTriggers?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * A map of arbitrary strings that, when changed, will force the `docker.RemoteImage` resource to be replaced. This can be used to rebuild an image when contents of source code folders change
+     */
+    triggers?: pulumi.Input<{[key: string]: any}>;
 }

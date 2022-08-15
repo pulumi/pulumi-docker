@@ -13,13 +13,37 @@ namespace Pulumi.Docker.Outputs
     [OutputType]
     public sealed class ServiceTaskSpec
     {
+        /// <summary>
+        /// The spec for each container
+        /// </summary>
         public readonly Outputs.ServiceTaskSpecContainerSpec ContainerSpec;
+        /// <summary>
+        /// A counter that triggers an update even if no relevant parameters have been changed. See the [spec](https://github.com/docker/swarmkit/blob/master/api/specs.proto#L126).
+        /// </summary>
         public readonly int? ForceUpdate;
+        /// <summary>
+        /// Specifies the log driver to use for tasks created from this spec. If not present, the default one for the swarm will be used, finally falling back to the engine default if not specified
+        /// </summary>
         public readonly Outputs.ServiceTaskSpecLogDriver? LogDriver;
+        /// <summary>
+        /// Ids of the networks in which the  container will be put in
+        /// </summary>
         public readonly ImmutableArray<string> Networks;
+        /// <summary>
+        /// The placement preferences
+        /// </summary>
         public readonly Outputs.ServiceTaskSpecPlacement? Placement;
+        /// <summary>
+        /// Resource requirements which apply to each individual container created as part of the service
+        /// </summary>
         public readonly Outputs.ServiceTaskSpecResources? Resources;
+        /// <summary>
+        /// Specification for the restart policy which applies to containers created as part of this service.
+        /// </summary>
         public readonly Outputs.ServiceTaskSpecRestartPolicy? RestartPolicy;
+        /// <summary>
+        /// Runtime is the type of runtime specified for the task executor. See the [types](https://github.com/moby/moby/blob/master/api/types/swarm/runtime.go).
+        /// </summary>
         public readonly string? Runtime;
 
         [OutputConstructor]

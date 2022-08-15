@@ -19,29 +19,34 @@ import (
 // package main
 //
 // import (
-// 	"github.com/pulumi/pulumi-docker/sdk/v3/go/docker"
-// 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//
+//	"github.com/pulumi/pulumi-docker/sdk/v3/go/docker"
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//
 // )
 //
-// func main() {
-// 	pulumi.Run(func(ctx *pulumi.Context) error {
-// 		_, err := docker.NewVolume(ctx, "sharedVolume", nil)
-// 		if err != nil {
-// 			return err
-// 		}
-// 		return nil
-// 	})
-// }
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := docker.NewVolume(ctx, "sharedVolume", nil)
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
 // ```
 //
 // ## Import
 //
 // ### Example Assuming you created a `volume` as follows #!/bin/bash docker volume create # prints the long ID 524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d you provide the definition for the resource as follows terraform resource "docker_volume" "foo" {
 //
-//  name = "524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d" } then the import command is as follows #!/bin/bash
+//	name = "524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d" } then the import command is as follows #!/bin/bash
 //
 // ```sh
-//  $ pulumi import docker:index/volume:Volume foo 524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d
+//
+//	$ pulumi import docker:index/volume:Volume foo 524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d
+//
 // ```
 type Volume struct {
 	pulumi.CustomResourceState
@@ -165,7 +170,7 @@ func (i *Volume) ToVolumeOutputWithContext(ctx context.Context) VolumeOutput {
 // VolumeArrayInput is an input type that accepts VolumeArray and VolumeArrayOutput values.
 // You can construct a concrete instance of `VolumeArrayInput` via:
 //
-//          VolumeArray{ VolumeArgs{...} }
+//	VolumeArray{ VolumeArgs{...} }
 type VolumeArrayInput interface {
 	pulumi.Input
 
@@ -190,7 +195,7 @@ func (i VolumeArray) ToVolumeArrayOutputWithContext(ctx context.Context) VolumeA
 // VolumeMapInput is an input type that accepts VolumeMap and VolumeMapOutput values.
 // You can construct a concrete instance of `VolumeMapInput` via:
 //
-//          VolumeMap{ "key": VolumeArgs{...} }
+//	VolumeMap{ "key": VolumeArgs{...} }
 type VolumeMapInput interface {
 	pulumi.Input
 

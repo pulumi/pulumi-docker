@@ -10,16 +10,23 @@ using Pulumi.Serialization;
 namespace Pulumi.Docker.Inputs
 {
 
-    public sealed class ServiceModeArgs : Pulumi.ResourceArgs
+    public sealed class ServiceModeArgs : global::Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// The global service mode. Defaults to `false`
+        /// </summary>
         [Input("global")]
         public Input<bool>? Global { get; set; }
 
+        /// <summary>
+        /// The replicated service mode
+        /// </summary>
         [Input("replicated")]
         public Input<Inputs.ServiceModeReplicatedArgs>? Replicated { get; set; }
 
         public ServiceModeArgs()
         {
         }
+        public static new ServiceModeArgs Empty => new ServiceModeArgs();
     }
 }

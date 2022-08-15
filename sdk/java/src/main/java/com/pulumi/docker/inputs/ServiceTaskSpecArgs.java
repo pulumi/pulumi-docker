@@ -22,58 +22,122 @@ public final class ServiceTaskSpecArgs extends com.pulumi.resources.ResourceArgs
 
     public static final ServiceTaskSpecArgs Empty = new ServiceTaskSpecArgs();
 
+    /**
+     * The spec for each container
+     * 
+     */
     @Import(name="containerSpec", required=true)
     private Output<ServiceTaskSpecContainerSpecArgs> containerSpec;
 
+    /**
+     * @return The spec for each container
+     * 
+     */
     public Output<ServiceTaskSpecContainerSpecArgs> containerSpec() {
         return this.containerSpec;
     }
 
+    /**
+     * A counter that triggers an update even if no relevant parameters have been changed. See the [spec](https://github.com/docker/swarmkit/blob/master/api/specs.proto#L126).
+     * 
+     */
     @Import(name="forceUpdate")
     private @Nullable Output<Integer> forceUpdate;
 
+    /**
+     * @return A counter that triggers an update even if no relevant parameters have been changed. See the [spec](https://github.com/docker/swarmkit/blob/master/api/specs.proto#L126).
+     * 
+     */
     public Optional<Output<Integer>> forceUpdate() {
         return Optional.ofNullable(this.forceUpdate);
     }
 
+    /**
+     * Specifies the log driver to use for tasks created from this spec. If not present, the default one for the swarm will be used, finally falling back to the engine default if not specified
+     * 
+     */
     @Import(name="logDriver")
     private @Nullable Output<ServiceTaskSpecLogDriverArgs> logDriver;
 
+    /**
+     * @return Specifies the log driver to use for tasks created from this spec. If not present, the default one for the swarm will be used, finally falling back to the engine default if not specified
+     * 
+     */
     public Optional<Output<ServiceTaskSpecLogDriverArgs>> logDriver() {
         return Optional.ofNullable(this.logDriver);
     }
 
+    /**
+     * Ids of the networks in which the  container will be put in
+     * 
+     */
     @Import(name="networks")
     private @Nullable Output<List<String>> networks;
 
+    /**
+     * @return Ids of the networks in which the  container will be put in
+     * 
+     */
     public Optional<Output<List<String>>> networks() {
         return Optional.ofNullable(this.networks);
     }
 
+    /**
+     * The placement preferences
+     * 
+     */
     @Import(name="placement")
     private @Nullable Output<ServiceTaskSpecPlacementArgs> placement;
 
+    /**
+     * @return The placement preferences
+     * 
+     */
     public Optional<Output<ServiceTaskSpecPlacementArgs>> placement() {
         return Optional.ofNullable(this.placement);
     }
 
+    /**
+     * Resource requirements which apply to each individual container created as part of the service
+     * 
+     */
     @Import(name="resources")
     private @Nullable Output<ServiceTaskSpecResourcesArgs> resources;
 
+    /**
+     * @return Resource requirements which apply to each individual container created as part of the service
+     * 
+     */
     public Optional<Output<ServiceTaskSpecResourcesArgs>> resources() {
         return Optional.ofNullable(this.resources);
     }
 
+    /**
+     * Specification for the restart policy which applies to containers created as part of this service.
+     * 
+     */
     @Import(name="restartPolicy")
     private @Nullable Output<ServiceTaskSpecRestartPolicyArgs> restartPolicy;
 
+    /**
+     * @return Specification for the restart policy which applies to containers created as part of this service.
+     * 
+     */
     public Optional<Output<ServiceTaskSpecRestartPolicyArgs>> restartPolicy() {
         return Optional.ofNullable(this.restartPolicy);
     }
 
+    /**
+     * Runtime is the type of runtime specified for the task executor. See the [types](https://github.com/moby/moby/blob/master/api/types/swarm/runtime.go).
+     * 
+     */
     @Import(name="runtime")
     private @Nullable Output<String> runtime;
 
+    /**
+     * @return Runtime is the type of runtime specified for the task executor. See the [types](https://github.com/moby/moby/blob/master/api/types/swarm/runtime.go).
+     * 
+     */
     public Optional<Output<String>> runtime() {
         return Optional.ofNullable(this.runtime);
     }
@@ -109,78 +173,180 @@ public final class ServiceTaskSpecArgs extends com.pulumi.resources.ResourceArgs
             $ = new ServiceTaskSpecArgs(Objects.requireNonNull(defaults));
         }
 
+        /**
+         * @param containerSpec The spec for each container
+         * 
+         * @return builder
+         * 
+         */
         public Builder containerSpec(Output<ServiceTaskSpecContainerSpecArgs> containerSpec) {
             $.containerSpec = containerSpec;
             return this;
         }
 
+        /**
+         * @param containerSpec The spec for each container
+         * 
+         * @return builder
+         * 
+         */
         public Builder containerSpec(ServiceTaskSpecContainerSpecArgs containerSpec) {
             return containerSpec(Output.of(containerSpec));
         }
 
+        /**
+         * @param forceUpdate A counter that triggers an update even if no relevant parameters have been changed. See the [spec](https://github.com/docker/swarmkit/blob/master/api/specs.proto#L126).
+         * 
+         * @return builder
+         * 
+         */
         public Builder forceUpdate(@Nullable Output<Integer> forceUpdate) {
             $.forceUpdate = forceUpdate;
             return this;
         }
 
+        /**
+         * @param forceUpdate A counter that triggers an update even if no relevant parameters have been changed. See the [spec](https://github.com/docker/swarmkit/blob/master/api/specs.proto#L126).
+         * 
+         * @return builder
+         * 
+         */
         public Builder forceUpdate(Integer forceUpdate) {
             return forceUpdate(Output.of(forceUpdate));
         }
 
+        /**
+         * @param logDriver Specifies the log driver to use for tasks created from this spec. If not present, the default one for the swarm will be used, finally falling back to the engine default if not specified
+         * 
+         * @return builder
+         * 
+         */
         public Builder logDriver(@Nullable Output<ServiceTaskSpecLogDriverArgs> logDriver) {
             $.logDriver = logDriver;
             return this;
         }
 
+        /**
+         * @param logDriver Specifies the log driver to use for tasks created from this spec. If not present, the default one for the swarm will be used, finally falling back to the engine default if not specified
+         * 
+         * @return builder
+         * 
+         */
         public Builder logDriver(ServiceTaskSpecLogDriverArgs logDriver) {
             return logDriver(Output.of(logDriver));
         }
 
+        /**
+         * @param networks Ids of the networks in which the  container will be put in
+         * 
+         * @return builder
+         * 
+         */
         public Builder networks(@Nullable Output<List<String>> networks) {
             $.networks = networks;
             return this;
         }
 
+        /**
+         * @param networks Ids of the networks in which the  container will be put in
+         * 
+         * @return builder
+         * 
+         */
         public Builder networks(List<String> networks) {
             return networks(Output.of(networks));
         }
 
+        /**
+         * @param networks Ids of the networks in which the  container will be put in
+         * 
+         * @return builder
+         * 
+         */
         public Builder networks(String... networks) {
             return networks(List.of(networks));
         }
 
+        /**
+         * @param placement The placement preferences
+         * 
+         * @return builder
+         * 
+         */
         public Builder placement(@Nullable Output<ServiceTaskSpecPlacementArgs> placement) {
             $.placement = placement;
             return this;
         }
 
+        /**
+         * @param placement The placement preferences
+         * 
+         * @return builder
+         * 
+         */
         public Builder placement(ServiceTaskSpecPlacementArgs placement) {
             return placement(Output.of(placement));
         }
 
+        /**
+         * @param resources Resource requirements which apply to each individual container created as part of the service
+         * 
+         * @return builder
+         * 
+         */
         public Builder resources(@Nullable Output<ServiceTaskSpecResourcesArgs> resources) {
             $.resources = resources;
             return this;
         }
 
+        /**
+         * @param resources Resource requirements which apply to each individual container created as part of the service
+         * 
+         * @return builder
+         * 
+         */
         public Builder resources(ServiceTaskSpecResourcesArgs resources) {
             return resources(Output.of(resources));
         }
 
+        /**
+         * @param restartPolicy Specification for the restart policy which applies to containers created as part of this service.
+         * 
+         * @return builder
+         * 
+         */
         public Builder restartPolicy(@Nullable Output<ServiceTaskSpecRestartPolicyArgs> restartPolicy) {
             $.restartPolicy = restartPolicy;
             return this;
         }
 
+        /**
+         * @param restartPolicy Specification for the restart policy which applies to containers created as part of this service.
+         * 
+         * @return builder
+         * 
+         */
         public Builder restartPolicy(ServiceTaskSpecRestartPolicyArgs restartPolicy) {
             return restartPolicy(Output.of(restartPolicy));
         }
 
+        /**
+         * @param runtime Runtime is the type of runtime specified for the task executor. See the [types](https://github.com/moby/moby/blob/master/api/types/swarm/runtime.go).
+         * 
+         * @return builder
+         * 
+         */
         public Builder runtime(@Nullable Output<String> runtime) {
             $.runtime = runtime;
             return this;
         }
 
+        /**
+         * @param runtime Runtime is the type of runtime specified for the task executor. See the [types](https://github.com/moby/moby/blob/master/api/types/swarm/runtime.go).
+         * 
+         * @return builder
+         * 
+         */
         public Builder runtime(String runtime) {
             return runtime(Output.of(runtime));
         }

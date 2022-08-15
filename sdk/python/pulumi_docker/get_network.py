@@ -48,36 +48,57 @@ class GetNetworkResult:
     @property
     @pulumi.getter
     def driver(self) -> str:
+        """
+        The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
+        """
         return pulumi.get(self, "driver")
 
     @property
     @pulumi.getter
     def id(self) -> str:
+        """
+        The ID of this resource.
+        """
         return pulumi.get(self, "id")
 
     @property
     @pulumi.getter
     def internal(self) -> bool:
+        """
+        If `true`, the network is internal.
+        """
         return pulumi.get(self, "internal")
 
     @property
     @pulumi.getter(name="ipamConfigs")
     def ipam_configs(self) -> Sequence['outputs.GetNetworkIpamConfigResult']:
+        """
+        The IPAM configuration options
+        """
         return pulumi.get(self, "ipam_configs")
 
     @property
     @pulumi.getter
     def name(self) -> str:
+        """
+        The name of the Docker network.
+        """
         return pulumi.get(self, "name")
 
     @property
     @pulumi.getter
     def options(self) -> Mapping[str, Any]:
+        """
+        Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
+        """
         return pulumi.get(self, "options")
 
     @property
     @pulumi.getter
     def scope(self) -> str:
+        """
+        Scope of the network. One of `swarm`, `global`, or `local`.
+        """
         return pulumi.get(self, "scope")
 
 
@@ -109,6 +130,9 @@ def get_network(name: Optional[str] = None,
 
     main = docker.get_network(name="main")
     ```
+
+
+    :param str name: The name of the Docker network.
     """
     __args__ = dict()
     __args__['name'] = name
@@ -139,5 +163,8 @@ def get_network_output(name: Optional[pulumi.Input[str]] = None,
 
     main = docker.get_network(name="main")
     ```
+
+
+    :param str name: The name of the Docker network.
     """
     ...

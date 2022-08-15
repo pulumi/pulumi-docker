@@ -16,9 +16,17 @@ public final class ContainerUploadArgs extends com.pulumi.resources.ResourceArgs
 
     public static final ContainerUploadArgs Empty = new ContainerUploadArgs();
 
+    /**
+     * Literal string value to use as the object content, which will be uploaded as UTF-8-encoded text. Conflicts with `content_base64` &amp; `source`
+     * 
+     */
     @Import(name="content")
     private @Nullable Output<String> content;
 
+    /**
+     * @return Literal string value to use as the object content, which will be uploaded as UTF-8-encoded text. Conflicts with `content_base64` &amp; `source`
+     * 
+     */
     public Optional<Output<String>> content() {
         return Optional.ofNullable(this.content);
     }
@@ -30,30 +38,62 @@ public final class ContainerUploadArgs extends com.pulumi.resources.ResourceArgs
         return Optional.ofNullable(this.contentBase64);
     }
 
+    /**
+     * If `true`, the file will be uploaded with user executable permission. Defaults to `false`.
+     * 
+     */
     @Import(name="executable")
     private @Nullable Output<Boolean> executable;
 
+    /**
+     * @return If `true`, the file will be uploaded with user executable permission. Defaults to `false`.
+     * 
+     */
     public Optional<Output<Boolean>> executable() {
         return Optional.ofNullable(this.executable);
     }
 
+    /**
+     * Path to the file in the container where is upload goes to
+     * 
+     */
     @Import(name="file", required=true)
     private Output<String> file;
 
+    /**
+     * @return Path to the file in the container where is upload goes to
+     * 
+     */
     public Output<String> file() {
         return this.file;
     }
 
+    /**
+     * A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state. Conflicts with `content` &amp; `content_base64`
+     * 
+     */
     @Import(name="source")
     private @Nullable Output<String> source;
 
+    /**
+     * @return A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state. Conflicts with `content` &amp; `content_base64`
+     * 
+     */
     public Optional<Output<String>> source() {
         return Optional.ofNullable(this.source);
     }
 
+    /**
+     * If using `source`, this will force an update if the file content has updated but the filename has not.
+     * 
+     */
     @Import(name="sourceHash")
     private @Nullable Output<String> sourceHash;
 
+    /**
+     * @return If using `source`, this will force an update if the file content has updated but the filename has not.
+     * 
+     */
     public Optional<Output<String>> sourceHash() {
         return Optional.ofNullable(this.sourceHash);
     }
@@ -87,11 +127,23 @@ public final class ContainerUploadArgs extends com.pulumi.resources.ResourceArgs
             $ = new ContainerUploadArgs(Objects.requireNonNull(defaults));
         }
 
+        /**
+         * @param content Literal string value to use as the object content, which will be uploaded as UTF-8-encoded text. Conflicts with `content_base64` &amp; `source`
+         * 
+         * @return builder
+         * 
+         */
         public Builder content(@Nullable Output<String> content) {
             $.content = content;
             return this;
         }
 
+        /**
+         * @param content Literal string value to use as the object content, which will be uploaded as UTF-8-encoded text. Conflicts with `content_base64` &amp; `source`
+         * 
+         * @return builder
+         * 
+         */
         public Builder content(String content) {
             return content(Output.of(content));
         }
@@ -105,38 +157,86 @@ public final class ContainerUploadArgs extends com.pulumi.resources.ResourceArgs
             return contentBase64(Output.of(contentBase64));
         }
 
+        /**
+         * @param executable If `true`, the file will be uploaded with user executable permission. Defaults to `false`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder executable(@Nullable Output<Boolean> executable) {
             $.executable = executable;
             return this;
         }
 
+        /**
+         * @param executable If `true`, the file will be uploaded with user executable permission. Defaults to `false`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder executable(Boolean executable) {
             return executable(Output.of(executable));
         }
 
+        /**
+         * @param file Path to the file in the container where is upload goes to
+         * 
+         * @return builder
+         * 
+         */
         public Builder file(Output<String> file) {
             $.file = file;
             return this;
         }
 
+        /**
+         * @param file Path to the file in the container where is upload goes to
+         * 
+         * @return builder
+         * 
+         */
         public Builder file(String file) {
             return file(Output.of(file));
         }
 
+        /**
+         * @param source A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state. Conflicts with `content` &amp; `content_base64`
+         * 
+         * @return builder
+         * 
+         */
         public Builder source(@Nullable Output<String> source) {
             $.source = source;
             return this;
         }
 
+        /**
+         * @param source A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state. Conflicts with `content` &amp; `content_base64`
+         * 
+         * @return builder
+         * 
+         */
         public Builder source(String source) {
             return source(Output.of(source));
         }
 
+        /**
+         * @param sourceHash If using `source`, this will force an update if the file content has updated but the filename has not.
+         * 
+         * @return builder
+         * 
+         */
         public Builder sourceHash(@Nullable Output<String> sourceHash) {
             $.sourceHash = sourceHash;
             return this;
         }
 
+        /**
+         * @param sourceHash If using `source`, this will force an update if the file content has updated but the filename has not.
+         * 
+         * @return builder
+         * 
+         */
         public Builder sourceHash(String sourceHash) {
             return sourceHash(Output.of(sourceHash));
         }

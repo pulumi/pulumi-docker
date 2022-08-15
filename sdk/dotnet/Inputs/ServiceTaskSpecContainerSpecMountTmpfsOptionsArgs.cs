@@ -10,8 +10,11 @@ using Pulumi.Serialization;
 namespace Pulumi.Docker.Inputs
 {
 
-    public sealed class ServiceTaskSpecContainerSpecMountTmpfsOptionsArgs : Pulumi.ResourceArgs
+    public sealed class ServiceTaskSpecContainerSpecMountTmpfsOptionsArgs : global::Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Scheduling mode for the service
+        /// </summary>
         [Input("mode")]
         public Input<int>? Mode { get; set; }
 
@@ -21,5 +24,6 @@ namespace Pulumi.Docker.Inputs
         public ServiceTaskSpecContainerSpecMountTmpfsOptionsArgs()
         {
         }
+        public static new ServiceTaskSpecContainerSpecMountTmpfsOptionsArgs Empty => new ServiceTaskSpecContainerSpecMountTmpfsOptionsArgs();
     }
 }

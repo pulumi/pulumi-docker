@@ -11,6 +11,10 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceTaskSpecContainerSpecMountTmpfsOptions {
+    /**
+     * @return Scheduling mode for the service
+     * 
+     */
     private final @Nullable Integer mode;
     private final @Nullable Integer sizeBytes;
 
@@ -22,6 +26,10 @@ public final class ServiceTaskSpecContainerSpecMountTmpfsOptions {
         this.sizeBytes = sizeBytes;
     }
 
+    /**
+     * @return Scheduling mode for the service
+     * 
+     */
     public Optional<Integer> mode() {
         return Optional.ofNullable(this.mode);
     }

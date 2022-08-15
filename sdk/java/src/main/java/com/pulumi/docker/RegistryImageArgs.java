@@ -48,16 +48,14 @@ public final class RegistryImageArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * If true, then the Docker image won&#39;t be deleted on destroy operation. If this is false, it will delete the image from
-     * the docker registry on destroy operation. Defaults to `false`
+     * If true, then the Docker image won&#39;t be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
      * 
      */
     @Import(name="keepRemotely")
     private @Nullable Output<Boolean> keepRemotely;
 
     /**
-     * @return If true, then the Docker image won&#39;t be deleted on destroy operation. If this is false, it will delete the image from
-     * the docker registry on destroy operation. Defaults to `false`
+     * @return If true, then the Docker image won&#39;t be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
      * 
      */
     public Optional<Output<Boolean>> keepRemotely() {
@@ -149,8 +147,7 @@ public final class RegistryImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param keepRemotely If true, then the Docker image won&#39;t be deleted on destroy operation. If this is false, it will delete the image from
-         * the docker registry on destroy operation. Defaults to `false`
+         * @param keepRemotely If true, then the Docker image won&#39;t be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
          * 
          * @return builder
          * 
@@ -161,8 +158,7 @@ public final class RegistryImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param keepRemotely If true, then the Docker image won&#39;t be deleted on destroy operation. If this is false, it will delete the image from
-         * the docker registry on destroy operation. Defaults to `false`
+         * @param keepRemotely If true, then the Docker image won&#39;t be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
          * 
          * @return builder
          * 

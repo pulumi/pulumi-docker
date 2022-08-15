@@ -19,51 +19,107 @@ public final class ContainerMountArgs extends com.pulumi.resources.ResourceArgs 
 
     public static final ContainerMountArgs Empty = new ContainerMountArgs();
 
+    /**
+     * Optional configuration for the bind type.
+     * 
+     */
     @Import(name="bindOptions")
     private @Nullable Output<ContainerMountBindOptionsArgs> bindOptions;
 
+    /**
+     * @return Optional configuration for the bind type.
+     * 
+     */
     public Optional<Output<ContainerMountBindOptionsArgs>> bindOptions() {
         return Optional.ofNullable(this.bindOptions);
     }
 
+    /**
+     * Whether the mount should be read-only.
+     * 
+     */
     @Import(name="readOnly")
     private @Nullable Output<Boolean> readOnly;
 
+    /**
+     * @return Whether the mount should be read-only.
+     * 
+     */
     public Optional<Output<Boolean>> readOnly() {
         return Optional.ofNullable(this.readOnly);
     }
 
+    /**
+     * Mount source (e.g. a volume name, a host path).
+     * 
+     */
     @Import(name="source")
     private @Nullable Output<String> source;
 
+    /**
+     * @return Mount source (e.g. a volume name, a host path).
+     * 
+     */
     public Optional<Output<String>> source() {
         return Optional.ofNullable(this.source);
     }
 
+    /**
+     * Container path
+     * 
+     */
     @Import(name="target", required=true)
     private Output<String> target;
 
+    /**
+     * @return Container path
+     * 
+     */
     public Output<String> target() {
         return this.target;
     }
 
+    /**
+     * Optional configuration for the tmpfs type.
+     * 
+     */
     @Import(name="tmpfsOptions")
     private @Nullable Output<ContainerMountTmpfsOptionsArgs> tmpfsOptions;
 
+    /**
+     * @return Optional configuration for the tmpfs type.
+     * 
+     */
     public Optional<Output<ContainerMountTmpfsOptionsArgs>> tmpfsOptions() {
         return Optional.ofNullable(this.tmpfsOptions);
     }
 
+    /**
+     * The mount type
+     * 
+     */
     @Import(name="type", required=true)
     private Output<String> type;
 
+    /**
+     * @return The mount type
+     * 
+     */
     public Output<String> type() {
         return this.type;
     }
 
+    /**
+     * Optional configuration for the volume type.
+     * 
+     */
     @Import(name="volumeOptions")
     private @Nullable Output<ContainerMountVolumeOptionsArgs> volumeOptions;
 
+    /**
+     * @return Optional configuration for the volume type.
+     * 
+     */
     public Optional<Output<ContainerMountVolumeOptionsArgs>> volumeOptions() {
         return Optional.ofNullable(this.volumeOptions);
     }
@@ -98,65 +154,149 @@ public final class ContainerMountArgs extends com.pulumi.resources.ResourceArgs 
             $ = new ContainerMountArgs(Objects.requireNonNull(defaults));
         }
 
+        /**
+         * @param bindOptions Optional configuration for the bind type.
+         * 
+         * @return builder
+         * 
+         */
         public Builder bindOptions(@Nullable Output<ContainerMountBindOptionsArgs> bindOptions) {
             $.bindOptions = bindOptions;
             return this;
         }
 
+        /**
+         * @param bindOptions Optional configuration for the bind type.
+         * 
+         * @return builder
+         * 
+         */
         public Builder bindOptions(ContainerMountBindOptionsArgs bindOptions) {
             return bindOptions(Output.of(bindOptions));
         }
 
+        /**
+         * @param readOnly Whether the mount should be read-only.
+         * 
+         * @return builder
+         * 
+         */
         public Builder readOnly(@Nullable Output<Boolean> readOnly) {
             $.readOnly = readOnly;
             return this;
         }
 
+        /**
+         * @param readOnly Whether the mount should be read-only.
+         * 
+         * @return builder
+         * 
+         */
         public Builder readOnly(Boolean readOnly) {
             return readOnly(Output.of(readOnly));
         }
 
+        /**
+         * @param source Mount source (e.g. a volume name, a host path).
+         * 
+         * @return builder
+         * 
+         */
         public Builder source(@Nullable Output<String> source) {
             $.source = source;
             return this;
         }
 
+        /**
+         * @param source Mount source (e.g. a volume name, a host path).
+         * 
+         * @return builder
+         * 
+         */
         public Builder source(String source) {
             return source(Output.of(source));
         }
 
+        /**
+         * @param target Container path
+         * 
+         * @return builder
+         * 
+         */
         public Builder target(Output<String> target) {
             $.target = target;
             return this;
         }
 
+        /**
+         * @param target Container path
+         * 
+         * @return builder
+         * 
+         */
         public Builder target(String target) {
             return target(Output.of(target));
         }
 
+        /**
+         * @param tmpfsOptions Optional configuration for the tmpfs type.
+         * 
+         * @return builder
+         * 
+         */
         public Builder tmpfsOptions(@Nullable Output<ContainerMountTmpfsOptionsArgs> tmpfsOptions) {
             $.tmpfsOptions = tmpfsOptions;
             return this;
         }
 
+        /**
+         * @param tmpfsOptions Optional configuration for the tmpfs type.
+         * 
+         * @return builder
+         * 
+         */
         public Builder tmpfsOptions(ContainerMountTmpfsOptionsArgs tmpfsOptions) {
             return tmpfsOptions(Output.of(tmpfsOptions));
         }
 
+        /**
+         * @param type The mount type
+         * 
+         * @return builder
+         * 
+         */
         public Builder type(Output<String> type) {
             $.type = type;
             return this;
         }
 
+        /**
+         * @param type The mount type
+         * 
+         * @return builder
+         * 
+         */
         public Builder type(String type) {
             return type(Output.of(type));
         }
 
+        /**
+         * @param volumeOptions Optional configuration for the volume type.
+         * 
+         * @return builder
+         * 
+         */
         public Builder volumeOptions(@Nullable Output<ContainerMountVolumeOptionsArgs> volumeOptions) {
             $.volumeOptions = volumeOptions;
             return this;
         }
 
+        /**
+         * @param volumeOptions Optional configuration for the volume type.
+         * 
+         * @return builder
+         * 
+         */
         public Builder volumeOptions(ContainerMountVolumeOptionsArgs volumeOptions) {
             return volumeOptions(Output.of(volumeOptions));
         }
