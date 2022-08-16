@@ -16,29 +16,27 @@ namespace Pulumi.Docker
     /// ## Example Usage
     /// 
     /// ```csharp
+    /// using System.Collections.Generic;
     /// using Pulumi;
     /// using Docker = Pulumi.Docker;
     /// 
-    /// class MyStack : Stack
+    /// return await Deployment.RunAsync(() =&gt; 
     /// {
-    ///     public MyStack()
+    ///     var sample_volume_plugin = new Docker.Plugin("sample-volume-plugin", new()
     ///     {
-    ///         var sample_volume_plugin = new Docker.Plugin("sample-volume-plugin", new Docker.PluginArgs
+    ///         Alias = "sample-volume-plugin",
+    ///         EnableTimeout = 60,
+    ///         Enabled = false,
+    ///         Envs = new[]
     ///         {
-    ///             Alias = "sample-volume-plugin",
-    ///             EnableTimeout = 60,
-    ///             Enabled = false,
-    ///             Envs = 
-    ///             {
-    ///                 "DEBUG=1",
-    ///             },
-    ///             ForceDestroy = true,
-    ///             ForceDisable = true,
-    ///             GrantAllPermissions = true,
-    ///         });
-    ///     }
+    ///             "DEBUG=1",
+    ///         },
+    ///         ForceDestroy = true,
+    ///         ForceDisable = true,
+    ///         GrantAllPermissions = true,
+    ///     });
     /// 
-    /// }
+    /// });
     /// ```
     /// 
     /// ## Import
@@ -50,7 +48,7 @@ namespace Pulumi.Docker
     /// ```
     /// </summary>
     [DockerResourceType("docker:index/plugin:Plugin")]
-    public partial class Plugin : Pulumi.CustomResource
+    public partial class Plugin : global::Pulumi.CustomResource
     {
         /// <summary>
         /// Docker Plugin alias
@@ -156,7 +154,7 @@ namespace Pulumi.Docker
         }
     }
 
-    public sealed class PluginArgs : Pulumi.ResourceArgs
+    public sealed class PluginArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
         /// Docker Plugin alias
@@ -227,9 +225,10 @@ namespace Pulumi.Docker
         public PluginArgs()
         {
         }
+        public static new PluginArgs Empty => new PluginArgs();
     }
 
-    public sealed class PluginState : Pulumi.ResourceArgs
+    public sealed class PluginState : global::Pulumi.ResourceArgs
     {
         /// <summary>
         /// Docker Plugin alias
@@ -306,5 +305,6 @@ namespace Pulumi.Docker
         public PluginState()
         {
         }
+        public static new PluginState Empty => new PluginState();
     }
 }

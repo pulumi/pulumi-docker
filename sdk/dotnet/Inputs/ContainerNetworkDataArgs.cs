@@ -10,8 +10,11 @@ using Pulumi.Serialization;
 namespace Pulumi.Docker.Inputs
 {
 
-    public sealed class ContainerNetworkDataArgs : Pulumi.ResourceArgs
+    public sealed class ContainerNetworkDataArgs : global::Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// The network gateway of the container.
+        /// </summary>
         [Input("gateway")]
         public Input<string>? Gateway { get; set; }
 
@@ -21,9 +24,15 @@ namespace Pulumi.Docker.Inputs
         [Input("globalIpv6PrefixLength")]
         public Input<int>? GlobalIpv6PrefixLength { get; set; }
 
+        /// <summary>
+        /// The IP address of the container.
+        /// </summary>
         [Input("ipAddress")]
         public Input<string>? IpAddress { get; set; }
 
+        /// <summary>
+        /// The IP prefix length of the container.
+        /// </summary>
         [Input("ipPrefixLength")]
         public Input<int>? IpPrefixLength { get; set; }
 
@@ -36,5 +45,6 @@ namespace Pulumi.Docker.Inputs
         public ContainerNetworkDataArgs()
         {
         }
+        public static new ContainerNetworkDataArgs Empty => new ContainerNetworkDataArgs();
     }
 }

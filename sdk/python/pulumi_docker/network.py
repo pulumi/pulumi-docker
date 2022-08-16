@@ -31,8 +31,7 @@ class NetworkArgs:
         The set of arguments for constructing a Network resource.
         :param pulumi.Input[bool] attachable: Enable manual container attachment to the network.
         :param pulumi.Input[bool] check_duplicate: Requests daemon to check for networks with same name.
-        :param pulumi.Input[str] driver: The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network
-               docs](https://docs.docker.com/network/#network-drivers) for more details.
+        :param pulumi.Input[str] driver: The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
         :param pulumi.Input[bool] ingress: Create swarm routing-mesh network. Defaults to `false`.
         :param pulumi.Input[bool] internal: Whether the network is internal.
         :param pulumi.Input[Sequence[pulumi.Input['NetworkIpamConfigArgs']]] ipam_configs: The IPAM configuration options
@@ -40,8 +39,7 @@ class NetworkArgs:
         :param pulumi.Input[bool] ipv6: Enable IPv6 networking. Defaults to `false`.
         :param pulumi.Input[Sequence[pulumi.Input['NetworkLabelArgs']]] labels: User-defined key/value metadata
         :param pulumi.Input[str] name: The name of the Docker network.
-        :param pulumi.Input[Mapping[str, Any]] options: Only available with bridge networks. See [bridge options
-               docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
+        :param pulumi.Input[Mapping[str, Any]] options: Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
         """
         if attachable is not None:
             pulumi.set(__self__, "attachable", attachable)
@@ -94,8 +92,7 @@ class NetworkArgs:
     @pulumi.getter
     def driver(self) -> Optional[pulumi.Input[str]]:
         """
-        The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network
-        docs](https://docs.docker.com/network/#network-drivers) for more details.
+        The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
         """
         return pulumi.get(self, "driver")
 
@@ -191,8 +188,7 @@ class NetworkArgs:
     @pulumi.getter
     def options(self) -> Optional[pulumi.Input[Mapping[str, Any]]]:
         """
-        Only available with bridge networks. See [bridge options
-        docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
+        Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
         """
         return pulumi.get(self, "options")
 
@@ -220,8 +216,7 @@ class _NetworkState:
         Input properties used for looking up and filtering Network resources.
         :param pulumi.Input[bool] attachable: Enable manual container attachment to the network.
         :param pulumi.Input[bool] check_duplicate: Requests daemon to check for networks with same name.
-        :param pulumi.Input[str] driver: The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network
-               docs](https://docs.docker.com/network/#network-drivers) for more details.
+        :param pulumi.Input[str] driver: The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
         :param pulumi.Input[bool] ingress: Create swarm routing-mesh network. Defaults to `false`.
         :param pulumi.Input[bool] internal: Whether the network is internal.
         :param pulumi.Input[Sequence[pulumi.Input['NetworkIpamConfigArgs']]] ipam_configs: The IPAM configuration options
@@ -229,8 +224,7 @@ class _NetworkState:
         :param pulumi.Input[bool] ipv6: Enable IPv6 networking. Defaults to `false`.
         :param pulumi.Input[Sequence[pulumi.Input['NetworkLabelArgs']]] labels: User-defined key/value metadata
         :param pulumi.Input[str] name: The name of the Docker network.
-        :param pulumi.Input[Mapping[str, Any]] options: Only available with bridge networks. See [bridge options
-               docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
+        :param pulumi.Input[Mapping[str, Any]] options: Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
         :param pulumi.Input[str] scope: Scope of the network. One of `swarm`, `global`, or `local`.
         """
         if attachable is not None:
@@ -286,8 +280,7 @@ class _NetworkState:
     @pulumi.getter
     def driver(self) -> Optional[pulumi.Input[str]]:
         """
-        The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network
-        docs](https://docs.docker.com/network/#network-drivers) for more details.
+        The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
         """
         return pulumi.get(self, "driver")
 
@@ -383,8 +376,7 @@ class _NetworkState:
     @pulumi.getter
     def options(self) -> Optional[pulumi.Input[Mapping[str, Any]]]:
         """
-        Only available with bridge networks. See [bridge options
-        docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
+        Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
         """
         return pulumi.get(self, "options")
 
@@ -424,7 +416,7 @@ class Network(pulumi.CustomResource):
                  __props__=None):
         """
         <!-- Bug: Type and Name are switched -->
-        `Network` provides details about a specific Docker Network.
+        `Network` provides a docker network resource.
 
         ## Example Usage
 
@@ -449,8 +441,7 @@ class Network(pulumi.CustomResource):
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[bool] attachable: Enable manual container attachment to the network.
         :param pulumi.Input[bool] check_duplicate: Requests daemon to check for networks with same name.
-        :param pulumi.Input[str] driver: The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network
-               docs](https://docs.docker.com/network/#network-drivers) for more details.
+        :param pulumi.Input[str] driver: The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
         :param pulumi.Input[bool] ingress: Create swarm routing-mesh network. Defaults to `false`.
         :param pulumi.Input[bool] internal: Whether the network is internal.
         :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['NetworkIpamConfigArgs']]]] ipam_configs: The IPAM configuration options
@@ -458,8 +449,7 @@ class Network(pulumi.CustomResource):
         :param pulumi.Input[bool] ipv6: Enable IPv6 networking. Defaults to `false`.
         :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['NetworkLabelArgs']]]] labels: User-defined key/value metadata
         :param pulumi.Input[str] name: The name of the Docker network.
-        :param pulumi.Input[Mapping[str, Any]] options: Only available with bridge networks. See [bridge options
-               docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
+        :param pulumi.Input[Mapping[str, Any]] options: Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
         """
         ...
     @overload
@@ -469,7 +459,7 @@ class Network(pulumi.CustomResource):
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
         <!-- Bug: Type and Name are switched -->
-        `Network` provides details about a specific Docker Network.
+        `Network` provides a docker network resource.
 
         ## Example Usage
 
@@ -568,8 +558,7 @@ class Network(pulumi.CustomResource):
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[bool] attachable: Enable manual container attachment to the network.
         :param pulumi.Input[bool] check_duplicate: Requests daemon to check for networks with same name.
-        :param pulumi.Input[str] driver: The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network
-               docs](https://docs.docker.com/network/#network-drivers) for more details.
+        :param pulumi.Input[str] driver: The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
         :param pulumi.Input[bool] ingress: Create swarm routing-mesh network. Defaults to `false`.
         :param pulumi.Input[bool] internal: Whether the network is internal.
         :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['NetworkIpamConfigArgs']]]] ipam_configs: The IPAM configuration options
@@ -577,8 +566,7 @@ class Network(pulumi.CustomResource):
         :param pulumi.Input[bool] ipv6: Enable IPv6 networking. Defaults to `false`.
         :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['NetworkLabelArgs']]]] labels: User-defined key/value metadata
         :param pulumi.Input[str] name: The name of the Docker network.
-        :param pulumi.Input[Mapping[str, Any]] options: Only available with bridge networks. See [bridge options
-               docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
+        :param pulumi.Input[Mapping[str, Any]] options: Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
         :param pulumi.Input[str] scope: Scope of the network. One of `swarm`, `global`, or `local`.
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
@@ -619,8 +607,7 @@ class Network(pulumi.CustomResource):
     @pulumi.getter
     def driver(self) -> pulumi.Output[str]:
         """
-        The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network
-        docs](https://docs.docker.com/network/#network-drivers) for more details.
+        The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
         """
         return pulumi.get(self, "driver")
 
@@ -684,8 +671,7 @@ class Network(pulumi.CustomResource):
     @pulumi.getter
     def options(self) -> pulumi.Output[Mapping[str, Any]]:
         """
-        Only available with bridge networks. See [bridge options
-        docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
+        Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
         """
         return pulumi.get(self, "options")
 

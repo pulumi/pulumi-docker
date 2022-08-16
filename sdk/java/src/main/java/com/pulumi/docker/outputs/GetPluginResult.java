@@ -13,12 +13,40 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class GetPluginResult {
+    /**
+     * @return The alias of the Docker plugin. If the tag is omitted, `:latest` is complemented to the attribute value.
+     * 
+     */
     private final @Nullable String alias;
+    /**
+     * @return If `true` the plugin is enabled
+     * 
+     */
     private final Boolean enabled;
+    /**
+     * @return The environment variables in the form of `KEY=VALUE`, e.g. `DEBUG=0`
+     * 
+     */
     private final List<String> envs;
+    /**
+     * @return If true, grant all permissions necessary to run the plugin
+     * 
+     */
     private final Boolean grantAllPermissions;
+    /**
+     * @return The ID of the plugin, which has precedence over the `alias` of both are given
+     * 
+     */
     private final @Nullable String id;
+    /**
+     * @return The plugin name. If the tag is omitted, `:latest` is complemented to the attribute value.
+     * 
+     */
     private final String name;
+    /**
+     * @return The Docker Plugin Reference
+     * 
+     */
     private final String pluginReference;
 
     @CustomType.Constructor
@@ -39,24 +67,52 @@ public final class GetPluginResult {
         this.pluginReference = pluginReference;
     }
 
+    /**
+     * @return The alias of the Docker plugin. If the tag is omitted, `:latest` is complemented to the attribute value.
+     * 
+     */
     public Optional<String> alias() {
         return Optional.ofNullable(this.alias);
     }
+    /**
+     * @return If `true` the plugin is enabled
+     * 
+     */
     public Boolean enabled() {
         return this.enabled;
     }
+    /**
+     * @return The environment variables in the form of `KEY=VALUE`, e.g. `DEBUG=0`
+     * 
+     */
     public List<String> envs() {
         return this.envs;
     }
+    /**
+     * @return If true, grant all permissions necessary to run the plugin
+     * 
+     */
     public Boolean grantAllPermissions() {
         return this.grantAllPermissions;
     }
+    /**
+     * @return The ID of the plugin, which has precedence over the `alias` of both are given
+     * 
+     */
     public Optional<String> id() {
         return Optional.ofNullable(this.id);
     }
+    /**
+     * @return The plugin name. If the tag is omitted, `:latest` is complemented to the attribute value.
+     * 
+     */
     public String name() {
         return this.name;
     }
+    /**
+     * @return The Docker Plugin Reference
+     * 
+     */
     public String pluginReference() {
         return this.pluginReference;
     }

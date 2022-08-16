@@ -14,14 +14,50 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class RemoteImageBuild {
+    /**
+     * @return Set build-time variables
+     * 
+     */
     private final @Nullable Map<String,String> buildArg;
+    /**
+     * @return Name of the Dockerfile. Defaults to `Dockerfile`.
+     * 
+     */
     private final @Nullable String dockerfile;
+    /**
+     * @return Always remove intermediate containers
+     * 
+     */
     private final @Nullable Boolean forceRemove;
+    /**
+     * @return Set metadata for an image
+     * 
+     */
     private final @Nullable Map<String,String> label;
+    /**
+     * @return Do not use cache when building the image
+     * 
+     */
     private final @Nullable Boolean noCache;
+    /**
+     * @return Context path
+     * 
+     */
     private final String path;
+    /**
+     * @return Remove intermediate containers after a successful build. Defaults to  `true`.
+     * 
+     */
     private final @Nullable Boolean remove;
+    /**
+     * @return Name and optionally a tag in the &#39;name:tag&#39; format
+     * 
+     */
     private final @Nullable List<String> tags;
+    /**
+     * @return Set the target build stage to build
+     * 
+     */
     private final @Nullable String target;
 
     @CustomType.Constructor
@@ -46,30 +82,66 @@ public final class RemoteImageBuild {
         this.target = target;
     }
 
+    /**
+     * @return Set build-time variables
+     * 
+     */
     public Map<String,String> buildArg() {
         return this.buildArg == null ? Map.of() : this.buildArg;
     }
+    /**
+     * @return Name of the Dockerfile. Defaults to `Dockerfile`.
+     * 
+     */
     public Optional<String> dockerfile() {
         return Optional.ofNullable(this.dockerfile);
     }
+    /**
+     * @return Always remove intermediate containers
+     * 
+     */
     public Optional<Boolean> forceRemove() {
         return Optional.ofNullable(this.forceRemove);
     }
+    /**
+     * @return Set metadata for an image
+     * 
+     */
     public Map<String,String> label() {
         return this.label == null ? Map.of() : this.label;
     }
+    /**
+     * @return Do not use cache when building the image
+     * 
+     */
     public Optional<Boolean> noCache() {
         return Optional.ofNullable(this.noCache);
     }
+    /**
+     * @return Context path
+     * 
+     */
     public String path() {
         return this.path;
     }
+    /**
+     * @return Remove intermediate containers after a successful build. Defaults to  `true`.
+     * 
+     */
     public Optional<Boolean> remove() {
         return Optional.ofNullable(this.remove);
     }
+    /**
+     * @return Name and optionally a tag in the &#39;name:tag&#39; format
+     * 
+     */
     public List<String> tags() {
         return this.tags == null ? List.of() : this.tags;
     }
+    /**
+     * @return Set the target build stage to build
+     * 
+     */
     public Optional<String> target() {
         return Optional.ofNullable(this.target);
     }

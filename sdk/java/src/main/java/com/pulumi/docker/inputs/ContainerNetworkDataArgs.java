@@ -17,6 +17,8 @@ public final class ContainerNetworkDataArgs extends com.pulumi.resources.Resourc
     public static final ContainerNetworkDataArgs Empty = new ContainerNetworkDataArgs();
 
     /**
+     * The network gateway of the container.
+     * 
      * @deprecated
      * Use `network_data` instead. The network gateway of the container as read from its NetworkSettings.
      * 
@@ -26,6 +28,8 @@ public final class ContainerNetworkDataArgs extends com.pulumi.resources.Resourc
     private @Nullable Output<String> gateway;
 
     /**
+     * @return The network gateway of the container.
+     * 
      * @deprecated
      * Use `network_data` instead. The network gateway of the container as read from its NetworkSettings.
      * 
@@ -50,6 +54,8 @@ public final class ContainerNetworkDataArgs extends com.pulumi.resources.Resourc
     }
 
     /**
+     * The IP address of the container.
+     * 
      * @deprecated
      * Use `network_data` instead. The IP address of the container&#39;s first network it.
      * 
@@ -59,6 +65,8 @@ public final class ContainerNetworkDataArgs extends com.pulumi.resources.Resourc
     private @Nullable Output<String> ipAddress;
 
     /**
+     * @return The IP address of the container.
+     * 
      * @deprecated
      * Use `network_data` instead. The IP address of the container&#39;s first network it.
      * 
@@ -69,6 +77,8 @@ public final class ContainerNetworkDataArgs extends com.pulumi.resources.Resourc
     }
 
     /**
+     * The IP prefix length of the container.
+     * 
      * @deprecated
      * Use `network_data` instead. The IP prefix length of the container as read from its NetworkSettings.
      * 
@@ -78,6 +88,8 @@ public final class ContainerNetworkDataArgs extends com.pulumi.resources.Resourc
     private @Nullable Output<Integer> ipPrefixLength;
 
     /**
+     * @return The IP prefix length of the container.
+     * 
      * @deprecated
      * Use `network_data` instead. The IP prefix length of the container as read from its NetworkSettings.
      * 
@@ -132,6 +144,8 @@ public final class ContainerNetworkDataArgs extends com.pulumi.resources.Resourc
         }
 
         /**
+         * @param gateway The network gateway of the container.
+         * 
          * @return builder
          * 
          * @deprecated
@@ -145,6 +159,8 @@ public final class ContainerNetworkDataArgs extends com.pulumi.resources.Resourc
         }
 
         /**
+         * @param gateway The network gateway of the container.
+         * 
          * @return builder
          * 
          * @deprecated
@@ -175,6 +191,8 @@ public final class ContainerNetworkDataArgs extends com.pulumi.resources.Resourc
         }
 
         /**
+         * @param ipAddress The IP address of the container.
+         * 
          * @return builder
          * 
          * @deprecated
@@ -188,6 +206,8 @@ public final class ContainerNetworkDataArgs extends com.pulumi.resources.Resourc
         }
 
         /**
+         * @param ipAddress The IP address of the container.
+         * 
          * @return builder
          * 
          * @deprecated
@@ -200,6 +220,8 @@ public final class ContainerNetworkDataArgs extends com.pulumi.resources.Resourc
         }
 
         /**
+         * @param ipPrefixLength The IP prefix length of the container.
+         * 
          * @return builder
          * 
          * @deprecated
@@ -213,6 +235,8 @@ public final class ContainerNetworkDataArgs extends com.pulumi.resources.Resourc
         }
 
         /**
+         * @param ipPrefixLength The IP prefix length of the container.
+         * 
          * @return builder
          * 
          * @deprecated

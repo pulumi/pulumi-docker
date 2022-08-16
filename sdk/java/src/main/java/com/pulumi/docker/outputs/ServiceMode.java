@@ -12,7 +12,15 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceMode {
+    /**
+     * @return The global service mode. Defaults to `false`
+     * 
+     */
     private final @Nullable Boolean global;
+    /**
+     * @return The replicated service mode
+     * 
+     */
     private final @Nullable ServiceModeReplicated replicated;
 
     @CustomType.Constructor
@@ -23,9 +31,17 @@ public final class ServiceMode {
         this.replicated = replicated;
     }
 
+    /**
+     * @return The global service mode. Defaults to `false`
+     * 
+     */
     public Optional<Boolean> global() {
         return Optional.ofNullable(this.global);
     }
+    /**
+     * @return The replicated service mode
+     * 
+     */
     public Optional<ServiceModeReplicated> replicated() {
         return Optional.ofNullable(this.replicated);
     }

@@ -45,7 +45,7 @@ namespace Pulumi.Docker
     /// ```
     /// </summary>
     [DockerResourceType("docker:index/service:Service")]
-    public partial class Service : Pulumi.CustomResource
+    public partial class Service : global::Pulumi.CustomResource
     {
         /// <summary>
         /// Configuration for the authentication for pulling the images of the service
@@ -145,7 +145,7 @@ namespace Pulumi.Docker
         }
     }
 
-    public sealed class ServiceArgs : Pulumi.ResourceArgs
+    public sealed class ServiceArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
         /// Configuration for the authentication for pulling the images of the service
@@ -210,9 +210,10 @@ namespace Pulumi.Docker
         public ServiceArgs()
         {
         }
+        public static new ServiceArgs Empty => new ServiceArgs();
     }
 
-    public sealed class ServiceState : Pulumi.ResourceArgs
+    public sealed class ServiceState : global::Pulumi.ResourceArgs
     {
         /// <summary>
         /// Configuration for the authentication for pulling the images of the service
@@ -277,5 +278,6 @@ namespace Pulumi.Docker
         public ServiceState()
         {
         }
+        public static new ServiceState Empty => new ServiceState();
     }
 }

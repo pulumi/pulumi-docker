@@ -46,16 +46,25 @@ class GetRegistryImageResult:
     @property
     @pulumi.getter(name="insecureSkipVerify")
     def insecure_skip_verify(self) -> Optional[bool]:
+        """
+        If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
+        """
         return pulumi.get(self, "insecure_skip_verify")
 
     @property
     @pulumi.getter
     def name(self) -> str:
+        """
+        The name of the Docker image, including any tags. e.g. `alpine:latest`
+        """
         return pulumi.get(self, "name")
 
     @property
     @pulumi.getter(name="sha256Digest")
     def sha256_digest(self) -> str:
+        """
+        The content digest of the image, as stored in the registry.
+        """
         return pulumi.get(self, "sha256_digest")
 
 
@@ -88,6 +97,10 @@ def get_registry_image(insecure_skip_verify: Optional[bool] = None,
         name=ubuntu_registry_image.name,
         pull_triggers=[ubuntu_registry_image.sha256_digest])
     ```
+
+
+    :param bool insecure_skip_verify: If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
+    :param str name: The name of the Docker image, including any tags. e.g. `alpine:latest`
     """
     __args__ = dict()
     __args__['insecureSkipVerify'] = insecure_skip_verify
@@ -120,5 +133,9 @@ def get_registry_image_output(insecure_skip_verify: Optional[pulumi.Input[Option
         name=ubuntu_registry_image.name,
         pull_triggers=[ubuntu_registry_image.sha256_digest])
     ```
+
+
+    :param bool insecure_skip_verify: If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
+    :param str name: The name of the Docker image, including any tags. e.g. `alpine:latest`
     """
     ...

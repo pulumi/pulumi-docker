@@ -88,8 +88,7 @@ export class Container extends pulumi.CustomResource {
      */
     public readonly capabilities!: pulumi.Output<outputs.ContainerCapabilities | undefined>;
     /**
-     * The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be
-     * `["/usr/bin/myprogram","-","baz.con"]`.
+     * The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-","baz.con"]`.
      */
     public readonly command!: pulumi.Output<string[]>;
     /**
@@ -105,8 +104,7 @@ export class Container extends pulumi.CustomResource {
      */
     public readonly cpuShares!: pulumi.Output<number | undefined>;
     /**
-     * If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on
-     * successful stop.
+     * If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
      */
     public readonly destroyGraceSeconds!: pulumi.Output<number | undefined>;
     /**
@@ -130,9 +128,7 @@ export class Container extends pulumi.CustomResource {
      */
     public readonly domainname!: pulumi.Output<string | undefined>;
     /**
-     * The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an
-     * executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be
-     * `"/usr/bin/myprogra"]`.
+     * The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogra"]`.
      */
     public readonly entrypoints!: pulumi.Output<string[]>;
     /**
@@ -140,7 +136,7 @@ export class Container extends pulumi.CustomResource {
      */
     public readonly envs!: pulumi.Output<string[]>;
     /**
-     * The exit code of the container if its execution is done (`must_run` must be disabled).
+     * The exit code of the container if its execution is done (`mustRun` must be disabled).
      */
     public /*out*/ readonly exitCode!: pulumi.Output<number>;
     /**
@@ -150,8 +146,7 @@ export class Container extends pulumi.CustomResource {
      */
     public /*out*/ readonly gateway!: pulumi.Output<string>;
     /**
-     * GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result
-     * in unexpected behavior.
+     * GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.
      */
     public readonly gpus!: pulumi.Output<string | undefined>;
     /**
@@ -171,13 +166,11 @@ export class Container extends pulumi.CustomResource {
      */
     public readonly hosts!: pulumi.Output<outputs.ContainerHost[] | undefined>;
     /**
-     * The ID of the image to back this container. The easiest way to get this value is to use the `docker_image` resource as
-     * is shown in the example.
+     * The ID of the image to back this container. The easiest way to get this value is to use the `docker.RemoteImage` resource as is shown in the example.
      */
     public readonly image!: pulumi.Output<string>;
     /**
-     * Configured whether an init process should be injected for this container. If unset this will default to the `dockerd`
-     * defaults.
+     * Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
      */
     public readonly init!: pulumi.Output<boolean>;
     /**
@@ -193,8 +186,7 @@ export class Container extends pulumi.CustomResource {
      */
     public /*out*/ readonly ipPrefixLength!: pulumi.Output<number>;
     /**
-     * IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or
-     * `host`.
+     * IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
      */
     public readonly ipcMode!: pulumi.Output<string>;
     /**
@@ -306,8 +298,7 @@ export class Container extends pulumi.CustomResource {
      */
     public readonly runtime!: pulumi.Output<string>;
     /**
-     * List of string values to customize labels for MLS systems, such as SELinux. See
-     * https://docs.docker.com/engine/reference/run/#security-configuration.
+     * List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
      */
     public readonly securityOpts!: pulumi.Output<string[]>;
     /**
@@ -315,8 +306,7 @@ export class Container extends pulumi.CustomResource {
      */
     public readonly shmSize!: pulumi.Output<number>;
     /**
-     * If `true`, then the Docker container will be started after creation. If `false`, then the container is only created.
-     * Defaults to `true`.
+     * If `true`, then the Docker container will be started after creation. If `false`, then the container is only created. Defaults to `true`.
      */
     public readonly start!: pulumi.Output<boolean | undefined>;
     /**
@@ -352,13 +342,11 @@ export class Container extends pulumi.CustomResource {
      */
     public readonly ulimits!: pulumi.Output<outputs.ContainerUlimit[] | undefined>;
     /**
-     * Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and
-     * at least one of them has to be set.
+     * Specifies files to upload to the container before starting it. Only one of `content` or `contentBase64` can be set and at least one of them has to be set.
      */
     public readonly uploads!: pulumi.Output<outputs.ContainerUpload[] | undefined>;
     /**
-     * User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by
-     * name.
+     * User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.
      */
     public readonly user!: pulumi.Output<string | undefined>;
     /**
@@ -551,8 +539,7 @@ export interface ContainerState {
      */
     capabilities?: pulumi.Input<inputs.ContainerCapabilities>;
     /**
-     * The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be
-     * `["/usr/bin/myprogram","-","baz.con"]`.
+     * The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-","baz.con"]`.
      */
     command?: pulumi.Input<pulumi.Input<string>[]>;
     /**
@@ -568,8 +555,7 @@ export interface ContainerState {
      */
     cpuShares?: pulumi.Input<number>;
     /**
-     * If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on
-     * successful stop.
+     * If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
      */
     destroyGraceSeconds?: pulumi.Input<number>;
     /**
@@ -593,9 +579,7 @@ export interface ContainerState {
      */
     domainname?: pulumi.Input<string>;
     /**
-     * The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an
-     * executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be
-     * `"/usr/bin/myprogra"]`.
+     * The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogra"]`.
      */
     entrypoints?: pulumi.Input<pulumi.Input<string>[]>;
     /**
@@ -603,7 +587,7 @@ export interface ContainerState {
      */
     envs?: pulumi.Input<pulumi.Input<string>[]>;
     /**
-     * The exit code of the container if its execution is done (`must_run` must be disabled).
+     * The exit code of the container if its execution is done (`mustRun` must be disabled).
      */
     exitCode?: pulumi.Input<number>;
     /**
@@ -613,8 +597,7 @@ export interface ContainerState {
      */
     gateway?: pulumi.Input<string>;
     /**
-     * GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result
-     * in unexpected behavior.
+     * GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.
      */
     gpus?: pulumi.Input<string>;
     /**
@@ -634,13 +617,11 @@ export interface ContainerState {
      */
     hosts?: pulumi.Input<pulumi.Input<inputs.ContainerHost>[]>;
     /**
-     * The ID of the image to back this container. The easiest way to get this value is to use the `docker_image` resource as
-     * is shown in the example.
+     * The ID of the image to back this container. The easiest way to get this value is to use the `docker.RemoteImage` resource as is shown in the example.
      */
     image?: pulumi.Input<string>;
     /**
-     * Configured whether an init process should be injected for this container. If unset this will default to the `dockerd`
-     * defaults.
+     * Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
      */
     init?: pulumi.Input<boolean>;
     /**
@@ -656,8 +637,7 @@ export interface ContainerState {
      */
     ipPrefixLength?: pulumi.Input<number>;
     /**
-     * IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or
-     * `host`.
+     * IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
      */
     ipcMode?: pulumi.Input<string>;
     /**
@@ -769,8 +749,7 @@ export interface ContainerState {
      */
     runtime?: pulumi.Input<string>;
     /**
-     * List of string values to customize labels for MLS systems, such as SELinux. See
-     * https://docs.docker.com/engine/reference/run/#security-configuration.
+     * List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
      */
     securityOpts?: pulumi.Input<pulumi.Input<string>[]>;
     /**
@@ -778,8 +757,7 @@ export interface ContainerState {
      */
     shmSize?: pulumi.Input<number>;
     /**
-     * If `true`, then the Docker container will be started after creation. If `false`, then the container is only created.
-     * Defaults to `true`.
+     * If `true`, then the Docker container will be started after creation. If `false`, then the container is only created. Defaults to `true`.
      */
     start?: pulumi.Input<boolean>;
     /**
@@ -815,13 +793,11 @@ export interface ContainerState {
      */
     ulimits?: pulumi.Input<pulumi.Input<inputs.ContainerUlimit>[]>;
     /**
-     * Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and
-     * at least one of them has to be set.
+     * Specifies files to upload to the container before starting it. Only one of `content` or `contentBase64` can be set and at least one of them has to be set.
      */
     uploads?: pulumi.Input<pulumi.Input<inputs.ContainerUpload>[]>;
     /**
-     * User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by
-     * name.
+     * User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.
      */
     user?: pulumi.Input<string>;
     /**
@@ -851,8 +827,7 @@ export interface ContainerArgs {
      */
     capabilities?: pulumi.Input<inputs.ContainerCapabilities>;
     /**
-     * The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be
-     * `["/usr/bin/myprogram","-","baz.con"]`.
+     * The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-","baz.con"]`.
      */
     command?: pulumi.Input<pulumi.Input<string>[]>;
     /**
@@ -864,8 +839,7 @@ export interface ContainerArgs {
      */
     cpuShares?: pulumi.Input<number>;
     /**
-     * If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on
-     * successful stop.
+     * If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
      */
     destroyGraceSeconds?: pulumi.Input<number>;
     /**
@@ -889,9 +863,7 @@ export interface ContainerArgs {
      */
     domainname?: pulumi.Input<string>;
     /**
-     * The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an
-     * executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be
-     * `"/usr/bin/myprogra"]`.
+     * The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogra"]`.
      */
     entrypoints?: pulumi.Input<pulumi.Input<string>[]>;
     /**
@@ -899,8 +871,7 @@ export interface ContainerArgs {
      */
     envs?: pulumi.Input<pulumi.Input<string>[]>;
     /**
-     * GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result
-     * in unexpected behavior.
+     * GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.
      */
     gpus?: pulumi.Input<string>;
     /**
@@ -920,18 +891,15 @@ export interface ContainerArgs {
      */
     hosts?: pulumi.Input<pulumi.Input<inputs.ContainerHost>[]>;
     /**
-     * The ID of the image to back this container. The easiest way to get this value is to use the `docker_image` resource as
-     * is shown in the example.
+     * The ID of the image to back this container. The easiest way to get this value is to use the `docker.RemoteImage` resource as is shown in the example.
      */
     image: pulumi.Input<string>;
     /**
-     * Configured whether an init process should be injected for this container. If unset this will default to the `dockerd`
-     * defaults.
+     * Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
      */
     init?: pulumi.Input<boolean>;
     /**
-     * IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or
-     * `host`.
+     * IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
      */
     ipcMode?: pulumi.Input<string>;
     /**
@@ -1039,8 +1007,7 @@ export interface ContainerArgs {
      */
     runtime?: pulumi.Input<string>;
     /**
-     * List of string values to customize labels for MLS systems, such as SELinux. See
-     * https://docs.docker.com/engine/reference/run/#security-configuration.
+     * List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
      */
     securityOpts?: pulumi.Input<pulumi.Input<string>[]>;
     /**
@@ -1048,8 +1015,7 @@ export interface ContainerArgs {
      */
     shmSize?: pulumi.Input<number>;
     /**
-     * If `true`, then the Docker container will be started after creation. If `false`, then the container is only created.
-     * Defaults to `true`.
+     * If `true`, then the Docker container will be started after creation. If `false`, then the container is only created. Defaults to `true`.
      */
     start?: pulumi.Input<boolean>;
     /**
@@ -1085,13 +1051,11 @@ export interface ContainerArgs {
      */
     ulimits?: pulumi.Input<pulumi.Input<inputs.ContainerUlimit>[]>;
     /**
-     * Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and
-     * at least one of them has to be set.
+     * Specifies files to upload to the container before starting it. Only one of `content` or `contentBase64` can be set and at least one of them has to be set.
      */
     uploads?: pulumi.Input<pulumi.Input<inputs.ContainerUpload>[]>;
     /**
-     * User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by
-     * name.
+     * User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.
      */
     user?: pulumi.Input<string>;
     /**

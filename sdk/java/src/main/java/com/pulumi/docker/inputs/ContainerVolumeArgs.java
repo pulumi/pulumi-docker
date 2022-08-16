@@ -16,37 +16,77 @@ public final class ContainerVolumeArgs extends com.pulumi.resources.ResourceArgs
 
     public static final ContainerVolumeArgs Empty = new ContainerVolumeArgs();
 
+    /**
+     * The path in the container where the volume will be mounted.
+     * 
+     */
     @Import(name="containerPath")
     private @Nullable Output<String> containerPath;
 
+    /**
+     * @return The path in the container where the volume will be mounted.
+     * 
+     */
     public Optional<Output<String>> containerPath() {
         return Optional.ofNullable(this.containerPath);
     }
 
+    /**
+     * The container where the volume is coming from.
+     * 
+     */
     @Import(name="fromContainer")
     private @Nullable Output<String> fromContainer;
 
+    /**
+     * @return The container where the volume is coming from.
+     * 
+     */
     public Optional<Output<String>> fromContainer() {
         return Optional.ofNullable(this.fromContainer);
     }
 
+    /**
+     * The path on the host where the volume is coming from.
+     * 
+     */
     @Import(name="hostPath")
     private @Nullable Output<String> hostPath;
 
+    /**
+     * @return The path on the host where the volume is coming from.
+     * 
+     */
     public Optional<Output<String>> hostPath() {
         return Optional.ofNullable(this.hostPath);
     }
 
+    /**
+     * If `true`, this volume will be readonly. Defaults to `false`.
+     * 
+     */
     @Import(name="readOnly")
     private @Nullable Output<Boolean> readOnly;
 
+    /**
+     * @return If `true`, this volume will be readonly. Defaults to `false`.
+     * 
+     */
     public Optional<Output<Boolean>> readOnly() {
         return Optional.ofNullable(this.readOnly);
     }
 
+    /**
+     * The name of the docker volume which should be mounted.
+     * 
+     */
     @Import(name="volumeName")
     private @Nullable Output<String> volumeName;
 
+    /**
+     * @return The name of the docker volume which should be mounted.
+     * 
+     */
     public Optional<Output<String>> volumeName() {
         return Optional.ofNullable(this.volumeName);
     }
@@ -79,47 +119,107 @@ public final class ContainerVolumeArgs extends com.pulumi.resources.ResourceArgs
             $ = new ContainerVolumeArgs(Objects.requireNonNull(defaults));
         }
 
+        /**
+         * @param containerPath The path in the container where the volume will be mounted.
+         * 
+         * @return builder
+         * 
+         */
         public Builder containerPath(@Nullable Output<String> containerPath) {
             $.containerPath = containerPath;
             return this;
         }
 
+        /**
+         * @param containerPath The path in the container where the volume will be mounted.
+         * 
+         * @return builder
+         * 
+         */
         public Builder containerPath(String containerPath) {
             return containerPath(Output.of(containerPath));
         }
 
+        /**
+         * @param fromContainer The container where the volume is coming from.
+         * 
+         * @return builder
+         * 
+         */
         public Builder fromContainer(@Nullable Output<String> fromContainer) {
             $.fromContainer = fromContainer;
             return this;
         }
 
+        /**
+         * @param fromContainer The container where the volume is coming from.
+         * 
+         * @return builder
+         * 
+         */
         public Builder fromContainer(String fromContainer) {
             return fromContainer(Output.of(fromContainer));
         }
 
+        /**
+         * @param hostPath The path on the host where the volume is coming from.
+         * 
+         * @return builder
+         * 
+         */
         public Builder hostPath(@Nullable Output<String> hostPath) {
             $.hostPath = hostPath;
             return this;
         }
 
+        /**
+         * @param hostPath The path on the host where the volume is coming from.
+         * 
+         * @return builder
+         * 
+         */
         public Builder hostPath(String hostPath) {
             return hostPath(Output.of(hostPath));
         }
 
+        /**
+         * @param readOnly If `true`, this volume will be readonly. Defaults to `false`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder readOnly(@Nullable Output<Boolean> readOnly) {
             $.readOnly = readOnly;
             return this;
         }
 
+        /**
+         * @param readOnly If `true`, this volume will be readonly. Defaults to `false`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder readOnly(Boolean readOnly) {
             return readOnly(Output.of(readOnly));
         }
 
+        /**
+         * @param volumeName The name of the docker volume which should be mounted.
+         * 
+         * @return builder
+         * 
+         */
         public Builder volumeName(@Nullable Output<String> volumeName) {
             $.volumeName = volumeName;
             return this;
         }
 
+        /**
+         * @param volumeName The name of the docker volume which should be mounted.
+         * 
+         * @return builder
+         * 
+         */
         public Builder volumeName(String volumeName) {
             return volumeName(Output.of(volumeName));
         }

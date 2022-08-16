@@ -10,7 +10,7 @@ using Pulumi.Serialization;
 namespace Pulumi.Docker.Inputs
 {
 
-    public sealed class ServiceTaskSpecContainerSpecHealthcheckGetArgs : Pulumi.ResourceArgs
+    public sealed class ServiceTaskSpecContainerSpecHealthcheckGetArgs : global::Pulumi.ResourceArgs
     {
         [Input("interval")]
         public Input<string>? Interval { get; set; }
@@ -35,5 +35,6 @@ namespace Pulumi.Docker.Inputs
         public ServiceTaskSpecContainerSpecHealthcheckGetArgs()
         {
         }
+        public static new ServiceTaskSpecContainerSpecHealthcheckGetArgs Empty => new ServiceTaskSpecContainerSpecHealthcheckGetArgs();
     }
 }

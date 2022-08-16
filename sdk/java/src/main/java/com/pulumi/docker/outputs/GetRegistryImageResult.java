@@ -17,8 +17,20 @@ public final class GetRegistryImageResult {
      * 
      */
     private final String id;
+    /**
+     * @return If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
+     * 
+     */
     private final @Nullable Boolean insecureSkipVerify;
+    /**
+     * @return The name of the Docker image, including any tags. e.g. `alpine:latest`
+     * 
+     */
     private final String name;
+    /**
+     * @return The content digest of the image, as stored in the registry.
+     * 
+     */
     private final String sha256Digest;
 
     @CustomType.Constructor
@@ -40,12 +52,24 @@ public final class GetRegistryImageResult {
     public String id() {
         return this.id;
     }
+    /**
+     * @return If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
+     * 
+     */
     public Optional<Boolean> insecureSkipVerify() {
         return Optional.ofNullable(this.insecureSkipVerify);
     }
+    /**
+     * @return The name of the Docker image, including any tags. e.g. `alpine:latest`
+     * 
+     */
     public String name() {
         return this.name;
     }
+    /**
+     * @return The content digest of the image, as stored in the registry.
+     * 
+     */
     public String sha256Digest() {
         return this.sha256Digest;
     }

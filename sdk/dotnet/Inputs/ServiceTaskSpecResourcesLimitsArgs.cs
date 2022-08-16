@@ -10,7 +10,7 @@ using Pulumi.Serialization;
 namespace Pulumi.Docker.Inputs
 {
 
-    public sealed class ServiceTaskSpecResourcesLimitsArgs : Pulumi.ResourceArgs
+    public sealed class ServiceTaskSpecResourcesLimitsArgs : global::Pulumi.ResourceArgs
     {
         [Input("memoryBytes")]
         public Input<int>? MemoryBytes { get; set; }
@@ -21,5 +21,6 @@ namespace Pulumi.Docker.Inputs
         public ServiceTaskSpecResourcesLimitsArgs()
         {
         }
+        public static new ServiceTaskSpecResourcesLimitsArgs Empty => new ServiceTaskSpecResourcesLimitsArgs();
     }
 }

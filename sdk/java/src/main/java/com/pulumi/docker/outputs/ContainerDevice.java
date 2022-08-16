@@ -11,8 +11,20 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ContainerDevice {
+    /**
+     * @return The path in the container where the device will be bound.
+     * 
+     */
     private final @Nullable String containerPath;
+    /**
+     * @return The path on the host where the device is located.
+     * 
+     */
     private final String hostPath;
+    /**
+     * @return The cgroup permissions given to the container to access the device. Defaults to `rwm`.
+     * 
+     */
     private final @Nullable String permissions;
 
     @CustomType.Constructor
@@ -25,12 +37,24 @@ public final class ContainerDevice {
         this.permissions = permissions;
     }
 
+    /**
+     * @return The path in the container where the device will be bound.
+     * 
+     */
     public Optional<String> containerPath() {
         return Optional.ofNullable(this.containerPath);
     }
+    /**
+     * @return The path on the host where the device is located.
+     * 
+     */
     public String hostPath() {
         return this.hostPath;
     }
+    /**
+     * @return The cgroup permissions given to the container to access the device. Defaults to `rwm`.
+     * 
+     */
     public Optional<String> permissions() {
         return Optional.ofNullable(this.permissions);
     }

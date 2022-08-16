@@ -17,7 +17,7 @@ type CacheFrom struct {
 // CacheFromInput is an input type that accepts CacheFromArgs and CacheFromOutput values.
 // You can construct a concrete instance of `CacheFromInput` via:
 //
-//          CacheFromArgs{...}
+//	CacheFromArgs{...}
 type CacheFromInput interface {
 	pulumi.Input
 
@@ -28,11 +28,11 @@ type CacheFromInput interface {
 // CacheFromPtrInput is an input type that accepts CacheFromArgs, CacheFromPtr and CacheFromPtrOutput values.
 // You can construct a concrete instance of `CacheFromPtrInput` via:
 //
-//          CacheFromArgs{...}
+//	        CacheFromArgs{...}
 //
-//  or:
+//	or:
 //
-//          nil
+//	        nil
 type CacheFromPtrInput interface {
 	pulumi.Input
 

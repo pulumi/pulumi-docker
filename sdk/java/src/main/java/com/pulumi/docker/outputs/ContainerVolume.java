@@ -12,10 +12,30 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ContainerVolume {
+    /**
+     * @return The path in the container where the volume will be mounted.
+     * 
+     */
     private final @Nullable String containerPath;
+    /**
+     * @return The container where the volume is coming from.
+     * 
+     */
     private final @Nullable String fromContainer;
+    /**
+     * @return The path on the host where the volume is coming from.
+     * 
+     */
     private final @Nullable String hostPath;
+    /**
+     * @return If `true`, this volume will be readonly. Defaults to `false`.
+     * 
+     */
     private final @Nullable Boolean readOnly;
+    /**
+     * @return The name of the docker volume which should be mounted.
+     * 
+     */
     private final @Nullable String volumeName;
 
     @CustomType.Constructor
@@ -32,18 +52,38 @@ public final class ContainerVolume {
         this.volumeName = volumeName;
     }
 
+    /**
+     * @return The path in the container where the volume will be mounted.
+     * 
+     */
     public Optional<String> containerPath() {
         return Optional.ofNullable(this.containerPath);
     }
+    /**
+     * @return The container where the volume is coming from.
+     * 
+     */
     public Optional<String> fromContainer() {
         return Optional.ofNullable(this.fromContainer);
     }
+    /**
+     * @return The path on the host where the volume is coming from.
+     * 
+     */
     public Optional<String> hostPath() {
         return Optional.ofNullable(this.hostPath);
     }
+    /**
+     * @return If `true`, this volume will be readonly. Defaults to `false`.
+     * 
+     */
     public Optional<Boolean> readOnly() {
         return Optional.ofNullable(this.readOnly);
     }
+    /**
+     * @return The name of the docker volume which should be mounted.
+     * 
+     */
     public Optional<String> volumeName() {
         return Optional.ofNullable(this.volumeName);
     }

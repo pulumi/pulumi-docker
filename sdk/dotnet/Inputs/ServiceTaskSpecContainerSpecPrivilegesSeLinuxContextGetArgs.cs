@@ -10,7 +10,7 @@ using Pulumi.Serialization;
 namespace Pulumi.Docker.Inputs
 {
 
-    public sealed class ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextGetArgs : Pulumi.ResourceArgs
+    public sealed class ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextGetArgs : global::Pulumi.ResourceArgs
     {
         [Input("disable")]
         public Input<bool>? Disable { get; set; }
@@ -30,5 +30,6 @@ namespace Pulumi.Docker.Inputs
         public ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextGetArgs()
         {
         }
+        public static new ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextGetArgs Empty => new ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextGetArgs();
     }
 }

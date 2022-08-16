@@ -43,11 +43,17 @@ class GetRemoteImageResult:
     @property
     @pulumi.getter
     def name(self) -> str:
+        """
+        The name of the Docker image, including any tags or SHA256 repo digests.
+        """
         return pulumi.get(self, "name")
 
     @property
     @pulumi.getter(name="repoDigest")
     def repo_digest(self) -> str:
+        """
+        The image sha256 digest in the form of `repo[:tag]@sha256:<hash>`. It may be empty in the edge case where the local image was pulled from a repo, tagged locally, and then referred to in the data source by that local name/tag.
+        """
         return pulumi.get(self, "repo_digest")
 
 
@@ -78,6 +84,9 @@ def get_remote_image(name: Optional[str] = None,
     digest = docker.get_remote_image(name="nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2")
     tag_and_digest = docker.get_remote_image(name="nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2")
     ```
+
+
+    :param str name: The name of the Docker image, including any tags or SHA256 repo digests.
     """
     __args__ = dict()
     __args__['name'] = name
@@ -107,5 +116,8 @@ def get_remote_image_output(name: Optional[pulumi.Input[str]] = None,
     digest = docker.get_remote_image(name="nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2")
     tag_and_digest = docker.get_remote_image(name="nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2")
     ```
+
+
+    :param str name: The name of the Docker image, including any tags or SHA256 repo digests.
     """
     ...

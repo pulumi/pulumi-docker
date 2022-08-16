@@ -16,9 +16,17 @@ public final class ServiceEndpointSpecPortArgs extends com.pulumi.resources.Reso
 
     public static final ServiceEndpointSpecPortArgs Empty = new ServiceEndpointSpecPortArgs();
 
+    /**
+     * Name of the service
+     * 
+     */
     @Import(name="name")
     private @Nullable Output<String> name;
 
+    /**
+     * @return Name of the service
+     * 
+     */
     public Optional<Output<String>> name() {
         return Optional.ofNullable(this.name);
     }
@@ -79,11 +87,23 @@ public final class ServiceEndpointSpecPortArgs extends com.pulumi.resources.Reso
             $ = new ServiceEndpointSpecPortArgs(Objects.requireNonNull(defaults));
         }
 
+        /**
+         * @param name Name of the service
+         * 
+         * @return builder
+         * 
+         */
         public Builder name(@Nullable Output<String> name) {
             $.name = name;
             return this;
         }
 
+        /**
+         * @param name Name of the service
+         * 
+         * @return builder
+         * 
+         */
         public Builder name(String name) {
             return name(Output.of(name));
         }

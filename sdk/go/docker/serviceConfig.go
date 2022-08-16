@@ -17,12 +17,14 @@ import (
 //
 // 08c26c477474478d971139f750984775a7f019dbe8a2e7f09d66a187c009e66d you provide the definition for the resource as follows terraform resource "docker_config" "foo" {
 //
-//  name = "foo"
+//	name = "foo"
 //
-//  data = base64encode("{\"a\"\"b\"}") } then the import command is as follows #!/bin/bash
+//	data = base64encode("{\"a\"\"b\"}") } then the import command is as follows #!/bin/bash
 //
 // ```sh
-//  $ pulumi import docker:index/serviceConfig:ServiceConfig foo 08c26c477474478d971139f750984775a7f019dbe8a2e7f09d66a187c009e66d
+//
+//	$ pulumi import docker:index/serviceConfig:ServiceConfig foo 08c26c477474478d971139f750984775a7f019dbe8a2e7f09d66a187c009e66d
+//
 // ```
 type ServiceConfig struct {
 	pulumi.CustomResourceState
@@ -123,7 +125,7 @@ func (i *ServiceConfig) ToServiceConfigOutputWithContext(ctx context.Context) Se
 // ServiceConfigArrayInput is an input type that accepts ServiceConfigArray and ServiceConfigArrayOutput values.
 // You can construct a concrete instance of `ServiceConfigArrayInput` via:
 //
-//          ServiceConfigArray{ ServiceConfigArgs{...} }
+//	ServiceConfigArray{ ServiceConfigArgs{...} }
 type ServiceConfigArrayInput interface {
 	pulumi.Input
 
@@ -148,7 +150,7 @@ func (i ServiceConfigArray) ToServiceConfigArrayOutputWithContext(ctx context.Co
 // ServiceConfigMapInput is an input type that accepts ServiceConfigMap and ServiceConfigMapOutput values.
 // You can construct a concrete instance of `ServiceConfigMapInput` via:
 //
-//          ServiceConfigMap{ "key": ServiceConfigArgs{...} }
+//	ServiceConfigMap{ "key": ServiceConfigArgs{...} }
 type ServiceConfigMapInput interface {
 	pulumi.Input
 

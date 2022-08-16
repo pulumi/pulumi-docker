@@ -12,8 +12,10 @@ import com.pulumi.docker.Utilities;
 import com.pulumi.docker.inputs.RemoteImageState;
 import com.pulumi.docker.outputs.RemoteImageBuild;
 import java.lang.Boolean;
+import java.lang.Object;
 import java.lang.String;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Nullable;
 
@@ -94,60 +96,19 @@ import javax.annotation.Nullable;
  *     }
  * }
  * ```
- * ### Build
- * 
- * You can also use the resource to build an image.
- * In this case the image &#34;zoo&#34; and &#34;zoo:develop&#34; are built.
- * ```java
- * package generated_program;
- * 
- * import com.pulumi.Context;
- * import com.pulumi.Pulumi;
- * import com.pulumi.core.Output;
- * import com.pulumi.docker.RemoteImage;
- * import com.pulumi.docker.RemoteImageArgs;
- * import com.pulumi.docker.inputs.RemoteImageBuildArgs;
- * import java.util.List;
- * import java.util.ArrayList;
- * import java.util.Map;
- * import java.io.File;
- * import java.nio.file.Files;
- * import java.nio.file.Paths;
- * 
- * public class App {
- *     public static void main(String[] args) {
- *         Pulumi.run(App::stack);
- *     }
- * 
- *     public static void stack(Context ctx) {
- *         var zoo = new RemoteImage(&#34;zoo&#34;, RemoteImageArgs.builder()        
- *             .name(&#34;zoo&#34;)
- *             .build(RemoteImageBuildArgs.builder()
- *                 .path(&#34;.&#34;)
- *                 .tags(&#34;zoo:develop&#34;)
- *                 .buildArg(Map.of(&#34;foo&#34;, &#34;zoo&#34;))
- *                 .label(Map.of(&#34;author&#34;, &#34;zoo&#34;))
- *                 .build())
- *             .build());
- * 
- *     }
- * }
- * ```
  * 
  */
 @ResourceType(type="docker:index/remoteImage:RemoteImage")
 public class RemoteImage extends com.pulumi.resources.CustomResource {
     /**
-     * Configuration to build an image. Please see [docker build command
-     * reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+     * Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
      * 
      */
     @Export(name="build", type=RemoteImageBuild.class, parameters={})
     private Output</* @Nullable */ RemoteImageBuild> build;
 
     /**
-     * @return Configuration to build an image. Please see [docker build command
-     * reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+     * @return Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
      * 
      */
     public Output<Optional<RemoteImageBuild>> build() {
@@ -168,16 +129,14 @@ public class RemoteImage extends com.pulumi.resources.CustomResource {
         return Codegen.optional(this.forceRemove);
     }
     /**
-     * If true, then the Docker image won&#39;t be deleted on destroy operation. If this is false, it will delete the image from
-     * the docker local storage on destroy operation.
+     * If true, then the Docker image won&#39;t be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
      * 
      */
     @Export(name="keepLocally", type=Boolean.class, parameters={})
     private Output</* @Nullable */ Boolean> keepLocally;
 
     /**
-     * @return If true, then the Docker image won&#39;t be deleted on destroy operation. If this is false, it will delete the image from
-     * the docker local storage on destroy operation.
+     * @return If true, then the Docker image won&#39;t be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
      * 
      */
     public Output<Optional<Boolean>> keepLocally() {
@@ -246,16 +205,14 @@ public class RemoteImage extends com.pulumi.resources.CustomResource {
         return Codegen.optional(this.pullTrigger);
     }
     /**
-     * List of values which cause an image pull when changed. This is used to store the image digest from the registry when
-     * using the [docker_registry_image](../data-sources/registry_image.md).
+     * List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
      * 
      */
     @Export(name="pullTriggers", type=List.class, parameters={String.class})
     private Output</* @Nullable */ List<String>> pullTriggers;
 
     /**
-     * @return List of values which cause an image pull when changed. This is used to store the image digest from the registry when
-     * using the [docker_registry_image](../data-sources/registry_image.md).
+     * @return List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
      * 
      */
     public Output<Optional<List<String>>> pullTriggers() {
@@ -274,6 +231,20 @@ public class RemoteImage extends com.pulumi.resources.CustomResource {
      */
     public Output<String> repoDigest() {
         return this.repoDigest;
+    }
+    /**
+     * A map of arbitrary strings that, when changed, will force the `docker.RemoteImage` resource to be replaced. This can be used to rebuild an image when contents of source code folders change
+     * 
+     */
+    @Export(name="triggers", type=Map.class, parameters={String.class, Object.class})
+    private Output</* @Nullable */ Map<String,Object>> triggers;
+
+    /**
+     * @return A map of arbitrary strings that, when changed, will force the `docker.RemoteImage` resource to be replaced. This can be used to rebuild an image when contents of source code folders change
+     * 
+     */
+    public Output<Optional<Map<String,Object>>> triggers() {
+        return Codegen.optional(this.triggers);
     }
 
     /**

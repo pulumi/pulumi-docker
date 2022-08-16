@@ -10,16 +10,23 @@ using Pulumi.Serialization;
 namespace Pulumi.Docker.Inputs
 {
 
-    public sealed class ContainerHostArgs : Pulumi.ResourceArgs
+    public sealed class ContainerHostArgs : global::Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Hostname to add
+        /// </summary>
         [Input("host", required: true)]
         public Input<string> Host { get; set; } = null!;
 
+        /// <summary>
+        /// IP address this hostname should resolve to.
+        /// </summary>
         [Input("ip", required: true)]
         public Input<string> Ip { get; set; } = null!;
 
         public ContainerHostArgs()
         {
         }
+        public static new ContainerHostArgs Empty => new ContainerHostArgs();
     }
 }

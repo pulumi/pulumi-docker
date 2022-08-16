@@ -15,7 +15,7 @@ namespace Pulumi.Docker
     /// #!/bin/bash # Docker secret cannot be imported as the secret data, once set, is never exposed again.
     /// </summary>
     [DockerResourceType("docker:index/secret:Secret")]
-    public partial class Secret : Pulumi.CustomResource
+    public partial class Secret : global::Pulumi.CustomResource
     {
         /// <summary>
         /// Base64-url-safe-encoded secret data
@@ -79,7 +79,7 @@ namespace Pulumi.Docker
         }
     }
 
-    public sealed class SecretArgs : Pulumi.ResourceArgs
+    public sealed class SecretArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
         /// Base64-url-safe-encoded secret data
@@ -108,9 +108,10 @@ namespace Pulumi.Docker
         public SecretArgs()
         {
         }
+        public static new SecretArgs Empty => new SecretArgs();
     }
 
-    public sealed class SecretState : Pulumi.ResourceArgs
+    public sealed class SecretState : global::Pulumi.ResourceArgs
     {
         /// <summary>
         /// Base64-url-safe-encoded secret data
@@ -139,5 +140,6 @@ namespace Pulumi.Docker
         public SecretState()
         {
         }
+        public static new SecretState Empty => new SecretState();
     }
 }

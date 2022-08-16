@@ -21,7 +21,7 @@ type RegistryAuth struct {
 // RegistryAuthInput is an input type that accepts RegistryAuthArgs and RegistryAuthOutput values.
 // You can construct a concrete instance of `RegistryAuthInput` via:
 //
-//          RegistryAuthArgs{...}
+//	RegistryAuthArgs{...}
 type RegistryAuthInput interface {
 	pulumi.Input
 
@@ -52,7 +52,7 @@ func (i RegistryAuthArgs) ToRegistryAuthOutputWithContext(ctx context.Context) R
 // RegistryAuthArrayInput is an input type that accepts RegistryAuthArray and RegistryAuthArrayOutput values.
 // You can construct a concrete instance of `RegistryAuthArrayInput` via:
 //
-//          RegistryAuthArray{ RegistryAuthArgs{...} }
+//	RegistryAuthArray{ RegistryAuthArgs{...} }
 type RegistryAuthArrayInput interface {
 	pulumi.Input
 

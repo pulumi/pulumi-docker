@@ -15,16 +15,32 @@ public final class GetRegistryImagePlainArgs extends com.pulumi.resources.Invoke
 
     public static final GetRegistryImagePlainArgs Empty = new GetRegistryImagePlainArgs();
 
+    /**
+     * If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
+     * 
+     */
     @Import(name="insecureSkipVerify")
     private @Nullable Boolean insecureSkipVerify;
 
+    /**
+     * @return If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
+     * 
+     */
     public Optional<Boolean> insecureSkipVerify() {
         return Optional.ofNullable(this.insecureSkipVerify);
     }
 
+    /**
+     * The name of the Docker image, including any tags. e.g. `alpine:latest`
+     * 
+     */
     @Import(name="name", required=true)
     private String name;
 
+    /**
+     * @return The name of the Docker image, including any tags. e.g. `alpine:latest`
+     * 
+     */
     public String name() {
         return this.name;
     }
@@ -54,11 +70,23 @@ public final class GetRegistryImagePlainArgs extends com.pulumi.resources.Invoke
             $ = new GetRegistryImagePlainArgs(Objects.requireNonNull(defaults));
         }
 
+        /**
+         * @param insecureSkipVerify If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
+         * 
+         * @return builder
+         * 
+         */
         public Builder insecureSkipVerify(@Nullable Boolean insecureSkipVerify) {
             $.insecureSkipVerify = insecureSkipVerify;
             return this;
         }
 
+        /**
+         * @param name The name of the Docker image, including any tags. e.g. `alpine:latest`
+         * 
+         * @return builder
+         * 
+         */
         public Builder name(String name) {
             $.name = name;
             return this;

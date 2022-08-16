@@ -10,7 +10,7 @@ using Pulumi.Serialization;
 namespace Pulumi.Docker.Inputs
 {
 
-    public sealed class ServiceTaskSpecContainerSpecSecretGetArgs : Pulumi.ResourceArgs
+    public sealed class ServiceTaskSpecContainerSpecSecretGetArgs : global::Pulumi.ResourceArgs
     {
         [Input("fileGid")]
         public Input<string>? FileGid { get; set; }
@@ -33,5 +33,6 @@ namespace Pulumi.Docker.Inputs
         public ServiceTaskSpecContainerSpecSecretGetArgs()
         {
         }
+        public static new ServiceTaskSpecContainerSpecSecretGetArgs Empty => new ServiceTaskSpecContainerSpecSecretGetArgs();
     }
 }

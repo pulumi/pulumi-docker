@@ -11,6 +11,10 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceTaskSpecLogDriver {
+    /**
+     * @return Name of the service
+     * 
+     */
     private final String name;
     private final @Nullable Map<String,String> options;
 
@@ -22,6 +26,10 @@ public final class ServiceTaskSpecLogDriver {
         this.options = options;
     }
 
+    /**
+     * @return Name of the service
+     * 
+     */
     public String name() {
         return this.name;
     }

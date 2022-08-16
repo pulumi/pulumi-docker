@@ -16,7 +16,7 @@ namespace Pulumi.Docker
     /// [documentation](https://www.pulumi.com/docs/reference/programming-model/#providers) for more information.
     /// </summary>
     [DockerResourceType("pulumi:providers:docker")]
-    public partial class Provider : Pulumi.ProviderResource
+    public partial class Provider : global::Pulumi.ProviderResource
     {
         /// <summary>
         /// PEM-encoded content of Docker host CA certificate
@@ -74,7 +74,7 @@ namespace Pulumi.Docker
         }
     }
 
-    public sealed class ProviderArgs : Pulumi.ResourceArgs
+    public sealed class ProviderArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
         /// PEM-encoded content of Docker host CA certificate
@@ -130,5 +130,6 @@ namespace Pulumi.Docker
         {
             Host = Utilities.GetEnv("DOCKER_HOST") ?? "unix:///var/run/docker.sock";
         }
+        public static new ProviderArgs Empty => new ProviderArgs();
     }
 }

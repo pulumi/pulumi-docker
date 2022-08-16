@@ -13,7 +13,7 @@ namespace Pulumi.Docker
     /// Creates a docker tag. It has the exact same functionality as the `docker tag` command. Deleting the resource will neither delete the source nor target images. The source image must exist on the machine running the docker daemon.
     /// </summary>
     [DockerResourceType("docker:index/tag:Tag")]
-    public partial class Tag : Pulumi.CustomResource
+    public partial class Tag : global::Pulumi.CustomResource
     {
         /// <summary>
         /// Name of the source image.
@@ -77,7 +77,7 @@ namespace Pulumi.Docker
         }
     }
 
-    public sealed class TagArgs : Pulumi.ResourceArgs
+    public sealed class TagArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
         /// Name of the source image.
@@ -94,9 +94,10 @@ namespace Pulumi.Docker
         public TagArgs()
         {
         }
+        public static new TagArgs Empty => new TagArgs();
     }
 
-    public sealed class TagState : Pulumi.ResourceArgs
+    public sealed class TagState : global::Pulumi.ResourceArgs
     {
         /// <summary>
         /// Name of the source image.
@@ -119,5 +120,6 @@ namespace Pulumi.Docker
         public TagState()
         {
         }
+        public static new TagState Empty => new TagState();
     }
 }

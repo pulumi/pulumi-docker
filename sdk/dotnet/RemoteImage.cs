@@ -21,20 +21,18 @@ namespace Pulumi.Docker
     /// for further updates of the image
     /// 
     /// ```csharp
+    /// using System.Collections.Generic;
     /// using Pulumi;
     /// using Docker = Pulumi.Docker;
     /// 
-    /// class MyStack : Stack
+    /// return await Deployment.RunAsync(() =&gt; 
     /// {
-    ///     public MyStack()
+    ///     var ubuntu = new Docker.RemoteImage("ubuntu", new()
     ///     {
-    ///         var ubuntu = new Docker.RemoteImage("ubuntu", new Docker.RemoteImageArgs
-    ///         {
-    ///             Name = "ubuntu:precise",
-    ///         });
-    ///     }
+    ///         Name = "ubuntu:precise",
+    ///     });
     /// 
-    /// }
+    /// });
     /// ```
     /// ### Dynamic updates
     /// 
@@ -42,73 +40,34 @@ namespace Pulumi.Docker
     /// you need to use it in combination with `docker.RegistryImage` as follows:
     /// 
     /// ```csharp
+    /// using System.Collections.Generic;
     /// using Pulumi;
     /// using Docker = Pulumi.Docker;
     /// 
-    /// class MyStack : Stack
+    /// return await Deployment.RunAsync(() =&gt; 
     /// {
-    ///     public MyStack()
+    ///     var ubuntuRegistryImage = Docker.GetRegistryImage.Invoke(new()
     ///     {
-    ///         var ubuntuRegistryImage = Output.Create(Docker.GetRegistryImage.InvokeAsync(new Docker.GetRegistryImageArgs
-    ///         {
-    ///             Name = "ubuntu:precise",
-    ///         }));
-    ///         var ubuntuRemoteImage = new Docker.RemoteImage("ubuntuRemoteImage", new Docker.RemoteImageArgs
-    ///         {
-    ///             Name = ubuntuRegistryImage.Apply(ubuntuRegistryImage =&gt; ubuntuRegistryImage.Name),
-    ///             PullTriggers = 
-    ///             {
-    ///                 ubuntuRegistryImage.Apply(ubuntuRegistryImage =&gt; ubuntuRegistryImage.Sha256Digest),
-    ///             },
-    ///         });
-    ///     }
+    ///         Name = "ubuntu:precise",
+    ///     });
     /// 
-    /// }
-    /// ```
-    /// ### Build
-    /// 
-    /// You can also use the resource to build an image.
-    /// In this case the image "zoo" and "zoo:develop" are built.
-    /// 
-    /// ```csharp
-    /// using Pulumi;
-    /// using Docker = Pulumi.Docker;
-    /// 
-    /// class MyStack : Stack
-    /// {
-    ///     public MyStack()
+    ///     var ubuntuRemoteImage = new Docker.RemoteImage("ubuntuRemoteImage", new()
     ///     {
-    ///         var zoo = new Docker.RemoteImage("zoo", new Docker.RemoteImageArgs
+    ///         Name = ubuntuRegistryImage.Apply(getRegistryImageResult =&gt; getRegistryImageResult.Name),
+    ///         PullTriggers = new[]
     ///         {
-    ///             Name = "zoo",
-    ///             Build = new Docker.Inputs.RemoteImageBuildArgs
-    ///             {
-    ///                 Path = ".",
-    ///                 Tags = 
-    ///                 {
-    ///                     "zoo:develop",
-    ///                 },
-    ///                 BuildArg = 
-    ///                 {
-    ///                     { "foo", "zoo" },
-    ///                 },
-    ///                 Label = 
-    ///                 {
-    ///                     { "author", "zoo" },
-    ///                 },
-    ///             },
-    ///         });
-    ///     }
+    ///             ubuntuRegistryImage.Apply(getRegistryImageResult =&gt; getRegistryImageResult.Sha256Digest),
+    ///         },
+    ///     });
     /// 
-    /// }
+    /// });
     /// ```
     /// </summary>
     [DockerResourceType("docker:index/remoteImage:RemoteImage")]
-    public partial class RemoteImage : Pulumi.CustomResource
+    public partial class RemoteImage : global::Pulumi.CustomResource
     {
         /// <summary>
-        /// Configuration to build an image. Please see [docker build command
-        /// reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+        /// Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
         /// </summary>
         [Output("build")]
         public Output<Outputs.RemoteImageBuild?> Build { get; private set; } = null!;
@@ -120,8 +79,7 @@ namespace Pulumi.Docker
         public Output<bool?> ForceRemove { get; private set; } = null!;
 
         /// <summary>
-        /// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from
-        /// the docker local storage on destroy operation.
+        /// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
         /// </summary>
         [Output("keepLocally")]
         public Output<bool?> KeepLocally { get; private set; } = null!;
@@ -148,8 +106,7 @@ namespace Pulumi.Docker
         public Output<string?> PullTrigger { get; private set; } = null!;
 
         /// <summary>
-        /// List of values which cause an image pull when changed. This is used to store the image digest from the registry when
-        /// using the [docker_registry_image](../data-sources/registry_image.md).
+        /// List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
         /// </summary>
         [Output("pullTriggers")]
         public Output<ImmutableArray<string>> PullTriggers { get; private set; } = null!;
@@ -159,6 +116,12 @@ namespace Pulumi.Docker
         /// </summary>
         [Output("repoDigest")]
         public Output<string> RepoDigest { get; private set; } = null!;
+
+        /// <summary>
+        /// A map of arbitrary strings that, when changed, will force the `docker.RemoteImage` resource to be replaced. This can be used to rebuild an image when contents of source code folders change
+        /// </summary>
+        [Output("triggers")]
+        public Output<ImmutableDictionary<string, object>?> Triggers { get; private set; } = null!;
 
 
         /// <summary>
@@ -204,11 +167,10 @@ namespace Pulumi.Docker
         }
     }
 
-    public sealed class RemoteImageArgs : Pulumi.ResourceArgs
+    public sealed class RemoteImageArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// Configuration to build an image. Please see [docker build command
-        /// reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+        /// Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
         /// </summary>
         [Input("build")]
         public Input<Inputs.RemoteImageBuildArgs>? Build { get; set; }
@@ -220,8 +182,7 @@ namespace Pulumi.Docker
         public Input<bool>? ForceRemove { get; set; }
 
         /// <summary>
-        /// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from
-        /// the docker local storage on destroy operation.
+        /// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
         /// </summary>
         [Input("keepLocally")]
         public Input<bool>? KeepLocally { get; set; }
@@ -242,8 +203,7 @@ namespace Pulumi.Docker
         private InputList<string>? _pullTriggers;
 
         /// <summary>
-        /// List of values which cause an image pull when changed. This is used to store the image digest from the registry when
-        /// using the [docker_registry_image](../data-sources/registry_image.md).
+        /// List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
         /// </summary>
         public InputList<string> PullTriggers
         {
@@ -251,16 +211,28 @@ namespace Pulumi.Docker
             set => _pullTriggers = value;
         }
 
+        [Input("triggers")]
+        private InputMap<object>? _triggers;
+
+        /// <summary>
+        /// A map of arbitrary strings that, when changed, will force the `docker.RemoteImage` resource to be replaced. This can be used to rebuild an image when contents of source code folders change
+        /// </summary>
+        public InputMap<object> Triggers
+        {
+            get => _triggers ?? (_triggers = new InputMap<object>());
+            set => _triggers = value;
+        }
+
         public RemoteImageArgs()
         {
         }
+        public static new RemoteImageArgs Empty => new RemoteImageArgs();
     }
 
-    public sealed class RemoteImageState : Pulumi.ResourceArgs
+    public sealed class RemoteImageState : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// Configuration to build an image. Please see [docker build command
-        /// reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
+        /// Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
         /// </summary>
         [Input("build")]
         public Input<Inputs.RemoteImageBuildGetArgs>? Build { get; set; }
@@ -272,8 +244,7 @@ namespace Pulumi.Docker
         public Input<bool>? ForceRemove { get; set; }
 
         /// <summary>
-        /// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from
-        /// the docker local storage on destroy operation.
+        /// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
         /// </summary>
         [Input("keepLocally")]
         public Input<bool>? KeepLocally { get; set; }
@@ -303,8 +274,7 @@ namespace Pulumi.Docker
         private InputList<string>? _pullTriggers;
 
         /// <summary>
-        /// List of values which cause an image pull when changed. This is used to store the image digest from the registry when
-        /// using the [docker_registry_image](../data-sources/registry_image.md).
+        /// List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
         /// </summary>
         public InputList<string> PullTriggers
         {
@@ -318,8 +288,21 @@ namespace Pulumi.Docker
         [Input("repoDigest")]
         public Input<string>? RepoDigest { get; set; }
 
+        [Input("triggers")]
+        private InputMap<object>? _triggers;
+
+        /// <summary>
+        /// A map of arbitrary strings that, when changed, will force the `docker.RemoteImage` resource to be replaced. This can be used to rebuild an image when contents of source code folders change
+        /// </summary>
+        public InputMap<object> Triggers
+        {
+            get => _triggers ?? (_triggers = new InputMap<object>());
+            set => _triggers = value;
+        }
+
         public RemoteImageState()
         {
         }
+        public static new RemoteImageState Empty => new RemoteImageState();
     }
 }

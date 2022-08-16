@@ -10,7 +10,7 @@ using Pulumi.Serialization;
 namespace Pulumi.Docker.Inputs
 {
 
-    public sealed class ServiceTaskSpecRestartPolicyGetArgs : Pulumi.ResourceArgs
+    public sealed class ServiceTaskSpecRestartPolicyGetArgs : global::Pulumi.ResourceArgs
     {
         [Input("condition")]
         public Input<string>? Condition { get; set; }
@@ -27,5 +27,6 @@ namespace Pulumi.Docker.Inputs
         public ServiceTaskSpecRestartPolicyGetArgs()
         {
         }
+        public static new ServiceTaskSpecRestartPolicyGetArgs Empty => new ServiceTaskSpecRestartPolicyGetArgs();
     }
 }

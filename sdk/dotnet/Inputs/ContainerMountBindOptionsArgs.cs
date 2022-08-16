@@ -10,7 +10,7 @@ using Pulumi.Serialization;
 namespace Pulumi.Docker.Inputs
 {
 
-    public sealed class ContainerMountBindOptionsArgs : Pulumi.ResourceArgs
+    public sealed class ContainerMountBindOptionsArgs : global::Pulumi.ResourceArgs
     {
         [Input("propagation")]
         public Input<string>? Propagation { get; set; }
@@ -18,5 +18,6 @@ namespace Pulumi.Docker.Inputs
         public ContainerMountBindOptionsArgs()
         {
         }
+        public static new ContainerMountBindOptionsArgs Empty => new ContainerMountBindOptionsArgs();
     }
 }

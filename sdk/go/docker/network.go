@@ -11,7 +11,7 @@ import (
 )
 
 // <!-- Bug: Type and Name are switched -->
-// `Network` provides details about a specific Docker Network.
+// `Network` provides a docker network resource.
 //
 // ## Example Usage
 //
@@ -19,29 +19,34 @@ import (
 // package main
 //
 // import (
-// 	"github.com/pulumi/pulumi-docker/sdk/v3/go/docker"
-// 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//
+//	"github.com/pulumi/pulumi-docker/sdk/v3/go/docker"
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//
 // )
 //
-// func main() {
-// 	pulumi.Run(func(ctx *pulumi.Context) error {
-// 		_, err := docker.NewNetwork(ctx, "privateNetwork", nil)
-// 		if err != nil {
-// 			return err
-// 		}
-// 		return nil
-// 	})
-// }
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := docker.NewNetwork(ctx, "privateNetwork", nil)
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
 // ```
 //
 // ## Import
 //
 // ### Example Assuming you created a `network` as follows #!/bin/bash docker network create foo # prints the long ID 87b57a9b91ecab2db2a6dbf38df74c67d7c7108cbe479d6576574ec2cd8c2d73 you provide the definition for the resource as follows terraform resource "docker_network" "foo" {
 //
-//  name = "foo" } then the import command is as follows #!/bin/bash
+//	name = "foo" } then the import command is as follows #!/bin/bash
 //
 // ```sh
-//  $ pulumi import docker:index/network:Network foo 87b57a9b91ecab2db2a6dbf38df74c67d7c7108cbe479d6576574ec2cd8c2d73
+//
+//	$ pulumi import docker:index/network:Network foo 87b57a9b91ecab2db2a6dbf38df74c67d7c7108cbe479d6576574ec2cd8c2d73
+//
 // ```
 type Network struct {
 	pulumi.CustomResourceState
@@ -50,8 +55,7 @@ type Network struct {
 	Attachable pulumi.BoolPtrOutput `pulumi:"attachable"`
 	// Requests daemon to check for networks with same name.
 	CheckDuplicate pulumi.BoolPtrOutput `pulumi:"checkDuplicate"`
-	// The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network
-	// docs](https://docs.docker.com/network/#network-drivers) for more details.
+	// The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
 	Driver pulumi.StringOutput `pulumi:"driver"`
 	// Create swarm routing-mesh network. Defaults to `false`.
 	Ingress pulumi.BoolPtrOutput `pulumi:"ingress"`
@@ -67,8 +71,7 @@ type Network struct {
 	Labels NetworkLabelArrayOutput `pulumi:"labels"`
 	// The name of the Docker network.
 	Name pulumi.StringOutput `pulumi:"name"`
-	// Only available with bridge networks. See [bridge options
-	// docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
+	// Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
 	Options pulumi.MapOutput `pulumi:"options"`
 	// Scope of the network. One of `swarm`, `global`, or `local`.
 	Scope pulumi.StringOutput `pulumi:"scope"`
@@ -107,8 +110,7 @@ type networkState struct {
 	Attachable *bool `pulumi:"attachable"`
 	// Requests daemon to check for networks with same name.
 	CheckDuplicate *bool `pulumi:"checkDuplicate"`
-	// The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network
-	// docs](https://docs.docker.com/network/#network-drivers) for more details.
+	// The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
 	Driver *string `pulumi:"driver"`
 	// Create swarm routing-mesh network. Defaults to `false`.
 	Ingress *bool `pulumi:"ingress"`
@@ -124,8 +126,7 @@ type networkState struct {
 	Labels []NetworkLabel `pulumi:"labels"`
 	// The name of the Docker network.
 	Name *string `pulumi:"name"`
-	// Only available with bridge networks. See [bridge options
-	// docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
+	// Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
 	Options map[string]interface{} `pulumi:"options"`
 	// Scope of the network. One of `swarm`, `global`, or `local`.
 	Scope *string `pulumi:"scope"`
@@ -136,8 +137,7 @@ type NetworkState struct {
 	Attachable pulumi.BoolPtrInput
 	// Requests daemon to check for networks with same name.
 	CheckDuplicate pulumi.BoolPtrInput
-	// The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network
-	// docs](https://docs.docker.com/network/#network-drivers) for more details.
+	// The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
 	Driver pulumi.StringPtrInput
 	// Create swarm routing-mesh network. Defaults to `false`.
 	Ingress pulumi.BoolPtrInput
@@ -153,8 +153,7 @@ type NetworkState struct {
 	Labels NetworkLabelArrayInput
 	// The name of the Docker network.
 	Name pulumi.StringPtrInput
-	// Only available with bridge networks. See [bridge options
-	// docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
+	// Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
 	Options pulumi.MapInput
 	// Scope of the network. One of `swarm`, `global`, or `local`.
 	Scope pulumi.StringPtrInput
@@ -169,8 +168,7 @@ type networkArgs struct {
 	Attachable *bool `pulumi:"attachable"`
 	// Requests daemon to check for networks with same name.
 	CheckDuplicate *bool `pulumi:"checkDuplicate"`
-	// The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network
-	// docs](https://docs.docker.com/network/#network-drivers) for more details.
+	// The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
 	Driver *string `pulumi:"driver"`
 	// Create swarm routing-mesh network. Defaults to `false`.
 	Ingress *bool `pulumi:"ingress"`
@@ -186,8 +184,7 @@ type networkArgs struct {
 	Labels []NetworkLabel `pulumi:"labels"`
 	// The name of the Docker network.
 	Name *string `pulumi:"name"`
-	// Only available with bridge networks. See [bridge options
-	// docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
+	// Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
 	Options map[string]interface{} `pulumi:"options"`
 }
 
@@ -197,8 +194,7 @@ type NetworkArgs struct {
 	Attachable pulumi.BoolPtrInput
 	// Requests daemon to check for networks with same name.
 	CheckDuplicate pulumi.BoolPtrInput
-	// The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network
-	// docs](https://docs.docker.com/network/#network-drivers) for more details.
+	// The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
 	Driver pulumi.StringPtrInput
 	// Create swarm routing-mesh network. Defaults to `false`.
 	Ingress pulumi.BoolPtrInput
@@ -214,8 +210,7 @@ type NetworkArgs struct {
 	Labels NetworkLabelArrayInput
 	// The name of the Docker network.
 	Name pulumi.StringPtrInput
-	// Only available with bridge networks. See [bridge options
-	// docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
+	// Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
 	Options pulumi.MapInput
 }
 
@@ -245,7 +240,7 @@ func (i *Network) ToNetworkOutputWithContext(ctx context.Context) NetworkOutput 
 // NetworkArrayInput is an input type that accepts NetworkArray and NetworkArrayOutput values.
 // You can construct a concrete instance of `NetworkArrayInput` via:
 //
-//          NetworkArray{ NetworkArgs{...} }
+//	NetworkArray{ NetworkArgs{...} }
 type NetworkArrayInput interface {
 	pulumi.Input
 
@@ -270,7 +265,7 @@ func (i NetworkArray) ToNetworkArrayOutputWithContext(ctx context.Context) Netwo
 // NetworkMapInput is an input type that accepts NetworkMap and NetworkMapOutput values.
 // You can construct a concrete instance of `NetworkMapInput` via:
 //
-//          NetworkMap{ "key": NetworkArgs{...} }
+//	NetworkMap{ "key": NetworkArgs{...} }
 type NetworkMapInput interface {
 	pulumi.Input
 
@@ -316,8 +311,7 @@ func (o NetworkOutput) CheckDuplicate() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *Network) pulumi.BoolPtrOutput { return v.CheckDuplicate }).(pulumi.BoolPtrOutput)
 }
 
-// The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network
-// docs](https://docs.docker.com/network/#network-drivers) for more details.
+// The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
 func (o NetworkOutput) Driver() pulumi.StringOutput {
 	return o.ApplyT(func(v *Network) pulumi.StringOutput { return v.Driver }).(pulumi.StringOutput)
 }
@@ -357,8 +351,7 @@ func (o NetworkOutput) Name() pulumi.StringOutput {
 	return o.ApplyT(func(v *Network) pulumi.StringOutput { return v.Name }).(pulumi.StringOutput)
 }
 
-// Only available with bridge networks. See [bridge options
-// docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
+// Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
 func (o NetworkOutput) Options() pulumi.MapOutput {
 	return o.ApplyT(func(v *Network) pulumi.MapOutput { return v.Options }).(pulumi.MapOutput)
 }

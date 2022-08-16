@@ -13,10 +13,30 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ContainerHealthcheck {
+    /**
+     * @return Time between running the check (ms|s|m|h). Defaults to `0s`.
+     * 
+     */
     private final @Nullable String interval;
+    /**
+     * @return Consecutive failures needed to report unhealthy. Defaults to `0`.
+     * 
+     */
     private final @Nullable Integer retries;
+    /**
+     * @return Start period for the container to initialize before counting retries towards unstable (ms|s|m|h). Defaults to `0s`.
+     * 
+     */
     private final @Nullable String startPeriod;
+    /**
+     * @return Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `[&#34;CMD&#34;, &#34;curl&#34;, &#34;-f&#34;, &#34;localhost/health&#34;]`.
+     * 
+     */
     private final List<String> tests;
+    /**
+     * @return Maximum time to allow one check to run (ms|s|m|h). Defaults to `0s`.
+     * 
+     */
     private final @Nullable String timeout;
 
     @CustomType.Constructor
@@ -33,18 +53,38 @@ public final class ContainerHealthcheck {
         this.timeout = timeout;
     }
 
+    /**
+     * @return Time between running the check (ms|s|m|h). Defaults to `0s`.
+     * 
+     */
     public Optional<String> interval() {
         return Optional.ofNullable(this.interval);
     }
+    /**
+     * @return Consecutive failures needed to report unhealthy. Defaults to `0`.
+     * 
+     */
     public Optional<Integer> retries() {
         return Optional.ofNullable(this.retries);
     }
+    /**
+     * @return Start period for the container to initialize before counting retries towards unstable (ms|s|m|h). Defaults to `0s`.
+     * 
+     */
     public Optional<String> startPeriod() {
         return Optional.ofNullable(this.startPeriod);
     }
+    /**
+     * @return Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `[&#34;CMD&#34;, &#34;curl&#34;, &#34;-f&#34;, &#34;localhost/health&#34;]`.
+     * 
+     */
     public List<String> tests() {
         return this.tests;
     }
+    /**
+     * @return Maximum time to allow one check to run (ms|s|m|h). Defaults to `0s`.
+     * 
+     */
     public Optional<String> timeout() {
         return Optional.ofNullable(this.timeout);
     }

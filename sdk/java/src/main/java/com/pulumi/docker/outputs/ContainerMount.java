@@ -15,12 +15,40 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ContainerMount {
+    /**
+     * @return Optional configuration for the bind type.
+     * 
+     */
     private final @Nullable ContainerMountBindOptions bindOptions;
+    /**
+     * @return Whether the mount should be read-only.
+     * 
+     */
     private final @Nullable Boolean readOnly;
+    /**
+     * @return Mount source (e.g. a volume name, a host path).
+     * 
+     */
     private final @Nullable String source;
+    /**
+     * @return Container path
+     * 
+     */
     private final String target;
+    /**
+     * @return Optional configuration for the tmpfs type.
+     * 
+     */
     private final @Nullable ContainerMountTmpfsOptions tmpfsOptions;
+    /**
+     * @return The mount type
+     * 
+     */
     private final String type;
+    /**
+     * @return Optional configuration for the volume type.
+     * 
+     */
     private final @Nullable ContainerMountVolumeOptions volumeOptions;
 
     @CustomType.Constructor
@@ -41,24 +69,52 @@ public final class ContainerMount {
         this.volumeOptions = volumeOptions;
     }
 
+    /**
+     * @return Optional configuration for the bind type.
+     * 
+     */
     public Optional<ContainerMountBindOptions> bindOptions() {
         return Optional.ofNullable(this.bindOptions);
     }
+    /**
+     * @return Whether the mount should be read-only.
+     * 
+     */
     public Optional<Boolean> readOnly() {
         return Optional.ofNullable(this.readOnly);
     }
+    /**
+     * @return Mount source (e.g. a volume name, a host path).
+     * 
+     */
     public Optional<String> source() {
         return Optional.ofNullable(this.source);
     }
+    /**
+     * @return Container path
+     * 
+     */
     public String target() {
         return this.target;
     }
+    /**
+     * @return Optional configuration for the tmpfs type.
+     * 
+     */
     public Optional<ContainerMountTmpfsOptions> tmpfsOptions() {
         return Optional.ofNullable(this.tmpfsOptions);
     }
+    /**
+     * @return The mount type
+     * 
+     */
     public String type() {
         return this.type;
     }
+    /**
+     * @return Optional configuration for the volume type.
+     * 
+     */
     public Optional<ContainerMountVolumeOptions> volumeOptions() {
         return Optional.ofNullable(this.volumeOptions);
     }

@@ -15,9 +15,10 @@ import (
 // ## Example Usage
 //
 // ### With alias
-// data "Plugin" "byAlias" {
-//   alias = "sample-volume-plugin:latest"
-// }
+//
+//	data "Plugin" "byAlias" {
+//	  alias = "sample-volume-plugin:latest"
+//	}
 func LookupPlugin(ctx *pulumi.Context, args *LookupPluginArgs, opts ...pulumi.InvokeOption) (*LookupPluginResult, error) {
 	var rv LookupPluginResult
 	err := ctx.Invoke("docker:index/getPlugin:getPlugin", args, &rv, opts...)
@@ -29,19 +30,28 @@ func LookupPlugin(ctx *pulumi.Context, args *LookupPluginArgs, opts ...pulumi.In
 
 // A collection of arguments for invoking getPlugin.
 type LookupPluginArgs struct {
+	// The alias of the Docker plugin. If the tag is omitted, `:latest` is complemented to the attribute value.
 	Alias *string `pulumi:"alias"`
-	Id    *string `pulumi:"id"`
+	// The ID of the plugin, which has precedence over the `alias` of both are given
+	Id *string `pulumi:"id"`
 }
 
 // A collection of values returned by getPlugin.
 type LookupPluginResult struct {
-	Alias               *string  `pulumi:"alias"`
-	Enabled             bool     `pulumi:"enabled"`
-	Envs                []string `pulumi:"envs"`
-	GrantAllPermissions bool     `pulumi:"grantAllPermissions"`
-	Id                  *string  `pulumi:"id"`
-	Name                string   `pulumi:"name"`
-	PluginReference     string   `pulumi:"pluginReference"`
+	// The alias of the Docker plugin. If the tag is omitted, `:latest` is complemented to the attribute value.
+	Alias *string `pulumi:"alias"`
+	// If `true` the plugin is enabled
+	Enabled bool `pulumi:"enabled"`
+	// The environment variables in the form of `KEY=VALUE`, e.g. `DEBUG=0`
+	Envs []string `pulumi:"envs"`
+	// If true, grant all permissions necessary to run the plugin
+	GrantAllPermissions bool `pulumi:"grantAllPermissions"`
+	// The ID of the plugin, which has precedence over the `alias` of both are given
+	Id *string `pulumi:"id"`
+	// The plugin name. If the tag is omitted, `:latest` is complemented to the attribute value.
+	Name string `pulumi:"name"`
+	// The Docker Plugin Reference
+	PluginReference string `pulumi:"pluginReference"`
 }
 
 func LookupPluginOutput(ctx *pulumi.Context, args LookupPluginOutputArgs, opts ...pulumi.InvokeOption) LookupPluginResultOutput {
@@ -59,8 +69,10 @@ func LookupPluginOutput(ctx *pulumi.Context, args LookupPluginOutputArgs, opts .
 
 // A collection of arguments for invoking getPlugin.
 type LookupPluginOutputArgs struct {
+	// The alias of the Docker plugin. If the tag is omitted, `:latest` is complemented to the attribute value.
 	Alias pulumi.StringPtrInput `pulumi:"alias"`
-	Id    pulumi.StringPtrInput `pulumi:"id"`
+	// The ID of the plugin, which has precedence over the `alias` of both are given
+	Id pulumi.StringPtrInput `pulumi:"id"`
 }
 
 func (LookupPluginOutputArgs) ElementType() reflect.Type {
@@ -82,30 +94,37 @@ func (o LookupPluginResultOutput) ToLookupPluginResultOutputWithContext(ctx cont
 	return o
 }
 
+// The alias of the Docker plugin. If the tag is omitted, `:latest` is complemented to the attribute value.
 func (o LookupPluginResultOutput) Alias() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v LookupPluginResult) *string { return v.Alias }).(pulumi.StringPtrOutput)
 }
 
+// If `true` the plugin is enabled
 func (o LookupPluginResultOutput) Enabled() pulumi.BoolOutput {
 	return o.ApplyT(func(v LookupPluginResult) bool { return v.Enabled }).(pulumi.BoolOutput)
 }
 
+// The environment variables in the form of `KEY=VALUE`, e.g. `DEBUG=0`
 func (o LookupPluginResultOutput) Envs() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v LookupPluginResult) []string { return v.Envs }).(pulumi.StringArrayOutput)
 }
 
+// If true, grant all permissions necessary to run the plugin
 func (o LookupPluginResultOutput) GrantAllPermissions() pulumi.BoolOutput {
 	return o.ApplyT(func(v LookupPluginResult) bool { return v.GrantAllPermissions }).(pulumi.BoolOutput)
 }
 
+// The ID of the plugin, which has precedence over the `alias` of both are given
 func (o LookupPluginResultOutput) Id() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v LookupPluginResult) *string { return v.Id }).(pulumi.StringPtrOutput)
 }
 
+// The plugin name. If the tag is omitted, `:latest` is complemented to the attribute value.
 func (o LookupPluginResultOutput) Name() pulumi.StringOutput {
 	return o.ApplyT(func(v LookupPluginResult) string { return v.Name }).(pulumi.StringOutput)
 }
 
+// The Docker Plugin Reference
 func (o LookupPluginResultOutput) PluginReference() pulumi.StringOutput {
 	return o.ApplyT(func(v LookupPluginResult) string { return v.PluginReference }).(pulumi.StringOutput)
 }

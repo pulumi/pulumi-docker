@@ -19,28 +19,27 @@ namespace Pulumi.Docker
         /// {{% example %}}
         /// 
         /// ```csharp
+        /// using System.Collections.Generic;
         /// using Pulumi;
         /// using Docker = Pulumi.Docker;
         /// 
-        /// class MyStack : Stack
+        /// return await Deployment.RunAsync(() =&gt; 
         /// {
-        ///     public MyStack()
+        ///     var ubuntuRegistryImage = Docker.GetRegistryImage.Invoke(new()
         ///     {
-        ///         var ubuntuRegistryImage = Output.Create(Docker.GetRegistryImage.InvokeAsync(new Docker.GetRegistryImageArgs
-        ///         {
-        ///             Name = "ubuntu:precise",
-        ///         }));
-        ///         var ubuntuRemoteImage = new Docker.RemoteImage("ubuntuRemoteImage", new Docker.RemoteImageArgs
-        ///         {
-        ///             Name = ubuntuRegistryImage.Apply(ubuntuRegistryImage =&gt; ubuntuRegistryImage.Name),
-        ///             PullTriggers = 
-        ///             {
-        ///                 ubuntuRegistryImage.Apply(ubuntuRegistryImage =&gt; ubuntuRegistryImage.Sha256Digest),
-        ///             },
-        ///         });
-        ///     }
+        ///         Name = "ubuntu:precise",
+        ///     });
         /// 
-        /// }
+        ///     var ubuntuRemoteImage = new Docker.RemoteImage("ubuntuRemoteImage", new()
+        ///     {
+        ///         Name = ubuntuRegistryImage.Apply(getRegistryImageResult =&gt; getRegistryImageResult.Name),
+        ///         PullTriggers = new[]
+        ///         {
+        ///             ubuntuRegistryImage.Apply(getRegistryImageResult =&gt; getRegistryImageResult.Sha256Digest),
+        ///         },
+        ///     });
+        /// 
+        /// });
         /// ```
         /// {{% /example %}}
         /// {{% /examples %}}
@@ -56,28 +55,27 @@ namespace Pulumi.Docker
         /// {{% example %}}
         /// 
         /// ```csharp
+        /// using System.Collections.Generic;
         /// using Pulumi;
         /// using Docker = Pulumi.Docker;
         /// 
-        /// class MyStack : Stack
+        /// return await Deployment.RunAsync(() =&gt; 
         /// {
-        ///     public MyStack()
+        ///     var ubuntuRegistryImage = Docker.GetRegistryImage.Invoke(new()
         ///     {
-        ///         var ubuntuRegistryImage = Output.Create(Docker.GetRegistryImage.InvokeAsync(new Docker.GetRegistryImageArgs
-        ///         {
-        ///             Name = "ubuntu:precise",
-        ///         }));
-        ///         var ubuntuRemoteImage = new Docker.RemoteImage("ubuntuRemoteImage", new Docker.RemoteImageArgs
-        ///         {
-        ///             Name = ubuntuRegistryImage.Apply(ubuntuRegistryImage =&gt; ubuntuRegistryImage.Name),
-        ///             PullTriggers = 
-        ///             {
-        ///                 ubuntuRegistryImage.Apply(ubuntuRegistryImage =&gt; ubuntuRegistryImage.Sha256Digest),
-        ///             },
-        ///         });
-        ///     }
+        ///         Name = "ubuntu:precise",
+        ///     });
         /// 
-        /// }
+        ///     var ubuntuRemoteImage = new Docker.RemoteImage("ubuntuRemoteImage", new()
+        ///     {
+        ///         Name = ubuntuRegistryImage.Apply(getRegistryImageResult =&gt; getRegistryImageResult.Name),
+        ///         PullTriggers = new[]
+        ///         {
+        ///             ubuntuRegistryImage.Apply(getRegistryImageResult =&gt; getRegistryImageResult.Sha256Digest),
+        ///         },
+        ///     });
+        /// 
+        /// });
         /// ```
         /// {{% /example %}}
         /// {{% /examples %}}
@@ -87,30 +85,44 @@ namespace Pulumi.Docker
     }
 
 
-    public sealed class GetRegistryImageArgs : Pulumi.InvokeArgs
+    public sealed class GetRegistryImageArgs : global::Pulumi.InvokeArgs
     {
+        /// <summary>
+        /// If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
+        /// </summary>
         [Input("insecureSkipVerify")]
         public bool? InsecureSkipVerify { get; set; }
 
+        /// <summary>
+        /// The name of the Docker image, including any tags. e.g. `alpine:latest`
+        /// </summary>
         [Input("name", required: true)]
         public string Name { get; set; } = null!;
 
         public GetRegistryImageArgs()
         {
         }
+        public static new GetRegistryImageArgs Empty => new GetRegistryImageArgs();
     }
 
-    public sealed class GetRegistryImageInvokeArgs : Pulumi.InvokeArgs
+    public sealed class GetRegistryImageInvokeArgs : global::Pulumi.InvokeArgs
     {
+        /// <summary>
+        /// If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
+        /// </summary>
         [Input("insecureSkipVerify")]
         public Input<bool>? InsecureSkipVerify { get; set; }
 
+        /// <summary>
+        /// The name of the Docker image, including any tags. e.g. `alpine:latest`
+        /// </summary>
         [Input("name", required: true)]
         public Input<string> Name { get; set; } = null!;
 
         public GetRegistryImageInvokeArgs()
         {
         }
+        public static new GetRegistryImageInvokeArgs Empty => new GetRegistryImageInvokeArgs();
     }
 
 
@@ -121,8 +133,17 @@ namespace Pulumi.Docker
         /// The provider-assigned unique ID for this managed resource.
         /// </summary>
         public readonly string Id;
+        /// <summary>
+        /// If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
+        /// </summary>
         public readonly bool? InsecureSkipVerify;
+        /// <summary>
+        /// The name of the Docker image, including any tags. e.g. `alpine:latest`
+        /// </summary>
         public readonly string Name;
+        /// <summary>
+        /// The content digest of the image, as stored in the registry.
+        /// </summary>
         public readonly string Sha256Digest;
 
         [OutputConstructor]

@@ -9,7 +9,15 @@ import java.util.Objects;
 
 @CustomType
 public final class ContainerHost {
+    /**
+     * @return Hostname to add
+     * 
+     */
     private final String host;
+    /**
+     * @return IP address this hostname should resolve to.
+     * 
+     */
     private final String ip;
 
     @CustomType.Constructor
@@ -20,9 +28,17 @@ public final class ContainerHost {
         this.ip = ip;
     }
 
+    /**
+     * @return Hostname to add
+     * 
+     */
     public String host() {
         return this.host;
     }
+    /**
+     * @return IP address this hostname should resolve to.
+     * 
+     */
     public String ip() {
         return this.ip;
     }

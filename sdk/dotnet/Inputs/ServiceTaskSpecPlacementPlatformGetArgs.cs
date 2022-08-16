@@ -10,7 +10,7 @@ using Pulumi.Serialization;
 namespace Pulumi.Docker.Inputs
 {
 
-    public sealed class ServiceTaskSpecPlacementPlatformGetArgs : Pulumi.ResourceArgs
+    public sealed class ServiceTaskSpecPlacementPlatformGetArgs : global::Pulumi.ResourceArgs
     {
         [Input("architecture", required: true)]
         public Input<string> Architecture { get; set; } = null!;
@@ -21,5 +21,6 @@ namespace Pulumi.Docker.Inputs
         public ServiceTaskSpecPlacementPlatformGetArgs()
         {
         }
+        public static new ServiceTaskSpecPlacementPlatformGetArgs Empty => new ServiceTaskSpecPlacementPlatformGetArgs();
     }
 }

@@ -10,16 +10,23 @@ using Pulumi.Serialization;
 namespace Pulumi.Docker.Inputs
 {
 
-    public sealed class ServiceTaskSpecContainerSpecLabelArgs : Pulumi.ResourceArgs
+    public sealed class ServiceTaskSpecContainerSpecLabelArgs : global::Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Name of the label
+        /// </summary>
         [Input("label", required: true)]
         public Input<string> Label { get; set; } = null!;
 
+        /// <summary>
+        /// Value of the label
+        /// </summary>
         [Input("value", required: true)]
         public Input<string> Value { get; set; } = null!;
 
         public ServiceTaskSpecContainerSpecLabelArgs()
         {
         }
+        public static new ServiceTaskSpecContainerSpecLabelArgs Empty => new ServiceTaskSpecContainerSpecLabelArgs();
     }
 }

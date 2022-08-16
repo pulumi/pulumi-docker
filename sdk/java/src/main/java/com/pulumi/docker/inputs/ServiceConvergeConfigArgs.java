@@ -15,16 +15,32 @@ public final class ServiceConvergeConfigArgs extends com.pulumi.resources.Resour
 
     public static final ServiceConvergeConfigArgs Empty = new ServiceConvergeConfigArgs();
 
+    /**
+     * The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.
+     * 
+     */
     @Import(name="delay")
     private @Nullable Output<String> delay;
 
+    /**
+     * @return The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.
+     * 
+     */
     public Optional<Output<String>> delay() {
         return Optional.ofNullable(this.delay);
     }
 
+    /**
+     * The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`
+     * 
+     */
     @Import(name="timeout")
     private @Nullable Output<String> timeout;
 
+    /**
+     * @return The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`
+     * 
+     */
     public Optional<Output<String>> timeout() {
         return Optional.ofNullable(this.timeout);
     }
@@ -54,20 +70,44 @@ public final class ServiceConvergeConfigArgs extends com.pulumi.resources.Resour
             $ = new ServiceConvergeConfigArgs(Objects.requireNonNull(defaults));
         }
 
+        /**
+         * @param delay The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder delay(@Nullable Output<String> delay) {
             $.delay = delay;
             return this;
         }
 
+        /**
+         * @param delay The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder delay(String delay) {
             return delay(Output.of(delay));
         }
 
+        /**
+         * @param timeout The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`
+         * 
+         * @return builder
+         * 
+         */
         public Builder timeout(@Nullable Output<String> timeout) {
             $.timeout = timeout;
             return this;
         }
 
+        /**
+         * @param timeout The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`
+         * 
+         * @return builder
+         * 
+         */
         public Builder timeout(String timeout) {
             return timeout(Output.of(timeout));
         }

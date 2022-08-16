@@ -10,7 +10,7 @@ using Pulumi.Serialization;
 namespace Pulumi.Docker.Inputs
 {
 
-    public sealed class ServiceTaskSpecPlacementArgs : Pulumi.ResourceArgs
+    public sealed class ServiceTaskSpecPlacementArgs : global::Pulumi.ResourceArgs
     {
         [Input("constraints")]
         private InputList<string>? _constraints;
@@ -42,5 +42,6 @@ namespace Pulumi.Docker.Inputs
         public ServiceTaskSpecPlacementArgs()
         {
         }
+        public static new ServiceTaskSpecPlacementArgs Empty => new ServiceTaskSpecPlacementArgs();
     }
 }

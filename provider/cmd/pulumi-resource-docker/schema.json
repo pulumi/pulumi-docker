@@ -133,6 +133,7 @@
                     "items": {
                         "type": "string"
                     },
+                    "description": "List of linux capabilities to add.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -145,6 +146,7 @@
                     "items": {
                         "type": "string"
                     },
+                    "description": "List of linux capabilities to drop.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -159,6 +161,7 @@
             "properties": {
                 "containerPath": {
                     "type": "string",
+                    "description": "The path in the container where the device will be bound.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -168,6 +171,7 @@
                 },
                 "hostPath": {
                     "type": "string",
+                    "description": "The path on the host where the device is located.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -177,6 +181,7 @@
                 },
                 "permissions": {
                     "type": "string",
+                    "description": "The cgroup permissions given to the container to access the device. Defaults to `rwm`.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -194,6 +199,7 @@
             "properties": {
                 "interval": {
                     "type": "string",
+                    "description": "Time between running the check (ms|s|m|h). Defaults to `0s`.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -202,6 +208,7 @@
                 },
                 "retries": {
                     "type": "integer",
+                    "description": "Consecutive failures needed to report unhealthy. Defaults to `0`.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -210,6 +217,7 @@
                 },
                 "startPeriod": {
                     "type": "string",
+                    "description": "Start period for the container to initialize before counting retries towards unstable (ms|s|m|h). Defaults to `0s`.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -221,6 +229,7 @@
                     "items": {
                         "type": "string"
                     },
+                    "description": "Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `[\"CMD\", \"curl\", \"-f\", \"localhost/health\"]`.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -229,6 +238,7 @@
                 },
                 "timeout": {
                     "type": "string",
+                    "description": "Maximum time to allow one check to run (ms|s|m|h). Defaults to `0s`.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -245,6 +255,7 @@
             "properties": {
                 "host": {
                     "type": "string",
+                    "description": "Hostname to add\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -254,6 +265,7 @@
                 },
                 "ip": {
                     "type": "string",
+                    "description": "IP address this hostname should resolve to.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -272,6 +284,7 @@
             "properties": {
                 "label": {
                     "type": "string",
+                    "description": "Name of the label\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -281,6 +294,7 @@
                 },
                 "value": {
                     "type": "string",
+                    "description": "Value of the label\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -299,6 +313,7 @@
             "properties": {
                 "bindOptions": {
                     "$ref": "#/types/docker:index/ContainerMountBindOptions:ContainerMountBindOptions",
+                    "description": "Optional configuration for the bind type.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -307,6 +322,7 @@
                 },
                 "readOnly": {
                     "type": "boolean",
+                    "description": "Whether the mount should be read-only.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -315,6 +331,7 @@
                 },
                 "source": {
                     "type": "string",
+                    "description": "Mount source (e.g. a volume name, a host path).\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -323,6 +340,7 @@
                 },
                 "target": {
                     "type": "string",
+                    "description": "Container path\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -331,6 +349,7 @@
                 },
                 "tmpfsOptions": {
                     "$ref": "#/types/docker:index/ContainerMountTmpfsOptions:ContainerMountTmpfsOptions",
+                    "description": "Optional configuration for the tmpfs type.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -340,6 +359,7 @@
                 },
                 "type": {
                     "type": "string",
+                    "description": "The mount type\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -348,6 +368,7 @@
                 },
                 "volumeOptions": {
                     "$ref": "#/types/docker:index/ContainerMountVolumeOptions:ContainerMountVolumeOptions",
+                    "description": "Optional configuration for the volume type.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -421,6 +442,7 @@
                     "items": {
                         "$ref": "#/types/docker:index/ContainerMountVolumeOptionsLabel:ContainerMountVolumeOptionsLabel"
                     },
+                    "description": "User-defined key/value metadata\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -442,6 +464,7 @@
             "properties": {
                 "label": {
                     "type": "string",
+                    "description": "Name of the label\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -451,6 +474,7 @@
                 },
                 "value": {
                     "type": "string",
+                    "description": "Value of the label\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -469,6 +493,7 @@
             "properties": {
                 "gateway": {
                     "type": "string",
+                    "description": "The network gateway of the container.\n",
                     "deprecationMessage": "Use `network_data` instead. The network gateway of the container as read from its NetworkSettings.",
                     "language": {
                         "python": {
@@ -494,6 +519,7 @@
                 },
                 "ipAddress": {
                     "type": "string",
+                    "description": "The IP address of the container.\n",
                     "deprecationMessage": "Use `network_data` instead. The IP address of the container's first network it.",
                     "language": {
                         "python": {
@@ -503,6 +529,7 @@
                 },
                 "ipPrefixLength": {
                     "type": "integer",
+                    "description": "The IP prefix length of the container.\n",
                     "deprecationMessage": "Use `network_data` instead. The IP prefix length of the container as read from its NetworkSettings.",
                     "language": {
                         "python": {
@@ -549,6 +576,7 @@
                     "items": {
                         "type": "string"
                     },
+                    "description": "The network aliases of the container in the specific network.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -558,6 +586,7 @@
                 },
                 "ipv4Address": {
                     "type": "string",
+                    "description": "The IPV4 address of the container in the specific network.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -567,6 +596,7 @@
                 },
                 "ipv6Address": {
                     "type": "string",
+                    "description": "The IPV6 address of the container in the specific network.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -576,6 +606,7 @@
                 },
                 "name": {
                     "type": "string",
+                    "description": "The name or id of the network to use. You can use `name` or `id` attribute from a `docker.Network` resource.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -593,6 +624,7 @@
             "properties": {
                 "external": {
                     "type": "integer",
+                    "description": "Port exposed out of the container. If not given a free random port `\u003e= 32768` will be used.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -602,6 +634,7 @@
                 },
                 "internal": {
                     "type": "integer",
+                    "description": "Port within the container.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -611,6 +644,7 @@
                 },
                 "ip": {
                     "type": "string",
+                    "description": "IP address/mask that can access this port. Defaults to `0.0.0.0`.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -620,6 +654,7 @@
                 },
                 "protocol": {
                     "type": "string",
+                    "description": "Protocol that can be used over this port. Defaults to `tcp`.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -645,6 +680,7 @@
             "properties": {
                 "hard": {
                     "type": "integer",
+                    "description": "The hard limit\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -654,6 +690,7 @@
                 },
                 "name": {
                     "type": "string",
+                    "description": "The name of the ulimit\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -663,6 +700,7 @@
                 },
                 "soft": {
                     "type": "integer",
+                    "description": "The soft limit\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -682,6 +720,7 @@
             "properties": {
                 "content": {
                     "type": "string",
+                    "description": "Literal string value to use as the object content, which will be uploaded as UTF-8-encoded text. Conflicts with `content_base64` \u0026 `source`\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -700,6 +739,7 @@
                 },
                 "executable": {
                     "type": "boolean",
+                    "description": "If `true`, the file will be uploaded with user executable permission. Defaults to `false`.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -709,6 +749,7 @@
                 },
                 "file": {
                     "type": "string",
+                    "description": "Path to the file in the container where is upload goes to\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -718,6 +759,7 @@
                 },
                 "source": {
                     "type": "string",
+                    "description": "A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state. Conflicts with `content` \u0026 `content_base64`\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -727,6 +769,7 @@
                 },
                 "sourceHash": {
                     "type": "string",
+                    "description": "If using `source`, this will force an update if the file content has updated but the filename has not.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -744,6 +787,7 @@
             "properties": {
                 "containerPath": {
                     "type": "string",
+                    "description": "The path in the container where the volume will be mounted.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -753,6 +797,7 @@
                 },
                 "fromContainer": {
                     "type": "string",
+                    "description": "The container where the volume is coming from.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -762,6 +807,7 @@
                 },
                 "hostPath": {
                     "type": "string",
+                    "description": "The path on the host where the volume is coming from.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -771,6 +817,7 @@
                 },
                 "readOnly": {
                     "type": "boolean",
+                    "description": "If `true`, this volume will be readonly. Defaults to `false`.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -780,6 +827,7 @@
                 },
                 "volumeName": {
                     "type": "string",
+                    "description": "The name of the docker volume which should be mounted.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -797,6 +845,7 @@
                     "additionalProperties": {
                         "$ref": "pulumi.json#/Any"
                     },
+                    "description": "Auxiliary IPv4 or IPv6 addresses used by Network driver\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -806,6 +855,7 @@
                 },
                 "gateway": {
                     "type": "string",
+                    "description": "The IP address of the gateway\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -815,6 +865,7 @@
                 },
                 "ipRange": {
                     "type": "string",
+                    "description": "The ip range in CIDR form\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -824,6 +875,7 @@
                 },
                 "subnet": {
                     "type": "string",
+                    "description": "The subnet in CIDR form\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -838,6 +890,7 @@
             "properties": {
                 "label": {
                     "type": "string",
+                    "description": "Name of the label\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -847,6 +900,7 @@
                 },
                 "value": {
                     "type": "string",
+                    "description": "Value of the label\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -865,6 +919,7 @@
             "properties": {
                 "name": {
                     "type": "string",
+                    "description": "The name of the permission\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -876,6 +931,7 @@
                     "items": {
                         "type": "string"
                     },
+                    "description": "The value of the permission\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -949,6 +1005,7 @@
                     "items": {
                         "$ref": "#/types/docker:index/RegistryImageBuildAuthConfig:RegistryImageBuildAuthConfig"
                     },
+                    "description": "The configuration for the authentication\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -960,6 +1017,7 @@
                     "additionalProperties": {
                         "type": "string"
                     },
+                    "description": "Pairs for build-time variables in the form TODO\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -969,6 +1027,7 @@
                 },
                 "buildId": {
                     "type": "string",
+                    "description": "BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -981,6 +1040,7 @@
                     "items": {
                         "type": "string"
                     },
+                    "description": "Images to consider as cache sources\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -990,6 +1050,7 @@
                 },
                 "cgroupParent": {
                     "type": "string",
+                    "description": "Optional parent cgroup for the container\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -999,6 +1060,7 @@
                 },
                 "context": {
                     "type": "string",
+                    "description": "The absolute path to the context folder. You can use the helper function '${path.cwd}/context-dir'.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1008,6 +1070,7 @@
                 },
                 "cpuPeriod": {
                     "type": "integer",
+                    "description": "The length of a CPU period in microseconds\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1017,6 +1080,7 @@
                 },
                 "cpuQuota": {
                     "type": "integer",
+                    "description": "Microseconds of CPU time that the container can get in a CPU period\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1026,6 +1090,7 @@
                 },
                 "cpuSetCpus": {
                     "type": "string",
+                    "description": "CPUs in which to allow execution (e.g., `0-3`, `0`, `1`)\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1035,6 +1100,7 @@
                 },
                 "cpuSetMems": {
                     "type": "string",
+                    "description": "MEMs in which to allow execution (`0-3`, `0`, `1`)\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1044,6 +1110,7 @@
                 },
                 "cpuShares": {
                     "type": "integer",
+                    "description": "CPU shares (relative weight)\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1053,6 +1120,7 @@
                 },
                 "dockerfile": {
                     "type": "string",
+                    "description": "Dockerfile file. Defaults to `Dockerfile`\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1065,6 +1133,7 @@
                     "items": {
                         "type": "string"
                     },
+                    "description": "A list of hostnames/IP mappings to add to the container’s /etc/hosts file. Specified in the form [\"hostname:IP\"]\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1074,6 +1143,7 @@
                 },
                 "forceRemove": {
                     "type": "boolean",
+                    "description": "Always remove intermediate containers\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1083,6 +1153,7 @@
                 },
                 "isolation": {
                     "type": "string",
+                    "description": "Isolation represents the isolation technology of a container. The supported values are\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1095,6 +1166,7 @@
                     "additionalProperties": {
                         "type": "string"
                     },
+                    "description": "User-defined key/value metadata\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1104,6 +1176,7 @@
                 },
                 "memory": {
                     "type": "integer",
+                    "description": "Set memory limit for build\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1113,6 +1186,7 @@
                 },
                 "memorySwap": {
                     "type": "integer",
+                    "description": "Total memory (memory + swap), -1 to enable unlimited swap\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1122,6 +1196,7 @@
                 },
                 "networkMode": {
                     "type": "string",
+                    "description": "Set the networking mode for the RUN instructions during build\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1131,6 +1206,7 @@
                 },
                 "noCache": {
                     "type": "boolean",
+                    "description": "Do not use the cache when building the image\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1140,6 +1216,7 @@
                 },
                 "platform": {
                     "type": "string",
+                    "description": "Set platform if server is multi-platform capable\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1149,6 +1226,7 @@
                 },
                 "pullParent": {
                     "type": "boolean",
+                    "description": "Attempt to pull the image even if an older image exists locally\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1158,6 +1236,7 @@
                 },
                 "remoteContext": {
                     "type": "string",
+                    "description": "A Git repository URI or HTTP/HTTPS context URI\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1167,6 +1246,7 @@
                 },
                 "remove": {
                     "type": "boolean",
+                    "description": "Remove intermediate containers after a successful build (default behavior)\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1179,6 +1259,7 @@
                     "items": {
                         "type": "string"
                     },
+                    "description": "The security options\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1188,6 +1269,7 @@
                 },
                 "sessionId": {
                     "type": "string",
+                    "description": "Set an ID for the build session\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1197,6 +1279,7 @@
                 },
                 "shmSize": {
                     "type": "integer",
+                    "description": "Size of /dev/shm in bytes. The size must be greater than 0\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1206,6 +1289,7 @@
                 },
                 "squash": {
                     "type": "boolean",
+                    "description": "If true the new layers are squashed into a new image with a single new layer\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1215,6 +1299,7 @@
                 },
                 "suppressOutput": {
                     "type": "boolean",
+                    "description": "Suppress the build output and print image ID on success\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1224,6 +1309,7 @@
                 },
                 "target": {
                     "type": "string",
+                    "description": "Set the target build stage to build\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1236,6 +1322,7 @@
                     "items": {
                         "$ref": "#/types/docker:index/RegistryImageBuildUlimit:RegistryImageBuildUlimit"
                     },
+                    "description": "Configuration for ulimits\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1244,6 +1331,7 @@
                 },
                 "version": {
                     "type": "string",
+                    "description": "Version of the underlying builder to use\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1342,6 +1430,7 @@
                 },
                 "name": {
                     "type": "string",
+                    "description": "The name of the Docker image.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1373,6 +1462,7 @@
                     "additionalProperties": {
                         "type": "string"
                     },
+                    "description": "Set build-time variables\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1382,6 +1472,7 @@
                 },
                 "dockerfile": {
                     "type": "string",
+                    "description": "Name of the Dockerfile. Defaults to `Dockerfile`.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1391,6 +1482,7 @@
                 },
                 "forceRemove": {
                     "type": "boolean",
+                    "description": "Always remove intermediate containers\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1402,6 +1494,7 @@
                     "additionalProperties": {
                         "type": "string"
                     },
+                    "description": "Set metadata for an image\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1410,6 +1503,7 @@
                 },
                 "noCache": {
                     "type": "boolean",
+                    "description": "Do not use cache when building the image\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1418,6 +1512,7 @@
                 },
                 "path": {
                     "type": "string",
+                    "description": "Context path\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1427,6 +1522,7 @@
                 },
                 "remove": {
                     "type": "boolean",
+                    "description": "Remove intermediate containers after a successful build. Defaults to  `true`.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1438,6 +1534,7 @@
                     "items": {
                         "type": "string"
                     },
+                    "description": "Name and optionally a tag in the 'name:tag' format\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1446,6 +1543,7 @@
                 },
                 "target": {
                     "type": "string",
+                    "description": "Set the target build stage to build\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1462,6 +1560,7 @@
             "properties": {
                 "label": {
                     "type": "string",
+                    "description": "Name of the label\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1471,6 +1570,7 @@
                 },
                 "value": {
                     "type": "string",
+                    "description": "Value of the label\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1489,6 +1589,7 @@
             "properties": {
                 "password": {
                     "type": "string",
+                    "description": "The password\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1498,6 +1599,7 @@
                 },
                 "serverAddress": {
                     "type": "string",
+                    "description": "The address of the server for the authentication\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1507,6 +1609,7 @@
                 },
                 "username": {
                     "type": "string",
+                    "description": "The username\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1524,6 +1627,7 @@
             "properties": {
                 "delay": {
                     "type": "string",
+                    "description": "The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1532,6 +1636,7 @@
                 },
                 "timeout": {
                     "type": "string",
+                    "description": "The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1545,6 +1650,7 @@
             "properties": {
                 "mode": {
                     "type": "string",
+                    "description": "The mode of resolution to use for internal load balancing between tasks\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1556,6 +1662,7 @@
                     "items": {
                         "$ref": "#/types/docker:index/ServiceEndpointSpecPort:ServiceEndpointSpecPort"
                     },
+                    "description": "List of exposed ports that this service is accessible on from the outside. Ports can only be provided if 'vip' resolution mode is used\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1576,6 +1683,7 @@
             "properties": {
                 "name": {
                     "type": "string",
+                    "description": "Name of the service\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1632,6 +1740,7 @@
             "properties": {
                 "label": {
                     "type": "string",
+                    "description": "Name of the label\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1641,6 +1750,7 @@
                 },
                 "value": {
                     "type": "string",
+                    "description": "Value of the label\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1659,6 +1769,7 @@
             "properties": {
                 "global": {
                     "type": "boolean",
+                    "description": "The global service mode. Defaults to `false`\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1667,6 +1778,7 @@
                 },
                 "replicated": {
                     "$ref": "#/types/docker:index/ServiceModeReplicated:ServiceModeReplicated",
+                    "description": "The replicated service mode\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1700,6 +1812,7 @@
             "properties": {
                 "delay": {
                     "type": "string",
+                    "description": "Delay between task rollbacks (ns|us|ms|s|m|h). Defaults to `0s`.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1708,6 +1821,7 @@
                 },
                 "failureAction": {
                     "type": "string",
+                    "description": "Action on rollback failure: pause | continue. Defaults to `pause`.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1716,6 +1830,7 @@
                 },
                 "maxFailureRatio": {
                     "type": "string",
+                    "description": "Failure rate to tolerate during a rollback. Defaults to `0.0`.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1724,6 +1839,7 @@
                 },
                 "monitor": {
                     "type": "string",
+                    "description": "Duration after each task rollback to monitor for failure (ns|us|ms|s|m|h). Defaults to `5s`.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1732,6 +1848,7 @@
                 },
                 "order": {
                     "type": "string",
+                    "description": "Rollback order: either 'stop-first' or 'start-first'. Defaults to `stop-first`.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1740,6 +1857,7 @@
                 },
                 "parallelism": {
                     "type": "integer",
+                    "description": "Maximum number of tasks to be rollbacked in one iteration. Defaults to `1`\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1753,6 +1871,7 @@
             "properties": {
                 "containerSpec": {
                     "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpec:ServiceTaskSpecContainerSpec",
+                    "description": "The spec for each container\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1761,6 +1880,7 @@
                 },
                 "forceUpdate": {
                     "type": "integer",
+                    "description": "A counter that triggers an update even if no relevant parameters have been changed. See the [spec](https://github.com/docker/swarmkit/blob/master/api/specs.proto#L126).\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1769,6 +1889,7 @@
                 },
                 "logDriver": {
                     "$ref": "#/types/docker:index/ServiceTaskSpecLogDriver:ServiceTaskSpecLogDriver",
+                    "description": "Specifies the log driver to use for tasks created from this spec. If not present, the default one for the swarm will be used, finally falling back to the engine default if not specified\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1780,6 +1901,7 @@
                     "items": {
                         "type": "string"
                     },
+                    "description": "Ids of the networks in which the  container will be put in\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1788,6 +1910,7 @@
                 },
                 "placement": {
                     "$ref": "#/types/docker:index/ServiceTaskSpecPlacement:ServiceTaskSpecPlacement",
+                    "description": "The placement preferences\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1796,6 +1919,7 @@
                 },
                 "resources": {
                     "$ref": "#/types/docker:index/ServiceTaskSpecResources:ServiceTaskSpecResources",
+                    "description": "Resource requirements which apply to each individual container created as part of the service\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1804,6 +1928,7 @@
                 },
                 "restartPolicy": {
                     "$ref": "#/types/docker:index/ServiceTaskSpecRestartPolicy:ServiceTaskSpecRestartPolicy",
+                    "description": "Specification for the restart policy which applies to containers created as part of this service.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1812,6 +1937,7 @@
                 },
                 "runtime": {
                     "type": "string",
+                    "description": "Runtime is the type of runtime specified for the task executor. See the [types](https://github.com/moby/moby/blob/master/api/types/swarm/runtime.go).\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1958,6 +2084,7 @@
                     "items": {
                         "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecLabel:ServiceTaskSpecContainerSpecLabel"
                     },
+                    "description": "User-defined key/value metadata\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -2222,6 +2349,7 @@
             "properties": {
                 "label": {
                     "type": "string",
+                    "description": "Name of the label\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -2231,6 +2359,7 @@
                 },
                 "value": {
                     "type": "string",
+                    "description": "Value of the label\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -2327,6 +2456,7 @@
             "properties": {
                 "mode": {
                     "type": "integer",
+                    "description": "Scheduling mode for the service\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -2370,6 +2500,7 @@
                     "items": {
                         "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecMountVolumeOptionsLabel:ServiceTaskSpecContainerSpecMountVolumeOptionsLabel"
                     },
+                    "description": "User-defined key/value metadata\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -2391,6 +2522,7 @@
             "properties": {
                 "label": {
                     "type": "string",
+                    "description": "Name of the label\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -2400,6 +2532,7 @@
                 },
                 "value": {
                     "type": "string",
+                    "description": "Value of the label\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -2562,6 +2695,7 @@
             "properties": {
                 "name": {
                     "type": "string",
+                    "description": "Name of the service\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -2795,6 +2929,7 @@
             "properties": {
                 "delay": {
                     "type": "string",
+                    "description": "Delay between task updates `(ns|us|ms|s|m|h)`. Defaults to `0s`.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -2803,6 +2938,7 @@
                 },
                 "failureAction": {
                     "type": "string",
+                    "description": "Action on update failure: `pause`, `continue` or `rollback`. Defaults to `pause`.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -2811,6 +2947,7 @@
                 },
                 "maxFailureRatio": {
                     "type": "string",
+                    "description": "Failure rate to tolerate during an update. Defaults to `0.0`.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -2819,6 +2956,7 @@
                 },
                 "monitor": {
                     "type": "string",
+                    "description": "Duration after each task update to monitor for failure (ns|us|ms|s|m|h). Defaults to `5s`.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -2827,6 +2965,7 @@
                 },
                 "order": {
                     "type": "string",
+                    "description": "Update order: either 'stop-first' or 'start-first'. Defaults to `stop-first`.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -2835,6 +2974,7 @@
                 },
                 "parallelism": {
                     "type": "integer",
+                    "description": "Maximum number of tasks to be updated in one iteration. Defaults to `1`\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -2848,6 +2988,7 @@
             "properties": {
                 "label": {
                     "type": "string",
+                    "description": "Name of the label\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -2857,6 +2998,7 @@
                 },
                 "value": {
                     "type": "string",
+                    "description": "Value of the label\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -2993,7 +3135,7 @@
     },
     "resources": {
         "docker:index/container:Container": {
-            "description": "\u003c!-- Bug: Type and Name are switched --\u003e\nManages the lifecycle of a Docker container.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\n// Find the latest Ubuntu precise image.\nconst ubuntuRemoteImage = new docker.RemoteImage(\"ubuntuRemoteImage\", {name: \"ubuntu:precise\"});\n// Start a container\nconst ubuntuContainer = new docker.Container(\"ubuntuContainer\", {image: ubuntuRemoteImage.latest});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\n# Find the latest Ubuntu precise image.\nubuntu_remote_image = docker.RemoteImage(\"ubuntuRemoteImage\", name=\"ubuntu:precise\")\n# Start a container\nubuntu_container = docker.Container(\"ubuntuContainer\", image=ubuntu_remote_image.latest)\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        // Find the latest Ubuntu precise image.\n        var ubuntuRemoteImage = new Docker.RemoteImage(\"ubuntuRemoteImage\", new Docker.RemoteImageArgs\n        {\n            Name = \"ubuntu:precise\",\n        });\n        // Start a container\n        var ubuntuContainer = new Docker.Container(\"ubuntuContainer\", new Docker.ContainerArgs\n        {\n            Image = ubuntuRemoteImage.Latest,\n        });\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v3/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\tubuntuRemoteImage, err := docker.NewRemoteImage(ctx, \"ubuntuRemoteImage\", \u0026docker.RemoteImageArgs{\n\t\t\tName: pulumi.String(\"ubuntu:precise\"),\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\t_, err = docker.NewContainer(ctx, \"ubuntuContainer\", \u0026docker.ContainerArgs{\n\t\t\tImage: ubuntuRemoteImage.Latest,\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.RemoteImage;\nimport com.pulumi.docker.RemoteImageArgs;\nimport com.pulumi.docker.Container;\nimport com.pulumi.docker.ContainerArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var ubuntuRemoteImage = new RemoteImage(\"ubuntuRemoteImage\", RemoteImageArgs.builder()        \n            .name(\"ubuntu:precise\")\n            .build());\n\n        var ubuntuContainer = new Container(\"ubuntuContainer\", ContainerArgs.builder()        \n            .image(ubuntuRemoteImage.latest())\n            .build());\n\n    }\n}\n```\n```yaml\nresources:\n  # Start a container\n  ubuntuContainer:\n    type: docker:Container\n    properties:\n      image: ${ubuntuRemoteImage.latest}\n  # Find the latest Ubuntu precise image.\n  ubuntuRemoteImage:\n    type: docker:RemoteImage\n    properties:\n      name: ubuntu:precise\n```\n{{% /example %}}\n{{% /examples %}}\n\n## Import\n\n### Example Assuming you created a `container` as follows #!/bin/bash docker run --name foo -p8080:80 -d nginx\n\n# prints the container ID\n\n9a550c0f0163d39d77222d3efd58701b625d47676c25c686c95b5b92d1cba6fd you provide the definition for the resource as follows terraform resource \"docker_container\" \"foo\" {\n\n name\n\n= \"foo\"\n\n image = \"nginx\"\n\n ports {\n\n\n\n internal = \"80\"\n\n\n\n external = \"8080\"\n\n } } then the import command is as follows #!/bin/bash\n\n```sh\n $ pulumi import docker:index/container:Container foo 9a550c0f0163d39d77222d3efd58701b625d47676c25c686c95b5b92d1cba6fd\n```\n\n ",
+            "description": "\u003c!-- Bug: Type and Name are switched --\u003e\nManages the lifecycle of a Docker container.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\n// Find the latest Ubuntu precise image.\nconst ubuntuRemoteImage = new docker.RemoteImage(\"ubuntuRemoteImage\", {name: \"ubuntu:precise\"});\n// Start a container\nconst ubuntuContainer = new docker.Container(\"ubuntuContainer\", {image: ubuntuRemoteImage.latest});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\n# Find the latest Ubuntu precise image.\nubuntu_remote_image = docker.RemoteImage(\"ubuntuRemoteImage\", name=\"ubuntu:precise\")\n# Start a container\nubuntu_container = docker.Container(\"ubuntuContainer\", image=ubuntu_remote_image.latest)\n```\n```csharp\nusing System.Collections.Generic;\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nreturn await Deployment.RunAsync(() =\u003e \n{\n    // Find the latest Ubuntu precise image.\n    var ubuntuRemoteImage = new Docker.RemoteImage(\"ubuntuRemoteImage\", new()\n    {\n        Name = \"ubuntu:precise\",\n    });\n\n    // Start a container\n    var ubuntuContainer = new Docker.Container(\"ubuntuContainer\", new()\n    {\n        Image = ubuntuRemoteImage.Latest,\n    });\n\n});\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v3/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\tubuntuRemoteImage, err := docker.NewRemoteImage(ctx, \"ubuntuRemoteImage\", \u0026docker.RemoteImageArgs{\n\t\t\tName: pulumi.String(\"ubuntu:precise\"),\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\t_, err = docker.NewContainer(ctx, \"ubuntuContainer\", \u0026docker.ContainerArgs{\n\t\t\tImage: ubuntuRemoteImage.Latest,\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.RemoteImage;\nimport com.pulumi.docker.RemoteImageArgs;\nimport com.pulumi.docker.Container;\nimport com.pulumi.docker.ContainerArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var ubuntuRemoteImage = new RemoteImage(\"ubuntuRemoteImage\", RemoteImageArgs.builder()        \n            .name(\"ubuntu:precise\")\n            .build());\n\n        var ubuntuContainer = new Container(\"ubuntuContainer\", ContainerArgs.builder()        \n            .image(ubuntuRemoteImage.latest())\n            .build());\n\n    }\n}\n```\n```yaml\nresources:\n  # Start a container\n  ubuntuContainer:\n    type: docker:Container\n    properties:\n      image: ${ubuntuRemoteImage.latest}\n  # Find the latest Ubuntu precise image.\n  ubuntuRemoteImage:\n    type: docker:RemoteImage\n    properties:\n      name: ubuntu:precise\n```\n{{% /example %}}\n{{% /examples %}}\n\n## Import\n\n### Example Assuming you created a `container` as follows #!/bin/bash docker run --name foo -p8080:80 -d nginx\n\n# prints the container ID\n\n9a550c0f0163d39d77222d3efd58701b625d47676c25c686c95b5b92d1cba6fd you provide the definition for the resource as follows terraform resource \"docker_container\" \"foo\" {\n\n name\n\n= \"foo\"\n\n image = \"nginx\"\n\n ports {\n\n\n\n internal = \"80\"\n\n\n\n external = \"8080\"\n\n } } then the import command is as follows #!/bin/bash\n\n```sh\n $ pulumi import docker:index/container:Container foo 9a550c0f0163d39d77222d3efd58701b625d47676c25c686c95b5b92d1cba6fd\n```\n\n ",
             "properties": {
                 "attach": {
                     "type": "boolean",
@@ -3012,7 +3154,7 @@
                     "items": {
                         "type": "string"
                     },
-                    "description": "The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be\n`[\"/usr/bin/myprogram\",\"-\",\"baz.con\"]`.\n"
+                    "description": "The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[\"/usr/bin/myprogram\",\"-\",\"baz.con\"]`.\n"
                 },
                 "containerLogs": {
                     "type": "string",
@@ -3028,7 +3170,7 @@
                 },
                 "destroyGraceSeconds": {
                     "type": "integer",
-                    "description": "If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on\nsuccessful stop.\n"
+                    "description": "If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.\n"
                 },
                 "devices": {
                     "type": "array",
@@ -3067,7 +3209,7 @@
                     "items": {
                         "type": "string"
                     },
-                    "description": "The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an\nexecutable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be\n`\"/usr/bin/myprogra\"]`.\n"
+                    "description": "The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `\"/usr/bin/myprogra\"]`.\n"
                 },
                 "envs": {
                     "type": "array",
@@ -3087,7 +3229,7 @@
                 },
                 "gpus": {
                     "type": "string",
-                    "description": "GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result\nin unexpected behavior.\n"
+                    "description": "GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.\n"
                 },
                 "groupAdds": {
                     "type": "array",
@@ -3113,11 +3255,11 @@
                 },
                 "image": {
                     "type": "string",
-                    "description": "The ID of the image to back this container. The easiest way to get this value is to use the `docker_image` resource as\nis shown in the example.\n"
+                    "description": "The ID of the image to back this container. The easiest way to get this value is to use the `docker.RemoteImage` resource as is shown in the example.\n"
                 },
                 "init": {
                     "type": "boolean",
-                    "description": "Configured whether an init process should be injected for this container. If unset this will default to the `dockerd`\ndefaults.\n"
+                    "description": "Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.\n"
                 },
                 "ipAddress": {
                     "type": "string",
@@ -3131,7 +3273,7 @@
                 },
                 "ipcMode": {
                     "type": "string",
-                    "description": "IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:\u003cname|id\u003e` or\n`host`.\n"
+                    "description": "IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:\u003cname|id\u003e` or `host`.\n"
                 },
                 "labels": {
                     "type": "array",
@@ -3268,7 +3410,7 @@
                     "items": {
                         "type": "string"
                     },
-                    "description": "List of string values to customize labels for MLS systems, such as SELinux. See\nhttps://docs.docker.com/engine/reference/run/#security-configuration.\n"
+                    "description": "List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.\n"
                 },
                 "shmSize": {
                     "type": "integer",
@@ -3276,7 +3418,7 @@
                 },
                 "start": {
                     "type": "boolean",
-                    "description": "If `true`, then the Docker container will be started after creation. If `false`, then the container is only created.\nDefaults to `true`.\n"
+                    "description": "If `true`, then the Docker container will be started after creation. If `false`, then the container is only created. Defaults to `true`.\n"
                 },
                 "stdinOpen": {
                     "type": "boolean",
@@ -3327,11 +3469,11 @@
                     "items": {
                         "$ref": "#/types/docker:index/ContainerUpload:ContainerUpload"
                     },
-                    "description": "Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and\nat least one of them has to be set.\n"
+                    "description": "Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and at least one of them has to be set.\n"
                 },
                 "user": {
                     "type": "string",
-                    "description": "User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by\nname.\n"
+                    "description": "User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.\n"
                 },
                 "usernsMode": {
                     "type": "string",
@@ -3389,7 +3531,7 @@
                     "items": {
                         "type": "string"
                     },
-                    "description": "The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be\n`[\"/usr/bin/myprogram\",\"-\",\"baz.con\"]`.\n",
+                    "description": "The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[\"/usr/bin/myprogram\",\"-\",\"baz.con\"]`.\n",
                     "willReplaceOnChanges": true
                 },
                 "cpuSet": {
@@ -3402,7 +3544,7 @@
                 },
                 "destroyGraceSeconds": {
                     "type": "integer",
-                    "description": "If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on\nsuccessful stop.\n"
+                    "description": "If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.\n"
                 },
                 "devices": {
                     "type": "array",
@@ -3446,7 +3588,7 @@
                     "items": {
                         "type": "string"
                     },
-                    "description": "The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an\nexecutable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be\n`\"/usr/bin/myprogra\"]`.\n",
+                    "description": "The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `\"/usr/bin/myprogra\"]`.\n",
                     "willReplaceOnChanges": true
                 },
                 "envs": {
@@ -3459,7 +3601,7 @@
                 },
                 "gpus": {
                     "type": "string",
-                    "description": "GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result\nin unexpected behavior.\n",
+                    "description": "GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.\n",
                     "willReplaceOnChanges": true
                 },
                 "groupAdds": {
@@ -3489,16 +3631,16 @@
                 },
                 "image": {
                     "type": "string",
-                    "description": "The ID of the image to back this container. The easiest way to get this value is to use the `docker_image` resource as\nis shown in the example.\n",
+                    "description": "The ID of the image to back this container. The easiest way to get this value is to use the `docker.RemoteImage` resource as is shown in the example.\n",
                     "willReplaceOnChanges": true
                 },
                 "init": {
                     "type": "boolean",
-                    "description": "Configured whether an init process should be injected for this container. If unset this will default to the `dockerd`\ndefaults.\n"
+                    "description": "Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.\n"
                 },
                 "ipcMode": {
                     "type": "string",
-                    "description": "IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:\u003cname|id\u003e` or\n`host`.\n",
+                    "description": "IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:\u003cname|id\u003e` or `host`.\n",
                     "willReplaceOnChanges": true
                 },
                 "labels": {
@@ -3645,7 +3787,7 @@
                     "items": {
                         "type": "string"
                     },
-                    "description": "List of string values to customize labels for MLS systems, such as SELinux. See\nhttps://docs.docker.com/engine/reference/run/#security-configuration.\n",
+                    "description": "List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.\n",
                     "willReplaceOnChanges": true
                 },
                 "shmSize": {
@@ -3655,7 +3797,7 @@
                 },
                 "start": {
                     "type": "boolean",
-                    "description": "If `true`, then the Docker container will be started after creation. If `false`, then the container is only created.\nDefaults to `true`.\n"
+                    "description": "If `true`, then the Docker container will be started after creation. If `false`, then the container is only created. Defaults to `true`.\n"
                 },
                 "stdinOpen": {
                     "type": "boolean",
@@ -3713,12 +3855,12 @@
                     "items": {
                         "$ref": "#/types/docker:index/ContainerUpload:ContainerUpload"
                     },
-                    "description": "Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and\nat least one of them has to be set.\n",
+                    "description": "Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and at least one of them has to be set.\n",
                     "willReplaceOnChanges": true
                 },
                 "user": {
                     "type": "string",
-                    "description": "User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by\nname.\n",
+                    "description": "User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.\n",
                     "willReplaceOnChanges": true
                 },
                 "usernsMode": {
@@ -3764,7 +3906,7 @@
                         "items": {
                             "type": "string"
                         },
-                        "description": "The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be\n`[\"/usr/bin/myprogram\",\"-\",\"baz.con\"]`.\n",
+                        "description": "The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[\"/usr/bin/myprogram\",\"-\",\"baz.con\"]`.\n",
                         "willReplaceOnChanges": true
                     },
                     "containerLogs": {
@@ -3781,7 +3923,7 @@
                     },
                     "destroyGraceSeconds": {
                         "type": "integer",
-                        "description": "If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on\nsuccessful stop.\n"
+                        "description": "If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.\n"
                     },
                     "devices": {
                         "type": "array",
@@ -3825,7 +3967,7 @@
                         "items": {
                             "type": "string"
                         },
-                        "description": "The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an\nexecutable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be\n`\"/usr/bin/myprogra\"]`.\n",
+                        "description": "The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `\"/usr/bin/myprogra\"]`.\n",
                         "willReplaceOnChanges": true
                     },
                     "envs": {
@@ -3847,7 +3989,7 @@
                     },
                     "gpus": {
                         "type": "string",
-                        "description": "GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result\nin unexpected behavior.\n",
+                        "description": "GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.\n",
                         "willReplaceOnChanges": true
                     },
                     "groupAdds": {
@@ -3877,12 +4019,12 @@
                     },
                     "image": {
                         "type": "string",
-                        "description": "The ID of the image to back this container. The easiest way to get this value is to use the `docker_image` resource as\nis shown in the example.\n",
+                        "description": "The ID of the image to back this container. The easiest way to get this value is to use the `docker.RemoteImage` resource as is shown in the example.\n",
                         "willReplaceOnChanges": true
                     },
                     "init": {
                         "type": "boolean",
-                        "description": "Configured whether an init process should be injected for this container. If unset this will default to the `dockerd`\ndefaults.\n"
+                        "description": "Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.\n"
                     },
                     "ipAddress": {
                         "type": "string",
@@ -3896,7 +4038,7 @@
                     },
                     "ipcMode": {
                         "type": "string",
-                        "description": "IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:\u003cname|id\u003e` or\n`host`.\n",
+                        "description": "IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:\u003cname|id\u003e` or `host`.\n",
                         "willReplaceOnChanges": true
                     },
                     "labels": {
@@ -4050,7 +4192,7 @@
                         "items": {
                             "type": "string"
                         },
-                        "description": "List of string values to customize labels for MLS systems, such as SELinux. See\nhttps://docs.docker.com/engine/reference/run/#security-configuration.\n",
+                        "description": "List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.\n",
                         "willReplaceOnChanges": true
                     },
                     "shmSize": {
@@ -4060,7 +4202,7 @@
                     },
                     "start": {
                         "type": "boolean",
-                        "description": "If `true`, then the Docker container will be started after creation. If `false`, then the container is only created.\nDefaults to `true`.\n"
+                        "description": "If `true`, then the Docker container will be started after creation. If `false`, then the container is only created. Defaults to `true`.\n"
                     },
                     "stdinOpen": {
                         "type": "boolean",
@@ -4118,12 +4260,12 @@
                         "items": {
                             "$ref": "#/types/docker:index/ContainerUpload:ContainerUpload"
                         },
-                        "description": "Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and\nat least one of them has to be set.\n",
+                        "description": "Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and at least one of them has to be set.\n",
                         "willReplaceOnChanges": true
                     },
                     "user": {
                         "type": "string",
-                        "description": "User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by\nname.\n",
+                        "description": "User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.\n",
                         "willReplaceOnChanges": true
                     },
                     "usernsMode": {
@@ -4149,7 +4291,7 @@
             }
         },
         "docker:index/network:Network": {
-            "description": "\u003c!-- Bug: Type and Name are switched --\u003e\n`docker.Network` provides details about a specific Docker Network.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst privateNetwork = new docker.Network(\"private_network\", {});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nprivate_network = docker.Network(\"privateNetwork\")\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        var privateNetwork = new Docker.Network(\"privateNetwork\", new Docker.NetworkArgs\n        {\n        });\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v3/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := docker.NewNetwork(ctx, \"privateNetwork\", nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.Network;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var privateNetwork = new Network(\"privateNetwork\");\n\n    }\n}\n```\n```yaml\nresources:\n  privateNetwork:\n    type: docker:Network\n```\n{{% /example %}}\n{{% /examples %}}\n\n## Import\n\n### Example Assuming you created a `network` as follows #!/bin/bash docker network create foo # prints the long ID 87b57a9b91ecab2db2a6dbf38df74c67d7c7108cbe479d6576574ec2cd8c2d73 you provide the definition for the resource as follows terraform resource \"docker_network\" \"foo\" {\n\n name = \"foo\" } then the import command is as follows #!/bin/bash\n\n```sh\n $ pulumi import docker:index/network:Network foo 87b57a9b91ecab2db2a6dbf38df74c67d7c7108cbe479d6576574ec2cd8c2d73\n```\n\n ",
+            "description": "\u003c!-- Bug: Type and Name are switched --\u003e\n`docker.Network` provides a docker network resource.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst privateNetwork = new docker.Network(\"private_network\", {});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nprivate_network = docker.Network(\"privateNetwork\")\n```\n```csharp\nusing System.Collections.Generic;\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nreturn await Deployment.RunAsync(() =\u003e \n{\n    var privateNetwork = new Docker.Network(\"privateNetwork\");\n\n});\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v3/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := docker.NewNetwork(ctx, \"privateNetwork\", nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.Network;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var privateNetwork = new Network(\"privateNetwork\");\n\n    }\n}\n```\n```yaml\nresources:\n  privateNetwork:\n    type: docker:Network\n```\n{{% /example %}}\n{{% /examples %}}\n\n## Import\n\n### Example Assuming you created a `network` as follows #!/bin/bash docker network create foo # prints the long ID 87b57a9b91ecab2db2a6dbf38df74c67d7c7108cbe479d6576574ec2cd8c2d73 you provide the definition for the resource as follows terraform resource \"docker_network\" \"foo\" {\n\n name = \"foo\" } then the import command is as follows #!/bin/bash\n\n```sh\n $ pulumi import docker:index/network:Network foo 87b57a9b91ecab2db2a6dbf38df74c67d7c7108cbe479d6576574ec2cd8c2d73\n```\n\n ",
             "properties": {
                 "attachable": {
                     "type": "boolean",
@@ -4161,7 +4303,7 @@
                 },
                 "driver": {
                     "type": "string",
-                    "description": "The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network\ndocs](https://docs.docker.com/network/#network-drivers) for more details.\n"
+                    "description": "The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.\n"
                 },
                 "ingress": {
                     "type": "boolean",
@@ -4202,7 +4344,7 @@
                     "additionalProperties": {
                         "$ref": "pulumi.json#/Any"
                     },
-                    "description": "Only available with bridge networks. See [bridge options\ndocs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.\n"
+                    "description": "Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.\n"
                 },
                 "scope": {
                     "type": "string",
@@ -4230,7 +4372,7 @@
                 },
                 "driver": {
                     "type": "string",
-                    "description": "The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network\ndocs](https://docs.docker.com/network/#network-drivers) for more details.\n",
+                    "description": "The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.\n",
                     "willReplaceOnChanges": true
                 },
                 "ingress": {
@@ -4279,7 +4421,7 @@
                     "additionalProperties": {
                         "$ref": "pulumi.json#/Any"
                     },
-                    "description": "Only available with bridge networks. See [bridge options\ndocs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.\n",
+                    "description": "Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.\n",
                     "willReplaceOnChanges": true
                 }
             },
@@ -4298,7 +4440,7 @@
                     },
                     "driver": {
                         "type": "string",
-                        "description": "The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network\ndocs](https://docs.docker.com/network/#network-drivers) for more details.\n",
+                        "description": "The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.\n",
                         "willReplaceOnChanges": true
                     },
                     "ingress": {
@@ -4347,7 +4489,7 @@
                         "additionalProperties": {
                             "$ref": "pulumi.json#/Any"
                         },
-                        "description": "Only available with bridge networks. See [bridge options\ndocs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.\n",
+                        "description": "Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.\n",
                         "willReplaceOnChanges": true
                     },
                     "scope": {
@@ -4359,7 +4501,7 @@
             }
         },
         "docker:index/plugin:Plugin": {
-            "description": "\u003c!-- Bug: Type and Name are switched --\u003e\nManages the lifecycle of a Docker plugin.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst sample_volume_plugin = new docker.Plugin(\"sample-volume-plugin\", {\n    alias: \"sample-volume-plugin\",\n    enableTimeout: 60,\n    enabled: false,\n    envs: [\"DEBUG=1\"],\n    forceDestroy: true,\n    forceDisable: true,\n    grantAllPermissions: true,\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nsample_volume_plugin = docker.Plugin(\"sample-volume-plugin\",\n    alias=\"sample-volume-plugin\",\n    enable_timeout=60,\n    enabled=False,\n    envs=[\"DEBUG=1\"],\n    force_destroy=True,\n    force_disable=True,\n    grant_all_permissions=True)\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        var sample_volume_plugin = new Docker.Plugin(\"sample-volume-plugin\", new Docker.PluginArgs\n        {\n            Alias = \"sample-volume-plugin\",\n            EnableTimeout = 60,\n            Enabled = false,\n            Envs = \n            {\n                \"DEBUG=1\",\n            },\n            ForceDestroy = true,\n            ForceDisable = true,\n            GrantAllPermissions = true,\n        });\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v3/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := docker.NewPlugin(ctx, \"sample-volume-plugin\", \u0026docker.PluginArgs{\n\t\t\tAlias:         pulumi.String(\"sample-volume-plugin\"),\n\t\t\tEnableTimeout: pulumi.Int(60),\n\t\t\tEnabled:       pulumi.Bool(false),\n\t\t\tEnvs: pulumi.StringArray{\n\t\t\t\tpulumi.String(\"DEBUG=1\"),\n\t\t\t},\n\t\t\tForceDestroy:        pulumi.Bool(true),\n\t\t\tForceDisable:        pulumi.Bool(true),\n\t\t\tGrantAllPermissions: pulumi.Bool(true),\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.Plugin;\nimport com.pulumi.docker.PluginArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var sample_volume_plugin = new Plugin(\"sample-volume-plugin\", PluginArgs.builder()        \n            .alias(\"sample-volume-plugin\")\n            .enableTimeout(60)\n            .enabled(false)\n            .envs(\"DEBUG=1\")\n            .forceDestroy(true)\n            .forceDisable(true)\n            .grantAllPermissions(true)\n            .build());\n\n    }\n}\n```\n```yaml\nresources:\n  sample-volume-plugin:\n    type: docker:Plugin\n    properties:\n      alias: sample-volume-plugin\n      enableTimeout: 60\n      enabled: false\n      envs:\n        - DEBUG=1\n      forceDestroy: true\n      forceDisable: true\n      grantAllPermissions: true\n```\n{{% /example %}}\n{{% /examples %}}\n\n## Import\n\n#!/bin/bash\n\n```sh\n $ pulumi import docker:index/plugin:Plugin sample-volume-plugin \"$(docker plugin inspect -f {{.ID}} tiborvass/sample-volume-plugin:latest)\"\n```\n\n ",
+            "description": "\u003c!-- Bug: Type and Name are switched --\u003e\nManages the lifecycle of a Docker plugin.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst sample_volume_plugin = new docker.Plugin(\"sample-volume-plugin\", {\n    alias: \"sample-volume-plugin\",\n    enableTimeout: 60,\n    enabled: false,\n    envs: [\"DEBUG=1\"],\n    forceDestroy: true,\n    forceDisable: true,\n    grantAllPermissions: true,\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nsample_volume_plugin = docker.Plugin(\"sample-volume-plugin\",\n    alias=\"sample-volume-plugin\",\n    enable_timeout=60,\n    enabled=False,\n    envs=[\"DEBUG=1\"],\n    force_destroy=True,\n    force_disable=True,\n    grant_all_permissions=True)\n```\n```csharp\nusing System.Collections.Generic;\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nreturn await Deployment.RunAsync(() =\u003e \n{\n    var sample_volume_plugin = new Docker.Plugin(\"sample-volume-plugin\", new()\n    {\n        Alias = \"sample-volume-plugin\",\n        EnableTimeout = 60,\n        Enabled = false,\n        Envs = new[]\n        {\n            \"DEBUG=1\",\n        },\n        ForceDestroy = true,\n        ForceDisable = true,\n        GrantAllPermissions = true,\n    });\n\n});\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v3/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := docker.NewPlugin(ctx, \"sample-volume-plugin\", \u0026docker.PluginArgs{\n\t\t\tAlias:         pulumi.String(\"sample-volume-plugin\"),\n\t\t\tEnableTimeout: pulumi.Int(60),\n\t\t\tEnabled:       pulumi.Bool(false),\n\t\t\tEnvs: pulumi.StringArray{\n\t\t\t\tpulumi.String(\"DEBUG=1\"),\n\t\t\t},\n\t\t\tForceDestroy:        pulumi.Bool(true),\n\t\t\tForceDisable:        pulumi.Bool(true),\n\t\t\tGrantAllPermissions: pulumi.Bool(true),\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.Plugin;\nimport com.pulumi.docker.PluginArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var sample_volume_plugin = new Plugin(\"sample-volume-plugin\", PluginArgs.builder()        \n            .alias(\"sample-volume-plugin\")\n            .enableTimeout(60)\n            .enabled(false)\n            .envs(\"DEBUG=1\")\n            .forceDestroy(true)\n            .forceDisable(true)\n            .grantAllPermissions(true)\n            .build());\n\n    }\n}\n```\n```yaml\nresources:\n  sample-volume-plugin:\n    type: docker:Plugin\n    properties:\n      alias: sample-volume-plugin\n      enableTimeout: 60\n      enabled: false\n      envs:\n        - DEBUG=1\n      forceDestroy: true\n      forceDisable: true\n      grantAllPermissions: true\n```\n{{% /example %}}\n{{% /examples %}}\n\n## Import\n\n#!/bin/bash\n\n```sh\n $ pulumi import docker:index/plugin:Plugin sample-volume-plugin \"$(docker plugin inspect -f {{.ID}} tiborvass/sample-volume-plugin:latest)\"\n```\n\n ",
             "properties": {
                 "alias": {
                     "type": "string",
@@ -4516,7 +4658,7 @@
             }
         },
         "docker:index/registryImage:RegistryImage": {
-            "description": "\u003c!-- Bug: Type and Name are switched --\u003e\nManages the lifecycle of docker image/tag in a registry means it can store one or more version of specific docker images and identified by their tags.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\nTo be able to update an image itself when an updated image arrives.\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\nimport * as process from \"process\";\n\nconst helloworld = new docker.RegistryImage(\"helloworld\", {\n    build: {\n        context: `${process.cwd()}/absolutePathToContextFolder`,\n    },\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nhelloworld = docker.RegistryImage(\"helloworld\", build=docker.RegistryImageBuildArgs(\n    context=f\"{path['cwd']}/absolutePathToContextFolder\",\n))\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        var helloworld = new Docker.RegistryImage(\"helloworld\", new Docker.RegistryImageArgs\n        {\n            Build = new Docker.Inputs.RegistryImageBuildArgs\n            {\n                Context = $\"{path.Cwd}/absolutePathToContextFolder\",\n            },\n        });\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"fmt\"\n\n\t\"github.com/pulumi/pulumi-docker/sdk/v3/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := docker.NewRegistryImage(ctx, \"helloworld\", \u0026docker.RegistryImageArgs{\n\t\t\tBuild: \u0026RegistryImageBuildArgs{\n\t\t\t\tContext: pulumi.String(fmt.Sprintf(\"%v/absolutePathToContextFolder\", path.Cwd)),\n\t\t\t},\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.RegistryImage;\nimport com.pulumi.docker.RegistryImageArgs;\nimport com.pulumi.docker.inputs.RegistryImageBuildArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var helloworld = new RegistryImage(\"helloworld\", RegistryImageArgs.builder()        \n            .build(RegistryImageBuildArgs.builder()\n                .context(String.format(\"%s/absolutePathToContextFolder\", path.cwd()))\n                .build())\n            .build());\n\n    }\n}\n```\n```yaml\nresources:\n  helloworld:\n    type: docker:RegistryImage\n    properties:\n      build:\n        context: ${path.cwd}/absolutePathToContextFolder\n```\n{{% /example %}}\n{{% /examples %}}",
+            "description": "\u003c!-- Bug: Type and Name are switched --\u003e\nManages the lifecycle of docker image/tag in a registry means it can store one or more version of specific docker images and identified by their tags.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\nTo be able to update an image itself when an updated image arrives.\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\nimport * as process from \"process\";\n\nconst helloworld = new docker.RegistryImage(\"helloworld\", {\n    build: {\n        context: `${process.cwd()}/absolutePathToContextFolder`,\n    },\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nhelloworld = docker.RegistryImage(\"helloworld\", build=docker.RegistryImageBuildArgs(\n    context=f\"{path['cwd']}/absolutePathToContextFolder\",\n))\n```\n```csharp\nusing System.Collections.Generic;\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nreturn await Deployment.RunAsync(() =\u003e \n{\n    var helloworld = new Docker.RegistryImage(\"helloworld\", new()\n    {\n        Build = new Docker.Inputs.RegistryImageBuildArgs\n        {\n            Context = $\"{path.Cwd}/absolutePathToContextFolder\",\n        },\n    });\n\n});\n```\n```go\npackage main\n\nimport (\n\t\"fmt\"\n\n\t\"github.com/pulumi/pulumi-docker/sdk/v3/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := docker.NewRegistryImage(ctx, \"helloworld\", \u0026docker.RegistryImageArgs{\n\t\t\tBuild: \u0026RegistryImageBuildArgs{\n\t\t\t\tContext: pulumi.String(fmt.Sprintf(\"%v/absolutePathToContextFolder\", path.Cwd)),\n\t\t\t},\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.RegistryImage;\nimport com.pulumi.docker.RegistryImageArgs;\nimport com.pulumi.docker.inputs.RegistryImageBuildArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var helloworld = new RegistryImage(\"helloworld\", RegistryImageArgs.builder()        \n            .build(RegistryImageBuildArgs.builder()\n                .context(String.format(\"%s/absolutePathToContextFolder\", path.cwd()))\n                .build())\n            .build());\n\n    }\n}\n```\n```yaml\nresources:\n  helloworld:\n    type: docker:RegistryImage\n    properties:\n      build:\n        context: ${path.cwd}/absolutePathToContextFolder\n```\n{{% /example %}}\n{{% /examples %}}",
             "properties": {
                 "build": {
                     "$ref": "#/types/docker:index/RegistryImageBuild:RegistryImageBuild",
@@ -4528,7 +4670,7 @@
                 },
                 "keepRemotely": {
                     "type": "boolean",
-                    "description": "If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from\nthe docker registry on destroy operation. Defaults to `false`\n"
+                    "description": "If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`\n"
                 },
                 "name": {
                     "type": "string",
@@ -4554,7 +4696,7 @@
                 },
                 "keepRemotely": {
                     "type": "boolean",
-                    "description": "If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from\nthe docker registry on destroy operation. Defaults to `false`\n"
+                    "description": "If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`\n"
                 },
                 "name": {
                     "type": "string",
@@ -4575,7 +4717,7 @@
                     },
                     "keepRemotely": {
                         "type": "boolean",
-                        "description": "If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from\nthe docker registry on destroy operation. Defaults to `false`\n"
+                        "description": "If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`\n"
                     },
                     "name": {
                         "type": "string",
@@ -4591,11 +4733,11 @@
             }
         },
         "docker:index/remoteImage:RemoteImage": {
-            "description": "\u003c!-- Bug: Type and Name are switched --\u003e\nPulls a Docker image to a given Docker host from a Docker Registry.\n This resource will *not* pull new layers of the image automatically unless used in conjunction with docker.RegistryImage data source to update the `pull_triggers` field.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n### Basic\n\nFinds and downloads the latest `ubuntu:precise` image but does not check\nfor further updates of the image\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst ubuntu = new docker.RemoteImage(\"ubuntu\", {\n    name: \"ubuntu:precise\",\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nubuntu = docker.RemoteImage(\"ubuntu\", name=\"ubuntu:precise\")\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        var ubuntu = new Docker.RemoteImage(\"ubuntu\", new Docker.RemoteImageArgs\n        {\n            Name = \"ubuntu:precise\",\n        });\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v3/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := docker.NewRemoteImage(ctx, \"ubuntu\", \u0026docker.RemoteImageArgs{\n\t\t\tName: pulumi.String(\"ubuntu:precise\"),\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.RemoteImage;\nimport com.pulumi.docker.RemoteImageArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var ubuntu = new RemoteImage(\"ubuntu\", RemoteImageArgs.builder()        \n            .name(\"ubuntu:precise\")\n            .build());\n\n    }\n}\n```\n```yaml\nresources:\n  ubuntu:\n    type: docker:RemoteImage\n    properties:\n      name: ubuntu:precise\n```\n{{% /example %}}\n{{% example %}}\n### Dynamic updates\n\nTo be able to update an image dynamically when the `sha256` sum changes,\nyou need to use it in combination with `docker.RegistryImage` as follows:\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst ubuntuRegistryImage = docker.getRegistryImage({\n    name: \"ubuntu:precise\",\n});\nconst ubuntuRemoteImage = new docker.RemoteImage(\"ubuntuRemoteImage\", {\n    name: ubuntuRegistryImage.then(ubuntuRegistryImage =\u003e ubuntuRegistryImage.name),\n    pullTriggers: [ubuntuRegistryImage.then(ubuntuRegistryImage =\u003e ubuntuRegistryImage.sha256Digest)],\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nubuntu_registry_image = docker.get_registry_image(name=\"ubuntu:precise\")\nubuntu_remote_image = docker.RemoteImage(\"ubuntuRemoteImage\",\n    name=ubuntu_registry_image.name,\n    pull_triggers=[ubuntu_registry_image.sha256_digest])\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        var ubuntuRegistryImage = Output.Create(Docker.GetRegistryImage.InvokeAsync(new Docker.GetRegistryImageArgs\n        {\n            Name = \"ubuntu:precise\",\n        }));\n        var ubuntuRemoteImage = new Docker.RemoteImage(\"ubuntuRemoteImage\", new Docker.RemoteImageArgs\n        {\n            Name = ubuntuRegistryImage.Apply(ubuntuRegistryImage =\u003e ubuntuRegistryImage.Name),\n            PullTriggers = \n            {\n                ubuntuRegistryImage.Apply(ubuntuRegistryImage =\u003e ubuntuRegistryImage.Sha256Digest),\n            },\n        });\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v3/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\tubuntuRegistryImage, err := docker.LookupRegistryImage(ctx, \u0026GetRegistryImageArgs{\n\t\t\tName: \"ubuntu:precise\",\n\t\t}, nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\t_, err = docker.NewRemoteImage(ctx, \"ubuntuRemoteImage\", \u0026docker.RemoteImageArgs{\n\t\t\tName: pulumi.String(ubuntuRegistryImage.Name),\n\t\t\tPullTriggers: pulumi.StringArray{\n\t\t\t\tpulumi.String(ubuntuRegistryImage.Sha256Digest),\n\t\t\t},\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.DockerFunctions;\nimport com.pulumi.docker.inputs.GetRegistryImageArgs;\nimport com.pulumi.docker.RemoteImage;\nimport com.pulumi.docker.RemoteImageArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        final var ubuntuRegistryImage = DockerFunctions.getRegistryImage(GetRegistryImageArgs.builder()\n            .name(\"ubuntu:precise\")\n            .build());\n\n        var ubuntuRemoteImage = new RemoteImage(\"ubuntuRemoteImage\", RemoteImageArgs.builder()        \n            .name(ubuntuRegistryImage.applyValue(getRegistryImageResult -\u003e getRegistryImageResult.name()))\n            .pullTriggers(ubuntuRegistryImage.applyValue(getRegistryImageResult -\u003e getRegistryImageResult.sha256Digest()))\n            .build());\n\n    }\n}\n```\n```yaml\nresources:\n  ubuntuRemoteImage:\n    type: docker:RemoteImage\n    properties:\n      name: ${ubuntuRegistryImage.name}\n      pullTriggers:\n        - ${ubuntuRegistryImage.sha256Digest}\nvariables:\n  ubuntuRegistryImage:\n    Fn::Invoke:\n      Function: docker:getRegistryImage\n      Arguments:\n        name: ubuntu:precise\n```\n{{% /example %}}\n{{% example %}}\n### Build\n\nYou can also use the resource to build an image.\nIn this case the image \"zoo\" and \"zoo:develop\" are built.\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst zoo = new docker.RemoteImage(\"zoo\", {\n    name: \"zoo\",\n    build: {\n        path: \".\",\n        tags: [\"zoo:develop\"],\n        buildArg: {\n            foo: \"zoo\",\n        },\n        label: {\n            author: \"zoo\",\n        },\n    },\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nzoo = docker.RemoteImage(\"zoo\",\n    name=\"zoo\",\n    build=docker.RemoteImageBuildArgs(\n        path=\".\",\n        tags=[\"zoo:develop\"],\n        build_arg={\n            \"foo\": \"zoo\",\n        },\n        label={\n            \"author\": \"zoo\",\n        },\n    ))\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        var zoo = new Docker.RemoteImage(\"zoo\", new Docker.RemoteImageArgs\n        {\n            Name = \"zoo\",\n            Build = new Docker.Inputs.RemoteImageBuildArgs\n            {\n                Path = \".\",\n                Tags = \n                {\n                    \"zoo:develop\",\n                },\n                BuildArg = \n                {\n                    { \"foo\", \"zoo\" },\n                },\n                Label = \n                {\n                    { \"author\", \"zoo\" },\n                },\n            },\n        });\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v3/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := docker.NewRemoteImage(ctx, \"zoo\", \u0026docker.RemoteImageArgs{\n\t\t\tName: pulumi.String(\"zoo\"),\n\t\t\tBuild: \u0026RemoteImageBuildArgs{\n\t\t\t\tPath: pulumi.String(\".\"),\n\t\t\t\tTags: pulumi.StringArray{\n\t\t\t\t\tpulumi.String(\"zoo:develop\"),\n\t\t\t\t},\n\t\t\t\tBuildArg: pulumi.StringMap{\n\t\t\t\t\t\"foo\": pulumi.String(\"zoo\"),\n\t\t\t\t},\n\t\t\t\tLabel: pulumi.StringMap{\n\t\t\t\t\t\"author\": pulumi.String(\"zoo\"),\n\t\t\t\t},\n\t\t\t},\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.RemoteImage;\nimport com.pulumi.docker.RemoteImageArgs;\nimport com.pulumi.docker.inputs.RemoteImageBuildArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var zoo = new RemoteImage(\"zoo\", RemoteImageArgs.builder()        \n            .name(\"zoo\")\n            .build(RemoteImageBuildArgs.builder()\n                .path(\".\")\n                .tags(\"zoo:develop\")\n                .buildArg(Map.of(\"foo\", \"zoo\"))\n                .label(Map.of(\"author\", \"zoo\"))\n                .build())\n            .build());\n\n    }\n}\n```\n```yaml\nresources:\n  zoo:\n    type: docker:RemoteImage\n    properties:\n      name: zoo\n      build:\n        path: .\n        tags:\n          - zoo:develop\n        buildArg:\n          foo: zoo\n        label:\n          author: zoo\n```\n{{% /example %}}\n{{% /examples %}}",
+            "description": "\u003c!-- Bug: Type and Name are switched --\u003e\nPulls a Docker image to a given Docker host from a Docker Registry.\n This resource will *not* pull new layers of the image automatically unless used in conjunction with docker.RegistryImage data source to update the `pull_triggers` field.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n### Basic\n\nFinds and downloads the latest `ubuntu:precise` image but does not check\nfor further updates of the image\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst ubuntu = new docker.RemoteImage(\"ubuntu\", {\n    name: \"ubuntu:precise\",\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nubuntu = docker.RemoteImage(\"ubuntu\", name=\"ubuntu:precise\")\n```\n```csharp\nusing System.Collections.Generic;\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nreturn await Deployment.RunAsync(() =\u003e \n{\n    var ubuntu = new Docker.RemoteImage(\"ubuntu\", new()\n    {\n        Name = \"ubuntu:precise\",\n    });\n\n});\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v3/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := docker.NewRemoteImage(ctx, \"ubuntu\", \u0026docker.RemoteImageArgs{\n\t\t\tName: pulumi.String(\"ubuntu:precise\"),\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.RemoteImage;\nimport com.pulumi.docker.RemoteImageArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var ubuntu = new RemoteImage(\"ubuntu\", RemoteImageArgs.builder()        \n            .name(\"ubuntu:precise\")\n            .build());\n\n    }\n}\n```\n```yaml\nresources:\n  ubuntu:\n    type: docker:RemoteImage\n    properties:\n      name: ubuntu:precise\n```\n{{% /example %}}\n{{% example %}}\n### Dynamic updates\n\nTo be able to update an image dynamically when the `sha256` sum changes,\nyou need to use it in combination with `docker.RegistryImage` as follows:\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst ubuntuRegistryImage = docker.getRegistryImage({\n    name: \"ubuntu:precise\",\n});\nconst ubuntuRemoteImage = new docker.RemoteImage(\"ubuntuRemoteImage\", {\n    name: ubuntuRegistryImage.then(ubuntuRegistryImage =\u003e ubuntuRegistryImage.name),\n    pullTriggers: [ubuntuRegistryImage.then(ubuntuRegistryImage =\u003e ubuntuRegistryImage.sha256Digest)],\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nubuntu_registry_image = docker.get_registry_image(name=\"ubuntu:precise\")\nubuntu_remote_image = docker.RemoteImage(\"ubuntuRemoteImage\",\n    name=ubuntu_registry_image.name,\n    pull_triggers=[ubuntu_registry_image.sha256_digest])\n```\n```csharp\nusing System.Collections.Generic;\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nreturn await Deployment.RunAsync(() =\u003e \n{\n    var ubuntuRegistryImage = Docker.GetRegistryImage.Invoke(new()\n    {\n        Name = \"ubuntu:precise\",\n    });\n\n    var ubuntuRemoteImage = new Docker.RemoteImage(\"ubuntuRemoteImage\", new()\n    {\n        Name = ubuntuRegistryImage.Apply(getRegistryImageResult =\u003e getRegistryImageResult.Name),\n        PullTriggers = new[]\n        {\n            ubuntuRegistryImage.Apply(getRegistryImageResult =\u003e getRegistryImageResult.Sha256Digest),\n        },\n    });\n\n});\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v3/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\tubuntuRegistryImage, err := docker.LookupRegistryImage(ctx, \u0026GetRegistryImageArgs{\n\t\t\tName: \"ubuntu:precise\",\n\t\t}, nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\t_, err = docker.NewRemoteImage(ctx, \"ubuntuRemoteImage\", \u0026docker.RemoteImageArgs{\n\t\t\tName: pulumi.String(ubuntuRegistryImage.Name),\n\t\t\tPullTriggers: pulumi.StringArray{\n\t\t\t\tpulumi.String(ubuntuRegistryImage.Sha256Digest),\n\t\t\t},\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.DockerFunctions;\nimport com.pulumi.docker.inputs.GetRegistryImageArgs;\nimport com.pulumi.docker.RemoteImage;\nimport com.pulumi.docker.RemoteImageArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        final var ubuntuRegistryImage = DockerFunctions.getRegistryImage(GetRegistryImageArgs.builder()\n            .name(\"ubuntu:precise\")\n            .build());\n\n        var ubuntuRemoteImage = new RemoteImage(\"ubuntuRemoteImage\", RemoteImageArgs.builder()        \n            .name(ubuntuRegistryImage.applyValue(getRegistryImageResult -\u003e getRegistryImageResult.name()))\n            .pullTriggers(ubuntuRegistryImage.applyValue(getRegistryImageResult -\u003e getRegistryImageResult.sha256Digest()))\n            .build());\n\n    }\n}\n```\n```yaml\nresources:\n  ubuntuRemoteImage:\n    type: docker:RemoteImage\n    properties:\n      name: ${ubuntuRegistryImage.name}\n      pullTriggers:\n        - ${ubuntuRegistryImage.sha256Digest}\nvariables:\n  ubuntuRegistryImage:\n    Fn::Invoke:\n      Function: docker:getRegistryImage\n      Arguments:\n        name: ubuntu:precise\n```\n{{% /example %}}\n{{% /examples %}}",
             "properties": {
                 "build": {
                     "$ref": "#/types/docker:index/RemoteImageBuild:RemoteImageBuild",
-                    "description": "Configuration to build an image. Please see [docker build command\nreference](https://docs.docker.com/engine/reference/commandline/build/#options) too.\n"
+                    "description": "Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.\n"
                 },
                 "forceRemove": {
                     "type": "boolean",
@@ -4603,7 +4745,7 @@
                 },
                 "keepLocally": {
                     "type": "boolean",
-                    "description": "If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from\nthe docker local storage on destroy operation.\n"
+                    "description": "If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.\n"
                 },
                 "latest": {
                     "type": "string",
@@ -4628,11 +4770,18 @@
                     "items": {
                         "type": "string"
                     },
-                    "description": "List of values which cause an image pull when changed. This is used to store the image digest from the registry when\nusing the [docker_registry_image](../data-sources/registry_image.md).\n"
+                    "description": "List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.\n"
                 },
                 "repoDigest": {
                     "type": "string",
                     "description": "The image sha256 digest in the form of `repo[:tag]@sha256:\u003chash\u003e`.\n"
+                },
+                "triggers": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "pulumi.json#/Any"
+                    },
+                    "description": "A map of arbitrary strings that, when changed, will force the `docker.RemoteImage` resource to be replaced. This can be used to rebuild an image when contents of source code folders change\n"
                 }
             },
             "required": [
@@ -4644,7 +4793,7 @@
             "inputProperties": {
                 "build": {
                     "$ref": "#/types/docker:index/RemoteImageBuild:RemoteImageBuild",
-                    "description": "Configuration to build an image. Please see [docker build command\nreference](https://docs.docker.com/engine/reference/commandline/build/#options) too.\n"
+                    "description": "Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.\n"
                 },
                 "forceRemove": {
                     "type": "boolean",
@@ -4652,11 +4801,12 @@
                 },
                 "keepLocally": {
                     "type": "boolean",
-                    "description": "If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from\nthe docker local storage on destroy operation.\n"
+                    "description": "If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.\n"
                 },
                 "name": {
                     "type": "string",
-                    "description": "The name of the Docker image, including any tags or SHA256 repo digests.\n"
+                    "description": "The name of the Docker image, including any tags or SHA256 repo digests.\n",
+                    "willReplaceOnChanges": true
                 },
                 "pullTrigger": {
                     "type": "string",
@@ -4669,7 +4819,15 @@
                     "items": {
                         "type": "string"
                     },
-                    "description": "List of values which cause an image pull when changed. This is used to store the image digest from the registry when\nusing the [docker_registry_image](../data-sources/registry_image.md).\n",
+                    "description": "List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.\n",
+                    "willReplaceOnChanges": true
+                },
+                "triggers": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "pulumi.json#/Any"
+                    },
+                    "description": "A map of arbitrary strings that, when changed, will force the `docker.RemoteImage` resource to be replaced. This can be used to rebuild an image when contents of source code folders change\n",
                     "willReplaceOnChanges": true
                 }
             },
@@ -4681,7 +4839,7 @@
                 "properties": {
                     "build": {
                         "$ref": "#/types/docker:index/RemoteImageBuild:RemoteImageBuild",
-                        "description": "Configuration to build an image. Please see [docker build command\nreference](https://docs.docker.com/engine/reference/commandline/build/#options) too.\n"
+                        "description": "Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.\n"
                     },
                     "forceRemove": {
                         "type": "boolean",
@@ -4689,7 +4847,7 @@
                     },
                     "keepLocally": {
                         "type": "boolean",
-                        "description": "If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from\nthe docker local storage on destroy operation.\n"
+                        "description": "If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.\n"
                     },
                     "latest": {
                         "type": "string",
@@ -4698,7 +4856,8 @@
                     },
                     "name": {
                         "type": "string",
-                        "description": "The name of the Docker image, including any tags or SHA256 repo digests.\n"
+                        "description": "The name of the Docker image, including any tags or SHA256 repo digests.\n",
+                        "willReplaceOnChanges": true
                     },
                     "output": {
                         "type": "string",
@@ -4715,12 +4874,20 @@
                         "items": {
                             "type": "string"
                         },
-                        "description": "List of values which cause an image pull when changed. This is used to store the image digest from the registry when\nusing the [docker_registry_image](../data-sources/registry_image.md).\n",
+                        "description": "List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.\n",
                         "willReplaceOnChanges": true
                     },
                     "repoDigest": {
                         "type": "string",
                         "description": "The image sha256 digest in the form of `repo[:tag]@sha256:\u003chash\u003e`.\n"
+                    },
+                    "triggers": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "$ref": "pulumi.json#/Any"
+                        },
+                        "description": "A map of arbitrary strings that, when changed, will force the `docker.RemoteImage` resource to be replaced. This can be used to rebuild an image when contents of source code folders change\n",
+                        "willReplaceOnChanges": true
                     }
                 },
                 "type": "object"
@@ -5050,7 +5217,7 @@
             }
         },
         "docker:index/volume:Volume": {
-            "description": "\u003c!-- Bug: Type and Name are switched --\u003e\nCreates and destroys a volume in Docker. This can be used alongside docker.Container to prepare volumes that can be shared across containers.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst sharedVolume = new docker.Volume(\"shared_volume\", {});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nshared_volume = docker.Volume(\"sharedVolume\")\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        var sharedVolume = new Docker.Volume(\"sharedVolume\", new Docker.VolumeArgs\n        {\n        });\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v3/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := docker.NewVolume(ctx, \"sharedVolume\", nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.Volume;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var sharedVolume = new Volume(\"sharedVolume\");\n\n    }\n}\n```\n```yaml\nresources:\n  sharedVolume:\n    type: docker:Volume\n```\n{{% /example %}}\n{{% /examples %}}\n\n## Import\n\n### Example Assuming you created a `volume` as follows #!/bin/bash docker volume create # prints the long ID 524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d you provide the definition for the resource as follows terraform resource \"docker_volume\" \"foo\" {\n\n name = \"524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d\" } then the import command is as follows #!/bin/bash\n\n```sh\n $ pulumi import docker:index/volume:Volume foo 524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d\n```\n\n ",
+            "description": "\u003c!-- Bug: Type and Name are switched --\u003e\nCreates and destroys a volume in Docker. This can be used alongside docker.Container to prepare volumes that can be shared across containers.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst sharedVolume = new docker.Volume(\"shared_volume\", {});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nshared_volume = docker.Volume(\"sharedVolume\")\n```\n```csharp\nusing System.Collections.Generic;\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nreturn await Deployment.RunAsync(() =\u003e \n{\n    var sharedVolume = new Docker.Volume(\"sharedVolume\");\n\n});\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v3/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := docker.NewVolume(ctx, \"sharedVolume\", nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.Volume;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var sharedVolume = new Volume(\"sharedVolume\");\n\n    }\n}\n```\n```yaml\nresources:\n  sharedVolume:\n    type: docker:Volume\n```\n{{% /example %}}\n{{% /examples %}}\n\n## Import\n\n### Example Assuming you created a `volume` as follows #!/bin/bash docker volume create # prints the long ID 524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d you provide the definition for the resource as follows terraform resource \"docker_volume\" \"foo\" {\n\n name = \"524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d\" } then the import command is as follows #!/bin/bash\n\n```sh\n $ pulumi import docker:index/volume:Volume foo 524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d\n```\n\n ",
             "properties": {
                 "driver": {
                     "type": "string",
@@ -5152,12 +5319,13 @@
     },
     "functions": {
         "docker:index/getNetwork:getNetwork": {
-            "description": "`docker.Network` provides details about a specific Docker Network.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst main = pulumi.output(docker.getNetwork({\n    name: \"main\",\n}));\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nmain = docker.get_network(name=\"main\")\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        var main = Output.Create(Docker.GetNetwork.InvokeAsync(new Docker.GetNetworkArgs\n        {\n            Name = \"main\",\n        }));\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v3/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := docker.LookupNetwork(ctx, \u0026GetNetworkArgs{\n\t\t\tName: \"main\",\n\t\t}, nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.DockerFunctions;\nimport com.pulumi.docker.inputs.GetNetworkArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        final var main = DockerFunctions.getNetwork(GetNetworkArgs.builder()\n            .name(\"main\")\n            .build());\n\n    }\n}\n```\n```yaml\nvariables:\n  main:\n    Fn::Invoke:\n      Function: docker:getNetwork\n      Arguments:\n        name: main\n```\n{{% /example %}}\n{{% /examples %}}",
+            "description": "`docker.Network` provides details about a specific Docker Network.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst main = pulumi.output(docker.getNetwork({\n    name: \"main\",\n}));\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nmain = docker.get_network(name=\"main\")\n```\n```csharp\nusing System.Collections.Generic;\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nreturn await Deployment.RunAsync(() =\u003e \n{\n    var main = Docker.GetNetwork.Invoke(new()\n    {\n        Name = \"main\",\n    });\n\n});\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v3/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := docker.LookupNetwork(ctx, \u0026GetNetworkArgs{\n\t\t\tName: \"main\",\n\t\t}, nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.DockerFunctions;\nimport com.pulumi.docker.inputs.GetNetworkArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        final var main = DockerFunctions.getNetwork(GetNetworkArgs.builder()\n            .name(\"main\")\n            .build());\n\n    }\n}\n```\n```yaml\nvariables:\n  main:\n    Fn::Invoke:\n      Function: docker:getNetwork\n      Arguments:\n        name: main\n```\n{{% /example %}}\n{{% /examples %}}",
             "inputs": {
                 "description": "A collection of arguments for invoking getNetwork.\n",
                 "properties": {
                     "name": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "The name of the Docker network.\n"
                     }
                 },
                 "type": "object",
@@ -5169,31 +5337,38 @@
                 "description": "A collection of values returned by getNetwork.\n",
                 "properties": {
                     "driver": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.\n"
                     },
                     "id": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "The ID of this resource.\n"
                     },
                     "internal": {
-                        "type": "boolean"
+                        "type": "boolean",
+                        "description": "If `true`, the network is internal.\n"
                     },
                     "ipamConfigs": {
                         "type": "array",
                         "items": {
                             "$ref": "#/types/docker:index/getNetworkIpamConfig:getNetworkIpamConfig"
-                        }
+                        },
+                        "description": "The IPAM configuration options\n"
                     },
                     "name": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "The name of the Docker network.\n"
                     },
                     "options": {
                         "type": "object",
                         "additionalProperties": {
                             "$ref": "pulumi.json#/Any"
-                        }
+                        },
+                        "description": "Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.\n"
                     },
                     "scope": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "Scope of the network. One of `swarm`, `global`, or `local`.\n"
                     }
                 },
                 "type": "object",
@@ -5214,10 +5389,12 @@
                 "description": "A collection of arguments for invoking getPlugin.\n",
                 "properties": {
                     "alias": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "The alias of the Docker plugin. If the tag is omitted, `:latest` is complemented to the attribute value.\n"
                     },
                     "id": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "The ID of the plugin, which has precedence over the `alias` of both are given\n"
                     }
                 },
                 "type": "object"
@@ -5226,28 +5403,35 @@
                 "description": "A collection of values returned by getPlugin.\n",
                 "properties": {
                     "alias": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "The alias of the Docker plugin. If the tag is omitted, `:latest` is complemented to the attribute value.\n"
                     },
                     "enabled": {
-                        "type": "boolean"
+                        "type": "boolean",
+                        "description": "If `true` the plugin is enabled\n"
                     },
                     "envs": {
                         "type": "array",
                         "items": {
                             "type": "string"
-                        }
+                        },
+                        "description": "The environment variables in the form of `KEY=VALUE`, e.g. `DEBUG=0`\n"
                     },
                     "grantAllPermissions": {
-                        "type": "boolean"
+                        "type": "boolean",
+                        "description": "If true, grant all permissions necessary to run the plugin\n"
                     },
                     "id": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "The ID of the plugin, which has precedence over the `alias` of both are given\n"
                     },
                     "name": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "The plugin name. If the tag is omitted, `:latest` is complemented to the attribute value.\n"
                     },
                     "pluginReference": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "The Docker Plugin Reference\n"
                     }
                 },
                 "type": "object",
@@ -5261,15 +5445,17 @@
             }
         },
         "docker:index/getRegistryImage:getRegistryImage": {
-            "description": "Reads the image metadata from a Docker Registry. Used in conjunction with the docker.RemoteImage resource to keep an image up to date on the latest available version of the tag.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst ubuntuRegistryImage = docker.getRegistryImage({\n    name: \"ubuntu:precise\",\n});\nconst ubuntuRemoteImage = new docker.RemoteImage(\"ubuntuRemoteImage\", {\n    name: ubuntuRegistryImage.then(ubuntuRegistryImage =\u003e ubuntuRegistryImage.name),\n    pullTriggers: [ubuntuRegistryImage.then(ubuntuRegistryImage =\u003e ubuntuRegistryImage.sha256Digest)],\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nubuntu_registry_image = docker.get_registry_image(name=\"ubuntu:precise\")\nubuntu_remote_image = docker.RemoteImage(\"ubuntuRemoteImage\",\n    name=ubuntu_registry_image.name,\n    pull_triggers=[ubuntu_registry_image.sha256_digest])\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        var ubuntuRegistryImage = Output.Create(Docker.GetRegistryImage.InvokeAsync(new Docker.GetRegistryImageArgs\n        {\n            Name = \"ubuntu:precise\",\n        }));\n        var ubuntuRemoteImage = new Docker.RemoteImage(\"ubuntuRemoteImage\", new Docker.RemoteImageArgs\n        {\n            Name = ubuntuRegistryImage.Apply(ubuntuRegistryImage =\u003e ubuntuRegistryImage.Name),\n            PullTriggers = \n            {\n                ubuntuRegistryImage.Apply(ubuntuRegistryImage =\u003e ubuntuRegistryImage.Sha256Digest),\n            },\n        });\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v3/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\tubuntuRegistryImage, err := docker.LookupRegistryImage(ctx, \u0026GetRegistryImageArgs{\n\t\t\tName: \"ubuntu:precise\",\n\t\t}, nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\t_, err = docker.NewRemoteImage(ctx, \"ubuntuRemoteImage\", \u0026docker.RemoteImageArgs{\n\t\t\tName: pulumi.String(ubuntuRegistryImage.Name),\n\t\t\tPullTriggers: pulumi.StringArray{\n\t\t\t\tpulumi.String(ubuntuRegistryImage.Sha256Digest),\n\t\t\t},\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.DockerFunctions;\nimport com.pulumi.docker.inputs.GetRegistryImageArgs;\nimport com.pulumi.docker.RemoteImage;\nimport com.pulumi.docker.RemoteImageArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        final var ubuntuRegistryImage = DockerFunctions.getRegistryImage(GetRegistryImageArgs.builder()\n            .name(\"ubuntu:precise\")\n            .build());\n\n        var ubuntuRemoteImage = new RemoteImage(\"ubuntuRemoteImage\", RemoteImageArgs.builder()        \n            .name(ubuntuRegistryImage.applyValue(getRegistryImageResult -\u003e getRegistryImageResult.name()))\n            .pullTriggers(ubuntuRegistryImage.applyValue(getRegistryImageResult -\u003e getRegistryImageResult.sha256Digest()))\n            .build());\n\n    }\n}\n```\n```yaml\nresources:\n  ubuntuRemoteImage:\n    type: docker:RemoteImage\n    properties:\n      name: ${ubuntuRegistryImage.name}\n      pullTriggers:\n        - ${ubuntuRegistryImage.sha256Digest}\nvariables:\n  ubuntuRegistryImage:\n    Fn::Invoke:\n      Function: docker:getRegistryImage\n      Arguments:\n        name: ubuntu:precise\n```\n{{% /example %}}\n{{% /examples %}}",
+            "description": "Reads the image metadata from a Docker Registry. Used in conjunction with the docker.RemoteImage resource to keep an image up to date on the latest available version of the tag.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst ubuntuRegistryImage = docker.getRegistryImage({\n    name: \"ubuntu:precise\",\n});\nconst ubuntuRemoteImage = new docker.RemoteImage(\"ubuntuRemoteImage\", {\n    name: ubuntuRegistryImage.then(ubuntuRegistryImage =\u003e ubuntuRegistryImage.name),\n    pullTriggers: [ubuntuRegistryImage.then(ubuntuRegistryImage =\u003e ubuntuRegistryImage.sha256Digest)],\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nubuntu_registry_image = docker.get_registry_image(name=\"ubuntu:precise\")\nubuntu_remote_image = docker.RemoteImage(\"ubuntuRemoteImage\",\n    name=ubuntu_registry_image.name,\n    pull_triggers=[ubuntu_registry_image.sha256_digest])\n```\n```csharp\nusing System.Collections.Generic;\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nreturn await Deployment.RunAsync(() =\u003e \n{\n    var ubuntuRegistryImage = Docker.GetRegistryImage.Invoke(new()\n    {\n        Name = \"ubuntu:precise\",\n    });\n\n    var ubuntuRemoteImage = new Docker.RemoteImage(\"ubuntuRemoteImage\", new()\n    {\n        Name = ubuntuRegistryImage.Apply(getRegistryImageResult =\u003e getRegistryImageResult.Name),\n        PullTriggers = new[]\n        {\n            ubuntuRegistryImage.Apply(getRegistryImageResult =\u003e getRegistryImageResult.Sha256Digest),\n        },\n    });\n\n});\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v3/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\tubuntuRegistryImage, err := docker.LookupRegistryImage(ctx, \u0026GetRegistryImageArgs{\n\t\t\tName: \"ubuntu:precise\",\n\t\t}, nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\t_, err = docker.NewRemoteImage(ctx, \"ubuntuRemoteImage\", \u0026docker.RemoteImageArgs{\n\t\t\tName: pulumi.String(ubuntuRegistryImage.Name),\n\t\t\tPullTriggers: pulumi.StringArray{\n\t\t\t\tpulumi.String(ubuntuRegistryImage.Sha256Digest),\n\t\t\t},\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.DockerFunctions;\nimport com.pulumi.docker.inputs.GetRegistryImageArgs;\nimport com.pulumi.docker.RemoteImage;\nimport com.pulumi.docker.RemoteImageArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        final var ubuntuRegistryImage = DockerFunctions.getRegistryImage(GetRegistryImageArgs.builder()\n            .name(\"ubuntu:precise\")\n            .build());\n\n        var ubuntuRemoteImage = new RemoteImage(\"ubuntuRemoteImage\", RemoteImageArgs.builder()        \n            .name(ubuntuRegistryImage.applyValue(getRegistryImageResult -\u003e getRegistryImageResult.name()))\n            .pullTriggers(ubuntuRegistryImage.applyValue(getRegistryImageResult -\u003e getRegistryImageResult.sha256Digest()))\n            .build());\n\n    }\n}\n```\n```yaml\nresources:\n  ubuntuRemoteImage:\n    type: docker:RemoteImage\n    properties:\n      name: ${ubuntuRegistryImage.name}\n      pullTriggers:\n        - ${ubuntuRegistryImage.sha256Digest}\nvariables:\n  ubuntuRegistryImage:\n    Fn::Invoke:\n      Function: docker:getRegistryImage\n      Arguments:\n        name: ubuntu:precise\n```\n{{% /example %}}\n{{% /examples %}}",
             "inputs": {
                 "description": "A collection of arguments for invoking getRegistryImage.\n",
                 "properties": {
                     "insecureSkipVerify": {
-                        "type": "boolean"
+                        "type": "boolean",
+                        "description": "If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`\n"
                     },
                     "name": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "The name of the Docker image, including any tags. e.g. `alpine:latest`\n"
                     }
                 },
                 "type": "object",
@@ -5285,13 +5471,16 @@
                         "description": "The provider-assigned unique ID for this managed resource.\n"
                     },
                     "insecureSkipVerify": {
-                        "type": "boolean"
+                        "type": "boolean",
+                        "description": "If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`\n"
                     },
                     "name": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "The name of the Docker image, including any tags. e.g. `alpine:latest`\n"
                     },
                     "sha256Digest": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "The content digest of the image, as stored in the registry.\n"
                     }
                 },
                 "type": "object",
@@ -5303,12 +5492,13 @@
             }
         },
         "docker:index/getRemoteImage:getRemoteImage": {
-            "description": "`docker.RemoteImage` provides details about a specific Docker Image which need to be presend on the Docker Host\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\n// uses the 'latest' tag\nconst latest = pulumi.output(docker.getRemoteImage({\n    name: \"nginx\",\n}));\n// uses a specific tag\nconst specific = pulumi.output(docker.getRemoteImage({\n    name: \"nginx:1.17.6\",\n}));\n// use the image digest\nconst digest = pulumi.output(docker.getRemoteImage({\n    name: \"nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2\",\n}));\n// uses the tag and the image digest\nconst tagAndDigest = pulumi.output(docker.getRemoteImage({\n    name: \"nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2\",\n}));\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nlatest = docker.get_remote_image(name=\"nginx\")\nspecific = docker.get_remote_image(name=\"nginx:1.17.6\")\ndigest = docker.get_remote_image(name=\"nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2\")\ntag_and_digest = docker.get_remote_image(name=\"nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2\")\n```\n```csharp\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nclass MyStack : Stack\n{\n    public MyStack()\n    {\n        var latest = Output.Create(Docker.GetRemoteImage.InvokeAsync(new Docker.GetRemoteImageArgs\n        {\n            Name = \"nginx\",\n        }));\n        var specific = Output.Create(Docker.GetRemoteImage.InvokeAsync(new Docker.GetRemoteImageArgs\n        {\n            Name = \"nginx:1.17.6\",\n        }));\n        var digest = Output.Create(Docker.GetRemoteImage.InvokeAsync(new Docker.GetRemoteImageArgs\n        {\n            Name = \"nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2\",\n        }));\n        var tagAndDigest = Output.Create(Docker.GetRemoteImage.InvokeAsync(new Docker.GetRemoteImageArgs\n        {\n            Name = \"nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2\",\n        }));\n    }\n\n}\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v3/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := docker.LookupRemoteImage(ctx, \u0026GetRemoteImageArgs{\n\t\t\tName: \"nginx\",\n\t\t}, nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\t_, err = docker.LookupRemoteImage(ctx, \u0026GetRemoteImageArgs{\n\t\t\tName: \"nginx:1.17.6\",\n\t\t}, nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\t_, err = docker.LookupRemoteImage(ctx, \u0026GetRemoteImageArgs{\n\t\t\tName: \"nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2\",\n\t\t}, nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\t_, err = docker.LookupRemoteImage(ctx, \u0026GetRemoteImageArgs{\n\t\t\tName: \"nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2\",\n\t\t}, nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.DockerFunctions;\nimport com.pulumi.docker.inputs.GetRemoteImageArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        final var latest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()\n            .name(\"nginx\")\n            .build());\n\n        final var specific = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()\n            .name(\"nginx:1.17.6\")\n            .build());\n\n        final var digest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()\n            .name(\"nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2\")\n            .build());\n\n        final var tagAndDigest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()\n            .name(\"nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2\")\n            .build());\n\n    }\n}\n```\n```yaml\nvariables:\n  latest:\n    Fn::Invoke:\n      Function: docker:getRemoteImage\n      Arguments:\n        name: nginx\n  specific:\n    Fn::Invoke:\n      Function: docker:getRemoteImage\n      Arguments:\n        name: nginx:1.17.6\n  digest:\n    Fn::Invoke:\n      Function: docker:getRemoteImage\n      Arguments:\n        name: nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2\n  tagAndDigest:\n    Fn::Invoke:\n      Function: docker:getRemoteImage\n      Arguments:\n        name: nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2\n```\n{{% /example %}}\n{{% /examples %}}",
+            "description": "`docker.RemoteImage` provides details about a specific Docker Image which need to be presend on the Docker Host\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\n// uses the 'latest' tag\nconst latest = pulumi.output(docker.getRemoteImage({\n    name: \"nginx\",\n}));\n// uses a specific tag\nconst specific = pulumi.output(docker.getRemoteImage({\n    name: \"nginx:1.17.6\",\n}));\n// use the image digest\nconst digest = pulumi.output(docker.getRemoteImage({\n    name: \"nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2\",\n}));\n// uses the tag and the image digest\nconst tagAndDigest = pulumi.output(docker.getRemoteImage({\n    name: \"nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2\",\n}));\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nlatest = docker.get_remote_image(name=\"nginx\")\nspecific = docker.get_remote_image(name=\"nginx:1.17.6\")\ndigest = docker.get_remote_image(name=\"nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2\")\ntag_and_digest = docker.get_remote_image(name=\"nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2\")\n```\n```csharp\nusing System.Collections.Generic;\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nreturn await Deployment.RunAsync(() =\u003e \n{\n    var latest = Docker.GetRemoteImage.Invoke(new()\n    {\n        Name = \"nginx\",\n    });\n\n    var specific = Docker.GetRemoteImage.Invoke(new()\n    {\n        Name = \"nginx:1.17.6\",\n    });\n\n    var digest = Docker.GetRemoteImage.Invoke(new()\n    {\n        Name = \"nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2\",\n    });\n\n    var tagAndDigest = Docker.GetRemoteImage.Invoke(new()\n    {\n        Name = \"nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2\",\n    });\n\n});\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v3/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := docker.LookupRemoteImage(ctx, \u0026GetRemoteImageArgs{\n\t\t\tName: \"nginx\",\n\t\t}, nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\t_, err = docker.LookupRemoteImage(ctx, \u0026GetRemoteImageArgs{\n\t\t\tName: \"nginx:1.17.6\",\n\t\t}, nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\t_, err = docker.LookupRemoteImage(ctx, \u0026GetRemoteImageArgs{\n\t\t\tName: \"nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2\",\n\t\t}, nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\t_, err = docker.LookupRemoteImage(ctx, \u0026GetRemoteImageArgs{\n\t\t\tName: \"nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2\",\n\t\t}, nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.DockerFunctions;\nimport com.pulumi.docker.inputs.GetRemoteImageArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        final var latest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()\n            .name(\"nginx\")\n            .build());\n\n        final var specific = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()\n            .name(\"nginx:1.17.6\")\n            .build());\n\n        final var digest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()\n            .name(\"nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2\")\n            .build());\n\n        final var tagAndDigest = DockerFunctions.getRemoteImage(GetRemoteImageArgs.builder()\n            .name(\"nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2\")\n            .build());\n\n    }\n}\n```\n```yaml\nvariables:\n  latest:\n    Fn::Invoke:\n      Function: docker:getRemoteImage\n      Arguments:\n        name: nginx\n  specific:\n    Fn::Invoke:\n      Function: docker:getRemoteImage\n      Arguments:\n        name: nginx:1.17.6\n  digest:\n    Fn::Invoke:\n      Function: docker:getRemoteImage\n      Arguments:\n        name: nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2\n  tagAndDigest:\n    Fn::Invoke:\n      Function: docker:getRemoteImage\n      Arguments:\n        name: nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2\n```\n{{% /example %}}\n{{% /examples %}}",
             "inputs": {
                 "description": "A collection of arguments for invoking getRemoteImage.\n",
                 "properties": {
                     "name": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "The name of the Docker image, including any tags or SHA256 repo digests.\n"
                     }
                 },
                 "type": "object",
@@ -5324,10 +5514,12 @@
                         "description": "The provider-assigned unique ID for this managed resource.\n"
                     },
                     "name": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "The name of the Docker image, including any tags or SHA256 repo digests.\n"
                     },
                     "repoDigest": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "The image sha256 digest in the form of `repo[:tag]@sha256:\u003chash\u003e`. It may be empty in the edge case where the local image was pulled from a repo, tagged locally, and then referred to in the data source by that local name/tag.\n"
                     }
                 },
                 "type": "object",

@@ -143,16 +143,14 @@ public class Container extends com.pulumi.resources.CustomResource {
         return Codegen.optional(this.capabilities);
     }
     /**
-     * The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be
-     * `[&#34;/usr/bin/myprogram&#34;,&#34;-&#34;,&#34;baz.con&#34;]`.
+     * The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[&#34;/usr/bin/myprogram&#34;,&#34;-&#34;,&#34;baz.con&#34;]`.
      * 
      */
     @Export(name="command", type=List.class, parameters={String.class})
     private Output<List<String>> command;
 
     /**
-     * @return The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be
-     * `[&#34;/usr/bin/myprogram&#34;,&#34;-&#34;,&#34;baz.con&#34;]`.
+     * @return The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[&#34;/usr/bin/myprogram&#34;,&#34;-&#34;,&#34;baz.con&#34;]`.
      * 
      */
     public Output<List<String>> command() {
@@ -201,16 +199,14 @@ public class Container extends com.pulumi.resources.CustomResource {
         return Codegen.optional(this.cpuShares);
     }
     /**
-     * If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on
-     * successful stop.
+     * If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
      * 
      */
     @Export(name="destroyGraceSeconds", type=Integer.class, parameters={})
     private Output</* @Nullable */ Integer> destroyGraceSeconds;
 
     /**
-     * @return If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on
-     * successful stop.
+     * @return If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
      * 
      */
     public Output<Optional<Integer>> destroyGraceSeconds() {
@@ -287,18 +283,14 @@ public class Container extends com.pulumi.resources.CustomResource {
         return Codegen.optional(this.domainname);
     }
     /**
-     * The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an
-     * executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be
-     * `&#34;/usr/bin/myprogra&#34;]`.
+     * The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `&#34;/usr/bin/myprogra&#34;]`.
      * 
      */
     @Export(name="entrypoints", type=List.class, parameters={String.class})
     private Output<List<String>> entrypoints;
 
     /**
-     * @return The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an
-     * executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be
-     * `&#34;/usr/bin/myprogra&#34;]`.
+     * @return The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `&#34;/usr/bin/myprogra&#34;]`.
      * 
      */
     public Output<List<String>> entrypoints() {
@@ -351,16 +343,14 @@ public class Container extends com.pulumi.resources.CustomResource {
         return this.gateway;
     }
     /**
-     * GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result
-     * in unexpected behavior.
+     * GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.
      * 
      */
     @Export(name="gpus", type=String.class, parameters={})
     private Output</* @Nullable */ String> gpus;
 
     /**
-     * @return GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result
-     * in unexpected behavior.
+     * @return GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.
      * 
      */
     public Output<Optional<String>> gpus() {
@@ -423,32 +413,28 @@ public class Container extends com.pulumi.resources.CustomResource {
         return Codegen.optional(this.hosts);
     }
     /**
-     * The ID of the image to back this container. The easiest way to get this value is to use the `docker_image` resource as
-     * is shown in the example.
+     * The ID of the image to back this container. The easiest way to get this value is to use the `docker.RemoteImage` resource as is shown in the example.
      * 
      */
     @Export(name="image", type=String.class, parameters={})
     private Output<String> image;
 
     /**
-     * @return The ID of the image to back this container. The easiest way to get this value is to use the `docker_image` resource as
-     * is shown in the example.
+     * @return The ID of the image to back this container. The easiest way to get this value is to use the `docker.RemoteImage` resource as is shown in the example.
      * 
      */
     public Output<String> image() {
         return this.image;
     }
     /**
-     * Configured whether an init process should be injected for this container. If unset this will default to the `dockerd`
-     * defaults.
+     * Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
      * 
      */
     @Export(name="init", type=Boolean.class, parameters={})
     private Output<Boolean> init;
 
     /**
-     * @return Configured whether an init process should be injected for this container. If unset this will default to the `dockerd`
-     * defaults.
+     * @return Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
      * 
      */
     public Output<Boolean> init() {
@@ -491,16 +477,14 @@ public class Container extends com.pulumi.resources.CustomResource {
         return this.ipPrefixLength;
     }
     /**
-     * IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:&lt;name|id&gt;` or
-     * `host`.
+     * IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:&lt;name|id&gt;` or `host`.
      * 
      */
     @Export(name="ipcMode", type=String.class, parameters={})
     private Output<String> ipcMode;
 
     /**
-     * @return IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:&lt;name|id&gt;` or
-     * `host`.
+     * @return IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:&lt;name|id&gt;` or `host`.
      * 
      */
     public Output<String> ipcMode() {
@@ -873,16 +857,14 @@ public class Container extends com.pulumi.resources.CustomResource {
         return this.runtime;
     }
     /**
-     * List of string values to customize labels for MLS systems, such as SELinux. See
-     * https://docs.docker.com/engine/reference/run/#security-configuration.
+     * List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
      * 
      */
     @Export(name="securityOpts", type=List.class, parameters={String.class})
     private Output<List<String>> securityOpts;
 
     /**
-     * @return List of string values to customize labels for MLS systems, such as SELinux. See
-     * https://docs.docker.com/engine/reference/run/#security-configuration.
+     * @return List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.
      * 
      */
     public Output<List<String>> securityOpts() {
@@ -903,16 +885,14 @@ public class Container extends com.pulumi.resources.CustomResource {
         return this.shmSize;
     }
     /**
-     * If `true`, then the Docker container will be started after creation. If `false`, then the container is only created.
-     * Defaults to `true`.
+     * If `true`, then the Docker container will be started after creation. If `false`, then the container is only created. Defaults to `true`.
      * 
      */
     @Export(name="start", type=Boolean.class, parameters={})
     private Output</* @Nullable */ Boolean> start;
 
     /**
-     * @return If `true`, then the Docker container will be started after creation. If `false`, then the container is only created.
-     * Defaults to `true`.
+     * @return If `true`, then the Docker container will be started after creation. If `false`, then the container is only created. Defaults to `true`.
      * 
      */
     public Output<Optional<Boolean>> start() {
@@ -1031,32 +1011,28 @@ public class Container extends com.pulumi.resources.CustomResource {
         return Codegen.optional(this.ulimits);
     }
     /**
-     * Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and
-     * at least one of them has to be set.
+     * Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and at least one of them has to be set.
      * 
      */
     @Export(name="uploads", type=List.class, parameters={ContainerUpload.class})
     private Output</* @Nullable */ List<ContainerUpload>> uploads;
 
     /**
-     * @return Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and
-     * at least one of them has to be set.
+     * @return Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and at least one of them has to be set.
      * 
      */
     public Output<Optional<List<ContainerUpload>>> uploads() {
         return Codegen.optional(this.uploads);
     }
     /**
-     * User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by
-     * name.
+     * User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.
      * 
      */
     @Export(name="user", type=String.class, parameters={})
     private Output</* @Nullable */ String> user;
 
     /**
-     * @return User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by
-     * name.
+     * @return User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.
      * 
      */
     public Output<Optional<String>> user() {

@@ -74,7 +74,7 @@ namespace Pulumi.Docker
         }
     }
 
-    internal sealed class DockerResourceTypeAttribute : Pulumi.ResourceTypeAttribute
+    internal sealed class DockerResourceTypeAttribute : global::Pulumi.ResourceTypeAttribute
     {
         public DockerResourceTypeAttribute(string type) : base(type, Utilities.Version)
         {

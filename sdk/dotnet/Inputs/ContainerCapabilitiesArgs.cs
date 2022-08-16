@@ -10,10 +10,14 @@ using Pulumi.Serialization;
 namespace Pulumi.Docker.Inputs
 {
 
-    public sealed class ContainerCapabilitiesArgs : Pulumi.ResourceArgs
+    public sealed class ContainerCapabilitiesArgs : global::Pulumi.ResourceArgs
     {
         [Input("adds")]
         private InputList<string>? _adds;
+
+        /// <summary>
+        /// List of linux capabilities to add.
+        /// </summary>
         public InputList<string> Adds
         {
             get => _adds ?? (_adds = new InputList<string>());
@@ -22,6 +26,10 @@ namespace Pulumi.Docker.Inputs
 
         [Input("drops")]
         private InputList<string>? _drops;
+
+        /// <summary>
+        /// List of linux capabilities to drop.
+        /// </summary>
         public InputList<string> Drops
         {
             get => _drops ?? (_drops = new InputList<string>());
@@ -31,5 +39,6 @@ namespace Pulumi.Docker.Inputs
         public ContainerCapabilitiesArgs()
         {
         }
+        public static new ContainerCapabilitiesArgs Empty => new ContainerCapabilitiesArgs();
     }
 }

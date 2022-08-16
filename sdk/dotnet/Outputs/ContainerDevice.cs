@@ -13,8 +13,17 @@ namespace Pulumi.Docker.Outputs
     [OutputType]
     public sealed class ContainerDevice
     {
+        /// <summary>
+        /// The path in the container where the device will be bound.
+        /// </summary>
         public readonly string? ContainerPath;
+        /// <summary>
+        /// The path on the host where the device is located.
+        /// </summary>
         public readonly string HostPath;
+        /// <summary>
+        /// The cgroup permissions given to the container to access the device. Defaults to `rwm`.
+        /// </summary>
         public readonly string? Permissions;
 
         [OutputConstructor]

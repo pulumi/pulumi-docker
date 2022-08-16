@@ -33,9 +33,17 @@ public final class ContainerMountVolumeOptionsArgs extends com.pulumi.resources.
         return Optional.ofNullable(this.driverOptions);
     }
 
+    /**
+     * User-defined key/value metadata
+     * 
+     */
     @Import(name="labels")
     private @Nullable Output<List<ContainerMountVolumeOptionsLabelArgs>> labels;
 
+    /**
+     * @return User-defined key/value metadata
+     * 
+     */
     public Optional<Output<List<ContainerMountVolumeOptionsLabelArgs>>> labels() {
         return Optional.ofNullable(this.labels);
     }
@@ -92,15 +100,33 @@ public final class ContainerMountVolumeOptionsArgs extends com.pulumi.resources.
             return driverOptions(Output.of(driverOptions));
         }
 
+        /**
+         * @param labels User-defined key/value metadata
+         * 
+         * @return builder
+         * 
+         */
         public Builder labels(@Nullable Output<List<ContainerMountVolumeOptionsLabelArgs>> labels) {
             $.labels = labels;
             return this;
         }
 
+        /**
+         * @param labels User-defined key/value metadata
+         * 
+         * @return builder
+         * 
+         */
         public Builder labels(List<ContainerMountVolumeOptionsLabelArgs> labels) {
             return labels(Output.of(labels));
         }
 
+        /**
+         * @param labels User-defined key/value metadata
+         * 
+         * @return builder
+         * 
+         */
         public Builder labels(ContainerMountVolumeOptionsLabelArgs... labels) {
             return labels(List.of(labels));
         }

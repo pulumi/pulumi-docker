@@ -10,7 +10,7 @@ using Pulumi.Serialization;
 namespace Pulumi.Docker.Inputs
 {
 
-    public sealed class ServiceTaskSpecResourcesReservationGetArgs : Pulumi.ResourceArgs
+    public sealed class ServiceTaskSpecResourcesReservationGetArgs : global::Pulumi.ResourceArgs
     {
         [Input("genericResources")]
         public Input<Inputs.ServiceTaskSpecResourcesReservationGenericResourcesGetArgs>? GenericResources { get; set; }
@@ -24,5 +24,6 @@ namespace Pulumi.Docker.Inputs
         public ServiceTaskSpecResourcesReservationGetArgs()
         {
         }
+        public static new ServiceTaskSpecResourcesReservationGetArgs Empty => new ServiceTaskSpecResourcesReservationGetArgs();
     }
 }

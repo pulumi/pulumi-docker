@@ -10,7 +10,7 @@ using Pulumi.Serialization;
 namespace Pulumi.Docker.Inputs
 {
 
-    public sealed class ServiceTaskSpecContainerSpecDnsConfigArgs : Pulumi.ResourceArgs
+    public sealed class ServiceTaskSpecContainerSpecDnsConfigArgs : global::Pulumi.ResourceArgs
     {
         [Input("nameservers", required: true)]
         private InputList<string>? _nameservers;
@@ -39,5 +39,6 @@ namespace Pulumi.Docker.Inputs
         public ServiceTaskSpecContainerSpecDnsConfigArgs()
         {
         }
+        public static new ServiceTaskSpecContainerSpecDnsConfigArgs Empty => new ServiceTaskSpecContainerSpecDnsConfigArgs();
     }
 }

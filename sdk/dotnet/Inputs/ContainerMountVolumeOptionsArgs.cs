@@ -10,7 +10,7 @@ using Pulumi.Serialization;
 namespace Pulumi.Docker.Inputs
 {
 
-    public sealed class ContainerMountVolumeOptionsArgs : Pulumi.ResourceArgs
+    public sealed class ContainerMountVolumeOptionsArgs : global::Pulumi.ResourceArgs
     {
         [Input("driverName")]
         public Input<string>? DriverName { get; set; }
@@ -25,6 +25,10 @@ namespace Pulumi.Docker.Inputs
 
         [Input("labels")]
         private InputList<Inputs.ContainerMountVolumeOptionsLabelArgs>? _labels;
+
+        /// <summary>
+        /// User-defined key/value metadata
+        /// </summary>
         public InputList<Inputs.ContainerMountVolumeOptionsLabelArgs> Labels
         {
             get => _labels ?? (_labels = new InputList<Inputs.ContainerMountVolumeOptionsLabelArgs>());
@@ -37,5 +41,6 @@ namespace Pulumi.Docker.Inputs
         public ContainerMountVolumeOptionsArgs()
         {
         }
+        public static new ContainerMountVolumeOptionsArgs Empty => new ContainerMountVolumeOptionsArgs();
     }
 }

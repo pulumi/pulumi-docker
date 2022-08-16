@@ -13,16 +13,32 @@ public final class ContainerHostArgs extends com.pulumi.resources.ResourceArgs {
 
     public static final ContainerHostArgs Empty = new ContainerHostArgs();
 
+    /**
+     * Hostname to add
+     * 
+     */
     @Import(name="host", required=true)
     private Output<String> host;
 
+    /**
+     * @return Hostname to add
+     * 
+     */
     public Output<String> host() {
         return this.host;
     }
 
+    /**
+     * IP address this hostname should resolve to.
+     * 
+     */
     @Import(name="ip", required=true)
     private Output<String> ip;
 
+    /**
+     * @return IP address this hostname should resolve to.
+     * 
+     */
     public Output<String> ip() {
         return this.ip;
     }
@@ -52,20 +68,44 @@ public final class ContainerHostArgs extends com.pulumi.resources.ResourceArgs {
             $ = new ContainerHostArgs(Objects.requireNonNull(defaults));
         }
 
+        /**
+         * @param host Hostname to add
+         * 
+         * @return builder
+         * 
+         */
         public Builder host(Output<String> host) {
             $.host = host;
             return this;
         }
 
+        /**
+         * @param host Hostname to add
+         * 
+         * @return builder
+         * 
+         */
         public Builder host(String host) {
             return host(Output.of(host));
         }
 
+        /**
+         * @param ip IP address this hostname should resolve to.
+         * 
+         * @return builder
+         * 
+         */
         public Builder ip(Output<String> ip) {
             $.ip = ip;
             return this;
         }
 
+        /**
+         * @param ip IP address this hostname should resolve to.
+         * 
+         * @return builder
+         * 
+         */
         public Builder ip(String ip) {
             return ip(Output.of(ip));
         }

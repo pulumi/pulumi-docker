@@ -10,7 +10,7 @@ using Pulumi.Serialization;
 namespace Pulumi.Docker.Inputs
 {
 
-    public sealed class RegistryImageBuildAuthConfigArgs : Pulumi.ResourceArgs
+    public sealed class RegistryImageBuildAuthConfigArgs : global::Pulumi.ResourceArgs
     {
         [Input("auth")]
         public Input<string>? Auth { get; set; }
@@ -39,5 +39,6 @@ namespace Pulumi.Docker.Inputs
         public RegistryImageBuildAuthConfigArgs()
         {
         }
+        public static new RegistryImageBuildAuthConfigArgs Empty => new RegistryImageBuildAuthConfigArgs();
     }
 }

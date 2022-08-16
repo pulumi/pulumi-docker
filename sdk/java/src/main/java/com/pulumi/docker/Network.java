@@ -22,7 +22,7 @@ import javax.annotation.Nullable;
 
 /**
  * &lt;!-- Bug: Type and Name are switched --&gt;
- * `docker.Network` provides details about a specific Docker Network.
+ * `docker.Network` provides a docker network resource.
  * 
  * ## Example Usage
  * ```java
@@ -93,16 +93,14 @@ public class Network extends com.pulumi.resources.CustomResource {
         return Codegen.optional(this.checkDuplicate);
     }
     /**
-     * The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network
-     * docs](https://docs.docker.com/network/#network-drivers) for more details.
+     * The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
      * 
      */
     @Export(name="driver", type=String.class, parameters={})
     private Output<String> driver;
 
     /**
-     * @return The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network
-     * docs](https://docs.docker.com/network/#network-drivers) for more details.
+     * @return The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
      * 
      */
     public Output<String> driver() {
@@ -207,16 +205,14 @@ public class Network extends com.pulumi.resources.CustomResource {
         return this.name;
     }
     /**
-     * Only available with bridge networks. See [bridge options
-     * docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
+     * Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
      * 
      */
     @Export(name="options", type=Map.class, parameters={String.class, Object.class})
     private Output<Map<String,Object>> options;
 
     /**
-     * @return Only available with bridge networks. See [bridge options
-     * docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
+     * @return Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
      * 
      */
     public Output<Map<String,Object>> options() {

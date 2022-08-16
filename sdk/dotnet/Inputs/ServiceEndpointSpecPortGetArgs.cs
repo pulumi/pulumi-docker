@@ -10,8 +10,11 @@ using Pulumi.Serialization;
 namespace Pulumi.Docker.Inputs
 {
 
-    public sealed class ServiceEndpointSpecPortGetArgs : Pulumi.ResourceArgs
+    public sealed class ServiceEndpointSpecPortGetArgs : global::Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Name of the service
+        /// </summary>
         [Input("name")]
         public Input<string>? Name { get; set; }
 
@@ -30,5 +33,6 @@ namespace Pulumi.Docker.Inputs
         public ServiceEndpointSpecPortGetArgs()
         {
         }
+        public static new ServiceEndpointSpecPortGetArgs Empty => new ServiceEndpointSpecPortGetArgs();
     }
 }
