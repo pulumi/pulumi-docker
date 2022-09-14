@@ -79,6 +79,12 @@ namespace Pulumi.Docker
         public Output<bool?> ForceRemove { get; private set; } = null!;
 
         /// <summary>
+        /// The ID of the image (as seen when executing `docker inspect` on the image). Can be used to reference the image via its ID in other resources.
+        /// </summary>
+        [Output("imageId")]
+        public Output<string> ImageId { get; private set; } = null!;
+
+        /// <summary>
         /// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
         /// </summary>
         [Output("keepLocally")]
@@ -242,6 +248,12 @@ namespace Pulumi.Docker
         /// </summary>
         [Input("forceRemove")]
         public Input<bool>? ForceRemove { get; set; }
+
+        /// <summary>
+        /// The ID of the image (as seen when executing `docker inspect` on the image). Can be used to reference the image via its ID in other resources.
+        /// </summary>
+        [Input("imageId")]
+        public Input<string>? ImageId { get; set; }
 
         /// <summary>
         /// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.

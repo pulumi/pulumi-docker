@@ -140,6 +140,7 @@ class _RemoteImageState:
     def __init__(__self__, *,
                  build: Optional[pulumi.Input['RemoteImageBuildArgs']] = None,
                  force_remove: Optional[pulumi.Input[bool]] = None,
+                 image_id: Optional[pulumi.Input[str]] = None,
                  keep_locally: Optional[pulumi.Input[bool]] = None,
                  latest: Optional[pulumi.Input[str]] = None,
                  name: Optional[pulumi.Input[str]] = None,
@@ -152,6 +153,7 @@ class _RemoteImageState:
         Input properties used for looking up and filtering RemoteImage resources.
         :param pulumi.Input['RemoteImageBuildArgs'] build: Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
         :param pulumi.Input[bool] force_remove: If true, then the image is removed forcibly when the resource is destroyed.
+        :param pulumi.Input[str] image_id: The ID of the image (as seen when executing `docker inspect` on the image). Can be used to reference the image via its ID in other resources.
         :param pulumi.Input[bool] keep_locally: If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
         :param pulumi.Input[str] latest: The ID of the image in the form of `sha256:<hash>` image digest. Do not confuse it with the default `latest` tag.
         :param pulumi.Input[str] name: The name of the Docker image, including any tags or SHA256 repo digests.
@@ -164,6 +166,8 @@ class _RemoteImageState:
             pulumi.set(__self__, "build", build)
         if force_remove is not None:
             pulumi.set(__self__, "force_remove", force_remove)
+        if image_id is not None:
+            pulumi.set(__self__, "image_id", image_id)
         if keep_locally is not None:
             pulumi.set(__self__, "keep_locally", keep_locally)
         if latest is not None:
@@ -213,6 +217,18 @@ class _RemoteImageState:
     @force_remove.setter
     def force_remove(self, value: Optional[pulumi.Input[bool]]):
         pulumi.set(self, "force_remove", value)
+
+    @property
+    @pulumi.getter(name="imageId")
+    def image_id(self) -> Optional[pulumi.Input[str]]:
+        """
+        The ID of the image (as seen when executing `docker inspect` on the image). Can be used to reference the image via its ID in other resources.
+        """
+        return pulumi.get(self, "image_id")
+
+    @image_id.setter
+    def image_id(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "image_id", value)
 
     @property
     @pulumi.getter(name="keepLocally")
@@ -444,6 +460,7 @@ class RemoteImage(pulumi.CustomResource):
             __props__.__dict__["pull_trigger"] = pull_trigger
             __props__.__dict__["pull_triggers"] = pull_triggers
             __props__.__dict__["triggers"] = triggers
+            __props__.__dict__["image_id"] = None
             __props__.__dict__["latest"] = None
             __props__.__dict__["output"] = None
             __props__.__dict__["repo_digest"] = None
@@ -459,6 +476,7 @@ class RemoteImage(pulumi.CustomResource):
             opts: Optional[pulumi.ResourceOptions] = None,
             build: Optional[pulumi.Input[pulumi.InputType['RemoteImageBuildArgs']]] = None,
             force_remove: Optional[pulumi.Input[bool]] = None,
+            image_id: Optional[pulumi.Input[str]] = None,
             keep_locally: Optional[pulumi.Input[bool]] = None,
             latest: Optional[pulumi.Input[str]] = None,
             name: Optional[pulumi.Input[str]] = None,
@@ -476,6 +494,7 @@ class RemoteImage(pulumi.CustomResource):
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[pulumi.InputType['RemoteImageBuildArgs']] build: Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
         :param pulumi.Input[bool] force_remove: If true, then the image is removed forcibly when the resource is destroyed.
+        :param pulumi.Input[str] image_id: The ID of the image (as seen when executing `docker inspect` on the image). Can be used to reference the image via its ID in other resources.
         :param pulumi.Input[bool] keep_locally: If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
         :param pulumi.Input[str] latest: The ID of the image in the form of `sha256:<hash>` image digest. Do not confuse it with the default `latest` tag.
         :param pulumi.Input[str] name: The name of the Docker image, including any tags or SHA256 repo digests.
@@ -490,6 +509,7 @@ class RemoteImage(pulumi.CustomResource):
 
         __props__.__dict__["build"] = build
         __props__.__dict__["force_remove"] = force_remove
+        __props__.__dict__["image_id"] = image_id
         __props__.__dict__["keep_locally"] = keep_locally
         __props__.__dict__["latest"] = latest
         __props__.__dict__["name"] = name
@@ -515,6 +535,14 @@ class RemoteImage(pulumi.CustomResource):
         If true, then the image is removed forcibly when the resource is destroyed.
         """
         return pulumi.get(self, "force_remove")
+
+    @property
+    @pulumi.getter(name="imageId")
+    def image_id(self) -> pulumi.Output[str]:
+        """
+        The ID of the image (as seen when executing `docker inspect` on the image). Can be used to reference the image via its ID in other resources.
+        """
+        return pulumi.get(self, "image_id")
 
     @property
     @pulumi.getter(name="keepLocally")

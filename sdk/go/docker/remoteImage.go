@@ -89,6 +89,8 @@ type RemoteImage struct {
 	Build RemoteImageBuildPtrOutput `pulumi:"build"`
 	// If true, then the image is removed forcibly when the resource is destroyed.
 	ForceRemove pulumi.BoolPtrOutput `pulumi:"forceRemove"`
+	// The ID of the image (as seen when executing `docker inspect` on the image). Can be used to reference the image via its ID in other resources.
+	ImageId pulumi.StringOutput `pulumi:"imageId"`
 	// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
 	KeepLocally pulumi.BoolPtrOutput `pulumi:"keepLocally"`
 	// The ID of the image in the form of `sha256:<hash>` image digest. Do not confuse it with the default `latest` tag.
@@ -147,6 +149,8 @@ type remoteImageState struct {
 	Build *RemoteImageBuild `pulumi:"build"`
 	// If true, then the image is removed forcibly when the resource is destroyed.
 	ForceRemove *bool `pulumi:"forceRemove"`
+	// The ID of the image (as seen when executing `docker inspect` on the image). Can be used to reference the image via its ID in other resources.
+	ImageId *string `pulumi:"imageId"`
 	// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
 	KeepLocally *bool `pulumi:"keepLocally"`
 	// The ID of the image in the form of `sha256:<hash>` image digest. Do not confuse it with the default `latest` tag.
@@ -174,6 +178,8 @@ type RemoteImageState struct {
 	Build RemoteImageBuildPtrInput
 	// If true, then the image is removed forcibly when the resource is destroyed.
 	ForceRemove pulumi.BoolPtrInput
+	// The ID of the image (as seen when executing `docker inspect` on the image). Can be used to reference the image via its ID in other resources.
+	ImageId pulumi.StringPtrInput
 	// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
 	KeepLocally pulumi.BoolPtrInput
 	// The ID of the image in the form of `sha256:<hash>` image digest. Do not confuse it with the default `latest` tag.
@@ -334,6 +340,11 @@ func (o RemoteImageOutput) Build() RemoteImageBuildPtrOutput {
 // If true, then the image is removed forcibly when the resource is destroyed.
 func (o RemoteImageOutput) ForceRemove() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *RemoteImage) pulumi.BoolPtrOutput { return v.ForceRemove }).(pulumi.BoolPtrOutput)
+}
+
+// The ID of the image (as seen when executing `docker inspect` on the image). Can be used to reference the image via its ID in other resources.
+func (o RemoteImageOutput) ImageId() pulumi.StringOutput {
+	return o.ApplyT(func(v *RemoteImage) pulumi.StringOutput { return v.ImageId }).(pulumi.StringOutput)
 }
 
 // If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.

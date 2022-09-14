@@ -79,6 +79,10 @@ export class RemoteImage extends pulumi.CustomResource {
      */
     public readonly forceRemove!: pulumi.Output<boolean | undefined>;
     /**
+     * The ID of the image (as seen when executing `docker inspect` on the image). Can be used to reference the image via its ID in other resources.
+     */
+    public /*out*/ readonly imageId!: pulumi.Output<string>;
+    /**
      * If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
      */
     public readonly keepLocally!: pulumi.Output<boolean | undefined>;
@@ -130,6 +134,7 @@ export class RemoteImage extends pulumi.CustomResource {
             const state = argsOrState as RemoteImageState | undefined;
             resourceInputs["build"] = state ? state.build : undefined;
             resourceInputs["forceRemove"] = state ? state.forceRemove : undefined;
+            resourceInputs["imageId"] = state ? state.imageId : undefined;
             resourceInputs["keepLocally"] = state ? state.keepLocally : undefined;
             resourceInputs["latest"] = state ? state.latest : undefined;
             resourceInputs["name"] = state ? state.name : undefined;
@@ -150,6 +155,7 @@ export class RemoteImage extends pulumi.CustomResource {
             resourceInputs["pullTrigger"] = args ? args.pullTrigger : undefined;
             resourceInputs["pullTriggers"] = args ? args.pullTriggers : undefined;
             resourceInputs["triggers"] = args ? args.triggers : undefined;
+            resourceInputs["imageId"] = undefined /*out*/;
             resourceInputs["latest"] = undefined /*out*/;
             resourceInputs["output"] = undefined /*out*/;
             resourceInputs["repoDigest"] = undefined /*out*/;
@@ -171,6 +177,10 @@ export interface RemoteImageState {
      * If true, then the image is removed forcibly when the resource is destroyed.
      */
     forceRemove?: pulumi.Input<boolean>;
+    /**
+     * The ID of the image (as seen when executing `docker inspect` on the image). Can be used to reference the image via its ID in other resources.
+     */
+    imageId?: pulumi.Input<string>;
     /**
      * If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
      */

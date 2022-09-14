@@ -35,7 +35,7 @@ import (
 //				return err
 //			}
 //			_, err = docker.NewContainer(ctx, "ubuntuContainer", &docker.ContainerArgs{
-//				Image: ubuntuRemoteImage.Latest,
+//				Image: ubuntuRemoteImage.ImageId,
 //			})
 //			if err != nil {
 //				return err

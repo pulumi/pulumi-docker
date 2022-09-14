@@ -18,7 +18,7 @@ import * as utilities from "./utilities";
  * // Find the latest Ubuntu precise image.
  * const ubuntuRemoteImage = new docker.RemoteImage("ubuntuRemoteImage", {name: "ubuntu:precise"});
  * // Start a container
- * const ubuntuContainer = new docker.Container("ubuntuContainer", {image: ubuntuRemoteImage.latest});
+ * const ubuntuContainer = new docker.Container("ubuntuContainer", {image: ubuntuRemoteImage.imageId});
  * ```
  *
  * ## Import
