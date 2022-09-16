@@ -129,6 +129,20 @@ public class RemoteImage extends com.pulumi.resources.CustomResource {
         return Codegen.optional(this.forceRemove);
     }
     /**
+     * The ID of the image (as seen when executing `docker inspect` on the image). Can be used to reference the image via its ID in other resources.
+     * 
+     */
+    @Export(name="imageId", type=String.class, parameters={})
+    private Output<String> imageId;
+
+    /**
+     * @return The ID of the image (as seen when executing `docker inspect` on the image). Can be used to reference the image via its ID in other resources.
+     * 
+     */
+    public Output<String> imageId() {
+        return this.imageId;
+    }
+    /**
      * If true, then the Docker image won&#39;t be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
      * 
      */

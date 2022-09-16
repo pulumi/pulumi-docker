@@ -31,7 +31,7 @@ namespace Pulumi.Docker
     ///     // Start a container
     ///     var ubuntuContainer = new Docker.Container("ubuntuContainer", new()
     ///     {
-    ///         Image = ubuntuRemoteImage.Latest,
+    ///         Image = ubuntuRemoteImage.ImageId,
     ///     });
     /// 
     /// });

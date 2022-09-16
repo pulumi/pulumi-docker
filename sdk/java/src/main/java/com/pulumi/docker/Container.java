@@ -64,7 +64,7 @@ import javax.annotation.Nullable;
  *             .build());
  * 
  *         var ubuntuContainer = new Container(&#34;ubuntuContainer&#34;, ContainerArgs.builder()        
- *             .image(ubuntuRemoteImage.latest())
+ *             .image(ubuntuRemoteImage.imageId())
  *             .build());
  * 
  *     }

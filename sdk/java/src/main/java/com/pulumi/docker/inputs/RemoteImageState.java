@@ -51,6 +51,21 @@ public final class RemoteImageState extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
+     * The ID of the image (as seen when executing `docker inspect` on the image). Can be used to reference the image via its ID in other resources.
+     * 
+     */
+    @Import(name="imageId")
+    private @Nullable Output<String> imageId;
+
+    /**
+     * @return The ID of the image (as seen when executing `docker inspect` on the image). Can be used to reference the image via its ID in other resources.
+     * 
+     */
+    public Optional<Output<String>> imageId() {
+        return Optional.ofNullable(this.imageId);
+    }
+
+    /**
      * If true, then the Docker image won&#39;t be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
      * 
      */
@@ -195,6 +210,7 @@ public final class RemoteImageState extends com.pulumi.resources.ResourceArgs {
     private RemoteImageState(RemoteImageState $) {
         this.build = $.build;
         this.forceRemove = $.forceRemove;
+        this.imageId = $.imageId;
         this.keepLocally = $.keepLocally;
         this.latest = $.latest;
         this.name = $.name;
@@ -263,6 +279,27 @@ public final class RemoteImageState extends com.pulumi.resources.ResourceArgs {
          */
         public Builder forceRemove(Boolean forceRemove) {
             return forceRemove(Output.of(forceRemove));
+        }
+
+        /**
+         * @param imageId The ID of the image (as seen when executing `docker inspect` on the image). Can be used to reference the image via its ID in other resources.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder imageId(@Nullable Output<String> imageId) {
+            $.imageId = imageId;
+            return this;
+        }
+
+        /**
+         * @param imageId The ID of the image (as seen when executing `docker inspect` on the image). Can be used to reference the image via its ID in other resources.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder imageId(String imageId) {
+            return imageId(Output.of(imageId));
         }
 
         /**
