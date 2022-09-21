@@ -665,7 +665,9 @@ async def run_command_that_can_fail(
     stream_id = math.floor(random() * (1 << 30))
 
     if env is not None:
-        env = os.environ.copy().update(env)
+        environ = os.environ.copy()
+        environ.update(env)
+        env = environ
 
     process = await asyncio.create_subprocess_exec(
         cmd_name, *args, env=env,
