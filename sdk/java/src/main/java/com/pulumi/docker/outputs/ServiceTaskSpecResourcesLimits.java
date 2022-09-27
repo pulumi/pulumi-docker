@@ -11,17 +11,10 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceTaskSpecResourcesLimits {
-    private final @Nullable Integer memoryBytes;
-    private final @Nullable Integer nanoCpus;
+    private @Nullable Integer memoryBytes;
+    private @Nullable Integer nanoCpus;
 
-    @CustomType.Constructor
-    private ServiceTaskSpecResourcesLimits(
-        @CustomType.Parameter("memoryBytes") @Nullable Integer memoryBytes,
-        @CustomType.Parameter("nanoCpus") @Nullable Integer nanoCpus) {
-        this.memoryBytes = memoryBytes;
-        this.nanoCpus = nanoCpus;
-    }
-
+    private ServiceTaskSpecResourcesLimits() {}
     public Optional<Integer> memoryBytes() {
         return Optional.ofNullable(this.memoryBytes);
     }
@@ -36,30 +29,32 @@ public final class ServiceTaskSpecResourcesLimits {
     public static Builder builder(ServiceTaskSpecResourcesLimits defaults) {
         return new Builder(defaults);
     }
-
+    @CustomType.Builder
     public static final class Builder {
         private @Nullable Integer memoryBytes;
         private @Nullable Integer nanoCpus;
-
-        public Builder() {
-    	      // Empty
-        }
-
+        public Builder() {}
         public Builder(ServiceTaskSpecResourcesLimits defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.memoryBytes = defaults.memoryBytes;
     	      this.nanoCpus = defaults.nanoCpus;
         }
 
+        @CustomType.Setter
         public Builder memoryBytes(@Nullable Integer memoryBytes) {
             this.memoryBytes = memoryBytes;
             return this;
         }
+        @CustomType.Setter
         public Builder nanoCpus(@Nullable Integer nanoCpus) {
             this.nanoCpus = nanoCpus;
             return this;
-        }        public ServiceTaskSpecResourcesLimits build() {
-            return new ServiceTaskSpecResourcesLimits(memoryBytes, nanoCpus);
+        }
+        public ServiceTaskSpecResourcesLimits build() {
+            final var o = new ServiceTaskSpecResourcesLimits();
+            o.memoryBytes = memoryBytes;
+            o.nanoCpus = nanoCpus;
+            return o;
         }
     }
 }

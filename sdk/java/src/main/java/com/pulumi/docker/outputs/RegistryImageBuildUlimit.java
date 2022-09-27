@@ -10,24 +10,15 @@ import java.util.Objects;
 
 @CustomType
 public final class RegistryImageBuildUlimit {
-    private final Integer hard;
+    private Integer hard;
     /**
      * @return The name of the Docker image.
      * 
      */
-    private final String name;
-    private final Integer soft;
+    private String name;
+    private Integer soft;
 
-    @CustomType.Constructor
-    private RegistryImageBuildUlimit(
-        @CustomType.Parameter("hard") Integer hard,
-        @CustomType.Parameter("name") String name,
-        @CustomType.Parameter("soft") Integer soft) {
-        this.hard = hard;
-        this.name = name;
-        this.soft = soft;
-    }
-
+    private RegistryImageBuildUlimit() {}
     public Integer hard() {
         return this.hard;
     }
@@ -49,16 +40,12 @@ public final class RegistryImageBuildUlimit {
     public static Builder builder(RegistryImageBuildUlimit defaults) {
         return new Builder(defaults);
     }
-
+    @CustomType.Builder
     public static final class Builder {
         private Integer hard;
         private String name;
         private Integer soft;
-
-        public Builder() {
-    	      // Empty
-        }
-
+        public Builder() {}
         public Builder(RegistryImageBuildUlimit defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.hard = defaults.hard;
@@ -66,19 +53,27 @@ public final class RegistryImageBuildUlimit {
     	      this.soft = defaults.soft;
         }
 
+        @CustomType.Setter
         public Builder hard(Integer hard) {
             this.hard = Objects.requireNonNull(hard);
             return this;
         }
+        @CustomType.Setter
         public Builder name(String name) {
             this.name = Objects.requireNonNull(name);
             return this;
         }
+        @CustomType.Setter
         public Builder soft(Integer soft) {
             this.soft = Objects.requireNonNull(soft);
             return this;
-        }        public RegistryImageBuildUlimit build() {
-            return new RegistryImageBuildUlimit(hard, name, soft);
+        }
+        public RegistryImageBuildUlimit build() {
+            final var o = new RegistryImageBuildUlimit();
+            o.hard = hard;
+            o.name = name;
+            o.soft = soft;
+            return o;
         }
     }
 }

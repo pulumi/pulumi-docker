@@ -15,21 +15,14 @@ public final class ServiceConvergeConfig {
      * @return The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.
      * 
      */
-    private final @Nullable String delay;
+    private @Nullable String delay;
     /**
      * @return The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`
      * 
      */
-    private final @Nullable String timeout;
+    private @Nullable String timeout;
 
-    @CustomType.Constructor
-    private ServiceConvergeConfig(
-        @CustomType.Parameter("delay") @Nullable String delay,
-        @CustomType.Parameter("timeout") @Nullable String timeout) {
-        this.delay = delay;
-        this.timeout = timeout;
-    }
-
+    private ServiceConvergeConfig() {}
     /**
      * @return The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.
      * 
@@ -52,30 +45,32 @@ public final class ServiceConvergeConfig {
     public static Builder builder(ServiceConvergeConfig defaults) {
         return new Builder(defaults);
     }
-
+    @CustomType.Builder
     public static final class Builder {
         private @Nullable String delay;
         private @Nullable String timeout;
-
-        public Builder() {
-    	      // Empty
-        }
-
+        public Builder() {}
         public Builder(ServiceConvergeConfig defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.delay = defaults.delay;
     	      this.timeout = defaults.timeout;
         }
 
+        @CustomType.Setter
         public Builder delay(@Nullable String delay) {
             this.delay = delay;
             return this;
         }
+        @CustomType.Setter
         public Builder timeout(@Nullable String timeout) {
             this.timeout = timeout;
             return this;
-        }        public ServiceConvergeConfig build() {
-            return new ServiceConvergeConfig(delay, timeout);
+        }
+        public ServiceConvergeConfig build() {
+            final var o = new ServiceConvergeConfig();
+            o.delay = delay;
+            o.timeout = timeout;
+            return o;
         }
     }
 }

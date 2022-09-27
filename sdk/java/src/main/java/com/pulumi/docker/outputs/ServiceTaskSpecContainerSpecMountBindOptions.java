@@ -11,13 +11,9 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceTaskSpecContainerSpecMountBindOptions {
-    private final @Nullable String propagation;
+    private @Nullable String propagation;
 
-    @CustomType.Constructor
-    private ServiceTaskSpecContainerSpecMountBindOptions(@CustomType.Parameter("propagation") @Nullable String propagation) {
-        this.propagation = propagation;
-    }
-
+    private ServiceTaskSpecContainerSpecMountBindOptions() {}
     public Optional<String> propagation() {
         return Optional.ofNullable(this.propagation);
     }
@@ -29,24 +25,24 @@ public final class ServiceTaskSpecContainerSpecMountBindOptions {
     public static Builder builder(ServiceTaskSpecContainerSpecMountBindOptions defaults) {
         return new Builder(defaults);
     }
-
+    @CustomType.Builder
     public static final class Builder {
         private @Nullable String propagation;
-
-        public Builder() {
-    	      // Empty
-        }
-
+        public Builder() {}
         public Builder(ServiceTaskSpecContainerSpecMountBindOptions defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.propagation = defaults.propagation;
         }
 
+        @CustomType.Setter
         public Builder propagation(@Nullable String propagation) {
             this.propagation = propagation;
             return this;
-        }        public ServiceTaskSpecContainerSpecMountBindOptions build() {
-            return new ServiceTaskSpecContainerSpecMountBindOptions(propagation);
+        }
+        public ServiceTaskSpecContainerSpecMountBindOptions build() {
+            final var o = new ServiceTaskSpecContainerSpecMountBindOptions();
+            o.propagation = propagation;
+            return o;
         }
     }
 }

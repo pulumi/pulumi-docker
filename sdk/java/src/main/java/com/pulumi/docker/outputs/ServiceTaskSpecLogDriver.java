@@ -15,17 +15,10 @@ public final class ServiceTaskSpecLogDriver {
      * @return Name of the service
      * 
      */
-    private final String name;
-    private final @Nullable Map<String,String> options;
+    private String name;
+    private @Nullable Map<String,String> options;
 
-    @CustomType.Constructor
-    private ServiceTaskSpecLogDriver(
-        @CustomType.Parameter("name") String name,
-        @CustomType.Parameter("options") @Nullable Map<String,String> options) {
-        this.name = name;
-        this.options = options;
-    }
-
+    private ServiceTaskSpecLogDriver() {}
     /**
      * @return Name of the service
      * 
@@ -44,30 +37,32 @@ public final class ServiceTaskSpecLogDriver {
     public static Builder builder(ServiceTaskSpecLogDriver defaults) {
         return new Builder(defaults);
     }
-
+    @CustomType.Builder
     public static final class Builder {
         private String name;
         private @Nullable Map<String,String> options;
-
-        public Builder() {
-    	      // Empty
-        }
-
+        public Builder() {}
         public Builder(ServiceTaskSpecLogDriver defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.name = defaults.name;
     	      this.options = defaults.options;
         }
 
+        @CustomType.Setter
         public Builder name(String name) {
             this.name = Objects.requireNonNull(name);
             return this;
         }
+        @CustomType.Setter
         public Builder options(@Nullable Map<String,String> options) {
             this.options = options;
             return this;
-        }        public ServiceTaskSpecLogDriver build() {
-            return new ServiceTaskSpecLogDriver(name, options);
+        }
+        public ServiceTaskSpecLogDriver build() {
+            final var o = new ServiceTaskSpecLogDriver();
+            o.name = name;
+            o.options = options;
+            return o;
         }
     }
 }

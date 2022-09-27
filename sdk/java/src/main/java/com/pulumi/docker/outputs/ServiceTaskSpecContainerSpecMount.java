@@ -15,32 +15,15 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceTaskSpecContainerSpecMount {
-    private final @Nullable ServiceTaskSpecContainerSpecMountBindOptions bindOptions;
-    private final @Nullable Boolean readOnly;
-    private final @Nullable String source;
-    private final String target;
-    private final @Nullable ServiceTaskSpecContainerSpecMountTmpfsOptions tmpfsOptions;
-    private final String type;
-    private final @Nullable ServiceTaskSpecContainerSpecMountVolumeOptions volumeOptions;
+    private @Nullable ServiceTaskSpecContainerSpecMountBindOptions bindOptions;
+    private @Nullable Boolean readOnly;
+    private @Nullable String source;
+    private String target;
+    private @Nullable ServiceTaskSpecContainerSpecMountTmpfsOptions tmpfsOptions;
+    private String type;
+    private @Nullable ServiceTaskSpecContainerSpecMountVolumeOptions volumeOptions;
 
-    @CustomType.Constructor
-    private ServiceTaskSpecContainerSpecMount(
-        @CustomType.Parameter("bindOptions") @Nullable ServiceTaskSpecContainerSpecMountBindOptions bindOptions,
-        @CustomType.Parameter("readOnly") @Nullable Boolean readOnly,
-        @CustomType.Parameter("source") @Nullable String source,
-        @CustomType.Parameter("target") String target,
-        @CustomType.Parameter("tmpfsOptions") @Nullable ServiceTaskSpecContainerSpecMountTmpfsOptions tmpfsOptions,
-        @CustomType.Parameter("type") String type,
-        @CustomType.Parameter("volumeOptions") @Nullable ServiceTaskSpecContainerSpecMountVolumeOptions volumeOptions) {
-        this.bindOptions = bindOptions;
-        this.readOnly = readOnly;
-        this.source = source;
-        this.target = target;
-        this.tmpfsOptions = tmpfsOptions;
-        this.type = type;
-        this.volumeOptions = volumeOptions;
-    }
-
+    private ServiceTaskSpecContainerSpecMount() {}
     public Optional<ServiceTaskSpecContainerSpecMountBindOptions> bindOptions() {
         return Optional.ofNullable(this.bindOptions);
     }
@@ -70,7 +53,7 @@ public final class ServiceTaskSpecContainerSpecMount {
     public static Builder builder(ServiceTaskSpecContainerSpecMount defaults) {
         return new Builder(defaults);
     }
-
+    @CustomType.Builder
     public static final class Builder {
         private @Nullable ServiceTaskSpecContainerSpecMountBindOptions bindOptions;
         private @Nullable Boolean readOnly;
@@ -79,11 +62,7 @@ public final class ServiceTaskSpecContainerSpecMount {
         private @Nullable ServiceTaskSpecContainerSpecMountTmpfsOptions tmpfsOptions;
         private String type;
         private @Nullable ServiceTaskSpecContainerSpecMountVolumeOptions volumeOptions;
-
-        public Builder() {
-    	      // Empty
-        }
-
+        public Builder() {}
         public Builder(ServiceTaskSpecContainerSpecMount defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.bindOptions = defaults.bindOptions;
@@ -95,35 +74,51 @@ public final class ServiceTaskSpecContainerSpecMount {
     	      this.volumeOptions = defaults.volumeOptions;
         }
 
+        @CustomType.Setter
         public Builder bindOptions(@Nullable ServiceTaskSpecContainerSpecMountBindOptions bindOptions) {
             this.bindOptions = bindOptions;
             return this;
         }
+        @CustomType.Setter
         public Builder readOnly(@Nullable Boolean readOnly) {
             this.readOnly = readOnly;
             return this;
         }
+        @CustomType.Setter
         public Builder source(@Nullable String source) {
             this.source = source;
             return this;
         }
+        @CustomType.Setter
         public Builder target(String target) {
             this.target = Objects.requireNonNull(target);
             return this;
         }
+        @CustomType.Setter
         public Builder tmpfsOptions(@Nullable ServiceTaskSpecContainerSpecMountTmpfsOptions tmpfsOptions) {
             this.tmpfsOptions = tmpfsOptions;
             return this;
         }
+        @CustomType.Setter
         public Builder type(String type) {
             this.type = Objects.requireNonNull(type);
             return this;
         }
+        @CustomType.Setter
         public Builder volumeOptions(@Nullable ServiceTaskSpecContainerSpecMountVolumeOptions volumeOptions) {
             this.volumeOptions = volumeOptions;
             return this;
-        }        public ServiceTaskSpecContainerSpecMount build() {
-            return new ServiceTaskSpecContainerSpecMount(bindOptions, readOnly, source, target, tmpfsOptions, type, volumeOptions);
+        }
+        public ServiceTaskSpecContainerSpecMount build() {
+            final var o = new ServiceTaskSpecContainerSpecMount();
+            o.bindOptions = bindOptions;
+            o.readOnly = readOnly;
+            o.source = source;
+            o.target = target;
+            o.tmpfsOptions = tmpfsOptions;
+            o.type = type;
+            o.volumeOptions = volumeOptions;
+            return o;
         }
     }
 }

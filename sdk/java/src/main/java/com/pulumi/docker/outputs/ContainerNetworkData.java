@@ -20,9 +20,9 @@ public final class ContainerNetworkData {
      * 
      */
     @Deprecated /* Use `network_data` instead. The network gateway of the container as read from its NetworkSettings. */
-    private final @Nullable String gateway;
-    private final @Nullable String globalIpv6Address;
-    private final @Nullable Integer globalIpv6PrefixLength;
+    private @Nullable String gateway;
+    private @Nullable String globalIpv6Address;
+    private @Nullable Integer globalIpv6PrefixLength;
     /**
      * @return The IP address of the container.
      * 
@@ -31,7 +31,7 @@ public final class ContainerNetworkData {
      * 
      */
     @Deprecated /* Use `network_data` instead. The IP address of the container's first network it. */
-    private final @Nullable String ipAddress;
+    private @Nullable String ipAddress;
     /**
      * @return The IP prefix length of the container.
      * 
@@ -40,28 +40,11 @@ public final class ContainerNetworkData {
      * 
      */
     @Deprecated /* Use `network_data` instead. The IP prefix length of the container as read from its NetworkSettings. */
-    private final @Nullable Integer ipPrefixLength;
-    private final @Nullable String ipv6Gateway;
-    private final @Nullable String networkName;
+    private @Nullable Integer ipPrefixLength;
+    private @Nullable String ipv6Gateway;
+    private @Nullable String networkName;
 
-    @CustomType.Constructor
-    private ContainerNetworkData(
-        @CustomType.Parameter("gateway") @Nullable String gateway,
-        @CustomType.Parameter("globalIpv6Address") @Nullable String globalIpv6Address,
-        @CustomType.Parameter("globalIpv6PrefixLength") @Nullable Integer globalIpv6PrefixLength,
-        @CustomType.Parameter("ipAddress") @Nullable String ipAddress,
-        @CustomType.Parameter("ipPrefixLength") @Nullable Integer ipPrefixLength,
-        @CustomType.Parameter("ipv6Gateway") @Nullable String ipv6Gateway,
-        @CustomType.Parameter("networkName") @Nullable String networkName) {
-        this.gateway = gateway;
-        this.globalIpv6Address = globalIpv6Address;
-        this.globalIpv6PrefixLength = globalIpv6PrefixLength;
-        this.ipAddress = ipAddress;
-        this.ipPrefixLength = ipPrefixLength;
-        this.ipv6Gateway = ipv6Gateway;
-        this.networkName = networkName;
-    }
-
+    private ContainerNetworkData() {}
     /**
      * @return The network gateway of the container.
      * 
@@ -115,7 +98,7 @@ public final class ContainerNetworkData {
     public static Builder builder(ContainerNetworkData defaults) {
         return new Builder(defaults);
     }
-
+    @CustomType.Builder
     public static final class Builder {
         private @Nullable String gateway;
         private @Nullable String globalIpv6Address;
@@ -124,11 +107,7 @@ public final class ContainerNetworkData {
         private @Nullable Integer ipPrefixLength;
         private @Nullable String ipv6Gateway;
         private @Nullable String networkName;
-
-        public Builder() {
-    	      // Empty
-        }
-
+        public Builder() {}
         public Builder(ContainerNetworkData defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.gateway = defaults.gateway;
@@ -140,35 +119,51 @@ public final class ContainerNetworkData {
     	      this.networkName = defaults.networkName;
         }
 
+        @CustomType.Setter
         public Builder gateway(@Nullable String gateway) {
             this.gateway = gateway;
             return this;
         }
+        @CustomType.Setter
         public Builder globalIpv6Address(@Nullable String globalIpv6Address) {
             this.globalIpv6Address = globalIpv6Address;
             return this;
         }
+        @CustomType.Setter
         public Builder globalIpv6PrefixLength(@Nullable Integer globalIpv6PrefixLength) {
             this.globalIpv6PrefixLength = globalIpv6PrefixLength;
             return this;
         }
+        @CustomType.Setter
         public Builder ipAddress(@Nullable String ipAddress) {
             this.ipAddress = ipAddress;
             return this;
         }
+        @CustomType.Setter
         public Builder ipPrefixLength(@Nullable Integer ipPrefixLength) {
             this.ipPrefixLength = ipPrefixLength;
             return this;
         }
+        @CustomType.Setter
         public Builder ipv6Gateway(@Nullable String ipv6Gateway) {
             this.ipv6Gateway = ipv6Gateway;
             return this;
         }
+        @CustomType.Setter
         public Builder networkName(@Nullable String networkName) {
             this.networkName = networkName;
             return this;
-        }        public ContainerNetworkData build() {
-            return new ContainerNetworkData(gateway, globalIpv6Address, globalIpv6PrefixLength, ipAddress, ipPrefixLength, ipv6Gateway, networkName);
+        }
+        public ContainerNetworkData build() {
+            final var o = new ContainerNetworkData();
+            o.gateway = gateway;
+            o.globalIpv6Address = globalIpv6Address;
+            o.globalIpv6PrefixLength = globalIpv6PrefixLength;
+            o.ipAddress = ipAddress;
+            o.ipPrefixLength = ipPrefixLength;
+            o.ipv6Gateway = ipv6Gateway;
+            o.networkName = networkName;
+            return o;
         }
     }
 }

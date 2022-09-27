@@ -14,23 +14,12 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceTaskSpecPlacement {
-    private final @Nullable List<String> constraints;
-    private final @Nullable Integer maxReplicas;
-    private final @Nullable List<ServiceTaskSpecPlacementPlatform> platforms;
-    private final @Nullable List<String> prefs;
+    private @Nullable List<String> constraints;
+    private @Nullable Integer maxReplicas;
+    private @Nullable List<ServiceTaskSpecPlacementPlatform> platforms;
+    private @Nullable List<String> prefs;
 
-    @CustomType.Constructor
-    private ServiceTaskSpecPlacement(
-        @CustomType.Parameter("constraints") @Nullable List<String> constraints,
-        @CustomType.Parameter("maxReplicas") @Nullable Integer maxReplicas,
-        @CustomType.Parameter("platforms") @Nullable List<ServiceTaskSpecPlacementPlatform> platforms,
-        @CustomType.Parameter("prefs") @Nullable List<String> prefs) {
-        this.constraints = constraints;
-        this.maxReplicas = maxReplicas;
-        this.platforms = platforms;
-        this.prefs = prefs;
-    }
-
+    private ServiceTaskSpecPlacement() {}
     public List<String> constraints() {
         return this.constraints == null ? List.of() : this.constraints;
     }
@@ -51,17 +40,13 @@ public final class ServiceTaskSpecPlacement {
     public static Builder builder(ServiceTaskSpecPlacement defaults) {
         return new Builder(defaults);
     }
-
+    @CustomType.Builder
     public static final class Builder {
         private @Nullable List<String> constraints;
         private @Nullable Integer maxReplicas;
         private @Nullable List<ServiceTaskSpecPlacementPlatform> platforms;
         private @Nullable List<String> prefs;
-
-        public Builder() {
-    	      // Empty
-        }
-
+        public Builder() {}
         public Builder(ServiceTaskSpecPlacement defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.constraints = defaults.constraints;
@@ -70,6 +55,7 @@ public final class ServiceTaskSpecPlacement {
     	      this.prefs = defaults.prefs;
         }
 
+        @CustomType.Setter
         public Builder constraints(@Nullable List<String> constraints) {
             this.constraints = constraints;
             return this;
@@ -77,10 +63,12 @@ public final class ServiceTaskSpecPlacement {
         public Builder constraints(String... constraints) {
             return constraints(List.of(constraints));
         }
+        @CustomType.Setter
         public Builder maxReplicas(@Nullable Integer maxReplicas) {
             this.maxReplicas = maxReplicas;
             return this;
         }
+        @CustomType.Setter
         public Builder platforms(@Nullable List<ServiceTaskSpecPlacementPlatform> platforms) {
             this.platforms = platforms;
             return this;
@@ -88,14 +76,21 @@ public final class ServiceTaskSpecPlacement {
         public Builder platforms(ServiceTaskSpecPlacementPlatform... platforms) {
             return platforms(List.of(platforms));
         }
+        @CustomType.Setter
         public Builder prefs(@Nullable List<String> prefs) {
             this.prefs = prefs;
             return this;
         }
         public Builder prefs(String... prefs) {
             return prefs(List.of(prefs));
-        }        public ServiceTaskSpecPlacement build() {
-            return new ServiceTaskSpecPlacement(constraints, maxReplicas, platforms, prefs);
+        }
+        public ServiceTaskSpecPlacement build() {
+            final var o = new ServiceTaskSpecPlacement();
+            o.constraints = constraints;
+            o.maxReplicas = maxReplicas;
+            o.platforms = platforms;
+            o.prefs = prefs;
+            return o;
         }
     }
 }

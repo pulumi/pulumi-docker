@@ -11,20 +11,11 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceTaskSpecContainerSpecDnsConfig {
-    private final List<String> nameservers;
-    private final @Nullable List<String> options;
-    private final @Nullable List<String> searches;
+    private List<String> nameservers;
+    private @Nullable List<String> options;
+    private @Nullable List<String> searches;
 
-    @CustomType.Constructor
-    private ServiceTaskSpecContainerSpecDnsConfig(
-        @CustomType.Parameter("nameservers") List<String> nameservers,
-        @CustomType.Parameter("options") @Nullable List<String> options,
-        @CustomType.Parameter("searches") @Nullable List<String> searches) {
-        this.nameservers = nameservers;
-        this.options = options;
-        this.searches = searches;
-    }
-
+    private ServiceTaskSpecContainerSpecDnsConfig() {}
     public List<String> nameservers() {
         return this.nameservers;
     }
@@ -42,16 +33,12 @@ public final class ServiceTaskSpecContainerSpecDnsConfig {
     public static Builder builder(ServiceTaskSpecContainerSpecDnsConfig defaults) {
         return new Builder(defaults);
     }
-
+    @CustomType.Builder
     public static final class Builder {
         private List<String> nameservers;
         private @Nullable List<String> options;
         private @Nullable List<String> searches;
-
-        public Builder() {
-    	      // Empty
-        }
-
+        public Builder() {}
         public Builder(ServiceTaskSpecContainerSpecDnsConfig defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.nameservers = defaults.nameservers;
@@ -59,6 +46,7 @@ public final class ServiceTaskSpecContainerSpecDnsConfig {
     	      this.searches = defaults.searches;
         }
 
+        @CustomType.Setter
         public Builder nameservers(List<String> nameservers) {
             this.nameservers = Objects.requireNonNull(nameservers);
             return this;
@@ -66,6 +54,7 @@ public final class ServiceTaskSpecContainerSpecDnsConfig {
         public Builder nameservers(String... nameservers) {
             return nameservers(List.of(nameservers));
         }
+        @CustomType.Setter
         public Builder options(@Nullable List<String> options) {
             this.options = options;
             return this;
@@ -73,14 +62,20 @@ public final class ServiceTaskSpecContainerSpecDnsConfig {
         public Builder options(String... options) {
             return options(List.of(options));
         }
+        @CustomType.Setter
         public Builder searches(@Nullable List<String> searches) {
             this.searches = searches;
             return this;
         }
         public Builder searches(String... searches) {
             return searches(List.of(searches));
-        }        public ServiceTaskSpecContainerSpecDnsConfig build() {
-            return new ServiceTaskSpecContainerSpecDnsConfig(nameservers, options, searches);
+        }
+        public ServiceTaskSpecContainerSpecDnsConfig build() {
+            final var o = new ServiceTaskSpecContainerSpecDnsConfig();
+            o.nameservers = nameservers;
+            o.options = options;
+            o.searches = searches;
+            return o;
         }
     }
 }

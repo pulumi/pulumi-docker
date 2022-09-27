@@ -16,49 +16,34 @@ public final class ServiceUpdateConfig {
      * @return Delay between task updates `(ns|us|ms|s|m|h)`. Defaults to `0s`.
      * 
      */
-    private final @Nullable String delay;
+    private @Nullable String delay;
     /**
      * @return Action on update failure: `pause`, `continue` or `rollback`. Defaults to `pause`.
      * 
      */
-    private final @Nullable String failureAction;
+    private @Nullable String failureAction;
     /**
      * @return Failure rate to tolerate during an update. Defaults to `0.0`.
      * 
      */
-    private final @Nullable String maxFailureRatio;
+    private @Nullable String maxFailureRatio;
     /**
      * @return Duration after each task update to monitor for failure (ns|us|ms|s|m|h). Defaults to `5s`.
      * 
      */
-    private final @Nullable String monitor;
+    private @Nullable String monitor;
     /**
      * @return Update order: either &#39;stop-first&#39; or &#39;start-first&#39;. Defaults to `stop-first`.
      * 
      */
-    private final @Nullable String order;
+    private @Nullable String order;
     /**
      * @return Maximum number of tasks to be updated in one iteration. Defaults to `1`
      * 
      */
-    private final @Nullable Integer parallelism;
+    private @Nullable Integer parallelism;
 
-    @CustomType.Constructor
-    private ServiceUpdateConfig(
-        @CustomType.Parameter("delay") @Nullable String delay,
-        @CustomType.Parameter("failureAction") @Nullable String failureAction,
-        @CustomType.Parameter("maxFailureRatio") @Nullable String maxFailureRatio,
-        @CustomType.Parameter("monitor") @Nullable String monitor,
-        @CustomType.Parameter("order") @Nullable String order,
-        @CustomType.Parameter("parallelism") @Nullable Integer parallelism) {
-        this.delay = delay;
-        this.failureAction = failureAction;
-        this.maxFailureRatio = maxFailureRatio;
-        this.monitor = monitor;
-        this.order = order;
-        this.parallelism = parallelism;
-    }
-
+    private ServiceUpdateConfig() {}
     /**
      * @return Delay between task updates `(ns|us|ms|s|m|h)`. Defaults to `0s`.
      * 
@@ -109,7 +94,7 @@ public final class ServiceUpdateConfig {
     public static Builder builder(ServiceUpdateConfig defaults) {
         return new Builder(defaults);
     }
-
+    @CustomType.Builder
     public static final class Builder {
         private @Nullable String delay;
         private @Nullable String failureAction;
@@ -117,11 +102,7 @@ public final class ServiceUpdateConfig {
         private @Nullable String monitor;
         private @Nullable String order;
         private @Nullable Integer parallelism;
-
-        public Builder() {
-    	      // Empty
-        }
-
+        public Builder() {}
         public Builder(ServiceUpdateConfig defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.delay = defaults.delay;
@@ -132,31 +113,45 @@ public final class ServiceUpdateConfig {
     	      this.parallelism = defaults.parallelism;
         }
 
+        @CustomType.Setter
         public Builder delay(@Nullable String delay) {
             this.delay = delay;
             return this;
         }
+        @CustomType.Setter
         public Builder failureAction(@Nullable String failureAction) {
             this.failureAction = failureAction;
             return this;
         }
+        @CustomType.Setter
         public Builder maxFailureRatio(@Nullable String maxFailureRatio) {
             this.maxFailureRatio = maxFailureRatio;
             return this;
         }
+        @CustomType.Setter
         public Builder monitor(@Nullable String monitor) {
             this.monitor = monitor;
             return this;
         }
+        @CustomType.Setter
         public Builder order(@Nullable String order) {
             this.order = order;
             return this;
         }
+        @CustomType.Setter
         public Builder parallelism(@Nullable Integer parallelism) {
             this.parallelism = parallelism;
             return this;
-        }        public ServiceUpdateConfig build() {
-            return new ServiceUpdateConfig(delay, failureAction, maxFailureRatio, monitor, order, parallelism);
+        }
+        public ServiceUpdateConfig build() {
+            final var o = new ServiceUpdateConfig();
+            o.delay = delay;
+            o.failureAction = failureAction;
+            o.maxFailureRatio = maxFailureRatio;
+            o.monitor = monitor;
+            o.order = order;
+            o.parallelism = parallelism;
+            return o;
         }
     }
 }

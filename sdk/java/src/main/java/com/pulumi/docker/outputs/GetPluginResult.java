@@ -17,56 +17,39 @@ public final class GetPluginResult {
      * @return The alias of the Docker plugin. If the tag is omitted, `:latest` is complemented to the attribute value.
      * 
      */
-    private final @Nullable String alias;
+    private @Nullable String alias;
     /**
      * @return If `true` the plugin is enabled
      * 
      */
-    private final Boolean enabled;
+    private Boolean enabled;
     /**
      * @return The environment variables in the form of `KEY=VALUE`, e.g. `DEBUG=0`
      * 
      */
-    private final List<String> envs;
+    private List<String> envs;
     /**
      * @return If true, grant all permissions necessary to run the plugin
      * 
      */
-    private final Boolean grantAllPermissions;
+    private Boolean grantAllPermissions;
     /**
      * @return The ID of the plugin, which has precedence over the `alias` of both are given
      * 
      */
-    private final @Nullable String id;
+    private @Nullable String id;
     /**
      * @return The plugin name. If the tag is omitted, `:latest` is complemented to the attribute value.
      * 
      */
-    private final String name;
+    private String name;
     /**
      * @return The Docker Plugin Reference
      * 
      */
-    private final String pluginReference;
+    private String pluginReference;
 
-    @CustomType.Constructor
-    private GetPluginResult(
-        @CustomType.Parameter("alias") @Nullable String alias,
-        @CustomType.Parameter("enabled") Boolean enabled,
-        @CustomType.Parameter("envs") List<String> envs,
-        @CustomType.Parameter("grantAllPermissions") Boolean grantAllPermissions,
-        @CustomType.Parameter("id") @Nullable String id,
-        @CustomType.Parameter("name") String name,
-        @CustomType.Parameter("pluginReference") String pluginReference) {
-        this.alias = alias;
-        this.enabled = enabled;
-        this.envs = envs;
-        this.grantAllPermissions = grantAllPermissions;
-        this.id = id;
-        this.name = name;
-        this.pluginReference = pluginReference;
-    }
-
+    private GetPluginResult() {}
     /**
      * @return The alias of the Docker plugin. If the tag is omitted, `:latest` is complemented to the attribute value.
      * 
@@ -124,7 +107,7 @@ public final class GetPluginResult {
     public static Builder builder(GetPluginResult defaults) {
         return new Builder(defaults);
     }
-
+    @CustomType.Builder
     public static final class Builder {
         private @Nullable String alias;
         private Boolean enabled;
@@ -133,11 +116,7 @@ public final class GetPluginResult {
         private @Nullable String id;
         private String name;
         private String pluginReference;
-
-        public Builder() {
-    	      // Empty
-        }
-
+        public Builder() {}
         public Builder(GetPluginResult defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.alias = defaults.alias;
@@ -149,14 +128,17 @@ public final class GetPluginResult {
     	      this.pluginReference = defaults.pluginReference;
         }
 
+        @CustomType.Setter
         public Builder alias(@Nullable String alias) {
             this.alias = alias;
             return this;
         }
+        @CustomType.Setter
         public Builder enabled(Boolean enabled) {
             this.enabled = Objects.requireNonNull(enabled);
             return this;
         }
+        @CustomType.Setter
         public Builder envs(List<String> envs) {
             this.envs = Objects.requireNonNull(envs);
             return this;
@@ -164,23 +146,36 @@ public final class GetPluginResult {
         public Builder envs(String... envs) {
             return envs(List.of(envs));
         }
+        @CustomType.Setter
         public Builder grantAllPermissions(Boolean grantAllPermissions) {
             this.grantAllPermissions = Objects.requireNonNull(grantAllPermissions);
             return this;
         }
+        @CustomType.Setter
         public Builder id(@Nullable String id) {
             this.id = id;
             return this;
         }
+        @CustomType.Setter
         public Builder name(String name) {
             this.name = Objects.requireNonNull(name);
             return this;
         }
+        @CustomType.Setter
         public Builder pluginReference(String pluginReference) {
             this.pluginReference = Objects.requireNonNull(pluginReference);
             return this;
-        }        public GetPluginResult build() {
-            return new GetPluginResult(alias, enabled, envs, grantAllPermissions, id, name, pluginReference);
+        }
+        public GetPluginResult build() {
+            final var o = new GetPluginResult();
+            o.alias = alias;
+            o.enabled = enabled;
+            o.envs = envs;
+            o.grantAllPermissions = grantAllPermissions;
+            o.id = id;
+            o.name = name;
+            o.pluginReference = pluginReference;
+            return o;
         }
     }
 }

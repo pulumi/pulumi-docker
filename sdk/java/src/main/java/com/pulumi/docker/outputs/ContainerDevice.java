@@ -15,28 +15,19 @@ public final class ContainerDevice {
      * @return The path in the container where the device will be bound.
      * 
      */
-    private final @Nullable String containerPath;
+    private @Nullable String containerPath;
     /**
      * @return The path on the host where the device is located.
      * 
      */
-    private final String hostPath;
+    private String hostPath;
     /**
      * @return The cgroup permissions given to the container to access the device. Defaults to `rwm`.
      * 
      */
-    private final @Nullable String permissions;
+    private @Nullable String permissions;
 
-    @CustomType.Constructor
-    private ContainerDevice(
-        @CustomType.Parameter("containerPath") @Nullable String containerPath,
-        @CustomType.Parameter("hostPath") String hostPath,
-        @CustomType.Parameter("permissions") @Nullable String permissions) {
-        this.containerPath = containerPath;
-        this.hostPath = hostPath;
-        this.permissions = permissions;
-    }
-
+    private ContainerDevice() {}
     /**
      * @return The path in the container where the device will be bound.
      * 
@@ -66,16 +57,12 @@ public final class ContainerDevice {
     public static Builder builder(ContainerDevice defaults) {
         return new Builder(defaults);
     }
-
+    @CustomType.Builder
     public static final class Builder {
         private @Nullable String containerPath;
         private String hostPath;
         private @Nullable String permissions;
-
-        public Builder() {
-    	      // Empty
-        }
-
+        public Builder() {}
         public Builder(ContainerDevice defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.containerPath = defaults.containerPath;
@@ -83,19 +70,27 @@ public final class ContainerDevice {
     	      this.permissions = defaults.permissions;
         }
 
+        @CustomType.Setter
         public Builder containerPath(@Nullable String containerPath) {
             this.containerPath = containerPath;
             return this;
         }
+        @CustomType.Setter
         public Builder hostPath(String hostPath) {
             this.hostPath = Objects.requireNonNull(hostPath);
             return this;
         }
+        @CustomType.Setter
         public Builder permissions(@Nullable String permissions) {
             this.permissions = permissions;
             return this;
-        }        public ContainerDevice build() {
-            return new ContainerDevice(containerPath, hostPath, permissions);
+        }
+        public ContainerDevice build() {
+            final var o = new ContainerDevice();
+            o.containerPath = containerPath;
+            o.hostPath = hostPath;
+            o.permissions = permissions;
+            return o;
         }
     }
 }

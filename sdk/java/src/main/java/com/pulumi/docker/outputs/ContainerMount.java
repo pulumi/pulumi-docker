@@ -19,56 +19,39 @@ public final class ContainerMount {
      * @return Optional configuration for the bind type.
      * 
      */
-    private final @Nullable ContainerMountBindOptions bindOptions;
+    private @Nullable ContainerMountBindOptions bindOptions;
     /**
      * @return Whether the mount should be read-only.
      * 
      */
-    private final @Nullable Boolean readOnly;
+    private @Nullable Boolean readOnly;
     /**
      * @return Mount source (e.g. a volume name, a host path).
      * 
      */
-    private final @Nullable String source;
+    private @Nullable String source;
     /**
      * @return Container path
      * 
      */
-    private final String target;
+    private String target;
     /**
      * @return Optional configuration for the tmpfs type.
      * 
      */
-    private final @Nullable ContainerMountTmpfsOptions tmpfsOptions;
+    private @Nullable ContainerMountTmpfsOptions tmpfsOptions;
     /**
      * @return The mount type
      * 
      */
-    private final String type;
+    private String type;
     /**
      * @return Optional configuration for the volume type.
      * 
      */
-    private final @Nullable ContainerMountVolumeOptions volumeOptions;
+    private @Nullable ContainerMountVolumeOptions volumeOptions;
 
-    @CustomType.Constructor
-    private ContainerMount(
-        @CustomType.Parameter("bindOptions") @Nullable ContainerMountBindOptions bindOptions,
-        @CustomType.Parameter("readOnly") @Nullable Boolean readOnly,
-        @CustomType.Parameter("source") @Nullable String source,
-        @CustomType.Parameter("target") String target,
-        @CustomType.Parameter("tmpfsOptions") @Nullable ContainerMountTmpfsOptions tmpfsOptions,
-        @CustomType.Parameter("type") String type,
-        @CustomType.Parameter("volumeOptions") @Nullable ContainerMountVolumeOptions volumeOptions) {
-        this.bindOptions = bindOptions;
-        this.readOnly = readOnly;
-        this.source = source;
-        this.target = target;
-        this.tmpfsOptions = tmpfsOptions;
-        this.type = type;
-        this.volumeOptions = volumeOptions;
-    }
-
+    private ContainerMount() {}
     /**
      * @return Optional configuration for the bind type.
      * 
@@ -126,7 +109,7 @@ public final class ContainerMount {
     public static Builder builder(ContainerMount defaults) {
         return new Builder(defaults);
     }
-
+    @CustomType.Builder
     public static final class Builder {
         private @Nullable ContainerMountBindOptions bindOptions;
         private @Nullable Boolean readOnly;
@@ -135,11 +118,7 @@ public final class ContainerMount {
         private @Nullable ContainerMountTmpfsOptions tmpfsOptions;
         private String type;
         private @Nullable ContainerMountVolumeOptions volumeOptions;
-
-        public Builder() {
-    	      // Empty
-        }
-
+        public Builder() {}
         public Builder(ContainerMount defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.bindOptions = defaults.bindOptions;
@@ -151,35 +130,51 @@ public final class ContainerMount {
     	      this.volumeOptions = defaults.volumeOptions;
         }
 
+        @CustomType.Setter
         public Builder bindOptions(@Nullable ContainerMountBindOptions bindOptions) {
             this.bindOptions = bindOptions;
             return this;
         }
+        @CustomType.Setter
         public Builder readOnly(@Nullable Boolean readOnly) {
             this.readOnly = readOnly;
             return this;
         }
+        @CustomType.Setter
         public Builder source(@Nullable String source) {
             this.source = source;
             return this;
         }
+        @CustomType.Setter
         public Builder target(String target) {
             this.target = Objects.requireNonNull(target);
             return this;
         }
+        @CustomType.Setter
         public Builder tmpfsOptions(@Nullable ContainerMountTmpfsOptions tmpfsOptions) {
             this.tmpfsOptions = tmpfsOptions;
             return this;
         }
+        @CustomType.Setter
         public Builder type(String type) {
             this.type = Objects.requireNonNull(type);
             return this;
         }
+        @CustomType.Setter
         public Builder volumeOptions(@Nullable ContainerMountVolumeOptions volumeOptions) {
             this.volumeOptions = volumeOptions;
             return this;
-        }        public ContainerMount build() {
-            return new ContainerMount(bindOptions, readOnly, source, target, tmpfsOptions, type, volumeOptions);
+        }
+        public ContainerMount build() {
+            final var o = new ContainerMount();
+            o.bindOptions = bindOptions;
+            o.readOnly = readOnly;
+            o.source = source;
+            o.target = target;
+            o.tmpfsOptions = tmpfsOptions;
+            o.type = type;
+            o.volumeOptions = volumeOptions;
+            return o;
         }
     }
 }

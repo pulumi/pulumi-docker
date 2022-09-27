@@ -21,231 +21,164 @@ public final class RegistryImageBuild {
      * @return The configuration for the authentication
      * 
      */
-    private final @Nullable List<RegistryImageBuildAuthConfig> authConfigs;
+    private @Nullable List<RegistryImageBuildAuthConfig> authConfigs;
     /**
      * @return Pairs for build-time variables in the form TODO
      * 
      */
-    private final @Nullable Map<String,String> buildArgs;
+    private @Nullable Map<String,String> buildArgs;
     /**
      * @return BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request.
      * 
      */
-    private final @Nullable String buildId;
+    private @Nullable String buildId;
     /**
      * @return Images to consider as cache sources
      * 
      */
-    private final @Nullable List<String> cacheFroms;
+    private @Nullable List<String> cacheFroms;
     /**
      * @return Optional parent cgroup for the container
      * 
      */
-    private final @Nullable String cgroupParent;
+    private @Nullable String cgroupParent;
     /**
      * @return The absolute path to the context folder. You can use the helper function &#39;${path.cwd}/context-dir&#39;.
      * 
      */
-    private final String context;
+    private String context;
     /**
      * @return The length of a CPU period in microseconds
      * 
      */
-    private final @Nullable Integer cpuPeriod;
+    private @Nullable Integer cpuPeriod;
     /**
      * @return Microseconds of CPU time that the container can get in a CPU period
      * 
      */
-    private final @Nullable Integer cpuQuota;
+    private @Nullable Integer cpuQuota;
     /**
      * @return CPUs in which to allow execution (e.g., `0-3`, `0`, `1`)
      * 
      */
-    private final @Nullable String cpuSetCpus;
+    private @Nullable String cpuSetCpus;
     /**
      * @return MEMs in which to allow execution (`0-3`, `0`, `1`)
      * 
      */
-    private final @Nullable String cpuSetMems;
+    private @Nullable String cpuSetMems;
     /**
      * @return CPU shares (relative weight)
      * 
      */
-    private final @Nullable Integer cpuShares;
+    private @Nullable Integer cpuShares;
     /**
      * @return Dockerfile file. Defaults to `Dockerfile`
      * 
      */
-    private final @Nullable String dockerfile;
+    private @Nullable String dockerfile;
     /**
      * @return A list of hostnames/IP mappings to add to the container’s /etc/hosts file. Specified in the form [&#34;hostname:IP&#34;]
      * 
      */
-    private final @Nullable List<String> extraHosts;
+    private @Nullable List<String> extraHosts;
     /**
      * @return Always remove intermediate containers
      * 
      */
-    private final @Nullable Boolean forceRemove;
+    private @Nullable Boolean forceRemove;
     /**
      * @return Isolation represents the isolation technology of a container. The supported values are
      * 
      */
-    private final @Nullable String isolation;
+    private @Nullable String isolation;
     /**
      * @return User-defined key/value metadata
      * 
      */
-    private final @Nullable Map<String,String> labels;
+    private @Nullable Map<String,String> labels;
     /**
      * @return Set memory limit for build
      * 
      */
-    private final @Nullable Integer memory;
+    private @Nullable Integer memory;
     /**
      * @return Total memory (memory + swap), -1 to enable unlimited swap
      * 
      */
-    private final @Nullable Integer memorySwap;
+    private @Nullable Integer memorySwap;
     /**
      * @return Set the networking mode for the RUN instructions during build
      * 
      */
-    private final @Nullable String networkMode;
+    private @Nullable String networkMode;
     /**
      * @return Do not use the cache when building the image
      * 
      */
-    private final @Nullable Boolean noCache;
+    private @Nullable Boolean noCache;
     /**
      * @return Set platform if server is multi-platform capable
      * 
      */
-    private final @Nullable String platform;
+    private @Nullable String platform;
     /**
      * @return Attempt to pull the image even if an older image exists locally
      * 
      */
-    private final @Nullable Boolean pullParent;
+    private @Nullable Boolean pullParent;
     /**
      * @return A Git repository URI or HTTP/HTTPS context URI
      * 
      */
-    private final @Nullable String remoteContext;
+    private @Nullable String remoteContext;
     /**
      * @return Remove intermediate containers after a successful build (default behavior)
      * 
      */
-    private final @Nullable Boolean remove;
+    private @Nullable Boolean remove;
     /**
      * @return The security options
      * 
      */
-    private final @Nullable List<String> securityOpts;
+    private @Nullable List<String> securityOpts;
     /**
      * @return Set an ID for the build session
      * 
      */
-    private final @Nullable String sessionId;
+    private @Nullable String sessionId;
     /**
      * @return Size of /dev/shm in bytes. The size must be greater than 0
      * 
      */
-    private final @Nullable Integer shmSize;
+    private @Nullable Integer shmSize;
     /**
      * @return If true the new layers are squashed into a new image with a single new layer
      * 
      */
-    private final @Nullable Boolean squash;
+    private @Nullable Boolean squash;
     /**
      * @return Suppress the build output and print image ID on success
      * 
      */
-    private final @Nullable Boolean suppressOutput;
+    private @Nullable Boolean suppressOutput;
     /**
      * @return Set the target build stage to build
      * 
      */
-    private final @Nullable String target;
+    private @Nullable String target;
     /**
      * @return Configuration for ulimits
      * 
      */
-    private final @Nullable List<RegistryImageBuildUlimit> ulimits;
+    private @Nullable List<RegistryImageBuildUlimit> ulimits;
     /**
      * @return Version of the underlying builder to use
      * 
      */
-    private final @Nullable String version;
+    private @Nullable String version;
 
-    @CustomType.Constructor
-    private RegistryImageBuild(
-        @CustomType.Parameter("authConfigs") @Nullable List<RegistryImageBuildAuthConfig> authConfigs,
-        @CustomType.Parameter("buildArgs") @Nullable Map<String,String> buildArgs,
-        @CustomType.Parameter("buildId") @Nullable String buildId,
-        @CustomType.Parameter("cacheFroms") @Nullable List<String> cacheFroms,
-        @CustomType.Parameter("cgroupParent") @Nullable String cgroupParent,
-        @CustomType.Parameter("context") String context,
-        @CustomType.Parameter("cpuPeriod") @Nullable Integer cpuPeriod,
-        @CustomType.Parameter("cpuQuota") @Nullable Integer cpuQuota,
-        @CustomType.Parameter("cpuSetCpus") @Nullable String cpuSetCpus,
-        @CustomType.Parameter("cpuSetMems") @Nullable String cpuSetMems,
-        @CustomType.Parameter("cpuShares") @Nullable Integer cpuShares,
-        @CustomType.Parameter("dockerfile") @Nullable String dockerfile,
-        @CustomType.Parameter("extraHosts") @Nullable List<String> extraHosts,
-        @CustomType.Parameter("forceRemove") @Nullable Boolean forceRemove,
-        @CustomType.Parameter("isolation") @Nullable String isolation,
-        @CustomType.Parameter("labels") @Nullable Map<String,String> labels,
-        @CustomType.Parameter("memory") @Nullable Integer memory,
-        @CustomType.Parameter("memorySwap") @Nullable Integer memorySwap,
-        @CustomType.Parameter("networkMode") @Nullable String networkMode,
-        @CustomType.Parameter("noCache") @Nullable Boolean noCache,
-        @CustomType.Parameter("platform") @Nullable String platform,
-        @CustomType.Parameter("pullParent") @Nullable Boolean pullParent,
-        @CustomType.Parameter("remoteContext") @Nullable String remoteContext,
-        @CustomType.Parameter("remove") @Nullable Boolean remove,
-        @CustomType.Parameter("securityOpts") @Nullable List<String> securityOpts,
-        @CustomType.Parameter("sessionId") @Nullable String sessionId,
-        @CustomType.Parameter("shmSize") @Nullable Integer shmSize,
-        @CustomType.Parameter("squash") @Nullable Boolean squash,
-        @CustomType.Parameter("suppressOutput") @Nullable Boolean suppressOutput,
-        @CustomType.Parameter("target") @Nullable String target,
-        @CustomType.Parameter("ulimits") @Nullable List<RegistryImageBuildUlimit> ulimits,
-        @CustomType.Parameter("version") @Nullable String version) {
-        this.authConfigs = authConfigs;
-        this.buildArgs = buildArgs;
-        this.buildId = buildId;
-        this.cacheFroms = cacheFroms;
-        this.cgroupParent = cgroupParent;
-        this.context = context;
-        this.cpuPeriod = cpuPeriod;
-        this.cpuQuota = cpuQuota;
-        this.cpuSetCpus = cpuSetCpus;
-        this.cpuSetMems = cpuSetMems;
-        this.cpuShares = cpuShares;
-        this.dockerfile = dockerfile;
-        this.extraHosts = extraHosts;
-        this.forceRemove = forceRemove;
-        this.isolation = isolation;
-        this.labels = labels;
-        this.memory = memory;
-        this.memorySwap = memorySwap;
-        this.networkMode = networkMode;
-        this.noCache = noCache;
-        this.platform = platform;
-        this.pullParent = pullParent;
-        this.remoteContext = remoteContext;
-        this.remove = remove;
-        this.securityOpts = securityOpts;
-        this.sessionId = sessionId;
-        this.shmSize = shmSize;
-        this.squash = squash;
-        this.suppressOutput = suppressOutput;
-        this.target = target;
-        this.ulimits = ulimits;
-        this.version = version;
-    }
-
+    private RegistryImageBuild() {}
     /**
      * @return The configuration for the authentication
      * 
@@ -478,7 +411,7 @@ public final class RegistryImageBuild {
     public static Builder builder(RegistryImageBuild defaults) {
         return new Builder(defaults);
     }
-
+    @CustomType.Builder
     public static final class Builder {
         private @Nullable List<RegistryImageBuildAuthConfig> authConfigs;
         private @Nullable Map<String,String> buildArgs;
@@ -512,11 +445,7 @@ public final class RegistryImageBuild {
         private @Nullable String target;
         private @Nullable List<RegistryImageBuildUlimit> ulimits;
         private @Nullable String version;
-
-        public Builder() {
-    	      // Empty
-        }
-
+        public Builder() {}
         public Builder(RegistryImageBuild defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.authConfigs = defaults.authConfigs;
@@ -553,6 +482,7 @@ public final class RegistryImageBuild {
     	      this.version = defaults.version;
         }
 
+        @CustomType.Setter
         public Builder authConfigs(@Nullable List<RegistryImageBuildAuthConfig> authConfigs) {
             this.authConfigs = authConfigs;
             return this;
@@ -560,14 +490,17 @@ public final class RegistryImageBuild {
         public Builder authConfigs(RegistryImageBuildAuthConfig... authConfigs) {
             return authConfigs(List.of(authConfigs));
         }
+        @CustomType.Setter
         public Builder buildArgs(@Nullable Map<String,String> buildArgs) {
             this.buildArgs = buildArgs;
             return this;
         }
+        @CustomType.Setter
         public Builder buildId(@Nullable String buildId) {
             this.buildId = buildId;
             return this;
         }
+        @CustomType.Setter
         public Builder cacheFroms(@Nullable List<String> cacheFroms) {
             this.cacheFroms = cacheFroms;
             return this;
@@ -575,38 +508,47 @@ public final class RegistryImageBuild {
         public Builder cacheFroms(String... cacheFroms) {
             return cacheFroms(List.of(cacheFroms));
         }
+        @CustomType.Setter
         public Builder cgroupParent(@Nullable String cgroupParent) {
             this.cgroupParent = cgroupParent;
             return this;
         }
+        @CustomType.Setter
         public Builder context(String context) {
             this.context = Objects.requireNonNull(context);
             return this;
         }
+        @CustomType.Setter
         public Builder cpuPeriod(@Nullable Integer cpuPeriod) {
             this.cpuPeriod = cpuPeriod;
             return this;
         }
+        @CustomType.Setter
         public Builder cpuQuota(@Nullable Integer cpuQuota) {
             this.cpuQuota = cpuQuota;
             return this;
         }
+        @CustomType.Setter
         public Builder cpuSetCpus(@Nullable String cpuSetCpus) {
             this.cpuSetCpus = cpuSetCpus;
             return this;
         }
+        @CustomType.Setter
         public Builder cpuSetMems(@Nullable String cpuSetMems) {
             this.cpuSetMems = cpuSetMems;
             return this;
         }
+        @CustomType.Setter
         public Builder cpuShares(@Nullable Integer cpuShares) {
             this.cpuShares = cpuShares;
             return this;
         }
+        @CustomType.Setter
         public Builder dockerfile(@Nullable String dockerfile) {
             this.dockerfile = dockerfile;
             return this;
         }
+        @CustomType.Setter
         public Builder extraHosts(@Nullable List<String> extraHosts) {
             this.extraHosts = extraHosts;
             return this;
@@ -614,50 +556,62 @@ public final class RegistryImageBuild {
         public Builder extraHosts(String... extraHosts) {
             return extraHosts(List.of(extraHosts));
         }
+        @CustomType.Setter
         public Builder forceRemove(@Nullable Boolean forceRemove) {
             this.forceRemove = forceRemove;
             return this;
         }
+        @CustomType.Setter
         public Builder isolation(@Nullable String isolation) {
             this.isolation = isolation;
             return this;
         }
+        @CustomType.Setter
         public Builder labels(@Nullable Map<String,String> labels) {
             this.labels = labels;
             return this;
         }
+        @CustomType.Setter
         public Builder memory(@Nullable Integer memory) {
             this.memory = memory;
             return this;
         }
+        @CustomType.Setter
         public Builder memorySwap(@Nullable Integer memorySwap) {
             this.memorySwap = memorySwap;
             return this;
         }
+        @CustomType.Setter
         public Builder networkMode(@Nullable String networkMode) {
             this.networkMode = networkMode;
             return this;
         }
+        @CustomType.Setter
         public Builder noCache(@Nullable Boolean noCache) {
             this.noCache = noCache;
             return this;
         }
+        @CustomType.Setter
         public Builder platform(@Nullable String platform) {
             this.platform = platform;
             return this;
         }
+        @CustomType.Setter
         public Builder pullParent(@Nullable Boolean pullParent) {
             this.pullParent = pullParent;
             return this;
         }
+        @CustomType.Setter
         public Builder remoteContext(@Nullable String remoteContext) {
             this.remoteContext = remoteContext;
             return this;
         }
+        @CustomType.Setter
         public Builder remove(@Nullable Boolean remove) {
             this.remove = remove;
             return this;
         }
+        @CustomType.Setter
         public Builder securityOpts(@Nullable List<String> securityOpts) {
             this.securityOpts = securityOpts;
             return this;
@@ -665,26 +619,32 @@ public final class RegistryImageBuild {
         public Builder securityOpts(String... securityOpts) {
             return securityOpts(List.of(securityOpts));
         }
+        @CustomType.Setter
         public Builder sessionId(@Nullable String sessionId) {
             this.sessionId = sessionId;
             return this;
         }
+        @CustomType.Setter
         public Builder shmSize(@Nullable Integer shmSize) {
             this.shmSize = shmSize;
             return this;
         }
+        @CustomType.Setter
         public Builder squash(@Nullable Boolean squash) {
             this.squash = squash;
             return this;
         }
+        @CustomType.Setter
         public Builder suppressOutput(@Nullable Boolean suppressOutput) {
             this.suppressOutput = suppressOutput;
             return this;
         }
+        @CustomType.Setter
         public Builder target(@Nullable String target) {
             this.target = target;
             return this;
         }
+        @CustomType.Setter
         public Builder ulimits(@Nullable List<RegistryImageBuildUlimit> ulimits) {
             this.ulimits = ulimits;
             return this;
@@ -692,11 +652,46 @@ public final class RegistryImageBuild {
         public Builder ulimits(RegistryImageBuildUlimit... ulimits) {
             return ulimits(List.of(ulimits));
         }
+        @CustomType.Setter
         public Builder version(@Nullable String version) {
             this.version = version;
             return this;
-        }        public RegistryImageBuild build() {
-            return new RegistryImageBuild(authConfigs, buildArgs, buildId, cacheFroms, cgroupParent, context, cpuPeriod, cpuQuota, cpuSetCpus, cpuSetMems, cpuShares, dockerfile, extraHosts, forceRemove, isolation, labels, memory, memorySwap, networkMode, noCache, platform, pullParent, remoteContext, remove, securityOpts, sessionId, shmSize, squash, suppressOutput, target, ulimits, version);
+        }
+        public RegistryImageBuild build() {
+            final var o = new RegistryImageBuild();
+            o.authConfigs = authConfigs;
+            o.buildArgs = buildArgs;
+            o.buildId = buildId;
+            o.cacheFroms = cacheFroms;
+            o.cgroupParent = cgroupParent;
+            o.context = context;
+            o.cpuPeriod = cpuPeriod;
+            o.cpuQuota = cpuQuota;
+            o.cpuSetCpus = cpuSetCpus;
+            o.cpuSetMems = cpuSetMems;
+            o.cpuShares = cpuShares;
+            o.dockerfile = dockerfile;
+            o.extraHosts = extraHosts;
+            o.forceRemove = forceRemove;
+            o.isolation = isolation;
+            o.labels = labels;
+            o.memory = memory;
+            o.memorySwap = memorySwap;
+            o.networkMode = networkMode;
+            o.noCache = noCache;
+            o.platform = platform;
+            o.pullParent = pullParent;
+            o.remoteContext = remoteContext;
+            o.remove = remove;
+            o.securityOpts = securityOpts;
+            o.sessionId = sessionId;
+            o.shmSize = shmSize;
+            o.squash = squash;
+            o.suppressOutput = suppressOutput;
+            o.target = target;
+            o.ulimits = ulimits;
+            o.version = version;
+            return o;
         }
     }
 }

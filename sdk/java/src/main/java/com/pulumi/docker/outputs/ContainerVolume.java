@@ -16,42 +16,29 @@ public final class ContainerVolume {
      * @return The path in the container where the volume will be mounted.
      * 
      */
-    private final @Nullable String containerPath;
+    private @Nullable String containerPath;
     /**
      * @return The container where the volume is coming from.
      * 
      */
-    private final @Nullable String fromContainer;
+    private @Nullable String fromContainer;
     /**
      * @return The path on the host where the volume is coming from.
      * 
      */
-    private final @Nullable String hostPath;
+    private @Nullable String hostPath;
     /**
      * @return If `true`, this volume will be readonly. Defaults to `false`.
      * 
      */
-    private final @Nullable Boolean readOnly;
+    private @Nullable Boolean readOnly;
     /**
      * @return The name of the docker volume which should be mounted.
      * 
      */
-    private final @Nullable String volumeName;
+    private @Nullable String volumeName;
 
-    @CustomType.Constructor
-    private ContainerVolume(
-        @CustomType.Parameter("containerPath") @Nullable String containerPath,
-        @CustomType.Parameter("fromContainer") @Nullable String fromContainer,
-        @CustomType.Parameter("hostPath") @Nullable String hostPath,
-        @CustomType.Parameter("readOnly") @Nullable Boolean readOnly,
-        @CustomType.Parameter("volumeName") @Nullable String volumeName) {
-        this.containerPath = containerPath;
-        this.fromContainer = fromContainer;
-        this.hostPath = hostPath;
-        this.readOnly = readOnly;
-        this.volumeName = volumeName;
-    }
-
+    private ContainerVolume() {}
     /**
      * @return The path in the container where the volume will be mounted.
      * 
@@ -95,18 +82,14 @@ public final class ContainerVolume {
     public static Builder builder(ContainerVolume defaults) {
         return new Builder(defaults);
     }
-
+    @CustomType.Builder
     public static final class Builder {
         private @Nullable String containerPath;
         private @Nullable String fromContainer;
         private @Nullable String hostPath;
         private @Nullable Boolean readOnly;
         private @Nullable String volumeName;
-
-        public Builder() {
-    	      // Empty
-        }
-
+        public Builder() {}
         public Builder(ContainerVolume defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.containerPath = defaults.containerPath;
@@ -116,27 +99,39 @@ public final class ContainerVolume {
     	      this.volumeName = defaults.volumeName;
         }
 
+        @CustomType.Setter
         public Builder containerPath(@Nullable String containerPath) {
             this.containerPath = containerPath;
             return this;
         }
+        @CustomType.Setter
         public Builder fromContainer(@Nullable String fromContainer) {
             this.fromContainer = fromContainer;
             return this;
         }
+        @CustomType.Setter
         public Builder hostPath(@Nullable String hostPath) {
             this.hostPath = hostPath;
             return this;
         }
+        @CustomType.Setter
         public Builder readOnly(@Nullable Boolean readOnly) {
             this.readOnly = readOnly;
             return this;
         }
+        @CustomType.Setter
         public Builder volumeName(@Nullable String volumeName) {
             this.volumeName = volumeName;
             return this;
-        }        public ContainerVolume build() {
-            return new ContainerVolume(containerPath, fromContainer, hostPath, readOnly, volumeName);
+        }
+        public ContainerVolume build() {
+            final var o = new ContainerVolume();
+            o.containerPath = containerPath;
+            o.fromContainer = fromContainer;
+            o.hostPath = hostPath;
+            o.readOnly = readOnly;
+            o.volumeName = volumeName;
+            return o;
         }
     }
 }

@@ -11,17 +11,10 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ContainerMountTmpfsOptions {
-    private final @Nullable Integer mode;
-    private final @Nullable Integer sizeBytes;
+    private @Nullable Integer mode;
+    private @Nullable Integer sizeBytes;
 
-    @CustomType.Constructor
-    private ContainerMountTmpfsOptions(
-        @CustomType.Parameter("mode") @Nullable Integer mode,
-        @CustomType.Parameter("sizeBytes") @Nullable Integer sizeBytes) {
-        this.mode = mode;
-        this.sizeBytes = sizeBytes;
-    }
-
+    private ContainerMountTmpfsOptions() {}
     public Optional<Integer> mode() {
         return Optional.ofNullable(this.mode);
     }
@@ -36,30 +29,32 @@ public final class ContainerMountTmpfsOptions {
     public static Builder builder(ContainerMountTmpfsOptions defaults) {
         return new Builder(defaults);
     }
-
+    @CustomType.Builder
     public static final class Builder {
         private @Nullable Integer mode;
         private @Nullable Integer sizeBytes;
-
-        public Builder() {
-    	      // Empty
-        }
-
+        public Builder() {}
         public Builder(ContainerMountTmpfsOptions defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.mode = defaults.mode;
     	      this.sizeBytes = defaults.sizeBytes;
         }
 
+        @CustomType.Setter
         public Builder mode(@Nullable Integer mode) {
             this.mode = mode;
             return this;
         }
+        @CustomType.Setter
         public Builder sizeBytes(@Nullable Integer sizeBytes) {
             this.sizeBytes = sizeBytes;
             return this;
-        }        public ContainerMountTmpfsOptions build() {
-            return new ContainerMountTmpfsOptions(mode, sizeBytes);
+        }
+        public ContainerMountTmpfsOptions build() {
+            final var o = new ContainerMountTmpfsOptions();
+            o.mode = mode;
+            o.sizeBytes = sizeBytes;
+            return o;
         }
     }
 }

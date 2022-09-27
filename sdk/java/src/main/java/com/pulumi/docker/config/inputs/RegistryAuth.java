@@ -11,26 +11,13 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class RegistryAuth {
-    private final String address;
-    private final @Nullable String configFile;
-    private final @Nullable String configFileContent;
-    private final @Nullable String password;
-    private final @Nullable String username;
+    private String address;
+    private @Nullable String configFile;
+    private @Nullable String configFileContent;
+    private @Nullable String password;
+    private @Nullable String username;
 
-    @CustomType.Constructor
-    private RegistryAuth(
-        @CustomType.Parameter("address") String address,
-        @CustomType.Parameter("configFile") @Nullable String configFile,
-        @CustomType.Parameter("configFileContent") @Nullable String configFileContent,
-        @CustomType.Parameter("password") @Nullable String password,
-        @CustomType.Parameter("username") @Nullable String username) {
-        this.address = address;
-        this.configFile = configFile;
-        this.configFileContent = configFileContent;
-        this.password = password;
-        this.username = username;
-    }
-
+    private RegistryAuth() {}
     public String address() {
         return this.address;
     }
@@ -54,18 +41,14 @@ public final class RegistryAuth {
     public static Builder builder(RegistryAuth defaults) {
         return new Builder(defaults);
     }
-
+    @CustomType.Builder
     public static final class Builder {
         private String address;
         private @Nullable String configFile;
         private @Nullable String configFileContent;
         private @Nullable String password;
         private @Nullable String username;
-
-        public Builder() {
-    	      // Empty
-        }
-
+        public Builder() {}
         public Builder(RegistryAuth defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.address = defaults.address;
@@ -75,27 +58,39 @@ public final class RegistryAuth {
     	      this.username = defaults.username;
         }
 
+        @CustomType.Setter
         public Builder address(String address) {
             this.address = Objects.requireNonNull(address);
             return this;
         }
+        @CustomType.Setter
         public Builder configFile(@Nullable String configFile) {
             this.configFile = configFile;
             return this;
         }
+        @CustomType.Setter
         public Builder configFileContent(@Nullable String configFileContent) {
             this.configFileContent = configFileContent;
             return this;
         }
+        @CustomType.Setter
         public Builder password(@Nullable String password) {
             this.password = password;
             return this;
         }
+        @CustomType.Setter
         public Builder username(@Nullable String username) {
             this.username = username;
             return this;
-        }        public RegistryAuth build() {
-            return new RegistryAuth(address, configFile, configFileContent, password, username);
+        }
+        public RegistryAuth build() {
+            final var o = new RegistryAuth();
+            o.address = address;
+            o.configFile = configFile;
+            o.configFileContent = configFileContent;
+            o.password = password;
+            o.username = username;
+            return o;
         }
     }
 }

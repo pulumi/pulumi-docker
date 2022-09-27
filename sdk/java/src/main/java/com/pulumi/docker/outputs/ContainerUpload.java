@@ -16,45 +16,30 @@ public final class ContainerUpload {
      * @return Literal string value to use as the object content, which will be uploaded as UTF-8-encoded text. Conflicts with `content_base64` &amp; `source`
      * 
      */
-    private final @Nullable String content;
-    private final @Nullable String contentBase64;
+    private @Nullable String content;
+    private @Nullable String contentBase64;
     /**
      * @return If `true`, the file will be uploaded with user executable permission. Defaults to `false`.
      * 
      */
-    private final @Nullable Boolean executable;
+    private @Nullable Boolean executable;
     /**
      * @return Path to the file in the container where is upload goes to
      * 
      */
-    private final String file;
+    private String file;
     /**
      * @return A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state. Conflicts with `content` &amp; `content_base64`
      * 
      */
-    private final @Nullable String source;
+    private @Nullable String source;
     /**
      * @return If using `source`, this will force an update if the file content has updated but the filename has not.
      * 
      */
-    private final @Nullable String sourceHash;
+    private @Nullable String sourceHash;
 
-    @CustomType.Constructor
-    private ContainerUpload(
-        @CustomType.Parameter("content") @Nullable String content,
-        @CustomType.Parameter("contentBase64") @Nullable String contentBase64,
-        @CustomType.Parameter("executable") @Nullable Boolean executable,
-        @CustomType.Parameter("file") String file,
-        @CustomType.Parameter("source") @Nullable String source,
-        @CustomType.Parameter("sourceHash") @Nullable String sourceHash) {
-        this.content = content;
-        this.contentBase64 = contentBase64;
-        this.executable = executable;
-        this.file = file;
-        this.source = source;
-        this.sourceHash = sourceHash;
-    }
-
+    private ContainerUpload() {}
     /**
      * @return Literal string value to use as the object content, which will be uploaded as UTF-8-encoded text. Conflicts with `content_base64` &amp; `source`
      * 
@@ -101,7 +86,7 @@ public final class ContainerUpload {
     public static Builder builder(ContainerUpload defaults) {
         return new Builder(defaults);
     }
-
+    @CustomType.Builder
     public static final class Builder {
         private @Nullable String content;
         private @Nullable String contentBase64;
@@ -109,11 +94,7 @@ public final class ContainerUpload {
         private String file;
         private @Nullable String source;
         private @Nullable String sourceHash;
-
-        public Builder() {
-    	      // Empty
-        }
-
+        public Builder() {}
         public Builder(ContainerUpload defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.content = defaults.content;
@@ -124,31 +105,45 @@ public final class ContainerUpload {
     	      this.sourceHash = defaults.sourceHash;
         }
 
+        @CustomType.Setter
         public Builder content(@Nullable String content) {
             this.content = content;
             return this;
         }
+        @CustomType.Setter
         public Builder contentBase64(@Nullable String contentBase64) {
             this.contentBase64 = contentBase64;
             return this;
         }
+        @CustomType.Setter
         public Builder executable(@Nullable Boolean executable) {
             this.executable = executable;
             return this;
         }
+        @CustomType.Setter
         public Builder file(String file) {
             this.file = Objects.requireNonNull(file);
             return this;
         }
+        @CustomType.Setter
         public Builder source(@Nullable String source) {
             this.source = source;
             return this;
         }
+        @CustomType.Setter
         public Builder sourceHash(@Nullable String sourceHash) {
             this.sourceHash = sourceHash;
             return this;
-        }        public ContainerUpload build() {
-            return new ContainerUpload(content, contentBase64, executable, file, source, sourceHash);
+        }
+        public ContainerUpload build() {
+            final var o = new ContainerUpload();
+            o.content = content;
+            o.contentBase64 = contentBase64;
+            o.executable = executable;
+            o.file = file;
+            o.source = source;
+            o.sourceHash = sourceHash;
+            return o;
         }
     }
 }

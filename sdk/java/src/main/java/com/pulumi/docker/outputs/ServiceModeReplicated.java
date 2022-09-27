@@ -11,13 +11,9 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceModeReplicated {
-    private final @Nullable Integer replicas;
+    private @Nullable Integer replicas;
 
-    @CustomType.Constructor
-    private ServiceModeReplicated(@CustomType.Parameter("replicas") @Nullable Integer replicas) {
-        this.replicas = replicas;
-    }
-
+    private ServiceModeReplicated() {}
     public Optional<Integer> replicas() {
         return Optional.ofNullable(this.replicas);
     }
@@ -29,24 +25,24 @@ public final class ServiceModeReplicated {
     public static Builder builder(ServiceModeReplicated defaults) {
         return new Builder(defaults);
     }
-
+    @CustomType.Builder
     public static final class Builder {
         private @Nullable Integer replicas;
-
-        public Builder() {
-    	      // Empty
-        }
-
+        public Builder() {}
         public Builder(ServiceModeReplicated defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.replicas = defaults.replicas;
         }
 
+        @CustomType.Setter
         public Builder replicas(@Nullable Integer replicas) {
             this.replicas = replicas;
             return this;
-        }        public ServiceModeReplicated build() {
-            return new ServiceModeReplicated(replicas);
+        }
+        public ServiceModeReplicated build() {
+            final var o = new ServiceModeReplicated();
+            o.replicas = replicas;
+            return o;
         }
     }
 }
