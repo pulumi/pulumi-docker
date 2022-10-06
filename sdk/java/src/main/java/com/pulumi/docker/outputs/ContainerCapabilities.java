@@ -15,21 +15,14 @@ public final class ContainerCapabilities {
      * @return List of linux capabilities to add.
      * 
      */
-    private final @Nullable List<String> adds;
+    private @Nullable List<String> adds;
     /**
      * @return List of linux capabilities to drop.
      * 
      */
-    private final @Nullable List<String> drops;
+    private @Nullable List<String> drops;
 
-    @CustomType.Constructor
-    private ContainerCapabilities(
-        @CustomType.Parameter("adds") @Nullable List<String> adds,
-        @CustomType.Parameter("drops") @Nullable List<String> drops) {
-        this.adds = adds;
-        this.drops = drops;
-    }
-
+    private ContainerCapabilities() {}
     /**
      * @return List of linux capabilities to add.
      * 
@@ -52,21 +45,18 @@ public final class ContainerCapabilities {
     public static Builder builder(ContainerCapabilities defaults) {
         return new Builder(defaults);
     }
-
+    @CustomType.Builder
     public static final class Builder {
         private @Nullable List<String> adds;
         private @Nullable List<String> drops;
-
-        public Builder() {
-    	      // Empty
-        }
-
+        public Builder() {}
         public Builder(ContainerCapabilities defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.adds = defaults.adds;
     	      this.drops = defaults.drops;
         }
 
+        @CustomType.Setter
         public Builder adds(@Nullable List<String> adds) {
             this.adds = adds;
             return this;
@@ -74,14 +64,19 @@ public final class ContainerCapabilities {
         public Builder adds(String... adds) {
             return adds(List.of(adds));
         }
+        @CustomType.Setter
         public Builder drops(@Nullable List<String> drops) {
             this.drops = drops;
             return this;
         }
         public Builder drops(String... drops) {
             return drops(List.of(drops));
-        }        public ContainerCapabilities build() {
-            return new ContainerCapabilities(adds, drops);
+        }
+        public ContainerCapabilities build() {
+            final var o = new ContainerCapabilities();
+            o.adds = adds;
+            o.drops = drops;
+            return o;
         }
     }
 }

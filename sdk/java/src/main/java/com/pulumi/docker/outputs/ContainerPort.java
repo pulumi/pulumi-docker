@@ -16,35 +16,24 @@ public final class ContainerPort {
      * @return Port exposed out of the container. If not given a free random port `&gt;= 32768` will be used.
      * 
      */
-    private final @Nullable Integer external;
+    private @Nullable Integer external;
     /**
      * @return Port within the container.
      * 
      */
-    private final Integer internal;
+    private Integer internal;
     /**
      * @return IP address/mask that can access this port. Defaults to `0.0.0.0`.
      * 
      */
-    private final @Nullable String ip;
+    private @Nullable String ip;
     /**
      * @return Protocol that can be used over this port. Defaults to `tcp`.
      * 
      */
-    private final @Nullable String protocol;
+    private @Nullable String protocol;
 
-    @CustomType.Constructor
-    private ContainerPort(
-        @CustomType.Parameter("external") @Nullable Integer external,
-        @CustomType.Parameter("internal") Integer internal,
-        @CustomType.Parameter("ip") @Nullable String ip,
-        @CustomType.Parameter("protocol") @Nullable String protocol) {
-        this.external = external;
-        this.internal = internal;
-        this.ip = ip;
-        this.protocol = protocol;
-    }
-
+    private ContainerPort() {}
     /**
      * @return Port exposed out of the container. If not given a free random port `&gt;= 32768` will be used.
      * 
@@ -81,17 +70,13 @@ public final class ContainerPort {
     public static Builder builder(ContainerPort defaults) {
         return new Builder(defaults);
     }
-
+    @CustomType.Builder
     public static final class Builder {
         private @Nullable Integer external;
         private Integer internal;
         private @Nullable String ip;
         private @Nullable String protocol;
-
-        public Builder() {
-    	      // Empty
-        }
-
+        public Builder() {}
         public Builder(ContainerPort defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.external = defaults.external;
@@ -100,23 +85,33 @@ public final class ContainerPort {
     	      this.protocol = defaults.protocol;
         }
 
+        @CustomType.Setter
         public Builder external(@Nullable Integer external) {
             this.external = external;
             return this;
         }
+        @CustomType.Setter
         public Builder internal(Integer internal) {
             this.internal = Objects.requireNonNull(internal);
             return this;
         }
+        @CustomType.Setter
         public Builder ip(@Nullable String ip) {
             this.ip = ip;
             return this;
         }
+        @CustomType.Setter
         public Builder protocol(@Nullable String protocol) {
             this.protocol = protocol;
             return this;
-        }        public ContainerPort build() {
-            return new ContainerPort(external, internal, ip, protocol);
+        }
+        public ContainerPort build() {
+            final var o = new ContainerPort();
+            o.external = external;
+            o.internal = internal;
+            o.ip = ip;
+            o.protocol = protocol;
+            return o;
         }
     }
 }

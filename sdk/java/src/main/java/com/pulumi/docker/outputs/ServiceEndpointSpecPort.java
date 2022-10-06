@@ -16,26 +16,13 @@ public final class ServiceEndpointSpecPort {
      * @return Name of the service
      * 
      */
-    private final @Nullable String name;
-    private final @Nullable String protocol;
-    private final @Nullable String publishMode;
-    private final @Nullable Integer publishedPort;
-    private final Integer targetPort;
+    private @Nullable String name;
+    private @Nullable String protocol;
+    private @Nullable String publishMode;
+    private @Nullable Integer publishedPort;
+    private Integer targetPort;
 
-    @CustomType.Constructor
-    private ServiceEndpointSpecPort(
-        @CustomType.Parameter("name") @Nullable String name,
-        @CustomType.Parameter("protocol") @Nullable String protocol,
-        @CustomType.Parameter("publishMode") @Nullable String publishMode,
-        @CustomType.Parameter("publishedPort") @Nullable Integer publishedPort,
-        @CustomType.Parameter("targetPort") Integer targetPort) {
-        this.name = name;
-        this.protocol = protocol;
-        this.publishMode = publishMode;
-        this.publishedPort = publishedPort;
-        this.targetPort = targetPort;
-    }
-
+    private ServiceEndpointSpecPort() {}
     /**
      * @return Name of the service
      * 
@@ -63,18 +50,14 @@ public final class ServiceEndpointSpecPort {
     public static Builder builder(ServiceEndpointSpecPort defaults) {
         return new Builder(defaults);
     }
-
+    @CustomType.Builder
     public static final class Builder {
         private @Nullable String name;
         private @Nullable String protocol;
         private @Nullable String publishMode;
         private @Nullable Integer publishedPort;
         private Integer targetPort;
-
-        public Builder() {
-    	      // Empty
-        }
-
+        public Builder() {}
         public Builder(ServiceEndpointSpecPort defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.name = defaults.name;
@@ -84,27 +67,39 @@ public final class ServiceEndpointSpecPort {
     	      this.targetPort = defaults.targetPort;
         }
 
+        @CustomType.Setter
         public Builder name(@Nullable String name) {
             this.name = name;
             return this;
         }
+        @CustomType.Setter
         public Builder protocol(@Nullable String protocol) {
             this.protocol = protocol;
             return this;
         }
+        @CustomType.Setter
         public Builder publishMode(@Nullable String publishMode) {
             this.publishMode = publishMode;
             return this;
         }
+        @CustomType.Setter
         public Builder publishedPort(@Nullable Integer publishedPort) {
             this.publishedPort = publishedPort;
             return this;
         }
+        @CustomType.Setter
         public Builder targetPort(Integer targetPort) {
             this.targetPort = Objects.requireNonNull(targetPort);
             return this;
-        }        public ServiceEndpointSpecPort build() {
-            return new ServiceEndpointSpecPort(name, protocol, publishMode, publishedPort, targetPort);
+        }
+        public ServiceEndpointSpecPort build() {
+            final var o = new ServiceEndpointSpecPort();
+            o.name = name;
+            o.protocol = protocol;
+            o.publishMode = publishMode;
+            o.publishedPort = publishedPort;
+            o.targetPort = targetPort;
+            return o;
         }
     }
 }

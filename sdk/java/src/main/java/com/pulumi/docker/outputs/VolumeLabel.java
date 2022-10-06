@@ -13,21 +13,14 @@ public final class VolumeLabel {
      * @return Name of the label
      * 
      */
-    private final String label;
+    private String label;
     /**
      * @return Value of the label
      * 
      */
-    private final String value;
+    private String value;
 
-    @CustomType.Constructor
-    private VolumeLabel(
-        @CustomType.Parameter("label") String label,
-        @CustomType.Parameter("value") String value) {
-        this.label = label;
-        this.value = value;
-    }
-
+    private VolumeLabel() {}
     /**
      * @return Name of the label
      * 
@@ -50,30 +43,32 @@ public final class VolumeLabel {
     public static Builder builder(VolumeLabel defaults) {
         return new Builder(defaults);
     }
-
+    @CustomType.Builder
     public static final class Builder {
         private String label;
         private String value;
-
-        public Builder() {
-    	      // Empty
-        }
-
+        public Builder() {}
         public Builder(VolumeLabel defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.label = defaults.label;
     	      this.value = defaults.value;
         }
 
+        @CustomType.Setter
         public Builder label(String label) {
             this.label = Objects.requireNonNull(label);
             return this;
         }
+        @CustomType.Setter
         public Builder value(String value) {
             this.value = Objects.requireNonNull(value);
             return this;
-        }        public VolumeLabel build() {
-            return new VolumeLabel(label, value);
+        }
+        public VolumeLabel build() {
+            final var o = new VolumeLabel();
+            o.label = label;
+            o.value = value;
+            return o;
         }
     }
 }

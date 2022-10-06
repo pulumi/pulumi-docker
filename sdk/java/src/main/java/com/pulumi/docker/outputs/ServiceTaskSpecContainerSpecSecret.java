@@ -12,29 +12,14 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceTaskSpecContainerSpecSecret {
-    private final @Nullable String fileGid;
-    private final @Nullable Integer fileMode;
-    private final String fileName;
-    private final @Nullable String fileUid;
-    private final String secretId;
-    private final @Nullable String secretName;
+    private @Nullable String fileGid;
+    private @Nullable Integer fileMode;
+    private String fileName;
+    private @Nullable String fileUid;
+    private String secretId;
+    private @Nullable String secretName;
 
-    @CustomType.Constructor
-    private ServiceTaskSpecContainerSpecSecret(
-        @CustomType.Parameter("fileGid") @Nullable String fileGid,
-        @CustomType.Parameter("fileMode") @Nullable Integer fileMode,
-        @CustomType.Parameter("fileName") String fileName,
-        @CustomType.Parameter("fileUid") @Nullable String fileUid,
-        @CustomType.Parameter("secretId") String secretId,
-        @CustomType.Parameter("secretName") @Nullable String secretName) {
-        this.fileGid = fileGid;
-        this.fileMode = fileMode;
-        this.fileName = fileName;
-        this.fileUid = fileUid;
-        this.secretId = secretId;
-        this.secretName = secretName;
-    }
-
+    private ServiceTaskSpecContainerSpecSecret() {}
     public Optional<String> fileGid() {
         return Optional.ofNullable(this.fileGid);
     }
@@ -61,7 +46,7 @@ public final class ServiceTaskSpecContainerSpecSecret {
     public static Builder builder(ServiceTaskSpecContainerSpecSecret defaults) {
         return new Builder(defaults);
     }
-
+    @CustomType.Builder
     public static final class Builder {
         private @Nullable String fileGid;
         private @Nullable Integer fileMode;
@@ -69,11 +54,7 @@ public final class ServiceTaskSpecContainerSpecSecret {
         private @Nullable String fileUid;
         private String secretId;
         private @Nullable String secretName;
-
-        public Builder() {
-    	      // Empty
-        }
-
+        public Builder() {}
         public Builder(ServiceTaskSpecContainerSpecSecret defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.fileGid = defaults.fileGid;
@@ -84,31 +65,45 @@ public final class ServiceTaskSpecContainerSpecSecret {
     	      this.secretName = defaults.secretName;
         }
 
+        @CustomType.Setter
         public Builder fileGid(@Nullable String fileGid) {
             this.fileGid = fileGid;
             return this;
         }
+        @CustomType.Setter
         public Builder fileMode(@Nullable Integer fileMode) {
             this.fileMode = fileMode;
             return this;
         }
+        @CustomType.Setter
         public Builder fileName(String fileName) {
             this.fileName = Objects.requireNonNull(fileName);
             return this;
         }
+        @CustomType.Setter
         public Builder fileUid(@Nullable String fileUid) {
             this.fileUid = fileUid;
             return this;
         }
+        @CustomType.Setter
         public Builder secretId(String secretId) {
             this.secretId = Objects.requireNonNull(secretId);
             return this;
         }
+        @CustomType.Setter
         public Builder secretName(@Nullable String secretName) {
             this.secretName = secretName;
             return this;
-        }        public ServiceTaskSpecContainerSpecSecret build() {
-            return new ServiceTaskSpecContainerSpecSecret(fileGid, fileMode, fileName, fileUid, secretId, secretName);
+        }
+        public ServiceTaskSpecContainerSpecSecret build() {
+            final var o = new ServiceTaskSpecContainerSpecSecret();
+            o.fileGid = fileGid;
+            o.fileMode = fileMode;
+            o.fileName = fileName;
+            o.fileUid = fileUid;
+            o.secretId = secretId;
+            o.secretName = secretName;
+            return o;
         }
     }
 }

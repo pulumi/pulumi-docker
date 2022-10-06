@@ -11,17 +11,10 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceTaskSpecContainerSpecPrivilegesCredentialSpec {
-    private final @Nullable String file;
-    private final @Nullable String registry;
+    private @Nullable String file;
+    private @Nullable String registry;
 
-    @CustomType.Constructor
-    private ServiceTaskSpecContainerSpecPrivilegesCredentialSpec(
-        @CustomType.Parameter("file") @Nullable String file,
-        @CustomType.Parameter("registry") @Nullable String registry) {
-        this.file = file;
-        this.registry = registry;
-    }
-
+    private ServiceTaskSpecContainerSpecPrivilegesCredentialSpec() {}
     public Optional<String> file() {
         return Optional.ofNullable(this.file);
     }
@@ -36,30 +29,32 @@ public final class ServiceTaskSpecContainerSpecPrivilegesCredentialSpec {
     public static Builder builder(ServiceTaskSpecContainerSpecPrivilegesCredentialSpec defaults) {
         return new Builder(defaults);
     }
-
+    @CustomType.Builder
     public static final class Builder {
         private @Nullable String file;
         private @Nullable String registry;
-
-        public Builder() {
-    	      // Empty
-        }
-
+        public Builder() {}
         public Builder(ServiceTaskSpecContainerSpecPrivilegesCredentialSpec defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.file = defaults.file;
     	      this.registry = defaults.registry;
         }
 
+        @CustomType.Setter
         public Builder file(@Nullable String file) {
             this.file = file;
             return this;
         }
+        @CustomType.Setter
         public Builder registry(@Nullable String registry) {
             this.registry = registry;
             return this;
-        }        public ServiceTaskSpecContainerSpecPrivilegesCredentialSpec build() {
-            return new ServiceTaskSpecContainerSpecPrivilegesCredentialSpec(file, registry);
+        }
+        public ServiceTaskSpecContainerSpecPrivilegesCredentialSpec build() {
+            final var o = new ServiceTaskSpecContainerSpecPrivilegesCredentialSpec();
+            o.file = file;
+            o.registry = registry;
+            return o;
         }
     }
 }

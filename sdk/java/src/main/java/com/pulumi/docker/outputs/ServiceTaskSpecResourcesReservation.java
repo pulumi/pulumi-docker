@@ -12,20 +12,11 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceTaskSpecResourcesReservation {
-    private final @Nullable ServiceTaskSpecResourcesReservationGenericResources genericResources;
-    private final @Nullable Integer memoryBytes;
-    private final @Nullable Integer nanoCpus;
+    private @Nullable ServiceTaskSpecResourcesReservationGenericResources genericResources;
+    private @Nullable Integer memoryBytes;
+    private @Nullable Integer nanoCpus;
 
-    @CustomType.Constructor
-    private ServiceTaskSpecResourcesReservation(
-        @CustomType.Parameter("genericResources") @Nullable ServiceTaskSpecResourcesReservationGenericResources genericResources,
-        @CustomType.Parameter("memoryBytes") @Nullable Integer memoryBytes,
-        @CustomType.Parameter("nanoCpus") @Nullable Integer nanoCpus) {
-        this.genericResources = genericResources;
-        this.memoryBytes = memoryBytes;
-        this.nanoCpus = nanoCpus;
-    }
-
+    private ServiceTaskSpecResourcesReservation() {}
     public Optional<ServiceTaskSpecResourcesReservationGenericResources> genericResources() {
         return Optional.ofNullable(this.genericResources);
     }
@@ -43,16 +34,12 @@ public final class ServiceTaskSpecResourcesReservation {
     public static Builder builder(ServiceTaskSpecResourcesReservation defaults) {
         return new Builder(defaults);
     }
-
+    @CustomType.Builder
     public static final class Builder {
         private @Nullable ServiceTaskSpecResourcesReservationGenericResources genericResources;
         private @Nullable Integer memoryBytes;
         private @Nullable Integer nanoCpus;
-
-        public Builder() {
-    	      // Empty
-        }
-
+        public Builder() {}
         public Builder(ServiceTaskSpecResourcesReservation defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.genericResources = defaults.genericResources;
@@ -60,19 +47,27 @@ public final class ServiceTaskSpecResourcesReservation {
     	      this.nanoCpus = defaults.nanoCpus;
         }
 
+        @CustomType.Setter
         public Builder genericResources(@Nullable ServiceTaskSpecResourcesReservationGenericResources genericResources) {
             this.genericResources = genericResources;
             return this;
         }
+        @CustomType.Setter
         public Builder memoryBytes(@Nullable Integer memoryBytes) {
             this.memoryBytes = memoryBytes;
             return this;
         }
+        @CustomType.Setter
         public Builder nanoCpus(@Nullable Integer nanoCpus) {
             this.nanoCpus = nanoCpus;
             return this;
-        }        public ServiceTaskSpecResourcesReservation build() {
-            return new ServiceTaskSpecResourcesReservation(genericResources, memoryBytes, nanoCpus);
+        }
+        public ServiceTaskSpecResourcesReservation build() {
+            final var o = new ServiceTaskSpecResourcesReservation();
+            o.genericResources = genericResources;
+            o.memoryBytes = memoryBytes;
+            o.nanoCpus = nanoCpus;
+            return o;
         }
     }
 }

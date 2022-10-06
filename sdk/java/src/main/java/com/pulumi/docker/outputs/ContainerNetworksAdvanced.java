@@ -16,35 +16,24 @@ public final class ContainerNetworksAdvanced {
      * @return The network aliases of the container in the specific network.
      * 
      */
-    private final @Nullable List<String> aliases;
+    private @Nullable List<String> aliases;
     /**
      * @return The IPV4 address of the container in the specific network.
      * 
      */
-    private final @Nullable String ipv4Address;
+    private @Nullable String ipv4Address;
     /**
      * @return The IPV6 address of the container in the specific network.
      * 
      */
-    private final @Nullable String ipv6Address;
+    private @Nullable String ipv6Address;
     /**
      * @return The name or id of the network to use. You can use `name` or `id` attribute from a `docker.Network` resource.
      * 
      */
-    private final String name;
+    private String name;
 
-    @CustomType.Constructor
-    private ContainerNetworksAdvanced(
-        @CustomType.Parameter("aliases") @Nullable List<String> aliases,
-        @CustomType.Parameter("ipv4Address") @Nullable String ipv4Address,
-        @CustomType.Parameter("ipv6Address") @Nullable String ipv6Address,
-        @CustomType.Parameter("name") String name) {
-        this.aliases = aliases;
-        this.ipv4Address = ipv4Address;
-        this.ipv6Address = ipv6Address;
-        this.name = name;
-    }
-
+    private ContainerNetworksAdvanced() {}
     /**
      * @return The network aliases of the container in the specific network.
      * 
@@ -81,17 +70,13 @@ public final class ContainerNetworksAdvanced {
     public static Builder builder(ContainerNetworksAdvanced defaults) {
         return new Builder(defaults);
     }
-
+    @CustomType.Builder
     public static final class Builder {
         private @Nullable List<String> aliases;
         private @Nullable String ipv4Address;
         private @Nullable String ipv6Address;
         private String name;
-
-        public Builder() {
-    	      // Empty
-        }
-
+        public Builder() {}
         public Builder(ContainerNetworksAdvanced defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.aliases = defaults.aliases;
@@ -100,6 +85,7 @@ public final class ContainerNetworksAdvanced {
     	      this.name = defaults.name;
         }
 
+        @CustomType.Setter
         public Builder aliases(@Nullable List<String> aliases) {
             this.aliases = aliases;
             return this;
@@ -107,19 +93,28 @@ public final class ContainerNetworksAdvanced {
         public Builder aliases(String... aliases) {
             return aliases(List.of(aliases));
         }
+        @CustomType.Setter
         public Builder ipv4Address(@Nullable String ipv4Address) {
             this.ipv4Address = ipv4Address;
             return this;
         }
+        @CustomType.Setter
         public Builder ipv6Address(@Nullable String ipv6Address) {
             this.ipv6Address = ipv6Address;
             return this;
         }
+        @CustomType.Setter
         public Builder name(String name) {
             this.name = Objects.requireNonNull(name);
             return this;
-        }        public ContainerNetworksAdvanced build() {
-            return new ContainerNetworksAdvanced(aliases, ipv4Address, ipv6Address, name);
+        }
+        public ContainerNetworksAdvanced build() {
+            final var o = new ContainerNetworksAdvanced();
+            o.aliases = aliases;
+            o.ipv4Address = ipv4Address;
+            o.ipv6Address = ipv6Address;
+            o.name = name;
+            return o;
         }
     }
 }

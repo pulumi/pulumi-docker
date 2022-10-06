@@ -11,13 +11,9 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ContainerMountBindOptions {
-    private final @Nullable String propagation;
+    private @Nullable String propagation;
 
-    @CustomType.Constructor
-    private ContainerMountBindOptions(@CustomType.Parameter("propagation") @Nullable String propagation) {
-        this.propagation = propagation;
-    }
-
+    private ContainerMountBindOptions() {}
     public Optional<String> propagation() {
         return Optional.ofNullable(this.propagation);
     }
@@ -29,24 +25,24 @@ public final class ContainerMountBindOptions {
     public static Builder builder(ContainerMountBindOptions defaults) {
         return new Builder(defaults);
     }
-
+    @CustomType.Builder
     public static final class Builder {
         private @Nullable String propagation;
-
-        public Builder() {
-    	      // Empty
-        }
-
+        public Builder() {}
         public Builder(ContainerMountBindOptions defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.propagation = defaults.propagation;
         }
 
+        @CustomType.Setter
         public Builder propagation(@Nullable String propagation) {
             this.propagation = propagation;
             return this;
-        }        public ContainerMountBindOptions build() {
-            return new ContainerMountBindOptions(propagation);
+        }
+        public ContainerMountBindOptions build() {
+            final var o = new ContainerMountBindOptions();
+            o.propagation = propagation;
+            return o;
         }
     }
 }

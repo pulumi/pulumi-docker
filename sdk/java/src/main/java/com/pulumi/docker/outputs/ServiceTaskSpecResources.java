@@ -12,17 +12,10 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceTaskSpecResources {
-    private final @Nullable ServiceTaskSpecResourcesLimits limits;
-    private final @Nullable ServiceTaskSpecResourcesReservation reservation;
+    private @Nullable ServiceTaskSpecResourcesLimits limits;
+    private @Nullable ServiceTaskSpecResourcesReservation reservation;
 
-    @CustomType.Constructor
-    private ServiceTaskSpecResources(
-        @CustomType.Parameter("limits") @Nullable ServiceTaskSpecResourcesLimits limits,
-        @CustomType.Parameter("reservation") @Nullable ServiceTaskSpecResourcesReservation reservation) {
-        this.limits = limits;
-        this.reservation = reservation;
-    }
-
+    private ServiceTaskSpecResources() {}
     public Optional<ServiceTaskSpecResourcesLimits> limits() {
         return Optional.ofNullable(this.limits);
     }
@@ -37,30 +30,32 @@ public final class ServiceTaskSpecResources {
     public static Builder builder(ServiceTaskSpecResources defaults) {
         return new Builder(defaults);
     }
-
+    @CustomType.Builder
     public static final class Builder {
         private @Nullable ServiceTaskSpecResourcesLimits limits;
         private @Nullable ServiceTaskSpecResourcesReservation reservation;
-
-        public Builder() {
-    	      // Empty
-        }
-
+        public Builder() {}
         public Builder(ServiceTaskSpecResources defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.limits = defaults.limits;
     	      this.reservation = defaults.reservation;
         }
 
+        @CustomType.Setter
         public Builder limits(@Nullable ServiceTaskSpecResourcesLimits limits) {
             this.limits = limits;
             return this;
         }
+        @CustomType.Setter
         public Builder reservation(@Nullable ServiceTaskSpecResourcesReservation reservation) {
             this.reservation = reservation;
             return this;
-        }        public ServiceTaskSpecResources build() {
-            return new ServiceTaskSpecResources(limits, reservation);
+        }
+        public ServiceTaskSpecResources build() {
+            final var o = new ServiceTaskSpecResources();
+            o.limits = limits;
+            o.reservation = reservation;
+            return o;
         }
     }
 }

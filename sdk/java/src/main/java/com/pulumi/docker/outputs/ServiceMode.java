@@ -16,21 +16,14 @@ public final class ServiceMode {
      * @return The global service mode. Defaults to `false`
      * 
      */
-    private final @Nullable Boolean global;
+    private @Nullable Boolean global;
     /**
      * @return The replicated service mode
      * 
      */
-    private final @Nullable ServiceModeReplicated replicated;
+    private @Nullable ServiceModeReplicated replicated;
 
-    @CustomType.Constructor
-    private ServiceMode(
-        @CustomType.Parameter("global") @Nullable Boolean global,
-        @CustomType.Parameter("replicated") @Nullable ServiceModeReplicated replicated) {
-        this.global = global;
-        this.replicated = replicated;
-    }
-
+    private ServiceMode() {}
     /**
      * @return The global service mode. Defaults to `false`
      * 
@@ -53,30 +46,32 @@ public final class ServiceMode {
     public static Builder builder(ServiceMode defaults) {
         return new Builder(defaults);
     }
-
+    @CustomType.Builder
     public static final class Builder {
         private @Nullable Boolean global;
         private @Nullable ServiceModeReplicated replicated;
-
-        public Builder() {
-    	      // Empty
-        }
-
+        public Builder() {}
         public Builder(ServiceMode defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.global = defaults.global;
     	      this.replicated = defaults.replicated;
         }
 
+        @CustomType.Setter
         public Builder global(@Nullable Boolean global) {
             this.global = global;
             return this;
         }
+        @CustomType.Setter
         public Builder replicated(@Nullable ServiceModeReplicated replicated) {
             this.replicated = replicated;
             return this;
-        }        public ServiceMode build() {
-            return new ServiceMode(global, replicated);
+        }
+        public ServiceMode build() {
+            final var o = new ServiceMode();
+            o.global = global;
+            o.replicated = replicated;
+            return o;
         }
     }
 }

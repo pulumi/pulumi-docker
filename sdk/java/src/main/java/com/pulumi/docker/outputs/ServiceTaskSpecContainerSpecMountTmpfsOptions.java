@@ -15,17 +15,10 @@ public final class ServiceTaskSpecContainerSpecMountTmpfsOptions {
      * @return Scheduling mode for the service
      * 
      */
-    private final @Nullable Integer mode;
-    private final @Nullable Integer sizeBytes;
+    private @Nullable Integer mode;
+    private @Nullable Integer sizeBytes;
 
-    @CustomType.Constructor
-    private ServiceTaskSpecContainerSpecMountTmpfsOptions(
-        @CustomType.Parameter("mode") @Nullable Integer mode,
-        @CustomType.Parameter("sizeBytes") @Nullable Integer sizeBytes) {
-        this.mode = mode;
-        this.sizeBytes = sizeBytes;
-    }
-
+    private ServiceTaskSpecContainerSpecMountTmpfsOptions() {}
     /**
      * @return Scheduling mode for the service
      * 
@@ -44,30 +37,32 @@ public final class ServiceTaskSpecContainerSpecMountTmpfsOptions {
     public static Builder builder(ServiceTaskSpecContainerSpecMountTmpfsOptions defaults) {
         return new Builder(defaults);
     }
-
+    @CustomType.Builder
     public static final class Builder {
         private @Nullable Integer mode;
         private @Nullable Integer sizeBytes;
-
-        public Builder() {
-    	      // Empty
-        }
-
+        public Builder() {}
         public Builder(ServiceTaskSpecContainerSpecMountTmpfsOptions defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.mode = defaults.mode;
     	      this.sizeBytes = defaults.sizeBytes;
         }
 
+        @CustomType.Setter
         public Builder mode(@Nullable Integer mode) {
             this.mode = mode;
             return this;
         }
+        @CustomType.Setter
         public Builder sizeBytes(@Nullable Integer sizeBytes) {
             this.sizeBytes = sizeBytes;
             return this;
-        }        public ServiceTaskSpecContainerSpecMountTmpfsOptions build() {
-            return new ServiceTaskSpecContainerSpecMountTmpfsOptions(mode, sizeBytes);
+        }
+        public ServiceTaskSpecContainerSpecMountTmpfsOptions build() {
+            final var o = new ServiceTaskSpecContainerSpecMountTmpfsOptions();
+            o.mode = mode;
+            o.sizeBytes = sizeBytes;
+            return o;
         }
     }
 }

@@ -15,28 +15,19 @@ public final class ServiceAuth {
      * @return The password
      * 
      */
-    private final @Nullable String password;
+    private @Nullable String password;
     /**
      * @return The address of the server for the authentication
      * 
      */
-    private final String serverAddress;
+    private String serverAddress;
     /**
      * @return The username
      * 
      */
-    private final @Nullable String username;
+    private @Nullable String username;
 
-    @CustomType.Constructor
-    private ServiceAuth(
-        @CustomType.Parameter("password") @Nullable String password,
-        @CustomType.Parameter("serverAddress") String serverAddress,
-        @CustomType.Parameter("username") @Nullable String username) {
-        this.password = password;
-        this.serverAddress = serverAddress;
-        this.username = username;
-    }
-
+    private ServiceAuth() {}
     /**
      * @return The password
      * 
@@ -66,16 +57,12 @@ public final class ServiceAuth {
     public static Builder builder(ServiceAuth defaults) {
         return new Builder(defaults);
     }
-
+    @CustomType.Builder
     public static final class Builder {
         private @Nullable String password;
         private String serverAddress;
         private @Nullable String username;
-
-        public Builder() {
-    	      // Empty
-        }
-
+        public Builder() {}
         public Builder(ServiceAuth defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.password = defaults.password;
@@ -83,19 +70,27 @@ public final class ServiceAuth {
     	      this.username = defaults.username;
         }
 
+        @CustomType.Setter
         public Builder password(@Nullable String password) {
             this.password = password;
             return this;
         }
+        @CustomType.Setter
         public Builder serverAddress(String serverAddress) {
             this.serverAddress = Objects.requireNonNull(serverAddress);
             return this;
         }
+        @CustomType.Setter
         public Builder username(@Nullable String username) {
             this.username = username;
             return this;
-        }        public ServiceAuth build() {
-            return new ServiceAuth(password, serverAddress, username);
+        }
+        public ServiceAuth build() {
+            final var o = new ServiceAuth();
+            o.password = password;
+            o.serverAddress = serverAddress;
+            o.username = username;
+            return o;
         }
     }
 }

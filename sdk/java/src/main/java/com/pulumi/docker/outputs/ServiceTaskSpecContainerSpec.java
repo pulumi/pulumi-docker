@@ -22,75 +22,32 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceTaskSpecContainerSpec {
-    private final @Nullable List<String> args;
-    private final @Nullable List<String> commands;
-    private final @Nullable List<ServiceTaskSpecContainerSpecConfig> configs;
-    private final @Nullable String dir;
-    private final @Nullable ServiceTaskSpecContainerSpecDnsConfig dnsConfig;
-    private final @Nullable Map<String,String> env;
-    private final @Nullable List<String> groups;
-    private final @Nullable ServiceTaskSpecContainerSpecHealthcheck healthcheck;
-    private final @Nullable String hostname;
-    private final @Nullable List<ServiceTaskSpecContainerSpecHost> hosts;
-    private final String image;
-    private final @Nullable String isolation;
+    private @Nullable List<String> args;
+    private @Nullable List<String> commands;
+    private @Nullable List<ServiceTaskSpecContainerSpecConfig> configs;
+    private @Nullable String dir;
+    private @Nullable ServiceTaskSpecContainerSpecDnsConfig dnsConfig;
+    private @Nullable Map<String,String> env;
+    private @Nullable List<String> groups;
+    private @Nullable ServiceTaskSpecContainerSpecHealthcheck healthcheck;
+    private @Nullable String hostname;
+    private @Nullable List<ServiceTaskSpecContainerSpecHost> hosts;
+    private String image;
+    private @Nullable String isolation;
     /**
      * @return User-defined key/value metadata
      * 
      */
-    private final @Nullable List<ServiceTaskSpecContainerSpecLabel> labels;
-    private final @Nullable List<ServiceTaskSpecContainerSpecMount> mounts;
-    private final @Nullable ServiceTaskSpecContainerSpecPrivileges privileges;
-    private final @Nullable Boolean readOnly;
-    private final @Nullable List<ServiceTaskSpecContainerSpecSecret> secrets;
-    private final @Nullable String stopGracePeriod;
-    private final @Nullable String stopSignal;
-    private final @Nullable String user;
+    private @Nullable List<ServiceTaskSpecContainerSpecLabel> labels;
+    private @Nullable List<ServiceTaskSpecContainerSpecMount> mounts;
+    private @Nullable ServiceTaskSpecContainerSpecPrivileges privileges;
+    private @Nullable Boolean readOnly;
+    private @Nullable List<ServiceTaskSpecContainerSpecSecret> secrets;
+    private @Nullable String stopGracePeriod;
+    private @Nullable String stopSignal;
+    private @Nullable String user;
 
-    @CustomType.Constructor
-    private ServiceTaskSpecContainerSpec(
-        @CustomType.Parameter("args") @Nullable List<String> args,
-        @CustomType.Parameter("commands") @Nullable List<String> commands,
-        @CustomType.Parameter("configs") @Nullable List<ServiceTaskSpecContainerSpecConfig> configs,
-        @CustomType.Parameter("dir") @Nullable String dir,
-        @CustomType.Parameter("dnsConfig") @Nullable ServiceTaskSpecContainerSpecDnsConfig dnsConfig,
-        @CustomType.Parameter("env") @Nullable Map<String,String> env,
-        @CustomType.Parameter("groups") @Nullable List<String> groups,
-        @CustomType.Parameter("healthcheck") @Nullable ServiceTaskSpecContainerSpecHealthcheck healthcheck,
-        @CustomType.Parameter("hostname") @Nullable String hostname,
-        @CustomType.Parameter("hosts") @Nullable List<ServiceTaskSpecContainerSpecHost> hosts,
-        @CustomType.Parameter("image") String image,
-        @CustomType.Parameter("isolation") @Nullable String isolation,
-        @CustomType.Parameter("labels") @Nullable List<ServiceTaskSpecContainerSpecLabel> labels,
-        @CustomType.Parameter("mounts") @Nullable List<ServiceTaskSpecContainerSpecMount> mounts,
-        @CustomType.Parameter("privileges") @Nullable ServiceTaskSpecContainerSpecPrivileges privileges,
-        @CustomType.Parameter("readOnly") @Nullable Boolean readOnly,
-        @CustomType.Parameter("secrets") @Nullable List<ServiceTaskSpecContainerSpecSecret> secrets,
-        @CustomType.Parameter("stopGracePeriod") @Nullable String stopGracePeriod,
-        @CustomType.Parameter("stopSignal") @Nullable String stopSignal,
-        @CustomType.Parameter("user") @Nullable String user) {
-        this.args = args;
-        this.commands = commands;
-        this.configs = configs;
-        this.dir = dir;
-        this.dnsConfig = dnsConfig;
-        this.env = env;
-        this.groups = groups;
-        this.healthcheck = healthcheck;
-        this.hostname = hostname;
-        this.hosts = hosts;
-        this.image = image;
-        this.isolation = isolation;
-        this.labels = labels;
-        this.mounts = mounts;
-        this.privileges = privileges;
-        this.readOnly = readOnly;
-        this.secrets = secrets;
-        this.stopGracePeriod = stopGracePeriod;
-        this.stopSignal = stopSignal;
-        this.user = user;
-    }
-
+    private ServiceTaskSpecContainerSpec() {}
     public List<String> args() {
         return this.args == null ? List.of() : this.args;
     }
@@ -163,7 +120,7 @@ public final class ServiceTaskSpecContainerSpec {
     public static Builder builder(ServiceTaskSpecContainerSpec defaults) {
         return new Builder(defaults);
     }
-
+    @CustomType.Builder
     public static final class Builder {
         private @Nullable List<String> args;
         private @Nullable List<String> commands;
@@ -185,11 +142,7 @@ public final class ServiceTaskSpecContainerSpec {
         private @Nullable String stopGracePeriod;
         private @Nullable String stopSignal;
         private @Nullable String user;
-
-        public Builder() {
-    	      // Empty
-        }
-
+        public Builder() {}
         public Builder(ServiceTaskSpecContainerSpec defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.args = defaults.args;
@@ -214,6 +167,7 @@ public final class ServiceTaskSpecContainerSpec {
     	      this.user = defaults.user;
         }
 
+        @CustomType.Setter
         public Builder args(@Nullable List<String> args) {
             this.args = args;
             return this;
@@ -221,6 +175,7 @@ public final class ServiceTaskSpecContainerSpec {
         public Builder args(String... args) {
             return args(List.of(args));
         }
+        @CustomType.Setter
         public Builder commands(@Nullable List<String> commands) {
             this.commands = commands;
             return this;
@@ -228,6 +183,7 @@ public final class ServiceTaskSpecContainerSpec {
         public Builder commands(String... commands) {
             return commands(List.of(commands));
         }
+        @CustomType.Setter
         public Builder configs(@Nullable List<ServiceTaskSpecContainerSpecConfig> configs) {
             this.configs = configs;
             return this;
@@ -235,18 +191,22 @@ public final class ServiceTaskSpecContainerSpec {
         public Builder configs(ServiceTaskSpecContainerSpecConfig... configs) {
             return configs(List.of(configs));
         }
+        @CustomType.Setter
         public Builder dir(@Nullable String dir) {
             this.dir = dir;
             return this;
         }
+        @CustomType.Setter
         public Builder dnsConfig(@Nullable ServiceTaskSpecContainerSpecDnsConfig dnsConfig) {
             this.dnsConfig = dnsConfig;
             return this;
         }
+        @CustomType.Setter
         public Builder env(@Nullable Map<String,String> env) {
             this.env = env;
             return this;
         }
+        @CustomType.Setter
         public Builder groups(@Nullable List<String> groups) {
             this.groups = groups;
             return this;
@@ -254,14 +214,17 @@ public final class ServiceTaskSpecContainerSpec {
         public Builder groups(String... groups) {
             return groups(List.of(groups));
         }
+        @CustomType.Setter
         public Builder healthcheck(@Nullable ServiceTaskSpecContainerSpecHealthcheck healthcheck) {
             this.healthcheck = healthcheck;
             return this;
         }
+        @CustomType.Setter
         public Builder hostname(@Nullable String hostname) {
             this.hostname = hostname;
             return this;
         }
+        @CustomType.Setter
         public Builder hosts(@Nullable List<ServiceTaskSpecContainerSpecHost> hosts) {
             this.hosts = hosts;
             return this;
@@ -269,14 +232,17 @@ public final class ServiceTaskSpecContainerSpec {
         public Builder hosts(ServiceTaskSpecContainerSpecHost... hosts) {
             return hosts(List.of(hosts));
         }
+        @CustomType.Setter
         public Builder image(String image) {
             this.image = Objects.requireNonNull(image);
             return this;
         }
+        @CustomType.Setter
         public Builder isolation(@Nullable String isolation) {
             this.isolation = isolation;
             return this;
         }
+        @CustomType.Setter
         public Builder labels(@Nullable List<ServiceTaskSpecContainerSpecLabel> labels) {
             this.labels = labels;
             return this;
@@ -284,6 +250,7 @@ public final class ServiceTaskSpecContainerSpec {
         public Builder labels(ServiceTaskSpecContainerSpecLabel... labels) {
             return labels(List.of(labels));
         }
+        @CustomType.Setter
         public Builder mounts(@Nullable List<ServiceTaskSpecContainerSpecMount> mounts) {
             this.mounts = mounts;
             return this;
@@ -291,14 +258,17 @@ public final class ServiceTaskSpecContainerSpec {
         public Builder mounts(ServiceTaskSpecContainerSpecMount... mounts) {
             return mounts(List.of(mounts));
         }
+        @CustomType.Setter
         public Builder privileges(@Nullable ServiceTaskSpecContainerSpecPrivileges privileges) {
             this.privileges = privileges;
             return this;
         }
+        @CustomType.Setter
         public Builder readOnly(@Nullable Boolean readOnly) {
             this.readOnly = readOnly;
             return this;
         }
+        @CustomType.Setter
         public Builder secrets(@Nullable List<ServiceTaskSpecContainerSpecSecret> secrets) {
             this.secrets = secrets;
             return this;
@@ -306,19 +276,44 @@ public final class ServiceTaskSpecContainerSpec {
         public Builder secrets(ServiceTaskSpecContainerSpecSecret... secrets) {
             return secrets(List.of(secrets));
         }
+        @CustomType.Setter
         public Builder stopGracePeriod(@Nullable String stopGracePeriod) {
             this.stopGracePeriod = stopGracePeriod;
             return this;
         }
+        @CustomType.Setter
         public Builder stopSignal(@Nullable String stopSignal) {
             this.stopSignal = stopSignal;
             return this;
         }
+        @CustomType.Setter
         public Builder user(@Nullable String user) {
             this.user = user;
             return this;
-        }        public ServiceTaskSpecContainerSpec build() {
-            return new ServiceTaskSpecContainerSpec(args, commands, configs, dir, dnsConfig, env, groups, healthcheck, hostname, hosts, image, isolation, labels, mounts, privileges, readOnly, secrets, stopGracePeriod, stopSignal, user);
+        }
+        public ServiceTaskSpecContainerSpec build() {
+            final var o = new ServiceTaskSpecContainerSpec();
+            o.args = args;
+            o.commands = commands;
+            o.configs = configs;
+            o.dir = dir;
+            o.dnsConfig = dnsConfig;
+            o.env = env;
+            o.groups = groups;
+            o.healthcheck = healthcheck;
+            o.hostname = hostname;
+            o.hosts = hosts;
+            o.image = image;
+            o.isolation = isolation;
+            o.labels = labels;
+            o.mounts = mounts;
+            o.privileges = privileges;
+            o.readOnly = readOnly;
+            o.secrets = secrets;
+            o.stopGracePeriod = stopGracePeriod;
+            o.stopSignal = stopSignal;
+            o.user = user;
+            return o;
         }
     }
 }

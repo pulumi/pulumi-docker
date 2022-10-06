@@ -22,63 +22,44 @@ public final class ServiceTaskSpec {
      * @return The spec for each container
      * 
      */
-    private final ServiceTaskSpecContainerSpec containerSpec;
+    private ServiceTaskSpecContainerSpec containerSpec;
     /**
      * @return A counter that triggers an update even if no relevant parameters have been changed. See the [spec](https://github.com/docker/swarmkit/blob/master/api/specs.proto#L126).
      * 
      */
-    private final @Nullable Integer forceUpdate;
+    private @Nullable Integer forceUpdate;
     /**
      * @return Specifies the log driver to use for tasks created from this spec. If not present, the default one for the swarm will be used, finally falling back to the engine default if not specified
      * 
      */
-    private final @Nullable ServiceTaskSpecLogDriver logDriver;
+    private @Nullable ServiceTaskSpecLogDriver logDriver;
     /**
      * @return Ids of the networks in which the  container will be put in
      * 
      */
-    private final @Nullable List<String> networks;
+    private @Nullable List<String> networks;
     /**
      * @return The placement preferences
      * 
      */
-    private final @Nullable ServiceTaskSpecPlacement placement;
+    private @Nullable ServiceTaskSpecPlacement placement;
     /**
      * @return Resource requirements which apply to each individual container created as part of the service
      * 
      */
-    private final @Nullable ServiceTaskSpecResources resources;
+    private @Nullable ServiceTaskSpecResources resources;
     /**
      * @return Specification for the restart policy which applies to containers created as part of this service.
      * 
      */
-    private final @Nullable ServiceTaskSpecRestartPolicy restartPolicy;
+    private @Nullable ServiceTaskSpecRestartPolicy restartPolicy;
     /**
      * @return Runtime is the type of runtime specified for the task executor. See the [types](https://github.com/moby/moby/blob/master/api/types/swarm/runtime.go).
      * 
      */
-    private final @Nullable String runtime;
+    private @Nullable String runtime;
 
-    @CustomType.Constructor
-    private ServiceTaskSpec(
-        @CustomType.Parameter("containerSpec") ServiceTaskSpecContainerSpec containerSpec,
-        @CustomType.Parameter("forceUpdate") @Nullable Integer forceUpdate,
-        @CustomType.Parameter("logDriver") @Nullable ServiceTaskSpecLogDriver logDriver,
-        @CustomType.Parameter("networks") @Nullable List<String> networks,
-        @CustomType.Parameter("placement") @Nullable ServiceTaskSpecPlacement placement,
-        @CustomType.Parameter("resources") @Nullable ServiceTaskSpecResources resources,
-        @CustomType.Parameter("restartPolicy") @Nullable ServiceTaskSpecRestartPolicy restartPolicy,
-        @CustomType.Parameter("runtime") @Nullable String runtime) {
-        this.containerSpec = containerSpec;
-        this.forceUpdate = forceUpdate;
-        this.logDriver = logDriver;
-        this.networks = networks;
-        this.placement = placement;
-        this.resources = resources;
-        this.restartPolicy = restartPolicy;
-        this.runtime = runtime;
-    }
-
+    private ServiceTaskSpec() {}
     /**
      * @return The spec for each container
      * 
@@ -143,7 +124,7 @@ public final class ServiceTaskSpec {
     public static Builder builder(ServiceTaskSpec defaults) {
         return new Builder(defaults);
     }
-
+    @CustomType.Builder
     public static final class Builder {
         private ServiceTaskSpecContainerSpec containerSpec;
         private @Nullable Integer forceUpdate;
@@ -153,11 +134,7 @@ public final class ServiceTaskSpec {
         private @Nullable ServiceTaskSpecResources resources;
         private @Nullable ServiceTaskSpecRestartPolicy restartPolicy;
         private @Nullable String runtime;
-
-        public Builder() {
-    	      // Empty
-        }
-
+        public Builder() {}
         public Builder(ServiceTaskSpec defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.containerSpec = defaults.containerSpec;
@@ -170,18 +147,22 @@ public final class ServiceTaskSpec {
     	      this.runtime = defaults.runtime;
         }
 
+        @CustomType.Setter
         public Builder containerSpec(ServiceTaskSpecContainerSpec containerSpec) {
             this.containerSpec = Objects.requireNonNull(containerSpec);
             return this;
         }
+        @CustomType.Setter
         public Builder forceUpdate(@Nullable Integer forceUpdate) {
             this.forceUpdate = forceUpdate;
             return this;
         }
+        @CustomType.Setter
         public Builder logDriver(@Nullable ServiceTaskSpecLogDriver logDriver) {
             this.logDriver = logDriver;
             return this;
         }
+        @CustomType.Setter
         public Builder networks(@Nullable List<String> networks) {
             this.networks = networks;
             return this;
@@ -189,23 +170,37 @@ public final class ServiceTaskSpec {
         public Builder networks(String... networks) {
             return networks(List.of(networks));
         }
+        @CustomType.Setter
         public Builder placement(@Nullable ServiceTaskSpecPlacement placement) {
             this.placement = placement;
             return this;
         }
+        @CustomType.Setter
         public Builder resources(@Nullable ServiceTaskSpecResources resources) {
             this.resources = resources;
             return this;
         }
+        @CustomType.Setter
         public Builder restartPolicy(@Nullable ServiceTaskSpecRestartPolicy restartPolicy) {
             this.restartPolicy = restartPolicy;
             return this;
         }
+        @CustomType.Setter
         public Builder runtime(@Nullable String runtime) {
             this.runtime = runtime;
             return this;
-        }        public ServiceTaskSpec build() {
-            return new ServiceTaskSpec(containerSpec, forceUpdate, logDriver, networks, placement, resources, restartPolicy, runtime);
+        }
+        public ServiceTaskSpec build() {
+            final var o = new ServiceTaskSpec();
+            o.containerSpec = containerSpec;
+            o.forceUpdate = forceUpdate;
+            o.logDriver = logDriver;
+            o.networks = networks;
+            o.placement = placement;
+            o.resources = resources;
+            o.restartPolicy = restartPolicy;
+            o.runtime = runtime;
+            return o;
         }
     }
 }

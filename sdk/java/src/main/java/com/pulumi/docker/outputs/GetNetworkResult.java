@@ -18,56 +18,39 @@ public final class GetNetworkResult {
      * @return The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
      * 
      */
-    private final String driver;
+    private String driver;
     /**
      * @return The ID of this resource.
      * 
      */
-    private final String id;
+    private String id;
     /**
      * @return If `true`, the network is internal.
      * 
      */
-    private final Boolean internal;
+    private Boolean internal;
     /**
      * @return The IPAM configuration options
      * 
      */
-    private final List<GetNetworkIpamConfig> ipamConfigs;
+    private List<GetNetworkIpamConfig> ipamConfigs;
     /**
      * @return The name of the Docker network.
      * 
      */
-    private final String name;
+    private String name;
     /**
      * @return Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
      * 
      */
-    private final Map<String,Object> options;
+    private Map<String,Object> options;
     /**
      * @return Scope of the network. One of `swarm`, `global`, or `local`.
      * 
      */
-    private final String scope;
+    private String scope;
 
-    @CustomType.Constructor
-    private GetNetworkResult(
-        @CustomType.Parameter("driver") String driver,
-        @CustomType.Parameter("id") String id,
-        @CustomType.Parameter("internal") Boolean internal,
-        @CustomType.Parameter("ipamConfigs") List<GetNetworkIpamConfig> ipamConfigs,
-        @CustomType.Parameter("name") String name,
-        @CustomType.Parameter("options") Map<String,Object> options,
-        @CustomType.Parameter("scope") String scope) {
-        this.driver = driver;
-        this.id = id;
-        this.internal = internal;
-        this.ipamConfigs = ipamConfigs;
-        this.name = name;
-        this.options = options;
-        this.scope = scope;
-    }
-
+    private GetNetworkResult() {}
     /**
      * @return The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
      * 
@@ -125,7 +108,7 @@ public final class GetNetworkResult {
     public static Builder builder(GetNetworkResult defaults) {
         return new Builder(defaults);
     }
-
+    @CustomType.Builder
     public static final class Builder {
         private String driver;
         private String id;
@@ -134,11 +117,7 @@ public final class GetNetworkResult {
         private String name;
         private Map<String,Object> options;
         private String scope;
-
-        public Builder() {
-    	      // Empty
-        }
-
+        public Builder() {}
         public Builder(GetNetworkResult defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.driver = defaults.driver;
@@ -150,18 +129,22 @@ public final class GetNetworkResult {
     	      this.scope = defaults.scope;
         }
 
+        @CustomType.Setter
         public Builder driver(String driver) {
             this.driver = Objects.requireNonNull(driver);
             return this;
         }
+        @CustomType.Setter
         public Builder id(String id) {
             this.id = Objects.requireNonNull(id);
             return this;
         }
+        @CustomType.Setter
         public Builder internal(Boolean internal) {
             this.internal = Objects.requireNonNull(internal);
             return this;
         }
+        @CustomType.Setter
         public Builder ipamConfigs(List<GetNetworkIpamConfig> ipamConfigs) {
             this.ipamConfigs = Objects.requireNonNull(ipamConfigs);
             return this;
@@ -169,19 +152,31 @@ public final class GetNetworkResult {
         public Builder ipamConfigs(GetNetworkIpamConfig... ipamConfigs) {
             return ipamConfigs(List.of(ipamConfigs));
         }
+        @CustomType.Setter
         public Builder name(String name) {
             this.name = Objects.requireNonNull(name);
             return this;
         }
+        @CustomType.Setter
         public Builder options(Map<String,Object> options) {
             this.options = Objects.requireNonNull(options);
             return this;
         }
+        @CustomType.Setter
         public Builder scope(String scope) {
             this.scope = Objects.requireNonNull(scope);
             return this;
-        }        public GetNetworkResult build() {
-            return new GetNetworkResult(driver, id, internal, ipamConfigs, name, options, scope);
+        }
+        public GetNetworkResult build() {
+            final var o = new GetNetworkResult();
+            o.driver = driver;
+            o.id = id;
+            o.internal = internal;
+            o.ipamConfigs = ipamConfigs;
+            o.name = name;
+            o.options = options;
+            o.scope = scope;
+            return o;
         }
     }
 }

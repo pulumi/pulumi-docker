@@ -12,17 +12,10 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceTaskSpecContainerSpecPrivileges {
-    private final @Nullable ServiceTaskSpecContainerSpecPrivilegesCredentialSpec credentialSpec;
-    private final @Nullable ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext seLinuxContext;
+    private @Nullable ServiceTaskSpecContainerSpecPrivilegesCredentialSpec credentialSpec;
+    private @Nullable ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext seLinuxContext;
 
-    @CustomType.Constructor
-    private ServiceTaskSpecContainerSpecPrivileges(
-        @CustomType.Parameter("credentialSpec") @Nullable ServiceTaskSpecContainerSpecPrivilegesCredentialSpec credentialSpec,
-        @CustomType.Parameter("seLinuxContext") @Nullable ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext seLinuxContext) {
-        this.credentialSpec = credentialSpec;
-        this.seLinuxContext = seLinuxContext;
-    }
-
+    private ServiceTaskSpecContainerSpecPrivileges() {}
     public Optional<ServiceTaskSpecContainerSpecPrivilegesCredentialSpec> credentialSpec() {
         return Optional.ofNullable(this.credentialSpec);
     }
@@ -37,30 +30,32 @@ public final class ServiceTaskSpecContainerSpecPrivileges {
     public static Builder builder(ServiceTaskSpecContainerSpecPrivileges defaults) {
         return new Builder(defaults);
     }
-
+    @CustomType.Builder
     public static final class Builder {
         private @Nullable ServiceTaskSpecContainerSpecPrivilegesCredentialSpec credentialSpec;
         private @Nullable ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext seLinuxContext;
-
-        public Builder() {
-    	      // Empty
-        }
-
+        public Builder() {}
         public Builder(ServiceTaskSpecContainerSpecPrivileges defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.credentialSpec = defaults.credentialSpec;
     	      this.seLinuxContext = defaults.seLinuxContext;
         }
 
+        @CustomType.Setter
         public Builder credentialSpec(@Nullable ServiceTaskSpecContainerSpecPrivilegesCredentialSpec credentialSpec) {
             this.credentialSpec = credentialSpec;
             return this;
         }
+        @CustomType.Setter
         public Builder seLinuxContext(@Nullable ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext seLinuxContext) {
             this.seLinuxContext = seLinuxContext;
             return this;
-        }        public ServiceTaskSpecContainerSpecPrivileges build() {
-            return new ServiceTaskSpecContainerSpecPrivileges(credentialSpec, seLinuxContext);
+        }
+        public ServiceTaskSpecContainerSpecPrivileges build() {
+            final var o = new ServiceTaskSpecContainerSpecPrivileges();
+            o.credentialSpec = credentialSpec;
+            o.seLinuxContext = seLinuxContext;
+            return o;
         }
     }
 }

@@ -18,70 +18,49 @@ public final class RemoteImageBuild {
      * @return Set build-time variables
      * 
      */
-    private final @Nullable Map<String,String> buildArg;
+    private @Nullable Map<String,String> buildArg;
     /**
      * @return Name of the Dockerfile. Defaults to `Dockerfile`.
      * 
      */
-    private final @Nullable String dockerfile;
+    private @Nullable String dockerfile;
     /**
      * @return Always remove intermediate containers
      * 
      */
-    private final @Nullable Boolean forceRemove;
+    private @Nullable Boolean forceRemove;
     /**
      * @return Set metadata for an image
      * 
      */
-    private final @Nullable Map<String,String> label;
+    private @Nullable Map<String,String> label;
     /**
      * @return Do not use cache when building the image
      * 
      */
-    private final @Nullable Boolean noCache;
+    private @Nullable Boolean noCache;
     /**
      * @return Context path
      * 
      */
-    private final String path;
+    private String path;
     /**
      * @return Remove intermediate containers after a successful build. Defaults to  `true`.
      * 
      */
-    private final @Nullable Boolean remove;
+    private @Nullable Boolean remove;
     /**
      * @return Name and optionally a tag in the &#39;name:tag&#39; format
      * 
      */
-    private final @Nullable List<String> tags;
+    private @Nullable List<String> tags;
     /**
      * @return Set the target build stage to build
      * 
      */
-    private final @Nullable String target;
+    private @Nullable String target;
 
-    @CustomType.Constructor
-    private RemoteImageBuild(
-        @CustomType.Parameter("buildArg") @Nullable Map<String,String> buildArg,
-        @CustomType.Parameter("dockerfile") @Nullable String dockerfile,
-        @CustomType.Parameter("forceRemove") @Nullable Boolean forceRemove,
-        @CustomType.Parameter("label") @Nullable Map<String,String> label,
-        @CustomType.Parameter("noCache") @Nullable Boolean noCache,
-        @CustomType.Parameter("path") String path,
-        @CustomType.Parameter("remove") @Nullable Boolean remove,
-        @CustomType.Parameter("tags") @Nullable List<String> tags,
-        @CustomType.Parameter("target") @Nullable String target) {
-        this.buildArg = buildArg;
-        this.dockerfile = dockerfile;
-        this.forceRemove = forceRemove;
-        this.label = label;
-        this.noCache = noCache;
-        this.path = path;
-        this.remove = remove;
-        this.tags = tags;
-        this.target = target;
-    }
-
+    private RemoteImageBuild() {}
     /**
      * @return Set build-time variables
      * 
@@ -153,7 +132,7 @@ public final class RemoteImageBuild {
     public static Builder builder(RemoteImageBuild defaults) {
         return new Builder(defaults);
     }
-
+    @CustomType.Builder
     public static final class Builder {
         private @Nullable Map<String,String> buildArg;
         private @Nullable String dockerfile;
@@ -164,11 +143,7 @@ public final class RemoteImageBuild {
         private @Nullable Boolean remove;
         private @Nullable List<String> tags;
         private @Nullable String target;
-
-        public Builder() {
-    	      // Empty
-        }
-
+        public Builder() {}
         public Builder(RemoteImageBuild defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.buildArg = defaults.buildArg;
@@ -182,34 +157,42 @@ public final class RemoteImageBuild {
     	      this.target = defaults.target;
         }
 
+        @CustomType.Setter
         public Builder buildArg(@Nullable Map<String,String> buildArg) {
             this.buildArg = buildArg;
             return this;
         }
+        @CustomType.Setter
         public Builder dockerfile(@Nullable String dockerfile) {
             this.dockerfile = dockerfile;
             return this;
         }
+        @CustomType.Setter
         public Builder forceRemove(@Nullable Boolean forceRemove) {
             this.forceRemove = forceRemove;
             return this;
         }
+        @CustomType.Setter
         public Builder label(@Nullable Map<String,String> label) {
             this.label = label;
             return this;
         }
+        @CustomType.Setter
         public Builder noCache(@Nullable Boolean noCache) {
             this.noCache = noCache;
             return this;
         }
+        @CustomType.Setter
         public Builder path(String path) {
             this.path = Objects.requireNonNull(path);
             return this;
         }
+        @CustomType.Setter
         public Builder remove(@Nullable Boolean remove) {
             this.remove = remove;
             return this;
         }
+        @CustomType.Setter
         public Builder tags(@Nullable List<String> tags) {
             this.tags = tags;
             return this;
@@ -217,11 +200,23 @@ public final class RemoteImageBuild {
         public Builder tags(String... tags) {
             return tags(List.of(tags));
         }
+        @CustomType.Setter
         public Builder target(@Nullable String target) {
             this.target = target;
             return this;
-        }        public RemoteImageBuild build() {
-            return new RemoteImageBuild(buildArg, dockerfile, forceRemove, label, noCache, path, remove, tags, target);
+        }
+        public RemoteImageBuild build() {
+            final var o = new RemoteImageBuild();
+            o.buildArg = buildArg;
+            o.dockerfile = dockerfile;
+            o.forceRemove = forceRemove;
+            o.label = label;
+            o.noCache = noCache;
+            o.path = path;
+            o.remove = remove;
+            o.tags = tags;
+            o.target = target;
+            return o;
         }
     }
 }

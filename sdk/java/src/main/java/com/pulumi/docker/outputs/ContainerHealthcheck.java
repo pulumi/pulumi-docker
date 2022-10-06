@@ -17,42 +17,29 @@ public final class ContainerHealthcheck {
      * @return Time between running the check (ms|s|m|h). Defaults to `0s`.
      * 
      */
-    private final @Nullable String interval;
+    private @Nullable String interval;
     /**
      * @return Consecutive failures needed to report unhealthy. Defaults to `0`.
      * 
      */
-    private final @Nullable Integer retries;
+    private @Nullable Integer retries;
     /**
      * @return Start period for the container to initialize before counting retries towards unstable (ms|s|m|h). Defaults to `0s`.
      * 
      */
-    private final @Nullable String startPeriod;
+    private @Nullable String startPeriod;
     /**
      * @return Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `[&#34;CMD&#34;, &#34;curl&#34;, &#34;-f&#34;, &#34;localhost/health&#34;]`.
      * 
      */
-    private final List<String> tests;
+    private List<String> tests;
     /**
      * @return Maximum time to allow one check to run (ms|s|m|h). Defaults to `0s`.
      * 
      */
-    private final @Nullable String timeout;
+    private @Nullable String timeout;
 
-    @CustomType.Constructor
-    private ContainerHealthcheck(
-        @CustomType.Parameter("interval") @Nullable String interval,
-        @CustomType.Parameter("retries") @Nullable Integer retries,
-        @CustomType.Parameter("startPeriod") @Nullable String startPeriod,
-        @CustomType.Parameter("tests") List<String> tests,
-        @CustomType.Parameter("timeout") @Nullable String timeout) {
-        this.interval = interval;
-        this.retries = retries;
-        this.startPeriod = startPeriod;
-        this.tests = tests;
-        this.timeout = timeout;
-    }
-
+    private ContainerHealthcheck() {}
     /**
      * @return Time between running the check (ms|s|m|h). Defaults to `0s`.
      * 
@@ -96,18 +83,14 @@ public final class ContainerHealthcheck {
     public static Builder builder(ContainerHealthcheck defaults) {
         return new Builder(defaults);
     }
-
+    @CustomType.Builder
     public static final class Builder {
         private @Nullable String interval;
         private @Nullable Integer retries;
         private @Nullable String startPeriod;
         private List<String> tests;
         private @Nullable String timeout;
-
-        public Builder() {
-    	      // Empty
-        }
-
+        public Builder() {}
         public Builder(ContainerHealthcheck defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.interval = defaults.interval;
@@ -117,18 +100,22 @@ public final class ContainerHealthcheck {
     	      this.timeout = defaults.timeout;
         }
 
+        @CustomType.Setter
         public Builder interval(@Nullable String interval) {
             this.interval = interval;
             return this;
         }
+        @CustomType.Setter
         public Builder retries(@Nullable Integer retries) {
             this.retries = retries;
             return this;
         }
+        @CustomType.Setter
         public Builder startPeriod(@Nullable String startPeriod) {
             this.startPeriod = startPeriod;
             return this;
         }
+        @CustomType.Setter
         public Builder tests(List<String> tests) {
             this.tests = Objects.requireNonNull(tests);
             return this;
@@ -136,11 +123,19 @@ public final class ContainerHealthcheck {
         public Builder tests(String... tests) {
             return tests(List.of(tests));
         }
+        @CustomType.Setter
         public Builder timeout(@Nullable String timeout) {
             this.timeout = timeout;
             return this;
-        }        public ContainerHealthcheck build() {
-            return new ContainerHealthcheck(interval, retries, startPeriod, tests, timeout);
+        }
+        public ContainerHealthcheck build() {
+            final var o = new ContainerHealthcheck();
+            o.interval = interval;
+            o.retries = retries;
+            o.startPeriod = startPeriod;
+            o.tests = tests;
+            o.timeout = timeout;
+            return o;
         }
     }
 }

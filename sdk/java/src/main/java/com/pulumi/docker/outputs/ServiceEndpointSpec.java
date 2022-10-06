@@ -17,21 +17,14 @@ public final class ServiceEndpointSpec {
      * @return The mode of resolution to use for internal load balancing between tasks
      * 
      */
-    private final @Nullable String mode;
+    private @Nullable String mode;
     /**
      * @return List of exposed ports that this service is accessible on from the outside. Ports can only be provided if &#39;vip&#39; resolution mode is used
      * 
      */
-    private final @Nullable List<ServiceEndpointSpecPort> ports;
+    private @Nullable List<ServiceEndpointSpecPort> ports;
 
-    @CustomType.Constructor
-    private ServiceEndpointSpec(
-        @CustomType.Parameter("mode") @Nullable String mode,
-        @CustomType.Parameter("ports") @Nullable List<ServiceEndpointSpecPort> ports) {
-        this.mode = mode;
-        this.ports = ports;
-    }
-
+    private ServiceEndpointSpec() {}
     /**
      * @return The mode of resolution to use for internal load balancing between tasks
      * 
@@ -54,33 +47,35 @@ public final class ServiceEndpointSpec {
     public static Builder builder(ServiceEndpointSpec defaults) {
         return new Builder(defaults);
     }
-
+    @CustomType.Builder
     public static final class Builder {
         private @Nullable String mode;
         private @Nullable List<ServiceEndpointSpecPort> ports;
-
-        public Builder() {
-    	      // Empty
-        }
-
+        public Builder() {}
         public Builder(ServiceEndpointSpec defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.mode = defaults.mode;
     	      this.ports = defaults.ports;
         }
 
+        @CustomType.Setter
         public Builder mode(@Nullable String mode) {
             this.mode = mode;
             return this;
         }
+        @CustomType.Setter
         public Builder ports(@Nullable List<ServiceEndpointSpecPort> ports) {
             this.ports = ports;
             return this;
         }
         public Builder ports(ServiceEndpointSpecPort... ports) {
             return ports(List.of(ports));
-        }        public ServiceEndpointSpec build() {
-            return new ServiceEndpointSpec(mode, ports);
+        }
+        public ServiceEndpointSpec build() {
+            final var o = new ServiceEndpointSpec();
+            o.mode = mode;
+            o.ports = ports;
+            return o;
         }
     }
 }

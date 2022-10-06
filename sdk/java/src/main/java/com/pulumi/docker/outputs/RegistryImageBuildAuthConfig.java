@@ -11,35 +11,16 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class RegistryImageBuildAuthConfig {
-    private final @Nullable String auth;
-    private final @Nullable String email;
-    private final String hostName;
-    private final @Nullable String identityToken;
-    private final @Nullable String password;
-    private final @Nullable String registryToken;
-    private final @Nullable String serverAddress;
-    private final @Nullable String userName;
+    private @Nullable String auth;
+    private @Nullable String email;
+    private String hostName;
+    private @Nullable String identityToken;
+    private @Nullable String password;
+    private @Nullable String registryToken;
+    private @Nullable String serverAddress;
+    private @Nullable String userName;
 
-    @CustomType.Constructor
-    private RegistryImageBuildAuthConfig(
-        @CustomType.Parameter("auth") @Nullable String auth,
-        @CustomType.Parameter("email") @Nullable String email,
-        @CustomType.Parameter("hostName") String hostName,
-        @CustomType.Parameter("identityToken") @Nullable String identityToken,
-        @CustomType.Parameter("password") @Nullable String password,
-        @CustomType.Parameter("registryToken") @Nullable String registryToken,
-        @CustomType.Parameter("serverAddress") @Nullable String serverAddress,
-        @CustomType.Parameter("userName") @Nullable String userName) {
-        this.auth = auth;
-        this.email = email;
-        this.hostName = hostName;
-        this.identityToken = identityToken;
-        this.password = password;
-        this.registryToken = registryToken;
-        this.serverAddress = serverAddress;
-        this.userName = userName;
-    }
-
+    private RegistryImageBuildAuthConfig() {}
     public Optional<String> auth() {
         return Optional.ofNullable(this.auth);
     }
@@ -72,7 +53,7 @@ public final class RegistryImageBuildAuthConfig {
     public static Builder builder(RegistryImageBuildAuthConfig defaults) {
         return new Builder(defaults);
     }
-
+    @CustomType.Builder
     public static final class Builder {
         private @Nullable String auth;
         private @Nullable String email;
@@ -82,11 +63,7 @@ public final class RegistryImageBuildAuthConfig {
         private @Nullable String registryToken;
         private @Nullable String serverAddress;
         private @Nullable String userName;
-
-        public Builder() {
-    	      // Empty
-        }
-
+        public Builder() {}
         public Builder(RegistryImageBuildAuthConfig defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.auth = defaults.auth;
@@ -99,39 +76,57 @@ public final class RegistryImageBuildAuthConfig {
     	      this.userName = defaults.userName;
         }
 
+        @CustomType.Setter
         public Builder auth(@Nullable String auth) {
             this.auth = auth;
             return this;
         }
+        @CustomType.Setter
         public Builder email(@Nullable String email) {
             this.email = email;
             return this;
         }
+        @CustomType.Setter
         public Builder hostName(String hostName) {
             this.hostName = Objects.requireNonNull(hostName);
             return this;
         }
+        @CustomType.Setter
         public Builder identityToken(@Nullable String identityToken) {
             this.identityToken = identityToken;
             return this;
         }
+        @CustomType.Setter
         public Builder password(@Nullable String password) {
             this.password = password;
             return this;
         }
+        @CustomType.Setter
         public Builder registryToken(@Nullable String registryToken) {
             this.registryToken = registryToken;
             return this;
         }
+        @CustomType.Setter
         public Builder serverAddress(@Nullable String serverAddress) {
             this.serverAddress = serverAddress;
             return this;
         }
+        @CustomType.Setter
         public Builder userName(@Nullable String userName) {
             this.userName = userName;
             return this;
-        }        public RegistryImageBuildAuthConfig build() {
-            return new RegistryImageBuildAuthConfig(auth, email, hostName, identityToken, password, registryToken, serverAddress, userName);
+        }
+        public RegistryImageBuildAuthConfig build() {
+            final var o = new RegistryImageBuildAuthConfig();
+            o.auth = auth;
+            o.email = email;
+            o.hostName = hostName;
+            o.identityToken = identityToken;
+            o.password = password;
+            o.registryToken = registryToken;
+            o.serverAddress = serverAddress;
+            o.userName = userName;
+            return o;
         }
     }
 }

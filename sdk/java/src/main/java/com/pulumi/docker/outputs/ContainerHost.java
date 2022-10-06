@@ -13,21 +13,14 @@ public final class ContainerHost {
      * @return Hostname to add
      * 
      */
-    private final String host;
+    private String host;
     /**
      * @return IP address this hostname should resolve to.
      * 
      */
-    private final String ip;
+    private String ip;
 
-    @CustomType.Constructor
-    private ContainerHost(
-        @CustomType.Parameter("host") String host,
-        @CustomType.Parameter("ip") String ip) {
-        this.host = host;
-        this.ip = ip;
-    }
-
+    private ContainerHost() {}
     /**
      * @return Hostname to add
      * 
@@ -50,30 +43,32 @@ public final class ContainerHost {
     public static Builder builder(ContainerHost defaults) {
         return new Builder(defaults);
     }
-
+    @CustomType.Builder
     public static final class Builder {
         private String host;
         private String ip;
-
-        public Builder() {
-    	      // Empty
-        }
-
+        public Builder() {}
         public Builder(ContainerHost defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.host = defaults.host;
     	      this.ip = defaults.ip;
         }
 
+        @CustomType.Setter
         public Builder host(String host) {
             this.host = Objects.requireNonNull(host);
             return this;
         }
+        @CustomType.Setter
         public Builder ip(String ip) {
             this.ip = Objects.requireNonNull(ip);
             return this;
-        }        public ContainerHost build() {
-            return new ContainerHost(host, ip);
+        }
+        public ContainerHost build() {
+            final var o = new ContainerHost();
+            o.host = host;
+            o.ip = ip;
+            return o;
         }
     }
 }

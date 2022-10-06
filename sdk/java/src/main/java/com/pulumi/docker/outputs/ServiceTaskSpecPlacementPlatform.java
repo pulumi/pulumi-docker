@@ -9,17 +9,10 @@ import java.util.Objects;
 
 @CustomType
 public final class ServiceTaskSpecPlacementPlatform {
-    private final String architecture;
-    private final String os;
+    private String architecture;
+    private String os;
 
-    @CustomType.Constructor
-    private ServiceTaskSpecPlacementPlatform(
-        @CustomType.Parameter("architecture") String architecture,
-        @CustomType.Parameter("os") String os) {
-        this.architecture = architecture;
-        this.os = os;
-    }
-
+    private ServiceTaskSpecPlacementPlatform() {}
     public String architecture() {
         return this.architecture;
     }
@@ -34,30 +27,32 @@ public final class ServiceTaskSpecPlacementPlatform {
     public static Builder builder(ServiceTaskSpecPlacementPlatform defaults) {
         return new Builder(defaults);
     }
-
+    @CustomType.Builder
     public static final class Builder {
         private String architecture;
         private String os;
-
-        public Builder() {
-    	      // Empty
-        }
-
+        public Builder() {}
         public Builder(ServiceTaskSpecPlacementPlatform defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.architecture = defaults.architecture;
     	      this.os = defaults.os;
         }
 
+        @CustomType.Setter
         public Builder architecture(String architecture) {
             this.architecture = Objects.requireNonNull(architecture);
             return this;
         }
+        @CustomType.Setter
         public Builder os(String os) {
             this.os = Objects.requireNonNull(os);
             return this;
-        }        public ServiceTaskSpecPlacementPlatform build() {
-            return new ServiceTaskSpecPlacementPlatform(architecture, os);
+        }
+        public ServiceTaskSpecPlacementPlatform build() {
+            final var o = new ServiceTaskSpecPlacementPlatform();
+            o.architecture = architecture;
+            o.os = os;
+            return o;
         }
     }
 }

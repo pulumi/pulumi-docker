@@ -12,23 +12,12 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceTaskSpecRestartPolicy {
-    private final @Nullable String condition;
-    private final @Nullable String delay;
-    private final @Nullable Integer maxAttempts;
-    private final @Nullable String window;
+    private @Nullable String condition;
+    private @Nullable String delay;
+    private @Nullable Integer maxAttempts;
+    private @Nullable String window;
 
-    @CustomType.Constructor
-    private ServiceTaskSpecRestartPolicy(
-        @CustomType.Parameter("condition") @Nullable String condition,
-        @CustomType.Parameter("delay") @Nullable String delay,
-        @CustomType.Parameter("maxAttempts") @Nullable Integer maxAttempts,
-        @CustomType.Parameter("window") @Nullable String window) {
-        this.condition = condition;
-        this.delay = delay;
-        this.maxAttempts = maxAttempts;
-        this.window = window;
-    }
-
+    private ServiceTaskSpecRestartPolicy() {}
     public Optional<String> condition() {
         return Optional.ofNullable(this.condition);
     }
@@ -49,17 +38,13 @@ public final class ServiceTaskSpecRestartPolicy {
     public static Builder builder(ServiceTaskSpecRestartPolicy defaults) {
         return new Builder(defaults);
     }
-
+    @CustomType.Builder
     public static final class Builder {
         private @Nullable String condition;
         private @Nullable String delay;
         private @Nullable Integer maxAttempts;
         private @Nullable String window;
-
-        public Builder() {
-    	      // Empty
-        }
-
+        public Builder() {}
         public Builder(ServiceTaskSpecRestartPolicy defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.condition = defaults.condition;
@@ -68,23 +53,33 @@ public final class ServiceTaskSpecRestartPolicy {
     	      this.window = defaults.window;
         }
 
+        @CustomType.Setter
         public Builder condition(@Nullable String condition) {
             this.condition = condition;
             return this;
         }
+        @CustomType.Setter
         public Builder delay(@Nullable String delay) {
             this.delay = delay;
             return this;
         }
+        @CustomType.Setter
         public Builder maxAttempts(@Nullable Integer maxAttempts) {
             this.maxAttempts = maxAttempts;
             return this;
         }
+        @CustomType.Setter
         public Builder window(@Nullable String window) {
             this.window = window;
             return this;
-        }        public ServiceTaskSpecRestartPolicy build() {
-            return new ServiceTaskSpecRestartPolicy(condition, delay, maxAttempts, window);
+        }
+        public ServiceTaskSpecRestartPolicy build() {
+            final var o = new ServiceTaskSpecRestartPolicy();
+            o.condition = condition;
+            o.delay = delay;
+            o.maxAttempts = maxAttempts;
+            o.window = window;
+            return o;
         }
     }
 }

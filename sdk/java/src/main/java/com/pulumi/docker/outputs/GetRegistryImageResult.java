@@ -16,35 +16,24 @@ public final class GetRegistryImageResult {
      * @return The provider-assigned unique ID for this managed resource.
      * 
      */
-    private final String id;
+    private String id;
     /**
      * @return If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
      * 
      */
-    private final @Nullable Boolean insecureSkipVerify;
+    private @Nullable Boolean insecureSkipVerify;
     /**
      * @return The name of the Docker image, including any tags. e.g. `alpine:latest`
      * 
      */
-    private final String name;
+    private String name;
     /**
      * @return The content digest of the image, as stored in the registry.
      * 
      */
-    private final String sha256Digest;
+    private String sha256Digest;
 
-    @CustomType.Constructor
-    private GetRegistryImageResult(
-        @CustomType.Parameter("id") String id,
-        @CustomType.Parameter("insecureSkipVerify") @Nullable Boolean insecureSkipVerify,
-        @CustomType.Parameter("name") String name,
-        @CustomType.Parameter("sha256Digest") String sha256Digest) {
-        this.id = id;
-        this.insecureSkipVerify = insecureSkipVerify;
-        this.name = name;
-        this.sha256Digest = sha256Digest;
-    }
-
+    private GetRegistryImageResult() {}
     /**
      * @return The provider-assigned unique ID for this managed resource.
      * 
@@ -81,17 +70,13 @@ public final class GetRegistryImageResult {
     public static Builder builder(GetRegistryImageResult defaults) {
         return new Builder(defaults);
     }
-
+    @CustomType.Builder
     public static final class Builder {
         private String id;
         private @Nullable Boolean insecureSkipVerify;
         private String name;
         private String sha256Digest;
-
-        public Builder() {
-    	      // Empty
-        }
-
+        public Builder() {}
         public Builder(GetRegistryImageResult defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.id = defaults.id;
@@ -100,23 +85,33 @@ public final class GetRegistryImageResult {
     	      this.sha256Digest = defaults.sha256Digest;
         }
 
+        @CustomType.Setter
         public Builder id(String id) {
             this.id = Objects.requireNonNull(id);
             return this;
         }
+        @CustomType.Setter
         public Builder insecureSkipVerify(@Nullable Boolean insecureSkipVerify) {
             this.insecureSkipVerify = insecureSkipVerify;
             return this;
         }
+        @CustomType.Setter
         public Builder name(String name) {
             this.name = Objects.requireNonNull(name);
             return this;
         }
+        @CustomType.Setter
         public Builder sha256Digest(String sha256Digest) {
             this.sha256Digest = Objects.requireNonNull(sha256Digest);
             return this;
-        }        public GetRegistryImageResult build() {
-            return new GetRegistryImageResult(id, insecureSkipVerify, name, sha256Digest);
+        }
+        public GetRegistryImageResult build() {
+            final var o = new GetRegistryImageResult();
+            o.id = id;
+            o.insecureSkipVerify = insecureSkipVerify;
+            o.name = name;
+            o.sha256Digest = sha256Digest;
+            return o;
         }
     }
 }

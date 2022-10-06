@@ -13,26 +13,13 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceTaskSpecContainerSpecHealthcheck {
-    private final @Nullable String interval;
-    private final @Nullable Integer retries;
-    private final @Nullable String startPeriod;
-    private final List<String> tests;
-    private final @Nullable String timeout;
+    private @Nullable String interval;
+    private @Nullable Integer retries;
+    private @Nullable String startPeriod;
+    private List<String> tests;
+    private @Nullable String timeout;
 
-    @CustomType.Constructor
-    private ServiceTaskSpecContainerSpecHealthcheck(
-        @CustomType.Parameter("interval") @Nullable String interval,
-        @CustomType.Parameter("retries") @Nullable Integer retries,
-        @CustomType.Parameter("startPeriod") @Nullable String startPeriod,
-        @CustomType.Parameter("tests") List<String> tests,
-        @CustomType.Parameter("timeout") @Nullable String timeout) {
-        this.interval = interval;
-        this.retries = retries;
-        this.startPeriod = startPeriod;
-        this.tests = tests;
-        this.timeout = timeout;
-    }
-
+    private ServiceTaskSpecContainerSpecHealthcheck() {}
     public Optional<String> interval() {
         return Optional.ofNullable(this.interval);
     }
@@ -56,18 +43,14 @@ public final class ServiceTaskSpecContainerSpecHealthcheck {
     public static Builder builder(ServiceTaskSpecContainerSpecHealthcheck defaults) {
         return new Builder(defaults);
     }
-
+    @CustomType.Builder
     public static final class Builder {
         private @Nullable String interval;
         private @Nullable Integer retries;
         private @Nullable String startPeriod;
         private List<String> tests;
         private @Nullable String timeout;
-
-        public Builder() {
-    	      // Empty
-        }
-
+        public Builder() {}
         public Builder(ServiceTaskSpecContainerSpecHealthcheck defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.interval = defaults.interval;
@@ -77,18 +60,22 @@ public final class ServiceTaskSpecContainerSpecHealthcheck {
     	      this.timeout = defaults.timeout;
         }
 
+        @CustomType.Setter
         public Builder interval(@Nullable String interval) {
             this.interval = interval;
             return this;
         }
+        @CustomType.Setter
         public Builder retries(@Nullable Integer retries) {
             this.retries = retries;
             return this;
         }
+        @CustomType.Setter
         public Builder startPeriod(@Nullable String startPeriod) {
             this.startPeriod = startPeriod;
             return this;
         }
+        @CustomType.Setter
         public Builder tests(List<String> tests) {
             this.tests = Objects.requireNonNull(tests);
             return this;
@@ -96,11 +83,19 @@ public final class ServiceTaskSpecContainerSpecHealthcheck {
         public Builder tests(String... tests) {
             return tests(List.of(tests));
         }
+        @CustomType.Setter
         public Builder timeout(@Nullable String timeout) {
             this.timeout = timeout;
             return this;
-        }        public ServiceTaskSpecContainerSpecHealthcheck build() {
-            return new ServiceTaskSpecContainerSpecHealthcheck(interval, retries, startPeriod, tests, timeout);
+        }
+        public ServiceTaskSpecContainerSpecHealthcheck build() {
+            final var o = new ServiceTaskSpecContainerSpecHealthcheck();
+            o.interval = interval;
+            o.retries = retries;
+            o.startPeriod = startPeriod;
+            o.tests = tests;
+            o.timeout = timeout;
+            return o;
         }
     }
 }

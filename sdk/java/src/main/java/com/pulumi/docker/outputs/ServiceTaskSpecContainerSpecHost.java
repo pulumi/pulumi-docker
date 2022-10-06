@@ -9,17 +9,10 @@ import java.util.Objects;
 
 @CustomType
 public final class ServiceTaskSpecContainerSpecHost {
-    private final String host;
-    private final String ip;
+    private String host;
+    private String ip;
 
-    @CustomType.Constructor
-    private ServiceTaskSpecContainerSpecHost(
-        @CustomType.Parameter("host") String host,
-        @CustomType.Parameter("ip") String ip) {
-        this.host = host;
-        this.ip = ip;
-    }
-
+    private ServiceTaskSpecContainerSpecHost() {}
     public String host() {
         return this.host;
     }
@@ -34,30 +27,32 @@ public final class ServiceTaskSpecContainerSpecHost {
     public static Builder builder(ServiceTaskSpecContainerSpecHost defaults) {
         return new Builder(defaults);
     }
-
+    @CustomType.Builder
     public static final class Builder {
         private String host;
         private String ip;
-
-        public Builder() {
-    	      // Empty
-        }
-
+        public Builder() {}
         public Builder(ServiceTaskSpecContainerSpecHost defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.host = defaults.host;
     	      this.ip = defaults.ip;
         }
 
+        @CustomType.Setter
         public Builder host(String host) {
             this.host = Objects.requireNonNull(host);
             return this;
         }
+        @CustomType.Setter
         public Builder ip(String ip) {
             this.ip = Objects.requireNonNull(ip);
             return this;
-        }        public ServiceTaskSpecContainerSpecHost build() {
-            return new ServiceTaskSpecContainerSpecHost(host, ip);
+        }
+        public ServiceTaskSpecContainerSpecHost build() {
+            final var o = new ServiceTaskSpecContainerSpecHost();
+            o.host = host;
+            o.ip = ip;
+            return o;
         }
     }
 }

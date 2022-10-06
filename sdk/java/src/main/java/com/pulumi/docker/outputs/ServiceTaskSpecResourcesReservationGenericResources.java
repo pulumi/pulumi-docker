@@ -11,17 +11,10 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceTaskSpecResourcesReservationGenericResources {
-    private final @Nullable List<String> discreteResourcesSpecs;
-    private final @Nullable List<String> namedResourcesSpecs;
+    private @Nullable List<String> discreteResourcesSpecs;
+    private @Nullable List<String> namedResourcesSpecs;
 
-    @CustomType.Constructor
-    private ServiceTaskSpecResourcesReservationGenericResources(
-        @CustomType.Parameter("discreteResourcesSpecs") @Nullable List<String> discreteResourcesSpecs,
-        @CustomType.Parameter("namedResourcesSpecs") @Nullable List<String> namedResourcesSpecs) {
-        this.discreteResourcesSpecs = discreteResourcesSpecs;
-        this.namedResourcesSpecs = namedResourcesSpecs;
-    }
-
+    private ServiceTaskSpecResourcesReservationGenericResources() {}
     public List<String> discreteResourcesSpecs() {
         return this.discreteResourcesSpecs == null ? List.of() : this.discreteResourcesSpecs;
     }
@@ -36,21 +29,18 @@ public final class ServiceTaskSpecResourcesReservationGenericResources {
     public static Builder builder(ServiceTaskSpecResourcesReservationGenericResources defaults) {
         return new Builder(defaults);
     }
-
+    @CustomType.Builder
     public static final class Builder {
         private @Nullable List<String> discreteResourcesSpecs;
         private @Nullable List<String> namedResourcesSpecs;
-
-        public Builder() {
-    	      // Empty
-        }
-
+        public Builder() {}
         public Builder(ServiceTaskSpecResourcesReservationGenericResources defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.discreteResourcesSpecs = defaults.discreteResourcesSpecs;
     	      this.namedResourcesSpecs = defaults.namedResourcesSpecs;
         }
 
+        @CustomType.Setter
         public Builder discreteResourcesSpecs(@Nullable List<String> discreteResourcesSpecs) {
             this.discreteResourcesSpecs = discreteResourcesSpecs;
             return this;
@@ -58,14 +48,19 @@ public final class ServiceTaskSpecResourcesReservationGenericResources {
         public Builder discreteResourcesSpecs(String... discreteResourcesSpecs) {
             return discreteResourcesSpecs(List.of(discreteResourcesSpecs));
         }
+        @CustomType.Setter
         public Builder namedResourcesSpecs(@Nullable List<String> namedResourcesSpecs) {
             this.namedResourcesSpecs = namedResourcesSpecs;
             return this;
         }
         public Builder namedResourcesSpecs(String... namedResourcesSpecs) {
             return namedResourcesSpecs(List.of(namedResourcesSpecs));
-        }        public ServiceTaskSpecResourcesReservationGenericResources build() {
-            return new ServiceTaskSpecResourcesReservationGenericResources(discreteResourcesSpecs, namedResourcesSpecs);
+        }
+        public ServiceTaskSpecResourcesReservationGenericResources build() {
+            final var o = new ServiceTaskSpecResourcesReservationGenericResources();
+            o.discreteResourcesSpecs = discreteResourcesSpecs;
+            o.namedResourcesSpecs = namedResourcesSpecs;
+            return o;
         }
     }
 }

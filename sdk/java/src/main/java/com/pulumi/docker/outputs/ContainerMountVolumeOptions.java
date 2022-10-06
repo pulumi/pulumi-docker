@@ -15,27 +15,16 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ContainerMountVolumeOptions {
-    private final @Nullable String driverName;
-    private final @Nullable Map<String,String> driverOptions;
+    private @Nullable String driverName;
+    private @Nullable Map<String,String> driverOptions;
     /**
      * @return User-defined key/value metadata
      * 
      */
-    private final @Nullable List<ContainerMountVolumeOptionsLabel> labels;
-    private final @Nullable Boolean noCopy;
+    private @Nullable List<ContainerMountVolumeOptionsLabel> labels;
+    private @Nullable Boolean noCopy;
 
-    @CustomType.Constructor
-    private ContainerMountVolumeOptions(
-        @CustomType.Parameter("driverName") @Nullable String driverName,
-        @CustomType.Parameter("driverOptions") @Nullable Map<String,String> driverOptions,
-        @CustomType.Parameter("labels") @Nullable List<ContainerMountVolumeOptionsLabel> labels,
-        @CustomType.Parameter("noCopy") @Nullable Boolean noCopy) {
-        this.driverName = driverName;
-        this.driverOptions = driverOptions;
-        this.labels = labels;
-        this.noCopy = noCopy;
-    }
-
+    private ContainerMountVolumeOptions() {}
     public Optional<String> driverName() {
         return Optional.ofNullable(this.driverName);
     }
@@ -60,17 +49,13 @@ public final class ContainerMountVolumeOptions {
     public static Builder builder(ContainerMountVolumeOptions defaults) {
         return new Builder(defaults);
     }
-
+    @CustomType.Builder
     public static final class Builder {
         private @Nullable String driverName;
         private @Nullable Map<String,String> driverOptions;
         private @Nullable List<ContainerMountVolumeOptionsLabel> labels;
         private @Nullable Boolean noCopy;
-
-        public Builder() {
-    	      // Empty
-        }
-
+        public Builder() {}
         public Builder(ContainerMountVolumeOptions defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.driverName = defaults.driverName;
@@ -79,14 +64,17 @@ public final class ContainerMountVolumeOptions {
     	      this.noCopy = defaults.noCopy;
         }
 
+        @CustomType.Setter
         public Builder driverName(@Nullable String driverName) {
             this.driverName = driverName;
             return this;
         }
+        @CustomType.Setter
         public Builder driverOptions(@Nullable Map<String,String> driverOptions) {
             this.driverOptions = driverOptions;
             return this;
         }
+        @CustomType.Setter
         public Builder labels(@Nullable List<ContainerMountVolumeOptionsLabel> labels) {
             this.labels = labels;
             return this;
@@ -94,11 +82,18 @@ public final class ContainerMountVolumeOptions {
         public Builder labels(ContainerMountVolumeOptionsLabel... labels) {
             return labels(List.of(labels));
         }
+        @CustomType.Setter
         public Builder noCopy(@Nullable Boolean noCopy) {
             this.noCopy = noCopy;
             return this;
-        }        public ContainerMountVolumeOptions build() {
-            return new ContainerMountVolumeOptions(driverName, driverOptions, labels, noCopy);
+        }
+        public ContainerMountVolumeOptions build() {
+            final var o = new ContainerMountVolumeOptions();
+            o.driverName = driverName;
+            o.driverOptions = driverOptions;
+            o.labels = labels;
+            o.noCopy = noCopy;
+            return o;
         }
     }
 }
