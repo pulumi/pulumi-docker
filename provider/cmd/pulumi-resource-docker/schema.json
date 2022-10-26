@@ -110,7 +110,8 @@
                     "type": "string"
                 },
                 "password": {
-                    "type": "string"
+                    "type": "string",
+                    "secret": true
                 },
                 "username": {
                     "type": "string"
@@ -977,7 +978,8 @@
                         "python": {
                             "mapCase": false
                         }
-                    }
+                    },
+                    "secret": true
                 },
                 "username": {
                     "type": "string",
@@ -1595,6 +1597,7 @@
                             "mapCase": false
                         }
                     },
+                    "secret": true,
                     "willReplaceOnChanges": true
                 },
                 "serverAddress": {
@@ -3052,6 +3055,29 @@
                 }
             },
             "type": "object"
+        },
+        "docker:index/registry:Registry": {
+            "description": "Describes a Docker container registry",
+            "properties": {
+                "password": {
+                    "type": "string",
+                    "description": "The password to authenticate to the registry"
+                },
+                "serverURL": {
+                    "type": "string",
+                    "description": "The URL of the Docker registry server"
+                },
+                "username": {
+                    "type": "string",
+                    "description": "The username to authenticate to the registry"
+                }
+            },
+            "type": "object",
+            "required": [
+                "serverURL",
+                "username",
+                "password"
+            ]
         }
     },
     "provider": {
@@ -3135,7 +3161,7 @@
     },
     "resources": {
         "docker:index/container:Container": {
-            "description": "\u003c!-- Bug: Type and Name are switched --\u003e\nManages the lifecycle of a Docker container.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\n// Find the latest Ubuntu precise image.\nconst ubuntuRemoteImage = new docker.RemoteImage(\"ubuntuRemoteImage\", {name: \"ubuntu:precise\"});\n// Start a container\nconst ubuntuContainer = new docker.Container(\"ubuntuContainer\", {image: ubuntuRemoteImage.imageId});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\n# Find the latest Ubuntu precise image.\nubuntu_remote_image = docker.RemoteImage(\"ubuntuRemoteImage\", name=\"ubuntu:precise\")\n# Start a container\nubuntu_container = docker.Container(\"ubuntuContainer\", image=ubuntu_remote_image.image_id)\n```\n```csharp\nusing System.Collections.Generic;\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nreturn await Deployment.RunAsync(() =\u003e \n{\n    // Find the latest Ubuntu precise image.\n    var ubuntuRemoteImage = new Docker.RemoteImage(\"ubuntuRemoteImage\", new()\n    {\n        Name = \"ubuntu:precise\",\n    });\n\n    // Start a container\n    var ubuntuContainer = new Docker.Container(\"ubuntuContainer\", new()\n    {\n        Image = ubuntuRemoteImage.ImageId,\n    });\n\n});\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v3/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\tubuntuRemoteImage, err := docker.NewRemoteImage(ctx, \"ubuntuRemoteImage\", \u0026docker.RemoteImageArgs{\n\t\t\tName: pulumi.String(\"ubuntu:precise\"),\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\t_, err = docker.NewContainer(ctx, \"ubuntuContainer\", \u0026docker.ContainerArgs{\n\t\t\tImage: ubuntuRemoteImage.ImageId,\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.RemoteImage;\nimport com.pulumi.docker.RemoteImageArgs;\nimport com.pulumi.docker.Container;\nimport com.pulumi.docker.ContainerArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var ubuntuRemoteImage = new RemoteImage(\"ubuntuRemoteImage\", RemoteImageArgs.builder()        \n            .name(\"ubuntu:precise\")\n            .build());\n\n        var ubuntuContainer = new Container(\"ubuntuContainer\", ContainerArgs.builder()        \n            .image(ubuntuRemoteImage.imageId())\n            .build());\n\n    }\n}\n```\n```yaml\nresources:\n  # Start a container\n  ubuntuContainer:\n    type: docker:Container\n    properties:\n      image: ${ubuntuRemoteImage.imageId}\n  # Find the latest Ubuntu precise image.\n  ubuntuRemoteImage:\n    type: docker:RemoteImage\n    properties:\n      name: ubuntu:precise\n```\n{{% /example %}}\n{{% /examples %}}\n\n## Import\n\n### Example Assuming you created a `container` as follows #!/bin/bash docker run --name foo -p8080:80 -d nginx\n\n# prints the container ID\n\n9a550c0f0163d39d77222d3efd58701b625d47676c25c686c95b5b92d1cba6fd you provide the definition for the resource as follows terraform resource \"docker_container\" \"foo\" {\n\n name\n\n= \"foo\"\n\n image = \"nginx\"\n\n ports {\n\n\n\n internal = \"80\"\n\n\n\n external = \"8080\"\n\n } } then the import command is as follows #!/bin/bash\n\n```sh\n $ pulumi import docker:index/container:Container foo 9a550c0f0163d39d77222d3efd58701b625d47676c25c686c95b5b92d1cba6fd\n```\n\n ",
+            "description": "\u003c!-- Bug: Type and Name are switched --\u003e\nManages the lifecycle of a Docker container.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\n// Find the latest Ubuntu precise image.\nconst ubuntuRemoteImage = new docker.RemoteImage(\"ubuntuRemoteImage\", {name: \"ubuntu:precise\"});\n// Start a container\nconst ubuntuContainer = new docker.Container(\"ubuntuContainer\", {image: ubuntuRemoteImage.imageId});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\n# Find the latest Ubuntu precise image.\nubuntu_remote_image = docker.RemoteImage(\"ubuntuRemoteImage\", name=\"ubuntu:precise\")\n# Start a container\nubuntu_container = docker.Container(\"ubuntuContainer\", image=ubuntu_remote_image.image_id)\n```\n```csharp\nusing System.Collections.Generic;\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nreturn await Deployment.RunAsync(() =\u003e \n{\n    // Find the latest Ubuntu precise image.\n    var ubuntuRemoteImage = new Docker.RemoteImage(\"ubuntuRemoteImage\", new()\n    {\n        Name = \"ubuntu:precise\",\n    });\n\n    // Start a container\n    var ubuntuContainer = new Docker.Container(\"ubuntuContainer\", new()\n    {\n        Image = ubuntuRemoteImage.ImageId,\n    });\n\n});\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v3/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\tubuntuRemoteImage, err := docker.NewRemoteImage(ctx, \"ubuntuRemoteImage\", \u0026docker.RemoteImageArgs{\n\t\t\tName: pulumi.String(\"ubuntu:precise\"),\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\t_, err = docker.NewContainer(ctx, \"ubuntuContainer\", \u0026docker.ContainerArgs{\n\t\t\tImage: ubuntuRemoteImage.ImageId,\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.RemoteImage;\nimport com.pulumi.docker.RemoteImageArgs;\nimport com.pulumi.docker.Container;\nimport com.pulumi.docker.ContainerArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var ubuntuRemoteImage = new RemoteImage(\"ubuntuRemoteImage\", RemoteImageArgs.builder()        \n            .name(\"ubuntu:precise\")\n            .build());\n\n        var ubuntuContainer = new Container(\"ubuntuContainer\", ContainerArgs.builder()        \n            .image(ubuntuRemoteImage.imageId())\n            .build());\n\n    }\n}\n```\n```yaml\nresources:\n  # Start a container\n  ubuntuContainer:\n    type: docker:Container\n    properties:\n      image: ${ubuntuRemoteImage.imageId}\n  # Find the latest Ubuntu precise image.\n  ubuntuRemoteImage:\n    type: docker:RemoteImage\n    properties:\n      name: ubuntu:precise\n```\n{{% /example %}}\n{{% /examples %}}\n\n## Import\n\n### Example Assuming you created a `container` as follows #!/bin/bash docker run --name foo -p8080:80 -d nginx\n\nprints the container ID\n\n9a550c0f0163d39d77222d3efd58701b625d47676c25c686c95b5b92d1cba6fd you provide the definition for the resource as follows terraform resource \"docker_container\" \"foo\" {\n\n name\n\n= \"foo\"\n\n image = \"nginx\"\n\n ports {\n\n\n\n internal = \"80\"\n\n\n\n external = \"8080\"\n\n } } then the import command is as follows #!/bin/bash\n\n```sh\n $ pulumi import docker:index/container:Container foo 9a550c0f0163d39d77222d3efd58701b625d47676c25c686c95b5b92d1cba6fd\n```\n\n ",
             "properties": {
                 "attach": {
                     "type": "boolean",
@@ -4290,8 +4316,74 @@
                 "type": "object"
             }
         },
+        "docker:index/image:Image": {
+            "description": "A real cruddy dicker image we hope",
+            "properties": {
+                "context": {
+                    "type": "string",
+                    "description": "The path to the build context to use."
+                },
+                "dockerfile": {
+                    "type": "string",
+                    "description": "The path to the Dockerfile to use."
+                },
+                "name": {
+                    "type": "string",
+                    "description": "The image name"
+                },
+                "registryURL": {
+                    "type": "string",
+                    "description": "The URL of the registry server hosting the image."
+                },
+                "tag": {
+                    "type": "string",
+                    "description": "The image tag.",
+                    "default": "latest"
+                }
+            },
+            "type": "object",
+            "required": [
+                "dockerfile",
+                "context",
+                "name",
+                "registryURL"
+            ],
+            "inputProperties": {
+                "context": {
+                    "type": "string",
+                    "description": "The path to the build context to use."
+                },
+                "dockerfile": {
+                    "type": "string",
+                    "description": "The path to the Dockerfile to use."
+                },
+                "name": {
+                    "type": "string",
+                    "description": "The image name"
+                },
+                "registry": {
+                    "type": "string",
+                    "$ref": "#/types/docker:index:registry",
+                    "description": "The registry to push the image to"
+                },
+                "registryURL": {
+                    "type": "string",
+                    "description": "The URL of the registry server hosting the image."
+                },
+                "tag": {
+                    "type": "string",
+                    "description": "The image tag.",
+                    "default": "latest"
+                }
+            },
+            "requiredInputs": [
+                "name",
+                "registryURL",
+                "registry"
+            ]
+        },
         "docker:index/network:Network": {
-            "description": "\u003c!-- Bug: Type and Name are switched --\u003e\n`docker.Network` provides a docker network resource.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst privateNetwork = new docker.Network(\"private_network\", {});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nprivate_network = docker.Network(\"privateNetwork\")\n```\n```csharp\nusing System.Collections.Generic;\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nreturn await Deployment.RunAsync(() =\u003e \n{\n    var privateNetwork = new Docker.Network(\"privateNetwork\");\n\n});\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v3/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := docker.NewNetwork(ctx, \"privateNetwork\", nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.Network;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var privateNetwork = new Network(\"privateNetwork\");\n\n    }\n}\n```\n```yaml\nresources:\n  privateNetwork:\n    type: docker:Network\n```\n{{% /example %}}\n{{% /examples %}}\n\n## Import\n\n### Example Assuming you created a `network` as follows #!/bin/bash docker network create foo # prints the long ID 87b57a9b91ecab2db2a6dbf38df74c67d7c7108cbe479d6576574ec2cd8c2d73 you provide the definition for the resource as follows terraform resource \"docker_network\" \"foo\" {\n\n name = \"foo\" } then the import command is as follows #!/bin/bash\n\n```sh\n $ pulumi import docker:index/network:Network foo 87b57a9b91ecab2db2a6dbf38df74c67d7c7108cbe479d6576574ec2cd8c2d73\n```\n\n ",
+            "description": "\u003c!-- Bug: Type and Name are switched --\u003e\n`docker.Network` provides a docker network resource.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst privateNetwork = new docker.Network(\"private_network\", {});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nprivate_network = docker.Network(\"privateNetwork\")\n```\n```csharp\nusing System.Collections.Generic;\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nreturn await Deployment.RunAsync(() =\u003e \n{\n    var privateNetwork = new Docker.Network(\"privateNetwork\");\n\n});\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v3/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := docker.NewNetwork(ctx, \"privateNetwork\", nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.Network;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var privateNetwork = new Network(\"privateNetwork\");\n\n    }\n}\n```\n```yaml\nresources:\n  privateNetwork:\n    type: docker:Network\n```\n{{% /example %}}\n{{% /examples %}}\n\n## Import\n\n### Example Assuming you created a `network` as follows #!/bin/bash docker network create foo prints the long ID 87b57a9b91ecab2db2a6dbf38df74c67d7c7108cbe479d6576574ec2cd8c2d73 you provide the definition for the resource as follows terraform resource \"docker_network\" \"foo\" {\n\n name = \"foo\" } then the import command is as follows #!/bin/bash\n\n```sh\n $ pulumi import docker:index/network:Network foo 87b57a9b91ecab2db2a6dbf38df74c67d7c7108cbe479d6576574ec2cd8c2d73\n```\n\n ",
             "properties": {
                 "attachable": {
                     "type": "boolean",
@@ -4903,11 +4995,12 @@
             }
         },
         "docker:index/secret:Secret": {
-            "description": "\n\n\n## Import\n\n#!/bin/bash # Docker secret cannot be imported as the secret data, once set, is never exposed again. ",
+            "description": "\n\n\n## Import\n\n#!/bin/bash Docker secret cannot be imported as the secret data, once set, is never exposed again. ",
             "properties": {
                 "data": {
                     "type": "string",
-                    "description": "Base64-url-safe-encoded secret data\n"
+                    "description": "Base64-url-safe-encoded secret data\n",
+                    "secret": true
                 },
                 "labels": {
                     "type": "array",
@@ -4929,6 +5022,7 @@
                 "data": {
                     "type": "string",
                     "description": "Base64-url-safe-encoded secret data\n",
+                    "secret": true,
                     "willReplaceOnChanges": true
                 },
                 "labels": {
@@ -4954,6 +5048,7 @@
                     "data": {
                         "type": "string",
                         "description": "Base64-url-safe-encoded secret data\n",
+                        "secret": true,
                         "willReplaceOnChanges": true
                     },
                     "labels": {
@@ -4974,7 +5069,7 @@
             }
         },
         "docker:index/service:Service": {
-            "description": "\n\n\n## Import\n\n### Example Assuming you created a `service` as follows #!/bin/bash docker service create --name foo -p 8080:80 nginx # prints th ID 4pcphbxkfn2rffhbhe6czytgi you provide the definition for the resource as follows terraform resource \"docker_service\" \"foo\" {\n\n name = \"foo\"\n\n task_spec {\n\n\n\n container_spec {\n\n\n\n\n\n image = \"nginx\"\n\n\n\n }\n\n }\n\n endpoint_spec {\n\n\n\n ports {\n\n\n\n\n\n target_port\n\n\n\n= \"80\"\n\n\n\n\n\n published_port = \"8080\"\n\n\n\n }\n\n } } then the import command is as follows #!/bin/bash\n\n```sh\n $ pulumi import docker:index/service:Service foo 4pcphbxkfn2rffhbhe6czytgi\n```\n\n ",
+            "description": "\n\n\n## Import\n\n### Example Assuming you created a `service` as follows #!/bin/bash docker service create --name foo -p 8080:80 nginx prints th ID 4pcphbxkfn2rffhbhe6czytgi you provide the definition for the resource as follows terraform resource \"docker_service\" \"foo\" {\n\n name = \"foo\"\n\n task_spec {\n\n\n\n container_spec {\n\n\n\n\n\n image = \"nginx\"\n\n\n\n }\n\n }\n\n endpoint_spec {\n\n\n\n ports {\n\n\n\n\n\n target_port\n\n\n\n= \"80\"\n\n\n\n\n\n published_port = \"8080\"\n\n\n\n }\n\n } } then the import command is as follows #!/bin/bash\n\n```sh\n $ pulumi import docker:index/service:Service foo 4pcphbxkfn2rffhbhe6czytgi\n```\n\n ",
             "properties": {
                 "auth": {
                     "$ref": "#/types/docker:index/ServiceAuth:ServiceAuth",
@@ -5120,7 +5215,7 @@
             }
         },
         "docker:index/serviceConfig:ServiceConfig": {
-            "description": "\n\n\n## Import\n\n### Example Assuming you created a `config` as follows #!/bin/bash printf '{\"a\":\"b\"}' | docker config create foo - # prints the id\n\n08c26c477474478d971139f750984775a7f019dbe8a2e7f09d66a187c009e66d you provide the definition for the resource as follows terraform resource \"docker_config\" \"foo\" {\n\n name = \"foo\"\n\n data = base64encode(\"{\\\"a\\\"\\\"b\\\"}\") } then the import command is as follows #!/bin/bash\n\n```sh\n $ pulumi import docker:index/serviceConfig:ServiceConfig foo 08c26c477474478d971139f750984775a7f019dbe8a2e7f09d66a187c009e66d\n```\n\n ",
+            "description": "\n\n\n## Import\n\n### Example Assuming you created a `config` as follows #!/bin/bash printf '{\"a\":\"b\"}' | docker config create foo - prints the id\n\n08c26c477474478d971139f750984775a7f019dbe8a2e7f09d66a187c009e66d you provide the definition for the resource as follows terraform resource \"docker_config\" \"foo\" {\n\n name = \"foo\"\n\n data = base64encode(\"{\\\"a\\\"\\\"b\\\"}\") } then the import command is as follows #!/bin/bash\n\n```sh\n $ pulumi import docker:index/serviceConfig:ServiceConfig foo 08c26c477474478d971139f750984775a7f019dbe8a2e7f09d66a187c009e66d\n```\n\n ",
             "properties": {
                 "data": {
                     "type": "string",
@@ -5226,7 +5321,7 @@
             }
         },
         "docker:index/volume:Volume": {
-            "description": "\u003c!-- Bug: Type and Name are switched --\u003e\nCreates and destroys a volume in Docker. This can be used alongside docker.Container to prepare volumes that can be shared across containers.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst sharedVolume = new docker.Volume(\"shared_volume\", {});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nshared_volume = docker.Volume(\"sharedVolume\")\n```\n```csharp\nusing System.Collections.Generic;\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nreturn await Deployment.RunAsync(() =\u003e \n{\n    var sharedVolume = new Docker.Volume(\"sharedVolume\");\n\n});\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v3/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := docker.NewVolume(ctx, \"sharedVolume\", nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.Volume;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var sharedVolume = new Volume(\"sharedVolume\");\n\n    }\n}\n```\n```yaml\nresources:\n  sharedVolume:\n    type: docker:Volume\n```\n{{% /example %}}\n{{% /examples %}}\n\n## Import\n\n### Example Assuming you created a `volume` as follows #!/bin/bash docker volume create # prints the long ID 524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d you provide the definition for the resource as follows terraform resource \"docker_volume\" \"foo\" {\n\n name = \"524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d\" } then the import command is as follows #!/bin/bash\n\n```sh\n $ pulumi import docker:index/volume:Volume foo 524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d\n```\n\n ",
+            "description": "\u003c!-- Bug: Type and Name are switched --\u003e\nCreates and destroys a volume in Docker. This can be used alongside docker.Container to prepare volumes that can be shared across containers.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst sharedVolume = new docker.Volume(\"shared_volume\", {});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nshared_volume = docker.Volume(\"sharedVolume\")\n```\n```csharp\nusing System.Collections.Generic;\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nreturn await Deployment.RunAsync(() =\u003e \n{\n    var sharedVolume = new Docker.Volume(\"sharedVolume\");\n\n});\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v3/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := docker.NewVolume(ctx, \"sharedVolume\", nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.Volume;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var sharedVolume = new Volume(\"sharedVolume\");\n\n    }\n}\n```\n```yaml\nresources:\n  sharedVolume:\n    type: docker:Volume\n```\n{{% /example %}}\n{{% /examples %}}\n\n## Import\n\n### Example Assuming you created a `volume` as follows #!/bin/bash docker volume create prints the long ID 524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d you provide the definition for the resource as follows terraform resource \"docker_volume\" \"foo\" {\n\n name = \"524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d\" } then the import command is as follows #!/bin/bash\n\n```sh\n $ pulumi import docker:index/volume:Volume foo 524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d\n```\n\n ",
             "properties": {
                 "driver": {
                     "type": "string",

@@ -16,6 +16,7 @@ package provider
 
 import (
 	"fmt"
+	"github.com/pulumi/pulumi/pkg/v3/codegen/schema"
 	"path/filepath"
 	"unicode"
 
@@ -112,6 +113,95 @@ func Provider() tfbridge.ProviderInfo {
 			"docker_plugin":         {Tok: dockerResource(dockerMod, "Plugin")},
 			"docker_tag":            {Tok: dockerResource(dockerMod, "Tag")},
 		},
+		ExtraTypes: map[string]schema.ComplexTypeSpec{
+			dockerResource(dockerMod, "Registry").String(): {
+				ObjectTypeSpec: schema.ObjectTypeSpec{
+					Type:        "object",
+					Description: "Describes a Docker container registry",
+					Properties: map[string]schema.PropertySpec{
+						"serverURL": {
+							Description: "The URL of the Docker registry server",
+							TypeSpec:    schema.TypeSpec{Type: "string"},
+						},
+						"username": {
+							Description: "The username to authenticate to the registry",
+							TypeSpec:    schema.TypeSpec{Type: "string"},
+						},
+
+						"password": {
+							Description: "The password to authenticate to the registry",
+							TypeSpec:    schema.TypeSpec{Type: "string"},
+						},
+					},
+					Required: []string{"serverURL", "username", "password"},
+				},
+			},
+		},
+		ExtraResources: map[string]schema.ResourceSpec{
+			dockerResource(dockerMod, "Image").String(): {
+				ObjectTypeSpec: schema.ObjectTypeSpec{
+					Type:        "object",
+					Description: "A real cruddy dicker image we hope",
+					Properties: map[string]schema.PropertySpec{
+						"dockerfile": {
+							Description: "The path to the Dockerfile to use.",
+							TypeSpec:    schema.TypeSpec{Type: "string"},
+						},
+						"context": {
+							Description: "The path to the build context to use.",
+							TypeSpec:    schema.TypeSpec{Type: "string"},
+						},
+						"name": {
+							Description: "The image name",
+							TypeSpec:    schema.TypeSpec{Type: "string"},
+						},
+						"registryURL": {
+							Description: "The URL of the registry server hosting the image.",
+							TypeSpec:    schema.TypeSpec{Type: "string"},
+						},
+						"tag": {
+							Description: "The image tag.",
+							Default:     "latest",
+							TypeSpec:    schema.TypeSpec{Type: "string"},
+						},
+					},
+					Required: []string{"dockerfile", "context", "name", "registryURL"},
+				},
+				IsComponent: false,
+				InputProperties: map[string]schema.PropertySpec{
+					"dockerfile": {
+						Description: "The path to the Dockerfile to use.",
+						TypeSpec:    schema.TypeSpec{Type: "string"},
+					},
+					"context": {
+						Description: "The path to the build context to use.",
+						TypeSpec:    schema.TypeSpec{Type: "string"},
+					},
+					"name": {
+						Description: "The image name",
+						TypeSpec:    schema.TypeSpec{Type: "string"},
+					},
+					"registryURL": {
+						Description: "The URL of the registry server hosting the image.",
+						TypeSpec:    schema.TypeSpec{Type: "string"},
+					},
+					"tag": {
+						Description: "The image tag.",
+						Default:     "latest",
+						TypeSpec:    schema.TypeSpec{Type: "string"},
+					},
+					"registry": {
+						Description: "The registry to push the image to",
+						TypeSpec: schema.TypeSpec{
+							Type: "string",
+							Ref:  "#/types/docker:index:registry",
+						},
+					},
+				},
+				RequiredInputs: []string{"name", "registryURL", "registry"},
+			},
+		},
+
 		DataSources: map[string]*tfbridge.DataSourceInfo{
 			"docker_network":        {Tok: dockerDataSource(dockerMod, "getNetwork")},
 			"docker_registry_image": {Tok: dockerDataSource(dockerMod, "getRegistryImage")},
