@@ -236,7 +236,7 @@ async def build_and_push_image(
     if pull_from_cache:
         _cache_from_param = CacheFrom() if isinstance(path_or_build.cache_from, bool) else path_or_build.cache_from
         cache_from_param = _cache_from_param if _cache_from_param else CacheFrom()
-        cache_from = pull_cache(base_image_name, cache_from_param, repository_url, log_resource)
+        cache_from = await pull_cache(base_image_name, cache_from_param, repository_url, log_resource)
 
     # Next, build the image.
     log_ephemeral(f"Building image '{ path_or_build if isinstance(path_or_build, str) else path_or_build.context or '.'}'...", log_resource)
