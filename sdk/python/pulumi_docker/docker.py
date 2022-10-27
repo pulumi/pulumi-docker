@@ -526,7 +526,7 @@ async def login_to_registry(registry: Registry, log_resource: pulumi.Resource):
         # An existing login wasn't found; WARNING: we must not await anything between this check
         # for existing logins, and appending our new login attempt, otherwise an async interleaving
         # could sneak in, log into the same server, and yield a redundant login (which will error out).
-        docker_password_stdin = use_docker_password_stdin(log_resource)
+        docker_password_stdin = await use_docker_password_stdin(log_resource)
 
         # pass 'report_full_command_line: false' here so that if we fail to login we don't emit the
         # username/password in our logs.  Instead, we'll just say "'docker login' failed with code ..."
