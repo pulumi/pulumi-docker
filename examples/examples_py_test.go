@@ -17,7 +17,6 @@
 package examples
 
 import (
-	"fmt"
 	"os"
 	"path"
 	"testing"
@@ -25,23 +24,23 @@ import (
 	"github.com/pulumi/pulumi/pkg/v3/testing/integration"
 )
 
-func TestAwsPy(t *testing.T) {
-	region := os.Getenv("AWS_REGION")
-	if region == "" {
-		t.Skipf("Skipping test due to missing AWS_REGION environment variable")
-	}
-	fmt.Printf("AWS Region: %v\n", region)
-
-	test := getPyOptions(t).
-		With(integration.ProgramTestOptions{
-			Config: map[string]string{
-				"aws:region": region,
-			},
-			Dir: path.Join(getCwd(t), "aws-py"),
-		})
-
-	integration.ProgramTest(t, &test)
-}
+//func TestAwsPy(t *testing.T) {
+//	region := os.Getenv("AWS_REGION")
+//	if region == "" {
+//		t.Skipf("Skipping test due to missing AWS_REGION environment variable")
+//	}
+//	fmt.Printf("AWS Region: %v\n", region)
+//
+//	test := getPyOptions(t).
+//		With(integration.ProgramTestOptions{
+//			Config: map[string]string{
+//				"aws:region": region,
+//			},
+//			Dir: path.Join(getCwd(t), "aws-py"),
+//		})
+//
+//	integration.ProgramTest(t, &test)
+//}
 
 func TestAzurePy(t *testing.T) {
 	location := os.Getenv("AZURE_LOCATION")
@@ -69,15 +68,15 @@ func TestNginxPy(t *testing.T) {
 	integration.ProgramTest(t, &test)
 }
 
-func TestDockerfilePy(t *testing.T) {
-	test := getPyOptions(t).
-		With(integration.ProgramTestOptions{
-			Dir:                    path.Join(getCwd(t), "dockerfile-py"),
-			ExtraRuntimeValidation: dockerFileWithDependenciesOutputValidation,
-		})
-
-	integration.ProgramTest(t, &test)
-}
+//func TestDockerfilePy(t *testing.T) {
+//	test := getPyOptions(t).
+//		With(integration.ProgramTestOptions{
+//			Dir:                    path.Join(getCwd(t), "dockerfile-py"),
+//			ExtraRuntimeValidation: dockerFileWithDependenciesOutputValidation,
+//		})
+//
+//	integration.ProgramTest(t, &test)
+//}
 
 func getPyOptions(t *testing.T) integration.ProgramTestOptions {
 	base := getBaseOptions()
