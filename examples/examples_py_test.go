@@ -26,6 +26,7 @@ import (
 )
 
 func TestAwsPy(t *testing.T) {
+	t.Skipf("https://github.com/pulumi/pulumi-docker/issues/411")
 	region := os.Getenv("AWS_REGION")
 	if region == "" {
 		t.Skipf("Skipping test due to missing AWS_REGION environment variable")
@@ -70,6 +71,7 @@ func TestNginxPy(t *testing.T) {
 }
 
 func TestDockerfilePy(t *testing.T) {
+	t.Skipf("https://github.com/pulumi/pulumi-docker/issues/411")
 	test := getPyOptions(t).
 		With(integration.ProgramTestOptions{
 			Dir:                    path.Join(getCwd(t), "dockerfile-py"),
