@@ -218,13 +218,13 @@ func Provider() tfbridge.ProviderInfo {
 				"@types/node":   "^10.0.0",
 				"@types/semver": "^5.4.0",
 			},
-			Overlay: &tfbridge.OverlayInfo{
-				DestFiles: []string{
-					"docker.ts",
-					"image.ts",
-					"utils.ts",
-				},
-			},
+			//Overlay: &tfbridge.OverlayInfo{
+			//	DestFiles: []string{
+			//		"docker.ts",
+			//		"image.ts",
+			//		"utils.ts",
+			//	},
+			//},
 		},
 		Python: &tfbridge.PythonInfo{
 			Requires: map[string]string{
