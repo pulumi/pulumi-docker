@@ -141,7 +141,7 @@ func Provider() tfbridge.ProviderInfo {
 			dockerResource(dockerMod, "Image").String(): {
 				ObjectTypeSpec: schema.ObjectTypeSpec{
 					Type:        "object",
-					Description: "A real cruddy dicker image we hope",
+					Description: "A real CRUD docker image we hope",
 					Properties: map[string]schema.PropertySpec{
 						"dockerfile": {
 							Description: "The path to the Dockerfile to use.",
