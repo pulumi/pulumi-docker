@@ -4353,7 +4353,7 @@
             }
         },
         "docker:index/image:Image": {
-            "description": "A real cruddy dicker image we hope",
+            "description": "A real CRUDdy docker image we hope",
             "properties": {
                 "context": {
                     "type": "string",
