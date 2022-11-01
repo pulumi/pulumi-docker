@@ -4353,7 +4353,7 @@
             }
         },
         "docker:index/image:Image": {
-            "description": "A real CRUDdy docker image we hope",
+            "description": "A real CRUD docker image we hope",
             "properties": {
                 "context": {
                     "type": "string",
@@ -4398,8 +4398,7 @@
                     "description": "The image name"
                 },
                 "registry": {
-                    "type": "string",
-                    "$ref": "#/types/docker:index:registry",
+                    "$ref": "#/types/docker:index/registry:Registry",
                     "description": "The registry to push the image to"
                 },
                 "registryURL": {

@@ -193,8 +193,7 @@ func Provider() tfbridge.ProviderInfo {
 					"registry": {
 						Description: "The registry to push the image to",
 						TypeSpec: schema.TypeSpec{
-							Type: "string",
-							Ref:  "#/types/docker:index:registry",
+							Ref: "#/types/docker:index/registry:Registry",
 						},
 					},
 				},
