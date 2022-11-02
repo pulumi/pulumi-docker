@@ -27,12 +27,8 @@ var pulumiSchema []byte
 var providerName = "docker"
 
 func main() {
-
-	provider.Serve(providerName, version.Version, pulumiSchema)
-	// TODO: intercept the native resources here
 	// Instead of calling tfbridge.Main, as is customary for bridged providers,
-	// implement all calls separately so that we can apply native vs bridged logic at every RPC call
-	//
-	//tfbridge.Main("docker", version.Version, docker.Provider(), pulumiSchema)
-
+	// in this provider we implement all calls
+	// so that we can apply native vs bridged logic at every RPC call
+	provider.Serve(providerName, version.Version, pulumiSchema)
 }

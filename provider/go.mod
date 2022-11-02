@@ -3,9 +3,13 @@ module github.com/pulumi/pulumi-docker/provider/v3
 go 1.19
 
 require (
+	github.com/golang/protobuf v1.5.2
 	github.com/pulumi/pulumi-terraform-bridge/v3 v3.33.0
+	github.com/pulumi/pulumi/pkg/v3 v3.44.2
 	github.com/pulumi/pulumi/sdk/v3 v3.44.2
 	github.com/terraform-providers/terraform-provider-docker/shim v0.0.0
+	google.golang.org/grpc v1.49.0
+	google.golang.org/protobuf v1.28.1
 )
 
 replace (
@@ -106,7 +110,6 @@ require (
 	github.com/golang-jwt/jwt/v4 v4.4.2 // indirect
 	github.com/golang/glog v1.0.0 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
-	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
@@ -196,7 +199,6 @@ require (
 	github.com/posener/complete v1.2.3 // indirect
 	github.com/pulumi/pulumi-java/pkg v0.6.0 // indirect
 	github.com/pulumi/pulumi-yaml v0.5.10 // indirect
-	github.com/pulumi/pulumi/pkg/v3 v3.44.2 // indirect
 	github.com/pulumi/schema-tools v0.1.0 // indirect
 	github.com/pulumi/terraform-diff-reader v0.0.0-20201211191010-ad4715e9285e // indirect
 	github.com/rivo/uniseg v0.2.0 // indirect
@@ -249,8 +251,6 @@ require (
 	google.golang.org/api v0.91.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/genproto v0.0.0-20220802133213-ce4fa296bf78 // indirect
-	google.golang.org/grpc v1.49.0 // indirect
-	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/AlecAivazis/survey.v1 v1.8.9-0.20200217094205-6773bdf39b7f // indirect
 	gopkg.in/square/go-jose.v2 v2.6.0 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
