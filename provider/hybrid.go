@@ -20,6 +20,9 @@ type dockerHybridProvider struct {
 	nativeProvider  rpc.ResourceProviderServer
 }
 
+// Track a list of native resource tokens
+var dockerImageToken = "docker:index/image:Image"
+
 // gRPC methods for the hybrid provider
 
 func (dp dockerHybridProvider) Attach(ctx context.Context, attach *rpc.PluginAttach) (*emptypb.Empty, error) {

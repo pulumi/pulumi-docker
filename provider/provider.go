@@ -15,9 +15,6 @@ import (
 	"sync"
 )
 
-// Track a list of native resource tokens
-var dockerImageToken = "index/image.Image"
-
 type dockerNativeProvider struct {
 	host        *provider.HostClient
 	name        string
