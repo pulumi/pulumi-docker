@@ -217,24 +217,10 @@ func Provider() tfbridge.ProviderInfo {
 				"@types/node":   "^10.0.0",
 				"@types/semver": "^5.4.0",
 			},
-			//Overlay: &tfbridge.OverlayInfo{
-			//	DestFiles: []string{
-			//		"docker.ts",
-			//		"image.ts",
-			//		"utils.ts",
-			//	},
-			//},
 		},
 		Python: &tfbridge.PythonInfo{
 			Requires: map[string]string{
 				"pulumi": ">=3.0.0,<4.0.0",
-			},
-			Overlay: &tfbridge.OverlayInfo{
-				DestFiles: []string{
-					"pulumi_docker/docker.py",
-					"pulumi_docker/image.py",
-					"pulumi_docker/utils.py",
-				},
 			},
 		},
 		Golang: &tfbridge.GolangInfo{
@@ -252,14 +238,6 @@ func Provider() tfbridge.ProviderInfo {
 			},
 			Namespaces: map[string]string{
 				dockerPkg: "Docker",
-			},
-			Overlay: &tfbridge.OverlayInfo{
-				DestFiles: []string{
-					"Docker.cs",
-					"Image.cs",
-					"Extensions.cs",
-					"Utils.cs",
-				},
 			},
 		},
 	}
