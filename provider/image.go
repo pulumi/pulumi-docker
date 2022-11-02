@@ -77,7 +77,7 @@ func (p *dockerNativeProvider) dockerBuildGo(ctx context.Context,
 	// make the build options
 	opts := types.ImageBuildOptions{
 		Dockerfile: dockerfile,
-		Tags:       []string{"gsaenger/" + imageName}, // TODO: definitely do not hardcode this - must be the registry namespace, for dockerhub this is the username
+		Tags:       []string{username + imageName},
 		Remove:     true,
 	}
 
