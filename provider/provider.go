@@ -123,21 +123,8 @@ func (p *dockerNativeProvider) Create(ctx context.Context, req *rpc.CreateReques
 	label := fmt.Sprintf("%s.Create(%s)", p.name, urn)
 	logging.V(9).Infof("%s executing", label)
 
-	// TODO: this Create is really only targeting Image at the moment
-	//inputs, err := plugin.UnmarshalProperties(req.GetProperties(), plugin.MarshalOptions{KeepUnknowns: true, SkipNulls: true})
-	//if err != nil {
-	//	return nil, err
-	//}
-	//
-
-	outputProperties, err := p.dockerBuildGo(ctx, urn, req.GetProperties())
-	if err != nil {
-		return nil, err
-	}
-	return &rpc.CreateResponse{
-		Id:         "ignored",
-		Properties: outputProperties,
-	}, nil
+	msg := fmt.Sprintf("Create is not yet implemented for %s", urn.Type())
+	return nil, status.Error(codes.Unimplemented, msg)
 
 }
 
