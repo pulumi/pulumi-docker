@@ -10,7 +10,6 @@ export type Container = import("./container").Container;
 export const Container: typeof import("./container").Container = null as any;
 utilities.lazyLoad(exports, ["Container"], () => require("./container"));
 
-export * from "./docker";
 export { GetLogsArgs, GetLogsResult, GetLogsOutputArgs } from "./getLogs";
 export const getLogs: typeof import("./getLogs").getLogs = null as any;
 export const getLogsOutput: typeof import("./getLogs").getLogsOutput = null as any;
@@ -36,7 +35,12 @@ export const getRemoteImage: typeof import("./getRemoteImage").getRemoteImage = 
 export const getRemoteImageOutput: typeof import("./getRemoteImage").getRemoteImageOutput = null as any;
 utilities.lazyLoad(exports, ["getRemoteImage","getRemoteImageOutput"], () => require("./getRemoteImage"));
 
-export * from "./image";
+
+export { ImageArgs } from "./image";
+export type Image = import("./image").Image;
+export const Image: typeof import("./image").Image = null as any;
+utilities.lazyLoad(exports, ["Image"], () => require("./image"));
+
 export { NetworkArgs, NetworkState } from "./network";
 export type Network = import("./network").Network;
 export const Network: typeof import("./network").Network = null as any;
@@ -82,12 +86,10 @@ export type Tag = import("./tag").Tag;
 export const Tag: typeof import("./tag").Tag = null as any;
 utilities.lazyLoad(exports, ["Tag"], () => require("./tag"));
 
-export * from "./utils";
 export { VolumeArgs, VolumeState } from "./volume";
 export type Volume = import("./volume").Volume;
 export const Volume: typeof import("./volume").Volume = null as any;
 utilities.lazyLoad(exports, ["Volume"], () => require("./volume"));
-
 
 // Export sub-modules:
 import * as config from "./config";
@@ -104,6 +106,8 @@ const _module = {
         switch (type) {
             case "docker:index/container:Container":
                 return new Container(name, <any>undefined, { urn })
+            case "docker:index/image:Image":
+                return new Image(name, <any>undefined, { urn })
             case "docker:index/network:Network":
                 return new Network(name, <any>undefined, { urn })
             case "docker:index/plugin:Plugin":
@@ -128,6 +132,7 @@ const _module = {
     },
 };
 pulumi.runtime.registerResourceModule("docker", "index/container", _module)
+pulumi.runtime.registerResourceModule("docker", "index/image", _module)
 pulumi.runtime.registerResourceModule("docker", "index/network", _module)
 pulumi.runtime.registerResourceModule("docker", "index/plugin", _module)
 pulumi.runtime.registerResourceModule("docker", "index/registryImage", _module)

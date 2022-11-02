@@ -69,6 +69,7 @@ __all__ = [
     'ServiceTaskSpecRestartPolicyArgs',
     'ServiceUpdateConfigArgs',
     'VolumeLabelArgs',
+    'RegistryArgs',
 ]
 
 @pulumi.input_type
@@ -4021,5 +4022,58 @@ class VolumeLabelArgs:
     @value.setter
     def value(self, value: pulumi.Input[str]):
         pulumi.set(self, "value", value)
+
+
+@pulumi.input_type
+class RegistryArgs:
+    def __init__(__self__, *,
+                 password: pulumi.Input[str],
+                 server_url: pulumi.Input[str],
+                 username: pulumi.Input[str]):
+        """
+        Describes a Docker container registry
+        :param pulumi.Input[str] password: The password to authenticate to the registry
+        :param pulumi.Input[str] server_url: The URL of the Docker registry server
+        :param pulumi.Input[str] username: The username to authenticate to the registry
+        """
+        pulumi.set(__self__, "password", password)
+        pulumi.set(__self__, "server_url", server_url)
+        pulumi.set(__self__, "username", username)
+
+    @property
+    @pulumi.getter
+    def password(self) -> pulumi.Input[str]:
+        """
+        The password to authenticate to the registry
+        """
+        return pulumi.get(self, "password")
+
+    @password.setter
+    def password(self, value: pulumi.Input[str]):
+        pulumi.set(self, "password", value)
+
+    @property
+    @pulumi.getter(name="serverURL")
+    def server_url(self) -> pulumi.Input[str]:
+        """
+        The URL of the Docker registry server
+        """
+        return pulumi.get(self, "server_url")
+
+    @server_url.setter
+    def server_url(self, value: pulumi.Input[str]):
+        pulumi.set(self, "server_url", value)
+
+    @property
+    @pulumi.getter
+    def username(self) -> pulumi.Input[str]:
+        """
+        The username to authenticate to the registry
+        """
+        return pulumi.get(self, "username")
+
+    @username.setter
+    def username(self, value: pulumi.Input[str]):
+        pulumi.set(self, "username", value)
 
 

@@ -311,6 +311,24 @@ export interface ProviderRegistryAuth {
     username?: pulumi.Input<string>;
 }
 
+/**
+ * Describes a Docker container registry
+ */
+export interface Registry {
+    /**
+     * The password to authenticate to the registry
+     */
+    password: pulumi.Input<string>;
+    /**
+     * The URL of the Docker registry server
+     */
+    serverURL: pulumi.Input<string>;
+    /**
+     * The username to authenticate to the registry
+     */
+    username: pulumi.Input<string>;
+}
+
 export interface RegistryImageBuild {
     /**
      * The configuration for the authentication
