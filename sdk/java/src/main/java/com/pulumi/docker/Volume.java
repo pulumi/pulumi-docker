@@ -51,7 +51,7 @@ import javax.annotation.Nullable;
  * 
  * ## Import
  * 
- * ### Example Assuming you created a `volume` as follows #!/bin/bash docker volume create # prints the long ID 524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d you provide the definition for the resource as follows terraform resource &#34;docker_volume&#34; &#34;foo&#34; {
+ * ### Example Assuming you created a `volume` as follows #!/bin/bash docker volume create prints the long ID 524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d you provide the definition for the resource as follows terraform resource &#34;docker_volume&#34; &#34;foo&#34; {
  * 
  *  name = &#34;524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d&#34; } then the import command is as follows #!/bin/bash
  * 

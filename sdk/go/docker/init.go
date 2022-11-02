@@ -22,6 +22,8 @@ func (m *module) Construct(ctx *pulumi.Context, name, typ, urn string) (r pulumi
 	switch typ {
 	case "docker:index/container:Container":
 		r = &Container{}
+	case "docker:index/image:Image":
+		r = &Image{}
 	case "docker:index/network:Network":
 		r = &Network{}
 	case "docker:index/plugin:Plugin":
@@ -71,6 +73,11 @@ func init() {
 	pulumi.RegisterResourceModule(
 		"docker",
 		"index/container",
+		&module{version},
+	)
+	pulumi.RegisterResourceModule(
+		"docker",
+		"index/image",
 		&module{version},
 	)
 	pulumi.RegisterResourceModule(

@@ -2,7 +2,8 @@
 // *** Do not edit by hand unless you're certain you know what you are doing! ***
 
 import * as pulumi from "@pulumi/pulumi";
-import { input as inputs, output as outputs } from "../types";
+import * as inputs from "../types/input";
+import * as outputs from "../types/output";
 
 export interface ContainerCapabilities {
     /**
@@ -308,6 +309,24 @@ export interface ProviderRegistryAuth {
     configFileContent?: pulumi.Input<string>;
     password?: pulumi.Input<string>;
     username?: pulumi.Input<string>;
+}
+
+/**
+ * Describes a Docker container registry
+ */
+export interface Registry {
+    /**
+     * The password to authenticate to the registry
+     */
+    password: pulumi.Input<string>;
+    /**
+     * The URL of the Docker registry server
+     */
+    serverURL: pulumi.Input<string>;
+    /**
+     * The username to authenticate to the registry
+     */
+    username: pulumi.Input<string>;
 }
 
 export interface RegistryImageBuild {

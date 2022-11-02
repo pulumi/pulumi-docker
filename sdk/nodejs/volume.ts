@@ -2,7 +2,8 @@
 // *** Do not edit by hand unless you're certain you know what you are doing! ***
 
 import * as pulumi from "@pulumi/pulumi";
-import { input as inputs, output as outputs } from "./types";
+import * as inputs from "./types/input";
+import * as outputs from "./types/output";
 import * as utilities from "./utilities";
 
 /**
@@ -20,7 +21,7 @@ import * as utilities from "./utilities";
  *
  * ## Import
  *
- * ### Example Assuming you created a `volume` as follows #!/bin/bash docker volume create # prints the long ID 524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d you provide the definition for the resource as follows terraform resource "docker_volume" "foo" {
+ * ### Example Assuming you created a `volume` as follows #!/bin/bash docker volume create prints the long ID 524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d you provide the definition for the resource as follows terraform resource "docker_volume" "foo" {
  *
  *  name = "524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d" } then the import command is as follows #!/bin/bash
  *

@@ -7,79 +7,102 @@ import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Export;
 import com.pulumi.core.annotations.ResourceType;
 import com.pulumi.core.internal.Codegen;
-import com.pulumi.docker.SecretArgs;
+import com.pulumi.docker.ImageArgs;
 import com.pulumi.docker.Utilities;
-import com.pulumi.docker.inputs.SecretState;
-import com.pulumi.docker.outputs.SecretLabel;
 import java.lang.String;
-import java.util.List;
 import java.util.Optional;
 import javax.annotation.Nullable;
 
 /**
- * ## Import
- * 
- * #!/bin/bash Docker secret cannot be imported as the secret data, once set, is never exposed again.
+ * A real CRUD docker image we hope
  * 
  */
-@ResourceType(type="docker:index/secret:Secret")
-public class Secret extends com.pulumi.resources.CustomResource {
+@ResourceType(type="docker:index/image:Image")
+public class Image extends com.pulumi.resources.CustomResource {
     /**
-     * Base64-url-safe-encoded secret data
+     * The path to the build context to use.
      * 
      */
-    @Export(name="data", type=String.class, parameters={})
-    private Output<String> data;
+    @Export(name="context", type=String.class, parameters={})
+    private Output<String> context;
 
     /**
-     * @return Base64-url-safe-encoded secret data
+     * @return The path to the build context to use.
      * 
      */
-    public Output<String> data() {
-        return this.data;
+    public Output<String> context() {
+        return this.context;
     }
     /**
-     * User-defined key/value metadata
+     * The path to the Dockerfile to use.
      * 
      */
-    @Export(name="labels", type=List.class, parameters={SecretLabel.class})
-    private Output</* @Nullable */ List<SecretLabel>> labels;
+    @Export(name="dockerfile", type=String.class, parameters={})
+    private Output<String> dockerfile;
 
     /**
-     * @return User-defined key/value metadata
+     * @return The path to the Dockerfile to use.
      * 
      */
-    public Output<Optional<List<SecretLabel>>> labels() {
-        return Codegen.optional(this.labels);
+    public Output<String> dockerfile() {
+        return this.dockerfile;
     }
     /**
-     * User-defined name of the secret
+     * The image name
      * 
      */
     @Export(name="name", type=String.class, parameters={})
     private Output<String> name;
 
     /**
-     * @return User-defined name of the secret
+     * @return The image name
      * 
      */
     public Output<String> name() {
         return this.name;
+    }
+    /**
+     * The URL of the registry server hosting the image.
+     * 
+     */
+    @Export(name="registryURL", type=String.class, parameters={})
+    private Output<String> registryURL;
+
+    /**
+     * @return The URL of the registry server hosting the image.
+     * 
+     */
+    public Output<String> registryURL() {
+        return this.registryURL;
+    }
+    /**
+     * The image tag.
+     * 
+     */
+    @Export(name="tag", type=String.class, parameters={})
+    private Output</* @Nullable */ String> tag;
+
+    /**
+     * @return The image tag.
+     * 
+     */
+    public Output<Optional<String>> tag() {
+        return Codegen.optional(this.tag);
     }
 
     /**
      *
      * @param name The _unique_ name of the resulting resource.
      */
-    public Secret(String name) {
-        this(name, SecretArgs.Empty);
+    public Image(String name) {
+        this(name, ImageArgs.Empty);
     }
     /**
      *
      * @param name The _unique_ name of the resulting resource.
      * @param args The arguments to use to populate this resource's properties.
      */
-    public Secret(String name, SecretArgs args) {
+    public Image(String name, ImageArgs args) {
         this(name, args, null);
     }
     /**
@@ -88,20 +111,17 @@ public class Secret extends com.pulumi.resources.CustomResource {
      * @param args The arguments to use to populate this resource's properties.
      * @param options A bag of options that control this resource's behavior.
      */
-    public Secret(String name, SecretArgs args, @Nullable com.pulumi.resources.CustomResourceOptions options) {
-        super("docker:index/secret:Secret", name, args == null ? SecretArgs.Empty : args, makeResourceOptions(options, Codegen.empty()));
+    public Image(String name, ImageArgs args, @Nullable com.pulumi.resources.CustomResourceOptions options) {
+        super("docker:index/image:Image", name, args == null ? ImageArgs.Empty : args, makeResourceOptions(options, Codegen.empty()));
     }
 
-    private Secret(String name, Output<String> id, @Nullable SecretState state, @Nullable com.pulumi.resources.CustomResourceOptions options) {
-        super("docker:index/secret:Secret", name, state, makeResourceOptions(options, id));
+    private Image(String name, Output<String> id, @Nullable com.pulumi.resources.CustomResourceOptions options) {
+        super("docker:index/image:Image", name, null, makeResourceOptions(options, id));
     }
 
     private static com.pulumi.resources.CustomResourceOptions makeResourceOptions(@Nullable com.pulumi.resources.CustomResourceOptions options, @Nullable Output<String> id) {
         var defaultOptions = com.pulumi.resources.CustomResourceOptions.builder()
             .version(Utilities.getVersion())
-            .additionalSecretOutputs(List.of(
-                "data"
-            ))
             .build();
         return com.pulumi.resources.CustomResourceOptions.merge(defaultOptions, options, id);
     }
@@ -112,10 +132,9 @@ public class Secret extends com.pulumi.resources.CustomResource {
      *
      * @param name The _unique_ name of the resulting resource.
      * @param id The _unique_ provider ID of the resource to lookup.
-     * @param state
      * @param options Optional settings to control the behavior of the CustomResource.
      */
-    public static Secret get(String name, Output<String> id, @Nullable SecretState state, @Nullable com.pulumi.resources.CustomResourceOptions options) {
-        return new Secret(name, id, state, options);
+    public static Image get(String name, Output<String> id, @Nullable com.pulumi.resources.CustomResourceOptions options) {
+        return new Image(name, id, options);
     }
 }

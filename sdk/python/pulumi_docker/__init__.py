@@ -6,7 +6,6 @@ from . import _utilities
 import typing
 # Export this package's modules as members:
 from .container import *
-from .docker import *
 from .get_network import *
 from .get_plugin import *
 from .get_registry_image import *
@@ -21,7 +20,6 @@ from .secret import *
 from .service import *
 from .service_config import *
 from .tag import *
-from .utils import *
 from .volume import *
 from ._inputs import *
 from . import outputs
@@ -42,6 +40,14 @@ _utilities.register(
   "fqn": "pulumi_docker",
   "classes": {
    "docker:index/container:Container": "Container"
+  }
+ },
+ {
+  "pkg": "docker",
+  "mod": "index/image",
+  "fqn": "pulumi_docker",
+  "classes": {
+   "docker:index/image:Image": "Image"
   }
  },
  {

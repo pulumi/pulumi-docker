@@ -16,7 +16,6 @@
         "config/index.ts",
         "config/vars.ts",
         "container.ts",
-        "docker.ts",
         "getNetwork.ts",
         "getPlugin.ts",
         "getRegistryImage.ts",
@@ -36,7 +35,6 @@
         "types/input.ts",
         "types/output.ts",
         "utilities.ts",
-        "utils.ts",
         "volume.ts"
     ]
 }

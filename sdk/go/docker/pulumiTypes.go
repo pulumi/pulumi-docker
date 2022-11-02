@@ -9646,6 +9646,79 @@ func (o GetNetworkIpamConfigArrayOutput) Index(i pulumi.IntInput) GetNetworkIpam
 	}).(GetNetworkIpamConfigOutput)
 }
 
+// Describes a Docker container registry
+type Registry struct {
+	// The password to authenticate to the registry
+	Password string `pulumi:"password"`
+	// The URL of the Docker registry server
+	ServerURL string `pulumi:"serverURL"`
+	// The username to authenticate to the registry
+	Username string `pulumi:"username"`
+}
+
+// RegistryInput is an input type that accepts RegistryArgs and RegistryOutput values.
+// You can construct a concrete instance of `RegistryInput` via:
+//
+//	RegistryArgs{...}
+type RegistryInput interface {
+	pulumi.Input
+
+	ToRegistryOutput() RegistryOutput
+	ToRegistryOutputWithContext(context.Context) RegistryOutput
+}
+
+// Describes a Docker container registry
+type RegistryArgs struct {
+	// The password to authenticate to the registry
+	Password pulumi.StringInput `pulumi:"password"`
+	// The URL of the Docker registry server
+	ServerURL pulumi.StringInput `pulumi:"serverURL"`
+	// The username to authenticate to the registry
+	Username pulumi.StringInput `pulumi:"username"`
+}
+
+func (RegistryArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*Registry)(nil)).Elem()
+}
+
+func (i RegistryArgs) ToRegistryOutput() RegistryOutput {
+	return i.ToRegistryOutputWithContext(context.Background())
+}
+
+func (i RegistryArgs) ToRegistryOutputWithContext(ctx context.Context) RegistryOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(RegistryOutput)
+}
+
+// Describes a Docker container registry
+type RegistryOutput struct{ *pulumi.OutputState }
+
+func (RegistryOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*Registry)(nil)).Elem()
+}
+
+func (o RegistryOutput) ToRegistryOutput() RegistryOutput {
+	return o
+}
+
+func (o RegistryOutput) ToRegistryOutputWithContext(ctx context.Context) RegistryOutput {
+	return o
+}
+
+// The password to authenticate to the registry
+func (o RegistryOutput) Password() pulumi.StringOutput {
+	return o.ApplyT(func(v Registry) string { return v.Password }).(pulumi.StringOutput)
+}
+
+// The URL of the Docker registry server
+func (o RegistryOutput) ServerURL() pulumi.StringOutput {
+	return o.ApplyT(func(v Registry) string { return v.ServerURL }).(pulumi.StringOutput)
+}
+
+// The username to authenticate to the registry
+func (o RegistryOutput) Username() pulumi.StringOutput {
+	return o.ApplyT(func(v Registry) string { return v.Username }).(pulumi.StringOutput)
+}
+
 func init() {
 	pulumi.RegisterInputType(reflect.TypeOf((*ContainerCapabilitiesInput)(nil)).Elem(), ContainerCapabilitiesArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*ContainerCapabilitiesPtrInput)(nil)).Elem(), ContainerCapabilitiesArgs{})
@@ -9767,6 +9840,7 @@ func init() {
 	pulumi.RegisterInputType(reflect.TypeOf((*VolumeLabelArrayInput)(nil)).Elem(), VolumeLabelArray{})
 	pulumi.RegisterInputType(reflect.TypeOf((*GetNetworkIpamConfigInput)(nil)).Elem(), GetNetworkIpamConfigArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*GetNetworkIpamConfigArrayInput)(nil)).Elem(), GetNetworkIpamConfigArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*RegistryInput)(nil)).Elem(), RegistryArgs{})
 	pulumi.RegisterOutputType(ContainerCapabilitiesOutput{})
 	pulumi.RegisterOutputType(ContainerCapabilitiesPtrOutput{})
 	pulumi.RegisterOutputType(ContainerDeviceOutput{})
@@ -9887,4 +9961,5 @@ func init() {
 	pulumi.RegisterOutputType(VolumeLabelArrayOutput{})
 	pulumi.RegisterOutputType(GetNetworkIpamConfigOutput{})
 	pulumi.RegisterOutputType(GetNetworkIpamConfigArrayOutput{})
+	pulumi.RegisterOutputType(RegistryOutput{})
 }

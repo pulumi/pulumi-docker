@@ -136,7 +136,7 @@ class Secret(pulumi.CustomResource):
         """
         ## Import
 
-        #!/bin/bash # Docker secret cannot be imported as the secret data, once set, is never exposed again.
+        #!/bin/bash Docker secret cannot be imported as the secret data, once set, is never exposed again.
 
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
@@ -153,7 +153,7 @@ class Secret(pulumi.CustomResource):
         """
         ## Import
 
-        #!/bin/bash # Docker secret cannot be imported as the secret data, once set, is never exposed again.
+        #!/bin/bash Docker secret cannot be imported as the secret data, once set, is never exposed again.
 
         :param str resource_name: The name of the resource.
         :param SecretArgs args: The arguments to use to populate this resource's properties.
@@ -184,9 +184,11 @@ class Secret(pulumi.CustomResource):
 
             if data is None and not opts.urn:
                 raise TypeError("Missing required property 'data'")
-            __props__.__dict__["data"] = data
+            __props__.__dict__["data"] = None if data is None else pulumi.Output.secret(data)
             __props__.__dict__["labels"] = labels
             __props__.__dict__["name"] = name
+        secret_opts = pulumi.ResourceOptions(additional_secret_outputs=["data"])
+        opts = pulumi.ResourceOptions.merge(opts, secret_opts)
         super(Secret, __self__).__init__(
             'docker:index/secret:Secret',
             resource_name,

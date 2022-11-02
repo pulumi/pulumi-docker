@@ -12,11 +12,21 @@ namespace Pulumi.Docker.Inputs
 
     public sealed class ServiceAuthGetArgs : global::Pulumi.ResourceArgs
     {
+        [Input("password")]
+        private Input<string>? _password;
+
         /// <summary>
         /// The password
         /// </summary>
-        [Input("password")]
-        public Input<string>? Password { get; set; }
+        public Input<string>? Password
+        {
+            get => _password;
+            set
+            {
+                var emptySecret = Output.CreateSecret(0);
+                _password = Output.Tuple<Input<string>?, int>(value, emptySecret).Apply(t => t.Item1);
+            }
+        }
 
         /// <summary>
         /// The address of the server for the authentication

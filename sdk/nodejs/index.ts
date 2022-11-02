@@ -5,24 +5,86 @@ import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "./utilities";
 
 // Export members:
-export * from "./container";
-export * from "./docker";
-export * from "./getNetwork";
-export * from "./getPlugin";
-export * from "./getRegistryImage";
-export * from "./getRemoteImage";
-export * from "./image";
-export * from "./network";
-export * from "./plugin";
-export * from "./provider";
-export * from "./registryImage";
-export * from "./remoteImage";
-export * from "./secret";
-export * from "./service";
-export * from "./serviceConfig";
-export * from "./tag";
-export * from "./utils";
-export * from "./volume";
+export { ContainerArgs, ContainerState } from "./container";
+export type Container = import("./container").Container;
+export const Container: typeof import("./container").Container = null as any;
+utilities.lazyLoad(exports, ["Container"], () => require("./container"));
+
+export { GetNetworkArgs, GetNetworkResult, GetNetworkOutputArgs } from "./getNetwork";
+export const getNetwork: typeof import("./getNetwork").getNetwork = null as any;
+export const getNetworkOutput: typeof import("./getNetwork").getNetworkOutput = null as any;
+utilities.lazyLoad(exports, ["getNetwork","getNetworkOutput"], () => require("./getNetwork"));
+
+export { GetPluginArgs, GetPluginResult, GetPluginOutputArgs } from "./getPlugin";
+export const getPlugin: typeof import("./getPlugin").getPlugin = null as any;
+export const getPluginOutput: typeof import("./getPlugin").getPluginOutput = null as any;
+utilities.lazyLoad(exports, ["getPlugin","getPluginOutput"], () => require("./getPlugin"));
+
+export { GetRegistryImageArgs, GetRegistryImageResult, GetRegistryImageOutputArgs } from "./getRegistryImage";
+export const getRegistryImage: typeof import("./getRegistryImage").getRegistryImage = null as any;
+export const getRegistryImageOutput: typeof import("./getRegistryImage").getRegistryImageOutput = null as any;
+utilities.lazyLoad(exports, ["getRegistryImage","getRegistryImageOutput"], () => require("./getRegistryImage"));
+
+export { GetRemoteImageArgs, GetRemoteImageResult, GetRemoteImageOutputArgs } from "./getRemoteImage";
+export const getRemoteImage: typeof import("./getRemoteImage").getRemoteImage = null as any;
+export const getRemoteImageOutput: typeof import("./getRemoteImage").getRemoteImageOutput = null as any;
+utilities.lazyLoad(exports, ["getRemoteImage","getRemoteImageOutput"], () => require("./getRemoteImage"));
+
+export { ImageArgs } from "./image";
+export type Image = import("./image").Image;
+export const Image: typeof import("./image").Image = null as any;
+utilities.lazyLoad(exports, ["Image"], () => require("./image"));
+
+export { NetworkArgs, NetworkState } from "./network";
+export type Network = import("./network").Network;
+export const Network: typeof import("./network").Network = null as any;
+utilities.lazyLoad(exports, ["Network"], () => require("./network"));
+
+export { PluginArgs, PluginState } from "./plugin";
+export type Plugin = import("./plugin").Plugin;
+export const Plugin: typeof import("./plugin").Plugin = null as any;
+utilities.lazyLoad(exports, ["Plugin"], () => require("./plugin"));
+
+export { ProviderArgs } from "./provider";
+export type Provider = import("./provider").Provider;
+export const Provider: typeof import("./provider").Provider = null as any;
+utilities.lazyLoad(exports, ["Provider"], () => require("./provider"));
+
+export { RegistryImageArgs, RegistryImageState } from "./registryImage";
+export type RegistryImage = import("./registryImage").RegistryImage;
+export const RegistryImage: typeof import("./registryImage").RegistryImage = null as any;
+utilities.lazyLoad(exports, ["RegistryImage"], () => require("./registryImage"));
+
+export { RemoteImageArgs, RemoteImageState } from "./remoteImage";
+export type RemoteImage = import("./remoteImage").RemoteImage;
+export const RemoteImage: typeof import("./remoteImage").RemoteImage = null as any;
+utilities.lazyLoad(exports, ["RemoteImage"], () => require("./remoteImage"));
+
+export { SecretArgs, SecretState } from "./secret";
+export type Secret = import("./secret").Secret;
+export const Secret: typeof import("./secret").Secret = null as any;
+utilities.lazyLoad(exports, ["Secret"], () => require("./secret"));
+
+export { ServiceArgs, ServiceState } from "./service";
+export type Service = import("./service").Service;
+export const Service: typeof import("./service").Service = null as any;
+utilities.lazyLoad(exports, ["Service"], () => require("./service"));
+
+export { ServiceConfigArgs, ServiceConfigState } from "./serviceConfig";
+export type ServiceConfig = import("./serviceConfig").ServiceConfig;
+export const ServiceConfig: typeof import("./serviceConfig").ServiceConfig = null as any;
+utilities.lazyLoad(exports, ["ServiceConfig"], () => require("./serviceConfig"));
+
+export { TagArgs, TagState } from "./tag";
+export type Tag = import("./tag").Tag;
+export const Tag: typeof import("./tag").Tag = null as any;
+utilities.lazyLoad(exports, ["Tag"], () => require("./tag"));
+
+export { VolumeArgs, VolumeState } from "./volume";
+export type Volume = import("./volume").Volume;
+export const Volume: typeof import("./volume").Volume = null as any;
+utilities.lazyLoad(exports, ["Volume"], () => require("./volume"));
+
 
 // Export sub-modules:
 import * as config from "./config";
@@ -33,24 +95,14 @@ export {
     types,
 };
 
-// Import resources to register:
-import { Container } from "./container";
-import { Network } from "./network";
-import { Plugin } from "./plugin";
-import { RegistryImage } from "./registryImage";
-import { RemoteImage } from "./remoteImage";
-import { Secret } from "./secret";
-import { Service } from "./service";
-import { ServiceConfig } from "./serviceConfig";
-import { Tag } from "./tag";
-import { Volume } from "./volume";
-
 const _module = {
     version: utilities.getVersion(),
     construct: (name: string, type: string, urn: string): pulumi.Resource => {
         switch (type) {
             case "docker:index/container:Container":
                 return new Container(name, <any>undefined, { urn })
+            case "docker:index/image:Image":
+                return new Image(name, <any>undefined, { urn })
             case "docker:index/network:Network":
                 return new Network(name, <any>undefined, { urn })
             case "docker:index/plugin:Plugin":
@@ -75,6 +127,7 @@ const _module = {
     },
 };
 pulumi.runtime.registerResourceModule("docker", "index/container", _module)
+pulumi.runtime.registerResourceModule("docker", "index/image", _module)
 pulumi.runtime.registerResourceModule("docker", "index/network", _module)
 pulumi.runtime.registerResourceModule("docker", "index/plugin", _module)
 pulumi.runtime.registerResourceModule("docker", "index/registryImage", _module)
@@ -84,9 +137,6 @@ pulumi.runtime.registerResourceModule("docker", "index/service", _module)
 pulumi.runtime.registerResourceModule("docker", "index/serviceConfig", _module)
 pulumi.runtime.registerResourceModule("docker", "index/tag", _module)
 pulumi.runtime.registerResourceModule("docker", "index/volume", _module)
-
-import { Provider } from "./provider";
-
 pulumi.runtime.registerResourcePackage("docker", {
     version: utilities.getVersion(),
     constructProvider: (name: string, type: string, urn: string): pulumi.ProviderResource => {

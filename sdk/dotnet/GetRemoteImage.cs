@@ -51,7 +51,7 @@ namespace Pulumi.Docker
         /// {{% /examples %}}
         /// </summary>
         public static Task<GetRemoteImageResult> InvokeAsync(GetRemoteImageArgs args, InvokeOptions? options = null)
-            => Pulumi.Deployment.Instance.InvokeAsync<GetRemoteImageResult>("docker:index/getRemoteImage:getRemoteImage", args ?? new GetRemoteImageArgs(), options.WithDefaults());
+            => global::Pulumi.Deployment.Instance.InvokeAsync<GetRemoteImageResult>("docker:index/getRemoteImage:getRemoteImage", args ?? new GetRemoteImageArgs(), options.WithDefaults());
 
         /// <summary>
         /// `docker.RemoteImage` provides details about a specific Docker Image which need to be presend on the Docker Host
@@ -93,7 +93,7 @@ namespace Pulumi.Docker
         /// {{% /examples %}}
         /// </summary>
         public static Output<GetRemoteImageResult> Invoke(GetRemoteImageInvokeArgs args, InvokeOptions? options = null)
-            => Pulumi.Deployment.Instance.Invoke<GetRemoteImageResult>("docker:index/getRemoteImage:getRemoteImage", args ?? new GetRemoteImageInvokeArgs(), options.WithDefaults());
+            => global::Pulumi.Deployment.Instance.Invoke<GetRemoteImageResult>("docker:index/getRemoteImage:getRemoteImage", args ?? new GetRemoteImageInvokeArgs(), options.WithDefaults());
     }
 
 
