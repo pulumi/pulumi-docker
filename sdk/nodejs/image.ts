@@ -77,8 +77,8 @@ export class Image extends pulumi.CustomResource {
             if ((!args || args.registryURL === undefined) && !opts.urn) {
                 throw new Error("Missing required property 'registryURL'");
             }
-            resourceInputs["context"] = args ? args.context : undefined;
-            resourceInputs["dockerfile"] = args ? args.dockerfile : undefined;
+            resourceInputs["context"] = (args ? args.context : undefined) ?? ".";
+            resourceInputs["dockerfile"] = (args ? args.dockerfile : undefined) ?? "Dockerfile";
             resourceInputs["name"] = args ? args.name : undefined;
             resourceInputs["registry"] = args ? args.registry : undefined;
             resourceInputs["registryURL"] = args ? args.registryURL : undefined;

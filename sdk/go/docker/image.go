@@ -43,6 +43,12 @@ func NewImage(ctx *pulumi.Context,
 	if args.RegistryURL == nil {
 		return nil, errors.New("invalid value for required argument 'RegistryURL'")
 	}
+	if isZero(args.Context) {
+		args.Context = pulumi.StringPtr(".")
+	}
+	if isZero(args.Dockerfile) {
+		args.Dockerfile = pulumi.StringPtr("Dockerfile")
+	}
 	if isZero(args.Tag) {
 		args.Tag = pulumi.StringPtr("latest")
 	}

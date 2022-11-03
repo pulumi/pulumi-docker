@@ -263,6 +263,8 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         public ImageArgs build() {
+            $.context = Codegen.stringProp("context").output().arg($.context).def(".").getNullable();
+            $.dockerfile = Codegen.stringProp("dockerfile").output().arg($.dockerfile).def("Dockerfile").getNullable();
             $.name = Objects.requireNonNull($.name, "expected parameter 'name' to be non-null");
             $.registry = Objects.requireNonNull($.registry, "expected parameter 'registry' to be non-null");
             $.registryURL = Objects.requireNonNull($.registryURL, "expected parameter 'registryURL' to be non-null");

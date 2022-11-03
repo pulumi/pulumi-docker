@@ -33,8 +33,12 @@ class ImageArgs:
         pulumi.set(__self__, "name", name)
         pulumi.set(__self__, "registry", registry)
         pulumi.set(__self__, "registry_url", registry_url)
+        if context is None:
+            context = '.'
         if context is not None:
             pulumi.set(__self__, "context", context)
+        if dockerfile is None:
+            dockerfile = 'Dockerfile'
         if dockerfile is not None:
             pulumi.set(__self__, "dockerfile", dockerfile)
         if tag is None:
@@ -178,7 +182,11 @@ class Image(pulumi.CustomResource):
                 raise TypeError('__props__ is only valid when passed in combination with a valid opts.id to get an existing resource')
             __props__ = ImageArgs.__new__(ImageArgs)
 
+            if context is None:
+                context = '.'
             __props__.__dict__["context"] = context
+            if dockerfile is None:
+                dockerfile = 'Dockerfile'
             __props__.__dict__["dockerfile"] = dockerfile
             if name is None and not opts.urn:
                 raise TypeError("Missing required property 'name'")

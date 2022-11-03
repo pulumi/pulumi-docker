@@ -128,6 +128,8 @@ namespace Pulumi.Docker
 
         public ImageArgs()
         {
+            Context = ".";
+            Dockerfile = "Dockerfile";
             Tag = "latest";
         }
         public static new ImageArgs Empty => new ImageArgs();
