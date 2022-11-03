@@ -29,7 +29,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 
 	dockerfile := inputs["dockerfile"].StringValue()
 	buildContext := inputs["context"].StringValue()
-	registryURL := inputs["registryURL"].StringValue()
+	server := inputs["registryServer"].StringValue()
 	imageName := inputs["name"].StringValue()
 	//tag := inputs["tag"].StringValue()
 	registry := inputs["registry"].ObjectValue()
@@ -87,7 +87,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	var authConfig = types.AuthConfig{
 		Username:      username,
 		Password:      password,
-		ServerAddress: registryURL,
+		ServerAddress: server,
 	}
 
 	authConfigBytes, _ := json.Marshal(authConfig)
@@ -110,10 +110,10 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	}
 
 	outputs := map[string]interface{}{
-		"dockerfile":  dockerfile,
-		"context":     buildContext,
-		"name":        imageTag,
-		"registryURL": registryURL,
+		"dockerfile":     dockerfile,
+		"context":        buildContext,
+		"name":           imageTag,
+		"registryServer": server,
 	}
 	return plugin.MarshalProperties(
 		resource.NewPropertyMapFromMap(outputs),
