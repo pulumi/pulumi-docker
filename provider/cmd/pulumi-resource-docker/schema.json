@@ -4321,11 +4321,13 @@
             "properties": {
                 "context": {
                     "type": "string",
-                    "description": "The path to the build context to use."
+                    "description": "The path to the build context to use.",
+                    "default": "."
                 },
                 "dockerfile": {
                     "type": "string",
-                    "description": "The path to the Dockerfile to use."
+                    "description": "The path to the Dockerfile to use.",
+                    "default": "Dockerfile"
                 },
                 "name": {
                     "type": "string",
@@ -4351,11 +4353,13 @@
             "inputProperties": {
                 "context": {
                     "type": "string",
-                    "description": "The path to the build context to use."
+                    "description": "The path to the build context to use.",
+                    "default": "."
                 },
                 "dockerfile": {
                     "type": "string",
-                    "description": "The path to the Dockerfile to use."
+                    "description": "The path to the Dockerfile to use.",
+                    "default": "Dockerfile"
                 },
                 "name": {
                     "type": "string",

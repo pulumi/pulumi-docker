@@ -146,10 +146,12 @@ func Provider() tfbridge.ProviderInfo {
 						"dockerfile": {
 							Description: "The path to the Dockerfile to use.",
 							TypeSpec:    schema.TypeSpec{Type: "string"},
+							Default:     "Dockerfile",
 						},
 						"context": {
 							Description: "The path to the build context to use.",
 							TypeSpec:    schema.TypeSpec{Type: "string"},
+							Default:     ".",
 						},
 						"name": {
 							Description: "The image name",
@@ -172,10 +174,12 @@ func Provider() tfbridge.ProviderInfo {
 					"dockerfile": {
 						Description: "The path to the Dockerfile to use.",
 						TypeSpec:    schema.TypeSpec{Type: "string"},
+						Default:     "Dockerfile",
 					},
 					"context": {
 						Description: "The path to the build context to use.",
 						TypeSpec:    schema.TypeSpec{Type: "string"},
+						Default:     ".",
 					},
 					"name": {
 						Description: "The image name",
