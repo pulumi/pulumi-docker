@@ -3063,7 +3063,7 @@
                     "type": "string",
                     "description": "The password to authenticate to the registry"
                 },
-                "serverURL": {
+                "server": {
                     "type": "string",
                     "description": "The URL of the Docker registry server"
                 },
@@ -3074,7 +3074,7 @@
             },
             "type": "object",
             "required": [
-                "serverURL",
+                "server",
                 "username",
                 "password"
             ]
@@ -4369,7 +4369,7 @@
                     "type": "string",
                     "description": "The image name"
                 },
-                "registryURL": {
+                "registryServer": {
                     "type": "string",
                     "description": "The URL of the registry server hosting the image."
                 },
@@ -4384,7 +4384,7 @@
                 "dockerfile",
                 "context",
                 "name",
-                "registryURL"
+                "registryServer"
             ],
             "inputProperties": {
                 "context": {
@@ -4405,7 +4405,7 @@
                     "$ref": "#/types/docker:index/registry:Registry",
                     "description": "The registry to push the image to"
                 },
-                "registryURL": {
+                "registryServer": {
                     "type": "string",
                     "description": "The URL of the registry server hosting the image."
                 },
@@ -4417,7 +4417,7 @@
             },
             "requiredInputs": [
                 "name",
-                "registryURL",
+                "registryServer",
                 "registry"
             ]
         },
