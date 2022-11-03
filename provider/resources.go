@@ -119,7 +119,7 @@ func Provider() tfbridge.ProviderInfo {
 					Type:        "object",
 					Description: "Describes a Docker container registry",
 					Properties: map[string]schema.PropertySpec{
-						"serverURL": {
+						"server": {
 							Description: "The URL of the Docker registry server",
 							TypeSpec:    schema.TypeSpec{Type: "string"},
 						},
@@ -133,7 +133,7 @@ func Provider() tfbridge.ProviderInfo {
 							TypeSpec:    schema.TypeSpec{Type: "string"},
 						},
 					},
-					Required: []string{"serverURL", "username", "password"},
+					Required: []string{"server", "username", "password"},
 				},
 			},
 		},
@@ -157,7 +157,7 @@ func Provider() tfbridge.ProviderInfo {
 							Description: "The image name",
 							TypeSpec:    schema.TypeSpec{Type: "string"},
 						},
-						"registryURL": {
+						"registryServer": {
 							Description: "The URL of the registry server hosting the image.",
 							TypeSpec:    schema.TypeSpec{Type: "string"},
 						},
@@ -167,7 +167,7 @@ func Provider() tfbridge.ProviderInfo {
 							TypeSpec:    schema.TypeSpec{Type: "string"},
 						},
 					},
-					Required: []string{"dockerfile", "context", "name", "registryURL"},
+					Required: []string{"dockerfile", "context", "name", "registryServer"},
 				},
 				IsComponent: false,
 				InputProperties: map[string]schema.PropertySpec{
@@ -185,7 +185,7 @@ func Provider() tfbridge.ProviderInfo {
 						Description: "The image name",
 						TypeSpec:    schema.TypeSpec{Type: "string"},
 					},
-					"registryURL": {
+					"registryServer": {
 						Description: "The URL of the registry server hosting the image.",
 						TypeSpec:    schema.TypeSpec{Type: "string"},
 					},
@@ -201,7 +201,7 @@ func Provider() tfbridge.ProviderInfo {
 						},
 					},
 				},
-				RequiredInputs: []string{"name", "registryURL", "registry"},
+				RequiredInputs: []string{"name", "registryServer", "registry"},
 			},
 		},
 
