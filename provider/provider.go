@@ -124,12 +124,20 @@ func (p *dockerNativeProvider) Create(ctx context.Context, req *rpc.CreateReques
 	label := fmt.Sprintf("%s.Create(%s)", p.name, urn)
 	logging.V(9).Infof("%s executing", label)
 
-	msg := fmt.Sprintf("Create is not yet implemented for %s", urn.Type())
-	return nil, status.Error(codes.Unimplemented, msg)
+	outputProperties, err := p.dockerBuild(ctx, urn, req.GetProperties())
+	if err != nil {
+		return nil, err
+	}
+	return &rpc.CreateResponse{
+		Id:         "ignored",
+		Properties: outputProperties,
+	}, nil
+	//msg := fmt.Sprintf("Create is not yet implemented for %s", urn.Type())
+	//return nil, status.Error(codes.Unimplemented, msg)
 
 }
 
-// TODO: these are the remaining methods
+//TODO: these are the remaining methods
 
 // Read the current live state associated with a resource.
 func (p *dockerNativeProvider) Read(ctx context.Context, req *rpc.ReadRequest) (*rpc.ReadResponse, error) {
