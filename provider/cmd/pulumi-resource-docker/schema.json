@@ -4410,6 +4410,11 @@
                     "$ref": "#/types/docker:index/registry:Registry",
                     "description": "The registry to push the image to"
                 },
+                "skipPush": {
+                    "type": "boolean",
+                    "description": "A flag to skip a registry push.",
+                    "default": false
+                },
                 "tag": {
                     "type": "string",
                     "description": "The image tag.",

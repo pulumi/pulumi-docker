@@ -179,7 +179,7 @@ func Provider() tfbridge.ProviderInfo {
 							TypeSpec:    schema.TypeSpec{Type: "string"},
 						},
 					},
-					//Required: []string{"imageName", "registryServer"},
+					//Required: []string{"imageName", "registryServer"}, TODO are any of these necessary to Require
 				},
 				IsComponent: false,
 				InputProperties: map[string]schema.PropertySpec{
@@ -210,6 +210,13 @@ func Provider() tfbridge.ProviderInfo {
 								},
 							},
 						},
+					},
+					"skipPush": {
+						Description: "A flag to skip a registry push.",
+						TypeSpec: schema.TypeSpec{
+							Type: "boolean",
+						},
+						Default: false,
 					},
 				},
 				RequiredInputs: []string{"imageName"},
