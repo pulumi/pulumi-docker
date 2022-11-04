@@ -25,10 +25,10 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	if err != nil {
 		return nil, err
 	}
-	//panic(fmt.Sprintf("here are the inputs: %v", inputs))
+	build := inputs["build"].ObjectValue()
 
-	dockerfile := inputs["dockerfile"].StringValue()
-	buildContext := inputs["context"].StringValue()
+	dockerfile := build["dockerfile"].StringValue()
+	buildContext := build["context"].StringValue()
 	server := inputs["registryServer"].StringValue()
 	imageName := inputs["name"].StringValue()
 	//tag := inputs["tag"].StringValue()
