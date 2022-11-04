@@ -27,6 +27,8 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	}
 
 	imageName := inputs["imageName"].StringValue()
+	skipPush := inputs["skipPush"].BoolValue()
+
 	//tag := inputs["tag"].StringValue()
 	registry := inputs["registry"].ObjectValue()
 	username := registry["username"].StringValue()
@@ -78,7 +80,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		panic(err)
 	}
 
-	// make the build options
+	// make the build options TODO: this is where we will add the buildkit flags etc
 	opts := types.ImageBuildOptions{
 		Dockerfile: dockerfile,
 		Tags:       []string{imageName}, //this should build the image locally, sans registry info
@@ -95,8 +97,21 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		fmt.Println(scanner.Text())
 	}
 
+	// if we are not pushing to the registry, we return after building the local image.
+	if skipPush {
+		outputs := map[string]interface{}{
+			"dockerfile": dockerfile,
+			"context":    buildContext,
+			//"registryImageName": "", TODO: do we have to even return this at all, remove if we don't
+			"registryServer": server,
+		}
+		return plugin.MarshalProperties(
+			resource.NewPropertyMapFromMap(outputs),
+			plugin.MarshalOptions{KeepUnknowns: true, SkipNulls: true},
+		)
+	}
+
 	fmt.Println("see if we can push to the registry")
-	//TODO: this should be contingent on the `skipPush` setting
 
 	// Quick and dirty auth; we can also preconfigure the client itself I believe
 
