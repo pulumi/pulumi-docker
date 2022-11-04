@@ -4337,7 +4337,11 @@
             "properties": {
                 "imageName": {
                     "type": "string",
-                    "description": "The image name"
+                    "description": "The fully qualified image name"
+                },
+                "registryImageName": {
+                    "type": "string",
+                    "description": "The fully qualified image name that was pushed to the registry."
                 },
                 "registryServer": {
                     "type": "string",
@@ -4350,10 +4354,6 @@
                 }
             },
             "type": "object",
-            "required": [
-                "imageName",
-                "registryServer"
-            ],
             "inputProperties": {
                 "build": {
                     "oneOf": [
@@ -4381,8 +4381,7 @@
                 }
             },
             "requiredInputs": [
-                "imageName",
-                "registry"
+                "imageName"
             ]
         },
         "docker:index/network:Network": {

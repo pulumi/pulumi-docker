@@ -71,7 +71,6 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	//}
 
 	fmt.Println("now let's BUILD an image")
-	imageTag := username + "/" + imageName
 
 	// make the build context
 	tar, err := archive.TarWithOptions(buildContext, &archive.TarOptions{})
@@ -82,7 +81,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	// make the build options
 	opts := types.ImageBuildOptions{
 		Dockerfile: dockerfile,
-		Tags:       []string{imageTag},
+		Tags:       []string{imageName}, //this should build the image locally, sans registry info
 		Remove:     true,
 	}
 
@@ -97,6 +96,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	}
 
 	fmt.Println("see if we can push to the registry")
+	//TODO: this should be contingent on the `skipPush` setting
 
 	// Quick and dirty auth; we can also preconfigure the client itself I believe
 
@@ -111,7 +111,14 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 
 	pushOpts := types.ImagePushOptions{RegistryAuth: authConfigEncoded}
 
-	pushOutput, err := cli.ImagePush(context.Background(), imageTag, pushOpts)
+	// This is a shift away from imageName to have to be of the "registry/image" format.
+	registryImageTag := username + "/" + imageName
+	// tag our image with the qualified image name that includes the registry
+	err = cli.ImageTag(context.Background(), imageName, registryImageTag)
+	if err != nil {
+		panic(err)
+	}
+	pushOutput, err := cli.ImagePush(context.Background(), registryImageTag, pushOpts)
 
 	if err != nil {
 		panic(err)
@@ -126,10 +133,10 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	}
 
 	outputs := map[string]interface{}{
-		"dockerfile":     dockerfile,
-		"context":        buildContext,
-		"name":           imageTag,
-		"registryServer": server,
+		"dockerfile":        dockerfile,
+		"context":           buildContext,
+		"registryImageName": registryImageTag,
+		"registryServer":    server,
 	}
 	return plugin.MarshalProperties(
 		resource.NewPropertyMapFromMap(outputs),
