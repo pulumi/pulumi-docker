@@ -3016,6 +3016,26 @@
                 "value"
             ]
         },
+        "docker:index/dockerBuild:DockerBuild": {
+            "description": "The Docker build context",
+            "properties": {
+                "context": {
+                    "type": "string",
+                    "description": "The path to the build context to use.",
+                    "default": "."
+                },
+                "dockerfile": {
+                    "type": "string",
+                    "description": "The path to the Dockerfile to use.",
+                    "default": "Dockerfile"
+                }
+            },
+            "type": "object",
+            "required": [
+                "context",
+                "dockerfile"
+            ]
+        },
         "docker:index/getNetworkIpamConfig:getNetworkIpamConfig": {
             "properties": {
                 "auxAddress": {
@@ -4319,16 +4339,6 @@
         "docker:index/image:Image": {
             "description": "A real CRUD docker image we hope",
             "properties": {
-                "context": {
-                    "type": "string",
-                    "description": "The path to the build context to use.",
-                    "default": "."
-                },
-                "dockerfile": {
-                    "type": "string",
-                    "description": "The path to the Dockerfile to use.",
-                    "default": "Dockerfile"
-                },
                 "name": {
                     "type": "string",
                     "description": "The image name"
@@ -4345,21 +4355,13 @@
             },
             "type": "object",
             "required": [
-                "dockerfile",
-                "context",
                 "name",
                 "registryServer"
             ],
             "inputProperties": {
-                "context": {
-                    "type": "string",
-                    "description": "The path to the build context to use.",
-                    "default": "."
-                },
-                "dockerfile": {
-                    "type": "string",
-                    "description": "The path to the Dockerfile to use.",
-                    "default": "Dockerfile"
+                "build": {
+                    "$ref": "#/types/docker:index/dockerBuild:DockerBuild",
+                    "description": "The Docker build context"
                 },
                 "name": {
                     "type": "string",
@@ -4382,7 +4384,8 @@
             "requiredInputs": [
                 "name",
                 "registryServer",
-                "registry"
+                "registry",
+                "build"
             ]
         },
         "docker:index/network:Network": {
