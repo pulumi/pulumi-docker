@@ -4382,8 +4382,7 @@
             },
             "requiredInputs": [
                 "imageName",
-                "registry",
-                "build"
+                "registry"
             ]
         },
         "docker:index/network:Network": {

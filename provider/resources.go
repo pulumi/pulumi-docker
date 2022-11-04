@@ -208,7 +208,7 @@ func Provider() tfbridge.ProviderInfo {
 						},
 					},
 				},
-				RequiredInputs: []string{"imageName", "registry", "build"},
+				RequiredInputs: []string{"imageName", "registry"},
 			},
 		},
 

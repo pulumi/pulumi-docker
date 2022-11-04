@@ -33,9 +33,24 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	password := registry["password"].StringValue()
 	server := registry["server"].StringValue()
 
-	build := inputs["build"].ObjectValue()
-	dockerfile := build["dockerfile"].StringValue()
-	buildContext := build["context"].StringValue()
+	// build can be a string or an object; we will also use reasonable defaults here.
+	var buildContext string
+	var dockerfile string
+
+	if inputs["build"].IsNull() {
+		// use the filepath and the default "Dockerfile" for the Dockerfile
+		buildContext = "."
+		dockerfile = "Dockerfile"
+	} else if inputs["build"].IsString() {
+		// use the filepath and the default "Dockerfile" for the Dockerfile
+		buildContext = inputs["build"].StringValue()
+		dockerfile = "Dockerfile" // default to Dockerfile
+	} else {
+		// read in the build type fields
+		build := inputs["build"].ObjectValue()
+		dockerfile = build["dockerfile"].StringValue()
+		buildContext = build["context"].StringValue()
+	}
 
 	fmt.Println("USING THE DOCKER CLIENT NOW")
 
