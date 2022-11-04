@@ -3030,11 +3030,7 @@
                     "default": "Dockerfile"
                 }
             },
-            "type": "object",
-            "required": [
-                "context",
-                "dockerfile"
-            ]
+            "type": "object"
         },
         "docker:index/getNetworkIpamConfig:getNetworkIpamConfig": {
             "properties": {
@@ -4339,7 +4335,7 @@
         "docker:index/image:Image": {
             "description": "A real CRUD docker image we hope",
             "properties": {
-                "name": {
+                "imageName": {
                     "type": "string",
                     "description": "The image name"
                 },
@@ -4355,25 +4351,28 @@
             },
             "type": "object",
             "required": [
-                "name",
+                "imageName",
                 "registryServer"
             ],
             "inputProperties": {
                 "build": {
-                    "$ref": "#/types/docker:index/dockerBuild:DockerBuild",
+                    "oneOf": [
+                        {
+                            "$ref": "#/types/docker:index/dockerBuild:DockerBuild"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ],
                     "description": "The Docker build context"
                 },
-                "name": {
+                "imageName": {
                     "type": "string",
                     "description": "The image name"
                 },
                 "registry": {
                     "$ref": "#/types/docker:index/registry:Registry",
                     "description": "The registry to push the image to"
-                },
-                "registryServer": {
-                    "type": "string",
-                    "description": "The URL of the registry server hosting the image."
                 },
                 "tag": {
                     "type": "string",
@@ -4382,8 +4381,7 @@
                 }
             },
             "requiredInputs": [
-                "name",
-                "registryServer",
+                "imageName",
                 "registry",
                 "build"
             ]

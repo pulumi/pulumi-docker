@@ -25,16 +25,17 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	if err != nil {
 		return nil, err
 	}
-	build := inputs["build"].ObjectValue()
 
-	dockerfile := build["dockerfile"].StringValue()
-	buildContext := build["context"].StringValue()
-	server := inputs["registryServer"].StringValue()
-	imageName := inputs["name"].StringValue()
+	imageName := inputs["imageName"].StringValue()
 	//tag := inputs["tag"].StringValue()
 	registry := inputs["registry"].ObjectValue()
 	username := registry["username"].StringValue()
 	password := registry["password"].StringValue()
+	server := registry["server"].StringValue()
+
+	build := inputs["build"].ObjectValue()
+	dockerfile := build["dockerfile"].StringValue()
+	buildContext := build["context"].StringValue()
 
 	fmt.Println("USING THE DOCKER CLIENT NOW")
 
