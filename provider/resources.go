@@ -162,7 +162,7 @@ func Provider() tfbridge.ProviderInfo {
 					Description: "A real CRUD docker image we hope",
 					Properties: map[string]schema.PropertySpec{
 						"imageName": {
-							Description: "The image name",
+							Description: "The fully qualified image name",
 							TypeSpec:    schema.TypeSpec{Type: "string"},
 						},
 						"registryServer": {
@@ -174,8 +174,12 @@ func Provider() tfbridge.ProviderInfo {
 							Default:     "latest",
 							TypeSpec:    schema.TypeSpec{Type: "string"},
 						},
+						"registryImageName": {
+							Description: "The fully qualified image name that was pushed to the registry.",
+							TypeSpec:    schema.TypeSpec{Type: "string"},
+						},
 					},
-					Required: []string{"imageName", "registryServer"},
+					//Required: []string{"imageName", "registryServer"},
 				},
 				IsComponent: false,
 				InputProperties: map[string]schema.PropertySpec{
@@ -208,7 +212,7 @@ func Provider() tfbridge.ProviderInfo {
 						},
 					},
 				},
-				RequiredInputs: []string{"imageName", "registry"},
+				RequiredInputs: []string{"imageName"},
 			},
 		},
 
