@@ -151,6 +151,70 @@ func Provider() tfbridge.ProviderInfo {
 							TypeSpec:    schema.TypeSpec{Type: "string"},
 							Default:     "Dockerfile",
 						},
+						"cacheFrom": {
+							Description: "A cached image or list of build stages to use as build cache",
+							TypeSpec: schema.TypeSpec{
+								OneOf: []schema.TypeSpec{
+									{
+										Type: "boolean",
+									},
+									{
+										Ref: "#/types/docker:index/cacheFrom:CacheFrom",
+									},
+								},
+							},
+						},
+						"env": {
+							Description: "Environment variables to set on the invocation of docker build, " +
+								"for example to support DOCKER_BUILDKIT=1 docker build.",
+							TypeSpec: schema.TypeSpec{
+								Type: "object",
+								AdditionalProperties: &schema.TypeSpec{
+									Type: "string",
+								},
+							},
+						},
+						"args": {
+							Description: "An optional map of named build-time argument variables to set " +
+								"during the Docker build. This flag allows you to pass built-time variables" +
+								"that can be accessed like environment variables inside the RUN instruction.",
+							TypeSpec: schema.TypeSpec{
+								Type: "object",
+								AdditionalProperties: &schema.TypeSpec{
+									Type: "string",
+								},
+							},
+						},
+						"extraOptions": {
+							Description: "A bag of extra options to pass on to the docker SDK.",
+							TypeSpec: schema.TypeSpec{
+								Type: "array",
+								Items: &schema.TypeSpec{
+									Type: "string",
+								},
+							},
+						},
+						"target": {
+							Description: "The target of the Dockerfile to build",
+							TypeSpec:    schema.TypeSpec{Type: "string"},
+						},
+					},
+				},
+			},
+			dockerResource(dockerMod, "CacheFrom").String(): {
+				ObjectTypeSpec: schema.ObjectTypeSpec{
+					Type:        "object",
+					Description: "Specifies information about where to obtain a cache",
+					Properties: map[string]schema.PropertySpec{
+						"stages": {
+							Description: "A list of cached build stages",
+							TypeSpec: schema.TypeSpec{
+								Type: "array",
+								Items: &schema.TypeSpec{
+									Type: "string",
+								},
+							},
+						},
 					},
 				},
 			},
@@ -159,7 +223,7 @@ func Provider() tfbridge.ProviderInfo {
 			dockerResource(dockerMod, "Image").String(): {
 				ObjectTypeSpec: schema.ObjectTypeSpec{
 					Type:        "object",
-					Description: "A real CRUD docker image we hope",
+					Description: "A real CRUD docker image we hope", // TODO: update description
 					Properties: map[string]schema.PropertySpec{
 						"imageName": {
 							Description: "The fully qualified image name",
@@ -203,10 +267,10 @@ func Provider() tfbridge.ProviderInfo {
 						TypeSpec: schema.TypeSpec{
 							OneOf: []schema.TypeSpec{
 								{
-									Ref: "#/types/docker:index/dockerBuild:DockerBuild",
+									Type: "string",
 								},
 								{
-									Type: "string",
+									Ref: "#/types/docker:index/dockerBuild:DockerBuild",
 								},
 							},
 						},
