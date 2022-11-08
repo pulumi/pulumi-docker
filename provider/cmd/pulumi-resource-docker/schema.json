@@ -3016,9 +3016,40 @@
                 "value"
             ]
         },
+        "docker:index/cacheFrom:CacheFrom": {
+            "description": "Specifies information about where to obtain a cache",
+            "properties": {
+                "stages": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "A list of cached build stages"
+                }
+            },
+            "type": "object"
+        },
         "docker:index/dockerBuild:DockerBuild": {
             "description": "The Docker build context",
             "properties": {
+                "args": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass built-time variablesthat can be accessed like environment variables inside the RUN instruction."
+                },
+                "cacheFrom": {
+                    "oneOf": [
+                        {
+                            "type": "boolean"
+                        },
+                        {
+                            "$ref": "#/types/docker:index/cacheFrom:CacheFrom"
+                        }
+                    ],
+                    "description": "A cached image or list of build stages to use as build cache"
+                },
                 "context": {
                     "type": "string",
                     "description": "The path to the build context to use.",
@@ -3028,6 +3059,24 @@
                     "type": "string",
                     "description": "The path to the Dockerfile to use.",
                     "default": "Dockerfile"
+                },
+                "env": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "Environment variables to set on the invocation of docker build, for example to support DOCKER_BUILDKIT=1 docker build."
+                },
+                "extraOptions": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "A bag of extra options to pass on to the docker SDK."
+                },
+                "target": {
+                    "type": "string",
+                    "description": "The target of the Dockerfile to build"
                 }
             },
             "type": "object"
@@ -4394,10 +4443,10 @@
                 "build": {
                     "oneOf": [
                         {
-                            "$ref": "#/types/docker:index/dockerBuild:DockerBuild"
+                            "type": "string"
                         },
                         {
-                            "type": "string"
+                            "$ref": "#/types/docker:index/dockerBuild:DockerBuild"
                         }
                     ],
                     "description": "The Docker build context"
