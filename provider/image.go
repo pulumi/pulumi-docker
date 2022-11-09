@@ -14,10 +14,37 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
 )
 
+type Image struct {
+	Name     string
+	SkipPush bool
+	Registry Registry
+	Tag      string
+	Build    Build
+}
+
+type Registry struct {
+	Server   string
+	Username string
+	Password string
+}
+
+type Build struct {
+	Context      string
+	Dockerfile   string
+	CachedImages []string
+	Env          map[string]string
+	Args         map[string]string
+	ExtraOptions []string
+	Target       string
+}
+
+type CacheFrom struct {
+	Stages []string
+}
+
 func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	urn resource.URN,
 	props *structpb.Struct) (*structpb.Struct, error) {
-	fmt.Println("resource URN", urn)
 
 	fmt.Println("getting inputs...")
 
@@ -26,71 +53,54 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		return nil, err
 	}
 
-	imageName := inputs["imageName"].StringValue()
-	skipPush := inputs["skipPush"].BoolValue()
-
-	//tag := inputs["tag"].StringValue()
-	registry := inputs["registry"].ObjectValue()
-	username := registry["username"].StringValue()
-	password := registry["password"].StringValue()
-	server := registry["server"].StringValue()
-
-	// build can be a string or an object; we will also use reasonable defaults here.
-	var buildContext string
-	var dockerfile string
-
-	if inputs["build"].IsNull() {
-		// use the filepath and the default "Dockerfile" for the Dockerfile
-		buildContext = "."
-		dockerfile = "Dockerfile"
-	} else if inputs["build"].IsString() {
-		// use the filepath and the default "Dockerfile" for the Dockerfile
-		buildContext = inputs["build"].StringValue()
-		dockerfile = "Dockerfile" // default to Dockerfile
-	} else {
-		// read in the build type fields
-		build := inputs["build"].ObjectValue()
-		dockerfile = build["dockerfile"].StringValue()
-		buildContext = build["context"].StringValue()
+	// read in values to Image
+	img := Image{
+		Name:     inputs["imageName"].StringValue(),
+		SkipPush: inputs["skipPush"].BoolValue(),
+		Registry: Registry{
+			Server:   inputs["registry"].ObjectValue()["server"].StringValue(),
+			Username: inputs["registry"].ObjectValue()["username"].StringValue(),
+			Password: inputs["registry"].ObjectValue()["password"].StringValue(),
+		},
 	}
+
+	build := marshalBuild(inputs["build"])
+	cache := getCachedImages(img, inputs["build"].ObjectValue()["cacheFrom"])
+
+	build.CachedImages = cache
+	img.Build = build
 
 	fmt.Println("USING THE DOCKER CLIENT NOW")
 
-	cli, err := client.NewClientWithOpts(client.FromEnv)
+	docker, err := client.NewClientWithOpts(client.FromEnv)
 
 	if err != nil {
 		panic(err)
 	}
-	//fmt.Println("Get list of  existing images")
-	//imgs, err := cli.ImageList(context.Background(), types.ImageListOptions{})
-	//if err != nil {
-	//	panic(err)
-	//}
-	//
-	//fmt.Println("List image labels")
-	//for _, img := range imgs {
-	//	fmt.Println("whole image: ", img.RepoTags) // RepoTags gives a list of tags that correspond to the REPOSITORY and TAGS headers of the "docker images" output
-	//}
 
 	fmt.Println("now let's BUILD an image")
 
 	// make the build context
-	tar, err := archive.TarWithOptions(buildContext, &archive.TarOptions{})
+	tar, err := archive.TarWithOptions(img.Build.Context, &archive.TarOptions{})
 	if err != nil {
 		panic(err)
 	}
 
 	// make the build options TODO: this is where we will add the buildkit flags etc
+	fmt.Println(img.Build.CachedImages)
 	opts := types.ImageBuildOptions{
-		Dockerfile: dockerfile,
-		Tags:       []string{imageName}, //this should build the image locally, sans registry info
+		Dockerfile: img.Build.Dockerfile,
+		Tags:       []string{img.Name}, //this should build the image locally, sans registry info
 		Remove:     true,
+		CacheFrom:  img.Build.CachedImages,
 	}
 
-	imgBuildResp, err := cli.ImageBuild(context.Background(), tar, opts)
+	imgBuildResp, err := docker.ImageBuild(context.Background(), tar, opts)
 	if err != nil {
 		panic(err)
 	}
+
+	defer imgBuildResp.Body.Close()
 	// Print build logs to terminal
 	scanner := bufio.NewScanner(imgBuildResp.Body)
 	for scanner.Scan() {
@@ -98,12 +108,11 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	}
 
 	// if we are not pushing to the registry, we return after building the local image.
-	if skipPush {
+	if img.SkipPush {
 		outputs := map[string]interface{}{
-			"dockerfile": dockerfile,
-			"context":    buildContext,
-			//"registryImageName": "", TODO: do we have to even return this at all, remove if we don't
-			"registryServer": server,
+			"dockerfile":     img.Build.Dockerfile,
+			"context":        img.Build.Context,
+			"registryServer": img.Registry.Server,
 		}
 		return plugin.MarshalProperties(
 			resource.NewPropertyMapFromMap(outputs),
@@ -116,9 +125,9 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	// Quick and dirty auth; we can also preconfigure the client itself I believe
 
 	var authConfig = types.AuthConfig{
-		Username:      username,
-		Password:      password,
-		ServerAddress: server,
+		Username:      img.Registry.Username,
+		Password:      img.Registry.Password,
+		ServerAddress: img.Registry.Server,
 	}
 
 	authConfigBytes, _ := json.Marshal(authConfig)
@@ -127,13 +136,13 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	pushOpts := types.ImagePushOptions{RegistryAuth: authConfigEncoded}
 
 	// This is a shift away from imageName to have to be of the "registry/image" format.
-	registryImageTag := username + "/" + imageName
+	registryImageTag := img.Registry.Username + "/" + img.Name
 	// tag our image with the qualified image name that includes the registry
-	err = cli.ImageTag(context.Background(), imageName, registryImageTag)
+	err = docker.ImageTag(context.Background(), img.Name, registryImageTag)
 	if err != nil {
 		panic(err)
 	}
-	pushOutput, err := cli.ImagePush(context.Background(), registryImageTag, pushOpts)
+	pushOutput, err := docker.ImagePush(context.Background(), registryImageTag, pushOpts)
 
 	if err != nil {
 		panic(err)
@@ -148,13 +157,108 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	}
 
 	outputs := map[string]interface{}{
-		"dockerfile":        dockerfile,
-		"context":           buildContext,
+		"dockerfile":        img.Build.Dockerfile,
+		"context":           img.Build.Context,
 		"registryImageName": registryImageTag,
-		"registryServer":    server,
+		"registryServer":    img.Registry.Server,
 	}
 	return plugin.MarshalProperties(
 		resource.NewPropertyMapFromMap(outputs),
 		plugin.MarshalOptions{KeepUnknowns: true, SkipNulls: true},
 	)
+}
+
+func marshalBuild(b resource.PropertyValue) Build {
+
+	// build can be nil, a string or an object; we will also use reasonable defaults here.
+	var build Build
+
+	if b.IsNull() {
+		// use the default build context
+		build.Dockerfile = "Dockerfile"
+		build.Context = "."
+		return build
+	}
+	if b.IsString() {
+		// use the filepath as context
+		build.Context = b.StringValue()
+		build.Dockerfile = "Dockerfile" // default to Dockerfile
+		return build
+	}
+
+	// read in the build type fields
+	buildObject := b.ObjectValue()
+	// Dockerfile
+	if buildObject["dockerfile"].IsNull() {
+		// set default
+		build.Dockerfile = "Dockerfile"
+	} else {
+		build.Dockerfile = buildObject["dockerfile"].StringValue()
+	}
+	// Context
+	if buildObject["context"].IsNull() {
+		// set default
+		build.Context = "."
+	} else {
+		build.Context = buildObject["context"].StringValue()
+	}
+	// Envs
+	envs := make(map[string]string)
+	if !buildObject["env"].IsNull() {
+		for k, v := range buildObject["env"].ObjectValue() {
+			key := fmt.Sprintf("%v", k)
+			envs[key] = v.StringValue()
+		}
+	}
+	build.Env = envs
+	// Args
+	args := make(map[string]string)
+	if !buildObject["args"].IsNull() {
+		for k, v := range buildObject["args"].ObjectValue() {
+			key := fmt.Sprintf("%v", k)
+			args[key] = v.StringValue()
+		}
+	}
+	build.Args = args
+
+	// ExtraOptions
+	if !buildObject["extraOptions"].IsNull() {
+		opts := buildObject["extraOptions"].ArrayValue()
+		for _, v := range opts {
+			build.ExtraOptions = append(build.ExtraOptions, v.StringValue())
+		}
+	}
+
+	// Target
+	if !buildObject["target"].IsNull() {
+		build.Target = buildObject["target"].StringValue()
+	}
+	return build
+}
+
+func getCachedImages(img Image, c resource.PropertyValue) []string {
+
+	var cacheImages []string
+
+	if c.IsNull() {
+		return cacheImages
+	}
+	latest := img.Registry.Username + "/" + img.Name
+	// if we specify cacheFrom as True, we pull the latest build+push of our image implicitly, i.e. registry/image
+	if c.IsBool() {
+		useCache := c.BoolValue()
+		if useCache {
+			cacheImages = append(cacheImages, latest)
+		}
+		return cacheImages
+	}
+	// if we specify a list of stages, then we only pull those
+	cacheFrom := c.ObjectValue()
+	stages := cacheFrom["stages"].ArrayValue()
+	for _, img := range stages {
+		// TODO: Verify correct behavior for this feature and how it works with the Docker client
+		stage := img.StringValue()
+		cacheImages = append(cacheImages, stage)
+	}
+	return cacheImages
 }
