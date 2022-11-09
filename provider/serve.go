@@ -19,7 +19,8 @@ func Serve(providerName, version string, schemaBytes []byte) {
 	}
 }
 
-func makeProvider(host *provider.HostClient, name, version string, schemaBytes []byte) (rpc.ResourceProviderServer, error) {
+func makeProvider(host *provider.HostClient, name, version string, schemaBytes []byte) (
+	rpc.ResourceProviderServer, error) {
 	nativeProvider := &dockerNativeProvider{
 		host:        host,
 		name:        name,

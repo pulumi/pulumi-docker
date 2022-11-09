@@ -15,12 +15,14 @@ import (
 type Image struct {
 	pulumi.CustomResourceState
 
-	// The fully qualified image name
-	ImageName pulumi.StringPtrOutput `pulumi:"imageName"`
-	// The fully qualified image name that was pushed to the registry.
-	RegistryImageName pulumi.StringPtrOutput `pulumi:"registryImageName"`
+	// The path to the build context to use.
+	Context pulumi.StringOutput `pulumi:"context"`
+	// The path to the Dockerfile to use.
+	Dockerfile pulumi.StringOutput `pulumi:"dockerfile"`
+	// The image name
+	Name pulumi.StringOutput `pulumi:"name"`
 	// The URL of the registry server hosting the image.
-	RegistryServer pulumi.StringPtrOutput `pulumi:"registryServer"`
+	RegistryURL pulumi.StringOutput `pulumi:"registryURL"`
 	// The image tag.
 	Tag pulumi.StringPtrOutput `pulumi:"tag"`
 }
@@ -32,11 +34,20 @@ func NewImage(ctx *pulumi.Context,
 		return nil, errors.New("missing one or more required arguments")
 	}
 
-	if args.ImageName == nil {
-		return nil, errors.New("invalid value for required argument 'ImageName'")
+	if args.Name == nil {
+		return nil, errors.New("invalid value for required argument 'Name'")
 	}
-	if isZero(args.SkipPush) {
-		args.SkipPush = pulumi.BoolPtr(false)
+	if args.Registry == nil {
+		return nil, errors.New("invalid value for required argument 'Registry'")
+	}
+	if args.RegistryURL == nil {
+		return nil, errors.New("invalid value for required argument 'RegistryURL'")
+	}
+	if isZero(args.Context) {
+		args.Context = pulumi.StringPtr(".")
+	}
+	if isZero(args.Dockerfile) {
+		args.Dockerfile = pulumi.StringPtr("Dockerfile")
 	}
 	if isZero(args.Tag) {
 		args.Tag = pulumi.StringPtr("latest")
@@ -73,28 +84,32 @@ func (ImageState) ElementType() reflect.Type {
 }
 
 type imageArgs struct {
-	// The Docker build context
-	Build interface{} `pulumi:"build"`
+	// The path to the build context to use.
+	Context *string `pulumi:"context"`
+	// The path to the Dockerfile to use.
+	Dockerfile *string `pulumi:"dockerfile"`
 	// The image name
-	ImageName string `pulumi:"imageName"`
+	Name string `pulumi:"name"`
 	// The registry to push the image to
-	Registry *Registry `pulumi:"registry"`
-	// A flag to skip a registry push.
-	SkipPush *bool `pulumi:"skipPush"`
+	Registry Registry `pulumi:"registry"`
+	// The URL of the registry server hosting the image.
+	RegistryURL string `pulumi:"registryURL"`
 	// The image tag.
 	Tag *string `pulumi:"tag"`
 }
 
 // The set of arguments for constructing a Image resource.
 type ImageArgs struct {
-	// The Docker build context
-	Build pulumi.Input
+	// The path to the build context to use.
+	Context pulumi.StringPtrInput
+	// The path to the Dockerfile to use.
+	Dockerfile pulumi.StringPtrInput
 	// The image name
-	ImageName pulumi.StringInput
+	Name pulumi.StringInput
 	// The registry to push the image to
-	Registry RegistryPtrInput
-	// A flag to skip a registry push.
-	SkipPush pulumi.BoolPtrInput
+	Registry RegistryInput
+	// The URL of the registry server hosting the image.
+	RegistryURL pulumi.StringInput
 	// The image tag.
 	Tag pulumi.StringPtrInput
 }
@@ -186,19 +201,24 @@ func (o ImageOutput) ToImageOutputWithContext(ctx context.Context) ImageOutput {
 	return o
 }
 
-// The fully qualified image name
-func (o ImageOutput) ImageName() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v *Image) pulumi.StringPtrOutput { return v.ImageName }).(pulumi.StringPtrOutput)
+// The path to the build context to use.
+func (o ImageOutput) Context() pulumi.StringOutput {
+	return o.ApplyT(func(v *Image) pulumi.StringOutput { return v.Context }).(pulumi.StringOutput)
 }
 
-// The fully qualified image name that was pushed to the registry.
-func (o ImageOutput) RegistryImageName() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v *Image) pulumi.StringPtrOutput { return v.RegistryImageName }).(pulumi.StringPtrOutput)
+// The path to the Dockerfile to use.
+func (o ImageOutput) Dockerfile() pulumi.StringOutput {
+	return o.ApplyT(func(v *Image) pulumi.StringOutput { return v.Dockerfile }).(pulumi.StringOutput)
+}
+
+// The image name
+func (o ImageOutput) Name() pulumi.StringOutput {
+	return o.ApplyT(func(v *Image) pulumi.StringOutput { return v.Name }).(pulumi.StringOutput)
 }
 
 // The URL of the registry server hosting the image.
-func (o ImageOutput) RegistryServer() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v *Image) pulumi.StringPtrOutput { return v.RegistryServer }).(pulumi.StringPtrOutput)
+func (o ImageOutput) RegistryURL() pulumi.StringOutput {
+	return o.ApplyT(func(v *Image) pulumi.StringOutput { return v.RegistryURL }).(pulumi.StringOutput)
 }
 
 // The image tag.

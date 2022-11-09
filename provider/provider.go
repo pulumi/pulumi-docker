@@ -40,7 +40,8 @@ func (p *dockerNativeProvider) Call(ctx context.Context, req *rpc.CallRequest) (
 }
 
 // Construct creates a new component resource.
-func (p *dockerNativeProvider) Construct(ctx context.Context, req *rpc.ConstructRequest) (*rpc.ConstructResponse, error) {
+func (p *dockerNativeProvider) Construct(ctx context.Context, req *rpc.ConstructRequest) (
+	*rpc.ConstructResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "construct is not yet implemented")
 }
 
@@ -67,7 +68,8 @@ func (p *dockerNativeProvider) Invoke(_ context.Context, req *rpc.InvokeRequest)
 
 // StreamInvoke dynamically executes a built-in function in the provider. The result is streamed
 // back as a series of messages.
-func (p *dockerNativeProvider) StreamInvoke(req *rpc.InvokeRequest, server rpc.ResourceProvider_StreamInvokeServer) error {
+func (p *dockerNativeProvider) StreamInvoke(
+	req *rpc.InvokeRequest, server rpc.ResourceProvider_StreamInvokeServer) error {
 	tok := req.GetTok()
 	return fmt.Errorf("unknown StreamInvoke token '%s'", tok)
 }
@@ -167,7 +169,8 @@ func (p *dockerNativeProvider) GetPluginInfo(context.Context, *pbempty.Empty) (*
 }
 
 // GetSchema returns the JSON-serialized schema for the provider.
-func (p *dockerNativeProvider) GetSchema(ctx context.Context, req *rpc.GetSchemaRequest) (*rpc.GetSchemaResponse, error) {
+func (p *dockerNativeProvider) GetSchema(ctx context.Context, req *rpc.GetSchemaRequest) (
+	*rpc.GetSchemaResponse, error) {
 	if v := req.GetVersion(); v != 0 {
 		return nil, fmt.Errorf("unsupported schema version %d", v)
 	}

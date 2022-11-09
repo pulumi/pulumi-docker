@@ -38,7 +38,8 @@ func (dp dockerHybridProvider) Cancel(ctx context.Context, e *empty.Empty) (*emp
 	return &empty.Empty{}, nil
 }
 
-func (dp dockerHybridProvider) GetSchema(ctx context.Context, request *rpc.GetSchemaRequest) (*rpc.GetSchemaResponse, error) {
+func (dp dockerHybridProvider) GetSchema(ctx context.Context, request *rpc.GetSchemaRequest) (
+	*rpc.GetSchemaResponse, error) {
 	if v := request.GetVersion(); v != 0 {
 		return nil, fmt.Errorf("unsupported schema version %d", v)
 	}
@@ -58,7 +59,8 @@ func (dp dockerHybridProvider) DiffConfig(ctx context.Context, request *rpc.Diff
 	}, nil
 }
 
-func (dp dockerHybridProvider) Configure(ctx context.Context, request *rpc.ConfigureRequest) (*rpc.ConfigureResponse, error) {
+func (dp dockerHybridProvider) Configure(ctx context.Context, request *rpc.ConfigureRequest) (
+	*rpc.ConfigureResponse, error) {
 	var myResp *rpc.ConfigureResponse
 	for _, prov := range []rpc.ResourceProviderServer{dp.bridgedProvider, dp.nativeProvider} {
 		resp, err := prov.Configure(ctx, request)
@@ -70,9 +72,11 @@ func (dp dockerHybridProvider) Configure(ctx context.Context, request *rpc.Confi
 	return myResp, nil
 }
 
-// TODO: this is for functions AKA data sources, and our provider doesn't have any metadatea becuase we're just implementing from scratch
+// TODO: this is for functions AKA data sources,
+// and our provider doesn't have any metadata because we're just implementing from scratch
 func (dp dockerHybridProvider) Invoke(ctx context.Context, request *rpc.InvokeRequest) (*rpc.InvokeResponse, error) {
-	// TODO: remove below snippet, as we're not implementing data sources here atm, or implement a default once the way in which we're passing in any ExtraDataSources is better
+	// TODO: remove below snippet, as we're not implementing data sources here atm,
+	// or implement a default once the way in which we're passing in any ExtraDataSources is better
 	//if _, ok := dp.metadata.Functions[request.Tok]; ok {
 	//	return dp.nativeProvider.Invoke(ctx, request)
 	//}
@@ -80,7 +84,8 @@ func (dp dockerHybridProvider) Invoke(ctx context.Context, request *rpc.InvokeRe
 	return dp.bridgedProvider.Invoke(ctx, request)
 }
 
-func (dp dockerHybridProvider) StreamInvoke(request *rpc.InvokeRequest, server rpc.ResourceProvider_StreamInvokeServer) error {
+func (dp dockerHybridProvider) StreamInvoke(
+	request *rpc.InvokeRequest, server rpc.ResourceProvider_StreamInvokeServer) error {
 	return status.Error(codes.Unimplemented, "StreamInvoke is not yet implemented")
 }
 
@@ -141,7 +146,8 @@ func (dp dockerHybridProvider) Delete(ctx context.Context, request *rpc.DeleteRe
 	return dp.bridgedProvider.Delete(ctx, request)
 }
 
-func (dp dockerHybridProvider) Construct(ctx context.Context, request *rpc.ConstructRequest) (*rpc.ConstructResponse, error) {
+func (dp dockerHybridProvider) Construct(ctx context.Context, request *rpc.ConstructRequest) (
+	*rpc.ConstructResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "Construct is not yet implemented")
 }
 

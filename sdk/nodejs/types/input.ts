@@ -5,18 +5,6 @@ import * as pulumi from "@pulumi/pulumi";
 import * as inputs from "../types/input";
 import * as outputs from "../types/output";
 
-import * as utilities from "../utilities";
-
-/**
- * Specifies information about where to obtain a cache
- */
-export interface CacheFrom {
-    /**
-     * A list of cached build stages
-     */
-    stages?: pulumi.Input<pulumi.Input<string>[]>;
-}
-
 export interface ContainerCapabilities {
     /**
      * List of linux capabilities to add.
@@ -274,50 +262,6 @@ export interface ContainerVolume {
     volumeName?: pulumi.Input<string>;
 }
 
-/**
- * The Docker build context
- */
-export interface DockerBuild {
-    /**
-     * An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass built-time variablesthat can be accessed like environment variables inside the RUN instruction.
-     */
-    args?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
-    /**
-     * A cached image or list of build stages to use as build cache
-     */
-    cacheFrom?: pulumi.Input<boolean | inputs.CacheFrom>;
-    /**
-     * The path to the build context to use.
-     */
-    context?: pulumi.Input<string>;
-    /**
-     * The path to the Dockerfile to use.
-     */
-    dockerfile?: pulumi.Input<string>;
-    /**
-     * Environment variables to set on the invocation of docker build, for example to support DOCKER_BUILDKIT=1 docker build.
-     */
-    env?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
-    /**
-     * A bag of extra options to pass on to the docker SDK.
-     */
-    extraOptions?: pulumi.Input<pulumi.Input<string>[]>;
-    /**
-     * The target of the Dockerfile to build
-     */
-    target?: pulumi.Input<string>;
-}
-/**
- * dockerBuildProvideDefaults sets the appropriate defaults for DockerBuild
- */
-export function dockerBuildProvideDefaults(val: DockerBuild): DockerBuild {
-    return {
-        ...val,
-        context: (val.context) ?? ".",
-        dockerfile: (val.dockerfile) ?? "Dockerfile",
-    };
-}
-
 export interface NetworkIpamConfig {
     /**
      * Auxiliary IPv4 or IPv6 addresses used by Network driver
@@ -378,7 +322,7 @@ export interface Registry {
     /**
      * The URL of the Docker registry server
      */
-    server: pulumi.Input<string>;
+    serverURL: pulumi.Input<string>;
     /**
      * The username to authenticate to the registry
      */
