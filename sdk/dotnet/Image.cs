@@ -16,28 +16,22 @@ namespace Pulumi.Docker
     public partial class Image : global::Pulumi.CustomResource
     {
         /// <summary>
-        /// The path to the build context to use.
+        /// The fully qualified image name
         /// </summary>
-        [Output("context")]
-        public Output<string> Context { get; private set; } = null!;
+        [Output("imageName")]
+        public Output<string?> ImageName { get; private set; } = null!;
 
         /// <summary>
-        /// The path to the Dockerfile to use.
+        /// The fully qualified image name that was pushed to the registry.
         /// </summary>
-        [Output("dockerfile")]
-        public Output<string> Dockerfile { get; private set; } = null!;
-
-        /// <summary>
-        /// The image name
-        /// </summary>
-        [Output("name")]
-        public Output<string> Name { get; private set; } = null!;
+        [Output("registryImageName")]
+        public Output<string?> RegistryImageName { get; private set; } = null!;
 
         /// <summary>
         /// The URL of the registry server hosting the image.
         /// </summary>
-        [Output("registryURL")]
-        public Output<string> RegistryURL { get; private set; } = null!;
+        [Output("registryServer")]
+        public Output<string?> RegistryServer { get; private set; } = null!;
 
         /// <summary>
         /// The image tag.
@@ -91,34 +85,28 @@ namespace Pulumi.Docker
     public sealed class ImageArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// The path to the build context to use.
+        /// The Docker build context
         /// </summary>
-        [Input("context")]
-        public Input<string>? Context { get; set; }
-
-        /// <summary>
-        /// The path to the Dockerfile to use.
-        /// </summary>
-        [Input("dockerfile")]
-        public Input<string>? Dockerfile { get; set; }
+        [Input("build")]
+        public InputUnion<string, Inputs.DockerBuildArgs>? Build { get; set; }
 
         /// <summary>
         /// The image name
         /// </summary>
-        [Input("name", required: true)]
-        public Input<string> Name { get; set; } = null!;
+        [Input("imageName", required: true)]
+        public Input<string> ImageName { get; set; } = null!;
 
         /// <summary>
         /// The registry to push the image to
         /// </summary>
-        [Input("registry", required: true)]
-        public Input<Inputs.RegistryArgs> Registry { get; set; } = null!;
+        [Input("registry")]
+        public Input<Inputs.RegistryArgs>? Registry { get; set; }
 
         /// <summary>
-        /// The URL of the registry server hosting the image.
+        /// A flag to skip a registry push.
         /// </summary>
-        [Input("registryURL", required: true)]
-        public Input<string> RegistryURL { get; set; } = null!;
+        [Input("skipPush")]
+        public Input<bool>? SkipPush { get; set; }
 
         /// <summary>
         /// The image tag.
@@ -128,8 +116,7 @@ namespace Pulumi.Docker
 
         public ImageArgs()
         {
-            Context = ".";
-            Dockerfile = "Dockerfile";
+            SkipPush = false;
             Tag = "latest";
         }
         public static new ImageArgs Empty => new ImageArgs();
