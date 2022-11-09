@@ -33,7 +33,7 @@ type Build struct {
 	Dockerfile   string
 	CachedImages []string
 	Env          map[string]string
-	Args         map[string]string
+	Args         map[string]*string
 	ExtraOptions []string
 	Target       string
 }
@@ -84,11 +84,13 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 
 	// make the build options TODO: this is where we will add the buildkit flags etc
 	fmt.Println(img.Build.CachedImages)
+
 	opts := types.ImageBuildOptions{
 		Dockerfile: img.Build.Dockerfile,
 		Tags:       []string{img.Name}, //this should build the image locally, sans registry info
 		Remove:     true,
 		CacheFrom:  img.Build.CachedImages,
+		BuildArgs:  build.Args,
 	}
 
 	imgBuildResp, err := docker.ImageBuild(context.Background(), tar, opts)
@@ -208,11 +210,12 @@ func marshalBuild(b resource.PropertyValue) Build {
 	}
 	build.Env = envs
 	// Args
-	args := make(map[string]string)
+	args := make(map[string]*string)
 	if !buildObject["args"].IsNull() {
 		for k, v := range buildObject["args"].ObjectValue() {
 			key := fmt.Sprintf("%v", k)
-			args[key] = v.StringValue()
+			vStr := v.StringValue()
+			args[key] = &vStr
 		}
 	}
 	build.Args = args
