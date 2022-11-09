@@ -21,7 +21,7 @@ type dockerHybridProvider struct {
 }
 
 // Track a list of native resource tokens
-var dockerImageToken = "docker:index/image:Image"
+var dockerImageTok = "docker:index/image:Image"
 
 // gRPC methods for the hybrid provider
 
@@ -59,15 +59,15 @@ func (dp dockerHybridProvider) DiffConfig(ctx context.Context, request *rpc.Diff
 }
 
 func (dp dockerHybridProvider) Configure(ctx context.Context, request *rpc.ConfigureRequest) (*rpc.ConfigureResponse, error) {
-	var myResp rpc.ConfigureResponse
+	var myResp *rpc.ConfigureResponse
 	for _, prov := range []rpc.ResourceProviderServer{dp.bridgedProvider, dp.nativeProvider} {
 		resp, err := prov.Configure(ctx, request)
 		if err != nil {
 			return nil, err
 		}
-		myResp = *resp
+		myResp = resp
 	}
-	return &myResp, nil
+	return myResp, nil
 }
 
 // TODO: this is for functions AKA data sources, and our provider doesn't have any metadatea becuase we're just implementing from scratch
@@ -90,7 +90,7 @@ func (dp dockerHybridProvider) Check(ctx context.Context, request *rpc.CheckRequ
 	tok := urn.Type().String()
 	fmt.Println(tok)
 	// TODO: implement this for actual!!!
-	if tok == dockerImageToken {
+	if tok == dockerImageTok {
 		return dp.nativeProvider.Check(ctx, request)
 	}
 	return dp.bridgedProvider.Check(ctx, request)
@@ -99,7 +99,7 @@ func (dp dockerHybridProvider) Check(ctx context.Context, request *rpc.CheckRequ
 func (dp dockerHybridProvider) Diff(ctx context.Context, request *rpc.DiffRequest) (*rpc.DiffResponse, error) {
 	urn := resource.URN(request.GetUrn())
 	tok := urn.Type().String()
-	if tok == dockerImageToken {
+	if tok == dockerImageTok {
 		return dp.nativeProvider.Diff(ctx, request)
 	}
 	return dp.bridgedProvider.Diff(ctx, request)
@@ -108,7 +108,7 @@ func (dp dockerHybridProvider) Diff(ctx context.Context, request *rpc.DiffReques
 func (dp dockerHybridProvider) Create(ctx context.Context, request *rpc.CreateRequest) (*rpc.CreateResponse, error) {
 	urn := resource.URN(request.GetUrn())
 	tok := urn.Type().String()
-	if tok == dockerImageToken {
+	if tok == dockerImageTok {
 		return dp.nativeProvider.Create(ctx, request)
 	}
 	return dp.bridgedProvider.Create(ctx, request)
@@ -117,7 +117,7 @@ func (dp dockerHybridProvider) Create(ctx context.Context, request *rpc.CreateRe
 func (dp dockerHybridProvider) Read(ctx context.Context, request *rpc.ReadRequest) (*rpc.ReadResponse, error) {
 	urn := resource.URN(request.GetUrn())
 	tok := urn.Type().String()
-	if tok == dockerImageToken {
+	if tok == dockerImageTok {
 		return dp.nativeProvider.Read(ctx, request)
 	}
 	return dp.bridgedProvider.Read(ctx, request)
@@ -126,7 +126,7 @@ func (dp dockerHybridProvider) Read(ctx context.Context, request *rpc.ReadReques
 func (dp dockerHybridProvider) Update(ctx context.Context, request *rpc.UpdateRequest) (*rpc.UpdateResponse, error) {
 	urn := resource.URN(request.GetUrn())
 	tok := urn.Type().String()
-	if tok == dockerImageToken {
+	if tok == dockerImageTok {
 		return dp.nativeProvider.Update(ctx, request)
 	}
 	return dp.bridgedProvider.Update(ctx, request)
@@ -135,7 +135,7 @@ func (dp dockerHybridProvider) Update(ctx context.Context, request *rpc.UpdateRe
 func (dp dockerHybridProvider) Delete(ctx context.Context, request *rpc.DeleteRequest) (*empty.Empty, error) {
 	urn := resource.URN(request.GetUrn())
 	tok := urn.Type().String()
-	if tok == dockerImageToken {
+	if tok == dockerImageTok {
 		return dp.nativeProvider.Delete(ctx, request)
 	}
 	return dp.bridgedProvider.Delete(ctx, request)

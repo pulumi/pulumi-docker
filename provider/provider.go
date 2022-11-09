@@ -12,7 +12,6 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/emptypb"
-	"sync"
 )
 
 type dockerNativeProvider struct {
@@ -20,7 +19,7 @@ type dockerNativeProvider struct {
 	name        string
 	version     string
 	schemaBytes []byte
-	loginLock   sync.Mutex
+	//loginLock   sync.Mutex
 }
 
 // docker native methods
