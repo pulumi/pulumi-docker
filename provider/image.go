@@ -38,10 +38,6 @@ type Build struct {
 	Target       string
 }
 
-type CacheFrom struct {
-	Stages []string
-}
-
 func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	urn resource.URN,
 	props *structpb.Struct) (*structpb.Struct, error) {
