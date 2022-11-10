@@ -9,9 +9,11 @@ import (
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
 	"github.com/docker/docker/pkg/archive"
+	"github.com/docker/docker/pkg/jsonmessage"
 	structpb "github.com/golang/protobuf/ptypes/struct"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
+	"io"
 )
 
 type Image struct {
@@ -66,8 +68,10 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		Registry: reg,
 	}
 
+	fmt.Println(img.Registry)
+
 	build := marshalBuild(inputs["build"])
-	cache := getCachedImages(img, inputs["build"].ObjectValue()["cacheFrom"])
+	cache := getCachedImages(img, inputs["build"])
 
 	build.CachedImages = cache
 	img.Build = build
@@ -88,8 +92,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		panic(err)
 	}
 
-	// make the build options TODO: this is where we will add the buildkit flags etc
-	fmt.Println(img.Build.CachedImages)
+	// make the build options
 
 	opts := types.ImageBuildOptions{
 		Dockerfile: img.Build.Dockerfile,
@@ -142,16 +145,35 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	// By default, we push our image with the qualified image name from the input, without extra tagging.
 	pushOutput, err := docker.ImagePush(context.Background(), img.Name, pushOpts)
 
+	defer pushOutput.Close()
+
+	//err = parsePushOutput(pushOutput)
+
 	if err != nil {
 		panic(err)
 	}
-
-	defer pushOutput.Close()
-
+	fmt.Println("scanning the push output")
 	// Print push logs to terminal
-	pushScanner := bufio.NewScanner(pushOutput)
-	for pushScanner.Scan() {
-		fmt.Println(pushScanner.Text())
+	//pushScanner := bufio.NewScanner(pushOutput)
+	//for pushScanner.Scan() {
+
+	for {
+
+		dec := json.NewDecoder(pushOutput)
+		jmsg := jsonmessage.JSONMessage{}
+
+		err = dec.Decode(&jmsg)
+		if err != nil {
+			if err == io.EOF {
+				break
+			}
+			return nil, err
+		}
+
+		fmt.Println("the jmsg: ", jmsg)
+		fmt.Println("END OF MESSAGE")
+		////fmt.Println(pushScanner.Text())
+		//}
 	}
 
 	outputs := map[string]interface{}{
@@ -235,9 +257,13 @@ func marshalBuild(b resource.PropertyValue) Build {
 	return build
 }
 
-func getCachedImages(img Image, c resource.PropertyValue) []string {
+func getCachedImages(img Image, b resource.PropertyValue) []string {
 
 	var cacheImages []string
+	if b.IsNull() {
+		return cacheImages
+	}
+	c := b.ObjectValue()["cacheFrom"]
 
 	if c.IsNull() {
 		return cacheImages
@@ -260,4 +286,17 @@ func getCachedImages(img Image, c resource.PropertyValue) []string {
 		cacheImages = append(cacheImages, stage)
 	}
 	return cacheImages
+}
+
+func parsePushOutput(rc io.ReadCloser) error {
+	dec := json.NewDecoder(rc)
+	jmsg := jsonmessage.JSONMessage{}
+
+	err := dec.Decode(&jmsg)
+	fmt.Println(jmsg)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
