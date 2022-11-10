@@ -49,15 +49,21 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		return nil, err
 	}
 
+	//set Registry
+	var reg Registry
+	if !inputs["registry"].IsNull() {
+		reg = Registry{
+			Server:   inputs["registry"].ObjectValue()["server"].StringValue(),
+			Username: inputs["registry"].ObjectValue()["username"].StringValue(),
+			Password: inputs["registry"].ObjectValue()["password"].StringValue(),
+		}
+	}
+
 	// read in values to Image
 	img := Image{
 		Name:     inputs["imageName"].StringValue(),
 		SkipPush: inputs["skipPush"].BoolValue(),
-		Registry: Registry{
-			Server:   inputs["registry"].ObjectValue()["server"].StringValue(),
-			Username: inputs["registry"].ObjectValue()["username"].StringValue(),
-			Password: inputs["registry"].ObjectValue()["password"].StringValue(),
-		},
+		Registry: reg,
 	}
 
 	build := marshalBuild(inputs["build"])
@@ -133,14 +139,8 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 
 	pushOpts := types.ImagePushOptions{RegistryAuth: authConfigEncoded}
 
-	// This is a shift away from imageName to have to be of the "registry/image" format.
-	registryImageTag := img.Registry.Username + "/" + img.Name
-	// tag our image with the qualified image name that includes the registry
-	err = docker.ImageTag(context.Background(), img.Name, registryImageTag)
-	if err != nil {
-		panic(err)
-	}
-	pushOutput, err := docker.ImagePush(context.Background(), registryImageTag, pushOpts)
+	// By default, we push our image with the qualified image name from the input, without extra tagging.
+	pushOutput, err := docker.ImagePush(context.Background(), img.Name, pushOpts)
 
 	if err != nil {
 		panic(err)
@@ -155,10 +155,10 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	}
 
 	outputs := map[string]interface{}{
-		"dockerfile":        img.Build.Dockerfile,
-		"context":           img.Build.Context,
-		"registryImageName": registryImageTag,
-		"registryServer":    img.Registry.Server,
+		"dockerfile":     img.Build.Dockerfile,
+		"context":        img.Build.Context,
+		"baseImageName":  img.Name,
+		"registryServer": img.Registry.Server,
 	}
 	return plugin.MarshalProperties(
 		resource.NewPropertyMapFromMap(outputs),

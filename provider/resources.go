@@ -233,27 +233,16 @@ func Provider() tfbridge.ProviderInfo {
 							Description: "The URL of the registry server hosting the image.",
 							TypeSpec:    schema.TypeSpec{Type: "string"},
 						},
-						"tag": {
-							Description: "The image tag.",
-							Default:     "latest",
-							TypeSpec:    schema.TypeSpec{Type: "string"},
-						},
-						"registryImageName": {
+						"baseImageName": {
 							Description: "The fully qualified image name that was pushed to the registry.",
 							TypeSpec:    schema.TypeSpec{Type: "string"},
 						},
 					},
-					//Required: []string{"imageName", "registryServer"}, TODO are any of these necessary to Require
 				},
 				IsComponent: false,
 				InputProperties: map[string]schema.PropertySpec{
 					"imageName": {
 						Description: "The image name",
-						TypeSpec:    schema.TypeSpec{Type: "string"},
-					},
-					"tag": {
-						Description: "The image tag.",
-						Default:     "latest",
 						TypeSpec:    schema.TypeSpec{Type: "string"},
 					},
 					"registry": {
