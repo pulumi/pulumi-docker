@@ -4420,22 +4420,17 @@
         "docker:index/image:Image": {
             "description": "A real CRUD docker image we hope",
             "properties": {
+                "baseImageName": {
+                    "type": "string",
+                    "description": "The fully qualified image name that was pushed to the registry."
+                },
                 "imageName": {
                     "type": "string",
                     "description": "The fully qualified image name"
                 },
-                "registryImageName": {
-                    "type": "string",
-                    "description": "The fully qualified image name that was pushed to the registry."
-                },
                 "registryServer": {
                     "type": "string",
                     "description": "The URL of the registry server hosting the image."
-                },
-                "tag": {
-                    "type": "string",
-                    "description": "The image tag.",
-                    "default": "latest"
                 }
             },
             "type": "object",
@@ -4463,11 +4458,6 @@
                     "type": "boolean",
                     "description": "A flag to skip a registry push.",
                     "default": false
-                },
-                "tag": {
-                    "type": "string",
-                    "description": "The image tag.",
-                    "default": "latest"
                 }
             },
             "requiredInputs": [
