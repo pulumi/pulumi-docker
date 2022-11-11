@@ -58,8 +58,9 @@ func TestDockerfileWithMultipleTargets(t *testing.T) {
 
 	test := getJsOptions(t).
 		With(integration.ProgramTestOptions{
-			Dir:                    path.Join(getCwd(t), "dockerfile-with-targets"),
-			ExtraRuntimeValidation: dockerFileWithDependenciesOutputValidation,
+			Dir: path.Join(getCwd(t), "dockerfile-with-targets"),
+			//ExtraRuntimeValidation: dockerFileWithDependenciesOutputValidation,
+			SkipRefresh: true,
 		})
 
 	integration.ProgramTest(t, &test)

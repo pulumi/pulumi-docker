@@ -37,8 +37,9 @@ func TestDotNet(t *testing.T) {
 
 	test := getCsharpBaseOptions(t).
 		With(integration.ProgramTestOptions{
-			Dir:                    path.Join(getCwd(t), "dotnet"),
-			ExtraRuntimeValidation: dockerFileWithDependenciesOutputValidation,
+			Dir: path.Join(getCwd(t), "dotnet"),
+			//ExtraRuntimeValidation: dockerFileWithDependenciesOutputValidation,
+			SkipRefresh: true,
 		})
 
 	integration.ProgramTest(t, &test)
