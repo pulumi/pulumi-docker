@@ -36,15 +36,15 @@ public final class RegistryArgs extends com.pulumi.resources.ResourceArgs {
      * The URL of the Docker registry server
      * 
      */
-    @Import(name="serverURL", required=true)
-    private Output<String> serverURL;
+    @Import(name="server", required=true)
+    private Output<String> server;
 
     /**
      * @return The URL of the Docker registry server
      * 
      */
-    public Output<String> serverURL() {
-        return this.serverURL;
+    public Output<String> server() {
+        return this.server;
     }
 
     /**
@@ -66,7 +66,7 @@ public final class RegistryArgs extends com.pulumi.resources.ResourceArgs {
 
     private RegistryArgs(RegistryArgs $) {
         this.password = $.password;
-        this.serverURL = $.serverURL;
+        this.server = $.server;
         this.username = $.username;
     }
 
@@ -110,24 +110,24 @@ public final class RegistryArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param serverURL The URL of the Docker registry server
+         * @param server The URL of the Docker registry server
          * 
          * @return builder
          * 
          */
-        public Builder serverURL(Output<String> serverURL) {
-            $.serverURL = serverURL;
+        public Builder server(Output<String> server) {
+            $.server = server;
             return this;
         }
 
         /**
-         * @param serverURL The URL of the Docker registry server
+         * @param server The URL of the Docker registry server
          * 
          * @return builder
          * 
          */
-        public Builder serverURL(String serverURL) {
-            return serverURL(Output.of(serverURL));
+        public Builder server(String server) {
+            return server(Output.of(server));
         }
 
         /**
@@ -153,7 +153,7 @@ public final class RegistryArgs extends com.pulumi.resources.ResourceArgs {
 
         public RegistryArgs build() {
             $.password = Objects.requireNonNull($.password, "expected parameter 'password' to be non-null");
-            $.serverURL = Objects.requireNonNull($.serverURL, "expected parameter 'serverURL' to be non-null");
+            $.server = Objects.requireNonNull($.server, "expected parameter 'server' to be non-null");
             $.username = Objects.requireNonNull($.username, "expected parameter 'username' to be non-null");
             return $;
         }

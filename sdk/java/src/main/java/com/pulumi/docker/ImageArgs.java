@@ -3,10 +3,13 @@
 
 package com.pulumi.docker;
 
+import com.pulumi.core.Either;
 import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
 import com.pulumi.core.internal.Codegen;
+import com.pulumi.docker.inputs.DockerBuildArgs;
 import com.pulumi.docker.inputs.RegistryArgs;
+import java.lang.Boolean;
 import java.lang.String;
 import java.util.Objects;
 import java.util.Optional;
@@ -18,104 +21,72 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
     public static final ImageArgs Empty = new ImageArgs();
 
     /**
-     * The path to the build context to use.
+     * The Docker build context
      * 
      */
-    @Import(name="context")
-    private @Nullable Output<String> context;
+    @Import(name="build")
+    private @Nullable Output<Either<String,DockerBuildArgs>> build;
 
     /**
-     * @return The path to the build context to use.
+     * @return The Docker build context
      * 
      */
-    public Optional<Output<String>> context() {
-        return Optional.ofNullable(this.context);
-    }
-
-    /**
-     * The path to the Dockerfile to use.
-     * 
-     */
-    @Import(name="dockerfile")
-    private @Nullable Output<String> dockerfile;
-
-    /**
-     * @return The path to the Dockerfile to use.
-     * 
-     */
-    public Optional<Output<String>> dockerfile() {
-        return Optional.ofNullable(this.dockerfile);
+    public Optional<Output<Either<String,DockerBuildArgs>>> build() {
+        return Optional.ofNullable(this.build);
     }
 
     /**
      * The image name
      * 
      */
-    @Import(name="name", required=true)
-    private Output<String> name;
+    @Import(name="imageName", required=true)
+    private Output<String> imageName;
 
     /**
      * @return The image name
      * 
      */
-    public Output<String> name() {
-        return this.name;
+    public Output<String> imageName() {
+        return this.imageName;
     }
 
     /**
      * The registry to push the image to
      * 
      */
-    @Import(name="registry", required=true)
-    private Output<RegistryArgs> registry;
+    @Import(name="registry")
+    private @Nullable Output<RegistryArgs> registry;
 
     /**
      * @return The registry to push the image to
      * 
      */
-    public Output<RegistryArgs> registry() {
-        return this.registry;
+    public Optional<Output<RegistryArgs>> registry() {
+        return Optional.ofNullable(this.registry);
     }
 
     /**
-     * The URL of the registry server hosting the image.
+     * A flag to skip a registry push.
      * 
      */
-    @Import(name="registryURL", required=true)
-    private Output<String> registryURL;
+    @Import(name="skipPush")
+    private @Nullable Output<Boolean> skipPush;
 
     /**
-     * @return The URL of the registry server hosting the image.
+     * @return A flag to skip a registry push.
      * 
      */
-    public Output<String> registryURL() {
-        return this.registryURL;
-    }
-
-    /**
-     * The image tag.
-     * 
-     */
-    @Import(name="tag")
-    private @Nullable Output<String> tag;
-
-    /**
-     * @return The image tag.
-     * 
-     */
-    public Optional<Output<String>> tag() {
-        return Optional.ofNullable(this.tag);
+    public Optional<Output<Boolean>> skipPush() {
+        return Optional.ofNullable(this.skipPush);
     }
 
     private ImageArgs() {}
 
     private ImageArgs(ImageArgs $) {
-        this.context = $.context;
-        this.dockerfile = $.dockerfile;
-        this.name = $.name;
+        this.build = $.build;
+        this.imageName = $.imageName;
         this.registry = $.registry;
-        this.registryURL = $.registryURL;
-        this.tag = $.tag;
+        this.skipPush = $.skipPush;
     }
 
     public static Builder builder() {
@@ -137,66 +108,65 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param context The path to the build context to use.
+         * @param build The Docker build context
          * 
          * @return builder
          * 
          */
-        public Builder context(@Nullable Output<String> context) {
-            $.context = context;
+        public Builder build(@Nullable Output<Either<String,DockerBuildArgs>> build) {
+            $.build = build;
             return this;
         }
 
         /**
-         * @param context The path to the build context to use.
+         * @param build The Docker build context
          * 
          * @return builder
          * 
          */
-        public Builder context(String context) {
-            return context(Output.of(context));
+        public Builder build(Either<String,DockerBuildArgs> build) {
+            return build(Output.of(build));
         }
 
         /**
-         * @param dockerfile The path to the Dockerfile to use.
+         * @param build The Docker build context
          * 
          * @return builder
          * 
          */
-        public Builder dockerfile(@Nullable Output<String> dockerfile) {
-            $.dockerfile = dockerfile;
+        public Builder build(String build) {
+            return build(Either.ofLeft(build));
+        }
+
+        /**
+         * @param build The Docker build context
+         * 
+         * @return builder
+         * 
+         */
+        public Builder build(DockerBuildArgs build) {
+            return build(Either.ofRight(build));
+        }
+
+        /**
+         * @param imageName The image name
+         * 
+         * @return builder
+         * 
+         */
+        public Builder imageName(Output<String> imageName) {
+            $.imageName = imageName;
             return this;
         }
 
         /**
-         * @param dockerfile The path to the Dockerfile to use.
+         * @param imageName The image name
          * 
          * @return builder
          * 
          */
-        public Builder dockerfile(String dockerfile) {
-            return dockerfile(Output.of(dockerfile));
-        }
-
-        /**
-         * @param name The image name
-         * 
-         * @return builder
-         * 
-         */
-        public Builder name(Output<String> name) {
-            $.name = name;
-            return this;
-        }
-
-        /**
-         * @param name The image name
-         * 
-         * @return builder
-         * 
-         */
-        public Builder name(String name) {
-            return name(Output.of(name));
+        public Builder imageName(String imageName) {
+            return imageName(Output.of(imageName));
         }
 
         /**
@@ -205,7 +175,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
          * @return builder
          * 
          */
-        public Builder registry(Output<RegistryArgs> registry) {
+        public Builder registry(@Nullable Output<RegistryArgs> registry) {
             $.registry = registry;
             return this;
         }
@@ -221,54 +191,29 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param registryURL The URL of the registry server hosting the image.
+         * @param skipPush A flag to skip a registry push.
          * 
          * @return builder
          * 
          */
-        public Builder registryURL(Output<String> registryURL) {
-            $.registryURL = registryURL;
+        public Builder skipPush(@Nullable Output<Boolean> skipPush) {
+            $.skipPush = skipPush;
             return this;
         }
 
         /**
-         * @param registryURL The URL of the registry server hosting the image.
+         * @param skipPush A flag to skip a registry push.
          * 
          * @return builder
          * 
          */
-        public Builder registryURL(String registryURL) {
-            return registryURL(Output.of(registryURL));
-        }
-
-        /**
-         * @param tag The image tag.
-         * 
-         * @return builder
-         * 
-         */
-        public Builder tag(@Nullable Output<String> tag) {
-            $.tag = tag;
-            return this;
-        }
-
-        /**
-         * @param tag The image tag.
-         * 
-         * @return builder
-         * 
-         */
-        public Builder tag(String tag) {
-            return tag(Output.of(tag));
+        public Builder skipPush(Boolean skipPush) {
+            return skipPush(Output.of(skipPush));
         }
 
         public ImageArgs build() {
-            $.context = Codegen.stringProp("context").output().arg($.context).def(".").getNullable();
-            $.dockerfile = Codegen.stringProp("dockerfile").output().arg($.dockerfile).def("Dockerfile").getNullable();
-            $.name = Objects.requireNonNull($.name, "expected parameter 'name' to be non-null");
-            $.registry = Objects.requireNonNull($.registry, "expected parameter 'registry' to be non-null");
-            $.registryURL = Objects.requireNonNull($.registryURL, "expected parameter 'registryURL' to be non-null");
-            $.tag = Codegen.stringProp("tag").output().arg($.tag).def("latest").getNullable();
+            $.imageName = Objects.requireNonNull($.imageName, "expected parameter 'imageName' to be non-null");
+            $.skipPush = Codegen.booleanProp("skipPush").output().arg($.skipPush).def(false).getNullable();
             return $;
         }
     }

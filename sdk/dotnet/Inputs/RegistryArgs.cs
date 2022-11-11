@@ -24,8 +24,8 @@ namespace Pulumi.Docker.Inputs
         /// <summary>
         /// The URL of the Docker registry server
         /// </summary>
-        [Input("serverURL", required: true)]
-        public Input<string> ServerURL { get; set; } = null!;
+        [Input("server", required: true)]
+        public Input<string> Server { get; set; } = null!;
 
         /// <summary>
         /// The username to authenticate to the registry

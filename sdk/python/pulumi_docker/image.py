@@ -15,108 +15,74 @@ __all__ = ['ImageArgs', 'Image']
 @pulumi.input_type
 class ImageArgs:
     def __init__(__self__, *,
-                 name: pulumi.Input[str],
-                 registry: pulumi.Input['RegistryArgs'],
-                 registry_url: pulumi.Input[str],
-                 context: Optional[pulumi.Input[str]] = None,
-                 dockerfile: Optional[pulumi.Input[str]] = None,
-                 tag: Optional[pulumi.Input[str]] = None):
+                 image_name: pulumi.Input[str],
+                 build: Optional[pulumi.Input[Union[str, 'DockerBuildArgs']]] = None,
+                 registry: Optional[pulumi.Input['RegistryArgs']] = None,
+                 skip_push: Optional[pulumi.Input[bool]] = None):
         """
         The set of arguments for constructing a Image resource.
-        :param pulumi.Input[str] name: The image name
+        :param pulumi.Input[str] image_name: The image name
+        :param pulumi.Input[Union[str, 'DockerBuildArgs']] build: The Docker build context
         :param pulumi.Input['RegistryArgs'] registry: The registry to push the image to
-        :param pulumi.Input[str] registry_url: The URL of the registry server hosting the image.
-        :param pulumi.Input[str] context: The path to the build context to use.
-        :param pulumi.Input[str] dockerfile: The path to the Dockerfile to use.
-        :param pulumi.Input[str] tag: The image tag.
+        :param pulumi.Input[bool] skip_push: A flag to skip a registry push.
         """
-        pulumi.set(__self__, "name", name)
-        pulumi.set(__self__, "registry", registry)
-        pulumi.set(__self__, "registry_url", registry_url)
-        if context is None:
-            context = '.'
-        if context is not None:
-            pulumi.set(__self__, "context", context)
-        if dockerfile is None:
-            dockerfile = 'Dockerfile'
-        if dockerfile is not None:
-            pulumi.set(__self__, "dockerfile", dockerfile)
-        if tag is None:
-            tag = 'latest'
-        if tag is not None:
-            pulumi.set(__self__, "tag", tag)
+        pulumi.set(__self__, "image_name", image_name)
+        if build is not None:
+            pulumi.set(__self__, "build", build)
+        if registry is not None:
+            pulumi.set(__self__, "registry", registry)
+        if skip_push is None:
+            skip_push = False
+        if skip_push is not None:
+            pulumi.set(__self__, "skip_push", skip_push)
 
     @property
-    @pulumi.getter
-    def name(self) -> pulumi.Input[str]:
+    @pulumi.getter(name="imageName")
+    def image_name(self) -> pulumi.Input[str]:
         """
         The image name
         """
-        return pulumi.get(self, "name")
+        return pulumi.get(self, "image_name")
 
-    @name.setter
-    def name(self, value: pulumi.Input[str]):
-        pulumi.set(self, "name", value)
+    @image_name.setter
+    def image_name(self, value: pulumi.Input[str]):
+        pulumi.set(self, "image_name", value)
 
     @property
     @pulumi.getter
-    def registry(self) -> pulumi.Input['RegistryArgs']:
+    def build(self) -> Optional[pulumi.Input[Union[str, 'DockerBuildArgs']]]:
+        """
+        The Docker build context
+        """
+        return pulumi.get(self, "build")
+
+    @build.setter
+    def build(self, value: Optional[pulumi.Input[Union[str, 'DockerBuildArgs']]]):
+        pulumi.set(self, "build", value)
+
+    @property
+    @pulumi.getter
+    def registry(self) -> Optional[pulumi.Input['RegistryArgs']]:
         """
         The registry to push the image to
         """
         return pulumi.get(self, "registry")
 
     @registry.setter
-    def registry(self, value: pulumi.Input['RegistryArgs']):
+    def registry(self, value: Optional[pulumi.Input['RegistryArgs']]):
         pulumi.set(self, "registry", value)
 
     @property
-    @pulumi.getter(name="registryURL")
-    def registry_url(self) -> pulumi.Input[str]:
+    @pulumi.getter(name="skipPush")
+    def skip_push(self) -> Optional[pulumi.Input[bool]]:
         """
-        The URL of the registry server hosting the image.
+        A flag to skip a registry push.
         """
-        return pulumi.get(self, "registry_url")
+        return pulumi.get(self, "skip_push")
 
-    @registry_url.setter
-    def registry_url(self, value: pulumi.Input[str]):
-        pulumi.set(self, "registry_url", value)
-
-    @property
-    @pulumi.getter
-    def context(self) -> Optional[pulumi.Input[str]]:
-        """
-        The path to the build context to use.
-        """
-        return pulumi.get(self, "context")
-
-    @context.setter
-    def context(self, value: Optional[pulumi.Input[str]]):
-        pulumi.set(self, "context", value)
-
-    @property
-    @pulumi.getter
-    def dockerfile(self) -> Optional[pulumi.Input[str]]:
-        """
-        The path to the Dockerfile to use.
-        """
-        return pulumi.get(self, "dockerfile")
-
-    @dockerfile.setter
-    def dockerfile(self, value: Optional[pulumi.Input[str]]):
-        pulumi.set(self, "dockerfile", value)
-
-    @property
-    @pulumi.getter
-    def tag(self) -> Optional[pulumi.Input[str]]:
-        """
-        The image tag.
-        """
-        return pulumi.get(self, "tag")
-
-    @tag.setter
-    def tag(self, value: Optional[pulumi.Input[str]]):
-        pulumi.set(self, "tag", value)
+    @skip_push.setter
+    def skip_push(self, value: Optional[pulumi.Input[bool]]):
+        pulumi.set(self, "skip_push", value)
 
 
 class Image(pulumi.CustomResource):
@@ -124,24 +90,20 @@ class Image(pulumi.CustomResource):
     def __init__(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
-                 context: Optional[pulumi.Input[str]] = None,
-                 dockerfile: Optional[pulumi.Input[str]] = None,
-                 name: Optional[pulumi.Input[str]] = None,
+                 build: Optional[pulumi.Input[Union[str, pulumi.InputType['DockerBuildArgs']]]] = None,
+                 image_name: Optional[pulumi.Input[str]] = None,
                  registry: Optional[pulumi.Input[pulumi.InputType['RegistryArgs']]] = None,
-                 registry_url: Optional[pulumi.Input[str]] = None,
-                 tag: Optional[pulumi.Input[str]] = None,
+                 skip_push: Optional[pulumi.Input[bool]] = None,
                  __props__=None):
         """
         A real CRUD docker image we hope
 
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
-        :param pulumi.Input[str] context: The path to the build context to use.
-        :param pulumi.Input[str] dockerfile: The path to the Dockerfile to use.
-        :param pulumi.Input[str] name: The image name
+        :param pulumi.Input[Union[str, pulumi.InputType['DockerBuildArgs']]] build: The Docker build context
+        :param pulumi.Input[str] image_name: The image name
         :param pulumi.Input[pulumi.InputType['RegistryArgs']] registry: The registry to push the image to
-        :param pulumi.Input[str] registry_url: The URL of the registry server hosting the image.
-        :param pulumi.Input[str] tag: The image tag.
+        :param pulumi.Input[bool] skip_push: A flag to skip a registry push.
         """
         ...
     @overload
@@ -167,12 +129,10 @@ class Image(pulumi.CustomResource):
     def _internal_init(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
-                 context: Optional[pulumi.Input[str]] = None,
-                 dockerfile: Optional[pulumi.Input[str]] = None,
-                 name: Optional[pulumi.Input[str]] = None,
+                 build: Optional[pulumi.Input[Union[str, pulumi.InputType['DockerBuildArgs']]]] = None,
+                 image_name: Optional[pulumi.Input[str]] = None,
                  registry: Optional[pulumi.Input[pulumi.InputType['RegistryArgs']]] = None,
-                 registry_url: Optional[pulumi.Input[str]] = None,
-                 tag: Optional[pulumi.Input[str]] = None,
+                 skip_push: Optional[pulumi.Input[bool]] = None,
                  __props__=None):
         opts = pulumi.ResourceOptions.merge(_utilities.get_resource_opts_defaults(), opts)
         if not isinstance(opts, pulumi.ResourceOptions):
@@ -182,24 +142,16 @@ class Image(pulumi.CustomResource):
                 raise TypeError('__props__ is only valid when passed in combination with a valid opts.id to get an existing resource')
             __props__ = ImageArgs.__new__(ImageArgs)
 
-            if context is None:
-                context = '.'
-            __props__.__dict__["context"] = context
-            if dockerfile is None:
-                dockerfile = 'Dockerfile'
-            __props__.__dict__["dockerfile"] = dockerfile
-            if name is None and not opts.urn:
-                raise TypeError("Missing required property 'name'")
-            __props__.__dict__["name"] = name
-            if registry is None and not opts.urn:
-                raise TypeError("Missing required property 'registry'")
+            __props__.__dict__["build"] = build
+            if image_name is None and not opts.urn:
+                raise TypeError("Missing required property 'image_name'")
+            __props__.__dict__["image_name"] = image_name
             __props__.__dict__["registry"] = registry
-            if registry_url is None and not opts.urn:
-                raise TypeError("Missing required property 'registry_url'")
-            __props__.__dict__["registry_url"] = registry_url
-            if tag is None:
-                tag = 'latest'
-            __props__.__dict__["tag"] = tag
+            if skip_push is None:
+                skip_push = False
+            __props__.__dict__["skip_push"] = skip_push
+            __props__.__dict__["base_image_name"] = None
+            __props__.__dict__["registry_server"] = None
         super(Image, __self__).__init__(
             'docker:index/image:Image',
             resource_name,
@@ -222,50 +174,32 @@ class Image(pulumi.CustomResource):
 
         __props__ = ImageArgs.__new__(ImageArgs)
 
-        __props__.__dict__["context"] = None
-        __props__.__dict__["dockerfile"] = None
-        __props__.__dict__["name"] = None
-        __props__.__dict__["registry_url"] = None
-        __props__.__dict__["tag"] = None
+        __props__.__dict__["base_image_name"] = None
+        __props__.__dict__["image_name"] = None
+        __props__.__dict__["registry_server"] = None
         return Image(resource_name, opts=opts, __props__=__props__)
 
     @property
-    @pulumi.getter
-    def context(self) -> pulumi.Output[str]:
+    @pulumi.getter(name="baseImageName")
+    def base_image_name(self) -> pulumi.Output[Optional[str]]:
         """
-        The path to the build context to use.
+        The fully qualified image name that was pushed to the registry.
         """
-        return pulumi.get(self, "context")
+        return pulumi.get(self, "base_image_name")
 
     @property
-    @pulumi.getter
-    def dockerfile(self) -> pulumi.Output[str]:
+    @pulumi.getter(name="imageName")
+    def image_name(self) -> pulumi.Output[Optional[str]]:
         """
-        The path to the Dockerfile to use.
+        The fully qualified image name
         """
-        return pulumi.get(self, "dockerfile")
+        return pulumi.get(self, "image_name")
 
     @property
-    @pulumi.getter
-    def name(self) -> pulumi.Output[str]:
-        """
-        The image name
-        """
-        return pulumi.get(self, "name")
-
-    @property
-    @pulumi.getter(name="registryURL")
-    def registry_url(self) -> pulumi.Output[str]:
+    @pulumi.getter(name="registryServer")
+    def registry_server(self) -> pulumi.Output[Optional[str]]:
         """
         The URL of the registry server hosting the image.
         """
-        return pulumi.get(self, "registry_url")
-
-    @property
-    @pulumi.getter
-    def tag(self) -> pulumi.Output[Optional[str]]:
-        """
-        The image tag.
-        """
-        return pulumi.get(self, "tag")
+        return pulumi.get(self, "registry_server")
 

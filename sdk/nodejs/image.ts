@@ -37,25 +37,17 @@ export class Image extends pulumi.CustomResource {
     }
 
     /**
-     * The path to the build context to use.
+     * The fully qualified image name that was pushed to the registry.
      */
-    public readonly context!: pulumi.Output<string>;
+    public /*out*/ readonly baseImageName!: pulumi.Output<string | undefined>;
     /**
-     * The path to the Dockerfile to use.
+     * The fully qualified image name
      */
-    public readonly dockerfile!: pulumi.Output<string>;
-    /**
-     * The image name
-     */
-    public readonly name!: pulumi.Output<string>;
+    public readonly imageName!: pulumi.Output<string | undefined>;
     /**
      * The URL of the registry server hosting the image.
      */
-    public readonly registryURL!: pulumi.Output<string>;
-    /**
-     * The image tag.
-     */
-    public readonly tag!: pulumi.Output<string | undefined>;
+    public /*out*/ readonly registryServer!: pulumi.Output<string | undefined>;
 
     /**
      * Create a Image resource with the given unique name, arguments, and options.
@@ -68,27 +60,19 @@ export class Image extends pulumi.CustomResource {
         let resourceInputs: pulumi.Inputs = {};
         opts = opts || {};
         if (!opts.id) {
-            if ((!args || args.name === undefined) && !opts.urn) {
-                throw new Error("Missing required property 'name'");
+            if ((!args || args.imageName === undefined) && !opts.urn) {
+                throw new Error("Missing required property 'imageName'");
             }
-            if ((!args || args.registry === undefined) && !opts.urn) {
-                throw new Error("Missing required property 'registry'");
-            }
-            if ((!args || args.registryURL === undefined) && !opts.urn) {
-                throw new Error("Missing required property 'registryURL'");
-            }
-            resourceInputs["context"] = (args ? args.context : undefined) ?? ".";
-            resourceInputs["dockerfile"] = (args ? args.dockerfile : undefined) ?? "Dockerfile";
-            resourceInputs["name"] = args ? args.name : undefined;
+            resourceInputs["build"] = args ? args.build : undefined;
+            resourceInputs["imageName"] = args ? args.imageName : undefined;
             resourceInputs["registry"] = args ? args.registry : undefined;
-            resourceInputs["registryURL"] = args ? args.registryURL : undefined;
-            resourceInputs["tag"] = (args ? args.tag : undefined) ?? "latest";
+            resourceInputs["skipPush"] = (args ? args.skipPush : undefined) ?? false;
+            resourceInputs["baseImageName"] = undefined /*out*/;
+            resourceInputs["registryServer"] = undefined /*out*/;
         } else {
-            resourceInputs["context"] = undefined /*out*/;
-            resourceInputs["dockerfile"] = undefined /*out*/;
-            resourceInputs["name"] = undefined /*out*/;
-            resourceInputs["registryURL"] = undefined /*out*/;
-            resourceInputs["tag"] = undefined /*out*/;
+            resourceInputs["baseImageName"] = undefined /*out*/;
+            resourceInputs["imageName"] = undefined /*out*/;
+            resourceInputs["registryServer"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
         super(Image.__pulumiType, name, resourceInputs, opts);
@@ -100,27 +84,19 @@ export class Image extends pulumi.CustomResource {
  */
 export interface ImageArgs {
     /**
-     * The path to the build context to use.
+     * The Docker build context
      */
-    context?: pulumi.Input<string>;
-    /**
-     * The path to the Dockerfile to use.
-     */
-    dockerfile?: pulumi.Input<string>;
+    build?: pulumi.Input<string | inputs.DockerBuild>;
     /**
      * The image name
      */
-    name: pulumi.Input<string>;
+    imageName: pulumi.Input<string>;
     /**
      * The registry to push the image to
      */
-    registry: pulumi.Input<inputs.Registry>;
+    registry?: pulumi.Input<inputs.Registry>;
     /**
-     * The URL of the registry server hosting the image.
+     * A flag to skip a registry push.
      */
-    registryURL: pulumi.Input<string>;
-    /**
-     * The image tag.
-     */
-    tag?: pulumi.Input<string>;
+    skipPush?: pulumi.Input<boolean>;
 }

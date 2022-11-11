@@ -20,74 +20,46 @@ import javax.annotation.Nullable;
 @ResourceType(type="docker:index/image:Image")
 public class Image extends com.pulumi.resources.CustomResource {
     /**
-     * The path to the build context to use.
+     * The fully qualified image name that was pushed to the registry.
      * 
      */
-    @Export(name="context", type=String.class, parameters={})
-    private Output<String> context;
+    @Export(name="baseImageName", type=String.class, parameters={})
+    private Output</* @Nullable */ String> baseImageName;
 
     /**
-     * @return The path to the build context to use.
+     * @return The fully qualified image name that was pushed to the registry.
      * 
      */
-    public Output<String> context() {
-        return this.context;
+    public Output<Optional<String>> baseImageName() {
+        return Codegen.optional(this.baseImageName);
     }
     /**
-     * The path to the Dockerfile to use.
+     * The fully qualified image name
      * 
      */
-    @Export(name="dockerfile", type=String.class, parameters={})
-    private Output<String> dockerfile;
+    @Export(name="imageName", type=String.class, parameters={})
+    private Output</* @Nullable */ String> imageName;
 
     /**
-     * @return The path to the Dockerfile to use.
+     * @return The fully qualified image name
      * 
      */
-    public Output<String> dockerfile() {
-        return this.dockerfile;
-    }
-    /**
-     * The image name
-     * 
-     */
-    @Export(name="name", type=String.class, parameters={})
-    private Output<String> name;
-
-    /**
-     * @return The image name
-     * 
-     */
-    public Output<String> name() {
-        return this.name;
+    public Output<Optional<String>> imageName() {
+        return Codegen.optional(this.imageName);
     }
     /**
      * The URL of the registry server hosting the image.
      * 
      */
-    @Export(name="registryURL", type=String.class, parameters={})
-    private Output<String> registryURL;
+    @Export(name="registryServer", type=String.class, parameters={})
+    private Output</* @Nullable */ String> registryServer;
 
     /**
      * @return The URL of the registry server hosting the image.
      * 
      */
-    public Output<String> registryURL() {
-        return this.registryURL;
-    }
-    /**
-     * The image tag.
-     * 
-     */
-    @Export(name="tag", type=String.class, parameters={})
-    private Output</* @Nullable */ String> tag;
-
-    /**
-     * @return The image tag.
-     * 
-     */
-    public Output<Optional<String>> tag() {
-        return Codegen.optional(this.tag);
+    public Output<Optional<String>> registryServer() {
+        return Codegen.optional(this.registryServer);
     }
 
     /**
