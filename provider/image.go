@@ -9,12 +9,10 @@ import (
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
 	"github.com/docker/docker/pkg/archive"
-	"github.com/docker/docker/pkg/jsonmessage"
 	structpb "github.com/golang/protobuf/ptypes/struct"
 	"github.com/pkg/errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
-	"io"
 )
 
 type Image struct {
@@ -152,8 +150,6 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 
 	defer pushOutput.Close()
 
-	//err = parsePushOutput(pushOutput)
-
 	if err != nil {
 		return nil, err
 	}
@@ -161,7 +157,6 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	// Print push logs to terminal
 	pushScanner := bufio.NewScanner(pushOutput)
 	for pushScanner.Scan() {
-
 		fmt.Println(pushScanner.Text())
 	}
 
@@ -299,17 +294,4 @@ func getCachedImages(img Image, b resource.PropertyValue) []string {
 		cacheImages = append(cacheImages, stage)
 	}
 	return cacheImages
-}
-
-func parsePushOutput(rc io.ReadCloser) error {
-	dec := json.NewDecoder(rc)
-	jmsg := jsonmessage.JSONMessage{}
-
-	err := dec.Decode(&jmsg)
-	fmt.Println(jmsg)
-	if err != nil {
-		return err
-	}
-
-	return nil
 }
