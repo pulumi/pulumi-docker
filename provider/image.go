@@ -11,6 +11,7 @@ import (
 	"github.com/docker/docker/pkg/archive"
 	"github.com/docker/docker/pkg/jsonmessage"
 	structpb "github.com/golang/protobuf/ptypes/struct"
+	"github.com/pkg/errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
 	"io"
@@ -89,7 +90,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	// make the build context
 	tar, err := archive.TarWithOptions(img.Build.Context, &archive.TarOptions{})
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	// make the build options
@@ -104,7 +105,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 
 	imgBuildResp, err := docker.ImageBuild(context.Background(), tar, opts)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	defer imgBuildResp.Body.Close()
@@ -137,7 +138,11 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		ServerAddress: img.Registry.Server,
 	}
 
-	authConfigBytes, _ := json.Marshal(authConfig)
+	authConfigBytes, err := json.Marshal(authConfig)
+
+	if err != nil {
+		return nil, errors.Wrap(err, "Error parsing authConfig")
+	}
 	authConfigEncoded := base64.URLEncoding.EncodeToString(authConfigBytes)
 
 	pushOpts := types.ImagePushOptions{RegistryAuth: authConfigEncoded}
@@ -150,31 +155,39 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	//err = parsePushOutput(pushOutput)
 
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 	fmt.Println("scanning the push output")
 	// Print push logs to terminal
-	//pushScanner := bufio.NewScanner(pushOutput)
-	//for pushScanner.Scan() {
+	pushScanner := bufio.NewScanner(pushOutput)
+	for pushScanner.Scan() {
 
-	for {
-
-		dec := json.NewDecoder(pushOutput)
-		jmsg := jsonmessage.JSONMessage{}
-
-		err = dec.Decode(&jmsg)
-		if err != nil {
-			if err == io.EOF {
-				break
-			}
-			return nil, err
-		}
-
-		fmt.Println("the jmsg: ", jmsg)
-		fmt.Println("END OF MESSAGE")
-		////fmt.Println(pushScanner.Text())
-		//}
+		fmt.Println(pushScanner.Text())
 	}
+
+	//TODO: keep picking at this
+	//for {
+	//	dec := json.NewDecoder(pushOutput)
+	//	jmsg := jsonmessage.JSONMessage{}
+	//
+	//	err = dec.Decode(&jmsg)
+	//	if err != nil {
+	//		if err == io.EOF {
+	//			break
+	//		}
+	//		return nil, errors.Wrap(err, "Error decoding json")
+	//	}
+	//
+	//	fmt.Println(jmsg)
+	//	if jmsg.Progress != nil {
+	//		fmt.Println("printing progress:")
+	//		fmt.Println(jmsg.Progress.String())
+	//	}
+	//	if jmsg.Error != nil {
+	//		return nil, errors.Errorf(jmsg.Error.Message)
+	//
+	//	}
+	//}
 
 	outputs := map[string]interface{}{
 		"dockerfile":     img.Build.Dockerfile,
