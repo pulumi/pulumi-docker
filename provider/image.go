@@ -9,6 +9,7 @@ import (
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
 	"github.com/docker/docker/pkg/archive"
+	"github.com/docker/docker/pkg/jsonmessage"
 	structpb "github.com/golang/protobuf/ptypes/struct"
 	"github.com/pkg/errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
@@ -43,8 +44,6 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	urn resource.URN,
 	props *structpb.Struct) (*structpb.Struct, error) {
 
-	fmt.Println("getting inputs...")
-
 	inputs, err := plugin.UnmarshalProperties(props, plugin.MarshalOptions{KeepUnknowns: true, SkipNulls: true})
 	if err != nil {
 		return nil, err
@@ -67,15 +66,11 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		Registry: reg,
 	}
 
-	fmt.Println(img.Registry)
-
 	build := marshalBuild(inputs["build"])
 	cache := getCachedImages(img, inputs["build"])
 
 	build.CachedImages = cache
 	img.Build = build
-
-	fmt.Println("USING THE DOCKER CLIENT NOW")
 
 	docker, err := client.NewClientWithOpts(client.FromEnv)
 
@@ -83,7 +78,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		panic(err)
 	}
 
-	fmt.Println("now let's BUILD an image")
+	p.host.Log(ctx, "info", urn, "Building the image")
 
 	// make the build context
 	tar, err := archive.TarWithOptions(img.Build.Context, &archive.TarOptions{})
@@ -110,7 +105,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	// Print build logs to terminal
 	scanner := bufio.NewScanner(imgBuildResp.Body)
 	for scanner.Scan() {
-		fmt.Println(scanner.Text())
+		p.host.Log(ctx, "info", urn, scanner.Text())
 	}
 
 	// if we are not pushing to the registry, we return after building the local image.
@@ -126,7 +121,13 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		)
 	}
 
-	fmt.Println("see if we can push to the registry")
+	err = imgBuildResp.Body.Close()
+
+	if err != nil {
+		return nil, err
+	}
+
+	p.host.Log(ctx, "info", urn, "Pushing Image to the registry")
 
 	// Quick and dirty auth; we can also preconfigure the client itself I believe
 
@@ -148,41 +149,39 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	// By default, we push our image with the qualified image name from the input, without extra tagging.
 	pushOutput, err := docker.ImagePush(context.Background(), img.Name, pushOpts)
 
-	defer pushOutput.Close()
-
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println("scanning the push output")
+
+	defer pushOutput.Close()
+
 	// Print push logs to terminal
 	pushScanner := bufio.NewScanner(pushOutput)
 	for pushScanner.Scan() {
-		fmt.Println(pushScanner.Text())
-	}
+		msg := pushScanner.Text()
+		var jsmsg jsonmessage.JSONMessage
+		err := json.Unmarshal([]byte(msg), &jsmsg)
+		if err != nil {
+			return nil, errors.Wrapf(err, "encountered error unmarshalling:")
+		}
+		if jsmsg.Status != "" {
+			if jsmsg.Status != "Pushing" {
+				var info string
+				if jsmsg.ID != "" {
+					info = fmt.Sprintf("%s: %s", jsmsg.ID, jsmsg.Status)
+				} else {
+					info = fmt.Sprintf("%s", jsmsg.Status)
 
-	//TODO: keep picking at this
-	//for {
-	//	dec := json.NewDecoder(pushOutput)
-	//	jmsg := jsonmessage.JSONMessage{}
-	//
-	//	err = dec.Decode(&jmsg)
-	//	if err != nil {
-	//		if err == io.EOF {
-	//			break
-	//		}
-	//		return nil, errors.Wrap(err, "Error decoding json")
-	//	}
-	//
-	//	fmt.Println(jmsg)
-	//	if jmsg.Progress != nil {
-	//		fmt.Println("printing progress:")
-	//		fmt.Println(jmsg.Progress.String())
-	//	}
-	//	if jmsg.Error != nil {
-	//		return nil, errors.Errorf(jmsg.Error.Message)
-	//
-	//	}
-	//}
+				}
+				p.host.Log(ctx, "info", urn, info)
+			}
+		}
+
+		if jsmsg.Error != nil {
+			return nil, errors.Errorf(jsmsg.Error.Message)
+		}
+
+	}
 
 	outputs := map[string]interface{}{
 		"dockerfile":     img.Build.Dockerfile,
