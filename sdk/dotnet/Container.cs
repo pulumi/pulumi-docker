@@ -97,6 +97,12 @@ namespace Pulumi.Docker
         public Output<string> ContainerLogs { get; private set; } = null!;
 
         /// <summary>
+        /// The total number of milliseconds to wait for the container to reach status 'running'
+        /// </summary>
+        [Output("containerReadRefreshTimeoutMilliseconds")]
+        public Output<int?> ContainerReadRefreshTimeoutMilliseconds { get; private set; } = null!;
+
+        /// <summary>
         /// A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
         /// </summary>
         [Output("cpuSet")]
@@ -471,6 +477,18 @@ namespace Pulumi.Docker
         public Output<ImmutableArray<Outputs.ContainerVolume>> Volumes { get; private set; } = null!;
 
         /// <summary>
+        /// If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.
+        /// </summary>
+        [Output("wait")]
+        public Output<bool?> Wait { get; private set; } = null!;
+
+        /// <summary>
+        /// The timeout in seconds to wait the container to be healthy after creation. Defaults to `60`.
+        /// </summary>
+        [Output("waitTimeout")]
+        public Output<int?> WaitTimeout { get; private set; } = null!;
+
+        /// <summary>
         /// The working directory for commands to run in.
         /// </summary>
         [Output("workingDir")]
@@ -545,6 +563,12 @@ namespace Pulumi.Docker
             get => _command ?? (_command = new InputList<string>());
             set => _command = value;
         }
+
+        /// <summary>
+        /// The total number of milliseconds to wait for the container to reach status 'running'
+        /// </summary>
+        [Input("containerReadRefreshTimeoutMilliseconds")]
+        public Input<int>? ContainerReadRefreshTimeoutMilliseconds { get; set; }
 
         /// <summary>
         /// A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
@@ -1032,6 +1056,18 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
+        /// If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.
+        /// </summary>
+        [Input("wait")]
+        public Input<bool>? Wait { get; set; }
+
+        /// <summary>
+        /// The timeout in seconds to wait the container to be healthy after creation. Defaults to `60`.
+        /// </summary>
+        [Input("waitTimeout")]
+        public Input<int>? WaitTimeout { get; set; }
+
+        /// <summary>
         /// The working directory for commands to run in.
         /// </summary>
         [Input("workingDir")]
@@ -1080,6 +1116,12 @@ namespace Pulumi.Docker
         /// </summary>
         [Input("containerLogs")]
         public Input<string>? ContainerLogs { get; set; }
+
+        /// <summary>
+        /// The total number of milliseconds to wait for the container to reach status 'running'
+        /// </summary>
+        [Input("containerReadRefreshTimeoutMilliseconds")]
+        public Input<int>? ContainerReadRefreshTimeoutMilliseconds { get; set; }
 
         /// <summary>
         /// A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
@@ -1601,6 +1643,18 @@ namespace Pulumi.Docker
             get => _volumes ?? (_volumes = new InputList<Inputs.ContainerVolumeGetArgs>());
             set => _volumes = value;
         }
+
+        /// <summary>
+        /// If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.
+        /// </summary>
+        [Input("wait")]
+        public Input<bool>? Wait { get; set; }
+
+        /// <summary>
+        /// The timeout in seconds to wait the container to be healthy after creation. Defaults to `60`.
+        /// </summary>
+        [Input("waitTimeout")]
+        public Input<int>? WaitTimeout { get; set; }
 
         /// <summary>
         /// The working directory for commands to run in.

@@ -17,6 +17,7 @@
         "config/vars.ts",
         "container.ts",
         "docker.ts",
+        "getLogs.ts",
         "getNetwork.ts",
         "getPlugin.ts",
         "getRegistryImage.ts",

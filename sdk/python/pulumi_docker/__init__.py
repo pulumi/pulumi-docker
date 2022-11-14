@@ -7,6 +7,7 @@ import typing
 # Export this package's modules as members:
 from .container import *
 from .docker import *
+from .get_logs import *
 from .get_network import *
 from .get_plugin import *
 from .get_registry_image import *

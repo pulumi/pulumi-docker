@@ -117,6 +117,7 @@ func Provider() tfbridge.ProviderInfo {
 			"docker_registry_image": {Tok: dockerDataSource(dockerMod, "getRegistryImage")},
 			"docker_plugin":         {Tok: dockerDataSource(dockerMod, "getPlugin")},
 			"docker_image":          {Tok: dockerDataSource(dockerMod, "getRemoteImage")},
+			"docker_logs":           {Tok: dockerDataSource(dockerMod, "getLogs")},
 		},
 		JavaScript: &tfbridge.JavaScriptInfo{
 			Dependencies: map[string]string{

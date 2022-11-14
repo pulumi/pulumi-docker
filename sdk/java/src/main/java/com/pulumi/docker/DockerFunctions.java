@@ -8,6 +8,8 @@ import com.pulumi.core.TypeShape;
 import com.pulumi.deployment.Deployment;
 import com.pulumi.deployment.InvokeOptions;
 import com.pulumi.docker.Utilities;
+import com.pulumi.docker.inputs.GetLogsArgs;
+import com.pulumi.docker.inputs.GetLogsPlainArgs;
 import com.pulumi.docker.inputs.GetNetworkArgs;
 import com.pulumi.docker.inputs.GetNetworkPlainArgs;
 import com.pulumi.docker.inputs.GetPluginArgs;
@@ -16,6 +18,7 @@ import com.pulumi.docker.inputs.GetRegistryImageArgs;
 import com.pulumi.docker.inputs.GetRegistryImagePlainArgs;
 import com.pulumi.docker.inputs.GetRemoteImageArgs;
 import com.pulumi.docker.inputs.GetRemoteImagePlainArgs;
+import com.pulumi.docker.outputs.GetLogsResult;
 import com.pulumi.docker.outputs.GetNetworkResult;
 import com.pulumi.docker.outputs.GetPluginResult;
 import com.pulumi.docker.outputs.GetRegistryImageResult;
@@ -23,6 +26,34 @@ import com.pulumi.docker.outputs.GetRemoteImageResult;
 import java.util.concurrent.CompletableFuture;
 
 public final class DockerFunctions {
+    /**
+     * `docker.getLogs` provides logs from specific container
+     * 
+     */
+    public static Output<GetLogsResult> getLogs(GetLogsArgs args) {
+        return getLogs(args, InvokeOptions.Empty);
+    }
+    /**
+     * `docker.getLogs` provides logs from specific container
+     * 
+     */
+    public static CompletableFuture<GetLogsResult> getLogsPlain(GetLogsPlainArgs args) {
+        return getLogsPlain(args, InvokeOptions.Empty);
+    }
+    /**
+     * `docker.getLogs` provides logs from specific container
+     * 
+     */
+    public static Output<GetLogsResult> getLogs(GetLogsArgs args, InvokeOptions options) {
+        return Deployment.getInstance().invoke("docker:index/getLogs:getLogs", TypeShape.of(GetLogsResult.class), args, Utilities.withVersion(options));
+    }
+    /**
+     * `docker.getLogs` provides logs from specific container
+     * 
+     */
+    public static CompletableFuture<GetLogsResult> getLogsPlain(GetLogsPlainArgs args, InvokeOptions options) {
+        return Deployment.getInstance().invokeAsync("docker:index/getLogs:getLogs", TypeShape.of(GetLogsResult.class), args, Utilities.withVersion(options));
+    }
     /**
      * `docker.Network` provides details about a specific Docker Network.
      * 
