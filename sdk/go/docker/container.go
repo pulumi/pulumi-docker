@@ -86,6 +86,8 @@ type Container struct {
 	Command pulumi.StringArrayOutput `pulumi:"command"`
 	// The logs of the container if its execution is done (`attach` must be disabled).
 	ContainerLogs pulumi.StringOutput `pulumi:"containerLogs"`
+	// The total number of milliseconds to wait for the container to reach status 'running'
+	ContainerReadRefreshTimeoutMilliseconds pulumi.IntPtrOutput `pulumi:"containerReadRefreshTimeoutMilliseconds"`
 	// A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
 	CpuSet pulumi.StringPtrOutput `pulumi:"cpuSet"`
 	// CPU shares (relative weight) for the container.
@@ -224,6 +226,10 @@ type Container struct {
 	UsernsMode pulumi.StringPtrOutput `pulumi:"usernsMode"`
 	// Spec for mounting volumes in the container.
 	Volumes ContainerVolumeArrayOutput `pulumi:"volumes"`
+	// If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.
+	Wait pulumi.BoolPtrOutput `pulumi:"wait"`
+	// The timeout in seconds to wait the container to be healthy after creation. Defaults to `60`.
+	WaitTimeout pulumi.IntPtrOutput `pulumi:"waitTimeout"`
 	// The working directory for commands to run in.
 	WorkingDir pulumi.StringPtrOutput `pulumi:"workingDir"`
 }
@@ -270,6 +276,8 @@ type containerState struct {
 	Command []string `pulumi:"command"`
 	// The logs of the container if its execution is done (`attach` must be disabled).
 	ContainerLogs *string `pulumi:"containerLogs"`
+	// The total number of milliseconds to wait for the container to reach status 'running'
+	ContainerReadRefreshTimeoutMilliseconds *int `pulumi:"containerReadRefreshTimeoutMilliseconds"`
 	// A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
 	CpuSet *string `pulumi:"cpuSet"`
 	// CPU shares (relative weight) for the container.
@@ -408,6 +416,10 @@ type containerState struct {
 	UsernsMode *string `pulumi:"usernsMode"`
 	// Spec for mounting volumes in the container.
 	Volumes []ContainerVolume `pulumi:"volumes"`
+	// If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.
+	Wait *bool `pulumi:"wait"`
+	// The timeout in seconds to wait the container to be healthy after creation. Defaults to `60`.
+	WaitTimeout *int `pulumi:"waitTimeout"`
 	// The working directory for commands to run in.
 	WorkingDir *string `pulumi:"workingDir"`
 }
@@ -423,6 +435,8 @@ type ContainerState struct {
 	Command pulumi.StringArrayInput
 	// The logs of the container if its execution is done (`attach` must be disabled).
 	ContainerLogs pulumi.StringPtrInput
+	// The total number of milliseconds to wait for the container to reach status 'running'
+	ContainerReadRefreshTimeoutMilliseconds pulumi.IntPtrInput
 	// A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
 	CpuSet pulumi.StringPtrInput
 	// CPU shares (relative weight) for the container.
@@ -561,6 +575,10 @@ type ContainerState struct {
 	UsernsMode pulumi.StringPtrInput
 	// Spec for mounting volumes in the container.
 	Volumes ContainerVolumeArrayInput
+	// If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.
+	Wait pulumi.BoolPtrInput
+	// The timeout in seconds to wait the container to be healthy after creation. Defaults to `60`.
+	WaitTimeout pulumi.IntPtrInput
 	// The working directory for commands to run in.
 	WorkingDir pulumi.StringPtrInput
 }
@@ -576,6 +594,8 @@ type containerArgs struct {
 	Capabilities *ContainerCapabilities `pulumi:"capabilities"`
 	// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-","baz.con"]`.
 	Command []string `pulumi:"command"`
+	// The total number of milliseconds to wait for the container to reach status 'running'
+	ContainerReadRefreshTimeoutMilliseconds *int `pulumi:"containerReadRefreshTimeoutMilliseconds"`
 	// A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
 	CpuSet *string `pulumi:"cpuSet"`
 	// CPU shares (relative weight) for the container.
@@ -698,6 +718,10 @@ type containerArgs struct {
 	UsernsMode *string `pulumi:"usernsMode"`
 	// Spec for mounting volumes in the container.
 	Volumes []ContainerVolume `pulumi:"volumes"`
+	// If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.
+	Wait *bool `pulumi:"wait"`
+	// The timeout in seconds to wait the container to be healthy after creation. Defaults to `60`.
+	WaitTimeout *int `pulumi:"waitTimeout"`
 	// The working directory for commands to run in.
 	WorkingDir *string `pulumi:"workingDir"`
 }
@@ -710,6 +734,8 @@ type ContainerArgs struct {
 	Capabilities ContainerCapabilitiesPtrInput
 	// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-","baz.con"]`.
 	Command pulumi.StringArrayInput
+	// The total number of milliseconds to wait for the container to reach status 'running'
+	ContainerReadRefreshTimeoutMilliseconds pulumi.IntPtrInput
 	// A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
 	CpuSet pulumi.StringPtrInput
 	// CPU shares (relative weight) for the container.
@@ -832,6 +858,10 @@ type ContainerArgs struct {
 	UsernsMode pulumi.StringPtrInput
 	// Spec for mounting volumes in the container.
 	Volumes ContainerVolumeArrayInput
+	// If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.
+	Wait pulumi.BoolPtrInput
+	// The timeout in seconds to wait the container to be healthy after creation. Defaults to `60`.
+	WaitTimeout pulumi.IntPtrInput
 	// The working directory for commands to run in.
 	WorkingDir pulumi.StringPtrInput
 }
@@ -946,6 +976,11 @@ func (o ContainerOutput) Command() pulumi.StringArrayOutput {
 // The logs of the container if its execution is done (`attach` must be disabled).
 func (o ContainerOutput) ContainerLogs() pulumi.StringOutput {
 	return o.ApplyT(func(v *Container) pulumi.StringOutput { return v.ContainerLogs }).(pulumi.StringOutput)
+}
+
+// The total number of milliseconds to wait for the container to reach status 'running'
+func (o ContainerOutput) ContainerReadRefreshTimeoutMilliseconds() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v *Container) pulumi.IntPtrOutput { return v.ContainerReadRefreshTimeoutMilliseconds }).(pulumi.IntPtrOutput)
 }
 
 // A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
@@ -1270,6 +1305,16 @@ func (o ContainerOutput) UsernsMode() pulumi.StringPtrOutput {
 // Spec for mounting volumes in the container.
 func (o ContainerOutput) Volumes() ContainerVolumeArrayOutput {
 	return o.ApplyT(func(v *Container) ContainerVolumeArrayOutput { return v.Volumes }).(ContainerVolumeArrayOutput)
+}
+
+// If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.
+func (o ContainerOutput) Wait() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *Container) pulumi.BoolPtrOutput { return v.Wait }).(pulumi.BoolPtrOutput)
+}
+
+// The timeout in seconds to wait the container to be healthy after creation. Defaults to `60`.
+func (o ContainerOutput) WaitTimeout() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v *Container) pulumi.IntPtrOutput { return v.WaitTimeout }).(pulumi.IntPtrOutput)
 }
 
 // The working directory for commands to run in.

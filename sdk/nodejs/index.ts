@@ -7,6 +7,7 @@ import * as utilities from "./utilities";
 // Export members:
 export * from "./container";
 export * from "./docker";
+export * from "./getLogs";
 export * from "./getNetwork";
 export * from "./getPlugin";
 export * from "./getRegistryImage";

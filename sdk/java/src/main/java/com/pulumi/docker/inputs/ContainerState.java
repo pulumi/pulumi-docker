@@ -108,6 +108,21 @@ public final class ContainerState extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
+     * The total number of milliseconds to wait for the container to reach status &#39;running&#39;
+     * 
+     */
+    @Import(name="containerReadRefreshTimeoutMilliseconds")
+    private @Nullable Output<Integer> containerReadRefreshTimeoutMilliseconds;
+
+    /**
+     * @return The total number of milliseconds to wait for the container to reach status &#39;running&#39;
+     * 
+     */
+    public Optional<Output<Integer>> containerReadRefreshTimeoutMilliseconds() {
+        return Optional.ofNullable(this.containerReadRefreshTimeoutMilliseconds);
+    }
+
+    /**
      * A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
      * 
      */
@@ -1090,6 +1105,36 @@ public final class ContainerState extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
+     * If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.
+     * 
+     */
+    @Import(name="wait")
+    private @Nullable Output<Boolean> wait;
+
+    /**
+     * @return If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.
+     * 
+     */
+    public Optional<Output<Boolean>> wait_() {
+        return Optional.ofNullable(this.wait);
+    }
+
+    /**
+     * The timeout in seconds to wait the container to be healthy after creation. Defaults to `60`.
+     * 
+     */
+    @Import(name="waitTimeout")
+    private @Nullable Output<Integer> waitTimeout;
+
+    /**
+     * @return The timeout in seconds to wait the container to be healthy after creation. Defaults to `60`.
+     * 
+     */
+    public Optional<Output<Integer>> waitTimeout() {
+        return Optional.ofNullable(this.waitTimeout);
+    }
+
+    /**
      * The working directory for commands to run in.
      * 
      */
@@ -1112,6 +1157,7 @@ public final class ContainerState extends com.pulumi.resources.ResourceArgs {
         this.capabilities = $.capabilities;
         this.command = $.command;
         this.containerLogs = $.containerLogs;
+        this.containerReadRefreshTimeoutMilliseconds = $.containerReadRefreshTimeoutMilliseconds;
         this.cpuSet = $.cpuSet;
         this.cpuShares = $.cpuShares;
         this.destroyGraceSeconds = $.destroyGraceSeconds;
@@ -1174,6 +1220,8 @@ public final class ContainerState extends com.pulumi.resources.ResourceArgs {
         this.user = $.user;
         this.usernsMode = $.usernsMode;
         this.volumes = $.volumes;
+        this.wait = $.wait;
+        this.waitTimeout = $.waitTimeout;
         this.workingDir = $.workingDir;
     }
 
@@ -1308,6 +1356,27 @@ public final class ContainerState extends com.pulumi.resources.ResourceArgs {
          */
         public Builder containerLogs(String containerLogs) {
             return containerLogs(Output.of(containerLogs));
+        }
+
+        /**
+         * @param containerReadRefreshTimeoutMilliseconds The total number of milliseconds to wait for the container to reach status &#39;running&#39;
+         * 
+         * @return builder
+         * 
+         */
+        public Builder containerReadRefreshTimeoutMilliseconds(@Nullable Output<Integer> containerReadRefreshTimeoutMilliseconds) {
+            $.containerReadRefreshTimeoutMilliseconds = containerReadRefreshTimeoutMilliseconds;
+            return this;
+        }
+
+        /**
+         * @param containerReadRefreshTimeoutMilliseconds The total number of milliseconds to wait for the container to reach status &#39;running&#39;
+         * 
+         * @return builder
+         * 
+         */
+        public Builder containerReadRefreshTimeoutMilliseconds(Integer containerReadRefreshTimeoutMilliseconds) {
+            return containerReadRefreshTimeoutMilliseconds(Output.of(containerReadRefreshTimeoutMilliseconds));
         }
 
         /**
@@ -2874,6 +2943,48 @@ public final class ContainerState extends com.pulumi.resources.ResourceArgs {
          */
         public Builder volumes(ContainerVolumeArgs... volumes) {
             return volumes(List.of(volumes));
+        }
+
+        /**
+         * @param wait If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder wait_(@Nullable Output<Boolean> wait) {
+            $.wait = wait;
+            return this;
+        }
+
+        /**
+         * @param wait If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder wait_(Boolean wait) {
+            return wait_(Output.of(wait));
+        }
+
+        /**
+         * @param waitTimeout The timeout in seconds to wait the container to be healthy after creation. Defaults to `60`.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder waitTimeout(@Nullable Output<Integer> waitTimeout) {
+            $.waitTimeout = waitTimeout;
+            return this;
+        }
+
+        /**
+         * @param waitTimeout The timeout in seconds to wait the container to be healthy after creation. Defaults to `60`.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder waitTimeout(Integer waitTimeout) {
+            return waitTimeout(Output.of(waitTimeout));
         }
 
         /**

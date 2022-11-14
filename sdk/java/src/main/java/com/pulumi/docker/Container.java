@@ -171,6 +171,20 @@ public class Container extends com.pulumi.resources.CustomResource {
         return this.containerLogs;
     }
     /**
+     * The total number of milliseconds to wait for the container to reach status &#39;running&#39;
+     * 
+     */
+    @Export(name="containerReadRefreshTimeoutMilliseconds", type=Integer.class, parameters={})
+    private Output</* @Nullable */ Integer> containerReadRefreshTimeoutMilliseconds;
+
+    /**
+     * @return The total number of milliseconds to wait for the container to reach status &#39;running&#39;
+     * 
+     */
+    public Output<Optional<Integer>> containerReadRefreshTimeoutMilliseconds() {
+        return Codegen.optional(this.containerReadRefreshTimeoutMilliseconds);
+    }
+    /**
      * A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
      * 
      */
@@ -1065,6 +1079,34 @@ public class Container extends com.pulumi.resources.CustomResource {
      */
     public Output<Optional<List<ContainerVolume>>> volumes() {
         return Codegen.optional(this.volumes);
+    }
+    /**
+     * If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.
+     * 
+     */
+    @Export(name="wait", type=Boolean.class, parameters={})
+    private Output</* @Nullable */ Boolean> wait;
+
+    /**
+     * @return If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.
+     * 
+     */
+    public Output<Optional<Boolean>> wait_() {
+        return Codegen.optional(this.wait);
+    }
+    /**
+     * The timeout in seconds to wait the container to be healthy after creation. Defaults to `60`.
+     * 
+     */
+    @Export(name="waitTimeout", type=Integer.class, parameters={})
+    private Output</* @Nullable */ Integer> waitTimeout;
+
+    /**
+     * @return The timeout in seconds to wait the container to be healthy after creation. Defaults to `60`.
+     * 
+     */
+    public Output<Optional<Integer>> waitTimeout() {
+        return Codegen.optional(this.waitTimeout);
     }
     /**
      * The working directory for commands to run in.

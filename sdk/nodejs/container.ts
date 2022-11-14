@@ -96,6 +96,10 @@ export class Container extends pulumi.CustomResource {
      */
     public /*out*/ readonly containerLogs!: pulumi.Output<string>;
     /**
+     * The total number of milliseconds to wait for the container to reach status 'running'
+     */
+    public readonly containerReadRefreshTimeoutMilliseconds!: pulumi.Output<number | undefined>;
+    /**
      * A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
      */
     public readonly cpuSet!: pulumi.Output<string | undefined>;
@@ -358,6 +362,14 @@ export class Container extends pulumi.CustomResource {
      */
     public readonly volumes!: pulumi.Output<outputs.ContainerVolume[] | undefined>;
     /**
+     * If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.
+     */
+    public readonly wait!: pulumi.Output<boolean | undefined>;
+    /**
+     * The timeout in seconds to wait the container to be healthy after creation. Defaults to `60`.
+     */
+    public readonly waitTimeout!: pulumi.Output<number | undefined>;
+    /**
      * The working directory for commands to run in.
      */
     public readonly workingDir!: pulumi.Output<string | undefined>;
@@ -380,6 +392,7 @@ export class Container extends pulumi.CustomResource {
             resourceInputs["capabilities"] = state ? state.capabilities : undefined;
             resourceInputs["command"] = state ? state.command : undefined;
             resourceInputs["containerLogs"] = state ? state.containerLogs : undefined;
+            resourceInputs["containerReadRefreshTimeoutMilliseconds"] = state ? state.containerReadRefreshTimeoutMilliseconds : undefined;
             resourceInputs["cpuSet"] = state ? state.cpuSet : undefined;
             resourceInputs["cpuShares"] = state ? state.cpuShares : undefined;
             resourceInputs["destroyGraceSeconds"] = state ? state.destroyGraceSeconds : undefined;
@@ -442,6 +455,8 @@ export class Container extends pulumi.CustomResource {
             resourceInputs["user"] = state ? state.user : undefined;
             resourceInputs["usernsMode"] = state ? state.usernsMode : undefined;
             resourceInputs["volumes"] = state ? state.volumes : undefined;
+            resourceInputs["wait"] = state ? state.wait : undefined;
+            resourceInputs["waitTimeout"] = state ? state.waitTimeout : undefined;
             resourceInputs["workingDir"] = state ? state.workingDir : undefined;
         } else {
             const args = argsOrState as ContainerArgs | undefined;
@@ -451,6 +466,7 @@ export class Container extends pulumi.CustomResource {
             resourceInputs["attach"] = args ? args.attach : undefined;
             resourceInputs["capabilities"] = args ? args.capabilities : undefined;
             resourceInputs["command"] = args ? args.command : undefined;
+            resourceInputs["containerReadRefreshTimeoutMilliseconds"] = args ? args.containerReadRefreshTimeoutMilliseconds : undefined;
             resourceInputs["cpuSet"] = args ? args.cpuSet : undefined;
             resourceInputs["cpuShares"] = args ? args.cpuShares : undefined;
             resourceInputs["destroyGraceSeconds"] = args ? args.destroyGraceSeconds : undefined;
@@ -508,6 +524,8 @@ export class Container extends pulumi.CustomResource {
             resourceInputs["user"] = args ? args.user : undefined;
             resourceInputs["usernsMode"] = args ? args.usernsMode : undefined;
             resourceInputs["volumes"] = args ? args.volumes : undefined;
+            resourceInputs["wait"] = args ? args.wait : undefined;
+            resourceInputs["waitTimeout"] = args ? args.waitTimeout : undefined;
             resourceInputs["workingDir"] = args ? args.workingDir : undefined;
             resourceInputs["bridge"] = undefined /*out*/;
             resourceInputs["containerLogs"] = undefined /*out*/;
@@ -546,6 +564,10 @@ export interface ContainerState {
      * The logs of the container if its execution is done (`attach` must be disabled).
      */
     containerLogs?: pulumi.Input<string>;
+    /**
+     * The total number of milliseconds to wait for the container to reach status 'running'
+     */
+    containerReadRefreshTimeoutMilliseconds?: pulumi.Input<number>;
     /**
      * A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
      */
@@ -809,6 +831,14 @@ export interface ContainerState {
      */
     volumes?: pulumi.Input<pulumi.Input<inputs.ContainerVolume>[]>;
     /**
+     * If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.
+     */
+    wait?: pulumi.Input<boolean>;
+    /**
+     * The timeout in seconds to wait the container to be healthy after creation. Defaults to `60`.
+     */
+    waitTimeout?: pulumi.Input<number>;
+    /**
      * The working directory for commands to run in.
      */
     workingDir?: pulumi.Input<string>;
@@ -830,6 +860,10 @@ export interface ContainerArgs {
      * The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-","baz.con"]`.
      */
     command?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * The total number of milliseconds to wait for the container to reach status 'running'
+     */
+    containerReadRefreshTimeoutMilliseconds?: pulumi.Input<number>;
     /**
      * A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
      */
@@ -1066,6 +1100,14 @@ export interface ContainerArgs {
      * Spec for mounting volumes in the container.
      */
     volumes?: pulumi.Input<pulumi.Input<inputs.ContainerVolume>[]>;
+    /**
+     * If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.
+     */
+    wait?: pulumi.Input<boolean>;
+    /**
+     * The timeout in seconds to wait the container to be healthy after creation. Defaults to `60`.
+     */
+    waitTimeout?: pulumi.Input<number>;
     /**
      * The working directory for commands to run in.
      */

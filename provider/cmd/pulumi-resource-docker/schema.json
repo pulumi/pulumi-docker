@@ -3160,6 +3160,10 @@
                     "type": "string",
                     "description": "The logs of the container if its execution is done (`attach` must be disabled).\n"
                 },
+                "containerReadRefreshTimeoutMilliseconds": {
+                    "type": "integer",
+                    "description": "The total number of milliseconds to wait for the container to reach status 'running'\n"
+                },
                 "cpuSet": {
                     "type": "string",
                     "description": "A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.\n"
@@ -3486,6 +3490,14 @@
                     },
                     "description": "Spec for mounting volumes in the container.\n"
                 },
+                "wait": {
+                    "type": "boolean",
+                    "description": "If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.\n"
+                },
+                "waitTimeout": {
+                    "type": "integer",
+                    "description": "The timeout in seconds to wait the container to be healthy after creation. Defaults to `60`.\n"
+                },
                 "workingDir": {
                     "type": "string",
                     "description": "The working directory for commands to run in.\n"
@@ -3533,6 +3545,10 @@
                     },
                     "description": "The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[\"/usr/bin/myprogram\",\"-\",\"baz.con\"]`.\n",
                     "willReplaceOnChanges": true
+                },
+                "containerReadRefreshTimeoutMilliseconds": {
+                    "type": "integer",
+                    "description": "The total number of milliseconds to wait for the container to reach status 'running'\n"
                 },
                 "cpuSet": {
                     "type": "string",
@@ -3876,6 +3892,14 @@
                     "description": "Spec for mounting volumes in the container.\n",
                     "willReplaceOnChanges": true
                 },
+                "wait": {
+                    "type": "boolean",
+                    "description": "If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.\n"
+                },
+                "waitTimeout": {
+                    "type": "integer",
+                    "description": "The timeout in seconds to wait the container to be healthy after creation. Defaults to `60`.\n"
+                },
                 "workingDir": {
                     "type": "string",
                     "description": "The working directory for commands to run in.\n",
@@ -3912,6 +3936,10 @@
                     "containerLogs": {
                         "type": "string",
                         "description": "The logs of the container if its execution is done (`attach` must be disabled).\n"
+                    },
+                    "containerReadRefreshTimeoutMilliseconds": {
+                        "type": "integer",
+                        "description": "The total number of milliseconds to wait for the container to reach status 'running'\n"
                     },
                     "cpuSet": {
                         "type": "string",
@@ -4280,6 +4308,14 @@
                         },
                         "description": "Spec for mounting volumes in the container.\n",
                         "willReplaceOnChanges": true
+                    },
+                    "wait": {
+                        "type": "boolean",
+                        "description": "If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.\n"
+                    },
+                    "waitTimeout": {
+                        "type": "integer",
+                        "description": "The timeout in seconds to wait the container to be healthy after creation. Defaults to `60`.\n"
                     },
                     "workingDir": {
                         "type": "string",
@@ -5327,6 +5363,112 @@
         }
     },
     "functions": {
+        "docker:index/getLogs:getLogs": {
+            "description": "`docker.getLogs` provides logs from specific container\n",
+            "inputs": {
+                "description": "A collection of arguments for invoking getLogs.\n",
+                "properties": {
+                    "details": {
+                        "type": "boolean"
+                    },
+                    "discardHeaders": {
+                        "type": "boolean",
+                        "description": "Discard headers that docker appends to each log entry\n"
+                    },
+                    "follow": {
+                        "type": "boolean"
+                    },
+                    "logsListStringEnabled": {
+                        "type": "boolean",
+                        "description": "If true populate computed value `logs_list_string`\n"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "The name of the Docker Container\n"
+                    },
+                    "showStderr": {
+                        "type": "boolean"
+                    },
+                    "showStdout": {
+                        "type": "boolean"
+                    },
+                    "since": {
+                        "type": "string"
+                    },
+                    "tail": {
+                        "type": "string"
+                    },
+                    "timestamps": {
+                        "type": "boolean"
+                    },
+                    "until": {
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "name"
+                ]
+            },
+            "outputs": {
+                "description": "A collection of values returned by getLogs.\n",
+                "properties": {
+                    "details": {
+                        "type": "boolean"
+                    },
+                    "discardHeaders": {
+                        "type": "boolean",
+                        "description": "Discard headers that docker appends to each log entry\n"
+                    },
+                    "follow": {
+                        "type": "boolean"
+                    },
+                    "id": {
+                        "type": "string",
+                        "description": "The provider-assigned unique ID for this managed resource.\n"
+                    },
+                    "logsListStringEnabled": {
+                        "type": "boolean",
+                        "description": "If true populate computed value `logs_list_string`\n"
+                    },
+                    "logsListStrings": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "List of container logs, each element is a line.\n"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "The name of the Docker Container\n"
+                    },
+                    "showStderr": {
+                        "type": "boolean"
+                    },
+                    "showStdout": {
+                        "type": "boolean"
+                    },
+                    "since": {
+                        "type": "string"
+                    },
+                    "tail": {
+                        "type": "string"
+                    },
+                    "timestamps": {
+                        "type": "boolean"
+                    },
+                    "until": {
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "logsListStrings",
+                    "name",
+                    "id"
+                ]
+            }
+        },
         "docker:index/getNetwork:getNetwork": {
             "description": "`docker.Network` provides details about a specific Docker Network.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst main = pulumi.output(docker.getNetwork({\n    name: \"main\",\n}));\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nmain = docker.get_network(name=\"main\")\n```\n```csharp\nusing System.Collections.Generic;\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nreturn await Deployment.RunAsync(() =\u003e \n{\n    var main = Docker.GetNetwork.Invoke(new()\n    {\n        Name = \"main\",\n    });\n\n});\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v3/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := docker.LookupNetwork(ctx, \u0026GetNetworkArgs{\n\t\t\tName: \"main\",\n\t\t}, nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.DockerFunctions;\nimport com.pulumi.docker.inputs.GetNetworkArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        final var main = DockerFunctions.getNetwork(GetNetworkArgs.builder()\n            .name(\"main\")\n            .build());\n\n    }\n}\n```\n```yaml\nvariables:\n  main:\n    Fn::Invoke:\n      Function: docker:getNetwork\n      Arguments:\n        name: main\n```\n{{% /example %}}\n{{% /examples %}}",
             "inputs": {

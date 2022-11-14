@@ -20,6 +20,7 @@ class ContainerArgs:
                  attach: Optional[pulumi.Input[bool]] = None,
                  capabilities: Optional[pulumi.Input['ContainerCapabilitiesArgs']] = None,
                  command: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 container_read_refresh_timeout_milliseconds: Optional[pulumi.Input[int]] = None,
                  cpu_set: Optional[pulumi.Input[str]] = None,
                  cpu_shares: Optional[pulumi.Input[int]] = None,
                  destroy_grace_seconds: Optional[pulumi.Input[int]] = None,
@@ -76,6 +77,8 @@ class ContainerArgs:
                  user: Optional[pulumi.Input[str]] = None,
                  userns_mode: Optional[pulumi.Input[str]] = None,
                  volumes: Optional[pulumi.Input[Sequence[pulumi.Input['ContainerVolumeArgs']]]] = None,
+                 wait: Optional[pulumi.Input[bool]] = None,
+                 wait_timeout: Optional[pulumi.Input[int]] = None,
                  working_dir: Optional[pulumi.Input[str]] = None):
         """
         The set of arguments for constructing a Container resource.
@@ -83,6 +86,7 @@ class ContainerArgs:
         :param pulumi.Input[bool] attach: If `true` attach to the container after its creation and waits the end of its execution. Defaults to `false`.
         :param pulumi.Input['ContainerCapabilitiesArgs'] capabilities: Add or drop certrain linux capabilities.
         :param pulumi.Input[Sequence[pulumi.Input[str]]] command: The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-","baz.con"]`.
+        :param pulumi.Input[int] container_read_refresh_timeout_milliseconds: The total number of milliseconds to wait for the container to reach status 'running'
         :param pulumi.Input[str] cpu_set: A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
         :param pulumi.Input[int] cpu_shares: CPU shares (relative weight) for the container.
         :param pulumi.Input[int] destroy_grace_seconds: If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
@@ -141,6 +145,8 @@ class ContainerArgs:
         :param pulumi.Input[str] user: User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.
         :param pulumi.Input[str] userns_mode: Sets the usernamespace mode for the container when usernamespace remapping option is enabled.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerVolumeArgs']]] volumes: Spec for mounting volumes in the container.
+        :param pulumi.Input[bool] wait: If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.
+        :param pulumi.Input[int] wait_timeout: The timeout in seconds to wait the container to be healthy after creation. Defaults to `60`.
         :param pulumi.Input[str] working_dir: The working directory for commands to run in.
         """
         pulumi.set(__self__, "image", image)
@@ -150,6 +156,8 @@ class ContainerArgs:
             pulumi.set(__self__, "capabilities", capabilities)
         if command is not None:
             pulumi.set(__self__, "command", command)
+        if container_read_refresh_timeout_milliseconds is not None:
+            pulumi.set(__self__, "container_read_refresh_timeout_milliseconds", container_read_refresh_timeout_milliseconds)
         if cpu_set is not None:
             pulumi.set(__self__, "cpu_set", cpu_set)
         if cpu_shares is not None:
@@ -271,6 +279,10 @@ class ContainerArgs:
             pulumi.set(__self__, "userns_mode", userns_mode)
         if volumes is not None:
             pulumi.set(__self__, "volumes", volumes)
+        if wait is not None:
+            pulumi.set(__self__, "wait", wait)
+        if wait_timeout is not None:
+            pulumi.set(__self__, "wait_timeout", wait_timeout)
         if working_dir is not None:
             pulumi.set(__self__, "working_dir", working_dir)
 
@@ -321,6 +333,18 @@ class ContainerArgs:
     @command.setter
     def command(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
         pulumi.set(self, "command", value)
+
+    @property
+    @pulumi.getter(name="containerReadRefreshTimeoutMilliseconds")
+    def container_read_refresh_timeout_milliseconds(self) -> Optional[pulumi.Input[int]]:
+        """
+        The total number of milliseconds to wait for the container to reach status 'running'
+        """
+        return pulumi.get(self, "container_read_refresh_timeout_milliseconds")
+
+    @container_read_refresh_timeout_milliseconds.setter
+    def container_read_refresh_timeout_milliseconds(self, value: Optional[pulumi.Input[int]]):
+        pulumi.set(self, "container_read_refresh_timeout_milliseconds", value)
 
     @property
     @pulumi.getter(name="cpuSet")
@@ -997,6 +1021,30 @@ class ContainerArgs:
         pulumi.set(self, "volumes", value)
 
     @property
+    @pulumi.getter
+    def wait(self) -> Optional[pulumi.Input[bool]]:
+        """
+        If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.
+        """
+        return pulumi.get(self, "wait")
+
+    @wait.setter
+    def wait(self, value: Optional[pulumi.Input[bool]]):
+        pulumi.set(self, "wait", value)
+
+    @property
+    @pulumi.getter(name="waitTimeout")
+    def wait_timeout(self) -> Optional[pulumi.Input[int]]:
+        """
+        The timeout in seconds to wait the container to be healthy after creation. Defaults to `60`.
+        """
+        return pulumi.get(self, "wait_timeout")
+
+    @wait_timeout.setter
+    def wait_timeout(self, value: Optional[pulumi.Input[int]]):
+        pulumi.set(self, "wait_timeout", value)
+
+    @property
     @pulumi.getter(name="workingDir")
     def working_dir(self) -> Optional[pulumi.Input[str]]:
         """
@@ -1017,6 +1065,7 @@ class _ContainerState:
                  capabilities: Optional[pulumi.Input['ContainerCapabilitiesArgs']] = None,
                  command: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  container_logs: Optional[pulumi.Input[str]] = None,
+                 container_read_refresh_timeout_milliseconds: Optional[pulumi.Input[int]] = None,
                  cpu_set: Optional[pulumi.Input[str]] = None,
                  cpu_shares: Optional[pulumi.Input[int]] = None,
                  destroy_grace_seconds: Optional[pulumi.Input[int]] = None,
@@ -1079,6 +1128,8 @@ class _ContainerState:
                  user: Optional[pulumi.Input[str]] = None,
                  userns_mode: Optional[pulumi.Input[str]] = None,
                  volumes: Optional[pulumi.Input[Sequence[pulumi.Input['ContainerVolumeArgs']]]] = None,
+                 wait: Optional[pulumi.Input[bool]] = None,
+                 wait_timeout: Optional[pulumi.Input[int]] = None,
                  working_dir: Optional[pulumi.Input[str]] = None):
         """
         Input properties used for looking up and filtering Container resources.
@@ -1087,6 +1138,7 @@ class _ContainerState:
         :param pulumi.Input['ContainerCapabilitiesArgs'] capabilities: Add or drop certrain linux capabilities.
         :param pulumi.Input[Sequence[pulumi.Input[str]]] command: The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-","baz.con"]`.
         :param pulumi.Input[str] container_logs: The logs of the container if its execution is done (`attach` must be disabled).
+        :param pulumi.Input[int] container_read_refresh_timeout_milliseconds: The total number of milliseconds to wait for the container to reach status 'running'
         :param pulumi.Input[str] cpu_set: A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
         :param pulumi.Input[int] cpu_shares: CPU shares (relative weight) for the container.
         :param pulumi.Input[int] destroy_grace_seconds: If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
@@ -1151,6 +1203,8 @@ class _ContainerState:
         :param pulumi.Input[str] user: User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.
         :param pulumi.Input[str] userns_mode: Sets the usernamespace mode for the container when usernamespace remapping option is enabled.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerVolumeArgs']]] volumes: Spec for mounting volumes in the container.
+        :param pulumi.Input[bool] wait: If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.
+        :param pulumi.Input[int] wait_timeout: The timeout in seconds to wait the container to be healthy after creation. Defaults to `60`.
         :param pulumi.Input[str] working_dir: The working directory for commands to run in.
         """
         if attach is not None:
@@ -1163,6 +1217,8 @@ class _ContainerState:
             pulumi.set(__self__, "command", command)
         if container_logs is not None:
             pulumi.set(__self__, "container_logs", container_logs)
+        if container_read_refresh_timeout_milliseconds is not None:
+            pulumi.set(__self__, "container_read_refresh_timeout_milliseconds", container_read_refresh_timeout_milliseconds)
         if cpu_set is not None:
             pulumi.set(__self__, "cpu_set", cpu_set)
         if cpu_shares is not None:
@@ -1305,6 +1361,10 @@ class _ContainerState:
             pulumi.set(__self__, "userns_mode", userns_mode)
         if volumes is not None:
             pulumi.set(__self__, "volumes", volumes)
+        if wait is not None:
+            pulumi.set(__self__, "wait", wait)
+        if wait_timeout is not None:
+            pulumi.set(__self__, "wait_timeout", wait_timeout)
         if working_dir is not None:
             pulumi.set(__self__, "working_dir", working_dir)
 
@@ -1367,6 +1427,18 @@ class _ContainerState:
     @container_logs.setter
     def container_logs(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "container_logs", value)
+
+    @property
+    @pulumi.getter(name="containerReadRefreshTimeoutMilliseconds")
+    def container_read_refresh_timeout_milliseconds(self) -> Optional[pulumi.Input[int]]:
+        """
+        The total number of milliseconds to wait for the container to reach status 'running'
+        """
+        return pulumi.get(self, "container_read_refresh_timeout_milliseconds")
+
+    @container_read_refresh_timeout_milliseconds.setter
+    def container_read_refresh_timeout_milliseconds(self, value: Optional[pulumi.Input[int]]):
+        pulumi.set(self, "container_read_refresh_timeout_milliseconds", value)
 
     @property
     @pulumi.getter(name="cpuSet")
@@ -2115,6 +2187,30 @@ class _ContainerState:
         pulumi.set(self, "volumes", value)
 
     @property
+    @pulumi.getter
+    def wait(self) -> Optional[pulumi.Input[bool]]:
+        """
+        If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.
+        """
+        return pulumi.get(self, "wait")
+
+    @wait.setter
+    def wait(self, value: Optional[pulumi.Input[bool]]):
+        pulumi.set(self, "wait", value)
+
+    @property
+    @pulumi.getter(name="waitTimeout")
+    def wait_timeout(self) -> Optional[pulumi.Input[int]]:
+        """
+        The timeout in seconds to wait the container to be healthy after creation. Defaults to `60`.
+        """
+        return pulumi.get(self, "wait_timeout")
+
+    @wait_timeout.setter
+    def wait_timeout(self, value: Optional[pulumi.Input[int]]):
+        pulumi.set(self, "wait_timeout", value)
+
+    @property
     @pulumi.getter(name="workingDir")
     def working_dir(self) -> Optional[pulumi.Input[str]]:
         """
@@ -2135,6 +2231,7 @@ class Container(pulumi.CustomResource):
                  attach: Optional[pulumi.Input[bool]] = None,
                  capabilities: Optional[pulumi.Input[pulumi.InputType['ContainerCapabilitiesArgs']]] = None,
                  command: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 container_read_refresh_timeout_milliseconds: Optional[pulumi.Input[int]] = None,
                  cpu_set: Optional[pulumi.Input[str]] = None,
                  cpu_shares: Optional[pulumi.Input[int]] = None,
                  destroy_grace_seconds: Optional[pulumi.Input[int]] = None,
@@ -2192,6 +2289,8 @@ class Container(pulumi.CustomResource):
                  user: Optional[pulumi.Input[str]] = None,
                  userns_mode: Optional[pulumi.Input[str]] = None,
                  volumes: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerVolumeArgs']]]]] = None,
+                 wait: Optional[pulumi.Input[bool]] = None,
+                 wait_timeout: Optional[pulumi.Input[int]] = None,
                  working_dir: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         """
@@ -2241,6 +2340,7 @@ class Container(pulumi.CustomResource):
         :param pulumi.Input[bool] attach: If `true` attach to the container after its creation and waits the end of its execution. Defaults to `false`.
         :param pulumi.Input[pulumi.InputType['ContainerCapabilitiesArgs']] capabilities: Add or drop certrain linux capabilities.
         :param pulumi.Input[Sequence[pulumi.Input[str]]] command: The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-","baz.con"]`.
+        :param pulumi.Input[int] container_read_refresh_timeout_milliseconds: The total number of milliseconds to wait for the container to reach status 'running'
         :param pulumi.Input[str] cpu_set: A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
         :param pulumi.Input[int] cpu_shares: CPU shares (relative weight) for the container.
         :param pulumi.Input[int] destroy_grace_seconds: If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
@@ -2300,6 +2400,8 @@ class Container(pulumi.CustomResource):
         :param pulumi.Input[str] user: User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.
         :param pulumi.Input[str] userns_mode: Sets the usernamespace mode for the container when usernamespace remapping option is enabled.
         :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerVolumeArgs']]]] volumes: Spec for mounting volumes in the container.
+        :param pulumi.Input[bool] wait: If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.
+        :param pulumi.Input[int] wait_timeout: The timeout in seconds to wait the container to be healthy after creation. Defaults to `60`.
         :param pulumi.Input[str] working_dir: The working directory for commands to run in.
         """
         ...
@@ -2368,6 +2470,7 @@ class Container(pulumi.CustomResource):
                  attach: Optional[pulumi.Input[bool]] = None,
                  capabilities: Optional[pulumi.Input[pulumi.InputType['ContainerCapabilitiesArgs']]] = None,
                  command: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 container_read_refresh_timeout_milliseconds: Optional[pulumi.Input[int]] = None,
                  cpu_set: Optional[pulumi.Input[str]] = None,
                  cpu_shares: Optional[pulumi.Input[int]] = None,
                  destroy_grace_seconds: Optional[pulumi.Input[int]] = None,
@@ -2425,6 +2528,8 @@ class Container(pulumi.CustomResource):
                  user: Optional[pulumi.Input[str]] = None,
                  userns_mode: Optional[pulumi.Input[str]] = None,
                  volumes: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerVolumeArgs']]]]] = None,
+                 wait: Optional[pulumi.Input[bool]] = None,
+                 wait_timeout: Optional[pulumi.Input[int]] = None,
                  working_dir: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         opts = pulumi.ResourceOptions.merge(_utilities.get_resource_opts_defaults(), opts)
@@ -2438,6 +2543,7 @@ class Container(pulumi.CustomResource):
             __props__.__dict__["attach"] = attach
             __props__.__dict__["capabilities"] = capabilities
             __props__.__dict__["command"] = command
+            __props__.__dict__["container_read_refresh_timeout_milliseconds"] = container_read_refresh_timeout_milliseconds
             __props__.__dict__["cpu_set"] = cpu_set
             __props__.__dict__["cpu_shares"] = cpu_shares
             __props__.__dict__["destroy_grace_seconds"] = destroy_grace_seconds
@@ -2506,6 +2612,8 @@ class Container(pulumi.CustomResource):
             __props__.__dict__["user"] = user
             __props__.__dict__["userns_mode"] = userns_mode
             __props__.__dict__["volumes"] = volumes
+            __props__.__dict__["wait"] = wait
+            __props__.__dict__["wait_timeout"] = wait_timeout
             __props__.__dict__["working_dir"] = working_dir
             __props__.__dict__["bridge"] = None
             __props__.__dict__["container_logs"] = None
@@ -2529,6 +2637,7 @@ class Container(pulumi.CustomResource):
             capabilities: Optional[pulumi.Input[pulumi.InputType['ContainerCapabilitiesArgs']]] = None,
             command: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
             container_logs: Optional[pulumi.Input[str]] = None,
+            container_read_refresh_timeout_milliseconds: Optional[pulumi.Input[int]] = None,
             cpu_set: Optional[pulumi.Input[str]] = None,
             cpu_shares: Optional[pulumi.Input[int]] = None,
             destroy_grace_seconds: Optional[pulumi.Input[int]] = None,
@@ -2591,6 +2700,8 @@ class Container(pulumi.CustomResource):
             user: Optional[pulumi.Input[str]] = None,
             userns_mode: Optional[pulumi.Input[str]] = None,
             volumes: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerVolumeArgs']]]]] = None,
+            wait: Optional[pulumi.Input[bool]] = None,
+            wait_timeout: Optional[pulumi.Input[int]] = None,
             working_dir: Optional[pulumi.Input[str]] = None) -> 'Container':
         """
         Get an existing Container resource's state with the given name, id, and optional extra
@@ -2604,6 +2715,7 @@ class Container(pulumi.CustomResource):
         :param pulumi.Input[pulumi.InputType['ContainerCapabilitiesArgs']] capabilities: Add or drop certrain linux capabilities.
         :param pulumi.Input[Sequence[pulumi.Input[str]]] command: The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-","baz.con"]`.
         :param pulumi.Input[str] container_logs: The logs of the container if its execution is done (`attach` must be disabled).
+        :param pulumi.Input[int] container_read_refresh_timeout_milliseconds: The total number of milliseconds to wait for the container to reach status 'running'
         :param pulumi.Input[str] cpu_set: A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
         :param pulumi.Input[int] cpu_shares: CPU shares (relative weight) for the container.
         :param pulumi.Input[int] destroy_grace_seconds: If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.
@@ -2668,6 +2780,8 @@ class Container(pulumi.CustomResource):
         :param pulumi.Input[str] user: User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.
         :param pulumi.Input[str] userns_mode: Sets the usernamespace mode for the container when usernamespace remapping option is enabled.
         :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerVolumeArgs']]]] volumes: Spec for mounting volumes in the container.
+        :param pulumi.Input[bool] wait: If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.
+        :param pulumi.Input[int] wait_timeout: The timeout in seconds to wait the container to be healthy after creation. Defaults to `60`.
         :param pulumi.Input[str] working_dir: The working directory for commands to run in.
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
@@ -2679,6 +2793,7 @@ class Container(pulumi.CustomResource):
         __props__.__dict__["capabilities"] = capabilities
         __props__.__dict__["command"] = command
         __props__.__dict__["container_logs"] = container_logs
+        __props__.__dict__["container_read_refresh_timeout_milliseconds"] = container_read_refresh_timeout_milliseconds
         __props__.__dict__["cpu_set"] = cpu_set
         __props__.__dict__["cpu_shares"] = cpu_shares
         __props__.__dict__["destroy_grace_seconds"] = destroy_grace_seconds
@@ -2741,6 +2856,8 @@ class Container(pulumi.CustomResource):
         __props__.__dict__["user"] = user
         __props__.__dict__["userns_mode"] = userns_mode
         __props__.__dict__["volumes"] = volumes
+        __props__.__dict__["wait"] = wait
+        __props__.__dict__["wait_timeout"] = wait_timeout
         __props__.__dict__["working_dir"] = working_dir
         return Container(resource_name, opts=opts, __props__=__props__)
 
@@ -2783,6 +2900,14 @@ class Container(pulumi.CustomResource):
         The logs of the container if its execution is done (`attach` must be disabled).
         """
         return pulumi.get(self, "container_logs")
+
+    @property
+    @pulumi.getter(name="containerReadRefreshTimeoutMilliseconds")
+    def container_read_refresh_timeout_milliseconds(self) -> pulumi.Output[Optional[int]]:
+        """
+        The total number of milliseconds to wait for the container to reach status 'running'
+        """
+        return pulumi.get(self, "container_read_refresh_timeout_milliseconds")
 
     @property
     @pulumi.getter(name="cpuSet")
@@ -3281,6 +3406,22 @@ class Container(pulumi.CustomResource):
         Spec for mounting volumes in the container.
         """
         return pulumi.get(self, "volumes")
+
+    @property
+    @pulumi.getter
+    def wait(self) -> pulumi.Output[Optional[bool]]:
+        """
+        If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.
+        """
+        return pulumi.get(self, "wait")
+
+    @property
+    @pulumi.getter(name="waitTimeout")
+    def wait_timeout(self) -> pulumi.Output[Optional[int]]:
+        """
+        The timeout in seconds to wait the container to be healthy after creation. Defaults to `60`.
+        """
+        return pulumi.get(self, "wait_timeout")
 
     @property
     @pulumi.getter(name="workingDir")
