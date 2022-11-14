@@ -16,6 +16,8 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
 )
 
+const defaultDockerfile = "Dockerfile"
+
 type Image struct {
 	Name     string
 	SkipPush bool
@@ -78,7 +80,11 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		panic(err)
 	}
 
-	p.host.Log(ctx, "info", urn, "Building the image")
+	err = p.host.Log(ctx, "info", urn, "Building the image")
+
+	if err != nil {
+		return nil, err
+	}
 
 	// make the build context
 	tar, err := archive.TarWithOptions(img.Build.Context, &archive.TarOptions{})
@@ -92,8 +98,8 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		Dockerfile: img.Build.Dockerfile,
 		Tags:       []string{img.Name}, //this should build the image locally, sans registry info
 		Remove:     true,
-		CacheFrom:  img.Build.CachedImages,
-		BuildArgs:  build.Args,
+		//CacheFrom:  img.Build.CachedImages, // TODO: this needs a login, so needs to be handled differently.
+		BuildArgs: build.Args,
 	}
 
 	imgBuildResp, err := docker.ImageBuild(context.Background(), tar, opts)
@@ -105,7 +111,10 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	// Print build logs to terminal
 	scanner := bufio.NewScanner(imgBuildResp.Body)
 	for scanner.Scan() {
-		p.host.Log(ctx, "info", urn, scanner.Text())
+		err := p.host.Log(ctx, "info", urn, scanner.Text())
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	// if we are not pushing to the registry, we return after building the local image.
@@ -127,8 +136,11 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		return nil, err
 	}
 
-	p.host.Log(ctx, "info", urn, "Pushing Image to the registry")
+	err = p.host.Log(ctx, "info", urn, "Pushing Image to the registry")
 
+	if err != nil {
+		return nil, err
+	}
 	// Quick and dirty auth; we can also preconfigure the client itself I believe
 
 	var authConfig = types.AuthConfig{
@@ -170,10 +182,13 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 				if jsmsg.ID != "" {
 					info = fmt.Sprintf("%s: %s", jsmsg.ID, jsmsg.Status)
 				} else {
-					info = fmt.Sprintf("%s", jsmsg.Status)
+					info = jsmsg.Status
 
 				}
-				p.host.Log(ctx, "info", urn, info)
+				err := p.host.Log(ctx, "info", urn, info)
+				if err != nil {
+					return nil, err
+				}
 			}
 		}
 
@@ -202,14 +217,14 @@ func marshalBuild(b resource.PropertyValue) Build {
 
 	if b.IsNull() {
 		// use the default build context
-		build.Dockerfile = "Dockerfile"
+		build.Dockerfile = defaultDockerfile
 		build.Context = "."
 		return build
 	}
 	if b.IsString() {
 		// use the filepath as context
 		build.Context = b.StringValue()
-		build.Dockerfile = "Dockerfile" // default to Dockerfile
+		build.Dockerfile = defaultDockerfile
 		return build
 	}
 
@@ -218,7 +233,7 @@ func marshalBuild(b resource.PropertyValue) Build {
 	// Dockerfile
 	if buildObject["dockerfile"].IsNull() {
 		// set default
-		build.Dockerfile = "Dockerfile"
+		build.Dockerfile = defaultDockerfile
 	} else {
 		build.Dockerfile = buildObject["dockerfile"].StringValue()
 	}
@@ -288,7 +303,6 @@ func getCachedImages(img Image, b resource.PropertyValue) []string {
 	cacheFrom := c.ObjectValue()
 	stages := cacheFrom["stages"].ArrayValue()
 	for _, img := range stages {
-		// TODO: Verify correct behavior for this feature and how it works with the Docker client
 		stage := img.StringValue()
 		cacheImages = append(cacheImages, stage)
 	}
