@@ -44,11 +44,11 @@ type Build struct {
 
 func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	urn resource.URN,
-	props *structpb.Struct) (*structpb.Struct, error) {
+	props *structpb.Struct) (string, *structpb.Struct, error) {
 
 	inputs, err := plugin.UnmarshalProperties(props, plugin.MarshalOptions{KeepUnknowns: true, SkipNulls: true})
 	if err != nil {
-		return nil, err
+		return "", nil, err
 	}
 
 	//set Registry
@@ -83,13 +83,13 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	err = p.host.Log(ctx, "info", urn, "Building the image")
 
 	if err != nil {
-		return nil, err
+		return "", nil, err
 	}
 
 	// make the build context
 	tar, err := archive.TarWithOptions(img.Build.Context, &archive.TarOptions{})
 	if err != nil {
-		return nil, err
+		return "", nil, err
 	}
 
 	// make the build options
@@ -100,12 +100,12 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		Remove:     true,
 		//CacheFrom:  img.Build.CachedImages, // TODO: this needs a login, so needs to be handled differently.
 		BuildArgs: build.Args,
-		Version:   types.BuilderBuildKit,
+		//Version:   types.BuilderBuildKit, // TODO: parse this setting from the `env` input
 	}
 
 	imgBuildResp, err := docker.ImageBuild(context.Background(), tar, opts)
 	if err != nil {
-		return nil, err
+		return "", nil, err
 	}
 
 	defer imgBuildResp.Body.Close()
@@ -114,7 +114,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	for scanner.Scan() {
 		err := p.host.Log(ctx, "info", urn, scanner.Text())
 		if err != nil {
-			return nil, err
+			return "", nil, err
 		}
 	}
 
@@ -125,22 +125,24 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 			"context":        img.Build.Context,
 			"registryServer": img.Registry.Server,
 		}
-		return plugin.MarshalProperties(
+
+		pbstruct, err := plugin.MarshalProperties(
 			resource.NewPropertyMapFromMap(outputs),
 			plugin.MarshalOptions{KeepUnknowns: true, SkipNulls: true},
 		)
+		return img.Name, pbstruct, err
 	}
 
 	err = imgBuildResp.Body.Close()
 
 	if err != nil {
-		return nil, err
+		return "", nil, err
 	}
 
 	err = p.host.Log(ctx, "info", urn, "Pushing Image to the registry")
 
 	if err != nil {
-		return nil, err
+		return "", nil, err
 	}
 	// Quick and dirty auth; we can also preconfigure the client itself I believe
 
@@ -153,7 +155,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	authConfigBytes, err := json.Marshal(authConfig)
 
 	if err != nil {
-		return nil, errors.Wrap(err, "Error parsing authConfig")
+		return "", nil, errors.Wrap(err, "Error parsing authConfig")
 	}
 	authConfigEncoded := base64.URLEncoding.EncodeToString(authConfigBytes)
 
@@ -163,7 +165,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	pushOutput, err := docker.ImagePush(context.Background(), img.Name, pushOpts)
 
 	if err != nil {
-		return nil, err
+		return "", nil, err
 	}
 
 	defer pushOutput.Close()
@@ -175,7 +177,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		var jsmsg jsonmessage.JSONMessage
 		err := json.Unmarshal([]byte(msg), &jsmsg)
 		if err != nil {
-			return nil, errors.Wrapf(err, "encountered error unmarshalling:")
+			return "", nil, errors.Wrapf(err, "encountered error unmarshalling:")
 		}
 		if jsmsg.Status != "" {
 			if jsmsg.Status != "Pushing" {
@@ -188,13 +190,13 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 				}
 				err := p.host.Log(ctx, "info", urn, info)
 				if err != nil {
-					return nil, err
+					return "", nil, err
 				}
 			}
 		}
 
 		if jsmsg.Error != nil {
-			return nil, errors.Errorf(jsmsg.Error.Message)
+			return "", nil, errors.Errorf(jsmsg.Error.Message)
 		}
 
 	}
@@ -205,10 +207,11 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		"baseImageName":  img.Name,
 		"registryServer": img.Registry.Server,
 	}
-	return plugin.MarshalProperties(
+	pbstruct, err := plugin.MarshalProperties(
 		resource.NewPropertyMapFromMap(outputs),
 		plugin.MarshalOptions{KeepUnknowns: true, SkipNulls: true},
 	)
+	return img.Name, pbstruct, err
 }
 
 func marshalBuild(b resource.PropertyValue) Build {
