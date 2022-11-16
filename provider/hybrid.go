@@ -21,7 +21,7 @@ type dockerHybridProvider struct {
 }
 
 // Track a list of native resource tokens
-var dockerImageTok = "docker:index/image:Image"
+const dockerImageTok = "docker:index/image:Image"
 
 // gRPC methods for the hybrid provider
 
