@@ -54,13 +54,10 @@ func TestNginx(t *testing.T) {
 }
 
 func TestDockerfileWithMultipleTargets(t *testing.T) {
-	t.Skip("Skipping test due to updates in Image resource")
 
 	test := getJsOptions(t).
 		With(integration.ProgramTestOptions{
 			Dir: path.Join(getCwd(t), "dockerfile-with-targets"),
-			//ExtraRuntimeValidation: dockerFileWithDependenciesOutputValidation,
-			SkipRefresh: true,
 		})
 
 	integration.ProgramTest(t, &test)
