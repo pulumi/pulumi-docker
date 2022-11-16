@@ -33,13 +33,10 @@ func TestNginxCs(t *testing.T) {
 }
 
 func TestDotNet(t *testing.T) {
-	t.Skip("Skipping test due to updates in Image resource")
 
 	test := getCsharpBaseOptions(t).
 		With(integration.ProgramTestOptions{
 			Dir: path.Join(getCwd(t), "dotnet"),
-			//ExtraRuntimeValidation: dockerFileWithDependenciesOutputValidation,
-			SkipRefresh: true,
 		})
 
 	integration.ProgramTest(t, &test)

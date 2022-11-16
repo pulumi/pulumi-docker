@@ -59,7 +59,6 @@ func TestBuildCacheFromGo(t *testing.T) {
 }
 
 func TestDockerfileGo(t *testing.T) {
-	t.Skip("ignoring due to major version change")
 	cwd, err := os.Getwd()
 	if !assert.NoError(t, err) {
 		t.FailNow()
@@ -70,8 +69,6 @@ func TestDockerfileGo(t *testing.T) {
 			"github.com/pulumi/pulumi-docker/sdk/v2",
 		},
 		Dir: path.Join(cwd, "dockerfile-go"),
-		//ExtraRuntimeValidation: dockerFileWithDependenciesOutputValidation,
-		SkipRefresh: true,
 	})
 	integration.ProgramTest(t, &opts)
 }

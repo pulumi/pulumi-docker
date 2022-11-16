@@ -72,12 +72,9 @@ func TestNginxPy(t *testing.T) {
 }
 
 func TestDockerfilePy(t *testing.T) {
-	t.Skipf("https://github.com/pulumi/pulumi-docker/issues/411")
 	test := getPyOptions(t).
 		With(integration.ProgramTestOptions{
 			Dir: path.Join(getCwd(t), "dockerfile-py"),
-			//ExtraRuntimeValidation: dockerFileWithDependenciesOutputValidation,
-			SkipRefresh: true,
 		})
 
 	integration.ProgramTest(t, &test)
