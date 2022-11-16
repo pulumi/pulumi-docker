@@ -58,7 +58,9 @@ func (p *dockerNativeProvider) DiffConfig(ctx context.Context, req *rpc.DiffRequ
 
 // Configure configures the resource provider with "globals" that control its behavior.
 func (p *dockerNativeProvider) Configure(_ context.Context, req *rpc.ConfigureRequest) (*rpc.ConfigureResponse, error) {
-	return &rpc.ConfigureResponse{}, nil
+	return &rpc.ConfigureResponse{
+		AcceptSecrets: true,
+	}, nil
 }
 
 // Invoke dynamically executes a built-in function in the provider.
@@ -95,29 +97,26 @@ func (p *dockerNativeProvider) Diff(ctx context.Context, req *rpc.DiffRequest) (
 	label := fmt.Sprintf("%s.Diff(%s)", p.name, urn)
 	logging.V(9).Infof("%s executing", label)
 
-	olds, err := plugin.UnmarshalProperties(req.GetOlds(), plugin.MarshalOptions{KeepUnknowns: true, SkipNulls: true})
+	oldState, err := plugin.UnmarshalProperties(req.GetOlds(), plugin.MarshalOptions{KeepUnknowns: true, SkipNulls: true, KeepSecrets: true})
 	if err != nil {
 		return nil, err
 	}
 
-	news, err := plugin.UnmarshalProperties(req.GetNews(), plugin.MarshalOptions{KeepUnknowns: true, SkipNulls: true})
+	// Extract old inputs from the `__inputs` field of the old state.
+	oldInputs := parseCheckpointObject(oldState)
+
+	news, err := plugin.UnmarshalProperties(req.GetNews(), plugin.MarshalOptions{KeepUnknowns: true, SkipNulls: true, KeepSecrets: true})
 	if err != nil {
 		return nil, err
 	}
 
-	d := olds.Diff(news)
+	d := oldInputs.Diff(news)
 
 	if d == nil {
 		return &rpc.DiffResponse{
 			Changes: rpc.DiffResponse_DIFF_NONE,
 		}, nil
 	}
-	//changes := rpc.DiffResponse_DIFF_NONE
-	//
-	//// Replace the below condition with logic specific to your provider
-	//if d.Changed("imageName") {
-	//	changes = rpc.DiffResponse_DIFF_SOME
-	//}
 
 	return &rpc.DiffResponse{
 		Changes: rpc.DiffResponse_DIFF_UNKNOWN,
@@ -130,17 +129,42 @@ func (p *dockerNativeProvider) Create(ctx context.Context, req *rpc.CreateReques
 	label := fmt.Sprintf("%s.Create(%s)", p.name, urn)
 	logging.V(9).Infof("%s executing", label)
 
-	outputProperties, err := p.dockerBuild(ctx, urn, req.GetProperties())
+	// Deserialize RPC inputs.
+	inputs, err := plugin.UnmarshalProperties(req.GetProperties(), plugin.MarshalOptions{
+		Label:        fmt.Sprintf("%s.inputs", label),
+		KeepUnknowns: true,
+		RejectAssets: true,
+		KeepSecrets:  true,
+	})
+	if err != nil {
+		return nil, errors.Wrapf(err, "malformed resource inputs")
+	}
+
+	id, outputProperties, err := p.dockerBuild(ctx, urn, req.GetProperties())
 	if err != nil {
 		return nil, err
 	}
+
+	outputs, err := plugin.UnmarshalProperties(outputProperties, plugin.MarshalOptions{
+		Label:        fmt.Sprintf("%s.outputs", label),
+		KeepUnknowns: true,
+		RejectAssets: true,
+		KeepSecrets:  true,
+	})
+	// Store both outputs and inputs into the state.
+	checkpoint, err := plugin.MarshalProperties(
+		checkpointObject(inputs, outputs.Mappable()),
+		plugin.MarshalOptions{Label: fmt.Sprintf("%s.checkpoint", label), KeepSecrets: true, KeepUnknowns: true, SkipNulls: true},
+	)
+	if err != nil {
+		return nil, err
+	}
+
 	return &rpc.CreateResponse{
-		Id:         "ignored",
-		Properties: outputProperties,
+		Id:         id,
+		Properties: checkpoint,
 	}, nil
 }
-
-//TODO: these are the remaining methods
 
 // Read the current live state associated with a resource.
 func (p *dockerNativeProvider) Read(ctx context.Context, req *rpc.ReadRequest) (*rpc.ReadResponse, error) {
@@ -149,35 +173,9 @@ func (p *dockerNativeProvider) Read(ctx context.Context, req *rpc.ReadRequest) (
 	logging.V(9).Infof("%s executing", label)
 	id := req.GetId()
 
-	// Retrieve the old state.
-	oldState, err := plugin.UnmarshalProperties(req.GetProperties(), plugin.MarshalOptions{
-		Label: fmt.Sprintf("%s.olds", label), KeepUnknowns: true, SkipNulls: true, KeepSecrets: true,
-	})
-	if err != nil {
-		return nil, err
-	}
-
-	// verify resource type
-	resourceTok := string(urn.Type())
-	if resourceTok != dockerImageTok {
-		return nil, errors.Errorf("Resource type '%s' not found", resourceTok)
-	}
-
-	var oldInputs resource.PropertyMap
-
-	if inputs, ok := oldState["__inputs"]; ok {
-		oldInputs = inputs.ObjectValue()
-	}
-
-	inputsRecord, err := plugin.MarshalProperties(
-		oldInputs,
-		plugin.MarshalOptions{Label: fmt.Sprintf("%s.inputs", label), KeepUnknowns: true, SkipNulls: true},
-	)
-
-	// I think we don't need to fully implement Read,
-	// since we will never actually read an image from the registry and compare it to existing state?
-
-	return &rpc.ReadResponse{Id: id, Inputs: inputsRecord}, nil
+	// For now, we will return the minimum implementation for Read,
+	// until we find a use case for reading an image from a registry and comparing it to existing state
+	return &rpc.ReadResponse{Id: id}, nil
 
 }
 
@@ -186,13 +184,40 @@ func (p *dockerNativeProvider) Update(ctx context.Context, req *rpc.UpdateReques
 	urn := resource.URN(req.GetUrn())
 	label := fmt.Sprintf("%s.Update(%s)", p.name, urn)
 	logging.V(9).Infof("%s executing", label)
+
+	// Read the inputs to persist them into state.
+	newInputs, err := plugin.UnmarshalProperties(req.GetNews(), plugin.MarshalOptions{
+		Label:        fmt.Sprintf("%s.newInputs", label),
+		KeepUnknowns: true,
+		RejectAssets: true,
+		KeepSecrets:  true,
+	})
+	if err != nil {
+		return nil, errors.Wrapf(err, "diff failed because malformed resource inputs")
+	}
 	// When the docker image is updated, we build and push again.
-	outputProperties, err := p.dockerBuild(ctx, urn, req.GetNews())
+	_, outputProperties, err := p.dockerBuild(ctx, urn, req.GetNews())
+
+	outputs, err := plugin.UnmarshalProperties(outputProperties, plugin.MarshalOptions{
+		Label:        fmt.Sprintf("%s.outputs", label),
+		KeepUnknowns: true,
+		RejectAssets: true,
+		KeepSecrets:  true,
+	})
+	// Store both outputs and inputs into the state and return RPC checkpoint.
+	checkpoint, err := plugin.MarshalProperties(
+		checkpointObject(newInputs, outputs.Mappable()),
+		plugin.MarshalOptions{Label: fmt.Sprintf("%s.checkpoint", label), KeepSecrets: true, KeepUnknowns: true, SkipNulls: true},
+	)
+	if err != nil {
+		return nil, err
+	}
+
 	if err != nil {
 		return nil, err
 	}
 	return &rpc.UpdateResponse{
-		Properties: outputProperties,
+		Properties: checkpoint,
 	}, nil
 }
 
@@ -231,4 +256,20 @@ func (p *dockerNativeProvider) GetSchema(ctx context.Context, req *rpc.GetSchema
 func (p *dockerNativeProvider) Cancel(context.Context, *pbempty.Empty) (*pbempty.Empty, error) {
 	// TODO
 	return &pbempty.Empty{}, nil
+}
+
+// checkpointObject puts inputs in the `__inputs` field of the state.
+func checkpointObject(inputs resource.PropertyMap, outputs map[string]interface{}) resource.PropertyMap {
+	object := resource.NewPropertyMapFromMap(outputs)
+	object["__inputs"] = resource.MakeSecret(resource.NewObjectProperty(inputs))
+	return object
+}
+
+// parseCheckpointObject returns inputs that are saved in the `__inputs` field of the state.
+func parseCheckpointObject(obj resource.PropertyMap) resource.PropertyMap {
+	if inputs, ok := obj["__inputs"]; ok {
+		return inputs.SecretValue().Element.ObjectValue()
+	}
+
+	return nil
 }
