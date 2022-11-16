@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	pbempty "github.com/golang/protobuf/ptypes/empty"
+	"github.com/pkg/errors"
 	"github.com/pulumi/pulumi/pkg/v3/resource/provider"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
@@ -108,13 +109,13 @@ func (p *dockerNativeProvider) Diff(ctx context.Context, req *rpc.DiffRequest) (
 	changes := rpc.DiffResponse_DIFF_NONE
 
 	// Replace the below condition with logic specific to your provider
-	if d.Changed("length") {
+	if d.Changed("imageName") {
 		changes = rpc.DiffResponse_DIFF_SOME
 	}
 
 	return &rpc.DiffResponse{
 		Changes:  changes,
-		Replaces: []string{"length"},
+		Replaces: []string{"imageName"},
 	}, nil
 }
 
@@ -132,9 +133,6 @@ func (p *dockerNativeProvider) Create(ctx context.Context, req *rpc.CreateReques
 		Id:         "ignored",
 		Properties: outputProperties,
 	}, nil
-	//msg := fmt.Sprintf("Create is not yet implemented for %s", urn.Type())
-	//return nil, status.Error(codes.Unimplemented, msg)
-
 }
 
 //TODO: these are the remaining methods
@@ -144,8 +142,38 @@ func (p *dockerNativeProvider) Read(ctx context.Context, req *rpc.ReadRequest) (
 	urn := resource.URN(req.GetUrn())
 	label := fmt.Sprintf("%s.Read(%s)", p.name, urn)
 	logging.V(9).Infof("%s executing", label)
-	msg := fmt.Sprintf("Read is not yet implemented for %s", urn.Type())
-	return nil, status.Error(codes.Unimplemented, msg)
+	id := req.GetId()
+
+	// Retrieve the old state.
+	oldState, err := plugin.UnmarshalProperties(req.GetProperties(), plugin.MarshalOptions{
+		Label: fmt.Sprintf("%s.olds", label), KeepUnknowns: true, SkipNulls: true, KeepSecrets: true,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	// verify resource type
+	resourceTok := string(urn.Type())
+	if resourceTok != dockerImageTok {
+		return nil, errors.Errorf("Resource type '%s' not found", resourceTok)
+	}
+
+	var oldInputs resource.PropertyMap
+
+	if inputs, ok := oldState["__inputs"]; ok {
+		oldInputs = inputs.ObjectValue()
+	}
+
+	inputsRecord, err := plugin.MarshalProperties(
+		oldInputs,
+		plugin.MarshalOptions{Label: fmt.Sprintf("%s.inputs", label), KeepUnknowns: true, SkipNulls: true},
+	)
+
+	// I think we don't need to fully implement Read,
+	// since we will never actually read an image from the registry and compare it to existing state?
+
+	return &rpc.ReadResponse{Id: id, Inputs: inputsRecord}, nil
+
 }
 
 // Update updates an existing resource with new values.
@@ -153,9 +181,14 @@ func (p *dockerNativeProvider) Update(ctx context.Context, req *rpc.UpdateReques
 	urn := resource.URN(req.GetUrn())
 	label := fmt.Sprintf("%s.Update(%s)", p.name, urn)
 	logging.V(9).Infof("%s executing", label)
-	// Our example Random resource will never be updated - if there is a diff, it will be a replacement.
-	msg := fmt.Sprintf("Update is not yet implemented for %s", urn.Type())
-	return nil, status.Error(codes.Unimplemented, msg)
+	// When the docker image is updated, we build and push again.
+	outputProperties, err := p.dockerBuild(ctx, urn, req.GetNews())
+	if err != nil {
+		return nil, err
+	}
+	return &rpc.UpdateResponse{
+		Properties: outputProperties,
+	}, nil
 }
 
 // Delete tears down an existing resource with the given ID.  If it fails, the resource is assumed
