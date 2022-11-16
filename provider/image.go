@@ -100,6 +100,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		Remove:     true,
 		//CacheFrom:  img.Build.CachedImages, // TODO: this needs a login, so needs to be handled differently.
 		BuildArgs: build.Args,
+		Version:   types.BuilderBuildKit,
 	}
 
 	imgBuildResp, err := docker.ImageBuild(context.Background(), tar, opts)

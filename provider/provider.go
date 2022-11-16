@@ -106,16 +106,21 @@ func (p *dockerNativeProvider) Diff(ctx context.Context, req *rpc.DiffRequest) (
 	}
 
 	d := olds.Diff(news)
-	changes := rpc.DiffResponse_DIFF_NONE
 
-	// Replace the below condition with logic specific to your provider
-	if d.Changed("imageName") {
-		changes = rpc.DiffResponse_DIFF_SOME
+	if d == nil {
+		return &rpc.DiffResponse{
+			Changes: rpc.DiffResponse_DIFF_NONE,
+		}, nil
 	}
+	//changes := rpc.DiffResponse_DIFF_NONE
+	//
+	//// Replace the below condition with logic specific to your provider
+	//if d.Changed("imageName") {
+	//	changes = rpc.DiffResponse_DIFF_SOME
+	//}
 
 	return &rpc.DiffResponse{
-		Changes:  changes,
-		Replaces: []string{"imageName"},
+		Changes: rpc.DiffResponse_DIFF_UNKNOWN,
 	}, nil
 }
 
