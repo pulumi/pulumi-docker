@@ -1,10 +1,10 @@
 import pulumi
-from pulumi_docker import Image, DockerBuild
+from pulumi_docker import Image, DockerBuildArgs
 
 image = Image(
     "my-image",
-    image_name="pulumi-user/example:v1.0.0",
-    build=DockerBuild(
+    image_name="pulumi-user/python",
+    build=DockerBuildArgs(
         target="dependencies",
         env={'TEST_ENV': '42'},
     ),
