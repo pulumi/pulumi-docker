@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 
 using Pulumi;
 using Pulumi.Docker;
+using Pulumi.Docker.Inputs
 
 class Program
 {

@@ -33,7 +33,7 @@ func TestNginxCs(t *testing.T) {
 }
 
 func TestDotNet(t *testing.T) {
-	t.Skip("Skipping test due to updates in Image resource")
+	//t.Skip("Skipping test due to updates in Image resource")
 
 	test := getCsharpBaseOptions(t).
 		With(integration.ProgramTestOptions{
