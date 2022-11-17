@@ -3,7 +3,7 @@ from pulumi_docker import Image, DockerBuildArgs
 
 image = Image(
     "my-image",
-    image_name="pulumi-user/python",
+    image_name="pulumi-user/example:v1.0.0",
     build=DockerBuildArgs(
         target="dependencies",
         env={'TEST_ENV': '42'},
