@@ -143,6 +143,7 @@ func (p *dockerNativeProvider) Create(ctx context.Context, req *rpc.CreateReques
 		KeepUnknowns: true,
 		RejectAssets: true,
 		KeepSecrets:  true,
+		SkipNulls:    true,
 	})
 	if err != nil {
 		return nil, errors.Wrapf(err, "malformed resource inputs")
@@ -158,6 +159,7 @@ func (p *dockerNativeProvider) Create(ctx context.Context, req *rpc.CreateReques
 		KeepUnknowns: true,
 		RejectAssets: true,
 		KeepSecrets:  true,
+		SkipNulls:    true,
 	})
 	if err != nil {
 		return nil, err
@@ -208,6 +210,7 @@ func (p *dockerNativeProvider) Update(ctx context.Context, req *rpc.UpdateReques
 		KeepUnknowns: true,
 		RejectAssets: true,
 		KeepSecrets:  true,
+		SkipNulls:    true,
 	})
 	if err != nil {
 		return nil, errors.Wrapf(err, "diff failed because malformed resource inputs")
@@ -222,6 +225,7 @@ func (p *dockerNativeProvider) Update(ctx context.Context, req *rpc.UpdateReques
 		KeepUnknowns: true,
 		RejectAssets: true,
 		KeepSecrets:  true,
+		SkipNulls:    true,
 	})
 	if err != nil {
 		return nil, err
