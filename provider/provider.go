@@ -97,7 +97,11 @@ func (p *dockerNativeProvider) Diff(ctx context.Context, req *rpc.DiffRequest) (
 	label := fmt.Sprintf("%s.Diff(%s)", p.name, urn)
 	logging.V(9).Infof("%s executing", label)
 
-	oldState, err := plugin.UnmarshalProperties(req.GetOlds(), plugin.MarshalOptions{KeepUnknowns: true, SkipNulls: true, KeepSecrets: true})
+	oldState, err := plugin.UnmarshalProperties(req.GetOlds(), plugin.MarshalOptions{
+		KeepUnknowns: true,
+		SkipNulls:    true,
+		KeepSecrets:  true,
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -105,7 +109,11 @@ func (p *dockerNativeProvider) Diff(ctx context.Context, req *rpc.DiffRequest) (
 	// Extract old inputs from the `__inputs` field of the old state.
 	oldInputs := parseCheckpointObject(oldState)
 
-	news, err := plugin.UnmarshalProperties(req.GetNews(), plugin.MarshalOptions{KeepUnknowns: true, SkipNulls: true, KeepSecrets: true})
+	news, err := plugin.UnmarshalProperties(req.GetNews(), plugin.MarshalOptions{
+		KeepUnknowns: true,
+		SkipNulls:    true,
+		KeepSecrets:  true,
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -151,10 +159,19 @@ func (p *dockerNativeProvider) Create(ctx context.Context, req *rpc.CreateReques
 		RejectAssets: true,
 		KeepSecrets:  true,
 	})
+	if err != nil {
+		return nil, err
+	}
+
 	// Store both outputs and inputs into the state.
 	checkpoint, err := plugin.MarshalProperties(
 		checkpointObject(inputs, outputs.Mappable()),
-		plugin.MarshalOptions{Label: fmt.Sprintf("%s.checkpoint", label), KeepSecrets: true, KeepUnknowns: true, SkipNulls: true},
+		plugin.MarshalOptions{
+			Label:        fmt.Sprintf("%s.checkpoint", label),
+			KeepSecrets:  true,
+			KeepUnknowns: true,
+			SkipNulls:    true,
+		},
 	)
 	if err != nil {
 		return nil, err
@@ -197,21 +214,28 @@ func (p *dockerNativeProvider) Update(ctx context.Context, req *rpc.UpdateReques
 	}
 	// When the docker image is updated, we build and push again.
 	_, outputProperties, err := p.dockerBuild(ctx, urn, req.GetNews())
-
+	if err != nil {
+		return nil, err
+	}
 	outputs, err := plugin.UnmarshalProperties(outputProperties, plugin.MarshalOptions{
 		Label:        fmt.Sprintf("%s.outputs", label),
 		KeepUnknowns: true,
 		RejectAssets: true,
 		KeepSecrets:  true,
 	})
-	// Store both outputs and inputs into the state and return RPC checkpoint.
-	checkpoint, err := plugin.MarshalProperties(
-		checkpointObject(newInputs, outputs.Mappable()),
-		plugin.MarshalOptions{Label: fmt.Sprintf("%s.checkpoint", label), KeepSecrets: true, KeepUnknowns: true, SkipNulls: true},
-	)
 	if err != nil {
 		return nil, err
 	}
+	// Store both outputs and inputs into the state and return RPC checkpoint.
+	checkpoint, err := plugin.MarshalProperties(
+		checkpointObject(newInputs, outputs.Mappable()),
+		plugin.MarshalOptions{
+			Label:        fmt.Sprintf("%s.checkpoint", label),
+			KeepSecrets:  true,
+			KeepUnknowns: true,
+			SkipNulls:    true,
+		},
+	)
 
 	if err != nil {
 		return nil, err
