@@ -255,8 +255,6 @@ func (p *dockerNativeProvider) Delete(ctx context.Context, req *rpc.DeleteReques
 	urn := resource.URN(req.GetUrn())
 	label := fmt.Sprintf("%s.Update(%s)", p.name, urn)
 	logging.V(9).Infof("%s executing", label)
-	// Implement Delete logic specific to your provider.
-	// Note that for our Random resource, we don't have to do anything on Delete.
 	return &pbempty.Empty{}, nil
 }
 
