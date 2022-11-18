@@ -131,6 +131,7 @@ func Provider() tfbridge.ProviderInfo {
 						"password": {
 							Description: "The password to authenticate to the registry",
 							TypeSpec:    schema.TypeSpec{Type: "string"},
+							Secret:      true,
 						},
 					},
 					Required: []string{"server", "username", "password"},

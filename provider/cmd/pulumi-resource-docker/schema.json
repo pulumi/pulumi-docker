@@ -3126,7 +3126,8 @@
             "properties": {
                 "password": {
                     "type": "string",
-                    "description": "The password to authenticate to the registry"
+                    "description": "The password to authenticate to the registry",
+                    "secret": true
                 },
                 "server": {
                     "type": "string",
