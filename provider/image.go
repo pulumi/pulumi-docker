@@ -68,7 +68,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	docker, err := client.NewClientWithOpts(client.FromEnv)
 
 	if err != nil {
-		panic(err)
+		return "", nil, err
 	}
 
 	err = p.host.Log(ctx, "info", urn, "Building the image")
