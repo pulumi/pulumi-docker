@@ -13,7 +13,7 @@ import (
 
 // ## Import
 //
-// #!/bin/bash # Docker secret cannot be imported as the secret data, once set, is never exposed again.
+// #!/bin/bash Docker secret cannot be imported as the secret data, once set, is never exposed again.
 type Secret struct {
 	pulumi.CustomResourceState
 
@@ -35,6 +35,13 @@ func NewSecret(ctx *pulumi.Context,
 	if args.Data == nil {
 		return nil, errors.New("invalid value for required argument 'Data'")
 	}
+	if args.Data != nil {
+		args.Data = pulumi.ToSecret(args.Data).(pulumi.StringOutput)
+	}
+	secrets := pulumi.AdditionalSecretOutputs([]string{
+		"data",
+	})
+	opts = append(opts, secrets)
 	var resource Secret
 	err := ctx.RegisterResource("docker:index/secret:Secret", name, args, &resource, opts...)
 	if err != nil {

@@ -15,13 +15,13 @@ namespace Pulumi.Docker
         /// `docker.getLogs` provides logs from specific container
         /// </summary>
         public static Task<GetLogsResult> InvokeAsync(GetLogsArgs args, InvokeOptions? options = null)
-            => Pulumi.Deployment.Instance.InvokeAsync<GetLogsResult>("docker:index/getLogs:getLogs", args ?? new GetLogsArgs(), options.WithDefaults());
+            => global::Pulumi.Deployment.Instance.InvokeAsync<GetLogsResult>("docker:index/getLogs:getLogs", args ?? new GetLogsArgs(), options.WithDefaults());
 
         /// <summary>
         /// `docker.getLogs` provides logs from specific container
         /// </summary>
         public static Output<GetLogsResult> Invoke(GetLogsInvokeArgs args, InvokeOptions? options = null)
-            => Pulumi.Deployment.Instance.Invoke<GetLogsResult>("docker:index/getLogs:getLogs", args ?? new GetLogsInvokeArgs(), options.WithDefaults());
+            => global::Pulumi.Deployment.Instance.Invoke<GetLogsResult>("docker:index/getLogs:getLogs", args ?? new GetLogsInvokeArgs(), options.WithDefaults());
     }
 
 

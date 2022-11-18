@@ -2,13 +2,14 @@
 // *** Do not edit by hand unless you're certain you know what you are doing! ***
 
 import * as pulumi from "@pulumi/pulumi";
-import { input as inputs, output as outputs } from "./types";
+import * as inputs from "./types/input";
+import * as outputs from "./types/output";
 import * as utilities from "./utilities";
 
 /**
  * ## Import
  *
- * #!/bin/bash # Docker secret cannot be imported as the secret data, once set, is never exposed again.
+ * #!/bin/bash Docker secret cannot be imported as the secret data, once set, is never exposed again.
  */
 export class Secret extends pulumi.CustomResource {
     /**
@@ -72,11 +73,13 @@ export class Secret extends pulumi.CustomResource {
             if ((!args || args.data === undefined) && !opts.urn) {
                 throw new Error("Missing required property 'data'");
             }
-            resourceInputs["data"] = args ? args.data : undefined;
+            resourceInputs["data"] = args?.data ? pulumi.secret(args.data) : undefined;
             resourceInputs["labels"] = args ? args.labels : undefined;
             resourceInputs["name"] = args ? args.name : undefined;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
+        const secretOpts = { additionalSecretOutputs: ["data"] };
+        opts = pulumi.mergeOptions(opts, secretOpts);
         super(Secret.__pulumiType, name, resourceInputs, opts);
     }
 }
