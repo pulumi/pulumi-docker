@@ -51,16 +51,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		return "", nil, err
 	}
 
-	//set Registry
-	var reg Registry
-	if !inputs["registry"].IsNull() {
-		reg = Registry{
-			Server:   inputs["registry"].ObjectValue()["server"].StringValue(),
-			Username: inputs["registry"].ObjectValue()["username"].StringValue(),
-			Password: inputs["registry"].ObjectValue()["password"].StringValue(),
-		}
-	}
-
+	reg := setRegistry(inputs["registry"])
 	// read in values to Image
 	img := Image{
 		Name:     inputs["imageName"].StringValue(),
@@ -311,4 +302,15 @@ func getCachedImages(img Image, b resource.PropertyValue) []string {
 		cacheImages = append(cacheImages, stage)
 	}
 	return cacheImages
+}
+
+func setRegistry(r resource.PropertyValue) Registry {
+	var reg Registry
+	if !r.IsNull() {
+		reg.Server = r.ObjectValue()["server"].StringValue()
+		reg.Username = r.ObjectValue()["username"].StringValue()
+		reg.Password = r.ObjectValue()["password"].StringValue()
+		return reg
+	}
+	return reg
 }
