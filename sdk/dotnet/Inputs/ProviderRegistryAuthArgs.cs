@@ -22,7 +22,16 @@ namespace Pulumi.Docker.Inputs
         public Input<string>? ConfigFileContent { get; set; }
 
         [Input("password")]
-        public Input<string>? Password { get; set; }
+        private Input<string>? _password;
+        public Input<string>? Password
+        {
+            get => _password;
+            set
+            {
+                var emptySecret = Output.CreateSecret(0);
+                _password = Output.Tuple<Input<string>?, int>(value, emptySecret).Apply(t => t.Item1);
+            }
+        }
 
         [Input("username")]
         public Input<string>? Username { get; set; }

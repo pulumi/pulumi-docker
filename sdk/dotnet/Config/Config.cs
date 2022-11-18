@@ -30,7 +30,7 @@ namespace Pulumi.Docker
             }
         }
 
-        private static readonly Pulumi.Config __config = new Pulumi.Config("docker");
+        private static readonly global::Pulumi.Config __config = new global::Pulumi.Config("docker");
 
         private static readonly __Value<string?> _caMaterial = new __Value<string?>(() => __config.Get("caMaterial"));
         /// <summary>

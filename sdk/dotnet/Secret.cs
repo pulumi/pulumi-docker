@@ -12,7 +12,7 @@ namespace Pulumi.Docker
     /// <summary>
     /// ## Import
     /// 
-    /// #!/bin/bash # Docker secret cannot be imported as the secret data, once set, is never exposed again.
+    /// #!/bin/bash Docker secret cannot be imported as the secret data, once set, is never exposed again.
     /// </summary>
     [DockerResourceType("docker:index/secret:Secret")]
     public partial class Secret : global::Pulumi.CustomResource
@@ -58,6 +58,10 @@ namespace Pulumi.Docker
             var defaultOptions = new CustomResourceOptions
             {
                 Version = Utilities.Version,
+                AdditionalSecretOutputs =
+                {
+                    "data",
+                },
             };
             var merged = CustomResourceOptions.Merge(defaultOptions, options);
             // Override the ID if one was specified for consistency with other language SDKs.
@@ -81,11 +85,21 @@ namespace Pulumi.Docker
 
     public sealed class SecretArgs : global::Pulumi.ResourceArgs
     {
+        [Input("data", required: true)]
+        private Input<string>? _data;
+
         /// <summary>
         /// Base64-url-safe-encoded secret data
         /// </summary>
-        [Input("data", required: true)]
-        public Input<string> Data { get; set; } = null!;
+        public Input<string>? Data
+        {
+            get => _data;
+            set
+            {
+                var emptySecret = Output.CreateSecret(0);
+                _data = Output.Tuple<Input<string>?, int>(value, emptySecret).Apply(t => t.Item1);
+            }
+        }
 
         [Input("labels")]
         private InputList<Inputs.SecretLabelArgs>? _labels;
@@ -113,11 +127,21 @@ namespace Pulumi.Docker
 
     public sealed class SecretState : global::Pulumi.ResourceArgs
     {
+        [Input("data")]
+        private Input<string>? _data;
+
         /// <summary>
         /// Base64-url-safe-encoded secret data
         /// </summary>
-        [Input("data")]
-        public Input<string>? Data { get; set; }
+        public Input<string>? Data
+        {
+            get => _data;
+            set
+            {
+                var emptySecret = Output.CreateSecret(0);
+                _data = Output.Tuple<Input<string>?, int>(value, emptySecret).Apply(t => t.Item1);
+            }
+        }
 
         [Input("labels")]
         private InputList<Inputs.SecretLabelGetArgs>? _labels;

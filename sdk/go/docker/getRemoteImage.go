@@ -26,7 +26,7 @@ import (
 //
 //	func main() {
 //		pulumi.Run(func(ctx *pulumi.Context) error {
-//			_, err := docker.LookupRemoteImage(ctx, &GetRemoteImageArgs{
+//			_, err = docker.LookupRemoteImage(ctx, &GetRemoteImageArgs{
 //				Name: "nginx",
 //			}, nil)
 //			if err != nil {
