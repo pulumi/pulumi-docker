@@ -45,7 +45,6 @@ func TestAwsPy(t *testing.T) {
 }
 
 func TestAzurePy(t *testing.T) {
-	t.Skip("Skipping test due to updates in Image resource")
 	location := os.Getenv("AZURE_LOCATION")
 	if location == "" {
 		t.Skipf("Skipping test due to missing AZURE_LOCATION environment variable")
