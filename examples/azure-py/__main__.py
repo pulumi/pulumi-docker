@@ -16,7 +16,7 @@ my_image = Image("myimage",
                      lambda server: f'{server}/{custom_image}:v1.0.0'),
                  build=DockerBuildArgs(context=f'./{custom_image}'),
                  registry=RegistryArgs(
-                     registry=registry.login_server,
+                     server=registry.login_server,
                      username=registry.admin_username,
                      password=registry.admin_password)
                  )
