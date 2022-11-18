@@ -94,7 +94,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		//Version:   types.BuilderBuildKit, // TODO: parse this setting from the `env` input
 	}
 
-	imgBuildResp, err := docker.ImageBuild(context.Background(), tar, opts)
+	imgBuildResp, err := docker.ImageBuild(ctx, tar, opts)
 	if err != nil {
 		return "", nil, err
 	}
@@ -124,12 +124,6 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		return img.Name, pbstruct, err
 	}
 
-	err = imgBuildResp.Body.Close()
-
-	if err != nil {
-		return "", nil, err
-	}
-
 	err = p.host.Log(ctx, "info", urn, "Pushing Image to the registry")
 
 	if err != nil {
@@ -153,7 +147,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	pushOpts := types.ImagePushOptions{RegistryAuth: authConfigEncoded}
 
 	// By default, we push our image with the qualified image name from the input, without extra tagging.
-	pushOutput, err := docker.ImagePush(context.Background(), img.Name, pushOpts)
+	pushOutput, err := docker.ImagePush(ctx, img.Name, pushOpts)
 
 	if err != nil {
 		return "", nil, err
