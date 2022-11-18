@@ -13,6 +13,11 @@ import (
 )
 
 // Hybrid provider struct
+// In order to add schematized, pulumi-native resources to a TF bridged provider,
+// we declare both a native provider and a bridged provider, and multiplex them
+// into a hybrid provider. The hybrid provider gRPC methods determine which resource
+// gets handled by which provider via if/else logic.
+
 type dockerHybridProvider struct {
 	schemaBytes     []byte
 	version         string
@@ -72,14 +77,7 @@ func (dp dockerHybridProvider) Configure(ctx context.Context, request *rpc.Confi
 	return myResp, nil
 }
 
-// TODO: this is for functions AKA data sources,
-// and our provider doesn't have any metadata because we're just implementing from scratch
 func (dp dockerHybridProvider) Invoke(ctx context.Context, request *rpc.InvokeRequest) (*rpc.InvokeResponse, error) {
-	// TODO: remove below snippet, as we're not implementing data sources here atm,
-	// or implement a default once the way in which we're passing in any ExtraDataSources is better
-	//if _, ok := dp.metadata.Functions[request.Tok]; ok {
-	//	return dp.nativeProvider.Invoke(ctx, request)
-	//}
 	logging.V(9).Infof("Invoking on bridge provider for: %q", request.Tok)
 	return dp.bridgedProvider.Invoke(ctx, request)
 }
@@ -91,10 +89,7 @@ func (dp dockerHybridProvider) StreamInvoke(
 
 func (dp dockerHybridProvider) Check(ctx context.Context, request *rpc.CheckRequest) (*rpc.CheckResponse, error) {
 	urn := resource.URN(request.GetUrn())
-
 	tok := urn.Type().String()
-	fmt.Println(tok)
-	// TODO: implement this for actual!!!
 	if tok == dockerImageTok {
 		return dp.nativeProvider.Check(ctx, request)
 	}
