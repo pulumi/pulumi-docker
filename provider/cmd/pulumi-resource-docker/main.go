@@ -18,15 +18,17 @@ package main
 
 import (
 	_ "embed"
-
-	docker "github.com/pulumi/pulumi-docker/provider/v3"
+	"github.com/pulumi/pulumi-docker/provider/v3"
 	"github.com/pulumi/pulumi-docker/provider/v3/pkg/version"
-	"github.com/pulumi/pulumi-terraform-bridge/v3/pkg/tfbridge"
 )
 
 //go:embed schema-embed.json
 var pulumiSchema []byte
+var providerName = "docker"
 
 func main() {
-	tfbridge.Main("docker", version.Version, docker.Provider(), pulumiSchema)
+	// Instead of calling tfbridge.Main, as is customary for bridged providers,
+	// in this provider we implement all calls
+	// so that we can apply native vs bridged logic at every RPC call
+	provider.Serve(providerName, version.Version, pulumiSchema)
 }

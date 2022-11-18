@@ -3016,6 +3016,71 @@
                 "value"
             ]
         },
+        "docker:index/cacheFrom:CacheFrom": {
+            "description": "Specifies information about where to obtain a cache",
+            "properties": {
+                "stages": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "A list of cached build stages"
+                }
+            },
+            "type": "object"
+        },
+        "docker:index/dockerBuild:DockerBuild": {
+            "description": "The Docker build context",
+            "properties": {
+                "args": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass built-time variablesthat can be accessed like environment variables inside the RUN instruction."
+                },
+                "cacheFrom": {
+                    "oneOf": [
+                        {
+                            "type": "boolean"
+                        },
+                        {
+                            "$ref": "#/types/docker:index/cacheFrom:CacheFrom"
+                        }
+                    ],
+                    "description": "A cached image or list of build stages to use as build cache"
+                },
+                "context": {
+                    "type": "string",
+                    "description": "The path to the build context to use.",
+                    "default": "."
+                },
+                "dockerfile": {
+                    "type": "string",
+                    "description": "The path to the Dockerfile to use.",
+                    "default": "Dockerfile"
+                },
+                "env": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "Environment variables to set on the invocation of docker build, for example to support DOCKER_BUILDKIT=1 docker build."
+                },
+                "extraOptions": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "A bag of extra options to pass on to the docker SDK."
+                },
+                "target": {
+                    "type": "string",
+                    "description": "The target of the Dockerfile to build"
+                }
+            },
+            "type": "object"
+        },
         "docker:index/getNetworkIpamConfig:getNetworkIpamConfig": {
             "properties": {
                 "auxAddress": {
@@ -3055,6 +3120,30 @@
                 }
             },
             "type": "object"
+        },
+        "docker:index/registry:Registry": {
+            "description": "Describes a Docker container registry",
+            "properties": {
+                "password": {
+                    "type": "string",
+                    "description": "The password to authenticate to the registry",
+                    "secret": true
+                },
+                "server": {
+                    "type": "string",
+                    "description": "The URL of the Docker registry server"
+                },
+                "username": {
+                    "type": "string",
+                    "description": "The username to authenticate to the registry"
+                }
+            },
+            "type": "object",
+            "required": [
+                "server",
+                "username",
+                "password"
+            ]
         }
     },
     "provider": {
@@ -4328,6 +4417,53 @@
                 },
                 "type": "object"
             }
+        },
+        "docker:index/image:Image": {
+            "description": "A real CRUD docker image we hope",
+            "properties": {
+                "baseImageName": {
+                    "type": "string",
+                    "description": "The fully qualified image name that was pushed to the registry."
+                },
+                "imageName": {
+                    "type": "string",
+                    "description": "The fully qualified image name"
+                },
+                "registryServer": {
+                    "type": "string",
+                    "description": "The URL of the registry server hosting the image."
+                }
+            },
+            "type": "object",
+            "inputProperties": {
+                "build": {
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "$ref": "#/types/docker:index/dockerBuild:DockerBuild"
+                        }
+                    ],
+                    "description": "The Docker build context"
+                },
+                "imageName": {
+                    "type": "string",
+                    "description": "The image name"
+                },
+                "registry": {
+                    "$ref": "#/types/docker:index/registry:Registry",
+                    "description": "The registry to push the image to"
+                },
+                "skipPush": {
+                    "type": "boolean",
+                    "description": "A flag to skip a registry push.",
+                    "default": false
+                }
+            },
+            "requiredInputs": [
+                "imageName"
+            ]
         },
         "docker:index/network:Network": {
             "description": "\u003c!-- Bug: Type and Name are switched --\u003e\n`docker.Network` provides a docker network resource.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst privateNetwork = new docker.Network(\"private_network\", {});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nprivate_network = docker.Network(\"privateNetwork\")\n```\n```csharp\nusing System.Collections.Generic;\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nreturn await Deployment.RunAsync(() =\u003e \n{\n    var privateNetwork = new Docker.Network(\"privateNetwork\");\n\n});\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v3/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := docker.NewNetwork(ctx, \"privateNetwork\", nil)\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.Network;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var privateNetwork = new Network(\"privateNetwork\");\n\n    }\n}\n```\n```yaml\nresources:\n  privateNetwork:\n    type: docker:Network\n```\n{{% /example %}}\n{{% /examples %}}\n\n## Import\n\n### Example Assuming you created a `network` as follows #!/bin/bash docker network create foo prints the long ID 87b57a9b91ecab2db2a6dbf38df74c67d7c7108cbe479d6576574ec2cd8c2d73 you provide the definition for the resource as follows terraform resource \"docker_network\" \"foo\" {\n\n name = \"foo\" } then the import command is as follows #!/bin/bash\n\n```sh\n $ pulumi import docker:index/network:Network foo 87b57a9b91ecab2db2a6dbf38df74c67d7c7108cbe479d6576574ec2cd8c2d73\n```\n\n ",

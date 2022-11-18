@@ -9534,6 +9534,201 @@ func (o VolumeLabelArrayOutput) Index(i pulumi.IntInput) VolumeLabelOutput {
 	}).(VolumeLabelOutput)
 }
 
+// Specifies information about where to obtain a cache
+type CacheFrom struct {
+	// A list of cached build stages
+	Stages []string `pulumi:"stages"`
+}
+
+// CacheFromInput is an input type that accepts CacheFromArgs and CacheFromOutput values.
+// You can construct a concrete instance of `CacheFromInput` via:
+//
+//	CacheFromArgs{...}
+type CacheFromInput interface {
+	pulumi.Input
+
+	ToCacheFromOutput() CacheFromOutput
+	ToCacheFromOutputWithContext(context.Context) CacheFromOutput
+}
+
+// Specifies information about where to obtain a cache
+type CacheFromArgs struct {
+	// A list of cached build stages
+	Stages pulumi.StringArrayInput `pulumi:"stages"`
+}
+
+func (CacheFromArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*CacheFrom)(nil)).Elem()
+}
+
+func (i CacheFromArgs) ToCacheFromOutput() CacheFromOutput {
+	return i.ToCacheFromOutputWithContext(context.Background())
+}
+
+func (i CacheFromArgs) ToCacheFromOutputWithContext(ctx context.Context) CacheFromOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(CacheFromOutput)
+}
+
+// Specifies information about where to obtain a cache
+type CacheFromOutput struct{ *pulumi.OutputState }
+
+func (CacheFromOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*CacheFrom)(nil)).Elem()
+}
+
+func (o CacheFromOutput) ToCacheFromOutput() CacheFromOutput {
+	return o
+}
+
+func (o CacheFromOutput) ToCacheFromOutputWithContext(ctx context.Context) CacheFromOutput {
+	return o
+}
+
+// A list of cached build stages
+func (o CacheFromOutput) Stages() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v CacheFrom) []string { return v.Stages }).(pulumi.StringArrayOutput)
+}
+
+// The Docker build context
+type DockerBuild struct {
+	// An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass built-time variablesthat can be accessed like environment variables inside the RUN instruction.
+	Args map[string]string `pulumi:"args"`
+	// A cached image or list of build stages to use as build cache
+	CacheFrom interface{} `pulumi:"cacheFrom"`
+	// The path to the build context to use.
+	Context *string `pulumi:"context"`
+	// The path to the Dockerfile to use.
+	Dockerfile *string `pulumi:"dockerfile"`
+	// Environment variables to set on the invocation of docker build, for example to support DOCKER_BUILDKIT=1 docker build.
+	Env map[string]string `pulumi:"env"`
+	// A bag of extra options to pass on to the docker SDK.
+	ExtraOptions []string `pulumi:"extraOptions"`
+	// The target of the Dockerfile to build
+	Target *string `pulumi:"target"`
+}
+
+// Defaults sets the appropriate defaults for DockerBuild
+func (val *DockerBuild) Defaults() *DockerBuild {
+	if val == nil {
+		return nil
+	}
+	tmp := *val
+	if isZero(tmp.Context) {
+		context_ := "."
+		tmp.Context = &context_
+	}
+	if isZero(tmp.Dockerfile) {
+		dockerfile_ := "Dockerfile"
+		tmp.Dockerfile = &dockerfile_
+	}
+	return &tmp
+}
+
+// DockerBuildInput is an input type that accepts DockerBuildArgs and DockerBuildOutput values.
+// You can construct a concrete instance of `DockerBuildInput` via:
+//
+//	DockerBuildArgs{...}
+type DockerBuildInput interface {
+	pulumi.Input
+
+	ToDockerBuildOutput() DockerBuildOutput
+	ToDockerBuildOutputWithContext(context.Context) DockerBuildOutput
+}
+
+// The Docker build context
+type DockerBuildArgs struct {
+	// An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass built-time variablesthat can be accessed like environment variables inside the RUN instruction.
+	Args pulumi.StringMapInput `pulumi:"args"`
+	// A cached image or list of build stages to use as build cache
+	CacheFrom pulumi.Input `pulumi:"cacheFrom"`
+	// The path to the build context to use.
+	Context pulumi.StringPtrInput `pulumi:"context"`
+	// The path to the Dockerfile to use.
+	Dockerfile pulumi.StringPtrInput `pulumi:"dockerfile"`
+	// Environment variables to set on the invocation of docker build, for example to support DOCKER_BUILDKIT=1 docker build.
+	Env pulumi.StringMapInput `pulumi:"env"`
+	// A bag of extra options to pass on to the docker SDK.
+	ExtraOptions pulumi.StringArrayInput `pulumi:"extraOptions"`
+	// The target of the Dockerfile to build
+	Target pulumi.StringPtrInput `pulumi:"target"`
+}
+
+// Defaults sets the appropriate defaults for DockerBuildArgs
+func (val *DockerBuildArgs) Defaults() *DockerBuildArgs {
+	if val == nil {
+		return nil
+	}
+	tmp := *val
+	if isZero(tmp.Context) {
+		tmp.Context = pulumi.StringPtr(".")
+	}
+	if isZero(tmp.Dockerfile) {
+		tmp.Dockerfile = pulumi.StringPtr("Dockerfile")
+	}
+	return &tmp
+}
+func (DockerBuildArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*DockerBuild)(nil)).Elem()
+}
+
+func (i DockerBuildArgs) ToDockerBuildOutput() DockerBuildOutput {
+	return i.ToDockerBuildOutputWithContext(context.Background())
+}
+
+func (i DockerBuildArgs) ToDockerBuildOutputWithContext(ctx context.Context) DockerBuildOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(DockerBuildOutput)
+}
+
+// The Docker build context
+type DockerBuildOutput struct{ *pulumi.OutputState }
+
+func (DockerBuildOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*DockerBuild)(nil)).Elem()
+}
+
+func (o DockerBuildOutput) ToDockerBuildOutput() DockerBuildOutput {
+	return o
+}
+
+func (o DockerBuildOutput) ToDockerBuildOutputWithContext(ctx context.Context) DockerBuildOutput {
+	return o
+}
+
+// An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass built-time variablesthat can be accessed like environment variables inside the RUN instruction.
+func (o DockerBuildOutput) Args() pulumi.StringMapOutput {
+	return o.ApplyT(func(v DockerBuild) map[string]string { return v.Args }).(pulumi.StringMapOutput)
+}
+
+// A cached image or list of build stages to use as build cache
+func (o DockerBuildOutput) CacheFrom() pulumi.AnyOutput {
+	return o.ApplyT(func(v DockerBuild) interface{} { return v.CacheFrom }).(pulumi.AnyOutput)
+}
+
+// The path to the build context to use.
+func (o DockerBuildOutput) Context() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v DockerBuild) *string { return v.Context }).(pulumi.StringPtrOutput)
+}
+
+// The path to the Dockerfile to use.
+func (o DockerBuildOutput) Dockerfile() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v DockerBuild) *string { return v.Dockerfile }).(pulumi.StringPtrOutput)
+}
+
+// Environment variables to set on the invocation of docker build, for example to support DOCKER_BUILDKIT=1 docker build.
+func (o DockerBuildOutput) Env() pulumi.StringMapOutput {
+	return o.ApplyT(func(v DockerBuild) map[string]string { return v.Env }).(pulumi.StringMapOutput)
+}
+
+// A bag of extra options to pass on to the docker SDK.
+func (o DockerBuildOutput) ExtraOptions() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v DockerBuild) []string { return v.ExtraOptions }).(pulumi.StringArrayOutput)
+}
+
+// The target of the Dockerfile to build
+func (o DockerBuildOutput) Target() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v DockerBuild) *string { return v.Target }).(pulumi.StringPtrOutput)
+}
+
 type GetNetworkIpamConfig struct {
 	AuxAddress map[string]interface{} `pulumi:"auxAddress"`
 	Gateway    *string                `pulumi:"gateway"`
@@ -9644,6 +9839,184 @@ func (o GetNetworkIpamConfigArrayOutput) Index(i pulumi.IntInput) GetNetworkIpam
 	return pulumi.All(o, i).ApplyT(func(vs []interface{}) GetNetworkIpamConfig {
 		return vs[0].([]GetNetworkIpamConfig)[vs[1].(int)]
 	}).(GetNetworkIpamConfigOutput)
+}
+
+// Describes a Docker container registry
+type Registry struct {
+	// The password to authenticate to the registry
+	Password string `pulumi:"password"`
+	// The URL of the Docker registry server
+	Server string `pulumi:"server"`
+	// The username to authenticate to the registry
+	Username string `pulumi:"username"`
+}
+
+// RegistryInput is an input type that accepts RegistryArgs and RegistryOutput values.
+// You can construct a concrete instance of `RegistryInput` via:
+//
+//	RegistryArgs{...}
+type RegistryInput interface {
+	pulumi.Input
+
+	ToRegistryOutput() RegistryOutput
+	ToRegistryOutputWithContext(context.Context) RegistryOutput
+}
+
+// Describes a Docker container registry
+type RegistryArgs struct {
+	// The password to authenticate to the registry
+	Password pulumi.StringInput `pulumi:"password"`
+	// The URL of the Docker registry server
+	Server pulumi.StringInput `pulumi:"server"`
+	// The username to authenticate to the registry
+	Username pulumi.StringInput `pulumi:"username"`
+}
+
+func (RegistryArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*Registry)(nil)).Elem()
+}
+
+func (i RegistryArgs) ToRegistryOutput() RegistryOutput {
+	return i.ToRegistryOutputWithContext(context.Background())
+}
+
+func (i RegistryArgs) ToRegistryOutputWithContext(ctx context.Context) RegistryOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(RegistryOutput)
+}
+
+func (i RegistryArgs) ToRegistryPtrOutput() RegistryPtrOutput {
+	return i.ToRegistryPtrOutputWithContext(context.Background())
+}
+
+func (i RegistryArgs) ToRegistryPtrOutputWithContext(ctx context.Context) RegistryPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(RegistryOutput).ToRegistryPtrOutputWithContext(ctx)
+}
+
+// RegistryPtrInput is an input type that accepts RegistryArgs, RegistryPtr and RegistryPtrOutput values.
+// You can construct a concrete instance of `RegistryPtrInput` via:
+//
+//	        RegistryArgs{...}
+//
+//	or:
+//
+//	        nil
+type RegistryPtrInput interface {
+	pulumi.Input
+
+	ToRegistryPtrOutput() RegistryPtrOutput
+	ToRegistryPtrOutputWithContext(context.Context) RegistryPtrOutput
+}
+
+type registryPtrType RegistryArgs
+
+func RegistryPtr(v *RegistryArgs) RegistryPtrInput {
+	return (*registryPtrType)(v)
+}
+
+func (*registryPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**Registry)(nil)).Elem()
+}
+
+func (i *registryPtrType) ToRegistryPtrOutput() RegistryPtrOutput {
+	return i.ToRegistryPtrOutputWithContext(context.Background())
+}
+
+func (i *registryPtrType) ToRegistryPtrOutputWithContext(ctx context.Context) RegistryPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(RegistryPtrOutput)
+}
+
+// Describes a Docker container registry
+type RegistryOutput struct{ *pulumi.OutputState }
+
+func (RegistryOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*Registry)(nil)).Elem()
+}
+
+func (o RegistryOutput) ToRegistryOutput() RegistryOutput {
+	return o
+}
+
+func (o RegistryOutput) ToRegistryOutputWithContext(ctx context.Context) RegistryOutput {
+	return o
+}
+
+func (o RegistryOutput) ToRegistryPtrOutput() RegistryPtrOutput {
+	return o.ToRegistryPtrOutputWithContext(context.Background())
+}
+
+func (o RegistryOutput) ToRegistryPtrOutputWithContext(ctx context.Context) RegistryPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v Registry) *Registry {
+		return &v
+	}).(RegistryPtrOutput)
+}
+
+// The password to authenticate to the registry
+func (o RegistryOutput) Password() pulumi.StringOutput {
+	return o.ApplyT(func(v Registry) string { return v.Password }).(pulumi.StringOutput)
+}
+
+// The URL of the Docker registry server
+func (o RegistryOutput) Server() pulumi.StringOutput {
+	return o.ApplyT(func(v Registry) string { return v.Server }).(pulumi.StringOutput)
+}
+
+// The username to authenticate to the registry
+func (o RegistryOutput) Username() pulumi.StringOutput {
+	return o.ApplyT(func(v Registry) string { return v.Username }).(pulumi.StringOutput)
+}
+
+type RegistryPtrOutput struct{ *pulumi.OutputState }
+
+func (RegistryPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**Registry)(nil)).Elem()
+}
+
+func (o RegistryPtrOutput) ToRegistryPtrOutput() RegistryPtrOutput {
+	return o
+}
+
+func (o RegistryPtrOutput) ToRegistryPtrOutputWithContext(ctx context.Context) RegistryPtrOutput {
+	return o
+}
+
+func (o RegistryPtrOutput) Elem() RegistryOutput {
+	return o.ApplyT(func(v *Registry) Registry {
+		if v != nil {
+			return *v
+		}
+		var ret Registry
+		return ret
+	}).(RegistryOutput)
+}
+
+// The password to authenticate to the registry
+func (o RegistryPtrOutput) Password() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *Registry) *string {
+		if v == nil {
+			return nil
+		}
+		return &v.Password
+	}).(pulumi.StringPtrOutput)
+}
+
+// The URL of the Docker registry server
+func (o RegistryPtrOutput) Server() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *Registry) *string {
+		if v == nil {
+			return nil
+		}
+		return &v.Server
+	}).(pulumi.StringPtrOutput)
+}
+
+// The username to authenticate to the registry
+func (o RegistryPtrOutput) Username() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *Registry) *string {
+		if v == nil {
+			return nil
+		}
+		return &v.Username
+	}).(pulumi.StringPtrOutput)
 }
 
 func init() {
@@ -9765,8 +10138,12 @@ func init() {
 	pulumi.RegisterInputType(reflect.TypeOf((*ServiceUpdateConfigPtrInput)(nil)).Elem(), ServiceUpdateConfigArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*VolumeLabelInput)(nil)).Elem(), VolumeLabelArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*VolumeLabelArrayInput)(nil)).Elem(), VolumeLabelArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*CacheFromInput)(nil)).Elem(), CacheFromArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*DockerBuildInput)(nil)).Elem(), DockerBuildArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*GetNetworkIpamConfigInput)(nil)).Elem(), GetNetworkIpamConfigArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*GetNetworkIpamConfigArrayInput)(nil)).Elem(), GetNetworkIpamConfigArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*RegistryInput)(nil)).Elem(), RegistryArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*RegistryPtrInput)(nil)).Elem(), RegistryArgs{})
 	pulumi.RegisterOutputType(ContainerCapabilitiesOutput{})
 	pulumi.RegisterOutputType(ContainerCapabilitiesPtrOutput{})
 	pulumi.RegisterOutputType(ContainerDeviceOutput{})
@@ -9885,6 +10262,10 @@ func init() {
 	pulumi.RegisterOutputType(ServiceUpdateConfigPtrOutput{})
 	pulumi.RegisterOutputType(VolumeLabelOutput{})
 	pulumi.RegisterOutputType(VolumeLabelArrayOutput{})
+	pulumi.RegisterOutputType(CacheFromOutput{})
+	pulumi.RegisterOutputType(DockerBuildOutput{})
 	pulumi.RegisterOutputType(GetNetworkIpamConfigOutput{})
 	pulumi.RegisterOutputType(GetNetworkIpamConfigArrayOutput{})
+	pulumi.RegisterOutputType(RegistryOutput{})
+	pulumi.RegisterOutputType(RegistryPtrOutput{})
 }

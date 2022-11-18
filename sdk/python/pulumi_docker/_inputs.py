@@ -69,6 +69,9 @@ __all__ = [
     'ServiceTaskSpecRestartPolicyArgs',
     'ServiceUpdateConfigArgs',
     'VolumeLabelArgs',
+    'CacheFromArgs',
+    'DockerBuildArgs',
+    'RegistryArgs',
 ]
 
 @pulumi.input_type
@@ -4021,5 +4024,206 @@ class VolumeLabelArgs:
     @value.setter
     def value(self, value: pulumi.Input[str]):
         pulumi.set(self, "value", value)
+
+
+@pulumi.input_type
+class CacheFromArgs:
+    def __init__(__self__, *,
+                 stages: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None):
+        """
+        Specifies information about where to obtain a cache
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] stages: A list of cached build stages
+        """
+        if stages is not None:
+            pulumi.set(__self__, "stages", stages)
+
+    @property
+    @pulumi.getter
+    def stages(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+        """
+        A list of cached build stages
+        """
+        return pulumi.get(self, "stages")
+
+    @stages.setter
+    def stages(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
+        pulumi.set(self, "stages", value)
+
+
+@pulumi.input_type
+class DockerBuildArgs:
+    def __init__(__self__, *,
+                 args: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
+                 cache_from: Optional[pulumi.Input[Union[bool, 'CacheFromArgs']]] = None,
+                 context: Optional[pulumi.Input[str]] = None,
+                 dockerfile: Optional[pulumi.Input[str]] = None,
+                 env: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
+                 extra_options: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 target: Optional[pulumi.Input[str]] = None):
+        """
+        The Docker build context
+        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] args: An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass built-time variablesthat can be accessed like environment variables inside the RUN instruction.
+        :param pulumi.Input[Union[bool, 'CacheFromArgs']] cache_from: A cached image or list of build stages to use as build cache
+        :param pulumi.Input[str] context: The path to the build context to use.
+        :param pulumi.Input[str] dockerfile: The path to the Dockerfile to use.
+        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] env: Environment variables to set on the invocation of docker build, for example to support DOCKER_BUILDKIT=1 docker build.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] extra_options: A bag of extra options to pass on to the docker SDK.
+        :param pulumi.Input[str] target: The target of the Dockerfile to build
+        """
+        if args is not None:
+            pulumi.set(__self__, "args", args)
+        if cache_from is not None:
+            pulumi.set(__self__, "cache_from", cache_from)
+        if context is None:
+            context = '.'
+        if context is not None:
+            pulumi.set(__self__, "context", context)
+        if dockerfile is None:
+            dockerfile = 'Dockerfile'
+        if dockerfile is not None:
+            pulumi.set(__self__, "dockerfile", dockerfile)
+        if env is not None:
+            pulumi.set(__self__, "env", env)
+        if extra_options is not None:
+            pulumi.set(__self__, "extra_options", extra_options)
+        if target is not None:
+            pulumi.set(__self__, "target", target)
+
+    @property
+    @pulumi.getter
+    def args(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]:
+        """
+        An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass built-time variablesthat can be accessed like environment variables inside the RUN instruction.
+        """
+        return pulumi.get(self, "args")
+
+    @args.setter
+    def args(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]):
+        pulumi.set(self, "args", value)
+
+    @property
+    @pulumi.getter(name="cacheFrom")
+    def cache_from(self) -> Optional[pulumi.Input[Union[bool, 'CacheFromArgs']]]:
+        """
+        A cached image or list of build stages to use as build cache
+        """
+        return pulumi.get(self, "cache_from")
+
+    @cache_from.setter
+    def cache_from(self, value: Optional[pulumi.Input[Union[bool, 'CacheFromArgs']]]):
+        pulumi.set(self, "cache_from", value)
+
+    @property
+    @pulumi.getter
+    def context(self) -> Optional[pulumi.Input[str]]:
+        """
+        The path to the build context to use.
+        """
+        return pulumi.get(self, "context")
+
+    @context.setter
+    def context(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "context", value)
+
+    @property
+    @pulumi.getter
+    def dockerfile(self) -> Optional[pulumi.Input[str]]:
+        """
+        The path to the Dockerfile to use.
+        """
+        return pulumi.get(self, "dockerfile")
+
+    @dockerfile.setter
+    def dockerfile(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "dockerfile", value)
+
+    @property
+    @pulumi.getter
+    def env(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]:
+        """
+        Environment variables to set on the invocation of docker build, for example to support DOCKER_BUILDKIT=1 docker build.
+        """
+        return pulumi.get(self, "env")
+
+    @env.setter
+    def env(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]):
+        pulumi.set(self, "env", value)
+
+    @property
+    @pulumi.getter(name="extraOptions")
+    def extra_options(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+        """
+        A bag of extra options to pass on to the docker SDK.
+        """
+        return pulumi.get(self, "extra_options")
+
+    @extra_options.setter
+    def extra_options(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
+        pulumi.set(self, "extra_options", value)
+
+    @property
+    @pulumi.getter
+    def target(self) -> Optional[pulumi.Input[str]]:
+        """
+        The target of the Dockerfile to build
+        """
+        return pulumi.get(self, "target")
+
+    @target.setter
+    def target(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "target", value)
+
+
+@pulumi.input_type
+class RegistryArgs:
+    def __init__(__self__, *,
+                 password: pulumi.Input[str],
+                 server: pulumi.Input[str],
+                 username: pulumi.Input[str]):
+        """
+        Describes a Docker container registry
+        :param pulumi.Input[str] password: The password to authenticate to the registry
+        :param pulumi.Input[str] server: The URL of the Docker registry server
+        :param pulumi.Input[str] username: The username to authenticate to the registry
+        """
+        pulumi.set(__self__, "password", password)
+        pulumi.set(__self__, "server", server)
+        pulumi.set(__self__, "username", username)
+
+    @property
+    @pulumi.getter
+    def password(self) -> pulumi.Input[str]:
+        """
+        The password to authenticate to the registry
+        """
+        return pulumi.get(self, "password")
+
+    @password.setter
+    def password(self, value: pulumi.Input[str]):
+        pulumi.set(self, "password", value)
+
+    @property
+    @pulumi.getter
+    def server(self) -> pulumi.Input[str]:
+        """
+        The URL of the Docker registry server
+        """
+        return pulumi.get(self, "server")
+
+    @server.setter
+    def server(self, value: pulumi.Input[str]):
+        pulumi.set(self, "server", value)
+
+    @property
+    @pulumi.getter
+    def username(self) -> pulumi.Input[str]:
+        """
+        The username to authenticate to the registry
+        """
+        return pulumi.get(self, "username")
+
+    @username.setter
+    def username(self, value: pulumi.Input[str]):
+        pulumi.set(self, "username", value)
 
 

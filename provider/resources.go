@@ -16,6 +16,7 @@ package provider
 
 import (
 	"fmt"
+	"github.com/pulumi/pulumi/pkg/v3/codegen/schema"
 	"path/filepath"
 	"unicode"
 
@@ -112,6 +113,170 @@ func Provider() tfbridge.ProviderInfo {
 			"docker_plugin":         {Tok: dockerResource(dockerMod, "Plugin")},
 			"docker_tag":            {Tok: dockerResource(dockerMod, "Tag")},
 		},
+		ExtraTypes: map[string]schema.ComplexTypeSpec{
+			dockerResource(dockerMod, "Registry").String(): {
+				ObjectTypeSpec: schema.ObjectTypeSpec{
+					Type:        "object",
+					Description: "Describes a Docker container registry",
+					Properties: map[string]schema.PropertySpec{
+						"server": {
+							Description: "The URL of the Docker registry server",
+							TypeSpec:    schema.TypeSpec{Type: "string"},
+						},
+						"username": {
+							Description: "The username to authenticate to the registry",
+							TypeSpec:    schema.TypeSpec{Type: "string"},
+						},
+
+						"password": {
+							Description: "The password to authenticate to the registry",
+							TypeSpec:    schema.TypeSpec{Type: "string"},
+							Secret:      true,
+						},
+					},
+					Required: []string{"server", "username", "password"},
+				},
+			},
+			dockerResource(dockerMod, "DockerBuild").String(): {
+				ObjectTypeSpec: schema.ObjectTypeSpec{
+					Type:        "object",
+					Description: "The Docker build context",
+					Properties: map[string]schema.PropertySpec{
+						"context": {
+							Description: "The path to the build context to use.",
+							TypeSpec:    schema.TypeSpec{Type: "string"},
+							Default:     ".",
+						},
+						"dockerfile": {
+							Description: "The path to the Dockerfile to use.",
+							TypeSpec:    schema.TypeSpec{Type: "string"},
+							Default:     "Dockerfile",
+						},
+						"cacheFrom": {
+							Description: "A cached image or list of build stages to use as build cache",
+							TypeSpec: schema.TypeSpec{
+								OneOf: []schema.TypeSpec{
+									{
+										Type: "boolean",
+									},
+									{
+										Ref: "#/types/docker:index/cacheFrom:CacheFrom",
+									},
+								},
+							},
+						},
+						"env": {
+							Description: "Environment variables to set on the invocation of docker build, " +
+								"for example to support DOCKER_BUILDKIT=1 docker build.",
+							TypeSpec: schema.TypeSpec{
+								Type: "object",
+								AdditionalProperties: &schema.TypeSpec{
+									Type: "string",
+								},
+							},
+						},
+						"args": {
+							Description: "An optional map of named build-time argument variables to set " +
+								"during the Docker build. This flag allows you to pass built-time variables" +
+								"that can be accessed like environment variables inside the RUN instruction.",
+							TypeSpec: schema.TypeSpec{
+								Type: "object",
+								AdditionalProperties: &schema.TypeSpec{
+									Type: "string",
+								},
+							},
+						},
+						"extraOptions": {
+							Description: "A bag of extra options to pass on to the docker SDK.",
+							TypeSpec: schema.TypeSpec{
+								Type: "array",
+								Items: &schema.TypeSpec{
+									Type: "string",
+								},
+							},
+						},
+						"target": {
+							Description: "The target of the Dockerfile to build",
+							TypeSpec:    schema.TypeSpec{Type: "string"},
+						},
+					},
+				},
+			},
+			dockerResource(dockerMod, "CacheFrom").String(): {
+				ObjectTypeSpec: schema.ObjectTypeSpec{
+					Type:        "object",
+					Description: "Specifies information about where to obtain a cache",
+					Properties: map[string]schema.PropertySpec{
+						"stages": {
+							Description: "A list of cached build stages",
+							TypeSpec: schema.TypeSpec{
+								Type: "array",
+								Items: &schema.TypeSpec{
+									Type: "string",
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+		ExtraResources: map[string]schema.ResourceSpec{
+			dockerResource(dockerMod, "Image").String(): {
+				ObjectTypeSpec: schema.ObjectTypeSpec{
+					Type:        "object",
+					Description: "A real CRUD docker image we hope", // TODO: update description
+					Properties: map[string]schema.PropertySpec{
+						"imageName": {
+							Description: "The fully qualified image name",
+							TypeSpec:    schema.TypeSpec{Type: "string"},
+						},
+						"registryServer": {
+							Description: "The URL of the registry server hosting the image.",
+							TypeSpec:    schema.TypeSpec{Type: "string"},
+						},
+						"baseImageName": {
+							Description: "The fully qualified image name that was pushed to the registry.",
+							TypeSpec:    schema.TypeSpec{Type: "string"},
+						},
+					},
+				},
+				IsComponent: false,
+				InputProperties: map[string]schema.PropertySpec{
+					"imageName": {
+						Description: "The image name",
+						TypeSpec:    schema.TypeSpec{Type: "string"},
+					},
+					"registry": {
+						Description: "The registry to push the image to",
+						TypeSpec: schema.TypeSpec{
+							Ref: "#/types/docker:index/registry:Registry",
+						},
+					},
+					"build": {
+						Description: "The Docker build context",
+						TypeSpec: schema.TypeSpec{
+							OneOf: []schema.TypeSpec{
+								{
+									Type: "string",
+								},
+								{
+									Ref: "#/types/docker:index/dockerBuild:DockerBuild",
+								},
+							},
+						},
+					},
+					"skipPush": {
+						Description: "A flag to skip a registry push.",
+						TypeSpec: schema.TypeSpec{
+							Type: "boolean",
+						},
+						Default: false,
+					},
+				},
+				RequiredInputs: []string{"imageName"},
+			},
+		},
+
 		DataSources: map[string]*tfbridge.DataSourceInfo{
 			"docker_network":        {Tok: dockerDataSource(dockerMod, "getNetwork")},
 			"docker_registry_image": {Tok: dockerDataSource(dockerMod, "getRegistryImage")},
@@ -128,24 +293,10 @@ func Provider() tfbridge.ProviderInfo {
 				"@types/node":   "^10.0.0",
 				"@types/semver": "^5.4.0",
 			},
-			Overlay: &tfbridge.OverlayInfo{
-				DestFiles: []string{
-					"docker.ts",
-					"image.ts",
-					"utils.ts",
-				},
-			},
 		},
 		Python: &tfbridge.PythonInfo{
 			Requires: map[string]string{
 				"pulumi": ">=3.0.0,<4.0.0",
-			},
-			Overlay: &tfbridge.OverlayInfo{
-				DestFiles: []string{
-					"pulumi_docker/docker.py",
-					"pulumi_docker/image.py",
-					"pulumi_docker/utils.py",
-				},
 			},
 		},
 		Golang: &tfbridge.GolangInfo{
@@ -163,14 +314,6 @@ func Provider() tfbridge.ProviderInfo {
 			},
 			Namespaces: map[string]string{
 				dockerPkg: "Docker",
-			},
-			Overlay: &tfbridge.OverlayInfo{
-				DestFiles: []string{
-					"Docker.cs",
-					"Image.cs",
-					"Extensions.cs",
-					"Utils.cs",
-				},
 			},
 		},
 	}

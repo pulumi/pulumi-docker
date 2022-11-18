@@ -2,7 +2,7 @@
 
 import pulumi
 from pulumi_azure import core, containerservice
-from pulumi_docker import Image, ImageRegistry, DockerBuild
+from pulumi_docker import Image, RegistryArgs, DockerBuildArgs
 
 custom_image = "app"
 
@@ -14,6 +14,9 @@ registry = containerservice.Registry(
 my_image = Image("myimage",
                  image_name=registry.login_server.apply(
                      lambda server: f'{server}/{custom_image}:v1.0.0'),
-                 build=DockerBuild(context=f'./{custom_image}'),
-                 registry=ImageRegistry(registry.login_server, registry.admin_username, registry.admin_password)
+                 build=DockerBuildArgs(context=f'./{custom_image}'),
+                 registry=RegistryArgs(
+                     server=registry.login_server,
+                     username=registry.admin_username,
+                     password=registry.admin_password)
                  )

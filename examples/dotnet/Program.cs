@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 
 using Pulumi;
 using Pulumi.Docker;
+using Pulumi.Docker.Inputs;
 
 class Program
 {
@@ -12,7 +13,7 @@ class Program
             var image = new Image("my-image", new ImageArgs
             {
                 ImageName = "pulumi-user/example:v1.0.0",
-                Build = new DockerBuild
+                Build = new DockerBuildArgs
                 {
                     Env = new Dictionary<string, string>
                     { 
