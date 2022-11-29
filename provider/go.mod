@@ -1,4 +1,4 @@
-module github.com/pulumi/pulumi-docker/provider/v3
+module github.com/pulumi/pulumi-docker/provider/v4
 
 go 1.19
 

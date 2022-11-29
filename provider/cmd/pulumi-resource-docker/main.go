@@ -18,8 +18,8 @@ package main
 
 import (
 	_ "embed"
-	"github.com/pulumi/pulumi-docker/provider/v3"
-	"github.com/pulumi/pulumi-docker/provider/v3/pkg/version"
+	"github.com/pulumi/pulumi-docker/provider/v4"
+	"github.com/pulumi/pulumi-docker/provider/v4/pkg/version"
 )
 
 //go:embed schema-embed.json
