@@ -25,6 +25,7 @@ env:
   SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
   TRAVIS_OS_NAME: linux
   VERSION_PREFIX: 4.0.0
+  IS_PRERELEASE: true
 
 jobs:
   build_sdk:
