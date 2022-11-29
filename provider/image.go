@@ -203,7 +203,6 @@ func marshalBuild(b resource.PropertyValue) Build {
 
 	// build can be nil, a string or an object; we will also use reasonable defaults here.
 	var build Build
-
 	if b.IsNull() {
 		// use the default build context
 		build.Dockerfile = defaultDockerfile
@@ -214,6 +213,8 @@ func marshalBuild(b resource.PropertyValue) Build {
 		// use the filepath as context
 		build.Context = b.StringValue()
 		build.Dockerfile = defaultDockerfile
+		build.Env = make(map[string]string)
+		build.Args = make(map[string]*string)
 		return build
 	}
 
@@ -242,6 +243,7 @@ func marshalBuild(b resource.PropertyValue) Build {
 		}
 	}
 	build.Env = envs
+
 	// Args
 	args := make(map[string]*string)
 	if !buildObject["args"].IsNull() {

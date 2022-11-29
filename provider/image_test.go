@@ -42,9 +42,72 @@ func TestSetRegistry(t *testing.T) {
 	testRegistryIncomplete := setRegistry(testRegistryIncompleteInput)
 	testRegistryNil := setRegistry(testRegistryNilInput)
 
-	assert.Equal(t, testRegistryValid, expectedRegistry)
-	assert.NotEqual(t, testRegistryIncomplete, expectedRegistry)
-	assert.Equal(t, testRegistryIncomplete, expectedRegistryIncomplete)
-	assert.Equal(t, testRegistryNil, expectedRegistryNil)
+	assert.Equal(t, expectedRegistry, testRegistryValid)
+	assert.NotEqual(t, expectedRegistry, testRegistryIncomplete)
+	assert.Equal(t, expectedRegistryIncomplete, testRegistryIncomplete)
+	assert.Equal(t, expectedRegistryNil, testRegistryNil)
+
+}
+
+func TestMarshalBuild(t *testing.T) {
+
+	t.Run("Default Build on empty input", func(t *testing.T) {
+		expected := Build{
+			Context:    ".",
+			Dockerfile: "Dockerfile",
+			Args:       map[string]*string{},
+			Env:        map[string]string{},
+		}
+		input := resource.PropertyValue{
+			resource.NewPropertyMapFromMap(map[string]interface{}{}),
+		}
+		actual := marshalBuild(input)
+		assert.Equal(t, expected, actual)
+	})
+
+	t.Run("String input Build", func(t *testing.T) {
+		expected := Build{
+			Context:    "/twilight/sparkle/bin",
+			Dockerfile: "Dockerfile",
+			Args:       map[string]*string{},
+			Env:        map[string]string{},
+		}
+		input := resource.NewStringProperty("/twilight/sparkle/bin")
+		actual := marshalBuild(input)
+		assert.Equal(t, expected, actual)
+	})
+
+	t.Run("Custom Dockerfile with default context", func(t *testing.T) {
+		expected := Build{
+			Context:    ".",
+			Dockerfile: "TheLastUnicorn",
+			Args:       map[string]*string{},
+			Env:        map[string]string{},
+		}
+		input := resource.PropertyValue{
+			resource.NewPropertyMapFromMap(map[string]interface{}{
+				"dockerfile": "TheLastUnicorn",
+			}),
+		}
+		actual := marshalBuild(input)
+		assert.Equal(t, expected, actual)
+	})
+
+	t.Run("Custom Dockerfile with custom context", func(t *testing.T) {
+		expected := Build{
+			Context:    "/twilight/sparkle/bin",
+			Dockerfile: "TheLastUnicorn",
+			Args:       map[string]*string{},
+			Env:        map[string]string{},
+		}
+		input := resource.PropertyValue{
+			resource.NewPropertyMapFromMap(map[string]interface{}{
+				"dockerfile": "TheLastUnicorn",
+				"context":    "/twilight/sparkle/bin",
+			}),
+		}
+		actual := marshalBuild(input)
+		assert.Equal(t, expected, actual)
+	})
 
 }
