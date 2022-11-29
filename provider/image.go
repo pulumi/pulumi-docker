@@ -301,9 +301,15 @@ func getCachedImages(img Image, b resource.PropertyValue) []string {
 func setRegistry(r resource.PropertyValue) Registry {
 	var reg Registry
 	if !r.IsNull() {
-		reg.Server = r.ObjectValue()["server"].StringValue()
-		reg.Username = r.ObjectValue()["username"].StringValue()
-		reg.Password = r.ObjectValue()["password"].StringValue()
+		if !r.ObjectValue()["server"].IsNull() {
+			reg.Server = r.ObjectValue()["server"].StringValue()
+		}
+		if !r.ObjectValue()["username"].IsNull() {
+			reg.Username = r.ObjectValue()["username"].StringValue()
+		}
+		if !r.ObjectValue()["password"].IsNull() {
+			reg.Password = r.ObjectValue()["password"].StringValue()
+		}
 		return reg
 	}
 	return reg
