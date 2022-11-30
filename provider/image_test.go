@@ -14,13 +14,11 @@ func TestSetRegistry(t *testing.T) {
 			Username: "pulumipus",
 			Password: "supersecret",
 		}
-		input := resource.PropertyValue{
-			resource.NewPropertyMapFromMap(map[string]interface{}{
-				"server":   "https://index.docker.io/v1/",
-				"username": "pulumipus",
-				"password": "supersecret",
-			}),
-		}
+		input := resource.NewObjectProperty(resource.PropertyMap{
+			"server":   resource.NewStringProperty("https://index.docker.io/v1/"),
+			"username": resource.NewStringProperty("pulumipus"),
+			"password": resource.NewStringProperty("supersecret"),
+		})
 
 		actual := setRegistry(input)
 		assert.Equal(t, expected, actual)
@@ -30,12 +28,10 @@ func TestSetRegistry(t *testing.T) {
 			Server:   "https://index.docker.io/v1/",
 			Username: "pulumipus",
 		}
-		input := resource.PropertyValue{
-			resource.NewPropertyMapFromMap(map[string]interface{}{
-				"server":   "https://index.docker.io/v1/",
-				"username": "pulumipus",
-			}),
-		}
+		input := resource.NewObjectProperty(resource.PropertyMap{
+			"server":   resource.NewStringProperty("https://index.docker.io/v1/"),
+			"username": resource.NewStringProperty("pulumipus"),
+		})
 
 		actual := setRegistry(input)
 		assert.Equal(t, expected, actual)
@@ -84,11 +80,9 @@ func TestMarshalBuild(t *testing.T) {
 			Args:       map[string]*string{},
 			Env:        map[string]string{},
 		}
-		input := resource.PropertyValue{
-			resource.NewPropertyMapFromMap(map[string]interface{}{
-				"dockerfile": "TheLastUnicorn",
-			}),
-		}
+		input := resource.NewObjectProperty(resource.PropertyMap{
+			"dockerfile": resource.NewStringProperty("TheLastUnicorn"),
+		})
 		actual := marshalBuild(input)
 		assert.Equal(t, expected, actual)
 	})
@@ -100,12 +94,11 @@ func TestMarshalBuild(t *testing.T) {
 			Args:       map[string]*string{},
 			Env:        map[string]string{},
 		}
-		input := resource.PropertyValue{
-			resource.NewPropertyMapFromMap(map[string]interface{}{
-				"dockerfile": "TheLastUnicorn",
-				"context":    "/twilight/sparkle/bin",
-			}),
-		}
+		input := resource.NewObjectProperty(resource.PropertyMap{
+			"dockerfile": resource.NewStringProperty("TheLastUnicorn"),
+			"context":    resource.NewStringProperty("/twilight/sparkle/bin"),
+		})
+
 		actual := marshalBuild(input)
 		assert.Equal(t, expected, actual)
 	})
