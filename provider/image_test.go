@@ -8,45 +8,45 @@ import (
 
 func TestSetRegistry(t *testing.T) {
 
-	expectedRegistry := Registry{
-		Server:   "https://index.docker.io/v1/",
-		Username: "pulumipus",
-		Password: "supersecret",
-	}
+	t.Run("Valid Registry", func(t *testing.T) {
+		expected := Registry{
+			Server:   "https://index.docker.io/v1/",
+			Username: "pulumipus",
+			Password: "supersecret",
+		}
+		input := resource.PropertyValue{
+			resource.NewPropertyMapFromMap(map[string]interface{}{
+				"server":   "https://index.docker.io/v1/",
+				"username": "pulumipus",
+				"password": "supersecret",
+			}),
+		}
 
-	expectedRegistryIncomplete := Registry{
-		Server:   "https://index.docker.io/v1/",
-		Username: "pulumipus",
-	}
+		actual := setRegistry(input)
+		assert.Equal(t, expected, actual)
+	})
+	t.Run("Incomplete Registry sets all available fields", func(t *testing.T) {
+		expected := Registry{
+			Server:   "https://index.docker.io/v1/",
+			Username: "pulumipus",
+		}
+		input := resource.PropertyValue{
+			resource.NewPropertyMapFromMap(map[string]interface{}{
+				"server":   "https://index.docker.io/v1/",
+				"username": "pulumipus",
+			}),
+		}
 
-	expectedRegistryNil := Registry{}
+		actual := setRegistry(input)
+		assert.Equal(t, expected, actual)
+	})
 
-	testRegistryValidInput := resource.PropertyValue{
-		resource.NewPropertyMapFromMap(map[string]interface{}{
-			"server":   "https://index.docker.io/v1/",
-			"username": "pulumipus",
-			"password": "supersecret",
-		}),
-	}
-
-	testRegistryIncompleteInput := resource.PropertyValue{
-		resource.NewPropertyMapFromMap(map[string]interface{}{
-			"server":   "https://index.docker.io/v1/",
-			"username": "pulumipus",
-		}),
-	}
-
-	testRegistryNilInput := resource.PropertyValue{}
-
-	testRegistryValid := setRegistry(testRegistryValidInput)
-	testRegistryIncomplete := setRegistry(testRegistryIncompleteInput)
-	testRegistryNil := setRegistry(testRegistryNilInput)
-
-	assert.Equal(t, expectedRegistry, testRegistryValid)
-	assert.NotEqual(t, expectedRegistry, testRegistryIncomplete)
-	assert.Equal(t, expectedRegistryIncomplete, testRegistryIncomplete)
-	assert.Equal(t, expectedRegistryNil, testRegistryNil)
-
+	t.Run("Registry can be nil", func(t *testing.T) {
+		expected := Registry{}
+		input := resource.PropertyValue{}
+		actual := setRegistry(input)
+		assert.Equal(t, expected, actual)
+	})
 }
 
 func TestMarshalBuild(t *testing.T) {
