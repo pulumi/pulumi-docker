@@ -235,25 +235,11 @@ func marshalBuild(b resource.PropertyValue) Build {
 		build.Context = buildObject["context"].StringValue()
 	}
 	// Envs
-	envs := make(map[string]string)
-	if !buildObject["env"].IsNull() {
-		for k, v := range buildObject["env"].ObjectValue() {
-			key := fmt.Sprintf("%v", k)
-			envs[key] = v.StringValue()
-		}
-	}
-	build.Env = envs
+
+	build.Env = setEnvs(buildObject["env"])
 
 	// Args
-	args := make(map[string]*string)
-	if !buildObject["args"].IsNull() {
-		for k, v := range buildObject["args"].ObjectValue() {
-			key := fmt.Sprintf("%v", k)
-			vStr := v.StringValue()
-			args[key] = &vStr
-		}
-	}
-	build.Args = args
+	build.Args = setArgs(buildObject["args"])
 
 	// ExtraOptions
 	if !buildObject["extraOptions"].IsNull() {
@@ -315,4 +301,27 @@ func setRegistry(r resource.PropertyValue) Registry {
 		return reg
 	}
 	return reg
+}
+
+func setArgs(a resource.PropertyValue) map[string]*string {
+	args := make(map[string]*string)
+	if !a.IsNull() {
+		for k, v := range a.ObjectValue() {
+			key := fmt.Sprintf("%v", k)
+			vStr := v.StringValue()
+			args[key] = &vStr
+		}
+	}
+	return args
+}
+
+func setEnvs(e resource.PropertyValue) map[string]string {
+	envs := make(map[string]string)
+	if !e.IsNull() {
+		for k, v := range e.ObjectValue() {
+			key := fmt.Sprintf("%v", k)
+			envs[key] = v.StringValue()
+		}
+	}
+	return envs
 }
