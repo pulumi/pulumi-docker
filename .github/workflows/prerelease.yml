@@ -8,6 +8,7 @@ env:
   AWS_REGION: us-west-2
   AZURE_LOCATION: westus
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  IS_PRERELEASE: true
   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
   NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
   NUGET_PUBLISH_KEY: ${{ secrets.NUGET_PUBLISH_KEY }}
@@ -24,9 +25,6 @@ env:
   SIGNING_PASSWORD: ${{ secrets.JAVA_SIGNING_PASSWORD }}
   SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
   TRAVIS_OS_NAME: linux
-  VERSION_PREFIX: 4.0.0
-  IS_PRERELEASE: true
-
 jobs:
   build_sdk:
     name: build_sdk
