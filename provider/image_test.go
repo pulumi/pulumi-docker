@@ -51,8 +51,6 @@ func TestMarshalBuild(t *testing.T) {
 		expected := Build{
 			Context:    ".",
 			Dockerfile: "Dockerfile",
-			Args:       map[string]*string{},
-			Env:        map[string]string{},
 		}
 		input := resource.PropertyValue{
 			resource.NewPropertyMapFromMap(map[string]interface{}{}),
@@ -65,8 +63,6 @@ func TestMarshalBuild(t *testing.T) {
 		expected := Build{
 			Context:    "/twilight/sparkle/bin",
 			Dockerfile: "Dockerfile",
-			Args:       map[string]*string{},
-			Env:        map[string]string{},
 		}
 		input := resource.NewStringProperty("/twilight/sparkle/bin")
 		actual := marshalBuild(input)
@@ -77,8 +73,6 @@ func TestMarshalBuild(t *testing.T) {
 		expected := Build{
 			Context:    ".",
 			Dockerfile: "TheLastUnicorn",
-			Args:       map[string]*string{},
-			Env:        map[string]string{},
 		}
 		input := resource.NewObjectProperty(resource.PropertyMap{
 			"dockerfile": resource.NewStringProperty("TheLastUnicorn"),
@@ -91,8 +85,6 @@ func TestMarshalBuild(t *testing.T) {
 		expected := Build{
 			Context:    "/twilight/sparkle/bin",
 			Dockerfile: "TheLastUnicorn",
-			Args:       map[string]*string{},
-			Env:        map[string]string{},
 		}
 		input := resource.NewObjectProperty(resource.PropertyMap{
 			"dockerfile": resource.NewStringProperty("TheLastUnicorn"),
@@ -111,7 +103,6 @@ func TestMarshalBuild(t *testing.T) {
 			Args: map[string]*string{
 				"Swiftwind": &argval,
 			},
-			Env: map[string]string{},
 		}
 
 		input := resource.NewObjectProperty(resource.PropertyMap{
@@ -129,7 +120,6 @@ func TestMarshalBuild(t *testing.T) {
 		expected := Build{
 			Context:    ".",
 			Dockerfile: "Dockerfile",
-			Args:       map[string]*string{},
 			Env: map[string]string{
 				"Strawberry": "fruit",
 			},
@@ -167,7 +157,7 @@ func TestSetArgs(t *testing.T) {
 	})
 
 	t.Run("No args set", func(t *testing.T) {
-		expected := map[string]*string{}
+		expected := map[string]*string(nil)
 		input := resource.NewObjectProperty(resource.PropertyMap{})
 		actual := setArgs(input)
 		assert.Equal(t, expected, actual)
@@ -190,7 +180,7 @@ func TestSetEnvs(t *testing.T) {
 		assert.Equal(t, expected, actual)
 	})
 	t.Run("No environment variables", func(t *testing.T) {
-		expected := map[string]string{}
+		expected := map[string]string(nil)
 		input := resource.NewObjectProperty(resource.PropertyMap{})
 		actual := setEnvs(input)
 		assert.Equal(t, expected, actual)

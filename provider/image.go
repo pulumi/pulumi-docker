@@ -213,8 +213,6 @@ func marshalBuild(b resource.PropertyValue) Build {
 		// use the filepath as context
 		build.Context = b.StringValue()
 		build.Dockerfile = defaultDockerfile
-		build.Env = make(map[string]string)
-		build.Args = make(map[string]*string)
 		return build
 	}
 
@@ -311,6 +309,9 @@ func setArgs(a resource.PropertyValue) map[string]*string {
 			args[key] = &vStr
 		}
 	}
+	if len(args) == 0 {
+		return nil
+	}
 	return args
 }
 
@@ -321,6 +322,9 @@ func setEnvs(e resource.PropertyValue) map[string]string {
 			key := fmt.Sprintf("%v", k)
 			envs[key] = v.StringValue()
 		}
+	}
+	if len(envs) == 0 {
+		return nil
 	}
 	return envs
 }
