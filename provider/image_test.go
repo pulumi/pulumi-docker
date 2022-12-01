@@ -135,6 +135,52 @@ func TestMarshalBuild(t *testing.T) {
 		assert.Equal(t, expected, actual)
 	})
 
+	t.Run("Sets Extra Options", func(t *testing.T) {
+		expected := Build{
+			Context:      ".",
+			Dockerfile:   "Dockerfile",
+			ExtraOptions: []string{"cat", "dog", "pot-bellied pig"},
+		}
+
+		input := resource.NewObjectProperty(resource.PropertyMap{
+			"extraOptions": resource.NewArrayProperty([]resource.PropertyValue{
+				resource.NewStringProperty("cat"),
+				resource.NewStringProperty("dog"),
+				resource.NewStringProperty("pot-bellied pig"),
+			}),
+		})
+
+		actual := marshalBuild(input)
+		assert.Equal(t, expected, actual)
+	})
+
+	t.Run("Does Not Set Extra Options on Empty Input", func(t *testing.T) {
+		expected := Build{
+			Context:    ".",
+			Dockerfile: "Dockerfile",
+		}
+
+		input := resource.NewObjectProperty(resource.PropertyMap{
+			"extraOptions": resource.NewArrayProperty([]resource.PropertyValue{}),
+		})
+
+		actual := marshalBuild(input)
+		assert.Equal(t, expected, actual)
+	})
+	t.Run("Sets Target", func(t *testing.T) {
+		expected := Build{
+			Context:    ".",
+			Dockerfile: "Dockerfile",
+			Target:     "bullseye",
+		}
+
+		input := resource.NewObjectProperty(resource.PropertyMap{
+			"target": resource.NewStringProperty("bullseye"),
+		})
+
+		actual := marshalBuild(input)
+		assert.Equal(t, expected, actual)
+	})
 }
 
 func TestSetArgs(t *testing.T) {
@@ -156,7 +202,7 @@ func TestSetArgs(t *testing.T) {
 		assert.Equal(t, expected, actual)
 	})
 
-	t.Run("No args set", func(t *testing.T) {
+	t.Run("Returns nil when no args set", func(t *testing.T) {
 		expected := map[string]*string(nil)
 		input := resource.NewObjectProperty(resource.PropertyMap{})
 		actual := setArgs(input)
@@ -179,7 +225,7 @@ func TestSetEnvs(t *testing.T) {
 		actual := setEnvs(input)
 		assert.Equal(t, expected, actual)
 	})
-	t.Run("No environment variables", func(t *testing.T) {
+	t.Run("Returns nil when no environment variables set", func(t *testing.T) {
 		expected := map[string]string(nil)
 		input := resource.NewObjectProperty(resource.PropertyMap{})
 		actual := setEnvs(input)
@@ -251,3 +297,4 @@ func TestGetCachedImages(t *testing.T) {
 		assert.Equal(t, expected, actual)
 	})
 }
+
