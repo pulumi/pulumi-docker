@@ -165,11 +165,17 @@ func TestSetArgs(t *testing.T) {
 		actual := setArgs(input)
 		assert.Equal(t, expected, actual)
 	})
+
+	t.Run("No args set", func(t *testing.T) {
+		expected := map[string]*string{}
+		input := resource.NewObjectProperty(resource.PropertyMap{})
+		actual := setArgs(input)
+		assert.Equal(t, expected, actual)
+	})
 }
 
 func TestSetEnvs(t *testing.T) {
 	t.Run("Set any environment variables", func(t *testing.T) {
-
 		expected := map[string]string{
 			"Strawberry": "fruit",
 			"Carrot":     "veggie",
@@ -181,6 +187,77 @@ func TestSetEnvs(t *testing.T) {
 			"Docker":     resource.NewStringProperty("a bit of a mess tbh"),
 		})
 		actual := setEnvs(input)
+		assert.Equal(t, expected, actual)
+	})
+	t.Run("No environment variables", func(t *testing.T) {
+		expected := map[string]string{}
+		input := resource.NewObjectProperty(resource.PropertyMap{})
+		actual := setEnvs(input)
+		assert.Equal(t, expected, actual)
+	})
+}
+
+func TestGetCachedImages(t *testing.T) {
+	t.Run("Test Cached Images", func(t *testing.T) {
+		expected := []string{"apple", "banana", "cherry"}
+		imgInput := Image{
+			Name:     "unicornsareawesome",
+			SkipPush: false,
+			Registry: Registry{
+				Server:   "https://index.docker.io/v1/",
+				Username: "pulumipus",
+				Password: "supersecret",
+			},
+		}
+		buildInput := resource.NewObjectProperty(resource.PropertyMap{
+			"dockerfile": resource.NewStringProperty("TheLastUnicorn"),
+			"context":    resource.NewStringProperty("/twilight/sparkle/bin"),
+
+			"cacheFrom": resource.NewObjectProperty(resource.PropertyMap{
+				"stages": resource.NewArrayProperty([]resource.PropertyValue{
+					resource.NewStringProperty("apple"),
+					resource.NewStringProperty("banana"),
+					resource.NewStringProperty("cherry"),
+				}),
+			}),
+		})
+
+		actual := getCachedImages(imgInput, buildInput)
+		assert.Equal(t, expected, actual)
+
+	})
+	t.Run("Test Cached Images No Build Input Returns Nil", func(t *testing.T) {
+		expected := []string(nil)
+		imgInput := Image{
+			Name:     "unicornsareawesome",
+			SkipPush: false,
+			Registry: Registry{
+				Server:   "https://index.docker.io/v1/",
+				Username: "pulumipus",
+				Password: "supersecret",
+			},
+		}
+		buildInput := resource.NewObjectProperty(resource.PropertyMap{})
+		actual := getCachedImages(imgInput, buildInput)
+		assert.Equal(t, expected, actual)
+	})
+
+	t.Run("Test Cached Images No cacheFrom Input Returns Nil", func(t *testing.T) {
+		expected := []string(nil)
+		imgInput := Image{
+			Name:     "unicornsareawesome",
+			SkipPush: false,
+			Registry: Registry{
+				Server:   "https://index.docker.io/v1/",
+				Username: "pulumipus",
+				Password: "supersecret",
+			},
+		}
+		buildInput := resource.NewObjectProperty(resource.PropertyMap{
+			"dockerfile": resource.NewStringProperty("TheLastUnicorn"),
+			"context":    resource.NewStringProperty("/twilight/sparkle/bin"),
+		})
+		actual := getCachedImages(imgInput, buildInput)
 		assert.Equal(t, expected, actual)
 	})
 }

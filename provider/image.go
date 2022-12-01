@@ -257,7 +257,6 @@ func marshalBuild(b resource.PropertyValue) Build {
 }
 
 func getCachedImages(img Image, b resource.PropertyValue) []string {
-
 	var cacheImages []string
 	if b.IsNull() {
 		return cacheImages
