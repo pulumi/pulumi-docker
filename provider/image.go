@@ -59,7 +59,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		Registry: reg,
 	}
 
-	build := marshalBuild(inputs["build"])
+	build := marshalBuildAndApplyDefaults(inputs["build"])
 	cache := getCachedImages(img, inputs["build"])
 
 	build.CachedImages = cache
@@ -199,7 +199,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	return img.Name, pbstruct, err
 }
 
-func marshalBuild(b resource.PropertyValue) Build {
+func marshalBuildAndApplyDefaults(b resource.PropertyValue) Build {
 
 	// build can be nil, a string or an object; we will also use reasonable defaults here.
 	var build Build

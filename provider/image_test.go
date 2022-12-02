@@ -45,17 +45,15 @@ func TestSetRegistry(t *testing.T) {
 	})
 }
 
-func TestMarshalBuild(t *testing.T) {
+func TestMarshalBuildAndApplyDefaults(t *testing.T) {
 
 	t.Run("Default Build on empty input", func(t *testing.T) {
 		expected := Build{
 			Context:    ".",
 			Dockerfile: "Dockerfile",
 		}
-		input := resource.PropertyValue{
-			resource.NewPropertyMapFromMap(map[string]interface{}{}),
-		}
-		actual := marshalBuild(input)
+		input := resource.NewObjectProperty(resource.PropertyMap{})
+		actual := marshalBuildAndApplyDefaults(input)
 		assert.Equal(t, expected, actual)
 	})
 
@@ -65,7 +63,7 @@ func TestMarshalBuild(t *testing.T) {
 			Dockerfile: "Dockerfile",
 		}
 		input := resource.NewStringProperty("/twilight/sparkle/bin")
-		actual := marshalBuild(input)
+		actual := marshalBuildAndApplyDefaults(input)
 		assert.Equal(t, expected, actual)
 	})
 
@@ -77,7 +75,7 @@ func TestMarshalBuild(t *testing.T) {
 		input := resource.NewObjectProperty(resource.PropertyMap{
 			"dockerfile": resource.NewStringProperty("TheLastUnicorn"),
 		})
-		actual := marshalBuild(input)
+		actual := marshalBuildAndApplyDefaults(input)
 		assert.Equal(t, expected, actual)
 	})
 
@@ -91,7 +89,7 @@ func TestMarshalBuild(t *testing.T) {
 			"context":    resource.NewStringProperty("/twilight/sparkle/bin"),
 		})
 
-		actual := marshalBuild(input)
+		actual := marshalBuildAndApplyDefaults(input)
 		assert.Equal(t, expected, actual)
 	})
 
@@ -111,7 +109,7 @@ func TestMarshalBuild(t *testing.T) {
 			}),
 		})
 
-		actual := marshalBuild(input)
+		actual := marshalBuildAndApplyDefaults(input)
 		assert.Equal(t, expected, actual)
 	})
 
@@ -131,7 +129,7 @@ func TestMarshalBuild(t *testing.T) {
 			}),
 		})
 
-		actual := marshalBuild(input)
+		actual := marshalBuildAndApplyDefaults(input)
 		assert.Equal(t, expected, actual)
 	})
 
@@ -150,7 +148,7 @@ func TestMarshalBuild(t *testing.T) {
 			}),
 		})
 
-		actual := marshalBuild(input)
+		actual := marshalBuildAndApplyDefaults(input)
 		assert.Equal(t, expected, actual)
 	})
 
@@ -164,7 +162,7 @@ func TestMarshalBuild(t *testing.T) {
 			"extraOptions": resource.NewArrayProperty([]resource.PropertyValue{}),
 		})
 
-		actual := marshalBuild(input)
+		actual := marshalBuildAndApplyDefaults(input)
 		assert.Equal(t, expected, actual)
 	})
 	t.Run("Sets Target", func(t *testing.T) {
@@ -178,7 +176,7 @@ func TestMarshalBuild(t *testing.T) {
 			"target": resource.NewStringProperty("bullseye"),
 		})
 
-		actual := marshalBuild(input)
+		actual := marshalBuildAndApplyDefaults(input)
 		assert.Equal(t, expected, actual)
 	})
 }
@@ -297,4 +295,3 @@ func TestGetCachedImages(t *testing.T) {
 		assert.Equal(t, expected, actual)
 	})
 }
-
