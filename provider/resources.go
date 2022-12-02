@@ -233,7 +233,7 @@ func Provider() tfbridge.ProviderInfo {
 			dockerResource(dockerMod, "Image").String(): {
 				ObjectTypeSpec: schema.ObjectTypeSpec{
 					Type:        "object",
-					Description: "A real CRUD docker image we hope", // TODO: update description
+					Description: "Builds a Docker Image and pushes to a Docker registry.",
 					Properties: map[string]schema.PropertySpec{
 						"imageName": {
 							Description: "The fully qualified image name",
