@@ -7,7 +7,7 @@ import * as outputs from "./types/output";
 import * as utilities from "./utilities";
 
 /**
- * A real CRUD docker image we hope
+ * Builds a Docker Image and pushes to a Docker registry.
  */
 export class Image extends pulumi.CustomResource {
     /**

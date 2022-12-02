@@ -41,6 +41,27 @@ public final class DockerBuildArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
+     * The version of the Docker builder. Valid inputs are:
+     * `BuilderV1` - the first generation builder in docker daemon
+     * `BuilderBuildKit - the builder based on moby/buildkit project
+     *  Defaults to `BuilderBuildKit`.
+     * 
+     */
+    @Import(name="builderVersion")
+    private @Nullable Output<String> builderVersion;
+
+    /**
+     * @return The version of the Docker builder. Valid inputs are:
+     * `BuilderV1` - the first generation builder in docker daemon
+     * `BuilderBuildKit - the builder based on moby/buildkit project
+     *  Defaults to `BuilderBuildKit`.
+     * 
+     */
+    public Optional<Output<String>> builderVersion() {
+        return Optional.ofNullable(this.builderVersion);
+    }
+
+    /**
      * A cached image or list of build stages to use as build cache
      * 
      */
@@ -134,6 +155,7 @@ public final class DockerBuildArgs extends com.pulumi.resources.ResourceArgs {
 
     private DockerBuildArgs(DockerBuildArgs $) {
         this.args = $.args;
+        this.builderVersion = $.builderVersion;
         this.cacheFrom = $.cacheFrom;
         this.context = $.context;
         this.dockerfile = $.dockerfile;
@@ -179,6 +201,33 @@ public final class DockerBuildArgs extends com.pulumi.resources.ResourceArgs {
          */
         public Builder args(Map<String,String> args) {
             return args(Output.of(args));
+        }
+
+        /**
+         * @param builderVersion The version of the Docker builder. Valid inputs are:
+         * `BuilderV1` - the first generation builder in docker daemon
+         * `BuilderBuildKit - the builder based on moby/buildkit project
+         *  Defaults to `BuilderBuildKit`.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder builderVersion(@Nullable Output<String> builderVersion) {
+            $.builderVersion = builderVersion;
+            return this;
+        }
+
+        /**
+         * @param builderVersion The version of the Docker builder. Valid inputs are:
+         * `BuilderV1` - the first generation builder in docker daemon
+         * `BuilderBuildKit - the builder based on moby/buildkit project
+         *  Defaults to `BuilderBuildKit`.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder builderVersion(String builderVersion) {
+            return builderVersion(Output.of(builderVersion));
         }
 
         /**
@@ -338,6 +387,7 @@ public final class DockerBuildArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         public DockerBuildArgs build() {
+            $.builderVersion = Codegen.stringProp("builderVersion").output().arg($.builderVersion).def("BuilderBuildKit").getNullable();
             $.context = Codegen.stringProp("context").output().arg($.context).def(".").getNullable();
             $.dockerfile = Codegen.stringProp("dockerfile").output().arg($.dockerfile).def("Dockerfile").getNullable();
             return $;

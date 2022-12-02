@@ -283,6 +283,13 @@ export interface DockerBuild {
      */
     args?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
     /**
+     * The version of the Docker builder. Valid inputs are: 
+     * `BuilderV1` - the first generation builder in docker daemon
+     * `BuilderBuildKit - the builder based on moby/buildkit project
+     *  Defaults to `BuilderBuildKit`.
+     */
+    builderVersion?: pulumi.Input<string>;
+    /**
      * A cached image or list of build stages to use as build cache
      */
     cacheFrom?: pulumi.Input<boolean | inputs.CacheFrom>;
@@ -313,6 +320,7 @@ export interface DockerBuild {
 export function dockerBuildProvideDefaults(val: DockerBuild): DockerBuild {
     return {
         ...val,
+        builderVersion: (val.builderVersion) ?? "BuilderBuildKit",
         context: (val.context) ?? ".",
         dockerfile: (val.dockerfile) ?? "Dockerfile",
     };

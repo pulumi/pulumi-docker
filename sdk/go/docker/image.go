@@ -11,7 +11,7 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// A real CRUD docker image we hope
+// Builds a Docker Image and pushes to a Docker registry.
 type Image struct {
 	pulumi.CustomResourceState
 

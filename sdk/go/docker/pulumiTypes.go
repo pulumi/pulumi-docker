@@ -9593,6 +9593,11 @@ func (o CacheFromOutput) Stages() pulumi.StringArrayOutput {
 type DockerBuild struct {
 	// An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass built-time variablesthat can be accessed like environment variables inside the RUN instruction.
 	Args map[string]string `pulumi:"args"`
+	// The version of the Docker builder. Valid inputs are:
+	// `BuilderV1` - the first generation builder in docker daemon
+	// `BuilderBuildKit - the builder based on moby/buildkit project
+	//  Defaults to `BuilderBuildKit`.
+	BuilderVersion *string `pulumi:"builderVersion"`
 	// A cached image or list of build stages to use as build cache
 	CacheFrom interface{} `pulumi:"cacheFrom"`
 	// The path to the build context to use.
@@ -9613,6 +9618,10 @@ func (val *DockerBuild) Defaults() *DockerBuild {
 		return nil
 	}
 	tmp := *val
+	if isZero(tmp.BuilderVersion) {
+		builderVersion_ := "BuilderBuildKit"
+		tmp.BuilderVersion = &builderVersion_
+	}
 	if isZero(tmp.Context) {
 		context_ := "."
 		tmp.Context = &context_
@@ -9639,6 +9648,11 @@ type DockerBuildInput interface {
 type DockerBuildArgs struct {
 	// An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass built-time variablesthat can be accessed like environment variables inside the RUN instruction.
 	Args pulumi.StringMapInput `pulumi:"args"`
+	// The version of the Docker builder. Valid inputs are:
+	// `BuilderV1` - the first generation builder in docker daemon
+	// `BuilderBuildKit - the builder based on moby/buildkit project
+	//  Defaults to `BuilderBuildKit`.
+	BuilderVersion pulumi.StringPtrInput `pulumi:"builderVersion"`
 	// A cached image or list of build stages to use as build cache
 	CacheFrom pulumi.Input `pulumi:"cacheFrom"`
 	// The path to the build context to use.
@@ -9659,6 +9673,9 @@ func (val *DockerBuildArgs) Defaults() *DockerBuildArgs {
 		return nil
 	}
 	tmp := *val
+	if isZero(tmp.BuilderVersion) {
+		tmp.BuilderVersion = pulumi.StringPtr("BuilderBuildKit")
+	}
 	if isZero(tmp.Context) {
 		tmp.Context = pulumi.StringPtr(".")
 	}
@@ -9697,6 +9714,15 @@ func (o DockerBuildOutput) ToDockerBuildOutputWithContext(ctx context.Context) D
 // An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass built-time variablesthat can be accessed like environment variables inside the RUN instruction.
 func (o DockerBuildOutput) Args() pulumi.StringMapOutput {
 	return o.ApplyT(func(v DockerBuild) map[string]string { return v.Args }).(pulumi.StringMapOutput)
+}
+
+// The version of the Docker builder. Valid inputs are:
+// `BuilderV1` - the first generation builder in docker daemon
+// `BuilderBuildKit - the builder based on moby/buildkit project
+//
+//	Defaults to `BuilderBuildKit`.
+func (o DockerBuildOutput) BuilderVersion() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v DockerBuild) *string { return v.BuilderVersion }).(pulumi.StringPtrOutput)
 }
 
 // A cached image or list of build stages to use as build cache
