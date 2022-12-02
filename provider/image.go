@@ -17,7 +17,7 @@ import (
 )
 
 const defaultDockerfile = "Dockerfile"
-const defaultBuilder = "BuilderBuildKit"
+const defaultBuilder = "2"
 
 type Image struct {
 	Name     string
@@ -41,7 +41,7 @@ type Build struct {
 	Args           map[string]*string
 	ExtraOptions   []string
 	Target         string
-	BuilderVersion string
+	BuilderVersion types.BuilderVersion
 }
 
 func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
@@ -61,7 +61,10 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		Registry: reg,
 	}
 
-	build := marshalBuildAndApplyDefaults(inputs["build"])
+	build, err := marshalBuildAndApplyDefaults(inputs["build"])
+	if err != nil {
+		return "", nil, err
+	}
 	cache := marshalCachedImages(img, inputs["build"])
 
 	build.CachedImages = cache
@@ -93,7 +96,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		Remove:     true,
 		//CacheFrom:  img.Build.CachedImages, // TODO: this needs a login, so needs to be handled differently.
 		BuildArgs: build.Args,
-		Version:   types.BuilderBuildKit, // TODO: parse this setting from the `env` input
+		Version:   build.BuilderVersion,
 	}
 
 	imgBuildResp, err := docker.ImageBuild(ctx, tar, opts)
@@ -201,21 +204,21 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	return img.Name, pbstruct, err
 }
 
-func marshalBuildAndApplyDefaults(b resource.PropertyValue) Build {
+func marshalBuildAndApplyDefaults(b resource.PropertyValue) (Build, error) {
 
 	// build can be nil, a string or an object; we will also use reasonable defaults here.
 	var build Build
 	if b.IsNull() {
-		// use the default build context
+		//// use the default build context
 		build.Dockerfile = defaultDockerfile
 		build.Context = "."
-		return build
+		return build, nil
 	}
 	if b.IsString() {
 		// use the filepath as context
 		build.Context = b.StringValue()
 		build.Dockerfile = defaultDockerfile
-		return build
+		return build, nil
 	}
 
 	// read in the build type fields
@@ -234,15 +237,16 @@ func marshalBuildAndApplyDefaults(b resource.PropertyValue) Build {
 	} else {
 		build.Context = buildObject["context"].StringValue()
 	}
-	// BuildKit
-	if buildObject["builderVersion"].IsNull() {
-		//set default
-		build.BuilderVersion = defaultBuilder
-	} else {
-		build.BuilderVersion = buildObject["builderVersion"].StringValue()
-	}
-	// Envs
 
+	// BuildKit
+	version, err := marshalBuilder(buildObject["builderVersion"])
+
+	if err != nil {
+		return build, err
+	}
+	build.BuilderVersion = version
+
+	// Envs
 	build.Env = marshalEnvs(buildObject["env"])
 
 	// Args
@@ -260,7 +264,7 @@ func marshalBuildAndApplyDefaults(b resource.PropertyValue) Build {
 	if !buildObject["target"].IsNull() {
 		build.Target = buildObject["target"].StringValue()
 	}
-	return build
+	return build, nil
 }
 
 func marshalCachedImages(img Image, b resource.PropertyValue) []string {
@@ -336,4 +340,24 @@ func marshalEnvs(e resource.PropertyValue) map[string]string {
 		return nil
 	}
 	return envs
+}
+
+func marshalBuilder(builder resource.PropertyValue) (types.BuilderVersion, error) {
+	var version types.BuilderVersion
+
+	if builder.IsNull() {
+		//set default
+		return defaultBuilder, nil
+	}
+	// verify valid input
+	switch builder.StringValue() {
+	case "BuilderV1":
+		return "1", nil
+	case "BuilderBuildKit":
+		return "2", nil
+	default:
+		// because the Docker client will default to `BuilderV1`
+		// when version isn't set, we return an error
+		return version, errors.Errorf("Invalid Docker Builder version")
+	}
 }

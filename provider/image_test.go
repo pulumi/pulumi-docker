@@ -1,6 +1,7 @@
 package provider
 
 import (
+	"github.com/docker/docker/api/types"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/stretchr/testify/assert"
 	"testing"
@@ -53,7 +54,7 @@ func TestMarshalBuildAndApplyDefaults(t *testing.T) {
 			Dockerfile: "Dockerfile",
 		}
 		input := resource.NewObjectProperty(resource.PropertyMap{})
-		actual := marshalBuildAndApplyDefaults(input)
+		actual, _ := marshalBuildAndApplyDefaults(input)
 		assert.Equal(t, expected, actual)
 	})
 
@@ -63,7 +64,7 @@ func TestMarshalBuildAndApplyDefaults(t *testing.T) {
 			Dockerfile: "Dockerfile",
 		}
 		input := resource.NewStringProperty("/twilight/sparkle/bin")
-		actual := marshalBuildAndApplyDefaults(input)
+		actual, _ := marshalBuildAndApplyDefaults(input)
 		assert.Equal(t, expected, actual)
 	})
 
@@ -75,7 +76,7 @@ func TestMarshalBuildAndApplyDefaults(t *testing.T) {
 		input := resource.NewObjectProperty(resource.PropertyMap{
 			"dockerfile": resource.NewStringProperty("TheLastUnicorn"),
 		})
-		actual := marshalBuildAndApplyDefaults(input)
+		actual, _ := marshalBuildAndApplyDefaults(input)
 		assert.Equal(t, expected, actual)
 	})
 
@@ -89,7 +90,7 @@ func TestMarshalBuildAndApplyDefaults(t *testing.T) {
 			"context":    resource.NewStringProperty("/twilight/sparkle/bin"),
 		})
 
-		actual := marshalBuildAndApplyDefaults(input)
+		actual, _ := marshalBuildAndApplyDefaults(input)
 		assert.Equal(t, expected, actual)
 	})
 
@@ -109,7 +110,7 @@ func TestMarshalBuildAndApplyDefaults(t *testing.T) {
 			}),
 		})
 
-		actual := marshalBuildAndApplyDefaults(input)
+		actual, _ := marshalBuildAndApplyDefaults(input)
 		assert.Equal(t, expected, actual)
 	})
 
@@ -129,7 +130,7 @@ func TestMarshalBuildAndApplyDefaults(t *testing.T) {
 			}),
 		})
 
-		actual := marshalBuildAndApplyDefaults(input)
+		actual, _ := marshalBuildAndApplyDefaults(input)
 		assert.Equal(t, expected, actual)
 	})
 
@@ -148,7 +149,7 @@ func TestMarshalBuildAndApplyDefaults(t *testing.T) {
 			}),
 		})
 
-		actual := marshalBuildAndApplyDefaults(input)
+		actual, _ := marshalBuildAndApplyDefaults(input)
 		assert.Equal(t, expected, actual)
 	})
 
@@ -162,7 +163,7 @@ func TestMarshalBuildAndApplyDefaults(t *testing.T) {
 			"extraOptions": resource.NewArrayProperty([]resource.PropertyValue{}),
 		})
 
-		actual := marshalBuildAndApplyDefaults(input)
+		actual, _ := marshalBuildAndApplyDefaults(input)
 		assert.Equal(t, expected, actual)
 	})
 	t.Run("Sets Target", func(t *testing.T) {
@@ -176,7 +177,21 @@ func TestMarshalBuildAndApplyDefaults(t *testing.T) {
 			"target": resource.NewStringProperty("bullseye"),
 		})
 
-		actual := marshalBuildAndApplyDefaults(input)
+		actual, _ := marshalBuildAndApplyDefaults(input)
+		assert.Equal(t, expected, actual)
+	})
+	t.Run("Sets Target", func(t *testing.T) {
+		expected := Build{
+			Context:    ".",
+			Dockerfile: "Dockerfile",
+			Target:     "bullseye",
+		}
+
+		input := resource.NewObjectProperty(resource.PropertyMap{
+			"target": resource.NewStringProperty("bullseye"),
+		})
+
+		actual, _ := marshalBuildAndApplyDefaults(input)
 		assert.Equal(t, expected, actual)
 	})
 }
@@ -293,5 +308,39 @@ func TestMarshalCachedImages(t *testing.T) {
 		})
 		actual := marshalCachedImages(imgInput, buildInput)
 		assert.Equal(t, expected, actual)
+	})
+}
+
+func TestMarshalBuilder(t *testing.T) {
+	t.Run("Test Builder Version Default", func(t *testing.T) {
+		expected := types.BuilderBuildKit
+		input := resource.NewPropertyValue(nil)
+		actual, _ := marshalBuilder(input)
+		assert.Equal(t, expected, actual)
+
+	})
+	t.Run("Test Builder BuildKit Version", func(t *testing.T) {
+		expected := types.BuilderBuildKit
+		input := resource.NewStringProperty("BuilderBuildKit")
+
+		actual, _ := marshalBuilder(input)
+		assert.Equal(t, expected, actual)
+
+	})
+	t.Run("Test Builder V1 Version", func(t *testing.T) {
+		expected := types.BuilderV1
+		input := resource.NewStringProperty("BuilderV1")
+
+		actual, _ := marshalBuilder(input)
+		assert.Equal(t, expected, actual)
+
+	})
+	t.Run("Test Invalid Builder Returns Error", func(t *testing.T) {
+		expected := types.BuilderV1
+		input := resource.NewStringProperty("BuilderV1")
+
+		actual, _ := marshalBuilder(input)
+		assert.Equal(t, expected, actual)
+
 	})
 }

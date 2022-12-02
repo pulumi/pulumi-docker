@@ -203,7 +203,7 @@ func Provider() tfbridge.ProviderInfo {
 							Description: "The version of the Docker builder. " +
 								"Valid inputs are: \n" +
 								"`BuilderV1` - the first generation builder in docker daemon\n" + "" +
-								"`BuilderBuildKit - te builder based on moby/buildkit project\n " +
+								"`BuilderBuildKit - the builder based on moby/buildkit project\n " +
 								"Defaults to `BuilderBuildKit`.",
 							TypeSpec: schema.TypeSpec{Type: "string"},
 							Default:  "BuilderBuildKit",
