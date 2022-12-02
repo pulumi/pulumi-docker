@@ -60,7 +60,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	}
 
 	build := marshalBuildAndApplyDefaults(inputs["build"])
-	cache := getCachedImages(img, inputs["build"])
+	cache := marshalCachedImages(img, inputs["build"])
 
 	build.CachedImages = cache
 	img.Build = build
@@ -234,10 +234,10 @@ func marshalBuildAndApplyDefaults(b resource.PropertyValue) Build {
 	}
 	// Envs
 
-	build.Env = setEnvs(buildObject["env"])
+	build.Env = marshalEnvs(buildObject["env"])
 
 	// Args
-	build.Args = setArgs(buildObject["args"])
+	build.Args = marshalArgs(buildObject["args"])
 
 	// ExtraOptions
 	if !buildObject["extraOptions"].IsNull() {
@@ -254,7 +254,7 @@ func marshalBuildAndApplyDefaults(b resource.PropertyValue) Build {
 	return build
 }
 
-func getCachedImages(img Image, b resource.PropertyValue) []string {
+func marshalCachedImages(img Image, b resource.PropertyValue) []string {
 	var cacheImages []string
 	if b.IsNull() {
 		return cacheImages
@@ -300,7 +300,7 @@ func setRegistry(r resource.PropertyValue) Registry {
 	return reg
 }
 
-func setArgs(a resource.PropertyValue) map[string]*string {
+func marshalArgs(a resource.PropertyValue) map[string]*string {
 	args := make(map[string]*string)
 	if !a.IsNull() {
 		for k, v := range a.ObjectValue() {
@@ -315,7 +315,7 @@ func setArgs(a resource.PropertyValue) map[string]*string {
 	return args
 }
 
-func setEnvs(e resource.PropertyValue) map[string]string {
+func marshalEnvs(e resource.PropertyValue) map[string]string {
 	envs := make(map[string]string)
 	if !e.IsNull() {
 		for k, v := range e.ObjectValue() {

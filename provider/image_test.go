@@ -181,7 +181,7 @@ func TestMarshalBuildAndApplyDefaults(t *testing.T) {
 	})
 }
 
-func TestSetArgs(t *testing.T) {
+func TestMarshalArgs(t *testing.T) {
 	t.Run("Set any args", func(t *testing.T) {
 		a := "Alicorn"
 		p := "Pegasus"
@@ -196,19 +196,19 @@ func TestSetArgs(t *testing.T) {
 			"Fledge":    resource.NewStringProperty("Pegasus"),
 			"The Last":  resource.NewStringProperty("Unicorn"),
 		})
-		actual := setArgs(input)
+		actual := marshalArgs(input)
 		assert.Equal(t, expected, actual)
 	})
 
 	t.Run("Returns nil when no args set", func(t *testing.T) {
 		expected := map[string]*string(nil)
 		input := resource.NewObjectProperty(resource.PropertyMap{})
-		actual := setArgs(input)
+		actual := marshalArgs(input)
 		assert.Equal(t, expected, actual)
 	})
 }
 
-func TestSetEnvs(t *testing.T) {
+func TestMarshalEnvs(t *testing.T) {
 	t.Run("Set any environment variables", func(t *testing.T) {
 		expected := map[string]string{
 			"Strawberry": "fruit",
@@ -220,18 +220,18 @@ func TestSetEnvs(t *testing.T) {
 			"Carrot":     resource.NewStringProperty("veggie"),
 			"Docker":     resource.NewStringProperty("a bit of a mess tbh"),
 		})
-		actual := setEnvs(input)
+		actual := marshalEnvs(input)
 		assert.Equal(t, expected, actual)
 	})
 	t.Run("Returns nil when no environment variables set", func(t *testing.T) {
 		expected := map[string]string(nil)
 		input := resource.NewObjectProperty(resource.PropertyMap{})
-		actual := setEnvs(input)
+		actual := marshalEnvs(input)
 		assert.Equal(t, expected, actual)
 	})
 }
 
-func TestGetCachedImages(t *testing.T) {
+func TestMarshalCachedImages(t *testing.T) {
 	t.Run("Test Cached Images", func(t *testing.T) {
 		expected := []string{"apple", "banana", "cherry"}
 		imgInput := Image{
@@ -256,7 +256,7 @@ func TestGetCachedImages(t *testing.T) {
 			}),
 		})
 
-		actual := getCachedImages(imgInput, buildInput)
+		actual := marshalCachedImages(imgInput, buildInput)
 		assert.Equal(t, expected, actual)
 
 	})
@@ -272,7 +272,7 @@ func TestGetCachedImages(t *testing.T) {
 			},
 		}
 		buildInput := resource.NewObjectProperty(resource.PropertyMap{})
-		actual := getCachedImages(imgInput, buildInput)
+		actual := marshalCachedImages(imgInput, buildInput)
 		assert.Equal(t, expected, actual)
 	})
 
@@ -291,7 +291,7 @@ func TestGetCachedImages(t *testing.T) {
 			"dockerfile": resource.NewStringProperty("TheLastUnicorn"),
 			"context":    resource.NewStringProperty("/twilight/sparkle/bin"),
 		})
-		actual := getCachedImages(imgInput, buildInput)
+		actual := marshalCachedImages(imgInput, buildInput)
 		assert.Equal(t, expected, actual)
 	})
 }
