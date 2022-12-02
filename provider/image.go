@@ -17,6 +17,7 @@ import (
 )
 
 const defaultDockerfile = "Dockerfile"
+const defaultBuilder = "BuilderBuildKit"
 
 type Image struct {
 	Name     string
@@ -33,13 +34,14 @@ type Registry struct {
 }
 
 type Build struct {
-	Context      string
-	Dockerfile   string
-	CachedImages []string
-	Env          map[string]string
-	Args         map[string]*string
-	ExtraOptions []string
-	Target       string
+	Context        string
+	Dockerfile     string
+	CachedImages   []string
+	Env            map[string]string
+	Args           map[string]*string
+	ExtraOptions   []string
+	Target         string
+	BuilderVersion string
 }
 
 func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
@@ -91,7 +93,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		Remove:     true,
 		//CacheFrom:  img.Build.CachedImages, // TODO: this needs a login, so needs to be handled differently.
 		BuildArgs: build.Args,
-		//Version:   types.BuilderBuildKit, // TODO: parse this setting from the `env` input
+		Version:   types.BuilderBuildKit, // TODO: parse this setting from the `env` input
 	}
 
 	imgBuildResp, err := docker.ImageBuild(ctx, tar, opts)
@@ -231,6 +233,13 @@ func marshalBuildAndApplyDefaults(b resource.PropertyValue) Build {
 		build.Context = "."
 	} else {
 		build.Context = buildObject["context"].StringValue()
+	}
+	// BuildKit
+	if buildObject["builderVersion"].IsNull() {
+		//set default
+		build.BuilderVersion = defaultBuilder
+	} else {
+		build.BuilderVersion = buildObject["builderVersion"].StringValue()
 	}
 	// Envs
 
