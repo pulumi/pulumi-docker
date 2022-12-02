@@ -59,8 +59,8 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		Registry: reg,
 	}
 
-	build := marshalBuild(inputs["build"])
-	cache := getCachedImages(img, inputs["build"])
+	build := marshalBuildAndApplyDefaults(inputs["build"])
+	cache := marshalCachedImages(img, inputs["build"])
 
 	build.CachedImages = cache
 	img.Build = build
@@ -199,11 +199,10 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	return img.Name, pbstruct, err
 }
 
-func marshalBuild(b resource.PropertyValue) Build {
+func marshalBuildAndApplyDefaults(b resource.PropertyValue) Build {
 
 	// build can be nil, a string or an object; we will also use reasonable defaults here.
 	var build Build
-
 	if b.IsNull() {
 		// use the default build context
 		build.Dockerfile = defaultDockerfile
@@ -234,24 +233,11 @@ func marshalBuild(b resource.PropertyValue) Build {
 		build.Context = buildObject["context"].StringValue()
 	}
 	// Envs
-	envs := make(map[string]string)
-	if !buildObject["env"].IsNull() {
-		for k, v := range buildObject["env"].ObjectValue() {
-			key := fmt.Sprintf("%v", k)
-			envs[key] = v.StringValue()
-		}
-	}
-	build.Env = envs
+
+	build.Env = marshalEnvs(buildObject["env"])
+
 	// Args
-	args := make(map[string]*string)
-	if !buildObject["args"].IsNull() {
-		for k, v := range buildObject["args"].ObjectValue() {
-			key := fmt.Sprintf("%v", k)
-			vStr := v.StringValue()
-			args[key] = &vStr
-		}
-	}
-	build.Args = args
+	build.Args = marshalArgs(buildObject["args"])
 
 	// ExtraOptions
 	if !buildObject["extraOptions"].IsNull() {
@@ -268,8 +254,7 @@ func marshalBuild(b resource.PropertyValue) Build {
 	return build
 }
 
-func getCachedImages(img Image, b resource.PropertyValue) []string {
-
+func marshalCachedImages(img Image, b resource.PropertyValue) []string {
 	var cacheImages []string
 	if b.IsNull() {
 		return cacheImages
@@ -301,10 +286,45 @@ func getCachedImages(img Image, b resource.PropertyValue) []string {
 func setRegistry(r resource.PropertyValue) Registry {
 	var reg Registry
 	if !r.IsNull() {
-		reg.Server = r.ObjectValue()["server"].StringValue()
-		reg.Username = r.ObjectValue()["username"].StringValue()
-		reg.Password = r.ObjectValue()["password"].StringValue()
+		if !r.ObjectValue()["server"].IsNull() {
+			reg.Server = r.ObjectValue()["server"].StringValue()
+		}
+		if !r.ObjectValue()["username"].IsNull() {
+			reg.Username = r.ObjectValue()["username"].StringValue()
+		}
+		if !r.ObjectValue()["password"].IsNull() {
+			reg.Password = r.ObjectValue()["password"].StringValue()
+		}
 		return reg
 	}
 	return reg
+}
+
+func marshalArgs(a resource.PropertyValue) map[string]*string {
+	args := make(map[string]*string)
+	if !a.IsNull() {
+		for k, v := range a.ObjectValue() {
+			key := fmt.Sprintf("%v", k)
+			vStr := v.StringValue()
+			args[key] = &vStr
+		}
+	}
+	if len(args) == 0 {
+		return nil
+	}
+	return args
+}
+
+func marshalEnvs(e resource.PropertyValue) map[string]string {
+	envs := make(map[string]string)
+	if !e.IsNull() {
+		for k, v := range e.ObjectValue() {
+			key := fmt.Sprintf("%v", k)
+			envs[key] = v.StringValue()
+		}
+	}
+	if len(envs) == 0 {
+		return nil
+	}
+	return envs
 }
