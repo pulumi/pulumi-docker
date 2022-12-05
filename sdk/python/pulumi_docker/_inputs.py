@@ -8,6 +8,7 @@ import pulumi
 import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
 from . import _utilities
+from ._enums import *
 
 __all__ = [
     'ContainerCapabilitiesArgs',
@@ -4054,7 +4055,7 @@ class CacheFromArgs:
 class DockerBuildArgs:
     def __init__(__self__, *,
                  args: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
-                 builder_version: Optional[pulumi.Input[str]] = None,
+                 builder_version: Optional[pulumi.Input['BuilderVersion']] = None,
                  cache_from: Optional[pulumi.Input[Union[bool, 'CacheFromArgs']]] = None,
                  context: Optional[pulumi.Input[str]] = None,
                  dockerfile: Optional[pulumi.Input[str]] = None,
@@ -4064,10 +4065,7 @@ class DockerBuildArgs:
         """
         The Docker build context
         :param pulumi.Input[Mapping[str, pulumi.Input[str]]] args: An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass built-time variablesthat can be accessed like environment variables inside the RUN instruction.
-        :param pulumi.Input[str] builder_version: The version of the Docker builder. Valid inputs are: 
-               `BuilderV1` - the first generation builder in docker daemon
-               `BuilderBuildKit - the builder based on moby/buildkit project
-                Defaults to `BuilderBuildKit`.
+        :param pulumi.Input['BuilderVersion'] builder_version: The version of the Docker builder. 
         :param pulumi.Input[Union[bool, 'CacheFromArgs']] cache_from: A cached image or list of build stages to use as build cache
         :param pulumi.Input[str] context: The path to the build context to use.
         :param pulumi.Input[str] dockerfile: The path to the Dockerfile to use.
@@ -4112,17 +4110,14 @@ class DockerBuildArgs:
 
     @property
     @pulumi.getter(name="builderVersion")
-    def builder_version(self) -> Optional[pulumi.Input[str]]:
+    def builder_version(self) -> Optional[pulumi.Input['BuilderVersion']]:
         """
-        The version of the Docker builder. Valid inputs are: 
-        `BuilderV1` - the first generation builder in docker daemon
-        `BuilderBuildKit - the builder based on moby/buildkit project
-         Defaults to `BuilderBuildKit`.
+        The version of the Docker builder. 
         """
         return pulumi.get(self, "builder_version")
 
     @builder_version.setter
-    def builder_version(self, value: Optional[pulumi.Input[str]]):
+    def builder_version(self, value: Optional[pulumi.Input['BuilderVersion']]):
         pulumi.set(self, "builder_version", value)
 
     @property

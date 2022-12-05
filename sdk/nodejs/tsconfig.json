@@ -32,6 +32,7 @@
         "service.ts",
         "serviceConfig.ts",
         "tag.ts",
+        "types/enums/index.ts",
         "types/index.ts",
         "types/input.ts",
         "types/output.ts",

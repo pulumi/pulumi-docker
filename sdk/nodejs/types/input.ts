@@ -4,6 +4,7 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as inputs from "../types/input";
 import * as outputs from "../types/output";
+import * as enums from "../types/enums";
 
 import * as utilities from "../utilities";
 
@@ -283,12 +284,9 @@ export interface DockerBuild {
      */
     args?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
     /**
-     * The version of the Docker builder. Valid inputs are: 
-     * `BuilderV1` - the first generation builder in docker daemon
-     * `BuilderBuildKit - the builder based on moby/buildkit project
-     *  Defaults to `BuilderBuildKit`.
+     * The version of the Docker builder. 
      */
-    builderVersion?: pulumi.Input<string>;
+    builderVersion?: pulumi.Input<enums.BuilderVersion>;
     /**
      * A cached image or list of build stages to use as build cache
      */

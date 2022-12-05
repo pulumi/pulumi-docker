@@ -28,13 +28,10 @@ namespace Pulumi.Docker.Inputs
         }
 
         /// <summary>
-        /// The version of the Docker builder. Valid inputs are: 
-        /// `BuilderV1` - the first generation builder in docker daemon
-        /// `BuilderBuildKit - the builder based on moby/buildkit project
-        ///  Defaults to `BuilderBuildKit`.
+        /// The version of the Docker builder. 
         /// </summary>
         [Input("builderVersion")]
-        public Input<string>? BuilderVersion { get; set; }
+        public Input<Pulumi.Docker.BuilderVersion>? BuilderVersion { get; set; }
 
         /// <summary>
         /// A cached image or list of build stages to use as build cache
@@ -86,7 +83,7 @@ namespace Pulumi.Docker.Inputs
 
         public DockerBuildArgs()
         {
-            BuilderVersion = "BuilderBuildKit";
+            BuilderVersion = Pulumi.Docker.BuilderVersion.BuilderBuildKit;
             Context = ".";
             Dockerfile = "Dockerfile";
         }
