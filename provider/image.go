@@ -14,6 +14,7 @@ import (
 	"github.com/pkg/errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
+	"github.com/pulumi/pulumi/sdk/v3/go/common/util/mapper"
 )
 
 const defaultDockerfile = "Dockerfile"
@@ -33,13 +34,13 @@ type Registry struct {
 }
 
 type Build struct {
-	Context      string
-	Dockerfile   string
-	CachedImages []string
-	Env          map[string]string
-	Args         map[string]*string
-	ExtraOptions []string
-	Target       string
+	Context      string             `pulumi:"context,optional"`
+	Dockerfile   string             `pulumi:"dockerfile,optional"`
+	CachedImages []string           `pulumi:"cachedImages,optional"`
+	Env          map[string]string  `pulumi:"env,optional"`
+	Args         map[string]*string `pulumi:"args,optional"`
+	ExtraOptions []string           `pulumi:"extraOptions,optional"`
+	Target       string             `pulumi:"target,optional"`
 }
 
 func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
@@ -59,7 +60,10 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		Registry: reg,
 	}
 
-	build := marshalBuildAndApplyDefaults(inputs["build"])
+	build, err := marshalBuildAndApplyDefaults(inputs["build"])
+	if err != nil {
+		return "", nil, err
+	}
 	cache := marshalCachedImages(img, inputs["build"])
 
 	build.CachedImages = cache
@@ -199,59 +203,65 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	return img.Name, pbstruct, err
 }
 
-func marshalBuildAndApplyDefaults(b resource.PropertyValue) Build {
+func buildToPropertyValue(build Build) (resource.PropertyValue, error) {
+	pm, err := buildToPropertyMap(build)
+	if err != nil {
+		return resource.PropertyValue{}, err
+	}
+	return resource.NewObjectProperty(pm), nil
+}
 
-	// build can be nil, a string or an object; we will also use reasonable defaults here.
+func buildToPropertyMap(build Build) (resource.PropertyMap, error) {
+	mapper := mapper.New(nil)
+	m, err := mapper.Encode(build)
+	if err != nil {
+		return nil, err
+	}
+	return resource.NewPropertyMapFromMap(m), nil
+}
+
+func buildFromPropertyMap(pm resource.PropertyMap) (Build, error) {
 	var build Build
-	if b.IsNull() {
-		// use the default build context
-		build.Dockerfile = defaultDockerfile
+	err := mapper.Map(pm.Mappable(), &build)
+	if err != nil {
+		return Build{}, err
+	}
+	return build, nil
+}
+
+func buildFromString(context string) (Build, error) {
+	return Build{Context: context}, nil
+}
+
+func buildFromPropertyValue(pv resource.PropertyValue) (Build, error) {
+	if pv.IsNull() {
+		return Build{}, nil
+	}
+	if pv.IsString() {
+		return buildFromString(pv.StringValue())
+	}
+	if pv.IsObject() {
+		return buildFromPropertyMap(pv.ObjectValue())
+	}
+	return Build{}, fmt.Errorf("Cannot recognize Build from: %v", pv)
+}
+
+func applyBuildDefaults(build Build) Build {
+	if build.Context == "" {
 		build.Context = "."
-		return build
 	}
-	if b.IsString() {
-		// use the filepath as context
-		build.Context = b.StringValue()
+	if build.Dockerfile == "" {
 		build.Dockerfile = defaultDockerfile
-		return build
-	}
-
-	// read in the build type fields
-	buildObject := b.ObjectValue()
-	// Dockerfile
-	if buildObject["dockerfile"].IsNull() {
-		// set default
-		build.Dockerfile = defaultDockerfile
-	} else {
-		build.Dockerfile = buildObject["dockerfile"].StringValue()
-	}
-	// Context
-	if buildObject["context"].IsNull() {
-		// set default
-		build.Context = "."
-	} else {
-		build.Context = buildObject["context"].StringValue()
-	}
-	// Envs
-
-	build.Env = marshalEnvs(buildObject["env"])
-
-	// Args
-	build.Args = marshalArgs(buildObject["args"])
-
-	// ExtraOptions
-	if !buildObject["extraOptions"].IsNull() {
-		opts := buildObject["extraOptions"].ArrayValue()
-		for _, v := range opts {
-			build.ExtraOptions = append(build.ExtraOptions, v.StringValue())
-		}
-	}
-
-	// Target
-	if !buildObject["target"].IsNull() {
-		build.Target = buildObject["target"].StringValue()
 	}
 	return build
+}
+
+func marshalBuildAndApplyDefaults(pv resource.PropertyValue) (Build, error) {
+	build, err := buildFromPropertyValue(pv)
+	if err != nil {
+		return build, err
+	}
+	return applyBuildDefaults(build), nil
 }
 
 func marshalCachedImages(img Image, b resource.PropertyValue) []string {

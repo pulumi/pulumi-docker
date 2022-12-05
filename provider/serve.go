@@ -2,9 +2,11 @@ package provider
 
 import (
 	"context"
+	"fmt"
 	"github.com/pulumi/pulumi-terraform-bridge/v3/pkg/tfbridge"
 	"github.com/pulumi/pulumi/pkg/v3/resource/provider"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/util/cmdutil"
+	pulumirpc "github.com/pulumi/pulumi/sdk/v3/proto/go"
 	rpc "github.com/pulumi/pulumi/sdk/v3/proto/go"
 )
 
@@ -17,6 +19,11 @@ func Serve(providerName, version string, schemaBytes []byte) {
 	if err != nil {
 		cmdutil.ExitError(err.Error())
 	}
+}
+
+func (dp dockerNativeProvider) GetMapping(
+	_ context.Context, _ *pulumirpc.GetMappingRequest) (*pulumirpc.GetMappingResponse, error) {
+	return nil, fmt.Errorf("Not implemented")
 }
 
 func makeProvider(host *provider.HostClient, name, version string, schemaBytes []byte) (

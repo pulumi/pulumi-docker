@@ -6,6 +6,7 @@ import (
 	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/util/logging"
+	pulumirpc "github.com/pulumi/pulumi/sdk/v3/proto/go"
 	rpc "github.com/pulumi/pulumi/sdk/v3/proto/go"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -29,6 +30,11 @@ type dockerHybridProvider struct {
 const dockerImageTok = "docker:index/image:Image"
 
 // gRPC methods for the hybrid provider
+
+func (dp dockerHybridProvider) GetMapping(
+	_ context.Context, _ *pulumirpc.GetMappingRequest) (*pulumirpc.GetMappingResponse, error) {
+	return nil, fmt.Errorf("Not implemented")
+}
 
 func (dp dockerHybridProvider) Attach(ctx context.Context, attach *rpc.PluginAttach) (*emptypb.Empty, error) {
 	//TODO implement me
