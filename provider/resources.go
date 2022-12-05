@@ -200,13 +200,11 @@ func Provider() tfbridge.ProviderInfo {
 							TypeSpec:    schema.TypeSpec{Type: "string"},
 						},
 						"builderVersion": {
-							Description: "The version of the Docker builder. " +
-								"Valid inputs are: \n" +
-								"`BuilderV1` - the first generation builder in docker daemon\n" + "" +
-								"`BuilderBuildKit - the builder based on moby/buildkit project\n " +
-								"Defaults to `BuilderBuildKit`.",
-							TypeSpec: schema.TypeSpec{Type: "string"},
-							Default:  "BuilderBuildKit",
+							Description: "The version of the Docker builder. ",
+							TypeSpec: schema.TypeSpec{
+								Ref: "#/types/docker:index/builderVersion:BuilderVersion",
+							},
+							Default: "BuilderBuildKit",
 						},
 					},
 				},
@@ -226,6 +224,16 @@ func Provider() tfbridge.ProviderInfo {
 							},
 						},
 					},
+				},
+			},
+			dockerResource(dockerMod, "BuilderVersion").String(): {
+				ObjectTypeSpec: schema.ObjectTypeSpec{
+					Description: "The version of the Docker builder",
+					Type:        "string",
+				},
+				Enum: []schema.EnumValueSpec{
+					{Name: "BuilderV1", Value: "BuilderV1", Description: "The first generation builder for Docker Daemon"},
+					{Name: "BuilderBuildKit", Value: "BuilderBuildKit", Description: "The builder based on moby/buildkit project"},
 				},
 			},
 		},

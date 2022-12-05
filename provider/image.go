@@ -209,7 +209,7 @@ func marshalBuildAndApplyDefaults(b resource.PropertyValue) (Build, error) {
 	// build can be nil, a string or an object; we will also use reasonable defaults here.
 	var build Build
 	if b.IsNull() {
-		//// use the default build context
+		// use the default build context
 		build.Dockerfile = defaultDockerfile
 		build.Context = "."
 		return build, nil
