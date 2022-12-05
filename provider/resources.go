@@ -199,6 +199,13 @@ func Provider() tfbridge.ProviderInfo {
 							Description: "The target of the Dockerfile to build",
 							TypeSpec:    schema.TypeSpec{Type: "string"},
 						},
+						"builderVersion": {
+							Description: "The version of the Docker builder. ",
+							TypeSpec: schema.TypeSpec{
+								Ref: "#/types/docker:index/builderVersion:BuilderVersion",
+							},
+							Default: "BuilderBuildKit",
+						},
 					},
 				},
 			},
@@ -219,12 +226,22 @@ func Provider() tfbridge.ProviderInfo {
 					},
 				},
 			},
+			dockerResource(dockerMod, "BuilderVersion").String(): {
+				ObjectTypeSpec: schema.ObjectTypeSpec{
+					Description: "The version of the Docker builder",
+					Type:        "string",
+				},
+				Enum: []schema.EnumValueSpec{
+					{Name: "BuilderV1", Value: "BuilderV1", Description: "The first generation builder for Docker Daemon"},
+					{Name: "BuilderBuildKit", Value: "BuilderBuildKit", Description: "The builder based on moby/buildkit project"},
+				},
+			},
 		},
 		ExtraResources: map[string]schema.ResourceSpec{
 			dockerResource(dockerMod, "Image").String(): {
 				ObjectTypeSpec: schema.ObjectTypeSpec{
 					Type:        "object",
-					Description: "A real CRUD docker image we hope", // TODO: update description
+					Description: "Builds a Docker Image and pushes to a Docker registry.",
 					Properties: map[string]schema.PropertySpec{
 						"imageName": {
 							Description: "The fully qualified image name",

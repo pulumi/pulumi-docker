@@ -14,7 +14,7 @@ import java.util.Optional;
 import javax.annotation.Nullable;
 
 /**
- * A real CRUD docker image we hope
+ * Builds a Docker Image and pushes to a Docker registry.
  * 
  */
 @ResourceType(type="docker:index/image:Image")

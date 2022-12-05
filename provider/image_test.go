@@ -1,6 +1,7 @@
 package provider
 
 import (
+	"github.com/docker/docker/api/types"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/stretchr/testify/assert"
 	"testing"
@@ -49,12 +50,14 @@ func TestMarshalBuildAndApplyDefaults(t *testing.T) {
 
 	t.Run("Default Build on empty input", func(t *testing.T) {
 		expected := Build{
-			Context:    ".",
-			Dockerfile: "Dockerfile",
+			Context:        ".",
+			Dockerfile:     "Dockerfile",
+			BuilderVersion: "2",
 		}
 		input := resource.NewObjectProperty(resource.PropertyMap{})
-		actual := marshalBuildAndApplyDefaults(input)
+		actual, err := marshalBuildAndApplyDefaults(input)
 		assert.Equal(t, expected, actual)
+		assert.NoError(t, err)
 	})
 
 	t.Run("String input Build", func(t *testing.T) {
@@ -63,34 +66,39 @@ func TestMarshalBuildAndApplyDefaults(t *testing.T) {
 			Dockerfile: "Dockerfile",
 		}
 		input := resource.NewStringProperty("/twilight/sparkle/bin")
-		actual := marshalBuildAndApplyDefaults(input)
+		actual, err := marshalBuildAndApplyDefaults(input)
 		assert.Equal(t, expected, actual)
+		assert.NoError(t, err)
 	})
 
 	t.Run("Custom Dockerfile with default context", func(t *testing.T) {
 		expected := Build{
-			Context:    ".",
-			Dockerfile: "TheLastUnicorn",
+			Context:        ".",
+			Dockerfile:     "TheLastUnicorn",
+			BuilderVersion: "2",
 		}
 		input := resource.NewObjectProperty(resource.PropertyMap{
 			"dockerfile": resource.NewStringProperty("TheLastUnicorn"),
 		})
-		actual := marshalBuildAndApplyDefaults(input)
+		actual, err := marshalBuildAndApplyDefaults(input)
 		assert.Equal(t, expected, actual)
+		assert.NoError(t, err)
 	})
 
 	t.Run("Custom Dockerfile with custom context", func(t *testing.T) {
 		expected := Build{
-			Context:    "/twilight/sparkle/bin",
-			Dockerfile: "TheLastUnicorn",
+			Context:        "/twilight/sparkle/bin",
+			Dockerfile:     "TheLastUnicorn",
+			BuilderVersion: "2",
 		}
 		input := resource.NewObjectProperty(resource.PropertyMap{
 			"dockerfile": resource.NewStringProperty("TheLastUnicorn"),
 			"context":    resource.NewStringProperty("/twilight/sparkle/bin"),
 		})
 
-		actual := marshalBuildAndApplyDefaults(input)
+		actual, err := marshalBuildAndApplyDefaults(input)
 		assert.Equal(t, expected, actual)
+		assert.NoError(t, err)
 	})
 
 	t.Run("Setting Args", func(t *testing.T) {
@@ -101,6 +109,7 @@ func TestMarshalBuildAndApplyDefaults(t *testing.T) {
 			Args: map[string]*string{
 				"Swiftwind": &argval,
 			},
+			BuilderVersion: "2",
 		}
 
 		input := resource.NewObjectProperty(resource.PropertyMap{
@@ -109,8 +118,9 @@ func TestMarshalBuildAndApplyDefaults(t *testing.T) {
 			}),
 		})
 
-		actual := marshalBuildAndApplyDefaults(input)
+		actual, err := marshalBuildAndApplyDefaults(input)
 		assert.Equal(t, expected, actual)
+		assert.NoError(t, err)
 	})
 
 	t.Run("Setting Env", func(t *testing.T) {
@@ -121,6 +131,7 @@ func TestMarshalBuildAndApplyDefaults(t *testing.T) {
 			Env: map[string]string{
 				"Strawberry": "fruit",
 			},
+			BuilderVersion: "2",
 		}
 
 		input := resource.NewObjectProperty(resource.PropertyMap{
@@ -129,15 +140,17 @@ func TestMarshalBuildAndApplyDefaults(t *testing.T) {
 			}),
 		})
 
-		actual := marshalBuildAndApplyDefaults(input)
+		actual, err := marshalBuildAndApplyDefaults(input)
 		assert.Equal(t, expected, actual)
+		assert.NoError(t, err)
 	})
 
 	t.Run("Sets Extra Options", func(t *testing.T) {
 		expected := Build{
-			Context:      ".",
-			Dockerfile:   "Dockerfile",
-			ExtraOptions: []string{"cat", "dog", "pot-bellied pig"},
+			Context:        ".",
+			Dockerfile:     "Dockerfile",
+			ExtraOptions:   []string{"cat", "dog", "pot-bellied pig"},
+			BuilderVersion: "2",
 		}
 
 		input := resource.NewObjectProperty(resource.PropertyMap{
@@ -148,36 +161,69 @@ func TestMarshalBuildAndApplyDefaults(t *testing.T) {
 			}),
 		})
 
-		actual := marshalBuildAndApplyDefaults(input)
+		actual, err := marshalBuildAndApplyDefaults(input)
 		assert.Equal(t, expected, actual)
+		assert.NoError(t, err)
 	})
 
 	t.Run("Does Not Set Extra Options on Empty Input", func(t *testing.T) {
 		expected := Build{
-			Context:    ".",
-			Dockerfile: "Dockerfile",
+			Context:        ".",
+			Dockerfile:     "Dockerfile",
+			BuilderVersion: "2",
 		}
 
 		input := resource.NewObjectProperty(resource.PropertyMap{
 			"extraOptions": resource.NewArrayProperty([]resource.PropertyValue{}),
 		})
 
-		actual := marshalBuildAndApplyDefaults(input)
+		actual, err := marshalBuildAndApplyDefaults(input)
 		assert.Equal(t, expected, actual)
+		assert.NoError(t, err)
 	})
 	t.Run("Sets Target", func(t *testing.T) {
 		expected := Build{
-			Context:    ".",
-			Dockerfile: "Dockerfile",
-			Target:     "bullseye",
+			Context:        ".",
+			Dockerfile:     "Dockerfile",
+			Target:         "bullseye",
+			BuilderVersion: "2",
 		}
 
 		input := resource.NewObjectProperty(resource.PropertyMap{
 			"target": resource.NewStringProperty("bullseye"),
 		})
 
-		actual := marshalBuildAndApplyDefaults(input)
+		actual, err := marshalBuildAndApplyDefaults(input)
 		assert.Equal(t, expected, actual)
+		assert.NoError(t, err)
+	})
+	t.Run("Sets Builder to classic V1 builder", func(t *testing.T) {
+		expected := Build{
+			Context:        ".",
+			Dockerfile:     "Dockerfile",
+			BuilderVersion: "1",
+		}
+
+		input := resource.NewObjectProperty(resource.PropertyMap{
+			"builderVersion": resource.NewStringProperty("BuilderV1"),
+		})
+
+		actual, err := marshalBuildAndApplyDefaults(input)
+		assert.Equal(t, expected, actual)
+		assert.NoError(t, err)
+	})
+	t.Run("Sets Builder to default on no input", func(t *testing.T) {
+		expected := Build{
+			Context:        ".",
+			Dockerfile:     "Dockerfile",
+			BuilderVersion: "2",
+		}
+
+		input := resource.NewObjectProperty(resource.PropertyMap{})
+
+		actual, err := marshalBuildAndApplyDefaults(input)
+		assert.Equal(t, expected, actual)
+		assert.NoError(t, err)
 	})
 }
 
@@ -293,5 +339,42 @@ func TestMarshalCachedImages(t *testing.T) {
 		})
 		actual := marshalCachedImages(imgInput, buildInput)
 		assert.Equal(t, expected, actual)
+	})
+}
+
+func TestMarshalBuilder(t *testing.T) {
+	t.Run("Test Builder Version Default", func(t *testing.T) {
+		expected := types.BuilderBuildKit
+		input := resource.NewPropertyValue(nil)
+		actual, err := marshalBuilder(input)
+		assert.Equal(t, expected, actual)
+		assert.NoError(t, err)
+
+	})
+	t.Run("Test Builder BuildKit Version", func(t *testing.T) {
+		expected := types.BuilderBuildKit
+		input := resource.NewStringProperty("BuilderBuildKit")
+
+		actual, err := marshalBuilder(input)
+		assert.Equal(t, expected, actual)
+		assert.NoError(t, err)
+
+	})
+	t.Run("Test Builder V1 Version", func(t *testing.T) {
+		expected := types.BuilderV1
+		input := resource.NewStringProperty("BuilderV1")
+
+		actual, err := marshalBuilder(input)
+		assert.Equal(t, expected, actual)
+		assert.NoError(t, err)
+
+	})
+	t.Run("Test Invalid Builder Returns Error", func(t *testing.T) {
+		expected := types.BuilderV1
+		input := resource.NewStringProperty("BuilderV1")
+
+		actual, err := marshalBuilder(input)
+		assert.Equal(t, expected, actual)
+		assert.NoError(t, err)
 	})
 }

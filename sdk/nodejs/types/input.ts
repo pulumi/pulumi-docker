@@ -4,6 +4,7 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as inputs from "../types/input";
 import * as outputs from "../types/output";
+import * as enums from "../types/enums";
 
 import * as utilities from "../utilities";
 
@@ -283,6 +284,10 @@ export interface DockerBuild {
      */
     args?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
     /**
+     * The version of the Docker builder. 
+     */
+    builderVersion?: pulumi.Input<enums.BuilderVersion>;
+    /**
      * A cached image or list of build stages to use as build cache
      */
     cacheFrom?: pulumi.Input<boolean | inputs.CacheFrom>;
@@ -313,6 +318,7 @@ export interface DockerBuild {
 export function dockerBuildProvideDefaults(val: DockerBuild): DockerBuild {
     return {
         ...val,
+        builderVersion: (val.builderVersion) ?? "BuilderBuildKit",
         context: (val.context) ?? ".",
         dockerfile: (val.dockerfile) ?? "Dockerfile",
     };

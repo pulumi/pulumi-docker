@@ -8,6 +8,7 @@ import pulumi
 import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
 from . import _utilities
+from ._enums import *
 
 __all__ = [
     'ContainerCapabilitiesArgs',
@@ -4054,6 +4055,7 @@ class CacheFromArgs:
 class DockerBuildArgs:
     def __init__(__self__, *,
                  args: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
+                 builder_version: Optional[pulumi.Input['BuilderVersion']] = None,
                  cache_from: Optional[pulumi.Input[Union[bool, 'CacheFromArgs']]] = None,
                  context: Optional[pulumi.Input[str]] = None,
                  dockerfile: Optional[pulumi.Input[str]] = None,
@@ -4063,6 +4065,7 @@ class DockerBuildArgs:
         """
         The Docker build context
         :param pulumi.Input[Mapping[str, pulumi.Input[str]]] args: An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass built-time variablesthat can be accessed like environment variables inside the RUN instruction.
+        :param pulumi.Input['BuilderVersion'] builder_version: The version of the Docker builder. 
         :param pulumi.Input[Union[bool, 'CacheFromArgs']] cache_from: A cached image or list of build stages to use as build cache
         :param pulumi.Input[str] context: The path to the build context to use.
         :param pulumi.Input[str] dockerfile: The path to the Dockerfile to use.
@@ -4072,6 +4075,10 @@ class DockerBuildArgs:
         """
         if args is not None:
             pulumi.set(__self__, "args", args)
+        if builder_version is None:
+            builder_version = 'BuilderBuildKit'
+        if builder_version is not None:
+            pulumi.set(__self__, "builder_version", builder_version)
         if cache_from is not None:
             pulumi.set(__self__, "cache_from", cache_from)
         if context is None:
@@ -4100,6 +4107,18 @@ class DockerBuildArgs:
     @args.setter
     def args(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]):
         pulumi.set(self, "args", value)
+
+    @property
+    @pulumi.getter(name="builderVersion")
+    def builder_version(self) -> Optional[pulumi.Input['BuilderVersion']]:
+        """
+        The version of the Docker builder. 
+        """
+        return pulumi.get(self, "builder_version")
+
+    @builder_version.setter
+    def builder_version(self, value: Optional[pulumi.Input['BuilderVersion']]):
+        pulumi.set(self, "builder_version", value)
 
     @property
     @pulumi.getter(name="cacheFrom")

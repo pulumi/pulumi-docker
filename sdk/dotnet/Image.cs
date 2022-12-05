@@ -10,7 +10,7 @@ using Pulumi.Serialization;
 namespace Pulumi.Docker
 {
     /// <summary>
-    /// A real CRUD docker image we hope
+    /// Builds a Docker Image and pushes to a Docker registry.
     /// </summary>
     [DockerResourceType("docker:index/image:Image")]
     public partial class Image : global::Pulumi.CustomResource

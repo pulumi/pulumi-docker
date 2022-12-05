@@ -8,6 +8,7 @@ import pulumi
 import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
 from . import _utilities
+from ._enums import *
 from ._inputs import *
 
 __all__ = ['ImageArgs', 'Image']
@@ -96,7 +97,7 @@ class Image(pulumi.CustomResource):
                  skip_push: Optional[pulumi.Input[bool]] = None,
                  __props__=None):
         """
-        A real CRUD docker image we hope
+        Builds a Docker Image and pushes to a Docker registry.
 
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
@@ -112,7 +113,7 @@ class Image(pulumi.CustomResource):
                  args: ImageArgs,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
-        A real CRUD docker image we hope
+        Builds a Docker Image and pushes to a Docker registry.
 
         :param str resource_name: The name of the resource.
         :param ImageArgs args: The arguments to use to populate this resource's properties.
