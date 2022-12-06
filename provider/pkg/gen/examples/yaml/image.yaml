@@ -1,0 +1,16 @@
+name: image-yaml
+description: A minimal Pulumi YAML program
+runtime: yaml
+config: {}
+variables: {}
+resources:
+  guins-image:
+    type: docker:Image
+    properties:
+      imageName: gsaenger/test-yaml:tag1
+      skipPush: true
+      build:
+        dockerfile: Dockerfile
+        context: .
+outputs:
+  imageName: ${guins-image.imageName}
