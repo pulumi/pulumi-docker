@@ -54,10 +54,11 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	}
 
 	reg := setRegistry(inputs["registry"])
+	skipPush := marshalSkipPush(inputs["skipPush"])
 	// read in values to Image
 	img := Image{
 		Name:     inputs["imageName"].StringValue(),
-		SkipPush: inputs["skipPush"].BoolValue(),
+		SkipPush: skipPush,
 		Registry: reg,
 	}
 
@@ -360,4 +361,16 @@ func marshalBuilder(builder resource.PropertyValue) (types.BuilderVersion, error
 		// when version isn't set, we return an error
 		return version, errors.Errorf("Invalid Docker Builder version")
 	}
+}
+
+func marshalSkipPush(sp resource.PropertyValue) bool {
+	if sp.IsNull() {
+		// defaults to false
+		return false
+	}
+	if sp.BoolValue() == true {
+		// override default
+		return true
+	}
+	return false
 }

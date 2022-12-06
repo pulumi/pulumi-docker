@@ -378,3 +378,27 @@ func TestMarshalBuilder(t *testing.T) {
 		assert.NoError(t, err)
 	})
 }
+
+func TestMarshalSkipPush(t *testing.T) {
+	t.Run("Test SkipPush defaults to false", func(t *testing.T) {
+		expected := false
+		input := resource.NewPropertyValue(nil)
+		actual := marshalSkipPush(input)
+		assert.Equal(t, expected, actual)
+
+	})
+	t.Run("Test SkipPush returns true if set to true", func(t *testing.T) {
+		expected := true
+		input := resource.NewBoolProperty(true)
+
+		actual := marshalSkipPush(input)
+		assert.Equal(t, expected, actual)
+	})
+	t.Run("Test SkipPush returns false if set to false", func(t *testing.T) {
+		expected := false
+		input := resource.NewBoolProperty(false)
+
+		actual := marshalSkipPush(input)
+		assert.Equal(t, expected, actual)
+	})
+}
