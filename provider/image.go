@@ -53,7 +53,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		return "", nil, err
 	}
 
-	reg := setRegistry(inputs["registry"])
+	reg := marshalRegistry(inputs["registry"])
 	skipPush := marshalSkipPush(inputs["skipPush"])
 	// read in values to Image
 	img := Image{
@@ -297,7 +297,7 @@ func marshalCachedImages(img Image, b resource.PropertyValue) []string {
 	return cacheImages
 }
 
-func setRegistry(r resource.PropertyValue) Registry {
+func marshalRegistry(r resource.PropertyValue) Registry {
 	var reg Registry
 	if !r.IsNull() {
 		if !r.ObjectValue()["server"].IsNull() {

@@ -21,7 +21,7 @@ func TestSetRegistry(t *testing.T) {
 			"password": resource.NewStringProperty("supersecret"),
 		})
 
-		actual := setRegistry(input)
+		actual := marshalRegistry(input)
 		assert.Equal(t, expected, actual)
 	})
 	t.Run("Incomplete Registry sets all available fields", func(t *testing.T) {
@@ -34,14 +34,14 @@ func TestSetRegistry(t *testing.T) {
 			"username": resource.NewStringProperty("pulumipus"),
 		})
 
-		actual := setRegistry(input)
+		actual := marshalRegistry(input)
 		assert.Equal(t, expected, actual)
 	})
 
 	t.Run("Registry can be nil", func(t *testing.T) {
 		expected := Registry{}
 		input := resource.PropertyValue{}
-		actual := setRegistry(input)
+		actual := marshalRegistry(input)
 		assert.Equal(t, expected, actual)
 	})
 }
