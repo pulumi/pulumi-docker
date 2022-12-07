@@ -1,17 +1,17 @@
 {{% examples %}}
 ## Example Usage
 {{% example %}}
-### A minimal Pulumi YAML program
+### A Docker image build
 
 ```typescript
 import * as pulumi from "@pulumi/pulumi";
 
-export const imageName = guinsImage.imageName;
+export const imageName = demoImage.imageName;
 ```
 ```python
 import pulumi
 
-pulumi.export("imageName", guins_image["imageName"])
+pulumi.export("imageName", demo_image["imageName"])
 ```
 ```csharp
 using System.Collections.Generic;
@@ -21,7 +21,7 @@ return await Deployment.RunAsync(() =>
 {
     return new Dictionary<string, object?>
     {
-        ["imageName"] = guinsImage.ImageName,
+        ["imageName"] = demoImage.ImageName,
     };
 });
 
@@ -35,24 +35,24 @@ import (
 
 func main() {
 	pulumi.Run(func(ctx *pulumi.Context) error {
-		ctx.Export("imageName", guinsImage.ImageName)
+		ctx.Export("imageName", demoImage.ImageName)
 		return nil
 	})
 }
 ```
 ```yaml
 config: {}
-description: A minimal Pulumi YAML program
+description: A Docker image build
 name: image-yaml
 outputs:
-    imageName: ${guins-image.imageName}
+    imageName: ${demo-image.imageName}
 resources:
-    guins-image:
+    demo-image:
         properties:
             build:
                 context: .
                 dockerfile: Dockerfile
-            imageName: gsaenger/test-yaml:tag1
+            imageName: username/image:tag1
             skipPush: true
         type: docker:Image
 runtime: yaml
