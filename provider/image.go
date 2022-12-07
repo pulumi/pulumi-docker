@@ -368,9 +368,5 @@ func marshalSkipPush(sp resource.PropertyValue) bool {
 		// defaults to false
 		return false
 	}
-	if sp.BoolValue() == true {
-		// override default
-		return true
-	}
-	return false
+	return sp.BoolValue()
 }
