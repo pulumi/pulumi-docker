@@ -19,6 +19,8 @@ import (
 // gets handled by which provider via if/else logic.
 
 type dockerHybridProvider struct {
+	rpc.UnimplementedResourceProviderServer
+
 	schemaBytes     []byte
 	version         string
 	bridgedProvider rpc.ResourceProviderServer

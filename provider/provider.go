@@ -16,6 +16,8 @@ import (
 )
 
 type dockerNativeProvider struct {
+	rpc.UnimplementedResourceProviderServer
+
 	host        *provider.HostClient
 	name        string
 	version     string
