@@ -21,7 +21,7 @@ func TestSetRegistry(t *testing.T) {
 			"password": resource.NewStringProperty("supersecret"),
 		})
 
-		actual := setRegistry(input)
+		actual := marshalRegistry(input)
 		assert.Equal(t, expected, actual)
 	})
 	t.Run("Incomplete Registry sets all available fields", func(t *testing.T) {
@@ -34,14 +34,14 @@ func TestSetRegistry(t *testing.T) {
 			"username": resource.NewStringProperty("pulumipus"),
 		})
 
-		actual := setRegistry(input)
+		actual := marshalRegistry(input)
 		assert.Equal(t, expected, actual)
 	})
 
 	t.Run("Registry can be nil", func(t *testing.T) {
 		expected := Registry{}
 		input := resource.PropertyValue{}
-		actual := setRegistry(input)
+		actual := marshalRegistry(input)
 		assert.Equal(t, expected, actual)
 	})
 }
@@ -376,5 +376,29 @@ func TestMarshalBuilder(t *testing.T) {
 		actual, err := marshalBuilder(input)
 		assert.Equal(t, expected, actual)
 		assert.NoError(t, err)
+	})
+}
+
+func TestMarshalSkipPush(t *testing.T) {
+	t.Run("Test SkipPush defaults to false", func(t *testing.T) {
+		expected := false
+		input := resource.NewPropertyValue(nil)
+		actual := marshalSkipPush(input)
+		assert.Equal(t, expected, actual)
+
+	})
+	t.Run("Test SkipPush returns true if set to true", func(t *testing.T) {
+		expected := true
+		input := resource.NewBoolProperty(true)
+
+		actual := marshalSkipPush(input)
+		assert.Equal(t, expected, actual)
+	})
+	t.Run("Test SkipPush returns false if set to false", func(t *testing.T) {
+		expected := false
+		input := resource.NewBoolProperty(false)
+
+		actual := marshalSkipPush(input)
+		assert.Equal(t, expected, actual)
 	})
 }
