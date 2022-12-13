@@ -284,7 +284,7 @@ export interface DockerBuild {
      */
     args?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
     /**
-     * The version of the Docker builder. 
+     * The version of the Docker builder.
      */
     builderVersion?: pulumi.Input<enums.BuilderVersion>;
     /**
@@ -295,6 +295,10 @@ export interface DockerBuild {
      * The path to the build context to use.
      */
     context?: pulumi.Input<string>;
+    /**
+     * The digest hash of the Docker build context.
+     */
+    contextDigest?: pulumi.Input<string>;
     /**
      * The path to the Dockerfile to use.
      */

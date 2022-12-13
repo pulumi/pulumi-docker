@@ -3057,7 +3057,7 @@
                 },
                 "builderVersion": {
                     "$ref": "#/types/docker:index/builderVersion:BuilderVersion",
-                    "description": "The version of the Docker builder. ",
+                    "description": "The version of the Docker builder.",
                     "default": "BuilderBuildKit"
                 },
                 "cacheFrom": {
@@ -3075,6 +3075,10 @@
                     "type": "string",
                     "description": "The path to the build context to use.",
                     "default": "."
+                },
+                "contextDigest": {
+                    "type": "string",
+                    "description": "The digest hash of the Docker build context."
                 },
                 "dockerfile": {
                     "type": "string",

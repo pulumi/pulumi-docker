@@ -1,18 +1,28 @@
 package provider
 
 import (
+	"bytes"
 	"context"
+	"crypto/sha256"
+	"encoding/hex"
 	"fmt"
 	pbempty "github.com/golang/protobuf/ptypes/empty"
+	"github.com/moby/moby/builder/dockerignore"
+	"github.com/moby/moby/pkg/fileutils"
 	"github.com/pkg/errors"
 	"github.com/pulumi/pulumi/pkg/v3/resource/provider"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/util/logging"
 	rpc "github.com/pulumi/pulumi/sdk/v3/proto/go"
+	"github.com/ryboe/q"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/emptypb"
+	"io"
+	"io/fs"
+	"os"
+	"path/filepath"
 )
 
 type dockerNativeProvider struct {
@@ -107,6 +117,7 @@ func (p *dockerNativeProvider) Diff(ctx context.Context, req *rpc.DiffRequest) (
 	}
 
 	// Extract old inputs from the `__inputs` field of the old state.
+	q.Q("old State:", oldState)
 	oldInputs := parseCheckpointObject(oldState)
 
 	news, err := plugin.UnmarshalProperties(req.GetNews(), plugin.MarshalOptions{
@@ -118,7 +129,26 @@ func (p *dockerNativeProvider) Diff(ctx context.Context, req *rpc.DiffRequest) (
 		return nil, err
 	}
 
+	// TODO: I need it for the hashcontext function
+	build, err := marshalBuildAndApplyDefaults(news["build"])
+	if err != nil {
+		return nil, err
+	}
+
+	dockerContext := build.Context
+	dockerfile := build.Dockerfile
+
+	contextDigest, err := hashContext(dockerContext, dockerfile)
+	if err != nil {
+		return nil, err
+	}
+
+	// add implicit resource to provider
+	news["build"].ObjectValue()["contextDigest"] = resource.NewStringProperty(contextDigest)
+
 	d := oldInputs.Diff(news)
+	q.Q("news:", news)
+	q.Q("oldInputs:", oldInputs)
 
 	if d == nil {
 		return &rpc.DiffResponse{
@@ -126,8 +156,23 @@ func (p *dockerNativeProvider) Diff(ctx context.Context, req *rpc.DiffRequest) (
 		}, nil
 	}
 
+	diff := map[string]*rpc.PropertyDiff{}
+	for key := range d.Adds {
+		q.Q(d.Adds)
+		diff[string(key)] = &rpc.PropertyDiff{Kind: rpc.PropertyDiff_ADD}
+	}
+	for key := range d.Deletes {
+		q.Q(d.Deletes)
+		diff[string(key)] = &rpc.PropertyDiff{Kind: rpc.PropertyDiff_DELETE}
+	}
+	for key := range d.Updates {
+		q.Q(d.Updates)
+		diff[string(key)] = &rpc.PropertyDiff{Kind: rpc.PropertyDiff_UPDATE}
+	}
 	return &rpc.DiffResponse{
-		Changes: rpc.DiffResponse_DIFF_UNKNOWN,
+		Changes:         rpc.DiffResponse_DIFF_SOME,
+		DetailedDiff:    diff,
+		HasDetailedDiff: true,
 	}, nil
 }
 
@@ -149,6 +194,23 @@ func (p *dockerNativeProvider) Create(ctx context.Context, req *rpc.CreateReques
 		return nil, errors.Wrapf(err, "malformed resource inputs")
 	}
 
+	// set contextDigest
+	build, err := marshalBuildAndApplyDefaults(inputs["build"]) // TODO: is this where we pass the context digest? yes? t r y i t
+	if err != nil {
+		return nil, err
+	}
+
+	dockerContext := build.Context
+	dockerfile := build.Dockerfile
+
+	contextDigest, err := hashContext(dockerContext, dockerfile)
+	if err != nil {
+		return nil, err
+	}
+	inputs["build"].ObjectValue()["contextDigest"] = resource.NewStringProperty(contextDigest)
+	q.Q(inputs)
+	q.Q(inputs["build"].ObjectValue()["contextDigest"])
+
 	id, outputProperties, err := p.dockerBuild(ctx, urn, req.GetProperties())
 	if err != nil {
 		return nil, err
@@ -165,7 +227,7 @@ func (p *dockerNativeProvider) Create(ctx context.Context, req *rpc.CreateReques
 		return nil, err
 	}
 
-	// Store both outputs and inputs into the state.
+	// Store both outputs and inputs into the state. TODO: do this in diff also?
 	checkpoint, err := plugin.MarshalProperties(
 		checkpointObject(inputs, outputs.Mappable()),
 		plugin.MarshalOptions{
@@ -298,4 +360,104 @@ func parseCheckpointObject(obj resource.PropertyMap) resource.PropertyMap {
 	}
 
 	return nil
+}
+
+type contextHash struct {
+	contextPath string
+	input       bytes.Buffer
+}
+
+func newContextHash(contextPath string) *contextHash {
+	return &contextHash{contextPath: contextPath}
+}
+
+func (ch *contextHash) hashPath(path string, fileMode fs.FileMode) error {
+	f, err := os.Open(filepath.Join(ch.contextPath, path))
+	if err != nil {
+		return fmt.Errorf("open %s: %w", path, err)
+	}
+	defer f.Close()
+	h := sha256.New()
+	_, err = io.Copy(h, f)
+	if err != nil {
+		return fmt.Errorf("read %s: %w", path, err)
+	}
+	ch.input.Write([]byte(path))
+	ch.input.Write([]byte(fileMode.String()))
+	ch.input.Write(h.Sum(nil))
+	ch.input.WriteByte(0)
+	return nil
+}
+
+func (ch *contextHash) hexSum() string {
+	h := sha256.New()
+	ch.input.WriteTo(h)
+	return hex.EncodeToString(h.Sum(nil))
+}
+
+func hashContext(contextPath string, dockerfile string) (string, error) {
+	dockerIgnorePath := dockerfile + ".dockerignore"
+	dockerIgnore, err := os.ReadFile(dockerIgnorePath)
+	if err != nil {
+		if os.IsNotExist(err) {
+			dockerIgnorePath = filepath.Join(contextPath, ".dockerignore")
+			dockerIgnore, err = os.ReadFile(dockerIgnorePath)
+			if err != nil && !os.IsNotExist(err) {
+				return "", fmt.Errorf("unable to read %s file: %w", dockerIgnorePath, err)
+			}
+		} else {
+			return "", fmt.Errorf("unable to read %s file: %w", dockerIgnorePath, err)
+		}
+	}
+	ignorePatterns, err := dockerignore.ReadAll(bytes.NewReader(dockerIgnore))
+	if err != nil {
+		return "", fmt.Errorf("unable to parse %s file: %w", dockerIgnorePath, err)
+	}
+	ignoreMatcher, err := fileutils.NewPatternMatcher(ignorePatterns)
+	if err != nil {
+		return "", fmt.Errorf("unable to load rules from %s: %w", dockerIgnorePath, err)
+	}
+	ch := newContextHash(contextPath)
+	err = ch.hashPath(dockerfile, 0)
+	if err != nil {
+		return "", fmt.Errorf("hashing dockerfile %q: %w", dockerfile, err)
+	}
+	err = filepath.WalkDir(contextPath, func(path string, d os.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		path, err = filepath.Rel(contextPath, path)
+		if err != nil {
+			return err
+		}
+		if path == "." {
+			return nil
+		}
+		ignore, err := ignoreMatcher.Matches(path)
+		if err != nil {
+			return fmt.Errorf("%s rule failed: %w", dockerIgnorePath, err)
+		}
+		if ignore {
+			if d.IsDir() {
+				return filepath.SkipDir
+			} else {
+				return nil
+			}
+		} else if d.IsDir() {
+			return nil
+		}
+		info, err := d.Info()
+		if err != nil {
+			return fmt.Errorf("determining mode for %q: %w", path, err)
+		}
+		err = ch.hashPath(path, info.Mode())
+		if err != nil {
+			return fmt.Errorf("hashing %q: %w", path, err)
+		}
+		return nil
+	})
+	if err != nil {
+		return "", fmt.Errorf("unable to hash build context: %w", err)
+	}
+	return ch.hexSum(), nil
 }
