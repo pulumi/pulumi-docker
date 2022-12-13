@@ -200,17 +200,11 @@ func Provider() tfbridge.ProviderInfo {
 							TypeSpec:    schema.TypeSpec{Type: "string"},
 						},
 						"builderVersion": {
-							Description: "The version of the Docker builder.",
+							Description: "The version of the Docker builder. ",
 							TypeSpec: schema.TypeSpec{
 								Ref: "#/types/docker:index/builderVersion:BuilderVersion",
 							},
 							Default: "BuilderBuildKit",
-						},
-						"contextDigest": {
-							Description: "The digest hash of the Docker build context.",
-							TypeSpec: schema.TypeSpec{
-								Type: "string",
-							},
 						},
 					},
 				},

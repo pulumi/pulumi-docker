@@ -15,7 +15,6 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/util/logging"
 	rpc "github.com/pulumi/pulumi/sdk/v3/proto/go"
-	"github.com/ryboe/q"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/emptypb"
@@ -98,7 +97,37 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 	label := fmt.Sprintf("%s.Create(%s)", p.name, urn)
 	logging.V(9).Infof("%s executing", label)
 
-	return &rpc.CheckResponse{Inputs: req.News, Failures: nil}, nil
+	inputs, err := plugin.UnmarshalProperties(req.GetNews(), plugin.MarshalOptions{
+		KeepUnknowns: true,
+		SkipNulls:    true,
+		KeepSecrets:  true,
+	})
+
+	// Set defaults
+	build, err := marshalBuildAndApplyDefaults(inputs["build"])
+	if err != nil {
+		return nil, err
+	}
+
+	dockerContext := build.Context
+	dockerfile := build.Dockerfile
+
+	// Set docker build context
+	contextDigest, err := hashContext(dockerContext, dockerfile)
+	if err != nil {
+		return nil, err
+	}
+
+	// add implicit resource to provider
+	inputs["build"].ObjectValue()["contextDigest"] = resource.NewStringProperty(contextDigest)
+
+	inputStruct, err := plugin.MarshalProperties(inputs, plugin.MarshalOptions{
+		KeepUnknowns: true,
+		SkipNulls:    true,
+		KeepSecrets:  true,
+	})
+
+	return &rpc.CheckResponse{Inputs: inputStruct, Failures: nil}, nil
 }
 
 // Diff checks what impacts a hypothetical update will have on the resource's properties.
@@ -117,7 +146,6 @@ func (p *dockerNativeProvider) Diff(ctx context.Context, req *rpc.DiffRequest) (
 	}
 
 	// Extract old inputs from the `__inputs` field of the old state.
-	q.Q("old State:", oldState)
 	oldInputs := parseCheckpointObject(oldState)
 
 	news, err := plugin.UnmarshalProperties(req.GetNews(), plugin.MarshalOptions{
@@ -129,26 +157,7 @@ func (p *dockerNativeProvider) Diff(ctx context.Context, req *rpc.DiffRequest) (
 		return nil, err
 	}
 
-	// TODO: I need it for the hashcontext function
-	build, err := marshalBuildAndApplyDefaults(news["build"])
-	if err != nil {
-		return nil, err
-	}
-
-	dockerContext := build.Context
-	dockerfile := build.Dockerfile
-
-	contextDigest, err := hashContext(dockerContext, dockerfile)
-	if err != nil {
-		return nil, err
-	}
-
-	// add implicit resource to provider
-	news["build"].ObjectValue()["contextDigest"] = resource.NewStringProperty(contextDigest)
-
 	d := oldInputs.Diff(news)
-	q.Q("news:", news)
-	q.Q("oldInputs:", oldInputs)
 
 	if d == nil {
 		return &rpc.DiffResponse{
@@ -158,15 +167,12 @@ func (p *dockerNativeProvider) Diff(ctx context.Context, req *rpc.DiffRequest) (
 
 	diff := map[string]*rpc.PropertyDiff{}
 	for key := range d.Adds {
-		q.Q(d.Adds)
 		diff[string(key)] = &rpc.PropertyDiff{Kind: rpc.PropertyDiff_ADD}
 	}
 	for key := range d.Deletes {
-		q.Q(d.Deletes)
 		diff[string(key)] = &rpc.PropertyDiff{Kind: rpc.PropertyDiff_DELETE}
 	}
 	for key := range d.Updates {
-		q.Q(d.Updates)
 		diff[string(key)] = &rpc.PropertyDiff{Kind: rpc.PropertyDiff_UPDATE}
 	}
 	return &rpc.DiffResponse{
@@ -194,23 +200,6 @@ func (p *dockerNativeProvider) Create(ctx context.Context, req *rpc.CreateReques
 		return nil, errors.Wrapf(err, "malformed resource inputs")
 	}
 
-	// set contextDigest
-	build, err := marshalBuildAndApplyDefaults(inputs["build"]) // TODO: is this where we pass the context digest? yes? t r y i t
-	if err != nil {
-		return nil, err
-	}
-
-	dockerContext := build.Context
-	dockerfile := build.Dockerfile
-
-	contextDigest, err := hashContext(dockerContext, dockerfile)
-	if err != nil {
-		return nil, err
-	}
-	inputs["build"].ObjectValue()["contextDigest"] = resource.NewStringProperty(contextDigest)
-	q.Q(inputs)
-	q.Q(inputs["build"].ObjectValue()["contextDigest"])
-
 	id, outputProperties, err := p.dockerBuild(ctx, urn, req.GetProperties())
 	if err != nil {
 		return nil, err
@@ -227,7 +216,7 @@ func (p *dockerNativeProvider) Create(ctx context.Context, req *rpc.CreateReques
 		return nil, err
 	}
 
-	// Store both outputs and inputs into the state. TODO: do this in diff also?
+	// Store both outputs and inputs into the state.
 	checkpoint, err := plugin.MarshalProperties(
 		checkpointObject(inputs, outputs.Mappable()),
 		plugin.MarshalOptions{
