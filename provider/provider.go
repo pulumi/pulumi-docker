@@ -7,7 +7,7 @@ import (
 	"encoding/hex"
 	"fmt"
 	pbempty "github.com/golang/protobuf/ptypes/empty"
-	"github.com/moby/moby/builder/dockerignore"
+	"github.com/moby/buildkit/frontend/dockerfile/dockerignore"
 	"github.com/moby/moby/pkg/fileutils"
 	"github.com/pkg/errors"
 	"github.com/pulumi/pulumi/pkg/v3/resource/provider"
@@ -102,6 +102,9 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 		SkipNulls:    true,
 		KeepSecrets:  true,
 	})
+	if err != nil {
+		return nil, err
+	}
 
 	// Set defaults
 	build, err := marshalBuildAndApplyDefaults(inputs["build"])
@@ -126,6 +129,10 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 		SkipNulls:    true,
 		KeepSecrets:  true,
 	})
+
+	if err != nil {
+		return nil, err
+	}
 
 	return &rpc.CheckResponse{Inputs: inputStruct, Failures: nil}, nil
 }
@@ -380,7 +387,10 @@ func (ch *contextHash) hashPath(path string, fileMode fs.FileMode) error {
 
 func (ch *contextHash) hexSum() string {
 	h := sha256.New()
-	ch.input.WriteTo(h)
+	_, err := ch.input.WriteTo(h)
+	if err != nil {
+		return ""
+	}
 	return hex.EncodeToString(h.Sum(nil))
 }
 
@@ -429,9 +439,9 @@ func hashContext(contextPath string, dockerfile string) (string, error) {
 		if ignore {
 			if d.IsDir() {
 				return filepath.SkipDir
-			} else {
-				return nil
 			}
+			return nil
+
 		} else if d.IsDir() {
 			return nil
 		}
