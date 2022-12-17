@@ -5,6 +5,7 @@ go 1.19
 require (
 	github.com/docker/docker v20.10.21+incompatible
 	github.com/golang/protobuf v1.5.2
+	github.com/moby/buildkit v0.10.5
 	github.com/moby/moby v20.10.18+incompatible
 	github.com/pkg/errors v0.9.1
 	github.com/pulumi/pulumi-terraform-bridge/v3 v3.33.0
@@ -179,7 +180,6 @@ require (
 	github.com/mitchellh/hashstructure v1.0.0 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/mitchellh/reflectwalk v1.0.2 // indirect
-	github.com/moby/buildkit v0.10.5 // indirect
 	github.com/moby/sys/mount v0.3.0 // indirect
 	github.com/moby/sys/mountinfo v0.6.0 // indirect
 	github.com/moby/sys/symlink v0.2.0 // indirect

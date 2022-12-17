@@ -22,6 +22,7 @@ import (
 	"io/fs"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 type dockerNativeProvider struct {
@@ -358,48 +359,68 @@ func parseCheckpointObject(obj resource.PropertyMap) resource.PropertyMap {
 	return nil
 }
 
-type contextHash struct {
-	contextPath string
-	input       bytes.Buffer
+type contextHashAccumulator struct {
+	dockerContextPath string
+	input             bytes.Buffer // This will hold the file info and content bytes to pass to a hash object
 }
 
-func newContextHash(contextPath string) *contextHash {
-	return &contextHash{contextPath: contextPath}
-}
+func (accumulator *contextHashAccumulator) hashPath(path string, fileMode fs.FileMode) error {
 
-func (ch *contextHash) hashPath(path string, fileMode fs.FileMode) error {
-	f, err := os.Open(filepath.Join(ch.contextPath, path))
-	if err != nil {
-		return fmt.Errorf("open %s: %w", path, err)
+	hash := sha256.New()
+
+	if fileMode.Type() == fs.ModeSymlink {
+		// For symlinks, we hash the symlink _path_ instead of the file content.
+		// This will allow us to:
+		// a) ignore changes at the symlink target
+		// b) detect if the symlink _itself_ changes
+		// c) avoid a panic on io.Copy if the symlink target is a directory
+		symLinkPath, err := filepath.EvalSymlinks(path)
+		if err != nil {
+			return fmt.Errorf("could not evaluate symlink at %s: %w", path, err)
+		}
+		symLinkReader := strings.NewReader(symLinkPath)
+		_, err = io.Copy(hash, symLinkReader)
+		if err != nil {
+			return fmt.Errorf("could not copy symlink path %s to hash: %w", path, err)
+		}
+	} else {
+		// For regular files, we can hash their content.
+		// TODO: consider only hashing file metadata to improve performance
+		f, err := os.Open(filepath.Join(accumulator.dockerContextPath, path))
+		if err != nil {
+			return fmt.Errorf("could not open file %s: %w", path, err)
+		}
+		defer f.Close()
+		_, err = io.Copy(hash, f)
+		if err != nil {
+			return fmt.Errorf("could not copy file %s to hash: %w", path, err)
+		}
 	}
-	defer f.Close()
-	h := sha256.New()
-	_, err = io.Copy(h, f)
-	if err != nil {
-		return fmt.Errorf("read %s: %w", path, err)
-	}
-	ch.input.Write([]byte(path))
-	ch.input.Write([]byte(fileMode.String()))
-	ch.input.Write(h.Sum(nil))
-	ch.input.WriteByte(0)
+
+	// Capture all information in the accumulator buffer and add a separator
+	accumulator.input.Write([]byte(path))
+	accumulator.input.Write([]byte(fileMode.String()))
+	accumulator.input.Write(hash.Sum(nil))
+	accumulator.input.WriteByte(0)
 	return nil
 }
 
-func (ch *contextHash) hexSum() string {
+func (accumulator *contextHashAccumulator) hexSumContext() string {
 	h := sha256.New()
-	_, err := ch.input.WriteTo(h)
+	_, err := accumulator.input.WriteTo(h)
 	if err != nil {
 		return ""
 	}
 	return hex.EncodeToString(h.Sum(nil))
 }
 
-func hashContext(contextPath string, dockerfile string) (string, error) {
+func hashContext(dockerContextPath string, dockerfile string) (string, error) {
+	// exclude all files listed in dockerignore
 	dockerIgnorePath := dockerfile + ".dockerignore"
 	dockerIgnore, err := os.ReadFile(dockerIgnorePath)
 	if err != nil {
 		if os.IsNotExist(err) {
-			dockerIgnorePath = filepath.Join(contextPath, ".dockerignore")
+			dockerIgnorePath = filepath.Join(dockerContextPath, ".dockerignore")
 			dockerIgnore, err = os.ReadFile(dockerIgnorePath)
 			if err != nil && !os.IsNotExist(err) {
 				return "", fmt.Errorf("unable to read %s file: %w", dockerIgnorePath, err)
@@ -416,16 +437,19 @@ func hashContext(contextPath string, dockerfile string) (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("unable to load rules from %s: %w", dockerIgnorePath, err)
 	}
-	ch := newContextHash(contextPath)
-	err = ch.hashPath(dockerfile, 0)
+
+	accumulator := contextHashAccumulator{dockerContextPath: dockerContextPath}
+	err = accumulator.hashPath(dockerfile, 0)
 	if err != nil {
-		return "", fmt.Errorf("hashing dockerfile %q: %w", dockerfile, err)
+		return "", fmt.Errorf("error hashing dockerfile %q: %w", dockerfile, err)
 	}
-	err = filepath.WalkDir(contextPath, func(path string, d os.DirEntry, err error) error {
+	// for each file in the Docker build context, create a hash of its content
+	err = filepath.WalkDir(dockerContextPath, func(path string, d os.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
-		path, err = filepath.Rel(contextPath, path)
+		path, err = filepath.Rel(dockerContextPath, path)
+
 		if err != nil {
 			return err
 		}
@@ -445,18 +469,21 @@ func hashContext(contextPath string, dockerfile string) (string, error) {
 		} else if d.IsDir() {
 			return nil
 		}
-		info, err := d.Info()
+		fileInfo, err := d.Info()
 		if err != nil {
 			return fmt.Errorf("determining mode for %q: %w", path, err)
 		}
-		err = ch.hashPath(path, info.Mode())
+
+		err = accumulator.hashPath(path, fileInfo.Mode())
+
 		if err != nil {
-			return fmt.Errorf("hashing %q: %w", path, err)
+			return fmt.Errorf("error while hashing %q: %w", path, err)
 		}
 		return nil
 	})
 	if err != nil {
 		return "", fmt.Errorf("unable to hash build context: %w", err)
 	}
-	return ch.hexSum(), nil
+	// create a hash of the entire input of the hash accumulator
+	return accumulator.hexSumContext(), nil
 }
