@@ -373,9 +373,11 @@ func processLogLine(msg string) (string, error) {
 	}
 	if jm.ID != "" {
 		info = jm.ID
+		return info, nil
 	}
 	if jm.From != "" {
 		info = jm.From
+		return info, nil
 	}
 	if jm.Progress != nil {
 		info = jm.Status + " " + jm.Progress.String()
