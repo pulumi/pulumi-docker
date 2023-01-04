@@ -77,7 +77,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		return "", nil, err
 	}
 
-	err = p.host.Log(ctx, "info", urn, "Building the image")
+	err = p.host.LogStatus(ctx, "info", urn, "Building the image")
 
 	if err != nil {
 		return "", nil, err
@@ -106,10 +106,10 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	}
 
 	defer imgBuildResp.Body.Close()
-	// Print build logs to terminal
+	// Print build logs to `Info` progress report
 	scanner := bufio.NewScanner(imgBuildResp.Body)
 	for scanner.Scan() {
-		err := p.host.Log(ctx, "info", urn, scanner.Text())
+		err := p.host.LogStatus(ctx, "info", urn, scanner.Text())
 		if err != nil {
 			return "", nil, err
 		}
@@ -130,7 +130,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		return img.Name, pbstruct, err
 	}
 
-	err = p.host.Log(ctx, "info", urn, "Pushing Image to the registry")
+	err = p.host.LogStatus(ctx, "info", urn, "Pushing Image to the registry")
 
 	if err != nil {
 		return "", nil, err
@@ -161,7 +161,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 
 	defer pushOutput.Close()
 
-	// Print push logs to terminal
+	// Print push logs to `Info` progress report
 	pushScanner := bufio.NewScanner(pushOutput)
 	for pushScanner.Scan() {
 		msg := pushScanner.Text()
@@ -179,7 +179,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 					info = jsmsg.Status
 
 				}
-				err := p.host.Log(ctx, "info", urn, info)
+				err := p.host.LogStatus(ctx, "info", urn, info)
 				if err != nil {
 					return "", nil, err
 				}
