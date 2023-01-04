@@ -384,6 +384,10 @@ func processLogLine(msg string) (string, error) {
 	} else {
 		info = jm.Status
 	}
-
+	if jm.Aux != nil {
+		infoBytes, _ := json.Marshal(jm.Aux)
+		// because this is unstructured JSON we print out the whole object.
+		info = string(infoBytes)
+	}
 	return info, nil
 }
