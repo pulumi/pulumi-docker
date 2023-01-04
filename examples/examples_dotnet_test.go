@@ -33,7 +33,7 @@ func TestNginxCs(t *testing.T) {
 }
 
 func TestDotNet(t *testing.T) {
-
+	t.Skip("skipping due to buildkit error")
 	test := getCsharpBaseOptions(t).
 		With(integration.ProgramTestOptions{
 			Dir: path.Join(getCwd(t), "dotnet"),
