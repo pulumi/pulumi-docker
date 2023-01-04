@@ -109,7 +109,11 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	// Print build logs to `Info` progress report
 	scanner := bufio.NewScanner(imgBuildResp.Body)
 	for scanner.Scan() {
-		err := p.host.LogStatus(ctx, "info", urn, scanner.Text())
+		info, err := processLogLine(scanner.Text())
+		if err != nil {
+			return "", nil, err
+		}
+		err = p.host.LogStatus(ctx, "info", urn, info)
 		if err != nil {
 			return "", nil, err
 		}
@@ -164,32 +168,14 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	// Print push logs to `Info` progress report
 	pushScanner := bufio.NewScanner(pushOutput)
 	for pushScanner.Scan() {
-		msg := pushScanner.Text()
-		var jsmsg jsonmessage.JSONMessage
-		err := json.Unmarshal([]byte(msg), &jsmsg)
+		info, err := processLogLine(pushScanner.Text())
 		if err != nil {
-			return "", nil, errors.Wrapf(err, "encountered error unmarshalling:")
+			return "", nil, err
 		}
-		if jsmsg.Status != "" {
-			if jsmsg.Status != "Pushing" {
-				var info string
-				if jsmsg.ID != "" {
-					info = fmt.Sprintf("%s: %s", jsmsg.ID, jsmsg.Status)
-				} else {
-					info = jsmsg.Status
-
-				}
-				err := p.host.LogStatus(ctx, "info", urn, info)
-				if err != nil {
-					return "", nil, err
-				}
-			}
+		err = p.host.LogStatus(ctx, "info", urn, info)
+		if err != nil {
+			return "", nil, err
 		}
-
-		if jsmsg.Error != nil {
-			return "", nil, errors.Errorf(jsmsg.Error.Message)
-		}
-
 	}
 
 	outputs := map[string]interface{}{
@@ -369,4 +355,35 @@ func marshalSkipPush(sp resource.PropertyValue) bool {
 		return false
 	}
 	return sp.BoolValue()
+}
+
+func processLogLine(msg string) (string, error) {
+	var info string
+	var jm jsonmessage.JSONMessage
+	err := json.Unmarshal([]byte(msg), &jm)
+	if err != nil {
+		return info, errors.Wrapf(err, "encountered error unmarshalling:")
+	}
+	// process this JSONMessage
+	if jm.Error != nil {
+		if jm.Error.Code == 401 {
+			return info, fmt.Errorf("authentication is required")
+		}
+		return info, errors.Errorf(jm.Error.Message)
+	}
+	if jm.ID != "" {
+		info = jm.ID
+	}
+	if jm.From != "" {
+		info = jm.From
+	}
+	if jm.Progress != nil {
+		info = jm.Status + " " + jm.Progress.String()
+	} else if jm.Stream != "" {
+		info = jm.Stream
+	} else {
+		info = jm.Status
+	}
+
+	return info, nil
 }
