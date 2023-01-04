@@ -5,10 +5,13 @@ go 1.19
 require (
 	github.com/docker/docker v20.10.21+incompatible
 	github.com/golang/protobuf v1.5.2
+	github.com/moby/buildkit v0.10.5
+	github.com/moby/moby v20.10.18+incompatible
 	github.com/pkg/errors v0.9.1
 	github.com/pulumi/pulumi-terraform-bridge/v3 v3.33.0
 	github.com/pulumi/pulumi/pkg/v3 v3.44.2
 	github.com/pulumi/pulumi/sdk/v3 v3.44.2
+	github.com/stretchr/testify v1.8.0
 	github.com/terraform-providers/terraform-provider-docker/shim v0.0.0
 	google.golang.org/grpc v1.49.0
 	google.golang.org/protobuf v1.28.1
@@ -177,7 +180,6 @@ require (
 	github.com/mitchellh/hashstructure v1.0.0 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/mitchellh/reflectwalk v1.0.2 // indirect
-	github.com/moby/buildkit v0.10.5 // indirect
 	github.com/moby/sys/mount v0.3.0 // indirect
 	github.com/moby/sys/mountinfo v0.6.0 // indirect
 	github.com/moby/sys/symlink v0.2.0 // indirect
@@ -217,7 +219,6 @@ require (
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/cobra v1.5.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	github.com/stretchr/testify v1.8.0 // indirect
 	github.com/terraform-providers/terraform-provider-docker v0.0.0 // indirect
 	github.com/texttheater/golang-levenshtein v1.0.1 // indirect
 	github.com/tweekmonster/luser v0.0.0-20161003172636-3fa38070dbd7 // indirect

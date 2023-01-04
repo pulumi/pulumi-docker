@@ -1,9 +1,14 @@
 package provider
 
 import (
+	"bytes"
 	"context"
+	"crypto/sha256"
+	"encoding/hex"
 	"fmt"
 	pbempty "github.com/golang/protobuf/ptypes/empty"
+	"github.com/moby/buildkit/frontend/dockerfile/dockerignore"
+	"github.com/moby/moby/pkg/fileutils"
 	"github.com/pkg/errors"
 	"github.com/pulumi/pulumi/pkg/v3/resource/provider"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
@@ -13,6 +18,11 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/emptypb"
+	"io"
+	"io/fs"
+	"os"
+	"path/filepath"
+	"strings"
 )
 
 type dockerNativeProvider struct {
@@ -90,7 +100,44 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 	label := fmt.Sprintf("%s.Create(%s)", p.name, urn)
 	logging.V(9).Infof("%s executing", label)
 
-	return &rpc.CheckResponse{Inputs: req.News, Failures: nil}, nil
+	inputs, err := plugin.UnmarshalProperties(req.GetNews(), plugin.MarshalOptions{
+		KeepUnknowns: true,
+		SkipNulls:    true,
+		KeepSecrets:  true,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	// Set defaults
+	build, err := marshalBuildAndApplyDefaults(inputs["build"])
+	if err != nil {
+		return nil, err
+	}
+
+	dockerContext := build.Context
+	dockerfile := build.Dockerfile
+
+	// Set docker build context
+	contextDigest, err := hashContext(dockerContext, dockerfile)
+	if err != nil {
+		return nil, err
+	}
+
+	// add implicit resource to provider
+	inputs["build"].ObjectValue()["contextDigest"] = resource.NewStringProperty(contextDigest)
+
+	inputStruct, err := plugin.MarshalProperties(inputs, plugin.MarshalOptions{
+		KeepUnknowns: true,
+		SkipNulls:    true,
+		KeepSecrets:  true,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &rpc.CheckResponse{Inputs: inputStruct, Failures: nil}, nil
 }
 
 // Diff checks what impacts a hypothetical update will have on the resource's properties.
@@ -128,8 +175,20 @@ func (p *dockerNativeProvider) Diff(ctx context.Context, req *rpc.DiffRequest) (
 		}, nil
 	}
 
+	diff := map[string]*rpc.PropertyDiff{}
+	for key := range d.Adds {
+		diff[string(key)] = &rpc.PropertyDiff{Kind: rpc.PropertyDiff_ADD}
+	}
+	for key := range d.Deletes {
+		diff[string(key)] = &rpc.PropertyDiff{Kind: rpc.PropertyDiff_DELETE}
+	}
+	for key := range d.Updates {
+		diff[string(key)] = &rpc.PropertyDiff{Kind: rpc.PropertyDiff_UPDATE}
+	}
 	return &rpc.DiffResponse{
-		Changes: rpc.DiffResponse_DIFF_UNKNOWN,
+		Changes:         rpc.DiffResponse_DIFF_SOME,
+		DetailedDiff:    diff,
+		HasDetailedDiff: true,
 	}, nil
 }
 
@@ -300,4 +359,133 @@ func parseCheckpointObject(obj resource.PropertyMap) resource.PropertyMap {
 	}
 
 	return nil
+}
+
+type contextHashAccumulator struct {
+	dockerContextPath string
+	input             bytes.Buffer // This will hold the file info and content bytes to pass to a hash object
+}
+
+func (accumulator *contextHashAccumulator) hashPath(path string, fileMode fs.FileMode) error {
+
+	hash := sha256.New()
+
+	if fileMode.Type() == fs.ModeSymlink {
+		// For symlinks, we hash the symlink _path_ instead of the file content.
+		// This will allow us to:
+		// a) ignore changes at the symlink target
+		// b) detect if the symlink _itself_ changes
+		// c) avoid a panic on io.Copy if the symlink target is a directory
+		symLinkPath, err := filepath.EvalSymlinks(path)
+		if err != nil {
+			return fmt.Errorf("could not evaluate symlink at %s: %w", path, err)
+		}
+		symLinkReader := strings.NewReader(symLinkPath)
+		_, err = io.Copy(hash, symLinkReader)
+		if err != nil {
+			return fmt.Errorf("could not copy symlink path %s to hash: %w", path, err)
+		}
+	} else {
+		// For regular files, we can hash their content.
+		// TODO: consider only hashing file metadata to improve performance
+		f, err := os.Open(filepath.Join(accumulator.dockerContextPath, path))
+		if err != nil {
+			return fmt.Errorf("could not open file %s: %w", path, err)
+		}
+		defer f.Close()
+		_, err = io.Copy(hash, f)
+		if err != nil {
+			return fmt.Errorf("could not copy file %s to hash: %w", path, err)
+		}
+	}
+
+	// Capture all information in the accumulator buffer and add a separator
+	accumulator.input.Write([]byte(path))
+	accumulator.input.Write([]byte(fileMode.String()))
+	accumulator.input.Write(hash.Sum(nil))
+	accumulator.input.WriteByte(0)
+	return nil
+}
+
+func (accumulator *contextHashAccumulator) hexSumContext() string {
+	h := sha256.New()
+	_, err := accumulator.input.WriteTo(h)
+	if err != nil {
+		return ""
+	}
+	return hex.EncodeToString(h.Sum(nil))
+}
+
+func hashContext(dockerContextPath string, dockerfile string) (string, error) {
+	// exclude all files listed in dockerignore
+	dockerIgnorePath := dockerfile + ".dockerignore"
+	dockerIgnore, err := os.ReadFile(dockerIgnorePath)
+	if err != nil {
+		if os.IsNotExist(err) {
+			dockerIgnorePath = filepath.Join(dockerContextPath, ".dockerignore")
+			dockerIgnore, err = os.ReadFile(dockerIgnorePath)
+			if err != nil && !os.IsNotExist(err) {
+				return "", fmt.Errorf("unable to read %s file: %w", dockerIgnorePath, err)
+			}
+		} else {
+			return "", fmt.Errorf("unable to read %s file: %w", dockerIgnorePath, err)
+		}
+	}
+	ignorePatterns, err := dockerignore.ReadAll(bytes.NewReader(dockerIgnore))
+	if err != nil {
+		return "", fmt.Errorf("unable to parse %s file: %w", dockerIgnorePath, err)
+	}
+	ignoreMatcher, err := fileutils.NewPatternMatcher(ignorePatterns)
+	if err != nil {
+		return "", fmt.Errorf("unable to load rules from %s: %w", dockerIgnorePath, err)
+	}
+
+	accumulator := contextHashAccumulator{dockerContextPath: dockerContextPath}
+	err = accumulator.hashPath(dockerfile, 0)
+	if err != nil {
+		return "", fmt.Errorf("error hashing dockerfile %q: %w", dockerfile, err)
+	}
+	// for each file in the Docker build context, create a hash of its content
+	err = filepath.WalkDir(dockerContextPath, func(path string, d os.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		path, err = filepath.Rel(dockerContextPath, path)
+
+		if err != nil {
+			return err
+		}
+		if path == "." {
+			return nil
+		}
+		ignore, err := ignoreMatcher.Matches(path)
+		if err != nil {
+			return fmt.Errorf("%s rule failed: %w", dockerIgnorePath, err)
+		}
+		if ignore {
+			if d.IsDir() {
+				return filepath.SkipDir
+			}
+			return nil
+
+		} else if d.IsDir() {
+			return nil
+		}
+		fileInfo, err := d.Info()
+		if err != nil {
+			return fmt.Errorf("determining mode for %q: %w", path, err)
+		}
+
+		err = accumulator.hashPath(path, fileInfo.Mode())
+
+		if err != nil {
+			return fmt.Errorf("error while hashing %q: %w", path, err)
+		}
+		return nil
+	})
+	if err != nil {
+		return "", fmt.Errorf("unable to hash build context: %w", err)
+	}
+	// create a hash of the entire input of the hash accumulator
+	return accumulator.hexSumContext(), nil
 }

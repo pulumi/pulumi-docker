@@ -26,7 +26,7 @@ import (
 )
 
 func TestNginxGo(t *testing.T) {
-	t.Skip("ignoring due to major version change")
+
 	cwd, err := os.Getwd()
 	if !assert.NoError(t, err) {
 		t.FailNow()
@@ -34,7 +34,7 @@ func TestNginxGo(t *testing.T) {
 
 	opts := base.With(integration.ProgramTestOptions{
 		Dependencies: []string{
-			"github.com/pulumi/pulumi-docker/sdk/v2",
+			"github.com/pulumi/pulumi-docker/sdk/v4",
 		},
 		Dir: path.Join(cwd, "nginx-go"),
 	})
@@ -59,7 +59,6 @@ func TestBuildCacheFromGo(t *testing.T) {
 }
 
 func TestDockerfileGo(t *testing.T) {
-	t.Skip("ignoring due to 4.x.x major version change")
 	cwd, err := os.Getwd()
 	if !assert.NoError(t, err) {
 		t.FailNow()
@@ -67,7 +66,7 @@ func TestDockerfileGo(t *testing.T) {
 
 	opts := base.With(integration.ProgramTestOptions{
 		Dependencies: []string{
-			"github.com/pulumi/pulumi-docker/sdk/v3",
+			"github.com/pulumi/pulumi-docker/sdk/v4",
 		},
 		Dir: path.Join(cwd, "dockerfile-go"),
 	})
