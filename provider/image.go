@@ -109,14 +109,18 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	// Print build logs to `Info` progress report
 	scanner := bufio.NewScanner(imgBuildResp.Body)
 	for scanner.Scan() {
-		info, err := processLogLine(scanner.Text())
+		err := p.host.Log(ctx, "info", urn, scanner.Text())
 		if err != nil {
 			return "", nil, err
 		}
-		err = p.host.LogStatus(ctx, "info", urn, info)
-		if err != nil {
-			return "", nil, err
-		}
+		//info, err := processLogLine(scanner.Text())
+		//if err != nil {
+		//	return "", nil, err
+		//}
+		//err = p.host.LogStatus(ctx, "info", urn, info)
+		//if err != nil {
+		//	return "", nil, err
+		//}
 	}
 
 	// if we are not pushing to the registry, we return after building the local image.
