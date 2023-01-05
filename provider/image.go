@@ -19,6 +19,8 @@ import (
 const defaultDockerfile = "Dockerfile"
 const defaultBuilder = "2"
 
+// Adding a comment here to check CI tests
+
 type Image struct {
 	Name     string
 	SkipPush bool
