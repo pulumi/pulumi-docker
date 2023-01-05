@@ -6,6 +6,9 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+
+	"github.com/docker/cli/cli/config"
+	"github.com/docker/cli/cli/config/credentials"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
 	"github.com/docker/docker/pkg/archive"
@@ -91,6 +94,17 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 
 	// make the build options
 
+	creds, err := config.Load(config.Dir())
+	if err != nil {
+		return "", props, err
+	}
+	creds.CredentialsStore = credentials.DetectDefaultStore(creds.CredentialsStore)
+	auths, err := creds.GetAllCredentials()
+
+	authConfigs := make(map[string]types.AuthConfig, len(auths))
+	for k, auth := range auths {
+		authConfigs[k] = types.AuthConfig(auth)
+	}
 	opts := types.ImageBuildOptions{
 		Dockerfile: img.Build.Dockerfile,
 		Tags:       []string{img.Name}, //this should build the image locally, sans registry info
@@ -98,6 +112,8 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		//CacheFrom:  img.Build.CachedImages, // TODO: this needs a login, so needs to be handled differently.
 		BuildArgs: build.Args,
 		Version:   build.BuilderVersion,
+
+		AuthConfigs: authConfigs,
 	}
 
 	imgBuildResp, err := docker.ImageBuild(ctx, tar, opts)
@@ -109,15 +125,17 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	// Print build logs to `Info` progress report
 	scanner := bufio.NewScanner(imgBuildResp.Body)
 	for scanner.Scan() {
-		err := p.host.Log(ctx, "info", urn, scanner.Text())
-		if err != nil {
-			return "", nil, err
+		// err := p.host.Log(ctx, "info", urn, scanner.Text())
+		// if err != nil {
+		// 	return "", nil, err
+		// }
+		info, err := processLogLine(scanner.Text())
+		// if err != nil {
+		// 	return "", nil, err
+		// }
+		if err == nil {
+			_ = p.host.Log(ctx, "info", urn, info)
 		}
-		//info, err := processLogLine(scanner.Text())
-		//if err != nil {
-		//	return "", nil, err
-		//}
-		//err = p.host.LogStatus(ctx, "info", urn, info)
 		//if err != nil {
 		//	return "", nil, err
 		//}
@@ -365,6 +383,7 @@ func processLogLine(msg string) (string, error) {
 	var info string
 	var jm jsonmessage.JSONMessage
 	err := json.Unmarshal([]byte(msg), &jm)
+	fmt.Printf("🦖 %#+v\n", jm)
 	if err != nil {
 		return info, errors.Wrapf(err, "encountered error unmarshalling:")
 	}
@@ -377,11 +396,11 @@ func processLogLine(msg string) (string, error) {
 	}
 	if jm.ID != "" {
 		info = jm.ID
-		return info, nil
+		// return info, nil
 	}
 	if jm.From != "" {
 		info = jm.From
-		return info, nil
+		// return info, nil
 	}
 	if jm.Progress != nil {
 		info = jm.Status + " " + jm.Progress.String()
