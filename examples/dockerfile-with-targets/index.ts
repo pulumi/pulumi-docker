@@ -5,6 +5,7 @@ const myDependenciesImage = new docker.Image("my-image", {
     build: {
         target: "dependencies",
         env: { "TEST_ENV": "42" },
+        builderVersion: "BuilderV1",
     },
     skipPush: true,
 });
