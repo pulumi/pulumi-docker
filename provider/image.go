@@ -100,6 +100,10 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	}
 	creds.CredentialsStore = credentials.DetectDefaultStore(creds.CredentialsStore)
 	auths, err := creds.GetAllCredentials()
+	autherrinfo := fmt.Sprintf("THIS WAS THE AUTH ERROR %v", err)
+	_ = p.host.Log(ctx, "info", urn, autherrinfo)
+	authsinfo := fmt.Sprintf("THIS WAS THE AUTH itself %v", auths)
+	_ = p.host.Log(ctx, "info", urn, authsinfo)
 
 	authConfigs := make(map[string]types.AuthConfig, len(auths))
 	for k, auth := range auths {
@@ -122,6 +126,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	}
 
 	defer imgBuildResp.Body.Close()
+
 	// Print build logs to `Info` progress report
 	scanner := bufio.NewScanner(imgBuildResp.Body)
 	for scanner.Scan() {
@@ -130,9 +135,10 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		// 	return "", nil, err
 		// }
 		info, err := processLogLine(scanner.Text())
-		// if err != nil {
-		// 	return "", nil, err
-		// }
+		if err != nil {
+			info = fmt.Sprintf("THIS WAS AN ERROR: %v", err)
+			_ = p.host.Log(ctx, "info", urn, info)
+		}
 		if err == nil {
 			_ = p.host.Log(ctx, "info", urn, info)
 		}
