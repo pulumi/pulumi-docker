@@ -6,6 +6,8 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"github.com/moby/buildkit/session"
+	"net"
 
 	"github.com/docker/cli/cli/config"
 	"github.com/docker/cli/cli/config/credentials"
@@ -92,23 +94,30 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		return "", nil, err
 	}
 
-	// make the build options
-
+	// get credentials
 	creds, err := config.Load(config.Dir())
 	if err != nil {
 		return "", props, err
 	}
 	creds.CredentialsStore = credentials.DetectDefaultStore(creds.CredentialsStore)
 	auths, err := creds.GetAllCredentials()
-	autherrinfo := fmt.Sprintf("THIS WAS THE AUTH ERROR %v", err)
-	_ = p.host.Log(ctx, "info", urn, autherrinfo)
-	authsinfo := fmt.Sprintf("THIS WAS THE AUTH itself %v", auths)
-	_ = p.host.Log(ctx, "info", urn, authsinfo)
-
+	if err != nil {
+		return "", nil, err
+	}
+	// read auths to a map of authConfigs for the build options to consume
 	authConfigs := make(map[string]types.AuthConfig, len(auths))
 	for k, auth := range auths {
 		authConfigs[k] = types.AuthConfig(auth)
 	}
+
+	//sess, _ := session.NewSession(ctx, "pulumi-docker", "")
+	//dialSession := func(ctx context.Context, proto string, meta map[string][]string) (net.Conn, error) {
+	//	return docker.DialHijack(ctx, "/session", proto, meta)
+	//}
+	//go sess.Run(ctx, dialSession)
+	//defer sess.Close()
+
+	// make the build options
 	opts := types.ImageBuildOptions{
 		Dockerfile: img.Build.Dockerfile,
 		Tags:       []string{img.Name}, //this should build the image locally, sans registry info
@@ -118,6 +127,17 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		Version:   build.BuilderVersion,
 
 		AuthConfigs: authConfigs,
+	}
+
+	// Start a session for BuildKit
+	if build.BuilderVersion == defaultBuilder {
+		sess, _ := session.NewSession(ctx, "pulumi-docker", "")
+		dialSession := func(ctx context.Context, proto string, meta map[string][]string) (net.Conn, error) {
+			return docker.DialHijack(ctx, "/session", proto, meta)
+		}
+		go sess.Run(ctx, dialSession)
+		defer sess.Close()
+		opts.SessionID = sess.ID()
 	}
 
 	imgBuildResp, err := docker.ImageBuild(ctx, tar, opts)
