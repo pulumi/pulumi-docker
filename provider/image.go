@@ -19,6 +19,7 @@ import (
 	"github.com/pkg/errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
+	"github.com/ryboe/q"
 )
 
 const defaultDockerfile = "Dockerfile"
@@ -150,21 +151,15 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	// Print build logs to `Info` progress report
 	scanner := bufio.NewScanner(imgBuildResp.Body)
 	for scanner.Scan() {
-		// err := p.host.Log(ctx, "info", urn, scanner.Text())
-		// if err != nil {
-		// 	return "", nil, err
-		// }
+
 		info, err := processLogLine(scanner.Text())
 		if err != nil {
-			info = fmt.Sprintf("THIS WAS AN ERROR: %v", err)
-			_ = p.host.Log(ctx, "info", urn, info)
+			return "", nil, err
 		}
-		if err == nil {
-			_ = p.host.Log(ctx, "info", urn, info)
+		err = p.host.Log(ctx, "info", urn, info)
+		if err != nil {
+			return "", nil, err
 		}
-		//if err != nil {
-		//	return "", nil, err
-		//}
 	}
 
 	// if we are not pushing to the registry, we return after building the local image.
@@ -188,7 +183,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		return "", nil, err
 	}
 	// Quick and dirty auth; we can also preconfigure the client itself I believe
-
+	// TODO: use auth pattern as above to use default auth
 	var authConfig = types.AuthConfig{
 		Username:      img.Registry.Username,
 		Password:      img.Registry.Password,
@@ -409,7 +404,8 @@ func processLogLine(msg string) (string, error) {
 	var info string
 	var jm jsonmessage.JSONMessage
 	err := json.Unmarshal([]byte(msg), &jm)
-	fmt.Printf("🦖 %#+v\n", jm)
+	fmt.Println("HERE IT IS", jm)
+	q.Q(jm)
 	if err != nil {
 		return info, errors.Wrapf(err, "encountered error unmarshalling:")
 	}
@@ -421,24 +417,22 @@ func processLogLine(msg string) (string, error) {
 		return info, errors.Errorf(jm.Error.Message)
 	}
 	if jm.ID != "" {
-		info = jm.ID
-		// return info, nil
+		info += jm.ID
 	}
 	if jm.From != "" {
-		info = jm.From
-		// return info, nil
+		info += jm.From
 	}
 	if jm.Progress != nil {
 		info = jm.Status + " " + jm.Progress.String()
 	} else if jm.Stream != "" {
-		info = jm.Stream
+		info += jm.Stream
 	} else {
-		info = jm.Status
+		info += jm.Status
 	}
 	if jm.Aux != nil {
 		infoBytes, _ := json.Marshal(jm.Aux)
 		// because this is unstructured JSON we print out the whole object.
-		info = string(infoBytes)
+		info += string(infoBytes) //TODO:
 	}
 	return info, nil
 }
