@@ -71,7 +71,6 @@ func TestNginxPy(t *testing.T) {
 }
 
 func TestDockerfilePy(t *testing.T) {
-	t.Skip("skipping due to buildkit error")
 	test := getPyOptions(t).
 		With(integration.ProgramTestOptions{
 			Dir: path.Join(getCwd(t), "dockerfile-py"),
