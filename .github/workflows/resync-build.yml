@@ -7,7 +7,13 @@ env:
   ARM_TENANT_ID: 706143bc-e1d4-4593-aee2-c9dc60ab9be7
   AWS_REGION: us-west-2
   AZURE_LOCATION: westus
+  DOTNETVERSION: |
+    6.0.x
+    3.1.301
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  GOVERSION: 1.19.x
+  JAVAVERSION: "11"
+  NODEVERSION: 16.x
   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
   NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
   NUGET_PUBLISH_KEY: ${{ secrets.NUGET_PUBLISH_KEY }}
@@ -21,6 +27,7 @@ env:
   PULUMI_LOCAL_NUGET: ${{ github.workspace }}/nuget
   PULUMI_MISSING_MAPPING_ERROR: true
   PYPI_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+  PYTHONVERSION: "3.9"
   SIGNING_KEY: ${{ secrets.JAVA_SIGNING_KEY }}
   SIGNING_KEY_ID: ${{ secrets.JAVA_SIGNING_KEY_ID }}
   SIGNING_PASSWORD: ${{ secrets.JAVA_SIGNING_PASSWORD }}
@@ -48,7 +55,7 @@ jobs:
     - name: Install Go
       uses: actions/setup-go@v2
       with:
-        go-version: ${{matrix.goversion}}
+        go-version: ${{ env.GOVERSION }}
     - name: Install pulumictl
       uses: jaxxstorm/action-install-gh-release@v1.5.0
       with:
@@ -58,16 +65,16 @@ jobs:
     - name: Setup DotNet
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: ${{matrix.dotnetversion}}
+        dotnet-version: ${{ env.DOTNETVERSION }}
     - name: Setup Node
       uses: actions/setup-node@v2
       with:
-        node-version: ${{matrix.nodeversion}}
+        node-version: ${{ env.NODEVERSION }}
         registry-url: https://registry.npmjs.org
     - name: Setup Python
       uses: actions/setup-python@v2
       with:
-        python-version: ${{matrix.pythonversion}}
+        python-version: ${{ env.PYTHONVERSION }}
     - name: Sync with ci-mgmt
       run: cp -r ci-mgmt/provider-ci/providers/$PROVIDER/repo/. .
     - name: Remove ci-mgmt directory
@@ -101,19 +108,6 @@ jobs:
         team-reviewers: platform-integrations
         title: Fix up build for pulumi-${{ env.PROVIDER }}
         token: ${{ secrets.PULUMI_BOT_TOKEN }}
-    strategy:
-      fail-fast: true
-      matrix:
-        dotnetversion:
-        - |
-          6.0.x
-          3.1.301
-        goversion:
-        - 1.19.x
-        nodeversion:
-        - 16.x
-        pythonversion:
-        - "3.9"
 name: Resync build
 on:
   workflow_dispatch:
