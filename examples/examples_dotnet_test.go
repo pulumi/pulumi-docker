@@ -33,6 +33,7 @@ func TestNginxCs(t *testing.T) {
 }
 
 func TestDotNet(t *testing.T) {
+
 	test := getCsharpBaseOptions(t).
 		With(integration.ProgramTestOptions{
 			Dir: path.Join(getCwd(t), "dotnet"),
