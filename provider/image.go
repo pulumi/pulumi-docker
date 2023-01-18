@@ -11,15 +11,16 @@ import (
 
 	"github.com/docker/cli/cli/config"
 	"github.com/docker/cli/cli/config/credentials"
+	clitypes "github.com/docker/cli/cli/config/types"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
 	"github.com/docker/docker/pkg/archive"
 	"github.com/docker/docker/pkg/jsonmessage"
 	structpb "github.com/golang/protobuf/ptypes/struct"
+	controlapi "github.com/moby/buildkit/api/services/control"
 	"github.com/pkg/errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
-	"github.com/ryboe/q"
 )
 
 const defaultDockerfile = "Dockerfile"
@@ -95,13 +96,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		return "", nil, err
 	}
 
-	// get credentials
-	creds, err := config.Load(config.Dir())
-	if err != nil {
-		return "", props, err
-	}
-	creds.CredentialsStore = credentials.DetectDefaultStore(creds.CredentialsStore)
-	auths, err := creds.GetAllCredentials()
+	auths, err := getCredentials()
 	if err != nil {
 		return "", nil, err
 	}
@@ -110,13 +105,6 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	for k, auth := range auths {
 		authConfigs[k] = types.AuthConfig(auth)
 	}
-
-	//sess, _ := session.NewSession(ctx, "pulumi-docker", "")
-	//dialSession := func(ctx context.Context, proto string, meta map[string][]string) (net.Conn, error) {
-	//	return docker.DialHijack(ctx, "/session", proto, meta)
-	//}
-	//go sess.Run(ctx, dialSession)
-	//defer sess.Close()
 
 	// make the build options
 	opts := types.ImageBuildOptions{
@@ -156,7 +144,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		if err != nil {
 			return "", nil, err
 		}
-		err = p.host.Log(ctx, "info", urn, info)
+		err = p.host.LogStatus(ctx, "info", urn, info)
 		if err != nil {
 			return "", nil, err
 		}
@@ -400,12 +388,23 @@ func marshalSkipPush(sp resource.PropertyValue) bool {
 	return sp.BoolValue()
 }
 
+func getCredentials() (map[string]clitypes.AuthConfig, error) {
+	creds, err := config.Load(config.Dir())
+	if err != nil {
+		return nil, err
+	}
+	creds.CredentialsStore = credentials.DetectDefaultStore(creds.CredentialsStore)
+	auths, err := creds.GetAllCredentials()
+	if err != nil {
+		return nil, err
+	}
+	return auths, nil
+}
+
 func processLogLine(msg string) (string, error) {
 	var info string
 	var jm jsonmessage.JSONMessage
 	err := json.Unmarshal([]byte(msg), &jm)
-	fmt.Println("HERE IT IS", jm)
-	q.Q(jm)
 	if err != nil {
 		return info, errors.Wrapf(err, "encountered error unmarshalling:")
 	}
@@ -416,23 +415,58 @@ func processLogLine(msg string) (string, error) {
 		}
 		return info, errors.Errorf(jm.Error.Message)
 	}
-	if jm.ID != "" {
-		info += jm.ID
-	}
 	if jm.From != "" {
 		info += jm.From
 	}
 	if jm.Progress != nil {
-		info = jm.Status + " " + jm.Progress.String()
+		info += jm.Status + " " + jm.Progress.String()
 	} else if jm.Stream != "" {
 		info += jm.Stream
+
 	} else {
 		info += jm.Status
 	}
 	if jm.Aux != nil {
-		infoBytes, _ := json.Marshal(jm.Aux)
-		// because this is unstructured JSON we print out the whole object.
-		info += string(infoBytes) //TODO:
+		// if we're dealing with buildkit tracer logs, we need to decode
+		if jm.ID == "moby.buildkit.trace" {
+			// Process the message like the 'tracer.write' method in build_buildkit.go
+			// https://github.com/docker/docker-ce/blob/master/components/cli/cli/command/image/build_buildkit.go#L392
+			var resp controlapi.StatusResponse
+			var infoBytes []byte
+			// ignore messages that are not understood
+			if err := json.Unmarshal(*jm.Aux, &infoBytes); err != nil {
+				info += "failed to parse aux message: " + err.Error()
+			}
+			if err := (&resp).Unmarshal(infoBytes); err != nil {
+				info += "failed to parse aux message: " + err.Error()
+			}
+			for _, vertex := range resp.Vertexes {
+				info += fmt.Sprintf("layer: %+v\n", vertex.Digest)
+			}
+			for _, status := range resp.Statuses {
+				info += fmt.Sprintf("status: %s\n", status.GetID())
+			}
+			for _, log := range resp.Logs {
+				info += fmt.Sprintf("log: %+v\n", log.GetMsg())
+			}
+			for _, warn := range resp.Warnings {
+				info += fmt.Sprintf("warning: %+v\n", warn.GetShort())
+			}
+
+		} else {
+			// most other aux messages are secretly a BuildResult
+			var result types.BuildResult
+			if err := json.Unmarshal(*jm.Aux, &result); err != nil {
+				// in the case of non-BuildResult aux messages we print out the whole object.
+				infoBytes, err := json.Marshal(jm.Aux)
+				if err != nil {
+					info += "failed to parse aux message: " + err.Error()
+				}
+				info += string(infoBytes)
+			} else {
+				info += result.ID
+			}
+		}
 	}
 	return info, nil
 }
