@@ -124,7 +124,12 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		dialSession := func(ctx context.Context, proto string, meta map[string][]string) (net.Conn, error) {
 			return docker.DialHijack(ctx, "/session", proto, meta)
 		}
-		go sess.Run(ctx, dialSession)
+		go func() {
+			err := sess.Run(ctx, dialSession)
+			if err != nil {
+				return
+			}
+		}()
 		defer sess.Close()
 		opts.SessionID = sess.ID()
 	}
