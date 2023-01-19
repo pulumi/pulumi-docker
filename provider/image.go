@@ -6,11 +6,18 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"github.com/moby/buildkit/session"
+	"net"
+
+	"github.com/docker/cli/cli/config"
+	"github.com/docker/cli/cli/config/credentials"
+	clitypes "github.com/docker/cli/cli/config/types"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
 	"github.com/docker/docker/pkg/archive"
 	"github.com/docker/docker/pkg/jsonmessage"
 	structpb "github.com/golang/protobuf/ptypes/struct"
+	controlapi "github.com/moby/buildkit/api/services/control"
 	"github.com/pkg/errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
@@ -77,7 +84,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		return "", nil, err
 	}
 
-	err = p.host.Log(ctx, "info", urn, "Building the image")
+	err = p.host.LogStatus(ctx, "info", urn, "Building the image")
 
 	if err != nil {
 		return "", nil, err
@@ -89,8 +96,17 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		return "", nil, err
 	}
 
-	// make the build options
+	auths, err := getCredentials()
+	if err != nil {
+		return "", nil, err
+	}
+	// read auths to a map of authConfigs for the build options to consume
+	authConfigs := make(map[string]types.AuthConfig, len(auths))
+	for k, auth := range auths {
+		authConfigs[k] = types.AuthConfig(auth)
+	}
 
+	// make the build options
 	opts := types.ImageBuildOptions{
 		Dockerfile: img.Build.Dockerfile,
 		Tags:       []string{img.Name}, //this should build the image locally, sans registry info
@@ -98,6 +114,24 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		//CacheFrom:  img.Build.CachedImages, // TODO: this needs a login, so needs to be handled differently.
 		BuildArgs: build.Args,
 		Version:   build.BuilderVersion,
+
+		AuthConfigs: authConfigs,
+	}
+
+	// Start a session for BuildKit
+	if build.BuilderVersion == defaultBuilder {
+		sess, _ := session.NewSession(ctx, "pulumi-docker", "")
+		dialSession := func(ctx context.Context, proto string, meta map[string][]string) (net.Conn, error) {
+			return docker.DialHijack(ctx, "/session", proto, meta)
+		}
+		go func() {
+			err := sess.Run(ctx, dialSession)
+			if err != nil {
+				return
+			}
+		}()
+		defer sess.Close()
+		opts.SessionID = sess.ID()
 	}
 
 	imgBuildResp, err := docker.ImageBuild(ctx, tar, opts)
@@ -106,10 +140,16 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	}
 
 	defer imgBuildResp.Body.Close()
-	// Print build logs to terminal
+
+	// Print build logs to `Info` progress report
 	scanner := bufio.NewScanner(imgBuildResp.Body)
 	for scanner.Scan() {
-		err := p.host.Log(ctx, "info", urn, scanner.Text())
+
+		info, err := processLogLine(scanner.Text())
+		if err != nil {
+			return "", nil, err
+		}
+		err = p.host.LogStatus(ctx, "info", urn, info)
 		if err != nil {
 			return "", nil, err
 		}
@@ -130,13 +170,13 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		return img.Name, pbstruct, err
 	}
 
-	err = p.host.Log(ctx, "info", urn, "Pushing Image to the registry")
+	err = p.host.LogStatus(ctx, "info", urn, "Pushing Image to the registry")
 
 	if err != nil {
 		return "", nil, err
 	}
 	// Quick and dirty auth; we can also preconfigure the client itself I believe
-
+	// TODO: use auth pattern as above to use default auth
 	var authConfig = types.AuthConfig{
 		Username:      img.Registry.Username,
 		Password:      img.Registry.Password,
@@ -161,35 +201,17 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 
 	defer pushOutput.Close()
 
-	// Print push logs to terminal
+	// Print push logs to `Info` progress report
 	pushScanner := bufio.NewScanner(pushOutput)
 	for pushScanner.Scan() {
-		msg := pushScanner.Text()
-		var jsmsg jsonmessage.JSONMessage
-		err := json.Unmarshal([]byte(msg), &jsmsg)
+		info, err := processLogLine(pushScanner.Text())
 		if err != nil {
-			return "", nil, errors.Wrapf(err, "encountered error unmarshalling:")
+			return "", nil, err
 		}
-		if jsmsg.Status != "" {
-			if jsmsg.Status != "Pushing" {
-				var info string
-				if jsmsg.ID != "" {
-					info = fmt.Sprintf("%s: %s", jsmsg.ID, jsmsg.Status)
-				} else {
-					info = jsmsg.Status
-
-				}
-				err := p.host.Log(ctx, "info", urn, info)
-				if err != nil {
-					return "", nil, err
-				}
-			}
+		err = p.host.LogStatus(ctx, "info", urn, info)
+		if err != nil {
+			return "", nil, err
 		}
-
-		if jsmsg.Error != nil {
-			return "", nil, errors.Errorf(jsmsg.Error.Message)
-		}
-
 	}
 
 	outputs := map[string]interface{}{
@@ -369,4 +391,87 @@ func marshalSkipPush(sp resource.PropertyValue) bool {
 		return false
 	}
 	return sp.BoolValue()
+}
+
+func getCredentials() (map[string]clitypes.AuthConfig, error) {
+	creds, err := config.Load(config.Dir())
+	if err != nil {
+		return nil, err
+	}
+	creds.CredentialsStore = credentials.DetectDefaultStore(creds.CredentialsStore)
+	auths, err := creds.GetAllCredentials()
+	if err != nil {
+		return nil, err
+	}
+	return auths, nil
+}
+
+func processLogLine(msg string) (string, error) {
+	var info string
+	var jm jsonmessage.JSONMessage
+	err := json.Unmarshal([]byte(msg), &jm)
+	if err != nil {
+		return info, errors.Wrapf(err, "encountered error unmarshalling:")
+	}
+	// process this JSONMessage
+	if jm.Error != nil {
+		if jm.Error.Code == 401 {
+			return info, fmt.Errorf("authentication is required")
+		}
+		return info, errors.Errorf(jm.Error.Message)
+	}
+	if jm.From != "" {
+		info += jm.From
+	}
+	if jm.Progress != nil {
+		info += jm.Status + " " + jm.Progress.String()
+	} else if jm.Stream != "" {
+		info += jm.Stream
+
+	} else {
+		info += jm.Status
+	}
+	if jm.Aux != nil {
+		// if we're dealing with buildkit tracer logs, we need to decode
+		if jm.ID == "moby.buildkit.trace" {
+			// Process the message like the 'tracer.write' method in build_buildkit.go
+			// https://github.com/docker/docker-ce/blob/master/components/cli/cli/command/image/build_buildkit.go#L392
+			var resp controlapi.StatusResponse
+			var infoBytes []byte
+			// ignore messages that are not understood
+			if err := json.Unmarshal(*jm.Aux, &infoBytes); err != nil {
+				info += "failed to parse aux message: " + err.Error()
+			}
+			if err := (&resp).Unmarshal(infoBytes); err != nil {
+				info += "failed to parse aux message: " + err.Error()
+			}
+			for _, vertex := range resp.Vertexes {
+				info += fmt.Sprintf("layer: %+v\n", vertex.Digest)
+			}
+			for _, status := range resp.Statuses {
+				info += fmt.Sprintf("status: %s\n", status.GetID())
+			}
+			for _, log := range resp.Logs {
+				info += fmt.Sprintf("log: %+v\n", log.GetMsg())
+			}
+			for _, warn := range resp.Warnings {
+				info += fmt.Sprintf("warning: %+v\n", warn.GetShort())
+			}
+
+		} else {
+			// most other aux messages are secretly a BuildResult
+			var result types.BuildResult
+			if err := json.Unmarshal(*jm.Aux, &result); err != nil {
+				// in the case of non-BuildResult aux messages we print out the whole object.
+				infoBytes, err := json.Marshal(jm.Aux)
+				if err != nil {
+					info += "failed to parse aux message: " + err.Error()
+				}
+				info += string(infoBytes)
+			} else {
+				info += result.ID
+			}
+		}
+	}
+	return info, nil
 }
