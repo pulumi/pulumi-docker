@@ -3161,9 +3161,7 @@
             },
             "type": "object",
             "required": [
-                "server",
-                "username",
-                "password"
+                "server"
             ]
         }
     },

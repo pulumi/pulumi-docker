@@ -134,7 +134,7 @@ func Provider() tfbridge.ProviderInfo {
 							Secret:      true,
 						},
 					},
-					Required: []string{"server", "username", "password"},
+					Required: []string{"server"},
 				},
 			},
 			dockerResource(dockerMod, "DockerBuild").String(): {

@@ -7,6 +7,8 @@ import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
 import java.lang.String;
 import java.util.Objects;
+import java.util.Optional;
+import javax.annotation.Nullable;
 
 
 /**
@@ -21,15 +23,15 @@ public final class RegistryArgs extends com.pulumi.resources.ResourceArgs {
      * The password to authenticate to the registry
      * 
      */
-    @Import(name="password", required=true)
-    private Output<String> password;
+    @Import(name="password")
+    private @Nullable Output<String> password;
 
     /**
      * @return The password to authenticate to the registry
      * 
      */
-    public Output<String> password() {
-        return this.password;
+    public Optional<Output<String>> password() {
+        return Optional.ofNullable(this.password);
     }
 
     /**
@@ -51,15 +53,15 @@ public final class RegistryArgs extends com.pulumi.resources.ResourceArgs {
      * The username to authenticate to the registry
      * 
      */
-    @Import(name="username", required=true)
-    private Output<String> username;
+    @Import(name="username")
+    private @Nullable Output<String> username;
 
     /**
      * @return The username to authenticate to the registry
      * 
      */
-    public Output<String> username() {
-        return this.username;
+    public Optional<Output<String>> username() {
+        return Optional.ofNullable(this.username);
     }
 
     private RegistryArgs() {}
@@ -94,7 +96,7 @@ public final class RegistryArgs extends com.pulumi.resources.ResourceArgs {
          * @return builder
          * 
          */
-        public Builder password(Output<String> password) {
+        public Builder password(@Nullable Output<String> password) {
             $.password = password;
             return this;
         }
@@ -136,7 +138,7 @@ public final class RegistryArgs extends com.pulumi.resources.ResourceArgs {
          * @return builder
          * 
          */
-        public Builder username(Output<String> username) {
+        public Builder username(@Nullable Output<String> username) {
             $.username = username;
             return this;
         }
@@ -152,9 +154,7 @@ public final class RegistryArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         public RegistryArgs build() {
-            $.password = Objects.requireNonNull($.password, "expected parameter 'password' to be non-null");
             $.server = Objects.requireNonNull($.server, "expected parameter 'server' to be non-null");
-            $.username = Objects.requireNonNull($.username, "expected parameter 'username' to be non-null");
             return $;
         }
     }

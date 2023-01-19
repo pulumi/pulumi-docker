@@ -9860,11 +9860,11 @@ func (o GetNetworkIpamConfigArrayOutput) Index(i pulumi.IntInput) GetNetworkIpam
 // Describes a Docker container registry
 type Registry struct {
 	// The password to authenticate to the registry
-	Password string `pulumi:"password"`
+	Password *string `pulumi:"password"`
 	// The URL of the Docker registry server
 	Server string `pulumi:"server"`
 	// The username to authenticate to the registry
-	Username string `pulumi:"username"`
+	Username *string `pulumi:"username"`
 }
 
 // RegistryInput is an input type that accepts RegistryArgs and RegistryOutput values.
@@ -9881,11 +9881,11 @@ type RegistryInput interface {
 // Describes a Docker container registry
 type RegistryArgs struct {
 	// The password to authenticate to the registry
-	Password pulumi.StringInput `pulumi:"password"`
+	Password pulumi.StringPtrInput `pulumi:"password"`
 	// The URL of the Docker registry server
 	Server pulumi.StringInput `pulumi:"server"`
 	// The username to authenticate to the registry
-	Username pulumi.StringInput `pulumi:"username"`
+	Username pulumi.StringPtrInput `pulumi:"username"`
 }
 
 func (RegistryArgs) ElementType() reflect.Type {
@@ -9967,8 +9967,8 @@ func (o RegistryOutput) ToRegistryPtrOutputWithContext(ctx context.Context) Regi
 }
 
 // The password to authenticate to the registry
-func (o RegistryOutput) Password() pulumi.StringOutput {
-	return o.ApplyT(func(v Registry) string { return v.Password }).(pulumi.StringOutput)
+func (o RegistryOutput) Password() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v Registry) *string { return v.Password }).(pulumi.StringPtrOutput)
 }
 
 // The URL of the Docker registry server
@@ -9977,8 +9977,8 @@ func (o RegistryOutput) Server() pulumi.StringOutput {
 }
 
 // The username to authenticate to the registry
-func (o RegistryOutput) Username() pulumi.StringOutput {
-	return o.ApplyT(func(v Registry) string { return v.Username }).(pulumi.StringOutput)
+func (o RegistryOutput) Username() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v Registry) *string { return v.Username }).(pulumi.StringPtrOutput)
 }
 
 type RegistryPtrOutput struct{ *pulumi.OutputState }
@@ -10011,7 +10011,7 @@ func (o RegistryPtrOutput) Password() pulumi.StringPtrOutput {
 		if v == nil {
 			return nil
 		}
-		return &v.Password
+		return v.Password
 	}).(pulumi.StringPtrOutput)
 }
 
@@ -10031,7 +10031,7 @@ func (o RegistryPtrOutput) Username() pulumi.StringPtrOutput {
 		if v == nil {
 			return nil
 		}
-		return &v.Username
+		return v.Username
 	}).(pulumi.StringPtrOutput)
 }
 
