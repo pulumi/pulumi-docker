@@ -188,14 +188,14 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		// send warning if user is attempting to use in-program credentials
 		if img.Registry.Username == "" && img.Registry.Password != "" {
 			msg := "username was not set, although password was; using host credentials file"
-			err = p.host.LogStatus(ctx, "warning", urn, msg)
+			err = p.host.Log(ctx, "warning", urn, msg)
 			if err != nil {
 				return "", nil, err
 			}
 		}
 		if img.Registry.Password == "" && img.Registry.Username != "" {
 			msg := "password was not set, although username was; using host credentials file"
-			err = p.host.LogStatus(ctx, "warning", urn, msg)
+			err = p.host.Log(ctx, "warning", urn, msg)
 			if err != nil {
 				return "", nil, err
 			}
