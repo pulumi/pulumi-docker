@@ -128,7 +128,6 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 	inputs["build"] = resource.NewObjectProperty(resource.PropertyMap{
 		"contextDigest": resource.NewStringProperty(contextDigest),
 	})
-	//inputs["build"].ObjectValue()["contextDigest"] = resource.NewStringProperty(contextDigest)
 
 	inputStruct, err := plugin.MarshalProperties(inputs, plugin.MarshalOptions{
 		KeepUnknowns: true,
