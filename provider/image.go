@@ -175,15 +175,37 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	if err != nil {
 		return "", nil, err
 	}
-	// Quick and dirty auth; we can also preconfigure the client itself I believe
-	// TODO: use auth pattern as above to use default auth
-	var authConfig = types.AuthConfig{
-		Username:      img.Registry.Username,
-		Password:      img.Registry.Password,
-		ServerAddress: img.Registry.Server,
+
+	// authentication for registry push
+	// we check if the user set creds in the Pulumi program, and use those preferentially
+	var pushAuthConfig types.AuthConfig
+
+	if img.Registry.Username != "" && img.Registry.Password != "" {
+		pushAuthConfig.Username = img.Registry.Username
+		pushAuthConfig.Password = img.Registry.Password
+		pushAuthConfig.ServerAddress = img.Registry.Server
+	} else {
+		// send warning if user is attempting to use in-program credentials
+		if img.Registry.Username == "" && img.Registry.Password != "" {
+			msg := "username was not set, although password was; using host credentials file"
+			err = p.host.LogStatus(ctx, "warning", urn, msg)
+			if err != nil {
+				return "", nil, err
+			}
+		}
+		if img.Registry.Password == "" && img.Registry.Username != "" {
+			msg := "password was not set, although username was; using host credentials file"
+			err = p.host.LogStatus(ctx, "warning", urn, msg)
+			if err != nil {
+				return "", nil, err
+			}
+		}
+		// we push to the server declared in the program, using our auth configs from image build.
+		// if the program does not have a server declared, we will let the docker client error
+		pushAuthConfig = authConfigs[img.Registry.Server]
 	}
 
-	authConfigBytes, err := json.Marshal(authConfig)
+	authConfigBytes, err := json.Marshal(pushAuthConfig)
 
 	if err != nil {
 		return "", nil, errors.Wrap(err, "Error parsing authConfig")

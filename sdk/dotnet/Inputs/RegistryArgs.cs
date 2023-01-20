@@ -15,7 +15,7 @@ namespace Pulumi.Docker.Inputs
     /// </summary>
     public sealed class RegistryArgs : global::Pulumi.ResourceArgs
     {
-        [Input("password", required: true)]
+        [Input("password")]
         private Input<string>? _password;
 
         /// <summary>
@@ -40,8 +40,8 @@ namespace Pulumi.Docker.Inputs
         /// <summary>
         /// The username to authenticate to the registry
         /// </summary>
-        [Input("username", required: true)]
-        public Input<string> Username { get; set; } = null!;
+        [Input("username")]
+        public Input<string>? Username { get; set; }
 
         public RegistryArgs()
         {

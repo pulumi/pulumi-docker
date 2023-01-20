@@ -4196,30 +4196,20 @@ class DockerBuildArgs:
 @pulumi.input_type
 class RegistryArgs:
     def __init__(__self__, *,
-                 password: pulumi.Input[str],
                  server: pulumi.Input[str],
-                 username: pulumi.Input[str]):
+                 password: Optional[pulumi.Input[str]] = None,
+                 username: Optional[pulumi.Input[str]] = None):
         """
         Describes a Docker container registry
-        :param pulumi.Input[str] password: The password to authenticate to the registry
         :param pulumi.Input[str] server: The URL of the Docker registry server
+        :param pulumi.Input[str] password: The password to authenticate to the registry
         :param pulumi.Input[str] username: The username to authenticate to the registry
         """
-        pulumi.set(__self__, "password", password)
         pulumi.set(__self__, "server", server)
-        pulumi.set(__self__, "username", username)
-
-    @property
-    @pulumi.getter
-    def password(self) -> pulumi.Input[str]:
-        """
-        The password to authenticate to the registry
-        """
-        return pulumi.get(self, "password")
-
-    @password.setter
-    def password(self, value: pulumi.Input[str]):
-        pulumi.set(self, "password", value)
+        if password is not None:
+            pulumi.set(__self__, "password", password)
+        if username is not None:
+            pulumi.set(__self__, "username", username)
 
     @property
     @pulumi.getter
@@ -4235,14 +4225,26 @@ class RegistryArgs:
 
     @property
     @pulumi.getter
-    def username(self) -> pulumi.Input[str]:
+    def password(self) -> Optional[pulumi.Input[str]]:
+        """
+        The password to authenticate to the registry
+        """
+        return pulumi.get(self, "password")
+
+    @password.setter
+    def password(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "password", value)
+
+    @property
+    @pulumi.getter
+    def username(self) -> Optional[pulumi.Input[str]]:
         """
         The username to authenticate to the registry
         """
         return pulumi.get(self, "username")
 
     @username.setter
-    def username(self, value: pulumi.Input[str]):
+    def username(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "username", value)
 
 
