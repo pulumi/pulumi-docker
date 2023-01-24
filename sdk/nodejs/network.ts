@@ -17,7 +17,7 @@ import * as utilities from "./utilities";
  * import * as pulumi from "@pulumi/pulumi";
  * import * as docker from "@pulumi/docker";
  *
- * const privateNetwork = new docker.Network("private_network", {});
+ * const privateNetwork = new docker.Network("privateNetwork", {});
  * ```
  *
  * ## Import

@@ -9862,7 +9862,7 @@ type Registry struct {
 	// The password to authenticate to the registry
 	Password *string `pulumi:"password"`
 	// The URL of the Docker registry server
-	Server string `pulumi:"server"`
+	Server *string `pulumi:"server"`
 	// The username to authenticate to the registry
 	Username *string `pulumi:"username"`
 }
@@ -9883,7 +9883,7 @@ type RegistryArgs struct {
 	// The password to authenticate to the registry
 	Password pulumi.StringPtrInput `pulumi:"password"`
 	// The URL of the Docker registry server
-	Server pulumi.StringInput `pulumi:"server"`
+	Server pulumi.StringPtrInput `pulumi:"server"`
 	// The username to authenticate to the registry
 	Username pulumi.StringPtrInput `pulumi:"username"`
 }
@@ -9972,8 +9972,8 @@ func (o RegistryOutput) Password() pulumi.StringPtrOutput {
 }
 
 // The URL of the Docker registry server
-func (o RegistryOutput) Server() pulumi.StringOutput {
-	return o.ApplyT(func(v Registry) string { return v.Server }).(pulumi.StringOutput)
+func (o RegistryOutput) Server() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v Registry) *string { return v.Server }).(pulumi.StringPtrOutput)
 }
 
 // The username to authenticate to the registry
@@ -10021,7 +10021,7 @@ func (o RegistryPtrOutput) Server() pulumi.StringPtrOutput {
 		if v == nil {
 			return nil
 		}
-		return &v.Server
+		return v.Server
 	}).(pulumi.StringPtrOutput)
 }
 

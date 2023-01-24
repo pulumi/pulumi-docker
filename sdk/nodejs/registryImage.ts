@@ -18,13 +18,10 @@ import * as utilities from "./utilities";
  * ```typescript
  * import * as pulumi from "@pulumi/pulumi";
  * import * as docker from "@pulumi/docker";
- * import * as process from "process";
  *
- * const helloworld = new docker.RegistryImage("helloworld", {
- *     build: {
- *         context: `${process.cwd()}/absolutePathToContextFolder`,
- *     },
- * });
+ * const helloworld = new docker.RegistryImage("helloworld", {build: {
+ *     context: `${path.cwd}/absolutePathToContextFolder`,
+ * }});
  * ```
  */
 export class RegistryImage extends pulumi.CustomResource {

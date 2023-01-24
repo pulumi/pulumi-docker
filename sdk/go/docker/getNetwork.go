@@ -26,7 +26,7 @@ import (
 //
 //	func main() {
 //		pulumi.Run(func(ctx *pulumi.Context) error {
-//			_, err = docker.LookupNetwork(ctx, &GetNetworkArgs{
+//			_, err := docker.LookupNetwork(ctx, &docker.LookupNetworkArgs{
 //				Name: "main",
 //			}, nil)
 //			if err != nil {

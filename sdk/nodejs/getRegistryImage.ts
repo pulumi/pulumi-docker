@@ -23,11 +23,8 @@ import * as utilities from "./utilities";
  * ```
  */
 export function getRegistryImage(args: GetRegistryImageArgs, opts?: pulumi.InvokeOptions): Promise<GetRegistryImageResult> {
-    if (!opts) {
-        opts = {}
-    }
 
-    opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
+    opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
     return pulumi.runtime.invoke("docker:index/getRegistryImage:getRegistryImage", {
         "insecureSkipVerify": args.insecureSkipVerify,
         "name": args.name,
@@ -69,9 +66,26 @@ export interface GetRegistryImageResult {
      */
     readonly sha256Digest: string;
 }
-
+/**
+ * Reads the image metadata from a Docker Registry. Used in conjunction with the docker.RemoteImage resource to keep an image up to date on the latest available version of the tag.
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as docker from "@pulumi/docker";
+ *
+ * const ubuntuRegistryImage = docker.getRegistryImage({
+ *     name: "ubuntu:precise",
+ * });
+ * const ubuntuRemoteImage = new docker.RemoteImage("ubuntuRemoteImage", {
+ *     name: ubuntuRegistryImage.then(ubuntuRegistryImage => ubuntuRegistryImage.name),
+ *     pullTriggers: [ubuntuRegistryImage.then(ubuntuRegistryImage => ubuntuRegistryImage.sha256Digest)],
+ * });
+ * ```
+ */
 export function getRegistryImageOutput(args: GetRegistryImageOutputArgs, opts?: pulumi.InvokeOptions): pulumi.Output<GetRegistryImageResult> {
-    return pulumi.output(args).apply(a => getRegistryImage(a, opts))
+    return pulumi.output(args).apply((a: any) => getRegistryImage(a, opts))
 }
 
 /**
