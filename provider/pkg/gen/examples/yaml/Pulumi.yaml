@@ -12,5 +12,7 @@ resources:
       build:
         dockerfile: Dockerfile
         context: .
+    options:
+      version: v4.0.0-alpha.1
 outputs:
   imageName: ${demo-image.imageName}
