@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"github.com/moby/buildkit/session"
 	"net"
+	"strings"
 
 	"github.com/docker/cli/cli/config"
 	"github.com/docker/cli/cli/config/credentials"
@@ -59,7 +60,6 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	if err != nil {
 		return "", nil, err
 	}
-
 	reg := marshalRegistry(inputs["registry"])
 	skipPush := marshalSkipPush(inputs["skipPush"])
 	// read in values to Image
@@ -183,7 +183,11 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	if img.Registry.Username != "" && img.Registry.Password != "" {
 		pushAuthConfig.Username = img.Registry.Username
 		pushAuthConfig.Password = img.Registry.Password
-		pushAuthConfig.ServerAddress = img.Registry.Server
+		pushAuthConfig.ServerAddress, err = getRegistryAddr(img.Registry.Server, img.Name)
+		if err != nil {
+			return "", nil, err
+		}
+
 	} else {
 		// send warning if user is attempting to use in-program credentials
 		if img.Registry.Username == "" && img.Registry.Password != "" {
@@ -201,8 +205,12 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 			}
 		}
 		// we push to the server declared in the program, using our auth configs from image build.
-		// if the program does not have a server declared, we will let the docker client error
-		pushAuthConfig = authConfigs[img.Registry.Server]
+		// if there is no servername in the registry, we attempt to build it from the fully qualified image name.
+		registryServer, err := getRegistryAddr(img.Registry.Server, img.Name)
+		if err != nil {
+			return "", nil, err
+		}
+		pushAuthConfig = authConfigs[registryServer]
 	}
 
 	authConfigBytes, err := json.Marshal(pushAuthConfig)
@@ -426,6 +434,37 @@ func getCredentials() (map[string]clitypes.AuthConfig, error) {
 		return nil, err
 	}
 	return auths, nil
+}
+
+func getRegistryAddr(serverName, imgName string) (string, error) {
+	var serverAddr string
+	if serverName == "docker.io" {
+		// if it's dockerhub, we special case it so host config can find the correct registry
+		return "https://index.docker.io/v1/", nil
+	}
+
+	if serverName == "" {
+		// construct server address from image name
+		addr, _, found := strings.Cut(imgName, "/")
+		if !found {
+			return "", errors.Errorf("image name must be fully qualified: %s", imgName)
+		}
+		if addr == "docker.io" {
+			return "https://index.docker.io/v1/", nil
+		}
+		// we need the full server address for the lookup
+		serverAddr = "https://" + addr
+
+	} else {
+		// check if the provider registry server starts with https://
+		if strings.Contains(serverName, "https://") {
+			serverAddr = serverName
+		} else {
+			// TODO: this is where we would default to Docker if we wanted to do so.
+			return "", errors.Errorf("invalid registry server name: %s", serverName)
+		}
+	}
+	return serverAddr, nil
 }
 
 func processLogLine(msg string) (string, error) {
