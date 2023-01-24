@@ -19,7 +19,6 @@ import (
 	"github.com/docker/docker/pkg/jsonmessage"
 	structpb "github.com/golang/protobuf/ptypes/struct"
 	controlapi "github.com/moby/buildkit/api/services/control"
-	"github.com/pkg/errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
 )
@@ -218,7 +217,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	authConfigBytes, err := json.Marshal(pushAuthConfig)
 
 	if err != nil {
-		return "", nil, errors.Wrap(err, "Error parsing authConfig")
+		return "", nil, fmt.Errorf("error parsing authConfig: %v", err)
 	}
 	authConfigEncoded := base64.URLEncoding.EncodeToString(authConfigBytes)
 
@@ -413,7 +412,7 @@ func marshalBuilder(builder resource.PropertyValue) (types.BuilderVersion, error
 	default:
 		// because the Docker client will default to `BuilderV1`
 		// when version isn't set, we return an error
-		return version, errors.Errorf("Invalid Docker Builder version")
+		return version, fmt.Errorf("invalid Docker Builder version")
 	}
 }
 
@@ -453,7 +452,7 @@ func getRegistryAddrForAuth(serverName, imgName string) (string, error) {
 		// if there is no servername in the registry input, we attempt to build it from the fully qualified image name.
 		addr, _, found := strings.Cut(imgName, "/")
 		if !found {
-			return "", errors.Errorf("image name must be fully qualified: %s", imgName)
+			return "", fmt.Errorf("image name must be fully qualified: %s", imgName)
 		}
 		if addr == "docker.io" {
 			return "https://index.docker.io/v1/", nil
@@ -470,7 +469,7 @@ func getRegistryAddrForAuth(serverName, imgName string) (string, error) {
 			serverAddr = "https://" + serverName
 		}
 		// TODO: this is where we would default to Docker if we wanted to do so.
-		// A valid registry address includes a `.` so we could add additional helper checks here.
+		// https://github.com/pulumi/pulumi-docker/issues/466
 	}
 	return serverAddr, nil
 }
@@ -480,14 +479,14 @@ func processLogLine(msg string) (string, error) {
 	var jm jsonmessage.JSONMessage
 	err := json.Unmarshal([]byte(msg), &jm)
 	if err != nil {
-		return info, errors.Wrapf(err, "encountered error unmarshalling:")
+		return info, fmt.Errorf("encountered error unmarshalling: %v", err)
 	}
 	// process this JSONMessage
 	if jm.Error != nil {
 		if jm.Error.Code == 401 {
 			return info, fmt.Errorf("authentication is required")
 		}
-		return info, errors.Errorf(jm.Error.Message)
+		return info, fmt.Errorf(jm.Error.Message)
 	}
 	if jm.From != "" {
 		info += jm.From
