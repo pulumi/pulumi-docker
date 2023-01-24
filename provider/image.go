@@ -177,13 +177,14 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	}
 
 	// authentication for registry push
-	// we check if the user set creds in the Pulumi program, and use those preferentially
+	// we check if the user set creds in the Pulumi program, and use those preferentially,
+	// otherwise we use host machine creds via authConfigs.
 	var pushAuthConfig types.AuthConfig
 
 	if img.Registry.Username != "" && img.Registry.Password != "" {
 		pushAuthConfig.Username = img.Registry.Username
 		pushAuthConfig.Password = img.Registry.Password
-		pushAuthConfig.ServerAddress, err = getRegistryAddr(img.Registry.Server, img.Name)
+		pushAuthConfig.ServerAddress, err = getRegistryAddrForAuth(img.Registry.Server, img.Name)
 		if err != nil {
 			return "", nil, err
 		}
@@ -204,12 +205,12 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 				return "", nil, err
 			}
 		}
-		// we push to the server declared in the program, using our auth configs from image build.
-		// if there is no servername in the registry, we attempt to build it from the fully qualified image name.
-		registryServer, err := getRegistryAddr(img.Registry.Server, img.Name)
+
+		registryServer, err := getRegistryAddrForAuth(img.Registry.Server, img.Name)
 		if err != nil {
 			return "", nil, err
 		}
+
 		pushAuthConfig = authConfigs[registryServer]
 	}
 
@@ -436,7 +437,12 @@ func getCredentials() (map[string]clitypes.AuthConfig, error) {
 	return auths, nil
 }
 
-func getRegistryAddr(serverName, imgName string) (string, error) {
+// // we push to the server declared in the program, using our auth configs from image build.
+//
+//	// if there is no servername in the registry input, we attempt to build it from the fully qualified image name.
+//
+// if there is no servername in the registry input, we attempt to build it from the fully qualified image name.
+func getRegistryAddrForAuth(serverName, imgName string) (string, error) {
 	var serverAddr string
 	if serverName == "docker.io" {
 		// if it's dockerhub, we special case it so host config can find the correct registry
@@ -457,11 +463,11 @@ func getRegistryAddr(serverName, imgName string) (string, error) {
 
 	} else {
 		// check if the provider registry server starts with https://
-		if strings.Contains(serverName, "https://") {
+		if strings.HasPrefix(serverName, "https://") {
 			serverAddr = serverName
 		} else {
 			// TODO: this is where we would default to Docker if we wanted to do so.
-			return "", errors.Errorf("invalid registry server name: %s", serverName)
+			serverAddr = "https://" + serverName
 		}
 	}
 	return serverAddr, nil
