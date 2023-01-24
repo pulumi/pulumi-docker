@@ -211,6 +211,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 			return "", nil, err
 		}
 
+		// we use the credentials for the server declared in the program, looking them up from the host authConfigs.
 		pushAuthConfig = authConfigs[registryServer]
 	}
 
@@ -437,11 +438,10 @@ func getCredentials() (map[string]clitypes.AuthConfig, error) {
 	return auths, nil
 }
 
-// // we push to the server declared in the program, using our auth configs from image build.
-//
-//	// if there is no servername in the registry input, we attempt to build it from the fully qualified image name.
-//
-// if there is no servername in the registry input, we attempt to build it from the fully qualified image name.
+// Because the authConfigs provided by the host include the `https://` prefix in the map keys, `getRegistryAddrForAuth`
+// ensures we return a registry address that includes the `https://` scheme.
+// While this prefix is not needed for program-provided auth, it is valid regardless, so adding it by default
+// keeps the special case handling to a minimum.
 func getRegistryAddrForAuth(serverName, imgName string) (string, error) {
 	var serverAddr string
 	if serverName == "docker.io" {
@@ -450,7 +450,7 @@ func getRegistryAddrForAuth(serverName, imgName string) (string, error) {
 	}
 
 	if serverName == "" {
-		// construct server address from image name
+		// if there is no servername in the registry input, we attempt to build it from the fully qualified image name.
 		addr, _, found := strings.Cut(imgName, "/")
 		if !found {
 			return "", errors.Errorf("image name must be fully qualified: %s", imgName)
@@ -466,9 +466,11 @@ func getRegistryAddrForAuth(serverName, imgName string) (string, error) {
 		if strings.HasPrefix(serverName, "https://") {
 			serverAddr = serverName
 		} else {
-			// TODO: this is where we would default to Docker if we wanted to do so.
+			// courtesy add the prefix so user does not have to explicitly do so
 			serverAddr = "https://" + serverName
 		}
+		// TODO: this is where we would default to Docker if we wanted to do so.
+		// A valid registry address includes a `.` so we could add additional helper checks here.
 	}
 	return serverAddr, nil
 }
