@@ -32,6 +32,7 @@ func TestSetRegistry(t *testing.T) {
 		input := resource.NewObjectProperty(resource.PropertyMap{
 			"server":   resource.NewStringProperty("https://index.docker.io/v1/"),
 			"username": resource.NewStringProperty("pulumipus"),
+			"password": resource.NewStringProperty(""),
 		})
 
 		actual := marshalRegistry(input)
