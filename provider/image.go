@@ -6,6 +6,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"github.com/docker/distribution/reference"
 	"github.com/moby/buildkit/session"
 	"net"
 	"strings"
@@ -450,10 +451,11 @@ func getRegistryAddrForAuth(serverName, imgName string) (string, error) {
 
 	if serverName == "" {
 		// if there is no servername in the registry input, we attempt to build it from the fully qualified image name.
-		addr, _, found := strings.Cut(imgName, "/")
-		if !found {
-			return "", fmt.Errorf("image name must be fully qualified: %s", imgName)
+		addr, err := getRegistryAddrFromImage(imgName)
+		if err != nil {
+			return "", err
 		}
+
 		if addr == "docker.io" {
 			return "https://index.docker.io/v1/", nil
 		}
@@ -472,6 +474,20 @@ func getRegistryAddrForAuth(serverName, imgName string) (string, error) {
 		// https://github.com/pulumi/pulumi-docker/issues/466
 	}
 	return serverAddr, nil
+}
+
+func getRegistryAddrFromImage(imgName string) (string, error) {
+	named, err := reference.ParseNamed(imgName)
+	if err != nil {
+		msg := fmt.Errorf("error: %s. This provider requires all image names to be fully qualified.\n"+
+			"For example, if you are attempting to push to Dockerhub, prefix your image name with `docker.io`:\n\n"+
+			"`docker.io/repository/image:tag`", err)
+		fmt.Println(msg)
+		return "", err
+	}
+	addr := reference.Domain(named)
+	return addr, nil
+
 }
 
 func processLogLine(msg string) (string, error) {
