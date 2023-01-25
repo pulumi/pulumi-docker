@@ -332,18 +332,10 @@ func marshalCachedImages(img Image, b resource.PropertyValue) []string {
 	if c.IsNull() {
 		return cacheImages
 	}
-	latest := img.Registry.Username + "/" + img.Name
-	// if we specify cacheFrom as True, we pull the latest build+push of our image implicitly, i.e. registry/image
-	if c.IsBool() {
-		useCache := c.BoolValue()
-		if useCache {
-			cacheImages = append(cacheImages, latest)
-		}
-		return cacheImages
-	}
+
 	// if we specify a list of stages, then we only pull those
 	cacheFrom := c.ObjectValue()
-	stages := cacheFrom["stages"].ArrayValue()
+	stages := cacheFrom["images"].ArrayValue()
 	for _, img := range stages {
 		stage := img.StringValue()
 		cacheImages = append(cacheImages, stage)
