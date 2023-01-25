@@ -470,8 +470,6 @@ func getRegistryAddrForAuth(serverName, imgName string) (string, error) {
 			// courtesy add the prefix so user does not have to explicitly do so
 			serverAddr = "https://" + serverName
 		}
-		// TODO: this is where we would default to Docker if we wanted to do so.
-		// https://github.com/pulumi/pulumi-docker/issues/466
 	}
 	return serverAddr, nil
 }
