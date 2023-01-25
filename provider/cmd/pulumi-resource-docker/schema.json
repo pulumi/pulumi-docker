@@ -3033,14 +3033,14 @@
             ]
         },
         "docker:index/cacheFrom:CacheFrom": {
-            "description": "Specifies information about where to obtain a cache",
+            "description": "Contains a list of images to reference when building using a cache",
             "properties": {
-                "stages": {
+                "images": {
                     "type": "array",
                     "items": {
                         "type": "string"
                     },
-                    "description": "A list of cached build stages"
+                    "description": "Specifies cached images"
                 }
             },
             "type": "object"
@@ -3061,15 +3061,8 @@
                     "default": "BuilderBuildKit"
                 },
                 "cacheFrom": {
-                    "oneOf": [
-                        {
-                            "type": "boolean"
-                        },
-                        {
-                            "$ref": "#/types/docker:index/cacheFrom:CacheFrom"
-                        }
-                    ],
-                    "description": "A cached image or list of build stages to use as build cache"
+                    "$ref": "#/types/docker:index/cacheFrom:CacheFrom",
+                    "description": "A list of images to use as build cache"
                 },
                 "context": {
                     "type": "string",
