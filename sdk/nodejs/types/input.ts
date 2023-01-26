@@ -9,13 +9,13 @@ import * as enums from "../types/enums";
 import * as utilities from "../utilities";
 
 /**
- * Specifies information about where to obtain a cache
+ * Contains a list of images to reference when building using a cache
  */
 export interface CacheFrom {
     /**
-     * A list of cached build stages
+     * Specifies cached images
      */
-    stages?: pulumi.Input<pulumi.Input<string>[]>;
+    images?: pulumi.Input<pulumi.Input<string>[]>;
 }
 
 export interface ContainerCapabilities {
@@ -288,9 +288,9 @@ export interface DockerBuild {
      */
     builderVersion?: pulumi.Input<enums.BuilderVersion>;
     /**
-     * A cached image or list of build stages to use as build cache
+     * A list of images to use as build cache
      */
-    cacheFrom?: pulumi.Input<boolean | inputs.CacheFrom>;
+    cacheFrom?: pulumi.Input<inputs.CacheFrom>;
     /**
      * The path to the build context to use.
      */

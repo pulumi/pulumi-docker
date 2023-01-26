@@ -111,9 +111,9 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		Dockerfile: img.Build.Dockerfile,
 		Tags:       []string{img.Name}, //this should build the image locally, sans registry info
 		Remove:     true,
-		//CacheFrom:  img.Build.CachedImages, // TODO: this needs a login, so needs to be handled differently.
-		BuildArgs: build.Args,
-		Version:   build.BuilderVersion,
+		CacheFrom:  img.Build.CachedImages,
+		BuildArgs:  build.Args,
+		Version:    build.BuilderVersion,
 
 		AuthConfigs: authConfigs,
 	}
@@ -519,16 +519,21 @@ func processLogLine(msg string) (string, error) {
 				info += "failed to parse aux message: " + err.Error()
 			}
 			for _, vertex := range resp.Vertexes {
-				info += fmt.Sprintf("layer: %+v\n", vertex.Digest)
+				info += fmt.Sprintf("digest: %+v\n", vertex.Digest)
+				info += fmt.Sprintf("%s\n", vertex.Name)
+				if vertex.Error != "" {
+					info += fmt.Sprintf("error: %s\n", vertex.Error)
+				}
 			}
 			for _, status := range resp.Statuses {
-				info += fmt.Sprintf("status: %s\n", status.GetID())
+				info += fmt.Sprintf("%s\n", status.GetID())
 			}
 			for _, log := range resp.Logs {
-				info += fmt.Sprintf("log: %+v\n", log.GetMsg())
+				info += fmt.Sprintf("%s\n", string(log.Msg))
+
 			}
 			for _, warn := range resp.Warnings {
-				info += fmt.Sprintf("warning: %+v\n", warn.GetShort())
+				info += fmt.Sprintf("%s\n", string(warn.Short))
 			}
 
 		} else {
