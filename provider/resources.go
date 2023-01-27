@@ -157,16 +157,6 @@ func Provider() tfbridge.ProviderInfo {
 								Ref: "#/types/docker:index/cacheFrom:CacheFrom",
 							},
 						},
-						"env": {
-							Description: "Environment variables to set on the invocation of docker build, " +
-								"for example to support DOCKER_BUILDKIT=1 docker build.",
-							TypeSpec: schema.TypeSpec{
-								Type: "object",
-								AdditionalProperties: &schema.TypeSpec{
-									Type: "string",
-								},
-							},
-						},
 						"args": {
 							Description: "An optional map of named build-time argument variables to set " +
 								"during the Docker build. This flag allows you to pass built-time variables" +

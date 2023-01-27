@@ -3074,13 +3074,6 @@
                     "description": "The path to the Dockerfile to use.",
                     "default": "Dockerfile"
                 },
-                "env": {
-                    "type": "object",
-                    "additionalProperties": {
-                        "type": "string"
-                    },
-                    "description": "Environment variables to set on the invocation of docker build, for example to support DOCKER_BUILDKIT=1 docker build."
-                },
                 "extraOptions": {
                     "type": "array",
                     "items": {
