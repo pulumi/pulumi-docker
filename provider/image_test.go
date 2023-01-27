@@ -1,6 +1,7 @@
 package provider
 
 import (
+	"fmt"
 	"github.com/docker/docker/api/types"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/stretchr/testify/assert"
@@ -32,6 +33,7 @@ func TestSetRegistry(t *testing.T) {
 		input := resource.NewObjectProperty(resource.PropertyMap{
 			"server":   resource.NewStringProperty("https://index.docker.io/v1/"),
 			"username": resource.NewStringProperty("pulumipus"),
+			"password": resource.NewStringProperty(""),
 		})
 
 		actual := marshalRegistry(input)
@@ -400,5 +402,32 @@ func TestMarshalSkipPush(t *testing.T) {
 
 		actual := marshalSkipPush(input)
 		assert.Equal(t, expected, actual)
+	})
+}
+
+func TestGetRegistryAddrFromImage(t *testing.T) {
+
+	t.Run("Returns registry name of correct spec format", func(t *testing.T) {
+		expected := "pulumi.test.registry"
+		input := "pulumi.test.registry/unicorns/swiftwind:latest"
+		actual, err := getRegistryAddrFromImage(input)
+		assert.NoError(t, err)
+		assert.Equal(t, expected, actual)
+	})
+
+	t.Run("Returns error for incorrect registry format", func(t *testing.T) {
+		expected := ""
+		input := "pulumi-test-registry/unicorns/swiftwind:latest"
+
+		expectedError := fmt.Errorf(
+			"error: repository name must be canonical. This provider requires " +
+				"all image names to be fully qualified.\nFor example, if you are " +
+				"attempting to push to Dockerhub, prefix your image name with " +
+				"`docker.io`:\n\n`docker.io/repository/image:tag`",
+		)
+		actual, err := getRegistryAddrFromImage(input)
+		assert.Equal(t, expected, actual)
+		assert.Error(t, err)
+		assert.Equal(t, expectedError, err)
 	})
 }

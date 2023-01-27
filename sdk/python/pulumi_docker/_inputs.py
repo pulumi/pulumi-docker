@@ -4196,32 +4196,21 @@ class DockerBuildArgs:
 @pulumi.input_type
 class RegistryArgs:
     def __init__(__self__, *,
-                 server: pulumi.Input[str],
                  password: Optional[pulumi.Input[str]] = None,
+                 server: Optional[pulumi.Input[str]] = None,
                  username: Optional[pulumi.Input[str]] = None):
         """
         Describes a Docker container registry
-        :param pulumi.Input[str] server: The URL of the Docker registry server
         :param pulumi.Input[str] password: The password to authenticate to the registry
+        :param pulumi.Input[str] server: The URL of the Docker registry server
         :param pulumi.Input[str] username: The username to authenticate to the registry
         """
-        pulumi.set(__self__, "server", server)
         if password is not None:
             pulumi.set(__self__, "password", password)
+        if server is not None:
+            pulumi.set(__self__, "server", server)
         if username is not None:
             pulumi.set(__self__, "username", username)
-
-    @property
-    @pulumi.getter
-    def server(self) -> pulumi.Input[str]:
-        """
-        The URL of the Docker registry server
-        """
-        return pulumi.get(self, "server")
-
-    @server.setter
-    def server(self, value: pulumi.Input[str]):
-        pulumi.set(self, "server", value)
 
     @property
     @pulumi.getter
@@ -4234,6 +4223,18 @@ class RegistryArgs:
     @password.setter
     def password(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "password", value)
+
+    @property
+    @pulumi.getter
+    def server(self) -> Optional[pulumi.Input[str]]:
+        """
+        The URL of the Docker registry server
+        """
+        return pulumi.get(self, "server")
+
+    @server.setter
+    def server(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "server", value)
 
     @property
     @pulumi.getter

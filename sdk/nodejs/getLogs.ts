@@ -8,11 +8,8 @@ import * as utilities from "./utilities";
  * `docker.getLogs` provides logs from specific container
  */
 export function getLogs(args: GetLogsArgs, opts?: pulumi.InvokeOptions): Promise<GetLogsResult> {
-    if (!opts) {
-        opts = {}
-    }
 
-    opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
+    opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
     return pulumi.runtime.invoke("docker:index/getLogs:getLogs", {
         "details": args.details,
         "discardHeaders": args.discardHeaders,
@@ -87,9 +84,11 @@ export interface GetLogsResult {
     readonly timestamps?: boolean;
     readonly until?: string;
 }
-
+/**
+ * `docker.getLogs` provides logs from specific container
+ */
 export function getLogsOutput(args: GetLogsOutputArgs, opts?: pulumi.InvokeOptions): pulumi.Output<GetLogsResult> {
-    return pulumi.output(args).apply(a => getLogs(a, opts))
+    return pulumi.output(args).apply((a: any) => getLogs(a, opts))
 }
 
 /**

@@ -13,30 +13,23 @@ import * as utilities from "./utilities";
  * import * as pulumi from "@pulumi/pulumi";
  * import * as docker from "@pulumi/docker";
  *
- * // uses the 'latest' tag
- * const latest = pulumi.output(docker.getRemoteImage({
+ * const latest = docker.getRemoteImage({
  *     name: "nginx",
- * }));
- * // uses a specific tag
- * const specific = pulumi.output(docker.getRemoteImage({
+ * });
+ * const specific = docker.getRemoteImage({
  *     name: "nginx:1.17.6",
- * }));
- * // use the image digest
- * const digest = pulumi.output(docker.getRemoteImage({
+ * });
+ * const digest = docker.getRemoteImage({
  *     name: "nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2",
- * }));
- * // uses the tag and the image digest
- * const tagAndDigest = pulumi.output(docker.getRemoteImage({
+ * });
+ * const tagAndDigest = docker.getRemoteImage({
  *     name: "nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2",
- * }));
+ * });
  * ```
  */
 export function getRemoteImage(args: GetRemoteImageArgs, opts?: pulumi.InvokeOptions): Promise<GetRemoteImageResult> {
-    if (!opts) {
-        opts = {}
-    }
 
-    opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
+    opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
     return pulumi.runtime.invoke("docker:index/getRemoteImage:getRemoteImage", {
         "name": args.name,
     }, opts);
@@ -69,9 +62,31 @@ export interface GetRemoteImageResult {
      */
     readonly repoDigest: string;
 }
-
+/**
+ * `docker.RemoteImage` provides details about a specific Docker Image which need to be presend on the Docker Host
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as docker from "@pulumi/docker";
+ *
+ * const latest = docker.getRemoteImage({
+ *     name: "nginx",
+ * });
+ * const specific = docker.getRemoteImage({
+ *     name: "nginx:1.17.6",
+ * });
+ * const digest = docker.getRemoteImage({
+ *     name: "nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2",
+ * });
+ * const tagAndDigest = docker.getRemoteImage({
+ *     name: "nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2",
+ * });
+ * ```
+ */
 export function getRemoteImageOutput(args: GetRemoteImageOutputArgs, opts?: pulumi.InvokeOptions): pulumi.Output<GetRemoteImageResult> {
-    return pulumi.output(args).apply(a => getRemoteImage(a, opts))
+    return pulumi.output(args).apply((a: any) => getRemoteImage(a, opts))
 }
 
 /**

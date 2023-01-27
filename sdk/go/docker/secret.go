@@ -36,7 +36,7 @@ func NewSecret(ctx *pulumi.Context,
 		return nil, errors.New("invalid value for required argument 'Data'")
 	}
 	if args.Data != nil {
-		args.Data = pulumi.ToSecret(args.Data).(pulumi.StringOutput)
+		args.Data = pulumi.ToSecret(args.Data).(pulumi.StringInput)
 	}
 	secrets := pulumi.AdditionalSecretOutputs([]string{
 		"data",

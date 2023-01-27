@@ -384,7 +384,7 @@ export interface Registry {
     /**
      * The URL of the Docker registry server
      */
-    server: pulumi.Input<string>;
+    server?: pulumi.Input<string>;
     /**
      * The username to authenticate to the registry
      */

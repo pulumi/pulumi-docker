@@ -38,15 +38,15 @@ public final class RegistryArgs extends com.pulumi.resources.ResourceArgs {
      * The URL of the Docker registry server
      * 
      */
-    @Import(name="server", required=true)
-    private Output<String> server;
+    @Import(name="server")
+    private @Nullable Output<String> server;
 
     /**
      * @return The URL of the Docker registry server
      * 
      */
-    public Output<String> server() {
-        return this.server;
+    public Optional<Output<String>> server() {
+        return Optional.ofNullable(this.server);
     }
 
     /**
@@ -117,7 +117,7 @@ public final class RegistryArgs extends com.pulumi.resources.ResourceArgs {
          * @return builder
          * 
          */
-        public Builder server(Output<String> server) {
+        public Builder server(@Nullable Output<String> server) {
             $.server = server;
             return this;
         }
@@ -154,7 +154,6 @@ public final class RegistryArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         public RegistryArgs build() {
-            $.server = Objects.requireNonNull($.server, "expected parameter 'server' to be non-null");
             return $;
         }
     }

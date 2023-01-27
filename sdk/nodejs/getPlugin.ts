@@ -16,11 +16,8 @@ import * as utilities from "./utilities";
  */
 export function getPlugin(args?: GetPluginArgs, opts?: pulumi.InvokeOptions): Promise<GetPluginResult> {
     args = args || {};
-    if (!opts) {
-        opts = {}
-    }
 
-    opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
+    opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
     return pulumi.runtime.invoke("docker:index/getPlugin:getPlugin", {
         "alias": args.alias,
         "id": args.id,
@@ -74,9 +71,18 @@ export interface GetPluginResult {
      */
     readonly pluginReference: string;
 }
-
+/**
+ * Reads the local Docker plugin. The plugin must be installed locally.
+ *
+ * ## Example Usage
+ *
+ * ### With alias
+ * data "docker.Plugin" "byAlias" {
+ *   alias = "sample-volume-plugin:latest"
+ * }
+ */
 export function getPluginOutput(args?: GetPluginOutputArgs, opts?: pulumi.InvokeOptions): pulumi.Output<GetPluginResult> {
-    return pulumi.output(args).apply(a => getPlugin(a, opts))
+    return pulumi.output(args).apply((a: any) => getPlugin(a, opts))
 }
 
 /**

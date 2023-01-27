@@ -6,8 +6,10 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"github.com/docker/distribution/reference"
 	"github.com/moby/buildkit/session"
 	"net"
+	"strings"
 
 	"github.com/docker/cli/cli/config"
 	"github.com/docker/cli/cli/config/credentials"
@@ -18,7 +20,6 @@ import (
 	"github.com/docker/docker/pkg/jsonmessage"
 	structpb "github.com/golang/protobuf/ptypes/struct"
 	controlapi "github.com/moby/buildkit/api/services/control"
-	"github.com/pkg/errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
 )
@@ -59,7 +60,6 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	if err != nil {
 		return "", nil, err
 	}
-
 	reg := marshalRegistry(inputs["registry"])
 	skipPush := marshalSkipPush(inputs["skipPush"])
 	// read in values to Image
@@ -177,13 +177,18 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	}
 
 	// authentication for registry push
-	// we check if the user set creds in the Pulumi program, and use those preferentially
+	// we check if the user set creds in the Pulumi program, and use those preferentially,
+	// otherwise we use host machine creds via authConfigs.
 	var pushAuthConfig types.AuthConfig
 
 	if img.Registry.Username != "" && img.Registry.Password != "" {
 		pushAuthConfig.Username = img.Registry.Username
 		pushAuthConfig.Password = img.Registry.Password
-		pushAuthConfig.ServerAddress = img.Registry.Server
+		pushAuthConfig.ServerAddress, err = getRegistryAddrForAuth(img.Registry.Server, img.Name)
+		if err != nil {
+			return "", nil, err
+		}
+
 	} else {
 		// send warning if user is attempting to use in-program credentials
 		if img.Registry.Username == "" && img.Registry.Password != "" {
@@ -200,15 +205,20 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 				return "", nil, err
 			}
 		}
-		// we push to the server declared in the program, using our auth configs from image build.
-		// if the program does not have a server declared, we will let the docker client error
-		pushAuthConfig = authConfigs[img.Registry.Server]
+
+		registryServer, err := getRegistryAddrForAuth(img.Registry.Server, img.Name)
+		if err != nil {
+			return "", nil, err
+		}
+
+		// we use the credentials for the server declared in the program, looking them up from the host authConfigs.
+		pushAuthConfig = authConfigs[registryServer]
 	}
 
 	authConfigBytes, err := json.Marshal(pushAuthConfig)
 
 	if err != nil {
-		return "", nil, errors.Wrap(err, "Error parsing authConfig")
+		return "", nil, fmt.Errorf("error parsing authConfig: %v", err)
 	}
 	authConfigEncoded := base64.URLEncoding.EncodeToString(authConfigBytes)
 
@@ -403,7 +413,7 @@ func marshalBuilder(builder resource.PropertyValue) (types.BuilderVersion, error
 	default:
 		// because the Docker client will default to `BuilderV1`
 		// when version isn't set, we return an error
-		return version, errors.Errorf("Invalid Docker Builder version")
+		return version, fmt.Errorf("invalid Docker Builder version")
 	}
 }
 
@@ -428,19 +438,68 @@ func getCredentials() (map[string]clitypes.AuthConfig, error) {
 	return auths, nil
 }
 
+// Because the authConfigs provided by the host include the `https://` prefix in the map keys, `getRegistryAddrForAuth`
+// ensures we return a registry address that includes the `https://` scheme.
+// While this prefix is not needed for program-provided auth, it is valid regardless, so adding it by default
+// keeps the special case handling to a minimum.
+func getRegistryAddrForAuth(serverName, imgName string) (string, error) {
+	var serverAddr string
+	if serverName == "docker.io" {
+		// if it's dockerhub, we special case it so host config can find the correct registry
+		return "https://index.docker.io/v1/", nil
+	}
+
+	if serverName == "" {
+		// if there is no servername in the registry input, we attempt to build it from the fully qualified image name.
+		addr, err := getRegistryAddrFromImage(imgName)
+		if err != nil {
+			return "", err
+		}
+
+		if addr == "docker.io" {
+			return "https://index.docker.io/v1/", nil
+		}
+		// we need the full server address for the lookup
+		serverAddr = "https://" + addr
+
+	} else {
+		// check if the provider registry server starts with https://
+		if strings.HasPrefix(serverName, "https://") {
+			serverAddr = serverName
+		} else {
+			// courtesy add the prefix so user does not have to explicitly do so
+			serverAddr = "https://" + serverName
+		}
+	}
+	return serverAddr, nil
+}
+
+func getRegistryAddrFromImage(imgName string) (string, error) {
+	named, err := reference.ParseNamed(imgName)
+	if err != nil {
+		msg := fmt.Errorf("error: %s. This provider requires all image names to be fully qualified.\n"+
+			"For example, if you are attempting to push to Dockerhub, prefix your image name with `docker.io`:\n\n"+
+			"`docker.io/repository/image:tag`", err)
+		return "", msg
+	}
+	addr := reference.Domain(named)
+	return addr, nil
+
+}
+
 func processLogLine(msg string) (string, error) {
 	var info string
 	var jm jsonmessage.JSONMessage
 	err := json.Unmarshal([]byte(msg), &jm)
 	if err != nil {
-		return info, errors.Wrapf(err, "encountered error unmarshalling:")
+		return info, fmt.Errorf("encountered error unmarshalling: %v", err)
 	}
 	// process this JSONMessage
 	if jm.Error != nil {
 		if jm.Error.Code == 401 {
 			return info, fmt.Errorf("authentication is required")
 		}
-		return info, errors.Errorf(jm.Error.Message)
+		return info, fmt.Errorf(jm.Error.Message)
 	}
 	if jm.From != "" {
 		info += jm.From
