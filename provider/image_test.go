@@ -296,7 +296,7 @@ func TestMarshalCachedImages(t *testing.T) {
 			"context":    resource.NewStringProperty("/twilight/sparkle/bin"),
 
 			"cacheFrom": resource.NewObjectProperty(resource.PropertyMap{
-				"stages": resource.NewArrayProperty([]resource.PropertyValue{
+				"images": resource.NewArrayProperty([]resource.PropertyValue{
 					resource.NewStringProperty("apple"),
 					resource.NewStringProperty("banana"),
 					resource.NewStringProperty("cherry"),

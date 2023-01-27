@@ -13,7 +13,7 @@ import javax.annotation.Nullable;
 
 
 /**
- * Specifies information about where to obtain a cache
+ * Contains a list of images to reference when building using a cache
  * 
  */
 public final class CacheFromArgs extends com.pulumi.resources.ResourceArgs {
@@ -21,24 +21,24 @@ public final class CacheFromArgs extends com.pulumi.resources.ResourceArgs {
     public static final CacheFromArgs Empty = new CacheFromArgs();
 
     /**
-     * A list of cached build stages
+     * Specifies cached images
      * 
      */
-    @Import(name="stages")
-    private @Nullable Output<List<String>> stages;
+    @Import(name="images")
+    private @Nullable Output<List<String>> images;
 
     /**
-     * @return A list of cached build stages
+     * @return Specifies cached images
      * 
      */
-    public Optional<Output<List<String>>> stages() {
-        return Optional.ofNullable(this.stages);
+    public Optional<Output<List<String>>> images() {
+        return Optional.ofNullable(this.images);
     }
 
     private CacheFromArgs() {}
 
     private CacheFromArgs(CacheFromArgs $) {
-        this.stages = $.stages;
+        this.images = $.images;
     }
 
     public static Builder builder() {
@@ -60,34 +60,34 @@ public final class CacheFromArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param stages A list of cached build stages
+         * @param images Specifies cached images
          * 
          * @return builder
          * 
          */
-        public Builder stages(@Nullable Output<List<String>> stages) {
-            $.stages = stages;
+        public Builder images(@Nullable Output<List<String>> images) {
+            $.images = images;
             return this;
         }
 
         /**
-         * @param stages A list of cached build stages
+         * @param images Specifies cached images
          * 
          * @return builder
          * 
          */
-        public Builder stages(List<String> stages) {
-            return stages(Output.of(stages));
+        public Builder images(List<String> images) {
+            return images(Output.of(images));
         }
 
         /**
-         * @param stages A list of cached build stages
+         * @param images Specifies cached images
          * 
          * @return builder
          * 
          */
-        public Builder stages(String... stages) {
-            return stages(List.of(stages));
+        public Builder images(String... images) {
+            return images(List.of(images));
         }
 
         public CacheFromArgs build() {

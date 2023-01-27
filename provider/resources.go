@@ -152,16 +152,9 @@ func Provider() tfbridge.ProviderInfo {
 							Default:     "Dockerfile",
 						},
 						"cacheFrom": {
-							Description: "A cached image or list of build stages to use as build cache",
+							Description: "A list of images to use as build cache",
 							TypeSpec: schema.TypeSpec{
-								OneOf: []schema.TypeSpec{
-									{
-										Type: "boolean",
-									},
-									{
-										Ref: "#/types/docker:index/cacheFrom:CacheFrom",
-									},
-								},
+								Ref: "#/types/docker:index/cacheFrom:CacheFrom",
 							},
 						},
 						"env": {
@@ -211,10 +204,10 @@ func Provider() tfbridge.ProviderInfo {
 			dockerResource(dockerMod, "CacheFrom").String(): {
 				ObjectTypeSpec: schema.ObjectTypeSpec{
 					Type:        "object",
-					Description: "Specifies information about where to obtain a cache",
+					Description: "Contains a list of images to reference when building using a cache",
 					Properties: map[string]schema.PropertySpec{
-						"stages": {
-							Description: "A list of cached build stages",
+						"images": {
+							Description: "Specifies cached images",
 							TypeSpec: schema.TypeSpec{
 								Type: "array",
 								Items: &schema.TypeSpec{

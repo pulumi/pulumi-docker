@@ -3,13 +3,11 @@
 
 package com.pulumi.docker.inputs;
 
-import com.pulumi.core.Either;
 import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
 import com.pulumi.core.internal.Codegen;
 import com.pulumi.docker.enums.BuilderVersion;
 import com.pulumi.docker.inputs.CacheFromArgs;
-import java.lang.Boolean;
 import java.lang.String;
 import java.util.List;
 import java.util.Map;
@@ -57,17 +55,17 @@ public final class DockerBuildArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * A cached image or list of build stages to use as build cache
+     * A list of images to use as build cache
      * 
      */
     @Import(name="cacheFrom")
-    private @Nullable Output<Either<Boolean,CacheFromArgs>> cacheFrom;
+    private @Nullable Output<CacheFromArgs> cacheFrom;
 
     /**
-     * @return A cached image or list of build stages to use as build cache
+     * @return A list of images to use as build cache
      * 
      */
-    public Optional<Output<Either<Boolean,CacheFromArgs>>> cacheFrom() {
+    public Optional<Output<CacheFromArgs>> cacheFrom() {
         return Optional.ofNullable(this.cacheFrom);
     }
 
@@ -220,44 +218,24 @@ public final class DockerBuildArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param cacheFrom A cached image or list of build stages to use as build cache
+         * @param cacheFrom A list of images to use as build cache
          * 
          * @return builder
          * 
          */
-        public Builder cacheFrom(@Nullable Output<Either<Boolean,CacheFromArgs>> cacheFrom) {
+        public Builder cacheFrom(@Nullable Output<CacheFromArgs> cacheFrom) {
             $.cacheFrom = cacheFrom;
             return this;
         }
 
         /**
-         * @param cacheFrom A cached image or list of build stages to use as build cache
-         * 
-         * @return builder
-         * 
-         */
-        public Builder cacheFrom(Either<Boolean,CacheFromArgs> cacheFrom) {
-            return cacheFrom(Output.of(cacheFrom));
-        }
-
-        /**
-         * @param cacheFrom A cached image or list of build stages to use as build cache
-         * 
-         * @return builder
-         * 
-         */
-        public Builder cacheFrom(Boolean cacheFrom) {
-            return cacheFrom(Either.ofLeft(cacheFrom));
-        }
-
-        /**
-         * @param cacheFrom A cached image or list of build stages to use as build cache
+         * @param cacheFrom A list of images to use as build cache
          * 
          * @return builder
          * 
          */
         public Builder cacheFrom(CacheFromArgs cacheFrom) {
-            return cacheFrom(Either.ofRight(cacheFrom));
+            return cacheFrom(Output.of(cacheFrom));
         }
 
         /**
