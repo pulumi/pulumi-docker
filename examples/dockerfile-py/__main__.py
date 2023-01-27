@@ -6,7 +6,7 @@ image = Image(
     image_name="pulumi-user/example:v1.0.0",
     build=DockerBuildArgs(
         target="dependencies",
-        env={'TEST_ENV': '42'},
+        args={'TEST_ARG': '42'},
     ),
     skip_push=True,
 )

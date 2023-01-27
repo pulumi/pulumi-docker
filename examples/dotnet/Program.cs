@@ -15,9 +15,9 @@ class Program
                 ImageName = "pulumi-user/example:v1.0.0",
                 Build = new DockerBuildArgs
                 {
-                    Env = new Dictionary<string, string>
+                    Args = new Dictionary<string, string>
                     { 
-                        {"TEST_ENV", "42"}, 
+                        {"TEST_ARG", "42"},
                     },
                     Target = "dependencies",
                 },

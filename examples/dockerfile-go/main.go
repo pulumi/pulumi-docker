@@ -11,8 +11,8 @@ func main() {
 			ImageName: pulumi.String("pulumi-user/example:v1.0.0"),
 			Build: docker.DockerBuildArgs{
 				Target: pulumi.String("dependencies"),
-				Env: pulumi.StringMap{
-					"TEST_ENV": pulumi.String("42"),
+				Args: pulumi.StringMap{
+					"TEST_ARG": pulumi.String("42"),
 				},
 			},
 			SkipPush: pulumi.Bool(true),

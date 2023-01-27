@@ -9686,10 +9686,6 @@ type DockerBuild struct {
 	Context *string `pulumi:"context"`
 	// The path to the Dockerfile to use.
 	Dockerfile *string `pulumi:"dockerfile"`
-	// Environment variables to set on the invocation of docker build, for example to support DOCKER_BUILDKIT=1 docker build.
-	Env map[string]string `pulumi:"env"`
-	// A bag of extra options to pass on to the docker SDK.
-	ExtraOptions []string `pulumi:"extraOptions"`
 	// The target of the Dockerfile to build
 	Target *string `pulumi:"target"`
 }
@@ -9738,10 +9734,6 @@ type DockerBuildArgs struct {
 	Context pulumi.StringPtrInput `pulumi:"context"`
 	// The path to the Dockerfile to use.
 	Dockerfile pulumi.StringPtrInput `pulumi:"dockerfile"`
-	// Environment variables to set on the invocation of docker build, for example to support DOCKER_BUILDKIT=1 docker build.
-	Env pulumi.StringMapInput `pulumi:"env"`
-	// A bag of extra options to pass on to the docker SDK.
-	ExtraOptions pulumi.StringArrayInput `pulumi:"extraOptions"`
 	// The target of the Dockerfile to build
 	Target pulumi.StringPtrInput `pulumi:"target"`
 }
@@ -9813,16 +9805,6 @@ func (o DockerBuildOutput) Context() pulumi.StringPtrOutput {
 // The path to the Dockerfile to use.
 func (o DockerBuildOutput) Dockerfile() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v DockerBuild) *string { return v.Dockerfile }).(pulumi.StringPtrOutput)
-}
-
-// Environment variables to set on the invocation of docker build, for example to support DOCKER_BUILDKIT=1 docker build.
-func (o DockerBuildOutput) Env() pulumi.StringMapOutput {
-	return o.ApplyT(func(v DockerBuild) map[string]string { return v.Env }).(pulumi.StringMapOutput)
-}
-
-// A bag of extra options to pass on to the docker SDK.
-func (o DockerBuildOutput) ExtraOptions() pulumi.StringArrayOutput {
-	return o.ApplyT(func(v DockerBuild) []string { return v.ExtraOptions }).(pulumi.StringArrayOutput)
 }
 
 // The target of the Dockerfile to build

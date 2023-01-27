@@ -51,30 +51,6 @@ namespace Pulumi.Docker.Inputs
         [Input("dockerfile")]
         public Input<string>? Dockerfile { get; set; }
 
-        [Input("env")]
-        private InputMap<string>? _env;
-
-        /// <summary>
-        /// Environment variables to set on the invocation of docker build, for example to support DOCKER_BUILDKIT=1 docker build.
-        /// </summary>
-        public InputMap<string> Env
-        {
-            get => _env ?? (_env = new InputMap<string>());
-            set => _env = value;
-        }
-
-        [Input("extraOptions")]
-        private InputList<string>? _extraOptions;
-
-        /// <summary>
-        /// A bag of extra options to pass on to the docker SDK.
-        /// </summary>
-        public InputList<string> ExtraOptions
-        {
-            get => _extraOptions ?? (_extraOptions = new InputList<string>());
-            set => _extraOptions = value;
-        }
-
         /// <summary>
         /// The target of the Dockerfile to build
         /// </summary>

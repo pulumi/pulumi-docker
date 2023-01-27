@@ -45,9 +45,7 @@ type Build struct {
 	Context        string
 	Dockerfile     string
 	CachedImages   []string
-	Env            map[string]string
 	Args           map[string]*string
-	ExtraOptions   []string
 	Target         string
 	BuilderVersion types.BuilderVersion
 }
@@ -301,19 +299,8 @@ func marshalBuildAndApplyDefaults(b resource.PropertyValue) (Build, error) {
 	}
 	build.BuilderVersion = version
 
-	// Envs
-	build.Env = marshalEnvs(buildObject["env"])
-
 	// Args
 	build.Args = marshalArgs(buildObject["args"])
-
-	// ExtraOptions
-	if !buildObject["extraOptions"].IsNull() {
-		opts := buildObject["extraOptions"].ArrayValue()
-		for _, v := range opts {
-			build.ExtraOptions = append(build.ExtraOptions, v.StringValue())
-		}
-	}
 
 	// Target
 	if !buildObject["target"].IsNull() {
@@ -373,20 +360,6 @@ func marshalArgs(a resource.PropertyValue) map[string]*string {
 		return nil
 	}
 	return args
-}
-
-func marshalEnvs(e resource.PropertyValue) map[string]string {
-	envs := make(map[string]string)
-	if !e.IsNull() {
-		for k, v := range e.ObjectValue() {
-			key := fmt.Sprintf("%v", k)
-			envs[key] = v.StringValue()
-		}
-	}
-	if len(envs) == 0 {
-		return nil
-	}
-	return envs
 }
 
 func marshalBuilder(builder resource.PropertyValue) (types.BuilderVersion, error) {
