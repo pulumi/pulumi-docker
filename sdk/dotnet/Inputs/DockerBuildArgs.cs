@@ -51,18 +51,6 @@ namespace Pulumi.Docker.Inputs
         [Input("dockerfile")]
         public Input<string>? Dockerfile { get; set; }
 
-        [Input("extraOptions")]
-        private InputList<string>? _extraOptions;
-
-        /// <summary>
-        /// A bag of extra options to pass on to the docker SDK.
-        /// </summary>
-        public InputList<string> ExtraOptions
-        {
-            get => _extraOptions ?? (_extraOptions = new InputList<string>());
-            set => _extraOptions = value;
-        }
-
         /// <summary>
         /// The target of the Dockerfile to build
         /// </summary>

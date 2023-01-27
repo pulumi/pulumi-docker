@@ -300,10 +300,6 @@ export interface DockerBuild {
      */
     dockerfile?: pulumi.Input<string>;
     /**
-     * A bag of extra options to pass on to the docker SDK.
-     */
-    extraOptions?: pulumi.Input<pulumi.Input<string>[]>;
-    /**
      * The target of the Dockerfile to build
      */
     target?: pulumi.Input<string>;

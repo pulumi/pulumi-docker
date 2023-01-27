@@ -4059,7 +4059,6 @@ class DockerBuildArgs:
                  cache_from: Optional[pulumi.Input['CacheFromArgs']] = None,
                  context: Optional[pulumi.Input[str]] = None,
                  dockerfile: Optional[pulumi.Input[str]] = None,
-                 extra_options: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  target: Optional[pulumi.Input[str]] = None):
         """
         The Docker build context
@@ -4068,7 +4067,6 @@ class DockerBuildArgs:
         :param pulumi.Input['CacheFromArgs'] cache_from: A list of images to use as build cache
         :param pulumi.Input[str] context: The path to the build context to use.
         :param pulumi.Input[str] dockerfile: The path to the Dockerfile to use.
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] extra_options: A bag of extra options to pass on to the docker SDK.
         :param pulumi.Input[str] target: The target of the Dockerfile to build
         """
         if args is not None:
@@ -4087,8 +4085,6 @@ class DockerBuildArgs:
             dockerfile = 'Dockerfile'
         if dockerfile is not None:
             pulumi.set(__self__, "dockerfile", dockerfile)
-        if extra_options is not None:
-            pulumi.set(__self__, "extra_options", extra_options)
         if target is not None:
             pulumi.set(__self__, "target", target)
 
@@ -4151,18 +4147,6 @@ class DockerBuildArgs:
     @dockerfile.setter
     def dockerfile(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "dockerfile", value)
-
-    @property
-    @pulumi.getter(name="extraOptions")
-    def extra_options(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
-        """
-        A bag of extra options to pass on to the docker SDK.
-        """
-        return pulumi.get(self, "extra_options")
-
-    @extra_options.setter
-    def extra_options(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
-        pulumi.set(self, "extra_options", value)
 
     @property
     @pulumi.getter

@@ -9686,8 +9686,6 @@ type DockerBuild struct {
 	Context *string `pulumi:"context"`
 	// The path to the Dockerfile to use.
 	Dockerfile *string `pulumi:"dockerfile"`
-	// A bag of extra options to pass on to the docker SDK.
-	ExtraOptions []string `pulumi:"extraOptions"`
 	// The target of the Dockerfile to build
 	Target *string `pulumi:"target"`
 }
@@ -9736,8 +9734,6 @@ type DockerBuildArgs struct {
 	Context pulumi.StringPtrInput `pulumi:"context"`
 	// The path to the Dockerfile to use.
 	Dockerfile pulumi.StringPtrInput `pulumi:"dockerfile"`
-	// A bag of extra options to pass on to the docker SDK.
-	ExtraOptions pulumi.StringArrayInput `pulumi:"extraOptions"`
 	// The target of the Dockerfile to build
 	Target pulumi.StringPtrInput `pulumi:"target"`
 }
@@ -9809,11 +9805,6 @@ func (o DockerBuildOutput) Context() pulumi.StringPtrOutput {
 // The path to the Dockerfile to use.
 func (o DockerBuildOutput) Dockerfile() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v DockerBuild) *string { return v.Dockerfile }).(pulumi.StringPtrOutput)
-}
-
-// A bag of extra options to pass on to the docker SDK.
-func (o DockerBuildOutput) ExtraOptions() pulumi.StringArrayOutput {
-	return o.ApplyT(func(v DockerBuild) []string { return v.ExtraOptions }).(pulumi.StringArrayOutput)
 }
 
 // The target of the Dockerfile to build
