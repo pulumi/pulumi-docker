@@ -125,28 +125,6 @@ func TestMarshalBuildAndApplyDefaults(t *testing.T) {
 		assert.NoError(t, err)
 	})
 
-	t.Run("Setting Env", func(t *testing.T) {
-
-		expected := Build{
-			Context:    ".",
-			Dockerfile: "Dockerfile",
-			Env: map[string]string{
-				"Strawberry": "fruit",
-			},
-			BuilderVersion: "2",
-		}
-
-		input := resource.NewObjectProperty(resource.PropertyMap{
-			"env": resource.NewObjectProperty(resource.PropertyMap{
-				"Strawberry": resource.NewStringProperty("fruit"),
-			}),
-		})
-
-		actual, err := marshalBuildAndApplyDefaults(input)
-		assert.Equal(t, expected, actual)
-		assert.NoError(t, err)
-	})
-
 	t.Run("Sets Extra Options", func(t *testing.T) {
 		expected := Build{
 			Context:        ".",
@@ -252,29 +230,6 @@ func TestMarshalArgs(t *testing.T) {
 		expected := map[string]*string(nil)
 		input := resource.NewObjectProperty(resource.PropertyMap{})
 		actual := marshalArgs(input)
-		assert.Equal(t, expected, actual)
-	})
-}
-
-func TestMarshalEnvs(t *testing.T) {
-	t.Run("Set any environment variables", func(t *testing.T) {
-		expected := map[string]string{
-			"Strawberry": "fruit",
-			"Carrot":     "veggie",
-			"Docker":     "a bit of a mess tbh",
-		}
-		input := resource.NewObjectProperty(resource.PropertyMap{
-			"Strawberry": resource.NewStringProperty("fruit"),
-			"Carrot":     resource.NewStringProperty("veggie"),
-			"Docker":     resource.NewStringProperty("a bit of a mess tbh"),
-		})
-		actual := marshalEnvs(input)
-		assert.Equal(t, expected, actual)
-	})
-	t.Run("Returns nil when no environment variables set", func(t *testing.T) {
-		expected := map[string]string(nil)
-		input := resource.NewObjectProperty(resource.PropertyMap{})
-		actual := marshalEnvs(input)
 		assert.Equal(t, expected, actual)
 	})
 }
