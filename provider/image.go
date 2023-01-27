@@ -46,7 +46,6 @@ type Build struct {
 	Dockerfile     string
 	CachedImages   []string
 	Args           map[string]*string
-	ExtraOptions   []string
 	Target         string
 	BuilderVersion types.BuilderVersion
 }
@@ -302,14 +301,6 @@ func marshalBuildAndApplyDefaults(b resource.PropertyValue) (Build, error) {
 
 	// Args
 	build.Args = marshalArgs(buildObject["args"])
-
-	// ExtraOptions
-	if !buildObject["extraOptions"].IsNull() {
-		opts := buildObject["extraOptions"].ArrayValue()
-		for _, v := range opts {
-			build.ExtraOptions = append(build.ExtraOptions, v.StringValue())
-		}
-	}
 
 	// Target
 	if !buildObject["target"].IsNull() {

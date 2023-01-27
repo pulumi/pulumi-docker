@@ -125,42 +125,6 @@ func TestMarshalBuildAndApplyDefaults(t *testing.T) {
 		assert.NoError(t, err)
 	})
 
-	t.Run("Sets Extra Options", func(t *testing.T) {
-		expected := Build{
-			Context:        ".",
-			Dockerfile:     "Dockerfile",
-			ExtraOptions:   []string{"cat", "dog", "pot-bellied pig"},
-			BuilderVersion: "2",
-		}
-
-		input := resource.NewObjectProperty(resource.PropertyMap{
-			"extraOptions": resource.NewArrayProperty([]resource.PropertyValue{
-				resource.NewStringProperty("cat"),
-				resource.NewStringProperty("dog"),
-				resource.NewStringProperty("pot-bellied pig"),
-			}),
-		})
-
-		actual, err := marshalBuildAndApplyDefaults(input)
-		assert.Equal(t, expected, actual)
-		assert.NoError(t, err)
-	})
-
-	t.Run("Does Not Set Extra Options on Empty Input", func(t *testing.T) {
-		expected := Build{
-			Context:        ".",
-			Dockerfile:     "Dockerfile",
-			BuilderVersion: "2",
-		}
-
-		input := resource.NewObjectProperty(resource.PropertyMap{
-			"extraOptions": resource.NewArrayProperty([]resource.PropertyValue{}),
-		})
-
-		actual, err := marshalBuildAndApplyDefaults(input)
-		assert.Equal(t, expected, actual)
-		assert.NoError(t, err)
-	})
 	t.Run("Sets Target", func(t *testing.T) {
 		expected := Build{
 			Context:        ".",
