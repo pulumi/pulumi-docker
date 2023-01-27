@@ -141,6 +141,22 @@ func TestMarshalBuildAndApplyDefaults(t *testing.T) {
 		assert.Equal(t, expected, actual)
 		assert.NoError(t, err)
 	})
+	t.Run("Sets Platform", func(t *testing.T) {
+		expected := Build{
+			Context:        ".",
+			Dockerfile:     "Dockerfile",
+			Platform:       "linux/leg32",
+			BuilderVersion: "2",
+		}
+
+		input := resource.NewObjectProperty(resource.PropertyMap{
+			"platform": resource.NewStringProperty("linux/leg32"),
+		})
+
+		actual, err := marshalBuildAndApplyDefaults(input)
+		assert.Equal(t, expected, actual)
+		assert.NoError(t, err)
+	})
 	t.Run("Sets Builder to classic V1 builder", func(t *testing.T) {
 		expected := Build{
 			Context:        ".",
