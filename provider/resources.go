@@ -168,15 +168,6 @@ func Provider() tfbridge.ProviderInfo {
 								},
 							},
 						},
-						"extraOptions": {
-							Description: "A bag of extra options to pass on to the docker SDK.",
-							TypeSpec: schema.TypeSpec{
-								Type: "array",
-								Items: &schema.TypeSpec{
-									Type: "string",
-								},
-							},
-						},
 						"target": {
 							Description: "The target of the Dockerfile to build",
 							TypeSpec:    schema.TypeSpec{Type: "string"},

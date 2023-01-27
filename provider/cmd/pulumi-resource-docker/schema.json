@@ -3074,13 +3074,6 @@
                     "description": "The path to the Dockerfile to use.",
                     "default": "Dockerfile"
                 },
-                "extraOptions": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    },
-                    "description": "A bag of extra options to pass on to the docker SDK."
-                },
                 "target": {
                     "type": "string",
                     "description": "The target of the Dockerfile to build"
