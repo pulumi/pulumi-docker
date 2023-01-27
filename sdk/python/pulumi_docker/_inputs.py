@@ -4059,7 +4059,6 @@ class DockerBuildArgs:
                  cache_from: Optional[pulumi.Input['CacheFromArgs']] = None,
                  context: Optional[pulumi.Input[str]] = None,
                  dockerfile: Optional[pulumi.Input[str]] = None,
-                 env: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
                  extra_options: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  target: Optional[pulumi.Input[str]] = None):
         """
@@ -4069,7 +4068,6 @@ class DockerBuildArgs:
         :param pulumi.Input['CacheFromArgs'] cache_from: A list of images to use as build cache
         :param pulumi.Input[str] context: The path to the build context to use.
         :param pulumi.Input[str] dockerfile: The path to the Dockerfile to use.
-        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] env: Environment variables to set on the invocation of docker build, for example to support DOCKER_BUILDKIT=1 docker build.
         :param pulumi.Input[Sequence[pulumi.Input[str]]] extra_options: A bag of extra options to pass on to the docker SDK.
         :param pulumi.Input[str] target: The target of the Dockerfile to build
         """
@@ -4089,8 +4087,6 @@ class DockerBuildArgs:
             dockerfile = 'Dockerfile'
         if dockerfile is not None:
             pulumi.set(__self__, "dockerfile", dockerfile)
-        if env is not None:
-            pulumi.set(__self__, "env", env)
         if extra_options is not None:
             pulumi.set(__self__, "extra_options", extra_options)
         if target is not None:
@@ -4155,18 +4151,6 @@ class DockerBuildArgs:
     @dockerfile.setter
     def dockerfile(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "dockerfile", value)
-
-    @property
-    @pulumi.getter
-    def env(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]:
-        """
-        Environment variables to set on the invocation of docker build, for example to support DOCKER_BUILDKIT=1 docker build.
-        """
-        return pulumi.get(self, "env")
-
-    @env.setter
-    def env(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]):
-        pulumi.set(self, "env", value)
 
     @property
     @pulumi.getter(name="extraOptions")

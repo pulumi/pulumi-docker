@@ -100,21 +100,6 @@ public final class DockerBuildArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * Environment variables to set on the invocation of docker build, for example to support DOCKER_BUILDKIT=1 docker build.
-     * 
-     */
-    @Import(name="env")
-    private @Nullable Output<Map<String,String>> env;
-
-    /**
-     * @return Environment variables to set on the invocation of docker build, for example to support DOCKER_BUILDKIT=1 docker build.
-     * 
-     */
-    public Optional<Output<Map<String,String>>> env() {
-        return Optional.ofNullable(this.env);
-    }
-
-    /**
      * A bag of extra options to pass on to the docker SDK.
      * 
      */
@@ -152,7 +137,6 @@ public final class DockerBuildArgs extends com.pulumi.resources.ResourceArgs {
         this.cacheFrom = $.cacheFrom;
         this.context = $.context;
         this.dockerfile = $.dockerfile;
-        this.env = $.env;
         this.extraOptions = $.extraOptions;
         this.target = $.target;
     }
@@ -278,27 +262,6 @@ public final class DockerBuildArgs extends com.pulumi.resources.ResourceArgs {
          */
         public Builder dockerfile(String dockerfile) {
             return dockerfile(Output.of(dockerfile));
-        }
-
-        /**
-         * @param env Environment variables to set on the invocation of docker build, for example to support DOCKER_BUILDKIT=1 docker build.
-         * 
-         * @return builder
-         * 
-         */
-        public Builder env(@Nullable Output<Map<String,String>> env) {
-            $.env = env;
-            return this;
-        }
-
-        /**
-         * @param env Environment variables to set on the invocation of docker build, for example to support DOCKER_BUILDKIT=1 docker build.
-         * 
-         * @return builder
-         * 
-         */
-        public Builder env(Map<String,String> env) {
-            return env(Output.of(env));
         }
 
         /**
