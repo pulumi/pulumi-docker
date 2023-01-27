@@ -11,20 +11,20 @@ namespace Pulumi.Docker.Inputs
 {
 
     /// <summary>
-    /// Specifies information about where to obtain a cache
+    /// Contains a list of images to reference when building using a cache
     /// </summary>
     public sealed class CacheFromArgs : global::Pulumi.ResourceArgs
     {
-        [Input("stages")]
-        private InputList<string>? _stages;
+        [Input("images")]
+        private InputList<string>? _images;
 
         /// <summary>
-        /// A list of cached build stages
+        /// Specifies cached images
         /// </summary>
-        public InputList<string> Stages
+        public InputList<string> Images
         {
-            get => _stages ?? (_stages = new InputList<string>());
-            set => _stages = value;
+            get => _images ?? (_images = new InputList<string>());
+            set => _images = value;
         }
 
         public CacheFromArgs()

@@ -34,10 +34,10 @@ namespace Pulumi.Docker.Inputs
         public Input<Pulumi.Docker.BuilderVersion>? BuilderVersion { get; set; }
 
         /// <summary>
-        /// A cached image or list of build stages to use as build cache
+        /// A list of images to use as build cache
         /// </summary>
         [Input("cacheFrom")]
-        public InputUnion<bool, Inputs.CacheFromArgs>? CacheFrom { get; set; }
+        public Input<Inputs.CacheFromArgs>? CacheFrom { get; set; }
 
         /// <summary>
         /// The path to the build context to use.

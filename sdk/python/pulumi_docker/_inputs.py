@@ -4030,25 +4030,25 @@ class VolumeLabelArgs:
 @pulumi.input_type
 class CacheFromArgs:
     def __init__(__self__, *,
-                 stages: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None):
+                 images: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None):
         """
-        Specifies information about where to obtain a cache
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] stages: A list of cached build stages
+        Contains a list of images to reference when building using a cache
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] images: Specifies cached images
         """
-        if stages is not None:
-            pulumi.set(__self__, "stages", stages)
+        if images is not None:
+            pulumi.set(__self__, "images", images)
 
     @property
     @pulumi.getter
-    def stages(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+    def images(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
         """
-        A list of cached build stages
+        Specifies cached images
         """
-        return pulumi.get(self, "stages")
+        return pulumi.get(self, "images")
 
-    @stages.setter
-    def stages(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
-        pulumi.set(self, "stages", value)
+    @images.setter
+    def images(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
+        pulumi.set(self, "images", value)
 
 
 @pulumi.input_type
@@ -4056,7 +4056,7 @@ class DockerBuildArgs:
     def __init__(__self__, *,
                  args: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
                  builder_version: Optional[pulumi.Input['BuilderVersion']] = None,
-                 cache_from: Optional[pulumi.Input[Union[bool, 'CacheFromArgs']]] = None,
+                 cache_from: Optional[pulumi.Input['CacheFromArgs']] = None,
                  context: Optional[pulumi.Input[str]] = None,
                  dockerfile: Optional[pulumi.Input[str]] = None,
                  env: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
@@ -4066,7 +4066,7 @@ class DockerBuildArgs:
         The Docker build context
         :param pulumi.Input[Mapping[str, pulumi.Input[str]]] args: An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass built-time variablesthat can be accessed like environment variables inside the RUN instruction.
         :param pulumi.Input['BuilderVersion'] builder_version: The version of the Docker builder. 
-        :param pulumi.Input[Union[bool, 'CacheFromArgs']] cache_from: A cached image or list of build stages to use as build cache
+        :param pulumi.Input['CacheFromArgs'] cache_from: A list of images to use as build cache
         :param pulumi.Input[str] context: The path to the build context to use.
         :param pulumi.Input[str] dockerfile: The path to the Dockerfile to use.
         :param pulumi.Input[Mapping[str, pulumi.Input[str]]] env: Environment variables to set on the invocation of docker build, for example to support DOCKER_BUILDKIT=1 docker build.
@@ -4122,14 +4122,14 @@ class DockerBuildArgs:
 
     @property
     @pulumi.getter(name="cacheFrom")
-    def cache_from(self) -> Optional[pulumi.Input[Union[bool, 'CacheFromArgs']]]:
+    def cache_from(self) -> Optional[pulumi.Input['CacheFromArgs']]:
         """
-        A cached image or list of build stages to use as build cache
+        A list of images to use as build cache
         """
         return pulumi.get(self, "cache_from")
 
     @cache_from.setter
-    def cache_from(self, value: Optional[pulumi.Input[Union[bool, 'CacheFromArgs']]]):
+    def cache_from(self, value: Optional[pulumi.Input['CacheFromArgs']]):
         pulumi.set(self, "cache_from", value)
 
     @property

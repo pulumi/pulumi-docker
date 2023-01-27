@@ -9534,10 +9534,10 @@ func (o VolumeLabelArrayOutput) Index(i pulumi.IntInput) VolumeLabelOutput {
 	}).(VolumeLabelOutput)
 }
 
-// Specifies information about where to obtain a cache
+// Contains a list of images to reference when building using a cache
 type CacheFrom struct {
-	// A list of cached build stages
-	Stages []string `pulumi:"stages"`
+	// Specifies cached images
+	Images []string `pulumi:"images"`
 }
 
 // CacheFromInput is an input type that accepts CacheFromArgs and CacheFromOutput values.
@@ -9551,10 +9551,10 @@ type CacheFromInput interface {
 	ToCacheFromOutputWithContext(context.Context) CacheFromOutput
 }
 
-// Specifies information about where to obtain a cache
+// Contains a list of images to reference when building using a cache
 type CacheFromArgs struct {
-	// A list of cached build stages
-	Stages pulumi.StringArrayInput `pulumi:"stages"`
+	// Specifies cached images
+	Images pulumi.StringArrayInput `pulumi:"images"`
 }
 
 func (CacheFromArgs) ElementType() reflect.Type {
@@ -9569,7 +9569,48 @@ func (i CacheFromArgs) ToCacheFromOutputWithContext(ctx context.Context) CacheFr
 	return pulumi.ToOutputWithContext(ctx, i).(CacheFromOutput)
 }
 
-// Specifies information about where to obtain a cache
+func (i CacheFromArgs) ToCacheFromPtrOutput() CacheFromPtrOutput {
+	return i.ToCacheFromPtrOutputWithContext(context.Background())
+}
+
+func (i CacheFromArgs) ToCacheFromPtrOutputWithContext(ctx context.Context) CacheFromPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(CacheFromOutput).ToCacheFromPtrOutputWithContext(ctx)
+}
+
+// CacheFromPtrInput is an input type that accepts CacheFromArgs, CacheFromPtr and CacheFromPtrOutput values.
+// You can construct a concrete instance of `CacheFromPtrInput` via:
+//
+//	        CacheFromArgs{...}
+//
+//	or:
+//
+//	        nil
+type CacheFromPtrInput interface {
+	pulumi.Input
+
+	ToCacheFromPtrOutput() CacheFromPtrOutput
+	ToCacheFromPtrOutputWithContext(context.Context) CacheFromPtrOutput
+}
+
+type cacheFromPtrType CacheFromArgs
+
+func CacheFromPtr(v *CacheFromArgs) CacheFromPtrInput {
+	return (*cacheFromPtrType)(v)
+}
+
+func (*cacheFromPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**CacheFrom)(nil)).Elem()
+}
+
+func (i *cacheFromPtrType) ToCacheFromPtrOutput() CacheFromPtrOutput {
+	return i.ToCacheFromPtrOutputWithContext(context.Background())
+}
+
+func (i *cacheFromPtrType) ToCacheFromPtrOutputWithContext(ctx context.Context) CacheFromPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(CacheFromPtrOutput)
+}
+
+// Contains a list of images to reference when building using a cache
 type CacheFromOutput struct{ *pulumi.OutputState }
 
 func (CacheFromOutput) ElementType() reflect.Type {
@@ -9584,9 +9625,53 @@ func (o CacheFromOutput) ToCacheFromOutputWithContext(ctx context.Context) Cache
 	return o
 }
 
-// A list of cached build stages
-func (o CacheFromOutput) Stages() pulumi.StringArrayOutput {
-	return o.ApplyT(func(v CacheFrom) []string { return v.Stages }).(pulumi.StringArrayOutput)
+func (o CacheFromOutput) ToCacheFromPtrOutput() CacheFromPtrOutput {
+	return o.ToCacheFromPtrOutputWithContext(context.Background())
+}
+
+func (o CacheFromOutput) ToCacheFromPtrOutputWithContext(ctx context.Context) CacheFromPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v CacheFrom) *CacheFrom {
+		return &v
+	}).(CacheFromPtrOutput)
+}
+
+// Specifies cached images
+func (o CacheFromOutput) Images() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v CacheFrom) []string { return v.Images }).(pulumi.StringArrayOutput)
+}
+
+type CacheFromPtrOutput struct{ *pulumi.OutputState }
+
+func (CacheFromPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**CacheFrom)(nil)).Elem()
+}
+
+func (o CacheFromPtrOutput) ToCacheFromPtrOutput() CacheFromPtrOutput {
+	return o
+}
+
+func (o CacheFromPtrOutput) ToCacheFromPtrOutputWithContext(ctx context.Context) CacheFromPtrOutput {
+	return o
+}
+
+func (o CacheFromPtrOutput) Elem() CacheFromOutput {
+	return o.ApplyT(func(v *CacheFrom) CacheFrom {
+		if v != nil {
+			return *v
+		}
+		var ret CacheFrom
+		return ret
+	}).(CacheFromOutput)
+}
+
+// Specifies cached images
+func (o CacheFromPtrOutput) Images() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v *CacheFrom) []string {
+		if v == nil {
+			return nil
+		}
+		return v.Images
+	}).(pulumi.StringArrayOutput)
 }
 
 // The Docker build context
@@ -9595,8 +9680,8 @@ type DockerBuild struct {
 	Args map[string]string `pulumi:"args"`
 	// The version of the Docker builder.
 	BuilderVersion *BuilderVersion `pulumi:"builderVersion"`
-	// A cached image or list of build stages to use as build cache
-	CacheFrom interface{} `pulumi:"cacheFrom"`
+	// A list of images to use as build cache
+	CacheFrom *CacheFrom `pulumi:"cacheFrom"`
 	// The path to the build context to use.
 	Context *string `pulumi:"context"`
 	// The path to the Dockerfile to use.
@@ -9647,8 +9732,8 @@ type DockerBuildArgs struct {
 	Args pulumi.StringMapInput `pulumi:"args"`
 	// The version of the Docker builder.
 	BuilderVersion BuilderVersionPtrInput `pulumi:"builderVersion"`
-	// A cached image or list of build stages to use as build cache
-	CacheFrom pulumi.Input `pulumi:"cacheFrom"`
+	// A list of images to use as build cache
+	CacheFrom CacheFromPtrInput `pulumi:"cacheFrom"`
 	// The path to the build context to use.
 	Context pulumi.StringPtrInput `pulumi:"context"`
 	// The path to the Dockerfile to use.
@@ -9715,9 +9800,9 @@ func (o DockerBuildOutput) BuilderVersion() BuilderVersionPtrOutput {
 	return o.ApplyT(func(v DockerBuild) *BuilderVersion { return v.BuilderVersion }).(BuilderVersionPtrOutput)
 }
 
-// A cached image or list of build stages to use as build cache
-func (o DockerBuildOutput) CacheFrom() pulumi.AnyOutput {
-	return o.ApplyT(func(v DockerBuild) interface{} { return v.CacheFrom }).(pulumi.AnyOutput)
+// A list of images to use as build cache
+func (o DockerBuildOutput) CacheFrom() CacheFromPtrOutput {
+	return o.ApplyT(func(v DockerBuild) *CacheFrom { return v.CacheFrom }).(CacheFromPtrOutput)
 }
 
 // The path to the build context to use.
@@ -10155,6 +10240,7 @@ func init() {
 	pulumi.RegisterInputType(reflect.TypeOf((*VolumeLabelInput)(nil)).Elem(), VolumeLabelArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*VolumeLabelArrayInput)(nil)).Elem(), VolumeLabelArray{})
 	pulumi.RegisterInputType(reflect.TypeOf((*CacheFromInput)(nil)).Elem(), CacheFromArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*CacheFromPtrInput)(nil)).Elem(), CacheFromArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*DockerBuildInput)(nil)).Elem(), DockerBuildArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*GetNetworkIpamConfigInput)(nil)).Elem(), GetNetworkIpamConfigArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*GetNetworkIpamConfigArrayInput)(nil)).Elem(), GetNetworkIpamConfigArray{})
@@ -10279,6 +10365,7 @@ func init() {
 	pulumi.RegisterOutputType(VolumeLabelOutput{})
 	pulumi.RegisterOutputType(VolumeLabelArrayOutput{})
 	pulumi.RegisterOutputType(CacheFromOutput{})
+	pulumi.RegisterOutputType(CacheFromPtrOutput{})
 	pulumi.RegisterOutputType(DockerBuildOutput{})
 	pulumi.RegisterOutputType(GetNetworkIpamConfigOutput{})
 	pulumi.RegisterOutputType(GetNetworkIpamConfigArrayOutput{})
