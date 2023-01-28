@@ -99,6 +99,21 @@ public final class DockerBuildArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
+     *  Set platform if server is multi-platform capable
+     * 
+     */
+    @Import(name="platform")
+    private @Nullable Output<String> platform;
+
+    /**
+     * @return  Set platform if server is multi-platform capable
+     * 
+     */
+    public Optional<Output<String>> platform() {
+        return Optional.ofNullable(this.platform);
+    }
+
+    /**
      * The target of the Dockerfile to build
      * 
      */
@@ -121,6 +136,7 @@ public final class DockerBuildArgs extends com.pulumi.resources.ResourceArgs {
         this.cacheFrom = $.cacheFrom;
         this.context = $.context;
         this.dockerfile = $.dockerfile;
+        this.platform = $.platform;
         this.target = $.target;
     }
 
@@ -245,6 +261,27 @@ public final class DockerBuildArgs extends com.pulumi.resources.ResourceArgs {
          */
         public Builder dockerfile(String dockerfile) {
             return dockerfile(Output.of(dockerfile));
+        }
+
+        /**
+         * @param platform  Set platform if server is multi-platform capable
+         * 
+         * @return builder
+         * 
+         */
+        public Builder platform(@Nullable Output<String> platform) {
+            $.platform = platform;
+            return this;
+        }
+
+        /**
+         * @param platform  Set platform if server is multi-platform capable
+         * 
+         * @return builder
+         * 
+         */
+        public Builder platform(String platform) {
+            return platform(Output.of(platform));
         }
 
         /**

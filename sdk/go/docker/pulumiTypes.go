@@ -9686,6 +9686,8 @@ type DockerBuild struct {
 	Context *string `pulumi:"context"`
 	// The path to the Dockerfile to use.
 	Dockerfile *string `pulumi:"dockerfile"`
+	//  Set platform if server is multi-platform capable
+	Platform *string `pulumi:"platform"`
 	// The target of the Dockerfile to build
 	Target *string `pulumi:"target"`
 }
@@ -9734,6 +9736,8 @@ type DockerBuildArgs struct {
 	Context pulumi.StringPtrInput `pulumi:"context"`
 	// The path to the Dockerfile to use.
 	Dockerfile pulumi.StringPtrInput `pulumi:"dockerfile"`
+	//  Set platform if server is multi-platform capable
+	Platform pulumi.StringPtrInput `pulumi:"platform"`
 	// The target of the Dockerfile to build
 	Target pulumi.StringPtrInput `pulumi:"target"`
 }
@@ -9805,6 +9809,11 @@ func (o DockerBuildOutput) Context() pulumi.StringPtrOutput {
 // The path to the Dockerfile to use.
 func (o DockerBuildOutput) Dockerfile() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v DockerBuild) *string { return v.Dockerfile }).(pulumi.StringPtrOutput)
+}
+
+// Set platform if server is multi-platform capable
+func (o DockerBuildOutput) Platform() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v DockerBuild) *string { return v.Platform }).(pulumi.StringPtrOutput)
 }
 
 // The target of the Dockerfile to build

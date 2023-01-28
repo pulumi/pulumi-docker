@@ -300,6 +300,10 @@ export interface DockerBuild {
      */
     dockerfile?: pulumi.Input<string>;
     /**
+     *  Set platform if server is multi-platform capable
+     */
+    platform?: pulumi.Input<string>;
+    /**
      * The target of the Dockerfile to build
      */
     target?: pulumi.Input<string>;
