@@ -5,15 +5,17 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/pulumi/pulumi-aws/sdk/v4/go/aws/ecr"
-	"github.com/pulumi/pulumi-docker/sdk/v3/go/docker"
+	"github.com/pulumi/pulumi-aws/sdk/v5/go/aws/ecr"
+	"github.com/pulumi/pulumi-docker/sdk/go/docker"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
 func main() {
 	pulumi.Run(func(ctx *pulumi.Context) error {
 
-		repo, err := ecr.NewRepository(ctx, "foo", &ecr.RepositoryArgs{})
+		repo, err := ecr.NewRepository(ctx, "foo", &ecr.RepositoryArgs{
+			ForceDelete: pulumi.BoolPtr(true),
+		})
 		if err != nil {
 			return err
 		}
@@ -41,13 +43,13 @@ func main() {
 				Context:    pulumi.String("./app"),
 				Dockerfile: pulumi.String("./app/Dockerfile"),
 				CacheFrom: docker.CacheFromPtr(&docker.CacheFromArgs{
-					Stages: pulumi.StringArray{
+					Images: pulumi.StringArray{
 						pulumi.String("builder"),
 					},
 				}),
 			},
 			ImageName: repo.RepositoryUrl,
-			Registry: docker.ImageRegistryArgs{
+			Registry: docker.RegistryArgs{
 				Server:   repo.RepositoryUrl,
 				Username: repoUser,
 				Password: repoPass,
