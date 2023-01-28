@@ -47,6 +47,7 @@ type Build struct {
 	CachedImages   []string
 	Args           map[string]*string
 	Target         string
+	Platform       string
 	BuilderVersion types.BuilderVersion
 }
 
@@ -112,6 +113,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		CacheFrom:  img.Build.CachedImages,
 		BuildArgs:  build.Args,
 		Version:    build.BuilderVersion,
+		Platform:   build.Platform,
 
 		AuthConfigs: authConfigs,
 	}
@@ -305,6 +307,11 @@ func marshalBuildAndApplyDefaults(b resource.PropertyValue) (Build, error) {
 	// Target
 	if !buildObject["target"].IsNull() {
 		build.Target = buildObject["target"].StringValue()
+	}
+
+	// Platform
+	if !buildObject["platform"].IsNull() {
+		build.Platform = buildObject["platform"].StringValue()
 	}
 	return build, nil
 }

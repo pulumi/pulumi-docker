@@ -52,6 +52,12 @@ namespace Pulumi.Docker.Inputs
         public Input<string>? Dockerfile { get; set; }
 
         /// <summary>
+        ///  Set platform if server is multi-platform capable
+        /// </summary>
+        [Input("platform")]
+        public Input<string>? Platform { get; set; }
+
+        /// <summary>
         /// The target of the Dockerfile to build
         /// </summary>
         [Input("target")]

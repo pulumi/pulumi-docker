@@ -179,6 +179,10 @@ func Provider() tfbridge.ProviderInfo {
 							},
 							Default: "BuilderBuildKit",
 						},
+						"platform": {
+							Description: " Set platform if server is multi-platform capable",
+							TypeSpec:    schema.TypeSpec{Type: "string"},
+						},
 					},
 				},
 			},

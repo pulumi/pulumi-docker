@@ -4059,6 +4059,7 @@ class DockerBuildArgs:
                  cache_from: Optional[pulumi.Input['CacheFromArgs']] = None,
                  context: Optional[pulumi.Input[str]] = None,
                  dockerfile: Optional[pulumi.Input[str]] = None,
+                 platform: Optional[pulumi.Input[str]] = None,
                  target: Optional[pulumi.Input[str]] = None):
         """
         The Docker build context
@@ -4067,6 +4068,7 @@ class DockerBuildArgs:
         :param pulumi.Input['CacheFromArgs'] cache_from: A list of images to use as build cache
         :param pulumi.Input[str] context: The path to the build context to use.
         :param pulumi.Input[str] dockerfile: The path to the Dockerfile to use.
+        :param pulumi.Input[str] platform:  Set platform if server is multi-platform capable
         :param pulumi.Input[str] target: The target of the Dockerfile to build
         """
         if args is not None:
@@ -4085,6 +4087,8 @@ class DockerBuildArgs:
             dockerfile = 'Dockerfile'
         if dockerfile is not None:
             pulumi.set(__self__, "dockerfile", dockerfile)
+        if platform is not None:
+            pulumi.set(__self__, "platform", platform)
         if target is not None:
             pulumi.set(__self__, "target", target)
 
@@ -4147,6 +4151,18 @@ class DockerBuildArgs:
     @dockerfile.setter
     def dockerfile(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "dockerfile", value)
+
+    @property
+    @pulumi.getter
+    def platform(self) -> Optional[pulumi.Input[str]]:
+        """
+         Set platform if server is multi-platform capable
+        """
+        return pulumi.get(self, "platform")
+
+    @platform.setter
+    def platform(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "platform", value)
 
     @property
     @pulumi.getter

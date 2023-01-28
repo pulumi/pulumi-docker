@@ -3074,6 +3074,10 @@
                     "description": "The path to the Dockerfile to use.",
                     "default": "Dockerfile"
                 },
+                "platform": {
+                    "type": "string",
+                    "description": " Set platform if server is multi-platform capable"
+                },
                 "target": {
                     "type": "string",
                     "description": "The target of the Dockerfile to build"
