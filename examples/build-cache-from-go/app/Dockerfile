@@ -1,18 +1,14 @@
-FROM node:15 as builder
-
-WORKDIR /app
-COPY package.json .
-
-RUN npm i
-
-COPY app.js .
-
-FROM node:15-alpine as runtime
+FROM busybox as builder
 
 WORKDIR /app
 
-EXPOSE 3000/tcp
+RUN sleep 30s && echo "Long-running build process output: 🦖" > app.deps
 
-ENTRYPOINT [ "node", "app.js" ]
+FROM busybox as runtime
 
-COPY --from=builder /app .
+WORKDIR /app
+
+COPY app.sh ./
+COPY --from=builder /app ./
+
+ENTRYPOINT [ "/app/app.sh" ]

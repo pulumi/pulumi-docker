@@ -13,12 +13,14 @@ import (
 func main() {
 	pulumi.Run(func(ctx *pulumi.Context) error {
 
-		repo, err := ecr.NewRepository(ctx, "foo", &ecr.RepositoryArgs{
+		repo, err := ecr.NewRepository(ctx, "docker-provider-test", &ecr.RepositoryArgs{
 			ForceDelete: pulumi.BoolPtr(true),
 		})
 		if err != nil {
 			return err
 		}
+
+		ctx.Export("repositoryUrl", repo.RepositoryUrl)
 
 		repoCreds := repo.RegistryId.ApplyT(func(rid string) ([]string, error) {
 			creds, err := ecr.GetCredentials(ctx, &ecr.GetCredentialsArgs{
@@ -36,19 +38,18 @@ func main() {
 			return strings.Split(string(data), ":"), nil
 		}).(pulumi.StringArrayOutput)
 		repoUser := repoCreds.Index(pulumi.Int(0))
-		repoPass := repoCreds.Index(pulumi.Int(1))
+		repoPass := pulumi.ToSecret(repoCreds.Index(pulumi.Int(1))).(pulumi.StringOutput)
 
-		image, err := docker.NewImage(ctx, "my-image", &docker.ImageArgs{
-			Build: docker.DockerBuildArgs{
-				Context:    pulumi.String("./app"),
-				Dockerfile: pulumi.String("./app/Dockerfile"),
-				CacheFrom: docker.CacheFromPtr(&docker.CacheFromArgs{
-					Images: pulumi.StringArray{
-						pulumi.String("builder"),
-					},
-				}),
-			},
+		image, err := docker.NewImage(ctx, "build-cache-from-go", &docker.ImageArgs{
 			ImageName: repo.RepositoryUrl,
+			Build: docker.DockerBuildArgs{
+				Context: pulumi.String("./app"),
+				CacheFrom: &docker.CacheFromArgs{
+					Images: pulumi.StringArray{
+						pulumi.Sprintf("%v:latest", repo.RepositoryUrl),
+					},
+				},
+			},
 			Registry: docker.RegistryArgs{
 				Server:   repo.RepositoryUrl,
 				Username: repoUser,
@@ -58,6 +59,7 @@ func main() {
 		if err != nil {
 			return err
 		}
+
 		ctx.Export("imageName", image.ImageName)
 		return nil
 	})

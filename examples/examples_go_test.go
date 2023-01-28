@@ -17,9 +17,12 @@
 package examples
 
 import (
+	"fmt"
 	"os"
+	"os/exec"
 	"path"
 	"testing"
+	"time"
 
 	"github.com/pulumi/pulumi/pkg/v3/testing/integration"
 	"github.com/stretchr/testify/assert"
@@ -41,21 +44,86 @@ func TestNginxGo(t *testing.T) {
 	integration.ProgramTest(t, &opts)
 }
 
+// TestBuildCacheFromGo tests the use of CacheFrom behavior with Image v4 using BuildKit.
+//
+// This runs `pulumi` multiple times via ProgramTest to evaluate docker build times.
+//
+// Step 1 creates an ECR registry and a docker image with a 10 second sleep in the first build
+// stage.
+//
+// ExtraRuntimeValidation after step 1 clears deletes the image locally, then prunes docker's build
+// cache.
+//
+// Step 2 modifies a second-stage input and rebuilds.
+//
+// We expect Step 1 to take more time than the sleep duration, ensuring we don't have a local cache.
+//
+// With `--cache-from` and a decent network connection, we expect Step 2 to take less time than the
+// sleep duration.
+//
+// There is some measurement error here, as we're measuring Docker via `pulumi up` and step 2 will
+// have to download the first stage from the repository. To minimize this the same Pulumi program is
+// used and the initial stage uses busybox as a base.
 func TestBuildCacheFromGo(t *testing.T) {
-	t.Skip("ignoring due to major version change")
 	cwd, err := os.Getwd()
 	if !assert.NoError(t, err) {
 		t.FailNow()
 	}
 
+	clearCache := func(imageName string) error {
+		if err := exec.Command("docker", "image", "rm", imageName).Run(); err != nil {
+			return fmt.Errorf("error removing image %q: %w", imageName, err)
+		}
+		if err := exec.Command("docker", "image", "prune").Run(); err != nil {
+			return fmt.Errorf("error pruning dangling images: %w", err)
+		}
+		if err := exec.Command("docker", "builder", "prune").Run(); err != nil {
+			return fmt.Errorf("error pruning build cache: %w", err)
+		}
+		return nil
+	}
+
+	step1Start := time.Now()
+	var step1DeployTime time.Duration
+	var step2Start time.Time
+	var step2DeployTime time.Duration
+
 	opts := base.With(integration.ProgramTestOptions{
+		Dir:         path.Join(cwd, "build-cache-from-go"),
+		Quick:       true,
+		SkipRefresh: true,
 		Dependencies: []string{
 			"github.com/pulumi/pulumi-docker/sdk=../sdk",
-			"github.com/pulumi/pulumi-aws/sdk/v5",
 		},
-		Dir: path.Join(cwd, "build-cache-from-go"),
+		ExtraRuntimeValidation: func(t *testing.T, stack integration.RuntimeValidationStackInfo) {
+			step1DeployTime = time.Since(step1Start)
+			if repoUrl, ok := stack.Outputs["repositoryUrl"].(string); ok {
+				assert.NoError(t, clearCache(repoUrl))
+			} else {
+				t.Errorf("expected repositoryUrl output")
+			}
+
+			step2Start = time.Now()
+		},
+		EditDirs: []integration.EditDir{
+			{
+				Dir:      "step2",
+				Additive: true,
+				ExtraRuntimeValidation: func(t *testing.T, stack integration.RuntimeValidationStackInfo) {
+					step2DeployTime = time.Since(step2Start)
+					if repoUrl, ok := stack.Outputs["repositoryUrl"].(string); ok {
+						assert.NoError(t, clearCache(repoUrl))
+					} else {
+						t.Errorf("expected repositoryUrl output")
+					}
+				},
+			},
+		},
 	})
 	integration.ProgramTest(t, &opts)
+
+	assert.Greater(t, step1DeployTime, 30*time.Second)
+	assert.Less(t, step2DeployTime, 30*time.Second)
 }
 
 func TestDockerfileGo(t *testing.T) {
