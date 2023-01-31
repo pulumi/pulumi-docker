@@ -7,8 +7,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/docker/distribution/reference"
-	"github.com/moby/buildkit/session"
-	"net"
+	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
+	"golang.org/x/sync/errgroup"
+	"io"
+	"os"
+	"os/exec"
+	"path/filepath"
 	"strings"
 
 	"github.com/docker/cli/cli/config"
@@ -16,12 +20,11 @@ import (
 	clitypes "github.com/docker/cli/cli/config/types"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
-	"github.com/docker/docker/pkg/archive"
 	"github.com/docker/docker/pkg/jsonmessage"
 	structpb "github.com/golang/protobuf/ptypes/struct"
 	controlapi "github.com/moby/buildkit/api/services/control"
+	buildkitclient "github.com/moby/buildkit/client"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
-	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
 )
 
 const defaultDockerfile = "Dockerfile"
@@ -89,11 +92,11 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		return "", nil, err
 	}
 
-	// make the build context
-	tar, err := archive.TarWithOptions(img.Build.Context, &archive.TarOptions{})
-	if err != nil {
-		return "", nil, err
-	}
+	//// make the build context
+	//tar, err := archive.TarWithOptions(img.Build.Context, &archive.TarOptions{})
+	//if err != nil {
+	//	return "", nil, err
+	//}
 
 	auths, err := getCredentials()
 	if err != nil {
@@ -106,54 +109,101 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	}
 
 	// make the build options
-	opts := types.ImageBuildOptions{
-		Dockerfile: img.Build.Dockerfile,
-		Tags:       []string{img.Name}, //this should build the image locally, sans registry info
-		Remove:     true,
-		CacheFrom:  img.Build.CachedImages,
-		BuildArgs:  build.Args,
-		Version:    build.BuilderVersion,
-		Platform:   build.Platform,
+	//opts := types.ImageBuildOptions{
+	//	Dockerfile: img.Build.Dockerfile,
+	//	Tags:       []string{img.Name}, //this should build the image locally, sans registry info
+	//	Remove:     true,
+	//	CacheFrom:  img.Build.CachedImages,
+	//	BuildArgs:  build.Args,
+	//	Version:    build.BuilderVersion,
+	//	Platform:   build.Platform,
+	//
+	//	AuthConfigs: authConfigs,
+	//}
 
-		AuthConfigs: authConfigs,
-	}
+	//// Start a session for BuildKit
+	//if build.BuilderVersion == defaultBuilder {
+	//	sess, _ := session.NewSession(ctx, "pulumi-docker", "")
+	//	dialSession := func(ctx context.Context, proto string, meta map[string][]string) (net.Conn, error) {
+	//		return docker.DialHijack(ctx, "/session", proto, meta)
+	//	}
+	//	go func() {
+	//		err := sess.Run(ctx, dialSession)
+	//		if err != nil {
+	//			return
+	//		}
+	//	}()
+	//	defer sess.Close()
+	//	opts.SessionID = sess.ID()
+	//}
 
-	// Start a session for BuildKit
-	if build.BuilderVersion == defaultBuilder {
-		sess, _ := session.NewSession(ctx, "pulumi-docker", "")
-		dialSession := func(ctx context.Context, proto string, meta map[string][]string) (net.Conn, error) {
-			return docker.DialHijack(ctx, "/session", proto, meta)
-		}
-		go func() {
-			err := sess.Run(ctx, dialSession)
-			if err != nil {
-				return
-			}
-		}()
-		defer sess.Close()
-		opts.SessionID = sess.ID()
-	}
-
-	imgBuildResp, err := docker.ImageBuild(ctx, tar, opts)
+	bkClient, err := buildkitclient.New(ctx, "", buildkitclient.WithFailFast())
 	if err != nil {
-		return "", nil, err
+		return "did not get a new buildkit client", nil, err
 	}
+	// TODO: not sure what this does - "pipeRead" ?
+	pipeR, pipeW := io.Pipe()
 
-	defer imgBuildResp.Body.Close()
-
-	// Print build logs to `Info` progress report
-	scanner := bufio.NewScanner(imgBuildResp.Body)
-	for scanner.Scan() {
-
-		info, err := processLogLine(scanner.Text())
-		if err != nil {
-			return "", nil, err
-		}
-		err = p.host.LogStatus(ctx, "info", urn, info)
-		if err != nil {
-			return "", nil, err
-		}
+	// TODO looks like we need a "solver" of some sort - what even are words
+	solveOpt, err := newSolveOpt(build, pipeW)
+	if err != nil {
+		return "did not get a new solve opts", nil, err
 	}
+	ch := make(chan *buildkitclient.SolveStatus)
+	eg, ctx := errgroup.WithContext(ctx)
+	eg.Go(func() error {
+		var err error
+
+		_, err = bkClient.Solve(ctx, nil, *solveOpt, ch)
+
+		return err
+	})
+	//eg.Go(func() error {
+	//	var c console.Console
+	//	if cn, err := console.ConsoleFromFile(os.Stderr); err == nil {
+	//		c = cn
+	//	}
+	//	// not using shared context to not disrupt display but let is finish reporting errors
+	//	_, err = progressui.DisplaySolveStatus(context.TODO(), "", c, os.Stdout, ch)
+	//	return err
+	//})
+	eg.Go(func() error {
+		if err := loadDockerTar(pipeR); err != nil { //TODO: use moby/moby to get tar file
+			return err
+		}
+		return pipeR.Close()
+	})
+	if err := eg.Wait(); err != nil {
+		return "error group had an error", nil, err
+	}
+	p.host.Log(ctx, "info", urn, "Loaded the image  to Docker.")
+
+	//bkClient.Build()
+	//builder.New()
+	//command.Cli()
+	//
+	//buildxbuild.Build()
+
+	//imgBuildResp, err := docker.ImageBuild(ctx, tar, opts)
+	//if err != nil {
+	//	return "", nil, err
+	//}
+	//
+	//defer imgBuildResp.Body.Close()
+	//
+	//// Print build logs to `Info` progress report
+	//scanner := bufio.NewScanner(imgBuildResp.Body)
+	//for scanner.Scan() {
+	//
+	//	info, err := processLogLine(scanner.Text())
+	//	if err != nil {
+	//		return "", nil, err
+	//	}
+	//	err = p.host.LogStatus(ctx, "info", urn, info)
+	//	if err != nil {
+	//		return "", nil, err
+	//	}
+	//}
 
 	// if we are not pushing to the registry, we return after building the local image.
 	if img.SkipPush {
@@ -169,6 +219,8 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		)
 		return img.Name, pbstruct, err
 	}
+
+	// TODO: pushing behavior begins here!!!
 
 	err = p.host.LogStatus(ctx, "info", urn, "Pushing Image to the registry")
 
@@ -532,4 +584,57 @@ func processLogLine(msg string) (string, error) {
 		}
 	}
 	return info, nil
+}
+
+func newSolveOpt(b Build, w io.WriteCloser) (*buildkitclient.SolveOpt, error) {
+
+	localDirs := map[string]string{
+		"context":    b.Context,
+		"dockerfile": b.Dockerfile,
+	}
+
+	frontend := "dockerfile.v0" // TODO: use gateway
+
+	file := filepath.Join(b.Context, b.Dockerfile)
+	frontendAttrs := map[string]string{
+		"filename": filepath.Base(file),
+	}
+	if b.Target != "" {
+		frontendAttrs["target"] = b.Target
+	}
+	//if clicontext.Bool("no-cache") {
+	//	frontendAttrs["no-cache"] = ""
+	//}
+	for _, buildArg := range b.Args {
+		kv := strings.SplitN(*buildArg, "=", 2)
+		if len(kv) != 2 {
+			return nil, fmt.Errorf("invalid build-arg value %s", buildArg)
+		}
+		frontendAttrs["build-arg:"+kv[0]] = kv[1]
+	}
+	return &buildkitclient.SolveOpt{
+		Exports: []buildkitclient.ExportEntry{ //TODO: find out how these behave
+			{
+				Type: "docker", // TODO: is this the correct type here?
+				Attrs: map[string]string{
+					"name": "tag", // TODO: what are these attributes?
+				},
+				Output: func(_ map[string]string) (io.WriteCloser, error) {
+					return w, nil //TODO hoping this is the build output writer
+				},
+			},
+		},
+		LocalDirs:     localDirs,
+		Frontend:      frontend,
+		FrontendAttrs: frontendAttrs,
+	}, nil
+}
+
+func loadDockerTar(r io.Reader) error {
+	// no need to use moby/moby/client here
+	cmd := exec.Command("docker", "load")
+	cmd.Stdin = r
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	return cmd.Run()
 }
