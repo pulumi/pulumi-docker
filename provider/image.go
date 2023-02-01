@@ -153,6 +153,9 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		buildkitclient.WithFailFast(),
 		buildkitclient.WithContextDialer(func(context.Context, string) (net.Conn, error) {
 			return docker.DialHijack(ctx, "/grpc", "h2c", nil)
+		}),
+		buildkitclient.WithSessionDialer(func(ctx context.Context, proto string, meta map[string][]string) (net.Conn, error) {
+			return docker.DialHijack(ctx, "/session", proto, meta)
 		}))
 	if err != nil {
 		return "did not get a new buildkit client", nil, err
@@ -644,7 +647,7 @@ func newSolveOpt(b Build, w io.WriteCloser) (*buildkitclient.SolveOpt, error) {
 	return &buildkitclient.SolveOpt{
 		Exports: []buildkitclient.ExportEntry{ //TODO: find out how these behave
 			{
-				Type: "tar", // TODO: is this the correct type here?
+				Type: "docker", // TODO: is this the correct type here?
 				//Attrs: map[string]string{
 				//	"name": "tag", //
 				//},
