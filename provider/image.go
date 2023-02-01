@@ -10,6 +10,7 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
 	"golang.org/x/sync/errgroup"
 	"io"
+	"net"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -25,6 +26,7 @@ import (
 	controlapi "github.com/moby/buildkit/api/services/control"
 	buildkitclient "github.com/moby/buildkit/client"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
+	"github.com/ryboe/q"
 )
 
 const defaultDockerfile = "Dockerfile"
@@ -92,8 +94,15 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		return "", nil, err
 	}
 
-	//// make the build context
+	// make the build context
 	//tar, err := archive.TarWithOptions(img.Build.Context, &archive.TarOptions{})
+	//if err != nil {
+	//	return "", nil, err
+	//}
+	//q.Q("attempt to load the tar file")
+	//q.Q(tar)
+	//tarReadCloser := io.NopCloser(tar)
+	//err = loadDockerTar(tarReadCloser)
 	//if err != nil {
 	//	return "", nil, err
 	//}
@@ -137,14 +146,23 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	//	opts.SessionID = sess.ID()
 	//}
 
-	bkClient, err := buildkitclient.New(ctx, "", buildkitclient.WithFailFast())
+	q.Q("Starting buildkitclient")
+
+	bkClient, err := buildkitclient.New(ctx, "",
+		buildkitclient.WithFailFast(),
+		buildkitclient.WithContextDialer(func(context.Context, string) (net.Conn, error) {
+			return docker.DialHijack(ctx, "/grpc", "h2c", nil)
+		}))
 	if err != nil {
 		return "did not get a new buildkit client", nil, err
 	}
-	// TODO: not sure what this does - "pipeRead" ?
-	pipeR, pipeW := io.Pipe()
+
+	q.Q(bkClient)
+	// TODO: figure out what do do with these
+	_, pipeW := io.Pipe()
 
 	// TODO looks like we need a "solver" of some sort - what even are words
+	q.Q("calling newSolveOpt")
 	solveOpt, err := newSolveOpt(build, pipeW)
 	if err != nil {
 		return "did not get a new solve opts", nil, err
@@ -153,11 +171,12 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	eg, ctx := errgroup.WithContext(ctx)
 	eg.Go(func() error {
 		var err error
-
-		_, err = bkClient.Solve(ctx, nil, *solveOpt, ch)
-
-		return err
+		q.Q("in first eg.Go")
+		solvResp, err := bkClient.Solve(ctx, nil, *solveOpt, ch)
+		q.Q(solvResp)
+		return fmt.Errorf("hey this thing couldn't be Solved: %q", err)
 	})
+
 	//eg.Go(func() error {
 	//	var c console.Console
 	//	if cn, err := console.ConsoleFromFile(os.Stderr); err == nil {
@@ -167,12 +186,15 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	//	_, err = progressui.DisplaySolveStatus(context.TODO(), "", c, os.Stdout, ch)
 	//	return err
 	//})
-	eg.Go(func() error {
-		if err := loadDockerTar(pipeR); err != nil { //TODO: use moby/moby to get tar file
-			return err
-		}
-		return pipeR.Close()
-	})
+	//eg.Go(func() error {
+	//	q.Q("in second eg.Go")
+	//	if err := loadDockerTar(pipeR); err != nil { //TODO: maybe use moby/moby to get tar file
+	//		return fmt.Errorf("tar pipe nonsense %q", err)
+	//	}
+	//	return pipeR.Close()
+	//})
+
+	q.Q("this is below the goroutines")
 	if err := eg.Wait(); err != nil {
 		return "error group had an error", nil, err
 	}
@@ -589,19 +611,22 @@ func processLogLine(msg string) (string, error) {
 func newSolveOpt(b Build, w io.WriteCloser) (*buildkitclient.SolveOpt, error) {
 
 	localDirs := map[string]string{
-		"context":    b.Context,
+		"context":    "./",
 		"dockerfile": b.Dockerfile,
 	}
-
+	q.Q("context in newSolveOpt", b.Context)
 	frontend := "dockerfile.v0" // TODO: use gateway
 
 	file := filepath.Join(b.Context, b.Dockerfile)
+	q.Q("filepath joined", file)
+	q.Q("filepathbase: ", filepath.Base(file))
 	frontendAttrs := map[string]string{
-		"filename": filepath.Base(file),
+		"filename": "./Dockerfile", //TODO: remove hardcoding
 	}
 	if b.Target != "" {
 		frontendAttrs["target"] = b.Target
 	}
+	frontendAttrs["context:"] = "./" // TODO: remove hardcoding
 	//if clicontext.Bool("no-cache") {
 	//	frontendAttrs["no-cache"] = ""
 	//}
@@ -612,13 +637,14 @@ func newSolveOpt(b Build, w io.WriteCloser) (*buildkitclient.SolveOpt, error) {
 		}
 		frontendAttrs["build-arg:"+kv[0]] = kv[1]
 	}
+	q.Q(frontendAttrs)
 	return &buildkitclient.SolveOpt{
 		Exports: []buildkitclient.ExportEntry{ //TODO: find out how these behave
 			{
 				Type: "docker", // TODO: is this the correct type here?
-				Attrs: map[string]string{
-					"name": "tag", // TODO: what are these attributes?
-				},
+				//Attrs: map[string]string{
+				//	"name": "tag", //
+				//},
 				Output: func(_ map[string]string) (io.WriteCloser, error) {
 					return w, nil //TODO hoping this is the build output writer
 				},
@@ -631,7 +657,7 @@ func newSolveOpt(b Build, w io.WriteCloser) (*buildkitclient.SolveOpt, error) {
 }
 
 func loadDockerTar(r io.Reader) error {
-	// no need to use moby/moby/client here
+	// TODO: possibly use moby/moby/client here
 	cmd := exec.Command("docker", "load")
 	cmd.Stdin = r
 	cmd.Stdout = os.Stdout
