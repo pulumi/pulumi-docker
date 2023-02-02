@@ -101,5 +101,31 @@ resources:
 runtime: yaml
 variables: {}
 ```
+```java
+package main
+
+import (
+	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker"
+	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+)
+
+func main() {
+	pulumi.Run(func(ctx *pulumi.Context) error {
+		demoImage, err := docker.NewImage(ctx, "demo-image", &docker.ImageArgs{
+			Build: pulumi.Any{
+				Context:    pulumi.String("."),
+				Dockerfile: pulumi.String("Dockerfile"),
+			},
+			ImageName: pulumi.String("username/image:tag1"),
+			SkipPush:  pulumi.Bool(true),
+		})
+		if err != nil {
+			return err
+		}
+		ctx.Export("imageName", demoImage.ImageName)
+		return nil
+	})
+}
+```
 {{% /example %}}
 {{% /examples %}}

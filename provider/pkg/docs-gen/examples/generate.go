@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -29,23 +28,23 @@ func main() {
 		yamlPath = filepath.Join(cwd, yamlPath)
 	}
 
-	finfo, err := os.Lstat(mdPath)
+	fileInfo, err := os.Lstat(mdPath)
 	if err != nil && os.IsNotExist(err) {
 		if err := os.MkdirAll(mdPath, 0600); err != nil {
 			panic(err)
 		}
 	}
 
-	if !finfo.IsDir() {
+	if !fileInfo.IsDir() {
 		fmt.Fprintf(os.Stderr, "Expect markdown destination %q to be a directory\n", mdPath)
 		os.Exit(1)
 	}
 
-	yamls, err := os.ReadDir(yamlPath)
+	yamlFiles, err := os.ReadDir(yamlPath)
 	if err != nil {
 		panic(err)
 	}
-	for _, yamlFile := range yamls {
+	for _, yamlFile := range yamlFiles {
 		if err := processYaml(filepath.Join(yamlPath, yamlFile.Name()), mdPath); err != nil {
 			fmt.Fprintf(os.Stderr, "%+v", err)
 			os.Exit(1)
@@ -67,7 +66,8 @@ func markdownExample(description string,
 	python string,
 	csharp string,
 	golang string,
-	yaml string) string {
+	yaml string,
+	java string) string {
 
 	return fmt.Sprintf("{{%% example %%}}\n### %s\n\n"+
 		"```typescript\n%s```\n"+
@@ -75,8 +75,9 @@ func markdownExample(description string,
 		"```csharp\n%s```\n"+
 		"```go\n%s```\n"+
 		"```yaml\n%s```\n"+
+		"```java\n%s```\n"+
 		"{{%% /example %%}}\n",
-		description, typescript, python, csharp, golang, yaml)
+		description, typescript, python, csharp, golang, yaml, java)
 }
 
 func processYaml(path string, mdDir string) error {
@@ -99,8 +100,7 @@ func processYaml(path string, mdDir string) error {
 		}
 
 		description := example["description"].(string)
-		fmt.Fprintf(os.Stdout, "Processing %s\n", description)
-		dir, err := ioutil.TempDir("", "")
+		dir, err := os.MkdirTemp("", "")
 		if err != nil {
 			return err
 		}
@@ -108,8 +108,6 @@ func processYaml(path string, mdDir string) error {
 		defer func() {
 			contract.IgnoreError(os.RemoveAll(dir))
 		}()
-
-		fmt.Fprintf(os.Stderr, "New dir: %q\n", dir)
 
 		src, err := os.OpenFile(filepath.Join(dir, "Pulumi.yaml"), os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0755)
 		if err != nil {
@@ -123,7 +121,6 @@ func processYaml(path string, mdDir string) error {
 
 		cmd := exec.Command("pulumi", "convert", "--language", "typescript", "--out",
 			filepath.Join(dir, "example-nodejs"), "--generate-only")
-		fmt.Println("RAN COMMAND")
 		cmd.Stderr = os.Stderr
 		cmd.Stdout = os.Stdout
 		fmt.Println(dir)
@@ -135,7 +132,6 @@ func processYaml(path string, mdDir string) error {
 		if err != nil {
 			return err
 		}
-		fmt.Println("NODEJS CONTENT:", string(content))
 		typescript := string(content)
 
 		cmd = exec.Command("pulumi", "convert", "--language", "python", "--out",
@@ -146,11 +142,10 @@ func processYaml(path string, mdDir string) error {
 		if err := cmd.Run(); err != nil {
 			_, _ = fmt.Fprintf(os.Stderr, "convert python failed, ignoring: %+v", err)
 		}
-		content, err = ioutil.ReadFile(filepath.Join(dir, "example-py", "__main__.py"))
+		content, err = os.ReadFile(filepath.Join(dir, "example-py", "__main__.py"))
 		if err != nil {
 			return err
 		}
-		fmt.Println("PYTHON CONTENT:", string(content))
 		python := string(content)
 
 		cmd = exec.Command("pulumi", "convert", "--language", "csharp", "--out",
@@ -161,11 +156,10 @@ func processYaml(path string, mdDir string) error {
 		if err = cmd.Run(); err != nil {
 			_, _ = fmt.Fprintf(os.Stderr, "convert go failed, ignoring: %+v", err)
 		}
-		content, err = ioutil.ReadFile(filepath.Join(dir, "example-dotnet", "Program.cs"))
+		content, err = os.ReadFile(filepath.Join(dir, "example-dotnet", "Program.cs"))
 		if err != nil {
 			return err
 		}
-		fmt.Println("see sharp CONTENT:", string(content))
 		csharp := string(content)
 
 		cmd = exec.Command("pulumi", "convert", "--language", "go", "--out",
@@ -176,22 +170,34 @@ func processYaml(path string, mdDir string) error {
 		if err = cmd.Run(); err != nil {
 			_, _ = fmt.Fprintf(os.Stderr, "convert go failed, ignoring: %+v", err)
 		}
-		content, err = ioutil.ReadFile(filepath.Join(dir, "example-go", "main.go"))
+		content, err = os.ReadFile(filepath.Join(dir, "example-go", "main.go"))
 		if err != nil {
 			return err
 		}
-		fmt.Println("Go CONTENT:", string(content))
 		golang := string(content)
 
 		// TODO add java when convert supports it.
+		cmd = exec.Command("pulumi", "convert", "--language", "java", "--out",
+			filepath.Join(dir, "example-go"), "--generate-only")
+		cmd.Stderr = os.Stderr
+		cmd.Stdout = os.Stdout
+		cmd.Dir = dir
+		if err = cmd.Run(); err != nil {
+			_, _ = fmt.Fprintf(os.Stderr, "convert java failed, ignoring: %+v", err)
+		}
+		content, err = os.ReadFile(filepath.Join(dir, "example-go", "main.go"))
+		if err != nil {
+			return err
+		}
+		java := string(content)
 
-		content, err = ioutil.ReadFile(filepath.Join(dir, "Pulumi.yaml"))
+		content, err = os.ReadFile(filepath.Join(dir, "Pulumi.yaml"))
 		if err != nil {
 			return err
 		}
 		yaml := string(content)
 
-		exampleStrings = append(exampleStrings, markdownExample(description, typescript, python, csharp, golang, yaml))
+		exampleStrings = append(exampleStrings, markdownExample(description, typescript, python, csharp, golang, yaml, java))
 	}
 	contract.AssertNoError(err)
 	fmt.Fprintf(os.Stdout, "Writing %s\n", filepath.Join(mdDir, md))
