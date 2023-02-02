@@ -159,7 +159,7 @@ func Provider() tfbridge.ProviderInfo {
 						},
 						"args": {
 							Description: "An optional map of named build-time argument variables to set " +
-								"during the Docker build. This flag allows you to pass built-time variables" +
+								"during the Docker build. This flag allows you to pass build-time variables" +
 								"that can be accessed like environment variables inside the RUN instruction.",
 							TypeSpec: schema.TypeSpec{
 								Type: "object",
@@ -173,15 +173,16 @@ func Provider() tfbridge.ProviderInfo {
 							TypeSpec:    schema.TypeSpec{Type: "string"},
 						},
 						"builderVersion": {
-							Description: "The version of the Docker builder. ",
+							Description: "The version of the Docker builder.",
 							TypeSpec: schema.TypeSpec{
 								Ref: "#/types/docker:index/builderVersion:BuilderVersion",
 							},
 							Default: "BuilderBuildKit",
 						},
 						"platform": {
-							Description: " Set platform if server is multi-platform capable",
-							TypeSpec:    schema.TypeSpec{Type: "string"},
+							Description: "The architecture of the platform you want to build this image for, " +
+								"e.g. `linux/arm64`.",
+							TypeSpec: schema.TypeSpec{Type: "string"},
 						},
 					},
 				},
@@ -205,27 +206,32 @@ func Provider() tfbridge.ProviderInfo {
 			},
 			dockerResource(dockerMod, "BuilderVersion").String(): {
 				ObjectTypeSpec: schema.ObjectTypeSpec{
-					Description: "The version of the Docker builder",
+					Description: "The version of the Docker builder.",
 					Type:        "string",
 				},
 				Enum: []schema.EnumValueSpec{
-					{Name: "BuilderV1", Value: "BuilderV1", Description: "The first generation builder for Docker Daemon"},
-					{Name: "BuilderBuildKit", Value: "BuilderBuildKit", Description: "The builder based on moby/buildkit project"},
+					{Name: "BuilderV1", Value: "BuilderV1",
+						Description: "The first generation builder for Docker Daemon",
+					},
+					{Name: "BuilderBuildKit", Value: "BuilderBuildKit",
+						Description: "The builder based on moby/buildkit project",
+					},
 				},
 			},
 		},
 		ExtraResources: map[string]schema.ResourceSpec{
 			dockerResource(dockerMod, "Image").String(): {
 				ObjectTypeSpec: schema.ObjectTypeSpec{
-					Type:        "object",
-					Description: "Builds a Docker Image and pushes to a Docker registry.",
+					Type: "object",
+					Description: "Builds a Docker Image and pushes to a Docker registry.\n\n" +
+						docImage,
 					Properties: map[string]schema.PropertySpec{
 						"imageName": {
 							Description: "The fully qualified image name",
 							TypeSpec:    schema.TypeSpec{Type: "string"},
 						},
 						"registryServer": {
-							Description: "The URL of the registry server hosting the image.",
+							Description: "The name of the registry server hosting the image.",
 							TypeSpec:    schema.TypeSpec{Type: "string"},
 						},
 						"baseImageName": {
