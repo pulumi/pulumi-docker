@@ -6,22 +6,21 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"github.com/docker/distribution/reference"
-	"github.com/moby/buildkit/session"
-	"net"
-	"strings"
-
 	"github.com/docker/cli/cli/config"
 	"github.com/docker/cli/cli/config/credentials"
 	clitypes "github.com/docker/cli/cli/config/types"
+	"github.com/docker/distribution/reference"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
 	"github.com/docker/docker/pkg/archive"
 	"github.com/docker/docker/pkg/jsonmessage"
 	structpb "github.com/golang/protobuf/ptypes/struct"
 	controlapi "github.com/moby/buildkit/api/services/control"
+	"github.com/moby/buildkit/session"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
+	"net"
+	"strings"
 )
 
 const defaultDockerfile = "Dockerfile"
@@ -212,7 +211,12 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		}
 
 		// we use the credentials for the server declared in the program, looking them up from the host authConfigs.
-		pushAuthConfig = authConfigs[registryServer]
+		val, found := authConfigs[registryServer]
+		if found {
+			pushAuthConfig = val
+		} else {
+			pushAuthConfig = authConfigs["https://"+registryServer]
+		}
 	}
 
 	authConfigBytes, err := json.Marshal(pushAuthConfig)
@@ -432,16 +436,9 @@ func getRegistryAddrForAuth(serverName, imgName string) (string, error) {
 			return "https://index.docker.io/v1/", nil
 		}
 		// we need the full server address for the lookup
-		serverAddr = "https://" + addr
-
+		serverAddr = addr
 	} else {
-		// check if the provider registry server starts with https://
-		if strings.HasPrefix(serverName, "https://") {
-			serverAddr = serverName
-		} else {
-			// courtesy add the prefix so user does not have to explicitly do so
-			serverAddr = "https://" + serverName
-		}
+		serverAddr = strings.TrimPrefix(serverName, "https://")
 	}
 	return serverAddr, nil
 }
