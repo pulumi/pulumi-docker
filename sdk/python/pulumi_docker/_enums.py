@@ -11,7 +11,7 @@ __all__ = [
 
 class BuilderVersion(str, Enum):
     """
-    The version of the Docker builder
+    The version of the Docker builder.
     """
     BUILDER_V1 = "BuilderV1"
     """

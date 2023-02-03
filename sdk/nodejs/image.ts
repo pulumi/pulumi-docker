@@ -9,6 +9,26 @@ import * as utilities from "./utilities";
 
 /**
  * Builds a Docker Image and pushes to a Docker registry.
+ *
+ * ## Example Usage
+ * ### A Docker image build
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as docker from "@pulumi/docker";
+ *
+ * const demoImage = new docker.Image("demo-image", {
+ *     build: {
+ *         context: ".",
+ *         dockerfile: "Dockerfile",
+ *     },
+ *     imageName: "username/image:tag1",
+ *     skipPush: true,
+ * });
+ * export const imageName = demoImage.imageName;
+ * ```
+ *
+ * {{% //examples %}}
  */
 export class Image extends pulumi.CustomResource {
     /**
@@ -46,7 +66,7 @@ export class Image extends pulumi.CustomResource {
      */
     public readonly imageName!: pulumi.Output<string | undefined>;
     /**
-     * The URL of the registry server hosting the image.
+     * The name of the registry server hosting the image.
      */
     public /*out*/ readonly registryServer!: pulumi.Output<string | undefined>;
 

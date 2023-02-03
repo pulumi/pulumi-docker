@@ -11,6 +11,36 @@ namespace Pulumi.Docker
 {
     /// <summary>
     /// Builds a Docker Image and pushes to a Docker registry.
+    /// 
+    /// ## Example Usage
+    /// ### A Docker image build
+    /// ```csharp
+    /// using System.Collections.Generic;
+    /// using Pulumi;
+    /// using Docker = Pulumi.Docker;
+    /// 
+    /// return await Deployment.RunAsync(() =&gt; 
+    /// {
+    ///     var demoImage = new Docker.Image("demo-image", new()
+    ///     {
+    ///         Build = 
+    ///         {
+    ///             { "context", "." },
+    ///             { "dockerfile", "Dockerfile" },
+    ///         },
+    ///         ImageName = "username/image:tag1",
+    ///         SkipPush = true,
+    ///     });
+    /// 
+    ///     return new Dictionary&lt;string, object?&gt;
+    ///     {
+    ///         ["imageName"] = demoImage.ImageName,
+    ///     };
+    /// });
+    /// 
+    /// ```
+    /// 
+    /// {{% //examples %}}
     /// </summary>
     [DockerResourceType("docker:index/image:Image")]
     public partial class Image : global::Pulumi.CustomResource
@@ -28,7 +58,7 @@ namespace Pulumi.Docker
         public Output<string?> ImageName { get; private set; } = null!;
 
         /// <summary>
-        /// The URL of the registry server hosting the image.
+        /// The name of the registry server hosting the image.
         /// </summary>
         [Output("registryServer")]
         public Output<string?> RegistryServer { get; private set; } = null!;

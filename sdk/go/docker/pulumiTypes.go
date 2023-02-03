@@ -9676,7 +9676,7 @@ func (o CacheFromPtrOutput) Images() pulumi.StringArrayOutput {
 
 // The Docker build context
 type DockerBuild struct {
-	// An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass built-time variablesthat can be accessed like environment variables inside the RUN instruction.
+	// An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass build-time variablesthat can be accessed like environment variables inside the RUN instruction.
 	Args map[string]string `pulumi:"args"`
 	// The version of the Docker builder.
 	BuilderVersion *BuilderVersion `pulumi:"builderVersion"`
@@ -9686,7 +9686,7 @@ type DockerBuild struct {
 	Context *string `pulumi:"context"`
 	// The path to the Dockerfile to use.
 	Dockerfile *string `pulumi:"dockerfile"`
-	//  Set platform if server is multi-platform capable
+	// The architecture of the platform you want to build this image for, e.g. `linux/arm64`.
 	Platform *string `pulumi:"platform"`
 	// The target of the Dockerfile to build
 	Target *string `pulumi:"target"`
@@ -9726,7 +9726,7 @@ type DockerBuildInput interface {
 
 // The Docker build context
 type DockerBuildArgs struct {
-	// An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass built-time variablesthat can be accessed like environment variables inside the RUN instruction.
+	// An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass build-time variablesthat can be accessed like environment variables inside the RUN instruction.
 	Args pulumi.StringMapInput `pulumi:"args"`
 	// The version of the Docker builder.
 	BuilderVersion BuilderVersionPtrInput `pulumi:"builderVersion"`
@@ -9736,7 +9736,7 @@ type DockerBuildArgs struct {
 	Context pulumi.StringPtrInput `pulumi:"context"`
 	// The path to the Dockerfile to use.
 	Dockerfile pulumi.StringPtrInput `pulumi:"dockerfile"`
-	//  Set platform if server is multi-platform capable
+	// The architecture of the platform you want to build this image for, e.g. `linux/arm64`.
 	Platform pulumi.StringPtrInput `pulumi:"platform"`
 	// The target of the Dockerfile to build
 	Target pulumi.StringPtrInput `pulumi:"target"`
@@ -9786,7 +9786,7 @@ func (o DockerBuildOutput) ToDockerBuildOutputWithContext(ctx context.Context) D
 	return o
 }
 
-// An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass built-time variablesthat can be accessed like environment variables inside the RUN instruction.
+// An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass build-time variablesthat can be accessed like environment variables inside the RUN instruction.
 func (o DockerBuildOutput) Args() pulumi.StringMapOutput {
 	return o.ApplyT(func(v DockerBuild) map[string]string { return v.Args }).(pulumi.StringMapOutput)
 }
@@ -9811,7 +9811,7 @@ func (o DockerBuildOutput) Dockerfile() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v DockerBuild) *string { return v.Dockerfile }).(pulumi.StringPtrOutput)
 }
 
-// Set platform if server is multi-platform capable
+// The architecture of the platform you want to build this image for, e.g. `linux/arm64`.
 func (o DockerBuildOutput) Platform() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v DockerBuild) *string { return v.Platform }).(pulumi.StringPtrOutput)
 }

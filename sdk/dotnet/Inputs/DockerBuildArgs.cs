@@ -19,7 +19,7 @@ namespace Pulumi.Docker.Inputs
         private InputMap<string>? _args;
 
         /// <summary>
-        /// An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass built-time variablesthat can be accessed like environment variables inside the RUN instruction.
+        /// An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass build-time variablesthat can be accessed like environment variables inside the RUN instruction.
         /// </summary>
         public InputMap<string> Args
         {
@@ -28,7 +28,7 @@ namespace Pulumi.Docker.Inputs
         }
 
         /// <summary>
-        /// The version of the Docker builder. 
+        /// The version of the Docker builder.
         /// </summary>
         [Input("builderVersion")]
         public Input<Pulumi.Docker.BuilderVersion>? BuilderVersion { get; set; }
@@ -52,7 +52,7 @@ namespace Pulumi.Docker.Inputs
         public Input<string>? Dockerfile { get; set; }
 
         /// <summary>
-        ///  Set platform if server is multi-platform capable
+        /// The architecture of the platform you want to build this image for, e.g. `linux/arm64`.
         /// </summary>
         [Input("platform")]
         public Input<string>? Platform { get; set; }

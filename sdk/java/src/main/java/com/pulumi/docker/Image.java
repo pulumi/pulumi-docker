@@ -16,6 +16,41 @@ import javax.annotation.Nullable;
 /**
  * Builds a Docker Image and pushes to a Docker registry.
  * 
+ * ## Example Usage
+ * ### A Docker image build
+ * ```java
+ * package generated_program;
+ * 
+ * import com.pulumi.Context;
+ * import com.pulumi.Pulumi;
+ * import com.pulumi.core.Output;
+ * import com.pulumi.docker.Image;
+ * import com.pulumi.docker.ImageArgs;
+ * import java.util.List;
+ * import java.util.ArrayList;
+ * import java.util.Map;
+ * import java.io.File;
+ * import java.nio.file.Files;
+ * import java.nio.file.Paths;
+ * 
+ * public class App {
+ *     public static void main(String[] args) {
+ *         Pulumi.run(App::stack);
+ *     }
+ * 
+ *     public static void stack(Context ctx) {
+ *         var demoImage = new Image(&#34;demoImage&#34;, ImageArgs.builder()
+ *                 .imageName(&#34;username/image:tag1&#34;)
+ *                 .skipPush(true)
+ *                 .build());
+ * 
+ *         ctx.export(&#34;imageName&#34;, demoImage.imageName());
+ *     }
+ * }
+ * ```
+ * 
+ * {{% //examples %}}
+ * 
  */
 @ResourceType(type="docker:index/image:Image")
 public class Image extends com.pulumi.resources.CustomResource {
@@ -48,14 +83,14 @@ public class Image extends com.pulumi.resources.CustomResource {
         return Codegen.optional(this.imageName);
     }
     /**
-     * The URL of the registry server hosting the image.
+     * The name of the registry server hosting the image.
      * 
      */
     @Export(name="registryServer", type=String.class, parameters={})
     private Output</* @Nullable */ String> registryServer;
 
     /**
-     * @return The URL of the registry server hosting the image.
+     * @return The name of the registry server hosting the image.
      * 
      */
     public Output<Optional<String>> registryServer() {
