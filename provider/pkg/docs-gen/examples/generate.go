@@ -146,10 +146,25 @@ func processYaml(path string, mdDir string) error {
 		contract.AssertNoError(src.Close())
 
 		typescript, err := convert("typescript", dir, "index.ts")
+		if err != nil {
+			return err
+		}
 		python, err := convert("python", dir, "__main__.py")
+		if err != nil {
+			return err
+		}
 		csharp, err := convert("csharp", dir, "Program.cs")
+		if err != nil {
+			return err
+		}
 		golang, err := convert("go", dir, "main.go")
+		if err != nil {
+			return err
+		}
 		java, err := convert("java", dir, "src/main/java/generated_program/App.java")
+		if err != nil {
+			return err
+		}
 
 		yamlContent, err := os.ReadFile(filepath.Join(dir, "Pulumi.yaml"))
 		if err != nil {
