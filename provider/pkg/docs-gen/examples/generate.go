@@ -178,16 +178,18 @@ func processYaml(path string, mdDir string) error {
 
 		// TODO add java when convert supports it.
 		cmd = exec.Command("pulumi", "convert", "--language", "java", "--out",
-			filepath.Join(dir, "example-go"), "--generate-only")
+			filepath.Join(dir, "example-java"), "--generate-only")
 		cmd.Stderr = os.Stderr
 		cmd.Stdout = os.Stdout
 		cmd.Dir = dir
+		fmt.Println(dir)
 		if err = cmd.Run(); err != nil {
 			_, _ = fmt.Fprintf(os.Stderr, "convert java failed, ignoring: %+v", err)
 		}
-		content, err = os.ReadFile(filepath.Join(dir, "example-go", "main.go"))
+		content, err = os.ReadFile(filepath.Join(dir, "example-java", "src/main/java/generated_program/App.java"))
+
 		if err != nil {
-			return err
+			return fmt.Errorf("java err %s", err)
 		}
 		java := string(content)
 

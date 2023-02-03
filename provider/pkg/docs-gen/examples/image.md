@@ -102,29 +102,33 @@ runtime: yaml
 variables: {}
 ```
 ```java
-package main
+package generated_program;
 
-import (
-	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-)
+import com.pulumi.Context;
+import com.pulumi.Pulumi;
+import com.pulumi.core.Output;
+import com.pulumi.docker.Image;
+import com.pulumi.docker.ImageArgs;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
-func main() {
-	pulumi.Run(func(ctx *pulumi.Context) error {
-		demoImage, err := docker.NewImage(ctx, "demo-image", &docker.ImageArgs{
-			Build: pulumi.Any{
-				Context:    pulumi.String("."),
-				Dockerfile: pulumi.String("Dockerfile"),
-			},
-			ImageName: pulumi.String("username/image:tag1"),
-			SkipPush:  pulumi.Bool(true),
-		})
-		if err != nil {
-			return err
-		}
-		ctx.Export("imageName", demoImage.ImageName)
-		return nil
-	})
+public class App {
+    public static void main(String[] args) {
+        Pulumi.run(App::stack);
+    }
+
+    public static void stack(Context ctx) {
+        var demoImage = new Image("demoImage", ImageArgs.builder()
+                .imageName("username/image:tag1")
+                .skipPush(true)
+                .build());
+
+        ctx.export("imageName", demoImage.imageName());
+    }
 }
 ```
 {{% /example %}}
