@@ -280,11 +280,11 @@ export interface ContainerVolume {
  */
 export interface DockerBuild {
     /**
-     * An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass built-time variablesthat can be accessed like environment variables inside the RUN instruction.
+     * An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass build-time variablesthat can be accessed like environment variables inside the RUN instruction.
      */
     args?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
     /**
-     * The version of the Docker builder. 
+     * The version of the Docker builder.
      */
     builderVersion?: pulumi.Input<enums.BuilderVersion>;
     /**
@@ -300,7 +300,7 @@ export interface DockerBuild {
      */
     dockerfile?: pulumi.Input<string>;
     /**
-     *  Set platform if server is multi-platform capable
+     * The architecture of the platform you want to build this image for, e.g. `linux/arm64`.
      */
     platform?: pulumi.Input<string>;
     /**

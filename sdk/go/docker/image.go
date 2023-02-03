@@ -12,6 +12,40 @@ import (
 )
 
 // Builds a Docker Image and pushes to a Docker registry.
+//
+// ## Example Usage
+// ### A Docker image build
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker"
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			demoImage, err := docker.NewImage(ctx, "demo-image", &docker.ImageArgs{
+//				Build: pulumi.Any{
+//					Context:    pulumi.String("."),
+//					Dockerfile: pulumi.String("Dockerfile"),
+//				},
+//				ImageName: pulumi.String("username/image:tag1"),
+//				SkipPush:  pulumi.Bool(true),
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			ctx.Export("imageName", demoImage.ImageName)
+//			return nil
+//		})
+//	}
+//
+// ```
+//
+// {{% //examples %}}
 type Image struct {
 	pulumi.CustomResourceState
 
@@ -19,7 +53,7 @@ type Image struct {
 	BaseImageName pulumi.StringPtrOutput `pulumi:"baseImageName"`
 	// The fully qualified image name
 	ImageName pulumi.StringPtrOutput `pulumi:"imageName"`
-	// The URL of the registry server hosting the image.
+	// The name of the registry server hosting the image.
 	RegistryServer pulumi.StringPtrOutput `pulumi:"registryServer"`
 }
 
@@ -187,7 +221,7 @@ func (o ImageOutput) ImageName() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Image) pulumi.StringPtrOutput { return v.ImageName }).(pulumi.StringPtrOutput)
 }
 
-// The URL of the registry server hosting the image.
+// The name of the registry server hosting the image.
 func (o ImageOutput) RegistryServer() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Image) pulumi.StringPtrOutput { return v.RegistryServer }).(pulumi.StringPtrOutput)
 }

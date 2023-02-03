@@ -14,6 +14,6 @@ export const BuilderVersion = {
 } as const;
 
 /**
- * The version of the Docker builder
+ * The version of the Docker builder.
  */
 export type BuilderVersion = (typeof BuilderVersion)[keyof typeof BuilderVersion];

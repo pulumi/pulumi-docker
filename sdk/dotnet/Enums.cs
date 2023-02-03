@@ -8,7 +8,7 @@ using Pulumi;
 namespace Pulumi.Docker
 {
     /// <summary>
-    /// The version of the Docker builder
+    /// The version of the Docker builder.
     /// </summary>
     [EnumType]
     public readonly struct BuilderVersion : IEquatable<BuilderVersion>

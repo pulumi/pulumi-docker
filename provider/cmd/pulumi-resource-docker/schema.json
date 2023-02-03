@@ -3017,7 +3017,7 @@
             ]
         },
         "docker:index/builderVersion:BuilderVersion": {
-            "description": "The version of the Docker builder",
+            "description": "The version of the Docker builder.",
             "type": "string",
             "enum": [
                 {
@@ -3053,11 +3053,11 @@
                     "additionalProperties": {
                         "type": "string"
                     },
-                    "description": "An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass built-time variablesthat can be accessed like environment variables inside the RUN instruction."
+                    "description": "An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass build-time variablesthat can be accessed like environment variables inside the RUN instruction."
                 },
                 "builderVersion": {
                     "$ref": "#/types/docker:index/builderVersion:BuilderVersion",
-                    "description": "The version of the Docker builder. ",
+                    "description": "The version of the Docker builder.",
                     "default": "BuilderBuildKit"
                 },
                 "cacheFrom": {
@@ -3076,7 +3076,7 @@
                 },
                 "platform": {
                     "type": "string",
-                    "description": " Set platform if server is multi-platform capable"
+                    "description": "The architecture of the platform you want to build this image for, e.g. `linux/arm64`."
                 },
                 "target": {
                     "type": "string",
@@ -4418,7 +4418,7 @@
             }
         },
         "docker:index/image:Image": {
-            "description": "Builds a Docker Image and pushes to a Docker registry.",
+            "description": "{{% examples %}}\nBuilds a Docker Image and pushes to a Docker registry.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n### A Docker image build\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst demoImage = new docker.Image(\"demo-image\", {\n    build: {\n        context: \".\",\n        dockerfile: \"Dockerfile\",\n    },\n    imageName: \"username/image:tag1\",\n    skipPush: true,\n});\nexport const imageName = demoImage.imageName;\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\ndemo_image = docker.Image(\"demo-image\",\n    build={\n        \"context\": \".\",\n        \"dockerfile\": \"Dockerfile\",\n    },\n    image_name=\"username/image:tag1\",\n    skip_push=True)\npulumi.export(\"imageName\", demo_image.image_name)\n```\n```csharp\nusing System.Collections.Generic;\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nreturn await Deployment.RunAsync(() =\u003e \n{\n    var demoImage = new Docker.Image(\"demo-image\", new()\n    {\n        Build = \n        {\n            { \"context\", \".\" },\n            { \"dockerfile\", \"Dockerfile\" },\n        },\n        ImageName = \"username/image:tag1\",\n        SkipPush = true,\n    });\n\n    return new Dictionary\u003cstring, object?\u003e\n    {\n        [\"imageName\"] = demoImage.ImageName,\n    };\n});\n\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v4/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\tdemoImage, err := docker.NewImage(ctx, \"demo-image\", \u0026docker.ImageArgs{\n\t\t\tBuild: pulumi.Any{\n\t\t\t\tContext:    pulumi.String(\".\"),\n\t\t\t\tDockerfile: pulumi.String(\"Dockerfile\"),\n\t\t\t},\n\t\t\tImageName: pulumi.String(\"username/image:tag1\"),\n\t\t\tSkipPush:  pulumi.Bool(true),\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\tctx.Export(\"imageName\", demoImage.ImageName)\n\t\treturn nil\n\t})\n}\n```\n```yaml\nconfig: {}\ndescription: A Docker image build\nname: image-yaml\noutputs:\n    imageName: ${demo-image.imageName}\nresources:\n    demo-image:\n        options:\n            version: v4.0.0-alpha.1\n        properties:\n            build:\n                context: .\n                dockerfile: Dockerfile\n            imageName: username/image:tag1\n            skipPush: true\n        type: docker:Image\nruntime: yaml\nvariables: {}\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.Image;\nimport com.pulumi.docker.ImageArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var demoImage = new Image(\"demoImage\", ImageArgs.builder()\n                .imageName(\"username/image:tag1\")\n                .skipPush(true)\n                .build());\n\n        ctx.export(\"imageName\", demoImage.imageName());\n    }\n}\n```\n{{% /example %}}\n{{% /examples %}}\n\n{{% //examples %}}",
             "properties": {
                 "baseImageName": {
                     "type": "string",
@@ -4430,7 +4430,7 @@
                 },
                 "registryServer": {
                     "type": "string",
-                    "description": "The URL of the registry server hosting the image."
+                    "description": "The name of the registry server hosting the image."
                 }
             },
             "type": "object",

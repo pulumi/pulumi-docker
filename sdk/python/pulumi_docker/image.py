@@ -99,6 +99,24 @@ class Image(pulumi.CustomResource):
         """
         Builds a Docker Image and pushes to a Docker registry.
 
+        ## Example Usage
+        ### A Docker image build
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        demo_image = docker.Image("demo-image",
+            build={
+                "context": ".",
+                "dockerfile": "Dockerfile",
+            },
+            image_name="username/image:tag1",
+            skip_push=True)
+        pulumi.export("imageName", demo_image.image_name)
+        ```
+
+        {{% //examples %}}
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[Union[str, pulumi.InputType['DockerBuildArgs']]] build: The Docker build context
@@ -114,6 +132,24 @@ class Image(pulumi.CustomResource):
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
         Builds a Docker Image and pushes to a Docker registry.
+
+        ## Example Usage
+        ### A Docker image build
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        demo_image = docker.Image("demo-image",
+            build={
+                "context": ".",
+                "dockerfile": "Dockerfile",
+            },
+            image_name="username/image:tag1",
+            skip_push=True)
+        pulumi.export("imageName", demo_image.image_name)
+        ```
+
+        {{% //examples %}}
 
         :param str resource_name: The name of the resource.
         :param ImageArgs args: The arguments to use to populate this resource's properties.
@@ -200,7 +236,7 @@ class Image(pulumi.CustomResource):
     @pulumi.getter(name="registryServer")
     def registry_server(self) -> pulumi.Output[Optional[str]]:
         """
-        The URL of the registry server hosting the image.
+        The name of the registry server hosting the image.
         """
         return pulumi.get(self, "registry_server")
 

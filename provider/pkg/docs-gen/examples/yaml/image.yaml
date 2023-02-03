@@ -1,0 +1,18 @@
+name: image-yaml
+description: A Docker image build
+runtime: yaml
+config: {}
+variables: {}
+resources:
+  demo-image:
+    type: docker:Image
+    properties:
+      imageName: username/image:tag1
+      skipPush: true
+      build:
+        dockerfile: Dockerfile
+        context: .
+    options:
+      version: v4.0.0-alpha.1
+outputs:
+  imageName: ${demo-image.imageName}

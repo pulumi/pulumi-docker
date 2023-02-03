@@ -4063,12 +4063,12 @@ class DockerBuildArgs:
                  target: Optional[pulumi.Input[str]] = None):
         """
         The Docker build context
-        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] args: An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass built-time variablesthat can be accessed like environment variables inside the RUN instruction.
-        :param pulumi.Input['BuilderVersion'] builder_version: The version of the Docker builder. 
+        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] args: An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass build-time variablesthat can be accessed like environment variables inside the RUN instruction.
+        :param pulumi.Input['BuilderVersion'] builder_version: The version of the Docker builder.
         :param pulumi.Input['CacheFromArgs'] cache_from: A list of images to use as build cache
         :param pulumi.Input[str] context: The path to the build context to use.
         :param pulumi.Input[str] dockerfile: The path to the Dockerfile to use.
-        :param pulumi.Input[str] platform:  Set platform if server is multi-platform capable
+        :param pulumi.Input[str] platform: The architecture of the platform you want to build this image for, e.g. `linux/arm64`.
         :param pulumi.Input[str] target: The target of the Dockerfile to build
         """
         if args is not None:
@@ -4096,7 +4096,7 @@ class DockerBuildArgs:
     @pulumi.getter
     def args(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]:
         """
-        An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass built-time variablesthat can be accessed like environment variables inside the RUN instruction.
+        An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass build-time variablesthat can be accessed like environment variables inside the RUN instruction.
         """
         return pulumi.get(self, "args")
 
@@ -4108,7 +4108,7 @@ class DockerBuildArgs:
     @pulumi.getter(name="builderVersion")
     def builder_version(self) -> Optional[pulumi.Input['BuilderVersion']]:
         """
-        The version of the Docker builder. 
+        The version of the Docker builder.
         """
         return pulumi.get(self, "builder_version")
 
@@ -4156,7 +4156,7 @@ class DockerBuildArgs:
     @pulumi.getter
     def platform(self) -> Optional[pulumi.Input[str]]:
         """
-         Set platform if server is multi-platform capable
+        The architecture of the platform you want to build this image for, e.g. `linux/arm64`.
         """
         return pulumi.get(self, "platform")
 

@@ -24,14 +24,14 @@ public final class DockerBuildArgs extends com.pulumi.resources.ResourceArgs {
     public static final DockerBuildArgs Empty = new DockerBuildArgs();
 
     /**
-     * An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass built-time variablesthat can be accessed like environment variables inside the RUN instruction.
+     * An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass build-time variablesthat can be accessed like environment variables inside the RUN instruction.
      * 
      */
     @Import(name="args")
     private @Nullable Output<Map<String,String>> args;
 
     /**
-     * @return An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass built-time variablesthat can be accessed like environment variables inside the RUN instruction.
+     * @return An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass build-time variablesthat can be accessed like environment variables inside the RUN instruction.
      * 
      */
     public Optional<Output<Map<String,String>>> args() {
@@ -99,14 +99,14 @@ public final class DockerBuildArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     *  Set platform if server is multi-platform capable
+     * The architecture of the platform you want to build this image for, e.g. `linux/arm64`.
      * 
      */
     @Import(name="platform")
     private @Nullable Output<String> platform;
 
     /**
-     * @return  Set platform if server is multi-platform capable
+     * @return The architecture of the platform you want to build this image for, e.g. `linux/arm64`.
      * 
      */
     public Optional<Output<String>> platform() {
@@ -159,7 +159,7 @@ public final class DockerBuildArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param args An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass built-time variablesthat can be accessed like environment variables inside the RUN instruction.
+         * @param args An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass build-time variablesthat can be accessed like environment variables inside the RUN instruction.
          * 
          * @return builder
          * 
@@ -170,7 +170,7 @@ public final class DockerBuildArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param args An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass built-time variablesthat can be accessed like environment variables inside the RUN instruction.
+         * @param args An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass build-time variablesthat can be accessed like environment variables inside the RUN instruction.
          * 
          * @return builder
          * 
@@ -264,7 +264,7 @@ public final class DockerBuildArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param platform  Set platform if server is multi-platform capable
+         * @param platform The architecture of the platform you want to build this image for, e.g. `linux/arm64`.
          * 
          * @return builder
          * 
@@ -275,7 +275,7 @@ public final class DockerBuildArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param platform  Set platform if server is multi-platform capable
+         * @param platform The architecture of the platform you want to build this image for, e.g. `linux/arm64`.
          * 
          * @return builder
          * 

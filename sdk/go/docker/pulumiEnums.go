@@ -10,7 +10,7 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// The version of the Docker builder
+// The version of the Docker builder.
 type BuilderVersion string
 
 const (
