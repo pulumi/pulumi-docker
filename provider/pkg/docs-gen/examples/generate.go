@@ -82,7 +82,16 @@ func markdownExample(description string,
 
 func convert(language, tempDir, programFile string) (string, error) {
 	exampleDir := filepath.Join(tempDir, "example"+language)
-	cmd := exec.Command("pulumi", "convert", "--language", language, "--out", filepath.Join(tempDir, exampleDir), "--generate-only")
+	cmd := exec.Command(
+		"pulumi",
+		"convert",
+		"--language",
+		language,
+		"--out",
+		filepath.Join(tempDir, exampleDir),
+		"--generate-only",
+	)
+
 	cmd.Stderr = os.Stderr
 	cmd.Stdout = os.Stdout
 	cmd.Dir = tempDir
@@ -93,8 +102,8 @@ func convert(language, tempDir, programFile string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return string(content), nil
 
+	return string(content), nil
 }
 
 func processYaml(path string, mdDir string) error {
