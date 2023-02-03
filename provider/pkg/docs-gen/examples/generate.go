@@ -80,6 +80,23 @@ func markdownExample(description string,
 		description, typescript, python, csharp, golang, yaml, java)
 }
 
+func convert(language, tempDir, programFile string) (string, error) {
+	exampleDir := filepath.Join(tempDir, "example"+language)
+	cmd := exec.Command("pulumi", "convert", "--language", language, "--out", filepath.Join(tempDir, exampleDir), "--generate-only")
+	cmd.Stderr = os.Stderr
+	cmd.Stdout = os.Stdout
+	cmd.Dir = tempDir
+	if err := cmd.Run(); err != nil {
+		_, _ = fmt.Fprintf(os.Stderr, "convert %s failed, ignoring: %+v", language, err)
+	}
+	content, err := os.ReadFile(filepath.Join(tempDir, exampleDir, programFile))
+	if err != nil {
+		return "", err
+	}
+	return string(content), nil
+
+}
+
 func processYaml(path string, mdDir string) error {
 	yamlFile, err := os.Open(path)
 	if err != nil {
@@ -119,85 +136,17 @@ func processYaml(path string, mdDir string) error {
 		}
 		contract.AssertNoError(src.Close())
 
-		cmd := exec.Command("pulumi", "convert", "--language", "typescript", "--out",
-			filepath.Join(dir, "example-nodejs"), "--generate-only")
-		cmd.Stderr = os.Stderr
-		cmd.Stdout = os.Stdout
-		fmt.Println(dir)
-		cmd.Dir = dir
-		if err = cmd.Run(); err != nil {
-			_, _ = fmt.Fprintf(os.Stderr, "convert nodejs failed, ignoring: %+v", err)
-		}
-		content, err := os.ReadFile(filepath.Join(dir, "example-nodejs", "index.ts"))
+		typescript, err := convert("typescript", dir, "index.ts")
+		python, err := convert("python", dir, "__main__.py")
+		csharp, err := convert("csharp", dir, "Program.cs")
+		golang, err := convert("go", dir, "main.go")
+		java, err := convert("java", dir, "src/main/java/generated_program/App.java")
+
+		yamlContent, err := os.ReadFile(filepath.Join(dir, "Pulumi.yaml"))
 		if err != nil {
 			return err
 		}
-		typescript := string(content)
-
-		cmd = exec.Command("pulumi", "convert", "--language", "python", "--out",
-			filepath.Join(dir, "example-py"), "--generate-only")
-		cmd.Stderr = os.Stderr
-		cmd.Stdout = os.Stdout
-		cmd.Dir = dir
-		if err := cmd.Run(); err != nil {
-			_, _ = fmt.Fprintf(os.Stderr, "convert python failed, ignoring: %+v", err)
-		}
-		content, err = os.ReadFile(filepath.Join(dir, "example-py", "__main__.py"))
-		if err != nil {
-			return err
-		}
-		python := string(content)
-
-		cmd = exec.Command("pulumi", "convert", "--language", "csharp", "--out",
-			filepath.Join(dir, "example-dotnet"), "--generate-only")
-		cmd.Stderr = os.Stderr
-		cmd.Stdout = os.Stdout
-		cmd.Dir = dir
-		if err = cmd.Run(); err != nil {
-			_, _ = fmt.Fprintf(os.Stderr, "convert go failed, ignoring: %+v", err)
-		}
-		content, err = os.ReadFile(filepath.Join(dir, "example-dotnet", "Program.cs"))
-		if err != nil {
-			return err
-		}
-		csharp := string(content)
-
-		cmd = exec.Command("pulumi", "convert", "--language", "go", "--out",
-			filepath.Join(dir, "example-go"), "--generate-only")
-		cmd.Stderr = os.Stderr
-		cmd.Stdout = os.Stdout
-		cmd.Dir = dir
-		if err = cmd.Run(); err != nil {
-			_, _ = fmt.Fprintf(os.Stderr, "convert go failed, ignoring: %+v", err)
-		}
-		content, err = os.ReadFile(filepath.Join(dir, "example-go", "main.go"))
-		if err != nil {
-			return err
-		}
-		golang := string(content)
-
-		// TODO add java when convert supports it.
-		cmd = exec.Command("pulumi", "convert", "--language", "java", "--out",
-			filepath.Join(dir, "example-java"), "--generate-only")
-		cmd.Stderr = os.Stderr
-		cmd.Stdout = os.Stdout
-		cmd.Dir = dir
-		fmt.Println(dir)
-		if err = cmd.Run(); err != nil {
-			_, _ = fmt.Fprintf(os.Stderr, "convert java failed, ignoring: %+v", err)
-		}
-		content, err = os.ReadFile(filepath.Join(dir, "example-java", "src/main/java/generated_program/App.java"))
-
-		if err != nil {
-			return fmt.Errorf("java err %s", err)
-		}
-		java := string(content)
-
-		content, err = os.ReadFile(filepath.Join(dir, "Pulumi.yaml"))
-		if err != nil {
-			return err
-		}
-		yaml := string(content)
+		yaml := string(yamlContent)
 
 		exampleStrings = append(exampleStrings, markdownExample(description, typescript, python, csharp, golang, yaml, java))
 	}
