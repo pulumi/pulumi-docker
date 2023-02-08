@@ -15,7 +15,6 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/util/logging"
 	rpc "github.com/pulumi/pulumi/sdk/v3/proto/go"
-	"github.com/ryboe/q"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/emptypb"
@@ -110,7 +109,6 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 	if err != nil {
 		return nil, err
 	}
-	q.Q(inputs)
 
 	// Set defaults
 	build, err := marshalBuildAndApplyDefaults(inputs["build"])
@@ -120,6 +118,11 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 
 	dockerContext := build.Context
 	dockerfile := build.Dockerfile
+	// Hash docker build context digest
+	contextDigest, err := hashContext(dockerContext, dockerfile)
+	if err != nil {
+		return nil, err
+	}
 
 	// Get the system platform
 	os := runtime.GOOS
@@ -129,38 +132,24 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 	}
 	arch := runtime.GOARCH
 	hostPlatform := filepath.Join(os, arch)
+	msg := fmt.Sprintf(
+		"Building your image for %s architecture.\n"+
+			"To ensure you are building for the correct platform, consider "+
+			"explicitly setting the `platform` field on ImageBuildOptions.", hostPlatform)
 
-	// Set docker build context
-	contextDigest, err := hashContext(dockerContext, dockerfile)
-	if err != nil {
-		return nil, err
-	}
-
-	// add implicit resource contextDigest and default build platform to provider
+	// build options: add implicit resource contextDigest and set default host platform
 	if inputs["build"].IsNull() {
 		inputs["build"] = resource.NewObjectProperty(resource.PropertyMap{
 			"contextDigest": resource.NewStringProperty(contextDigest),
-			"hostPlatform":  resource.NewStringProperty(hostPlatform),
+			"platform":      resource.NewStringProperty(hostPlatform),
 		})
+		p.host.Log(ctx, "info", urn, msg)
 	} else {
 		inputs["build"].ObjectValue()["contextDigest"] = resource.NewStringProperty(contextDigest)
-		inputs["build"].ObjectValue()["hostPlatform"] = resource.NewStringProperty(hostPlatform)
-		//else {
-		//	// check if the platform is being changed
-		//	// TODO: we DONT want to run this if it is set at all; only if it's _not_ set
-		//	inputsPlatform := inputs["build"].ObjectValue()["platform"].StringValue()
-		//	q.Q("this is the inputs to Diff in the double-else statement ", inputsPlatform)
-		//	q.Q("and the system platform", platform)
-		//	if platform != inputsPlatform {
-		//		msg := fmt.Sprintf(
-		//			"It looks like you are changing the platform for your image from %s to %s, "+
-		//				"possibly because you are building the image on a different operating system.\n"+
-		//				"To ensure you are building for the correct platform, consider "+
-		//				"explicitly setting the `platform` field on ImageBuildOptions. \n"+
-		//				"If this change was intentional, please disregard this message.", inputsPlatform, platform)
-		//		p.host.Log(ctx, "warning", urn, msg)
-		//	}
-		//}
+		if inputs["build"].ObjectValue()["platform"].IsNull() {
+			inputs["build"].ObjectValue()["platform"] = resource.NewStringProperty(hostPlatform)
+			p.host.Log(ctx, "info", urn, msg)
+		}
 	}
 
 	inputStruct, err := plugin.MarshalProperties(inputs, plugin.MarshalOptions{
@@ -179,7 +168,6 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 // Diff checks what impacts a hypothetical update will have on the resource's properties.
 func (p *dockerNativeProvider) Diff(ctx context.Context, req *rpc.DiffRequest) (*rpc.DiffResponse, error) {
 	urn := resource.URN(req.GetUrn())
-	p.host.Log(ctx, "info", urn, "is diff running the very first time?")
 	label := fmt.Sprintf("%s.Diff(%s)", p.name, urn)
 	logging.V(9).Infof("%s executing", label)
 
@@ -206,30 +194,11 @@ func (p *dockerNativeProvider) Diff(ctx context.Context, req *rpc.DiffRequest) (
 
 	d := oldInputs.Diff(news)
 
-	q.Q(oldInputs)
-	q.Q(news)
-
-	//oldsPlatform := oldInputs["build"].ObjectValue()["platform"].StringValue()
-	oldsHostPlatform := oldInputs["build"].ObjectValue()["hostPlatform"].StringValue()
-	newsHostPlatform := news["build"].ObjectValue()["hostPlatform"].StringValue()
-
-	if news["build"].ObjectValue()["platform"].IsNull() && oldsHostPlatform != newsHostPlatform {
-
-		msg := fmt.Sprintf(
-			"It looks like you are building your image on %s but it was previously built on %s.\n"+
-				"To ensure you are building for the correct platform, consider "+
-				"explicitly setting the `platform` field on ImageBuildOptions. \n"+
-				newsHostPlatform, oldsHostPlatform)
-
-		p.host.Log(ctx, "warning", urn, msg)
-	}
-
 	if d == nil {
 		return &rpc.DiffResponse{
 			Changes: rpc.DiffResponse_DIFF_NONE,
 		}, nil
 	}
-	q.Q(d)
 
 	diff := map[string]*rpc.PropertyDiff{}
 	for key := range d.Adds {
