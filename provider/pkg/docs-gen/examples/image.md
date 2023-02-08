@@ -122,10 +122,11 @@ public class App {
     }
 
     public static void stack(Context ctx) {
-        var demoImage = new Image("demoImage", ImageArgs.builder()
-                .imageName("username/image:tag1")
-                .skipPush(true)
-                .build());
+        var demoImage = new Image("demoImage", ImageArgs.builder()        
+            .build(%!v(PANIC=Format method: interface conversion: model.Expression is *model.TemplateExpression, not *model.LiteralValueExpression))
+            .imageName("username/image:tag1")
+            .skipPush(true)
+            .build());
 
         ctx.export("imageName", demoImage.imageName());
     }

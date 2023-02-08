@@ -143,12 +143,18 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 			"contextDigest": resource.NewStringProperty(contextDigest),
 			"platform":      resource.NewStringProperty(hostPlatform),
 		})
-		p.host.Log(ctx, "info", urn, msg)
+		err = p.host.Log(ctx, "info", urn, msg)
+		if err != nil {
+			return nil, err
+		}
 	} else {
 		inputs["build"].ObjectValue()["contextDigest"] = resource.NewStringProperty(contextDigest)
 		if inputs["build"].ObjectValue()["platform"].IsNull() {
 			inputs["build"].ObjectValue()["platform"] = resource.NewStringProperty(hostPlatform)
-			p.host.Log(ctx, "info", urn, msg)
+			err = p.host.Log(ctx, "info", urn, msg)
+			if err != nil {
+				return nil, err
+			}
 		}
 	}
 
