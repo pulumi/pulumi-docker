@@ -6,14 +6,15 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"net"
+
 	"github.com/docker/distribution/reference"
 	"github.com/moby/buildkit/session"
-	"net"
-	"strings"
+	"github.com/moby/moby/registry"
 
 	"github.com/docker/cli/cli/config"
+	"github.com/docker/cli/cli/config/configfile"
 	"github.com/docker/cli/cli/config/credentials"
-	clitypes "github.com/docker/cli/cli/config/types"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
 	"github.com/docker/docker/pkg/archive"
@@ -95,7 +96,12 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		return "", nil, err
 	}
 
-	auths, err := getCredentials()
+	cfg, err := getDefaultDockerConfig()
+	if err != nil {
+		return "", nil, err
+	}
+
+	auths, err := cfg.GetAllCredentials()
 	if err != nil {
 		return "", nil, err
 	}
@@ -211,8 +217,12 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 			return "", nil, err
 		}
 
-		// we use the credentials for the server declared in the program, looking them up from the host authConfigs.
-		pushAuthConfig = authConfigs[registryServer]
+		cliPushAuthConfig, err := cfg.GetAuthConfig(registryServer)
+		if err != nil {
+			return "", nil, err
+		}
+
+		pushAuthConfig = types.AuthConfig(cliPushAuthConfig)
 	}
 
 	authConfigBytes, err := json.Marshal(pushAuthConfig)
@@ -397,53 +407,38 @@ func marshalSkipPush(sp resource.PropertyValue) bool {
 	return sp.BoolValue()
 }
 
-func getCredentials() (map[string]clitypes.AuthConfig, error) {
-	creds, err := config.Load(config.Dir())
+func getDefaultDockerConfig() (*configfile.ConfigFile, error) {
+	cfg, err := config.Load(config.Dir())
 	if err != nil {
 		return nil, err
 	}
-	creds.CredentialsStore = credentials.DetectDefaultStore(creds.CredentialsStore)
-	auths, err := creds.GetAllCredentials()
-	if err != nil {
-		return nil, err
-	}
-	return auths, nil
+	cfg.CredentialsStore = credentials.DetectDefaultStore(cfg.CredentialsStore)
+	return cfg, nil
 }
 
-// Because the authConfigs provided by the host include the `https://` prefix in the map keys, `getRegistryAddrForAuth`
-// ensures we return a registry address that includes the `https://` scheme.
-// While this prefix is not needed for program-provided auth, it is valid regardless, so adding it by default
-// keeps the special case handling to a minimum.
+// Because the authConfigs provided by the host may return URIs with the `https://` scheme in the
+// map keys, `getRegistryAddrForAuth` ensures we return either the legacy Docker IndexServer's URI,
+// which is special cased, or a registry hostname.
 func getRegistryAddrForAuth(serverName, imgName string) (string, error) {
-	var serverAddr string
-	if serverName == "docker.io" {
-		// if it's dockerhub, we special case it so host config can find the correct registry
-		return "https://index.docker.io/v1/", nil
-	}
+	var hostname string
 
 	if serverName == "" {
 		// if there is no servername in the registry input, we attempt to build it from the fully qualified image name.
-		addr, err := getRegistryAddrFromImage(imgName)
+		var err error
+		hostname, err = getRegistryAddrFromImage(imgName)
 		if err != nil {
 			return "", err
 		}
-
-		if addr == "docker.io" {
-			return "https://index.docker.io/v1/", nil
-		}
-		// we need the full server address for the lookup
-		serverAddr = "https://" + addr
-
 	} else {
-		// check if the provider registry server starts with https://
-		if strings.HasPrefix(serverName, "https://") {
-			serverAddr = serverName
-		} else {
-			// courtesy add the prefix so user does not have to explicitly do so
-			serverAddr = "https://" + serverName
-		}
+		hostname = registry.ConvertToHostname(serverName)
 	}
-	return serverAddr, nil
+
+	switch hostname {
+	// handle historically permitted names, mapping them to the v1 registry hostname
+	case registry.IndexHostname, registry.IndexName, registry.DefaultV2Registry.Host:
+		return registry.IndexServer, nil
+	}
+	return hostname, nil
 }
 
 func getRegistryAddrFromImage(imgName string) (string, error) {
@@ -456,7 +451,6 @@ func getRegistryAddrFromImage(imgName string) (string, error) {
 	}
 	addr := reference.Domain(named)
 	return addr, nil
-
 }
 
 func processLogLine(msg string) (string, error) {
