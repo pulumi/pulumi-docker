@@ -23,6 +23,7 @@ import (
 	controlapi "github.com/moby/buildkit/api/services/control"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
+	"github.com/ryboe/q"
 )
 
 const defaultDockerfile = "Dockerfile"
@@ -224,6 +225,19 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 
 		pushAuthConfig = types.AuthConfig(cliPushAuthConfig)
 	}
+
+	q.Q(pushAuthConfig)
+
+	pretty := fmt.Sprintf("auth field: %s\n"+
+		"password: %s\n"+
+		"username: %s\n"+
+		"server addr: %s\n"+
+		"email: %s\n"+
+		"identityToken: %s\n"+
+		"RegistryToken: %s\n", pushAuthConfig.Auth, pushAuthConfig.Password, pushAuthConfig.Username,
+		pushAuthConfig.ServerAddress, pushAuthConfig.Email, pushAuthConfig.IdentityToken, pushAuthConfig.RegistryToken)
+
+	err = p.host.Log(ctx, "info", urn, pretty)
 
 	authConfigBytes, err := json.Marshal(pushAuthConfig)
 
