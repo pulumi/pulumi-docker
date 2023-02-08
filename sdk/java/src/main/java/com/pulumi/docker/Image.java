@@ -39,10 +39,11 @@ import javax.annotation.Nullable;
  *     }
  * 
  *     public static void stack(Context ctx) {
- *         var demoImage = new Image(&#34;demoImage&#34;, ImageArgs.builder()
- *                 .imageName(&#34;username/image:tag1&#34;)
- *                 .skipPush(true)
- *                 .build());
+ *         var demoImage = new Image(&#34;demoImage&#34;, ImageArgs.builder()        
+ *             .build(%!v(PANIC=Format method: interface conversion: model.Expression is *model.TemplateExpression, not *model.LiteralValueExpression))
+ *             .imageName(&#34;username/image:tag1&#34;)
+ *             .skipPush(true)
+ *             .build());
  * 
  *         ctx.export(&#34;imageName&#34;, demoImage.imageName());
  *     }

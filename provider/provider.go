@@ -22,6 +22,7 @@ import (
 	"io/fs"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
 )
 
@@ -117,20 +118,44 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 
 	dockerContext := build.Context
 	dockerfile := build.Dockerfile
-
-	// Set docker build context
+	// Hash docker build context digest
 	contextDigest, err := hashContext(dockerContext, dockerfile)
 	if err != nil {
 		return nil, err
 	}
 
-	// add implicit resource to provider
+	// Get the system platform
+	os := runtime.GOOS
+	// Docker for Mac builds and runs for linux/amd64, not darwin
+	if os == "darwin" {
+		os = "linux"
+	}
+	arch := runtime.GOARCH
+	hostPlatform := filepath.Join(os, arch)
+	msg := fmt.Sprintf(
+		"Building your image for %s architecture.\n"+
+			"To ensure you are building for the correct platform, consider "+
+			"explicitly setting the `platform` field on ImageBuildOptions.", hostPlatform)
+
+	// build options: add implicit resource contextDigest and set default host platform
 	if inputs["build"].IsNull() {
 		inputs["build"] = resource.NewObjectProperty(resource.PropertyMap{
 			"contextDigest": resource.NewStringProperty(contextDigest),
+			"platform":      resource.NewStringProperty(hostPlatform),
 		})
+		err = p.host.Log(ctx, "info", urn, msg)
+		if err != nil {
+			return nil, err
+		}
 	} else {
 		inputs["build"].ObjectValue()["contextDigest"] = resource.NewStringProperty(contextDigest)
+		if inputs["build"].ObjectValue()["platform"].IsNull() {
+			inputs["build"].ObjectValue()["platform"] = resource.NewStringProperty(hostPlatform)
+			err = p.host.Log(ctx, "info", urn, msg)
+			if err != nil {
+				return nil, err
+			}
+		}
 	}
 
 	inputStruct, err := plugin.MarshalProperties(inputs, plugin.MarshalOptions{
@@ -184,6 +209,7 @@ func (p *dockerNativeProvider) Diff(ctx context.Context, req *rpc.DiffRequest) (
 	diff := map[string]*rpc.PropertyDiff{}
 	for key := range d.Adds {
 		diff[string(key)] = &rpc.PropertyDiff{Kind: rpc.PropertyDiff_ADD}
+
 	}
 	for key := range d.Deletes {
 		diff[string(key)] = &rpc.PropertyDiff{Kind: rpc.PropertyDiff_DELETE}
