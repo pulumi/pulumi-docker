@@ -4462,6 +4462,11 @@
             },
             "requiredInputs": [
                 "imageName"
+            ],
+            "aliases": [
+                {
+                    "type": "docker:image:Image"
+                }
             ]
         },
         "docker:index/network:Network": {

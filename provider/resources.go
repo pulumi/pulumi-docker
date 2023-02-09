@@ -17,6 +17,7 @@ package provider
 import (
 	"fmt"
 	"github.com/pulumi/pulumi/pkg/v3/codegen/schema"
+	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"path/filepath"
 	"unicode"
 
@@ -274,6 +275,11 @@ func Provider() tfbridge.ProviderInfo {
 					},
 				},
 				RequiredInputs: []string{"imageName"},
+				Aliases: []schema.AliasSpec{
+					{
+						Type: pulumi.StringRef("docker:image:Image"),
+					},
+				},
 			},
 		},
 

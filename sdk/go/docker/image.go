@@ -70,6 +70,12 @@ func NewImage(ctx *pulumi.Context,
 	if isZero(args.SkipPush) {
 		args.SkipPush = pulumi.BoolPtr(false)
 	}
+	aliases := pulumi.Aliases([]pulumi.Alias{
+		{
+			Type: pulumi.String("docker:image:Image"),
+		},
+	})
+	opts = append(opts, aliases)
 	var resource Image
 	err := ctx.RegisterResource("docker:index/image:Image", name, args, &resource, opts...)
 	if err != nil {

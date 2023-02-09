@@ -96,6 +96,8 @@ export class Image extends pulumi.CustomResource {
             resourceInputs["registryServer"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
+        const aliasOpts = { aliases: [{ type: "docker:image:Image" }] };
+        opts = pulumi.mergeOptions(opts, aliasOpts);
         super(Image.__pulumiType, name, resourceInputs, opts);
     }
 }
