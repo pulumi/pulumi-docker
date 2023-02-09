@@ -189,6 +189,8 @@ class Image(pulumi.CustomResource):
             __props__.__dict__["skip_push"] = skip_push
             __props__.__dict__["base_image_name"] = None
             __props__.__dict__["registry_server"] = None
+        alias_opts = pulumi.ResourceOptions(aliases=[pulumi.Alias(type_="docker:image:Image")])
+        opts = pulumi.ResourceOptions.merge(opts, alias_opts)
         super(Image, __self__).__init__(
             'docker:index/image:Image',
             resource_name,
