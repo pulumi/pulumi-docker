@@ -9,10 +9,10 @@ const config = new pulumi.Config();
 const useServicePrincipalAuth = !!config.getBoolean("useServicePrincipalAuth");
 
 // Create a private ACR registry.
-const rg = new azure.core.ResourceGroup("myrg",{location: "westus"})
+const rg = new azure.core.ResourceGroup("myrg")
 const registry = new azure.containerservice.Registry("myregistry", {
     resourceGroupName: rg.name,
-    adminEnabled: !useServicePrincipalAuth, // TODO: figure this out
+    adminEnabled: true,
     sku: "Basic",
 });
 

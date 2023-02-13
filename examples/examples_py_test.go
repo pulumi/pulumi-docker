@@ -61,6 +61,23 @@ func TestAzurePy(t *testing.T) {
 	integration.ProgramTest(t, &test)
 }
 
+func TestAzureContainerRegistryPy(t *testing.T) {
+	location := os.Getenv("AZURE_LOCATION")
+	if location == "" {
+		t.Skipf("Skipping test due to missing AZURE_LOCATION environment variable")
+	}
+	test := getPyOptions(t).
+		With(integration.ProgramTestOptions{
+			Dir: path.Join(getCwd(t), "container-registries/azure/py"),
+			Config: map[string]string{
+				"azure:environment": "public",
+				"azure:location":    location,
+			},
+		})
+
+	integration.ProgramTest(t, &test)
+}
+
 func TestNginxPy(t *testing.T) {
 	test := getPyOptions(t).
 		With(integration.ProgramTestOptions{

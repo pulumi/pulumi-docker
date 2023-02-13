@@ -64,9 +64,17 @@ func TestDockerfileWithMultipleTargets(t *testing.T) {
 }
 
 func TestAzureContainerRegistry(t *testing.T) {
+	location := os.Getenv("AZURE_LOCATION")
+	if location == "" {
+		t.Skipf("Skipping test due to missing AZURE_LOCATION environment variable")
+	}
 	test := getJsOptions(t).
 		With(integration.ProgramTestOptions{
 			Dir: path.Join(getCwd(t), "container-registries/azure/ts"),
+			Config: map[string]string{
+				"azure:environment": "public",
+				"azure:location":    location,
+			},
 		})
 
 	integration.ProgramTest(t, &test)
