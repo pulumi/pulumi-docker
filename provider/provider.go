@@ -15,6 +15,7 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/util/logging"
 	rpc "github.com/pulumi/pulumi/sdk/v3/proto/go"
+	"github.com/ryboe/q"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/emptypb"
@@ -22,6 +23,7 @@ import (
 	"io/fs"
 	"os"
 	"path/filepath"
+	"reflect"
 	"runtime"
 	"strings"
 )
@@ -206,6 +208,8 @@ func (p *dockerNativeProvider) Diff(ctx context.Context, req *rpc.DiffRequest) (
 		}, nil
 	}
 
+	//excludeFromDiff := []string{"username", "password"}
+
 	diff := map[string]*rpc.PropertyDiff{}
 	for key := range d.Adds {
 		diff[string(key)] = &rpc.PropertyDiff{Kind: rpc.PropertyDiff_ADD}
@@ -214,9 +218,49 @@ func (p *dockerNativeProvider) Diff(ctx context.Context, req *rpc.DiffRequest) (
 	for key := range d.Deletes {
 		diff[string(key)] = &rpc.PropertyDiff{Kind: rpc.PropertyDiff_DELETE}
 	}
-	for key := range d.Updates {
-		diff[string(key)] = &rpc.PropertyDiff{Kind: rpc.PropertyDiff_UPDATE}
+	q.Q(d.Updates)
+
+	//d.Updates["registry"].Object.Updates["password"]
+
+	for key, valueDiff := range d.Updates {
+
+		q.Q(key)
+		//for _, excludeKey := range excludeFromDiff {
+		//	if string(key) != excludeKey {
+		//		diff[string(key)] = &rpc.PropertyDiff{
+		//			Kind: rpc.PropertyDiff_UPDATE,
+		//		}
+		//	}
+		//}
+		if string(key) != "registry" {
+			diff[string(key)] = &rpc.PropertyDiff{
+				Kind: rpc.PropertyDiff_UPDATE,
+			}
+		} else {
+
+			q.Q("key again, diff on that key", string(key), diff[string(key)])
+			//regDiff := diff[string(key)]
+			q.Q(valueDiff.Object.Updates["password"])
+			q.Q(valueDiff.Object.Updates["username"])
+
+			// we only want to register a diff on server name
+
+			serverDiff := valueDiff.Object.Updates["server"]
+
+			if !reflect.ValueOf(serverDiff).IsZero() { // TODO: this is likely wrong as well, see below using reflect
+				diff[string(key)] = &rpc.PropertyDiff{
+					Kind: rpc.PropertyDiff_UPDATE,
+				}
+			}
+		}
 	}
+	q.Q(diff)
+	if len(diff) == 0 {
+		return &rpc.DiffResponse{
+			Changes: rpc.DiffResponse_DIFF_NONE,
+		}, nil
+	}
+	q.Q("debugging to see if we made it here")
 	return &rpc.DiffResponse{
 		Changes:         rpc.DiffResponse_DIFF_SOME,
 		DetailedDiff:    diff,
