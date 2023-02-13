@@ -63,6 +63,15 @@ func TestDockerfileWithMultipleTargets(t *testing.T) {
 	integration.ProgramTest(t, &test)
 }
 
+func TestAzureContainerRegistry(t *testing.T) {
+	test := getJsOptions(t).
+		With(integration.ProgramTestOptions{
+			Dir: path.Join(getCwd(t), "container-registries/azure/ts"),
+		})
+
+	integration.ProgramTest(t, &test)
+}
+
 func getJsOptions(t *testing.T) integration.ProgramTestOptions {
 	base := getBaseOptions()
 	baseJs := base.With(integration.ProgramTestOptions{
