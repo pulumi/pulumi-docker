@@ -125,13 +125,13 @@ func Provider() tfbridge.ProviderInfo {
 							TypeSpec:    schema.TypeSpec{Type: "string"},
 						},
 						"username": {
-							Description: "The username to authenticate to the registry." +
+							Description: "The username to authenticate to the registry. " +
 								"Does not cause image rebuild when changed.",
 							TypeSpec: schema.TypeSpec{Type: "string"},
 						},
 
 						"password": {
-							Description: "The password to authenticate to the registry." +
+							Description: "The password to authenticate to the registry. " +
 								"Does not cause image rebuild when changed.",
 							TypeSpec: schema.TypeSpec{Type: "string"},
 							Secret:   true,
