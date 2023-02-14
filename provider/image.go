@@ -120,6 +120,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		BuildArgs:  build.Args,
 		Version:    build.BuilderVersion,
 		Platform:   build.Platform,
+		Target:     build.Target,
 
 		AuthConfigs: authConfigs,
 	}
