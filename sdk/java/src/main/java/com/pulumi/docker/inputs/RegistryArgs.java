@@ -20,14 +20,14 @@ public final class RegistryArgs extends com.pulumi.resources.ResourceArgs {
     public static final RegistryArgs Empty = new RegistryArgs();
 
     /**
-     * The password to authenticate to the registry
+     * The password to authenticate to the registry. Does not cause image rebuild when changed.
      * 
      */
     @Import(name="password")
     private @Nullable Output<String> password;
 
     /**
-     * @return The password to authenticate to the registry
+     * @return The password to authenticate to the registry. Does not cause image rebuild when changed.
      * 
      */
     public Optional<Output<String>> password() {
@@ -50,14 +50,14 @@ public final class RegistryArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * The username to authenticate to the registry
+     * The username to authenticate to the registry. Does not cause image rebuild when changed.
      * 
      */
     @Import(name="username")
     private @Nullable Output<String> username;
 
     /**
-     * @return The username to authenticate to the registry
+     * @return The username to authenticate to the registry. Does not cause image rebuild when changed.
      * 
      */
     public Optional<Output<String>> username() {
@@ -91,7 +91,7 @@ public final class RegistryArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param password The password to authenticate to the registry
+         * @param password The password to authenticate to the registry. Does not cause image rebuild when changed.
          * 
          * @return builder
          * 
@@ -102,7 +102,7 @@ public final class RegistryArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param password The password to authenticate to the registry
+         * @param password The password to authenticate to the registry. Does not cause image rebuild when changed.
          * 
          * @return builder
          * 
@@ -133,7 +133,7 @@ public final class RegistryArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param username The username to authenticate to the registry
+         * @param username The username to authenticate to the registry. Does not cause image rebuild when changed.
          * 
          * @return builder
          * 
@@ -144,7 +144,7 @@ public final class RegistryArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param username The username to authenticate to the registry
+         * @param username The username to authenticate to the registry. Does not cause image rebuild when changed.
          * 
          * @return builder
          * 

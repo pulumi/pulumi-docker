@@ -19,7 +19,7 @@ namespace Pulumi.Docker.Inputs
         private Input<string>? _password;
 
         /// <summary>
-        /// The password to authenticate to the registry
+        /// The password to authenticate to the registry. Does not cause image rebuild when changed.
         /// </summary>
         public Input<string>? Password
         {
@@ -38,7 +38,7 @@ namespace Pulumi.Docker.Inputs
         public Input<string>? Server { get; set; }
 
         /// <summary>
-        /// The username to authenticate to the registry
+        /// The username to authenticate to the registry. Does not cause image rebuild when changed.
         /// </summary>
         [Input("username")]
         public Input<string>? Username { get; set; }
