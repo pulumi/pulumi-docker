@@ -102,22 +102,14 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		return "", nil, err
 	}
 
-	//auths, err := cfg.GetAllCredentials()
-	//if err != nil {
-	//	return "", nil, err
-	//}
-	// read `docker/cli/cli/config/types` auths to a map of `docker/docker/api/types` authConfigs
-	// for the build options to consume
 	authConfigs := make(map[string]types.AuthConfig)
-	//for k, auth := range auths {
-	//	authConfigs[k] = types.AuthConfig(auth)
-	//}
+	var regAuth types.AuthConfig
 
 	// sign into registry if we're pushing or setting CacheFrom
 	// TODO: add functionality for additional registry caches not associated with the stack image
 	// See: https://github.com/pulumi/pulumi-docker/issues/497
 	if len(img.Build.CachedImages) > 0 || !img.SkipPush {
-		cacheAuth, msg, err := getRegistryAuth(img, cfg)
+		auth, msg, err := getRegistryAuth(img, cfg)
 		if err != nil {
 			return "", nil, err
 		}
@@ -127,7 +119,8 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 				return "", nil, err
 			}
 		}
-		authConfigs[cacheAuth.ServerAddress] = cacheAuth
+		authConfigs[auth.ServerAddress] = auth // for image cache
+		regAuth = auth                         // for image push
 	}
 
 	q.Q("after adding auth configs", authConfigs)
@@ -176,7 +169,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		if err != nil {
 			return "", nil, err
 		}
-		err = p.host.Log(ctx, "info", urn, info)
+		err = p.host.LogStatus(ctx, "info", urn, info)
 		if err != nil {
 			return "", nil, err
 		}
@@ -203,20 +196,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		return "", nil, err
 	}
 
-	pushAuthConfig, msg, err := getRegistryAuth(img, cfg)
-
-	if err != nil {
-		return "", nil, err
-	}
-
-	if msg != "" {
-		err = p.host.Log(ctx, "warning", urn, msg)
-		if err != nil {
-			return "", nil, err
-		}
-	}
-
-	authConfigBytes, err := json.Marshal(pushAuthConfig)
+	authConfigBytes, err := json.Marshal(regAuth)
 
 	if err != nil {
 		return "", nil, fmt.Errorf("error parsing authConfig: %v", err)
