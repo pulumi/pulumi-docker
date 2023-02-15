@@ -23,6 +23,7 @@ import (
 	controlapi "github.com/moby/buildkit/api/services/control"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
+	"github.com/ryboe/q"
 )
 
 const defaultDockerfile = "Dockerfile"
@@ -111,6 +112,21 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		authConfigs[k] = types.AuthConfig(auth)
 	}
 
+	inputServerName, err := getRegistryAddrForAuth(reg.Server, img.Name)
+
+	inputAuthConfigForCache := types.AuthConfig{
+		Username:      reg.Username,
+		Password:      reg.Password,
+		ServerAddress: inputServerName,
+	}
+
+	if err != nil {
+		return "", nil, err
+	}
+
+	authConfigs[inputServerName] = inputAuthConfigForCache
+
+	q.Q("after adding auth configs", authConfigs)
 	// make the build options
 	opts := types.ImageBuildOptions{
 		Dockerfile: img.Build.Dockerfile,
@@ -156,7 +172,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		if err != nil {
 			return "", nil, err
 		}
-		err = p.host.LogStatus(ctx, "info", urn, info)
+		err = p.host.Log(ctx, "info", urn, info)
 		if err != nil {
 			return "", nil, err
 		}
@@ -432,6 +448,7 @@ func getRegistryAddrForAuth(serverName, imgName string) (string, error) {
 		}
 	} else {
 		hostname = registry.ConvertToHostname(serverName)
+		q.Q("HERE HERE HERE", hostname)
 	}
 
 	switch hostname {
@@ -444,6 +461,7 @@ func getRegistryAddrForAuth(serverName, imgName string) (string, error) {
 
 func getRegistryAddrFromImage(imgName string) (string, error) {
 	named, err := reference.ParseNamed(imgName)
+	q.Q("getting registry addr from image")
 	if err != nil {
 		msg := fmt.Errorf("error: %s. This provider requires all image names to be fully qualified.\n"+
 			"For example, if you are attempting to push to Dockerhub, prefix your image name with `docker.io`:\n\n"+
