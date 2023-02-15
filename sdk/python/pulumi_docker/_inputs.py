@@ -4185,9 +4185,9 @@ class RegistryArgs:
                  username: Optional[pulumi.Input[str]] = None):
         """
         Describes a Docker container registry
-        :param pulumi.Input[str] password: The password to authenticate to the registry
+        :param pulumi.Input[str] password: The password to authenticate to the registry. Does not cause image rebuild when changed.
         :param pulumi.Input[str] server: The URL of the Docker registry server
-        :param pulumi.Input[str] username: The username to authenticate to the registry
+        :param pulumi.Input[str] username: The username to authenticate to the registry. Does not cause image rebuild when changed.
         """
         if password is not None:
             pulumi.set(__self__, "password", password)
@@ -4200,7 +4200,7 @@ class RegistryArgs:
     @pulumi.getter
     def password(self) -> Optional[pulumi.Input[str]]:
         """
-        The password to authenticate to the registry
+        The password to authenticate to the registry. Does not cause image rebuild when changed.
         """
         return pulumi.get(self, "password")
 
@@ -4224,7 +4224,7 @@ class RegistryArgs:
     @pulumi.getter
     def username(self) -> Optional[pulumi.Input[str]]:
         """
-        The username to authenticate to the registry
+        The username to authenticate to the registry. Does not cause image rebuild when changed.
         """
         return pulumi.get(self, "username")
 

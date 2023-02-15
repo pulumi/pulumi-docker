@@ -214,14 +214,47 @@ func (p *dockerNativeProvider) Diff(ctx context.Context, req *rpc.DiffRequest) (
 	for key := range d.Deletes {
 		diff[string(key)] = &rpc.PropertyDiff{Kind: rpc.PropertyDiff_DELETE}
 	}
-	for key := range d.Updates {
-		diff[string(key)] = &rpc.PropertyDiff{Kind: rpc.PropertyDiff_UPDATE}
+
+	detailedUpdates := diffUpdates(d.Updates)
+
+	// merge detailedUpdates into diff
+	for k, v := range detailedUpdates {
+		diff[k] = v
+	}
+
+	// if diff is empty, it means we skipped any changes to username and password
+	if len(diff) == 0 {
+		return &rpc.DiffResponse{
+			Changes: rpc.DiffResponse_DIFF_NONE,
+		}, nil
 	}
 	return &rpc.DiffResponse{
 		Changes:         rpc.DiffResponse_DIFF_SOME,
 		DetailedDiff:    diff,
 		HasDetailedDiff: true,
 	}, nil
+}
+
+func diffUpdates(updates map[resource.PropertyKey]resource.ValueDiff) map[string]*rpc.PropertyDiff {
+	updateDiff := map[string]*rpc.PropertyDiff{}
+	for key, valueDiff := range updates {
+		if string(key) != "registry" {
+			updateDiff[string(key)] = &rpc.PropertyDiff{
+				Kind: rpc.PropertyDiff_UPDATE,
+			}
+		} else {
+			// only register a diff on "server" field, but not on "username" or "password",
+			// as they can change frequently and should not trigger a rebuild.
+			serverDiff := valueDiff.Object.Updates["server"]
+			// if serverDiff is not empty, we register a property diff update
+			if serverDiff != (resource.ValueDiff{}) {
+				updateDiff[string(key)] = &rpc.PropertyDiff{
+					Kind: rpc.PropertyDiff_UPDATE,
+				}
+			}
+		}
+	}
+	return updateDiff
 }
 
 // Create allocates a new instance of the provided resource and returns its unique ID afterwards.

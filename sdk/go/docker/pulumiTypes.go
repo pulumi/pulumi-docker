@@ -9935,11 +9935,11 @@ func (o GetNetworkIpamConfigArrayOutput) Index(i pulumi.IntInput) GetNetworkIpam
 
 // Describes a Docker container registry
 type Registry struct {
-	// The password to authenticate to the registry
+	// The password to authenticate to the registry. Does not cause image rebuild when changed.
 	Password *string `pulumi:"password"`
 	// The URL of the Docker registry server
 	Server *string `pulumi:"server"`
-	// The username to authenticate to the registry
+	// The username to authenticate to the registry. Does not cause image rebuild when changed.
 	Username *string `pulumi:"username"`
 }
 
@@ -9956,11 +9956,11 @@ type RegistryInput interface {
 
 // Describes a Docker container registry
 type RegistryArgs struct {
-	// The password to authenticate to the registry
+	// The password to authenticate to the registry. Does not cause image rebuild when changed.
 	Password pulumi.StringPtrInput `pulumi:"password"`
 	// The URL of the Docker registry server
 	Server pulumi.StringPtrInput `pulumi:"server"`
-	// The username to authenticate to the registry
+	// The username to authenticate to the registry. Does not cause image rebuild when changed.
 	Username pulumi.StringPtrInput `pulumi:"username"`
 }
 
@@ -10042,7 +10042,7 @@ func (o RegistryOutput) ToRegistryPtrOutputWithContext(ctx context.Context) Regi
 	}).(RegistryPtrOutput)
 }
 
-// The password to authenticate to the registry
+// The password to authenticate to the registry. Does not cause image rebuild when changed.
 func (o RegistryOutput) Password() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v Registry) *string { return v.Password }).(pulumi.StringPtrOutput)
 }
@@ -10052,7 +10052,7 @@ func (o RegistryOutput) Server() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v Registry) *string { return v.Server }).(pulumi.StringPtrOutput)
 }
 
-// The username to authenticate to the registry
+// The username to authenticate to the registry. Does not cause image rebuild when changed.
 func (o RegistryOutput) Username() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v Registry) *string { return v.Username }).(pulumi.StringPtrOutput)
 }
@@ -10081,7 +10081,7 @@ func (o RegistryPtrOutput) Elem() RegistryOutput {
 	}).(RegistryOutput)
 }
 
-// The password to authenticate to the registry
+// The password to authenticate to the registry. Does not cause image rebuild when changed.
 func (o RegistryPtrOutput) Password() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Registry) *string {
 		if v == nil {
@@ -10101,7 +10101,7 @@ func (o RegistryPtrOutput) Server() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
-// The username to authenticate to the registry
+// The username to authenticate to the registry. Does not cause image rebuild when changed.
 func (o RegistryPtrOutput) Username() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Registry) *string {
 		if v == nil {

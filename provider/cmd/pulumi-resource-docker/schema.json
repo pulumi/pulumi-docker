@@ -3130,7 +3130,7 @@
             "properties": {
                 "password": {
                     "type": "string",
-                    "description": "The password to authenticate to the registry",
+                    "description": "The password to authenticate to the registry. Does not cause image rebuild when changed.",
                     "secret": true
                 },
                 "server": {
@@ -3139,7 +3139,7 @@
                 },
                 "username": {
                     "type": "string",
-                    "description": "The username to authenticate to the registry"
+                    "description": "The username to authenticate to the registry. Does not cause image rebuild when changed."
                 }
             },
             "type": "object"

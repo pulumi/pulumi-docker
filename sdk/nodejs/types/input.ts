@@ -374,7 +374,7 @@ export interface ProviderRegistryAuth {
  */
 export interface Registry {
     /**
-     * The password to authenticate to the registry
+     * The password to authenticate to the registry. Does not cause image rebuild when changed.
      */
     password?: pulumi.Input<string>;
     /**
@@ -382,7 +382,7 @@ export interface Registry {
      */
     server?: pulumi.Input<string>;
     /**
-     * The username to authenticate to the registry
+     * The username to authenticate to the registry. Does not cause image rebuild when changed.
      */
     username?: pulumi.Input<string>;
 }
