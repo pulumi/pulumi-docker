@@ -102,29 +102,33 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		return "", nil, err
 	}
 
-	auths, err := cfg.GetAllCredentials()
-	if err != nil {
-		return "", nil, err
-	}
-	// read auths to a map of authConfigs for the build options to consume
-	authConfigs := make(map[string]types.AuthConfig, len(auths))
-	for k, auth := range auths {
-		authConfigs[k] = types.AuthConfig(auth)
-	}
+	//auths, err := cfg.GetAllCredentials()
+	//if err != nil {
+	//	return "", nil, err
+	//}
+	// read `docker/cli/cli/config/types` auths to a map of `docker/docker/api/types` authConfigs
+	// for the build options to consume
+	authConfigs := make(map[string]types.AuthConfig)
+	//for k, auth := range auths {
+	//	authConfigs[k] = types.AuthConfig(auth)
+	//}
 
-	inputServerName, err := getRegistryAddrForAuth(reg.Server, img.Name)
-
-	inputAuthConfigForCache := types.AuthConfig{
-		Username:      reg.Username,
-		Password:      reg.Password,
-		ServerAddress: inputServerName,
+	// sign into registry if we're pushing or setting CacheFrom
+	// TODO: add functionality for additional registry caches not associated with the stack image
+	// See: https://github.com/pulumi/pulumi-docker/issues/497
+	if len(img.Build.CachedImages) > 0 || !img.SkipPush {
+		cacheAuth, msg, err := getRegistryAuth(img, cfg)
+		if err != nil {
+			return "", nil, err
+		}
+		if msg != "" {
+			err = p.host.Log(ctx, "warning", urn, msg)
+			if err != nil {
+				return "", nil, err
+			}
+		}
+		authConfigs[cacheAuth.ServerAddress] = cacheAuth
 	}
-
-	if err != nil {
-		return "", nil, err
-	}
-
-	authConfigs[inputServerName] = inputAuthConfigForCache
 
 	q.Q("after adding auth configs", authConfigs)
 	// make the build options
@@ -199,47 +203,17 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		return "", nil, err
 	}
 
-	// authentication for registry push
-	// we check if the user set creds in the Pulumi program, and use those preferentially,
-	// otherwise we use host machine creds via authConfigs.
-	var pushAuthConfig types.AuthConfig
+	pushAuthConfig, msg, err := getRegistryAuth(img, cfg)
 
-	if img.Registry.Username != "" && img.Registry.Password != "" {
-		pushAuthConfig.Username = img.Registry.Username
-		pushAuthConfig.Password = img.Registry.Password
-		pushAuthConfig.ServerAddress, err = getRegistryAddrForAuth(img.Registry.Server, img.Name)
+	if err != nil {
+		return "", nil, err
+	}
+
+	if msg != "" {
+		err = p.host.Log(ctx, "warning", urn, msg)
 		if err != nil {
 			return "", nil, err
 		}
-
-	} else {
-		// send warning if user is attempting to use in-program credentials
-		if img.Registry.Username == "" && img.Registry.Password != "" {
-			msg := "username was not set, although password was; using host credentials file"
-			err = p.host.Log(ctx, "warning", urn, msg)
-			if err != nil {
-				return "", nil, err
-			}
-		}
-		if img.Registry.Password == "" && img.Registry.Username != "" {
-			msg := "password was not set, although username was; using host credentials file"
-			err = p.host.Log(ctx, "warning", urn, msg)
-			if err != nil {
-				return "", nil, err
-			}
-		}
-
-		registryServer, err := getRegistryAddrForAuth(img.Registry.Server, img.Name)
-		if err != nil {
-			return "", nil, err
-		}
-
-		cliPushAuthConfig, err := cfg.GetAuthConfig(registryServer)
-		if err != nil {
-			return "", nil, err
-		}
-
-		pushAuthConfig = types.AuthConfig(cliPushAuthConfig)
 	}
 
 	authConfigBytes, err := json.Marshal(pushAuthConfig)
@@ -431,6 +405,46 @@ func getDefaultDockerConfig() (*configfile.ConfigFile, error) {
 	}
 	cfg.CredentialsStore = credentials.DetectDefaultStore(cfg.CredentialsStore)
 	return cfg, nil
+}
+
+func getRegistryAuth(img Image, cfg *configfile.ConfigFile) (types.AuthConfig, string, error) {
+	// authentication for registry push or cache pull
+	// we check if the user set creds in the Pulumi program, and use those preferentially,
+	// otherwise we use host machine creds via authConfigs.
+	var regAuthConfig types.AuthConfig
+	var msg string
+
+	if img.Registry.Username != "" && img.Registry.Password != "" {
+		regAuthConfig.Username = img.Registry.Username
+		regAuthConfig.Password = img.Registry.Password
+		serverAddr, err := getRegistryAddrForAuth(img.Registry.Server, img.Name)
+		if err != nil {
+			return regAuthConfig, msg, err
+		}
+		regAuthConfig.ServerAddress = serverAddr
+
+	} else {
+		// send warning if user is attempting to use in-program credentials
+		if img.Registry.Username == "" && img.Registry.Password != "" {
+			msg = "username was not set, although password was; using host credentials file"
+		}
+		if img.Registry.Password == "" && img.Registry.Username != "" {
+			msg = "password was not set, although username was; using host credentials file"
+		}
+
+		registryServer, err := getRegistryAddrForAuth(img.Registry.Server, img.Name)
+		if err != nil {
+			return regAuthConfig, msg, err
+		}
+
+		cliPushAuthConfig, err := cfg.GetAuthConfig(registryServer)
+		if err != nil {
+			return regAuthConfig, msg, err
+		}
+
+		regAuthConfig = types.AuthConfig(cliPushAuthConfig)
+	}
+	return regAuthConfig, msg, nil
 }
 
 // Because the authConfigs provided by the host may return URIs with the `https://` scheme in the
