@@ -13,7 +13,9 @@ import (
 func main() {
 	pulumi.Run(func(ctx *pulumi.Context) error {
 		// Create a private ECR registry.
-		repo, err := ecr.NewRepository(ctx, "my-repo", nil)
+		repo, err := ecr.NewRepository(ctx, "my-repo", &ecr.RepositoryArgs{
+			ForceDelete: pulumi.Bool(true),
+		})
 		if err != nil {
 			return err
 		}
