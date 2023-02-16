@@ -54,14 +54,14 @@ public final class DockerBuildArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * A list of images to use as build cache
+     * A list of image names to use as build cache. Images provided must have a cache manifest. Must provide authentication to cache registry.
      * 
      */
     @Import(name="cacheFrom")
     private @Nullable Output<CacheFromArgs> cacheFrom;
 
     /**
-     * @return A list of images to use as build cache
+     * @return A list of image names to use as build cache. Images provided must have a cache manifest. Must provide authentication to cache registry.
      * 
      */
     public Optional<Output<CacheFromArgs>> cacheFrom() {
@@ -201,7 +201,7 @@ public final class DockerBuildArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param cacheFrom A list of images to use as build cache
+         * @param cacheFrom A list of image names to use as build cache. Images provided must have a cache manifest. Must provide authentication to cache registry.
          * 
          * @return builder
          * 
@@ -212,7 +212,7 @@ public final class DockerBuildArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param cacheFrom A list of images to use as build cache
+         * @param cacheFrom A list of image names to use as build cache. Images provided must have a cache manifest. Must provide authentication to cache registry.
          * 
          * @return builder
          * 

@@ -3062,7 +3062,7 @@
                 },
                 "cacheFrom": {
                     "$ref": "#/types/docker:index/cacheFrom:CacheFrom",
-                    "description": "A list of images to use as build cache"
+                    "description": "A list of image names to use as build cache. Images provided must have a cache manifest. Must provide authentication to cache registry."
                 },
                 "context": {
                     "type": "string",

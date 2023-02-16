@@ -9680,7 +9680,7 @@ type DockerBuild struct {
 	Args map[string]string `pulumi:"args"`
 	// The version of the Docker builder.
 	BuilderVersion *BuilderVersion `pulumi:"builderVersion"`
-	// A list of images to use as build cache
+	// A list of image names to use as build cache. Images provided must have a cache manifest. Must provide authentication to cache registry.
 	CacheFrom *CacheFrom `pulumi:"cacheFrom"`
 	// The path to the build context to use.
 	Context *string `pulumi:"context"`
@@ -9730,7 +9730,7 @@ type DockerBuildArgs struct {
 	Args pulumi.StringMapInput `pulumi:"args"`
 	// The version of the Docker builder.
 	BuilderVersion BuilderVersionPtrInput `pulumi:"builderVersion"`
-	// A list of images to use as build cache
+	// A list of image names to use as build cache. Images provided must have a cache manifest. Must provide authentication to cache registry.
 	CacheFrom CacheFromPtrInput `pulumi:"cacheFrom"`
 	// The path to the build context to use.
 	Context pulumi.StringPtrInput `pulumi:"context"`
@@ -9796,7 +9796,7 @@ func (o DockerBuildOutput) BuilderVersion() BuilderVersionPtrOutput {
 	return o.ApplyT(func(v DockerBuild) *BuilderVersion { return v.BuilderVersion }).(BuilderVersionPtrOutput)
 }
 
-// A list of images to use as build cache
+// A list of image names to use as build cache. Images provided must have a cache manifest. Must provide authentication to cache registry.
 func (o DockerBuildOutput) CacheFrom() CacheFromPtrOutput {
 	return o.ApplyT(func(v DockerBuild) *CacheFrom { return v.CacheFrom }).(CacheFromPtrOutput)
 }
