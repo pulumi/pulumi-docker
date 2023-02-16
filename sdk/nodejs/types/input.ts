@@ -288,7 +288,7 @@ export interface DockerBuild {
      */
     builderVersion?: pulumi.Input<enums.BuilderVersion>;
     /**
-     * A list of images to use as build cache
+     * A list of image names to use as build cache. Images provided must have a cache manifest. Must provide authentication to cache registry.
      */
     cacheFrom?: pulumi.Input<inputs.CacheFrom>;
     /**

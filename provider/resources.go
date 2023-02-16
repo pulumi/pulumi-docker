@@ -155,7 +155,10 @@ func Provider() tfbridge.ProviderInfo {
 							Default:     "Dockerfile",
 						},
 						"cacheFrom": {
-							Description: "A list of images to use as build cache",
+							Description: "A list of image names to use as build cache. " +
+								"Images provided must have a cache manifest. " +
+								"Must provide authentication to cache registry.",
+
 							TypeSpec: schema.TypeSpec{
 								Ref: "#/types/docker:index/cacheFrom:CacheFrom",
 							},

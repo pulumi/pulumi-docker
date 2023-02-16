@@ -34,7 +34,7 @@ namespace Pulumi.Docker.Inputs
         public Input<Pulumi.Docker.BuilderVersion>? BuilderVersion { get; set; }
 
         /// <summary>
-        /// A list of images to use as build cache
+        /// A list of image names to use as build cache. Images provided must have a cache manifest. Must provide authentication to cache registry.
         /// </summary>
         [Input("cacheFrom")]
         public Input<Inputs.CacheFromArgs>? CacheFrom { get; set; }
