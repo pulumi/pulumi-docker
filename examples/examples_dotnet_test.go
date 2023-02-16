@@ -17,10 +17,10 @@
 package examples
 
 import (
+	"github.com/pulumi/pulumi/pkg/v3/testing/integration"
+	"os"
 	"path"
 	"testing"
-
-	"github.com/pulumi/pulumi/pkg/v3/testing/integration"
 )
 
 func TestNginxCs(t *testing.T) {
@@ -37,6 +37,23 @@ func TestDotNet(t *testing.T) {
 	test := getCsharpBaseOptions(t).
 		With(integration.ProgramTestOptions{
 			Dir: path.Join(getCwd(t), "dotnet"),
+		})
+
+	integration.ProgramTest(t, &test)
+}
+
+func TestAzureContainerRegistryDotNet(t *testing.T) {
+	location := os.Getenv("AZURE_LOCATION")
+	if location == "" {
+		t.Skipf("Skipping test due to missing AZURE_LOCATION environment variable")
+	}
+	test := getCsharpBaseOptions(t).
+		With(integration.ProgramTestOptions{
+			Dir: path.Join(getCwd(t), "container-registries/azure/csharp"),
+			Config: map[string]string{
+				"azure:environment": "public",
+				"azure:location":    location,
+			},
 		})
 
 	integration.ProgramTest(t, &test)

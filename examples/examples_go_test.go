@@ -73,6 +73,28 @@ func TestDockerfileGo(t *testing.T) {
 	integration.ProgramTest(t, &opts)
 }
 
+func TestAzureContainerRegistryGo(t *testing.T) {
+	location := os.Getenv("AZURE_LOCATION")
+	if location == "" {
+		t.Skipf("Skipping test due to missing AZURE_LOCATION environment variable")
+	}
+	cwd, err := os.Getwd()
+	if !assert.NoError(t, err) {
+		t.FailNow()
+	}
+	opts := base.With(integration.ProgramTestOptions{
+		//Dependencies: []string{
+		//	"github.com/pulumi/pulumi-docker/sdk/v4",
+		//},
+		Dir: path.Join(cwd, "container-registries/azure/go"),
+		Config: map[string]string{
+			"azure:environment": "public",
+			"azure:location":    location,
+		},
+	})
+	integration.ProgramTest(t, &opts)
+}
+
 var base = integration.ProgramTestOptions{
 	ExpectRefreshChanges: true, // Docker resources generally see changes when refreshed.
 	// Note: no Config! This package should be usable without any config.

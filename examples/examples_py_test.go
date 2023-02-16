@@ -44,18 +44,18 @@ func TestAwsPy(t *testing.T) {
 	integration.ProgramTest(t, &test)
 }
 
-func TestAzurePy(t *testing.T) {
+func TestAzureContainerRegistryPy(t *testing.T) {
 	location := os.Getenv("AZURE_LOCATION")
 	if location == "" {
 		t.Skipf("Skipping test due to missing AZURE_LOCATION environment variable")
 	}
 	test := getPyOptions(t).
 		With(integration.ProgramTestOptions{
+			Dir: path.Join(getCwd(t), "container-registries/azure/py"),
 			Config: map[string]string{
 				"azure:environment": "public",
 				"azure:location":    location,
 			},
-			Dir: path.Join(getCwd(t), "azure-py"),
 		})
 
 	integration.ProgramTest(t, &test)
