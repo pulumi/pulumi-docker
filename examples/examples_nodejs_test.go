@@ -80,6 +80,22 @@ func TestAzureContainerRegistry(t *testing.T) {
 	integration.ProgramTest(t, &test)
 }
 
+func TestAwsContainerRegistry(t *testing.T) {
+	region := os.Getenv("AWS_REGION")
+	if region == "" {
+		t.Skipf("Skipping test due to missing AWS_REGION environment variable")
+	}
+	test := getJsOptions(t).
+		With(integration.ProgramTestOptions{
+			Dir: path.Join(getCwd(t), "container-registries/aws/ts"),
+			Config: map[string]string{
+				"aws:region": region,
+			},
+		})
+
+	integration.ProgramTest(t, &test)
+}
+
 func getJsOptions(t *testing.T) integration.ProgramTestOptions {
 	base := getBaseOptions()
 	baseJs := base.With(integration.ProgramTestOptions{

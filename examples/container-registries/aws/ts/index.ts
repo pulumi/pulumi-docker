@@ -5,7 +5,6 @@ import * as docker from "@pulumi/docker";
 const repo = new aws.ecr.Repository("my-repo");
 
 // Get registry info (creds and endpoint) so we can build/publish to it.
-const imageName = repo.repositoryUrl;
 const registryInfo = repo.registryId.apply(async id => {
     const credentials = await aws.ecr.getCredentials({ registryId: id });
     const decodedCredentials = Buffer.from(credentials.authorizationToken, "base64").toString();
@@ -22,8 +21,10 @@ const registryInfo = repo.registryId.apply(async id => {
 
 // Build and publish the image.
 const image = new docker.Image("my-image", {
-    build: "app",
-    imageName: imageName,
+    build: {
+        context: "app"
+    },
+    imageName: repo.repositoryUrl,
     registry: registryInfo,
 });
 
