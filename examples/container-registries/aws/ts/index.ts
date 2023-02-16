@@ -2,7 +2,9 @@ import * as aws from "@pulumi/aws";
 import * as docker from "@pulumi/docker";
 
 // Create a private ECR registry.
-const repo = new aws.ecr.Repository("my-repo");
+const repo = new aws.ecr.Repository("my-repo",{
+    forceDelete: true,
+});
 
 // Get registry info (creds and endpoint) so we can build/publish to it.
 const registryInfo = repo.registryId.apply(async id => {
@@ -28,6 +30,5 @@ const image = new docker.Image("my-image", {
     registry: registryInfo,
 });
 
-// Export the resuling base name in addition to the specific version pushed.
-export const baseImageName = image.baseImageName;
-export const fullImageName = image.imageName;
+// Export the resulting image name
+export const imageName = image.imageName;

@@ -61,6 +61,22 @@ func TestAzureContainerRegistryPy(t *testing.T) {
 	integration.ProgramTest(t, &test)
 }
 
+func TestAwsContainerRegistryPy(t *testing.T) {
+	region := os.Getenv("AWS_REGION")
+	if region == "" {
+		t.Skipf("Skipping test due to missing AWS_REGION environment variable")
+	}
+	test := getPyOptions(t).
+		With(integration.ProgramTestOptions{
+			Dir: path.Join(getCwd(t), "container-registries/aws/py"),
+			Config: map[string]string{
+				"aws:region": region,
+			},
+		})
+
+	integration.ProgramTest(t, &test)
+}
+
 func TestNginxPy(t *testing.T) {
 	test := getPyOptions(t).
 		With(integration.ProgramTestOptions{
