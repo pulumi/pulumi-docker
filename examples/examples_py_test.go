@@ -57,6 +57,21 @@ func TestAwsContainerRegistryPy(t *testing.T) {
 	integration.ProgramTest(t, &test)
 }
 
+func TestGcpContainerRegistryPy(t *testing.T) {
+	project := os.Getenv("GOOGLE_PROJECT")
+	if project == "" {
+		t.Skipf("Skipping test due to missing GOOGLE_PROJECT environment variable")
+	}
+	test := getJsOptions(t).
+		With(integration.ProgramTestOptions{
+			Dir: path.Join(getCwd(t), "container-registries/gcp/py"),
+			Config: map[string]string{
+				"gcp:project": project,
+			},
+		})
+	integration.ProgramTest(t, &test)
+}
+
 func TestNginxPy(t *testing.T) {
 	test := getPyOptions(t).
 		With(integration.ProgramTestOptions{
