@@ -96,6 +96,21 @@ func TestAwsContainerRegistry(t *testing.T) {
 	integration.ProgramTest(t, &test)
 }
 
+func TestGcpContainerRegistry(t *testing.T) {
+	project := os.Getenv("GOOGLE_PROJECT")
+	if project == "" {
+		t.Skipf("Skipping test due to missing GOOGLE_PROJECT environment variable")
+	}
+	test := getJsOptions(t).
+		With(integration.ProgramTestOptions{
+			Dir: path.Join(getCwd(t), "container-registries/gcp/ts"),
+			Config: map[string]string{
+				"gcp:project": project,
+			},
+		})
+	integration.ProgramTest(t, &test)
+}
+
 func getJsOptions(t *testing.T) integration.ProgramTestOptions {
 	base := getBaseOptions()
 	baseJs := base.With(integration.ProgramTestOptions{
