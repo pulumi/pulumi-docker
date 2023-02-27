@@ -59,6 +59,22 @@ func TestAzureContainerRegistryDotNet(t *testing.T) {
 	integration.ProgramTest(t, &test)
 }
 
+func TestAwsContainerRegistry(t *testing.T) {
+	region := os.Getenv("AWS_REGION")
+	if region == "" {
+		t.Skipf("Skipping test due to missing AWS_REGION environment variable")
+	}
+	test := getCsharpBaseOptions(t).
+		With(integration.ProgramTestOptions{
+			Dir: path.Join(getCwd(t), "container-registries/aws/csharp"),
+			Config: map[string]string{
+				"aws:region": region,
+			},
+		})
+
+	integration.ProgramTest(t, &test)
+}
+
 func getCsharpBaseOptions(t *testing.T) integration.ProgramTestOptions {
 	base := getBaseOptions()
 	baseCsharp := base.With(integration.ProgramTestOptions{

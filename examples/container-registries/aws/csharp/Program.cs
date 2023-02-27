@@ -5,12 +5,16 @@ using System.Threading.Tasks;
 using Pulumi;
 using Pulumi.Aws.Ecr;
 using Pulumi.Docker;
+using Pulumi.Docker.Inputs;
 
 class Program
 {
     static Task<int> Main() => Deployment.RunAsync(async () => {
         // Create a private ECR registry.
-        var repo = new Repository("my-repo");
+        var repo = new Repository("my-repo", new RepositoryArgs{
+            ForceDelete = true,
+        });
+
 
         // Get registry info (creds and endpoint) so we can build/publish to it.
         var imageName = repo.RepositoryUrl;
@@ -26,7 +30,7 @@ class Program
                 throw new Exception("Invalid credentials");
             }
 
-            return new ImageRegistry
+            return new Pulumi.Docker.Inputs.RegistryArgs
             {
                 Server = creds.ProxyEndpoint,
                 Username = parts[0],
@@ -37,12 +41,12 @@ class Program
         // Build and publish the app image.
         var image = new Image("my-image", new ImageArgs
         {
-            Build = new DockerBuild { Context = "app" },
+            Build = new Pulumi.Docker.Inputs.DockerBuildArgs { Context = "app" },
             ImageName = imageName,
             Registry = registryInfo,
         });
 
-        // Export the resulting base name in addition to the specific version pushed.
+        // Export the resulting image name
         return new Dictionary<string, object>
         {
             { "baseImageName", image.BaseImageName },

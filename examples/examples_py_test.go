@@ -17,32 +17,12 @@
 package examples
 
 import (
-	"fmt"
 	"os"
 	"path"
 	"testing"
 
 	"github.com/pulumi/pulumi/pkg/v3/testing/integration"
 )
-
-func TestAwsPy(t *testing.T) {
-	t.Skipf("https://github.com/pulumi/pulumi-docker/issues/411")
-	region := os.Getenv("AWS_REGION")
-	if region == "" {
-		t.Skipf("Skipping test due to missing AWS_REGION environment variable")
-	}
-	fmt.Printf("AWS Region: %v\n", region)
-
-	test := getPyOptions(t).
-		With(integration.ProgramTestOptions{
-			Config: map[string]string{
-				"aws:region": region,
-			},
-			Dir: path.Join(getCwd(t), "aws-py"),
-		})
-
-	integration.ProgramTest(t, &test)
-}
 
 func TestAzureContainerRegistryPy(t *testing.T) {
 	location := os.Getenv("AZURE_LOCATION")
@@ -55,6 +35,22 @@ func TestAzureContainerRegistryPy(t *testing.T) {
 			Config: map[string]string{
 				"azure:environment": "public",
 				"azure:location":    location,
+			},
+		})
+
+	integration.ProgramTest(t, &test)
+}
+
+func TestAwsContainerRegistryPy(t *testing.T) {
+	region := os.Getenv("AWS_REGION")
+	if region == "" {
+		t.Skipf("Skipping test due to missing AWS_REGION environment variable")
+	}
+	test := getPyOptions(t).
+		With(integration.ProgramTestOptions{
+			Dir: path.Join(getCwd(t), "container-registries/aws/py"),
+			Config: map[string]string{
+				"aws:region": region,
 			},
 		})
 

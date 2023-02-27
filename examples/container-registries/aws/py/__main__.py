@@ -1,10 +1,14 @@
 import base64
 import pulumi
 import pulumi_aws as aws
-import pulumi_docker as docker
+from pulumi_docker import Image, DockerBuildArgs, RegistryArgs
 
 # Create a private ECR registry.
-repo = aws.ecr.Repository('my-repo')
+repo = aws.ecr.Repository(
+    'my-repo',
+    force_delete=True,
+
+)
 
 # Get registry info (creds and endpoint) so we can build/publish to it.
 def getRegistryInfo(rid):
@@ -13,15 +17,23 @@ def getRegistryInfo(rid):
     parts = decoded.split(':')
     if len(parts) != 2:
         raise Exception("Invalid credentials")
-    return docker.ImageRegistry(creds.proxy_endpoint, parts[0], parts[1])
-image_name = repo.repository_url
-registry_info = repo.registry_id.apply(getRegistryInfo)
+    return RegistryArgs(
+        server=creds.proxy_endpoint,
+        username=parts[0],
+        password=parts[1],
+    )
+
+
+registryInfo = repo.registry_id.apply(getRegistryInfo)
 
 # Build and publish the image.
-image = docker.Image('my-image',
-    build='app',
-    image_name=image_name,
-    registry=registry_info,
+image = Image(
+    'my-image',
+    build=DockerBuildArgs(
+        context='app',
+    ),
+    image_name=repo.repository_url,
+    registry=registryInfo,
 )
 
 # Export the resulting base name in addition to the specific version pushed.
