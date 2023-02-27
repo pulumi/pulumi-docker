@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Pulumi;
 using Pulumi.Docker;
+using Pulumi.Docker.Inputs;
 using Pulumi.Gcp.Container;
 
 class Program
@@ -21,7 +22,7 @@ class Program
         // Build and publish the app image.
         var image = new Image("my-image", new ImageArgs
         {
-            Build = new DockerBuild { Context = "app" },
+            Build = new Pulumi.Docker.Inputs.DockerBuildArgs { Context = "app" },
             ImageName = imageName,
             //Registry = registryInfo,
         });

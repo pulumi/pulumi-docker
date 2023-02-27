@@ -12,7 +12,9 @@ registry_info = None # use gcloud for auth.
 
 # Build and publish the image.
 image = docker.Image('my-image',
-    build='app',
+    build=DockerBuildArgs(
+        context='app',
+    ),
     image_name=image_name,
     registry=registry_info,
 )
