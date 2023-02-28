@@ -2,15 +2,18 @@ package provider
 
 import (
 	"bufio"
+	"bytes"
 	"context"
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"net"
-
 	"github.com/docker/distribution/reference"
+	"github.com/moby/buildkit/frontend/dockerfile/dockerignore"
 	"github.com/moby/buildkit/session"
 	"github.com/moby/moby/registry"
+	"github.com/ryboe/q"
+	"net"
+	"os"
 
 	"github.com/docker/cli/cli/config"
 	"github.com/docker/cli/cli/config/configfile"
@@ -91,7 +94,34 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	}
 
 	// make the build context
-	tar, err := archive.TarWithOptions(img.Build.Context, &archive.TarOptions{})
+
+	// exclude dockerignore files
+	dockerIgnore, err := os.ReadFile(".dockerignore")
+	if err != nil {
+		//if os.IsNotExist(err) {
+		//	dockerIgnorePath = filepath.Join(dockerContextPath, ".dockerignore")
+		//	dockerIgnore, err = os.ReadFile(dockerIgnorePath)
+		//	if err != nil && !os.IsNotExist(err) {
+		//		return "", fmt.Errorf("unable to read %s file: %w", dockerIgnorePath, err)
+		//	}
+		//} else {
+		return "", nil, fmt.Errorf("unable to read %s file: %w", ".dockerignore", err)
+		//}
+	}
+	ignorePatterns, err := dockerignore.ReadAll(bytes.NewReader(dockerIgnore))
+	if err != nil {
+		return "", nil, fmt.Errorf("unable to parse %s file: %w", ".dockerignore", err)
+	}
+	//ignoreMatcher, err := fileutils.NewPatternMatcher(ignorePatterns)
+	//if err != nil {
+	//	return "", fmt.Errorf("unable to load rules from %s: %w", dockerIgnorePath, err)
+	//}
+
+	q.Q(ignorePatterns)
+
+	tar, err := archive.TarWithOptions(img.Build.Context, &archive.TarOptions{
+		ExcludePatterns: ignorePatterns,
+	})
 	if err != nil {
 		return "", nil, err
 	}
