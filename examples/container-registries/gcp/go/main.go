@@ -21,15 +21,12 @@ func main() {
 			return rep.RepositoryUrl, nil
 		})
 
-		// Get registry info (creds and endpoint).
 		imageName := pulumi.Sprintf("%s/myapp", registryUrl)
-		registryInfo := docker.RegistryOutput{} // use gcloud
 
 		// Build and publish the app image.
 		image, err := docker.NewImage(ctx, "my-image", &docker.ImageArgs{
 			Build:     &docker.DockerBuildArgs{Context: pulumi.String("app")},
 			ImageName: imageName,
-			Registry:  registryInfo,
 		})
 
 		// Export the resulting image name
