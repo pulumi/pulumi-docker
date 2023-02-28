@@ -2,17 +2,14 @@ package provider
 
 import (
 	"bufio"
-	"bytes"
 	"context"
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"github.com/docker/distribution/reference"
-	"github.com/moby/buildkit/frontend/dockerfile/dockerignore"
 	"github.com/moby/buildkit/session"
 	"github.com/moby/moby/registry"
 	"net"
-	"os"
 	"path/filepath"
 
 	"github.com/docker/cli/cli/config"
@@ -94,15 +91,13 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	}
 
 	// make the build context and ensure to exclude dockerignore file patterns
+
 	dockerIgnorePath := filepath.Join(build.Context, ".dockerignore")
-	dockerIgnore, err := os.ReadFile(dockerIgnorePath)
+	ignorePatterns, err := getIgnore(dockerIgnorePath)
 	if err != nil {
-		return "", nil, fmt.Errorf("unable to read %s file: %w", ".dockerignore", err)
+		return "", nil, err
 	}
-	ignorePatterns, err := dockerignore.ReadAll(bytes.NewReader(dockerIgnore))
-	if err != nil {
-		return "", nil, fmt.Errorf("unable to parse %s file: %w", ".dockerignore", err)
-	}
+
 	tar, err := archive.TarWithOptions(img.Build.Context, &archive.TarOptions{
 		ExcludePatterns: ignorePatterns,
 	})
