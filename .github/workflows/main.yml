@@ -11,6 +11,13 @@ env:
     6.0.x
     3.1.301
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  GOOGLE_CI_SERVICE_ACCOUNT_EMAIL: pulumi-ci@pulumi-ci-gcp-provider.iam.gserviceaccount.com
+  GOOGLE_CI_WORKLOAD_IDENTITY_POOL: pulumi-ci
+  GOOGLE_CI_WORKLOAD_IDENTITY_PROVIDER: pulumi-ci
+  GOOGLE_PROJECT: pulumi-ci-gcp-provider
+  GOOGLE_PROJECT_NUMBER: 895284651812
+  GOOGLE_REGION: us-central1
+  GOOGLE_ZONE: us-central1-a
   GOVERSION: 1.19.x
   JAVAVERSION: "11"
   NODEVERSION: 16.x
@@ -565,6 +572,20 @@ jobs:
         role-duration-seconds: 3600
         role-session-name: ${{ env.PROVIDER }}@githubActions
         role-to-assume: ${{ secrets.AWS_CI_ROLE_ARN }}
+    - name: Authenticate to Google Cloud
+      uses: google-github-actions/auth@v0
+      with:
+        service_account: ${{ env.GOOGLE_CI_SERVICE_ACCOUNT_EMAIL }}
+        workload_identity_provider: projects/${{ env.GOOGLE_PROJECT_NUMBER
+          }}/locations/global/workloadIdentityPools/${{
+          env.GOOGLE_CI_WORKLOAD_IDENTITY_POOL }}/providers/${{
+          env.GOOGLE_CI_WORKLOAD_IDENTITY_PROVIDER }}
+    - name: Setup gcloud auth
+      uses: google-github-actions/setup-gcloud@v0
+      with:
+        install_components: gke-gcloud-auth-plugin
+    - name: Login to Google Cloud Registry
+      run: gcloud --quiet auth configure-docker
     - name: Install dependencies
       run: make install_${{ matrix.language}}_sdk
     - name: Install gotestfmt
