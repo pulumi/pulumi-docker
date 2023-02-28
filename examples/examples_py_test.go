@@ -57,6 +57,22 @@ func TestAwsContainerRegistryPy(t *testing.T) {
 	integration.ProgramTest(t, &test)
 }
 
+func TestDigitaloceanContainerRegistryPy(t *testing.T) {
+	token := os.Getenv("DIGITALOCEAN_TOKEN")
+	if token == "" {
+		t.Skipf("Skipping test due to missing DIGITALOCEAN_TOKEN environment variable")
+	}
+	test := getPyOptions(t).
+		With(integration.ProgramTestOptions{
+			Dir: path.Join(getCwd(t), "container-registries/digitalocean/py"),
+			Config: map[string]string{
+				"digitalocean:token": token,
+			},
+		})
+
+	integration.ProgramTest(t, &test)
+}
+
 func TestGcpContainerRegistryPy(t *testing.T) {
 	project := os.Getenv("GOOGLE_PROJECT")
 	if project == "" {
@@ -69,6 +85,7 @@ func TestGcpContainerRegistryPy(t *testing.T) {
 				"gcp:project": project,
 			},
 		})
+
 	integration.ProgramTest(t, &test)
 }
 

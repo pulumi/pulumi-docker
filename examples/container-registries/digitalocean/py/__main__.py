@@ -2,7 +2,7 @@ import base64
 import json
 import pulumi
 import pulumi_digitalocean as digitalocean
-import pulumi_docker as docker
+from pulumi_docker import Image, DockerBuildArgs, RegistryArgs
 
 # Create a private DigitalOcean Container Registry.
 registry = digitalocean.ContainerRegistry('my-reg',
@@ -25,13 +25,20 @@ def getRegistryInfo(info):
     parts = decoded.split(':')
     if len(parts) != 2:
         raise Exception('Invalid credentials')
-    return docker.ImageRegistry(server_url, parts[0], parts[1])
+    return RegistryArgs(
+        server=server_url,
+        username=parts[0],
+        password=parts[1],
+    )
 registry_info = pulumi.Output.all(
     registry_creds.docker_credentials, registry.server_url).apply(getRegistryInfo)
 
 # Build and publish the image.
-image = docker.Image('my-image',
-    build='app',
+image = Image(
+    'my-image',
+    build=DockerBuildArgs(
+        context='app',
+    ),
     image_name=image_name,
     registry=registry_info,
 )

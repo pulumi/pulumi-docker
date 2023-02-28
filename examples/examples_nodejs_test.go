@@ -98,7 +98,7 @@ func TestAwsContainerRegistry(t *testing.T) {
 
 func TestDigitaloceanContainerRegistry(t *testing.T) {
 	token := os.Getenv("DIGITALOCEAN_TOKEN")
-	if region == "" {
+	if token == "" {
 		t.Skipf("Skipping test due to missing DIGITALOCEAN_TOKEN environment variable")
 	}
 	test := getJsOptions(t).
