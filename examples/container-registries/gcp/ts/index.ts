@@ -8,7 +8,6 @@ const registryUrl = registry.id.apply(_ =>
 
 // Get registry info (creds and endpoint).
 const imageName = registryUrl.apply(url => `${url}/myapp`);
-const registryInfo = undefined; // use gcloud for authentication.
 
 // Build and publish the image.
 const image = new docker.Image("my-image", {
@@ -16,7 +15,6 @@ const image = new docker.Image("my-image", {
         context: "app"
     },
     imageName: imageName,
-    registry: registryInfo,
 });
 
 // Export the resulting image name
