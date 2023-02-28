@@ -115,13 +115,12 @@ func TestGcpContainerRegistryGo(t *testing.T) {
 	if project == "" {
 		t.Skipf("Skipping test due to missing GOOGLE_PROJECT environment variable")
 	}
-	test := getJsOptions(t).
-		With(integration.ProgramTestOptions{
-			Dir: path.Join(getCwd(t), "container-registries/gcp/go"),
-			Config: map[string]string{
-				"gcp:project": project,
-			},
-		})
+	test := base.With(integration.ProgramTestOptions{
+		Dir: path.Join(getCwd(t), "container-registries/gcp/go"),
+		Config: map[string]string{
+			"gcp:project": project,
+		},
+	})
 	integration.ProgramTest(t, &test)
 }
 
