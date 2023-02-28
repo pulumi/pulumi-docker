@@ -11,9 +11,9 @@ import (
 	"github.com/moby/buildkit/frontend/dockerfile/dockerignore"
 	"github.com/moby/buildkit/session"
 	"github.com/moby/moby/registry"
-	"github.com/ryboe/q"
 	"net"
 	"os"
+	"path/filepath"
 
 	"github.com/docker/cli/cli/config"
 	"github.com/docker/cli/cli/config/configfile"
@@ -93,32 +93,16 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		return "", nil, err
 	}
 
-	// make the build context
-
-	// exclude dockerignore files
-	dockerIgnore, err := os.ReadFile(".dockerignore")
+	// make the build context and ensure to exclude dockerignore file patterns
+	dockerIgnorePath := filepath.Join(build.Context, ".dockerignore")
+	dockerIgnore, err := os.ReadFile(dockerIgnorePath)
 	if err != nil {
-		//if os.IsNotExist(err) {
-		//	dockerIgnorePath = filepath.Join(dockerContextPath, ".dockerignore")
-		//	dockerIgnore, err = os.ReadFile(dockerIgnorePath)
-		//	if err != nil && !os.IsNotExist(err) {
-		//		return "", fmt.Errorf("unable to read %s file: %w", dockerIgnorePath, err)
-		//	}
-		//} else {
 		return "", nil, fmt.Errorf("unable to read %s file: %w", ".dockerignore", err)
-		//}
 	}
 	ignorePatterns, err := dockerignore.ReadAll(bytes.NewReader(dockerIgnore))
 	if err != nil {
 		return "", nil, fmt.Errorf("unable to parse %s file: %w", ".dockerignore", err)
 	}
-	//ignoreMatcher, err := fileutils.NewPatternMatcher(ignorePatterns)
-	//if err != nil {
-	//	return "", fmt.Errorf("unable to load rules from %s: %w", dockerIgnorePath, err)
-	//}
-
-	q.Q(ignorePatterns)
-
 	tar, err := archive.TarWithOptions(img.Build.Context, &archive.TarOptions{
 		ExcludePatterns: ignorePatterns,
 	})
