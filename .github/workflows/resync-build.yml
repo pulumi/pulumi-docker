@@ -11,6 +11,13 @@ env:
     6.0.x
     3.1.301
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  GOOGLE_CI_SERVICE_ACCOUNT_EMAIL: pulumi-ci@pulumi-ci-gcp-provider.iam.gserviceaccount.com
+  GOOGLE_CI_WORKLOAD_IDENTITY_POOL: pulumi-ci
+  GOOGLE_CI_WORKLOAD_IDENTITY_PROVIDER: pulumi-ci
+  GOOGLE_PROJECT: pulumi-ci-gcp-provider
+  GOOGLE_PROJECT_NUMBER: 895284651812
+  GOOGLE_REGION: us-central1
+  GOOGLE_ZONE: us-central1-a
   GOVERSION: 1.19.x
   JAVAVERSION: "11"
   NODEVERSION: 16.x
