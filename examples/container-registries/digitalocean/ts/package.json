@@ -1,11 +1,10 @@
 {
     "name": "cbp-do-ts",
     "devDependencies": {
-        "@types/node": "^8.0.0"
+        "@types/node": "^14.0.0"
     },
     "dependencies": {
-        "@pulumi/digitalocean": "^3.1.1",
-        "@pulumi/docker": "^2.0.0",
+        "@pulumi/digitalocean": "latest",
         "@pulumi/pulumi": "^3.0.0"
     }
 }
