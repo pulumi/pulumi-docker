@@ -15,7 +15,7 @@ func main() {
 		server := "docker.io"
 
 		// Populate the registry info (creds and endpoint).
-		imageName := server + username + "/myapp"
+		imageName := server + "/" + username + "/myapp"
 
 		registryInfo := password.ApplyT(func(pw string) (docker.Registry, error) {
 			return docker.Registry{

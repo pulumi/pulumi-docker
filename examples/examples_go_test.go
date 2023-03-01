@@ -125,8 +125,16 @@ func TestGcpContainerRegistryGo(t *testing.T) {
 }
 
 func TestDockerContainerRegistryGo(t *testing.T) {
+	username := "pulumibot"
+	password := os.Getenv("DOCKER_HUB_PASSWORD")
 	test := base.With(integration.ProgramTestOptions{
 		Dir: path.Join(getCwd(t), "container-registries/docker/go"),
+		Config: map[string]string{
+			"cbp-docker-go:dockerUsername": username,
+		},
+		Secrets: map[string]string{
+			"cbp-docker-go:dockerPassword": password,
+		},
 	})
 	integration.ProgramTest(t, &test)
 }

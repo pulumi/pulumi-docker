@@ -91,9 +91,17 @@ func TestGcpContainerRegistryDotnet(t *testing.T) {
 }
 
 func TestDockerContainerRegistryDotnet(t *testing.T) {
+	username := "pulumibot"
+	password := os.Getenv("DOCKER_HUB_PASSWORD")
 	test := getCsharpBaseOptions(t).
 		With(integration.ProgramTestOptions{
 			Dir: path.Join(getCwd(t), "container-registries/docker/csharp"),
+			Config: map[string]string{
+				"cbp-docker-csharp:dockerUsername": username,
+			},
+			Secrets: map[string]string{
+				"cbp-docker-csharp:dockerPassword": password,
+			},
 		})
 	integration.ProgramTest(t, &test)
 }
