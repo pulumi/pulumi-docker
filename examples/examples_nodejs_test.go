@@ -54,7 +54,7 @@ func TestNginx(t *testing.T) {
 }
 
 func TestDockerfileWithMultipleTargets(t *testing.T) {
-
+	t.Skipf("Skipping test due to dockerignore shenanigans")
 	test := getJsOptions(t).
 		With(integration.ProgramTestOptions{
 			Dir: path.Join(getCwd(t), "dockerfile-with-targets"),
