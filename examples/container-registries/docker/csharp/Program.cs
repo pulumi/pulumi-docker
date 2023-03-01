@@ -26,7 +26,7 @@ class Program
         // Build and publish the app image.
         var image = new Image("my-image", new ImageArgs
         {
-            ImageName = imageName
+            ImageName = imageName,
             Build = new Pulumi.Docker.Inputs.DockerBuildArgs { Context = "app" },
             Registry = registryInfo,
         });
