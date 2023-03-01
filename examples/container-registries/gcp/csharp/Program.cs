@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Pulumi;
 using Pulumi.Docker;
+using Pulumi.Docker.Inputs;
 using Pulumi.Gcp.Container;
 
 class Program
@@ -14,16 +15,14 @@ class Program
             return (await GetRegistryRepository.InvokeAsync()).RepositoryUrl;
         }); 
 
-        // Get registry info (creds and endpoint).
+        // Get image name
         var imageName = Output.Format($"{registryUrl}/myapp");
-        //var registryInfo = new ImageRegistry(); // use gcloud for authentication.
 
         // Build and publish the app image.
         var image = new Image("my-image", new ImageArgs
         {
-            Build = new DockerBuild { Context = "app" },
+            Build = new Pulumi.Docker.Inputs.DockerBuildArgs { Context = "app" },
             ImageName = imageName,
-            //Registry = registryInfo,
         });
 
         // Export the resulting base name in addition to the specific version pushed.

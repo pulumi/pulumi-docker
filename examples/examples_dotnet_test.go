@@ -59,7 +59,7 @@ func TestAzureContainerRegistryDotNet(t *testing.T) {
 	integration.ProgramTest(t, &test)
 }
 
-func TestAwsContainerRegistry(t *testing.T) {
+func TestAwsContainerRegistryDotnet(t *testing.T) {
 	region := os.Getenv("AWS_REGION")
 	if region == "" {
 		t.Skipf("Skipping test due to missing AWS_REGION environment variable")
@@ -72,6 +72,21 @@ func TestAwsContainerRegistry(t *testing.T) {
 			},
 		})
 
+	integration.ProgramTest(t, &test)
+}
+
+func TestGcpContainerRegistryDotnet(t *testing.T) {
+	project := os.Getenv("GOOGLE_PROJECT")
+	if project == "" {
+		t.Skipf("Skipping test due to missing GOOGLE_PROJECT environment variable")
+	}
+	test := getCsharpBaseOptions(t).
+		With(integration.ProgramTestOptions{
+			Dir: path.Join(getCwd(t), "container-registries/gcp/csharp"),
+			Config: map[string]string{
+				"gcp:project": project,
+			},
+		})
 	integration.ProgramTest(t, &test)
 }
 

@@ -110,6 +110,20 @@ func TestAwsContainerRegistryGo(t *testing.T) {
 	integration.ProgramTest(t, &opts)
 }
 
+func TestGcpContainerRegistryGo(t *testing.T) {
+	project := os.Getenv("GOOGLE_PROJECT")
+	if project == "" {
+		t.Skipf("Skipping test due to missing GOOGLE_PROJECT environment variable")
+	}
+	test := base.With(integration.ProgramTestOptions{
+		Dir: path.Join(getCwd(t), "container-registries/gcp/go"),
+		Config: map[string]string{
+			"gcp:project": project,
+		},
+	})
+	integration.ProgramTest(t, &test)
+}
+
 var base = integration.ProgramTestOptions{
 	ExpectRefreshChanges: true, // Docker resources generally see changes when refreshed.
 	// Note: no Config! This package should be usable without any config.
