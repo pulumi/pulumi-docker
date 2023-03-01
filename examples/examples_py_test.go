@@ -72,6 +72,13 @@ func TestGcpContainerRegistryPy(t *testing.T) {
 	integration.ProgramTest(t, &test)
 }
 
+func TestDockerContainerRegistryPy(t *testing.T) {
+	test := getPyOptions(t).
+		With(integration.ProgramTestOptions{
+			Dir: path.Join(getCwd(t), "container-registries/docker/py"),
+		})
+	integration.ProgramTest(t, &test)
+}
 func TestNginxPy(t *testing.T) {
 	test := getPyOptions(t).
 		With(integration.ProgramTestOptions{

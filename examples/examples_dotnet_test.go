@@ -90,6 +90,14 @@ func TestGcpContainerRegistryDotnet(t *testing.T) {
 	integration.ProgramTest(t, &test)
 }
 
+func TestDockerContainerRegistryDotnet(t *testing.T) {
+	test := getCsharpBaseOptions(t).
+		With(integration.ProgramTestOptions{
+			Dir: path.Join(getCwd(t), "container-registries/docker/csharp"),
+		})
+	integration.ProgramTest(t, &test)
+}
+
 func getCsharpBaseOptions(t *testing.T) integration.ProgramTestOptions {
 	base := getBaseOptions()
 	baseCsharp := base.With(integration.ProgramTestOptions{

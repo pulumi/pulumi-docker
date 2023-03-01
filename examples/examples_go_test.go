@@ -124,6 +124,13 @@ func TestGcpContainerRegistryGo(t *testing.T) {
 	integration.ProgramTest(t, &test)
 }
 
+func TestDockerContainerRegistryGo(t *testing.T) {
+	test := base.With(integration.ProgramTestOptions{
+		Dir: path.Join(getCwd(t), "container-registries/docker/go"),
+	})
+	integration.ProgramTest(t, &test)
+}
+
 var base = integration.ProgramTestOptions{
 	ExpectRefreshChanges: true, // Docker resources generally see changes when refreshed.
 	// Note: no Config! This package should be usable without any config.
