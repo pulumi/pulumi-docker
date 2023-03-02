@@ -91,7 +91,6 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	}
 
 	// make the build context and ensure to exclude dockerignore file patterns
-
 	dockerIgnorePath := filepath.Join(build.Context, ".dockerignore")
 	ignorePatterns, err := getIgnore(dockerIgnorePath)
 	if err != nil {

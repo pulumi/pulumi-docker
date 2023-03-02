@@ -59,7 +59,6 @@ func TestBuildCacheFromGo(t *testing.T) {
 }
 
 func TestDockerfileGo(t *testing.T) {
-	t.Skipf("Skipping test due to dockerignore shenanigans")
 	cwd, err := os.Getwd()
 	if !assert.NoError(t, err) {
 		t.FailNow()
