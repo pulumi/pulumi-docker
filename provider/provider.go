@@ -546,7 +546,11 @@ func hashContext(dockerContextPath string, dockerfile string) (string, error) {
 func getIgnore(dockerIgnorePath string) ([]string, error) {
 	var ignorePatterns []string
 	dockerIgnore, err := os.ReadFile(dockerIgnorePath)
-	if err != nil && !os.IsNotExist(err) {
+	if err != nil {
+		if os.IsNotExist(err) {
+			// .dockerignore files are optional
+			return ignorePatterns, nil
+		}
 		return ignorePatterns, fmt.Errorf("unable to read %s file: %w", dockerIgnorePath, err)
 	}
 	ignorePatterns, err = dockerignore.ReadAll(bytes.NewReader(dockerIgnore))
