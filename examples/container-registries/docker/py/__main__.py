@@ -4,7 +4,7 @@ from pulumi_docker import Image, DockerBuildArgs, RegistryArgs
 # Fetch the Docker Hub auth info from config.
 config = pulumi.Config()
 username = config.require('dockerUsername')
-accessToken = config.require_secret('dockerAccessToken')
+password = config.require_secret('dockerPassword')
 
 # Populate the registry info (creds and endpoint).
 image_name=f'docker.io/{username}/myapp',
@@ -14,7 +14,7 @@ def get_registry_info(token):
     return RegistryArgs(
         server='docker.io',
         username=username,
-        password=token,
+        password=password,
     )
 
 
