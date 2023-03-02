@@ -91,7 +91,6 @@ func TestGcpContainerRegistryDotnet(t *testing.T) {
 }
 
 func TestDockerContainerRegistryDotnet(t *testing.T) {
-	t.Skipf("smoke screen checck")
 	username := "pulumibot"
 	password := os.Getenv("DOCKER_HUB_PASSWORD")
 	test := getCsharpBaseOptions(t).
