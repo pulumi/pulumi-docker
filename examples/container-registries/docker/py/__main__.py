@@ -1,34 +1,32 @@
 import pulumi
-from pulumi_docker import Image, DockerBuildArgs, RegistryArgs
+import pulumi_docker as docker
 
 # Fetch the Docker Hub auth info from config.
 config = pulumi.Config()
 username = config.require('dockerUsername')
-password = config.require_secret('dockerPassword')
+accessToken = config.require_secret('dockerPassword')
 
 # Populate the registry info (creds and endpoint).
-image_name=f'docker.io/{username}/myapp',
+image_name=f'{username}/myapp',
 
 
 def get_registry_info(token):
-    return RegistryArgs(
+    return docker.ImageRegistry(
         server='docker.io',
         username=username,
-        password=password,
+        password=token,
     )
 
 
-registry_info=password.apply(get_registry_info)
+registry_info=accessToken.apply(get_registry_info)
 
 # Build and publish the image.
-image = Image(
-    'my-image',
-    build=DockerBuildArgs(
-        context='app',
-    ),
+image = docker.Image('my-image',
+    build='app',
     image_name=image_name,
     registry=registry_info,
 )
 
-# Export the resulting image name
-pulumi.export('imageName', image.image_name)
+# Export the resulting base name in addition to the specific version pushed.
+pulumi.export('baseImageName', image.base_image_name)
+pulumi.export('fullImageName', image.image_name)
