@@ -473,6 +473,11 @@ func processLogLine(msg string) (string, error) {
 		if jm.Error.Code == 401 {
 			return info, fmt.Errorf("authentication is required")
 		}
+		if jm.Error.Message == "EOF" {
+			return info, fmt.Errorf("%s\n: This error is most likely due to incorrect or mismatched registry "+
+				"credentials. Please double check you are using the correct credentials and registry name.",
+				jm.Error.Message)
+		}
 		return info, fmt.Errorf(jm.Error.Message)
 	}
 	if jm.From != "" {
