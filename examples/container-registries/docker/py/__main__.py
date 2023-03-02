@@ -18,7 +18,7 @@ def get_registry_info(token):
     )
 
 
-registry_info=accessToken.apply(get_registry_info)
+registry_info=password.apply(get_registry_info)
 
 # Build and publish the image.
 image = Image(
