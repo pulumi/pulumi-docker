@@ -7,6 +7,7 @@ env:
   ARM_TENANT_ID: 706143bc-e1d4-4593-aee2-c9dc60ab9be7
   AWS_REGION: us-west-2
   AZURE_LOCATION: westus
+  DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
   DOTNETVERSION: |
     6.0.x
     3.1.301
