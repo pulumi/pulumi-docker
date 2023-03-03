@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using Pulumi;
 using Pulumi.DigitalOcean;
 using Pulumi.Docker;
+using Pulumi.Docker.Inputs;
 
 class Program
 {
@@ -40,7 +41,7 @@ class Program
                     throw new Exception("Invalid credentials");
                 }
 
-                return new ImageRegistry
+                return new Pulumi.Docker.Inputs.RegistryArgs
                 {
                     Server = serverUrl,
                     Username = parts[0],
@@ -51,15 +52,15 @@ class Program
         // Build and publish the app image.
         var image = new Image("my-image", new ImageArgs
         {
-            Build = new DockerBuild { Context = "app" },
+            Build = new Pulumi.Docker.Inputs.DockerBuildArgs { Context = "app" },
             ImageName = imageName,
             Registry = registryInfo,
         });
 
         // Export the resulting base name in addition to the specific version pushed.
+	// Export the resulting image name
         return new Dictionary<string, object>
         {
-            { "baseImageName", image.BaseImageName },
             { "fullImageName", image.ImageName },
         };
     });
