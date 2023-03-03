@@ -10,11 +10,10 @@ func main() {
 		imageArgs := &docker.ImageArgs{
 			ImageName: pulumi.String("pulumi-user/example:v1.0.0"),
 			Build: docker.DockerBuildArgs{
-				Target: pulumi.String("dependencies"),
-				Args: pulumi.StringMap{
-					"TEST_ARG": pulumi.String("42"),
-				},
+
+				Context: pulumi.String("app"),
 			},
+
 			SkipPush: pulumi.Bool(true),
 		}
 		image, err := docker.NewImage(ctx, "my-image", imageArgs)
