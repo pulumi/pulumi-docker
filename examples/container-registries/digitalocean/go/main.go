@@ -6,9 +6,9 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/pulumi/pulumi-digitalocean/sdk/v2/go/digitalocean"
-	"github.com/pulumi/pulumi-docker/sdk/v2/go/docker"
-	"github.com/pulumi/pulumi/sdk/v2/go/pulumi"
+	"github.com/pulumi/pulumi-digitalocean/sdk/v4/go/digitalocean"
+	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker"
+	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
 func main() {
@@ -16,6 +16,7 @@ func main() {
 		// Create a private DigitalOcean Container Registry.
 		registry, err := digitalocean.NewContainerRegistry(ctx, "my-reg",
 			&digitalocean.ContainerRegistryArgs{
+				// TODO: why is the following commented out?
 				// SubscriptionTierSlug: pulumi.String("starter"),
 			})
 		if err != nil {
@@ -35,31 +36,31 @@ func main() {
 		}
 
 		registryInfo := pulumi.All(creds.DockerCredentials, registry.ServerUrl).ApplyT(
-			func(args []interface{}) (docker.ImageRegistry, error) {
+			func(args []interface{}) (docker.Registry, error) {
 				// We are given a Docker creds file; parse it to find the temp username/password.
 				authJson := args[0].(string)
 				serverUrl := args[1].(string)
 				var auths map[string]interface{}
 				if err := json.Unmarshal([]byte(authJson), &auths); err != nil {
-					return docker.ImageRegistry{}, err
+					return docker.Registry{}, err
 				}
 				authMap := auths["auths"].(map[string]interface{})
 				authToken := authMap[serverUrl].(map[string]interface{})["auth"].(string)
 				decoded, err := base64.StdEncoding.DecodeString(authToken)
 				if err != nil {
-					return docker.ImageRegistry{}, err
+					return docker.Registry{}, err
 				}
 				parts := strings.Split(string(decoded), ":")
 				if len(parts) != 2 {
-					return docker.ImageRegistry{}, errors.New("Invalid credentials")
+					return docker.Registry{}, errors.New("Invalid credentials")
 				}
-				return docker.ImageRegistry{
-					Server:   serverUrl,
-					Username: parts[0],
-					Password: parts[1],
+				return docker.Registry{
+					Server:   &serverUrl,
+					Username: &parts[0],
+					Password: &parts[1],
 				}, nil
 			},
-		).(docker.ImageRegistryOutput)
+		).(docker.RegistryOutput)
 
 		// Build and publish the app image.
 		image, err := docker.NewImage(ctx, "my-image", &docker.ImageArgs{
@@ -68,8 +69,7 @@ func main() {
 			Registry:  registryInfo,
 		})
 
-		// Export the resulting base name in addition to the specific version pushed.
-		ctx.Export("baseImageName", image.BaseImageName)
+		// Export the resulting image name
 		ctx.Export("fullImageName", image.ImageName)
 		return nil
 	})
