@@ -99,7 +99,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 
 	tar, err := archive.TarWithOptions(img.Build.Context, &archive.TarOptions{
 		ExcludePatterns: ignorePatterns,
-		IncludeFiles:    []string{"Dockerfile", ".dockerignore"},
+		IncludeFiles:    []string{".", img.Build.Dockerfile, ".dockerignore"},
 	})
 	if err != nil {
 		return "", nil, err
