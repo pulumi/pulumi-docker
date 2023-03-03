@@ -1,2 +1,2 @@
-FROM nginx
-COPY index.html /usr/share/nginx/html
+FROM --platform=linux/amd64 ubuntu
+COPY . /app

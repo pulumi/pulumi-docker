@@ -7,11 +7,13 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/docker/distribution/reference"
+	"github.com/docker/docker/pkg/idtools"
 	"github.com/moby/buildkit/session"
 	"github.com/moby/moby/registry"
 	"net"
 	"path/filepath"
 
+	buildCmd "github.com/docker/cli/cli/command/image/build"
 	"github.com/docker/cli/cli/config"
 	"github.com/docker/cli/cli/config/configfile"
 	"github.com/docker/cli/cli/config/credentials"
@@ -23,6 +25,7 @@ import (
 	controlapi "github.com/moby/buildkit/api/services/control"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
+	"github.com/ryboe/q"
 )
 
 const defaultDockerfile = "Dockerfile"
@@ -96,11 +99,16 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	if err != nil {
 		return "", nil, err
 	}
+	q.Q("before", ignorePatterns)
+
+	ignorePatterns = buildCmd.TrimBuildFilesFromExcludes(ignorePatterns, img.Build.Dockerfile, false)
+	q.Q("after", ignorePatterns)
 
 	tar, err := archive.TarWithOptions(img.Build.Context, &archive.TarOptions{
 		ExcludePatterns: ignorePatterns,
-		IncludeFiles:    []string{"Dockerfile", ".dockerignore"},
+		ChownOpts:       &idtools.Identity{UID: 0, GID: 0},
 	})
+
 	if err != nil {
 		return "", nil, err
 	}

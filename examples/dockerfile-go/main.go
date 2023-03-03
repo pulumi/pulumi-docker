@@ -8,7 +8,7 @@ import (
 func main() {
 	pulumi.Run(func(ctx *pulumi.Context) error {
 		imageArgs := &docker.ImageArgs{
-			ImageName: pulumi.String("pulumi-user/example:v1.0.0"),
+			ImageName: pulumi.String("pulumi-user/example:debug-5"),
 			Build: docker.DockerBuildArgs{
 
 				Context: pulumi.String("app"),
