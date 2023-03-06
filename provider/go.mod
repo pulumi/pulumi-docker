@@ -14,7 +14,7 @@ require (
 	github.com/pulumi/pulumi/pkg/v3 v3.56.0
 	github.com/pulumi/pulumi/sdk/v3 v3.56.0
 	github.com/stretchr/testify v1.8.2
-	github.com/terraform-providers/terraform-provider-docker/shim v0.0.0
+	github.com/terraform-providers/terraform-provider-docker v0.0.0
 	google.golang.org/grpc v1.53.0
 	google.golang.org/protobuf v1.28.1
 	gopkg.in/yaml.v3 v3.0.1
@@ -25,7 +25,6 @@ replace (
 	github.com/hashicorp/terraform-plugin-sdk/v2 => github.com/pulumi/terraform-plugin-sdk/v2 v2.0.0-20220725190814-23001ad6ec03
 	github.com/hashicorp/vault => github.com/hashicorp/vault v1.2.0
 	github.com/terraform-providers/terraform-provider-docker => ../upstream
-	github.com/terraform-providers/terraform-provider-docker/shim => ./shim
 )
 
 require (
@@ -236,7 +235,6 @@ require (
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/cobra v1.6.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	github.com/terraform-providers/terraform-provider-docker v0.0.0 // indirect
 	github.com/texttheater/golang-levenshtein v1.0.1 // indirect
 	github.com/tonistiigi/fsutil v0.0.0-20230214225802-a3696a2f1f27 // indirect
 	github.com/tonistiigi/units v0.0.0-20180711220420-6950e57a87ea // indirect
