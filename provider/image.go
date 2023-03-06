@@ -10,6 +10,7 @@ import (
 
 	"github.com/docker/distribution/reference"
 	"github.com/moby/buildkit/session"
+	"github.com/moby/buildkit/session/auth/authprovider"
 	"github.com/moby/moby/registry"
 
 	"github.com/docker/cli/cli/config"
@@ -104,6 +105,14 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	authConfigs := make(map[string]types.AuthConfig)
 	var regAuth types.AuthConfig
 
+	auths, err := cfg.GetAllCredentials()
+	if err != nil {
+		return "", nil, err
+	}
+	for k, auth := range auths {
+		authConfigs[k] = types.AuthConfig(auth)
+	}
+
 	// sign into registry if we're pushing or setting CacheFrom
 	// TODO: add functionality for additional registry caches not associated with the stack image
 	// See: https://github.com/pulumi/pulumi-docker/issues/497
@@ -118,9 +127,13 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 				return "", nil, err
 			}
 		}
+		fmt.Printf("⛳⛳⛳ %#+v\n", authConfigs)
 		authConfigs[auth.ServerAddress] = auth // for image cache
 		regAuth = auth                         // for image push
 	}
+	fmt.Printf("🐉🐉🐉 %#+v\n", authConfigs)
+	fmt.Printf("⚠️⚠️⚠️ %#+v\n", build.Args)
+
 	// make the build options
 	opts := types.ImageBuildOptions{
 		Dockerfile: img.Build.Dockerfile,
@@ -132,12 +145,16 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		Platform:   build.Platform,
 		Target:     build.Target,
 
-		AuthConfigs: authConfigs,
+		// AuthConfigs: authConfigs,
 	}
 
 	// Start a session for BuildKit
 	if build.BuilderVersion == defaultBuilder {
 		sess, _ := session.NewSession(ctx, "pulumi-docker", "")
+
+		dockerAuthProvider := authprovider.NewDockerAuthProvider(cfg)
+		sess.Allow(dockerAuthProvider)
+
 		dialSession := func(ctx context.Context, proto string, meta map[string][]string) (net.Conn, error) {
 			return docker.DialHijack(ctx, "/session", proto, meta)
 		}

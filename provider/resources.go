@@ -16,10 +16,11 @@ package provider
 
 import (
 	"fmt"
-	"github.com/pulumi/pulumi/pkg/v3/codegen/schema"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"path/filepath"
 	"unicode"
+
+	"github.com/pulumi/pulumi/pkg/v3/codegen/schema"
+	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 
 	"github.com/pulumi/pulumi-docker/provider/v4/pkg/version"
 	"github.com/pulumi/pulumi-terraform-bridge/v3/pkg/tfbridge"
@@ -62,13 +63,14 @@ func dockerDataSource(mod string, res string) tokens.ModuleMember {
 func Provider() tfbridge.ProviderInfo {
 	p := shimv2.NewProvider(shim.NewProvider())
 	prov := tfbridge.ProviderInfo{
-		P:           p,
-		Name:        "docker",
-		Description: "A Pulumi package for interacting with Docker in Pulumi programs",
-		Keywords:    []string{"pulumi", "docker"},
-		License:     "Apache-2.0",
-		Homepage:    "https://pulumi.io",
-		Repository:  "https://github.com/pulumi/pulumi-docker",
+		P:                p,
+		Name:             "docker",
+		Description:      "A Pulumi package for interacting with Docker in Pulumi programs",
+		Keywords:         []string{"pulumi", "docker"},
+		License:          "Apache-2.0",
+		Homepage:         "https://pulumi.io",
+		Repository:       "https://github.com/pulumi/pulumi-docker",
+		UpstreamRepoPath: "./upstream",
 		Config: map[string]*tfbridge.SchemaInfo{
 			"host": {
 				Default: &tfbridge.DefaultInfo{
