@@ -109,7 +109,7 @@ func TestDigitaloceanContainerRegistry(t *testing.T) {
 			},
 		})
 
-	integration.programtest(t, &test)
+	integration.ProgramTest(t, &test)
 }
 
 func TestGcpContainerRegistry(t *testing.T) {
