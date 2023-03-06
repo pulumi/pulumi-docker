@@ -125,7 +125,7 @@ func TestGcpContainerRegistry(t *testing.T) {
 			},
 		})
 
-	integration.programtest(t, &test)
+	integration.ProgramTest(t, &test)
 }
 
 func getJsOptions(t *testing.T) integration.ProgramTestOptions {
