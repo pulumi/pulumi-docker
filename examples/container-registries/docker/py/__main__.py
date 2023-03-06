@@ -7,7 +7,7 @@ username = config.require('dockerUsername')
 accessToken = config.require_secret('dockerPassword')
 
 # Populate the registry info (creds and endpoint).
-image_name=f'docker.io/{username}/myapp',
+image_name=f'docker.io/{username}/myapp'
 
 
 def get_registry_info(token):
