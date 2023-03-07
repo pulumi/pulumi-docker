@@ -17,13 +17,13 @@ __all__ = ['ImageArgs', 'Image']
 class ImageArgs:
     def __init__(__self__, *,
                  image_name: pulumi.Input[str],
-                 build: Optional[pulumi.Input[Union[str, 'DockerBuildArgs']]] = None,
+                 build: Optional[pulumi.Input['DockerBuildArgs']] = None,
                  registry: Optional[pulumi.Input['RegistryArgs']] = None,
                  skip_push: Optional[pulumi.Input[bool]] = None):
         """
         The set of arguments for constructing a Image resource.
         :param pulumi.Input[str] image_name: The image name
-        :param pulumi.Input[Union[str, 'DockerBuildArgs']] build: The Docker build context
+        :param pulumi.Input['DockerBuildArgs'] build: The Docker build context
         :param pulumi.Input['RegistryArgs'] registry: The registry to push the image to
         :param pulumi.Input[bool] skip_push: A flag to skip a registry push.
         """
@@ -51,14 +51,14 @@ class ImageArgs:
 
     @property
     @pulumi.getter
-    def build(self) -> Optional[pulumi.Input[Union[str, 'DockerBuildArgs']]]:
+    def build(self) -> Optional[pulumi.Input['DockerBuildArgs']]:
         """
         The Docker build context
         """
         return pulumi.get(self, "build")
 
     @build.setter
-    def build(self, value: Optional[pulumi.Input[Union[str, 'DockerBuildArgs']]]):
+    def build(self, value: Optional[pulumi.Input['DockerBuildArgs']]):
         pulumi.set(self, "build", value)
 
     @property
@@ -91,7 +91,7 @@ class Image(pulumi.CustomResource):
     def __init__(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
-                 build: Optional[pulumi.Input[Union[str, pulumi.InputType['DockerBuildArgs']]]] = None,
+                 build: Optional[pulumi.Input[pulumi.InputType['DockerBuildArgs']]] = None,
                  image_name: Optional[pulumi.Input[str]] = None,
                  registry: Optional[pulumi.Input[pulumi.InputType['RegistryArgs']]] = None,
                  skip_push: Optional[pulumi.Input[bool]] = None,
@@ -119,7 +119,7 @@ class Image(pulumi.CustomResource):
 
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
-        :param pulumi.Input[Union[str, pulumi.InputType['DockerBuildArgs']]] build: The Docker build context
+        :param pulumi.Input[pulumi.InputType['DockerBuildArgs']] build: The Docker build context
         :param pulumi.Input[str] image_name: The image name
         :param pulumi.Input[pulumi.InputType['RegistryArgs']] registry: The registry to push the image to
         :param pulumi.Input[bool] skip_push: A flag to skip a registry push.
@@ -166,7 +166,7 @@ class Image(pulumi.CustomResource):
     def _internal_init(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
-                 build: Optional[pulumi.Input[Union[str, pulumi.InputType['DockerBuildArgs']]]] = None,
+                 build: Optional[pulumi.Input[pulumi.InputType['DockerBuildArgs']]] = None,
                  image_name: Optional[pulumi.Input[str]] = None,
                  registry: Optional[pulumi.Input[pulumi.InputType['RegistryArgs']]] = None,
                  skip_push: Optional[pulumi.Input[bool]] = None,
