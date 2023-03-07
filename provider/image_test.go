@@ -62,17 +62,6 @@ func TestMarshalBuildAndApplyDefaults(t *testing.T) {
 		assert.NoError(t, err)
 	})
 
-	t.Run("String input Build", func(t *testing.T) {
-		expected := Build{
-			Context:    "/twilight/sparkle/bin",
-			Dockerfile: "Dockerfile",
-		}
-		input := resource.NewStringProperty("/twilight/sparkle/bin")
-		actual, err := marshalBuildAndApplyDefaults(input)
-		assert.Equal(t, expected, actual)
-		assert.NoError(t, err)
-	})
-
 	t.Run("Custom Dockerfile with default context", func(t *testing.T) {
 		expected := Build{
 			Context:        ".",

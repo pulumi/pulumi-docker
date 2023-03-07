@@ -261,14 +261,7 @@ func Provider() tfbridge.ProviderInfo {
 					"build": {
 						Description: "The Docker build context",
 						TypeSpec: schema.TypeSpec{
-							OneOf: []schema.TypeSpec{
-								{
-									Type: "string",
-								},
-								{
-									Ref: "#/types/docker:index/dockerBuild:DockerBuild",
-								},
-							},
+							Ref: "#/types/docker:index/dockerBuild:DockerBuild",
 						},
 					},
 					"skipPush": {
