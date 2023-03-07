@@ -49,7 +49,7 @@ func TestAzureContainerRegistry(t *testing.T) {
 	}
 	test := getJsOptions(t).
 		With(integration.ProgramTestOptions{
-			Dir: path.Join(getCwd(t), "container-registries/azure/ts"),
+			Dir: path.Join(getCwd(t), "azure-container-registry/ts"),
 			Config: map[string]string{
 				"azure:environment": "public",
 				"azure:location":    location,
@@ -66,7 +66,7 @@ func TestAwsContainerRegistry(t *testing.T) {
 	}
 	test := getJsOptions(t).
 		With(integration.ProgramTestOptions{
-			Dir: path.Join(getCwd(t), "container-registries/aws/ts"),
+			Dir: path.Join(getCwd(t), "aws-container-registry/ts"),
 			Config: map[string]string{
 				"aws:region": region,
 			},
@@ -82,7 +82,7 @@ func TestDigitaloceanContainerRegistry(t *testing.T) {
 	}
 	test := getJsOptions(t).
 		With(integration.ProgramTestOptions{
-			Dir: path.Join(getCwd(t), "container-registries/digitalocean/ts"),
+			Dir: path.Join(getCwd(t), "digitalocean-container-registry/ts"),
 			Config: map[string]string{
 				"digitalocean:token": token,
 			},
@@ -98,7 +98,7 @@ func TestGcpContainerRegistry(t *testing.T) {
 	}
 	test := getJsOptions(t).
 		With(integration.ProgramTestOptions{
-			Dir: path.Join(getCwd(t), "container-registries/gcp/ts"),
+			Dir: path.Join(getCwd(t), "gcp-container-registry/ts"),
 			Config: map[string]string{
 				"gcp:project": project,
 			},
@@ -112,7 +112,7 @@ func TestDockerContainerRegistry(t *testing.T) {
 	password := os.Getenv("DOCKER_HUB_PASSWORD")
 	test := getJsOptions(t).
 		With(integration.ProgramTestOptions{
-			Dir: path.Join(getCwd(t), "container-registries/docker/ts"),
+			Dir: path.Join(getCwd(t), "docker-container-registry/ts"),
 			Config: map[string]string{
 				"cbp-docker-ts-dev:dockerUsername": username,
 			},

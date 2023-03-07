@@ -48,7 +48,7 @@ func TestAzureContainerRegistryDotNet(t *testing.T) {
 	}
 	test := getCsharpBaseOptions(t).
 		With(integration.ProgramTestOptions{
-			Dir: path.Join(getCwd(t), "container-registries/azure/csharp"),
+			Dir: path.Join(getCwd(t), "azure-container-registry/csharp"),
 			Config: map[string]string{
 				"azure:environment": "public",
 				"azure:location":    location,
@@ -65,7 +65,7 @@ func TestAwsContainerRegistryDotnet(t *testing.T) {
 	}
 	test := getCsharpBaseOptions(t).
 		With(integration.ProgramTestOptions{
-			Dir: path.Join(getCwd(t), "container-registries/aws/csharp"),
+			Dir: path.Join(getCwd(t), "aws-container-registry/csharp"),
 			Config: map[string]string{
 				"aws:region": region,
 			},
@@ -81,7 +81,7 @@ func TestDigitaloceanContainerRegistryDotnet(t *testing.T) {
 	}
 	test := getCsharpBaseOptions(t).
 		With(integration.ProgramTestOptions{
-			Dir: path.Join(getCwd(t), "container-registries/digitalocean/csharp"),
+			Dir: path.Join(getCwd(t), "digitalocean-container-registry/csharp"),
 			Config: map[string]string{
 				"digitalocean:token": token,
 			},
@@ -97,7 +97,7 @@ func TestGcpContainerRegistryDotnet(t *testing.T) {
 	}
 	test := getCsharpBaseOptions(t).
 		With(integration.ProgramTestOptions{
-			Dir: path.Join(getCwd(t), "container-registries/gcp/csharp"),
+			Dir: path.Join(getCwd(t), "gcp-container-registry/csharp"),
 			Config: map[string]string{
 				"gcp:project": project,
 			},
@@ -110,7 +110,7 @@ func TestDockerContainerRegistryDotnet(t *testing.T) {
 	password := os.Getenv("DOCKER_HUB_PASSWORD")
 	test := getCsharpBaseOptions(t).
 		With(integration.ProgramTestOptions{
-			Dir: path.Join(getCwd(t), "container-registries/docker/csharp"),
+			Dir: path.Join(getCwd(t), "docker-container-registry/csharp"),
 			Config: map[string]string{
 				"cbp-docker-csharp:dockerUsername": username,
 			},

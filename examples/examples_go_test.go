@@ -83,7 +83,7 @@ func TestAzureContainerRegistryGo(t *testing.T) {
 		t.FailNow()
 	}
 	opts := base.With(integration.ProgramTestOptions{
-		Dir: path.Join(cwd, "container-registries/azure/go"),
+		Dir: path.Join(cwd, "azure-container-registry/go"),
 		Config: map[string]string{
 			"azure:environment": "public",
 			"azure:location":    location,
@@ -102,7 +102,7 @@ func TestAwsContainerRegistryGo(t *testing.T) {
 		t.FailNow()
 	}
 	opts := base.With(integration.ProgramTestOptions{
-		Dir: path.Join(cwd, "container-registries/aws/go"),
+		Dir: path.Join(cwd, "aws-container-registry/go"),
 		Config: map[string]string{
 			"aws:region": region,
 		},
@@ -120,7 +120,7 @@ func TestDigitaloceanContainerRegistryGo(t *testing.T) {
 		t.FailNow()
 	}
 	opts := base.With(integration.ProgramTestOptions{
-		Dir: path.Join(cwd, "container-registries/digitalocean/go"),
+		Dir: path.Join(cwd, "digitalocean-container-registry/go"),
 		Config: map[string]string{
 			"digitalocean:token": token,
 		},
@@ -135,7 +135,7 @@ func TestGcpContainerRegistryGo(t *testing.T) {
 		t.Skipf("Skipping test due to missing GOOGLE_PROJECT environment variable")
 	}
 	test := base.With(integration.ProgramTestOptions{
-		Dir: path.Join(getCwd(t), "container-registries/gcp/go"),
+		Dir: path.Join(getCwd(t), "gcp-container-registry/go"),
 		Config: map[string]string{
 			"gcp:project": project,
 		},
@@ -147,7 +147,7 @@ func TestDockerContainerRegistryGo(t *testing.T) {
 	username := "pulumibot"
 	password := os.Getenv("DOCKER_HUB_PASSWORD")
 	test := base.With(integration.ProgramTestOptions{
-		Dir: path.Join(getCwd(t), "container-registries/docker/go"),
+		Dir: path.Join(getCwd(t), "docker-container-registry/go"),
 		Config: map[string]string{
 			"cbp-docker-go:dockerUsername": username,
 		},
