@@ -84,7 +84,7 @@ export class Image extends pulumi.CustomResource {
             if ((!args || args.imageName === undefined) && !opts.urn) {
                 throw new Error("Missing required property 'imageName'");
             }
-            resourceInputs["build"] = args ? args.build : undefined;
+            resourceInputs["build"] = args ? (args.build ? pulumi.output(args.build).apply(inputs.dockerBuildProvideDefaults) : undefined) : undefined;
             resourceInputs["imageName"] = args ? args.imageName : undefined;
             resourceInputs["registry"] = args ? args.registry : undefined;
             resourceInputs["skipPush"] = (args ? args.skipPush : undefined) ?? false;
@@ -109,7 +109,7 @@ export interface ImageArgs {
     /**
      * The Docker build context
      */
-    build?: pulumi.Input<string | inputs.DockerBuild>;
+    build?: pulumi.Input<inputs.DockerBuild>;
     /**
      * The image name
      */

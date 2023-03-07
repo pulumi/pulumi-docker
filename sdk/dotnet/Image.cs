@@ -116,7 +116,7 @@ namespace Pulumi.Docker
         /// The Docker build context
         /// </summary>
         [Input("build")]
-        public InputUnion<string, Inputs.DockerBuildArgs>? Build { get; set; }
+        public Input<Inputs.DockerBuildArgs>? Build { get; set; }
 
         /// <summary>
         /// The image name

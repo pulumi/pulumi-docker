@@ -275,13 +275,6 @@ func marshalBuildAndApplyDefaults(b resource.PropertyValue) (Build, error) {
 		build.Context = "."
 		return build, nil
 	}
-	if b.IsString() {
-		// use the filepath as context
-		build.Context = b.StringValue()
-		build.Dockerfile = defaultDockerfile
-		return build, nil
-	}
-
 	// read in the build type fields
 	buildObject := b.ObjectValue()
 	// Dockerfile

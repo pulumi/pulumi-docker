@@ -9771,6 +9771,47 @@ func (i DockerBuildArgs) ToDockerBuildOutputWithContext(ctx context.Context) Doc
 	return pulumi.ToOutputWithContext(ctx, i).(DockerBuildOutput)
 }
 
+func (i DockerBuildArgs) ToDockerBuildPtrOutput() DockerBuildPtrOutput {
+	return i.ToDockerBuildPtrOutputWithContext(context.Background())
+}
+
+func (i DockerBuildArgs) ToDockerBuildPtrOutputWithContext(ctx context.Context) DockerBuildPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(DockerBuildOutput).ToDockerBuildPtrOutputWithContext(ctx)
+}
+
+// DockerBuildPtrInput is an input type that accepts DockerBuildArgs, DockerBuildPtr and DockerBuildPtrOutput values.
+// You can construct a concrete instance of `DockerBuildPtrInput` via:
+//
+//	        DockerBuildArgs{...}
+//
+//	or:
+//
+//	        nil
+type DockerBuildPtrInput interface {
+	pulumi.Input
+
+	ToDockerBuildPtrOutput() DockerBuildPtrOutput
+	ToDockerBuildPtrOutputWithContext(context.Context) DockerBuildPtrOutput
+}
+
+type dockerBuildPtrType DockerBuildArgs
+
+func DockerBuildPtr(v *DockerBuildArgs) DockerBuildPtrInput {
+	return (*dockerBuildPtrType)(v)
+}
+
+func (*dockerBuildPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**DockerBuild)(nil)).Elem()
+}
+
+func (i *dockerBuildPtrType) ToDockerBuildPtrOutput() DockerBuildPtrOutput {
+	return i.ToDockerBuildPtrOutputWithContext(context.Background())
+}
+
+func (i *dockerBuildPtrType) ToDockerBuildPtrOutputWithContext(ctx context.Context) DockerBuildPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(DockerBuildPtrOutput)
+}
+
 // The Docker build context
 type DockerBuildOutput struct{ *pulumi.OutputState }
 
@@ -9784,6 +9825,16 @@ func (o DockerBuildOutput) ToDockerBuildOutput() DockerBuildOutput {
 
 func (o DockerBuildOutput) ToDockerBuildOutputWithContext(ctx context.Context) DockerBuildOutput {
 	return o
+}
+
+func (o DockerBuildOutput) ToDockerBuildPtrOutput() DockerBuildPtrOutput {
+	return o.ToDockerBuildPtrOutputWithContext(context.Background())
+}
+
+func (o DockerBuildOutput) ToDockerBuildPtrOutputWithContext(ctx context.Context) DockerBuildPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v DockerBuild) *DockerBuild {
+		return &v
+	}).(DockerBuildPtrOutput)
 }
 
 // An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass build-time variablesthat can be accessed like environment variables inside the RUN instruction.
@@ -9819,6 +9870,100 @@ func (o DockerBuildOutput) Platform() pulumi.StringPtrOutput {
 // The target of the Dockerfile to build
 func (o DockerBuildOutput) Target() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v DockerBuild) *string { return v.Target }).(pulumi.StringPtrOutput)
+}
+
+type DockerBuildPtrOutput struct{ *pulumi.OutputState }
+
+func (DockerBuildPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**DockerBuild)(nil)).Elem()
+}
+
+func (o DockerBuildPtrOutput) ToDockerBuildPtrOutput() DockerBuildPtrOutput {
+	return o
+}
+
+func (o DockerBuildPtrOutput) ToDockerBuildPtrOutputWithContext(ctx context.Context) DockerBuildPtrOutput {
+	return o
+}
+
+func (o DockerBuildPtrOutput) Elem() DockerBuildOutput {
+	return o.ApplyT(func(v *DockerBuild) DockerBuild {
+		if v != nil {
+			return *v
+		}
+		var ret DockerBuild
+		return ret
+	}).(DockerBuildOutput)
+}
+
+// An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass build-time variablesthat can be accessed like environment variables inside the RUN instruction.
+func (o DockerBuildPtrOutput) Args() pulumi.StringMapOutput {
+	return o.ApplyT(func(v *DockerBuild) map[string]string {
+		if v == nil {
+			return nil
+		}
+		return v.Args
+	}).(pulumi.StringMapOutput)
+}
+
+// The version of the Docker builder.
+func (o DockerBuildPtrOutput) BuilderVersion() BuilderVersionPtrOutput {
+	return o.ApplyT(func(v *DockerBuild) *BuilderVersion {
+		if v == nil {
+			return nil
+		}
+		return v.BuilderVersion
+	}).(BuilderVersionPtrOutput)
+}
+
+// A list of image names to use as build cache. Images provided must have a cache manifest. Must provide authentication to cache registry.
+func (o DockerBuildPtrOutput) CacheFrom() CacheFromPtrOutput {
+	return o.ApplyT(func(v *DockerBuild) *CacheFrom {
+		if v == nil {
+			return nil
+		}
+		return v.CacheFrom
+	}).(CacheFromPtrOutput)
+}
+
+// The path to the build context to use.
+func (o DockerBuildPtrOutput) Context() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *DockerBuild) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Context
+	}).(pulumi.StringPtrOutput)
+}
+
+// The path to the Dockerfile to use.
+func (o DockerBuildPtrOutput) Dockerfile() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *DockerBuild) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Dockerfile
+	}).(pulumi.StringPtrOutput)
+}
+
+// The architecture of the platform you want to build this image for, e.g. `linux/arm64`.
+func (o DockerBuildPtrOutput) Platform() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *DockerBuild) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Platform
+	}).(pulumi.StringPtrOutput)
+}
+
+// The target of the Dockerfile to build
+func (o DockerBuildPtrOutput) Target() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *DockerBuild) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Target
+	}).(pulumi.StringPtrOutput)
 }
 
 type GetNetworkIpamConfig struct {
@@ -10233,6 +10378,7 @@ func init() {
 	pulumi.RegisterInputType(reflect.TypeOf((*CacheFromInput)(nil)).Elem(), CacheFromArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*CacheFromPtrInput)(nil)).Elem(), CacheFromArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*DockerBuildInput)(nil)).Elem(), DockerBuildArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*DockerBuildPtrInput)(nil)).Elem(), DockerBuildArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*GetNetworkIpamConfigInput)(nil)).Elem(), GetNetworkIpamConfigArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*GetNetworkIpamConfigArrayInput)(nil)).Elem(), GetNetworkIpamConfigArray{})
 	pulumi.RegisterInputType(reflect.TypeOf((*RegistryInput)(nil)).Elem(), RegistryArgs{})
@@ -10358,6 +10504,7 @@ func init() {
 	pulumi.RegisterOutputType(CacheFromOutput{})
 	pulumi.RegisterOutputType(CacheFromPtrOutput{})
 	pulumi.RegisterOutputType(DockerBuildOutput{})
+	pulumi.RegisterOutputType(DockerBuildPtrOutput{})
 	pulumi.RegisterOutputType(GetNetworkIpamConfigOutput{})
 	pulumi.RegisterOutputType(GetNetworkIpamConfigArrayOutput{})
 	pulumi.RegisterOutputType(RegistryOutput{})

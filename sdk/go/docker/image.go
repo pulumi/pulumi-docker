@@ -67,6 +67,9 @@ func NewImage(ctx *pulumi.Context,
 	if args.ImageName == nil {
 		return nil, errors.New("invalid value for required argument 'ImageName'")
 	}
+	if args.Build != nil {
+		args.Build = args.Build.ToDockerBuildPtrOutput().ApplyT(func(v *DockerBuild) *DockerBuild { return v.Defaults() }).(DockerBuildPtrOutput)
+	}
 	if isZero(args.SkipPush) {
 		args.SkipPush = pulumi.BoolPtr(false)
 	}
@@ -109,7 +112,7 @@ func (ImageState) ElementType() reflect.Type {
 
 type imageArgs struct {
 	// The Docker build context
-	Build interface{} `pulumi:"build"`
+	Build *DockerBuild `pulumi:"build"`
 	// The image name
 	ImageName string `pulumi:"imageName"`
 	// The registry to push the image to
@@ -121,7 +124,7 @@ type imageArgs struct {
 // The set of arguments for constructing a Image resource.
 type ImageArgs struct {
 	// The Docker build context
-	Build pulumi.Input
+	Build DockerBuildPtrInput
 	// The image name
 	ImageName pulumi.StringInput
 	// The registry to push the image to
