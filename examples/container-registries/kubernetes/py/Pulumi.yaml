@@ -1,3 +1,0 @@
-name: cbp-k8s-py
-runtime: python
-description: A minimal AWS Python Pulumi program

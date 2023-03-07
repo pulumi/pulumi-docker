@@ -1,3 +1,0 @@
-name: cbp-gcp-k8s-go
-runtime: go
-description: An example of building/publishing a Docker container image to Google Cloud GCR
