@@ -4436,14 +4436,7 @@
             "type": "object",
             "inputProperties": {
                 "build": {
-                    "oneOf": [
-                        {
-                            "type": "string"
-                        },
-                        {
-                            "$ref": "#/types/docker:index/dockerBuild:DockerBuild"
-                        }
-                    ],
+                    "$ref": "#/types/docker:index/dockerBuild:DockerBuild",
                     "description": "The Docker build context"
                 },
                 "imageName": {
