@@ -6,11 +6,11 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"net"
-
 	"github.com/docker/distribution/reference"
 	"github.com/moby/buildkit/session"
 	"github.com/moby/moby/registry"
+	"net"
+	"path/filepath"
 
 	"github.com/docker/cli/cli/config"
 	"github.com/docker/cli/cli/config/configfile"
@@ -23,6 +23,8 @@ import (
 	controlapi "github.com/moby/buildkit/api/services/control"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
+
+	buildCmd "github.com/docker/cli/cli/command/image/build"
 )
 
 const defaultDockerfile = "Dockerfile"
@@ -90,8 +92,34 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		return "", nil, err
 	}
 
-	// make the build context
-	tar, err := archive.TarWithOptions(img.Build.Context, &archive.TarOptions{})
+	// make the build context and ensure to exclude dockerignore file patterns
+	dockerIgnorePath := filepath.Join(build.Context, ".dockerignore")
+	initialIgnorePatterns, err := getIgnore(dockerIgnorePath)
+	// un-ignore build files so the docker daemon can use them
+	ignorePatterns := buildCmd.TrimBuildFilesFromExcludes(
+		initialIgnorePatterns,
+		img.Build.Dockerfile,
+		false,
+	)
+
+	// warn user about accidentally copying build files
+	if build.BuilderVersion == defaultBuilder && len(initialIgnorePatterns) != len(ignorePatterns) {
+		msg := "It looks like you are trying to dockerignore a build file such as `Dockerfile` or `.dockerignore`. " +
+			"To avoid accidentally copying these files to your image, please ensure any copied file systems do not " +
+			"include `Dockerfile` or `.dockerignore`."
+		err = p.host.Log(ctx, "warning", urn, msg)
+		if err != nil {
+			return "", nil, err
+		}
+	}
+
+	if err != nil {
+		return "", nil, err
+	}
+
+	tar, err := archive.TarWithOptions(img.Build.Context, &archive.TarOptions{
+		ExcludePatterns: ignorePatterns,
+	})
 	if err != nil {
 		return "", nil, err
 	}

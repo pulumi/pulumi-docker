@@ -483,22 +483,10 @@ func (accumulator *contextHashAccumulator) hexSumContext() string {
 
 func hashContext(dockerContextPath string, dockerfile string) (string, error) {
 	// exclude all files listed in dockerignore
-	dockerIgnorePath := dockerfile + ".dockerignore"
-	dockerIgnore, err := os.ReadFile(dockerIgnorePath)
+	dockerIgnorePath := filepath.Join(dockerContextPath, ".dockerignore")
+	ignorePatterns, err := getIgnore(dockerIgnorePath)
 	if err != nil {
-		if os.IsNotExist(err) {
-			dockerIgnorePath = filepath.Join(dockerContextPath, ".dockerignore")
-			dockerIgnore, err = os.ReadFile(dockerIgnorePath)
-			if err != nil && !os.IsNotExist(err) {
-				return "", fmt.Errorf("unable to read %s file: %w", dockerIgnorePath, err)
-			}
-		} else {
-			return "", fmt.Errorf("unable to read %s file: %w", dockerIgnorePath, err)
-		}
-	}
-	ignorePatterns, err := dockerignore.ReadAll(bytes.NewReader(dockerIgnore))
-	if err != nil {
-		return "", fmt.Errorf("unable to parse %s file: %w", dockerIgnorePath, err)
+		return "", err
 	}
 	ignoreMatcher, err := fileutils.NewPatternMatcher(ignorePatterns)
 	if err != nil {
@@ -553,4 +541,21 @@ func hashContext(dockerContextPath string, dockerfile string) (string, error) {
 	}
 	// create a hash of the entire input of the hash accumulator
 	return accumulator.hexSumContext(), nil
+}
+
+func getIgnore(dockerIgnorePath string) ([]string, error) {
+	var ignorePatterns []string
+	dockerIgnore, err := os.ReadFile(dockerIgnorePath)
+	if err != nil {
+		if os.IsNotExist(err) {
+			// .dockerignore files are optional
+			return ignorePatterns, nil
+		}
+		return ignorePatterns, fmt.Errorf("unable to read %s file: %w", dockerIgnorePath, err)
+	}
+	ignorePatterns, err = dockerignore.ReadAll(bytes.NewReader(dockerIgnore))
+	if err != nil {
+		return ignorePatterns, fmt.Errorf("unable to parse %s file: %w", ".dockerignore", err)
+	}
+	return ignorePatterns, nil
 }

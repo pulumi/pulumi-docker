@@ -54,7 +54,6 @@ func TestNginx(t *testing.T) {
 }
 
 func TestDockerfileWithMultipleTargets(t *testing.T) {
-
 	test := getJsOptions(t).
 		With(integration.ProgramTestOptions{
 			Dir: path.Join(getCwd(t), "dockerfile-with-targets"),
