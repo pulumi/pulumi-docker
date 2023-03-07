@@ -1,5 +1,0 @@
-name: aws
-runtime: nodejs
-description: A minimal TypeScript Pulumi program
-template:
-  description: A minimal TypeScript Pulumi program
