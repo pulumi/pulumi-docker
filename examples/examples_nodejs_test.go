@@ -17,32 +17,12 @@
 package examples
 
 import (
-	"fmt"
 	"os"
 	"path"
 	"testing"
 
 	"github.com/pulumi/pulumi/pkg/v3/testing/integration"
 )
-
-func TestAws(t *testing.T) {
-	t.Skip("Skipping test due to updates in Image resource")
-	region := os.Getenv("AWS_REGION")
-	if region == "" {
-		t.Skipf("Skipping test due to missing AWS_REGION environment variable")
-	}
-	fmt.Printf("AWS Region: %v\n", region)
-
-	test := getJsOptions(t).
-		With(integration.ProgramTestOptions{
-			Config: map[string]string{
-				"aws:region": region,
-			},
-			Dir: path.Join(getCwd(t), "aws"),
-		})
-
-	integration.ProgramTest(t, &test)
-}
 
 func TestNginx(t *testing.T) {
 	test := getJsOptions(t).
