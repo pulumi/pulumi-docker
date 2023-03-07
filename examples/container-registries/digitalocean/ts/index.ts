@@ -8,7 +8,6 @@ const registry = new digitalocean.ContainerRegistry("my-reg", {
 });
 
 // Get registry info (creds and endpoint) so we can build/publish to it.
-const imageName = registry.endpoint.apply(s => `${s}/myapp`);
 const creds = new digitalocean.ContainerRegistryDockerCredentials("my-reg-creds", {
     registryName: registry.name,
     write: true,
@@ -33,8 +32,10 @@ const registryInfo = pulumi.all(
 
 // Build and publish the image.
 const image = new docker.Image("my-image", {
-    build: "app",
-    imageName: imageName,
+    build: {
+        context: "app"
+    },
+    imageName: registry.endpoint.apply(s => `${s}/myapp`),
     registry: registryInfo,
 });
 
