@@ -24,7 +24,7 @@ import (
 	"github.com/pulumi/pulumi/pkg/v3/testing/integration"
 )
 
-func TestNginx(t *testing.T) {
+func TestNginxTs(t *testing.T) {
 	test := getJsOptions(t).
 		With(integration.ProgramTestOptions{
 			Dir: path.Join(getCwd(t), "nginx"),
