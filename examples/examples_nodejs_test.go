@@ -33,10 +33,10 @@ func TestNginx(t *testing.T) {
 	integration.ProgramTest(t, &test)
 }
 
-func TestDockerfileWithMultipleTargets(t *testing.T) {
+func TestDockerfileWithTarget(t *testing.T) {
 	test := getJsOptions(t).
 		With(integration.ProgramTestOptions{
-			Dir: path.Join(getCwd(t), "dockerfile-with-targets"),
+			Dir: path.Join(getCwd(t), "dockerfile-with-target"),
 		})
 
 	integration.ProgramTest(t, &test)
