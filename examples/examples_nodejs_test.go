@@ -128,6 +128,22 @@ func TestGcpContainerRegistry(t *testing.T) {
 	integration.ProgramTest(t, &test)
 }
 
+func TestDockerContainerRegistry(t *testing.T) {
+	username := "pulumibot"
+	password := os.Getenv("DOCKER_HUB_PASSWORD")
+	test := getJsOptions(t).
+		With(integration.ProgramTestOptions{
+			Dir: path.Join(getCwd(t), "container-registries/docker/ts"),
+			Config: map[string]string{
+				"cbp-docker-ts-dev:dockerUsername": username,
+			},
+			Secrets: map[string]string{
+				"cbp-docker-ts-dev:dockerPassword": password,
+			},
+		})
+	integration.ProgramTest(t, &test)
+}
+
 func getJsOptions(t *testing.T) integration.ProgramTestOptions {
 	base := getBaseOptions()
 	baseJs := base.With(integration.ProgramTestOptions{

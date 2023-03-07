@@ -89,6 +89,21 @@ func TestGcpContainerRegistryPy(t *testing.T) {
 	integration.ProgramTest(t, &test)
 }
 
+func TestDockerContainerRegistryPy(t *testing.T) {
+	username := "pulumibot"
+	password := os.Getenv("DOCKER_HUB_PASSWORD")
+	test := getPyOptions(t).
+		With(integration.ProgramTestOptions{
+			Dir: path.Join(getCwd(t), "container-registries/docker/py"),
+			Config: map[string]string{
+				"cbp-docker-py:dockerUsername": username,
+			},
+			Secrets: map[string]string{
+				"cbp-docker-py:dockerPassword": password,
+			},
+		})
+	integration.ProgramTest(t, &test)
+}
 func TestNginxPy(t *testing.T) {
 	test := getPyOptions(t).
 		With(integration.ProgramTestOptions{

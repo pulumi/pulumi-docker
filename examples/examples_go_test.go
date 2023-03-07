@@ -143,6 +143,21 @@ func TestGcpContainerRegistryGo(t *testing.T) {
 	integration.ProgramTest(t, &test)
 }
 
+func TestDockerContainerRegistryGo(t *testing.T) {
+	username := "pulumibot"
+	password := os.Getenv("DOCKER_HUB_PASSWORD")
+	test := base.With(integration.ProgramTestOptions{
+		Dir: path.Join(getCwd(t), "container-registries/docker/go"),
+		Config: map[string]string{
+			"cbp-docker-go:dockerUsername": username,
+		},
+		Secrets: map[string]string{
+			"cbp-docker-go:dockerPassword": password,
+		},
+	})
+	integration.ProgramTest(t, &test)
+}
+
 var base = integration.ProgramTestOptions{
 	ExpectRefreshChanges: true, // Docker resources generally see changes when refreshed.
 	// Note: no Config! This package should be usable without any config.

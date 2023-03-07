@@ -16,11 +16,12 @@ const registryInfo = {
 
 // Build and publish the container image.
 const image = new docker.Image("my-image", {
-    build: "app",
+    build: {
+        context: "app"
+    },
     imageName: imageName,
     registry: registryInfo,
 });
 
-// Export the resuling base name in addition to the specific version pushed.
-export const baseImageName = image.baseImageName;
+// Export the resulting image name
 export const fullImageName = image.imageName;
