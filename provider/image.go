@@ -94,21 +94,22 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 
 	// make the build context and ensure to exclude dockerignore file patterns
 	dockerIgnorePath := filepath.Join(build.Context, ".dockerignore")
-	ignorePatterns, err := getIgnore(dockerIgnorePath)
-	ignorePatterns = buildCmd.TrimBuildFilesFromExcludes(ignorePatterns, img.Build.Dockerfile, false)
+	initialIgnorePatterns, err := getIgnore(dockerIgnorePath)
+	// un-ignore build files so the docker daemon can use them
+	ignorePatterns := buildCmd.TrimBuildFilesFromExcludes(
+		initialIgnorePatterns,
+		img.Build.Dockerfile,
+		false,
+	)
 
 	// warn user about accidentally copying build files
-	if build.BuilderVersion == defaultBuilder {
-		for _, pattern := range ignorePatterns {
-			if pattern == "!Dockerfile" || pattern == "!.Dockerignore" {
-				msg := "It looks like you are trying to dockerignore a build file such as Dockerfile or .dockerignore. " +
-					"Due to limitations when running this provider in Buildkit mode, your build files may get copied " +
-					"into your image. Please ensure any copied file systems do not include build files."
-				err = p.host.Log(ctx, "warning", urn, msg)
-				if err != nil {
-					return "", nil, err
-				}
-			}
+	if build.BuilderVersion == defaultBuilder && len(initialIgnorePatterns) != len(ignorePatterns) {
+		msg := "It looks like you are trying to dockerignore a build file such as Dockerfile or .dockerignore. " +
+			"Due to limitations when running this provider in Buildkit mode, your build files may get copied " +
+			"into your image. Please ensure any copied file systems do not include build files."
+		err = p.host.Log(ctx, "warning", urn, msg)
+		if err != nil {
+			return "", nil, err
 		}
 	}
 
