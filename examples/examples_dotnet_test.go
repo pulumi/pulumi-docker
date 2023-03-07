@@ -74,7 +74,7 @@ func TestAwsContainerRegistryDotnet(t *testing.T) {
 	integration.ProgramTest(t, &test)
 }
 
-func TestDigitaloceanContainerRegistry(t *testing.T) {
+func TestDigitaloceanContainerRegistryDotnet(t *testing.T) {
 	token := os.Getenv("DIGITALOCEAN_TOKEN")
 	if token == "" {
 		t.Skipf("Skipping test due to missing DIGITALOCEAN_TOKEN environment variable")
