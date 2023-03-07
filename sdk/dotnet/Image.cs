@@ -23,10 +23,10 @@ namespace Pulumi.Docker
     /// {
     ///     var demoImage = new Docker.Image("demo-image", new()
     ///     {
-    ///         Build = 
+    ///         Build = new Docker.Inputs.DockerBuildArgs
     ///         {
-    ///             { "context", "." },
-    ///             { "dockerfile", "Dockerfile" },
+    ///             Context = ".",
+    ///             Dockerfile = "Dockerfile",
     ///         },
     ///         ImageName = "username/image:tag1",
     ///         SkipPush = true,
@@ -116,7 +116,7 @@ namespace Pulumi.Docker
         /// The Docker build context
         /// </summary>
         [Input("build")]
-        public InputUnion<string, Inputs.DockerBuildArgs>? Build { get; set; }
+        public Input<Inputs.DockerBuildArgs>? Build { get; set; }
 
         /// <summary>
         /// The image name

@@ -3,7 +3,6 @@
 
 package com.pulumi.docker;
 
-import com.pulumi.core.Either;
 import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
 import com.pulumi.core.internal.Codegen;
@@ -25,13 +24,13 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
      * 
      */
     @Import(name="build")
-    private @Nullable Output<Either<String,DockerBuildArgs>> build;
+    private @Nullable Output<DockerBuildArgs> build;
 
     /**
      * @return The Docker build context
      * 
      */
-    public Optional<Output<Either<String,DockerBuildArgs>>> build() {
+    public Optional<Output<DockerBuildArgs>> build() {
         return Optional.ofNullable(this.build);
     }
 
@@ -113,7 +112,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
          * @return builder
          * 
          */
-        public Builder build(@Nullable Output<Either<String,DockerBuildArgs>> build) {
+        public Builder build(@Nullable Output<DockerBuildArgs> build) {
             $.build = build;
             return this;
         }
@@ -124,28 +123,8 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
          * @return builder
          * 
          */
-        public Builder build(Either<String,DockerBuildArgs> build) {
-            return build(Output.of(build));
-        }
-
-        /**
-         * @param build The Docker build context
-         * 
-         * @return builder
-         * 
-         */
-        public Builder build(String build) {
-            return build(Either.ofLeft(build));
-        }
-
-        /**
-         * @param build The Docker build context
-         * 
-         * @return builder
-         * 
-         */
         public Builder build(DockerBuildArgs build) {
-            return build(Either.ofRight(build));
+            return build(Output.of(build));
         }
 
         /**
