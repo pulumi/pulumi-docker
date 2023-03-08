@@ -16,15 +16,18 @@ package provider
 
 import (
 	"fmt"
-	"github.com/pulumi/pulumi/pkg/v3/codegen/schema"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"path/filepath"
 	"unicode"
 
+	"github.com/pulumi/pulumi/pkg/v3/codegen/schema"
+	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+
 	"github.com/pulumi/pulumi-docker/provider/v4/pkg/version"
 	"github.com/pulumi/pulumi-terraform-bridge/v3/pkg/tfbridge"
+	"github.com/pulumi/pulumi-terraform-bridge/v3/pkg/tfbridge/x"
 	shimv2 "github.com/pulumi/pulumi-terraform-bridge/v3/pkg/tfshim/sdk-v2"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/tokens"
+	"github.com/pulumi/pulumi/sdk/v3/go/common/util/contract"
 	"github.com/terraform-providers/terraform-provider-docker/shim"
 )
 
@@ -321,7 +324,9 @@ func Provider() tfbridge.ProviderInfo {
 			},
 		},
 	}
-
+	err := x.ComputeDefaults(&prov, x.TokensSingleModule("docker_", dockerMod,
+		x.MakeStandardToken(dockerPkg)))
+	contract.AssertNoError(err)
 	prov.SetAutonaming(255, "-")
 
 	return prov
