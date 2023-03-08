@@ -27,6 +27,7 @@ import (
 	"github.com/pulumi/pulumi-terraform-bridge/v3/pkg/tfbridge/x"
 	shimv2 "github.com/pulumi/pulumi-terraform-bridge/v3/pkg/tfshim/sdk-v2"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/tokens"
+	"github.com/pulumi/pulumi/sdk/v3/go/common/util/contract"
 	"github.com/terraform-providers/terraform-provider-docker/shim"
 )
 
@@ -325,6 +326,7 @@ func Provider() tfbridge.ProviderInfo {
 	}
 	err := x.ComputeDefaults(&prov, x.TokensSingleModule("docker_", dockerMod,
 		x.MakeStandardToken(dockerPkg)))
+	contract.AssertNoError(err)
 	prov.SetAutonaming(255, "-")
 
 	return prov
