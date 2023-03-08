@@ -45,7 +45,7 @@ import (
 //
 // ```
 //
-// {{% //examples %}}
+// {{% /examples %}}
 type Image struct {
 	pulumi.CustomResourceState
 

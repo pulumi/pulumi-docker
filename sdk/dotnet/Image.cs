@@ -40,7 +40,7 @@ namespace Pulumi.Docker
     /// 
     /// ```
     /// 
-    /// {{% //examples %}}
+    /// {{% /examples %}}
     /// </summary>
     [DockerResourceType("docker:index/image:Image")]
     public partial class Image : global::Pulumi.CustomResource

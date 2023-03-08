@@ -52,7 +52,7 @@ import javax.annotation.Nullable;
  * }
  * ```
  * 
- * {{% //examples %}}
+ * {{% /examples %}}
  * 
  */
 @ResourceType(type="docker:index/image:Image")
