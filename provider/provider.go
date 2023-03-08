@@ -8,7 +8,7 @@ import (
 	"fmt"
 	pbempty "github.com/golang/protobuf/ptypes/empty"
 	"github.com/moby/buildkit/frontend/dockerfile/dockerignore"
-	"github.com/moby/moby/pkg/fileutils"
+	"github.com/moby/patternmatcher"
 	"github.com/pkg/errors"
 	"github.com/pulumi/pulumi/pkg/v3/resource/provider"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
@@ -488,7 +488,7 @@ func hashContext(dockerContextPath string, dockerfile string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	ignoreMatcher, err := fileutils.NewPatternMatcher(ignorePatterns)
+	ignoreMatcher, err := patternmatcher.New(ignorePatterns)
 	if err != nil {
 		return "", fmt.Errorf("unable to load rules from %s: %w", dockerIgnorePath, err)
 	}
