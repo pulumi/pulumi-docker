@@ -11,7 +11,7 @@ require (
 	github.com/moby/moby v23.0.0+incompatible
 	github.com/moby/patternmatcher v0.5.0
 	github.com/pkg/errors v0.9.1
-	github.com/pulumi/pulumi-terraform-bridge/v3 v3.42.1-0.20230308062139-d8c5f91bf8c5
+	github.com/pulumi/pulumi-terraform-bridge/v3 v3.42.1
 	github.com/pulumi/pulumi/pkg/v3 v3.56.0
 	github.com/pulumi/pulumi/sdk/v3 v3.56.0
 	github.com/stretchr/testify v1.8.2

@@ -6,6 +6,13 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
+	"io"
+	"io/fs"
+	"os"
+	"path/filepath"
+	"runtime"
+	"strings"
+
 	pbempty "github.com/golang/protobuf/ptypes/empty"
 	"github.com/moby/buildkit/frontend/dockerfile/dockerignore"
 	"github.com/moby/patternmatcher"
@@ -18,12 +25,6 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/emptypb"
-	"io"
-	"io/fs"
-	"os"
-	"path/filepath"
-	"runtime"
-	"strings"
 )
 
 type dockerNativeProvider struct {
@@ -511,7 +512,7 @@ func hashContext(dockerContextPath string, dockerfile string) (string, error) {
 		if path == "." {
 			return nil
 		}
-		ignore, err := ignoreMatcher.Matches(path)
+		ignore, err := ignoreMatcher.MatchesOrParentMatches(path)
 		if err != nil {
 			return fmt.Errorf("%s rule failed: %w", dockerIgnorePath, err)
 		}
