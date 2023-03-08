@@ -177,7 +177,7 @@ def get_logs(details: Optional[bool] = None,
              until: Optional[str] = None,
              opts: Optional[pulumi.InvokeOptions] = None) -> AwaitableGetLogsResult:
     """
-    `get_logs` provides logs from specific container
+    _get_logs_ provides logs from specific container
 
 
     :param bool discard_headers: Discard headers that docker appends to each log entry
@@ -229,7 +229,7 @@ def get_logs_output(details: Optional[pulumi.Input[Optional[bool]]] = None,
                     until: Optional[pulumi.Input[Optional[str]]] = None,
                     opts: Optional[pulumi.InvokeOptions] = None) -> pulumi.Output[GetLogsResult]:
     """
-    `get_logs` provides logs from specific container
+    _get_logs_ provides logs from specific container
 
 
     :param bool discard_headers: Discard headers that docker appends to each log entry
