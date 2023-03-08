@@ -52,8 +52,6 @@ import javax.annotation.Nullable;
  * }
  * ```
  * 
- * {{% //examples %}}
- * 
  */
 @ResourceType(type="docker:index/image:Image")
 public class Image extends com.pulumi.resources.CustomResource {

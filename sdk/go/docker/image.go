@@ -7,7 +7,7 @@ import (
 	"context"
 	"reflect"
 
-	"github.com/pkg/errors"
+	"errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
@@ -44,8 +44,6 @@ import (
 //	}
 //
 // ```
-//
-// {{% //examples %}}
 type Image struct {
 	pulumi.CustomResourceState
 
@@ -70,7 +68,7 @@ func NewImage(ctx *pulumi.Context,
 	if args.Build != nil {
 		args.Build = args.Build.ToDockerBuildPtrOutput().ApplyT(func(v *DockerBuild) *DockerBuild { return v.Defaults() }).(DockerBuildPtrOutput)
 	}
-	if isZero(args.SkipPush) {
+	if args.SkipPush == nil {
 		args.SkipPush = pulumi.BoolPtr(false)
 	}
 	aliases := pulumi.Aliases([]pulumi.Alias{
