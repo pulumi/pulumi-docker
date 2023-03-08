@@ -9698,15 +9698,15 @@ func (val *DockerBuild) Defaults() *DockerBuild {
 		return nil
 	}
 	tmp := *val
-	if isZero(tmp.BuilderVersion) {
+	if tmp.BuilderVersion == nil {
 		builderVersion_ := BuilderVersion("BuilderBuildKit")
 		tmp.BuilderVersion = &builderVersion_
 	}
-	if isZero(tmp.Context) {
+	if tmp.Context == nil {
 		context_ := "."
 		tmp.Context = &context_
 	}
-	if isZero(tmp.Dockerfile) {
+	if tmp.Dockerfile == nil {
 		dockerfile_ := "Dockerfile"
 		tmp.Dockerfile = &dockerfile_
 	}
@@ -9748,13 +9748,13 @@ func (val *DockerBuildArgs) Defaults() *DockerBuildArgs {
 		return nil
 	}
 	tmp := *val
-	if isZero(tmp.BuilderVersion) {
+	if tmp.BuilderVersion == nil {
 		tmp.BuilderVersion = BuilderVersion("BuilderBuildKit")
 	}
-	if isZero(tmp.Context) {
+	if tmp.Context == nil {
 		tmp.Context = pulumi.StringPtr(".")
 	}
-	if isZero(tmp.Dockerfile) {
+	if tmp.Dockerfile == nil {
 		tmp.Dockerfile = pulumi.StringPtr("Dockerfile")
 	}
 	return &tmp

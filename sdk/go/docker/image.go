@@ -7,7 +7,7 @@ import (
 	"context"
 	"reflect"
 
-	"github.com/pkg/errors"
+	"errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
@@ -33,7 +33,7 @@ func NewImage(ctx *pulumi.Context,
 	if args.ImageName == nil {
 		return nil, errors.New("invalid value for required argument 'ImageName'")
 	}
-	if isZero(args.SkipPush) {
+	if args.SkipPush == nil {
 		args.SkipPush = pulumi.BoolPtr(false)
 	}
 	var resource Image
