@@ -256,6 +256,10 @@ func Provider() tfbridge.ProviderInfo {
 							Description: "The path to the build context to use.",
 							TypeSpec:    schema.TypeSpec{Type: "string"},
 						},
+						"repoDigest": {
+							Description: "The digest of the manifest pushed to the registry, e.g.: repo[:tag]@<algorithm>:<hash>",
+							TypeSpec:    schema.TypeSpec{Type: "string"},
+						},
 					},
 				},
 				IsComponent: false,

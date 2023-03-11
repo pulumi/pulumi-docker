@@ -267,16 +267,16 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		}
 	}
 
+	outputs := map[string]interface{}{
+		"dockerfile":     relDockerfile,
+		"context":        img.Build.Context,
+		"baseImageName":  img.Name,
+		"registryServer": img.Registry.Server,
+		"imageName":      img.Name,
+	}
+
 	// if we are not pushing to the registry, we return after building the local image.
 	if img.SkipPush {
-		outputs := map[string]interface{}{
-			"dockerfile":     relDockerfile,
-			"context":        img.Build.Context,
-			"baseImageName":  img.Name,
-			"registryServer": img.Registry.Server,
-			"imageName":      img.Name,
-		}
-
 		pbstruct, err := plugin.MarshalProperties(
 			resource.NewPropertyMapFromMap(outputs),
 			plugin.MarshalOptions{KeepUnknowns: true, SkipNulls: true},
@@ -321,13 +321,17 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		}
 	}
 
-	outputs := map[string]interface{}{
-		"dockerfile":     relDockerfile,
-		"context":        img.Build.Context,
-		"baseImageName":  img.Name,
-		"registryServer": img.Registry.Server,
-		"imageName":      img.Name,
+	dist, _, err := docker.ImageInspectWithRaw(ctx, img.Name)
+	if err != nil {
+		return "", nil, err
 	}
+
+	// The repoDigest should be populated after a push. Clients may choose to throw an error or coerce
+	// this to a non-optional value.
+	if len(dist.RepoDigests) > 0 {
+		outputs["repoDigest"] = dist.RepoDigests[0]
+	}
+
 	pbstruct, err := plugin.MarshalProperties(
 		resource.NewPropertyMapFromMap(outputs),
 		plugin.MarshalOptions{KeepUnknowns: true, SkipNulls: true},

@@ -22,6 +22,7 @@ import (
 	"testing"
 
 	"github.com/pulumi/pulumi/pkg/v3/testing/integration"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestNginxTs(t *testing.T) {
@@ -69,6 +70,11 @@ func TestAwsContainerRegistry(t *testing.T) {
 			Dir: path.Join(getCwd(t), "aws-container-registry/ts"),
 			Config: map[string]string{
 				"aws:region": region,
+			},
+			ExtraRuntimeValidation: func(t *testing.T, stack integration.RuntimeValidationStackInfo) {
+				digest, ok := stack.Outputs["repoDigest"].(string)
+				assert.True(t, ok)
+				assert.NotEmpty(t, digest)
 			},
 		})
 
@@ -118,6 +124,11 @@ func TestDockerContainerRegistryNode(t *testing.T) {
 			},
 			Secrets: map[string]string{
 				"cbp-docker-ts-dev:dockerPassword": password,
+			},
+			ExtraRuntimeValidation: func(t *testing.T, stack integration.RuntimeValidationStackInfo) {
+				digest, ok := stack.Outputs["repoDigest"].(string)
+				assert.True(t, ok)
+				assert.NotEmpty(t, digest)
 			},
 		})
 	integration.ProgramTest(t, &test)
