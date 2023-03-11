@@ -73,6 +73,12 @@ namespace Pulumi.Docker
         [Output("registryServer")]
         public Output<string> RegistryServer { get; private set; } = null!;
 
+        /// <summary>
+        /// The digest of the manifest pushed to the registry, e.g.: repo[:tag]@&lt;algorithm&gt;:&lt;hash&gt;
+        /// </summary>
+        [Output("repoDigest")]
+        public Output<string?> RepoDigest { get; private set; } = null!;
+
 
         /// <summary>
         /// Create a Image resource with the given unique name, arguments, and options.
