@@ -286,11 +286,24 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		}
 	}
 
+	dist, _, err := docker.ImageInspectWithRaw(ctx, img.Name)
+	if err != nil {
+		return "", nil, err
+	}
+
+	// The repoDigest should be populated after a push. Clients may choose to throw an error or coerce
+	// this to a non-optional value.
+	repoDigest := resource.NewNullProperty()
+	if len(dist.RepoDigests) > 0 {
+		repoDigest = resource.NewStringProperty(dist.RepoDigests[0])
+	}
+
 	outputs := map[string]interface{}{
 		"dockerfile":     img.Build.Dockerfile,
 		"context":        img.Build.Context,
 		"baseImageName":  img.Name,
 		"registryServer": img.Registry.Server,
+		"repoDigest":     repoDigest,
 	}
 	pbstruct, err := plugin.MarshalProperties(
 		resource.NewPropertyMapFromMap(outputs),

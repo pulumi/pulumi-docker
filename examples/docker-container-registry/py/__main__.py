@@ -32,3 +32,4 @@ image = Image(
 
 # Export the resulting image name
 pulumi.export('fullImageName', image.image_name)
+pulumi.export('repoDigest', image.repo_digest)

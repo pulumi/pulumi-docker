@@ -101,6 +101,20 @@ public class Image extends com.pulumi.resources.CustomResource {
     public Output<Optional<String>> registryServer() {
         return Codegen.optional(this.registryServer);
     }
+    /**
+     * The digest of the manifest pushed to the registry, e.g.: repo[:tag]@&lt;algorithm&gt;:&lt;hash&gt;
+     * 
+     */
+    @Export(name="repoDigest", type=String.class, parameters={})
+    private Output</* @Nullable */ String> repoDigest;
+
+    /**
+     * @return The digest of the manifest pushed to the registry, e.g.: repo[:tag]@&lt;algorithm&gt;:&lt;hash&gt;
+     * 
+     */
+    public Output<Optional<String>> repoDigest() {
+        return Codegen.optional(this.repoDigest);
+    }
 
     /**
      *

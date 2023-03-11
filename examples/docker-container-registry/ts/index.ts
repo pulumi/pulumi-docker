@@ -25,3 +25,4 @@ const image = new docker.Image("my-image", {
 
 // Export the resulting image name
 export const fullImageName = image.imageName;
+export const repoDigest = image.repoDigest;

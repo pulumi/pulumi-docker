@@ -247,6 +247,10 @@ func Provider() tfbridge.ProviderInfo {
 							Description: "The fully qualified image name that was pushed to the registry.",
 							TypeSpec:    schema.TypeSpec{Type: "string"},
 						},
+						"repoDigest": {
+							Description: "The digest of the manifest pushed to the registry, e.g.: repo[:tag]@<algorithm>:<hash>",
+							TypeSpec:    schema.TypeSpec{Type: "string"},
+						},
 					},
 				},
 				IsComponent: false,

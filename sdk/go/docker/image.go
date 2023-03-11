@@ -53,6 +53,8 @@ type Image struct {
 	ImageName pulumi.StringPtrOutput `pulumi:"imageName"`
 	// The name of the registry server hosting the image.
 	RegistryServer pulumi.StringPtrOutput `pulumi:"registryServer"`
+	// The digest of the manifest pushed to the registry, e.g.: repo[:tag]@<algorithm>:<hash>
+	RepoDigest pulumi.StringPtrOutput `pulumi:"repoDigest"`
 }
 
 // NewImage registers a new resource with the given unique name, arguments, and options.
@@ -231,6 +233,11 @@ func (o ImageOutput) ImageName() pulumi.StringPtrOutput {
 // The name of the registry server hosting the image.
 func (o ImageOutput) RegistryServer() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Image) pulumi.StringPtrOutput { return v.RegistryServer }).(pulumi.StringPtrOutput)
+}
+
+// The digest of the manifest pushed to the registry, e.g.: repo[:tag]@<algorithm>:<hash>
+func (o ImageOutput) RepoDigest() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *Image) pulumi.StringPtrOutput { return v.RepoDigest }).(pulumi.StringPtrOutput)
 }
 
 type ImageArrayOutput struct{ *pulumi.OutputState }

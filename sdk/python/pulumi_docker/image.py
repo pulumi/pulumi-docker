@@ -185,6 +185,7 @@ class Image(pulumi.CustomResource):
             __props__.__dict__["skip_push"] = skip_push
             __props__.__dict__["base_image_name"] = None
             __props__.__dict__["registry_server"] = None
+            __props__.__dict__["repo_digest"] = None
         alias_opts = pulumi.ResourceOptions(aliases=[pulumi.Alias(type_="docker:image:Image")])
         opts = pulumi.ResourceOptions.merge(opts, alias_opts)
         super(Image, __self__).__init__(
@@ -212,6 +213,7 @@ class Image(pulumi.CustomResource):
         __props__.__dict__["base_image_name"] = None
         __props__.__dict__["image_name"] = None
         __props__.__dict__["registry_server"] = None
+        __props__.__dict__["repo_digest"] = None
         return Image(resource_name, opts=opts, __props__=__props__)
 
     @property
@@ -237,4 +239,12 @@ class Image(pulumi.CustomResource):
         The name of the registry server hosting the image.
         """
         return pulumi.get(self, "registry_server")
+
+    @property
+    @pulumi.getter(name="repoDigest")
+    def repo_digest(self) -> pulumi.Output[Optional[str]]:
+        """
+        The digest of the manifest pushed to the registry, e.g.: repo[:tag]@<algorithm>:<hash>
+        """
+        return pulumi.get(self, "repo_digest")
 

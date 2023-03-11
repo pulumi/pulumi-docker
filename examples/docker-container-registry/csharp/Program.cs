@@ -35,6 +35,7 @@ class Program
         return new Dictionary<string, object>
         {
             { "imageName", image.ImageName },
+            { "repoDigest", image.RepoDigest },
         };
     });
 }
