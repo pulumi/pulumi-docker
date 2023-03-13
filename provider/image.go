@@ -15,6 +15,7 @@ import (
 	"github.com/moby/buildkit/session/auth/authprovider"
 	"github.com/moby/moby/registry"
 
+	clibuild "github.com/docker/cli/cli/command/image/build"
 	"github.com/docker/cli/cli/config"
 	"github.com/docker/cli/cli/config/configfile"
 	"github.com/docker/cli/cli/config/credentials"
@@ -104,6 +105,15 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	initialIgnorePatterns, err := getIgnore(dockerIgnorePath)
 	if err != nil {
 		return "", nil, fmt.Errorf("error reading ignore file: %w", err)
+	}
+
+	contextDir, err := clibuild.ResolveAndValidateContextPath(build.Context)
+	if err != nil {
+		return "", nil, fmt.Errorf("error resolving context: %w", err)
+	}
+
+	if err := clibuild.ValidateContextDirectory(contextDir, initialIgnorePatterns); err != nil {
+		return "", nil, fmt.Errorf("error validating context: %w", err)
 	}
 
 	// un-ignore build files so the docker daemon can use them
