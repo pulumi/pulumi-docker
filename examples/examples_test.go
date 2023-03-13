@@ -15,9 +15,10 @@
 package examples
 
 import (
-	"github.com/pulumi/pulumi/pkg/v3/testing/integration"
 	"os"
 	"testing"
+
+	"github.com/pulumi/pulumi/pkg/v3/testing/integration"
 )
 
 func getCwd(t *testing.T) string {

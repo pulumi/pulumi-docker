@@ -1,0 +1,12 @@
+{
+    "name": "app",
+    "type": "module",
+    "scripts": {
+        "build": "tsc",
+        "start": "node ./bin/index.js"
+    },
+    "devDependencies": {
+        "@types/node": "^18.15.0",
+        "typescript": "^4.9.5"
+    }
+}
