@@ -46,10 +46,10 @@ Object.defineProperty(exports, "certPath", {
 /**
  * The Docker daemon address
  */
-export declare const host: string;
+export declare const host: string | undefined;
 Object.defineProperty(exports, "host", {
     get() {
-        return __config.get("host") ?? (utilities.getEnv("DOCKER_HOST") || "unix:///var/run/docker.sock");
+        return __config.get("host") ?? utilities.getEnv("DOCKER_HOST");
     },
     enumerable: true,
 });

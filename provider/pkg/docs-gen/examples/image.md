@@ -21,10 +21,10 @@ import pulumi
 import pulumi_docker as docker
 
 demo_image = docker.Image("demo-image",
-    build={
-        "context": ".",
-        "dockerfile": "Dockerfile",
-    },
+    build=docker.DockerBuildArgs(
+        context=".",
+        dockerfile="Dockerfile",
+    ),
     image_name="username/image:tag1",
     skip_push=True)
 pulumi.export("imageName", demo_image.image_name)
@@ -38,10 +38,10 @@ return await Deployment.RunAsync(() =>
 {
     var demoImage = new Docker.Image("demo-image", new()
     {
-        Build = 
+        Build = new Docker.Inputs.DockerBuildArgs
         {
-            { "context", "." },
-            { "dockerfile", "Dockerfile" },
+            Context = ".",
+            Dockerfile = "Dockerfile",
         },
         ImageName = "username/image:tag1",
         SkipPush = true,
@@ -65,7 +65,7 @@ import (
 func main() {
 	pulumi.Run(func(ctx *pulumi.Context) error {
 		demoImage, err := docker.NewImage(ctx, "demo-image", &docker.ImageArgs{
-			Build: pulumi.Any{
+			Build: &docker.DockerBuildArgs{
 				Context:    pulumi.String("."),
 				Dockerfile: pulumi.String("Dockerfile"),
 			},
@@ -108,6 +108,7 @@ import com.pulumi.Pulumi;
 import com.pulumi.core.Output;
 import com.pulumi.docker.Image;
 import com.pulumi.docker.ImageArgs;
+import com.pulumi.docker.inputs.DockerBuildArgs;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -122,7 +123,10 @@ public class App {
 
     public static void stack(Context ctx) {
         var demoImage = new Image("demoImage", ImageArgs.builder()        
-            .build(%!v(PANIC=Format method: interface conversion: model.Expression is *model.TemplateExpression, not *model.LiteralValueExpression))
+            .build(DockerBuildArgs.builder()
+                .context(".")
+                .dockerfile("Dockerfile")
+                .build())
             .imageName("username/image:tag1")
             .skipPush(true)
             .build());

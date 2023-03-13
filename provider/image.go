@@ -80,7 +80,10 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	build.CachedImages = cache
 	img.Build = build
 
-	docker, err := client.NewClientWithOpts(client.FromEnv)
+	docker, err := client.NewClientWithOpts(
+		client.FromEnv,
+		client.WithAPIVersionNegotiation(),
+	)
 
 	if err != nil {
 		return "", nil, err

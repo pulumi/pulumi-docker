@@ -62,7 +62,7 @@ namespace Pulumi.Docker
             set => _certPath.Set(value);
         }
 
-        private static readonly __Value<string?> _host = new __Value<string?>(() => __config.Get("host") ?? Utilities.GetEnv("DOCKER_HOST") ?? "unix:///var/run/docker.sock");
+        private static readonly __Value<string?> _host = new __Value<string?>(() => __config.Get("host") ?? Utilities.GetEnv("DOCKER_HOST"));
         /// <summary>
         /// The Docker daemon address
         /// </summary>

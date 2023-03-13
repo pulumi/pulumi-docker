@@ -1,0 +1,83 @@
+From 35c36871b55dcaae8c073e630472cc1cf1bb6587 Mon Sep 17 00:00:00 2001
+From: Aaron Friel <mayreply@aaronfriel.com>
+Date: Sun, 12 Mar 2023 19:00:46 -0700
+Subject: [PATCH] Smarter default Docker client behavior
+
+---
+ internal/provider/config.go                   | 36 ++++++++-----------
+ internal/provider/provider.go                 |  6 +---
+ .../resource_docker_container_funcs.go        |  6 +++-
+ shim/shim.go                                  | 10 ++++++
+ 4 files changed, 30 insertions(+), 28 deletions(-)
+ create mode 100644 shim/shim.go
+
+diff --git a/internal/provider/config.go b/internal/provider/config.go
+index 32a99d7a..f30495b7 100644
+--- a/internal/provider/config.go
++++ b/internal/provider/config.go
+@@ -83,6 +83,9 @@ func defaultPooledTransport() *http.Transport {
+
+ // NewClient returns a new Docker client.
+ func (c *Config) NewClient() (*client.Client, error) {
++	opts := []client.Opt{
++		client.FromEnv,
++	}
+ 	if c.Cert != "" || c.Key != "" {
+ 		if c.Cert == "" || c.Key == "" {
+ 			return nil, fmt.Errorf("cert_material, and key_material must be specified")
+@@ -97,25 +100,13 @@ func (c *Config) NewClient() (*client.Client, error) {
+ 			return nil, err
+ 		}
+
+-		// Note: don't change the order here, because the custom client
+-		// needs to be set first them we overwrite the other options: host, version
+-		return client.NewClientWithOpts(
+-			client.WithHTTPClient(httpClient),
+-			client.WithHost(c.Host),
+-			client.WithAPIVersionNegotiation(),
+-		)
+-	}
+-
+-	if c.CertPath != "" {
++		opts = append(opts, client.WithHTTPClient(httpClient))
++	} else if c.CertPath != "" {
+ 		// If there is cert information, load it and use it.
+ 		ca := filepath.Join(c.CertPath, "ca.pem")
+ 		cert := filepath.Join(c.CertPath, "cert.pem")
+ 		key := filepath.Join(c.CertPath, "key.pem")
+-		return client.NewClientWithOpts(
+-			client.WithHost(c.Host),
+-			client.WithTLSClientConfig(ca, cert, key),
+-			client.WithAPIVersionNegotiation(),
+-		)
++		opts = append(opts, client.WithTLSClientConfig(ca, cert, key))
+ 	}
+
+ 	// If there is no cert information, then check for ssh://
+@@ -124,18 +115,19 @@ func (c *Config) NewClient() (*client.Client, error) {
+ 		return nil, err
+ 	}
+ 	if helper != nil {
+-		return client.NewClientWithOpts(
+-			client.WithHost(helper.Host),
+-			client.WithDialContext(helper.Dialer),
+-			client.WithAPIVersionNegotiation(),
+-		)
++		opts = append(opts, client.WithDialContext(helper.Dialer))
++	}
++
++	if c.Host != "" {
++		opts = append(opts, client.WithHost(c.Host))
+ 	}
+
+ 	// If there is no ssh://, then just return the direct client
+-	return client.NewClientWithOpts(
+-		client.WithHost(c.Host),
++	opts = append(opts,
+ 		client.WithAPIVersionNegotiation(),
+ 	)
++	ret, err := client.NewClientWithOpts(opts...)
++	return ret, err
+ }
+
+ // Data structure for holding data that we fetch from Docker.

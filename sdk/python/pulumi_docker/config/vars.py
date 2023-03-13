@@ -38,11 +38,11 @@ class _ExportableConfig(types.ModuleType):
         return __config__.get('certPath')
 
     @property
-    def host(self) -> str:
+    def host(self) -> Optional[str]:
         """
         The Docker daemon address
         """
-        return __config__.get('host') or (_utilities.get_env('DOCKER_HOST') or 'unix:///var/run/docker.sock')
+        return __config__.get('host') or _utilities.get_env('DOCKER_HOST')
 
     @property
     def key_material(self) -> Optional[str]:

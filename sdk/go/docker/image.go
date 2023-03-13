@@ -28,7 +28,7 @@ import (
 //	func main() {
 //		pulumi.Run(func(ctx *pulumi.Context) error {
 //			demoImage, err := docker.NewImage(ctx, "demo-image", &docker.ImageArgs{
-//				Build: pulumi.Any{
+//				Build: &docker.DockerBuildArgs{
 //					Context:    pulumi.String("."),
 //					Dockerfile: pulumi.String("Dockerfile"),
 //				},

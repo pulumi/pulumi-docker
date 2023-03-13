@@ -25,7 +25,7 @@ certPath: Optional[str]
 Path to directory with Docker TLS config
 """
 
-host: str
+host: Optional[str]
 """
 The Docker daemon address
 """

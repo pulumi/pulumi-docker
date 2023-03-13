@@ -39,7 +39,7 @@ public final class Config {
  * 
  */
     public String host() {
-        return Codegen.stringProp("host").config(config).env("DOCKER_HOST").def("unix:///var/run/docker.sock").require();
+        return Codegen.stringProp("host").config(config).env("DOCKER_HOST").require();
     }
 /**
  * PEM-encoded content of Docker client private key

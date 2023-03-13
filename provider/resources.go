@@ -76,7 +76,6 @@ func Provider() tfbridge.ProviderInfo {
 		Config: map[string]*tfbridge.SchemaInfo{
 			"host": {
 				Default: &tfbridge.DefaultInfo{
-					Value:   "unix:///var/run/docker.sock",
 					EnvVars: []string{"DOCKER_HOST"},
 				},
 			},
