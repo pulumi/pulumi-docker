@@ -6,15 +6,19 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"github.com/docker/distribution/reference"
-	"github.com/moby/buildkit/session"
-	"github.com/moby/moby/registry"
 	"net"
 	"path/filepath"
+
+	"github.com/docker/distribution/reference"
+	"github.com/docker/docker/pkg/idtools"
+	"github.com/moby/buildkit/session"
+	"github.com/moby/buildkit/session/auth/authprovider"
+	"github.com/moby/moby/registry"
 
 	"github.com/docker/cli/cli/config"
 	"github.com/docker/cli/cli/config/configfile"
 	"github.com/docker/cli/cli/config/credentials"
+	clitypes "github.com/docker/cli/cli/config/types"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
 	"github.com/docker/docker/pkg/archive"
@@ -98,6 +102,10 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	// make the build context and ensure to exclude dockerignore file patterns
 	dockerIgnorePath := filepath.Join(build.Context, ".dockerignore")
 	initialIgnorePatterns, err := getIgnore(dockerIgnorePath)
+	if err != nil {
+		return "", nil, fmt.Errorf("error reading ignore file: %w", err)
+	}
+
 	// un-ignore build files so the docker daemon can use them
 	ignorePatterns := buildCmd.TrimBuildFilesFromExcludes(
 		initialIgnorePatterns,
@@ -120,8 +128,9 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		return "", nil, err
 	}
 
-	tar, err := archive.TarWithOptions(img.Build.Context, &archive.TarOptions{
+	tar, err := archive.TarWithOptions(contextDir, &archive.TarOptions{
 		ExcludePatterns: ignorePatterns,
+		ChownOpts:       &idtools.Identity{UID: 0, GID: 0},
 	})
 	if err != nil {
 		return "", nil, err
@@ -157,14 +166,14 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 				return "", nil, err
 			}
 		}
-		authConfigs[auth.ServerAddress] = auth // for image cache
-		regAuth = auth                         // for image push
+		authConfigs[auth.ServerAddress] = auth                          // for image cache
+		cfg.AuthConfigs[auth.ServerAddress] = clitypes.AuthConfig(auth) // for buildkit cache using session auth
+		regAuth = auth                                                  // for image push
 	}
 	// make the build options
 	opts := types.ImageBuildOptions{
 		Dockerfile: img.Build.Dockerfile,
 		Tags:       []string{img.Name}, //this should build the image locally, sans registry info
-		Remove:     true,
 		CacheFrom:  img.Build.CachedImages,
 		BuildArgs:  build.Args,
 		Version:    build.BuilderVersion,
@@ -177,6 +186,10 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	// Start a session for BuildKit
 	if build.BuilderVersion == defaultBuilder {
 		sess, _ := session.NewSession(ctx, "pulumi-docker", "")
+
+		dockerAuthProvider := authprovider.NewDockerAuthProvider(cfg)
+		sess.Allow(dockerAuthProvider)
+
 		dialSession := func(ctx context.Context, proto string, meta map[string][]string) (net.Conn, error) {
 			return docker.DialHijack(ctx, "/session", proto, meta)
 		}
