@@ -89,7 +89,7 @@ outputs:
 resources:
     demo-image:
         options:
-            version: v4.0.0-alpha.1
+            version: v4.0.0
         properties:
             build:
                 context: .

@@ -78,8 +78,9 @@ cleanup:
 	rm -r $(WORKING_DIR)/bin
 	rm -f provider/cmd/$(PROVIDER)/schema.go
 
-docs:
-	cd provider/pkg/docs-gen/examples/ && go run generate.go ./yaml ./
+docs: provider
+	cd provider/pkg/docs-gen/examples/ && \
+		PATH="$(WORKING_DIR)/bin:$$PATH" go run generate.go ./yaml ./
 
 finish-patch:
 	@if [ ! -z "$$(cd upstream && git status --porcelain)" ]; then echo "Please commit your changes before finishing the patch"; exit 1; fi
