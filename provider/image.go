@@ -135,6 +135,14 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	authConfigs := make(map[string]types.AuthConfig)
 	var regAuth types.AuthConfig
 
+	auths, err := cfg.GetAllCredentials()
+	if err != nil {
+		return "", nil, err
+	}
+	for k, auth := range auths {
+		authConfigs[k] = types.AuthConfig(auth)
+	}
+
 	// sign into registry if we're pushing or setting CacheFrom
 	// TODO: add functionality for additional registry caches not associated with the stack image
 	// See: https://github.com/pulumi/pulumi-docker/issues/497
