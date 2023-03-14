@@ -132,7 +132,7 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 		os = "linux"
 	}
 	arch := runtime.GOARCH
-	hostPlatform := filepath.Join(os, arch)
+	hostPlatform := os + "/" + arch
 	msg := fmt.Sprintf(
 		"Building your image for %s architecture.\n"+
 			"To ensure you are building for the correct platform, consider "+

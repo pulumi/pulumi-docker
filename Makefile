@@ -78,8 +78,9 @@ cleanup:
 	rm -r $(WORKING_DIR)/bin
 	rm -f provider/cmd/$(PROVIDER)/schema.go
 
-docs:
-	cd provider/pkg/docs-gen/examples/ && go run generate.go ./yaml ./
+docs: provider
+	cd provider/pkg/docs-gen/examples/ && \
+		PATH="$(WORKING_DIR)/bin:$$PATH" go run generate.go ./yaml ./
 
 finish-patch:
 	@if [ ! -z "$$(cd upstream && git status --porcelain)" ]; then echo "Please commit your changes before finishing the patch"; exit 1; fi
@@ -133,7 +134,7 @@ endif
 test:
 	cd examples && go test -v -tags=all -parallel $(TESTPARALLELISM) -timeout 2h
 
-tfgen: install_plugins docs
+tfgen: install_plugins upstream docs
 	(cd provider && go build -p 1 -o $(WORKING_DIR)/bin/$(TFGEN) -ldflags "-X $(PROJECT)/$(VERSION_PATH)=$(VERSION)" $(PROJECT)/$(PROVIDER_PATH)/cmd/$(TFGEN))
 	$(WORKING_DIR)/bin/$(TFGEN) schema --out provider/cmd/$(PROVIDER)
 	(cd provider && VERSION=$(VERSION) go generate cmd/$(PROVIDER)/main.go)

@@ -295,7 +295,7 @@ public final class ProviderArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         public ProviderArgs build() {
-            $.host = Codegen.stringProp("host").output().arg($.host).env("DOCKER_HOST").def("unix:///var/run/docker.sock").getNullable();
+            $.host = Codegen.stringProp("host").output().arg($.host).env("DOCKER_HOST").getNullable();
             return $;
         }
     }

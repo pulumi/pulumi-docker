@@ -13,6 +13,6 @@ resources:
         dockerfile: Dockerfile
         context: .
     options:
-      version: v4.0.0-alpha.1
+      version: v4.0.0
 outputs:
   imageName: ${demo-image.imageName}

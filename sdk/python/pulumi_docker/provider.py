@@ -38,7 +38,7 @@ class ProviderArgs:
         if cert_path is not None:
             pulumi.set(__self__, "cert_path", cert_path)
         if host is None:
-            host = (_utilities.get_env('DOCKER_HOST') or 'unix:///var/run/docker.sock')
+            host = _utilities.get_env('DOCKER_HOST')
         if host is not None:
             pulumi.set(__self__, "host", host)
         if key_material is not None:
@@ -205,7 +205,7 @@ class Provider(pulumi.ProviderResource):
             __props__.__dict__["cert_material"] = cert_material
             __props__.__dict__["cert_path"] = cert_path
             if host is None:
-                host = (_utilities.get_env('DOCKER_HOST') or 'unix:///var/run/docker.sock')
+                host = _utilities.get_env('DOCKER_HOST')
             __props__.__dict__["host"] = host
             __props__.__dict__["key_material"] = key_material
             __props__.__dict__["registry_auth"] = pulumi.Output.from_input(registry_auth).apply(pulumi.runtime.to_json) if registry_auth is not None else None

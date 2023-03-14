@@ -28,6 +28,7 @@ import javax.annotation.Nullable;
  * import com.pulumi.core.Output;
  * import com.pulumi.docker.Image;
  * import com.pulumi.docker.ImageArgs;
+ * import com.pulumi.docker.inputs.DockerBuildArgs;
  * import java.util.List;
  * import java.util.ArrayList;
  * import java.util.Map;
@@ -42,7 +43,10 @@ import javax.annotation.Nullable;
  * 
  *     public static void stack(Context ctx) {
  *         var demoImage = new Image(&#34;demoImage&#34;, ImageArgs.builder()        
- *             .build(%!v(PANIC=Format method: interface conversion: model.Expression is *model.TemplateExpression, not *model.LiteralValueExpression))
+ *             .build(DockerBuildArgs.builder()
+ *                 .context(&#34;.&#34;)
+ *                 .dockerfile(&#34;Dockerfile&#34;)
+ *                 .build())
  *             .imageName(&#34;username/image:tag1&#34;)
  *             .skipPush(true)
  *             .build());

@@ -128,7 +128,7 @@ namespace Pulumi.Docker
 
         public ProviderArgs()
         {
-            Host = Utilities.GetEnv("DOCKER_HOST") ?? "unix:///var/run/docker.sock";
+            Host = Utilities.GetEnv("DOCKER_HOST");
         }
         public static new ProviderArgs Empty => new ProviderArgs();
     }

@@ -23,10 +23,10 @@ namespace Pulumi.Docker
     /// {
     ///     var demoImage = new Docker.Image("demo-image", new()
     ///     {
-    ///         Build = 
+    ///         Build = new Docker.Inputs.DockerBuildArgs
     ///         {
-    ///             { "context", "." },
-    ///             { "dockerfile", "Dockerfile" },
+    ///             Context = ".",
+    ///             Dockerfile = "Dockerfile",
     ///         },
     ///         ImageName = "username/image:tag1",
     ///         SkipPush = true,

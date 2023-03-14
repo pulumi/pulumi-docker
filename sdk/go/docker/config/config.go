@@ -29,7 +29,7 @@ func GetHost(ctx *pulumi.Context) string {
 	if err == nil {
 		return v
 	}
-	return getEnvOrDefault("unix:///var/run/docker.sock", nil, "DOCKER_HOST").(string)
+	return getEnvOrDefault("", nil, "DOCKER_HOST").(string)
 }
 
 // PEM-encoded content of Docker client private key

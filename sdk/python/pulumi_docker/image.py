@@ -106,10 +106,10 @@ class Image(pulumi.CustomResource):
         import pulumi_docker as docker
 
         demo_image = docker.Image("demo-image",
-            build={
-                "context": ".",
-                "dockerfile": "Dockerfile",
-            },
+            build=docker.DockerBuildArgs(
+                context=".",
+                dockerfile="Dockerfile",
+            ),
             image_name="username/image:tag1",
             skip_push=True)
         pulumi.export("imageName", demo_image.image_name)
@@ -138,10 +138,10 @@ class Image(pulumi.CustomResource):
         import pulumi_docker as docker
 
         demo_image = docker.Image("demo-image",
-            build={
-                "context": ".",
-                "dockerfile": "Dockerfile",
-            },
+            build=docker.DockerBuildArgs(
+                context=".",
+                dockerfile="Dockerfile",
+            ),
             image_name="username/image:tag1",
             skip_push=True)
         pulumi.export("imageName", demo_image.image_name)

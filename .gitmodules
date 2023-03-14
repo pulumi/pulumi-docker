@@ -1,0 +1,4 @@
+[submodule "upstream"]
+	path = upstream
+	url = https://github.com/kreuzwerker/terraform-provider-docker.git
+  ignore = dirty
