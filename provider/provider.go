@@ -442,7 +442,7 @@ func (accumulator *contextHashAccumulator) hashPath(path string, fileMode fs.Fil
 		// a) ignore changes at the symlink target
 		// b) detect if the symlink _itself_ changes
 		// c) avoid a panic on io.Copy if the symlink target is a directory
-		symLinkPath, err := filepath.EvalSymlinks(path)
+		symLinkPath, err := filepath.EvalSymlinks(filepath.Join(accumulator.dockerContextPath, path))
 		if err != nil {
 			return fmt.Errorf("could not evaluate symlink at %s: %w", path, err)
 		}
