@@ -204,7 +204,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	}
 	// make the build options
 	opts := types.ImageBuildOptions{
-		Dockerfile: img.Build.Dockerfile,
+		Dockerfile: build.Dockerfile,
 		Tags:       []string{img.Name}, //this should build the image locally, sans registry info
 		CacheFrom:  img.Build.CachedImages,
 		BuildArgs:  build.Args,
