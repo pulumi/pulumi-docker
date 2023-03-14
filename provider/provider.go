@@ -6,6 +6,8 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
+	clibuild "github.com/docker/cli/cli/command/image/build"
+	"github.com/ryboe/q"
 	"io"
 	"io/fs"
 	"os"
@@ -119,7 +121,23 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 	}
 
 	dockerContext := build.Context
+	q.Q(build.Context)
 	dockerfile := build.Dockerfile
+	q.Q(build.Dockerfile)
+
+	if build.Context != "" {
+		q.Q("we have specified a context. The Dockerfile is likely not in that context. We need to do something.")
+		specifiedContext := build.Context
+		contextDir, relDockerfile, err := clibuild.GetContextFromLocalDir(specifiedContext, build.Dockerfile)
+		q.Q(contextDir)
+		q.Q(relDockerfile)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	// Get relative dockerfile path in case Dockerfile is not in the build context
+
 	// Hash docker build context digest
 	contextDigest, err := hashContext(dockerContext, dockerfile)
 	if err != nil {
