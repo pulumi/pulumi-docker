@@ -125,12 +125,8 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 		return nil, err
 	}
 
-	// Get the system platform
-	os := runtime.GOOS
-	// Docker for Mac builds and runs for linux/amd64, not darwin
-	if os == "darwin" {
-		os = "linux"
-	}
+	// OS defaults to Linux in all cases
+	os := "linux"
 	arch := runtime.GOARCH
 	hostPlatform := os + "/" + arch
 	msg := fmt.Sprintf(
