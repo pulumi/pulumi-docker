@@ -6,7 +6,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
-	"github.com/ryboe/q"
+	clibuild "github.com/docker/cli/cli/command/image/build"
 	"io"
 	"io/fs"
 	"os"
@@ -119,8 +119,14 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 		return nil, err
 	}
 
+	// Set relative dockerfile path in case Dockerfile is not in the build context
+	_, relDockerfile, err := clibuild.GetContextFromLocalDir(build.Context, build.Dockerfile)
+	if err != nil {
+		return nil, err
+	}
+
 	// Hash docker build context digest
-	contextDigest, err := hashContext(build.Context, build.Dockerfile)
+	contextDigest, err := hashContext(build.Context, relDockerfile)
 	if err != nil {
 		return nil, err
 	}
@@ -478,7 +484,6 @@ func (accumulator *contextHashAccumulator) hexSumContext() string {
 }
 
 func hashContext(dockerContextPath string, dockerfile string) (string, error) {
-	q.Q("we are in hashContext and this is the dockerfile? ", dockerfile)
 	// exclude all files listed in dockerignore
 	dockerIgnorePath := filepath.Join(dockerContextPath, ".dockerignore")
 	ignorePatterns, err := getIgnore(dockerIgnorePath)

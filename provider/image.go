@@ -6,11 +6,11 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"github.com/ryboe/q"
 	"io"
 	"net"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/docker/distribution/reference"
 	"github.com/docker/docker/pkg/idtools"
@@ -110,7 +110,20 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		return "", nil, fmt.Errorf("error reading ignore file: %w", err)
 	}
 
-	contextDir, err := clibuild.ResolveAndValidateContextPath(build.Context)
+	// Handle Dockerfile from outside of build context folder
+	var relDockerfile string
+	var dockerfileCtx io.ReadCloser
+	contextDir, relDockerfile, err := clibuild.GetContextFromLocalDir(build.Context, build.Dockerfile)
+	if err == nil && strings.HasPrefix(relDockerfile, ".."+string(filepath.Separator)) {
+		// Dockerfile is outside of build context; read the Dockerfile and pass it as dockerfileCtx
+		dockerfileCtx, err = os.Open(build.Dockerfile)
+		if err != nil {
+			return "", nil, fmt.Errorf("unable to open Dockerfile: %v", err)
+		}
+		defer dockerfileCtx.Close()
+	}
+
+	contextDir, err = clibuild.ResolveAndValidateContextPath(build.Context)
 	if err != nil {
 		return "", nil, fmt.Errorf("error resolving context: %w", err)
 	}
@@ -137,10 +150,6 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		}
 	}
 
-	if err != nil {
-		return "", nil, err
-	}
-
 	tar, err := archive.TarWithOptions(contextDir, &archive.TarOptions{
 		ExcludePatterns: ignorePatterns,
 		ChownOpts:       &idtools.Identity{UID: 0, GID: 0},
@@ -149,19 +158,8 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		return "", nil, err
 	}
 
-	// add dockerfile to tarball in case it's not in the build context
-	var dockerfileCtx io.ReadCloser
-	dockerfilePath := filepath.Join(build.Context, build.Dockerfile)
-	q.Q(dockerfilePath)
-	dockerfileCtx, err = os.Open(dockerfilePath)
-	if err != nil {
-		return "", nil, fmt.Errorf("unable to open Dockerfile: %v", err)
-	}
-	defer dockerfileCtx.Close()
-
-	q.Q(dockerfileCtx)
-
-	if dockerfileCtx != nil {
+	// add dockerfile to tarball if it's not in the build context
+	if dockerfileCtx != nil && tar != nil {
 		tar, build.Dockerfile, err = clibuild.AddDockerfileToBuildContext(dockerfileCtx, tar)
 		if err != nil {
 			return "", nil, err
@@ -347,14 +345,6 @@ func marshalBuildAndApplyDefaults(b resource.PropertyValue) (Build, error) {
 	} else {
 		build.Context = buildObject["context"].StringValue()
 	}
-
-	// Set relative dockerfile path in case Dockerfile is not in the build context
-	_, relDockerfile, err := clibuild.GetContextFromLocalDir(build.Context, build.Dockerfile)
-	if err != nil {
-		return build, err
-	}
-	build.Dockerfile = relDockerfile // TODO: refactor with the setting above maybe
-	q.Q(build.Dockerfile)
 
 	// BuildKit
 	version, err := marshalBuilder(buildObject["builderVersion"])
