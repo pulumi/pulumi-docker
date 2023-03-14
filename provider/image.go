@@ -6,6 +6,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"github.com/ryboe/q"
 	"io"
 	"net"
 	"os"
@@ -32,7 +33,6 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
 
 	buildCmd "github.com/docker/cli/cli/command/image/build"
-	"github.com/ryboe/q"
 )
 
 const defaultDockerfile = "Dockerfile"
@@ -149,9 +149,11 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		return "", nil, err
 	}
 
-	// add dockerfile to tarball if it's not in the build context
+	// add dockerfile to tarball in case it's not in the build context
 	var dockerfileCtx io.ReadCloser
-	dockerfileCtx, err = os.Open(build.Dockerfile)
+	dockerfilePath := filepath.Join(build.Context, build.Dockerfile)
+	q.Q(dockerfilePath)
+	dockerfileCtx, err = os.Open(dockerfilePath)
 	if err != nil {
 		return "", nil, fmt.Errorf("unable to open Dockerfile: %v", err)
 	}
@@ -159,7 +161,6 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 
 	q.Q(dockerfileCtx)
 
-	// replace Dockerfile if it was added from stdin or a file outside the build-context, and there is archive context
 	if dockerfileCtx != nil {
 		tar, build.Dockerfile, err = clibuild.AddDockerfileToBuildContext(dockerfileCtx, tar)
 		if err != nil {
@@ -346,6 +347,14 @@ func marshalBuildAndApplyDefaults(b resource.PropertyValue) (Build, error) {
 	} else {
 		build.Context = buildObject["context"].StringValue()
 	}
+
+	// Set relative dockerfile path in case Dockerfile is not in the build context
+	_, relDockerfile, err := clibuild.GetContextFromLocalDir(build.Context, build.Dockerfile)
+	if err != nil {
+		return build, err
+	}
+	build.Dockerfile = relDockerfile // TODO: refactor with the setting above maybe
+	q.Q(build.Dockerfile)
 
 	// BuildKit
 	version, err := marshalBuilder(buildObject["builderVersion"])
