@@ -123,7 +123,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		defer dockerfileCtx.Close()
 	}
 
-	contextDir, err = clibuild.ResolveAndValidateContextPath(build.Context)
+	contextDir, err = clibuild.ResolveAndValidateContextPath(contextDir)
 	if err != nil {
 		return "", nil, fmt.Errorf("error resolving context: %w", err)
 	}
