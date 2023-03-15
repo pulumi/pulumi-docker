@@ -6,7 +6,6 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
-	clibuild "github.com/docker/cli/cli/command/image/build"
 	"io"
 	"io/fs"
 	"os"
@@ -24,6 +23,7 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/util/logging"
 	rpc "github.com/pulumi/pulumi/sdk/v3/proto/go"
+	"github.com/ryboe/q"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/emptypb"
@@ -121,10 +121,66 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 
 	// Set relative dockerfile path in case Dockerfile is not in the build context
 	// TODO: Do some actual logic here because we have to fix for both situations.
-	_, relDockerfile, err := clibuild.GetContextFromLocalDir(build.Context, "")
-	if err != nil {
-		return nil, fmt.Errorf("encountered error while getting the relative Dockerfile: %s", err)
+	// the below is wrong, because we don't actually have an absolute dockerfile path in all cases.
+	// determine id Dockerfile is absolute?
+	// idea: see if the build context contains Dockerfile?
+	// that solution does not work because we don't know where in the world these files are,
+	// and we want to honor a "Dockerfile" always being relative to the build context.
+	relDockerfile := build.Dockerfile
+	q.Q(build.Dockerfile)
+	q.Q("relDpockerfile before ", relDockerfile)
+
+	sep := string(filepath.Separator)
+	q.Q(sep)
+	if strings.Contains(build.Dockerfile, sep) {
+		q.Q("Dockerfile has a slash in it and is therefore not relative to build context by default")
+		absDockerfile, err := filepath.Abs(build.Dockerfile)
+		if err != nil {
+			return nil, fmt.Errorf("absDockerfile error: %s", err)
+		}
+		absBuildpath, err := filepath.Abs(build.Context)
+		if err != nil {
+			return nil, fmt.Errorf("absBuildPath error: %s", err)
+		}
+		q.Q(absDockerfile)
+		q.Q(absBuildpath)
+		relDockerfile, err = filepath.Rel(absBuildpath, absDockerfile)
+		if err != nil {
+			return nil, fmt.Errorf("relDockerfile error: %s", err)
+		}
+	} else {
+		q.Q("Dockerfile is assumed relative to build context. Do noting. If it crashes, it is user error")
 	}
+
+	//relDockerfile := filepath.Base(build.Dockerfile)
+	//_, err = os.Stat(filepath.Join(build.Context, relDockerfile))
+	//q.Q(filepath.Join(build.Context, relDockerfile))
+	//q.Q("relDockerfile before: ", relDockerfile)
+	//if errors.Is(err, os.ErrNotExist) {
+	//	q.Q("Dockerfile is not in build context")
+	//	absDockerfile, err := filepath.Abs(build.Dockerfile)
+	//	if err != nil {
+	//		return nil, fmt.Errorf("absDockerfile error: %s", err)
+	//	}
+	//	absBuildpath, err := filepath.Abs(build.Context)
+	//	if err != nil {
+	//		return nil, fmt.Errorf("absBuildPath error: %s", err)
+	//	}
+	//	q.Q(absDockerfile)
+	//	q.Q(absBuildpath)
+	//	relDockerfile, err = filepath.Rel(absBuildpath, absDockerfile)
+	//	if err != nil {
+	//		return nil, fmt.Errorf("relDockerfile error: %s", err)
+	//	}
+	//} else {
+	//	q.Q("Dockerfile IS in build context, do nothing")
+	//}
+
+	q.Q(relDockerfile)
+	//
+	//if err != nil {
+	//	return nil, fmt.Errorf("encountered error while getting the relative Dockerfile: %s", err)
+	//}
 
 	// Hash docker build context digest
 	contextDigest, err := hashContext(build.Context, relDockerfile)
@@ -134,6 +190,7 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 
 	// OS defaults to Linux in all cases
 	os := "linux"
+
 	arch := runtime.GOARCH
 	hostPlatform := os + "/" + arch
 	msg := fmt.Sprintf(
