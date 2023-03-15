@@ -78,7 +78,7 @@ cleanup:
 	rm -r $(WORKING_DIR)/bin
 	rm -f provider/cmd/$(PROVIDER)/schema.go
 
-docs: provider
+docs:
 	cd provider/pkg/docs-gen/examples/ && \
 		PATH="$(WORKING_DIR)/bin:$$PATH" go run generate.go ./yaml ./
 
