@@ -120,9 +120,10 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 	}
 
 	// Set relative dockerfile path in case Dockerfile is not in the build context
-	_, relDockerfile, err := clibuild.GetContextFromLocalDir(build.Context, build.Dockerfile)
+	// TODO: Do some actual logic here because we have to fix for both situations.
+	_, relDockerfile, err := clibuild.GetContextFromLocalDir(build.Context, "")
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("encountered error while getting the relative Dockerfile: %s", err)
 	}
 
 	// Hash docker build context digest
