@@ -120,6 +120,9 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 
 	// Get the relative path to Dockerfile from docker context
 	relDockerfile, err := getRelDockerfilePath(build.Context, build.Dockerfile)
+	if err != nil {
+		return nil, err
+	}
 
 	// Hash docker build context digest
 	contextDigest, err := hashContext(build.Context, relDockerfile)

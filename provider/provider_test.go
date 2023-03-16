@@ -109,7 +109,6 @@ func TestDiffUpdates(t *testing.T) {
 
 }
 
-<<<<<<< HEAD
 func TestHashIgnoresFile(t *testing.T) {
 	baseResult, err := hashContext("./testdata/ignores/basedir", "./Dockerfile")
 	require.NoError(t, err)
