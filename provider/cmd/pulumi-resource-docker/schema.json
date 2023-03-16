@@ -4438,6 +4438,13 @@
                 }
             },
             "type": "object",
+            "required": [
+                "dockerfile",
+                "context",
+                "baseImageName",
+                "registryServer",
+                "imageName"
+            ],
             "inputProperties": {
                 "build": {
                     "$ref": "#/types/docker:index/dockerBuild:DockerBuild",

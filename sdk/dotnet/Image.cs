@@ -47,31 +47,31 @@ namespace Pulumi.Docker
         /// The fully qualified image name that was pushed to the registry.
         /// </summary>
         [Output("baseImageName")]
-        public Output<string?> BaseImageName { get; private set; } = null!;
+        public Output<string> BaseImageName { get; private set; } = null!;
 
         /// <summary>
         /// The path to the build context to use.
         /// </summary>
         [Output("context")]
-        public Output<string?> Context { get; private set; } = null!;
+        public Output<string> Context { get; private set; } = null!;
 
         /// <summary>
         /// The location of the Dockerfile relative to the docker build context.
         /// </summary>
         [Output("dockerfile")]
-        public Output<string?> Dockerfile { get; private set; } = null!;
+        public Output<string> Dockerfile { get; private set; } = null!;
 
         /// <summary>
         /// The fully qualified image name
         /// </summary>
         [Output("imageName")]
-        public Output<string?> ImageName { get; private set; } = null!;
+        public Output<string> ImageName { get; private set; } = null!;
 
         /// <summary>
         /// The name of the registry server hosting the image.
         /// </summary>
         [Output("registryServer")]
-        public Output<string?> RegistryServer { get; private set; } = null!;
+        public Output<string> RegistryServer { get; private set; } = null!;
 
 
         /// <summary>

@@ -6,6 +6,13 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"io"
+	"net"
+	"os"
+	"path"
+	"path/filepath"
+	"strings"
+
 	buildCmd "github.com/docker/cli/cli/command/image/build"
 	clibuild "github.com/docker/cli/cli/command/image/build"
 	"github.com/docker/cli/cli/config"
@@ -25,12 +32,6 @@ import (
 	"github.com/moby/moby/registry"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
-	"io"
-	"net"
-	"os"
-	"path"
-	"path/filepath"
-	"strings"
 )
 
 const defaultDockerfile = "Dockerfile"
@@ -271,6 +272,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		outputs := map[string]interface{}{
 			"dockerfile":     relDockerfile,
 			"context":        img.Build.Context,
+			"baseImageName":  img.Name,
 			"registryServer": img.Registry.Server,
 			"imageName":      img.Name,
 		}

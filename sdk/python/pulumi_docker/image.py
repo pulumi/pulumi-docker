@@ -220,7 +220,7 @@ class Image(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="baseImageName")
-    def base_image_name(self) -> pulumi.Output[Optional[str]]:
+    def base_image_name(self) -> pulumi.Output[str]:
         """
         The fully qualified image name that was pushed to the registry.
         """
@@ -228,7 +228,7 @@ class Image(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def context(self) -> pulumi.Output[Optional[str]]:
+    def context(self) -> pulumi.Output[str]:
         """
         The path to the build context to use.
         """
@@ -236,7 +236,7 @@ class Image(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def dockerfile(self) -> pulumi.Output[Optional[str]]:
+    def dockerfile(self) -> pulumi.Output[str]:
         """
         The location of the Dockerfile relative to the docker build context.
         """
@@ -244,7 +244,7 @@ class Image(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="imageName")
-    def image_name(self) -> pulumi.Output[Optional[str]]:
+    def image_name(self) -> pulumi.Output[str]:
         """
         The fully qualified image name
         """
@@ -252,7 +252,7 @@ class Image(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="registryServer")
-    def registry_server(self) -> pulumi.Output[Optional[str]]:
+    def registry_server(self) -> pulumi.Output[str]:
         """
         The name of the registry server hosting the image.
         """
