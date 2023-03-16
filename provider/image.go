@@ -6,17 +6,16 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"io"
-	"net"
-	"os"
-	"path/filepath"
-	"strings"
-
 	"github.com/docker/distribution/reference"
 	"github.com/docker/docker/pkg/idtools"
 	"github.com/moby/buildkit/session"
 	"github.com/moby/buildkit/session/auth/authprovider"
 	"github.com/moby/moby/registry"
+	"io"
+	"net"
+	"os"
+	"path/filepath"
+	"strings"
 
 	clibuild "github.com/docker/cli/cli/command/image/build"
 	"github.com/docker/cli/cli/config"
@@ -111,19 +110,18 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	}
 
 	// Handle Dockerfile from outside of build context folder
-	var relDockerfile string
 	var dockerfileCtx io.ReadCloser
-	contextDir, relDockerfile, err := clibuild.GetContextFromLocalDir(build.Context, build.Dockerfile)
-	if err == nil && strings.HasPrefix(relDockerfile, ".."+string(filepath.Separator)) {
-		// Dockerfile is outside of build context; read the Dockerfile and pass it as dockerfileCtx
+	if strings.Contains(build.Dockerfile, string(filepath.Separator)) {
+		// Dockerfile is outside of build context or otherwise specified with an explicit path;
+		// read the Dockerfile and pass it as dockerfileCtx
 		dockerfileCtx, err = os.Open(build.Dockerfile)
 		if err != nil {
-			return "", nil, fmt.Errorf("unable to open Dockerfile: %v", err)
+			return "", nil, fmt.Errorf("the provider is sadly unable to open Dockerfile: %v", err)
 		}
 		defer dockerfileCtx.Close()
 	}
 
-	contextDir, err = clibuild.ResolveAndValidateContextPath(contextDir)
+	contextDir, err := clibuild.ResolveAndValidateContextPath(build.Context)
 	if err != nil {
 		return "", nil, fmt.Errorf("error resolving context: %w", err)
 	}
