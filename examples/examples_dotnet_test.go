@@ -42,7 +42,6 @@ func TestDotNet(t *testing.T) {
 }
 
 func TestAzureContainerRegistryDotNet(t *testing.T) {
-	t.Skipf("skip to rule out dotnet")
 	location := os.Getenv("AZURE_LOCATION")
 	if location == "" {
 		t.Skipf("Skipping test due to missing AZURE_LOCATION environment variable")
@@ -60,7 +59,6 @@ func TestAzureContainerRegistryDotNet(t *testing.T) {
 }
 
 func TestAwsContainerRegistryDotnet(t *testing.T) {
-	t.Skipf("skip to rule out dotnet")
 	region := os.Getenv("AWS_REGION")
 	if region == "" {
 		t.Skipf("Skipping test due to missing AWS_REGION environment variable")
@@ -77,7 +75,6 @@ func TestAwsContainerRegistryDotnet(t *testing.T) {
 }
 
 func TestDigitaloceanContainerRegistryDotnet(t *testing.T) {
-	t.Skipf("skip to rule out dotnet")
 	token := os.Getenv("DIGITALOCEAN_TOKEN")
 	if token == "" {
 		t.Skipf("Skipping test due to missing DIGITALOCEAN_TOKEN environment variable")
@@ -94,7 +91,6 @@ func TestDigitaloceanContainerRegistryDotnet(t *testing.T) {
 }
 
 func TestGcpContainerRegistryDotnet(t *testing.T) {
-	t.Skipf("skip to rule out dotnet")
 	project := os.Getenv("GOOGLE_PROJECT")
 	if project == "" {
 		t.Skipf("Skipping test due to missing GOOGLE_PROJECT environment variable")
@@ -110,7 +106,6 @@ func TestGcpContainerRegistryDotnet(t *testing.T) {
 }
 
 func TestDockerContainerRegistryDotnet(t *testing.T) {
-	t.Skipf("skip to rule out dotnet")
 	username := "pulumibot"
 	password := os.Getenv("DOCKER_HUB_PASSWORD")
 	test := getCsharpBaseOptions(t).
