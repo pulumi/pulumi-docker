@@ -118,24 +118,8 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 		return nil, err
 	}
 
-	// Most Dockerfiles are relative to build context.
-	relDockerfile := build.Dockerfile
-	// if the program specifies an absolute path or a path relative to the program's local directory,
-	// we need to get the Dockerfile's relative path to the context directory for the hash function
-	if strings.Contains(build.Dockerfile, string(filepath.Separator)) {
-		absDockerfile, err := filepath.Abs(build.Dockerfile)
-		if err != nil {
-			return nil, fmt.Errorf("absDockerfile error: %s", err)
-		}
-		absBuildpath, err := filepath.Abs(build.Context)
-		if err != nil {
-			return nil, fmt.Errorf("absBuildPath error: %s", err)
-		}
-		relDockerfile, err = filepath.Rel(absBuildpath, absDockerfile)
-		if err != nil {
-			return nil, fmt.Errorf("relDockerfile error: %s", err)
-		}
-	}
+	// Get the relative path to Dockerfile from docker context
+	relDockerfile, err := getRelDockerfilePath(build.Context, build.Dockerfile)
 
 	// Hash docker build context digest
 	contextDigest, err := hashContext(build.Context, relDockerfile)
@@ -572,4 +556,25 @@ func getIgnore(dockerIgnorePath string) ([]string, error) {
 		return ignorePatterns, fmt.Errorf("unable to parse %s file: %w", ".dockerignore", err)
 	}
 	return ignorePatterns, nil
+}
+
+func getRelDockerfilePath(buildContext, dockerfile string) (string, error) {
+	// if the Pulumi program specifies an absolute path or a path relative to the program's local directory,
+	// we need to get the Dockerfile's relative path to the context directory for the hash function
+	if strings.Contains(dockerfile, string(filepath.Separator)) {
+		absDockerfile, err := filepath.Abs(dockerfile)
+		if err != nil {
+			return "", fmt.Errorf("absDockerfile error: %s", err)
+		}
+		absBuildpath, err := filepath.Abs(buildContext)
+		if err != nil {
+			return "", fmt.Errorf("absBuildPath error: %s", err)
+		}
+		dockerfile, err = filepath.Rel(absBuildpath, absDockerfile)
+		if err != nil {
+			return "", fmt.Errorf("relDockerfile error: %s", err)
+		}
+
+	}
+	return dockerfile, nil
 }
