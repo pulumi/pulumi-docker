@@ -9,6 +9,7 @@ import (
 	"io"
 	"io/fs"
 	"os"
+	"path"
 	"path/filepath"
 	"runtime"
 	"strings"
@@ -428,8 +429,7 @@ type contextHashAccumulator struct {
 	input             bytes.Buffer // This will hold the file info and content bytes to pass to a hash object
 }
 
-func (accumulator *contextHashAccumulator) hashPath(path string, fileMode fs.FileMode) error {
-
+func (accumulator *contextHashAccumulator) hashPath(file string, fileMode fs.FileMode) error {
 	hash := sha256.New()
 
 	if fileMode.Type() == fs.ModeSymlink {
@@ -438,31 +438,31 @@ func (accumulator *contextHashAccumulator) hashPath(path string, fileMode fs.Fil
 		// a) ignore changes at the symlink target
 		// b) detect if the symlink _itself_ changes
 		// c) avoid a panic on io.Copy if the symlink target is a directory
-		symLinkPath, err := filepath.EvalSymlinks(path)
+		symLinkPath, err := filepath.EvalSymlinks(filepath.Join(accumulator.dockerContextPath, file))
 		if err != nil {
-			return fmt.Errorf("could not evaluate symlink at %s: %w", path, err)
+			return fmt.Errorf("could not evaluate symlink at %s: %w", file, err)
 		}
-		symLinkReader := strings.NewReader(symLinkPath)
-		_, err = io.Copy(hash, symLinkReader)
+		// Hashed content is the clean, os-agnostic file path:
+		_, err = io.Copy(hash, strings.NewReader(path.Clean(symLinkPath)))
 		if err != nil {
-			return fmt.Errorf("could not copy symlink path %s to hash: %w", path, err)
+			return fmt.Errorf("could not copy symlink path %s to hash: %w", file, err)
 		}
 	} else {
 		// For regular files, we can hash their content.
 		// TODO: consider only hashing file metadata to improve performance
-		f, err := os.Open(filepath.Join(accumulator.dockerContextPath, path))
+		f, err := os.Open(filepath.Join(accumulator.dockerContextPath, file))
 		if err != nil {
-			return fmt.Errorf("could not open file %s: %w", path, err)
+			return fmt.Errorf("could not open file %s: %w", file, err)
 		}
 		defer f.Close()
 		_, err = io.Copy(hash, f)
 		if err != nil {
-			return fmt.Errorf("could not copy file %s to hash: %w", path, err)
+			return fmt.Errorf("could not copy file %s to hash: %w", file, err)
 		}
 	}
 
 	// Capture all information in the accumulator buffer and add a separator
-	accumulator.input.Write([]byte(path))
+	accumulator.input.Write([]byte(filepath.Clean(file))) // use os-agnostic filepath
 	accumulator.input.Write([]byte(fileMode.String()))
 	accumulator.input.Write(hash.Sum(nil))
 	accumulator.input.WriteByte(0)
