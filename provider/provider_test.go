@@ -1,10 +1,12 @@
 package provider
 
 import (
+	"testing"
+
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	rpc "github.com/pulumi/pulumi/sdk/v3/proto/go"
 	"github.com/stretchr/testify/assert"
-	"testing"
+	"github.com/stretchr/testify/require"
 )
 
 func TestDiffUpdates(t *testing.T) {
@@ -105,4 +107,39 @@ func TestDiffUpdates(t *testing.T) {
 		assert.Equal(t, expected, actual)
 	})
 
+}
+
+func TestHashIgnoresFile(t *testing.T) {
+	baseResult, err := hashContext("./testdata/ignores/basedir", "./Dockerfile")
+	require.NoError(t, err)
+
+	result, err := hashContext("./testdata/ignores/basedir-with-ignored-files", "./Dockerfile")
+	require.NoError(t, err)
+
+	assert.Equal(t, result, baseResult)
+}
+
+func TestHashRenamingMatters(t *testing.T) {
+	baseResult, err := hashContext("./testdata/renaming-matters/step1", "./Dockerfile")
+	require.NoError(t, err)
+
+	result, err := hashContext("./testdata/renaming-matters/step2", "./Dockerfile")
+	require.NoError(t, err)
+
+	assert.NotEqual(t, result, baseResult)
+}
+
+func TestHashFilemodeMatters(t *testing.T) {
+	baseResult, err := hashContext("./testdata/filemode-matters/step1", "./Dockerfile")
+	require.NoError(t, err)
+
+	result, err := hashContext("./testdata/filemode-matters/step2-chmod-x", "./Dockerfile")
+	require.NoError(t, err)
+
+	assert.NotEqual(t, result, baseResult)
+}
+
+func TestHashDeepSymlinks(t *testing.T) {
+	_, err := hashContext("./testdata/symlinks", "./Dockerfile")
+	assert.NoError(t, err)
 }
