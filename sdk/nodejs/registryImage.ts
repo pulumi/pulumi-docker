@@ -2,26 +2,27 @@
 // *** Do not edit by hand unless you're certain you know what you are doing! ***
 
 import * as pulumi from "@pulumi/pulumi";
-import * as inputs from "./types/input";
-import * as outputs from "./types/output";
-import * as enums from "./types/enums";
 import * as utilities from "./utilities";
 
 /**
  * <!-- Bug: Type and Name are switched -->
- * Manages the lifecycle of docker image/tag in a registry means it can store one or more version of specific docker images and identified by their tags.
+ * Manages the lifecycle of docker image in a registry. You can upload images to a registry (= `docker push`) and also delete them again
  *
  * ## Example Usage
  *
- * To be able to update an image itself when an updated image arrives.
+ * Build an image with the `docker.RemoteImage` resource and then push it to a registry:
  *
  * ```typescript
  * import * as pulumi from "@pulumi/pulumi";
  * import * as docker from "@pulumi/docker";
  *
- * const helloworld = new docker.RegistryImage("helloworld", {build: {
- *     context: `${path.cwd}/absolutePathToContextFolder`,
- * }});
+ * const helloworld = new docker.RegistryImage("helloworld", {keepRemotely: true});
+ * const image = new docker.RemoteImage("image", {
+ *     name: "registry.com/somename:1.0",
+ *     build: {
+ *         context: `${path.cwd}/absolutePathToContextFolder`,
+ *     },
+ * });
  * ```
  */
 export class RegistryImage extends pulumi.CustomResource {
@@ -53,10 +54,6 @@ export class RegistryImage extends pulumi.CustomResource {
     }
 
     /**
-     * Definition for building the image
-     */
-    public readonly build!: pulumi.Output<outputs.RegistryImageBuild | undefined>;
-    /**
      * If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
      */
     public readonly insecureSkipVerify!: pulumi.Output<boolean | undefined>;
@@ -72,6 +69,10 @@ export class RegistryImage extends pulumi.CustomResource {
      * The sha256 digest of the image.
      */
     public /*out*/ readonly sha256Digest!: pulumi.Output<string>;
+    /**
+     * A map of arbitrary strings that, when changed, will force the `docker.RegistryImage` resource to be replaced. This can be used to repush a local image
+     */
+    public readonly triggers!: pulumi.Output<{[key: string]: any} | undefined>;
 
     /**
      * Create a RegistryImage resource with the given unique name, arguments, and options.
@@ -86,17 +87,17 @@ export class RegistryImage extends pulumi.CustomResource {
         opts = opts || {};
         if (opts.id) {
             const state = argsOrState as RegistryImageState | undefined;
-            resourceInputs["build"] = state ? state.build : undefined;
             resourceInputs["insecureSkipVerify"] = state ? state.insecureSkipVerify : undefined;
             resourceInputs["keepRemotely"] = state ? state.keepRemotely : undefined;
             resourceInputs["name"] = state ? state.name : undefined;
             resourceInputs["sha256Digest"] = state ? state.sha256Digest : undefined;
+            resourceInputs["triggers"] = state ? state.triggers : undefined;
         } else {
             const args = argsOrState as RegistryImageArgs | undefined;
-            resourceInputs["build"] = args ? args.build : undefined;
             resourceInputs["insecureSkipVerify"] = args ? args.insecureSkipVerify : undefined;
             resourceInputs["keepRemotely"] = args ? args.keepRemotely : undefined;
             resourceInputs["name"] = args ? args.name : undefined;
+            resourceInputs["triggers"] = args ? args.triggers : undefined;
             resourceInputs["sha256Digest"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
@@ -108,10 +109,6 @@ export class RegistryImage extends pulumi.CustomResource {
  * Input properties used for looking up and filtering RegistryImage resources.
  */
 export interface RegistryImageState {
-    /**
-     * Definition for building the image
-     */
-    build?: pulumi.Input<inputs.RegistryImageBuild>;
     /**
      * If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
      */
@@ -128,16 +125,16 @@ export interface RegistryImageState {
      * The sha256 digest of the image.
      */
     sha256Digest?: pulumi.Input<string>;
+    /**
+     * A map of arbitrary strings that, when changed, will force the `docker.RegistryImage` resource to be replaced. This can be used to repush a local image
+     */
+    triggers?: pulumi.Input<{[key: string]: any}>;
 }
 
 /**
  * The set of arguments for constructing a RegistryImage resource.
  */
 export interface RegistryImageArgs {
-    /**
-     * Definition for building the image
-     */
-    build?: pulumi.Input<inputs.RegistryImageBuild>;
     /**
      * If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
      */
@@ -150,4 +147,8 @@ export interface RegistryImageArgs {
      * The name of the Docker image.
      */
     name?: pulumi.Input<string>;
+    /**
+     * A map of arbitrary strings that, when changed, will force the `docker.RegistryImage` resource to be replaced. This can be used to repush a local image
+     */
+    triggers?: pulumi.Input<{[key: string]: any}>;
 }

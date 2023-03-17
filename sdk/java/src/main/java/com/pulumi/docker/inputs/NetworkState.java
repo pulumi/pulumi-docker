@@ -127,6 +127,21 @@ public final class NetworkState extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
+     * Provide explicit options to the IPAM driver. Valid options vary with `ipam_driver` and refer to that driver&#39;s documentation for more details.
+     * 
+     */
+    @Import(name="ipamOptions")
+    private @Nullable Output<Map<String,Object>> ipamOptions;
+
+    /**
+     * @return Provide explicit options to the IPAM driver. Valid options vary with `ipam_driver` and refer to that driver&#39;s documentation for more details.
+     * 
+     */
+    public Optional<Output<Map<String,Object>>> ipamOptions() {
+        return Optional.ofNullable(this.ipamOptions);
+    }
+
+    /**
      * Enable IPv6 networking. Defaults to `false`.
      * 
      */
@@ -211,6 +226,7 @@ public final class NetworkState extends com.pulumi.resources.ResourceArgs {
         this.internal = $.internal;
         this.ipamConfigs = $.ipamConfigs;
         this.ipamDriver = $.ipamDriver;
+        this.ipamOptions = $.ipamOptions;
         this.ipv6 = $.ipv6;
         this.labels = $.labels;
         this.name = $.name;
@@ -391,6 +407,27 @@ public final class NetworkState extends com.pulumi.resources.ResourceArgs {
          */
         public Builder ipamDriver(String ipamDriver) {
             return ipamDriver(Output.of(ipamDriver));
+        }
+
+        /**
+         * @param ipamOptions Provide explicit options to the IPAM driver. Valid options vary with `ipam_driver` and refer to that driver&#39;s documentation for more details.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder ipamOptions(@Nullable Output<Map<String,Object>> ipamOptions) {
+            $.ipamOptions = ipamOptions;
+            return this;
+        }
+
+        /**
+         * @param ipamOptions Provide explicit options to the IPAM driver. Valid options vary with `ipam_driver` and refer to that driver&#39;s documentation for more details.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder ipamOptions(Map<String,Object> ipamOptions) {
+            return ipamOptions(Output.of(ipamOptions));
         }
 
         /**

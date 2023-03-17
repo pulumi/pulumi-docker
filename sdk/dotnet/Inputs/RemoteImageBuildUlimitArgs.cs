@@ -10,13 +10,13 @@ using Pulumi.Serialization;
 namespace Pulumi.Docker.Inputs
 {
 
-    public sealed class RegistryImageBuildUlimitArgs : global::Pulumi.ResourceArgs
+    public sealed class RemoteImageBuildUlimitArgs : global::Pulumi.ResourceArgs
     {
         [Input("hard", required: true)]
         public Input<int> Hard { get; set; } = null!;
 
         /// <summary>
-        /// The name of the Docker image.
+        /// The name of the Docker image, including any tags or SHA256 repo digests.
         /// </summary>
         [Input("name", required: true)]
         public Input<string> Name { get; set; } = null!;
@@ -24,9 +24,9 @@ namespace Pulumi.Docker.Inputs
         [Input("soft", required: true)]
         public Input<int> Soft { get; set; } = null!;
 
-        public RegistryImageBuildUlimitArgs()
+        public RemoteImageBuildUlimitArgs()
         {
         }
-        public static new RegistryImageBuildUlimitArgs Empty => new RegistryImageBuildUlimitArgs();
+        public static new RemoteImageBuildUlimitArgs Empty => new RemoteImageBuildUlimitArgs();
     }
 }

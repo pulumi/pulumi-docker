@@ -11,9 +11,9 @@ import java.util.Optional;
 import javax.annotation.Nullable;
 
 
-public final class RegistryImageBuildAuthConfigArgs extends com.pulumi.resources.ResourceArgs {
+public final class RemoteImageBuildAuthConfigArgs extends com.pulumi.resources.ResourceArgs {
 
-    public static final RegistryImageBuildAuthConfigArgs Empty = new RegistryImageBuildAuthConfigArgs();
+    public static final RemoteImageBuildAuthConfigArgs Empty = new RemoteImageBuildAuthConfigArgs();
 
     @Import(name="auth")
     private @Nullable Output<String> auth;
@@ -71,9 +71,9 @@ public final class RegistryImageBuildAuthConfigArgs extends com.pulumi.resources
         return Optional.ofNullable(this.userName);
     }
 
-    private RegistryImageBuildAuthConfigArgs() {}
+    private RemoteImageBuildAuthConfigArgs() {}
 
-    private RegistryImageBuildAuthConfigArgs(RegistryImageBuildAuthConfigArgs $) {
+    private RemoteImageBuildAuthConfigArgs(RemoteImageBuildAuthConfigArgs $) {
         this.auth = $.auth;
         this.email = $.email;
         this.hostName = $.hostName;
@@ -87,19 +87,19 @@ public final class RegistryImageBuildAuthConfigArgs extends com.pulumi.resources
     public static Builder builder() {
         return new Builder();
     }
-    public static Builder builder(RegistryImageBuildAuthConfigArgs defaults) {
+    public static Builder builder(RemoteImageBuildAuthConfigArgs defaults) {
         return new Builder(defaults);
     }
 
     public static final class Builder {
-        private RegistryImageBuildAuthConfigArgs $;
+        private RemoteImageBuildAuthConfigArgs $;
 
         public Builder() {
-            $ = new RegistryImageBuildAuthConfigArgs();
+            $ = new RemoteImageBuildAuthConfigArgs();
         }
 
-        public Builder(RegistryImageBuildAuthConfigArgs defaults) {
-            $ = new RegistryImageBuildAuthConfigArgs(Objects.requireNonNull(defaults));
+        public Builder(RemoteImageBuildAuthConfigArgs defaults) {
+            $ = new RemoteImageBuildAuthConfigArgs(Objects.requireNonNull(defaults));
         }
 
         public Builder auth(@Nullable Output<String> auth) {
@@ -174,7 +174,7 @@ public final class RegistryImageBuildAuthConfigArgs extends com.pulumi.resources
             return userName(Output.of(userName));
         }
 
-        public RegistryImageBuildAuthConfigArgs build() {
+        public RemoteImageBuildAuthConfigArgs build() {
             $.hostName = Objects.requireNonNull($.hostName, "expected parameter 'hostName' to be non-null");
             return $;
         }

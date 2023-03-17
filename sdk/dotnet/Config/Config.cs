@@ -105,6 +105,7 @@ namespace Pulumi.Docker
              public class RegistryAuth
              {
                 public string Address { get; set; }
+                public bool? AuthDisabled { get; set; }
                 public string? ConfigFile { get; set; } = null!;
                 public string? ConfigFileContent { get; set; } = null!;
                 public string? Password { get; set; } = null!;

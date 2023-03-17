@@ -11,17 +11,17 @@ namespace Pulumi.Docker.Outputs
 {
 
     [OutputType]
-    public sealed class RegistryImageBuildUlimit
+    public sealed class RemoteImageBuildUlimit
     {
         public readonly int Hard;
         /// <summary>
-        /// The name of the Docker image.
+        /// The name of the Docker image, including any tags or SHA256 repo digests.
         /// </summary>
         public readonly string Name;
         public readonly int Soft;
 
         [OutputConstructor]
-        private RegistryImageBuildUlimit(
+        private RemoteImageBuildUlimit(
             int hard,
 
             string name,

@@ -11,7 +11,7 @@ namespace Pulumi.Docker.Outputs
 {
 
     [OutputType]
-    public sealed class RegistryImageBuildAuthConfig
+    public sealed class RemoteImageBuildAuthConfig
     {
         public readonly string? Auth;
         public readonly string? Email;
@@ -23,7 +23,7 @@ namespace Pulumi.Docker.Outputs
         public readonly string? UserName;
 
         [OutputConstructor]
-        private RegistryImageBuildAuthConfig(
+        private RemoteImageBuildAuthConfig(
             string? auth,
 
             string? email,

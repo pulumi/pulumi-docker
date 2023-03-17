@@ -157,24 +157,6 @@ public class RemoteImage extends com.pulumi.resources.CustomResource {
         return Codegen.optional(this.keepLocally);
     }
     /**
-     * The ID of the image in the form of `sha256:&lt;hash&gt;` image digest. Do not confuse it with the default `latest` tag.
-     * 
-     * @deprecated
-     * Use repo_digest instead
-     * 
-     */
-    @Deprecated /* Use repo_digest instead */
-    @Export(name="latest", type=String.class, parameters={})
-    private Output<String> latest;
-
-    /**
-     * @return The ID of the image in the form of `sha256:&lt;hash&gt;` image digest. Do not confuse it with the default `latest` tag.
-     * 
-     */
-    public Output<String> latest() {
-        return this.latest;
-    }
-    /**
      * The name of the Docker image, including any tags or SHA256 repo digests.
      * 
      */
@@ -189,34 +171,18 @@ public class RemoteImage extends com.pulumi.resources.CustomResource {
         return this.name;
     }
     /**
-     * @deprecated
-     * Is unused and will be removed.
+     * The platform to use when pulling the image. Defaults to the platform of the current machine.
      * 
      */
-    @Deprecated /* Is unused and will be removed. */
-    @Export(name="output", type=String.class, parameters={})
-    private Output<String> output;
-
-    public Output<String> output() {
-        return this.output;
-    }
-    /**
-     * A value which cause an image pull when changed
-     * 
-     * @deprecated
-     * Use field pull_triggers instead
-     * 
-     */
-    @Deprecated /* Use field pull_triggers instead */
-    @Export(name="pullTrigger", type=String.class, parameters={})
-    private Output</* @Nullable */ String> pullTrigger;
+    @Export(name="platform", type=String.class, parameters={})
+    private Output</* @Nullable */ String> platform;
 
     /**
-     * @return A value which cause an image pull when changed
+     * @return The platform to use when pulling the image. Defaults to the platform of the current machine.
      * 
      */
-    public Output<Optional<String>> pullTrigger() {
-        return Codegen.optional(this.pullTrigger);
+    public Output<Optional<String>> platform() {
+        return Codegen.optional(this.platform);
     }
     /**
      * List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.

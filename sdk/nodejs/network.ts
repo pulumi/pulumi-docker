@@ -87,6 +87,10 @@ export class Network extends pulumi.CustomResource {
      */
     public readonly ipamDriver!: pulumi.Output<string | undefined>;
     /**
+     * Provide explicit options to the IPAM driver. Valid options vary with `ipamDriver` and refer to that driver's documentation for more details.
+     */
+    public readonly ipamOptions!: pulumi.Output<{[key: string]: any} | undefined>;
+    /**
      * Enable IPv6 networking. Defaults to `false`.
      */
     public readonly ipv6!: pulumi.Output<boolean | undefined>;
@@ -127,6 +131,7 @@ export class Network extends pulumi.CustomResource {
             resourceInputs["internal"] = state ? state.internal : undefined;
             resourceInputs["ipamConfigs"] = state ? state.ipamConfigs : undefined;
             resourceInputs["ipamDriver"] = state ? state.ipamDriver : undefined;
+            resourceInputs["ipamOptions"] = state ? state.ipamOptions : undefined;
             resourceInputs["ipv6"] = state ? state.ipv6 : undefined;
             resourceInputs["labels"] = state ? state.labels : undefined;
             resourceInputs["name"] = state ? state.name : undefined;
@@ -141,6 +146,7 @@ export class Network extends pulumi.CustomResource {
             resourceInputs["internal"] = args ? args.internal : undefined;
             resourceInputs["ipamConfigs"] = args ? args.ipamConfigs : undefined;
             resourceInputs["ipamDriver"] = args ? args.ipamDriver : undefined;
+            resourceInputs["ipamOptions"] = args ? args.ipamOptions : undefined;
             resourceInputs["ipv6"] = args ? args.ipv6 : undefined;
             resourceInputs["labels"] = args ? args.labels : undefined;
             resourceInputs["name"] = args ? args.name : undefined;
@@ -184,6 +190,10 @@ export interface NetworkState {
      * Driver used by the custom IP scheme of the network. Defaults to `default`
      */
     ipamDriver?: pulumi.Input<string>;
+    /**
+     * Provide explicit options to the IPAM driver. Valid options vary with `ipamDriver` and refer to that driver's documentation for more details.
+     */
+    ipamOptions?: pulumi.Input<{[key: string]: any}>;
     /**
      * Enable IPv6 networking. Defaults to `false`.
      */
@@ -238,6 +248,10 @@ export interface NetworkArgs {
      * Driver used by the custom IP scheme of the network. Defaults to `default`
      */
     ipamDriver?: pulumi.Input<string>;
+    /**
+     * Provide explicit options to the IPAM driver. Valid options vary with `ipamDriver` and refer to that driver's documentation for more details.
+     */
+    ipamOptions?: pulumi.Input<{[key: string]: any}>;
     /**
      * Enable IPv6 networking. Defaults to `false`.
      */

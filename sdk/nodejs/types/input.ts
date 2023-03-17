@@ -151,27 +151,13 @@ export interface ContainerMountVolumeOptionsLabel {
 }
 
 export interface ContainerNetworkData {
-    /**
-     * The network gateway of the container.
-     *
-     * @deprecated Use `network_data` instead. The network gateway of the container as read from its NetworkSettings.
-     */
     gateway?: pulumi.Input<string>;
     globalIpv6Address?: pulumi.Input<string>;
     globalIpv6PrefixLength?: pulumi.Input<number>;
-    /**
-     * The IP address of the container.
-     *
-     * @deprecated Use `network_data` instead. The IP address of the container's first network it.
-     */
     ipAddress?: pulumi.Input<string>;
-    /**
-     * The IP prefix length of the container.
-     *
-     * @deprecated Use `network_data` instead. The IP prefix length of the container as read from its NetworkSettings.
-     */
     ipPrefixLength?: pulumi.Input<number>;
     ipv6Gateway?: pulumi.Input<string>;
+    macAddress?: pulumi.Input<string>;
     networkName?: pulumi.Input<string>;
 }
 
@@ -363,6 +349,7 @@ export interface PluginGrantPermission {
 
 export interface ProviderRegistryAuth {
     address: pulumi.Input<string>;
+    authDisabled?: pulumi.Input<boolean>;
     configFile?: pulumi.Input<string>;
     configFileContent?: pulumi.Input<string>;
     password?: pulumi.Input<string>;
@@ -387,11 +374,15 @@ export interface Registry {
     username?: pulumi.Input<string>;
 }
 
-export interface RegistryImageBuild {
+export interface RemoteImageBuild {
     /**
      * The configuration for the authentication
      */
-    authConfigs?: pulumi.Input<pulumi.Input<inputs.RegistryImageBuildAuthConfig>[]>;
+    authConfigs?: pulumi.Input<pulumi.Input<inputs.RemoteImageBuildAuthConfig>[]>;
+    /**
+     * Set build-time variables
+     */
+    buildArg?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
     /**
      * Pairs for build-time variables in the form TODO
      */
@@ -409,7 +400,7 @@ export interface RegistryImageBuild {
      */
     cgroupParent?: pulumi.Input<string>;
     /**
-     * The absolute path to the context folder. You can use the helper function '${path.cwd}/context-dir'.
+     * Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
      */
     context: pulumi.Input<string>;
     /**
@@ -433,7 +424,7 @@ export interface RegistryImageBuild {
      */
     cpuShares?: pulumi.Input<number>;
     /**
-     * Dockerfile file. Defaults to `Dockerfile`
+     * Name of the Dockerfile. Defaults to `Dockerfile`.
      */
     dockerfile?: pulumi.Input<string>;
     /**
@@ -448,6 +439,10 @@ export interface RegistryImageBuild {
      * Isolation represents the isolation technology of a container. The supported values are
      */
     isolation?: pulumi.Input<string>;
+    /**
+     * Set metadata for an image
+     */
+    label?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
     /**
      * User-defined key/value metadata
      */
@@ -481,7 +476,7 @@ export interface RegistryImageBuild {
      */
     remoteContext?: pulumi.Input<string>;
     /**
-     * Remove intermediate containers after a successful build (default behavior)
+     * Remove intermediate containers after a successful build. Defaults to `true`.
      */
     remove?: pulumi.Input<boolean>;
     /**
@@ -505,20 +500,24 @@ export interface RegistryImageBuild {
      */
     suppressOutput?: pulumi.Input<boolean>;
     /**
+     * Name and optionally a tag in the 'name:tag' format
+     */
+    tags?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
      * Set the target build stage to build
      */
     target?: pulumi.Input<string>;
     /**
      * Configuration for ulimits
      */
-    ulimits?: pulumi.Input<pulumi.Input<inputs.RegistryImageBuildUlimit>[]>;
+    ulimits?: pulumi.Input<pulumi.Input<inputs.RemoteImageBuildUlimit>[]>;
     /**
      * Version of the underlying builder to use
      */
     version?: pulumi.Input<string>;
 }
 
-export interface RegistryImageBuildAuthConfig {
+export interface RemoteImageBuildAuthConfig {
     auth?: pulumi.Input<string>;
     email?: pulumi.Input<string>;
     hostName: pulumi.Input<string>;
@@ -529,52 +528,13 @@ export interface RegistryImageBuildAuthConfig {
     userName?: pulumi.Input<string>;
 }
 
-export interface RegistryImageBuildUlimit {
+export interface RemoteImageBuildUlimit {
     hard: pulumi.Input<number>;
     /**
-     * The name of the Docker image.
+     * The name of the Docker image, including any tags or SHA256 repo digests.
      */
     name: pulumi.Input<string>;
     soft: pulumi.Input<number>;
-}
-
-export interface RemoteImageBuild {
-    /**
-     * Set build-time variables
-     */
-    buildArg?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
-    /**
-     * Name of the Dockerfile. Defaults to `Dockerfile`.
-     */
-    dockerfile?: pulumi.Input<string>;
-    /**
-     * Always remove intermediate containers
-     */
-    forceRemove?: pulumi.Input<boolean>;
-    /**
-     * Set metadata for an image
-     */
-    label?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
-    /**
-     * Do not use cache when building the image
-     */
-    noCache?: pulumi.Input<boolean>;
-    /**
-     * Context path
-     */
-    path: pulumi.Input<string>;
-    /**
-     * Remove intermediate containers after a successful build. Defaults to  `true`.
-     */
-    remove?: pulumi.Input<boolean>;
-    /**
-     * Name and optionally a tag in the 'name:tag' format
-     */
-    tags?: pulumi.Input<pulumi.Input<string>[]>;
-    /**
-     * Set the target build stage to build
-     */
-    target?: pulumi.Input<string>;
 }
 
 export interface SecretLabel {
@@ -703,9 +663,9 @@ export interface ServiceTaskSpec {
      */
     logDriver?: pulumi.Input<inputs.ServiceTaskSpecLogDriver>;
     /**
-     * Ids of the networks in which the  container will be put in
+     * The networks the container is attached to
      */
-    networks?: pulumi.Input<pulumi.Input<string>[]>;
+    networksAdvanceds?: pulumi.Input<pulumi.Input<inputs.ServiceTaskSpecNetworksAdvanced>[]>;
     /**
      * The placement preferences
      */
@@ -747,6 +707,7 @@ export interface ServiceTaskSpecContainerSpec {
     secrets?: pulumi.Input<pulumi.Input<inputs.ServiceTaskSpecContainerSpecSecret>[]>;
     stopGracePeriod?: pulumi.Input<string>;
     stopSignal?: pulumi.Input<string>;
+    sysctl?: pulumi.Input<{[key: string]: any}>;
     user?: pulumi.Input<string>;
 }
 
@@ -865,6 +826,15 @@ export interface ServiceTaskSpecLogDriver {
      */
     name: pulumi.Input<string>;
     options?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+}
+
+export interface ServiceTaskSpecNetworksAdvanced {
+    aliases?: pulumi.Input<pulumi.Input<string>[]>;
+    driverOpts?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * Name of the service
+     */
+    name: pulumi.Input<string>;
 }
 
 export interface ServiceTaskSpecPlacement {

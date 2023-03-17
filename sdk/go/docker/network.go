@@ -65,6 +65,8 @@ type Network struct {
 	IpamConfigs NetworkIpamConfigArrayOutput `pulumi:"ipamConfigs"`
 	// Driver used by the custom IP scheme of the network. Defaults to `default`
 	IpamDriver pulumi.StringPtrOutput `pulumi:"ipamDriver"`
+	// Provide explicit options to the IPAM driver. Valid options vary with `ipamDriver` and refer to that driver's documentation for more details.
+	IpamOptions pulumi.MapOutput `pulumi:"ipamOptions"`
 	// Enable IPv6 networking. Defaults to `false`.
 	Ipv6 pulumi.BoolPtrOutput `pulumi:"ipv6"`
 	// User-defined key/value metadata
@@ -120,6 +122,8 @@ type networkState struct {
 	IpamConfigs []NetworkIpamConfig `pulumi:"ipamConfigs"`
 	// Driver used by the custom IP scheme of the network. Defaults to `default`
 	IpamDriver *string `pulumi:"ipamDriver"`
+	// Provide explicit options to the IPAM driver. Valid options vary with `ipamDriver` and refer to that driver's documentation for more details.
+	IpamOptions map[string]interface{} `pulumi:"ipamOptions"`
 	// Enable IPv6 networking. Defaults to `false`.
 	Ipv6 *bool `pulumi:"ipv6"`
 	// User-defined key/value metadata
@@ -147,6 +151,8 @@ type NetworkState struct {
 	IpamConfigs NetworkIpamConfigArrayInput
 	// Driver used by the custom IP scheme of the network. Defaults to `default`
 	IpamDriver pulumi.StringPtrInput
+	// Provide explicit options to the IPAM driver. Valid options vary with `ipamDriver` and refer to that driver's documentation for more details.
+	IpamOptions pulumi.MapInput
 	// Enable IPv6 networking. Defaults to `false`.
 	Ipv6 pulumi.BoolPtrInput
 	// User-defined key/value metadata
@@ -178,6 +184,8 @@ type networkArgs struct {
 	IpamConfigs []NetworkIpamConfig `pulumi:"ipamConfigs"`
 	// Driver used by the custom IP scheme of the network. Defaults to `default`
 	IpamDriver *string `pulumi:"ipamDriver"`
+	// Provide explicit options to the IPAM driver. Valid options vary with `ipamDriver` and refer to that driver's documentation for more details.
+	IpamOptions map[string]interface{} `pulumi:"ipamOptions"`
 	// Enable IPv6 networking. Defaults to `false`.
 	Ipv6 *bool `pulumi:"ipv6"`
 	// User-defined key/value metadata
@@ -204,6 +212,8 @@ type NetworkArgs struct {
 	IpamConfigs NetworkIpamConfigArrayInput
 	// Driver used by the custom IP scheme of the network. Defaults to `default`
 	IpamDriver pulumi.StringPtrInput
+	// Provide explicit options to the IPAM driver. Valid options vary with `ipamDriver` and refer to that driver's documentation for more details.
+	IpamOptions pulumi.MapInput
 	// Enable IPv6 networking. Defaults to `false`.
 	Ipv6 pulumi.BoolPtrInput
 	// User-defined key/value metadata
@@ -334,6 +344,11 @@ func (o NetworkOutput) IpamConfigs() NetworkIpamConfigArrayOutput {
 // Driver used by the custom IP scheme of the network. Defaults to `default`
 func (o NetworkOutput) IpamDriver() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Network) pulumi.StringPtrOutput { return v.IpamDriver }).(pulumi.StringPtrOutput)
+}
+
+// Provide explicit options to the IPAM driver. Valid options vary with `ipamDriver` and refer to that driver's documentation for more details.
+func (o NetworkOutput) IpamOptions() pulumi.MapOutput {
+	return o.ApplyT(func(v *Network) pulumi.MapOutput { return v.IpamOptions }).(pulumi.MapOutput)
 }
 
 // Enable IPv6 networking. Defaults to `false`.

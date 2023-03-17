@@ -14,6 +14,7 @@ import com.pulumi.docker.inputs.ServiceTaskSpecContainerSpecMountArgs;
 import com.pulumi.docker.inputs.ServiceTaskSpecContainerSpecPrivilegesArgs;
 import com.pulumi.docker.inputs.ServiceTaskSpecContainerSpecSecretArgs;
 import java.lang.Boolean;
+import java.lang.Object;
 import java.lang.String;
 import java.util.List;
 import java.util.Map;
@@ -167,6 +168,13 @@ public final class ServiceTaskSpecContainerSpecArgs extends com.pulumi.resources
         return Optional.ofNullable(this.stopSignal);
     }
 
+    @Import(name="sysctl")
+    private @Nullable Output<Map<String,Object>> sysctl;
+
+    public Optional<Output<Map<String,Object>>> sysctl() {
+        return Optional.ofNullable(this.sysctl);
+    }
+
     @Import(name="user")
     private @Nullable Output<String> user;
 
@@ -196,6 +204,7 @@ public final class ServiceTaskSpecContainerSpecArgs extends com.pulumi.resources
         this.secrets = $.secrets;
         this.stopGracePeriod = $.stopGracePeriod;
         this.stopSignal = $.stopSignal;
+        this.sysctl = $.sysctl;
         this.user = $.user;
     }
 
@@ -436,6 +445,15 @@ public final class ServiceTaskSpecContainerSpecArgs extends com.pulumi.resources
 
         public Builder stopSignal(String stopSignal) {
             return stopSignal(Output.of(stopSignal));
+        }
+
+        public Builder sysctl(@Nullable Output<Map<String,Object>> sysctl) {
+            $.sysctl = sysctl;
+            return this;
+        }
+
+        public Builder sysctl(Map<String,Object> sysctl) {
+            return sysctl(Output.of(sysctl));
         }
 
         public Builder user(@Nullable Output<String> user) {

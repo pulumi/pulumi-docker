@@ -11,11 +11,11 @@ namespace Pulumi.Docker
 {
     /// <summary>
     /// &lt;!-- Bug: Type and Name are switched --&gt;
-    /// Manages the lifecycle of docker image/tag in a registry means it can store one or more version of specific docker images and identified by their tags.
+    /// Manages the lifecycle of docker image in a registry. You can upload images to a registry (= `docker push`) and also delete them again
     /// 
     /// ## Example Usage
     /// 
-    /// To be able to update an image itself when an updated image arrives.
+    /// Build an image with the `docker.RemoteImage` resource and then push it to a registry:
     /// 
     /// ```csharp
     /// using System.Collections.Generic;
@@ -26,7 +26,13 @@ namespace Pulumi.Docker
     /// {
     ///     var helloworld = new Docker.RegistryImage("helloworld", new()
     ///     {
-    ///         Build = new Docker.Inputs.RegistryImageBuildArgs
+    ///         KeepRemotely = true,
+    ///     });
+    /// 
+    ///     var image = new Docker.RemoteImage("image", new()
+    ///     {
+    ///         Name = "registry.com/somename:1.0",
+    ///         Build = new Docker.Inputs.RemoteImageBuildArgs
     ///         {
     ///             Context = $"{path.Cwd}/absolutePathToContextFolder",
     ///         },
@@ -38,12 +44,6 @@ namespace Pulumi.Docker
     [DockerResourceType("docker:index/registryImage:RegistryImage")]
     public partial class RegistryImage : global::Pulumi.CustomResource
     {
-        /// <summary>
-        /// Definition for building the image
-        /// </summary>
-        [Output("build")]
-        public Output<Outputs.RegistryImageBuild?> Build { get; private set; } = null!;
-
         /// <summary>
         /// If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
         /// </summary>
@@ -67,6 +67,12 @@ namespace Pulumi.Docker
         /// </summary>
         [Output("sha256Digest")]
         public Output<string> Sha256Digest { get; private set; } = null!;
+
+        /// <summary>
+        /// A map of arbitrary strings that, when changed, will force the `docker.RegistryImage` resource to be replaced. This can be used to repush a local image
+        /// </summary>
+        [Output("triggers")]
+        public Output<ImmutableDictionary<string, object>?> Triggers { get; private set; } = null!;
 
 
         /// <summary>
@@ -115,12 +121,6 @@ namespace Pulumi.Docker
     public sealed class RegistryImageArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// Definition for building the image
-        /// </summary>
-        [Input("build")]
-        public Input<Inputs.RegistryImageBuildArgs>? Build { get; set; }
-
-        /// <summary>
         /// If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
         /// </summary>
         [Input("insecureSkipVerify")]
@@ -138,6 +138,18 @@ namespace Pulumi.Docker
         [Input("name")]
         public Input<string>? Name { get; set; }
 
+        [Input("triggers")]
+        private InputMap<object>? _triggers;
+
+        /// <summary>
+        /// A map of arbitrary strings that, when changed, will force the `docker.RegistryImage` resource to be replaced. This can be used to repush a local image
+        /// </summary>
+        public InputMap<object> Triggers
+        {
+            get => _triggers ?? (_triggers = new InputMap<object>());
+            set => _triggers = value;
+        }
+
         public RegistryImageArgs()
         {
         }
@@ -146,12 +158,6 @@ namespace Pulumi.Docker
 
     public sealed class RegistryImageState : global::Pulumi.ResourceArgs
     {
-        /// <summary>
-        /// Definition for building the image
-        /// </summary>
-        [Input("build")]
-        public Input<Inputs.RegistryImageBuildGetArgs>? Build { get; set; }
-
         /// <summary>
         /// If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
         /// </summary>
@@ -175,6 +181,18 @@ namespace Pulumi.Docker
         /// </summary>
         [Input("sha256Digest")]
         public Input<string>? Sha256Digest { get; set; }
+
+        [Input("triggers")]
+        private InputMap<object>? _triggers;
+
+        /// <summary>
+        /// A map of arbitrary strings that, when changed, will force the `docker.RegistryImage` resource to be replaced. This can be used to repush a local image
+        /// </summary>
+        public InputMap<object> Triggers
+        {
+            get => _triggers ?? (_triggers = new InputMap<object>());
+            set => _triggers = value;
+        }
 
         public RegistryImageState()
         {

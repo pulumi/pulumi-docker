@@ -19,6 +19,7 @@ class ContainerArgs:
                  image: pulumi.Input[str],
                  attach: Optional[pulumi.Input[bool]] = None,
                  capabilities: Optional[pulumi.Input['ContainerCapabilitiesArgs']] = None,
+                 cgroupns_mode: Optional[pulumi.Input[str]] = None,
                  command: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  container_read_refresh_timeout_milliseconds: Optional[pulumi.Input[int]] = None,
                  cpu_set: Optional[pulumi.Input[str]] = None,
@@ -39,7 +40,6 @@ class ContainerArgs:
                  init: Optional[pulumi.Input[bool]] = None,
                  ipc_mode: Optional[pulumi.Input[str]] = None,
                  labels: Optional[pulumi.Input[Sequence[pulumi.Input['ContainerLabelArgs']]]] = None,
-                 links: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  log_driver: Optional[pulumi.Input[str]] = None,
                  log_opts: Optional[pulumi.Input[Mapping[str, Any]]] = None,
                  logs: Optional[pulumi.Input[bool]] = None,
@@ -49,9 +49,7 @@ class ContainerArgs:
                  mounts: Optional[pulumi.Input[Sequence[pulumi.Input['ContainerMountArgs']]]] = None,
                  must_run: Optional[pulumi.Input[bool]] = None,
                  name: Optional[pulumi.Input[str]] = None,
-                 network_aliases: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  network_mode: Optional[pulumi.Input[str]] = None,
-                 networks: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  networks_advanced: Optional[pulumi.Input[Sequence[pulumi.Input['ContainerNetworksAdvancedArgs']]]] = None,
                  pid_mode: Optional[pulumi.Input[str]] = None,
                  ports: Optional[pulumi.Input[Sequence[pulumi.Input['ContainerPortArgs']]]] = None,
@@ -85,7 +83,8 @@ class ContainerArgs:
         :param pulumi.Input[str] image: The ID of the image to back this container. The easiest way to get this value is to use the `RemoteImage` resource as is shown in the example.
         :param pulumi.Input[bool] attach: If `true` attach to the container after its creation and waits the end of its execution. Defaults to `false`.
         :param pulumi.Input['ContainerCapabilitiesArgs'] capabilities: Add or drop certrain linux capabilities.
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] command: The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-","baz.con"]`.
+        :param pulumi.Input[str] cgroupns_mode: Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] command: The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.con"]`.
         :param pulumi.Input[int] container_read_refresh_timeout_milliseconds: The total number of milliseconds to wait for the container to reach status 'running'
         :param pulumi.Input[str] cpu_set: A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
         :param pulumi.Input[int] cpu_shares: CPU shares (relative weight) for the container.
@@ -105,7 +104,6 @@ class ContainerArgs:
         :param pulumi.Input[bool] init: Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
         :param pulumi.Input[str] ipc_mode: IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerLabelArgs']]] labels: User-defined key/value metadata
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] links: Set of links for link based connectivity between containers that are running on the same host.
         :param pulumi.Input[str] log_driver: The logging driver to use for the container.
         :param pulumi.Input[Mapping[str, Any]] log_opts: Key/value pairs to use as options for the logging driver.
         :param pulumi.Input[bool] logs: Save the container logs (`attach` must be enabled). Defaults to `false`.
@@ -117,9 +115,7 @@ class ContainerArgs:
         :param pulumi.Input[bool] must_run: If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform
                assumes it is successful. Defaults to `true`.
         :param pulumi.Input[str] name: The name of the container.
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] network_aliases: Set an alias for the container in all specified networks
         :param pulumi.Input[str] network_mode: Network mode of the container.
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] networks: ID of the networks in which the container is.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerNetworksAdvancedArgs']]] networks_advanced: The networks the container is attached to
         :param pulumi.Input[str] pid_mode: he PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerPortArgs']]] ports: Publish a container's port(s) to the host.
@@ -154,6 +150,8 @@ class ContainerArgs:
             pulumi.set(__self__, "attach", attach)
         if capabilities is not None:
             pulumi.set(__self__, "capabilities", capabilities)
+        if cgroupns_mode is not None:
+            pulumi.set(__self__, "cgroupns_mode", cgroupns_mode)
         if command is not None:
             pulumi.set(__self__, "command", command)
         if container_read_refresh_timeout_milliseconds is not None:
@@ -194,11 +192,6 @@ class ContainerArgs:
             pulumi.set(__self__, "ipc_mode", ipc_mode)
         if labels is not None:
             pulumi.set(__self__, "labels", labels)
-        if links is not None:
-            warnings.warn("""The --link flag is a legacy feature of Docker. It may eventually be removed.""", DeprecationWarning)
-            pulumi.log.warn("""links is deprecated: The --link flag is a legacy feature of Docker. It may eventually be removed.""")
-        if links is not None:
-            pulumi.set(__self__, "links", links)
         if log_driver is not None:
             pulumi.set(__self__, "log_driver", log_driver)
         if log_opts is not None:
@@ -217,18 +210,8 @@ class ContainerArgs:
             pulumi.set(__self__, "must_run", must_run)
         if name is not None:
             pulumi.set(__self__, "name", name)
-        if network_aliases is not None:
-            warnings.warn("""Use networks_advanced instead. Will be removed in v3.0.0""", DeprecationWarning)
-            pulumi.log.warn("""network_aliases is deprecated: Use networks_advanced instead. Will be removed in v3.0.0""")
-        if network_aliases is not None:
-            pulumi.set(__self__, "network_aliases", network_aliases)
         if network_mode is not None:
             pulumi.set(__self__, "network_mode", network_mode)
-        if networks is not None:
-            warnings.warn("""Use networks_advanced instead. Will be removed in v3.0.0""", DeprecationWarning)
-            pulumi.log.warn("""networks is deprecated: Use networks_advanced instead. Will be removed in v3.0.0""")
-        if networks is not None:
-            pulumi.set(__self__, "networks", networks)
         if networks_advanced is not None:
             pulumi.set(__self__, "networks_advanced", networks_advanced)
         if pid_mode is not None:
@@ -323,10 +306,22 @@ class ContainerArgs:
         pulumi.set(self, "capabilities", value)
 
     @property
+    @pulumi.getter(name="cgroupnsMode")
+    def cgroupns_mode(self) -> Optional[pulumi.Input[str]]:
+        """
+        Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
+        """
+        return pulumi.get(self, "cgroupns_mode")
+
+    @cgroupns_mode.setter
+    def cgroupns_mode(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "cgroupns_mode", value)
+
+    @property
     @pulumi.getter
     def command(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
         """
-        The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-","baz.con"]`.
+        The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.con"]`.
         """
         return pulumi.get(self, "command")
 
@@ -563,18 +558,6 @@ class ContainerArgs:
         pulumi.set(self, "labels", value)
 
     @property
-    @pulumi.getter
-    def links(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
-        """
-        Set of links for link based connectivity between containers that are running on the same host.
-        """
-        return pulumi.get(self, "links")
-
-    @links.setter
-    def links(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
-        pulumi.set(self, "links", value)
-
-    @property
     @pulumi.getter(name="logDriver")
     def log_driver(self) -> Optional[pulumi.Input[str]]:
         """
@@ -685,18 +668,6 @@ class ContainerArgs:
         pulumi.set(self, "name", value)
 
     @property
-    @pulumi.getter(name="networkAliases")
-    def network_aliases(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
-        """
-        Set an alias for the container in all specified networks
-        """
-        return pulumi.get(self, "network_aliases")
-
-    @network_aliases.setter
-    def network_aliases(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
-        pulumi.set(self, "network_aliases", value)
-
-    @property
     @pulumi.getter(name="networkMode")
     def network_mode(self) -> Optional[pulumi.Input[str]]:
         """
@@ -707,18 +678,6 @@ class ContainerArgs:
     @network_mode.setter
     def network_mode(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "network_mode", value)
-
-    @property
-    @pulumi.getter
-    def networks(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
-        """
-        ID of the networks in which the container is.
-        """
-        return pulumi.get(self, "networks")
-
-    @networks.setter
-    def networks(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
-        pulumi.set(self, "networks", value)
 
     @property
     @pulumi.getter(name="networksAdvanced")
@@ -1063,6 +1022,7 @@ class _ContainerState:
                  attach: Optional[pulumi.Input[bool]] = None,
                  bridge: Optional[pulumi.Input[str]] = None,
                  capabilities: Optional[pulumi.Input['ContainerCapabilitiesArgs']] = None,
+                 cgroupns_mode: Optional[pulumi.Input[str]] = None,
                  command: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  container_logs: Optional[pulumi.Input[str]] = None,
                  container_read_refresh_timeout_milliseconds: Optional[pulumi.Input[int]] = None,
@@ -1077,7 +1037,6 @@ class _ContainerState:
                  entrypoints: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  envs: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  exit_code: Optional[pulumi.Input[int]] = None,
-                 gateway: Optional[pulumi.Input[str]] = None,
                  gpus: Optional[pulumi.Input[str]] = None,
                  group_adds: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  healthcheck: Optional[pulumi.Input['ContainerHealthcheckArgs']] = None,
@@ -1085,11 +1044,8 @@ class _ContainerState:
                  hosts: Optional[pulumi.Input[Sequence[pulumi.Input['ContainerHostArgs']]]] = None,
                  image: Optional[pulumi.Input[str]] = None,
                  init: Optional[pulumi.Input[bool]] = None,
-                 ip_address: Optional[pulumi.Input[str]] = None,
-                 ip_prefix_length: Optional[pulumi.Input[int]] = None,
                  ipc_mode: Optional[pulumi.Input[str]] = None,
                  labels: Optional[pulumi.Input[Sequence[pulumi.Input['ContainerLabelArgs']]]] = None,
-                 links: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  log_driver: Optional[pulumi.Input[str]] = None,
                  log_opts: Optional[pulumi.Input[Mapping[str, Any]]] = None,
                  logs: Optional[pulumi.Input[bool]] = None,
@@ -1099,10 +1055,8 @@ class _ContainerState:
                  mounts: Optional[pulumi.Input[Sequence[pulumi.Input['ContainerMountArgs']]]] = None,
                  must_run: Optional[pulumi.Input[bool]] = None,
                  name: Optional[pulumi.Input[str]] = None,
-                 network_aliases: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  network_datas: Optional[pulumi.Input[Sequence[pulumi.Input['ContainerNetworkDataArgs']]]] = None,
                  network_mode: Optional[pulumi.Input[str]] = None,
-                 networks: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  networks_advanced: Optional[pulumi.Input[Sequence[pulumi.Input['ContainerNetworksAdvancedArgs']]]] = None,
                  pid_mode: Optional[pulumi.Input[str]] = None,
                  ports: Optional[pulumi.Input[Sequence[pulumi.Input['ContainerPortArgs']]]] = None,
@@ -1136,7 +1090,8 @@ class _ContainerState:
         :param pulumi.Input[bool] attach: If `true` attach to the container after its creation and waits the end of its execution. Defaults to `false`.
         :param pulumi.Input[str] bridge: The network bridge of the container as read from its NetworkSettings.
         :param pulumi.Input['ContainerCapabilitiesArgs'] capabilities: Add or drop certrain linux capabilities.
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] command: The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-","baz.con"]`.
+        :param pulumi.Input[str] cgroupns_mode: Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] command: The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.con"]`.
         :param pulumi.Input[str] container_logs: The logs of the container if its execution is done (`attach` must be disabled).
         :param pulumi.Input[int] container_read_refresh_timeout_milliseconds: The total number of milliseconds to wait for the container to reach status 'running'
         :param pulumi.Input[str] cpu_set: A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
@@ -1150,7 +1105,6 @@ class _ContainerState:
         :param pulumi.Input[Sequence[pulumi.Input[str]]] entrypoints: The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogra"]`.
         :param pulumi.Input[Sequence[pulumi.Input[str]]] envs: Environment variables to set in the form of `KEY=VALUE`, e.g. `DEBUG=0`
         :param pulumi.Input[int] exit_code: The exit code of the container if its execution is done (`must_run` must be disabled).
-        :param pulumi.Input[str] gateway: The network gateway of the container.
         :param pulumi.Input[str] gpus: GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.
         :param pulumi.Input[Sequence[pulumi.Input[str]]] group_adds: Additional groups for the container user
         :param pulumi.Input['ContainerHealthcheckArgs'] healthcheck: A test to perform to check that the container is healthy
@@ -1158,11 +1112,8 @@ class _ContainerState:
         :param pulumi.Input[Sequence[pulumi.Input['ContainerHostArgs']]] hosts: Additional hosts to add to the container.
         :param pulumi.Input[str] image: The ID of the image to back this container. The easiest way to get this value is to use the `RemoteImage` resource as is shown in the example.
         :param pulumi.Input[bool] init: Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
-        :param pulumi.Input[str] ip_address: The IP address of the container.
-        :param pulumi.Input[int] ip_prefix_length: The IP prefix length of the container.
         :param pulumi.Input[str] ipc_mode: IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerLabelArgs']]] labels: User-defined key/value metadata
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] links: Set of links for link based connectivity between containers that are running on the same host.
         :param pulumi.Input[str] log_driver: The logging driver to use for the container.
         :param pulumi.Input[Mapping[str, Any]] log_opts: Key/value pairs to use as options for the logging driver.
         :param pulumi.Input[bool] logs: Save the container logs (`attach` must be enabled). Defaults to `false`.
@@ -1174,10 +1125,8 @@ class _ContainerState:
         :param pulumi.Input[bool] must_run: If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform
                assumes it is successful. Defaults to `true`.
         :param pulumi.Input[str] name: The name of the container.
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] network_aliases: Set an alias for the container in all specified networks
         :param pulumi.Input[Sequence[pulumi.Input['ContainerNetworkDataArgs']]] network_datas: The data of the networks the container is connected to.
         :param pulumi.Input[str] network_mode: Network mode of the container.
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] networks: ID of the networks in which the container is.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerNetworksAdvancedArgs']]] networks_advanced: The networks the container is attached to
         :param pulumi.Input[str] pid_mode: he PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerPortArgs']]] ports: Publish a container's port(s) to the host.
@@ -1213,6 +1162,8 @@ class _ContainerState:
             pulumi.set(__self__, "bridge", bridge)
         if capabilities is not None:
             pulumi.set(__self__, "capabilities", capabilities)
+        if cgroupns_mode is not None:
+            pulumi.set(__self__, "cgroupns_mode", cgroupns_mode)
         if command is not None:
             pulumi.set(__self__, "command", command)
         if container_logs is not None:
@@ -1241,11 +1192,6 @@ class _ContainerState:
             pulumi.set(__self__, "envs", envs)
         if exit_code is not None:
             pulumi.set(__self__, "exit_code", exit_code)
-        if gateway is not None:
-            warnings.warn("""Use `network_data` instead. The network gateway of the container as read from its NetworkSettings.""", DeprecationWarning)
-            pulumi.log.warn("""gateway is deprecated: Use `network_data` instead. The network gateway of the container as read from its NetworkSettings.""")
-        if gateway is not None:
-            pulumi.set(__self__, "gateway", gateway)
         if gpus is not None:
             pulumi.set(__self__, "gpus", gpus)
         if group_adds is not None:
@@ -1260,25 +1206,10 @@ class _ContainerState:
             pulumi.set(__self__, "image", image)
         if init is not None:
             pulumi.set(__self__, "init", init)
-        if ip_address is not None:
-            warnings.warn("""Use `network_data` instead. The IP address of the container's first network it.""", DeprecationWarning)
-            pulumi.log.warn("""ip_address is deprecated: Use `network_data` instead. The IP address of the container's first network it.""")
-        if ip_address is not None:
-            pulumi.set(__self__, "ip_address", ip_address)
-        if ip_prefix_length is not None:
-            warnings.warn("""Use `network_data` instead. The IP prefix length of the container as read from its NetworkSettings.""", DeprecationWarning)
-            pulumi.log.warn("""ip_prefix_length is deprecated: Use `network_data` instead. The IP prefix length of the container as read from its NetworkSettings.""")
-        if ip_prefix_length is not None:
-            pulumi.set(__self__, "ip_prefix_length", ip_prefix_length)
         if ipc_mode is not None:
             pulumi.set(__self__, "ipc_mode", ipc_mode)
         if labels is not None:
             pulumi.set(__self__, "labels", labels)
-        if links is not None:
-            warnings.warn("""The --link flag is a legacy feature of Docker. It may eventually be removed.""", DeprecationWarning)
-            pulumi.log.warn("""links is deprecated: The --link flag is a legacy feature of Docker. It may eventually be removed.""")
-        if links is not None:
-            pulumi.set(__self__, "links", links)
         if log_driver is not None:
             pulumi.set(__self__, "log_driver", log_driver)
         if log_opts is not None:
@@ -1297,20 +1228,10 @@ class _ContainerState:
             pulumi.set(__self__, "must_run", must_run)
         if name is not None:
             pulumi.set(__self__, "name", name)
-        if network_aliases is not None:
-            warnings.warn("""Use networks_advanced instead. Will be removed in v3.0.0""", DeprecationWarning)
-            pulumi.log.warn("""network_aliases is deprecated: Use networks_advanced instead. Will be removed in v3.0.0""")
-        if network_aliases is not None:
-            pulumi.set(__self__, "network_aliases", network_aliases)
         if network_datas is not None:
             pulumi.set(__self__, "network_datas", network_datas)
         if network_mode is not None:
             pulumi.set(__self__, "network_mode", network_mode)
-        if networks is not None:
-            warnings.warn("""Use networks_advanced instead. Will be removed in v3.0.0""", DeprecationWarning)
-            pulumi.log.warn("""networks is deprecated: Use networks_advanced instead. Will be removed in v3.0.0""")
-        if networks is not None:
-            pulumi.set(__self__, "networks", networks)
         if networks_advanced is not None:
             pulumi.set(__self__, "networks_advanced", networks_advanced)
         if pid_mode is not None:
@@ -1405,10 +1326,22 @@ class _ContainerState:
         pulumi.set(self, "capabilities", value)
 
     @property
+    @pulumi.getter(name="cgroupnsMode")
+    def cgroupns_mode(self) -> Optional[pulumi.Input[str]]:
+        """
+        Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
+        """
+        return pulumi.get(self, "cgroupns_mode")
+
+    @cgroupns_mode.setter
+    def cgroupns_mode(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "cgroupns_mode", value)
+
+    @property
     @pulumi.getter
     def command(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
         """
-        The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-","baz.con"]`.
+        The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.con"]`.
         """
         return pulumi.get(self, "command")
 
@@ -1574,18 +1507,6 @@ class _ContainerState:
 
     @property
     @pulumi.getter
-    def gateway(self) -> Optional[pulumi.Input[str]]:
-        """
-        The network gateway of the container.
-        """
-        return pulumi.get(self, "gateway")
-
-    @gateway.setter
-    def gateway(self, value: Optional[pulumi.Input[str]]):
-        pulumi.set(self, "gateway", value)
-
-    @property
-    @pulumi.getter
     def gpus(self) -> Optional[pulumi.Input[str]]:
         """
         GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.
@@ -1669,30 +1590,6 @@ class _ContainerState:
         pulumi.set(self, "init", value)
 
     @property
-    @pulumi.getter(name="ipAddress")
-    def ip_address(self) -> Optional[pulumi.Input[str]]:
-        """
-        The IP address of the container.
-        """
-        return pulumi.get(self, "ip_address")
-
-    @ip_address.setter
-    def ip_address(self, value: Optional[pulumi.Input[str]]):
-        pulumi.set(self, "ip_address", value)
-
-    @property
-    @pulumi.getter(name="ipPrefixLength")
-    def ip_prefix_length(self) -> Optional[pulumi.Input[int]]:
-        """
-        The IP prefix length of the container.
-        """
-        return pulumi.get(self, "ip_prefix_length")
-
-    @ip_prefix_length.setter
-    def ip_prefix_length(self, value: Optional[pulumi.Input[int]]):
-        pulumi.set(self, "ip_prefix_length", value)
-
-    @property
     @pulumi.getter(name="ipcMode")
     def ipc_mode(self) -> Optional[pulumi.Input[str]]:
         """
@@ -1715,18 +1612,6 @@ class _ContainerState:
     @labels.setter
     def labels(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['ContainerLabelArgs']]]]):
         pulumi.set(self, "labels", value)
-
-    @property
-    @pulumi.getter
-    def links(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
-        """
-        Set of links for link based connectivity between containers that are running on the same host.
-        """
-        return pulumi.get(self, "links")
-
-    @links.setter
-    def links(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
-        pulumi.set(self, "links", value)
 
     @property
     @pulumi.getter(name="logDriver")
@@ -1839,18 +1724,6 @@ class _ContainerState:
         pulumi.set(self, "name", value)
 
     @property
-    @pulumi.getter(name="networkAliases")
-    def network_aliases(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
-        """
-        Set an alias for the container in all specified networks
-        """
-        return pulumi.get(self, "network_aliases")
-
-    @network_aliases.setter
-    def network_aliases(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
-        pulumi.set(self, "network_aliases", value)
-
-    @property
     @pulumi.getter(name="networkDatas")
     def network_datas(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['ContainerNetworkDataArgs']]]]:
         """
@@ -1873,18 +1746,6 @@ class _ContainerState:
     @network_mode.setter
     def network_mode(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "network_mode", value)
-
-    @property
-    @pulumi.getter
-    def networks(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
-        """
-        ID of the networks in which the container is.
-        """
-        return pulumi.get(self, "networks")
-
-    @networks.setter
-    def networks(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
-        pulumi.set(self, "networks", value)
 
     @property
     @pulumi.getter(name="networksAdvanced")
@@ -2230,6 +2091,7 @@ class Container(pulumi.CustomResource):
                  opts: Optional[pulumi.ResourceOptions] = None,
                  attach: Optional[pulumi.Input[bool]] = None,
                  capabilities: Optional[pulumi.Input[pulumi.InputType['ContainerCapabilitiesArgs']]] = None,
+                 cgroupns_mode: Optional[pulumi.Input[str]] = None,
                  command: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  container_read_refresh_timeout_milliseconds: Optional[pulumi.Input[int]] = None,
                  cpu_set: Optional[pulumi.Input[str]] = None,
@@ -2251,7 +2113,6 @@ class Container(pulumi.CustomResource):
                  init: Optional[pulumi.Input[bool]] = None,
                  ipc_mode: Optional[pulumi.Input[str]] = None,
                  labels: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerLabelArgs']]]]] = None,
-                 links: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  log_driver: Optional[pulumi.Input[str]] = None,
                  log_opts: Optional[pulumi.Input[Mapping[str, Any]]] = None,
                  logs: Optional[pulumi.Input[bool]] = None,
@@ -2261,9 +2122,7 @@ class Container(pulumi.CustomResource):
                  mounts: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerMountArgs']]]]] = None,
                  must_run: Optional[pulumi.Input[bool]] = None,
                  name: Optional[pulumi.Input[str]] = None,
-                 network_aliases: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  network_mode: Optional[pulumi.Input[str]] = None,
-                 networks: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  networks_advanced: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerNetworksAdvancedArgs']]]]] = None,
                  pid_mode: Optional[pulumi.Input[str]] = None,
                  ports: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerPortArgs']]]]] = None,
@@ -2339,7 +2198,8 @@ class Container(pulumi.CustomResource):
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[bool] attach: If `true` attach to the container after its creation and waits the end of its execution. Defaults to `false`.
         :param pulumi.Input[pulumi.InputType['ContainerCapabilitiesArgs']] capabilities: Add or drop certrain linux capabilities.
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] command: The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-","baz.con"]`.
+        :param pulumi.Input[str] cgroupns_mode: Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] command: The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.con"]`.
         :param pulumi.Input[int] container_read_refresh_timeout_milliseconds: The total number of milliseconds to wait for the container to reach status 'running'
         :param pulumi.Input[str] cpu_set: A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
         :param pulumi.Input[int] cpu_shares: CPU shares (relative weight) for the container.
@@ -2360,7 +2220,6 @@ class Container(pulumi.CustomResource):
         :param pulumi.Input[bool] init: Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
         :param pulumi.Input[str] ipc_mode: IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
         :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerLabelArgs']]]] labels: User-defined key/value metadata
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] links: Set of links for link based connectivity between containers that are running on the same host.
         :param pulumi.Input[str] log_driver: The logging driver to use for the container.
         :param pulumi.Input[Mapping[str, Any]] log_opts: Key/value pairs to use as options for the logging driver.
         :param pulumi.Input[bool] logs: Save the container logs (`attach` must be enabled). Defaults to `false`.
@@ -2372,9 +2231,7 @@ class Container(pulumi.CustomResource):
         :param pulumi.Input[bool] must_run: If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform
                assumes it is successful. Defaults to `true`.
         :param pulumi.Input[str] name: The name of the container.
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] network_aliases: Set an alias for the container in all specified networks
         :param pulumi.Input[str] network_mode: Network mode of the container.
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] networks: ID of the networks in which the container is.
         :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerNetworksAdvancedArgs']]]] networks_advanced: The networks the container is attached to
         :param pulumi.Input[str] pid_mode: he PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
         :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerPortArgs']]]] ports: Publish a container's port(s) to the host.
@@ -2469,6 +2326,7 @@ class Container(pulumi.CustomResource):
                  opts: Optional[pulumi.ResourceOptions] = None,
                  attach: Optional[pulumi.Input[bool]] = None,
                  capabilities: Optional[pulumi.Input[pulumi.InputType['ContainerCapabilitiesArgs']]] = None,
+                 cgroupns_mode: Optional[pulumi.Input[str]] = None,
                  command: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  container_read_refresh_timeout_milliseconds: Optional[pulumi.Input[int]] = None,
                  cpu_set: Optional[pulumi.Input[str]] = None,
@@ -2490,7 +2348,6 @@ class Container(pulumi.CustomResource):
                  init: Optional[pulumi.Input[bool]] = None,
                  ipc_mode: Optional[pulumi.Input[str]] = None,
                  labels: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerLabelArgs']]]]] = None,
-                 links: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  log_driver: Optional[pulumi.Input[str]] = None,
                  log_opts: Optional[pulumi.Input[Mapping[str, Any]]] = None,
                  logs: Optional[pulumi.Input[bool]] = None,
@@ -2500,9 +2357,7 @@ class Container(pulumi.CustomResource):
                  mounts: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerMountArgs']]]]] = None,
                  must_run: Optional[pulumi.Input[bool]] = None,
                  name: Optional[pulumi.Input[str]] = None,
-                 network_aliases: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  network_mode: Optional[pulumi.Input[str]] = None,
-                 networks: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  networks_advanced: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerNetworksAdvancedArgs']]]]] = None,
                  pid_mode: Optional[pulumi.Input[str]] = None,
                  ports: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerPortArgs']]]]] = None,
@@ -2542,6 +2397,7 @@ class Container(pulumi.CustomResource):
 
             __props__.__dict__["attach"] = attach
             __props__.__dict__["capabilities"] = capabilities
+            __props__.__dict__["cgroupns_mode"] = cgroupns_mode
             __props__.__dict__["command"] = command
             __props__.__dict__["container_read_refresh_timeout_milliseconds"] = container_read_refresh_timeout_milliseconds
             __props__.__dict__["cpu_set"] = cpu_set
@@ -2565,10 +2421,6 @@ class Container(pulumi.CustomResource):
             __props__.__dict__["init"] = init
             __props__.__dict__["ipc_mode"] = ipc_mode
             __props__.__dict__["labels"] = labels
-            if links is not None and not opts.urn:
-                warnings.warn("""The --link flag is a legacy feature of Docker. It may eventually be removed.""", DeprecationWarning)
-                pulumi.log.warn("""links is deprecated: The --link flag is a legacy feature of Docker. It may eventually be removed.""")
-            __props__.__dict__["links"] = links
             __props__.__dict__["log_driver"] = log_driver
             __props__.__dict__["log_opts"] = log_opts
             __props__.__dict__["logs"] = logs
@@ -2578,15 +2430,7 @@ class Container(pulumi.CustomResource):
             __props__.__dict__["mounts"] = mounts
             __props__.__dict__["must_run"] = must_run
             __props__.__dict__["name"] = name
-            if network_aliases is not None and not opts.urn:
-                warnings.warn("""Use networks_advanced instead. Will be removed in v3.0.0""", DeprecationWarning)
-                pulumi.log.warn("""network_aliases is deprecated: Use networks_advanced instead. Will be removed in v3.0.0""")
-            __props__.__dict__["network_aliases"] = network_aliases
             __props__.__dict__["network_mode"] = network_mode
-            if networks is not None and not opts.urn:
-                warnings.warn("""Use networks_advanced instead. Will be removed in v3.0.0""", DeprecationWarning)
-                pulumi.log.warn("""networks is deprecated: Use networks_advanced instead. Will be removed in v3.0.0""")
-            __props__.__dict__["networks"] = networks
             __props__.__dict__["networks_advanced"] = networks_advanced
             __props__.__dict__["pid_mode"] = pid_mode
             __props__.__dict__["ports"] = ports
@@ -2618,9 +2462,6 @@ class Container(pulumi.CustomResource):
             __props__.__dict__["bridge"] = None
             __props__.__dict__["container_logs"] = None
             __props__.__dict__["exit_code"] = None
-            __props__.__dict__["gateway"] = None
-            __props__.__dict__["ip_address"] = None
-            __props__.__dict__["ip_prefix_length"] = None
             __props__.__dict__["network_datas"] = None
         super(Container, __self__).__init__(
             'docker:index/container:Container',
@@ -2635,6 +2476,7 @@ class Container(pulumi.CustomResource):
             attach: Optional[pulumi.Input[bool]] = None,
             bridge: Optional[pulumi.Input[str]] = None,
             capabilities: Optional[pulumi.Input[pulumi.InputType['ContainerCapabilitiesArgs']]] = None,
+            cgroupns_mode: Optional[pulumi.Input[str]] = None,
             command: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
             container_logs: Optional[pulumi.Input[str]] = None,
             container_read_refresh_timeout_milliseconds: Optional[pulumi.Input[int]] = None,
@@ -2649,7 +2491,6 @@ class Container(pulumi.CustomResource):
             entrypoints: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
             envs: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
             exit_code: Optional[pulumi.Input[int]] = None,
-            gateway: Optional[pulumi.Input[str]] = None,
             gpus: Optional[pulumi.Input[str]] = None,
             group_adds: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
             healthcheck: Optional[pulumi.Input[pulumi.InputType['ContainerHealthcheckArgs']]] = None,
@@ -2657,11 +2498,8 @@ class Container(pulumi.CustomResource):
             hosts: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerHostArgs']]]]] = None,
             image: Optional[pulumi.Input[str]] = None,
             init: Optional[pulumi.Input[bool]] = None,
-            ip_address: Optional[pulumi.Input[str]] = None,
-            ip_prefix_length: Optional[pulumi.Input[int]] = None,
             ipc_mode: Optional[pulumi.Input[str]] = None,
             labels: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerLabelArgs']]]]] = None,
-            links: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
             log_driver: Optional[pulumi.Input[str]] = None,
             log_opts: Optional[pulumi.Input[Mapping[str, Any]]] = None,
             logs: Optional[pulumi.Input[bool]] = None,
@@ -2671,10 +2509,8 @@ class Container(pulumi.CustomResource):
             mounts: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerMountArgs']]]]] = None,
             must_run: Optional[pulumi.Input[bool]] = None,
             name: Optional[pulumi.Input[str]] = None,
-            network_aliases: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
             network_datas: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerNetworkDataArgs']]]]] = None,
             network_mode: Optional[pulumi.Input[str]] = None,
-            networks: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
             networks_advanced: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerNetworksAdvancedArgs']]]]] = None,
             pid_mode: Optional[pulumi.Input[str]] = None,
             ports: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerPortArgs']]]]] = None,
@@ -2713,7 +2549,8 @@ class Container(pulumi.CustomResource):
         :param pulumi.Input[bool] attach: If `true` attach to the container after its creation and waits the end of its execution. Defaults to `false`.
         :param pulumi.Input[str] bridge: The network bridge of the container as read from its NetworkSettings.
         :param pulumi.Input[pulumi.InputType['ContainerCapabilitiesArgs']] capabilities: Add or drop certrain linux capabilities.
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] command: The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-","baz.con"]`.
+        :param pulumi.Input[str] cgroupns_mode: Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] command: The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.con"]`.
         :param pulumi.Input[str] container_logs: The logs of the container if its execution is done (`attach` must be disabled).
         :param pulumi.Input[int] container_read_refresh_timeout_milliseconds: The total number of milliseconds to wait for the container to reach status 'running'
         :param pulumi.Input[str] cpu_set: A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.
@@ -2727,7 +2564,6 @@ class Container(pulumi.CustomResource):
         :param pulumi.Input[Sequence[pulumi.Input[str]]] entrypoints: The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `"/usr/bin/myprogra"]`.
         :param pulumi.Input[Sequence[pulumi.Input[str]]] envs: Environment variables to set in the form of `KEY=VALUE`, e.g. `DEBUG=0`
         :param pulumi.Input[int] exit_code: The exit code of the container if its execution is done (`must_run` must be disabled).
-        :param pulumi.Input[str] gateway: The network gateway of the container.
         :param pulumi.Input[str] gpus: GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.
         :param pulumi.Input[Sequence[pulumi.Input[str]]] group_adds: Additional groups for the container user
         :param pulumi.Input[pulumi.InputType['ContainerHealthcheckArgs']] healthcheck: A test to perform to check that the container is healthy
@@ -2735,11 +2571,8 @@ class Container(pulumi.CustomResource):
         :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerHostArgs']]]] hosts: Additional hosts to add to the container.
         :param pulumi.Input[str] image: The ID of the image to back this container. The easiest way to get this value is to use the `RemoteImage` resource as is shown in the example.
         :param pulumi.Input[bool] init: Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
-        :param pulumi.Input[str] ip_address: The IP address of the container.
-        :param pulumi.Input[int] ip_prefix_length: The IP prefix length of the container.
         :param pulumi.Input[str] ipc_mode: IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
         :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerLabelArgs']]]] labels: User-defined key/value metadata
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] links: Set of links for link based connectivity between containers that are running on the same host.
         :param pulumi.Input[str] log_driver: The logging driver to use for the container.
         :param pulumi.Input[Mapping[str, Any]] log_opts: Key/value pairs to use as options for the logging driver.
         :param pulumi.Input[bool] logs: Save the container logs (`attach` must be enabled). Defaults to `false`.
@@ -2751,10 +2584,8 @@ class Container(pulumi.CustomResource):
         :param pulumi.Input[bool] must_run: If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform
                assumes it is successful. Defaults to `true`.
         :param pulumi.Input[str] name: The name of the container.
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] network_aliases: Set an alias for the container in all specified networks
         :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerNetworkDataArgs']]]] network_datas: The data of the networks the container is connected to.
         :param pulumi.Input[str] network_mode: Network mode of the container.
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] networks: ID of the networks in which the container is.
         :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerNetworksAdvancedArgs']]]] networks_advanced: The networks the container is attached to
         :param pulumi.Input[str] pid_mode: he PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
         :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerPortArgs']]]] ports: Publish a container's port(s) to the host.
@@ -2791,6 +2622,7 @@ class Container(pulumi.CustomResource):
         __props__.__dict__["attach"] = attach
         __props__.__dict__["bridge"] = bridge
         __props__.__dict__["capabilities"] = capabilities
+        __props__.__dict__["cgroupns_mode"] = cgroupns_mode
         __props__.__dict__["command"] = command
         __props__.__dict__["container_logs"] = container_logs
         __props__.__dict__["container_read_refresh_timeout_milliseconds"] = container_read_refresh_timeout_milliseconds
@@ -2805,7 +2637,6 @@ class Container(pulumi.CustomResource):
         __props__.__dict__["entrypoints"] = entrypoints
         __props__.__dict__["envs"] = envs
         __props__.__dict__["exit_code"] = exit_code
-        __props__.__dict__["gateway"] = gateway
         __props__.__dict__["gpus"] = gpus
         __props__.__dict__["group_adds"] = group_adds
         __props__.__dict__["healthcheck"] = healthcheck
@@ -2813,11 +2644,8 @@ class Container(pulumi.CustomResource):
         __props__.__dict__["hosts"] = hosts
         __props__.__dict__["image"] = image
         __props__.__dict__["init"] = init
-        __props__.__dict__["ip_address"] = ip_address
-        __props__.__dict__["ip_prefix_length"] = ip_prefix_length
         __props__.__dict__["ipc_mode"] = ipc_mode
         __props__.__dict__["labels"] = labels
-        __props__.__dict__["links"] = links
         __props__.__dict__["log_driver"] = log_driver
         __props__.__dict__["log_opts"] = log_opts
         __props__.__dict__["logs"] = logs
@@ -2827,10 +2655,8 @@ class Container(pulumi.CustomResource):
         __props__.__dict__["mounts"] = mounts
         __props__.__dict__["must_run"] = must_run
         __props__.__dict__["name"] = name
-        __props__.__dict__["network_aliases"] = network_aliases
         __props__.__dict__["network_datas"] = network_datas
         __props__.__dict__["network_mode"] = network_mode
-        __props__.__dict__["networks"] = networks
         __props__.__dict__["networks_advanced"] = networks_advanced
         __props__.__dict__["pid_mode"] = pid_mode
         __props__.__dict__["ports"] = ports
@@ -2886,10 +2712,18 @@ class Container(pulumi.CustomResource):
         return pulumi.get(self, "capabilities")
 
     @property
+    @pulumi.getter(name="cgroupnsMode")
+    def cgroupns_mode(self) -> pulumi.Output[Optional[str]]:
+        """
+        Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
+        """
+        return pulumi.get(self, "cgroupns_mode")
+
+    @property
     @pulumi.getter
     def command(self) -> pulumi.Output[Sequence[str]]:
         """
-        The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-","baz.con"]`.
+        The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.con"]`.
         """
         return pulumi.get(self, "command")
 
@@ -2999,14 +2833,6 @@ class Container(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def gateway(self) -> pulumi.Output[str]:
-        """
-        The network gateway of the container.
-        """
-        return pulumi.get(self, "gateway")
-
-    @property
-    @pulumi.getter
     def gpus(self) -> pulumi.Output[Optional[str]]:
         """
         GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.
@@ -3062,22 +2888,6 @@ class Container(pulumi.CustomResource):
         return pulumi.get(self, "init")
 
     @property
-    @pulumi.getter(name="ipAddress")
-    def ip_address(self) -> pulumi.Output[str]:
-        """
-        The IP address of the container.
-        """
-        return pulumi.get(self, "ip_address")
-
-    @property
-    @pulumi.getter(name="ipPrefixLength")
-    def ip_prefix_length(self) -> pulumi.Output[int]:
-        """
-        The IP prefix length of the container.
-        """
-        return pulumi.get(self, "ip_prefix_length")
-
-    @property
     @pulumi.getter(name="ipcMode")
     def ipc_mode(self) -> pulumi.Output[str]:
         """
@@ -3092,14 +2902,6 @@ class Container(pulumi.CustomResource):
         User-defined key/value metadata
         """
         return pulumi.get(self, "labels")
-
-    @property
-    @pulumi.getter
-    def links(self) -> pulumi.Output[Optional[Sequence[str]]]:
-        """
-        Set of links for link based connectivity between containers that are running on the same host.
-        """
-        return pulumi.get(self, "links")
 
     @property
     @pulumi.getter(name="logDriver")
@@ -3176,14 +2978,6 @@ class Container(pulumi.CustomResource):
         return pulumi.get(self, "name")
 
     @property
-    @pulumi.getter(name="networkAliases")
-    def network_aliases(self) -> pulumi.Output[Optional[Sequence[str]]]:
-        """
-        Set an alias for the container in all specified networks
-        """
-        return pulumi.get(self, "network_aliases")
-
-    @property
     @pulumi.getter(name="networkDatas")
     def network_datas(self) -> pulumi.Output[Sequence['outputs.ContainerNetworkData']]:
         """
@@ -3198,14 +2992,6 @@ class Container(pulumi.CustomResource):
         Network mode of the container.
         """
         return pulumi.get(self, "network_mode")
-
-    @property
-    @pulumi.getter
-    def networks(self) -> pulumi.Output[Optional[Sequence[str]]]:
-        """
-        ID of the networks in which the container is.
-        """
-        return pulumi.get(self, "networks")
 
     @property
     @pulumi.getter(name="networksAdvanced")

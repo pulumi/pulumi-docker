@@ -13,6 +13,7 @@ import com.pulumi.docker.outputs.ServiceTaskSpecContainerSpecMount;
 import com.pulumi.docker.outputs.ServiceTaskSpecContainerSpecPrivileges;
 import com.pulumi.docker.outputs.ServiceTaskSpecContainerSpecSecret;
 import java.lang.Boolean;
+import java.lang.Object;
 import java.lang.String;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +46,7 @@ public final class ServiceTaskSpecContainerSpec {
     private @Nullable List<ServiceTaskSpecContainerSpecSecret> secrets;
     private @Nullable String stopGracePeriod;
     private @Nullable String stopSignal;
+    private @Nullable Map<String,Object> sysctl;
     private @Nullable String user;
 
     private ServiceTaskSpecContainerSpec() {}
@@ -109,6 +111,9 @@ public final class ServiceTaskSpecContainerSpec {
     public Optional<String> stopSignal() {
         return Optional.ofNullable(this.stopSignal);
     }
+    public Map<String,Object> sysctl() {
+        return this.sysctl == null ? Map.of() : this.sysctl;
+    }
     public Optional<String> user() {
         return Optional.ofNullable(this.user);
     }
@@ -141,6 +146,7 @@ public final class ServiceTaskSpecContainerSpec {
         private @Nullable List<ServiceTaskSpecContainerSpecSecret> secrets;
         private @Nullable String stopGracePeriod;
         private @Nullable String stopSignal;
+        private @Nullable Map<String,Object> sysctl;
         private @Nullable String user;
         public Builder() {}
         public Builder(ServiceTaskSpecContainerSpec defaults) {
@@ -164,6 +170,7 @@ public final class ServiceTaskSpecContainerSpec {
     	      this.secrets = defaults.secrets;
     	      this.stopGracePeriod = defaults.stopGracePeriod;
     	      this.stopSignal = defaults.stopSignal;
+    	      this.sysctl = defaults.sysctl;
     	      this.user = defaults.user;
         }
 
@@ -287,6 +294,11 @@ public final class ServiceTaskSpecContainerSpec {
             return this;
         }
         @CustomType.Setter
+        public Builder sysctl(@Nullable Map<String,Object> sysctl) {
+            this.sysctl = sysctl;
+            return this;
+        }
+        @CustomType.Setter
         public Builder user(@Nullable String user) {
             this.user = user;
             return this;
@@ -312,6 +324,7 @@ public final class ServiceTaskSpecContainerSpec {
             o.secrets = secrets;
             o.stopGracePeriod = stopGracePeriod;
             o.stopSignal = stopSignal;
+            o.sysctl = sysctl;
             o.user = user;
             return o;
         }

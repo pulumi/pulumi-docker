@@ -143,14 +143,28 @@ public class Container extends com.pulumi.resources.CustomResource {
         return Codegen.optional(this.capabilities);
     }
     /**
-     * The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[&#34;/usr/bin/myprogram&#34;,&#34;-&#34;,&#34;baz.con&#34;]`.
+     * Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
+     * 
+     */
+    @Export(name="cgroupnsMode", type=String.class, parameters={})
+    private Output</* @Nullable */ String> cgroupnsMode;
+
+    /**
+     * @return Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
+     * 
+     */
+    public Output<Optional<String>> cgroupnsMode() {
+        return Codegen.optional(this.cgroupnsMode);
+    }
+    /**
+     * The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[&#34;/usr/bin/myprogram&#34;,&#34;-f&#34;,&#34;baz.con&#34;]`.
      * 
      */
     @Export(name="command", type=List.class, parameters={String.class})
     private Output<List<String>> command;
 
     /**
-     * @return The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[&#34;/usr/bin/myprogram&#34;,&#34;-&#34;,&#34;baz.con&#34;]`.
+     * @return The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[&#34;/usr/bin/myprogram&#34;,&#34;-f&#34;,&#34;baz.con&#34;]`.
      * 
      */
     public Output<List<String>> command() {
@@ -339,24 +353,6 @@ public class Container extends com.pulumi.resources.CustomResource {
         return this.exitCode;
     }
     /**
-     * The network gateway of the container.
-     * 
-     * @deprecated
-     * Use `network_data` instead. The network gateway of the container as read from its NetworkSettings.
-     * 
-     */
-    @Deprecated /* Use `network_data` instead. The network gateway of the container as read from its NetworkSettings. */
-    @Export(name="gateway", type=String.class, parameters={})
-    private Output<String> gateway;
-
-    /**
-     * @return The network gateway of the container.
-     * 
-     */
-    public Output<String> gateway() {
-        return this.gateway;
-    }
-    /**
      * GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.
      * 
      */
@@ -455,42 +451,6 @@ public class Container extends com.pulumi.resources.CustomResource {
         return this.init;
     }
     /**
-     * The IP address of the container.
-     * 
-     * @deprecated
-     * Use `network_data` instead. The IP address of the container&#39;s first network it.
-     * 
-     */
-    @Deprecated /* Use `network_data` instead. The IP address of the container's first network it. */
-    @Export(name="ipAddress", type=String.class, parameters={})
-    private Output<String> ipAddress;
-
-    /**
-     * @return The IP address of the container.
-     * 
-     */
-    public Output<String> ipAddress() {
-        return this.ipAddress;
-    }
-    /**
-     * The IP prefix length of the container.
-     * 
-     * @deprecated
-     * Use `network_data` instead. The IP prefix length of the container as read from its NetworkSettings.
-     * 
-     */
-    @Deprecated /* Use `network_data` instead. The IP prefix length of the container as read from its NetworkSettings. */
-    @Export(name="ipPrefixLength", type=Integer.class, parameters={})
-    private Output<Integer> ipPrefixLength;
-
-    /**
-     * @return The IP prefix length of the container.
-     * 
-     */
-    public Output<Integer> ipPrefixLength() {
-        return this.ipPrefixLength;
-    }
-    /**
      * IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:&lt;name|id&gt;` or `host`.
      * 
      */
@@ -517,24 +477,6 @@ public class Container extends com.pulumi.resources.CustomResource {
      */
     public Output<List<ContainerLabel>> labels() {
         return this.labels;
-    }
-    /**
-     * Set of links for link based connectivity between containers that are running on the same host.
-     * 
-     * @deprecated
-     * The --link flag is a legacy feature of Docker. It may eventually be removed.
-     * 
-     */
-    @Deprecated /* The --link flag is a legacy feature of Docker. It may eventually be removed. */
-    @Export(name="links", type=List.class, parameters={String.class})
-    private Output</* @Nullable */ List<String>> links;
-
-    /**
-     * @return Set of links for link based connectivity between containers that are running on the same host.
-     * 
-     */
-    public Output<Optional<List<String>>> links() {
-        return Codegen.optional(this.links);
     }
     /**
      * The logging driver to use for the container.
@@ -667,24 +609,6 @@ public class Container extends com.pulumi.resources.CustomResource {
         return this.name;
     }
     /**
-     * Set an alias for the container in all specified networks
-     * 
-     * @deprecated
-     * Use networks_advanced instead. Will be removed in v3.0.0
-     * 
-     */
-    @Deprecated /* Use networks_advanced instead. Will be removed in v3.0.0 */
-    @Export(name="networkAliases", type=List.class, parameters={String.class})
-    private Output</* @Nullable */ List<String>> networkAliases;
-
-    /**
-     * @return Set an alias for the container in all specified networks
-     * 
-     */
-    public Output<Optional<List<String>>> networkAliases() {
-        return Codegen.optional(this.networkAliases);
-    }
-    /**
      * The data of the networks the container is connected to.
      * 
      */
@@ -711,24 +635,6 @@ public class Container extends com.pulumi.resources.CustomResource {
      */
     public Output<Optional<String>> networkMode() {
         return Codegen.optional(this.networkMode);
-    }
-    /**
-     * ID of the networks in which the container is.
-     * 
-     * @deprecated
-     * Use networks_advanced instead. Will be removed in v3.0.0
-     * 
-     */
-    @Deprecated /* Use networks_advanced instead. Will be removed in v3.0.0 */
-    @Export(name="networks", type=List.class, parameters={String.class})
-    private Output</* @Nullable */ List<String>> networks;
-
-    /**
-     * @return ID of the networks in which the container is.
-     * 
-     */
-    public Output<Optional<List<String>>> networks() {
-        return Codegen.optional(this.networks);
     }
     /**
      * The networks the container is attached to

@@ -93,18 +93,10 @@ type RemoteImage struct {
 	ImageId pulumi.StringOutput `pulumi:"imageId"`
 	// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
 	KeepLocally pulumi.BoolPtrOutput `pulumi:"keepLocally"`
-	// The ID of the image in the form of `sha256:<hash>` image digest. Do not confuse it with the default `latest` tag.
-	//
-	// Deprecated: Use repo_digest instead
-	Latest pulumi.StringOutput `pulumi:"latest"`
 	// The name of the Docker image, including any tags or SHA256 repo digests.
 	Name pulumi.StringOutput `pulumi:"name"`
-	// Deprecated: Is unused and will be removed.
-	Output pulumi.StringOutput `pulumi:"output"`
-	// A value which cause an image pull when changed
-	//
-	// Deprecated: Use field pull_triggers instead
-	PullTrigger pulumi.StringPtrOutput `pulumi:"pullTrigger"`
+	// The platform to use when pulling the image. Defaults to the platform of the current machine.
+	Platform pulumi.StringPtrOutput `pulumi:"platform"`
 	// List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
 	PullTriggers pulumi.StringArrayOutput `pulumi:"pullTriggers"`
 	// The image sha256 digest in the form of `repo[:tag]@sha256:<hash>`.
@@ -153,18 +145,10 @@ type remoteImageState struct {
 	ImageId *string `pulumi:"imageId"`
 	// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
 	KeepLocally *bool `pulumi:"keepLocally"`
-	// The ID of the image in the form of `sha256:<hash>` image digest. Do not confuse it with the default `latest` tag.
-	//
-	// Deprecated: Use repo_digest instead
-	Latest *string `pulumi:"latest"`
 	// The name of the Docker image, including any tags or SHA256 repo digests.
 	Name *string `pulumi:"name"`
-	// Deprecated: Is unused and will be removed.
-	Output *string `pulumi:"output"`
-	// A value which cause an image pull when changed
-	//
-	// Deprecated: Use field pull_triggers instead
-	PullTrigger *string `pulumi:"pullTrigger"`
+	// The platform to use when pulling the image. Defaults to the platform of the current machine.
+	Platform *string `pulumi:"platform"`
 	// List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
 	PullTriggers []string `pulumi:"pullTriggers"`
 	// The image sha256 digest in the form of `repo[:tag]@sha256:<hash>`.
@@ -182,18 +166,10 @@ type RemoteImageState struct {
 	ImageId pulumi.StringPtrInput
 	// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
 	KeepLocally pulumi.BoolPtrInput
-	// The ID of the image in the form of `sha256:<hash>` image digest. Do not confuse it with the default `latest` tag.
-	//
-	// Deprecated: Use repo_digest instead
-	Latest pulumi.StringPtrInput
 	// The name of the Docker image, including any tags or SHA256 repo digests.
 	Name pulumi.StringPtrInput
-	// Deprecated: Is unused and will be removed.
-	Output pulumi.StringPtrInput
-	// A value which cause an image pull when changed
-	//
-	// Deprecated: Use field pull_triggers instead
-	PullTrigger pulumi.StringPtrInput
+	// The platform to use when pulling the image. Defaults to the platform of the current machine.
+	Platform pulumi.StringPtrInput
 	// List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
 	PullTriggers pulumi.StringArrayInput
 	// The image sha256 digest in the form of `repo[:tag]@sha256:<hash>`.
@@ -215,10 +191,8 @@ type remoteImageArgs struct {
 	KeepLocally *bool `pulumi:"keepLocally"`
 	// The name of the Docker image, including any tags or SHA256 repo digests.
 	Name string `pulumi:"name"`
-	// A value which cause an image pull when changed
-	//
-	// Deprecated: Use field pull_triggers instead
-	PullTrigger *string `pulumi:"pullTrigger"`
+	// The platform to use when pulling the image. Defaults to the platform of the current machine.
+	Platform *string `pulumi:"platform"`
 	// List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
 	PullTriggers []string `pulumi:"pullTriggers"`
 	// A map of arbitrary strings that, when changed, will force the `RemoteImage` resource to be replaced. This can be used to rebuild an image when contents of source code folders change
@@ -235,10 +209,8 @@ type RemoteImageArgs struct {
 	KeepLocally pulumi.BoolPtrInput
 	// The name of the Docker image, including any tags or SHA256 repo digests.
 	Name pulumi.StringInput
-	// A value which cause an image pull when changed
-	//
-	// Deprecated: Use field pull_triggers instead
-	PullTrigger pulumi.StringPtrInput
+	// The platform to use when pulling the image. Defaults to the platform of the current machine.
+	Platform pulumi.StringPtrInput
 	// List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
 	PullTriggers pulumi.StringArrayInput
 	// A map of arbitrary strings that, when changed, will force the `RemoteImage` resource to be replaced. This can be used to rebuild an image when contents of source code folders change
@@ -352,28 +324,14 @@ func (o RemoteImageOutput) KeepLocally() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *RemoteImage) pulumi.BoolPtrOutput { return v.KeepLocally }).(pulumi.BoolPtrOutput)
 }
 
-// The ID of the image in the form of `sha256:<hash>` image digest. Do not confuse it with the default `latest` tag.
-//
-// Deprecated: Use repo_digest instead
-func (o RemoteImageOutput) Latest() pulumi.StringOutput {
-	return o.ApplyT(func(v *RemoteImage) pulumi.StringOutput { return v.Latest }).(pulumi.StringOutput)
-}
-
 // The name of the Docker image, including any tags or SHA256 repo digests.
 func (o RemoteImageOutput) Name() pulumi.StringOutput {
 	return o.ApplyT(func(v *RemoteImage) pulumi.StringOutput { return v.Name }).(pulumi.StringOutput)
 }
 
-// Deprecated: Is unused and will be removed.
-func (o RemoteImageOutput) Output() pulumi.StringOutput {
-	return o.ApplyT(func(v *RemoteImage) pulumi.StringOutput { return v.Output }).(pulumi.StringOutput)
-}
-
-// A value which cause an image pull when changed
-//
-// Deprecated: Use field pull_triggers instead
-func (o RemoteImageOutput) PullTrigger() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v *RemoteImage) pulumi.StringPtrOutput { return v.PullTrigger }).(pulumi.StringPtrOutput)
+// The platform to use when pulling the image. Defaults to the platform of the current machine.
+func (o RemoteImageOutput) Platform() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *RemoteImage) pulumi.StringPtrOutput { return v.Platform }).(pulumi.StringPtrOutput)
 }
 
 // List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.

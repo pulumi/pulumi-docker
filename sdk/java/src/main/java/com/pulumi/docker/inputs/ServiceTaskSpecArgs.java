@@ -7,6 +7,7 @@ import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
 import com.pulumi.docker.inputs.ServiceTaskSpecContainerSpecArgs;
 import com.pulumi.docker.inputs.ServiceTaskSpecLogDriverArgs;
+import com.pulumi.docker.inputs.ServiceTaskSpecNetworksAdvancedArgs;
 import com.pulumi.docker.inputs.ServiceTaskSpecPlacementArgs;
 import com.pulumi.docker.inputs.ServiceTaskSpecResourcesArgs;
 import com.pulumi.docker.inputs.ServiceTaskSpecRestartPolicyArgs;
@@ -68,18 +69,18 @@ public final class ServiceTaskSpecArgs extends com.pulumi.resources.ResourceArgs
     }
 
     /**
-     * Ids of the networks in which the  container will be put in
+     * The networks the container is attached to
      * 
      */
-    @Import(name="networks")
-    private @Nullable Output<List<String>> networks;
+    @Import(name="networksAdvanceds")
+    private @Nullable Output<List<ServiceTaskSpecNetworksAdvancedArgs>> networksAdvanceds;
 
     /**
-     * @return Ids of the networks in which the  container will be put in
+     * @return The networks the container is attached to
      * 
      */
-    public Optional<Output<List<String>>> networks() {
-        return Optional.ofNullable(this.networks);
+    public Optional<Output<List<ServiceTaskSpecNetworksAdvancedArgs>>> networksAdvanceds() {
+        return Optional.ofNullable(this.networksAdvanceds);
     }
 
     /**
@@ -148,7 +149,7 @@ public final class ServiceTaskSpecArgs extends com.pulumi.resources.ResourceArgs
         this.containerSpec = $.containerSpec;
         this.forceUpdate = $.forceUpdate;
         this.logDriver = $.logDriver;
-        this.networks = $.networks;
+        this.networksAdvanceds = $.networksAdvanceds;
         this.placement = $.placement;
         this.resources = $.resources;
         this.restartPolicy = $.restartPolicy;
@@ -237,34 +238,34 @@ public final class ServiceTaskSpecArgs extends com.pulumi.resources.ResourceArgs
         }
 
         /**
-         * @param networks Ids of the networks in which the  container will be put in
+         * @param networksAdvanceds The networks the container is attached to
          * 
          * @return builder
          * 
          */
-        public Builder networks(@Nullable Output<List<String>> networks) {
-            $.networks = networks;
+        public Builder networksAdvanceds(@Nullable Output<List<ServiceTaskSpecNetworksAdvancedArgs>> networksAdvanceds) {
+            $.networksAdvanceds = networksAdvanceds;
             return this;
         }
 
         /**
-         * @param networks Ids of the networks in which the  container will be put in
+         * @param networksAdvanceds The networks the container is attached to
          * 
          * @return builder
          * 
          */
-        public Builder networks(List<String> networks) {
-            return networks(Output.of(networks));
+        public Builder networksAdvanceds(List<ServiceTaskSpecNetworksAdvancedArgs> networksAdvanceds) {
+            return networksAdvanceds(Output.of(networksAdvanceds));
         }
 
         /**
-         * @param networks Ids of the networks in which the  container will be put in
+         * @param networksAdvanceds The networks the container is attached to
          * 
          * @return builder
          * 
          */
-        public Builder networks(String... networks) {
-            return networks(List.of(networks));
+        public Builder networksAdvanceds(ServiceTaskSpecNetworksAdvancedArgs... networksAdvanceds) {
+            return networksAdvanceds(List.of(networksAdvanceds));
         }
 
         /**

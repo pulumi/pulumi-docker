@@ -30,16 +30,16 @@ namespace Pulumi.Docker.Inputs
         [Input("logDriver")]
         public Input<Inputs.ServiceTaskSpecLogDriverArgs>? LogDriver { get; set; }
 
-        [Input("networks")]
-        private InputList<string>? _networks;
+        [Input("networksAdvanceds")]
+        private InputList<Inputs.ServiceTaskSpecNetworksAdvancedArgs>? _networksAdvanceds;
 
         /// <summary>
-        /// Ids of the networks in which the  container will be put in
+        /// The networks the container is attached to
         /// </summary>
-        public InputList<string> Networks
+        public InputList<Inputs.ServiceTaskSpecNetworksAdvancedArgs> NetworksAdvanceds
         {
-            get => _networks ?? (_networks = new InputList<string>());
-            set => _networks = value;
+            get => _networksAdvanceds ?? (_networksAdvanceds = new InputList<Inputs.ServiceTaskSpecNetworksAdvancedArgs>());
+            set => _networksAdvanceds = value;
         }
 
         /// <summary>

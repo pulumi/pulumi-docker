@@ -10,19 +10,20 @@ import com.pulumi.core.internal.Codegen;
 import com.pulumi.docker.RegistryImageArgs;
 import com.pulumi.docker.Utilities;
 import com.pulumi.docker.inputs.RegistryImageState;
-import com.pulumi.docker.outputs.RegistryImageBuild;
 import java.lang.Boolean;
+import java.lang.Object;
 import java.lang.String;
+import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Nullable;
 
 /**
  * &lt;!-- Bug: Type and Name are switched --&gt;
- * Manages the lifecycle of docker image/tag in a registry means it can store one or more version of specific docker images and identified by their tags.
+ * Manages the lifecycle of docker image in a registry. You can upload images to a registry (= `docker push`) and also delete them again
  * 
  * ## Example Usage
  * 
- * To be able to update an image itself when an updated image arrives.
+ * Build an image with the `docker.RemoteImage` resource and then push it to a registry:
  * ```java
  * package generated_program;
  * 
@@ -31,7 +32,9 @@ import javax.annotation.Nullable;
  * import com.pulumi.core.Output;
  * import com.pulumi.docker.RegistryImage;
  * import com.pulumi.docker.RegistryImageArgs;
- * import com.pulumi.docker.inputs.RegistryImageBuildArgs;
+ * import com.pulumi.docker.RemoteImage;
+ * import com.pulumi.docker.RemoteImageArgs;
+ * import com.pulumi.docker.inputs.RemoteImageBuildArgs;
  * import java.util.List;
  * import java.util.ArrayList;
  * import java.util.Map;
@@ -46,7 +49,12 @@ import javax.annotation.Nullable;
  * 
  *     public static void stack(Context ctx) {
  *         var helloworld = new RegistryImage(&#34;helloworld&#34;, RegistryImageArgs.builder()        
- *             .build(RegistryImageBuildArgs.builder()
+ *             .keepRemotely(true)
+ *             .build());
+ * 
+ *         var image = new RemoteImage(&#34;image&#34;, RemoteImageArgs.builder()        
+ *             .name(&#34;registry.com/somename:1.0&#34;)
+ *             .build(RemoteImageBuildArgs.builder()
  *                 .context(String.format(&#34;%s/absolutePathToContextFolder&#34;, path.cwd()))
  *                 .build())
  *             .build());
@@ -58,20 +66,6 @@ import javax.annotation.Nullable;
  */
 @ResourceType(type="docker:index/registryImage:RegistryImage")
 public class RegistryImage extends com.pulumi.resources.CustomResource {
-    /**
-     * Definition for building the image
-     * 
-     */
-    @Export(name="build", type=RegistryImageBuild.class, parameters={})
-    private Output</* @Nullable */ RegistryImageBuild> build;
-
-    /**
-     * @return Definition for building the image
-     * 
-     */
-    public Output<Optional<RegistryImageBuild>> build() {
-        return Codegen.optional(this.build);
-    }
     /**
      * If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
      * 
@@ -127,6 +121,20 @@ public class RegistryImage extends com.pulumi.resources.CustomResource {
      */
     public Output<String> sha256Digest() {
         return this.sha256Digest;
+    }
+    /**
+     * A map of arbitrary strings that, when changed, will force the `docker.RegistryImage` resource to be replaced. This can be used to repush a local image
+     * 
+     */
+    @Export(name="triggers", type=Map.class, parameters={String.class, Object.class})
+    private Output</* @Nullable */ Map<String,Object>> triggers;
+
+    /**
+     * @return A map of arbitrary strings that, when changed, will force the `docker.RegistryImage` resource to be replaced. This can be used to repush a local image
+     * 
+     */
+    public Output<Optional<Map<String,Object>>> triggers() {
+        return Codegen.optional(this.triggers);
     }
 
     /**

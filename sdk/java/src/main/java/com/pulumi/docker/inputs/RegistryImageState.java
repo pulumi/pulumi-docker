@@ -5,9 +5,10 @@ package com.pulumi.docker.inputs;
 
 import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
-import com.pulumi.docker.inputs.RegistryImageBuildArgs;
 import java.lang.Boolean;
+import java.lang.Object;
 import java.lang.String;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import javax.annotation.Nullable;
@@ -16,21 +17,6 @@ import javax.annotation.Nullable;
 public final class RegistryImageState extends com.pulumi.resources.ResourceArgs {
 
     public static final RegistryImageState Empty = new RegistryImageState();
-
-    /**
-     * Definition for building the image
-     * 
-     */
-    @Import(name="build")
-    private @Nullable Output<RegistryImageBuildArgs> build;
-
-    /**
-     * @return Definition for building the image
-     * 
-     */
-    public Optional<Output<RegistryImageBuildArgs>> build() {
-        return Optional.ofNullable(this.build);
-    }
 
     /**
      * If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
@@ -92,14 +78,29 @@ public final class RegistryImageState extends com.pulumi.resources.ResourceArgs 
         return Optional.ofNullable(this.sha256Digest);
     }
 
+    /**
+     * A map of arbitrary strings that, when changed, will force the `docker.RegistryImage` resource to be replaced. This can be used to repush a local image
+     * 
+     */
+    @Import(name="triggers")
+    private @Nullable Output<Map<String,Object>> triggers;
+
+    /**
+     * @return A map of arbitrary strings that, when changed, will force the `docker.RegistryImage` resource to be replaced. This can be used to repush a local image
+     * 
+     */
+    public Optional<Output<Map<String,Object>>> triggers() {
+        return Optional.ofNullable(this.triggers);
+    }
+
     private RegistryImageState() {}
 
     private RegistryImageState(RegistryImageState $) {
-        this.build = $.build;
         this.insecureSkipVerify = $.insecureSkipVerify;
         this.keepRemotely = $.keepRemotely;
         this.name = $.name;
         this.sha256Digest = $.sha256Digest;
+        this.triggers = $.triggers;
     }
 
     public static Builder builder() {
@@ -118,27 +119,6 @@ public final class RegistryImageState extends com.pulumi.resources.ResourceArgs 
 
         public Builder(RegistryImageState defaults) {
             $ = new RegistryImageState(Objects.requireNonNull(defaults));
-        }
-
-        /**
-         * @param build Definition for building the image
-         * 
-         * @return builder
-         * 
-         */
-        public Builder build(@Nullable Output<RegistryImageBuildArgs> build) {
-            $.build = build;
-            return this;
-        }
-
-        /**
-         * @param build Definition for building the image
-         * 
-         * @return builder
-         * 
-         */
-        public Builder build(RegistryImageBuildArgs build) {
-            return build(Output.of(build));
         }
 
         /**
@@ -223,6 +203,27 @@ public final class RegistryImageState extends com.pulumi.resources.ResourceArgs 
          */
         public Builder sha256Digest(String sha256Digest) {
             return sha256Digest(Output.of(sha256Digest));
+        }
+
+        /**
+         * @param triggers A map of arbitrary strings that, when changed, will force the `docker.RegistryImage` resource to be replaced. This can be used to repush a local image
+         * 
+         * @return builder
+         * 
+         */
+        public Builder triggers(@Nullable Output<Map<String,Object>> triggers) {
+            $.triggers = triggers;
+            return this;
+        }
+
+        /**
+         * @param triggers A map of arbitrary strings that, when changed, will force the `docker.RegistryImage` resource to be replaced. This can be used to repush a local image
+         * 
+         * @return builder
+         * 
+         */
+        public Builder triggers(Map<String,Object> triggers) {
+            return triggers(Output.of(triggers));
         }
 
         public RegistryImageState build() {

@@ -12,47 +12,16 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ContainerNetworkData {
-    /**
-     * @return The network gateway of the container.
-     * 
-     * @deprecated
-     * Use `network_data` instead. The network gateway of the container as read from its NetworkSettings.
-     * 
-     */
-    @Deprecated /* Use `network_data` instead. The network gateway of the container as read from its NetworkSettings. */
     private @Nullable String gateway;
     private @Nullable String globalIpv6Address;
     private @Nullable Integer globalIpv6PrefixLength;
-    /**
-     * @return The IP address of the container.
-     * 
-     * @deprecated
-     * Use `network_data` instead. The IP address of the container&#39;s first network it.
-     * 
-     */
-    @Deprecated /* Use `network_data` instead. The IP address of the container's first network it. */
     private @Nullable String ipAddress;
-    /**
-     * @return The IP prefix length of the container.
-     * 
-     * @deprecated
-     * Use `network_data` instead. The IP prefix length of the container as read from its NetworkSettings.
-     * 
-     */
-    @Deprecated /* Use `network_data` instead. The IP prefix length of the container as read from its NetworkSettings. */
     private @Nullable Integer ipPrefixLength;
     private @Nullable String ipv6Gateway;
+    private @Nullable String macAddress;
     private @Nullable String networkName;
 
     private ContainerNetworkData() {}
-    /**
-     * @return The network gateway of the container.
-     * 
-     * @deprecated
-     * Use `network_data` instead. The network gateway of the container as read from its NetworkSettings.
-     * 
-     */
-    @Deprecated /* Use `network_data` instead. The network gateway of the container as read from its NetworkSettings. */
     public Optional<String> gateway() {
         return Optional.ofNullable(this.gateway);
     }
@@ -62,30 +31,17 @@ public final class ContainerNetworkData {
     public Optional<Integer> globalIpv6PrefixLength() {
         return Optional.ofNullable(this.globalIpv6PrefixLength);
     }
-    /**
-     * @return The IP address of the container.
-     * 
-     * @deprecated
-     * Use `network_data` instead. The IP address of the container&#39;s first network it.
-     * 
-     */
-    @Deprecated /* Use `network_data` instead. The IP address of the container's first network it. */
     public Optional<String> ipAddress() {
         return Optional.ofNullable(this.ipAddress);
     }
-    /**
-     * @return The IP prefix length of the container.
-     * 
-     * @deprecated
-     * Use `network_data` instead. The IP prefix length of the container as read from its NetworkSettings.
-     * 
-     */
-    @Deprecated /* Use `network_data` instead. The IP prefix length of the container as read from its NetworkSettings. */
     public Optional<Integer> ipPrefixLength() {
         return Optional.ofNullable(this.ipPrefixLength);
     }
     public Optional<String> ipv6Gateway() {
         return Optional.ofNullable(this.ipv6Gateway);
+    }
+    public Optional<String> macAddress() {
+        return Optional.ofNullable(this.macAddress);
     }
     public Optional<String> networkName() {
         return Optional.ofNullable(this.networkName);
@@ -106,6 +62,7 @@ public final class ContainerNetworkData {
         private @Nullable String ipAddress;
         private @Nullable Integer ipPrefixLength;
         private @Nullable String ipv6Gateway;
+        private @Nullable String macAddress;
         private @Nullable String networkName;
         public Builder() {}
         public Builder(ContainerNetworkData defaults) {
@@ -116,6 +73,7 @@ public final class ContainerNetworkData {
     	      this.ipAddress = defaults.ipAddress;
     	      this.ipPrefixLength = defaults.ipPrefixLength;
     	      this.ipv6Gateway = defaults.ipv6Gateway;
+    	      this.macAddress = defaults.macAddress;
     	      this.networkName = defaults.networkName;
         }
 
@@ -150,6 +108,11 @@ public final class ContainerNetworkData {
             return this;
         }
         @CustomType.Setter
+        public Builder macAddress(@Nullable String macAddress) {
+            this.macAddress = macAddress;
+            return this;
+        }
+        @CustomType.Setter
         public Builder networkName(@Nullable String networkName) {
             this.networkName = networkName;
             return this;
@@ -162,6 +125,7 @@ public final class ContainerNetworkData {
             o.ipAddress = ipAddress;
             o.ipPrefixLength = ipPrefixLength;
             o.ipv6Gateway = ipv6Gateway;
+            o.macAddress = macAddress;
             o.networkName = networkName;
             return o;
         }
