@@ -184,6 +184,8 @@ class Image(pulumi.CustomResource):
                 skip_push = False
             __props__.__dict__["skip_push"] = skip_push
             __props__.__dict__["base_image_name"] = None
+            __props__.__dict__["context"] = None
+            __props__.__dict__["dockerfile"] = None
             __props__.__dict__["registry_server"] = None
         alias_opts = pulumi.ResourceOptions(aliases=[pulumi.Alias(type_="docker:image:Image")])
         opts = pulumi.ResourceOptions.merge(opts, alias_opts)
@@ -210,6 +212,8 @@ class Image(pulumi.CustomResource):
         __props__ = ImageArgs.__new__(ImageArgs)
 
         __props__.__dict__["base_image_name"] = None
+        __props__.__dict__["context"] = None
+        __props__.__dict__["dockerfile"] = None
         __props__.__dict__["image_name"] = None
         __props__.__dict__["registry_server"] = None
         return Image(resource_name, opts=opts, __props__=__props__)
@@ -221,6 +225,22 @@ class Image(pulumi.CustomResource):
         The fully qualified image name that was pushed to the registry.
         """
         return pulumi.get(self, "base_image_name")
+
+    @property
+    @pulumi.getter
+    def context(self) -> pulumi.Output[Optional[str]]:
+        """
+        The path to the build context to use.
+        """
+        return pulumi.get(self, "context")
+
+    @property
+    @pulumi.getter
+    def dockerfile(self) -> pulumi.Output[Optional[str]]:
+        """
+        The location of the Dockerfile relative to the docker build context.
+        """
+        return pulumi.get(self, "dockerfile")
 
     @property
     @pulumi.getter(name="imageName")

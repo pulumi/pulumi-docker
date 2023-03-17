@@ -60,6 +60,14 @@ export class Image extends pulumi.CustomResource {
      */
     public /*out*/ readonly baseImageName!: pulumi.Output<string | undefined>;
     /**
+     * The path to the build context to use.
+     */
+    public /*out*/ readonly context!: pulumi.Output<string | undefined>;
+    /**
+     * The location of the Dockerfile relative to the docker build context.
+     */
+    public /*out*/ readonly dockerfile!: pulumi.Output<string | undefined>;
+    /**
      * The fully qualified image name
      */
     public readonly imageName!: pulumi.Output<string | undefined>;
@@ -87,9 +95,13 @@ export class Image extends pulumi.CustomResource {
             resourceInputs["registry"] = args ? args.registry : undefined;
             resourceInputs["skipPush"] = (args ? args.skipPush : undefined) ?? false;
             resourceInputs["baseImageName"] = undefined /*out*/;
+            resourceInputs["context"] = undefined /*out*/;
+            resourceInputs["dockerfile"] = undefined /*out*/;
             resourceInputs["registryServer"] = undefined /*out*/;
         } else {
             resourceInputs["baseImageName"] = undefined /*out*/;
+            resourceInputs["context"] = undefined /*out*/;
+            resourceInputs["dockerfile"] = undefined /*out*/;
             resourceInputs["imageName"] = undefined /*out*/;
             resourceInputs["registryServer"] = undefined /*out*/;
         }

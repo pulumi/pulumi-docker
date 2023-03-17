@@ -3065,13 +3065,11 @@
                 },
                 "context": {
                     "type": "string",
-                    "description": "The path to the build context to use.",
-                    "default": "."
+                    "description": "The path to the build context to use."
                 },
                 "dockerfile": {
                     "type": "string",
-                    "description": "The path to the Dockerfile to use.",
-                    "default": "Dockerfile"
+                    "description": "The path to the Dockerfile to use."
                 },
                 "platform": {
                     "type": "string",
@@ -4421,6 +4419,14 @@
                 "baseImageName": {
                     "type": "string",
                     "description": "The fully qualified image name that was pushed to the registry."
+                },
+                "context": {
+                    "type": "string",
+                    "description": "The path to the build context to use."
+                },
+                "dockerfile": {
+                    "type": "string",
+                    "description": "The location of the Dockerfile relative to the docker build context."
                 },
                 "imageName": {
                     "type": "string",

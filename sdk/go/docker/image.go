@@ -49,6 +49,10 @@ type Image struct {
 
 	// The fully qualified image name that was pushed to the registry.
 	BaseImageName pulumi.StringPtrOutput `pulumi:"baseImageName"`
+	// The path to the build context to use.
+	Context pulumi.StringPtrOutput `pulumi:"context"`
+	// The location of the Dockerfile relative to the docker build context.
+	Dockerfile pulumi.StringPtrOutput `pulumi:"dockerfile"`
 	// The fully qualified image name
 	ImageName pulumi.StringPtrOutput `pulumi:"imageName"`
 	// The name of the registry server hosting the image.
@@ -221,6 +225,16 @@ func (o ImageOutput) ToImageOutputWithContext(ctx context.Context) ImageOutput {
 // The fully qualified image name that was pushed to the registry.
 func (o ImageOutput) BaseImageName() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Image) pulumi.StringPtrOutput { return v.BaseImageName }).(pulumi.StringPtrOutput)
+}
+
+// The path to the build context to use.
+func (o ImageOutput) Context() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *Image) pulumi.StringPtrOutput { return v.Context }).(pulumi.StringPtrOutput)
+}
+
+// The location of the Dockerfile relative to the docker build context.
+func (o ImageOutput) Dockerfile() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *Image) pulumi.StringPtrOutput { return v.Dockerfile }).(pulumi.StringPtrOutput)
 }
 
 // The fully qualified image name

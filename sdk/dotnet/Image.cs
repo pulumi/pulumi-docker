@@ -50,6 +50,18 @@ namespace Pulumi.Docker
         public Output<string?> BaseImageName { get; private set; } = null!;
 
         /// <summary>
+        /// The path to the build context to use.
+        /// </summary>
+        [Output("context")]
+        public Output<string?> Context { get; private set; } = null!;
+
+        /// <summary>
+        /// The location of the Dockerfile relative to the docker build context.
+        /// </summary>
+        [Output("dockerfile")]
+        public Output<string?> Dockerfile { get; private set; } = null!;
+
+        /// <summary>
         /// The fully qualified image name
         /// </summary>
         [Output("imageName")]
