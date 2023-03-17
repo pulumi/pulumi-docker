@@ -165,12 +165,13 @@ func TestGetRelDockerfilePath(t *testing.T) {
 		assert.Equal(t, expected, actual)
 	})
 
-	t.Run("A Dockerfile name with multiple separators will return its relative position to the build context", func(t *testing.T) {
-		expected := "../other-folder/Dockerfile"
-		input1, input2 := "./special-context", "./other-folder/Dockerfile"
+	t.Run("A Dockerfile name with multiple separators will return its relative position to the build context",
+		func(t *testing.T) {
+			expected := "../other-folder/Dockerfile"
+			input1, input2 := "./special-context", "./other-folder/Dockerfile"
 
-		actual, err := getRelDockerfilePath(input1, input2)
-		assert.NoError(t, err)
-		assert.Equal(t, expected, actual)
-	})
+			actual, err := getRelDockerfilePath(input1, input2)
+			assert.NoError(t, err)
+			assert.Equal(t, expected, actual)
+		})
 }
