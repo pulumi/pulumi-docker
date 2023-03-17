@@ -1,15 +1,13 @@
-name: dockerfile-in-context
+name: dockerfile-default-context
 runtime: yaml
 resources:
   demo-image:
     type: docker:Image
     properties:
-      imageName: pulumibot/test-image:tag1
+      imageName: pulumibot/test-image:tag
       skipPush: true
-      build:
-        context: ./app
-        dockerfile: ./app/Dockerfile
     options:
       version: v4.0.0
 outputs:
   imageName: ${demo-image.imageName}
+  out-dockerfile: ${demo-image.dockerfile}

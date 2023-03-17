@@ -37,6 +37,19 @@ func TestDockerfileDefaultYAML(t *testing.T) {
 	})
 }
 
+func TestDockerfileDefaultContextYAML(t *testing.T) {
+	cwd, err := os.Getwd()
+	if !assert.NoError(t, err) {
+		t.FailNow()
+	}
+
+	integration.ProgramTest(t, &integration.ProgramTestOptions{
+		Dir:         path.Join(cwd, "test-dockerfile", "dockerfile-default-context"),
+		Quick:       true,
+		SkipRefresh: true,
+	})
+}
+
 func TestDockerfileExternalYAML(t *testing.T) {
 	cwd, err := os.Getwd()
 	if !assert.NoError(t, err) {
