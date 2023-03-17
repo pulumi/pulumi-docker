@@ -118,6 +118,37 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 		return nil, err
 	}
 
+	// Verify Dockerfile at given location
+	if _, statErr := os.Stat(build.Dockerfile); statErr != nil {
+		if filepath.IsAbs(build.Dockerfile) {
+			return nil, fmt.Errorf("could not open dockerfile at absolute path %s: %v", build.Dockerfile, statErr)
+		}
+		relPath := filepath.Join(build.Context, build.Dockerfile)
+		_, err = os.Stat(relPath)
+
+		// In the case of a pulumi project that looks as follows:
+		// infra/
+		//   app/
+		//     # some content for the Docker build
+		//     Dockerfile
+		//   Pulumi.yaml
+		//
+		//
+		// the user inputs:
+		//    context: "./app"
+		//    dockerfile: "./Dockerfile" # this is in error because it is in "./app/Dockerfile"
+		//
+		// we want an error message that tells the user: try "./app/Dockerfile"
+		if err != nil {
+			// no clue case
+			return nil, fmt.Errorf("could not open dockerfile at relative path %s: %v", build.Dockerfile, statErr)
+		}
+
+		// we could open the relative path
+		return nil, fmt.Errorf("could not open dockerfile at relative path %s. "+
+			"Try setting `dockerfile` to %q", build.Dockerfile, relPath)
+
+	}
 	// Get the relative path to Dockerfile from docker context
 	relDockerfile, err := getRelDockerfilePath(build.Context, build.Dockerfile)
 	if err != nil {
