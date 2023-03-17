@@ -4079,12 +4079,8 @@ class DockerBuildArgs:
             pulumi.set(__self__, "builder_version", builder_version)
         if cache_from is not None:
             pulumi.set(__self__, "cache_from", cache_from)
-        if context is None:
-            context = '.'
         if context is not None:
             pulumi.set(__self__, "context", context)
-        if dockerfile is None:
-            dockerfile = 'Dockerfile'
         if dockerfile is not None:
             pulumi.set(__self__, "dockerfile", dockerfile)
         if platform is not None:

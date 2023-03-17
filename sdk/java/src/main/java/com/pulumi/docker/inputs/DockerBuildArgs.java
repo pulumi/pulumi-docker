@@ -307,8 +307,6 @@ public final class DockerBuildArgs extends com.pulumi.resources.ResourceArgs {
 
         public DockerBuildArgs build() {
             $.builderVersion = Codegen.objectProp("builderVersion", BuilderVersion.class).output().arg($.builderVersion).def(BuilderVersion.BuilderBuildKit).getNullable();
-            $.context = Codegen.stringProp("context").output().arg($.context).def(".").getNullable();
-            $.dockerfile = Codegen.stringProp("dockerfile").output().arg($.dockerfile).def("Dockerfile").getNullable();
             return $;
         }
     }

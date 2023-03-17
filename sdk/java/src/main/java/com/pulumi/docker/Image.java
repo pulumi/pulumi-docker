@@ -74,6 +74,34 @@ public class Image extends com.pulumi.resources.CustomResource {
         return Codegen.optional(this.baseImageName);
     }
     /**
+     * The path to the build context to use.
+     * 
+     */
+    @Export(name="context", type=String.class, parameters={})
+    private Output</* @Nullable */ String> context;
+
+    /**
+     * @return The path to the build context to use.
+     * 
+     */
+    public Output<Optional<String>> context() {
+        return Codegen.optional(this.context);
+    }
+    /**
+     * The location of the Dockerfile relative to the docker build context.
+     * 
+     */
+    @Export(name="dockerfile", type=String.class, parameters={})
+    private Output</* @Nullable */ String> dockerfile;
+
+    /**
+     * @return The location of the Dockerfile relative to the docker build context.
+     * 
+     */
+    public Output<Optional<String>> dockerfile() {
+        return Codegen.optional(this.dockerfile);
+    }
+    /**
      * The fully qualified image name
      * 
      */

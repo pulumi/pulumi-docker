@@ -142,4 +142,36 @@ func TestHashFilemodeMatters(t *testing.T) {
 func TestHashDeepSymlinks(t *testing.T) {
 	_, err := hashContext("./testdata/symlinks", "./Dockerfile")
 	assert.NoError(t, err)
+
+}
+
+func TestGetRelDockerfilePath(t *testing.T) {
+
+	t.Run("A Dockerfile name with no separators is relative to the build context", func(t *testing.T) {
+		expected := "Dockerfile"
+		input1, input2 := ".", "Dockerfile"
+
+		actual, err := getRelDockerfilePath(input1, input2)
+		assert.NoError(t, err)
+		assert.Equal(t, expected, actual)
+	})
+
+	t.Run("A Dockerfile name with separators will return its relative position to the build context", func(t *testing.T) {
+		expected := "../Dockerfile"
+		input1, input2 := "./special-context", "./Dockerfile"
+
+		actual, err := getRelDockerfilePath(input1, input2)
+		assert.NoError(t, err)
+		assert.Equal(t, expected, actual)
+	})
+
+	t.Run("A Dockerfile name with multiple separators will return its relative position to the build context",
+		func(t *testing.T) {
+			expected := "../other-folder/Dockerfile"
+			input1, input2 := "./special-context", "./other-folder/Dockerfile"
+
+			actual, err := getRelDockerfilePath(input1, input2)
+			assert.NoError(t, err)
+			assert.Equal(t, expected, actual)
+		})
 }

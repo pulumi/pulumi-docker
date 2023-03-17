@@ -107,7 +107,7 @@ func TestGcpContainerRegistry(t *testing.T) {
 	integration.ProgramTest(t, &test)
 }
 
-func TestDockerContainerRegistry(t *testing.T) {
+func TestDockerContainerRegistryNode(t *testing.T) {
 	username := "pulumibot"
 	password := os.Getenv("DOCKER_HUB_PASSWORD")
 	test := getJsOptions(t).

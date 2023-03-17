@@ -118,10 +118,45 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 		return nil, err
 	}
 
-	dockerContext := build.Context
-	dockerfile := build.Dockerfile
+	// Verify Dockerfile at given location
+	if _, statErr := os.Stat(build.Dockerfile); statErr != nil {
+		if filepath.IsAbs(build.Dockerfile) {
+			return nil, fmt.Errorf("could not open dockerfile at absolute path %s: %v", build.Dockerfile, statErr)
+		}
+		relPath := filepath.Join(build.Context, build.Dockerfile)
+		_, err = os.Stat(relPath)
+
+		// In the case of a pulumi project that looks as follows:
+		// infra/
+		//   app/
+		//     # some content for the Docker build
+		//     Dockerfile
+		//   Pulumi.yaml
+		//
+		//
+		// the user inputs:
+		//    context: "./app"
+		//    dockerfile: "./Dockerfile" # this is in error because it is in "./app/Dockerfile"
+		//
+		// we want an error message that tells the user: try "./app/Dockerfile"
+		if err != nil {
+			// no clue case
+			return nil, fmt.Errorf("could not open dockerfile at relative path %s: %v", build.Dockerfile, statErr)
+		}
+
+		// we could open the relative path
+		return nil, fmt.Errorf("could not open dockerfile at relative path %s. "+
+			"Try setting `dockerfile` to %q", build.Dockerfile, relPath)
+
+	}
+	// Get the relative path to Dockerfile from docker context
+	relDockerfile, err := getRelDockerfilePath(build.Context, build.Dockerfile)
+	if err != nil {
+		return nil, err
+	}
+
 	// Hash docker build context digest
-	contextDigest, err := hashContext(dockerContext, dockerfile)
+	contextDigest, err := hashContext(build.Context, relDockerfile)
 	if err != nil {
 		return nil, err
 	}
@@ -555,4 +590,25 @@ func getIgnore(dockerIgnorePath string) ([]string, error) {
 		return ignorePatterns, fmt.Errorf("unable to parse %s file: %w", ".dockerignore", err)
 	}
 	return ignorePatterns, nil
+}
+
+func getRelDockerfilePath(buildContext, dockerfile string) (string, error) {
+	// if the Pulumi program specifies an absolute path or a path relative to the program's local directory,
+	// we need to get the Dockerfile's relative path to the context directory for the hash function
+	if strings.Contains(dockerfile, string(filepath.Separator)) {
+		absDockerfile, err := filepath.Abs(dockerfile)
+		if err != nil {
+			return "", fmt.Errorf("absDockerfile error: %s", err)
+		}
+		absBuildpath, err := filepath.Abs(buildContext)
+		if err != nil {
+			return "", fmt.Errorf("absBuildPath error: %s", err)
+		}
+		dockerfile, err = filepath.Rel(absBuildpath, absDockerfile)
+		if err != nil {
+			return "", fmt.Errorf("relDockerfile error: %s", err)
+		}
+
+	}
+	return dockerfile, nil
 }
