@@ -6,6 +6,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
+	"github.com/pulumi/pulumi/sdk/v3/go/common/diag"
 	"io"
 	"io/fs"
 	"os"
@@ -153,6 +154,11 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 			if err != nil {
 				return nil, err
 			}
+		}
+
+		if _, err := marshalCachedImages(inputs["build"]); err != nil {
+			err = p.host.Log(ctx, diag.Error, urn, msg)
+			return nil, err
 		}
 	}
 

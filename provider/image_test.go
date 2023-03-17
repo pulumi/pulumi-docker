@@ -206,15 +206,6 @@ func TestMarshalArgs(t *testing.T) {
 func TestMarshalCachedImages(t *testing.T) {
 	t.Run("Test Cached Images", func(t *testing.T) {
 		expected := []string{"apple", "banana", "cherry"}
-		imgInput := Image{
-			Name:     "unicornsareawesome",
-			SkipPush: false,
-			Registry: Registry{
-				Server:   "https://index.docker.io/v1/",
-				Username: "pulumipus",
-				Password: "supersecret",
-			},
-		}
 		buildInput := resource.NewObjectProperty(resource.PropertyMap{
 			"dockerfile": resource.NewStringProperty("TheLastUnicorn"),
 			"context":    resource.NewStringProperty("/twilight/sparkle/bin"),
@@ -227,44 +218,38 @@ func TestMarshalCachedImages(t *testing.T) {
 				}),
 			}),
 		})
-
-		actual := marshalCachedImages(imgInput, buildInput)
+		actual, err := marshalCachedImages(buildInput)
+		assert.NoError(t, err)
 		assert.Equal(t, expected, actual)
 
 	})
 	t.Run("Test Cached Images No Build Input Returns Nil", func(t *testing.T) {
 		expected := []string(nil)
-		imgInput := Image{
-			Name:     "unicornsareawesome",
-			SkipPush: false,
-			Registry: Registry{
-				Server:   "https://index.docker.io/v1/",
-				Username: "pulumipus",
-				Password: "supersecret",
-			},
-		}
 		buildInput := resource.NewObjectProperty(resource.PropertyMap{})
-		actual := marshalCachedImages(imgInput, buildInput)
+		actual, err := marshalCachedImages(buildInput)
+		assert.NoError(t, err)
 		assert.Equal(t, expected, actual)
 	})
 
 	t.Run("Test Cached Images No cacheFrom Input Returns Nil", func(t *testing.T) {
 		expected := []string(nil)
-		imgInput := Image{
-			Name:     "unicornsareawesome",
-			SkipPush: false,
-			Registry: Registry{
-				Server:   "https://index.docker.io/v1/",
-				Username: "pulumipus",
-				Password: "supersecret",
-			},
-		}
 		buildInput := resource.NewObjectProperty(resource.PropertyMap{
 			"dockerfile": resource.NewStringProperty("TheLastUnicorn"),
 			"context":    resource.NewStringProperty("/twilight/sparkle/bin"),
 		})
-		actual := marshalCachedImages(imgInput, buildInput)
+		actual, err := marshalCachedImages(buildInput)
+		assert.NoError(t, err)
 		assert.Equal(t, expected, actual)
+	})
+	t.Run("Test Cached Images No images Input Returns Nil and error", func(t *testing.T) {
+		buildInput := resource.NewObjectProperty(resource.PropertyMap{
+			"dockerfile": resource.NewStringProperty("TheLastUnicorn"),
+			"context":    resource.NewStringProperty("/twilight/sparkle/bin"),
+			"cacheFrom":  resource.NewObjectProperty(resource.PropertyMap{}),
+		})
+		actual, err := marshalCachedImages(buildInput)
+		assert.Error(t, err)
+		assert.Nil(t, actual)
 	})
 }
 

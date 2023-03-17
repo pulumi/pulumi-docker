@@ -80,7 +80,10 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	if err != nil {
 		return "", nil, err
 	}
-	cache := marshalCachedImages(img, inputs["build"])
+	cache, err := marshalCachedImages(inputs["build"])
+	if err != nil {
+		return "", nil, err
+	}
 
 	build.CachedImages = cache
 	img.Build = build
@@ -349,25 +352,28 @@ func marshalBuildAndApplyDefaults(b resource.PropertyValue) (Build, error) {
 	return build, nil
 }
 
-func marshalCachedImages(img Image, b resource.PropertyValue) []string {
+func marshalCachedImages(b resource.PropertyValue) ([]string, error) {
 	var cacheImages []string
 	if b.IsNull() {
-		return cacheImages
+		return cacheImages, nil
 	}
 	c := b.ObjectValue()["cacheFrom"]
 
 	if c.IsNull() {
-		return cacheImages
+		return cacheImages, nil
 	}
 
 	// if we specify a list of stages, then we only pull those
 	cacheFrom := c.ObjectValue()
+	if cacheFrom["images"].IsNull() {
+		return cacheImages, fmt.Errorf("if you want to use cacheFrom, you must have `images` set")
+	}
 	stages := cacheFrom["images"].ArrayValue()
 	for _, img := range stages {
 		stage := img.StringValue()
 		cacheImages = append(cacheImages, stage)
 	}
-	return cacheImages
+	return cacheImages, nil
 }
 
 func marshalRegistry(r resource.PropertyValue) Registry {
