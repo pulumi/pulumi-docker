@@ -6,32 +6,31 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"github.com/docker/distribution/reference"
-	"github.com/docker/docker/pkg/idtools"
-	"github.com/moby/buildkit/session"
-	"github.com/moby/buildkit/session/auth/authprovider"
-	"github.com/moby/moby/registry"
-	"io"
-	"net"
-	"os"
-	"path/filepath"
-	"strings"
-
+	buildCmd "github.com/docker/cli/cli/command/image/build"
 	clibuild "github.com/docker/cli/cli/command/image/build"
 	"github.com/docker/cli/cli/config"
 	"github.com/docker/cli/cli/config/configfile"
 	"github.com/docker/cli/cli/config/credentials"
 	clitypes "github.com/docker/cli/cli/config/types"
+	"github.com/docker/distribution/reference"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
 	"github.com/docker/docker/pkg/archive"
+	"github.com/docker/docker/pkg/idtools"
 	"github.com/docker/docker/pkg/jsonmessage"
 	structpb "github.com/golang/protobuf/ptypes/struct"
 	controlapi "github.com/moby/buildkit/api/services/control"
+	"github.com/moby/buildkit/session"
+	"github.com/moby/buildkit/session/auth/authprovider"
+	"github.com/moby/moby/registry"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
-
-	buildCmd "github.com/docker/cli/cli/command/image/build"
+	"io"
+	"net"
+	"os"
+	"path"
+	"path/filepath"
+	"strings"
 )
 
 const defaultDockerfile = "Dockerfile"
@@ -109,16 +108,24 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		return "", nil, fmt.Errorf("error reading ignore file: %w", err)
 	}
 
-	// Handle Dockerfile from outside of build context folder
-	var dockerfileCtx io.ReadCloser
-	if strings.Contains(build.Dockerfile, string(filepath.Separator)) {
-		// Dockerfile is outside of build context or otherwise specified with an explicit path;
-		// read the Dockerfile and pass it as dockerfileCtx
-		dockerfileCtx, err = os.Open(build.Dockerfile)
-		if err != nil {
-			return "", nil, fmt.Errorf("the provider is sadly unable to open Dockerfile: %v", err)
-		}
-		defer dockerfileCtx.Close()
+	absDockerfile, err := filepath.Abs(build.Dockerfile)
+	if err != nil {
+		return "", nil, fmt.Errorf("absDockerfile error: %s", err)
+	}
+	absBuildpath, err := filepath.Abs(build.Context)
+	if err != nil {
+		return "", nil, fmt.Errorf("absBuildPath error: %s", err)
+	}
+	relDockerfile, err := filepath.Rel(absBuildpath, absDockerfile)
+	if err != nil {
+		return "", nil, fmt.Errorf("relDockerfile error: %s", err)
+	}
+
+	// if the dockerfile is in the context it will be something like "./Dockerfile" or ".\sub\dir\Dockerfile"
+	// if the dockerfile is out of the context it will begin with "../"
+	dockerfileInContext := true
+	if strings.HasPrefix(relDockerfile, ".."+string(filepath.Separator)) {
+		dockerfileInContext = false
 	}
 
 	contextDir, err := clibuild.ResolveAndValidateContextPath(build.Context)
@@ -133,7 +140,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	// un-ignore build files so the docker daemon can use them
 	ignorePatterns := buildCmd.TrimBuildFilesFromExcludes(
 		initialIgnorePatterns,
-		img.Build.Dockerfile,
+		relDockerfile,
 		false,
 	)
 
@@ -157,8 +164,15 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	}
 
 	// add dockerfile to tarball if it's not in the build context
-	if dockerfileCtx != nil && tar != nil {
-		tar, build.Dockerfile, err = clibuild.AddDockerfileToBuildContext(dockerfileCtx, tar)
+	replaceDockerfile := relDockerfile
+	if !dockerfileInContext {
+		// Handle Dockerfile from outside of build context folder
+		var dockerfileCtx io.ReadCloser
+		dockerfileCtx, err = os.Open(build.Dockerfile)
+		if err != nil {
+			return "", nil, err
+		}
+		tar, replaceDockerfile, err = clibuild.AddDockerfileToBuildContext(dockerfileCtx, tar)
 		if err != nil {
 			return "", nil, err
 		}
@@ -200,7 +214,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	}
 	// make the build options
 	opts := types.ImageBuildOptions{
-		Dockerfile: build.Dockerfile,
+		Dockerfile: replaceDockerfile,
 		Tags:       []string{img.Name}, //this should build the image locally, sans registry info
 		CacheFrom:  img.Build.CachedImages,
 		BuildArgs:  build.Args,
@@ -255,9 +269,10 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	// if we are not pushing to the registry, we return after building the local image.
 	if img.SkipPush {
 		outputs := map[string]interface{}{
-			"dockerfile":     img.Build.Dockerfile,
+			"dockerfile":     relDockerfile,
 			"context":        img.Build.Context,
 			"registryServer": img.Registry.Server,
+			"imageName":      img.Name,
 		}
 
 		pbstruct, err := plugin.MarshalProperties(
@@ -305,10 +320,11 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	}
 
 	outputs := map[string]interface{}{
-		"dockerfile":     img.Build.Dockerfile,
+		"dockerfile":     relDockerfile,
 		"context":        img.Build.Context,
 		"baseImageName":  img.Name,
 		"registryServer": img.Registry.Server,
+		"imageName":      img.Name,
 	}
 	pbstruct, err := plugin.MarshalProperties(
 		resource.NewPropertyMapFromMap(outputs),
@@ -323,19 +339,13 @@ func marshalBuildAndApplyDefaults(b resource.PropertyValue) (Build, error) {
 	var build Build
 	if b.IsNull() {
 		// use the default build context
-		build.Dockerfile = defaultDockerfile
 		build.Context = "."
+		build.Dockerfile = defaultDockerfile
 		return build, nil
 	}
 	// read in the build type fields
 	buildObject := b.ObjectValue()
-	// Dockerfile
-	if buildObject["dockerfile"].IsNull() {
-		// set default
-		build.Dockerfile = defaultDockerfile
-	} else {
-		build.Dockerfile = buildObject["dockerfile"].StringValue()
-	}
+
 	// Context
 	if buildObject["context"].IsNull() {
 		// set default
@@ -344,6 +354,13 @@ func marshalBuildAndApplyDefaults(b resource.PropertyValue) (Build, error) {
 		build.Context = buildObject["context"].StringValue()
 	}
 
+	// Dockerfile
+	if buildObject["dockerfile"].IsNull() {
+		// set default
+		build.Dockerfile = path.Join(build.Context, defaultDockerfile)
+	} else {
+		build.Dockerfile = buildObject["dockerfile"].StringValue()
+	}
 	// BuildKit
 	version, err := marshalBuilder(buildObject["builderVersion"])
 
