@@ -102,6 +102,9 @@
                 "address": {
                     "type": "string"
                 },
+                "authDisabled": {
+                    "type": "boolean"
+                },
                 "configFile": {
                     "type": "string"
                 },
@@ -493,8 +496,6 @@
             "properties": {
                 "gateway": {
                     "type": "string",
-                    "description": "The network gateway of the container.\n",
-                    "deprecationMessage": "Use `network_data` instead. The network gateway of the container as read from its NetworkSettings.",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -519,8 +520,6 @@
                 },
                 "ipAddress": {
                     "type": "string",
-                    "description": "The IP address of the container.\n",
-                    "deprecationMessage": "Use `network_data` instead. The IP address of the container's first network it.",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -529,8 +528,6 @@
                 },
                 "ipPrefixLength": {
                     "type": "integer",
-                    "description": "The IP prefix length of the container.\n",
-                    "deprecationMessage": "Use `network_data` instead. The IP prefix length of the container as read from its NetworkSettings.",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -538,6 +535,14 @@
                     }
                 },
                 "ipv6Gateway": {
+                    "type": "string",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
+                "macAddress": {
                     "type": "string",
                     "language": {
                         "python": {
@@ -564,6 +569,7 @@
                         "ipAddress",
                         "ipPrefixLength",
                         "ipv6Gateway",
+                        "macAddress",
                         "networkName"
                     ]
                 }
@@ -955,6 +961,14 @@
                         }
                     }
                 },
+                "authDisabled": {
+                    "type": "boolean",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
                 "configFile": {
                     "type": "string",
                     "language": {
@@ -999,12 +1013,12 @@
                 }
             }
         },
-        "docker:index/RegistryImageBuild:RegistryImageBuild": {
+        "docker:index/RemoteImageBuild:RemoteImageBuild": {
             "properties": {
                 "authConfigs": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/types/docker:index/RegistryImageBuildAuthConfig:RegistryImageBuildAuthConfig"
+                        "$ref": "#/types/docker:index/RemoteImageBuildAuthConfig:RemoteImageBuildAuthConfig"
                     },
                     "description": "The configuration for the authentication\n",
                     "language": {
@@ -1012,6 +1026,19 @@
                             "mapCase": false
                         }
                     }
+                },
+                "buildArg": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "Set build-time variables\n",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "buildArgs": {
                     "type": "object",
@@ -1061,7 +1088,7 @@
                 },
                 "context": {
                     "type": "string",
-                    "description": "The absolute path to the context folder. You can use the helper function '${path.cwd}/context-dir'.\n",
+                    "description": "Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1121,7 +1148,7 @@
                 },
                 "dockerfile": {
                     "type": "string",
-                    "description": "Dockerfile file. Defaults to `Dockerfile`\n",
+                    "description": "Name of the Dockerfile. Defaults to `Dockerfile`.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1161,6 +1188,18 @@
                         }
                     },
                     "willReplaceOnChanges": true
+                },
+                "label": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "Set metadata for an image\n",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
                 },
                 "labels": {
                     "type": "object",
@@ -1247,13 +1286,12 @@
                 },
                 "remove": {
                     "type": "boolean",
-                    "description": "Remove intermediate containers after a successful build (default behavior)\n",
+                    "description": "Remove intermediate containers after a successful build. Defaults to `true`.\n",
                     "language": {
                         "python": {
                             "mapCase": false
                         }
-                    },
-                    "willReplaceOnChanges": true
+                    }
                 },
                 "securityOpts": {
                     "type": "array",
@@ -1308,6 +1346,18 @@
                     },
                     "willReplaceOnChanges": true
                 },
+                "tags": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Name and optionally a tag in the 'name:tag' format\n",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    }
+                },
                 "target": {
                     "type": "string",
                     "description": "Set the target build stage to build\n",
@@ -1321,7 +1371,7 @@
                 "ulimits": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/types/docker:index/RegistryImageBuildUlimit:RegistryImageBuildUlimit"
+                        "$ref": "#/types/docker:index/RemoteImageBuildUlimit:RemoteImageBuildUlimit"
                     },
                     "description": "Configuration for ulimits\n",
                     "language": {
@@ -1346,7 +1396,7 @@
                 "context"
             ]
         },
-        "docker:index/RegistryImageBuildAuthConfig:RegistryImageBuildAuthConfig": {
+        "docker:index/RemoteImageBuildAuthConfig:RemoteImageBuildAuthConfig": {
             "properties": {
                 "auth": {
                     "type": "string",
@@ -1418,7 +1468,7 @@
                 "hostName"
             ]
         },
-        "docker:index/RegistryImageBuildUlimit:RegistryImageBuildUlimit": {
+        "docker:index/RemoteImageBuildUlimit:RemoteImageBuildUlimit": {
             "properties": {
                 "hard": {
                     "type": "integer",
@@ -1431,7 +1481,7 @@
                 },
                 "name": {
                     "type": "string",
-                    "description": "The name of the Docker image.\n",
+                    "description": "The name of the Docker image, including any tags or SHA256 repo digests.\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -1454,107 +1504,6 @@
                 "hard",
                 "name",
                 "soft"
-            ]
-        },
-        "docker:index/RemoteImageBuild:RemoteImageBuild": {
-            "properties": {
-                "buildArg": {
-                    "type": "object",
-                    "additionalProperties": {
-                        "type": "string"
-                    },
-                    "description": "Set build-time variables\n",
-                    "language": {
-                        "python": {
-                            "mapCase": false
-                        }
-                    },
-                    "willReplaceOnChanges": true
-                },
-                "dockerfile": {
-                    "type": "string",
-                    "description": "Name of the Dockerfile. Defaults to `Dockerfile`.\n",
-                    "language": {
-                        "python": {
-                            "mapCase": false
-                        }
-                    },
-                    "willReplaceOnChanges": true
-                },
-                "forceRemove": {
-                    "type": "boolean",
-                    "description": "Always remove intermediate containers\n",
-                    "language": {
-                        "python": {
-                            "mapCase": false
-                        }
-                    }
-                },
-                "label": {
-                    "type": "object",
-                    "additionalProperties": {
-                        "type": "string"
-                    },
-                    "description": "Set metadata for an image\n",
-                    "language": {
-                        "python": {
-                            "mapCase": false
-                        }
-                    }
-                },
-                "noCache": {
-                    "type": "boolean",
-                    "description": "Do not use cache when building the image\n",
-                    "language": {
-                        "python": {
-                            "mapCase": false
-                        }
-                    }
-                },
-                "path": {
-                    "type": "string",
-                    "description": "Context path\n",
-                    "language": {
-                        "python": {
-                            "mapCase": false
-                        }
-                    },
-                    "willReplaceOnChanges": true
-                },
-                "remove": {
-                    "type": "boolean",
-                    "description": "Remove intermediate containers after a successful build. Defaults to  `true`.\n",
-                    "language": {
-                        "python": {
-                            "mapCase": false
-                        }
-                    }
-                },
-                "tags": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    },
-                    "description": "Name and optionally a tag in the 'name:tag' format\n",
-                    "language": {
-                        "python": {
-                            "mapCase": false
-                        }
-                    }
-                },
-                "target": {
-                    "type": "string",
-                    "description": "Set the target build stage to build\n",
-                    "language": {
-                        "python": {
-                            "mapCase": false
-                        }
-                    }
-                }
-            },
-            "type": "object",
-            "required": [
-                "path"
             ]
         },
         "docker:index/SecretLabel:SecretLabel": {
@@ -1898,12 +1847,12 @@
                         }
                     }
                 },
-                "networks": {
+                "networksAdvanceds": {
                     "type": "array",
                     "items": {
-                        "type": "string"
+                        "$ref": "#/types/docker:index/ServiceTaskSpecNetworksAdvanced:ServiceTaskSpecNetworksAdvanced"
                     },
-                    "description": "Ids of the networks in which the  container will be put in\n",
+                    "description": "The networks the container is attached to\n",
                     "language": {
                         "python": {
                             "mapCase": false
@@ -2146,6 +2095,18 @@
                             "mapCase": false
                         }
                     }
+                },
+                "sysctl": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "pulumi.json#/Any"
+                    },
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    },
+                    "willReplaceOnChanges": true
                 },
                 "user": {
                     "type": "string",
@@ -2721,6 +2682,48 @@
                 "name"
             ]
         },
+        "docker:index/ServiceTaskSpecNetworksAdvanced:ServiceTaskSpecNetworksAdvanced": {
+            "properties": {
+                "aliases": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    },
+                    "willReplaceOnChanges": true
+                },
+                "driverOpts": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    },
+                    "willReplaceOnChanges": true
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Name of the service\n",
+                    "language": {
+                        "python": {
+                            "mapCase": false
+                        }
+                    },
+                    "willReplaceOnChanges": true
+                }
+            },
+            "type": "object",
+            "required": [
+                "name"
+            ]
+        },
         "docker:index/ServiceTaskSpecPlacement:ServiceTaskSpecPlacement": {
             "properties": {
                 "constraints": {
@@ -3238,12 +3241,16 @@
                     "$ref": "#/types/docker:index/ContainerCapabilities:ContainerCapabilities",
                     "description": "Add or drop certrain linux capabilities.\n"
                 },
+                "cgroupnsMode": {
+                    "type": "string",
+                    "description": "Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.\n"
+                },
                 "command": {
                     "type": "array",
                     "items": {
                         "type": "string"
                     },
-                    "description": "The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[\"/usr/bin/myprogram\",\"-\",\"baz.con\"]`.\n"
+                    "description": "The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[\"/usr/bin/myprogram\",\"-f\",\"baz.con\"]`.\n"
                 },
                 "containerLogs": {
                     "type": "string",
@@ -3315,11 +3322,6 @@
                     "type": "integer",
                     "description": "The exit code of the container if its execution is done (`must_run` must be disabled).\n"
                 },
-                "gateway": {
-                    "type": "string",
-                    "description": "The network gateway of the container.\n",
-                    "deprecationMessage": "Use `network_data` instead. The network gateway of the container as read from its NetworkSettings."
-                },
                 "gpus": {
                     "type": "string",
                     "description": "GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.\n"
@@ -3354,16 +3356,6 @@
                     "type": "boolean",
                     "description": "Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.\n"
                 },
-                "ipAddress": {
-                    "type": "string",
-                    "description": "The IP address of the container.\n",
-                    "deprecationMessage": "Use `network_data` instead. The IP address of the container's first network it."
-                },
-                "ipPrefixLength": {
-                    "type": "integer",
-                    "description": "The IP prefix length of the container.\n",
-                    "deprecationMessage": "Use `network_data` instead. The IP prefix length of the container as read from its NetworkSettings."
-                },
                 "ipcMode": {
                     "type": "string",
                     "description": "IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:\u003cname|id\u003e` or `host`.\n"
@@ -3374,14 +3366,6 @@
                         "$ref": "#/types/docker:index/ContainerLabel:ContainerLabel"
                     },
                     "description": "User-defined key/value metadata\n"
-                },
-                "links": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    },
-                    "description": "Set of links for link based connectivity between containers that are running on the same host.\n",
-                    "deprecationMessage": "The --link flag is a legacy feature of Docker. It may eventually be removed."
                 },
                 "logDriver": {
                     "type": "string",
@@ -3425,14 +3409,6 @@
                     "type": "string",
                     "description": "The name of the container.\n"
                 },
-                "networkAliases": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    },
-                    "description": "Set an alias for the container in all specified networks\n",
-                    "deprecationMessage": "Use networks_advanced instead. Will be removed in v3.0.0"
-                },
                 "networkDatas": {
                     "type": "array",
                     "items": {
@@ -3443,14 +3419,6 @@
                 "networkMode": {
                     "type": "string",
                     "description": "Network mode of the container.\n"
-                },
-                "networks": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    },
-                    "description": "ID of the networks in which the container is.\n",
-                    "deprecationMessage": "Use networks_advanced instead. Will be removed in v3.0.0"
                 },
                 "networksAdvanced": {
                     "type": "array",
@@ -3599,13 +3567,10 @@
                 "entrypoints",
                 "envs",
                 "exitCode",
-                "gateway",
                 "healthcheck",
                 "hostname",
                 "image",
                 "init",
-                "ipAddress",
-                "ipPrefixLength",
                 "ipcMode",
                 "labels",
                 "logDriver",
@@ -3627,12 +3592,17 @@
                     "description": "Add or drop certrain linux capabilities.\n",
                     "willReplaceOnChanges": true
                 },
+                "cgroupnsMode": {
+                    "type": "string",
+                    "description": "Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.\n",
+                    "willReplaceOnChanges": true
+                },
                 "command": {
                     "type": "array",
                     "items": {
                         "type": "string"
                     },
-                    "description": "The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[\"/usr/bin/myprogram\",\"-\",\"baz.con\"]`.\n",
+                    "description": "The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[\"/usr/bin/myprogram\",\"-f\",\"baz.con\"]`.\n",
                     "willReplaceOnChanges": true
                 },
                 "containerReadRefreshTimeoutMilliseconds": {
@@ -3756,15 +3726,6 @@
                     "description": "User-defined key/value metadata\n",
                     "willReplaceOnChanges": true
                 },
-                "links": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    },
-                    "description": "Set of links for link based connectivity between containers that are running on the same host.\n",
-                    "deprecationMessage": "The --link flag is a legacy feature of Docker. It may eventually be removed.",
-                    "willReplaceOnChanges": true
-                },
                 "logDriver": {
                     "type": "string",
                     "description": "The logging driver to use for the container.\n",
@@ -3811,27 +3772,9 @@
                     "description": "The name of the container.\n",
                     "willReplaceOnChanges": true
                 },
-                "networkAliases": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    },
-                    "description": "Set an alias for the container in all specified networks\n",
-                    "deprecationMessage": "Use networks_advanced instead. Will be removed in v3.0.0",
-                    "willReplaceOnChanges": true
-                },
                 "networkMode": {
                     "type": "string",
                     "description": "Network mode of the container.\n",
-                    "willReplaceOnChanges": true
-                },
-                "networks": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    },
-                    "description": "ID of the networks in which the container is.\n",
-                    "deprecationMessage": "Use networks_advanced instead. Will be removed in v3.0.0",
                     "willReplaceOnChanges": true
                 },
                 "networksAdvanced": {
@@ -4014,12 +3957,17 @@
                         "description": "Add or drop certrain linux capabilities.\n",
                         "willReplaceOnChanges": true
                     },
+                    "cgroupnsMode": {
+                        "type": "string",
+                        "description": "Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.\n",
+                        "willReplaceOnChanges": true
+                    },
                     "command": {
                         "type": "array",
                         "items": {
                             "type": "string"
                         },
-                        "description": "The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[\"/usr/bin/myprogram\",\"-\",\"baz.con\"]`.\n",
+                        "description": "The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[\"/usr/bin/myprogram\",\"-f\",\"baz.con\"]`.\n",
                         "willReplaceOnChanges": true
                     },
                     "containerLogs": {
@@ -4099,11 +4047,6 @@
                         "type": "integer",
                         "description": "The exit code of the container if its execution is done (`must_run` must be disabled).\n"
                     },
-                    "gateway": {
-                        "type": "string",
-                        "description": "The network gateway of the container.\n",
-                        "deprecationMessage": "Use `network_data` instead. The network gateway of the container as read from its NetworkSettings."
-                    },
                     "gpus": {
                         "type": "string",
                         "description": "GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.\n",
@@ -4143,16 +4086,6 @@
                         "type": "boolean",
                         "description": "Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.\n"
                     },
-                    "ipAddress": {
-                        "type": "string",
-                        "description": "The IP address of the container.\n",
-                        "deprecationMessage": "Use `network_data` instead. The IP address of the container's first network it."
-                    },
-                    "ipPrefixLength": {
-                        "type": "integer",
-                        "description": "The IP prefix length of the container.\n",
-                        "deprecationMessage": "Use `network_data` instead. The IP prefix length of the container as read from its NetworkSettings."
-                    },
                     "ipcMode": {
                         "type": "string",
                         "description": "IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:\u003cname|id\u003e` or `host`.\n",
@@ -4164,15 +4097,6 @@
                             "$ref": "#/types/docker:index/ContainerLabel:ContainerLabel"
                         },
                         "description": "User-defined key/value metadata\n",
-                        "willReplaceOnChanges": true
-                    },
-                    "links": {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "description": "Set of links for link based connectivity between containers that are running on the same host.\n",
-                        "deprecationMessage": "The --link flag is a legacy feature of Docker. It may eventually be removed.",
                         "willReplaceOnChanges": true
                     },
                     "logDriver": {
@@ -4221,15 +4145,6 @@
                         "description": "The name of the container.\n",
                         "willReplaceOnChanges": true
                     },
-                    "networkAliases": {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "description": "Set an alias for the container in all specified networks\n",
-                        "deprecationMessage": "Use networks_advanced instead. Will be removed in v3.0.0",
-                        "willReplaceOnChanges": true
-                    },
                     "networkDatas": {
                         "type": "array",
                         "items": {
@@ -4240,15 +4155,6 @@
                     "networkMode": {
                         "type": "string",
                         "description": "Network mode of the container.\n",
-                        "willReplaceOnChanges": true
-                    },
-                    "networks": {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "description": "ID of the networks in which the container is.\n",
-                        "deprecationMessage": "Use networks_advanced instead. Will be removed in v3.0.0",
                         "willReplaceOnChanges": true
                     },
                     "networksAdvanced": {
@@ -4494,6 +4400,13 @@
                     "type": "string",
                     "description": "Driver used by the custom IP scheme of the network. Defaults to `default`\n"
                 },
+                "ipamOptions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "pulumi.json#/Any"
+                    },
+                    "description": "Provide explicit options to the IPAM driver. Valid options vary with `ipam_driver` and refer to that driver's documentation for more details.\n"
+                },
                 "ipv6": {
                     "type": "boolean",
                     "description": "Enable IPv6 networking. Defaults to `false`.\n"
@@ -4568,6 +4481,14 @@
                     "description": "Driver used by the custom IP scheme of the network. Defaults to `default`\n",
                     "willReplaceOnChanges": true
                 },
+                "ipamOptions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "pulumi.json#/Any"
+                    },
+                    "description": "Provide explicit options to the IPAM driver. Valid options vary with `ipam_driver` and refer to that driver's documentation for more details.\n",
+                    "willReplaceOnChanges": true
+                },
                 "ipv6": {
                     "type": "boolean",
                     "description": "Enable IPv6 networking. Defaults to `false`.\n",
@@ -4634,6 +4555,14 @@
                     "ipamDriver": {
                         "type": "string",
                         "description": "Driver used by the custom IP scheme of the network. Defaults to `default`\n",
+                        "willReplaceOnChanges": true
+                    },
+                    "ipamOptions": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "$ref": "pulumi.json#/Any"
+                        },
+                        "description": "Provide explicit options to the IPAM driver. Valid options vary with `ipam_driver` and refer to that driver's documentation for more details.\n",
                         "willReplaceOnChanges": true
                     },
                     "ipv6": {
@@ -4828,12 +4757,8 @@
             }
         },
         "docker:index/registryImage:RegistryImage": {
-            "description": "\u003c!-- Bug: Type and Name are switched --\u003e\nManages the lifecycle of docker image/tag in a registry means it can store one or more version of specific docker images and identified by their tags.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\nTo be able to update an image itself when an updated image arrives.\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst helloworld = new docker.RegistryImage(\"helloworld\", {build: {\n    context: `${path.cwd}/absolutePathToContextFolder`,\n}});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nhelloworld = docker.RegistryImage(\"helloworld\", build=docker.RegistryImageBuildArgs(\n    context=f\"{path['cwd']}/absolutePathToContextFolder\",\n))\n```\n```csharp\nusing System.Collections.Generic;\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nreturn await Deployment.RunAsync(() =\u003e \n{\n    var helloworld = new Docker.RegistryImage(\"helloworld\", new()\n    {\n        Build = new Docker.Inputs.RegistryImageBuildArgs\n        {\n            Context = $\"{path.Cwd}/absolutePathToContextFolder\",\n        },\n    });\n\n});\n```\n```go\npackage main\n\nimport (\n\t\"fmt\"\n\n\t\"github.com/pulumi/pulumi-docker/sdk/v4/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := docker.NewRegistryImage(ctx, \"helloworld\", \u0026docker.RegistryImageArgs{\n\t\t\tBuild: \u0026docker.RegistryImageBuildArgs{\n\t\t\t\tContext: pulumi.String(fmt.Sprintf(\"%v/absolutePathToContextFolder\", path.Cwd)),\n\t\t\t},\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.RegistryImage;\nimport com.pulumi.docker.RegistryImageArgs;\nimport com.pulumi.docker.inputs.RegistryImageBuildArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var helloworld = new RegistryImage(\"helloworld\", RegistryImageArgs.builder()        \n            .build(RegistryImageBuildArgs.builder()\n                .context(String.format(\"%s/absolutePathToContextFolder\", path.cwd()))\n                .build())\n            .build());\n\n    }\n}\n```\n```yaml\nresources:\n  helloworld:\n    type: docker:RegistryImage\n    properties:\n      build:\n        context: ${path.cwd}/absolutePathToContextFolder\n```\n{{% /example %}}\n{{% /examples %}}",
+            "description": "\u003c!-- Bug: Type and Name are switched --\u003e\nManages the lifecycle of docker image in a registry. You can upload images to a registry (= `docker push`) and also delete them again\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\nBuild an image with the `docker.RemoteImage` resource and then push it to a registry:\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst helloworld = new docker.RegistryImage(\"helloworld\", {keepRemotely: true});\nconst image = new docker.RemoteImage(\"image\", {\n    name: \"registry.com/somename:1.0\",\n    build: {\n        context: `${path.cwd}/absolutePathToContextFolder`,\n    },\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nhelloworld = docker.RegistryImage(\"helloworld\", keep_remotely=True)\nimage = docker.RemoteImage(\"image\",\n    name=\"registry.com/somename:1.0\",\n    build=docker.RemoteImageBuildArgs(\n        context=f\"{path['cwd']}/absolutePathToContextFolder\",\n    ))\n```\n```csharp\nusing System.Collections.Generic;\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nreturn await Deployment.RunAsync(() =\u003e \n{\n    var helloworld = new Docker.RegistryImage(\"helloworld\", new()\n    {\n        KeepRemotely = true,\n    });\n\n    var image = new Docker.RemoteImage(\"image\", new()\n    {\n        Name = \"registry.com/somename:1.0\",\n        Build = new Docker.Inputs.RemoteImageBuildArgs\n        {\n            Context = $\"{path.Cwd}/absolutePathToContextFolder\",\n        },\n    });\n\n});\n```\n```go\npackage main\n\nimport (\n\t\"fmt\"\n\n\t\"github.com/pulumi/pulumi-docker/sdk/v4/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := docker.NewRegistryImage(ctx, \"helloworld\", \u0026docker.RegistryImageArgs{\n\t\t\tKeepRemotely: pulumi.Bool(true),\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\t_, err = docker.NewRemoteImage(ctx, \"image\", \u0026docker.RemoteImageArgs{\n\t\t\tName: pulumi.String(\"registry.com/somename:1.0\"),\n\t\t\tBuild: \u0026docker.RemoteImageBuildArgs{\n\t\t\t\tContext: pulumi.String(fmt.Sprintf(\"%v/absolutePathToContextFolder\", path.Cwd)),\n\t\t\t},\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.RegistryImage;\nimport com.pulumi.docker.RegistryImageArgs;\nimport com.pulumi.docker.RemoteImage;\nimport com.pulumi.docker.RemoteImageArgs;\nimport com.pulumi.docker.inputs.RemoteImageBuildArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var helloworld = new RegistryImage(\"helloworld\", RegistryImageArgs.builder()        \n            .keepRemotely(true)\n            .build());\n\n        var image = new RemoteImage(\"image\", RemoteImageArgs.builder()        \n            .name(\"registry.com/somename:1.0\")\n            .build(RemoteImageBuildArgs.builder()\n                .context(String.format(\"%s/absolutePathToContextFolder\", path.cwd()))\n                .build())\n            .build());\n\n    }\n}\n```\n```yaml\nresources:\n  helloworld:\n    type: docker:RegistryImage\n    properties:\n      keepRemotely: true\n  image:\n    type: docker:RemoteImage\n    properties:\n      name: registry.com/somename:1.0\n      build:\n        context: ${path.cwd}/absolutePathToContextFolder\n```\n{{% /example %}}\n{{% /examples %}}",
             "properties": {
-                "build": {
-                    "$ref": "#/types/docker:index/RegistryImageBuild:RegistryImageBuild",
-                    "description": "Definition for building the image\n"
-                },
                 "insecureSkipVerify": {
                     "type": "boolean",
                     "description": "If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`\n"
@@ -4849,6 +4774,13 @@
                 "sha256Digest": {
                     "type": "string",
                     "description": "The sha256 digest of the image.\n"
+                },
+                "triggers": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "pulumi.json#/Any"
+                    },
+                    "description": "A map of arbitrary strings that, when changed, will force the `docker.RegistryImage` resource to be replaced. This can be used to repush a local image\n"
                 }
             },
             "required": [
@@ -4856,10 +4788,6 @@
                 "sha256Digest"
             ],
             "inputProperties": {
-                "build": {
-                    "$ref": "#/types/docker:index/RegistryImageBuild:RegistryImageBuild",
-                    "description": "Definition for building the image\n"
-                },
                 "insecureSkipVerify": {
                     "type": "boolean",
                     "description": "If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`\n"
@@ -4872,15 +4800,19 @@
                     "type": "string",
                     "description": "The name of the Docker image.\n",
                     "willReplaceOnChanges": true
+                },
+                "triggers": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "pulumi.json#/Any"
+                    },
+                    "description": "A map of arbitrary strings that, when changed, will force the `docker.RegistryImage` resource to be replaced. This can be used to repush a local image\n",
+                    "willReplaceOnChanges": true
                 }
             },
             "stateInputs": {
                 "description": "Input properties used for looking up and filtering RegistryImage resources.\n",
                 "properties": {
-                    "build": {
-                        "$ref": "#/types/docker:index/RegistryImageBuild:RegistryImageBuild",
-                        "description": "Definition for building the image\n"
-                    },
                     "insecureSkipVerify": {
                         "type": "boolean",
                         "description": "If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`\n"
@@ -4897,6 +4829,14 @@
                     "sha256Digest": {
                         "type": "string",
                         "description": "The sha256 digest of the image.\n"
+                    },
+                    "triggers": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "$ref": "pulumi.json#/Any"
+                        },
+                        "description": "A map of arbitrary strings that, when changed, will force the `docker.RegistryImage` resource to be replaced. This can be used to repush a local image\n",
+                        "willReplaceOnChanges": true
                     }
                 },
                 "type": "object"
@@ -4921,23 +4861,13 @@
                     "type": "boolean",
                     "description": "If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.\n"
                 },
-                "latest": {
-                    "type": "string",
-                    "description": "The ID of the image in the form of `sha256:\u003chash\u003e` image digest. Do not confuse it with the default `latest` tag.\n",
-                    "deprecationMessage": "Use repo_digest instead"
-                },
                 "name": {
                     "type": "string",
                     "description": "The name of the Docker image, including any tags or SHA256 repo digests.\n"
                 },
-                "output": {
+                "platform": {
                     "type": "string",
-                    "deprecationMessage": "Is unused and will be removed."
-                },
-                "pullTrigger": {
-                    "type": "string",
-                    "description": "A value which cause an image pull when changed\n",
-                    "deprecationMessage": "Use field pull_triggers instead"
+                    "description": "The platform to use when pulling the image. Defaults to the platform of the current machine.\n"
                 },
                 "pullTriggers": {
                     "type": "array",
@@ -4960,9 +4890,7 @@
             },
             "required": [
                 "imageId",
-                "latest",
                 "name",
-                "output",
                 "repoDigest"
             ],
             "inputProperties": {
@@ -4983,10 +4911,9 @@
                     "description": "The name of the Docker image, including any tags or SHA256 repo digests.\n",
                     "willReplaceOnChanges": true
                 },
-                "pullTrigger": {
+                "platform": {
                     "type": "string",
-                    "description": "A value which cause an image pull when changed\n",
-                    "deprecationMessage": "Use field pull_triggers instead",
+                    "description": "The platform to use when pulling the image. Defaults to the platform of the current machine.\n",
                     "willReplaceOnChanges": true
                 },
                 "pullTriggers": {
@@ -5028,24 +4955,14 @@
                         "type": "boolean",
                         "description": "If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.\n"
                     },
-                    "latest": {
-                        "type": "string",
-                        "description": "The ID of the image in the form of `sha256:\u003chash\u003e` image digest. Do not confuse it with the default `latest` tag.\n",
-                        "deprecationMessage": "Use repo_digest instead"
-                    },
                     "name": {
                         "type": "string",
                         "description": "The name of the Docker image, including any tags or SHA256 repo digests.\n",
                         "willReplaceOnChanges": true
                     },
-                    "output": {
+                    "platform": {
                         "type": "string",
-                        "deprecationMessage": "Is unused and will be removed."
-                    },
-                    "pullTrigger": {
-                        "type": "string",
-                        "description": "A value which cause an image pull when changed\n",
-                        "deprecationMessage": "Use field pull_triggers instead",
+                        "description": "The platform to use when pulling the image. Defaults to the platform of the current machine.\n",
                         "willReplaceOnChanges": true
                     },
                     "pullTriggers": {
