@@ -79,8 +79,7 @@ cleanup:
 	rm -f provider/cmd/$(PROVIDER)/schema.go
 
 docs:
-	cd provider/pkg/docs-gen/examples/ && \
-		PATH="$(WORKING_DIR)/bin:$$PATH" go run generate.go ./yaml ./
+	cd provider/pkg/docs-gen/examples/ && go run generate.go ./yaml ./
 
 finish-patch:
 	@if [ ! -z "$$(cd upstream && git status --porcelain)" ]; then echo "Please commit your changes before finishing the patch"; exit 1; fi
@@ -100,7 +99,7 @@ install_nodejs_sdk:
 	yarn link --cwd $(WORKING_DIR)/sdk/nodejs/bin
 
 install_plugins:
-	[ -x "$(shell command -v pulumi)" ] || curl -fsSL https://get.pulumi.com | sh
+	[ -x "$(shell command -v pulumi 2>/dev/null)" ] || curl -fsSL https://get.pulumi.com | sh
 
 lint_provider: provider
 	cd provider && golangci-lint run -c ../.golangci.yml
@@ -134,7 +133,7 @@ endif
 test:
 	cd examples && go test -v -tags=all -parallel $(TESTPARALLELISM) -timeout 2h
 
-tfgen: install_plugins upstream docs
+tfgen: install_plugins docs
 	(cd provider && go build -p 1 -o $(WORKING_DIR)/bin/$(TFGEN) -ldflags "-X $(PROJECT)/$(VERSION_PATH)=$(VERSION)" $(PROJECT)/$(PROVIDER_PATH)/cmd/$(TFGEN))
 	$(WORKING_DIR)/bin/$(TFGEN) schema --out provider/cmd/$(PROVIDER)
 	(cd provider && VERSION=$(VERSION) go generate cmd/$(PROVIDER)/main.go)
