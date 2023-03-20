@@ -23,7 +23,7 @@ const remoteImage = new docker.RemoteImage("nginx-image", {
 
 // Launch a container using the nginx image we just downloaded.
 const container = new docker.Container("nginx", {
-    image: remoteImage.latest,
+    image: remoteImage.repoDigest,
     ports: [{
         internal: 80,
         // external: defaults to an open ephemeral port
