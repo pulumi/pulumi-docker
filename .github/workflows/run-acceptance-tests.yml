@@ -19,7 +19,7 @@ env:
   GOOGLE_PROJECT_NUMBER: 895284651812
   GOOGLE_REGION: us-central1
   GOOGLE_ZONE: us-central1-a
-  GOVERSION: 1.19.x
+  GOVERSION: 1.20.1
   JAVAVERSION: "11"
   NODEVERSION: 16.x
   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -155,7 +155,7 @@ jobs:
         repository: ${{ github.event.client_payload.github.payload.repository.full_name }}
         token: ${{ secrets.PULUMI_BOT_TOKEN }}
   lint:
-    container: golangci/golangci-lint:latest
+    container: golangci/golangci-lint:v1.51
     if: github.event_name == 'repository_dispatch' ||
       github.event.pull_request.head.repo.full_name == github.repository
     name: lint
@@ -194,7 +194,7 @@ jobs:
         fields: repo,commit,author,action
         status: ${{ job.status }}
   lint_sdk:
-    container: golangci/golangci-lint:latest
+    container: golangci/golangci-lint:v1.51
     if: github.event_name == 'repository_dispatch' ||
       github.event.pull_request.head.repo.full_name == github.repository
     name: lint-sdk

@@ -19,7 +19,7 @@ env:
   GOOGLE_PROJECT_NUMBER: 895284651812
   GOOGLE_REGION: us-central1
   GOOGLE_ZONE: us-central1-a
-  GOVERSION: 1.19.x
+  GOVERSION: 1.20.1
   JAVAVERSION: "11"
   NODEVERSION: 16.x
   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -148,7 +148,7 @@ jobs:
       run: pulumictl create docs-build pulumi-${{ env.PROVIDER }}
         ${GITHUB_REF#refs/tags/}
   lint:
-    container: golangci/golangci-lint:latest
+    container: golangci/golangci-lint:v1.51
     name: lint
     runs-on: ubuntu-latest
     steps:
@@ -183,7 +183,7 @@ jobs:
         fields: repo,commit,author,action
         status: ${{ job.status }}
   lint_sdk:
-    container: golangci/golangci-lint:latest
+    container: golangci/golangci-lint:v1.51
     name: lint-sdk
     needs: build_sdk
     runs-on: ubuntu-latest
