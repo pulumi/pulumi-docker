@@ -58,23 +58,23 @@ export class Image extends pulumi.CustomResource {
     /**
      * The fully qualified image name that was pushed to the registry.
      */
-    public /*out*/ readonly baseImageName!: pulumi.Output<string | undefined>;
+    public /*out*/ readonly baseImageName!: pulumi.Output<string>;
     /**
      * The path to the build context to use.
      */
-    public /*out*/ readonly context!: pulumi.Output<string | undefined>;
+    public /*out*/ readonly context!: pulumi.Output<string>;
     /**
      * The location of the Dockerfile relative to the docker build context.
      */
-    public /*out*/ readonly dockerfile!: pulumi.Output<string | undefined>;
+    public /*out*/ readonly dockerfile!: pulumi.Output<string>;
     /**
      * The fully qualified image name
      */
-    public readonly imageName!: pulumi.Output<string | undefined>;
+    public readonly imageName!: pulumi.Output<string>;
     /**
      * The name of the registry server hosting the image.
      */
-    public /*out*/ readonly registryServer!: pulumi.Output<string | undefined>;
+    public /*out*/ readonly registryServer!: pulumi.Output<string>;
 
     /**
      * Create a Image resource with the given unique name, arguments, and options.

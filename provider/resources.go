@@ -232,6 +232,9 @@ func Provider() tfbridge.ProviderInfo {
 					Type: "object",
 					Description: "Builds a Docker Image and pushes to a Docker registry.\n\n" +
 						docImage,
+					Required: []string{
+						"dockerfile", "context", "baseImageName", "registryServer", "imageName",
+					},
 					Properties: map[string]schema.PropertySpec{
 						"imageName": {
 							Description: "The fully qualified image name",
