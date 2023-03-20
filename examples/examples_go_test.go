@@ -161,6 +161,9 @@ func TestAzureContainerRegistryGo(t *testing.T) {
 			"azure:environment": "public",
 			"azure:location":    location,
 		},
+		Dependencies: []string{
+			"github.com/pulumi/pulumi-docker/sdk/v4=../sdk",
+		},
 	})
 	integration.ProgramTest(t, &opts)
 }
@@ -178,6 +181,9 @@ func TestAwsContainerRegistryGo(t *testing.T) {
 		Dir: path.Join(cwd, "aws-container-registry/go"),
 		Config: map[string]string{
 			"aws:region": region,
+		},
+		Dependencies: []string{
+			"github.com/pulumi/pulumi-docker/sdk/v4=../sdk",
 		},
 	})
 	integration.ProgramTest(t, &opts)
@@ -197,6 +203,9 @@ func TestDigitaloceanContainerRegistryGo(t *testing.T) {
 		Config: map[string]string{
 			"digitalocean:token": token,
 		},
+		Dependencies: []string{
+			"github.com/pulumi/pulumi-docker/sdk/v4=../sdk",
+		},
 	})
 
 	integration.ProgramTest(t, &opts)
@@ -212,6 +221,9 @@ func TestGcpContainerRegistryGo(t *testing.T) {
 		Config: map[string]string{
 			"gcp:project": project,
 		},
+		Dependencies: []string{
+			"github.com/pulumi/pulumi-docker/sdk/v4=../sdk",
+		},
 	})
 	integration.ProgramTest(t, &test)
 }
@@ -226,6 +238,9 @@ func TestDockerContainerRegistryGo(t *testing.T) {
 		},
 		Secrets: map[string]string{
 			"cbp-docker-go:dockerPassword": password,
+		},
+		Dependencies: []string{
+			"github.com/pulumi/pulumi-docker/sdk/v4=../sdk",
 		},
 	})
 	integration.ProgramTest(t, &test)

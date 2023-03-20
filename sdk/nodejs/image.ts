@@ -75,6 +75,10 @@ export class Image extends pulumi.CustomResource {
      * The name of the registry server hosting the image.
      */
     public /*out*/ readonly registryServer!: pulumi.Output<string>;
+    /**
+     * The digest of the manifest pushed to the registry, e.g.: repo[:tag]@<algorithm>:<hash>
+     */
+    public /*out*/ readonly repoDigest!: pulumi.Output<string | undefined>;
 
     /**
      * Create a Image resource with the given unique name, arguments, and options.
@@ -98,12 +102,14 @@ export class Image extends pulumi.CustomResource {
             resourceInputs["context"] = undefined /*out*/;
             resourceInputs["dockerfile"] = undefined /*out*/;
             resourceInputs["registryServer"] = undefined /*out*/;
+            resourceInputs["repoDigest"] = undefined /*out*/;
         } else {
             resourceInputs["baseImageName"] = undefined /*out*/;
             resourceInputs["context"] = undefined /*out*/;
             resourceInputs["dockerfile"] = undefined /*out*/;
             resourceInputs["imageName"] = undefined /*out*/;
             resourceInputs["registryServer"] = undefined /*out*/;
+            resourceInputs["repoDigest"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
         const aliasOpts = { aliases: [{ type: "docker:image:Image" }] };

@@ -12,6 +12,7 @@ import com.pulumi.docker.ImageArgs;
 import com.pulumi.docker.Utilities;
 import java.lang.String;
 import java.util.List;
+import java.util.Optional;
 import javax.annotation.Nullable;
 
 /**
@@ -127,6 +128,20 @@ public class Image extends com.pulumi.resources.CustomResource {
      */
     public Output<String> registryServer() {
         return this.registryServer;
+    }
+    /**
+     * The digest of the manifest pushed to the registry, e.g.: repo[:tag]@&lt;algorithm&gt;:&lt;hash&gt;
+     * 
+     */
+    @Export(name="repoDigest", type=String.class, parameters={})
+    private Output</* @Nullable */ String> repoDigest;
+
+    /**
+     * @return The digest of the manifest pushed to the registry, e.g.: repo[:tag]@&lt;algorithm&gt;:&lt;hash&gt;
+     * 
+     */
+    public Output<Optional<String>> repoDigest() {
+        return Codegen.optional(this.repoDigest);
     }
 
     /**
