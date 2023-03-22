@@ -301,8 +301,6 @@ export function dockerBuildProvideDefaults(val: DockerBuild): DockerBuild {
     return {
         ...val,
         builderVersion: (val.builderVersion) ?? "BuilderBuildKit",
-        context: (val.context) ?? ".",
-        dockerfile: (val.dockerfile) ?? "Dockerfile",
     };
 }
 

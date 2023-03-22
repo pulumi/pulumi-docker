@@ -184,7 +184,10 @@ class Image(pulumi.CustomResource):
                 skip_push = False
             __props__.__dict__["skip_push"] = skip_push
             __props__.__dict__["base_image_name"] = None
+            __props__.__dict__["context"] = None
+            __props__.__dict__["dockerfile"] = None
             __props__.__dict__["registry_server"] = None
+            __props__.__dict__["repo_digest"] = None
         alias_opts = pulumi.ResourceOptions(aliases=[pulumi.Alias(type_="docker:image:Image")])
         opts = pulumi.ResourceOptions.merge(opts, alias_opts)
         super(Image, __self__).__init__(
@@ -210,21 +213,40 @@ class Image(pulumi.CustomResource):
         __props__ = ImageArgs.__new__(ImageArgs)
 
         __props__.__dict__["base_image_name"] = None
+        __props__.__dict__["context"] = None
+        __props__.__dict__["dockerfile"] = None
         __props__.__dict__["image_name"] = None
         __props__.__dict__["registry_server"] = None
+        __props__.__dict__["repo_digest"] = None
         return Image(resource_name, opts=opts, __props__=__props__)
 
     @property
     @pulumi.getter(name="baseImageName")
-    def base_image_name(self) -> pulumi.Output[Optional[str]]:
+    def base_image_name(self) -> pulumi.Output[str]:
         """
         The fully qualified image name that was pushed to the registry.
         """
         return pulumi.get(self, "base_image_name")
 
     @property
+    @pulumi.getter
+    def context(self) -> pulumi.Output[str]:
+        """
+        The path to the build context to use.
+        """
+        return pulumi.get(self, "context")
+
+    @property
+    @pulumi.getter
+    def dockerfile(self) -> pulumi.Output[str]:
+        """
+        The location of the Dockerfile relative to the docker build context.
+        """
+        return pulumi.get(self, "dockerfile")
+
+    @property
     @pulumi.getter(name="imageName")
-    def image_name(self) -> pulumi.Output[Optional[str]]:
+    def image_name(self) -> pulumi.Output[str]:
         """
         The fully qualified image name
         """
@@ -232,9 +254,17 @@ class Image(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="registryServer")
-    def registry_server(self) -> pulumi.Output[Optional[str]]:
+    def registry_server(self) -> pulumi.Output[str]:
         """
         The name of the registry server hosting the image.
         """
         return pulumi.get(self, "registry_server")
+
+    @property
+    @pulumi.getter(name="repoDigest")
+    def repo_digest(self) -> pulumi.Output[Optional[str]]:
+        """
+        The digest of the manifest pushed to the registry, e.g.: repo[:tag]@<algorithm>:<hash>
+        """
+        return pulumi.get(self, "repo_digest")
 

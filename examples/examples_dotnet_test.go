@@ -26,10 +26,8 @@ import (
 func TestNginxCs(t *testing.T) {
 	test := getCsharpBaseOptions(t).
 		With(integration.ProgramTestOptions{
-			Dir:              path.Join(getCwd(t), "nginx-cs"),
-			Quick:            true,
-			SkipRefresh:      true,
-			DestroyOnCleanup: true,
+			Dir:                  path.Join(getCwd(t), "nginx-cs"),
+			ExpectRefreshChanges: true,
 		})
 
 	integration.ProgramTest(t, &test)
@@ -56,6 +54,7 @@ func TestAzureContainerRegistryDotNet(t *testing.T) {
 				"azure:environment": "public",
 				"azure:location":    location,
 			},
+			ExpectRefreshChanges: true,
 		})
 
 	integration.ProgramTest(t, &test)

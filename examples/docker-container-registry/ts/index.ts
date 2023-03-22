@@ -17,7 +17,7 @@ const registryInfo = {
 // Build and publish the container image.
 const image = new docker.Image("my-image", {
     build: {
-        context: "app"
+        context: "app",
     },
     imageName: imageName,
     registry: registryInfo,
@@ -25,3 +25,4 @@ const image = new docker.Image("my-image", {
 
 // Export the resulting image name
 export const fullImageName = image.imageName;
+export const repoDigest = image.repoDigest;

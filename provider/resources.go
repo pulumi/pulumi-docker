@@ -150,12 +150,10 @@ func Provider() tfbridge.ProviderInfo {
 						"context": {
 							Description: "The path to the build context to use.",
 							TypeSpec:    schema.TypeSpec{Type: "string"},
-							Default:     ".",
 						},
 						"dockerfile": {
 							Description: "The path to the Dockerfile to use.",
 							TypeSpec:    schema.TypeSpec{Type: "string"},
-							Default:     "Dockerfile",
 						},
 						"cacheFrom": {
 							Description: "A list of image names to use as build cache. " +
@@ -234,6 +232,9 @@ func Provider() tfbridge.ProviderInfo {
 					Type: "object",
 					Description: "Builds a Docker Image and pushes to a Docker registry.\n\n" +
 						docImage,
+					Required: []string{
+						"dockerfile", "context", "baseImageName", "registryServer", "imageName",
+					},
 					Properties: map[string]schema.PropertySpec{
 						"imageName": {
 							Description: "The fully qualified image name",
@@ -245,6 +246,18 @@ func Provider() tfbridge.ProviderInfo {
 						},
 						"baseImageName": {
 							Description: "The fully qualified image name that was pushed to the registry.",
+							TypeSpec:    schema.TypeSpec{Type: "string"},
+						},
+						"dockerfile": {
+							Description: "The location of the Dockerfile relative to the docker build context.",
+							TypeSpec:    schema.TypeSpec{Type: "string"},
+						},
+						"context": {
+							Description: "The path to the build context to use.",
+							TypeSpec:    schema.TypeSpec{Type: "string"},
+						},
+						"repoDigest": {
+							Description: "The digest of the manifest pushed to the registry, e.g.: repo[:tag]@<algorithm>:<hash>",
 							TypeSpec:    schema.TypeSpec{Type: "string"},
 						},
 					},

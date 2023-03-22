@@ -39,7 +39,8 @@ func TestNginxGo(t *testing.T) {
 		Dependencies: []string{
 			"github.com/pulumi/pulumi-docker/sdk/v4=../sdk",
 		},
-		Dir: path.Join(cwd, "nginx-go"),
+		Dir:                  path.Join(cwd, "nginx-go"),
+		ExpectRefreshChanges: true,
 	})
 	integration.ProgramTest(t, &opts)
 }
@@ -161,6 +162,10 @@ func TestAzureContainerRegistryGo(t *testing.T) {
 			"azure:environment": "public",
 			"azure:location":    location,
 		},
+		Dependencies: []string{
+			"github.com/pulumi/pulumi-docker/sdk/v4=../sdk",
+		},
+		ExpectRefreshChanges: true,
 	})
 	integration.ProgramTest(t, &opts)
 }
@@ -178,6 +183,9 @@ func TestAwsContainerRegistryGo(t *testing.T) {
 		Dir: path.Join(cwd, "aws-container-registry/go"),
 		Config: map[string]string{
 			"aws:region": region,
+		},
+		Dependencies: []string{
+			"github.com/pulumi/pulumi-docker/sdk/v4=../sdk",
 		},
 	})
 	integration.ProgramTest(t, &opts)
@@ -197,6 +205,9 @@ func TestDigitaloceanContainerRegistryGo(t *testing.T) {
 		Config: map[string]string{
 			"digitalocean:token": token,
 		},
+		Dependencies: []string{
+			"github.com/pulumi/pulumi-docker/sdk/v4=../sdk",
+		},
 	})
 
 	integration.ProgramTest(t, &opts)
@@ -211,6 +222,9 @@ func TestGcpContainerRegistryGo(t *testing.T) {
 		Dir: path.Join(getCwd(t), "gcp-container-registry/go"),
 		Config: map[string]string{
 			"gcp:project": project,
+		},
+		Dependencies: []string{
+			"github.com/pulumi/pulumi-docker/sdk/v4=../sdk",
 		},
 	})
 	integration.ProgramTest(t, &test)
@@ -227,11 +241,11 @@ func TestDockerContainerRegistryGo(t *testing.T) {
 		Secrets: map[string]string{
 			"cbp-docker-go:dockerPassword": password,
 		},
+		Dependencies: []string{
+			"github.com/pulumi/pulumi-docker/sdk/v4=../sdk",
+		},
 	})
 	integration.ProgramTest(t, &test)
 }
 
-var base = integration.ProgramTestOptions{
-	ExpectRefreshChanges: true, // Docker resources generally see changes when refreshed.
-	// Note: no Config! This package should be usable without any config.
-}
+var base = getBaseOptions()

@@ -9579,14 +9579,6 @@ func (val *DockerBuild) Defaults() *DockerBuild {
 		builderVersion_ := BuilderVersion("BuilderBuildKit")
 		tmp.BuilderVersion = &builderVersion_
 	}
-	if tmp.Context == nil {
-		context_ := "."
-		tmp.Context = &context_
-	}
-	if tmp.Dockerfile == nil {
-		dockerfile_ := "Dockerfile"
-		tmp.Dockerfile = &dockerfile_
-	}
 	return &tmp
 }
 
@@ -9627,12 +9619,6 @@ func (val *DockerBuildArgs) Defaults() *DockerBuildArgs {
 	tmp := *val
 	if tmp.BuilderVersion == nil {
 		tmp.BuilderVersion = BuilderVersion("BuilderBuildKit")
-	}
-	if tmp.Context == nil {
-		tmp.Context = pulumi.StringPtr(".")
-	}
-	if tmp.Dockerfile == nil {
-		tmp.Dockerfile = pulumi.StringPtr("Dockerfile")
 	}
 	return &tmp
 }

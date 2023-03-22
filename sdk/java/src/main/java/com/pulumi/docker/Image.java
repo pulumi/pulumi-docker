@@ -64,42 +64,84 @@ public class Image extends com.pulumi.resources.CustomResource {
      * 
      */
     @Export(name="baseImageName", type=String.class, parameters={})
-    private Output</* @Nullable */ String> baseImageName;
+    private Output<String> baseImageName;
 
     /**
      * @return The fully qualified image name that was pushed to the registry.
      * 
      */
-    public Output<Optional<String>> baseImageName() {
-        return Codegen.optional(this.baseImageName);
+    public Output<String> baseImageName() {
+        return this.baseImageName;
+    }
+    /**
+     * The path to the build context to use.
+     * 
+     */
+    @Export(name="context", type=String.class, parameters={})
+    private Output<String> context;
+
+    /**
+     * @return The path to the build context to use.
+     * 
+     */
+    public Output<String> context() {
+        return this.context;
+    }
+    /**
+     * The location of the Dockerfile relative to the docker build context.
+     * 
+     */
+    @Export(name="dockerfile", type=String.class, parameters={})
+    private Output<String> dockerfile;
+
+    /**
+     * @return The location of the Dockerfile relative to the docker build context.
+     * 
+     */
+    public Output<String> dockerfile() {
+        return this.dockerfile;
     }
     /**
      * The fully qualified image name
      * 
      */
     @Export(name="imageName", type=String.class, parameters={})
-    private Output</* @Nullable */ String> imageName;
+    private Output<String> imageName;
 
     /**
      * @return The fully qualified image name
      * 
      */
-    public Output<Optional<String>> imageName() {
-        return Codegen.optional(this.imageName);
+    public Output<String> imageName() {
+        return this.imageName;
     }
     /**
      * The name of the registry server hosting the image.
      * 
      */
     @Export(name="registryServer", type=String.class, parameters={})
-    private Output</* @Nullable */ String> registryServer;
+    private Output<String> registryServer;
 
     /**
      * @return The name of the registry server hosting the image.
      * 
      */
-    public Output<Optional<String>> registryServer() {
-        return Codegen.optional(this.registryServer);
+    public Output<String> registryServer() {
+        return this.registryServer;
+    }
+    /**
+     * The digest of the manifest pushed to the registry, e.g.: repo[:tag]@&lt;algorithm&gt;:&lt;hash&gt;
+     * 
+     */
+    @Export(name="repoDigest", type=String.class, parameters={})
+    private Output</* @Nullable */ String> repoDigest;
+
+    /**
+     * @return The digest of the manifest pushed to the registry, e.g.: repo[:tag]@&lt;algorithm&gt;:&lt;hash&gt;
+     * 
+     */
+    public Output<Optional<String>> repoDigest() {
+        return Codegen.optional(this.repoDigest);
     }
 
     /**

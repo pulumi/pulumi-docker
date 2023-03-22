@@ -6,30 +6,32 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"io"
 	"net"
+	"os"
+	"path"
 	"path/filepath"
+	"strings"
 
-	"github.com/docker/distribution/reference"
-	"github.com/docker/docker/pkg/idtools"
-	"github.com/moby/buildkit/session"
-	"github.com/moby/buildkit/session/auth/authprovider"
-	"github.com/moby/moby/registry"
-
+	buildCmd "github.com/docker/cli/cli/command/image/build"
 	clibuild "github.com/docker/cli/cli/command/image/build"
 	"github.com/docker/cli/cli/config"
 	"github.com/docker/cli/cli/config/configfile"
 	"github.com/docker/cli/cli/config/credentials"
 	clitypes "github.com/docker/cli/cli/config/types"
+	"github.com/docker/distribution/reference"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
 	"github.com/docker/docker/pkg/archive"
+	"github.com/docker/docker/pkg/idtools"
 	"github.com/docker/docker/pkg/jsonmessage"
 	structpb "github.com/golang/protobuf/ptypes/struct"
 	controlapi "github.com/moby/buildkit/api/services/control"
+	"github.com/moby/buildkit/session"
+	"github.com/moby/buildkit/session/auth/authprovider"
+	"github.com/moby/moby/registry"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
-
-	buildCmd "github.com/docker/cli/cli/command/image/build"
 )
 
 const defaultDockerfile = "Dockerfile"
@@ -80,7 +82,10 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	if err != nil {
 		return "", nil, err
 	}
-	cache := marshalCachedImages(img, inputs["build"])
+	cache, err := marshalCachedImages(inputs["build"])
+	if err != nil {
+		return "", nil, err
+	}
 
 	build.CachedImages = cache
 	img.Build = build
@@ -107,6 +112,26 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		return "", nil, fmt.Errorf("error reading ignore file: %w", err)
 	}
 
+	absDockerfile, err := filepath.Abs(build.Dockerfile)
+	if err != nil {
+		return "", nil, fmt.Errorf("absDockerfile error: %s", err)
+	}
+	absBuildpath, err := filepath.Abs(build.Context)
+	if err != nil {
+		return "", nil, fmt.Errorf("absBuildPath error: %s", err)
+	}
+	relDockerfile, err := filepath.Rel(absBuildpath, absDockerfile)
+	if err != nil {
+		return "", nil, fmt.Errorf("relDockerfile error: %s", err)
+	}
+
+	// if the dockerfile is in the context it will be something like "./Dockerfile" or ".\sub\dir\Dockerfile"
+	// if the dockerfile is out of the context it will begin with "../"
+	dockerfileInContext := true
+	if strings.HasPrefix(relDockerfile, ".."+string(filepath.Separator)) {
+		dockerfileInContext = false
+	}
+
 	contextDir, err := clibuild.ResolveAndValidateContextPath(build.Context)
 	if err != nil {
 		return "", nil, fmt.Errorf("error resolving context: %w", err)
@@ -119,7 +144,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	// un-ignore build files so the docker daemon can use them
 	ignorePatterns := buildCmd.TrimBuildFilesFromExcludes(
 		initialIgnorePatterns,
-		img.Build.Dockerfile,
+		relDockerfile,
 		false,
 	)
 
@@ -134,16 +159,27 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		}
 	}
 
-	if err != nil {
-		return "", nil, err
-	}
-
 	tar, err := archive.TarWithOptions(contextDir, &archive.TarOptions{
 		ExcludePatterns: ignorePatterns,
 		ChownOpts:       &idtools.Identity{UID: 0, GID: 0},
 	})
 	if err != nil {
 		return "", nil, err
+	}
+
+	// add dockerfile to tarball if it's not in the build context
+	replaceDockerfile := relDockerfile
+	if !dockerfileInContext {
+		// Handle Dockerfile from outside of build context folder
+		var dockerfileCtx io.ReadCloser
+		dockerfileCtx, err = os.Open(build.Dockerfile)
+		if err != nil {
+			return "", nil, err
+		}
+		tar, replaceDockerfile, err = clibuild.AddDockerfileToBuildContext(dockerfileCtx, tar)
+		if err != nil {
+			return "", nil, err
+		}
 	}
 
 	cfg, err := getDefaultDockerConfig()
@@ -182,7 +218,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	}
 	// make the build options
 	opts := types.ImageBuildOptions{
-		Dockerfile: img.Build.Dockerfile,
+		Dockerfile: replaceDockerfile,
 		Tags:       []string{img.Name}, //this should build the image locally, sans registry info
 		CacheFrom:  img.Build.CachedImages,
 		BuildArgs:  build.Args,
@@ -234,14 +270,16 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		}
 	}
 
+	outputs := map[string]interface{}{
+		"dockerfile":     relDockerfile,
+		"context":        img.Build.Context,
+		"baseImageName":  img.Name,
+		"registryServer": img.Registry.Server,
+		"imageName":      img.Name,
+	}
+
 	// if we are not pushing to the registry, we return after building the local image.
 	if img.SkipPush {
-		outputs := map[string]interface{}{
-			"dockerfile":     img.Build.Dockerfile,
-			"context":        img.Build.Context,
-			"registryServer": img.Registry.Server,
-		}
-
 		pbstruct, err := plugin.MarshalProperties(
 			resource.NewPropertyMapFromMap(outputs),
 			plugin.MarshalOptions{KeepUnknowns: true, SkipNulls: true},
@@ -286,12 +324,17 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		}
 	}
 
-	outputs := map[string]interface{}{
-		"dockerfile":     img.Build.Dockerfile,
-		"context":        img.Build.Context,
-		"baseImageName":  img.Name,
-		"registryServer": img.Registry.Server,
+	dist, _, err := docker.ImageInspectWithRaw(ctx, img.Name)
+	if err != nil {
+		return "", nil, err
 	}
+
+	// The repoDigest should be populated after a push. Clients may choose to throw an error or coerce
+	// this to a non-optional value.
+	if len(dist.RepoDigests) > 0 {
+		outputs["repoDigest"] = dist.RepoDigests[0]
+	}
+
 	pbstruct, err := plugin.MarshalProperties(
 		resource.NewPropertyMapFromMap(outputs),
 		plugin.MarshalOptions{KeepUnknowns: true, SkipNulls: true},
@@ -305,19 +348,13 @@ func marshalBuildAndApplyDefaults(b resource.PropertyValue) (Build, error) {
 	var build Build
 	if b.IsNull() {
 		// use the default build context
-		build.Dockerfile = defaultDockerfile
 		build.Context = "."
+		build.Dockerfile = defaultDockerfile
 		return build, nil
 	}
 	// read in the build type fields
 	buildObject := b.ObjectValue()
-	// Dockerfile
-	if buildObject["dockerfile"].IsNull() {
-		// set default
-		build.Dockerfile = defaultDockerfile
-	} else {
-		build.Dockerfile = buildObject["dockerfile"].StringValue()
-	}
+
 	// Context
 	if buildObject["context"].IsNull() {
 		// set default
@@ -326,6 +363,13 @@ func marshalBuildAndApplyDefaults(b resource.PropertyValue) (Build, error) {
 		build.Context = buildObject["context"].StringValue()
 	}
 
+	// Dockerfile
+	if buildObject["dockerfile"].IsNull() {
+		// set default
+		build.Dockerfile = path.Join(build.Context, defaultDockerfile)
+	} else {
+		build.Dockerfile = buildObject["dockerfile"].StringValue()
+	}
 	// BuildKit
 	version, err := marshalBuilder(buildObject["builderVersion"])
 
@@ -349,25 +393,28 @@ func marshalBuildAndApplyDefaults(b resource.PropertyValue) (Build, error) {
 	return build, nil
 }
 
-func marshalCachedImages(img Image, b resource.PropertyValue) []string {
+func marshalCachedImages(b resource.PropertyValue) ([]string, error) {
 	var cacheImages []string
 	if b.IsNull() {
-		return cacheImages
+		return cacheImages, nil
 	}
 	c := b.ObjectValue()["cacheFrom"]
 
 	if c.IsNull() {
-		return cacheImages
+		return cacheImages, nil
 	}
 
 	// if we specify a list of stages, then we only pull those
 	cacheFrom := c.ObjectValue()
+	if cacheFrom["images"].IsNull() {
+		return cacheImages, fmt.Errorf("if you want to use cacheFrom, you must have `images` set")
+	}
 	stages := cacheFrom["images"].ArrayValue()
 	for _, img := range stages {
 		stage := img.StringValue()
 		cacheImages = append(cacheImages, stage)
 	}
-	return cacheImages
+	return cacheImages, nil
 }
 
 func marshalRegistry(r resource.PropertyValue) Registry {

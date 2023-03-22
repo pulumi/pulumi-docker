@@ -1,0 +1,15 @@
+name: dockerfile-default
+runtime: yaml
+resources:
+  demo-image:
+    type: docker:Image
+    properties:
+      imageName: pulumibot/test-image:tag2
+      skipPush: true
+      build:
+        context: ./app
+    options:
+      version: v4.0.0
+outputs:
+  imageName: ${demo-image.imageName}
+  out-dockerfile: ${demo-image.dockerfile}

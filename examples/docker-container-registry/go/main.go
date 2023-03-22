@@ -37,6 +37,7 @@ func main() {
 
 		// Export the resulting image name and tag.
 		ctx.Export("imageName", image.ImageName)
+		ctx.Export("repoDigest", image.RepoDigest)
 		return nil
 	})
 }

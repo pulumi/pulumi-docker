@@ -48,11 +48,17 @@ type Image struct {
 	pulumi.CustomResourceState
 
 	// The fully qualified image name that was pushed to the registry.
-	BaseImageName pulumi.StringPtrOutput `pulumi:"baseImageName"`
+	BaseImageName pulumi.StringOutput `pulumi:"baseImageName"`
+	// The path to the build context to use.
+	Context pulumi.StringOutput `pulumi:"context"`
+	// The location of the Dockerfile relative to the docker build context.
+	Dockerfile pulumi.StringOutput `pulumi:"dockerfile"`
 	// The fully qualified image name
-	ImageName pulumi.StringPtrOutput `pulumi:"imageName"`
+	ImageName pulumi.StringOutput `pulumi:"imageName"`
 	// The name of the registry server hosting the image.
-	RegistryServer pulumi.StringPtrOutput `pulumi:"registryServer"`
+	RegistryServer pulumi.StringOutput `pulumi:"registryServer"`
+	// The digest of the manifest pushed to the registry, e.g.: repo[:tag]@<algorithm>:<hash>
+	RepoDigest pulumi.StringPtrOutput `pulumi:"repoDigest"`
 }
 
 // NewImage registers a new resource with the given unique name, arguments, and options.
@@ -219,18 +225,33 @@ func (o ImageOutput) ToImageOutputWithContext(ctx context.Context) ImageOutput {
 }
 
 // The fully qualified image name that was pushed to the registry.
-func (o ImageOutput) BaseImageName() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v *Image) pulumi.StringPtrOutput { return v.BaseImageName }).(pulumi.StringPtrOutput)
+func (o ImageOutput) BaseImageName() pulumi.StringOutput {
+	return o.ApplyT(func(v *Image) pulumi.StringOutput { return v.BaseImageName }).(pulumi.StringOutput)
+}
+
+// The path to the build context to use.
+func (o ImageOutput) Context() pulumi.StringOutput {
+	return o.ApplyT(func(v *Image) pulumi.StringOutput { return v.Context }).(pulumi.StringOutput)
+}
+
+// The location of the Dockerfile relative to the docker build context.
+func (o ImageOutput) Dockerfile() pulumi.StringOutput {
+	return o.ApplyT(func(v *Image) pulumi.StringOutput { return v.Dockerfile }).(pulumi.StringOutput)
 }
 
 // The fully qualified image name
-func (o ImageOutput) ImageName() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v *Image) pulumi.StringPtrOutput { return v.ImageName }).(pulumi.StringPtrOutput)
+func (o ImageOutput) ImageName() pulumi.StringOutput {
+	return o.ApplyT(func(v *Image) pulumi.StringOutput { return v.ImageName }).(pulumi.StringOutput)
 }
 
 // The name of the registry server hosting the image.
-func (o ImageOutput) RegistryServer() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v *Image) pulumi.StringPtrOutput { return v.RegistryServer }).(pulumi.StringPtrOutput)
+func (o ImageOutput) RegistryServer() pulumi.StringOutput {
+	return o.ApplyT(func(v *Image) pulumi.StringOutput { return v.RegistryServer }).(pulumi.StringOutput)
+}
+
+// The digest of the manifest pushed to the registry, e.g.: repo[:tag]@<algorithm>:<hash>
+func (o ImageOutput) RepoDigest() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *Image) pulumi.StringPtrOutput { return v.RepoDigest }).(pulumi.StringPtrOutput)
 }
 
 type ImageArrayOutput struct{ *pulumi.OutputState }

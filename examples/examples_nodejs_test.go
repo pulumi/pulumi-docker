@@ -22,12 +22,14 @@ import (
 	"testing"
 
 	"github.com/pulumi/pulumi/pkg/v3/testing/integration"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestNginxTs(t *testing.T) {
 	test := getJsOptions(t).
 		With(integration.ProgramTestOptions{
-			Dir: path.Join(getCwd(t), "nginx"),
+			Dir:                  path.Join(getCwd(t), "nginx"),
+			ExpectRefreshChanges: true,
 		})
 
 	integration.ProgramTest(t, &test)
@@ -54,6 +56,7 @@ func TestAzureContainerRegistry(t *testing.T) {
 				"azure:environment": "public",
 				"azure:location":    location,
 			},
+			ExpectRefreshChanges: true,
 		})
 
 	integration.ProgramTest(t, &test)
@@ -69,6 +72,11 @@ func TestAwsContainerRegistry(t *testing.T) {
 			Dir: path.Join(getCwd(t), "aws-container-registry/ts"),
 			Config: map[string]string{
 				"aws:region": region,
+			},
+			ExtraRuntimeValidation: func(t *testing.T, stack integration.RuntimeValidationStackInfo) {
+				digest, ok := stack.Outputs["repoDigest"].(string)
+				assert.True(t, ok)
+				assert.NotEmpty(t, digest)
 			},
 		})
 
@@ -107,7 +115,7 @@ func TestGcpContainerRegistry(t *testing.T) {
 	integration.ProgramTest(t, &test)
 }
 
-func TestDockerContainerRegistry(t *testing.T) {
+func TestDockerContainerRegistryNode(t *testing.T) {
 	username := "pulumibot"
 	password := os.Getenv("DOCKER_HUB_PASSWORD")
 	test := getJsOptions(t).
@@ -118,6 +126,11 @@ func TestDockerContainerRegistry(t *testing.T) {
 			},
 			Secrets: map[string]string{
 				"cbp-docker-ts-dev:dockerPassword": password,
+			},
+			ExtraRuntimeValidation: func(t *testing.T, stack integration.RuntimeValidationStackInfo) {
+				digest, ok := stack.Outputs["repoDigest"].(string)
+				assert.True(t, ok)
+				assert.NotEmpty(t, digest)
 			},
 		})
 	integration.ProgramTest(t, &test)

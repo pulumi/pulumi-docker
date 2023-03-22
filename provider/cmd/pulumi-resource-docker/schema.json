@@ -3068,13 +3068,11 @@
                 },
                 "context": {
                     "type": "string",
-                    "description": "The path to the build context to use.",
-                    "default": "."
+                    "description": "The path to the build context to use."
                 },
                 "dockerfile": {
                     "type": "string",
-                    "description": "The path to the Dockerfile to use.",
-                    "default": "Dockerfile"
+                    "description": "The path to the Dockerfile to use."
                 },
                 "platform": {
                     "type": "string",
@@ -4328,6 +4326,14 @@
                     "type": "string",
                     "description": "The fully qualified image name that was pushed to the registry."
                 },
+                "context": {
+                    "type": "string",
+                    "description": "The path to the build context to use."
+                },
+                "dockerfile": {
+                    "type": "string",
+                    "description": "The location of the Dockerfile relative to the docker build context."
+                },
                 "imageName": {
                     "type": "string",
                     "description": "The fully qualified image name"
@@ -4335,9 +4341,20 @@
                 "registryServer": {
                     "type": "string",
                     "description": "The name of the registry server hosting the image."
+                },
+                "repoDigest": {
+                    "type": "string",
+                    "description": "The digest of the manifest pushed to the registry, e.g.: repo[:tag]@\u003calgorithm\u003e:\u003chash\u003e"
                 }
             },
             "type": "object",
+            "required": [
+                "dockerfile",
+                "context",
+                "baseImageName",
+                "registryServer",
+                "imageName"
+            ],
             "inputProperties": {
                 "build": {
                     "$ref": "#/types/docker:index/dockerBuild:DockerBuild",
