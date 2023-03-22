@@ -356,10 +356,11 @@ func (p *dockerNativeProvider) Read(ctx context.Context, req *rpc.ReadRequest) (
 	label := fmt.Sprintf("%s.Read(%s)", p.name, urn)
 	logging.V(9).Infof("%s executing", label)
 	id := req.GetId()
+	inputs := req.GetInputs()
+	properties := req.GetProperties()
 
-	// For now, we will return the minimum implementation for Read,
-	// until we find a use case for reading an image from a registry and comparing it to existing state
-	return &rpc.ReadResponse{Id: id}, nil
+	// Return properties as passed, since we do no reconciliation,
+	return &rpc.ReadResponse{Id: id, Inputs: inputs, Properties: properties}, nil
 
 }
 

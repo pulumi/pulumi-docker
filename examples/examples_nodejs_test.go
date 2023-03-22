@@ -28,7 +28,8 @@ import (
 func TestNginxTs(t *testing.T) {
 	test := getJsOptions(t).
 		With(integration.ProgramTestOptions{
-			Dir: path.Join(getCwd(t), "nginx"),
+			Dir:                  path.Join(getCwd(t), "nginx"),
+			ExpectRefreshChanges: true,
 		})
 
 	integration.ProgramTest(t, &test)
@@ -55,6 +56,7 @@ func TestAzureContainerRegistry(t *testing.T) {
 				"azure:environment": "public",
 				"azure:location":    location,
 			},
+			ExpectRefreshChanges: true,
 		})
 
 	integration.ProgramTest(t, &test)
