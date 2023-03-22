@@ -165,6 +165,7 @@ func TestAzureContainerRegistryGo(t *testing.T) {
 		Dependencies: []string{
 			"github.com/pulumi/pulumi-docker/sdk/v4=../sdk",
 		},
+		ExpectRefreshChanges: true,
 	})
 	integration.ProgramTest(t, &opts)
 }

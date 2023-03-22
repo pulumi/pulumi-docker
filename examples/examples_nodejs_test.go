@@ -56,6 +56,7 @@ func TestAzureContainerRegistry(t *testing.T) {
 				"azure:environment": "public",
 				"azure:location":    location,
 			},
+			ExpectRefreshChanges: true,
 		})
 
 	integration.ProgramTest(t, &test)
