@@ -107,7 +107,8 @@ func TestDockerContainerRegistryPy(t *testing.T) {
 func TestNginxPy(t *testing.T) {
 	test := getPyOptions(t).
 		With(integration.ProgramTestOptions{
-			Dir: path.Join(getCwd(t), "nginx-py"),
+			Dir:                  path.Join(getCwd(t), "nginx-py"),
+			ExpectRefreshChanges: true,
 		})
 
 	integration.ProgramTest(t, &test)

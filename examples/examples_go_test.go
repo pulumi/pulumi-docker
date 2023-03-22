@@ -39,7 +39,8 @@ func TestNginxGo(t *testing.T) {
 		Dependencies: []string{
 			"github.com/pulumi/pulumi-docker/sdk/v4=../sdk",
 		},
-		Dir: path.Join(cwd, "nginx-go"),
+		Dir:                  path.Join(cwd, "nginx-go"),
+		ExpectRefreshChanges: true,
 	})
 	integration.ProgramTest(t, &opts)
 }
@@ -246,7 +247,4 @@ func TestDockerContainerRegistryGo(t *testing.T) {
 	integration.ProgramTest(t, &test)
 }
 
-var base = integration.ProgramTestOptions{
-	ExpectRefreshChanges: true, // Docker resources generally see changes when refreshed.
-	// Note: no Config! This package should be usable without any config.
-}
+var base = getBaseOptions()

@@ -26,7 +26,8 @@ import (
 func TestNginxCs(t *testing.T) {
 	test := getCsharpBaseOptions(t).
 		With(integration.ProgramTestOptions{
-			Dir: path.Join(getCwd(t), "nginx-cs"),
+			Dir:                  path.Join(getCwd(t), "nginx-cs"),
+			ExpectRefreshChanges: true,
 		})
 
 	integration.ProgramTest(t, &test)
