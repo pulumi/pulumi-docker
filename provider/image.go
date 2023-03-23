@@ -32,6 +32,7 @@ import (
 	"github.com/moby/moby/registry"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
+	"github.com/ryboe/q"
 )
 
 const defaultDockerfile = "Dockerfile"
@@ -159,10 +160,14 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		}
 	}
 
+	userIdentity := idtools.CurrentIdentity()
+	q.Q(userIdentity)
+
 	tar, err := archive.TarWithOptions(contextDir, &archive.TarOptions{
 		ExcludePatterns: ignorePatterns,
-		ChownOpts:       &idtools.Identity{UID: 0, GID: 0},
+		ChownOpts:       &idtools.Identity{UID: 0, GID: 0}, // TODO: this does not seem to affect anything in TarWithOptions.
 	})
+	//TODO: the error "Can't add ... to tar file" may still be a permissions error - just not one that is controlled by ChownOpts.
 	if err != nil {
 		return "", nil, err
 	}

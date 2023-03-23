@@ -14,6 +14,7 @@ require (
 	github.com/pulumi/pulumi-terraform-bridge/v3 v3.42.1
 	github.com/pulumi/pulumi/pkg/v3 v3.56.0
 	github.com/pulumi/pulumi/sdk/v3 v3.56.0
+	github.com/ryboe/q v1.0.19
 	github.com/stretchr/testify v1.8.2
 	github.com/terraform-providers/terraform-provider-docker v0.0.0
 	google.golang.org/grpc v1.53.0
@@ -23,6 +24,7 @@ require (
 
 replace (
 	cloud.google.com/go/storage => cloud.google.com/go/storage v1.29.0
+	github.com/docker/docker => /Users/guin/go/src/github.com/docker/docker
 	github.com/hashicorp/terraform-plugin-sdk/v2 => github.com/pulumi/terraform-plugin-sdk/v2 v2.0.0-20221122203342-430f685de305
 	github.com/hashicorp/vault => github.com/hashicorp/vault v1.2.0
 	github.com/terraform-providers/terraform-provider-docker => ../upstream
@@ -175,6 +177,8 @@ require (
 	github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51 // indirect
 	github.com/kevinburke/ssh_config v1.2.0 // indirect
 	github.com/klauspost/compress v1.16.0 // indirect
+	github.com/kr/pretty v0.3.1 // indirect
+	github.com/kr/text v0.2.0 // indirect
 	github.com/kylelemons/godebug v1.1.0 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.16 // indirect
