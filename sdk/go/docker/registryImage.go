@@ -11,11 +11,11 @@ import (
 )
 
 // <!-- Bug: Type and Name are switched -->
-// Manages the lifecycle of docker image/tag in a registry means it can store one or more version of specific docker images and identified by their tags.
+// Manages the lifecycle of docker image in a registry. You can upload images to a registry (= `docker push`) and also delete them again
 //
 // ## Example Usage
 //
-// To be able to update an image itself when an updated image arrives.
+// Build an image with the `RemoteImage` resource and then push it to a registry:
 //
 // ```go
 // package main
@@ -32,7 +32,14 @@ import (
 //	func main() {
 //		pulumi.Run(func(ctx *pulumi.Context) error {
 //			_, err := docker.NewRegistryImage(ctx, "helloworld", &docker.RegistryImageArgs{
-//				Build: &docker.RegistryImageBuildArgs{
+//				KeepRemotely: pulumi.Bool(true),
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			_, err = docker.NewRemoteImage(ctx, "image", &docker.RemoteImageArgs{
+//				Name: pulumi.String("registry.com/somename:1.0"),
+//				Build: &docker.RemoteImageBuildArgs{
 //					Context: pulumi.String(fmt.Sprintf("%v/absolutePathToContextFolder", path.Cwd)),
 //				},
 //			})
@@ -47,8 +54,6 @@ import (
 type RegistryImage struct {
 	pulumi.CustomResourceState
 
-	// Definition for building the image
-	Build RegistryImageBuildPtrOutput `pulumi:"build"`
 	// If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
 	InsecureSkipVerify pulumi.BoolPtrOutput `pulumi:"insecureSkipVerify"`
 	// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
@@ -57,6 +62,8 @@ type RegistryImage struct {
 	Name pulumi.StringOutput `pulumi:"name"`
 	// The sha256 digest of the image.
 	Sha256Digest pulumi.StringOutput `pulumi:"sha256Digest"`
+	// A map of arbitrary strings that, when changed, will force the `RegistryImage` resource to be replaced. This can be used to repush a local image
+	Triggers pulumi.MapOutput `pulumi:"triggers"`
 }
 
 // NewRegistryImage registers a new resource with the given unique name, arguments, and options.
@@ -88,8 +95,6 @@ func GetRegistryImage(ctx *pulumi.Context,
 
 // Input properties used for looking up and filtering RegistryImage resources.
 type registryImageState struct {
-	// Definition for building the image
-	Build *RegistryImageBuild `pulumi:"build"`
 	// If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
 	InsecureSkipVerify *bool `pulumi:"insecureSkipVerify"`
 	// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
@@ -98,11 +103,11 @@ type registryImageState struct {
 	Name *string `pulumi:"name"`
 	// The sha256 digest of the image.
 	Sha256Digest *string `pulumi:"sha256Digest"`
+	// A map of arbitrary strings that, when changed, will force the `RegistryImage` resource to be replaced. This can be used to repush a local image
+	Triggers map[string]interface{} `pulumi:"triggers"`
 }
 
 type RegistryImageState struct {
-	// Definition for building the image
-	Build RegistryImageBuildPtrInput
 	// If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
 	InsecureSkipVerify pulumi.BoolPtrInput
 	// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
@@ -111,6 +116,8 @@ type RegistryImageState struct {
 	Name pulumi.StringPtrInput
 	// The sha256 digest of the image.
 	Sha256Digest pulumi.StringPtrInput
+	// A map of arbitrary strings that, when changed, will force the `RegistryImage` resource to be replaced. This can be used to repush a local image
+	Triggers pulumi.MapInput
 }
 
 func (RegistryImageState) ElementType() reflect.Type {
@@ -118,26 +125,26 @@ func (RegistryImageState) ElementType() reflect.Type {
 }
 
 type registryImageArgs struct {
-	// Definition for building the image
-	Build *RegistryImageBuild `pulumi:"build"`
 	// If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
 	InsecureSkipVerify *bool `pulumi:"insecureSkipVerify"`
 	// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
 	KeepRemotely *bool `pulumi:"keepRemotely"`
 	// The name of the Docker image.
 	Name *string `pulumi:"name"`
+	// A map of arbitrary strings that, when changed, will force the `RegistryImage` resource to be replaced. This can be used to repush a local image
+	Triggers map[string]interface{} `pulumi:"triggers"`
 }
 
 // The set of arguments for constructing a RegistryImage resource.
 type RegistryImageArgs struct {
-	// Definition for building the image
-	Build RegistryImageBuildPtrInput
 	// If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
 	InsecureSkipVerify pulumi.BoolPtrInput
 	// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
 	KeepRemotely pulumi.BoolPtrInput
 	// The name of the Docker image.
 	Name pulumi.StringPtrInput
+	// A map of arbitrary strings that, when changed, will force the `RegistryImage` resource to be replaced. This can be used to repush a local image
+	Triggers pulumi.MapInput
 }
 
 func (RegistryImageArgs) ElementType() reflect.Type {
@@ -227,11 +234,6 @@ func (o RegistryImageOutput) ToRegistryImageOutputWithContext(ctx context.Contex
 	return o
 }
 
-// Definition for building the image
-func (o RegistryImageOutput) Build() RegistryImageBuildPtrOutput {
-	return o.ApplyT(func(v *RegistryImage) RegistryImageBuildPtrOutput { return v.Build }).(RegistryImageBuildPtrOutput)
-}
-
 // If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
 func (o RegistryImageOutput) InsecureSkipVerify() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *RegistryImage) pulumi.BoolPtrOutput { return v.InsecureSkipVerify }).(pulumi.BoolPtrOutput)
@@ -250,6 +252,11 @@ func (o RegistryImageOutput) Name() pulumi.StringOutput {
 // The sha256 digest of the image.
 func (o RegistryImageOutput) Sha256Digest() pulumi.StringOutput {
 	return o.ApplyT(func(v *RegistryImage) pulumi.StringOutput { return v.Sha256Digest }).(pulumi.StringOutput)
+}
+
+// A map of arbitrary strings that, when changed, will force the `RegistryImage` resource to be replaced. This can be used to repush a local image
+func (o RegistryImageOutput) Triggers() pulumi.MapOutput {
+	return o.ApplyT(func(v *RegistryImage) pulumi.MapOutput { return v.Triggers }).(pulumi.MapOutput)
 }
 
 type RegistryImageArrayOutput struct{ *pulumi.OutputState }

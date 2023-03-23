@@ -14,33 +14,129 @@ namespace Pulumi.Docker.Outputs
     public sealed class RemoteImageBuild
     {
         /// <summary>
+        /// The configuration for the authentication
+        /// </summary>
+        public readonly ImmutableArray<Outputs.RemoteImageBuildAuthConfig> AuthConfigs;
+        /// <summary>
         /// Set build-time variables
         /// </summary>
         public readonly ImmutableDictionary<string, string>? BuildArg;
+        /// <summary>
+        /// Pairs for build-time variables in the form TODO
+        /// </summary>
+        public readonly ImmutableDictionary<string, string>? BuildArgs;
+        /// <summary>
+        /// BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request.
+        /// </summary>
+        public readonly string? BuildId;
+        /// <summary>
+        /// Images to consider as cache sources
+        /// </summary>
+        public readonly ImmutableArray<string> CacheFroms;
+        /// <summary>
+        /// Optional parent cgroup for the container
+        /// </summary>
+        public readonly string? CgroupParent;
+        /// <summary>
+        /// Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
+        /// </summary>
+        public readonly string Context;
+        /// <summary>
+        /// The length of a CPU period in microseconds
+        /// </summary>
+        public readonly int? CpuPeriod;
+        /// <summary>
+        /// Microseconds of CPU time that the container can get in a CPU period
+        /// </summary>
+        public readonly int? CpuQuota;
+        /// <summary>
+        /// CPUs in which to allow execution (e.g., `0-3`, `0`, `1`)
+        /// </summary>
+        public readonly string? CpuSetCpus;
+        /// <summary>
+        /// MEMs in which to allow execution (`0-3`, `0`, `1`)
+        /// </summary>
+        public readonly string? CpuSetMems;
+        /// <summary>
+        /// CPU shares (relative weight)
+        /// </summary>
+        public readonly int? CpuShares;
         /// <summary>
         /// Name of the Dockerfile. Defaults to `Dockerfile`.
         /// </summary>
         public readonly string? Dockerfile;
         /// <summary>
+        /// A list of hostnames/IP mappings to add to the container’s /etc/hosts file. Specified in the form ["hostname:IP"]
+        /// </summary>
+        public readonly ImmutableArray<string> ExtraHosts;
+        /// <summary>
         /// Always remove intermediate containers
         /// </summary>
         public readonly bool? ForceRemove;
+        /// <summary>
+        /// Isolation represents the isolation technology of a container. The supported values are
+        /// </summary>
+        public readonly string? Isolation;
         /// <summary>
         /// Set metadata for an image
         /// </summary>
         public readonly ImmutableDictionary<string, string>? Label;
         /// <summary>
-        /// Do not use cache when building the image
+        /// User-defined key/value metadata
+        /// </summary>
+        public readonly ImmutableDictionary<string, string>? Labels;
+        /// <summary>
+        /// Set memory limit for build
+        /// </summary>
+        public readonly int? Memory;
+        /// <summary>
+        /// Total memory (memory + swap), -1 to enable unlimited swap
+        /// </summary>
+        public readonly int? MemorySwap;
+        /// <summary>
+        /// Set the networking mode for the RUN instructions during build
+        /// </summary>
+        public readonly string? NetworkMode;
+        /// <summary>
+        /// Do not use the cache when building the image
         /// </summary>
         public readonly bool? NoCache;
         /// <summary>
-        /// Context path
+        /// Set platform if server is multi-platform capable
         /// </summary>
-        public readonly string Path;
+        public readonly string? Platform;
         /// <summary>
-        /// Remove intermediate containers after a successful build. Defaults to  `true`.
+        /// Attempt to pull the image even if an older image exists locally
+        /// </summary>
+        public readonly bool? PullParent;
+        /// <summary>
+        /// A Git repository URI or HTTP/HTTPS context URI
+        /// </summary>
+        public readonly string? RemoteContext;
+        /// <summary>
+        /// Remove intermediate containers after a successful build. Defaults to `true`.
         /// </summary>
         public readonly bool? Remove;
+        /// <summary>
+        /// The security options
+        /// </summary>
+        public readonly ImmutableArray<string> SecurityOpts;
+        /// <summary>
+        /// Set an ID for the build session
+        /// </summary>
+        public readonly string? SessionId;
+        /// <summary>
+        /// Size of /dev/shm in bytes. The size must be greater than 0
+        /// </summary>
+        public readonly int? ShmSize;
+        /// <summary>
+        /// If true the new layers are squashed into a new image with a single new layer
+        /// </summary>
+        public readonly bool? Squash;
+        /// <summary>
+        /// Suppress the build output and print image ID on success
+        /// </summary>
+        public readonly bool? SuppressOutput;
         /// <summary>
         /// Name and optionally a tag in the 'name:tag' format
         /// </summary>
@@ -49,36 +145,122 @@ namespace Pulumi.Docker.Outputs
         /// Set the target build stage to build
         /// </summary>
         public readonly string? Target;
+        /// <summary>
+        /// Configuration for ulimits
+        /// </summary>
+        public readonly ImmutableArray<Outputs.RemoteImageBuildUlimit> Ulimits;
+        /// <summary>
+        /// Version of the underlying builder to use
+        /// </summary>
+        public readonly string? Version;
 
         [OutputConstructor]
         private RemoteImageBuild(
+            ImmutableArray<Outputs.RemoteImageBuildAuthConfig> authConfigs,
+
             ImmutableDictionary<string, string>? buildArg,
+
+            ImmutableDictionary<string, string>? buildArgs,
+
+            string? buildId,
+
+            ImmutableArray<string> cacheFroms,
+
+            string? cgroupParent,
+
+            string context,
+
+            int? cpuPeriod,
+
+            int? cpuQuota,
+
+            string? cpuSetCpus,
+
+            string? cpuSetMems,
+
+            int? cpuShares,
 
             string? dockerfile,
 
+            ImmutableArray<string> extraHosts,
+
             bool? forceRemove,
+
+            string? isolation,
 
             ImmutableDictionary<string, string>? label,
 
+            ImmutableDictionary<string, string>? labels,
+
+            int? memory,
+
+            int? memorySwap,
+
+            string? networkMode,
+
             bool? noCache,
 
-            string path,
+            string? platform,
+
+            bool? pullParent,
+
+            string? remoteContext,
 
             bool? remove,
 
+            ImmutableArray<string> securityOpts,
+
+            string? sessionId,
+
+            int? shmSize,
+
+            bool? squash,
+
+            bool? suppressOutput,
+
             ImmutableArray<string> tags,
 
-            string? target)
+            string? target,
+
+            ImmutableArray<Outputs.RemoteImageBuildUlimit> ulimits,
+
+            string? version)
         {
+            AuthConfigs = authConfigs;
             BuildArg = buildArg;
+            BuildArgs = buildArgs;
+            BuildId = buildId;
+            CacheFroms = cacheFroms;
+            CgroupParent = cgroupParent;
+            Context = context;
+            CpuPeriod = cpuPeriod;
+            CpuQuota = cpuQuota;
+            CpuSetCpus = cpuSetCpus;
+            CpuSetMems = cpuSetMems;
+            CpuShares = cpuShares;
             Dockerfile = dockerfile;
+            ExtraHosts = extraHosts;
             ForceRemove = forceRemove;
+            Isolation = isolation;
             Label = label;
+            Labels = labels;
+            Memory = memory;
+            MemorySwap = memorySwap;
+            NetworkMode = networkMode;
             NoCache = noCache;
-            Path = path;
+            Platform = platform;
+            PullParent = pullParent;
+            RemoteContext = remoteContext;
             Remove = remove;
+            SecurityOpts = securityOpts;
+            SessionId = sessionId;
+            ShmSize = shmSize;
+            Squash = squash;
+            SuppressOutput = suppressOutput;
             Tags = tags;
             Target = target;
+            Ulimits = ulimits;
+            Version = version;
         }
     }
 }

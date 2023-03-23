@@ -62,14 +62,29 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[&#34;/usr/bin/myprogram&#34;,&#34;-&#34;,&#34;baz.con&#34;]`.
+     * Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
+     * 
+     */
+    @Import(name="cgroupnsMode")
+    private @Nullable Output<String> cgroupnsMode;
+
+    /**
+     * @return Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
+     * 
+     */
+    public Optional<Output<String>> cgroupnsMode() {
+        return Optional.ofNullable(this.cgroupnsMode);
+    }
+
+    /**
+     * The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[&#34;/usr/bin/myprogram&#34;,&#34;-f&#34;,&#34;baz.con&#34;]`.
      * 
      */
     @Import(name="command")
     private @Nullable Output<List<String>> command;
 
     /**
-     * @return The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[&#34;/usr/bin/myprogram&#34;,&#34;-&#34;,&#34;baz.con&#34;]`.
+     * @return The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[&#34;/usr/bin/myprogram&#34;,&#34;-f&#34;,&#34;baz.con&#34;]`.
      * 
      */
     public Optional<Output<List<String>>> command() {
@@ -377,29 +392,6 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * Set of links for link based connectivity between containers that are running on the same host.
-     * 
-     * @deprecated
-     * The --link flag is a legacy feature of Docker. It may eventually be removed.
-     * 
-     */
-    @Deprecated /* The --link flag is a legacy feature of Docker. It may eventually be removed. */
-    @Import(name="links")
-    private @Nullable Output<List<String>> links;
-
-    /**
-     * @return Set of links for link based connectivity between containers that are running on the same host.
-     * 
-     * @deprecated
-     * The --link flag is a legacy feature of Docker. It may eventually be removed.
-     * 
-     */
-    @Deprecated /* The --link flag is a legacy feature of Docker. It may eventually be removed. */
-    public Optional<Output<List<String>>> links() {
-        return Optional.ofNullable(this.links);
-    }
-
-    /**
      * The logging driver to use for the container.
      * 
      */
@@ -539,29 +531,6 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * Set an alias for the container in all specified networks
-     * 
-     * @deprecated
-     * Use networks_advanced instead. Will be removed in v3.0.0
-     * 
-     */
-    @Deprecated /* Use networks_advanced instead. Will be removed in v3.0.0 */
-    @Import(name="networkAliases")
-    private @Nullable Output<List<String>> networkAliases;
-
-    /**
-     * @return Set an alias for the container in all specified networks
-     * 
-     * @deprecated
-     * Use networks_advanced instead. Will be removed in v3.0.0
-     * 
-     */
-    @Deprecated /* Use networks_advanced instead. Will be removed in v3.0.0 */
-    public Optional<Output<List<String>>> networkAliases() {
-        return Optional.ofNullable(this.networkAliases);
-    }
-
-    /**
      * Network mode of the container.
      * 
      */
@@ -574,29 +543,6 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
      */
     public Optional<Output<String>> networkMode() {
         return Optional.ofNullable(this.networkMode);
-    }
-
-    /**
-     * ID of the networks in which the container is.
-     * 
-     * @deprecated
-     * Use networks_advanced instead. Will be removed in v3.0.0
-     * 
-     */
-    @Deprecated /* Use networks_advanced instead. Will be removed in v3.0.0 */
-    @Import(name="networks")
-    private @Nullable Output<List<String>> networks;
-
-    /**
-     * @return ID of the networks in which the container is.
-     * 
-     * @deprecated
-     * Use networks_advanced instead. Will be removed in v3.0.0
-     * 
-     */
-    @Deprecated /* Use networks_advanced instead. Will be removed in v3.0.0 */
-    public Optional<Output<List<String>>> networks() {
-        return Optional.ofNullable(this.networks);
     }
 
     /**
@@ -1024,6 +970,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
     private ContainerArgs(ContainerArgs $) {
         this.attach = $.attach;
         this.capabilities = $.capabilities;
+        this.cgroupnsMode = $.cgroupnsMode;
         this.command = $.command;
         this.containerReadRefreshTimeoutMilliseconds = $.containerReadRefreshTimeoutMilliseconds;
         this.cpuSet = $.cpuSet;
@@ -1045,7 +992,6 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         this.init = $.init;
         this.ipcMode = $.ipcMode;
         this.labels = $.labels;
-        this.links = $.links;
         this.logDriver = $.logDriver;
         this.logOpts = $.logOpts;
         this.logs = $.logs;
@@ -1055,9 +1001,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         this.mounts = $.mounts;
         this.mustRun = $.mustRun;
         this.name = $.name;
-        this.networkAliases = $.networkAliases;
         this.networkMode = $.networkMode;
-        this.networks = $.networks;
         this.networksAdvanced = $.networksAdvanced;
         this.pidMode = $.pidMode;
         this.ports = $.ports;
@@ -1149,7 +1093,28 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param command The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[&#34;/usr/bin/myprogram&#34;,&#34;-&#34;,&#34;baz.con&#34;]`.
+         * @param cgroupnsMode Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder cgroupnsMode(@Nullable Output<String> cgroupnsMode) {
+            $.cgroupnsMode = cgroupnsMode;
+            return this;
+        }
+
+        /**
+         * @param cgroupnsMode Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder cgroupnsMode(String cgroupnsMode) {
+            return cgroupnsMode(Output.of(cgroupnsMode));
+        }
+
+        /**
+         * @param command The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[&#34;/usr/bin/myprogram&#34;,&#34;-f&#34;,&#34;baz.con&#34;]`.
          * 
          * @return builder
          * 
@@ -1160,7 +1125,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param command The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[&#34;/usr/bin/myprogram&#34;,&#34;-&#34;,&#34;baz.con&#34;]`.
+         * @param command The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[&#34;/usr/bin/myprogram&#34;,&#34;-f&#34;,&#34;baz.con&#34;]`.
          * 
          * @return builder
          * 
@@ -1170,7 +1135,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param command The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[&#34;/usr/bin/myprogram&#34;,&#34;-&#34;,&#34;baz.con&#34;]`.
+         * @param command The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[&#34;/usr/bin/myprogram&#34;,&#34;-f&#34;,&#34;baz.con&#34;]`.
          * 
          * @return builder
          * 
@@ -1690,49 +1655,6 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param links Set of links for link based connectivity between containers that are running on the same host.
-         * 
-         * @return builder
-         * 
-         * @deprecated
-         * The --link flag is a legacy feature of Docker. It may eventually be removed.
-         * 
-         */
-        @Deprecated /* The --link flag is a legacy feature of Docker. It may eventually be removed. */
-        public Builder links(@Nullable Output<List<String>> links) {
-            $.links = links;
-            return this;
-        }
-
-        /**
-         * @param links Set of links for link based connectivity between containers that are running on the same host.
-         * 
-         * @return builder
-         * 
-         * @deprecated
-         * The --link flag is a legacy feature of Docker. It may eventually be removed.
-         * 
-         */
-        @Deprecated /* The --link flag is a legacy feature of Docker. It may eventually be removed. */
-        public Builder links(List<String> links) {
-            return links(Output.of(links));
-        }
-
-        /**
-         * @param links Set of links for link based connectivity between containers that are running on the same host.
-         * 
-         * @return builder
-         * 
-         * @deprecated
-         * The --link flag is a legacy feature of Docker. It may eventually be removed.
-         * 
-         */
-        @Deprecated /* The --link flag is a legacy feature of Docker. It may eventually be removed. */
-        public Builder links(String... links) {
-            return links(List.of(links));
-        }
-
-        /**
          * @param logDriver The logging driver to use for the container.
          * 
          * @return builder
@@ -1936,49 +1858,6 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param networkAliases Set an alias for the container in all specified networks
-         * 
-         * @return builder
-         * 
-         * @deprecated
-         * Use networks_advanced instead. Will be removed in v3.0.0
-         * 
-         */
-        @Deprecated /* Use networks_advanced instead. Will be removed in v3.0.0 */
-        public Builder networkAliases(@Nullable Output<List<String>> networkAliases) {
-            $.networkAliases = networkAliases;
-            return this;
-        }
-
-        /**
-         * @param networkAliases Set an alias for the container in all specified networks
-         * 
-         * @return builder
-         * 
-         * @deprecated
-         * Use networks_advanced instead. Will be removed in v3.0.0
-         * 
-         */
-        @Deprecated /* Use networks_advanced instead. Will be removed in v3.0.0 */
-        public Builder networkAliases(List<String> networkAliases) {
-            return networkAliases(Output.of(networkAliases));
-        }
-
-        /**
-         * @param networkAliases Set an alias for the container in all specified networks
-         * 
-         * @return builder
-         * 
-         * @deprecated
-         * Use networks_advanced instead. Will be removed in v3.0.0
-         * 
-         */
-        @Deprecated /* Use networks_advanced instead. Will be removed in v3.0.0 */
-        public Builder networkAliases(String... networkAliases) {
-            return networkAliases(List.of(networkAliases));
-        }
-
-        /**
          * @param networkMode Network mode of the container.
          * 
          * @return builder
@@ -1997,49 +1876,6 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
          */
         public Builder networkMode(String networkMode) {
             return networkMode(Output.of(networkMode));
-        }
-
-        /**
-         * @param networks ID of the networks in which the container is.
-         * 
-         * @return builder
-         * 
-         * @deprecated
-         * Use networks_advanced instead. Will be removed in v3.0.0
-         * 
-         */
-        @Deprecated /* Use networks_advanced instead. Will be removed in v3.0.0 */
-        public Builder networks(@Nullable Output<List<String>> networks) {
-            $.networks = networks;
-            return this;
-        }
-
-        /**
-         * @param networks ID of the networks in which the container is.
-         * 
-         * @return builder
-         * 
-         * @deprecated
-         * Use networks_advanced instead. Will be removed in v3.0.0
-         * 
-         */
-        @Deprecated /* Use networks_advanced instead. Will be removed in v3.0.0 */
-        public Builder networks(List<String> networks) {
-            return networks(Output.of(networks));
-        }
-
-        /**
-         * @param networks ID of the networks in which the container is.
-         * 
-         * @return builder
-         * 
-         * @deprecated
-         * Use networks_advanced instead. Will be removed in v3.0.0
-         * 
-         */
-        @Deprecated /* Use networks_advanced instead. Will be removed in v3.0.0 */
-        public Builder networks(String... networks) {
-            return networks(List.of(networks));
         }
 
         /**

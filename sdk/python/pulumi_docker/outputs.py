@@ -31,10 +31,9 @@ __all__ = [
     'NetworkIpamConfig',
     'NetworkLabel',
     'PluginGrantPermission',
-    'RegistryImageBuild',
-    'RegistryImageBuildAuthConfig',
-    'RegistryImageBuildUlimit',
     'RemoteImageBuild',
+    'RemoteImageBuildAuthConfig',
+    'RemoteImageBuildUlimit',
     'SecretLabel',
     'ServiceAuth',
     'ServiceConvergeConfig',
@@ -61,6 +60,7 @@ __all__ = [
     'ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext',
     'ServiceTaskSpecContainerSpecSecret',
     'ServiceTaskSpecLogDriver',
+    'ServiceTaskSpecNetworksAdvanced',
     'ServiceTaskSpecPlacement',
     'ServiceTaskSpecPlacementPlatform',
     'ServiceTaskSpecResources',
@@ -577,6 +577,8 @@ class ContainerNetworkData(dict):
             suggest = "ip_prefix_length"
         elif key == "ipv6Gateway":
             suggest = "ipv6_gateway"
+        elif key == "macAddress":
+            suggest = "mac_address"
         elif key == "networkName":
             suggest = "network_name"
 
@@ -598,12 +600,8 @@ class ContainerNetworkData(dict):
                  ip_address: Optional[str] = None,
                  ip_prefix_length: Optional[int] = None,
                  ipv6_gateway: Optional[str] = None,
+                 mac_address: Optional[str] = None,
                  network_name: Optional[str] = None):
-        """
-        :param str gateway: The network gateway of the container.
-        :param str ip_address: The IP address of the container.
-        :param int ip_prefix_length: The IP prefix length of the container.
-        """
         if gateway is not None:
             pulumi.set(__self__, "gateway", gateway)
         if global_ipv6_address is not None:
@@ -616,15 +614,14 @@ class ContainerNetworkData(dict):
             pulumi.set(__self__, "ip_prefix_length", ip_prefix_length)
         if ipv6_gateway is not None:
             pulumi.set(__self__, "ipv6_gateway", ipv6_gateway)
+        if mac_address is not None:
+            pulumi.set(__self__, "mac_address", mac_address)
         if network_name is not None:
             pulumi.set(__self__, "network_name", network_name)
 
     @property
     @pulumi.getter
     def gateway(self) -> Optional[str]:
-        """
-        The network gateway of the container.
-        """
         return pulumi.get(self, "gateway")
 
     @property
@@ -640,23 +637,22 @@ class ContainerNetworkData(dict):
     @property
     @pulumi.getter(name="ipAddress")
     def ip_address(self) -> Optional[str]:
-        """
-        The IP address of the container.
-        """
         return pulumi.get(self, "ip_address")
 
     @property
     @pulumi.getter(name="ipPrefixLength")
     def ip_prefix_length(self) -> Optional[int]:
-        """
-        The IP prefix length of the container.
-        """
         return pulumi.get(self, "ip_prefix_length")
 
     @property
     @pulumi.getter(name="ipv6Gateway")
     def ipv6_gateway(self) -> Optional[str]:
         return pulumi.get(self, "ipv6_gateway")
+
+    @property
+    @pulumi.getter(name="macAddress")
+    def mac_address(self) -> Optional[str]:
+        return pulumi.get(self, "mac_address")
 
     @property
     @pulumi.getter(name="networkName")
@@ -1149,12 +1145,14 @@ class PluginGrantPermission(dict):
 
 
 @pulumi.output_type
-class RegistryImageBuild(dict):
+class RemoteImageBuild(dict):
     @staticmethod
     def __key_warning(key: str):
         suggest = None
         if key == "authConfigs":
             suggest = "auth_configs"
+        elif key == "buildArg":
+            suggest = "build_arg"
         elif key == "buildArgs":
             suggest = "build_args"
         elif key == "buildId":
@@ -1197,19 +1195,20 @@ class RegistryImageBuild(dict):
             suggest = "suppress_output"
 
         if suggest:
-            pulumi.log.warn(f"Key '{key}' not found in RegistryImageBuild. Access the value via the '{suggest}' property getter instead.")
+            pulumi.log.warn(f"Key '{key}' not found in RemoteImageBuild. Access the value via the '{suggest}' property getter instead.")
 
     def __getitem__(self, key: str) -> Any:
-        RegistryImageBuild.__key_warning(key)
+        RemoteImageBuild.__key_warning(key)
         return super().__getitem__(key)
 
     def get(self, key: str, default = None) -> Any:
-        RegistryImageBuild.__key_warning(key)
+        RemoteImageBuild.__key_warning(key)
         return super().get(key, default)
 
     def __init__(__self__, *,
                  context: str,
-                 auth_configs: Optional[Sequence['outputs.RegistryImageBuildAuthConfig']] = None,
+                 auth_configs: Optional[Sequence['outputs.RemoteImageBuildAuthConfig']] = None,
+                 build_arg: Optional[Mapping[str, str]] = None,
                  build_args: Optional[Mapping[str, str]] = None,
                  build_id: Optional[str] = None,
                  cache_froms: Optional[Sequence[str]] = None,
@@ -1223,6 +1222,7 @@ class RegistryImageBuild(dict):
                  extra_hosts: Optional[Sequence[str]] = None,
                  force_remove: Optional[bool] = None,
                  isolation: Optional[str] = None,
+                 label: Optional[Mapping[str, str]] = None,
                  labels: Optional[Mapping[str, str]] = None,
                  memory: Optional[int] = None,
                  memory_swap: Optional[int] = None,
@@ -1237,12 +1237,14 @@ class RegistryImageBuild(dict):
                  shm_size: Optional[int] = None,
                  squash: Optional[bool] = None,
                  suppress_output: Optional[bool] = None,
+                 tags: Optional[Sequence[str]] = None,
                  target: Optional[str] = None,
-                 ulimits: Optional[Sequence['outputs.RegistryImageBuildUlimit']] = None,
+                 ulimits: Optional[Sequence['outputs.RemoteImageBuildUlimit']] = None,
                  version: Optional[str] = None):
         """
-        :param str context: The absolute path to the context folder. You can use the helper function '${path.cwd}/context-dir'.
-        :param Sequence['RegistryImageBuildAuthConfigArgs'] auth_configs: The configuration for the authentication
+        :param str context: Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
+        :param Sequence['RemoteImageBuildAuthConfigArgs'] auth_configs: The configuration for the authentication
+        :param Mapping[str, str] build_arg: Set build-time variables
         :param Mapping[str, str] build_args: Pairs for build-time variables in the form TODO
         :param str build_id: BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request.
         :param Sequence[str] cache_froms: Images to consider as cache sources
@@ -1252,10 +1254,11 @@ class RegistryImageBuild(dict):
         :param str cpu_set_cpus: CPUs in which to allow execution (e.g., `0-3`, `0`, `1`)
         :param str cpu_set_mems: MEMs in which to allow execution (`0-3`, `0`, `1`)
         :param int cpu_shares: CPU shares (relative weight)
-        :param str dockerfile: Dockerfile file. Defaults to `Dockerfile`
+        :param str dockerfile: Name of the Dockerfile. Defaults to `Dockerfile`.
         :param Sequence[str] extra_hosts: A list of hostnames/IP mappings to add to the container’s /etc/hosts file. Specified in the form ["hostname:IP"]
         :param bool force_remove: Always remove intermediate containers
         :param str isolation: Isolation represents the isolation technology of a container. The supported values are
+        :param Mapping[str, str] label: Set metadata for an image
         :param Mapping[str, str] labels: User-defined key/value metadata
         :param int memory: Set memory limit for build
         :param int memory_swap: Total memory (memory + swap), -1 to enable unlimited swap
@@ -1264,19 +1267,22 @@ class RegistryImageBuild(dict):
         :param str platform: Set platform if server is multi-platform capable
         :param bool pull_parent: Attempt to pull the image even if an older image exists locally
         :param str remote_context: A Git repository URI or HTTP/HTTPS context URI
-        :param bool remove: Remove intermediate containers after a successful build (default behavior)
+        :param bool remove: Remove intermediate containers after a successful build. Defaults to `true`.
         :param Sequence[str] security_opts: The security options
         :param str session_id: Set an ID for the build session
         :param int shm_size: Size of /dev/shm in bytes. The size must be greater than 0
         :param bool squash: If true the new layers are squashed into a new image with a single new layer
         :param bool suppress_output: Suppress the build output and print image ID on success
+        :param Sequence[str] tags: Name and optionally a tag in the 'name:tag' format
         :param str target: Set the target build stage to build
-        :param Sequence['RegistryImageBuildUlimitArgs'] ulimits: Configuration for ulimits
+        :param Sequence['RemoteImageBuildUlimitArgs'] ulimits: Configuration for ulimits
         :param str version: Version of the underlying builder to use
         """
         pulumi.set(__self__, "context", context)
         if auth_configs is not None:
             pulumi.set(__self__, "auth_configs", auth_configs)
+        if build_arg is not None:
+            pulumi.set(__self__, "build_arg", build_arg)
         if build_args is not None:
             pulumi.set(__self__, "build_args", build_args)
         if build_id is not None:
@@ -1303,6 +1309,8 @@ class RegistryImageBuild(dict):
             pulumi.set(__self__, "force_remove", force_remove)
         if isolation is not None:
             pulumi.set(__self__, "isolation", isolation)
+        if label is not None:
+            pulumi.set(__self__, "label", label)
         if labels is not None:
             pulumi.set(__self__, "labels", labels)
         if memory is not None:
@@ -1331,6 +1339,8 @@ class RegistryImageBuild(dict):
             pulumi.set(__self__, "squash", squash)
         if suppress_output is not None:
             pulumi.set(__self__, "suppress_output", suppress_output)
+        if tags is not None:
+            pulumi.set(__self__, "tags", tags)
         if target is not None:
             pulumi.set(__self__, "target", target)
         if ulimits is not None:
@@ -1342,17 +1352,25 @@ class RegistryImageBuild(dict):
     @pulumi.getter
     def context(self) -> str:
         """
-        The absolute path to the context folder. You can use the helper function '${path.cwd}/context-dir'.
+        Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
         """
         return pulumi.get(self, "context")
 
     @property
     @pulumi.getter(name="authConfigs")
-    def auth_configs(self) -> Optional[Sequence['outputs.RegistryImageBuildAuthConfig']]:
+    def auth_configs(self) -> Optional[Sequence['outputs.RemoteImageBuildAuthConfig']]:
         """
         The configuration for the authentication
         """
         return pulumi.get(self, "auth_configs")
+
+    @property
+    @pulumi.getter(name="buildArg")
+    def build_arg(self) -> Optional[Mapping[str, str]]:
+        """
+        Set build-time variables
+        """
+        return pulumi.get(self, "build_arg")
 
     @property
     @pulumi.getter(name="buildArgs")
@@ -1430,7 +1448,7 @@ class RegistryImageBuild(dict):
     @pulumi.getter
     def dockerfile(self) -> Optional[str]:
         """
-        Dockerfile file. Defaults to `Dockerfile`
+        Name of the Dockerfile. Defaults to `Dockerfile`.
         """
         return pulumi.get(self, "dockerfile")
 
@@ -1457,6 +1475,14 @@ class RegistryImageBuild(dict):
         Isolation represents the isolation technology of a container. The supported values are
         """
         return pulumi.get(self, "isolation")
+
+    @property
+    @pulumi.getter
+    def label(self) -> Optional[Mapping[str, str]]:
+        """
+        Set metadata for an image
+        """
+        return pulumi.get(self, "label")
 
     @property
     @pulumi.getter
@@ -1526,7 +1552,7 @@ class RegistryImageBuild(dict):
     @pulumi.getter
     def remove(self) -> Optional[bool]:
         """
-        Remove intermediate containers after a successful build (default behavior)
+        Remove intermediate containers after a successful build. Defaults to `true`.
         """
         return pulumi.get(self, "remove")
 
@@ -1572,6 +1598,14 @@ class RegistryImageBuild(dict):
 
     @property
     @pulumi.getter
+    def tags(self) -> Optional[Sequence[str]]:
+        """
+        Name and optionally a tag in the 'name:tag' format
+        """
+        return pulumi.get(self, "tags")
+
+    @property
+    @pulumi.getter
     def target(self) -> Optional[str]:
         """
         Set the target build stage to build
@@ -1580,7 +1614,7 @@ class RegistryImageBuild(dict):
 
     @property
     @pulumi.getter
-    def ulimits(self) -> Optional[Sequence['outputs.RegistryImageBuildUlimit']]:
+    def ulimits(self) -> Optional[Sequence['outputs.RemoteImageBuildUlimit']]:
         """
         Configuration for ulimits
         """
@@ -1596,7 +1630,7 @@ class RegistryImageBuild(dict):
 
 
 @pulumi.output_type
-class RegistryImageBuildAuthConfig(dict):
+class RemoteImageBuildAuthConfig(dict):
     @staticmethod
     def __key_warning(key: str):
         suggest = None
@@ -1612,14 +1646,14 @@ class RegistryImageBuildAuthConfig(dict):
             suggest = "user_name"
 
         if suggest:
-            pulumi.log.warn(f"Key '{key}' not found in RegistryImageBuildAuthConfig. Access the value via the '{suggest}' property getter instead.")
+            pulumi.log.warn(f"Key '{key}' not found in RemoteImageBuildAuthConfig. Access the value via the '{suggest}' property getter instead.")
 
     def __getitem__(self, key: str) -> Any:
-        RegistryImageBuildAuthConfig.__key_warning(key)
+        RemoteImageBuildAuthConfig.__key_warning(key)
         return super().__getitem__(key)
 
     def get(self, key: str, default = None) -> Any:
-        RegistryImageBuildAuthConfig.__key_warning(key)
+        RemoteImageBuildAuthConfig.__key_warning(key)
         return super().get(key, default)
 
     def __init__(__self__, *,
@@ -1689,13 +1723,13 @@ class RegistryImageBuildAuthConfig(dict):
 
 
 @pulumi.output_type
-class RegistryImageBuildUlimit(dict):
+class RemoteImageBuildUlimit(dict):
     def __init__(__self__, *,
                  hard: int,
                  name: str,
                  soft: int):
         """
-        :param str name: The name of the Docker image.
+        :param str name: The name of the Docker image, including any tags or SHA256 repo digests.
         """
         pulumi.set(__self__, "hard", hard)
         pulumi.set(__self__, "name", name)
@@ -1710,7 +1744,7 @@ class RegistryImageBuildUlimit(dict):
     @pulumi.getter
     def name(self) -> str:
         """
-        The name of the Docker image.
+        The name of the Docker image, including any tags or SHA256 repo digests.
         """
         return pulumi.get(self, "name")
 
@@ -1718,141 +1752,6 @@ class RegistryImageBuildUlimit(dict):
     @pulumi.getter
     def soft(self) -> int:
         return pulumi.get(self, "soft")
-
-
-@pulumi.output_type
-class RemoteImageBuild(dict):
-    @staticmethod
-    def __key_warning(key: str):
-        suggest = None
-        if key == "buildArg":
-            suggest = "build_arg"
-        elif key == "forceRemove":
-            suggest = "force_remove"
-        elif key == "noCache":
-            suggest = "no_cache"
-
-        if suggest:
-            pulumi.log.warn(f"Key '{key}' not found in RemoteImageBuild. Access the value via the '{suggest}' property getter instead.")
-
-    def __getitem__(self, key: str) -> Any:
-        RemoteImageBuild.__key_warning(key)
-        return super().__getitem__(key)
-
-    def get(self, key: str, default = None) -> Any:
-        RemoteImageBuild.__key_warning(key)
-        return super().get(key, default)
-
-    def __init__(__self__, *,
-                 path: str,
-                 build_arg: Optional[Mapping[str, str]] = None,
-                 dockerfile: Optional[str] = None,
-                 force_remove: Optional[bool] = None,
-                 label: Optional[Mapping[str, str]] = None,
-                 no_cache: Optional[bool] = None,
-                 remove: Optional[bool] = None,
-                 tags: Optional[Sequence[str]] = None,
-                 target: Optional[str] = None):
-        """
-        :param str path: Context path
-        :param Mapping[str, str] build_arg: Set build-time variables
-        :param str dockerfile: Name of the Dockerfile. Defaults to `Dockerfile`.
-        :param bool force_remove: Always remove intermediate containers
-        :param Mapping[str, str] label: Set metadata for an image
-        :param bool no_cache: Do not use cache when building the image
-        :param bool remove: Remove intermediate containers after a successful build. Defaults to  `true`.
-        :param Sequence[str] tags: Name and optionally a tag in the 'name:tag' format
-        :param str target: Set the target build stage to build
-        """
-        pulumi.set(__self__, "path", path)
-        if build_arg is not None:
-            pulumi.set(__self__, "build_arg", build_arg)
-        if dockerfile is not None:
-            pulumi.set(__self__, "dockerfile", dockerfile)
-        if force_remove is not None:
-            pulumi.set(__self__, "force_remove", force_remove)
-        if label is not None:
-            pulumi.set(__self__, "label", label)
-        if no_cache is not None:
-            pulumi.set(__self__, "no_cache", no_cache)
-        if remove is not None:
-            pulumi.set(__self__, "remove", remove)
-        if tags is not None:
-            pulumi.set(__self__, "tags", tags)
-        if target is not None:
-            pulumi.set(__self__, "target", target)
-
-    @property
-    @pulumi.getter
-    def path(self) -> str:
-        """
-        Context path
-        """
-        return pulumi.get(self, "path")
-
-    @property
-    @pulumi.getter(name="buildArg")
-    def build_arg(self) -> Optional[Mapping[str, str]]:
-        """
-        Set build-time variables
-        """
-        return pulumi.get(self, "build_arg")
-
-    @property
-    @pulumi.getter
-    def dockerfile(self) -> Optional[str]:
-        """
-        Name of the Dockerfile. Defaults to `Dockerfile`.
-        """
-        return pulumi.get(self, "dockerfile")
-
-    @property
-    @pulumi.getter(name="forceRemove")
-    def force_remove(self) -> Optional[bool]:
-        """
-        Always remove intermediate containers
-        """
-        return pulumi.get(self, "force_remove")
-
-    @property
-    @pulumi.getter
-    def label(self) -> Optional[Mapping[str, str]]:
-        """
-        Set metadata for an image
-        """
-        return pulumi.get(self, "label")
-
-    @property
-    @pulumi.getter(name="noCache")
-    def no_cache(self) -> Optional[bool]:
-        """
-        Do not use cache when building the image
-        """
-        return pulumi.get(self, "no_cache")
-
-    @property
-    @pulumi.getter
-    def remove(self) -> Optional[bool]:
-        """
-        Remove intermediate containers after a successful build. Defaults to  `true`.
-        """
-        return pulumi.get(self, "remove")
-
-    @property
-    @pulumi.getter
-    def tags(self) -> Optional[Sequence[str]]:
-        """
-        Name and optionally a tag in the 'name:tag' format
-        """
-        return pulumi.get(self, "tags")
-
-    @property
-    @pulumi.getter
-    def target(self) -> Optional[str]:
-        """
-        Set the target build stage to build
-        """
-        return pulumi.get(self, "target")
 
 
 @pulumi.output_type
@@ -2275,6 +2174,8 @@ class ServiceTaskSpec(dict):
             suggest = "force_update"
         elif key == "logDriver":
             suggest = "log_driver"
+        elif key == "networksAdvanceds":
+            suggest = "networks_advanceds"
         elif key == "restartPolicy":
             suggest = "restart_policy"
 
@@ -2293,7 +2194,7 @@ class ServiceTaskSpec(dict):
                  container_spec: 'outputs.ServiceTaskSpecContainerSpec',
                  force_update: Optional[int] = None,
                  log_driver: Optional['outputs.ServiceTaskSpecLogDriver'] = None,
-                 networks: Optional[Sequence[str]] = None,
+                 networks_advanceds: Optional[Sequence['outputs.ServiceTaskSpecNetworksAdvanced']] = None,
                  placement: Optional['outputs.ServiceTaskSpecPlacement'] = None,
                  resources: Optional['outputs.ServiceTaskSpecResources'] = None,
                  restart_policy: Optional['outputs.ServiceTaskSpecRestartPolicy'] = None,
@@ -2302,7 +2203,7 @@ class ServiceTaskSpec(dict):
         :param 'ServiceTaskSpecContainerSpecArgs' container_spec: The spec for each container
         :param int force_update: A counter that triggers an update even if no relevant parameters have been changed. See the [spec](https://github.com/docker/swarmkit/blob/master/api/specs.proto#L126).
         :param 'ServiceTaskSpecLogDriverArgs' log_driver: Specifies the log driver to use for tasks created from this spec. If not present, the default one for the swarm will be used, finally falling back to the engine default if not specified
-        :param Sequence[str] networks: Ids of the networks in which the  container will be put in
+        :param Sequence['ServiceTaskSpecNetworksAdvancedArgs'] networks_advanceds: The networks the container is attached to
         :param 'ServiceTaskSpecPlacementArgs' placement: The placement preferences
         :param 'ServiceTaskSpecResourcesArgs' resources: Resource requirements which apply to each individual container created as part of the service
         :param 'ServiceTaskSpecRestartPolicyArgs' restart_policy: Specification for the restart policy which applies to containers created as part of this service.
@@ -2313,8 +2214,8 @@ class ServiceTaskSpec(dict):
             pulumi.set(__self__, "force_update", force_update)
         if log_driver is not None:
             pulumi.set(__self__, "log_driver", log_driver)
-        if networks is not None:
-            pulumi.set(__self__, "networks", networks)
+        if networks_advanceds is not None:
+            pulumi.set(__self__, "networks_advanceds", networks_advanceds)
         if placement is not None:
             pulumi.set(__self__, "placement", placement)
         if resources is not None:
@@ -2349,12 +2250,12 @@ class ServiceTaskSpec(dict):
         return pulumi.get(self, "log_driver")
 
     @property
-    @pulumi.getter
-    def networks(self) -> Optional[Sequence[str]]:
+    @pulumi.getter(name="networksAdvanceds")
+    def networks_advanceds(self) -> Optional[Sequence['outputs.ServiceTaskSpecNetworksAdvanced']]:
         """
-        Ids of the networks in which the  container will be put in
+        The networks the container is attached to
         """
-        return pulumi.get(self, "networks")
+        return pulumi.get(self, "networks_advanceds")
 
     @property
     @pulumi.getter
@@ -2434,6 +2335,7 @@ class ServiceTaskSpecContainerSpec(dict):
                  secrets: Optional[Sequence['outputs.ServiceTaskSpecContainerSpecSecret']] = None,
                  stop_grace_period: Optional[str] = None,
                  stop_signal: Optional[str] = None,
+                 sysctl: Optional[Mapping[str, Any]] = None,
                  user: Optional[str] = None):
         """
         :param Sequence['ServiceTaskSpecContainerSpecLabelArgs'] labels: User-defined key/value metadata
@@ -2475,6 +2377,8 @@ class ServiceTaskSpecContainerSpec(dict):
             pulumi.set(__self__, "stop_grace_period", stop_grace_period)
         if stop_signal is not None:
             pulumi.set(__self__, "stop_signal", stop_signal)
+        if sysctl is not None:
+            pulumi.set(__self__, "sysctl", sysctl)
         if user is not None:
             pulumi.set(__self__, "user", user)
 
@@ -2575,6 +2479,11 @@ class ServiceTaskSpecContainerSpec(dict):
     @pulumi.getter(name="stopSignal")
     def stop_signal(self) -> Optional[str]:
         return pulumi.get(self, "stop_signal")
+
+    @property
+    @pulumi.getter
+    def sysctl(self) -> Optional[Mapping[str, Any]]:
+        return pulumi.get(self, "sysctl")
 
     @property
     @pulumi.getter
@@ -3237,6 +3146,57 @@ class ServiceTaskSpecLogDriver(dict):
     @pulumi.getter
     def options(self) -> Optional[Mapping[str, str]]:
         return pulumi.get(self, "options")
+
+
+@pulumi.output_type
+class ServiceTaskSpecNetworksAdvanced(dict):
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "driverOpts":
+            suggest = "driver_opts"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in ServiceTaskSpecNetworksAdvanced. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        ServiceTaskSpecNetworksAdvanced.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        ServiceTaskSpecNetworksAdvanced.__key_warning(key)
+        return super().get(key, default)
+
+    def __init__(__self__, *,
+                 name: str,
+                 aliases: Optional[Sequence[str]] = None,
+                 driver_opts: Optional[Sequence[str]] = None):
+        """
+        :param str name: Name of the service
+        """
+        pulumi.set(__self__, "name", name)
+        if aliases is not None:
+            pulumi.set(__self__, "aliases", aliases)
+        if driver_opts is not None:
+            pulumi.set(__self__, "driver_opts", driver_opts)
+
+    @property
+    @pulumi.getter
+    def name(self) -> str:
+        """
+        Name of the service
+        """
+        return pulumi.get(self, "name")
+
+    @property
+    @pulumi.getter
+    def aliases(self) -> Optional[Sequence[str]]:
+        return pulumi.get(self, "aliases")
+
+    @property
+    @pulumi.getter(name="driverOpts")
+    def driver_opts(self) -> Optional[Sequence[str]]:
+        return pulumi.get(self, "driver_opts")
 
 
 @pulumi.output_type

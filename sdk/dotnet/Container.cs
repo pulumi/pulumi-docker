@@ -85,7 +85,13 @@ namespace Pulumi.Docker
         public Output<Outputs.ContainerCapabilities?> Capabilities { get; private set; } = null!;
 
         /// <summary>
-        /// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-","baz.con"]`.
+        /// Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
+        /// </summary>
+        [Output("cgroupnsMode")]
+        public Output<string?> CgroupnsMode { get; private set; } = null!;
+
+        /// <summary>
+        /// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.con"]`.
         /// </summary>
         [Output("command")]
         public Output<ImmutableArray<string>> Command { get; private set; } = null!;
@@ -169,12 +175,6 @@ namespace Pulumi.Docker
         public Output<int> ExitCode { get; private set; } = null!;
 
         /// <summary>
-        /// The network gateway of the container.
-        /// </summary>
-        [Output("gateway")]
-        public Output<string> Gateway { get; private set; } = null!;
-
-        /// <summary>
         /// GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.
         /// </summary>
         [Output("gpus")]
@@ -217,18 +217,6 @@ namespace Pulumi.Docker
         public Output<bool> Init { get; private set; } = null!;
 
         /// <summary>
-        /// The IP address of the container.
-        /// </summary>
-        [Output("ipAddress")]
-        public Output<string> IpAddress { get; private set; } = null!;
-
-        /// <summary>
-        /// The IP prefix length of the container.
-        /// </summary>
-        [Output("ipPrefixLength")]
-        public Output<int> IpPrefixLength { get; private set; } = null!;
-
-        /// <summary>
         /// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:&lt;name|id&gt;` or `host`.
         /// </summary>
         [Output("ipcMode")]
@@ -239,12 +227,6 @@ namespace Pulumi.Docker
         /// </summary>
         [Output("labels")]
         public Output<ImmutableArray<Outputs.ContainerLabel>> Labels { get; private set; } = null!;
-
-        /// <summary>
-        /// Set of links for link based connectivity between containers that are running on the same host.
-        /// </summary>
-        [Output("links")]
-        public Output<ImmutableArray<string>> Links { get; private set; } = null!;
 
         /// <summary>
         /// The logging driver to use for the container.
@@ -303,12 +285,6 @@ namespace Pulumi.Docker
         public Output<string> Name { get; private set; } = null!;
 
         /// <summary>
-        /// Set an alias for the container in all specified networks
-        /// </summary>
-        [Output("networkAliases")]
-        public Output<ImmutableArray<string>> NetworkAliases { get; private set; } = null!;
-
-        /// <summary>
         /// The data of the networks the container is connected to.
         /// </summary>
         [Output("networkDatas")]
@@ -319,12 +295,6 @@ namespace Pulumi.Docker
         /// </summary>
         [Output("networkMode")]
         public Output<string?> NetworkMode { get; private set; } = null!;
-
-        /// <summary>
-        /// ID of the networks in which the container is.
-        /// </summary>
-        [Output("networks")]
-        public Output<ImmutableArray<string>> Networks { get; private set; } = null!;
 
         /// <summary>
         /// The networks the container is attached to
@@ -552,11 +522,17 @@ namespace Pulumi.Docker
         [Input("capabilities")]
         public Input<Inputs.ContainerCapabilitiesArgs>? Capabilities { get; set; }
 
+        /// <summary>
+        /// Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
+        /// </summary>
+        [Input("cgroupnsMode")]
+        public Input<string>? CgroupnsMode { get; set; }
+
         [Input("command")]
         private InputList<string>? _command;
 
         /// <summary>
-        /// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-","baz.con"]`.
+        /// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.con"]`.
         /// </summary>
         public InputList<string> Command
         {
@@ -738,19 +714,6 @@ namespace Pulumi.Docker
             set => _labels = value;
         }
 
-        [Input("links")]
-        private InputList<string>? _links;
-
-        /// <summary>
-        /// Set of links for link based connectivity between containers that are running on the same host.
-        /// </summary>
-        [Obsolete(@"The --link flag is a legacy feature of Docker. It may eventually be removed.")]
-        public InputList<string> Links
-        {
-            get => _links ?? (_links = new InputList<string>());
-            set => _links = value;
-        }
-
         /// <summary>
         /// The logging driver to use for the container.
         /// </summary>
@@ -819,37 +782,11 @@ namespace Pulumi.Docker
         [Input("name")]
         public Input<string>? Name { get; set; }
 
-        [Input("networkAliases")]
-        private InputList<string>? _networkAliases;
-
-        /// <summary>
-        /// Set an alias for the container in all specified networks
-        /// </summary>
-        [Obsolete(@"Use networks_advanced instead. Will be removed in v3.0.0")]
-        public InputList<string> NetworkAliases
-        {
-            get => _networkAliases ?? (_networkAliases = new InputList<string>());
-            set => _networkAliases = value;
-        }
-
         /// <summary>
         /// Network mode of the container.
         /// </summary>
         [Input("networkMode")]
         public Input<string>? NetworkMode { get; set; }
-
-        [Input("networks")]
-        private InputList<string>? _networks;
-
-        /// <summary>
-        /// ID of the networks in which the container is.
-        /// </summary>
-        [Obsolete(@"Use networks_advanced instead. Will be removed in v3.0.0")]
-        public InputList<string> Networks
-        {
-            get => _networks ?? (_networks = new InputList<string>());
-            set => _networks = value;
-        }
 
         [Input("networksAdvanced")]
         private InputList<Inputs.ContainerNetworksAdvancedArgs>? _networksAdvanced;
@@ -1099,11 +1036,17 @@ namespace Pulumi.Docker
         [Input("capabilities")]
         public Input<Inputs.ContainerCapabilitiesGetArgs>? Capabilities { get; set; }
 
+        /// <summary>
+        /// Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
+        /// </summary>
+        [Input("cgroupnsMode")]
+        public Input<string>? CgroupnsMode { get; set; }
+
         [Input("command")]
         private InputList<string>? _command;
 
         /// <summary>
-        /// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-","baz.con"]`.
+        /// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.con"]`.
         /// </summary>
         public InputList<string> Command
         {
@@ -1226,12 +1169,6 @@ namespace Pulumi.Docker
         public Input<int>? ExitCode { get; set; }
 
         /// <summary>
-        /// The network gateway of the container.
-        /// </summary>
-        [Input("gateway")]
-        public Input<string>? Gateway { get; set; }
-
-        /// <summary>
         /// GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.
         /// </summary>
         [Input("gpus")]
@@ -1286,18 +1223,6 @@ namespace Pulumi.Docker
         public Input<bool>? Init { get; set; }
 
         /// <summary>
-        /// The IP address of the container.
-        /// </summary>
-        [Input("ipAddress")]
-        public Input<string>? IpAddress { get; set; }
-
-        /// <summary>
-        /// The IP prefix length of the container.
-        /// </summary>
-        [Input("ipPrefixLength")]
-        public Input<int>? IpPrefixLength { get; set; }
-
-        /// <summary>
         /// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:&lt;name|id&gt;` or `host`.
         /// </summary>
         [Input("ipcMode")]
@@ -1313,19 +1238,6 @@ namespace Pulumi.Docker
         {
             get => _labels ?? (_labels = new InputList<Inputs.ContainerLabelGetArgs>());
             set => _labels = value;
-        }
-
-        [Input("links")]
-        private InputList<string>? _links;
-
-        /// <summary>
-        /// Set of links for link based connectivity between containers that are running on the same host.
-        /// </summary>
-        [Obsolete(@"The --link flag is a legacy feature of Docker. It may eventually be removed.")]
-        public InputList<string> Links
-        {
-            get => _links ?? (_links = new InputList<string>());
-            set => _links = value;
         }
 
         /// <summary>
@@ -1396,19 +1308,6 @@ namespace Pulumi.Docker
         [Input("name")]
         public Input<string>? Name { get; set; }
 
-        [Input("networkAliases")]
-        private InputList<string>? _networkAliases;
-
-        /// <summary>
-        /// Set an alias for the container in all specified networks
-        /// </summary>
-        [Obsolete(@"Use networks_advanced instead. Will be removed in v3.0.0")]
-        public InputList<string> NetworkAliases
-        {
-            get => _networkAliases ?? (_networkAliases = new InputList<string>());
-            set => _networkAliases = value;
-        }
-
         [Input("networkDatas")]
         private InputList<Inputs.ContainerNetworkDataGetArgs>? _networkDatas;
 
@@ -1426,19 +1325,6 @@ namespace Pulumi.Docker
         /// </summary>
         [Input("networkMode")]
         public Input<string>? NetworkMode { get; set; }
-
-        [Input("networks")]
-        private InputList<string>? _networks;
-
-        /// <summary>
-        /// ID of the networks in which the container is.
-        /// </summary>
-        [Obsolete(@"Use networks_advanced instead. Will be removed in v3.0.0")]
-        public InputList<string> Networks
-        {
-            get => _networks ?? (_networks = new InputList<string>());
-            set => _networks = value;
-        }
 
         [Input("networksAdvanced")]
         private InputList<Inputs.ContainerNetworksAdvancedGetArgs>? _networksAdvanced;

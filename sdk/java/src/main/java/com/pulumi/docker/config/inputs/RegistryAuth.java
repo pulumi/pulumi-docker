@@ -4,6 +4,7 @@
 package com.pulumi.docker.config.inputs;
 
 import com.pulumi.core.annotations.CustomType;
+import java.lang.Boolean;
 import java.lang.String;
 import java.util.Objects;
 import java.util.Optional;
@@ -12,6 +13,7 @@ import javax.annotation.Nullable;
 @CustomType
 public final class RegistryAuth {
     private String address;
+    private @Nullable Boolean authDisabled;
     private @Nullable String configFile;
     private @Nullable String configFileContent;
     private @Nullable String password;
@@ -20,6 +22,9 @@ public final class RegistryAuth {
     private RegistryAuth() {}
     public String address() {
         return this.address;
+    }
+    public Optional<Boolean> authDisabled() {
+        return Optional.ofNullable(this.authDisabled);
     }
     public Optional<String> configFile() {
         return Optional.ofNullable(this.configFile);
@@ -44,6 +49,7 @@ public final class RegistryAuth {
     @CustomType.Builder
     public static final class Builder {
         private String address;
+        private @Nullable Boolean authDisabled;
         private @Nullable String configFile;
         private @Nullable String configFileContent;
         private @Nullable String password;
@@ -52,6 +58,7 @@ public final class RegistryAuth {
         public Builder(RegistryAuth defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.address = defaults.address;
+    	      this.authDisabled = defaults.authDisabled;
     	      this.configFile = defaults.configFile;
     	      this.configFileContent = defaults.configFileContent;
     	      this.password = defaults.password;
@@ -61,6 +68,11 @@ public final class RegistryAuth {
         @CustomType.Setter
         public Builder address(String address) {
             this.address = Objects.requireNonNull(address);
+            return this;
+        }
+        @CustomType.Setter
+        public Builder authDisabled(@Nullable Boolean authDisabled) {
+            this.authDisabled = authDisabled;
             return this;
         }
         @CustomType.Setter
@@ -86,6 +98,7 @@ public final class RegistryAuth {
         public RegistryAuth build() {
             final var o = new RegistryAuth();
             o.address = address;
+            o.authDisabled = authDisabled;
             o.configFile = configFile;
             o.configFileContent = configFileContent;
             o.password = password;

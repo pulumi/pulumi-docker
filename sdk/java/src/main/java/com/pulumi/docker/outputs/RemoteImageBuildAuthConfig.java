@@ -10,7 +10,7 @@ import java.util.Optional;
 import javax.annotation.Nullable;
 
 @CustomType
-public final class RegistryImageBuildAuthConfig {
+public final class RemoteImageBuildAuthConfig {
     private @Nullable String auth;
     private @Nullable String email;
     private String hostName;
@@ -20,7 +20,7 @@ public final class RegistryImageBuildAuthConfig {
     private @Nullable String serverAddress;
     private @Nullable String userName;
 
-    private RegistryImageBuildAuthConfig() {}
+    private RemoteImageBuildAuthConfig() {}
     public Optional<String> auth() {
         return Optional.ofNullable(this.auth);
     }
@@ -50,7 +50,7 @@ public final class RegistryImageBuildAuthConfig {
         return new Builder();
     }
 
-    public static Builder builder(RegistryImageBuildAuthConfig defaults) {
+    public static Builder builder(RemoteImageBuildAuthConfig defaults) {
         return new Builder(defaults);
     }
     @CustomType.Builder
@@ -64,7 +64,7 @@ public final class RegistryImageBuildAuthConfig {
         private @Nullable String serverAddress;
         private @Nullable String userName;
         public Builder() {}
-        public Builder(RegistryImageBuildAuthConfig defaults) {
+        public Builder(RemoteImageBuildAuthConfig defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.auth = defaults.auth;
     	      this.email = defaults.email;
@@ -116,8 +116,8 @@ public final class RegistryImageBuildAuthConfig {
             this.userName = userName;
             return this;
         }
-        public RegistryImageBuildAuthConfig build() {
-            final var o = new RegistryImageBuildAuthConfig();
+        public RemoteImageBuildAuthConfig build() {
+            final var o = new RemoteImageBuildAuthConfig();
             o.auth = auth;
             o.email = email;
             o.hostName = hostName;

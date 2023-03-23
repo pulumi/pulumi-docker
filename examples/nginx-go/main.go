@@ -25,7 +25,7 @@ func main() {
 			Internal: pulumi.Int(80),
 		}
 		containerArgs := &docker.ContainerArgs{
-			Image: image.Latest,
+			Image: image.RepoDigest,
 			Ports: docker.ContainerPortArray([]docker.ContainerPortInput{portArgs}),
 		}
 		container, err := docker.NewContainer(ctx, "nginx", containerArgs)

@@ -90,7 +90,11 @@ export class Container extends pulumi.CustomResource {
      */
     public readonly capabilities!: pulumi.Output<outputs.ContainerCapabilities | undefined>;
     /**
-     * The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-","baz.con"]`.
+     * Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
+     */
+    public readonly cgroupnsMode!: pulumi.Output<string | undefined>;
+    /**
+     * The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.con"]`.
      */
     public readonly command!: pulumi.Output<string[]>;
     /**
@@ -146,12 +150,6 @@ export class Container extends pulumi.CustomResource {
      */
     public /*out*/ readonly exitCode!: pulumi.Output<number>;
     /**
-     * The network gateway of the container.
-     *
-     * @deprecated Use `network_data` instead. The network gateway of the container as read from its NetworkSettings.
-     */
-    public /*out*/ readonly gateway!: pulumi.Output<string>;
-    /**
      * GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.
      */
     public readonly gpus!: pulumi.Output<string | undefined>;
@@ -180,18 +178,6 @@ export class Container extends pulumi.CustomResource {
      */
     public readonly init!: pulumi.Output<boolean>;
     /**
-     * The IP address of the container.
-     *
-     * @deprecated Use `network_data` instead. The IP address of the container's first network it.
-     */
-    public /*out*/ readonly ipAddress!: pulumi.Output<string>;
-    /**
-     * The IP prefix length of the container.
-     *
-     * @deprecated Use `network_data` instead. The IP prefix length of the container as read from its NetworkSettings.
-     */
-    public /*out*/ readonly ipPrefixLength!: pulumi.Output<number>;
-    /**
      * IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
      */
     public readonly ipcMode!: pulumi.Output<string>;
@@ -199,12 +185,6 @@ export class Container extends pulumi.CustomResource {
      * User-defined key/value metadata
      */
     public readonly labels!: pulumi.Output<outputs.ContainerLabel[]>;
-    /**
-     * Set of links for link based connectivity between containers that are running on the same host.
-     *
-     * @deprecated The --link flag is a legacy feature of Docker. It may eventually be removed.
-     */
-    public readonly links!: pulumi.Output<string[] | undefined>;
     /**
      * The logging driver to use for the container.
      */
@@ -244,12 +224,6 @@ export class Container extends pulumi.CustomResource {
      */
     public readonly name!: pulumi.Output<string>;
     /**
-     * Set an alias for the container in all specified networks
-     *
-     * @deprecated Use networks_advanced instead. Will be removed in v3.0.0
-     */
-    public readonly networkAliases!: pulumi.Output<string[] | undefined>;
-    /**
      * The data of the networks the container is connected to.
      */
     public /*out*/ readonly networkDatas!: pulumi.Output<outputs.ContainerNetworkData[]>;
@@ -257,12 +231,6 @@ export class Container extends pulumi.CustomResource {
      * Network mode of the container.
      */
     public readonly networkMode!: pulumi.Output<string | undefined>;
-    /**
-     * ID of the networks in which the container is.
-     *
-     * @deprecated Use networks_advanced instead. Will be removed in v3.0.0
-     */
-    public readonly networks!: pulumi.Output<string[] | undefined>;
     /**
      * The networks the container is attached to
      */
@@ -392,6 +360,7 @@ export class Container extends pulumi.CustomResource {
             resourceInputs["attach"] = state ? state.attach : undefined;
             resourceInputs["bridge"] = state ? state.bridge : undefined;
             resourceInputs["capabilities"] = state ? state.capabilities : undefined;
+            resourceInputs["cgroupnsMode"] = state ? state.cgroupnsMode : undefined;
             resourceInputs["command"] = state ? state.command : undefined;
             resourceInputs["containerLogs"] = state ? state.containerLogs : undefined;
             resourceInputs["containerReadRefreshTimeoutMilliseconds"] = state ? state.containerReadRefreshTimeoutMilliseconds : undefined;
@@ -406,7 +375,6 @@ export class Container extends pulumi.CustomResource {
             resourceInputs["entrypoints"] = state ? state.entrypoints : undefined;
             resourceInputs["envs"] = state ? state.envs : undefined;
             resourceInputs["exitCode"] = state ? state.exitCode : undefined;
-            resourceInputs["gateway"] = state ? state.gateway : undefined;
             resourceInputs["gpus"] = state ? state.gpus : undefined;
             resourceInputs["groupAdds"] = state ? state.groupAdds : undefined;
             resourceInputs["healthcheck"] = state ? state.healthcheck : undefined;
@@ -414,11 +382,8 @@ export class Container extends pulumi.CustomResource {
             resourceInputs["hosts"] = state ? state.hosts : undefined;
             resourceInputs["image"] = state ? state.image : undefined;
             resourceInputs["init"] = state ? state.init : undefined;
-            resourceInputs["ipAddress"] = state ? state.ipAddress : undefined;
-            resourceInputs["ipPrefixLength"] = state ? state.ipPrefixLength : undefined;
             resourceInputs["ipcMode"] = state ? state.ipcMode : undefined;
             resourceInputs["labels"] = state ? state.labels : undefined;
-            resourceInputs["links"] = state ? state.links : undefined;
             resourceInputs["logDriver"] = state ? state.logDriver : undefined;
             resourceInputs["logOpts"] = state ? state.logOpts : undefined;
             resourceInputs["logs"] = state ? state.logs : undefined;
@@ -428,10 +393,8 @@ export class Container extends pulumi.CustomResource {
             resourceInputs["mounts"] = state ? state.mounts : undefined;
             resourceInputs["mustRun"] = state ? state.mustRun : undefined;
             resourceInputs["name"] = state ? state.name : undefined;
-            resourceInputs["networkAliases"] = state ? state.networkAliases : undefined;
             resourceInputs["networkDatas"] = state ? state.networkDatas : undefined;
             resourceInputs["networkMode"] = state ? state.networkMode : undefined;
-            resourceInputs["networks"] = state ? state.networks : undefined;
             resourceInputs["networksAdvanced"] = state ? state.networksAdvanced : undefined;
             resourceInputs["pidMode"] = state ? state.pidMode : undefined;
             resourceInputs["ports"] = state ? state.ports : undefined;
@@ -467,6 +430,7 @@ export class Container extends pulumi.CustomResource {
             }
             resourceInputs["attach"] = args ? args.attach : undefined;
             resourceInputs["capabilities"] = args ? args.capabilities : undefined;
+            resourceInputs["cgroupnsMode"] = args ? args.cgroupnsMode : undefined;
             resourceInputs["command"] = args ? args.command : undefined;
             resourceInputs["containerReadRefreshTimeoutMilliseconds"] = args ? args.containerReadRefreshTimeoutMilliseconds : undefined;
             resourceInputs["cpuSet"] = args ? args.cpuSet : undefined;
@@ -488,7 +452,6 @@ export class Container extends pulumi.CustomResource {
             resourceInputs["init"] = args ? args.init : undefined;
             resourceInputs["ipcMode"] = args ? args.ipcMode : undefined;
             resourceInputs["labels"] = args ? args.labels : undefined;
-            resourceInputs["links"] = args ? args.links : undefined;
             resourceInputs["logDriver"] = args ? args.logDriver : undefined;
             resourceInputs["logOpts"] = args ? args.logOpts : undefined;
             resourceInputs["logs"] = args ? args.logs : undefined;
@@ -498,9 +461,7 @@ export class Container extends pulumi.CustomResource {
             resourceInputs["mounts"] = args ? args.mounts : undefined;
             resourceInputs["mustRun"] = args ? args.mustRun : undefined;
             resourceInputs["name"] = args ? args.name : undefined;
-            resourceInputs["networkAliases"] = args ? args.networkAliases : undefined;
             resourceInputs["networkMode"] = args ? args.networkMode : undefined;
-            resourceInputs["networks"] = args ? args.networks : undefined;
             resourceInputs["networksAdvanced"] = args ? args.networksAdvanced : undefined;
             resourceInputs["pidMode"] = args ? args.pidMode : undefined;
             resourceInputs["ports"] = args ? args.ports : undefined;
@@ -532,9 +493,6 @@ export class Container extends pulumi.CustomResource {
             resourceInputs["bridge"] = undefined /*out*/;
             resourceInputs["containerLogs"] = undefined /*out*/;
             resourceInputs["exitCode"] = undefined /*out*/;
-            resourceInputs["gateway"] = undefined /*out*/;
-            resourceInputs["ipAddress"] = undefined /*out*/;
-            resourceInputs["ipPrefixLength"] = undefined /*out*/;
             resourceInputs["networkDatas"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
@@ -559,7 +517,11 @@ export interface ContainerState {
      */
     capabilities?: pulumi.Input<inputs.ContainerCapabilities>;
     /**
-     * The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-","baz.con"]`.
+     * Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
+     */
+    cgroupnsMode?: pulumi.Input<string>;
+    /**
+     * The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.con"]`.
      */
     command?: pulumi.Input<pulumi.Input<string>[]>;
     /**
@@ -615,12 +577,6 @@ export interface ContainerState {
      */
     exitCode?: pulumi.Input<number>;
     /**
-     * The network gateway of the container.
-     *
-     * @deprecated Use `network_data` instead. The network gateway of the container as read from its NetworkSettings.
-     */
-    gateway?: pulumi.Input<string>;
-    /**
      * GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.
      */
     gpus?: pulumi.Input<string>;
@@ -649,18 +605,6 @@ export interface ContainerState {
      */
     init?: pulumi.Input<boolean>;
     /**
-     * The IP address of the container.
-     *
-     * @deprecated Use `network_data` instead. The IP address of the container's first network it.
-     */
-    ipAddress?: pulumi.Input<string>;
-    /**
-     * The IP prefix length of the container.
-     *
-     * @deprecated Use `network_data` instead. The IP prefix length of the container as read from its NetworkSettings.
-     */
-    ipPrefixLength?: pulumi.Input<number>;
-    /**
      * IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
      */
     ipcMode?: pulumi.Input<string>;
@@ -668,12 +612,6 @@ export interface ContainerState {
      * User-defined key/value metadata
      */
     labels?: pulumi.Input<pulumi.Input<inputs.ContainerLabel>[]>;
-    /**
-     * Set of links for link based connectivity between containers that are running on the same host.
-     *
-     * @deprecated The --link flag is a legacy feature of Docker. It may eventually be removed.
-     */
-    links?: pulumi.Input<pulumi.Input<string>[]>;
     /**
      * The logging driver to use for the container.
      */
@@ -713,12 +651,6 @@ export interface ContainerState {
      */
     name?: pulumi.Input<string>;
     /**
-     * Set an alias for the container in all specified networks
-     *
-     * @deprecated Use networks_advanced instead. Will be removed in v3.0.0
-     */
-    networkAliases?: pulumi.Input<pulumi.Input<string>[]>;
-    /**
      * The data of the networks the container is connected to.
      */
     networkDatas?: pulumi.Input<pulumi.Input<inputs.ContainerNetworkData>[]>;
@@ -726,12 +658,6 @@ export interface ContainerState {
      * Network mode of the container.
      */
     networkMode?: pulumi.Input<string>;
-    /**
-     * ID of the networks in which the container is.
-     *
-     * @deprecated Use networks_advanced instead. Will be removed in v3.0.0
-     */
-    networks?: pulumi.Input<pulumi.Input<string>[]>;
     /**
      * The networks the container is attached to
      */
@@ -859,7 +785,11 @@ export interface ContainerArgs {
      */
     capabilities?: pulumi.Input<inputs.ContainerCapabilities>;
     /**
-     * The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-","baz.con"]`.
+     * Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
+     */
+    cgroupnsMode?: pulumi.Input<string>;
+    /**
+     * The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.con"]`.
      */
     command?: pulumi.Input<pulumi.Input<string>[]>;
     /**
@@ -943,12 +873,6 @@ export interface ContainerArgs {
      */
     labels?: pulumi.Input<pulumi.Input<inputs.ContainerLabel>[]>;
     /**
-     * Set of links for link based connectivity between containers that are running on the same host.
-     *
-     * @deprecated The --link flag is a legacy feature of Docker. It may eventually be removed.
-     */
-    links?: pulumi.Input<pulumi.Input<string>[]>;
-    /**
      * The logging driver to use for the container.
      */
     logDriver?: pulumi.Input<string>;
@@ -987,21 +911,9 @@ export interface ContainerArgs {
      */
     name?: pulumi.Input<string>;
     /**
-     * Set an alias for the container in all specified networks
-     *
-     * @deprecated Use networks_advanced instead. Will be removed in v3.0.0
-     */
-    networkAliases?: pulumi.Input<pulumi.Input<string>[]>;
-    /**
      * Network mode of the container.
      */
     networkMode?: pulumi.Input<string>;
-    /**
-     * ID of the networks in which the container is.
-     *
-     * @deprecated Use networks_advanced instead. Will be removed in v3.0.0
-     */
-    networks?: pulumi.Input<pulumi.Input<string>[]>;
     /**
      * The networks the container is attached to
      */

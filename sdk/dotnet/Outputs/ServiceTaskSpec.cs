@@ -26,9 +26,9 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly Outputs.ServiceTaskSpecLogDriver? LogDriver;
         /// <summary>
-        /// Ids of the networks in which the  container will be put in
+        /// The networks the container is attached to
         /// </summary>
-        public readonly ImmutableArray<string> Networks;
+        public readonly ImmutableArray<Outputs.ServiceTaskSpecNetworksAdvanced> NetworksAdvanceds;
         /// <summary>
         /// The placement preferences
         /// </summary>
@@ -54,7 +54,7 @@ namespace Pulumi.Docker.Outputs
 
             Outputs.ServiceTaskSpecLogDriver? logDriver,
 
-            ImmutableArray<string> networks,
+            ImmutableArray<Outputs.ServiceTaskSpecNetworksAdvanced> networksAdvanceds,
 
             Outputs.ServiceTaskSpecPlacement? placement,
 
@@ -67,7 +67,7 @@ namespace Pulumi.Docker.Outputs
             ContainerSpec = containerSpec;
             ForceUpdate = forceUpdate;
             LogDriver = logDriver;
-            Networks = networks;
+            NetworksAdvanceds = networksAdvanceds;
             Placement = placement;
             Resources = resources;
             RestartPolicy = restartPolicy;

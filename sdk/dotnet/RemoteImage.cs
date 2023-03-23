@@ -91,25 +91,16 @@ namespace Pulumi.Docker
         public Output<bool?> KeepLocally { get; private set; } = null!;
 
         /// <summary>
-        /// The ID of the image in the form of `sha256:&lt;hash&gt;` image digest. Do not confuse it with the default `latest` tag.
-        /// </summary>
-        [Output("latest")]
-        public Output<string> Latest { get; private set; } = null!;
-
-        /// <summary>
         /// The name of the Docker image, including any tags or SHA256 repo digests.
         /// </summary>
         [Output("name")]
         public Output<string> Name { get; private set; } = null!;
 
-        [Output("output")]
-        public Output<string> Output { get; private set; } = null!;
-
         /// <summary>
-        /// A value which cause an image pull when changed
+        /// The platform to use when pulling the image. Defaults to the platform of the current machine.
         /// </summary>
-        [Output("pullTrigger")]
-        public Output<string?> PullTrigger { get; private set; } = null!;
+        [Output("platform")]
+        public Output<string?> Platform { get; private set; } = null!;
 
         /// <summary>
         /// List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
@@ -200,10 +191,10 @@ namespace Pulumi.Docker
         public Input<string> Name { get; set; } = null!;
 
         /// <summary>
-        /// A value which cause an image pull when changed
+        /// The platform to use when pulling the image. Defaults to the platform of the current machine.
         /// </summary>
-        [Input("pullTrigger")]
-        public Input<string>? PullTrigger { get; set; }
+        [Input("platform")]
+        public Input<string>? Platform { get; set; }
 
         [Input("pullTriggers")]
         private InputList<string>? _pullTriggers;
@@ -262,25 +253,16 @@ namespace Pulumi.Docker
         public Input<bool>? KeepLocally { get; set; }
 
         /// <summary>
-        /// The ID of the image in the form of `sha256:&lt;hash&gt;` image digest. Do not confuse it with the default `latest` tag.
-        /// </summary>
-        [Input("latest")]
-        public Input<string>? Latest { get; set; }
-
-        /// <summary>
         /// The name of the Docker image, including any tags or SHA256 repo digests.
         /// </summary>
         [Input("name")]
         public Input<string>? Name { get; set; }
 
-        [Input("output")]
-        public Input<string>? Output { get; set; }
-
         /// <summary>
-        /// A value which cause an image pull when changed
+        /// The platform to use when pulling the image. Defaults to the platform of the current machine.
         /// </summary>
-        [Input("pullTrigger")]
-        public Input<string>? PullTrigger { get; set; }
+        [Input("platform")]
+        public Input<string>? Platform { get; set; }
 
         [Input("pullTriggers")]
         private InputList<string>? _pullTriggers;

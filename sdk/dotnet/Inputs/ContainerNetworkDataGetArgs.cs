@@ -12,9 +12,6 @@ namespace Pulumi.Docker.Inputs
 
     public sealed class ContainerNetworkDataGetArgs : global::Pulumi.ResourceArgs
     {
-        /// <summary>
-        /// The network gateway of the container.
-        /// </summary>
         [Input("gateway")]
         public Input<string>? Gateway { get; set; }
 
@@ -24,20 +21,17 @@ namespace Pulumi.Docker.Inputs
         [Input("globalIpv6PrefixLength")]
         public Input<int>? GlobalIpv6PrefixLength { get; set; }
 
-        /// <summary>
-        /// The IP address of the container.
-        /// </summary>
         [Input("ipAddress")]
         public Input<string>? IpAddress { get; set; }
 
-        /// <summary>
-        /// The IP prefix length of the container.
-        /// </summary>
         [Input("ipPrefixLength")]
         public Input<int>? IpPrefixLength { get; set; }
 
         [Input("ipv6Gateway")]
         public Input<string>? Ipv6Gateway { get; set; }
+
+        [Input("macAddress")]
+        public Input<string>? MacAddress { get; set; }
 
         [Input("networkName")]
         public Input<string>? NetworkName { get; set; }

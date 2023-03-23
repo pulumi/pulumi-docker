@@ -83,6 +83,12 @@ namespace Pulumi.Docker
         public Output<string?> IpamDriver { get; private set; } = null!;
 
         /// <summary>
+        /// Provide explicit options to the IPAM driver. Valid options vary with `ipam_driver` and refer to that driver's documentation for more details.
+        /// </summary>
+        [Output("ipamOptions")]
+        public Output<ImmutableDictionary<string, object>?> IpamOptions { get; private set; } = null!;
+
+        /// <summary>
         /// Enable IPv6 networking. Defaults to `false`.
         /// </summary>
         [Output("ipv6")]
@@ -206,6 +212,18 @@ namespace Pulumi.Docker
         [Input("ipamDriver")]
         public Input<string>? IpamDriver { get; set; }
 
+        [Input("ipamOptions")]
+        private InputMap<object>? _ipamOptions;
+
+        /// <summary>
+        /// Provide explicit options to the IPAM driver. Valid options vary with `ipam_driver` and refer to that driver's documentation for more details.
+        /// </summary>
+        public InputMap<object> IpamOptions
+        {
+            get => _ipamOptions ?? (_ipamOptions = new InputMap<object>());
+            set => _ipamOptions = value;
+        }
+
         /// <summary>
         /// Enable IPv6 networking. Defaults to `false`.
         /// </summary>
@@ -297,6 +315,18 @@ namespace Pulumi.Docker
         /// </summary>
         [Input("ipamDriver")]
         public Input<string>? IpamDriver { get; set; }
+
+        [Input("ipamOptions")]
+        private InputMap<object>? _ipamOptions;
+
+        /// <summary>
+        /// Provide explicit options to the IPAM driver. Valid options vary with `ipam_driver` and refer to that driver's documentation for more details.
+        /// </summary>
+        public InputMap<object> IpamOptions
+        {
+            get => _ipamOptions ?? (_ipamOptions = new InputMap<object>());
+            set => _ipamOptions = value;
+        }
 
         /// <summary>
         /// Enable IPv6 networking. Defaults to `false`.

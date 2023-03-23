@@ -81,26 +81,18 @@ public final class RemoteImageArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * A value which cause an image pull when changed
-     * 
-     * @deprecated
-     * Use field pull_triggers instead
+     * The platform to use when pulling the image. Defaults to the platform of the current machine.
      * 
      */
-    @Deprecated /* Use field pull_triggers instead */
-    @Import(name="pullTrigger")
-    private @Nullable Output<String> pullTrigger;
+    @Import(name="platform")
+    private @Nullable Output<String> platform;
 
     /**
-     * @return A value which cause an image pull when changed
-     * 
-     * @deprecated
-     * Use field pull_triggers instead
+     * @return The platform to use when pulling the image. Defaults to the platform of the current machine.
      * 
      */
-    @Deprecated /* Use field pull_triggers instead */
-    public Optional<Output<String>> pullTrigger() {
-        return Optional.ofNullable(this.pullTrigger);
+    public Optional<Output<String>> platform() {
+        return Optional.ofNullable(this.platform);
     }
 
     /**
@@ -140,7 +132,7 @@ public final class RemoteImageArgs extends com.pulumi.resources.ResourceArgs {
         this.forceRemove = $.forceRemove;
         this.keepLocally = $.keepLocally;
         this.name = $.name;
-        this.pullTrigger = $.pullTrigger;
+        this.platform = $.platform;
         this.pullTriggers = $.pullTriggers;
         this.triggers = $.triggers;
     }
@@ -248,32 +240,24 @@ public final class RemoteImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param pullTrigger A value which cause an image pull when changed
+         * @param platform The platform to use when pulling the image. Defaults to the platform of the current machine.
          * 
          * @return builder
          * 
-         * @deprecated
-         * Use field pull_triggers instead
-         * 
          */
-        @Deprecated /* Use field pull_triggers instead */
-        public Builder pullTrigger(@Nullable Output<String> pullTrigger) {
-            $.pullTrigger = pullTrigger;
+        public Builder platform(@Nullable Output<String> platform) {
+            $.platform = platform;
             return this;
         }
 
         /**
-         * @param pullTrigger A value which cause an image pull when changed
+         * @param platform The platform to use when pulling the image. Defaults to the platform of the current machine.
          * 
          * @return builder
          * 
-         * @deprecated
-         * Use field pull_triggers instead
-         * 
          */
-        @Deprecated /* Use field pull_triggers instead */
-        public Builder pullTrigger(String pullTrigger) {
-            return pullTrigger(Output.of(pullTrigger));
+        public Builder platform(String platform) {
+            return platform(Output.of(platform));
         }
 
         /**

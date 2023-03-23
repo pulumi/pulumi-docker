@@ -15,6 +15,9 @@ namespace Pulumi.Docker.Inputs
         [Input("address", required: true)]
         public Input<string> Address { get; set; } = null!;
 
+        [Input("authDisabled")]
+        public Input<bool>? AuthDisabled { get; set; }
+
         [Input("configFile")]
         public Input<string>? ConfigFile { get; set; }
 

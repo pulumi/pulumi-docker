@@ -141,27 +141,13 @@ export interface ContainerMountVolumeOptionsLabel {
 }
 
 export interface ContainerNetworkData {
-    /**
-     * The network gateway of the container.
-     *
-     * @deprecated Use `network_data` instead. The network gateway of the container as read from its NetworkSettings.
-     */
     gateway: string;
     globalIpv6Address: string;
     globalIpv6PrefixLength: number;
-    /**
-     * The IP address of the container.
-     *
-     * @deprecated Use `network_data` instead. The IP address of the container's first network it.
-     */
     ipAddress: string;
-    /**
-     * The IP prefix length of the container.
-     *
-     * @deprecated Use `network_data` instead. The IP prefix length of the container as read from its NetworkSettings.
-     */
     ipPrefixLength: number;
     ipv6Gateway: string;
+    macAddress: string;
     networkName: string;
 }
 
@@ -313,11 +299,15 @@ export interface PluginGrantPermission {
     values: string[];
 }
 
-export interface RegistryImageBuild {
+export interface RemoteImageBuild {
     /**
      * The configuration for the authentication
      */
-    authConfigs?: outputs.RegistryImageBuildAuthConfig[];
+    authConfigs?: outputs.RemoteImageBuildAuthConfig[];
+    /**
+     * Set build-time variables
+     */
+    buildArg?: {[key: string]: string};
     /**
      * Pairs for build-time variables in the form TODO
      */
@@ -335,7 +325,7 @@ export interface RegistryImageBuild {
      */
     cgroupParent?: string;
     /**
-     * The absolute path to the context folder. You can use the helper function '${path.cwd}/context-dir'.
+     * Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.
      */
     context: string;
     /**
@@ -359,7 +349,7 @@ export interface RegistryImageBuild {
      */
     cpuShares?: number;
     /**
-     * Dockerfile file. Defaults to `Dockerfile`
+     * Name of the Dockerfile. Defaults to `Dockerfile`.
      */
     dockerfile?: string;
     /**
@@ -374,6 +364,10 @@ export interface RegistryImageBuild {
      * Isolation represents the isolation technology of a container. The supported values are
      */
     isolation?: string;
+    /**
+     * Set metadata for an image
+     */
+    label?: {[key: string]: string};
     /**
      * User-defined key/value metadata
      */
@@ -407,7 +401,7 @@ export interface RegistryImageBuild {
      */
     remoteContext?: string;
     /**
-     * Remove intermediate containers after a successful build (default behavior)
+     * Remove intermediate containers after a successful build. Defaults to `true`.
      */
     remove?: boolean;
     /**
@@ -431,20 +425,24 @@ export interface RegistryImageBuild {
      */
     suppressOutput?: boolean;
     /**
+     * Name and optionally a tag in the 'name:tag' format
+     */
+    tags?: string[];
+    /**
      * Set the target build stage to build
      */
     target?: string;
     /**
      * Configuration for ulimits
      */
-    ulimits?: outputs.RegistryImageBuildUlimit[];
+    ulimits?: outputs.RemoteImageBuildUlimit[];
     /**
      * Version of the underlying builder to use
      */
     version?: string;
 }
 
-export interface RegistryImageBuildAuthConfig {
+export interface RemoteImageBuildAuthConfig {
     auth?: string;
     email?: string;
     hostName: string;
@@ -455,52 +453,13 @@ export interface RegistryImageBuildAuthConfig {
     userName?: string;
 }
 
-export interface RegistryImageBuildUlimit {
+export interface RemoteImageBuildUlimit {
     hard: number;
     /**
-     * The name of the Docker image.
+     * The name of the Docker image, including any tags or SHA256 repo digests.
      */
     name: string;
     soft: number;
-}
-
-export interface RemoteImageBuild {
-    /**
-     * Set build-time variables
-     */
-    buildArg?: {[key: string]: string};
-    /**
-     * Name of the Dockerfile. Defaults to `Dockerfile`.
-     */
-    dockerfile?: string;
-    /**
-     * Always remove intermediate containers
-     */
-    forceRemove?: boolean;
-    /**
-     * Set metadata for an image
-     */
-    label?: {[key: string]: string};
-    /**
-     * Do not use cache when building the image
-     */
-    noCache?: boolean;
-    /**
-     * Context path
-     */
-    path: string;
-    /**
-     * Remove intermediate containers after a successful build. Defaults to  `true`.
-     */
-    remove?: boolean;
-    /**
-     * Name and optionally a tag in the 'name:tag' format
-     */
-    tags?: string[];
-    /**
-     * Set the target build stage to build
-     */
-    target?: string;
 }
 
 export interface SecretLabel {
@@ -629,9 +588,9 @@ export interface ServiceTaskSpec {
      */
     logDriver?: outputs.ServiceTaskSpecLogDriver;
     /**
-     * Ids of the networks in which the  container will be put in
+     * The networks the container is attached to
      */
-    networks?: string[];
+    networksAdvanceds?: outputs.ServiceTaskSpecNetworksAdvanced[];
     /**
      * The placement preferences
      */
@@ -673,6 +632,7 @@ export interface ServiceTaskSpecContainerSpec {
     secrets?: outputs.ServiceTaskSpecContainerSpecSecret[];
     stopGracePeriod: string;
     stopSignal?: string;
+    sysctl?: {[key: string]: any};
     user?: string;
 }
 
@@ -793,6 +753,15 @@ export interface ServiceTaskSpecLogDriver {
     options?: {[key: string]: string};
 }
 
+export interface ServiceTaskSpecNetworksAdvanced {
+    aliases?: string[];
+    driverOpts?: string[];
+    /**
+     * Name of the service
+     */
+    name: string;
+}
+
 export interface ServiceTaskSpecPlacement {
     constraints?: string[];
     maxReplicas?: number;
@@ -874,6 +843,7 @@ export interface VolumeLabel {
 export namespace config {
     export interface RegistryAuth {
         address: string;
+        authDisabled?: boolean;
         configFile?: string;
         configFileContent?: string;
         password?: string;

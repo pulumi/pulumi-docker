@@ -87,25 +87,13 @@ export class RemoteImage extends pulumi.CustomResource {
      */
     public readonly keepLocally!: pulumi.Output<boolean | undefined>;
     /**
-     * The ID of the image in the form of `sha256:<hash>` image digest. Do not confuse it with the default `latest` tag.
-     *
-     * @deprecated Use repo_digest instead
-     */
-    public /*out*/ readonly latest!: pulumi.Output<string>;
-    /**
      * The name of the Docker image, including any tags or SHA256 repo digests.
      */
     public readonly name!: pulumi.Output<string>;
     /**
-     * @deprecated Is unused and will be removed.
+     * The platform to use when pulling the image. Defaults to the platform of the current machine.
      */
-    public /*out*/ readonly output!: pulumi.Output<string>;
-    /**
-     * A value which cause an image pull when changed
-     *
-     * @deprecated Use field pull_triggers instead
-     */
-    public readonly pullTrigger!: pulumi.Output<string | undefined>;
+    public readonly platform!: pulumi.Output<string | undefined>;
     /**
      * List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
      */
@@ -136,10 +124,8 @@ export class RemoteImage extends pulumi.CustomResource {
             resourceInputs["forceRemove"] = state ? state.forceRemove : undefined;
             resourceInputs["imageId"] = state ? state.imageId : undefined;
             resourceInputs["keepLocally"] = state ? state.keepLocally : undefined;
-            resourceInputs["latest"] = state ? state.latest : undefined;
             resourceInputs["name"] = state ? state.name : undefined;
-            resourceInputs["output"] = state ? state.output : undefined;
-            resourceInputs["pullTrigger"] = state ? state.pullTrigger : undefined;
+            resourceInputs["platform"] = state ? state.platform : undefined;
             resourceInputs["pullTriggers"] = state ? state.pullTriggers : undefined;
             resourceInputs["repoDigest"] = state ? state.repoDigest : undefined;
             resourceInputs["triggers"] = state ? state.triggers : undefined;
@@ -152,12 +138,10 @@ export class RemoteImage extends pulumi.CustomResource {
             resourceInputs["forceRemove"] = args ? args.forceRemove : undefined;
             resourceInputs["keepLocally"] = args ? args.keepLocally : undefined;
             resourceInputs["name"] = args ? args.name : undefined;
-            resourceInputs["pullTrigger"] = args ? args.pullTrigger : undefined;
+            resourceInputs["platform"] = args ? args.platform : undefined;
             resourceInputs["pullTriggers"] = args ? args.pullTriggers : undefined;
             resourceInputs["triggers"] = args ? args.triggers : undefined;
             resourceInputs["imageId"] = undefined /*out*/;
-            resourceInputs["latest"] = undefined /*out*/;
-            resourceInputs["output"] = undefined /*out*/;
             resourceInputs["repoDigest"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
@@ -186,25 +170,13 @@ export interface RemoteImageState {
      */
     keepLocally?: pulumi.Input<boolean>;
     /**
-     * The ID of the image in the form of `sha256:<hash>` image digest. Do not confuse it with the default `latest` tag.
-     *
-     * @deprecated Use repo_digest instead
-     */
-    latest?: pulumi.Input<string>;
-    /**
      * The name of the Docker image, including any tags or SHA256 repo digests.
      */
     name?: pulumi.Input<string>;
     /**
-     * @deprecated Is unused and will be removed.
+     * The platform to use when pulling the image. Defaults to the platform of the current machine.
      */
-    output?: pulumi.Input<string>;
-    /**
-     * A value which cause an image pull when changed
-     *
-     * @deprecated Use field pull_triggers instead
-     */
-    pullTrigger?: pulumi.Input<string>;
+    platform?: pulumi.Input<string>;
     /**
      * List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
      */
@@ -240,11 +212,9 @@ export interface RemoteImageArgs {
      */
     name: pulumi.Input<string>;
     /**
-     * A value which cause an image pull when changed
-     *
-     * @deprecated Use field pull_triggers instead
+     * The platform to use when pulling the image. Defaults to the platform of the current machine.
      */
-    pullTrigger?: pulumi.Input<string>;
+    platform?: pulumi.Input<string>;
     /**
      * List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
      */

@@ -20,7 +20,7 @@ class RemoteImageArgs:
                  build: Optional[pulumi.Input['RemoteImageBuildArgs']] = None,
                  force_remove: Optional[pulumi.Input[bool]] = None,
                  keep_locally: Optional[pulumi.Input[bool]] = None,
-                 pull_trigger: Optional[pulumi.Input[str]] = None,
+                 platform: Optional[pulumi.Input[str]] = None,
                  pull_triggers: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  triggers: Optional[pulumi.Input[Mapping[str, Any]]] = None):
         """
@@ -29,7 +29,7 @@ class RemoteImageArgs:
         :param pulumi.Input['RemoteImageBuildArgs'] build: Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
         :param pulumi.Input[bool] force_remove: If true, then the image is removed forcibly when the resource is destroyed.
         :param pulumi.Input[bool] keep_locally: If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
-        :param pulumi.Input[str] pull_trigger: A value which cause an image pull when changed
+        :param pulumi.Input[str] platform: The platform to use when pulling the image. Defaults to the platform of the current machine.
         :param pulumi.Input[Sequence[pulumi.Input[str]]] pull_triggers: List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
         :param pulumi.Input[Mapping[str, Any]] triggers: A map of arbitrary strings that, when changed, will force the `RemoteImage` resource to be replaced. This can be used to rebuild an image when contents of source code folders change
         """
@@ -40,11 +40,8 @@ class RemoteImageArgs:
             pulumi.set(__self__, "force_remove", force_remove)
         if keep_locally is not None:
             pulumi.set(__self__, "keep_locally", keep_locally)
-        if pull_trigger is not None:
-            warnings.warn("""Use field pull_triggers instead""", DeprecationWarning)
-            pulumi.log.warn("""pull_trigger is deprecated: Use field pull_triggers instead""")
-        if pull_trigger is not None:
-            pulumi.set(__self__, "pull_trigger", pull_trigger)
+        if platform is not None:
+            pulumi.set(__self__, "platform", platform)
         if pull_triggers is not None:
             pulumi.set(__self__, "pull_triggers", pull_triggers)
         if triggers is not None:
@@ -99,16 +96,16 @@ class RemoteImageArgs:
         pulumi.set(self, "keep_locally", value)
 
     @property
-    @pulumi.getter(name="pullTrigger")
-    def pull_trigger(self) -> Optional[pulumi.Input[str]]:
+    @pulumi.getter
+    def platform(self) -> Optional[pulumi.Input[str]]:
         """
-        A value which cause an image pull when changed
+        The platform to use when pulling the image. Defaults to the platform of the current machine.
         """
-        return pulumi.get(self, "pull_trigger")
+        return pulumi.get(self, "platform")
 
-    @pull_trigger.setter
-    def pull_trigger(self, value: Optional[pulumi.Input[str]]):
-        pulumi.set(self, "pull_trigger", value)
+    @platform.setter
+    def platform(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "platform", value)
 
     @property
     @pulumi.getter(name="pullTriggers")
@@ -142,10 +139,8 @@ class _RemoteImageState:
                  force_remove: Optional[pulumi.Input[bool]] = None,
                  image_id: Optional[pulumi.Input[str]] = None,
                  keep_locally: Optional[pulumi.Input[bool]] = None,
-                 latest: Optional[pulumi.Input[str]] = None,
                  name: Optional[pulumi.Input[str]] = None,
-                 output: Optional[pulumi.Input[str]] = None,
-                 pull_trigger: Optional[pulumi.Input[str]] = None,
+                 platform: Optional[pulumi.Input[str]] = None,
                  pull_triggers: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  repo_digest: Optional[pulumi.Input[str]] = None,
                  triggers: Optional[pulumi.Input[Mapping[str, Any]]] = None):
@@ -155,9 +150,8 @@ class _RemoteImageState:
         :param pulumi.Input[bool] force_remove: If true, then the image is removed forcibly when the resource is destroyed.
         :param pulumi.Input[str] image_id: The ID of the image (as seen when executing `docker inspect` on the image). Can be used to reference the image via its ID in other resources.
         :param pulumi.Input[bool] keep_locally: If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
-        :param pulumi.Input[str] latest: The ID of the image in the form of `sha256:<hash>` image digest. Do not confuse it with the default `latest` tag.
         :param pulumi.Input[str] name: The name of the Docker image, including any tags or SHA256 repo digests.
-        :param pulumi.Input[str] pull_trigger: A value which cause an image pull when changed
+        :param pulumi.Input[str] platform: The platform to use when pulling the image. Defaults to the platform of the current machine.
         :param pulumi.Input[Sequence[pulumi.Input[str]]] pull_triggers: List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
         :param pulumi.Input[str] repo_digest: The image sha256 digest in the form of `repo[:tag]@sha256:<hash>`.
         :param pulumi.Input[Mapping[str, Any]] triggers: A map of arbitrary strings that, when changed, will force the `RemoteImage` resource to be replaced. This can be used to rebuild an image when contents of source code folders change
@@ -170,23 +164,10 @@ class _RemoteImageState:
             pulumi.set(__self__, "image_id", image_id)
         if keep_locally is not None:
             pulumi.set(__self__, "keep_locally", keep_locally)
-        if latest is not None:
-            warnings.warn("""Use repo_digest instead""", DeprecationWarning)
-            pulumi.log.warn("""latest is deprecated: Use repo_digest instead""")
-        if latest is not None:
-            pulumi.set(__self__, "latest", latest)
         if name is not None:
             pulumi.set(__self__, "name", name)
-        if output is not None:
-            warnings.warn("""Is unused and will be removed.""", DeprecationWarning)
-            pulumi.log.warn("""output is deprecated: Is unused and will be removed.""")
-        if output is not None:
-            pulumi.set(__self__, "output", output)
-        if pull_trigger is not None:
-            warnings.warn("""Use field pull_triggers instead""", DeprecationWarning)
-            pulumi.log.warn("""pull_trigger is deprecated: Use field pull_triggers instead""")
-        if pull_trigger is not None:
-            pulumi.set(__self__, "pull_trigger", pull_trigger)
+        if platform is not None:
+            pulumi.set(__self__, "platform", platform)
         if pull_triggers is not None:
             pulumi.set(__self__, "pull_triggers", pull_triggers)
         if repo_digest is not None:
@@ -244,18 +225,6 @@ class _RemoteImageState:
 
     @property
     @pulumi.getter
-    def latest(self) -> Optional[pulumi.Input[str]]:
-        """
-        The ID of the image in the form of `sha256:<hash>` image digest. Do not confuse it with the default `latest` tag.
-        """
-        return pulumi.get(self, "latest")
-
-    @latest.setter
-    def latest(self, value: Optional[pulumi.Input[str]]):
-        pulumi.set(self, "latest", value)
-
-    @property
-    @pulumi.getter
     def name(self) -> Optional[pulumi.Input[str]]:
         """
         The name of the Docker image, including any tags or SHA256 repo digests.
@@ -268,24 +237,15 @@ class _RemoteImageState:
 
     @property
     @pulumi.getter
-    def output(self) -> Optional[pulumi.Input[str]]:
-        return pulumi.get(self, "output")
-
-    @output.setter
-    def output(self, value: Optional[pulumi.Input[str]]):
-        pulumi.set(self, "output", value)
-
-    @property
-    @pulumi.getter(name="pullTrigger")
-    def pull_trigger(self) -> Optional[pulumi.Input[str]]:
+    def platform(self) -> Optional[pulumi.Input[str]]:
         """
-        A value which cause an image pull when changed
+        The platform to use when pulling the image. Defaults to the platform of the current machine.
         """
-        return pulumi.get(self, "pull_trigger")
+        return pulumi.get(self, "platform")
 
-    @pull_trigger.setter
-    def pull_trigger(self, value: Optional[pulumi.Input[str]]):
-        pulumi.set(self, "pull_trigger", value)
+    @platform.setter
+    def platform(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "platform", value)
 
     @property
     @pulumi.getter(name="pullTriggers")
@@ -333,7 +293,7 @@ class RemoteImage(pulumi.CustomResource):
                  force_remove: Optional[pulumi.Input[bool]] = None,
                  keep_locally: Optional[pulumi.Input[bool]] = None,
                  name: Optional[pulumi.Input[str]] = None,
-                 pull_trigger: Optional[pulumi.Input[str]] = None,
+                 platform: Optional[pulumi.Input[str]] = None,
                  pull_triggers: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  triggers: Optional[pulumi.Input[Mapping[str, Any]]] = None,
                  __props__=None):
@@ -375,7 +335,7 @@ class RemoteImage(pulumi.CustomResource):
         :param pulumi.Input[bool] force_remove: If true, then the image is removed forcibly when the resource is destroyed.
         :param pulumi.Input[bool] keep_locally: If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
         :param pulumi.Input[str] name: The name of the Docker image, including any tags or SHA256 repo digests.
-        :param pulumi.Input[str] pull_trigger: A value which cause an image pull when changed
+        :param pulumi.Input[str] platform: The platform to use when pulling the image. Defaults to the platform of the current machine.
         :param pulumi.Input[Sequence[pulumi.Input[str]]] pull_triggers: List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
         :param pulumi.Input[Mapping[str, Any]] triggers: A map of arbitrary strings that, when changed, will force the `RemoteImage` resource to be replaced. This can be used to rebuild an image when contents of source code folders change
         """
@@ -436,7 +396,7 @@ class RemoteImage(pulumi.CustomResource):
                  force_remove: Optional[pulumi.Input[bool]] = None,
                  keep_locally: Optional[pulumi.Input[bool]] = None,
                  name: Optional[pulumi.Input[str]] = None,
-                 pull_trigger: Optional[pulumi.Input[str]] = None,
+                 platform: Optional[pulumi.Input[str]] = None,
                  pull_triggers: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  triggers: Optional[pulumi.Input[Mapping[str, Any]]] = None,
                  __props__=None):
@@ -454,15 +414,10 @@ class RemoteImage(pulumi.CustomResource):
             if name is None and not opts.urn:
                 raise TypeError("Missing required property 'name'")
             __props__.__dict__["name"] = name
-            if pull_trigger is not None and not opts.urn:
-                warnings.warn("""Use field pull_triggers instead""", DeprecationWarning)
-                pulumi.log.warn("""pull_trigger is deprecated: Use field pull_triggers instead""")
-            __props__.__dict__["pull_trigger"] = pull_trigger
+            __props__.__dict__["platform"] = platform
             __props__.__dict__["pull_triggers"] = pull_triggers
             __props__.__dict__["triggers"] = triggers
             __props__.__dict__["image_id"] = None
-            __props__.__dict__["latest"] = None
-            __props__.__dict__["output"] = None
             __props__.__dict__["repo_digest"] = None
         super(RemoteImage, __self__).__init__(
             'docker:index/remoteImage:RemoteImage',
@@ -478,10 +433,8 @@ class RemoteImage(pulumi.CustomResource):
             force_remove: Optional[pulumi.Input[bool]] = None,
             image_id: Optional[pulumi.Input[str]] = None,
             keep_locally: Optional[pulumi.Input[bool]] = None,
-            latest: Optional[pulumi.Input[str]] = None,
             name: Optional[pulumi.Input[str]] = None,
-            output: Optional[pulumi.Input[str]] = None,
-            pull_trigger: Optional[pulumi.Input[str]] = None,
+            platform: Optional[pulumi.Input[str]] = None,
             pull_triggers: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
             repo_digest: Optional[pulumi.Input[str]] = None,
             triggers: Optional[pulumi.Input[Mapping[str, Any]]] = None) -> 'RemoteImage':
@@ -496,9 +449,8 @@ class RemoteImage(pulumi.CustomResource):
         :param pulumi.Input[bool] force_remove: If true, then the image is removed forcibly when the resource is destroyed.
         :param pulumi.Input[str] image_id: The ID of the image (as seen when executing `docker inspect` on the image). Can be used to reference the image via its ID in other resources.
         :param pulumi.Input[bool] keep_locally: If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
-        :param pulumi.Input[str] latest: The ID of the image in the form of `sha256:<hash>` image digest. Do not confuse it with the default `latest` tag.
         :param pulumi.Input[str] name: The name of the Docker image, including any tags or SHA256 repo digests.
-        :param pulumi.Input[str] pull_trigger: A value which cause an image pull when changed
+        :param pulumi.Input[str] platform: The platform to use when pulling the image. Defaults to the platform of the current machine.
         :param pulumi.Input[Sequence[pulumi.Input[str]]] pull_triggers: List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
         :param pulumi.Input[str] repo_digest: The image sha256 digest in the form of `repo[:tag]@sha256:<hash>`.
         :param pulumi.Input[Mapping[str, Any]] triggers: A map of arbitrary strings that, when changed, will force the `RemoteImage` resource to be replaced. This can be used to rebuild an image when contents of source code folders change
@@ -511,10 +463,8 @@ class RemoteImage(pulumi.CustomResource):
         __props__.__dict__["force_remove"] = force_remove
         __props__.__dict__["image_id"] = image_id
         __props__.__dict__["keep_locally"] = keep_locally
-        __props__.__dict__["latest"] = latest
         __props__.__dict__["name"] = name
-        __props__.__dict__["output"] = output
-        __props__.__dict__["pull_trigger"] = pull_trigger
+        __props__.__dict__["platform"] = platform
         __props__.__dict__["pull_triggers"] = pull_triggers
         __props__.__dict__["repo_digest"] = repo_digest
         __props__.__dict__["triggers"] = triggers
@@ -554,14 +504,6 @@ class RemoteImage(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def latest(self) -> pulumi.Output[str]:
-        """
-        The ID of the image in the form of `sha256:<hash>` image digest. Do not confuse it with the default `latest` tag.
-        """
-        return pulumi.get(self, "latest")
-
-    @property
-    @pulumi.getter
     def name(self) -> pulumi.Output[str]:
         """
         The name of the Docker image, including any tags or SHA256 repo digests.
@@ -570,16 +512,11 @@ class RemoteImage(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def output(self) -> pulumi.Output[str]:
-        return pulumi.get(self, "output")
-
-    @property
-    @pulumi.getter(name="pullTrigger")
-    def pull_trigger(self) -> pulumi.Output[Optional[str]]:
+    def platform(self) -> pulumi.Output[Optional[str]]:
         """
-        A value which cause an image pull when changed
+        The platform to use when pulling the image. Defaults to the platform of the current machine.
         """
-        return pulumi.get(self, "pull_trigger")
+        return pulumi.get(self, "platform")
 
     @property
     @pulumi.getter(name="pullTriggers")

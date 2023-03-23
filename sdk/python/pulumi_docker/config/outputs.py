@@ -17,11 +17,14 @@ __all__ = [
 class RegistryAuth(dict):
     def __init__(__self__, *,
                  address: str,
+                 auth_disabled: Optional[bool] = None,
                  config_file: Optional[str] = None,
                  config_file_content: Optional[str] = None,
                  password: Optional[str] = None,
                  username: Optional[str] = None):
         pulumi.set(__self__, "address", address)
+        if auth_disabled is not None:
+            pulumi.set(__self__, "auth_disabled", auth_disabled)
         if config_file is not None:
             pulumi.set(__self__, "config_file", config_file)
         if config_file_content is not None:
@@ -35,6 +38,11 @@ class RegistryAuth(dict):
     @pulumi.getter
     def address(self) -> str:
         return pulumi.get(self, "address")
+
+    @property
+    @pulumi.getter(name="authDisabled")
+    def auth_disabled(self) -> Optional[bool]:
+        return pulumi.get(self, "auth_disabled")
 
     @property
     @pulumi.getter(name="configFile")

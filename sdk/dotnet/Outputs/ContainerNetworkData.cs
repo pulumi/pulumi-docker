@@ -13,21 +13,13 @@ namespace Pulumi.Docker.Outputs
     [OutputType]
     public sealed class ContainerNetworkData
     {
-        /// <summary>
-        /// The network gateway of the container.
-        /// </summary>
         public readonly string? Gateway;
         public readonly string? GlobalIpv6Address;
         public readonly int? GlobalIpv6PrefixLength;
-        /// <summary>
-        /// The IP address of the container.
-        /// </summary>
         public readonly string? IpAddress;
-        /// <summary>
-        /// The IP prefix length of the container.
-        /// </summary>
         public readonly int? IpPrefixLength;
         public readonly string? Ipv6Gateway;
+        public readonly string? MacAddress;
         public readonly string? NetworkName;
 
         [OutputConstructor]
@@ -44,6 +36,8 @@ namespace Pulumi.Docker.Outputs
 
             string? ipv6Gateway,
 
+            string? macAddress,
+
             string? networkName)
         {
             Gateway = gateway;
@@ -52,6 +46,7 @@ namespace Pulumi.Docker.Outputs
             IpAddress = ipAddress;
             IpPrefixLength = ipPrefixLength;
             Ipv6Gateway = ipv6Gateway;
+            MacAddress = macAddress;
             NetworkName = networkName;
         }
     }

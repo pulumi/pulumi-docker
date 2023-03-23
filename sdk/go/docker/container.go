@@ -82,7 +82,9 @@ type Container struct {
 	Bridge pulumi.StringOutput `pulumi:"bridge"`
 	// Add or drop certrain linux capabilities.
 	Capabilities ContainerCapabilitiesPtrOutput `pulumi:"capabilities"`
-	// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-","baz.con"]`.
+	// Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
+	CgroupnsMode pulumi.StringPtrOutput `pulumi:"cgroupnsMode"`
+	// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.con"]`.
 	Command pulumi.StringArrayOutput `pulumi:"command"`
 	// The logs of the container if its execution is done (`attach` must be disabled).
 	ContainerLogs pulumi.StringOutput `pulumi:"containerLogs"`
@@ -110,10 +112,6 @@ type Container struct {
 	Envs pulumi.StringArrayOutput `pulumi:"envs"`
 	// The exit code of the container if its execution is done (`mustRun` must be disabled).
 	ExitCode pulumi.IntOutput `pulumi:"exitCode"`
-	// The network gateway of the container.
-	//
-	// Deprecated: Use `network_data` instead. The network gateway of the container as read from its NetworkSettings.
-	Gateway pulumi.StringOutput `pulumi:"gateway"`
 	// GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.
 	Gpus pulumi.StringPtrOutput `pulumi:"gpus"`
 	// Additional groups for the container user
@@ -128,22 +126,10 @@ type Container struct {
 	Image pulumi.StringOutput `pulumi:"image"`
 	// Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
 	Init pulumi.BoolOutput `pulumi:"init"`
-	// The IP address of the container.
-	//
-	// Deprecated: Use `network_data` instead. The IP address of the container's first network it.
-	IpAddress pulumi.StringOutput `pulumi:"ipAddress"`
-	// The IP prefix length of the container.
-	//
-	// Deprecated: Use `network_data` instead. The IP prefix length of the container as read from its NetworkSettings.
-	IpPrefixLength pulumi.IntOutput `pulumi:"ipPrefixLength"`
 	// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
 	IpcMode pulumi.StringOutput `pulumi:"ipcMode"`
 	// User-defined key/value metadata
 	Labels ContainerLabelArrayOutput `pulumi:"labels"`
-	// Set of links for link based connectivity between containers that are running on the same host.
-	//
-	// Deprecated: The --link flag is a legacy feature of Docker. It may eventually be removed.
-	Links pulumi.StringArrayOutput `pulumi:"links"`
 	// The logging driver to use for the container.
 	LogDriver pulumi.StringOutput `pulumi:"logDriver"`
 	// Key/value pairs to use as options for the logging driver.
@@ -164,18 +150,10 @@ type Container struct {
 	MustRun pulumi.BoolPtrOutput `pulumi:"mustRun"`
 	// The name of the container.
 	Name pulumi.StringOutput `pulumi:"name"`
-	// Set an alias for the container in all specified networks
-	//
-	// Deprecated: Use networks_advanced instead. Will be removed in v3.0.0
-	NetworkAliases pulumi.StringArrayOutput `pulumi:"networkAliases"`
 	// The data of the networks the container is connected to.
 	NetworkDatas ContainerNetworkDataArrayOutput `pulumi:"networkDatas"`
 	// Network mode of the container.
 	NetworkMode pulumi.StringPtrOutput `pulumi:"networkMode"`
-	// ID of the networks in which the container is.
-	//
-	// Deprecated: Use networks_advanced instead. Will be removed in v3.0.0
-	Networks pulumi.StringArrayOutput `pulumi:"networks"`
 	// The networks the container is attached to
 	NetworksAdvanced ContainerNetworksAdvancedArrayOutput `pulumi:"networksAdvanced"`
 	// he PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
@@ -272,7 +250,9 @@ type containerState struct {
 	Bridge *string `pulumi:"bridge"`
 	// Add or drop certrain linux capabilities.
 	Capabilities *ContainerCapabilities `pulumi:"capabilities"`
-	// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-","baz.con"]`.
+	// Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
+	CgroupnsMode *string `pulumi:"cgroupnsMode"`
+	// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.con"]`.
 	Command []string `pulumi:"command"`
 	// The logs of the container if its execution is done (`attach` must be disabled).
 	ContainerLogs *string `pulumi:"containerLogs"`
@@ -300,10 +280,6 @@ type containerState struct {
 	Envs []string `pulumi:"envs"`
 	// The exit code of the container if its execution is done (`mustRun` must be disabled).
 	ExitCode *int `pulumi:"exitCode"`
-	// The network gateway of the container.
-	//
-	// Deprecated: Use `network_data` instead. The network gateway of the container as read from its NetworkSettings.
-	Gateway *string `pulumi:"gateway"`
 	// GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.
 	Gpus *string `pulumi:"gpus"`
 	// Additional groups for the container user
@@ -318,22 +294,10 @@ type containerState struct {
 	Image *string `pulumi:"image"`
 	// Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
 	Init *bool `pulumi:"init"`
-	// The IP address of the container.
-	//
-	// Deprecated: Use `network_data` instead. The IP address of the container's first network it.
-	IpAddress *string `pulumi:"ipAddress"`
-	// The IP prefix length of the container.
-	//
-	// Deprecated: Use `network_data` instead. The IP prefix length of the container as read from its NetworkSettings.
-	IpPrefixLength *int `pulumi:"ipPrefixLength"`
 	// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
 	IpcMode *string `pulumi:"ipcMode"`
 	// User-defined key/value metadata
 	Labels []ContainerLabel `pulumi:"labels"`
-	// Set of links for link based connectivity between containers that are running on the same host.
-	//
-	// Deprecated: The --link flag is a legacy feature of Docker. It may eventually be removed.
-	Links []string `pulumi:"links"`
 	// The logging driver to use for the container.
 	LogDriver *string `pulumi:"logDriver"`
 	// Key/value pairs to use as options for the logging driver.
@@ -354,18 +318,10 @@ type containerState struct {
 	MustRun *bool `pulumi:"mustRun"`
 	// The name of the container.
 	Name *string `pulumi:"name"`
-	// Set an alias for the container in all specified networks
-	//
-	// Deprecated: Use networks_advanced instead. Will be removed in v3.0.0
-	NetworkAliases []string `pulumi:"networkAliases"`
 	// The data of the networks the container is connected to.
 	NetworkDatas []ContainerNetworkData `pulumi:"networkDatas"`
 	// Network mode of the container.
 	NetworkMode *string `pulumi:"networkMode"`
-	// ID of the networks in which the container is.
-	//
-	// Deprecated: Use networks_advanced instead. Will be removed in v3.0.0
-	Networks []string `pulumi:"networks"`
 	// The networks the container is attached to
 	NetworksAdvanced []ContainerNetworksAdvanced `pulumi:"networksAdvanced"`
 	// he PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
@@ -431,7 +387,9 @@ type ContainerState struct {
 	Bridge pulumi.StringPtrInput
 	// Add or drop certrain linux capabilities.
 	Capabilities ContainerCapabilitiesPtrInput
-	// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-","baz.con"]`.
+	// Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
+	CgroupnsMode pulumi.StringPtrInput
+	// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.con"]`.
 	Command pulumi.StringArrayInput
 	// The logs of the container if its execution is done (`attach` must be disabled).
 	ContainerLogs pulumi.StringPtrInput
@@ -459,10 +417,6 @@ type ContainerState struct {
 	Envs pulumi.StringArrayInput
 	// The exit code of the container if its execution is done (`mustRun` must be disabled).
 	ExitCode pulumi.IntPtrInput
-	// The network gateway of the container.
-	//
-	// Deprecated: Use `network_data` instead. The network gateway of the container as read from its NetworkSettings.
-	Gateway pulumi.StringPtrInput
 	// GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.
 	Gpus pulumi.StringPtrInput
 	// Additional groups for the container user
@@ -477,22 +431,10 @@ type ContainerState struct {
 	Image pulumi.StringPtrInput
 	// Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.
 	Init pulumi.BoolPtrInput
-	// The IP address of the container.
-	//
-	// Deprecated: Use `network_data` instead. The IP address of the container's first network it.
-	IpAddress pulumi.StringPtrInput
-	// The IP prefix length of the container.
-	//
-	// Deprecated: Use `network_data` instead. The IP prefix length of the container as read from its NetworkSettings.
-	IpPrefixLength pulumi.IntPtrInput
 	// IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
 	IpcMode pulumi.StringPtrInput
 	// User-defined key/value metadata
 	Labels ContainerLabelArrayInput
-	// Set of links for link based connectivity between containers that are running on the same host.
-	//
-	// Deprecated: The --link flag is a legacy feature of Docker. It may eventually be removed.
-	Links pulumi.StringArrayInput
 	// The logging driver to use for the container.
 	LogDriver pulumi.StringPtrInput
 	// Key/value pairs to use as options for the logging driver.
@@ -513,18 +455,10 @@ type ContainerState struct {
 	MustRun pulumi.BoolPtrInput
 	// The name of the container.
 	Name pulumi.StringPtrInput
-	// Set an alias for the container in all specified networks
-	//
-	// Deprecated: Use networks_advanced instead. Will be removed in v3.0.0
-	NetworkAliases pulumi.StringArrayInput
 	// The data of the networks the container is connected to.
 	NetworkDatas ContainerNetworkDataArrayInput
 	// Network mode of the container.
 	NetworkMode pulumi.StringPtrInput
-	// ID of the networks in which the container is.
-	//
-	// Deprecated: Use networks_advanced instead. Will be removed in v3.0.0
-	Networks pulumi.StringArrayInput
 	// The networks the container is attached to
 	NetworksAdvanced ContainerNetworksAdvancedArrayInput
 	// he PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
@@ -592,7 +526,9 @@ type containerArgs struct {
 	Attach *bool `pulumi:"attach"`
 	// Add or drop certrain linux capabilities.
 	Capabilities *ContainerCapabilities `pulumi:"capabilities"`
-	// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-","baz.con"]`.
+	// Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
+	CgroupnsMode *string `pulumi:"cgroupnsMode"`
+	// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.con"]`.
 	Command []string `pulumi:"command"`
 	// The total number of milliseconds to wait for the container to reach status 'running'
 	ContainerReadRefreshTimeoutMilliseconds *int `pulumi:"containerReadRefreshTimeoutMilliseconds"`
@@ -634,10 +570,6 @@ type containerArgs struct {
 	IpcMode *string `pulumi:"ipcMode"`
 	// User-defined key/value metadata
 	Labels []ContainerLabel `pulumi:"labels"`
-	// Set of links for link based connectivity between containers that are running on the same host.
-	//
-	// Deprecated: The --link flag is a legacy feature of Docker. It may eventually be removed.
-	Links []string `pulumi:"links"`
 	// The logging driver to use for the container.
 	LogDriver *string `pulumi:"logDriver"`
 	// Key/value pairs to use as options for the logging driver.
@@ -658,16 +590,8 @@ type containerArgs struct {
 	MustRun *bool `pulumi:"mustRun"`
 	// The name of the container.
 	Name *string `pulumi:"name"`
-	// Set an alias for the container in all specified networks
-	//
-	// Deprecated: Use networks_advanced instead. Will be removed in v3.0.0
-	NetworkAliases []string `pulumi:"networkAliases"`
 	// Network mode of the container.
 	NetworkMode *string `pulumi:"networkMode"`
-	// ID of the networks in which the container is.
-	//
-	// Deprecated: Use networks_advanced instead. Will be removed in v3.0.0
-	Networks []string `pulumi:"networks"`
 	// The networks the container is attached to
 	NetworksAdvanced []ContainerNetworksAdvanced `pulumi:"networksAdvanced"`
 	// he PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
@@ -732,7 +656,9 @@ type ContainerArgs struct {
 	Attach pulumi.BoolPtrInput
 	// Add or drop certrain linux capabilities.
 	Capabilities ContainerCapabilitiesPtrInput
-	// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-","baz.con"]`.
+	// Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
+	CgroupnsMode pulumi.StringPtrInput
+	// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.con"]`.
 	Command pulumi.StringArrayInput
 	// The total number of milliseconds to wait for the container to reach status 'running'
 	ContainerReadRefreshTimeoutMilliseconds pulumi.IntPtrInput
@@ -774,10 +700,6 @@ type ContainerArgs struct {
 	IpcMode pulumi.StringPtrInput
 	// User-defined key/value metadata
 	Labels ContainerLabelArrayInput
-	// Set of links for link based connectivity between containers that are running on the same host.
-	//
-	// Deprecated: The --link flag is a legacy feature of Docker. It may eventually be removed.
-	Links pulumi.StringArrayInput
 	// The logging driver to use for the container.
 	LogDriver pulumi.StringPtrInput
 	// Key/value pairs to use as options for the logging driver.
@@ -798,16 +720,8 @@ type ContainerArgs struct {
 	MustRun pulumi.BoolPtrInput
 	// The name of the container.
 	Name pulumi.StringPtrInput
-	// Set an alias for the container in all specified networks
-	//
-	// Deprecated: Use networks_advanced instead. Will be removed in v3.0.0
-	NetworkAliases pulumi.StringArrayInput
 	// Network mode of the container.
 	NetworkMode pulumi.StringPtrInput
-	// ID of the networks in which the container is.
-	//
-	// Deprecated: Use networks_advanced instead. Will be removed in v3.0.0
-	Networks pulumi.StringArrayInput
 	// The networks the container is attached to
 	NetworksAdvanced ContainerNetworksAdvancedArrayInput
 	// he PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
@@ -968,7 +882,12 @@ func (o ContainerOutput) Capabilities() ContainerCapabilitiesPtrOutput {
 	return o.ApplyT(func(v *Container) ContainerCapabilitiesPtrOutput { return v.Capabilities }).(ContainerCapabilitiesPtrOutput)
 }
 
-// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-","baz.con"]`.
+// Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
+func (o ContainerOutput) CgroupnsMode() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *Container) pulumi.StringPtrOutput { return v.CgroupnsMode }).(pulumi.StringPtrOutput)
+}
+
+// The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `["/usr/bin/myprogram","-f","baz.con"]`.
 func (o ContainerOutput) Command() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v *Container) pulumi.StringArrayOutput { return v.Command }).(pulumi.StringArrayOutput)
 }
@@ -1038,13 +957,6 @@ func (o ContainerOutput) ExitCode() pulumi.IntOutput {
 	return o.ApplyT(func(v *Container) pulumi.IntOutput { return v.ExitCode }).(pulumi.IntOutput)
 }
 
-// The network gateway of the container.
-//
-// Deprecated: Use `network_data` instead. The network gateway of the container as read from its NetworkSettings.
-func (o ContainerOutput) Gateway() pulumi.StringOutput {
-	return o.ApplyT(func(v *Container) pulumi.StringOutput { return v.Gateway }).(pulumi.StringOutput)
-}
-
 // GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.
 func (o ContainerOutput) Gpus() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Container) pulumi.StringPtrOutput { return v.Gpus }).(pulumi.StringPtrOutput)
@@ -1080,20 +992,6 @@ func (o ContainerOutput) Init() pulumi.BoolOutput {
 	return o.ApplyT(func(v *Container) pulumi.BoolOutput { return v.Init }).(pulumi.BoolOutput)
 }
 
-// The IP address of the container.
-//
-// Deprecated: Use `network_data` instead. The IP address of the container's first network it.
-func (o ContainerOutput) IpAddress() pulumi.StringOutput {
-	return o.ApplyT(func(v *Container) pulumi.StringOutput { return v.IpAddress }).(pulumi.StringOutput)
-}
-
-// The IP prefix length of the container.
-//
-// Deprecated: Use `network_data` instead. The IP prefix length of the container as read from its NetworkSettings.
-func (o ContainerOutput) IpPrefixLength() pulumi.IntOutput {
-	return o.ApplyT(func(v *Container) pulumi.IntOutput { return v.IpPrefixLength }).(pulumi.IntOutput)
-}
-
 // IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.
 func (o ContainerOutput) IpcMode() pulumi.StringOutput {
 	return o.ApplyT(func(v *Container) pulumi.StringOutput { return v.IpcMode }).(pulumi.StringOutput)
@@ -1102,13 +1000,6 @@ func (o ContainerOutput) IpcMode() pulumi.StringOutput {
 // User-defined key/value metadata
 func (o ContainerOutput) Labels() ContainerLabelArrayOutput {
 	return o.ApplyT(func(v *Container) ContainerLabelArrayOutput { return v.Labels }).(ContainerLabelArrayOutput)
-}
-
-// Set of links for link based connectivity between containers that are running on the same host.
-//
-// Deprecated: The --link flag is a legacy feature of Docker. It may eventually be removed.
-func (o ContainerOutput) Links() pulumi.StringArrayOutput {
-	return o.ApplyT(func(v *Container) pulumi.StringArrayOutput { return v.Links }).(pulumi.StringArrayOutput)
 }
 
 // The logging driver to use for the container.
@@ -1158,13 +1049,6 @@ func (o ContainerOutput) Name() pulumi.StringOutput {
 	return o.ApplyT(func(v *Container) pulumi.StringOutput { return v.Name }).(pulumi.StringOutput)
 }
 
-// Set an alias for the container in all specified networks
-//
-// Deprecated: Use networks_advanced instead. Will be removed in v3.0.0
-func (o ContainerOutput) NetworkAliases() pulumi.StringArrayOutput {
-	return o.ApplyT(func(v *Container) pulumi.StringArrayOutput { return v.NetworkAliases }).(pulumi.StringArrayOutput)
-}
-
 // The data of the networks the container is connected to.
 func (o ContainerOutput) NetworkDatas() ContainerNetworkDataArrayOutput {
 	return o.ApplyT(func(v *Container) ContainerNetworkDataArrayOutput { return v.NetworkDatas }).(ContainerNetworkDataArrayOutput)
@@ -1173,13 +1057,6 @@ func (o ContainerOutput) NetworkDatas() ContainerNetworkDataArrayOutput {
 // Network mode of the container.
 func (o ContainerOutput) NetworkMode() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Container) pulumi.StringPtrOutput { return v.NetworkMode }).(pulumi.StringPtrOutput)
-}
-
-// ID of the networks in which the container is.
-//
-// Deprecated: Use networks_advanced instead. Will be removed in v3.0.0
-func (o ContainerOutput) Networks() pulumi.StringArrayOutput {
-	return o.ApplyT(func(v *Container) pulumi.StringArrayOutput { return v.Networks }).(pulumi.StringArrayOutput)
 }
 
 // The networks the container is attached to

@@ -6,6 +6,7 @@ package com.pulumi.docker.outputs;
 import com.pulumi.core.annotations.CustomType;
 import com.pulumi.docker.outputs.ServiceTaskSpecContainerSpec;
 import com.pulumi.docker.outputs.ServiceTaskSpecLogDriver;
+import com.pulumi.docker.outputs.ServiceTaskSpecNetworksAdvanced;
 import com.pulumi.docker.outputs.ServiceTaskSpecPlacement;
 import com.pulumi.docker.outputs.ServiceTaskSpecResources;
 import com.pulumi.docker.outputs.ServiceTaskSpecRestartPolicy;
@@ -34,10 +35,10 @@ public final class ServiceTaskSpec {
      */
     private @Nullable ServiceTaskSpecLogDriver logDriver;
     /**
-     * @return Ids of the networks in which the  container will be put in
+     * @return The networks the container is attached to
      * 
      */
-    private @Nullable List<String> networks;
+    private @Nullable List<ServiceTaskSpecNetworksAdvanced> networksAdvanceds;
     /**
      * @return The placement preferences
      * 
@@ -82,11 +83,11 @@ public final class ServiceTaskSpec {
         return Optional.ofNullable(this.logDriver);
     }
     /**
-     * @return Ids of the networks in which the  container will be put in
+     * @return The networks the container is attached to
      * 
      */
-    public List<String> networks() {
-        return this.networks == null ? List.of() : this.networks;
+    public List<ServiceTaskSpecNetworksAdvanced> networksAdvanceds() {
+        return this.networksAdvanceds == null ? List.of() : this.networksAdvanceds;
     }
     /**
      * @return The placement preferences
@@ -129,7 +130,7 @@ public final class ServiceTaskSpec {
         private ServiceTaskSpecContainerSpec containerSpec;
         private @Nullable Integer forceUpdate;
         private @Nullable ServiceTaskSpecLogDriver logDriver;
-        private @Nullable List<String> networks;
+        private @Nullable List<ServiceTaskSpecNetworksAdvanced> networksAdvanceds;
         private @Nullable ServiceTaskSpecPlacement placement;
         private @Nullable ServiceTaskSpecResources resources;
         private @Nullable ServiceTaskSpecRestartPolicy restartPolicy;
@@ -140,7 +141,7 @@ public final class ServiceTaskSpec {
     	      this.containerSpec = defaults.containerSpec;
     	      this.forceUpdate = defaults.forceUpdate;
     	      this.logDriver = defaults.logDriver;
-    	      this.networks = defaults.networks;
+    	      this.networksAdvanceds = defaults.networksAdvanceds;
     	      this.placement = defaults.placement;
     	      this.resources = defaults.resources;
     	      this.restartPolicy = defaults.restartPolicy;
@@ -163,12 +164,12 @@ public final class ServiceTaskSpec {
             return this;
         }
         @CustomType.Setter
-        public Builder networks(@Nullable List<String> networks) {
-            this.networks = networks;
+        public Builder networksAdvanceds(@Nullable List<ServiceTaskSpecNetworksAdvanced> networksAdvanceds) {
+            this.networksAdvanceds = networksAdvanceds;
             return this;
         }
-        public Builder networks(String... networks) {
-            return networks(List.of(networks));
+        public Builder networksAdvanceds(ServiceTaskSpecNetworksAdvanced... networksAdvanceds) {
+            return networksAdvanceds(List.of(networksAdvanceds));
         }
         @CustomType.Setter
         public Builder placement(@Nullable ServiceTaskSpecPlacement placement) {
@@ -195,7 +196,7 @@ public final class ServiceTaskSpec {
             o.containerSpec = containerSpec;
             o.forceUpdate = forceUpdate;
             o.logDriver = logDriver;
-            o.networks = networks;
+            o.networksAdvanceds = networksAdvanceds;
             o.placement = placement;
             o.resources = resources;
             o.restartPolicy = restartPolicy;

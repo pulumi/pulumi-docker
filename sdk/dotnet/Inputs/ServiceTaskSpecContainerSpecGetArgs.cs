@@ -118,6 +118,14 @@ namespace Pulumi.Docker.Inputs
         [Input("stopSignal")]
         public Input<string>? StopSignal { get; set; }
 
+        [Input("sysctl")]
+        private InputMap<object>? _sysctl;
+        public InputMap<object> Sysctl
+        {
+            get => _sysctl ?? (_sysctl = new InputMap<object>());
+            set => _sysctl = value;
+        }
+
         [Input("user")]
         public Input<string>? User { get; set; }
 

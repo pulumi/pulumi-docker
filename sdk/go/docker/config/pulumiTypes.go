@@ -12,6 +12,7 @@ import (
 
 type RegistryAuth struct {
 	Address           string  `pulumi:"address"`
+	AuthDisabled      *bool   `pulumi:"authDisabled"`
 	ConfigFile        *string `pulumi:"configFile"`
 	ConfigFileContent *string `pulumi:"configFileContent"`
 	Password          *string `pulumi:"password"`
@@ -31,6 +32,7 @@ type RegistryAuthInput interface {
 
 type RegistryAuthArgs struct {
 	Address           pulumi.StringInput    `pulumi:"address"`
+	AuthDisabled      pulumi.BoolPtrInput   `pulumi:"authDisabled"`
 	ConfigFile        pulumi.StringPtrInput `pulumi:"configFile"`
 	ConfigFileContent pulumi.StringPtrInput `pulumi:"configFileContent"`
 	Password          pulumi.StringPtrInput `pulumi:"password"`
@@ -90,6 +92,10 @@ func (o RegistryAuthOutput) ToRegistryAuthOutputWithContext(ctx context.Context)
 
 func (o RegistryAuthOutput) Address() pulumi.StringOutput {
 	return o.ApplyT(func(v RegistryAuth) string { return v.Address }).(pulumi.StringOutput)
+}
+
+func (o RegistryAuthOutput) AuthDisabled() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v RegistryAuth) *bool { return v.AuthDisabled }).(pulumi.BoolPtrOutput)
 }
 
 func (o RegistryAuthOutput) ConfigFile() pulumi.StringPtrOutput {

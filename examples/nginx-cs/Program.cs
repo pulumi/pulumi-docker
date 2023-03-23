@@ -22,7 +22,7 @@ class Program
             // Launch a container using the nginx image we just downloaded.
             var container = new Container("nginx", new ContainerArgs
             {
-                Image = remoteImage.Latest,
+                Image = remoteImage.RepoDigest,
                 Ports =
                 {
                     new ContainerPortArgs

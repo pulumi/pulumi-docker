@@ -9,21 +9,21 @@ import java.lang.String;
 import java.util.Objects;
 
 @CustomType
-public final class RegistryImageBuildUlimit {
+public final class RemoteImageBuildUlimit {
     private Integer hard;
     /**
-     * @return The name of the Docker image.
+     * @return The name of the Docker image, including any tags or SHA256 repo digests.
      * 
      */
     private String name;
     private Integer soft;
 
-    private RegistryImageBuildUlimit() {}
+    private RemoteImageBuildUlimit() {}
     public Integer hard() {
         return this.hard;
     }
     /**
-     * @return The name of the Docker image.
+     * @return The name of the Docker image, including any tags or SHA256 repo digests.
      * 
      */
     public String name() {
@@ -37,7 +37,7 @@ public final class RegistryImageBuildUlimit {
         return new Builder();
     }
 
-    public static Builder builder(RegistryImageBuildUlimit defaults) {
+    public static Builder builder(RemoteImageBuildUlimit defaults) {
         return new Builder(defaults);
     }
     @CustomType.Builder
@@ -46,7 +46,7 @@ public final class RegistryImageBuildUlimit {
         private String name;
         private Integer soft;
         public Builder() {}
-        public Builder(RegistryImageBuildUlimit defaults) {
+        public Builder(RemoteImageBuildUlimit defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.hard = defaults.hard;
     	      this.name = defaults.name;
@@ -68,8 +68,8 @@ public final class RegistryImageBuildUlimit {
             this.soft = Objects.requireNonNull(soft);
             return this;
         }
-        public RegistryImageBuildUlimit build() {
-            final var o = new RegistryImageBuildUlimit();
+        public RemoteImageBuildUlimit build() {
+            final var o = new RemoteImageBuildUlimit();
             o.hard = hard;
             o.name = name;
             o.soft = soft;

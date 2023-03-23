@@ -81,29 +81,6 @@ public final class RemoteImageState extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * The ID of the image in the form of `sha256:&lt;hash&gt;` image digest. Do not confuse it with the default `latest` tag.
-     * 
-     * @deprecated
-     * Use repo_digest instead
-     * 
-     */
-    @Deprecated /* Use repo_digest instead */
-    @Import(name="latest")
-    private @Nullable Output<String> latest;
-
-    /**
-     * @return The ID of the image in the form of `sha256:&lt;hash&gt;` image digest. Do not confuse it with the default `latest` tag.
-     * 
-     * @deprecated
-     * Use repo_digest instead
-     * 
-     */
-    @Deprecated /* Use repo_digest instead */
-    public Optional<Output<String>> latest() {
-        return Optional.ofNullable(this.latest);
-    }
-
-    /**
      * The name of the Docker image, including any tags or SHA256 repo digests.
      * 
      */
@@ -119,45 +96,18 @@ public final class RemoteImageState extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * @deprecated
-     * Is unused and will be removed.
+     * The platform to use when pulling the image. Defaults to the platform of the current machine.
      * 
      */
-    @Deprecated /* Is unused and will be removed. */
-    @Import(name="output")
-    private @Nullable Output<String> output;
+    @Import(name="platform")
+    private @Nullable Output<String> platform;
 
     /**
-     * @deprecated
-     * Is unused and will be removed.
+     * @return The platform to use when pulling the image. Defaults to the platform of the current machine.
      * 
      */
-    @Deprecated /* Is unused and will be removed. */
-    public Optional<Output<String>> output() {
-        return Optional.ofNullable(this.output);
-    }
-
-    /**
-     * A value which cause an image pull when changed
-     * 
-     * @deprecated
-     * Use field pull_triggers instead
-     * 
-     */
-    @Deprecated /* Use field pull_triggers instead */
-    @Import(name="pullTrigger")
-    private @Nullable Output<String> pullTrigger;
-
-    /**
-     * @return A value which cause an image pull when changed
-     * 
-     * @deprecated
-     * Use field pull_triggers instead
-     * 
-     */
-    @Deprecated /* Use field pull_triggers instead */
-    public Optional<Output<String>> pullTrigger() {
-        return Optional.ofNullable(this.pullTrigger);
+    public Optional<Output<String>> platform() {
+        return Optional.ofNullable(this.platform);
     }
 
     /**
@@ -212,10 +162,8 @@ public final class RemoteImageState extends com.pulumi.resources.ResourceArgs {
         this.forceRemove = $.forceRemove;
         this.imageId = $.imageId;
         this.keepLocally = $.keepLocally;
-        this.latest = $.latest;
         this.name = $.name;
-        this.output = $.output;
-        this.pullTrigger = $.pullTrigger;
+        this.platform = $.platform;
         this.pullTriggers = $.pullTriggers;
         this.repoDigest = $.repoDigest;
         this.triggers = $.triggers;
@@ -324,35 +272,6 @@ public final class RemoteImageState extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param latest The ID of the image in the form of `sha256:&lt;hash&gt;` image digest. Do not confuse it with the default `latest` tag.
-         * 
-         * @return builder
-         * 
-         * @deprecated
-         * Use repo_digest instead
-         * 
-         */
-        @Deprecated /* Use repo_digest instead */
-        public Builder latest(@Nullable Output<String> latest) {
-            $.latest = latest;
-            return this;
-        }
-
-        /**
-         * @param latest The ID of the image in the form of `sha256:&lt;hash&gt;` image digest. Do not confuse it with the default `latest` tag.
-         * 
-         * @return builder
-         * 
-         * @deprecated
-         * Use repo_digest instead
-         * 
-         */
-        @Deprecated /* Use repo_digest instead */
-        public Builder latest(String latest) {
-            return latest(Output.of(latest));
-        }
-
-        /**
          * @param name The name of the Docker image, including any tags or SHA256 repo digests.
          * 
          * @return builder
@@ -374,57 +293,24 @@ public final class RemoteImageState extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
+         * @param platform The platform to use when pulling the image. Defaults to the platform of the current machine.
+         * 
          * @return builder
          * 
-         * @deprecated
-         * Is unused and will be removed.
-         * 
          */
-        @Deprecated /* Is unused and will be removed. */
-        public Builder output(@Nullable Output<String> output) {
-            $.output = output;
+        public Builder platform(@Nullable Output<String> platform) {
+            $.platform = platform;
             return this;
         }
 
         /**
-         * @return builder
-         * 
-         * @deprecated
-         * Is unused and will be removed.
-         * 
-         */
-        @Deprecated /* Is unused and will be removed. */
-        public Builder output(String output) {
-            return output(Output.of(output));
-        }
-
-        /**
-         * @param pullTrigger A value which cause an image pull when changed
+         * @param platform The platform to use when pulling the image. Defaults to the platform of the current machine.
          * 
          * @return builder
          * 
-         * @deprecated
-         * Use field pull_triggers instead
-         * 
          */
-        @Deprecated /* Use field pull_triggers instead */
-        public Builder pullTrigger(@Nullable Output<String> pullTrigger) {
-            $.pullTrigger = pullTrigger;
-            return this;
-        }
-
-        /**
-         * @param pullTrigger A value which cause an image pull when changed
-         * 
-         * @return builder
-         * 
-         * @deprecated
-         * Use field pull_triggers instead
-         * 
-         */
-        @Deprecated /* Use field pull_triggers instead */
-        public Builder pullTrigger(String pullTrigger) {
-            return pullTrigger(Output.of(pullTrigger));
+        public Builder platform(String platform) {
+            return platform(Output.of(platform));
         }
 
         /**

@@ -5,6 +5,7 @@ package com.pulumi.docker.inputs;
 
 import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
+import java.lang.Boolean;
 import java.lang.String;
 import java.util.Objects;
 import java.util.Optional;
@@ -20,6 +21,13 @@ public final class ProviderRegistryAuthArgs extends com.pulumi.resources.Resourc
 
     public Output<String> address() {
         return this.address;
+    }
+
+    @Import(name="authDisabled")
+    private @Nullable Output<Boolean> authDisabled;
+
+    public Optional<Output<Boolean>> authDisabled() {
+        return Optional.ofNullable(this.authDisabled);
     }
 
     @Import(name="configFile")
@@ -54,6 +62,7 @@ public final class ProviderRegistryAuthArgs extends com.pulumi.resources.Resourc
 
     private ProviderRegistryAuthArgs(ProviderRegistryAuthArgs $) {
         this.address = $.address;
+        this.authDisabled = $.authDisabled;
         this.configFile = $.configFile;
         this.configFileContent = $.configFileContent;
         this.password = $.password;
@@ -85,6 +94,15 @@ public final class ProviderRegistryAuthArgs extends com.pulumi.resources.Resourc
 
         public Builder address(String address) {
             return address(Output.of(address));
+        }
+
+        public Builder authDisabled(@Nullable Output<Boolean> authDisabled) {
+            $.authDisabled = authDisabled;
+            return this;
+        }
+
+        public Builder authDisabled(Boolean authDisabled) {
+            return authDisabled(Output.of(authDisabled));
         }
 
         public Builder configFile(@Nullable Output<String> configFile) {

@@ -5,9 +5,10 @@ package com.pulumi.docker;
 
 import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
-import com.pulumi.docker.inputs.RegistryImageBuildArgs;
 import java.lang.Boolean;
+import java.lang.Object;
 import java.lang.String;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import javax.annotation.Nullable;
@@ -16,21 +17,6 @@ import javax.annotation.Nullable;
 public final class RegistryImageArgs extends com.pulumi.resources.ResourceArgs {
 
     public static final RegistryImageArgs Empty = new RegistryImageArgs();
-
-    /**
-     * Definition for building the image
-     * 
-     */
-    @Import(name="build")
-    private @Nullable Output<RegistryImageBuildArgs> build;
-
-    /**
-     * @return Definition for building the image
-     * 
-     */
-    public Optional<Output<RegistryImageBuildArgs>> build() {
-        return Optional.ofNullable(this.build);
-    }
 
     /**
      * If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
@@ -77,13 +63,28 @@ public final class RegistryImageArgs extends com.pulumi.resources.ResourceArgs {
         return Optional.ofNullable(this.name);
     }
 
+    /**
+     * A map of arbitrary strings that, when changed, will force the `docker.RegistryImage` resource to be replaced. This can be used to repush a local image
+     * 
+     */
+    @Import(name="triggers")
+    private @Nullable Output<Map<String,Object>> triggers;
+
+    /**
+     * @return A map of arbitrary strings that, when changed, will force the `docker.RegistryImage` resource to be replaced. This can be used to repush a local image
+     * 
+     */
+    public Optional<Output<Map<String,Object>>> triggers() {
+        return Optional.ofNullable(this.triggers);
+    }
+
     private RegistryImageArgs() {}
 
     private RegistryImageArgs(RegistryImageArgs $) {
-        this.build = $.build;
         this.insecureSkipVerify = $.insecureSkipVerify;
         this.keepRemotely = $.keepRemotely;
         this.name = $.name;
+        this.triggers = $.triggers;
     }
 
     public static Builder builder() {
@@ -102,27 +103,6 @@ public final class RegistryImageArgs extends com.pulumi.resources.ResourceArgs {
 
         public Builder(RegistryImageArgs defaults) {
             $ = new RegistryImageArgs(Objects.requireNonNull(defaults));
-        }
-
-        /**
-         * @param build Definition for building the image
-         * 
-         * @return builder
-         * 
-         */
-        public Builder build(@Nullable Output<RegistryImageBuildArgs> build) {
-            $.build = build;
-            return this;
-        }
-
-        /**
-         * @param build Definition for building the image
-         * 
-         * @return builder
-         * 
-         */
-        public Builder build(RegistryImageBuildArgs build) {
-            return build(Output.of(build));
         }
 
         /**
@@ -186,6 +166,27 @@ public final class RegistryImageArgs extends com.pulumi.resources.ResourceArgs {
          */
         public Builder name(String name) {
             return name(Output.of(name));
+        }
+
+        /**
+         * @param triggers A map of arbitrary strings that, when changed, will force the `docker.RegistryImage` resource to be replaced. This can be used to repush a local image
+         * 
+         * @return builder
+         * 
+         */
+        public Builder triggers(@Nullable Output<Map<String,Object>> triggers) {
+            $.triggers = triggers;
+            return this;
+        }
+
+        /**
+         * @param triggers A map of arbitrary strings that, when changed, will force the `docker.RegistryImage` resource to be replaced. This can be used to repush a local image
+         * 
+         * @return builder
+         * 
+         */
+        public Builder triggers(Map<String,Object> triggers) {
+            return triggers(Output.of(triggers));
         }
 
         public RegistryImageArgs build() {

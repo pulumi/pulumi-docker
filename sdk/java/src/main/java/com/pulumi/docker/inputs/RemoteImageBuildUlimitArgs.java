@@ -10,9 +10,9 @@ import java.lang.String;
 import java.util.Objects;
 
 
-public final class RegistryImageBuildUlimitArgs extends com.pulumi.resources.ResourceArgs {
+public final class RemoteImageBuildUlimitArgs extends com.pulumi.resources.ResourceArgs {
 
-    public static final RegistryImageBuildUlimitArgs Empty = new RegistryImageBuildUlimitArgs();
+    public static final RemoteImageBuildUlimitArgs Empty = new RemoteImageBuildUlimitArgs();
 
     @Import(name="hard", required=true)
     private Output<Integer> hard;
@@ -22,14 +22,14 @@ public final class RegistryImageBuildUlimitArgs extends com.pulumi.resources.Res
     }
 
     /**
-     * The name of the Docker image.
+     * The name of the Docker image, including any tags or SHA256 repo digests.
      * 
      */
     @Import(name="name", required=true)
     private Output<String> name;
 
     /**
-     * @return The name of the Docker image.
+     * @return The name of the Docker image, including any tags or SHA256 repo digests.
      * 
      */
     public Output<String> name() {
@@ -43,9 +43,9 @@ public final class RegistryImageBuildUlimitArgs extends com.pulumi.resources.Res
         return this.soft;
     }
 
-    private RegistryImageBuildUlimitArgs() {}
+    private RemoteImageBuildUlimitArgs() {}
 
-    private RegistryImageBuildUlimitArgs(RegistryImageBuildUlimitArgs $) {
+    private RemoteImageBuildUlimitArgs(RemoteImageBuildUlimitArgs $) {
         this.hard = $.hard;
         this.name = $.name;
         this.soft = $.soft;
@@ -54,19 +54,19 @@ public final class RegistryImageBuildUlimitArgs extends com.pulumi.resources.Res
     public static Builder builder() {
         return new Builder();
     }
-    public static Builder builder(RegistryImageBuildUlimitArgs defaults) {
+    public static Builder builder(RemoteImageBuildUlimitArgs defaults) {
         return new Builder(defaults);
     }
 
     public static final class Builder {
-        private RegistryImageBuildUlimitArgs $;
+        private RemoteImageBuildUlimitArgs $;
 
         public Builder() {
-            $ = new RegistryImageBuildUlimitArgs();
+            $ = new RemoteImageBuildUlimitArgs();
         }
 
-        public Builder(RegistryImageBuildUlimitArgs defaults) {
-            $ = new RegistryImageBuildUlimitArgs(Objects.requireNonNull(defaults));
+        public Builder(RemoteImageBuildUlimitArgs defaults) {
+            $ = new RemoteImageBuildUlimitArgs(Objects.requireNonNull(defaults));
         }
 
         public Builder hard(Output<Integer> hard) {
@@ -79,7 +79,7 @@ public final class RegistryImageBuildUlimitArgs extends com.pulumi.resources.Res
         }
 
         /**
-         * @param name The name of the Docker image.
+         * @param name The name of the Docker image, including any tags or SHA256 repo digests.
          * 
          * @return builder
          * 
@@ -90,7 +90,7 @@ public final class RegistryImageBuildUlimitArgs extends com.pulumi.resources.Res
         }
 
         /**
-         * @param name The name of the Docker image.
+         * @param name The name of the Docker image, including any tags or SHA256 repo digests.
          * 
          * @return builder
          * 
@@ -108,7 +108,7 @@ public final class RegistryImageBuildUlimitArgs extends com.pulumi.resources.Res
             return soft(Output.of(soft));
         }
 
-        public RegistryImageBuildUlimitArgs build() {
+        public RemoteImageBuildUlimitArgs build() {
             $.hard = Objects.requireNonNull($.hard, "expected parameter 'hard' to be non-null");
             $.name = Objects.requireNonNull($.name, "expected parameter 'name' to be non-null");
             $.soft = Objects.requireNonNull($.soft, "expected parameter 'soft' to be non-null");

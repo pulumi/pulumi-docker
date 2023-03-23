@@ -35,6 +35,7 @@ namespace Pulumi.Docker.Outputs
         public readonly ImmutableArray<Outputs.ServiceTaskSpecContainerSpecSecret> Secrets;
         public readonly string? StopGracePeriod;
         public readonly string? StopSignal;
+        public readonly ImmutableDictionary<string, object>? Sysctl;
         public readonly string? User;
 
         [OutputConstructor]
@@ -77,6 +78,8 @@ namespace Pulumi.Docker.Outputs
 
             string? stopSignal,
 
+            ImmutableDictionary<string, object>? sysctl,
+
             string? user)
         {
             Args = args;
@@ -98,6 +101,7 @@ namespace Pulumi.Docker.Outputs
             Secrets = secrets;
             StopGracePeriod = stopGracePeriod;
             StopSignal = stopSignal;
+            Sysctl = sysctl;
             User = user;
         }
     }
