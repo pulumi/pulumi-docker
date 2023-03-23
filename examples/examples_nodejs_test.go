@@ -30,6 +30,7 @@ func TestNginxTs(t *testing.T) {
 		With(integration.ProgramTestOptions{
 			Dir:                  path.Join(getCwd(t), "nginx"),
 			ExpectRefreshChanges: true,
+			Quick:                true,
 		})
 
 	integration.ProgramTest(t, &test)

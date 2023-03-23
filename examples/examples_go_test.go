@@ -41,6 +41,7 @@ func TestNginxGo(t *testing.T) {
 		},
 		Dir:                  path.Join(cwd, "nginx-go"),
 		ExpectRefreshChanges: true,
+		Quick:                true,
 	})
 	integration.ProgramTest(t, &opts)
 }
