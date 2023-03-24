@@ -24,7 +24,7 @@ require (
 
 replace (
 	cloud.google.com/go/storage => cloud.google.com/go/storage v1.29.0
-	github.com/docker/docker => /Users/guin/go/src/github.com/docker/docker
+	//github.com/docker/docker => /Users/guin/go/src/github.com/docker/docker
 	github.com/hashicorp/terraform-plugin-sdk/v2 => github.com/pulumi/terraform-plugin-sdk/v2 v2.0.0-20221122203342-430f685de305
 	github.com/hashicorp/vault => github.com/hashicorp/vault v1.2.0
 	github.com/terraform-providers/terraform-provider-docker => ../upstream
