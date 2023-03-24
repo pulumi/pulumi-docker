@@ -26,6 +26,7 @@ func makeProvider(host *provider.HostClient, name, version string, schemaBytes [
 		name:        name,
 		version:     version,
 		schemaBytes: schemaBytes,
+		config:      map[string]string{},
 	}
 
 	prov := Provider()

@@ -7,6 +7,7 @@ import (
 	"encoding/hex"
 	"fmt"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/diag"
+	"github.com/ryboe/q"
 	"io"
 	"io/fs"
 	"os"
@@ -36,6 +37,7 @@ type dockerNativeProvider struct {
 	name        string
 	version     string
 	schemaBytes []byte
+	config      map[string]string
 	//loginLock   sync.Mutex
 }
 
@@ -74,6 +76,13 @@ func (p *dockerNativeProvider) DiffConfig(ctx context.Context, req *rpc.DiffRequ
 
 // Configure configures the resource provider with "globals" that control its behavior.
 func (p *dockerNativeProvider) Configure(_ context.Context, req *rpc.ConfigureRequest) (*rpc.ConfigureResponse, error) {
+	vars := req.GetVariables()
+	q.Q(vars)
+	for key, val := range req.GetVariables() {
+		p.config[strings.TrimPrefix(key, "docker:config:")] = val
+	}
+	q.Q(p.config)
+
 	return &rpc.ConfigureResponse{
 		AcceptSecrets: true,
 	}, nil
