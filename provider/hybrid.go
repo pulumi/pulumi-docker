@@ -7,7 +7,6 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/util/logging"
 	rpc "github.com/pulumi/pulumi/sdk/v3/proto/go"
-	"github.com/ryboe/q"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/emptypb"
@@ -69,14 +68,9 @@ func (dp dockerHybridProvider) DiffConfig(ctx context.Context, request *rpc.Diff
 
 func (dp dockerHybridProvider) Configure(ctx context.Context, request *rpc.ConfigureRequest) (
 	*rpc.ConfigureResponse, error) {
-	q.Q("in hybridConfigure")
-	q.Q("is the vars field set?", request.Variables)
-
 	var myResp *rpc.ConfigureResponse
-	for _, prov := range []rpc.ResourceProviderServer{dp.nativeProvider} { // TODO: move the hybrid provider back in here!!!
-		q.Q("in for loop, ", request.Variables)
+	for _, prov := range []rpc.ResourceProviderServer{dp.bridgedProvider, dp.nativeProvider} {
 		resp, err := prov.Configure(ctx, request)
-		q.Q("in for loop, resp: ", resp.String())
 		if err != nil {
 			return nil, err
 		}

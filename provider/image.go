@@ -37,7 +37,6 @@ import (
 	"github.com/moby/moby/registry"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
-	"github.com/ryboe/q"
 )
 
 const defaultDockerfile = "Dockerfile"
@@ -81,8 +80,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	props *structpb.Struct) (string, *structpb.Struct, error) {
 
 	inputs, err := plugin.UnmarshalProperties(props, plugin.MarshalOptions{KeepUnknowns: true, SkipNulls: true})
-	configs := p.config
-	q.Q(configs)
+
 	if err != nil {
 		return "", nil, err
 	}
@@ -173,14 +171,10 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		}
 	}
 
-	userIdentity := idtools.CurrentIdentity()
-	q.Q(userIdentity)
-
 	tar, err := archive.TarWithOptions(contextDir, &archive.TarOptions{
 		ExcludePatterns: ignorePatterns,
-		ChownOpts:       &idtools.Identity{UID: 0, GID: 0}, // TODO: this does not seem to affect anything in TarWithOptions.
+		ChownOpts:       &idtools.Identity{UID: 0, GID: 0},
 	})
-	//TODO: the error "Can't add ... to tar file" may still be a permissions error - just not one that is controlled by ChownOpts.
 	if err != nil {
 		return "", nil, err
 	}
@@ -199,8 +193,6 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 			return "", nil, err
 		}
 	}
-
-	q.Q("do we still need even more configs? did we make it here?")
 
 	cfg, err := getDefaultDockerConfig()
 	if err != nil {
@@ -271,10 +263,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 
 	imgBuildResp, err := docker.ImageBuild(ctx, tar, opts)
 	if err != nil {
-		q.Q("we hit this error after Build")
 		return "", nil, err
-	} else {
-		q.Q("we did NOT hit an error after build")
 	}
 
 	defer imgBuildResp.Body.Close()
@@ -501,13 +490,10 @@ func marshalSkipPush(sp resource.PropertyValue) bool {
 }
 
 func getDefaultDockerConfig() (*configfile.ConfigFile, error) {
-	q.Q("in docker config")
 	cfg, err := config.Load(config.Dir())
-	q.Q(cfg)
 	if err != nil {
 		return nil, err
 	}
-	q.Q(cfg.CredentialsStore)
 	cfg.CredentialsStore = credentials.DetectDefaultStore(cfg.CredentialsStore)
 	return cfg, nil
 }
