@@ -16,6 +16,7 @@ namespace Pulumi.Docker
     /// ### A Docker image build
     /// ```csharp
     /// using System.Collections.Generic;
+    /// using System.Linq;
     /// using Pulumi;
     /// using Docker = Pulumi.Docker;
     /// 
