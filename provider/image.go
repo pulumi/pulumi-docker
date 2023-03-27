@@ -690,6 +690,7 @@ func configureDockerClient(configs map[string]string) (*client.Client, error) {
 		// Set custom client first
 		return client.NewClientWithOpts(
 			client.WithHTTPClient(httpClient),
+			client.FromEnv,
 			client.WithHost(host),
 			client.WithAPIVersionNegotiation(),
 		)
