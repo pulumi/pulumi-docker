@@ -674,7 +674,7 @@ func configureDockerClient(configs map[string]string) (*client.Client, error) {
 		host = val
 	}
 
-	// see if we're using raw certificates
+	// Create the https client with raw TLS certificates that have been provided directly
 	if certMaterial != "" || keyMaterial != "" || caMaterial != "" {
 		if certMaterial == "" || keyMaterial == "" || caMaterial == "" {
 			return nil, fmt.Errorf("certMaterial, keyMaterial, and caMaterial must all be specified")
@@ -697,6 +697,7 @@ func configureDockerClient(configs map[string]string) (*client.Client, error) {
 		)
 	}
 
+	// Create the https client with TLS certificate material at the specified path
 	var ca, cert, key string
 	if certPath != "" {
 		ca = filepath.Join(certPath, "ca.pem")
@@ -709,6 +710,7 @@ func configureDockerClient(configs map[string]string) (*client.Client, error) {
 		)
 	}
 
+	// No TLS certificate material provided, create an http client
 	return client.NewClientWithOpts(
 		client.FromEnv,
 		client.WithAPIVersionNegotiation(),
