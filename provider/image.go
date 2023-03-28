@@ -674,9 +674,10 @@ func configureDockerClient(configs map[string]string) (*client.Client, error) {
 		host = val
 	}
 
-	if certMaterial != "" || keyMaterial != "" {
-		if certMaterial == "" || keyMaterial == "" {
-			return nil, fmt.Errorf("certMaterial, and keyMaterial must be specified")
+	// see if we're using raw certificates
+	if certMaterial != "" || keyMaterial != "" || caMaterial != "" {
+		if certMaterial == "" || keyMaterial == "" || caMaterial == "" {
+			return nil, fmt.Errorf("certMaterial, keyMaterial, and caMaterial must all be specified")
 		}
 
 		if certPath != "" {
@@ -729,14 +730,14 @@ func buildHTTPClientFromBytes(caPEMCert, certPEMBlock, keyPEMBlock []byte) (*htt
 	}
 
 	if len(caPEMCert) == 0 {
-		tlsConfig.InsecureSkipVerify = true
-	} else {
-		caPool := x509.NewCertPool()
-		if !caPool.AppendCertsFromPEM(caPEMCert) {
-			return nil, fmt.Errorf("could not add RootCA pem")
-		}
-		tlsConfig.RootCAs = caPool
+		return nil, fmt.Errorf("certificate authority must be specified")
 	}
+	
+	caPool := x509.NewCertPool()
+	if !caPool.AppendCertsFromPEM(caPEMCert) {
+		return nil, fmt.Errorf("could not add RootCA pem")
+	}
+	tlsConfig.RootCAs = caPool
 
 	tr := defaultTransport()
 	tr.TLSClientConfig = tlsConfig
