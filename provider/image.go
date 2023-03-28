@@ -3,15 +3,20 @@ package provider
 import (
 	"bufio"
 	"context"
+	"crypto/tls"
+	"crypto/x509"
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"io"
 	"net"
+	"net/http"
 	"os"
 	"path"
 	"path/filepath"
+	"runtime"
 	"strings"
+	"time"
 
 	buildCmd "github.com/docker/cli/cli/command/image/build"
 	clibuild "github.com/docker/cli/cli/command/image/build"
@@ -61,11 +66,21 @@ type Build struct {
 	BuilderVersion types.BuilderVersion
 }
 
+type Config struct {
+	Host     string
+	SSHOpts  []string
+	Ca       string
+	Cert     string
+	Key      string
+	CertPath string
+}
+
 func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	urn resource.URN,
 	props *structpb.Struct) (string, *structpb.Struct, error) {
 
 	inputs, err := plugin.UnmarshalProperties(props, plugin.MarshalOptions{KeepUnknowns: true, SkipNulls: true})
+
 	if err != nil {
 		return "", nil, err
 	}
@@ -90,10 +105,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	build.CachedImages = cache
 	img.Build = build
 
-	docker, err := client.NewClientWithOpts(
-		client.FromEnv,
-		client.WithAPIVersionNegotiation(),
-	)
+	docker, err := configureDockerClient(p.config)
 
 	if err != nil {
 		return "", nil, err
@@ -641,4 +653,121 @@ func processLogLine(msg string) (string, error) {
 		}
 	}
 	return info, nil
+}
+
+func configureDockerClient(configs map[string]string) (*client.Client, error) {
+	// check for TLS inputs
+	var caMaterial, certMaterial, keyMaterial, certPath, host string
+	if val, ok := configs["caMaterial"]; ok {
+		caMaterial = val
+	}
+	if val, ok := configs["certMaterial"]; ok {
+		certMaterial = val
+	}
+	if val, ok := configs["keyMaterial"]; ok {
+		keyMaterial = val
+	}
+	if val, ok := configs["certPath"]; ok {
+		certPath = val
+	}
+	if val, ok := configs["host"]; ok {
+		host = val
+	}
+
+	// Create the https client with raw TLS certificates that have been provided directly
+	if certMaterial != "" || keyMaterial != "" || caMaterial != "" {
+		if certMaterial == "" || keyMaterial == "" || caMaterial == "" {
+			return nil, fmt.Errorf("certMaterial, keyMaterial, and caMaterial must all be specified")
+		}
+
+		if certPath != "" {
+			return nil, fmt.Errorf("when using raw certificates, certPath must not be specified")
+		}
+		httpClient, err := buildHTTPClientFromBytes([]byte(caMaterial), []byte(certMaterial), []byte(keyMaterial))
+		if err != nil {
+			return nil, err
+		}
+
+		// Set custom client first
+		return client.NewClientWithOpts(
+			client.WithHTTPClient(httpClient),
+			client.FromEnv,
+			client.WithHost(host),
+			client.WithAPIVersionNegotiation(),
+		)
+	}
+
+	// Create the https client with TLS certificate material at the specified path
+	var ca, cert, key string
+	if certPath != "" {
+		ca = filepath.Join(certPath, "ca.pem")
+		cert = filepath.Join(certPath, "cert.pem")
+		key = filepath.Join(certPath, "key.pem")
+		return client.NewClientWithOpts(
+			client.FromEnv,
+			client.WithTLSClientConfig(ca, cert, key),
+			client.WithAPIVersionNegotiation(),
+		)
+	}
+
+	// No TLS certificate material provided, create an http client
+	return client.NewClientWithOpts(
+		client.FromEnv,
+		client.WithAPIVersionNegotiation(),
+	)
+}
+
+// buildHTTPClientFromBytes builds the http client from bytes (content of the files)
+func buildHTTPClientFromBytes(caPEMCert, certPEMBlock, keyPEMBlock []byte) (*http.Client, error) {
+	tlsConfig := &tls.Config{
+		MinVersion: tls.VersionTLS12,
+		MaxVersion: 0,
+	}
+	if certPEMBlock != nil && keyPEMBlock != nil {
+		tlsCert, err := tls.X509KeyPair(certPEMBlock, keyPEMBlock)
+		if err != nil {
+			return nil, err
+		}
+		tlsConfig.Certificates = []tls.Certificate{tlsCert}
+	}
+
+	if len(caPEMCert) == 0 {
+		return nil, fmt.Errorf("certificate authority must be specified")
+	}
+	caPool := x509.NewCertPool()
+	if !caPool.AppendCertsFromPEM(caPEMCert) {
+		return nil, fmt.Errorf("could not add RootCA pem")
+	}
+	tlsConfig.RootCAs = caPool
+
+	tr := defaultTransport()
+	tr.TLSClientConfig = tlsConfig
+	return &http.Client{Transport: tr}, nil
+}
+
+// defaultTransport returns a new http.Transport with similar default values to
+// http.DefaultTransport, but with idle connections and keepalives disabled.
+func defaultTransport() *http.Transport {
+	transport := defaultPooledTransport()
+	transport.DisableKeepAlives = true
+	transport.MaxIdleConnsPerHost = -1
+	return transport
+}
+
+// defaultPooledTransport returns a new http.Transport with similar default
+// values to http.DefaultTransport.
+func defaultPooledTransport() *http.Transport {
+	transport := &http.Transport{
+		Proxy: http.ProxyFromEnvironment,
+		DialContext: (&net.Dialer{
+			Timeout:   30 * time.Second,
+			KeepAlive: 30 * time.Second,
+		}).DialContext,
+		MaxIdleConns:          100,
+		IdleConnTimeout:       90 * time.Second,
+		TLSHandshakeTimeout:   10 * time.Second,
+		ExpectContinueTimeout: 1 * time.Second,
+		MaxIdleConnsPerHost:   runtime.GOMAXPROCS(0) + 1,
+	}
+	return transport
 }

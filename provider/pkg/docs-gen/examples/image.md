@@ -31,6 +31,7 @@ pulumi.export("imageName", demo_image.image_name)
 ```
 ```csharp
 using System.Collections.Generic;
+using System.Linq;
 using Pulumi;
 using Docker = Pulumi.Docker;
 

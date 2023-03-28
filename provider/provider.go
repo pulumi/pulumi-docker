@@ -36,6 +36,7 @@ type dockerNativeProvider struct {
 	name        string
 	version     string
 	schemaBytes []byte
+	config      map[string]string
 	//loginLock   sync.Mutex
 }
 
@@ -74,6 +75,9 @@ func (p *dockerNativeProvider) DiffConfig(ctx context.Context, req *rpc.DiffRequ
 
 // Configure configures the resource provider with "globals" that control its behavior.
 func (p *dockerNativeProvider) Configure(_ context.Context, req *rpc.ConfigureRequest) (*rpc.ConfigureResponse, error) {
+	for key, val := range req.GetVariables() {
+		p.config[strings.TrimPrefix(key, "docker:config:")] = val
+	}
 	return &rpc.ConfigureResponse{
 		AcceptSecrets: true,
 	}, nil
