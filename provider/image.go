@@ -732,7 +732,6 @@ func buildHTTPClientFromBytes(caPEMCert, certPEMBlock, keyPEMBlock []byte) (*htt
 	if len(caPEMCert) == 0 {
 		return nil, fmt.Errorf("certificate authority must be specified")
 	}
-	
 	caPool := x509.NewCertPool()
 	if !caPool.AppendCertsFromPEM(caPEMCert) {
 		return nil, fmt.Errorf("could not add RootCA pem")
