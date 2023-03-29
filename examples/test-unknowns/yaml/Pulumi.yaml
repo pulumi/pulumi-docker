@@ -1,0 +1,19 @@
+name: dockerfile-default-context
+runtime: yaml
+resources:
+  randName:
+    type: random:RandomString
+    properties:
+      length: 8
+  demo-image:
+    type: docker:Image
+    properties:
+      imageName: pulumibot/test-unknowns:yaml
+      skipPush: true
+      build:
+        args:
+          RANDOM_ARG: ${randName.id}
+    options:
+      version: v4.1.0
+outputs:
+  randNameId: ${randName.id}
