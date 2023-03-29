@@ -340,3 +340,86 @@ func TestGetRegistryAddrFromImage(t *testing.T) {
 		assert.Equal(t, expectedError, err)
 	})
 }
+
+func TestConfigureDockerClient(t *testing.T) {
+
+	t.Run("Given a host passed via pulumi config, a client should have that host", func(t *testing.T) {
+		expected := "testhost://something.sock"
+		input := map[string]string{
+			"host": "testhost://something.sock",
+		}
+
+		actual, err := configureDockerClient(input)
+		assert.NoError(t, err)
+		assert.Equal(t, expected, actual.DaemonHost())
+	})
+	t.Run("Given a host passed via environment, a client should be configured", func(t *testing.T) {
+		input := map[string]string{}
+		actual, err := configureDockerClient(input)
+		assert.NoError(t, err)
+		assert.NotNil(t, actual)
+	})
+
+	t.Run("For TLS, must pass certMaterial, keyMaterial, and caMaterial", func(t *testing.T) {
+		input := map[string]string{
+			"caMaterial": "raw-cert-string",
+		}
+		actual, err := configureDockerClient(input)
+		expectedError := fmt.Errorf("certMaterial, keyMaterial, and caMaterial must all be specified")
+		if assert.Error(t, err) {
+			assert.Equal(t, expectedError, err)
+		}
+		assert.Nil(t, actual)
+	})
+	t.Run("Errors if only caMaterial is specified", func(t *testing.T) {
+		input := map[string]string{
+			"caMaterial": "raw-ca-string",
+		}
+		actual, err := configureDockerClient(input)
+		expectedError := fmt.Errorf("certMaterial, keyMaterial, and caMaterial must all be specified")
+		if assert.Error(t, err) {
+			assert.Equal(t, expectedError, err)
+		}
+		assert.Nil(t, actual)
+	})
+	t.Run("Errors if only keyMaterial is specified", func(t *testing.T) {
+		input := map[string]string{
+			"keyMaterial": "raw-key-string",
+		}
+		actual, err := configureDockerClient(input)
+		expectedError := fmt.Errorf("certMaterial, keyMaterial, and caMaterial must all be specified")
+		if assert.Error(t, err) {
+			assert.Equal(t, expectedError, err)
+		}
+		assert.Nil(t, actual)
+	})
+
+	t.Run("Errors if not all of certMaterial, keyMaterial, and caMaterial are specified", func(t *testing.T) {
+		input := map[string]string{
+			"caMaterial":   "raw-ca-string",
+			"certMaterial": "raw-cert-string",
+		}
+		actual, err := configureDockerClient(input)
+		expectedError := fmt.Errorf("certMaterial, keyMaterial, and caMaterial must all be specified")
+		if assert.Error(t, err) {
+			assert.Equal(t, expectedError, err)
+		}
+		assert.Nil(t, actual)
+	})
+
+	t.Run("Fails if both a certPath and raw certificates are passed", func(t *testing.T) {
+		input := map[string]string{
+			"certPath":     "path/to/certs",
+			"caMaterial":   "raw-ca-string",
+			"keyMaterial":  "raw-key-string",
+			"certMaterial": "raw-cert-string",
+		}
+		actual, err := configureDockerClient(input)
+		expectedError := fmt.Errorf("when using raw certificates, certPath must not be specified")
+		if assert.Error(t, err) {
+			assert.Equal(t, expectedError, err)
+		}
+		assert.Nil(t, actual)
+	})
+
+}
