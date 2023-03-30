@@ -689,10 +689,17 @@ func configureDockerClient(configs map[string]string) (*client.Client, error) {
 		}
 
 		// Set custom client first
+		if host != "" {
+			return client.NewClientWithOpts(
+				client.WithHTTPClient(httpClient),
+				client.WithHost(host),
+				client.FromEnv,
+				client.WithAPIVersionNegotiation(),
+			)
+		}
 		return client.NewClientWithOpts(
 			client.WithHTTPClient(httpClient),
 			client.FromEnv,
-			client.WithHost(host),
 			client.WithAPIVersionNegotiation(),
 		)
 	}
@@ -703,6 +710,14 @@ func configureDockerClient(configs map[string]string) (*client.Client, error) {
 		ca = filepath.Join(certPath, "ca.pem")
 		cert = filepath.Join(certPath, "cert.pem")
 		key = filepath.Join(certPath, "key.pem")
+		if host != "" {
+			return client.NewClientWithOpts(
+				client.FromEnv,
+				client.WithHost(host),
+				client.WithTLSClientConfig(ca, cert, key),
+				client.WithAPIVersionNegotiation(),
+			)
+		}
 		return client.NewClientWithOpts(
 			client.FromEnv,
 			client.WithTLSClientConfig(ca, cert, key),
@@ -711,6 +726,14 @@ func configureDockerClient(configs map[string]string) (*client.Client, error) {
 	}
 
 	// No TLS certificate material provided, create an http client
+	if host != "" {
+		return client.NewClientWithOpts(
+			client.FromEnv,
+			client.WithHost(host),
+			client.WithAPIVersionNegotiation(),
+		)
+	}
+
 	return client.NewClientWithOpts(
 		client.FromEnv,
 		client.WithAPIVersionNegotiation(),
