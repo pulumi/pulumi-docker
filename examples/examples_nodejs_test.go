@@ -137,6 +137,21 @@ func TestDockerContainerRegistryNode(t *testing.T) {
 	integration.ProgramTest(t, &test)
 }
 
+func TestUnknownInputsNode(t *testing.T) {
+	test := getJsOptions(t).
+		With(integration.ProgramTestOptions{
+			Dir: path.Join(getCwd(t), "test-unknowns", "ts"),
+			ExtraRuntimeValidation: func(t *testing.T, stack integration.RuntimeValidationStackInfo) {
+				randID, ok := stack.Outputs["randnameid"]
+				assert.True(t, ok)
+				assert.NotEmpty(t, randID)
+			},
+			Quick:       true,
+			SkipRefresh: true,
+		})
+	integration.ProgramTest(t, &test)
+}
+
 func getJsOptions(t *testing.T) integration.ProgramTestOptions {
 	base := getBaseOptions()
 	baseJs := base.With(integration.ProgramTestOptions{

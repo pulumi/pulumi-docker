@@ -109,7 +109,7 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 	logging.V(9).Infof("%s executing", label)
 
 	inputs, err := plugin.UnmarshalProperties(req.GetNews(), plugin.MarshalOptions{
-		KeepUnknowns: true,
+		KeepUnknowns: false,
 		SkipNulls:    true,
 		KeepSecrets:  true,
 	})
