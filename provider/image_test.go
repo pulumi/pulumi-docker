@@ -251,7 +251,7 @@ func TestMarshalCachedImages(t *testing.T) {
 			}),
 		})
 		actual, err := marshalCachedImages(buildInput)
-		expectedError := fmt.Errorf("the `images` field must be a list of items")
+		expectedError := fmt.Errorf("the `images` field must be a list of strings")
 		if assert.Error(t, err) {
 			assert.Equal(t, expectedError, err)
 		}

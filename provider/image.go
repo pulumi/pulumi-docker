@@ -422,7 +422,7 @@ func marshalCachedImages(b resource.PropertyValue) ([]string, error) {
 		return cacheImages, fmt.Errorf("cacheFrom requires an `images` field")
 	}
 	if !cacheFrom["images"].IsArray() {
-		return cacheImages, fmt.Errorf("the `images` field must be a list of items")
+		return cacheImages, fmt.Errorf("the `images` field must be a list of strings")
 	}
 
 	stages := cacheFrom["images"].ArrayValue()
