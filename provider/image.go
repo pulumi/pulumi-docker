@@ -419,10 +419,18 @@ func marshalCachedImages(b resource.PropertyValue) ([]string, error) {
 	// if we specify a list of stages, then we only pull those
 	cacheFrom := c.ObjectValue()
 	if cacheFrom["images"].IsNull() {
-		return cacheImages, fmt.Errorf("if you want to use cacheFrom, you must have `images` set")
+		return cacheImages, fmt.Errorf("cacheFrom requires an `images` field")
 	}
+	if !cacheFrom["images"].IsArray() {
+		return cacheImages, fmt.Errorf("the `images` field must be a list of items")
+	}
+
 	stages := cacheFrom["images"].ArrayValue()
 	for _, img := range stages {
+		// if we are in preview, we cannot add an undefined Output so we skip to the next item
+		if img.IsNull() {
+			continue
+		}
 		stage := img.StringValue()
 		cacheImages = append(cacheImages, stage)
 	}
