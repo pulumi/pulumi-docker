@@ -418,8 +418,11 @@ func marshalCachedImages(b resource.PropertyValue) ([]string, error) {
 
 	// if we specify a list of stages, then we only pull those
 	cacheFrom := c.ObjectValue()
-	if cacheFrom["images"].IsNull() {
+	if _, ok := cacheFrom["images"]; !ok {
 		return cacheImages, fmt.Errorf("cacheFrom requires an `images` field")
+	}
+	if cacheFrom["images"].IsNull() {
+		return cacheImages, nil
 	}
 	if !cacheFrom["images"].IsArray() {
 		return cacheImages, fmt.Errorf("the `images` field must be a list of strings")

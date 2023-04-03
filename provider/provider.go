@@ -196,10 +196,7 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 
 	}
 	if _, err = marshalCachedImages(inputs["build"]); err != nil {
-
-		if err != nil {
-			return nil, err
-		}
+		return nil, err
 	}
 
 	inputStruct, err := plugin.MarshalProperties(inputs, plugin.MarshalOptions{

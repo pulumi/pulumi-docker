@@ -305,6 +305,26 @@ func TestMarshalCachedImages(t *testing.T) {
 		assert.Equal(t, expected, actual)
 
 	})
+	t.Run("Test Cached Images Passes On Unknown Images List", func(t *testing.T) {
+		expected := []string(nil)
+		buildInput := resource.NewObjectProperty(resource.PropertyMap{
+			"cacheFrom": resource.NewObjectProperty(resource.PropertyMap{
+				"images": resource.NewNullProperty(), // unknowns are passed as null property values
+			}),
+		})
+		actual, err := marshalCachedImages(buildInput)
+		assert.NoError(t, err)
+		assert.Equal(t, expected, actual)
+	})
+	t.Run("Test Cached Images Passes On Unknown cacheFrom", func(t *testing.T) {
+		expected := []string(nil)
+		buildInput := resource.NewObjectProperty(resource.PropertyMap{
+			"cacheFrom": resource.NewNullProperty(), // unknowns are passed as null property values
+		})
+		actual, err := marshalCachedImages(buildInput)
+		assert.NoError(t, err)
+		assert.Equal(t, expected, actual)
+	})
 }
 
 func TestMarshalBuilder(t *testing.T) {
