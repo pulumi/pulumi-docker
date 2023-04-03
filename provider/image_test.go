@@ -497,3 +497,20 @@ func TestConfigureDockerClient(t *testing.T) {
 	})
 
 }
+
+func TestMapDockerignore(t *testing.T) {
+
+	t.Run("Returns default .dockerignore", func(t *testing.T) {
+		expected := ".dockerignore"
+		input := "Dockerfile"
+		actual := mapDockerignore(input)
+		assert.Equal(t, expected, actual)
+	})
+	t.Run("Returns .dockerignore extension for nonstandard dockerfile names", func(t *testing.T) {
+		expected := "special.dockerfile.dockerignore"
+		input := "special.dockerfile"
+		actual := mapDockerignore(input)
+		assert.Equal(t, expected, actual)
+	})
+
+}

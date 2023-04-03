@@ -118,7 +118,10 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	}
 
 	// make the build context and ensure to exclude dockerignore file patterns
-	dockerIgnorePath := filepath.Join(build.Context, ".dockerignore")
+	// map the expected location for dockerignore
+	dockerignore := mapDockerignore(filepath.Base(build.Dockerfile))
+	dockerIgnorePath := filepath.Join(build.Context, dockerignore)
+
 	initialIgnorePatterns, err := getIgnore(dockerIgnorePath)
 	if err != nil {
 		return "", nil, fmt.Errorf("error reading ignore file: %w", err)
@@ -805,4 +808,20 @@ func defaultPooledTransport() *http.Transport {
 		MaxIdleConnsPerHost:   runtime.GOMAXPROCS(0) + 1,
 	}
 	return transport
+}
+
+func mapDockerignore(dockerfile string) string {
+	// Docker maps `Dockerfile` -> `.dockerignore`
+	// Nonstandard dockerfile names map to a file with a `.dockerignore` extension
+	// e.g. `Mockerfile` -> `Mockerfile.dockerignore`
+	// Note that we do not verify the existence of a .dockerignore file; we only map the name that it would have.
+
+	ignore := ".dockerignore"
+
+	// Add extension for nonstandardly named Dockerfiles
+	if dockerfile != "Dockerfile" {
+		ignore = dockerfile + ignore
+	}
+	// Return the default dockerignore name.
+	return ignore
 }

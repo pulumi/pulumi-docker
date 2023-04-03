@@ -523,7 +523,7 @@ func (accumulator *contextHashAccumulator) hexSumContext() string {
 
 func hashContext(dockerContextPath string, dockerfile string) (string, error) {
 	// exclude all files listed in dockerignore
-	dockerIgnorePath := filepath.Join(dockerContextPath, ".dockerignore")
+	dockerIgnorePath := filepath.Join(dockerContextPath, mapDockerignore(filepath.Base(dockerfile)))
 	ignorePatterns, err := getIgnore(dockerIgnorePath)
 	if err != nil {
 		return "", err
