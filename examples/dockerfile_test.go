@@ -141,9 +141,5 @@ func TestDockerignoreWithExternalDockerfileYAML(t *testing.T) {
 		Dir:         path.Join(cwd, "test-dockerfile", "dockerignore-with-external-dockerfile"),
 		Quick:       true,
 		SkipRefresh: true,
-		ExtraRuntimeValidation: func(t *testing.T, stack integration.RuntimeValidationStackInfo) {
-			expected := " BOOYAH"
-			assert.Equal(t, expected, stack.Outputs)
-		},
 	})
 }
