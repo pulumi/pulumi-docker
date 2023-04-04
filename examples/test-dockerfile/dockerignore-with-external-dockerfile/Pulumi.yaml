@@ -1,0 +1,16 @@
+name: dockerfile-external
+runtime: yaml
+resources:
+  demo-image:
+    type: docker:Image
+    properties:
+      imageName: pulumibot/test-image:tag3
+      skipPush: true
+      build:
+        context: ./app
+        dockerfile: ./Dockerfile
+    options:
+      version: v4.0.0
+outputs:
+  imageName: ${demo-image.imageName}
+  out-dockerfile: ${demo-image.dockerfile}
