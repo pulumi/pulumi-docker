@@ -502,7 +502,7 @@ func TestMapDockerignore(t *testing.T) {
 
 	t.Run("Returns default .dockerignore", func(t *testing.T) {
 		expected := ".dockerignore"
-		input := "Dockerfile"
+		input := defaultDockerfile
 		actual := mapDockerignore(input)
 		assert.Equal(t, expected, actual)
 	})

@@ -819,7 +819,7 @@ func mapDockerignore(dockerfile string) string {
 	ignore := ".dockerignore"
 
 	// Add extension for nonstandardly named Dockerfiles
-	if dockerfile != "Dockerfile" {
+	if dockerfile != defaultDockerfile {
 		ignore = dockerfile + ignore
 	}
 	// Return the default dockerignore name.
