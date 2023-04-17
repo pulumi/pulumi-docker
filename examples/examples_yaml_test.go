@@ -40,3 +40,22 @@ func TestUnknownInputsYAML(t *testing.T) {
 		},
 	})
 }
+
+func TestSecretsYAML(t *testing.T) {
+	cwd, err := os.Getwd()
+	if !assert.NoError(t, err) {
+		t.FailNow()
+	}
+	integration.ProgramTest(t, &integration.ProgramTestOptions{
+		Dir:         path.Join(cwd, "test-secrets", "yaml"),
+		Quick:       true,
+		SkipRefresh: true,
+		ExtraRuntimeValidation: func(t *testing.T, stack integration.RuntimeValidationStackInfo) {
+			imgName, ok := stack.Outputs["imageName"]
+			assert.True(t, ok)
+			assert.NotEmpty(t, imgName)
+			assert.Equal(t, "pulumibot/test-secrets:yaml", imgName)
+
+		},
+	})
+}

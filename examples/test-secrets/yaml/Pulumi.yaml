@@ -1,0 +1,21 @@
+name: dockerfile-secret
+runtime: yaml
+variables:
+  secret:
+    fn::secret:
+      SECRET_ARG: supersecret
+  secretName:
+    fn::secret: pulumibot/test-secrets:yaml
+resources:
+  demo-image:
+    type: docker:Image
+    properties:
+      imageName: ${secretName}
+      skipPush: true
+      build:
+        args:
+          ${secret}
+    options:
+      version: v4.1.0
+outputs:
+  imageName: ${demo-image.imageName}
