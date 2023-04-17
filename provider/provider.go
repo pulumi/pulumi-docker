@@ -110,7 +110,6 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 	inputs, err := plugin.UnmarshalProperties(req.GetNews(), plugin.MarshalOptions{
 		KeepUnknowns: false,
 		SkipNulls:    true,
-		KeepSecrets:  true,
 	})
 	if err != nil {
 		return nil, err
@@ -220,7 +219,6 @@ func (p *dockerNativeProvider) Diff(ctx context.Context, req *rpc.DiffRequest) (
 	oldState, err := plugin.UnmarshalProperties(req.GetOlds(), plugin.MarshalOptions{
 		KeepUnknowns: true,
 		SkipNulls:    true,
-		KeepSecrets:  true,
 	})
 	if err != nil {
 		return nil, err
@@ -232,7 +230,6 @@ func (p *dockerNativeProvider) Diff(ctx context.Context, req *rpc.DiffRequest) (
 	news, err := plugin.UnmarshalProperties(req.GetNews(), plugin.MarshalOptions{
 		KeepUnknowns: true,
 		SkipNulls:    true,
-		KeepSecrets:  true,
 	})
 	if err != nil {
 		return nil, err
@@ -308,7 +305,6 @@ func (p *dockerNativeProvider) Create(ctx context.Context, req *rpc.CreateReques
 		Label:        fmt.Sprintf("%s.inputs", label),
 		KeepUnknowns: true,
 		RejectAssets: true,
-		KeepSecrets:  true,
 		SkipNulls:    true,
 	})
 	if err != nil {
@@ -376,7 +372,6 @@ func (p *dockerNativeProvider) Update(ctx context.Context, req *rpc.UpdateReques
 		Label:        fmt.Sprintf("%s.newInputs", label),
 		KeepUnknowns: true,
 		RejectAssets: true,
-		KeepSecrets:  true,
 		SkipNulls:    true,
 	})
 	if err != nil {
