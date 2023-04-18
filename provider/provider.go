@@ -110,7 +110,6 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 	inputs, err := plugin.UnmarshalProperties(req.GetNews(), plugin.MarshalOptions{
 		KeepUnknowns: false,
 		SkipNulls:    true,
-		KeepSecrets:  true,
 	})
 	if err != nil {
 		return nil, err
@@ -202,7 +201,6 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 	inputStruct, err := plugin.MarshalProperties(inputs, plugin.MarshalOptions{
 		KeepUnknowns: true,
 		SkipNulls:    true,
-		KeepSecrets:  true,
 	})
 	if err != nil {
 		return nil, err
@@ -220,7 +218,6 @@ func (p *dockerNativeProvider) Diff(ctx context.Context, req *rpc.DiffRequest) (
 	oldState, err := plugin.UnmarshalProperties(req.GetOlds(), plugin.MarshalOptions{
 		KeepUnknowns: true,
 		SkipNulls:    true,
-		KeepSecrets:  true,
 	})
 	if err != nil {
 		return nil, err
@@ -232,7 +229,6 @@ func (p *dockerNativeProvider) Diff(ctx context.Context, req *rpc.DiffRequest) (
 	news, err := plugin.UnmarshalProperties(req.GetNews(), plugin.MarshalOptions{
 		KeepUnknowns: true,
 		SkipNulls:    true,
-		KeepSecrets:  true,
 	})
 	if err != nil {
 		return nil, err
@@ -308,7 +304,6 @@ func (p *dockerNativeProvider) Create(ctx context.Context, req *rpc.CreateReques
 		Label:        fmt.Sprintf("%s.inputs", label),
 		KeepUnknowns: true,
 		RejectAssets: true,
-		KeepSecrets:  true,
 		SkipNulls:    true,
 	})
 	if err != nil {
@@ -324,7 +319,6 @@ func (p *dockerNativeProvider) Create(ctx context.Context, req *rpc.CreateReques
 		Label:        fmt.Sprintf("%s.outputs", label),
 		KeepUnknowns: true,
 		RejectAssets: true,
-		KeepSecrets:  true,
 		SkipNulls:    true,
 	})
 	if err != nil {
@@ -336,7 +330,6 @@ func (p *dockerNativeProvider) Create(ctx context.Context, req *rpc.CreateReques
 		checkpointObject(inputs, outputs.Mappable()),
 		plugin.MarshalOptions{
 			Label:        fmt.Sprintf("%s.checkpoint", label),
-			KeepSecrets:  true,
 			KeepUnknowns: true,
 			SkipNulls:    true,
 		},
@@ -376,7 +369,6 @@ func (p *dockerNativeProvider) Update(ctx context.Context, req *rpc.UpdateReques
 		Label:        fmt.Sprintf("%s.newInputs", label),
 		KeepUnknowns: true,
 		RejectAssets: true,
-		KeepSecrets:  true,
 		SkipNulls:    true,
 	})
 	if err != nil {
@@ -391,7 +383,6 @@ func (p *dockerNativeProvider) Update(ctx context.Context, req *rpc.UpdateReques
 		Label:        fmt.Sprintf("%s.outputs", label),
 		KeepUnknowns: true,
 		RejectAssets: true,
-		KeepSecrets:  true,
 		SkipNulls:    true,
 	})
 	if err != nil {
@@ -402,7 +393,6 @@ func (p *dockerNativeProvider) Update(ctx context.Context, req *rpc.UpdateReques
 		checkpointObject(newInputs, outputs.Mappable()),
 		plugin.MarshalOptions{
 			Label:        fmt.Sprintf("%s.checkpoint", label),
-			KeepSecrets:  true,
 			KeepUnknowns: true,
 			SkipNulls:    true,
 		},
@@ -461,7 +451,11 @@ func checkpointObject(inputs resource.PropertyMap, outputs map[string]interface{
 // parseCheckpointObject returns inputs that are saved in the `__inputs` field of the state.
 func parseCheckpointObject(obj resource.PropertyMap) resource.PropertyMap {
 	if inputs, ok := obj["__inputs"]; ok {
-		return inputs.SecretValue().Element.ObjectValue()
+		if inputs.ContainsSecrets() {
+			return inputs.SecretValue().Element.ObjectValue()
+		}
+		return inputs.ObjectValue()
+
 	}
 
 	return nil
