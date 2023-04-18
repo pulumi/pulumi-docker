@@ -451,7 +451,11 @@ func checkpointObject(inputs resource.PropertyMap, outputs map[string]interface{
 // parseCheckpointObject returns inputs that are saved in the `__inputs` field of the state.
 func parseCheckpointObject(obj resource.PropertyMap) resource.PropertyMap {
 	if inputs, ok := obj["__inputs"]; ok {
-		return inputs.SecretValue().Element.ObjectValue()
+		if inputs.ContainsSecrets() {
+			return inputs.SecretValue().Element.ObjectValue()
+		}
+		return inputs.ObjectValue()
+
 	}
 
 	return nil
