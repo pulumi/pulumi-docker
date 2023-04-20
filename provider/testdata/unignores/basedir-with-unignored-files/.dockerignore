@@ -1,0 +1,6 @@
+# Ignore everything
+*
+
+#Unignore everything
+!Dockerfile
+!top-dir
