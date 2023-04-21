@@ -137,3 +137,258 @@ public class App {
 }
 ```
 {{% /example %}}
+{{% example %}}
+### Docker image build using caching with AWS Elastic Container Registry
+
+```typescript
+import * as pulumi from "@pulumi/pulumi";
+import * as aws from "@pulumi/aws";
+import * as docker from "@pulumi/docker";
+
+const ecrRepository = new aws.ecr.Repository("ecr-repository", {name: "docker-repository"});
+const authToken = aws.ecr.getAuthorizationTokenOutput({
+    registryId: ecrRepository.registryId,
+});
+const myAppImage = new docker.Image("my-app-image", {
+    build: {
+        args: {
+            BUILDKIT_INLINE_CACHE: "1",
+        },
+        cacheFrom: {
+            images: [pulumi.interpolate`${ecrRepository.repositoryUrl}:latest`],
+        },
+        context: "app/",
+        dockerfile: "Dockerfile",
+    },
+    imageName: pulumi.interpolate`${ecrRepository.repositoryUrl}:latest`,
+    registry: {
+        password: pulumi.secret(authToken.password),
+        server: ecrRepository.repositoryUrl,
+    },
+});
+export const imageName = myAppImage.imageName;
+```
+```python
+import pulumi
+import pulumi_aws as aws
+import pulumi_docker as docker
+
+ecr_repository = aws.ecr.Repository("ecr-repository", name="docker-repository")
+auth_token = aws.ecr.get_authorization_token_output(registry_id=ecr_repository.registry_id)
+my_app_image = docker.Image("my-app-image",
+    build=docker.DockerBuildArgs(
+        args={
+            "BUILDKIT_INLINE_CACHE": "1",
+        },
+        cache_from=docker.CacheFromArgs(
+            images=[ecr_repository.repository_url.apply(lambda repository_url: f"{repository_url}:latest")],
+        ),
+        context="app/",
+        dockerfile="Dockerfile",
+    ),
+    image_name=ecr_repository.repository_url.apply(lambda repository_url: f"{repository_url}:latest"),
+    registry=docker.RegistryArgs(
+        password=pulumi.Output.secret(auth_token.password),
+        server=ecr_repository.repository_url,
+    ))
+pulumi.export("imageName", my_app_image.image_name)
+```
+```csharp
+using System.Collections.Generic;
+using System.Linq;
+using Pulumi;
+using Aws = Pulumi.Aws;
+using Docker = Pulumi.Docker;
+
+return await Deployment.RunAsync(() => 
+{
+    var ecrRepository = new Aws.Ecr.Repository("ecr-repository", new()
+    {
+        Name = "docker-repository",
+    });
+
+    var authToken = Aws.Ecr.GetAuthorizationToken.Invoke(new()
+    {
+        RegistryId = ecrRepository.RegistryId,
+    });
+
+    var myAppImage = new Docker.Image("my-app-image", new()
+    {
+        Build = new Docker.Inputs.DockerBuildArgs
+        {
+            Args = 
+            {
+                { "BUILDKIT_INLINE_CACHE", "1" },
+            },
+            CacheFrom = new Docker.Inputs.CacheFromArgs
+            {
+                Images = new[]
+                {
+                    ecrRepository.RepositoryUrl.Apply(repositoryUrl => $"{repositoryUrl}:latest"),
+                },
+            },
+            Context = "app/",
+            Dockerfile = "Dockerfile",
+        },
+        ImageName = ecrRepository.RepositoryUrl.Apply(repositoryUrl => $"{repositoryUrl}:latest"),
+        Registry = new Docker.Inputs.RegistryArgs
+        {
+            Password = Output.CreateSecret(authToken.Apply(getAuthorizationTokenResult => getAuthorizationTokenResult.Password)),
+            Server = ecrRepository.RepositoryUrl,
+        },
+    });
+
+    return new Dictionary<string, object?>
+    {
+        ["imageName"] = myAppImage.ImageName,
+    };
+});
+
+```
+```go
+package main
+
+import (
+	"fmt"
+
+	"github.com/pulumi/pulumi-aws/sdk/v5/go/aws/ecr"
+	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker"
+	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+)
+
+func main() {
+	pulumi.Run(func(ctx *pulumi.Context) error {
+		ecrRepository, err := ecr.NewRepository(ctx, "ecr-repository", &ecr.RepositoryArgs{
+			Name: pulumi.String("docker-repository"),
+		})
+		if err != nil {
+			return err
+		}
+		authToken := ecr.GetAuthorizationTokenOutput(ctx, ecr.GetAuthorizationTokenOutputArgs{
+			RegistryId: ecrRepository.RegistryId,
+		}, nil)
+		myAppImage, err := docker.NewImage(ctx, "my-app-image", &docker.ImageArgs{
+			Build: &docker.DockerBuildArgs{
+				Args: pulumi.StringMap{
+					"BUILDKIT_INLINE_CACHE": pulumi.String("1"),
+				},
+				CacheFrom: &docker.CacheFromArgs{
+					Images: pulumi.StringArray{
+						ecrRepository.RepositoryUrl.ApplyT(func(repositoryUrl string) (string, error) {
+							return fmt.Sprintf("%v:latest", repositoryUrl), nil
+						}).(pulumi.StringOutput),
+					},
+				},
+				Context:    pulumi.String("app/"),
+				Dockerfile: pulumi.String("Dockerfile"),
+			},
+			ImageName: ecrRepository.RepositoryUrl.ApplyT(func(repositoryUrl string) (string, error) {
+				return fmt.Sprintf("%v:latest", repositoryUrl), nil
+			}).(pulumi.StringOutput),
+			Registry: &docker.RegistryArgs{
+				Password: pulumi.ToSecret(authToken.ApplyT(func(authToken ecr.GetAuthorizationTokenResult) (string, error) {
+					return authToken.Password, nil
+				}).(pulumi.StringOutput)).(pulumi.StringOutput),
+				Server: ecrRepository.RepositoryUrl,
+			},
+		})
+		if err != nil {
+			return err
+		}
+		ctx.Export("imageName", myAppImage.ImageName)
+		return nil
+	})
+}
+```
+```yaml
+config: {}
+description: Docker image build using caching with AWS Elastic Container Registry
+name: image-caching-yaml
+outputs:
+    imageName: ${my-app-image.imageName}
+resources:
+    ecr-repository:
+        properties:
+            name: docker-repository
+        type: aws:ecr:Repository
+    my-app-image:
+        options:
+            version: v4.1.2
+        properties:
+            build:
+                args:
+                    BUILDKIT_INLINE_CACHE: "1"
+                cacheFrom:
+                    images:
+                        - ${ecr-repository.repositoryUrl}:latest
+                context: app/
+                dockerfile: Dockerfile
+            imageName: ${ecr-repository.repositoryUrl}:latest
+            registry:
+                password:
+                    fn::secret: ${authToken.password}
+                server: ${ecr-repository.repositoryUrl}
+        type: docker:Image
+runtime: yaml
+variables:
+    authToken:
+        fn::aws:ecr:getAuthorizationToken:
+            registryId: ${ecr-repository.registryId}
+```
+```java
+package generated_program;
+
+import com.pulumi.Context;
+import com.pulumi.Pulumi;
+import com.pulumi.core.Output;
+import com.pulumi.aws.ecr.Repository;
+import com.pulumi.aws.ecr.RepositoryArgs;
+import com.pulumi.aws.ecr.EcrFunctions;
+import com.pulumi.aws.ecr.inputs.GetAuthorizationTokenArgs;
+import com.pulumi.docker.Image;
+import com.pulumi.docker.ImageArgs;
+import com.pulumi.docker.inputs.DockerBuildArgs;
+import com.pulumi.docker.inputs.CacheFromArgs;
+import com.pulumi.docker.inputs.RegistryArgs;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+public class App {
+    public static void main(String[] args) {
+        Pulumi.run(App::stack);
+    }
+
+    public static void stack(Context ctx) {
+        var ecrRepository = new Repository("ecrRepository", RepositoryArgs.builder()        
+            .name("docker-repository")
+            .build());
+
+        final var authToken = EcrFunctions.getAuthorizationToken(GetAuthorizationTokenArgs.builder()
+            .registryId(ecrRepository.registryId())
+            .build());
+
+        var myAppImage = new Image("myAppImage", ImageArgs.builder()        
+            .build(DockerBuildArgs.builder()
+                .args(Map.of("BUILDKIT_INLINE_CACHE", "1"))
+                .cacheFrom(CacheFromArgs.builder()
+                    .images(ecrRepository.repositoryUrl().applyValue(repositoryUrl -> String.format("%s:latest", repositoryUrl)))
+                    .build())
+                .context("app/")
+                .dockerfile("Dockerfile")
+                .build())
+            .imageName(ecrRepository.repositoryUrl().applyValue(repositoryUrl -> String.format("%s:latest", repositoryUrl)))
+            .registry(RegistryArgs.builder()
+                .password(Output.ofSecret(authToken.applyValue(getAuthorizationTokenResult -> getAuthorizationTokenResult).applyValue(authToken -> authToken.applyValue(getAuthorizationTokenResult -> getAuthorizationTokenResult.password()))))
+                .server(ecrRepository.repositoryUrl())
+                .build())
+            .build());
+
+        ctx.export("imageName", myAppImage.imageName());
+    }
+}
+```
+{{% /example %}}
