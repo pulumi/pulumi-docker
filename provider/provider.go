@@ -550,9 +550,6 @@ func hashContext(dockerContextPath string, dockerfile string) (string, error) {
 			return fmt.Errorf("%s rule failed: %w", dockerIgnorePath, err)
 		}
 		if ignore {
-			if d.IsDir() {
-				return filepath.SkipDir
-			}
 			return nil
 
 		} else if d.IsDir() {

@@ -145,6 +145,16 @@ func TestHashDeepSymlinks(t *testing.T) {
 
 }
 
+func TestHashUnignoredDirs(t *testing.T) {
+	baseResult, err := hashContext("./testdata/unignores/basedir", "./Dockerfile")
+	require.NoError(t, err)
+
+	unignoreResult, err := hashContext("./testdata/unignores/basedir-with-unignored-files", "./Dockerfile")
+	require.NoError(t, err)
+
+	assert.Equal(t, baseResult, unignoreResult)
+}
+
 func TestGetRelDockerfilePath(t *testing.T) {
 
 	t.Run("A Dockerfile name with no separators is relative to the build context", func(t *testing.T) {
