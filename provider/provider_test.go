@@ -1,6 +1,7 @@
 package provider
 
 import (
+	"path/filepath"
 	"testing"
 
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
@@ -106,82 +107,70 @@ func TestDiffUpdates(t *testing.T) {
 		actual := diffUpdates(input)
 		assert.Equal(t, expected, actual)
 	})
-
 }
 
 func TestHashIgnoresFile(t *testing.T) {
-	baseResult, err := hashContext("./testdata/ignores/basedir", "./Dockerfile")
+	step1Dir := "./testdata/ignores/basedir"
+	baseResult, err := hashContext(step1Dir, filepath.Join(step1Dir, defaultDockerfile))
 	require.NoError(t, err)
 
-	result, err := hashContext("./testdata/ignores/basedir-with-ignored-files", "./Dockerfile")
+	step2Dir := "./testdata/ignores/basedir-with-ignored-files"
+	result, err := hashContext(step2Dir, filepath.Join(step2Dir, defaultDockerfile))
+	require.NoError(t, err)
+
+	assert.Equal(t, result, baseResult)
+}
+
+func TestHashIgnoresDockerfileOutsideDirMove(t *testing.T) {
+	appDir := "./testdata/dockerfile-location-irrelevant/app"
+	baseResult, err := hashContext(appDir, "./testdata/dockerfile-location-irrelevant/step1.Dockerfile")
+	require.NoError(t, err)
+
+	result, err := hashContext(appDir, "./testdata/dockerfile-location-irrelevant/step2.Dockerfile")
 	require.NoError(t, err)
 
 	assert.Equal(t, result, baseResult)
 }
 
 func TestHashRenamingMatters(t *testing.T) {
-	baseResult, err := hashContext("./testdata/renaming-matters/step1", "./Dockerfile")
+	step1Dir := "./testdata/filemode-matters/step1"
+	baseResult, err := hashContext(step1Dir, filepath.Join(step1Dir, defaultDockerfile))
 	require.NoError(t, err)
 
-	result, err := hashContext("./testdata/renaming-matters/step2", "./Dockerfile")
+	step2Dir := "./testdata/renaming-matters/step2"
+	result, err := hashContext(step2Dir, filepath.Join(step2Dir, defaultDockerfile))
 	require.NoError(t, err)
 
 	assert.NotEqual(t, result, baseResult)
 }
 
 func TestHashFilemodeMatters(t *testing.T) {
-	baseResult, err := hashContext("./testdata/filemode-matters/step1", "./Dockerfile")
+	step1Dir := "./testdata/filemode-matters/step1"
+	baseResult, err := hashContext(step1Dir, filepath.Join(step1Dir, defaultDockerfile))
 	require.NoError(t, err)
 
-	result, err := hashContext("./testdata/filemode-matters/step2-chmod-x", "./Dockerfile")
+	step2Dir := "./testdata/filemode-matters/step2-chmod-x"
+	result, err := hashContext(step2Dir, filepath.Join(step2Dir, defaultDockerfile))
 	require.NoError(t, err)
 
 	assert.NotEqual(t, result, baseResult)
 }
 
 func TestHashDeepSymlinks(t *testing.T) {
-	_, err := hashContext("./testdata/symlinks", "./Dockerfile")
+	dir := "./testdata/symlinks"
+	_, err := hashContext(dir, filepath.Join(dir, "Dockerfile"))
 	assert.NoError(t, err)
 
 }
 
 func TestHashUnignoredDirs(t *testing.T) {
-	baseResult, err := hashContext("./testdata/unignores/basedir", "./Dockerfile")
+	step1Dir := "./testdata/unignores/basedir"
+	baseResult, err := hashContext(step1Dir, filepath.Join(step1Dir, defaultDockerfile)
 	require.NoError(t, err)
 
-	unignoreResult, err := hashContext("./testdata/unignores/basedir-with-unignored-files", "./Dockerfile")
+	step2Dir := "./testdata/unignores/basedir-with-unignored-dirs"
+	unignoreResult, err := hashContext(step2Dir, filepath.Join(step2Dir, defaultDockerfile))
 	require.NoError(t, err)
 
 	assert.Equal(t, baseResult, unignoreResult)
-}
-
-func TestGetRelDockerfilePath(t *testing.T) {
-
-	t.Run("A Dockerfile name with no separators is relative to the build context", func(t *testing.T) {
-		expected := "Dockerfile"
-		input1, input2 := ".", "Dockerfile"
-
-		actual, err := getRelDockerfilePath(input1, input2)
-		assert.NoError(t, err)
-		assert.Equal(t, expected, actual)
-	})
-
-	t.Run("A Dockerfile name with separators will return its relative position to the build context", func(t *testing.T) {
-		expected := "../Dockerfile"
-		input1, input2 := "./special-context", "./Dockerfile"
-
-		actual, err := getRelDockerfilePath(input1, input2)
-		assert.NoError(t, err)
-		assert.Equal(t, expected, actual)
-	})
-
-	t.Run("A Dockerfile name with multiple separators will return its relative position to the build context",
-		func(t *testing.T) {
-			expected := "../other-folder/Dockerfile"
-			input1, input2 := "./special-context", "./other-folder/Dockerfile"
-
-			actual, err := getRelDockerfilePath(input1, input2)
-			assert.NoError(t, err)
-			assert.Equal(t, expected, actual)
-		})
 }
