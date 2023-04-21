@@ -463,7 +463,10 @@ type contextHashAccumulator struct {
 // points to is hashed. If it is a regular file, we hash the contents of the file. In order to
 // detect file renames and mode changes, we also write to the accumulator a relative name and file
 // mode.
-func (accumulator *contextHashAccumulator) hashPath(filePath string, relativeNameOfFile string, fileMode fs.FileMode) error {
+func (accumulator *contextHashAccumulator) hashPath(
+	filePath string,
+	relativeNameOfFile string,
+	fileMode fs.FileMode) error {
 	hash := sha256.New()
 
 	if fileMode.Type() == fs.ModeSymlink {

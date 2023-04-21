@@ -165,7 +165,7 @@ func TestHashDeepSymlinks(t *testing.T) {
 
 func TestHashUnignoredDirs(t *testing.T) {
 	step1Dir := "./testdata/unignores/basedir"
-	baseResult, err := hashContext(step1Dir, filepath.Join(step1Dir, defaultDockerfile)
+	baseResult, err := hashContext(step1Dir, filepath.Join(step1Dir, defaultDockerfile))
 	require.NoError(t, err)
 
 	step2Dir := "./testdata/unignores/basedir-with-unignored-dirs"
