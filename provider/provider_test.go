@@ -168,7 +168,7 @@ func TestHashUnignoredDirs(t *testing.T) {
 	baseResult, err := hashContext(step1Dir, filepath.Join(step1Dir, defaultDockerfile))
 	require.NoError(t, err)
 
-	step2Dir := "./testdata/unignores/basedir-with-unignored-dirs"
+	step2Dir := "./testdata/unignores/basedir-with-unignored-files"
 	unignoreResult, err := hashContext(step2Dir, filepath.Join(step2Dir, defaultDockerfile))
 	require.NoError(t, err)
 
