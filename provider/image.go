@@ -231,6 +231,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		cfg.AuthConfigs[auth.ServerAddress] = clitypes.AuthConfig(auth) // for buildkit cache using session auth
 		regAuth = auth                                                  // for image push
 	}
+
 	// make the build options
 	opts := types.ImageBuildOptions{
 		Dockerfile: replaceDockerfile,
@@ -262,6 +263,35 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		}()
 		defer sess.Close()
 		opts.SessionID = sess.ID()
+	}
+
+	// Docker with BuildKit seems to not cache multi-stage builds every other build. This is a known issue:
+	// - https://github.com/moby/buildkit/issues/3730
+	// - https://github.com/moby/buildkit/issues/2274
+	// - https://github.com/moby/buildkit/issues/1981
+	//
+	// A workaround suggested in these threads is to `docker pull` the image prior to building.
+
+	// In this loop, we pull the cached images, and no errors inside this loop are fatal. If we fail
+	// to pull an image, we log a warning and continue.
+	for _, cachedImage := range img.Build.CachedImages {
+		auth, msg, err := getRegistryAuth(img, cfg)
+		if err != nil {
+			err = p.host.Log(ctx, "warning", urn, msg)
+			continue
+		}
+		if msg != "" {
+			err = p.host.Log(ctx, "warning", urn, msg)
+			if err != nil {
+				continue
+			}
+		}
+
+		err = pullDockerImage(ctx, p, urn, docker, auth, cachedImage, opts.Platform)
+		if err != nil {
+			// Non-fatal, warn that we failed to pull the image
+			err = p.host.Log(ctx, "warning", urn, fmt.Sprintf("Failed to pull cached image %s: %v", cachedImage, err))
+		}
 	}
 
 	imgBuildResp, err := docker.ImageBuild(ctx, tar, opts)
@@ -355,6 +385,44 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		plugin.MarshalOptions{KeepUnknowns: true, SkipNulls: true},
 	)
 	return img.Name, pbstruct, err
+}
+
+func pullDockerImage(ctx context.Context, p *dockerNativeProvider, urn resource.URN, docker *client.Client, authConfig types.AuthConfig, cachedImage string, platform string) error {
+	if cachedImage != "" {
+		err := p.host.Log(ctx, "info", urn, fmt.Sprintf("Pulling cached image %s", cachedImage))
+		if err != nil {
+			return err
+		}
+
+		cachedImageAuthBytes, err := json.Marshal(authConfig)
+		if err != nil {
+			return err
+		}
+		cachedImageRegistryAuth := base64.URLEncoding.EncodeToString(cachedImageAuthBytes)
+
+		pullOutput, err := docker.ImagePull(ctx, cachedImage, types.ImagePullOptions{
+			RegistryAuth: cachedImageRegistryAuth,
+			Platform:     platform,
+		})
+		if err != nil {
+			return fmt.Errorf("Error pulling cached image %s: %v", cachedImage, err)
+		}
+
+		defer pullOutput.Close()
+
+		pushScanner := bufio.NewScanner(pullOutput)
+		for pushScanner.Scan() {
+			info, err := processLogLine(pushScanner.Text())
+			if err != nil {
+				return fmt.Errorf("Error pulling cached image %s: %v", cachedImage, err)
+			}
+			err = p.host.LogStatus(ctx, "info", urn, info)
+			if err != nil {
+				return err
+			}
+		}
+	}
+	return nil
 }
 
 func marshalBuildAndApplyDefaults(b resource.PropertyValue) (Build, error) {
