@@ -1,3 +1,4 @@
+{{% examples %}}
 ## Example Usage
 {{% example %}}
 ### A Docker image build
@@ -392,3 +393,4 @@ public class App {
 }
 ```
 {{% /example %}}
+{{% /examples %}}
