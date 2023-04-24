@@ -1,6 +1,7 @@
-Builds a Docker image and optionally pushes to a registry and Docker repository.
+`Image` builds a Docker image and pushes it Docker and OCI compatible registries.
+This resource enables running Docker builds as part of a Pulumi deployment.
 
-Note: The Docker Image resource does not delete the remote image when the Pulumi resource is destroyed.
+Note: This resource does not delete tags, locally or remotely, when destroyed.
 
 ## Cross-platform builds
 
@@ -8,7 +9,7 @@ The Image resource supports cross-platform builds when the [Docker engine has cr
 The Image resource currently supports providing only a single operating system and architecture in the `platform` field, e.g.: `linux/amd64`.
 To enable this support, you may need to install the emulators in the environment running your Pulumi program.
 
-If you're using Linux, you may be using Docker Engine or Docker Desktop for Linux, depending on how you've installed Docker. The [FAQ for Docker Desktop for Linux](https://docs.docker.com/desktop/faqs/linuxfaqs/#context) describes the differences and how to select which you're using.
+If you are using Linux, you may be using Docker Engine or Docker Desktop for Linux, depending on how you have installed Docker. The [FAQ for Docker Desktop for Linux](https://docs.docker.com/desktop/faqs/linuxfaqs/#context) describes the differences and how to select which Docker context is in use.
 
 * For local development using Docker Desktop, this is enabled by default.
 * For systems using Docker Engine, install the QEMU binaries and register them with using the docker image from [github.com/tonistiigi/binfmt](https://github.com/tonistiigi/binfmt):

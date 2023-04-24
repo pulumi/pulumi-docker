@@ -272,7 +272,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	//
 	// A workaround suggested in these threads is to `docker pull` the image prior to building.
 
-	// In this loop, we pull the cached images, and no errors inside this loop are fatal. If we fail
+	// In this loop, we pull the cached images, and none of the errors inside this loop are fatal. If we fail
 	// to pull an image, we log a warning and continue.
 	for _, cachedImage := range img.Build.CachedImages {
 		auth, msg, err := getRegistryAuth(img, cfg)
