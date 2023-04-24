@@ -277,20 +277,18 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	for _, cachedImage := range img.Build.CachedImages {
 		auth, msg, err := getRegistryAuth(img, cfg)
 		if err != nil {
-			err = p.host.Log(ctx, "warning", urn, msg)
+			_ = p.host.Log(ctx, "warning", urn, msg)
 			continue
 		}
 		if msg != "" {
-			err = p.host.Log(ctx, "warning", urn, msg)
-			if err != nil {
-				continue
-			}
+			_ = p.host.Log(ctx, "warning", urn, msg)
+			continue
 		}
 
 		err = pullDockerImage(ctx, p, urn, docker, auth, cachedImage, opts.Platform)
 		if err != nil {
 			// Non-fatal, warn that we failed to pull the image
-			err = p.host.Log(ctx, "warning", urn, fmt.Sprintf("Failed to pull cached image %s: %v", cachedImage, err))
+			_ = p.host.Log(ctx, "warning", urn, fmt.Sprintf("Failed to pull cached image %s: %v", cachedImage, err))
 		}
 	}
 
@@ -387,7 +385,8 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	return img.Name, pbstruct, err
 }
 
-func pullDockerImage(ctx context.Context, p *dockerNativeProvider, urn resource.URN, docker *client.Client, authConfig types.AuthConfig, cachedImage string, platform string) error {
+func pullDockerImage(ctx context.Context, p *dockerNativeProvider, urn resource.URN,
+	docker *client.Client, authConfig types.AuthConfig, cachedImage string, platform string) error {
 	if cachedImage != "" {
 		err := p.host.Log(ctx, "info", urn, fmt.Sprintf("Pulling cached image %s", cachedImage))
 		if err != nil {

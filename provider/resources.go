@@ -338,7 +338,7 @@ func Provider() tfbridge.ProviderInfo {
 	}
 	err := x.ComputeDefaults(&prov, x.TokensSingleModule("docker_", dockerMod,
 		x.MakeStandardToken(dockerPkg)))
-	contract.AssertNoError(err)
+	contract.AssertNoErrorf(err, "failed to map tokens")
 	prov.SetAutonaming(255, "-")
 
 	return prov
