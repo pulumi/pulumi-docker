@@ -152,14 +152,7 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 			"Try setting `dockerfile` to %q", build.Dockerfile, relPath)
 
 	}
-	// Get the relative path to Dockerfile from docker context
-	relDockerfile, err := getRelDockerfilePath(build.Context, build.Dockerfile)
-	if err != nil {
-		return nil, err
-	}
-
-	// Hash docker build context digest
-	contextDigest, err := hashContext(build.Context, relDockerfile)
+	contextDigest, err := hashContext(build.Context, build.Dockerfile)
 	if err != nil {
 		return nil, err
 	}
@@ -466,7 +459,14 @@ type contextHashAccumulator struct {
 	input             bytes.Buffer // This will hold the file info and content bytes to pass to a hash object
 }
 
-func (accumulator *contextHashAccumulator) hashPath(file string, fileMode fs.FileMode) error {
+// hashPath accumulates hashes for files in a directory. If the file is a symlink, the location it
+// points to is hashed. If it is a regular file, we hash the contents of the file. In order to
+// detect file renames and mode changes, we also write to the accumulator a relative name and file
+// mode.
+func (accumulator *contextHashAccumulator) hashPath(
+	filePath string,
+	relativeNameOfFile string,
+	fileMode fs.FileMode) error {
 	hash := sha256.New()
 
 	if fileMode.Type() == fs.ModeSymlink {
@@ -475,31 +475,31 @@ func (accumulator *contextHashAccumulator) hashPath(file string, fileMode fs.Fil
 		// a) ignore changes at the symlink target
 		// b) detect if the symlink _itself_ changes
 		// c) avoid a panic on io.Copy if the symlink target is a directory
-		symLinkPath, err := filepath.EvalSymlinks(filepath.Join(accumulator.dockerContextPath, file))
+		symLinkPath, err := filepath.EvalSymlinks(filePath)
 		if err != nil {
-			return fmt.Errorf("could not evaluate symlink at %s: %w", file, err)
+			return fmt.Errorf("could not evaluate symlink at %s: %w", filePath, err)
 		}
 		// Hashed content is the clean, os-agnostic file path:
-		_, err = io.Copy(hash, strings.NewReader(path.Clean(symLinkPath)))
+		_, err = io.Copy(hash, strings.NewReader(filepath.ToSlash(filepath.Clean(symLinkPath))))
 		if err != nil {
-			return fmt.Errorf("could not copy symlink path %s to hash: %w", file, err)
+			return fmt.Errorf("could not copy symlink path %s to hash: %w", filePath, err)
 		}
 	} else {
 		// For regular files, we can hash their content.
 		// TODO: consider only hashing file metadata to improve performance
-		f, err := os.Open(filepath.Join(accumulator.dockerContextPath, file))
+		f, err := os.Open(filePath)
 		if err != nil {
-			return fmt.Errorf("could not open file %s: %w", file, err)
+			return fmt.Errorf("could not open file %s: %w", filePath, err)
 		}
 		defer f.Close()
 		_, err = io.Copy(hash, f)
 		if err != nil {
-			return fmt.Errorf("could not copy file %s to hash: %w", file, err)
+			return fmt.Errorf("could not copy file %s to hash: %w", filePath, err)
 		}
 	}
 
-	// Capture all information in the accumulator buffer and add a separator
-	accumulator.input.Write([]byte(filepath.Clean(file))) // use os-agnostic filepath
+	// We use "filepath.ToSlash" to return an OS-agnostic path, which uses "/".
+	accumulator.input.Write([]byte(filepath.ToSlash(path.Clean(relativeNameOfFile))))
 	accumulator.input.Write([]byte(fileMode.String()))
 	accumulator.input.Write(hash.Sum(nil))
 	accumulator.input.WriteByte(0)
@@ -528,7 +528,16 @@ func hashContext(dockerContextPath string, dockerfile string) (string, error) {
 	}
 
 	accumulator := contextHashAccumulator{dockerContextPath: dockerContextPath}
-	err = accumulator.hashPath(dockerfile, 0)
+	// The dockerfile is always hashed into the digest with the same "name", regardless of its actual
+	// name.
+	//
+	// If the dockerfile is outside the build context, this matches Docker's behavior. Whether it's
+	// "foo.Dockerfile" or "bar.Dockerfile", the builder only cares about its contents, not its name.
+	//
+	// If the dockerfile is inside the build context, we will hash it twice, but that is OK. We hash
+	// it here the first time with the name "Dockerfile", and then in the WalkDir loop on we hash it
+	// again with its actual name.
+	err = accumulator.hashPath(dockerfile, defaultDockerfile, 0)
 	if err != nil {
 		return "", fmt.Errorf("error hashing dockerfile %q: %w", dockerfile, err)
 	}
@@ -537,15 +546,16 @@ func hashContext(dockerContextPath string, dockerfile string) (string, error) {
 		if err != nil {
 			return err
 		}
-		path, err = filepath.Rel(dockerContextPath, path)
-
+		// The relative path is used in checking against .dockerignore and what is used in computing the
+		// name of the file hashed.
+		relPath, err := filepath.Rel(dockerContextPath, path)
 		if err != nil {
 			return err
 		}
-		if path == "." {
+		if relPath == "." {
 			return nil
 		}
-		ignore, err := ignoreMatcher.MatchesOrParentMatches(path)
+		ignore, err := ignoreMatcher.MatchesOrParentMatches(relPath)
 		if err != nil {
 			return fmt.Errorf("%s rule failed: %w", dockerIgnorePath, err)
 		}
@@ -557,13 +567,14 @@ func hashContext(dockerContextPath string, dockerfile string) (string, error) {
 		}
 		fileInfo, err := d.Info()
 		if err != nil {
-			return fmt.Errorf("determining mode for %q: %w", path, err)
+			return fmt.Errorf("determining mode for %q: %w", relPath, err)
 		}
 
-		err = accumulator.hashPath(path, fileInfo.Mode())
+		// We pass in the full path to the file, not the relative path above
+		err = accumulator.hashPath(path, relPath, fileInfo.Mode())
 
 		if err != nil {
-			return fmt.Errorf("error while hashing %q: %w", path, err)
+			return fmt.Errorf("error while hashing %q: %w", relPath, err)
 		}
 		return nil
 	})
@@ -589,25 +600,4 @@ func getIgnore(dockerIgnorePath string) ([]string, error) {
 		return ignorePatterns, fmt.Errorf("unable to parse %s file: %w", ".dockerignore", err)
 	}
 	return ignorePatterns, nil
-}
-
-func getRelDockerfilePath(buildContext, dockerfile string) (string, error) {
-	// if the Pulumi program specifies an absolute path or a path relative to the program's local directory,
-	// we need to get the Dockerfile's relative path to the context directory for the hash function
-	if strings.Contains(dockerfile, string(filepath.Separator)) {
-		absDockerfile, err := filepath.Abs(dockerfile)
-		if err != nil {
-			return "", fmt.Errorf("absDockerfile error: %s", err)
-		}
-		absBuildpath, err := filepath.Abs(buildContext)
-		if err != nil {
-			return "", fmt.Errorf("absBuildPath error: %s", err)
-		}
-		dockerfile, err = filepath.Rel(absBuildpath, absDockerfile)
-		if err != nil {
-			return "", fmt.Errorf("relDockerfile error: %s", err)
-		}
-
-	}
-	return dockerfile, nil
 }
