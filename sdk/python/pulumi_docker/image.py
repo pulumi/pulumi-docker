@@ -97,7 +97,22 @@ class Image(pulumi.CustomResource):
                  skip_push: Optional[pulumi.Input[bool]] = None,
                  __props__=None):
         """
-        Builds a Docker Image and pushes to a Docker registry.
+        `Image` builds a Docker image and pushes it Docker and OCI compatible registries.
+        This resource enables running Docker builds as part of a Pulumi deployment.
+
+        Note: This resource does not delete tags, locally or remotely, when destroyed.
+
+        ## Cross-platform builds
+
+        The Image resource supports cross-platform builds when the [Docker engine has cross-platform support enabled via emulators](https://docs.docker.com/build/building/multi-platform/#building-multi-platform-images).
+        The Image resource currently supports providing only a single operating system and architecture in the `platform` field, e.g.: `linux/amd64`.
+        To enable this support, you may need to install the emulators in the environment running your Pulumi program.
+
+        If you are using Linux, you may be using Docker Engine or Docker Desktop for Linux, depending on how you have installed Docker. The [FAQ for Docker Desktop for Linux](https://docs.docker.com/desktop/faqs/linuxfaqs/#context) describes the differences and how to select which Docker context is in use.
+
+        * For local development using Docker Desktop, this is enabled by default.
+        * For systems using Docker Engine, install the QEMU binaries and register them with using the docker image from [github.com/tonistiigi/binfmt](https://github.com/tonistiigi/binfmt):
+        * In a GitHub Actions workflow, the [docker/setup-qemu-action](https://github.com/docker/setup-qemu-action) can be used instead by adding this step to your workflow file. Example workflow usage:
 
         ## Example Usage
         ### A Docker image build
@@ -114,6 +129,32 @@ class Image(pulumi.CustomResource):
             skip_push=True)
         pulumi.export("imageName", demo_image.image_name)
         ```
+        ### Docker image build using caching with AWS Elastic Container Registry
+        ```python
+        import pulumi
+        import pulumi_aws as aws
+        import pulumi_docker as docker
+
+        ecr_repository = aws.ecr.Repository("ecr-repository", name="docker-repository")
+        auth_token = aws.ecr.get_authorization_token_output(registry_id=ecr_repository.registry_id)
+        my_app_image = docker.Image("my-app-image",
+            build=docker.DockerBuildArgs(
+                args={
+                    "BUILDKIT_INLINE_CACHE": "1",
+                },
+                cache_from=docker.CacheFromArgs(
+                    images=[ecr_repository.repository_url.apply(lambda repository_url: f"{repository_url}:latest")],
+                ),
+                context="app/",
+                dockerfile="Dockerfile",
+            ),
+            image_name=ecr_repository.repository_url.apply(lambda repository_url: f"{repository_url}:latest"),
+            registry=docker.RegistryArgs(
+                password=pulumi.Output.secret(auth_token.password),
+                server=ecr_repository.repository_url,
+            ))
+        pulumi.export("imageName", my_app_image.image_name)
+        ```
 
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
@@ -129,7 +170,22 @@ class Image(pulumi.CustomResource):
                  args: ImageArgs,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
-        Builds a Docker Image and pushes to a Docker registry.
+        `Image` builds a Docker image and pushes it Docker and OCI compatible registries.
+        This resource enables running Docker builds as part of a Pulumi deployment.
+
+        Note: This resource does not delete tags, locally or remotely, when destroyed.
+
+        ## Cross-platform builds
+
+        The Image resource supports cross-platform builds when the [Docker engine has cross-platform support enabled via emulators](https://docs.docker.com/build/building/multi-platform/#building-multi-platform-images).
+        The Image resource currently supports providing only a single operating system and architecture in the `platform` field, e.g.: `linux/amd64`.
+        To enable this support, you may need to install the emulators in the environment running your Pulumi program.
+
+        If you are using Linux, you may be using Docker Engine or Docker Desktop for Linux, depending on how you have installed Docker. The [FAQ for Docker Desktop for Linux](https://docs.docker.com/desktop/faqs/linuxfaqs/#context) describes the differences and how to select which Docker context is in use.
+
+        * For local development using Docker Desktop, this is enabled by default.
+        * For systems using Docker Engine, install the QEMU binaries and register them with using the docker image from [github.com/tonistiigi/binfmt](https://github.com/tonistiigi/binfmt):
+        * In a GitHub Actions workflow, the [docker/setup-qemu-action](https://github.com/docker/setup-qemu-action) can be used instead by adding this step to your workflow file. Example workflow usage:
 
         ## Example Usage
         ### A Docker image build
@@ -145,6 +201,32 @@ class Image(pulumi.CustomResource):
             image_name="username/image:tag1",
             skip_push=True)
         pulumi.export("imageName", demo_image.image_name)
+        ```
+        ### Docker image build using caching with AWS Elastic Container Registry
+        ```python
+        import pulumi
+        import pulumi_aws as aws
+        import pulumi_docker as docker
+
+        ecr_repository = aws.ecr.Repository("ecr-repository", name="docker-repository")
+        auth_token = aws.ecr.get_authorization_token_output(registry_id=ecr_repository.registry_id)
+        my_app_image = docker.Image("my-app-image",
+            build=docker.DockerBuildArgs(
+                args={
+                    "BUILDKIT_INLINE_CACHE": "1",
+                },
+                cache_from=docker.CacheFromArgs(
+                    images=[ecr_repository.repository_url.apply(lambda repository_url: f"{repository_url}:latest")],
+                ),
+                context="app/",
+                dockerfile="Dockerfile",
+            ),
+            image_name=ecr_repository.repository_url.apply(lambda repository_url: f"{repository_url}:latest"),
+            registry=docker.RegistryArgs(
+                password=pulumi.Output.secret(auth_token.password),
+                server=ecr_repository.repository_url,
+            ))
+        pulumi.export("imageName", my_app_image.image_name)
         ```
 
         :param str resource_name: The name of the resource.

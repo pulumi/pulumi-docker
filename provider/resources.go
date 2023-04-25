@@ -229,9 +229,8 @@ func Provider() tfbridge.ProviderInfo {
 		ExtraResources: map[string]schema.ResourceSpec{
 			dockerResource(dockerMod, "Image").String(): {
 				ObjectTypeSpec: schema.ObjectTypeSpec{
-					Type: "object",
-					Description: "Builds a Docker Image and pushes to a Docker registry.\n\n" +
-						docImage,
+					Type:        "object",
+					Description: docImage,
 					Required: []string{
 						"dockerfile", "context", "baseImageName", "registryServer", "imageName",
 					},
@@ -339,7 +338,7 @@ func Provider() tfbridge.ProviderInfo {
 	}
 	err := x.ComputeDefaults(&prov, x.TokensSingleModule("docker_", dockerMod,
 		x.MakeStandardToken(dockerPkg)))
-	contract.AssertNoError(err)
+	contract.AssertNoErrorf(err, "failed to map tokens")
 	prov.SetAutonaming(255, "-")
 
 	return prov

@@ -20,6 +20,7 @@ namespace Pulumi.Docker
         /// 
         /// ```csharp
         /// using System.Collections.Generic;
+        /// using System.Linq;
         /// using Pulumi;
         /// using Docker = Pulumi.Docker;
         /// 
@@ -62,6 +63,7 @@ namespace Pulumi.Docker
         /// 
         /// ```csharp
         /// using System.Collections.Generic;
+        /// using System.Linq;
         /// using Pulumi;
         /// using Docker = Pulumi.Docker;
         /// 

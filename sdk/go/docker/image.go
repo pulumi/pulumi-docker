@@ -11,7 +11,22 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// Builds a Docker Image and pushes to a Docker registry.
+// `Image` builds a Docker image and pushes it Docker and OCI compatible registries.
+// This resource enables running Docker builds as part of a Pulumi deployment.
+//
+// Note: This resource does not delete tags, locally or remotely, when destroyed.
+//
+// ## Cross-platform builds
+//
+// The Image resource supports cross-platform builds when the [Docker engine has cross-platform support enabled via emulators](https://docs.docker.com/build/building/multi-platform/#building-multi-platform-images).
+// The Image resource currently supports providing only a single operating system and architecture in the `platform` field, e.g.: `linux/amd64`.
+// To enable this support, you may need to install the emulators in the environment running your Pulumi program.
+//
+// If you are using Linux, you may be using Docker Engine or Docker Desktop for Linux, depending on how you have installed Docker. The [FAQ for Docker Desktop for Linux](https://docs.docker.com/desktop/faqs/linuxfaqs/#context) describes the differences and how to select which Docker context is in use.
+//
+// * For local development using Docker Desktop, this is enabled by default.
+// * For systems using Docker Engine, install the QEMU binaries and register them with using the docker image from [github.com/tonistiigi/binfmt](https://github.com/tonistiigi/binfmt):
+// * In a GitHub Actions workflow, the [docker/setup-qemu-action](https://github.com/docker/setup-qemu-action) can be used instead by adding this step to your workflow file. Example workflow usage:
 //
 // ## Example Usage
 // ### A Docker image build
@@ -39,6 +54,65 @@ import (
 //				return err
 //			}
 //			ctx.Export("imageName", demoImage.ImageName)
+//			return nil
+//		})
+//	}
+//
+// ```
+// ### Docker image build using caching with AWS Elastic Container Registry
+// ```go
+// package main
+//
+// import (
+//
+//	"fmt"
+//
+//	"github.com/pulumi/pulumi-aws/sdk/v5/go/aws/ecr"
+//	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker"
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			ecrRepository, err := ecr.NewRepository(ctx, "ecr-repository", &ecr.RepositoryArgs{
+//				Name: pulumi.String("docker-repository"),
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			authToken := ecr.GetAuthorizationTokenOutput(ctx, ecr.GetAuthorizationTokenOutputArgs{
+//				RegistryId: ecrRepository.RegistryId,
+//			}, nil)
+//			myAppImage, err := docker.NewImage(ctx, "my-app-image", &docker.ImageArgs{
+//				Build: &docker.DockerBuildArgs{
+//					Args: pulumi.StringMap{
+//						"BUILDKIT_INLINE_CACHE": pulumi.String("1"),
+//					},
+//					CacheFrom: &docker.CacheFromArgs{
+//						Images: pulumi.StringArray{
+//							ecrRepository.RepositoryUrl.ApplyT(func(repositoryUrl string) (string, error) {
+//								return fmt.Sprintf("%v:latest", repositoryUrl), nil
+//							}).(pulumi.StringOutput),
+//						},
+//					},
+//					Context:    pulumi.String("app/"),
+//					Dockerfile: pulumi.String("Dockerfile"),
+//				},
+//				ImageName: ecrRepository.RepositoryUrl.ApplyT(func(repositoryUrl string) (string, error) {
+//					return fmt.Sprintf("%v:latest", repositoryUrl), nil
+//				}).(pulumi.StringOutput),
+//				Registry: &docker.RegistryArgs{
+//					Password: pulumi.ToSecret(authToken.ApplyT(func(authToken ecr.GetAuthorizationTokenResult) (string, error) {
+//						return authToken.Password, nil
+//					}).(pulumi.StringOutput)).(pulumi.StringOutput),
+//					Server: ecrRepository.RepositoryUrl,
+//				},
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			ctx.Export("imageName", myAppImage.ImageName)
 //			return nil
 //		})
 //	}

@@ -38,6 +38,7 @@ def readme():
 
 
 setup(name='pulumi_docker',
+      python_requires='>=3.7',
       version=VERSION,
       description="A Pulumi package for interacting with Docker in Pulumi programs",
       long_description=readme(),

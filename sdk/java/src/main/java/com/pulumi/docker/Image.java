@@ -16,7 +16,22 @@ import java.util.Optional;
 import javax.annotation.Nullable;
 
 /**
- * Builds a Docker Image and pushes to a Docker registry.
+ * `Image` builds a Docker image and pushes it Docker and OCI compatible registries.
+ * This resource enables running Docker builds as part of a Pulumi deployment.
+ * 
+ * Note: This resource does not delete tags, locally or remotely, when destroyed.
+ * 
+ * ## Cross-platform builds
+ * 
+ * The Image resource supports cross-platform builds when the [Docker engine has cross-platform support enabled via emulators](https://docs.docker.com/build/building/multi-platform/#building-multi-platform-images).
+ * The Image resource currently supports providing only a single operating system and architecture in the `platform` field, e.g.: `linux/amd64`.
+ * To enable this support, you may need to install the emulators in the environment running your Pulumi program.
+ * 
+ * If you are using Linux, you may be using Docker Engine or Docker Desktop for Linux, depending on how you have installed Docker. The [FAQ for Docker Desktop for Linux](https://docs.docker.com/desktop/faqs/linuxfaqs/#context) describes the differences and how to select which Docker context is in use.
+ * 
+ * * For local development using Docker Desktop, this is enabled by default.
+ * * For systems using Docker Engine, install the QEMU binaries and register them with using the docker image from [github.com/tonistiigi/binfmt](https://github.com/tonistiigi/binfmt):
+ * * In a GitHub Actions workflow, the [docker/setup-qemu-action](https://github.com/docker/setup-qemu-action) can be used instead by adding this step to your workflow file. Example workflow usage:
  * 
  * ## Example Usage
  * ### A Docker image build
@@ -52,6 +67,63 @@ import javax.annotation.Nullable;
  *             .build());
  * 
  *         ctx.export(&#34;imageName&#34;, demoImage.imageName());
+ *     }
+ * }
+ * ```
+ * ### Docker image build using caching with AWS Elastic Container Registry
+ * ```java
+ * package generated_program;
+ * 
+ * import com.pulumi.Context;
+ * import com.pulumi.Pulumi;
+ * import com.pulumi.core.Output;
+ * import com.pulumi.aws.ecr.Repository;
+ * import com.pulumi.aws.ecr.RepositoryArgs;
+ * import com.pulumi.aws.ecr.EcrFunctions;
+ * import com.pulumi.aws.ecr.inputs.GetAuthorizationTokenArgs;
+ * import com.pulumi.docker.Image;
+ * import com.pulumi.docker.ImageArgs;
+ * import com.pulumi.docker.inputs.DockerBuildArgs;
+ * import com.pulumi.docker.inputs.CacheFromArgs;
+ * import com.pulumi.docker.inputs.RegistryArgs;
+ * import java.util.List;
+ * import java.util.ArrayList;
+ * import java.util.Map;
+ * import java.io.File;
+ * import java.nio.file.Files;
+ * import java.nio.file.Paths;
+ * 
+ * public class App {
+ *     public static void main(String[] args) {
+ *         Pulumi.run(App::stack);
+ *     }
+ * 
+ *     public static void stack(Context ctx) {
+ *         var ecrRepository = new Repository(&#34;ecrRepository&#34;, RepositoryArgs.builder()        
+ *             .name(&#34;docker-repository&#34;)
+ *             .build());
+ * 
+ *         final var authToken = EcrFunctions.getAuthorizationToken(GetAuthorizationTokenArgs.builder()
+ *             .registryId(ecrRepository.registryId())
+ *             .build());
+ * 
+ *         var myAppImage = new Image(&#34;myAppImage&#34;, ImageArgs.builder()        
+ *             .build(DockerBuildArgs.builder()
+ *                 .args(Map.of(&#34;BUILDKIT_INLINE_CACHE&#34;, &#34;1&#34;))
+ *                 .cacheFrom(CacheFromArgs.builder()
+ *                     .images(ecrRepository.repositoryUrl().applyValue(repositoryUrl -&gt; String.format(&#34;%s:latest&#34;, repositoryUrl)))
+ *                     .build())
+ *                 .context(&#34;app/&#34;)
+ *                 .dockerfile(&#34;Dockerfile&#34;)
+ *                 .build())
+ *             .imageName(ecrRepository.repositoryUrl().applyValue(repositoryUrl -&gt; String.format(&#34;%s:latest&#34;, repositoryUrl)))
+ *             .registry(RegistryArgs.builder()
+ *                 .password(Output.ofSecret(authToken.applyValue(getAuthorizationTokenResult -&gt; getAuthorizationTokenResult).applyValue(authToken -&gt; authToken.applyValue(getAuthorizationTokenResult -&gt; getAuthorizationTokenResult.password()))))
+ *                 .server(ecrRepository.repositoryUrl())
+ *                 .build())
+ *             .build());
+ * 
+ *         ctx.export(&#34;imageName&#34;, myAppImage.imageName());
  *     }
  * }
  * ```

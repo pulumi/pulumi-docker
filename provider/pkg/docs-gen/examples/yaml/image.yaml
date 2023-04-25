@@ -16,3 +16,38 @@ resources:
       version: v4.0.0
 outputs:
   imageName: ${demo-image.imageName}
+---
+name: image-caching-yaml
+description: Docker image build using caching with AWS Elastic Container Registry
+runtime: yaml
+config: {}
+variables:
+  authToken:
+    fn::aws:ecr:getAuthorizationToken:
+      registryId: ${ecr-repository.registryId}
+resources:
+  ecr-repository:
+    type: aws:ecr:Repository
+    properties:
+      name: docker-repository
+  my-app-image:
+    type: docker:Image
+    properties:
+      imageName: ${ecr-repository.repositoryUrl}:latest
+      build:
+        dockerfile: Dockerfile
+        context: app/
+        args:
+          BUILDKIT_INLINE_CACHE: "1"
+        cacheFrom:
+          images:
+            - ${ecr-repository.repositoryUrl}:latest
+      registry:
+        server: ${ecr-repository.repositoryUrl}
+        password:
+          fn::secret:
+            ${authToken.password}
+    options:
+      version: v4.1.2
+outputs:
+  imageName: ${my-app-image.imageName}

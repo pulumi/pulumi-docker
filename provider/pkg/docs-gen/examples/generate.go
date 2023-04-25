@@ -53,10 +53,11 @@ func main() {
 }
 
 func markdownExamples(examples []string) string {
-	s := "## Example Usage\n"
+	s := "{{% examples %}}\n## Example Usage\n"
 	for _, example := range examples {
 		s += example
 	}
+	s += "{{% /examples %}}"
 	return s
 }
 
