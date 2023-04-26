@@ -127,6 +127,7 @@ import javax.annotation.Nullable;
  *     }
  * }
  * ```
+ * {{% /examples %}}
  * 
  */
 @ResourceType(type="docker:index/image:Image")

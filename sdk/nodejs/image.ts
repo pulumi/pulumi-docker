@@ -72,6 +72,7 @@ import * as utilities from "./utilities";
  * });
  * export const imageName = myAppImage.imageName;
  * ```
+ * {{% /examples %}}
  */
 export class Image extends pulumi.CustomResource {
     /**

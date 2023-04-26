@@ -155,6 +155,7 @@ class Image(pulumi.CustomResource):
             ))
         pulumi.export("imageName", my_app_image.image_name)
         ```
+        {{% /examples %}}
 
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
@@ -228,6 +229,7 @@ class Image(pulumi.CustomResource):
             ))
         pulumi.export("imageName", my_app_image.image_name)
         ```
+        {{% /examples %}}
 
         :param str resource_name: The name of the resource.
         :param ImageArgs args: The arguments to use to populate this resource's properties.
