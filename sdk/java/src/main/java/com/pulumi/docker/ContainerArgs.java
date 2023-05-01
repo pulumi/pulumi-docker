@@ -519,15 +519,15 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
      * The name of the container.
      * 
      */
-    @Import(name="name", required=true)
-    private Output<String> name;
+    @Import(name="name")
+    private @Nullable Output<String> name;
 
     /**
      * @return The name of the container.
      * 
      */
-    public Output<String> name() {
-        return this.name;
+    public Optional<Output<String>> name() {
+        return Optional.ofNullable(this.name);
     }
 
     /**
@@ -1842,7 +1842,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
          * @return builder
          * 
          */
-        public Builder name(Output<String> name) {
+        public Builder name(@Nullable Output<String> name) {
             $.name = name;
             return this;
         }
@@ -2528,7 +2528,6 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
 
         public ContainerArgs build() {
             $.image = Objects.requireNonNull($.image, "expected parameter 'image' to be non-null");
-            $.name = Objects.requireNonNull($.name, "expected parameter 'name' to be non-null");
             return $;
         }
     }

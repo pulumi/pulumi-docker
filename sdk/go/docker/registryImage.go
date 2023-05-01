@@ -7,7 +7,6 @@ import (
 	"context"
 	"reflect"
 
-	"errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
@@ -32,18 +31,17 @@ import (
 //
 //	func main() {
 //		pulumi.Run(func(ctx *pulumi.Context) error {
-//			image, err := docker.NewRemoteImage(ctx, "image", &docker.RemoteImageArgs{
-//				Name: pulumi.String("registry.com/somename:1.0"),
-//				Build: &docker.RemoteImageBuildArgs{
-//					Context: pulumi.String(fmt.Sprintf("%v/absolutePathToContextFolder", path.Cwd)),
-//				},
+//			_, err := docker.NewRegistryImage(ctx, "helloworld", &docker.RegistryImageArgs{
+//				KeepRemotely: pulumi.Bool(true),
 //			})
 //			if err != nil {
 //				return err
 //			}
-//			_, err = docker.NewRegistryImage(ctx, "helloworld", &docker.RegistryImageArgs{
-//				Name:         image.Name,
-//				KeepRemotely: pulumi.Bool(true),
+//			_, err = docker.NewRemoteImage(ctx, "image", &docker.RemoteImageArgs{
+//				Name: pulumi.String("registry.com/somename:1.0"),
+//				Build: &docker.RemoteImageBuildArgs{
+//					Context: pulumi.String(fmt.Sprintf("%v/absolutePathToContextFolder", path.Cwd)),
+//				},
 //			})
 //			if err != nil {
 //				return err
@@ -72,12 +70,9 @@ type RegistryImage struct {
 func NewRegistryImage(ctx *pulumi.Context,
 	name string, args *RegistryImageArgs, opts ...pulumi.ResourceOption) (*RegistryImage, error) {
 	if args == nil {
-		return nil, errors.New("missing one or more required arguments")
+		args = &RegistryImageArgs{}
 	}
 
-	if args.Name == nil {
-		return nil, errors.New("invalid value for required argument 'Name'")
-	}
 	var resource RegistryImage
 	err := ctx.RegisterResource("docker:index/registryImage:RegistryImage", name, args, &resource, opts...)
 	if err != nil {
@@ -135,7 +130,7 @@ type registryImageArgs struct {
 	// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
 	KeepRemotely *bool `pulumi:"keepRemotely"`
 	// The name of the Docker image.
-	Name string `pulumi:"name"`
+	Name *string `pulumi:"name"`
 	// A map of arbitrary strings that, when changed, will force the `RegistryImage` resource to be replaced. This can be used to repush a local image
 	Triggers map[string]interface{} `pulumi:"triggers"`
 }
@@ -147,7 +142,7 @@ type RegistryImageArgs struct {
 	// If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
 	KeepRemotely pulumi.BoolPtrInput
 	// The name of the Docker image.
-	Name pulumi.StringInput
+	Name pulumi.StringPtrInput
 	// A map of arbitrary strings that, when changed, will force the `RegistryImage` resource to be replaced. This can be used to repush a local image
 	Triggers pulumi.MapInput
 }

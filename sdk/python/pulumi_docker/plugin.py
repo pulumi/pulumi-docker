@@ -16,7 +16,6 @@ __all__ = ['PluginArgs', 'Plugin']
 @pulumi.input_type
 class PluginArgs:
     def __init__(__self__, *,
-                 name: pulumi.Input[str],
                  alias: Optional[pulumi.Input[str]] = None,
                  enable_timeout: Optional[pulumi.Input[int]] = None,
                  enabled: Optional[pulumi.Input[bool]] = None,
@@ -24,10 +23,10 @@ class PluginArgs:
                  force_destroy: Optional[pulumi.Input[bool]] = None,
                  force_disable: Optional[pulumi.Input[bool]] = None,
                  grant_all_permissions: Optional[pulumi.Input[bool]] = None,
-                 grant_permissions: Optional[pulumi.Input[Sequence[pulumi.Input['PluginGrantPermissionArgs']]]] = None):
+                 grant_permissions: Optional[pulumi.Input[Sequence[pulumi.Input['PluginGrantPermissionArgs']]]] = None,
+                 name: Optional[pulumi.Input[str]] = None):
         """
         The set of arguments for constructing a Plugin resource.
-        :param pulumi.Input[str] name: Docker Plugin name
         :param pulumi.Input[str] alias: Docker Plugin alias
         :param pulumi.Input[int] enable_timeout: HTTP client timeout to enable the plugin
         :param pulumi.Input[bool] enabled: If `true` the plugin is enabled. Defaults to `true`
@@ -36,8 +35,8 @@ class PluginArgs:
         :param pulumi.Input[bool] force_disable: If true, then the plugin is disabled forcibly
         :param pulumi.Input[bool] grant_all_permissions: If true, grant all permissions necessary to run the plugin
         :param pulumi.Input[Sequence[pulumi.Input['PluginGrantPermissionArgs']]] grant_permissions: Grant specific permissions only
+        :param pulumi.Input[str] name: Docker Plugin name
         """
-        pulumi.set(__self__, "name", name)
         if alias is not None:
             pulumi.set(__self__, "alias", alias)
         if enable_timeout is not None:
@@ -54,18 +53,8 @@ class PluginArgs:
             pulumi.set(__self__, "grant_all_permissions", grant_all_permissions)
         if grant_permissions is not None:
             pulumi.set(__self__, "grant_permissions", grant_permissions)
-
-    @property
-    @pulumi.getter
-    def name(self) -> pulumi.Input[str]:
-        """
-        Docker Plugin name
-        """
-        return pulumi.get(self, "name")
-
-    @name.setter
-    def name(self, value: pulumi.Input[str]):
-        pulumi.set(self, "name", value)
+        if name is not None:
+            pulumi.set(__self__, "name", name)
 
     @property
     @pulumi.getter
@@ -162,6 +151,18 @@ class PluginArgs:
     @grant_permissions.setter
     def grant_permissions(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['PluginGrantPermissionArgs']]]]):
         pulumi.set(self, "grant_permissions", value)
+
+    @property
+    @pulumi.getter
+    def name(self) -> Optional[pulumi.Input[str]]:
+        """
+        Docker Plugin name
+        """
+        return pulumi.get(self, "name")
+
+    @name.setter
+    def name(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "name", value)
 
 
 @pulumi.input_type
@@ -364,8 +365,7 @@ class Plugin(pulumi.CustomResource):
             envs=["DEBUG=1"],
             force_destroy=True,
             force_disable=True,
-            grant_all_permissions=True,
-            name="tiborvass/sample-volume-plugin")
+            grant_all_permissions=True)
         ```
 
         ## Import
@@ -392,7 +392,7 @@ class Plugin(pulumi.CustomResource):
     @overload
     def __init__(__self__,
                  resource_name: str,
-                 args: PluginArgs,
+                 args: Optional[PluginArgs] = None,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
         <!-- Bug: Type and Name are switched -->
@@ -411,8 +411,7 @@ class Plugin(pulumi.CustomResource):
             envs=["DEBUG=1"],
             force_destroy=True,
             force_disable=True,
-            grant_all_permissions=True,
-            name="tiborvass/sample-volume-plugin")
+            grant_all_permissions=True)
         ```
 
         ## Import
@@ -464,8 +463,6 @@ class Plugin(pulumi.CustomResource):
             __props__.__dict__["force_disable"] = force_disable
             __props__.__dict__["grant_all_permissions"] = grant_all_permissions
             __props__.__dict__["grant_permissions"] = grant_permissions
-            if name is None and not opts.urn:
-                raise TypeError("Missing required property 'name'")
             __props__.__dict__["name"] = name
             __props__.__dict__["plugin_reference"] = None
         super(Plugin, __self__).__init__(

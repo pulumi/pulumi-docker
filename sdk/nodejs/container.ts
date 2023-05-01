@@ -20,10 +20,7 @@ import * as utilities from "./utilities";
  * // Find the latest Ubuntu precise image.
  * const ubuntuRemoteImage = new docker.RemoteImage("ubuntuRemoteImage", {name: "ubuntu:precise"});
  * // Start a container
- * const ubuntuContainer = new docker.Container("ubuntuContainer", {
- *     name: "foo",
- *     image: ubuntuRemoteImage.imageId,
- * });
+ * const ubuntuContainer = new docker.Container("ubuntuContainer", {image: ubuntuRemoteImage.imageId});
  * ```
  *
  * ## Import
@@ -430,9 +427,6 @@ export class Container extends pulumi.CustomResource {
             const args = argsOrState as ContainerArgs | undefined;
             if ((!args || args.image === undefined) && !opts.urn) {
                 throw new Error("Missing required property 'image'");
-            }
-            if ((!args || args.name === undefined) && !opts.urn) {
-                throw new Error("Missing required property 'name'");
             }
             resourceInputs["attach"] = args ? args.attach : undefined;
             resourceInputs["capabilities"] = args ? args.capabilities : undefined;
@@ -915,7 +909,7 @@ export interface ContainerArgs {
     /**
      * The name of the container.
      */
-    name: pulumi.Input<string>;
+    name?: pulumi.Input<string>;
     /**
      * Network mode of the container.
      */

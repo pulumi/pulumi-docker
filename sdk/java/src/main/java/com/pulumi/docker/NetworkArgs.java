@@ -175,15 +175,15 @@ public final class NetworkArgs extends com.pulumi.resources.ResourceArgs {
      * The name of the Docker network.
      * 
      */
-    @Import(name="name", required=true)
-    private Output<String> name;
+    @Import(name="name")
+    private @Nullable Output<String> name;
 
     /**
      * @return The name of the Docker network.
      * 
      */
-    public Output<String> name() {
-        return this.name;
+    public Optional<Output<String>> name() {
+        return Optional.ofNullable(this.name);
     }
 
     /**
@@ -472,7 +472,7 @@ public final class NetworkArgs extends com.pulumi.resources.ResourceArgs {
          * @return builder
          * 
          */
-        public Builder name(Output<String> name) {
+        public Builder name(@Nullable Output<String> name) {
             $.name = name;
             return this;
         }
@@ -509,7 +509,6 @@ public final class NetworkArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         public NetworkArgs build() {
-            $.name = Objects.requireNonNull($.name, "expected parameter 'name' to be non-null");
             return $;
         }
     }

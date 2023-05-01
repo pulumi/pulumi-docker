@@ -23,10 +23,7 @@ namespace Pulumi.Docker
     /// 
     /// return await Deployment.RunAsync(() =&gt; 
     /// {
-    ///     var sharedVolume = new Docker.Volume("sharedVolume", new()
-    ///     {
-    ///         Name = "shared_volume",
-    ///     });
+    ///     var sharedVolume = new Docker.Volume("sharedVolume");
     /// 
     /// });
     /// ```

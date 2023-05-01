@@ -25,7 +25,6 @@ import * as utilities from "./utilities";
  *     forceDestroy: true,
  *     forceDisable: true,
  *     grantAllPermissions: true,
- *     name: "tiborvass/sample-volume-plugin",
  * });
  * ```
  *
@@ -113,7 +112,7 @@ export class Plugin extends pulumi.CustomResource {
      * @param args The arguments to use to populate this resource's properties.
      * @param opts A bag of options that control this resource's behavior.
      */
-    constructor(name: string, args: PluginArgs, opts?: pulumi.CustomResourceOptions)
+    constructor(name: string, args?: PluginArgs, opts?: pulumi.CustomResourceOptions)
     constructor(name: string, argsOrState?: PluginArgs | PluginState, opts?: pulumi.CustomResourceOptions) {
         let resourceInputs: pulumi.Inputs = {};
         opts = opts || {};
@@ -131,9 +130,6 @@ export class Plugin extends pulumi.CustomResource {
             resourceInputs["pluginReference"] = state ? state.pluginReference : undefined;
         } else {
             const args = argsOrState as PluginArgs | undefined;
-            if ((!args || args.name === undefined) && !opts.urn) {
-                throw new Error("Missing required property 'name'");
-            }
             resourceInputs["alias"] = args ? args.alias : undefined;
             resourceInputs["enableTimeout"] = args ? args.enableTimeout : undefined;
             resourceInputs["enabled"] = args ? args.enabled : undefined;
@@ -235,5 +231,5 @@ export interface PluginArgs {
     /**
      * Docker Plugin name
      */
-    name: pulumi.Input<string>;
+    name?: pulumi.Input<string>;
 }

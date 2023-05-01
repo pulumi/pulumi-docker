@@ -14,36 +14,25 @@ __all__ = ['RegistryImageArgs', 'RegistryImage']
 @pulumi.input_type
 class RegistryImageArgs:
     def __init__(__self__, *,
-                 name: pulumi.Input[str],
                  insecure_skip_verify: Optional[pulumi.Input[bool]] = None,
                  keep_remotely: Optional[pulumi.Input[bool]] = None,
+                 name: Optional[pulumi.Input[str]] = None,
                  triggers: Optional[pulumi.Input[Mapping[str, Any]]] = None):
         """
         The set of arguments for constructing a RegistryImage resource.
-        :param pulumi.Input[str] name: The name of the Docker image.
         :param pulumi.Input[bool] insecure_skip_verify: If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
         :param pulumi.Input[bool] keep_remotely: If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
+        :param pulumi.Input[str] name: The name of the Docker image.
         :param pulumi.Input[Mapping[str, Any]] triggers: A map of arbitrary strings that, when changed, will force the `RegistryImage` resource to be replaced. This can be used to repush a local image
         """
-        pulumi.set(__self__, "name", name)
         if insecure_skip_verify is not None:
             pulumi.set(__self__, "insecure_skip_verify", insecure_skip_verify)
         if keep_remotely is not None:
             pulumi.set(__self__, "keep_remotely", keep_remotely)
+        if name is not None:
+            pulumi.set(__self__, "name", name)
         if triggers is not None:
             pulumi.set(__self__, "triggers", triggers)
-
-    @property
-    @pulumi.getter
-    def name(self) -> pulumi.Input[str]:
-        """
-        The name of the Docker image.
-        """
-        return pulumi.get(self, "name")
-
-    @name.setter
-    def name(self, value: pulumi.Input[str]):
-        pulumi.set(self, "name", value)
 
     @property
     @pulumi.getter(name="insecureSkipVerify")
@@ -68,6 +57,18 @@ class RegistryImageArgs:
     @keep_remotely.setter
     def keep_remotely(self, value: Optional[pulumi.Input[bool]]):
         pulumi.set(self, "keep_remotely", value)
+
+    @property
+    @pulumi.getter
+    def name(self) -> Optional[pulumi.Input[str]]:
+        """
+        The name of the Docker image.
+        """
+        return pulumi.get(self, "name")
+
+    @name.setter
+    def name(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "name", value)
 
     @property
     @pulumi.getter
@@ -192,14 +193,12 @@ class RegistryImage(pulumi.CustomResource):
         import pulumi
         import pulumi_docker as docker
 
+        helloworld = docker.RegistryImage("helloworld", keep_remotely=True)
         image = docker.RemoteImage("image",
             name="registry.com/somename:1.0",
             build=docker.RemoteImageBuildArgs(
                 context=f"{path['cwd']}/absolutePathToContextFolder",
             ))
-        helloworld = docker.RegistryImage("helloworld",
-            name=image.name,
-            keep_remotely=True)
         ```
 
         :param str resource_name: The name of the resource.
@@ -213,7 +212,7 @@ class RegistryImage(pulumi.CustomResource):
     @overload
     def __init__(__self__,
                  resource_name: str,
-                 args: RegistryImageArgs,
+                 args: Optional[RegistryImageArgs] = None,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
         <!-- Bug: Type and Name are switched -->
@@ -227,14 +226,12 @@ class RegistryImage(pulumi.CustomResource):
         import pulumi
         import pulumi_docker as docker
 
+        helloworld = docker.RegistryImage("helloworld", keep_remotely=True)
         image = docker.RemoteImage("image",
             name="registry.com/somename:1.0",
             build=docker.RemoteImageBuildArgs(
                 context=f"{path['cwd']}/absolutePathToContextFolder",
             ))
-        helloworld = docker.RegistryImage("helloworld",
-            name=image.name,
-            keep_remotely=True)
         ```
 
         :param str resource_name: The name of the resource.
@@ -267,8 +264,6 @@ class RegistryImage(pulumi.CustomResource):
 
             __props__.__dict__["insecure_skip_verify"] = insecure_skip_verify
             __props__.__dict__["keep_remotely"] = keep_remotely
-            if name is None and not opts.urn:
-                raise TypeError("Missing required property 'name'")
             __props__.__dict__["name"] = name
             __props__.__dict__["triggers"] = triggers
             __props__.__dict__["sha256_digest"] = None

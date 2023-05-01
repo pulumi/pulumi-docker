@@ -186,8 +186,8 @@ namespace Pulumi.Docker
         /// <summary>
         /// Name of the service
         /// </summary>
-        [Input("name", required: true)]
-        public Input<string> Name { get; set; } = null!;
+        [Input("name")]
+        public Input<string>? Name { get; set; }
 
         /// <summary>
         /// Specification for the rollback strategy of the service

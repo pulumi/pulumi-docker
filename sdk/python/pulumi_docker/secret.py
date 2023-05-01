@@ -17,18 +17,19 @@ __all__ = ['SecretArgs', 'Secret']
 class SecretArgs:
     def __init__(__self__, *,
                  data: pulumi.Input[str],
-                 name: pulumi.Input[str],
-                 labels: Optional[pulumi.Input[Sequence[pulumi.Input['SecretLabelArgs']]]] = None):
+                 labels: Optional[pulumi.Input[Sequence[pulumi.Input['SecretLabelArgs']]]] = None,
+                 name: Optional[pulumi.Input[str]] = None):
         """
         The set of arguments for constructing a Secret resource.
         :param pulumi.Input[str] data: Base64-url-safe-encoded secret data
-        :param pulumi.Input[str] name: User-defined name of the secret
         :param pulumi.Input[Sequence[pulumi.Input['SecretLabelArgs']]] labels: User-defined key/value metadata
+        :param pulumi.Input[str] name: User-defined name of the secret
         """
         pulumi.set(__self__, "data", data)
-        pulumi.set(__self__, "name", name)
         if labels is not None:
             pulumi.set(__self__, "labels", labels)
+        if name is not None:
+            pulumi.set(__self__, "name", name)
 
     @property
     @pulumi.getter
@@ -44,18 +45,6 @@ class SecretArgs:
 
     @property
     @pulumi.getter
-    def name(self) -> pulumi.Input[str]:
-        """
-        User-defined name of the secret
-        """
-        return pulumi.get(self, "name")
-
-    @name.setter
-    def name(self, value: pulumi.Input[str]):
-        pulumi.set(self, "name", value)
-
-    @property
-    @pulumi.getter
     def labels(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['SecretLabelArgs']]]]:
         """
         User-defined key/value metadata
@@ -65,6 +54,18 @@ class SecretArgs:
     @labels.setter
     def labels(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['SecretLabelArgs']]]]):
         pulumi.set(self, "labels", value)
+
+    @property
+    @pulumi.getter
+    def name(self) -> Optional[pulumi.Input[str]]:
+        """
+        User-defined name of the secret
+        """
+        return pulumi.get(self, "name")
+
+    @name.setter
+    def name(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "name", value)
 
 
 @pulumi.input_type
@@ -185,8 +186,6 @@ class Secret(pulumi.CustomResource):
                 raise TypeError("Missing required property 'data'")
             __props__.__dict__["data"] = None if data is None else pulumi.Output.secret(data)
             __props__.__dict__["labels"] = labels
-            if name is None and not opts.urn:
-                raise TypeError("Missing required property 'name'")
             __props__.__dict__["name"] = name
         secret_opts = pulumi.ResourceOptions(additional_secret_outputs=["data"])
         opts = pulumi.ResourceOptions.merge(opts, secret_opts)

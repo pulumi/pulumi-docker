@@ -193,7 +193,7 @@ class Volume(pulumi.CustomResource):
         import pulumi
         import pulumi_docker as docker
 
-        shared_volume = docker.Volume("sharedVolume", name="shared_volume")
+        shared_volume = docker.Volume("sharedVolume")
         ```
 
         ## Import
@@ -229,7 +229,7 @@ class Volume(pulumi.CustomResource):
         import pulumi
         import pulumi_docker as docker
 
-        shared_volume = docker.Volume("sharedVolume", name="shared_volume")
+        shared_volume = docker.Volume("sharedVolume")
         ```
 
         ## Import

@@ -32,7 +32,6 @@ import javax.annotation.Nullable;
  * import com.pulumi.Pulumi;
  * import com.pulumi.core.Output;
  * import com.pulumi.docker.Network;
- * import com.pulumi.docker.NetworkArgs;
  * import java.util.List;
  * import java.util.ArrayList;
  * import java.util.Map;
@@ -46,9 +45,7 @@ import javax.annotation.Nullable;
  *     }
  * 
  *     public static void stack(Context ctx) {
- *         var privateNetwork = new Network(&#34;privateNetwork&#34;, NetworkArgs.builder()        
- *             .name(&#34;my_network&#34;)
- *             .build());
+ *         var privateNetwork = new Network(&#34;privateNetwork&#34;);
  * 
  *     }
  * }
@@ -262,7 +259,7 @@ public class Network extends com.pulumi.resources.CustomResource {
      * @param name The _unique_ name of the resulting resource.
      * @param args The arguments to use to populate this resource's properties.
      */
-    public Network(String name, NetworkArgs args) {
+    public Network(String name, @Nullable NetworkArgs args) {
         this(name, args, null);
     }
     /**
@@ -271,7 +268,7 @@ public class Network extends com.pulumi.resources.CustomResource {
      * @param args The arguments to use to populate this resource's properties.
      * @param options A bag of options that control this resource's behavior.
      */
-    public Network(String name, NetworkArgs args, @Nullable com.pulumi.resources.CustomResourceOptions options) {
+    public Network(String name, @Nullable NetworkArgs args, @Nullable com.pulumi.resources.CustomResourceOptions options) {
         super("docker:index/network:Network", name, args == null ? NetworkArgs.Empty : args, makeResourceOptions(options, Codegen.empty()));
     }
 

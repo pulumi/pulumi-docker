@@ -25,6 +25,11 @@ namespace Pulumi.Docker
     /// 
     /// return await Deployment.RunAsync(() =&gt; 
     /// {
+    ///     var helloworld = new Docker.RegistryImage("helloworld", new()
+    ///     {
+    ///         KeepRemotely = true,
+    ///     });
+    /// 
     ///     var image = new Docker.RemoteImage("image", new()
     ///     {
     ///         Name = "registry.com/somename:1.0",
@@ -32,12 +37,6 @@ namespace Pulumi.Docker
     ///         {
     ///             Context = $"{path.Cwd}/absolutePathToContextFolder",
     ///         },
-    ///     });
-    /// 
-    ///     var helloworld = new Docker.RegistryImage("helloworld", new()
-    ///     {
-    ///         Name = image.Name,
-    ///         KeepRemotely = true,
     ///     });
     /// 
     /// });
@@ -84,7 +83,7 @@ namespace Pulumi.Docker
         /// <param name="name">The unique name of the resource</param>
         /// <param name="args">The arguments used to populate this resource's properties</param>
         /// <param name="options">A bag of options that control this resource's behavior</param>
-        public RegistryImage(string name, RegistryImageArgs args, CustomResourceOptions? options = null)
+        public RegistryImage(string name, RegistryImageArgs? args = null, CustomResourceOptions? options = null)
             : base("docker:index/registryImage:RegistryImage", name, args ?? new RegistryImageArgs(), MakeResourceOptions(options, ""))
         {
         }
@@ -137,8 +136,8 @@ namespace Pulumi.Docker
         /// <summary>
         /// The name of the Docker image.
         /// </summary>
-        [Input("name", required: true)]
-        public Input<string> Name { get; set; } = null!;
+        [Input("name")]
+        public Input<string>? Name { get; set; }
 
         [Input("triggers")]
         private InputMap<object>? _triggers;

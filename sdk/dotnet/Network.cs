@@ -23,10 +23,7 @@ namespace Pulumi.Docker
     /// 
     /// return await Deployment.RunAsync(() =&gt; 
     /// {
-    ///     var privateNetwork = new Docker.Network("privateNetwork", new()
-    ///     {
-    ///         Name = "my_network",
-    ///     });
+    ///     var privateNetwork = new Docker.Network("privateNetwork");
     /// 
     /// });
     /// ```
@@ -130,7 +127,7 @@ namespace Pulumi.Docker
         /// <param name="name">The unique name of the resource</param>
         /// <param name="args">The arguments used to populate this resource's properties</param>
         /// <param name="options">A bag of options that control this resource's behavior</param>
-        public Network(string name, NetworkArgs args, CustomResourceOptions? options = null)
+        public Network(string name, NetworkArgs? args = null, CustomResourceOptions? options = null)
             : base("docker:index/network:Network", name, args ?? new NetworkArgs(), MakeResourceOptions(options, ""))
         {
         }
@@ -249,8 +246,8 @@ namespace Pulumi.Docker
         /// <summary>
         /// The name of the Docker network.
         /// </summary>
-        [Input("name", required: true)]
-        public Input<string> Name { get; set; } = null!;
+        [Input("name")]
+        public Input<string>? Name { get; set; }
 
         [Input("options")]
         private InputMap<object>? _options;

@@ -35,7 +35,6 @@ import (
 //				return err
 //			}
 //			_, err = docker.NewContainer(ctx, "ubuntuContainer", &docker.ContainerArgs{
-//				Name:  pulumi.String("foo"),
 //				Image: ubuntuRemoteImage.ImageId,
 //			})
 //			if err != nil {
@@ -222,9 +221,6 @@ func NewContainer(ctx *pulumi.Context,
 
 	if args.Image == nil {
 		return nil, errors.New("invalid value for required argument 'Image'")
-	}
-	if args.Name == nil {
-		return nil, errors.New("invalid value for required argument 'Name'")
 	}
 	var resource Container
 	err := ctx.RegisterResource("docker:index/container:Container", name, args, &resource, opts...)
@@ -593,7 +589,7 @@ type containerArgs struct {
 	// assumes it is successful. Defaults to `true`.
 	MustRun *bool `pulumi:"mustRun"`
 	// The name of the container.
-	Name string `pulumi:"name"`
+	Name *string `pulumi:"name"`
 	// Network mode of the container.
 	NetworkMode *string `pulumi:"networkMode"`
 	// The networks the container is attached to
@@ -723,7 +719,7 @@ type ContainerArgs struct {
 	// assumes it is successful. Defaults to `true`.
 	MustRun pulumi.BoolPtrInput
 	// The name of the container.
-	Name pulumi.StringInput
+	Name pulumi.StringPtrInput
 	// Network mode of the container.
 	NetworkMode pulumi.StringPtrInput
 	// The networks the container is attached to

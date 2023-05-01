@@ -17,7 +17,6 @@ __all__ = ['ContainerArgs', 'Container']
 class ContainerArgs:
     def __init__(__self__, *,
                  image: pulumi.Input[str],
-                 name: pulumi.Input[str],
                  attach: Optional[pulumi.Input[bool]] = None,
                  capabilities: Optional[pulumi.Input['ContainerCapabilitiesArgs']] = None,
                  cgroupns_mode: Optional[pulumi.Input[str]] = None,
@@ -49,6 +48,7 @@ class ContainerArgs:
                  memory_swap: Optional[pulumi.Input[int]] = None,
                  mounts: Optional[pulumi.Input[Sequence[pulumi.Input['ContainerMountArgs']]]] = None,
                  must_run: Optional[pulumi.Input[bool]] = None,
+                 name: Optional[pulumi.Input[str]] = None,
                  network_mode: Optional[pulumi.Input[str]] = None,
                  networks_advanced: Optional[pulumi.Input[Sequence[pulumi.Input['ContainerNetworksAdvancedArgs']]]] = None,
                  pid_mode: Optional[pulumi.Input[str]] = None,
@@ -81,7 +81,6 @@ class ContainerArgs:
         """
         The set of arguments for constructing a Container resource.
         :param pulumi.Input[str] image: The ID of the image to back this container. The easiest way to get this value is to use the `RemoteImage` resource as is shown in the example.
-        :param pulumi.Input[str] name: The name of the container.
         :param pulumi.Input[bool] attach: If `true` attach to the container after its creation and waits the end of its execution. Defaults to `false`.
         :param pulumi.Input['ContainerCapabilitiesArgs'] capabilities: Add or drop certrain linux capabilities.
         :param pulumi.Input[str] cgroupns_mode: Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.
@@ -115,6 +114,7 @@ class ContainerArgs:
         :param pulumi.Input[Sequence[pulumi.Input['ContainerMountArgs']]] mounts: Specification for mounts to be added to containers created as part of the service.
         :param pulumi.Input[bool] must_run: If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform
                assumes it is successful. Defaults to `true`.
+        :param pulumi.Input[str] name: The name of the container.
         :param pulumi.Input[str] network_mode: Network mode of the container.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerNetworksAdvancedArgs']]] networks_advanced: The networks the container is attached to
         :param pulumi.Input[str] pid_mode: he PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.
@@ -146,7 +146,6 @@ class ContainerArgs:
         :param pulumi.Input[str] working_dir: The working directory for commands to run in.
         """
         pulumi.set(__self__, "image", image)
-        pulumi.set(__self__, "name", name)
         if attach is not None:
             pulumi.set(__self__, "attach", attach)
         if capabilities is not None:
@@ -209,6 +208,8 @@ class ContainerArgs:
             pulumi.set(__self__, "mounts", mounts)
         if must_run is not None:
             pulumi.set(__self__, "must_run", must_run)
+        if name is not None:
+            pulumi.set(__self__, "name", name)
         if network_mode is not None:
             pulumi.set(__self__, "network_mode", network_mode)
         if networks_advanced is not None:
@@ -279,18 +280,6 @@ class ContainerArgs:
     @image.setter
     def image(self, value: pulumi.Input[str]):
         pulumi.set(self, "image", value)
-
-    @property
-    @pulumi.getter
-    def name(self) -> pulumi.Input[str]:
-        """
-        The name of the container.
-        """
-        return pulumi.get(self, "name")
-
-    @name.setter
-    def name(self, value: pulumi.Input[str]):
-        pulumi.set(self, "name", value)
 
     @property
     @pulumi.getter
@@ -665,6 +654,18 @@ class ContainerArgs:
     @must_run.setter
     def must_run(self, value: Optional[pulumi.Input[bool]]):
         pulumi.set(self, "must_run", value)
+
+    @property
+    @pulumi.getter
+    def name(self) -> Optional[pulumi.Input[str]]:
+        """
+        The name of the container.
+        """
+        return pulumi.get(self, "name")
+
+    @name.setter
+    def name(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "name", value)
 
     @property
     @pulumi.getter(name="networkMode")
@@ -2164,9 +2165,7 @@ class Container(pulumi.CustomResource):
         # Find the latest Ubuntu precise image.
         ubuntu_remote_image = docker.RemoteImage("ubuntuRemoteImage", name="ubuntu:precise")
         # Start a container
-        ubuntu_container = docker.Container("ubuntuContainer",
-            name="foo",
-            image=ubuntu_remote_image.image_id)
+        ubuntu_container = docker.Container("ubuntuContainer", image=ubuntu_remote_image.image_id)
         ```
 
         ## Import
@@ -2281,9 +2280,7 @@ class Container(pulumi.CustomResource):
         # Find the latest Ubuntu precise image.
         ubuntu_remote_image = docker.RemoteImage("ubuntuRemoteImage", name="ubuntu:precise")
         # Start a container
-        ubuntu_container = docker.Container("ubuntuContainer",
-            name="foo",
-            image=ubuntu_remote_image.image_id)
+        ubuntu_container = docker.Container("ubuntuContainer", image=ubuntu_remote_image.image_id)
         ```
 
         ## Import
@@ -2432,8 +2429,6 @@ class Container(pulumi.CustomResource):
             __props__.__dict__["memory_swap"] = memory_swap
             __props__.__dict__["mounts"] = mounts
             __props__.__dict__["must_run"] = must_run
-            if name is None and not opts.urn:
-                raise TypeError("Missing required property 'name'")
             __props__.__dict__["name"] = name
             __props__.__dict__["network_mode"] = network_mode
             __props__.__dict__["networks_advanced"] = networks_advanced

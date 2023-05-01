@@ -76,9 +76,6 @@ func NewService(ctx *pulumi.Context,
 		return nil, errors.New("missing one or more required arguments")
 	}
 
-	if args.Name == nil {
-		return nil, errors.New("invalid value for required argument 'Name'")
-	}
 	if args.TaskSpec == nil {
 		return nil, errors.New("invalid value for required argument 'TaskSpec'")
 	}
@@ -161,7 +158,7 @@ type serviceArgs struct {
 	// Scheduling mode for the service
 	Mode *ServiceMode `pulumi:"mode"`
 	// Name of the service
-	Name string `pulumi:"name"`
+	Name *string `pulumi:"name"`
 	// Specification for the rollback strategy of the service
 	RollbackConfig *ServiceRollbackConfig `pulumi:"rollbackConfig"`
 	// User modifiable task configuration
@@ -183,7 +180,7 @@ type ServiceArgs struct {
 	// Scheduling mode for the service
 	Mode ServiceModePtrInput
 	// Name of the service
-	Name pulumi.StringInput
+	Name pulumi.StringPtrInput
 	// Specification for the rollback strategy of the service
 	RollbackConfig ServiceRollbackConfigPtrInput
 	// User modifiable task configuration

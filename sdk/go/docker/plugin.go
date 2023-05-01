@@ -7,7 +7,6 @@ import (
 	"context"
 	"reflect"
 
-	"errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
@@ -38,7 +37,6 @@ import (
 //				ForceDestroy:        pulumi.Bool(true),
 //				ForceDisable:        pulumi.Bool(true),
 //				GrantAllPermissions: pulumi.Bool(true),
-//				Name:                pulumi.String("tiborvass/sample-volume-plugin"),
 //			})
 //			if err != nil {
 //				return err
@@ -87,12 +85,9 @@ type Plugin struct {
 func NewPlugin(ctx *pulumi.Context,
 	name string, args *PluginArgs, opts ...pulumi.ResourceOption) (*Plugin, error) {
 	if args == nil {
-		return nil, errors.New("missing one or more required arguments")
+		args = &PluginArgs{}
 	}
 
-	if args.Name == nil {
-		return nil, errors.New("invalid value for required argument 'Name'")
-	}
 	var resource Plugin
 	err := ctx.RegisterResource("docker:index/plugin:Plugin", name, args, &resource, opts...)
 	if err != nil {
@@ -182,7 +177,7 @@ type pluginArgs struct {
 	// Grant specific permissions only
 	GrantPermissions []PluginGrantPermission `pulumi:"grantPermissions"`
 	// Docker Plugin name
-	Name string `pulumi:"name"`
+	Name *string `pulumi:"name"`
 }
 
 // The set of arguments for constructing a Plugin resource.
@@ -204,7 +199,7 @@ type PluginArgs struct {
 	// Grant specific permissions only
 	GrantPermissions PluginGrantPermissionArrayInput
 	// Docker Plugin name
-	Name pulumi.StringInput
+	Name pulumi.StringPtrInput
 }
 
 func (PluginArgs) ElementType() reflect.Type {

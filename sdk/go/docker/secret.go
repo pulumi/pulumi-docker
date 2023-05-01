@@ -35,9 +35,6 @@ func NewSecret(ctx *pulumi.Context,
 	if args.Data == nil {
 		return nil, errors.New("invalid value for required argument 'Data'")
 	}
-	if args.Name == nil {
-		return nil, errors.New("invalid value for required argument 'Name'")
-	}
 	if args.Data != nil {
 		args.Data = pulumi.ToSecret(args.Data).(pulumi.StringInput)
 	}
@@ -94,7 +91,7 @@ type secretArgs struct {
 	// User-defined key/value metadata
 	Labels []SecretLabel `pulumi:"labels"`
 	// User-defined name of the secret
-	Name string `pulumi:"name"`
+	Name *string `pulumi:"name"`
 }
 
 // The set of arguments for constructing a Secret resource.
@@ -104,7 +101,7 @@ type SecretArgs struct {
 	// User-defined key/value metadata
 	Labels SecretLabelArrayInput
 	// User-defined name of the secret
-	Name pulumi.StringInput
+	Name pulumi.StringPtrInput
 }
 
 func (SecretArgs) ElementType() reflect.Type {

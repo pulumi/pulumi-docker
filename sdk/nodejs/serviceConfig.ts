@@ -76,9 +76,6 @@ export class ServiceConfig extends pulumi.CustomResource {
             if ((!args || args.data === undefined) && !opts.urn) {
                 throw new Error("Missing required property 'data'");
             }
-            if ((!args || args.name === undefined) && !opts.urn) {
-                throw new Error("Missing required property 'name'");
-            }
             resourceInputs["data"] = args ? args.data : undefined;
             resourceInputs["name"] = args ? args.name : undefined;
         }
@@ -112,5 +109,5 @@ export interface ServiceConfigArgs {
     /**
      * User-defined name of the config
      */
-    name: pulumi.Input<string>;
+    name?: pulumi.Input<string>;
 }

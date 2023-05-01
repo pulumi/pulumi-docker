@@ -32,7 +32,6 @@ namespace Pulumi.Docker
     ///     // Start a container
     ///     var ubuntuContainer = new Docker.Container("ubuntuContainer", new()
     ///     {
-    ///         Name = "foo",
     ///         Image = ubuntuRemoteImage.ImageId,
     ///     });
     /// 
@@ -781,8 +780,8 @@ namespace Pulumi.Docker
         /// <summary>
         /// The name of the container.
         /// </summary>
-        [Input("name", required: true)]
-        public Input<string> Name { get; set; } = null!;
+        [Input("name")]
+        public Input<string>? Name { get; set; }
 
         /// <summary>
         /// Network mode of the container.

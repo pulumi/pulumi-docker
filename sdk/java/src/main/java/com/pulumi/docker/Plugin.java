@@ -52,7 +52,6 @@ import javax.annotation.Nullable;
  *             .forceDestroy(true)
  *             .forceDisable(true)
  *             .grantAllPermissions(true)
- *             .name(&#34;tiborvass/sample-volume-plugin&#34;)
  *             .build());
  * 
  *     }
@@ -223,7 +222,7 @@ public class Plugin extends com.pulumi.resources.CustomResource {
      * @param name The _unique_ name of the resulting resource.
      * @param args The arguments to use to populate this resource's properties.
      */
-    public Plugin(String name, PluginArgs args) {
+    public Plugin(String name, @Nullable PluginArgs args) {
         this(name, args, null);
     }
     /**
@@ -232,7 +231,7 @@ public class Plugin extends com.pulumi.resources.CustomResource {
      * @param args The arguments to use to populate this resource's properties.
      * @param options A bag of options that control this resource's behavior.
      */
-    public Plugin(String name, PluginArgs args, @Nullable com.pulumi.resources.CustomResourceOptions options) {
+    public Plugin(String name, @Nullable PluginArgs args, @Nullable com.pulumi.resources.CustomResourceOptions options) {
         super("docker:index/plugin:Plugin", name, args == null ? PluginArgs.Empty : args, makeResourceOptions(options, Codegen.empty()));
     }
 

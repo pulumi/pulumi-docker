@@ -45,9 +45,6 @@ func NewServiceConfig(ctx *pulumi.Context,
 	if args.Data == nil {
 		return nil, errors.New("invalid value for required argument 'Data'")
 	}
-	if args.Name == nil {
-		return nil, errors.New("invalid value for required argument 'Name'")
-	}
 	var resource ServiceConfig
 	err := ctx.RegisterResource("docker:index/serviceConfig:ServiceConfig", name, args, &resource, opts...)
 	if err != nil {
@@ -91,7 +88,7 @@ type serviceConfigArgs struct {
 	// Base64-url-safe-encoded config data
 	Data string `pulumi:"data"`
 	// User-defined name of the config
-	Name string `pulumi:"name"`
+	Name *string `pulumi:"name"`
 }
 
 // The set of arguments for constructing a ServiceConfig resource.
@@ -99,7 +96,7 @@ type ServiceConfigArgs struct {
 	// Base64-url-safe-encoded config data
 	Data pulumi.StringInput
 	// User-defined name of the config
-	Name pulumi.StringInput
+	Name pulumi.StringPtrInput
 }
 
 func (ServiceConfigArgs) ElementType() reflect.Type {
