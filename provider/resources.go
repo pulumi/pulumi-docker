@@ -16,6 +16,8 @@ package provider
 
 import (
 	"fmt"
+	// embed is used to store bridge-metadata.json in the compiled binary
+	_ "embed"
 	"path/filepath"
 	"unicode"
 
@@ -334,12 +336,17 @@ func Provider() tfbridge.ProviderInfo {
 			Namespaces: map[string]string{
 				dockerPkg: "Docker",
 			},
-		},
+		}, MetadataInfo: tfbridge.NewProviderMetadata(metadata),
 	}
 	err := x.ComputeDefaults(&prov, x.TokensSingleModule("docker_", dockerMod,
 		x.MakeStandardToken(dockerPkg)))
 	contract.AssertNoErrorf(err, "failed to map tokens")
+	err = x.AutoAliasing(&prov, prov.GetMetadata())
+	contract.AssertNoErrorf(err, "auto aliasing apply failed")
 	prov.SetAutonaming(255, "-")
 
 	return prov
 }
+
+//go:embed cmd/pulumi-resource-docker/bridge-metadata.json
+var metadata []byte

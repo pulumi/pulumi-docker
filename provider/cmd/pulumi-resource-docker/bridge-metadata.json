@@ -1,0 +1,1249 @@
+{
+    "auto-aliasing": {
+        "resources": {
+            "docker_config": {
+                "current": "docker:index/serviceConfig:ServiceConfig",
+                "fields": {
+                    "data": {},
+                    "name": {}
+                }
+            },
+            "docker_container": {
+                "current": "docker:index/container:Container",
+                "fields": {
+                    "attach": {},
+                    "bridge": {},
+                    "capabilities": {
+                        "maxItemsOne": true,
+                        "elem": {
+                            "fields": {
+                                "add": {
+                                    "maxItemsOne": false,
+                                    "elem": {}
+                                },
+                                "drop": {
+                                    "maxItemsOne": false,
+                                    "elem": {}
+                                }
+                            }
+                        }
+                    },
+                    "cgroupns_mode": {},
+                    "command": {
+                        "maxItemsOne": false,
+                        "elem": {}
+                    },
+                    "container_logs": {},
+                    "container_read_refresh_timeout_milliseconds": {},
+                    "cpu_set": {},
+                    "cpu_shares": {},
+                    "destroy_grace_seconds": {},
+                    "devices": {
+                        "maxItemsOne": false,
+                        "elem": {
+                            "fields": {
+                                "container_path": {},
+                                "host_path": {},
+                                "permissions": {}
+                            }
+                        }
+                    },
+                    "dns": {
+                        "maxItemsOne": false,
+                        "elem": {}
+                    },
+                    "dns_opts": {
+                        "maxItemsOne": false,
+                        "elem": {}
+                    },
+                    "dns_search": {
+                        "maxItemsOne": false,
+                        "elem": {}
+                    },
+                    "domainname": {},
+                    "entrypoint": {
+                        "maxItemsOne": false,
+                        "elem": {}
+                    },
+                    "env": {
+                        "maxItemsOne": false,
+                        "elem": {}
+                    },
+                    "exit_code": {},
+                    "gpus": {},
+                    "group_add": {
+                        "maxItemsOne": false,
+                        "elem": {}
+                    },
+                    "healthcheck": {
+                        "maxItemsOne": true,
+                        "elem": {
+                            "fields": {
+                                "interval": {},
+                                "retries": {},
+                                "start_period": {},
+                                "test": {
+                                    "maxItemsOne": false,
+                                    "elem": {}
+                                },
+                                "timeout": {}
+                            }
+                        }
+                    },
+                    "host": {
+                        "maxItemsOne": false,
+                        "elem": {
+                            "fields": {
+                                "host": {},
+                                "ip": {}
+                            }
+                        }
+                    },
+                    "hostname": {},
+                    "image": {},
+                    "init": {},
+                    "ipc_mode": {},
+                    "labels": {
+                        "maxItemsOne": false,
+                        "elem": {
+                            "fields": {
+                                "label": {},
+                                "value": {}
+                            }
+                        }
+                    },
+                    "log_driver": {},
+                    "log_opts": {},
+                    "logs": {},
+                    "max_retry_count": {},
+                    "memory": {},
+                    "memory_swap": {},
+                    "mounts": {
+                        "maxItemsOne": false,
+                        "elem": {
+                            "fields": {
+                                "bind_options": {
+                                    "maxItemsOne": true,
+                                    "elem": {
+                                        "fields": {
+                                            "propagation": {}
+                                        }
+                                    }
+                                },
+                                "read_only": {},
+                                "source": {},
+                                "target": {},
+                                "tmpfs_options": {
+                                    "maxItemsOne": true,
+                                    "elem": {
+                                        "fields": {
+                                            "mode": {},
+                                            "size_bytes": {}
+                                        }
+                                    }
+                                },
+                                "type": {},
+                                "volume_options": {
+                                    "maxItemsOne": true,
+                                    "elem": {
+                                        "fields": {
+                                            "driver_name": {},
+                                            "driver_options": {
+                                                "elem": {}
+                                            },
+                                            "labels": {
+                                                "maxItemsOne": false,
+                                                "elem": {
+                                                    "fields": {
+                                                        "label": {},
+                                                        "value": {}
+                                                    }
+                                                }
+                                            },
+                                            "no_copy": {}
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "must_run": {},
+                    "name": {},
+                    "network_data": {
+                        "maxItemsOne": false,
+                        "elem": {
+                            "fields": {
+                                "gateway": {},
+                                "global_ipv6_address": {},
+                                "global_ipv6_prefix_length": {},
+                                "ip_address": {},
+                                "ip_prefix_length": {},
+                                "ipv6_gateway": {},
+                                "mac_address": {},
+                                "network_name": {}
+                            }
+                        }
+                    },
+                    "network_mode": {},
+                    "networks_advanced": {
+                        "maxItemsOne": false,
+                        "elem": {
+                            "fields": {
+                                "aliases": {
+                                    "maxItemsOne": false,
+                                    "elem": {}
+                                },
+                                "ipv4_address": {},
+                                "ipv6_address": {},
+                                "name": {}
+                            }
+                        }
+                    },
+                    "pid_mode": {},
+                    "ports": {
+                        "maxItemsOne": false,
+                        "elem": {
+                            "fields": {
+                                "external": {},
+                                "internal": {},
+                                "ip": {},
+                                "protocol": {}
+                            }
+                        }
+                    },
+                    "privileged": {},
+                    "publish_all_ports": {},
+                    "read_only": {},
+                    "remove_volumes": {},
+                    "restart": {},
+                    "rm": {},
+                    "runtime": {},
+                    "security_opts": {
+                        "maxItemsOne": false,
+                        "elem": {}
+                    },
+                    "shm_size": {},
+                    "start": {},
+                    "stdin_open": {},
+                    "stop_signal": {},
+                    "stop_timeout": {},
+                    "storage_opts": {},
+                    "sysctls": {},
+                    "tmpfs": {},
+                    "tty": {},
+                    "ulimit": {
+                        "maxItemsOne": false,
+                        "elem": {
+                            "fields": {
+                                "hard": {},
+                                "name": {},
+                                "soft": {}
+                            }
+                        }
+                    },
+                    "upload": {
+                        "maxItemsOne": false,
+                        "elem": {
+                            "fields": {
+                                "content": {},
+                                "content_base64": {},
+                                "executable": {},
+                                "file": {},
+                                "source": {},
+                                "source_hash": {}
+                            }
+                        }
+                    },
+                    "user": {
+                        "elem": {}
+                    },
+                    "userns_mode": {},
+                    "volumes": {
+                        "maxItemsOne": false,
+                        "elem": {
+                            "fields": {
+                                "container_path": {},
+                                "from_container": {},
+                                "host_path": {},
+                                "read_only": {},
+                                "volume_name": {}
+                            }
+                        }
+                    },
+                    "wait": {},
+                    "wait_timeout": {},
+                    "working_dir": {}
+                }
+            },
+            "docker_image": {
+                "current": "docker:index/remoteImage:RemoteImage",
+                "fields": {
+                    "build": {
+                        "maxItemsOne": true,
+                        "elem": {
+                            "fields": {
+                                "auth_config": {
+                                    "maxItemsOne": false,
+                                    "elem": {
+                                        "fields": {
+                                            "auth": {},
+                                            "email": {},
+                                            "host_name": {},
+                                            "identity_token": {},
+                                            "password": {},
+                                            "registry_token": {},
+                                            "server_address": {},
+                                            "user_name": {}
+                                        }
+                                    }
+                                },
+                                "build_arg": {
+                                    "elem": {}
+                                },
+                                "build_args": {
+                                    "elem": {}
+                                },
+                                "build_id": {},
+                                "cache_from": {
+                                    "maxItemsOne": false,
+                                    "elem": {}
+                                },
+                                "cgroup_parent": {},
+                                "context": {},
+                                "cpu_period": {},
+                                "cpu_quota": {},
+                                "cpu_set_cpus": {},
+                                "cpu_set_mems": {},
+                                "cpu_shares": {},
+                                "dockerfile": {},
+                                "extra_hosts": {
+                                    "maxItemsOne": false,
+                                    "elem": {}
+                                },
+                                "force_remove": {},
+                                "isolation": {},
+                                "label": {
+                                    "elem": {}
+                                },
+                                "labels": {
+                                    "elem": {}
+                                },
+                                "memory": {},
+                                "memory_swap": {},
+                                "network_mode": {},
+                                "no_cache": {},
+                                "platform": {},
+                                "pull_parent": {},
+                                "remote_context": {},
+                                "remove": {},
+                                "security_opt": {
+                                    "maxItemsOne": false,
+                                    "elem": {}
+                                },
+                                "session_id": {},
+                                "shm_size": {},
+                                "squash": {},
+                                "suppress_output": {},
+                                "tag": {
+                                    "maxItemsOne": false,
+                                    "elem": {}
+                                },
+                                "target": {},
+                                "ulimit": {
+                                    "maxItemsOne": false,
+                                    "elem": {
+                                        "fields": {
+                                            "hard": {},
+                                            "name": {},
+                                            "soft": {}
+                                        }
+                                    }
+                                },
+                                "version": {}
+                            }
+                        }
+                    },
+                    "force_remove": {},
+                    "id": {},
+                    "image_id": {},
+                    "keep_locally": {},
+                    "name": {},
+                    "platform": {},
+                    "pull_triggers": {
+                        "maxItemsOne": false,
+                        "elem": {}
+                    },
+                    "repo_digest": {},
+                    "triggers": {}
+                }
+            },
+            "docker_network": {
+                "current": "docker:index/network:Network",
+                "fields": {
+                    "attachable": {},
+                    "check_duplicate": {},
+                    "driver": {},
+                    "ingress": {},
+                    "internal": {},
+                    "ipam_config": {
+                        "maxItemsOne": false,
+                        "elem": {
+                            "fields": {
+                                "aux_address": {},
+                                "gateway": {},
+                                "ip_range": {},
+                                "subnet": {}
+                            }
+                        }
+                    },
+                    "ipam_driver": {},
+                    "ipam_options": {},
+                    "ipv6": {},
+                    "labels": {
+                        "maxItemsOne": false,
+                        "elem": {
+                            "fields": {
+                                "label": {},
+                                "value": {}
+                            }
+                        }
+                    },
+                    "name": {},
+                    "options": {},
+                    "scope": {}
+                }
+            },
+            "docker_plugin": {
+                "current": "docker:index/plugin:Plugin",
+                "fields": {
+                    "alias": {},
+                    "enable_timeout": {},
+                    "enabled": {},
+                    "env": {
+                        "maxItemsOne": false,
+                        "elem": {}
+                    },
+                    "force_destroy": {},
+                    "force_disable": {},
+                    "grant_all_permissions": {},
+                    "grant_permissions": {
+                        "maxItemsOne": false,
+                        "elem": {
+                            "fields": {
+                                "name": {},
+                                "value": {
+                                    "maxItemsOne": false,
+                                    "elem": {}
+                                }
+                            }
+                        }
+                    },
+                    "name": {},
+                    "plugin_reference": {}
+                }
+            },
+            "docker_registry_image": {
+                "current": "docker:index/registryImage:RegistryImage",
+                "fields": {
+                    "insecure_skip_verify": {},
+                    "keep_remotely": {},
+                    "name": {},
+                    "sha256_digest": {},
+                    "triggers": {}
+                }
+            },
+            "docker_secret": {
+                "current": "docker:index/secret:Secret",
+                "fields": {
+                    "data": {},
+                    "labels": {
+                        "maxItemsOne": false,
+                        "elem": {
+                            "fields": {
+                                "label": {},
+                                "value": {}
+                            }
+                        }
+                    },
+                    "name": {}
+                }
+            },
+            "docker_service": {
+                "current": "docker:index/service:Service",
+                "fields": {
+                    "auth": {
+                        "maxItemsOne": true,
+                        "elem": {
+                            "fields": {
+                                "password": {},
+                                "server_address": {},
+                                "username": {}
+                            }
+                        }
+                    },
+                    "converge_config": {
+                        "maxItemsOne": true,
+                        "elem": {
+                            "fields": {
+                                "delay": {},
+                                "timeout": {}
+                            }
+                        }
+                    },
+                    "endpoint_spec": {
+                        "maxItemsOne": true,
+                        "elem": {
+                            "fields": {
+                                "mode": {},
+                                "ports": {
+                                    "maxItemsOne": false,
+                                    "elem": {
+                                        "fields": {
+                                            "name": {},
+                                            "protocol": {},
+                                            "publish_mode": {},
+                                            "published_port": {},
+                                            "target_port": {}
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "labels": {
+                        "maxItemsOne": false,
+                        "elem": {
+                            "fields": {
+                                "label": {},
+                                "value": {}
+                            }
+                        }
+                    },
+                    "mode": {
+                        "maxItemsOne": true,
+                        "elem": {
+                            "fields": {
+                                "global": {},
+                                "replicated": {
+                                    "maxItemsOne": true,
+                                    "elem": {
+                                        "fields": {
+                                            "replicas": {}
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "name": {},
+                    "rollback_config": {
+                        "maxItemsOne": true,
+                        "elem": {
+                            "fields": {
+                                "delay": {},
+                                "failure_action": {},
+                                "max_failure_ratio": {},
+                                "monitor": {},
+                                "order": {},
+                                "parallelism": {}
+                            }
+                        }
+                    },
+                    "task_spec": {
+                        "maxItemsOne": true,
+                        "elem": {
+                            "fields": {
+                                "container_spec": {
+                                    "maxItemsOne": true,
+                                    "elem": {
+                                        "fields": {
+                                            "args": {
+                                                "maxItemsOne": false,
+                                                "elem": {}
+                                            },
+                                            "command": {
+                                                "maxItemsOne": false,
+                                                "elem": {}
+                                            },
+                                            "configs": {
+                                                "maxItemsOne": false,
+                                                "elem": {
+                                                    "fields": {
+                                                        "config_id": {},
+                                                        "config_name": {},
+                                                        "file_gid": {},
+                                                        "file_mode": {},
+                                                        "file_name": {},
+                                                        "file_uid": {}
+                                                    }
+                                                }
+                                            },
+                                            "dir": {},
+                                            "dns_config": {
+                                                "maxItemsOne": true,
+                                                "elem": {
+                                                    "fields": {
+                                                        "nameservers": {
+                                                            "maxItemsOne": false,
+                                                            "elem": {}
+                                                        },
+                                                        "options": {
+                                                            "maxItemsOne": false,
+                                                            "elem": {}
+                                                        },
+                                                        "search": {
+                                                            "maxItemsOne": false,
+                                                            "elem": {}
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            "env": {
+                                                "elem": {}
+                                            },
+                                            "groups": {
+                                                "maxItemsOne": false,
+                                                "elem": {}
+                                            },
+                                            "healthcheck": {
+                                                "maxItemsOne": true,
+                                                "elem": {
+                                                    "fields": {
+                                                        "interval": {},
+                                                        "retries": {},
+                                                        "start_period": {},
+                                                        "test": {
+                                                            "maxItemsOne": false,
+                                                            "elem": {}
+                                                        },
+                                                        "timeout": {}
+                                                    }
+                                                }
+                                            },
+                                            "hostname": {},
+                                            "hosts": {
+                                                "maxItemsOne": false,
+                                                "elem": {
+                                                    "fields": {
+                                                        "host": {},
+                                                        "ip": {}
+                                                    }
+                                                }
+                                            },
+                                            "image": {},
+                                            "isolation": {},
+                                            "labels": {
+                                                "maxItemsOne": false,
+                                                "elem": {
+                                                    "fields": {
+                                                        "label": {},
+                                                        "value": {}
+                                                    }
+                                                }
+                                            },
+                                            "mounts": {
+                                                "maxItemsOne": false,
+                                                "elem": {
+                                                    "fields": {
+                                                        "bind_options": {
+                                                            "maxItemsOne": true,
+                                                            "elem": {
+                                                                "fields": {
+                                                                    "propagation": {}
+                                                                }
+                                                            }
+                                                        },
+                                                        "read_only": {},
+                                                        "source": {},
+                                                        "target": {},
+                                                        "tmpfs_options": {
+                                                            "maxItemsOne": true,
+                                                            "elem": {
+                                                                "fields": {
+                                                                    "mode": {},
+                                                                    "size_bytes": {}
+                                                                }
+                                                            }
+                                                        },
+                                                        "type": {},
+                                                        "volume_options": {
+                                                            "maxItemsOne": true,
+                                                            "elem": {
+                                                                "fields": {
+                                                                    "driver_name": {},
+                                                                    "driver_options": {
+                                                                        "elem": {}
+                                                                    },
+                                                                    "labels": {
+                                                                        "maxItemsOne": false,
+                                                                        "elem": {
+                                                                            "fields": {
+                                                                                "label": {},
+                                                                                "value": {}
+                                                                            }
+                                                                        }
+                                                                    },
+                                                                    "no_copy": {}
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            "privileges": {
+                                                "maxItemsOne": true,
+                                                "elem": {
+                                                    "fields": {
+                                                        "credential_spec": {
+                                                            "maxItemsOne": true,
+                                                            "elem": {
+                                                                "fields": {
+                                                                    "file": {},
+                                                                    "registry": {}
+                                                                }
+                                                            }
+                                                        },
+                                                        "se_linux_context": {
+                                                            "maxItemsOne": true,
+                                                            "elem": {
+                                                                "fields": {
+                                                                    "disable": {},
+                                                                    "level": {},
+                                                                    "role": {},
+                                                                    "type": {},
+                                                                    "user": {}
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            "read_only": {},
+                                            "secrets": {
+                                                "maxItemsOne": false,
+                                                "elem": {
+                                                    "fields": {
+                                                        "file_gid": {},
+                                                        "file_mode": {},
+                                                        "file_name": {},
+                                                        "file_uid": {},
+                                                        "secret_id": {},
+                                                        "secret_name": {}
+                                                    }
+                                                }
+                                            },
+                                            "stop_grace_period": {},
+                                            "stop_signal": {},
+                                            "sysctl": {},
+                                            "user": {}
+                                        }
+                                    }
+                                },
+                                "force_update": {},
+                                "log_driver": {
+                                    "maxItemsOne": true,
+                                    "elem": {
+                                        "fields": {
+                                            "name": {},
+                                            "options": {
+                                                "elem": {}
+                                            }
+                                        }
+                                    }
+                                },
+                                "networks_advanced": {
+                                    "maxItemsOne": false,
+                                    "elem": {
+                                        "fields": {
+                                            "aliases": {
+                                                "maxItemsOne": false,
+                                                "elem": {}
+                                            },
+                                            "driver_opts": {
+                                                "maxItemsOne": false,
+                                                "elem": {}
+                                            },
+                                            "name": {}
+                                        }
+                                    }
+                                },
+                                "placement": {
+                                    "maxItemsOne": true,
+                                    "elem": {
+                                        "fields": {
+                                            "constraints": {
+                                                "maxItemsOne": false,
+                                                "elem": {}
+                                            },
+                                            "max_replicas": {},
+                                            "platforms": {
+                                                "maxItemsOne": false,
+                                                "elem": {
+                                                    "fields": {
+                                                        "architecture": {},
+                                                        "os": {}
+                                                    }
+                                                }
+                                            },
+                                            "prefs": {
+                                                "maxItemsOne": false,
+                                                "elem": {}
+                                            }
+                                        }
+                                    }
+                                },
+                                "resources": {
+                                    "maxItemsOne": true,
+                                    "elem": {
+                                        "fields": {
+                                            "limits": {
+                                                "maxItemsOne": true,
+                                                "elem": {
+                                                    "fields": {
+                                                        "memory_bytes": {},
+                                                        "nano_cpus": {}
+                                                    }
+                                                }
+                                            },
+                                            "reservation": {
+                                                "maxItemsOne": true,
+                                                "elem": {
+                                                    "fields": {
+                                                        "generic_resources": {
+                                                            "maxItemsOne": true,
+                                                            "elem": {
+                                                                "fields": {
+                                                                    "discrete_resources_spec": {
+                                                                        "maxItemsOne": false,
+                                                                        "elem": {}
+                                                                    },
+                                                                    "named_resources_spec": {
+                                                                        "maxItemsOne": false,
+                                                                        "elem": {}
+                                                                    }
+                                                                }
+                                                            }
+                                                        },
+                                                        "memory_bytes": {},
+                                                        "nano_cpus": {}
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "restart_policy": {
+                                    "maxItemsOne": true,
+                                    "elem": {
+                                        "fields": {
+                                            "condition": {},
+                                            "delay": {},
+                                            "max_attempts": {},
+                                            "window": {}
+                                        }
+                                    }
+                                },
+                                "runtime": {}
+                            }
+                        }
+                    },
+                    "update_config": {
+                        "maxItemsOne": true,
+                        "elem": {
+                            "fields": {
+                                "delay": {},
+                                "failure_action": {},
+                                "max_failure_ratio": {},
+                                "monitor": {},
+                                "order": {},
+                                "parallelism": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "docker_tag": {
+                "current": "docker:index/tag:Tag",
+                "fields": {
+                    "source_image": {},
+                    "source_image_id": {},
+                    "target_image": {}
+                }
+            },
+            "docker_volume": {
+                "current": "docker:index/volume:Volume",
+                "fields": {
+                    "driver": {},
+                    "driver_opts": {},
+                    "labels": {
+                        "maxItemsOne": false,
+                        "elem": {
+                            "fields": {
+                                "label": {},
+                                "value": {}
+                            }
+                        }
+                    },
+                    "mountpoint": {},
+                    "name": {}
+                }
+            }
+        },
+        "datasources": {
+            "docker_image": {
+                "current": "docker:index/getRemoteImage:getRemoteImage"
+            },
+            "docker_logs": {
+                "current": "docker:index/getLogs:getLogs"
+            },
+            "docker_network": {
+                "current": "docker:index/getNetwork:getNetwork"
+            },
+            "docker_plugin": {
+                "current": "docker:index/getPlugin:getPlugin"
+            },
+            "docker_registry_image": {
+                "current": "docker:index/getRegistryImage:getRegistryImage"
+            }
+        }
+    },
+    "renames": {
+        "resources": {
+            "docker:index/container:Container": "docker_container",
+            "docker:index/network:Network": "docker_network",
+            "docker:index/plugin:Plugin": "docker_plugin",
+            "docker:index/registryImage:RegistryImage": "docker_registry_image",
+            "docker:index/remoteImage:RemoteImage": "docker_image",
+            "docker:index/secret:Secret": "docker_secret",
+            "docker:index/service:Service": "docker_service",
+            "docker:index/serviceConfig:ServiceConfig": "docker_config",
+            "docker:index/tag:Tag": "docker_tag",
+            "docker:index/volume:Volume": "docker_volume"
+        },
+        "functions": {
+            "docker:index/getLogs:getLogs": "docker_logs",
+            "docker:index/getNetwork:getNetwork": "docker_network",
+            "docker:index/getPlugin:getPlugin": "docker_plugin",
+            "docker:index/getRegistryImage:getRegistryImage": "docker_registry_image",
+            "docker:index/getRemoteImage:getRemoteImage": "docker_image"
+        },
+        "renamedProperties": {
+            "docker:config/registryAuth:registryAuth": {
+                "authDisabled": "auth_disabled",
+                "configFile": "config_file",
+                "configFileContent": "config_file_content"
+            },
+            "docker:index/ContainerCapabilities:ContainerCapabilities": {
+                "adds": "add",
+                "drops": "drop"
+            },
+            "docker:index/ContainerDevice:ContainerDevice": {
+                "containerPath": "container_path",
+                "hostPath": "host_path"
+            },
+            "docker:index/ContainerHealthcheck:ContainerHealthcheck": {
+                "startPeriod": "start_period",
+                "tests": "test"
+            },
+            "docker:index/ContainerMount:ContainerMount": {
+                "bindOptions": "bind_options",
+                "readOnly": "read_only",
+                "tmpfsOptions": "tmpfs_options",
+                "volumeOptions": "volume_options"
+            },
+            "docker:index/ContainerMountTmpfsOptions:ContainerMountTmpfsOptions": {
+                "sizeBytes": "size_bytes"
+            },
+            "docker:index/ContainerMountVolumeOptions:ContainerMountVolumeOptions": {
+                "driverName": "driver_name",
+                "driverOptions": "driver_options",
+                "noCopy": "no_copy"
+            },
+            "docker:index/ContainerNetworkData:ContainerNetworkData": {
+                "globalIpv6Address": "global_ipv6_address",
+                "globalIpv6PrefixLength": "global_ipv6_prefix_length",
+                "ipAddress": "ip_address",
+                "ipPrefixLength": "ip_prefix_length",
+                "ipv6Gateway": "ipv6_gateway",
+                "macAddress": "mac_address",
+                "networkName": "network_name"
+            },
+            "docker:index/ContainerNetworksAdvanced:ContainerNetworksAdvanced": {
+                "ipv4Address": "ipv4_address",
+                "ipv6Address": "ipv6_address"
+            },
+            "docker:index/ContainerUpload:ContainerUpload": {
+                "contentBase64": "content_base64",
+                "sourceHash": "source_hash"
+            },
+            "docker:index/ContainerVolume:ContainerVolume": {
+                "containerPath": "container_path",
+                "fromContainer": "from_container",
+                "hostPath": "host_path",
+                "readOnly": "read_only",
+                "volumeName": "volume_name"
+            },
+            "docker:index/NetworkIpamConfig:NetworkIpamConfig": {
+                "auxAddress": "aux_address",
+                "ipRange": "ip_range"
+            },
+            "docker:index/PluginGrantPermission:PluginGrantPermission": {
+                "values": "value"
+            },
+            "docker:index/ProviderRegistryAuth:ProviderRegistryAuth": {
+                "authDisabled": "auth_disabled",
+                "configFile": "config_file",
+                "configFileContent": "config_file_content"
+            },
+            "docker:index/RemoteImageBuild:RemoteImageBuild": {
+                "authConfigs": "auth_config",
+                "buildArg": "build_arg",
+                "buildArgs": "build_args",
+                "buildId": "build_id",
+                "cacheFroms": "cache_from",
+                "cgroupParent": "cgroup_parent",
+                "cpuPeriod": "cpu_period",
+                "cpuQuota": "cpu_quota",
+                "cpuSetCpus": "cpu_set_cpus",
+                "cpuSetMems": "cpu_set_mems",
+                "cpuShares": "cpu_shares",
+                "extraHosts": "extra_hosts",
+                "forceRemove": "force_remove",
+                "memorySwap": "memory_swap",
+                "networkMode": "network_mode",
+                "noCache": "no_cache",
+                "pullParent": "pull_parent",
+                "remoteContext": "remote_context",
+                "securityOpts": "security_opt",
+                "sessionId": "session_id",
+                "shmSize": "shm_size",
+                "suppressOutput": "suppress_output",
+                "tags": "tag",
+                "ulimits": "ulimit"
+            },
+            "docker:index/RemoteImageBuildAuthConfig:RemoteImageBuildAuthConfig": {
+                "hostName": "host_name",
+                "identityToken": "identity_token",
+                "registryToken": "registry_token",
+                "serverAddress": "server_address",
+                "userName": "user_name"
+            },
+            "docker:index/ServiceAuth:ServiceAuth": {
+                "serverAddress": "server_address"
+            },
+            "docker:index/ServiceEndpointSpecPort:ServiceEndpointSpecPort": {
+                "publishMode": "publish_mode",
+                "publishedPort": "published_port",
+                "targetPort": "target_port"
+            },
+            "docker:index/ServiceRollbackConfig:ServiceRollbackConfig": {
+                "failureAction": "failure_action",
+                "maxFailureRatio": "max_failure_ratio"
+            },
+            "docker:index/ServiceTaskSpec:ServiceTaskSpec": {
+                "containerSpec": "container_spec",
+                "forceUpdate": "force_update",
+                "logDriver": "log_driver",
+                "networksAdvanceds": "networks_advanced",
+                "restartPolicy": "restart_policy"
+            },
+            "docker:index/ServiceTaskSpecContainerSpec:ServiceTaskSpecContainerSpec": {
+                "commands": "command",
+                "dnsConfig": "dns_config",
+                "readOnly": "read_only",
+                "stopGracePeriod": "stop_grace_period",
+                "stopSignal": "stop_signal"
+            },
+            "docker:index/ServiceTaskSpecContainerSpecConfig:ServiceTaskSpecContainerSpecConfig": {
+                "configId": "config_id",
+                "configName": "config_name",
+                "fileGid": "file_gid",
+                "fileMode": "file_mode",
+                "fileName": "file_name",
+                "fileUid": "file_uid"
+            },
+            "docker:index/ServiceTaskSpecContainerSpecDnsConfig:ServiceTaskSpecContainerSpecDnsConfig": {
+                "searches": "search"
+            },
+            "docker:index/ServiceTaskSpecContainerSpecHealthcheck:ServiceTaskSpecContainerSpecHealthcheck": {
+                "startPeriod": "start_period",
+                "tests": "test"
+            },
+            "docker:index/ServiceTaskSpecContainerSpecMount:ServiceTaskSpecContainerSpecMount": {
+                "bindOptions": "bind_options",
+                "readOnly": "read_only",
+                "tmpfsOptions": "tmpfs_options",
+                "volumeOptions": "volume_options"
+            },
+            "docker:index/ServiceTaskSpecContainerSpecMountTmpfsOptions:ServiceTaskSpecContainerSpecMountTmpfsOptions": {
+                "sizeBytes": "size_bytes"
+            },
+            "docker:index/ServiceTaskSpecContainerSpecMountVolumeOptions:ServiceTaskSpecContainerSpecMountVolumeOptions": {
+                "driverName": "driver_name",
+                "driverOptions": "driver_options",
+                "noCopy": "no_copy"
+            },
+            "docker:index/ServiceTaskSpecContainerSpecPrivileges:ServiceTaskSpecContainerSpecPrivileges": {
+                "credentialSpec": "credential_spec",
+                "seLinuxContext": "se_linux_context"
+            },
+            "docker:index/ServiceTaskSpecContainerSpecSecret:ServiceTaskSpecContainerSpecSecret": {
+                "fileGid": "file_gid",
+                "fileMode": "file_mode",
+                "fileName": "file_name",
+                "fileUid": "file_uid",
+                "secretId": "secret_id",
+                "secretName": "secret_name"
+            },
+            "docker:index/ServiceTaskSpecNetworksAdvanced:ServiceTaskSpecNetworksAdvanced": {
+                "driverOpts": "driver_opts"
+            },
+            "docker:index/ServiceTaskSpecPlacement:ServiceTaskSpecPlacement": {
+                "maxReplicas": "max_replicas"
+            },
+            "docker:index/ServiceTaskSpecResourcesLimits:ServiceTaskSpecResourcesLimits": {
+                "memoryBytes": "memory_bytes",
+                "nanoCpus": "nano_cpus"
+            },
+            "docker:index/ServiceTaskSpecResourcesReservation:ServiceTaskSpecResourcesReservation": {
+                "genericResources": "generic_resources",
+                "memoryBytes": "memory_bytes",
+                "nanoCpus": "nano_cpus"
+            },
+            "docker:index/ServiceTaskSpecResourcesReservationGenericResources:ServiceTaskSpecResourcesReservationGenericResources": {
+                "discreteResourcesSpecs": "discrete_resources_spec",
+                "namedResourcesSpecs": "named_resources_spec"
+            },
+            "docker:index/ServiceTaskSpecRestartPolicy:ServiceTaskSpecRestartPolicy": {
+                "maxAttempts": "max_attempts"
+            },
+            "docker:index/ServiceUpdateConfig:ServiceUpdateConfig": {
+                "failureAction": "failure_action",
+                "maxFailureRatio": "max_failure_ratio"
+            },
+            "docker:index/container:Container": {
+                "cgroupnsMode": "cgroupns_mode",
+                "containerLogs": "container_logs",
+                "containerReadRefreshTimeoutMilliseconds": "container_read_refresh_timeout_milliseconds",
+                "cpuSet": "cpu_set",
+                "cpuShares": "cpu_shares",
+                "destroyGraceSeconds": "destroy_grace_seconds",
+                "dnsOpts": "dns_opts",
+                "dnsSearches": "dns_search",
+                "entrypoints": "entrypoint",
+                "envs": "env",
+                "exitCode": "exit_code",
+                "groupAdds": "group_add",
+                "hosts": "host",
+                "ipcMode": "ipc_mode",
+                "logDriver": "log_driver",
+                "logOpts": "log_opts",
+                "maxRetryCount": "max_retry_count",
+                "memorySwap": "memory_swap",
+                "mustRun": "must_run",
+                "networkDatas": "network_data",
+                "networkMode": "network_mode",
+                "networksAdvanced": "networks_advanced",
+                "pidMode": "pid_mode",
+                "publishAllPorts": "publish_all_ports",
+                "readOnly": "read_only",
+                "removeVolumes": "remove_volumes",
+                "securityOpts": "security_opts",
+                "shmSize": "shm_size",
+                "stdinOpen": "stdin_open",
+                "stopSignal": "stop_signal",
+                "stopTimeout": "stop_timeout",
+                "storageOpts": "storage_opts",
+                "ulimits": "ulimit",
+                "uploads": "upload",
+                "usernsMode": "userns_mode",
+                "waitTimeout": "wait_timeout",
+                "workingDir": "working_dir"
+            },
+            "docker:index/getLogs:getLogs": {
+                "discardHeaders": "discard_headers",
+                "logsListStringEnabled": "logs_list_string_enabled",
+                "logsListStrings": "logs_list_string",
+                "showStderr": "show_stderr",
+                "showStdout": "show_stdout"
+            },
+            "docker:index/getNetwork:getNetwork": {
+                "ipamConfigs": "ipam_config"
+            },
+            "docker:index/getNetworkIpamConfig:getNetworkIpamConfig": {
+                "auxAddress": "aux_address",
+                "ipRange": "ip_range"
+            },
+            "docker:index/getPlugin:getPlugin": {
+                "envs": "env",
+                "grantAllPermissions": "grant_all_permissions",
+                "pluginReference": "plugin_reference"
+            },
+            "docker:index/getRegistryImage:getRegistryImage": {
+                "insecureSkipVerify": "insecure_skip_verify",
+                "sha256Digest": "sha256_digest"
+            },
+            "docker:index/getRemoteImage:getRemoteImage": {
+                "repoDigest": "repo_digest"
+            },
+            "docker:index/network:Network": {
+                "checkDuplicate": "check_duplicate",
+                "ipamConfigs": "ipam_config",
+                "ipamDriver": "ipam_driver",
+                "ipamOptions": "ipam_options"
+            },
+            "docker:index/plugin:Plugin": {
+                "enableTimeout": "enable_timeout",
+                "envs": "env",
+                "forceDestroy": "force_destroy",
+                "forceDisable": "force_disable",
+                "grantAllPermissions": "grant_all_permissions",
+                "grantPermissions": "grant_permissions",
+                "pluginReference": "plugin_reference"
+            },
+            "docker:index/registryImage:RegistryImage": {
+                "insecureSkipVerify": "insecure_skip_verify",
+                "keepRemotely": "keep_remotely",
+                "sha256Digest": "sha256_digest"
+            },
+            "docker:index/remoteImage:RemoteImage": {
+                "forceRemove": "force_remove",
+                "imageId": "image_id",
+                "keepLocally": "keep_locally",
+                "pullTriggers": "pull_triggers",
+                "repoDigest": "repo_digest"
+            },
+            "docker:index/service:Service": {
+                "convergeConfig": "converge_config",
+                "endpointSpec": "endpoint_spec",
+                "rollbackConfig": "rollback_config",
+                "taskSpec": "task_spec",
+                "updateConfig": "update_config"
+            },
+            "docker:index/tag:Tag": {
+                "sourceImage": "source_image",
+                "sourceImageId": "source_image_id",
+                "targetImage": "target_image"
+            },
+            "docker:index/volume:Volume": {
+                "driverOpts": "driver_opts"
+            },
+            "docker:index:Provider": {
+                "caMaterial": "ca_material",
+                "certMaterial": "cert_material",
+                "certPath": "cert_path",
+                "keyMaterial": "key_material",
+                "registryAuth": "registry_auth",
+                "sshOpts": "ssh_opts"
+            }
+        },
+        "renamedConfigProperties": {
+            "caMaterial": "ca_material",
+            "certMaterial": "cert_material",
+            "certPath": "cert_path",
+            "keyMaterial": "key_material",
+            "registryAuth": "registry_auth",
+            "sshOpts": "ssh_opts"
+        }
+    }
+}
