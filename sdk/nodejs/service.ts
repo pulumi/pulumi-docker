@@ -131,6 +131,9 @@ export class Service extends pulumi.CustomResource {
             resourceInputs["updateConfig"] = state ? state.updateConfig : undefined;
         } else {
             const args = argsOrState as ServiceArgs | undefined;
+            if ((!args || args.name === undefined) && !opts.urn) {
+                throw new Error("Missing required property 'name'");
+            }
             if ((!args || args.taskSpec === undefined) && !opts.urn) {
                 throw new Error("Missing required property 'taskSpec'");
             }
@@ -218,7 +221,7 @@ export interface ServiceArgs {
     /**
      * Name of the service
      */
-    name?: pulumi.Input<string>;
+    name: pulumi.Input<string>;
     /**
      * Specification for the rollback strategy of the service
      */

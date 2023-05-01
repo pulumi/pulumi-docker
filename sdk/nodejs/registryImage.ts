@@ -16,12 +16,15 @@ import * as utilities from "./utilities";
  * import * as pulumi from "@pulumi/pulumi";
  * import * as docker from "@pulumi/docker";
  *
- * const helloworld = new docker.RegistryImage("helloworld", {keepRemotely: true});
  * const image = new docker.RemoteImage("image", {
  *     name: "registry.com/somename:1.0",
  *     build: {
  *         context: `${path.cwd}/absolutePathToContextFolder`,
  *     },
+ * });
+ * const helloworld = new docker.RegistryImage("helloworld", {
+ *     name: image.name,
+ *     keepRemotely: true,
  * });
  * ```
  */
@@ -81,7 +84,7 @@ export class RegistryImage extends pulumi.CustomResource {
      * @param args The arguments to use to populate this resource's properties.
      * @param opts A bag of options that control this resource's behavior.
      */
-    constructor(name: string, args?: RegistryImageArgs, opts?: pulumi.CustomResourceOptions)
+    constructor(name: string, args: RegistryImageArgs, opts?: pulumi.CustomResourceOptions)
     constructor(name: string, argsOrState?: RegistryImageArgs | RegistryImageState, opts?: pulumi.CustomResourceOptions) {
         let resourceInputs: pulumi.Inputs = {};
         opts = opts || {};
@@ -94,6 +97,9 @@ export class RegistryImage extends pulumi.CustomResource {
             resourceInputs["triggers"] = state ? state.triggers : undefined;
         } else {
             const args = argsOrState as RegistryImageArgs | undefined;
+            if ((!args || args.name === undefined) && !opts.urn) {
+                throw new Error("Missing required property 'name'");
+            }
             resourceInputs["insecureSkipVerify"] = args ? args.insecureSkipVerify : undefined;
             resourceInputs["keepRemotely"] = args ? args.keepRemotely : undefined;
             resourceInputs["name"] = args ? args.name : undefined;
@@ -146,7 +152,7 @@ export interface RegistryImageArgs {
     /**
      * The name of the Docker image.
      */
-    name?: pulumi.Input<string>;
+    name: pulumi.Input<string>;
     /**
      * A map of arbitrary strings that, when changed, will force the `docker.RegistryImage` resource to be replaced. This can be used to repush a local image
      */

@@ -7,6 +7,7 @@ import (
 	"context"
 	"reflect"
 
+	"errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
@@ -27,7 +28,9 @@ import (
 //
 //	func main() {
 //		pulumi.Run(func(ctx *pulumi.Context) error {
-//			_, err := docker.NewNetwork(ctx, "privateNetwork", nil)
+//			_, err := docker.NewNetwork(ctx, "privateNetwork", &docker.NetworkArgs{
+//				Name: pulumi.String("my_network"),
+//			})
 //			if err != nil {
 //				return err
 //			}
@@ -83,9 +86,12 @@ type Network struct {
 func NewNetwork(ctx *pulumi.Context,
 	name string, args *NetworkArgs, opts ...pulumi.ResourceOption) (*Network, error) {
 	if args == nil {
-		args = &NetworkArgs{}
+		return nil, errors.New("missing one or more required arguments")
 	}
 
+	if args.Name == nil {
+		return nil, errors.New("invalid value for required argument 'Name'")
+	}
 	var resource Network
 	err := ctx.RegisterResource("docker:index/network:Network", name, args, &resource, opts...)
 	if err != nil {
@@ -191,7 +197,7 @@ type networkArgs struct {
 	// User-defined key/value metadata
 	Labels []NetworkLabel `pulumi:"labels"`
 	// The name of the Docker network.
-	Name *string `pulumi:"name"`
+	Name string `pulumi:"name"`
 	// Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
 	Options map[string]interface{} `pulumi:"options"`
 }
@@ -219,7 +225,7 @@ type NetworkArgs struct {
 	// User-defined key/value metadata
 	Labels NetworkLabelArrayInput
 	// The name of the Docker network.
-	Name pulumi.StringPtrInput
+	Name pulumi.StringInput
 	// Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
 	Options pulumi.MapInput
 }

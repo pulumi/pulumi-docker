@@ -143,15 +143,15 @@ public final class PluginArgs extends com.pulumi.resources.ResourceArgs {
      * Docker Plugin name
      * 
      */
-    @Import(name="name")
-    private @Nullable Output<String> name;
+    @Import(name="name", required=true)
+    private Output<String> name;
 
     /**
      * @return Docker Plugin name
      * 
      */
-    public Optional<Output<String>> name() {
-        return Optional.ofNullable(this.name);
+    public Output<String> name() {
+        return this.name;
     }
 
     private PluginArgs() {}
@@ -380,7 +380,7 @@ public final class PluginArgs extends com.pulumi.resources.ResourceArgs {
          * @return builder
          * 
          */
-        public Builder name(@Nullable Output<String> name) {
+        public Builder name(Output<String> name) {
             $.name = name;
             return this;
         }
@@ -396,6 +396,7 @@ public final class PluginArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         public PluginArgs build() {
+            $.name = Objects.requireNonNull($.name, "expected parameter 'name' to be non-null");
             return $;
         }
     }

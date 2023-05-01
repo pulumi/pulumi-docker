@@ -74,6 +74,9 @@ export class Secret extends pulumi.CustomResource {
             if ((!args || args.data === undefined) && !opts.urn) {
                 throw new Error("Missing required property 'data'");
             }
+            if ((!args || args.name === undefined) && !opts.urn) {
+                throw new Error("Missing required property 'name'");
+            }
             resourceInputs["data"] = args?.data ? pulumi.secret(args.data) : undefined;
             resourceInputs["labels"] = args ? args.labels : undefined;
             resourceInputs["name"] = args ? args.name : undefined;
@@ -118,5 +121,5 @@ export interface SecretArgs {
     /**
      * User-defined name of the secret
      */
-    name?: pulumi.Input<string>;
+    name: pulumi.Input<string>;
 }

@@ -17,7 +17,7 @@ import * as utilities from "./utilities";
  * import * as pulumi from "@pulumi/pulumi";
  * import * as docker from "@pulumi/docker";
  *
- * const privateNetwork = new docker.Network("privateNetwork", {});
+ * const privateNetwork = new docker.Network("privateNetwork", {name: "my_network"});
  * ```
  *
  * ## Import
@@ -118,7 +118,7 @@ export class Network extends pulumi.CustomResource {
      * @param args The arguments to use to populate this resource's properties.
      * @param opts A bag of options that control this resource's behavior.
      */
-    constructor(name: string, args?: NetworkArgs, opts?: pulumi.CustomResourceOptions)
+    constructor(name: string, args: NetworkArgs, opts?: pulumi.CustomResourceOptions)
     constructor(name: string, argsOrState?: NetworkArgs | NetworkState, opts?: pulumi.CustomResourceOptions) {
         let resourceInputs: pulumi.Inputs = {};
         opts = opts || {};
@@ -139,6 +139,9 @@ export class Network extends pulumi.CustomResource {
             resourceInputs["scope"] = state ? state.scope : undefined;
         } else {
             const args = argsOrState as NetworkArgs | undefined;
+            if ((!args || args.name === undefined) && !opts.urn) {
+                throw new Error("Missing required property 'name'");
+            }
             resourceInputs["attachable"] = args ? args.attachable : undefined;
             resourceInputs["checkDuplicate"] = args ? args.checkDuplicate : undefined;
             resourceInputs["driver"] = args ? args.driver : undefined;
@@ -263,7 +266,7 @@ export interface NetworkArgs {
     /**
      * The name of the Docker network.
      */
-    name?: pulumi.Input<string>;
+    name: pulumi.Input<string>;
     /**
      * Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
      */

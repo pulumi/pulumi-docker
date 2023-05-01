@@ -27,7 +27,9 @@ import (
 //
 //	func main() {
 //		pulumi.Run(func(ctx *pulumi.Context) error {
-//			_, err := docker.NewVolume(ctx, "sharedVolume", nil)
+//			_, err := docker.NewVolume(ctx, "sharedVolume", &docker.VolumeArgs{
+//				Name: pulumi.String("shared_volume"),
+//			})
 //			if err != nil {
 //				return err
 //			}

@@ -30,11 +30,11 @@ import javax.annotation.Nullable;
  * import com.pulumi.Context;
  * import com.pulumi.Pulumi;
  * import com.pulumi.core.Output;
- * import com.pulumi.docker.RegistryImage;
- * import com.pulumi.docker.RegistryImageArgs;
  * import com.pulumi.docker.RemoteImage;
  * import com.pulumi.docker.RemoteImageArgs;
  * import com.pulumi.docker.inputs.RemoteImageBuildArgs;
+ * import com.pulumi.docker.RegistryImage;
+ * import com.pulumi.docker.RegistryImageArgs;
  * import java.util.List;
  * import java.util.ArrayList;
  * import java.util.Map;
@@ -48,15 +48,16 @@ import javax.annotation.Nullable;
  *     }
  * 
  *     public static void stack(Context ctx) {
- *         var helloworld = new RegistryImage(&#34;helloworld&#34;, RegistryImageArgs.builder()        
- *             .keepRemotely(true)
- *             .build());
- * 
  *         var image = new RemoteImage(&#34;image&#34;, RemoteImageArgs.builder()        
  *             .name(&#34;registry.com/somename:1.0&#34;)
  *             .build(RemoteImageBuildArgs.builder()
  *                 .context(String.format(&#34;%s/absolutePathToContextFolder&#34;, path.cwd()))
  *                 .build())
+ *             .build());
+ * 
+ *         var helloworld = new RegistryImage(&#34;helloworld&#34;, RegistryImageArgs.builder()        
+ *             .name(image.name())
+ *             .keepRemotely(true)
  *             .build());
  * 
  *     }
@@ -149,7 +150,7 @@ public class RegistryImage extends com.pulumi.resources.CustomResource {
      * @param name The _unique_ name of the resulting resource.
      * @param args The arguments to use to populate this resource's properties.
      */
-    public RegistryImage(String name, @Nullable RegistryImageArgs args) {
+    public RegistryImage(String name, RegistryImageArgs args) {
         this(name, args, null);
     }
     /**
@@ -158,7 +159,7 @@ public class RegistryImage extends com.pulumi.resources.CustomResource {
      * @param args The arguments to use to populate this resource's properties.
      * @param options A bag of options that control this resource's behavior.
      */
-    public RegistryImage(String name, @Nullable RegistryImageArgs args, @Nullable com.pulumi.resources.CustomResourceOptions options) {
+    public RegistryImage(String name, RegistryImageArgs args, @Nullable com.pulumi.resources.CustomResourceOptions options) {
         super("docker:index/registryImage:RegistryImage", name, args == null ? RegistryImageArgs.Empty : args, makeResourceOptions(options, Codegen.empty()));
     }
 

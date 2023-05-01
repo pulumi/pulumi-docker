@@ -35,6 +35,7 @@ namespace Pulumi.Docker
     ///         ForceDestroy = true,
     ///         ForceDisable = true,
     ///         GrantAllPermissions = true,
+    ///         Name = "tiborvass/sample-volume-plugin",
     ///     });
     /// 
     /// });
@@ -119,7 +120,7 @@ namespace Pulumi.Docker
         /// <param name="name">The unique name of the resource</param>
         /// <param name="args">The arguments used to populate this resource's properties</param>
         /// <param name="options">A bag of options that control this resource's behavior</param>
-        public Plugin(string name, PluginArgs? args = null, CustomResourceOptions? options = null)
+        public Plugin(string name, PluginArgs args, CustomResourceOptions? options = null)
             : base("docker:index/plugin:Plugin", name, args ?? new PluginArgs(), MakeResourceOptions(options, ""))
         {
         }
@@ -220,8 +221,8 @@ namespace Pulumi.Docker
         /// <summary>
         /// Docker Plugin name
         /// </summary>
-        [Input("name")]
-        public Input<string>? Name { get; set; }
+        [Input("name", required: true)]
+        public Input<string> Name { get; set; } = null!;
 
         public PluginArgs()
         {

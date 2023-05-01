@@ -16,27 +16,28 @@ __all__ = ['ServiceArgs', 'Service']
 @pulumi.input_type
 class ServiceArgs:
     def __init__(__self__, *,
+                 name: pulumi.Input[str],
                  task_spec: pulumi.Input['ServiceTaskSpecArgs'],
                  auth: Optional[pulumi.Input['ServiceAuthArgs']] = None,
                  converge_config: Optional[pulumi.Input['ServiceConvergeConfigArgs']] = None,
                  endpoint_spec: Optional[pulumi.Input['ServiceEndpointSpecArgs']] = None,
                  labels: Optional[pulumi.Input[Sequence[pulumi.Input['ServiceLabelArgs']]]] = None,
                  mode: Optional[pulumi.Input['ServiceModeArgs']] = None,
-                 name: Optional[pulumi.Input[str]] = None,
                  rollback_config: Optional[pulumi.Input['ServiceRollbackConfigArgs']] = None,
                  update_config: Optional[pulumi.Input['ServiceUpdateConfigArgs']] = None):
         """
         The set of arguments for constructing a Service resource.
+        :param pulumi.Input[str] name: Name of the service
         :param pulumi.Input['ServiceTaskSpecArgs'] task_spec: User modifiable task configuration
         :param pulumi.Input['ServiceAuthArgs'] auth: Configuration for the authentication for pulling the images of the service
         :param pulumi.Input['ServiceConvergeConfigArgs'] converge_config: A configuration to ensure that a service converges aka reaches the desired that of all task up and running
         :param pulumi.Input['ServiceEndpointSpecArgs'] endpoint_spec: Properties that can be configured to access and load balance a service
         :param pulumi.Input[Sequence[pulumi.Input['ServiceLabelArgs']]] labels: User-defined key/value metadata
         :param pulumi.Input['ServiceModeArgs'] mode: Scheduling mode for the service
-        :param pulumi.Input[str] name: Name of the service
         :param pulumi.Input['ServiceRollbackConfigArgs'] rollback_config: Specification for the rollback strategy of the service
         :param pulumi.Input['ServiceUpdateConfigArgs'] update_config: Specification for the update strategy of the service
         """
+        pulumi.set(__self__, "name", name)
         pulumi.set(__self__, "task_spec", task_spec)
         if auth is not None:
             pulumi.set(__self__, "auth", auth)
@@ -48,12 +49,22 @@ class ServiceArgs:
             pulumi.set(__self__, "labels", labels)
         if mode is not None:
             pulumi.set(__self__, "mode", mode)
-        if name is not None:
-            pulumi.set(__self__, "name", name)
         if rollback_config is not None:
             pulumi.set(__self__, "rollback_config", rollback_config)
         if update_config is not None:
             pulumi.set(__self__, "update_config", update_config)
+
+    @property
+    @pulumi.getter
+    def name(self) -> pulumi.Input[str]:
+        """
+        Name of the service
+        """
+        return pulumi.get(self, "name")
+
+    @name.setter
+    def name(self, value: pulumi.Input[str]):
+        pulumi.set(self, "name", value)
 
     @property
     @pulumi.getter(name="taskSpec")
@@ -126,18 +137,6 @@ class ServiceArgs:
     @mode.setter
     def mode(self, value: Optional[pulumi.Input['ServiceModeArgs']]):
         pulumi.set(self, "mode", value)
-
-    @property
-    @pulumi.getter
-    def name(self) -> Optional[pulumi.Input[str]]:
-        """
-        Name of the service
-        """
-        return pulumi.get(self, "name")
-
-    @name.setter
-    def name(self, value: Optional[pulumi.Input[str]]):
-        pulumi.set(self, "name", value)
 
     @property
     @pulumi.getter(name="rollbackConfig")
@@ -457,6 +456,8 @@ class Service(pulumi.CustomResource):
             __props__.__dict__["endpoint_spec"] = endpoint_spec
             __props__.__dict__["labels"] = labels
             __props__.__dict__["mode"] = mode
+            if name is None and not opts.urn:
+                raise TypeError("Missing required property 'name'")
             __props__.__dict__["name"] = name
             __props__.__dict__["rollback_config"] = rollback_config
             if task_spec is None and not opts.urn:

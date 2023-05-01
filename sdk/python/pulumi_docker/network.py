@@ -16,6 +16,7 @@ __all__ = ['NetworkArgs', 'Network']
 @pulumi.input_type
 class NetworkArgs:
     def __init__(__self__, *,
+                 name: pulumi.Input[str],
                  attachable: Optional[pulumi.Input[bool]] = None,
                  check_duplicate: Optional[pulumi.Input[bool]] = None,
                  driver: Optional[pulumi.Input[str]] = None,
@@ -26,10 +27,10 @@ class NetworkArgs:
                  ipam_options: Optional[pulumi.Input[Mapping[str, Any]]] = None,
                  ipv6: Optional[pulumi.Input[bool]] = None,
                  labels: Optional[pulumi.Input[Sequence[pulumi.Input['NetworkLabelArgs']]]] = None,
-                 name: Optional[pulumi.Input[str]] = None,
                  options: Optional[pulumi.Input[Mapping[str, Any]]] = None):
         """
         The set of arguments for constructing a Network resource.
+        :param pulumi.Input[str] name: The name of the Docker network.
         :param pulumi.Input[bool] attachable: Enable manual container attachment to the network.
         :param pulumi.Input[bool] check_duplicate: Requests daemon to check for networks with same name.
         :param pulumi.Input[str] driver: The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
@@ -40,9 +41,9 @@ class NetworkArgs:
         :param pulumi.Input[Mapping[str, Any]] ipam_options: Provide explicit options to the IPAM driver. Valid options vary with `ipam_driver` and refer to that driver's documentation for more details.
         :param pulumi.Input[bool] ipv6: Enable IPv6 networking. Defaults to `false`.
         :param pulumi.Input[Sequence[pulumi.Input['NetworkLabelArgs']]] labels: User-defined key/value metadata
-        :param pulumi.Input[str] name: The name of the Docker network.
         :param pulumi.Input[Mapping[str, Any]] options: Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
         """
+        pulumi.set(__self__, "name", name)
         if attachable is not None:
             pulumi.set(__self__, "attachable", attachable)
         if check_duplicate is not None:
@@ -63,10 +64,20 @@ class NetworkArgs:
             pulumi.set(__self__, "ipv6", ipv6)
         if labels is not None:
             pulumi.set(__self__, "labels", labels)
-        if name is not None:
-            pulumi.set(__self__, "name", name)
         if options is not None:
             pulumi.set(__self__, "options", options)
+
+    @property
+    @pulumi.getter
+    def name(self) -> pulumi.Input[str]:
+        """
+        The name of the Docker network.
+        """
+        return pulumi.get(self, "name")
+
+    @name.setter
+    def name(self, value: pulumi.Input[str]):
+        pulumi.set(self, "name", value)
 
     @property
     @pulumi.getter
@@ -187,18 +198,6 @@ class NetworkArgs:
     @labels.setter
     def labels(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['NetworkLabelArgs']]]]):
         pulumi.set(self, "labels", value)
-
-    @property
-    @pulumi.getter
-    def name(self) -> Optional[pulumi.Input[str]]:
-        """
-        The name of the Docker network.
-        """
-        return pulumi.get(self, "name")
-
-    @name.setter
-    def name(self, value: Optional[pulumi.Input[str]]):
-        pulumi.set(self, "name", value)
 
     @property
     @pulumi.getter
@@ -457,7 +456,7 @@ class Network(pulumi.CustomResource):
         import pulumi
         import pulumi_docker as docker
 
-        private_network = docker.Network("privateNetwork")
+        private_network = docker.Network("privateNetwork", name="my_network")
         ```
 
         ## Import
@@ -489,7 +488,7 @@ class Network(pulumi.CustomResource):
     @overload
     def __init__(__self__,
                  resource_name: str,
-                 args: Optional[NetworkArgs] = None,
+                 args: NetworkArgs,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
         <!-- Bug: Type and Name are switched -->
@@ -501,7 +500,7 @@ class Network(pulumi.CustomResource):
         import pulumi
         import pulumi_docker as docker
 
-        private_network = docker.Network("privateNetwork")
+        private_network = docker.Network("privateNetwork", name="my_network")
         ```
 
         ## Import
@@ -560,6 +559,8 @@ class Network(pulumi.CustomResource):
             __props__.__dict__["ipam_options"] = ipam_options
             __props__.__dict__["ipv6"] = ipv6
             __props__.__dict__["labels"] = labels
+            if name is None and not opts.urn:
+                raise TypeError("Missing required property 'name'")
             __props__.__dict__["name"] = name
             __props__.__dict__["options"] = options
             __props__.__dict__["scope"] = None

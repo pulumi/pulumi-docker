@@ -15,15 +15,14 @@ __all__ = ['ServiceConfigArgs', 'ServiceConfig']
 class ServiceConfigArgs:
     def __init__(__self__, *,
                  data: pulumi.Input[str],
-                 name: Optional[pulumi.Input[str]] = None):
+                 name: pulumi.Input[str]):
         """
         The set of arguments for constructing a ServiceConfig resource.
         :param pulumi.Input[str] data: Base64-url-safe-encoded config data
         :param pulumi.Input[str] name: User-defined name of the config
         """
         pulumi.set(__self__, "data", data)
-        if name is not None:
-            pulumi.set(__self__, "name", name)
+        pulumi.set(__self__, "name", name)
 
     @property
     @pulumi.getter
@@ -39,14 +38,14 @@ class ServiceConfigArgs:
 
     @property
     @pulumi.getter
-    def name(self) -> Optional[pulumi.Input[str]]:
+    def name(self) -> pulumi.Input[str]:
         """
         User-defined name of the config
         """
         return pulumi.get(self, "name")
 
     @name.setter
-    def name(self, value: Optional[pulumi.Input[str]]):
+    def name(self, value: pulumi.Input[str]):
         pulumi.set(self, "name", value)
 
 
@@ -168,6 +167,8 @@ class ServiceConfig(pulumi.CustomResource):
             if data is None and not opts.urn:
                 raise TypeError("Missing required property 'data'")
             __props__.__dict__["data"] = data
+            if name is None and not opts.urn:
+                raise TypeError("Missing required property 'name'")
             __props__.__dict__["name"] = name
         super(ServiceConfig, __self__).__init__(
             'docker:index/serviceConfig:ServiceConfig',
