@@ -187,7 +187,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	if !dockerfileInContext {
 		// Handle Dockerfile from outside of build context folder
 		var dockerfileCtx io.ReadCloser
-		dockerfileCtx, err = os.Open(build.Dockerfile)
+		dockerfileCtx, err = os.Open(build.Dockerfile) // TODO: this is where we are running into an issue maybe
 		if err != nil {
 			return "", nil, err
 		}
