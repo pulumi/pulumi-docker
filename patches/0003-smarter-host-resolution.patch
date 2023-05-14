@@ -4,15 +4,11 @@ Date: Sun, 12 Mar 2023 19:00:46 -0700
 Subject: [PATCH] Smarter default Docker client behavior
 
 ---
- internal/provider/config.go                   | 36 ++++++++-----------
- internal/provider/provider.go                 |  6 +---
- .../resource_docker_container_funcs.go        |  6 +++-
- shim/shim.go                                  | 10 ++++++
- 4 files changed, 30 insertions(+), 28 deletions(-)
- create mode 100644 shim/shim.go
+ internal/provider/config.go | 34 ++++++++++++----------------------
+ 1 file changed, 12 insertions(+), 22 deletions(-)
 
 diff --git a/internal/provider/config.go b/internal/provider/config.go
-index 32a99d7a..f30495b7 100644
+index 32a99d7..7393751 100644
 --- a/internal/provider/config.go
 +++ b/internal/provider/config.go
 @@ -83,6 +83,9 @@ func defaultPooledTransport() *http.Transport {
@@ -54,7 +50,7 @@ index 32a99d7a..f30495b7 100644
  	}
 
  	// If there is no cert information, then check for ssh://
-@@ -124,18 +115,19 @@ func (c *Config) NewClient() (*client.Client, error) {
+@@ -124,18 +115,17 @@ func (c *Config) NewClient() (*client.Client, error) {
  		return nil, err
  	}
  	if helper != nil {
@@ -63,10 +59,8 @@ index 32a99d7a..f30495b7 100644
 -			client.WithDialContext(helper.Dialer),
 -			client.WithAPIVersionNegotiation(),
 -		)
-+		opts = append(opts, client.WithDialContext(helper.Dialer))
-+	}
-+
-+	if c.Host != "" {
++		opts = append(opts, client.WithDialContext(helper.Dialer), client.WithHost(helper.Host))
++	} else if c.Host != "" {
 +		opts = append(opts, client.WithHost(c.Host))
  	}
 
