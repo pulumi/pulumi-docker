@@ -206,8 +206,7 @@ export class Container extends pulumi.CustomResource {
      */
     public readonly memory!: pulumi.Output<number | undefined>;
     /**
-     * The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `terraform
-     * apply` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
+     * The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
      */
     public readonly memorySwap!: pulumi.Output<number | undefined>;
     /**
@@ -633,8 +632,7 @@ export interface ContainerState {
      */
     memory?: pulumi.Input<number>;
     /**
-     * The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `terraform
-     * apply` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
+     * The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
      */
     memorySwap?: pulumi.Input<number>;
     /**
@@ -893,8 +891,7 @@ export interface ContainerArgs {
      */
     memory?: pulumi.Input<number>;
     /**
-     * The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `terraform
-     * apply` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
+     * The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
      */
     memorySwap?: pulumi.Input<number>;
     /**

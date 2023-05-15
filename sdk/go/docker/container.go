@@ -140,8 +140,7 @@ type Container struct {
 	MaxRetryCount pulumi.IntPtrOutput `pulumi:"maxRetryCount"`
 	// The memory limit for the container in MBs.
 	Memory pulumi.IntPtrOutput `pulumi:"memory"`
-	// The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `terraform
-	// apply` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
+	// The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
 	MemorySwap pulumi.IntPtrOutput `pulumi:"memorySwap"`
 	// Specification for mounts to be added to containers created as part of the service.
 	Mounts ContainerMountArrayOutput `pulumi:"mounts"`
@@ -308,8 +307,7 @@ type containerState struct {
 	MaxRetryCount *int `pulumi:"maxRetryCount"`
 	// The memory limit for the container in MBs.
 	Memory *int `pulumi:"memory"`
-	// The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `terraform
-	// apply` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
+	// The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
 	MemorySwap *int `pulumi:"memorySwap"`
 	// Specification for mounts to be added to containers created as part of the service.
 	Mounts []ContainerMount `pulumi:"mounts"`
@@ -445,8 +443,7 @@ type ContainerState struct {
 	MaxRetryCount pulumi.IntPtrInput
 	// The memory limit for the container in MBs.
 	Memory pulumi.IntPtrInput
-	// The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `terraform
-	// apply` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
+	// The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
 	MemorySwap pulumi.IntPtrInput
 	// Specification for mounts to be added to containers created as part of the service.
 	Mounts ContainerMountArrayInput
@@ -580,8 +577,7 @@ type containerArgs struct {
 	MaxRetryCount *int `pulumi:"maxRetryCount"`
 	// The memory limit for the container in MBs.
 	Memory *int `pulumi:"memory"`
-	// The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `terraform
-	// apply` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
+	// The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
 	MemorySwap *int `pulumi:"memorySwap"`
 	// Specification for mounts to be added to containers created as part of the service.
 	Mounts []ContainerMount `pulumi:"mounts"`
@@ -710,8 +706,7 @@ type ContainerArgs struct {
 	MaxRetryCount pulumi.IntPtrInput
 	// The memory limit for the container in MBs.
 	Memory pulumi.IntPtrInput
-	// The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `terraform
-	// apply` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
+	// The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
 	MemorySwap pulumi.IntPtrInput
 	// Specification for mounts to be added to containers created as part of the service.
 	Mounts ContainerMountArrayInput
@@ -1027,8 +1022,7 @@ func (o ContainerOutput) Memory() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v *Container) pulumi.IntPtrOutput { return v.Memory }).(pulumi.IntPtrOutput)
 }
 
-// The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `terraform
-// apply` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
+// The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
 func (o ContainerOutput) MemorySwap() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v *Container) pulumi.IntPtrOutput { return v.MemorySwap }).(pulumi.IntPtrOutput)
 }

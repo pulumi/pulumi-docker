@@ -467,16 +467,14 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `terraform
-     * apply` if the target host doesn&#39;t support memory swap, when that is the case docker will use a soft limitation.
+     * The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn&#39;t support memory swap, when that is the case docker will use a soft limitation.
      * 
      */
     @Import(name="memorySwap")
     private @Nullable Output<Integer> memorySwap;
 
     /**
-     * @return The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `terraform
-     * apply` if the target host doesn&#39;t support memory swap, when that is the case docker will use a soft limitation.
+     * @return The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn&#39;t support memory swap, when that is the case docker will use a soft limitation.
      * 
      */
     public Optional<Output<Integer>> memorySwap() {
@@ -1760,8 +1758,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param memorySwap The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `terraform
-         * apply` if the target host doesn&#39;t support memory swap, when that is the case docker will use a soft limitation.
+         * @param memorySwap The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn&#39;t support memory swap, when that is the case docker will use a soft limitation.
          * 
          * @return builder
          * 
@@ -1772,8 +1769,7 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param memorySwap The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `terraform
-         * apply` if the target host doesn&#39;t support memory swap, when that is the case docker will use a soft limitation.
+         * @param memorySwap The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn&#39;t support memory swap, when that is the case docker will use a soft limitation.
          * 
          * @return builder
          * 

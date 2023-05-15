@@ -109,8 +109,7 @@ class ContainerArgs:
         :param pulumi.Input[bool] logs: Save the container logs (`attach` must be enabled). Defaults to `false`.
         :param pulumi.Input[int] max_retry_count: The maximum amount of times to an attempt a restart when `restart` is set to 'on-failure'.
         :param pulumi.Input[int] memory: The memory limit for the container in MBs.
-        :param pulumi.Input[int] memory_swap: The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `terraform
-               apply` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
+        :param pulumi.Input[int] memory_swap: The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerMountArgs']]] mounts: Specification for mounts to be added to containers created as part of the service.
         :param pulumi.Input[bool] must_run: If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform
                assumes it is successful. Defaults to `true`.
@@ -621,8 +620,7 @@ class ContainerArgs:
     @pulumi.getter(name="memorySwap")
     def memory_swap(self) -> Optional[pulumi.Input[int]]:
         """
-        The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `terraform
-        apply` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
+        The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
         """
         return pulumi.get(self, "memory_swap")
 
@@ -1119,8 +1117,7 @@ class _ContainerState:
         :param pulumi.Input[bool] logs: Save the container logs (`attach` must be enabled). Defaults to `false`.
         :param pulumi.Input[int] max_retry_count: The maximum amount of times to an attempt a restart when `restart` is set to 'on-failure'.
         :param pulumi.Input[int] memory: The memory limit for the container in MBs.
-        :param pulumi.Input[int] memory_swap: The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `terraform
-               apply` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
+        :param pulumi.Input[int] memory_swap: The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
         :param pulumi.Input[Sequence[pulumi.Input['ContainerMountArgs']]] mounts: Specification for mounts to be added to containers created as part of the service.
         :param pulumi.Input[bool] must_run: If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform
                assumes it is successful. Defaults to `true`.
@@ -1677,8 +1674,7 @@ class _ContainerState:
     @pulumi.getter(name="memorySwap")
     def memory_swap(self) -> Optional[pulumi.Input[int]]:
         """
-        The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `terraform
-        apply` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
+        The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
         """
         return pulumi.get(self, "memory_swap")
 
@@ -2225,8 +2221,7 @@ class Container(pulumi.CustomResource):
         :param pulumi.Input[bool] logs: Save the container logs (`attach` must be enabled). Defaults to `false`.
         :param pulumi.Input[int] max_retry_count: The maximum amount of times to an attempt a restart when `restart` is set to 'on-failure'.
         :param pulumi.Input[int] memory: The memory limit for the container in MBs.
-        :param pulumi.Input[int] memory_swap: The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `terraform
-               apply` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
+        :param pulumi.Input[int] memory_swap: The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
         :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerMountArgs']]]] mounts: Specification for mounts to be added to containers created as part of the service.
         :param pulumi.Input[bool] must_run: If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform
                assumes it is successful. Defaults to `true`.
@@ -2578,8 +2573,7 @@ class Container(pulumi.CustomResource):
         :param pulumi.Input[bool] logs: Save the container logs (`attach` must be enabled). Defaults to `false`.
         :param pulumi.Input[int] max_retry_count: The maximum amount of times to an attempt a restart when `restart` is set to 'on-failure'.
         :param pulumi.Input[int] memory: The memory limit for the container in MBs.
-        :param pulumi.Input[int] memory_swap: The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `terraform
-               apply` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
+        :param pulumi.Input[int] memory_swap: The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
         :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ContainerMountArgs']]]] mounts: Specification for mounts to be added to containers created as part of the service.
         :param pulumi.Input[bool] must_run: If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform
                assumes it is successful. Defaults to `true`.
@@ -2947,8 +2941,7 @@ class Container(pulumi.CustomResource):
     @pulumi.getter(name="memorySwap")
     def memory_swap(self) -> pulumi.Output[Optional[int]]:
         """
-        The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `terraform
-        apply` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
+        The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
         """
         return pulumi.get(self, "memory_swap")
 
