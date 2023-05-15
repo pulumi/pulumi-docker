@@ -260,8 +260,7 @@ namespace Pulumi.Docker
         public Output<int?> Memory { get; private set; } = null!;
 
         /// <summary>
-        /// The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `terraform
-        /// apply` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
+        /// The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
         /// </summary>
         [Output("memorySwap")]
         public Output<int?> MemorySwap { get; private set; } = null!;
@@ -752,8 +751,7 @@ namespace Pulumi.Docker
         public Input<int>? Memory { get; set; }
 
         /// <summary>
-        /// The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `terraform
-        /// apply` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
+        /// The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
         /// </summary>
         [Input("memorySwap")]
         public Input<int>? MemorySwap { get; set; }
@@ -1278,8 +1276,7 @@ namespace Pulumi.Docker
         public Input<int>? Memory { get; set; }
 
         /// <summary>
-        /// The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `terraform
-        /// apply` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
+        /// The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `pulumi up` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.
         /// </summary>
         [Input("memorySwap")]
         public Input<int>? MemorySwap { get; set; }
