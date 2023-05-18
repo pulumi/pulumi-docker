@@ -3,10 +3,10 @@ package provider
 import (
 	"context"
 	"fmt"
-	"reflect"
 
 	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
+	"github.com/pulumi/pulumi/sdk/v3/go/common/util/contract"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/util/logging"
 	rpc "github.com/pulumi/pulumi/sdk/v3/proto/go"
 	"google.golang.org/grpc/codes"
@@ -73,18 +73,15 @@ func (dp dockerHybridProvider) Configure(
 	request *rpc.ConfigureRequest,
 ) (*rpc.ConfigureResponse, error) {
 	// Native provider returns empty response and error from Configure, just call it to propagate the information.
-	resp, err := dp.nativeProvider.Configure(ctx, request)
+	r, err := dp.nativeProvider.Configure(ctx, request)
 	if err != nil {
 		return nil, fmt.Errorf("Docker native provider returned an unexpected error from Configure: %w", err)
 	}
 
-	if resp.AcceptOutputs != false ||
-		resp.AcceptResources != false ||
-		resp.AcceptSecrets != false ||
-		resp.SupportsPreview != false {
-		return nil, fmt.Errorf("Docker native provider returned an unexpected non-empty "+
-			"response from Configure: %v", resp)
-	}
+	contract.Assertf(r.AcceptOutputs, "Unexpected AcceptOutputs=true from Docker native provider Configure")
+	contract.Assertf(r.AcceptResources, "Unexpected AcceptResources=true from Docker native provider Configure")
+	contract.Assertf(r.AcceptSecrets, "Unexpected AcceptSecrets=true from Docker native provider Configure")
+	contract.Assertf(r.SupportsPreview, "Unexpected SupportsPreview=true from Docker native provider Configure")
 
 	// Mostly delegate Configure handling to the bridged provider.
 	return dp.bridgedProvider.Configure(ctx, request)
