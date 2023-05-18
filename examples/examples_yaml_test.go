@@ -1,3 +1,4 @@
+// Copyright 2016-2023, Pulumi Corporation.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,11 +17,14 @@
 package examples
 
 import (
-	"github.com/pulumi/pulumi/pkg/v3/testing/integration"
-	"github.com/stretchr/testify/assert"
+	"encoding/json"
 	"os"
 	"path"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+
+	"github.com/pulumi/pulumi/pkg/v3/testing/integration"
 )
 
 func TestUnknownInputsYAML(t *testing.T) {
@@ -54,8 +58,13 @@ func TestSecretsYAML(t *testing.T) {
 			imgName, ok := stack.Outputs["imageName"]
 			assert.True(t, ok)
 			assert.NotEmpty(t, imgName)
-			assert.Equal(t, "pulumibot/test-secrets:yaml", imgName)
 
+			// imgName is going to be a secret value encoded as a map. Currently ProgramTest lacks the
+			// capacity to decrypt it and check the contents. For now we simply ensure that the secret
+			// information is not present plaintext in the JSON expansion of this value.
+			imgNameStr, err := json.Marshal(imgName)
+			assert.NoError(t, err)
+			assert.NotContains(t, imgNameStr, "pulumibot/test-secrets:yaml")
 		},
 	})
 }
