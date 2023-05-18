@@ -287,7 +287,7 @@ func diffUpdates(updates map[resource.PropertyKey]resource.ValueDiff) map[string
 
 // Create allocates a new instance of the provided resource and returns its unique ID afterwards.
 func (p *dockerNativeProvider) Create(ctx context.Context, req *rpc.CreateRequest) (*rpc.CreateResponse, error) {
-	contract.Assertf(!req.GetPreview(), "Internal error in pulumi-docker: "+
+	contract.Assertf(req.GetPreview(), "Internal error in pulumi-docker: "+
 		"dockerNativeProvider Create should not be called during preview "+
 		"as it currently does not support partial data or recognizing unknowns.")
 
