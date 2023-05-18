@@ -78,10 +78,10 @@ func (dp dockerHybridProvider) Configure(
 		return nil, fmt.Errorf("Docker native provider returned an unexpected error from Configure: %w", err)
 	}
 
-	contract.Assertf(r.AcceptOutputs, "Unexpected AcceptOutputs=true from Docker native provider Configure")
-	contract.Assertf(r.AcceptResources, "Unexpected AcceptResources=true from Docker native provider Configure")
-	contract.Assertf(r.AcceptSecrets, "Unexpected AcceptSecrets=true from Docker native provider Configure")
-	contract.Assertf(r.SupportsPreview, "Unexpected SupportsPreview=true from Docker native provider Configure")
+	contract.Assertf(!r.AcceptOutputs, "Unexpected AcceptOutputs=true from Docker native provider Configure")
+	contract.Assertf(!r.AcceptResources, "Unexpected AcceptResources=true from Docker native provider Configure")
+	contract.Assertf(!r.AcceptSecrets, "Unexpected AcceptSecrets=true from Docker native provider Configure")
+	contract.Assertf(!r.SupportsPreview, "Unexpected SupportsPreview=true from Docker native provider Configure")
 
 	// Mostly delegate Configure handling to the bridged provider.
 	return dp.bridgedProvider.Configure(ctx, request)
