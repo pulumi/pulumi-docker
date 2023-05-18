@@ -83,8 +83,15 @@ func (dp dockerHybridProvider) Configure(
 	contract.Assertf(!r.AcceptSecrets, "Unexpected AcceptSecrets=true from Docker native provider Configure")
 	contract.Assertf(!r.SupportsPreview, "Unexpected SupportsPreview=true from Docker native provider Configure")
 
-	// Mostly delegate Configure handling to the bridged provider.
-	return dp.bridgedProvider.Configure(ctx, request)
+	// For the most part delegate Configure handling to the bridged provider.
+	resp, err := dp.bridgedProvider.Configure(ctx, request)
+
+	// With one important exception: the hybrid provider cannot support preview because Create on the native
+	// provider is not ready to accept partial data with unknowns when called in preview mode. This limits the
+	// ability of the bridged provider to do best-effort processing and validation in preview. An alternate design
+	// would return SupportsPreview=true here but shield the native provider from it.
+	resp.SupportsPreview = false
+	return resp, err
 }
 
 func (dp dockerHybridProvider) Invoke(ctx context.Context, request *rpc.InvokeRequest) (*rpc.InvokeResponse, error) {

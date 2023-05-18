@@ -21,6 +21,7 @@ import (
 	"github.com/pulumi/pulumi/pkg/v3/resource/provider"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
+	"github.com/pulumi/pulumi/sdk/v3/go/common/util/contract"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/util/logging"
 	rpc "github.com/pulumi/pulumi/sdk/v3/proto/go"
 	"google.golang.org/grpc/codes"
@@ -286,6 +287,10 @@ func diffUpdates(updates map[resource.PropertyKey]resource.ValueDiff) map[string
 
 // Create allocates a new instance of the provided resource and returns its unique ID afterwards.
 func (p *dockerNativeProvider) Create(ctx context.Context, req *rpc.CreateRequest) (*rpc.CreateResponse, error) {
+	contract.Assertf(!req.GetPreview(), "Internal error in pulumi-docker: "+
+		"dockerNativeProvider Create should not be called during preview "+
+		"as it currently does not support partial data or recognizing unknowns.")
+
 	urn := resource.URN(req.GetUrn())
 	label := fmt.Sprintf("%s.Create(%s)", p.name, urn)
 	logging.V(9).Infof("%s executing", label)
