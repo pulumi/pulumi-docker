@@ -3,6 +3,8 @@ package provider
 import (
 	"context"
 	"fmt"
+	"reflect"
+
 	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/util/logging"
@@ -66,17 +68,22 @@ func (dp dockerHybridProvider) DiffConfig(ctx context.Context, request *rpc.Diff
 	}, nil
 }
 
-func (dp dockerHybridProvider) Configure(ctx context.Context, request *rpc.ConfigureRequest) (
-	*rpc.ConfigureResponse, error) {
-	var myResp *rpc.ConfigureResponse
-	for _, prov := range []rpc.ResourceProviderServer{dp.bridgedProvider, dp.nativeProvider} {
-		resp, err := prov.Configure(ctx, request)
-		if err != nil {
-			return nil, err
-		}
-		myResp = resp
+func (dp dockerHybridProvider) Configure(
+	ctx context.Context,
+	request *rpc.ConfigureRequest,
+) (*rpc.ConfigureResponse, error) {
+	// Native provider returns empty response and error from Configure, just call it to propagate the information.
+	resp, err := dp.nativeProvider.Configure(ctx, request)
+	if err != nil {
+		return nil, fmt.Errorf("Docker native provider returned an unexpected error from Configure: %w", err)
 	}
-	return myResp, nil
+	if reflect.DeepEqual(resp, &rpc.ConfigureResponse{}) {
+		return nil, fmt.Errorf("Docker native provider returned an unexpected non-empty "+
+			"response from Configure: %v", resp)
+	}
+
+	// Mostly delegate Configure handling to the bridged provider.
+	return dp.bridgedProvider.Configure(ctx, request)
 }
 
 func (dp dockerHybridProvider) Invoke(ctx context.Context, request *rpc.InvokeRequest) (*rpc.InvokeResponse, error) {

@@ -124,6 +124,15 @@ func TestDockerContainerRegistryDotnet(t *testing.T) {
 	integration.ProgramTest(t, &test)
 }
 
+func TestSecretsInExplicitProvider(t *testing.T) {
+	test := getCsharpBaseOptions(t).With(integration.ProgramTestOptions{
+		Dir:         path.Join(getCwd(t), "test-secrets-in-explicit-provider", "csharp"),
+		Quick:       true,
+		SkipRefresh: true,
+	})
+	integration.ProgramTest(t, &test)
+}
+
 func getCsharpBaseOptions(t *testing.T) integration.ProgramTestOptions {
 	base := getBaseOptions()
 	baseCsharp := base.With(integration.ProgramTestOptions{

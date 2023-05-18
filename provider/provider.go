@@ -77,9 +77,7 @@ func (p *dockerNativeProvider) Configure(_ context.Context, req *rpc.ConfigureRe
 	for key, val := range req.GetVariables() {
 		p.config[strings.TrimPrefix(key, "docker:config:")] = val
 	}
-	return &rpc.ConfigureResponse{
-		AcceptSecrets: true,
-	}, nil
+	return &rpc.ConfigureResponse{}, nil
 }
 
 // Invoke dynamically executes a built-in function in the provider.
