@@ -77,7 +77,11 @@ func (dp dockerHybridProvider) Configure(
 	if err != nil {
 		return nil, fmt.Errorf("Docker native provider returned an unexpected error from Configure: %w", err)
 	}
-	if reflect.DeepEqual(resp, &rpc.ConfigureResponse{}) {
+
+	if resp.AcceptOutputs != false ||
+		resp.AcceptResources != false ||
+		resp.AcceptSecrets != false ||
+		resp.SupportsPreview != false {
 		return nil, fmt.Errorf("Docker native provider returned an unexpected non-empty "+
 			"response from Configure: %v", resp)
 	}
