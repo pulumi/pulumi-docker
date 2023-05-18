@@ -3,8 +3,10 @@ package provider
 import (
 	"context"
 	"fmt"
+
 	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
+	"github.com/pulumi/pulumi/sdk/v3/go/common/util/contract"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/util/logging"
 	rpc "github.com/pulumi/pulumi/sdk/v3/proto/go"
 	"google.golang.org/grpc/codes"
@@ -66,17 +68,30 @@ func (dp dockerHybridProvider) DiffConfig(ctx context.Context, request *rpc.Diff
 	}, nil
 }
 
-func (dp dockerHybridProvider) Configure(ctx context.Context, request *rpc.ConfigureRequest) (
-	*rpc.ConfigureResponse, error) {
-	var myResp *rpc.ConfigureResponse
-	for _, prov := range []rpc.ResourceProviderServer{dp.bridgedProvider, dp.nativeProvider} {
-		resp, err := prov.Configure(ctx, request)
-		if err != nil {
-			return nil, err
-		}
-		myResp = resp
+func (dp dockerHybridProvider) Configure(
+	ctx context.Context,
+	request *rpc.ConfigureRequest,
+) (*rpc.ConfigureResponse, error) {
+	// Native provider returns empty response and error from Configure, just call it to propagate the information.
+	r, err := dp.nativeProvider.Configure(ctx, request)
+	if err != nil {
+		return nil, fmt.Errorf("Docker native provider returned an unexpected error from Configure: %w", err)
 	}
-	return myResp, nil
+
+	contract.Assertf(!r.AcceptOutputs, "Unexpected AcceptOutputs=true from Docker native provider Configure")
+	contract.Assertf(!r.AcceptResources, "Unexpected AcceptResources=true from Docker native provider Configure")
+	contract.Assertf(!r.AcceptSecrets, "Unexpected AcceptSecrets=true from Docker native provider Configure")
+	contract.Assertf(!r.SupportsPreview, "Unexpected SupportsPreview=true from Docker native provider Configure")
+
+	// For the most part delegate Configure handling to the bridged provider.
+	resp, err := dp.bridgedProvider.Configure(ctx, request)
+
+	// With one important exception: the hybrid provider cannot support preview because Create on the native
+	// provider is not ready to accept partial data with unknowns when called in preview mode. This limits the
+	// ability of the bridged provider to do best-effort processing and validation in preview. An alternate design
+	// would return SupportsPreview=true here but shield the native provider from it.
+	resp.SupportsPreview = false
+	return resp, err
 }
 
 func (dp dockerHybridProvider) Invoke(ctx context.Context, request *rpc.InvokeRequest) (*rpc.InvokeResponse, error) {

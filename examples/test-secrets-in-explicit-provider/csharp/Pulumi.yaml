@@ -1,0 +1,3 @@
+name: docker-640
+runtime: dotnet
+description: A minimal C# Pulumi program reproducing pulumi/pulumi-docker/issues/640
