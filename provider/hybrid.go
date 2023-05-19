@@ -56,16 +56,13 @@ func (dp dockerHybridProvider) GetSchema(ctx context.Context, request *rpc.GetSc
 }
 
 func (dp dockerHybridProvider) CheckConfig(ctx context.Context, request *rpc.CheckRequest) (*rpc.CheckResponse, error) {
-	return &rpc.CheckResponse{Inputs: request.GetNews()}, nil
+	// Delegate to the bridged provider, as native Provider does not implement it.
+	return dp.bridgedProvider.CheckConfig(ctx, request)
 }
 
 func (dp dockerHybridProvider) DiffConfig(ctx context.Context, request *rpc.DiffRequest) (*rpc.DiffResponse, error) {
-	return &rpc.DiffResponse{
-		Changes:             0,
-		Replaces:            []string{},
-		Stables:             []string{},
-		DeleteBeforeReplace: false,
-	}, nil
+	// Delegate to the bridged provider, as native Provider does not implement it.
+	return dp.bridgedProvider.DiffConfig(ctx, request)
 }
 
 func (dp dockerHybridProvider) Configure(
@@ -85,6 +82,9 @@ func (dp dockerHybridProvider) Configure(
 
 	// For the most part delegate Configure handling to the bridged provider.
 	resp, err := dp.bridgedProvider.Configure(ctx, request)
+	if err != nil {
+		return nil, err
+	}
 
 	// With one important exception: the hybrid provider cannot support preview because Create on the native
 	// provider is not ready to accept partial data with unknowns when called in preview mode. This limits the

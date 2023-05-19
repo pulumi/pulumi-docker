@@ -1,4 +1,4 @@
-// Copyright 2016-2018, Pulumi Corporation.
+// Copyright 2016-2023, Pulumi Corporation.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,9 +17,11 @@
 package examples
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"os"
 	"path"
+	"strings"
 	"testing"
 
 	"github.com/pulumi/pulumi/pkg/v3/testing/integration"
@@ -133,8 +135,28 @@ func TestSecretsInExplicitProvider(t *testing.T) {
 		Quick:       true,
 		SkipRefresh: true,
 
-		// Temporary profilactic check until pulumi/pulumi#12981 is resolved.
 		ExtraRuntimeValidation: func(t *testing.T, stack integration.RuntimeValidationStackInfo) {
+			deploymentJSON, err := json.MarshalIndent(stack.Deployment, "", "  ")
+			assert.NoError(t, err)
+
+			t.Run("program-initiated secrets are encrypted", func(t *testing.T) {
+				t.Skip("TODO <ticket>")
+				if strings.Contains(string(deploymentJSON), "secret-address") {
+					t.Error("secret-address found stored in plaintext")
+				}
+				pw := stack.Outputs["password"].(string)
+				realPW, err := base64.StdEncoding.DecodeString(pw)
+				assert.NoError(t, err)
+				if strings.Contains(string(deploymentJSON), string(realPW)) {
+					t.Error("random password found stored in plaintext")
+				}
+			})
+
+			t.Run("properties marked sensitive in the schema are encrypted", func(t *testing.T) {
+				assert.NotContains(t, string(deploymentJSON), "secret-password")
+			})
+
+			// Temporary profilactic check to rule out panics; needed until pulumi/pulumi#12981 is resolved.
 			for _, e := range stack.Events {
 				eventsJSON, err := json.MarshalIndent(e, "", "  ")
 				assert.NoError(t, err)
