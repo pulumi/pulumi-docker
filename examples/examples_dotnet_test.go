@@ -17,10 +17,13 @@
 package examples
 
 import (
-	"github.com/pulumi/pulumi/pkg/v3/testing/integration"
+	"encoding/json"
 	"os"
 	"path"
 	"testing"
+
+	"github.com/pulumi/pulumi/pkg/v3/testing/integration"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestNginxCs(t *testing.T) {
@@ -129,6 +132,16 @@ func TestSecretsInExplicitProvider(t *testing.T) {
 		Dir:         path.Join(getCwd(t), "test-secrets-in-explicit-provider", "csharp"),
 		Quick:       true,
 		SkipRefresh: true,
+
+		// Temporary profilactic check until pulumi/pulumi#12981 is resolved.
+		ExtraRuntimeValidation: func(t *testing.T, stack integration.RuntimeValidationStackInfo) {
+			for _, e := range stack.Events {
+				eventsJSON, err := json.MarshalIndent(e, "", "  ")
+				assert.NoError(t, err)
+				assert.NotContainsf(t, string(eventsJSON), "panic",
+					"Unexpected panic recorded in engine events")
+			}
+		},
 	})
 	integration.ProgramTest(t, &test)
 }
