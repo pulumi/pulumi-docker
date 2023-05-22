@@ -1,24 +1,59 @@
-﻿using Pulumi;
+﻿using System;
 using System.Collections.Generic;
+using System.Text;
+
+using Pulumi;
+using Pulumi.Random;
 
 return await Deployment.RunAsync(() =>
 {
-   var provider = new Pulumi.Docker.Provider("docker", new Pulumi.Docker.ProviderArgs
+   // Test handling secrets marked by the program.
+   var providerWithSecretAddress = new Pulumi.Docker.Provider("provider-with-secret-address", new Pulumi.Docker.ProviderArgs
    {
-      Host = "host",
       RegistryAuth = new List<Pulumi.Docker.Inputs.ProviderRegistryAuthArgs>
       {
          new Pulumi.Docker.Inputs.ProviderRegistryAuthArgs
          {
-            Address = "somewhere.org",
+            Address = Output.CreateSecret("secret-address"),
             Username = "some-user",
-            Password = "some-password"
          }
       }
    });
 
-   return new Dictionary<string, object?>
+   var password = new Pulumi.Random.RandomPassword("password", new()
    {
-      ["outputKey"] = "outputValue"
+       Length = 16,
+       Special = false,
+   });
+
+   // Test handling dynamic secrets that start as unknown.
+   var providerWithSecretUsername = new Pulumi.Docker.Provider("provider-with-secret-username", new Pulumi.Docker.ProviderArgs
+   {
+      RegistryAuth = new List<Pulumi.Docker.Inputs.ProviderRegistryAuthArgs>
+      {
+         new Pulumi.Docker.Inputs.ProviderRegistryAuthArgs
+         {
+            Address = "some-address",
+            Username = password.Result,
+         }
+      }
+   });
+
+   // Test handling secrets marked in the schema.
+   var providerWithSecretPassword = new Pulumi.Docker.Provider("provider-with-password", new Pulumi.Docker.ProviderArgs
+   {
+      RegistryAuth = new List<Pulumi.Docker.Inputs.ProviderRegistryAuthArgs>
+      {
+         new Pulumi.Docker.Inputs.ProviderRegistryAuthArgs
+         {
+            Address = "some-address",
+            Username = "some-user",
+            Password = "secret-password",
+         }
+      }
+   });
+
+   return new Dictionary<string, object?>{
+       ["password"] = Output.Unsecret(password.Result).Apply(s => Convert.ToBase64String(Encoding.UTF8.GetBytes(s))),
    };
 });

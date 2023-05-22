@@ -11,9 +11,9 @@ require (
 	github.com/moby/moby v23.0.1+incompatible
 	github.com/moby/patternmatcher v0.5.0
 	github.com/pkg/errors v0.9.1
-	github.com/pulumi/pulumi-terraform-bridge/v3 v3.47.2
-	github.com/pulumi/pulumi/pkg/v3 v3.64.0
-	github.com/pulumi/pulumi/sdk/v3 v3.64.0
+	github.com/pulumi/pulumi-terraform-bridge/v3 v3.47.3
+	github.com/pulumi/pulumi/pkg/v3 v3.66.0
+	github.com/pulumi/pulumi/sdk/v3 v3.66.0
 	github.com/stretchr/testify v1.8.2
 	github.com/terraform-providers/terraform-provider-docker v0.0.0
 	google.golang.org/grpc v1.54.0
@@ -89,7 +89,7 @@ require (
 	github.com/cenkalti/backoff/v3 v3.2.2 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/cheggaaa/pb v1.0.29 // indirect
-	github.com/cloudflare/circl v1.1.0 // indirect
+	github.com/cloudflare/circl v1.3.3 // indirect
 	github.com/containerd/console v1.0.3 // indirect
 	github.com/containerd/containerd v1.7.0 // indirect
 	github.com/containerd/continuity v0.3.1-0.20230206214859-2a963a2f56e8 // indirect
@@ -267,7 +267,7 @@ require (
 	gocloud.dev v0.28.0 // indirect
 	gocloud.dev/secrets/hashivault v0.28.0 // indirect
 	golang.org/x/crypto v0.6.0 // indirect
-	golang.org/x/mod v0.9.0 // indirect
+	golang.org/x/mod v0.10.0 // indirect
 	golang.org/x/net v0.8.0 // indirect
 	golang.org/x/oauth2 v0.5.0 // indirect
 	golang.org/x/sync v0.1.0 // indirect

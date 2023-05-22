@@ -1,4 +1,4 @@
-// Copyright 2016-2018, Pulumi Corporation.
+// Copyright 2016-2023, Pulumi Corporation.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,10 +17,14 @@
 package examples
 
 import (
-	"github.com/pulumi/pulumi/pkg/v3/testing/integration"
+	"encoding/base64"
+	"encoding/json"
 	"os"
 	"path"
 	"testing"
+
+	"github.com/pulumi/pulumi/pkg/v3/testing/integration"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestNginxCs(t *testing.T) {
@@ -125,10 +129,45 @@ func TestDockerContainerRegistryDotnet(t *testing.T) {
 }
 
 func TestSecretsInExplicitProvider(t *testing.T) {
+	check := func(t *testing.T, stack integration.RuntimeValidationStackInfo) {
+		deploymentJSON, err := json.MarshalIndent(stack.Deployment, "", "  ")
+		assert.NoError(t, err)
+
+		t.Run("providerWithSecretAddress", func(t *testing.T) {
+			t.Skip("TODO[pulumi/pulumi-docker#643]")
+			assert.NotContainsf(t, string(deploymentJSON), "secret-address",
+				"Secrets like 'secret-address' should not be stored in the plain")
+		})
+
+		t.Run("providerWithSecretUsername", func(t *testing.T) {
+			t.Skip("TODO[pulumi/pulumi-docker#643]")
+			pw := stack.Outputs["password"].(string)
+			realPW, err := base64.StdEncoding.DecodeString(pw)
+			assert.NoError(t, err)
+			assert.NotContainsf(t, string(deploymentJSON), string(realPW),
+				"Secrets like the output of RandomPassword should not be stored in the plain")
+		})
+
+		t.Run("providerWithSecretPassword", func(t *testing.T) {
+			assert.NotContainsf(t, string(deploymentJSON), "secret-password",
+				"Secret properties like RegistryAuth.Password should not be stored in the plain")
+		})
+
+		t.Run("noPanics", func(t *testing.T) {
+			// Temporary check to rule out panics; needed until pulumi/pulumi#12981 is resolved.
+			for _, e := range stack.Events {
+				eventsJSON, err := json.MarshalIndent(e, "", "  ")
+				assert.NoError(t, err)
+				assert.NotContainsf(t, string(eventsJSON), "panic",
+					"Unexpected panic recorded in engine events")
+			}
+		})
+	}
 	test := getCsharpBaseOptions(t).With(integration.ProgramTestOptions{
-		Dir:         path.Join(getCwd(t), "test-secrets-in-explicit-provider", "csharp"),
-		Quick:       true,
-		SkipRefresh: true,
+		Dir:                    path.Join(getCwd(t), "test-secrets-in-explicit-provider", "csharp"),
+		Quick:                  true,
+		SkipRefresh:            true,
+		ExtraRuntimeValidation: check,
 	})
 	integration.ProgramTest(t, &test)
 }
