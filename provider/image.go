@@ -37,6 +37,7 @@ import (
 	"github.com/moby/moby/registry"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
+	"github.com/ryboe/q"
 )
 
 const defaultDockerfile = "Dockerfile"
@@ -128,20 +129,24 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	}
 
 	absDockerfile, err := filepath.Abs(build.Dockerfile)
+	q.Q(absDockerfile)
 	if err != nil {
 		return "", nil, fmt.Errorf("absDockerfile error: %s", err)
 	}
 	absBuildpath, err := filepath.Abs(build.Context)
+	q.Q(absBuildpath)
 	if err != nil {
 		return "", nil, fmt.Errorf("absBuildPath error: %s", err)
 	}
 	relDockerfile, err := filepath.Rel(absBuildpath, absDockerfile)
+	q.Q(relDockerfile)
 	if err != nil {
 		return "", nil, fmt.Errorf("relDockerfile error: %s", err)
 	}
 
 	// if the dockerfile is in the context it will be something like "./Dockerfile" or ".\sub\dir\Dockerfile"
 	// if the dockerfile is out of the context it will begin with "../"
+	// TODO: by "context" are we referring to pulumi context, or docker context? this is confusing!
 	dockerfileInContext := true
 	if strings.HasPrefix(relDockerfile, ".."+string(filepath.Separator)) {
 		dockerfileInContext = false
@@ -187,8 +192,19 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	if !dockerfileInContext {
 		// Handle Dockerfile from outside of build context folder
 		var dockerfileCtx io.ReadCloser
+		// force the error
+		q.Q(build.Dockerfile)
+		windowsdebugdockerfile := strings.TrimSuffix(build.Dockerfile, "/Dockerfile")
+		windowsdebugdockerfile = windowsdebugdockerfile + `\Dockerfile`
+		q.Q(windowsdebugdockerfile)
+		debugDockerfileCtx, err := os.Open(windowsdebugdockerfile)
+		if err != nil {
+			q.Q("error opening debug dockerfile", err)
+		}
+		q.Q(debugDockerfileCtx.Stat())
 		dockerfileCtx, err = os.Open(build.Dockerfile) // TODO: this is where we are running into an issue maybe
 		if err != nil {
+			q.Q("we are encountering an error after os.Open")
 			return "", nil, err
 		}
 		tar, replaceDockerfile, err = clibuild.AddDockerfileToBuildContext(dockerfileCtx, tar)
@@ -231,6 +247,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		cfg.AuthConfigs[auth.ServerAddress] = clitypes.AuthConfig(auth) // for buildkit cache using session auth
 		regAuth = auth                                                  // for image push
 	}
+	q.Q(replaceDockerfile)
 
 	// make the build options
 	opts := types.ImageBuildOptions{
