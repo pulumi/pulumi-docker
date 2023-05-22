@@ -11,7 +11,6 @@ import (
 	"io"
 	"net"
 	"net/http"
-	"os"
 	"path"
 	"path/filepath"
 	"runtime"
@@ -139,20 +138,13 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	if err != nil {
 		return "", nil, fmt.Errorf("absBuildPath error: %s", err)
 	}
-	relDockerfile, err := filepath.Rel(absBuildpath, absDockerfile) // TODO: assert the behavior of filepath.Rel
+	relDockerfile, err := filepath.Rel(absBuildpath, absDockerfile) // TODO: assert the behavior of filepath.Rel - where does the backslash come from?
 	q.Q(relDockerfile)
 	if err != nil {
 		return "", nil, fmt.Errorf("relDockerfile error: %s", err)
 	}
-
-	debugrelDockerfileWindows := strings.TrimSuffix(relDockerfile, "/Dockerfile")
-	relDockerfile = debugrelDockerfileWindows + `\Dockerfile`
-	q.Q(relDockerfile)
-
-	toslashreldebug := strings.ReplaceAll(relDockerfile, `\`, "/")
-	q.Q(toslashreldebug)
-
-	relDockerfile = toslashreldebug
+	relDockerfile = filepath.ToSlash(relDockerfile)
+	q.Q("relDockerfile after ToSlash", relDockerfile)
 	// if the dockerfile is in the context it will be something like "./Dockerfile" or ".\sub\dir\Dockerfile"
 	// if the dockerfile is out of the docker context it will begin with "../"
 	dockerfileInContext := true
@@ -200,19 +192,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	if !dockerfileInContext {
 		// Handle Dockerfile from outside of build context folder
 		var dockerfileCtx io.ReadCloser
-		// force the error
-		q.Q(build.Dockerfile)
-		windowsdebugdockerfile := strings.TrimSuffix(build.Dockerfile, "/Dockerfile")
-		windowsdebugdockerfile = windowsdebugdockerfile + `\Dockerfile`
-		q.Q(windowsdebugdockerfile)
-		debugDockerfileCtx, err := os.Open(windowsdebugdockerfile)
 		if err != nil {
-			q.Q("error opening debug dockerfile", err)
-		}
-		q.Q(debugDockerfileCtx.Stat())
-		dockerfileCtx, err = os.Open(build.Dockerfile) // we do not hit this error here.
-		if err != nil {
-			q.Q("we are encountering an error after os.Open")
 			return "", nil, err
 		}
 		tar, replaceDockerfile, err = clibuild.AddDockerfileToBuildContext(dockerfileCtx, tar)
