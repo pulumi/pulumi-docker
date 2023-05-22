@@ -7,9 +7,8 @@ using Pulumi.Random;
 
 return await Deployment.RunAsync(() =>
 {
-
-   // Test passing values marked secret by the user program to the provider.
-   var provider1 = new Pulumi.Docker.Provider("provider-with-sensitive-address", new Pulumi.Docker.ProviderArgs
+   // Test handling secrets marked by the program.
+   var providerWithSecretAddress = new Pulumi.Docker.Provider("provider-with-secret-address", new Pulumi.Docker.ProviderArgs
    {
       RegistryAuth = new List<Pulumi.Docker.Inputs.ProviderRegistryAuthArgs>
       {
@@ -21,8 +20,27 @@ return await Deployment.RunAsync(() =>
       }
    });
 
-   // Test setting values marked secret in the provider schema.
-   var provider2 = new Pulumi.Docker.Provider("provider-with-password", new Pulumi.Docker.ProviderArgs
+   var password = new Pulumi.Random.RandomPassword("password", new()
+   {
+       Length = 16,
+       Special = false,
+   });
+
+   // Test handling dynamic secrets that start as unknown.
+   var providerWithSecretUsername = new Pulumi.Docker.Provider("provider-with-secret-username", new Pulumi.Docker.ProviderArgs
+   {
+      RegistryAuth = new List<Pulumi.Docker.Inputs.ProviderRegistryAuthArgs>
+      {
+         new Pulumi.Docker.Inputs.ProviderRegistryAuthArgs
+         {
+            Address = "some-address",
+            Username = password.Result,
+         }
+      }
+   });
+
+   // Test handling secrets marked in the schema.
+   var providerWithSecretPassword = new Pulumi.Docker.Provider("provider-with-password", new Pulumi.Docker.ProviderArgs
    {
       RegistryAuth = new List<Pulumi.Docker.Inputs.ProviderRegistryAuthArgs>
       {
@@ -35,28 +53,7 @@ return await Deployment.RunAsync(() =>
       }
    });
 
-   // Test setting values that start as unknown and resolve to secrets.
-   var password = new Pulumi.Random.RandomPassword("password", new()
-   {
-       Length = 16,
-       Special = false,
-   });
-
-   var provider3 = new Pulumi.Docker.Provider("provider-with-random-sensitive-username", new Pulumi.Docker.ProviderArgs
-   {
-      RegistryAuth = new List<Pulumi.Docker.Inputs.ProviderRegistryAuthArgs>
-      {
-         new Pulumi.Docker.Inputs.ProviderRegistryAuthArgs
-         {
-            Address = "some-address",
-            Username = password.Result,
-         }
-      }
-   });
-
-   var pw = Output.Unsecret(password.Result).Apply(s => Convert.ToBase64String(Encoding.UTF8.GetBytes(s)));
-
    return new Dictionary<string, object?>{
-       ["password"] = pw,
+       ["password"] = Output.Unsecret(password.Result).Apply(s => Convert.ToBase64String(Encoding.UTF8.GetBytes(s))),
    };
 });

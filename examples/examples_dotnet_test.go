@@ -21,7 +21,6 @@ import (
 	"encoding/json"
 	"os"
 	"path"
-	"strings"
 	"testing"
 
 	"github.com/pulumi/pulumi/pkg/v3/testing/integration"
@@ -130,40 +129,45 @@ func TestDockerContainerRegistryDotnet(t *testing.T) {
 }
 
 func TestSecretsInExplicitProvider(t *testing.T) {
-	test := getCsharpBaseOptions(t).With(integration.ProgramTestOptions{
-		Dir:         path.Join(getCwd(t), "test-secrets-in-explicit-provider", "csharp"),
-		Quick:       true,
-		SkipRefresh: true,
+	check := func(t *testing.T, stack integration.RuntimeValidationStackInfo) {
+		deploymentJSON, err := json.MarshalIndent(stack.Deployment, "", "  ")
+		assert.NoError(t, err)
 
-		ExtraRuntimeValidation: func(t *testing.T, stack integration.RuntimeValidationStackInfo) {
-			deploymentJSON, err := json.MarshalIndent(stack.Deployment, "", "  ")
+		t.Run("providerWithSecretAddress", func(t *testing.T) {
+			t.Skip("TODO[pulumi/pulumi-docker#643]")
+			assert.NotContainsf(t, string(deploymentJSON), "secret-address",
+				"Secrets like 'secret-address' should not be stored in the plain")
+		})
+
+		t.Run("providerWithSecretUsername", func(t *testing.T) {
+			t.Skip("TODO[pulumi/pulumi-docker#643]")
+			pw := stack.Outputs["password"].(string)
+			realPW, err := base64.StdEncoding.DecodeString(pw)
 			assert.NoError(t, err)
+			assert.NotContainsf(t, string(deploymentJSON), string(realPW),
+				"Secrets like the output of RandomPassword should not be stored in the plain")
+		})
 
-			t.Run("program-initiated secrets are encrypted", func(t *testing.T) {
-				t.Skip("TODO <ticket>")
-				if strings.Contains(string(deploymentJSON), "secret-address") {
-					t.Error("secret-address found stored in plaintext")
-				}
-				pw := stack.Outputs["password"].(string)
-				realPW, err := base64.StdEncoding.DecodeString(pw)
-				assert.NoError(t, err)
-				if strings.Contains(string(deploymentJSON), string(realPW)) {
-					t.Error("random password found stored in plaintext")
-				}
-			})
+		t.Run("providerWithSecretPassword", func(t *testing.T) {
+			assert.NotContainsf(t, string(deploymentJSON), "secret-password",
+				"Secret properties like RegistryAuth.Password should not be stored in the plain")
+		})
 
-			t.Run("properties marked sensitive in the schema are encrypted", func(t *testing.T) {
-				assert.NotContains(t, string(deploymentJSON), "secret-password")
-			})
-
-			// Temporary profilactic check to rule out panics; needed until pulumi/pulumi#12981 is resolved.
+		t.Run("noPanics", func(t *testing.T) {
+			// Temporary check to rule out panics; needed until pulumi/pulumi#12981 is resolved.
 			for _, e := range stack.Events {
 				eventsJSON, err := json.MarshalIndent(e, "", "  ")
 				assert.NoError(t, err)
 				assert.NotContainsf(t, string(eventsJSON), "panic",
 					"Unexpected panic recorded in engine events")
 			}
-		},
+		})
+	}
+	test := getCsharpBaseOptions(t).With(integration.ProgramTestOptions{
+		Dir:                    path.Join(getCwd(t), "test-secrets-in-explicit-provider", "csharp"),
+		Quick:                  true,
+		SkipRefresh:            true,
+		ExtraRuntimeValidation: check,
 	})
 	integration.ProgramTest(t, &test)
 }
