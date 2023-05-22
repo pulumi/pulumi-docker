@@ -4,7 +4,6 @@ go 1.19
 
 require (
 	github.com/blang/semver v3.5.1+incompatible
-	github.com/pkg/errors v0.9.1
 	github.com/pulumi/pulumi/sdk/v3 v3.37.2
 )
 
@@ -29,6 +28,7 @@ require (
 	github.com/mitchellh/go-ps v1.0.0 // indirect
 	github.com/opentracing/basictracer-go v1.0.0 // indirect
 	github.com/opentracing/opentracing-go v1.1.0 // indirect
+	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pkg/term v1.1.0 // indirect
 	github.com/rivo/uniseg v0.2.0 // indirect
 	github.com/rogpeppe/go-internal v1.8.1 // indirect
@@ -45,9 +45,9 @@ require (
 	github.com/xanzy/ssh-agent v0.2.1 // indirect
 	go.uber.org/atomic v1.6.0 // indirect
 	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9 // indirect
-	golang.org/x/net v0.0.0-20201021035429-f5854403a974 // indirect
-	golang.org/x/sys v0.0.0-20210817190340-bfb29a6856f2 // indirect
-	golang.org/x/text v0.3.3 // indirect
+	golang.org/x/net v0.7.0 // indirect
+	golang.org/x/sys v0.5.0 // indirect
+	golang.org/x/text v0.7.0 // indirect
 	google.golang.org/genproto v0.0.0-20200608115520-7c474a2e3482 // indirect
 	google.golang.org/grpc v1.29.1 // indirect
 	google.golang.org/protobuf v1.24.0 // indirect
