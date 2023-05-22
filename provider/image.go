@@ -117,6 +117,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	if err != nil {
 		return "", nil, err
 	}
+	q.Q(build.Dockerfile)
 
 	// make the build context and ensure to exclude dockerignore file patterns
 	// map the expected location for dockerignore
@@ -138,15 +139,22 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	if err != nil {
 		return "", nil, fmt.Errorf("absBuildPath error: %s", err)
 	}
-	relDockerfile, err := filepath.Rel(absBuildpath, absDockerfile)
+	relDockerfile, err := filepath.Rel(absBuildpath, absDockerfile) // TODO: assert the behavior of filepath.Rel
 	q.Q(relDockerfile)
 	if err != nil {
 		return "", nil, fmt.Errorf("relDockerfile error: %s", err)
 	}
 
+	debugrelDockerfileWindows := strings.TrimSuffix(relDockerfile, "/Dockerfile")
+	relDockerfile = debugrelDockerfileWindows + `\Dockerfile`
+	q.Q(relDockerfile)
+
+	toslashreldebug := strings.ReplaceAll(relDockerfile, `\`, "/")
+	q.Q(toslashreldebug)
+
+	relDockerfile = toslashreldebug
 	// if the dockerfile is in the context it will be something like "./Dockerfile" or ".\sub\dir\Dockerfile"
-	// if the dockerfile is out of the context it will begin with "../"
-	// TODO: by "context" are we referring to pulumi context, or docker context? this is confusing!
+	// if the dockerfile is out of the docker context it will begin with "../"
 	dockerfileInContext := true
 	if strings.HasPrefix(relDockerfile, ".."+string(filepath.Separator)) {
 		dockerfileInContext = false
@@ -202,7 +210,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 			q.Q("error opening debug dockerfile", err)
 		}
 		q.Q(debugDockerfileCtx.Stat())
-		dockerfileCtx, err = os.Open(build.Dockerfile) // TODO: this is where we are running into an issue maybe
+		dockerfileCtx, err = os.Open(build.Dockerfile) // we do not hit this error here.
 		if err != nil {
 			q.Q("we are encountering an error after os.Open")
 			return "", nil, err
