@@ -152,7 +152,15 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 			"Try setting `dockerfile` to %q", build.Dockerfile, relPath)
 
 	}
-	contextDigest, err := hashContext(build.Context, build.Dockerfile)
+
+	_, dockerfileInContext, tar, err := TarBuildContext(ctx, build, func(msg string) error {
+		return p.host.Log(ctx, "warning", urn, msg)
+	})
+	if err != nil {
+		return nil, err
+	}
+	// Hash everything in the tar archive
+	contextDigest, err := computeDigest(tar, dockerfileInContext, build)
 	if err != nil {
 		return nil, err
 	}
@@ -202,6 +210,29 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 	return &rpc.CheckResponse{Inputs: inputStruct, Failures: nil}, nil
 }
 
+func computeDigest(tar io.ReadCloser, dockerfileInContext bool, build Build) (string, error) {
+	hash := sha256.New()
+	numBytes, err := io.Copy(hash, tar)
+	if err != nil {
+		return "", err
+	}
+	fmt.Printf("🤖🤖🤖 %d bytes hashed\n", numBytes)
+
+	if !dockerfileInContext {
+		hash.Write([]byte{0})
+		dockerfile, err := os.ReadFile(build.Dockerfile)
+		if err != nil {
+			return "", err
+		}
+		if _, err := io.Copy(hash, bytes.NewReader(dockerfile)); err != nil {
+			return "", err
+		}
+	}
+	contextDigest := hex.EncodeToString(hash.Sum(nil))
+	fmt.Printf("🤖🤖🤖 Digest: %s\n", contextDigest)
+	return contextDigest, nil
+}
+
 // Diff checks what impacts a hypothetical update will have on the resource's properties.
 func (p *dockerNativeProvider) Diff(ctx context.Context, req *rpc.DiffRequest) (*rpc.DiffResponse, error) {
 	urn := resource.URN(req.GetUrn())
@@ -238,7 +269,6 @@ func (p *dockerNativeProvider) Diff(ctx context.Context, req *rpc.DiffRequest) (
 	diff := map[string]*rpc.PropertyDiff{}
 	for key := range d.Adds {
 		diff[string(key)] = &rpc.PropertyDiff{Kind: rpc.PropertyDiff_ADD}
-
 	}
 	for key := range d.Deletes {
 		diff[string(key)] = &rpc.PropertyDiff{Kind: rpc.PropertyDiff_DELETE}
@@ -348,7 +378,6 @@ func (p *dockerNativeProvider) Read(ctx context.Context, req *rpc.ReadRequest) (
 
 	// Return properties as passed, since we do no reconciliation,
 	return &rpc.ReadResponse{Id: id, Inputs: inputs, Properties: properties}, nil
-
 }
 
 // Update updates an existing resource with new values.
@@ -390,7 +419,6 @@ func (p *dockerNativeProvider) Update(ctx context.Context, req *rpc.UpdateReques
 			SkipNulls:    true,
 		},
 	)
-
 	if err != nil {
 		return nil, err
 	}
@@ -417,7 +445,8 @@ func (p *dockerNativeProvider) GetPluginInfo(context.Context, *pbempty.Empty) (*
 
 // GetSchema returns the JSON-serialized schema for the provider.
 func (p *dockerNativeProvider) GetSchema(ctx context.Context, req *rpc.GetSchemaRequest) (
-	*rpc.GetSchemaResponse, error) {
+	*rpc.GetSchemaResponse, error,
+) {
 	if v := req.GetVersion(); v != 0 {
 		return nil, fmt.Errorf("unsupported schema version %d", v)
 	}
@@ -466,7 +495,8 @@ type contextHashAccumulator struct {
 func (accumulator *contextHashAccumulator) hashPath(
 	filePath string,
 	relativeNameOfFile string,
-	fileMode fs.FileMode) error {
+	fileMode fs.FileMode,
+) error {
 	hash := sha256.New()
 
 	if fileMode.Type() == fs.ModeSymlink {
@@ -561,7 +591,6 @@ func hashContext(dockerContextPath string, dockerfile string) (string, error) {
 		}
 		if ignore {
 			return nil
-
 		} else if d.IsDir() {
 			return nil
 		}

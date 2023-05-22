@@ -39,8 +39,10 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
 )
 
-const defaultDockerfile = "Dockerfile"
-const defaultBuilder = "2"
+const (
+	defaultDockerfile = "Dockerfile"
+	defaultBuilder    = "2"
+)
 
 type Image struct {
 	Name     string
@@ -77,10 +79,9 @@ type Config struct {
 
 func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	urn resource.URN,
-	props *structpb.Struct) (string, *structpb.Struct, error) {
-
+	props *structpb.Struct,
+) (string, *structpb.Struct, error) {
 	inputs, err := plugin.UnmarshalProperties(props, plugin.MarshalOptions{KeepUnknowns: true, SkipNulls: true})
-
 	if err != nil {
 		return "", nil, err
 	}
@@ -106,7 +107,6 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	img.Build = build
 
 	docker, err := configureDockerClient(p.config)
-
 	if err != nil {
 		return "", nil, err
 	}
@@ -119,64 +119,12 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 
 	// make the build context and ensure to exclude dockerignore file patterns
 	// map the expected location for dockerignore
-	dockerignore := mapDockerignore(filepath.Base(build.Dockerfile))
-	dockerIgnorePath := filepath.Join(build.Context, dockerignore)
-
-	initialIgnorePatterns, err := getIgnore(dockerIgnorePath)
-	if err != nil {
-		return "", nil, fmt.Errorf("error reading ignore file: %w", err)
-	}
-
-	absDockerfile, err := filepath.Abs(build.Dockerfile)
-	if err != nil {
-		return "", nil, fmt.Errorf("absDockerfile error: %s", err)
-	}
-	absBuildpath, err := filepath.Abs(build.Context)
-	if err != nil {
-		return "", nil, fmt.Errorf("absBuildPath error: %s", err)
-	}
-	relDockerfile, err := filepath.Rel(absBuildpath, absDockerfile)
-	if err != nil {
-		return "", nil, fmt.Errorf("relDockerfile error: %s", err)
-	}
-
 	// if the dockerfile is in the context it will be something like "./Dockerfile" or ".\sub\dir\Dockerfile"
 	// if the dockerfile is out of the context it will begin with "../"
-	dockerfileInContext := true
-	if strings.HasPrefix(relDockerfile, ".."+string(filepath.Separator)) {
-		dockerfileInContext = false
-	}
-
-	contextDir, err := clibuild.ResolveAndValidateContextPath(build.Context)
-	if err != nil {
-		return "", nil, fmt.Errorf("error resolving context: %w", err)
-	}
-
-	if err := clibuild.ValidateContextDirectory(contextDir, initialIgnorePatterns); err != nil {
-		return "", nil, fmt.Errorf("error validating context: %w", err)
-	}
-
 	// un-ignore build files so the docker daemon can use them
-	ignorePatterns := buildCmd.TrimBuildFilesFromExcludes(
-		initialIgnorePatterns,
-		relDockerfile,
-		false,
-	)
-
 	// warn user about accidentally copying build files
-	if build.BuilderVersion == defaultBuilder && len(initialIgnorePatterns) != len(ignorePatterns) {
-		msg := "It looks like you are trying to dockerignore a build file such as `Dockerfile` or `.dockerignore`. " +
-			"To avoid accidentally copying these files to your image, please ensure any copied file systems do not " +
-			"include `Dockerfile` or `.dockerignore`."
-		err = p.host.Log(ctx, "warning", urn, msg)
-		if err != nil {
-			return "", nil, err
-		}
-	}
-
-	tar, err := archive.TarWithOptions(contextDir, &archive.TarOptions{
-		ExcludePatterns: ignorePatterns,
-		ChownOpts:       &idtools.Identity{UID: 0, GID: 0},
+	relDockerfile, dockerfileInContext, tar, err := TarBuildContext(ctx, build, func(msg string) error {
+		return p.host.Log(ctx, "warning", urn, msg)
 	})
 	if err != nil {
 		return "", nil, err
@@ -337,7 +285,6 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	}
 
 	authConfigBytes, err := json.Marshal(regAuth)
-
 	if err != nil {
 		return "", nil, fmt.Errorf("error parsing authConfig: %v", err)
 	}
@@ -347,7 +294,6 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 
 	// By default, we push our image with the qualified image name from the input, without extra tagging.
 	pushOutput, err := docker.ImagePush(ctx, img.Name, pushOpts)
-
 	if err != nil {
 		return "", nil, err
 	}
@@ -385,8 +331,73 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	return img.Name, pbstruct, err
 }
 
+func TarBuildContext(ctx context.Context, build Build, logWarning func(string) error) (string, bool, io.ReadCloser, error) {
+	dockerignore := mapDockerignore(filepath.Base(build.Dockerfile)) // Mockerfile.dockerignore
+	dockerIgnorePath := filepath.Join(build.Context, dockerignore)
+
+	initialIgnorePatterns, err := getIgnore(dockerIgnorePath)
+	if err != nil {
+		return "", false, nil, fmt.Errorf("error reading ignore file: %w", err)
+	}
+
+	absDockerfile, err := filepath.Abs(build.Dockerfile)
+	if err != nil {
+		return "", false, nil, fmt.Errorf("absDockerfile error: %s", err)
+	}
+	absBuildpath, err := filepath.Abs(build.Context)
+	if err != nil {
+		return "", false, nil, fmt.Errorf("absBuildPath error: %s", err)
+	}
+	relDockerfile, err := filepath.Rel(absBuildpath, absDockerfile)
+	if err != nil {
+		return "", false, nil, fmt.Errorf("relDockerfile error: %s", err)
+	}
+
+	dockerfileInContext := true
+	if strings.HasPrefix(relDockerfile, ".."+string(filepath.Separator)) {
+		dockerfileInContext = false
+	}
+
+	contextDir, err := clibuild.ResolveAndValidateContextPath(build.Context)
+	if err != nil {
+		return "", false, nil, fmt.Errorf("error resolving context: %w", err)
+	}
+
+	if err := clibuild.ValidateContextDirectory(contextDir, initialIgnorePatterns); err != nil {
+		return "", false, nil, fmt.Errorf("error validating context: %w", err)
+	}
+
+	ignorePatterns := buildCmd.TrimBuildFilesFromExcludes(
+		initialIgnorePatterns,
+		relDockerfile,
+		false,
+	)
+
+	if build.BuilderVersion == defaultBuilder && len(initialIgnorePatterns) != len(ignorePatterns) {
+		msg := "It looks like you are trying to dockerignore a build file such as `Dockerfile` or `.dockerignore`. " +
+			"To avoid accidentally copying these files to your image, please ensure any copied file systems do not " +
+			"include `Dockerfile` or `.dockerignore`."
+		err = logWarning(msg)
+		if err != nil {
+			return "", false, nil, err
+		}
+	}
+
+	fmt.Printf("🌴🌴 %v\n", ignorePatterns)
+
+	tar, err := archive.TarWithOptions(contextDir, &archive.TarOptions{
+		ExcludePatterns: ignorePatterns,
+		ChownOpts:       &idtools.Identity{UID: 0, GID: 0},
+	})
+	if err != nil {
+		return "", false, nil, err
+	}
+	return relDockerfile, dockerfileInContext, tar, nil
+}
+
 func pullDockerImage(ctx context.Context, p *dockerNativeProvider, urn resource.URN,
-	docker *client.Client, authConfig types.AuthConfig, cachedImage string, platform string) error {
+	docker *client.Client, authConfig types.AuthConfig, cachedImage string, platform string,
+) error {
 	if cachedImage != "" {
 		err := p.host.Log(ctx, "info", urn, fmt.Sprintf("Pulling cached image %s", cachedImage))
 		if err != nil {
@@ -425,7 +436,6 @@ func pullDockerImage(ctx context.Context, p *dockerNativeProvider, urn resource.
 }
 
 func marshalBuildAndApplyDefaults(b resource.PropertyValue) (Build, error) {
-
 	// build can be nil, a string or an object; we will also use reasonable defaults here.
 	var build Build
 	if b.IsNull() {
@@ -454,7 +464,6 @@ func marshalBuildAndApplyDefaults(b resource.PropertyValue) (Build, error) {
 	}
 	// BuildKit
 	version, err := marshalBuilder(buildObject["builderVersion"])
-
 	if err != nil {
 		return build, err
 	}
@@ -547,7 +556,7 @@ func marshalBuilder(builder resource.PropertyValue) (types.BuilderVersion, error
 	var version types.BuilderVersion
 
 	if builder.IsNull() {
-		//set default
+		// set default
 		return defaultBuilder, nil
 	}
 	// verify valid input
@@ -683,7 +692,6 @@ func processLogLine(msg string) (string, error) {
 		info += jm.Status + " " + jm.Progress.String()
 	} else if jm.Stream != "" {
 		info += jm.Stream
-
 	} else {
 		info += jm.Status
 	}
@@ -713,7 +721,6 @@ func processLogLine(msg string) (string, error) {
 			}
 			for _, log := range resp.Logs {
 				info += fmt.Sprintf("%s\n", string(log.Msg))
-
 			}
 			for _, warn := range resp.Warnings {
 				info += fmt.Sprintf("%s\n", string(warn.Short))
