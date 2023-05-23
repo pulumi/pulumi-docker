@@ -140,10 +140,14 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		return "", nil, fmt.Errorf("relDockerfile error: %s", err)
 	}
 
-	// if the dockerfile is in the context it will be something like "./Dockerfile" or ".\sub\dir\Dockerfile"
+	// filepath.Abs returns the filepath with the os' filepath separator.
+	// To clean this up, we convert the filepath to a forward slash.
+	relDockerfile = filepath.ToSlash(relDockerfile)
+
+	// if the dockerfile is in the context it will be something like "./Dockerfile" or "./sub/dir/Dockerfile"
 	// if the dockerfile is out of the context it will begin with "../"
 	dockerfileInContext := true
-	if strings.HasPrefix(relDockerfile, ".."+string(filepath.Separator)) {
+	if strings.HasPrefix(relDockerfile, "../") {
 		dockerfileInContext = false
 	}
 
