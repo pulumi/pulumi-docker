@@ -17,6 +17,8 @@
 package examples
 
 import (
+	"encoding/base64"
+	"encoding/json"
 	"os"
 	"path"
 	"testing"
@@ -149,6 +151,48 @@ func TestUnknownInputsNode(t *testing.T) {
 			Quick:       true,
 			SkipRefresh: true,
 		})
+	integration.ProgramTest(t, &test)
+}
+
+func TestSecretsInExplicitProviderNode(t *testing.T) {
+	check := func(t *testing.T, stack integration.RuntimeValidationStackInfo) {
+		deploymentJSON, err := json.MarshalIndent(stack.Deployment, "", "  ")
+		assert.NoError(t, err)
+
+		t.Run("providerWithSecretAddress", func(t *testing.T) {
+			assert.NotContainsf(t, string(deploymentJSON), "secret-address",
+				"Secrets like 'secret-address' should not be stored in the plain")
+		})
+
+		t.Run("providerWithSecretUsername", func(t *testing.T) {
+			pw := stack.Outputs["password"].(string)
+			realPW, err := base64.StdEncoding.DecodeString(pw)
+			assert.NoError(t, err)
+			assert.NotContainsf(t, string(deploymentJSON), string(realPW),
+				"Secrets like the output of RandomPassword should not be stored in the plain")
+		})
+
+		t.Run("providerWithSecretPassword", func(t *testing.T) {
+			assert.NotContainsf(t, string(deploymentJSON), "secret-password",
+				"Secret properties like RegistryAuth.Password should not be stored in the plain")
+		})
+
+		t.Run("noPanics", func(t *testing.T) {
+			// Temporary check to rule out panics; needed until pulumi/pulumi#12981 is resolved.
+			for _, e := range stack.Events {
+				eventsJSON, err := json.MarshalIndent(e, "", "  ")
+				assert.NoError(t, err)
+				assert.NotContainsf(t, string(eventsJSON), "panic",
+					"Unexpected panic recorded in engine events")
+			}
+		})
+	}
+	test := getJsOptions(t).With(integration.ProgramTestOptions{
+		Dir:                    path.Join(getCwd(t), "test-secrets-in-explicit-provider", "ts"),
+		Quick:                  true,
+		SkipRefresh:            true,
+		ExtraRuntimeValidation: check,
+	})
 	integration.ProgramTest(t, &test)
 }
 

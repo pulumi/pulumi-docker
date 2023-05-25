@@ -8,7 +8,7 @@ using Pulumi.Random;
 return await Deployment.RunAsync(() =>
 {
    // Test handling secrets marked by the program.
-   var providerWithSecretAddress = new Pulumi.Docker.Provider("provider-with-secret-address", new Pulumi.Docker.ProviderArgs
+   var providerWithSecretAddress = new Pulumi.Docker.Provider("provider-with-sensitive-address", new Pulumi.Docker.ProviderArgs
    {
       RegistryAuth = new List<Pulumi.Docker.Inputs.ProviderRegistryAuthArgs>
       {
@@ -27,7 +27,7 @@ return await Deployment.RunAsync(() =>
    });
 
    // Test handling dynamic secrets that start as unknown.
-   var providerWithSecretUsername = new Pulumi.Docker.Provider("provider-with-secret-username", new Pulumi.Docker.ProviderArgs
+   var providerWithSecretUsername = new Pulumi.Docker.Provider("provider-with-sensitive-username", new Pulumi.Docker.ProviderArgs
    {
       RegistryAuth = new List<Pulumi.Docker.Inputs.ProviderRegistryAuthArgs>
       {
