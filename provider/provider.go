@@ -542,16 +542,18 @@ func hashContext(dockerContextPath string, dockerfile string) (string, error) {
 	}
 	err = fsutil.Walk(context.Background(), dockerContextPath, &fsutil.WalkOpt{
 		ExcludePatterns: ignorePatterns,
-	}, func(relPath string, d fs.FileInfo, err error) error {
+	}, func(filePath string, fileInfo fs.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
-		if d.IsDir() {
+		if fileInfo.IsDir() {
 			return nil
 		}
-		err = accumulator.hashPath(filepath.Join(dockerContextPath, relPath), relPath, d.Mode())
+		// fsutil.Walk makes filePath relative to the root, we join it back to get an absolute path to
+		// the file to hash.
+		err = accumulator.hashPath(filepath.Join(dockerContextPath, filePath), filePath, fileInfo.Mode())
 		if err != nil {
-			return fmt.Errorf("error while hashing %q: %w", relPath, err)
+			return fmt.Errorf("error while hashing %q: %w", filePath, err)
 		}
 		return nil
 	})

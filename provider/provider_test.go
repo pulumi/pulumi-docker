@@ -142,7 +142,8 @@ func TestHashIgnoresWildcards(t *testing.T) {
 	require.NoError(t, err)
 
 	assert.Equal(t, baselineResult, modIgnoredResult, "hash should not change when modifying ignored files")
-	assert.NotEqual(t, baselineResult, modIncludedResult, "hash should change when modifying included (via wildcard ignore exclusion) files")
+	assert.NotEqual(t, baselineResult, modIncludedResult,
+		"hash should change when modifying included (via wildcard ignore exclusion) files")
 }
 
 // Tests that we handle .dockerignore exclusions such as "!foo/*/bar", as above, when using a
@@ -168,7 +169,8 @@ func TestHashIgnoresWildcardsRelative(t *testing.T) {
 	require.NoError(t, err)
 
 	assert.Equal(t, baselineResult, modIgnoredResult, "hash should not change when modifying ignored files")
-	assert.NotEqual(t, baselineResult, modIncludedResult, "hash should change when modifying included (via wildcard ignore exclusion) files")
+	assert.NotEqual(t, baselineResult, modIncludedResult,
+		"hash should change when modifying included (via wildcard ignore exclusion) files")
 }
 
 func TestHashIgnoresDockerfileOutsideDirMove(t *testing.T) {
