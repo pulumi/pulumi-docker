@@ -1,6 +1,7 @@
 package provider
 
 import (
+	"os"
 	"path/filepath"
 	"testing"
 
@@ -11,7 +12,6 @@ import (
 )
 
 func TestDiffUpdates(t *testing.T) {
-
 	t.Run("No diff happens on changed password", func(t *testing.T) {
 		expected := map[string]*rpc.PropertyDiff{}
 		input := map[resource.PropertyKey]resource.ValueDiff{
@@ -119,6 +119,58 @@ func TestHashIgnoresFile(t *testing.T) {
 	require.NoError(t, err)
 
 	assert.Equal(t, result, baseResult)
+}
+
+// Tests that we handle .dockerignore exclusions such as "!foo/*/bar".
+//
+// See:
+// - https://github.com/moby/moby/issues/30018
+// - https://github.com/moby/moby/issues/45608
+//
+// Buildkit handles these correctly (according to spec), Docker's classic builder does not.
+func TestHashIgnoresWildcards(t *testing.T) {
+	baselineDir := "testdata/ignores-wildcard/basedir"
+	baselineResult, err := hashContext(baselineDir, filepath.Join(baselineDir, defaultDockerfile))
+	require.NoError(t, err)
+
+	modIgnoredDir := "testdata/ignores-wildcard/basedir-modified-ignored-file"
+	modIgnoredResult, err := hashContext(modIgnoredDir, filepath.Join(modIgnoredDir, defaultDockerfile))
+	require.NoError(t, err)
+
+	modIncludedDir := "testdata/ignores-wildcard/basedir-modified-included-file"
+	modIncludedResult, err := hashContext(modIncludedDir, filepath.Join(modIncludedDir, defaultDockerfile))
+	require.NoError(t, err)
+
+	assert.Equal(t, baselineResult, modIgnoredResult, "hash should not change when modifying ignored files")
+	assert.NotEqual(t, baselineResult, modIncludedResult,
+		"hash should change when modifying included (via wildcard ignore exclusion) files")
+}
+
+// Tests that we handle .dockerignore exclusions such as "!foo/*/bar", as above, when using a
+// relative context path.
+func TestHashIgnoresWildcardsRelative(t *testing.T) {
+	err := os.Chdir("pkg")
+	require.NoError(t, err)
+	defer func() {
+		err = os.Chdir("..")
+		require.NoError(t, err)
+	}()
+
+	baselineDir := "../testdata/ignores-wildcard/basedir"
+	baselineResult, err := hashContext(baselineDir, filepath.Join(baselineDir, defaultDockerfile))
+	require.NoError(t, err)
+
+	modIgnoredDir := "../testdata/ignores-wildcard/basedir-modified-ignored-file"
+	modIgnoredResult, err := hashContext(modIgnoredDir, filepath.Join(modIgnoredDir, defaultDockerfile))
+	require.NoError(t, err)
+
+	modIncludedDir := "../testdata/ignores-wildcard/basedir-modified-included-file"
+	modIncludedResult, err := hashContext(modIncludedDir, filepath.Join(modIncludedDir, defaultDockerfile))
+	require.NoError(t, err)
+
+	assert.Equal(t, baselineResult, modIgnoredResult, "hash should not change when modifying ignored files")
+	assert.NotEqual(t, baselineResult, modIncludedResult,
+		"hash should change when modifying included (via wildcard ignore exclusion) files")
 }
 
 func TestHashIgnoresDockerfileOutsideDirMove(t *testing.T) {

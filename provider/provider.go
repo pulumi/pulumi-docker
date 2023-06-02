@@ -16,7 +16,6 @@ import (
 
 	pbempty "github.com/golang/protobuf/ptypes/empty"
 	"github.com/moby/buildkit/frontend/dockerfile/dockerignore"
-	"github.com/moby/patternmatcher"
 	"github.com/pkg/errors"
 	"github.com/pulumi/pulumi/pkg/v3/resource/provider"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
@@ -24,6 +23,7 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/common/util/contract"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/util/logging"
 	rpc "github.com/pulumi/pulumi/sdk/v3/proto/go"
+	"github.com/tonistiigi/fsutil"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/emptypb"
@@ -525,10 +525,6 @@ func hashContext(dockerContextPath string, dockerfile string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	ignoreMatcher, err := patternmatcher.New(ignorePatterns)
-	if err != nil {
-		return "", fmt.Errorf("unable to load rules from %s: %w", dockerIgnorePath, err)
-	}
 
 	accumulator := contextHashAccumulator{dockerContextPath: dockerContextPath}
 	// The dockerfile is always hashed into the digest with the same "name", regardless of its actual
@@ -544,40 +540,20 @@ func hashContext(dockerContextPath string, dockerfile string) (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("error hashing dockerfile %q: %w", dockerfile, err)
 	}
-	// for each file in the Docker build context, create a hash of its content
-	err = filepath.WalkDir(dockerContextPath, func(path string, d os.DirEntry, err error) error {
+	err = fsutil.Walk(context.Background(), dockerContextPath, &fsutil.WalkOpt{
+		ExcludePatterns: ignorePatterns,
+	}, func(filePath string, fileInfo fs.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
-		// The relative path is used in checking against .dockerignore and what is used in computing the
-		// name of the file hashed.
-		relPath, err := filepath.Rel(dockerContextPath, path)
-		if err != nil {
-			return err
-		}
-		if relPath == "." {
+		if fileInfo.IsDir() {
 			return nil
 		}
-		ignore, err := ignoreMatcher.MatchesOrParentMatches(relPath)
+		// fsutil.Walk makes filePath relative to the root, we join it back to get an absolute path to
+		// the file to hash.
+		err = accumulator.hashPath(filepath.Join(dockerContextPath, filePath), filePath, fileInfo.Mode())
 		if err != nil {
-			return fmt.Errorf("%s rule failed: %w", dockerIgnorePath, err)
-		}
-		if ignore {
-			return nil
-
-		} else if d.IsDir() {
-			return nil
-		}
-		fileInfo, err := d.Info()
-		if err != nil {
-			return fmt.Errorf("determining mode for %q: %w", relPath, err)
-		}
-
-		// We pass in the full path to the file, not the relative path above
-		err = accumulator.hashPath(path, relPath, fileInfo.Mode())
-
-		if err != nil {
-			return fmt.Errorf("error while hashing %q: %w", relPath, err)
+			return fmt.Errorf("error while hashing %q: %w", filePath, err)
 		}
 		return nil
 	})
