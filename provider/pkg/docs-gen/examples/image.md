@@ -163,7 +163,7 @@ const myAppImage = new docker.Image("my-app-image", {
     },
     imageName: pulumi.interpolate`${ecrRepository.repositoryUrl}:latest`,
     registry: {
-        password: pulumi.secret(authToken.password),
+        password: pulumi.secret(authToken.apply(authToken => authToken.password)),
         server: ecrRepository.repositoryUrl,
     },
 });
@@ -287,9 +287,9 @@ func main() {
 				return fmt.Sprintf("%v:latest", repositoryUrl), nil
 			}).(pulumi.StringOutput),
 			Registry: &docker.RegistryArgs{
-				Password: pulumi.ToSecret(authToken.ApplyT(func(authToken ecr.GetAuthorizationTokenResult) (string, error) {
-					return authToken.Password, nil
-				}).(pulumi.StringOutput)).(pulumi.StringOutput),
+				Password: pulumi.ToSecret(authToken.ApplyT(func(authToken ecr.GetAuthorizationTokenResult) (*string, error) {
+					return &authToken.Password, nil
+				}).(pulumi.StringPtrOutput)).(*pulumi.StringOutput),
 				Server: ecrRepository.RepositoryUrl,
 			},
 		})

@@ -66,7 +66,7 @@ import * as utilities from "./utilities";
  *     },
  *     imageName: pulumi.interpolate`${ecrRepository.repositoryUrl}:latest`,
  *     registry: {
- *         password: pulumi.secret(authToken.password),
+ *         password: pulumi.secret(authToken.apply(authToken => authToken.password)),
  *         server: ecrRepository.repositoryUrl,
  *     },
  * });
