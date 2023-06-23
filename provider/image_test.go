@@ -528,7 +528,7 @@ func TestConfigureDockerClient(t *testing.T) {
 		os := runtime.GOOS
 		switch os {
 		case "windows":
-			assert.Equal(t, actual.DaemonHost(), "tcp://127.0.0.1:2376")
+			assert.Equal(t, actual.DaemonHost(), "npipe:////./pipe/docker_engine")
 		default:
 			assert.Equal(t, actual.DaemonHost(), "unix:///var/run/docker.sock")
 		}
