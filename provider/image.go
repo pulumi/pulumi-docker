@@ -827,6 +827,7 @@ func configureDockerClient(configs map[string]string) (*client.Client, error) {
 				client.WithHost(helper.Host),
 			)
 		}
+		// if no helper is registered for the scheme, we return a non-SSH client using the supplied host.
 		return client.NewClientWithOpts(
 			client.FromEnv,
 			client.WithHost(host),
