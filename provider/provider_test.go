@@ -251,17 +251,17 @@ func TestSetConfiguration(t *testing.T) {
 		actual := setConfiguration(input)
 		assert.Equal(t, expected, actual)
 	})
-	t.Run("Sets provider config with preference to environment variables", func(t *testing.T) {
+	t.Run("Sets provider config with preference to stack config variables", func(t *testing.T) {
 		expected := map[string]string{
 			"host":       "thisisatesthost",
 			"caMaterial": "materialsareweird",
 		}
 		input := map[string]string{
-			"host":       "thishostshouldbeoverwritten",
+			"host":       "thisisatesthost",
 			"caMaterial": "materialsareweird",
 		}
 
-		t.Setenv("DOCKER_HOST", "thisisatesthost")
+		t.Setenv("DOCKER_HOST", "thishostshouldbeignored")
 
 		actual := setConfiguration(input)
 		assert.Equal(t, expected, actual)
