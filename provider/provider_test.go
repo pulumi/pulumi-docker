@@ -226,3 +226,60 @@ func TestHashUnignoredDirs(t *testing.T) {
 
 	assert.Equal(t, baseResult, unignoreResult)
 }
+
+func TestSetConfiguration(t *testing.T) {
+	t.Run("Sets provider config correctly when passed a valid input map", func(t *testing.T) {
+		expected := map[string]string{
+			"host":       "thisisatesthost",
+			"caMaterial": "materialsareweird",
+		}
+		input := map[string]string{
+			"host":       "thisisatesthost",
+			"caMaterial": "materialsareweird",
+		}
+		actual := setConfiguration(input)
+		assert.Equal(t, expected, actual)
+	})
+	t.Run("Sets provider config correctly from environment variables", func(t *testing.T) {
+		expected := map[string]string{
+			"host":       "thisisatesthost",
+			"caMaterial": "materialsareweird",
+		}
+		t.Setenv("DOCKER_HOST", "thisisatesthost")
+		t.Setenv("DOCKER_CA_MATERIAL", "materialsareweird")
+		input := map[string]string{}
+		actual := setConfiguration(input)
+		assert.Equal(t, expected, actual)
+	})
+	t.Run("Sets provider config with preference to environment variables", func(t *testing.T) {
+		expected := map[string]string{
+			"host":       "thisisatesthost",
+			"caMaterial": "materialsareweird",
+		}
+		input := map[string]string{
+			"host":       "thishostshouldbeoverwritten",
+			"caMaterial": "materialsareweird",
+		}
+
+		t.Setenv("DOCKER_HOST", "thisisatesthost")
+
+		actual := setConfiguration(input)
+		assert.Equal(t, expected, actual)
+	})
+	t.Run("Sets provider config by correctly merging stack config and env vars", func(t *testing.T) {
+		expected := map[string]string{
+			"host":        "thisisatesthost",
+			"caMaterial":  "materialsareweird",
+			"authConfigs": "authConfigs",
+		}
+		input := map[string]string{
+			"caMaterial":  "materialsareweird",
+			"authConfigs": "authConfigs",
+		}
+
+		t.Setenv("DOCKER_HOST", "thisisatesthost")
+
+		actual := setConfiguration(input)
+		assert.Equal(t, expected, actual)
+	})
+}

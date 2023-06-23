@@ -742,7 +742,6 @@ func processLogLine(msg string) (string, error) {
 }
 
 func configureDockerClient(configs map[string]string) (*client.Client, error) {
-	fmt.Println("🦉🦉🦉🦉🦉🦉 CONFIG", configs)
 	// check for TLS inputs
 	var caMaterial, certMaterial, keyMaterial, certPath, host string
 	if val, ok := configs["caMaterial"]; ok {

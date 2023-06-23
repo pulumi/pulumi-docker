@@ -76,25 +76,9 @@ func (p *dockerNativeProvider) DiffConfig(ctx context.Context, req *rpc.DiffRequ
 // Configure configures the resource provider with "globals" that control its behavior.
 func (p *dockerNativeProvider) Configure(_ context.Context, req *rpc.ConfigureRequest) (*rpc.ConfigureResponse, error) {
 
-	for key, val := range req.GetVariables() {
-		p.config[strings.TrimPrefix(key, "docker:config:")] = val
-	}
-	// get env vars, if any.
-	// Because historically we give precedence to env vars over config vars, we overwrite here.
-	if value := os.Getenv("DOCKER_HOST"); value != "" {
-		p.config["host"] = value
-	}
-	if value := os.Getenv("DOCKER_CA_MATERIAL"); value != "" {
-		p.config["caMaterial"] = value
-	}
-	if value := os.Getenv("DOCKER_CERT_MATERIAL"); value != "" {
-		p.config["certMaterial"] = value
-	}
-	if value := os.Getenv("DOCKER_KEY_MATERIAL"); value != "" {
-		p.config["keyMaterial"] = value
-	}
-	if value := os.Getenv("DOCKER_CERT_PATH"); value != "" {
-		p.config["certPath"] = value
+	config := setConfiguration(req.GetVariables())
+	for key, val := range config {
+		p.config[key] = val
 	}
 	return &rpc.ConfigureResponse{}, nil
 }
@@ -597,4 +581,31 @@ func getIgnore(dockerIgnorePath string) ([]string, error) {
 		return ignorePatterns, fmt.Errorf("unable to parse %s file: %w", ".dockerignore", err)
 	}
 	return ignorePatterns, nil
+}
+
+// setConfiguration takes in the stack config settings and additionally reads in any environment variables
+func setConfiguration(configVars map[string]string) map[string]string {
+	envConfig := make(map[string]string)
+	for key, val := range configVars {
+		envConfig[strings.TrimPrefix(key, "docker:config:")] = val
+	}
+	// get env vars, if any.
+	// Because historically we give precedence to env vars over config vars, we overwrite here.
+	if value := os.Getenv("DOCKER_HOST"); value != "" {
+		envConfig["host"] = value
+	}
+	if value := os.Getenv("DOCKER_CA_MATERIAL"); value != "" {
+		envConfig["caMaterial"] = value
+	}
+	if value := os.Getenv("DOCKER_CERT_MATERIAL"); value != "" {
+		envConfig["certMaterial"] = value
+	}
+	if value := os.Getenv("DOCKER_KEY_MATERIAL"); value != "" {
+		envConfig["keyMaterial"] = value
+	}
+	if value := os.Getenv("DOCKER_CERT_PATH"); value != "" {
+		envConfig["certPath"] = value
+	}
+
+	return envConfig
 }

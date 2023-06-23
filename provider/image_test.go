@@ -428,12 +428,6 @@ func TestConfigureDockerClient(t *testing.T) {
 		assert.NoError(t, err)
 		assert.Equal(t, expected, actual.DaemonHost())
 	})
-	t.Run("Given a host passed via environment, a client should be configured", func(t *testing.T) {
-		input := map[string]string{}
-		actual, err := configureDockerClient(input)
-		assert.NoError(t, err)
-		assert.NotNil(t, actual)
-	})
 
 	t.Run("For TLS, must pass certMaterial, keyMaterial, and caMaterial", func(t *testing.T) {
 		input := map[string]string{
