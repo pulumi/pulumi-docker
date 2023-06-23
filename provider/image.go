@@ -8,6 +8,9 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"github.com/docker/cli/cli/connhelper"
+	"github.com/moby/buildkit/session"
+	"github.com/moby/buildkit/session/auth/authprovider"
 	"io"
 	"net"
 	"net/http"
@@ -32,8 +35,6 @@ import (
 	"github.com/docker/docker/pkg/jsonmessage"
 	structpb "github.com/golang/protobuf/ptypes/struct"
 	controlapi "github.com/moby/buildkit/api/services/control"
-	"github.com/moby/buildkit/session"
-	"github.com/moby/buildkit/session/auth/authprovider"
 	"github.com/moby/moby/registry"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
@@ -249,7 +250,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		AuthConfigs: authConfigs,
 	}
 
-	// Start a session for BuildKit
+	//Start a session for BuildKit
 	if build.BuilderVersion == defaultBuilder {
 		sess, _ := session.NewSession(ctx, "pulumi-docker", "")
 
@@ -300,7 +301,6 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	if err != nil {
 		return "", nil, err
 	}
-
 	defer imgBuildResp.Body.Close()
 
 	// Print build logs to `Info` progress report
@@ -813,13 +813,27 @@ func configureDockerClient(configs map[string]string) (*client.Client, error) {
 
 	// No TLS certificate material provided, create an http client
 	if host != "" {
+		// first, check for ssh host
+		sshopts := []string{}
+		helper, err := connhelper.GetConnectionHelperWithSSHOpts(host, sshopts)
+		if err != nil {
+			return nil, err
+		}
+		if helper != nil {
+			return client.NewClientWithOpts(
+				client.FromEnv,
+				client.WithAPIVersionNegotiation(),
+				client.WithDialContext(helper.Dialer),
+				client.WithHost(helper.Host),
+			)
+		}
+		// if no helper is registered for the scheme, we return a non-SSH client using the supplied host.
 		return client.NewClientWithOpts(
 			client.FromEnv,
 			client.WithHost(host),
 			client.WithAPIVersionNegotiation(),
 		)
 	}
-
 	return client.NewClientWithOpts(
 		client.FromEnv,
 		client.WithAPIVersionNegotiation(),

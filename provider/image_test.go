@@ -5,6 +5,7 @@ import (
 	"github.com/docker/docker/api/types"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/stretchr/testify/assert"
+	"runtime"
 	"testing"
 )
 
@@ -496,6 +497,48 @@ func TestConfigureDockerClient(t *testing.T) {
 		assert.Nil(t, actual)
 	})
 
+	t.Run("When passed a valid ssh scheme for the host, a client with a helper daemon host will be returned",
+		func(t *testing.T) {
+			input := map[string]string{
+				"host": "ssh://test@128.199.8.23",
+			}
+			actual, _ := configureDockerClient(input)
+			// The connection helper returns http://docker.example.com as the client's daemon host.
+			assert.Equal(t, actual.DaemonHost(), "http://docker.example.com")
+		})
+	t.Run("When passed an invalid ssh scheme for the host, no client is returned",
+		func(t *testing.T) {
+			input := map[string]string{
+				"host": "ssh://this/is-not-a-hostname",
+			}
+			actual, err := configureDockerClient(input)
+			assert.Nil(t, actual)
+			assert.ErrorContains(t, err, "ssh host connection is not valid")
+		})
+
+	t.Run("When passed a valid non-ssh scheme for the host, a client without daemon host will be returned",
+		func(t *testing.T) {
+			input := map[string]string{
+				"host": "unix:///var/run/docker.sock",
+			}
+			actual, _ := configureDockerClient(input)
+			assert.Equal(t, actual.DaemonHost(), input["host"])
+		})
+	t.Run("When host is empty, returns default host ", func(t *testing.T) {
+
+		input := map[string]string{
+			"host": "",
+		}
+		actual, _ := configureDockerClient(input)
+
+		os := runtime.GOOS
+		switch os {
+		case "windows":
+			assert.Equal(t, actual.DaemonHost(), "tcp://127.0.0.1:2376")
+		default:
+			assert.Equal(t, actual.DaemonHost(), "unix:///var/run/docker.sock")
+		}
+	})
 }
 
 func TestMapDockerignore(t *testing.T) {
