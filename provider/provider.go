@@ -75,8 +75,10 @@ func (p *dockerNativeProvider) DiffConfig(ctx context.Context, req *rpc.DiffRequ
 
 // Configure configures the resource provider with "globals" that control its behavior.
 func (p *dockerNativeProvider) Configure(_ context.Context, req *rpc.ConfigureRequest) (*rpc.ConfigureResponse, error) {
-	for key, val := range req.GetVariables() {
-		p.config[strings.TrimPrefix(key, "docker:config:")] = val
+
+	config := setConfiguration(req.GetVariables())
+	for key, val := range config {
+		p.config[key] = val
 	}
 	return &rpc.ConfigureResponse{}, nil
 }
@@ -579,4 +581,47 @@ func getIgnore(dockerIgnorePath string) ([]string, error) {
 		return ignorePatterns, fmt.Errorf("unable to parse %s file: %w", ".dockerignore", err)
 	}
 	return ignorePatterns, nil
+}
+
+// setConfiguration takes in the stack config settings and  reads in any environment variables on unset fields.
+// If we implement https://github.com/pulumi/pulumi-terraform-bridge/issues/1238 we can remove this.
+func setConfiguration(configVars map[string]string) map[string]string {
+	envConfig := make(map[string]string)
+	for key, val := range configVars {
+		envConfig[strings.TrimPrefix(key, "docker:config:")] = val
+	}
+	// add env vars, if any. Stack config will have precedence.
+
+	_, ok := envConfig["host"]
+	if !ok {
+		if value := os.Getenv("DOCKER_HOST"); value != "" {
+			envConfig["host"] = value
+		}
+	}
+	_, ok = envConfig["caMaterial"]
+	if !ok {
+		if value := os.Getenv("DOCKER_CA_MATERIAL"); value != "" {
+			envConfig["caMaterial"] = value
+		}
+	}
+	_, ok = envConfig["certMaterial"]
+	if !ok {
+		if value := os.Getenv("DOCKER_CERT_MATERIAL"); value != "" {
+			envConfig["certMaterial"] = value
+		}
+	}
+	_, ok = envConfig["keyMaterial"]
+	if !ok {
+		if value := os.Getenv("DOCKER_KEY_MATERIAL"); value != "" {
+			envConfig["keyMaterial"] = value
+		}
+	}
+	_, ok = envConfig["certPath"]
+	if !ok {
+		if value := os.Getenv("DOCKER_CERT_PATH"); value != "" {
+			envConfig["certPath"] = value
+		}
+	}
+
+	return envConfig
 }

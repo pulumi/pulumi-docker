@@ -428,12 +428,6 @@ func TestConfigureDockerClient(t *testing.T) {
 		assert.NoError(t, err)
 		assert.Equal(t, expected, actual.DaemonHost())
 	})
-	t.Run("Given a host passed via environment, a client should be configured", func(t *testing.T) {
-		input := map[string]string{}
-		actual, err := configureDockerClient(input)
-		assert.NoError(t, err)
-		assert.NotNil(t, actual)
-	})
 
 	t.Run("For TLS, must pass certMaterial, keyMaterial, and caMaterial", func(t *testing.T) {
 		input := map[string]string{
@@ -534,7 +528,7 @@ func TestConfigureDockerClient(t *testing.T) {
 		os := runtime.GOOS
 		switch os {
 		case "windows":
-			assert.Equal(t, actual.DaemonHost(), "tcp://127.0.0.1:2376")
+			assert.Equal(t, actual.DaemonHost(), "npipe:////./pipe/docker_engine")
 		default:
 			assert.Equal(t, actual.DaemonHost(), "unix:///var/run/docker.sock")
 		}
