@@ -1,7 +1,7 @@
-From d7453de5b95e80bec4551cc34bc215b46ee7ca36 Mon Sep 17 00:00:00 2001
+From fb291193d44d36d001c7aba9d7e3f65c3b7f0563 Mon Sep 17 00:00:00 2001
 From: Aaron Friel <mayreply@aaronfriel.com>
 Date: Mon, 6 Mar 2023 02:52:33 -0800
-Subject: [PATCH] update to latest docker library
+Subject: [PATCH 1/4] update to latest docker library
 
 ---
  internal/provider/provider.go                        | 6 +-----
@@ -9,10 +9,10 @@ Subject: [PATCH] update to latest docker library
  2 files changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/internal/provider/provider.go b/internal/provider/provider.go
-index de404a00..294194fa 100644
+index b52deab..7feca79 100644
 --- a/internal/provider/provider.go
 +++ b/internal/provider/provider.go
-@@ -294,11 +294,7 @@ func providerSetToRegistryAuth(authList *schema.Set) (*AuthConfigs, error) {
+@@ -311,11 +311,7 @@ func providerSetToRegistryAuth(authList *schema.Set) (*AuthConfigs, error) {
  func loadConfigFile(configData io.Reader) (*configfile.ConfigFile, error) {
  	configFile := configfile.New("")
  	if err := configFile.LoadFromReader(configData); err != nil {
@@ -26,7 +26,7 @@ index de404a00..294194fa 100644
  	return configFile, nil
  }
 diff --git a/internal/provider/resource_docker_container_funcs.go b/internal/provider/resource_docker_container_funcs.go
-index 43109a3b..ae0205ec 100644
+index f51ce0c..9f902d4 100644
 --- a/internal/provider/resource_docker_container_funcs.go
 +++ b/internal/provider/resource_docker_container_funcs.go
 @@ -11,6 +11,7 @@ import (
@@ -37,7 +37,7 @@ index 43109a3b..ae0205ec 100644
  	"os"
  	"strings"
  	"time"
-@@ -903,7 +904,10 @@ func resourceDockerContainerDelete(ctx context.Context, d *schema.ResourceData,
+@@ -874,7 +875,10 @@ func resourceDockerContainerDelete(ctx context.Context, d *schema.ResourceData,
  		}
  
  		log.Printf("[INFO] Stopping Container '%s' with timeout %v", d.Id(), timeout)
@@ -50,5 +50,5 @@ index 43109a3b..ae0205ec 100644
  		}
  	}
 -- 
-2.39.1
+2.40.0
 

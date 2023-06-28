@@ -1,7 +1,7 @@
-From 82d0f20ef70da03c1e36eb675debc6c6f276cd29 Mon Sep 17 00:00:00 2001
+From 42c5527d09ae2dbadbb5069334fff383be8d2f95 Mon Sep 17 00:00:00 2001
 From: Ian Wahbe <ian@wahbe.com>
 Date: Mon, 6 Mar 2023 13:39:15 +0100
-Subject: [PATCH] Add `shim.NewProvider` to expose `internal/provider.New`
+Subject: [PATCH 2/4] Add `shim.NewProvider` to expose `internal/provider.New`
 
 ---
  shim/shim.go | 10 ++++++++++
@@ -25,5 +25,5 @@ index 0000000..fb00354
 +	return provider.New("dev")()
 +}
 -- 
-2.39.1
+2.40.0
 

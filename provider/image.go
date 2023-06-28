@@ -247,6 +247,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 
 	// make the build options
 	var platform string
+	fmt.Println("🦉🦉🦉🦉🦉", build.Platform)
 	if len(build.Platform) == 1 {
 		platform = build.Platform[0]
 
@@ -492,9 +493,6 @@ func marshalBuildAndApplyDefaults(b resource.PropertyValue) (Build, error) {
 				}
 				platforms = append(platforms, platform.StringValue())
 			}
-		}
-		if buildObject["platform"].IsString() {
-			platforms = append(platforms, buildObject["platform"].StringValue())
 		}
 		build.Platform = platforms
 

@@ -1800,7 +1800,10 @@
                     "description": "The path to the Dockerfile to use."
                 },
                 "platform": {
-                    "type": "string",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
                     "description": "The architecture of the platform you want to build this image for, e.g. `linux/arm64`."
                 },
                 "target": {

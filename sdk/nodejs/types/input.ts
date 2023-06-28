@@ -288,7 +288,7 @@ export interface DockerBuild {
     /**
      * The architecture of the platform you want to build this image for, e.g. `linux/arm64`.
      */
-    platform?: pulumi.Input<string>;
+    platform?: pulumi.Input<pulumi.Input<string>[]>;
     /**
      * The target of the Dockerfile to build
      */
