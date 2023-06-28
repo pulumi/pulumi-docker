@@ -237,86 +237,6 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		regAuth = auth                                                  // for image push
 	}
 
-	// make the build options
-	opts := types.ImageBuildOptions{
-		Dockerfile: replaceDockerfile,
-		Tags:       []string{img.Name}, // this should build the image locally, sans registry info
-		CacheFrom:  img.Build.CachedImages,
-		BuildArgs:  build.Args,
-		Version:    build.BuilderVersion,
-		Platform:   build.Platform,
-		Target:     build.Target,
-
-		AuthConfigs: authConfigs,
-	}
-
-	//Start a session for BuildKit
-	if build.BuilderVersion == defaultBuilder {
-		sess, _ := session.NewSession(ctx, "pulumi-docker", "")
-
-		dockerAuthProvider := authprovider.NewDockerAuthProvider(cfg)
-		sess.Allow(dockerAuthProvider)
-
-		dialSession := func(ctx context.Context, proto string, meta map[string][]string) (net.Conn, error) {
-			return docker.DialHijack(ctx, "/session", proto, meta)
-		}
-		go func() {
-			err := sess.Run(ctx, dialSession)
-			if err != nil {
-				return
-			}
-		}()
-		defer sess.Close()
-		opts.SessionID = sess.ID()
-	}
-
-	// Docker with BuildKit seems to not cache multi-stage builds every other build. This is a known issue:
-	// - https://github.com/moby/buildkit/issues/3730
-	// - https://github.com/moby/buildkit/issues/2274
-	// - https://github.com/moby/buildkit/issues/1981
-	//
-	// A workaround suggested in these threads is to `docker pull` the image prior to building.
-
-	// In this loop, we pull the cached images, and none of the errors inside this loop are fatal. If we fail
-	// to pull an image, we log a warning and continue.
-	for _, cachedImage := range img.Build.CachedImages {
-		auth, msg, err := getRegistryAuth(img, cfg)
-		if err != nil {
-			_ = p.host.Log(ctx, "warning", urn, msg)
-			continue
-		}
-		if msg != "" {
-			_ = p.host.Log(ctx, "warning", urn, msg)
-			continue
-		}
-
-		err = pullDockerImage(ctx, p, urn, docker, auth, cachedImage, opts.Platform)
-		if err != nil {
-			// Non-fatal, warn that we failed to pull the image
-			_ = p.host.Log(ctx, "warning", urn, fmt.Sprintf("Failed to pull cached image %s: %v", cachedImage, err))
-		}
-	}
-
-	imgBuildResp, err := docker.ImageBuild(ctx, tar, opts)
-	if err != nil {
-		return "", nil, err
-	}
-	defer imgBuildResp.Body.Close()
-
-	// Print build logs to `Info` progress report
-	scanner := bufio.NewScanner(imgBuildResp.Body)
-	for scanner.Scan() {
-
-		info, err := processLogLine(scanner.Text())
-		if err != nil {
-			return "", nil, err
-		}
-		err = p.host.LogStatus(ctx, "info", urn, info)
-		if err != nil {
-			return "", nil, err
-		}
-	}
-
 	outputs := map[string]interface{}{
 		"dockerfile":     relDockerfile,
 		"context":        img.Build.Context,
@@ -325,50 +245,138 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		"imageName":      img.Name,
 	}
 
-	// if we are not pushing to the registry, we return after building the local image.
-	if img.SkipPush {
-		pbstruct, err := plugin.MarshalProperties(
-			resource.NewPropertyMapFromMap(outputs),
-			plugin.MarshalOptions{KeepUnknowns: true, SkipNulls: true},
-		)
-		return img.Name, pbstruct, err
-	}
+	// make the build options
+	var platform string
+	if len(build.Platform) == 1 {
+		platform = build.Platform[0]
 
-	err = p.host.LogStatus(ctx, "info", urn, "Pushing Image to the registry")
+		opts := types.ImageBuildOptions{
+			Dockerfile: replaceDockerfile,
+			Tags:       []string{img.Name}, // this should build the image locally, sans registry info
+			CacheFrom:  img.Build.CachedImages,
+			BuildArgs:  build.Args,
+			Version:    build.BuilderVersion,
+			Platform:   platform,
+			Target:     build.Target,
 
-	if err != nil {
-		return "", nil, err
-	}
+			AuthConfigs: authConfigs,
+		}
 
-	authConfigBytes, err := json.Marshal(regAuth)
+		//Start a session for BuildKit
+		if build.BuilderVersion == defaultBuilder {
+			sess, _ := session.NewSession(ctx, "pulumi-docker", "")
 
-	if err != nil {
-		return "", nil, fmt.Errorf("error parsing authConfig: %v", err)
-	}
-	authConfigEncoded := base64.URLEncoding.EncodeToString(authConfigBytes)
+			dockerAuthProvider := authprovider.NewDockerAuthProvider(cfg)
+			sess.Allow(dockerAuthProvider)
 
-	pushOpts := types.ImagePushOptions{RegistryAuth: authConfigEncoded}
+			dialSession := func(ctx context.Context, proto string, meta map[string][]string) (net.Conn, error) {
+				return docker.DialHijack(ctx, "/session", proto, meta)
+			}
+			go func() {
+				err := sess.Run(ctx, dialSession)
+				if err != nil {
+					return
+				}
+			}()
+			defer sess.Close()
+			opts.SessionID = sess.ID()
+		}
 
-	// By default, we push our image with the qualified image name from the input, without extra tagging.
-	pushOutput, err := docker.ImagePush(ctx, img.Name, pushOpts)
+		// Docker with BuildKit seems to not cache multi-stage builds every other build. This is a known issue:
+		// - https://github.com/moby/buildkit/issues/3730
+		// - https://github.com/moby/buildkit/issues/2274
+		// - https://github.com/moby/buildkit/issues/1981
+		//
+		// A workaround suggested in these threads is to `docker pull` the image prior to building.
 
-	if err != nil {
-		return "", nil, err
-	}
+		// In this loop, we pull the cached images, and none of the errors inside this loop are fatal. If we fail
+		// to pull an image, we log a warning and continue.
+		for _, cachedImage := range img.Build.CachedImages {
+			auth, msg, err := getRegistryAuth(img, cfg)
+			if err != nil {
+				_ = p.host.Log(ctx, "warning", urn, msg)
+				continue
+			}
+			if msg != "" {
+				_ = p.host.Log(ctx, "warning", urn, msg)
+				continue
+			}
 
-	defer pushOutput.Close()
+			err = pullDockerImage(ctx, p, urn, docker, auth, cachedImage, opts.Platform)
+			if err != nil {
+				// Non-fatal, warn that we failed to pull the image
+				_ = p.host.Log(ctx, "warning", urn, fmt.Sprintf("Failed to pull cached image %s: %v", cachedImage, err))
+			}
+		}
 
-	// Print push logs to `Info` progress report
-	pushScanner := bufio.NewScanner(pushOutput)
-	for pushScanner.Scan() {
-		info, err := processLogLine(pushScanner.Text())
+		imgBuildResp, err := docker.ImageBuild(ctx, tar, opts)
 		if err != nil {
 			return "", nil, err
 		}
-		err = p.host.LogStatus(ctx, "info", urn, info)
+		defer imgBuildResp.Body.Close()
+
+		// Print build logs to `Info` progress report
+		scanner := bufio.NewScanner(imgBuildResp.Body)
+		for scanner.Scan() {
+
+			info, err := processLogLine(scanner.Text())
+			if err != nil {
+				return "", nil, err
+			}
+			err = p.host.LogStatus(ctx, "info", urn, info)
+			if err != nil {
+				return "", nil, err
+			}
+		}
+
+		// if we are not pushing to the registry, we return after building the local image.
+		if img.SkipPush {
+			pbstruct, err := plugin.MarshalProperties(
+				resource.NewPropertyMapFromMap(outputs),
+				plugin.MarshalOptions{KeepUnknowns: true, SkipNulls: true},
+			)
+			return img.Name, pbstruct, err
+		}
+
+		err = p.host.LogStatus(ctx, "info", urn, "Pushing Image to the registry")
+
 		if err != nil {
 			return "", nil, err
 		}
+
+		authConfigBytes, err := json.Marshal(regAuth)
+
+		if err != nil {
+			return "", nil, fmt.Errorf("error parsing authConfig: %v", err)
+		}
+		authConfigEncoded := base64.URLEncoding.EncodeToString(authConfigBytes)
+
+		pushOpts := types.ImagePushOptions{RegistryAuth: authConfigEncoded}
+
+		// By default, we push our image with the qualified image name from the input, without extra tagging.
+		pushOutput, err := docker.ImagePush(ctx, img.Name, pushOpts)
+
+		if err != nil {
+			return "", nil, err
+		}
+
+		defer pushOutput.Close()
+
+		// Print push logs to `Info` progress report
+		pushScanner := bufio.NewScanner(pushOutput)
+		for pushScanner.Scan() {
+			info, err := processLogLine(pushScanner.Text())
+			if err != nil {
+				return "", nil, err
+			}
+			err = p.host.LogStatus(ctx, "info", urn, info)
+			if err != nil {
+				return "", nil, err
+			}
+		}
+	} else {
+		// use buildx functionality
+
 	}
 
 	dist, _, err := docker.ImageInspectWithRaw(ctx, img.Name)
