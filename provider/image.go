@@ -63,7 +63,7 @@ type Build struct {
 	CachedImages   []string
 	Args           map[string]*string
 	Target         string
-	Platform       string
+	Platform       []string
 	BuilderVersion types.BuilderVersion
 }
 
@@ -473,8 +473,23 @@ func marshalBuildAndApplyDefaults(b resource.PropertyValue) (Build, error) {
 	}
 
 	// Platform
+	var platforms []string
 	if !buildObject["platform"].IsNull() {
-		build.Platform = buildObject["platform"].StringValue()
+		if buildObject["platform"].IsArray() {
+			platformList := buildObject["platform"].ArrayValue()
+			for _, platform := range platformList {
+				// if we are in preview, we cannot add an undefined Output so we skip to the next item
+				if platform.IsNull() {
+					continue
+				}
+				platforms = append(platforms, platform.StringValue())
+			}
+		}
+		if buildObject["platform"].IsString() {
+			platforms = append(platforms, buildObject["platform"].StringValue())
+		}
+		build.Platform = platforms
+
 	}
 	return build, nil
 }
