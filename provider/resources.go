@@ -189,7 +189,12 @@ func Provider() tfbridge.ProviderInfo {
 						"platform": {
 							Description: "The architecture of the platform you want to build this image for, " +
 								"e.g. `linux/arm64`.",
-							TypeSpec: schema.TypeSpec{Type: "string"},
+							TypeSpec: schema.TypeSpec{
+								Type: "array",
+								Items: &schema.TypeSpec{
+									Type: "string",
+								},
+							},
 						},
 					},
 				},
