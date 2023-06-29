@@ -15,8 +15,9 @@ import (
 	"os"
 )
 
-func runBuildx() {
-	fmt.Println("build")
+func runBuildx(build Build, img Image) {
+	fmt.Println("🦉🦉 build", build)
+	fmt.Println("🦉🦉image", img)
 	ctx := context.Background()
 
 	// some CLI that is just the docker thing
@@ -30,8 +31,8 @@ func runBuildx() {
 	fmt.Println(cli.ConfigFile())
 
 	controllerOpts := controllerapi.BuildOptions{
-		ContextPath:    "/Users/guin/go/src/github.com/pulumi/hackweek-june-23/use-buildx",
-		DockerfileName: "Dockerfile",
+		ContextPath:    build.Context,
+		DockerfileName: build.Dockerfile,
 		//PrintFunc:      nil,
 		//NamedContexts:  nil,
 		//Allow:          nil,
@@ -45,17 +46,17 @@ func runBuildx() {
 		//Labels:         nil,
 		//NetworkMode:    "",
 		//NoCacheFilter:  nil,
-		Platforms: []string{"linux/arm/v7", "linux/amd64"},
+		Platforms: build.Platform,
 		//Secrets:        nil,
 		//ShmSize:        0,
 		//SSH:            nil,
-		Tags: []string{"gsaenger/hi-multiplat-program:wed-2"},
+		Tags: []string{img.Name},
 		//Target:         "",
 		//Ulimits:        nil,
 		Builder: "busy_sammet",
 		//NoCache:        false,
 		//Pull:           false,
-		ExportPush: true,
+		ExportPush: true, // we want to always push in this case
 		//ExportLoad:     false,
 		//SourcePolicy:   nil,
 	}
@@ -71,6 +72,7 @@ func runBuildx() {
 	//	fmt.Println(err.Error())
 	//}
 	var printer *progress.Printer
+	// TODO: somehow hook this up to pulumi.Info
 	printer, err = progress.NewPrinter(ctx2, os.Stderr, os.Stderr, "this is a progress mode",
 		progress.WithDesc(
 			fmt.Sprintf("building with %q instance using %s driver", "test", "default"), fmt.Sprintf("second print statement"),
