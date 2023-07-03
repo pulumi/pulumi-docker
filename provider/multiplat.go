@@ -3,7 +3,7 @@ package provider
 import (
 	"context"
 	"fmt"
-	actualbuild "github.com/docker/buildx/controller/build"
+	controllerbuild "github.com/docker/buildx/controller/build"
 	controllerapi "github.com/docker/buildx/controller/pb"
 	_ "github.com/docker/buildx/driver/docker"
 	_ "github.com/docker/buildx/driver/docker-container"
@@ -16,19 +16,25 @@ import (
 )
 
 func runBuildx(build Build, img Image) {
-	fmt.Println("🦉🦉 build", build)
-	fmt.Println("🦉🦉image", img)
+	fmt.Println("🦉🦉🦉🦉🦉🦉Running buildx")
 	ctx := context.Background()
 
-	// some CLI that is just the docker thing
+	// initialize docker CLI
 	cli, err := command.NewDockerCli()
 	if err != nil {
 		fmt.Println(err.Error())
 	}
 
 	err = cli.Initialize(cliflags.NewClientOptions())
+	if err != nil {
+		fmt.Println(err.Error())
+	}
 
-	fmt.Println(cli.ConfigFile())
+	// in buildx, build args are a map of string to string, no pointers involved
+	var buildArgs map[string]string
+	for key, arg := range build.Args {
+		buildArgs[key] = *arg
+	}
 
 	controllerOpts := controllerapi.BuildOptions{
 		ContextPath:    build.Context,
@@ -37,8 +43,8 @@ func runBuildx(build Build, img Image) {
 		//NamedContexts:  nil,
 		//Allow:          nil,
 		//Attests:        nil,
-		//BuildArgs:      nil,
-		//CacheFrom:      nil,
+		BuildArgs: buildArgs,
+		//CacheFrom: nil,
 		//CacheTo:        nil,
 		//CgroupParent:   "",
 		//Exports:        nil,
@@ -53,7 +59,7 @@ func runBuildx(build Build, img Image) {
 		Tags: []string{img.Name},
 		//Target:         "",
 		//Ulimits:        nil,
-		Builder: "busy_sammet",
+		Builder: "interesting_pare",
 		//NoCache:        false,
 		//Pull:           false,
 		ExportPush: true, // we want to always push in this case
@@ -62,7 +68,6 @@ func runBuildx(build Build, img Image) {
 	}
 
 	// I got this from here: https://github.com/docker/buildx/blob/master/commands/build.go#L254
-
 	ctx2, cancel := context.WithCancel(context.TODO())
 
 	defer cancel()
@@ -73,7 +78,7 @@ func runBuildx(build Build, img Image) {
 	//}
 	var printer *progress.Printer
 	// TODO: somehow hook this up to pulumi.Info
-	printer, err = progress.NewPrinter(ctx2, os.Stderr, os.Stderr, "this is a progress mode",
+	printer, err = progress.NewPrinter(ctx2, os.Stderr, os.Stderr, "auto",
 		progress.WithDesc(
 			fmt.Sprintf("building with %q instance using %s driver", "test", "default"), fmt.Sprintf("second print statement"),
 		),
@@ -85,17 +90,9 @@ func runBuildx(build Build, img Image) {
 		fmt.Println(err.Error())
 	}
 
-	resp, res, buildErr := actualbuild.RunBuild(ctx, cli, controllerOpts, cli.In(), printer, true)
-	if resp != nil {
-		fmt.Println("resp was not nil")
-	}
-	if res != nil {
-		fmt.Println("res was not nil")
-	}
+	_, _, buildErr := controllerbuild.RunBuild(ctx, cli, controllerOpts, cli.In(), printer, true)
 	if buildErr != nil {
 		fmt.Println("hitting the build error")
 		fmt.Println(buildErr.Error())
 	}
-	fmt.Println("we got to the end sheesh")
-
 }

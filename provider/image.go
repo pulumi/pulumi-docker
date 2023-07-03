@@ -389,7 +389,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 
 	} else {
 		//TODO: we probably only want to run this if we're pushing.
-		//TODO: so it skipPush is set to true, then we error out saying you can only build for a single platform.
+		//TODO: so if skipPush is set to true, then we error out saying you can only build for a single platform.
 		// use buildx functionality
 		runBuildx(build, img)
 
