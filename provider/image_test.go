@@ -2,11 +2,12 @@ package provider
 
 import (
 	"fmt"
+	"runtime"
+	"testing"
+
 	"github.com/docker/docker/api/types"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/stretchr/testify/assert"
-	"runtime"
-	"testing"
 )
 
 func TestSetRegistry(t *testing.T) {
@@ -424,7 +425,7 @@ func TestConfigureDockerClient(t *testing.T) {
 			"host": "testhost://something.sock",
 		}
 
-		actual, err := configureDockerClient(input)
+		actual, err := configureDockerClient(input, false)
 		assert.NoError(t, err)
 		assert.Equal(t, expected, actual.DaemonHost())
 	})
@@ -433,7 +434,7 @@ func TestConfigureDockerClient(t *testing.T) {
 		input := map[string]string{
 			"caMaterial": "raw-cert-string",
 		}
-		actual, err := configureDockerClient(input)
+		actual, err := configureDockerClient(input, false)
 		expectedError := fmt.Errorf("certMaterial, keyMaterial, and caMaterial must all be specified")
 		if assert.Error(t, err) {
 			assert.Equal(t, expectedError, err)
@@ -444,7 +445,7 @@ func TestConfigureDockerClient(t *testing.T) {
 		input := map[string]string{
 			"caMaterial": "raw-ca-string",
 		}
-		actual, err := configureDockerClient(input)
+		actual, err := configureDockerClient(input, false)
 		expectedError := fmt.Errorf("certMaterial, keyMaterial, and caMaterial must all be specified")
 		if assert.Error(t, err) {
 			assert.Equal(t, expectedError, err)
@@ -455,7 +456,7 @@ func TestConfigureDockerClient(t *testing.T) {
 		input := map[string]string{
 			"keyMaterial": "raw-key-string",
 		}
-		actual, err := configureDockerClient(input)
+		actual, err := configureDockerClient(input, false)
 		expectedError := fmt.Errorf("certMaterial, keyMaterial, and caMaterial must all be specified")
 		if assert.Error(t, err) {
 			assert.Equal(t, expectedError, err)
@@ -468,7 +469,7 @@ func TestConfigureDockerClient(t *testing.T) {
 			"caMaterial":   "raw-ca-string",
 			"certMaterial": "raw-cert-string",
 		}
-		actual, err := configureDockerClient(input)
+		actual, err := configureDockerClient(input, false)
 		expectedError := fmt.Errorf("certMaterial, keyMaterial, and caMaterial must all be specified")
 		if assert.Error(t, err) {
 			assert.Equal(t, expectedError, err)
@@ -483,7 +484,7 @@ func TestConfigureDockerClient(t *testing.T) {
 			"keyMaterial":  "raw-key-string",
 			"certMaterial": "raw-cert-string",
 		}
-		actual, err := configureDockerClient(input)
+		actual, err := configureDockerClient(input, false)
 		expectedError := fmt.Errorf("when using raw certificates, certPath must not be specified")
 		if assert.Error(t, err) {
 			assert.Equal(t, expectedError, err)
@@ -496,7 +497,7 @@ func TestConfigureDockerClient(t *testing.T) {
 			input := map[string]string{
 				"host": "ssh://test@128.199.8.23",
 			}
-			actual, _ := configureDockerClient(input)
+			actual, _ := configureDockerClient(input, false)
 			// The connection helper returns http://docker.example.com as the client's daemon host.
 			assert.Equal(t, actual.DaemonHost(), "http://docker.example.com")
 		})
@@ -505,7 +506,7 @@ func TestConfigureDockerClient(t *testing.T) {
 			input := map[string]string{
 				"host": "ssh://this/is-not-a-hostname",
 			}
-			actual, err := configureDockerClient(input)
+			actual, err := configureDockerClient(input, false)
 			assert.Nil(t, actual)
 			assert.ErrorContains(t, err, "ssh host connection is not valid")
 		})
@@ -515,7 +516,7 @@ func TestConfigureDockerClient(t *testing.T) {
 			input := map[string]string{
 				"host": "unix:///var/run/docker.sock",
 			}
-			actual, _ := configureDockerClient(input)
+			actual, _ := configureDockerClient(input, false)
 			assert.Equal(t, actual.DaemonHost(), input["host"])
 		})
 	t.Run("When host is empty, returns default host ", func(t *testing.T) {
@@ -523,7 +524,7 @@ func TestConfigureDockerClient(t *testing.T) {
 		input := map[string]string{
 			"host": "",
 		}
-		actual, _ := configureDockerClient(input)
+		actual, _ := configureDockerClient(input, false)
 
 		os := runtime.GOOS
 		switch os {

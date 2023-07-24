@@ -8,10 +8,8 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"github.com/docker/cli/cli/connhelper"
-	"github.com/moby/buildkit/session"
-	"github.com/moby/buildkit/session/auth/authprovider"
 	"io"
+	"log"
 	"net"
 	"net/http"
 	"os"
@@ -21,6 +19,10 @@ import (
 	"strings"
 	"time"
 
+	"github.com/docker/cli/cli/connhelper"
+	"github.com/moby/buildkit/session"
+	"github.com/moby/buildkit/session/auth/authprovider"
+
 	buildCmd "github.com/docker/cli/cli/command/image/build"
 	clibuild "github.com/docker/cli/cli/command/image/build"
 	"github.com/docker/cli/cli/config"
@@ -29,6 +31,7 @@ import (
 	clitypes "github.com/docker/cli/cli/config/types"
 	"github.com/docker/distribution/reference"
 	"github.com/docker/docker/api/types"
+	"github.com/docker/docker/api/types/filters"
 	"github.com/docker/docker/client"
 	"github.com/docker/docker/pkg/archive"
 	"github.com/docker/docker/pkg/idtools"
@@ -106,7 +109,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	build.CachedImages = cache
 	img.Build = build
 
-	docker, err := configureDockerClient(p.config)
+	docker, err := configureDockerClient(p.config, true)
 
 	if err != nil {
 		return "", nil, err
@@ -741,9 +744,45 @@ func processLogLine(msg string) (string, error) {
 	return info, nil
 }
 
-func configureDockerClient(configs map[string]string) (*client.Client, error) {
+// When `verify` is set, this function will check that the connection to the docker daemon works.
+// If it doesn't and no host was configured, it will try to connect to the user's docker daemon.
+func configureDockerClient(configs map[string]string, verify bool) (*client.Client, error) {
+	host, isExplicitHost := configs["host"]
+
+	if !isExplicitHost {
+		host = client.DefaultDockerHost
+	}
+
+	cli, err := configureDockerClientInner(configs, host)
+	if err != nil {
+		return nil, err
+	}
+	if !verify {
+		return cli, nil
+	}
+
+	// Check if the connection works. If not and we used the default host, try the user host.
+	log.Printf("checking connection to docker daemon at %s", host)
+	_, err = cli.PluginList(context.Background(), filters.Args{})
+	if err != nil && !isExplicitHost && runtime.GOOS != "windows" {
+		home, err2 := os.UserHomeDir()
+		if err2 != nil {
+			return nil, err2
+		}
+		userSock := fmt.Sprintf("unix://%s/.docker/run/docker.sock", home)
+		log.Printf("no connection to docker daemon at %s, trying %s (%v)", host, userSock, err)
+		cli, err = configureDockerClientInner(configs, userSock)
+		if err != nil {
+			log.Printf("no connection to docker daemon at %s, stopping (%v)", host, err)
+		}
+	}
+
+	return cli, err
+}
+
+func configureDockerClientInner(configs map[string]string, host string) (*client.Client, error) {
 	// check for TLS inputs
-	var caMaterial, certMaterial, keyMaterial, certPath, host string
+	var caMaterial, certMaterial, keyMaterial, certPath string
 	if val, ok := configs["caMaterial"]; ok {
 		caMaterial = val
 	}
@@ -756,88 +795,66 @@ func configureDockerClient(configs map[string]string) (*client.Client, error) {
 	if val, ok := configs["certPath"]; ok {
 		certPath = val
 	}
-	if val, ok := configs["host"]; ok {
-		host = val
-	}
+
+	var err error
+	clientOpts := []client.Opt{}
 
 	// Create the https client with raw TLS certificates that have been provided directly
 	if certMaterial != "" || keyMaterial != "" || caMaterial != "" {
 		if certMaterial == "" || keyMaterial == "" || caMaterial == "" {
 			return nil, fmt.Errorf("certMaterial, keyMaterial, and caMaterial must all be specified")
 		}
-
 		if certPath != "" {
 			return nil, fmt.Errorf("when using raw certificates, certPath must not be specified")
 		}
+
 		httpClient, err := buildHTTPClientFromBytes([]byte(caMaterial), []byte(certMaterial), []byte(keyMaterial))
 		if err != nil {
 			return nil, err
 		}
 
-		// Set custom client first
+		clientOpts = append(clientOpts, client.WithHTTPClient(httpClient))
+		// Set host before env to preserve previous logic
 		if host != "" {
-			return client.NewClientWithOpts(
-				client.WithHTTPClient(httpClient),
-				client.WithHost(host),
-				client.FromEnv,
-				client.WithAPIVersionNegotiation(),
-			)
+			clientOpts = append(clientOpts, client.WithHost(host))
 		}
-		return client.NewClientWithOpts(
-			client.WithHTTPClient(httpClient),
-			client.FromEnv,
-			client.WithAPIVersionNegotiation(),
-		)
-	}
-
-	// Create the https client with TLS certificate material at the specified path
-	var ca, cert, key string
-	if certPath != "" {
+		clientOpts = append(clientOpts, client.FromEnv, client.WithAPIVersionNegotiation())
+	} else if certPath != "" {
+		// Create the https client with TLS certificate material at the specified path
+		var ca, cert, key string
 		ca = filepath.Join(certPath, "ca.pem")
 		cert = filepath.Join(certPath, "cert.pem")
 		key = filepath.Join(certPath, "key.pem")
+
+		clientOpts = append(clientOpts, client.FromEnv, client.WithTLSClientConfig(ca, cert, key), client.WithAPIVersionNegotiation())
+
 		if host != "" {
-			return client.NewClientWithOpts(
-				client.FromEnv,
-				client.WithHost(host),
-				client.WithTLSClientConfig(ca, cert, key),
-				client.WithAPIVersionNegotiation(),
-			)
+			clientOpts = append(clientOpts, client.WithHost(host))
 		}
-		return client.NewClientWithOpts(
-			client.FromEnv,
-			client.WithTLSClientConfig(ca, cert, key),
-			client.WithAPIVersionNegotiation(),
-		)
+	} else {
+		// No TLS certificate material provided, create an http client
+		if host != "" {
+			// first, check for ssh host
+			sshopts := []string{}
+			helper, err := connhelper.GetConnectionHelperWithSSHOpts(host, sshopts)
+			if err != nil {
+				return nil, err
+			}
+			if helper != nil {
+				clientOpts = append(clientOpts, client.FromEnv, client.WithAPIVersionNegotiation(),
+					client.WithDialContext(helper.Dialer), client.WithHost(helper.Host))
+			} else {
+				// if no helper is registered for the scheme, we return a non-SSH client using the supplied host.
+				clientOpts = append(clientOpts, client.FromEnv, client.WithHost(host), client.WithAPIVersionNegotiation())
+			}
+		} else {
+			clientOpts = append(clientOpts, client.FromEnv, client.WithAPIVersionNegotiation())
+		}
 	}
 
-	// No TLS certificate material provided, create an http client
-	if host != "" {
-		// first, check for ssh host
-		sshopts := []string{}
-		helper, err := connhelper.GetConnectionHelperWithSSHOpts(host, sshopts)
-		if err != nil {
-			return nil, err
-		}
-		if helper != nil {
-			return client.NewClientWithOpts(
-				client.FromEnv,
-				client.WithAPIVersionNegotiation(),
-				client.WithDialContext(helper.Dialer),
-				client.WithHost(helper.Host),
-			)
-		}
-		// if no helper is registered for the scheme, we return a non-SSH client using the supplied host.
-		return client.NewClientWithOpts(
-			client.FromEnv,
-			client.WithHost(host),
-			client.WithAPIVersionNegotiation(),
-		)
-	}
-	return client.NewClientWithOpts(
-		client.FromEnv,
-		client.WithAPIVersionNegotiation(),
-	)
+	res, err := client.NewClientWithOpts(clientOpts...)
+
+	return res, err
 }
 
 // buildHTTPClientFromBytes builds the http client from bytes (content of the files)
