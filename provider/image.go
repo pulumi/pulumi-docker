@@ -818,7 +818,9 @@ func configureDockerClientInner(configs map[string]string, host string) (*client
 		if host != "" {
 			clientOpts = append(clientOpts, client.WithHost(host))
 		}
-		clientOpts = append(clientOpts, client.FromEnv, client.WithAPIVersionNegotiation())
+		clientOpts = append(clientOpts,
+			client.FromEnv,
+			client.WithAPIVersionNegotiation())
 	} else if certPath != "" {
 		// Create the https client with TLS certificate material at the specified path
 		var ca, cert, key string
@@ -826,7 +828,10 @@ func configureDockerClientInner(configs map[string]string, host string) (*client
 		cert = filepath.Join(certPath, "cert.pem")
 		key = filepath.Join(certPath, "key.pem")
 
-		clientOpts = append(clientOpts, client.FromEnv, client.WithTLSClientConfig(ca, cert, key), client.WithAPIVersionNegotiation())
+		clientOpts = append(clientOpts,
+			client.FromEnv,
+			client.WithTLSClientConfig(ca, cert, key),
+			client.WithAPIVersionNegotiation())
 
 		if host != "" {
 			clientOpts = append(clientOpts, client.WithHost(host))
@@ -841,14 +846,22 @@ func configureDockerClientInner(configs map[string]string, host string) (*client
 				return nil, err
 			}
 			if helper != nil {
-				clientOpts = append(clientOpts, client.FromEnv, client.WithAPIVersionNegotiation(),
-					client.WithDialContext(helper.Dialer), client.WithHost(helper.Host))
+				clientOpts = append(clientOpts,
+					client.FromEnv,
+					client.WithAPIVersionNegotiation(),
+					client.WithDialContext(helper.Dialer),
+					client.WithHost(helper.Host))
 			} else {
 				// if no helper is registered for the scheme, we return a non-SSH client using the supplied host.
-				clientOpts = append(clientOpts, client.FromEnv, client.WithHost(host), client.WithAPIVersionNegotiation())
+				clientOpts = append(clientOpts,
+					client.FromEnv,
+					client.WithHost(host),
+					client.WithAPIVersionNegotiation())
 			}
 		} else {
-			clientOpts = append(clientOpts, client.FromEnv, client.WithAPIVersionNegotiation())
+			clientOpts = append(clientOpts,
+				client.FromEnv,
+				client.WithAPIVersionNegotiation())
 		}
 	}
 
