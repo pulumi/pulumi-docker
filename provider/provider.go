@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"io"
 	"io/fs"
+	"log"
 	"os"
 	"path"
 	"path/filepath"
@@ -80,6 +81,18 @@ func (p *dockerNativeProvider) Configure(_ context.Context, req *rpc.ConfigureRe
 	for key, val := range config {
 		p.config[key] = val
 	}
+
+	// Configure a Docker daemon client here even though we won't use it. We want use the native
+	// provider's logic to determine the host address and then set the DOCKER_HOST environment
+	// accordingly so the bridged provider picks it up, too.
+	client, err := configureDockerClient(p.config, true)
+	if err != nil {
+		return nil, err
+	}
+	host := client.DaemonHost()
+	log.Printf("Setting DOCKER_HOST to %s", host)
+	os.Setenv("DOCKER_HOST", host)
+
 	return &rpc.ConfigureResponse{}, nil
 }
 
