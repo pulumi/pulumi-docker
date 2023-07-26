@@ -744,7 +744,9 @@ func processLogLine(msg string) (string, error) {
 }
 
 // When `verify` is set, this function will check that the connection to the docker daemon works.
-// If it doesn't and no host was configured, it will try to connect to the user's docker daemon.
+// If it doesn't and no host was configured, it will try to connect to the user's docker daemon
+// instead of the system-wide one.
+// `verify` is a testing affordance and will always be true in production.
 func configureDockerClient(configs map[string]string, verify bool) (*client.Client, error) {
 	host, isExplicitHost := configs["host"]
 
@@ -761,6 +763,7 @@ func configureDockerClient(configs map[string]string, verify bool) (*client.Clie
 	}
 
 	// Check if the connection works. If not and we used the default host, try the user host.
+	// See "Adminless install on macOS" on https://www.docker.com/blog/docker-desktop-4-18/
 	log.Printf("checking connection to docker daemon at %s", host)
 	_, err = cli.PluginList(context.Background(), filters.Args{})
 	if err != nil && !isExplicitHost && runtime.GOOS != "windows" {
