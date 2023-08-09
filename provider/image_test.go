@@ -552,19 +552,3 @@ func TestMapDockerignore(t *testing.T) {
 	})
 
 }
-
-func TestSSHOptsToSlice(t *testing.T) {
-	// The input for this test was taken from the config input returned by pulumirpc's req.GetVariables.
-	// It flattens the sshOpts config input into a string representation with escape characters.
-	t.Run("Properly normalizes flattened sshOpts configs input", func(t *testing.T) {
-		expected := []string{
-			"-l", "pulumipus",
-			"-i", "/Users/pulumipus/secret/.ssh/id_rsa",
-			"-o", "StrictHostKeyChecking=yes",
-			"-o", "UserKnownHostsFile=/dev/null"}
-		input := "[\"-l\",\"pulumipus\",\"-i\",\"/Users/pulumipus/secret/.ssh/id_rsa\"," +
-			"\"-o\",\"StrictHostKeyChecking=yes\",\"-o\",\"UserKnownHostsFile=/dev/null\"]"
-		actual := SSHOptsToSlice(input)
-		assert.Equal(t, expected, actual)
-	})
-}

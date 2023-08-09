@@ -850,7 +850,10 @@ func configureDockerClientInner(configs map[string]string, host string) (*client
 	} else {
 		// No TLS certificate material provided, create an http client
 		if host != "" {
-			sshopts := SSHOptsToSlice(configs["sshOpts"])
+			var sshopts []string
+			if opts, ok := configs["sshOpts]"]; ok {
+				json.Unmarshal([]byte(opts), &sshopts)
+			}
 			// first, check for ssh host
 			helper, err := connhelper.GetConnectionHelperWithSSHOpts(host, sshopts)
 			if err != nil {
@@ -950,17 +953,4 @@ func mapDockerignore(dockerfile string) string {
 	}
 	// Return the default dockerignore name.
 	return ignore
-}
-
-func SSHOptsToSlice(sshOptsFromConf string) []string {
-
-	trimmedOpts := strings.Trim(sshOptsFromConf, "[]")
-	slicedOpts := strings.Split(trimmedOpts, ",")
-	sshopts := []string{}
-
-	for _, val := range slicedOpts {
-		val = strings.ReplaceAll(val, "\"", "")
-		sshopts = append(sshopts, val)
-	}
-	return sshopts
 }
