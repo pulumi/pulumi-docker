@@ -90,8 +90,14 @@ func (p *dockerNativeProvider) Configure(_ context.Context, req *rpc.ConfigureRe
 		return nil, err
 	}
 	host := client.DaemonHost()
-	log.Printf("Setting DOCKER_HOST to %s", host)
-	os.Setenv("DOCKER_HOST", host)
+
+	// In the case of a remote docker client that we connect to with SSH, we use a connection helper as the daemon host.
+	// Per the docker/cli/cli/connhelper package, this is hardcoded as http://docker.example.com for SSH.
+	// If we are using a remote host via SSH, we do NOT want to overwrite DOCKER_HOST here.
+	if host != "http://docker.example.com" {
+		log.Printf("Setting DOCKER_HOST to %s", host)
+		os.Setenv("DOCKER_HOST", host)
+	}
 
 	return &rpc.ConfigureResponse{}, nil
 }
