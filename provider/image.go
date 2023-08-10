@@ -762,6 +762,14 @@ func configureDockerClient(configs map[string]string, verify bool) (*client.Clie
 		return cli, nil
 	}
 
+	// Skip checking connection for SSH.
+	// When a user uses an SSH-based client, we do not want to fall back on default hosts.
+	// Additionally, due to https://github.com/kreuzwerker/terraform-provider-docker/issues/262,
+	// we want to limit making connections to our remote host.
+	if cli.DaemonHost() == "http://docker.example.com" {
+		return cli, err
+	}
+
 	// Check if the connection works. If not and we used the default host, try the user host.
 	// See "Adminless install on macOS" on https://www.docker.com/blog/docker-desktop-4-18/
 	log.Printf("checking connection to docker daemon at %s", host)
