@@ -1,6 +1,6 @@
 module github.com/pulumi/pulumi-docker/examples/container-registries/digitalocean/go
 
-go 1.19
+go 1.20
 
 require (
 	github.com/pulumi/pulumi-digitalocean/sdk/v4 v4.18.0
