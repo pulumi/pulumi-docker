@@ -26,6 +26,7 @@ export const ipOutput = ip
 const provider = new docker.Provider("docker-provider", {
     host: pulumi.interpolate`ssh://root@${ip}`,
     sshOpts: [
+        "-i", "/home/runner/.ssh",
         "-o", "StrictHostKeyChecking=no",
         "-o", "UserKnownHostsFile=/dev/null"
     ],
