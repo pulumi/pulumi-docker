@@ -22,6 +22,7 @@ import (
 	"os"
 	"path"
 	"testing"
+	"time"
 
 	"github.com/pulumi/pulumi/pkg/v3/testing/integration"
 	"github.com/stretchr/testify/assert"
@@ -193,6 +194,32 @@ func TestSecretsInExplicitProviderNode(t *testing.T) {
 		SkipRefresh:            true,
 		ExtraRuntimeValidation: check,
 	})
+	integration.ProgramTest(t, &test)
+}
+
+func TestSSHConnNode(t *testing.T) {
+	token := os.Getenv("DIGITALOCEAN_TOKEN")
+	if token == "" {
+		t.Skipf("Skipping test due to missing DIGITALOCEAN_TOKEN environment variable")
+	}
+	test := getJsOptions(t).
+		With(integration.ProgramTestOptions{
+			Dir: path.Join(getCwd(t), "test-ssh-conn", "ts"),
+			ExtraRuntimeValidation: func(t *testing.T, stack integration.RuntimeValidationStackInfo) {
+				ipOutput, ok := stack.Outputs["ipOutput"]
+				assert.True(t, ok)
+				assert.NotEmpty(t, ipOutput)
+				// Due to a bug in the docker client, we add sleep here so our SSH connection does not get refused.
+				time.Sleep(20 * time.Second)
+			},
+			SkipRefresh:      true,
+			Quick:            true,
+			RetryFailedSteps: true,
+			Config: map[string]string{
+				"digitalocean:token": token,
+			},
+			Verbose: true,
+		})
 	integration.ProgramTest(t, &test)
 }
 
