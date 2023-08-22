@@ -19,7 +19,7 @@ async function addSleep(addr: string, ms: number) {
     return addr
 }
 
-let ip = remoteHost.ipv4Address.apply(ipv4Address => addSleep(ipv4Address, 20000))
+const ip = remoteHost.ipv4Address.apply(ipv4Address => addSleep(ipv4Address, 20000))
 
 export const ipOutput = ip
 
@@ -34,9 +34,7 @@ const provider = new docker.Provider("docker-provider", {
 
 const remoteImage = new docker.RemoteImage("image", {
     name: "nginx"
-}, {
-    provider: provider
-});
+}, { provider });
 
 const container = new docker.Container("container", {
     image: remoteImage.imageId
