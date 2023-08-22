@@ -22,7 +22,6 @@ import (
 	"os"
 	"path"
 	"testing"
-	"time"
 
 	"github.com/pulumi/pulumi/pkg/v3/testing/integration"
 	"github.com/stretchr/testify/assert"
@@ -211,8 +210,6 @@ func TestSSHConnNode(t *testing.T) {
 				ipOutput, ok := stack.Outputs["ipOutput"]
 				assert.True(t, ok)
 				assert.NotEmpty(t, ipOutput)
-				// Due to a bug in the docker client, we add sleep here so our SSH connection does not get refused.
-				time.Sleep(20 * time.Second)
 			},
 			SkipRefresh:      true,
 			Quick:            true,
