@@ -851,7 +851,7 @@ func configureDockerClientInner(configs map[string]string, host string) (*client
 		// No TLS certificate material provided, create an http client
 		if host != "" {
 			var sshopts []string
-			if opts, ok := configs["sshOpts]"]; ok {
+			if opts, ok := configs["sshOpts"]; ok {
 				err = json.Unmarshal([]byte(opts), &sshopts)
 				if err != nil {
 					return nil, err
