@@ -5,7 +5,7 @@ import * as pulumi from "@pulumi/pulumi";
 // Create a private DigitalOcean Container Registry.
 const registry = new digitalocean.ContainerRegistry("my-reg", {
     subscriptionTierSlug: "starter",
-});
+}, { ignoreChanges: ["storageUsageBytes"] });
 
 // Get registry info (creds and endpoint) so we can build/publish to it.
 const creds = new digitalocean.ContainerRegistryDockerCredentials("my-reg-creds", {
