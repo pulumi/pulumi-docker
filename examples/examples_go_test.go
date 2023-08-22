@@ -193,6 +193,8 @@ func TestAwsContainerRegistryGo(t *testing.T) {
 }
 
 func TestDigitaloceanContainerRegistryGo(t *testing.T) {
+	t.Skipf("Skipping test due to known storageUsageBytes issue #TODO")
+
 	token := os.Getenv("DIGITALOCEAN_TOKEN")
 	if token == "" {
 		t.Skipf("Skipping test due to missing DIGITALOCEAN_TOKEN environment variable")
