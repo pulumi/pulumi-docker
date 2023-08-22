@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io"
+	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -107,6 +108,8 @@ func convert(language, tempDir, programFile string) (string, error) {
 }
 
 func processYaml(path string, mdDir string) error {
+	log.Printf("Processing %s", path)
+
 	yamlFile, err := os.Open(path)
 	if err != nil {
 		return err
@@ -124,8 +127,12 @@ func processYaml(path string, mdDir string) error {
 		if err == io.EOF {
 			break
 		}
+		if err != nil {
+			return err
+		}
 
 		description := example["description"].(string)
+
 		dir, err := os.MkdirTemp("", "")
 		if err != nil {
 			return err
