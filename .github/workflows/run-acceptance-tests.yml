@@ -9,6 +9,7 @@ env:
   ARM_TENANT_ID: 706143bc-e1d4-4593-aee2-c9dc60ab9be7
   AWS_REGION: us-west-2
   AZURE_LOCATION: westus
+  DIGITALOCEAN_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
   DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
   DOTNETVERSION: |
       6.0.x
@@ -41,7 +42,6 @@ env:
   SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
   TF_APPEND_USER_AGENT: pulumi
   TRAVIS_OS_NAME: linux
-  DIGITALOCEAN_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
 jobs:
   build_sdk:
     if: github.event_name == 'repository_dispatch' ||
@@ -62,8 +62,10 @@ jobs:
     - name: Unshallow clone for tags
       run: git fetch --prune --unshallow --tags
     - name: Install Go
-      uses: actions/setup-go@v3
+      uses: actions/setup-go@v4
       with:
+        cache-dependency-path: |
+            sdk/go.sum
         go-version: 1.20.1
     - name: Install pulumictl
       uses: jaxxstorm/action-install-gh-release@v1.5.0
@@ -176,8 +178,10 @@ jobs:
     - name: Unshallow clone for tags
       run: git fetch --prune --unshallow --tags
     - name: Install Go
-      uses: actions/setup-go@v3
+      uses: actions/setup-go@v4
       with:
+        cache-dependency-path: |
+            sdk/go.sum
         go-version: 1.20.1
     - name: Install pulumictl
       uses: jaxxstorm/action-install-gh-release@v1.5.0
@@ -211,8 +215,10 @@ jobs:
     - name: Unshallow clone for tags
       run: git fetch --prune --unshallow --tags
     - name: Install Go
-      uses: actions/setup-go@v3
+      uses: actions/setup-go@v4
       with:
+        cache-dependency-path: |
+            sdk/go.sum
         go-version: 1.20.1
     - name: Install pulumictl
       uses: jaxxstorm/action-install-gh-release@v1.5.0
@@ -301,8 +307,10 @@ jobs:
     - name: Unshallow clone for tags
       run: git fetch --prune --unshallow --tags
     - name: Install Go
-      uses: actions/setup-go@v3
+      uses: actions/setup-go@v4
       with:
+        cache-dependency-path: |
+            sdk/go.sum
         go-version: 1.20.1
     - name: Install pulumictl
       uses: jaxxstorm/action-install-gh-release@v1.5.0
