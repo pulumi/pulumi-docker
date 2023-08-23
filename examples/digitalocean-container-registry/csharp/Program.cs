@@ -57,8 +57,8 @@ class Program
             Registry = registryInfo,
         });
 
+        // Export the resulting image name.
         // Export the resulting base name in addition to the specific version pushed.
-	    // Export the resulting image name
         return new Dictionary<string, object?>
         {
             { "baseImageName", image.BaseImageName },

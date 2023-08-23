@@ -852,7 +852,7 @@ func configureDockerClientInner(configs map[string]string, host string) (*client
 		if host != "" {
 			var sshopts []string
 			if opts, ok := configs["sshOpts"]; ok {
-				err = json.Unmarshal([]byte(opts), &sshopts)
+				err := json.Unmarshal([]byte(opts), &sshopts)
 				if err != nil {
 					return nil, err
 				}
