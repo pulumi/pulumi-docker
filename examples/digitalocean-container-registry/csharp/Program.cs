@@ -10,7 +10,7 @@ using Pulumi.Docker.Inputs;
 
 class Program
 {
-    static Task<int> Main() => Deployment.RunAsync(async () => {
+    static Task<int> Main() => Deployment.RunAsync(() => {
         // Create a private DigitalOcean Container Registry.
         var registry = new ContainerRegistry("my-reg", new ContainerRegistryArgs
         {
@@ -33,7 +33,7 @@ class Program
                 var serverUrl = args[1];
                 dynamic auths = JsonConvert.DeserializeObject(authJson);
                 var authToken = auths["auths"][serverUrl]["auth"];
-                var decoded = ASCIIEncoding.ASCII.GetString(authToken);
+                var decoded = Encoding.ASCII.GetString(authToken);
 
                 var parts = decoded.Split(':');
                 if (parts.Length != 2)
@@ -41,7 +41,7 @@ class Program
                     throw new Exception("Invalid credentials");
                 }
 
-                return new Pulumi.Docker.Inputs.RegistryArgs
+                return new RegistryArgs
                 {
                     Server = serverUrl,
                     Username = parts[0],
@@ -52,15 +52,16 @@ class Program
         // Build and publish the app image.
         var image = new Image("my-image", new ImageArgs
         {
-            Build = new Pulumi.Docker.Inputs.DockerBuildArgs { Context = "app" },
+            Build = new DockerBuildArgs { Context = "app" },
             ImageName = imageName,
             Registry = registryInfo,
         });
 
+        // Export the resulting image name.
         // Export the resulting base name in addition to the specific version pushed.
-	// Export the resulting image name
-        return new Dictionary<string, object>
+        return new Dictionary<string, object?>
         {
+            { "baseImageName", image.BaseImageName },
             { "fullImageName", image.ImageName },
         };
     });

@@ -748,6 +748,7 @@ func processLogLine(msg string) (string, error) {
 // instead of the system-wide one.
 // `verify` is a testing affordance and will always be true in production.
 func configureDockerClient(configs map[string]string, verify bool) (*client.Client, error) {
+
 	host, isExplicitHost := configs["host"]
 
 	if !isExplicitHost {
@@ -849,8 +850,14 @@ func configureDockerClientInner(configs map[string]string, host string) (*client
 	} else {
 		// No TLS certificate material provided, create an http client
 		if host != "" {
+			var sshopts []string
+			if opts, ok := configs["sshOpts"]; ok {
+				err := json.Unmarshal([]byte(opts), &sshopts)
+				if err != nil {
+					return nil, err
+				}
+			}
 			// first, check for ssh host
-			sshopts := []string{}
 			helper, err := connhelper.GetConnectionHelperWithSSHOpts(host, sshopts)
 			if err != nil {
 				return nil, err

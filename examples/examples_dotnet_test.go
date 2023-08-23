@@ -82,6 +82,8 @@ func TestAwsContainerRegistryDotnet(t *testing.T) {
 }
 
 func TestDigitaloceanContainerRegistryDotnet(t *testing.T) {
+	t.Skipf("Skipping test due to known storageUsageBytes issue https://github.com/pulumi/pulumi-docker/issues/718")
+
 	token := os.Getenv("DIGITALOCEAN_TOKEN")
 	if token == "" {
 		t.Skipf("Skipping test due to missing DIGITALOCEAN_TOKEN environment variable")

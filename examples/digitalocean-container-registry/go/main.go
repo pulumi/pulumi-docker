@@ -16,8 +16,7 @@ func main() {
 		// Create a private DigitalOcean Container Registry.
 		registry, err := digitalocean.NewContainerRegistry(ctx, "my-reg",
 			&digitalocean.ContainerRegistryArgs{
-				// TODO: why is the following commented out?
-				// SubscriptionTierSlug: pulumi.String("starter"),
+				SubscriptionTierSlug: pulumi.String("starter"),
 			})
 		if err != nil {
 			return err
