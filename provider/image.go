@@ -784,7 +784,12 @@ func configureDockerClient(configs map[string]string, verify bool) (*client.Clie
 		log.Printf("no connection to docker daemon at %s, trying %s (%v)", host, userSock, err)
 		cli, err = configureDockerClientInner(configs, userSock)
 		if err != nil {
-			log.Printf("no connection to docker daemon at %s, stopping (%v)", host, err)
+			linuxUserSock := fmt.Sprintf("unix://%s/.docker/desktop/docker.sock", home)
+			log.Printf("no connection to docker daemon at %s, trying %s (%v)", userSock, linuxUserSock, err)
+			cli, err = configureDockerClientInner(configs, linuxUserSock)
+			if err != nil {
+				log.Printf("no connection to docker daemon at %s, stopping (%v)", host, err)
+			}
 		}
 	}
 
