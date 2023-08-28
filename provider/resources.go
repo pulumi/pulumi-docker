@@ -256,16 +256,24 @@ func Provider() tfbridge.ProviderInfo {
 							TypeSpec:    schema.TypeSpec{Type: "string"},
 						},
 						"repoDigest": {
-							Description: "The digest of the manifest pushed to the registry, e.g.: repository@<algorithm>:<hash>",
-							TypeSpec:    schema.TypeSpec{Type: "string"},
+							Description: "The manifest digest of an image pushed to a registry, of the format " +
+								"repository@<algorithm>:<hash>, e.g. `username/demo-image@sha256:" +
+								"a6ae6dd8d39c5bb02320e41abf00cd4cb35905fec540e37d306c878be8d38bd3`.\n" +
+								"This reference is unique per image build and push. \n" +
+								"Only available for images pushed to a registry.\n" +
+								"Use when passing a reference to a pushed image to container management resources.",
+							TypeSpec: schema.TypeSpec{Type: "string"},
 						},
 					},
 				},
 				IsComponent: false,
 				InputProperties: map[string]schema.PropertySpec{
 					"imageName": {
-						Description: "The image name, of the format repository[:tag]. For the manifest SHA of a pushed docker image, please use `repoDigest`.",
-						TypeSpec:    schema.TypeSpec{Type: "string"},
+						Description: "The image name, of the format repository[:tag], " +
+							"e.g. `docker.io/username/demo-image:v1`.\n" +
+							"This reference is not unique to each build and push." +
+							"For the unique manifest SHA of a pushed docker image, please use `repoDigest`.",
+						TypeSpec: schema.TypeSpec{Type: "string"},
 					},
 					"registry": {
 						Description: "The registry to push the image to",
