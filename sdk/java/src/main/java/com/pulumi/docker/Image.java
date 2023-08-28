@@ -21,6 +21,13 @@ import javax.annotation.Nullable;
  * 
  * Note: This resource does not delete tags, locally or remotely, when destroyed.
  * 
+ * ## Image name
+ * 
+ * The Image resource uses `imageName` to refer to a fully qualified Docker image name, by the format `repository:tag`.
+ * Note that this does not include any digest information and thus will not cause any updates when passed to dependencies,
+ * even when using `latest` tag. To trigger such updates, when referencing pushed images, please use the `repoDigest` Output
+ * instead, which is of the format `repository@&lt;algorithm&gt;:&lt;hash&gt;`.
+ * 
  * ## Cross-platform builds
  * 
  * The Image resource supports cross-platform builds when the [Docker engine has cross-platform support enabled via emulators](https://docs.docker.com/build/building/multi-platform/#building-multi-platform-images).
@@ -202,14 +209,14 @@ public class Image extends com.pulumi.resources.CustomResource {
         return this.registryServer;
     }
     /**
-     * The digest of the manifest pushed to the registry, e.g.: repo[:tag]@&lt;algorithm&gt;:&lt;hash&gt;
+     * The digest of the manifest pushed to the registry, e.g.: repository@&lt;algorithm&gt;:&lt;hash&gt;
      * 
      */
     @Export(name="repoDigest", type=String.class, parameters={})
     private Output</* @Nullable */ String> repoDigest;
 
     /**
-     * @return The digest of the manifest pushed to the registry, e.g.: repo[:tag]@&lt;algorithm&gt;:&lt;hash&gt;
+     * @return The digest of the manifest pushed to the registry, e.g.: repository@&lt;algorithm&gt;:&lt;hash&gt;
      * 
      */
     public Output<Optional<String>> repoDigest() {

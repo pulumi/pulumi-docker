@@ -16,6 +16,13 @@ import (
 //
 // Note: This resource does not delete tags, locally or remotely, when destroyed.
 //
+// ## Image name
+//
+// The Image resource uses `imageName` to refer to a fully qualified Docker image name, by the format `repository:tag`.
+// Note that this does not include any digest information and thus will not cause any updates when passed to dependencies,
+// even when using `latest` tag. To trigger such updates, when referencing pushed images, please use the `repoDigest` Output
+// instead, which is of the format `repository@<algorithm>:<hash>`.
+//
 // ## Cross-platform builds
 //
 // The Image resource supports cross-platform builds when the [Docker engine has cross-platform support enabled via emulators](https://docs.docker.com/build/building/multi-platform/#building-multi-platform-images).
@@ -131,7 +138,7 @@ type Image struct {
 	ImageName pulumi.StringOutput `pulumi:"imageName"`
 	// The name of the registry server hosting the image.
 	RegistryServer pulumi.StringOutput `pulumi:"registryServer"`
-	// The digest of the manifest pushed to the registry, e.g.: repo[:tag]@<algorithm>:<hash>
+	// The digest of the manifest pushed to the registry, e.g.: repository@<algorithm>:<hash>
 	RepoDigest pulumi.StringPtrOutput `pulumi:"repoDigest"`
 }
 
@@ -191,7 +198,7 @@ func (ImageState) ElementType() reflect.Type {
 type imageArgs struct {
 	// The Docker build context
 	Build *DockerBuild `pulumi:"build"`
-	// The image name
+	// The image name, of the format repository[:tag]. For the manifest SHA of a pushed docker image, please use `repoDigest`.
 	ImageName string `pulumi:"imageName"`
 	// The registry to push the image to
 	Registry *Registry `pulumi:"registry"`
@@ -203,7 +210,7 @@ type imageArgs struct {
 type ImageArgs struct {
 	// The Docker build context
 	Build DockerBuildPtrInput
-	// The image name
+	// The image name, of the format repository[:tag]. For the manifest SHA of a pushed docker image, please use `repoDigest`.
 	ImageName pulumi.StringInput
 	// The registry to push the image to
 	Registry RegistryPtrInput
@@ -323,7 +330,7 @@ func (o ImageOutput) RegistryServer() pulumi.StringOutput {
 	return o.ApplyT(func(v *Image) pulumi.StringOutput { return v.RegistryServer }).(pulumi.StringOutput)
 }
 
-// The digest of the manifest pushed to the registry, e.g.: repo[:tag]@<algorithm>:<hash>
+// The digest of the manifest pushed to the registry, e.g.: repository@<algorithm>:<hash>
 func (o ImageOutput) RepoDigest() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Image) pulumi.StringPtrOutput { return v.RepoDigest }).(pulumi.StringPtrOutput)
 }

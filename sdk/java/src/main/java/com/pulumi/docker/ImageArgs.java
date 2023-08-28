@@ -35,14 +35,14 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * The image name
+     * The image name, of the format repository[:tag]. For the manifest SHA of a pushed docker image, please use `repoDigest`.
      * 
      */
     @Import(name="imageName", required=true)
     private Output<String> imageName;
 
     /**
-     * @return The image name
+     * @return The image name, of the format repository[:tag]. For the manifest SHA of a pushed docker image, please use `repoDigest`.
      * 
      */
     public Output<String> imageName() {
@@ -128,7 +128,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param imageName The image name
+         * @param imageName The image name, of the format repository[:tag]. For the manifest SHA of a pushed docker image, please use `repoDigest`.
          * 
          * @return builder
          * 
@@ -139,7 +139,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param imageName The image name
+         * @param imageName The image name, of the format repository[:tag]. For the manifest SHA of a pushed docker image, please use `repoDigest`.
          * 
          * @return builder
          * 

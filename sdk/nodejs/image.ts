@@ -13,6 +13,13 @@ import * as utilities from "./utilities";
  *
  * Note: This resource does not delete tags, locally or remotely, when destroyed.
  *
+ * ## Image name
+ *
+ * The Image resource uses `imageName` to refer to a fully qualified Docker image name, by the format `repository:tag`.
+ * Note that this does not include any digest information and thus will not cause any updates when passed to dependencies,
+ * even when using `latest` tag. To trigger such updates, when referencing pushed images, please use the `repoDigest` Output
+ * instead, which is of the format `repository@<algorithm>:<hash>`.
+ *
  * ## Cross-platform builds
  *
  * The Image resource supports cross-platform builds when the [Docker engine has cross-platform support enabled via emulators](https://docs.docker.com/build/building/multi-platform/#building-multi-platform-images).
@@ -121,7 +128,7 @@ export class Image extends pulumi.CustomResource {
      */
     public /*out*/ readonly registryServer!: pulumi.Output<string>;
     /**
-     * The digest of the manifest pushed to the registry, e.g.: repo[:tag]@<algorithm>:<hash>
+     * The digest of the manifest pushed to the registry, e.g.: repository@<algorithm>:<hash>
      */
     public /*out*/ readonly repoDigest!: pulumi.Output<string | undefined>;
 
@@ -172,7 +179,7 @@ export interface ImageArgs {
      */
     build?: pulumi.Input<inputs.DockerBuild>;
     /**
-     * The image name
+     * The image name, of the format repository[:tag]. For the manifest SHA of a pushed docker image, please use `repoDigest`.
      */
     imageName: pulumi.Input<string>;
     /**

@@ -22,7 +22,7 @@ class ImageArgs:
                  skip_push: Optional[pulumi.Input[bool]] = None):
         """
         The set of arguments for constructing a Image resource.
-        :param pulumi.Input[str] image_name: The image name
+        :param pulumi.Input[str] image_name: The image name, of the format repository[:tag]. For the manifest SHA of a pushed docker image, please use `repoDigest`.
         :param pulumi.Input['DockerBuildArgs'] build: The Docker build context
         :param pulumi.Input['RegistryArgs'] registry: The registry to push the image to
         :param pulumi.Input[bool] skip_push: A flag to skip a registry push.
@@ -41,7 +41,7 @@ class ImageArgs:
     @pulumi.getter(name="imageName")
     def image_name(self) -> pulumi.Input[str]:
         """
-        The image name
+        The image name, of the format repository[:tag]. For the manifest SHA of a pushed docker image, please use `repoDigest`.
         """
         return pulumi.get(self, "image_name")
 
@@ -102,6 +102,13 @@ class Image(pulumi.CustomResource):
 
         Note: This resource does not delete tags, locally or remotely, when destroyed.
 
+        ## Image name
+
+        The Image resource uses `imageName` to refer to a fully qualified Docker image name, by the format `repository:tag`.
+        Note that this does not include any digest information and thus will not cause any updates when passed to dependencies,
+        even when using `latest` tag. To trigger such updates, when referencing pushed images, please use the `repoDigest` Output
+        instead, which is of the format `repository@<algorithm>:<hash>`.
+
         ## Cross-platform builds
 
         The Image resource supports cross-platform builds when the [Docker engine has cross-platform support enabled via emulators](https://docs.docker.com/build/building/multi-platform/#building-multi-platform-images).
@@ -159,7 +166,7 @@ class Image(pulumi.CustomResource):
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[pulumi.InputType['DockerBuildArgs']] build: The Docker build context
-        :param pulumi.Input[str] image_name: The image name
+        :param pulumi.Input[str] image_name: The image name, of the format repository[:tag]. For the manifest SHA of a pushed docker image, please use `repoDigest`.
         :param pulumi.Input[pulumi.InputType['RegistryArgs']] registry: The registry to push the image to
         :param pulumi.Input[bool] skip_push: A flag to skip a registry push.
         """
@@ -174,6 +181,13 @@ class Image(pulumi.CustomResource):
         This resource enables running Docker builds as part of a Pulumi deployment.
 
         Note: This resource does not delete tags, locally or remotely, when destroyed.
+
+        ## Image name
+
+        The Image resource uses `imageName` to refer to a fully qualified Docker image name, by the format `repository:tag`.
+        Note that this does not include any digest information and thus will not cause any updates when passed to dependencies,
+        even when using `latest` tag. To trigger such updates, when referencing pushed images, please use the `repoDigest` Output
+        instead, which is of the format `repository@<algorithm>:<hash>`.
 
         ## Cross-platform builds
 
@@ -346,7 +360,7 @@ class Image(pulumi.CustomResource):
     @pulumi.getter(name="repoDigest")
     def repo_digest(self) -> pulumi.Output[Optional[str]]:
         """
-        The digest of the manifest pushed to the registry, e.g.: repo[:tag]@<algorithm>:<hash>
+        The digest of the manifest pushed to the registry, e.g.: repository@<algorithm>:<hash>
         """
         return pulumi.get(self, "repo_digest")
 
