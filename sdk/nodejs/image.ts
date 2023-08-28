@@ -17,8 +17,11 @@ import * as utilities from "./utilities";
  *
  * The Image resource uses `imageName` to refer to a fully qualified Docker image name, by the format `repository:tag`.
  * Note that this does not include any digest information and thus will not cause any updates when passed to dependencies,
- * even when using `latest` tag. To trigger such updates, when referencing pushed images, please use the `repoDigest` Output
- * instead, which is of the format `repository@<algorithm>:<hash>`.
+ * even when using `latest` tag. To trigger such updates, e.g. when referencing pushed images in container orchestration
+ * and management resources, please use the `repoDigest` Output instead, which is of the format
+ * `repository@<algorithm>:<hash>` and unique per build/push.
+ * Note that `repoDigest` is not available for local Images. For a local Image not pushed to a registry, you may want to
+ * give `imageName` a unique tag per pulumi update.
  *
  * ## Cross-platform builds
  *
@@ -41,6 +44,9 @@ import * as utilities from "./utilities";
  *
  * const demoImage = new docker.Image("demo-image", {
  *     build: {
+ *         args: {
+ *             platform: "linux/amd64",
+ *         },
  *         context: ".",
  *         dockerfile: "Dockerfile",
  *     },
@@ -48,6 +54,22 @@ import * as utilities from "./utilities";
  *     skipPush: true,
  * });
  * export const imageName = demoImage.imageName;
+ * ```
+ * ### A Docker image build and push
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as docker from "@pulumi/docker";
+ *
+ * const demoPushImage = new docker.Image("demo-push-image", {
+ *     build: {
+ *         context: ".",
+ *         dockerfile: "Dockerfile",
+ *     },
+ *     imageName: "docker.io/username/push-image:tag1",
+ * });
+ * export const imageName = demoPushImage.imageName;
+ * export const repoDigest = demoPushImage.repoDigest;
  * ```
  * ### Docker image build using caching with AWS Elastic Container Registry
  *
@@ -128,7 +150,10 @@ export class Image extends pulumi.CustomResource {
      */
     public /*out*/ readonly registryServer!: pulumi.Output<string>;
     /**
-     * The digest of the manifest pushed to the registry, e.g.: repository@<algorithm>:<hash>
+     * The manifest digest of an image pushed to a registry, of the format repository@<algorithm>:<hash>, e.g. `username/demo-image@sha256:a6ae6dd8d39c5bb02320e41abf00cd4cb35905fec540e37d306c878be8d38bd3`.
+     * This reference is unique per image build and push. 
+     * Only available for images pushed to a registry.
+     * Use when passing a reference to a pushed image to container management resources.
      */
     public /*out*/ readonly repoDigest!: pulumi.Output<string | undefined>;
 
@@ -179,7 +204,8 @@ export interface ImageArgs {
      */
     build?: pulumi.Input<inputs.DockerBuild>;
     /**
-     * The image name, of the format repository[:tag]. For the manifest SHA of a pushed docker image, please use `repoDigest`.
+     * The image name, of the format repository[:tag], e.g. `docker.io/username/demo-image:v1`.
+     * This reference is not unique to each build and push.For the unique manifest SHA of a pushed docker image, please use `repoDigest`.
      */
     imageName: pulumi.Input<string>;
     /**

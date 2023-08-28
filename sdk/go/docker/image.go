@@ -20,8 +20,11 @@ import (
 //
 // The Image resource uses `imageName` to refer to a fully qualified Docker image name, by the format `repository:tag`.
 // Note that this does not include any digest information and thus will not cause any updates when passed to dependencies,
-// even when using `latest` tag. To trigger such updates, when referencing pushed images, please use the `repoDigest` Output
-// instead, which is of the format `repository@<algorithm>:<hash>`.
+// even when using `latest` tag. To trigger such updates, e.g. when referencing pushed images in container orchestration
+// and management resources, please use the `repoDigest` Output instead, which is of the format
+// `repository@<algorithm>:<hash>` and unique per build/push.
+// Note that `repoDigest` is not available for local Images. For a local Image not pushed to a registry, you may want to
+// give `imageName` a unique tag per pulumi update.
 //
 // ## Cross-platform builds
 //
@@ -51,6 +54,9 @@ import (
 //		pulumi.Run(func(ctx *pulumi.Context) error {
 //			demoImage, err := docker.NewImage(ctx, "demo-image", &docker.ImageArgs{
 //				Build: &docker.DockerBuildArgs{
+//					Args: pulumi.StringMap{
+//						"platform": pulumi.String("linux/amd64"),
+//					},
 //					Context:    pulumi.String("."),
 //					Dockerfile: pulumi.String("Dockerfile"),
 //				},
@@ -61,6 +67,36 @@ import (
 //				return err
 //			}
 //			ctx.Export("imageName", demoImage.ImageName)
+//			return nil
+//		})
+//	}
+//
+// ```
+// ### A Docker image build and push
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker"
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			demoPushImage, err := docker.NewImage(ctx, "demo-push-image", &docker.ImageArgs{
+//				Build: &docker.DockerBuildArgs{
+//					Context:    pulumi.String("."),
+//					Dockerfile: pulumi.String("Dockerfile"),
+//				},
+//				ImageName: pulumi.String("docker.io/username/push-image:tag1"),
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			ctx.Export("imageName", demoPushImage.ImageName)
+//			ctx.Export("repoDigest", demoPushImage.RepoDigest)
 //			return nil
 //		})
 //	}
@@ -138,7 +174,10 @@ type Image struct {
 	ImageName pulumi.StringOutput `pulumi:"imageName"`
 	// The name of the registry server hosting the image.
 	RegistryServer pulumi.StringOutput `pulumi:"registryServer"`
-	// The digest of the manifest pushed to the registry, e.g.: repository@<algorithm>:<hash>
+	// The manifest digest of an image pushed to a registry, of the format repository@<algorithm>:<hash>, e.g. `username/demo-image@sha256:a6ae6dd8d39c5bb02320e41abf00cd4cb35905fec540e37d306c878be8d38bd3`.
+	// This reference is unique per image build and push.
+	// Only available for images pushed to a registry.
+	// Use when passing a reference to a pushed image to container management resources.
 	RepoDigest pulumi.StringPtrOutput `pulumi:"repoDigest"`
 }
 
@@ -198,7 +237,8 @@ func (ImageState) ElementType() reflect.Type {
 type imageArgs struct {
 	// The Docker build context
 	Build *DockerBuild `pulumi:"build"`
-	// The image name, of the format repository[:tag]. For the manifest SHA of a pushed docker image, please use `repoDigest`.
+	// The image name, of the format repository[:tag], e.g. `docker.io/username/demo-image:v1`.
+	// This reference is not unique to each build and push.For the unique manifest SHA of a pushed docker image, please use `repoDigest`.
 	ImageName string `pulumi:"imageName"`
 	// The registry to push the image to
 	Registry *Registry `pulumi:"registry"`
@@ -210,7 +250,8 @@ type imageArgs struct {
 type ImageArgs struct {
 	// The Docker build context
 	Build DockerBuildPtrInput
-	// The image name, of the format repository[:tag]. For the manifest SHA of a pushed docker image, please use `repoDigest`.
+	// The image name, of the format repository[:tag], e.g. `docker.io/username/demo-image:v1`.
+	// This reference is not unique to each build and push.For the unique manifest SHA of a pushed docker image, please use `repoDigest`.
 	ImageName pulumi.StringInput
 	// The registry to push the image to
 	Registry RegistryPtrInput
@@ -330,7 +371,10 @@ func (o ImageOutput) RegistryServer() pulumi.StringOutput {
 	return o.ApplyT(func(v *Image) pulumi.StringOutput { return v.RegistryServer }).(pulumi.StringOutput)
 }
 
-// The digest of the manifest pushed to the registry, e.g.: repository@<algorithm>:<hash>
+// The manifest digest of an image pushed to a registry, of the format repository@<algorithm>:<hash>, e.g. `username/demo-image@sha256:a6ae6dd8d39c5bb02320e41abf00cd4cb35905fec540e37d306c878be8d38bd3`.
+// This reference is unique per image build and push.
+// Only available for images pushed to a registry.
+// Use when passing a reference to a pushed image to container management resources.
 func (o ImageOutput) RepoDigest() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Image) pulumi.StringPtrOutput { return v.RepoDigest }).(pulumi.StringPtrOutput)
 }

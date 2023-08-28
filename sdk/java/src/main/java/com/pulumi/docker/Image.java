@@ -25,8 +25,11 @@ import javax.annotation.Nullable;
  * 
  * The Image resource uses `imageName` to refer to a fully qualified Docker image name, by the format `repository:tag`.
  * Note that this does not include any digest information and thus will not cause any updates when passed to dependencies,
- * even when using `latest` tag. To trigger such updates, when referencing pushed images, please use the `repoDigest` Output
- * instead, which is of the format `repository@&lt;algorithm&gt;:&lt;hash&gt;`.
+ * even when using `latest` tag. To trigger such updates, e.g. when referencing pushed images in container orchestration
+ * and management resources, please use the `repoDigest` Output instead, which is of the format
+ * `repository@&lt;algorithm&gt;:&lt;hash&gt;` and unique per build/push.
+ * Note that `repoDigest` is not available for local Images. For a local Image not pushed to a registry, you may want to
+ * give `imageName` a unique tag per pulumi update.
  * 
  * ## Cross-platform builds
  * 
@@ -66,6 +69,7 @@ import javax.annotation.Nullable;
  *     public static void stack(Context ctx) {
  *         var demoImage = new Image(&#34;demoImage&#34;, ImageArgs.builder()        
  *             .build(DockerBuildArgs.builder()
+ *                 .args(Map.of(&#34;platform&#34;, &#34;linux/amd64&#34;))
  *                 .context(&#34;.&#34;)
  *                 .dockerfile(&#34;Dockerfile&#34;)
  *                 .build())
@@ -74,6 +78,42 @@ import javax.annotation.Nullable;
  *             .build());
  * 
  *         ctx.export(&#34;imageName&#34;, demoImage.imageName());
+ *     }
+ * }
+ * ```
+ * ### A Docker image build and push
+ * ```java
+ * package generated_program;
+ * 
+ * import com.pulumi.Context;
+ * import com.pulumi.Pulumi;
+ * import com.pulumi.core.Output;
+ * import com.pulumi.docker.Image;
+ * import com.pulumi.docker.ImageArgs;
+ * import com.pulumi.docker.inputs.DockerBuildArgs;
+ * import java.util.List;
+ * import java.util.ArrayList;
+ * import java.util.Map;
+ * import java.io.File;
+ * import java.nio.file.Files;
+ * import java.nio.file.Paths;
+ * 
+ * public class App {
+ *     public static void main(String[] args) {
+ *         Pulumi.run(App::stack);
+ *     }
+ * 
+ *     public static void stack(Context ctx) {
+ *         var demoPushImage = new Image(&#34;demoPushImage&#34;, ImageArgs.builder()        
+ *             .build(DockerBuildArgs.builder()
+ *                 .context(&#34;.&#34;)
+ *                 .dockerfile(&#34;Dockerfile&#34;)
+ *                 .build())
+ *             .imageName(&#34;docker.io/username/push-image:tag1&#34;)
+ *             .build());
+ * 
+ *         ctx.export(&#34;imageName&#34;, demoPushImage.imageName());
+ *         ctx.export(&#34;repoDigest&#34;, demoPushImage.repoDigest());
  *     }
  * }
  * ```
@@ -209,14 +249,20 @@ public class Image extends com.pulumi.resources.CustomResource {
         return this.registryServer;
     }
     /**
-     * The digest of the manifest pushed to the registry, e.g.: repository@&lt;algorithm&gt;:&lt;hash&gt;
+     * The manifest digest of an image pushed to a registry, of the format repository@&lt;algorithm&gt;:&lt;hash&gt;, e.g. `username/demo-image@sha256:a6ae6dd8d39c5bb02320e41abf00cd4cb35905fec540e37d306c878be8d38bd3`.
+     * This reference is unique per image build and push.
+     * Only available for images pushed to a registry.
+     * Use when passing a reference to a pushed image to container management resources.
      * 
      */
     @Export(name="repoDigest", type=String.class, parameters={})
     private Output</* @Nullable */ String> repoDigest;
 
     /**
-     * @return The digest of the manifest pushed to the registry, e.g.: repository@&lt;algorithm&gt;:&lt;hash&gt;
+     * @return The manifest digest of an image pushed to a registry, of the format repository@&lt;algorithm&gt;:&lt;hash&gt;, e.g. `username/demo-image@sha256:a6ae6dd8d39c5bb02320e41abf00cd4cb35905fec540e37d306c878be8d38bd3`.
+     * This reference is unique per image build and push.
+     * Only available for images pushed to a registry.
+     * Use when passing a reference to a pushed image to container management resources.
      * 
      */
     public Output<Optional<String>> repoDigest() {

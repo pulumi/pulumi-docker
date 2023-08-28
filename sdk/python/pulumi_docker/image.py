@@ -22,7 +22,8 @@ class ImageArgs:
                  skip_push: Optional[pulumi.Input[bool]] = None):
         """
         The set of arguments for constructing a Image resource.
-        :param pulumi.Input[str] image_name: The image name, of the format repository[:tag]. For the manifest SHA of a pushed docker image, please use `repoDigest`.
+        :param pulumi.Input[str] image_name: The image name, of the format repository[:tag], e.g. `docker.io/username/demo-image:v1`.
+               This reference is not unique to each build and push.For the unique manifest SHA of a pushed docker image, please use `repoDigest`.
         :param pulumi.Input['DockerBuildArgs'] build: The Docker build context
         :param pulumi.Input['RegistryArgs'] registry: The registry to push the image to
         :param pulumi.Input[bool] skip_push: A flag to skip a registry push.
@@ -41,7 +42,8 @@ class ImageArgs:
     @pulumi.getter(name="imageName")
     def image_name(self) -> pulumi.Input[str]:
         """
-        The image name, of the format repository[:tag]. For the manifest SHA of a pushed docker image, please use `repoDigest`.
+        The image name, of the format repository[:tag], e.g. `docker.io/username/demo-image:v1`.
+        This reference is not unique to each build and push.For the unique manifest SHA of a pushed docker image, please use `repoDigest`.
         """
         return pulumi.get(self, "image_name")
 
@@ -106,8 +108,11 @@ class Image(pulumi.CustomResource):
 
         The Image resource uses `imageName` to refer to a fully qualified Docker image name, by the format `repository:tag`.
         Note that this does not include any digest information and thus will not cause any updates when passed to dependencies,
-        even when using `latest` tag. To trigger such updates, when referencing pushed images, please use the `repoDigest` Output
-        instead, which is of the format `repository@<algorithm>:<hash>`.
+        even when using `latest` tag. To trigger such updates, e.g. when referencing pushed images in container orchestration
+        and management resources, please use the `repoDigest` Output instead, which is of the format
+        `repository@<algorithm>:<hash>` and unique per build/push.
+        Note that `repoDigest` is not available for local Images. For a local Image not pushed to a registry, you may want to
+        give `imageName` a unique tag per pulumi update.
 
         ## Cross-platform builds
 
@@ -129,12 +134,29 @@ class Image(pulumi.CustomResource):
 
         demo_image = docker.Image("demo-image",
             build=docker.DockerBuildArgs(
+                args={
+                    "platform": "linux/amd64",
+                },
                 context=".",
                 dockerfile="Dockerfile",
             ),
             image_name="username/image:tag1",
             skip_push=True)
         pulumi.export("imageName", demo_image.image_name)
+        ```
+        ### A Docker image build and push
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        demo_push_image = docker.Image("demo-push-image",
+            build=docker.DockerBuildArgs(
+                context=".",
+                dockerfile="Dockerfile",
+            ),
+            image_name="docker.io/username/push-image:tag1")
+        pulumi.export("imageName", demo_push_image.image_name)
+        pulumi.export("repoDigest", demo_push_image.repo_digest)
         ```
         ### Docker image build using caching with AWS Elastic Container Registry
         ```python
@@ -166,7 +188,8 @@ class Image(pulumi.CustomResource):
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[pulumi.InputType['DockerBuildArgs']] build: The Docker build context
-        :param pulumi.Input[str] image_name: The image name, of the format repository[:tag]. For the manifest SHA of a pushed docker image, please use `repoDigest`.
+        :param pulumi.Input[str] image_name: The image name, of the format repository[:tag], e.g. `docker.io/username/demo-image:v1`.
+               This reference is not unique to each build and push.For the unique manifest SHA of a pushed docker image, please use `repoDigest`.
         :param pulumi.Input[pulumi.InputType['RegistryArgs']] registry: The registry to push the image to
         :param pulumi.Input[bool] skip_push: A flag to skip a registry push.
         """
@@ -186,8 +209,11 @@ class Image(pulumi.CustomResource):
 
         The Image resource uses `imageName` to refer to a fully qualified Docker image name, by the format `repository:tag`.
         Note that this does not include any digest information and thus will not cause any updates when passed to dependencies,
-        even when using `latest` tag. To trigger such updates, when referencing pushed images, please use the `repoDigest` Output
-        instead, which is of the format `repository@<algorithm>:<hash>`.
+        even when using `latest` tag. To trigger such updates, e.g. when referencing pushed images in container orchestration
+        and management resources, please use the `repoDigest` Output instead, which is of the format
+        `repository@<algorithm>:<hash>` and unique per build/push.
+        Note that `repoDigest` is not available for local Images. For a local Image not pushed to a registry, you may want to
+        give `imageName` a unique tag per pulumi update.
 
         ## Cross-platform builds
 
@@ -209,12 +235,29 @@ class Image(pulumi.CustomResource):
 
         demo_image = docker.Image("demo-image",
             build=docker.DockerBuildArgs(
+                args={
+                    "platform": "linux/amd64",
+                },
                 context=".",
                 dockerfile="Dockerfile",
             ),
             image_name="username/image:tag1",
             skip_push=True)
         pulumi.export("imageName", demo_image.image_name)
+        ```
+        ### A Docker image build and push
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        demo_push_image = docker.Image("demo-push-image",
+            build=docker.DockerBuildArgs(
+                context=".",
+                dockerfile="Dockerfile",
+            ),
+            image_name="docker.io/username/push-image:tag1")
+        pulumi.export("imageName", demo_push_image.image_name)
+        pulumi.export("repoDigest", demo_push_image.repo_digest)
         ```
         ### Docker image build using caching with AWS Elastic Container Registry
         ```python
@@ -360,7 +403,10 @@ class Image(pulumi.CustomResource):
     @pulumi.getter(name="repoDigest")
     def repo_digest(self) -> pulumi.Output[Optional[str]]:
         """
-        The digest of the manifest pushed to the registry, e.g.: repository@<algorithm>:<hash>
+        The manifest digest of an image pushed to a registry, of the format repository@<algorithm>:<hash>, e.g. `username/demo-image@sha256:a6ae6dd8d39c5bb02320e41abf00cd4cb35905fec540e37d306c878be8d38bd3`.
+        This reference is unique per image build and push. 
+        Only available for images pushed to a registry.
+        Use when passing a reference to a pushed image to container management resources.
         """
         return pulumi.get(self, "repo_digest")
 
