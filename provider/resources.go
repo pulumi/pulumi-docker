@@ -256,7 +256,7 @@ func Provider() tfbridge.ProviderInfo {
 							TypeSpec:    schema.TypeSpec{Type: "string"},
 						},
 						"repoDigest": {
-							Description: "The digest of the manifest pushed to the registry, e.g.: repo[:tag]@<algorithm>:<hash>",
+							Description: "The digest of the manifest pushed to the registry, e.g.: repository@<algorithm>:<hash>",
 							TypeSpec:    schema.TypeSpec{Type: "string"},
 						},
 					},
@@ -264,7 +264,7 @@ func Provider() tfbridge.ProviderInfo {
 				IsComponent: false,
 				InputProperties: map[string]schema.PropertySpec{
 					"imageName": {
-						Description: "The image name",
+						Description: "The image name, of the format repository[:tag]. For the manifest SHA of a pushed docker image, please use `repoDigest`.",
 						TypeSpec:    schema.TypeSpec{Type: "string"},
 					},
 					"registry": {
