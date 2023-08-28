@@ -7,8 +7,11 @@ Note: This resource does not delete tags, locally or remotely, when destroyed.
 
 The Image resource uses `imageName` to refer to a fully qualified Docker image name, by the format `repository:tag`.
 Note that this does not include any digest information and thus will not cause any updates when passed to dependencies,
-even when using `latest` tag. To trigger such updates, when referencing pushed images, please use the `repoDigest` Output 
-instead, which is of the format `repository@<algorithm>:<hash>`.
+even when using `latest` tag. To trigger such updates, e.g. when referencing pushed images in container orchestration 
+and management resources, please use the `repoDigest` Output instead, which is of the format 
+`repository@<algorithm>:<hash>` and unique per build/push. 
+Note that `repoDigest` is not available for local Images. For a local Image not pushed to a registry, you may want to 
+give `imageName` a unique tag per pulumi update.
 
 ## Cross-platform builds
 
