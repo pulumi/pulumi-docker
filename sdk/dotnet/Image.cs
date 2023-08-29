@@ -15,6 +15,16 @@ namespace Pulumi.Docker
     /// 
     /// Note: This resource does not delete tags, locally or remotely, when destroyed.
     /// 
+    /// ## Image name
+    /// 
+    /// The Image resource uses `imageName` to refer to a fully qualified Docker image name, by the format `repository:tag`.
+    /// Note that this does not include any digest information and thus will not cause any updates when passed to dependencies,
+    /// even when using `latest` tag. To trigger such updates, e.g. when referencing pushed images in container orchestration
+    /// and management resources, please use the `repoDigest` Output instead, which is of the format
+    /// `repository@&lt;algorithm&gt;:&lt;hash&gt;` and unique per build/push.
+    /// Note that `repoDigest` is not available for local Images. For a local Image not pushed to a registry, you may want to
+    /// give `imageName` a unique tag per pulumi update.
+    /// 
     /// ## Cross-platform builds
     /// 
     /// The Image resource supports cross-platform builds when the [Docker engine has cross-platform support enabled via emulators](https://docs.docker.com/build/building/multi-platform/#building-multi-platform-images).
@@ -41,6 +51,10 @@ namespace Pulumi.Docker
     ///     {
     ///         Build = new Docker.Inputs.DockerBuildArgs
     ///         {
+    ///             Args = 
+    ///             {
+    ///                 { "platform", "linux/amd64" },
+    ///             },
     ///             Context = ".",
     ///             Dockerfile = "Dockerfile",
     ///         },
@@ -51,6 +65,33 @@ namespace Pulumi.Docker
     ///     return new Dictionary&lt;string, object?&gt;
     ///     {
     ///         ["imageName"] = demoImage.ImageName,
+    ///     };
+    /// });
+    /// 
+    /// ```
+    /// ### A Docker image build and push
+    /// ```csharp
+    /// using System.Collections.Generic;
+    /// using System.Linq;
+    /// using Pulumi;
+    /// using Docker = Pulumi.Docker;
+    /// 
+    /// return await Deployment.RunAsync(() =&gt; 
+    /// {
+    ///     var demoPushImage = new Docker.Image("demo-push-image", new()
+    ///     {
+    ///         Build = new Docker.Inputs.DockerBuildArgs
+    ///         {
+    ///             Context = ".",
+    ///             Dockerfile = "Dockerfile",
+    ///         },
+    ///         ImageName = "docker.io/username/push-image:tag1",
+    ///     });
+    /// 
+    ///     return new Dictionary&lt;string, object?&gt;
+    ///     {
+    ///         ["imageName"] = demoPushImage.ImageName,
+    ///         ["repoDigest"] = demoPushImage.RepoDigest,
     ///     };
     /// });
     /// 
@@ -143,7 +184,10 @@ namespace Pulumi.Docker
         public Output<string> RegistryServer { get; private set; } = null!;
 
         /// <summary>
-        /// The digest of the manifest pushed to the registry, e.g.: repo[:tag]@&lt;algorithm&gt;:&lt;hash&gt;
+        /// The manifest digest of an image pushed to a registry, of the format repository@&lt;algorithm&gt;:&lt;hash&gt;, e.g. `username/demo-image@sha256:a6ae6dd8d39c5bb02320e41abf00cd4cb35905fec540e37d306c878be8d38bd3`.
+        /// This reference is unique per image build and push. 
+        /// Only available for images pushed to a registry.
+        /// Use when passing a reference to a pushed image to container management resources.
         /// </summary>
         [Output("repoDigest")]
         public Output<string?> RepoDigest { get; private set; } = null!;
@@ -204,7 +248,8 @@ namespace Pulumi.Docker
         public Input<Inputs.DockerBuildArgs>? Build { get; set; }
 
         /// <summary>
-        /// The image name
+        /// The image name, of the format repository[:tag], e.g. `docker.io/username/demo-image:v1`.
+        /// This reference is not unique to each build and push.For the unique manifest SHA of a pushed docker image, please use `repoDigest`.
         /// </summary>
         [Input("imageName", required: true)]
         public Input<string> ImageName { get; set; } = null!;

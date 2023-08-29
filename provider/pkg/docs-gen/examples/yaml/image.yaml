@@ -12,10 +12,31 @@ resources:
       build:
         dockerfile: Dockerfile
         context: .
+        args:
+          platform: linux/amd64
     options:
       version: v4.0.0
 outputs:
   imageName: ${demo-image.imageName}
+---
+name: image-push-yaml
+description: A Docker image build and push
+runtime: yaml
+config: {}
+variables: {}
+resources:
+  demo-push-image:
+    type: docker:Image
+    properties:
+      imageName: docker.io/username/push-image:tag1
+      build:
+        dockerfile: Dockerfile
+        context: .
+    options:
+      version: v4.0.0
+outputs:
+  imageName: ${demo-push-image.imageName}
+  repoDigest: ${demo-push-image.repoDigest}
 ---
 name: image-caching-yaml
 description: Docker image build using caching with AWS Elastic Container Registry

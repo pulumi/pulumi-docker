@@ -9,6 +9,9 @@ import * as docker from "@pulumi/docker";
 
 const demoImage = new docker.Image("demo-image", {
     build: {
+        args: {
+            platform: "linux/amd64",
+        },
         context: ".",
         dockerfile: "Dockerfile",
     },
@@ -23,6 +26,9 @@ import pulumi_docker as docker
 
 demo_image = docker.Image("demo-image",
     build=docker.DockerBuildArgs(
+        args={
+            "platform": "linux/amd64",
+        },
         context=".",
         dockerfile="Dockerfile",
     ),
@@ -42,6 +48,10 @@ return await Deployment.RunAsync(() =>
     {
         Build = new Docker.Inputs.DockerBuildArgs
         {
+            Args = 
+            {
+                { "platform", "linux/amd64" },
+            },
             Context = ".",
             Dockerfile = "Dockerfile",
         },
@@ -68,6 +78,9 @@ func main() {
 	pulumi.Run(func(ctx *pulumi.Context) error {
 		demoImage, err := docker.NewImage(ctx, "demo-image", &docker.ImageArgs{
 			Build: &docker.DockerBuildArgs{
+				Args: pulumi.StringMap{
+					"platform": pulumi.String("linux/amd64"),
+				},
 				Context:    pulumi.String("."),
 				Dockerfile: pulumi.String("Dockerfile"),
 			},
@@ -94,6 +107,8 @@ resources:
             version: v4.0.0
         properties:
             build:
+                args:
+                    platform: linux/amd64
                 context: .
                 dockerfile: Dockerfile
             imageName: username/image:tag1
@@ -126,6 +141,7 @@ public class App {
     public static void stack(Context ctx) {
         var demoImage = new Image("demoImage", ImageArgs.builder()        
             .build(DockerBuildArgs.builder()
+                .args(Map.of("platform", "linux/amd64"))
                 .context(".")
                 .dockerfile("Dockerfile")
                 .build())
@@ -134,6 +150,144 @@ public class App {
             .build());
 
         ctx.export("imageName", demoImage.imageName());
+    }
+}
+```
+{{% /example %}}
+{{% example %}}
+### A Docker image build and push
+
+```typescript
+import * as pulumi from "@pulumi/pulumi";
+import * as docker from "@pulumi/docker";
+
+const demoPushImage = new docker.Image("demo-push-image", {
+    build: {
+        context: ".",
+        dockerfile: "Dockerfile",
+    },
+    imageName: "docker.io/username/push-image:tag1",
+});
+export const imageName = demoPushImage.imageName;
+export const repoDigest = demoPushImage.repoDigest;
+```
+```python
+import pulumi
+import pulumi_docker as docker
+
+demo_push_image = docker.Image("demo-push-image",
+    build=docker.DockerBuildArgs(
+        context=".",
+        dockerfile="Dockerfile",
+    ),
+    image_name="docker.io/username/push-image:tag1")
+pulumi.export("imageName", demo_push_image.image_name)
+pulumi.export("repoDigest", demo_push_image.repo_digest)
+```
+```csharp
+using System.Collections.Generic;
+using System.Linq;
+using Pulumi;
+using Docker = Pulumi.Docker;
+
+return await Deployment.RunAsync(() => 
+{
+    var demoPushImage = new Docker.Image("demo-push-image", new()
+    {
+        Build = new Docker.Inputs.DockerBuildArgs
+        {
+            Context = ".",
+            Dockerfile = "Dockerfile",
+        },
+        ImageName = "docker.io/username/push-image:tag1",
+    });
+
+    return new Dictionary<string, object?>
+    {
+        ["imageName"] = demoPushImage.ImageName,
+        ["repoDigest"] = demoPushImage.RepoDigest,
+    };
+});
+
+```
+```go
+package main
+
+import (
+	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker"
+	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+)
+
+func main() {
+	pulumi.Run(func(ctx *pulumi.Context) error {
+		demoPushImage, err := docker.NewImage(ctx, "demo-push-image", &docker.ImageArgs{
+			Build: &docker.DockerBuildArgs{
+				Context:    pulumi.String("."),
+				Dockerfile: pulumi.String("Dockerfile"),
+			},
+			ImageName: pulumi.String("docker.io/username/push-image:tag1"),
+		})
+		if err != nil {
+			return err
+		}
+		ctx.Export("imageName", demoPushImage.ImageName)
+		ctx.Export("repoDigest", demoPushImage.RepoDigest)
+		return nil
+	})
+}
+```
+```yaml
+config: {}
+description: A Docker image build and push
+name: image-push-yaml
+outputs:
+    imageName: ${demo-push-image.imageName}
+    repoDigest: ${demo-push-image.repoDigest}
+resources:
+    demo-push-image:
+        options:
+            version: v4.0.0
+        properties:
+            build:
+                context: .
+                dockerfile: Dockerfile
+            imageName: docker.io/username/push-image:tag1
+        type: docker:Image
+runtime: yaml
+variables: {}
+```
+```java
+package generated_program;
+
+import com.pulumi.Context;
+import com.pulumi.Pulumi;
+import com.pulumi.core.Output;
+import com.pulumi.docker.Image;
+import com.pulumi.docker.ImageArgs;
+import com.pulumi.docker.inputs.DockerBuildArgs;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+public class App {
+    public static void main(String[] args) {
+        Pulumi.run(App::stack);
+    }
+
+    public static void stack(Context ctx) {
+        var demoPushImage = new Image("demoPushImage", ImageArgs.builder()        
+            .build(DockerBuildArgs.builder()
+                .context(".")
+                .dockerfile("Dockerfile")
+                .build())
+            .imageName("docker.io/username/push-image:tag1")
+            .build());
+
+        ctx.export("imageName", demoPushImage.imageName());
+        ctx.export("repoDigest", demoPushImage.repoDigest());
     }
 }
 ```
