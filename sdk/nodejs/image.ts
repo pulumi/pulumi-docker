@@ -150,12 +150,15 @@ export class Image extends pulumi.CustomResource {
      */
     public /*out*/ readonly registryServer!: pulumi.Output<string>;
     /**
+     * **For pushed images:**
      * The manifest digest of an image pushed to a registry, of the format repository@<algorithm>:<hash>, e.g. `username/demo-image@sha256:a6ae6dd8d39c5bb02320e41abf00cd4cb35905fec540e37d306c878be8d38bd3`.
      * This reference is unique per image build and push. 
      * Only available for images pushed to a registry.
      * Use when passing a reference to a pushed image to container management resources.
+     *
+     * **Local-only images**For local images, this field is the image ID of the built local image, of the format <algorithm>:<hash>, e.g `sha256:826a130323165bb0ccb0374ae774f885c067a951b51a6ee133577f4e5dbc4119` 
      */
-    public /*out*/ readonly repoDigest!: pulumi.Output<string | undefined>;
+    public /*out*/ readonly repoDigest!: pulumi.Output<string>;
 
     /**
      * Create a Image resource with the given unique name, arguments, and options.
@@ -205,7 +208,7 @@ export interface ImageArgs {
     build?: pulumi.Input<inputs.DockerBuild>;
     /**
      * The image name, of the format repository[:tag], e.g. `docker.io/username/demo-image:v1`.
-     * This reference is not unique to each build and push.For the unique manifest SHA of a pushed docker image, please use `repoDigest`.
+     * This reference is not unique to each build and push.For the unique manifest SHA of a pushed docker image, or the local image ID, please use `repoDigest`.
      */
     imageName: pulumi.Input<string>;
     /**
