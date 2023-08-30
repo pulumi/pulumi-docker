@@ -232,7 +232,7 @@ func Provider() tfbridge.ProviderInfo {
 					Type:        "object",
 					Description: docImage,
 					Required: []string{
-						"dockerfile", "context", "baseImageName", "registryServer", "imageName",
+						"dockerfile", "context", "baseImageName", "registryServer", "imageName", "repoDigest",
 					},
 					Properties: map[string]schema.PropertySpec{
 						"imageName": {
@@ -256,12 +256,17 @@ func Provider() tfbridge.ProviderInfo {
 							TypeSpec:    schema.TypeSpec{Type: "string"},
 						},
 						"repoDigest": {
-							Description: "The manifest digest of an image pushed to a registry, of the format " +
+							Description: "**For pushed images:**\n" +
+								"The manifest digest of an image pushed to a registry, of the format " +
 								"repository@<algorithm>:<hash>, e.g. `username/demo-image@sha256:" +
 								"a6ae6dd8d39c5bb02320e41abf00cd4cb35905fec540e37d306c878be8d38bd3`.\n" +
 								"This reference is unique per image build and push. \n" +
 								"Only available for images pushed to a registry.\n" +
-								"Use when passing a reference to a pushed image to container management resources.",
+								"Use when passing a reference to a pushed image to container management resources.\n\n" +
+								"**Local-only images**" +
+								"For local images, this field is the image ID of the built local image, of the format " +
+								"<algorithm>:<hash>, " +
+								"e.g `sha256:826a130323165bb0ccb0374ae774f885c067a951b51a6ee133577f4e5dbc4119` \n",
 							TypeSpec: schema.TypeSpec{Type: "string"},
 						},
 					},
@@ -272,7 +277,8 @@ func Provider() tfbridge.ProviderInfo {
 						Description: "The image name, of the format repository[:tag], " +
 							"e.g. `docker.io/username/demo-image:v1`.\n" +
 							"This reference is not unique to each build and push." +
-							"For the unique manifest SHA of a pushed docker image, please use `repoDigest`.",
+							"For the unique manifest SHA of a pushed docker image, or the local image ID, " +
+							"please use `repoDigest`.",
 						TypeSpec: schema.TypeSpec{Type: "string"},
 					},
 					"registry": {
