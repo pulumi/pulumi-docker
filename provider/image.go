@@ -777,7 +777,7 @@ func configureDockerClient(configs map[string]string, verify bool) (*client.Clie
 		return cli, err
 	}
 
-	// Check if the connection works. If not and we used the default host, try the user host.
+	// Check if the connection works. If not and we used the default host, try the possible user hosts.
 	// See "Adminless install on macOS" on https://www.docker.com/blog/docker-desktop-4-18/
 	log.Printf("checking connection to docker daemon at %s", host)
 	_, err = cli.Ping(context.Background())
@@ -786,17 +786,17 @@ func configureDockerClient(configs map[string]string, verify bool) (*client.Clie
 		if err2 != nil {
 			return nil, err2
 		}
-		userSock := fmt.Sprintf("unix://%s/.docker/run/docker.sock", home)
-		log.Printf("no connection to docker daemon at %s, trying %s (%v)", host, userSock, err)
-		cli, err = configureDockerClientInner(configs, userSock)
-		if err != nil {
-			linuxUserSock := fmt.Sprintf("unix://%s/.docker/desktop/docker.sock", home)
-			log.Printf("no connection to docker daemon at %s, trying %s (%v)", userSock, linuxUserSock, err)
-			cli, err = configureDockerClientInner(configs, linuxUserSock)
-			if err != nil {
-				log.Printf("no connection to docker daemon at %s, stopping (%v)", host, err)
+		user_hosts := []string{"unix://%s/.docker/run/docker.sock", "unix://%s/.docker/desktop/docker.sock"}
+		for _, user_host := range user_hosts {
+			userSock := fmt.Sprintf(user_host, home)
+			log.Printf("no connection to docker daemon at %s, trying %s (%v)", host, userSock, err)
+			cli, err = configureDockerClientInner(configs, userSock)
+			if err == nil {
+				return cli, err
 			}
+			host = userSock
 		}
+		log.Printf("no connection to docker daemon at %s, stopping (%v)", host, err)
 	}
 
 	return cli, err
