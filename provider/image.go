@@ -329,6 +329,13 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 
 	// if we are not pushing to the registry, we return after building the local image.
 	if img.SkipPush {
+		// Obtain image digest from docker inspect
+		imageInspect, _, inspErr := docker.ImageInspectWithRaw(ctx, img.Name)
+		if inspErr != nil {
+			return "", nil, err
+		}
+		// We set repoDigest to the image ID returned from docker inspect.
+		outputs["repoDigest"] = imageInspect.ID
 		pbstruct, err := plugin.MarshalProperties(
 			resource.NewPropertyMapFromMap(outputs),
 			plugin.MarshalOptions{KeepUnknowns: true, SkipNulls: true},

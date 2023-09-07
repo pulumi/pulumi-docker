@@ -222,6 +222,21 @@ func TestSSHConnNode(t *testing.T) {
 	integration.ProgramTest(t, &test)
 }
 
+func TestLocalRepoDigestNode(t *testing.T) {
+	test := getJsOptions(t).
+		With(integration.ProgramTestOptions{
+			Dir: path.Join(getCwd(t), "test-local-repo-digest-ts"),
+			ExtraRuntimeValidation: func(t *testing.T, stack integration.RuntimeValidationStackInfo) {
+				repoDigest, ok := stack.Outputs["repoDigest"]
+				assert.True(t, ok)
+				assert.NotEmpty(t, repoDigest)
+			},
+			Quick:       true,
+			SkipRefresh: true,
+		})
+	integration.ProgramTest(t, &test)
+}
+
 func getJsOptions(t *testing.T) integration.ProgramTestOptions {
 	base := getBaseOptions()
 	baseJs := base.With(integration.ProgramTestOptions{

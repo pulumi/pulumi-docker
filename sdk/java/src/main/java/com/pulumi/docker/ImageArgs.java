@@ -36,7 +36,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
 
     /**
      * The image name, of the format repository[:tag], e.g. `docker.io/username/demo-image:v1`.
-     * This reference is not unique to each build and push.For the unique manifest SHA of a pushed docker image, please use `repoDigest`.
+     * This reference is not unique to each build and push.For the unique manifest SHA of a pushed docker image, or the local image ID, please use `repoDigest`.
      * 
      */
     @Import(name="imageName", required=true)
@@ -44,7 +44,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
 
     /**
      * @return The image name, of the format repository[:tag], e.g. `docker.io/username/demo-image:v1`.
-     * This reference is not unique to each build and push.For the unique manifest SHA of a pushed docker image, please use `repoDigest`.
+     * This reference is not unique to each build and push.For the unique manifest SHA of a pushed docker image, or the local image ID, please use `repoDigest`.
      * 
      */
     public Output<String> imageName() {
@@ -131,7 +131,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
 
         /**
          * @param imageName The image name, of the format repository[:tag], e.g. `docker.io/username/demo-image:v1`.
-         * This reference is not unique to each build and push.For the unique manifest SHA of a pushed docker image, please use `repoDigest`.
+         * This reference is not unique to each build and push.For the unique manifest SHA of a pushed docker image, or the local image ID, please use `repoDigest`.
          * 
          * @return builder
          * 
@@ -143,7 +143,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
 
         /**
          * @param imageName The image name, of the format repository[:tag], e.g. `docker.io/username/demo-image:v1`.
-         * This reference is not unique to each build and push.For the unique manifest SHA of a pushed docker image, please use `repoDigest`.
+         * This reference is not unique to each build and push.For the unique manifest SHA of a pushed docker image, or the local image ID, please use `repoDigest`.
          * 
          * @return builder
          * 

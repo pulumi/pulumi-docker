@@ -184,13 +184,16 @@ namespace Pulumi.Docker
         public Output<string> RegistryServer { get; private set; } = null!;
 
         /// <summary>
+        /// **For pushed images:**
         /// The manifest digest of an image pushed to a registry, of the format repository@&lt;algorithm&gt;:&lt;hash&gt;, e.g. `username/demo-image@sha256:a6ae6dd8d39c5bb02320e41abf00cd4cb35905fec540e37d306c878be8d38bd3`.
         /// This reference is unique per image build and push. 
         /// Only available for images pushed to a registry.
         /// Use when passing a reference to a pushed image to container management resources.
+        /// 
+        /// **Local-only images**For local images, this field is the image ID of the built local image, of the format &lt;algorithm&gt;:&lt;hash&gt;, e.g `sha256:826a130323165bb0ccb0374ae774f885c067a951b51a6ee133577f4e5dbc4119` 
         /// </summary>
         [Output("repoDigest")]
-        public Output<string?> RepoDigest { get; private set; } = null!;
+        public Output<string> RepoDigest { get; private set; } = null!;
 
 
         /// <summary>
@@ -249,7 +252,7 @@ namespace Pulumi.Docker
 
         /// <summary>
         /// The image name, of the format repository[:tag], e.g. `docker.io/username/demo-image:v1`.
-        /// This reference is not unique to each build and push.For the unique manifest SHA of a pushed docker image, please use `repoDigest`.
+        /// This reference is not unique to each build and push.For the unique manifest SHA of a pushed docker image, or the local image ID, please use `repoDigest`.
         /// </summary>
         [Input("imageName", required: true)]
         public Input<string> ImageName { get; set; } = null!;
