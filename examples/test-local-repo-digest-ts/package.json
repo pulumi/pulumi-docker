@@ -1,0 +1,9 @@
+{
+    "name": "test-local-repo-digest-ts",
+    "devDependencies": {
+        "@types/node": "^16"
+    },
+    "dependencies": {
+        "@pulumi/pulumi": "^3.0.0"
+    }
+}
