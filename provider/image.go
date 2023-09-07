@@ -28,7 +28,6 @@ import (
 	"github.com/docker/cli/cli/connhelper"
 	"github.com/docker/distribution/reference"
 	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/api/types/filters"
 	"github.com/docker/docker/client"
 	"github.com/docker/docker/pkg/archive"
 	"github.com/docker/docker/pkg/idtools"
@@ -774,7 +773,7 @@ func configureDockerClient(configs map[string]string, verify bool) (*client.Clie
 	// Check if the connection works. If not and we used the default host, try the user host.
 	// See "Adminless install on macOS" on https://www.docker.com/blog/docker-desktop-4-18/
 	log.Printf("checking connection to docker daemon at %s", host)
-	_, err = cli.PluginList(context.Background(), filters.Args{})
+	_, err = cli.Ping(context.Background())
 	if err != nil && !isExplicitHost && runtime.GOOS != "windows" {
 		home, err2 := os.UserHomeDir()
 		if err2 != nil {
