@@ -8,6 +8,7 @@ import (
 	"reflect"
 
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 )
 
 // The version of the Docker builder.
@@ -80,6 +81,12 @@ func (o BuilderVersionOutput) ToBuilderVersionPtrOutputWithContext(ctx context.C
 	}).(BuilderVersionPtrOutput)
 }
 
+func (o BuilderVersionOutput) ToOutput(ctx context.Context) pulumix.Output[BuilderVersion] {
+	return pulumix.Output[BuilderVersion]{
+		OutputState: o.OutputState,
+	}
+}
+
 func (o BuilderVersionOutput) ToStringOutput() pulumi.StringOutput {
 	return o.ToStringOutputWithContext(context.Background())
 }
@@ -113,6 +120,12 @@ func (o BuilderVersionPtrOutput) ToBuilderVersionPtrOutput() BuilderVersionPtrOu
 
 func (o BuilderVersionPtrOutput) ToBuilderVersionPtrOutputWithContext(ctx context.Context) BuilderVersionPtrOutput {
 	return o
+}
+
+func (o BuilderVersionPtrOutput) ToOutput(ctx context.Context) pulumix.Output[*BuilderVersion] {
+	return pulumix.Output[*BuilderVersion]{
+		OutputState: o.OutputState,
+	}
 }
 
 func (o BuilderVersionPtrOutput) Elem() BuilderVersionOutput {
@@ -175,6 +188,12 @@ func (in *builderVersionPtr) ToBuilderVersionPtrOutput() BuilderVersionPtrOutput
 
 func (in *builderVersionPtr) ToBuilderVersionPtrOutputWithContext(ctx context.Context) BuilderVersionPtrOutput {
 	return pulumi.ToOutputWithContext(ctx, in).(BuilderVersionPtrOutput)
+}
+
+func (in *builderVersionPtr) ToOutput(ctx context.Context) pulumix.Output[*BuilderVersion] {
+	return pulumix.Output[*BuilderVersion]{
+		OutputState: in.ToBuilderVersionPtrOutputWithContext(ctx).OutputState,
+	}
 }
 
 func init() {

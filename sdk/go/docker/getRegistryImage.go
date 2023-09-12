@@ -7,7 +7,9 @@ import (
 	"context"
 	"reflect"
 
+	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker/internal"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 )
 
 // Reads the image metadata from a Docker Registry. Used in conjunction with the RemoteImage resource to keep an image up to date on the latest available version of the tag.
@@ -47,6 +49,7 @@ import (
 //
 // ```
 func LookupRegistryImage(ctx *pulumi.Context, args *LookupRegistryImageArgs, opts ...pulumi.InvokeOption) (*LookupRegistryImageResult, error) {
+	opts = internal.PkgInvokeDefaultOpts(opts)
 	var rv LookupRegistryImageResult
 	err := ctx.Invoke("docker:index/getRegistryImage:getRegistryImage", args, &rv, opts...)
 	if err != nil {
@@ -113,6 +116,12 @@ func (o LookupRegistryImageResultOutput) ToLookupRegistryImageResultOutput() Loo
 
 func (o LookupRegistryImageResultOutput) ToLookupRegistryImageResultOutputWithContext(ctx context.Context) LookupRegistryImageResultOutput {
 	return o
+}
+
+func (o LookupRegistryImageResultOutput) ToOutput(ctx context.Context) pulumix.Output[LookupRegistryImageResult] {
+	return pulumix.Output[LookupRegistryImageResult]{
+		OutputState: o.OutputState,
+	}
 }
 
 // The provider-assigned unique ID for this managed resource.

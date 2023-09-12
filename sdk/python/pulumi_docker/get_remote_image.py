@@ -94,9 +94,9 @@ def get_remote_image(name: Optional[str] = None,
     __ret__ = pulumi.runtime.invoke('docker:index/getRemoteImage:getRemoteImage', __args__, opts=opts, typ=GetRemoteImageResult).value
 
     return AwaitableGetRemoteImageResult(
-        id=__ret__.id,
-        name=__ret__.name,
-        repo_digest=__ret__.repo_digest)
+        id=pulumi.get(__ret__, 'id'),
+        name=pulumi.get(__ret__, 'name'),
+        repo_digest=pulumi.get(__ret__, 'repo_digest'))
 
 
 @_utilities.lift_output_func(get_remote_image)

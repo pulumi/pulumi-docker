@@ -140,13 +140,13 @@ def get_network(name: Optional[str] = None,
     __ret__ = pulumi.runtime.invoke('docker:index/getNetwork:getNetwork', __args__, opts=opts, typ=GetNetworkResult).value
 
     return AwaitableGetNetworkResult(
-        driver=__ret__.driver,
-        id=__ret__.id,
-        internal=__ret__.internal,
-        ipam_configs=__ret__.ipam_configs,
-        name=__ret__.name,
-        options=__ret__.options,
-        scope=__ret__.scope)
+        driver=pulumi.get(__ret__, 'driver'),
+        id=pulumi.get(__ret__, 'id'),
+        internal=pulumi.get(__ret__, 'internal'),
+        ipam_configs=pulumi.get(__ret__, 'ipam_configs'),
+        name=pulumi.get(__ret__, 'name'),
+        options=pulumi.get(__ret__, 'options'),
+        scope=pulumi.get(__ret__, 'scope'))
 
 
 @_utilities.lift_output_func(get_network)
