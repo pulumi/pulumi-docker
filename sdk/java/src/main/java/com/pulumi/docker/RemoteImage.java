@@ -104,7 +104,7 @@ public class RemoteImage extends com.pulumi.resources.CustomResource {
      * Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
      * 
      */
-    @Export(name="build", type=RemoteImageBuild.class, parameters={})
+    @Export(name="build", refs={RemoteImageBuild.class}, tree="[0]")
     private Output</* @Nullable */ RemoteImageBuild> build;
 
     /**
@@ -118,7 +118,7 @@ public class RemoteImage extends com.pulumi.resources.CustomResource {
      * If true, then the image is removed forcibly when the resource is destroyed.
      * 
      */
-    @Export(name="forceRemove", type=Boolean.class, parameters={})
+    @Export(name="forceRemove", refs={Boolean.class}, tree="[0]")
     private Output</* @Nullable */ Boolean> forceRemove;
 
     /**
@@ -132,7 +132,7 @@ public class RemoteImage extends com.pulumi.resources.CustomResource {
      * The ID of the image (as seen when executing `docker inspect` on the image). Can be used to reference the image via its ID in other resources.
      * 
      */
-    @Export(name="imageId", type=String.class, parameters={})
+    @Export(name="imageId", refs={String.class}, tree="[0]")
     private Output<String> imageId;
 
     /**
@@ -146,7 +146,7 @@ public class RemoteImage extends com.pulumi.resources.CustomResource {
      * If true, then the Docker image won&#39;t be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
      * 
      */
-    @Export(name="keepLocally", type=Boolean.class, parameters={})
+    @Export(name="keepLocally", refs={Boolean.class}, tree="[0]")
     private Output</* @Nullable */ Boolean> keepLocally;
 
     /**
@@ -160,7 +160,7 @@ public class RemoteImage extends com.pulumi.resources.CustomResource {
      * The name of the Docker image, including any tags or SHA256 repo digests.
      * 
      */
-    @Export(name="name", type=String.class, parameters={})
+    @Export(name="name", refs={String.class}, tree="[0]")
     private Output<String> name;
 
     /**
@@ -174,7 +174,7 @@ public class RemoteImage extends com.pulumi.resources.CustomResource {
      * The platform to use when pulling the image. Defaults to the platform of the current machine.
      * 
      */
-    @Export(name="platform", type=String.class, parameters={})
+    @Export(name="platform", refs={String.class}, tree="[0]")
     private Output</* @Nullable */ String> platform;
 
     /**
@@ -188,7 +188,7 @@ public class RemoteImage extends com.pulumi.resources.CustomResource {
      * List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
      * 
      */
-    @Export(name="pullTriggers", type=List.class, parameters={String.class})
+    @Export(name="pullTriggers", refs={List.class,String.class}, tree="[0,1]")
     private Output</* @Nullable */ List<String>> pullTriggers;
 
     /**
@@ -202,7 +202,7 @@ public class RemoteImage extends com.pulumi.resources.CustomResource {
      * The image sha256 digest in the form of `repo[:tag]@sha256:&lt;hash&gt;`.
      * 
      */
-    @Export(name="repoDigest", type=String.class, parameters={})
+    @Export(name="repoDigest", refs={String.class}, tree="[0]")
     private Output<String> repoDigest;
 
     /**
@@ -216,7 +216,7 @@ public class RemoteImage extends com.pulumi.resources.CustomResource {
      * A map of arbitrary strings that, when changed, will force the `docker.RemoteImage` resource to be replaced. This can be used to rebuild an image when contents of source code folders change
      * 
      */
-    @Export(name="triggers", type=Map.class, parameters={String.class, Object.class})
+    @Export(name="triggers", refs={Map.class,String.class,Object.class}, tree="[0,1,2]")
     private Output</* @Nullable */ Map<String,Object>> triggers;
 
     /**

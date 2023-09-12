@@ -66,7 +66,7 @@ public class Volume extends com.pulumi.resources.CustomResource {
      * Driver type for the volume. Defaults to `local`.
      * 
      */
-    @Export(name="driver", type=String.class, parameters={})
+    @Export(name="driver", refs={String.class}, tree="[0]")
     private Output<String> driver;
 
     /**
@@ -80,7 +80,7 @@ public class Volume extends com.pulumi.resources.CustomResource {
      * Options specific to the driver.
      * 
      */
-    @Export(name="driverOpts", type=Map.class, parameters={String.class, Object.class})
+    @Export(name="driverOpts", refs={Map.class,String.class,Object.class}, tree="[0,1,2]")
     private Output</* @Nullable */ Map<String,Object>> driverOpts;
 
     /**
@@ -94,7 +94,7 @@ public class Volume extends com.pulumi.resources.CustomResource {
      * User-defined key/value metadata
      * 
      */
-    @Export(name="labels", type=List.class, parameters={VolumeLabel.class})
+    @Export(name="labels", refs={List.class,VolumeLabel.class}, tree="[0,1]")
     private Output</* @Nullable */ List<VolumeLabel>> labels;
 
     /**
@@ -108,7 +108,7 @@ public class Volume extends com.pulumi.resources.CustomResource {
      * The mountpoint of the volume.
      * 
      */
-    @Export(name="mountpoint", type=String.class, parameters={})
+    @Export(name="mountpoint", refs={String.class}, tree="[0]")
     private Output<String> mountpoint;
 
     /**
@@ -122,7 +122,7 @@ public class Volume extends com.pulumi.resources.CustomResource {
      * The name of the Docker volume (will be generated if not provided).
      * 
      */
-    @Export(name="name", type=String.class, parameters={})
+    @Export(name="name", refs={String.class}, tree="[0]")
     private Output<String> name;
 
     /**

@@ -28,7 +28,7 @@ public class Secret extends com.pulumi.resources.CustomResource {
      * Base64-url-safe-encoded secret data
      * 
      */
-    @Export(name="data", type=String.class, parameters={})
+    @Export(name="data", refs={String.class}, tree="[0]")
     private Output<String> data;
 
     /**
@@ -42,7 +42,7 @@ public class Secret extends com.pulumi.resources.CustomResource {
      * User-defined key/value metadata
      * 
      */
-    @Export(name="labels", type=List.class, parameters={SecretLabel.class})
+    @Export(name="labels", refs={List.class,SecretLabel.class}, tree="[0,1]")
     private Output</* @Nullable */ List<SecretLabel>> labels;
 
     /**
@@ -56,7 +56,7 @@ public class Secret extends com.pulumi.resources.CustomResource {
      * User-defined name of the secret
      * 
      */
-    @Export(name="name", type=String.class, parameters={})
+    @Export(name="name", refs={String.class}, tree="[0]")
     private Output<String> name;
 
     /**

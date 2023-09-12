@@ -68,7 +68,7 @@ public class Network extends com.pulumi.resources.CustomResource {
      * Enable manual container attachment to the network.
      * 
      */
-    @Export(name="attachable", type=Boolean.class, parameters={})
+    @Export(name="attachable", refs={Boolean.class}, tree="[0]")
     private Output</* @Nullable */ Boolean> attachable;
 
     /**
@@ -82,7 +82,7 @@ public class Network extends com.pulumi.resources.CustomResource {
      * Requests daemon to check for networks with same name.
      * 
      */
-    @Export(name="checkDuplicate", type=Boolean.class, parameters={})
+    @Export(name="checkDuplicate", refs={Boolean.class}, tree="[0]")
     private Output</* @Nullable */ Boolean> checkDuplicate;
 
     /**
@@ -96,7 +96,7 @@ public class Network extends com.pulumi.resources.CustomResource {
      * The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.
      * 
      */
-    @Export(name="driver", type=String.class, parameters={})
+    @Export(name="driver", refs={String.class}, tree="[0]")
     private Output<String> driver;
 
     /**
@@ -110,7 +110,7 @@ public class Network extends com.pulumi.resources.CustomResource {
      * Create swarm routing-mesh network. Defaults to `false`.
      * 
      */
-    @Export(name="ingress", type=Boolean.class, parameters={})
+    @Export(name="ingress", refs={Boolean.class}, tree="[0]")
     private Output</* @Nullable */ Boolean> ingress;
 
     /**
@@ -124,7 +124,7 @@ public class Network extends com.pulumi.resources.CustomResource {
      * Whether the network is internal.
      * 
      */
-    @Export(name="internal", type=Boolean.class, parameters={})
+    @Export(name="internal", refs={Boolean.class}, tree="[0]")
     private Output<Boolean> internal;
 
     /**
@@ -138,7 +138,7 @@ public class Network extends com.pulumi.resources.CustomResource {
      * The IPAM configuration options
      * 
      */
-    @Export(name="ipamConfigs", type=List.class, parameters={NetworkIpamConfig.class})
+    @Export(name="ipamConfigs", refs={List.class,NetworkIpamConfig.class}, tree="[0,1]")
     private Output<List<NetworkIpamConfig>> ipamConfigs;
 
     /**
@@ -152,7 +152,7 @@ public class Network extends com.pulumi.resources.CustomResource {
      * Driver used by the custom IP scheme of the network. Defaults to `default`
      * 
      */
-    @Export(name="ipamDriver", type=String.class, parameters={})
+    @Export(name="ipamDriver", refs={String.class}, tree="[0]")
     private Output</* @Nullable */ String> ipamDriver;
 
     /**
@@ -166,7 +166,7 @@ public class Network extends com.pulumi.resources.CustomResource {
      * Provide explicit options to the IPAM driver. Valid options vary with `ipam_driver` and refer to that driver&#39;s documentation for more details.
      * 
      */
-    @Export(name="ipamOptions", type=Map.class, parameters={String.class, Object.class})
+    @Export(name="ipamOptions", refs={Map.class,String.class,Object.class}, tree="[0,1,2]")
     private Output</* @Nullable */ Map<String,Object>> ipamOptions;
 
     /**
@@ -180,7 +180,7 @@ public class Network extends com.pulumi.resources.CustomResource {
      * Enable IPv6 networking. Defaults to `false`.
      * 
      */
-    @Export(name="ipv6", type=Boolean.class, parameters={})
+    @Export(name="ipv6", refs={Boolean.class}, tree="[0]")
     private Output</* @Nullable */ Boolean> ipv6;
 
     /**
@@ -194,7 +194,7 @@ public class Network extends com.pulumi.resources.CustomResource {
      * User-defined key/value metadata
      * 
      */
-    @Export(name="labels", type=List.class, parameters={NetworkLabel.class})
+    @Export(name="labels", refs={List.class,NetworkLabel.class}, tree="[0,1]")
     private Output</* @Nullable */ List<NetworkLabel>> labels;
 
     /**
@@ -208,7 +208,7 @@ public class Network extends com.pulumi.resources.CustomResource {
      * The name of the Docker network.
      * 
      */
-    @Export(name="name", type=String.class, parameters={})
+    @Export(name="name", refs={String.class}, tree="[0]")
     private Output<String> name;
 
     /**
@@ -222,7 +222,7 @@ public class Network extends com.pulumi.resources.CustomResource {
      * Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
      * 
      */
-    @Export(name="options", type=Map.class, parameters={String.class, Object.class})
+    @Export(name="options", refs={Map.class,String.class,Object.class}, tree="[0,1,2]")
     private Output<Map<String,Object>> options;
 
     /**
@@ -236,7 +236,7 @@ public class Network extends com.pulumi.resources.CustomResource {
      * Scope of the network. One of `swarm`, `global`, or `local`.
      * 
      */
-    @Export(name="scope", type=String.class, parameters={})
+    @Export(name="scope", refs={String.class}, tree="[0]")
     private Output<String> scope;
 
     /**

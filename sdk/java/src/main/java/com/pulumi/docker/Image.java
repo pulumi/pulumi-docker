@@ -181,7 +181,7 @@ public class Image extends com.pulumi.resources.CustomResource {
      * The fully qualified image name that was pushed to the registry.
      * 
      */
-    @Export(name="baseImageName", type=String.class, parameters={})
+    @Export(name="baseImageName", refs={String.class}, tree="[0]")
     private Output<String> baseImageName;
 
     /**
@@ -195,7 +195,7 @@ public class Image extends com.pulumi.resources.CustomResource {
      * The path to the build context to use.
      * 
      */
-    @Export(name="context", type=String.class, parameters={})
+    @Export(name="context", refs={String.class}, tree="[0]")
     private Output<String> context;
 
     /**
@@ -209,7 +209,7 @@ public class Image extends com.pulumi.resources.CustomResource {
      * The location of the Dockerfile relative to the docker build context.
      * 
      */
-    @Export(name="dockerfile", type=String.class, parameters={})
+    @Export(name="dockerfile", refs={String.class}, tree="[0]")
     private Output<String> dockerfile;
 
     /**
@@ -223,7 +223,7 @@ public class Image extends com.pulumi.resources.CustomResource {
      * The fully qualified image name
      * 
      */
-    @Export(name="imageName", type=String.class, parameters={})
+    @Export(name="imageName", refs={String.class}, tree="[0]")
     private Output<String> imageName;
 
     /**
@@ -237,7 +237,7 @@ public class Image extends com.pulumi.resources.CustomResource {
      * The name of the registry server hosting the image.
      * 
      */
-    @Export(name="registryServer", type=String.class, parameters={})
+    @Export(name="registryServer", refs={String.class}, tree="[0]")
     private Output<String> registryServer;
 
     /**
@@ -257,7 +257,7 @@ public class Image extends com.pulumi.resources.CustomResource {
      * **Local-only images**For local images, this field is the image ID of the built local image, of the format &lt;algorithm&gt;:&lt;hash&gt;, e.g `sha256:826a130323165bb0ccb0374ae774f885c067a951b51a6ee133577f4e5dbc4119`
      * 
      */
-    @Export(name="repoDigest", type=String.class, parameters={})
+    @Export(name="repoDigest", refs={String.class}, tree="[0]")
     private Output<String> repoDigest;
 
     /**
