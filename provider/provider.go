@@ -6,6 +6,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
+	"github.com/pulumi/pulumi/sdk/v3/go/common/util/contract"
 	"io"
 	"io/fs"
 	"log"
@@ -22,7 +23,6 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/common/diag"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
-	"github.com/pulumi/pulumi/sdk/v3/go/common/util/contract"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/util/logging"
 	rpc "github.com/pulumi/pulumi/sdk/v3/proto/go"
 	"github.com/tonistiigi/fsutil"
@@ -138,11 +138,26 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 	logging.V(9).Infof("%s executing", label)
 
 	inputs, err := plugin.UnmarshalProperties(req.GetNews(), plugin.MarshalOptions{
-		KeepUnknowns: false,
+		KeepUnknowns: true,
 		SkipNulls:    true,
 	})
 	if err != nil {
 		return nil, err
+	}
+
+	if inputs["build"].ContainsUnknowns() {
+		// We skip some of the "nice-to-have" default and verification logic in the case of unknowns.
+		// This should be fine, given that _any_ unknowns in the Build field should trigger a diff.
+		// Furthermore, all of this will get called again during `pulumi up`.
+		inputStruct, err := plugin.MarshalProperties(inputs, plugin.MarshalOptions{
+			KeepUnknowns: false,
+			SkipNulls:    true,
+		})
+		if err != nil {
+			return nil, err
+		}
+
+		return &rpc.CheckResponse{Inputs: inputStruct, Failures: nil}, nil
 	}
 
 	// Set defaults
@@ -150,7 +165,6 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 	if err != nil {
 		return nil, err
 	}
-
 	// Verify Dockerfile at given location
 	if _, statErr := os.Stat(build.Dockerfile); statErr != nil {
 		if filepath.IsAbs(build.Dockerfile) {
@@ -239,7 +253,7 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 	}
 
 	inputStruct, err := plugin.MarshalProperties(inputs, plugin.MarshalOptions{
-		KeepUnknowns: true,
+		KeepUnknowns: false,
 		SkipNulls:    true,
 	})
 	if err != nil {
@@ -335,7 +349,7 @@ func diffUpdates(updates map[resource.PropertyKey]resource.ValueDiff) map[string
 func (p *dockerNativeProvider) Create(ctx context.Context, req *rpc.CreateRequest) (*rpc.CreateResponse, error) {
 	contract.Assertf(!req.GetPreview(), "Internal error in pulumi-docker: "+
 		"dockerNativeProvider Create should not be called during preview "+
-		"as it currently does not support partial data or recognizing unknowns.")
+		"as it currently does not support partial data.")
 
 	urn := resource.URN(req.GetUrn())
 	label := fmt.Sprintf("%s.Create(%s)", p.name, urn)
