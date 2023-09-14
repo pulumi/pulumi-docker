@@ -109,10 +109,10 @@ def get_registry_image(insecure_skip_verify: Optional[bool] = None,
     __ret__ = pulumi.runtime.invoke('docker:index/getRegistryImage:getRegistryImage', __args__, opts=opts, typ=GetRegistryImageResult).value
 
     return AwaitableGetRegistryImageResult(
-        id=__ret__.id,
-        insecure_skip_verify=__ret__.insecure_skip_verify,
-        name=__ret__.name,
-        sha256_digest=__ret__.sha256_digest)
+        id=pulumi.get(__ret__, 'id'),
+        insecure_skip_verify=pulumi.get(__ret__, 'insecure_skip_verify'),
+        name=pulumi.get(__ret__, 'name'),
+        sha256_digest=pulumi.get(__ret__, 'sha256_digest'))
 
 
 @_utilities.lift_output_func(get_registry_image)

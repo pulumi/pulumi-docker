@@ -200,19 +200,19 @@ def get_logs(details: Optional[bool] = None,
     __ret__ = pulumi.runtime.invoke('docker:index/getLogs:getLogs', __args__, opts=opts, typ=GetLogsResult).value
 
     return AwaitableGetLogsResult(
-        details=__ret__.details,
-        discard_headers=__ret__.discard_headers,
-        follow=__ret__.follow,
-        id=__ret__.id,
-        logs_list_string_enabled=__ret__.logs_list_string_enabled,
-        logs_list_strings=__ret__.logs_list_strings,
-        name=__ret__.name,
-        show_stderr=__ret__.show_stderr,
-        show_stdout=__ret__.show_stdout,
-        since=__ret__.since,
-        tail=__ret__.tail,
-        timestamps=__ret__.timestamps,
-        until=__ret__.until)
+        details=pulumi.get(__ret__, 'details'),
+        discard_headers=pulumi.get(__ret__, 'discard_headers'),
+        follow=pulumi.get(__ret__, 'follow'),
+        id=pulumi.get(__ret__, 'id'),
+        logs_list_string_enabled=pulumi.get(__ret__, 'logs_list_string_enabled'),
+        logs_list_strings=pulumi.get(__ret__, 'logs_list_strings'),
+        name=pulumi.get(__ret__, 'name'),
+        show_stderr=pulumi.get(__ret__, 'show_stderr'),
+        show_stdout=pulumi.get(__ret__, 'show_stdout'),
+        since=pulumi.get(__ret__, 'since'),
+        tail=pulumi.get(__ret__, 'tail'),
+        timestamps=pulumi.get(__ret__, 'timestamps'),
+        until=pulumi.get(__ret__, 'until'))
 
 
 @_utilities.lift_output_func(get_logs)

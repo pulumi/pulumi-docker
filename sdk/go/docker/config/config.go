@@ -4,9 +4,12 @@
 package config
 
 import (
+	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker/internal"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi/config"
 )
+
+var _ = internal.GetEnvOrDefault
 
 // PEM-encoded content of Docker host CA certificate
 func GetCaMaterial(ctx *pulumi.Context) string {
@@ -30,7 +33,7 @@ func GetHost(ctx *pulumi.Context) string {
 		return v
 	}
 	var value string
-	if d := getEnvOrDefault(nil, nil, "DOCKER_HOST"); d != nil {
+	if d := internal.GetEnvOrDefault(nil, nil, "DOCKER_HOST"); d != nil {
 		value = d.(string)
 	}
 	return value
