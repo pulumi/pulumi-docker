@@ -35,6 +35,10 @@ const dockerImageTok = "docker:index/image:Image"
 // gRPC methods for the hybrid provider
 
 func (dp dockerHybridProvider) Attach(ctx context.Context, attach *rpc.PluginAttach) (*emptypb.Empty, error) {
+	_, err := dp.bridgedProvider.Attach(ctx, attach)
+	if err != nil {
+		return nil, err
+	}
 	return dp.nativeProvider.Attach(ctx, attach)
 }
 
