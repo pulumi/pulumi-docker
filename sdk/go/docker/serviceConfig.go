@@ -8,7 +8,9 @@ import (
 	"reflect"
 
 	"errors"
+	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker/internal"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 )
 
 // ## Import
@@ -45,6 +47,7 @@ func NewServiceConfig(ctx *pulumi.Context,
 	if args.Data == nil {
 		return nil, errors.New("invalid value for required argument 'Data'")
 	}
+	opts = internal.PkgResourceDefaultOpts(opts)
 	var resource ServiceConfig
 	err := ctx.RegisterResource("docker:index/serviceConfig:ServiceConfig", name, args, &resource, opts...)
 	if err != nil {
@@ -122,6 +125,12 @@ func (i *ServiceConfig) ToServiceConfigOutputWithContext(ctx context.Context) Se
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceConfigOutput)
 }
 
+func (i *ServiceConfig) ToOutput(ctx context.Context) pulumix.Output[*ServiceConfig] {
+	return pulumix.Output[*ServiceConfig]{
+		OutputState: i.ToServiceConfigOutputWithContext(ctx).OutputState,
+	}
+}
+
 // ServiceConfigArrayInput is an input type that accepts ServiceConfigArray and ServiceConfigArrayOutput values.
 // You can construct a concrete instance of `ServiceConfigArrayInput` via:
 //
@@ -145,6 +154,12 @@ func (i ServiceConfigArray) ToServiceConfigArrayOutput() ServiceConfigArrayOutpu
 
 func (i ServiceConfigArray) ToServiceConfigArrayOutputWithContext(ctx context.Context) ServiceConfigArrayOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceConfigArrayOutput)
+}
+
+func (i ServiceConfigArray) ToOutput(ctx context.Context) pulumix.Output[[]*ServiceConfig] {
+	return pulumix.Output[[]*ServiceConfig]{
+		OutputState: i.ToServiceConfigArrayOutputWithContext(ctx).OutputState,
+	}
 }
 
 // ServiceConfigMapInput is an input type that accepts ServiceConfigMap and ServiceConfigMapOutput values.
@@ -172,6 +187,12 @@ func (i ServiceConfigMap) ToServiceConfigMapOutputWithContext(ctx context.Contex
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceConfigMapOutput)
 }
 
+func (i ServiceConfigMap) ToOutput(ctx context.Context) pulumix.Output[map[string]*ServiceConfig] {
+	return pulumix.Output[map[string]*ServiceConfig]{
+		OutputState: i.ToServiceConfigMapOutputWithContext(ctx).OutputState,
+	}
+}
+
 type ServiceConfigOutput struct{ *pulumi.OutputState }
 
 func (ServiceConfigOutput) ElementType() reflect.Type {
@@ -184,6 +205,12 @@ func (o ServiceConfigOutput) ToServiceConfigOutput() ServiceConfigOutput {
 
 func (o ServiceConfigOutput) ToServiceConfigOutputWithContext(ctx context.Context) ServiceConfigOutput {
 	return o
+}
+
+func (o ServiceConfigOutput) ToOutput(ctx context.Context) pulumix.Output[*ServiceConfig] {
+	return pulumix.Output[*ServiceConfig]{
+		OutputState: o.OutputState,
+	}
 }
 
 // Base64-url-safe-encoded config data
@@ -210,6 +237,12 @@ func (o ServiceConfigArrayOutput) ToServiceConfigArrayOutputWithContext(ctx cont
 	return o
 }
 
+func (o ServiceConfigArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]*ServiceConfig] {
+	return pulumix.Output[[]*ServiceConfig]{
+		OutputState: o.OutputState,
+	}
+}
+
 func (o ServiceConfigArrayOutput) Index(i pulumi.IntInput) ServiceConfigOutput {
 	return pulumi.All(o, i).ApplyT(func(vs []interface{}) *ServiceConfig {
 		return vs[0].([]*ServiceConfig)[vs[1].(int)]
@@ -228,6 +261,12 @@ func (o ServiceConfigMapOutput) ToServiceConfigMapOutput() ServiceConfigMapOutpu
 
 func (o ServiceConfigMapOutput) ToServiceConfigMapOutputWithContext(ctx context.Context) ServiceConfigMapOutput {
 	return o
+}
+
+func (o ServiceConfigMapOutput) ToOutput(ctx context.Context) pulumix.Output[map[string]*ServiceConfig] {
+	return pulumix.Output[map[string]*ServiceConfig]{
+		OutputState: o.OutputState,
+	}
 }
 
 func (o ServiceConfigMapOutput) MapIndex(k pulumi.StringInput) ServiceConfigOutput {

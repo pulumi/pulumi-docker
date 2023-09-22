@@ -65,7 +65,7 @@ public class Service extends com.pulumi.resources.CustomResource {
      * Configuration for the authentication for pulling the images of the service
      * 
      */
-    @Export(name="auth", type=ServiceAuth.class, parameters={})
+    @Export(name="auth", refs={ServiceAuth.class}, tree="[0]")
     private Output</* @Nullable */ ServiceAuth> auth;
 
     /**
@@ -79,7 +79,7 @@ public class Service extends com.pulumi.resources.CustomResource {
      * A configuration to ensure that a service converges aka reaches the desired that of all task up and running
      * 
      */
-    @Export(name="convergeConfig", type=ServiceConvergeConfig.class, parameters={})
+    @Export(name="convergeConfig", refs={ServiceConvergeConfig.class}, tree="[0]")
     private Output</* @Nullable */ ServiceConvergeConfig> convergeConfig;
 
     /**
@@ -93,7 +93,7 @@ public class Service extends com.pulumi.resources.CustomResource {
      * Properties that can be configured to access and load balance a service
      * 
      */
-    @Export(name="endpointSpec", type=ServiceEndpointSpec.class, parameters={})
+    @Export(name="endpointSpec", refs={ServiceEndpointSpec.class}, tree="[0]")
     private Output<ServiceEndpointSpec> endpointSpec;
 
     /**
@@ -107,7 +107,7 @@ public class Service extends com.pulumi.resources.CustomResource {
      * User-defined key/value metadata
      * 
      */
-    @Export(name="labels", type=List.class, parameters={ServiceLabel.class})
+    @Export(name="labels", refs={List.class,ServiceLabel.class}, tree="[0,1]")
     private Output<List<ServiceLabel>> labels;
 
     /**
@@ -121,7 +121,7 @@ public class Service extends com.pulumi.resources.CustomResource {
      * Scheduling mode for the service
      * 
      */
-    @Export(name="mode", type=ServiceMode.class, parameters={})
+    @Export(name="mode", refs={ServiceMode.class}, tree="[0]")
     private Output<ServiceMode> mode;
 
     /**
@@ -135,7 +135,7 @@ public class Service extends com.pulumi.resources.CustomResource {
      * Name of the service
      * 
      */
-    @Export(name="name", type=String.class, parameters={})
+    @Export(name="name", refs={String.class}, tree="[0]")
     private Output<String> name;
 
     /**
@@ -149,7 +149,7 @@ public class Service extends com.pulumi.resources.CustomResource {
      * Specification for the rollback strategy of the service
      * 
      */
-    @Export(name="rollbackConfig", type=ServiceRollbackConfig.class, parameters={})
+    @Export(name="rollbackConfig", refs={ServiceRollbackConfig.class}, tree="[0]")
     private Output</* @Nullable */ ServiceRollbackConfig> rollbackConfig;
 
     /**
@@ -163,7 +163,7 @@ public class Service extends com.pulumi.resources.CustomResource {
      * User modifiable task configuration
      * 
      */
-    @Export(name="taskSpec", type=ServiceTaskSpec.class, parameters={})
+    @Export(name="taskSpec", refs={ServiceTaskSpec.class}, tree="[0]")
     private Output<ServiceTaskSpec> taskSpec;
 
     /**
@@ -177,7 +177,7 @@ public class Service extends com.pulumi.resources.CustomResource {
      * Specification for the update strategy of the service
      * 
      */
-    @Export(name="updateConfig", type=ServiceUpdateConfig.class, parameters={})
+    @Export(name="updateConfig", refs={ServiceUpdateConfig.class}, tree="[0]")
     private Output</* @Nullable */ ServiceUpdateConfig> updateConfig;
 
     /**

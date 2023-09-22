@@ -23,7 +23,7 @@ public class Tag extends com.pulumi.resources.CustomResource {
      * Name of the source image.
      * 
      */
-    @Export(name="sourceImage", type=String.class, parameters={})
+    @Export(name="sourceImage", refs={String.class}, tree="[0]")
     private Output<String> sourceImage;
 
     /**
@@ -37,7 +37,7 @@ public class Tag extends com.pulumi.resources.CustomResource {
      * ImageID of the source image in the format of `sha256:&lt;&lt;ID&gt;&gt;`
      * 
      */
-    @Export(name="sourceImageId", type=String.class, parameters={})
+    @Export(name="sourceImageId", refs={String.class}, tree="[0]")
     private Output<String> sourceImageId;
 
     /**
@@ -51,7 +51,7 @@ public class Tag extends com.pulumi.resources.CustomResource {
      * Name of the target image.
      * 
      */
-    @Export(name="targetImage", type=String.class, parameters={})
+    @Export(name="targetImage", refs={String.class}, tree="[0]")
     private Output<String> targetImage;
 
     /**

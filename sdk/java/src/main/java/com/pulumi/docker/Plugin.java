@@ -73,7 +73,7 @@ public class Plugin extends com.pulumi.resources.CustomResource {
      * Docker Plugin alias
      * 
      */
-    @Export(name="alias", type=String.class, parameters={})
+    @Export(name="alias", refs={String.class}, tree="[0]")
     private Output<String> alias;
 
     /**
@@ -87,7 +87,7 @@ public class Plugin extends com.pulumi.resources.CustomResource {
      * HTTP client timeout to enable the plugin
      * 
      */
-    @Export(name="enableTimeout", type=Integer.class, parameters={})
+    @Export(name="enableTimeout", refs={Integer.class}, tree="[0]")
     private Output</* @Nullable */ Integer> enableTimeout;
 
     /**
@@ -101,7 +101,7 @@ public class Plugin extends com.pulumi.resources.CustomResource {
      * If `true` the plugin is enabled. Defaults to `true`
      * 
      */
-    @Export(name="enabled", type=Boolean.class, parameters={})
+    @Export(name="enabled", refs={Boolean.class}, tree="[0]")
     private Output</* @Nullable */ Boolean> enabled;
 
     /**
@@ -115,7 +115,7 @@ public class Plugin extends com.pulumi.resources.CustomResource {
      * The environment variables in the form of `KEY=VALUE`, e.g. `DEBUG=0`
      * 
      */
-    @Export(name="envs", type=List.class, parameters={String.class})
+    @Export(name="envs", refs={List.class,String.class}, tree="[0,1]")
     private Output<List<String>> envs;
 
     /**
@@ -129,7 +129,7 @@ public class Plugin extends com.pulumi.resources.CustomResource {
      * If true, then the plugin is destroyed forcibly
      * 
      */
-    @Export(name="forceDestroy", type=Boolean.class, parameters={})
+    @Export(name="forceDestroy", refs={Boolean.class}, tree="[0]")
     private Output</* @Nullable */ Boolean> forceDestroy;
 
     /**
@@ -143,7 +143,7 @@ public class Plugin extends com.pulumi.resources.CustomResource {
      * If true, then the plugin is disabled forcibly
      * 
      */
-    @Export(name="forceDisable", type=Boolean.class, parameters={})
+    @Export(name="forceDisable", refs={Boolean.class}, tree="[0]")
     private Output</* @Nullable */ Boolean> forceDisable;
 
     /**
@@ -157,7 +157,7 @@ public class Plugin extends com.pulumi.resources.CustomResource {
      * If true, grant all permissions necessary to run the plugin
      * 
      */
-    @Export(name="grantAllPermissions", type=Boolean.class, parameters={})
+    @Export(name="grantAllPermissions", refs={Boolean.class}, tree="[0]")
     private Output</* @Nullable */ Boolean> grantAllPermissions;
 
     /**
@@ -171,7 +171,7 @@ public class Plugin extends com.pulumi.resources.CustomResource {
      * Grant specific permissions only
      * 
      */
-    @Export(name="grantPermissions", type=List.class, parameters={PluginGrantPermission.class})
+    @Export(name="grantPermissions", refs={List.class,PluginGrantPermission.class}, tree="[0,1]")
     private Output</* @Nullable */ List<PluginGrantPermission>> grantPermissions;
 
     /**
@@ -185,7 +185,7 @@ public class Plugin extends com.pulumi.resources.CustomResource {
      * Docker Plugin name
      * 
      */
-    @Export(name="name", type=String.class, parameters={})
+    @Export(name="name", refs={String.class}, tree="[0]")
     private Output<String> name;
 
     /**
@@ -199,7 +199,7 @@ public class Plugin extends com.pulumi.resources.CustomResource {
      * Docker Plugin Reference
      * 
      */
-    @Export(name="pluginReference", type=String.class, parameters={})
+    @Export(name="pluginReference", refs={String.class}, tree="[0]")
     private Output<String> pluginReference;
 
     /**

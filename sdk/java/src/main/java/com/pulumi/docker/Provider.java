@@ -26,7 +26,7 @@ public class Provider extends com.pulumi.resources.ProviderResource {
      * PEM-encoded content of Docker host CA certificate
      * 
      */
-    @Export(name="caMaterial", type=String.class, parameters={})
+    @Export(name="caMaterial", refs={String.class}, tree="[0]")
     private Output</* @Nullable */ String> caMaterial;
 
     /**
@@ -40,7 +40,7 @@ public class Provider extends com.pulumi.resources.ProviderResource {
      * PEM-encoded content of Docker client certificate
      * 
      */
-    @Export(name="certMaterial", type=String.class, parameters={})
+    @Export(name="certMaterial", refs={String.class}, tree="[0]")
     private Output</* @Nullable */ String> certMaterial;
 
     /**
@@ -54,7 +54,7 @@ public class Provider extends com.pulumi.resources.ProviderResource {
      * Path to directory with Docker TLS config
      * 
      */
-    @Export(name="certPath", type=String.class, parameters={})
+    @Export(name="certPath", refs={String.class}, tree="[0]")
     private Output</* @Nullable */ String> certPath;
 
     /**
@@ -68,7 +68,7 @@ public class Provider extends com.pulumi.resources.ProviderResource {
      * The Docker daemon address
      * 
      */
-    @Export(name="host", type=String.class, parameters={})
+    @Export(name="host", refs={String.class}, tree="[0]")
     private Output</* @Nullable */ String> host;
 
     /**
@@ -82,7 +82,7 @@ public class Provider extends com.pulumi.resources.ProviderResource {
      * PEM-encoded content of Docker client private key
      * 
      */
-    @Export(name="keyMaterial", type=String.class, parameters={})
+    @Export(name="keyMaterial", refs={String.class}, tree="[0]")
     private Output</* @Nullable */ String> keyMaterial;
 
     /**

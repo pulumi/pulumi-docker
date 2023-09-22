@@ -140,13 +140,13 @@ def get_plugin(alias: Optional[str] = None,
     __ret__ = pulumi.runtime.invoke('docker:index/getPlugin:getPlugin', __args__, opts=opts, typ=GetPluginResult).value
 
     return AwaitableGetPluginResult(
-        alias=__ret__.alias,
-        enabled=__ret__.enabled,
-        envs=__ret__.envs,
-        grant_all_permissions=__ret__.grant_all_permissions,
-        id=__ret__.id,
-        name=__ret__.name,
-        plugin_reference=__ret__.plugin_reference)
+        alias=pulumi.get(__ret__, 'alias'),
+        enabled=pulumi.get(__ret__, 'enabled'),
+        envs=pulumi.get(__ret__, 'envs'),
+        grant_all_permissions=pulumi.get(__ret__, 'grant_all_permissions'),
+        id=pulumi.get(__ret__, 'id'),
+        name=pulumi.get(__ret__, 'name'),
+        plugin_reference=pulumi.get(__ret__, 'plugin_reference'))
 
 
 @_utilities.lift_output_func(get_plugin)

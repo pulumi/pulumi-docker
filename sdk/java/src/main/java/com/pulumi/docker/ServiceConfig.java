@@ -35,7 +35,7 @@ public class ServiceConfig extends com.pulumi.resources.CustomResource {
      * Base64-url-safe-encoded config data
      * 
      */
-    @Export(name="data", type=String.class, parameters={})
+    @Export(name="data", refs={String.class}, tree="[0]")
     private Output<String> data;
 
     /**
@@ -49,7 +49,7 @@ public class ServiceConfig extends com.pulumi.resources.CustomResource {
      * User-defined name of the config
      * 
      */
-    @Export(name="name", type=String.class, parameters={})
+    @Export(name="name", refs={String.class}, tree="[0]")
     private Output<String> name;
 
     /**

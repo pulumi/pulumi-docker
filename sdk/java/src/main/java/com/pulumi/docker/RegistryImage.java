@@ -70,7 +70,7 @@ public class RegistryImage extends com.pulumi.resources.CustomResource {
      * If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
      * 
      */
-    @Export(name="insecureSkipVerify", type=Boolean.class, parameters={})
+    @Export(name="insecureSkipVerify", refs={Boolean.class}, tree="[0]")
     private Output</* @Nullable */ Boolean> insecureSkipVerify;
 
     /**
@@ -84,7 +84,7 @@ public class RegistryImage extends com.pulumi.resources.CustomResource {
      * If true, then the Docker image won&#39;t be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`
      * 
      */
-    @Export(name="keepRemotely", type=Boolean.class, parameters={})
+    @Export(name="keepRemotely", refs={Boolean.class}, tree="[0]")
     private Output</* @Nullable */ Boolean> keepRemotely;
 
     /**
@@ -98,7 +98,7 @@ public class RegistryImage extends com.pulumi.resources.CustomResource {
      * The name of the Docker image.
      * 
      */
-    @Export(name="name", type=String.class, parameters={})
+    @Export(name="name", refs={String.class}, tree="[0]")
     private Output<String> name;
 
     /**
@@ -112,7 +112,7 @@ public class RegistryImage extends com.pulumi.resources.CustomResource {
      * The sha256 digest of the image.
      * 
      */
-    @Export(name="sha256Digest", type=String.class, parameters={})
+    @Export(name="sha256Digest", refs={String.class}, tree="[0]")
     private Output<String> sha256Digest;
 
     /**
@@ -126,7 +126,7 @@ public class RegistryImage extends com.pulumi.resources.CustomResource {
      * A map of arbitrary strings that, when changed, will force the `docker.RegistryImage` resource to be replaced. This can be used to repush a local image
      * 
      */
-    @Export(name="triggers", type=Map.class, parameters={String.class, Object.class})
+    @Export(name="triggers", refs={Map.class,String.class,Object.class}, tree="[0,1,2]")
     private Output</* @Nullable */ Map<String,Object>> triggers;
 
     /**
