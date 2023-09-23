@@ -801,7 +801,7 @@ func configureDockerClient(configs map[string]string, verify bool) (*client.Clie
 		for _, userHost := range userHosts {
 			userSock := fmt.Sprintf(userHost, home)
 			cli, err = configureDockerClientInner(configs, userSock)
-			if err == nil {
+			if err != nil {
 				return cli, err
 			}
 			if testConnection(cli) {
