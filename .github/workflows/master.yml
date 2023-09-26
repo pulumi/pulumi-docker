@@ -21,7 +21,7 @@ env:
   GOOGLE_PROJECT_NUMBER: 895284651812
   GOOGLE_REGION: us-central1
   GOOGLE_ZONE: us-central1-a
-  GOVERSION: 1.20.1
+  GOVERSION: 1.21.x
   JAVAVERSION: "11"
   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
   NODEVERSION: 16.x
@@ -61,7 +61,7 @@ jobs:
       with:
         cache-dependency-path: |
             sdk/go.sum
-        go-version: 1.20.1
+        go-version: 1.21.x
     - name: Install pulumictl
       uses: jaxxstorm/action-install-gh-release@v1.5.0
       with:
@@ -90,7 +90,7 @@ jobs:
     - name: Setup Gradle
       uses: gradle/gradle-build-action@v2
       with:
-        gradle-version: "8.3"
+        gradle-version: "7.6"
     - name: Download provider + tfgen binaries
       uses: actions/download-artifact@v2
       with:
@@ -165,7 +165,7 @@ jobs:
       with:
         cache-dependency-path: |
             sdk/go.sum
-        go-version: 1.20.1
+        go-version: 1.21.x
     - name: Install pulumictl
       uses: jaxxstorm/action-install-gh-release@v1.5.0
       with:
@@ -191,34 +191,28 @@ jobs:
 
         aws s3 cp "${{ env.COVERAGE_OUTPUT_DIR }}/summary.json" "${s3FullURI}" --acl bucket-owner-full-control
   lint:
-    container: golangci/golangci-lint:v1.51
     name: lint
     runs-on: ubuntu-latest
     steps:
     - name: Checkout Repo
       uses: actions/checkout@v3
-    - name: Checkout Scripts Repo
-      uses: actions/checkout@v3
-      with:
-        path: ci-scripts
-        repository: pulumi/scripts
-    - name: Mark repo as safe directory
-      run: git config --global --add safe.directory /__w/pulumi-${{ env.PROVIDER }}/pulumi-${{ env.PROVIDER }}
-    - name: Unshallow clone for tags
-      run: git fetch --prune --unshallow --tags
     - name: Install Go
       uses: actions/setup-go@v4
       with:
         cache-dependency-path: |
             sdk/go.sum
-        go-version: 1.20.1
-    - name: Install pulumictl
-      uses: jaxxstorm/action-install-gh-release@v1.5.0
+        go-version: 1.21.x
+    - name: disarm go:embed directives to enable lint
+      run: |
+        git grep -l 'go:embed' -- provider | xargs sed -i 's/go:embed/ goembed/g'
+    - name: prepare upstream
+      continue-on-error: true
+      run: make upstream
+    - name: golangci-lint
+      uses: golangci/golangci-lint-action@v3
       with:
-        repo: pulumi/pulumictl
-    - name: Install Pulumi CLI
-      uses: pulumi/action-install-pulumi-cli@v2
-    - run: make lint_provider
+        version: v1.54.1
+        working-directory: provider
     - if: failure() && github.event_name == 'push'
       name: Notify Slack
       uses: 8398a7/action-slack@v3
@@ -244,7 +238,7 @@ jobs:
       with:
         cache-dependency-path: |
             sdk/go.sum
-        go-version: 1.20.1
+        go-version: 1.21.x
     - name: Install pulumictl
       uses: jaxxstorm/action-install-gh-release@v1.5.0
       with:
@@ -313,7 +307,7 @@ jobs:
       with:
         cache-dependency-path: |
             sdk/go.sum
-        go-version: 1.20.1
+        go-version: 1.21.x
     - name: Install pulumictl
       uses: jaxxstorm/action-install-gh-release@v1.5.0
       with:
@@ -351,7 +345,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Publish SDKs
-      uses: pulumi/pulumi-package-publisher@v0.0.9
+      uses: pulumi/pulumi-package-publisher@v0.0.11
     - env:
         SLACK_CHANNEL: provider-upgrade-publish-status
         SLACK_COLOR: "#FF0000"
@@ -385,7 +379,7 @@ jobs:
       with:
         cache-dependency-path: |
             sdk/go.sum
-        go-version: 1.20.1
+        go-version: 1.21.x
     - name: Install pulumictl
       uses: jaxxstorm/action-install-gh-release@v1.5.0
       with:
@@ -414,7 +408,7 @@ jobs:
     - name: Setup Gradle
       uses: gradle/gradle-build-action@v2
       with:
-        gradle-version: "8.3"
+        gradle-version: "7.6"
     - name: Download provider + tfgen binaries
       uses: actions/download-artifact@v2
       with:
