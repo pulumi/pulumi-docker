@@ -284,7 +284,8 @@
         "docker:index/ContainerMountBindOptions:ContainerMountBindOptions": {
             "properties": {
                 "propagation": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "A propagation mode with the value.\n"
                 }
             },
             "type": "object"
@@ -292,10 +293,12 @@
         "docker:index/ContainerMountTmpfsOptions:ContainerMountTmpfsOptions": {
             "properties": {
                 "mode": {
-                    "type": "integer"
+                    "type": "integer",
+                    "description": "The permission mode for the tmpfs mount in an integer.\n"
                 },
                 "sizeBytes": {
-                    "type": "integer"
+                    "type": "integer",
+                    "description": "The size for the tmpfs mount in bytes.\n"
                 }
             },
             "type": "object"
@@ -303,23 +306,26 @@
         "docker:index/ContainerMountVolumeOptions:ContainerMountVolumeOptions": {
             "properties": {
                 "driverName": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Name of the driver to use to create the volume.\n"
                 },
                 "driverOptions": {
                     "type": "object",
                     "additionalProperties": {
                         "type": "string"
-                    }
+                    },
+                    "description": "key/value map of driver specific options.\n"
                 },
                 "labels": {
                     "type": "array",
                     "items": {
                         "$ref": "#/types/docker:index/ContainerMountVolumeOptionsLabel:ContainerMountVolumeOptionsLabel"
                     },
-                    "description": "User-defined key/value metadata\n"
+                    "description": "User-defined key/value metadata.\n"
                 },
                 "noCopy": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Populate volume with data from the target.\n"
                 }
             },
             "type": "object"
@@ -855,28 +861,36 @@
         "docker:index/RemoteImageBuildAuthConfig:RemoteImageBuildAuthConfig": {
             "properties": {
                 "auth": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "the auth token\n"
                 },
                 "email": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "the user emal\n"
                 },
                 "hostName": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "hostname of the registry\n"
                 },
                 "identityToken": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "the identity token\n"
                 },
                 "password": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "the registry password\n"
                 },
                 "registryToken": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "the registry token\n"
                 },
                 "serverAddress": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "the server address\n"
                 },
                 "userName": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "the registry user name\n"
                 }
             },
             "type": "object",
@@ -888,15 +902,17 @@
             "properties": {
                 "hard": {
                     "type": "integer",
+                    "description": "soft limit\n",
                     "willReplaceOnChanges": true
                 },
                 "name": {
                     "type": "string",
-                    "description": "The name of the Docker image, including any tags or SHA256 repo digests.\n",
+                    "description": "type of ulimit, e.g. `nofile`\n",
                     "willReplaceOnChanges": true
                 },
                 "soft": {
                     "type": "integer",
+                    "description": "hard limit\n",
                     "willReplaceOnChanges": true
                 }
             },
@@ -990,19 +1006,23 @@
             "properties": {
                 "name": {
                     "type": "string",
-                    "description": "Name of the service\n"
+                    "description": "A random name for the port\n"
                 },
                 "protocol": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Rrepresents the protocol of a port: `tcp`, `udp` or `sctp`. Defaults to `tcp`.\n"
                 },
                 "publishMode": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Represents the mode in which the port is to be published: 'ingress' or 'host'. Defaults to `ingress`.\n"
                 },
                 "publishedPort": {
-                    "type": "integer"
+                    "type": "integer",
+                    "description": "The port on the swarm hosts\n"
                 },
                 "targetPort": {
-                    "type": "integer"
+                    "type": "integer",
+                    "description": "The port inside the container\n"
                 }
             },
             "type": "object",
@@ -1060,7 +1080,8 @@
         "docker:index/ServiceModeReplicated:ServiceModeReplicated": {
             "properties": {
                 "replicas": {
-                    "type": "integer"
+                    "type": "integer",
+                    "description": "The amount of replicas of the service. Defaults to `1`\n"
                 }
             },
             "type": "object"
@@ -1155,56 +1176,68 @@
                     "type": "array",
                     "items": {
                         "type": "string"
-                    }
+                    },
+                    "description": "Arguments to the command\n"
                 },
                 "commands": {
                     "type": "array",
                     "items": {
                         "type": "string"
-                    }
+                    },
+                    "description": "The command/entrypoint to be run in the image. According to the [docker cli](https://github.com/docker/cli/blob/v20.10.7/cli/command/service/opts.go#L705) the override of the entrypoint is also passed to the `command` property and there is no `entrypoint` attribute in the `ContainerSpec` of the service.\n"
                 },
                 "configs": {
                     "type": "array",
                     "items": {
                         "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecConfig:ServiceTaskSpecContainerSpecConfig"
-                    }
+                    },
+                    "description": "References to zero or more configs that will be exposed to the service\n"
                 },
                 "dir": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "The working directory for commands to run in\n"
                 },
                 "dnsConfig": {
-                    "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecDnsConfig:ServiceTaskSpecContainerSpecDnsConfig"
+                    "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecDnsConfig:ServiceTaskSpecContainerSpecDnsConfig",
+                    "description": "Specification for DNS related configurations in resolver configuration file (`resolv.conf`)\n"
                 },
                 "env": {
                     "type": "object",
                     "additionalProperties": {
                         "type": "string"
-                    }
+                    },
+                    "description": "A list of environment variables in the form VAR=\"value\"\n"
                 },
                 "groups": {
                     "type": "array",
                     "items": {
                         "type": "string"
-                    }
+                    },
+                    "description": "A list of additional groups that the container process will run as\n"
                 },
                 "healthcheck": {
-                    "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecHealthcheck:ServiceTaskSpecContainerSpecHealthcheck"
+                    "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecHealthcheck:ServiceTaskSpecContainerSpecHealthcheck",
+                    "description": "A test to perform to check that the container is healthy\n"
                 },
                 "hostname": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "The hostname to use for the container, as a valid RFC 1123 hostname\n"
                 },
                 "hosts": {
                     "type": "array",
                     "items": {
                         "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecHost:ServiceTaskSpecContainerSpecHost"
                     },
+                    "description": "A list of hostname/IP mappings to add to the container's hosts file\n",
                     "willReplaceOnChanges": true
                 },
                 "image": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "The image name to use for the containers of the service, like `nginx:1.17.6`. Also use the data-source or resource of `docker.RemoteImage` with the `repo_digest` or `docker.RegistryImage` with the `name` attribute for this, as shown in the examples.\n"
                 },
                 "isolation": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Isolation technology of the containers running the service. (Windows only). Defaults to `default`.\n"
                 },
                 "labels": {
                     "type": "array",
@@ -1217,35 +1250,43 @@
                     "type": "array",
                     "items": {
                         "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecMount:ServiceTaskSpecContainerSpecMount"
-                    }
+                    },
+                    "description": "Specification for mounts to be added to containers created as part of the service\n"
                 },
                 "privileges": {
-                    "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecPrivileges:ServiceTaskSpecContainerSpecPrivileges"
+                    "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecPrivileges:ServiceTaskSpecContainerSpecPrivileges",
+                    "description": "Security options for the container\n"
                 },
                 "readOnly": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Whether the mount should be read-only\n"
                 },
                 "secrets": {
                     "type": "array",
                     "items": {
                         "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecSecret:ServiceTaskSpecContainerSpecSecret"
-                    }
+                    },
+                    "description": "References to zero or more secrets that will be exposed to the service\n"
                 },
                 "stopGracePeriod": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Amount of time to wait for the container to terminate before forcefully removing it (ms|s|m|h). If not specified or '0s' the destroy will not check if all tasks/containers of the service terminate.\n"
                 },
                 "stopSignal": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Signal to stop the container\n"
                 },
                 "sysctl": {
                     "type": "object",
                     "additionalProperties": {
                         "$ref": "pulumi.json#/Any"
                     },
+                    "description": "Sysctls config (Linux only)\n",
                     "willReplaceOnChanges": true
                 },
                 "user": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "SELinux user label\n"
                 }
             },
             "type": "object",
@@ -1266,22 +1307,28 @@
         "docker:index/ServiceTaskSpecContainerSpecConfig:ServiceTaskSpecContainerSpecConfig": {
             "properties": {
                 "configId": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "ID of the specific config that we're referencing\n"
                 },
                 "configName": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Name of the config that this references, but this is just provided for lookup/display purposes. The config in the reference will be identified by its ID\n"
                 },
                 "fileGid": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Represents the file GID. Defaults to `0`.\n"
                 },
                 "fileMode": {
-                    "type": "integer"
+                    "type": "integer",
+                    "description": "Represents represents the FileMode of the file. Defaults to `0o444`.\n"
                 },
                 "fileName": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Represents the final filename in the filesystem\n"
                 },
                 "fileUid": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Represents the file UID. Defaults to `0`.\n"
                 }
             },
             "type": "object",
@@ -1296,19 +1343,22 @@
                     "type": "array",
                     "items": {
                         "type": "string"
-                    }
+                    },
+                    "description": "The IP addresses of the name servers\n"
                 },
                 "options": {
                     "type": "array",
                     "items": {
                         "type": "string"
-                    }
+                    },
+                    "description": "A list of internal resolver variables to be modified (e.g., `debug`, `ndots:3`, etc.)\n"
                 },
                 "searches": {
                     "type": "array",
                     "items": {
                         "type": "string"
-                    }
+                    },
+                    "description": "A search list for host-name lookup\n"
                 }
             },
             "type": "object",
@@ -1319,22 +1369,27 @@
         "docker:index/ServiceTaskSpecContainerSpecHealthcheck:ServiceTaskSpecContainerSpecHealthcheck": {
             "properties": {
                 "interval": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Time between running the check (ms|s|m|h). Defaults to `0s`.\n"
                 },
                 "retries": {
-                    "type": "integer"
+                    "type": "integer",
+                    "description": "Consecutive failures needed to report unhealthy. Defaults to `0`\n"
                 },
                 "startPeriod": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Start period for the container to initialize before counting retries towards unstable (ms|s|m|h). Defaults to `0s`.\n"
                 },
                 "tests": {
                     "type": "array",
                     "items": {
                         "type": "string"
-                    }
+                    },
+                    "description": "The test to perform as list\n"
                 },
                 "timeout": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`\n"
                 }
             },
             "type": "object",
@@ -1346,10 +1401,12 @@
             "properties": {
                 "host": {
                     "type": "string",
+                    "description": "The name of the host\n",
                     "willReplaceOnChanges": true
                 },
                 "ip": {
                     "type": "string",
+                    "description": "The ip of the host\n",
                     "willReplaceOnChanges": true
                 }
             },
@@ -1381,25 +1438,32 @@
         "docker:index/ServiceTaskSpecContainerSpecMount:ServiceTaskSpecContainerSpecMount": {
             "properties": {
                 "bindOptions": {
-                    "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecMountBindOptions:ServiceTaskSpecContainerSpecMountBindOptions"
+                    "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecMountBindOptions:ServiceTaskSpecContainerSpecMountBindOptions",
+                    "description": "Optional configuration for the bind type\n"
                 },
                 "readOnly": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Whether the mount should be read-only\n"
                 },
                 "source": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Mount source (e.g. a volume name, a host path)\n"
                 },
                 "target": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Container path\n"
                 },
                 "tmpfsOptions": {
-                    "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecMountTmpfsOptions:ServiceTaskSpecContainerSpecMountTmpfsOptions"
+                    "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecMountTmpfsOptions:ServiceTaskSpecContainerSpecMountTmpfsOptions",
+                    "description": "Optional configuration for the tmpfs type\n"
                 },
                 "type": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "The mount type\n"
                 },
                 "volumeOptions": {
-                    "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecMountVolumeOptions:ServiceTaskSpecContainerSpecMountVolumeOptions"
+                    "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecMountVolumeOptions:ServiceTaskSpecContainerSpecMountVolumeOptions",
+                    "description": "Optional configuration for the volume type\n"
                 }
             },
             "type": "object",
@@ -1411,7 +1475,8 @@
         "docker:index/ServiceTaskSpecContainerSpecMountBindOptions:ServiceTaskSpecContainerSpecMountBindOptions": {
             "properties": {
                 "propagation": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Bind propagation refers to whether or not mounts created within a given bind-mount or named volume can be propagated to replicas of that mount. See the [docs](https://docs.docker.com/storage/bind-mounts/#configure-bind-propagation) for details. Defaults to `rprivate`\n"
                 }
             },
             "type": "object"
@@ -1420,10 +1485,11 @@
             "properties": {
                 "mode": {
                     "type": "integer",
-                    "description": "Scheduling mode for the service\n"
+                    "description": "The mode of resolution to use for internal load balancing between tasks\n"
                 },
                 "sizeBytes": {
-                    "type": "integer"
+                    "type": "integer",
+                    "description": "The size for the tmpfs mount in bytes\n"
                 }
             },
             "type": "object"
@@ -1431,13 +1497,15 @@
         "docker:index/ServiceTaskSpecContainerSpecMountVolumeOptions:ServiceTaskSpecContainerSpecMountVolumeOptions": {
             "properties": {
                 "driverName": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Name of the driver to use to create the volume\n"
                 },
                 "driverOptions": {
                     "type": "object",
                     "additionalProperties": {
                         "type": "string"
-                    }
+                    },
+                    "description": "key/value map of driver specific options\n"
                 },
                 "labels": {
                     "type": "array",
@@ -1447,7 +1515,8 @@
                     "description": "User-defined key/value metadata\n"
                 },
                 "noCopy": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Populate volume with data from the target\n"
                 }
             },
             "type": "object"
@@ -1474,10 +1543,12 @@
         "docker:index/ServiceTaskSpecContainerSpecPrivileges:ServiceTaskSpecContainerSpecPrivileges": {
             "properties": {
                 "credentialSpec": {
-                    "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecPrivilegesCredentialSpec:ServiceTaskSpecContainerSpecPrivilegesCredentialSpec"
+                    "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecPrivilegesCredentialSpec:ServiceTaskSpecContainerSpecPrivilegesCredentialSpec",
+                    "description": "CredentialSpec for managed service account (Windows only)\n"
                 },
                 "seLinuxContext": {
-                    "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext:ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext"
+                    "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext:ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext",
+                    "description": "SELinux labels of the container\n"
                 }
             },
             "type": "object"
@@ -1485,10 +1556,12 @@
         "docker:index/ServiceTaskSpecContainerSpecPrivilegesCredentialSpec:ServiceTaskSpecContainerSpecPrivilegesCredentialSpec": {
             "properties": {
                 "file": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Load credential spec from this file\n"
                 },
                 "registry": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Load credential spec from this value in the Windows registry\n"
                 }
             },
             "type": "object"
@@ -1496,19 +1569,24 @@
         "docker:index/ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext:ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext": {
             "properties": {
                 "disable": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Disable SELinux\n"
                 },
                 "level": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "SELinux level label\n"
                 },
                 "role": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "SELinux role label\n"
                 },
                 "type": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "The mount type\n"
                 },
                 "user": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "SELinux user label\n"
                 }
             },
             "type": "object"
@@ -1516,22 +1594,28 @@
         "docker:index/ServiceTaskSpecContainerSpecSecret:ServiceTaskSpecContainerSpecSecret": {
             "properties": {
                 "fileGid": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Represents the file GID. Defaults to `0`.\n"
                 },
                 "fileMode": {
-                    "type": "integer"
+                    "type": "integer",
+                    "description": "Represents represents the FileMode of the file. Defaults to `0o444`.\n"
                 },
                 "fileName": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Represents the final filename in the filesystem\n"
                 },
                 "fileUid": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Represents the file UID. Defaults to `0`.\n"
                 },
                 "secretId": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "ID of the specific secret that we're referencing\n"
                 },
                 "secretName": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Name of the secret that this references, but this is just provided for lookup/display purposes. The config in the reference will be identified by its ID\n"
                 }
             },
             "type": "object",
@@ -1544,13 +1628,14 @@
             "properties": {
                 "name": {
                     "type": "string",
-                    "description": "Name of the service\n"
+                    "description": "A random name for the port\n"
                 },
                 "options": {
                     "type": "object",
                     "additionalProperties": {
                         "type": "string"
-                    }
+                    },
+                    "description": "A list of internal resolver variables to be modified (e.g., `debug`, `ndots:3`, etc.)\n"
                 }
             },
             "type": "object",
@@ -1565,6 +1650,7 @@
                     "items": {
                         "type": "string"
                     },
+                    "description": "The network aliases of the container in the specific network.\n",
                     "willReplaceOnChanges": true
                 },
                 "driverOpts": {
@@ -1572,11 +1658,12 @@
                     "items": {
                         "type": "string"
                     },
+                    "description": "An array of driver options for the network, e.g. `opts1=value`\n",
                     "willReplaceOnChanges": true
                 },
                 "name": {
                     "type": "string",
-                    "description": "Name of the service\n",
+                    "description": "A random name for the port\n",
                     "willReplaceOnChanges": true
                 }
             },
@@ -1591,22 +1678,26 @@
                     "type": "array",
                     "items": {
                         "type": "string"
-                    }
+                    },
+                    "description": "An array of constraints. e.g.: `node.role==manager`\n"
                 },
                 "maxReplicas": {
-                    "type": "integer"
+                    "type": "integer",
+                    "description": "Maximum number of replicas for per node (default value is `0`, which is unlimited)\n"
                 },
                 "platforms": {
                     "type": "array",
                     "items": {
                         "$ref": "#/types/docker:index/ServiceTaskSpecPlacementPlatform:ServiceTaskSpecPlacementPlatform"
-                    }
+                    },
+                    "description": "Platforms stores all the platforms that the service's image can run on\n"
                 },
                 "prefs": {
                     "type": "array",
                     "items": {
                         "type": "string"
-                    }
+                    },
+                    "description": "Preferences provide a way to make the scheduler aware of factors such as topology. They are provided in order from highest to lowest precedence, e.g.: `spread=node.role.manager`\n"
                 }
             },
             "type": "object"
@@ -1614,10 +1705,12 @@
         "docker:index/ServiceTaskSpecPlacementPlatform:ServiceTaskSpecPlacementPlatform": {
             "properties": {
                 "architecture": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "The architecture, e.g. `amd64`\n"
                 },
                 "os": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "The operation system, e.g. `linux`\n"
                 }
             },
             "type": "object",
@@ -1629,10 +1722,12 @@
         "docker:index/ServiceTaskSpecResources:ServiceTaskSpecResources": {
             "properties": {
                 "limits": {
-                    "$ref": "#/types/docker:index/ServiceTaskSpecResourcesLimits:ServiceTaskSpecResourcesLimits"
+                    "$ref": "#/types/docker:index/ServiceTaskSpecResourcesLimits:ServiceTaskSpecResourcesLimits",
+                    "description": "Describes the resources which can be advertised by a node and requested by a task\n"
                 },
                 "reservation": {
-                    "$ref": "#/types/docker:index/ServiceTaskSpecResourcesReservation:ServiceTaskSpecResourcesReservation"
+                    "$ref": "#/types/docker:index/ServiceTaskSpecResourcesReservation:ServiceTaskSpecResourcesReservation",
+                    "description": "An object describing the resources which can be advertised by a node and requested by a task\n"
                 }
             },
             "type": "object"
@@ -1640,10 +1735,12 @@
         "docker:index/ServiceTaskSpecResourcesLimits:ServiceTaskSpecResourcesLimits": {
             "properties": {
                 "memoryBytes": {
-                    "type": "integer"
+                    "type": "integer",
+                    "description": "The amounf of memory in bytes the container allocates\n"
                 },
                 "nanoCpus": {
-                    "type": "integer"
+                    "type": "integer",
+                    "description": "CPU shares in units of `1/1e9` (or `10^-9`) of the CPU. Should be at least `1000000`\n"
                 }
             },
             "type": "object"
@@ -1651,13 +1748,16 @@
         "docker:index/ServiceTaskSpecResourcesReservation:ServiceTaskSpecResourcesReservation": {
             "properties": {
                 "genericResources": {
-                    "$ref": "#/types/docker:index/ServiceTaskSpecResourcesReservationGenericResources:ServiceTaskSpecResourcesReservationGenericResources"
+                    "$ref": "#/types/docker:index/ServiceTaskSpecResourcesReservationGenericResources:ServiceTaskSpecResourcesReservationGenericResources",
+                    "description": "User-defined resources can be either Integer resources (e.g, `SSD=3`) or String resources (e.g, GPU=UUID1)\n"
                 },
                 "memoryBytes": {
-                    "type": "integer"
+                    "type": "integer",
+                    "description": "The amounf of memory in bytes the container allocates\n"
                 },
                 "nanoCpus": {
-                    "type": "integer"
+                    "type": "integer",
+                    "description": "CPU shares in units of `1/1e9` (or `10^-9`) of the CPU. Should be at least `1000000`\n"
                 }
             },
             "type": "object"
@@ -1668,13 +1768,15 @@
                     "type": "array",
                     "items": {
                         "type": "string"
-                    }
+                    },
+                    "description": "The Integer resources\n"
                 },
                 "namedResourcesSpecs": {
                     "type": "array",
                     "items": {
                         "type": "string"
-                    }
+                    },
+                    "description": "The String resources\n"
                 }
             },
             "type": "object"
@@ -1682,16 +1784,20 @@
         "docker:index/ServiceTaskSpecRestartPolicy:ServiceTaskSpecRestartPolicy": {
             "properties": {
                 "condition": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Condition for restart\n"
                 },
                 "delay": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.\n"
                 },
                 "maxAttempts": {
-                    "type": "integer"
+                    "type": "integer",
+                    "description": "Maximum attempts to restart a given container before giving up (default value is `0`, which is ignored)\n"
                 },
                 "window": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "The time window used to evaluate the restart policy (default value is `0`, which is unbounded) (ms|s|m|h)\n"
                 }
             },
             "type": "object"
@@ -2050,7 +2156,7 @@
                     "items": {
                         "$ref": "#/types/docker:index/ContainerHost:ContainerHost"
                     },
-                    "description": "Additional hosts to add to the container.\n"
+                    "description": "Hostname to add\n"
                 },
                 "image": {
                     "type": "string",
@@ -2069,7 +2175,7 @@
                     "items": {
                         "$ref": "#/types/docker:index/ContainerLabel:ContainerLabel"
                     },
-                    "description": "User-defined key/value metadata\n"
+                    "description": "User-defined key/value metadata.\n"
                 },
                 "logDriver": {
                     "type": "string",
@@ -2111,7 +2217,7 @@
                 },
                 "name": {
                     "type": "string",
-                    "description": "The name of the container.\n"
+                    "description": "The name or id of the network to use. You can use `name` or `id` attribute from a `docker.Network` resource.\n"
                 },
                 "networkDatas": {
                     "type": "array",
@@ -2152,7 +2258,7 @@
                 },
                 "readOnly": {
                     "type": "boolean",
-                    "description": "If `true`, the container will be started as readonly. Defaults to `false`.\n"
+                    "description": "Whether the mount should be read-only.\n"
                 },
                 "removeVolumes": {
                     "type": "boolean",
@@ -2405,7 +2511,7 @@
                     "items": {
                         "$ref": "#/types/docker:index/ContainerHost:ContainerHost"
                     },
-                    "description": "Additional hosts to add to the container.\n",
+                    "description": "Hostname to add\n",
                     "willReplaceOnChanges": true
                 },
                 "image": {
@@ -2427,7 +2533,7 @@
                     "items": {
                         "$ref": "#/types/docker:index/ContainerLabel:ContainerLabel"
                     },
-                    "description": "User-defined key/value metadata\n",
+                    "description": "User-defined key/value metadata.\n",
                     "willReplaceOnChanges": true
                 },
                 "logDriver": {
@@ -2473,7 +2579,7 @@
                 },
                 "name": {
                     "type": "string",
-                    "description": "The name of the container.\n",
+                    "description": "The name or id of the network to use. You can use `name` or `id` attribute from a `docker.Network` resource.\n",
                     "willReplaceOnChanges": true
                 },
                 "networkMode": {
@@ -2514,7 +2620,7 @@
                 },
                 "readOnly": {
                     "type": "boolean",
-                    "description": "If `true`, the container will be started as readonly. Defaults to `false`.\n",
+                    "description": "Whether the mount should be read-only.\n",
                     "willReplaceOnChanges": true
                 },
                 "removeVolumes": {
@@ -2778,7 +2884,7 @@
                         "items": {
                             "$ref": "#/types/docker:index/ContainerHost:ContainerHost"
                         },
-                        "description": "Additional hosts to add to the container.\n",
+                        "description": "Hostname to add\n",
                         "willReplaceOnChanges": true
                     },
                     "image": {
@@ -2800,7 +2906,7 @@
                         "items": {
                             "$ref": "#/types/docker:index/ContainerLabel:ContainerLabel"
                         },
-                        "description": "User-defined key/value metadata\n",
+                        "description": "User-defined key/value metadata.\n",
                         "willReplaceOnChanges": true
                     },
                     "logDriver": {
@@ -2846,7 +2952,7 @@
                     },
                     "name": {
                         "type": "string",
-                        "description": "The name of the container.\n",
+                        "description": "The name or id of the network to use. You can use `name` or `id` attribute from a `docker.Network` resource.\n",
                         "willReplaceOnChanges": true
                     },
                     "networkDatas": {
@@ -2894,7 +3000,7 @@
                     },
                     "readOnly": {
                         "type": "boolean",
-                        "description": "If `true`, the container will be started as readonly. Defaults to `false`.\n",
+                        "description": "Whether the mount should be read-only.\n",
                         "willReplaceOnChanges": true
                     },
                     "removeVolumes": {
@@ -3366,7 +3472,7 @@
                 },
                 "name": {
                     "type": "string",
-                    "description": "Docker Plugin name\n"
+                    "description": "The name of the permission\n"
                 },
                 "pluginReference": {
                     "type": "string",
@@ -3421,7 +3527,7 @@
                 },
                 "name": {
                     "type": "string",
-                    "description": "Docker Plugin name\n",
+                    "description": "The name of the permission\n",
                     "willReplaceOnChanges": true
                 }
             },
@@ -3469,7 +3575,7 @@
                     },
                     "name": {
                         "type": "string",
-                        "description": "Docker Plugin name\n",
+                        "description": "The name of the permission\n",
                         "willReplaceOnChanges": true
                     },
                     "pluginReference": {
@@ -3575,7 +3681,7 @@
                 },
                 "forceRemove": {
                     "type": "boolean",
-                    "description": "If true, then the image is removed forcibly when the resource is destroyed.\n"
+                    "description": "Always remove intermediate containers\n"
                 },
                 "imageId": {
                     "type": "string",
@@ -3587,11 +3693,11 @@
                 },
                 "name": {
                     "type": "string",
-                    "description": "The name of the Docker image, including any tags or SHA256 repo digests.\n"
+                    "description": "type of ulimit, e.g. `nofile`\n"
                 },
                 "platform": {
                     "type": "string",
-                    "description": "The platform to use when pulling the image. Defaults to the platform of the current machine.\n"
+                    "description": "Set platform if server is multi-platform capable\n"
                 },
                 "pullTriggers": {
                     "type": "array",
@@ -3624,7 +3730,7 @@
                 },
                 "forceRemove": {
                     "type": "boolean",
-                    "description": "If true, then the image is removed forcibly when the resource is destroyed.\n"
+                    "description": "Always remove intermediate containers\n"
                 },
                 "keepLocally": {
                     "type": "boolean",
@@ -3632,12 +3738,12 @@
                 },
                 "name": {
                     "type": "string",
-                    "description": "The name of the Docker image, including any tags or SHA256 repo digests.\n",
+                    "description": "type of ulimit, e.g. `nofile`\n",
                     "willReplaceOnChanges": true
                 },
                 "platform": {
                     "type": "string",
-                    "description": "The platform to use when pulling the image. Defaults to the platform of the current machine.\n",
+                    "description": "Set platform if server is multi-platform capable\n",
                     "willReplaceOnChanges": true
                 },
                 "pullTriggers": {
@@ -3669,7 +3775,7 @@
                     },
                     "forceRemove": {
                         "type": "boolean",
-                        "description": "If true, then the image is removed forcibly when the resource is destroyed.\n"
+                        "description": "Always remove intermediate containers\n"
                     },
                     "imageId": {
                         "type": "string",
@@ -3681,12 +3787,12 @@
                     },
                     "name": {
                         "type": "string",
-                        "description": "The name of the Docker image, including any tags or SHA256 repo digests.\n",
+                        "description": "type of ulimit, e.g. `nofile`\n",
                         "willReplaceOnChanges": true
                     },
                     "platform": {
                         "type": "string",
-                        "description": "The platform to use when pulling the image. Defaults to the platform of the current machine.\n",
+                        "description": "Set platform if server is multi-platform capable\n",
                         "willReplaceOnChanges": true
                     },
                     "pullTriggers": {
@@ -3811,11 +3917,11 @@
                 },
                 "mode": {
                     "$ref": "#/types/docker:index/ServiceMode:ServiceMode",
-                    "description": "Scheduling mode for the service\n"
+                    "description": "The mode of resolution to use for internal load balancing between tasks\n"
                 },
                 "name": {
                     "type": "string",
-                    "description": "Name of the service\n"
+                    "description": "A random name for the port\n"
                 },
                 "rollbackConfig": {
                     "$ref": "#/types/docker:index/ServiceRollbackConfig:ServiceRollbackConfig",
@@ -3860,12 +3966,12 @@
                 },
                 "mode": {
                     "$ref": "#/types/docker:index/ServiceMode:ServiceMode",
-                    "description": "Scheduling mode for the service\n",
+                    "description": "The mode of resolution to use for internal load balancing between tasks\n",
                     "willReplaceOnChanges": true
                 },
                 "name": {
                     "type": "string",
-                    "description": "Name of the service\n",
+                    "description": "A random name for the port\n",
                     "willReplaceOnChanges": true
                 },
                 "rollbackConfig": {
@@ -3909,12 +4015,12 @@
                     },
                     "mode": {
                         "$ref": "#/types/docker:index/ServiceMode:ServiceMode",
-                        "description": "Scheduling mode for the service\n",
+                        "description": "The mode of resolution to use for internal load balancing between tasks\n",
                         "willReplaceOnChanges": true
                     },
                     "name": {
                         "type": "string",
-                        "description": "Name of the service\n",
+                        "description": "A random name for the port\n",
                         "willReplaceOnChanges": true
                     },
                     "rollbackConfig": {
