@@ -16,16 +16,32 @@ public final class ServiceTaskSpecResourcesReservationGenericResourcesArgs exten
 
     public static final ServiceTaskSpecResourcesReservationGenericResourcesArgs Empty = new ServiceTaskSpecResourcesReservationGenericResourcesArgs();
 
+    /**
+     * The Integer resources
+     * 
+     */
     @Import(name="discreteResourcesSpecs")
     private @Nullable Output<List<String>> discreteResourcesSpecs;
 
+    /**
+     * @return The Integer resources
+     * 
+     */
     public Optional<Output<List<String>>> discreteResourcesSpecs() {
         return Optional.ofNullable(this.discreteResourcesSpecs);
     }
 
+    /**
+     * The String resources
+     * 
+     */
     @Import(name="namedResourcesSpecs")
     private @Nullable Output<List<String>> namedResourcesSpecs;
 
+    /**
+     * @return The String resources
+     * 
+     */
     public Optional<Output<List<String>>> namedResourcesSpecs() {
         return Optional.ofNullable(this.namedResourcesSpecs);
     }
@@ -55,28 +71,64 @@ public final class ServiceTaskSpecResourcesReservationGenericResourcesArgs exten
             $ = new ServiceTaskSpecResourcesReservationGenericResourcesArgs(Objects.requireNonNull(defaults));
         }
 
+        /**
+         * @param discreteResourcesSpecs The Integer resources
+         * 
+         * @return builder
+         * 
+         */
         public Builder discreteResourcesSpecs(@Nullable Output<List<String>> discreteResourcesSpecs) {
             $.discreteResourcesSpecs = discreteResourcesSpecs;
             return this;
         }
 
+        /**
+         * @param discreteResourcesSpecs The Integer resources
+         * 
+         * @return builder
+         * 
+         */
         public Builder discreteResourcesSpecs(List<String> discreteResourcesSpecs) {
             return discreteResourcesSpecs(Output.of(discreteResourcesSpecs));
         }
 
+        /**
+         * @param discreteResourcesSpecs The Integer resources
+         * 
+         * @return builder
+         * 
+         */
         public Builder discreteResourcesSpecs(String... discreteResourcesSpecs) {
             return discreteResourcesSpecs(List.of(discreteResourcesSpecs));
         }
 
+        /**
+         * @param namedResourcesSpecs The String resources
+         * 
+         * @return builder
+         * 
+         */
         public Builder namedResourcesSpecs(@Nullable Output<List<String>> namedResourcesSpecs) {
             $.namedResourcesSpecs = namedResourcesSpecs;
             return this;
         }
 
+        /**
+         * @param namedResourcesSpecs The String resources
+         * 
+         * @return builder
+         * 
+         */
         public Builder namedResourcesSpecs(List<String> namedResourcesSpecs) {
             return namedResourcesSpecs(Output.of(namedResourcesSpecs));
         }
 
+        /**
+         * @param namedResourcesSpecs The String resources
+         * 
+         * @return builder
+         * 
+         */
         public Builder namedResourcesSpecs(String... namedResourcesSpecs) {
             return namedResourcesSpecs(List.of(namedResourcesSpecs));
         }

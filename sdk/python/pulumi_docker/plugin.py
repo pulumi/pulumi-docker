@@ -6,7 +6,7 @@ import copy
 import warnings
 import pulumi
 import pulumi.runtime
-from typing import Any, Mapping, Optional, Sequence, Union, overload
+from typing import Any, Callable, Mapping, Optional, Sequence, Union, overload
 from . import _utilities
 from . import outputs
 from ._inputs import *
@@ -35,26 +35,51 @@ class PluginArgs:
         :param pulumi.Input[bool] force_disable: If true, then the plugin is disabled forcibly
         :param pulumi.Input[bool] grant_all_permissions: If true, grant all permissions necessary to run the plugin
         :param pulumi.Input[Sequence[pulumi.Input['PluginGrantPermissionArgs']]] grant_permissions: Grant specific permissions only
-        :param pulumi.Input[str] name: Docker Plugin name
+        :param pulumi.Input[str] name: The name of the permission
         """
+        PluginArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            alias=alias,
+            enable_timeout=enable_timeout,
+            enabled=enabled,
+            envs=envs,
+            force_destroy=force_destroy,
+            force_disable=force_disable,
+            grant_all_permissions=grant_all_permissions,
+            grant_permissions=grant_permissions,
+            name=name,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             alias: Optional[pulumi.Input[str]] = None,
+             enable_timeout: Optional[pulumi.Input[int]] = None,
+             enabled: Optional[pulumi.Input[bool]] = None,
+             envs: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+             force_destroy: Optional[pulumi.Input[bool]] = None,
+             force_disable: Optional[pulumi.Input[bool]] = None,
+             grant_all_permissions: Optional[pulumi.Input[bool]] = None,
+             grant_permissions: Optional[pulumi.Input[Sequence[pulumi.Input['PluginGrantPermissionArgs']]]] = None,
+             name: Optional[pulumi.Input[str]] = None,
+             opts: Optional[pulumi.ResourceOptions]=None):
         if alias is not None:
-            pulumi.set(__self__, "alias", alias)
+            _setter("alias", alias)
         if enable_timeout is not None:
-            pulumi.set(__self__, "enable_timeout", enable_timeout)
+            _setter("enable_timeout", enable_timeout)
         if enabled is not None:
-            pulumi.set(__self__, "enabled", enabled)
+            _setter("enabled", enabled)
         if envs is not None:
-            pulumi.set(__self__, "envs", envs)
+            _setter("envs", envs)
         if force_destroy is not None:
-            pulumi.set(__self__, "force_destroy", force_destroy)
+            _setter("force_destroy", force_destroy)
         if force_disable is not None:
-            pulumi.set(__self__, "force_disable", force_disable)
+            _setter("force_disable", force_disable)
         if grant_all_permissions is not None:
-            pulumi.set(__self__, "grant_all_permissions", grant_all_permissions)
+            _setter("grant_all_permissions", grant_all_permissions)
         if grant_permissions is not None:
-            pulumi.set(__self__, "grant_permissions", grant_permissions)
+            _setter("grant_permissions", grant_permissions)
         if name is not None:
-            pulumi.set(__self__, "name", name)
+            _setter("name", name)
 
     @property
     @pulumi.getter
@@ -156,7 +181,7 @@ class PluginArgs:
     @pulumi.getter
     def name(self) -> Optional[pulumi.Input[str]]:
         """
-        Docker Plugin name
+        The name of the permission
         """
         return pulumi.get(self, "name")
 
@@ -188,29 +213,56 @@ class _PluginState:
         :param pulumi.Input[bool] force_disable: If true, then the plugin is disabled forcibly
         :param pulumi.Input[bool] grant_all_permissions: If true, grant all permissions necessary to run the plugin
         :param pulumi.Input[Sequence[pulumi.Input['PluginGrantPermissionArgs']]] grant_permissions: Grant specific permissions only
-        :param pulumi.Input[str] name: Docker Plugin name
+        :param pulumi.Input[str] name: The name of the permission
         :param pulumi.Input[str] plugin_reference: Docker Plugin Reference
         """
+        _PluginState._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            alias=alias,
+            enable_timeout=enable_timeout,
+            enabled=enabled,
+            envs=envs,
+            force_destroy=force_destroy,
+            force_disable=force_disable,
+            grant_all_permissions=grant_all_permissions,
+            grant_permissions=grant_permissions,
+            name=name,
+            plugin_reference=plugin_reference,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             alias: Optional[pulumi.Input[str]] = None,
+             enable_timeout: Optional[pulumi.Input[int]] = None,
+             enabled: Optional[pulumi.Input[bool]] = None,
+             envs: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+             force_destroy: Optional[pulumi.Input[bool]] = None,
+             force_disable: Optional[pulumi.Input[bool]] = None,
+             grant_all_permissions: Optional[pulumi.Input[bool]] = None,
+             grant_permissions: Optional[pulumi.Input[Sequence[pulumi.Input['PluginGrantPermissionArgs']]]] = None,
+             name: Optional[pulumi.Input[str]] = None,
+             plugin_reference: Optional[pulumi.Input[str]] = None,
+             opts: Optional[pulumi.ResourceOptions]=None):
         if alias is not None:
-            pulumi.set(__self__, "alias", alias)
+            _setter("alias", alias)
         if enable_timeout is not None:
-            pulumi.set(__self__, "enable_timeout", enable_timeout)
+            _setter("enable_timeout", enable_timeout)
         if enabled is not None:
-            pulumi.set(__self__, "enabled", enabled)
+            _setter("enabled", enabled)
         if envs is not None:
-            pulumi.set(__self__, "envs", envs)
+            _setter("envs", envs)
         if force_destroy is not None:
-            pulumi.set(__self__, "force_destroy", force_destroy)
+            _setter("force_destroy", force_destroy)
         if force_disable is not None:
-            pulumi.set(__self__, "force_disable", force_disable)
+            _setter("force_disable", force_disable)
         if grant_all_permissions is not None:
-            pulumi.set(__self__, "grant_all_permissions", grant_all_permissions)
+            _setter("grant_all_permissions", grant_all_permissions)
         if grant_permissions is not None:
-            pulumi.set(__self__, "grant_permissions", grant_permissions)
+            _setter("grant_permissions", grant_permissions)
         if name is not None:
-            pulumi.set(__self__, "name", name)
+            _setter("name", name)
         if plugin_reference is not None:
-            pulumi.set(__self__, "plugin_reference", plugin_reference)
+            _setter("plugin_reference", plugin_reference)
 
     @property
     @pulumi.getter
@@ -312,7 +364,7 @@ class _PluginState:
     @pulumi.getter
     def name(self) -> Optional[pulumi.Input[str]]:
         """
-        Docker Plugin name
+        The name of the permission
         """
         return pulumi.get(self, "name")
 
@@ -386,7 +438,7 @@ class Plugin(pulumi.CustomResource):
         :param pulumi.Input[bool] force_disable: If true, then the plugin is disabled forcibly
         :param pulumi.Input[bool] grant_all_permissions: If true, grant all permissions necessary to run the plugin
         :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['PluginGrantPermissionArgs']]]] grant_permissions: Grant specific permissions only
-        :param pulumi.Input[str] name: Docker Plugin name
+        :param pulumi.Input[str] name: The name of the permission
         """
         ...
     @overload
@@ -432,6 +484,10 @@ class Plugin(pulumi.CustomResource):
         if resource_args is not None:
             __self__._internal_init(resource_name, opts, **resource_args.__dict__)
         else:
+            kwargs = kwargs or {}
+            def _setter(key, value):
+                kwargs[key] = value
+            PluginArgs._configure(_setter, **kwargs)
             __self__._internal_init(resource_name, *args, **kwargs)
 
     def _internal_init(__self__,
@@ -500,7 +556,7 @@ class Plugin(pulumi.CustomResource):
         :param pulumi.Input[bool] force_disable: If true, then the plugin is disabled forcibly
         :param pulumi.Input[bool] grant_all_permissions: If true, grant all permissions necessary to run the plugin
         :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['PluginGrantPermissionArgs']]]] grant_permissions: Grant specific permissions only
-        :param pulumi.Input[str] name: Docker Plugin name
+        :param pulumi.Input[str] name: The name of the permission
         :param pulumi.Input[str] plugin_reference: Docker Plugin Reference
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
@@ -587,7 +643,7 @@ class Plugin(pulumi.CustomResource):
     @pulumi.getter
     def name(self) -> pulumi.Output[str]:
         """
-        Docker Plugin name
+        The name of the permission
         """
         return pulumi.get(self, "name")
 

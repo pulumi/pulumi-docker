@@ -12,29 +12,77 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceTaskSpecContainerSpecConfig {
+    /**
+     * @return ID of the specific config that we&#39;re referencing
+     * 
+     */
     private String configId;
+    /**
+     * @return Name of the config that this references, but this is just provided for lookup/display purposes. The config in the reference will be identified by its ID
+     * 
+     */
     private @Nullable String configName;
+    /**
+     * @return Represents the file GID. Defaults to `0`.
+     * 
+     */
     private @Nullable String fileGid;
+    /**
+     * @return Represents represents the FileMode of the file. Defaults to `0o444`.
+     * 
+     */
     private @Nullable Integer fileMode;
+    /**
+     * @return Represents the final filename in the filesystem
+     * 
+     */
     private String fileName;
+    /**
+     * @return Represents the file UID. Defaults to `0`.
+     * 
+     */
     private @Nullable String fileUid;
 
     private ServiceTaskSpecContainerSpecConfig() {}
+    /**
+     * @return ID of the specific config that we&#39;re referencing
+     * 
+     */
     public String configId() {
         return this.configId;
     }
+    /**
+     * @return Name of the config that this references, but this is just provided for lookup/display purposes. The config in the reference will be identified by its ID
+     * 
+     */
     public Optional<String> configName() {
         return Optional.ofNullable(this.configName);
     }
+    /**
+     * @return Represents the file GID. Defaults to `0`.
+     * 
+     */
     public Optional<String> fileGid() {
         return Optional.ofNullable(this.fileGid);
     }
+    /**
+     * @return Represents represents the FileMode of the file. Defaults to `0o444`.
+     * 
+     */
     public Optional<Integer> fileMode() {
         return Optional.ofNullable(this.fileMode);
     }
+    /**
+     * @return Represents the final filename in the filesystem
+     * 
+     */
     public String fileName() {
         return this.fileName;
     }
+    /**
+     * @return Represents the file UID. Defaults to `0`.
+     * 
+     */
     public Optional<String> fileUid() {
         return Optional.ofNullable(this.fileUid);
     }

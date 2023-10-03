@@ -72,13 +72,13 @@ namespace Pulumi.Docker
         public Output<ImmutableArray<Outputs.ServiceLabel>> Labels { get; private set; } = null!;
 
         /// <summary>
-        /// Scheduling mode for the service
+        /// The mode of resolution to use for internal load balancing between tasks
         /// </summary>
         [Output("mode")]
         public Output<Outputs.ServiceMode> Mode { get; private set; } = null!;
 
         /// <summary>
-        /// Name of the service
+        /// A random name for the port
         /// </summary>
         [Output("name")]
         public Output<string> Name { get; private set; } = null!;
@@ -178,13 +178,13 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// Scheduling mode for the service
+        /// The mode of resolution to use for internal load balancing between tasks
         /// </summary>
         [Input("mode")]
         public Input<Inputs.ServiceModeArgs>? Mode { get; set; }
 
         /// <summary>
-        /// Name of the service
+        /// A random name for the port
         /// </summary>
         [Input("name")]
         public Input<string>? Name { get; set; }
@@ -246,13 +246,13 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// Scheduling mode for the service
+        /// The mode of resolution to use for internal load balancing between tasks
         /// </summary>
         [Input("mode")]
         public Input<Inputs.ServiceModeGetArgs>? Mode { get; set; }
 
         /// <summary>
-        /// Name of the service
+        /// A random name for the port
         /// </summary>
         [Input("name")]
         public Input<string>? Name { get; set; }

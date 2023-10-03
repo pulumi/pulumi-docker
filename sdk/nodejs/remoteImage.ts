@@ -75,7 +75,7 @@ export class RemoteImage extends pulumi.CustomResource {
      */
     public readonly build!: pulumi.Output<outputs.RemoteImageBuild | undefined>;
     /**
-     * If true, then the image is removed forcibly when the resource is destroyed.
+     * Always remove intermediate containers
      */
     public readonly forceRemove!: pulumi.Output<boolean | undefined>;
     /**
@@ -87,11 +87,11 @@ export class RemoteImage extends pulumi.CustomResource {
      */
     public readonly keepLocally!: pulumi.Output<boolean | undefined>;
     /**
-     * The name of the Docker image, including any tags or SHA256 repo digests.
+     * type of ulimit, e.g. `nofile`
      */
     public readonly name!: pulumi.Output<string>;
     /**
-     * The platform to use when pulling the image. Defaults to the platform of the current machine.
+     * Set platform if server is multi-platform capable
      */
     public readonly platform!: pulumi.Output<string | undefined>;
     /**
@@ -158,7 +158,7 @@ export interface RemoteImageState {
      */
     build?: pulumi.Input<inputs.RemoteImageBuild>;
     /**
-     * If true, then the image is removed forcibly when the resource is destroyed.
+     * Always remove intermediate containers
      */
     forceRemove?: pulumi.Input<boolean>;
     /**
@@ -170,11 +170,11 @@ export interface RemoteImageState {
      */
     keepLocally?: pulumi.Input<boolean>;
     /**
-     * The name of the Docker image, including any tags or SHA256 repo digests.
+     * type of ulimit, e.g. `nofile`
      */
     name?: pulumi.Input<string>;
     /**
-     * The platform to use when pulling the image. Defaults to the platform of the current machine.
+     * Set platform if server is multi-platform capable
      */
     platform?: pulumi.Input<string>;
     /**
@@ -200,7 +200,7 @@ export interface RemoteImageArgs {
      */
     build?: pulumi.Input<inputs.RemoteImageBuild>;
     /**
-     * If true, then the image is removed forcibly when the resource is destroyed.
+     * Always remove intermediate containers
      */
     forceRemove?: pulumi.Input<boolean>;
     /**
@@ -208,11 +208,11 @@ export interface RemoteImageArgs {
      */
     keepLocally?: pulumi.Input<boolean>;
     /**
-     * The name of the Docker image, including any tags or SHA256 repo digests.
+     * type of ulimit, e.g. `nofile`
      */
     name: pulumi.Input<string>;
     /**
-     * The platform to use when pulling the image. Defaults to the platform of the current machine.
+     * Set platform if server is multi-platform capable
      */
     platform?: pulumi.Input<string>;
     /**

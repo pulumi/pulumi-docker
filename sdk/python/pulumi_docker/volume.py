@@ -6,7 +6,7 @@ import copy
 import warnings
 import pulumi
 import pulumi.runtime
-from typing import Any, Mapping, Optional, Sequence, Union, overload
+from typing import Any, Callable, Mapping, Optional, Sequence, Union, overload
 from . import _utilities
 from . import outputs
 from ._inputs import *
@@ -27,14 +27,29 @@ class VolumeArgs:
         :param pulumi.Input[Sequence[pulumi.Input['VolumeLabelArgs']]] labels: User-defined key/value metadata
         :param pulumi.Input[str] name: The name of the Docker volume (will be generated if not provided).
         """
+        VolumeArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            driver=driver,
+            driver_opts=driver_opts,
+            labels=labels,
+            name=name,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             driver: Optional[pulumi.Input[str]] = None,
+             driver_opts: Optional[pulumi.Input[Mapping[str, Any]]] = None,
+             labels: Optional[pulumi.Input[Sequence[pulumi.Input['VolumeLabelArgs']]]] = None,
+             name: Optional[pulumi.Input[str]] = None,
+             opts: Optional[pulumi.ResourceOptions]=None):
         if driver is not None:
-            pulumi.set(__self__, "driver", driver)
+            _setter("driver", driver)
         if driver_opts is not None:
-            pulumi.set(__self__, "driver_opts", driver_opts)
+            _setter("driver_opts", driver_opts)
         if labels is not None:
-            pulumi.set(__self__, "labels", labels)
+            _setter("labels", labels)
         if name is not None:
-            pulumi.set(__self__, "name", name)
+            _setter("name", name)
 
     @property
     @pulumi.getter
@@ -101,16 +116,33 @@ class _VolumeState:
         :param pulumi.Input[str] mountpoint: The mountpoint of the volume.
         :param pulumi.Input[str] name: The name of the Docker volume (will be generated if not provided).
         """
+        _VolumeState._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            driver=driver,
+            driver_opts=driver_opts,
+            labels=labels,
+            mountpoint=mountpoint,
+            name=name,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             driver: Optional[pulumi.Input[str]] = None,
+             driver_opts: Optional[pulumi.Input[Mapping[str, Any]]] = None,
+             labels: Optional[pulumi.Input[Sequence[pulumi.Input['VolumeLabelArgs']]]] = None,
+             mountpoint: Optional[pulumi.Input[str]] = None,
+             name: Optional[pulumi.Input[str]] = None,
+             opts: Optional[pulumi.ResourceOptions]=None):
         if driver is not None:
-            pulumi.set(__self__, "driver", driver)
+            _setter("driver", driver)
         if driver_opts is not None:
-            pulumi.set(__self__, "driver_opts", driver_opts)
+            _setter("driver_opts", driver_opts)
         if labels is not None:
-            pulumi.set(__self__, "labels", labels)
+            _setter("labels", labels)
         if mountpoint is not None:
-            pulumi.set(__self__, "mountpoint", mountpoint)
+            _setter("mountpoint", mountpoint)
         if name is not None:
-            pulumi.set(__self__, "name", name)
+            _setter("name", name)
 
     @property
     @pulumi.getter
@@ -252,6 +284,10 @@ class Volume(pulumi.CustomResource):
         if resource_args is not None:
             __self__._internal_init(resource_name, opts, **resource_args.__dict__)
         else:
+            kwargs = kwargs or {}
+            def _setter(key, value):
+                kwargs[key] = value
+            VolumeArgs._configure(_setter, **kwargs)
             __self__._internal_init(resource_name, *args, **kwargs)
 
     def _internal_init(__self__,

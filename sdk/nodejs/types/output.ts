@@ -111,21 +111,39 @@ export interface ContainerMount {
 }
 
 export interface ContainerMountBindOptions {
+    /**
+     * A propagation mode with the value.
+     */
     propagation?: string;
 }
 
 export interface ContainerMountTmpfsOptions {
+    /**
+     * The permission mode for the tmpfs mount in an integer.
+     */
     mode?: number;
+    /**
+     * The size for the tmpfs mount in bytes.
+     */
     sizeBytes?: number;
 }
 
 export interface ContainerMountVolumeOptions {
+    /**
+     * Name of the driver to use to create the volume.
+     */
     driverName?: string;
+    /**
+     * key/value map of driver specific options.
+     */
     driverOptions?: {[key: string]: string};
     /**
-     * User-defined key/value metadata
+     * User-defined key/value metadata.
      */
     labels?: outputs.ContainerMountVolumeOptionsLabel[];
+    /**
+     * Populate volume with data from the target.
+     */
     noCopy?: boolean;
 }
 
@@ -443,22 +461,52 @@ export interface RemoteImageBuild {
 }
 
 export interface RemoteImageBuildAuthConfig {
+    /**
+     * the auth token
+     */
     auth?: string;
+    /**
+     * the user emal
+     */
     email?: string;
+    /**
+     * hostname of the registry
+     */
     hostName: string;
+    /**
+     * the identity token
+     */
     identityToken?: string;
+    /**
+     * the registry password
+     */
     password?: string;
+    /**
+     * the registry token
+     */
     registryToken?: string;
+    /**
+     * the server address
+     */
     serverAddress?: string;
+    /**
+     * the registry user name
+     */
     userName?: string;
 }
 
 export interface RemoteImageBuildUlimit {
+    /**
+     * soft limit
+     */
     hard: number;
     /**
-     * The name of the Docker image, including any tags or SHA256 repo digests.
+     * type of ulimit, e.g. `nofile`
      */
     name: string;
+    /**
+     * hard limit
+     */
     soft: number;
 }
 
@@ -512,12 +560,24 @@ export interface ServiceEndpointSpec {
 
 export interface ServiceEndpointSpecPort {
     /**
-     * Name of the service
+     * A random name for the port
      */
     name?: string;
+    /**
+     * Rrepresents the protocol of a port: `tcp`, `udp` or `sctp`. Defaults to `tcp`.
+     */
     protocol?: string;
+    /**
+     * Represents the mode in which the port is to be published: 'ingress' or 'host'. Defaults to `ingress`.
+     */
     publishMode?: string;
+    /**
+     * The port on the swarm hosts
+     */
     publishedPort: number;
+    /**
+     * The port inside the container
+     */
     targetPort: number;
 }
 
@@ -544,6 +604,9 @@ export interface ServiceMode {
 }
 
 export interface ServiceModeReplicated {
+    /**
+     * The amount of replicas of the service. Defaults to `1`
+     */
     replicas?: number;
 }
 
@@ -610,57 +673,165 @@ export interface ServiceTaskSpec {
 }
 
 export interface ServiceTaskSpecContainerSpec {
+    /**
+     * Arguments to the command
+     */
     args?: string[];
+    /**
+     * The command/entrypoint to be run in the image. According to the [docker cli](https://github.com/docker/cli/blob/v20.10.7/cli/command/service/opts.go#L705) the override of the entrypoint is also passed to the `command` property and there is no `entrypoint` attribute in the `ContainerSpec` of the service.
+     */
     commands?: string[];
+    /**
+     * References to zero or more configs that will be exposed to the service
+     */
     configs?: outputs.ServiceTaskSpecContainerSpecConfig[];
+    /**
+     * The working directory for commands to run in
+     */
     dir?: string;
+    /**
+     * Specification for DNS related configurations in resolver configuration file (`resolv.conf`)
+     */
     dnsConfig: outputs.ServiceTaskSpecContainerSpecDnsConfig;
+    /**
+     * A list of environment variables in the form VAR="value"
+     */
     env?: {[key: string]: string};
+    /**
+     * A list of additional groups that the container process will run as
+     */
     groups?: string[];
+    /**
+     * A test to perform to check that the container is healthy
+     */
     healthcheck: outputs.ServiceTaskSpecContainerSpecHealthcheck;
+    /**
+     * The hostname to use for the container, as a valid RFC 1123 hostname
+     */
     hostname?: string;
+    /**
+     * A list of hostname/IP mappings to add to the container's hosts file
+     */
     hosts?: outputs.ServiceTaskSpecContainerSpecHost[];
+    /**
+     * The image name to use for the containers of the service, like `nginx:1.17.6`. Also use the data-source or resource of `docker.RemoteImage` with the `repoDigest` or `docker.RegistryImage` with the `name` attribute for this, as shown in the examples.
+     */
     image: string;
+    /**
+     * Isolation technology of the containers running the service. (Windows only). Defaults to `default`.
+     */
     isolation?: string;
     /**
      * User-defined key/value metadata
      */
     labels?: outputs.ServiceTaskSpecContainerSpecLabel[];
+    /**
+     * Specification for mounts to be added to containers created as part of the service
+     */
     mounts?: outputs.ServiceTaskSpecContainerSpecMount[];
+    /**
+     * Security options for the container
+     */
     privileges?: outputs.ServiceTaskSpecContainerSpecPrivileges;
+    /**
+     * Whether the mount should be read-only
+     */
     readOnly?: boolean;
+    /**
+     * References to zero or more secrets that will be exposed to the service
+     */
     secrets?: outputs.ServiceTaskSpecContainerSpecSecret[];
+    /**
+     * Amount of time to wait for the container to terminate before forcefully removing it (ms|s|m|h). If not specified or '0s' the destroy will not check if all tasks/containers of the service terminate.
+     */
     stopGracePeriod: string;
+    /**
+     * Signal to stop the container
+     */
     stopSignal?: string;
+    /**
+     * Sysctls config (Linux only)
+     */
     sysctl?: {[key: string]: any};
+    /**
+     * SELinux user label
+     */
     user?: string;
 }
 
 export interface ServiceTaskSpecContainerSpecConfig {
+    /**
+     * ID of the specific config that we're referencing
+     */
     configId: string;
+    /**
+     * Name of the config that this references, but this is just provided for lookup/display purposes. The config in the reference will be identified by its ID
+     */
     configName?: string;
+    /**
+     * Represents the file GID. Defaults to `0`.
+     */
     fileGid?: string;
+    /**
+     * Represents represents the FileMode of the file. Defaults to `0o444`.
+     */
     fileMode?: number;
+    /**
+     * Represents the final filename in the filesystem
+     */
     fileName: string;
+    /**
+     * Represents the file UID. Defaults to `0`.
+     */
     fileUid?: string;
 }
 
 export interface ServiceTaskSpecContainerSpecDnsConfig {
+    /**
+     * The IP addresses of the name servers
+     */
     nameservers: string[];
+    /**
+     * A list of internal resolver variables to be modified (e.g., `debug`, `ndots:3`, etc.)
+     */
     options?: string[];
+    /**
+     * A search list for host-name lookup
+     */
     searches?: string[];
 }
 
 export interface ServiceTaskSpecContainerSpecHealthcheck {
+    /**
+     * Time between running the check (ms|s|m|h). Defaults to `0s`.
+     */
     interval?: string;
+    /**
+     * Consecutive failures needed to report unhealthy. Defaults to `0`
+     */
     retries?: number;
+    /**
+     * Start period for the container to initialize before counting retries towards unstable (ms|s|m|h). Defaults to `0s`.
+     */
     startPeriod?: string;
+    /**
+     * The test to perform as list
+     */
     tests: string[];
+    /**
+     * The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`
+     */
     timeout?: string;
 }
 
 export interface ServiceTaskSpecContainerSpecHost {
+    /**
+     * The name of the host
+     */
     host: string;
+    /**
+     * The ip of the host
+     */
     ip: string;
 }
 
@@ -676,34 +847,70 @@ export interface ServiceTaskSpecContainerSpecLabel {
 }
 
 export interface ServiceTaskSpecContainerSpecMount {
+    /**
+     * Optional configuration for the bind type
+     */
     bindOptions?: outputs.ServiceTaskSpecContainerSpecMountBindOptions;
+    /**
+     * Whether the mount should be read-only
+     */
     readOnly?: boolean;
+    /**
+     * Mount source (e.g. a volume name, a host path)
+     */
     source?: string;
+    /**
+     * Container path
+     */
     target: string;
+    /**
+     * Optional configuration for the tmpfs type
+     */
     tmpfsOptions?: outputs.ServiceTaskSpecContainerSpecMountTmpfsOptions;
+    /**
+     * The mount type
+     */
     type: string;
+    /**
+     * Optional configuration for the volume type
+     */
     volumeOptions?: outputs.ServiceTaskSpecContainerSpecMountVolumeOptions;
 }
 
 export interface ServiceTaskSpecContainerSpecMountBindOptions {
+    /**
+     * Bind propagation refers to whether or not mounts created within a given bind-mount or named volume can be propagated to replicas of that mount. See the [docs](https://docs.docker.com/storage/bind-mounts/#configure-bind-propagation) for details. Defaults to `rprivate`
+     */
     propagation?: string;
 }
 
 export interface ServiceTaskSpecContainerSpecMountTmpfsOptions {
     /**
-     * Scheduling mode for the service
+     * The mode of resolution to use for internal load balancing between tasks
      */
     mode?: number;
+    /**
+     * The size for the tmpfs mount in bytes
+     */
     sizeBytes?: number;
 }
 
 export interface ServiceTaskSpecContainerSpecMountVolumeOptions {
+    /**
+     * Name of the driver to use to create the volume
+     */
     driverName?: string;
+    /**
+     * key/value map of driver specific options
+     */
     driverOptions?: {[key: string]: string};
     /**
      * User-defined key/value metadata
      */
     labels?: outputs.ServiceTaskSpecContainerSpecMountVolumeOptionsLabel[];
+    /**
+     * Populate volume with data from the target
+     */
     noCopy?: boolean;
 }
 
@@ -719,86 +926,197 @@ export interface ServiceTaskSpecContainerSpecMountVolumeOptionsLabel {
 }
 
 export interface ServiceTaskSpecContainerSpecPrivileges {
+    /**
+     * CredentialSpec for managed service account (Windows only)
+     */
     credentialSpec?: outputs.ServiceTaskSpecContainerSpecPrivilegesCredentialSpec;
+    /**
+     * SELinux labels of the container
+     */
     seLinuxContext?: outputs.ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext;
 }
 
 export interface ServiceTaskSpecContainerSpecPrivilegesCredentialSpec {
+    /**
+     * Load credential spec from this file
+     */
     file?: string;
+    /**
+     * Load credential spec from this value in the Windows registry
+     */
     registry?: string;
 }
 
 export interface ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext {
+    /**
+     * Disable SELinux
+     */
     disable?: boolean;
+    /**
+     * SELinux level label
+     */
     level?: string;
+    /**
+     * SELinux role label
+     */
     role?: string;
+    /**
+     * The mount type
+     */
     type?: string;
+    /**
+     * SELinux user label
+     */
     user?: string;
 }
 
 export interface ServiceTaskSpecContainerSpecSecret {
+    /**
+     * Represents the file GID. Defaults to `0`.
+     */
     fileGid?: string;
+    /**
+     * Represents represents the FileMode of the file. Defaults to `0o444`.
+     */
     fileMode?: number;
+    /**
+     * Represents the final filename in the filesystem
+     */
     fileName: string;
+    /**
+     * Represents the file UID. Defaults to `0`.
+     */
     fileUid?: string;
+    /**
+     * ID of the specific secret that we're referencing
+     */
     secretId: string;
+    /**
+     * Name of the secret that this references, but this is just provided for lookup/display purposes. The config in the reference will be identified by its ID
+     */
     secretName?: string;
 }
 
 export interface ServiceTaskSpecLogDriver {
     /**
-     * Name of the service
+     * A random name for the port
      */
     name: string;
+    /**
+     * A list of internal resolver variables to be modified (e.g., `debug`, `ndots:3`, etc.)
+     */
     options?: {[key: string]: string};
 }
 
 export interface ServiceTaskSpecNetworksAdvanced {
+    /**
+     * The network aliases of the container in the specific network.
+     */
     aliases?: string[];
+    /**
+     * An array of driver options for the network, e.g. `opts1=value`
+     */
     driverOpts?: string[];
     /**
-     * Name of the service
+     * A random name for the port
      */
     name: string;
 }
 
 export interface ServiceTaskSpecPlacement {
+    /**
+     * An array of constraints. e.g.: `node.role==manager`
+     */
     constraints?: string[];
+    /**
+     * Maximum number of replicas for per node (default value is `0`, which is unlimited)
+     */
     maxReplicas?: number;
+    /**
+     * Platforms stores all the platforms that the service's image can run on
+     */
     platforms?: outputs.ServiceTaskSpecPlacementPlatform[];
+    /**
+     * Preferences provide a way to make the scheduler aware of factors such as topology. They are provided in order from highest to lowest precedence, e.g.: `spread=node.role.manager`
+     */
     prefs?: string[];
 }
 
 export interface ServiceTaskSpecPlacementPlatform {
+    /**
+     * The architecture, e.g. `amd64`
+     */
     architecture: string;
+    /**
+     * The operation system, e.g. `linux`
+     */
     os: string;
 }
 
 export interface ServiceTaskSpecResources {
+    /**
+     * Describes the resources which can be advertised by a node and requested by a task
+     */
     limits?: outputs.ServiceTaskSpecResourcesLimits;
+    /**
+     * An object describing the resources which can be advertised by a node and requested by a task
+     */
     reservation?: outputs.ServiceTaskSpecResourcesReservation;
 }
 
 export interface ServiceTaskSpecResourcesLimits {
+    /**
+     * The amounf of memory in bytes the container allocates
+     */
     memoryBytes?: number;
+    /**
+     * CPU shares in units of `1/1e9` (or `10^-9`) of the CPU. Should be at least `1000000`
+     */
     nanoCpus?: number;
 }
 
 export interface ServiceTaskSpecResourcesReservation {
+    /**
+     * User-defined resources can be either Integer resources (e.g, `SSD=3`) or String resources (e.g, GPU=UUID1)
+     */
     genericResources?: outputs.ServiceTaskSpecResourcesReservationGenericResources;
+    /**
+     * The amounf of memory in bytes the container allocates
+     */
     memoryBytes?: number;
+    /**
+     * CPU shares in units of `1/1e9` (or `10^-9`) of the CPU. Should be at least `1000000`
+     */
     nanoCpus?: number;
 }
 
 export interface ServiceTaskSpecResourcesReservationGenericResources {
+    /**
+     * The Integer resources
+     */
     discreteResourcesSpecs?: string[];
+    /**
+     * The String resources
+     */
     namedResourcesSpecs?: string[];
 }
 
 export interface ServiceTaskSpecRestartPolicy {
+    /**
+     * Condition for restart
+     */
     condition?: string;
+    /**
+     * The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.
+     */
     delay?: string;
+    /**
+     * Maximum attempts to restart a given container before giving up (default value is `0`, which is ignored)
+     */
     maxAttempts?: number;
+    /**
+     * The time window used to evaluate the restart policy (default value is `0`, which is unbounded) (ms|s|m|h)
+     */
     window?: string;
 }
 

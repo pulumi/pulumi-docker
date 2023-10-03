@@ -140,14 +140,14 @@ public final class PluginArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * Docker Plugin name
+     * The name of the permission
      * 
      */
     @Import(name="name")
     private @Nullable Output<String> name;
 
     /**
-     * @return Docker Plugin name
+     * @return The name of the permission
      * 
      */
     public Optional<Output<String>> name() {
@@ -375,7 +375,7 @@ public final class PluginArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param name Docker Plugin name
+         * @param name The name of the permission
          * 
          * @return builder
          * 
@@ -386,7 +386,7 @@ public final class PluginArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param name Docker Plugin name
+         * @param name The name of the permission
          * 
          * @return builder
          * 

@@ -11,9 +11,17 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ContainerMountBindOptions {
+    /**
+     * @return A propagation mode with the value.
+     * 
+     */
     private @Nullable String propagation;
 
     private ContainerMountBindOptions() {}
+    /**
+     * @return A propagation mode with the value.
+     * 
+     */
     public Optional<String> propagation() {
         return Optional.ofNullable(this.propagation);
     }

@@ -87,11 +87,11 @@ export class Service extends pulumi.CustomResource {
      */
     public readonly labels!: pulumi.Output<outputs.ServiceLabel[]>;
     /**
-     * Scheduling mode for the service
+     * The mode of resolution to use for internal load balancing between tasks
      */
     public readonly mode!: pulumi.Output<outputs.ServiceMode>;
     /**
-     * Name of the service
+     * A random name for the port
      */
     public readonly name!: pulumi.Output<string>;
     /**
@@ -170,11 +170,11 @@ export interface ServiceState {
      */
     labels?: pulumi.Input<pulumi.Input<inputs.ServiceLabel>[]>;
     /**
-     * Scheduling mode for the service
+     * The mode of resolution to use for internal load balancing between tasks
      */
     mode?: pulumi.Input<inputs.ServiceMode>;
     /**
-     * Name of the service
+     * A random name for the port
      */
     name?: pulumi.Input<string>;
     /**
@@ -212,11 +212,11 @@ export interface ServiceArgs {
      */
     labels?: pulumi.Input<pulumi.Input<inputs.ServiceLabel>[]>;
     /**
-     * Scheduling mode for the service
+     * The mode of resolution to use for internal load balancing between tasks
      */
     mode?: pulumi.Input<inputs.ServiceMode>;
     /**
-     * Name of the service
+     * A random name for the port
      */
     name?: pulumi.Input<string>;
     /**

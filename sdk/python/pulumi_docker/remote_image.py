@@ -6,7 +6,7 @@ import copy
 import warnings
 import pulumi
 import pulumi.runtime
-from typing import Any, Mapping, Optional, Sequence, Union, overload
+from typing import Any, Callable, Mapping, Optional, Sequence, Union, overload
 from . import _utilities
 from . import outputs
 from ._inputs import *
@@ -25,33 +25,54 @@ class RemoteImageArgs:
                  triggers: Optional[pulumi.Input[Mapping[str, Any]]] = None):
         """
         The set of arguments for constructing a RemoteImage resource.
-        :param pulumi.Input[str] name: The name of the Docker image, including any tags or SHA256 repo digests.
+        :param pulumi.Input[str] name: type of ulimit, e.g. `nofile`
         :param pulumi.Input['RemoteImageBuildArgs'] build: Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
-        :param pulumi.Input[bool] force_remove: If true, then the image is removed forcibly when the resource is destroyed.
+        :param pulumi.Input[bool] force_remove: Always remove intermediate containers
         :param pulumi.Input[bool] keep_locally: If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
-        :param pulumi.Input[str] platform: The platform to use when pulling the image. Defaults to the platform of the current machine.
+        :param pulumi.Input[str] platform: Set platform if server is multi-platform capable
         :param pulumi.Input[Sequence[pulumi.Input[str]]] pull_triggers: List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
         :param pulumi.Input[Mapping[str, Any]] triggers: A map of arbitrary strings that, when changed, will force the `RemoteImage` resource to be replaced. This can be used to rebuild an image when contents of source code folders change
         """
-        pulumi.set(__self__, "name", name)
+        RemoteImageArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            name=name,
+            build=build,
+            force_remove=force_remove,
+            keep_locally=keep_locally,
+            platform=platform,
+            pull_triggers=pull_triggers,
+            triggers=triggers,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             name: pulumi.Input[str],
+             build: Optional[pulumi.Input['RemoteImageBuildArgs']] = None,
+             force_remove: Optional[pulumi.Input[bool]] = None,
+             keep_locally: Optional[pulumi.Input[bool]] = None,
+             platform: Optional[pulumi.Input[str]] = None,
+             pull_triggers: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+             triggers: Optional[pulumi.Input[Mapping[str, Any]]] = None,
+             opts: Optional[pulumi.ResourceOptions]=None):
+        _setter("name", name)
         if build is not None:
-            pulumi.set(__self__, "build", build)
+            _setter("build", build)
         if force_remove is not None:
-            pulumi.set(__self__, "force_remove", force_remove)
+            _setter("force_remove", force_remove)
         if keep_locally is not None:
-            pulumi.set(__self__, "keep_locally", keep_locally)
+            _setter("keep_locally", keep_locally)
         if platform is not None:
-            pulumi.set(__self__, "platform", platform)
+            _setter("platform", platform)
         if pull_triggers is not None:
-            pulumi.set(__self__, "pull_triggers", pull_triggers)
+            _setter("pull_triggers", pull_triggers)
         if triggers is not None:
-            pulumi.set(__self__, "triggers", triggers)
+            _setter("triggers", triggers)
 
     @property
     @pulumi.getter
     def name(self) -> pulumi.Input[str]:
         """
-        The name of the Docker image, including any tags or SHA256 repo digests.
+        type of ulimit, e.g. `nofile`
         """
         return pulumi.get(self, "name")
 
@@ -75,7 +96,7 @@ class RemoteImageArgs:
     @pulumi.getter(name="forceRemove")
     def force_remove(self) -> Optional[pulumi.Input[bool]]:
         """
-        If true, then the image is removed forcibly when the resource is destroyed.
+        Always remove intermediate containers
         """
         return pulumi.get(self, "force_remove")
 
@@ -99,7 +120,7 @@ class RemoteImageArgs:
     @pulumi.getter
     def platform(self) -> Optional[pulumi.Input[str]]:
         """
-        The platform to use when pulling the image. Defaults to the platform of the current machine.
+        Set platform if server is multi-platform capable
         """
         return pulumi.get(self, "platform")
 
@@ -147,33 +168,58 @@ class _RemoteImageState:
         """
         Input properties used for looking up and filtering RemoteImage resources.
         :param pulumi.Input['RemoteImageBuildArgs'] build: Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
-        :param pulumi.Input[bool] force_remove: If true, then the image is removed forcibly when the resource is destroyed.
+        :param pulumi.Input[bool] force_remove: Always remove intermediate containers
         :param pulumi.Input[str] image_id: The ID of the image (as seen when executing `docker inspect` on the image). Can be used to reference the image via its ID in other resources.
         :param pulumi.Input[bool] keep_locally: If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
-        :param pulumi.Input[str] name: The name of the Docker image, including any tags or SHA256 repo digests.
-        :param pulumi.Input[str] platform: The platform to use when pulling the image. Defaults to the platform of the current machine.
+        :param pulumi.Input[str] name: type of ulimit, e.g. `nofile`
+        :param pulumi.Input[str] platform: Set platform if server is multi-platform capable
         :param pulumi.Input[Sequence[pulumi.Input[str]]] pull_triggers: List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
         :param pulumi.Input[str] repo_digest: The image sha256 digest in the form of `repo[:tag]@sha256:<hash>`.
         :param pulumi.Input[Mapping[str, Any]] triggers: A map of arbitrary strings that, when changed, will force the `RemoteImage` resource to be replaced. This can be used to rebuild an image when contents of source code folders change
         """
+        _RemoteImageState._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            build=build,
+            force_remove=force_remove,
+            image_id=image_id,
+            keep_locally=keep_locally,
+            name=name,
+            platform=platform,
+            pull_triggers=pull_triggers,
+            repo_digest=repo_digest,
+            triggers=triggers,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             build: Optional[pulumi.Input['RemoteImageBuildArgs']] = None,
+             force_remove: Optional[pulumi.Input[bool]] = None,
+             image_id: Optional[pulumi.Input[str]] = None,
+             keep_locally: Optional[pulumi.Input[bool]] = None,
+             name: Optional[pulumi.Input[str]] = None,
+             platform: Optional[pulumi.Input[str]] = None,
+             pull_triggers: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+             repo_digest: Optional[pulumi.Input[str]] = None,
+             triggers: Optional[pulumi.Input[Mapping[str, Any]]] = None,
+             opts: Optional[pulumi.ResourceOptions]=None):
         if build is not None:
-            pulumi.set(__self__, "build", build)
+            _setter("build", build)
         if force_remove is not None:
-            pulumi.set(__self__, "force_remove", force_remove)
+            _setter("force_remove", force_remove)
         if image_id is not None:
-            pulumi.set(__self__, "image_id", image_id)
+            _setter("image_id", image_id)
         if keep_locally is not None:
-            pulumi.set(__self__, "keep_locally", keep_locally)
+            _setter("keep_locally", keep_locally)
         if name is not None:
-            pulumi.set(__self__, "name", name)
+            _setter("name", name)
         if platform is not None:
-            pulumi.set(__self__, "platform", platform)
+            _setter("platform", platform)
         if pull_triggers is not None:
-            pulumi.set(__self__, "pull_triggers", pull_triggers)
+            _setter("pull_triggers", pull_triggers)
         if repo_digest is not None:
-            pulumi.set(__self__, "repo_digest", repo_digest)
+            _setter("repo_digest", repo_digest)
         if triggers is not None:
-            pulumi.set(__self__, "triggers", triggers)
+            _setter("triggers", triggers)
 
     @property
     @pulumi.getter
@@ -191,7 +237,7 @@ class _RemoteImageState:
     @pulumi.getter(name="forceRemove")
     def force_remove(self) -> Optional[pulumi.Input[bool]]:
         """
-        If true, then the image is removed forcibly when the resource is destroyed.
+        Always remove intermediate containers
         """
         return pulumi.get(self, "force_remove")
 
@@ -227,7 +273,7 @@ class _RemoteImageState:
     @pulumi.getter
     def name(self) -> Optional[pulumi.Input[str]]:
         """
-        The name of the Docker image, including any tags or SHA256 repo digests.
+        type of ulimit, e.g. `nofile`
         """
         return pulumi.get(self, "name")
 
@@ -239,7 +285,7 @@ class _RemoteImageState:
     @pulumi.getter
     def platform(self) -> Optional[pulumi.Input[str]]:
         """
-        The platform to use when pulling the image. Defaults to the platform of the current machine.
+        Set platform if server is multi-platform capable
         """
         return pulumi.get(self, "platform")
 
@@ -332,10 +378,10 @@ class RemoteImage(pulumi.CustomResource):
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[pulumi.InputType['RemoteImageBuildArgs']] build: Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
-        :param pulumi.Input[bool] force_remove: If true, then the image is removed forcibly when the resource is destroyed.
+        :param pulumi.Input[bool] force_remove: Always remove intermediate containers
         :param pulumi.Input[bool] keep_locally: If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
-        :param pulumi.Input[str] name: The name of the Docker image, including any tags or SHA256 repo digests.
-        :param pulumi.Input[str] platform: The platform to use when pulling the image. Defaults to the platform of the current machine.
+        :param pulumi.Input[str] name: type of ulimit, e.g. `nofile`
+        :param pulumi.Input[str] platform: Set platform if server is multi-platform capable
         :param pulumi.Input[Sequence[pulumi.Input[str]]] pull_triggers: List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
         :param pulumi.Input[Mapping[str, Any]] triggers: A map of arbitrary strings that, when changed, will force the `RemoteImage` resource to be replaced. This can be used to rebuild an image when contents of source code folders change
         """
@@ -387,6 +433,10 @@ class RemoteImage(pulumi.CustomResource):
         if resource_args is not None:
             __self__._internal_init(resource_name, opts, **resource_args.__dict__)
         else:
+            kwargs = kwargs or {}
+            def _setter(key, value):
+                kwargs[key] = value
+            RemoteImageArgs._configure(_setter, **kwargs)
             __self__._internal_init(resource_name, *args, **kwargs)
 
     def _internal_init(__self__,
@@ -408,6 +458,11 @@ class RemoteImage(pulumi.CustomResource):
                 raise TypeError('__props__ is only valid when passed in combination with a valid opts.id to get an existing resource')
             __props__ = RemoteImageArgs.__new__(RemoteImageArgs)
 
+            if build is not None and not isinstance(build, RemoteImageBuildArgs):
+                build = build or {}
+                def _setter(key, value):
+                    build[key] = value
+                RemoteImageBuildArgs._configure(_setter, **build)
             __props__.__dict__["build"] = build
             __props__.__dict__["force_remove"] = force_remove
             __props__.__dict__["keep_locally"] = keep_locally
@@ -446,11 +501,11 @@ class RemoteImage(pulumi.CustomResource):
         :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[pulumi.InputType['RemoteImageBuildArgs']] build: Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
-        :param pulumi.Input[bool] force_remove: If true, then the image is removed forcibly when the resource is destroyed.
+        :param pulumi.Input[bool] force_remove: Always remove intermediate containers
         :param pulumi.Input[str] image_id: The ID of the image (as seen when executing `docker inspect` on the image). Can be used to reference the image via its ID in other resources.
         :param pulumi.Input[bool] keep_locally: If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
-        :param pulumi.Input[str] name: The name of the Docker image, including any tags or SHA256 repo digests.
-        :param pulumi.Input[str] platform: The platform to use when pulling the image. Defaults to the platform of the current machine.
+        :param pulumi.Input[str] name: type of ulimit, e.g. `nofile`
+        :param pulumi.Input[str] platform: Set platform if server is multi-platform capable
         :param pulumi.Input[Sequence[pulumi.Input[str]]] pull_triggers: List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
         :param pulumi.Input[str] repo_digest: The image sha256 digest in the form of `repo[:tag]@sha256:<hash>`.
         :param pulumi.Input[Mapping[str, Any]] triggers: A map of arbitrary strings that, when changed, will force the `RemoteImage` resource to be replaced. This can be used to rebuild an image when contents of source code folders change
@@ -482,7 +537,7 @@ class RemoteImage(pulumi.CustomResource):
     @pulumi.getter(name="forceRemove")
     def force_remove(self) -> pulumi.Output[Optional[bool]]:
         """
-        If true, then the image is removed forcibly when the resource is destroyed.
+        Always remove intermediate containers
         """
         return pulumi.get(self, "force_remove")
 
@@ -506,7 +561,7 @@ class RemoteImage(pulumi.CustomResource):
     @pulumi.getter
     def name(self) -> pulumi.Output[str]:
         """
-        The name of the Docker image, including any tags or SHA256 repo digests.
+        type of ulimit, e.g. `nofile`
         """
         return pulumi.get(self, "name")
 
@@ -514,7 +569,7 @@ class RemoteImage(pulumi.CustomResource):
     @pulumi.getter
     def platform(self) -> pulumi.Output[Optional[str]]:
         """
-        The platform to use when pulling the image. Defaults to the platform of the current machine.
+        Set platform if server is multi-platform capable
         """
         return pulumi.get(self, "platform")
 

@@ -6,7 +6,7 @@ import copy
 import warnings
 import pulumi
 import pulumi.runtime
-from typing import Any, Mapping, Optional, Sequence, Union, overload
+from typing import Any, Callable, Mapping, Optional, Sequence, Union, overload
 from . import _utilities
 
 __all__ = ['RegistryImageArgs', 'RegistryImage']
@@ -25,14 +25,29 @@ class RegistryImageArgs:
         :param pulumi.Input[str] name: The name of the Docker image.
         :param pulumi.Input[Mapping[str, Any]] triggers: A map of arbitrary strings that, when changed, will force the `RegistryImage` resource to be replaced. This can be used to repush a local image
         """
+        RegistryImageArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            insecure_skip_verify=insecure_skip_verify,
+            keep_remotely=keep_remotely,
+            name=name,
+            triggers=triggers,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             insecure_skip_verify: Optional[pulumi.Input[bool]] = None,
+             keep_remotely: Optional[pulumi.Input[bool]] = None,
+             name: Optional[pulumi.Input[str]] = None,
+             triggers: Optional[pulumi.Input[Mapping[str, Any]]] = None,
+             opts: Optional[pulumi.ResourceOptions]=None):
         if insecure_skip_verify is not None:
-            pulumi.set(__self__, "insecure_skip_verify", insecure_skip_verify)
+            _setter("insecure_skip_verify", insecure_skip_verify)
         if keep_remotely is not None:
-            pulumi.set(__self__, "keep_remotely", keep_remotely)
+            _setter("keep_remotely", keep_remotely)
         if name is not None:
-            pulumi.set(__self__, "name", name)
+            _setter("name", name)
         if triggers is not None:
-            pulumi.set(__self__, "triggers", triggers)
+            _setter("triggers", triggers)
 
     @property
     @pulumi.getter(name="insecureSkipVerify")
@@ -99,16 +114,33 @@ class _RegistryImageState:
         :param pulumi.Input[str] sha256_digest: The sha256 digest of the image.
         :param pulumi.Input[Mapping[str, Any]] triggers: A map of arbitrary strings that, when changed, will force the `RegistryImage` resource to be replaced. This can be used to repush a local image
         """
+        _RegistryImageState._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            insecure_skip_verify=insecure_skip_verify,
+            keep_remotely=keep_remotely,
+            name=name,
+            sha256_digest=sha256_digest,
+            triggers=triggers,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             insecure_skip_verify: Optional[pulumi.Input[bool]] = None,
+             keep_remotely: Optional[pulumi.Input[bool]] = None,
+             name: Optional[pulumi.Input[str]] = None,
+             sha256_digest: Optional[pulumi.Input[str]] = None,
+             triggers: Optional[pulumi.Input[Mapping[str, Any]]] = None,
+             opts: Optional[pulumi.ResourceOptions]=None):
         if insecure_skip_verify is not None:
-            pulumi.set(__self__, "insecure_skip_verify", insecure_skip_verify)
+            _setter("insecure_skip_verify", insecure_skip_verify)
         if keep_remotely is not None:
-            pulumi.set(__self__, "keep_remotely", keep_remotely)
+            _setter("keep_remotely", keep_remotely)
         if name is not None:
-            pulumi.set(__self__, "name", name)
+            _setter("name", name)
         if sha256_digest is not None:
-            pulumi.set(__self__, "sha256_digest", sha256_digest)
+            _setter("sha256_digest", sha256_digest)
         if triggers is not None:
-            pulumi.set(__self__, "triggers", triggers)
+            _setter("triggers", triggers)
 
     @property
     @pulumi.getter(name="insecureSkipVerify")
@@ -244,6 +276,10 @@ class RegistryImage(pulumi.CustomResource):
         if resource_args is not None:
             __self__._internal_init(resource_name, opts, **resource_args.__dict__)
         else:
+            kwargs = kwargs or {}
+            def _setter(key, value):
+                kwargs[key] = value
+            RegistryImageArgs._configure(_setter, **kwargs)
             __self__._internal_init(resource_name, *args, **kwargs)
 
     def _internal_init(__self__,

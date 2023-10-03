@@ -6,7 +6,7 @@ import copy
 import warnings
 import pulumi
 import pulumi.runtime
-from typing import Any, Mapping, Optional, Sequence, Union, overload
+from typing import Any, Callable, Mapping, Optional, Sequence, Union, overload
 from . import _utilities
 
 __all__ = ['TagArgs', 'Tag']
@@ -21,8 +21,19 @@ class TagArgs:
         :param pulumi.Input[str] source_image: Name of the source image.
         :param pulumi.Input[str] target_image: Name of the target image.
         """
-        pulumi.set(__self__, "source_image", source_image)
-        pulumi.set(__self__, "target_image", target_image)
+        TagArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            source_image=source_image,
+            target_image=target_image,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             source_image: pulumi.Input[str],
+             target_image: pulumi.Input[str],
+             opts: Optional[pulumi.ResourceOptions]=None):
+        _setter("source_image", source_image)
+        _setter("target_image", target_image)
 
     @property
     @pulumi.getter(name="sourceImage")
@@ -61,12 +72,25 @@ class _TagState:
         :param pulumi.Input[str] source_image_id: ImageID of the source image in the format of `sha256:<<ID>>`
         :param pulumi.Input[str] target_image: Name of the target image.
         """
+        _TagState._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            source_image=source_image,
+            source_image_id=source_image_id,
+            target_image=target_image,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             source_image: Optional[pulumi.Input[str]] = None,
+             source_image_id: Optional[pulumi.Input[str]] = None,
+             target_image: Optional[pulumi.Input[str]] = None,
+             opts: Optional[pulumi.ResourceOptions]=None):
         if source_image is not None:
-            pulumi.set(__self__, "source_image", source_image)
+            _setter("source_image", source_image)
         if source_image_id is not None:
-            pulumi.set(__self__, "source_image_id", source_image_id)
+            _setter("source_image_id", source_image_id)
         if target_image is not None:
-            pulumi.set(__self__, "target_image", target_image)
+            _setter("target_image", target_image)
 
     @property
     @pulumi.getter(name="sourceImage")
@@ -140,6 +164,10 @@ class Tag(pulumi.CustomResource):
         if resource_args is not None:
             __self__._internal_init(resource_name, opts, **resource_args.__dict__)
         else:
+            kwargs = kwargs or {}
+            def _setter(key, value):
+                kwargs[key] = value
+            TagArgs._configure(_setter, **kwargs)
             __self__._internal_init(resource_name, *args, **kwargs)
 
     def _internal_init(__self__,

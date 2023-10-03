@@ -19,38 +19,62 @@ public final class ContainerMountVolumeOptionsArgs extends com.pulumi.resources.
 
     public static final ContainerMountVolumeOptionsArgs Empty = new ContainerMountVolumeOptionsArgs();
 
+    /**
+     * Name of the driver to use to create the volume.
+     * 
+     */
     @Import(name="driverName")
     private @Nullable Output<String> driverName;
 
+    /**
+     * @return Name of the driver to use to create the volume.
+     * 
+     */
     public Optional<Output<String>> driverName() {
         return Optional.ofNullable(this.driverName);
     }
 
+    /**
+     * key/value map of driver specific options.
+     * 
+     */
     @Import(name="driverOptions")
     private @Nullable Output<Map<String,String>> driverOptions;
 
+    /**
+     * @return key/value map of driver specific options.
+     * 
+     */
     public Optional<Output<Map<String,String>>> driverOptions() {
         return Optional.ofNullable(this.driverOptions);
     }
 
     /**
-     * User-defined key/value metadata
+     * User-defined key/value metadata.
      * 
      */
     @Import(name="labels")
     private @Nullable Output<List<ContainerMountVolumeOptionsLabelArgs>> labels;
 
     /**
-     * @return User-defined key/value metadata
+     * @return User-defined key/value metadata.
      * 
      */
     public Optional<Output<List<ContainerMountVolumeOptionsLabelArgs>>> labels() {
         return Optional.ofNullable(this.labels);
     }
 
+    /**
+     * Populate volume with data from the target.
+     * 
+     */
     @Import(name="noCopy")
     private @Nullable Output<Boolean> noCopy;
 
+    /**
+     * @return Populate volume with data from the target.
+     * 
+     */
     public Optional<Output<Boolean>> noCopy() {
         return Optional.ofNullable(this.noCopy);
     }
@@ -82,26 +106,50 @@ public final class ContainerMountVolumeOptionsArgs extends com.pulumi.resources.
             $ = new ContainerMountVolumeOptionsArgs(Objects.requireNonNull(defaults));
         }
 
+        /**
+         * @param driverName Name of the driver to use to create the volume.
+         * 
+         * @return builder
+         * 
+         */
         public Builder driverName(@Nullable Output<String> driverName) {
             $.driverName = driverName;
             return this;
         }
 
+        /**
+         * @param driverName Name of the driver to use to create the volume.
+         * 
+         * @return builder
+         * 
+         */
         public Builder driverName(String driverName) {
             return driverName(Output.of(driverName));
         }
 
+        /**
+         * @param driverOptions key/value map of driver specific options.
+         * 
+         * @return builder
+         * 
+         */
         public Builder driverOptions(@Nullable Output<Map<String,String>> driverOptions) {
             $.driverOptions = driverOptions;
             return this;
         }
 
+        /**
+         * @param driverOptions key/value map of driver specific options.
+         * 
+         * @return builder
+         * 
+         */
         public Builder driverOptions(Map<String,String> driverOptions) {
             return driverOptions(Output.of(driverOptions));
         }
 
         /**
-         * @param labels User-defined key/value metadata
+         * @param labels User-defined key/value metadata.
          * 
          * @return builder
          * 
@@ -112,7 +160,7 @@ public final class ContainerMountVolumeOptionsArgs extends com.pulumi.resources.
         }
 
         /**
-         * @param labels User-defined key/value metadata
+         * @param labels User-defined key/value metadata.
          * 
          * @return builder
          * 
@@ -122,7 +170,7 @@ public final class ContainerMountVolumeOptionsArgs extends com.pulumi.resources.
         }
 
         /**
-         * @param labels User-defined key/value metadata
+         * @param labels User-defined key/value metadata.
          * 
          * @return builder
          * 
@@ -131,11 +179,23 @@ public final class ContainerMountVolumeOptionsArgs extends com.pulumi.resources.
             return labels(List.of(labels));
         }
 
+        /**
+         * @param noCopy Populate volume with data from the target.
+         * 
+         * @return builder
+         * 
+         */
         public Builder noCopy(@Nullable Output<Boolean> noCopy) {
             $.noCopy = noCopy;
             return this;
         }
 
+        /**
+         * @param noCopy Populate volume with data from the target.
+         * 
+         * @return builder
+         * 
+         */
         public Builder noCopy(Boolean noCopy) {
             return noCopy(Output.of(noCopy));
         }
