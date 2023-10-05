@@ -65,6 +65,12 @@ func TestSecretsYAML(t *testing.T) {
 			imgNameStr, err := json.Marshal(imgName)
 			assert.NoError(t, err)
 			assert.NotContains(t, imgNameStr, "pulumibot/test-secrets:yaml")
+
+			// Make sure that state file does not contain secrets in plain.
+			deploymentJSON, err := json.MarshalIndent(stack.Deployment, "", "  ")
+			assert.NoError(t, err)
+			assert.NotContainsf(t, string(deploymentJSON), "supersecret",
+				"Secret should not be stored in the plain state")
 		},
 	})
 }

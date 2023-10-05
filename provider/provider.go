@@ -347,6 +347,7 @@ func (p *dockerNativeProvider) Create(ctx context.Context, req *rpc.CreateReques
 		checkpointObject(inputs, outputs.Mappable()),
 		plugin.MarshalOptions{
 			Label:        fmt.Sprintf("%s.checkpoint", label),
+			KeepSecrets:  true,
 			KeepUnknowns: true,
 			SkipNulls:    true,
 		},
@@ -410,6 +411,7 @@ func (p *dockerNativeProvider) Update(ctx context.Context, req *rpc.UpdateReques
 		checkpointObject(newInputs, outputs.Mappable()),
 		plugin.MarshalOptions{
 			Label:        fmt.Sprintf("%s.checkpoint", label),
+			KeepSecrets:  true,
 			KeepUnknowns: true,
 			SkipNulls:    true,
 		},

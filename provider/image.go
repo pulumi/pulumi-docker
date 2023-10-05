@@ -784,10 +784,10 @@ func configureDockerClient(configs map[string]string, verify bool) (*client.Clie
 		if err != nil {
 			log.Printf("error connecting to docker daemon at %s: %v", cli.DaemonHost(), err)
 			return false
-		} else {
-			log.Printf("successful connection to docker daemon at %s", cli.DaemonHost())
-			return true
 		}
+
+		log.Printf("successful connection to docker daemon at %s", cli.DaemonHost())
+		return true
 	}
 
 	success := testConnection(cli)
