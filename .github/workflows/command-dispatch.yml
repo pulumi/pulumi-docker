@@ -24,7 +24,7 @@ env:
   GOVERSION: 1.21.x
   JAVAVERSION: "11"
   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-  NODEVERSION: 16.x
+  NODEVERSION: 20.x
   NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
   NUGET_PUBLISH_KEY: ${{ secrets.NUGET_PUBLISH_KEY }}
   PUBLISH_REPO_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
@@ -50,7 +50,9 @@ jobs:
       uses: actions/checkout@v3
     - uses: peter-evans/slash-command-dispatch@v2
       with:
-        commands: run-acceptance-tests
+        commands: |
+          run-acceptance-tests
+          release
         issue-type: pull-request
         permission: write
         reaction-token: ${{ secrets.GITHUB_TOKEN }}
