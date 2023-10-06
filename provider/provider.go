@@ -287,19 +287,18 @@ func (p *dockerNativeProvider) Diff(ctx context.Context, req *rpc.DiffRequest) (
 func diffUpdates(updates map[resource.PropertyKey]resource.ValueDiff) map[string]*rpc.PropertyDiff {
 	updateDiff := map[string]*rpc.PropertyDiff{}
 	for key, valueDiff := range updates {
-		if string(key) != "registry" {
-			updateDiff[string(key)] = &rpc.PropertyDiff{
-				Kind: rpc.PropertyDiff_UPDATE,
-			}
-		} else {
+		skipUpdate := false
+
+		if string(key) == "registry" && valueDiff.Object != nil {
 			// only register a diff on "server" field, but not on "username" or "password",
 			// as they can change frequently and should not trigger a rebuild.
-			serverDiff := valueDiff.Object.Updates["server"]
-			// if serverDiff is not empty, we register a property diff update
-			if serverDiff != (resource.ValueDiff{}) {
-				updateDiff[string(key)] = &rpc.PropertyDiff{
-					Kind: rpc.PropertyDiff_UPDATE,
-				}
+			_, hasServer := valueDiff.Object.Updates["server"]
+			skipUpdate = !hasServer
+		}
+
+		if !skipUpdate {
+			updateDiff[string(key)] = &rpc.PropertyDiff{
+				Kind: rpc.PropertyDiff_UPDATE,
 			}
 		}
 	}
