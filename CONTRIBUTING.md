@@ -18,9 +18,24 @@ Please read about our [contribution guidelines here.](https://github.com/pulumi/
 Please refer to the [main Pulumi repo](https://github.com/pulumi/pulumi/)'s [CONTRIBUTING.md file](
 https://github.com/pulumi/pulumi/blob/master/CONTRIBUTING.md#developing) for details on how to get set up with Pulumi.
 
+### Make build system
+
+Like the main pulumi repo, we use `make` as our build system. Here are some examples of the make targets:
+
+1. `make provider`, which restores/installs any build dependencies and builds the provider
+1. `make build_sdks`, which just builds the sdks
+1. `make install_sdks`, which installs the nodejs and .net sdks
+1. `make build`, which does all of the above
+
+To easily test new providers, add the bin folder of this project to your path.
+
+```bash
+export PATH=$HOME/.pulumi-dev/pulumi-docker/bin:$PATH
+```
+
 ## Committing Generated Code
 
-You must generate and check in the SDKs on each pull request containing a code change, e.g. adding a new resource to `resources.go`.
+You must generate and check in the SDKs on each pull request containing a code change, e.g. adding a new resource to `resources.go`. Changelog entries are no longer needed for this repository.
 
 1. Run `make build_sdks` from the root of this repository
 1. Open a pull request containing all changes
