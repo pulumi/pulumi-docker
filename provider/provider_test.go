@@ -82,6 +82,26 @@ func TestDiffUpdates(t *testing.T) {
 		assert.Equal(t, expected, actual)
 	})
 
+	t.Run("Diff happens on unknown new registry", func(t *testing.T) {
+		expected := map[string]*rpc.PropertyDiff{
+			"registry": {
+				Kind: rpc.PropertyDiff_UPDATE,
+			},
+		}
+		input := map[resource.PropertyKey]resource.ValueDiff{
+			"registry": {
+				Old: resource.NewObjectProperty(resource.PropertyMap{
+					"server":   resource.NewStringProperty("https://index.docker.io/v1/"),
+					"username": resource.NewStringProperty("pulumipus"),
+					"password": resource.NewStringProperty("supersecret"),
+				}),
+				New: resource.NewComputedProperty(resource.Computed{Element: resource.NewStringProperty("X")}),
+			},
+		}
+		actual := diffUpdates(input)
+		assert.Equal(t, expected, actual)
+	})
+
 	t.Run("Diff happens on changed build context", func(t *testing.T) {
 		expected := map[string]*rpc.PropertyDiff{
 			"build": {
