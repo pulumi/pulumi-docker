@@ -60,6 +60,12 @@ func TestAzureContainerRegistry(t *testing.T) {
 				"azure:location":    location,
 			},
 			ExpectRefreshChanges: true,
+			EditDirs: []integration.EditDir{
+				{
+					Dir:      "step2",
+					Additive: true,
+				},
+			},
 		})
 
 	integration.ProgramTest(t, &test)
