@@ -4030,8 +4030,6 @@ class DockerBuildArgs:
         """
         if args is not None:
             pulumi.set(__self__, "args", args)
-        if builder_version is None:
-            builder_version = 'BuilderBuildKit'
         if builder_version is not None:
             pulumi.set(__self__, "builder_version", builder_version)
         if cache_from is not None:

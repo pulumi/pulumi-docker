@@ -11013,19 +11013,6 @@ type DockerBuild struct {
 	Target *string `pulumi:"target"`
 }
 
-// Defaults sets the appropriate defaults for DockerBuild
-func (val *DockerBuild) Defaults() *DockerBuild {
-	if val == nil {
-		return nil
-	}
-	tmp := *val
-	if tmp.BuilderVersion == nil {
-		builderVersion_ := BuilderVersion("BuilderBuildKit")
-		tmp.BuilderVersion = &builderVersion_
-	}
-	return &tmp
-}
-
 // DockerBuildInput is an input type that accepts DockerBuildArgs and DockerBuildOutput values.
 // You can construct a concrete instance of `DockerBuildInput` via:
 //
@@ -11055,17 +11042,6 @@ type DockerBuildArgs struct {
 	Target pulumi.StringPtrInput `pulumi:"target"`
 }
 
-// Defaults sets the appropriate defaults for DockerBuildArgs
-func (val *DockerBuildArgs) Defaults() *DockerBuildArgs {
-	if val == nil {
-		return nil
-	}
-	tmp := *val
-	if tmp.BuilderVersion == nil {
-		tmp.BuilderVersion = BuilderVersion("BuilderBuildKit")
-	}
-	return &tmp
-}
 func (DockerBuildArgs) ElementType() reflect.Type {
 	return reflect.TypeOf((*DockerBuild)(nil)).Elem()
 }

@@ -6,8 +6,6 @@ import * as inputs from "../types/input";
 import * as outputs from "../types/output";
 import * as enums from "../types/enums";
 
-import * as utilities from "../utilities";
-
 /**
  * Contains a list of images to reference when building using a cache
  */
@@ -293,15 +291,6 @@ export interface DockerBuild {
      * The target of the Dockerfile to build
      */
     target?: pulumi.Input<string>;
-}
-/**
- * dockerBuildProvideDefaults sets the appropriate defaults for DockerBuild
- */
-export function dockerBuildProvideDefaults(val: DockerBuild): DockerBuild {
-    return {
-        ...val,
-        builderVersion: (val.builderVersion) ?? "BuilderBuildKit",
-    };
 }
 
 export interface NetworkIpamConfig {

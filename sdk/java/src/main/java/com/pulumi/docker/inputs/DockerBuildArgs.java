@@ -5,7 +5,6 @@ package com.pulumi.docker.inputs;
 
 import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
-import com.pulumi.core.internal.Codegen;
 import com.pulumi.docker.enums.BuilderVersion;
 import com.pulumi.docker.inputs.CacheFromArgs;
 import java.lang.String;
@@ -306,7 +305,6 @@ public final class DockerBuildArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         public DockerBuildArgs build() {
-            $.builderVersion = Codegen.objectProp("builderVersion", BuilderVersion.class).output().arg($.builderVersion).def(BuilderVersion.BuilderBuildKit).getNullable();
             return $;
         }
     }

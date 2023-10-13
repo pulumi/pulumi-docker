@@ -196,9 +196,6 @@ func NewImage(ctx *pulumi.Context,
 	if args.ImageName == nil {
 		return nil, errors.New("invalid value for required argument 'ImageName'")
 	}
-	if args.Build != nil {
-		args.Build = args.Build.ToDockerBuildPtrOutput().ApplyT(func(v *DockerBuild) *DockerBuild { return v.Defaults() }).(DockerBuildPtrOutput)
-	}
 	if args.SkipPush == nil {
 		args.SkipPush = pulumi.BoolPtr(false)
 	}

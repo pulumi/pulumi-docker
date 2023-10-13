@@ -1785,8 +1785,7 @@
                 },
                 "builderVersion": {
                     "$ref": "#/types/docker:index/builderVersion:BuilderVersion",
-                    "description": "The version of the Docker builder.",
-                    "default": "BuilderBuildKit"
+                    "description": "The version of the Docker builder."
                 },
                 "cacheFrom": {
                     "$ref": "#/types/docker:index/cacheFrom:CacheFrom",
