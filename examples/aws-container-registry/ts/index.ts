@@ -1,5 +1,6 @@
 import * as aws from "@pulumi/aws";
 import * as docker from "@pulumi/docker";
+import * as random from "@pulumi/random";
 
 // Create a private ECR registry.
 const repo = new aws.ecr.Repository("my-repo",{
@@ -21,10 +22,16 @@ const registryInfo = repo.registryId.apply(async id => {
     };
 });
 
+
 // Build and publish the image.
 const image = new docker.Image("my-image", {
     build: {
-        context: "app"
+        context: "app",
+        args: {
+            // Test for preview with dymanic build property.
+            // See https://github.com/pulumi/pulumi-docker/issues/620
+            KEY: new random.RandomUuid('guid', {}).result,
+        },
     },
     imageName: repo.repositoryUrl,
     registry: registryInfo,
