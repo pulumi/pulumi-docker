@@ -11,7 +11,7 @@ repo = aws.ecr.Repository(
 )
 
 # Get registry info (creds and endpoint) so we can build/publish to it.
-def getRegistryInfo(rid):
+def get_registry_info(rid):
     creds = aws.ecr.get_credentials(registry_id=rid)
     decoded = base64.b64decode(creds.authorization_token).decode()
     parts = decoded.split(':')
@@ -24,7 +24,7 @@ def getRegistryInfo(rid):
     )
 
 
-registryInfo = repo.registry_id.apply(getRegistryInfo)
+registry_info = repo.registry_id.apply(get_registry_info)
 
 # Build and publish the image.
 image = Image(
@@ -33,7 +33,7 @@ image = Image(
         context='app',
     ),
     image_name=repo.repository_url,
-    registry=registryInfo,
+    registry=registry_info,
 )
 
 # Export the resulting base name in addition to the specific version pushed.
