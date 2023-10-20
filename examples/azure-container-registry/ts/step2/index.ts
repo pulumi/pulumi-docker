@@ -4,7 +4,7 @@ import * as pulumi from "@pulumi/pulumi";
 
 // Create a private ACR registry.
 const rg = new azure.core.ResourceGroup("myrg")
-const registry = new azure.containerservice.Registry("myregistry", {
+const registry = new azure.containerservice.Registry("myotherregistry", { // <-- renamed the registry to cause a replacement
     resourceGroupName: rg.name,
     adminEnabled: true,
     sku: "Basic",

@@ -6,8 +6,6 @@ import * as inputs from "../types/input";
 import * as outputs from "../types/output";
 import * as enums from "../types/enums";
 
-import * as utilities from "../utilities";
-
 export interface ContainerCapabilities {
     /**
      * List of linux capabilities to add.

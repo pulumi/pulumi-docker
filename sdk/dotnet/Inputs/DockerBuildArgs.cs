@@ -65,7 +65,6 @@ namespace Pulumi.Docker.Inputs
 
         public DockerBuildArgs()
         {
-            BuilderVersion = Pulumi.Docker.BuilderVersion.BuilderBuildKit;
         }
         public static new DockerBuildArgs Empty => new DockerBuildArgs();
     }

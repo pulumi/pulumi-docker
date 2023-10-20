@@ -185,7 +185,6 @@ func Provider() tfbridge.ProviderInfo {
 							TypeSpec: schema.TypeSpec{
 								Ref: "#/types/docker:index/builderVersion:BuilderVersion",
 							},
-							Default: "BuilderBuildKit",
 						},
 						"platform": {
 							Description: "The architecture of the platform you want to build this image for, " +
