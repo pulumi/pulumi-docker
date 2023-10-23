@@ -14,9 +14,12 @@ namespace Pulumi.Docker.Outputs
     public sealed class ServiceTaskSpecLogDriver
     {
         /// <summary>
-        /// Name of the service
+        /// A random name for the port
         /// </summary>
         public readonly string Name;
+        /// <summary>
+        /// A list of internal resolver variables to be modified (e.g., `debug`, `ndots:3`, etc.)
+        /// </summary>
         public readonly ImmutableDictionary<string, string>? Options;
 
         [OutputConstructor]

@@ -200,7 +200,7 @@ namespace Pulumi.Docker
         public Output<string> Hostname { get; private set; } = null!;
 
         /// <summary>
-        /// Additional hosts to add to the container.
+        /// Hostname to add
         /// </summary>
         [Output("hosts")]
         public Output<ImmutableArray<Outputs.ContainerHost>> Hosts { get; private set; } = null!;
@@ -224,7 +224,7 @@ namespace Pulumi.Docker
         public Output<string> IpcMode { get; private set; } = null!;
 
         /// <summary>
-        /// User-defined key/value metadata
+        /// User-defined key/value metadata.
         /// </summary>
         [Output("labels")]
         public Output<ImmutableArray<Outputs.ContainerLabel>> Labels { get; private set; } = null!;
@@ -279,7 +279,7 @@ namespace Pulumi.Docker
         public Output<bool?> MustRun { get; private set; } = null!;
 
         /// <summary>
-        /// The name of the container.
+        /// The name or id of the network to use. You can use `name` or `id` attribute from a `docker.Network` resource.
         /// </summary>
         [Output("name")]
         public Output<string> Name { get; private set; } = null!;
@@ -327,7 +327,7 @@ namespace Pulumi.Docker
         public Output<bool?> PublishAllPorts { get; private set; } = null!;
 
         /// <summary>
-        /// If `true`, the container will be started as readonly. Defaults to `false`.
+        /// Whether the mount should be read-only.
         /// </summary>
         [Output("readOnly")]
         public Output<bool?> ReadOnly { get; private set; } = null!;
@@ -676,7 +676,7 @@ namespace Pulumi.Docker
         private InputList<Inputs.ContainerHostArgs>? _hosts;
 
         /// <summary>
-        /// Additional hosts to add to the container.
+        /// Hostname to add
         /// </summary>
         public InputList<Inputs.ContainerHostArgs> Hosts
         {
@@ -706,7 +706,7 @@ namespace Pulumi.Docker
         private InputList<Inputs.ContainerLabelArgs>? _labels;
 
         /// <summary>
-        /// User-defined key/value metadata
+        /// User-defined key/value metadata.
         /// </summary>
         public InputList<Inputs.ContainerLabelArgs> Labels
         {
@@ -776,7 +776,7 @@ namespace Pulumi.Docker
         public Input<bool>? MustRun { get; set; }
 
         /// <summary>
-        /// The name of the container.
+        /// The name or id of the network to use. You can use `name` or `id` attribute from a `docker.Network` resource.
         /// </summary>
         [Input("name")]
         public Input<string>? Name { get; set; }
@@ -830,7 +830,7 @@ namespace Pulumi.Docker
         public Input<bool>? PublishAllPorts { get; set; }
 
         /// <summary>
-        /// If `true`, the container will be started as readonly. Defaults to `false`.
+        /// Whether the mount should be read-only.
         /// </summary>
         [Input("readOnly")]
         public Input<bool>? ReadOnly { get; set; }
@@ -1201,7 +1201,7 @@ namespace Pulumi.Docker
         private InputList<Inputs.ContainerHostGetArgs>? _hosts;
 
         /// <summary>
-        /// Additional hosts to add to the container.
+        /// Hostname to add
         /// </summary>
         public InputList<Inputs.ContainerHostGetArgs> Hosts
         {
@@ -1231,7 +1231,7 @@ namespace Pulumi.Docker
         private InputList<Inputs.ContainerLabelGetArgs>? _labels;
 
         /// <summary>
-        /// User-defined key/value metadata
+        /// User-defined key/value metadata.
         /// </summary>
         public InputList<Inputs.ContainerLabelGetArgs> Labels
         {
@@ -1301,7 +1301,7 @@ namespace Pulumi.Docker
         public Input<bool>? MustRun { get; set; }
 
         /// <summary>
-        /// The name of the container.
+        /// The name or id of the network to use. You can use `name` or `id` attribute from a `docker.Network` resource.
         /// </summary>
         [Input("name")]
         public Input<string>? Name { get; set; }
@@ -1367,7 +1367,7 @@ namespace Pulumi.Docker
         public Input<bool>? PublishAllPorts { get; set; }
 
         /// <summary>
-        /// If `true`, the container will be started as readonly. Defaults to `false`.
+        /// Whether the mount should be read-only.
         /// </summary>
         [Input("readOnly")]
         public Input<bool>? ReadOnly { get; set; }

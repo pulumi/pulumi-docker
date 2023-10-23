@@ -14,9 +14,12 @@ namespace Pulumi.Docker.Outputs
     public sealed class ServiceTaskSpecContainerSpecMountTmpfsOptions
     {
         /// <summary>
-        /// Scheduling mode for the service
+        /// The mode of resolution to use for internal load balancing between tasks
         /// </summary>
         public readonly int? Mode;
+        /// <summary>
+        /// The size for the tmpfs mount in bytes
+        /// </summary>
         public readonly int? SizeBytes;
 
         [OutputConstructor]

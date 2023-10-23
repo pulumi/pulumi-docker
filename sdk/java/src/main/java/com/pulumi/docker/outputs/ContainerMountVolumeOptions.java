@@ -15,29 +15,53 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ContainerMountVolumeOptions {
+    /**
+     * @return Name of the driver to use to create the volume.
+     * 
+     */
     private @Nullable String driverName;
+    /**
+     * @return key/value map of driver specific options.
+     * 
+     */
     private @Nullable Map<String,String> driverOptions;
     /**
-     * @return User-defined key/value metadata
+     * @return User-defined key/value metadata.
      * 
      */
     private @Nullable List<ContainerMountVolumeOptionsLabel> labels;
+    /**
+     * @return Populate volume with data from the target.
+     * 
+     */
     private @Nullable Boolean noCopy;
 
     private ContainerMountVolumeOptions() {}
+    /**
+     * @return Name of the driver to use to create the volume.
+     * 
+     */
     public Optional<String> driverName() {
         return Optional.ofNullable(this.driverName);
     }
+    /**
+     * @return key/value map of driver specific options.
+     * 
+     */
     public Map<String,String> driverOptions() {
         return this.driverOptions == null ? Map.of() : this.driverOptions;
     }
     /**
-     * @return User-defined key/value metadata
+     * @return User-defined key/value metadata.
      * 
      */
     public List<ContainerMountVolumeOptionsLabel> labels() {
         return this.labels == null ? List.of() : this.labels;
     }
+    /**
+     * @return Populate volume with data from the target.
+     * 
+     */
     public Optional<Boolean> noCopy() {
         return Optional.ofNullable(this.noCopy);
     }

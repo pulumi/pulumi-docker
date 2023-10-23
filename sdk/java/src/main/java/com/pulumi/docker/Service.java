@@ -118,28 +118,28 @@ public class Service extends com.pulumi.resources.CustomResource {
         return this.labels;
     }
     /**
-     * Scheduling mode for the service
+     * The mode of resolution to use for internal load balancing between tasks
      * 
      */
     @Export(name="mode", refs={ServiceMode.class}, tree="[0]")
     private Output<ServiceMode> mode;
 
     /**
-     * @return Scheduling mode for the service
+     * @return The mode of resolution to use for internal load balancing between tasks
      * 
      */
     public Output<ServiceMode> mode() {
         return this.mode;
     }
     /**
-     * Name of the service
+     * A random name for the port
      * 
      */
     @Export(name="name", refs={String.class}, tree="[0]")
     private Output<String> name;
 
     /**
-     * @return Name of the service
+     * @return A random name for the port
      * 
      */
     public Output<String> name() {

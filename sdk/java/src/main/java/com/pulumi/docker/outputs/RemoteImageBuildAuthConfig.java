@@ -11,37 +11,101 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class RemoteImageBuildAuthConfig {
+    /**
+     * @return the auth token
+     * 
+     */
     private @Nullable String auth;
+    /**
+     * @return the user emal
+     * 
+     */
     private @Nullable String email;
+    /**
+     * @return hostname of the registry
+     * 
+     */
     private String hostName;
+    /**
+     * @return the identity token
+     * 
+     */
     private @Nullable String identityToken;
+    /**
+     * @return the registry password
+     * 
+     */
     private @Nullable String password;
+    /**
+     * @return the registry token
+     * 
+     */
     private @Nullable String registryToken;
+    /**
+     * @return the server address
+     * 
+     */
     private @Nullable String serverAddress;
+    /**
+     * @return the registry user name
+     * 
+     */
     private @Nullable String userName;
 
     private RemoteImageBuildAuthConfig() {}
+    /**
+     * @return the auth token
+     * 
+     */
     public Optional<String> auth() {
         return Optional.ofNullable(this.auth);
     }
+    /**
+     * @return the user emal
+     * 
+     */
     public Optional<String> email() {
         return Optional.ofNullable(this.email);
     }
+    /**
+     * @return hostname of the registry
+     * 
+     */
     public String hostName() {
         return this.hostName;
     }
+    /**
+     * @return the identity token
+     * 
+     */
     public Optional<String> identityToken() {
         return Optional.ofNullable(this.identityToken);
     }
+    /**
+     * @return the registry password
+     * 
+     */
     public Optional<String> password() {
         return Optional.ofNullable(this.password);
     }
+    /**
+     * @return the registry token
+     * 
+     */
     public Optional<String> registryToken() {
         return Optional.ofNullable(this.registryToken);
     }
+    /**
+     * @return the server address
+     * 
+     */
     public Optional<String> serverAddress() {
         return Optional.ofNullable(this.serverAddress);
     }
+    /**
+     * @return the registry user name
+     * 
+     */
     public Optional<String> userName() {
         return Optional.ofNullable(this.userName);
     }

@@ -15,9 +15,17 @@ public final class ContainerMountBindOptionsArgs extends com.pulumi.resources.Re
 
     public static final ContainerMountBindOptionsArgs Empty = new ContainerMountBindOptionsArgs();
 
+    /**
+     * A propagation mode with the value.
+     * 
+     */
     @Import(name="propagation")
     private @Nullable Output<String> propagation;
 
+    /**
+     * @return A propagation mode with the value.
+     * 
+     */
     public Optional<Output<String>> propagation() {
         return Optional.ofNullable(this.propagation);
     }
@@ -46,11 +54,23 @@ public final class ContainerMountBindOptionsArgs extends com.pulumi.resources.Re
             $ = new ContainerMountBindOptionsArgs(Objects.requireNonNull(defaults));
         }
 
+        /**
+         * @param propagation A propagation mode with the value.
+         * 
+         * @return builder
+         * 
+         */
         public Builder propagation(@Nullable Output<String> propagation) {
             $.propagation = propagation;
             return this;
         }
 
+        /**
+         * @param propagation A propagation mode with the value.
+         * 
+         * @return builder
+         * 
+         */
         public Builder propagation(String propagation) {
             return propagation(Output.of(propagation));
         }

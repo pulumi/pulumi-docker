@@ -166,7 +166,7 @@ export class Container extends pulumi.CustomResource {
      */
     public readonly hostname!: pulumi.Output<string>;
     /**
-     * Additional hosts to add to the container.
+     * Hostname to add
      */
     public readonly hosts!: pulumi.Output<outputs.ContainerHost[] | undefined>;
     /**
@@ -182,7 +182,7 @@ export class Container extends pulumi.CustomResource {
      */
     public readonly ipcMode!: pulumi.Output<string>;
     /**
-     * User-defined key/value metadata
+     * User-defined key/value metadata.
      */
     public readonly labels!: pulumi.Output<outputs.ContainerLabel[]>;
     /**
@@ -219,7 +219,7 @@ export class Container extends pulumi.CustomResource {
      */
     public readonly mustRun!: pulumi.Output<boolean | undefined>;
     /**
-     * The name of the container.
+     * The name or id of the network to use. You can use `name` or `id` attribute from a `docker.Network` resource.
      */
     public readonly name!: pulumi.Output<string>;
     /**
@@ -251,7 +251,7 @@ export class Container extends pulumi.CustomResource {
      */
     public readonly publishAllPorts!: pulumi.Output<boolean | undefined>;
     /**
-     * If `true`, the container will be started as readonly. Defaults to `false`.
+     * Whether the mount should be read-only.
      */
     public readonly readOnly!: pulumi.Output<boolean | undefined>;
     /**
@@ -592,7 +592,7 @@ export interface ContainerState {
      */
     hostname?: pulumi.Input<string>;
     /**
-     * Additional hosts to add to the container.
+     * Hostname to add
      */
     hosts?: pulumi.Input<pulumi.Input<inputs.ContainerHost>[]>;
     /**
@@ -608,7 +608,7 @@ export interface ContainerState {
      */
     ipcMode?: pulumi.Input<string>;
     /**
-     * User-defined key/value metadata
+     * User-defined key/value metadata.
      */
     labels?: pulumi.Input<pulumi.Input<inputs.ContainerLabel>[]>;
     /**
@@ -645,7 +645,7 @@ export interface ContainerState {
      */
     mustRun?: pulumi.Input<boolean>;
     /**
-     * The name of the container.
+     * The name or id of the network to use. You can use `name` or `id` attribute from a `docker.Network` resource.
      */
     name?: pulumi.Input<string>;
     /**
@@ -677,7 +677,7 @@ export interface ContainerState {
      */
     publishAllPorts?: pulumi.Input<boolean>;
     /**
-     * If `true`, the container will be started as readonly. Defaults to `false`.
+     * Whether the mount should be read-only.
      */
     readOnly?: pulumi.Input<boolean>;
     /**
@@ -851,7 +851,7 @@ export interface ContainerArgs {
      */
     hostname?: pulumi.Input<string>;
     /**
-     * Additional hosts to add to the container.
+     * Hostname to add
      */
     hosts?: pulumi.Input<pulumi.Input<inputs.ContainerHost>[]>;
     /**
@@ -867,7 +867,7 @@ export interface ContainerArgs {
      */
     ipcMode?: pulumi.Input<string>;
     /**
-     * User-defined key/value metadata
+     * User-defined key/value metadata.
      */
     labels?: pulumi.Input<pulumi.Input<inputs.ContainerLabel>[]>;
     /**
@@ -904,7 +904,7 @@ export interface ContainerArgs {
      */
     mustRun?: pulumi.Input<boolean>;
     /**
-     * The name of the container.
+     * The name or id of the network to use. You can use `name` or `id` attribute from a `docker.Network` resource.
      */
     name?: pulumi.Input<string>;
     /**
@@ -932,7 +932,7 @@ export interface ContainerArgs {
      */
     publishAllPorts?: pulumi.Input<boolean>;
     /**
-     * If `true`, the container will be started as readonly. Defaults to `false`.
+     * Whether the mount should be read-only.
      */
     readOnly?: pulumi.Input<boolean>;
     /**
