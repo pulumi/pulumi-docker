@@ -15,55 +15,6 @@ namespace Pulumi.Docker
     ///  This resource will *not* pull new layers of the image automatically unless used in conjunction with docker.RegistryImage data source to update the `pull_triggers` field.
     /// 
     /// ## Example Usage
-    /// ### Basic
-    /// 
-    /// Finds and downloads the latest `ubuntu:precise` image but does not check
-    /// for further updates of the image
-    /// 
-    /// ```csharp
-    /// using System.Collections.Generic;
-    /// using System.Linq;
-    /// using Pulumi;
-    /// using Docker = Pulumi.Docker;
-    /// 
-    /// return await Deployment.RunAsync(() =&gt; 
-    /// {
-    ///     var ubuntu = new Docker.RemoteImage("ubuntu", new()
-    ///     {
-    ///         Name = "ubuntu:precise",
-    ///     });
-    /// 
-    /// });
-    /// ```
-    /// ### Dynamic updates
-    /// 
-    /// To be able to update an image dynamically when the `sha256` sum changes,
-    /// you need to use it in combination with `docker.RegistryImage` as follows:
-    /// 
-    /// ```csharp
-    /// using System.Collections.Generic;
-    /// using System.Linq;
-    /// using Pulumi;
-    /// using Docker = Pulumi.Docker;
-    /// 
-    /// return await Deployment.RunAsync(() =&gt; 
-    /// {
-    ///     var ubuntuRegistryImage = Docker.GetRegistryImage.Invoke(new()
-    ///     {
-    ///         Name = "ubuntu:precise",
-    ///     });
-    /// 
-    ///     var ubuntuRemoteImage = new Docker.RemoteImage("ubuntuRemoteImage", new()
-    ///     {
-    ///         Name = ubuntuRegistryImage.Apply(getRegistryImageResult =&gt; getRegistryImageResult.Name),
-    ///         PullTriggers = new[]
-    ///         {
-    ///             ubuntuRegistryImage.Apply(getRegistryImageResult =&gt; getRegistryImageResult.Sha256Digest),
-    ///         },
-    ///     });
-    /// 
-    /// });
-    /// ```
     /// </summary>
     [DockerResourceType("docker:index/remoteImage:RemoteImage")]
     public partial class RemoteImage : global::Pulumi.CustomResource
@@ -75,7 +26,7 @@ namespace Pulumi.Docker
         public Output<Outputs.RemoteImageBuild?> Build { get; private set; } = null!;
 
         /// <summary>
-        /// If true, then the image is removed forcibly when the resource is destroyed.
+        /// Always remove intermediate containers
         /// </summary>
         [Output("forceRemove")]
         public Output<bool?> ForceRemove { get; private set; } = null!;
@@ -93,13 +44,13 @@ namespace Pulumi.Docker
         public Output<bool?> KeepLocally { get; private set; } = null!;
 
         /// <summary>
-        /// The name of the Docker image, including any tags or SHA256 repo digests.
+        /// type of ulimit, e.g. `nofile`
         /// </summary>
         [Output("name")]
         public Output<string> Name { get; private set; } = null!;
 
         /// <summary>
-        /// The platform to use when pulling the image. Defaults to the platform of the current machine.
+        /// Set platform if server is multi-platform capable
         /// </summary>
         [Output("platform")]
         public Output<string?> Platform { get; private set; } = null!;
@@ -175,7 +126,7 @@ namespace Pulumi.Docker
         public Input<Inputs.RemoteImageBuildArgs>? Build { get; set; }
 
         /// <summary>
-        /// If true, then the image is removed forcibly when the resource is destroyed.
+        /// Always remove intermediate containers
         /// </summary>
         [Input("forceRemove")]
         public Input<bool>? ForceRemove { get; set; }
@@ -187,13 +138,13 @@ namespace Pulumi.Docker
         public Input<bool>? KeepLocally { get; set; }
 
         /// <summary>
-        /// The name of the Docker image, including any tags or SHA256 repo digests.
+        /// type of ulimit, e.g. `nofile`
         /// </summary>
         [Input("name", required: true)]
         public Input<string> Name { get; set; } = null!;
 
         /// <summary>
-        /// The platform to use when pulling the image. Defaults to the platform of the current machine.
+        /// Set platform if server is multi-platform capable
         /// </summary>
         [Input("platform")]
         public Input<string>? Platform { get; set; }
@@ -237,7 +188,7 @@ namespace Pulumi.Docker
         public Input<Inputs.RemoteImageBuildGetArgs>? Build { get; set; }
 
         /// <summary>
-        /// If true, then the image is removed forcibly when the resource is destroyed.
+        /// Always remove intermediate containers
         /// </summary>
         [Input("forceRemove")]
         public Input<bool>? ForceRemove { get; set; }
@@ -255,13 +206,13 @@ namespace Pulumi.Docker
         public Input<bool>? KeepLocally { get; set; }
 
         /// <summary>
-        /// The name of the Docker image, including any tags or SHA256 repo digests.
+        /// type of ulimit, e.g. `nofile`
         /// </summary>
         [Input("name")]
         public Input<string>? Name { get; set; }
 
         /// <summary>
-        /// The platform to use when pulling the image. Defaults to the platform of the current machine.
+        /// Set platform if server is multi-platform capable
         /// </summary>
         [Input("platform")]
         public Input<string>? Platform { get; set; }

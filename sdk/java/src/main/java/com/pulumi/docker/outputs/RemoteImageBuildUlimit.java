@@ -10,25 +10,41 @@ import java.util.Objects;
 
 @CustomType
 public final class RemoteImageBuildUlimit {
+    /**
+     * @return soft limit
+     * 
+     */
     private Integer hard;
     /**
-     * @return The name of the Docker image, including any tags or SHA256 repo digests.
+     * @return type of ulimit, e.g. `nofile`
      * 
      */
     private String name;
+    /**
+     * @return hard limit
+     * 
+     */
     private Integer soft;
 
     private RemoteImageBuildUlimit() {}
+    /**
+     * @return soft limit
+     * 
+     */
     public Integer hard() {
         return this.hard;
     }
     /**
-     * @return The name of the Docker image, including any tags or SHA256 repo digests.
+     * @return type of ulimit, e.g. `nofile`
      * 
      */
     public String name() {
         return this.name;
     }
+    /**
+     * @return hard limit
+     * 
+     */
     public Integer soft() {
         return this.soft;
     }

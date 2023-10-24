@@ -13,13 +13,17 @@ namespace Pulumi.Docker.Inputs
     public sealed class ServiceTaskSpecLogDriverArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// Name of the service
+        /// A random name for the port
         /// </summary>
         [Input("name", required: true)]
         public Input<string> Name { get; set; } = null!;
 
         [Input("options")]
         private InputMap<string>? _options;
+
+        /// <summary>
+        /// A list of internal resolver variables to be modified (e.g., `debug`, `ndots:3`, etc.)
+        /// </summary>
         public InputMap<string> Options
         {
             get => _options ?? (_options = new InputMap<string>());

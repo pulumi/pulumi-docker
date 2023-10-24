@@ -17,23 +17,31 @@ public final class ServiceTaskSpecLogDriverArgs extends com.pulumi.resources.Res
     public static final ServiceTaskSpecLogDriverArgs Empty = new ServiceTaskSpecLogDriverArgs();
 
     /**
-     * Name of the service
+     * A random name for the port
      * 
      */
     @Import(name="name", required=true)
     private Output<String> name;
 
     /**
-     * @return Name of the service
+     * @return A random name for the port
      * 
      */
     public Output<String> name() {
         return this.name;
     }
 
+    /**
+     * A list of internal resolver variables to be modified (e.g., `debug`, `ndots:3`, etc.)
+     * 
+     */
     @Import(name="options")
     private @Nullable Output<Map<String,String>> options;
 
+    /**
+     * @return A list of internal resolver variables to be modified (e.g., `debug`, `ndots:3`, etc.)
+     * 
+     */
     public Optional<Output<Map<String,String>>> options() {
         return Optional.ofNullable(this.options);
     }
@@ -64,7 +72,7 @@ public final class ServiceTaskSpecLogDriverArgs extends com.pulumi.resources.Res
         }
 
         /**
-         * @param name Name of the service
+         * @param name A random name for the port
          * 
          * @return builder
          * 
@@ -75,7 +83,7 @@ public final class ServiceTaskSpecLogDriverArgs extends com.pulumi.resources.Res
         }
 
         /**
-         * @param name Name of the service
+         * @param name A random name for the port
          * 
          * @return builder
          * 
@@ -84,11 +92,23 @@ public final class ServiceTaskSpecLogDriverArgs extends com.pulumi.resources.Res
             return name(Output.of(name));
         }
 
+        /**
+         * @param options A list of internal resolver variables to be modified (e.g., `debug`, `ndots:3`, etc.)
+         * 
+         * @return builder
+         * 
+         */
         public Builder options(@Nullable Output<Map<String,String>> options) {
             $.options = options;
             return this;
         }
 
+        /**
+         * @param options A list of internal resolver variables to be modified (e.g., `debug`, `ndots:3`, etc.)
+         * 
+         * @return builder
+         * 
+         */
         public Builder options(Map<String,String> options) {
             return options(Output.of(options));
         }

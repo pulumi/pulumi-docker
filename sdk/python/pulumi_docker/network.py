@@ -6,7 +6,7 @@ import copy
 import warnings
 import pulumi
 import pulumi.runtime
-from typing import Any, Mapping, Optional, Sequence, Union, overload
+from typing import Any, Callable, Mapping, Optional, Sequence, Union, overload
 from . import _utilities
 from . import outputs
 from ._inputs import *
@@ -43,30 +43,71 @@ class NetworkArgs:
         :param pulumi.Input[str] name: The name of the Docker network.
         :param pulumi.Input[Mapping[str, Any]] options: Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
         """
+        NetworkArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            attachable=attachable,
+            check_duplicate=check_duplicate,
+            driver=driver,
+            ingress=ingress,
+            internal=internal,
+            ipam_configs=ipam_configs,
+            ipam_driver=ipam_driver,
+            ipam_options=ipam_options,
+            ipv6=ipv6,
+            labels=labels,
+            name=name,
+            options=options,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             attachable: Optional[pulumi.Input[bool]] = None,
+             check_duplicate: Optional[pulumi.Input[bool]] = None,
+             driver: Optional[pulumi.Input[str]] = None,
+             ingress: Optional[pulumi.Input[bool]] = None,
+             internal: Optional[pulumi.Input[bool]] = None,
+             ipam_configs: Optional[pulumi.Input[Sequence[pulumi.Input['NetworkIpamConfigArgs']]]] = None,
+             ipam_driver: Optional[pulumi.Input[str]] = None,
+             ipam_options: Optional[pulumi.Input[Mapping[str, Any]]] = None,
+             ipv6: Optional[pulumi.Input[bool]] = None,
+             labels: Optional[pulumi.Input[Sequence[pulumi.Input['NetworkLabelArgs']]]] = None,
+             name: Optional[pulumi.Input[str]] = None,
+             options: Optional[pulumi.Input[Mapping[str, Any]]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if check_duplicate is None and 'checkDuplicate' in kwargs:
+            check_duplicate = kwargs['checkDuplicate']
+        if ipam_configs is None and 'ipamConfigs' in kwargs:
+            ipam_configs = kwargs['ipamConfigs']
+        if ipam_driver is None and 'ipamDriver' in kwargs:
+            ipam_driver = kwargs['ipamDriver']
+        if ipam_options is None and 'ipamOptions' in kwargs:
+            ipam_options = kwargs['ipamOptions']
+
         if attachable is not None:
-            pulumi.set(__self__, "attachable", attachable)
+            _setter("attachable", attachable)
         if check_duplicate is not None:
-            pulumi.set(__self__, "check_duplicate", check_duplicate)
+            _setter("check_duplicate", check_duplicate)
         if driver is not None:
-            pulumi.set(__self__, "driver", driver)
+            _setter("driver", driver)
         if ingress is not None:
-            pulumi.set(__self__, "ingress", ingress)
+            _setter("ingress", ingress)
         if internal is not None:
-            pulumi.set(__self__, "internal", internal)
+            _setter("internal", internal)
         if ipam_configs is not None:
-            pulumi.set(__self__, "ipam_configs", ipam_configs)
+            _setter("ipam_configs", ipam_configs)
         if ipam_driver is not None:
-            pulumi.set(__self__, "ipam_driver", ipam_driver)
+            _setter("ipam_driver", ipam_driver)
         if ipam_options is not None:
-            pulumi.set(__self__, "ipam_options", ipam_options)
+            _setter("ipam_options", ipam_options)
         if ipv6 is not None:
-            pulumi.set(__self__, "ipv6", ipv6)
+            _setter("ipv6", ipv6)
         if labels is not None:
-            pulumi.set(__self__, "labels", labels)
+            _setter("labels", labels)
         if name is not None:
-            pulumi.set(__self__, "name", name)
+            _setter("name", name)
         if options is not None:
-            pulumi.set(__self__, "options", options)
+            _setter("options", options)
 
     @property
     @pulumi.getter
@@ -245,32 +286,75 @@ class _NetworkState:
         :param pulumi.Input[Mapping[str, Any]] options: Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.
         :param pulumi.Input[str] scope: Scope of the network. One of `swarm`, `global`, or `local`.
         """
+        _NetworkState._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            attachable=attachable,
+            check_duplicate=check_duplicate,
+            driver=driver,
+            ingress=ingress,
+            internal=internal,
+            ipam_configs=ipam_configs,
+            ipam_driver=ipam_driver,
+            ipam_options=ipam_options,
+            ipv6=ipv6,
+            labels=labels,
+            name=name,
+            options=options,
+            scope=scope,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             attachable: Optional[pulumi.Input[bool]] = None,
+             check_duplicate: Optional[pulumi.Input[bool]] = None,
+             driver: Optional[pulumi.Input[str]] = None,
+             ingress: Optional[pulumi.Input[bool]] = None,
+             internal: Optional[pulumi.Input[bool]] = None,
+             ipam_configs: Optional[pulumi.Input[Sequence[pulumi.Input['NetworkIpamConfigArgs']]]] = None,
+             ipam_driver: Optional[pulumi.Input[str]] = None,
+             ipam_options: Optional[pulumi.Input[Mapping[str, Any]]] = None,
+             ipv6: Optional[pulumi.Input[bool]] = None,
+             labels: Optional[pulumi.Input[Sequence[pulumi.Input['NetworkLabelArgs']]]] = None,
+             name: Optional[pulumi.Input[str]] = None,
+             options: Optional[pulumi.Input[Mapping[str, Any]]] = None,
+             scope: Optional[pulumi.Input[str]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if check_duplicate is None and 'checkDuplicate' in kwargs:
+            check_duplicate = kwargs['checkDuplicate']
+        if ipam_configs is None and 'ipamConfigs' in kwargs:
+            ipam_configs = kwargs['ipamConfigs']
+        if ipam_driver is None and 'ipamDriver' in kwargs:
+            ipam_driver = kwargs['ipamDriver']
+        if ipam_options is None and 'ipamOptions' in kwargs:
+            ipam_options = kwargs['ipamOptions']
+
         if attachable is not None:
-            pulumi.set(__self__, "attachable", attachable)
+            _setter("attachable", attachable)
         if check_duplicate is not None:
-            pulumi.set(__self__, "check_duplicate", check_duplicate)
+            _setter("check_duplicate", check_duplicate)
         if driver is not None:
-            pulumi.set(__self__, "driver", driver)
+            _setter("driver", driver)
         if ingress is not None:
-            pulumi.set(__self__, "ingress", ingress)
+            _setter("ingress", ingress)
         if internal is not None:
-            pulumi.set(__self__, "internal", internal)
+            _setter("internal", internal)
         if ipam_configs is not None:
-            pulumi.set(__self__, "ipam_configs", ipam_configs)
+            _setter("ipam_configs", ipam_configs)
         if ipam_driver is not None:
-            pulumi.set(__self__, "ipam_driver", ipam_driver)
+            _setter("ipam_driver", ipam_driver)
         if ipam_options is not None:
-            pulumi.set(__self__, "ipam_options", ipam_options)
+            _setter("ipam_options", ipam_options)
         if ipv6 is not None:
-            pulumi.set(__self__, "ipv6", ipv6)
+            _setter("ipv6", ipv6)
         if labels is not None:
-            pulumi.set(__self__, "labels", labels)
+            _setter("labels", labels)
         if name is not None:
-            pulumi.set(__self__, "name", name)
+            _setter("name", name)
         if options is not None:
-            pulumi.set(__self__, "options", options)
+            _setter("options", options)
         if scope is not None:
-            pulumi.set(__self__, "scope", scope)
+            _setter("scope", scope)
 
     @property
     @pulumi.getter
@@ -451,15 +535,6 @@ class Network(pulumi.CustomResource):
         <!-- Bug: Type and Name are switched -->
         `Network` provides a docker network resource.
 
-        ## Example Usage
-
-        ```python
-        import pulumi
-        import pulumi_docker as docker
-
-        private_network = docker.Network("privateNetwork")
-        ```
-
         ## Import
 
         ### Example Assuming you created a `network` as follows #!/bin/bash docker network create foo prints the long ID 87b57a9b91ecab2db2a6dbf38df74c67d7c7108cbe479d6576574ec2cd8c2d73 you provide the definition for the resource as follows terraform resource "docker_network" "foo" {
@@ -495,15 +570,6 @@ class Network(pulumi.CustomResource):
         <!-- Bug: Type and Name are switched -->
         `Network` provides a docker network resource.
 
-        ## Example Usage
-
-        ```python
-        import pulumi
-        import pulumi_docker as docker
-
-        private_network = docker.Network("privateNetwork")
-        ```
-
         ## Import
 
         ### Example Assuming you created a `network` as follows #!/bin/bash docker network create foo prints the long ID 87b57a9b91ecab2db2a6dbf38df74c67d7c7108cbe479d6576574ec2cd8c2d73 you provide the definition for the resource as follows terraform resource "docker_network" "foo" {
@@ -524,6 +590,10 @@ class Network(pulumi.CustomResource):
         if resource_args is not None:
             __self__._internal_init(resource_name, opts, **resource_args.__dict__)
         else:
+            kwargs = kwargs or {}
+            def _setter(key, value):
+                kwargs[key] = value
+            NetworkArgs._configure(_setter, **kwargs)
             __self__._internal_init(resource_name, *args, **kwargs)
 
     def _internal_init(__self__,

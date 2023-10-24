@@ -6,7 +6,7 @@ import copy
 import warnings
 import pulumi
 import pulumi.runtime
-from typing import Any, Mapping, Optional, Sequence, Union, overload
+from typing import Any, Callable, Mapping, Optional, Sequence, Union, overload
 from .. import _utilities
 
 __all__ = [
@@ -22,17 +22,46 @@ class RegistryAuth(dict):
                  config_file_content: Optional[str] = None,
                  password: Optional[str] = None,
                  username: Optional[str] = None):
-        pulumi.set(__self__, "address", address)
+        RegistryAuth._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            address=address,
+            auth_disabled=auth_disabled,
+            config_file=config_file,
+            config_file_content=config_file_content,
+            password=password,
+            username=username,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             address: Optional[str] = None,
+             auth_disabled: Optional[bool] = None,
+             config_file: Optional[str] = None,
+             config_file_content: Optional[str] = None,
+             password: Optional[str] = None,
+             username: Optional[str] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if address is None:
+            raise TypeError("Missing 'address' argument")
+        if auth_disabled is None and 'authDisabled' in kwargs:
+            auth_disabled = kwargs['authDisabled']
+        if config_file is None and 'configFile' in kwargs:
+            config_file = kwargs['configFile']
+        if config_file_content is None and 'configFileContent' in kwargs:
+            config_file_content = kwargs['configFileContent']
+
+        _setter("address", address)
         if auth_disabled is not None:
-            pulumi.set(__self__, "auth_disabled", auth_disabled)
+            _setter("auth_disabled", auth_disabled)
         if config_file is not None:
-            pulumi.set(__self__, "config_file", config_file)
+            _setter("config_file", config_file)
         if config_file_content is not None:
-            pulumi.set(__self__, "config_file_content", config_file_content)
+            _setter("config_file_content", config_file_content)
         if password is not None:
-            pulumi.set(__self__, "password", password)
+            _setter("password", password)
         if username is not None:
-            pulumi.set(__self__, "username", username)
+            _setter("username", username)
 
     @property
     @pulumi.getter

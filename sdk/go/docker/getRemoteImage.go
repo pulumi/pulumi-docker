@@ -13,50 +13,6 @@ import (
 )
 
 // `RemoteImage` provides details about a specific Docker Image which need to be presend on the Docker Host
-//
-// ## Example Usage
-//
-// ```go
-// package main
-//
-// import (
-//
-//	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker"
-//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-//
-// )
-//
-//	func main() {
-//		pulumi.Run(func(ctx *pulumi.Context) error {
-//			_, err := docker.LookupRemoteImage(ctx, &docker.LookupRemoteImageArgs{
-//				Name: "nginx",
-//			}, nil)
-//			if err != nil {
-//				return err
-//			}
-//			_, err = docker.LookupRemoteImage(ctx, &docker.LookupRemoteImageArgs{
-//				Name: "nginx:1.17.6",
-//			}, nil)
-//			if err != nil {
-//				return err
-//			}
-//			_, err = docker.LookupRemoteImage(ctx, &docker.LookupRemoteImageArgs{
-//				Name: "nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2",
-//			}, nil)
-//			if err != nil {
-//				return err
-//			}
-//			_, err = docker.LookupRemoteImage(ctx, &docker.LookupRemoteImageArgs{
-//				Name: "nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2",
-//			}, nil)
-//			if err != nil {
-//				return err
-//			}
-//			return nil
-//		})
-//	}
-//
-// ```
 func LookupRemoteImage(ctx *pulumi.Context, args *LookupRemoteImageArgs, opts ...pulumi.InvokeOption) (*LookupRemoteImageResult, error) {
 	opts = internal.PkgInvokeDefaultOpts(opts)
 	var rv LookupRemoteImageResult

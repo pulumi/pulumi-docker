@@ -16,44 +16,92 @@ public final class ServiceTaskSpecContainerSpecConfigArgs extends com.pulumi.res
 
     public static final ServiceTaskSpecContainerSpecConfigArgs Empty = new ServiceTaskSpecContainerSpecConfigArgs();
 
+    /**
+     * ID of the specific config that we&#39;re referencing
+     * 
+     */
     @Import(name="configId", required=true)
     private Output<String> configId;
 
+    /**
+     * @return ID of the specific config that we&#39;re referencing
+     * 
+     */
     public Output<String> configId() {
         return this.configId;
     }
 
+    /**
+     * Name of the config that this references, but this is just provided for lookup/display purposes. The config in the reference will be identified by its ID
+     * 
+     */
     @Import(name="configName")
     private @Nullable Output<String> configName;
 
+    /**
+     * @return Name of the config that this references, but this is just provided for lookup/display purposes. The config in the reference will be identified by its ID
+     * 
+     */
     public Optional<Output<String>> configName() {
         return Optional.ofNullable(this.configName);
     }
 
+    /**
+     * Represents the file GID. Defaults to `0`.
+     * 
+     */
     @Import(name="fileGid")
     private @Nullable Output<String> fileGid;
 
+    /**
+     * @return Represents the file GID. Defaults to `0`.
+     * 
+     */
     public Optional<Output<String>> fileGid() {
         return Optional.ofNullable(this.fileGid);
     }
 
+    /**
+     * Represents represents the FileMode of the file. Defaults to `0o444`.
+     * 
+     */
     @Import(name="fileMode")
     private @Nullable Output<Integer> fileMode;
 
+    /**
+     * @return Represents represents the FileMode of the file. Defaults to `0o444`.
+     * 
+     */
     public Optional<Output<Integer>> fileMode() {
         return Optional.ofNullable(this.fileMode);
     }
 
+    /**
+     * Represents the final filename in the filesystem
+     * 
+     */
     @Import(name="fileName", required=true)
     private Output<String> fileName;
 
+    /**
+     * @return Represents the final filename in the filesystem
+     * 
+     */
     public Output<String> fileName() {
         return this.fileName;
     }
 
+    /**
+     * Represents the file UID. Defaults to `0`.
+     * 
+     */
     @Import(name="fileUid")
     private @Nullable Output<String> fileUid;
 
+    /**
+     * @return Represents the file UID. Defaults to `0`.
+     * 
+     */
     public Optional<Output<String>> fileUid() {
         return Optional.ofNullable(this.fileUid);
     }
@@ -87,56 +135,128 @@ public final class ServiceTaskSpecContainerSpecConfigArgs extends com.pulumi.res
             $ = new ServiceTaskSpecContainerSpecConfigArgs(Objects.requireNonNull(defaults));
         }
 
+        /**
+         * @param configId ID of the specific config that we&#39;re referencing
+         * 
+         * @return builder
+         * 
+         */
         public Builder configId(Output<String> configId) {
             $.configId = configId;
             return this;
         }
 
+        /**
+         * @param configId ID of the specific config that we&#39;re referencing
+         * 
+         * @return builder
+         * 
+         */
         public Builder configId(String configId) {
             return configId(Output.of(configId));
         }
 
+        /**
+         * @param configName Name of the config that this references, but this is just provided for lookup/display purposes. The config in the reference will be identified by its ID
+         * 
+         * @return builder
+         * 
+         */
         public Builder configName(@Nullable Output<String> configName) {
             $.configName = configName;
             return this;
         }
 
+        /**
+         * @param configName Name of the config that this references, but this is just provided for lookup/display purposes. The config in the reference will be identified by its ID
+         * 
+         * @return builder
+         * 
+         */
         public Builder configName(String configName) {
             return configName(Output.of(configName));
         }
 
+        /**
+         * @param fileGid Represents the file GID. Defaults to `0`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder fileGid(@Nullable Output<String> fileGid) {
             $.fileGid = fileGid;
             return this;
         }
 
+        /**
+         * @param fileGid Represents the file GID. Defaults to `0`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder fileGid(String fileGid) {
             return fileGid(Output.of(fileGid));
         }
 
+        /**
+         * @param fileMode Represents represents the FileMode of the file. Defaults to `0o444`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder fileMode(@Nullable Output<Integer> fileMode) {
             $.fileMode = fileMode;
             return this;
         }
 
+        /**
+         * @param fileMode Represents represents the FileMode of the file. Defaults to `0o444`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder fileMode(Integer fileMode) {
             return fileMode(Output.of(fileMode));
         }
 
+        /**
+         * @param fileName Represents the final filename in the filesystem
+         * 
+         * @return builder
+         * 
+         */
         public Builder fileName(Output<String> fileName) {
             $.fileName = fileName;
             return this;
         }
 
+        /**
+         * @param fileName Represents the final filename in the filesystem
+         * 
+         * @return builder
+         * 
+         */
         public Builder fileName(String fileName) {
             return fileName(Output.of(fileName));
         }
 
+        /**
+         * @param fileUid Represents the file UID. Defaults to `0`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder fileUid(@Nullable Output<String> fileUid) {
             $.fileUid = fileUid;
             return this;
         }
 
+        /**
+         * @param fileUid Represents the file UID. Defaults to `0`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder fileUid(String fileUid) {
             return fileUid(Output.of(fileUid));
         }

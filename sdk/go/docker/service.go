@@ -59,9 +59,9 @@ type Service struct {
 	EndpointSpec ServiceEndpointSpecOutput `pulumi:"endpointSpec"`
 	// User-defined key/value metadata
 	Labels ServiceLabelArrayOutput `pulumi:"labels"`
-	// Scheduling mode for the service
+	// The mode of resolution to use for internal load balancing between tasks
 	Mode ServiceModeOutput `pulumi:"mode"`
-	// Name of the service
+	// A random name for the port
 	Name pulumi.StringOutput `pulumi:"name"`
 	// Specification for the rollback strategy of the service
 	RollbackConfig ServiceRollbackConfigPtrOutput `pulumi:"rollbackConfig"`
@@ -112,9 +112,9 @@ type serviceState struct {
 	EndpointSpec *ServiceEndpointSpec `pulumi:"endpointSpec"`
 	// User-defined key/value metadata
 	Labels []ServiceLabel `pulumi:"labels"`
-	// Scheduling mode for the service
+	// The mode of resolution to use for internal load balancing between tasks
 	Mode *ServiceMode `pulumi:"mode"`
-	// Name of the service
+	// A random name for the port
 	Name *string `pulumi:"name"`
 	// Specification for the rollback strategy of the service
 	RollbackConfig *ServiceRollbackConfig `pulumi:"rollbackConfig"`
@@ -133,9 +133,9 @@ type ServiceState struct {
 	EndpointSpec ServiceEndpointSpecPtrInput
 	// User-defined key/value metadata
 	Labels ServiceLabelArrayInput
-	// Scheduling mode for the service
+	// The mode of resolution to use for internal load balancing between tasks
 	Mode ServiceModePtrInput
-	// Name of the service
+	// A random name for the port
 	Name pulumi.StringPtrInput
 	// Specification for the rollback strategy of the service
 	RollbackConfig ServiceRollbackConfigPtrInput
@@ -158,9 +158,9 @@ type serviceArgs struct {
 	EndpointSpec *ServiceEndpointSpec `pulumi:"endpointSpec"`
 	// User-defined key/value metadata
 	Labels []ServiceLabel `pulumi:"labels"`
-	// Scheduling mode for the service
+	// The mode of resolution to use for internal load balancing between tasks
 	Mode *ServiceMode `pulumi:"mode"`
-	// Name of the service
+	// A random name for the port
 	Name *string `pulumi:"name"`
 	// Specification for the rollback strategy of the service
 	RollbackConfig *ServiceRollbackConfig `pulumi:"rollbackConfig"`
@@ -180,9 +180,9 @@ type ServiceArgs struct {
 	EndpointSpec ServiceEndpointSpecPtrInput
 	// User-defined key/value metadata
 	Labels ServiceLabelArrayInput
-	// Scheduling mode for the service
+	// The mode of resolution to use for internal load balancing between tasks
 	Mode ServiceModePtrInput
-	// Name of the service
+	// A random name for the port
 	Name pulumi.StringPtrInput
 	// Specification for the rollback strategy of the service
 	RollbackConfig ServiceRollbackConfigPtrInput
@@ -323,12 +323,12 @@ func (o ServiceOutput) Labels() ServiceLabelArrayOutput {
 	return o.ApplyT(func(v *Service) ServiceLabelArrayOutput { return v.Labels }).(ServiceLabelArrayOutput)
 }
 
-// Scheduling mode for the service
+// The mode of resolution to use for internal load balancing between tasks
 func (o ServiceOutput) Mode() ServiceModeOutput {
 	return o.ApplyT(func(v *Service) ServiceModeOutput { return v.Mode }).(ServiceModeOutput)
 }
 
-// Name of the service
+// A random name for the port
 func (o ServiceOutput) Name() pulumi.StringOutput {
 	return o.ApplyT(func(v *Service) pulumi.StringOutput { return v.Name }).(pulumi.StringOutput)
 }

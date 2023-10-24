@@ -12,20 +12,28 @@ import javax.annotation.Nullable;
 @CustomType
 public final class ServiceTaskSpecLogDriver {
     /**
-     * @return Name of the service
+     * @return A random name for the port
      * 
      */
     private String name;
+    /**
+     * @return A list of internal resolver variables to be modified (e.g., `debug`, `ndots:3`, etc.)
+     * 
+     */
     private @Nullable Map<String,String> options;
 
     private ServiceTaskSpecLogDriver() {}
     /**
-     * @return Name of the service
+     * @return A random name for the port
      * 
      */
     public String name() {
         return this.name;
     }
+    /**
+     * @return A list of internal resolver variables to be modified (e.g., `debug`, `ndots:3`, etc.)
+     * 
+     */
     public Map<String,String> options() {
         return this.options == null ? Map.of() : this.options;
     }

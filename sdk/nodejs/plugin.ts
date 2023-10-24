@@ -11,23 +11,6 @@ import * as utilities from "./utilities";
  * <!-- Bug: Type and Name are switched -->
  * Manages the lifecycle of a Docker plugin.
  *
- * ## Example Usage
- *
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as docker from "@pulumi/docker";
- *
- * const sample_volume_plugin = new docker.Plugin("sample-volume-plugin", {
- *     alias: "sample-volume-plugin",
- *     enableTimeout: 60,
- *     enabled: false,
- *     envs: ["DEBUG=1"],
- *     forceDestroy: true,
- *     forceDisable: true,
- *     grantAllPermissions: true,
- * });
- * ```
- *
  * ## Import
  *
  * #!/bin/bash
@@ -97,7 +80,7 @@ export class Plugin extends pulumi.CustomResource {
      */
     public readonly grantPermissions!: pulumi.Output<outputs.PluginGrantPermission[] | undefined>;
     /**
-     * Docker Plugin name
+     * The name of the permission
      */
     public readonly name!: pulumi.Output<string>;
     /**
@@ -183,7 +166,7 @@ export interface PluginState {
      */
     grantPermissions?: pulumi.Input<pulumi.Input<inputs.PluginGrantPermission>[]>;
     /**
-     * Docker Plugin name
+     * The name of the permission
      */
     name?: pulumi.Input<string>;
     /**
@@ -229,7 +212,7 @@ export interface PluginArgs {
      */
     grantPermissions?: pulumi.Input<pulumi.Input<inputs.PluginGrantPermission>[]>;
     /**
-     * Docker Plugin name
+     * The name of the permission
      */
     name?: pulumi.Input<string>;
 }

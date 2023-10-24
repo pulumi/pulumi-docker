@@ -13,7 +13,13 @@ namespace Pulumi.Docker.Outputs
     [OutputType]
     public sealed class ServiceTaskSpecResourcesReservationGenericResources
     {
+        /// <summary>
+        /// The Integer resources
+        /// </summary>
         public readonly ImmutableArray<string> DiscreteResourcesSpecs;
+        /// <summary>
+        /// The String resources
+        /// </summary>
         public readonly ImmutableArray<string> NamedResourcesSpecs;
 
         [OutputConstructor]
