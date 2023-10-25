@@ -16,30 +16,62 @@ public final class ServiceTaskSpecRestartPolicyArgs extends com.pulumi.resources
 
     public static final ServiceTaskSpecRestartPolicyArgs Empty = new ServiceTaskSpecRestartPolicyArgs();
 
+    /**
+     * Condition for restart
+     * 
+     */
     @Import(name="condition")
     private @Nullable Output<String> condition;
 
+    /**
+     * @return Condition for restart
+     * 
+     */
     public Optional<Output<String>> condition() {
         return Optional.ofNullable(this.condition);
     }
 
+    /**
+     * The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.
+     * 
+     */
     @Import(name="delay")
     private @Nullable Output<String> delay;
 
+    /**
+     * @return The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.
+     * 
+     */
     public Optional<Output<String>> delay() {
         return Optional.ofNullable(this.delay);
     }
 
+    /**
+     * Maximum attempts to restart a given container before giving up (default value is `0`, which is ignored)
+     * 
+     */
     @Import(name="maxAttempts")
     private @Nullable Output<Integer> maxAttempts;
 
+    /**
+     * @return Maximum attempts to restart a given container before giving up (default value is `0`, which is ignored)
+     * 
+     */
     public Optional<Output<Integer>> maxAttempts() {
         return Optional.ofNullable(this.maxAttempts);
     }
 
+    /**
+     * The time window used to evaluate the restart policy (default value is `0`, which is unbounded) (ms|s|m|h)
+     * 
+     */
     @Import(name="window")
     private @Nullable Output<String> window;
 
+    /**
+     * @return The time window used to evaluate the restart policy (default value is `0`, which is unbounded) (ms|s|m|h)
+     * 
+     */
     public Optional<Output<String>> window() {
         return Optional.ofNullable(this.window);
     }
@@ -71,38 +103,86 @@ public final class ServiceTaskSpecRestartPolicyArgs extends com.pulumi.resources
             $ = new ServiceTaskSpecRestartPolicyArgs(Objects.requireNonNull(defaults));
         }
 
+        /**
+         * @param condition Condition for restart
+         * 
+         * @return builder
+         * 
+         */
         public Builder condition(@Nullable Output<String> condition) {
             $.condition = condition;
             return this;
         }
 
+        /**
+         * @param condition Condition for restart
+         * 
+         * @return builder
+         * 
+         */
         public Builder condition(String condition) {
             return condition(Output.of(condition));
         }
 
+        /**
+         * @param delay The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder delay(@Nullable Output<String> delay) {
             $.delay = delay;
             return this;
         }
 
+        /**
+         * @param delay The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder delay(String delay) {
             return delay(Output.of(delay));
         }
 
+        /**
+         * @param maxAttempts Maximum attempts to restart a given container before giving up (default value is `0`, which is ignored)
+         * 
+         * @return builder
+         * 
+         */
         public Builder maxAttempts(@Nullable Output<Integer> maxAttempts) {
             $.maxAttempts = maxAttempts;
             return this;
         }
 
+        /**
+         * @param maxAttempts Maximum attempts to restart a given container before giving up (default value is `0`, which is ignored)
+         * 
+         * @return builder
+         * 
+         */
         public Builder maxAttempts(Integer maxAttempts) {
             return maxAttempts(Output.of(maxAttempts));
         }
 
+        /**
+         * @param window The time window used to evaluate the restart policy (default value is `0`, which is unbounded) (ms|s|m|h)
+         * 
+         * @return builder
+         * 
+         */
         public Builder window(@Nullable Output<String> window) {
             $.window = window;
             return this;
         }
 
+        /**
+         * @param window The time window used to evaluate the restart policy (default value is `0`, which is unbounded) (ms|s|m|h)
+         * 
+         * @return builder
+         * 
+         */
         public Builder window(String window) {
             return window(Output.of(window));
         }

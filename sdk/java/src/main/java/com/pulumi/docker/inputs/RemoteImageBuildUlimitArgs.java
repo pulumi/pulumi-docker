@@ -14,31 +14,47 @@ public final class RemoteImageBuildUlimitArgs extends com.pulumi.resources.Resou
 
     public static final RemoteImageBuildUlimitArgs Empty = new RemoteImageBuildUlimitArgs();
 
+    /**
+     * soft limit
+     * 
+     */
     @Import(name="hard", required=true)
     private Output<Integer> hard;
 
+    /**
+     * @return soft limit
+     * 
+     */
     public Output<Integer> hard() {
         return this.hard;
     }
 
     /**
-     * The name of the Docker image, including any tags or SHA256 repo digests.
+     * type of ulimit, e.g. `nofile`
      * 
      */
     @Import(name="name", required=true)
     private Output<String> name;
 
     /**
-     * @return The name of the Docker image, including any tags or SHA256 repo digests.
+     * @return type of ulimit, e.g. `nofile`
      * 
      */
     public Output<String> name() {
         return this.name;
     }
 
+    /**
+     * hard limit
+     * 
+     */
     @Import(name="soft", required=true)
     private Output<Integer> soft;
 
+    /**
+     * @return hard limit
+     * 
+     */
     public Output<Integer> soft() {
         return this.soft;
     }
@@ -69,17 +85,29 @@ public final class RemoteImageBuildUlimitArgs extends com.pulumi.resources.Resou
             $ = new RemoteImageBuildUlimitArgs(Objects.requireNonNull(defaults));
         }
 
+        /**
+         * @param hard soft limit
+         * 
+         * @return builder
+         * 
+         */
         public Builder hard(Output<Integer> hard) {
             $.hard = hard;
             return this;
         }
 
+        /**
+         * @param hard soft limit
+         * 
+         * @return builder
+         * 
+         */
         public Builder hard(Integer hard) {
             return hard(Output.of(hard));
         }
 
         /**
-         * @param name The name of the Docker image, including any tags or SHA256 repo digests.
+         * @param name type of ulimit, e.g. `nofile`
          * 
          * @return builder
          * 
@@ -90,7 +118,7 @@ public final class RemoteImageBuildUlimitArgs extends com.pulumi.resources.Resou
         }
 
         /**
-         * @param name The name of the Docker image, including any tags or SHA256 repo digests.
+         * @param name type of ulimit, e.g. `nofile`
          * 
          * @return builder
          * 
@@ -99,11 +127,23 @@ public final class RemoteImageBuildUlimitArgs extends com.pulumi.resources.Resou
             return name(Output.of(name));
         }
 
+        /**
+         * @param soft hard limit
+         * 
+         * @return builder
+         * 
+         */
         public Builder soft(Output<Integer> soft) {
             $.soft = soft;
             return this;
         }
 
+        /**
+         * @param soft hard limit
+         * 
+         * @return builder
+         * 
+         */
         public Builder soft(Integer soft) {
             return soft(Output.of(soft));
         }

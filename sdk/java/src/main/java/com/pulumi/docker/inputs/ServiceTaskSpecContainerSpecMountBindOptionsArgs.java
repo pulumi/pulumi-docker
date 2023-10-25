@@ -15,9 +15,17 @@ public final class ServiceTaskSpecContainerSpecMountBindOptionsArgs extends com.
 
     public static final ServiceTaskSpecContainerSpecMountBindOptionsArgs Empty = new ServiceTaskSpecContainerSpecMountBindOptionsArgs();
 
+    /**
+     * Bind propagation refers to whether or not mounts created within a given bind-mount or named volume can be propagated to replicas of that mount. See the [docs](https://docs.docker.com/storage/bind-mounts/#configure-bind-propagation) for details. Defaults to `rprivate`
+     * 
+     */
     @Import(name="propagation")
     private @Nullable Output<String> propagation;
 
+    /**
+     * @return Bind propagation refers to whether or not mounts created within a given bind-mount or named volume can be propagated to replicas of that mount. See the [docs](https://docs.docker.com/storage/bind-mounts/#configure-bind-propagation) for details. Defaults to `rprivate`
+     * 
+     */
     public Optional<Output<String>> propagation() {
         return Optional.ofNullable(this.propagation);
     }
@@ -46,11 +54,23 @@ public final class ServiceTaskSpecContainerSpecMountBindOptionsArgs extends com.
             $ = new ServiceTaskSpecContainerSpecMountBindOptionsArgs(Objects.requireNonNull(defaults));
         }
 
+        /**
+         * @param propagation Bind propagation refers to whether or not mounts created within a given bind-mount or named volume can be propagated to replicas of that mount. See the [docs](https://docs.docker.com/storage/bind-mounts/#configure-bind-propagation) for details. Defaults to `rprivate`
+         * 
+         * @return builder
+         * 
+         */
         public Builder propagation(@Nullable Output<String> propagation) {
             $.propagation = propagation;
             return this;
         }
 
+        /**
+         * @param propagation Bind propagation refers to whether or not mounts created within a given bind-mount or named volume can be propagated to replicas of that mount. See the [docs](https://docs.docker.com/storage/bind-mounts/#configure-bind-propagation) for details. Defaults to `rprivate`
+         * 
+         * @return builder
+         * 
+         */
         public Builder propagation(String propagation) {
             return propagation(Output.of(propagation));
         }

@@ -15,40 +15,6 @@ import (
 // <!-- Bug: Type and Name are switched -->
 // Manages the lifecycle of a Docker plugin.
 //
-// ## Example Usage
-//
-// ```go
-// package main
-//
-// import (
-//
-//	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker"
-//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-//
-// )
-//
-//	func main() {
-//		pulumi.Run(func(ctx *pulumi.Context) error {
-//			_, err := docker.NewPlugin(ctx, "sample-volume-plugin", &docker.PluginArgs{
-//				Alias:         pulumi.String("sample-volume-plugin"),
-//				EnableTimeout: pulumi.Int(60),
-//				Enabled:       pulumi.Bool(false),
-//				Envs: pulumi.StringArray{
-//					pulumi.String("DEBUG=1"),
-//				},
-//				ForceDestroy:        pulumi.Bool(true),
-//				ForceDisable:        pulumi.Bool(true),
-//				GrantAllPermissions: pulumi.Bool(true),
-//			})
-//			if err != nil {
-//				return err
-//			}
-//			return nil
-//		})
-//	}
-//
-// ```
-//
 // ## Import
 //
 // #!/bin/bash
@@ -77,7 +43,7 @@ type Plugin struct {
 	GrantAllPermissions pulumi.BoolPtrOutput `pulumi:"grantAllPermissions"`
 	// Grant specific permissions only
 	GrantPermissions PluginGrantPermissionArrayOutput `pulumi:"grantPermissions"`
-	// Docker Plugin name
+	// The name of the permission
 	Name pulumi.StringOutput `pulumi:"name"`
 	// Docker Plugin Reference
 	PluginReference pulumi.StringOutput `pulumi:"pluginReference"`
@@ -129,7 +95,7 @@ type pluginState struct {
 	GrantAllPermissions *bool `pulumi:"grantAllPermissions"`
 	// Grant specific permissions only
 	GrantPermissions []PluginGrantPermission `pulumi:"grantPermissions"`
-	// Docker Plugin name
+	// The name of the permission
 	Name *string `pulumi:"name"`
 	// Docker Plugin Reference
 	PluginReference *string `pulumi:"pluginReference"`
@@ -152,7 +118,7 @@ type PluginState struct {
 	GrantAllPermissions pulumi.BoolPtrInput
 	// Grant specific permissions only
 	GrantPermissions PluginGrantPermissionArrayInput
-	// Docker Plugin name
+	// The name of the permission
 	Name pulumi.StringPtrInput
 	// Docker Plugin Reference
 	PluginReference pulumi.StringPtrInput
@@ -179,7 +145,7 @@ type pluginArgs struct {
 	GrantAllPermissions *bool `pulumi:"grantAllPermissions"`
 	// Grant specific permissions only
 	GrantPermissions []PluginGrantPermission `pulumi:"grantPermissions"`
-	// Docker Plugin name
+	// The name of the permission
 	Name *string `pulumi:"name"`
 }
 
@@ -201,7 +167,7 @@ type PluginArgs struct {
 	GrantAllPermissions pulumi.BoolPtrInput
 	// Grant specific permissions only
 	GrantPermissions PluginGrantPermissionArrayInput
-	// Docker Plugin name
+	// The name of the permission
 	Name pulumi.StringPtrInput
 }
 
@@ -356,7 +322,7 @@ func (o PluginOutput) GrantPermissions() PluginGrantPermissionArrayOutput {
 	return o.ApplyT(func(v *Plugin) PluginGrantPermissionArrayOutput { return v.GrantPermissions }).(PluginGrantPermissionArrayOutput)
 }
 
-// Docker Plugin name
+// The name of the permission
 func (o PluginOutput) Name() pulumi.StringOutput {
 	return o.ApplyT(func(v *Plugin) pulumi.StringOutput { return v.Name }).(pulumi.StringOutput)
 }

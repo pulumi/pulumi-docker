@@ -16,44 +16,92 @@ public final class ServiceTaskSpecContainerSpecSecretArgs extends com.pulumi.res
 
     public static final ServiceTaskSpecContainerSpecSecretArgs Empty = new ServiceTaskSpecContainerSpecSecretArgs();
 
+    /**
+     * Represents the file GID. Defaults to `0`.
+     * 
+     */
     @Import(name="fileGid")
     private @Nullable Output<String> fileGid;
 
+    /**
+     * @return Represents the file GID. Defaults to `0`.
+     * 
+     */
     public Optional<Output<String>> fileGid() {
         return Optional.ofNullable(this.fileGid);
     }
 
+    /**
+     * Represents represents the FileMode of the file. Defaults to `0o444`.
+     * 
+     */
     @Import(name="fileMode")
     private @Nullable Output<Integer> fileMode;
 
+    /**
+     * @return Represents represents the FileMode of the file. Defaults to `0o444`.
+     * 
+     */
     public Optional<Output<Integer>> fileMode() {
         return Optional.ofNullable(this.fileMode);
     }
 
+    /**
+     * Represents the final filename in the filesystem
+     * 
+     */
     @Import(name="fileName", required=true)
     private Output<String> fileName;
 
+    /**
+     * @return Represents the final filename in the filesystem
+     * 
+     */
     public Output<String> fileName() {
         return this.fileName;
     }
 
+    /**
+     * Represents the file UID. Defaults to `0`.
+     * 
+     */
     @Import(name="fileUid")
     private @Nullable Output<String> fileUid;
 
+    /**
+     * @return Represents the file UID. Defaults to `0`.
+     * 
+     */
     public Optional<Output<String>> fileUid() {
         return Optional.ofNullable(this.fileUid);
     }
 
+    /**
+     * ID of the specific secret that we&#39;re referencing
+     * 
+     */
     @Import(name="secretId", required=true)
     private Output<String> secretId;
 
+    /**
+     * @return ID of the specific secret that we&#39;re referencing
+     * 
+     */
     public Output<String> secretId() {
         return this.secretId;
     }
 
+    /**
+     * Name of the secret that this references, but this is just provided for lookup/display purposes. The config in the reference will be identified by its ID
+     * 
+     */
     @Import(name="secretName")
     private @Nullable Output<String> secretName;
 
+    /**
+     * @return Name of the secret that this references, but this is just provided for lookup/display purposes. The config in the reference will be identified by its ID
+     * 
+     */
     public Optional<Output<String>> secretName() {
         return Optional.ofNullable(this.secretName);
     }
@@ -87,56 +135,128 @@ public final class ServiceTaskSpecContainerSpecSecretArgs extends com.pulumi.res
             $ = new ServiceTaskSpecContainerSpecSecretArgs(Objects.requireNonNull(defaults));
         }
 
+        /**
+         * @param fileGid Represents the file GID. Defaults to `0`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder fileGid(@Nullable Output<String> fileGid) {
             $.fileGid = fileGid;
             return this;
         }
 
+        /**
+         * @param fileGid Represents the file GID. Defaults to `0`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder fileGid(String fileGid) {
             return fileGid(Output.of(fileGid));
         }
 
+        /**
+         * @param fileMode Represents represents the FileMode of the file. Defaults to `0o444`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder fileMode(@Nullable Output<Integer> fileMode) {
             $.fileMode = fileMode;
             return this;
         }
 
+        /**
+         * @param fileMode Represents represents the FileMode of the file. Defaults to `0o444`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder fileMode(Integer fileMode) {
             return fileMode(Output.of(fileMode));
         }
 
+        /**
+         * @param fileName Represents the final filename in the filesystem
+         * 
+         * @return builder
+         * 
+         */
         public Builder fileName(Output<String> fileName) {
             $.fileName = fileName;
             return this;
         }
 
+        /**
+         * @param fileName Represents the final filename in the filesystem
+         * 
+         * @return builder
+         * 
+         */
         public Builder fileName(String fileName) {
             return fileName(Output.of(fileName));
         }
 
+        /**
+         * @param fileUid Represents the file UID. Defaults to `0`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder fileUid(@Nullable Output<String> fileUid) {
             $.fileUid = fileUid;
             return this;
         }
 
+        /**
+         * @param fileUid Represents the file UID. Defaults to `0`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder fileUid(String fileUid) {
             return fileUid(Output.of(fileUid));
         }
 
+        /**
+         * @param secretId ID of the specific secret that we&#39;re referencing
+         * 
+         * @return builder
+         * 
+         */
         public Builder secretId(Output<String> secretId) {
             $.secretId = secretId;
             return this;
         }
 
+        /**
+         * @param secretId ID of the specific secret that we&#39;re referencing
+         * 
+         * @return builder
+         * 
+         */
         public Builder secretId(String secretId) {
             return secretId(Output.of(secretId));
         }
 
+        /**
+         * @param secretName Name of the secret that this references, but this is just provided for lookup/display purposes. The config in the reference will be identified by its ID
+         * 
+         * @return builder
+         * 
+         */
         public Builder secretName(@Nullable Output<String> secretName) {
             $.secretName = secretName;
             return this;
         }
 
+        /**
+         * @param secretName Name of the secret that this references, but this is just provided for lookup/display purposes. The config in the reference will be identified by its ID
+         * 
+         * @return builder
+         * 
+         */
         public Builder secretName(String secretName) {
             return secretName(Output.of(secretName));
         }

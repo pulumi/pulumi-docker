@@ -85,14 +85,14 @@ public final class ServiceState extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * Scheduling mode for the service
+     * The mode of resolution to use for internal load balancing between tasks
      * 
      */
     @Import(name="mode")
     private @Nullable Output<ServiceModeArgs> mode;
 
     /**
-     * @return Scheduling mode for the service
+     * @return The mode of resolution to use for internal load balancing between tasks
      * 
      */
     public Optional<Output<ServiceModeArgs>> mode() {
@@ -100,14 +100,14 @@ public final class ServiceState extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * Name of the service
+     * A random name for the port
      * 
      */
     @Import(name="name")
     private @Nullable Output<String> name;
 
     /**
-     * @return Name of the service
+     * @return A random name for the port
      * 
      */
     public Optional<Output<String>> name() {
@@ -286,7 +286,7 @@ public final class ServiceState extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param mode Scheduling mode for the service
+         * @param mode The mode of resolution to use for internal load balancing between tasks
          * 
          * @return builder
          * 
@@ -297,7 +297,7 @@ public final class ServiceState extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param mode Scheduling mode for the service
+         * @param mode The mode of resolution to use for internal load balancing between tasks
          * 
          * @return builder
          * 
@@ -307,7 +307,7 @@ public final class ServiceState extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param name Name of the service
+         * @param name A random name for the port
          * 
          * @return builder
          * 
@@ -318,7 +318,7 @@ public final class ServiceState extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param name Name of the service
+         * @param name A random name for the port
          * 
          * @return builder
          * 

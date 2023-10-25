@@ -13,32 +13,64 @@ import javax.annotation.Nullable;
 @CustomType
 public final class ServiceEndpointSpecPort {
     /**
-     * @return Name of the service
+     * @return A random name for the port
      * 
      */
     private @Nullable String name;
+    /**
+     * @return Rrepresents the protocol of a port: `tcp`, `udp` or `sctp`. Defaults to `tcp`.
+     * 
+     */
     private @Nullable String protocol;
+    /**
+     * @return Represents the mode in which the port is to be published: &#39;ingress&#39; or &#39;host&#39;. Defaults to `ingress`.
+     * 
+     */
     private @Nullable String publishMode;
+    /**
+     * @return The port on the swarm hosts
+     * 
+     */
     private @Nullable Integer publishedPort;
+    /**
+     * @return The port inside the container
+     * 
+     */
     private Integer targetPort;
 
     private ServiceEndpointSpecPort() {}
     /**
-     * @return Name of the service
+     * @return A random name for the port
      * 
      */
     public Optional<String> name() {
         return Optional.ofNullable(this.name);
     }
+    /**
+     * @return Rrepresents the protocol of a port: `tcp`, `udp` or `sctp`. Defaults to `tcp`.
+     * 
+     */
     public Optional<String> protocol() {
         return Optional.ofNullable(this.protocol);
     }
+    /**
+     * @return Represents the mode in which the port is to be published: &#39;ingress&#39; or &#39;host&#39;. Defaults to `ingress`.
+     * 
+     */
     public Optional<String> publishMode() {
         return Optional.ofNullable(this.publishMode);
     }
+    /**
+     * @return The port on the swarm hosts
+     * 
+     */
     public Optional<Integer> publishedPort() {
         return Optional.ofNullable(this.publishedPort);
     }
+    /**
+     * @return The port inside the container
+     * 
+     */
     public Integer targetPort() {
         return this.targetPort;
     }

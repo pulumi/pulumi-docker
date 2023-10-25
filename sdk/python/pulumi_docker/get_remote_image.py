@@ -6,7 +6,7 @@ import copy
 import warnings
 import pulumi
 import pulumi.runtime
-from typing import Any, Mapping, Optional, Sequence, Union, overload
+from typing import Any, Callable, Mapping, Optional, Sequence, Union, overload
 from . import _utilities
 
 __all__ = [
@@ -73,18 +73,6 @@ def get_remote_image(name: Optional[str] = None,
     """
     `RemoteImage` provides details about a specific Docker Image which need to be presend on the Docker Host
 
-    ## Example Usage
-
-    ```python
-    import pulumi
-    import pulumi_docker as docker
-
-    latest = docker.get_remote_image(name="nginx")
-    specific = docker.get_remote_image(name="nginx:1.17.6")
-    digest = docker.get_remote_image(name="nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2")
-    tag_and_digest = docker.get_remote_image(name="nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2")
-    ```
-
 
     :param str name: The name of the Docker image, including any tags or SHA256 repo digests.
     """
@@ -104,18 +92,6 @@ def get_remote_image_output(name: Optional[pulumi.Input[str]] = None,
                             opts: Optional[pulumi.InvokeOptions] = None) -> pulumi.Output[GetRemoteImageResult]:
     """
     `RemoteImage` provides details about a specific Docker Image which need to be presend on the Docker Host
-
-    ## Example Usage
-
-    ```python
-    import pulumi
-    import pulumi_docker as docker
-
-    latest = docker.get_remote_image(name="nginx")
-    specific = docker.get_remote_image(name="nginx:1.17.6")
-    digest = docker.get_remote_image(name="nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2")
-    tag_and_digest = docker.get_remote_image(name="nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2")
-    ```
 
 
     :param str name: The name of the Docker image, including any tags or SHA256 repo digests.

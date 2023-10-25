@@ -12,13 +12,29 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceTaskSpecResources {
+    /**
+     * @return Describes the resources which can be advertised by a node and requested by a task
+     * 
+     */
     private @Nullable ServiceTaskSpecResourcesLimits limits;
+    /**
+     * @return An object describing the resources which can be advertised by a node and requested by a task
+     * 
+     */
     private @Nullable ServiceTaskSpecResourcesReservation reservation;
 
     private ServiceTaskSpecResources() {}
+    /**
+     * @return Describes the resources which can be advertised by a node and requested by a task
+     * 
+     */
     public Optional<ServiceTaskSpecResourcesLimits> limits() {
         return Optional.ofNullable(this.limits);
     }
+    /**
+     * @return An object describing the resources which can be advertised by a node and requested by a task
+     * 
+     */
     public Optional<ServiceTaskSpecResourcesReservation> reservation() {
         return Optional.ofNullable(this.reservation);
     }

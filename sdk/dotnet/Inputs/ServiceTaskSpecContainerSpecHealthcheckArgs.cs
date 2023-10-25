@@ -12,23 +12,39 @@ namespace Pulumi.Docker.Inputs
 
     public sealed class ServiceTaskSpecContainerSpecHealthcheckArgs : global::Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Time between running the check (ms|s|m|h). Defaults to `0s`.
+        /// </summary>
         [Input("interval")]
         public Input<string>? Interval { get; set; }
 
+        /// <summary>
+        /// Consecutive failures needed to report unhealthy. Defaults to `0`
+        /// </summary>
         [Input("retries")]
         public Input<int>? Retries { get; set; }
 
+        /// <summary>
+        /// Start period for the container to initialize before counting retries towards unstable (ms|s|m|h). Defaults to `0s`.
+        /// </summary>
         [Input("startPeriod")]
         public Input<string>? StartPeriod { get; set; }
 
         [Input("tests", required: true)]
         private InputList<string>? _tests;
+
+        /// <summary>
+        /// The test to perform as list
+        /// </summary>
         public InputList<string> Tests
         {
             get => _tests ?? (_tests = new InputList<string>());
             set => _tests = value;
         }
 
+        /// <summary>
+        /// The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`
+        /// </summary>
         [Input("timeout")]
         public Input<string>? Timeout { get; set; }
 

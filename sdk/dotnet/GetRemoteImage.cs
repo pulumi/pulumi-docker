@@ -13,86 +13,12 @@ namespace Pulumi.Docker
     {
         /// <summary>
         /// `docker.RemoteImage` provides details about a specific Docker Image which need to be presend on the Docker Host
-        /// 
-        /// {{% examples %}}
-        /// ## Example Usage
-        /// {{% example %}}
-        /// 
-        /// ```csharp
-        /// using System.Collections.Generic;
-        /// using System.Linq;
-        /// using Pulumi;
-        /// using Docker = Pulumi.Docker;
-        /// 
-        /// return await Deployment.RunAsync(() =&gt; 
-        /// {
-        ///     var latest = Docker.GetRemoteImage.Invoke(new()
-        ///     {
-        ///         Name = "nginx",
-        ///     });
-        /// 
-        ///     var specific = Docker.GetRemoteImage.Invoke(new()
-        ///     {
-        ///         Name = "nginx:1.17.6",
-        ///     });
-        /// 
-        ///     var digest = Docker.GetRemoteImage.Invoke(new()
-        ///     {
-        ///         Name = "nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2",
-        ///     });
-        /// 
-        ///     var tagAndDigest = Docker.GetRemoteImage.Invoke(new()
-        ///     {
-        ///         Name = "nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2",
-        ///     });
-        /// 
-        /// });
-        /// ```
-        /// {{% /example %}}
-        /// {{% /examples %}}
         /// </summary>
         public static Task<GetRemoteImageResult> InvokeAsync(GetRemoteImageArgs args, InvokeOptions? options = null)
             => global::Pulumi.Deployment.Instance.InvokeAsync<GetRemoteImageResult>("docker:index/getRemoteImage:getRemoteImage", args ?? new GetRemoteImageArgs(), options.WithDefaults());
 
         /// <summary>
         /// `docker.RemoteImage` provides details about a specific Docker Image which need to be presend on the Docker Host
-        /// 
-        /// {{% examples %}}
-        /// ## Example Usage
-        /// {{% example %}}
-        /// 
-        /// ```csharp
-        /// using System.Collections.Generic;
-        /// using System.Linq;
-        /// using Pulumi;
-        /// using Docker = Pulumi.Docker;
-        /// 
-        /// return await Deployment.RunAsync(() =&gt; 
-        /// {
-        ///     var latest = Docker.GetRemoteImage.Invoke(new()
-        ///     {
-        ///         Name = "nginx",
-        ///     });
-        /// 
-        ///     var specific = Docker.GetRemoteImage.Invoke(new()
-        ///     {
-        ///         Name = "nginx:1.17.6",
-        ///     });
-        /// 
-        ///     var digest = Docker.GetRemoteImage.Invoke(new()
-        ///     {
-        ///         Name = "nginx@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2",
-        ///     });
-        /// 
-        ///     var tagAndDigest = Docker.GetRemoteImage.Invoke(new()
-        ///     {
-        ///         Name = "nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2",
-        ///     });
-        /// 
-        /// });
-        /// ```
-        /// {{% /example %}}
-        /// {{% /examples %}}
         /// </summary>
         public static Output<GetRemoteImageResult> Invoke(GetRemoteImageInvokeArgs args, InvokeOptions? options = null)
             => global::Pulumi.Deployment.Instance.Invoke<GetRemoteImageResult>("docker:index/getRemoteImage:getRemoteImage", args ?? new GetRemoteImageInvokeArgs(), options.WithDefaults());
