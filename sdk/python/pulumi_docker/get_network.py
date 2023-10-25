@@ -122,6 +122,15 @@ def get_network(name: Optional[str] = None,
     """
     `Network` provides details about a specific Docker Network.
 
+    ## Example Usage
+
+    ```python
+    import pulumi
+    import pulumi_docker as docker
+
+    main = docker.get_network(name="main")
+    ```
+
 
     :param str name: The name of the Docker network.
     """
@@ -145,6 +154,15 @@ def get_network_output(name: Optional[pulumi.Input[str]] = None,
                        opts: Optional[pulumi.InvokeOptions] = None) -> pulumi.Output[GetNetworkResult]:
     """
     `Network` provides details about a specific Docker Network.
+
+    ## Example Usage
+
+    ```python
+    import pulumi
+    import pulumi_docker as docker
+
+    main = docker.get_network(name="main")
+    ```
 
 
     :param str name: The name of the Docker network.

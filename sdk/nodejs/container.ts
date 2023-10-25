@@ -11,6 +11,18 @@ import * as utilities from "./utilities";
  * <!-- Bug: Type and Name are switched -->
  * Manages the lifecycle of a Docker container.
  *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as docker from "@pulumi/docker";
+ *
+ * // Find the latest Ubuntu precise image.
+ * const ubuntuRemoteImage = new docker.RemoteImage("ubuntuRemoteImage", {name: "ubuntu:precise"});
+ * // Start a container
+ * const ubuntuContainer = new docker.Container("ubuntuContainer", {image: ubuntuRemoteImage.imageId});
+ * ```
+ *
  * ## Import
  *
  * ### Example Assuming you created a `container` as follows #!/bin/bash docker run --name foo -p8080:80 -d nginx

@@ -2550,6 +2550,18 @@ class Container(pulumi.CustomResource):
         <!-- Bug: Type and Name are switched -->
         Manages the lifecycle of a Docker container.
 
+        ## Example Usage
+
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        # Find the latest Ubuntu precise image.
+        ubuntu_remote_image = docker.RemoteImage("ubuntuRemoteImage", name="ubuntu:precise")
+        # Start a container
+        ubuntu_container = docker.Container("ubuntuContainer", image=ubuntu_remote_image.image_id)
+        ```
+
         ## Import
 
         ### Example Assuming you created a `container` as follows #!/bin/bash docker run --name foo -p8080:80 -d nginx
@@ -2651,6 +2663,18 @@ class Container(pulumi.CustomResource):
         """
         <!-- Bug: Type and Name are switched -->
         Manages the lifecycle of a Docker container.
+
+        ## Example Usage
+
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        # Find the latest Ubuntu precise image.
+        ubuntu_remote_image = docker.RemoteImage("ubuntuRemoteImage", name="ubuntu:precise")
+        # Start a container
+        ubuntu_container = docker.Container("ubuntuContainer", image=ubuntu_remote_image.image_id)
+        ```
 
         ## Import
 

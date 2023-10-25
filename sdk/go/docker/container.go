@@ -16,6 +16,38 @@ import (
 // <!-- Bug: Type and Name are switched -->
 // Manages the lifecycle of a Docker container.
 //
+// ## Example Usage
+//
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker"
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			ubuntuRemoteImage, err := docker.NewRemoteImage(ctx, "ubuntuRemoteImage", &docker.RemoteImageArgs{
+//				Name: pulumi.String("ubuntu:precise"),
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			_, err = docker.NewContainer(ctx, "ubuntuContainer", &docker.ContainerArgs{
+//				Image: ubuntuRemoteImage.ImageId,
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
+//
 // ## Import
 //
 // ### Example Assuming you created a `container` as follows #!/bin/bash docker run --name foo -p8080:80 -d nginx

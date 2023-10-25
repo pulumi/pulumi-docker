@@ -13,6 +13,21 @@ namespace Pulumi.Docker
     /// &lt;!-- Bug: Type and Name are switched --&gt;
     /// Creates and destroys a volume in Docker. This can be used alongside docker.Container to prepare volumes that can be shared across containers.
     /// 
+    /// ## Example Usage
+    /// 
+    /// ```csharp
+    /// using System.Collections.Generic;
+    /// using System.Linq;
+    /// using Pulumi;
+    /// using Docker = Pulumi.Docker;
+    /// 
+    /// return await Deployment.RunAsync(() =&gt; 
+    /// {
+    ///     var sharedVolume = new Docker.Volume("sharedVolume");
+    /// 
+    /// });
+    /// ```
+    /// 
     /// ## Import
     /// 
     /// ### Example Assuming you created a `volume` as follows #!/bin/bash docker volume create prints the long ID 524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d you provide the definition for the resource as follows terraform resource "docker_volume" "foo" {

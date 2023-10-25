@@ -371,6 +371,31 @@ class RemoteImage(pulumi.CustomResource):
          This resource will *not* pull new layers of the image automatically unless used in conjunction with RegistryImage data source to update the `pull_triggers` field.
 
         ## Example Usage
+        ### Basic
+
+        Finds and downloads the latest `ubuntu:precise` image but does not check
+        for further updates of the image
+
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        ubuntu = docker.RemoteImage("ubuntu", name="ubuntu:precise")
+        ```
+        ### Dynamic updates
+
+        To be able to update an image dynamically when the `sha256` sum changes,
+        you need to use it in combination with `RegistryImage` as follows:
+
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        ubuntu_registry_image = docker.get_registry_image(name="ubuntu:precise")
+        ubuntu_remote_image = docker.RemoteImage("ubuntuRemoteImage",
+            name=ubuntu_registry_image.name,
+            pull_triggers=[ubuntu_registry_image.sha256_digest])
+        ```
 
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
@@ -394,6 +419,31 @@ class RemoteImage(pulumi.CustomResource):
          This resource will *not* pull new layers of the image automatically unless used in conjunction with RegistryImage data source to update the `pull_triggers` field.
 
         ## Example Usage
+        ### Basic
+
+        Finds and downloads the latest `ubuntu:precise` image but does not check
+        for further updates of the image
+
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        ubuntu = docker.RemoteImage("ubuntu", name="ubuntu:precise")
+        ```
+        ### Dynamic updates
+
+        To be able to update an image dynamically when the `sha256` sum changes,
+        you need to use it in combination with `RegistryImage` as follows:
+
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        ubuntu_registry_image = docker.get_registry_image(name="ubuntu:precise")
+        ubuntu_remote_image = docker.RemoteImage("ubuntuRemoteImage",
+            name=ubuntu_registry_image.name,
+            pull_triggers=[ubuntu_registry_image.sha256_digest])
+        ```
 
         :param str resource_name: The name of the resource.
         :param RemoteImageArgs args: The arguments to use to populate this resource's properties.

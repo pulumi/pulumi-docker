@@ -15,6 +15,55 @@ namespace Pulumi.Docker
     ///  This resource will *not* pull new layers of the image automatically unless used in conjunction with docker.RegistryImage data source to update the `pull_triggers` field.
     /// 
     /// ## Example Usage
+    /// ### Basic
+    /// 
+    /// Finds and downloads the latest `ubuntu:precise` image but does not check
+    /// for further updates of the image
+    /// 
+    /// ```csharp
+    /// using System.Collections.Generic;
+    /// using System.Linq;
+    /// using Pulumi;
+    /// using Docker = Pulumi.Docker;
+    /// 
+    /// return await Deployment.RunAsync(() =&gt; 
+    /// {
+    ///     var ubuntu = new Docker.RemoteImage("ubuntu", new()
+    ///     {
+    ///         Name = "ubuntu:precise",
+    ///     });
+    /// 
+    /// });
+    /// ```
+    /// ### Dynamic updates
+    /// 
+    /// To be able to update an image dynamically when the `sha256` sum changes,
+    /// you need to use it in combination with `docker.RegistryImage` as follows:
+    /// 
+    /// ```csharp
+    /// using System.Collections.Generic;
+    /// using System.Linq;
+    /// using Pulumi;
+    /// using Docker = Pulumi.Docker;
+    /// 
+    /// return await Deployment.RunAsync(() =&gt; 
+    /// {
+    ///     var ubuntuRegistryImage = Docker.GetRegistryImage.Invoke(new()
+    ///     {
+    ///         Name = "ubuntu:precise",
+    ///     });
+    /// 
+    ///     var ubuntuRemoteImage = new Docker.RemoteImage("ubuntuRemoteImage", new()
+    ///     {
+    ///         Name = ubuntuRegistryImage.Apply(getRegistryImageResult =&gt; getRegistryImageResult.Name),
+    ///         PullTriggers = new[]
+    ///         {
+    ///             ubuntuRegistryImage.Apply(getRegistryImageResult =&gt; getRegistryImageResult.Sha256Digest),
+    ///         },
+    ///     });
+    /// 
+    /// });
+    /// ```
     /// </summary>
     [DockerResourceType("docker:index/remoteImage:RemoteImage")]
     public partial class RemoteImage : global::Pulumi.CustomResource
