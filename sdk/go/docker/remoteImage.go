@@ -19,6 +19,71 @@ import (
 //	This resource will *not* pull new layers of the image automatically unless used in conjunction with RegistryImage data source to update the `pullTriggers` field.
 //
 // ## Example Usage
+// ### Basic
+//
+// Finds and downloads the latest `ubuntu:precise` image but does not check
+// for further updates of the image
+//
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker"
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := docker.NewRemoteImage(ctx, "ubuntu", &docker.RemoteImageArgs{
+//				Name: pulumi.String("ubuntu:precise"),
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
+// ### Dynamic updates
+//
+// To be able to update an image dynamically when the `sha256` sum changes,
+// you need to use it in combination with `RegistryImage` as follows:
+//
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker"
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			ubuntuRegistryImage, err := docker.LookupRegistryImage(ctx, &docker.LookupRegistryImageArgs{
+//				Name: "ubuntu:precise",
+//			}, nil)
+//			if err != nil {
+//				return err
+//			}
+//			_, err = docker.NewRemoteImage(ctx, "ubuntuRemoteImage", &docker.RemoteImageArgs{
+//				Name: *pulumi.String(ubuntuRegistryImage.Name),
+//				PullTriggers: pulumi.StringArray{
+//					*pulumi.String(ubuntuRegistryImage.Sha256Digest),
+//				},
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
 type RemoteImage struct {
 	pulumi.CustomResourceState
 

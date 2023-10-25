@@ -13,6 +13,31 @@ namespace Pulumi.Docker
     /// &lt;!-- Bug: Type and Name are switched --&gt;
     /// Manages the lifecycle of a Docker container.
     /// 
+    /// ## Example Usage
+    /// 
+    /// ```csharp
+    /// using System.Collections.Generic;
+    /// using System.Linq;
+    /// using Pulumi;
+    /// using Docker = Pulumi.Docker;
+    /// 
+    /// return await Deployment.RunAsync(() =&gt; 
+    /// {
+    ///     // Find the latest Ubuntu precise image.
+    ///     var ubuntuRemoteImage = new Docker.RemoteImage("ubuntuRemoteImage", new()
+    ///     {
+    ///         Name = "ubuntu:precise",
+    ///     });
+    /// 
+    ///     // Start a container
+    ///     var ubuntuContainer = new Docker.Container("ubuntuContainer", new()
+    ///     {
+    ///         Image = ubuntuRemoteImage.ImageId,
+    ///     });
+    /// 
+    /// });
+    /// ```
+    /// 
     /// ## Import
     /// 
     /// ### Example Assuming you created a `container` as follows #!/bin/bash docker run --name foo -p8080:80 -d nginx

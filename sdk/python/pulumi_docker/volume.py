@@ -227,6 +227,15 @@ class Volume(pulumi.CustomResource):
         <!-- Bug: Type and Name are switched -->
         Creates and destroys a volume in Docker. This can be used alongside Container to prepare volumes that can be shared across containers.
 
+        ## Example Usage
+
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        shared_volume = docker.Volume("sharedVolume")
+        ```
+
         ## Import
 
         ### Example Assuming you created a `volume` as follows #!/bin/bash docker volume create prints the long ID 524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d you provide the definition for the resource as follows terraform resource "docker_volume" "foo" {
@@ -253,6 +262,15 @@ class Volume(pulumi.CustomResource):
         """
         <!-- Bug: Type and Name are switched -->
         Creates and destroys a volume in Docker. This can be used alongside Container to prepare volumes that can be shared across containers.
+
+        ## Example Usage
+
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        shared_volume = docker.Volume("sharedVolume")
+        ```
 
         ## Import
 

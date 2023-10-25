@@ -86,6 +86,18 @@ def get_registry_image(insecure_skip_verify: Optional[bool] = None,
     """
     Reads the image metadata from a Docker Registry. Used in conjunction with the RemoteImage resource to keep an image up to date on the latest available version of the tag.
 
+    ## Example Usage
+
+    ```python
+    import pulumi
+    import pulumi_docker as docker
+
+    ubuntu_registry_image = docker.get_registry_image(name="ubuntu:precise")
+    ubuntu_remote_image = docker.RemoteImage("ubuntuRemoteImage",
+        name=ubuntu_registry_image.name,
+        pull_triggers=[ubuntu_registry_image.sha256_digest])
+    ```
+
 
     :param bool insecure_skip_verify: If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
     :param str name: The name of the Docker image, including any tags. e.g. `alpine:latest`
@@ -109,6 +121,18 @@ def get_registry_image_output(insecure_skip_verify: Optional[pulumi.Input[Option
                               opts: Optional[pulumi.InvokeOptions] = None) -> pulumi.Output[GetRegistryImageResult]:
     """
     Reads the image metadata from a Docker Registry. Used in conjunction with the RemoteImage resource to keep an image up to date on the latest available version of the tag.
+
+    ## Example Usage
+
+    ```python
+    import pulumi
+    import pulumi_docker as docker
+
+    ubuntu_registry_image = docker.get_registry_image(name="ubuntu:precise")
+    ubuntu_remote_image = docker.RemoteImage("ubuntuRemoteImage",
+        name=ubuntu_registry_image.name,
+        pull_triggers=[ubuntu_registry_image.sha256_digest])
+    ```
 
 
     :param bool insecure_skip_verify: If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`

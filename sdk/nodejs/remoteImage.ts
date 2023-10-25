@@ -13,6 +13,34 @@ import * as utilities from "./utilities";
  *  This resource will *not* pull new layers of the image automatically unless used in conjunction with docker.RegistryImage data source to update the `pullTriggers` field.
  *
  * ## Example Usage
+ * ### Basic
+ *
+ * Finds and downloads the latest `ubuntu:precise` image but does not check
+ * for further updates of the image
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as docker from "@pulumi/docker";
+ *
+ * const ubuntu = new docker.RemoteImage("ubuntu", {name: "ubuntu:precise"});
+ * ```
+ * ### Dynamic updates
+ *
+ * To be able to update an image dynamically when the `sha256` sum changes,
+ * you need to use it in combination with `docker.RegistryImage` as follows:
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as docker from "@pulumi/docker";
+ *
+ * const ubuntuRegistryImage = docker.getRegistryImage({
+ *     name: "ubuntu:precise",
+ * });
+ * const ubuntuRemoteImage = new docker.RemoteImage("ubuntuRemoteImage", {
+ *     name: ubuntuRegistryImage.then(ubuntuRegistryImage => ubuntuRegistryImage.name),
+ *     pullTriggers: [ubuntuRegistryImage.then(ubuntuRegistryImage => ubuntuRegistryImage.sha256Digest)],
+ * });
+ * ```
  */
 export class RemoteImage extends pulumi.CustomResource {
     /**

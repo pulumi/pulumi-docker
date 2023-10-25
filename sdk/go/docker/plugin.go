@@ -15,6 +15,40 @@ import (
 // <!-- Bug: Type and Name are switched -->
 // Manages the lifecycle of a Docker plugin.
 //
+// ## Example Usage
+//
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker"
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := docker.NewPlugin(ctx, "sample-volume-plugin", &docker.PluginArgs{
+//				Alias:         pulumi.String("sample-volume-plugin"),
+//				EnableTimeout: pulumi.Int(60),
+//				Enabled:       pulumi.Bool(false),
+//				Envs: pulumi.StringArray{
+//					pulumi.String("DEBUG=1"),
+//				},
+//				ForceDestroy:        pulumi.Bool(true),
+//				ForceDisable:        pulumi.Bool(true),
+//				GrantAllPermissions: pulumi.Bool(true),
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
+//
 // ## Import
 //
 // #!/bin/bash
