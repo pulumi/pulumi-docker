@@ -13,34 +13,6 @@ import * as utilities from "./utilities";
  *  This resource will *not* pull new layers of the image automatically unless used in conjunction with docker.RegistryImage data source to update the `pullTriggers` field.
  *
  * ## Example Usage
- * ### Basic
- *
- * Finds and downloads the latest `ubuntu:precise` image but does not check
- * for further updates of the image
- *
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as docker from "@pulumi/docker";
- *
- * const ubuntu = new docker.RemoteImage("ubuntu", {name: "ubuntu:precise"});
- * ```
- * ### Dynamic updates
- *
- * To be able to update an image dynamically when the `sha256` sum changes,
- * you need to use it in combination with `docker.RegistryImage` as follows:
- *
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as docker from "@pulumi/docker";
- *
- * const ubuntuRegistryImage = docker.getRegistryImage({
- *     name: "ubuntu:precise",
- * });
- * const ubuntuRemoteImage = new docker.RemoteImage("ubuntuRemoteImage", {
- *     name: ubuntuRegistryImage.then(ubuntuRegistryImage => ubuntuRegistryImage.name),
- *     pullTriggers: [ubuntuRegistryImage.then(ubuntuRegistryImage => ubuntuRegistryImage.sha256Digest)],
- * });
- * ```
  */
 export class RemoteImage extends pulumi.CustomResource {
     /**
@@ -75,7 +47,7 @@ export class RemoteImage extends pulumi.CustomResource {
      */
     public readonly build!: pulumi.Output<outputs.RemoteImageBuild | undefined>;
     /**
-     * If true, then the image is removed forcibly when the resource is destroyed.
+     * Always remove intermediate containers
      */
     public readonly forceRemove!: pulumi.Output<boolean | undefined>;
     /**
@@ -87,11 +59,11 @@ export class RemoteImage extends pulumi.CustomResource {
      */
     public readonly keepLocally!: pulumi.Output<boolean | undefined>;
     /**
-     * The name of the Docker image, including any tags or SHA256 repo digests.
+     * type of ulimit, e.g. `nofile`
      */
     public readonly name!: pulumi.Output<string>;
     /**
-     * The platform to use when pulling the image. Defaults to the platform of the current machine.
+     * Set platform if server is multi-platform capable
      */
     public readonly platform!: pulumi.Output<string | undefined>;
     /**
@@ -158,7 +130,7 @@ export interface RemoteImageState {
      */
     build?: pulumi.Input<inputs.RemoteImageBuild>;
     /**
-     * If true, then the image is removed forcibly when the resource is destroyed.
+     * Always remove intermediate containers
      */
     forceRemove?: pulumi.Input<boolean>;
     /**
@@ -170,11 +142,11 @@ export interface RemoteImageState {
      */
     keepLocally?: pulumi.Input<boolean>;
     /**
-     * The name of the Docker image, including any tags or SHA256 repo digests.
+     * type of ulimit, e.g. `nofile`
      */
     name?: pulumi.Input<string>;
     /**
-     * The platform to use when pulling the image. Defaults to the platform of the current machine.
+     * Set platform if server is multi-platform capable
      */
     platform?: pulumi.Input<string>;
     /**
@@ -200,7 +172,7 @@ export interface RemoteImageArgs {
      */
     build?: pulumi.Input<inputs.RemoteImageBuild>;
     /**
-     * If true, then the image is removed forcibly when the resource is destroyed.
+     * Always remove intermediate containers
      */
     forceRemove?: pulumi.Input<boolean>;
     /**
@@ -208,11 +180,11 @@ export interface RemoteImageArgs {
      */
     keepLocally?: pulumi.Input<boolean>;
     /**
-     * The name of the Docker image, including any tags or SHA256 repo digests.
+     * type of ulimit, e.g. `nofile`
      */
     name: pulumi.Input<string>;
     /**
-     * The platform to use when pulling the image. Defaults to the platform of the current machine.
+     * Set platform if server is multi-platform capable
      */
     platform?: pulumi.Input<string>;
     /**

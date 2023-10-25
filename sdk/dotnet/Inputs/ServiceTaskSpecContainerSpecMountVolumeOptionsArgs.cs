@@ -12,11 +12,18 @@ namespace Pulumi.Docker.Inputs
 
     public sealed class ServiceTaskSpecContainerSpecMountVolumeOptionsArgs : global::Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Name of the driver to use to create the volume
+        /// </summary>
         [Input("driverName")]
         public Input<string>? DriverName { get; set; }
 
         [Input("driverOptions")]
         private InputMap<string>? _driverOptions;
+
+        /// <summary>
+        /// key/value map of driver specific options
+        /// </summary>
         public InputMap<string> DriverOptions
         {
             get => _driverOptions ?? (_driverOptions = new InputMap<string>());
@@ -35,6 +42,9 @@ namespace Pulumi.Docker.Inputs
             set => _labels = value;
         }
 
+        /// <summary>
+        /// Populate volume with data from the target
+        /// </summary>
         [Input("noCopy")]
         public Input<bool>? NoCopy { get; set; }
 

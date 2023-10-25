@@ -409,14 +409,14 @@ public class Container extends com.pulumi.resources.CustomResource {
         return this.hostname;
     }
     /**
-     * Additional hosts to add to the container.
+     * Hostname to add
      * 
      */
     @Export(name="hosts", refs={List.class,ContainerHost.class}, tree="[0,1]")
     private Output</* @Nullable */ List<ContainerHost>> hosts;
 
     /**
-     * @return Additional hosts to add to the container.
+     * @return Hostname to add
      * 
      */
     public Output<Optional<List<ContainerHost>>> hosts() {
@@ -465,14 +465,14 @@ public class Container extends com.pulumi.resources.CustomResource {
         return this.ipcMode;
     }
     /**
-     * User-defined key/value metadata
+     * User-defined key/value metadata.
      * 
      */
     @Export(name="labels", refs={List.class,ContainerLabel.class}, tree="[0,1]")
     private Output<List<ContainerLabel>> labels;
 
     /**
-     * @return User-defined key/value metadata
+     * @return User-defined key/value metadata.
      * 
      */
     public Output<List<ContainerLabel>> labels() {
@@ -593,14 +593,14 @@ public class Container extends com.pulumi.resources.CustomResource {
         return Codegen.optional(this.mustRun);
     }
     /**
-     * The name of the container.
+     * The name or id of the network to use. You can use `name` or `id` attribute from a `docker.Network` resource.
      * 
      */
     @Export(name="name", refs={String.class}, tree="[0]")
     private Output<String> name;
 
     /**
-     * @return The name of the container.
+     * @return The name or id of the network to use. You can use `name` or `id` attribute from a `docker.Network` resource.
      * 
      */
     public Output<String> name() {
@@ -705,14 +705,14 @@ public class Container extends com.pulumi.resources.CustomResource {
         return Codegen.optional(this.publishAllPorts);
     }
     /**
-     * If `true`, the container will be started as readonly. Defaults to `false`.
+     * Whether the mount should be read-only.
      * 
      */
     @Export(name="readOnly", refs={Boolean.class}, tree="[0]")
     private Output</* @Nullable */ Boolean> readOnly;
 
     /**
-     * @return If `true`, the container will be started as readonly. Defaults to `false`.
+     * @return Whether the mount should be read-only.
      * 
      */
     public Output<Optional<Boolean>> readOnly() {

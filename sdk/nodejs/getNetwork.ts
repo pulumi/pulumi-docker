@@ -9,17 +9,6 @@ import * as utilities from "./utilities";
 
 /**
  * `docker.Network` provides details about a specific Docker Network.
- *
- * ## Example Usage
- *
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as docker from "@pulumi/docker";
- *
- * const main = docker.getNetwork({
- *     name: "main",
- * });
- * ```
  */
 export function getNetwork(args: GetNetworkArgs, opts?: pulumi.InvokeOptions): Promise<GetNetworkResult> {
 
@@ -74,17 +63,6 @@ export interface GetNetworkResult {
 }
 /**
  * `docker.Network` provides details about a specific Docker Network.
- *
- * ## Example Usage
- *
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as docker from "@pulumi/docker";
- *
- * const main = docker.getNetwork({
- *     name: "main",
- * });
- * ```
  */
 export function getNetworkOutput(args: GetNetworkOutputArgs, opts?: pulumi.InvokeOptions): pulumi.Output<GetNetworkResult> {
     return pulumi.output(args).apply((a: any) => getNetwork(a, opts))

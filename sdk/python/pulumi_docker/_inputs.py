@@ -6,7 +6,7 @@ import copy
 import warnings
 import pulumi
 import pulumi.runtime
-from typing import Any, Mapping, Optional, Sequence, Union, overload
+from typing import Any, Callable, Mapping, Optional, Sequence, Union, overload
 from . import _utilities
 from ._enums import *
 
@@ -84,10 +84,23 @@ class ContainerCapabilitiesArgs:
         :param pulumi.Input[Sequence[pulumi.Input[str]]] adds: List of linux capabilities to add.
         :param pulumi.Input[Sequence[pulumi.Input[str]]] drops: List of linux capabilities to drop.
         """
+        ContainerCapabilitiesArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            adds=adds,
+            drops=drops,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             adds: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+             drops: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+
         if adds is not None:
-            pulumi.set(__self__, "adds", adds)
+            _setter("adds", adds)
         if drops is not None:
-            pulumi.set(__self__, "drops", drops)
+            _setter("drops", drops)
 
     @property
     @pulumi.getter
@@ -125,11 +138,32 @@ class ContainerDeviceArgs:
         :param pulumi.Input[str] container_path: The path in the container where the device will be bound.
         :param pulumi.Input[str] permissions: The cgroup permissions given to the container to access the device. Defaults to `rwm`.
         """
-        pulumi.set(__self__, "host_path", host_path)
+        ContainerDeviceArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            host_path=host_path,
+            container_path=container_path,
+            permissions=permissions,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             host_path: Optional[pulumi.Input[str]] = None,
+             container_path: Optional[pulumi.Input[str]] = None,
+             permissions: Optional[pulumi.Input[str]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if host_path is None and 'hostPath' in kwargs:
+            host_path = kwargs['hostPath']
+        if host_path is None:
+            raise TypeError("Missing 'host_path' argument")
+        if container_path is None and 'containerPath' in kwargs:
+            container_path = kwargs['containerPath']
+
+        _setter("host_path", host_path)
         if container_path is not None:
-            pulumi.set(__self__, "container_path", container_path)
+            _setter("container_path", container_path)
         if permissions is not None:
-            pulumi.set(__self__, "permissions", permissions)
+            _setter("permissions", permissions)
 
     @property
     @pulumi.getter(name="hostPath")
@@ -183,15 +217,38 @@ class ContainerHealthcheckArgs:
         :param pulumi.Input[str] start_period: Start period for the container to initialize before counting retries towards unstable (ms|s|m|h). Defaults to `0s`.
         :param pulumi.Input[str] timeout: Maximum time to allow one check to run (ms|s|m|h). Defaults to `0s`.
         """
-        pulumi.set(__self__, "tests", tests)
+        ContainerHealthcheckArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            tests=tests,
+            interval=interval,
+            retries=retries,
+            start_period=start_period,
+            timeout=timeout,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             tests: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+             interval: Optional[pulumi.Input[str]] = None,
+             retries: Optional[pulumi.Input[int]] = None,
+             start_period: Optional[pulumi.Input[str]] = None,
+             timeout: Optional[pulumi.Input[str]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if tests is None:
+            raise TypeError("Missing 'tests' argument")
+        if start_period is None and 'startPeriod' in kwargs:
+            start_period = kwargs['startPeriod']
+
+        _setter("tests", tests)
         if interval is not None:
-            pulumi.set(__self__, "interval", interval)
+            _setter("interval", interval)
         if retries is not None:
-            pulumi.set(__self__, "retries", retries)
+            _setter("retries", retries)
         if start_period is not None:
-            pulumi.set(__self__, "start_period", start_period)
+            _setter("start_period", start_period)
         if timeout is not None:
-            pulumi.set(__self__, "timeout", timeout)
+            _setter("timeout", timeout)
 
     @property
     @pulumi.getter
@@ -263,8 +320,25 @@ class ContainerHostArgs:
         :param pulumi.Input[str] host: Hostname to add
         :param pulumi.Input[str] ip: IP address this hostname should resolve to.
         """
-        pulumi.set(__self__, "host", host)
-        pulumi.set(__self__, "ip", ip)
+        ContainerHostArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            host=host,
+            ip=ip,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             host: Optional[pulumi.Input[str]] = None,
+             ip: Optional[pulumi.Input[str]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if host is None:
+            raise TypeError("Missing 'host' argument")
+        if ip is None:
+            raise TypeError("Missing 'ip' argument")
+
+        _setter("host", host)
+        _setter("ip", ip)
 
     @property
     @pulumi.getter
@@ -300,8 +374,25 @@ class ContainerLabelArgs:
         :param pulumi.Input[str] label: Name of the label
         :param pulumi.Input[str] value: Value of the label
         """
-        pulumi.set(__self__, "label", label)
-        pulumi.set(__self__, "value", value)
+        ContainerLabelArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            label=label,
+            value=value,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             label: Optional[pulumi.Input[str]] = None,
+             value: Optional[pulumi.Input[str]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if label is None:
+            raise TypeError("Missing 'label' argument")
+        if value is None:
+            raise TypeError("Missing 'value' argument")
+
+        _setter("label", label)
+        _setter("value", value)
 
     @property
     @pulumi.getter
@@ -347,18 +438,53 @@ class ContainerMountArgs:
         :param pulumi.Input['ContainerMountTmpfsOptionsArgs'] tmpfs_options: Optional configuration for the tmpfs type.
         :param pulumi.Input['ContainerMountVolumeOptionsArgs'] volume_options: Optional configuration for the volume type.
         """
-        pulumi.set(__self__, "target", target)
-        pulumi.set(__self__, "type", type)
+        ContainerMountArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            target=target,
+            type=type,
+            bind_options=bind_options,
+            read_only=read_only,
+            source=source,
+            tmpfs_options=tmpfs_options,
+            volume_options=volume_options,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             target: Optional[pulumi.Input[str]] = None,
+             type: Optional[pulumi.Input[str]] = None,
+             bind_options: Optional[pulumi.Input['ContainerMountBindOptionsArgs']] = None,
+             read_only: Optional[pulumi.Input[bool]] = None,
+             source: Optional[pulumi.Input[str]] = None,
+             tmpfs_options: Optional[pulumi.Input['ContainerMountTmpfsOptionsArgs']] = None,
+             volume_options: Optional[pulumi.Input['ContainerMountVolumeOptionsArgs']] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if target is None:
+            raise TypeError("Missing 'target' argument")
+        if type is None:
+            raise TypeError("Missing 'type' argument")
+        if bind_options is None and 'bindOptions' in kwargs:
+            bind_options = kwargs['bindOptions']
+        if read_only is None and 'readOnly' in kwargs:
+            read_only = kwargs['readOnly']
+        if tmpfs_options is None and 'tmpfsOptions' in kwargs:
+            tmpfs_options = kwargs['tmpfsOptions']
+        if volume_options is None and 'volumeOptions' in kwargs:
+            volume_options = kwargs['volumeOptions']
+
+        _setter("target", target)
+        _setter("type", type)
         if bind_options is not None:
-            pulumi.set(__self__, "bind_options", bind_options)
+            _setter("bind_options", bind_options)
         if read_only is not None:
-            pulumi.set(__self__, "read_only", read_only)
+            _setter("read_only", read_only)
         if source is not None:
-            pulumi.set(__self__, "source", source)
+            _setter("source", source)
         if tmpfs_options is not None:
-            pulumi.set(__self__, "tmpfs_options", tmpfs_options)
+            _setter("tmpfs_options", tmpfs_options)
         if volume_options is not None:
-            pulumi.set(__self__, "volume_options", volume_options)
+            _setter("volume_options", volume_options)
 
     @property
     @pulumi.getter
@@ -449,12 +575,29 @@ class ContainerMountArgs:
 class ContainerMountBindOptionsArgs:
     def __init__(__self__, *,
                  propagation: Optional[pulumi.Input[str]] = None):
+        """
+        :param pulumi.Input[str] propagation: A propagation mode with the value.
+        """
+        ContainerMountBindOptionsArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            propagation=propagation,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             propagation: Optional[pulumi.Input[str]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+
         if propagation is not None:
-            pulumi.set(__self__, "propagation", propagation)
+            _setter("propagation", propagation)
 
     @property
     @pulumi.getter
     def propagation(self) -> Optional[pulumi.Input[str]]:
+        """
+        A propagation mode with the value.
+        """
         return pulumi.get(self, "propagation")
 
     @propagation.setter
@@ -467,14 +610,36 @@ class ContainerMountTmpfsOptionsArgs:
     def __init__(__self__, *,
                  mode: Optional[pulumi.Input[int]] = None,
                  size_bytes: Optional[pulumi.Input[int]] = None):
+        """
+        :param pulumi.Input[int] mode: The permission mode for the tmpfs mount in an integer.
+        :param pulumi.Input[int] size_bytes: The size for the tmpfs mount in bytes.
+        """
+        ContainerMountTmpfsOptionsArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            mode=mode,
+            size_bytes=size_bytes,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             mode: Optional[pulumi.Input[int]] = None,
+             size_bytes: Optional[pulumi.Input[int]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if size_bytes is None and 'sizeBytes' in kwargs:
+            size_bytes = kwargs['sizeBytes']
+
         if mode is not None:
-            pulumi.set(__self__, "mode", mode)
+            _setter("mode", mode)
         if size_bytes is not None:
-            pulumi.set(__self__, "size_bytes", size_bytes)
+            _setter("size_bytes", size_bytes)
 
     @property
     @pulumi.getter
     def mode(self) -> Optional[pulumi.Input[int]]:
+        """
+        The permission mode for the tmpfs mount in an integer.
+        """
         return pulumi.get(self, "mode")
 
     @mode.setter
@@ -484,6 +649,9 @@ class ContainerMountTmpfsOptionsArgs:
     @property
     @pulumi.getter(name="sizeBytes")
     def size_bytes(self) -> Optional[pulumi.Input[int]]:
+        """
+        The size for the tmpfs mount in bytes.
+        """
         return pulumi.get(self, "size_bytes")
 
     @size_bytes.setter
@@ -499,20 +667,49 @@ class ContainerMountVolumeOptionsArgs:
                  labels: Optional[pulumi.Input[Sequence[pulumi.Input['ContainerMountVolumeOptionsLabelArgs']]]] = None,
                  no_copy: Optional[pulumi.Input[bool]] = None):
         """
-        :param pulumi.Input[Sequence[pulumi.Input['ContainerMountVolumeOptionsLabelArgs']]] labels: User-defined key/value metadata
+        :param pulumi.Input[str] driver_name: Name of the driver to use to create the volume.
+        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] driver_options: key/value map of driver specific options.
+        :param pulumi.Input[Sequence[pulumi.Input['ContainerMountVolumeOptionsLabelArgs']]] labels: User-defined key/value metadata.
+        :param pulumi.Input[bool] no_copy: Populate volume with data from the target.
         """
+        ContainerMountVolumeOptionsArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            driver_name=driver_name,
+            driver_options=driver_options,
+            labels=labels,
+            no_copy=no_copy,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             driver_name: Optional[pulumi.Input[str]] = None,
+             driver_options: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
+             labels: Optional[pulumi.Input[Sequence[pulumi.Input['ContainerMountVolumeOptionsLabelArgs']]]] = None,
+             no_copy: Optional[pulumi.Input[bool]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if driver_name is None and 'driverName' in kwargs:
+            driver_name = kwargs['driverName']
+        if driver_options is None and 'driverOptions' in kwargs:
+            driver_options = kwargs['driverOptions']
+        if no_copy is None and 'noCopy' in kwargs:
+            no_copy = kwargs['noCopy']
+
         if driver_name is not None:
-            pulumi.set(__self__, "driver_name", driver_name)
+            _setter("driver_name", driver_name)
         if driver_options is not None:
-            pulumi.set(__self__, "driver_options", driver_options)
+            _setter("driver_options", driver_options)
         if labels is not None:
-            pulumi.set(__self__, "labels", labels)
+            _setter("labels", labels)
         if no_copy is not None:
-            pulumi.set(__self__, "no_copy", no_copy)
+            _setter("no_copy", no_copy)
 
     @property
     @pulumi.getter(name="driverName")
     def driver_name(self) -> Optional[pulumi.Input[str]]:
+        """
+        Name of the driver to use to create the volume.
+        """
         return pulumi.get(self, "driver_name")
 
     @driver_name.setter
@@ -522,6 +719,9 @@ class ContainerMountVolumeOptionsArgs:
     @property
     @pulumi.getter(name="driverOptions")
     def driver_options(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]:
+        """
+        key/value map of driver specific options.
+        """
         return pulumi.get(self, "driver_options")
 
     @driver_options.setter
@@ -532,7 +732,7 @@ class ContainerMountVolumeOptionsArgs:
     @pulumi.getter
     def labels(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['ContainerMountVolumeOptionsLabelArgs']]]]:
         """
-        User-defined key/value metadata
+        User-defined key/value metadata.
         """
         return pulumi.get(self, "labels")
 
@@ -543,6 +743,9 @@ class ContainerMountVolumeOptionsArgs:
     @property
     @pulumi.getter(name="noCopy")
     def no_copy(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Populate volume with data from the target.
+        """
         return pulumi.get(self, "no_copy")
 
     @no_copy.setter
@@ -559,8 +762,25 @@ class ContainerMountVolumeOptionsLabelArgs:
         :param pulumi.Input[str] label: Name of the label
         :param pulumi.Input[str] value: Value of the label
         """
-        pulumi.set(__self__, "label", label)
-        pulumi.set(__self__, "value", value)
+        ContainerMountVolumeOptionsLabelArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            label=label,
+            value=value,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             label: Optional[pulumi.Input[str]] = None,
+             value: Optional[pulumi.Input[str]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if label is None:
+            raise TypeError("Missing 'label' argument")
+        if value is None:
+            raise TypeError("Missing 'value' argument")
+
+        _setter("label", label)
+        _setter("value", value)
 
     @property
     @pulumi.getter
@@ -598,22 +818,61 @@ class ContainerNetworkDataArgs:
                  ipv6_gateway: Optional[pulumi.Input[str]] = None,
                  mac_address: Optional[pulumi.Input[str]] = None,
                  network_name: Optional[pulumi.Input[str]] = None):
+        ContainerNetworkDataArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            gateway=gateway,
+            global_ipv6_address=global_ipv6_address,
+            global_ipv6_prefix_length=global_ipv6_prefix_length,
+            ip_address=ip_address,
+            ip_prefix_length=ip_prefix_length,
+            ipv6_gateway=ipv6_gateway,
+            mac_address=mac_address,
+            network_name=network_name,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             gateway: Optional[pulumi.Input[str]] = None,
+             global_ipv6_address: Optional[pulumi.Input[str]] = None,
+             global_ipv6_prefix_length: Optional[pulumi.Input[int]] = None,
+             ip_address: Optional[pulumi.Input[str]] = None,
+             ip_prefix_length: Optional[pulumi.Input[int]] = None,
+             ipv6_gateway: Optional[pulumi.Input[str]] = None,
+             mac_address: Optional[pulumi.Input[str]] = None,
+             network_name: Optional[pulumi.Input[str]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if global_ipv6_address is None and 'globalIpv6Address' in kwargs:
+            global_ipv6_address = kwargs['globalIpv6Address']
+        if global_ipv6_prefix_length is None and 'globalIpv6PrefixLength' in kwargs:
+            global_ipv6_prefix_length = kwargs['globalIpv6PrefixLength']
+        if ip_address is None and 'ipAddress' in kwargs:
+            ip_address = kwargs['ipAddress']
+        if ip_prefix_length is None and 'ipPrefixLength' in kwargs:
+            ip_prefix_length = kwargs['ipPrefixLength']
+        if ipv6_gateway is None and 'ipv6Gateway' in kwargs:
+            ipv6_gateway = kwargs['ipv6Gateway']
+        if mac_address is None and 'macAddress' in kwargs:
+            mac_address = kwargs['macAddress']
+        if network_name is None and 'networkName' in kwargs:
+            network_name = kwargs['networkName']
+
         if gateway is not None:
-            pulumi.set(__self__, "gateway", gateway)
+            _setter("gateway", gateway)
         if global_ipv6_address is not None:
-            pulumi.set(__self__, "global_ipv6_address", global_ipv6_address)
+            _setter("global_ipv6_address", global_ipv6_address)
         if global_ipv6_prefix_length is not None:
-            pulumi.set(__self__, "global_ipv6_prefix_length", global_ipv6_prefix_length)
+            _setter("global_ipv6_prefix_length", global_ipv6_prefix_length)
         if ip_address is not None:
-            pulumi.set(__self__, "ip_address", ip_address)
+            _setter("ip_address", ip_address)
         if ip_prefix_length is not None:
-            pulumi.set(__self__, "ip_prefix_length", ip_prefix_length)
+            _setter("ip_prefix_length", ip_prefix_length)
         if ipv6_gateway is not None:
-            pulumi.set(__self__, "ipv6_gateway", ipv6_gateway)
+            _setter("ipv6_gateway", ipv6_gateway)
         if mac_address is not None:
-            pulumi.set(__self__, "mac_address", mac_address)
+            _setter("mac_address", mac_address)
         if network_name is not None:
-            pulumi.set(__self__, "network_name", network_name)
+            _setter("network_name", network_name)
 
     @property
     @pulumi.getter
@@ -701,13 +960,36 @@ class ContainerNetworksAdvancedArgs:
         :param pulumi.Input[str] ipv4_address: The IPV4 address of the container in the specific network.
         :param pulumi.Input[str] ipv6_address: The IPV6 address of the container in the specific network.
         """
-        pulumi.set(__self__, "name", name)
+        ContainerNetworksAdvancedArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            name=name,
+            aliases=aliases,
+            ipv4_address=ipv4_address,
+            ipv6_address=ipv6_address,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             name: Optional[pulumi.Input[str]] = None,
+             aliases: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+             ipv4_address: Optional[pulumi.Input[str]] = None,
+             ipv6_address: Optional[pulumi.Input[str]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if name is None:
+            raise TypeError("Missing 'name' argument")
+        if ipv4_address is None and 'ipv4Address' in kwargs:
+            ipv4_address = kwargs['ipv4Address']
+        if ipv6_address is None and 'ipv6Address' in kwargs:
+            ipv6_address = kwargs['ipv6Address']
+
+        _setter("name", name)
         if aliases is not None:
-            pulumi.set(__self__, "aliases", aliases)
+            _setter("aliases", aliases)
         if ipv4_address is not None:
-            pulumi.set(__self__, "ipv4_address", ipv4_address)
+            _setter("ipv4_address", ipv4_address)
         if ipv6_address is not None:
-            pulumi.set(__self__, "ipv6_address", ipv6_address)
+            _setter("ipv6_address", ipv6_address)
 
     @property
     @pulumi.getter
@@ -771,13 +1053,32 @@ class ContainerPortArgs:
         :param pulumi.Input[str] ip: IP address/mask that can access this port. Defaults to `0.0.0.0`.
         :param pulumi.Input[str] protocol: Protocol that can be used over this port. Defaults to `tcp`.
         """
-        pulumi.set(__self__, "internal", internal)
+        ContainerPortArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            internal=internal,
+            external=external,
+            ip=ip,
+            protocol=protocol,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             internal: Optional[pulumi.Input[int]] = None,
+             external: Optional[pulumi.Input[int]] = None,
+             ip: Optional[pulumi.Input[str]] = None,
+             protocol: Optional[pulumi.Input[str]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if internal is None:
+            raise TypeError("Missing 'internal' argument")
+
+        _setter("internal", internal)
         if external is not None:
-            pulumi.set(__self__, "external", external)
+            _setter("external", external)
         if ip is not None:
-            pulumi.set(__self__, "ip", ip)
+            _setter("ip", ip)
         if protocol is not None:
-            pulumi.set(__self__, "protocol", protocol)
+            _setter("protocol", protocol)
 
     @property
     @pulumi.getter
@@ -839,9 +1140,30 @@ class ContainerUlimitArgs:
         :param pulumi.Input[str] name: The name of the ulimit
         :param pulumi.Input[int] soft: The soft limit
         """
-        pulumi.set(__self__, "hard", hard)
-        pulumi.set(__self__, "name", name)
-        pulumi.set(__self__, "soft", soft)
+        ContainerUlimitArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            hard=hard,
+            name=name,
+            soft=soft,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             hard: Optional[pulumi.Input[int]] = None,
+             name: Optional[pulumi.Input[str]] = None,
+             soft: Optional[pulumi.Input[int]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if hard is None:
+            raise TypeError("Missing 'hard' argument")
+        if name is None:
+            raise TypeError("Missing 'name' argument")
+        if soft is None:
+            raise TypeError("Missing 'soft' argument")
+
+        _setter("hard", hard)
+        _setter("name", name)
+        _setter("soft", soft)
 
     @property
     @pulumi.getter
@@ -896,17 +1218,44 @@ class ContainerUploadArgs:
         :param pulumi.Input[str] source: A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state. Conflicts with `content` & `content_base64`
         :param pulumi.Input[str] source_hash: If using `source`, this will force an update if the file content has updated but the filename has not.
         """
-        pulumi.set(__self__, "file", file)
+        ContainerUploadArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            file=file,
+            content=content,
+            content_base64=content_base64,
+            executable=executable,
+            source=source,
+            source_hash=source_hash,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             file: Optional[pulumi.Input[str]] = None,
+             content: Optional[pulumi.Input[str]] = None,
+             content_base64: Optional[pulumi.Input[str]] = None,
+             executable: Optional[pulumi.Input[bool]] = None,
+             source: Optional[pulumi.Input[str]] = None,
+             source_hash: Optional[pulumi.Input[str]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if file is None:
+            raise TypeError("Missing 'file' argument")
+        if content_base64 is None and 'contentBase64' in kwargs:
+            content_base64 = kwargs['contentBase64']
+        if source_hash is None and 'sourceHash' in kwargs:
+            source_hash = kwargs['sourceHash']
+
+        _setter("file", file)
         if content is not None:
-            pulumi.set(__self__, "content", content)
+            _setter("content", content)
         if content_base64 is not None:
-            pulumi.set(__self__, "content_base64", content_base64)
+            _setter("content_base64", content_base64)
         if executable is not None:
-            pulumi.set(__self__, "executable", executable)
+            _setter("executable", executable)
         if source is not None:
-            pulumi.set(__self__, "source", source)
+            _setter("source", source)
         if source_hash is not None:
-            pulumi.set(__self__, "source_hash", source_hash)
+            _setter("source_hash", source_hash)
 
     @property
     @pulumi.getter
@@ -993,16 +1342,45 @@ class ContainerVolumeArgs:
         :param pulumi.Input[bool] read_only: If `true`, this volume will be readonly. Defaults to `false`.
         :param pulumi.Input[str] volume_name: The name of the docker volume which should be mounted.
         """
+        ContainerVolumeArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            container_path=container_path,
+            from_container=from_container,
+            host_path=host_path,
+            read_only=read_only,
+            volume_name=volume_name,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             container_path: Optional[pulumi.Input[str]] = None,
+             from_container: Optional[pulumi.Input[str]] = None,
+             host_path: Optional[pulumi.Input[str]] = None,
+             read_only: Optional[pulumi.Input[bool]] = None,
+             volume_name: Optional[pulumi.Input[str]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if container_path is None and 'containerPath' in kwargs:
+            container_path = kwargs['containerPath']
+        if from_container is None and 'fromContainer' in kwargs:
+            from_container = kwargs['fromContainer']
+        if host_path is None and 'hostPath' in kwargs:
+            host_path = kwargs['hostPath']
+        if read_only is None and 'readOnly' in kwargs:
+            read_only = kwargs['readOnly']
+        if volume_name is None and 'volumeName' in kwargs:
+            volume_name = kwargs['volumeName']
+
         if container_path is not None:
-            pulumi.set(__self__, "container_path", container_path)
+            _setter("container_path", container_path)
         if from_container is not None:
-            pulumi.set(__self__, "from_container", from_container)
+            _setter("from_container", from_container)
         if host_path is not None:
-            pulumi.set(__self__, "host_path", host_path)
+            _setter("host_path", host_path)
         if read_only is not None:
-            pulumi.set(__self__, "read_only", read_only)
+            _setter("read_only", read_only)
         if volume_name is not None:
-            pulumi.set(__self__, "volume_name", volume_name)
+            _setter("volume_name", volume_name)
 
     @property
     @pulumi.getter(name="containerPath")
@@ -1078,14 +1456,35 @@ class NetworkIpamConfigArgs:
         :param pulumi.Input[str] ip_range: The ip range in CIDR form
         :param pulumi.Input[str] subnet: The subnet in CIDR form
         """
+        NetworkIpamConfigArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            aux_address=aux_address,
+            gateway=gateway,
+            ip_range=ip_range,
+            subnet=subnet,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             aux_address: Optional[pulumi.Input[Mapping[str, Any]]] = None,
+             gateway: Optional[pulumi.Input[str]] = None,
+             ip_range: Optional[pulumi.Input[str]] = None,
+             subnet: Optional[pulumi.Input[str]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if aux_address is None and 'auxAddress' in kwargs:
+            aux_address = kwargs['auxAddress']
+        if ip_range is None and 'ipRange' in kwargs:
+            ip_range = kwargs['ipRange']
+
         if aux_address is not None:
-            pulumi.set(__self__, "aux_address", aux_address)
+            _setter("aux_address", aux_address)
         if gateway is not None:
-            pulumi.set(__self__, "gateway", gateway)
+            _setter("gateway", gateway)
         if ip_range is not None:
-            pulumi.set(__self__, "ip_range", ip_range)
+            _setter("ip_range", ip_range)
         if subnet is not None:
-            pulumi.set(__self__, "subnet", subnet)
+            _setter("subnet", subnet)
 
     @property
     @pulumi.getter(name="auxAddress")
@@ -1145,8 +1544,25 @@ class NetworkLabelArgs:
         :param pulumi.Input[str] label: Name of the label
         :param pulumi.Input[str] value: Value of the label
         """
-        pulumi.set(__self__, "label", label)
-        pulumi.set(__self__, "value", value)
+        NetworkLabelArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            label=label,
+            value=value,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             label: Optional[pulumi.Input[str]] = None,
+             value: Optional[pulumi.Input[str]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if label is None:
+            raise TypeError("Missing 'label' argument")
+        if value is None:
+            raise TypeError("Missing 'value' argument")
+
+        _setter("label", label)
+        _setter("value", value)
 
     @property
     @pulumi.getter
@@ -1182,8 +1598,25 @@ class PluginGrantPermissionArgs:
         :param pulumi.Input[str] name: The name of the permission
         :param pulumi.Input[Sequence[pulumi.Input[str]]] values: The value of the permission
         """
-        pulumi.set(__self__, "name", name)
-        pulumi.set(__self__, "values", values)
+        PluginGrantPermissionArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            name=name,
+            values=values,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             name: Optional[pulumi.Input[str]] = None,
+             values: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if name is None:
+            raise TypeError("Missing 'name' argument")
+        if values is None:
+            raise TypeError("Missing 'values' argument")
+
+        _setter("name", name)
+        _setter("values", values)
 
     @property
     @pulumi.getter
@@ -1219,17 +1652,46 @@ class ProviderRegistryAuthArgs:
                  config_file_content: Optional[pulumi.Input[str]] = None,
                  password: Optional[pulumi.Input[str]] = None,
                  username: Optional[pulumi.Input[str]] = None):
-        pulumi.set(__self__, "address", address)
+        ProviderRegistryAuthArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            address=address,
+            auth_disabled=auth_disabled,
+            config_file=config_file,
+            config_file_content=config_file_content,
+            password=password,
+            username=username,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             address: Optional[pulumi.Input[str]] = None,
+             auth_disabled: Optional[pulumi.Input[bool]] = None,
+             config_file: Optional[pulumi.Input[str]] = None,
+             config_file_content: Optional[pulumi.Input[str]] = None,
+             password: Optional[pulumi.Input[str]] = None,
+             username: Optional[pulumi.Input[str]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if address is None:
+            raise TypeError("Missing 'address' argument")
+        if auth_disabled is None and 'authDisabled' in kwargs:
+            auth_disabled = kwargs['authDisabled']
+        if config_file is None and 'configFile' in kwargs:
+            config_file = kwargs['configFile']
+        if config_file_content is None and 'configFileContent' in kwargs:
+            config_file_content = kwargs['configFileContent']
+
+        _setter("address", address)
         if auth_disabled is not None:
-            pulumi.set(__self__, "auth_disabled", auth_disabled)
+            _setter("auth_disabled", auth_disabled)
         if config_file is not None:
-            pulumi.set(__self__, "config_file", config_file)
+            _setter("config_file", config_file)
         if config_file_content is not None:
-            pulumi.set(__self__, "config_file_content", config_file_content)
+            _setter("config_file_content", config_file_content)
         if password is not None:
-            pulumi.set(__self__, "password", password)
+            _setter("password", password)
         if username is not None:
-            pulumi.set(__self__, "username", username)
+            _setter("username", username)
 
     @property
     @pulumi.getter
@@ -1361,75 +1823,200 @@ class RemoteImageBuildArgs:
         :param pulumi.Input[Sequence[pulumi.Input['RemoteImageBuildUlimitArgs']]] ulimits: Configuration for ulimits
         :param pulumi.Input[str] version: Version of the underlying builder to use
         """
-        pulumi.set(__self__, "context", context)
+        RemoteImageBuildArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            context=context,
+            auth_configs=auth_configs,
+            build_arg=build_arg,
+            build_args=build_args,
+            build_id=build_id,
+            cache_froms=cache_froms,
+            cgroup_parent=cgroup_parent,
+            cpu_period=cpu_period,
+            cpu_quota=cpu_quota,
+            cpu_set_cpus=cpu_set_cpus,
+            cpu_set_mems=cpu_set_mems,
+            cpu_shares=cpu_shares,
+            dockerfile=dockerfile,
+            extra_hosts=extra_hosts,
+            force_remove=force_remove,
+            isolation=isolation,
+            label=label,
+            labels=labels,
+            memory=memory,
+            memory_swap=memory_swap,
+            network_mode=network_mode,
+            no_cache=no_cache,
+            platform=platform,
+            pull_parent=pull_parent,
+            remote_context=remote_context,
+            remove=remove,
+            security_opts=security_opts,
+            session_id=session_id,
+            shm_size=shm_size,
+            squash=squash,
+            suppress_output=suppress_output,
+            tags=tags,
+            target=target,
+            ulimits=ulimits,
+            version=version,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             context: Optional[pulumi.Input[str]] = None,
+             auth_configs: Optional[pulumi.Input[Sequence[pulumi.Input['RemoteImageBuildAuthConfigArgs']]]] = None,
+             build_arg: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
+             build_args: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
+             build_id: Optional[pulumi.Input[str]] = None,
+             cache_froms: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+             cgroup_parent: Optional[pulumi.Input[str]] = None,
+             cpu_period: Optional[pulumi.Input[int]] = None,
+             cpu_quota: Optional[pulumi.Input[int]] = None,
+             cpu_set_cpus: Optional[pulumi.Input[str]] = None,
+             cpu_set_mems: Optional[pulumi.Input[str]] = None,
+             cpu_shares: Optional[pulumi.Input[int]] = None,
+             dockerfile: Optional[pulumi.Input[str]] = None,
+             extra_hosts: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+             force_remove: Optional[pulumi.Input[bool]] = None,
+             isolation: Optional[pulumi.Input[str]] = None,
+             label: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
+             labels: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
+             memory: Optional[pulumi.Input[int]] = None,
+             memory_swap: Optional[pulumi.Input[int]] = None,
+             network_mode: Optional[pulumi.Input[str]] = None,
+             no_cache: Optional[pulumi.Input[bool]] = None,
+             platform: Optional[pulumi.Input[str]] = None,
+             pull_parent: Optional[pulumi.Input[bool]] = None,
+             remote_context: Optional[pulumi.Input[str]] = None,
+             remove: Optional[pulumi.Input[bool]] = None,
+             security_opts: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+             session_id: Optional[pulumi.Input[str]] = None,
+             shm_size: Optional[pulumi.Input[int]] = None,
+             squash: Optional[pulumi.Input[bool]] = None,
+             suppress_output: Optional[pulumi.Input[bool]] = None,
+             tags: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+             target: Optional[pulumi.Input[str]] = None,
+             ulimits: Optional[pulumi.Input[Sequence[pulumi.Input['RemoteImageBuildUlimitArgs']]]] = None,
+             version: Optional[pulumi.Input[str]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if context is None:
+            raise TypeError("Missing 'context' argument")
+        if auth_configs is None and 'authConfigs' in kwargs:
+            auth_configs = kwargs['authConfigs']
+        if build_arg is None and 'buildArg' in kwargs:
+            build_arg = kwargs['buildArg']
+        if build_args is None and 'buildArgs' in kwargs:
+            build_args = kwargs['buildArgs']
+        if build_id is None and 'buildId' in kwargs:
+            build_id = kwargs['buildId']
+        if cache_froms is None and 'cacheFroms' in kwargs:
+            cache_froms = kwargs['cacheFroms']
+        if cgroup_parent is None and 'cgroupParent' in kwargs:
+            cgroup_parent = kwargs['cgroupParent']
+        if cpu_period is None and 'cpuPeriod' in kwargs:
+            cpu_period = kwargs['cpuPeriod']
+        if cpu_quota is None and 'cpuQuota' in kwargs:
+            cpu_quota = kwargs['cpuQuota']
+        if cpu_set_cpus is None and 'cpuSetCpus' in kwargs:
+            cpu_set_cpus = kwargs['cpuSetCpus']
+        if cpu_set_mems is None and 'cpuSetMems' in kwargs:
+            cpu_set_mems = kwargs['cpuSetMems']
+        if cpu_shares is None and 'cpuShares' in kwargs:
+            cpu_shares = kwargs['cpuShares']
+        if extra_hosts is None and 'extraHosts' in kwargs:
+            extra_hosts = kwargs['extraHosts']
+        if force_remove is None and 'forceRemove' in kwargs:
+            force_remove = kwargs['forceRemove']
+        if memory_swap is None and 'memorySwap' in kwargs:
+            memory_swap = kwargs['memorySwap']
+        if network_mode is None and 'networkMode' in kwargs:
+            network_mode = kwargs['networkMode']
+        if no_cache is None and 'noCache' in kwargs:
+            no_cache = kwargs['noCache']
+        if pull_parent is None and 'pullParent' in kwargs:
+            pull_parent = kwargs['pullParent']
+        if remote_context is None and 'remoteContext' in kwargs:
+            remote_context = kwargs['remoteContext']
+        if security_opts is None and 'securityOpts' in kwargs:
+            security_opts = kwargs['securityOpts']
+        if session_id is None and 'sessionId' in kwargs:
+            session_id = kwargs['sessionId']
+        if shm_size is None and 'shmSize' in kwargs:
+            shm_size = kwargs['shmSize']
+        if suppress_output is None and 'suppressOutput' in kwargs:
+            suppress_output = kwargs['suppressOutput']
+
+        _setter("context", context)
         if auth_configs is not None:
-            pulumi.set(__self__, "auth_configs", auth_configs)
+            _setter("auth_configs", auth_configs)
         if build_arg is not None:
-            pulumi.set(__self__, "build_arg", build_arg)
+            _setter("build_arg", build_arg)
         if build_args is not None:
-            pulumi.set(__self__, "build_args", build_args)
+            _setter("build_args", build_args)
         if build_id is not None:
-            pulumi.set(__self__, "build_id", build_id)
+            _setter("build_id", build_id)
         if cache_froms is not None:
-            pulumi.set(__self__, "cache_froms", cache_froms)
+            _setter("cache_froms", cache_froms)
         if cgroup_parent is not None:
-            pulumi.set(__self__, "cgroup_parent", cgroup_parent)
+            _setter("cgroup_parent", cgroup_parent)
         if cpu_period is not None:
-            pulumi.set(__self__, "cpu_period", cpu_period)
+            _setter("cpu_period", cpu_period)
         if cpu_quota is not None:
-            pulumi.set(__self__, "cpu_quota", cpu_quota)
+            _setter("cpu_quota", cpu_quota)
         if cpu_set_cpus is not None:
-            pulumi.set(__self__, "cpu_set_cpus", cpu_set_cpus)
+            _setter("cpu_set_cpus", cpu_set_cpus)
         if cpu_set_mems is not None:
-            pulumi.set(__self__, "cpu_set_mems", cpu_set_mems)
+            _setter("cpu_set_mems", cpu_set_mems)
         if cpu_shares is not None:
-            pulumi.set(__self__, "cpu_shares", cpu_shares)
+            _setter("cpu_shares", cpu_shares)
         if dockerfile is not None:
-            pulumi.set(__self__, "dockerfile", dockerfile)
+            _setter("dockerfile", dockerfile)
         if extra_hosts is not None:
-            pulumi.set(__self__, "extra_hosts", extra_hosts)
+            _setter("extra_hosts", extra_hosts)
         if force_remove is not None:
-            pulumi.set(__self__, "force_remove", force_remove)
+            _setter("force_remove", force_remove)
         if isolation is not None:
-            pulumi.set(__self__, "isolation", isolation)
+            _setter("isolation", isolation)
         if label is not None:
-            pulumi.set(__self__, "label", label)
+            _setter("label", label)
         if labels is not None:
-            pulumi.set(__self__, "labels", labels)
+            _setter("labels", labels)
         if memory is not None:
-            pulumi.set(__self__, "memory", memory)
+            _setter("memory", memory)
         if memory_swap is not None:
-            pulumi.set(__self__, "memory_swap", memory_swap)
+            _setter("memory_swap", memory_swap)
         if network_mode is not None:
-            pulumi.set(__self__, "network_mode", network_mode)
+            _setter("network_mode", network_mode)
         if no_cache is not None:
-            pulumi.set(__self__, "no_cache", no_cache)
+            _setter("no_cache", no_cache)
         if platform is not None:
-            pulumi.set(__self__, "platform", platform)
+            _setter("platform", platform)
         if pull_parent is not None:
-            pulumi.set(__self__, "pull_parent", pull_parent)
+            _setter("pull_parent", pull_parent)
         if remote_context is not None:
-            pulumi.set(__self__, "remote_context", remote_context)
+            _setter("remote_context", remote_context)
         if remove is not None:
-            pulumi.set(__self__, "remove", remove)
+            _setter("remove", remove)
         if security_opts is not None:
-            pulumi.set(__self__, "security_opts", security_opts)
+            _setter("security_opts", security_opts)
         if session_id is not None:
-            pulumi.set(__self__, "session_id", session_id)
+            _setter("session_id", session_id)
         if shm_size is not None:
-            pulumi.set(__self__, "shm_size", shm_size)
+            _setter("shm_size", shm_size)
         if squash is not None:
-            pulumi.set(__self__, "squash", squash)
+            _setter("squash", squash)
         if suppress_output is not None:
-            pulumi.set(__self__, "suppress_output", suppress_output)
+            _setter("suppress_output", suppress_output)
         if tags is not None:
-            pulumi.set(__self__, "tags", tags)
+            _setter("tags", tags)
         if target is not None:
-            pulumi.set(__self__, "target", target)
+            _setter("target", target)
         if ulimits is not None:
-            pulumi.set(__self__, "ulimits", ulimits)
+            _setter("ulimits", ulimits)
         if version is not None:
-            pulumi.set(__self__, "version", version)
+            _setter("version", version)
 
     @property
     @pulumi.getter
@@ -1863,25 +2450,75 @@ class RemoteImageBuildAuthConfigArgs:
                  registry_token: Optional[pulumi.Input[str]] = None,
                  server_address: Optional[pulumi.Input[str]] = None,
                  user_name: Optional[pulumi.Input[str]] = None):
-        pulumi.set(__self__, "host_name", host_name)
+        """
+        :param pulumi.Input[str] host_name: hostname of the registry
+        :param pulumi.Input[str] auth: the auth token
+        :param pulumi.Input[str] email: the user emal
+        :param pulumi.Input[str] identity_token: the identity token
+        :param pulumi.Input[str] password: the registry password
+        :param pulumi.Input[str] registry_token: the registry token
+        :param pulumi.Input[str] server_address: the server address
+        :param pulumi.Input[str] user_name: the registry user name
+        """
+        RemoteImageBuildAuthConfigArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            host_name=host_name,
+            auth=auth,
+            email=email,
+            identity_token=identity_token,
+            password=password,
+            registry_token=registry_token,
+            server_address=server_address,
+            user_name=user_name,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             host_name: Optional[pulumi.Input[str]] = None,
+             auth: Optional[pulumi.Input[str]] = None,
+             email: Optional[pulumi.Input[str]] = None,
+             identity_token: Optional[pulumi.Input[str]] = None,
+             password: Optional[pulumi.Input[str]] = None,
+             registry_token: Optional[pulumi.Input[str]] = None,
+             server_address: Optional[pulumi.Input[str]] = None,
+             user_name: Optional[pulumi.Input[str]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if host_name is None and 'hostName' in kwargs:
+            host_name = kwargs['hostName']
+        if host_name is None:
+            raise TypeError("Missing 'host_name' argument")
+        if identity_token is None and 'identityToken' in kwargs:
+            identity_token = kwargs['identityToken']
+        if registry_token is None and 'registryToken' in kwargs:
+            registry_token = kwargs['registryToken']
+        if server_address is None and 'serverAddress' in kwargs:
+            server_address = kwargs['serverAddress']
+        if user_name is None and 'userName' in kwargs:
+            user_name = kwargs['userName']
+
+        _setter("host_name", host_name)
         if auth is not None:
-            pulumi.set(__self__, "auth", auth)
+            _setter("auth", auth)
         if email is not None:
-            pulumi.set(__self__, "email", email)
+            _setter("email", email)
         if identity_token is not None:
-            pulumi.set(__self__, "identity_token", identity_token)
+            _setter("identity_token", identity_token)
         if password is not None:
-            pulumi.set(__self__, "password", password)
+            _setter("password", password)
         if registry_token is not None:
-            pulumi.set(__self__, "registry_token", registry_token)
+            _setter("registry_token", registry_token)
         if server_address is not None:
-            pulumi.set(__self__, "server_address", server_address)
+            _setter("server_address", server_address)
         if user_name is not None:
-            pulumi.set(__self__, "user_name", user_name)
+            _setter("user_name", user_name)
 
     @property
     @pulumi.getter(name="hostName")
     def host_name(self) -> pulumi.Input[str]:
+        """
+        hostname of the registry
+        """
         return pulumi.get(self, "host_name")
 
     @host_name.setter
@@ -1891,6 +2528,9 @@ class RemoteImageBuildAuthConfigArgs:
     @property
     @pulumi.getter
     def auth(self) -> Optional[pulumi.Input[str]]:
+        """
+        the auth token
+        """
         return pulumi.get(self, "auth")
 
     @auth.setter
@@ -1900,6 +2540,9 @@ class RemoteImageBuildAuthConfigArgs:
     @property
     @pulumi.getter
     def email(self) -> Optional[pulumi.Input[str]]:
+        """
+        the user emal
+        """
         return pulumi.get(self, "email")
 
     @email.setter
@@ -1909,6 +2552,9 @@ class RemoteImageBuildAuthConfigArgs:
     @property
     @pulumi.getter(name="identityToken")
     def identity_token(self) -> Optional[pulumi.Input[str]]:
+        """
+        the identity token
+        """
         return pulumi.get(self, "identity_token")
 
     @identity_token.setter
@@ -1918,6 +2564,9 @@ class RemoteImageBuildAuthConfigArgs:
     @property
     @pulumi.getter
     def password(self) -> Optional[pulumi.Input[str]]:
+        """
+        the registry password
+        """
         return pulumi.get(self, "password")
 
     @password.setter
@@ -1927,6 +2576,9 @@ class RemoteImageBuildAuthConfigArgs:
     @property
     @pulumi.getter(name="registryToken")
     def registry_token(self) -> Optional[pulumi.Input[str]]:
+        """
+        the registry token
+        """
         return pulumi.get(self, "registry_token")
 
     @registry_token.setter
@@ -1936,6 +2588,9 @@ class RemoteImageBuildAuthConfigArgs:
     @property
     @pulumi.getter(name="serverAddress")
     def server_address(self) -> Optional[pulumi.Input[str]]:
+        """
+        the server address
+        """
         return pulumi.get(self, "server_address")
 
     @server_address.setter
@@ -1945,6 +2600,9 @@ class RemoteImageBuildAuthConfigArgs:
     @property
     @pulumi.getter(name="userName")
     def user_name(self) -> Optional[pulumi.Input[str]]:
+        """
+        the registry user name
+        """
         return pulumi.get(self, "user_name")
 
     @user_name.setter
@@ -1959,15 +2617,41 @@ class RemoteImageBuildUlimitArgs:
                  name: pulumi.Input[str],
                  soft: pulumi.Input[int]):
         """
-        :param pulumi.Input[str] name: The name of the Docker image, including any tags or SHA256 repo digests.
+        :param pulumi.Input[int] hard: soft limit
+        :param pulumi.Input[str] name: type of ulimit, e.g. `nofile`
+        :param pulumi.Input[int] soft: hard limit
         """
-        pulumi.set(__self__, "hard", hard)
-        pulumi.set(__self__, "name", name)
-        pulumi.set(__self__, "soft", soft)
+        RemoteImageBuildUlimitArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            hard=hard,
+            name=name,
+            soft=soft,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             hard: Optional[pulumi.Input[int]] = None,
+             name: Optional[pulumi.Input[str]] = None,
+             soft: Optional[pulumi.Input[int]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if hard is None:
+            raise TypeError("Missing 'hard' argument")
+        if name is None:
+            raise TypeError("Missing 'name' argument")
+        if soft is None:
+            raise TypeError("Missing 'soft' argument")
+
+        _setter("hard", hard)
+        _setter("name", name)
+        _setter("soft", soft)
 
     @property
     @pulumi.getter
     def hard(self) -> pulumi.Input[int]:
+        """
+        soft limit
+        """
         return pulumi.get(self, "hard")
 
     @hard.setter
@@ -1978,7 +2662,7 @@ class RemoteImageBuildUlimitArgs:
     @pulumi.getter
     def name(self) -> pulumi.Input[str]:
         """
-        The name of the Docker image, including any tags or SHA256 repo digests.
+        type of ulimit, e.g. `nofile`
         """
         return pulumi.get(self, "name")
 
@@ -1989,6 +2673,9 @@ class RemoteImageBuildUlimitArgs:
     @property
     @pulumi.getter
     def soft(self) -> pulumi.Input[int]:
+        """
+        hard limit
+        """
         return pulumi.get(self, "soft")
 
     @soft.setter
@@ -2005,8 +2692,25 @@ class SecretLabelArgs:
         :param pulumi.Input[str] label: Name of the label
         :param pulumi.Input[str] value: Value of the label
         """
-        pulumi.set(__self__, "label", label)
-        pulumi.set(__self__, "value", value)
+        SecretLabelArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            label=label,
+            value=value,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             label: Optional[pulumi.Input[str]] = None,
+             value: Optional[pulumi.Input[str]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if label is None:
+            raise TypeError("Missing 'label' argument")
+        if value is None:
+            raise TypeError("Missing 'value' argument")
+
+        _setter("label", label)
+        _setter("value", value)
 
     @property
     @pulumi.getter
@@ -2044,11 +2748,30 @@ class ServiceAuthArgs:
         :param pulumi.Input[str] password: The password
         :param pulumi.Input[str] username: The username
         """
-        pulumi.set(__self__, "server_address", server_address)
+        ServiceAuthArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            server_address=server_address,
+            password=password,
+            username=username,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             server_address: Optional[pulumi.Input[str]] = None,
+             password: Optional[pulumi.Input[str]] = None,
+             username: Optional[pulumi.Input[str]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if server_address is None and 'serverAddress' in kwargs:
+            server_address = kwargs['serverAddress']
+        if server_address is None:
+            raise TypeError("Missing 'server_address' argument")
+
+        _setter("server_address", server_address)
         if password is not None:
-            pulumi.set(__self__, "password", password)
+            _setter("password", password)
         if username is not None:
-            pulumi.set(__self__, "username", username)
+            _setter("username", username)
 
     @property
     @pulumi.getter(name="serverAddress")
@@ -2096,10 +2819,23 @@ class ServiceConvergeConfigArgs:
         :param pulumi.Input[str] delay: The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.
         :param pulumi.Input[str] timeout: The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`
         """
+        ServiceConvergeConfigArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            delay=delay,
+            timeout=timeout,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             delay: Optional[pulumi.Input[str]] = None,
+             timeout: Optional[pulumi.Input[str]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+
         if delay is not None:
-            pulumi.set(__self__, "delay", delay)
+            _setter("delay", delay)
         if timeout is not None:
-            pulumi.set(__self__, "timeout", timeout)
+            _setter("timeout", timeout)
 
     @property
     @pulumi.getter
@@ -2135,10 +2871,23 @@ class ServiceEndpointSpecArgs:
         :param pulumi.Input[str] mode: The mode of resolution to use for internal load balancing between tasks
         :param pulumi.Input[Sequence[pulumi.Input['ServiceEndpointSpecPortArgs']]] ports: List of exposed ports that this service is accessible on from the outside. Ports can only be provided if 'vip' resolution mode is used
         """
+        ServiceEndpointSpecArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            mode=mode,
+            ports=ports,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             mode: Optional[pulumi.Input[str]] = None,
+             ports: Optional[pulumi.Input[Sequence[pulumi.Input['ServiceEndpointSpecPortArgs']]]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+
         if mode is not None:
-            pulumi.set(__self__, "mode", mode)
+            _setter("mode", mode)
         if ports is not None:
-            pulumi.set(__self__, "ports", ports)
+            _setter("ports", ports)
 
     @property
     @pulumi.getter
@@ -2174,21 +2923,55 @@ class ServiceEndpointSpecPortArgs:
                  publish_mode: Optional[pulumi.Input[str]] = None,
                  published_port: Optional[pulumi.Input[int]] = None):
         """
-        :param pulumi.Input[str] name: Name of the service
+        :param pulumi.Input[int] target_port: The port inside the container
+        :param pulumi.Input[str] name: A random name for the port
+        :param pulumi.Input[str] protocol: Rrepresents the protocol of a port: `tcp`, `udp` or `sctp`. Defaults to `tcp`.
+        :param pulumi.Input[str] publish_mode: Represents the mode in which the port is to be published: 'ingress' or 'host'. Defaults to `ingress`.
+        :param pulumi.Input[int] published_port: The port on the swarm hosts
         """
-        pulumi.set(__self__, "target_port", target_port)
+        ServiceEndpointSpecPortArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            target_port=target_port,
+            name=name,
+            protocol=protocol,
+            publish_mode=publish_mode,
+            published_port=published_port,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             target_port: Optional[pulumi.Input[int]] = None,
+             name: Optional[pulumi.Input[str]] = None,
+             protocol: Optional[pulumi.Input[str]] = None,
+             publish_mode: Optional[pulumi.Input[str]] = None,
+             published_port: Optional[pulumi.Input[int]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if target_port is None and 'targetPort' in kwargs:
+            target_port = kwargs['targetPort']
+        if target_port is None:
+            raise TypeError("Missing 'target_port' argument")
+        if publish_mode is None and 'publishMode' in kwargs:
+            publish_mode = kwargs['publishMode']
+        if published_port is None and 'publishedPort' in kwargs:
+            published_port = kwargs['publishedPort']
+
+        _setter("target_port", target_port)
         if name is not None:
-            pulumi.set(__self__, "name", name)
+            _setter("name", name)
         if protocol is not None:
-            pulumi.set(__self__, "protocol", protocol)
+            _setter("protocol", protocol)
         if publish_mode is not None:
-            pulumi.set(__self__, "publish_mode", publish_mode)
+            _setter("publish_mode", publish_mode)
         if published_port is not None:
-            pulumi.set(__self__, "published_port", published_port)
+            _setter("published_port", published_port)
 
     @property
     @pulumi.getter(name="targetPort")
     def target_port(self) -> pulumi.Input[int]:
+        """
+        The port inside the container
+        """
         return pulumi.get(self, "target_port")
 
     @target_port.setter
@@ -2199,7 +2982,7 @@ class ServiceEndpointSpecPortArgs:
     @pulumi.getter
     def name(self) -> Optional[pulumi.Input[str]]:
         """
-        Name of the service
+        A random name for the port
         """
         return pulumi.get(self, "name")
 
@@ -2210,6 +2993,9 @@ class ServiceEndpointSpecPortArgs:
     @property
     @pulumi.getter
     def protocol(self) -> Optional[pulumi.Input[str]]:
+        """
+        Rrepresents the protocol of a port: `tcp`, `udp` or `sctp`. Defaults to `tcp`.
+        """
         return pulumi.get(self, "protocol")
 
     @protocol.setter
@@ -2219,6 +3005,9 @@ class ServiceEndpointSpecPortArgs:
     @property
     @pulumi.getter(name="publishMode")
     def publish_mode(self) -> Optional[pulumi.Input[str]]:
+        """
+        Represents the mode in which the port is to be published: 'ingress' or 'host'. Defaults to `ingress`.
+        """
         return pulumi.get(self, "publish_mode")
 
     @publish_mode.setter
@@ -2228,6 +3017,9 @@ class ServiceEndpointSpecPortArgs:
     @property
     @pulumi.getter(name="publishedPort")
     def published_port(self) -> Optional[pulumi.Input[int]]:
+        """
+        The port on the swarm hosts
+        """
         return pulumi.get(self, "published_port")
 
     @published_port.setter
@@ -2244,8 +3036,25 @@ class ServiceLabelArgs:
         :param pulumi.Input[str] label: Name of the label
         :param pulumi.Input[str] value: Value of the label
         """
-        pulumi.set(__self__, "label", label)
-        pulumi.set(__self__, "value", value)
+        ServiceLabelArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            label=label,
+            value=value,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             label: Optional[pulumi.Input[str]] = None,
+             value: Optional[pulumi.Input[str]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if label is None:
+            raise TypeError("Missing 'label' argument")
+        if value is None:
+            raise TypeError("Missing 'value' argument")
+
+        _setter("label", label)
+        _setter("value", value)
 
     @property
     @pulumi.getter
@@ -2281,10 +3090,25 @@ class ServiceModeArgs:
         :param pulumi.Input[bool] global_: The global service mode. Defaults to `false`
         :param pulumi.Input['ServiceModeReplicatedArgs'] replicated: The replicated service mode
         """
+        ServiceModeArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            global_=global_,
+            replicated=replicated,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             global_: Optional[pulumi.Input[bool]] = None,
+             replicated: Optional[pulumi.Input['ServiceModeReplicatedArgs']] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if global_ is None and 'global' in kwargs:
+            global_ = kwargs['global']
+
         if global_ is not None:
-            pulumi.set(__self__, "global_", global_)
+            _setter("global_", global_)
         if replicated is not None:
-            pulumi.set(__self__, "replicated", replicated)
+            _setter("replicated", replicated)
 
     @property
     @pulumi.getter(name="global")
@@ -2315,12 +3139,29 @@ class ServiceModeArgs:
 class ServiceModeReplicatedArgs:
     def __init__(__self__, *,
                  replicas: Optional[pulumi.Input[int]] = None):
+        """
+        :param pulumi.Input[int] replicas: The amount of replicas of the service. Defaults to `1`
+        """
+        ServiceModeReplicatedArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            replicas=replicas,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             replicas: Optional[pulumi.Input[int]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+
         if replicas is not None:
-            pulumi.set(__self__, "replicas", replicas)
+            _setter("replicas", replicas)
 
     @property
     @pulumi.getter
     def replicas(self) -> Optional[pulumi.Input[int]]:
+        """
+        The amount of replicas of the service. Defaults to `1`
+        """
         return pulumi.get(self, "replicas")
 
     @replicas.setter
@@ -2345,18 +3186,43 @@ class ServiceRollbackConfigArgs:
         :param pulumi.Input[str] order: Rollback order: either 'stop-first' or 'start-first'. Defaults to `stop-first`.
         :param pulumi.Input[int] parallelism: Maximum number of tasks to be rollbacked in one iteration. Defaults to `1`
         """
+        ServiceRollbackConfigArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            delay=delay,
+            failure_action=failure_action,
+            max_failure_ratio=max_failure_ratio,
+            monitor=monitor,
+            order=order,
+            parallelism=parallelism,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             delay: Optional[pulumi.Input[str]] = None,
+             failure_action: Optional[pulumi.Input[str]] = None,
+             max_failure_ratio: Optional[pulumi.Input[str]] = None,
+             monitor: Optional[pulumi.Input[str]] = None,
+             order: Optional[pulumi.Input[str]] = None,
+             parallelism: Optional[pulumi.Input[int]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if failure_action is None and 'failureAction' in kwargs:
+            failure_action = kwargs['failureAction']
+        if max_failure_ratio is None and 'maxFailureRatio' in kwargs:
+            max_failure_ratio = kwargs['maxFailureRatio']
+
         if delay is not None:
-            pulumi.set(__self__, "delay", delay)
+            _setter("delay", delay)
         if failure_action is not None:
-            pulumi.set(__self__, "failure_action", failure_action)
+            _setter("failure_action", failure_action)
         if max_failure_ratio is not None:
-            pulumi.set(__self__, "max_failure_ratio", max_failure_ratio)
+            _setter("max_failure_ratio", max_failure_ratio)
         if monitor is not None:
-            pulumi.set(__self__, "monitor", monitor)
+            _setter("monitor", monitor)
         if order is not None:
-            pulumi.set(__self__, "order", order)
+            _setter("order", order)
         if parallelism is not None:
-            pulumi.set(__self__, "parallelism", parallelism)
+            _setter("parallelism", parallelism)
 
     @property
     @pulumi.getter
@@ -2452,21 +3318,58 @@ class ServiceTaskSpecArgs:
         :param pulumi.Input['ServiceTaskSpecRestartPolicyArgs'] restart_policy: Specification for the restart policy which applies to containers created as part of this service.
         :param pulumi.Input[str] runtime: Runtime is the type of runtime specified for the task executor. See the [types](https://github.com/moby/moby/blob/master/api/types/swarm/runtime.go).
         """
-        pulumi.set(__self__, "container_spec", container_spec)
+        ServiceTaskSpecArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            container_spec=container_spec,
+            force_update=force_update,
+            log_driver=log_driver,
+            networks_advanceds=networks_advanceds,
+            placement=placement,
+            resources=resources,
+            restart_policy=restart_policy,
+            runtime=runtime,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             container_spec: Optional[pulumi.Input['ServiceTaskSpecContainerSpecArgs']] = None,
+             force_update: Optional[pulumi.Input[int]] = None,
+             log_driver: Optional[pulumi.Input['ServiceTaskSpecLogDriverArgs']] = None,
+             networks_advanceds: Optional[pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecNetworksAdvancedArgs']]]] = None,
+             placement: Optional[pulumi.Input['ServiceTaskSpecPlacementArgs']] = None,
+             resources: Optional[pulumi.Input['ServiceTaskSpecResourcesArgs']] = None,
+             restart_policy: Optional[pulumi.Input['ServiceTaskSpecRestartPolicyArgs']] = None,
+             runtime: Optional[pulumi.Input[str]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if container_spec is None and 'containerSpec' in kwargs:
+            container_spec = kwargs['containerSpec']
+        if container_spec is None:
+            raise TypeError("Missing 'container_spec' argument")
+        if force_update is None and 'forceUpdate' in kwargs:
+            force_update = kwargs['forceUpdate']
+        if log_driver is None and 'logDriver' in kwargs:
+            log_driver = kwargs['logDriver']
+        if networks_advanceds is None and 'networksAdvanceds' in kwargs:
+            networks_advanceds = kwargs['networksAdvanceds']
+        if restart_policy is None and 'restartPolicy' in kwargs:
+            restart_policy = kwargs['restartPolicy']
+
+        _setter("container_spec", container_spec)
         if force_update is not None:
-            pulumi.set(__self__, "force_update", force_update)
+            _setter("force_update", force_update)
         if log_driver is not None:
-            pulumi.set(__self__, "log_driver", log_driver)
+            _setter("log_driver", log_driver)
         if networks_advanceds is not None:
-            pulumi.set(__self__, "networks_advanceds", networks_advanceds)
+            _setter("networks_advanceds", networks_advanceds)
         if placement is not None:
-            pulumi.set(__self__, "placement", placement)
+            _setter("placement", placement)
         if resources is not None:
-            pulumi.set(__self__, "resources", resources)
+            _setter("resources", resources)
         if restart_policy is not None:
-            pulumi.set(__self__, "restart_policy", restart_policy)
+            _setter("restart_policy", restart_policy)
         if runtime is not None:
-            pulumi.set(__self__, "runtime", runtime)
+            _setter("runtime", runtime)
 
     @property
     @pulumi.getter(name="containerSpec")
@@ -2590,53 +3493,137 @@ class ServiceTaskSpecContainerSpecArgs:
                  sysctl: Optional[pulumi.Input[Mapping[str, Any]]] = None,
                  user: Optional[pulumi.Input[str]] = None):
         """
+        :param pulumi.Input[str] image: The image name to use for the containers of the service, like `nginx:1.17.6`. Also use the data-source or resource of `RemoteImage` with the `repo_digest` or `RegistryImage` with the `name` attribute for this, as shown in the examples.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] args: Arguments to the command
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] commands: The command/entrypoint to be run in the image. According to the [docker cli](https://github.com/docker/cli/blob/v20.10.7/cli/command/service/opts.go#L705) the override of the entrypoint is also passed to the `command` property and there is no `entrypoint` attribute in the `ContainerSpec` of the service.
+        :param pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecConfigArgs']]] configs: References to zero or more configs that will be exposed to the service
+        :param pulumi.Input[str] dir: The working directory for commands to run in
+        :param pulumi.Input['ServiceTaskSpecContainerSpecDnsConfigArgs'] dns_config: Specification for DNS related configurations in resolver configuration file (`resolv.conf`)
+        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] env: A list of environment variables in the form VAR="value"
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] groups: A list of additional groups that the container process will run as
+        :param pulumi.Input['ServiceTaskSpecContainerSpecHealthcheckArgs'] healthcheck: A test to perform to check that the container is healthy
+        :param pulumi.Input[str] hostname: The hostname to use for the container, as a valid RFC 1123 hostname
+        :param pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecHostArgs']]] hosts: A list of hostname/IP mappings to add to the container's hosts file
+        :param pulumi.Input[str] isolation: Isolation technology of the containers running the service. (Windows only). Defaults to `default`.
         :param pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecLabelArgs']]] labels: User-defined key/value metadata
+        :param pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecMountArgs']]] mounts: Specification for mounts to be added to containers created as part of the service
+        :param pulumi.Input['ServiceTaskSpecContainerSpecPrivilegesArgs'] privileges: Security options for the container
+        :param pulumi.Input[bool] read_only: Whether the mount should be read-only
+        :param pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecSecretArgs']]] secrets: References to zero or more secrets that will be exposed to the service
+        :param pulumi.Input[str] stop_grace_period: Amount of time to wait for the container to terminate before forcefully removing it (ms|s|m|h). If not specified or '0s' the destroy will not check if all tasks/containers of the service terminate.
+        :param pulumi.Input[str] stop_signal: Signal to stop the container
+        :param pulumi.Input[Mapping[str, Any]] sysctl: Sysctls config (Linux only)
+        :param pulumi.Input[str] user: SELinux user label
         """
-        pulumi.set(__self__, "image", image)
+        ServiceTaskSpecContainerSpecArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            image=image,
+            args=args,
+            commands=commands,
+            configs=configs,
+            dir=dir,
+            dns_config=dns_config,
+            env=env,
+            groups=groups,
+            healthcheck=healthcheck,
+            hostname=hostname,
+            hosts=hosts,
+            isolation=isolation,
+            labels=labels,
+            mounts=mounts,
+            privileges=privileges,
+            read_only=read_only,
+            secrets=secrets,
+            stop_grace_period=stop_grace_period,
+            stop_signal=stop_signal,
+            sysctl=sysctl,
+            user=user,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             image: Optional[pulumi.Input[str]] = None,
+             args: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+             commands: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+             configs: Optional[pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecConfigArgs']]]] = None,
+             dir: Optional[pulumi.Input[str]] = None,
+             dns_config: Optional[pulumi.Input['ServiceTaskSpecContainerSpecDnsConfigArgs']] = None,
+             env: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
+             groups: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+             healthcheck: Optional[pulumi.Input['ServiceTaskSpecContainerSpecHealthcheckArgs']] = None,
+             hostname: Optional[pulumi.Input[str]] = None,
+             hosts: Optional[pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecHostArgs']]]] = None,
+             isolation: Optional[pulumi.Input[str]] = None,
+             labels: Optional[pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecLabelArgs']]]] = None,
+             mounts: Optional[pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecMountArgs']]]] = None,
+             privileges: Optional[pulumi.Input['ServiceTaskSpecContainerSpecPrivilegesArgs']] = None,
+             read_only: Optional[pulumi.Input[bool]] = None,
+             secrets: Optional[pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecSecretArgs']]]] = None,
+             stop_grace_period: Optional[pulumi.Input[str]] = None,
+             stop_signal: Optional[pulumi.Input[str]] = None,
+             sysctl: Optional[pulumi.Input[Mapping[str, Any]]] = None,
+             user: Optional[pulumi.Input[str]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if image is None:
+            raise TypeError("Missing 'image' argument")
+        if dns_config is None and 'dnsConfig' in kwargs:
+            dns_config = kwargs['dnsConfig']
+        if read_only is None and 'readOnly' in kwargs:
+            read_only = kwargs['readOnly']
+        if stop_grace_period is None and 'stopGracePeriod' in kwargs:
+            stop_grace_period = kwargs['stopGracePeriod']
+        if stop_signal is None and 'stopSignal' in kwargs:
+            stop_signal = kwargs['stopSignal']
+
+        _setter("image", image)
         if args is not None:
-            pulumi.set(__self__, "args", args)
+            _setter("args", args)
         if commands is not None:
-            pulumi.set(__self__, "commands", commands)
+            _setter("commands", commands)
         if configs is not None:
-            pulumi.set(__self__, "configs", configs)
+            _setter("configs", configs)
         if dir is not None:
-            pulumi.set(__self__, "dir", dir)
+            _setter("dir", dir)
         if dns_config is not None:
-            pulumi.set(__self__, "dns_config", dns_config)
+            _setter("dns_config", dns_config)
         if env is not None:
-            pulumi.set(__self__, "env", env)
+            _setter("env", env)
         if groups is not None:
-            pulumi.set(__self__, "groups", groups)
+            _setter("groups", groups)
         if healthcheck is not None:
-            pulumi.set(__self__, "healthcheck", healthcheck)
+            _setter("healthcheck", healthcheck)
         if hostname is not None:
-            pulumi.set(__self__, "hostname", hostname)
+            _setter("hostname", hostname)
         if hosts is not None:
-            pulumi.set(__self__, "hosts", hosts)
+            _setter("hosts", hosts)
         if isolation is not None:
-            pulumi.set(__self__, "isolation", isolation)
+            _setter("isolation", isolation)
         if labels is not None:
-            pulumi.set(__self__, "labels", labels)
+            _setter("labels", labels)
         if mounts is not None:
-            pulumi.set(__self__, "mounts", mounts)
+            _setter("mounts", mounts)
         if privileges is not None:
-            pulumi.set(__self__, "privileges", privileges)
+            _setter("privileges", privileges)
         if read_only is not None:
-            pulumi.set(__self__, "read_only", read_only)
+            _setter("read_only", read_only)
         if secrets is not None:
-            pulumi.set(__self__, "secrets", secrets)
+            _setter("secrets", secrets)
         if stop_grace_period is not None:
-            pulumi.set(__self__, "stop_grace_period", stop_grace_period)
+            _setter("stop_grace_period", stop_grace_period)
         if stop_signal is not None:
-            pulumi.set(__self__, "stop_signal", stop_signal)
+            _setter("stop_signal", stop_signal)
         if sysctl is not None:
-            pulumi.set(__self__, "sysctl", sysctl)
+            _setter("sysctl", sysctl)
         if user is not None:
-            pulumi.set(__self__, "user", user)
+            _setter("user", user)
 
     @property
     @pulumi.getter
     def image(self) -> pulumi.Input[str]:
+        """
+        The image name to use for the containers of the service, like `nginx:1.17.6`. Also use the data-source or resource of `RemoteImage` with the `repo_digest` or `RegistryImage` with the `name` attribute for this, as shown in the examples.
+        """
         return pulumi.get(self, "image")
 
     @image.setter
@@ -2646,6 +3633,9 @@ class ServiceTaskSpecContainerSpecArgs:
     @property
     @pulumi.getter
     def args(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+        """
+        Arguments to the command
+        """
         return pulumi.get(self, "args")
 
     @args.setter
@@ -2655,6 +3645,9 @@ class ServiceTaskSpecContainerSpecArgs:
     @property
     @pulumi.getter
     def commands(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+        """
+        The command/entrypoint to be run in the image. According to the [docker cli](https://github.com/docker/cli/blob/v20.10.7/cli/command/service/opts.go#L705) the override of the entrypoint is also passed to the `command` property and there is no `entrypoint` attribute in the `ContainerSpec` of the service.
+        """
         return pulumi.get(self, "commands")
 
     @commands.setter
@@ -2664,6 +3657,9 @@ class ServiceTaskSpecContainerSpecArgs:
     @property
     @pulumi.getter
     def configs(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecConfigArgs']]]]:
+        """
+        References to zero or more configs that will be exposed to the service
+        """
         return pulumi.get(self, "configs")
 
     @configs.setter
@@ -2673,6 +3669,9 @@ class ServiceTaskSpecContainerSpecArgs:
     @property
     @pulumi.getter
     def dir(self) -> Optional[pulumi.Input[str]]:
+        """
+        The working directory for commands to run in
+        """
         return pulumi.get(self, "dir")
 
     @dir.setter
@@ -2682,6 +3681,9 @@ class ServiceTaskSpecContainerSpecArgs:
     @property
     @pulumi.getter(name="dnsConfig")
     def dns_config(self) -> Optional[pulumi.Input['ServiceTaskSpecContainerSpecDnsConfigArgs']]:
+        """
+        Specification for DNS related configurations in resolver configuration file (`resolv.conf`)
+        """
         return pulumi.get(self, "dns_config")
 
     @dns_config.setter
@@ -2691,6 +3693,9 @@ class ServiceTaskSpecContainerSpecArgs:
     @property
     @pulumi.getter
     def env(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]:
+        """
+        A list of environment variables in the form VAR="value"
+        """
         return pulumi.get(self, "env")
 
     @env.setter
@@ -2700,6 +3705,9 @@ class ServiceTaskSpecContainerSpecArgs:
     @property
     @pulumi.getter
     def groups(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+        """
+        A list of additional groups that the container process will run as
+        """
         return pulumi.get(self, "groups")
 
     @groups.setter
@@ -2709,6 +3717,9 @@ class ServiceTaskSpecContainerSpecArgs:
     @property
     @pulumi.getter
     def healthcheck(self) -> Optional[pulumi.Input['ServiceTaskSpecContainerSpecHealthcheckArgs']]:
+        """
+        A test to perform to check that the container is healthy
+        """
         return pulumi.get(self, "healthcheck")
 
     @healthcheck.setter
@@ -2718,6 +3729,9 @@ class ServiceTaskSpecContainerSpecArgs:
     @property
     @pulumi.getter
     def hostname(self) -> Optional[pulumi.Input[str]]:
+        """
+        The hostname to use for the container, as a valid RFC 1123 hostname
+        """
         return pulumi.get(self, "hostname")
 
     @hostname.setter
@@ -2727,6 +3741,9 @@ class ServiceTaskSpecContainerSpecArgs:
     @property
     @pulumi.getter
     def hosts(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecHostArgs']]]]:
+        """
+        A list of hostname/IP mappings to add to the container's hosts file
+        """
         return pulumi.get(self, "hosts")
 
     @hosts.setter
@@ -2736,6 +3753,9 @@ class ServiceTaskSpecContainerSpecArgs:
     @property
     @pulumi.getter
     def isolation(self) -> Optional[pulumi.Input[str]]:
+        """
+        Isolation technology of the containers running the service. (Windows only). Defaults to `default`.
+        """
         return pulumi.get(self, "isolation")
 
     @isolation.setter
@@ -2757,6 +3777,9 @@ class ServiceTaskSpecContainerSpecArgs:
     @property
     @pulumi.getter
     def mounts(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecMountArgs']]]]:
+        """
+        Specification for mounts to be added to containers created as part of the service
+        """
         return pulumi.get(self, "mounts")
 
     @mounts.setter
@@ -2766,6 +3789,9 @@ class ServiceTaskSpecContainerSpecArgs:
     @property
     @pulumi.getter
     def privileges(self) -> Optional[pulumi.Input['ServiceTaskSpecContainerSpecPrivilegesArgs']]:
+        """
+        Security options for the container
+        """
         return pulumi.get(self, "privileges")
 
     @privileges.setter
@@ -2775,6 +3801,9 @@ class ServiceTaskSpecContainerSpecArgs:
     @property
     @pulumi.getter(name="readOnly")
     def read_only(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Whether the mount should be read-only
+        """
         return pulumi.get(self, "read_only")
 
     @read_only.setter
@@ -2784,6 +3813,9 @@ class ServiceTaskSpecContainerSpecArgs:
     @property
     @pulumi.getter
     def secrets(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecSecretArgs']]]]:
+        """
+        References to zero or more secrets that will be exposed to the service
+        """
         return pulumi.get(self, "secrets")
 
     @secrets.setter
@@ -2793,6 +3825,9 @@ class ServiceTaskSpecContainerSpecArgs:
     @property
     @pulumi.getter(name="stopGracePeriod")
     def stop_grace_period(self) -> Optional[pulumi.Input[str]]:
+        """
+        Amount of time to wait for the container to terminate before forcefully removing it (ms|s|m|h). If not specified or '0s' the destroy will not check if all tasks/containers of the service terminate.
+        """
         return pulumi.get(self, "stop_grace_period")
 
     @stop_grace_period.setter
@@ -2802,6 +3837,9 @@ class ServiceTaskSpecContainerSpecArgs:
     @property
     @pulumi.getter(name="stopSignal")
     def stop_signal(self) -> Optional[pulumi.Input[str]]:
+        """
+        Signal to stop the container
+        """
         return pulumi.get(self, "stop_signal")
 
     @stop_signal.setter
@@ -2811,6 +3849,9 @@ class ServiceTaskSpecContainerSpecArgs:
     @property
     @pulumi.getter
     def sysctl(self) -> Optional[pulumi.Input[Mapping[str, Any]]]:
+        """
+        Sysctls config (Linux only)
+        """
         return pulumi.get(self, "sysctl")
 
     @sysctl.setter
@@ -2820,6 +3861,9 @@ class ServiceTaskSpecContainerSpecArgs:
     @property
     @pulumi.getter
     def user(self) -> Optional[pulumi.Input[str]]:
+        """
+        SELinux user label
+        """
         return pulumi.get(self, "user")
 
     @user.setter
@@ -2836,20 +3880,68 @@ class ServiceTaskSpecContainerSpecConfigArgs:
                  file_gid: Optional[pulumi.Input[str]] = None,
                  file_mode: Optional[pulumi.Input[int]] = None,
                  file_uid: Optional[pulumi.Input[str]] = None):
-        pulumi.set(__self__, "config_id", config_id)
-        pulumi.set(__self__, "file_name", file_name)
+        """
+        :param pulumi.Input[str] config_id: ID of the specific config that we're referencing
+        :param pulumi.Input[str] file_name: Represents the final filename in the filesystem
+        :param pulumi.Input[str] config_name: Name of the config that this references, but this is just provided for lookup/display purposes. The config in the reference will be identified by its ID
+        :param pulumi.Input[str] file_gid: Represents the file GID. Defaults to `0`.
+        :param pulumi.Input[int] file_mode: Represents represents the FileMode of the file. Defaults to `0o444`.
+        :param pulumi.Input[str] file_uid: Represents the file UID. Defaults to `0`.
+        """
+        ServiceTaskSpecContainerSpecConfigArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            config_id=config_id,
+            file_name=file_name,
+            config_name=config_name,
+            file_gid=file_gid,
+            file_mode=file_mode,
+            file_uid=file_uid,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             config_id: Optional[pulumi.Input[str]] = None,
+             file_name: Optional[pulumi.Input[str]] = None,
+             config_name: Optional[pulumi.Input[str]] = None,
+             file_gid: Optional[pulumi.Input[str]] = None,
+             file_mode: Optional[pulumi.Input[int]] = None,
+             file_uid: Optional[pulumi.Input[str]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if config_id is None and 'configId' in kwargs:
+            config_id = kwargs['configId']
+        if config_id is None:
+            raise TypeError("Missing 'config_id' argument")
+        if file_name is None and 'fileName' in kwargs:
+            file_name = kwargs['fileName']
+        if file_name is None:
+            raise TypeError("Missing 'file_name' argument")
+        if config_name is None and 'configName' in kwargs:
+            config_name = kwargs['configName']
+        if file_gid is None and 'fileGid' in kwargs:
+            file_gid = kwargs['fileGid']
+        if file_mode is None and 'fileMode' in kwargs:
+            file_mode = kwargs['fileMode']
+        if file_uid is None and 'fileUid' in kwargs:
+            file_uid = kwargs['fileUid']
+
+        _setter("config_id", config_id)
+        _setter("file_name", file_name)
         if config_name is not None:
-            pulumi.set(__self__, "config_name", config_name)
+            _setter("config_name", config_name)
         if file_gid is not None:
-            pulumi.set(__self__, "file_gid", file_gid)
+            _setter("file_gid", file_gid)
         if file_mode is not None:
-            pulumi.set(__self__, "file_mode", file_mode)
+            _setter("file_mode", file_mode)
         if file_uid is not None:
-            pulumi.set(__self__, "file_uid", file_uid)
+            _setter("file_uid", file_uid)
 
     @property
     @pulumi.getter(name="configId")
     def config_id(self) -> pulumi.Input[str]:
+        """
+        ID of the specific config that we're referencing
+        """
         return pulumi.get(self, "config_id")
 
     @config_id.setter
@@ -2859,6 +3951,9 @@ class ServiceTaskSpecContainerSpecConfigArgs:
     @property
     @pulumi.getter(name="fileName")
     def file_name(self) -> pulumi.Input[str]:
+        """
+        Represents the final filename in the filesystem
+        """
         return pulumi.get(self, "file_name")
 
     @file_name.setter
@@ -2868,6 +3963,9 @@ class ServiceTaskSpecContainerSpecConfigArgs:
     @property
     @pulumi.getter(name="configName")
     def config_name(self) -> Optional[pulumi.Input[str]]:
+        """
+        Name of the config that this references, but this is just provided for lookup/display purposes. The config in the reference will be identified by its ID
+        """
         return pulumi.get(self, "config_name")
 
     @config_name.setter
@@ -2877,6 +3975,9 @@ class ServiceTaskSpecContainerSpecConfigArgs:
     @property
     @pulumi.getter(name="fileGid")
     def file_gid(self) -> Optional[pulumi.Input[str]]:
+        """
+        Represents the file GID. Defaults to `0`.
+        """
         return pulumi.get(self, "file_gid")
 
     @file_gid.setter
@@ -2886,6 +3987,9 @@ class ServiceTaskSpecContainerSpecConfigArgs:
     @property
     @pulumi.getter(name="fileMode")
     def file_mode(self) -> Optional[pulumi.Input[int]]:
+        """
+        Represents represents the FileMode of the file. Defaults to `0o444`.
+        """
         return pulumi.get(self, "file_mode")
 
     @file_mode.setter
@@ -2895,6 +3999,9 @@ class ServiceTaskSpecContainerSpecConfigArgs:
     @property
     @pulumi.getter(name="fileUid")
     def file_uid(self) -> Optional[pulumi.Input[str]]:
+        """
+        Represents the file UID. Defaults to `0`.
+        """
         return pulumi.get(self, "file_uid")
 
     @file_uid.setter
@@ -2908,15 +4015,40 @@ class ServiceTaskSpecContainerSpecDnsConfigArgs:
                  nameservers: pulumi.Input[Sequence[pulumi.Input[str]]],
                  options: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  searches: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None):
-        pulumi.set(__self__, "nameservers", nameservers)
+        """
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] nameservers: The IP addresses of the name servers
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] options: A list of internal resolver variables to be modified (e.g., `debug`, `ndots:3`, etc.)
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] searches: A search list for host-name lookup
+        """
+        ServiceTaskSpecContainerSpecDnsConfigArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            nameservers=nameservers,
+            options=options,
+            searches=searches,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             nameservers: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+             options: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+             searches: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if nameservers is None:
+            raise TypeError("Missing 'nameservers' argument")
+
+        _setter("nameservers", nameservers)
         if options is not None:
-            pulumi.set(__self__, "options", options)
+            _setter("options", options)
         if searches is not None:
-            pulumi.set(__self__, "searches", searches)
+            _setter("searches", searches)
 
     @property
     @pulumi.getter
     def nameservers(self) -> pulumi.Input[Sequence[pulumi.Input[str]]]:
+        """
+        The IP addresses of the name servers
+        """
         return pulumi.get(self, "nameservers")
 
     @nameservers.setter
@@ -2926,6 +4058,9 @@ class ServiceTaskSpecContainerSpecDnsConfigArgs:
     @property
     @pulumi.getter
     def options(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+        """
+        A list of internal resolver variables to be modified (e.g., `debug`, `ndots:3`, etc.)
+        """
         return pulumi.get(self, "options")
 
     @options.setter
@@ -2935,6 +4070,9 @@ class ServiceTaskSpecContainerSpecDnsConfigArgs:
     @property
     @pulumi.getter
     def searches(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+        """
+        A search list for host-name lookup
+        """
         return pulumi.get(self, "searches")
 
     @searches.setter
@@ -2950,19 +4088,52 @@ class ServiceTaskSpecContainerSpecHealthcheckArgs:
                  retries: Optional[pulumi.Input[int]] = None,
                  start_period: Optional[pulumi.Input[str]] = None,
                  timeout: Optional[pulumi.Input[str]] = None):
-        pulumi.set(__self__, "tests", tests)
+        """
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] tests: The test to perform as list
+        :param pulumi.Input[str] interval: Time between running the check (ms|s|m|h). Defaults to `0s`.
+        :param pulumi.Input[int] retries: Consecutive failures needed to report unhealthy. Defaults to `0`
+        :param pulumi.Input[str] start_period: Start period for the container to initialize before counting retries towards unstable (ms|s|m|h). Defaults to `0s`.
+        :param pulumi.Input[str] timeout: The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`
+        """
+        ServiceTaskSpecContainerSpecHealthcheckArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            tests=tests,
+            interval=interval,
+            retries=retries,
+            start_period=start_period,
+            timeout=timeout,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             tests: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+             interval: Optional[pulumi.Input[str]] = None,
+             retries: Optional[pulumi.Input[int]] = None,
+             start_period: Optional[pulumi.Input[str]] = None,
+             timeout: Optional[pulumi.Input[str]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if tests is None:
+            raise TypeError("Missing 'tests' argument")
+        if start_period is None and 'startPeriod' in kwargs:
+            start_period = kwargs['startPeriod']
+
+        _setter("tests", tests)
         if interval is not None:
-            pulumi.set(__self__, "interval", interval)
+            _setter("interval", interval)
         if retries is not None:
-            pulumi.set(__self__, "retries", retries)
+            _setter("retries", retries)
         if start_period is not None:
-            pulumi.set(__self__, "start_period", start_period)
+            _setter("start_period", start_period)
         if timeout is not None:
-            pulumi.set(__self__, "timeout", timeout)
+            _setter("timeout", timeout)
 
     @property
     @pulumi.getter
     def tests(self) -> pulumi.Input[Sequence[pulumi.Input[str]]]:
+        """
+        The test to perform as list
+        """
         return pulumi.get(self, "tests")
 
     @tests.setter
@@ -2972,6 +4143,9 @@ class ServiceTaskSpecContainerSpecHealthcheckArgs:
     @property
     @pulumi.getter
     def interval(self) -> Optional[pulumi.Input[str]]:
+        """
+        Time between running the check (ms|s|m|h). Defaults to `0s`.
+        """
         return pulumi.get(self, "interval")
 
     @interval.setter
@@ -2981,6 +4155,9 @@ class ServiceTaskSpecContainerSpecHealthcheckArgs:
     @property
     @pulumi.getter
     def retries(self) -> Optional[pulumi.Input[int]]:
+        """
+        Consecutive failures needed to report unhealthy. Defaults to `0`
+        """
         return pulumi.get(self, "retries")
 
     @retries.setter
@@ -2990,6 +4167,9 @@ class ServiceTaskSpecContainerSpecHealthcheckArgs:
     @property
     @pulumi.getter(name="startPeriod")
     def start_period(self) -> Optional[pulumi.Input[str]]:
+        """
+        Start period for the container to initialize before counting retries towards unstable (ms|s|m|h). Defaults to `0s`.
+        """
         return pulumi.get(self, "start_period")
 
     @start_period.setter
@@ -2999,6 +4179,9 @@ class ServiceTaskSpecContainerSpecHealthcheckArgs:
     @property
     @pulumi.getter
     def timeout(self) -> Optional[pulumi.Input[str]]:
+        """
+        The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`
+        """
         return pulumi.get(self, "timeout")
 
     @timeout.setter
@@ -3011,12 +4194,36 @@ class ServiceTaskSpecContainerSpecHostArgs:
     def __init__(__self__, *,
                  host: pulumi.Input[str],
                  ip: pulumi.Input[str]):
-        pulumi.set(__self__, "host", host)
-        pulumi.set(__self__, "ip", ip)
+        """
+        :param pulumi.Input[str] host: The name of the host
+        :param pulumi.Input[str] ip: The ip of the host
+        """
+        ServiceTaskSpecContainerSpecHostArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            host=host,
+            ip=ip,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             host: Optional[pulumi.Input[str]] = None,
+             ip: Optional[pulumi.Input[str]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if host is None:
+            raise TypeError("Missing 'host' argument")
+        if ip is None:
+            raise TypeError("Missing 'ip' argument")
+
+        _setter("host", host)
+        _setter("ip", ip)
 
     @property
     @pulumi.getter
     def host(self) -> pulumi.Input[str]:
+        """
+        The name of the host
+        """
         return pulumi.get(self, "host")
 
     @host.setter
@@ -3026,6 +4233,9 @@ class ServiceTaskSpecContainerSpecHostArgs:
     @property
     @pulumi.getter
     def ip(self) -> pulumi.Input[str]:
+        """
+        The ip of the host
+        """
         return pulumi.get(self, "ip")
 
     @ip.setter
@@ -3042,8 +4252,25 @@ class ServiceTaskSpecContainerSpecLabelArgs:
         :param pulumi.Input[str] label: Name of the label
         :param pulumi.Input[str] value: Value of the label
         """
-        pulumi.set(__self__, "label", label)
-        pulumi.set(__self__, "value", value)
+        ServiceTaskSpecContainerSpecLabelArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            label=label,
+            value=value,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             label: Optional[pulumi.Input[str]] = None,
+             value: Optional[pulumi.Input[str]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if label is None:
+            raise TypeError("Missing 'label' argument")
+        if value is None:
+            raise TypeError("Missing 'value' argument")
+
+        _setter("label", label)
+        _setter("value", value)
 
     @property
     @pulumi.getter
@@ -3080,22 +4307,69 @@ class ServiceTaskSpecContainerSpecMountArgs:
                  source: Optional[pulumi.Input[str]] = None,
                  tmpfs_options: Optional[pulumi.Input['ServiceTaskSpecContainerSpecMountTmpfsOptionsArgs']] = None,
                  volume_options: Optional[pulumi.Input['ServiceTaskSpecContainerSpecMountVolumeOptionsArgs']] = None):
-        pulumi.set(__self__, "target", target)
-        pulumi.set(__self__, "type", type)
+        """
+        :param pulumi.Input[str] target: Container path
+        :param pulumi.Input[str] type: The mount type
+        :param pulumi.Input['ServiceTaskSpecContainerSpecMountBindOptionsArgs'] bind_options: Optional configuration for the bind type
+        :param pulumi.Input[bool] read_only: Whether the mount should be read-only
+        :param pulumi.Input[str] source: Mount source (e.g. a volume name, a host path)
+        :param pulumi.Input['ServiceTaskSpecContainerSpecMountTmpfsOptionsArgs'] tmpfs_options: Optional configuration for the tmpfs type
+        :param pulumi.Input['ServiceTaskSpecContainerSpecMountVolumeOptionsArgs'] volume_options: Optional configuration for the volume type
+        """
+        ServiceTaskSpecContainerSpecMountArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            target=target,
+            type=type,
+            bind_options=bind_options,
+            read_only=read_only,
+            source=source,
+            tmpfs_options=tmpfs_options,
+            volume_options=volume_options,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             target: Optional[pulumi.Input[str]] = None,
+             type: Optional[pulumi.Input[str]] = None,
+             bind_options: Optional[pulumi.Input['ServiceTaskSpecContainerSpecMountBindOptionsArgs']] = None,
+             read_only: Optional[pulumi.Input[bool]] = None,
+             source: Optional[pulumi.Input[str]] = None,
+             tmpfs_options: Optional[pulumi.Input['ServiceTaskSpecContainerSpecMountTmpfsOptionsArgs']] = None,
+             volume_options: Optional[pulumi.Input['ServiceTaskSpecContainerSpecMountVolumeOptionsArgs']] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if target is None:
+            raise TypeError("Missing 'target' argument")
+        if type is None:
+            raise TypeError("Missing 'type' argument")
+        if bind_options is None and 'bindOptions' in kwargs:
+            bind_options = kwargs['bindOptions']
+        if read_only is None and 'readOnly' in kwargs:
+            read_only = kwargs['readOnly']
+        if tmpfs_options is None and 'tmpfsOptions' in kwargs:
+            tmpfs_options = kwargs['tmpfsOptions']
+        if volume_options is None and 'volumeOptions' in kwargs:
+            volume_options = kwargs['volumeOptions']
+
+        _setter("target", target)
+        _setter("type", type)
         if bind_options is not None:
-            pulumi.set(__self__, "bind_options", bind_options)
+            _setter("bind_options", bind_options)
         if read_only is not None:
-            pulumi.set(__self__, "read_only", read_only)
+            _setter("read_only", read_only)
         if source is not None:
-            pulumi.set(__self__, "source", source)
+            _setter("source", source)
         if tmpfs_options is not None:
-            pulumi.set(__self__, "tmpfs_options", tmpfs_options)
+            _setter("tmpfs_options", tmpfs_options)
         if volume_options is not None:
-            pulumi.set(__self__, "volume_options", volume_options)
+            _setter("volume_options", volume_options)
 
     @property
     @pulumi.getter
     def target(self) -> pulumi.Input[str]:
+        """
+        Container path
+        """
         return pulumi.get(self, "target")
 
     @target.setter
@@ -3105,6 +4379,9 @@ class ServiceTaskSpecContainerSpecMountArgs:
     @property
     @pulumi.getter
     def type(self) -> pulumi.Input[str]:
+        """
+        The mount type
+        """
         return pulumi.get(self, "type")
 
     @type.setter
@@ -3114,6 +4391,9 @@ class ServiceTaskSpecContainerSpecMountArgs:
     @property
     @pulumi.getter(name="bindOptions")
     def bind_options(self) -> Optional[pulumi.Input['ServiceTaskSpecContainerSpecMountBindOptionsArgs']]:
+        """
+        Optional configuration for the bind type
+        """
         return pulumi.get(self, "bind_options")
 
     @bind_options.setter
@@ -3123,6 +4403,9 @@ class ServiceTaskSpecContainerSpecMountArgs:
     @property
     @pulumi.getter(name="readOnly")
     def read_only(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Whether the mount should be read-only
+        """
         return pulumi.get(self, "read_only")
 
     @read_only.setter
@@ -3132,6 +4415,9 @@ class ServiceTaskSpecContainerSpecMountArgs:
     @property
     @pulumi.getter
     def source(self) -> Optional[pulumi.Input[str]]:
+        """
+        Mount source (e.g. a volume name, a host path)
+        """
         return pulumi.get(self, "source")
 
     @source.setter
@@ -3141,6 +4427,9 @@ class ServiceTaskSpecContainerSpecMountArgs:
     @property
     @pulumi.getter(name="tmpfsOptions")
     def tmpfs_options(self) -> Optional[pulumi.Input['ServiceTaskSpecContainerSpecMountTmpfsOptionsArgs']]:
+        """
+        Optional configuration for the tmpfs type
+        """
         return pulumi.get(self, "tmpfs_options")
 
     @tmpfs_options.setter
@@ -3150,6 +4439,9 @@ class ServiceTaskSpecContainerSpecMountArgs:
     @property
     @pulumi.getter(name="volumeOptions")
     def volume_options(self) -> Optional[pulumi.Input['ServiceTaskSpecContainerSpecMountVolumeOptionsArgs']]:
+        """
+        Optional configuration for the volume type
+        """
         return pulumi.get(self, "volume_options")
 
     @volume_options.setter
@@ -3161,12 +4453,29 @@ class ServiceTaskSpecContainerSpecMountArgs:
 class ServiceTaskSpecContainerSpecMountBindOptionsArgs:
     def __init__(__self__, *,
                  propagation: Optional[pulumi.Input[str]] = None):
+        """
+        :param pulumi.Input[str] propagation: Bind propagation refers to whether or not mounts created within a given bind-mount or named volume can be propagated to replicas of that mount. See the [docs](https://docs.docker.com/storage/bind-mounts/#configure-bind-propagation) for details. Defaults to `rprivate`
+        """
+        ServiceTaskSpecContainerSpecMountBindOptionsArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            propagation=propagation,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             propagation: Optional[pulumi.Input[str]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+
         if propagation is not None:
-            pulumi.set(__self__, "propagation", propagation)
+            _setter("propagation", propagation)
 
     @property
     @pulumi.getter
     def propagation(self) -> Optional[pulumi.Input[str]]:
+        """
+        Bind propagation refers to whether or not mounts created within a given bind-mount or named volume can be propagated to replicas of that mount. See the [docs](https://docs.docker.com/storage/bind-mounts/#configure-bind-propagation) for details. Defaults to `rprivate`
+        """
         return pulumi.get(self, "propagation")
 
     @propagation.setter
@@ -3180,18 +4489,34 @@ class ServiceTaskSpecContainerSpecMountTmpfsOptionsArgs:
                  mode: Optional[pulumi.Input[int]] = None,
                  size_bytes: Optional[pulumi.Input[int]] = None):
         """
-        :param pulumi.Input[int] mode: Scheduling mode for the service
+        :param pulumi.Input[int] mode: The mode of resolution to use for internal load balancing between tasks
+        :param pulumi.Input[int] size_bytes: The size for the tmpfs mount in bytes
         """
+        ServiceTaskSpecContainerSpecMountTmpfsOptionsArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            mode=mode,
+            size_bytes=size_bytes,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             mode: Optional[pulumi.Input[int]] = None,
+             size_bytes: Optional[pulumi.Input[int]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if size_bytes is None and 'sizeBytes' in kwargs:
+            size_bytes = kwargs['sizeBytes']
+
         if mode is not None:
-            pulumi.set(__self__, "mode", mode)
+            _setter("mode", mode)
         if size_bytes is not None:
-            pulumi.set(__self__, "size_bytes", size_bytes)
+            _setter("size_bytes", size_bytes)
 
     @property
     @pulumi.getter
     def mode(self) -> Optional[pulumi.Input[int]]:
         """
-        Scheduling mode for the service
+        The mode of resolution to use for internal load balancing between tasks
         """
         return pulumi.get(self, "mode")
 
@@ -3202,6 +4527,9 @@ class ServiceTaskSpecContainerSpecMountTmpfsOptionsArgs:
     @property
     @pulumi.getter(name="sizeBytes")
     def size_bytes(self) -> Optional[pulumi.Input[int]]:
+        """
+        The size for the tmpfs mount in bytes
+        """
         return pulumi.get(self, "size_bytes")
 
     @size_bytes.setter
@@ -3217,20 +4545,49 @@ class ServiceTaskSpecContainerSpecMountVolumeOptionsArgs:
                  labels: Optional[pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArgs']]]] = None,
                  no_copy: Optional[pulumi.Input[bool]] = None):
         """
+        :param pulumi.Input[str] driver_name: Name of the driver to use to create the volume
+        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] driver_options: key/value map of driver specific options
         :param pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArgs']]] labels: User-defined key/value metadata
+        :param pulumi.Input[bool] no_copy: Populate volume with data from the target
         """
+        ServiceTaskSpecContainerSpecMountVolumeOptionsArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            driver_name=driver_name,
+            driver_options=driver_options,
+            labels=labels,
+            no_copy=no_copy,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             driver_name: Optional[pulumi.Input[str]] = None,
+             driver_options: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
+             labels: Optional[pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArgs']]]] = None,
+             no_copy: Optional[pulumi.Input[bool]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if driver_name is None and 'driverName' in kwargs:
+            driver_name = kwargs['driverName']
+        if driver_options is None and 'driverOptions' in kwargs:
+            driver_options = kwargs['driverOptions']
+        if no_copy is None and 'noCopy' in kwargs:
+            no_copy = kwargs['noCopy']
+
         if driver_name is not None:
-            pulumi.set(__self__, "driver_name", driver_name)
+            _setter("driver_name", driver_name)
         if driver_options is not None:
-            pulumi.set(__self__, "driver_options", driver_options)
+            _setter("driver_options", driver_options)
         if labels is not None:
-            pulumi.set(__self__, "labels", labels)
+            _setter("labels", labels)
         if no_copy is not None:
-            pulumi.set(__self__, "no_copy", no_copy)
+            _setter("no_copy", no_copy)
 
     @property
     @pulumi.getter(name="driverName")
     def driver_name(self) -> Optional[pulumi.Input[str]]:
+        """
+        Name of the driver to use to create the volume
+        """
         return pulumi.get(self, "driver_name")
 
     @driver_name.setter
@@ -3240,6 +4597,9 @@ class ServiceTaskSpecContainerSpecMountVolumeOptionsArgs:
     @property
     @pulumi.getter(name="driverOptions")
     def driver_options(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]:
+        """
+        key/value map of driver specific options
+        """
         return pulumi.get(self, "driver_options")
 
     @driver_options.setter
@@ -3261,6 +4621,9 @@ class ServiceTaskSpecContainerSpecMountVolumeOptionsArgs:
     @property
     @pulumi.getter(name="noCopy")
     def no_copy(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Populate volume with data from the target
+        """
         return pulumi.get(self, "no_copy")
 
     @no_copy.setter
@@ -3277,8 +4640,25 @@ class ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArgs:
         :param pulumi.Input[str] label: Name of the label
         :param pulumi.Input[str] value: Value of the label
         """
-        pulumi.set(__self__, "label", label)
-        pulumi.set(__self__, "value", value)
+        ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            label=label,
+            value=value,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             label: Optional[pulumi.Input[str]] = None,
+             value: Optional[pulumi.Input[str]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if label is None:
+            raise TypeError("Missing 'label' argument")
+        if value is None:
+            raise TypeError("Missing 'value' argument")
+
+        _setter("label", label)
+        _setter("value", value)
 
     @property
     @pulumi.getter
@@ -3310,14 +4690,38 @@ class ServiceTaskSpecContainerSpecPrivilegesArgs:
     def __init__(__self__, *,
                  credential_spec: Optional[pulumi.Input['ServiceTaskSpecContainerSpecPrivilegesCredentialSpecArgs']] = None,
                  se_linux_context: Optional[pulumi.Input['ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgs']] = None):
+        """
+        :param pulumi.Input['ServiceTaskSpecContainerSpecPrivilegesCredentialSpecArgs'] credential_spec: CredentialSpec for managed service account (Windows only)
+        :param pulumi.Input['ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgs'] se_linux_context: SELinux labels of the container
+        """
+        ServiceTaskSpecContainerSpecPrivilegesArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            credential_spec=credential_spec,
+            se_linux_context=se_linux_context,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             credential_spec: Optional[pulumi.Input['ServiceTaskSpecContainerSpecPrivilegesCredentialSpecArgs']] = None,
+             se_linux_context: Optional[pulumi.Input['ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgs']] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if credential_spec is None and 'credentialSpec' in kwargs:
+            credential_spec = kwargs['credentialSpec']
+        if se_linux_context is None and 'seLinuxContext' in kwargs:
+            se_linux_context = kwargs['seLinuxContext']
+
         if credential_spec is not None:
-            pulumi.set(__self__, "credential_spec", credential_spec)
+            _setter("credential_spec", credential_spec)
         if se_linux_context is not None:
-            pulumi.set(__self__, "se_linux_context", se_linux_context)
+            _setter("se_linux_context", se_linux_context)
 
     @property
     @pulumi.getter(name="credentialSpec")
     def credential_spec(self) -> Optional[pulumi.Input['ServiceTaskSpecContainerSpecPrivilegesCredentialSpecArgs']]:
+        """
+        CredentialSpec for managed service account (Windows only)
+        """
         return pulumi.get(self, "credential_spec")
 
     @credential_spec.setter
@@ -3327,6 +4731,9 @@ class ServiceTaskSpecContainerSpecPrivilegesArgs:
     @property
     @pulumi.getter(name="seLinuxContext")
     def se_linux_context(self) -> Optional[pulumi.Input['ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgs']]:
+        """
+        SELinux labels of the container
+        """
         return pulumi.get(self, "se_linux_context")
 
     @se_linux_context.setter
@@ -3339,14 +4746,34 @@ class ServiceTaskSpecContainerSpecPrivilegesCredentialSpecArgs:
     def __init__(__self__, *,
                  file: Optional[pulumi.Input[str]] = None,
                  registry: Optional[pulumi.Input[str]] = None):
+        """
+        :param pulumi.Input[str] file: Load credential spec from this file
+        :param pulumi.Input[str] registry: Load credential spec from this value in the Windows registry
+        """
+        ServiceTaskSpecContainerSpecPrivilegesCredentialSpecArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            file=file,
+            registry=registry,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             file: Optional[pulumi.Input[str]] = None,
+             registry: Optional[pulumi.Input[str]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+
         if file is not None:
-            pulumi.set(__self__, "file", file)
+            _setter("file", file)
         if registry is not None:
-            pulumi.set(__self__, "registry", registry)
+            _setter("registry", registry)
 
     @property
     @pulumi.getter
     def file(self) -> Optional[pulumi.Input[str]]:
+        """
+        Load credential spec from this file
+        """
         return pulumi.get(self, "file")
 
     @file.setter
@@ -3356,6 +4783,9 @@ class ServiceTaskSpecContainerSpecPrivilegesCredentialSpecArgs:
     @property
     @pulumi.getter
     def registry(self) -> Optional[pulumi.Input[str]]:
+        """
+        Load credential spec from this value in the Windows registry
+        """
         return pulumi.get(self, "registry")
 
     @registry.setter
@@ -3371,20 +4801,49 @@ class ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgs:
                  role: Optional[pulumi.Input[str]] = None,
                  type: Optional[pulumi.Input[str]] = None,
                  user: Optional[pulumi.Input[str]] = None):
+        """
+        :param pulumi.Input[bool] disable: Disable SELinux
+        :param pulumi.Input[str] level: SELinux level label
+        :param pulumi.Input[str] role: SELinux role label
+        :param pulumi.Input[str] type: The mount type
+        :param pulumi.Input[str] user: SELinux user label
+        """
+        ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            disable=disable,
+            level=level,
+            role=role,
+            type=type,
+            user=user,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             disable: Optional[pulumi.Input[bool]] = None,
+             level: Optional[pulumi.Input[str]] = None,
+             role: Optional[pulumi.Input[str]] = None,
+             type: Optional[pulumi.Input[str]] = None,
+             user: Optional[pulumi.Input[str]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+
         if disable is not None:
-            pulumi.set(__self__, "disable", disable)
+            _setter("disable", disable)
         if level is not None:
-            pulumi.set(__self__, "level", level)
+            _setter("level", level)
         if role is not None:
-            pulumi.set(__self__, "role", role)
+            _setter("role", role)
         if type is not None:
-            pulumi.set(__self__, "type", type)
+            _setter("type", type)
         if user is not None:
-            pulumi.set(__self__, "user", user)
+            _setter("user", user)
 
     @property
     @pulumi.getter
     def disable(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Disable SELinux
+        """
         return pulumi.get(self, "disable")
 
     @disable.setter
@@ -3394,6 +4853,9 @@ class ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgs:
     @property
     @pulumi.getter
     def level(self) -> Optional[pulumi.Input[str]]:
+        """
+        SELinux level label
+        """
         return pulumi.get(self, "level")
 
     @level.setter
@@ -3403,6 +4865,9 @@ class ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgs:
     @property
     @pulumi.getter
     def role(self) -> Optional[pulumi.Input[str]]:
+        """
+        SELinux role label
+        """
         return pulumi.get(self, "role")
 
     @role.setter
@@ -3412,6 +4877,9 @@ class ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgs:
     @property
     @pulumi.getter
     def type(self) -> Optional[pulumi.Input[str]]:
+        """
+        The mount type
+        """
         return pulumi.get(self, "type")
 
     @type.setter
@@ -3421,6 +4889,9 @@ class ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgs:
     @property
     @pulumi.getter
     def user(self) -> Optional[pulumi.Input[str]]:
+        """
+        SELinux user label
+        """
         return pulumi.get(self, "user")
 
     @user.setter
@@ -3437,20 +4908,68 @@ class ServiceTaskSpecContainerSpecSecretArgs:
                  file_mode: Optional[pulumi.Input[int]] = None,
                  file_uid: Optional[pulumi.Input[str]] = None,
                  secret_name: Optional[pulumi.Input[str]] = None):
-        pulumi.set(__self__, "file_name", file_name)
-        pulumi.set(__self__, "secret_id", secret_id)
+        """
+        :param pulumi.Input[str] file_name: Represents the final filename in the filesystem
+        :param pulumi.Input[str] secret_id: ID of the specific secret that we're referencing
+        :param pulumi.Input[str] file_gid: Represents the file GID. Defaults to `0`.
+        :param pulumi.Input[int] file_mode: Represents represents the FileMode of the file. Defaults to `0o444`.
+        :param pulumi.Input[str] file_uid: Represents the file UID. Defaults to `0`.
+        :param pulumi.Input[str] secret_name: Name of the secret that this references, but this is just provided for lookup/display purposes. The config in the reference will be identified by its ID
+        """
+        ServiceTaskSpecContainerSpecSecretArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            file_name=file_name,
+            secret_id=secret_id,
+            file_gid=file_gid,
+            file_mode=file_mode,
+            file_uid=file_uid,
+            secret_name=secret_name,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             file_name: Optional[pulumi.Input[str]] = None,
+             secret_id: Optional[pulumi.Input[str]] = None,
+             file_gid: Optional[pulumi.Input[str]] = None,
+             file_mode: Optional[pulumi.Input[int]] = None,
+             file_uid: Optional[pulumi.Input[str]] = None,
+             secret_name: Optional[pulumi.Input[str]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if file_name is None and 'fileName' in kwargs:
+            file_name = kwargs['fileName']
+        if file_name is None:
+            raise TypeError("Missing 'file_name' argument")
+        if secret_id is None and 'secretId' in kwargs:
+            secret_id = kwargs['secretId']
+        if secret_id is None:
+            raise TypeError("Missing 'secret_id' argument")
+        if file_gid is None and 'fileGid' in kwargs:
+            file_gid = kwargs['fileGid']
+        if file_mode is None and 'fileMode' in kwargs:
+            file_mode = kwargs['fileMode']
+        if file_uid is None and 'fileUid' in kwargs:
+            file_uid = kwargs['fileUid']
+        if secret_name is None and 'secretName' in kwargs:
+            secret_name = kwargs['secretName']
+
+        _setter("file_name", file_name)
+        _setter("secret_id", secret_id)
         if file_gid is not None:
-            pulumi.set(__self__, "file_gid", file_gid)
+            _setter("file_gid", file_gid)
         if file_mode is not None:
-            pulumi.set(__self__, "file_mode", file_mode)
+            _setter("file_mode", file_mode)
         if file_uid is not None:
-            pulumi.set(__self__, "file_uid", file_uid)
+            _setter("file_uid", file_uid)
         if secret_name is not None:
-            pulumi.set(__self__, "secret_name", secret_name)
+            _setter("secret_name", secret_name)
 
     @property
     @pulumi.getter(name="fileName")
     def file_name(self) -> pulumi.Input[str]:
+        """
+        Represents the final filename in the filesystem
+        """
         return pulumi.get(self, "file_name")
 
     @file_name.setter
@@ -3460,6 +4979,9 @@ class ServiceTaskSpecContainerSpecSecretArgs:
     @property
     @pulumi.getter(name="secretId")
     def secret_id(self) -> pulumi.Input[str]:
+        """
+        ID of the specific secret that we're referencing
+        """
         return pulumi.get(self, "secret_id")
 
     @secret_id.setter
@@ -3469,6 +4991,9 @@ class ServiceTaskSpecContainerSpecSecretArgs:
     @property
     @pulumi.getter(name="fileGid")
     def file_gid(self) -> Optional[pulumi.Input[str]]:
+        """
+        Represents the file GID. Defaults to `0`.
+        """
         return pulumi.get(self, "file_gid")
 
     @file_gid.setter
@@ -3478,6 +5003,9 @@ class ServiceTaskSpecContainerSpecSecretArgs:
     @property
     @pulumi.getter(name="fileMode")
     def file_mode(self) -> Optional[pulumi.Input[int]]:
+        """
+        Represents represents the FileMode of the file. Defaults to `0o444`.
+        """
         return pulumi.get(self, "file_mode")
 
     @file_mode.setter
@@ -3487,6 +5015,9 @@ class ServiceTaskSpecContainerSpecSecretArgs:
     @property
     @pulumi.getter(name="fileUid")
     def file_uid(self) -> Optional[pulumi.Input[str]]:
+        """
+        Represents the file UID. Defaults to `0`.
+        """
         return pulumi.get(self, "file_uid")
 
     @file_uid.setter
@@ -3496,6 +5027,9 @@ class ServiceTaskSpecContainerSpecSecretArgs:
     @property
     @pulumi.getter(name="secretName")
     def secret_name(self) -> Optional[pulumi.Input[str]]:
+        """
+        Name of the secret that this references, but this is just provided for lookup/display purposes. The config in the reference will be identified by its ID
+        """
         return pulumi.get(self, "secret_name")
 
     @secret_name.setter
@@ -3509,17 +5043,33 @@ class ServiceTaskSpecLogDriverArgs:
                  name: pulumi.Input[str],
                  options: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None):
         """
-        :param pulumi.Input[str] name: Name of the service
+        :param pulumi.Input[str] name: A random name for the port
+        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] options: A list of internal resolver variables to be modified (e.g., `debug`, `ndots:3`, etc.)
         """
-        pulumi.set(__self__, "name", name)
+        ServiceTaskSpecLogDriverArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            name=name,
+            options=options,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             name: Optional[pulumi.Input[str]] = None,
+             options: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if name is None:
+            raise TypeError("Missing 'name' argument")
+
+        _setter("name", name)
         if options is not None:
-            pulumi.set(__self__, "options", options)
+            _setter("options", options)
 
     @property
     @pulumi.getter
     def name(self) -> pulumi.Input[str]:
         """
-        Name of the service
+        A random name for the port
         """
         return pulumi.get(self, "name")
 
@@ -3530,6 +5080,9 @@ class ServiceTaskSpecLogDriverArgs:
     @property
     @pulumi.getter
     def options(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]:
+        """
+        A list of internal resolver variables to be modified (e.g., `debug`, `ndots:3`, etc.)
+        """
         return pulumi.get(self, "options")
 
     @options.setter
@@ -3544,19 +5097,40 @@ class ServiceTaskSpecNetworksAdvancedArgs:
                  aliases: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  driver_opts: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None):
         """
-        :param pulumi.Input[str] name: Name of the service
+        :param pulumi.Input[str] name: A random name for the port
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] aliases: The network aliases of the container in the specific network.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] driver_opts: An array of driver options for the network, e.g. `opts1=value`
         """
-        pulumi.set(__self__, "name", name)
+        ServiceTaskSpecNetworksAdvancedArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            name=name,
+            aliases=aliases,
+            driver_opts=driver_opts,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             name: Optional[pulumi.Input[str]] = None,
+             aliases: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+             driver_opts: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if name is None:
+            raise TypeError("Missing 'name' argument")
+        if driver_opts is None and 'driverOpts' in kwargs:
+            driver_opts = kwargs['driverOpts']
+
+        _setter("name", name)
         if aliases is not None:
-            pulumi.set(__self__, "aliases", aliases)
+            _setter("aliases", aliases)
         if driver_opts is not None:
-            pulumi.set(__self__, "driver_opts", driver_opts)
+            _setter("driver_opts", driver_opts)
 
     @property
     @pulumi.getter
     def name(self) -> pulumi.Input[str]:
         """
-        Name of the service
+        A random name for the port
         """
         return pulumi.get(self, "name")
 
@@ -3567,6 +5141,9 @@ class ServiceTaskSpecNetworksAdvancedArgs:
     @property
     @pulumi.getter
     def aliases(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+        """
+        The network aliases of the container in the specific network.
+        """
         return pulumi.get(self, "aliases")
 
     @aliases.setter
@@ -3576,6 +5153,9 @@ class ServiceTaskSpecNetworksAdvancedArgs:
     @property
     @pulumi.getter(name="driverOpts")
     def driver_opts(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+        """
+        An array of driver options for the network, e.g. `opts1=value`
+        """
         return pulumi.get(self, "driver_opts")
 
     @driver_opts.setter
@@ -3590,18 +5170,46 @@ class ServiceTaskSpecPlacementArgs:
                  max_replicas: Optional[pulumi.Input[int]] = None,
                  platforms: Optional[pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecPlacementPlatformArgs']]]] = None,
                  prefs: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None):
+        """
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] constraints: An array of constraints. e.g.: `node.role==manager`
+        :param pulumi.Input[int] max_replicas: Maximum number of replicas for per node (default value is `0`, which is unlimited)
+        :param pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecPlacementPlatformArgs']]] platforms: Platforms stores all the platforms that the service's image can run on
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] prefs: Preferences provide a way to make the scheduler aware of factors such as topology. They are provided in order from highest to lowest precedence, e.g.: `spread=node.role.manager`
+        """
+        ServiceTaskSpecPlacementArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            constraints=constraints,
+            max_replicas=max_replicas,
+            platforms=platforms,
+            prefs=prefs,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             constraints: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+             max_replicas: Optional[pulumi.Input[int]] = None,
+             platforms: Optional[pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecPlacementPlatformArgs']]]] = None,
+             prefs: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if max_replicas is None and 'maxReplicas' in kwargs:
+            max_replicas = kwargs['maxReplicas']
+
         if constraints is not None:
-            pulumi.set(__self__, "constraints", constraints)
+            _setter("constraints", constraints)
         if max_replicas is not None:
-            pulumi.set(__self__, "max_replicas", max_replicas)
+            _setter("max_replicas", max_replicas)
         if platforms is not None:
-            pulumi.set(__self__, "platforms", platforms)
+            _setter("platforms", platforms)
         if prefs is not None:
-            pulumi.set(__self__, "prefs", prefs)
+            _setter("prefs", prefs)
 
     @property
     @pulumi.getter
     def constraints(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+        """
+        An array of constraints. e.g.: `node.role==manager`
+        """
         return pulumi.get(self, "constraints")
 
     @constraints.setter
@@ -3611,6 +5219,9 @@ class ServiceTaskSpecPlacementArgs:
     @property
     @pulumi.getter(name="maxReplicas")
     def max_replicas(self) -> Optional[pulumi.Input[int]]:
+        """
+        Maximum number of replicas for per node (default value is `0`, which is unlimited)
+        """
         return pulumi.get(self, "max_replicas")
 
     @max_replicas.setter
@@ -3620,6 +5231,9 @@ class ServiceTaskSpecPlacementArgs:
     @property
     @pulumi.getter
     def platforms(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['ServiceTaskSpecPlacementPlatformArgs']]]]:
+        """
+        Platforms stores all the platforms that the service's image can run on
+        """
         return pulumi.get(self, "platforms")
 
     @platforms.setter
@@ -3629,6 +5243,9 @@ class ServiceTaskSpecPlacementArgs:
     @property
     @pulumi.getter
     def prefs(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+        """
+        Preferences provide a way to make the scheduler aware of factors such as topology. They are provided in order from highest to lowest precedence, e.g.: `spread=node.role.manager`
+        """
         return pulumi.get(self, "prefs")
 
     @prefs.setter
@@ -3641,12 +5258,36 @@ class ServiceTaskSpecPlacementPlatformArgs:
     def __init__(__self__, *,
                  architecture: pulumi.Input[str],
                  os: pulumi.Input[str]):
-        pulumi.set(__self__, "architecture", architecture)
-        pulumi.set(__self__, "os", os)
+        """
+        :param pulumi.Input[str] architecture: The architecture, e.g. `amd64`
+        :param pulumi.Input[str] os: The operation system, e.g. `linux`
+        """
+        ServiceTaskSpecPlacementPlatformArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            architecture=architecture,
+            os=os,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             architecture: Optional[pulumi.Input[str]] = None,
+             os: Optional[pulumi.Input[str]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if architecture is None:
+            raise TypeError("Missing 'architecture' argument")
+        if os is None:
+            raise TypeError("Missing 'os' argument")
+
+        _setter("architecture", architecture)
+        _setter("os", os)
 
     @property
     @pulumi.getter
     def architecture(self) -> pulumi.Input[str]:
+        """
+        The architecture, e.g. `amd64`
+        """
         return pulumi.get(self, "architecture")
 
     @architecture.setter
@@ -3656,6 +5297,9 @@ class ServiceTaskSpecPlacementPlatformArgs:
     @property
     @pulumi.getter
     def os(self) -> pulumi.Input[str]:
+        """
+        The operation system, e.g. `linux`
+        """
         return pulumi.get(self, "os")
 
     @os.setter
@@ -3668,14 +5312,34 @@ class ServiceTaskSpecResourcesArgs:
     def __init__(__self__, *,
                  limits: Optional[pulumi.Input['ServiceTaskSpecResourcesLimitsArgs']] = None,
                  reservation: Optional[pulumi.Input['ServiceTaskSpecResourcesReservationArgs']] = None):
+        """
+        :param pulumi.Input['ServiceTaskSpecResourcesLimitsArgs'] limits: Describes the resources which can be advertised by a node and requested by a task
+        :param pulumi.Input['ServiceTaskSpecResourcesReservationArgs'] reservation: An object describing the resources which can be advertised by a node and requested by a task
+        """
+        ServiceTaskSpecResourcesArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            limits=limits,
+            reservation=reservation,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             limits: Optional[pulumi.Input['ServiceTaskSpecResourcesLimitsArgs']] = None,
+             reservation: Optional[pulumi.Input['ServiceTaskSpecResourcesReservationArgs']] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+
         if limits is not None:
-            pulumi.set(__self__, "limits", limits)
+            _setter("limits", limits)
         if reservation is not None:
-            pulumi.set(__self__, "reservation", reservation)
+            _setter("reservation", reservation)
 
     @property
     @pulumi.getter
     def limits(self) -> Optional[pulumi.Input['ServiceTaskSpecResourcesLimitsArgs']]:
+        """
+        Describes the resources which can be advertised by a node and requested by a task
+        """
         return pulumi.get(self, "limits")
 
     @limits.setter
@@ -3685,6 +5349,9 @@ class ServiceTaskSpecResourcesArgs:
     @property
     @pulumi.getter
     def reservation(self) -> Optional[pulumi.Input['ServiceTaskSpecResourcesReservationArgs']]:
+        """
+        An object describing the resources which can be advertised by a node and requested by a task
+        """
         return pulumi.get(self, "reservation")
 
     @reservation.setter
@@ -3697,14 +5364,38 @@ class ServiceTaskSpecResourcesLimitsArgs:
     def __init__(__self__, *,
                  memory_bytes: Optional[pulumi.Input[int]] = None,
                  nano_cpus: Optional[pulumi.Input[int]] = None):
+        """
+        :param pulumi.Input[int] memory_bytes: The amounf of memory in bytes the container allocates
+        :param pulumi.Input[int] nano_cpus: CPU shares in units of `1/1e9` (or `10^-9`) of the CPU. Should be at least `1000000`
+        """
+        ServiceTaskSpecResourcesLimitsArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            memory_bytes=memory_bytes,
+            nano_cpus=nano_cpus,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             memory_bytes: Optional[pulumi.Input[int]] = None,
+             nano_cpus: Optional[pulumi.Input[int]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if memory_bytes is None and 'memoryBytes' in kwargs:
+            memory_bytes = kwargs['memoryBytes']
+        if nano_cpus is None and 'nanoCpus' in kwargs:
+            nano_cpus = kwargs['nanoCpus']
+
         if memory_bytes is not None:
-            pulumi.set(__self__, "memory_bytes", memory_bytes)
+            _setter("memory_bytes", memory_bytes)
         if nano_cpus is not None:
-            pulumi.set(__self__, "nano_cpus", nano_cpus)
+            _setter("nano_cpus", nano_cpus)
 
     @property
     @pulumi.getter(name="memoryBytes")
     def memory_bytes(self) -> Optional[pulumi.Input[int]]:
+        """
+        The amounf of memory in bytes the container allocates
+        """
         return pulumi.get(self, "memory_bytes")
 
     @memory_bytes.setter
@@ -3714,6 +5405,9 @@ class ServiceTaskSpecResourcesLimitsArgs:
     @property
     @pulumi.getter(name="nanoCpus")
     def nano_cpus(self) -> Optional[pulumi.Input[int]]:
+        """
+        CPU shares in units of `1/1e9` (or `10^-9`) of the CPU. Should be at least `1000000`
+        """
         return pulumi.get(self, "nano_cpus")
 
     @nano_cpus.setter
@@ -3727,16 +5421,45 @@ class ServiceTaskSpecResourcesReservationArgs:
                  generic_resources: Optional[pulumi.Input['ServiceTaskSpecResourcesReservationGenericResourcesArgs']] = None,
                  memory_bytes: Optional[pulumi.Input[int]] = None,
                  nano_cpus: Optional[pulumi.Input[int]] = None):
+        """
+        :param pulumi.Input['ServiceTaskSpecResourcesReservationGenericResourcesArgs'] generic_resources: User-defined resources can be either Integer resources (e.g, `SSD=3`) or String resources (e.g, GPU=UUID1)
+        :param pulumi.Input[int] memory_bytes: The amounf of memory in bytes the container allocates
+        :param pulumi.Input[int] nano_cpus: CPU shares in units of `1/1e9` (or `10^-9`) of the CPU. Should be at least `1000000`
+        """
+        ServiceTaskSpecResourcesReservationArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            generic_resources=generic_resources,
+            memory_bytes=memory_bytes,
+            nano_cpus=nano_cpus,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             generic_resources: Optional[pulumi.Input['ServiceTaskSpecResourcesReservationGenericResourcesArgs']] = None,
+             memory_bytes: Optional[pulumi.Input[int]] = None,
+             nano_cpus: Optional[pulumi.Input[int]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if generic_resources is None and 'genericResources' in kwargs:
+            generic_resources = kwargs['genericResources']
+        if memory_bytes is None and 'memoryBytes' in kwargs:
+            memory_bytes = kwargs['memoryBytes']
+        if nano_cpus is None and 'nanoCpus' in kwargs:
+            nano_cpus = kwargs['nanoCpus']
+
         if generic_resources is not None:
-            pulumi.set(__self__, "generic_resources", generic_resources)
+            _setter("generic_resources", generic_resources)
         if memory_bytes is not None:
-            pulumi.set(__self__, "memory_bytes", memory_bytes)
+            _setter("memory_bytes", memory_bytes)
         if nano_cpus is not None:
-            pulumi.set(__self__, "nano_cpus", nano_cpus)
+            _setter("nano_cpus", nano_cpus)
 
     @property
     @pulumi.getter(name="genericResources")
     def generic_resources(self) -> Optional[pulumi.Input['ServiceTaskSpecResourcesReservationGenericResourcesArgs']]:
+        """
+        User-defined resources can be either Integer resources (e.g, `SSD=3`) or String resources (e.g, GPU=UUID1)
+        """
         return pulumi.get(self, "generic_resources")
 
     @generic_resources.setter
@@ -3746,6 +5469,9 @@ class ServiceTaskSpecResourcesReservationArgs:
     @property
     @pulumi.getter(name="memoryBytes")
     def memory_bytes(self) -> Optional[pulumi.Input[int]]:
+        """
+        The amounf of memory in bytes the container allocates
+        """
         return pulumi.get(self, "memory_bytes")
 
     @memory_bytes.setter
@@ -3755,6 +5481,9 @@ class ServiceTaskSpecResourcesReservationArgs:
     @property
     @pulumi.getter(name="nanoCpus")
     def nano_cpus(self) -> Optional[pulumi.Input[int]]:
+        """
+        CPU shares in units of `1/1e9` (or `10^-9`) of the CPU. Should be at least `1000000`
+        """
         return pulumi.get(self, "nano_cpus")
 
     @nano_cpus.setter
@@ -3767,14 +5496,38 @@ class ServiceTaskSpecResourcesReservationGenericResourcesArgs:
     def __init__(__self__, *,
                  discrete_resources_specs: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  named_resources_specs: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None):
+        """
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] discrete_resources_specs: The Integer resources
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] named_resources_specs: The String resources
+        """
+        ServiceTaskSpecResourcesReservationGenericResourcesArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            discrete_resources_specs=discrete_resources_specs,
+            named_resources_specs=named_resources_specs,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             discrete_resources_specs: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+             named_resources_specs: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if discrete_resources_specs is None and 'discreteResourcesSpecs' in kwargs:
+            discrete_resources_specs = kwargs['discreteResourcesSpecs']
+        if named_resources_specs is None and 'namedResourcesSpecs' in kwargs:
+            named_resources_specs = kwargs['namedResourcesSpecs']
+
         if discrete_resources_specs is not None:
-            pulumi.set(__self__, "discrete_resources_specs", discrete_resources_specs)
+            _setter("discrete_resources_specs", discrete_resources_specs)
         if named_resources_specs is not None:
-            pulumi.set(__self__, "named_resources_specs", named_resources_specs)
+            _setter("named_resources_specs", named_resources_specs)
 
     @property
     @pulumi.getter(name="discreteResourcesSpecs")
     def discrete_resources_specs(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+        """
+        The Integer resources
+        """
         return pulumi.get(self, "discrete_resources_specs")
 
     @discrete_resources_specs.setter
@@ -3784,6 +5537,9 @@ class ServiceTaskSpecResourcesReservationGenericResourcesArgs:
     @property
     @pulumi.getter(name="namedResourcesSpecs")
     def named_resources_specs(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+        """
+        The String resources
+        """
         return pulumi.get(self, "named_resources_specs")
 
     @named_resources_specs.setter
@@ -3798,18 +5554,46 @@ class ServiceTaskSpecRestartPolicyArgs:
                  delay: Optional[pulumi.Input[str]] = None,
                  max_attempts: Optional[pulumi.Input[int]] = None,
                  window: Optional[pulumi.Input[str]] = None):
+        """
+        :param pulumi.Input[str] condition: Condition for restart
+        :param pulumi.Input[str] delay: The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.
+        :param pulumi.Input[int] max_attempts: Maximum attempts to restart a given container before giving up (default value is `0`, which is ignored)
+        :param pulumi.Input[str] window: The time window used to evaluate the restart policy (default value is `0`, which is unbounded) (ms|s|m|h)
+        """
+        ServiceTaskSpecRestartPolicyArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            condition=condition,
+            delay=delay,
+            max_attempts=max_attempts,
+            window=window,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             condition: Optional[pulumi.Input[str]] = None,
+             delay: Optional[pulumi.Input[str]] = None,
+             max_attempts: Optional[pulumi.Input[int]] = None,
+             window: Optional[pulumi.Input[str]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if max_attempts is None and 'maxAttempts' in kwargs:
+            max_attempts = kwargs['maxAttempts']
+
         if condition is not None:
-            pulumi.set(__self__, "condition", condition)
+            _setter("condition", condition)
         if delay is not None:
-            pulumi.set(__self__, "delay", delay)
+            _setter("delay", delay)
         if max_attempts is not None:
-            pulumi.set(__self__, "max_attempts", max_attempts)
+            _setter("max_attempts", max_attempts)
         if window is not None:
-            pulumi.set(__self__, "window", window)
+            _setter("window", window)
 
     @property
     @pulumi.getter
     def condition(self) -> Optional[pulumi.Input[str]]:
+        """
+        Condition for restart
+        """
         return pulumi.get(self, "condition")
 
     @condition.setter
@@ -3819,6 +5603,9 @@ class ServiceTaskSpecRestartPolicyArgs:
     @property
     @pulumi.getter
     def delay(self) -> Optional[pulumi.Input[str]]:
+        """
+        The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.
+        """
         return pulumi.get(self, "delay")
 
     @delay.setter
@@ -3828,6 +5615,9 @@ class ServiceTaskSpecRestartPolicyArgs:
     @property
     @pulumi.getter(name="maxAttempts")
     def max_attempts(self) -> Optional[pulumi.Input[int]]:
+        """
+        Maximum attempts to restart a given container before giving up (default value is `0`, which is ignored)
+        """
         return pulumi.get(self, "max_attempts")
 
     @max_attempts.setter
@@ -3837,6 +5627,9 @@ class ServiceTaskSpecRestartPolicyArgs:
     @property
     @pulumi.getter
     def window(self) -> Optional[pulumi.Input[str]]:
+        """
+        The time window used to evaluate the restart policy (default value is `0`, which is unbounded) (ms|s|m|h)
+        """
         return pulumi.get(self, "window")
 
     @window.setter
@@ -3861,18 +5654,43 @@ class ServiceUpdateConfigArgs:
         :param pulumi.Input[str] order: Update order: either 'stop-first' or 'start-first'. Defaults to `stop-first`.
         :param pulumi.Input[int] parallelism: Maximum number of tasks to be updated in one iteration. Defaults to `1`
         """
+        ServiceUpdateConfigArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            delay=delay,
+            failure_action=failure_action,
+            max_failure_ratio=max_failure_ratio,
+            monitor=monitor,
+            order=order,
+            parallelism=parallelism,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             delay: Optional[pulumi.Input[str]] = None,
+             failure_action: Optional[pulumi.Input[str]] = None,
+             max_failure_ratio: Optional[pulumi.Input[str]] = None,
+             monitor: Optional[pulumi.Input[str]] = None,
+             order: Optional[pulumi.Input[str]] = None,
+             parallelism: Optional[pulumi.Input[int]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if failure_action is None and 'failureAction' in kwargs:
+            failure_action = kwargs['failureAction']
+        if max_failure_ratio is None and 'maxFailureRatio' in kwargs:
+            max_failure_ratio = kwargs['maxFailureRatio']
+
         if delay is not None:
-            pulumi.set(__self__, "delay", delay)
+            _setter("delay", delay)
         if failure_action is not None:
-            pulumi.set(__self__, "failure_action", failure_action)
+            _setter("failure_action", failure_action)
         if max_failure_ratio is not None:
-            pulumi.set(__self__, "max_failure_ratio", max_failure_ratio)
+            _setter("max_failure_ratio", max_failure_ratio)
         if monitor is not None:
-            pulumi.set(__self__, "monitor", monitor)
+            _setter("monitor", monitor)
         if order is not None:
-            pulumi.set(__self__, "order", order)
+            _setter("order", order)
         if parallelism is not None:
-            pulumi.set(__self__, "parallelism", parallelism)
+            _setter("parallelism", parallelism)
 
     @property
     @pulumi.getter
@@ -3956,8 +5774,25 @@ class VolumeLabelArgs:
         :param pulumi.Input[str] label: Name of the label
         :param pulumi.Input[str] value: Value of the label
         """
-        pulumi.set(__self__, "label", label)
-        pulumi.set(__self__, "value", value)
+        VolumeLabelArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            label=label,
+            value=value,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             label: Optional[pulumi.Input[str]] = None,
+             value: Optional[pulumi.Input[str]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if label is None:
+            raise TypeError("Missing 'label' argument")
+        if value is None:
+            raise TypeError("Missing 'value' argument")
+
+        _setter("label", label)
+        _setter("value", value)
 
     @property
     @pulumi.getter
@@ -3992,8 +5827,19 @@ class CacheFromArgs:
         Contains a list of images to reference when building using a cache
         :param pulumi.Input[Sequence[pulumi.Input[str]]] images: Specifies cached images
         """
+        CacheFromArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            images=images,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             images: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+
         if images is not None:
-            pulumi.set(__self__, "images", images)
+            _setter("images", images)
 
     @property
     @pulumi.getter
@@ -4028,20 +5874,47 @@ class DockerBuildArgs:
         :param pulumi.Input[str] platform: The architecture of the platform you want to build this image for, e.g. `linux/arm64`.
         :param pulumi.Input[str] target: The target of the Dockerfile to build
         """
+        DockerBuildArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            args=args,
+            builder_version=builder_version,
+            cache_from=cache_from,
+            context=context,
+            dockerfile=dockerfile,
+            platform=platform,
+            target=target,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             args: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
+             builder_version: Optional[pulumi.Input['BuilderVersion']] = None,
+             cache_from: Optional[pulumi.Input['CacheFromArgs']] = None,
+             context: Optional[pulumi.Input[str]] = None,
+             dockerfile: Optional[pulumi.Input[str]] = None,
+             platform: Optional[pulumi.Input[str]] = None,
+             target: Optional[pulumi.Input[str]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+        if builder_version is None and 'builderVersion' in kwargs:
+            builder_version = kwargs['builderVersion']
+        if cache_from is None and 'cacheFrom' in kwargs:
+            cache_from = kwargs['cacheFrom']
+
         if args is not None:
-            pulumi.set(__self__, "args", args)
+            _setter("args", args)
         if builder_version is not None:
-            pulumi.set(__self__, "builder_version", builder_version)
+            _setter("builder_version", builder_version)
         if cache_from is not None:
-            pulumi.set(__self__, "cache_from", cache_from)
+            _setter("cache_from", cache_from)
         if context is not None:
-            pulumi.set(__self__, "context", context)
+            _setter("context", context)
         if dockerfile is not None:
-            pulumi.set(__self__, "dockerfile", dockerfile)
+            _setter("dockerfile", dockerfile)
         if platform is not None:
-            pulumi.set(__self__, "platform", platform)
+            _setter("platform", platform)
         if target is not None:
-            pulumi.set(__self__, "target", target)
+            _setter("target", target)
 
     @property
     @pulumi.getter
@@ -4140,12 +6013,27 @@ class RegistryArgs:
         :param pulumi.Input[str] server: The URL of the Docker registry server
         :param pulumi.Input[str] username: The username to authenticate to the registry. Does not cause image rebuild when changed.
         """
+        RegistryArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            password=password,
+            server=server,
+            username=username,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             password: Optional[pulumi.Input[str]] = None,
+             server: Optional[pulumi.Input[str]] = None,
+             username: Optional[pulumi.Input[str]] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
+             **kwargs):
+
         if password is not None:
-            pulumi.set(__self__, "password", password)
+            _setter("password", password)
         if server is not None:
-            pulumi.set(__self__, "server", server)
+            _setter("server", server)
         if username is not None:
-            pulumi.set(__self__, "username", username)
+            _setter("username", username)
 
     @property
     @pulumi.getter

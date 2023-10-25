@@ -9,13 +9,29 @@ import java.util.Objects;
 
 @CustomType
 public final class ServiceTaskSpecContainerSpecHost {
+    /**
+     * @return The name of the host
+     * 
+     */
     private String host;
+    /**
+     * @return The ip of the host
+     * 
+     */
     private String ip;
 
     private ServiceTaskSpecContainerSpecHost() {}
+    /**
+     * @return The name of the host
+     * 
+     */
     public String host() {
         return this.host;
     }
+    /**
+     * @return The ip of the host
+     * 
+     */
     public String ip() {
         return this.ip;
     }

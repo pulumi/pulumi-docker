@@ -13,33 +13,6 @@ namespace Pulumi.Docker
     /// &lt;!-- Bug: Type and Name are switched --&gt;
     /// Manages the lifecycle of a Docker plugin.
     /// 
-    /// ## Example Usage
-    /// 
-    /// ```csharp
-    /// using System.Collections.Generic;
-    /// using System.Linq;
-    /// using Pulumi;
-    /// using Docker = Pulumi.Docker;
-    /// 
-    /// return await Deployment.RunAsync(() =&gt; 
-    /// {
-    ///     var sample_volume_plugin = new Docker.Plugin("sample-volume-plugin", new()
-    ///     {
-    ///         Alias = "sample-volume-plugin",
-    ///         EnableTimeout = 60,
-    ///         Enabled = false,
-    ///         Envs = new[]
-    ///         {
-    ///             "DEBUG=1",
-    ///         },
-    ///         ForceDestroy = true,
-    ///         ForceDisable = true,
-    ///         GrantAllPermissions = true,
-    ///     });
-    /// 
-    /// });
-    /// ```
-    /// 
     /// ## Import
     /// 
     /// #!/bin/bash
@@ -100,7 +73,7 @@ namespace Pulumi.Docker
         public Output<ImmutableArray<Outputs.PluginGrantPermission>> GrantPermissions { get; private set; } = null!;
 
         /// <summary>
-        /// Docker Plugin name
+        /// The name of the permission
         /// </summary>
         [Output("name")]
         public Output<string> Name { get; private set; } = null!;
@@ -218,7 +191,7 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// Docker Plugin name
+        /// The name of the permission
         /// </summary>
         [Input("name")]
         public Input<string>? Name { get; set; }
@@ -292,7 +265,7 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// Docker Plugin name
+        /// The name of the permission
         /// </summary>
         [Input("name")]
         public Input<string>? Name { get; set; }

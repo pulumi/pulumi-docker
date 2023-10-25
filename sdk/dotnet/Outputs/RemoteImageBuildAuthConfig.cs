@@ -13,13 +13,37 @@ namespace Pulumi.Docker.Outputs
     [OutputType]
     public sealed class RemoteImageBuildAuthConfig
     {
+        /// <summary>
+        /// the auth token
+        /// </summary>
         public readonly string? Auth;
+        /// <summary>
+        /// the user emal
+        /// </summary>
         public readonly string? Email;
+        /// <summary>
+        /// hostname of the registry
+        /// </summary>
         public readonly string HostName;
+        /// <summary>
+        /// the identity token
+        /// </summary>
         public readonly string? IdentityToken;
+        /// <summary>
+        /// the registry password
+        /// </summary>
         public readonly string? Password;
+        /// <summary>
+        /// the registry token
+        /// </summary>
         public readonly string? RegistryToken;
+        /// <summary>
+        /// the server address
+        /// </summary>
         public readonly string? ServerAddress;
+        /// <summary>
+        /// the registry user name
+        /// </summary>
         public readonly string? UserName;
 
         [OutputConstructor]

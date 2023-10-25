@@ -13,21 +13,6 @@ namespace Pulumi.Docker
     /// &lt;!-- Bug: Type and Name are switched --&gt;
     /// `docker.Network` provides a docker network resource.
     /// 
-    /// ## Example Usage
-    /// 
-    /// ```csharp
-    /// using System.Collections.Generic;
-    /// using System.Linq;
-    /// using Pulumi;
-    /// using Docker = Pulumi.Docker;
-    /// 
-    /// return await Deployment.RunAsync(() =&gt; 
-    /// {
-    ///     var privateNetwork = new Docker.Network("privateNetwork");
-    /// 
-    /// });
-    /// ```
-    /// 
     /// ## Import
     /// 
     /// ### Example Assuming you created a `network` as follows #!/bin/bash docker network create foo prints the long ID 87b57a9b91ecab2db2a6dbf38df74c67d7c7108cbe479d6576574ec2cd8c2d73 you provide the definition for the resource as follows terraform resource "docker_network" "foo" {

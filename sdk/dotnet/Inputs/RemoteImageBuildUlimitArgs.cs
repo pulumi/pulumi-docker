@@ -12,15 +12,21 @@ namespace Pulumi.Docker.Inputs
 
     public sealed class RemoteImageBuildUlimitArgs : global::Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// soft limit
+        /// </summary>
         [Input("hard", required: true)]
         public Input<int> Hard { get; set; } = null!;
 
         /// <summary>
-        /// The name of the Docker image, including any tags or SHA256 repo digests.
+        /// type of ulimit, e.g. `nofile`
         /// </summary>
         [Input("name", required: true)]
         public Input<string> Name { get; set; } = null!;
 
+        /// <summary>
+        /// hard limit
+        /// </summary>
         [Input("soft", required: true)]
         public Input<int> Soft { get; set; } = null!;
 
