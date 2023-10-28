@@ -6,7 +6,7 @@ import copy
 import warnings
 import pulumi
 import pulumi.runtime
-from typing import Any, Callable, Mapping, Optional, Sequence, Union, overload
+from typing import Any, Mapping, Optional, Sequence, Union, overload
 from . import _utilities
 from ._inputs import *
 
@@ -31,57 +31,22 @@ class ProviderArgs:
         :param pulumi.Input[str] key_material: PEM-encoded content of Docker client private key
         :param pulumi.Input[Sequence[pulumi.Input[str]]] ssh_opts: Additional SSH option flags to be appended when using `ssh://` protocol
         """
-        ProviderArgs._configure(
-            lambda key, value: pulumi.set(__self__, key, value),
-            ca_material=ca_material,
-            cert_material=cert_material,
-            cert_path=cert_path,
-            host=host,
-            key_material=key_material,
-            registry_auth=registry_auth,
-            ssh_opts=ssh_opts,
-        )
-    @staticmethod
-    def _configure(
-             _setter: Callable[[Any, Any], None],
-             ca_material: Optional[pulumi.Input[str]] = None,
-             cert_material: Optional[pulumi.Input[str]] = None,
-             cert_path: Optional[pulumi.Input[str]] = None,
-             host: Optional[pulumi.Input[str]] = None,
-             key_material: Optional[pulumi.Input[str]] = None,
-             registry_auth: Optional[pulumi.Input[Sequence[pulumi.Input['ProviderRegistryAuthArgs']]]] = None,
-             ssh_opts: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
-             opts: Optional[pulumi.ResourceOptions] = None,
-             **kwargs):
-        if ca_material is None and 'caMaterial' in kwargs:
-            ca_material = kwargs['caMaterial']
-        if cert_material is None and 'certMaterial' in kwargs:
-            cert_material = kwargs['certMaterial']
-        if cert_path is None and 'certPath' in kwargs:
-            cert_path = kwargs['certPath']
-        if key_material is None and 'keyMaterial' in kwargs:
-            key_material = kwargs['keyMaterial']
-        if registry_auth is None and 'registryAuth' in kwargs:
-            registry_auth = kwargs['registryAuth']
-        if ssh_opts is None and 'sshOpts' in kwargs:
-            ssh_opts = kwargs['sshOpts']
-
         if ca_material is not None:
-            _setter("ca_material", ca_material)
+            pulumi.set(__self__, "ca_material", ca_material)
         if cert_material is not None:
-            _setter("cert_material", cert_material)
+            pulumi.set(__self__, "cert_material", cert_material)
         if cert_path is not None:
-            _setter("cert_path", cert_path)
+            pulumi.set(__self__, "cert_path", cert_path)
         if host is None:
             host = _utilities.get_env('DOCKER_HOST')
         if host is not None:
-            _setter("host", host)
+            pulumi.set(__self__, "host", host)
         if key_material is not None:
-            _setter("key_material", key_material)
+            pulumi.set(__self__, "key_material", key_material)
         if registry_auth is not None:
-            _setter("registry_auth", registry_auth)
+            pulumi.set(__self__, "registry_auth", registry_auth)
         if ssh_opts is not None:
-            _setter("ssh_opts", ssh_opts)
+            pulumi.set(__self__, "ssh_opts", ssh_opts)
 
     @property
     @pulumi.getter(name="caMaterial")
@@ -215,10 +180,6 @@ class Provider(pulumi.ProviderResource):
         if resource_args is not None:
             __self__._internal_init(resource_name, opts, **resource_args.__dict__)
         else:
-            kwargs = kwargs or {}
-            def _setter(key, value):
-                kwargs[key] = value
-            ProviderArgs._configure(_setter, **kwargs)
             __self__._internal_init(resource_name, *args, **kwargs)
 
     def _internal_init(__self__,
