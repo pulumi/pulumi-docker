@@ -6,7 +6,7 @@ import copy
 import warnings
 import pulumi
 import pulumi.runtime
-from typing import Any, Callable, Mapping, Optional, Sequence, Union, overload
+from typing import Any, Mapping, Optional, Sequence, Union, overload
 from . import _utilities
 from . import outputs
 from ._inputs import *
@@ -25,28 +25,11 @@ class SecretArgs:
         :param pulumi.Input[Sequence[pulumi.Input['SecretLabelArgs']]] labels: User-defined key/value metadata
         :param pulumi.Input[str] name: User-defined name of the secret
         """
-        SecretArgs._configure(
-            lambda key, value: pulumi.set(__self__, key, value),
-            data=data,
-            labels=labels,
-            name=name,
-        )
-    @staticmethod
-    def _configure(
-             _setter: Callable[[Any, Any], None],
-             data: Optional[pulumi.Input[str]] = None,
-             labels: Optional[pulumi.Input[Sequence[pulumi.Input['SecretLabelArgs']]]] = None,
-             name: Optional[pulumi.Input[str]] = None,
-             opts: Optional[pulumi.ResourceOptions] = None,
-             **kwargs):
-        if data is None:
-            raise TypeError("Missing 'data' argument")
-
-        _setter("data", data)
+        pulumi.set(__self__, "data", data)
         if labels is not None:
-            _setter("labels", labels)
+            pulumi.set(__self__, "labels", labels)
         if name is not None:
-            _setter("name", name)
+            pulumi.set(__self__, "name", name)
 
     @property
     @pulumi.getter
@@ -97,27 +80,12 @@ class _SecretState:
         :param pulumi.Input[Sequence[pulumi.Input['SecretLabelArgs']]] labels: User-defined key/value metadata
         :param pulumi.Input[str] name: User-defined name of the secret
         """
-        _SecretState._configure(
-            lambda key, value: pulumi.set(__self__, key, value),
-            data=data,
-            labels=labels,
-            name=name,
-        )
-    @staticmethod
-    def _configure(
-             _setter: Callable[[Any, Any], None],
-             data: Optional[pulumi.Input[str]] = None,
-             labels: Optional[pulumi.Input[Sequence[pulumi.Input['SecretLabelArgs']]]] = None,
-             name: Optional[pulumi.Input[str]] = None,
-             opts: Optional[pulumi.ResourceOptions] = None,
-             **kwargs):
-
         if data is not None:
-            _setter("data", data)
+            pulumi.set(__self__, "data", data)
         if labels is not None:
-            _setter("labels", labels)
+            pulumi.set(__self__, "labels", labels)
         if name is not None:
-            _setter("name", name)
+            pulumi.set(__self__, "name", name)
 
     @property
     @pulumi.getter
@@ -197,10 +165,6 @@ class Secret(pulumi.CustomResource):
         if resource_args is not None:
             __self__._internal_init(resource_name, opts, **resource_args.__dict__)
         else:
-            kwargs = kwargs or {}
-            def _setter(key, value):
-                kwargs[key] = value
-            SecretArgs._configure(_setter, **kwargs)
             __self__._internal_init(resource_name, *args, **kwargs)
 
     def _internal_init(__self__,
