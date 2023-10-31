@@ -34,6 +34,7 @@ import (
 	"github.com/docker/docker/pkg/jsonmessage"
 	structpb "github.com/golang/protobuf/ptypes/struct"
 	controlapi "github.com/moby/buildkit/api/services/control"
+	"github.com/moby/buildkit/identity"
 	"github.com/moby/buildkit/session"
 	"github.com/moby/buildkit/session/auth/authprovider"
 	"github.com/moby/moby/registry"
@@ -253,7 +254,10 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 
 	//Start a session for BuildKit
 	if build.BuilderVersion == defaultBuilder {
-		sess, _ := session.NewSession(ctx, "pulumi-docker", "")
+		sess, err := session.NewSession(ctx, "pulumi-docker", identity.NewID())
+		if err != nil {
+			return "", nil, err
+		}
 
 		dockerAuthProvider := authprovider.NewDockerAuthProvider(cfg)
 		sess.Allow(dockerAuthProvider)
@@ -264,7 +268,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		go func() {
 			err := sess.Run(ctx, dialSession)
 			if err != nil {
-				return
+				_ = p.host.Log(ctx, "error", urn, fmt.Sprintf("Error running BuildKit session: %v", err))
 			}
 		}()
 		defer sess.Close()
