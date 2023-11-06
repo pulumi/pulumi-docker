@@ -9,7 +9,6 @@ import (
 
 	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker/internal"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 )
 
 var _ = internal.GetEnvOrDefault
@@ -49,12 +48,6 @@ func (i ContainerCapabilitiesArgs) ToContainerCapabilitiesOutput() ContainerCapa
 
 func (i ContainerCapabilitiesArgs) ToContainerCapabilitiesOutputWithContext(ctx context.Context) ContainerCapabilitiesOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(ContainerCapabilitiesOutput)
-}
-
-func (i ContainerCapabilitiesArgs) ToOutput(ctx context.Context) pulumix.Output[ContainerCapabilities] {
-	return pulumix.Output[ContainerCapabilities]{
-		OutputState: i.ToContainerCapabilitiesOutputWithContext(ctx).OutputState,
-	}
 }
 
 func (i ContainerCapabilitiesArgs) ToContainerCapabilitiesPtrOutput() ContainerCapabilitiesPtrOutput {
@@ -98,12 +91,6 @@ func (i *containerCapabilitiesPtrType) ToContainerCapabilitiesPtrOutputWithConte
 	return pulumi.ToOutputWithContext(ctx, i).(ContainerCapabilitiesPtrOutput)
 }
 
-func (i *containerCapabilitiesPtrType) ToOutput(ctx context.Context) pulumix.Output[*ContainerCapabilities] {
-	return pulumix.Output[*ContainerCapabilities]{
-		OutputState: i.ToContainerCapabilitiesPtrOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ContainerCapabilitiesOutput struct{ *pulumi.OutputState }
 
 func (ContainerCapabilitiesOutput) ElementType() reflect.Type {
@@ -128,12 +115,6 @@ func (o ContainerCapabilitiesOutput) ToContainerCapabilitiesPtrOutputWithContext
 	}).(ContainerCapabilitiesPtrOutput)
 }
 
-func (o ContainerCapabilitiesOutput) ToOutput(ctx context.Context) pulumix.Output[ContainerCapabilities] {
-	return pulumix.Output[ContainerCapabilities]{
-		OutputState: o.OutputState,
-	}
-}
-
 // List of linux capabilities to add.
 func (o ContainerCapabilitiesOutput) Adds() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v ContainerCapabilities) []string { return v.Adds }).(pulumi.StringArrayOutput)
@@ -156,12 +137,6 @@ func (o ContainerCapabilitiesPtrOutput) ToContainerCapabilitiesPtrOutput() Conta
 
 func (o ContainerCapabilitiesPtrOutput) ToContainerCapabilitiesPtrOutputWithContext(ctx context.Context) ContainerCapabilitiesPtrOutput {
 	return o
-}
-
-func (o ContainerCapabilitiesPtrOutput) ToOutput(ctx context.Context) pulumix.Output[*ContainerCapabilities] {
-	return pulumix.Output[*ContainerCapabilities]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ContainerCapabilitiesPtrOutput) Elem() ContainerCapabilitiesOutput {
@@ -235,12 +210,6 @@ func (i ContainerDeviceArgs) ToContainerDeviceOutputWithContext(ctx context.Cont
 	return pulumi.ToOutputWithContext(ctx, i).(ContainerDeviceOutput)
 }
 
-func (i ContainerDeviceArgs) ToOutput(ctx context.Context) pulumix.Output[ContainerDevice] {
-	return pulumix.Output[ContainerDevice]{
-		OutputState: i.ToContainerDeviceOutputWithContext(ctx).OutputState,
-	}
-}
-
 // ContainerDeviceArrayInput is an input type that accepts ContainerDeviceArray and ContainerDeviceArrayOutput values.
 // You can construct a concrete instance of `ContainerDeviceArrayInput` via:
 //
@@ -266,12 +235,6 @@ func (i ContainerDeviceArray) ToContainerDeviceArrayOutputWithContext(ctx contex
 	return pulumi.ToOutputWithContext(ctx, i).(ContainerDeviceArrayOutput)
 }
 
-func (i ContainerDeviceArray) ToOutput(ctx context.Context) pulumix.Output[[]ContainerDevice] {
-	return pulumix.Output[[]ContainerDevice]{
-		OutputState: i.ToContainerDeviceArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ContainerDeviceOutput struct{ *pulumi.OutputState }
 
 func (ContainerDeviceOutput) ElementType() reflect.Type {
@@ -284,12 +247,6 @@ func (o ContainerDeviceOutput) ToContainerDeviceOutput() ContainerDeviceOutput {
 
 func (o ContainerDeviceOutput) ToContainerDeviceOutputWithContext(ctx context.Context) ContainerDeviceOutput {
 	return o
-}
-
-func (o ContainerDeviceOutput) ToOutput(ctx context.Context) pulumix.Output[ContainerDevice] {
-	return pulumix.Output[ContainerDevice]{
-		OutputState: o.OutputState,
-	}
 }
 
 // The path in the container where the device will be bound.
@@ -319,12 +276,6 @@ func (o ContainerDeviceArrayOutput) ToContainerDeviceArrayOutput() ContainerDevi
 
 func (o ContainerDeviceArrayOutput) ToContainerDeviceArrayOutputWithContext(ctx context.Context) ContainerDeviceArrayOutput {
 	return o
-}
-
-func (o ContainerDeviceArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]ContainerDevice] {
-	return pulumix.Output[[]ContainerDevice]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ContainerDeviceArrayOutput) Index(i pulumi.IntInput) ContainerDeviceOutput {
@@ -382,12 +333,6 @@ func (i ContainerHealthcheckArgs) ToContainerHealthcheckOutputWithContext(ctx co
 	return pulumi.ToOutputWithContext(ctx, i).(ContainerHealthcheckOutput)
 }
 
-func (i ContainerHealthcheckArgs) ToOutput(ctx context.Context) pulumix.Output[ContainerHealthcheck] {
-	return pulumix.Output[ContainerHealthcheck]{
-		OutputState: i.ToContainerHealthcheckOutputWithContext(ctx).OutputState,
-	}
-}
-
 func (i ContainerHealthcheckArgs) ToContainerHealthcheckPtrOutput() ContainerHealthcheckPtrOutput {
 	return i.ToContainerHealthcheckPtrOutputWithContext(context.Background())
 }
@@ -429,12 +374,6 @@ func (i *containerHealthcheckPtrType) ToContainerHealthcheckPtrOutputWithContext
 	return pulumi.ToOutputWithContext(ctx, i).(ContainerHealthcheckPtrOutput)
 }
 
-func (i *containerHealthcheckPtrType) ToOutput(ctx context.Context) pulumix.Output[*ContainerHealthcheck] {
-	return pulumix.Output[*ContainerHealthcheck]{
-		OutputState: i.ToContainerHealthcheckPtrOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ContainerHealthcheckOutput struct{ *pulumi.OutputState }
 
 func (ContainerHealthcheckOutput) ElementType() reflect.Type {
@@ -457,12 +396,6 @@ func (o ContainerHealthcheckOutput) ToContainerHealthcheckPtrOutputWithContext(c
 	return o.ApplyTWithContext(ctx, func(_ context.Context, v ContainerHealthcheck) *ContainerHealthcheck {
 		return &v
 	}).(ContainerHealthcheckPtrOutput)
-}
-
-func (o ContainerHealthcheckOutput) ToOutput(ctx context.Context) pulumix.Output[ContainerHealthcheck] {
-	return pulumix.Output[ContainerHealthcheck]{
-		OutputState: o.OutputState,
-	}
 }
 
 // Time between running the check (ms|s|m|h). Defaults to `0s`.
@@ -502,12 +435,6 @@ func (o ContainerHealthcheckPtrOutput) ToContainerHealthcheckPtrOutput() Contain
 
 func (o ContainerHealthcheckPtrOutput) ToContainerHealthcheckPtrOutputWithContext(ctx context.Context) ContainerHealthcheckPtrOutput {
 	return o
-}
-
-func (o ContainerHealthcheckPtrOutput) ToOutput(ctx context.Context) pulumix.Output[*ContainerHealthcheck] {
-	return pulumix.Output[*ContainerHealthcheck]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ContainerHealthcheckPtrOutput) Elem() ContainerHealthcheckOutput {
@@ -607,12 +534,6 @@ func (i ContainerHostArgs) ToContainerHostOutputWithContext(ctx context.Context)
 	return pulumi.ToOutputWithContext(ctx, i).(ContainerHostOutput)
 }
 
-func (i ContainerHostArgs) ToOutput(ctx context.Context) pulumix.Output[ContainerHost] {
-	return pulumix.Output[ContainerHost]{
-		OutputState: i.ToContainerHostOutputWithContext(ctx).OutputState,
-	}
-}
-
 // ContainerHostArrayInput is an input type that accepts ContainerHostArray and ContainerHostArrayOutput values.
 // You can construct a concrete instance of `ContainerHostArrayInput` via:
 //
@@ -638,12 +559,6 @@ func (i ContainerHostArray) ToContainerHostArrayOutputWithContext(ctx context.Co
 	return pulumi.ToOutputWithContext(ctx, i).(ContainerHostArrayOutput)
 }
 
-func (i ContainerHostArray) ToOutput(ctx context.Context) pulumix.Output[[]ContainerHost] {
-	return pulumix.Output[[]ContainerHost]{
-		OutputState: i.ToContainerHostArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ContainerHostOutput struct{ *pulumi.OutputState }
 
 func (ContainerHostOutput) ElementType() reflect.Type {
@@ -656,12 +571,6 @@ func (o ContainerHostOutput) ToContainerHostOutput() ContainerHostOutput {
 
 func (o ContainerHostOutput) ToContainerHostOutputWithContext(ctx context.Context) ContainerHostOutput {
 	return o
-}
-
-func (o ContainerHostOutput) ToOutput(ctx context.Context) pulumix.Output[ContainerHost] {
-	return pulumix.Output[ContainerHost]{
-		OutputState: o.OutputState,
-	}
 }
 
 // Hostname to add
@@ -686,12 +595,6 @@ func (o ContainerHostArrayOutput) ToContainerHostArrayOutput() ContainerHostArra
 
 func (o ContainerHostArrayOutput) ToContainerHostArrayOutputWithContext(ctx context.Context) ContainerHostArrayOutput {
 	return o
-}
-
-func (o ContainerHostArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]ContainerHost] {
-	return pulumix.Output[[]ContainerHost]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ContainerHostArrayOutput) Index(i pulumi.IntInput) ContainerHostOutput {
@@ -737,12 +640,6 @@ func (i ContainerLabelArgs) ToContainerLabelOutputWithContext(ctx context.Contex
 	return pulumi.ToOutputWithContext(ctx, i).(ContainerLabelOutput)
 }
 
-func (i ContainerLabelArgs) ToOutput(ctx context.Context) pulumix.Output[ContainerLabel] {
-	return pulumix.Output[ContainerLabel]{
-		OutputState: i.ToContainerLabelOutputWithContext(ctx).OutputState,
-	}
-}
-
 // ContainerLabelArrayInput is an input type that accepts ContainerLabelArray and ContainerLabelArrayOutput values.
 // You can construct a concrete instance of `ContainerLabelArrayInput` via:
 //
@@ -768,12 +665,6 @@ func (i ContainerLabelArray) ToContainerLabelArrayOutputWithContext(ctx context.
 	return pulumi.ToOutputWithContext(ctx, i).(ContainerLabelArrayOutput)
 }
 
-func (i ContainerLabelArray) ToOutput(ctx context.Context) pulumix.Output[[]ContainerLabel] {
-	return pulumix.Output[[]ContainerLabel]{
-		OutputState: i.ToContainerLabelArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ContainerLabelOutput struct{ *pulumi.OutputState }
 
 func (ContainerLabelOutput) ElementType() reflect.Type {
@@ -786,12 +677,6 @@ func (o ContainerLabelOutput) ToContainerLabelOutput() ContainerLabelOutput {
 
 func (o ContainerLabelOutput) ToContainerLabelOutputWithContext(ctx context.Context) ContainerLabelOutput {
 	return o
-}
-
-func (o ContainerLabelOutput) ToOutput(ctx context.Context) pulumix.Output[ContainerLabel] {
-	return pulumix.Output[ContainerLabel]{
-		OutputState: o.OutputState,
-	}
 }
 
 // Name of the label
@@ -816,12 +701,6 @@ func (o ContainerLabelArrayOutput) ToContainerLabelArrayOutput() ContainerLabelA
 
 func (o ContainerLabelArrayOutput) ToContainerLabelArrayOutputWithContext(ctx context.Context) ContainerLabelArrayOutput {
 	return o
-}
-
-func (o ContainerLabelArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]ContainerLabel] {
-	return pulumix.Output[[]ContainerLabel]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ContainerLabelArrayOutput) Index(i pulumi.IntInput) ContainerLabelOutput {
@@ -887,12 +766,6 @@ func (i ContainerMountArgs) ToContainerMountOutputWithContext(ctx context.Contex
 	return pulumi.ToOutputWithContext(ctx, i).(ContainerMountOutput)
 }
 
-func (i ContainerMountArgs) ToOutput(ctx context.Context) pulumix.Output[ContainerMount] {
-	return pulumix.Output[ContainerMount]{
-		OutputState: i.ToContainerMountOutputWithContext(ctx).OutputState,
-	}
-}
-
 // ContainerMountArrayInput is an input type that accepts ContainerMountArray and ContainerMountArrayOutput values.
 // You can construct a concrete instance of `ContainerMountArrayInput` via:
 //
@@ -918,12 +791,6 @@ func (i ContainerMountArray) ToContainerMountArrayOutputWithContext(ctx context.
 	return pulumi.ToOutputWithContext(ctx, i).(ContainerMountArrayOutput)
 }
 
-func (i ContainerMountArray) ToOutput(ctx context.Context) pulumix.Output[[]ContainerMount] {
-	return pulumix.Output[[]ContainerMount]{
-		OutputState: i.ToContainerMountArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ContainerMountOutput struct{ *pulumi.OutputState }
 
 func (ContainerMountOutput) ElementType() reflect.Type {
@@ -936,12 +803,6 @@ func (o ContainerMountOutput) ToContainerMountOutput() ContainerMountOutput {
 
 func (o ContainerMountOutput) ToContainerMountOutputWithContext(ctx context.Context) ContainerMountOutput {
 	return o
-}
-
-func (o ContainerMountOutput) ToOutput(ctx context.Context) pulumix.Output[ContainerMount] {
-	return pulumix.Output[ContainerMount]{
-		OutputState: o.OutputState,
-	}
 }
 
 // Optional configuration for the bind type.
@@ -993,12 +854,6 @@ func (o ContainerMountArrayOutput) ToContainerMountArrayOutputWithContext(ctx co
 	return o
 }
 
-func (o ContainerMountArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]ContainerMount] {
-	return pulumix.Output[[]ContainerMount]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o ContainerMountArrayOutput) Index(i pulumi.IntInput) ContainerMountOutput {
 	return pulumi.All(o, i).ApplyT(func(vs []interface{}) ContainerMount {
 		return vs[0].([]ContainerMount)[vs[1].(int)]
@@ -1036,12 +891,6 @@ func (i ContainerMountBindOptionsArgs) ToContainerMountBindOptionsOutput() Conta
 
 func (i ContainerMountBindOptionsArgs) ToContainerMountBindOptionsOutputWithContext(ctx context.Context) ContainerMountBindOptionsOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(ContainerMountBindOptionsOutput)
-}
-
-func (i ContainerMountBindOptionsArgs) ToOutput(ctx context.Context) pulumix.Output[ContainerMountBindOptions] {
-	return pulumix.Output[ContainerMountBindOptions]{
-		OutputState: i.ToContainerMountBindOptionsOutputWithContext(ctx).OutputState,
-	}
 }
 
 func (i ContainerMountBindOptionsArgs) ToContainerMountBindOptionsPtrOutput() ContainerMountBindOptionsPtrOutput {
@@ -1085,12 +934,6 @@ func (i *containerMountBindOptionsPtrType) ToContainerMountBindOptionsPtrOutputW
 	return pulumi.ToOutputWithContext(ctx, i).(ContainerMountBindOptionsPtrOutput)
 }
 
-func (i *containerMountBindOptionsPtrType) ToOutput(ctx context.Context) pulumix.Output[*ContainerMountBindOptions] {
-	return pulumix.Output[*ContainerMountBindOptions]{
-		OutputState: i.ToContainerMountBindOptionsPtrOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ContainerMountBindOptionsOutput struct{ *pulumi.OutputState }
 
 func (ContainerMountBindOptionsOutput) ElementType() reflect.Type {
@@ -1115,12 +958,6 @@ func (o ContainerMountBindOptionsOutput) ToContainerMountBindOptionsPtrOutputWit
 	}).(ContainerMountBindOptionsPtrOutput)
 }
 
-func (o ContainerMountBindOptionsOutput) ToOutput(ctx context.Context) pulumix.Output[ContainerMountBindOptions] {
-	return pulumix.Output[ContainerMountBindOptions]{
-		OutputState: o.OutputState,
-	}
-}
-
 // A propagation mode with the value.
 func (o ContainerMountBindOptionsOutput) Propagation() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ContainerMountBindOptions) *string { return v.Propagation }).(pulumi.StringPtrOutput)
@@ -1138,12 +975,6 @@ func (o ContainerMountBindOptionsPtrOutput) ToContainerMountBindOptionsPtrOutput
 
 func (o ContainerMountBindOptionsPtrOutput) ToContainerMountBindOptionsPtrOutputWithContext(ctx context.Context) ContainerMountBindOptionsPtrOutput {
 	return o
-}
-
-func (o ContainerMountBindOptionsPtrOutput) ToOutput(ctx context.Context) pulumix.Output[*ContainerMountBindOptions] {
-	return pulumix.Output[*ContainerMountBindOptions]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ContainerMountBindOptionsPtrOutput) Elem() ContainerMountBindOptionsOutput {
@@ -1203,12 +1034,6 @@ func (i ContainerMountTmpfsOptionsArgs) ToContainerMountTmpfsOptionsOutputWithCo
 	return pulumi.ToOutputWithContext(ctx, i).(ContainerMountTmpfsOptionsOutput)
 }
 
-func (i ContainerMountTmpfsOptionsArgs) ToOutput(ctx context.Context) pulumix.Output[ContainerMountTmpfsOptions] {
-	return pulumix.Output[ContainerMountTmpfsOptions]{
-		OutputState: i.ToContainerMountTmpfsOptionsOutputWithContext(ctx).OutputState,
-	}
-}
-
 func (i ContainerMountTmpfsOptionsArgs) ToContainerMountTmpfsOptionsPtrOutput() ContainerMountTmpfsOptionsPtrOutput {
 	return i.ToContainerMountTmpfsOptionsPtrOutputWithContext(context.Background())
 }
@@ -1250,12 +1075,6 @@ func (i *containerMountTmpfsOptionsPtrType) ToContainerMountTmpfsOptionsPtrOutpu
 	return pulumi.ToOutputWithContext(ctx, i).(ContainerMountTmpfsOptionsPtrOutput)
 }
 
-func (i *containerMountTmpfsOptionsPtrType) ToOutput(ctx context.Context) pulumix.Output[*ContainerMountTmpfsOptions] {
-	return pulumix.Output[*ContainerMountTmpfsOptions]{
-		OutputState: i.ToContainerMountTmpfsOptionsPtrOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ContainerMountTmpfsOptionsOutput struct{ *pulumi.OutputState }
 
 func (ContainerMountTmpfsOptionsOutput) ElementType() reflect.Type {
@@ -1280,12 +1099,6 @@ func (o ContainerMountTmpfsOptionsOutput) ToContainerMountTmpfsOptionsPtrOutputW
 	}).(ContainerMountTmpfsOptionsPtrOutput)
 }
 
-func (o ContainerMountTmpfsOptionsOutput) ToOutput(ctx context.Context) pulumix.Output[ContainerMountTmpfsOptions] {
-	return pulumix.Output[ContainerMountTmpfsOptions]{
-		OutputState: o.OutputState,
-	}
-}
-
 // The permission mode for the tmpfs mount in an integer.
 func (o ContainerMountTmpfsOptionsOutput) Mode() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v ContainerMountTmpfsOptions) *int { return v.Mode }).(pulumi.IntPtrOutput)
@@ -1308,12 +1121,6 @@ func (o ContainerMountTmpfsOptionsPtrOutput) ToContainerMountTmpfsOptionsPtrOutp
 
 func (o ContainerMountTmpfsOptionsPtrOutput) ToContainerMountTmpfsOptionsPtrOutputWithContext(ctx context.Context) ContainerMountTmpfsOptionsPtrOutput {
 	return o
-}
-
-func (o ContainerMountTmpfsOptionsPtrOutput) ToOutput(ctx context.Context) pulumix.Output[*ContainerMountTmpfsOptions] {
-	return pulumix.Output[*ContainerMountTmpfsOptions]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ContainerMountTmpfsOptionsPtrOutput) Elem() ContainerMountTmpfsOptionsOutput {
@@ -1391,12 +1198,6 @@ func (i ContainerMountVolumeOptionsArgs) ToContainerMountVolumeOptionsOutputWith
 	return pulumi.ToOutputWithContext(ctx, i).(ContainerMountVolumeOptionsOutput)
 }
 
-func (i ContainerMountVolumeOptionsArgs) ToOutput(ctx context.Context) pulumix.Output[ContainerMountVolumeOptions] {
-	return pulumix.Output[ContainerMountVolumeOptions]{
-		OutputState: i.ToContainerMountVolumeOptionsOutputWithContext(ctx).OutputState,
-	}
-}
-
 func (i ContainerMountVolumeOptionsArgs) ToContainerMountVolumeOptionsPtrOutput() ContainerMountVolumeOptionsPtrOutput {
 	return i.ToContainerMountVolumeOptionsPtrOutputWithContext(context.Background())
 }
@@ -1438,12 +1239,6 @@ func (i *containerMountVolumeOptionsPtrType) ToContainerMountVolumeOptionsPtrOut
 	return pulumi.ToOutputWithContext(ctx, i).(ContainerMountVolumeOptionsPtrOutput)
 }
 
-func (i *containerMountVolumeOptionsPtrType) ToOutput(ctx context.Context) pulumix.Output[*ContainerMountVolumeOptions] {
-	return pulumix.Output[*ContainerMountVolumeOptions]{
-		OutputState: i.ToContainerMountVolumeOptionsPtrOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ContainerMountVolumeOptionsOutput struct{ *pulumi.OutputState }
 
 func (ContainerMountVolumeOptionsOutput) ElementType() reflect.Type {
@@ -1466,12 +1261,6 @@ func (o ContainerMountVolumeOptionsOutput) ToContainerMountVolumeOptionsPtrOutpu
 	return o.ApplyTWithContext(ctx, func(_ context.Context, v ContainerMountVolumeOptions) *ContainerMountVolumeOptions {
 		return &v
 	}).(ContainerMountVolumeOptionsPtrOutput)
-}
-
-func (o ContainerMountVolumeOptionsOutput) ToOutput(ctx context.Context) pulumix.Output[ContainerMountVolumeOptions] {
-	return pulumix.Output[ContainerMountVolumeOptions]{
-		OutputState: o.OutputState,
-	}
 }
 
 // Name of the driver to use to create the volume.
@@ -1506,12 +1295,6 @@ func (o ContainerMountVolumeOptionsPtrOutput) ToContainerMountVolumeOptionsPtrOu
 
 func (o ContainerMountVolumeOptionsPtrOutput) ToContainerMountVolumeOptionsPtrOutputWithContext(ctx context.Context) ContainerMountVolumeOptionsPtrOutput {
 	return o
-}
-
-func (o ContainerMountVolumeOptionsPtrOutput) ToOutput(ctx context.Context) pulumix.Output[*ContainerMountVolumeOptions] {
-	return pulumix.Output[*ContainerMountVolumeOptions]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ContainerMountVolumeOptionsPtrOutput) Elem() ContainerMountVolumeOptionsOutput {
@@ -1601,12 +1384,6 @@ func (i ContainerMountVolumeOptionsLabelArgs) ToContainerMountVolumeOptionsLabel
 	return pulumi.ToOutputWithContext(ctx, i).(ContainerMountVolumeOptionsLabelOutput)
 }
 
-func (i ContainerMountVolumeOptionsLabelArgs) ToOutput(ctx context.Context) pulumix.Output[ContainerMountVolumeOptionsLabel] {
-	return pulumix.Output[ContainerMountVolumeOptionsLabel]{
-		OutputState: i.ToContainerMountVolumeOptionsLabelOutputWithContext(ctx).OutputState,
-	}
-}
-
 // ContainerMountVolumeOptionsLabelArrayInput is an input type that accepts ContainerMountVolumeOptionsLabelArray and ContainerMountVolumeOptionsLabelArrayOutput values.
 // You can construct a concrete instance of `ContainerMountVolumeOptionsLabelArrayInput` via:
 //
@@ -1632,12 +1409,6 @@ func (i ContainerMountVolumeOptionsLabelArray) ToContainerMountVolumeOptionsLabe
 	return pulumi.ToOutputWithContext(ctx, i).(ContainerMountVolumeOptionsLabelArrayOutput)
 }
 
-func (i ContainerMountVolumeOptionsLabelArray) ToOutput(ctx context.Context) pulumix.Output[[]ContainerMountVolumeOptionsLabel] {
-	return pulumix.Output[[]ContainerMountVolumeOptionsLabel]{
-		OutputState: i.ToContainerMountVolumeOptionsLabelArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ContainerMountVolumeOptionsLabelOutput struct{ *pulumi.OutputState }
 
 func (ContainerMountVolumeOptionsLabelOutput) ElementType() reflect.Type {
@@ -1650,12 +1421,6 @@ func (o ContainerMountVolumeOptionsLabelOutput) ToContainerMountVolumeOptionsLab
 
 func (o ContainerMountVolumeOptionsLabelOutput) ToContainerMountVolumeOptionsLabelOutputWithContext(ctx context.Context) ContainerMountVolumeOptionsLabelOutput {
 	return o
-}
-
-func (o ContainerMountVolumeOptionsLabelOutput) ToOutput(ctx context.Context) pulumix.Output[ContainerMountVolumeOptionsLabel] {
-	return pulumix.Output[ContainerMountVolumeOptionsLabel]{
-		OutputState: o.OutputState,
-	}
 }
 
 // Name of the label
@@ -1680,12 +1445,6 @@ func (o ContainerMountVolumeOptionsLabelArrayOutput) ToContainerMountVolumeOptio
 
 func (o ContainerMountVolumeOptionsLabelArrayOutput) ToContainerMountVolumeOptionsLabelArrayOutputWithContext(ctx context.Context) ContainerMountVolumeOptionsLabelArrayOutput {
 	return o
-}
-
-func (o ContainerMountVolumeOptionsLabelArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]ContainerMountVolumeOptionsLabel] {
-	return pulumix.Output[[]ContainerMountVolumeOptionsLabel]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ContainerMountVolumeOptionsLabelArrayOutput) Index(i pulumi.IntInput) ContainerMountVolumeOptionsLabelOutput {
@@ -1739,12 +1498,6 @@ func (i ContainerNetworkDataArgs) ToContainerNetworkDataOutputWithContext(ctx co
 	return pulumi.ToOutputWithContext(ctx, i).(ContainerNetworkDataOutput)
 }
 
-func (i ContainerNetworkDataArgs) ToOutput(ctx context.Context) pulumix.Output[ContainerNetworkData] {
-	return pulumix.Output[ContainerNetworkData]{
-		OutputState: i.ToContainerNetworkDataOutputWithContext(ctx).OutputState,
-	}
-}
-
 // ContainerNetworkDataArrayInput is an input type that accepts ContainerNetworkDataArray and ContainerNetworkDataArrayOutput values.
 // You can construct a concrete instance of `ContainerNetworkDataArrayInput` via:
 //
@@ -1770,12 +1523,6 @@ func (i ContainerNetworkDataArray) ToContainerNetworkDataArrayOutputWithContext(
 	return pulumi.ToOutputWithContext(ctx, i).(ContainerNetworkDataArrayOutput)
 }
 
-func (i ContainerNetworkDataArray) ToOutput(ctx context.Context) pulumix.Output[[]ContainerNetworkData] {
-	return pulumix.Output[[]ContainerNetworkData]{
-		OutputState: i.ToContainerNetworkDataArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ContainerNetworkDataOutput struct{ *pulumi.OutputState }
 
 func (ContainerNetworkDataOutput) ElementType() reflect.Type {
@@ -1788,12 +1535,6 @@ func (o ContainerNetworkDataOutput) ToContainerNetworkDataOutput() ContainerNetw
 
 func (o ContainerNetworkDataOutput) ToContainerNetworkDataOutputWithContext(ctx context.Context) ContainerNetworkDataOutput {
 	return o
-}
-
-func (o ContainerNetworkDataOutput) ToOutput(ctx context.Context) pulumix.Output[ContainerNetworkData] {
-	return pulumix.Output[ContainerNetworkData]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ContainerNetworkDataOutput) Gateway() pulumi.StringPtrOutput {
@@ -1840,12 +1581,6 @@ func (o ContainerNetworkDataArrayOutput) ToContainerNetworkDataArrayOutput() Con
 
 func (o ContainerNetworkDataArrayOutput) ToContainerNetworkDataArrayOutputWithContext(ctx context.Context) ContainerNetworkDataArrayOutput {
 	return o
-}
-
-func (o ContainerNetworkDataArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]ContainerNetworkData] {
-	return pulumix.Output[[]ContainerNetworkData]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ContainerNetworkDataArrayOutput) Index(i pulumi.IntInput) ContainerNetworkDataOutput {
@@ -1899,12 +1634,6 @@ func (i ContainerNetworksAdvancedArgs) ToContainerNetworksAdvancedOutputWithCont
 	return pulumi.ToOutputWithContext(ctx, i).(ContainerNetworksAdvancedOutput)
 }
 
-func (i ContainerNetworksAdvancedArgs) ToOutput(ctx context.Context) pulumix.Output[ContainerNetworksAdvanced] {
-	return pulumix.Output[ContainerNetworksAdvanced]{
-		OutputState: i.ToContainerNetworksAdvancedOutputWithContext(ctx).OutputState,
-	}
-}
-
 // ContainerNetworksAdvancedArrayInput is an input type that accepts ContainerNetworksAdvancedArray and ContainerNetworksAdvancedArrayOutput values.
 // You can construct a concrete instance of `ContainerNetworksAdvancedArrayInput` via:
 //
@@ -1930,12 +1659,6 @@ func (i ContainerNetworksAdvancedArray) ToContainerNetworksAdvancedArrayOutputWi
 	return pulumi.ToOutputWithContext(ctx, i).(ContainerNetworksAdvancedArrayOutput)
 }
 
-func (i ContainerNetworksAdvancedArray) ToOutput(ctx context.Context) pulumix.Output[[]ContainerNetworksAdvanced] {
-	return pulumix.Output[[]ContainerNetworksAdvanced]{
-		OutputState: i.ToContainerNetworksAdvancedArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ContainerNetworksAdvancedOutput struct{ *pulumi.OutputState }
 
 func (ContainerNetworksAdvancedOutput) ElementType() reflect.Type {
@@ -1948,12 +1671,6 @@ func (o ContainerNetworksAdvancedOutput) ToContainerNetworksAdvancedOutput() Con
 
 func (o ContainerNetworksAdvancedOutput) ToContainerNetworksAdvancedOutputWithContext(ctx context.Context) ContainerNetworksAdvancedOutput {
 	return o
-}
-
-func (o ContainerNetworksAdvancedOutput) ToOutput(ctx context.Context) pulumix.Output[ContainerNetworksAdvanced] {
-	return pulumix.Output[ContainerNetworksAdvanced]{
-		OutputState: o.OutputState,
-	}
 }
 
 // The network aliases of the container in the specific network.
@@ -1988,12 +1705,6 @@ func (o ContainerNetworksAdvancedArrayOutput) ToContainerNetworksAdvancedArrayOu
 
 func (o ContainerNetworksAdvancedArrayOutput) ToContainerNetworksAdvancedArrayOutputWithContext(ctx context.Context) ContainerNetworksAdvancedArrayOutput {
 	return o
-}
-
-func (o ContainerNetworksAdvancedArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]ContainerNetworksAdvanced] {
-	return pulumix.Output[[]ContainerNetworksAdvanced]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ContainerNetworksAdvancedArrayOutput) Index(i pulumi.IntInput) ContainerNetworksAdvancedOutput {
@@ -2047,12 +1758,6 @@ func (i ContainerPortArgs) ToContainerPortOutputWithContext(ctx context.Context)
 	return pulumi.ToOutputWithContext(ctx, i).(ContainerPortOutput)
 }
 
-func (i ContainerPortArgs) ToOutput(ctx context.Context) pulumix.Output[ContainerPort] {
-	return pulumix.Output[ContainerPort]{
-		OutputState: i.ToContainerPortOutputWithContext(ctx).OutputState,
-	}
-}
-
 // ContainerPortArrayInput is an input type that accepts ContainerPortArray and ContainerPortArrayOutput values.
 // You can construct a concrete instance of `ContainerPortArrayInput` via:
 //
@@ -2078,12 +1783,6 @@ func (i ContainerPortArray) ToContainerPortArrayOutputWithContext(ctx context.Co
 	return pulumi.ToOutputWithContext(ctx, i).(ContainerPortArrayOutput)
 }
 
-func (i ContainerPortArray) ToOutput(ctx context.Context) pulumix.Output[[]ContainerPort] {
-	return pulumix.Output[[]ContainerPort]{
-		OutputState: i.ToContainerPortArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ContainerPortOutput struct{ *pulumi.OutputState }
 
 func (ContainerPortOutput) ElementType() reflect.Type {
@@ -2096,12 +1795,6 @@ func (o ContainerPortOutput) ToContainerPortOutput() ContainerPortOutput {
 
 func (o ContainerPortOutput) ToContainerPortOutputWithContext(ctx context.Context) ContainerPortOutput {
 	return o
-}
-
-func (o ContainerPortOutput) ToOutput(ctx context.Context) pulumix.Output[ContainerPort] {
-	return pulumix.Output[ContainerPort]{
-		OutputState: o.OutputState,
-	}
 }
 
 // Port exposed out of the container. If not given a free random port `>= 32768` will be used.
@@ -2136,12 +1829,6 @@ func (o ContainerPortArrayOutput) ToContainerPortArrayOutput() ContainerPortArra
 
 func (o ContainerPortArrayOutput) ToContainerPortArrayOutputWithContext(ctx context.Context) ContainerPortArrayOutput {
 	return o
-}
-
-func (o ContainerPortArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]ContainerPort] {
-	return pulumix.Output[[]ContainerPort]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ContainerPortArrayOutput) Index(i pulumi.IntInput) ContainerPortOutput {
@@ -2191,12 +1878,6 @@ func (i ContainerUlimitArgs) ToContainerUlimitOutputWithContext(ctx context.Cont
 	return pulumi.ToOutputWithContext(ctx, i).(ContainerUlimitOutput)
 }
 
-func (i ContainerUlimitArgs) ToOutput(ctx context.Context) pulumix.Output[ContainerUlimit] {
-	return pulumix.Output[ContainerUlimit]{
-		OutputState: i.ToContainerUlimitOutputWithContext(ctx).OutputState,
-	}
-}
-
 // ContainerUlimitArrayInput is an input type that accepts ContainerUlimitArray and ContainerUlimitArrayOutput values.
 // You can construct a concrete instance of `ContainerUlimitArrayInput` via:
 //
@@ -2222,12 +1903,6 @@ func (i ContainerUlimitArray) ToContainerUlimitArrayOutputWithContext(ctx contex
 	return pulumi.ToOutputWithContext(ctx, i).(ContainerUlimitArrayOutput)
 }
 
-func (i ContainerUlimitArray) ToOutput(ctx context.Context) pulumix.Output[[]ContainerUlimit] {
-	return pulumix.Output[[]ContainerUlimit]{
-		OutputState: i.ToContainerUlimitArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ContainerUlimitOutput struct{ *pulumi.OutputState }
 
 func (ContainerUlimitOutput) ElementType() reflect.Type {
@@ -2240,12 +1915,6 @@ func (o ContainerUlimitOutput) ToContainerUlimitOutput() ContainerUlimitOutput {
 
 func (o ContainerUlimitOutput) ToContainerUlimitOutputWithContext(ctx context.Context) ContainerUlimitOutput {
 	return o
-}
-
-func (o ContainerUlimitOutput) ToOutput(ctx context.Context) pulumix.Output[ContainerUlimit] {
-	return pulumix.Output[ContainerUlimit]{
-		OutputState: o.OutputState,
-	}
 }
 
 // The hard limit
@@ -2275,12 +1944,6 @@ func (o ContainerUlimitArrayOutput) ToContainerUlimitArrayOutput() ContainerUlim
 
 func (o ContainerUlimitArrayOutput) ToContainerUlimitArrayOutputWithContext(ctx context.Context) ContainerUlimitArrayOutput {
 	return o
-}
-
-func (o ContainerUlimitArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]ContainerUlimit] {
-	return pulumix.Output[[]ContainerUlimit]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ContainerUlimitArrayOutput) Index(i pulumi.IntInput) ContainerUlimitOutput {
@@ -2340,12 +2003,6 @@ func (i ContainerUploadArgs) ToContainerUploadOutputWithContext(ctx context.Cont
 	return pulumi.ToOutputWithContext(ctx, i).(ContainerUploadOutput)
 }
 
-func (i ContainerUploadArgs) ToOutput(ctx context.Context) pulumix.Output[ContainerUpload] {
-	return pulumix.Output[ContainerUpload]{
-		OutputState: i.ToContainerUploadOutputWithContext(ctx).OutputState,
-	}
-}
-
 // ContainerUploadArrayInput is an input type that accepts ContainerUploadArray and ContainerUploadArrayOutput values.
 // You can construct a concrete instance of `ContainerUploadArrayInput` via:
 //
@@ -2371,12 +2028,6 @@ func (i ContainerUploadArray) ToContainerUploadArrayOutputWithContext(ctx contex
 	return pulumi.ToOutputWithContext(ctx, i).(ContainerUploadArrayOutput)
 }
 
-func (i ContainerUploadArray) ToOutput(ctx context.Context) pulumix.Output[[]ContainerUpload] {
-	return pulumix.Output[[]ContainerUpload]{
-		OutputState: i.ToContainerUploadArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ContainerUploadOutput struct{ *pulumi.OutputState }
 
 func (ContainerUploadOutput) ElementType() reflect.Type {
@@ -2389,12 +2040,6 @@ func (o ContainerUploadOutput) ToContainerUploadOutput() ContainerUploadOutput {
 
 func (o ContainerUploadOutput) ToContainerUploadOutputWithContext(ctx context.Context) ContainerUploadOutput {
 	return o
-}
-
-func (o ContainerUploadOutput) ToOutput(ctx context.Context) pulumix.Output[ContainerUpload] {
-	return pulumix.Output[ContainerUpload]{
-		OutputState: o.OutputState,
-	}
 }
 
 // Literal string value to use as the object content, which will be uploaded as UTF-8-encoded text. Conflicts with `contentBase64` & `source`
@@ -2438,12 +2083,6 @@ func (o ContainerUploadArrayOutput) ToContainerUploadArrayOutput() ContainerUplo
 
 func (o ContainerUploadArrayOutput) ToContainerUploadArrayOutputWithContext(ctx context.Context) ContainerUploadArrayOutput {
 	return o
-}
-
-func (o ContainerUploadArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]ContainerUpload] {
-	return pulumix.Output[[]ContainerUpload]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ContainerUploadArrayOutput) Index(i pulumi.IntInput) ContainerUploadOutput {
@@ -2501,12 +2140,6 @@ func (i ContainerVolumeArgs) ToContainerVolumeOutputWithContext(ctx context.Cont
 	return pulumi.ToOutputWithContext(ctx, i).(ContainerVolumeOutput)
 }
 
-func (i ContainerVolumeArgs) ToOutput(ctx context.Context) pulumix.Output[ContainerVolume] {
-	return pulumix.Output[ContainerVolume]{
-		OutputState: i.ToContainerVolumeOutputWithContext(ctx).OutputState,
-	}
-}
-
 // ContainerVolumeArrayInput is an input type that accepts ContainerVolumeArray and ContainerVolumeArrayOutput values.
 // You can construct a concrete instance of `ContainerVolumeArrayInput` via:
 //
@@ -2532,12 +2165,6 @@ func (i ContainerVolumeArray) ToContainerVolumeArrayOutputWithContext(ctx contex
 	return pulumi.ToOutputWithContext(ctx, i).(ContainerVolumeArrayOutput)
 }
 
-func (i ContainerVolumeArray) ToOutput(ctx context.Context) pulumix.Output[[]ContainerVolume] {
-	return pulumix.Output[[]ContainerVolume]{
-		OutputState: i.ToContainerVolumeArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ContainerVolumeOutput struct{ *pulumi.OutputState }
 
 func (ContainerVolumeOutput) ElementType() reflect.Type {
@@ -2550,12 +2177,6 @@ func (o ContainerVolumeOutput) ToContainerVolumeOutput() ContainerVolumeOutput {
 
 func (o ContainerVolumeOutput) ToContainerVolumeOutputWithContext(ctx context.Context) ContainerVolumeOutput {
 	return o
-}
-
-func (o ContainerVolumeOutput) ToOutput(ctx context.Context) pulumix.Output[ContainerVolume] {
-	return pulumix.Output[ContainerVolume]{
-		OutputState: o.OutputState,
-	}
 }
 
 // The path in the container where the volume will be mounted.
@@ -2595,12 +2216,6 @@ func (o ContainerVolumeArrayOutput) ToContainerVolumeArrayOutput() ContainerVolu
 
 func (o ContainerVolumeArrayOutput) ToContainerVolumeArrayOutputWithContext(ctx context.Context) ContainerVolumeArrayOutput {
 	return o
-}
-
-func (o ContainerVolumeArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]ContainerVolume] {
-	return pulumix.Output[[]ContainerVolume]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ContainerVolumeArrayOutput) Index(i pulumi.IntInput) ContainerVolumeOutput {
@@ -2654,12 +2269,6 @@ func (i NetworkIpamConfigArgs) ToNetworkIpamConfigOutputWithContext(ctx context.
 	return pulumi.ToOutputWithContext(ctx, i).(NetworkIpamConfigOutput)
 }
 
-func (i NetworkIpamConfigArgs) ToOutput(ctx context.Context) pulumix.Output[NetworkIpamConfig] {
-	return pulumix.Output[NetworkIpamConfig]{
-		OutputState: i.ToNetworkIpamConfigOutputWithContext(ctx).OutputState,
-	}
-}
-
 // NetworkIpamConfigArrayInput is an input type that accepts NetworkIpamConfigArray and NetworkIpamConfigArrayOutput values.
 // You can construct a concrete instance of `NetworkIpamConfigArrayInput` via:
 //
@@ -2685,12 +2294,6 @@ func (i NetworkIpamConfigArray) ToNetworkIpamConfigArrayOutputWithContext(ctx co
 	return pulumi.ToOutputWithContext(ctx, i).(NetworkIpamConfigArrayOutput)
 }
 
-func (i NetworkIpamConfigArray) ToOutput(ctx context.Context) pulumix.Output[[]NetworkIpamConfig] {
-	return pulumix.Output[[]NetworkIpamConfig]{
-		OutputState: i.ToNetworkIpamConfigArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type NetworkIpamConfigOutput struct{ *pulumi.OutputState }
 
 func (NetworkIpamConfigOutput) ElementType() reflect.Type {
@@ -2703,12 +2306,6 @@ func (o NetworkIpamConfigOutput) ToNetworkIpamConfigOutput() NetworkIpamConfigOu
 
 func (o NetworkIpamConfigOutput) ToNetworkIpamConfigOutputWithContext(ctx context.Context) NetworkIpamConfigOutput {
 	return o
-}
-
-func (o NetworkIpamConfigOutput) ToOutput(ctx context.Context) pulumix.Output[NetworkIpamConfig] {
-	return pulumix.Output[NetworkIpamConfig]{
-		OutputState: o.OutputState,
-	}
 }
 
 // Auxiliary IPv4 or IPv6 addresses used by Network driver
@@ -2743,12 +2340,6 @@ func (o NetworkIpamConfigArrayOutput) ToNetworkIpamConfigArrayOutput() NetworkIp
 
 func (o NetworkIpamConfigArrayOutput) ToNetworkIpamConfigArrayOutputWithContext(ctx context.Context) NetworkIpamConfigArrayOutput {
 	return o
-}
-
-func (o NetworkIpamConfigArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]NetworkIpamConfig] {
-	return pulumix.Output[[]NetworkIpamConfig]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o NetworkIpamConfigArrayOutput) Index(i pulumi.IntInput) NetworkIpamConfigOutput {
@@ -2794,12 +2385,6 @@ func (i NetworkLabelArgs) ToNetworkLabelOutputWithContext(ctx context.Context) N
 	return pulumi.ToOutputWithContext(ctx, i).(NetworkLabelOutput)
 }
 
-func (i NetworkLabelArgs) ToOutput(ctx context.Context) pulumix.Output[NetworkLabel] {
-	return pulumix.Output[NetworkLabel]{
-		OutputState: i.ToNetworkLabelOutputWithContext(ctx).OutputState,
-	}
-}
-
 // NetworkLabelArrayInput is an input type that accepts NetworkLabelArray and NetworkLabelArrayOutput values.
 // You can construct a concrete instance of `NetworkLabelArrayInput` via:
 //
@@ -2825,12 +2410,6 @@ func (i NetworkLabelArray) ToNetworkLabelArrayOutputWithContext(ctx context.Cont
 	return pulumi.ToOutputWithContext(ctx, i).(NetworkLabelArrayOutput)
 }
 
-func (i NetworkLabelArray) ToOutput(ctx context.Context) pulumix.Output[[]NetworkLabel] {
-	return pulumix.Output[[]NetworkLabel]{
-		OutputState: i.ToNetworkLabelArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type NetworkLabelOutput struct{ *pulumi.OutputState }
 
 func (NetworkLabelOutput) ElementType() reflect.Type {
@@ -2843,12 +2422,6 @@ func (o NetworkLabelOutput) ToNetworkLabelOutput() NetworkLabelOutput {
 
 func (o NetworkLabelOutput) ToNetworkLabelOutputWithContext(ctx context.Context) NetworkLabelOutput {
 	return o
-}
-
-func (o NetworkLabelOutput) ToOutput(ctx context.Context) pulumix.Output[NetworkLabel] {
-	return pulumix.Output[NetworkLabel]{
-		OutputState: o.OutputState,
-	}
 }
 
 // Name of the label
@@ -2873,12 +2446,6 @@ func (o NetworkLabelArrayOutput) ToNetworkLabelArrayOutput() NetworkLabelArrayOu
 
 func (o NetworkLabelArrayOutput) ToNetworkLabelArrayOutputWithContext(ctx context.Context) NetworkLabelArrayOutput {
 	return o
-}
-
-func (o NetworkLabelArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]NetworkLabel] {
-	return pulumix.Output[[]NetworkLabel]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o NetworkLabelArrayOutput) Index(i pulumi.IntInput) NetworkLabelOutput {
@@ -2924,12 +2491,6 @@ func (i PluginGrantPermissionArgs) ToPluginGrantPermissionOutputWithContext(ctx 
 	return pulumi.ToOutputWithContext(ctx, i).(PluginGrantPermissionOutput)
 }
 
-func (i PluginGrantPermissionArgs) ToOutput(ctx context.Context) pulumix.Output[PluginGrantPermission] {
-	return pulumix.Output[PluginGrantPermission]{
-		OutputState: i.ToPluginGrantPermissionOutputWithContext(ctx).OutputState,
-	}
-}
-
 // PluginGrantPermissionArrayInput is an input type that accepts PluginGrantPermissionArray and PluginGrantPermissionArrayOutput values.
 // You can construct a concrete instance of `PluginGrantPermissionArrayInput` via:
 //
@@ -2955,12 +2516,6 @@ func (i PluginGrantPermissionArray) ToPluginGrantPermissionArrayOutputWithContex
 	return pulumi.ToOutputWithContext(ctx, i).(PluginGrantPermissionArrayOutput)
 }
 
-func (i PluginGrantPermissionArray) ToOutput(ctx context.Context) pulumix.Output[[]PluginGrantPermission] {
-	return pulumix.Output[[]PluginGrantPermission]{
-		OutputState: i.ToPluginGrantPermissionArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type PluginGrantPermissionOutput struct{ *pulumi.OutputState }
 
 func (PluginGrantPermissionOutput) ElementType() reflect.Type {
@@ -2973,12 +2528,6 @@ func (o PluginGrantPermissionOutput) ToPluginGrantPermissionOutput() PluginGrant
 
 func (o PluginGrantPermissionOutput) ToPluginGrantPermissionOutputWithContext(ctx context.Context) PluginGrantPermissionOutput {
 	return o
-}
-
-func (o PluginGrantPermissionOutput) ToOutput(ctx context.Context) pulumix.Output[PluginGrantPermission] {
-	return pulumix.Output[PluginGrantPermission]{
-		OutputState: o.OutputState,
-	}
 }
 
 // The name of the permission
@@ -3003,12 +2552,6 @@ func (o PluginGrantPermissionArrayOutput) ToPluginGrantPermissionArrayOutput() P
 
 func (o PluginGrantPermissionArrayOutput) ToPluginGrantPermissionArrayOutputWithContext(ctx context.Context) PluginGrantPermissionArrayOutput {
 	return o
-}
-
-func (o PluginGrantPermissionArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]PluginGrantPermission] {
-	return pulumix.Output[[]PluginGrantPermission]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o PluginGrantPermissionArrayOutput) Index(i pulumi.IntInput) PluginGrantPermissionOutput {
@@ -3058,12 +2601,6 @@ func (i ProviderRegistryAuthArgs) ToProviderRegistryAuthOutputWithContext(ctx co
 	return pulumi.ToOutputWithContext(ctx, i).(ProviderRegistryAuthOutput)
 }
 
-func (i ProviderRegistryAuthArgs) ToOutput(ctx context.Context) pulumix.Output[ProviderRegistryAuth] {
-	return pulumix.Output[ProviderRegistryAuth]{
-		OutputState: i.ToProviderRegistryAuthOutputWithContext(ctx).OutputState,
-	}
-}
-
 // ProviderRegistryAuthArrayInput is an input type that accepts ProviderRegistryAuthArray and ProviderRegistryAuthArrayOutput values.
 // You can construct a concrete instance of `ProviderRegistryAuthArrayInput` via:
 //
@@ -3089,12 +2626,6 @@ func (i ProviderRegistryAuthArray) ToProviderRegistryAuthArrayOutputWithContext(
 	return pulumi.ToOutputWithContext(ctx, i).(ProviderRegistryAuthArrayOutput)
 }
 
-func (i ProviderRegistryAuthArray) ToOutput(ctx context.Context) pulumix.Output[[]ProviderRegistryAuth] {
-	return pulumix.Output[[]ProviderRegistryAuth]{
-		OutputState: i.ToProviderRegistryAuthArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ProviderRegistryAuthOutput struct{ *pulumi.OutputState }
 
 func (ProviderRegistryAuthOutput) ElementType() reflect.Type {
@@ -3107,12 +2638,6 @@ func (o ProviderRegistryAuthOutput) ToProviderRegistryAuthOutput() ProviderRegis
 
 func (o ProviderRegistryAuthOutput) ToProviderRegistryAuthOutputWithContext(ctx context.Context) ProviderRegistryAuthOutput {
 	return o
-}
-
-func (o ProviderRegistryAuthOutput) ToOutput(ctx context.Context) pulumix.Output[ProviderRegistryAuth] {
-	return pulumix.Output[ProviderRegistryAuth]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ProviderRegistryAuthOutput) Address() pulumi.StringOutput {
@@ -3151,12 +2676,6 @@ func (o ProviderRegistryAuthArrayOutput) ToProviderRegistryAuthArrayOutput() Pro
 
 func (o ProviderRegistryAuthArrayOutput) ToProviderRegistryAuthArrayOutputWithContext(ctx context.Context) ProviderRegistryAuthArrayOutput {
 	return o
-}
-
-func (o ProviderRegistryAuthArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]ProviderRegistryAuth] {
-	return pulumix.Output[[]ProviderRegistryAuth]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ProviderRegistryAuthArrayOutput) Index(i pulumi.IntInput) ProviderRegistryAuthOutput {
@@ -3334,12 +2853,6 @@ func (i RemoteImageBuildArgs) ToRemoteImageBuildOutputWithContext(ctx context.Co
 	return pulumi.ToOutputWithContext(ctx, i).(RemoteImageBuildOutput)
 }
 
-func (i RemoteImageBuildArgs) ToOutput(ctx context.Context) pulumix.Output[RemoteImageBuild] {
-	return pulumix.Output[RemoteImageBuild]{
-		OutputState: i.ToRemoteImageBuildOutputWithContext(ctx).OutputState,
-	}
-}
-
 func (i RemoteImageBuildArgs) ToRemoteImageBuildPtrOutput() RemoteImageBuildPtrOutput {
 	return i.ToRemoteImageBuildPtrOutputWithContext(context.Background())
 }
@@ -3381,12 +2894,6 @@ func (i *remoteImageBuildPtrType) ToRemoteImageBuildPtrOutputWithContext(ctx con
 	return pulumi.ToOutputWithContext(ctx, i).(RemoteImageBuildPtrOutput)
 }
 
-func (i *remoteImageBuildPtrType) ToOutput(ctx context.Context) pulumix.Output[*RemoteImageBuild] {
-	return pulumix.Output[*RemoteImageBuild]{
-		OutputState: i.ToRemoteImageBuildPtrOutputWithContext(ctx).OutputState,
-	}
-}
-
 type RemoteImageBuildOutput struct{ *pulumi.OutputState }
 
 func (RemoteImageBuildOutput) ElementType() reflect.Type {
@@ -3409,12 +2916,6 @@ func (o RemoteImageBuildOutput) ToRemoteImageBuildPtrOutputWithContext(ctx conte
 	return o.ApplyTWithContext(ctx, func(_ context.Context, v RemoteImageBuild) *RemoteImageBuild {
 		return &v
 	}).(RemoteImageBuildPtrOutput)
-}
-
-func (o RemoteImageBuildOutput) ToOutput(ctx context.Context) pulumix.Output[RemoteImageBuild] {
-	return pulumix.Output[RemoteImageBuild]{
-		OutputState: o.OutputState,
-	}
 }
 
 // The configuration for the authentication
@@ -3604,12 +3105,6 @@ func (o RemoteImageBuildPtrOutput) ToRemoteImageBuildPtrOutput() RemoteImageBuil
 
 func (o RemoteImageBuildPtrOutput) ToRemoteImageBuildPtrOutputWithContext(ctx context.Context) RemoteImageBuildPtrOutput {
 	return o
-}
-
-func (o RemoteImageBuildPtrOutput) ToOutput(ctx context.Context) pulumix.Output[*RemoteImageBuild] {
-	return pulumix.Output[*RemoteImageBuild]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o RemoteImageBuildPtrOutput) Elem() RemoteImageBuildOutput {
@@ -4033,12 +3528,6 @@ func (i RemoteImageBuildAuthConfigArgs) ToRemoteImageBuildAuthConfigOutputWithCo
 	return pulumi.ToOutputWithContext(ctx, i).(RemoteImageBuildAuthConfigOutput)
 }
 
-func (i RemoteImageBuildAuthConfigArgs) ToOutput(ctx context.Context) pulumix.Output[RemoteImageBuildAuthConfig] {
-	return pulumix.Output[RemoteImageBuildAuthConfig]{
-		OutputState: i.ToRemoteImageBuildAuthConfigOutputWithContext(ctx).OutputState,
-	}
-}
-
 // RemoteImageBuildAuthConfigArrayInput is an input type that accepts RemoteImageBuildAuthConfigArray and RemoteImageBuildAuthConfigArrayOutput values.
 // You can construct a concrete instance of `RemoteImageBuildAuthConfigArrayInput` via:
 //
@@ -4064,12 +3553,6 @@ func (i RemoteImageBuildAuthConfigArray) ToRemoteImageBuildAuthConfigArrayOutput
 	return pulumi.ToOutputWithContext(ctx, i).(RemoteImageBuildAuthConfigArrayOutput)
 }
 
-func (i RemoteImageBuildAuthConfigArray) ToOutput(ctx context.Context) pulumix.Output[[]RemoteImageBuildAuthConfig] {
-	return pulumix.Output[[]RemoteImageBuildAuthConfig]{
-		OutputState: i.ToRemoteImageBuildAuthConfigArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type RemoteImageBuildAuthConfigOutput struct{ *pulumi.OutputState }
 
 func (RemoteImageBuildAuthConfigOutput) ElementType() reflect.Type {
@@ -4082,12 +3565,6 @@ func (o RemoteImageBuildAuthConfigOutput) ToRemoteImageBuildAuthConfigOutput() R
 
 func (o RemoteImageBuildAuthConfigOutput) ToRemoteImageBuildAuthConfigOutputWithContext(ctx context.Context) RemoteImageBuildAuthConfigOutput {
 	return o
-}
-
-func (o RemoteImageBuildAuthConfigOutput) ToOutput(ctx context.Context) pulumix.Output[RemoteImageBuildAuthConfig] {
-	return pulumix.Output[RemoteImageBuildAuthConfig]{
-		OutputState: o.OutputState,
-	}
 }
 
 // the auth token
@@ -4144,12 +3621,6 @@ func (o RemoteImageBuildAuthConfigArrayOutput) ToRemoteImageBuildAuthConfigArray
 	return o
 }
 
-func (o RemoteImageBuildAuthConfigArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]RemoteImageBuildAuthConfig] {
-	return pulumix.Output[[]RemoteImageBuildAuthConfig]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o RemoteImageBuildAuthConfigArrayOutput) Index(i pulumi.IntInput) RemoteImageBuildAuthConfigOutput {
 	return pulumi.All(o, i).ApplyT(func(vs []interface{}) RemoteImageBuildAuthConfig {
 		return vs[0].([]RemoteImageBuildAuthConfig)[vs[1].(int)]
@@ -4197,12 +3668,6 @@ func (i RemoteImageBuildUlimitArgs) ToRemoteImageBuildUlimitOutputWithContext(ct
 	return pulumi.ToOutputWithContext(ctx, i).(RemoteImageBuildUlimitOutput)
 }
 
-func (i RemoteImageBuildUlimitArgs) ToOutput(ctx context.Context) pulumix.Output[RemoteImageBuildUlimit] {
-	return pulumix.Output[RemoteImageBuildUlimit]{
-		OutputState: i.ToRemoteImageBuildUlimitOutputWithContext(ctx).OutputState,
-	}
-}
-
 // RemoteImageBuildUlimitArrayInput is an input type that accepts RemoteImageBuildUlimitArray and RemoteImageBuildUlimitArrayOutput values.
 // You can construct a concrete instance of `RemoteImageBuildUlimitArrayInput` via:
 //
@@ -4228,12 +3693,6 @@ func (i RemoteImageBuildUlimitArray) ToRemoteImageBuildUlimitArrayOutputWithCont
 	return pulumi.ToOutputWithContext(ctx, i).(RemoteImageBuildUlimitArrayOutput)
 }
 
-func (i RemoteImageBuildUlimitArray) ToOutput(ctx context.Context) pulumix.Output[[]RemoteImageBuildUlimit] {
-	return pulumix.Output[[]RemoteImageBuildUlimit]{
-		OutputState: i.ToRemoteImageBuildUlimitArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type RemoteImageBuildUlimitOutput struct{ *pulumi.OutputState }
 
 func (RemoteImageBuildUlimitOutput) ElementType() reflect.Type {
@@ -4246,12 +3705,6 @@ func (o RemoteImageBuildUlimitOutput) ToRemoteImageBuildUlimitOutput() RemoteIma
 
 func (o RemoteImageBuildUlimitOutput) ToRemoteImageBuildUlimitOutputWithContext(ctx context.Context) RemoteImageBuildUlimitOutput {
 	return o
-}
-
-func (o RemoteImageBuildUlimitOutput) ToOutput(ctx context.Context) pulumix.Output[RemoteImageBuildUlimit] {
-	return pulumix.Output[RemoteImageBuildUlimit]{
-		OutputState: o.OutputState,
-	}
 }
 
 // soft limit
@@ -4281,12 +3734,6 @@ func (o RemoteImageBuildUlimitArrayOutput) ToRemoteImageBuildUlimitArrayOutput()
 
 func (o RemoteImageBuildUlimitArrayOutput) ToRemoteImageBuildUlimitArrayOutputWithContext(ctx context.Context) RemoteImageBuildUlimitArrayOutput {
 	return o
-}
-
-func (o RemoteImageBuildUlimitArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]RemoteImageBuildUlimit] {
-	return pulumix.Output[[]RemoteImageBuildUlimit]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o RemoteImageBuildUlimitArrayOutput) Index(i pulumi.IntInput) RemoteImageBuildUlimitOutput {
@@ -4332,12 +3779,6 @@ func (i SecretLabelArgs) ToSecretLabelOutputWithContext(ctx context.Context) Sec
 	return pulumi.ToOutputWithContext(ctx, i).(SecretLabelOutput)
 }
 
-func (i SecretLabelArgs) ToOutput(ctx context.Context) pulumix.Output[SecretLabel] {
-	return pulumix.Output[SecretLabel]{
-		OutputState: i.ToSecretLabelOutputWithContext(ctx).OutputState,
-	}
-}
-
 // SecretLabelArrayInput is an input type that accepts SecretLabelArray and SecretLabelArrayOutput values.
 // You can construct a concrete instance of `SecretLabelArrayInput` via:
 //
@@ -4363,12 +3804,6 @@ func (i SecretLabelArray) ToSecretLabelArrayOutputWithContext(ctx context.Contex
 	return pulumi.ToOutputWithContext(ctx, i).(SecretLabelArrayOutput)
 }
 
-func (i SecretLabelArray) ToOutput(ctx context.Context) pulumix.Output[[]SecretLabel] {
-	return pulumix.Output[[]SecretLabel]{
-		OutputState: i.ToSecretLabelArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type SecretLabelOutput struct{ *pulumi.OutputState }
 
 func (SecretLabelOutput) ElementType() reflect.Type {
@@ -4381,12 +3816,6 @@ func (o SecretLabelOutput) ToSecretLabelOutput() SecretLabelOutput {
 
 func (o SecretLabelOutput) ToSecretLabelOutputWithContext(ctx context.Context) SecretLabelOutput {
 	return o
-}
-
-func (o SecretLabelOutput) ToOutput(ctx context.Context) pulumix.Output[SecretLabel] {
-	return pulumix.Output[SecretLabel]{
-		OutputState: o.OutputState,
-	}
 }
 
 // Name of the label
@@ -4411,12 +3840,6 @@ func (o SecretLabelArrayOutput) ToSecretLabelArrayOutput() SecretLabelArrayOutpu
 
 func (o SecretLabelArrayOutput) ToSecretLabelArrayOutputWithContext(ctx context.Context) SecretLabelArrayOutput {
 	return o
-}
-
-func (o SecretLabelArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]SecretLabel] {
-	return pulumix.Output[[]SecretLabel]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o SecretLabelArrayOutput) Index(i pulumi.IntInput) SecretLabelOutput {
@@ -4466,12 +3889,6 @@ func (i ServiceAuthArgs) ToServiceAuthOutputWithContext(ctx context.Context) Ser
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceAuthOutput)
 }
 
-func (i ServiceAuthArgs) ToOutput(ctx context.Context) pulumix.Output[ServiceAuth] {
-	return pulumix.Output[ServiceAuth]{
-		OutputState: i.ToServiceAuthOutputWithContext(ctx).OutputState,
-	}
-}
-
 func (i ServiceAuthArgs) ToServiceAuthPtrOutput() ServiceAuthPtrOutput {
 	return i.ToServiceAuthPtrOutputWithContext(context.Background())
 }
@@ -4513,12 +3930,6 @@ func (i *serviceAuthPtrType) ToServiceAuthPtrOutputWithContext(ctx context.Conte
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceAuthPtrOutput)
 }
 
-func (i *serviceAuthPtrType) ToOutput(ctx context.Context) pulumix.Output[*ServiceAuth] {
-	return pulumix.Output[*ServiceAuth]{
-		OutputState: i.ToServiceAuthPtrOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ServiceAuthOutput struct{ *pulumi.OutputState }
 
 func (ServiceAuthOutput) ElementType() reflect.Type {
@@ -4541,12 +3952,6 @@ func (o ServiceAuthOutput) ToServiceAuthPtrOutputWithContext(ctx context.Context
 	return o.ApplyTWithContext(ctx, func(_ context.Context, v ServiceAuth) *ServiceAuth {
 		return &v
 	}).(ServiceAuthPtrOutput)
-}
-
-func (o ServiceAuthOutput) ToOutput(ctx context.Context) pulumix.Output[ServiceAuth] {
-	return pulumix.Output[ServiceAuth]{
-		OutputState: o.OutputState,
-	}
 }
 
 // The password
@@ -4576,12 +3981,6 @@ func (o ServiceAuthPtrOutput) ToServiceAuthPtrOutput() ServiceAuthPtrOutput {
 
 func (o ServiceAuthPtrOutput) ToServiceAuthPtrOutputWithContext(ctx context.Context) ServiceAuthPtrOutput {
 	return o
-}
-
-func (o ServiceAuthPtrOutput) ToOutput(ctx context.Context) pulumix.Output[*ServiceAuth] {
-	return pulumix.Output[*ServiceAuth]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ServiceAuthPtrOutput) Elem() ServiceAuthOutput {
@@ -4661,12 +4060,6 @@ func (i ServiceConvergeConfigArgs) ToServiceConvergeConfigOutputWithContext(ctx 
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceConvergeConfigOutput)
 }
 
-func (i ServiceConvergeConfigArgs) ToOutput(ctx context.Context) pulumix.Output[ServiceConvergeConfig] {
-	return pulumix.Output[ServiceConvergeConfig]{
-		OutputState: i.ToServiceConvergeConfigOutputWithContext(ctx).OutputState,
-	}
-}
-
 func (i ServiceConvergeConfigArgs) ToServiceConvergeConfigPtrOutput() ServiceConvergeConfigPtrOutput {
 	return i.ToServiceConvergeConfigPtrOutputWithContext(context.Background())
 }
@@ -4708,12 +4101,6 @@ func (i *serviceConvergeConfigPtrType) ToServiceConvergeConfigPtrOutputWithConte
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceConvergeConfigPtrOutput)
 }
 
-func (i *serviceConvergeConfigPtrType) ToOutput(ctx context.Context) pulumix.Output[*ServiceConvergeConfig] {
-	return pulumix.Output[*ServiceConvergeConfig]{
-		OutputState: i.ToServiceConvergeConfigPtrOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ServiceConvergeConfigOutput struct{ *pulumi.OutputState }
 
 func (ServiceConvergeConfigOutput) ElementType() reflect.Type {
@@ -4738,12 +4125,6 @@ func (o ServiceConvergeConfigOutput) ToServiceConvergeConfigPtrOutputWithContext
 	}).(ServiceConvergeConfigPtrOutput)
 }
 
-func (o ServiceConvergeConfigOutput) ToOutput(ctx context.Context) pulumix.Output[ServiceConvergeConfig] {
-	return pulumix.Output[ServiceConvergeConfig]{
-		OutputState: o.OutputState,
-	}
-}
-
 // The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.
 func (o ServiceConvergeConfigOutput) Delay() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ServiceConvergeConfig) *string { return v.Delay }).(pulumi.StringPtrOutput)
@@ -4766,12 +4147,6 @@ func (o ServiceConvergeConfigPtrOutput) ToServiceConvergeConfigPtrOutput() Servi
 
 func (o ServiceConvergeConfigPtrOutput) ToServiceConvergeConfigPtrOutputWithContext(ctx context.Context) ServiceConvergeConfigPtrOutput {
 	return o
-}
-
-func (o ServiceConvergeConfigPtrOutput) ToOutput(ctx context.Context) pulumix.Output[*ServiceConvergeConfig] {
-	return pulumix.Output[*ServiceConvergeConfig]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ServiceConvergeConfigPtrOutput) Elem() ServiceConvergeConfigOutput {
@@ -4841,12 +4216,6 @@ func (i ServiceEndpointSpecArgs) ToServiceEndpointSpecOutputWithContext(ctx cont
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceEndpointSpecOutput)
 }
 
-func (i ServiceEndpointSpecArgs) ToOutput(ctx context.Context) pulumix.Output[ServiceEndpointSpec] {
-	return pulumix.Output[ServiceEndpointSpec]{
-		OutputState: i.ToServiceEndpointSpecOutputWithContext(ctx).OutputState,
-	}
-}
-
 func (i ServiceEndpointSpecArgs) ToServiceEndpointSpecPtrOutput() ServiceEndpointSpecPtrOutput {
 	return i.ToServiceEndpointSpecPtrOutputWithContext(context.Background())
 }
@@ -4888,12 +4257,6 @@ func (i *serviceEndpointSpecPtrType) ToServiceEndpointSpecPtrOutputWithContext(c
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceEndpointSpecPtrOutput)
 }
 
-func (i *serviceEndpointSpecPtrType) ToOutput(ctx context.Context) pulumix.Output[*ServiceEndpointSpec] {
-	return pulumix.Output[*ServiceEndpointSpec]{
-		OutputState: i.ToServiceEndpointSpecPtrOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ServiceEndpointSpecOutput struct{ *pulumi.OutputState }
 
 func (ServiceEndpointSpecOutput) ElementType() reflect.Type {
@@ -4918,12 +4281,6 @@ func (o ServiceEndpointSpecOutput) ToServiceEndpointSpecPtrOutputWithContext(ctx
 	}).(ServiceEndpointSpecPtrOutput)
 }
 
-func (o ServiceEndpointSpecOutput) ToOutput(ctx context.Context) pulumix.Output[ServiceEndpointSpec] {
-	return pulumix.Output[ServiceEndpointSpec]{
-		OutputState: o.OutputState,
-	}
-}
-
 // The mode of resolution to use for internal load balancing between tasks
 func (o ServiceEndpointSpecOutput) Mode() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ServiceEndpointSpec) *string { return v.Mode }).(pulumi.StringPtrOutput)
@@ -4946,12 +4303,6 @@ func (o ServiceEndpointSpecPtrOutput) ToServiceEndpointSpecPtrOutput() ServiceEn
 
 func (o ServiceEndpointSpecPtrOutput) ToServiceEndpointSpecPtrOutputWithContext(ctx context.Context) ServiceEndpointSpecPtrOutput {
 	return o
-}
-
-func (o ServiceEndpointSpecPtrOutput) ToOutput(ctx context.Context) pulumix.Output[*ServiceEndpointSpec] {
-	return pulumix.Output[*ServiceEndpointSpec]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ServiceEndpointSpecPtrOutput) Elem() ServiceEndpointSpecOutput {
@@ -5033,12 +4384,6 @@ func (i ServiceEndpointSpecPortArgs) ToServiceEndpointSpecPortOutputWithContext(
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceEndpointSpecPortOutput)
 }
 
-func (i ServiceEndpointSpecPortArgs) ToOutput(ctx context.Context) pulumix.Output[ServiceEndpointSpecPort] {
-	return pulumix.Output[ServiceEndpointSpecPort]{
-		OutputState: i.ToServiceEndpointSpecPortOutputWithContext(ctx).OutputState,
-	}
-}
-
 // ServiceEndpointSpecPortArrayInput is an input type that accepts ServiceEndpointSpecPortArray and ServiceEndpointSpecPortArrayOutput values.
 // You can construct a concrete instance of `ServiceEndpointSpecPortArrayInput` via:
 //
@@ -5064,12 +4409,6 @@ func (i ServiceEndpointSpecPortArray) ToServiceEndpointSpecPortArrayOutputWithCo
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceEndpointSpecPortArrayOutput)
 }
 
-func (i ServiceEndpointSpecPortArray) ToOutput(ctx context.Context) pulumix.Output[[]ServiceEndpointSpecPort] {
-	return pulumix.Output[[]ServiceEndpointSpecPort]{
-		OutputState: i.ToServiceEndpointSpecPortArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ServiceEndpointSpecPortOutput struct{ *pulumi.OutputState }
 
 func (ServiceEndpointSpecPortOutput) ElementType() reflect.Type {
@@ -5082,12 +4421,6 @@ func (o ServiceEndpointSpecPortOutput) ToServiceEndpointSpecPortOutput() Service
 
 func (o ServiceEndpointSpecPortOutput) ToServiceEndpointSpecPortOutputWithContext(ctx context.Context) ServiceEndpointSpecPortOutput {
 	return o
-}
-
-func (o ServiceEndpointSpecPortOutput) ToOutput(ctx context.Context) pulumix.Output[ServiceEndpointSpecPort] {
-	return pulumix.Output[ServiceEndpointSpecPort]{
-		OutputState: o.OutputState,
-	}
 }
 
 // A random name for the port
@@ -5127,12 +4460,6 @@ func (o ServiceEndpointSpecPortArrayOutput) ToServiceEndpointSpecPortArrayOutput
 
 func (o ServiceEndpointSpecPortArrayOutput) ToServiceEndpointSpecPortArrayOutputWithContext(ctx context.Context) ServiceEndpointSpecPortArrayOutput {
 	return o
-}
-
-func (o ServiceEndpointSpecPortArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]ServiceEndpointSpecPort] {
-	return pulumix.Output[[]ServiceEndpointSpecPort]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ServiceEndpointSpecPortArrayOutput) Index(i pulumi.IntInput) ServiceEndpointSpecPortOutput {
@@ -5178,12 +4505,6 @@ func (i ServiceLabelArgs) ToServiceLabelOutputWithContext(ctx context.Context) S
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceLabelOutput)
 }
 
-func (i ServiceLabelArgs) ToOutput(ctx context.Context) pulumix.Output[ServiceLabel] {
-	return pulumix.Output[ServiceLabel]{
-		OutputState: i.ToServiceLabelOutputWithContext(ctx).OutputState,
-	}
-}
-
 // ServiceLabelArrayInput is an input type that accepts ServiceLabelArray and ServiceLabelArrayOutput values.
 // You can construct a concrete instance of `ServiceLabelArrayInput` via:
 //
@@ -5209,12 +4530,6 @@ func (i ServiceLabelArray) ToServiceLabelArrayOutputWithContext(ctx context.Cont
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceLabelArrayOutput)
 }
 
-func (i ServiceLabelArray) ToOutput(ctx context.Context) pulumix.Output[[]ServiceLabel] {
-	return pulumix.Output[[]ServiceLabel]{
-		OutputState: i.ToServiceLabelArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ServiceLabelOutput struct{ *pulumi.OutputState }
 
 func (ServiceLabelOutput) ElementType() reflect.Type {
@@ -5227,12 +4542,6 @@ func (o ServiceLabelOutput) ToServiceLabelOutput() ServiceLabelOutput {
 
 func (o ServiceLabelOutput) ToServiceLabelOutputWithContext(ctx context.Context) ServiceLabelOutput {
 	return o
-}
-
-func (o ServiceLabelOutput) ToOutput(ctx context.Context) pulumix.Output[ServiceLabel] {
-	return pulumix.Output[ServiceLabel]{
-		OutputState: o.OutputState,
-	}
 }
 
 // Name of the label
@@ -5257,12 +4566,6 @@ func (o ServiceLabelArrayOutput) ToServiceLabelArrayOutput() ServiceLabelArrayOu
 
 func (o ServiceLabelArrayOutput) ToServiceLabelArrayOutputWithContext(ctx context.Context) ServiceLabelArrayOutput {
 	return o
-}
-
-func (o ServiceLabelArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]ServiceLabel] {
-	return pulumix.Output[[]ServiceLabel]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ServiceLabelArrayOutput) Index(i pulumi.IntInput) ServiceLabelOutput {
@@ -5308,12 +4611,6 @@ func (i ServiceModeArgs) ToServiceModeOutputWithContext(ctx context.Context) Ser
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceModeOutput)
 }
 
-func (i ServiceModeArgs) ToOutput(ctx context.Context) pulumix.Output[ServiceMode] {
-	return pulumix.Output[ServiceMode]{
-		OutputState: i.ToServiceModeOutputWithContext(ctx).OutputState,
-	}
-}
-
 func (i ServiceModeArgs) ToServiceModePtrOutput() ServiceModePtrOutput {
 	return i.ToServiceModePtrOutputWithContext(context.Background())
 }
@@ -5355,12 +4652,6 @@ func (i *serviceModePtrType) ToServiceModePtrOutputWithContext(ctx context.Conte
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceModePtrOutput)
 }
 
-func (i *serviceModePtrType) ToOutput(ctx context.Context) pulumix.Output[*ServiceMode] {
-	return pulumix.Output[*ServiceMode]{
-		OutputState: i.ToServiceModePtrOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ServiceModeOutput struct{ *pulumi.OutputState }
 
 func (ServiceModeOutput) ElementType() reflect.Type {
@@ -5385,12 +4676,6 @@ func (o ServiceModeOutput) ToServiceModePtrOutputWithContext(ctx context.Context
 	}).(ServiceModePtrOutput)
 }
 
-func (o ServiceModeOutput) ToOutput(ctx context.Context) pulumix.Output[ServiceMode] {
-	return pulumix.Output[ServiceMode]{
-		OutputState: o.OutputState,
-	}
-}
-
 // The global service mode. Defaults to `false`
 func (o ServiceModeOutput) Global() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v ServiceMode) *bool { return v.Global }).(pulumi.BoolPtrOutput)
@@ -5413,12 +4698,6 @@ func (o ServiceModePtrOutput) ToServiceModePtrOutput() ServiceModePtrOutput {
 
 func (o ServiceModePtrOutput) ToServiceModePtrOutputWithContext(ctx context.Context) ServiceModePtrOutput {
 	return o
-}
-
-func (o ServiceModePtrOutput) ToOutput(ctx context.Context) pulumix.Output[*ServiceMode] {
-	return pulumix.Output[*ServiceMode]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ServiceModePtrOutput) Elem() ServiceModeOutput {
@@ -5484,12 +4763,6 @@ func (i ServiceModeReplicatedArgs) ToServiceModeReplicatedOutputWithContext(ctx 
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceModeReplicatedOutput)
 }
 
-func (i ServiceModeReplicatedArgs) ToOutput(ctx context.Context) pulumix.Output[ServiceModeReplicated] {
-	return pulumix.Output[ServiceModeReplicated]{
-		OutputState: i.ToServiceModeReplicatedOutputWithContext(ctx).OutputState,
-	}
-}
-
 func (i ServiceModeReplicatedArgs) ToServiceModeReplicatedPtrOutput() ServiceModeReplicatedPtrOutput {
 	return i.ToServiceModeReplicatedPtrOutputWithContext(context.Background())
 }
@@ -5531,12 +4804,6 @@ func (i *serviceModeReplicatedPtrType) ToServiceModeReplicatedPtrOutputWithConte
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceModeReplicatedPtrOutput)
 }
 
-func (i *serviceModeReplicatedPtrType) ToOutput(ctx context.Context) pulumix.Output[*ServiceModeReplicated] {
-	return pulumix.Output[*ServiceModeReplicated]{
-		OutputState: i.ToServiceModeReplicatedPtrOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ServiceModeReplicatedOutput struct{ *pulumi.OutputState }
 
 func (ServiceModeReplicatedOutput) ElementType() reflect.Type {
@@ -5561,12 +4828,6 @@ func (o ServiceModeReplicatedOutput) ToServiceModeReplicatedPtrOutputWithContext
 	}).(ServiceModeReplicatedPtrOutput)
 }
 
-func (o ServiceModeReplicatedOutput) ToOutput(ctx context.Context) pulumix.Output[ServiceModeReplicated] {
-	return pulumix.Output[ServiceModeReplicated]{
-		OutputState: o.OutputState,
-	}
-}
-
 // The amount of replicas of the service. Defaults to `1`
 func (o ServiceModeReplicatedOutput) Replicas() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v ServiceModeReplicated) *int { return v.Replicas }).(pulumi.IntPtrOutput)
@@ -5584,12 +4845,6 @@ func (o ServiceModeReplicatedPtrOutput) ToServiceModeReplicatedPtrOutput() Servi
 
 func (o ServiceModeReplicatedPtrOutput) ToServiceModeReplicatedPtrOutputWithContext(ctx context.Context) ServiceModeReplicatedPtrOutput {
 	return o
-}
-
-func (o ServiceModeReplicatedPtrOutput) ToOutput(ctx context.Context) pulumix.Output[*ServiceModeReplicated] {
-	return pulumix.Output[*ServiceModeReplicated]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ServiceModeReplicatedPtrOutput) Elem() ServiceModeReplicatedOutput {
@@ -5665,12 +4920,6 @@ func (i ServiceRollbackConfigArgs) ToServiceRollbackConfigOutputWithContext(ctx 
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceRollbackConfigOutput)
 }
 
-func (i ServiceRollbackConfigArgs) ToOutput(ctx context.Context) pulumix.Output[ServiceRollbackConfig] {
-	return pulumix.Output[ServiceRollbackConfig]{
-		OutputState: i.ToServiceRollbackConfigOutputWithContext(ctx).OutputState,
-	}
-}
-
 func (i ServiceRollbackConfigArgs) ToServiceRollbackConfigPtrOutput() ServiceRollbackConfigPtrOutput {
 	return i.ToServiceRollbackConfigPtrOutputWithContext(context.Background())
 }
@@ -5712,12 +4961,6 @@ func (i *serviceRollbackConfigPtrType) ToServiceRollbackConfigPtrOutputWithConte
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceRollbackConfigPtrOutput)
 }
 
-func (i *serviceRollbackConfigPtrType) ToOutput(ctx context.Context) pulumix.Output[*ServiceRollbackConfig] {
-	return pulumix.Output[*ServiceRollbackConfig]{
-		OutputState: i.ToServiceRollbackConfigPtrOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ServiceRollbackConfigOutput struct{ *pulumi.OutputState }
 
 func (ServiceRollbackConfigOutput) ElementType() reflect.Type {
@@ -5740,12 +4983,6 @@ func (o ServiceRollbackConfigOutput) ToServiceRollbackConfigPtrOutputWithContext
 	return o.ApplyTWithContext(ctx, func(_ context.Context, v ServiceRollbackConfig) *ServiceRollbackConfig {
 		return &v
 	}).(ServiceRollbackConfigPtrOutput)
-}
-
-func (o ServiceRollbackConfigOutput) ToOutput(ctx context.Context) pulumix.Output[ServiceRollbackConfig] {
-	return pulumix.Output[ServiceRollbackConfig]{
-		OutputState: o.OutputState,
-	}
 }
 
 // Delay between task rollbacks (ns|us|ms|s|m|h). Defaults to `0s`.
@@ -5790,12 +5027,6 @@ func (o ServiceRollbackConfigPtrOutput) ToServiceRollbackConfigPtrOutput() Servi
 
 func (o ServiceRollbackConfigPtrOutput) ToServiceRollbackConfigPtrOutputWithContext(ctx context.Context) ServiceRollbackConfigPtrOutput {
 	return o
-}
-
-func (o ServiceRollbackConfigPtrOutput) ToOutput(ctx context.Context) pulumix.Output[*ServiceRollbackConfig] {
-	return pulumix.Output[*ServiceRollbackConfig]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ServiceRollbackConfigPtrOutput) Elem() ServiceRollbackConfigOutput {
@@ -5929,12 +5160,6 @@ func (i ServiceTaskSpecArgs) ToServiceTaskSpecOutputWithContext(ctx context.Cont
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecOutput)
 }
 
-func (i ServiceTaskSpecArgs) ToOutput(ctx context.Context) pulumix.Output[ServiceTaskSpec] {
-	return pulumix.Output[ServiceTaskSpec]{
-		OutputState: i.ToServiceTaskSpecOutputWithContext(ctx).OutputState,
-	}
-}
-
 func (i ServiceTaskSpecArgs) ToServiceTaskSpecPtrOutput() ServiceTaskSpecPtrOutput {
 	return i.ToServiceTaskSpecPtrOutputWithContext(context.Background())
 }
@@ -5976,12 +5201,6 @@ func (i *serviceTaskSpecPtrType) ToServiceTaskSpecPtrOutputWithContext(ctx conte
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecPtrOutput)
 }
 
-func (i *serviceTaskSpecPtrType) ToOutput(ctx context.Context) pulumix.Output[*ServiceTaskSpec] {
-	return pulumix.Output[*ServiceTaskSpec]{
-		OutputState: i.ToServiceTaskSpecPtrOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ServiceTaskSpecOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecOutput) ElementType() reflect.Type {
@@ -6004,12 +5223,6 @@ func (o ServiceTaskSpecOutput) ToServiceTaskSpecPtrOutputWithContext(ctx context
 	return o.ApplyTWithContext(ctx, func(_ context.Context, v ServiceTaskSpec) *ServiceTaskSpec {
 		return &v
 	}).(ServiceTaskSpecPtrOutput)
-}
-
-func (o ServiceTaskSpecOutput) ToOutput(ctx context.Context) pulumix.Output[ServiceTaskSpec] {
-	return pulumix.Output[ServiceTaskSpec]{
-		OutputState: o.OutputState,
-	}
 }
 
 // The spec for each container
@@ -6064,12 +5277,6 @@ func (o ServiceTaskSpecPtrOutput) ToServiceTaskSpecPtrOutput() ServiceTaskSpecPt
 
 func (o ServiceTaskSpecPtrOutput) ToServiceTaskSpecPtrOutputWithContext(ctx context.Context) ServiceTaskSpecPtrOutput {
 	return o
-}
-
-func (o ServiceTaskSpecPtrOutput) ToOutput(ctx context.Context) pulumix.Output[*ServiceTaskSpec] {
-	return pulumix.Output[*ServiceTaskSpec]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ServiceTaskSpecPtrOutput) Elem() ServiceTaskSpecOutput {
@@ -6275,12 +5482,6 @@ func (i ServiceTaskSpecContainerSpecArgs) ToServiceTaskSpecContainerSpecOutputWi
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecContainerSpecOutput)
 }
 
-func (i ServiceTaskSpecContainerSpecArgs) ToOutput(ctx context.Context) pulumix.Output[ServiceTaskSpecContainerSpec] {
-	return pulumix.Output[ServiceTaskSpecContainerSpec]{
-		OutputState: i.ToServiceTaskSpecContainerSpecOutputWithContext(ctx).OutputState,
-	}
-}
-
 func (i ServiceTaskSpecContainerSpecArgs) ToServiceTaskSpecContainerSpecPtrOutput() ServiceTaskSpecContainerSpecPtrOutput {
 	return i.ToServiceTaskSpecContainerSpecPtrOutputWithContext(context.Background())
 }
@@ -6322,12 +5523,6 @@ func (i *serviceTaskSpecContainerSpecPtrType) ToServiceTaskSpecContainerSpecPtrO
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecContainerSpecPtrOutput)
 }
 
-func (i *serviceTaskSpecContainerSpecPtrType) ToOutput(ctx context.Context) pulumix.Output[*ServiceTaskSpecContainerSpec] {
-	return pulumix.Output[*ServiceTaskSpecContainerSpec]{
-		OutputState: i.ToServiceTaskSpecContainerSpecPtrOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ServiceTaskSpecContainerSpecOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecContainerSpecOutput) ElementType() reflect.Type {
@@ -6350,12 +5545,6 @@ func (o ServiceTaskSpecContainerSpecOutput) ToServiceTaskSpecContainerSpecPtrOut
 	return o.ApplyTWithContext(ctx, func(_ context.Context, v ServiceTaskSpecContainerSpec) *ServiceTaskSpecContainerSpec {
 		return &v
 	}).(ServiceTaskSpecContainerSpecPtrOutput)
-}
-
-func (o ServiceTaskSpecContainerSpecOutput) ToOutput(ctx context.Context) pulumix.Output[ServiceTaskSpecContainerSpec] {
-	return pulumix.Output[ServiceTaskSpecContainerSpec]{
-		OutputState: o.OutputState,
-	}
 }
 
 // Arguments to the command
@@ -6475,12 +5664,6 @@ func (o ServiceTaskSpecContainerSpecPtrOutput) ToServiceTaskSpecContainerSpecPtr
 
 func (o ServiceTaskSpecContainerSpecPtrOutput) ToServiceTaskSpecContainerSpecPtrOutputWithContext(ctx context.Context) ServiceTaskSpecContainerSpecPtrOutput {
 	return o
-}
-
-func (o ServiceTaskSpecContainerSpecPtrOutput) ToOutput(ctx context.Context) pulumix.Output[*ServiceTaskSpecContainerSpec] {
-	return pulumix.Output[*ServiceTaskSpecContainerSpec]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ServiceTaskSpecContainerSpecPtrOutput) Elem() ServiceTaskSpecContainerSpecOutput {
@@ -6756,12 +5939,6 @@ func (i ServiceTaskSpecContainerSpecConfigArgs) ToServiceTaskSpecContainerSpecCo
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecContainerSpecConfigOutput)
 }
 
-func (i ServiceTaskSpecContainerSpecConfigArgs) ToOutput(ctx context.Context) pulumix.Output[ServiceTaskSpecContainerSpecConfig] {
-	return pulumix.Output[ServiceTaskSpecContainerSpecConfig]{
-		OutputState: i.ToServiceTaskSpecContainerSpecConfigOutputWithContext(ctx).OutputState,
-	}
-}
-
 // ServiceTaskSpecContainerSpecConfigArrayInput is an input type that accepts ServiceTaskSpecContainerSpecConfigArray and ServiceTaskSpecContainerSpecConfigArrayOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecContainerSpecConfigArrayInput` via:
 //
@@ -6787,12 +5964,6 @@ func (i ServiceTaskSpecContainerSpecConfigArray) ToServiceTaskSpecContainerSpecC
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecContainerSpecConfigArrayOutput)
 }
 
-func (i ServiceTaskSpecContainerSpecConfigArray) ToOutput(ctx context.Context) pulumix.Output[[]ServiceTaskSpecContainerSpecConfig] {
-	return pulumix.Output[[]ServiceTaskSpecContainerSpecConfig]{
-		OutputState: i.ToServiceTaskSpecContainerSpecConfigArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ServiceTaskSpecContainerSpecConfigOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecContainerSpecConfigOutput) ElementType() reflect.Type {
@@ -6805,12 +5976,6 @@ func (o ServiceTaskSpecContainerSpecConfigOutput) ToServiceTaskSpecContainerSpec
 
 func (o ServiceTaskSpecContainerSpecConfigOutput) ToServiceTaskSpecContainerSpecConfigOutputWithContext(ctx context.Context) ServiceTaskSpecContainerSpecConfigOutput {
 	return o
-}
-
-func (o ServiceTaskSpecContainerSpecConfigOutput) ToOutput(ctx context.Context) pulumix.Output[ServiceTaskSpecContainerSpecConfig] {
-	return pulumix.Output[ServiceTaskSpecContainerSpecConfig]{
-		OutputState: o.OutputState,
-	}
 }
 
 // ID of the specific config that we're referencing
@@ -6855,12 +6020,6 @@ func (o ServiceTaskSpecContainerSpecConfigArrayOutput) ToServiceTaskSpecContaine
 
 func (o ServiceTaskSpecContainerSpecConfigArrayOutput) ToServiceTaskSpecContainerSpecConfigArrayOutputWithContext(ctx context.Context) ServiceTaskSpecContainerSpecConfigArrayOutput {
 	return o
-}
-
-func (o ServiceTaskSpecContainerSpecConfigArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]ServiceTaskSpecContainerSpecConfig] {
-	return pulumix.Output[[]ServiceTaskSpecContainerSpecConfig]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ServiceTaskSpecContainerSpecConfigArrayOutput) Index(i pulumi.IntInput) ServiceTaskSpecContainerSpecConfigOutput {
@@ -6910,12 +6069,6 @@ func (i ServiceTaskSpecContainerSpecDnsConfigArgs) ToServiceTaskSpecContainerSpe
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecContainerSpecDnsConfigOutput)
 }
 
-func (i ServiceTaskSpecContainerSpecDnsConfigArgs) ToOutput(ctx context.Context) pulumix.Output[ServiceTaskSpecContainerSpecDnsConfig] {
-	return pulumix.Output[ServiceTaskSpecContainerSpecDnsConfig]{
-		OutputState: i.ToServiceTaskSpecContainerSpecDnsConfigOutputWithContext(ctx).OutputState,
-	}
-}
-
 func (i ServiceTaskSpecContainerSpecDnsConfigArgs) ToServiceTaskSpecContainerSpecDnsConfigPtrOutput() ServiceTaskSpecContainerSpecDnsConfigPtrOutput {
 	return i.ToServiceTaskSpecContainerSpecDnsConfigPtrOutputWithContext(context.Background())
 }
@@ -6957,12 +6110,6 @@ func (i *serviceTaskSpecContainerSpecDnsConfigPtrType) ToServiceTaskSpecContaine
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecContainerSpecDnsConfigPtrOutput)
 }
 
-func (i *serviceTaskSpecContainerSpecDnsConfigPtrType) ToOutput(ctx context.Context) pulumix.Output[*ServiceTaskSpecContainerSpecDnsConfig] {
-	return pulumix.Output[*ServiceTaskSpecContainerSpecDnsConfig]{
-		OutputState: i.ToServiceTaskSpecContainerSpecDnsConfigPtrOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ServiceTaskSpecContainerSpecDnsConfigOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecContainerSpecDnsConfigOutput) ElementType() reflect.Type {
@@ -6985,12 +6132,6 @@ func (o ServiceTaskSpecContainerSpecDnsConfigOutput) ToServiceTaskSpecContainerS
 	return o.ApplyTWithContext(ctx, func(_ context.Context, v ServiceTaskSpecContainerSpecDnsConfig) *ServiceTaskSpecContainerSpecDnsConfig {
 		return &v
 	}).(ServiceTaskSpecContainerSpecDnsConfigPtrOutput)
-}
-
-func (o ServiceTaskSpecContainerSpecDnsConfigOutput) ToOutput(ctx context.Context) pulumix.Output[ServiceTaskSpecContainerSpecDnsConfig] {
-	return pulumix.Output[ServiceTaskSpecContainerSpecDnsConfig]{
-		OutputState: o.OutputState,
-	}
 }
 
 // The IP addresses of the name servers
@@ -7020,12 +6161,6 @@ func (o ServiceTaskSpecContainerSpecDnsConfigPtrOutput) ToServiceTaskSpecContain
 
 func (o ServiceTaskSpecContainerSpecDnsConfigPtrOutput) ToServiceTaskSpecContainerSpecDnsConfigPtrOutputWithContext(ctx context.Context) ServiceTaskSpecContainerSpecDnsConfigPtrOutput {
 	return o
-}
-
-func (o ServiceTaskSpecContainerSpecDnsConfigPtrOutput) ToOutput(ctx context.Context) pulumix.Output[*ServiceTaskSpecContainerSpecDnsConfig] {
-	return pulumix.Output[*ServiceTaskSpecContainerSpecDnsConfig]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ServiceTaskSpecContainerSpecDnsConfigPtrOutput) Elem() ServiceTaskSpecContainerSpecDnsConfigOutput {
@@ -7117,12 +6252,6 @@ func (i ServiceTaskSpecContainerSpecHealthcheckArgs) ToServiceTaskSpecContainerS
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecContainerSpecHealthcheckOutput)
 }
 
-func (i ServiceTaskSpecContainerSpecHealthcheckArgs) ToOutput(ctx context.Context) pulumix.Output[ServiceTaskSpecContainerSpecHealthcheck] {
-	return pulumix.Output[ServiceTaskSpecContainerSpecHealthcheck]{
-		OutputState: i.ToServiceTaskSpecContainerSpecHealthcheckOutputWithContext(ctx).OutputState,
-	}
-}
-
 func (i ServiceTaskSpecContainerSpecHealthcheckArgs) ToServiceTaskSpecContainerSpecHealthcheckPtrOutput() ServiceTaskSpecContainerSpecHealthcheckPtrOutput {
 	return i.ToServiceTaskSpecContainerSpecHealthcheckPtrOutputWithContext(context.Background())
 }
@@ -7164,12 +6293,6 @@ func (i *serviceTaskSpecContainerSpecHealthcheckPtrType) ToServiceTaskSpecContai
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecContainerSpecHealthcheckPtrOutput)
 }
 
-func (i *serviceTaskSpecContainerSpecHealthcheckPtrType) ToOutput(ctx context.Context) pulumix.Output[*ServiceTaskSpecContainerSpecHealthcheck] {
-	return pulumix.Output[*ServiceTaskSpecContainerSpecHealthcheck]{
-		OutputState: i.ToServiceTaskSpecContainerSpecHealthcheckPtrOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ServiceTaskSpecContainerSpecHealthcheckOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecContainerSpecHealthcheckOutput) ElementType() reflect.Type {
@@ -7192,12 +6315,6 @@ func (o ServiceTaskSpecContainerSpecHealthcheckOutput) ToServiceTaskSpecContaine
 	return o.ApplyTWithContext(ctx, func(_ context.Context, v ServiceTaskSpecContainerSpecHealthcheck) *ServiceTaskSpecContainerSpecHealthcheck {
 		return &v
 	}).(ServiceTaskSpecContainerSpecHealthcheckPtrOutput)
-}
-
-func (o ServiceTaskSpecContainerSpecHealthcheckOutput) ToOutput(ctx context.Context) pulumix.Output[ServiceTaskSpecContainerSpecHealthcheck] {
-	return pulumix.Output[ServiceTaskSpecContainerSpecHealthcheck]{
-		OutputState: o.OutputState,
-	}
 }
 
 // Time between running the check (ms|s|m|h). Defaults to `0s`.
@@ -7237,12 +6354,6 @@ func (o ServiceTaskSpecContainerSpecHealthcheckPtrOutput) ToServiceTaskSpecConta
 
 func (o ServiceTaskSpecContainerSpecHealthcheckPtrOutput) ToServiceTaskSpecContainerSpecHealthcheckPtrOutputWithContext(ctx context.Context) ServiceTaskSpecContainerSpecHealthcheckPtrOutput {
 	return o
-}
-
-func (o ServiceTaskSpecContainerSpecHealthcheckPtrOutput) ToOutput(ctx context.Context) pulumix.Output[*ServiceTaskSpecContainerSpecHealthcheck] {
-	return pulumix.Output[*ServiceTaskSpecContainerSpecHealthcheck]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ServiceTaskSpecContainerSpecHealthcheckPtrOutput) Elem() ServiceTaskSpecContainerSpecHealthcheckOutput {
@@ -7342,12 +6453,6 @@ func (i ServiceTaskSpecContainerSpecHostArgs) ToServiceTaskSpecContainerSpecHost
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecContainerSpecHostOutput)
 }
 
-func (i ServiceTaskSpecContainerSpecHostArgs) ToOutput(ctx context.Context) pulumix.Output[ServiceTaskSpecContainerSpecHost] {
-	return pulumix.Output[ServiceTaskSpecContainerSpecHost]{
-		OutputState: i.ToServiceTaskSpecContainerSpecHostOutputWithContext(ctx).OutputState,
-	}
-}
-
 // ServiceTaskSpecContainerSpecHostArrayInput is an input type that accepts ServiceTaskSpecContainerSpecHostArray and ServiceTaskSpecContainerSpecHostArrayOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecContainerSpecHostArrayInput` via:
 //
@@ -7373,12 +6478,6 @@ func (i ServiceTaskSpecContainerSpecHostArray) ToServiceTaskSpecContainerSpecHos
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecContainerSpecHostArrayOutput)
 }
 
-func (i ServiceTaskSpecContainerSpecHostArray) ToOutput(ctx context.Context) pulumix.Output[[]ServiceTaskSpecContainerSpecHost] {
-	return pulumix.Output[[]ServiceTaskSpecContainerSpecHost]{
-		OutputState: i.ToServiceTaskSpecContainerSpecHostArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ServiceTaskSpecContainerSpecHostOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecContainerSpecHostOutput) ElementType() reflect.Type {
@@ -7391,12 +6490,6 @@ func (o ServiceTaskSpecContainerSpecHostOutput) ToServiceTaskSpecContainerSpecHo
 
 func (o ServiceTaskSpecContainerSpecHostOutput) ToServiceTaskSpecContainerSpecHostOutputWithContext(ctx context.Context) ServiceTaskSpecContainerSpecHostOutput {
 	return o
-}
-
-func (o ServiceTaskSpecContainerSpecHostOutput) ToOutput(ctx context.Context) pulumix.Output[ServiceTaskSpecContainerSpecHost] {
-	return pulumix.Output[ServiceTaskSpecContainerSpecHost]{
-		OutputState: o.OutputState,
-	}
 }
 
 // The name of the host
@@ -7421,12 +6514,6 @@ func (o ServiceTaskSpecContainerSpecHostArrayOutput) ToServiceTaskSpecContainerS
 
 func (o ServiceTaskSpecContainerSpecHostArrayOutput) ToServiceTaskSpecContainerSpecHostArrayOutputWithContext(ctx context.Context) ServiceTaskSpecContainerSpecHostArrayOutput {
 	return o
-}
-
-func (o ServiceTaskSpecContainerSpecHostArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]ServiceTaskSpecContainerSpecHost] {
-	return pulumix.Output[[]ServiceTaskSpecContainerSpecHost]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ServiceTaskSpecContainerSpecHostArrayOutput) Index(i pulumi.IntInput) ServiceTaskSpecContainerSpecHostOutput {
@@ -7472,12 +6559,6 @@ func (i ServiceTaskSpecContainerSpecLabelArgs) ToServiceTaskSpecContainerSpecLab
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecContainerSpecLabelOutput)
 }
 
-func (i ServiceTaskSpecContainerSpecLabelArgs) ToOutput(ctx context.Context) pulumix.Output[ServiceTaskSpecContainerSpecLabel] {
-	return pulumix.Output[ServiceTaskSpecContainerSpecLabel]{
-		OutputState: i.ToServiceTaskSpecContainerSpecLabelOutputWithContext(ctx).OutputState,
-	}
-}
-
 // ServiceTaskSpecContainerSpecLabelArrayInput is an input type that accepts ServiceTaskSpecContainerSpecLabelArray and ServiceTaskSpecContainerSpecLabelArrayOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecContainerSpecLabelArrayInput` via:
 //
@@ -7503,12 +6584,6 @@ func (i ServiceTaskSpecContainerSpecLabelArray) ToServiceTaskSpecContainerSpecLa
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecContainerSpecLabelArrayOutput)
 }
 
-func (i ServiceTaskSpecContainerSpecLabelArray) ToOutput(ctx context.Context) pulumix.Output[[]ServiceTaskSpecContainerSpecLabel] {
-	return pulumix.Output[[]ServiceTaskSpecContainerSpecLabel]{
-		OutputState: i.ToServiceTaskSpecContainerSpecLabelArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ServiceTaskSpecContainerSpecLabelOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecContainerSpecLabelOutput) ElementType() reflect.Type {
@@ -7521,12 +6596,6 @@ func (o ServiceTaskSpecContainerSpecLabelOutput) ToServiceTaskSpecContainerSpecL
 
 func (o ServiceTaskSpecContainerSpecLabelOutput) ToServiceTaskSpecContainerSpecLabelOutputWithContext(ctx context.Context) ServiceTaskSpecContainerSpecLabelOutput {
 	return o
-}
-
-func (o ServiceTaskSpecContainerSpecLabelOutput) ToOutput(ctx context.Context) pulumix.Output[ServiceTaskSpecContainerSpecLabel] {
-	return pulumix.Output[ServiceTaskSpecContainerSpecLabel]{
-		OutputState: o.OutputState,
-	}
 }
 
 // Name of the label
@@ -7551,12 +6620,6 @@ func (o ServiceTaskSpecContainerSpecLabelArrayOutput) ToServiceTaskSpecContainer
 
 func (o ServiceTaskSpecContainerSpecLabelArrayOutput) ToServiceTaskSpecContainerSpecLabelArrayOutputWithContext(ctx context.Context) ServiceTaskSpecContainerSpecLabelArrayOutput {
 	return o
-}
-
-func (o ServiceTaskSpecContainerSpecLabelArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]ServiceTaskSpecContainerSpecLabel] {
-	return pulumix.Output[[]ServiceTaskSpecContainerSpecLabel]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ServiceTaskSpecContainerSpecLabelArrayOutput) Index(i pulumi.IntInput) ServiceTaskSpecContainerSpecLabelOutput {
@@ -7622,12 +6685,6 @@ func (i ServiceTaskSpecContainerSpecMountArgs) ToServiceTaskSpecContainerSpecMou
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecContainerSpecMountOutput)
 }
 
-func (i ServiceTaskSpecContainerSpecMountArgs) ToOutput(ctx context.Context) pulumix.Output[ServiceTaskSpecContainerSpecMount] {
-	return pulumix.Output[ServiceTaskSpecContainerSpecMount]{
-		OutputState: i.ToServiceTaskSpecContainerSpecMountOutputWithContext(ctx).OutputState,
-	}
-}
-
 // ServiceTaskSpecContainerSpecMountArrayInput is an input type that accepts ServiceTaskSpecContainerSpecMountArray and ServiceTaskSpecContainerSpecMountArrayOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecContainerSpecMountArrayInput` via:
 //
@@ -7653,12 +6710,6 @@ func (i ServiceTaskSpecContainerSpecMountArray) ToServiceTaskSpecContainerSpecMo
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecContainerSpecMountArrayOutput)
 }
 
-func (i ServiceTaskSpecContainerSpecMountArray) ToOutput(ctx context.Context) pulumix.Output[[]ServiceTaskSpecContainerSpecMount] {
-	return pulumix.Output[[]ServiceTaskSpecContainerSpecMount]{
-		OutputState: i.ToServiceTaskSpecContainerSpecMountArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ServiceTaskSpecContainerSpecMountOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecContainerSpecMountOutput) ElementType() reflect.Type {
@@ -7671,12 +6722,6 @@ func (o ServiceTaskSpecContainerSpecMountOutput) ToServiceTaskSpecContainerSpecM
 
 func (o ServiceTaskSpecContainerSpecMountOutput) ToServiceTaskSpecContainerSpecMountOutputWithContext(ctx context.Context) ServiceTaskSpecContainerSpecMountOutput {
 	return o
-}
-
-func (o ServiceTaskSpecContainerSpecMountOutput) ToOutput(ctx context.Context) pulumix.Output[ServiceTaskSpecContainerSpecMount] {
-	return pulumix.Output[ServiceTaskSpecContainerSpecMount]{
-		OutputState: o.OutputState,
-	}
 }
 
 // Optional configuration for the bind type
@@ -7734,12 +6779,6 @@ func (o ServiceTaskSpecContainerSpecMountArrayOutput) ToServiceTaskSpecContainer
 	return o
 }
 
-func (o ServiceTaskSpecContainerSpecMountArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]ServiceTaskSpecContainerSpecMount] {
-	return pulumix.Output[[]ServiceTaskSpecContainerSpecMount]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o ServiceTaskSpecContainerSpecMountArrayOutput) Index(i pulumi.IntInput) ServiceTaskSpecContainerSpecMountOutput {
 	return pulumi.All(o, i).ApplyT(func(vs []interface{}) ServiceTaskSpecContainerSpecMount {
 		return vs[0].([]ServiceTaskSpecContainerSpecMount)[vs[1].(int)]
@@ -7777,12 +6816,6 @@ func (i ServiceTaskSpecContainerSpecMountBindOptionsArgs) ToServiceTaskSpecConta
 
 func (i ServiceTaskSpecContainerSpecMountBindOptionsArgs) ToServiceTaskSpecContainerSpecMountBindOptionsOutputWithContext(ctx context.Context) ServiceTaskSpecContainerSpecMountBindOptionsOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecContainerSpecMountBindOptionsOutput)
-}
-
-func (i ServiceTaskSpecContainerSpecMountBindOptionsArgs) ToOutput(ctx context.Context) pulumix.Output[ServiceTaskSpecContainerSpecMountBindOptions] {
-	return pulumix.Output[ServiceTaskSpecContainerSpecMountBindOptions]{
-		OutputState: i.ToServiceTaskSpecContainerSpecMountBindOptionsOutputWithContext(ctx).OutputState,
-	}
 }
 
 func (i ServiceTaskSpecContainerSpecMountBindOptionsArgs) ToServiceTaskSpecContainerSpecMountBindOptionsPtrOutput() ServiceTaskSpecContainerSpecMountBindOptionsPtrOutput {
@@ -7826,12 +6859,6 @@ func (i *serviceTaskSpecContainerSpecMountBindOptionsPtrType) ToServiceTaskSpecC
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecContainerSpecMountBindOptionsPtrOutput)
 }
 
-func (i *serviceTaskSpecContainerSpecMountBindOptionsPtrType) ToOutput(ctx context.Context) pulumix.Output[*ServiceTaskSpecContainerSpecMountBindOptions] {
-	return pulumix.Output[*ServiceTaskSpecContainerSpecMountBindOptions]{
-		OutputState: i.ToServiceTaskSpecContainerSpecMountBindOptionsPtrOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ServiceTaskSpecContainerSpecMountBindOptionsOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecContainerSpecMountBindOptionsOutput) ElementType() reflect.Type {
@@ -7856,12 +6883,6 @@ func (o ServiceTaskSpecContainerSpecMountBindOptionsOutput) ToServiceTaskSpecCon
 	}).(ServiceTaskSpecContainerSpecMountBindOptionsPtrOutput)
 }
 
-func (o ServiceTaskSpecContainerSpecMountBindOptionsOutput) ToOutput(ctx context.Context) pulumix.Output[ServiceTaskSpecContainerSpecMountBindOptions] {
-	return pulumix.Output[ServiceTaskSpecContainerSpecMountBindOptions]{
-		OutputState: o.OutputState,
-	}
-}
-
 // Bind propagation refers to whether or not mounts created within a given bind-mount or named volume can be propagated to replicas of that mount. See the [docs](https://docs.docker.com/storage/bind-mounts/#configure-bind-propagation) for details. Defaults to `rprivate`
 func (o ServiceTaskSpecContainerSpecMountBindOptionsOutput) Propagation() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ServiceTaskSpecContainerSpecMountBindOptions) *string { return v.Propagation }).(pulumi.StringPtrOutput)
@@ -7879,12 +6900,6 @@ func (o ServiceTaskSpecContainerSpecMountBindOptionsPtrOutput) ToServiceTaskSpec
 
 func (o ServiceTaskSpecContainerSpecMountBindOptionsPtrOutput) ToServiceTaskSpecContainerSpecMountBindOptionsPtrOutputWithContext(ctx context.Context) ServiceTaskSpecContainerSpecMountBindOptionsPtrOutput {
 	return o
-}
-
-func (o ServiceTaskSpecContainerSpecMountBindOptionsPtrOutput) ToOutput(ctx context.Context) pulumix.Output[*ServiceTaskSpecContainerSpecMountBindOptions] {
-	return pulumix.Output[*ServiceTaskSpecContainerSpecMountBindOptions]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ServiceTaskSpecContainerSpecMountBindOptionsPtrOutput) Elem() ServiceTaskSpecContainerSpecMountBindOptionsOutput {
@@ -7944,12 +6959,6 @@ func (i ServiceTaskSpecContainerSpecMountTmpfsOptionsArgs) ToServiceTaskSpecCont
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecContainerSpecMountTmpfsOptionsOutput)
 }
 
-func (i ServiceTaskSpecContainerSpecMountTmpfsOptionsArgs) ToOutput(ctx context.Context) pulumix.Output[ServiceTaskSpecContainerSpecMountTmpfsOptions] {
-	return pulumix.Output[ServiceTaskSpecContainerSpecMountTmpfsOptions]{
-		OutputState: i.ToServiceTaskSpecContainerSpecMountTmpfsOptionsOutputWithContext(ctx).OutputState,
-	}
-}
-
 func (i ServiceTaskSpecContainerSpecMountTmpfsOptionsArgs) ToServiceTaskSpecContainerSpecMountTmpfsOptionsPtrOutput() ServiceTaskSpecContainerSpecMountTmpfsOptionsPtrOutput {
 	return i.ToServiceTaskSpecContainerSpecMountTmpfsOptionsPtrOutputWithContext(context.Background())
 }
@@ -7991,12 +7000,6 @@ func (i *serviceTaskSpecContainerSpecMountTmpfsOptionsPtrType) ToServiceTaskSpec
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecContainerSpecMountTmpfsOptionsPtrOutput)
 }
 
-func (i *serviceTaskSpecContainerSpecMountTmpfsOptionsPtrType) ToOutput(ctx context.Context) pulumix.Output[*ServiceTaskSpecContainerSpecMountTmpfsOptions] {
-	return pulumix.Output[*ServiceTaskSpecContainerSpecMountTmpfsOptions]{
-		OutputState: i.ToServiceTaskSpecContainerSpecMountTmpfsOptionsPtrOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ServiceTaskSpecContainerSpecMountTmpfsOptionsOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecContainerSpecMountTmpfsOptionsOutput) ElementType() reflect.Type {
@@ -8021,12 +7024,6 @@ func (o ServiceTaskSpecContainerSpecMountTmpfsOptionsOutput) ToServiceTaskSpecCo
 	}).(ServiceTaskSpecContainerSpecMountTmpfsOptionsPtrOutput)
 }
 
-func (o ServiceTaskSpecContainerSpecMountTmpfsOptionsOutput) ToOutput(ctx context.Context) pulumix.Output[ServiceTaskSpecContainerSpecMountTmpfsOptions] {
-	return pulumix.Output[ServiceTaskSpecContainerSpecMountTmpfsOptions]{
-		OutputState: o.OutputState,
-	}
-}
-
 // The mode of resolution to use for internal load balancing between tasks
 func (o ServiceTaskSpecContainerSpecMountTmpfsOptionsOutput) Mode() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v ServiceTaskSpecContainerSpecMountTmpfsOptions) *int { return v.Mode }).(pulumi.IntPtrOutput)
@@ -8049,12 +7046,6 @@ func (o ServiceTaskSpecContainerSpecMountTmpfsOptionsPtrOutput) ToServiceTaskSpe
 
 func (o ServiceTaskSpecContainerSpecMountTmpfsOptionsPtrOutput) ToServiceTaskSpecContainerSpecMountTmpfsOptionsPtrOutputWithContext(ctx context.Context) ServiceTaskSpecContainerSpecMountTmpfsOptionsPtrOutput {
 	return o
-}
-
-func (o ServiceTaskSpecContainerSpecMountTmpfsOptionsPtrOutput) ToOutput(ctx context.Context) pulumix.Output[*ServiceTaskSpecContainerSpecMountTmpfsOptions] {
-	return pulumix.Output[*ServiceTaskSpecContainerSpecMountTmpfsOptions]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ServiceTaskSpecContainerSpecMountTmpfsOptionsPtrOutput) Elem() ServiceTaskSpecContainerSpecMountTmpfsOptionsOutput {
@@ -8132,12 +7123,6 @@ func (i ServiceTaskSpecContainerSpecMountVolumeOptionsArgs) ToServiceTaskSpecCon
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecContainerSpecMountVolumeOptionsOutput)
 }
 
-func (i ServiceTaskSpecContainerSpecMountVolumeOptionsArgs) ToOutput(ctx context.Context) pulumix.Output[ServiceTaskSpecContainerSpecMountVolumeOptions] {
-	return pulumix.Output[ServiceTaskSpecContainerSpecMountVolumeOptions]{
-		OutputState: i.ToServiceTaskSpecContainerSpecMountVolumeOptionsOutputWithContext(ctx).OutputState,
-	}
-}
-
 func (i ServiceTaskSpecContainerSpecMountVolumeOptionsArgs) ToServiceTaskSpecContainerSpecMountVolumeOptionsPtrOutput() ServiceTaskSpecContainerSpecMountVolumeOptionsPtrOutput {
 	return i.ToServiceTaskSpecContainerSpecMountVolumeOptionsPtrOutputWithContext(context.Background())
 }
@@ -8179,12 +7164,6 @@ func (i *serviceTaskSpecContainerSpecMountVolumeOptionsPtrType) ToServiceTaskSpe
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecContainerSpecMountVolumeOptionsPtrOutput)
 }
 
-func (i *serviceTaskSpecContainerSpecMountVolumeOptionsPtrType) ToOutput(ctx context.Context) pulumix.Output[*ServiceTaskSpecContainerSpecMountVolumeOptions] {
-	return pulumix.Output[*ServiceTaskSpecContainerSpecMountVolumeOptions]{
-		OutputState: i.ToServiceTaskSpecContainerSpecMountVolumeOptionsPtrOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ServiceTaskSpecContainerSpecMountVolumeOptionsOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecContainerSpecMountVolumeOptionsOutput) ElementType() reflect.Type {
@@ -8207,12 +7186,6 @@ func (o ServiceTaskSpecContainerSpecMountVolumeOptionsOutput) ToServiceTaskSpecC
 	return o.ApplyTWithContext(ctx, func(_ context.Context, v ServiceTaskSpecContainerSpecMountVolumeOptions) *ServiceTaskSpecContainerSpecMountVolumeOptions {
 		return &v
 	}).(ServiceTaskSpecContainerSpecMountVolumeOptionsPtrOutput)
-}
-
-func (o ServiceTaskSpecContainerSpecMountVolumeOptionsOutput) ToOutput(ctx context.Context) pulumix.Output[ServiceTaskSpecContainerSpecMountVolumeOptions] {
-	return pulumix.Output[ServiceTaskSpecContainerSpecMountVolumeOptions]{
-		OutputState: o.OutputState,
-	}
 }
 
 // Name of the driver to use to create the volume
@@ -8249,12 +7222,6 @@ func (o ServiceTaskSpecContainerSpecMountVolumeOptionsPtrOutput) ToServiceTaskSp
 
 func (o ServiceTaskSpecContainerSpecMountVolumeOptionsPtrOutput) ToServiceTaskSpecContainerSpecMountVolumeOptionsPtrOutputWithContext(ctx context.Context) ServiceTaskSpecContainerSpecMountVolumeOptionsPtrOutput {
 	return o
-}
-
-func (o ServiceTaskSpecContainerSpecMountVolumeOptionsPtrOutput) ToOutput(ctx context.Context) pulumix.Output[*ServiceTaskSpecContainerSpecMountVolumeOptions] {
-	return pulumix.Output[*ServiceTaskSpecContainerSpecMountVolumeOptions]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ServiceTaskSpecContainerSpecMountVolumeOptionsPtrOutput) Elem() ServiceTaskSpecContainerSpecMountVolumeOptionsOutput {
@@ -8344,12 +7311,6 @@ func (i ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArgs) ToServiceTaskSp
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecContainerSpecMountVolumeOptionsLabelOutput)
 }
 
-func (i ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArgs) ToOutput(ctx context.Context) pulumix.Output[ServiceTaskSpecContainerSpecMountVolumeOptionsLabel] {
-	return pulumix.Output[ServiceTaskSpecContainerSpecMountVolumeOptionsLabel]{
-		OutputState: i.ToServiceTaskSpecContainerSpecMountVolumeOptionsLabelOutputWithContext(ctx).OutputState,
-	}
-}
-
 // ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayInput is an input type that accepts ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArray and ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayInput` via:
 //
@@ -8375,12 +7336,6 @@ func (i ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArray) ToServiceTaskS
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayOutput)
 }
 
-func (i ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArray) ToOutput(ctx context.Context) pulumix.Output[[]ServiceTaskSpecContainerSpecMountVolumeOptionsLabel] {
-	return pulumix.Output[[]ServiceTaskSpecContainerSpecMountVolumeOptionsLabel]{
-		OutputState: i.ToServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ServiceTaskSpecContainerSpecMountVolumeOptionsLabelOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecContainerSpecMountVolumeOptionsLabelOutput) ElementType() reflect.Type {
@@ -8393,12 +7348,6 @@ func (o ServiceTaskSpecContainerSpecMountVolumeOptionsLabelOutput) ToServiceTask
 
 func (o ServiceTaskSpecContainerSpecMountVolumeOptionsLabelOutput) ToServiceTaskSpecContainerSpecMountVolumeOptionsLabelOutputWithContext(ctx context.Context) ServiceTaskSpecContainerSpecMountVolumeOptionsLabelOutput {
 	return o
-}
-
-func (o ServiceTaskSpecContainerSpecMountVolumeOptionsLabelOutput) ToOutput(ctx context.Context) pulumix.Output[ServiceTaskSpecContainerSpecMountVolumeOptionsLabel] {
-	return pulumix.Output[ServiceTaskSpecContainerSpecMountVolumeOptionsLabel]{
-		OutputState: o.OutputState,
-	}
 }
 
 // Name of the label
@@ -8423,12 +7372,6 @@ func (o ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayOutput) ToServic
 
 func (o ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayOutput) ToServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayOutputWithContext(ctx context.Context) ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayOutput {
 	return o
-}
-
-func (o ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]ServiceTaskSpecContainerSpecMountVolumeOptionsLabel] {
-	return pulumix.Output[[]ServiceTaskSpecContainerSpecMountVolumeOptionsLabel]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ServiceTaskSpecContainerSpecMountVolumeOptionsLabelArrayOutput) Index(i pulumi.IntInput) ServiceTaskSpecContainerSpecMountVolumeOptionsLabelOutput {
@@ -8474,12 +7417,6 @@ func (i ServiceTaskSpecContainerSpecPrivilegesArgs) ToServiceTaskSpecContainerSp
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecContainerSpecPrivilegesOutput)
 }
 
-func (i ServiceTaskSpecContainerSpecPrivilegesArgs) ToOutput(ctx context.Context) pulumix.Output[ServiceTaskSpecContainerSpecPrivileges] {
-	return pulumix.Output[ServiceTaskSpecContainerSpecPrivileges]{
-		OutputState: i.ToServiceTaskSpecContainerSpecPrivilegesOutputWithContext(ctx).OutputState,
-	}
-}
-
 func (i ServiceTaskSpecContainerSpecPrivilegesArgs) ToServiceTaskSpecContainerSpecPrivilegesPtrOutput() ServiceTaskSpecContainerSpecPrivilegesPtrOutput {
 	return i.ToServiceTaskSpecContainerSpecPrivilegesPtrOutputWithContext(context.Background())
 }
@@ -8521,12 +7458,6 @@ func (i *serviceTaskSpecContainerSpecPrivilegesPtrType) ToServiceTaskSpecContain
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecContainerSpecPrivilegesPtrOutput)
 }
 
-func (i *serviceTaskSpecContainerSpecPrivilegesPtrType) ToOutput(ctx context.Context) pulumix.Output[*ServiceTaskSpecContainerSpecPrivileges] {
-	return pulumix.Output[*ServiceTaskSpecContainerSpecPrivileges]{
-		OutputState: i.ToServiceTaskSpecContainerSpecPrivilegesPtrOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ServiceTaskSpecContainerSpecPrivilegesOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecContainerSpecPrivilegesOutput) ElementType() reflect.Type {
@@ -8549,12 +7480,6 @@ func (o ServiceTaskSpecContainerSpecPrivilegesOutput) ToServiceTaskSpecContainer
 	return o.ApplyTWithContext(ctx, func(_ context.Context, v ServiceTaskSpecContainerSpecPrivileges) *ServiceTaskSpecContainerSpecPrivileges {
 		return &v
 	}).(ServiceTaskSpecContainerSpecPrivilegesPtrOutput)
-}
-
-func (o ServiceTaskSpecContainerSpecPrivilegesOutput) ToOutput(ctx context.Context) pulumix.Output[ServiceTaskSpecContainerSpecPrivileges] {
-	return pulumix.Output[ServiceTaskSpecContainerSpecPrivileges]{
-		OutputState: o.OutputState,
-	}
 }
 
 // CredentialSpec for managed service account (Windows only)
@@ -8583,12 +7508,6 @@ func (o ServiceTaskSpecContainerSpecPrivilegesPtrOutput) ToServiceTaskSpecContai
 
 func (o ServiceTaskSpecContainerSpecPrivilegesPtrOutput) ToServiceTaskSpecContainerSpecPrivilegesPtrOutputWithContext(ctx context.Context) ServiceTaskSpecContainerSpecPrivilegesPtrOutput {
 	return o
-}
-
-func (o ServiceTaskSpecContainerSpecPrivilegesPtrOutput) ToOutput(ctx context.Context) pulumix.Output[*ServiceTaskSpecContainerSpecPrivileges] {
-	return pulumix.Output[*ServiceTaskSpecContainerSpecPrivileges]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ServiceTaskSpecContainerSpecPrivilegesPtrOutput) Elem() ServiceTaskSpecContainerSpecPrivilegesOutput {
@@ -8658,12 +7577,6 @@ func (i ServiceTaskSpecContainerSpecPrivilegesCredentialSpecArgs) ToServiceTaskS
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecContainerSpecPrivilegesCredentialSpecOutput)
 }
 
-func (i ServiceTaskSpecContainerSpecPrivilegesCredentialSpecArgs) ToOutput(ctx context.Context) pulumix.Output[ServiceTaskSpecContainerSpecPrivilegesCredentialSpec] {
-	return pulumix.Output[ServiceTaskSpecContainerSpecPrivilegesCredentialSpec]{
-		OutputState: i.ToServiceTaskSpecContainerSpecPrivilegesCredentialSpecOutputWithContext(ctx).OutputState,
-	}
-}
-
 func (i ServiceTaskSpecContainerSpecPrivilegesCredentialSpecArgs) ToServiceTaskSpecContainerSpecPrivilegesCredentialSpecPtrOutput() ServiceTaskSpecContainerSpecPrivilegesCredentialSpecPtrOutput {
 	return i.ToServiceTaskSpecContainerSpecPrivilegesCredentialSpecPtrOutputWithContext(context.Background())
 }
@@ -8705,12 +7618,6 @@ func (i *serviceTaskSpecContainerSpecPrivilegesCredentialSpecPtrType) ToServiceT
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecContainerSpecPrivilegesCredentialSpecPtrOutput)
 }
 
-func (i *serviceTaskSpecContainerSpecPrivilegesCredentialSpecPtrType) ToOutput(ctx context.Context) pulumix.Output[*ServiceTaskSpecContainerSpecPrivilegesCredentialSpec] {
-	return pulumix.Output[*ServiceTaskSpecContainerSpecPrivilegesCredentialSpec]{
-		OutputState: i.ToServiceTaskSpecContainerSpecPrivilegesCredentialSpecPtrOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ServiceTaskSpecContainerSpecPrivilegesCredentialSpecOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecContainerSpecPrivilegesCredentialSpecOutput) ElementType() reflect.Type {
@@ -8735,12 +7642,6 @@ func (o ServiceTaskSpecContainerSpecPrivilegesCredentialSpecOutput) ToServiceTas
 	}).(ServiceTaskSpecContainerSpecPrivilegesCredentialSpecPtrOutput)
 }
 
-func (o ServiceTaskSpecContainerSpecPrivilegesCredentialSpecOutput) ToOutput(ctx context.Context) pulumix.Output[ServiceTaskSpecContainerSpecPrivilegesCredentialSpec] {
-	return pulumix.Output[ServiceTaskSpecContainerSpecPrivilegesCredentialSpec]{
-		OutputState: o.OutputState,
-	}
-}
-
 // Load credential spec from this file
 func (o ServiceTaskSpecContainerSpecPrivilegesCredentialSpecOutput) File() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ServiceTaskSpecContainerSpecPrivilegesCredentialSpec) *string { return v.File }).(pulumi.StringPtrOutput)
@@ -8763,12 +7664,6 @@ func (o ServiceTaskSpecContainerSpecPrivilegesCredentialSpecPtrOutput) ToService
 
 func (o ServiceTaskSpecContainerSpecPrivilegesCredentialSpecPtrOutput) ToServiceTaskSpecContainerSpecPrivilegesCredentialSpecPtrOutputWithContext(ctx context.Context) ServiceTaskSpecContainerSpecPrivilegesCredentialSpecPtrOutput {
 	return o
-}
-
-func (o ServiceTaskSpecContainerSpecPrivilegesCredentialSpecPtrOutput) ToOutput(ctx context.Context) pulumix.Output[*ServiceTaskSpecContainerSpecPrivilegesCredentialSpec] {
-	return pulumix.Output[*ServiceTaskSpecContainerSpecPrivilegesCredentialSpec]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ServiceTaskSpecContainerSpecPrivilegesCredentialSpecPtrOutput) Elem() ServiceTaskSpecContainerSpecPrivilegesCredentialSpecOutput {
@@ -8850,12 +7745,6 @@ func (i ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgs) ToServiceTaskS
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextOutput)
 }
 
-func (i ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgs) ToOutput(ctx context.Context) pulumix.Output[ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext] {
-	return pulumix.Output[ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext]{
-		OutputState: i.ToServiceTaskSpecContainerSpecPrivilegesSeLinuxContextOutputWithContext(ctx).OutputState,
-	}
-}
-
 func (i ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgs) ToServiceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrOutput() ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrOutput {
 	return i.ToServiceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrOutputWithContext(context.Background())
 }
@@ -8897,12 +7786,6 @@ func (i *serviceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrType) ToServiceT
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrOutput)
 }
 
-func (i *serviceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrType) ToOutput(ctx context.Context) pulumix.Output[*ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext] {
-	return pulumix.Output[*ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext]{
-		OutputState: i.ToServiceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextOutput) ElementType() reflect.Type {
@@ -8925,12 +7808,6 @@ func (o ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextOutput) ToServiceTas
 	return o.ApplyTWithContext(ctx, func(_ context.Context, v ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext) *ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext {
 		return &v
 	}).(ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrOutput)
-}
-
-func (o ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextOutput) ToOutput(ctx context.Context) pulumix.Output[ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext] {
-	return pulumix.Output[ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext]{
-		OutputState: o.OutputState,
-	}
 }
 
 // Disable SELinux
@@ -8970,12 +7847,6 @@ func (o ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrOutput) ToService
 
 func (o ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrOutput) ToServiceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrOutputWithContext(ctx context.Context) ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrOutput {
 	return o
-}
-
-func (o ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrOutput) ToOutput(ctx context.Context) pulumix.Output[*ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext] {
-	return pulumix.Output[*ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrOutput) Elem() ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextOutput {
@@ -9091,12 +7962,6 @@ func (i ServiceTaskSpecContainerSpecSecretArgs) ToServiceTaskSpecContainerSpecSe
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecContainerSpecSecretOutput)
 }
 
-func (i ServiceTaskSpecContainerSpecSecretArgs) ToOutput(ctx context.Context) pulumix.Output[ServiceTaskSpecContainerSpecSecret] {
-	return pulumix.Output[ServiceTaskSpecContainerSpecSecret]{
-		OutputState: i.ToServiceTaskSpecContainerSpecSecretOutputWithContext(ctx).OutputState,
-	}
-}
-
 // ServiceTaskSpecContainerSpecSecretArrayInput is an input type that accepts ServiceTaskSpecContainerSpecSecretArray and ServiceTaskSpecContainerSpecSecretArrayOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecContainerSpecSecretArrayInput` via:
 //
@@ -9122,12 +7987,6 @@ func (i ServiceTaskSpecContainerSpecSecretArray) ToServiceTaskSpecContainerSpecS
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecContainerSpecSecretArrayOutput)
 }
 
-func (i ServiceTaskSpecContainerSpecSecretArray) ToOutput(ctx context.Context) pulumix.Output[[]ServiceTaskSpecContainerSpecSecret] {
-	return pulumix.Output[[]ServiceTaskSpecContainerSpecSecret]{
-		OutputState: i.ToServiceTaskSpecContainerSpecSecretArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ServiceTaskSpecContainerSpecSecretOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecContainerSpecSecretOutput) ElementType() reflect.Type {
@@ -9140,12 +7999,6 @@ func (o ServiceTaskSpecContainerSpecSecretOutput) ToServiceTaskSpecContainerSpec
 
 func (o ServiceTaskSpecContainerSpecSecretOutput) ToServiceTaskSpecContainerSpecSecretOutputWithContext(ctx context.Context) ServiceTaskSpecContainerSpecSecretOutput {
 	return o
-}
-
-func (o ServiceTaskSpecContainerSpecSecretOutput) ToOutput(ctx context.Context) pulumix.Output[ServiceTaskSpecContainerSpecSecret] {
-	return pulumix.Output[ServiceTaskSpecContainerSpecSecret]{
-		OutputState: o.OutputState,
-	}
 }
 
 // Represents the file GID. Defaults to `0`.
@@ -9192,12 +8045,6 @@ func (o ServiceTaskSpecContainerSpecSecretArrayOutput) ToServiceTaskSpecContaine
 	return o
 }
 
-func (o ServiceTaskSpecContainerSpecSecretArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]ServiceTaskSpecContainerSpecSecret] {
-	return pulumix.Output[[]ServiceTaskSpecContainerSpecSecret]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o ServiceTaskSpecContainerSpecSecretArrayOutput) Index(i pulumi.IntInput) ServiceTaskSpecContainerSpecSecretOutput {
 	return pulumi.All(o, i).ApplyT(func(vs []interface{}) ServiceTaskSpecContainerSpecSecret {
 		return vs[0].([]ServiceTaskSpecContainerSpecSecret)[vs[1].(int)]
@@ -9241,12 +8088,6 @@ func (i ServiceTaskSpecLogDriverArgs) ToServiceTaskSpecLogDriverOutputWithContex
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecLogDriverOutput)
 }
 
-func (i ServiceTaskSpecLogDriverArgs) ToOutput(ctx context.Context) pulumix.Output[ServiceTaskSpecLogDriver] {
-	return pulumix.Output[ServiceTaskSpecLogDriver]{
-		OutputState: i.ToServiceTaskSpecLogDriverOutputWithContext(ctx).OutputState,
-	}
-}
-
 func (i ServiceTaskSpecLogDriverArgs) ToServiceTaskSpecLogDriverPtrOutput() ServiceTaskSpecLogDriverPtrOutput {
 	return i.ToServiceTaskSpecLogDriverPtrOutputWithContext(context.Background())
 }
@@ -9288,12 +8129,6 @@ func (i *serviceTaskSpecLogDriverPtrType) ToServiceTaskSpecLogDriverPtrOutputWit
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecLogDriverPtrOutput)
 }
 
-func (i *serviceTaskSpecLogDriverPtrType) ToOutput(ctx context.Context) pulumix.Output[*ServiceTaskSpecLogDriver] {
-	return pulumix.Output[*ServiceTaskSpecLogDriver]{
-		OutputState: i.ToServiceTaskSpecLogDriverPtrOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ServiceTaskSpecLogDriverOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecLogDriverOutput) ElementType() reflect.Type {
@@ -9318,12 +8153,6 @@ func (o ServiceTaskSpecLogDriverOutput) ToServiceTaskSpecLogDriverPtrOutputWithC
 	}).(ServiceTaskSpecLogDriverPtrOutput)
 }
 
-func (o ServiceTaskSpecLogDriverOutput) ToOutput(ctx context.Context) pulumix.Output[ServiceTaskSpecLogDriver] {
-	return pulumix.Output[ServiceTaskSpecLogDriver]{
-		OutputState: o.OutputState,
-	}
-}
-
 // A random name for the port
 func (o ServiceTaskSpecLogDriverOutput) Name() pulumi.StringOutput {
 	return o.ApplyT(func(v ServiceTaskSpecLogDriver) string { return v.Name }).(pulumi.StringOutput)
@@ -9346,12 +8175,6 @@ func (o ServiceTaskSpecLogDriverPtrOutput) ToServiceTaskSpecLogDriverPtrOutput()
 
 func (o ServiceTaskSpecLogDriverPtrOutput) ToServiceTaskSpecLogDriverPtrOutputWithContext(ctx context.Context) ServiceTaskSpecLogDriverPtrOutput {
 	return o
-}
-
-func (o ServiceTaskSpecLogDriverPtrOutput) ToOutput(ctx context.Context) pulumix.Output[*ServiceTaskSpecLogDriver] {
-	return pulumix.Output[*ServiceTaskSpecLogDriver]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ServiceTaskSpecLogDriverPtrOutput) Elem() ServiceTaskSpecLogDriverOutput {
@@ -9425,12 +8248,6 @@ func (i ServiceTaskSpecNetworksAdvancedArgs) ToServiceTaskSpecNetworksAdvancedOu
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecNetworksAdvancedOutput)
 }
 
-func (i ServiceTaskSpecNetworksAdvancedArgs) ToOutput(ctx context.Context) pulumix.Output[ServiceTaskSpecNetworksAdvanced] {
-	return pulumix.Output[ServiceTaskSpecNetworksAdvanced]{
-		OutputState: i.ToServiceTaskSpecNetworksAdvancedOutputWithContext(ctx).OutputState,
-	}
-}
-
 // ServiceTaskSpecNetworksAdvancedArrayInput is an input type that accepts ServiceTaskSpecNetworksAdvancedArray and ServiceTaskSpecNetworksAdvancedArrayOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecNetworksAdvancedArrayInput` via:
 //
@@ -9456,12 +8273,6 @@ func (i ServiceTaskSpecNetworksAdvancedArray) ToServiceTaskSpecNetworksAdvancedA
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecNetworksAdvancedArrayOutput)
 }
 
-func (i ServiceTaskSpecNetworksAdvancedArray) ToOutput(ctx context.Context) pulumix.Output[[]ServiceTaskSpecNetworksAdvanced] {
-	return pulumix.Output[[]ServiceTaskSpecNetworksAdvanced]{
-		OutputState: i.ToServiceTaskSpecNetworksAdvancedArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ServiceTaskSpecNetworksAdvancedOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecNetworksAdvancedOutput) ElementType() reflect.Type {
@@ -9474,12 +8285,6 @@ func (o ServiceTaskSpecNetworksAdvancedOutput) ToServiceTaskSpecNetworksAdvanced
 
 func (o ServiceTaskSpecNetworksAdvancedOutput) ToServiceTaskSpecNetworksAdvancedOutputWithContext(ctx context.Context) ServiceTaskSpecNetworksAdvancedOutput {
 	return o
-}
-
-func (o ServiceTaskSpecNetworksAdvancedOutput) ToOutput(ctx context.Context) pulumix.Output[ServiceTaskSpecNetworksAdvanced] {
-	return pulumix.Output[ServiceTaskSpecNetworksAdvanced]{
-		OutputState: o.OutputState,
-	}
 }
 
 // The network aliases of the container in the specific network.
@@ -9509,12 +8314,6 @@ func (o ServiceTaskSpecNetworksAdvancedArrayOutput) ToServiceTaskSpecNetworksAdv
 
 func (o ServiceTaskSpecNetworksAdvancedArrayOutput) ToServiceTaskSpecNetworksAdvancedArrayOutputWithContext(ctx context.Context) ServiceTaskSpecNetworksAdvancedArrayOutput {
 	return o
-}
-
-func (o ServiceTaskSpecNetworksAdvancedArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]ServiceTaskSpecNetworksAdvanced] {
-	return pulumix.Output[[]ServiceTaskSpecNetworksAdvanced]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ServiceTaskSpecNetworksAdvancedArrayOutput) Index(i pulumi.IntInput) ServiceTaskSpecNetworksAdvancedOutput {
@@ -9568,12 +8367,6 @@ func (i ServiceTaskSpecPlacementArgs) ToServiceTaskSpecPlacementOutputWithContex
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecPlacementOutput)
 }
 
-func (i ServiceTaskSpecPlacementArgs) ToOutput(ctx context.Context) pulumix.Output[ServiceTaskSpecPlacement] {
-	return pulumix.Output[ServiceTaskSpecPlacement]{
-		OutputState: i.ToServiceTaskSpecPlacementOutputWithContext(ctx).OutputState,
-	}
-}
-
 func (i ServiceTaskSpecPlacementArgs) ToServiceTaskSpecPlacementPtrOutput() ServiceTaskSpecPlacementPtrOutput {
 	return i.ToServiceTaskSpecPlacementPtrOutputWithContext(context.Background())
 }
@@ -9615,12 +8408,6 @@ func (i *serviceTaskSpecPlacementPtrType) ToServiceTaskSpecPlacementPtrOutputWit
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecPlacementPtrOutput)
 }
 
-func (i *serviceTaskSpecPlacementPtrType) ToOutput(ctx context.Context) pulumix.Output[*ServiceTaskSpecPlacement] {
-	return pulumix.Output[*ServiceTaskSpecPlacement]{
-		OutputState: i.ToServiceTaskSpecPlacementPtrOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ServiceTaskSpecPlacementOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecPlacementOutput) ElementType() reflect.Type {
@@ -9643,12 +8430,6 @@ func (o ServiceTaskSpecPlacementOutput) ToServiceTaskSpecPlacementPtrOutputWithC
 	return o.ApplyTWithContext(ctx, func(_ context.Context, v ServiceTaskSpecPlacement) *ServiceTaskSpecPlacement {
 		return &v
 	}).(ServiceTaskSpecPlacementPtrOutput)
-}
-
-func (o ServiceTaskSpecPlacementOutput) ToOutput(ctx context.Context) pulumix.Output[ServiceTaskSpecPlacement] {
-	return pulumix.Output[ServiceTaskSpecPlacement]{
-		OutputState: o.OutputState,
-	}
 }
 
 // An array of constraints. e.g.: `node.role==manager`
@@ -9683,12 +8464,6 @@ func (o ServiceTaskSpecPlacementPtrOutput) ToServiceTaskSpecPlacementPtrOutput()
 
 func (o ServiceTaskSpecPlacementPtrOutput) ToServiceTaskSpecPlacementPtrOutputWithContext(ctx context.Context) ServiceTaskSpecPlacementPtrOutput {
 	return o
-}
-
-func (o ServiceTaskSpecPlacementPtrOutput) ToOutput(ctx context.Context) pulumix.Output[*ServiceTaskSpecPlacement] {
-	return pulumix.Output[*ServiceTaskSpecPlacement]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ServiceTaskSpecPlacementPtrOutput) Elem() ServiceTaskSpecPlacementOutput {
@@ -9778,12 +8553,6 @@ func (i ServiceTaskSpecPlacementPlatformArgs) ToServiceTaskSpecPlacementPlatform
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecPlacementPlatformOutput)
 }
 
-func (i ServiceTaskSpecPlacementPlatformArgs) ToOutput(ctx context.Context) pulumix.Output[ServiceTaskSpecPlacementPlatform] {
-	return pulumix.Output[ServiceTaskSpecPlacementPlatform]{
-		OutputState: i.ToServiceTaskSpecPlacementPlatformOutputWithContext(ctx).OutputState,
-	}
-}
-
 // ServiceTaskSpecPlacementPlatformArrayInput is an input type that accepts ServiceTaskSpecPlacementPlatformArray and ServiceTaskSpecPlacementPlatformArrayOutput values.
 // You can construct a concrete instance of `ServiceTaskSpecPlacementPlatformArrayInput` via:
 //
@@ -9809,12 +8578,6 @@ func (i ServiceTaskSpecPlacementPlatformArray) ToServiceTaskSpecPlacementPlatfor
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecPlacementPlatformArrayOutput)
 }
 
-func (i ServiceTaskSpecPlacementPlatformArray) ToOutput(ctx context.Context) pulumix.Output[[]ServiceTaskSpecPlacementPlatform] {
-	return pulumix.Output[[]ServiceTaskSpecPlacementPlatform]{
-		OutputState: i.ToServiceTaskSpecPlacementPlatformArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ServiceTaskSpecPlacementPlatformOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecPlacementPlatformOutput) ElementType() reflect.Type {
@@ -9827,12 +8590,6 @@ func (o ServiceTaskSpecPlacementPlatformOutput) ToServiceTaskSpecPlacementPlatfo
 
 func (o ServiceTaskSpecPlacementPlatformOutput) ToServiceTaskSpecPlacementPlatformOutputWithContext(ctx context.Context) ServiceTaskSpecPlacementPlatformOutput {
 	return o
-}
-
-func (o ServiceTaskSpecPlacementPlatformOutput) ToOutput(ctx context.Context) pulumix.Output[ServiceTaskSpecPlacementPlatform] {
-	return pulumix.Output[ServiceTaskSpecPlacementPlatform]{
-		OutputState: o.OutputState,
-	}
 }
 
 // The architecture, e.g. `amd64`
@@ -9857,12 +8614,6 @@ func (o ServiceTaskSpecPlacementPlatformArrayOutput) ToServiceTaskSpecPlacementP
 
 func (o ServiceTaskSpecPlacementPlatformArrayOutput) ToServiceTaskSpecPlacementPlatformArrayOutputWithContext(ctx context.Context) ServiceTaskSpecPlacementPlatformArrayOutput {
 	return o
-}
-
-func (o ServiceTaskSpecPlacementPlatformArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]ServiceTaskSpecPlacementPlatform] {
-	return pulumix.Output[[]ServiceTaskSpecPlacementPlatform]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ServiceTaskSpecPlacementPlatformArrayOutput) Index(i pulumi.IntInput) ServiceTaskSpecPlacementPlatformOutput {
@@ -9908,12 +8659,6 @@ func (i ServiceTaskSpecResourcesArgs) ToServiceTaskSpecResourcesOutputWithContex
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecResourcesOutput)
 }
 
-func (i ServiceTaskSpecResourcesArgs) ToOutput(ctx context.Context) pulumix.Output[ServiceTaskSpecResources] {
-	return pulumix.Output[ServiceTaskSpecResources]{
-		OutputState: i.ToServiceTaskSpecResourcesOutputWithContext(ctx).OutputState,
-	}
-}
-
 func (i ServiceTaskSpecResourcesArgs) ToServiceTaskSpecResourcesPtrOutput() ServiceTaskSpecResourcesPtrOutput {
 	return i.ToServiceTaskSpecResourcesPtrOutputWithContext(context.Background())
 }
@@ -9955,12 +8700,6 @@ func (i *serviceTaskSpecResourcesPtrType) ToServiceTaskSpecResourcesPtrOutputWit
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecResourcesPtrOutput)
 }
 
-func (i *serviceTaskSpecResourcesPtrType) ToOutput(ctx context.Context) pulumix.Output[*ServiceTaskSpecResources] {
-	return pulumix.Output[*ServiceTaskSpecResources]{
-		OutputState: i.ToServiceTaskSpecResourcesPtrOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ServiceTaskSpecResourcesOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecResourcesOutput) ElementType() reflect.Type {
@@ -9985,12 +8724,6 @@ func (o ServiceTaskSpecResourcesOutput) ToServiceTaskSpecResourcesPtrOutputWithC
 	}).(ServiceTaskSpecResourcesPtrOutput)
 }
 
-func (o ServiceTaskSpecResourcesOutput) ToOutput(ctx context.Context) pulumix.Output[ServiceTaskSpecResources] {
-	return pulumix.Output[ServiceTaskSpecResources]{
-		OutputState: o.OutputState,
-	}
-}
-
 // Describes the resources which can be advertised by a node and requested by a task
 func (o ServiceTaskSpecResourcesOutput) Limits() ServiceTaskSpecResourcesLimitsPtrOutput {
 	return o.ApplyT(func(v ServiceTaskSpecResources) *ServiceTaskSpecResourcesLimits { return v.Limits }).(ServiceTaskSpecResourcesLimitsPtrOutput)
@@ -10013,12 +8746,6 @@ func (o ServiceTaskSpecResourcesPtrOutput) ToServiceTaskSpecResourcesPtrOutput()
 
 func (o ServiceTaskSpecResourcesPtrOutput) ToServiceTaskSpecResourcesPtrOutputWithContext(ctx context.Context) ServiceTaskSpecResourcesPtrOutput {
 	return o
-}
-
-func (o ServiceTaskSpecResourcesPtrOutput) ToOutput(ctx context.Context) pulumix.Output[*ServiceTaskSpecResources] {
-	return pulumix.Output[*ServiceTaskSpecResources]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ServiceTaskSpecResourcesPtrOutput) Elem() ServiceTaskSpecResourcesOutput {
@@ -10088,12 +8815,6 @@ func (i ServiceTaskSpecResourcesLimitsArgs) ToServiceTaskSpecResourcesLimitsOutp
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecResourcesLimitsOutput)
 }
 
-func (i ServiceTaskSpecResourcesLimitsArgs) ToOutput(ctx context.Context) pulumix.Output[ServiceTaskSpecResourcesLimits] {
-	return pulumix.Output[ServiceTaskSpecResourcesLimits]{
-		OutputState: i.ToServiceTaskSpecResourcesLimitsOutputWithContext(ctx).OutputState,
-	}
-}
-
 func (i ServiceTaskSpecResourcesLimitsArgs) ToServiceTaskSpecResourcesLimitsPtrOutput() ServiceTaskSpecResourcesLimitsPtrOutput {
 	return i.ToServiceTaskSpecResourcesLimitsPtrOutputWithContext(context.Background())
 }
@@ -10135,12 +8856,6 @@ func (i *serviceTaskSpecResourcesLimitsPtrType) ToServiceTaskSpecResourcesLimits
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecResourcesLimitsPtrOutput)
 }
 
-func (i *serviceTaskSpecResourcesLimitsPtrType) ToOutput(ctx context.Context) pulumix.Output[*ServiceTaskSpecResourcesLimits] {
-	return pulumix.Output[*ServiceTaskSpecResourcesLimits]{
-		OutputState: i.ToServiceTaskSpecResourcesLimitsPtrOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ServiceTaskSpecResourcesLimitsOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecResourcesLimitsOutput) ElementType() reflect.Type {
@@ -10165,12 +8880,6 @@ func (o ServiceTaskSpecResourcesLimitsOutput) ToServiceTaskSpecResourcesLimitsPt
 	}).(ServiceTaskSpecResourcesLimitsPtrOutput)
 }
 
-func (o ServiceTaskSpecResourcesLimitsOutput) ToOutput(ctx context.Context) pulumix.Output[ServiceTaskSpecResourcesLimits] {
-	return pulumix.Output[ServiceTaskSpecResourcesLimits]{
-		OutputState: o.OutputState,
-	}
-}
-
 // The amounf of memory in bytes the container allocates
 func (o ServiceTaskSpecResourcesLimitsOutput) MemoryBytes() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v ServiceTaskSpecResourcesLimits) *int { return v.MemoryBytes }).(pulumi.IntPtrOutput)
@@ -10193,12 +8902,6 @@ func (o ServiceTaskSpecResourcesLimitsPtrOutput) ToServiceTaskSpecResourcesLimit
 
 func (o ServiceTaskSpecResourcesLimitsPtrOutput) ToServiceTaskSpecResourcesLimitsPtrOutputWithContext(ctx context.Context) ServiceTaskSpecResourcesLimitsPtrOutput {
 	return o
-}
-
-func (o ServiceTaskSpecResourcesLimitsPtrOutput) ToOutput(ctx context.Context) pulumix.Output[*ServiceTaskSpecResourcesLimits] {
-	return pulumix.Output[*ServiceTaskSpecResourcesLimits]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ServiceTaskSpecResourcesLimitsPtrOutput) Elem() ServiceTaskSpecResourcesLimitsOutput {
@@ -10272,12 +8975,6 @@ func (i ServiceTaskSpecResourcesReservationArgs) ToServiceTaskSpecResourcesReser
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecResourcesReservationOutput)
 }
 
-func (i ServiceTaskSpecResourcesReservationArgs) ToOutput(ctx context.Context) pulumix.Output[ServiceTaskSpecResourcesReservation] {
-	return pulumix.Output[ServiceTaskSpecResourcesReservation]{
-		OutputState: i.ToServiceTaskSpecResourcesReservationOutputWithContext(ctx).OutputState,
-	}
-}
-
 func (i ServiceTaskSpecResourcesReservationArgs) ToServiceTaskSpecResourcesReservationPtrOutput() ServiceTaskSpecResourcesReservationPtrOutput {
 	return i.ToServiceTaskSpecResourcesReservationPtrOutputWithContext(context.Background())
 }
@@ -10319,12 +9016,6 @@ func (i *serviceTaskSpecResourcesReservationPtrType) ToServiceTaskSpecResourcesR
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecResourcesReservationPtrOutput)
 }
 
-func (i *serviceTaskSpecResourcesReservationPtrType) ToOutput(ctx context.Context) pulumix.Output[*ServiceTaskSpecResourcesReservation] {
-	return pulumix.Output[*ServiceTaskSpecResourcesReservation]{
-		OutputState: i.ToServiceTaskSpecResourcesReservationPtrOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ServiceTaskSpecResourcesReservationOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecResourcesReservationOutput) ElementType() reflect.Type {
@@ -10347,12 +9038,6 @@ func (o ServiceTaskSpecResourcesReservationOutput) ToServiceTaskSpecResourcesRes
 	return o.ApplyTWithContext(ctx, func(_ context.Context, v ServiceTaskSpecResourcesReservation) *ServiceTaskSpecResourcesReservation {
 		return &v
 	}).(ServiceTaskSpecResourcesReservationPtrOutput)
-}
-
-func (o ServiceTaskSpecResourcesReservationOutput) ToOutput(ctx context.Context) pulumix.Output[ServiceTaskSpecResourcesReservation] {
-	return pulumix.Output[ServiceTaskSpecResourcesReservation]{
-		OutputState: o.OutputState,
-	}
 }
 
 // User-defined resources can be either Integer resources (e.g, `SSD=3`) or String resources (e.g, GPU=UUID1)
@@ -10384,12 +9069,6 @@ func (o ServiceTaskSpecResourcesReservationPtrOutput) ToServiceTaskSpecResources
 
 func (o ServiceTaskSpecResourcesReservationPtrOutput) ToServiceTaskSpecResourcesReservationPtrOutputWithContext(ctx context.Context) ServiceTaskSpecResourcesReservationPtrOutput {
 	return o
-}
-
-func (o ServiceTaskSpecResourcesReservationPtrOutput) ToOutput(ctx context.Context) pulumix.Output[*ServiceTaskSpecResourcesReservation] {
-	return pulumix.Output[*ServiceTaskSpecResourcesReservation]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ServiceTaskSpecResourcesReservationPtrOutput) Elem() ServiceTaskSpecResourcesReservationOutput {
@@ -10469,12 +9148,6 @@ func (i ServiceTaskSpecResourcesReservationGenericResourcesArgs) ToServiceTaskSp
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecResourcesReservationGenericResourcesOutput)
 }
 
-func (i ServiceTaskSpecResourcesReservationGenericResourcesArgs) ToOutput(ctx context.Context) pulumix.Output[ServiceTaskSpecResourcesReservationGenericResources] {
-	return pulumix.Output[ServiceTaskSpecResourcesReservationGenericResources]{
-		OutputState: i.ToServiceTaskSpecResourcesReservationGenericResourcesOutputWithContext(ctx).OutputState,
-	}
-}
-
 func (i ServiceTaskSpecResourcesReservationGenericResourcesArgs) ToServiceTaskSpecResourcesReservationGenericResourcesPtrOutput() ServiceTaskSpecResourcesReservationGenericResourcesPtrOutput {
 	return i.ToServiceTaskSpecResourcesReservationGenericResourcesPtrOutputWithContext(context.Background())
 }
@@ -10516,12 +9189,6 @@ func (i *serviceTaskSpecResourcesReservationGenericResourcesPtrType) ToServiceTa
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecResourcesReservationGenericResourcesPtrOutput)
 }
 
-func (i *serviceTaskSpecResourcesReservationGenericResourcesPtrType) ToOutput(ctx context.Context) pulumix.Output[*ServiceTaskSpecResourcesReservationGenericResources] {
-	return pulumix.Output[*ServiceTaskSpecResourcesReservationGenericResources]{
-		OutputState: i.ToServiceTaskSpecResourcesReservationGenericResourcesPtrOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ServiceTaskSpecResourcesReservationGenericResourcesOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecResourcesReservationGenericResourcesOutput) ElementType() reflect.Type {
@@ -10546,12 +9213,6 @@ func (o ServiceTaskSpecResourcesReservationGenericResourcesOutput) ToServiceTask
 	}).(ServiceTaskSpecResourcesReservationGenericResourcesPtrOutput)
 }
 
-func (o ServiceTaskSpecResourcesReservationGenericResourcesOutput) ToOutput(ctx context.Context) pulumix.Output[ServiceTaskSpecResourcesReservationGenericResources] {
-	return pulumix.Output[ServiceTaskSpecResourcesReservationGenericResources]{
-		OutputState: o.OutputState,
-	}
-}
-
 // The Integer resources
 func (o ServiceTaskSpecResourcesReservationGenericResourcesOutput) DiscreteResourcesSpecs() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v ServiceTaskSpecResourcesReservationGenericResources) []string { return v.DiscreteResourcesSpecs }).(pulumi.StringArrayOutput)
@@ -10574,12 +9235,6 @@ func (o ServiceTaskSpecResourcesReservationGenericResourcesPtrOutput) ToServiceT
 
 func (o ServiceTaskSpecResourcesReservationGenericResourcesPtrOutput) ToServiceTaskSpecResourcesReservationGenericResourcesPtrOutputWithContext(ctx context.Context) ServiceTaskSpecResourcesReservationGenericResourcesPtrOutput {
 	return o
-}
-
-func (o ServiceTaskSpecResourcesReservationGenericResourcesPtrOutput) ToOutput(ctx context.Context) pulumix.Output[*ServiceTaskSpecResourcesReservationGenericResources] {
-	return pulumix.Output[*ServiceTaskSpecResourcesReservationGenericResources]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ServiceTaskSpecResourcesReservationGenericResourcesPtrOutput) Elem() ServiceTaskSpecResourcesReservationGenericResourcesOutput {
@@ -10657,12 +9312,6 @@ func (i ServiceTaskSpecRestartPolicyArgs) ToServiceTaskSpecRestartPolicyOutputWi
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecRestartPolicyOutput)
 }
 
-func (i ServiceTaskSpecRestartPolicyArgs) ToOutput(ctx context.Context) pulumix.Output[ServiceTaskSpecRestartPolicy] {
-	return pulumix.Output[ServiceTaskSpecRestartPolicy]{
-		OutputState: i.ToServiceTaskSpecRestartPolicyOutputWithContext(ctx).OutputState,
-	}
-}
-
 func (i ServiceTaskSpecRestartPolicyArgs) ToServiceTaskSpecRestartPolicyPtrOutput() ServiceTaskSpecRestartPolicyPtrOutput {
 	return i.ToServiceTaskSpecRestartPolicyPtrOutputWithContext(context.Background())
 }
@@ -10704,12 +9353,6 @@ func (i *serviceTaskSpecRestartPolicyPtrType) ToServiceTaskSpecRestartPolicyPtrO
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceTaskSpecRestartPolicyPtrOutput)
 }
 
-func (i *serviceTaskSpecRestartPolicyPtrType) ToOutput(ctx context.Context) pulumix.Output[*ServiceTaskSpecRestartPolicy] {
-	return pulumix.Output[*ServiceTaskSpecRestartPolicy]{
-		OutputState: i.ToServiceTaskSpecRestartPolicyPtrOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ServiceTaskSpecRestartPolicyOutput struct{ *pulumi.OutputState }
 
 func (ServiceTaskSpecRestartPolicyOutput) ElementType() reflect.Type {
@@ -10732,12 +9375,6 @@ func (o ServiceTaskSpecRestartPolicyOutput) ToServiceTaskSpecRestartPolicyPtrOut
 	return o.ApplyTWithContext(ctx, func(_ context.Context, v ServiceTaskSpecRestartPolicy) *ServiceTaskSpecRestartPolicy {
 		return &v
 	}).(ServiceTaskSpecRestartPolicyPtrOutput)
-}
-
-func (o ServiceTaskSpecRestartPolicyOutput) ToOutput(ctx context.Context) pulumix.Output[ServiceTaskSpecRestartPolicy] {
-	return pulumix.Output[ServiceTaskSpecRestartPolicy]{
-		OutputState: o.OutputState,
-	}
 }
 
 // Condition for restart
@@ -10772,12 +9409,6 @@ func (o ServiceTaskSpecRestartPolicyPtrOutput) ToServiceTaskSpecRestartPolicyPtr
 
 func (o ServiceTaskSpecRestartPolicyPtrOutput) ToServiceTaskSpecRestartPolicyPtrOutputWithContext(ctx context.Context) ServiceTaskSpecRestartPolicyPtrOutput {
 	return o
-}
-
-func (o ServiceTaskSpecRestartPolicyPtrOutput) ToOutput(ctx context.Context) pulumix.Output[*ServiceTaskSpecRestartPolicy] {
-	return pulumix.Output[*ServiceTaskSpecRestartPolicy]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ServiceTaskSpecRestartPolicyPtrOutput) Elem() ServiceTaskSpecRestartPolicyOutput {
@@ -10883,12 +9514,6 @@ func (i ServiceUpdateConfigArgs) ToServiceUpdateConfigOutputWithContext(ctx cont
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceUpdateConfigOutput)
 }
 
-func (i ServiceUpdateConfigArgs) ToOutput(ctx context.Context) pulumix.Output[ServiceUpdateConfig] {
-	return pulumix.Output[ServiceUpdateConfig]{
-		OutputState: i.ToServiceUpdateConfigOutputWithContext(ctx).OutputState,
-	}
-}
-
 func (i ServiceUpdateConfigArgs) ToServiceUpdateConfigPtrOutput() ServiceUpdateConfigPtrOutput {
 	return i.ToServiceUpdateConfigPtrOutputWithContext(context.Background())
 }
@@ -10930,12 +9555,6 @@ func (i *serviceUpdateConfigPtrType) ToServiceUpdateConfigPtrOutputWithContext(c
 	return pulumi.ToOutputWithContext(ctx, i).(ServiceUpdateConfigPtrOutput)
 }
 
-func (i *serviceUpdateConfigPtrType) ToOutput(ctx context.Context) pulumix.Output[*ServiceUpdateConfig] {
-	return pulumix.Output[*ServiceUpdateConfig]{
-		OutputState: i.ToServiceUpdateConfigPtrOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ServiceUpdateConfigOutput struct{ *pulumi.OutputState }
 
 func (ServiceUpdateConfigOutput) ElementType() reflect.Type {
@@ -10958,12 +9577,6 @@ func (o ServiceUpdateConfigOutput) ToServiceUpdateConfigPtrOutputWithContext(ctx
 	return o.ApplyTWithContext(ctx, func(_ context.Context, v ServiceUpdateConfig) *ServiceUpdateConfig {
 		return &v
 	}).(ServiceUpdateConfigPtrOutput)
-}
-
-func (o ServiceUpdateConfigOutput) ToOutput(ctx context.Context) pulumix.Output[ServiceUpdateConfig] {
-	return pulumix.Output[ServiceUpdateConfig]{
-		OutputState: o.OutputState,
-	}
 }
 
 // Delay between task updates `(ns|us|ms|s|m|h)`. Defaults to `0s`.
@@ -11008,12 +9621,6 @@ func (o ServiceUpdateConfigPtrOutput) ToServiceUpdateConfigPtrOutput() ServiceUp
 
 func (o ServiceUpdateConfigPtrOutput) ToServiceUpdateConfigPtrOutputWithContext(ctx context.Context) ServiceUpdateConfigPtrOutput {
 	return o
-}
-
-func (o ServiceUpdateConfigPtrOutput) ToOutput(ctx context.Context) pulumix.Output[*ServiceUpdateConfig] {
-	return pulumix.Output[*ServiceUpdateConfig]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ServiceUpdateConfigPtrOutput) Elem() ServiceUpdateConfigOutput {
@@ -11123,12 +9730,6 @@ func (i VolumeLabelArgs) ToVolumeLabelOutputWithContext(ctx context.Context) Vol
 	return pulumi.ToOutputWithContext(ctx, i).(VolumeLabelOutput)
 }
 
-func (i VolumeLabelArgs) ToOutput(ctx context.Context) pulumix.Output[VolumeLabel] {
-	return pulumix.Output[VolumeLabel]{
-		OutputState: i.ToVolumeLabelOutputWithContext(ctx).OutputState,
-	}
-}
-
 // VolumeLabelArrayInput is an input type that accepts VolumeLabelArray and VolumeLabelArrayOutput values.
 // You can construct a concrete instance of `VolumeLabelArrayInput` via:
 //
@@ -11154,12 +9755,6 @@ func (i VolumeLabelArray) ToVolumeLabelArrayOutputWithContext(ctx context.Contex
 	return pulumi.ToOutputWithContext(ctx, i).(VolumeLabelArrayOutput)
 }
 
-func (i VolumeLabelArray) ToOutput(ctx context.Context) pulumix.Output[[]VolumeLabel] {
-	return pulumix.Output[[]VolumeLabel]{
-		OutputState: i.ToVolumeLabelArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type VolumeLabelOutput struct{ *pulumi.OutputState }
 
 func (VolumeLabelOutput) ElementType() reflect.Type {
@@ -11172,12 +9767,6 @@ func (o VolumeLabelOutput) ToVolumeLabelOutput() VolumeLabelOutput {
 
 func (o VolumeLabelOutput) ToVolumeLabelOutputWithContext(ctx context.Context) VolumeLabelOutput {
 	return o
-}
-
-func (o VolumeLabelOutput) ToOutput(ctx context.Context) pulumix.Output[VolumeLabel] {
-	return pulumix.Output[VolumeLabel]{
-		OutputState: o.OutputState,
-	}
 }
 
 // Name of the label
@@ -11202,12 +9791,6 @@ func (o VolumeLabelArrayOutput) ToVolumeLabelArrayOutput() VolumeLabelArrayOutpu
 
 func (o VolumeLabelArrayOutput) ToVolumeLabelArrayOutputWithContext(ctx context.Context) VolumeLabelArrayOutput {
 	return o
-}
-
-func (o VolumeLabelArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]VolumeLabel] {
-	return pulumix.Output[[]VolumeLabel]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o VolumeLabelArrayOutput) Index(i pulumi.IntInput) VolumeLabelOutput {
@@ -11251,12 +9834,6 @@ func (i CacheFromArgs) ToCacheFromOutputWithContext(ctx context.Context) CacheFr
 	return pulumi.ToOutputWithContext(ctx, i).(CacheFromOutput)
 }
 
-func (i CacheFromArgs) ToOutput(ctx context.Context) pulumix.Output[CacheFrom] {
-	return pulumix.Output[CacheFrom]{
-		OutputState: i.ToCacheFromOutputWithContext(ctx).OutputState,
-	}
-}
-
 func (i CacheFromArgs) ToCacheFromPtrOutput() CacheFromPtrOutput {
 	return i.ToCacheFromPtrOutputWithContext(context.Background())
 }
@@ -11298,12 +9875,6 @@ func (i *cacheFromPtrType) ToCacheFromPtrOutputWithContext(ctx context.Context) 
 	return pulumi.ToOutputWithContext(ctx, i).(CacheFromPtrOutput)
 }
 
-func (i *cacheFromPtrType) ToOutput(ctx context.Context) pulumix.Output[*CacheFrom] {
-	return pulumix.Output[*CacheFrom]{
-		OutputState: i.ToCacheFromPtrOutputWithContext(ctx).OutputState,
-	}
-}
-
 // Contains a list of images to reference when building using a cache
 type CacheFromOutput struct{ *pulumi.OutputState }
 
@@ -11329,12 +9900,6 @@ func (o CacheFromOutput) ToCacheFromPtrOutputWithContext(ctx context.Context) Ca
 	}).(CacheFromPtrOutput)
 }
 
-func (o CacheFromOutput) ToOutput(ctx context.Context) pulumix.Output[CacheFrom] {
-	return pulumix.Output[CacheFrom]{
-		OutputState: o.OutputState,
-	}
-}
-
 // Specifies cached images
 func (o CacheFromOutput) Images() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v CacheFrom) []string { return v.Images }).(pulumi.StringArrayOutput)
@@ -11352,12 +9917,6 @@ func (o CacheFromPtrOutput) ToCacheFromPtrOutput() CacheFromPtrOutput {
 
 func (o CacheFromPtrOutput) ToCacheFromPtrOutputWithContext(ctx context.Context) CacheFromPtrOutput {
 	return o
-}
-
-func (o CacheFromPtrOutput) ToOutput(ctx context.Context) pulumix.Output[*CacheFrom] {
-	return pulumix.Output[*CacheFrom]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o CacheFromPtrOutput) Elem() CacheFromOutput {
@@ -11439,12 +9998,6 @@ func (i DockerBuildArgs) ToDockerBuildOutputWithContext(ctx context.Context) Doc
 	return pulumi.ToOutputWithContext(ctx, i).(DockerBuildOutput)
 }
 
-func (i DockerBuildArgs) ToOutput(ctx context.Context) pulumix.Output[DockerBuild] {
-	return pulumix.Output[DockerBuild]{
-		OutputState: i.ToDockerBuildOutputWithContext(ctx).OutputState,
-	}
-}
-
 func (i DockerBuildArgs) ToDockerBuildPtrOutput() DockerBuildPtrOutput {
 	return i.ToDockerBuildPtrOutputWithContext(context.Background())
 }
@@ -11486,12 +10039,6 @@ func (i *dockerBuildPtrType) ToDockerBuildPtrOutputWithContext(ctx context.Conte
 	return pulumi.ToOutputWithContext(ctx, i).(DockerBuildPtrOutput)
 }
 
-func (i *dockerBuildPtrType) ToOutput(ctx context.Context) pulumix.Output[*DockerBuild] {
-	return pulumix.Output[*DockerBuild]{
-		OutputState: i.ToDockerBuildPtrOutputWithContext(ctx).OutputState,
-	}
-}
-
 // The Docker build context
 type DockerBuildOutput struct{ *pulumi.OutputState }
 
@@ -11515,12 +10062,6 @@ func (o DockerBuildOutput) ToDockerBuildPtrOutputWithContext(ctx context.Context
 	return o.ApplyTWithContext(ctx, func(_ context.Context, v DockerBuild) *DockerBuild {
 		return &v
 	}).(DockerBuildPtrOutput)
-}
-
-func (o DockerBuildOutput) ToOutput(ctx context.Context) pulumix.Output[DockerBuild] {
-	return pulumix.Output[DockerBuild]{
-		OutputState: o.OutputState,
-	}
 }
 
 // An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass build-time variablesthat can be accessed like environment variables inside the RUN instruction.
@@ -11570,12 +10111,6 @@ func (o DockerBuildPtrOutput) ToDockerBuildPtrOutput() DockerBuildPtrOutput {
 
 func (o DockerBuildPtrOutput) ToDockerBuildPtrOutputWithContext(ctx context.Context) DockerBuildPtrOutput {
 	return o
-}
-
-func (o DockerBuildPtrOutput) ToOutput(ctx context.Context) pulumix.Output[*DockerBuild] {
-	return pulumix.Output[*DockerBuild]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o DockerBuildPtrOutput) Elem() DockerBuildOutput {
@@ -11695,12 +10230,6 @@ func (i GetNetworkIpamConfigArgs) ToGetNetworkIpamConfigOutputWithContext(ctx co
 	return pulumi.ToOutputWithContext(ctx, i).(GetNetworkIpamConfigOutput)
 }
 
-func (i GetNetworkIpamConfigArgs) ToOutput(ctx context.Context) pulumix.Output[GetNetworkIpamConfig] {
-	return pulumix.Output[GetNetworkIpamConfig]{
-		OutputState: i.ToGetNetworkIpamConfigOutputWithContext(ctx).OutputState,
-	}
-}
-
 // GetNetworkIpamConfigArrayInput is an input type that accepts GetNetworkIpamConfigArray and GetNetworkIpamConfigArrayOutput values.
 // You can construct a concrete instance of `GetNetworkIpamConfigArrayInput` via:
 //
@@ -11726,12 +10255,6 @@ func (i GetNetworkIpamConfigArray) ToGetNetworkIpamConfigArrayOutputWithContext(
 	return pulumi.ToOutputWithContext(ctx, i).(GetNetworkIpamConfigArrayOutput)
 }
 
-func (i GetNetworkIpamConfigArray) ToOutput(ctx context.Context) pulumix.Output[[]GetNetworkIpamConfig] {
-	return pulumix.Output[[]GetNetworkIpamConfig]{
-		OutputState: i.ToGetNetworkIpamConfigArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type GetNetworkIpamConfigOutput struct{ *pulumi.OutputState }
 
 func (GetNetworkIpamConfigOutput) ElementType() reflect.Type {
@@ -11744,12 +10267,6 @@ func (o GetNetworkIpamConfigOutput) ToGetNetworkIpamConfigOutput() GetNetworkIpa
 
 func (o GetNetworkIpamConfigOutput) ToGetNetworkIpamConfigOutputWithContext(ctx context.Context) GetNetworkIpamConfigOutput {
 	return o
-}
-
-func (o GetNetworkIpamConfigOutput) ToOutput(ctx context.Context) pulumix.Output[GetNetworkIpamConfig] {
-	return pulumix.Output[GetNetworkIpamConfig]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o GetNetworkIpamConfigOutput) AuxAddress() pulumi.MapOutput {
@@ -11780,12 +10297,6 @@ func (o GetNetworkIpamConfigArrayOutput) ToGetNetworkIpamConfigArrayOutput() Get
 
 func (o GetNetworkIpamConfigArrayOutput) ToGetNetworkIpamConfigArrayOutputWithContext(ctx context.Context) GetNetworkIpamConfigArrayOutput {
 	return o
-}
-
-func (o GetNetworkIpamConfigArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]GetNetworkIpamConfig] {
-	return pulumix.Output[[]GetNetworkIpamConfig]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o GetNetworkIpamConfigArrayOutput) Index(i pulumi.IntInput) GetNetworkIpamConfigOutput {
@@ -11837,12 +10348,6 @@ func (i RegistryArgs) ToRegistryOutputWithContext(ctx context.Context) RegistryO
 	return pulumi.ToOutputWithContext(ctx, i).(RegistryOutput)
 }
 
-func (i RegistryArgs) ToOutput(ctx context.Context) pulumix.Output[Registry] {
-	return pulumix.Output[Registry]{
-		OutputState: i.ToRegistryOutputWithContext(ctx).OutputState,
-	}
-}
-
 func (i RegistryArgs) ToRegistryPtrOutput() RegistryPtrOutput {
 	return i.ToRegistryPtrOutputWithContext(context.Background())
 }
@@ -11884,12 +10389,6 @@ func (i *registryPtrType) ToRegistryPtrOutputWithContext(ctx context.Context) Re
 	return pulumi.ToOutputWithContext(ctx, i).(RegistryPtrOutput)
 }
 
-func (i *registryPtrType) ToOutput(ctx context.Context) pulumix.Output[*Registry] {
-	return pulumix.Output[*Registry]{
-		OutputState: i.ToRegistryPtrOutputWithContext(ctx).OutputState,
-	}
-}
-
 // Describes a Docker container registry
 type RegistryOutput struct{ *pulumi.OutputState }
 
@@ -11913,12 +10412,6 @@ func (o RegistryOutput) ToRegistryPtrOutputWithContext(ctx context.Context) Regi
 	return o.ApplyTWithContext(ctx, func(_ context.Context, v Registry) *Registry {
 		return &v
 	}).(RegistryPtrOutput)
-}
-
-func (o RegistryOutput) ToOutput(ctx context.Context) pulumix.Output[Registry] {
-	return pulumix.Output[Registry]{
-		OutputState: o.OutputState,
-	}
 }
 
 // The password to authenticate to the registry. Does not cause image rebuild when changed.
@@ -11948,12 +10441,6 @@ func (o RegistryPtrOutput) ToRegistryPtrOutput() RegistryPtrOutput {
 
 func (o RegistryPtrOutput) ToRegistryPtrOutputWithContext(ctx context.Context) RegistryPtrOutput {
 	return o
-}
-
-func (o RegistryPtrOutput) ToOutput(ctx context.Context) pulumix.Output[*Registry] {
-	return pulumix.Output[*Registry]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o RegistryPtrOutput) Elem() RegistryOutput {

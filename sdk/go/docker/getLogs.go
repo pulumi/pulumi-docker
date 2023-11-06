@@ -9,7 +9,6 @@ import (
 
 	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker/internal"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 )
 
 // `getLogs` provides logs from specific container
@@ -111,12 +110,6 @@ func (o GetLogsResultOutput) ToGetLogsResultOutput() GetLogsResultOutput {
 
 func (o GetLogsResultOutput) ToGetLogsResultOutputWithContext(ctx context.Context) GetLogsResultOutput {
 	return o
-}
-
-func (o GetLogsResultOutput) ToOutput(ctx context.Context) pulumix.Output[GetLogsResult] {
-	return pulumix.Output[GetLogsResult]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o GetLogsResultOutput) Details() pulumi.BoolPtrOutput {
