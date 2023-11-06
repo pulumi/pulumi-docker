@@ -6,7 +6,7 @@ import copy
 import warnings
 import pulumi
 import pulumi.runtime
-from typing import Any, Mapping, Optional, Sequence, Union, overload
+from typing import Any, Callable, Mapping, Optional, Sequence, Union, overload
 from . import _utilities
 from . import outputs
 from ._inputs import *
@@ -33,19 +33,50 @@ class RemoteImageArgs:
         :param pulumi.Input[Sequence[pulumi.Input[str]]] pull_triggers: List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the docker*registry*image.
         :param pulumi.Input[Mapping[str, Any]] triggers: A map of arbitrary strings that, when changed, will force the `RemoteImage` resource to be replaced. This can be used to rebuild an image when contents of source code folders change
         """
-        pulumi.set(__self__, "name", name)
+        RemoteImageArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            name=name,
+            build=build,
+            force_remove=force_remove,
+            keep_locally=keep_locally,
+            platform=platform,
+            pull_triggers=pull_triggers,
+            triggers=triggers,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             name: Optional[pulumi.Input[str]] = None,
+             build: Optional[pulumi.Input['RemoteImageBuildArgs']] = None,
+             force_remove: Optional[pulumi.Input[bool]] = None,
+             keep_locally: Optional[pulumi.Input[bool]] = None,
+             platform: Optional[pulumi.Input[str]] = None,
+             pull_triggers: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+             triggers: Optional[pulumi.Input[Mapping[str, Any]]] = None,
+             opts: Optional[pulumi.ResourceOptions]=None,
+             **kwargs):
+        if name is None:
+            raise TypeError("Missing 'name' argument")
+        if force_remove is None and 'forceRemove' in kwargs:
+            force_remove = kwargs['forceRemove']
+        if keep_locally is None and 'keepLocally' in kwargs:
+            keep_locally = kwargs['keepLocally']
+        if pull_triggers is None and 'pullTriggers' in kwargs:
+            pull_triggers = kwargs['pullTriggers']
+
+        _setter("name", name)
         if build is not None:
-            pulumi.set(__self__, "build", build)
+            _setter("build", build)
         if force_remove is not None:
-            pulumi.set(__self__, "force_remove", force_remove)
+            _setter("force_remove", force_remove)
         if keep_locally is not None:
-            pulumi.set(__self__, "keep_locally", keep_locally)
+            _setter("keep_locally", keep_locally)
         if platform is not None:
-            pulumi.set(__self__, "platform", platform)
+            _setter("platform", platform)
         if pull_triggers is not None:
-            pulumi.set(__self__, "pull_triggers", pull_triggers)
+            _setter("pull_triggers", pull_triggers)
         if triggers is not None:
-            pulumi.set(__self__, "triggers", triggers)
+            _setter("triggers", triggers)
 
     @property
     @pulumi.getter
@@ -156,24 +187,61 @@ class _RemoteImageState:
         :param pulumi.Input[str] repo_digest: The image sha256 digest in the form of `repo[:tag]@sha256:<hash>`.
         :param pulumi.Input[Mapping[str, Any]] triggers: A map of arbitrary strings that, when changed, will force the `RemoteImage` resource to be replaced. This can be used to rebuild an image when contents of source code folders change
         """
+        _RemoteImageState._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            build=build,
+            force_remove=force_remove,
+            image_id=image_id,
+            keep_locally=keep_locally,
+            name=name,
+            platform=platform,
+            pull_triggers=pull_triggers,
+            repo_digest=repo_digest,
+            triggers=triggers,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             build: Optional[pulumi.Input['RemoteImageBuildArgs']] = None,
+             force_remove: Optional[pulumi.Input[bool]] = None,
+             image_id: Optional[pulumi.Input[str]] = None,
+             keep_locally: Optional[pulumi.Input[bool]] = None,
+             name: Optional[pulumi.Input[str]] = None,
+             platform: Optional[pulumi.Input[str]] = None,
+             pull_triggers: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+             repo_digest: Optional[pulumi.Input[str]] = None,
+             triggers: Optional[pulumi.Input[Mapping[str, Any]]] = None,
+             opts: Optional[pulumi.ResourceOptions]=None,
+             **kwargs):
+        if force_remove is None and 'forceRemove' in kwargs:
+            force_remove = kwargs['forceRemove']
+        if image_id is None and 'imageId' in kwargs:
+            image_id = kwargs['imageId']
+        if keep_locally is None and 'keepLocally' in kwargs:
+            keep_locally = kwargs['keepLocally']
+        if pull_triggers is None and 'pullTriggers' in kwargs:
+            pull_triggers = kwargs['pullTriggers']
+        if repo_digest is None and 'repoDigest' in kwargs:
+            repo_digest = kwargs['repoDigest']
+
         if build is not None:
-            pulumi.set(__self__, "build", build)
+            _setter("build", build)
         if force_remove is not None:
-            pulumi.set(__self__, "force_remove", force_remove)
+            _setter("force_remove", force_remove)
         if image_id is not None:
-            pulumi.set(__self__, "image_id", image_id)
+            _setter("image_id", image_id)
         if keep_locally is not None:
-            pulumi.set(__self__, "keep_locally", keep_locally)
+            _setter("keep_locally", keep_locally)
         if name is not None:
-            pulumi.set(__self__, "name", name)
+            _setter("name", name)
         if platform is not None:
-            pulumi.set(__self__, "platform", platform)
+            _setter("platform", platform)
         if pull_triggers is not None:
-            pulumi.set(__self__, "pull_triggers", pull_triggers)
+            _setter("pull_triggers", pull_triggers)
         if repo_digest is not None:
-            pulumi.set(__self__, "repo_digest", repo_digest)
+            _setter("repo_digest", repo_digest)
         if triggers is not None:
-            pulumi.set(__self__, "triggers", triggers)
+            _setter("triggers", triggers)
 
     @property
     @pulumi.getter
@@ -387,6 +455,10 @@ class RemoteImage(pulumi.CustomResource):
         if resource_args is not None:
             __self__._internal_init(resource_name, opts, **resource_args.__dict__)
         else:
+            kwargs = kwargs or {}
+            def _setter(key, value):
+                kwargs[key] = value
+            RemoteImageArgs._configure(_setter, **kwargs)
             __self__._internal_init(resource_name, *args, **kwargs)
 
     def _internal_init(__self__,
@@ -408,6 +480,11 @@ class RemoteImage(pulumi.CustomResource):
                 raise TypeError('__props__ is only valid when passed in combination with a valid opts.id to get an existing resource')
             __props__ = RemoteImageArgs.__new__(RemoteImageArgs)
 
+            if build is not None and not isinstance(build, RemoteImageBuildArgs):
+                build = build or {}
+                def _setter(key, value):
+                    build[key] = value
+                RemoteImageBuildArgs._configure(_setter, **build)
             __props__.__dict__["build"] = build
             __props__.__dict__["force_remove"] = force_remove
             __props__.__dict__["keep_locally"] = keep_locally

@@ -6,7 +6,7 @@ import copy
 import warnings
 import pulumi
 import pulumi.runtime
-from typing import Any, Mapping, Optional, Sequence, Union, overload
+from typing import Any, Callable, Mapping, Optional, Sequence, Union, overload
 from . import _utilities
 from . import outputs
 from ._inputs import *
@@ -37,23 +37,62 @@ class ServiceArgs:
         :param pulumi.Input['ServiceRollbackConfigArgs'] rollback_config: Specification for the rollback strategy of the service
         :param pulumi.Input['ServiceUpdateConfigArgs'] update_config: Specification for the update strategy of the service
         """
-        pulumi.set(__self__, "task_spec", task_spec)
+        ServiceArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            task_spec=task_spec,
+            auth=auth,
+            converge_config=converge_config,
+            endpoint_spec=endpoint_spec,
+            labels=labels,
+            mode=mode,
+            name=name,
+            rollback_config=rollback_config,
+            update_config=update_config,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             task_spec: Optional[pulumi.Input['ServiceTaskSpecArgs']] = None,
+             auth: Optional[pulumi.Input['ServiceAuthArgs']] = None,
+             converge_config: Optional[pulumi.Input['ServiceConvergeConfigArgs']] = None,
+             endpoint_spec: Optional[pulumi.Input['ServiceEndpointSpecArgs']] = None,
+             labels: Optional[pulumi.Input[Sequence[pulumi.Input['ServiceLabelArgs']]]] = None,
+             mode: Optional[pulumi.Input['ServiceModeArgs']] = None,
+             name: Optional[pulumi.Input[str]] = None,
+             rollback_config: Optional[pulumi.Input['ServiceRollbackConfigArgs']] = None,
+             update_config: Optional[pulumi.Input['ServiceUpdateConfigArgs']] = None,
+             opts: Optional[pulumi.ResourceOptions]=None,
+             **kwargs):
+        if task_spec is None and 'taskSpec' in kwargs:
+            task_spec = kwargs['taskSpec']
+        if task_spec is None:
+            raise TypeError("Missing 'task_spec' argument")
+        if converge_config is None and 'convergeConfig' in kwargs:
+            converge_config = kwargs['convergeConfig']
+        if endpoint_spec is None and 'endpointSpec' in kwargs:
+            endpoint_spec = kwargs['endpointSpec']
+        if rollback_config is None and 'rollbackConfig' in kwargs:
+            rollback_config = kwargs['rollbackConfig']
+        if update_config is None and 'updateConfig' in kwargs:
+            update_config = kwargs['updateConfig']
+
+        _setter("task_spec", task_spec)
         if auth is not None:
-            pulumi.set(__self__, "auth", auth)
+            _setter("auth", auth)
         if converge_config is not None:
-            pulumi.set(__self__, "converge_config", converge_config)
+            _setter("converge_config", converge_config)
         if endpoint_spec is not None:
-            pulumi.set(__self__, "endpoint_spec", endpoint_spec)
+            _setter("endpoint_spec", endpoint_spec)
         if labels is not None:
-            pulumi.set(__self__, "labels", labels)
+            _setter("labels", labels)
         if mode is not None:
-            pulumi.set(__self__, "mode", mode)
+            _setter("mode", mode)
         if name is not None:
-            pulumi.set(__self__, "name", name)
+            _setter("name", name)
         if rollback_config is not None:
-            pulumi.set(__self__, "rollback_config", rollback_config)
+            _setter("rollback_config", rollback_config)
         if update_config is not None:
-            pulumi.set(__self__, "update_config", update_config)
+            _setter("update_config", update_config)
 
     @property
     @pulumi.getter(name="taskSpec")
@@ -188,24 +227,61 @@ class _ServiceState:
         :param pulumi.Input['ServiceTaskSpecArgs'] task_spec: User modifiable task configuration
         :param pulumi.Input['ServiceUpdateConfigArgs'] update_config: Specification for the update strategy of the service
         """
+        _ServiceState._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            auth=auth,
+            converge_config=converge_config,
+            endpoint_spec=endpoint_spec,
+            labels=labels,
+            mode=mode,
+            name=name,
+            rollback_config=rollback_config,
+            task_spec=task_spec,
+            update_config=update_config,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             auth: Optional[pulumi.Input['ServiceAuthArgs']] = None,
+             converge_config: Optional[pulumi.Input['ServiceConvergeConfigArgs']] = None,
+             endpoint_spec: Optional[pulumi.Input['ServiceEndpointSpecArgs']] = None,
+             labels: Optional[pulumi.Input[Sequence[pulumi.Input['ServiceLabelArgs']]]] = None,
+             mode: Optional[pulumi.Input['ServiceModeArgs']] = None,
+             name: Optional[pulumi.Input[str]] = None,
+             rollback_config: Optional[pulumi.Input['ServiceRollbackConfigArgs']] = None,
+             task_spec: Optional[pulumi.Input['ServiceTaskSpecArgs']] = None,
+             update_config: Optional[pulumi.Input['ServiceUpdateConfigArgs']] = None,
+             opts: Optional[pulumi.ResourceOptions]=None,
+             **kwargs):
+        if converge_config is None and 'convergeConfig' in kwargs:
+            converge_config = kwargs['convergeConfig']
+        if endpoint_spec is None and 'endpointSpec' in kwargs:
+            endpoint_spec = kwargs['endpointSpec']
+        if rollback_config is None and 'rollbackConfig' in kwargs:
+            rollback_config = kwargs['rollbackConfig']
+        if task_spec is None and 'taskSpec' in kwargs:
+            task_spec = kwargs['taskSpec']
+        if update_config is None and 'updateConfig' in kwargs:
+            update_config = kwargs['updateConfig']
+
         if auth is not None:
-            pulumi.set(__self__, "auth", auth)
+            _setter("auth", auth)
         if converge_config is not None:
-            pulumi.set(__self__, "converge_config", converge_config)
+            _setter("converge_config", converge_config)
         if endpoint_spec is not None:
-            pulumi.set(__self__, "endpoint_spec", endpoint_spec)
+            _setter("endpoint_spec", endpoint_spec)
         if labels is not None:
-            pulumi.set(__self__, "labels", labels)
+            _setter("labels", labels)
         if mode is not None:
-            pulumi.set(__self__, "mode", mode)
+            _setter("mode", mode)
         if name is not None:
-            pulumi.set(__self__, "name", name)
+            _setter("name", name)
         if rollback_config is not None:
-            pulumi.set(__self__, "rollback_config", rollback_config)
+            _setter("rollback_config", rollback_config)
         if task_spec is not None:
-            pulumi.set(__self__, "task_spec", task_spec)
+            _setter("task_spec", task_spec)
         if update_config is not None:
-            pulumi.set(__self__, "update_config", update_config)
+            _setter("update_config", update_config)
 
     @property
     @pulumi.getter
@@ -429,6 +505,10 @@ class Service(pulumi.CustomResource):
         if resource_args is not None:
             __self__._internal_init(resource_name, opts, **resource_args.__dict__)
         else:
+            kwargs = kwargs or {}
+            def _setter(key, value):
+                kwargs[key] = value
+            ServiceArgs._configure(_setter, **kwargs)
             __self__._internal_init(resource_name, *args, **kwargs)
 
     def _internal_init(__self__,
@@ -452,16 +532,51 @@ class Service(pulumi.CustomResource):
                 raise TypeError('__props__ is only valid when passed in combination with a valid opts.id to get an existing resource')
             __props__ = ServiceArgs.__new__(ServiceArgs)
 
+            if auth is not None and not isinstance(auth, ServiceAuthArgs):
+                auth = auth or {}
+                def _setter(key, value):
+                    auth[key] = value
+                ServiceAuthArgs._configure(_setter, **auth)
             __props__.__dict__["auth"] = auth
+            if converge_config is not None and not isinstance(converge_config, ServiceConvergeConfigArgs):
+                converge_config = converge_config or {}
+                def _setter(key, value):
+                    converge_config[key] = value
+                ServiceConvergeConfigArgs._configure(_setter, **converge_config)
             __props__.__dict__["converge_config"] = converge_config
+            if endpoint_spec is not None and not isinstance(endpoint_spec, ServiceEndpointSpecArgs):
+                endpoint_spec = endpoint_spec or {}
+                def _setter(key, value):
+                    endpoint_spec[key] = value
+                ServiceEndpointSpecArgs._configure(_setter, **endpoint_spec)
             __props__.__dict__["endpoint_spec"] = endpoint_spec
             __props__.__dict__["labels"] = labels
+            if mode is not None and not isinstance(mode, ServiceModeArgs):
+                mode = mode or {}
+                def _setter(key, value):
+                    mode[key] = value
+                ServiceModeArgs._configure(_setter, **mode)
             __props__.__dict__["mode"] = mode
             __props__.__dict__["name"] = name
+            if rollback_config is not None and not isinstance(rollback_config, ServiceRollbackConfigArgs):
+                rollback_config = rollback_config or {}
+                def _setter(key, value):
+                    rollback_config[key] = value
+                ServiceRollbackConfigArgs._configure(_setter, **rollback_config)
             __props__.__dict__["rollback_config"] = rollback_config
+            if task_spec is not None and not isinstance(task_spec, ServiceTaskSpecArgs):
+                task_spec = task_spec or {}
+                def _setter(key, value):
+                    task_spec[key] = value
+                ServiceTaskSpecArgs._configure(_setter, **task_spec)
             if task_spec is None and not opts.urn:
                 raise TypeError("Missing required property 'task_spec'")
             __props__.__dict__["task_spec"] = task_spec
+            if update_config is not None and not isinstance(update_config, ServiceUpdateConfigArgs):
+                update_config = update_config or {}
+                def _setter(key, value):
+                    update_config[key] = value
+                ServiceUpdateConfigArgs._configure(_setter, **update_config)
             __props__.__dict__["update_config"] = update_config
         super(Service, __self__).__init__(
             'docker:index/service:Service',
