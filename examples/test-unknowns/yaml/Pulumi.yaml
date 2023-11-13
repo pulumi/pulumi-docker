@@ -1,10 +1,10 @@
 name: dockerfile-default-context
 runtime: yaml
 resources:
-  randName:
-    type: random:RandomString
+  commandName:
+    type: command:local:Command
     properties:
-      length: 8
+      create: echo guinisawesome
   demo-image:
     type: docker:Image
     properties:
@@ -12,8 +12,8 @@ resources:
       skipPush: true
       build:
         args:
-          RANDOM_ARG: ${randName.id}
+          RANDOM_ARG: ${commandName.stdout}
     options:
       version: v4.1.0
 outputs:
-  randNameId: ${randName.id}
+  randNameId: ${commandName.stdout}

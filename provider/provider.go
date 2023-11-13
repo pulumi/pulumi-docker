@@ -134,10 +134,12 @@ func (p *dockerNativeProvider) log(ctx context.Context, sev diag.Severity, urn r
 // the provider inputs are using for detecting and rendering diffs.
 func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest) (*rpc.CheckResponse, error) {
 	urn := resource.URN(req.GetUrn())
-	label := fmt.Sprintf("%s.Create(%s)", p.name, urn)
+	label := fmt.Sprintf("%s.Check(%s)", p.name, urn)
 	logging.V(9).Infof("%s executing", label)
 
-	inputs, err := plugin.UnmarshalProperties(req.GetNews(), plugin.MarshalOptions{
+	news := req.GetNews()
+
+	inputs, err := plugin.UnmarshalProperties(news, plugin.MarshalOptions{
 		KeepUnknowns: true,
 		SkipNulls:    true,
 	})
@@ -145,60 +147,78 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 		return nil, err
 	}
 
-	if inputs["build"].ContainsUnknowns() {
-		// We skip some of the "nice-to-have" default and verification logic in the case of unknowns.
-		// This should be fine, given that _any_ unknowns in the Build field should trigger a diff.
-		// Furthermore, all of this will get called again during `pulumi up`.
-		inputStruct, err := plugin.MarshalProperties(inputs, plugin.MarshalOptions{
-			KeepUnknowns: false,
-			SkipNulls:    true,
-		})
-		if err != nil {
-			return nil, err
-		}
+	//if inputs["build"].ContainsUnknowns() {
+	//	//// We skip some of the "nice-to-have" default and verification logic in the case of unknowns.
+	//	//// This should be fine, given that _any_ unknowns in the Build field should trigger a diff.
+	//	//// Furthermore, all of this will get called again during `pulumi up`.
+	//	//inputStruct, err := plugin.MarshalProperties(inputs, plugin.MarshalOptions{
+	//	//	KeepUnknowns: true,
+	//	//	SkipNulls:    true,
+	//	//})
+	//	//if err != nil {
+	//	//	return nil, err
+	//	//}
+	//
+	//	return &rpc.CheckResponse{Inputs: news, Failures: nil}, nil
+	//}
 
-		return &rpc.CheckResponse{Inputs: inputStruct, Failures: nil}, nil
-	}
-
-	// Set defaults
+	// Set defaults. TODO: remove foll comment - This doesn't work with unknowns, say, during preview.
 	build, err := marshalBuildAndApplyDefaults(inputs["build"])
 	if err != nil {
 		return nil, err
 	}
-	// Verify Dockerfile at given location
-	if _, statErr := os.Stat(build.Dockerfile); statErr != nil {
-		if filepath.IsAbs(build.Dockerfile) {
-			return nil, fmt.Errorf("could not open dockerfile at absolute path %s: %v", build.Dockerfile, statErr)
-		}
-		relPath := filepath.Join(build.Context, build.Dockerfile)
-		_, err = os.Stat(relPath)
 
-		// In the case of a pulumi project that looks as follows:
-		// infra/
-		//   app/
-		//     # some content for the Docker build
-		//     Dockerfile
-		//   Pulumi.yaml
-		//
-		//
-		// the user inputs:
-		//    context: "./app"
-		//    dockerfile: "./Dockerfile" # this is in error because it is in "./app/Dockerfile"
-		//
-		// we want an error message that tells the user: try "./app/Dockerfile"
-		if err != nil {
-			// no clue case
-			return nil, fmt.Errorf("could not open dockerfile at relative path %s: %v", build.Dockerfile, statErr)
-		}
-
-		// we could open the relative path
-		return nil, fmt.Errorf("could not open dockerfile at relative path %s. "+
-			"Try setting `dockerfile` to %q", build.Dockerfile, relPath)
-
+	// TODO: this only verifies if my Dockerfile is unknown. What about other unknowns? how do we want to handle that? do we rewrite the marshaler? let's prove this one first!
+	var knownDockerfile bool
+	if !inputs["build"].ObjectValue()["dockerfile"].ContainsUnknowns() {
+		knownDockerfile = true
 	}
-	contextDigest, err := hashContext(build.Context, build.Dockerfile)
-	if err != nil {
-		return nil, err
+	// Verify Dockerfile at given location
+
+	if knownDockerfile {
+
+		if _, statErr := os.Stat(build.Dockerfile); statErr != nil {
+			if filepath.IsAbs(build.Dockerfile) {
+				return nil, fmt.Errorf("could not open dockerfile at absolute path %s: %v", build.Dockerfile, statErr)
+			}
+			relPath := filepath.Join(build.Context, build.Dockerfile)
+			_, err = os.Stat(relPath)
+
+			// In the case of a pulumi project that looks as follows:
+			// infra/
+			//   app/
+			//     # some content for the Docker build
+			//     Dockerfile
+			//   Pulumi.yaml
+			//
+			//
+			// the user inputs:
+			//    context: "./app"
+			//    dockerfile: "./Dockerfile" # this is in error because it is in "./app/Dockerfile"
+			//
+			// we want an error message that tells the user: try "./app/Dockerfile"
+			if err != nil {
+				// no clue case
+				return nil, fmt.Errorf("could not open dockerfile at relative blahahaha path %s: %v", build.Dockerfile, statErr)
+			}
+
+			// we could open the relative path
+			return nil, fmt.Errorf("could not open dockerfile at relative blaheheh path %s. "+
+				"Try setting `dockerfile` to %q", build.Dockerfile, relPath)
+
+		}
+		contextDigest, err := hashContext(build.Context, build.Dockerfile)
+		if err != nil {
+			return nil, err
+		}
+		// add implicit resource contextDigest
+		if inputs["build"].IsNull() {
+			inputs["build"] = resource.NewObjectProperty(resource.PropertyMap{
+				"contextDigest": resource.NewStringProperty(contextDigest),
+			})
+		} else {
+			inputs["build"].ObjectValue()["contextDigest"] = resource.NewStringProperty(contextDigest)
+		}
 	}
 
 	// OS defaults to Linux in all cases
@@ -210,18 +230,18 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 			"To ensure you are building for the correct platform, consider "+
 			"explicitly setting the `platform` field on ImageBuildOptions.", hostPlatform)
 
-	// build options: add implicit resource contextDigest and set default host platform
+	// build options: set default host platform
+	// TODO: remove comment - notice how we're checking the inputs, not the build struct here? apparently we only use the build struct for the dockerfile hashing. Huh okay.
 	if inputs["build"].IsNull() {
 		inputs["build"] = resource.NewObjectProperty(resource.PropertyMap{
-			"contextDigest": resource.NewStringProperty(contextDigest),
-			"platform":      resource.NewStringProperty(hostPlatform),
+
+			"platform": resource.NewStringProperty(hostPlatform),
 		})
 		err = p.log(ctx, "info", urn, msg)
 		if err != nil {
 			return nil, err
 		}
 	} else {
-		inputs["build"].ObjectValue()["contextDigest"] = resource.NewStringProperty(contextDigest)
 		if inputs["build"].ObjectValue()["platform"].IsNull() {
 			inputs["build"].ObjectValue()["platform"] = resource.NewStringProperty(hostPlatform)
 			err = p.log(ctx, "info", urn, msg)
@@ -253,7 +273,7 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 	}
 
 	inputStruct, err := plugin.MarshalProperties(inputs, plugin.MarshalOptions{
-		KeepUnknowns: false,
+		KeepUnknowns: true,
 		SkipNulls:    true,
 	})
 	if err != nil {

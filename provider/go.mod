@@ -15,6 +15,7 @@ require (
 	github.com/pulumi/pulumi-terraform-bridge/v3 v3.66.0
 	github.com/pulumi/pulumi/pkg/v3 v3.94.2
 	github.com/pulumi/pulumi/sdk/v3 v3.94.2
+	github.com/ryboe/q v1.0.20
 	github.com/stretchr/testify v1.8.4
 	github.com/terraform-providers/terraform-provider-docker v0.0.0
 	github.com/tonistiigi/fsutil v0.0.0-20230105215944-fb433841cbfa
@@ -172,6 +173,8 @@ require (
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/kevinburke/ssh_config v1.2.0 // indirect
 	github.com/klauspost/compress v1.16.0 // indirect
+	github.com/kr/pretty v0.3.1 // indirect
+	github.com/kr/text v0.2.0 // indirect
 	github.com/kylelemons/godebug v1.1.0 // indirect
 	github.com/lucasb-eyer/go-colorful v1.2.0 // indirect
 	github.com/matryer/is v1.4.0 // indirect

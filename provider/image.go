@@ -41,6 +41,7 @@ import (
 	"github.com/opencontainers/go-digest"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
+	"github.com/ryboe/q"
 )
 
 const defaultDockerfile = "Dockerfile"
@@ -588,6 +589,8 @@ func marshalBuildAndApplyDefaults(b resource.PropertyValue) (Build, error) {
 	if buildObject["context"].IsNull() {
 		// set default
 		build.Context = "."
+	} else if buildObject["context"].ContainsUnknowns() {
+		q.Q("DO NOTIONG in context ever")
 	} else {
 		build.Context = buildObject["context"].StringValue()
 	}
@@ -596,6 +599,8 @@ func marshalBuildAndApplyDefaults(b resource.PropertyValue) (Build, error) {
 	if buildObject["dockerfile"].IsNull() {
 		// set default
 		build.Dockerfile = path.Join(build.Context, defaultDockerfile)
+	} else if buildObject["dockerfile"].ContainsUnknowns() {
+		q.Q("DO NOTIONG")
 	} else {
 		build.Dockerfile = buildObject["dockerfile"].StringValue()
 	}
@@ -611,6 +616,7 @@ func marshalBuildAndApplyDefaults(b resource.PropertyValue) (Build, error) {
 	build.Args = marshalArgs(buildObject["args"])
 
 	// Target
+	// TODO: Check for unknowns at every step. (Ugh.)
 	if !buildObject["target"].IsNull() {
 		build.Target = buildObject["target"].StringValue()
 	}
