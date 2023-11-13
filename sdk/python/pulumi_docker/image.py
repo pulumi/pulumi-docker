@@ -111,8 +111,7 @@ class Image(pulumi.CustomResource):
         even when using `latest` tag. To trigger such updates, e.g. when referencing pushed images in container orchestration
         and management resources, please use the `repoDigest` Output instead, which is of the format
         `repository@<algorithm>:<hash>` and unique per build/push.
-        Note that `repoDigest` is not available for local Images. For a local Image not pushed to a registry, you may want to
-        give `imageName` a unique tag per pulumi update.
+        As of Docker v4.4, `repoDigest` is now available for local Images.
 
         ## Cross-platform builds
 
@@ -212,8 +211,7 @@ class Image(pulumi.CustomResource):
         even when using `latest` tag. To trigger such updates, e.g. when referencing pushed images in container orchestration
         and management resources, please use the `repoDigest` Output instead, which is of the format
         `repository@<algorithm>:<hash>` and unique per build/push.
-        Note that `repoDigest` is not available for local Images. For a local Image not pushed to a registry, you may want to
-        give `imageName` a unique tag per pulumi update.
+        As of Docker v4.4, `repoDigest` is now available for local Images.
 
         ## Cross-platform builds
 
