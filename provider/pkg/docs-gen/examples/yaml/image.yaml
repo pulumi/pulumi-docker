@@ -15,7 +15,7 @@ resources:
         args:
           platform: linux/amd64
     options:
-      version: v4.0.0
+      version: v4.4.0
 outputs:
   imageName: ${demo-image.imageName}
 ---
@@ -33,7 +33,7 @@ resources:
         dockerfile: Dockerfile
         context: .
     options:
-      version: v4.0.0
+      version: v4.4.0
 outputs:
   imageName: ${demo-push-image.imageName}
   repoDigest: ${demo-push-image.repoDigest}
