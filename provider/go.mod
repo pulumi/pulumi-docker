@@ -3,12 +3,12 @@ module github.com/pulumi/pulumi-docker/provider/v4
 go 1.21
 
 require (
-	github.com/docker/cli v23.0.1+incompatible
+	github.com/docker/cli v23.0.7+incompatible
 	github.com/docker/distribution v2.8.1+incompatible
-	github.com/docker/docker v23.0.1+incompatible
+	github.com/docker/docker v23.0.7+incompatible
 	github.com/golang/protobuf v1.5.3
 	github.com/moby/buildkit v0.11.4
-	github.com/moby/moby v23.0.3+incompatible
+	github.com/moby/moby v23.0.7+incompatible
 	github.com/pkg/errors v0.9.1
 	github.com/pulumi/pulumi-terraform-bridge/v3 v3.63.2
 	github.com/pulumi/pulumi/pkg/v3 v3.91.1
