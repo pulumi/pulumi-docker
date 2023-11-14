@@ -46,7 +46,7 @@ func main() {
 			return err
 		}
 
-		ctx.Export("imageName", image.ImageName)
+		ctx.Export("imageName", image.RepoDigest)
 		return nil
 	})
 }
