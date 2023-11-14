@@ -17,6 +17,8 @@
 package examples
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"os"
 	"os/exec"
@@ -24,6 +26,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/docker/docker/api/types"
 	"github.com/pulumi/pulumi/pkg/v3/testing/integration"
 	"github.com/stretchr/testify/assert"
 )
@@ -87,6 +90,20 @@ func TestBuildCacheFromGo(t *testing.T) {
 		return nil
 	}
 
+	inspectImage := func(imageName string) (types.ImageInspect, error) {
+		cmd := exec.Command("docker", "image", "inspect", imageName)
+		inspectOutput, err := cmd.Output()
+		var result types.ImageInspect
+		if err != nil {
+			return result, fmt.Errorf("error inspecting image %q: %w", imageName, err)
+		}
+
+		rdr := bytes.NewReader(inspectOutput)
+		err = json.NewDecoder(rdr).Decode(&result)
+
+		return result, nil
+	}
+
 	clearCache("")
 
 	step1Start := time.Now()
@@ -94,8 +111,9 @@ func TestBuildCacheFromGo(t *testing.T) {
 	var step2Start time.Time
 	var step2DeployTime time.Duration
 
-	var imageName string
-	var ok bool
+	var firstImageName string
+	var firstImageId string
+	var firstImageRepoDigest string
 
 	opts := base.With(integration.ProgramTestOptions{
 		Dir:              path.Join(cwd, "multi-stage-build-go"),
@@ -107,11 +125,15 @@ func TestBuildCacheFromGo(t *testing.T) {
 		},
 		ExtraRuntimeValidation: func(t *testing.T, stack integration.RuntimeValidationStackInfo) {
 			step1DeployTime = time.Since(step1Start)
-
-			if imageName, ok = stack.Outputs["imageName"].(string); ok {
+			if imageName, ok := stack.Outputs["imageName"].(string); ok {
+				firstImageName = imageName
+				inspectResult, err := inspectImage(imageName)
+				assert.NoError(t, err)
+				firstImageId = inspectResult.ID
+				firstImageRepoDigest = inspectResult.RepoDigests[0]
 				assert.NoError(t, clearCache(imageName))
 			} else {
-				t.Errorf("expected repositoryUrl output")
+				t.Errorf("expected imageName output")
 			}
 
 			step2Start = time.Now()
@@ -122,7 +144,16 @@ func TestBuildCacheFromGo(t *testing.T) {
 				Additive: true,
 				ExtraRuntimeValidation: func(t *testing.T, stack integration.RuntimeValidationStackInfo) {
 					step2DeployTime = time.Since(step2Start)
-					clearCache(imageName)
+					if imageName, ok := stack.Outputs["imageName"].(string); ok {
+						assert.NotEqual(t, imageName, firstImageName)
+						inspectResult, err := inspectImage(imageName)
+						assert.NoError(t, err)
+						assert.NotEqual(t, inspectResult.ID, firstImageId)
+						assert.NotEqual(t, inspectResult.RepoDigests, firstImageRepoDigest)
+						assert.NoError(t, clearCache(imageName))
+					} else {
+						t.Errorf("expected imageName output")
+					}
 				},
 			},
 		},
