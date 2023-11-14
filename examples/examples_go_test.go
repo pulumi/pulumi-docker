@@ -17,6 +17,8 @@
 package examples
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"os"
 	"os/exec"
@@ -24,8 +26,10 @@ import (
 	"testing"
 	"time"
 
+	"github.com/docker/docker/api/types"
 	"github.com/pulumi/pulumi/pkg/v3/testing/integration"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestNginxGo(t *testing.T) {
@@ -66,36 +70,22 @@ func TestNginxGo(t *testing.T) {
 // There is some measurement error here, as we're measuring Docker via `pulumi up` and step 2 will
 // have to download the first stage from the repository. To minimize this the same Pulumi program is
 // used and the each stage uses a small image as the base.
+
+// As of https://github.com/pulumi/pulumi-docker/pull/843, this also
 func TestBuildCacheFromGo(t *testing.T) {
 	cwd, err := os.Getwd()
 	if !assert.NoError(t, err) {
 		t.FailNow()
 	}
 
-	clearCache := func(imageName string) error {
-		if imageName != "" {
-			if err := exec.Command("docker", "image", "rm", imageName).Run(); err != nil {
-				return fmt.Errorf("error removing image %q: %w", imageName, err)
-			}
-		}
-		if err := exec.Command("docker", "image", "prune").Run(); err != nil {
-			return fmt.Errorf("error pruning dangling images: %w", err)
-		}
-		if err := exec.Command("docker", "builder", "prune", "-a").Run(); err != nil {
-			return fmt.Errorf("error pruning build cache: %w", err)
-		}
-		return nil
-	}
-
-	clearCache("")
-
 	step1Start := time.Now()
 	var step1DeployTime time.Duration
 	var step2Start time.Time
 	var step2DeployTime time.Duration
 
-	var imageName string
-	var ok bool
+	var firstImageName string
+	var firstImageId string
+	var firstImageRepoDigest string
 
 	opts := base.With(integration.ProgramTestOptions{
 		Dir:              path.Join(cwd, "multi-stage-build-go"),
@@ -107,11 +97,19 @@ func TestBuildCacheFromGo(t *testing.T) {
 		},
 		ExtraRuntimeValidation: func(t *testing.T, stack integration.RuntimeValidationStackInfo) {
 			step1DeployTime = time.Since(step1Start)
+			if imageName, ok := stack.Outputs["imageName"].(string); ok && imageName != "" {
+				firstImageName = imageName
+				inspectResult, err := inspectImage(t, imageName)
 
-			if imageName, ok = stack.Outputs["imageName"].(string); ok {
+				assert.NoError(t, err)
+				firstImageId = inspectResult.ID
+
+				require.NotEmpty(t, inspectResult.RepoDigests)
+				firstImageRepoDigest = inspectResult.RepoDigests[0]
+
 				assert.NoError(t, clearCache(imageName))
 			} else {
-				t.Errorf("expected repositoryUrl output")
+				t.Errorf("expected imageName output")
 			}
 
 			step2Start = time.Now()
@@ -122,15 +120,65 @@ func TestBuildCacheFromGo(t *testing.T) {
 				Additive: true,
 				ExtraRuntimeValidation: func(t *testing.T, stack integration.RuntimeValidationStackInfo) {
 					step2DeployTime = time.Since(step2Start)
-					clearCache(imageName)
+					if imageName, ok := stack.Outputs["imageName"].(string); ok && imageName != "" {
+						assert.NotEqual(t, imageName, firstImageName)
+						inspectResult, err := inspectImage(t, imageName)
+						assert.NoError(t, err)
+
+						assert.NotEqual(t, firstImageId, inspectResult.ID)
+
+						require.NotEmpty(t, inspectResult.RepoDigests)
+						assert.NotEqual(t, firstImageRepoDigest, inspectResult.RepoDigests[0])
+
+						assert.NoError(t, clearCache(imageName))
+					} else {
+						t.Errorf("expected imageName output")
+					}
 				},
 			},
 		},
 	})
 	integration.ProgramTest(t, &opts)
 
+	if os.Getenv("CI") == "" {
+		// We don't clear the user's cache, and rely on CI to have a clean cache.
+		t.Log("⚠️ When running this test locally, your Docker cache may not be clean, and the final assertion may fail.\n" +
+			"⚠️ Running `docker system prune --all` will clear your cache, though it will delete all local images.")
+	}
+
 	assert.Less(t, step2DeployTime, 30*time.Second)
 	assert.Greater(t, step1DeployTime, 30*time.Second)
+}
+
+func clearCache(imageName string) error {
+	if imageName != "" {
+		if err := exec.Command("docker", "image", "rm", imageName).Run(); err != nil {
+			return fmt.Errorf("error removing image %q: %w", imageName, err)
+		}
+	}
+	if err := exec.Command("docker", "image", "prune").Run(); err != nil {
+		return fmt.Errorf("error pruning dangling images: %w", err)
+	}
+	if err := exec.Command("docker", "builder", "prune", "-a").Run(); err != nil {
+		return fmt.Errorf("error pruning build cache: %w", err)
+	}
+	return nil
+}
+
+func inspectImage(t *testing.T, imageName string) (types.ImageInspect, error) {
+	cmd := exec.Command("docker", "image", "inspect", imageName)
+	inspectOutput, err := cmd.Output()
+	if err != nil {
+		return types.ImageInspect{}, fmt.Errorf("error inspecting image %q: %w", imageName, err)
+	}
+
+	var result []types.ImageInspect
+	rdr := bytes.NewReader(inspectOutput)
+	err = json.NewDecoder(rdr).Decode(&result)
+	require.NoError(t, err)
+	require.NotEmpty(t, result)
+
+	return result[0], nil
 }
 
 func TestDockerfileGo(t *testing.T) {
