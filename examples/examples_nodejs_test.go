@@ -66,6 +66,7 @@ func TestAzureContainerRegistry(t *testing.T) {
 					Additive: true,
 				},
 			},
+			ExtraRuntimeValidation: assertHasRepoDigest,
 		})
 
 	integration.ProgramTest(t, &test)
@@ -82,11 +83,7 @@ func TestAwsContainerRegistry(t *testing.T) {
 			Config: map[string]string{
 				"aws:region": region,
 			},
-			ExtraRuntimeValidation: func(t *testing.T, stack integration.RuntimeValidationStackInfo) {
-				digest, ok := stack.Outputs["repoDigest"].(string)
-				assert.True(t, ok)
-				assert.NotEmpty(t, digest)
-			},
+			ExtraRuntimeValidation: assertHasRepoDigest,
 		})
 
 	integration.ProgramTest(t, &test)
@@ -105,6 +102,7 @@ func TestDigitaloceanContainerRegistry(t *testing.T) {
 			Config: map[string]string{
 				"digitalocean:token": token,
 			},
+			ExtraRuntimeValidation: assertHasRepoDigest,
 		})
 
 	integration.ProgramTest(t, &test)
@@ -121,6 +119,7 @@ func TestGcpContainerRegistry(t *testing.T) {
 			Config: map[string]string{
 				"gcp:project": project,
 			},
+			ExtraRuntimeValidation: assertHasRepoDigest,
 		})
 
 	integration.ProgramTest(t, &test)
@@ -138,11 +137,7 @@ func TestDockerContainerRegistryNode(t *testing.T) {
 			Secrets: map[string]string{
 				"cbp-docker-ts-dev:dockerPassword": password,
 			},
-			ExtraRuntimeValidation: func(t *testing.T, stack integration.RuntimeValidationStackInfo) {
-				digest, ok := stack.Outputs["repoDigest"].(string)
-				assert.True(t, ok)
-				assert.NotEmpty(t, digest)
-			},
+			ExtraRuntimeValidation: assertHasRepoDigest,
 		})
 	integration.ProgramTest(t, &test)
 }

@@ -42,3 +42,4 @@ const image = new docker.Image("my-image", {
 // Export the resuling base name in addition to the specific version pushed.
 export const baseImageName = image.baseImageName;
 export const fullImageName = image.imageName;
+export const repoDigest = image.repoDigest;

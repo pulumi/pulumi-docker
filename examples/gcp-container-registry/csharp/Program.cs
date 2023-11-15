@@ -13,7 +13,7 @@ class Program
         var registry = new Registry("my-registry");
         var registryUrl = registry.Id.Apply(async _ => {
             return (await GetRegistryRepository.InvokeAsync()).RepositoryUrl;
-        }); 
+        });
 
         // Get image name
         var imageName = Output.Format($"{registryUrl}/myapp");
@@ -30,6 +30,7 @@ class Program
         {
             { "baseImageName", image.BaseImageName },
             { "fullImageName", image.ImageName },
+            { "repoDigest": image.RepoDigest },
         };
     });
 }

@@ -214,7 +214,8 @@ func TestAzureContainerRegistryGo(t *testing.T) {
 		Dependencies: []string{
 			"github.com/pulumi/pulumi-docker/sdk/v4=../sdk",
 		},
-		ExpectRefreshChanges: true,
+		ExpectRefreshChanges:   true,
+		ExtraRuntimeValidation: assertHasRepoDigest,
 	})
 	integration.ProgramTest(t, &opts)
 }
@@ -236,6 +237,7 @@ func TestAwsContainerRegistryGo(t *testing.T) {
 		Dependencies: []string{
 			"github.com/pulumi/pulumi-docker/sdk/v4=../sdk",
 		},
+		ExtraRuntimeValidation: assertHasRepoDigest,
 	})
 	integration.ProgramTest(t, &opts)
 }
@@ -259,6 +261,7 @@ func TestDigitaloceanContainerRegistryGo(t *testing.T) {
 		Dependencies: []string{
 			"github.com/pulumi/pulumi-docker/sdk/v4=../sdk",
 		},
+		ExtraRuntimeValidation: assertHasRepoDigest,
 	})
 
 	integration.ProgramTest(t, &opts)
@@ -277,6 +280,7 @@ func TestGcpContainerRegistryGo(t *testing.T) {
 		Dependencies: []string{
 			"github.com/pulumi/pulumi-docker/sdk/v4=../sdk",
 		},
+		ExtraRuntimeValidation: assertHasRepoDigest,
 	})
 	integration.ProgramTest(t, &test)
 }
@@ -295,6 +299,7 @@ func TestDockerContainerRegistryGo(t *testing.T) {
 		Dependencies: []string{
 			"github.com/pulumi/pulumi-docker/sdk/v4=../sdk",
 		},
+		ExtraRuntimeValidation: assertHasRepoDigest,
 	})
 	integration.ProgramTest(t, &test)
 }

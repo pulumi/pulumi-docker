@@ -39,3 +39,4 @@ image = Image(
 # Export the resulting base name in addition to the specific version pushed.
 pulumi.export('baseImageName', image.base_image_name)
 pulumi.export('imageName', image.image_name)
+pulumi.export('repoDigest', image.repo_digest)
