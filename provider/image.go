@@ -47,6 +47,12 @@ import (
 const defaultDockerfile = "Dockerfile"
 const defaultBuilder = "2"
 
+func newScanner(r io.Reader) *bufio.Scanner {
+	scanner := bufio.NewScanner(r)
+	scanner.Buffer(make([]byte, 1024*1024), 1*1024*1024) // 1KiB, up to 1MiB
+	return scanner
+}
+
 type Image struct {
 	Name     string
 	SkipPush bool
@@ -355,7 +361,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	var expectedRepoDigest reference.Reference
 
 	// Print push logs to `Info` progress report
-	scanner := bufio.NewScanner(pushOutput)
+	scanner := newScanner(pushOutput)
 	for scanner.Scan() {
 		info, err := processLogLine(scanner.Text(), func(rm json.RawMessage) (bool, string, error) {
 			var result types.PushResult
@@ -383,6 +389,9 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 			return "", nil, err
 		}
 		_ = p.host.LogStatus(ctx, "info", urn, info)
+	}
+	if err := scanner.Err(); err != nil {
+		return "", nil, fmt.Errorf("error reading push output: %v", err)
 	}
 
 	// n.b.: This is one of the few API calls where we can use imageId and not img.Name, as it
@@ -478,7 +487,7 @@ func (p *dockerNativeProvider) runImageBuild(
 	defer imgBuildResp.Body.Close()
 
 	var imageID string
-	scanner := bufio.NewScanner(imgBuildResp.Body)
+	scanner := newScanner(imgBuildResp.Body)
 	for scanner.Scan() {
 		info, err := processLogLine(scanner.Text(), func(rm json.RawMessage) (bool, string, error) {
 			var result types.BuildResult
@@ -495,6 +504,9 @@ func (p *dockerNativeProvider) runImageBuild(
 			return imageID, err
 		}
 		_ = p.host.LogStatus(ctx, "info", urn, info)
+	}
+	if err := scanner.Err(); err != nil {
+		return imageID, fmt.Errorf("error reading build output: %v", err)
 	}
 
 	if imageID == "" {
@@ -559,13 +571,16 @@ func pullDockerImage(ctx context.Context, p *dockerNativeProvider, urn resource.
 
 		defer pullOutput.Close()
 
-		scanner := bufio.NewScanner(pullOutput)
+		scanner := newScanner(pullOutput)
 		for scanner.Scan() {
 			info, err := processLogLine(scanner.Text(), nil)
 			if err != nil {
 				return fmt.Errorf("Error pulling cached image %s: %v", cachedImage, err)
 			}
 			_ = p.host.LogStatus(ctx, "info", urn, info)
+		}
+		if err := scanner.Err(); err != nil {
+			return fmt.Errorf("error reading pull output: %v", err)
 		}
 	}
 	return nil
