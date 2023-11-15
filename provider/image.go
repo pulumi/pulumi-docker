@@ -288,7 +288,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 
 		err = pullDockerImage(ctx, p, urn, docker, auth, cachedImage, opts.Platform)
 		if err != nil {
-			// Non-fatal, let users know that we failed to pull the image but not as a warning.
+			// Non-fatal, let users know that we failed to pull the image
 			_ = p.host.Log(ctx, "info", urn, fmt.Sprintf("cacheFrom image %s not available: %v", cachedImage, err))
 		}
 	}
@@ -380,7 +380,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		return "", nil, fmt.Errorf("error reading push output: %v", err)
 	}
 
-	// n.b.: This is one of the few API calls where we can use imageId and not img.Name, as it
+	// n.b.: This is one of the few API calls where we can use imageID and not img.Name, as it
 	// inspects the local store.
 	repoDigest, err := p.getRepoDigest(ctx, docker, imageID, img, urn)
 	if err != nil {
@@ -426,7 +426,8 @@ func (p *dockerNativeProvider) getRepoDigest(
 			continue
 		}
 
-		// Compare on name, sans tag:
+		// If this image has been pushed to multiple repositories, repo digests will be present for
+		// each. Disambiguate by using the Name() property, which is the normalized repository name.
 		if imageName.Name() == ref.Name() {
 			repoDigest = ref
 			break
@@ -435,19 +436,24 @@ func (p *dockerNativeProvider) getRepoDigest(
 	return repoDigest, err
 }
 
-// runImageBuild is a helper function that runs the image build and ensures that the correct image
-// exists in the local image store. Due to reliability issues and a possible race condition, we use
-// a defense-in-depth approach to add uniqueness to built images, and poll for the image store to
-// contain a built image with the ID we expect.
+// runImageBuild runs the image build and ensures that the correct image exists in the local image
+// store. Due to reliability issues and a possible race condition, we use a defense-in-depth
+// approach to add uniqueness to built images, and poll for the image store to contain a built image
+// with the ID we expect.
 //
 // The returned image ID will be a sha that is unique to the image store, but cannot be used for
 // pushing, e.g.: "sha256:39a1a41d26ee99b35c260e96b8fa21778885a4a67c8f1d81c7b58b1979d52319". These
 // ids are only meaningful for the Docker Engine that built them.
 //
 // We take these steps to ensure that the image we built is the image we push:
-// 1. We label the image with a unique build ID.
-// 2. We poll the image store for the image ID we expect to find, and return that ID.
-// 3. We only return an imageId if the image in the store matches the image we built.
+//
+// 1. We label the image with a unique buildID.
+//
+// 2. We obtain the Docker image store's imageID as a result of `ImageBuild`.
+//
+// 3. We poll the image store looking for the image.
+//
+// 4. We only return an imageID if the image in the store matches both (1.) and (2.)
 func (p *dockerNativeProvider) runImageBuild(
 	ctx context.Context, docker *client.Client, tar io.Reader,
 	opts types.ImageBuildOptions, urn resource.URN, name string) (string, error) {
@@ -502,7 +508,7 @@ func (p *dockerNativeProvider) runImageBuild(
 		if err != nil {
 			return false, fmt.Errorf("error inspecting image: %v", err)
 		}
-		// Search for our imageId in listResult
+		// Search for our imageID in listResult
 		for _, storedImage := range listResult {
 			if storedImage.ID == imageID {
 				if storedImage.Labels[buildIDLabel] == buildIDValue {
@@ -517,7 +523,7 @@ func (p *dockerNativeProvider) runImageBuild(
 		return false, nil
 	}
 
-	for i := 0; i < 60; i++ {
+	for i := 0; i < 5; i++ {
 		found, err := findImageID()
 		if err != nil {
 			return "", err
@@ -526,6 +532,9 @@ func (p *dockerNativeProvider) runImageBuild(
 			break
 		}
 		time.Sleep(1 * time.Second)
+	}
+	if imageID == "" {
+		return "", fmt.Errorf("Unable to find built image in local image store")
 	}
 
 	_ = p.host.LogStatus(ctx, "info", urn, fmt.Sprintf("Image built successfully, local id %q", imageID))
@@ -798,8 +807,6 @@ func (p *dockerNativeProvider) processLog(ctx context.Context, urn resource.URN,
 	in io.Reader, onAuxMessage func(json.RawMessage) (bool, string, error),
 ) error {
 	decoder := json.NewDecoder(in)
-
-	var currentOffset int64
 	for {
 		var jm jsonmessage.JSONMessage
 		err := decoder.Decode(&jm)
@@ -809,11 +816,6 @@ func (p *dockerNativeProvider) processLog(ctx context.Context, urn resource.URN,
 			}
 			return fmt.Errorf("error parsing Docker output: %v", err)
 		}
-		newOffset := decoder.InputOffset()
-		if newOffset-currentOffset > 64*1024 {
-			_ = p.host.Log(ctx, "info", urn, fmt.Sprintf("Read %d KiB from Docker", (newOffset-currentOffset)/1024))
-		}
-		currentOffset = newOffset
 
 		msg, err := processLogLine(jm, onAuxMessage)
 		if err != nil {
