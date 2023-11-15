@@ -140,7 +140,7 @@ func TestBuildCacheFromGo(t *testing.T) {
 	})
 	integration.ProgramTest(t, &opts)
 
-	if os.Getenv("CI") != "" {
+	if os.Getenv("CI") == "" {
 		// We don't clear the user's cache, and rely on CI to have a clean cache.
 		t.Log("⚠️ When running this test locally, your Docker cache may not be clean, and the final assertion may fail.\n" +
 			"⚠️ Running `docker system prune --all` will clear your cache, though it will delete all local images.")
