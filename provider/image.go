@@ -523,8 +523,9 @@ func (p *dockerNativeProvider) runImageBuild(
 		return false, nil
 	}
 
+	var found bool
 	for i := 0; i < 5; i++ {
-		found, err := findImageID()
+		found, err = findImageID()
 		if err != nil {
 			return "", err
 		}
@@ -533,7 +534,7 @@ func (p *dockerNativeProvider) runImageBuild(
 		}
 		time.Sleep(1 * time.Second)
 	}
-	if imageID == "" {
+	if !found {
 		return "", fmt.Errorf("Unable to find built image in local image store")
 	}
 
