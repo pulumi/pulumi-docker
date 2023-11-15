@@ -9,7 +9,6 @@ import (
 
 	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker/internal"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 )
 
 // `RemoteImage` provides details about a specific Docker Image which need to be presend on the Docker Host
@@ -119,12 +118,6 @@ func (o LookupRemoteImageResultOutput) ToLookupRemoteImageResultOutput() LookupR
 
 func (o LookupRemoteImageResultOutput) ToLookupRemoteImageResultOutputWithContext(ctx context.Context) LookupRemoteImageResultOutput {
 	return o
-}
-
-func (o LookupRemoteImageResultOutput) ToOutput(ctx context.Context) pulumix.Output[LookupRemoteImageResult] {
-	return pulumix.Output[LookupRemoteImageResult]{
-		OutputState: o.OutputState,
-	}
 }
 
 // The provider-assigned unique ID for this managed resource.

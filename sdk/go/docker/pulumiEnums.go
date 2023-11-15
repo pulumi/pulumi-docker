@@ -81,12 +81,6 @@ func (o BuilderVersionOutput) ToBuilderVersionPtrOutputWithContext(ctx context.C
 	}).(BuilderVersionPtrOutput)
 }
 
-func (o BuilderVersionOutput) ToOutput(ctx context.Context) pulumix.Output[BuilderVersion] {
-	return pulumix.Output[BuilderVersion]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o BuilderVersionOutput) ToStringOutput() pulumi.StringOutput {
 	return o.ToStringOutputWithContext(context.Background())
 }
@@ -120,12 +114,6 @@ func (o BuilderVersionPtrOutput) ToBuilderVersionPtrOutput() BuilderVersionPtrOu
 
 func (o BuilderVersionPtrOutput) ToBuilderVersionPtrOutputWithContext(ctx context.Context) BuilderVersionPtrOutput {
 	return o
-}
-
-func (o BuilderVersionPtrOutput) ToOutput(ctx context.Context) pulumix.Output[*BuilderVersion] {
-	return pulumix.Output[*BuilderVersion]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o BuilderVersionPtrOutput) Elem() BuilderVersionOutput {
