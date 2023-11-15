@@ -30,7 +30,7 @@ class Program
         {
             { "baseImageName", image.BaseImageName },
             { "fullImageName", image.ImageName },
-            { "repoDigest": image.RepoDigest },
+            { "repoDigest", image.RepoDigest },
         };
     });
 }
