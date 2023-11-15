@@ -363,7 +363,12 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	// Print push logs to `Info` progress report
 	scanner := newScanner(pushOutput)
 	for scanner.Scan() {
-		info, err := processLogLine(scanner.Text(), func(rm json.RawMessage) (bool, string, error) {
+		line := scanner.Text()
+		if len(line) == bufio.MaxScanTokenSize {
+			_ = p.host.Log(ctx, "warning", urn,
+				fmt.Sprintf("Docker build output line exceeds %d KiB", bufio.MaxScanTokenSize/1024))
+		}
+		info, err := processLogLine(line, func(rm json.RawMessage) (bool, string, error) {
 			var result types.PushResult
 			err := json.Unmarshal(rm, &result)
 			if err != nil {
@@ -489,7 +494,12 @@ func (p *dockerNativeProvider) runImageBuild(
 	var imageID string
 	scanner := newScanner(imgBuildResp.Body)
 	for scanner.Scan() {
-		info, err := processLogLine(scanner.Text(), func(rm json.RawMessage) (bool, string, error) {
+		line := scanner.Text()
+		if len(line) == bufio.MaxScanTokenSize {
+			_ = p.host.Log(ctx, "warning", urn,
+				fmt.Sprintf("Docker build output line exceeds %d KiB", bufio.MaxScanTokenSize/1024))
+		}
+		info, err := processLogLine(line, func(rm json.RawMessage) (bool, string, error) {
 			var result types.BuildResult
 			err := json.Unmarshal(rm, &result)
 			if err != nil {
@@ -573,7 +583,12 @@ func pullDockerImage(ctx context.Context, p *dockerNativeProvider, urn resource.
 
 		scanner := newScanner(pullOutput)
 		for scanner.Scan() {
-			info, err := processLogLine(scanner.Text(), nil)
+			line := scanner.Text()
+			if len(line) == bufio.MaxScanTokenSize {
+				_ = p.host.Log(ctx, "warning", urn,
+					fmt.Sprintf("Docker build output line exceeds %d KiB", bufio.MaxScanTokenSize/1024))
+			}
+			info, err := processLogLine(line, nil)
 			if err != nil {
 				return fmt.Errorf("Error pulling cached image %s: %v", cachedImage, err)
 			}
