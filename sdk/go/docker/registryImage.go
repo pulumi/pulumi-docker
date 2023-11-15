@@ -9,7 +9,6 @@ import (
 
 	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker/internal"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 )
 
 // <!-- Bug: Type and Name are switched -->
@@ -173,12 +172,6 @@ func (i *RegistryImage) ToRegistryImageOutputWithContext(ctx context.Context) Re
 	return pulumi.ToOutputWithContext(ctx, i).(RegistryImageOutput)
 }
 
-func (i *RegistryImage) ToOutput(ctx context.Context) pulumix.Output[*RegistryImage] {
-	return pulumix.Output[*RegistryImage]{
-		OutputState: i.ToRegistryImageOutputWithContext(ctx).OutputState,
-	}
-}
-
 // RegistryImageArrayInput is an input type that accepts RegistryImageArray and RegistryImageArrayOutput values.
 // You can construct a concrete instance of `RegistryImageArrayInput` via:
 //
@@ -202,12 +195,6 @@ func (i RegistryImageArray) ToRegistryImageArrayOutput() RegistryImageArrayOutpu
 
 func (i RegistryImageArray) ToRegistryImageArrayOutputWithContext(ctx context.Context) RegistryImageArrayOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(RegistryImageArrayOutput)
-}
-
-func (i RegistryImageArray) ToOutput(ctx context.Context) pulumix.Output[[]*RegistryImage] {
-	return pulumix.Output[[]*RegistryImage]{
-		OutputState: i.ToRegistryImageArrayOutputWithContext(ctx).OutputState,
-	}
 }
 
 // RegistryImageMapInput is an input type that accepts RegistryImageMap and RegistryImageMapOutput values.
@@ -235,12 +222,6 @@ func (i RegistryImageMap) ToRegistryImageMapOutputWithContext(ctx context.Contex
 	return pulumi.ToOutputWithContext(ctx, i).(RegistryImageMapOutput)
 }
 
-func (i RegistryImageMap) ToOutput(ctx context.Context) pulumix.Output[map[string]*RegistryImage] {
-	return pulumix.Output[map[string]*RegistryImage]{
-		OutputState: i.ToRegistryImageMapOutputWithContext(ctx).OutputState,
-	}
-}
-
 type RegistryImageOutput struct{ *pulumi.OutputState }
 
 func (RegistryImageOutput) ElementType() reflect.Type {
@@ -253,12 +234,6 @@ func (o RegistryImageOutput) ToRegistryImageOutput() RegistryImageOutput {
 
 func (o RegistryImageOutput) ToRegistryImageOutputWithContext(ctx context.Context) RegistryImageOutput {
 	return o
-}
-
-func (o RegistryImageOutput) ToOutput(ctx context.Context) pulumix.Output[*RegistryImage] {
-	return pulumix.Output[*RegistryImage]{
-		OutputState: o.OutputState,
-	}
 }
 
 // If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
@@ -300,12 +275,6 @@ func (o RegistryImageArrayOutput) ToRegistryImageArrayOutputWithContext(ctx cont
 	return o
 }
 
-func (o RegistryImageArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]*RegistryImage] {
-	return pulumix.Output[[]*RegistryImage]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o RegistryImageArrayOutput) Index(i pulumi.IntInput) RegistryImageOutput {
 	return pulumi.All(o, i).ApplyT(func(vs []interface{}) *RegistryImage {
 		return vs[0].([]*RegistryImage)[vs[1].(int)]
@@ -324,12 +293,6 @@ func (o RegistryImageMapOutput) ToRegistryImageMapOutput() RegistryImageMapOutpu
 
 func (o RegistryImageMapOutput) ToRegistryImageMapOutputWithContext(ctx context.Context) RegistryImageMapOutput {
 	return o
-}
-
-func (o RegistryImageMapOutput) ToOutput(ctx context.Context) pulumix.Output[map[string]*RegistryImage] {
-	return pulumix.Output[map[string]*RegistryImage]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o RegistryImageMapOutput) MapIndex(k pulumi.StringInput) RegistryImageOutput {

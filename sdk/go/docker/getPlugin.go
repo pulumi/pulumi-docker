@@ -9,7 +9,6 @@ import (
 
 	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker/internal"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 )
 
 // Reads the local Docker plugin. The plugin must be installed locally.
@@ -95,12 +94,6 @@ func (o LookupPluginResultOutput) ToLookupPluginResultOutput() LookupPluginResul
 
 func (o LookupPluginResultOutput) ToLookupPluginResultOutputWithContext(ctx context.Context) LookupPluginResultOutput {
 	return o
-}
-
-func (o LookupPluginResultOutput) ToOutput(ctx context.Context) pulumix.Output[LookupPluginResult] {
-	return pulumix.Output[LookupPluginResult]{
-		OutputState: o.OutputState,
-	}
 }
 
 // The alias of the Docker plugin. If the tag is omitted, `:latest` is complemented to the attribute value.

@@ -10,7 +10,6 @@ import (
 	"errors"
 	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker/internal"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 )
 
 // <!-- Bug: Type and Name are switched -->
@@ -243,12 +242,6 @@ func (i *RemoteImage) ToRemoteImageOutputWithContext(ctx context.Context) Remote
 	return pulumi.ToOutputWithContext(ctx, i).(RemoteImageOutput)
 }
 
-func (i *RemoteImage) ToOutput(ctx context.Context) pulumix.Output[*RemoteImage] {
-	return pulumix.Output[*RemoteImage]{
-		OutputState: i.ToRemoteImageOutputWithContext(ctx).OutputState,
-	}
-}
-
 // RemoteImageArrayInput is an input type that accepts RemoteImageArray and RemoteImageArrayOutput values.
 // You can construct a concrete instance of `RemoteImageArrayInput` via:
 //
@@ -272,12 +265,6 @@ func (i RemoteImageArray) ToRemoteImageArrayOutput() RemoteImageArrayOutput {
 
 func (i RemoteImageArray) ToRemoteImageArrayOutputWithContext(ctx context.Context) RemoteImageArrayOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(RemoteImageArrayOutput)
-}
-
-func (i RemoteImageArray) ToOutput(ctx context.Context) pulumix.Output[[]*RemoteImage] {
-	return pulumix.Output[[]*RemoteImage]{
-		OutputState: i.ToRemoteImageArrayOutputWithContext(ctx).OutputState,
-	}
 }
 
 // RemoteImageMapInput is an input type that accepts RemoteImageMap and RemoteImageMapOutput values.
@@ -305,12 +292,6 @@ func (i RemoteImageMap) ToRemoteImageMapOutputWithContext(ctx context.Context) R
 	return pulumi.ToOutputWithContext(ctx, i).(RemoteImageMapOutput)
 }
 
-func (i RemoteImageMap) ToOutput(ctx context.Context) pulumix.Output[map[string]*RemoteImage] {
-	return pulumix.Output[map[string]*RemoteImage]{
-		OutputState: i.ToRemoteImageMapOutputWithContext(ctx).OutputState,
-	}
-}
-
 type RemoteImageOutput struct{ *pulumi.OutputState }
 
 func (RemoteImageOutput) ElementType() reflect.Type {
@@ -323,12 +304,6 @@ func (o RemoteImageOutput) ToRemoteImageOutput() RemoteImageOutput {
 
 func (o RemoteImageOutput) ToRemoteImageOutputWithContext(ctx context.Context) RemoteImageOutput {
 	return o
-}
-
-func (o RemoteImageOutput) ToOutput(ctx context.Context) pulumix.Output[*RemoteImage] {
-	return pulumix.Output[*RemoteImage]{
-		OutputState: o.OutputState,
-	}
 }
 
 // Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.
@@ -390,12 +365,6 @@ func (o RemoteImageArrayOutput) ToRemoteImageArrayOutputWithContext(ctx context.
 	return o
 }
 
-func (o RemoteImageArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]*RemoteImage] {
-	return pulumix.Output[[]*RemoteImage]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o RemoteImageArrayOutput) Index(i pulumi.IntInput) RemoteImageOutput {
 	return pulumi.All(o, i).ApplyT(func(vs []interface{}) *RemoteImage {
 		return vs[0].([]*RemoteImage)[vs[1].(int)]
@@ -414,12 +383,6 @@ func (o RemoteImageMapOutput) ToRemoteImageMapOutput() RemoteImageMapOutput {
 
 func (o RemoteImageMapOutput) ToRemoteImageMapOutputWithContext(ctx context.Context) RemoteImageMapOutput {
 	return o
-}
-
-func (o RemoteImageMapOutput) ToOutput(ctx context.Context) pulumix.Output[map[string]*RemoteImage] {
-	return pulumix.Output[map[string]*RemoteImage]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o RemoteImageMapOutput) MapIndex(k pulumi.StringInput) RemoteImageOutput {

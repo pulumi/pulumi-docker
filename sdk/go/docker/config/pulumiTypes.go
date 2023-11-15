@@ -9,7 +9,6 @@ import (
 
 	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker/internal"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 )
 
 var _ = internal.GetEnvOrDefault
@@ -55,12 +54,6 @@ func (i RegistryAuthArgs) ToRegistryAuthOutputWithContext(ctx context.Context) R
 	return pulumi.ToOutputWithContext(ctx, i).(RegistryAuthOutput)
 }
 
-func (i RegistryAuthArgs) ToOutput(ctx context.Context) pulumix.Output[RegistryAuth] {
-	return pulumix.Output[RegistryAuth]{
-		OutputState: i.ToRegistryAuthOutputWithContext(ctx).OutputState,
-	}
-}
-
 // RegistryAuthArrayInput is an input type that accepts RegistryAuthArray and RegistryAuthArrayOutput values.
 // You can construct a concrete instance of `RegistryAuthArrayInput` via:
 //
@@ -86,12 +79,6 @@ func (i RegistryAuthArray) ToRegistryAuthArrayOutputWithContext(ctx context.Cont
 	return pulumi.ToOutputWithContext(ctx, i).(RegistryAuthArrayOutput)
 }
 
-func (i RegistryAuthArray) ToOutput(ctx context.Context) pulumix.Output[[]RegistryAuth] {
-	return pulumix.Output[[]RegistryAuth]{
-		OutputState: i.ToRegistryAuthArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type RegistryAuthOutput struct{ *pulumi.OutputState }
 
 func (RegistryAuthOutput) ElementType() reflect.Type {
@@ -104,12 +91,6 @@ func (o RegistryAuthOutput) ToRegistryAuthOutput() RegistryAuthOutput {
 
 func (o RegistryAuthOutput) ToRegistryAuthOutputWithContext(ctx context.Context) RegistryAuthOutput {
 	return o
-}
-
-func (o RegistryAuthOutput) ToOutput(ctx context.Context) pulumix.Output[RegistryAuth] {
-	return pulumix.Output[RegistryAuth]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o RegistryAuthOutput) Address() pulumi.StringOutput {
@@ -148,12 +129,6 @@ func (o RegistryAuthArrayOutput) ToRegistryAuthArrayOutput() RegistryAuthArrayOu
 
 func (o RegistryAuthArrayOutput) ToRegistryAuthArrayOutputWithContext(ctx context.Context) RegistryAuthArrayOutput {
 	return o
-}
-
-func (o RegistryAuthArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]RegistryAuth] {
-	return pulumix.Output[[]RegistryAuth]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o RegistryAuthArrayOutput) Index(i pulumi.IntInput) RegistryAuthOutput {
