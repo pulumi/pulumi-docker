@@ -36,7 +36,8 @@ func TestAzureContainerRegistryPy(t *testing.T) {
 				"azure:environment": "public",
 				"azure:location":    location,
 			},
-			ExpectRefreshChanges: true,
+			ExpectRefreshChanges:   true,
+			ExtraRuntimeValidation: assertHasRepoDigest,
 		})
 
 	integration.ProgramTest(t, &test)
@@ -53,6 +54,7 @@ func TestAwsContainerRegistryPy(t *testing.T) {
 			Config: map[string]string{
 				"aws:region": region,
 			},
+			ExtraRuntimeValidation: assertHasRepoDigest,
 		})
 
 	integration.ProgramTest(t, &test)
@@ -71,6 +73,7 @@ func TestDigitaloceanContainerRegistryPy(t *testing.T) {
 			Config: map[string]string{
 				"digitalocean:token": token,
 			},
+			ExtraRuntimeValidation: assertHasRepoDigest,
 		})
 
 	integration.ProgramTest(t, &test)
@@ -87,6 +90,7 @@ func TestGcpContainerRegistryPy(t *testing.T) {
 			Config: map[string]string{
 				"gcp:project": project,
 			},
+			ExtraRuntimeValidation: assertHasRepoDigest,
 		})
 
 	integration.ProgramTest(t, &test)
@@ -104,9 +108,11 @@ func TestDockerContainerRegistryPy(t *testing.T) {
 			Secrets: map[string]string{
 				"cbp-docker-py:dockerPassword": password,
 			},
+			ExtraRuntimeValidation: assertHasRepoDigest,
 		})
 	integration.ProgramTest(t, &test)
 }
+
 func TestNginxPy(t *testing.T) {
 	test := getPyOptions(t).
 		With(integration.ProgramTestOptions{

@@ -19,3 +19,4 @@ image = docker.Image('my-image',
 
 # Export the resulting image name
 pulumi.export('imageName', image.image_name)
+pulumi.export('repoDigest', image.repo_digest)

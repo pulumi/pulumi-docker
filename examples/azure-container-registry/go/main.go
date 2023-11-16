@@ -40,6 +40,7 @@ func main() {
 		}
 
 		ctx.Export("deps-image", image.ImageName)
+		ctx.Export("repoDigest", image.RepoDigest)
 
 		return nil
 	})

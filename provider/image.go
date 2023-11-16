@@ -1,7 +1,6 @@
 package provider
 
 import (
-	"bufio"
 	"context"
 	"crypto/tls"
 	"crypto/x509"
@@ -33,11 +32,13 @@ import (
 	"github.com/docker/docker/pkg/idtools"
 	"github.com/docker/docker/pkg/jsonmessage"
 	structpb "github.com/golang/protobuf/ptypes/struct"
+	"github.com/google/uuid"
 	controlapi "github.com/moby/buildkit/api/services/control"
 	"github.com/moby/buildkit/identity"
 	"github.com/moby/buildkit/session"
 	"github.com/moby/buildkit/session/auth/authprovider"
 	"github.com/moby/moby/registry"
+	"github.com/opencontainers/go-digest"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
 )
@@ -114,12 +115,6 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		return "", nil, err
 	}
 
-	err = p.host.LogStatus(ctx, "info", urn, "Building the image")
-
-	if err != nil {
-		return "", nil, err
-	}
-
 	// make the build context and ensure to exclude dockerignore file patterns
 	// map the expected location for dockerignore
 	dockerignore := mapDockerignore(filepath.Base(build.Dockerfile))
@@ -175,10 +170,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		msg := "It looks like you are trying to dockerignore a build file such as `Dockerfile` or `.dockerignore`. " +
 			"To avoid accidentally copying these files to your image, please ensure any copied file systems do not " +
 			"include `Dockerfile` or `.dockerignore`."
-		err = p.host.Log(ctx, "warning", urn, msg)
-		if err != nil {
-			return "", nil, err
-		}
+		_ = p.host.Log(ctx, "warning", urn, msg)
 	}
 
 	tar, err := archive.TarWithOptions(contextDir, &archive.TarOptions{
@@ -188,6 +180,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	if err != nil {
 		return "", nil, err
 	}
+	defer tar.Close()
 
 	// add dockerfile to tarball if it's not in the build context
 	replaceDockerfile := relDockerfile
@@ -229,11 +222,9 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 			return "", nil, err
 		}
 		if msg != "" {
-			err = p.host.Log(ctx, "warning", urn, msg)
-			if err != nil {
-				return "", nil, err
-			}
+			_ = p.host.Log(ctx, "warning", urn, msg)
 		}
+
 		authConfigs[auth.ServerAddress] = auth                          // for image cache
 		cfg.AuthConfigs[auth.ServerAddress] = clitypes.AuthConfig(auth) // for buildkit cache using session auth
 		regAuth = auth                                                  // for image push
@@ -297,29 +288,15 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 
 		err = pullDockerImage(ctx, p, urn, docker, auth, cachedImage, opts.Platform)
 		if err != nil {
-			// Non-fatal, warn that we failed to pull the image
-			_ = p.host.Log(ctx, "warning", urn, fmt.Sprintf("Failed to pull cached image %s: %v", cachedImage, err))
+			// Non-fatal, let users know that we failed to pull the image
+			_ = p.host.Log(ctx, "info", urn, fmt.Sprintf("cacheFrom image %s not available: %v", cachedImage, err))
 		}
 	}
-
-	imgBuildResp, err := docker.ImageBuild(ctx, tar, opts)
-	if err != nil {
-		return "", nil, err
-	}
-	defer imgBuildResp.Body.Close()
 
 	// Print build logs to `Info` progress report
-	scanner := bufio.NewScanner(imgBuildResp.Body)
-	for scanner.Scan() {
-
-		info, err := processLogLine(scanner.Text())
-		if err != nil {
-			return "", nil, err
-		}
-		err = p.host.LogStatus(ctx, "info", urn, info)
-		if err != nil {
-			return "", nil, err
-		}
+	imageID, err := p.runImageBuild(ctx, docker, tar, opts, urn, img.Name)
+	if err != nil {
+		return "", nil, err
 	}
 
 	outputs := map[string]interface{}{
@@ -328,6 +305,11 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		"baseImageName":  img.Name,
 		"registryServer": img.Registry.Server,
 		"imageName":      img.Name,
+	}
+
+	imageName, err := reference.ParseNormalizedNamed(img.Name)
+	if err != nil {
+		return "", nil, err
 	}
 
 	// if we are not pushing to the registry, we return after building the local image.
@@ -346,11 +328,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		return img.Name, pbstruct, err
 	}
 
-	err = p.host.LogStatus(ctx, "info", urn, "Pushing Image to the registry")
-
-	if err != nil {
-		return "", nil, err
-	}
+	_ = p.host.LogStatus(ctx, "info", urn, "Pushing Image to the registry")
 
 	authConfigBytes, err := json.Marshal(regAuth)
 
@@ -370,28 +348,51 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 
 	defer pushOutput.Close()
 
-	// Print push logs to `Info` progress report
-	pushScanner := bufio.NewScanner(pushOutput)
-	for pushScanner.Scan() {
-		info, err := processLogLine(pushScanner.Text())
+	// TODO: https://github.com/pulumi/pulumi-docker/issues/846 - Consider relying on the PushResult
+	// for computing the repo digest.
+	var expectedRepoDigest reference.Reference
+	extractRepoDigest := func(rm json.RawMessage) (bool, string, error) {
+		var result types.PushResult
+		err := json.Unmarshal(rm, &result)
 		if err != nil {
-			return "", nil, err
+			// Unmarshal failures here mean the message isn't what we expected, return handled = false
+			return false, "", nil
 		}
-		err = p.host.LogStatus(ctx, "info", urn, info)
+
+		digest, err := digest.Parse(result.Digest)
 		if err != nil {
-			return "", nil, err
+			return false, fmt.Sprintf("Unable to parse pushed digest %q", result.Digest), nil
 		}
+
+		imageNameWithoutTag := reference.TrimNamed(imageName) // removes tags or digests
+		pushedRepoDigest, err := reference.WithDigest(imageNameWithoutTag, digest)
+		if err != nil {
+			return false, fmt.Sprintf("Unable to compute expected repo digest from imageName %q, digest %q",
+				imageName.String(), result.Digest), nil
+		}
+		expectedRepoDigest = pushedRepoDigest
+		return true, fmt.Sprintf("Pushed image with digest %s", result.Digest), nil
 	}
 
-	dist, _, err := docker.ImageInspectWithRaw(ctx, img.Name)
+	// Print push logs to `Info` progress report
+	err = p.processLog(ctx, urn, pushOutput, extractRepoDigest)
+	if err != nil {
+		return "", nil, fmt.Errorf("error reading push output: %v", err)
+	}
+
+	// n.b.: This is one of the few API calls where we can use imageID and not img.Name, as it
+	// inspects the local store.
+	repoDigest, err := p.getRepoDigest(ctx, docker, imageID, img, urn)
 	if err != nil {
 		return "", nil, err
 	}
+	outputs["repoDigest"] = repoDigest.String()
 
-	// The repoDigest should be populated after a push. Clients may choose to throw an error or coerce
-	// this to a non-optional value.
-	if len(dist.RepoDigests) > 0 {
-		outputs["repoDigest"] = dist.RepoDigests[0]
+	if expectedRepoDigest == nil {
+		_ = p.host.Log(ctx, "warning", urn, "Push completed without reporting a digest")
+	} else if expectedRepoDigest.String() != repoDigest.String() {
+		_ = p.host.Log(ctx, "warning", urn,
+			fmt.Sprintf("Expected repo digest %q, found %q", expectedRepoDigest, repoDigest))
 	}
 
 	pbstruct, err := plugin.MarshalProperties(
@@ -401,13 +402,150 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	return img.Name, pbstruct, err
 }
 
+// getRepoDigest returns the repoDigest for the given image ID that matches the target image name.
+// If the image is not found in the local store, it returns an error.
+func (p *dockerNativeProvider) getRepoDigest(
+	ctx context.Context, docker *client.Client, imageID string,
+	img Image, urn resource.URN) (reference.Reference, error) {
+	dist, _, err := docker.ImageInspectWithRaw(ctx, imageID)
+	if err != nil {
+		return nil, err
+	}
+
+	imageName, err := reference.ParseNormalizedNamed(img.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	var repoDigest reference.Reference
+	for _, d := range dist.RepoDigests {
+		ref, err := reference.ParseNormalizedNamed(d)
+
+		if err != nil {
+			_ = p.host.Log(ctx, "warning", urn, fmt.Sprintf("Error parsing digest %q: %v", d, err))
+			continue
+		}
+
+		// If this image has been pushed to multiple repositories, repo digests will be present for
+		// each. Disambiguate by using the Name() property, which is the normalized repository name.
+		if imageName.Name() == ref.Name() {
+			repoDigest = ref
+			break
+		}
+	}
+	return repoDigest, err
+}
+
+// runImageBuild runs the image build and ensures that the correct image exists in the local image
+// store. Due to reliability issues and a possible race condition, we use a defense-in-depth
+// approach to add uniqueness to built images, and poll for the image store to contain a built image
+// with the ID we expect.
+//
+// The returned image ID will be a sha that is unique to the image store, but cannot be used for
+// pushing, e.g.: "sha256:39a1a41d26ee99b35c260e96b8fa21778885a4a67c8f1d81c7b58b1979d52319". These
+// ids are only meaningful for the Docker Engine that built them.
+//
+// We take these steps to ensure that the image we built is the image we push:
+//
+// 1. We label the image with a unique buildID.
+//
+// 2. We obtain the Docker image store's imageID as a result of `ImageBuild`.
+//
+// 3. We poll the image store looking for the image.
+//
+// 4. We only return an imageID if the image in the store matches both (1.) and (2.)
+func (p *dockerNativeProvider) runImageBuild(
+	ctx context.Context, docker *client.Client, tar io.Reader,
+	opts types.ImageBuildOptions, urn resource.URN, name string) (string, error) {
+	if opts.Labels == nil {
+		opts.Labels = make(map[string]string)
+	}
+	// TODO: https://github.com/pulumi/pulumi-docker/issues/846 - Consider removing the build ID.
+	id, err := uuid.NewRandom()
+	if err != nil {
+		return "", fmt.Errorf("error generating random ID for build: %v", err)
+	}
+	buildIDLabel := "pulumi.com/build-id"
+	buildIDValue := id.String()
+	opts.Labels[buildIDLabel] = buildIDValue
+
+	// Close the imgBuildResp in a timely manner
+	_ = p.host.LogStatus(ctx, "info", urn, "Starting Docker build")
+	imgBuildResp, err := docker.ImageBuild(ctx, tar, opts)
+	if err != nil {
+		return "", fmt.Errorf("error building image: %v", err)
+	}
+	defer imgBuildResp.Body.Close()
+
+	var imageID string
+	extractImageID := func(rm json.RawMessage) (bool, string, error) {
+		var result types.BuildResult
+		err := json.Unmarshal(rm, &result)
+		if err != nil {
+			// Unmarshal failures here mean the message isn't what we expected, return handled = false
+			return false, "", nil
+		}
+
+		imageID = result.ID
+		return true, fmt.Sprintf("Built image with ID %s", imageID), nil
+	}
+
+	err = p.processLog(ctx, urn, imgBuildResp.Body, extractImageID)
+	if err != nil {
+		return "", fmt.Errorf("error reading build output: %v", err)
+	}
+
+	if imageID == "" {
+		return "", fmt.Errorf("no image id found in build output")
+	}
+
+	_ = p.host.LogStatus(ctx, "info", urn,
+		fmt.Sprintf("Built image with local id %q, polling image store for image", imageID))
+	// TODO: https://github.com/pulumi/pulumi-docker/issues/846 - Consider removing polling for the
+	// image.
+	findImageID := func() (bool, error) {
+		listResult, err := docker.ImageList(ctx, types.ImageListOptions{})
+		if err != nil {
+			return false, fmt.Errorf("error inspecting image: %v", err)
+		}
+		// Search for our imageID in listResult
+		for _, storedImage := range listResult {
+			if storedImage.ID == imageID {
+				if storedImage.Labels[buildIDLabel] == buildIDValue {
+					return true, nil
+				}
+				_ = p.host.Log(ctx, "warning", urn,
+					fmt.Sprintf("Found in store does not match built image, expected label %s=%s, found %s",
+						buildIDLabel, buildIDValue, storedImage.Labels[buildIDLabel]))
+				return false, nil
+			}
+		}
+		return false, nil
+	}
+
+	var found bool
+	for i := 0; i < 5; i++ {
+		found, err = findImageID()
+		if err != nil {
+			return "", err
+		}
+		if found {
+			break
+		}
+		time.Sleep(1 * time.Second)
+	}
+	if !found {
+		return "", fmt.Errorf("Unable to find built image in local image store")
+	}
+
+	_ = p.host.LogStatus(ctx, "info", urn, fmt.Sprintf("Image built successfully, local id %q", imageID))
+	return imageID, nil
+}
+
 func pullDockerImage(ctx context.Context, p *dockerNativeProvider, urn resource.URN,
 	docker *client.Client, authConfig types.AuthConfig, cachedImage string, platform string) error {
 	if cachedImage != "" {
-		err := p.host.Log(ctx, "info", urn, fmt.Sprintf("Pulling cached image %s", cachedImage))
-		if err != nil {
-			return err
-		}
+		_ = p.host.LogStatus(ctx, "info", urn, fmt.Sprintf("Pulling cached image %s", cachedImage))
 
 		cachedImageAuthBytes, err := json.Marshal(authConfig)
 		if err != nil {
@@ -425,16 +563,9 @@ func pullDockerImage(ctx context.Context, p *dockerNativeProvider, urn resource.
 
 		defer pullOutput.Close()
 
-		pushScanner := bufio.NewScanner(pullOutput)
-		for pushScanner.Scan() {
-			info, err := processLogLine(pushScanner.Text())
-			if err != nil {
-				return fmt.Errorf("Error pulling cached image %s: %v", cachedImage, err)
-			}
-			err = p.host.LogStatus(ctx, "info", urn, info)
-			if err != nil {
-				return err
-			}
+		err = p.processLog(ctx, urn, pullOutput, nil)
+		if err != nil {
+			return fmt.Errorf("error reading pull output: %v", err)
 		}
 	}
 	return nil
@@ -673,24 +804,52 @@ func getRegistryAddrFromImage(imgName string) (string, error) {
 	return addr, nil
 }
 
-func processLogLine(msg string) (string, error) {
-	var info string
-	var jm jsonmessage.JSONMessage
-	err := json.Unmarshal([]byte(msg), &jm)
-	if err != nil {
-		return info, fmt.Errorf("encountered error unmarshalling: %v", err)
+func (p *dockerNativeProvider) processLog(ctx context.Context, urn resource.URN,
+	in io.Reader, onAuxMessage func(json.RawMessage) (bool, string, error),
+) error {
+	decoder := json.NewDecoder(in)
+	for {
+		var jm jsonmessage.JSONMessage
+		err := decoder.Decode(&jm)
+		if err != nil {
+			if err == io.EOF {
+				break
+			}
+			return fmt.Errorf("error parsing Docker output: %v", err)
+		}
+
+		msg, err := processLogLine(jm, onAuxMessage)
+		if err != nil {
+			return err
+		}
+		if msg != "" {
+			_ = p.host.LogStatus(ctx, "info", urn, msg)
+		}
 	}
-	// process this JSONMessage
+
+	return nil
+}
+
+// processLogLine interprets the output from the Docker Engine, handling JSON encoded messages and
+// passing aux messages to a callback to handle.
+//
+// When `onAuxMessage` is not nil, it will be called with the aux message and should return either a
+// bool indicating whether the message was handled, a string to append to the log output, or an
+// error.
+func processLogLine(jm jsonmessage.JSONMessage,
+	onAuxMessage func(json.RawMessage) (bool, string, error),
+) (string, error) {
+	var info string
 	if jm.Error != nil {
 		if jm.Error.Code == 401 {
-			return info, fmt.Errorf("authentication is required")
+			return "", fmt.Errorf("authentication is required")
 		}
 		if jm.Error.Message == "EOF" {
-			return info, fmt.Errorf("%s\n: This error is most likely due to incorrect or mismatched registry "+
+			return "", fmt.Errorf("%s\n: This error is most likely due to incorrect or mismatched registry "+
 				"credentials. Please double check you are using the correct credentials and registry name.",
 				jm.Error.Message)
 		}
-		return info, fmt.Errorf(jm.Error.Message)
+		return "", fmt.Errorf(jm.Error.Message)
 	}
 	if jm.From != "" {
 		info += jm.From
@@ -736,20 +895,28 @@ func processLogLine(msg string) (string, error) {
 			}
 
 		} else {
-			// most other aux messages are secretly a BuildResult
-			var result types.BuildResult
-			if err := json.Unmarshal(*jm.Aux, &result); err != nil {
+			var handled bool
+			var output string
+			var err error
+			if onAuxMessage != nil && jm.Aux != nil {
+				handled, output, err = onAuxMessage(*jm.Aux)
+			}
+			if err != nil {
+				return "", err
+			} else if !handled {
 				// in the case of non-BuildResult aux messages we print out the whole object.
 				infoBytes, err := json.Marshal(jm.Aux)
 				if err != nil {
 					info += "failed to parse aux message: " + err.Error()
 				}
 				info += string(infoBytes)
-			} else {
-				info += result.ID
+			} else if output != "" {
+				info += output
 			}
 		}
 	}
+
+	info = strings.TrimSpace(info)
 	return info, nil
 }
 
