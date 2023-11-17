@@ -41,7 +41,6 @@ import (
 	"github.com/opencontainers/go-digest"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
-	"github.com/ryboe/q"
 )
 
 const defaultDockerfile = "Dockerfile"
@@ -586,24 +585,25 @@ func marshalBuildAndApplyDefaults(b resource.PropertyValue) (Build, error) {
 	buildObject := b.ObjectValue()
 
 	// Context
-	if buildObject["context"].IsNull() {
-		// set default
-		build.Context = "."
-	} else if buildObject["context"].ContainsUnknowns() {
-		q.Q("DO NOTIONG in context ever")
-	} else {
-		build.Context = buildObject["context"].StringValue()
+	if !buildObject["context"].ContainsUnknowns() {
+		if buildObject["context"].IsNull() {
+			// set default
+			build.Context = "."
+		} else {
+			build.Context = buildObject["context"].StringValue()
+		}
 	}
 
 	// Dockerfile
-	if buildObject["dockerfile"].IsNull() {
-		// set default
-		build.Dockerfile = path.Join(build.Context, defaultDockerfile)
-	} else if buildObject["dockerfile"].ContainsUnknowns() {
-		q.Q("DO NOTIONG")
-	} else {
-		build.Dockerfile = buildObject["dockerfile"].StringValue()
+	if !buildObject["dockerfile"].ContainsUnknowns() {
+		if buildObject["dockerfile"].IsNull() {
+			// set default
+			build.Dockerfile = path.Join(build.Context, defaultDockerfile)
+		} else {
+			build.Dockerfile = buildObject["dockerfile"].StringValue()
+		}
 	}
+
 	// BuildKit
 	version, err := marshalBuilder(buildObject["builderVersion"])
 
@@ -616,13 +616,12 @@ func marshalBuildAndApplyDefaults(b resource.PropertyValue) (Build, error) {
 	build.Args = marshalArgs(buildObject["args"])
 
 	// Target
-	// TODO: Check for unknowns at every step. (Ugh.)
-	if !buildObject["target"].IsNull() {
+	if !buildObject["target"].IsNull() && !buildObject["target"].ContainsUnknowns() {
 		build.Target = buildObject["target"].StringValue()
 	}
 
 	// Platform
-	if !buildObject["platform"].IsNull() {
+	if !buildObject["platform"].IsNull() && !buildObject["platform"].ContainsUnknowns() {
 		build.Platform = buildObject["platform"].StringValue()
 	}
 	return build, nil
@@ -654,26 +653,26 @@ func marshalCachedImages(b resource.PropertyValue) ([]string, error) {
 
 	stages := images.ArrayValue()
 	for _, img := range stages {
-		// if we are in preview, we cannot add an undefined Output so we skip to the next item
-		if img.IsNull() {
-			continue
+		if !img.IsNull() && !img.ContainsUnknowns() {
+			stage := img.StringValue()
+			cacheImages = append(cacheImages, stage)
 		}
-		stage := img.StringValue()
-		cacheImages = append(cacheImages, stage)
 	}
 	return cacheImages, nil
 }
 
 func marshalRegistry(r resource.PropertyValue) Registry {
 	var reg Registry
+
 	if !r.IsNull() {
-		if !r.ObjectValue()["server"].IsNull() {
+		if !r.ObjectValue()["server"].IsNull() && !r.ObjectValue()["server"].ContainsUnknowns() {
+			// TODO: what do we do for a Computed value? Having these structs may be problematic maybe? idk let's find out
 			reg.Server = r.ObjectValue()["server"].StringValue()
 		}
-		if !r.ObjectValue()["username"].IsNull() {
+		if !r.ObjectValue()["username"].IsNull() && !r.ObjectValue()["username"].ContainsUnknowns() {
 			reg.Username = r.ObjectValue()["username"].StringValue()
 		}
-		if !r.ObjectValue()["password"].IsNull() {
+		if !r.ObjectValue()["password"].IsNull() && !r.ObjectValue()["password"].ContainsUnknowns() {
 			reg.Password = r.ObjectValue()["password"].StringValue()
 		}
 		return reg
@@ -686,8 +685,10 @@ func marshalArgs(a resource.PropertyValue) map[string]*string {
 	if !a.IsNull() {
 		for k, v := range a.ObjectValue() {
 			key := fmt.Sprintf("%v", k)
-			vStr := v.StringValue()
-			args[key] = &vStr
+			if !a.ObjectValue().ContainsUnknowns() {
+				vStr := v.StringValue()
+				args[key] = &vStr
+			}
 		}
 	}
 	if len(args) == 0 {
