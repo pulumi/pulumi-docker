@@ -6,7 +6,6 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
-	"github.com/pulumi/pulumi/sdk/v3/go/common/util/contract"
 	"io"
 	"io/fs"
 	"log"
@@ -324,7 +323,7 @@ func (p *dockerNativeProvider) Diff(ctx context.Context, req *rpc.DiffRequest) (
 	for key := range d.Deletes {
 		diff[string(key)] = &rpc.PropertyDiff{Kind: rpc.PropertyDiff_DELETE}
 	}
-
+	// TODO: this now outputs dockerfile and platform as well which are unchanged
 	detailedUpdates := diffUpdates(d.Updates)
 
 	// merge detailedUpdates into diff
@@ -367,9 +366,9 @@ func diffUpdates(updates map[resource.PropertyKey]resource.ValueDiff) map[string
 
 // Create allocates a new instance of the provided resource and returns its unique ID afterwards.
 func (p *dockerNativeProvider) Create(ctx context.Context, req *rpc.CreateRequest) (*rpc.CreateResponse, error) {
-	contract.Assertf(!req.GetPreview(), "Internal error in pulumi-docker: "+
-		"dockerNativeProvider Create should not be called during preview "+
-		"as it currently does not support partial data.")
+	//contract.Assertf(!req.GetPreview(), "Internal error in pulumi-docker: "+
+	//	"dockerNativeProvider Create should not be called during preview "+
+	//	"as it currently does not support partial data.")
 
 	urn := resource.URN(req.GetUrn())
 	label := fmt.Sprintf("%s.Create(%s)", p.name, urn)
