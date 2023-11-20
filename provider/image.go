@@ -81,7 +81,8 @@ type Config struct {
 
 func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	urn resource.URN,
-	props *structpb.Struct) (string, *structpb.Struct, error) {
+	props *structpb.Struct,
+	runBuild bool) (string, *structpb.Struct, error) {
 
 	inputs, err := plugin.UnmarshalProperties(props, plugin.MarshalOptions{KeepUnknowns: true, SkipNulls: true})
 
@@ -202,6 +203,22 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		return "", nil, err
 	}
 
+	outputs := map[string]interface{}{
+		"dockerfile":     relDockerfile,
+		"context":        img.Build.Context,
+		"baseImageName":  img.Name,
+		"registryServer": img.Registry.Server,
+		"imageName":      img.Name,
+	}
+
+	if !runBuild {
+		pbstruct, err := plugin.MarshalProperties(
+			resource.NewPropertyMapFromMap(outputs),
+			plugin.MarshalOptions{KeepUnknowns: true, SkipNulls: true},
+		)
+		return img.Name, pbstruct, err
+	}
+
 	authConfigs := make(map[string]types.AuthConfig)
 	var regAuth types.AuthConfig
 
@@ -299,13 +316,13 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		return "", nil, err
 	}
 
-	outputs := map[string]interface{}{
-		"dockerfile":     relDockerfile,
-		"context":        img.Build.Context,
-		"baseImageName":  img.Name,
-		"registryServer": img.Registry.Server,
-		"imageName":      img.Name,
-	}
+	//outputs := map[string]interface{}{
+	//	"dockerfile":     relDockerfile,
+	//	"context":        img.Build.Context,
+	//	"baseImageName":  img.Name,
+	//	"registryServer": img.Registry.Server,
+	//	"imageName":      img.Name,
+	//}
 
 	imageName, err := reference.ParseNormalizedNamed(img.Name)
 	if err != nil {

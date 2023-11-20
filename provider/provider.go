@@ -6,6 +6,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
+	"github.com/ryboe/q"
 	"io"
 	"io/fs"
 	"log"
@@ -161,7 +162,12 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 	//	return &rpc.CheckResponse{Inputs: news, Failures: nil}, nil
 	//}
 
-	// Set defaults. TODO: remove foll comment - This doesn't work with unknowns, say, during preview.
+	buildOnPreview := marshalBuildOnPreview(inputs)
+	inputs["buildOnPreview"] = resource.NewBoolProperty(buildOnPreview)
+
+	q.Q(inputs)
+	q.Q("******************END OF CHECK***********************")
+
 	build, err := marshalBuildAndApplyDefaults(inputs["build"])
 	if err != nil {
 		return nil, err
@@ -230,7 +236,7 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 			"explicitly setting the `platform` field on ImageBuildOptions.", hostPlatform)
 
 	// build options: set default host platform
-	// TODO: remove comment - notice how we're checking the inputs, not the build struct here? apparently we only use the build struct for the dockerfile hashing. Huh okay.
+	// TODO: be sure to handle unknowns here too and then remove comment - notice how we're checking the inputs, not the build struct here? apparently we only use the build struct for the dockerfile hashing. Huh okay.
 	if inputs["build"].IsNull() {
 		inputs["build"] = resource.NewObjectProperty(resource.PropertyMap{
 
@@ -384,8 +390,12 @@ func (p *dockerNativeProvider) Create(ctx context.Context, req *rpc.CreateReques
 	if err != nil {
 		return nil, errors.Wrapf(err, "malformed resource inputs")
 	}
+	runBuild := false
+	if !req.GetPreview() || inputs["buildOnPreview"].BoolValue() {
+		runBuild = true
+	}
 
-	id, outputProperties, err := p.dockerBuild(ctx, urn, req.GetProperties())
+	id, outputProperties, err := p.dockerBuild(ctx, urn, req.GetProperties(), runBuild)
 	if err != nil {
 		return nil, err
 	}
@@ -450,8 +460,13 @@ func (p *dockerNativeProvider) Update(ctx context.Context, req *rpc.UpdateReques
 	if err != nil {
 		return nil, errors.Wrapf(err, "diff failed because malformed resource inputs")
 	}
+	runBuild := false
+	if !req.GetPreview() || newInputs["buildOnPreview"].BoolValue() {
+		runBuild = true
+	}
+
 	// When the docker image is updated, we build and push again.
-	_, outputProperties, err := p.dockerBuild(ctx, urn, req.GetNews())
+	_, outputProperties, err := p.dockerBuild(ctx, urn, req.GetNews(), runBuild)
 	if err != nil {
 		return nil, err
 	}
@@ -703,4 +718,12 @@ func setConfiguration(configVars map[string]string) map[string]string {
 	}
 
 	return envConfig
+}
+
+func marshalBuildOnPreview(inputs resource.PropertyMap) bool {
+	//set default if not set
+	if inputs["buildOnPreview"].IsNull() || inputs["buildOnPreview"].IsComputed() {
+		return false
+	}
+	return inputs["buildOnPreview"].BoolValue()
 }
