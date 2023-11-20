@@ -634,7 +634,7 @@ func marshalCachedImages(b resource.PropertyValue) ([]string, error) {
 	}
 	c := b.ObjectValue()["cacheFrom"]
 
-	if c.IsNull() {
+	if c.IsNull() || c.IsComputed() {
 		return cacheImages, nil
 	}
 
@@ -644,9 +644,10 @@ func marshalCachedImages(b resource.PropertyValue) ([]string, error) {
 	if !ok {
 		return cacheImages, fmt.Errorf("cacheFrom requires an `images` field")
 	}
-	if images.IsNull() {
+	if images.IsNull() || images.IsComputed() {
 		return cacheImages, nil
 	}
+
 	if !images.IsArray() {
 		return cacheImages, fmt.Errorf("the `images` field must be a list of strings")
 	}
@@ -685,7 +686,7 @@ func marshalArgs(a resource.PropertyValue) map[string]*string {
 	if !a.IsNull() {
 		for k, v := range a.ObjectValue() {
 			key := fmt.Sprintf("%v", k)
-			if !a.ObjectValue().ContainsUnknowns() {
+			if !v.ContainsUnknowns() {
 				vStr := v.StringValue()
 				args[key] = &vStr
 			}
