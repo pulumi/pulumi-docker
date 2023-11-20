@@ -48,6 +48,21 @@ func TestSetRegistry(t *testing.T) {
 		actual := marshalRegistry(input)
 		assert.Equal(t, expected, actual)
 	})
+
+	t.Run("Unknown Registry Server", func(t *testing.T) {
+		expected := Registry{
+			Username: "pulumipus",
+			Password: "supersecret",
+		}
+		input := resource.NewObjectProperty(resource.PropertyMap{
+			"server":   resource.NewComputedProperty(resource.Computed{Element: resource.NewStringProperty("X")}),
+			"username": resource.NewStringProperty("pulumipus"),
+			"password": resource.NewStringProperty("supersecret"),
+		})
+
+		actual := marshalRegistry(input)
+		assert.Equal(t, expected, actual)
+	})
 }
 
 func TestMarshalBuildAndApplyDefaults(t *testing.T) {
@@ -63,6 +78,24 @@ func TestMarshalBuildAndApplyDefaults(t *testing.T) {
 		assert.Equal(t, expected, actual)
 		assert.NoError(t, err)
 	})
+
+	t.Run("No default Dockerfile and Context for Unknown input",
+		func(t *testing.T) {
+			expected := Build{
+				BuilderVersion: "2",
+			}
+			input := resource.NewObjectProperty(resource.PropertyMap{
+				"dockerfile": resource.NewComputedProperty(
+					resource.Computed{Element: resource.NewStringProperty("dockerfile-from-elsewhere")},
+				),
+				"context": resource.NewComputedProperty(
+					resource.Computed{Element: resource.NewStringProperty("context-is-computed-at-up-time")},
+				),
+			})
+			actual, err := marshalBuildAndApplyDefaults(input)
+			assert.Equal(t, expected, actual)
+			assert.NoError(t, err)
+		})
 
 	t.Run("Custom Dockerfile with default context", func(t *testing.T) {
 		expected := Build{
@@ -94,7 +127,7 @@ func TestMarshalBuildAndApplyDefaults(t *testing.T) {
 		assert.NoError(t, err)
 	})
 
-	t.Run("Setting Args", func(t *testing.T) {
+	t.Run("Sets Args", func(t *testing.T) {
 		argval := "Alicorn"
 		expected := Build{
 			Context:    ".",
@@ -108,6 +141,31 @@ func TestMarshalBuildAndApplyDefaults(t *testing.T) {
 		input := resource.NewObjectProperty(resource.PropertyMap{
 			"args": resource.NewObjectProperty(resource.PropertyMap{
 				"Swiftwind": resource.NewStringProperty("Alicorn"),
+			}),
+		})
+
+		actual, err := marshalBuildAndApplyDefaults(input)
+		assert.Equal(t, expected, actual)
+		assert.NoError(t, err)
+	})
+
+	t.Run("Handles Unknown Args", func(t *testing.T) {
+		argval := "rainbow-mane"
+		expected := Build{
+			Context:    ".",
+			Dockerfile: "Dockerfile",
+			Args: map[string]*string{
+				"Swiftwind": &argval,
+			},
+			BuilderVersion: "2",
+		}
+
+		input := resource.NewObjectProperty(resource.PropertyMap{
+			"args": resource.NewObjectProperty(resource.PropertyMap{
+				"Swiftwind": resource.NewStringProperty("rainbow-mane"),
+				"Fluttershy": resource.NewComputedProperty(
+					resource.Computed{Element: resource.NewStringProperty("pink-hair")},
+				),
 			}),
 		})
 
@@ -132,6 +190,25 @@ func TestMarshalBuildAndApplyDefaults(t *testing.T) {
 		assert.Equal(t, expected, actual)
 		assert.NoError(t, err)
 	})
+
+	t.Run("Handles Unknown Target", func(t *testing.T) {
+		expected := Build{
+			Context:        ".",
+			Dockerfile:     "Dockerfile",
+			BuilderVersion: "2",
+		}
+
+		input := resource.NewObjectProperty(resource.PropertyMap{
+			"target": resource.NewComputedProperty(
+				resource.Computed{Element: resource.NewStringProperty("moving-target")},
+			),
+		})
+
+		actual, err := marshalBuildAndApplyDefaults(input)
+		assert.Equal(t, expected, actual)
+		assert.NoError(t, err)
+	})
+
 	t.Run("Sets Platform", func(t *testing.T) {
 		expected := Build{
 			Context:        ".",
@@ -148,6 +225,25 @@ func TestMarshalBuildAndApplyDefaults(t *testing.T) {
 		assert.Equal(t, expected, actual)
 		assert.NoError(t, err)
 	})
+
+	t.Run("Handles Unknown Platform", func(t *testing.T) {
+		expected := Build{
+			Context:        ".",
+			Dockerfile:     "Dockerfile",
+			BuilderVersion: "2",
+		}
+
+		input := resource.NewObjectProperty(resource.PropertyMap{
+			"platform": resource.NewComputedProperty(
+				resource.Computed{Element: resource.NewStringProperty("wheres-my-train")},
+			),
+		})
+
+		actual, err := marshalBuildAndApplyDefaults(input)
+		assert.Equal(t, expected, actual)
+		assert.NoError(t, err)
+	})
+
 	t.Run("Sets Builder to classic V1 builder", func(t *testing.T) {
 		expected := Build{
 			Context:        ".",
@@ -192,6 +288,21 @@ func TestMarshalArgs(t *testing.T) {
 			"Swiftwind": resource.NewStringProperty("Alicorn"),
 			"Fledge":    resource.NewStringProperty("Pegasus"),
 			"The Last":  resource.NewStringProperty("Unicorn"),
+		})
+		actual := marshalArgs(input)
+		assert.Equal(t, expected, actual)
+	})
+	t.Run("Does not set Computed args", func(t *testing.T) {
+		a := "Alicorn"
+
+		expected := map[string]*string{
+			"Swiftwind": &a,
+		}
+		input := resource.NewObjectProperty(resource.PropertyMap{
+			"Swiftwind": resource.NewStringProperty("Alicorn"),
+			"Fledge": resource.NewComputedProperty(
+				resource.Computed{Element: resource.NewStringProperty("pegasus")},
+			),
 		})
 		actual := marshalArgs(input)
 		assert.Equal(t, expected, actual)
@@ -280,7 +391,9 @@ func TestMarshalCachedImages(t *testing.T) {
 
 			"cacheFrom": resource.NewObjectProperty(resource.PropertyMap{
 				"images": resource.NewArrayProperty([]resource.PropertyValue{
-					resource.NewNullProperty(), // unknowns are passed as null property values
+					resource.NewComputedProperty(
+						resource.Computed{Element: resource.NewStringProperty("looking-for-my-image")},
+					),
 				}),
 			}),
 		})
@@ -296,6 +409,9 @@ func TestMarshalCachedImages(t *testing.T) {
 			"cacheFrom": resource.NewObjectProperty(resource.PropertyMap{
 				"images": resource.NewArrayProperty([]resource.PropertyValue{
 					resource.NewNullProperty(),
+					resource.NewComputedProperty(
+						resource.Computed{Element: resource.NewStringProperty("looking-for-my-image")},
+					),
 					resource.NewStringProperty("apple"),
 					resource.NewStringProperty("banana"),
 					resource.NewStringProperty("cherry"),
@@ -311,7 +427,15 @@ func TestMarshalCachedImages(t *testing.T) {
 		expected := []string(nil)
 		buildInput := resource.NewObjectProperty(resource.PropertyMap{
 			"cacheFrom": resource.NewObjectProperty(resource.PropertyMap{
-				"images": resource.NewNullProperty(), // unknowns are passed as null property values
+				"images": resource.NewComputedProperty(
+					resource.Computed{
+						Element: resource.NewArrayProperty([]resource.PropertyValue{
+							resource.NewComputedProperty(
+								resource.Computed{Element: resource.NewStringProperty("looking-for-my-image")},
+							),
+						}),
+					},
+				),
 			}),
 		})
 		actual, err := marshalCachedImages(buildInput)
@@ -321,7 +445,11 @@ func TestMarshalCachedImages(t *testing.T) {
 	t.Run("Test Cached Images Passes On Unknown cacheFrom", func(t *testing.T) {
 		expected := []string(nil)
 		buildInput := resource.NewObjectProperty(resource.PropertyMap{
-			"cacheFrom": resource.NewNullProperty(), // unknowns are passed as null property values
+			"cacheFrom": resource.NewComputedProperty(
+				resource.Computed{Element: resource.NewObjectProperty(
+					resource.NewPropertyMapFromMap(map[string]interface{}{}),
+				)},
+			),
 		})
 		actual, err := marshalCachedImages(buildInput)
 		assert.NoError(t, err)
@@ -329,6 +457,7 @@ func TestMarshalCachedImages(t *testing.T) {
 	})
 }
 
+// TODO: do we want to allow Builder to be Unknown? there's very little use case here
 func TestMarshalBuilder(t *testing.T) {
 	t.Run("Test Builder Version Default", func(t *testing.T) {
 		expected := types.BuilderBuildKit
@@ -366,6 +495,7 @@ func TestMarshalBuilder(t *testing.T) {
 	})
 }
 
+// TODO: do we want to allow SkipPush to be Unknown?
 func TestMarshalSkipPush(t *testing.T) {
 	t.Run("Test SkipPush defaults to false", func(t *testing.T) {
 		expected := false
