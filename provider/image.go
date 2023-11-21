@@ -316,14 +316,6 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		return "", nil, err
 	}
 
-	//outputs := map[string]interface{}{
-	//	"dockerfile":     relDockerfile,
-	//	"context":        img.Build.Context,
-	//	"baseImageName":  img.Name,
-	//	"registryServer": img.Registry.Server,
-	//	"imageName":      img.Name,
-	//}
-
 	imageName, err := reference.ParseNormalizedNamed(img.Name)
 	if err != nil {
 		return "", nil, err
@@ -684,7 +676,6 @@ func marshalRegistry(r resource.PropertyValue) Registry {
 
 	if !r.IsNull() {
 		if !r.ObjectValue()["server"].IsNull() && !r.ObjectValue()["server"].ContainsUnknowns() {
-			// TODO: what do we do for a Computed value? Having these structs may be problematic maybe? idk let's find out
 			reg.Server = r.ObjectValue()["server"].StringValue()
 		}
 		if !r.ObjectValue()["username"].IsNull() && !r.ObjectValue()["username"].ContainsUnknowns() {

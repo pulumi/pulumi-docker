@@ -6,7 +6,6 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
-	"github.com/ryboe/q"
 	"io"
 	"io/fs"
 	"log"
@@ -155,21 +154,29 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 	buildOnPreview := marshalBuildOnPreview(inputs)
 	inputs["buildOnPreview"] = resource.NewBoolProperty(buildOnPreview)
 
-	q.Q(inputs)
-	q.Q("******************END OF CHECK***********************")
-
 	build, err := marshalBuildAndApplyDefaults(inputs["build"])
 	if err != nil {
 		return nil, err
 	}
-
-	// TODO: this only verifies if my Dockerfile is unknown. What about other unknowns? how do we want to handle that? do we rewrite the marshaler? let's prove this one first!
+	// Set the resource inputs to the default values
 	var knownDockerfile bool
-	if !inputs["build"].ObjectValue()["dockerfile"].ContainsUnknowns() {
-		knownDockerfile = true
+	if inputs["build"].IsNull() {
+		inputs["build"] = resource.NewObjectProperty(resource.PropertyMap{
+			"dockerfile": resource.NewStringProperty(build.Dockerfile),
+			"context":    resource.NewStringProperty(build.Context),
+		})
+	} else {
+		// We do not want to set these fields if their values are Unknown.
+		if !inputs["build"].ObjectValue()["dockerfile"].ContainsUnknowns() {
+			inputs["build"].ObjectValue()["dockerfile"] = resource.NewStringProperty(build.Dockerfile)
+			knownDockerfile = true
+		}
+		if !inputs["build"].ObjectValue()["context"].ContainsUnknowns() {
+			inputs["build"].ObjectValue()["context"] = resource.NewStringProperty(build.Context)
+		}
 	}
-	// Verify Dockerfile at given location
 
+	// Verify Dockerfile at given location
 	if knownDockerfile {
 
 		if _, statErr := os.Stat(build.Dockerfile); statErr != nil {
@@ -194,11 +201,11 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 			// we want an error message that tells the user: try "./app/Dockerfile"
 			if err != nil {
 				// no clue case
-				return nil, fmt.Errorf("could not open dockerfile at relative blahahaha path %s: %v", build.Dockerfile, statErr)
+				return nil, fmt.Errorf("could not open dockerfile at relative path %s: %v", build.Dockerfile, statErr)
 			}
 
 			// we could open the relative path
-			return nil, fmt.Errorf("could not open dockerfile at relative blaheheh path %s. "+
+			return nil, fmt.Errorf("could not open dockerfile at relative path %s. "+
 				"Try setting `dockerfile` to %q", build.Dockerfile, relPath)
 
 		}
@@ -207,13 +214,8 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 			return nil, err
 		}
 		// add implicit resource contextDigest
-		if inputs["build"].IsNull() {
-			inputs["build"] = resource.NewObjectProperty(resource.PropertyMap{
-				"contextDigest": resource.NewStringProperty(contextDigest),
-			})
-		} else {
-			inputs["build"].ObjectValue()["contextDigest"] = resource.NewStringProperty(contextDigest)
-		}
+		inputs["build"].ObjectValue()["contextDigest"] = resource.NewStringProperty(contextDigest)
+
 	}
 
 	// OS defaults to Linux in all cases
@@ -226,26 +228,14 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 			"explicitly setting the `platform` field on ImageBuildOptions.", hostPlatform)
 
 	// build options: set default host platform
-	// TODO: be sure to handle unknowns here too and then remove comment - notice how we're checking the inputs, not the build struct here? apparently we only use the build struct for the dockerfile hashing. Huh okay.
-	if inputs["build"].IsNull() {
-		inputs["build"] = resource.NewObjectProperty(resource.PropertyMap{
-
-			"platform": resource.NewStringProperty(hostPlatform),
-		})
+	if inputs["build"].ObjectValue()["platform"].IsNull() {
+		inputs["build"].ObjectValue()["platform"] = resource.NewStringProperty(hostPlatform)
 		err = p.host.Log(ctx, "info", urn, msg)
 		if err != nil {
 			return nil, err
 		}
-	} else {
-		if inputs["build"].ObjectValue()["platform"].IsNull() {
-			inputs["build"].ObjectValue()["platform"] = resource.NewStringProperty(hostPlatform)
-			err = p.host.Log(ctx, "info", urn, msg)
-			if err != nil {
-				return nil, err
-			}
-		}
-
 	}
+
 	if _, err = marshalCachedImages(inputs["build"]); err != nil {
 		return nil, err
 	}
