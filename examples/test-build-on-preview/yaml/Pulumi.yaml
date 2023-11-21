@@ -1,0 +1,15 @@
+name: dockerfile-build-on-preview
+runtime: yaml
+#plugins:
+#  providers:
+#    - name: docker
+#      path: /Users/guin/go/src/github.com/pulumi/pulumi-docker/bin
+resources:
+  previewImage:
+    type: docker:Image
+    properties:
+      imageName: docker.io/pulumibot/build-on-preview:yaml
+      skipPush: true
+      buildOnPreview: true
+outputs:
+  repoDigest: ${previewImage.repoDigest}
