@@ -1,19 +1,17 @@
 name: dockerfile-default-context
 runtime: yaml
 resources:
-  commandName:
+  extraArg:
     type: command:local:Command
     properties:
-      create: echo guinisawesome
+      create: echo extra-argument
   demo-image:
     type: docker:Image
     properties:
-      imageName: pulumibot/test-unknowns:yaml
+      imageName: docker.io/pulumibot/test-unknowns:yaml
       skipPush: true
       build:
         args:
-          RANDOM_ARG: ${commandName.stdout}
-    options:
-      version: v4.1.0
+          RANDOM_ARG: ${extraArg.stdout}
 outputs:
-  randNameId: ${commandName.stdout}
+  extraArgument: ${extraArg.stdout}
