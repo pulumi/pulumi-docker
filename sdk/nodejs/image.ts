@@ -174,6 +174,7 @@ export class Image extends pulumi.CustomResource {
                 throw new Error("Missing required property 'imageName'");
             }
             resourceInputs["build"] = args ? args.build : undefined;
+            resourceInputs["buildOnPreview"] = (args ? args.buildOnPreview : undefined) ?? false;
             resourceInputs["imageName"] = args ? args.imageName : undefined;
             resourceInputs["registry"] = args ? args.registry : undefined;
             resourceInputs["skipPush"] = (args ? args.skipPush : undefined) ?? false;
@@ -205,6 +206,10 @@ export interface ImageArgs {
      * The Docker build context
      */
     build?: pulumi.Input<inputs.DockerBuild>;
+    /**
+     * A flag to build an image on preview
+     */
+    buildOnPreview?: pulumi.Input<boolean>;
     /**
      * The image name, of the format repository[:tag], e.g. `docker.io/username/demo-image:v1`.
      * This reference is not unique to each build and push.For the unique manifest SHA of a pushed docker image, or the local image ID, please use `repoDigest`.
