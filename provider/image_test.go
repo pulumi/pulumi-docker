@@ -276,7 +276,7 @@ func TestMarshalBuildAndApplyDefaults(t *testing.T) {
 
 func TestMarshalArgs(t *testing.T) {
 	t.Run("Set any args", func(t *testing.T) {
-		a := "Alicorn"
+		a := "alicorn"
 		p := "Pegasus"
 		tl := "Unicorn"
 		expected := map[string]*string{
@@ -285,7 +285,7 @@ func TestMarshalArgs(t *testing.T) {
 			"The Last":  &tl,
 		}
 		input := resource.NewObjectProperty(resource.PropertyMap{
-			"Swiftwind": resource.NewStringProperty("Alicorn"),
+			"Swiftwind": resource.NewStringProperty("alicorn"),
 			"Fledge":    resource.NewStringProperty("Pegasus"),
 			"The Last":  resource.NewStringProperty("Unicorn"),
 		})
@@ -293,13 +293,13 @@ func TestMarshalArgs(t *testing.T) {
 		assert.Equal(t, expected, actual)
 	})
 	t.Run("Does not set Computed args", func(t *testing.T) {
-		a := "Alicorn"
+		a := "unicorn-with-wings"
 
 		expected := map[string]*string{
 			"Swiftwind": &a,
 		}
 		input := resource.NewObjectProperty(resource.PropertyMap{
-			"Swiftwind": resource.NewStringProperty("Alicorn"),
+			"Swiftwind": resource.NewStringProperty("unicorn-with-wings"),
 			"Fledge": resource.NewComputedProperty(
 				resource.Computed{Element: resource.NewStringProperty("pegasus")},
 			),

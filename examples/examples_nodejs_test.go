@@ -147,7 +147,7 @@ func TestUnknownInputsNode(t *testing.T) {
 		With(integration.ProgramTestOptions{
 			Dir: path.Join(getCwd(t), "test-unknowns", "ts"),
 			ExtraRuntimeValidation: func(t *testing.T, stack integration.RuntimeValidationStackInfo) {
-				randID, ok := stack.Outputs["randnameid"]
+				randID, ok := stack.Outputs["randArgument"]
 				assert.True(t, ok)
 				assert.NotEmpty(t, randID)
 			},

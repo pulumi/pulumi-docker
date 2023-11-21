@@ -41,7 +41,7 @@ func TestUnknownInputsYAML(t *testing.T) {
 		Quick:       true,
 		SkipRefresh: true,
 		ExtraRuntimeValidation: func(t *testing.T, stack integration.RuntimeValidationStackInfo) {
-			randID, ok := stack.Outputs["randNameId"]
+			randID, ok := stack.Outputs["extraArgument"]
 			assert.True(t, ok)
 			assert.NotEmpty(t, randID)
 		},
