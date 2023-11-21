@@ -136,30 +136,13 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 	label := fmt.Sprintf("%s.Check(%s)", p.name, urn)
 	logging.V(9).Infof("%s executing", label)
 
-	news := req.GetNews()
-
-	inputs, err := plugin.UnmarshalProperties(news, plugin.MarshalOptions{
+	inputs, err := plugin.UnmarshalProperties(req.GetNews(), plugin.MarshalOptions{
 		KeepUnknowns: true,
 		SkipNulls:    true,
 	})
 	if err != nil {
 		return nil, err
 	}
-
-	//if inputs["build"].ContainsUnknowns() {
-	//	//// We skip some of the "nice-to-have" default and verification logic in the case of unknowns.
-	//	//// This should be fine, given that _any_ unknowns in the Build field should trigger a diff.
-	//	//// Furthermore, all of this will get called again during `pulumi up`.
-	//	//inputStruct, err := plugin.MarshalProperties(inputs, plugin.MarshalOptions{
-	//	//	KeepUnknowns: true,
-	//	//	SkipNulls:    true,
-	//	//})
-	//	//if err != nil {
-	//	//	return nil, err
-	//	//}
-	//
-	//	return &rpc.CheckResponse{Inputs: news, Failures: nil}, nil
-	//}
 
 	buildOnPreview := marshalBuildOnPreview(inputs)
 	inputs["buildOnPreview"] = resource.NewBoolProperty(buildOnPreview)
@@ -331,7 +314,6 @@ func (p *dockerNativeProvider) Diff(ctx context.Context, req *rpc.DiffRequest) (
 	for key := range d.Deletes {
 		diff[string(key)] = &rpc.PropertyDiff{Kind: rpc.PropertyDiff_DELETE}
 	}
-	// TODO: this now outputs dockerfile and platform as well which are unchanged
 	detailedUpdates := diffUpdates(d.Updates)
 
 	// merge detailedUpdates into diff
@@ -374,9 +356,6 @@ func diffUpdates(updates map[resource.PropertyKey]resource.ValueDiff) map[string
 
 // Create allocates a new instance of the provided resource and returns its unique ID afterwards.
 func (p *dockerNativeProvider) Create(ctx context.Context, req *rpc.CreateRequest) (*rpc.CreateResponse, error) {
-	//contract.Assertf(!req.GetPreview(), "Internal error in pulumi-docker: "+
-	//	"dockerNativeProvider Create should not be called during preview "+
-	//	"as it currently does not support partial data.")
 
 	urn := resource.URN(req.GetUrn())
 	label := fmt.Sprintf("%s.Create(%s)", p.name, urn)
