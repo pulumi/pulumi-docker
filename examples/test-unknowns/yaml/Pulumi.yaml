@@ -1,4 +1,4 @@
-name: dockerfile-default-context
+name: dockerfile-with-unknowns-yaml
 runtime: yaml
 resources:
   extraArg:

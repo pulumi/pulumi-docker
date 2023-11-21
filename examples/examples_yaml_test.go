@@ -17,6 +17,7 @@
 package examples
 
 import (
+	"bytes"
 	"encoding/json"
 	"os"
 	"path"
@@ -71,6 +72,26 @@ func TestSecretsYAML(t *testing.T) {
 			assert.NoError(t, err)
 			assert.NotContainsf(t, string(deploymentJSON), "supersecret",
 				"Secret should not be stored in the plain state")
+		},
+	})
+}
+
+func TestBuildOnPreviewYAML(t *testing.T) {
+	cwd, err := os.Getwd()
+	if !assert.NoError(t, err) {
+		t.FailNow()
+	}
+	var outputBuf bytes.Buffer
+	integration.ProgramTest(t, &integration.ProgramTestOptions{
+		Dir:                      path.Join(cwd, "test-build-on-preview", "yaml"),
+		SkipUpdate:               true, //only run Preview
+		SkipExportImport:         true,
+		Verbose:                  true, //we need this to verify the build output logs
+		AllowEmptyPreviewChanges: true,
+		Stdout:                   &outputBuf,
+		ExtraRuntimeValidation: func(t *testing.T, stack integration.RuntimeValidationStackInfo) {
+			assert.Contains(t, outputBuf.String(), "Image built successfully, local id")
+			assert.Contains(t, outputBuf.String(), "repoDigest:")
 		},
 	})
 }
