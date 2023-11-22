@@ -371,12 +371,15 @@ func (p *dockerNativeProvider) Create(ctx context.Context, req *rpc.CreateReques
 	if err != nil {
 		return nil, errors.Wrapf(err, "malformed resource inputs")
 	}
-	runBuild := false
-	if !req.GetPreview() || inputs["buildOnPreview"].BoolValue() {
-		runBuild = true
+
+	// if we're in preview mode and buildOnPreview is set to false, we return the inputs
+	if req.GetPreview() && !inputs["buildOnPreview"].BoolValue() {
+		return &rpc.CreateResponse{
+			Properties: req.GetProperties(),
+		}, nil
 	}
 
-	id, outputProperties, err := p.dockerBuild(ctx, urn, req.GetProperties(), runBuild)
+	id, outputProperties, err := p.dockerBuild(ctx, urn, req.GetProperties())
 	if err != nil {
 		return nil, err
 	}
@@ -441,13 +444,16 @@ func (p *dockerNativeProvider) Update(ctx context.Context, req *rpc.UpdateReques
 	if err != nil {
 		return nil, errors.Wrapf(err, "diff failed because malformed resource inputs")
 	}
-	runBuild := false
-	if !req.GetPreview() || newInputs["buildOnPreview"].BoolValue() {
-		runBuild = true
+
+	// if we are in Preview mode and buildOnPreview is set to false, return the news
+	if req.GetPreview() && !newInputs["buildOnPreview"].BoolValue() {
+		return &rpc.UpdateResponse{
+			Properties: req.GetNews(),
+		}, nil
 	}
 
 	// When the docker image is updated, we build and push again.
-	_, outputProperties, err := p.dockerBuild(ctx, urn, req.GetNews(), runBuild)
+	_, outputProperties, err := p.dockerBuild(ctx, urn, req.GetNews())
 	if err != nil {
 		return nil, err
 	}

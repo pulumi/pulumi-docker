@@ -72,7 +72,7 @@ func TestAzureContainerRegistry(t *testing.T) {
 	integration.ProgramTest(t, &test)
 }
 
-func TestAwsContainerRegistry(t *testing.T) {
+func TestAwsContainerRegistryNode(t *testing.T) {
 	region := os.Getenv("AWS_REGION")
 	if region == "" {
 		t.Skipf("Skipping test due to missing AWS_REGION environment variable")

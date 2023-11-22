@@ -82,7 +82,7 @@ type Config struct {
 func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	urn resource.URN,
 	props *structpb.Struct,
-	runBuild bool) (string, *structpb.Struct, error) {
+) (string, *structpb.Struct, error) {
 
 	inputs, err := plugin.UnmarshalProperties(props, plugin.MarshalOptions{KeepUnknowns: true, SkipNulls: true})
 
@@ -203,22 +203,6 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		return "", nil, err
 	}
 
-	outputs := map[string]interface{}{
-		"dockerfile":     relDockerfile,
-		"context":        img.Build.Context,
-		"baseImageName":  img.Name,
-		"registryServer": img.Registry.Server,
-		"imageName":      img.Name,
-	}
-
-	if !runBuild {
-		pbstruct, err := plugin.MarshalProperties(
-			resource.NewPropertyMapFromMap(outputs),
-			plugin.MarshalOptions{KeepUnknowns: true, SkipNulls: true},
-		)
-		return img.Name, pbstruct, err
-	}
-
 	authConfigs := make(map[string]types.AuthConfig)
 	var regAuth types.AuthConfig
 
@@ -314,6 +298,14 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	imageID, err := p.runImageBuild(ctx, docker, tar, opts, urn, img.Name)
 	if err != nil {
 		return "", nil, err
+	}
+
+	outputs := map[string]interface{}{
+		"dockerfile":     relDockerfile,
+		"context":        img.Build.Context,
+		"baseImageName":  img.Name,
+		"registryServer": img.Registry.Server,
+		"imageName":      img.Name,
 	}
 
 	imageName, err := reference.ParseNormalizedNamed(img.Name)
@@ -675,6 +667,7 @@ func marshalRegistry(r resource.PropertyValue) Registry {
 	var reg Registry
 
 	if !r.IsNull() {
+
 		if !r.ObjectValue()["server"].IsNull() && !r.ObjectValue()["server"].ContainsUnknowns() {
 			reg.Server = r.ObjectValue()["server"].StringValue()
 		}
@@ -684,6 +677,7 @@ func marshalRegistry(r resource.PropertyValue) Registry {
 		if !r.ObjectValue()["password"].IsNull() && !r.ObjectValue()["password"].ContainsUnknowns() {
 			reg.Password = r.ObjectValue()["password"].StringValue()
 		}
+
 		return reg
 	}
 	return reg
