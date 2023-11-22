@@ -148,6 +148,7 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 			"dockerfile": resource.NewStringProperty(build.Dockerfile),
 			"context":    resource.NewStringProperty(build.Context),
 		})
+		knownDockerfile = true
 	} else {
 		// We do not want to set these fields if their values are Unknown.
 		if !inputs["build"].ObjectValue()["dockerfile"].ContainsUnknowns() {
@@ -339,6 +340,11 @@ func (p *dockerNativeProvider) Create(ctx context.Context, req *rpc.CreateReques
 			Properties: req.GetProperties(),
 		}, nil
 	}
+	// buildOnPreview needs all inputs to be resolved. Return error if trying to build on preview and there are Unknowns.
+	if req.GetPreview() && inputs["buildOnPreview"].BoolValue() && inputs.ContainsUnknowns() {
+		return nil, errors.New("cannot build on preview with unresolved inputs. " +
+			"Set buildOnPreview to False, or ensure all inputs are resolved at preview.")
+	}
 
 	id, outputProperties, err := p.dockerBuild(ctx, urn, req.GetProperties())
 	if err != nil {
@@ -411,6 +417,11 @@ func (p *dockerNativeProvider) Update(ctx context.Context, req *rpc.UpdateReques
 		return &rpc.UpdateResponse{
 			Properties: req.GetNews(),
 		}, nil
+	}
+	// buildOnPreview needs all inputs to be resolved. Return error if trying to build on preview and there are Unknowns.
+	if req.GetPreview() && newInputs["buildOnPreview"].BoolValue() && newInputs.ContainsUnknowns() {
+		return nil, errors.New("cannot build on preview with unresolved inputs. " +
+			"Set buildOnPreview to False, or ensure all inputs are resolved at preview.")
 	}
 
 	// When the docker image is updated, we build and push again.
