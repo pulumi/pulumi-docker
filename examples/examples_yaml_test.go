@@ -127,6 +127,25 @@ func TestDockerSwarmYAML(t *testing.T) {
 			Quick:       true,
 			SkipRefresh: true,
 		})
+	})
+}
 
+func TestUnknownsBuildOnPreviewFailsYAML(t *testing.T) {
+	cwd, err := os.Getwd()
+	if !assert.NoError(t, err) {
+		t.FailNow()
+	}
+	var outputBuf bytes.Buffer
+	integration.ProgramTest(t, &integration.ProgramTestOptions{
+		Dir:                      path.Join(cwd, "test-unknowns", "yaml-build-on-preview"),
+		SkipUpdate:               true, //only run Preview
+		SkipExportImport:         true,
+		Verbose:                  true, //we need this to verify the build output logs
+		AllowEmptyPreviewChanges: true,
+		Stderr:                   &outputBuf,
+		ExtraRuntimeValidation: func(t *testing.T, stack integration.RuntimeValidationStackInfo) {
+			assert.Contains(t, outputBuf.String(), "cannot build on preview with unresolved inputs")
+		},
+		ExpectFailure: true,
 	})
 }
