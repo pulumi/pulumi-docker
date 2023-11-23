@@ -282,7 +282,7 @@ export interface ContainerVolume {
  */
 export interface DockerBuild {
     /**
-     * An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass build-time variablesthat can be accessed like environment variables inside the RUN instruction.
+     * An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass build-time variables that can be accessed like environment variables inside the RUN instruction.
      */
     args?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
     /**

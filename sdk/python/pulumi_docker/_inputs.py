@@ -4486,7 +4486,7 @@ class DockerBuildArgs:
                  target: Optional[pulumi.Input[str]] = None):
         """
         The Docker build context
-        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] args: An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass build-time variablesthat can be accessed like environment variables inside the RUN instruction.
+        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] args: An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass build-time variables that can be accessed like environment variables inside the RUN instruction.
         :param pulumi.Input['BuilderVersion'] builder_version: The version of the Docker builder.
         :param pulumi.Input['CacheFromArgs'] cache_from: A list of image names to use as build cache. Images provided must have a cache manifest. Must provide authentication to cache registry.
         :param pulumi.Input[str] context: The path to the build context to use.
@@ -4513,7 +4513,7 @@ class DockerBuildArgs:
     @pulumi.getter
     def args(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]:
         """
-        An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass build-time variablesthat can be accessed like environment variables inside the RUN instruction.
+        An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass build-time variables that can be accessed like environment variables inside the RUN instruction.
         """
         return pulumi.get(self, "args")
 
