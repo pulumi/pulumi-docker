@@ -28,14 +28,25 @@ from . import outputs
 
 # Make subpackages available:
 if typing.TYPE_CHECKING:
+    import pulumi_docker.buildx as __buildx
+    buildx = __buildx
     import pulumi_docker.config as __config
     config = __config
 else:
+    buildx = _utilities.lazy_import('pulumi_docker.buildx')
     config = _utilities.lazy_import('pulumi_docker.config')
 
 _utilities.register(
     resource_modules="""
 [
+ {
+  "pkg": "docker",
+  "mod": "buildx/image",
+  "fqn": "pulumi_docker.buildx",
+  "classes": {
+   "docker:buildx/image:Image": "Image"
+  }
+ },
  {
   "pkg": "docker",
   "mod": "index/container",

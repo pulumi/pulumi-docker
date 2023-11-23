@@ -95,10 +95,12 @@ utilities.lazyLoad(exports, ["Volume"], () => require("./volume"));
 export * from "./types/enums";
 
 // Export sub-modules:
+import * as buildx from "./buildx";
 import * as config from "./config";
 import * as types from "./types";
 
 export {
+    buildx,
     config,
     types,
 };
