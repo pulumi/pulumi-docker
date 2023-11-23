@@ -28,19 +28,31 @@ type dockerHybridProvider struct {
 	version         string
 	bridgedProvider rpc.ResourceProviderServer
 	nativeProvider  rpc.ResourceProviderServer
+	buildxProvider  rpc.ResourceProviderServer
 }
 
 // Track a list of native resource tokens
-const dockerImageTok = "docker:index/image:Image"
+const (
+	dockerImageTok = "docker:index/image:Image"
+	buildxTok      = "docker:buildx/image:Image"
+)
 
 // gRPC methods for the hybrid provider
 
 func (dp dockerHybridProvider) Attach(ctx context.Context, attach *rpc.PluginAttach) (*emptypb.Empty, error) {
 	_, err := dp.bridgedProvider.Attach(ctx, attach)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("attaching bridge provider: %w", err)
 	}
-	return dp.nativeProvider.Attach(ctx, attach)
+	_, err = dp.nativeProvider.Attach(ctx, attach)
+	if err != nil {
+		return nil, fmt.Errorf("attaching native provider: %w", err)
+	}
+	_, err = dp.buildxProvider.Attach(ctx, attach)
+	if err != nil {
+		return nil, fmt.Errorf("attaching buildx provider; %w", err)
+	}
+	return nil, err
 }
 
 func (dp dockerHybridProvider) Call(ctx context.Context, request *rpc.CallRequest) (*rpc.CallResponse, error) {
@@ -52,7 +64,8 @@ func (dp dockerHybridProvider) Cancel(ctx context.Context, e *empty.Empty) (*emp
 }
 
 func (dp dockerHybridProvider) GetSchema(ctx context.Context, request *rpc.GetSchemaRequest) (
-	*rpc.GetSchemaResponse, error) {
+	*rpc.GetSchemaResponse, error,
+) {
 	if v := request.GetVersion(); v != 0 {
 		return nil, fmt.Errorf("unsupported schema version %d", v)
 	}
@@ -73,16 +86,28 @@ func (dp dockerHybridProvider) Configure(
 	ctx context.Context,
 	request *rpc.ConfigureRequest,
 ) (*rpc.ConfigureResponse, error) {
-	// Native provider returns empty response and error from Configure, just call it to propagate the information.
-	r, err := dp.nativeProvider.Configure(ctx, request)
-	if err != nil {
-		return nil, fmt.Errorf("Docker native provider returned an unexpected error from Configure: %w", err)
+	providers := map[string]rpc.ResourceProviderServer{
+		"bridged": dp.bridgedProvider,
+		"native":  dp.nativeProvider,
+		"buildx":  dp.buildxProvider,
 	}
 
-	contract.Assertf(!r.AcceptOutputs, "Unexpected AcceptOutputs=true from Docker native provider Configure")
-	contract.Assertf(!r.AcceptResources, "Unexpected AcceptResources=true from Docker native provider Configure")
-	contract.Assertf(!r.AcceptSecrets, "Unexpected AcceptSecrets=true from Docker native provider Configure")
-	contract.Assertf(!r.SupportsPreview, "Unexpected SupportsPreview=true from Docker native provider Configure")
+	for pname, p := range providers {
+		// Native provider returns empty response and error from Configure, just call it to propagate the information.
+		r, err := p.Configure(ctx, request)
+		if err != nil {
+			return nil, fmt.Errorf("Docker %s provider returned an unexpected error from Configure: %w", pname, err)
+		}
+
+		if pname != "native" {
+			continue
+		}
+
+		contract.Assertf(!r.AcceptOutputs, fmt.Sprintf("Unexpected AcceptOutputs=true from Docker %s provider Configure", pname))
+		contract.Assertf(!r.AcceptResources, fmt.Sprintf("Unexpected AcceptResources=true from Docker %s provider Configure", pname))
+		contract.Assertf(!r.AcceptSecrets, fmt.Sprintf("Unexpected AcceptSecrets=true from Docker %s provider Configure", pname))
+		contract.Assertf(!r.SupportsPreview, fmt.Sprintf("Unexpected SupportsPreview=true from Docker %s provider Configure", pname))
+	}
 
 	// For the most part delegate Configure handling to the bridged provider.
 	resp, err := dp.bridgedProvider.Configure(ctx, request)
@@ -100,66 +125,44 @@ func (dp dockerHybridProvider) Invoke(ctx context.Context, request *rpc.InvokeRe
 }
 
 func (dp dockerHybridProvider) StreamInvoke(
-	request *rpc.InvokeRequest, server rpc.ResourceProvider_StreamInvokeServer) error {
+	request *rpc.InvokeRequest, server rpc.ResourceProvider_StreamInvokeServer,
+) error {
 	return status.Error(codes.Unimplemented, "StreamInvoke is not yet implemented")
 }
 
 func (dp dockerHybridProvider) Check(ctx context.Context, request *rpc.CheckRequest) (*rpc.CheckResponse, error) {
 	urn := resource.URN(request.GetUrn())
-	tok := urn.Type().String()
-	if tok == dockerImageTok {
-		return dp.nativeProvider.Check(ctx, request)
-	}
-	return dp.bridgedProvider.Check(ctx, request)
+	return dp.providerFor(urn).Check(ctx, request)
 }
 
 func (dp dockerHybridProvider) Diff(ctx context.Context, request *rpc.DiffRequest) (*rpc.DiffResponse, error) {
 	urn := resource.URN(request.GetUrn())
-	tok := urn.Type().String()
-	if tok == dockerImageTok {
-		return dp.nativeProvider.Diff(ctx, request)
-	}
-	return dp.bridgedProvider.Diff(ctx, request)
+	return dp.providerFor(urn).Diff(ctx, request)
 }
 
 func (dp dockerHybridProvider) Create(ctx context.Context, request *rpc.CreateRequest) (*rpc.CreateResponse, error) {
 	urn := resource.URN(request.GetUrn())
-	tok := urn.Type().String()
-	if tok == dockerImageTok {
-		return dp.nativeProvider.Create(ctx, request)
-	}
-	return dp.bridgedProvider.Create(ctx, request)
+	return dp.providerFor(urn).Create(ctx, request)
 }
 
 func (dp dockerHybridProvider) Read(ctx context.Context, request *rpc.ReadRequest) (*rpc.ReadResponse, error) {
 	urn := resource.URN(request.GetUrn())
-	tok := urn.Type().String()
-	if tok == dockerImageTok {
-		return dp.nativeProvider.Read(ctx, request)
-	}
-	return dp.bridgedProvider.Read(ctx, request)
+	return dp.providerFor(urn).Read(ctx, request)
 }
 
 func (dp dockerHybridProvider) Update(ctx context.Context, request *rpc.UpdateRequest) (*rpc.UpdateResponse, error) {
 	urn := resource.URN(request.GetUrn())
-	tok := urn.Type().String()
-	if tok == dockerImageTok {
-		return dp.nativeProvider.Update(ctx, request)
-	}
-	return dp.bridgedProvider.Update(ctx, request)
+	return dp.providerFor(urn).Update(ctx, request)
 }
 
 func (dp dockerHybridProvider) Delete(ctx context.Context, request *rpc.DeleteRequest) (*empty.Empty, error) {
 	urn := resource.URN(request.GetUrn())
-	tok := urn.Type().String()
-	if tok == dockerImageTok {
-		return dp.nativeProvider.Delete(ctx, request)
-	}
-	return dp.bridgedProvider.Delete(ctx, request)
+	return dp.providerFor(urn).Delete(ctx, request)
 }
 
 func (dp dockerHybridProvider) Construct(ctx context.Context, request *rpc.ConstructRequest) (
-	*rpc.ConstructResponse, error) {
+	*rpc.ConstructResponse, error,
+) {
 	return nil, status.Error(codes.Unimplemented, "Construct is not yet implemented")
 }
 
@@ -167,4 +170,16 @@ func (dp dockerHybridProvider) GetPluginInfo(ctx context.Context, empty *empty.E
 	return &rpc.PluginInfo{
 		Version: dp.version,
 	}, nil
+}
+
+func (dp dockerHybridProvider) providerFor(urn resource.URN) rpc.ResourceProviderServer {
+	tok := urn.Type().String()
+	switch tok {
+	case dockerImageTok:
+		return dp.nativeProvider
+	case buildxTok:
+		return dp.buildxProvider
+	default:
+		return dp.bridgedProvider
+	}
 }
