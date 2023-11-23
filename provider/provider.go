@@ -693,7 +693,7 @@ func getIgnorePatterns(fs afero.Fs, dockerfilePath, contextRoot string) ([]strin
 	return nil, nil
 }
 
-// setConfiguration takes in the stack config settings and  reads in any environment variables on unset fields.
+// setConfiguration takes in the stack config settings and reads in any environment variables on unset fields.
 // If we implement https://github.com/pulumi/pulumi-terraform-bridge/issues/1238 we can remove this.
 func setConfiguration(configVars map[string]string) map[string]string {
 	envConfig := make(map[string]string)

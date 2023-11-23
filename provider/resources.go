@@ -65,7 +65,7 @@ func dockerDataSource(mod string, res string) tokens.ModuleMember {
 	return dockerMember(mod+"/"+fn, res)
 }
 
-func Provider() tfbridge.ProviderInfo {
+func Provider(version string) tfbridge.ProviderInfo {
 	p := shimv2.NewProvider(shim.NewProvider())
 	prov := tfbridge.ProviderInfo{
 		P:                p,
@@ -240,6 +240,67 @@ func Provider() tfbridge.ProviderInfo {
 			},
 		},
 		ExtraResources: map[string]schema.ResourceSpec{
+			dockerResource("buildx", "Image").String(): {
+				ObjectTypeSpec: schema.ObjectTypeSpec{
+					Type:        "object",
+					Description: "Builds a Docker image with buildkit.",
+					Properties: map[string]schema.PropertySpec{
+						"file": {
+							Description: `Name of the Dockerfile to use (default: "$PATH/Dockerfile").`,
+							TypeSpec:    schema.TypeSpec{Type: "string"},
+						},
+
+						"tags": {
+							Description: `Name and optionally a tag (format: "name:tag"). If outputting to a registry, the name should include the fully qualified registry address.`,
+							TypeSpec: schema.TypeSpec{
+								Type: "array",
+								Items: &schema.TypeSpec{
+									Type: "string",
+								},
+							},
+						},
+
+						"context": {
+							Description: `Contexts to use while building the image. If omitted, an empty context is used. If more than one value is specified, they should be of the form "[name]=[value]"`,
+							TypeSpec: schema.TypeSpec{
+								Type: "array",
+								Items: &schema.TypeSpec{
+									Type: "string",
+								},
+							},
+						},
+					},
+				},
+				IsComponent: false,
+				InputProperties: map[string]schema.PropertySpec{
+					"file": {
+						Description: `Name of the Dockerfile to use (default: "$PATH/Dockerfile").`,
+						TypeSpec:    schema.TypeSpec{Type: "string"},
+					},
+
+					"tags": {
+						Description: `Name and optionally a tag (format: "name:tag"). If outputting to a registry, the name should include the fully qualified registry address.`,
+						TypeSpec: schema.TypeSpec{
+							Type: "array",
+							Items: &schema.TypeSpec{
+								Type: "string",
+							},
+						},
+					},
+
+					"context": {
+						Description: `Contexts to use while building the image. If omitted, an empty context is used. If more than one value is specified, they should be of the form "[name]=[value]"`,
+						TypeSpec: schema.TypeSpec{
+							Type: "array",
+							Items: &schema.TypeSpec{
+								Type: "string",
+							},
+						},
+					},
+				},
+				RequiredInputs: []string{"tags"},
+			},
+
 			dockerResource(dockerMod, "Image").String(): {
 				ObjectTypeSpec: schema.ObjectTypeSpec{
 					Type:        "object",
@@ -364,7 +425,7 @@ func Provider() tfbridge.ProviderInfo {
 		Golang: &tfbridge.GolangInfo{
 			ImportBasePath: filepath.Join(
 				fmt.Sprintf("github.com/pulumi/pulumi-%[1]s/sdk/", dockerPkg),
-				tfbridge.GetModuleMajorVersion(version.Version),
+				tfbridge.GetModuleMajorVersion(version),
 				"go",
 				dockerPkg,
 			),
