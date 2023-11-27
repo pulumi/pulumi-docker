@@ -55,7 +55,7 @@ func TestSetRegistry(t *testing.T) {
 			Password: "supersecret",
 		}
 		input := resource.NewObjectProperty(resource.PropertyMap{
-			"server":   resource.NewComputedProperty(resource.Computed{Element: resource.NewStringProperty("X")}),
+			"server":   resource.MakeComputed(resource.NewStringProperty("X")),
 			"username": resource.NewStringProperty("pulumipus"),
 			"password": resource.NewStringProperty("supersecret"),
 		})
@@ -85,11 +85,8 @@ func TestMarshalBuildAndApplyDefaults(t *testing.T) {
 				BuilderVersion: "2",
 			}
 			input := resource.NewObjectProperty(resource.PropertyMap{
-				"dockerfile": resource.NewComputedProperty(
-					resource.Computed{Element: resource.NewStringProperty("dockerfile-from-elsewhere")},
-				),
-				"context": resource.NewComputedProperty(
-					resource.Computed{Element: resource.NewStringProperty("context-is-computed-at-up-time")},
+				"dockerfile": resource.MakeComputed(resource.NewStringProperty("dockerfile-from-elsewhere")),
+				"context": resource.MakeComputed(resource.NewStringProperty("context-is-computed-at-up-time")),
 				),
 			})
 			actual, err := marshalBuildAndApplyDefaults(input)
@@ -163,9 +160,7 @@ func TestMarshalBuildAndApplyDefaults(t *testing.T) {
 		input := resource.NewObjectProperty(resource.PropertyMap{
 			"args": resource.NewObjectProperty(resource.PropertyMap{
 				"Swiftwind": resource.NewStringProperty("rainbow-mane"),
-				"Fluttershy": resource.NewComputedProperty(
-					resource.Computed{Element: resource.NewStringProperty("pink-hair")},
-				),
+				"Fluttershy": resource.MakeComputed(resource.NewStringProperty("pink-hair")),
 			}),
 		})
 
@@ -199,9 +194,7 @@ func TestMarshalBuildAndApplyDefaults(t *testing.T) {
 		}
 
 		input := resource.NewObjectProperty(resource.PropertyMap{
-			"target": resource.NewComputedProperty(
-				resource.Computed{Element: resource.NewStringProperty("moving-target")},
-			),
+			"target": resource.MakeComputed( resource.NewStringProperty("moving-target")),
 		})
 
 		actual, err := marshalBuildAndApplyDefaults(input)
@@ -234,9 +227,7 @@ func TestMarshalBuildAndApplyDefaults(t *testing.T) {
 		}
 
 		input := resource.NewObjectProperty(resource.PropertyMap{
-			"platform": resource.NewComputedProperty(
-				resource.Computed{Element: resource.NewStringProperty("wheres-my-train")},
-			),
+			"platform": resource.MakeComputed(resource.NewStringProperty("wheres-my-train")),
 		})
 
 		actual, err := marshalBuildAndApplyDefaults(input)
@@ -300,9 +291,7 @@ func TestMarshalArgs(t *testing.T) {
 		}
 		input := resource.NewObjectProperty(resource.PropertyMap{
 			"Swiftwind": resource.NewStringProperty("unicorn-with-wings"),
-			"Fledge": resource.NewComputedProperty(
-				resource.Computed{Element: resource.NewStringProperty("pegasus")},
-			),
+			"Fledge": resource.MakeComputed(resource.NewStringProperty("pegasus")),
 		})
 		actual := marshalArgs(input)
 		assert.Equal(t, expected, actual)
@@ -391,9 +380,7 @@ func TestMarshalCachedImages(t *testing.T) {
 
 			"cacheFrom": resource.NewObjectProperty(resource.PropertyMap{
 				"images": resource.NewArrayProperty([]resource.PropertyValue{
-					resource.NewComputedProperty(
-						resource.Computed{Element: resource.NewStringProperty("looking-for-my-image")},
-					),
+					resource.MakeComputed(resource.NewStringProperty("looking-for-my-image")),
 				}),
 			}),
 		})
@@ -409,9 +396,7 @@ func TestMarshalCachedImages(t *testing.T) {
 			"cacheFrom": resource.NewObjectProperty(resource.PropertyMap{
 				"images": resource.NewArrayProperty([]resource.PropertyValue{
 					resource.NewNullProperty(),
-					resource.NewComputedProperty(
-						resource.Computed{Element: resource.NewStringProperty("looking-for-my-image")},
-					),
+					resource.MakeComputed(resource.NewStringProperty("looking-for-my-image")),
 					resource.NewStringProperty("apple"),
 					resource.NewStringProperty("banana"),
 					resource.NewStringProperty("cherry"),
@@ -430,9 +415,7 @@ func TestMarshalCachedImages(t *testing.T) {
 				"images": resource.NewComputedProperty(
 					resource.Computed{
 						Element: resource.NewArrayProperty([]resource.PropertyValue{
-							resource.NewComputedProperty(
-								resource.Computed{Element: resource.NewStringProperty("looking-for-my-image")},
-							),
+							resource.MakeComputed(resource.NewStringProperty("looking-for-my-image")),
 						}),
 					},
 				),

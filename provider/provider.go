@@ -150,13 +150,15 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 		})
 		knownDockerfile = true
 	} else {
-		// We do not want to set these fields if their values are Unknown.
-		if !inputs["build"].ObjectValue()["dockerfile"].ContainsUnknowns() {
-			inputs["build"].ObjectValue()["dockerfile"] = resource.NewStringProperty(build.Dockerfile)
-			knownDockerfile = true
-		}
-		if !inputs["build"].ObjectValue()["context"].ContainsUnknowns() {
-			inputs["build"].ObjectValue()["context"] = resource.NewStringProperty(build.Context)
+		// avoid panic if inputs["build"] is not an Object - we only want to set these fields if their values are Known.
+		if inputs["build"].IsObject() {
+			if !inputs["build"].ObjectValue()["dockerfile"].ContainsUnknowns() {
+				inputs["build"].ObjectValue()["dockerfile"] = resource.NewStringProperty(build.Dockerfile)
+				knownDockerfile = true
+			}
+			if !inputs["build"].ObjectValue()["context"].ContainsUnknowns() {
+				inputs["build"].ObjectValue()["context"] = resource.NewStringProperty(build.Context)
+			}
 		}
 	}
 
@@ -333,17 +335,40 @@ func (p *dockerNativeProvider) Create(ctx context.Context, req *rpc.CreateReques
 	if err != nil {
 		return nil, errors.Wrapf(err, "malformed resource inputs")
 	}
+	if req.GetPreview() {
+		// verify buildOnPreview is Known; if not, send warning and continue.
+		if inputs["buildOnPreview"].ContainsUnknowns() {
+			msg := "buildOnPreview is unresolved; cannot build on preview. Continuing without preview image build. " +
+				"To avoid this warning, set buildOnPreview explicitly, and ensure all inputs are resolved at preview."
+			err = p.host.Log(ctx, "warning", urn, msg)
+			if err != nil {
+				return nil, err
+			}
+			return &rpc.CreateResponse{
+				Properties: req.GetProperties(),
+			}, nil
+		}
+		// if we're in preview mode and buildOnPreview is set to false, we return the inputs
+		if !inputs["buildOnPreview"].BoolValue() {
+			return &rpc.CreateResponse{
+				Properties: req.GetProperties(),
+			}, nil
+		}
+		// buildOnPreview needs all inputs to be resolved. Warn and continue without building the image
+		// TODO: there is room for some future granularity here - we should be able to build a local image without
+		// (TODO cont) knowing inputs for a registry, for example.
+		if inputs["buildOnPreview"].BoolValue() && inputs.ContainsUnknowns() {
+			msg := "cannot build on preview with unresolved inputs. Continuing without preview image build. " +
+				"To avoid this warning, set buildOnPreview to False, or ensure all inputs are resolved at preview."
+			err = p.host.Log(ctx, "warning", urn, msg)
+			if err != nil {
+				return nil, err
+			}
+			return &rpc.CreateResponse{
+				Properties: req.GetProperties(),
+			}, nil
+		}
 
-	// if we're in preview mode and buildOnPreview is set to false, we return the inputs
-	if req.GetPreview() && !inputs["buildOnPreview"].BoolValue() {
-		return &rpc.CreateResponse{
-			Properties: req.GetProperties(),
-		}, nil
-	}
-	// buildOnPreview needs all inputs to be resolved. Return error if trying to build on preview and there are Unknowns.
-	if req.GetPreview() && inputs["buildOnPreview"].BoolValue() && inputs.ContainsUnknowns() {
-		return nil, errors.New("cannot build on preview with unresolved inputs. " +
-			"Set buildOnPreview to False, or ensure all inputs are resolved at preview.")
 	}
 
 	id, outputProperties, err := p.dockerBuild(ctx, urn, req.GetProperties())
@@ -412,16 +437,39 @@ func (p *dockerNativeProvider) Update(ctx context.Context, req *rpc.UpdateReques
 		return nil, errors.Wrapf(err, "diff failed because malformed resource inputs")
 	}
 
-	// if we are in Preview mode and buildOnPreview is set to false, return the news
-	if req.GetPreview() && !newInputs["buildOnPreview"].BoolValue() {
-		return &rpc.UpdateResponse{
-			Properties: req.GetNews(),
-		}, nil
-	}
-	// buildOnPreview needs all inputs to be resolved. Return error if trying to build on preview and there are Unknowns.
-	if req.GetPreview() && newInputs["buildOnPreview"].BoolValue() && newInputs.ContainsUnknowns() {
-		return nil, errors.New("cannot build on preview with unresolved inputs. " +
-			"Set buildOnPreview to False, or ensure all inputs are resolved at preview.")
+	if req.GetPreview() {
+		// verify buildOnPreview is Known; if not, send warning and continue.
+		if newInputs["buildOnPreview"].ContainsUnknowns() {
+			msg := "buildOnPreview is unresolved; cannot build on preview. Continuing without preview image build. " +
+				"To avoid this warning, set buildOnPreview explicitly, and ensure all inputs are resolved at preview."
+			err = p.host.Log(ctx, "warning", urn, msg)
+			if err != nil {
+				return nil, err
+			}
+			return &rpc.UpdateResponse{
+				Properties: req.GetNews(),
+			}, nil
+		}
+
+		// if we are in Preview mode and buildOnPreview is set to false, return the news
+		if !newInputs["buildOnPreview"].BoolValue() {
+			return &rpc.UpdateResponse{
+				Properties: req.GetNews(),
+			}, nil
+		}
+		// buildOnPreview needs all inputs to be resolved. Warn and continue without building the image
+		// TODO: there is room for some future granularity here - see above TODO in Create method
+		if newInputs["buildOnPreview"].BoolValue() && newInputs.ContainsUnknowns() {
+			msg := "cannot build on preview with unresolved inputs. Continuing without preview image build. " +
+				"To avoid this warning, set buildOnPreview to False, or ensure all inputs are resolved at preview."
+			err = p.host.Log(ctx, "warning", urn, msg)
+			if err != nil {
+				return nil, err
+			}
+			return &rpc.UpdateResponse{
+				Properties: req.GetNews(),
+			}, nil
+		}
 	}
 
 	// When the docker image is updated, we build and push again.
