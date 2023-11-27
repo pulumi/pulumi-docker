@@ -611,6 +611,7 @@ func getIgnorePatterns(fs afero.Fs, dockerfilePath, contextRoot string) ([]strin
 		if err != nil {
 			return nil, fmt.Errorf("reading %q: %w", p, err)
 		}
+		defer f.Close()
 
 		ignorePatterns, err := dockerignore.ReadAll(f)
 		if err != nil {
