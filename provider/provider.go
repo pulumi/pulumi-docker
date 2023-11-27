@@ -24,6 +24,7 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/common/util/contract"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/util/logging"
 	rpc "github.com/pulumi/pulumi/sdk/v3/proto/go"
+	"github.com/spf13/afero"
 	"github.com/tonistiigi/fsutil"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -38,7 +39,6 @@ type dockerNativeProvider struct {
 	version     string
 	schemaBytes []byte
 	config      map[string]string
-	//loginLock   sync.Mutex
 }
 
 // docker native methods
@@ -539,10 +539,9 @@ func (accumulator *contextHashAccumulator) hexSumContext() string {
 	return hex.EncodeToString(h.Sum(nil))
 }
 
-func hashContext(dockerContextPath string, dockerfile string) (string, error) {
+func hashContext(dockerContextPath string, dockerfilePath string) (string, error) {
 	// exclude all files listed in dockerignore
-	dockerIgnorePath := filepath.Join(dockerContextPath, mapDockerignore(filepath.Base(dockerfile)))
-	ignorePatterns, err := getIgnore(dockerIgnorePath)
+	ignorePatterns, err := getIgnorePatterns(afero.NewOsFs(), dockerfilePath, dockerContextPath)
 	if err != nil {
 		return "", err
 	}
@@ -557,9 +556,9 @@ func hashContext(dockerContextPath string, dockerfile string) (string, error) {
 	// If the dockerfile is inside the build context, we will hash it twice, but that is OK. We hash
 	// it here the first time with the name "Dockerfile", and then in the WalkDir loop on we hash it
 	// again with its actual name.
-	err = accumulator.hashPath(dockerfile, defaultDockerfile, 0)
+	err = accumulator.hashPath(dockerfilePath, defaultDockerfile, 0)
 	if err != nil {
-		return "", fmt.Errorf("error hashing dockerfile %q: %w", dockerfile, err)
+		return "", fmt.Errorf("error hashing dockerfile %q: %w", dockerfilePath, err)
 	}
 	err = fsutil.Walk(context.Background(), dockerContextPath, &fsutil.WalkOpt{
 		ExcludePatterns: ignorePatterns,
@@ -585,21 +584,42 @@ func hashContext(dockerContextPath string, dockerfile string) (string, error) {
 	return accumulator.hexSumContext(), nil
 }
 
-func getIgnore(dockerIgnorePath string) ([]string, error) {
-	var ignorePatterns []string
-	dockerIgnore, err := os.ReadFile(dockerIgnorePath)
-	if err != nil {
-		if os.IsNotExist(err) {
-			// .dockerignore files are optional
-			return ignorePatterns, nil
+// getIgnorePatterns returns all patterns to ignore when constructing a build
+// context for the given Dockerfile, if any such patterns exists.
+//
+// Precedence is given to Dockerfile-specific ignore-files as per
+// https://docs.docker.com/build/building/context/#filename-and-location.
+func getIgnorePatterns(fs afero.Fs, dockerfilePath, contextRoot string) ([]string, error) {
+	paths := []string{}
+
+	// If we have a non-standard Dockerfile, first attempt to use its specific
+	// ignore-file, if one exists.
+	if filepath.Base(dockerfilePath) != defaultDockerfile {
+		paths = append(paths, dockerfilePath+".dockerignore")
+	}
+
+	// Always fall back to the ignore-file at the root of our build context.
+	paths = append(paths, filepath.Join(contextRoot, ".dockerignore"))
+
+	// Attempt to parse our candidate ignore-files, skipping any that don't
+	// exist.
+	for _, p := range paths {
+		f, err := fs.Open(p)
+		if errors.Is(err, afero.ErrFileNotFound) {
+			continue
 		}
-		return ignorePatterns, fmt.Errorf("unable to read %s file: %w", dockerIgnorePath, err)
+		if err != nil {
+			return nil, fmt.Errorf("reading %q: %w", p, err)
+		}
+
+		ignorePatterns, err := dockerignore.ReadAll(f)
+		if err != nil {
+			return nil, fmt.Errorf("unable to parse %q: %w", p, err)
+		}
+		return ignorePatterns, nil
 	}
-	ignorePatterns, err = dockerignore.ReadAll(bytes.NewReader(dockerIgnore))
-	if err != nil {
-		return ignorePatterns, fmt.Errorf("unable to parse %s file: %w", ".dockerignore", err)
-	}
-	return ignorePatterns, nil
+
+	return nil, nil
 }
 
 // setConfiguration takes in the stack config settings and  reads in any environment variables on unset fields.

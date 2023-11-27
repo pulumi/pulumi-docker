@@ -1,13 +1,17 @@
 package provider
 
 import (
+	"bufio"
 	"fmt"
 	"runtime"
+	"strings"
 	"testing"
 
 	"github.com/docker/docker/api/types"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
+	"github.com/spf13/afero"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestSetRegistry(t *testing.T) {
@@ -536,19 +540,92 @@ func TestConfigureDockerClient(t *testing.T) {
 	})
 }
 
-func TestMapDockerignore(t *testing.T) {
+func TestDockerIgnore(t *testing.T) {
+	tests := []struct {
+		name string
 
-	t.Run("Returns default .dockerignore", func(t *testing.T) {
-		expected := ".dockerignore"
-		input := defaultDockerfile
-		actual := mapDockerignore(input)
-		assert.Equal(t, expected, actual)
-	})
-	t.Run("Returns .dockerignore extension for nonstandard dockerfile names", func(t *testing.T) {
-		expected := "special.dockerfile.dockerignore"
-		input := "special.dockerfile"
-		actual := mapDockerignore(input)
-		assert.Equal(t, expected, actual)
-	})
+		dockerfile string
+		context    string
+		fs         map[string]string
 
+		want    []string
+		wantErr error
+	}{
+		{
+			name:       "Dockerfile with root dockerignore",
+			dockerfile: "./foo/Dockerfile",
+			fs: map[string]string{
+				".dockerignore": "rootignore",
+			},
+			want: []string{"rootignore"},
+		},
+		{
+			name:       "Dockerfile with root dockerignore and relative context",
+			dockerfile: "./foo/Dockerfile",
+			context:    "../",
+			fs: map[string]string{
+				"../.dockerignore": "rootignore",
+			},
+			want: []string{"rootignore"},
+		},
+		{
+			name:       "Dockerfile without root dockerignore",
+			dockerfile: "./foo/Dockerfile",
+			want:       nil,
+		},
+		{
+			name:       "Dockerfile with invalid root dockerignore",
+			dockerfile: "./foo/Dockerfile",
+			fs: map[string]string{
+				".dockerignore": strings.Repeat("*", bufio.MaxScanTokenSize),
+			},
+			wantErr: bufio.ErrTooLong,
+		},
+		{
+			name:       "custom.Dockerfile without custom dockerignore and without root dockerignore",
+			dockerfile: "./foo/custom.Dockerfile",
+			want:       nil,
+		},
+		{
+			name:       "custom.Dockerfile with custom dockerignore and without root dockerignore",
+			dockerfile: "./foo/custom.Dockerfile",
+			fs: map[string]string{
+				"foo/custom.Dockerfile.dockerignore": "customignore",
+			},
+			want: []string{"customignore"},
+		},
+		{
+			name:       "custom.Dockerfile with custom dockerignore and with root dockerignore",
+			dockerfile: "foo/custom.Dockerfile",
+			fs: map[string]string{
+				"foo/custom.Dockerfile.dockerignore": "customignore",
+				".dockerignore":                      "rootignore",
+			},
+			want: []string{"customignore"},
+		},
+		{
+			name:       "custom.Dockerfile without custom dockerignore and with root dockerignore",
+			dockerfile: "foo/custom.Dockerfile",
+			fs: map[string]string{
+				".dockerignore": "rootignore",
+			},
+			want: []string{"rootignore"},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			fs := afero.NewMemMapFs()
+			for fname, fdata := range tt.fs {
+				f, err := fs.Create(fname)
+				require.NoError(t, err)
+				_, err = f.Write([]byte(fdata))
+				require.NoError(t, err)
+			}
+			actual, err := getIgnorePatterns(fs, tt.dockerfile, tt.context)
+
+			assert.ErrorIs(t, err, tt.wantErr)
+			assert.Equal(t, tt.want, actual)
+		})
+	}
 }
