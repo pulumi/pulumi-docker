@@ -7,7 +7,7 @@ index d54d9e4..ebaefda 100644
  func dataSourceDockerImage() *schema.Resource {
  	return &schema.Resource{
 -		Description: "`docker_image` provides details about a specific Docker Image which need to be presend on the Docker Host",
-+		Description: "`docker_image` provides details about a specific Docker Image which need to be present on the Docker Host",
++		Description: "`docker_image` provides details about a specific Docker Image which needs to be present on the Docker Host",
  
  		ReadContext: dataSourceDockerImageRead,
  
@@ -20,13 +20,13 @@ index d34ff8f..fd40c2b 100644
  subcategory: ""
  description: |-
 -  docker_image provides details about a specific Docker Image which need to be presend on the Docker Host
-+  docker_image provides details about a specific Docker Image which need to be present on the Docker Host
++  docker_image provides details about a specific Docker Image which needs to be present on the Docker Host
  ---
  
  # docker_image (Data Source)
  
 -`docker_image` provides details about a specific Docker Image which need to be presend on the Docker Host
-+`docker_image` provides details about a specific Docker Image which need to be present on the Docker Host
++`docker_image` provides details about a specific Docker Image which needs to be present on the Docker Host
  
  ## Example Usage
  
