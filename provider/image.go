@@ -635,7 +635,7 @@ func marshalCachedImages(b resource.PropertyValue) ([]string, error) {
 	}
 	c := b.ObjectValue()["cacheFrom"]
 
-	if c.IsNull() || c.IsComputed() {
+	if c.IsNull() || c.ContainsUnknowns() {
 		return cacheImages, nil
 	}
 
@@ -666,7 +666,7 @@ func marshalCachedImages(b resource.PropertyValue) ([]string, error) {
 func marshalRegistry(r resource.PropertyValue) Registry {
 	var reg Registry
 
-	if !r.IsNull() {
+	if !r.IsNull() && r.IsObject() {
 
 		if !r.ObjectValue()["server"].IsNull() && !r.ObjectValue()["server"].ContainsUnknowns() {
 			reg.Server = r.ObjectValue()["server"].StringValue()
@@ -677,8 +677,6 @@ func marshalRegistry(r resource.PropertyValue) Registry {
 		if !r.ObjectValue()["password"].IsNull() && !r.ObjectValue()["password"].ContainsUnknowns() {
 			reg.Password = r.ObjectValue()["password"].StringValue()
 		}
-
-		return reg
 	}
 	return reg
 }
