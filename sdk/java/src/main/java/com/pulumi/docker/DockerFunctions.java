@@ -463,7 +463,7 @@ public final class DockerFunctions {
         return Deployment.getInstance().invokeAsync("docker:index/getRegistryImage:getRegistryImage", TypeShape.of(GetRegistryImageResult.class), args, Utilities.withVersion(options));
     }
     /**
-     * `docker.RemoteImage` provides details about a specific Docker Image which need to be presend on the Docker Host
+     * `docker.RemoteImage` provides details about a specific Docker Image which needs to be present on the Docker Host
      * 
      * ## Example Usage
      * ```java
@@ -512,7 +512,7 @@ public final class DockerFunctions {
         return getRemoteImage(args, InvokeOptions.Empty);
     }
     /**
-     * `docker.RemoteImage` provides details about a specific Docker Image which need to be presend on the Docker Host
+     * `docker.RemoteImage` provides details about a specific Docker Image which needs to be present on the Docker Host
      * 
      * ## Example Usage
      * ```java
@@ -561,7 +561,7 @@ public final class DockerFunctions {
         return getRemoteImagePlain(args, InvokeOptions.Empty);
     }
     /**
-     * `docker.RemoteImage` provides details about a specific Docker Image which need to be presend on the Docker Host
+     * `docker.RemoteImage` provides details about a specific Docker Image which needs to be present on the Docker Host
      * 
      * ## Example Usage
      * ```java
@@ -610,7 +610,7 @@ public final class DockerFunctions {
         return Deployment.getInstance().invoke("docker:index/getRemoteImage:getRemoteImage", TypeShape.of(GetRemoteImageResult.class), args, Utilities.withVersion(options));
     }
     /**
-     * `docker.RemoteImage` provides details about a specific Docker Image which need to be presend on the Docker Host
+     * `docker.RemoteImage` provides details about a specific Docker Image which needs to be present on the Docker Host
      * 
      * ## Example Usage
      * ```java

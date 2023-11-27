@@ -9941,7 +9941,7 @@ func (o CacheFromPtrOutput) Images() pulumi.StringArrayOutput {
 
 // The Docker build context
 type DockerBuild struct {
-	// An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass build-time variablesthat can be accessed like environment variables inside the RUN instruction.
+	// An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass build-time variables that can be accessed like environment variables inside the RUN instruction.
 	Args map[string]string `pulumi:"args"`
 	// The version of the Docker builder.
 	BuilderVersion *BuilderVersion `pulumi:"builderVersion"`
@@ -9970,7 +9970,7 @@ type DockerBuildInput interface {
 
 // The Docker build context
 type DockerBuildArgs struct {
-	// An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass build-time variablesthat can be accessed like environment variables inside the RUN instruction.
+	// An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass build-time variables that can be accessed like environment variables inside the RUN instruction.
 	Args pulumi.StringMapInput `pulumi:"args"`
 	// The version of the Docker builder.
 	BuilderVersion BuilderVersionPtrInput `pulumi:"builderVersion"`
@@ -10064,7 +10064,7 @@ func (o DockerBuildOutput) ToDockerBuildPtrOutputWithContext(ctx context.Context
 	}).(DockerBuildPtrOutput)
 }
 
-// An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass build-time variablesthat can be accessed like environment variables inside the RUN instruction.
+// An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass build-time variables that can be accessed like environment variables inside the RUN instruction.
 func (o DockerBuildOutput) Args() pulumi.StringMapOutput {
 	return o.ApplyT(func(v DockerBuild) map[string]string { return v.Args }).(pulumi.StringMapOutput)
 }
@@ -10123,7 +10123,7 @@ func (o DockerBuildPtrOutput) Elem() DockerBuildOutput {
 	}).(DockerBuildOutput)
 }
 
-// An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass build-time variablesthat can be accessed like environment variables inside the RUN instruction.
+// An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass build-time variables that can be accessed like environment variables inside the RUN instruction.
 func (o DockerBuildPtrOutput) Args() pulumi.StringMapOutput {
 	return o.ApplyT(func(v *DockerBuild) map[string]string {
 		if v == nil {
