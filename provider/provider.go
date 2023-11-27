@@ -375,39 +375,37 @@ func (p *dockerNativeProvider) Create(ctx context.Context, req *rpc.CreateReques
 		return nil, errors.Wrapf(err, "malformed resource inputs")
 	}
 	if req.GetPreview() {
+		var msg string
+		var returnWithoutBuild bool
 		// verify buildOnPreview is Known; if not, send warning and continue.
 		if inputs["buildOnPreview"].ContainsUnknowns() {
-			msg := "buildOnPreview is unresolved; cannot build on preview. Continuing without preview image build. " +
+			msg = "buildOnPreview is unresolved; cannot build on preview. Continuing without preview image build. " +
 				"To avoid this warning, set buildOnPreview explicitly, and ensure all inputs are resolved at preview."
-			err = p.host.Log(ctx, "warning", urn, msg)
-			if err != nil {
-				return nil, err
-			}
-			return &rpc.CreateResponse{
-				Properties: req.GetProperties(),
-			}, nil
+			returnWithoutBuild = true
 		}
 		// if we're in preview mode and buildOnPreview is set to false, we return the inputs
 		if !inputs["buildOnPreview"].BoolValue() {
-			return &rpc.CreateResponse{
-				Properties: req.GetProperties(),
-			}, nil
+			returnWithoutBuild = true
 		}
 		// buildOnPreview needs all inputs to be resolved. Warn and continue without building the image
 		// TODO: there is room for some future granularity here - we should be able to build a local image without
 		// (TODO cont) knowing inputs for a registry, for example.
-		if inputs["buildOnPreview"].BoolValue() && inputs.ContainsUnknowns() {
-			msg := "cannot build on preview with unresolved inputs. Continuing without preview image build. " +
+		if inputs.ContainsUnknowns() {
+			msg = "cannot build on preview with unresolved inputs. Continuing without preview image build. " +
 				"To avoid this warning, set buildOnPreview to False, or ensure all inputs are resolved at preview."
-			err = p.host.Log(ctx, "warning", urn, msg)
-			if err != nil {
-				return nil, err
+			returnWithoutBuild = true
+		}
+		if returnWithoutBuild {
+			if msg != "" {
+				err = p.host.Log(ctx, "warning", urn, msg)
+				if err != nil {
+					return nil, err
+				}
 			}
 			return &rpc.CreateResponse{
 				Properties: req.GetProperties(),
 			}, nil
 		}
-
 	}
 
 	id, outputProperties, err := p.dockerBuild(ctx, urn, req.GetProperties())
@@ -477,33 +475,33 @@ func (p *dockerNativeProvider) Update(ctx context.Context, req *rpc.UpdateReques
 	}
 
 	if req.GetPreview() {
+
+		var msg string
+		var returnWithoutBuild bool
 		// verify buildOnPreview is Known; if not, send warning and continue.
 		if newInputs["buildOnPreview"].ContainsUnknowns() {
-			msg := "buildOnPreview is unresolved; cannot build on preview. Continuing without preview image build. " +
+			msg = "buildOnPreview is unresolved; cannot build on preview. Continuing without preview image build. " +
 				"To avoid this warning, set buildOnPreview explicitly, and ensure all inputs are resolved at preview."
-			err = p.host.Log(ctx, "warning", urn, msg)
-			if err != nil {
-				return nil, err
-			}
-			return &rpc.UpdateResponse{
-				Properties: req.GetNews(),
-			}, nil
+			returnWithoutBuild = true
 		}
 
 		// if we are in Preview mode and buildOnPreview is set to false, return the news
 		if !newInputs["buildOnPreview"].BoolValue() {
-			return &rpc.UpdateResponse{
-				Properties: req.GetNews(),
-			}, nil
+			returnWithoutBuild = true
 		}
 		// buildOnPreview needs all inputs to be resolved. Warn and continue without building the image
 		// TODO: there is room for some future granularity here - see above TODO in Create method
-		if newInputs["buildOnPreview"].BoolValue() && newInputs.ContainsUnknowns() {
-			msg := "cannot build on preview with unresolved inputs. Continuing without preview image build. " +
+		if newInputs.ContainsUnknowns() {
+			msg = "cannot build on preview with unresolved inputs. Continuing without preview image build. " +
 				"To avoid this warning, set buildOnPreview to False, or ensure all inputs are resolved at preview."
-			err = p.host.Log(ctx, "warning", urn, msg)
-			if err != nil {
-				return nil, err
+			returnWithoutBuild = true
+		}
+		if returnWithoutBuild {
+			if msg != "" {
+				err = p.host.Log(ctx, "warning", urn, msg)
+				if err != nil {
+					return nil, err
+				}
 			}
 			return &rpc.UpdateResponse{
 				Properties: req.GetNews(),
