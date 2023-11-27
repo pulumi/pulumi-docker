@@ -86,8 +86,7 @@ func TestMarshalBuildAndApplyDefaults(t *testing.T) {
 			}
 			input := resource.NewObjectProperty(resource.PropertyMap{
 				"dockerfile": resource.MakeComputed(resource.NewStringProperty("dockerfile-from-elsewhere")),
-				"context": resource.MakeComputed(resource.NewStringProperty("context-is-computed-at-up-time")),
-				),
+				"context":    resource.MakeComputed(resource.NewStringProperty("context-is-computed-at-up-time")),
 			})
 			actual, err := marshalBuildAndApplyDefaults(input)
 			assert.Equal(t, expected, actual)
@@ -159,7 +158,7 @@ func TestMarshalBuildAndApplyDefaults(t *testing.T) {
 
 		input := resource.NewObjectProperty(resource.PropertyMap{
 			"args": resource.NewObjectProperty(resource.PropertyMap{
-				"Swiftwind": resource.NewStringProperty("rainbow-mane"),
+				"Swiftwind":  resource.NewStringProperty("rainbow-mane"),
 				"Fluttershy": resource.MakeComputed(resource.NewStringProperty("pink-hair")),
 			}),
 		})
@@ -194,7 +193,7 @@ func TestMarshalBuildAndApplyDefaults(t *testing.T) {
 		}
 
 		input := resource.NewObjectProperty(resource.PropertyMap{
-			"target": resource.MakeComputed( resource.NewStringProperty("moving-target")),
+			"target": resource.MakeComputed(resource.NewStringProperty("moving-target")),
 		})
 
 		actual, err := marshalBuildAndApplyDefaults(input)
@@ -291,7 +290,7 @@ func TestMarshalArgs(t *testing.T) {
 		}
 		input := resource.NewObjectProperty(resource.PropertyMap{
 			"Swiftwind": resource.NewStringProperty("unicorn-with-wings"),
-			"Fledge": resource.MakeComputed(resource.NewStringProperty("pegasus")),
+			"Fledge":    resource.MakeComputed(resource.NewStringProperty("pegasus")),
 		})
 		actual := marshalArgs(input)
 		assert.Equal(t, expected, actual)
