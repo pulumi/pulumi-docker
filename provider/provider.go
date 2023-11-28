@@ -585,7 +585,7 @@ func hashContext(dockerContextPath string, dockerfilePath string) (string, error
 }
 
 // getIgnorePatterns returns all patterns to ignore when constructing a build
-// context for the given Dockerfile, if any such patterns exists.
+// context for the given Dockerfile, if any such patterns exist.
 //
 // Precedence is given to Dockerfile-specific ignore-files as per
 // https://docs.docker.com/build/building/context/#filename-and-location.
