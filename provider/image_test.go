@@ -560,6 +560,15 @@ func TestDockerIgnore(t *testing.T) {
 			want: []string{"rootignore"},
 		},
 		{
+			name:       "Dockerfile with root dockerignore and custom dockerignore",
+			dockerfile: "./foo/Dockerfile",
+			fs: map[string]string{
+				"foo/Dockerfile.dockerignore": "customignore",
+				".dockerignore":               "rootignore",
+			},
+			want: []string{"customignore"},
+		},
+		{
 			name:       "Dockerfile with root dockerignore and relative context",
 			dockerfile: "./foo/Dockerfile",
 			context:    "../",

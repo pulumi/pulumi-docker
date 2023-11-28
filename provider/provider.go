@@ -590,16 +590,12 @@ func hashContext(dockerContextPath string, dockerfilePath string) (string, error
 // Precedence is given to Dockerfile-specific ignore-files as per
 // https://docs.docker.com/build/building/context/#filename-and-location.
 func getIgnorePatterns(fs afero.Fs, dockerfilePath, contextRoot string) ([]string, error) {
-	paths := []string{}
-
-	// If we have a non-standard Dockerfile, first attempt to use its specific
-	// ignore-file, if one exists.
-	if filepath.Base(dockerfilePath) != defaultDockerfile {
-		paths = append(paths, dockerfilePath+".dockerignore")
+	paths := []string{
+		// Prefer <Dockerfile>.dockerignore if it's present.
+		dockerfilePath + ".dockerignore",
+		// Otherwise fall back to the ignore-file at the root of our build context.
+		filepath.Join(contextRoot, ".dockerignore"),
 	}
-
-	// Always fall back to the ignore-file at the root of our build context.
-	paths = append(paths, filepath.Join(contextRoot, ".dockerignore"))
 
 	// Attempt to parse our candidate ignore-files, skipping any that don't
 	// exist.
