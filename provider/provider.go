@@ -727,7 +727,7 @@ func setConfiguration(configVars map[string]string) map[string]string {
 
 func marshalBuildOnPreview(inputs resource.PropertyMap) bool {
 	//set default if not set
-	if inputs["buildOnPreview"].IsNull() || inputs["buildOnPreview"].IsComputed() {
+	if inputs["buildOnPreview"].IsNull() || inputs["buildOnPreview"].ContainsUnknowns() {
 		return false
 	}
 	return inputs["buildOnPreview"].BoolValue()
