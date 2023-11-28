@@ -93,7 +93,7 @@ func TestDockerSwarmYAML(t *testing.T) {
 
 	t.Run("service", func(t *testing.T) {
 		integration.ProgramTest(t, &integration.ProgramTestOptions{
-			Dir:         path.Join(cwd, "test-swarm", "service-global"),
+			Dir:         path.Join(cwd, "test-swarm", "service"),
 			Quick:       true,
 			SkipRefresh: true,
 		})
@@ -109,9 +109,9 @@ func TestDockerSwarmYAML(t *testing.T) {
 
 	t.Run("service-global", func(t *testing.T) {
 		integration.ProgramTest(t, &integration.ProgramTestOptions{
-			Dir:         path.Join(cwd, "test-swarm", "service-global"),
-			Quick:       true,
-			SkipRefresh: true,
+			Dir:        path.Join(cwd, "test-swarm", "service-global"),
+			Quick:      true,
+			kipRefresh: true,
 		})
 	})
 }
