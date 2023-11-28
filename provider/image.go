@@ -645,7 +645,7 @@ func marshalCachedImages(b resource.PropertyValue) ([]string, error) {
 	if !ok {
 		return cacheImages, fmt.Errorf("cacheFrom requires an `images` field")
 	}
-	if images.IsNull() || images.IsComputed() {
+	if images.IsNull() || images.ContainsUnknowns() {
 		return cacheImages, nil
 	}
 
