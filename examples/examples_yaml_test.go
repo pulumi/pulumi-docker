@@ -91,7 +91,15 @@ func TestDockerSwarmYAML(t *testing.T) {
 		t.FailNow()
 	}
 
-	t.Run("replicated-service", func(t *testing.T) {
+	t.Run("service", func(t *testing.T) {
+		integration.ProgramTest(t, &integration.ProgramTestOptions{
+			Dir:         path.Join(cwd, "test-swarm", "service-global"),
+			Quick:       true,
+			SkipRefresh: true,
+		})
+	})
+
+	t.Run("service-replicated", func(t *testing.T) {
 		integration.ProgramTest(t, &integration.ProgramTestOptions{
 			Dir:         path.Join(cwd, "test-swarm", "service-replicated"),
 			Quick:       true,
@@ -99,7 +107,7 @@ func TestDockerSwarmYAML(t *testing.T) {
 		})
 	})
 
-	t.Run("global-service", func(t *testing.T) {
+	t.Run("service-global", func(t *testing.T) {
 		integration.ProgramTest(t, &integration.ProgramTestOptions{
 			Dir:         path.Join(cwd, "test-swarm", "service-global"),
 			Quick:       true,

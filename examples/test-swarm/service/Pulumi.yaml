@@ -1,4 +1,4 @@
-name: swarm-service-replicated
+name: swarm-service
 runtime: yaml
 resources:
   service:
@@ -7,6 +7,3 @@ resources:
       taskSpec:
         containerSpec:
           image: nginx
-      mode:
-        replicated:
-          replicas: 1
