@@ -6,8 +6,22 @@ index 577e81f..050453f 100644
 @@ -765,7 +765,6 @@ func resourceDockerService() *schema.Resource {
  						"global": {
  							Type:          schema.TypeBool,
- 							Description:   "The global service mode. Defaults to `false`",
+-							Description:   "The global service mode. Defaults to `false`",
++							Description:   "When `true`, tasks will run on every worker node. Conflicts with `replicated`",
 -							Default:       false,
  							Optional:      true,
  							ConflictsWith: []string{"mode.0.replicated", "converge_config"},
  						},
+diff --git a/docs/resources/service.md b/docs/resources/service.md
+index 496c93b..7ca972e 100644
+--- a/docs/resources/service.md
++++ b/docs/resources/service.md
+@@ -698,7 +698,7 @@ Required:
+
+ Optional:
+
+-- `global` (Boolean) The global service mode. Defaults to `false`
++- `global` (Boolean) When `true`, tasks will run on every worker node. Conflicts with `replicated`
+ - `replicated` (Block List, Max: 1) The replicated service mode (see [below for nested schema](#nestedblock--mode--replicated))
+
+ <a id="nestedblock--mode--replicated"></a>
