@@ -652,10 +652,8 @@ func marshalCachedImages(b resource.PropertyValue) ([]string, error) {
 	if !images.IsArray() {
 		if !images.ContainsUnknowns() {
 			return cacheImages, fmt.Errorf("the `images` field must be a list of strings")
-		} else {
-			return cacheImages, nil
 		}
-
+		return cacheImages, nil
 	}
 
 	stages := images.ArrayValue()

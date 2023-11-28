@@ -159,17 +159,16 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 			"context":    resource.NewStringProperty(build.Context),
 		})
 		knownDockerfile = true
-	} else {
+	} else if inputs["build"].IsObject() {
 		// avoid panic if inputs["build"] is not an Object - we only want to set these fields if their values are Known.
-		if inputs["build"].IsObject() {
-			if !inputs["build"].ObjectValue()["dockerfile"].ContainsUnknowns() {
-				inputs["build"].ObjectValue()["dockerfile"] = resource.NewStringProperty(build.Dockerfile)
-				knownDockerfile = true
-			}
-			if !inputs["build"].ObjectValue()["context"].ContainsUnknowns() {
-				inputs["build"].ObjectValue()["context"] = resource.NewStringProperty(build.Context)
-			}
+		if !inputs["build"].ObjectValue()["dockerfile"].ContainsUnknowns() {
+			inputs["build"].ObjectValue()["dockerfile"] = resource.NewStringProperty(build.Dockerfile)
+			knownDockerfile = true
 		}
+		if !inputs["build"].ObjectValue()["context"].ContainsUnknowns() {
+			inputs["build"].ObjectValue()["context"] = resource.NewStringProperty(build.Context)
+		}
+
 	}
 
 	// Verify Dockerfile at given location
@@ -177,7 +176,8 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 
 		if _, statErr := os.Stat(build.Dockerfile); statErr != nil {
 			if filepath.IsAbs(build.Dockerfile) {
-				return nil, fmt.Errorf("could not open dockerfile at absolute path %s: %v", build.Dockerfile, statErr)
+				return nil, fmt.Errorf(
+					"expected a relative Dockerfile path; got %q instead: %v", build.Dockerfile, statErr)
 			}
 			relPath := filepath.Join(build.Context, build.Dockerfile)
 			_, err = os.Stat(relPath)

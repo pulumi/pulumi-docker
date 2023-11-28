@@ -146,6 +146,5 @@ func TestUnknownsBuildOnPreviewFailsYAML(t *testing.T) {
 		ExtraRuntimeValidation: func(t *testing.T, stack integration.RuntimeValidationStackInfo) {
 			assert.Contains(t, outputBuf.String(), "cannot build on preview with unresolved inputs")
 		},
-		ExpectFailure: true,
 	})
 }
