@@ -229,7 +229,9 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 			return nil, err
 		}
 	}
-	if inputs["imageName"].IsString() {
+	// imageName only needs to be canonical if we're pushing or using cacheFrom.
+	needCanonicalImage := len(cache) > 0 || !marshalSkipPush(inputs["skipPush"])
+	if needCanonicalImage && !inputs["imageName"].IsNull() {
 		if _, err := getRegistryAddrFromImage(inputs["imageName"].StringValue()); err != nil {
 			return nil, err
 		}

@@ -314,7 +314,7 @@ func TestCheck(t *testing.T) {
 		wantErr error
 	}{
 		{
-			name: "invalid image name",
+			name: "can't push a non-canonical image name",
 			news: resource.PropertyMap{
 				"imageName": resource.NewStringProperty("not-fully-qualified-image-name:latest"),
 				"build": resource.NewObjectProperty(
@@ -326,7 +326,40 @@ func TestCheck(t *testing.T) {
 			wantErr: reference.ErrNameNotCanonical,
 		},
 		{
-			name: "invalid cacheFrom",
+			name: "image name can be non-canonical if not pushing",
+			news: resource.PropertyMap{
+				"imageName": resource.NewStringProperty("not-pushing:latest"),
+				"skipPush":  resource.NewBoolProperty(true),
+				"build": resource.NewObjectProperty(
+					resource.PropertyMap{
+						"dockerfile": resource.NewStringProperty("testdata/Dockerfile"),
+					},
+				),
+			},
+			wantErr: nil,
+		},
+		{
+			name: "image name must be non-canonical if using caching, even when not pushing",
+			news: resource.PropertyMap{
+				"imageName": resource.NewStringProperty("not-pushing:latest"),
+				"skipPush":  resource.NewBoolProperty(true),
+				"build": resource.NewObjectProperty(
+					resource.PropertyMap{
+						"dockerfile": resource.NewStringProperty("testdata/Dockerfile"),
+						"cacheFrom": resource.NewObjectProperty(
+							resource.PropertyMap{
+								"images": resource.NewArrayProperty(
+									[]resource.PropertyValue{resource.NewStringProperty("docker.io/pulumi/pulumi:latest")},
+								),
+							},
+						),
+					},
+				),
+			},
+			wantErr: reference.ErrNameNotCanonical,
+		},
+		{
+			name: "can't use non-canonical cacheFrom",
 			news: resource.PropertyMap{
 				"imageName": resource.NewStringProperty("docker.io/foo/bar:latest"),
 				"build": resource.NewObjectProperty(
