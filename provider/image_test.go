@@ -404,16 +404,15 @@ func TestGetRegistryAddrFromImage(t *testing.T) {
 		expected := ""
 		input := "pulumi-test-registry/unicorns/swiftwind:latest"
 
-		expectedError := fmt.Errorf(
-			"error: repository name must be canonical. This provider requires " +
-				"all image names to be fully qualified.\nFor example, if you are " +
-				"attempting to push to Dockerhub, prefix your image name with " +
-				"`docker.io`:\n\n`docker.io/repository/image:tag`",
-		)
+		expectedError := "\"pulumi-test-registry/unicorns/swiftwind:latest\": repository name must be canonical.\n" +
+			"This provider requires all image names to be fully qualified.\n" +
+			"For example, if you are attempting to push to Dockerhub, prefix your image name with `docker.io`:\n\n" +
+			"`docker.io/repository/image:tag`"
+
 		actual, err := getRegistryAddrFromImage(input)
 		assert.Equal(t, expected, actual)
 		assert.Error(t, err)
-		assert.Equal(t, expectedError, err)
+		assert.ErrorContains(t, err, expectedError)
 	})
 }
 

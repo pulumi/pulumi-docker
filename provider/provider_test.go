@@ -1,11 +1,14 @@
 package provider
 
 import (
+	"context"
 	"os"
 	"path/filepath"
 	"testing"
 
+	"github.com/docker/distribution/reference"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
+	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
 	rpc "github.com/pulumi/pulumi/sdk/v3/proto/go"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -232,7 +235,6 @@ func TestHashDeepSymlinks(t *testing.T) {
 	dir := "./testdata/symlinks"
 	_, err := hashContext(dir, filepath.Join(dir, "Dockerfile"))
 	assert.NoError(t, err)
-
 }
 
 func TestHashUnignoredDirs(t *testing.T) {
@@ -302,4 +304,63 @@ func TestSetConfiguration(t *testing.T) {
 		actual := setConfiguration(input)
 		assert.Equal(t, expected, actual)
 	})
+}
+
+func TestCheck(t *testing.T) {
+	tests := []struct {
+		name string
+		news resource.PropertyMap
+
+		wantErr error
+	}{
+		{
+			name: "invalid image name",
+			news: resource.PropertyMap{
+				"imageName": resource.NewStringProperty("not-fully-qualified-image-name:latest"),
+				"build": resource.NewObjectProperty(
+					resource.PropertyMap{
+						"dockerfile": resource.NewStringProperty("testdata/Dockerfile"),
+					},
+				),
+			},
+			wantErr: reference.ErrNameNotCanonical,
+		},
+		{
+			name: "invalid cacheFrom",
+			news: resource.PropertyMap{
+				"imageName": resource.NewStringProperty("docker.io/foo/bar:latest"),
+				"build": resource.NewObjectProperty(
+					resource.PropertyMap{
+						"dockerfile": resource.NewStringProperty("testdata/Dockerfile"),
+						"cacheFrom": resource.NewObjectProperty(
+							resource.PropertyMap{
+								"images": resource.NewArrayProperty(
+									[]resource.PropertyValue{resource.NewStringProperty("not-fully-qualified-cache:latest")},
+								),
+							},
+						),
+					},
+				),
+			},
+			wantErr: reference.ErrNameNotCanonical,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			p := dockerNativeProvider{}
+
+			news, err := plugin.MarshalProperties(tt.news, plugin.MarshalOptions{})
+			require.NoError(t, err)
+
+			req := &rpc.CheckRequest{
+				Urn:  string("urn:pulumi:test::docker-provider::docker:index/image:Image::foo"),
+				News: news,
+			}
+
+			_, err = p.Check(context.Background(), req)
+
+			assert.ErrorIs(t, err, tt.wantErr)
+		})
+	}
 }
