@@ -9941,6 +9941,8 @@ func (o CacheFromPtrOutput) Images() pulumi.StringArrayOutput {
 
 // The Docker build context
 type DockerBuild struct {
+	// Custom host-to-IP mappings to use while building (format: "host:ip")
+	AddHosts []string `pulumi:"addHosts"`
 	// An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass build-time variables that can be accessed like environment variables inside the RUN instruction.
 	Args map[string]string `pulumi:"args"`
 	// The version of the Docker builder.
@@ -9951,6 +9953,8 @@ type DockerBuild struct {
 	Context *string `pulumi:"context"`
 	// The path to the Dockerfile to use.
 	Dockerfile *string `pulumi:"dockerfile"`
+	// Set the networking mode for RUN instructions
+	Network *string `pulumi:"network"`
 	// The architecture of the platform you want to build this image for, e.g. `linux/arm64`.
 	Platform *string `pulumi:"platform"`
 	// The target of the Dockerfile to build
@@ -9970,6 +9974,8 @@ type DockerBuildInput interface {
 
 // The Docker build context
 type DockerBuildArgs struct {
+	// Custom host-to-IP mappings to use while building (format: "host:ip")
+	AddHosts pulumi.StringArrayInput `pulumi:"addHosts"`
 	// An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass build-time variables that can be accessed like environment variables inside the RUN instruction.
 	Args pulumi.StringMapInput `pulumi:"args"`
 	// The version of the Docker builder.
@@ -9980,6 +9986,8 @@ type DockerBuildArgs struct {
 	Context pulumi.StringPtrInput `pulumi:"context"`
 	// The path to the Dockerfile to use.
 	Dockerfile pulumi.StringPtrInput `pulumi:"dockerfile"`
+	// Set the networking mode for RUN instructions
+	Network pulumi.StringPtrInput `pulumi:"network"`
 	// The architecture of the platform you want to build this image for, e.g. `linux/arm64`.
 	Platform pulumi.StringPtrInput `pulumi:"platform"`
 	// The target of the Dockerfile to build
@@ -10064,6 +10072,11 @@ func (o DockerBuildOutput) ToDockerBuildPtrOutputWithContext(ctx context.Context
 	}).(DockerBuildPtrOutput)
 }
 
+// Custom host-to-IP mappings to use while building (format: "host:ip")
+func (o DockerBuildOutput) AddHosts() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v DockerBuild) []string { return v.AddHosts }).(pulumi.StringArrayOutput)
+}
+
 // An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass build-time variables that can be accessed like environment variables inside the RUN instruction.
 func (o DockerBuildOutput) Args() pulumi.StringMapOutput {
 	return o.ApplyT(func(v DockerBuild) map[string]string { return v.Args }).(pulumi.StringMapOutput)
@@ -10087,6 +10100,11 @@ func (o DockerBuildOutput) Context() pulumi.StringPtrOutput {
 // The path to the Dockerfile to use.
 func (o DockerBuildOutput) Dockerfile() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v DockerBuild) *string { return v.Dockerfile }).(pulumi.StringPtrOutput)
+}
+
+// Set the networking mode for RUN instructions
+func (o DockerBuildOutput) Network() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v DockerBuild) *string { return v.Network }).(pulumi.StringPtrOutput)
 }
 
 // The architecture of the platform you want to build this image for, e.g. `linux/arm64`.
@@ -10121,6 +10139,16 @@ func (o DockerBuildPtrOutput) Elem() DockerBuildOutput {
 		var ret DockerBuild
 		return ret
 	}).(DockerBuildOutput)
+}
+
+// Custom host-to-IP mappings to use while building (format: "host:ip")
+func (o DockerBuildPtrOutput) AddHosts() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v *DockerBuild) []string {
+		if v == nil {
+			return nil
+		}
+		return v.AddHosts
+	}).(pulumi.StringArrayOutput)
 }
 
 // An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass build-time variables that can be accessed like environment variables inside the RUN instruction.
@@ -10170,6 +10198,16 @@ func (o DockerBuildPtrOutput) Dockerfile() pulumi.StringPtrOutput {
 			return nil
 		}
 		return v.Dockerfile
+	}).(pulumi.StringPtrOutput)
+}
+
+// Set the networking mode for RUN instructions
+func (o DockerBuildPtrOutput) Network() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *DockerBuild) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Network
 	}).(pulumi.StringPtrOutput)
 }
 

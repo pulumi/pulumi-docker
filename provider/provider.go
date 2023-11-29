@@ -38,7 +38,6 @@ type dockerNativeProvider struct {
 	version     string
 	schemaBytes []byte
 	config      map[string]string
-	//loginLock   sync.Mutex
 }
 
 // docker native methods
@@ -60,7 +59,8 @@ func (p *dockerNativeProvider) Call(ctx context.Context, req *rpc.CallRequest) (
 
 // Construct creates a new component resource.
 func (p *dockerNativeProvider) Construct(ctx context.Context, req *rpc.ConstructRequest) (
-	*rpc.ConstructResponse, error) {
+	*rpc.ConstructResponse, error,
+) {
 	return nil, status.Error(codes.Unimplemented, "construct is not yet implemented")
 }
 
@@ -76,7 +76,6 @@ func (p *dockerNativeProvider) DiffConfig(ctx context.Context, req *rpc.DiffRequ
 
 // Configure configures the resource provider with "globals" that control its behavior.
 func (p *dockerNativeProvider) Configure(_ context.Context, req *rpc.ConfigureRequest) (*rpc.ConfigureResponse, error) {
-
 	config := setConfiguration(req.GetVariables())
 	for key, val := range config {
 		p.config[key] = val
@@ -111,7 +110,8 @@ func (p *dockerNativeProvider) Invoke(_ context.Context, req *rpc.InvokeRequest)
 // StreamInvoke dynamically executes a built-in function in the provider. The result is streamed
 // back as a series of messages.
 func (p *dockerNativeProvider) StreamInvoke(
-	req *rpc.InvokeRequest, server rpc.ResourceProvider_StreamInvokeServer) error {
+	req *rpc.InvokeRequest, server rpc.ResourceProvider_StreamInvokeServer,
+) error {
 	tok := req.GetTok()
 	return fmt.Errorf("unknown StreamInvoke token '%s'", tok)
 }
@@ -207,9 +207,6 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 		}
 
 	}
-	if _, err = marshalCachedImages(inputs["build"]); err != nil {
-		return nil, err
-	}
 
 	inputStruct, err := plugin.MarshalProperties(inputs, plugin.MarshalOptions{
 		KeepUnknowns: true,
@@ -258,7 +255,6 @@ func (p *dockerNativeProvider) Diff(ctx context.Context, req *rpc.DiffRequest) (
 	diff := map[string]*rpc.PropertyDiff{}
 	for key := range d.Adds {
 		diff[string(key)] = &rpc.PropertyDiff{Kind: rpc.PropertyDiff_ADD}
-
 	}
 	for key := range d.Deletes {
 		diff[string(key)] = &rpc.PropertyDiff{Kind: rpc.PropertyDiff_DELETE}
@@ -371,7 +367,6 @@ func (p *dockerNativeProvider) Read(ctx context.Context, req *rpc.ReadRequest) (
 
 	// Return properties as passed, since we do no reconciliation,
 	return &rpc.ReadResponse{Id: id, Inputs: inputs, Properties: properties}, nil
-
 }
 
 // Update updates an existing resource with new values.
@@ -414,7 +409,6 @@ func (p *dockerNativeProvider) Update(ctx context.Context, req *rpc.UpdateReques
 			SkipNulls:    true,
 		},
 	)
-
 	if err != nil {
 		return nil, err
 	}
@@ -441,7 +435,8 @@ func (p *dockerNativeProvider) GetPluginInfo(context.Context, *pbempty.Empty) (*
 
 // GetSchema returns the JSON-serialized schema for the provider.
 func (p *dockerNativeProvider) GetSchema(ctx context.Context, req *rpc.GetSchemaRequest) (
-	*rpc.GetSchemaResponse, error) {
+	*rpc.GetSchemaResponse, error,
+) {
 	if v := req.GetVersion(); v != 0 {
 		return nil, fmt.Errorf("unsupported schema version %d", v)
 	}
@@ -490,7 +485,8 @@ type contextHashAccumulator struct {
 func (accumulator *contextHashAccumulator) hashPath(
 	filePath string,
 	relativeNameOfFile string,
-	fileMode fs.FileMode) error {
+	fileMode fs.FileMode,
+) error {
 	hash := sha256.New()
 
 	if fileMode.Type() == fs.ModeSymlink {

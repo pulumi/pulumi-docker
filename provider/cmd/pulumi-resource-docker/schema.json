@@ -1882,6 +1882,13 @@
         "docker:index/dockerBuild:DockerBuild": {
             "description": "The Docker build context",
             "properties": {
+                "addHosts": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Custom host-to-IP mappings to use while building (format: \"host:ip\")"
+                },
                 "args": {
                     "type": "object",
                     "additionalProperties": {
@@ -1904,6 +1911,10 @@
                 "dockerfile": {
                     "type": "string",
                     "description": "The path to the Dockerfile to use."
+                },
+                "network": {
+                    "type": "string",
+                    "description": "Set the networking mode for RUN instructions"
                 },
                 "platform": {
                     "type": "string",
@@ -3148,6 +3159,10 @@
                 "imageName": {
                     "type": "string",
                     "description": "The fully qualified image name"
+                },
+                "platform": {
+                    "type": "string",
+                    "description": "The image's architecture and OS"
                 },
                 "registryServer": {
                     "type": "string",

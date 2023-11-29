@@ -8,6 +8,7 @@ import com.pulumi.core.annotations.Import;
 import com.pulumi.docker.enums.BuilderVersion;
 import com.pulumi.docker.inputs.CacheFromArgs;
 import java.lang.String;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -21,6 +22,21 @@ import javax.annotation.Nullable;
 public final class DockerBuildArgs extends com.pulumi.resources.ResourceArgs {
 
     public static final DockerBuildArgs Empty = new DockerBuildArgs();
+
+    /**
+     * Custom host-to-IP mappings to use while building (format: &#34;host:ip&#34;)
+     * 
+     */
+    @Import(name="addHosts")
+    private @Nullable Output<List<String>> addHosts;
+
+    /**
+     * @return Custom host-to-IP mappings to use while building (format: &#34;host:ip&#34;)
+     * 
+     */
+    public Optional<Output<List<String>>> addHosts() {
+        return Optional.ofNullable(this.addHosts);
+    }
 
     /**
      * An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass build-time variables that can be accessed like environment variables inside the RUN instruction.
@@ -98,6 +114,21 @@ public final class DockerBuildArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
+     * Set the networking mode for RUN instructions
+     * 
+     */
+    @Import(name="network")
+    private @Nullable Output<String> network;
+
+    /**
+     * @return Set the networking mode for RUN instructions
+     * 
+     */
+    public Optional<Output<String>> network() {
+        return Optional.ofNullable(this.network);
+    }
+
+    /**
      * The architecture of the platform you want to build this image for, e.g. `linux/arm64`.
      * 
      */
@@ -130,11 +161,13 @@ public final class DockerBuildArgs extends com.pulumi.resources.ResourceArgs {
     private DockerBuildArgs() {}
 
     private DockerBuildArgs(DockerBuildArgs $) {
+        this.addHosts = $.addHosts;
         this.args = $.args;
         this.builderVersion = $.builderVersion;
         this.cacheFrom = $.cacheFrom;
         this.context = $.context;
         this.dockerfile = $.dockerfile;
+        this.network = $.network;
         this.platform = $.platform;
         this.target = $.target;
     }
@@ -155,6 +188,37 @@ public final class DockerBuildArgs extends com.pulumi.resources.ResourceArgs {
 
         public Builder(DockerBuildArgs defaults) {
             $ = new DockerBuildArgs(Objects.requireNonNull(defaults));
+        }
+
+        /**
+         * @param addHosts Custom host-to-IP mappings to use while building (format: &#34;host:ip&#34;)
+         * 
+         * @return builder
+         * 
+         */
+        public Builder addHosts(@Nullable Output<List<String>> addHosts) {
+            $.addHosts = addHosts;
+            return this;
+        }
+
+        /**
+         * @param addHosts Custom host-to-IP mappings to use while building (format: &#34;host:ip&#34;)
+         * 
+         * @return builder
+         * 
+         */
+        public Builder addHosts(List<String> addHosts) {
+            return addHosts(Output.of(addHosts));
+        }
+
+        /**
+         * @param addHosts Custom host-to-IP mappings to use while building (format: &#34;host:ip&#34;)
+         * 
+         * @return builder
+         * 
+         */
+        public Builder addHosts(String... addHosts) {
+            return addHosts(List.of(addHosts));
         }
 
         /**
@@ -260,6 +324,27 @@ public final class DockerBuildArgs extends com.pulumi.resources.ResourceArgs {
          */
         public Builder dockerfile(String dockerfile) {
             return dockerfile(Output.of(dockerfile));
+        }
+
+        /**
+         * @param network Set the networking mode for RUN instructions
+         * 
+         * @return builder
+         * 
+         */
+        public Builder network(@Nullable Output<String> network) {
+            $.network = network;
+            return this;
+        }
+
+        /**
+         * @param network Set the networking mode for RUN instructions
+         * 
+         * @return builder
+         * 
+         */
+        public Builder network(String network) {
+            return network(Output.of(network));
         }
 
         /**

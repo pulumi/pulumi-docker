@@ -177,6 +177,12 @@ namespace Pulumi.Docker
         public Output<string> ImageName { get; private set; } = null!;
 
         /// <summary>
+        /// The image's architecture and OS
+        /// </summary>
+        [Output("platform")]
+        public Output<string?> Platform { get; private set; } = null!;
+
+        /// <summary>
         /// The name of the registry server hosting the image.
         /// </summary>
         [Output("registryServer")]

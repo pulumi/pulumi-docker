@@ -172,6 +172,8 @@ type Image struct {
 	Dockerfile pulumi.StringOutput `pulumi:"dockerfile"`
 	// The fully qualified image name
 	ImageName pulumi.StringOutput `pulumi:"imageName"`
+	// The image's architecture and OS
+	Platform pulumi.StringPtrOutput `pulumi:"platform"`
 	// The name of the registry server hosting the image.
 	RegistryServer pulumi.StringOutput `pulumi:"registryServer"`
 	// **For pushed images:**
@@ -365,6 +367,11 @@ func (o ImageOutput) Dockerfile() pulumi.StringOutput {
 // The fully qualified image name
 func (o ImageOutput) ImageName() pulumi.StringOutput {
 	return o.ApplyT(func(v *Image) pulumi.StringOutput { return v.ImageName }).(pulumi.StringOutput)
+}
+
+// The image's architecture and OS
+func (o ImageOutput) Platform() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *Image) pulumi.StringPtrOutput { return v.Platform }).(pulumi.StringPtrOutput)
 }
 
 // The name of the registry server hosting the image.

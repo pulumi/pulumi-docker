@@ -323,6 +323,7 @@ class Image(pulumi.CustomResource):
             __props__.__dict__["base_image_name"] = None
             __props__.__dict__["context"] = None
             __props__.__dict__["dockerfile"] = None
+            __props__.__dict__["platform"] = None
             __props__.__dict__["registry_server"] = None
             __props__.__dict__["repo_digest"] = None
         alias_opts = pulumi.ResourceOptions(aliases=[pulumi.Alias(type_="docker:image:Image")])
@@ -353,6 +354,7 @@ class Image(pulumi.CustomResource):
         __props__.__dict__["context"] = None
         __props__.__dict__["dockerfile"] = None
         __props__.__dict__["image_name"] = None
+        __props__.__dict__["platform"] = None
         __props__.__dict__["registry_server"] = None
         __props__.__dict__["repo_digest"] = None
         return Image(resource_name, opts=opts, __props__=__props__)
@@ -388,6 +390,14 @@ class Image(pulumi.CustomResource):
         The fully qualified image name
         """
         return pulumi.get(self, "image_name")
+
+    @property
+    @pulumi.getter
+    def platform(self) -> pulumi.Output[Optional[str]]:
+        """
+        The image's architecture and OS
+        """
+        return pulumi.get(self, "platform")
 
     @property
     @pulumi.getter(name="registryServer")
