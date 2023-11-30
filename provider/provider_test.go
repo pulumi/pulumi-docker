@@ -339,6 +339,24 @@ func TestCheck(t *testing.T) {
 			wantErr: nil,
 		},
 		{
+			name: "image name can be non-canonical if registry server is provided",
+			news: resource.PropertyMap{
+				"imageName": resource.NewStringProperty("foo/bar:latest"),
+				"skipPush":  resource.NewBoolProperty(true),
+				"build": resource.NewObjectProperty(
+					resource.PropertyMap{
+						"dockerfile": resource.NewStringProperty("testdata/Dockerfile"),
+					},
+				),
+				"registry": resource.NewObjectProperty(
+					resource.PropertyMap{
+						"server": resource.NewStringProperty("docker.io"),
+					},
+				),
+			},
+			wantErr: nil,
+		},
+		{
 			name: "image name must be non-canonical if using caching, even when not pushing",
 			news: resource.PropertyMap{
 				"imageName": resource.NewStringProperty("not-pushing:latest"),
@@ -359,7 +377,7 @@ func TestCheck(t *testing.T) {
 			wantErr: reference.ErrNameNotCanonical,
 		},
 		{
-			name: "can't use non-canonical cacheFrom",
+			name: "can't use non-canonical cacheFrom without a registry",
 			news: resource.PropertyMap{
 				"imageName": resource.NewStringProperty("docker.io/foo/bar:latest"),
 				"build": resource.NewObjectProperty(
@@ -376,6 +394,30 @@ func TestCheck(t *testing.T) {
 				),
 			},
 			wantErr: reference.ErrNameNotCanonical,
+		},
+		{
+			name: "can use non-canonical cacheFrom with a registry server",
+			news: resource.PropertyMap{
+				"imageName": resource.NewStringProperty("docker.io/foo/bar:latest"),
+				"build": resource.NewObjectProperty(
+					resource.PropertyMap{
+						"dockerfile": resource.NewStringProperty("testdata/Dockerfile"),
+						"cacheFrom": resource.NewObjectProperty(
+							resource.PropertyMap{
+								"images": resource.NewArrayProperty(
+									[]resource.PropertyValue{resource.NewStringProperty("not-fully-qualified-cache:latest")},
+								),
+							},
+						),
+					},
+				),
+				"registry": resource.NewObjectProperty(
+					resource.PropertyMap{
+						"server": resource.NewStringProperty("docker.io"),
+					},
+				),
+			},
+			wantErr: nil,
 		},
 	}
 

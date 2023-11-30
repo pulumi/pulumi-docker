@@ -224,15 +224,16 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 	if err != nil {
 		return nil, err
 	}
+	registry := marshalRegistry(inputs["registry"])
 	for _, i := range cache {
-		if _, err := getRegistryAddrFromImage(i); err != nil {
+		if _, err := getRegistryAddrForAuth(registry.Server, i); err != nil {
 			return nil, err
 		}
 	}
 	// imageName only needs to be canonical if we're pushing or using cacheFrom.
 	needCanonicalImage := len(cache) > 0 || !marshalSkipPush(inputs["skipPush"])
 	if needCanonicalImage && !inputs["imageName"].IsNull() {
-		if _, err := getRegistryAddrFromImage(inputs["imageName"].StringValue()); err != nil {
+		if _, err := getRegistryAddrForAuth(registry.Server, inputs["imageName"].StringValue()); err != nil {
 			return nil, err
 		}
 	}
