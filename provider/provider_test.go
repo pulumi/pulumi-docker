@@ -357,7 +357,7 @@ func TestCheck(t *testing.T) {
 			wantErr: nil,
 		},
 		{
-			name: "image name must be non-canonical if using caching, even when not pushing",
+			name: "image name must be canonical if using caching, even when not pushing",
 			news: resource.PropertyMap{
 				"imageName": resource.NewStringProperty("not-pushing:latest"),
 				"skipPush":  resource.NewBoolProperty(true),
