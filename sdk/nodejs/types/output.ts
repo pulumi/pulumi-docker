@@ -592,7 +592,7 @@ export interface ServiceLabel {
 
 export interface ServiceMode {
     /**
-     * The global service mode. Defaults to `false`
+     * When `true`, tasks will run on every worker node. Conflicts with `replicated`
      */
     global?: boolean;
     /**
