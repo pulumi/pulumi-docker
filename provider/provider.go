@@ -19,6 +19,7 @@ import (
 	"github.com/moby/buildkit/frontend/dockerfile/dockerignore"
 	"github.com/pkg/errors"
 	"github.com/pulumi/pulumi/pkg/v3/resource/provider"
+	"github.com/pulumi/pulumi/sdk/v3/go/common/diag"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/util/contract"
@@ -38,7 +39,6 @@ type dockerNativeProvider struct {
 	version     string
 	schemaBytes []byte
 	config      map[string]string
-	//loginLock   sync.Mutex
 }
 
 // docker native methods
@@ -114,6 +114,16 @@ func (p *dockerNativeProvider) StreamInvoke(
 	req *rpc.InvokeRequest, server rpc.ResourceProvider_StreamInvokeServer) error {
 	tok := req.GetTok()
 	return fmt.Errorf("unknown StreamInvoke token '%s'", tok)
+}
+
+// log emits a log to our host, or no-ops if a host has not been configured (as
+// in testing).
+func (p *dockerNativeProvider) log(ctx context.Context, sev diag.Severity, urn resource.URN, msg string) error {
+	// no-op if we're in a test.
+	if p.host == nil {
+		return nil
+	}
+	return p.host.Log(ctx, sev, urn, msg)
 }
 
 // Check validates that the given property bag is valid for a resource of the given type and returns
@@ -192,7 +202,7 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 			"contextDigest": resource.NewStringProperty(contextDigest),
 			"platform":      resource.NewStringProperty(hostPlatform),
 		})
-		err = p.host.Log(ctx, "info", urn, msg)
+		err = p.log(ctx, "info", urn, msg)
 		if err != nil {
 			return nil, err
 		}
@@ -200,15 +210,32 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 		inputs["build"].ObjectValue()["contextDigest"] = resource.NewStringProperty(contextDigest)
 		if inputs["build"].ObjectValue()["platform"].IsNull() {
 			inputs["build"].ObjectValue()["platform"] = resource.NewStringProperty(hostPlatform)
-			err = p.host.Log(ctx, "info", urn, msg)
+			err = p.log(ctx, "info", urn, msg)
 			if err != nil {
 				return nil, err
 			}
 		}
 
 	}
-	if _, err = marshalCachedImages(inputs["build"]); err != nil {
+
+	// Make sure image names are fully qualified.
+	cache, err := marshalCachedImages(inputs["build"])
+	if err != nil {
 		return nil, err
+	}
+	// imageName only needs to be canonical if we're pushing or using cacheFrom.
+	needCanonicalImage := len(cache) > 0 || !marshalSkipPush(inputs["skipPush"])
+	if needCanonicalImage && !inputs["imageName"].IsNull() {
+		registry := marshalRegistry(inputs["registry"])
+		host, err := getRegistryAddrForAuth(registry.Server, inputs["imageName"].StringValue())
+		if err != nil {
+			return nil, err
+		}
+		for _, i := range cache {
+			if _, err := getRegistryAddrForAuth(host, i); err != nil {
+				return nil, err
+			}
+		}
 	}
 
 	inputStruct, err := plugin.MarshalProperties(inputs, plugin.MarshalOptions{
