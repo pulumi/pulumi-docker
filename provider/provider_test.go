@@ -377,7 +377,7 @@ func TestCheck(t *testing.T) {
 			wantErr: reference.ErrNameNotCanonical,
 		},
 		{
-			name: "can't use non-canonical cacheFrom without a registry",
+			name: "cacheFrom can infer host from imageName",
 			news: resource.PropertyMap{
 				"imageName": resource.NewStringProperty("docker.io/foo/bar:latest"),
 				"build": resource.NewObjectProperty(
@@ -386,19 +386,19 @@ func TestCheck(t *testing.T) {
 						"cacheFrom": resource.NewObjectProperty(
 							resource.PropertyMap{
 								"images": resource.NewArrayProperty(
-									[]resource.PropertyValue{resource.NewStringProperty("not-fully-qualified-cache:latest")},
+									[]resource.PropertyValue{resource.NewStringProperty("foo/bar:latest")},
 								),
 							},
 						),
 					},
 				),
 			},
-			wantErr: reference.ErrNameNotCanonical,
+			wantErr: nil,
 		},
 		{
 			name: "can use non-canonical cacheFrom with a registry server",
 			news: resource.PropertyMap{
-				"imageName": resource.NewStringProperty("docker.io/foo/bar:latest"),
+				"imageName": resource.NewStringProperty("foo/bar:latest"),
 				"build": resource.NewObjectProperty(
 					resource.PropertyMap{
 						"dockerfile": resource.NewStringProperty("testdata/Dockerfile"),

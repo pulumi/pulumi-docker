@@ -39,7 +39,6 @@ type dockerNativeProvider struct {
 	version     string
 	schemaBytes []byte
 	config      map[string]string
-	//loginLock   sync.Mutex
 }
 
 // docker native methods
@@ -224,17 +223,18 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 	if err != nil {
 		return nil, err
 	}
-	registry := marshalRegistry(inputs["registry"])
-	for _, i := range cache {
-		if _, err := getRegistryAddrForAuth(registry.Server, i); err != nil {
-			return nil, err
-		}
-	}
 	// imageName only needs to be canonical if we're pushing or using cacheFrom.
 	needCanonicalImage := len(cache) > 0 || !marshalSkipPush(inputs["skipPush"])
 	if needCanonicalImage && !inputs["imageName"].IsNull() {
-		if _, err := getRegistryAddrForAuth(registry.Server, inputs["imageName"].StringValue()); err != nil {
+		registry := marshalRegistry(inputs["registry"])
+		host, err := getRegistryAddrForAuth(registry.Server, inputs["imageName"].StringValue())
+		if err != nil {
 			return nil, err
+		}
+		for _, i := range cache {
+			if _, err := getRegistryAddrForAuth(host, i); err != nil {
+				return nil, err
+			}
 		}
 	}
 
