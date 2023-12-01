@@ -19,10 +19,12 @@ package examples
 import (
 	"encoding/json"
 	"os"
+	"os/exec"
 	"path"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 
 	"github.com/pulumi/pulumi/pkg/v3/testing/integration"
 )
@@ -72,5 +74,44 @@ func TestSecretsYAML(t *testing.T) {
 			assert.NotContainsf(t, string(deploymentJSON), "supersecret",
 				"Secret should not be stored in the plain state")
 		},
+	})
+}
+
+func TestDockerSwarmYAML(t *testing.T) {
+	// Temporarily make ourselves a swarm manager.
+	cmd := exec.Command("docker", "swarm", "init")
+	output, err := cmd.CombinedOutput()
+	require.NoError(t, err, string(output))
+	t.Cleanup(func() {
+		require.NoError(t, exec.Command("docker", "swarm", "leave", "--force").Run())
+	})
+
+	cwd, err := os.Getwd()
+	if !assert.NoError(t, err) {
+		t.FailNow()
+	}
+
+	t.Run("service", func(t *testing.T) {
+		integration.ProgramTest(t, &integration.ProgramTestOptions{
+			Dir:         path.Join(cwd, "test-swarm", "service"),
+			Quick:       true,
+			SkipRefresh: true,
+		})
+	})
+
+	t.Run("service-replicated", func(t *testing.T) {
+		integration.ProgramTest(t, &integration.ProgramTestOptions{
+			Dir:         path.Join(cwd, "test-swarm", "service-replicated"),
+			Quick:       true,
+			SkipRefresh: true,
+		})
+	})
+
+	t.Run("service-global", func(t *testing.T) {
+		integration.ProgramTest(t, &integration.ProgramTestOptions{
+			Dir:         path.Join(cwd, "test-swarm", "service-global"),
+			Quick:       true,
+			SkipRefresh: true,
+		})
 	})
 }
