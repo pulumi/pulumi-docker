@@ -224,10 +224,8 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 			"explicitly setting the `platform` field on ImageBuildOptions.", hostPlatform)
 
 	// build options: set default host platform
-	// TODO: be sure to handle unknowns here too and then remove comment - notice how we're checking the inputs, not the build struct here? apparently we only use the build struct for the dockerfile hashing. Huh okay.
 	if inputs["build"].IsNull() {
 		inputs["build"] = resource.NewObjectProperty(resource.PropertyMap{
-
 			"platform": resource.NewStringProperty(hostPlatform),
 		})
 		err = p.log(ctx, "info", urn, msg)
@@ -777,10 +775,10 @@ func marshalBuildOnPreview(inputs resource.PropertyMap) bool {
 func ensureMinimumBuildInputs(inputs resource.PropertyMap) bool {
 	if !inputs["build"].IsObject() {
 		return false
-	} else {
-		if inputs["build"].ObjectValue()["dockerfile"].ContainsUnknowns() || inputs["build"].ObjectValue()["context"].ContainsUnknowns() {
-			return false
-		}
+	}
+	if inputs["build"].ObjectValue()["dockerfile"].ContainsUnknowns() ||
+		inputs["build"].ObjectValue()["context"].ContainsUnknowns() {
+		return false
 	}
 	if inputs["imageName"].ContainsUnknowns() {
 		return false

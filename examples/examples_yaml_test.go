@@ -130,7 +130,7 @@ func TestDockerSwarmYAML(t *testing.T) {
 	})
 }
 
-func TestUnknownsBuildOnPreviewFailsYAML(t *testing.T) {
+func TestUnknownsBuildOnPreviewWarnsYAML(t *testing.T) {
 	cwd, err := os.Getwd()
 	if !assert.NoError(t, err) {
 		t.FailNow()
