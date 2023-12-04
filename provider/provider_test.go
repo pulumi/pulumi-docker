@@ -1,11 +1,14 @@
 package provider
 
 import (
+	"context"
 	"os"
 	"path/filepath"
 	"testing"
 
+	"github.com/docker/distribution/reference"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
+	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
 	rpc "github.com/pulumi/pulumi/sdk/v3/proto/go"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -232,7 +235,6 @@ func TestHashDeepSymlinks(t *testing.T) {
 	dir := "./testdata/symlinks"
 	_, err := hashContext(dir, filepath.Join(dir, "Dockerfile"))
 	assert.NoError(t, err)
-
 }
 
 func TestHashUnignoredDirs(t *testing.T) {
@@ -302,4 +304,138 @@ func TestSetConfiguration(t *testing.T) {
 		actual := setConfiguration(input)
 		assert.Equal(t, expected, actual)
 	})
+}
+
+func TestCheck(t *testing.T) {
+	tests := []struct {
+		name string
+		news resource.PropertyMap
+
+		wantErr error
+	}{
+		{
+			name: "can't push a non-canonical image name",
+			news: resource.PropertyMap{
+				"imageName": resource.NewStringProperty("not-fully-qualified-image-name:latest"),
+				"build": resource.NewObjectProperty(
+					resource.PropertyMap{
+						"dockerfile": resource.NewStringProperty("testdata/Dockerfile"),
+					},
+				),
+			},
+			wantErr: reference.ErrNameNotCanonical,
+		},
+		{
+			name: "image name can be non-canonical if not pushing",
+			news: resource.PropertyMap{
+				"imageName": resource.NewStringProperty("not-pushing:latest"),
+				"skipPush":  resource.NewBoolProperty(true),
+				"build": resource.NewObjectProperty(
+					resource.PropertyMap{
+						"dockerfile": resource.NewStringProperty("testdata/Dockerfile"),
+					},
+				),
+			},
+			wantErr: nil,
+		},
+		{
+			name: "image name can be non-canonical if registry server is provided",
+			news: resource.PropertyMap{
+				"imageName": resource.NewStringProperty("foo/bar:latest"),
+				"skipPush":  resource.NewBoolProperty(true),
+				"build": resource.NewObjectProperty(
+					resource.PropertyMap{
+						"dockerfile": resource.NewStringProperty("testdata/Dockerfile"),
+					},
+				),
+				"registry": resource.NewObjectProperty(
+					resource.PropertyMap{
+						"server": resource.NewStringProperty("docker.io"),
+					},
+				),
+			},
+			wantErr: nil,
+		},
+		{
+			name: "image name must be canonical if using caching, even when not pushing",
+			news: resource.PropertyMap{
+				"imageName": resource.NewStringProperty("not-pushing:latest"),
+				"skipPush":  resource.NewBoolProperty(true),
+				"build": resource.NewObjectProperty(
+					resource.PropertyMap{
+						"dockerfile": resource.NewStringProperty("testdata/Dockerfile"),
+						"cacheFrom": resource.NewObjectProperty(
+							resource.PropertyMap{
+								"images": resource.NewArrayProperty(
+									[]resource.PropertyValue{resource.NewStringProperty("docker.io/pulumi/pulumi:latest")},
+								),
+							},
+						),
+					},
+				),
+			},
+			wantErr: reference.ErrNameNotCanonical,
+		},
+		{
+			name: "cacheFrom can infer host from imageName",
+			news: resource.PropertyMap{
+				"imageName": resource.NewStringProperty("docker.io/foo/bar:latest"),
+				"build": resource.NewObjectProperty(
+					resource.PropertyMap{
+						"dockerfile": resource.NewStringProperty("testdata/Dockerfile"),
+						"cacheFrom": resource.NewObjectProperty(
+							resource.PropertyMap{
+								"images": resource.NewArrayProperty(
+									[]resource.PropertyValue{resource.NewStringProperty("foo/bar:latest")},
+								),
+							},
+						),
+					},
+				),
+			},
+			wantErr: nil,
+		},
+		{
+			name: "can use non-canonical cacheFrom with a registry server",
+			news: resource.PropertyMap{
+				"imageName": resource.NewStringProperty("foo/bar:latest"),
+				"build": resource.NewObjectProperty(
+					resource.PropertyMap{
+						"dockerfile": resource.NewStringProperty("testdata/Dockerfile"),
+						"cacheFrom": resource.NewObjectProperty(
+							resource.PropertyMap{
+								"images": resource.NewArrayProperty(
+									[]resource.PropertyValue{resource.NewStringProperty("not-fully-qualified-cache:latest")},
+								),
+							},
+						),
+					},
+				),
+				"registry": resource.NewObjectProperty(
+					resource.PropertyMap{
+						"server": resource.NewStringProperty("docker.io"),
+					},
+				),
+			},
+			wantErr: nil,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			p := dockerNativeProvider{}
+
+			news, err := plugin.MarshalProperties(tt.news, plugin.MarshalOptions{})
+			require.NoError(t, err)
+
+			req := &rpc.CheckRequest{
+				Urn:  string("urn:pulumi:test::docker-provider::docker:index/image:Image::foo"),
+				News: news,
+			}
+
+			_, err = p.Check(context.Background(), req)
+
+			assert.ErrorIs(t, err, tt.wantErr)
+		})
+	}
 }

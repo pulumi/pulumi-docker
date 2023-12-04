@@ -827,9 +827,9 @@ func getRegistryAddrForAuth(serverName, imgName string) (string, error) {
 func getRegistryAddrFromImage(imgName string) (string, error) {
 	named, err := reference.ParseNamed(imgName)
 	if err != nil {
-		msg := fmt.Errorf("error: %s. This provider requires all image names to be fully qualified.\n"+
+		msg := fmt.Errorf("%q: %w.\nThis resource requires all image names to be fully qualified.\n"+
 			"For example, if you are attempting to push to Dockerhub, prefix your image name with `docker.io`:\n\n"+
-			"`docker.io/repository/image:tag`", err)
+			"`docker.io/repository/image:tag`", imgName, err)
 		return "", msg
 	}
 	addr := reference.Domain(named)
