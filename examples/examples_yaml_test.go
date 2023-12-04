@@ -98,6 +98,10 @@ func TestBuildOnPreviewYAML(t *testing.T) {
 	})
 }
 func TestDockerSwarmYAML(t *testing.T) {
+	cwd, err := os.Getwd()
+	if !assert.NoError(t, err) {
+		t.FailNow()
+	}
 	// Temporarily make ourselves a swarm manager.
 	cmd := exec.Command("docker", "swarm", "init")
 	output, err := cmd.CombinedOutput()
