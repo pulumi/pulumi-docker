@@ -380,21 +380,22 @@ func (p *dockerNativeProvider) Create(ctx context.Context, req *rpc.CreateReques
 		// verify buildOnPreview is Known; if not, send warning and continue.
 		if inputs["buildOnPreview"].ContainsUnknowns() {
 			msg = "buildOnPreview is unresolved; cannot build on preview. Continuing without preview image build. " +
-				"To avoid this warning, set buildOnPreview explicitly, and ensure all inputs are resolved at preview."
+				"To avoid this warning, set buildOnPreview explicitly."
 			returnWithoutBuild = true
 		}
 		// if we're in preview mode and buildOnPreview is set to false, we return the inputs
 		if !inputs["buildOnPreview"].BoolValue() {
 			returnWithoutBuild = true
 		}
-		// buildOnPreview needs all inputs to be resolved. Warn and continue without building the image
-		// TODO: there is room for some future granularity here - we should be able to build a local image without
-		// (TODO cont) knowing inputs for a registry, for example.
-		if inputs.ContainsUnknowns() {
-			msg = "cannot build on preview with unresolved inputs. Continuing without preview image build. " +
-				"To avoid this warning, set buildOnPreview to False, or ensure all inputs are resolved at preview."
+
+		// buildOnPreview needs image name, dockerfile, and context to be resolved.
+		// Warn and continue without building the image
+		if !ensureMinimumBuildInputs(inputs) {
 			returnWithoutBuild = true
+			msg = "Minimum inputs for build are unresolved. Continuing without preview image build. " +
+				"To avoid this warning, ensure image name, dockerfile, and context are resolved at preview."
 		}
+
 		if returnWithoutBuild {
 			if msg != "" {
 				err = p.host.Log(ctx, "warning", urn, msg)
@@ -408,7 +409,7 @@ func (p *dockerNativeProvider) Create(ctx context.Context, req *rpc.CreateReques
 		}
 	}
 
-	id, outputProperties, err := p.dockerBuild(ctx, urn, req.GetProperties())
+	id, outputProperties, err := p.dockerBuild(ctx, urn, req.GetProperties(), req.Preview)
 	if err != nil {
 		return nil, err
 	}
@@ -489,13 +490,14 @@ func (p *dockerNativeProvider) Update(ctx context.Context, req *rpc.UpdateReques
 		if !newInputs["buildOnPreview"].BoolValue() {
 			returnWithoutBuild = true
 		}
-		// buildOnPreview needs all inputs to be resolved. Warn and continue without building the image
-		// TODO: there is room for some future granularity here - see above TODO in Create method
-		if newInputs.ContainsUnknowns() {
-			msg = "cannot build on preview with unresolved inputs. Continuing without preview image build. " +
-				"To avoid this warning, set buildOnPreview to False, or ensure all inputs are resolved at preview."
+		// buildOnPreview needs image name, dockerfile, and context to be resolved.
+		// Warn and continue without building the image
+		if !ensureMinimumBuildInputs(newInputs) {
 			returnWithoutBuild = true
+			msg = "Minimum inputs for build are unresolved. Continuing without preview image build. " +
+				"To avoid this warning, ensure image name, dockerfile, and context are resolved at preview."
 		}
+
 		if returnWithoutBuild {
 			if msg != "" {
 				err = p.host.Log(ctx, "warning", urn, msg)
@@ -510,7 +512,7 @@ func (p *dockerNativeProvider) Update(ctx context.Context, req *rpc.UpdateReques
 	}
 
 	// When the docker image is updated, we build and push again.
-	_, outputProperties, err := p.dockerBuild(ctx, urn, req.GetNews())
+	_, outputProperties, err := p.dockerBuild(ctx, urn, req.GetNews(), req.Preview)
 	if err != nil {
 		return nil, err
 	}
@@ -770,4 +772,18 @@ func marshalBuildOnPreview(inputs resource.PropertyMap) bool {
 		return false
 	}
 	return inputs["buildOnPreview"].BoolValue()
+}
+
+func ensureMinimumBuildInputs(inputs resource.PropertyMap) bool {
+	if !inputs["build"].IsObject() {
+		return false
+	} else {
+		if inputs["build"].ObjectValue()["dockerfile"].ContainsUnknowns() || inputs["build"].ObjectValue()["context"].ContainsUnknowns() {
+			return false
+		}
+	}
+	if inputs["imageName"].ContainsUnknowns() {
+		return false
+	}
+	return true
 }

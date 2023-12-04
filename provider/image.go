@@ -82,6 +82,7 @@ type Config struct {
 func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	urn resource.URN,
 	props *structpb.Struct,
+	isPreview bool,
 ) (string, *structpb.Struct, error) {
 
 	inputs, err := plugin.UnmarshalProperties(props, plugin.MarshalOptions{KeepUnknowns: true, SkipNulls: true})
@@ -313,8 +314,8 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		return "", nil, err
 	}
 
-	// if we are not pushing to the registry, we return after building the local image.
-	if img.SkipPush {
+	// if we are not pushing to the registry, or we are in Preview mode, we return after building the local image.
+	if img.SkipPush || isPreview {
 		// Obtain image digest from docker inspect
 		imageInspect, _, inspErr := docker.ImageInspectWithRaw(ctx, img.Name)
 		if inspErr != nil {
