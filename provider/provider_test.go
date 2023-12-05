@@ -458,3 +458,93 @@ func TestCheck(t *testing.T) {
 		})
 	}
 }
+
+func TestCanPreview(t *testing.T) {
+	tests := []struct {
+		name string
+
+		inputs resource.PropertyMap
+		want   bool
+	}{
+		{
+			name: "buildOnPreview is unknown",
+			inputs: resource.PropertyMap{
+				"buildOnPreview": resource.NewComputedProperty(
+					resource.Computed{},
+				),
+			},
+			want: false,
+		},
+		{
+			name: "dockerfile is unknown",
+			inputs: resource.PropertyMap{
+				"buildOnPreview": resource.NewBoolProperty(true),
+				"build": resource.NewObjectProperty(resource.PropertyMap{
+					"dockerfile": resource.NewComputedProperty(resource.Computed{}),
+					"context":    resource.NewStringProperty("."),
+					"args":       resource.NewObjectProperty(resource.PropertyMap{}),
+				}),
+			},
+			want: false,
+		},
+		{
+			name: "context is unknown",
+			inputs: resource.PropertyMap{
+				"buildOnPreview": resource.NewBoolProperty(true),
+				"build": resource.NewObjectProperty(resource.PropertyMap{
+					"dockerfile": resource.NewStringProperty("Dockerfile"),
+					"context":    resource.NewComputedProperty(resource.Computed{}),
+					"args":       resource.NewObjectProperty(resource.PropertyMap{}),
+				}),
+			},
+			want: false,
+		},
+		{
+			name: "args is unknown",
+			inputs: resource.PropertyMap{
+				"buildOnPreview": resource.NewBoolProperty(true),
+				"build": resource.NewObjectProperty(resource.PropertyMap{
+					"dockerfile": resource.NewStringProperty("Dockerfile"),
+					"context":    resource.NewStringProperty("."),
+					"args":       resource.NewComputedProperty(resource.Computed{}),
+				}),
+			},
+			want: false,
+		},
+		{
+			name: "args contains unknown",
+			inputs: resource.PropertyMap{
+				"buildOnPreview": resource.NewBoolProperty(true),
+				"build": resource.NewObjectProperty(resource.PropertyMap{
+					"dockerfile": resource.NewStringProperty("Dockerfile"),
+					"context":    resource.NewStringProperty("."),
+					"args": resource.NewObjectProperty(resource.PropertyMap{
+						"unknown": resource.NewComputedProperty(resource.Computed{}),
+					}),
+				}),
+			},
+			want: false,
+		},
+		{
+			name: "everything known",
+			inputs: resource.PropertyMap{
+				"buildOnPreview": resource.NewBoolProperty(true),
+				"build": resource.NewObjectProperty(resource.PropertyMap{
+					"dockerfile": resource.NewStringProperty("Dockerfile"),
+					"context":    resource.NewStringProperty("."),
+					"args":       resource.NewObjectProperty(resource.PropertyMap{}),
+				}),
+			},
+			want: true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			p := &dockerNativeProvider{}
+			actual, err := p.canPreview(context.Background(), tt.inputs, resource.URN("a"))
+			require.NoError(t, err)
+			assert.Equal(t, tt.want, actual)
+		})
+	}
+}
