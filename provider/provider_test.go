@@ -419,13 +419,32 @@ func TestCheck(t *testing.T) {
 			},
 			wantErr: nil,
 		},
+		{
+			name: "validation is skipped if imageName is unknown",
+			news: resource.PropertyMap{
+				"imageName": resource.NewComputedProperty(resource.Computed{Element: resource.NewStringProperty("foo")}),
+				"build": resource.NewObjectProperty(
+					resource.PropertyMap{
+						"dockerfile": resource.NewStringProperty("testdata/Dockerfile"),
+						"cacheFrom": resource.NewObjectProperty(
+							resource.PropertyMap{
+								"images": resource.NewArrayProperty(
+									[]resource.PropertyValue{resource.NewStringProperty("foo/bar:latest")},
+								),
+							},
+						),
+					},
+				),
+			},
+			wantErr: nil,
+		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			p := dockerNativeProvider{}
 
-			news, err := plugin.MarshalProperties(tt.news, plugin.MarshalOptions{})
+			news, err := plugin.MarshalProperties(tt.news, plugin.MarshalOptions{KeepUnknowns: true})
 			require.NoError(t, err)
 
 			req := &rpc.CheckRequest{
