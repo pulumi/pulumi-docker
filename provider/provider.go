@@ -742,7 +742,11 @@ func ensureMinimumBuildInputs(inputs resource.PropertyMap) bool {
 
 // canPreview returns true if inputs are resolved enough to perform a preview
 // build.
-func (p *dockerNativeProvider) canPreview(ctx context.Context, inputs resource.PropertyMap, urn resource.URN) (bool, error) {
+func (p *dockerNativeProvider) canPreview(
+	ctx context.Context,
+	inputs resource.PropertyMap,
+	urn resource.URN,
+) (bool, error) {
 	var msg string
 	var returnWithoutBuild bool
 	// verify buildOnPreview is Known; if not, send warning and continue.
