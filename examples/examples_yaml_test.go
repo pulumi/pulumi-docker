@@ -17,6 +17,7 @@
 package examples
 
 import (
+	"bytes"
 	"encoding/json"
 	"os"
 	"os/exec"
@@ -40,7 +41,7 @@ func TestUnknownInputsYAML(t *testing.T) {
 		Quick:       true,
 		SkipRefresh: true,
 		ExtraRuntimeValidation: func(t *testing.T, stack integration.RuntimeValidationStackInfo) {
-			randID, ok := stack.Outputs["randNameId"]
+			randID, ok := stack.Outputs["extraArgument"]
 			assert.True(t, ok)
 			assert.NotEmpty(t, randID)
 		},
@@ -77,7 +78,30 @@ func TestSecretsYAML(t *testing.T) {
 	})
 }
 
+func TestBuildOnPreviewYAML(t *testing.T) {
+	cwd, err := os.Getwd()
+	if !assert.NoError(t, err) {
+		t.FailNow()
+	}
+	var outputBuf bytes.Buffer
+	integration.ProgramTest(t, &integration.ProgramTestOptions{
+		Dir:                      path.Join(cwd, "test-build-on-preview", "yaml"),
+		SkipUpdate:               true, //only run Preview
+		SkipExportImport:         true,
+		Verbose:                  true, //we need this to verify the build output logs
+		AllowEmptyPreviewChanges: true,
+		Stdout:                   &outputBuf,
+		ExtraRuntimeValidation: func(t *testing.T, stack integration.RuntimeValidationStackInfo) {
+			assert.Contains(t, outputBuf.String(), "Image built successfully, local id")
+			assert.Contains(t, outputBuf.String(), "repoDigest:")
+		},
+	})
+}
 func TestDockerSwarmYAML(t *testing.T) {
+	cwd, err := os.Getwd()
+	if !assert.NoError(t, err) {
+		t.FailNow()
+	}
 	// Temporarily make ourselves a swarm manager.
 	cmd := exec.Command("docker", "swarm", "init")
 	output, err := cmd.CombinedOutput()
@@ -85,12 +109,6 @@ func TestDockerSwarmYAML(t *testing.T) {
 	t.Cleanup(func() {
 		require.NoError(t, exec.Command("docker", "swarm", "leave", "--force").Run())
 	})
-
-	cwd, err := os.Getwd()
-	if !assert.NoError(t, err) {
-		t.FailNow()
-	}
-
 	t.Run("service", func(t *testing.T) {
 		integration.ProgramTest(t, &integration.ProgramTestOptions{
 			Dir:         path.Join(cwd, "test-swarm", "service"),
@@ -113,5 +131,24 @@ func TestDockerSwarmYAML(t *testing.T) {
 			Quick:       true,
 			SkipRefresh: true,
 		})
+	})
+}
+
+func TestUnknownsBuildOnPreviewWarnsYAML(t *testing.T) {
+	cwd, err := os.Getwd()
+	if !assert.NoError(t, err) {
+		t.FailNow()
+	}
+	var outputBuf bytes.Buffer
+	integration.ProgramTest(t, &integration.ProgramTestOptions{
+		Dir:                      path.Join(cwd, "test-unknowns", "yaml-build-on-preview"),
+		SkipUpdate:               true, //only run Preview
+		SkipExportImport:         true,
+		Verbose:                  true, //we need this to verify the build output logs
+		AllowEmptyPreviewChanges: true,
+		Stderr:                   &outputBuf,
+		ExtraRuntimeValidation: func(t *testing.T, stack integration.RuntimeValidationStackInfo) {
+			assert.Contains(t, outputBuf.String(), "Minimum inputs for build are unresolved.")
+		},
 	})
 }
