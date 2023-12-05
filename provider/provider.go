@@ -197,11 +197,11 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 			// we want an error message that tells the user: try "./app/Dockerfile"
 			if err != nil {
 				// no clue case
-				return nil, fmt.Errorf("could not open dockerfile at relative path %s: %v", build.Dockerfile, statErr)
+				return nil, fmt.Errorf("could not open dockerfile at relative path %q: %v", build.Dockerfile, statErr)
 			}
 
 			// we could open the relative path
-			return nil, fmt.Errorf("could not open dockerfile at relative path %s. "+
+			return nil, fmt.Errorf("could not open dockerfile at relative path %q. "+
 				"Try setting `dockerfile` to %q", build.Dockerfile, relPath)
 
 		}
@@ -232,7 +232,7 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 		if err != nil {
 			return nil, err
 		}
-	} else {
+	} else if inputs["build"].IsObject() {
 		if inputs["build"].ObjectValue()["platform"].IsNull() {
 			inputs["build"].ObjectValue()["platform"] = resource.NewStringProperty(hostPlatform)
 			err = p.log(ctx, "info", urn, msg)

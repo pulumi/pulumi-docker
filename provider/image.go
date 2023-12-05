@@ -583,6 +583,10 @@ func marshalBuildAndApplyDefaults(b resource.PropertyValue) (Build, error) {
 		build.Dockerfile = defaultDockerfile
 		return build, nil
 	}
+
+	if !b.IsObject() {
+		return build, nil
+	}
 	// read in the build type fields
 	buildObject := b.ObjectValue()
 
@@ -632,6 +636,9 @@ func marshalBuildAndApplyDefaults(b resource.PropertyValue) (Build, error) {
 func marshalCachedImages(b resource.PropertyValue) ([]string, error) {
 	var cacheImages []string
 	if b.IsNull() {
+		return cacheImages, nil
+	}
+	if !b.IsObject() {
 		return cacheImages, nil
 	}
 	c := b.ObjectValue()["cacheFrom"]

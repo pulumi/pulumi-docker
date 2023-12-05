@@ -438,6 +438,14 @@ func TestCheck(t *testing.T) {
 			},
 			wantErr: nil,
 		},
+		{
+			name: "build is unknown",
+			news: resource.PropertyMap{
+				"imageName": resource.NewStringProperty("docker.io/foo/bar:latest"),
+				"build":     resource.NewComputedProperty(resource.Computed{Element: resource.NewStringProperty("a")}),
+			},
+			wantErr: nil,
+		},
 	}
 
 	for _, tt := range tests {
