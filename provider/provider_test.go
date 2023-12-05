@@ -484,6 +484,13 @@ func TestCanPreview(t *testing.T) {
 			want: false,
 		},
 		{
+			name: "buildOnPreview is false",
+			inputs: resource.PropertyMap{
+				"buildOnPreview": resource.NewBoolProperty(false),
+			},
+			want: false,
+		},
+		{
 			name: "dockerfile is unknown",
 			inputs: resource.PropertyMap{
 				"buildOnPreview": resource.NewBoolProperty(true),

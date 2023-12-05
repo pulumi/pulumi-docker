@@ -747,35 +747,25 @@ func (p *dockerNativeProvider) canPreview(
 	inputs resource.PropertyMap,
 	urn resource.URN,
 ) (bool, error) {
-	var msg string
-	var returnWithoutBuild bool
 	// verify buildOnPreview is Known; if not, send warning and continue.
 	if inputs["buildOnPreview"].ContainsUnknowns() {
-		msg = "buildOnPreview is unresolved; cannot build on preview. Continuing without preview image build. " +
+		msg := "buildOnPreview is unresolved; cannot build on preview. Continuing without preview image build. " +
 			"To avoid this warning, set buildOnPreview explicitly, and ensure all inputs are resolved at preview."
-		returnWithoutBuild = true
+		err := p.log(ctx, "warning", urn, msg)
+		return false, err
 	}
-	// if we're in preview mode and buildOnPreview is set to false, we return the inputs
+	// if we're in preview mode and buildOnPreview is set to false, there's nothing to do.
 	if inputs["buildOnPreview"].IsBool() && !inputs["buildOnPreview"].BoolValue() {
-		returnWithoutBuild = true
+		return false, nil
 	}
 
 	// buildOnPreview needs image name, dockerfile, and context to be resolved.
 	// Warn and continue without building the image
 	if !ensureMinimumBuildInputs(inputs) {
-		returnWithoutBuild = true
-		msg = "Minimum inputs for build are unresolved. Continuing without preview image build. " +
+		msg := "Minimum inputs for build are unresolved. Continuing without preview image build. " +
 			"To avoid this warning, ensure image name, dockerfile, args, and context are resolved at preview."
-	}
-
-	if returnWithoutBuild {
-		if msg != "" {
-			err := p.log(ctx, "warning", urn, msg)
-			if err != nil {
-				return false, err
-			}
-		}
-		return false, nil
+		err := p.log(ctx, "warning", urn, msg)
+		return false, err
 	}
 
 	return true, nil
