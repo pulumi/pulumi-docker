@@ -477,7 +477,6 @@ func TestMarshalBuilder(t *testing.T) {
 	})
 }
 
-// TODO: do we want to allow SkipPush to be Unknown?
 func TestMarshalSkipPush(t *testing.T) {
 	t.Run("Test SkipPush defaults to false", func(t *testing.T) {
 		expected := false
