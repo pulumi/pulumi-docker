@@ -245,12 +245,11 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 	// Make sure image names are fully qualified.
 	cache, err := marshalCachedImages(inputs["build"])
 	if err != nil {
-
 		return nil, err
 	}
 	// imageName only needs to be canonical if we're pushing or using cacheFrom.
 	needCanonicalImage := len(cache) > 0 || !marshalSkipPush(inputs["skipPush"])
-	if needCanonicalImage && !inputs["imageName"].IsNull() {
+	if needCanonicalImage && !inputs["imageName"].IsNull() && inputs["imageName"].IsString() {
 		registry := marshalRegistry(inputs["registry"])
 		host, err := getRegistryAddrForAuth(registry.Server, inputs["imageName"].StringValue())
 		if err != nil {
@@ -777,7 +776,8 @@ func ensureMinimumBuildInputs(inputs resource.PropertyMap) bool {
 		return false
 	}
 	if inputs["build"].ObjectValue()["dockerfile"].ContainsUnknowns() ||
-		inputs["build"].ObjectValue()["context"].ContainsUnknowns() {
+		inputs["build"].ObjectValue()["context"].ContainsUnknowns() ||
+		inputs["build"].ObjectValue()["args"].ContainsUnknowns() {
 		return false
 	}
 	if inputs["imageName"].ContainsUnknowns() {
