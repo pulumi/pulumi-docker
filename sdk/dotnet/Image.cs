@@ -219,7 +219,7 @@ namespace Pulumi.Docker
                 Version = Utilities.Version,
                 Aliases =
                 {
-                    new global::Pulumi.Alias { Type = "docker:image:Image"},
+                    new global::Pulumi.Alias { Type = "docker:image:Image" },
                 },
             };
             var merged = CustomResourceOptions.Merge(defaultOptions, options);
