@@ -207,8 +207,11 @@ jobs:
       run: make test_provider
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v3
-      env:
-        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      with:
+        verbose: true
+        directory: provider
+        files: coverage.txt
+        token: ${{ secrets.CODECOV_TOKEN }}
     - if: github.event_name == 'pull_request'
       name: Check Schema is Valid
       run: |
