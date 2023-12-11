@@ -118,7 +118,7 @@ test_provider:
 	@echo ""
 	@echo "== test_provider ==================================================================="
 	@echo ""
-	cd provider && go test -v -short -race -covermode=atomic -coverprofile="coverage.txt" --coverpkg ./... ./... -parallel $(TESTPARALLELISM)
+	cd provider && go test -v -short -race -cover -coverprofile="coverage.txt" -coverpkg ./... ./... -parallel $(TESTPARALLELISM)
 
 tfgen: install_plugins upstream docs
 	(cd provider && go build $(PULUMI_PROVIDER_BUILD_PARALLELISM) -o $(WORKING_DIR)/bin/$(TFGEN) -ldflags "-X $(PROJECT)/$(VERSION_PATH)=$(VERSION)" $(PROJECT)/$(PROVIDER_PATH)/cmd/$(TFGEN))

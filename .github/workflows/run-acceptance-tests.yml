@@ -211,6 +211,7 @@ jobs:
         verbose: true
         directory: provider
         files: coverage.txt
+        functionalities: fixes
         token: ${{ secrets.CODECOV_TOKEN }}
     - if: github.event_name == 'pull_request'
       name: Check Schema is Valid
