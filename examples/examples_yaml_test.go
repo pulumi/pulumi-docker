@@ -17,12 +17,15 @@
 package examples
 
 import (
+	"bytes"
 	"encoding/json"
 	"os"
+	"os/exec"
 	"path"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 
 	"github.com/pulumi/pulumi/pkg/v3/testing/integration"
 )
@@ -38,7 +41,7 @@ func TestUnknownInputsYAML(t *testing.T) {
 		Quick:       true,
 		SkipRefresh: true,
 		ExtraRuntimeValidation: func(t *testing.T, stack integration.RuntimeValidationStackInfo) {
-			randID, ok := stack.Outputs["randNameId"]
+			randID, ok := stack.Outputs["extraArgument"]
 			assert.True(t, ok)
 			assert.NotEmpty(t, randID)
 		},
@@ -71,6 +74,81 @@ func TestSecretsYAML(t *testing.T) {
 			assert.NoError(t, err)
 			assert.NotContainsf(t, string(deploymentJSON), "supersecret",
 				"Secret should not be stored in the plain state")
+		},
+	})
+}
+
+func TestBuildOnPreviewYAML(t *testing.T) {
+	cwd, err := os.Getwd()
+	if !assert.NoError(t, err) {
+		t.FailNow()
+	}
+	var outputBuf bytes.Buffer
+	integration.ProgramTest(t, &integration.ProgramTestOptions{
+		Dir:                      path.Join(cwd, "test-build-on-preview", "yaml"),
+		SkipUpdate:               true, //only run Preview
+		SkipExportImport:         true,
+		Verbose:                  true, //we need this to verify the build output logs
+		AllowEmptyPreviewChanges: true,
+		Stdout:                   &outputBuf,
+		ExtraRuntimeValidation: func(t *testing.T, stack integration.RuntimeValidationStackInfo) {
+			assert.Contains(t, outputBuf.String(), "Image built successfully, local id")
+			assert.Contains(t, outputBuf.String(), "repoDigest:")
+		},
+	})
+}
+func TestDockerSwarmYAML(t *testing.T) {
+	cwd, err := os.Getwd()
+	if !assert.NoError(t, err) {
+		t.FailNow()
+	}
+	// Temporarily make ourselves a swarm manager.
+	cmd := exec.Command("docker", "swarm", "init")
+	output, err := cmd.CombinedOutput()
+	require.NoError(t, err, string(output))
+	t.Cleanup(func() {
+		require.NoError(t, exec.Command("docker", "swarm", "leave", "--force").Run())
+	})
+	t.Run("service", func(t *testing.T) {
+		integration.ProgramTest(t, &integration.ProgramTestOptions{
+			Dir:         path.Join(cwd, "test-swarm", "service"),
+			Quick:       true,
+			SkipRefresh: true,
+		})
+	})
+
+	t.Run("service-replicated", func(t *testing.T) {
+		integration.ProgramTest(t, &integration.ProgramTestOptions{
+			Dir:         path.Join(cwd, "test-swarm", "service-replicated"),
+			Quick:       true,
+			SkipRefresh: true,
+		})
+	})
+
+	t.Run("service-global", func(t *testing.T) {
+		integration.ProgramTest(t, &integration.ProgramTestOptions{
+			Dir:         path.Join(cwd, "test-swarm", "service-global"),
+			Quick:       true,
+			SkipRefresh: true,
+		})
+	})
+}
+
+func TestUnknownsBuildOnPreviewWarnsYAML(t *testing.T) {
+	cwd, err := os.Getwd()
+	if !assert.NoError(t, err) {
+		t.FailNow()
+	}
+	var outputBuf bytes.Buffer
+	integration.ProgramTest(t, &integration.ProgramTestOptions{
+		Dir:                      path.Join(cwd, "test-unknowns", "yaml-build-on-preview"),
+		SkipUpdate:               true, //only run Preview
+		SkipExportImport:         true,
+		Verbose:                  true, //we need this to verify the build output logs
+		AllowEmptyPreviewChanges: true,
+		Stderr:                   &outputBuf,
+		ExtraRuntimeValidation: func(t *testing.T, stack integration.RuntimeValidationStackInfo) {
+			assert.Contains(t, outputBuf.String(), "Minimum inputs for build are unresolved.")
 		},
 	})
 }

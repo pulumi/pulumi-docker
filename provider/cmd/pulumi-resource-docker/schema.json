@@ -1061,7 +1061,7 @@
             "properties": {
                 "global": {
                     "type": "boolean",
-                    "description": "The global service mode. Defaults to `false`\n"
+                    "description": "When `true`, tasks will run on every worker node. Conflicts with `replicated`\n"
                 },
                 "replicated": {
                     "$ref": "#/types/docker:index/ServiceModeReplicated:ServiceModeReplicated",
@@ -3171,6 +3171,11 @@
                 "build": {
                     "$ref": "#/types/docker:index/dockerBuild:DockerBuild",
                     "description": "The Docker build context"
+                },
+                "buildOnPreview": {
+                    "type": "boolean",
+                    "description": "A flag to build an image on preview",
+                    "default": false
                 },
                 "imageName": {
                     "type": "string",

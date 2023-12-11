@@ -18,6 +18,7 @@ class ImageArgs:
     def __init__(__self__, *,
                  image_name: pulumi.Input[str],
                  build: Optional[pulumi.Input['DockerBuildArgs']] = None,
+                 build_on_preview: Optional[pulumi.Input[bool]] = None,
                  registry: Optional[pulumi.Input['RegistryArgs']] = None,
                  skip_push: Optional[pulumi.Input[bool]] = None):
         """
@@ -25,12 +26,17 @@ class ImageArgs:
         :param pulumi.Input[str] image_name: The image name, of the format repository[:tag], e.g. `docker.io/username/demo-image:v1`.
                This reference is not unique to each build and push.For the unique manifest SHA of a pushed docker image, or the local image ID, please use `repoDigest`.
         :param pulumi.Input['DockerBuildArgs'] build: The Docker build context
+        :param pulumi.Input[bool] build_on_preview: A flag to build an image on preview
         :param pulumi.Input['RegistryArgs'] registry: The registry to push the image to
         :param pulumi.Input[bool] skip_push: A flag to skip a registry push.
         """
         pulumi.set(__self__, "image_name", image_name)
         if build is not None:
             pulumi.set(__self__, "build", build)
+        if build_on_preview is None:
+            build_on_preview = False
+        if build_on_preview is not None:
+            pulumi.set(__self__, "build_on_preview", build_on_preview)
         if registry is not None:
             pulumi.set(__self__, "registry", registry)
         if skip_push is None:
@@ -64,6 +70,18 @@ class ImageArgs:
         pulumi.set(self, "build", value)
 
     @property
+    @pulumi.getter(name="buildOnPreview")
+    def build_on_preview(self) -> Optional[pulumi.Input[bool]]:
+        """
+        A flag to build an image on preview
+        """
+        return pulumi.get(self, "build_on_preview")
+
+    @build_on_preview.setter
+    def build_on_preview(self, value: Optional[pulumi.Input[bool]]):
+        pulumi.set(self, "build_on_preview", value)
+
+    @property
     @pulumi.getter
     def registry(self) -> Optional[pulumi.Input['RegistryArgs']]:
         """
@@ -94,6 +112,7 @@ class Image(pulumi.CustomResource):
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
                  build: Optional[pulumi.Input[pulumi.InputType['DockerBuildArgs']]] = None,
+                 build_on_preview: Optional[pulumi.Input[bool]] = None,
                  image_name: Optional[pulumi.Input[str]] = None,
                  registry: Optional[pulumi.Input[pulumi.InputType['RegistryArgs']]] = None,
                  skip_push: Optional[pulumi.Input[bool]] = None,
@@ -187,6 +206,7 @@ class Image(pulumi.CustomResource):
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[pulumi.InputType['DockerBuildArgs']] build: The Docker build context
+        :param pulumi.Input[bool] build_on_preview: A flag to build an image on preview
         :param pulumi.Input[str] image_name: The image name, of the format repository[:tag], e.g. `docker.io/username/demo-image:v1`.
                This reference is not unique to each build and push.For the unique manifest SHA of a pushed docker image, or the local image ID, please use `repoDigest`.
         :param pulumi.Input[pulumi.InputType['RegistryArgs']] registry: The registry to push the image to
@@ -300,6 +320,7 @@ class Image(pulumi.CustomResource):
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
                  build: Optional[pulumi.Input[pulumi.InputType['DockerBuildArgs']]] = None,
+                 build_on_preview: Optional[pulumi.Input[bool]] = None,
                  image_name: Optional[pulumi.Input[str]] = None,
                  registry: Optional[pulumi.Input[pulumi.InputType['RegistryArgs']]] = None,
                  skip_push: Optional[pulumi.Input[bool]] = None,
@@ -313,6 +334,9 @@ class Image(pulumi.CustomResource):
             __props__ = ImageArgs.__new__(ImageArgs)
 
             __props__.__dict__["build"] = build
+            if build_on_preview is None:
+                build_on_preview = False
+            __props__.__dict__["build_on_preview"] = build_on_preview
             if image_name is None and not opts.urn:
                 raise TypeError("Missing required property 'image_name'")
             __props__.__dict__["image_name"] = image_name

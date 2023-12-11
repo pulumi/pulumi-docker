@@ -84,7 +84,9 @@ type Config struct {
 
 func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	urn resource.URN,
-	props *structpb.Struct) (string, *structpb.Struct, error) {
+	props *structpb.Struct,
+	isPreview bool,
+) (string, *structpb.Struct, error) {
 
 	inputs, err := plugin.UnmarshalProperties(props, plugin.MarshalOptions{KeepUnknowns: true, SkipNulls: true})
 
@@ -311,8 +313,8 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		return "", nil, err
 	}
 
-	// if we are not pushing to the registry, we return after building the local image.
-	if img.SkipPush {
+	// if we are not pushing to the registry, or we are in Preview mode, we return after building the local image.
+	if img.SkipPush || isPreview {
 		// Obtain image digest from docker inspect
 		imageInspect, _, inspErr := docker.ImageInspectWithRaw(ctx, img.Name)
 		if inspErr != nil {
@@ -580,24 +582,33 @@ func marshalBuildAndApplyDefaults(b resource.PropertyValue) (Build, error) {
 		build.Dockerfile = defaultDockerfile
 		return build, nil
 	}
+
+	if !b.IsObject() {
+		return build, nil
+	}
 	// read in the build type fields
 	buildObject := b.ObjectValue()
 
 	// Context
-	if buildObject["context"].IsNull() {
-		// set default
-		build.Context = "."
-	} else {
-		build.Context = buildObject["context"].StringValue()
+	if !buildObject["context"].ContainsUnknowns() {
+		if buildObject["context"].IsNull() {
+			// set default
+			build.Context = "."
+		} else {
+			build.Context = buildObject["context"].StringValue()
+		}
 	}
 
 	// Dockerfile
-	if buildObject["dockerfile"].IsNull() {
-		// set default
-		build.Dockerfile = path.Join(build.Context, defaultDockerfile)
-	} else {
-		build.Dockerfile = buildObject["dockerfile"].StringValue()
+	if !buildObject["dockerfile"].ContainsUnknowns() {
+		if buildObject["dockerfile"].IsNull() {
+			// set default
+			build.Dockerfile = path.Join(build.Context, defaultDockerfile)
+		} else {
+			build.Dockerfile = buildObject["dockerfile"].StringValue()
+		}
 	}
+
 	// BuildKit
 	version, err := marshalBuilder(buildObject["builderVersion"])
 
@@ -610,12 +621,12 @@ func marshalBuildAndApplyDefaults(b resource.PropertyValue) (Build, error) {
 	build.Args = marshalArgs(buildObject["args"])
 
 	// Target
-	if !buildObject["target"].IsNull() {
+	if !buildObject["target"].IsNull() && !buildObject["target"].ContainsUnknowns() {
 		build.Target = buildObject["target"].StringValue()
 	}
 
 	// Platform
-	if !buildObject["platform"].IsNull() {
+	if !buildObject["platform"].IsNull() && !buildObject["platform"].ContainsUnknowns() {
 		build.Platform = buildObject["platform"].StringValue()
 	}
 	return build, nil
@@ -626,9 +637,12 @@ func marshalCachedImages(b resource.PropertyValue) ([]string, error) {
 	if b.IsNull() {
 		return cacheImages, nil
 	}
+	if !b.IsObject() {
+		return cacheImages, nil
+	}
 	c := b.ObjectValue()["cacheFrom"]
 
-	if c.IsNull() {
+	if c.IsNull() || !c.IsObject() {
 		return cacheImages, nil
 	}
 
@@ -641,35 +655,38 @@ func marshalCachedImages(b resource.PropertyValue) ([]string, error) {
 	if images.IsNull() {
 		return cacheImages, nil
 	}
+
 	if !images.IsArray() {
-		return cacheImages, fmt.Errorf("the `images` field must be a list of strings")
+		if !images.ContainsUnknowns() {
+			return cacheImages, fmt.Errorf("the `images` field must be a list of strings")
+		}
+		return cacheImages, nil
 	}
 
 	stages := images.ArrayValue()
 	for _, img := range stages {
-		// if we are in preview, we cannot add an undefined Output so we skip to the next item
-		if img.IsNull() {
-			continue
+		if !img.IsNull() && !img.ContainsUnknowns() {
+			stage := img.StringValue()
+			cacheImages = append(cacheImages, stage)
 		}
-		stage := img.StringValue()
-		cacheImages = append(cacheImages, stage)
 	}
 	return cacheImages, nil
 }
 
 func marshalRegistry(r resource.PropertyValue) Registry {
 	var reg Registry
-	if !r.IsNull() {
-		if !r.ObjectValue()["server"].IsNull() {
+
+	if !r.IsNull() && r.IsObject() {
+
+		if !r.ObjectValue()["server"].IsNull() && !r.ObjectValue()["server"].ContainsUnknowns() {
 			reg.Server = r.ObjectValue()["server"].StringValue()
 		}
-		if !r.ObjectValue()["username"].IsNull() {
+		if !r.ObjectValue()["username"].IsNull() && !r.ObjectValue()["username"].ContainsUnknowns() {
 			reg.Username = r.ObjectValue()["username"].StringValue()
 		}
-		if !r.ObjectValue()["password"].IsNull() {
+		if !r.ObjectValue()["password"].IsNull() && !r.ObjectValue()["password"].ContainsUnknowns() {
 			reg.Password = r.ObjectValue()["password"].StringValue()
 		}
-		return reg
 	}
 	return reg
 }
@@ -679,8 +696,10 @@ func marshalArgs(a resource.PropertyValue) map[string]*string {
 	if !a.IsNull() {
 		for k, v := range a.ObjectValue() {
 			key := fmt.Sprintf("%v", k)
-			vStr := v.StringValue()
-			args[key] = &vStr
+			if !v.ContainsUnknowns() {
+				vStr := v.StringValue()
+				args[key] = &vStr
+			}
 		}
 	}
 	if len(args) == 0 {
@@ -794,9 +813,9 @@ func getRegistryAddrForAuth(serverName, imgName string) (string, error) {
 func getRegistryAddrFromImage(imgName string) (string, error) {
 	named, err := reference.ParseNamed(imgName)
 	if err != nil {
-		msg := fmt.Errorf("error: %s. This provider requires all image names to be fully qualified.\n"+
+		msg := fmt.Errorf("%q: %w.\nThis resource requires all image names to be fully qualified.\n"+
 			"For example, if you are attempting to push to Dockerhub, prefix your image name with `docker.io`:\n\n"+
-			"`docker.io/repository/image:tag`", err)
+			"`docker.io/repository/image:tag`", imgName, err)
 		return "", msg
 	}
 	addr := reference.Domain(named)

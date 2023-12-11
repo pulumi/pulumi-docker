@@ -423,7 +423,7 @@ jobs:
         role-session-name: ${{ env.PROVIDER }}@githubActions
         role-to-assume: ${{ secrets.AWS_CI_ROLE_ARN }}
     - name: Authenticate to Google Cloud
-      uses: google-github-actions/auth@v0
+      uses: google-github-actions/auth@v2
       with:
         service_account: ${{ env.GOOGLE_CI_SERVICE_ACCOUNT_EMAIL }}
         workload_identity_provider: projects/${{ env.GOOGLE_PROJECT_NUMBER

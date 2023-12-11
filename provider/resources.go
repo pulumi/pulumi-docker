@@ -300,6 +300,13 @@ func Provider() tfbridge.ProviderInfo {
 						},
 						Default: false,
 					},
+					"buildOnPreview": {
+						Description: "A flag to build an image on preview",
+						TypeSpec: schema.TypeSpec{
+							Type: "boolean",
+						},
+						Default: false,
+					},
 				},
 				RequiredInputs: []string{"imageName"},
 				Aliases: []schema.AliasSpec{

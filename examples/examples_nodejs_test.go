@@ -72,7 +72,7 @@ func TestAzureContainerRegistry(t *testing.T) {
 	integration.ProgramTest(t, &test)
 }
 
-func TestAwsContainerRegistry(t *testing.T) {
+func TestAwsContainerRegistryNode(t *testing.T) {
 	region := os.Getenv("AWS_REGION")
 	if region == "" {
 		t.Skipf("Skipping test due to missing AWS_REGION environment variable")
@@ -147,7 +147,7 @@ func TestUnknownInputsNode(t *testing.T) {
 		With(integration.ProgramTestOptions{
 			Dir: path.Join(getCwd(t), "test-unknowns", "ts"),
 			ExtraRuntimeValidation: func(t *testing.T, stack integration.RuntimeValidationStackInfo) {
-				randID, ok := stack.Outputs["randnameid"]
+				randID, ok := stack.Outputs["randArgument"]
 				assert.True(t, ok)
 				assert.NotEmpty(t, randID)
 			},

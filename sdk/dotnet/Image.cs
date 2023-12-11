@@ -219,7 +219,7 @@ namespace Pulumi.Docker
                 Version = Utilities.Version,
                 Aliases =
                 {
-                    new global::Pulumi.Alias { Type = "docker:image:Image"},
+                    new global::Pulumi.Alias { Type = "docker:image:Image" },
                 },
             };
             var merged = CustomResourceOptions.Merge(defaultOptions, options);
@@ -250,6 +250,12 @@ namespace Pulumi.Docker
         public Input<Inputs.DockerBuildArgs>? Build { get; set; }
 
         /// <summary>
+        /// A flag to build an image on preview
+        /// </summary>
+        [Input("buildOnPreview")]
+        public Input<bool>? BuildOnPreview { get; set; }
+
+        /// <summary>
         /// The image name, of the format repository[:tag], e.g. `docker.io/username/demo-image:v1`.
         /// This reference is not unique to each build and push.For the unique manifest SHA of a pushed docker image, or the local image ID, please use `repoDigest`.
         /// </summary>
@@ -270,6 +276,7 @@ namespace Pulumi.Docker
 
         public ImageArgs()
         {
+            BuildOnPreview = false;
             SkipPush = false;
         }
         public static new ImageArgs Empty => new ImageArgs();

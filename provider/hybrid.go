@@ -89,11 +89,7 @@ func (dp dockerHybridProvider) Configure(
 		return nil, err
 	}
 
-	// With one important exception: the hybrid provider cannot support preview because Create on the native
-	// provider is not ready to accept partial data with unknowns when called in preview mode. This limits the
-	// ability of the bridged provider to do best-effort processing and validation in preview. An alternate design
-	// would return SupportsPreview=true here but shield the native provider from it.
-	resp.SupportsPreview = false
+	resp.SupportsPreview = true
 	return resp, err
 }
 
