@@ -1,7 +1,0 @@
-FROM --platform=linux/amd64 ubuntu
-
-COPY . /
-
-Run cat app.txt
-
-RUN cat ignore.txt

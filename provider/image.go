@@ -41,10 +41,13 @@ import (
 	"github.com/opencontainers/go-digest"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
+	"github.com/spf13/afero"
 )
 
-const defaultDockerfile = "Dockerfile"
-const defaultBuilder = "2"
+const (
+	defaultDockerfile = "Dockerfile"
+	defaultBuilder    = "2"
+)
 
 type Image struct {
 	Name     string
@@ -112,17 +115,13 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	img.Build = build
 
 	docker, err := configureDockerClient(p.config, true)
-
 	if err != nil {
 		return "", nil, err
 	}
 
 	// make the build context and ensure to exclude dockerignore file patterns
-	// map the expected location for dockerignore
-	dockerignore := mapDockerignore(filepath.Base(build.Dockerfile))
-	dockerIgnorePath := filepath.Join(build.Context, dockerignore)
 
-	initialIgnorePatterns, err := getIgnore(dockerIgnorePath)
+	initialIgnorePatterns, err := getIgnorePatterns(afero.NewOsFs(), build.Dockerfile, build.Context)
 	if err != nil {
 		return "", nil, fmt.Errorf("error reading ignore file: %w", err)
 	}
@@ -245,7 +244,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		AuthConfigs: authConfigs,
 	}
 
-	//Start a session for BuildKit
+	// Start a session for BuildKit
 	if build.BuilderVersion == defaultBuilder {
 		sess, err := session.NewSession(ctx, "pulumi-docker", identity.NewID())
 		if err != nil {
@@ -1156,20 +1155,4 @@ func defaultPooledTransport() *http.Transport {
 		MaxIdleConnsPerHost:   runtime.GOMAXPROCS(0) + 1,
 	}
 	return transport
-}
-
-func mapDockerignore(dockerfile string) string {
-	// Docker maps `Dockerfile` -> `.dockerignore`
-	// Nonstandard dockerfile names map to a file with a `.dockerignore` extension
-	// e.g. `Mockerfile` -> `Mockerfile.dockerignore`
-	// Note that we do not verify the existence of a .dockerignore file; we only map the name that it would have.
-
-	ignore := ".dockerignore"
-
-	// Add extension for nonstandardly named Dockerfiles
-	if dockerfile != defaultDockerfile {
-		ignore = dockerfile + ignore
-	}
-	// Return the default dockerignore name.
-	return ignore
 }

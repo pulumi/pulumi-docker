@@ -17,11 +17,12 @@
 package examples
 
 import (
-	"github.com/pulumi/pulumi/pkg/v3/testing/integration"
-	"github.com/stretchr/testify/assert"
 	"os"
 	"path"
 	"testing"
+
+	"github.com/pulumi/pulumi/pkg/v3/testing/integration"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestDockerfileDefaultYAML(t *testing.T) {
@@ -97,35 +98,6 @@ func TestDockerignoreSpecifiedYAML(t *testing.T) {
 
 	integration.ProgramTest(t, &integration.ProgramTestOptions{
 		Dir:         path.Join(cwd, "test-dockerfile", "dockerignore-specified"),
-		Quick:       true,
-		SkipRefresh: true,
-	})
-}
-
-func TestDockerignoreDefaultFailYAML(t *testing.T) {
-	cwd, err := os.Getwd()
-	if !assert.NoError(t, err) {
-		t.FailNow()
-	}
-
-	integration.ProgramTest(t, &integration.ProgramTestOptions{
-		Dir:           path.Join(cwd, "test-dockerfile", "dockerignore-default-fail"),
-		Quick:         true,
-		SkipRefresh:   true,
-		ExpectFailure: true,
-	})
-}
-
-func TestDockerignoreNoMappingYAML(t *testing.T) {
-	cwd, err := os.Getwd()
-	if !assert.NoError(t, err) {
-		t.FailNow()
-	}
-	// we expect this test to succeed, as we test that the ignore.txt file does in fact _not_ get ignored
-	// the ignore.txt file does not get ignored, as  .dockerignore does not map to Mockerfile.
-	// The RUN command in Mockerfile therefore succeeds.
-	integration.ProgramTest(t, &integration.ProgramTestOptions{
-		Dir:         path.Join(cwd, "test-dockerfile", "dockerignore-no-mapping"),
 		Quick:       true,
 		SkipRefresh: true,
 	})
