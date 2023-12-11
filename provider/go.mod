@@ -12,9 +12,10 @@ require (
 	github.com/moby/moby v23.0.7+incompatible
 	github.com/opencontainers/go-digest v1.0.0
 	github.com/pkg/errors v0.9.1
-	github.com/pulumi/pulumi-terraform-bridge/v3 v3.67.0
-	github.com/pulumi/pulumi/pkg/v3 v3.95.0
-	github.com/pulumi/pulumi/sdk/v3 v3.95.0
+	github.com/pulumi/pulumi-terraform-bridge/v3 v3.67.1-0.20231211191944-3ea1c58acb4b
+	github.com/pulumi/pulumi/pkg/v3 v3.96.2
+	github.com/pulumi/pulumi/sdk/v3 v3.96.2
+	github.com/spf13/afero v1.9.5
 	github.com/stretchr/testify v1.8.4
 	github.com/terraform-providers/terraform-provider-docker v0.0.0
 	github.com/tonistiigi/fsutil v0.0.0-20230105215944-fb433841cbfa
@@ -95,6 +96,7 @@ require (
 	github.com/containerd/typeurl/v2 v2.1.0 // indirect
 	github.com/cyphar/filepath-securejoin v0.2.4 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/deckarep/golang-set/v2 v2.5.0 // indirect
 	github.com/djherbis/times v1.5.0 // indirect
 	github.com/docker/docker-credential-helpers v0.7.0 // indirect
 	github.com/docker/go-connections v0.4.0 // indirect
@@ -238,7 +240,6 @@ require (
 	github.com/shopspring/decimal v1.3.1 // indirect
 	github.com/sirupsen/logrus v1.9.0 // indirect
 	github.com/skeema/knownhosts v1.2.0 // indirect
-	github.com/spf13/afero v1.9.5 // indirect
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/cobra v1.7.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
