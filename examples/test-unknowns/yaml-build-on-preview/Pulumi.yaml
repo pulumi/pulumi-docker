@@ -1,4 +1,4 @@
-name: dockerfile-with-unknowns-yaml
+name: unknowns-build-on-preview-fail-yaml
 runtime: yaml
 resources:
   extraArg:
@@ -8,10 +8,10 @@ resources:
   demo-image:
     type: docker:Image
     properties:
-      imageName: docker.io/pulumibot/test-unknowns:yaml
+      imageName: docker.io/pulumibot/test-unknowns-build-on-preview-fail:yaml
       skipPush: true
       build:
         args:
           RANDOM_ARG: ${extraArg.stdout}
-outputs:
-  extraArgument: ${extraArg.stdout}
+      buildOnPreview: true
+  

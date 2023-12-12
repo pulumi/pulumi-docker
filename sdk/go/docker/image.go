@@ -196,6 +196,9 @@ func NewImage(ctx *pulumi.Context,
 	if args.ImageName == nil {
 		return nil, errors.New("invalid value for required argument 'ImageName'")
 	}
+	if args.BuildOnPreview == nil {
+		args.BuildOnPreview = pulumi.BoolPtr(false)
+	}
 	if args.SkipPush == nil {
 		args.SkipPush = pulumi.BoolPtr(false)
 	}
@@ -240,6 +243,8 @@ func (ImageState) ElementType() reflect.Type {
 type imageArgs struct {
 	// The Docker build context
 	Build *DockerBuild `pulumi:"build"`
+	// A flag to build an image on preview
+	BuildOnPreview *bool `pulumi:"buildOnPreview"`
 	// The image name, of the format repository[:tag], e.g. `docker.io/username/demo-image:v1`.
 	// This reference is not unique to each build and push.For the unique manifest SHA of a pushed docker image, or the local image ID, please use `repoDigest`.
 	ImageName string `pulumi:"imageName"`
@@ -253,6 +258,8 @@ type imageArgs struct {
 type ImageArgs struct {
 	// The Docker build context
 	Build DockerBuildPtrInput
+	// A flag to build an image on preview
+	BuildOnPreview pulumi.BoolPtrInput
 	// The image name, of the format repository[:tag], e.g. `docker.io/username/demo-image:v1`.
 	// This reference is not unique to each build and push.For the unique manifest SHA of a pushed docker image, or the local image ID, please use `repoDigest`.
 	ImageName pulumi.StringInput

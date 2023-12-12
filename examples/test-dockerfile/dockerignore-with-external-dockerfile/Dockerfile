@@ -1,5 +1,7 @@
-FROM --platform=linux/amd64 ubuntu
+FROM bash
 
 COPY . /
 
-RUN cat app.txt
+RUN [ -f "app.txt" ]
+
+RUN [ ! -f "ignore.txt" ]

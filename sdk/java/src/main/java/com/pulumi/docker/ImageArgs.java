@@ -35,6 +35,21 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
+     * A flag to build an image on preview
+     * 
+     */
+    @Import(name="buildOnPreview")
+    private @Nullable Output<Boolean> buildOnPreview;
+
+    /**
+     * @return A flag to build an image on preview
+     * 
+     */
+    public Optional<Output<Boolean>> buildOnPreview() {
+        return Optional.ofNullable(this.buildOnPreview);
+    }
+
+    /**
      * The image name, of the format repository[:tag], e.g. `docker.io/username/demo-image:v1`.
      * This reference is not unique to each build and push.For the unique manifest SHA of a pushed docker image, or the local image ID, please use `repoDigest`.
      * 
@@ -85,6 +100,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
 
     private ImageArgs(ImageArgs $) {
         this.build = $.build;
+        this.buildOnPreview = $.buildOnPreview;
         this.imageName = $.imageName;
         this.registry = $.registry;
         this.skipPush = $.skipPush;
@@ -127,6 +143,27 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
          */
         public Builder build(DockerBuildArgs build) {
             return build(Output.of(build));
+        }
+
+        /**
+         * @param buildOnPreview A flag to build an image on preview
+         * 
+         * @return builder
+         * 
+         */
+        public Builder buildOnPreview(@Nullable Output<Boolean> buildOnPreview) {
+            $.buildOnPreview = buildOnPreview;
+            return this;
+        }
+
+        /**
+         * @param buildOnPreview A flag to build an image on preview
+         * 
+         * @return builder
+         * 
+         */
+        public Builder buildOnPreview(Boolean buildOnPreview) {
+            return buildOnPreview(Output.of(buildOnPreview));
         }
 
         /**
@@ -195,6 +232,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         public ImageArgs build() {
+            $.buildOnPreview = Codegen.booleanProp("buildOnPreview").output().arg($.buildOnPreview).def(false).getNullable();
             $.imageName = Objects.requireNonNull($.imageName, "expected parameter 'imageName' to be non-null");
             $.skipPush = Codegen.booleanProp("skipPush").output().arg($.skipPush).def(false).getNullable();
             return $;

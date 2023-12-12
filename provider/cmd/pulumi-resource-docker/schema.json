@@ -3187,6 +3187,11 @@
                     "$ref": "#/types/docker:index/dockerBuild:DockerBuild",
                     "description": "The Docker build context"
                 },
+                "buildOnPreview": {
+                    "type": "boolean",
+                    "description": "A flag to build an image on preview",
+                    "default": false
+                },
                 "imageName": {
                     "type": "string",
                     "description": "The image name, of the format repository[:tag], e.g. `docker.io/username/demo-image:v1`.\nThis reference is not unique to each build and push.For the unique manifest SHA of a pushed docker image, or the local image ID, please use `repoDigest`."

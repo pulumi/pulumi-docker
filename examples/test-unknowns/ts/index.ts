@@ -1,12 +1,11 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as docker from "@pulumi/docker";
-import * as random from "@pulumi/random";
+import * as command from "@pulumi/command";
 
 
 
-const randName = new random.RandomString("random", {
-    length: 10,
-
+const randArg = new command.local.Command ("arg", {
+   create: "echo setMyArg"
 });
 
 const img = new docker.Image("docker-565-one", {
@@ -14,10 +13,10 @@ const img = new docker.Image("docker-565-one", {
 
     build: {
         args: {
-            "RANDOM_ARG": randName.id
+            "RANDOM_ARG": randArg.stdout
         },
     },
     skipPush: true,
 });
 
-export const randnameid = randName.id
+export const randArgument = randArg.stdout

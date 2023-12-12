@@ -22,9 +22,9 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/common/diag"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
-	"github.com/pulumi/pulumi/sdk/v3/go/common/util/contract"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/util/logging"
 	rpc "github.com/pulumi/pulumi/sdk/v3/proto/go"
+	"github.com/spf13/afero"
 	"github.com/tonistiigi/fsutil"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -135,57 +135,85 @@ func (p *dockerNativeProvider) log(ctx context.Context, sev diag.Severity, urn r
 // the provider inputs are using for detecting and rendering diffs.
 func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest) (*rpc.CheckResponse, error) {
 	urn := resource.URN(req.GetUrn())
-	label := fmt.Sprintf("%s.Create(%s)", p.name, urn)
+	label := fmt.Sprintf("%s.Check(%s)", p.name, urn)
 	logging.V(9).Infof("%s executing", label)
 
 	inputs, err := plugin.UnmarshalProperties(req.GetNews(), plugin.MarshalOptions{
-		KeepUnknowns: false,
+		KeepUnknowns: true,
 		SkipNulls:    true,
 	})
 	if err != nil {
 		return nil, err
 	}
 
-	// Set defaults
+	buildOnPreview := marshalBuildOnPreview(inputs)
+	inputs["buildOnPreview"] = resource.NewBoolProperty(buildOnPreview)
+
 	build, err := marshalBuildAndApplyDefaults(inputs["build"])
 	if err != nil {
 		return nil, err
 	}
-
-	// Verify Dockerfile at given location
-	if _, statErr := os.Stat(build.Dockerfile); statErr != nil {
-		if filepath.IsAbs(build.Dockerfile) {
-			return nil, fmt.Errorf("could not open dockerfile at absolute path %s: %v", build.Dockerfile, statErr)
+	// Set the resource inputs to the default values
+	var knownDockerfile bool
+	if inputs["build"].IsNull() {
+		inputs["build"] = resource.NewObjectProperty(resource.PropertyMap{
+			"dockerfile": resource.NewStringProperty(build.Dockerfile),
+			"context":    resource.NewStringProperty(build.Context),
+		})
+		knownDockerfile = true
+	} else if inputs["build"].IsObject() {
+		// avoid panic if inputs["build"] is not an Object - we only want to set these fields if their values are Known.
+		if !inputs["build"].ObjectValue()["dockerfile"].ContainsUnknowns() {
+			inputs["build"].ObjectValue()["dockerfile"] = resource.NewStringProperty(build.Dockerfile)
+			knownDockerfile = true
 		}
-		relPath := filepath.Join(build.Context, build.Dockerfile)
-		_, err = os.Stat(relPath)
-
-		// In the case of a pulumi project that looks as follows:
-		// infra/
-		//   app/
-		//     # some content for the Docker build
-		//     Dockerfile
-		//   Pulumi.yaml
-		//
-		//
-		// the user inputs:
-		//    context: "./app"
-		//    dockerfile: "./Dockerfile" # this is in error because it is in "./app/Dockerfile"
-		//
-		// we want an error message that tells the user: try "./app/Dockerfile"
-		if err != nil {
-			// no clue case
-			return nil, fmt.Errorf("could not open dockerfile at relative path %s: %v", build.Dockerfile, statErr)
+		if !inputs["build"].ObjectValue()["context"].ContainsUnknowns() {
+			inputs["build"].ObjectValue()["context"] = resource.NewStringProperty(build.Context)
 		}
-
-		// we could open the relative path
-		return nil, fmt.Errorf("could not open dockerfile at relative path %s. "+
-			"Try setting `dockerfile` to %q", build.Dockerfile, relPath)
 
 	}
-	contextDigest, err := hashContext(build.Context, build.Dockerfile)
-	if err != nil {
-		return nil, err
+
+	// Verify Dockerfile at given location
+	if knownDockerfile {
+
+		if _, statErr := os.Stat(build.Dockerfile); statErr != nil {
+			if filepath.IsAbs(build.Dockerfile) {
+				return nil, fmt.Errorf(
+					"expected a relative Dockerfile path; got %q instead: %v", build.Dockerfile, statErr)
+			}
+			relPath := filepath.Join(build.Context, build.Dockerfile)
+			_, err = os.Stat(relPath)
+
+			// In the case of a pulumi project that looks as follows:
+			// infra/
+			//   app/
+			//     # some content for the Docker build
+			//     Dockerfile
+			//   Pulumi.yaml
+			//
+			//
+			// the user inputs:
+			//    context: "./app"
+			//    dockerfile: "./Dockerfile" # this is in error because it is in "./app/Dockerfile"
+			//
+			// we want an error message that tells the user: try "./app/Dockerfile"
+			if err != nil {
+				// no clue case
+				return nil, fmt.Errorf("could not open dockerfile at relative path %q: %v", build.Dockerfile, statErr)
+			}
+
+			// we could open the relative path
+			return nil, fmt.Errorf("could not open dockerfile at relative path %q. "+
+				"Try setting `dockerfile` to %q", build.Dockerfile, relPath)
+
+		}
+		contextDigest, err := hashContext(build.Context, build.Dockerfile)
+		if err != nil {
+			return nil, err
+		}
+		// add implicit resource contextDigest
+		inputs["build"].ObjectValue()["contextDigest"] = resource.NewStringProperty(contextDigest)
+
 	}
 
 	// OS defaults to Linux in all cases
@@ -197,18 +225,16 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 			"To ensure you are building for the correct platform, consider "+
 			"explicitly setting the `platform` field on ImageBuildOptions.", hostPlatform)
 
-	// build options: add implicit resource contextDigest and set default host platform
+	// build options: set default host platform
 	if inputs["build"].IsNull() {
 		inputs["build"] = resource.NewObjectProperty(resource.PropertyMap{
-			"contextDigest": resource.NewStringProperty(contextDigest),
-			"platform":      resource.NewStringProperty(hostPlatform),
+			"platform": resource.NewStringProperty(hostPlatform),
 		})
 		err = p.log(ctx, "info", urn, msg)
 		if err != nil {
 			return nil, err
 		}
-	} else {
-		inputs["build"].ObjectValue()["contextDigest"] = resource.NewStringProperty(contextDigest)
+	} else if inputs["build"].IsObject() {
 		if inputs["build"].ObjectValue()["platform"].IsNull() {
 			inputs["build"].ObjectValue()["platform"] = resource.NewStringProperty(hostPlatform)
 			err = p.log(ctx, "info", urn, msg)
@@ -216,7 +242,6 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 				return nil, err
 			}
 		}
-
 	}
 
 	// Make sure image names are fully qualified.
@@ -226,7 +251,7 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 	}
 	// imageName only needs to be canonical if we're pushing or using cacheFrom.
 	needCanonicalImage := len(cache) > 0 || !marshalSkipPush(inputs["skipPush"])
-	if needCanonicalImage && !inputs["imageName"].IsNull() {
+	if needCanonicalImage && !inputs["imageName"].IsNull() && inputs["imageName"].IsString() {
 		registry := marshalRegistry(inputs["registry"])
 		host, err := getRegistryAddrForAuth(registry.Server, inputs["imageName"].StringValue())
 		if err != nil {
@@ -290,7 +315,6 @@ func (p *dockerNativeProvider) Diff(ctx context.Context, req *rpc.DiffRequest) (
 	for key := range d.Deletes {
 		diff[string(key)] = &rpc.PropertyDiff{Kind: rpc.PropertyDiff_DELETE}
 	}
-
 	detailedUpdates := diffUpdates(d.Updates)
 
 	// merge detailedUpdates into diff
@@ -333,9 +357,6 @@ func diffUpdates(updates map[resource.PropertyKey]resource.ValueDiff) map[string
 
 // Create allocates a new instance of the provided resource and returns its unique ID afterwards.
 func (p *dockerNativeProvider) Create(ctx context.Context, req *rpc.CreateRequest) (*rpc.CreateResponse, error) {
-	contract.Assertf(!req.GetPreview(), "Internal error in pulumi-docker: "+
-		"dockerNativeProvider Create should not be called during preview "+
-		"as it currently does not support partial data or recognizing unknowns.")
 
 	urn := resource.URN(req.GetUrn())
 	label := fmt.Sprintf("%s.Create(%s)", p.name, urn)
@@ -352,7 +373,19 @@ func (p *dockerNativeProvider) Create(ctx context.Context, req *rpc.CreateReques
 		return nil, errors.Wrapf(err, "malformed resource inputs")
 	}
 
-	id, outputProperties, err := p.dockerBuild(ctx, urn, req.GetProperties())
+	if req.GetPreview() {
+		ok, err := p.canPreview(ctx, inputs, urn)
+		if err != nil {
+			return nil, fmt.Errorf("checking preview: %w", err)
+		}
+		if !ok {
+			return &rpc.CreateResponse{
+				Properties: req.GetProperties(),
+			}, nil
+		}
+	}
+
+	id, outputProperties, err := p.dockerBuild(ctx, urn, req.GetProperties(), req.Preview)
 	if err != nil {
 		return nil, err
 	}
@@ -416,8 +449,21 @@ func (p *dockerNativeProvider) Update(ctx context.Context, req *rpc.UpdateReques
 	if err != nil {
 		return nil, errors.Wrapf(err, "diff failed because malformed resource inputs")
 	}
+
+	if req.GetPreview() {
+		ok, err := p.canPreview(ctx, newInputs, urn)
+		if err != nil {
+			return nil, fmt.Errorf("checking preview: %w", err)
+		}
+		if !ok {
+			return &rpc.UpdateResponse{
+				Properties: req.GetNews(),
+			}, nil
+		}
+	}
+
 	// When the docker image is updated, we build and push again.
-	_, outputProperties, err := p.dockerBuild(ctx, urn, req.GetNews())
+	_, outputProperties, err := p.dockerBuild(ctx, urn, req.GetNews(), req.Preview)
 	if err != nil {
 		return nil, err
 	}
@@ -566,10 +612,9 @@ func (accumulator *contextHashAccumulator) hexSumContext() string {
 	return hex.EncodeToString(h.Sum(nil))
 }
 
-func hashContext(dockerContextPath string, dockerfile string) (string, error) {
+func hashContext(dockerContextPath string, dockerfilePath string) (string, error) {
 	// exclude all files listed in dockerignore
-	dockerIgnorePath := filepath.Join(dockerContextPath, mapDockerignore(filepath.Base(dockerfile)))
-	ignorePatterns, err := getIgnore(dockerIgnorePath)
+	ignorePatterns, err := getIgnorePatterns(afero.NewOsFs(), dockerfilePath, dockerContextPath)
 	if err != nil {
 		return "", err
 	}
@@ -584,9 +629,9 @@ func hashContext(dockerContextPath string, dockerfile string) (string, error) {
 	// If the dockerfile is inside the build context, we will hash it twice, but that is OK. We hash
 	// it here the first time with the name "Dockerfile", and then in the WalkDir loop on we hash it
 	// again with its actual name.
-	err = accumulator.hashPath(dockerfile, defaultDockerfile, 0)
+	err = accumulator.hashPath(dockerfilePath, defaultDockerfile, 0)
 	if err != nil {
-		return "", fmt.Errorf("error hashing dockerfile %q: %w", dockerfile, err)
+		return "", fmt.Errorf("error hashing dockerfile %q: %w", dockerfilePath, err)
 	}
 	err = fsutil.Walk(context.Background(), dockerContextPath, &fsutil.WalkOpt{
 		ExcludePatterns: ignorePatterns,
@@ -612,21 +657,39 @@ func hashContext(dockerContextPath string, dockerfile string) (string, error) {
 	return accumulator.hexSumContext(), nil
 }
 
-func getIgnore(dockerIgnorePath string) ([]string, error) {
-	var ignorePatterns []string
-	dockerIgnore, err := os.ReadFile(dockerIgnorePath)
-	if err != nil {
-		if os.IsNotExist(err) {
-			// .dockerignore files are optional
-			return ignorePatterns, nil
+// getIgnorePatterns returns all patterns to ignore when constructing a build
+// context for the given Dockerfile, if any such patterns exist.
+//
+// Precedence is given to Dockerfile-specific ignore-files as per
+// https://docs.docker.com/build/building/context/#filename-and-location.
+func getIgnorePatterns(fs afero.Fs, dockerfilePath, contextRoot string) ([]string, error) {
+	paths := []string{
+		// Prefer <Dockerfile>.dockerignore if it's present.
+		dockerfilePath + ".dockerignore",
+		// Otherwise fall back to the ignore-file at the root of our build context.
+		filepath.Join(contextRoot, ".dockerignore"),
+	}
+
+	// Attempt to parse our candidate ignore-files, skipping any that don't
+	// exist.
+	for _, p := range paths {
+		f, err := fs.Open(p)
+		if errors.Is(err, afero.ErrFileNotFound) {
+			continue
 		}
-		return ignorePatterns, fmt.Errorf("unable to read %s file: %w", dockerIgnorePath, err)
+		if err != nil {
+			return nil, fmt.Errorf("reading %q: %w", p, err)
+		}
+		defer f.Close()
+
+		ignorePatterns, err := dockerignore.ReadAll(f)
+		if err != nil {
+			return nil, fmt.Errorf("unable to parse %q: %w", p, err)
+		}
+		return ignorePatterns, nil
 	}
-	ignorePatterns, err = dockerignore.ReadAll(bytes.NewReader(dockerIgnore))
-	if err != nil {
-		return ignorePatterns, fmt.Errorf("unable to parse %s file: %w", ".dockerignore", err)
-	}
-	return ignorePatterns, nil
+
+	return nil, nil
 }
 
 // setConfiguration takes in the stack config settings and  reads in any environment variables on unset fields.
@@ -670,4 +733,58 @@ func setConfiguration(configVars map[string]string) map[string]string {
 	}
 
 	return envConfig
+}
+
+func marshalBuildOnPreview(inputs resource.PropertyMap) bool {
+	//set default if not set
+	if inputs["buildOnPreview"].IsNull() || inputs["buildOnPreview"].ContainsUnknowns() {
+		return false
+	}
+	return inputs["buildOnPreview"].BoolValue()
+}
+
+func ensureMinimumBuildInputs(inputs resource.PropertyMap) bool {
+	if !inputs["build"].IsObject() {
+		return false
+	}
+	if inputs["build"].ObjectValue()["dockerfile"].ContainsUnknowns() ||
+		inputs["build"].ObjectValue()["context"].ContainsUnknowns() ||
+		inputs["build"].ObjectValue()["args"].ContainsUnknowns() {
+		return false
+	}
+	if inputs["imageName"].ContainsUnknowns() {
+		return false
+	}
+	return true
+}
+
+// canPreview returns true if inputs are resolved enough to perform a preview
+// build.
+func (p *dockerNativeProvider) canPreview(
+	ctx context.Context,
+	inputs resource.PropertyMap,
+	urn resource.URN,
+) (bool, error) {
+	// verify buildOnPreview is Known; if not, send warning and continue.
+	if inputs["buildOnPreview"].ContainsUnknowns() {
+		msg := "buildOnPreview is unresolved; cannot build on preview. Continuing without preview image build. " +
+			"To avoid this warning, set buildOnPreview explicitly, and ensure all inputs are resolved at preview."
+		err := p.log(ctx, "warning", urn, msg)
+		return false, err
+	}
+	// if we're in preview mode and buildOnPreview is set to false, there's nothing to do.
+	if inputs["buildOnPreview"].IsBool() && !inputs["buildOnPreview"].BoolValue() {
+		return false, nil
+	}
+
+	// buildOnPreview needs image name, dockerfile, and context to be resolved.
+	// Warn and continue without building the image
+	if !ensureMinimumBuildInputs(inputs) {
+		msg := "Minimum inputs for build are unresolved. Continuing without preview image build. " +
+			"To avoid this warning, ensure image name, dockerfile, args, and context are resolved at preview."
+		err := p.log(ctx, "warning", urn, msg)
+		return false, err
+	}
+
+	return true, nil
 }

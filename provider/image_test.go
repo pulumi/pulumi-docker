@@ -1,13 +1,17 @@
 package provider
 
 import (
+	"bufio"
 	"fmt"
 	"runtime"
+	"strings"
 	"testing"
 
 	"github.com/docker/docker/api/types"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
+	"github.com/spf13/afero"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestSetRegistry(t *testing.T) {
@@ -48,6 +52,21 @@ func TestSetRegistry(t *testing.T) {
 		actual := marshalRegistry(input)
 		assert.Equal(t, expected, actual)
 	})
+
+	t.Run("Unknown Registry Server", func(t *testing.T) {
+		expected := Registry{
+			Username: "pulumipus",
+			Password: "supersecret",
+		}
+		input := resource.NewObjectProperty(resource.PropertyMap{
+			"server":   resource.MakeComputed(resource.NewStringProperty("X")),
+			"username": resource.NewStringProperty("pulumipus"),
+			"password": resource.NewStringProperty("supersecret"),
+		})
+
+		actual := marshalRegistry(input)
+		assert.Equal(t, expected, actual)
+	})
 }
 
 func TestMarshalBuildAndApplyDefaults(t *testing.T) {
@@ -63,6 +82,20 @@ func TestMarshalBuildAndApplyDefaults(t *testing.T) {
 		assert.Equal(t, expected, actual)
 		assert.NoError(t, err)
 	})
+
+	t.Run("No default Dockerfile and Context for Unknown input",
+		func(t *testing.T) {
+			expected := Build{
+				BuilderVersion: "2",
+			}
+			input := resource.NewObjectProperty(resource.PropertyMap{
+				"dockerfile": resource.MakeComputed(resource.NewStringProperty("dockerfile-from-elsewhere")),
+				"context":    resource.MakeComputed(resource.NewStringProperty("context-is-computed-at-up-time")),
+			})
+			actual, err := marshalBuildAndApplyDefaults(input)
+			assert.Equal(t, expected, actual)
+			assert.NoError(t, err)
+		})
 
 	t.Run("Custom Dockerfile with default context", func(t *testing.T) {
 		expected := Build{
@@ -94,7 +127,7 @@ func TestMarshalBuildAndApplyDefaults(t *testing.T) {
 		assert.NoError(t, err)
 	})
 
-	t.Run("Setting Args", func(t *testing.T) {
+	t.Run("Sets Args", func(t *testing.T) {
 		argval := "Alicorn"
 		expected := Build{
 			Context:    ".",
@@ -108,6 +141,29 @@ func TestMarshalBuildAndApplyDefaults(t *testing.T) {
 		input := resource.NewObjectProperty(resource.PropertyMap{
 			"args": resource.NewObjectProperty(resource.PropertyMap{
 				"Swiftwind": resource.NewStringProperty("Alicorn"),
+			}),
+		})
+
+		actual, err := marshalBuildAndApplyDefaults(input)
+		assert.Equal(t, expected, actual)
+		assert.NoError(t, err)
+	})
+
+	t.Run("Handles Unknown Args", func(t *testing.T) {
+		argval := "rainbow-mane"
+		expected := Build{
+			Context:    ".",
+			Dockerfile: "Dockerfile",
+			Args: map[string]*string{
+				"Swiftwind": &argval,
+			},
+			BuilderVersion: "2",
+		}
+
+		input := resource.NewObjectProperty(resource.PropertyMap{
+			"args": resource.NewObjectProperty(resource.PropertyMap{
+				"Swiftwind":  resource.NewStringProperty("rainbow-mane"),
+				"Fluttershy": resource.MakeComputed(resource.NewStringProperty("pink-hair")),
 			}),
 		})
 
@@ -132,6 +188,23 @@ func TestMarshalBuildAndApplyDefaults(t *testing.T) {
 		assert.Equal(t, expected, actual)
 		assert.NoError(t, err)
 	})
+
+	t.Run("Handles Unknown Target", func(t *testing.T) {
+		expected := Build{
+			Context:        ".",
+			Dockerfile:     "Dockerfile",
+			BuilderVersion: "2",
+		}
+
+		input := resource.NewObjectProperty(resource.PropertyMap{
+			"target": resource.MakeComputed(resource.NewStringProperty("moving-target")),
+		})
+
+		actual, err := marshalBuildAndApplyDefaults(input)
+		assert.Equal(t, expected, actual)
+		assert.NoError(t, err)
+	})
+
 	t.Run("Sets Platform", func(t *testing.T) {
 		expected := Build{
 			Context:        ".",
@@ -148,6 +221,23 @@ func TestMarshalBuildAndApplyDefaults(t *testing.T) {
 		assert.Equal(t, expected, actual)
 		assert.NoError(t, err)
 	})
+
+	t.Run("Handles Unknown Platform", func(t *testing.T) {
+		expected := Build{
+			Context:        ".",
+			Dockerfile:     "Dockerfile",
+			BuilderVersion: "2",
+		}
+
+		input := resource.NewObjectProperty(resource.PropertyMap{
+			"platform": resource.MakeComputed(resource.NewStringProperty("wheres-my-train")),
+		})
+
+		actual, err := marshalBuildAndApplyDefaults(input)
+		assert.Equal(t, expected, actual)
+		assert.NoError(t, err)
+	})
+
 	t.Run("Sets Builder to classic V1 builder", func(t *testing.T) {
 		expected := Build{
 			Context:        ".",
@@ -180,7 +270,7 @@ func TestMarshalBuildAndApplyDefaults(t *testing.T) {
 
 func TestMarshalArgs(t *testing.T) {
 	t.Run("Set any args", func(t *testing.T) {
-		a := "Alicorn"
+		a := "alicorn"
 		p := "Pegasus"
 		tl := "Unicorn"
 		expected := map[string]*string{
@@ -189,9 +279,22 @@ func TestMarshalArgs(t *testing.T) {
 			"The Last":  &tl,
 		}
 		input := resource.NewObjectProperty(resource.PropertyMap{
-			"Swiftwind": resource.NewStringProperty("Alicorn"),
+			"Swiftwind": resource.NewStringProperty("alicorn"),
 			"Fledge":    resource.NewStringProperty("Pegasus"),
 			"The Last":  resource.NewStringProperty("Unicorn"),
+		})
+		actual := marshalArgs(input)
+		assert.Equal(t, expected, actual)
+	})
+	t.Run("Does not set Computed args", func(t *testing.T) {
+		a := "unicorn-with-wings"
+
+		expected := map[string]*string{
+			"Swiftwind": &a,
+		}
+		input := resource.NewObjectProperty(resource.PropertyMap{
+			"Swiftwind": resource.NewStringProperty("unicorn-with-wings"),
+			"Fledge":    resource.MakeComputed(resource.NewStringProperty("pegasus")),
 		})
 		actual := marshalArgs(input)
 		assert.Equal(t, expected, actual)
@@ -280,7 +383,7 @@ func TestMarshalCachedImages(t *testing.T) {
 
 			"cacheFrom": resource.NewObjectProperty(resource.PropertyMap{
 				"images": resource.NewArrayProperty([]resource.PropertyValue{
-					resource.NewNullProperty(), // unknowns are passed as null property values
+					resource.MakeComputed(resource.NewStringProperty("looking-for-my-image")),
 				}),
 			}),
 		})
@@ -296,6 +399,7 @@ func TestMarshalCachedImages(t *testing.T) {
 			"cacheFrom": resource.NewObjectProperty(resource.PropertyMap{
 				"images": resource.NewArrayProperty([]resource.PropertyValue{
 					resource.NewNullProperty(),
+					resource.MakeComputed(resource.NewStringProperty("looking-for-my-image")),
 					resource.NewStringProperty("apple"),
 					resource.NewStringProperty("banana"),
 					resource.NewStringProperty("cherry"),
@@ -311,7 +415,13 @@ func TestMarshalCachedImages(t *testing.T) {
 		expected := []string(nil)
 		buildInput := resource.NewObjectProperty(resource.PropertyMap{
 			"cacheFrom": resource.NewObjectProperty(resource.PropertyMap{
-				"images": resource.NewNullProperty(), // unknowns are passed as null property values
+				"images": resource.NewComputedProperty(
+					resource.Computed{
+						Element: resource.NewArrayProperty([]resource.PropertyValue{
+							resource.MakeComputed(resource.NewStringProperty("looking-for-my-image")),
+						}),
+					},
+				),
 			}),
 		})
 		actual, err := marshalCachedImages(buildInput)
@@ -321,7 +431,11 @@ func TestMarshalCachedImages(t *testing.T) {
 	t.Run("Test Cached Images Passes On Unknown cacheFrom", func(t *testing.T) {
 		expected := []string(nil)
 		buildInput := resource.NewObjectProperty(resource.PropertyMap{
-			"cacheFrom": resource.NewNullProperty(), // unknowns are passed as null property values
+			"cacheFrom": resource.NewComputedProperty(
+				resource.Computed{Element: resource.NewObjectProperty(
+					resource.NewPropertyMapFromMap(map[string]interface{}{}),
+				)},
+			),
 		})
 		actual, err := marshalCachedImages(buildInput)
 		assert.NoError(t, err)
@@ -329,6 +443,7 @@ func TestMarshalCachedImages(t *testing.T) {
 	})
 }
 
+// TODO: do we want to allow Builder to be Unknown? there's very little use case here
 func TestMarshalBuilder(t *testing.T) {
 	t.Run("Test Builder Version Default", func(t *testing.T) {
 		expected := types.BuilderBuildKit
@@ -535,19 +650,101 @@ func TestConfigureDockerClient(t *testing.T) {
 	})
 }
 
-func TestMapDockerignore(t *testing.T) {
+func TestDockerIgnore(t *testing.T) {
+	tests := []struct {
+		name string
 
-	t.Run("Returns default .dockerignore", func(t *testing.T) {
-		expected := ".dockerignore"
-		input := defaultDockerfile
-		actual := mapDockerignore(input)
-		assert.Equal(t, expected, actual)
-	})
-	t.Run("Returns .dockerignore extension for nonstandard dockerfile names", func(t *testing.T) {
-		expected := "special.dockerfile.dockerignore"
-		input := "special.dockerfile"
-		actual := mapDockerignore(input)
-		assert.Equal(t, expected, actual)
-	})
+		dockerfile string
+		context    string
+		fs         map[string]string
 
+		want    []string
+		wantErr error
+	}{
+		{
+			name:       "Dockerfile with root dockerignore",
+			dockerfile: "./foo/Dockerfile",
+			fs: map[string]string{
+				".dockerignore": "rootignore",
+			},
+			want: []string{"rootignore"},
+		},
+		{
+			name:       "Dockerfile with root dockerignore and custom dockerignore",
+			dockerfile: "./foo/Dockerfile",
+			fs: map[string]string{
+				"foo/Dockerfile.dockerignore": "customignore",
+				".dockerignore":               "rootignore",
+			},
+			want: []string{"customignore"},
+		},
+		{
+			name:       "Dockerfile with root dockerignore and relative context",
+			dockerfile: "./foo/Dockerfile",
+			context:    "../",
+			fs: map[string]string{
+				"../.dockerignore": "rootignore",
+			},
+			want: []string{"rootignore"},
+		},
+		{
+			name:       "Dockerfile without root dockerignore",
+			dockerfile: "./foo/Dockerfile",
+			want:       nil,
+		},
+		{
+			name:       "Dockerfile with invalid root dockerignore",
+			dockerfile: "./foo/Dockerfile",
+			fs: map[string]string{
+				".dockerignore": strings.Repeat("*", bufio.MaxScanTokenSize),
+			},
+			wantErr: bufio.ErrTooLong,
+		},
+		{
+			name:       "custom.Dockerfile without custom dockerignore and without root dockerignore",
+			dockerfile: "./foo/custom.Dockerfile",
+			want:       nil,
+		},
+		{
+			name:       "custom.Dockerfile with custom dockerignore and without root dockerignore",
+			dockerfile: "./foo/custom.Dockerfile",
+			fs: map[string]string{
+				"foo/custom.Dockerfile.dockerignore": "customignore",
+			},
+			want: []string{"customignore"},
+		},
+		{
+			name:       "custom.Dockerfile with custom dockerignore and with root dockerignore",
+			dockerfile: "foo/custom.Dockerfile",
+			fs: map[string]string{
+				"foo/custom.Dockerfile.dockerignore": "customignore",
+				".dockerignore":                      "rootignore",
+			},
+			want: []string{"customignore"},
+		},
+		{
+			name:       "custom.Dockerfile without custom dockerignore and with root dockerignore",
+			dockerfile: "foo/custom.Dockerfile",
+			fs: map[string]string{
+				".dockerignore": "rootignore",
+			},
+			want: []string{"rootignore"},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			fs := afero.NewMemMapFs()
+			for fname, fdata := range tt.fs {
+				f, err := fs.Create(fname)
+				require.NoError(t, err)
+				_, err = f.Write([]byte(fdata))
+				require.NoError(t, err)
+			}
+			actual, err := getIgnorePatterns(fs, tt.dockerfile, tt.context)
+
+			assert.ErrorIs(t, err, tt.wantErr)
+			assert.Equal(t, tt.want, actual)
+		})
+	}
 }
