@@ -73,10 +73,10 @@ public final class ServiceTaskSpecResourcesReservationGenericResources {
             return namedResourcesSpecs(List.of(namedResourcesSpecs));
         }
         public ServiceTaskSpecResourcesReservationGenericResources build() {
-            final var o = new ServiceTaskSpecResourcesReservationGenericResources();
-            o.discreteResourcesSpecs = discreteResourcesSpecs;
-            o.namedResourcesSpecs = namedResourcesSpecs;
-            return o;
+            final var _resultValue = new ServiceTaskSpecResourcesReservationGenericResources();
+            _resultValue.discreteResourcesSpecs = discreteResourcesSpecs;
+            _resultValue.namedResourcesSpecs = namedResourcesSpecs;
+            return _resultValue;
         }
     }
 }

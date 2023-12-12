@@ -67,10 +67,10 @@ public final class ServiceTaskSpecContainerSpecMountTmpfsOptions {
             return this;
         }
         public ServiceTaskSpecContainerSpecMountTmpfsOptions build() {
-            final var o = new ServiceTaskSpecContainerSpecMountTmpfsOptions();
-            o.mode = mode;
-            o.sizeBytes = sizeBytes;
-            return o;
+            final var _resultValue = new ServiceTaskSpecContainerSpecMountTmpfsOptions();
+            _resultValue.mode = mode;
+            _resultValue.sizeBytes = sizeBytes;
+            return _resultValue;
         }
     }
 }

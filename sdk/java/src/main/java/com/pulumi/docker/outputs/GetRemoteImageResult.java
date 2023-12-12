@@ -84,11 +84,11 @@ public final class GetRemoteImageResult {
             return this;
         }
         public GetRemoteImageResult build() {
-            final var o = new GetRemoteImageResult();
-            o.id = id;
-            o.name = name;
-            o.repoDigest = repoDigest;
-            return o;
+            final var _resultValue = new GetRemoteImageResult();
+            _resultValue.id = id;
+            _resultValue.name = name;
+            _resultValue.repoDigest = repoDigest;
+            return _resultValue;
         }
     }
 }

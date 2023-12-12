@@ -68,10 +68,10 @@ public final class ServiceMode {
             return this;
         }
         public ServiceMode build() {
-            final var o = new ServiceMode();
-            o.global = global;
-            o.replicated = replicated;
-            return o;
+            final var _resultValue = new ServiceMode();
+            _resultValue.global = global;
+            _resultValue.replicated = replicated;
+            return _resultValue;
         }
     }
 }

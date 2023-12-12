@@ -109,12 +109,12 @@ public final class ContainerNetworksAdvanced {
             return this;
         }
         public ContainerNetworksAdvanced build() {
-            final var o = new ContainerNetworksAdvanced();
-            o.aliases = aliases;
-            o.ipv4Address = ipv4Address;
-            o.ipv6Address = ipv6Address;
-            o.name = name;
-            return o;
+            final var _resultValue = new ContainerNetworksAdvanced();
+            _resultValue.aliases = aliases;
+            _resultValue.ipv4Address = ipv4Address;
+            _resultValue.ipv6Address = ipv6Address;
+            _resultValue.name = name;
+            return _resultValue;
         }
     }
 }

@@ -65,10 +65,10 @@ public final class ServiceLabel {
             return this;
         }
         public ServiceLabel build() {
-            final var o = new ServiceLabel();
-            o.label = label;
-            o.value = value;
-            return o;
+            final var _resultValue = new ServiceLabel();
+            _resultValue.label = label;
+            _resultValue.value = value;
+            return _resultValue;
         }
     }
 }

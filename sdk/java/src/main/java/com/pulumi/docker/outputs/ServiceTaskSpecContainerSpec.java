@@ -464,29 +464,29 @@ public final class ServiceTaskSpecContainerSpec {
             return this;
         }
         public ServiceTaskSpecContainerSpec build() {
-            final var o = new ServiceTaskSpecContainerSpec();
-            o.args = args;
-            o.commands = commands;
-            o.configs = configs;
-            o.dir = dir;
-            o.dnsConfig = dnsConfig;
-            o.env = env;
-            o.groups = groups;
-            o.healthcheck = healthcheck;
-            o.hostname = hostname;
-            o.hosts = hosts;
-            o.image = image;
-            o.isolation = isolation;
-            o.labels = labels;
-            o.mounts = mounts;
-            o.privileges = privileges;
-            o.readOnly = readOnly;
-            o.secrets = secrets;
-            o.stopGracePeriod = stopGracePeriod;
-            o.stopSignal = stopSignal;
-            o.sysctl = sysctl;
-            o.user = user;
-            return o;
+            final var _resultValue = new ServiceTaskSpecContainerSpec();
+            _resultValue.args = args;
+            _resultValue.commands = commands;
+            _resultValue.configs = configs;
+            _resultValue.dir = dir;
+            _resultValue.dnsConfig = dnsConfig;
+            _resultValue.env = env;
+            _resultValue.groups = groups;
+            _resultValue.healthcheck = healthcheck;
+            _resultValue.hostname = hostname;
+            _resultValue.hosts = hosts;
+            _resultValue.image = image;
+            _resultValue.isolation = isolation;
+            _resultValue.labels = labels;
+            _resultValue.mounts = mounts;
+            _resultValue.privileges = privileges;
+            _resultValue.readOnly = readOnly;
+            _resultValue.secrets = secrets;
+            _resultValue.stopGracePeriod = stopGracePeriod;
+            _resultValue.stopSignal = stopSignal;
+            _resultValue.sysctl = sysctl;
+            _resultValue.user = user;
+            return _resultValue;
         }
     }
 }

@@ -48,9 +48,9 @@ public final class ServiceTaskSpecContainerSpecMountBindOptions {
             return this;
         }
         public ServiceTaskSpecContainerSpecMountBindOptions build() {
-            final var o = new ServiceTaskSpecContainerSpecMountBindOptions();
-            o.propagation = propagation;
-            return o;
+            final var _resultValue = new ServiceTaskSpecContainerSpecMountBindOptions();
+            _resultValue.propagation = propagation;
+            return _resultValue;
         }
     }
 }

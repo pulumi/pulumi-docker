@@ -87,11 +87,11 @@ public final class ServiceTaskSpecResourcesReservation {
             return this;
         }
         public ServiceTaskSpecResourcesReservation build() {
-            final var o = new ServiceTaskSpecResourcesReservation();
-            o.genericResources = genericResources;
-            o.memoryBytes = memoryBytes;
-            o.nanoCpus = nanoCpus;
-            return o;
+            final var _resultValue = new ServiceTaskSpecResourcesReservation();
+            _resultValue.genericResources = genericResources;
+            _resultValue.memoryBytes = memoryBytes;
+            _resultValue.nanoCpus = nanoCpus;
+            return _resultValue;
         }
     }
 }

@@ -125,13 +125,13 @@ public final class ServiceEndpointSpecPort {
             return this;
         }
         public ServiceEndpointSpecPort build() {
-            final var o = new ServiceEndpointSpecPort();
-            o.name = name;
-            o.protocol = protocol;
-            o.publishMode = publishMode;
-            o.publishedPort = publishedPort;
-            o.targetPort = targetPort;
-            return o;
+            final var _resultValue = new ServiceEndpointSpecPort();
+            _resultValue.name = name;
+            _resultValue.protocol = protocol;
+            _resultValue.publishMode = publishMode;
+            _resultValue.publishedPort = publishedPort;
+            _resultValue.targetPort = targetPort;
+            return _resultValue;
         }
     }
 }

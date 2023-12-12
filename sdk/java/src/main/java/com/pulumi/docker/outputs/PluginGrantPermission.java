@@ -69,10 +69,10 @@ public final class PluginGrantPermission {
             return values(List.of(values));
         }
         public PluginGrantPermission build() {
-            final var o = new PluginGrantPermission();
-            o.name = name;
-            o.values = values;
-            return o;
+            final var _resultValue = new PluginGrantPermission();
+            _resultValue.name = name;
+            _resultValue.values = values;
+            return _resultValue;
         }
     }
 }

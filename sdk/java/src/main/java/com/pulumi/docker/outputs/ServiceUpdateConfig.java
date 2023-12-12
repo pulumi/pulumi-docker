@@ -144,14 +144,14 @@ public final class ServiceUpdateConfig {
             return this;
         }
         public ServiceUpdateConfig build() {
-            final var o = new ServiceUpdateConfig();
-            o.delay = delay;
-            o.failureAction = failureAction;
-            o.maxFailureRatio = maxFailureRatio;
-            o.monitor = monitor;
-            o.order = order;
-            o.parallelism = parallelism;
-            return o;
+            final var _resultValue = new ServiceUpdateConfig();
+            _resultValue.delay = delay;
+            _resultValue.failureAction = failureAction;
+            _resultValue.maxFailureRatio = maxFailureRatio;
+            _resultValue.monitor = monitor;
+            _resultValue.order = order;
+            _resultValue.parallelism = parallelism;
+            return _resultValue;
         }
     }
 }

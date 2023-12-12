@@ -112,12 +112,12 @@ public final class ContainerMountVolumeOptions {
             return this;
         }
         public ContainerMountVolumeOptions build() {
-            final var o = new ContainerMountVolumeOptions();
-            o.driverName = driverName;
-            o.driverOptions = driverOptions;
-            o.labels = labels;
-            o.noCopy = noCopy;
-            return o;
+            final var _resultValue = new ContainerMountVolumeOptions();
+            _resultValue.driverName = driverName;
+            _resultValue.driverOptions = driverOptions;
+            _resultValue.labels = labels;
+            _resultValue.noCopy = noCopy;
+            return _resultValue;
         }
     }
 }

@@ -65,10 +65,10 @@ public final class ContainerHost {
             return this;
         }
         public ContainerHost build() {
-            final var o = new ContainerHost();
-            o.host = host;
-            o.ip = ip;
-            return o;
+            final var _resultValue = new ContainerHost();
+            _resultValue.host = host;
+            _resultValue.ip = ip;
+            return _resultValue;
         }
     }
 }

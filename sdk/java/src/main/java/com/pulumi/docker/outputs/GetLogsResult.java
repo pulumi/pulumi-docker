@@ -217,21 +217,21 @@ public final class GetLogsResult {
             return this;
         }
         public GetLogsResult build() {
-            final var o = new GetLogsResult();
-            o.details = details;
-            o.discardHeaders = discardHeaders;
-            o.follow = follow;
-            o.id = id;
-            o.logsListStringEnabled = logsListStringEnabled;
-            o.logsListStrings = logsListStrings;
-            o.name = name;
-            o.showStderr = showStderr;
-            o.showStdout = showStdout;
-            o.since = since;
-            o.tail = tail;
-            o.timestamps = timestamps;
-            o.until = until;
-            return o;
+            final var _resultValue = new GetLogsResult();
+            _resultValue.details = details;
+            _resultValue.discardHeaders = discardHeaders;
+            _resultValue.follow = follow;
+            _resultValue.id = id;
+            _resultValue.logsListStringEnabled = logsListStringEnabled;
+            _resultValue.logsListStrings = logsListStrings;
+            _resultValue.name = name;
+            _resultValue.showStderr = showStderr;
+            _resultValue.showStdout = showStdout;
+            _resultValue.since = since;
+            _resultValue.tail = tail;
+            _resultValue.timestamps = timestamps;
+            _resultValue.until = until;
+            return _resultValue;
         }
     }
 }

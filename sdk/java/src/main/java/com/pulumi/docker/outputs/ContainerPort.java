@@ -106,12 +106,12 @@ public final class ContainerPort {
             return this;
         }
         public ContainerPort build() {
-            final var o = new ContainerPort();
-            o.external = external;
-            o.internal = internal;
-            o.ip = ip;
-            o.protocol = protocol;
-            return o;
+            final var _resultValue = new ContainerPort();
+            _resultValue.external = external;
+            _resultValue.internal = internal;
+            _resultValue.ip = ip;
+            _resultValue.protocol = protocol;
+            return _resultValue;
         }
     }
 }

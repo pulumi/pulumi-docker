@@ -48,9 +48,9 @@ public final class ServiceModeReplicated {
             return this;
         }
         public ServiceModeReplicated build() {
-            final var o = new ServiceModeReplicated();
-            o.replicas = replicas;
-            return o;
+            final var _resultValue = new ServiceModeReplicated();
+            _resultValue.replicas = replicas;
+            return _resultValue;
         }
     }
 }

@@ -67,10 +67,10 @@ public final class ServiceTaskSpecResourcesLimits {
             return this;
         }
         public ServiceTaskSpecResourcesLimits build() {
-            final var o = new ServiceTaskSpecResourcesLimits();
-            o.memoryBytes = memoryBytes;
-            o.nanoCpus = nanoCpus;
-            return o;
+            final var _resultValue = new ServiceTaskSpecResourcesLimits();
+            _resultValue.memoryBytes = memoryBytes;
+            _resultValue.nanoCpus = nanoCpus;
+            return _resultValue;
         }
     }
 }

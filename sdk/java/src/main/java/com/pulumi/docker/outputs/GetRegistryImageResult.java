@@ -106,12 +106,12 @@ public final class GetRegistryImageResult {
             return this;
         }
         public GetRegistryImageResult build() {
-            final var o = new GetRegistryImageResult();
-            o.id = id;
-            o.insecureSkipVerify = insecureSkipVerify;
-            o.name = name;
-            o.sha256Digest = sha256Digest;
-            return o;
+            final var _resultValue = new GetRegistryImageResult();
+            _resultValue.id = id;
+            _resultValue.insecureSkipVerify = insecureSkipVerify;
+            _resultValue.name = name;
+            _resultValue.sha256Digest = sha256Digest;
+            return _resultValue;
         }
     }
 }

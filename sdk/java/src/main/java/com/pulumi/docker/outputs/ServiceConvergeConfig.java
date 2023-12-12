@@ -67,10 +67,10 @@ public final class ServiceConvergeConfig {
             return this;
         }
         public ServiceConvergeConfig build() {
-            final var o = new ServiceConvergeConfig();
-            o.delay = delay;
-            o.timeout = timeout;
-            return o;
+            final var _resultValue = new ServiceConvergeConfig();
+            _resultValue.delay = delay;
+            _resultValue.timeout = timeout;
+            return _resultValue;
         }
     }
 }

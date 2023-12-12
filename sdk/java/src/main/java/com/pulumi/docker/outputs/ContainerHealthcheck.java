@@ -129,13 +129,13 @@ public final class ContainerHealthcheck {
             return this;
         }
         public ContainerHealthcheck build() {
-            final var o = new ContainerHealthcheck();
-            o.interval = interval;
-            o.retries = retries;
-            o.startPeriod = startPeriod;
-            o.tests = tests;
-            o.timeout = timeout;
-            return o;
+            final var _resultValue = new ContainerHealthcheck();
+            _resultValue.interval = interval;
+            _resultValue.retries = retries;
+            _resultValue.startPeriod = startPeriod;
+            _resultValue.tests = tests;
+            _resultValue.timeout = timeout;
+            return _resultValue;
         }
     }
 }

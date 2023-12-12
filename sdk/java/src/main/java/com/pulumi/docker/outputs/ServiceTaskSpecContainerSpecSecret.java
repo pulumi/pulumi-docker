@@ -144,14 +144,14 @@ public final class ServiceTaskSpecContainerSpecSecret {
             return this;
         }
         public ServiceTaskSpecContainerSpecSecret build() {
-            final var o = new ServiceTaskSpecContainerSpecSecret();
-            o.fileGid = fileGid;
-            o.fileMode = fileMode;
-            o.fileName = fileName;
-            o.fileUid = fileUid;
-            o.secretId = secretId;
-            o.secretName = secretName;
-            return o;
+            final var _resultValue = new ServiceTaskSpecContainerSpecSecret();
+            _resultValue.fileGid = fileGid;
+            _resultValue.fileMode = fileMode;
+            _resultValue.fileName = fileName;
+            _resultValue.fileUid = fileUid;
+            _resultValue.secretId = secretId;
+            _resultValue.secretName = secretName;
+            return _resultValue;
         }
     }
 }

@@ -73,10 +73,10 @@ public final class ContainerCapabilities {
             return drops(List.of(drops));
         }
         public ContainerCapabilities build() {
-            final var o = new ContainerCapabilities();
-            o.adds = adds;
-            o.drops = drops;
-            return o;
+            final var _resultValue = new ContainerCapabilities();
+            _resultValue.adds = adds;
+            _resultValue.drops = drops;
+            return _resultValue;
         }
     }
 }

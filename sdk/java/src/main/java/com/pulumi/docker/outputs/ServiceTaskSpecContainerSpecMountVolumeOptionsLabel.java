@@ -65,10 +65,10 @@ public final class ServiceTaskSpecContainerSpecMountVolumeOptionsLabel {
             return this;
         }
         public ServiceTaskSpecContainerSpecMountVolumeOptionsLabel build() {
-            final var o = new ServiceTaskSpecContainerSpecMountVolumeOptionsLabel();
-            o.label = label;
-            o.value = value;
-            return o;
+            final var _resultValue = new ServiceTaskSpecContainerSpecMountVolumeOptionsLabel();
+            _resultValue.label = label;
+            _resultValue.value = value;
+            return _resultValue;
         }
     }
 }

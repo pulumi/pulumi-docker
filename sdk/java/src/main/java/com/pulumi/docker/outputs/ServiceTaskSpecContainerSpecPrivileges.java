@@ -68,10 +68,10 @@ public final class ServiceTaskSpecContainerSpecPrivileges {
             return this;
         }
         public ServiceTaskSpecContainerSpecPrivileges build() {
-            final var o = new ServiceTaskSpecContainerSpecPrivileges();
-            o.credentialSpec = credentialSpec;
-            o.seLinuxContext = seLinuxContext;
-            return o;
+            final var _resultValue = new ServiceTaskSpecContainerSpecPrivileges();
+            _resultValue.credentialSpec = credentialSpec;
+            _resultValue.seLinuxContext = seLinuxContext;
+            return _resultValue;
         }
     }
 }

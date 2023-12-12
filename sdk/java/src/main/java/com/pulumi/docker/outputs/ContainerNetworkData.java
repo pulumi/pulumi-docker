@@ -118,16 +118,16 @@ public final class ContainerNetworkData {
             return this;
         }
         public ContainerNetworkData build() {
-            final var o = new ContainerNetworkData();
-            o.gateway = gateway;
-            o.globalIpv6Address = globalIpv6Address;
-            o.globalIpv6PrefixLength = globalIpv6PrefixLength;
-            o.ipAddress = ipAddress;
-            o.ipPrefixLength = ipPrefixLength;
-            o.ipv6Gateway = ipv6Gateway;
-            o.macAddress = macAddress;
-            o.networkName = networkName;
-            return o;
+            final var _resultValue = new ContainerNetworkData();
+            _resultValue.gateway = gateway;
+            _resultValue.globalIpv6Address = globalIpv6Address;
+            _resultValue.globalIpv6PrefixLength = globalIpv6PrefixLength;
+            _resultValue.ipAddress = ipAddress;
+            _resultValue.ipPrefixLength = ipPrefixLength;
+            _resultValue.ipv6Gateway = ipv6Gateway;
+            _resultValue.macAddress = macAddress;
+            _resultValue.networkName = networkName;
+            return _resultValue;
         }
     }
 }

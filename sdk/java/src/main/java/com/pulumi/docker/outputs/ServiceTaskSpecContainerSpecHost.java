@@ -65,10 +65,10 @@ public final class ServiceTaskSpecContainerSpecHost {
             return this;
         }
         public ServiceTaskSpecContainerSpecHost build() {
-            final var o = new ServiceTaskSpecContainerSpecHost();
-            o.host = host;
-            o.ip = ip;
-            return o;
+            final var _resultValue = new ServiceTaskSpecContainerSpecHost();
+            _resultValue.host = host;
+            _resultValue.ip = ip;
+            return _resultValue;
         }
     }
 }

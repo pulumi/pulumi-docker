@@ -181,16 +181,16 @@ public final class RemoteImageBuildAuthConfig {
             return this;
         }
         public RemoteImageBuildAuthConfig build() {
-            final var o = new RemoteImageBuildAuthConfig();
-            o.auth = auth;
-            o.email = email;
-            o.hostName = hostName;
-            o.identityToken = identityToken;
-            o.password = password;
-            o.registryToken = registryToken;
-            o.serverAddress = serverAddress;
-            o.userName = userName;
-            return o;
+            final var _resultValue = new RemoteImageBuildAuthConfig();
+            _resultValue.auth = auth;
+            _resultValue.email = email;
+            _resultValue.hostName = hostName;
+            _resultValue.identityToken = identityToken;
+            _resultValue.password = password;
+            _resultValue.registryToken = registryToken;
+            _resultValue.serverAddress = serverAddress;
+            _resultValue.userName = userName;
+            return _resultValue;
         }
     }
 }
