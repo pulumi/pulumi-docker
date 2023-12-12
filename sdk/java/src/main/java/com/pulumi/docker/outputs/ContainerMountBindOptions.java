@@ -48,9 +48,9 @@ public final class ContainerMountBindOptions {
             return this;
         }
         public ContainerMountBindOptions build() {
-            final var o = new ContainerMountBindOptions();
-            o.propagation = propagation;
-            return o;
+            final var _resultValue = new ContainerMountBindOptions();
+            _resultValue.propagation = propagation;
+            return _resultValue;
         }
     }
 }

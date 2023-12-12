@@ -144,14 +144,14 @@ public final class ServiceTaskSpecContainerSpecConfig {
             return this;
         }
         public ServiceTaskSpecContainerSpecConfig build() {
-            final var o = new ServiceTaskSpecContainerSpecConfig();
-            o.configId = configId;
-            o.configName = configName;
-            o.fileGid = fileGid;
-            o.fileMode = fileMode;
-            o.fileName = fileName;
-            o.fileUid = fileUid;
-            return o;
+            final var _resultValue = new ServiceTaskSpecContainerSpecConfig();
+            _resultValue.configId = configId;
+            _resultValue.configName = configName;
+            _resultValue.fileGid = fileGid;
+            _resultValue.fileMode = fileMode;
+            _resultValue.fileName = fileName;
+            _resultValue.fileUid = fileUid;
+            return _resultValue;
         }
     }
 }

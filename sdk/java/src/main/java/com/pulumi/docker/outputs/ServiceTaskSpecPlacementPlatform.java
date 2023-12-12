@@ -65,10 +65,10 @@ public final class ServiceTaskSpecPlacementPlatform {
             return this;
         }
         public ServiceTaskSpecPlacementPlatform build() {
-            final var o = new ServiceTaskSpecPlacementPlatform();
-            o.architecture = architecture;
-            o.os = os;
-            return o;
+            final var _resultValue = new ServiceTaskSpecPlacementPlatform();
+            _resultValue.architecture = architecture;
+            _resultValue.os = os;
+            return _resultValue;
         }
     }
 }

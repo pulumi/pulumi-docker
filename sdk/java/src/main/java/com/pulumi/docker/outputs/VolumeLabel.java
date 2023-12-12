@@ -65,10 +65,10 @@ public final class VolumeLabel {
             return this;
         }
         public VolumeLabel build() {
-            final var o = new VolumeLabel();
-            o.label = label;
-            o.value = value;
-            return o;
+            final var _resultValue = new VolumeLabel();
+            _resultValue.label = label;
+            _resultValue.value = value;
+            return _resultValue;
         }
     }
 }

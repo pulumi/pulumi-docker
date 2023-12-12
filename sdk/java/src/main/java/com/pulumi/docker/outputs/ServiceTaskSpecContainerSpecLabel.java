@@ -65,10 +65,10 @@ public final class ServiceTaskSpecContainerSpecLabel {
             return this;
         }
         public ServiceTaskSpecContainerSpecLabel build() {
-            final var o = new ServiceTaskSpecContainerSpecLabel();
-            o.label = label;
-            o.value = value;
-            return o;
+            final var _resultValue = new ServiceTaskSpecContainerSpecLabel();
+            _resultValue.label = label;
+            _resultValue.value = value;
+            return _resultValue;
         }
     }
 }

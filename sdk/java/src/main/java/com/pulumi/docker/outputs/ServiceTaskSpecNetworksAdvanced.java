@@ -92,11 +92,11 @@ public final class ServiceTaskSpecNetworksAdvanced {
             return this;
         }
         public ServiceTaskSpecNetworksAdvanced build() {
-            final var o = new ServiceTaskSpecNetworksAdvanced();
-            o.aliases = aliases;
-            o.driverOpts = driverOpts;
-            o.name = name;
-            return o;
+            final var _resultValue = new ServiceTaskSpecNetworksAdvanced();
+            _resultValue.aliases = aliases;
+            _resultValue.driverOpts = driverOpts;
+            _resultValue.name = name;
+            return _resultValue;
         }
     }
 }

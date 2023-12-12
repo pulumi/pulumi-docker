@@ -86,11 +86,11 @@ public final class ServiceAuth {
             return this;
         }
         public ServiceAuth build() {
-            final var o = new ServiceAuth();
-            o.password = password;
-            o.serverAddress = serverAddress;
-            o.username = username;
-            return o;
+            final var _resultValue = new ServiceAuth();
+            _resultValue.password = password;
+            _resultValue.serverAddress = serverAddress;
+            _resultValue.username = username;
+            return _resultValue;
         }
     }
 }

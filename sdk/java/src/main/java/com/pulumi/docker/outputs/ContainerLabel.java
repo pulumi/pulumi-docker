@@ -65,10 +65,10 @@ public final class ContainerLabel {
             return this;
         }
         public ContainerLabel build() {
-            final var o = new ContainerLabel();
-            o.label = label;
-            o.value = value;
-            return o;
+            final var _resultValue = new ContainerLabel();
+            _resultValue.label = label;
+            _resultValue.value = value;
+            return _resultValue;
         }
     }
 }

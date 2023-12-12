@@ -144,14 +144,14 @@ public final class ServiceRollbackConfig {
             return this;
         }
         public ServiceRollbackConfig build() {
-            final var o = new ServiceRollbackConfig();
-            o.delay = delay;
-            o.failureAction = failureAction;
-            o.maxFailureRatio = maxFailureRatio;
-            o.monitor = monitor;
-            o.order = order;
-            o.parallelism = parallelism;
-            return o;
+            final var _resultValue = new ServiceRollbackConfig();
+            _resultValue.delay = delay;
+            _resultValue.failureAction = failureAction;
+            _resultValue.maxFailureRatio = maxFailureRatio;
+            _resultValue.monitor = monitor;
+            _resultValue.order = order;
+            _resultValue.parallelism = parallelism;
+            return _resultValue;
         }
     }
 }

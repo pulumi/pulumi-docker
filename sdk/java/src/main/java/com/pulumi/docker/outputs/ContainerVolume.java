@@ -125,13 +125,13 @@ public final class ContainerVolume {
             return this;
         }
         public ContainerVolume build() {
-            final var o = new ContainerVolume();
-            o.containerPath = containerPath;
-            o.fromContainer = fromContainer;
-            o.hostPath = hostPath;
-            o.readOnly = readOnly;
-            o.volumeName = volumeName;
-            return o;
+            final var _resultValue = new ContainerVolume();
+            _resultValue.containerPath = containerPath;
+            _resultValue.fromContainer = fromContainer;
+            _resultValue.hostPath = hostPath;
+            _resultValue.readOnly = readOnly;
+            _resultValue.volumeName = volumeName;
+            return _resultValue;
         }
     }
 }

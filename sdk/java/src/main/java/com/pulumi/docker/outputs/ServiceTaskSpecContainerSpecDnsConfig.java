@@ -95,11 +95,11 @@ public final class ServiceTaskSpecContainerSpecDnsConfig {
             return searches(List.of(searches));
         }
         public ServiceTaskSpecContainerSpecDnsConfig build() {
-            final var o = new ServiceTaskSpecContainerSpecDnsConfig();
-            o.nameservers = nameservers;
-            o.options = options;
-            o.searches = searches;
-            return o;
+            final var _resultValue = new ServiceTaskSpecContainerSpecDnsConfig();
+            _resultValue.nameservers = nameservers;
+            _resultValue.options = options;
+            _resultValue.searches = searches;
+            return _resultValue;
         }
     }
 }

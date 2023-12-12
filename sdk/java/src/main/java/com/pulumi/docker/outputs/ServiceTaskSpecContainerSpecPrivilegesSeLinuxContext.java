@@ -125,13 +125,13 @@ public final class ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext {
             return this;
         }
         public ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext build() {
-            final var o = new ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext();
-            o.disable = disable;
-            o.level = level;
-            o.role = role;
-            o.type = type;
-            o.user = user;
-            return o;
+            final var _resultValue = new ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext();
+            _resultValue.disable = disable;
+            _resultValue.level = level;
+            _resultValue.role = role;
+            _resultValue.type = type;
+            _resultValue.user = user;
+            return _resultValue;
         }
     }
 }

@@ -106,12 +106,12 @@ public final class ServiceTaskSpecRestartPolicy {
             return this;
         }
         public ServiceTaskSpecRestartPolicy build() {
-            final var o = new ServiceTaskSpecRestartPolicy();
-            o.condition = condition;
-            o.delay = delay;
-            o.maxAttempts = maxAttempts;
-            o.window = window;
-            return o;
+            final var _resultValue = new ServiceTaskSpecRestartPolicy();
+            _resultValue.condition = condition;
+            _resultValue.delay = delay;
+            _resultValue.maxAttempts = maxAttempts;
+            _resultValue.window = window;
+            return _resultValue;
         }
     }
 }

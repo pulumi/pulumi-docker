@@ -68,10 +68,10 @@ public final class ServiceTaskSpecResources {
             return this;
         }
         public ServiceTaskSpecResources build() {
-            final var o = new ServiceTaskSpecResources();
-            o.limits = limits;
-            o.reservation = reservation;
-            return o;
+            final var _resultValue = new ServiceTaskSpecResources();
+            _resultValue.limits = limits;
+            _resultValue.reservation = reservation;
+            return _resultValue;
         }
     }
 }

@@ -85,11 +85,11 @@ public final class RemoteImageBuildUlimit {
             return this;
         }
         public RemoteImageBuildUlimit build() {
-            final var o = new RemoteImageBuildUlimit();
-            o.hard = hard;
-            o.name = name;
-            o.soft = soft;
-            return o;
+            final var _resultValue = new RemoteImageBuildUlimit();
+            _resultValue.hard = hard;
+            _resultValue.name = name;
+            _resultValue.soft = soft;
+            return _resultValue;
         }
     }
 }

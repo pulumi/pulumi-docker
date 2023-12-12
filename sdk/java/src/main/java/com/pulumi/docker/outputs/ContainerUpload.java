@@ -136,14 +136,14 @@ public final class ContainerUpload {
             return this;
         }
         public ContainerUpload build() {
-            final var o = new ContainerUpload();
-            o.content = content;
-            o.contentBase64 = contentBase64;
-            o.executable = executable;
-            o.file = file;
-            o.source = source;
-            o.sourceHash = sourceHash;
-            return o;
+            final var _resultValue = new ContainerUpload();
+            _resultValue.content = content;
+            _resultValue.contentBase64 = contentBase64;
+            _resultValue.executable = executable;
+            _resultValue.file = file;
+            _resultValue.source = source;
+            _resultValue.sourceHash = sourceHash;
+            return _resultValue;
         }
     }
 }

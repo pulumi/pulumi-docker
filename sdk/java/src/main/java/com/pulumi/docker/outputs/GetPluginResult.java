@@ -167,15 +167,15 @@ public final class GetPluginResult {
             return this;
         }
         public GetPluginResult build() {
-            final var o = new GetPluginResult();
-            o.alias = alias;
-            o.enabled = enabled;
-            o.envs = envs;
-            o.grantAllPermissions = grantAllPermissions;
-            o.id = id;
-            o.name = name;
-            o.pluginReference = pluginReference;
-            return o;
+            final var _resultValue = new GetPluginResult();
+            _resultValue.alias = alias;
+            _resultValue.enabled = enabled;
+            _resultValue.envs = envs;
+            _resultValue.grantAllPermissions = grantAllPermissions;
+            _resultValue.id = id;
+            _resultValue.name = name;
+            _resultValue.pluginReference = pluginReference;
+            return _resultValue;
         }
     }
 }

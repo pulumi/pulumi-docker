@@ -72,10 +72,10 @@ public final class ServiceEndpointSpec {
             return ports(List.of(ports));
         }
         public ServiceEndpointSpec build() {
-            final var o = new ServiceEndpointSpec();
-            o.mode = mode;
-            o.ports = ports;
-            return o;
+            final var _resultValue = new ServiceEndpointSpec();
+            _resultValue.mode = mode;
+            _resultValue.ports = ports;
+            return _resultValue;
         }
     }
 }

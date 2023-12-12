@@ -112,12 +112,12 @@ public final class ServiceTaskSpecContainerSpecMountVolumeOptions {
             return this;
         }
         public ServiceTaskSpecContainerSpecMountVolumeOptions build() {
-            final var o = new ServiceTaskSpecContainerSpecMountVolumeOptions();
-            o.driverName = driverName;
-            o.driverOptions = driverOptions;
-            o.labels = labels;
-            o.noCopy = noCopy;
-            return o;
+            final var _resultValue = new ServiceTaskSpecContainerSpecMountVolumeOptions();
+            _resultValue.driverName = driverName;
+            _resultValue.driverOptions = driverOptions;
+            _resultValue.labels = labels;
+            _resultValue.noCopy = noCopy;
+            return _resultValue;
         }
     }
 }

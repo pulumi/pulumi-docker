@@ -107,12 +107,12 @@ public final class NetworkIpamConfig {
             return this;
         }
         public NetworkIpamConfig build() {
-            final var o = new NetworkIpamConfig();
-            o.auxAddress = auxAddress;
-            o.gateway = gateway;
-            o.ipRange = ipRange;
-            o.subnet = subnet;
-            return o;
+            final var _resultValue = new NetworkIpamConfig();
+            _resultValue.auxAddress = auxAddress;
+            _resultValue.gateway = gateway;
+            _resultValue.ipRange = ipRange;
+            _resultValue.subnet = subnet;
+            return _resultValue;
         }
     }
 }

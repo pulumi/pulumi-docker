@@ -85,11 +85,11 @@ public final class ContainerUlimit {
             return this;
         }
         public ContainerUlimit build() {
-            final var o = new ContainerUlimit();
-            o.hard = hard;
-            o.name = name;
-            o.soft = soft;
-            return o;
+            final var _resultValue = new ContainerUlimit();
+            _resultValue.hard = hard;
+            _resultValue.name = name;
+            _resultValue.soft = soft;
+            return _resultValue;
         }
     }
 }

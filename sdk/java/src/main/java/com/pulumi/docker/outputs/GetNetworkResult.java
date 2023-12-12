@@ -168,15 +168,15 @@ public final class GetNetworkResult {
             return this;
         }
         public GetNetworkResult build() {
-            final var o = new GetNetworkResult();
-            o.driver = driver;
-            o.id = id;
-            o.internal = internal;
-            o.ipamConfigs = ipamConfigs;
-            o.name = name;
-            o.options = options;
-            o.scope = scope;
-            return o;
+            final var _resultValue = new GetNetworkResult();
+            _resultValue.driver = driver;
+            _resultValue.id = id;
+            _resultValue.internal = internal;
+            _resultValue.ipamConfigs = ipamConfigs;
+            _resultValue.name = name;
+            _resultValue.options = options;
+            _resultValue.scope = scope;
+            return _resultValue;
         }
     }
 }

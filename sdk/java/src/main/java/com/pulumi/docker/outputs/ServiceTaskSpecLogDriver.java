@@ -67,10 +67,10 @@ public final class ServiceTaskSpecLogDriver {
             return this;
         }
         public ServiceTaskSpecLogDriver build() {
-            final var o = new ServiceTaskSpecLogDriver();
-            o.name = name;
-            o.options = options;
-            return o;
+            final var _resultValue = new ServiceTaskSpecLogDriver();
+            _resultValue.name = name;
+            _resultValue.options = options;
+            return _resultValue;
         }
     }
 }

@@ -67,10 +67,10 @@ public final class ContainerMountTmpfsOptions {
             return this;
         }
         public ContainerMountTmpfsOptions build() {
-            final var o = new ContainerMountTmpfsOptions();
-            o.mode = mode;
-            o.sizeBytes = sizeBytes;
-            return o;
+            final var _resultValue = new ContainerMountTmpfsOptions();
+            _resultValue.mode = mode;
+            _resultValue.sizeBytes = sizeBytes;
+            return _resultValue;
         }
     }
 }

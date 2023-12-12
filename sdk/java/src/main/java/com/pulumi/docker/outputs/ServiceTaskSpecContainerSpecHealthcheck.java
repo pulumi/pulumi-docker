@@ -129,13 +129,13 @@ public final class ServiceTaskSpecContainerSpecHealthcheck {
             return this;
         }
         public ServiceTaskSpecContainerSpecHealthcheck build() {
-            final var o = new ServiceTaskSpecContainerSpecHealthcheck();
-            o.interval = interval;
-            o.retries = retries;
-            o.startPeriod = startPeriod;
-            o.tests = tests;
-            o.timeout = timeout;
-            return o;
+            final var _resultValue = new ServiceTaskSpecContainerSpecHealthcheck();
+            _resultValue.interval = interval;
+            _resultValue.retries = retries;
+            _resultValue.startPeriod = startPeriod;
+            _resultValue.tests = tests;
+            _resultValue.timeout = timeout;
+            return _resultValue;
         }
     }
 }

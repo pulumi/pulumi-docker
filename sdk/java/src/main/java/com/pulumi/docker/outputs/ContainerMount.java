@@ -166,15 +166,15 @@ public final class ContainerMount {
             return this;
         }
         public ContainerMount build() {
-            final var o = new ContainerMount();
-            o.bindOptions = bindOptions;
-            o.readOnly = readOnly;
-            o.source = source;
-            o.target = target;
-            o.tmpfsOptions = tmpfsOptions;
-            o.type = type;
-            o.volumeOptions = volumeOptions;
-            return o;
+            final var _resultValue = new ContainerMount();
+            _resultValue.bindOptions = bindOptions;
+            _resultValue.readOnly = readOnly;
+            _resultValue.source = source;
+            _resultValue.target = target;
+            _resultValue.tmpfsOptions = tmpfsOptions;
+            _resultValue.type = type;
+            _resultValue.volumeOptions = volumeOptions;
+            return _resultValue;
         }
     }
 }

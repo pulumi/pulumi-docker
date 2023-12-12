@@ -192,16 +192,16 @@ public final class ServiceTaskSpec {
             return this;
         }
         public ServiceTaskSpec build() {
-            final var o = new ServiceTaskSpec();
-            o.containerSpec = containerSpec;
-            o.forceUpdate = forceUpdate;
-            o.logDriver = logDriver;
-            o.networksAdvanceds = networksAdvanceds;
-            o.placement = placement;
-            o.resources = resources;
-            o.restartPolicy = restartPolicy;
-            o.runtime = runtime;
-            return o;
+            final var _resultValue = new ServiceTaskSpec();
+            _resultValue.containerSpec = containerSpec;
+            _resultValue.forceUpdate = forceUpdate;
+            _resultValue.logDriver = logDriver;
+            _resultValue.networksAdvanceds = networksAdvanceds;
+            _resultValue.placement = placement;
+            _resultValue.resources = resources;
+            _resultValue.restartPolicy = restartPolicy;
+            _resultValue.runtime = runtime;
+            return _resultValue;
         }
     }
 }

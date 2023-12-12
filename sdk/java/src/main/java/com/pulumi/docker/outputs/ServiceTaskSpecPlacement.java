@@ -117,12 +117,12 @@ public final class ServiceTaskSpecPlacement {
             return prefs(List.of(prefs));
         }
         public ServiceTaskSpecPlacement build() {
-            final var o = new ServiceTaskSpecPlacement();
-            o.constraints = constraints;
-            o.maxReplicas = maxReplicas;
-            o.platforms = platforms;
-            o.prefs = prefs;
-            return o;
+            final var _resultValue = new ServiceTaskSpecPlacement();
+            _resultValue.constraints = constraints;
+            _resultValue.maxReplicas = maxReplicas;
+            _resultValue.platforms = platforms;
+            _resultValue.prefs = prefs;
+            return _resultValue;
         }
     }
 }

@@ -86,11 +86,11 @@ public final class ContainerDevice {
             return this;
         }
         public ContainerDevice build() {
-            final var o = new ContainerDevice();
-            o.containerPath = containerPath;
-            o.hostPath = hostPath;
-            o.permissions = permissions;
-            return o;
+            final var _resultValue = new ContainerDevice();
+            _resultValue.containerPath = containerPath;
+            _resultValue.hostPath = hostPath;
+            _resultValue.permissions = permissions;
+            return _resultValue;
         }
     }
 }

@@ -67,10 +67,10 @@ public final class ServiceTaskSpecContainerSpecPrivilegesCredentialSpec {
             return this;
         }
         public ServiceTaskSpecContainerSpecPrivilegesCredentialSpec build() {
-            final var o = new ServiceTaskSpecContainerSpecPrivilegesCredentialSpec();
-            o.file = file;
-            o.registry = registry;
-            return o;
+            final var _resultValue = new ServiceTaskSpecContainerSpecPrivilegesCredentialSpec();
+            _resultValue.file = file;
+            _resultValue.registry = registry;
+            return _resultValue;
         }
     }
 }
