@@ -74,6 +74,7 @@ func Provider() tfbridge.ProviderInfo {
 		Homepage:         "https://pulumi.io",
 		Repository:       "https://github.com/pulumi/pulumi-docker",
 		UpstreamRepoPath: "./upstream",
+		GitHubOrg:        "kreuzwerker",
 		Config: map[string]*tfbridge.SchemaInfo{
 			"host": {
 				Default: &tfbridge.DefaultInfo{
