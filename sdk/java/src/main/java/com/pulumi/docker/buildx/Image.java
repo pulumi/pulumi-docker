@@ -9,6 +9,7 @@ import com.pulumi.core.annotations.ResourceType;
 import com.pulumi.core.internal.Codegen;
 import com.pulumi.docker.Utilities;
 import com.pulumi.docker.buildx.ImageArgs;
+import java.lang.Integer;
 import java.lang.String;
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +21,12 @@ import javax.annotation.Nullable;
  */
 @ResourceType(type="docker:buildx/image:Image")
 public class Image extends com.pulumi.resources.CustomResource {
+    @Export(name="architecture", refs={String.class}, tree="[0]")
+    private Output</* @Nullable */ String> architecture;
+
+    public Output<Optional<String>> architecture() {
+        return Codegen.optional(this.architecture);
+    }
     /**
      * Contexts to use while building the image. If omitted, an empty context
      * is used. If more than one value is specified, they should be of the
@@ -70,6 +77,30 @@ public class Image extends com.pulumi.resources.CustomResource {
      */
     public Output<Optional<String>> file() {
         return Codegen.optional(this.file);
+    }
+    @Export(name="os", refs={String.class}, tree="[0]")
+    private Output</* @Nullable */ String> os;
+
+    public Output<Optional<String>> os() {
+        return Codegen.optional(this.os);
+    }
+    @Export(name="repoDigests", refs={List.class,String.class}, tree="[0,1]")
+    private Output</* @Nullable */ List<String>> repoDigests;
+
+    public Output<Optional<List<String>>> repoDigests() {
+        return Codegen.optional(this.repoDigests);
+    }
+    @Export(name="repoTags", refs={List.class,String.class}, tree="[0,1]")
+    private Output</* @Nullable */ List<String>> repoTags;
+
+    public Output<Optional<List<String>>> repoTags() {
+        return Codegen.optional(this.repoTags);
+    }
+    @Export(name="size", refs={Integer.class}, tree="[0]")
+    private Output</* @Nullable */ Integer> size;
+
+    public Output<Optional<Integer>> size() {
+        return Codegen.optional(this.size);
     }
     /**
      * Name and optionally a tag (format: &#34;name:tag&#34;). If outputting to a
