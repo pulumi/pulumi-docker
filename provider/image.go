@@ -249,7 +249,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 			return "", nil, err
 		}
 
-		dockerAuthProvider := authprovider.NewDockerAuthProvider(cfg)
+		dockerAuthProvider := authprovider.NewDockerAuthProvider(cfg, nil)
 		sess.Allow(dockerAuthProvider)
 
 		dialSession := func(ctx context.Context, proto string, meta map[string][]string) (net.Conn, error) {
