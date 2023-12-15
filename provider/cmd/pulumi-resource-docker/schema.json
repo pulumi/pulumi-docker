@@ -2072,6 +2072,9 @@
         "docker:buildx/image:Image": {
             "description": "A Docker image built using Buildkit",
             "properties": {
+                "architecture": {
+                    "type": "string"
+                },
                 "context": {
                     "type": "array",
                     "items": {
@@ -2090,6 +2093,24 @@
                     "type": "string",
                     "description": "\nName of the Dockerfile to use (default: \"$PATH/Dockerfile\").",
                     "default": "Dockerfile"
+                },
+                "os": {
+                    "type": "string"
+                },
+                "repoDigests": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "repoTags": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "size": {
+                    "type": "integer"
                 },
                 "tags": {
                     "type": "array",

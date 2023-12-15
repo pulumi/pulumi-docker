@@ -15,6 +15,9 @@ namespace Pulumi.Docker.Buildx
     [DockerResourceType("docker:buildx/image:Image")]
     public partial class Image : global::Pulumi.CustomResource
     {
+        [Output("architecture")]
+        public Output<string?> Architecture { get; private set; } = null!;
+
         /// <summary>
         /// 
         /// Contexts to use while building the image. If omitted, an empty context
@@ -38,6 +41,18 @@ namespace Pulumi.Docker.Buildx
         /// </summary>
         [Output("file")]
         public Output<string?> File { get; private set; } = null!;
+
+        [Output("os")]
+        public Output<string?> Os { get; private set; } = null!;
+
+        [Output("repoDigests")]
+        public Output<ImmutableArray<string>> RepoDigests { get; private set; } = null!;
+
+        [Output("repoTags")]
+        public Output<ImmutableArray<string>> RepoTags { get; private set; } = null!;
+
+        [Output("size")]
+        public Output<int?> Size { get; private set; } = null!;
 
         /// <summary>
         /// 
