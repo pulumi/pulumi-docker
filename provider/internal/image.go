@@ -6,19 +6,49 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 )
 
+var (
+	_ infer.CustomResource[ImageArgs, ImageState] = (*Image)(nil)
+	_ infer.CustomCheck[ImageArgs]                = (*Image)(nil)
+	_ infer.Annotated                             = (infer.Annotated)((*Image)(nil))
+	_ infer.Annotated                             = (infer.Annotated)((*ImageArgs)(nil))
+	_ infer.Annotated                             = (infer.Annotated)((*ImageState)(nil))
+)
+
 // Image is a Docker image build using buildkit.
 type Image struct{}
 
+// Annotate provides a description of the Image resource.
+func (i *Image) Annotate(a infer.Annotator) {
+	a.Describe(&i, "A Docker image built using Buildkit")
+}
+
 // ImageArgs instantiates a new Image.
 type ImageArgs struct {
-	Tags    []string `pulumi:"tags"`
-	File    string   `pulumi:"file,optional"`
 	Context []string `pulumi:"context,optional"`
+	Exports []string `pulumi:"exports,optional"`
+	File    string   `pulumi:"file,optional"`
+	Tags    []string `pulumi:"tags"`
+}
+
+// Annotate describes inputs to the Image resource.
+func (ia *ImageArgs) Annotate(a infer.Annotator) {
+	a.Describe(&ia.Context, "Contexts to use while building the image. If omitted, an empty context is used. If more than one value is specified, they should be of the form \"name=value\"")
+	a.Describe(&ia.Exports, "Name and optionally a tag (format: \"name:tag\"). If outputting to a registry, the name should include the fully qualified registry address.")
+	a.Describe(&ia.File, "Name of the Dockerfile to use (default: \"$PATH/Dockerfile\").")
+	a.Describe(&ia.Tags, "Name and optionally a tag (format: \"name:tag\"). If outputting to a registry, the name should include the fully qualified registry address.")
+
+	a.SetDefault(&ia.File, "Dockerfile")
+	// TODO: SetDefault host platform.
 }
 
 // ImageState is serialized to the program's state file.
 type ImageState struct {
 	ImageArgs
+}
+
+// Annotate describes outputs of the Image resource.
+func (is *ImageState) Annotate(a infer.Annotator) {
+	is.ImageArgs.Annotate(a)
 }
 
 // Check validates ImageArgs and sets defaults.
@@ -51,8 +81,8 @@ func (*Image) Create(
 	name string,
 	input ImageArgs,
 	_ bool,
-) (string, *ImageState, error) {
-	state := &ImageState{}
+) (string, ImageState, error) {
+	state := ImageState{}
 
 	state.Tags = input.Tags
 	state.File = input.File

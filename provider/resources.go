@@ -22,16 +22,14 @@ import (
 	// embed is used to store bridge-metadata.json in the compiled binary
 	_ "embed"
 
-	"github.com/terraform-providers/terraform-provider-docker/shim"
-
+	"github.com/pulumi/pulumi-docker/provider/v4/internal"
 	"github.com/pulumi/pulumi-terraform-bridge/v3/pkg/tfbridge"
 	tfbridgetokens "github.com/pulumi/pulumi-terraform-bridge/v3/pkg/tfbridge/tokens"
 	shimv2 "github.com/pulumi/pulumi-terraform-bridge/v3/pkg/tfshim/sdk-v2"
 	"github.com/pulumi/pulumi/pkg/v3/codegen/schema"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/tokens"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-
-	"github.com/pulumi/pulumi-docker/provider/v4/pkg/version"
+	"github.com/terraform-providers/terraform-provider-docker/shim"
 )
 
 const (
@@ -232,66 +230,7 @@ func Provider(version string) tfbridge.ProviderInfo {
 			},
 		},
 		ExtraResources: map[string]schema.ResourceSpec{
-			dockerResource("buildx", "Image").String(): {
-				ObjectTypeSpec: schema.ObjectTypeSpec{
-					Type:        "object",
-					Description: "Builds a Docker image with buildkit.",
-					Properties: map[string]schema.PropertySpec{
-						"file": {
-							Description: `Name of the Dockerfile to use (default: "$PATH/Dockerfile").`,
-							TypeSpec:    schema.TypeSpec{Type: "string"},
-						},
-
-						"tags": {
-							Description: `Name and optionally a tag (format: "name:tag"). If outputting to a registry, the name should include the fully qualified registry address.`,
-							TypeSpec: schema.TypeSpec{
-								Type: "array",
-								Items: &schema.TypeSpec{
-									Type: "string",
-								},
-							},
-						},
-
-						"context": {
-							Description: `Contexts to use while building the image. If omitted, an empty context is used. If more than one value is specified, they should be of the form "[name]=[value]"`,
-							TypeSpec: schema.TypeSpec{
-								Type: "array",
-								Items: &schema.TypeSpec{
-									Type: "string",
-								},
-							},
-						},
-					},
-				},
-				IsComponent: false,
-				InputProperties: map[string]schema.PropertySpec{
-					"file": {
-						Description: `Name of the Dockerfile to use (default: "$PATH/Dockerfile").`,
-						TypeSpec:    schema.TypeSpec{Type: "string"},
-					},
-
-					"tags": {
-						Description: `Name and optionally a tag (format: "name:tag"). If outputting to a registry, the name should include the fully qualified registry address.`,
-						TypeSpec: schema.TypeSpec{
-							Type: "array",
-							Items: &schema.TypeSpec{
-								Type: "string",
-							},
-						},
-					},
-
-					"context": {
-						Description: `Contexts to use while building the image. If omitted, an empty context is used. If more than one value is specified, they should be of the form "[name]=[value]"`,
-						TypeSpec: schema.TypeSpec{
-							Type: "array",
-							Items: &schema.TypeSpec{
-								Type: "string",
-							},
-						},
-					},
-				},
-				RequiredInputs: []string{"tags"},
-			},
+			dockerResource("buildx", "Image").String(): internal.ImageSchema(),
 
 			dockerResource(dockerMod, "Image").String(): {
 				ObjectTypeSpec: schema.ObjectTypeSpec{
