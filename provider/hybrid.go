@@ -103,10 +103,14 @@ func (dp dockerHybridProvider) Configure(
 			continue
 		}
 
-		contract.Assertf(!r.AcceptOutputs, fmt.Sprintf("Unexpected AcceptOutputs=true from Docker %s provider Configure", pname))
-		contract.Assertf(!r.AcceptResources, fmt.Sprintf("Unexpected AcceptResources=true from Docker %s provider Configure", pname))
-		contract.Assertf(!r.AcceptSecrets, fmt.Sprintf("Unexpected AcceptSecrets=true from Docker %s provider Configure", pname))
-		contract.Assertf(!r.SupportsPreview, fmt.Sprintf("Unexpected SupportsPreview=true from Docker %s provider Configure", pname))
+		contract.Assertf(!r.AcceptOutputs,
+			fmt.Sprintf("Unexpected AcceptOutputs=true from Docker %s provider Configure", pname))
+		contract.Assertf(!r.AcceptResources,
+			fmt.Sprintf("Unexpected AcceptResources=true from Docker %s provider Configure", pname))
+		contract.Assertf(!r.AcceptSecrets,
+			fmt.Sprintf("Unexpected AcceptSecrets=true from Docker %s provider Configure", pname))
+		contract.Assertf(!r.SupportsPreview,
+			fmt.Sprintf("Unexpected SupportsPreview=true from Docker %s provider Configure", pname))
 	}
 
 	// For the most part delegate Configure handling to the bridged provider.

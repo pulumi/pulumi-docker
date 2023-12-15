@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"github.com/muesli/reflow/dedent"
 	provider "github.com/pulumi/pulumi-go-provider"
 	"github.com/pulumi/pulumi-go-provider/infer"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
@@ -32,10 +33,22 @@ type ImageArgs struct {
 
 // Annotate describes inputs to the Image resource.
 func (ia *ImageArgs) Annotate(a infer.Annotator) {
-	a.Describe(&ia.Context, "Contexts to use while building the image. If omitted, an empty context is used. If more than one value is specified, they should be of the form \"name=value\"")
-	a.Describe(&ia.Exports, "Name and optionally a tag (format: \"name:tag\"). If outputting to a registry, the name should include the fully qualified registry address.")
-	a.Describe(&ia.File, "Name of the Dockerfile to use (default: \"$PATH/Dockerfile\").")
-	a.Describe(&ia.Tags, "Name and optionally a tag (format: \"name:tag\"). If outputting to a registry, the name should include the fully qualified registry address.")
+	a.Describe(&ia.Context, dedent.String(`
+		Contexts to use while building the image. If omitted, an empty context
+		is used. If more than one value is specified, they should be of the
+		form "name=value".`,
+	))
+	a.Describe(&ia.Exports, dedent.String(`
+		Name and optionally a tag (format: "name:tag"). If outputting to a
+		registry, the name should include the fully qualified registry address.`,
+	))
+	a.Describe(&ia.File, dedent.String(`
+		Name of the Dockerfile to use (default: "$PATH/Dockerfile").`,
+	))
+	a.Describe(&ia.Tags, dedent.String(`
+		Name and optionally a tag (format: "name:tag"). If outputting to a
+		registry, the name should include the fully qualified registry address.`,
+	))
 
 	a.SetDefault(&ia.File, "Dockerfile")
 	// TODO: SetDefault host platform.
