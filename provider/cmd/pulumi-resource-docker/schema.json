@@ -2072,57 +2072,31 @@
         "docker:buildx/image:Image": {
             "description": "A Docker image built using Buildkit",
             "properties": {
-                "architecture": {
-                    "type": "string",
-                    "description": "The image's architecture"
-                },
                 "context": {
                     "type": "array",
                     "items": {
                         "type": "string"
                     },
-                    "description": "Contexts to use while building the image. If omitted, an empty context is used. If more than one value is specified, they should be of the form \"name=value\""
+                    "description": "\nContexts to use while building the image. If omitted, an empty context\nis used. If more than one value is specified, they should be of the\nform \"name=value\"."
                 },
                 "exports": {
                     "type": "array",
                     "items": {
                         "type": "string"
                     },
-                    "description": "Name and optionally a tag (format: \"name:tag\"). If outputting to a registry, the name should include the fully qualified registry address."
+                    "description": "\nName and optionally a tag (format: \"name:tag\"). If outputting to a\nregistry, the name should include the fully qualified registry address."
                 },
                 "file": {
                     "type": "string",
-                    "description": "Name of the Dockerfile to use (default: \"$PATH/Dockerfile\").",
+                    "description": "\nName of the Dockerfile to use (default: \"$PATH/Dockerfile\").",
                     "default": "Dockerfile"
-                },
-                "os": {
-                    "type": "string",
-                    "description": "The image's operating system"
-                },
-                "repoDigests": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    },
-                    "description": "Registry digests"
-                },
-                "repoTags": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    },
-                    "description": "Registry tags"
-                },
-                "size": {
-                    "type": "integer",
-                    "description": "Size of the image in bytes"
                 },
                 "tags": {
                     "type": "array",
                     "items": {
                         "type": "string"
                     },
-                    "description": "Name and optionally a tag (format: \"name:tag\"). If outputting to a registry, the name should include the fully qualified registry address."
+                    "description": "\nName and optionally a tag (format: \"name:tag\"). If outputting to a\nregistry, the name should include the fully qualified registry address."
                 }
             },
             "required": [
@@ -2134,18 +2108,18 @@
                     "items": {
                         "type": "string"
                     },
-                    "description": "Contexts to use while building the image. If omitted, an empty context is used. If more than one value is specified, they should be of the form \"name=value\""
+                    "description": "\nContexts to use while building the image. If omitted, an empty context\nis used. If more than one value is specified, they should be of the\nform \"name=value\"."
                 },
                 "exports": {
                     "type": "array",
                     "items": {
                         "type": "string"
                     },
-                    "description": "Name and optionally a tag (format: \"name:tag\"). If outputting to a registry, the name should include the fully qualified registry address."
+                    "description": "\nName and optionally a tag (format: \"name:tag\"). If outputting to a\nregistry, the name should include the fully qualified registry address."
                 },
                 "file": {
                     "type": "string",
-                    "description": "Name of the Dockerfile to use (default: \"$PATH/Dockerfile\").",
+                    "description": "\nName of the Dockerfile to use (default: \"$PATH/Dockerfile\").",
                     "default": "Dockerfile"
                 },
                 "tags": {
@@ -2153,7 +2127,7 @@
                     "items": {
                         "type": "string"
                     },
-                    "description": "Name and optionally a tag (format: \"name:tag\"). If outputting to a registry, the name should include the fully qualified registry address."
+                    "description": "\nName and optionally a tag (format: \"name:tag\"). If outputting to a\nregistry, the name should include the fully qualified registry address."
                 }
             },
             "requiredInputs": [

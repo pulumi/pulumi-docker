@@ -35,39 +35,27 @@ export class Image extends pulumi.CustomResource {
     }
 
     /**
-     * The image's architecture
-     */
-    public /*out*/ readonly architecture!: pulumi.Output<string | undefined>;
-    /**
-     * Contexts to use while building the image. If omitted, an empty context is used. If more than one value is specified, they should be of the form "name=value"
+     *
+     * Contexts to use while building the image. If omitted, an empty context
+     * is used. If more than one value is specified, they should be of the
+     * form "name=value".
      */
     public readonly context!: pulumi.Output<string[] | undefined>;
     /**
-     * Name and optionally a tag (format: "name:tag"). If outputting to a registry, the name should include the fully qualified registry address.
+     *
+     * Name and optionally a tag (format: "name:tag"). If outputting to a
+     * registry, the name should include the fully qualified registry address.
      */
     public readonly exports!: pulumi.Output<string[] | undefined>;
     /**
+     *
      * Name of the Dockerfile to use (default: "$PATH/Dockerfile").
      */
     public readonly file!: pulumi.Output<string | undefined>;
     /**
-     * The image's operating system
-     */
-    public /*out*/ readonly os!: pulumi.Output<string | undefined>;
-    /**
-     * Registry digests
-     */
-    public /*out*/ readonly repoDigests!: pulumi.Output<string[] | undefined>;
-    /**
-     * Registry tags
-     */
-    public /*out*/ readonly repoTags!: pulumi.Output<string[] | undefined>;
-    /**
-     * Size of the image in bytes
-     */
-    public /*out*/ readonly size!: pulumi.Output<number | undefined>;
-    /**
-     * Name and optionally a tag (format: "name:tag"). If outputting to a registry, the name should include the fully qualified registry address.
+     *
+     * Name and optionally a tag (format: "name:tag"). If outputting to a
+     * registry, the name should include the fully qualified registry address.
      */
     public readonly tags!: pulumi.Output<string[]>;
 
@@ -89,20 +77,10 @@ export class Image extends pulumi.CustomResource {
             resourceInputs["exports"] = args ? args.exports : undefined;
             resourceInputs["file"] = (args ? args.file : undefined) ?? "Dockerfile";
             resourceInputs["tags"] = args ? args.tags : undefined;
-            resourceInputs["architecture"] = undefined /*out*/;
-            resourceInputs["os"] = undefined /*out*/;
-            resourceInputs["repoDigests"] = undefined /*out*/;
-            resourceInputs["repoTags"] = undefined /*out*/;
-            resourceInputs["size"] = undefined /*out*/;
         } else {
-            resourceInputs["architecture"] = undefined /*out*/;
             resourceInputs["context"] = undefined /*out*/;
             resourceInputs["exports"] = undefined /*out*/;
             resourceInputs["file"] = undefined /*out*/;
-            resourceInputs["os"] = undefined /*out*/;
-            resourceInputs["repoDigests"] = undefined /*out*/;
-            resourceInputs["repoTags"] = undefined /*out*/;
-            resourceInputs["size"] = undefined /*out*/;
             resourceInputs["tags"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
@@ -115,19 +93,27 @@ export class Image extends pulumi.CustomResource {
  */
 export interface ImageArgs {
     /**
-     * Contexts to use while building the image. If omitted, an empty context is used. If more than one value is specified, they should be of the form "name=value"
+     *
+     * Contexts to use while building the image. If omitted, an empty context
+     * is used. If more than one value is specified, they should be of the
+     * form "name=value".
      */
     context?: pulumi.Input<pulumi.Input<string>[]>;
     /**
-     * Name and optionally a tag (format: "name:tag"). If outputting to a registry, the name should include the fully qualified registry address.
+     *
+     * Name and optionally a tag (format: "name:tag"). If outputting to a
+     * registry, the name should include the fully qualified registry address.
      */
     exports?: pulumi.Input<pulumi.Input<string>[]>;
     /**
+     *
      * Name of the Dockerfile to use (default: "$PATH/Dockerfile").
      */
     file?: pulumi.Input<string>;
     /**
-     * Name and optionally a tag (format: "name:tag"). If outputting to a registry, the name should include the fully qualified registry address.
+     *
+     * Name and optionally a tag (format: "name:tag"). If outputting to a
+     * registry, the name should include the fully qualified registry address.
      */
     tags: pulumi.Input<pulumi.Input<string>[]>;
 }

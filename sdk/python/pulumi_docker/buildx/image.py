@@ -20,10 +20,18 @@ class ImageArgs:
                  file: Optional[pulumi.Input[str]] = None):
         """
         The set of arguments for constructing a Image resource.
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] tags: Name and optionally a tag (format: "name:tag"). If outputting to a registry, the name should include the fully qualified registry address.
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] context: Contexts to use while building the image. If omitted, an empty context is used. If more than one value is specified, they should be of the form "name=value"
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] exports: Name and optionally a tag (format: "name:tag"). If outputting to a registry, the name should include the fully qualified registry address.
-        :param pulumi.Input[str] file: Name of the Dockerfile to use (default: "$PATH/Dockerfile").
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] tags: 
+               Name and optionally a tag (format: "name:tag"). If outputting to a
+               registry, the name should include the fully qualified registry address.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] context: 
+               Contexts to use while building the image. If omitted, an empty context
+               is used. If more than one value is specified, they should be of the
+               form "name=value".
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] exports: 
+               Name and optionally a tag (format: "name:tag"). If outputting to a
+               registry, the name should include the fully qualified registry address.
+        :param pulumi.Input[str] file: 
+               Name of the Dockerfile to use (default: "$PATH/Dockerfile").
         """
         pulumi.set(__self__, "tags", tags)
         if context is not None:
@@ -39,7 +47,9 @@ class ImageArgs:
     @pulumi.getter
     def tags(self) -> pulumi.Input[Sequence[pulumi.Input[str]]]:
         """
-        Name and optionally a tag (format: "name:tag"). If outputting to a registry, the name should include the fully qualified registry address.
+
+        Name and optionally a tag (format: "name:tag"). If outputting to a
+        registry, the name should include the fully qualified registry address.
         """
         return pulumi.get(self, "tags")
 
@@ -51,7 +61,10 @@ class ImageArgs:
     @pulumi.getter
     def context(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
         """
-        Contexts to use while building the image. If omitted, an empty context is used. If more than one value is specified, they should be of the form "name=value"
+
+        Contexts to use while building the image. If omitted, an empty context
+        is used. If more than one value is specified, they should be of the
+        form "name=value".
         """
         return pulumi.get(self, "context")
 
@@ -63,7 +76,9 @@ class ImageArgs:
     @pulumi.getter
     def exports(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
         """
-        Name and optionally a tag (format: "name:tag"). If outputting to a registry, the name should include the fully qualified registry address.
+
+        Name and optionally a tag (format: "name:tag"). If outputting to a
+        registry, the name should include the fully qualified registry address.
         """
         return pulumi.get(self, "exports")
 
@@ -75,6 +90,7 @@ class ImageArgs:
     @pulumi.getter
     def file(self) -> Optional[pulumi.Input[str]]:
         """
+
         Name of the Dockerfile to use (default: "$PATH/Dockerfile").
         """
         return pulumi.get(self, "file")
@@ -99,10 +115,18 @@ class Image(pulumi.CustomResource):
 
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] context: Contexts to use while building the image. If omitted, an empty context is used. If more than one value is specified, they should be of the form "name=value"
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] exports: Name and optionally a tag (format: "name:tag"). If outputting to a registry, the name should include the fully qualified registry address.
-        :param pulumi.Input[str] file: Name of the Dockerfile to use (default: "$PATH/Dockerfile").
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] tags: Name and optionally a tag (format: "name:tag"). If outputting to a registry, the name should include the fully qualified registry address.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] context: 
+               Contexts to use while building the image. If omitted, an empty context
+               is used. If more than one value is specified, they should be of the
+               form "name=value".
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] exports: 
+               Name and optionally a tag (format: "name:tag"). If outputting to a
+               registry, the name should include the fully qualified registry address.
+        :param pulumi.Input[str] file: 
+               Name of the Dockerfile to use (default: "$PATH/Dockerfile").
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] tags: 
+               Name and optionally a tag (format: "name:tag"). If outputting to a
+               registry, the name should include the fully qualified registry address.
         """
         ...
     @overload
@@ -149,11 +173,6 @@ class Image(pulumi.CustomResource):
             if tags is None and not opts.urn:
                 raise TypeError("Missing required property 'tags'")
             __props__.__dict__["tags"] = tags
-            __props__.__dict__["architecture"] = None
-            __props__.__dict__["os"] = None
-            __props__.__dict__["repo_digests"] = None
-            __props__.__dict__["repo_tags"] = None
-            __props__.__dict__["size"] = None
         super(Image, __self__).__init__(
             'docker:buildx/image:Image',
             resource_name,
@@ -176,30 +195,20 @@ class Image(pulumi.CustomResource):
 
         __props__ = ImageArgs.__new__(ImageArgs)
 
-        __props__.__dict__["architecture"] = None
         __props__.__dict__["context"] = None
         __props__.__dict__["exports"] = None
         __props__.__dict__["file"] = None
-        __props__.__dict__["os"] = None
-        __props__.__dict__["repo_digests"] = None
-        __props__.__dict__["repo_tags"] = None
-        __props__.__dict__["size"] = None
         __props__.__dict__["tags"] = None
         return Image(resource_name, opts=opts, __props__=__props__)
 
     @property
     @pulumi.getter
-    def architecture(self) -> pulumi.Output[Optional[str]]:
-        """
-        The image's architecture
-        """
-        return pulumi.get(self, "architecture")
-
-    @property
-    @pulumi.getter
     def context(self) -> pulumi.Output[Optional[Sequence[str]]]:
         """
-        Contexts to use while building the image. If omitted, an empty context is used. If more than one value is specified, they should be of the form "name=value"
+
+        Contexts to use while building the image. If omitted, an empty context
+        is used. If more than one value is specified, they should be of the
+        form "name=value".
         """
         return pulumi.get(self, "context")
 
@@ -207,7 +216,9 @@ class Image(pulumi.CustomResource):
     @pulumi.getter
     def exports(self) -> pulumi.Output[Optional[Sequence[str]]]:
         """
-        Name and optionally a tag (format: "name:tag"). If outputting to a registry, the name should include the fully qualified registry address.
+
+        Name and optionally a tag (format: "name:tag"). If outputting to a
+        registry, the name should include the fully qualified registry address.
         """
         return pulumi.get(self, "exports")
 
@@ -215,47 +226,18 @@ class Image(pulumi.CustomResource):
     @pulumi.getter
     def file(self) -> pulumi.Output[Optional[str]]:
         """
+
         Name of the Dockerfile to use (default: "$PATH/Dockerfile").
         """
         return pulumi.get(self, "file")
 
     @property
     @pulumi.getter
-    def os(self) -> pulumi.Output[Optional[str]]:
-        """
-        The image's operating system
-        """
-        return pulumi.get(self, "os")
-
-    @property
-    @pulumi.getter(name="repoDigests")
-    def repo_digests(self) -> pulumi.Output[Optional[Sequence[str]]]:
-        """
-        Registry digests
-        """
-        return pulumi.get(self, "repo_digests")
-
-    @property
-    @pulumi.getter(name="repoTags")
-    def repo_tags(self) -> pulumi.Output[Optional[Sequence[str]]]:
-        """
-        Registry tags
-        """
-        return pulumi.get(self, "repo_tags")
-
-    @property
-    @pulumi.getter
-    def size(self) -> pulumi.Output[Optional[int]]:
-        """
-        Size of the image in bytes
-        """
-        return pulumi.get(self, "size")
-
-    @property
-    @pulumi.getter
     def tags(self) -> pulumi.Output[Sequence[str]]:
         """
-        Name and optionally a tag (format: "name:tag"). If outputting to a registry, the name should include the fully qualified registry address.
+
+        Name and optionally a tag (format: "name:tag"). If outputting to a
+        registry, the name should include the fully qualified registry address.
         """
         return pulumi.get(self, "tags")
 
