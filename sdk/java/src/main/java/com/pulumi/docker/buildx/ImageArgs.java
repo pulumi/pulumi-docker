@@ -18,14 +18,19 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
     public static final ImageArgs Empty = new ImageArgs();
 
     /**
-     * Contexts to use while building the image. If omitted, an empty context is used. If more than one value is specified, they should be of the form &#34;name=value&#34;
+     * Contexts to use while building the image. If omitted, an empty context
+     * is used. If more than one value is specified, they should be of the
+     * form &#34;name=value&#34;.
      * 
      */
     @Import(name="context")
     private @Nullable Output<List<String>> context;
 
     /**
-     * @return Contexts to use while building the image. If omitted, an empty context is used. If more than one value is specified, they should be of the form &#34;name=value&#34;
+     * @return
+     * Contexts to use while building the image. If omitted, an empty context
+     * is used. If more than one value is specified, they should be of the
+     * form &#34;name=value&#34;.
      * 
      */
     public Optional<Output<List<String>>> context() {
@@ -33,14 +38,17 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * Name and optionally a tag (format: &#34;name:tag&#34;). If outputting to a registry, the name should include the fully qualified registry address.
+     * Name and optionally a tag (format: &#34;name:tag&#34;). If outputting to a
+     * registry, the name should include the fully qualified registry address.
      * 
      */
     @Import(name="exports")
     private @Nullable Output<List<String>> exports;
 
     /**
-     * @return Name and optionally a tag (format: &#34;name:tag&#34;). If outputting to a registry, the name should include the fully qualified registry address.
+     * @return
+     * Name and optionally a tag (format: &#34;name:tag&#34;). If outputting to a
+     * registry, the name should include the fully qualified registry address.
      * 
      */
     public Optional<Output<List<String>>> exports() {
@@ -55,7 +63,8 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
     private @Nullable Output<String> file;
 
     /**
-     * @return Name of the Dockerfile to use (default: &#34;$PATH/Dockerfile&#34;).
+     * @return
+     * Name of the Dockerfile to use (default: &#34;$PATH/Dockerfile&#34;).
      * 
      */
     public Optional<Output<String>> file() {
@@ -63,14 +72,17 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * Name and optionally a tag (format: &#34;name:tag&#34;). If outputting to a registry, the name should include the fully qualified registry address.
+     * Name and optionally a tag (format: &#34;name:tag&#34;). If outputting to a
+     * registry, the name should include the fully qualified registry address.
      * 
      */
     @Import(name="tags", required=true)
     private Output<List<String>> tags;
 
     /**
-     * @return Name and optionally a tag (format: &#34;name:tag&#34;). If outputting to a registry, the name should include the fully qualified registry address.
+     * @return
+     * Name and optionally a tag (format: &#34;name:tag&#34;). If outputting to a
+     * registry, the name should include the fully qualified registry address.
      * 
      */
     public Output<List<String>> tags() {
@@ -105,7 +117,10 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param context Contexts to use while building the image. If omitted, an empty context is used. If more than one value is specified, they should be of the form &#34;name=value&#34;
+         * @param context
+         * Contexts to use while building the image. If omitted, an empty context
+         * is used. If more than one value is specified, they should be of the
+         * form &#34;name=value&#34;.
          * 
          * @return builder
          * 
@@ -116,7 +131,10 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param context Contexts to use while building the image. If omitted, an empty context is used. If more than one value is specified, they should be of the form &#34;name=value&#34;
+         * @param context
+         * Contexts to use while building the image. If omitted, an empty context
+         * is used. If more than one value is specified, they should be of the
+         * form &#34;name=value&#34;.
          * 
          * @return builder
          * 
@@ -126,7 +144,10 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param context Contexts to use while building the image. If omitted, an empty context is used. If more than one value is specified, they should be of the form &#34;name=value&#34;
+         * @param context
+         * Contexts to use while building the image. If omitted, an empty context
+         * is used. If more than one value is specified, they should be of the
+         * form &#34;name=value&#34;.
          * 
          * @return builder
          * 
@@ -136,7 +157,9 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param exports Name and optionally a tag (format: &#34;name:tag&#34;). If outputting to a registry, the name should include the fully qualified registry address.
+         * @param exports
+         * Name and optionally a tag (format: &#34;name:tag&#34;). If outputting to a
+         * registry, the name should include the fully qualified registry address.
          * 
          * @return builder
          * 
@@ -147,7 +170,9 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param exports Name and optionally a tag (format: &#34;name:tag&#34;). If outputting to a registry, the name should include the fully qualified registry address.
+         * @param exports
+         * Name and optionally a tag (format: &#34;name:tag&#34;). If outputting to a
+         * registry, the name should include the fully qualified registry address.
          * 
          * @return builder
          * 
@@ -157,7 +182,9 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param exports Name and optionally a tag (format: &#34;name:tag&#34;). If outputting to a registry, the name should include the fully qualified registry address.
+         * @param exports
+         * Name and optionally a tag (format: &#34;name:tag&#34;). If outputting to a
+         * registry, the name should include the fully qualified registry address.
          * 
          * @return builder
          * 
@@ -167,7 +194,8 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param file Name of the Dockerfile to use (default: &#34;$PATH/Dockerfile&#34;).
+         * @param file
+         * Name of the Dockerfile to use (default: &#34;$PATH/Dockerfile&#34;).
          * 
          * @return builder
          * 
@@ -178,7 +206,8 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param file Name of the Dockerfile to use (default: &#34;$PATH/Dockerfile&#34;).
+         * @param file
+         * Name of the Dockerfile to use (default: &#34;$PATH/Dockerfile&#34;).
          * 
          * @return builder
          * 
@@ -188,7 +217,9 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param tags Name and optionally a tag (format: &#34;name:tag&#34;). If outputting to a registry, the name should include the fully qualified registry address.
+         * @param tags
+         * Name and optionally a tag (format: &#34;name:tag&#34;). If outputting to a
+         * registry, the name should include the fully qualified registry address.
          * 
          * @return builder
          * 
@@ -199,7 +230,9 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param tags Name and optionally a tag (format: &#34;name:tag&#34;). If outputting to a registry, the name should include the fully qualified registry address.
+         * @param tags
+         * Name and optionally a tag (format: &#34;name:tag&#34;). If outputting to a
+         * registry, the name should include the fully qualified registry address.
          * 
          * @return builder
          * 
@@ -209,7 +242,9 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param tags Name and optionally a tag (format: &#34;name:tag&#34;). If outputting to a registry, the name should include the fully qualified registry address.
+         * @param tags
+         * Name and optionally a tag (format: &#34;name:tag&#34;). If outputting to a
+         * registry, the name should include the fully qualified registry address.
          * 
          * @return builder
          * 

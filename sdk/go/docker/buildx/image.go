@@ -16,23 +16,17 @@ import (
 type Image struct {
 	pulumi.CustomResourceState
 
-	// The image's architecture
-	Architecture pulumi.StringPtrOutput `pulumi:"architecture"`
-	// Contexts to use while building the image. If omitted, an empty context is used. If more than one value is specified, they should be of the form "name=value"
+	// Contexts to use while building the image. If omitted, an empty context
+	// is used. If more than one value is specified, they should be of the
+	// form "name=value".
 	Context pulumi.StringArrayOutput `pulumi:"context"`
-	// Name and optionally a tag (format: "name:tag"). If outputting to a registry, the name should include the fully qualified registry address.
+	// Name and optionally a tag (format: "name:tag"). If outputting to a
+	// registry, the name should include the fully qualified registry address.
 	Exports pulumi.StringArrayOutput `pulumi:"exports"`
 	// Name of the Dockerfile to use (default: "$PATH/Dockerfile").
 	File pulumi.StringPtrOutput `pulumi:"file"`
-	// The image's operating system
-	Os pulumi.StringPtrOutput `pulumi:"os"`
-	// Registry digests
-	RepoDigests pulumi.StringArrayOutput `pulumi:"repoDigests"`
-	// Registry tags
-	RepoTags pulumi.StringArrayOutput `pulumi:"repoTags"`
-	// Size of the image in bytes
-	Size pulumi.IntPtrOutput `pulumi:"size"`
-	// Name and optionally a tag (format: "name:tag"). If outputting to a registry, the name should include the fully qualified registry address.
+	// Name and optionally a tag (format: "name:tag"). If outputting to a
+	// registry, the name should include the fully qualified registry address.
 	Tags pulumi.StringArrayOutput `pulumi:"tags"`
 }
 
@@ -82,25 +76,33 @@ func (ImageState) ElementType() reflect.Type {
 }
 
 type imageArgs struct {
-	// Contexts to use while building the image. If omitted, an empty context is used. If more than one value is specified, they should be of the form "name=value"
+	// Contexts to use while building the image. If omitted, an empty context
+	// is used. If more than one value is specified, they should be of the
+	// form "name=value".
 	Context []string `pulumi:"context"`
-	// Name and optionally a tag (format: "name:tag"). If outputting to a registry, the name should include the fully qualified registry address.
+	// Name and optionally a tag (format: "name:tag"). If outputting to a
+	// registry, the name should include the fully qualified registry address.
 	Exports []string `pulumi:"exports"`
 	// Name of the Dockerfile to use (default: "$PATH/Dockerfile").
 	File *string `pulumi:"file"`
-	// Name and optionally a tag (format: "name:tag"). If outputting to a registry, the name should include the fully qualified registry address.
+	// Name and optionally a tag (format: "name:tag"). If outputting to a
+	// registry, the name should include the fully qualified registry address.
 	Tags []string `pulumi:"tags"`
 }
 
 // The set of arguments for constructing a Image resource.
 type ImageArgs struct {
-	// Contexts to use while building the image. If omitted, an empty context is used. If more than one value is specified, they should be of the form "name=value"
+	// Contexts to use while building the image. If omitted, an empty context
+	// is used. If more than one value is specified, they should be of the
+	// form "name=value".
 	Context pulumi.StringArrayInput
-	// Name and optionally a tag (format: "name:tag"). If outputting to a registry, the name should include the fully qualified registry address.
+	// Name and optionally a tag (format: "name:tag"). If outputting to a
+	// registry, the name should include the fully qualified registry address.
 	Exports pulumi.StringArrayInput
 	// Name of the Dockerfile to use (default: "$PATH/Dockerfile").
 	File pulumi.StringPtrInput
-	// Name and optionally a tag (format: "name:tag"). If outputting to a registry, the name should include the fully qualified registry address.
+	// Name and optionally a tag (format: "name:tag"). If outputting to a
+	// registry, the name should include the fully qualified registry address.
 	Tags pulumi.StringArrayInput
 }
 
@@ -191,17 +193,15 @@ func (o ImageOutput) ToImageOutputWithContext(ctx context.Context) ImageOutput {
 	return o
 }
 
-// The image's architecture
-func (o ImageOutput) Architecture() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v *Image) pulumi.StringPtrOutput { return v.Architecture }).(pulumi.StringPtrOutput)
-}
-
-// Contexts to use while building the image. If omitted, an empty context is used. If more than one value is specified, they should be of the form "name=value"
+// Contexts to use while building the image. If omitted, an empty context
+// is used. If more than one value is specified, they should be of the
+// form "name=value".
 func (o ImageOutput) Context() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v *Image) pulumi.StringArrayOutput { return v.Context }).(pulumi.StringArrayOutput)
 }
 
-// Name and optionally a tag (format: "name:tag"). If outputting to a registry, the name should include the fully qualified registry address.
+// Name and optionally a tag (format: "name:tag"). If outputting to a
+// registry, the name should include the fully qualified registry address.
 func (o ImageOutput) Exports() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v *Image) pulumi.StringArrayOutput { return v.Exports }).(pulumi.StringArrayOutput)
 }
@@ -211,27 +211,8 @@ func (o ImageOutput) File() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Image) pulumi.StringPtrOutput { return v.File }).(pulumi.StringPtrOutput)
 }
 
-// The image's operating system
-func (o ImageOutput) Os() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v *Image) pulumi.StringPtrOutput { return v.Os }).(pulumi.StringPtrOutput)
-}
-
-// Registry digests
-func (o ImageOutput) RepoDigests() pulumi.StringArrayOutput {
-	return o.ApplyT(func(v *Image) pulumi.StringArrayOutput { return v.RepoDigests }).(pulumi.StringArrayOutput)
-}
-
-// Registry tags
-func (o ImageOutput) RepoTags() pulumi.StringArrayOutput {
-	return o.ApplyT(func(v *Image) pulumi.StringArrayOutput { return v.RepoTags }).(pulumi.StringArrayOutput)
-}
-
-// Size of the image in bytes
-func (o ImageOutput) Size() pulumi.IntPtrOutput {
-	return o.ApplyT(func(v *Image) pulumi.IntPtrOutput { return v.Size }).(pulumi.IntPtrOutput)
-}
-
-// Name and optionally a tag (format: "name:tag"). If outputting to a registry, the name should include the fully qualified registry address.
+// Name and optionally a tag (format: "name:tag"). If outputting to a
+// registry, the name should include the fully qualified registry address.
 func (o ImageOutput) Tags() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v *Image) pulumi.StringArrayOutput { return v.Tags }).(pulumi.StringArrayOutput)
 }
