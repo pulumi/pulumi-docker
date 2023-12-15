@@ -1,25 +1,36 @@
 package internal
 
 import (
-	// Docker providers are registered in init()
+	"context"
+	"fmt"
+	"slices"
+
+	// These imports are needed to register the drivers with buildkit.
 	_ "github.com/docker/buildx/driver/docker"
 	_ "github.com/docker/buildx/driver/docker-container"
 	_ "github.com/docker/buildx/driver/kubernetes"
 	_ "github.com/docker/buildx/util/buildflags"
 
+	controllerapi "github.com/docker/buildx/controller/pb"
+	"github.com/docker/buildx/util/buildflags"
+	"github.com/docker/docker/errdefs"
+	"github.com/moby/buildkit/exporter/containerimage/exptypes"
 	"github.com/muesli/reflow/dedent"
 
 	provider "github.com/pulumi/pulumi-go-provider"
 	"github.com/pulumi/pulumi-go-provider/infer"
+	"github.com/pulumi/pulumi/sdk/v3/go/common/diag"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 )
 
 var (
-	_ infer.CustomResource[ImageArgs, ImageState] = (*Image)(nil)
-	_ infer.CustomCheck[ImageArgs]                = (*Image)(nil)
 	_ infer.Annotated                             = (infer.Annotated)((*Image)(nil))
 	_ infer.Annotated                             = (infer.Annotated)((*ImageArgs)(nil))
 	_ infer.Annotated                             = (infer.Annotated)((*ImageState)(nil))
+	_ infer.CustomCheck[ImageArgs]                = (*Image)(nil)
+	_ infer.CustomDelete[ImageState]              = (*Image)(nil)
+	_ infer.CustomRead[ImageArgs, ImageState]     = (*Image)(nil)
+	_ infer.CustomResource[ImageArgs, ImageState] = (*Image)(nil)
 )
 
 // Image is a Docker image build using buildkit.
@@ -64,6 +75,12 @@ func (ia *ImageArgs) Annotate(a infer.Annotator) {
 // ImageState is serialized to the program's state file.
 type ImageState struct {
 	ImageArgs
+
+	Architecture string   `pulumi:"architecture,optional"`
+	OS           string   `pulumi:"os,optional"`
+	RepoDigests  []string `pulumi:"repoDigests,optional"`
+	RepoTags     []string `pulumi:"repoTags,optional"`
+	Size         int64    `pulumi:"size,optional"`
 }
 
 // Annotate describes outputs of the Image resource.
@@ -87,6 +104,11 @@ func (*Image) Check(
 			provider.CheckFailure{Property: "tags", Reason: "at least one tag is required"},
 		)
 	}
+	if _, err := buildflags.ParseExports(args.Exports); err != nil {
+		failures = append(failures,
+			provider.CheckFailure{Property: "exports", Reason: err.Error()},
+		)
+	}
 
 	if args.File == "" {
 		args.File = "Dockerfile"
@@ -96,19 +118,123 @@ func (*Image) Check(
 }
 
 // Create builds the image using buildkit.
-func (*Image) Create(
-	_ provider.Context,
+func (i *Image) Create(
+	ctx provider.Context,
 	name string,
 	input ImageArgs,
-	_ bool,
+	preview bool,
 ) (string, ImageState, error) {
-	state := ImageState{}
+	cfg := infer.GetConfig[Config](ctx)
 
-	state.Tags = input.Tags
+	state := ImageState{
+		ImageArgs: input,
+	}
+
+	ok, err := cfg.client.BuildKitEnabled()
+	if err != nil {
+		return name, state, fmt.Errorf("checking buildkit compatibility: %w", err)
+	}
+	if !ok {
+		return name, state, fmt.Errorf("buildkit is not supported on this host")
+	}
+
+	exports, err := buildflags.ParseExports(input.Exports)
+	if err != nil {
+		return name, state, fmt.Errorf("parsing exports: %w", err)
+	}
+	opts := controllerapi.BuildOptions{
+		DockerfileName: input.File,
+		ContextPath:    input.Context[0],
+		Tags:           input.Tags,
+		Exports:        exports,
+		// CacheFrom:      parsedCacheFrom,
+		// CacheTo:        parsedCacheTo,
+		// BuildArgs:      args,
+		// Platforms:      []string{build.Platform},
+		// Target:         build.Target,
+	}
+
+	if preview {
+		return name, state, nil
+	}
+
+	result, err := cfg.client.Build(ctx.(context.Context), opts)
+	if err != nil {
+		return name, state, fmt.Errorf("building: %w", err)
+	}
+
+	var id string
+	if digest, ok := result.ExporterResponse[exptypes.ExporterImageConfigDigestKey]; ok {
+		id = digest
+	} else if tag, ok := result.ExporterResponse["image.name"]; ok {
+		id = tag
+	} else {
+		id = name
+	}
+
+	// TODO: Handle case with no export.
+	_, _, state, err = i.Read(ctx, id, input, state)
+
+	return id, state, err
+}
+
+func (*Image) Read(
+	ctx provider.Context,
+	id string,
+	input ImageArgs,
+	state ImageState,
+) (
+	string, // id
+	ImageArgs, // normalized inputs
+	ImageState, // normalized state
+	error,
+) {
+	cfg := infer.GetConfig[Config](ctx)
+	inspect, err := cfg.client.Inspect(ctx, id)
+	if err != nil {
+		err = fmt.Errorf("inspecting image: %w", err)
+	}
+	// TODO: Handle cases where a tag has been deleted.
+
 	state.File = input.File
-	state.Context = input.Context
 
-	// TODO(https://github.com/pulumi/pulumi-docker/issues/885): Actually perform the build.
+	state.Architecture = inspect.Architecture
+	state.OS = inspect.Os
+	state.RepoDigests = inspect.RepoDigests
+	state.RepoTags = inspect.RepoTags
+	state.Size = inspect.Size
 
-	return name, state, nil
+	slices.Sort(state.RepoDigests)
+	slices.Sort(state.RepoTags)
+
+	return inspect.ID, input, state, err
+}
+
+// Delete deletes an Image. If the Image was already deleted out-of-band it is treated as a success.
+//
+// Any tags previously pushed to registries will not be deleted.
+func (*Image) Delete(
+	ctx provider.Context,
+	id string,
+	_ ImageState,
+) error {
+	cfg := infer.GetConfig[Config](ctx)
+
+	deletions, err := cfg.client.Delete(ctx.(context.Context), id)
+	if errdefs.IsNotFound(err) {
+		return nil // Nothing to do.
+	}
+
+	for _, d := range deletions {
+		if d.Deleted != "" {
+			ctx.Log(diag.Info, d.Deleted)
+		}
+		if d.Untagged != "" {
+			ctx.Log(diag.Info, d.Untagged)
+		}
+	}
+
+	// TODO: Delete tags from registries?
+
+	return err
 }

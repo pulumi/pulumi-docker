@@ -173,6 +173,11 @@ class Image(pulumi.CustomResource):
             if tags is None and not opts.urn:
                 raise TypeError("Missing required property 'tags'")
             __props__.__dict__["tags"] = tags
+            __props__.__dict__["architecture"] = None
+            __props__.__dict__["os"] = None
+            __props__.__dict__["repo_digests"] = None
+            __props__.__dict__["repo_tags"] = None
+            __props__.__dict__["size"] = None
         super(Image, __self__).__init__(
             'docker:buildx/image:Image',
             resource_name,
@@ -195,11 +200,21 @@ class Image(pulumi.CustomResource):
 
         __props__ = ImageArgs.__new__(ImageArgs)
 
+        __props__.__dict__["architecture"] = None
         __props__.__dict__["context"] = None
         __props__.__dict__["exports"] = None
         __props__.__dict__["file"] = None
+        __props__.__dict__["os"] = None
+        __props__.__dict__["repo_digests"] = None
+        __props__.__dict__["repo_tags"] = None
+        __props__.__dict__["size"] = None
         __props__.__dict__["tags"] = None
         return Image(resource_name, opts=opts, __props__=__props__)
+
+    @property
+    @pulumi.getter
+    def architecture(self) -> pulumi.Output[Optional[str]]:
+        return pulumi.get(self, "architecture")
 
     @property
     @pulumi.getter
@@ -230,6 +245,26 @@ class Image(pulumi.CustomResource):
         Name of the Dockerfile to use (default: "$PATH/Dockerfile").
         """
         return pulumi.get(self, "file")
+
+    @property
+    @pulumi.getter
+    def os(self) -> pulumi.Output[Optional[str]]:
+        return pulumi.get(self, "os")
+
+    @property
+    @pulumi.getter(name="repoDigests")
+    def repo_digests(self) -> pulumi.Output[Optional[Sequence[str]]]:
+        return pulumi.get(self, "repo_digests")
+
+    @property
+    @pulumi.getter(name="repoTags")
+    def repo_tags(self) -> pulumi.Output[Optional[Sequence[str]]]:
+        return pulumi.get(self, "repo_tags")
+
+    @property
+    @pulumi.getter
+    def size(self) -> pulumi.Output[Optional[int]]:
+        return pulumi.get(self, "size")
 
     @property
     @pulumi.getter

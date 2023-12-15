@@ -16,6 +16,7 @@ import (
 type Image struct {
 	pulumi.CustomResourceState
 
+	Architecture pulumi.StringPtrOutput `pulumi:"architecture"`
 	// Contexts to use while building the image. If omitted, an empty context
 	// is used. If more than one value is specified, they should be of the
 	// form "name=value".
@@ -24,7 +25,11 @@ type Image struct {
 	// registry, the name should include the fully qualified registry address.
 	Exports pulumi.StringArrayOutput `pulumi:"exports"`
 	// Name of the Dockerfile to use (default: "$PATH/Dockerfile").
-	File pulumi.StringPtrOutput `pulumi:"file"`
+	File        pulumi.StringPtrOutput   `pulumi:"file"`
+	Os          pulumi.StringPtrOutput   `pulumi:"os"`
+	RepoDigests pulumi.StringArrayOutput `pulumi:"repoDigests"`
+	RepoTags    pulumi.StringArrayOutput `pulumi:"repoTags"`
+	Size        pulumi.IntPtrOutput      `pulumi:"size"`
 	// Name and optionally a tag (format: "name:tag"). If outputting to a
 	// registry, the name should include the fully qualified registry address.
 	Tags pulumi.StringArrayOutput `pulumi:"tags"`
@@ -193,6 +198,10 @@ func (o ImageOutput) ToImageOutputWithContext(ctx context.Context) ImageOutput {
 	return o
 }
 
+func (o ImageOutput) Architecture() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *Image) pulumi.StringPtrOutput { return v.Architecture }).(pulumi.StringPtrOutput)
+}
+
 // Contexts to use while building the image. If omitted, an empty context
 // is used. If more than one value is specified, they should be of the
 // form "name=value".
@@ -209,6 +218,22 @@ func (o ImageOutput) Exports() pulumi.StringArrayOutput {
 // Name of the Dockerfile to use (default: "$PATH/Dockerfile").
 func (o ImageOutput) File() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Image) pulumi.StringPtrOutput { return v.File }).(pulumi.StringPtrOutput)
+}
+
+func (o ImageOutput) Os() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *Image) pulumi.StringPtrOutput { return v.Os }).(pulumi.StringPtrOutput)
+}
+
+func (o ImageOutput) RepoDigests() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v *Image) pulumi.StringArrayOutput { return v.RepoDigests }).(pulumi.StringArrayOutput)
+}
+
+func (o ImageOutput) RepoTags() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v *Image) pulumi.StringArrayOutput { return v.RepoTags }).(pulumi.StringArrayOutput)
+}
+
+func (o ImageOutput) Size() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v *Image) pulumi.IntPtrOutput { return v.Size }).(pulumi.IntPtrOutput)
 }
 
 // Name and optionally a tag (format: "name:tag"). If outputting to a

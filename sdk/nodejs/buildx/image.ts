@@ -34,6 +34,7 @@ export class Image extends pulumi.CustomResource {
         return obj['__pulumiType'] === Image.__pulumiType;
     }
 
+    public /*out*/ readonly architecture!: pulumi.Output<string | undefined>;
     /**
      *
      * Contexts to use while building the image. If omitted, an empty context
@@ -52,6 +53,10 @@ export class Image extends pulumi.CustomResource {
      * Name of the Dockerfile to use (default: "$PATH/Dockerfile").
      */
     public readonly file!: pulumi.Output<string | undefined>;
+    public /*out*/ readonly os!: pulumi.Output<string | undefined>;
+    public /*out*/ readonly repoDigests!: pulumi.Output<string[] | undefined>;
+    public /*out*/ readonly repoTags!: pulumi.Output<string[] | undefined>;
+    public /*out*/ readonly size!: pulumi.Output<number | undefined>;
     /**
      *
      * Name and optionally a tag (format: "name:tag"). If outputting to a
@@ -77,10 +82,20 @@ export class Image extends pulumi.CustomResource {
             resourceInputs["exports"] = args ? args.exports : undefined;
             resourceInputs["file"] = (args ? args.file : undefined) ?? "Dockerfile";
             resourceInputs["tags"] = args ? args.tags : undefined;
+            resourceInputs["architecture"] = undefined /*out*/;
+            resourceInputs["os"] = undefined /*out*/;
+            resourceInputs["repoDigests"] = undefined /*out*/;
+            resourceInputs["repoTags"] = undefined /*out*/;
+            resourceInputs["size"] = undefined /*out*/;
         } else {
+            resourceInputs["architecture"] = undefined /*out*/;
             resourceInputs["context"] = undefined /*out*/;
             resourceInputs["exports"] = undefined /*out*/;
             resourceInputs["file"] = undefined /*out*/;
+            resourceInputs["os"] = undefined /*out*/;
+            resourceInputs["repoDigests"] = undefined /*out*/;
+            resourceInputs["repoTags"] = undefined /*out*/;
+            resourceInputs["size"] = undefined /*out*/;
             resourceInputs["tags"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
