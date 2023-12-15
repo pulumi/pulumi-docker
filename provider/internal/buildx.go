@@ -2,6 +2,7 @@ package internal
 
 import (
 	"context"
+	"fmt"
 
 	provider "github.com/pulumi/pulumi-go-provider"
 	"github.com/pulumi/pulumi-go-provider/infer"
@@ -13,7 +14,17 @@ import (
 // Config configures the buildx provider.
 type Config struct {
 	Host string `pulumi:"host,optional"`
+
+	client Client
 }
+
+var (
+	_ infer.CustomConfigure = (*Config)(nil)
+	_ infer.Annotated       = (infer.Annotated)((*Config)(nil))
+)
+
+// _mockClientKey is used by tests to inject a mock Docker client.
+var _mockClientKey struct{}
 
 // Annotate provides user-facing descriptions and defaults for Config's fields.
 func (c *Config) Annotate(a infer.Annotator) {
@@ -22,8 +33,18 @@ func (c *Config) Annotate(a infer.Annotator) {
 }
 
 // Configure validates and processes user-provided configuration values.
-func (c *Config) Configure(_ provider.Context) error {
-	return nil
+func (c *Config) Configure(ctx provider.Context) error {
+	if client, ok := ctx.Value(_mockClientKey).(Client); ok {
+		c.client = client
+		return nil // Client has already been injected, nothing to do.
+	}
+
+	client, err := newDockerClient()
+	if err != nil {
+		return fmt.Errorf("getting client: %w", err)
+	}
+	c.client = client
+	return err
 }
 
 // NewBuildxProvider returns a new buildx provider.
