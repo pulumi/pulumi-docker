@@ -9,7 +9,6 @@ import com.pulumi.core.annotations.ResourceType;
 import com.pulumi.core.internal.Codegen;
 import com.pulumi.docker.Utilities;
 import com.pulumi.docker.buildx.ImageArgs;
-import java.lang.Integer;
 import java.lang.String;
 import java.util.List;
 import java.util.Optional;
@@ -22,42 +21,36 @@ import javax.annotation.Nullable;
 @ResourceType(type="docker:buildx/image:Image")
 public class Image extends com.pulumi.resources.CustomResource {
     /**
-     * The image&#39;s architecture
-     * 
-     */
-    @Export(name="architecture", refs={String.class}, tree="[0]")
-    private Output</* @Nullable */ String> architecture;
-
-    /**
-     * @return The image&#39;s architecture
-     * 
-     */
-    public Output<Optional<String>> architecture() {
-        return Codegen.optional(this.architecture);
-    }
-    /**
-     * Contexts to use while building the image. If omitted, an empty context is used. If more than one value is specified, they should be of the form &#34;name=value&#34;
+     * Contexts to use while building the image. If omitted, an empty context
+     * is used. If more than one value is specified, they should be of the
+     * form &#34;name=value&#34;.
      * 
      */
     @Export(name="context", refs={List.class,String.class}, tree="[0,1]")
     private Output</* @Nullable */ List<String>> context;
 
     /**
-     * @return Contexts to use while building the image. If omitted, an empty context is used. If more than one value is specified, they should be of the form &#34;name=value&#34;
+     * @return
+     * Contexts to use while building the image. If omitted, an empty context
+     * is used. If more than one value is specified, they should be of the
+     * form &#34;name=value&#34;.
      * 
      */
     public Output<Optional<List<String>>> context() {
         return Codegen.optional(this.context);
     }
     /**
-     * Name and optionally a tag (format: &#34;name:tag&#34;). If outputting to a registry, the name should include the fully qualified registry address.
+     * Name and optionally a tag (format: &#34;name:tag&#34;). If outputting to a
+     * registry, the name should include the fully qualified registry address.
      * 
      */
     @Export(name="exports", refs={List.class,String.class}, tree="[0,1]")
     private Output</* @Nullable */ List<String>> exports;
 
     /**
-     * @return Name and optionally a tag (format: &#34;name:tag&#34;). If outputting to a registry, the name should include the fully qualified registry address.
+     * @return
+     * Name and optionally a tag (format: &#34;name:tag&#34;). If outputting to a
+     * registry, the name should include the fully qualified registry address.
      * 
      */
     public Output<Optional<List<String>>> exports() {
@@ -71,77 +64,25 @@ public class Image extends com.pulumi.resources.CustomResource {
     private Output</* @Nullable */ String> file;
 
     /**
-     * @return Name of the Dockerfile to use (default: &#34;$PATH/Dockerfile&#34;).
+     * @return
+     * Name of the Dockerfile to use (default: &#34;$PATH/Dockerfile&#34;).
      * 
      */
     public Output<Optional<String>> file() {
         return Codegen.optional(this.file);
     }
     /**
-     * The image&#39;s operating system
-     * 
-     */
-    @Export(name="os", refs={String.class}, tree="[0]")
-    private Output</* @Nullable */ String> os;
-
-    /**
-     * @return The image&#39;s operating system
-     * 
-     */
-    public Output<Optional<String>> os() {
-        return Codegen.optional(this.os);
-    }
-    /**
-     * Registry digests
-     * 
-     */
-    @Export(name="repoDigests", refs={List.class,String.class}, tree="[0,1]")
-    private Output</* @Nullable */ List<String>> repoDigests;
-
-    /**
-     * @return Registry digests
-     * 
-     */
-    public Output<Optional<List<String>>> repoDigests() {
-        return Codegen.optional(this.repoDigests);
-    }
-    /**
-     * Registry tags
-     * 
-     */
-    @Export(name="repoTags", refs={List.class,String.class}, tree="[0,1]")
-    private Output</* @Nullable */ List<String>> repoTags;
-
-    /**
-     * @return Registry tags
-     * 
-     */
-    public Output<Optional<List<String>>> repoTags() {
-        return Codegen.optional(this.repoTags);
-    }
-    /**
-     * Size of the image in bytes
-     * 
-     */
-    @Export(name="size", refs={Integer.class}, tree="[0]")
-    private Output</* @Nullable */ Integer> size;
-
-    /**
-     * @return Size of the image in bytes
-     * 
-     */
-    public Output<Optional<Integer>> size() {
-        return Codegen.optional(this.size);
-    }
-    /**
-     * Name and optionally a tag (format: &#34;name:tag&#34;). If outputting to a registry, the name should include the fully qualified registry address.
+     * Name and optionally a tag (format: &#34;name:tag&#34;). If outputting to a
+     * registry, the name should include the fully qualified registry address.
      * 
      */
     @Export(name="tags", refs={List.class,String.class}, tree="[0,1]")
     private Output<List<String>> tags;
 
     /**
-     * @return Name and optionally a tag (format: &#34;name:tag&#34;). If outputting to a registry, the name should include the fully qualified registry address.
+     * @return
+     * Name and optionally a tag (format: &#34;name:tag&#34;). If outputting to a
+     * registry, the name should include the fully qualified registry address.
      * 
      */
     public Output<List<String>> tags() {
