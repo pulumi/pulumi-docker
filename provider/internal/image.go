@@ -1,6 +1,12 @@
 package internal
 
 import (
+	// Docker providers are registered in init()
+	_ "github.com/docker/buildx/driver/docker"
+	_ "github.com/docker/buildx/driver/docker-container"
+	_ "github.com/docker/buildx/driver/kubernetes"
+	_ "github.com/docker/buildx/util/buildflags"
+
 	"github.com/muesli/reflow/dedent"
 
 	provider "github.com/pulumi/pulumi-go-provider"
