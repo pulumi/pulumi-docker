@@ -5,6 +5,7 @@ import (
 
 	"github.com/blang/semver"
 	provider "github.com/pulumi/pulumi-go-provider"
+	"github.com/pulumi/pulumi-go-provider/infer"
 	"github.com/pulumi/pulumi-go-provider/integration"
 	"github.com/stretchr/testify/assert"
 )
@@ -18,9 +19,21 @@ func TestConfigure(t *testing.T) {
 	assert.NoError(t, err)
 }
 
-func TestAnnotate(t *testing.T) {
-	c := &Config{}
-	c.Annotate(annotator{})
+// TestAnnotate sanity checks that our annotations don't panic.
+func TestAnnotate(_ *testing.T) {
+	for _, tt := range []infer.Annotated{
+		&Config{},
+		&Image{},
+		&ImageArgs{},
+		&ImageState{},
+	} {
+		tt.Annotate(annotator{})
+	}
+}
+
+// TestSchema sanity checks that our schema doesn't panic.
+func TestSchema(_ *testing.T) {
+	ImageSchema()
 }
 
 type annotator struct{}
