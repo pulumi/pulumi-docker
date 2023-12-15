@@ -16,7 +16,7 @@ import (
 	"strings"
 
 	pbempty "github.com/golang/protobuf/ptypes/empty"
-	"github.com/moby/buildkit/frontend/dockerfile/dockerignore"
+	"github.com/moby/patternmatcher/ignorefile"
 	"github.com/pkg/errors"
 	"github.com/spf13/afero"
 	"github.com/tonistiigi/fsutil"
@@ -358,7 +358,6 @@ func diffUpdates(updates map[resource.PropertyKey]resource.ValueDiff) map[string
 
 // Create allocates a new instance of the provided resource and returns its unique ID afterwards.
 func (p *dockerNativeProvider) Create(ctx context.Context, req *rpc.CreateRequest) (*rpc.CreateResponse, error) {
-
 	urn := resource.URN(req.GetUrn())
 	label := fmt.Sprintf("%s.Create(%s)", p.name, urn)
 	logging.V(9).Infof("%s executing", label)
@@ -634,7 +633,7 @@ func hashContext(dockerContextPath string, dockerfilePath string) (string, error
 	if err != nil {
 		return "", fmt.Errorf("error hashing dockerfile %q: %w", dockerfilePath, err)
 	}
-	err = fsutil.Walk(context.Background(), dockerContextPath, &fsutil.WalkOpt{
+	err = fsutil.Walk(context.Background(), dockerContextPath, &fsutil.FilterOpt{
 		ExcludePatterns: ignorePatterns,
 	}, func(filePath string, fileInfo fs.FileInfo, err error) error {
 		if err != nil {
@@ -683,7 +682,7 @@ func getIgnorePatterns(fs afero.Fs, dockerfilePath, contextRoot string) ([]strin
 		}
 		defer f.Close()
 
-		ignorePatterns, err := dockerignore.ReadAll(f)
+		ignorePatterns, err := ignorefile.ReadAll(f)
 		if err != nil {
 			return nil, fmt.Errorf("unable to parse %q: %w", p, err)
 		}
