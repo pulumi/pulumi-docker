@@ -252,7 +252,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 			return "", nil, err
 		}
 
-		dockerAuthProvider := authprovider.NewDockerAuthProvider(cfg)
+		dockerAuthProvider := authprovider.NewDockerAuthProvider(cfg, nil)
 		sess.Allow(dockerAuthProvider)
 
 		dialSession := func(ctx context.Context, proto string, meta map[string][]string) (net.Conn, error) {
@@ -333,7 +333,6 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	_ = p.host.LogStatus(ctx, "info", urn, "Pushing Image to the registry")
 
 	authConfigBytes, err := json.Marshal(regAuth)
-
 	if err != nil {
 		return "", nil, fmt.Errorf("error parsing authConfig: %v", err)
 	}
@@ -343,7 +342,6 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 
 	// By default, we push our image with the qualified image name from the input, without extra tagging.
 	pushOutput, err := docker.ImagePush(ctx, img.Name, pushOpts)
-
 	if err != nil {
 		return "", nil, err
 	}
@@ -579,7 +577,6 @@ func pullDockerImage(ctx context.Context, p *dockerNativeProvider, urn resource.
 }
 
 func marshalBuildAndApplyDefaults(b resource.PropertyValue) (Build, error) {
-
 	// build can be nil, a string or an object; we will also use reasonable defaults here.
 	var build Build
 	if b.IsNull() {
@@ -617,7 +614,6 @@ func marshalBuildAndApplyDefaults(b resource.PropertyValue) (Build, error) {
 
 	// BuildKit
 	version, err := marshalBuilder(buildObject["builderVersion"])
-
 	if err != nil {
 		return build, err
 	}
@@ -718,7 +714,7 @@ func marshalBuilder(builder resource.PropertyValue) (types.BuilderVersion, error
 	var version types.BuilderVersion
 
 	if builder.IsNull() {
-		//set default
+		// set default
 		return defaultBuilder, nil
 	}
 	// verify valid input
@@ -882,7 +878,6 @@ func processLogLine(jm jsonmessage.JSONMessage,
 		info += jm.Status + " " + jm.Progress.String()
 	} else if jm.Stream != "" {
 		info += jm.Stream
-
 	} else {
 		info += jm.Status
 	}
@@ -912,7 +907,6 @@ func processLogLine(jm jsonmessage.JSONMessage,
 			}
 			for _, log := range resp.Logs {
 				info += fmt.Sprintf("%s\n", string(log.Msg))
-
 			}
 			for _, warn := range resp.Warnings {
 				info += fmt.Sprintf("%s\n", string(warn.Short))
@@ -949,7 +943,6 @@ func processLogLine(jm jsonmessage.JSONMessage,
 // instead of the system-wide one.
 // `verify` is a testing affordance and will always be true in production.
 func configureDockerClient(configs map[string]string, verify bool) (*client.Client, error) {
-
 	host, isExplicitHost := configs["host"]
 
 	if !isExplicitHost {
