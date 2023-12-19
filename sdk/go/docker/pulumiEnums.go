@@ -140,10 +140,11 @@ func (o BuilderVersionPtrOutput) ToStringPtrOutputWithContext(ctx context.Contex
 	}).(pulumi.StringPtrOutput)
 }
 
-// BuilderVersionInput is an input type that accepts BuilderVersionArgs and BuilderVersionOutput values.
-// You can construct a concrete instance of `BuilderVersionInput` via:
+// BuilderVersionInput is an input type that accepts values of the BuilderVersion enum
+// A concrete instance of `BuilderVersionInput` can be one of the following:
 //
-//	BuilderVersionArgs{...}
+//	BuilderVersionBuilderV1
+//	BuilderVersionBuilderBuildKit
 type BuilderVersionInput interface {
 	pulumi.Input
 
