@@ -433,6 +433,7 @@
             }
         }
     },
+    "auto-settings": {},
     "renames": {
         "resources": {
             "docker:index/container:Container": "docker_container",
