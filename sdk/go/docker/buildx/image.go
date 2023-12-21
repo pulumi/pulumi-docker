@@ -41,6 +41,8 @@ type Image struct {
 	Platforms pulumi.StringArrayOutput `pulumi:"platforms"`
 	// Always attempt to pull all referenced images
 	Pull pulumi.BoolPtrOutput `pulumi:"pull"`
+	// Logins for registry outputs
+	Registries RegistryAuthArrayOutput `pulumi:"registries"`
 	// Name and optionally a tag (format: "name:tag"). If outputting to a
 	// registry, the name should include the fully qualified registry address.
 	Tags pulumi.StringArrayOutput `pulumi:"tags"`
@@ -116,6 +118,8 @@ type imageArgs struct {
 	Platforms []string `pulumi:"platforms"`
 	// Always attempt to pull all referenced images
 	Pull *bool `pulumi:"pull"`
+	// Logins for registry outputs
+	Registries []RegistryAuth `pulumi:"registries"`
 	// Name and optionally a tag (format: "name:tag"). If outputting to a
 	// registry, the name should include the fully qualified registry address.
 	Tags []string `pulumi:"tags"`
@@ -147,6 +151,8 @@ type ImageArgs struct {
 	Platforms pulumi.StringArrayInput
 	// Always attempt to pull all referenced images
 	Pull pulumi.BoolPtrInput
+	// Logins for registry outputs
+	Registries RegistryAuthArrayInput
 	// Name and optionally a tag (format: "name:tag"). If outputting to a
 	// registry, the name should include the fully qualified registry address.
 	Tags pulumi.StringArrayInput
@@ -292,6 +298,11 @@ func (o ImageOutput) Platforms() pulumi.StringArrayOutput {
 // Always attempt to pull all referenced images
 func (o ImageOutput) Pull() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *Image) pulumi.BoolPtrOutput { return v.Pull }).(pulumi.BoolPtrOutput)
+}
+
+// Logins for registry outputs
+func (o ImageOutput) Registries() RegistryAuthArrayOutput {
+	return o.ApplyT(func(v *Image) RegistryAuthArrayOutput { return v.Registries }).(RegistryAuthArrayOutput)
 }
 
 // Name and optionally a tag (format: "name:tag"). If outputting to a

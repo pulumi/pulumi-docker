@@ -89,6 +89,13 @@ namespace Pulumi.Docker.Buildx
 
         /// <summary>
         /// 
+        /// Logins for registry outputs
+        /// </summary>
+        [Output("registries")]
+        public Output<ImmutableArray<Outputs.RegistryAuth>> Registries { get; private set; } = null!;
+
+        /// <summary>
+        /// 
         /// Name and optionally a tag (format: "name:tag"). If outputting to a
         /// registry, the name should include the fully qualified registry address.
         /// </summary>
@@ -238,6 +245,19 @@ namespace Pulumi.Docker.Buildx
         /// </summary>
         [Input("pull")]
         public Input<bool>? Pull { get; set; }
+
+        [Input("registries")]
+        private InputList<Inputs.RegistryAuthArgs>? _registries;
+
+        /// <summary>
+        /// 
+        /// Logins for registry outputs
+        /// </summary>
+        public InputList<Inputs.RegistryAuthArgs> Registries
+        {
+            get => _registries ?? (_registries = new InputList<Inputs.RegistryAuthArgs>());
+            set => _registries = value;
+        }
 
         [Input("tags", required: true)]
         private InputList<string>? _tags;

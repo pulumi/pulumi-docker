@@ -8,7 +8,6 @@ import com.pulumi.docker.buildx.outputs.Platform;
 import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.Integer;
 import java.lang.String;
-import java.util.List;
 import java.util.Objects;
 
 @CustomType
@@ -21,7 +20,6 @@ public final class Manifest {
      */
     private String ref;
     private Integer size;
-    private List<String> urls;
 
     private Manifest() {}
     public String digest() {
@@ -40,9 +38,6 @@ public final class Manifest {
     public Integer size() {
         return this.size;
     }
-    public List<String> urls() {
-        return this.urls;
-    }
 
     public static Builder builder() {
         return new Builder();
@@ -57,7 +52,6 @@ public final class Manifest {
         private Platform platform;
         private String ref;
         private Integer size;
-        private List<String> urls;
         public Builder() {}
         public Builder(Manifest defaults) {
     	      Objects.requireNonNull(defaults);
@@ -65,7 +59,6 @@ public final class Manifest {
     	      this.platform = defaults.platform;
     	      this.ref = defaults.ref;
     	      this.size = defaults.size;
-    	      this.urls = defaults.urls;
         }
 
         @CustomType.Setter
@@ -100,24 +93,12 @@ public final class Manifest {
             this.size = size;
             return this;
         }
-        @CustomType.Setter
-        public Builder urls(List<String> urls) {
-            if (urls == null) {
-              throw new MissingRequiredPropertyException("Manifest", "urls");
-            }
-            this.urls = urls;
-            return this;
-        }
-        public Builder urls(String... urls) {
-            return urls(List.of(urls));
-        }
         public Manifest build() {
             final var _resultValue = new Manifest();
             _resultValue.digest = digest;
             _resultValue.platform = platform;
             _resultValue.ref = ref;
             _resultValue.size = size;
-            _resultValue.urls = urls;
             return _resultValue;
         }
     }

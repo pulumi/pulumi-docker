@@ -112,12 +112,6 @@
                 },
                 "size": {
                     "type": "integer"
-                },
-                "urls": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
                 }
             },
             "type": "object",
@@ -125,8 +119,7 @@
                 "digest",
                 "platform",
                 "ref",
-                "size",
-                "urls"
+                "size"
             ]
         },
         "docker:buildx/image:Platform": {
@@ -142,6 +135,27 @@
             "required": [
                 "os",
                 "architecture"
+            ]
+        },
+        "docker:buildx/image:RegistryAuth": {
+            "properties": {
+                "address": {
+                    "type": "string",
+                    "description": "The registry's address (e.g. \"docker.io\")"
+                },
+                "password": {
+                    "type": "string",
+                    "description": "Password or token for the registry",
+                    "secret": true
+                },
+                "username": {
+                    "type": "string",
+                    "description": "Username for the registry"
+                }
+            },
+            "type": "object",
+            "required": [
+                "address"
             ]
         },
         "docker:config/registryAuth:registryAuth": {
@@ -2142,6 +2156,13 @@
                     "type": "boolean",
                     "description": "\nAlways attempt to pull all referenced images"
                 },
+                "registries": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/docker:buildx/image:RegistryAuth"
+                    },
+                    "description": "\nLogins for registry outputs"
+                },
                 "tags": {
                     "type": "array",
                     "items": {
@@ -2206,6 +2227,13 @@
                 "pull": {
                     "type": "boolean",
                     "description": "\nAlways attempt to pull all referenced images"
+                },
+                "registries": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/docker:buildx/image:RegistryAuth"
+                    },
+                    "description": "\nLogins for registry outputs"
                 },
                 "tags": {
                     "type": "array",

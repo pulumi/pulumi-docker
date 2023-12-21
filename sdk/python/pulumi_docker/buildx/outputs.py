@@ -13,6 +13,7 @@ from . import outputs
 __all__ = [
     'Manifest',
     'Platform',
+    'RegistryAuth',
 ]
 
 @pulumi.output_type
@@ -21,8 +22,7 @@ class Manifest(dict):
                  digest: str,
                  platform: 'outputs.Platform',
                  ref: str,
-                 size: int,
-                 urls: Sequence[str]):
+                 size: int):
         """
         :param str ref: The manifest's ref
         """
@@ -30,7 +30,6 @@ class Manifest(dict):
         pulumi.set(__self__, "platform", platform)
         pulumi.set(__self__, "ref", ref)
         pulumi.set(__self__, "size", size)
-        pulumi.set(__self__, "urls", urls)
 
     @property
     @pulumi.getter
@@ -55,11 +54,6 @@ class Manifest(dict):
     def size(self) -> int:
         return pulumi.get(self, "size")
 
-    @property
-    @pulumi.getter
-    def urls(self) -> Sequence[str]:
-        return pulumi.get(self, "urls")
-
 
 @pulumi.output_type
 class Platform(dict):
@@ -78,5 +72,47 @@ class Platform(dict):
     @pulumi.getter
     def os(self) -> str:
         return pulumi.get(self, "os")
+
+
+@pulumi.output_type
+class RegistryAuth(dict):
+    def __init__(__self__, *,
+                 address: str,
+                 password: Optional[str] = None,
+                 username: Optional[str] = None):
+        """
+        :param str address: The registry's address (e.g. "docker.io")
+        :param str password: Password or token for the registry
+        :param str username: Username for the registry
+        """
+        pulumi.set(__self__, "address", address)
+        if password is not None:
+            pulumi.set(__self__, "password", password)
+        if username is not None:
+            pulumi.set(__self__, "username", username)
+
+    @property
+    @pulumi.getter
+    def address(self) -> str:
+        """
+        The registry's address (e.g. "docker.io")
+        """
+        return pulumi.get(self, "address")
+
+    @property
+    @pulumi.getter
+    def password(self) -> Optional[str]:
+        """
+        Password or token for the registry
+        """
+        return pulumi.get(self, "password")
+
+    @property
+    @pulumi.getter
+    def username(self) -> Optional[str]:
+        """
+        Username for the registry
+        """
+        return pulumi.get(self, "username")
 
 

@@ -46,6 +46,7 @@ func TestLifecycle(t *testing.T) {
 			client: func(t *testing.T) Client {
 				ctrl := gomock.NewController(t)
 				c := mock.NewMockClient(ctrl)
+				c.EXPECT().Auth(gomock.Any(), gomock.Any()).Return(nil).AnyTimes()
 				gomock.InOrder(
 					c.EXPECT().BuildKitEnabled().Return(true, nil), // Preview.
 					c.EXPECT().BuildKitEnabled().Return(true, nil), // Create.
@@ -83,6 +84,15 @@ func TestLifecycle(t *testing.T) {
 						"file":    resource.NewStringProperty("../testdata/Dockerfile"),
 						"exports": resource.NewArrayProperty(
 							[]resource.PropertyValue{resource.NewStringProperty("type=registry")},
+						),
+						"registries": resource.NewArrayProperty(
+							[]resource.PropertyValue{
+								resource.NewObjectProperty(resource.PropertyMap{
+									"address":  resource.NewStringProperty("fakeaddress"),
+									"username": resource.NewStringProperty("fakeuser"),
+									"password": resource.MakeSecret(resource.NewStringProperty("password")),
+								}),
+							},
 						),
 					},
 				}
@@ -334,6 +344,55 @@ func TestDiff(t *testing.T) {
 
 		wantChanges bool
 	}{
+		{
+			name: "no diff if registry password changes",
+			olds: func(_ *testing.T, s ImageState) ImageState {
+				s.Registries = []properties.RegistryAuth{{
+					Address:  "foo",
+					Username: "foo",
+					Password: "foo",
+				}}
+				return s
+			},
+			news: func(_ *testing.T, a ImageArgs) ImageArgs {
+				a.Registries = []properties.RegistryAuth{{
+					Address:  "foo",
+					Username: "foo",
+					Password: "DIFFERENT PASSWORD",
+				}}
+				return a
+			},
+			wantChanges: false,
+		},
+		{
+			name: "diff if registry added",
+			olds: func(*testing.T, ImageState) ImageState { return baseState },
+			news: func(_ *testing.T, a ImageArgs) ImageArgs {
+				a.Registries = []properties.RegistryAuth{{}}
+				return a
+			},
+			wantChanges: true,
+		},
+		{
+			name: "diff if registry user changes",
+			olds: func(_ *testing.T, s ImageState) ImageState {
+				s.Registries = []properties.RegistryAuth{{
+					Address:  "foo",
+					Username: "foo",
+					Password: "foo",
+				}}
+				return s
+			},
+			news: func(_ *testing.T, a ImageArgs) ImageArgs {
+				a.Registries = []properties.RegistryAuth{{
+					Address:  "DIFFERENT USER",
+					Username: "foo",
+					Password: "foo",
+				}}
+				return a
+			},
+			wantChanges: true,
+		},
 		{
 			name: "diff if buildArgs changes",
 			olds: func(*testing.T, ImageState) ImageState { return baseState },

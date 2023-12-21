@@ -106,7 +106,7 @@ namespace Pulumi.Docker
         [Input("keyMaterial")]
         public Input<string>? KeyMaterial { get; set; }
 
-        [Input("registryAuth", json: true)]
+        [Input("registryAuth")]
         private InputList<Inputs.ProviderRegistryAuthArgs>? _registryAuth;
         public InputList<Inputs.ProviderRegistryAuthArgs> RegistryAuth
         {
@@ -114,7 +114,7 @@ namespace Pulumi.Docker
             set => _registryAuth = value;
         }
 
-        [Input("sshOpts", json: true)]
+        [Input("sshOpts")]
         private InputList<string>? _sshOpts;
 
         /// <summary>

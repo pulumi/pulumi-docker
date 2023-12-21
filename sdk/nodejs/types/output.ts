@@ -1165,12 +1165,26 @@ export namespace buildx {
          */
         ref: string;
         size: number;
-        urls: string[];
     }
 
     export interface Platform {
         architecture: string;
         os: string;
+    }
+
+    export interface RegistryAuth {
+        /**
+         * The registry's address (e.g. "docker.io")
+         */
+        address: string;
+        /**
+         * Password or token for the registry
+         */
+        password?: string;
+        /**
+         * Username for the registry
+         */
+        username?: string;
     }
 
 }
