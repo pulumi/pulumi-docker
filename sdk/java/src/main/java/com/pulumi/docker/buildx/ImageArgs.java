@@ -43,15 +43,14 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * External cache sources (e.g., &#34;user/app:cache&#34;, &#34;type=local,src=path/to/dir&#34;)
+     * TODO
      * 
      */
     @Import(name="cacheFrom")
     private @Nullable Output<List<String>> cacheFrom;
 
     /**
-     * @return
-     * External cache sources (e.g., &#34;user/app:cache&#34;, &#34;type=local,src=path/to/dir&#34;)
+     * @return TODO
      * 
      */
     public Optional<Output<List<String>>> cacheFrom() {
@@ -59,15 +58,14 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * Cache export destinations (e.g., &#34;user/app:cache&#34;, &#34;type=local,dest=path/to/dir&#34;)
+     * TODO
      * 
      */
     @Import(name="cacheTo")
     private @Nullable Output<List<String>> cacheTo;
 
     /**
-     * @return
-     * Cache export destinations (e.g., &#34;user/app:cache&#34;, &#34;type=local,dest=path/to/dir&#34;)
+     * @return TODO
      * 
      */
     public Optional<Output<List<String>>> cacheTo() {
@@ -145,15 +143,14 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * Always attempt to pull all referenced images
+     * TODO
      * 
      */
     @Import(name="pull")
     private @Nullable Output<Boolean> pull;
 
     /**
-     * @return
-     * Always attempt to pull all referenced images
+     * @return TODO
      * 
      */
     public Optional<Output<Boolean>> pull() {
@@ -240,8 +237,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param cacheFrom
-         * External cache sources (e.g., &#34;user/app:cache&#34;, &#34;type=local,src=path/to/dir&#34;)
+         * @param cacheFrom TODO
          * 
          * @return builder
          * 
@@ -252,8 +248,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param cacheFrom
-         * External cache sources (e.g., &#34;user/app:cache&#34;, &#34;type=local,src=path/to/dir&#34;)
+         * @param cacheFrom TODO
          * 
          * @return builder
          * 
@@ -263,8 +258,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param cacheFrom
-         * External cache sources (e.g., &#34;user/app:cache&#34;, &#34;type=local,src=path/to/dir&#34;)
+         * @param cacheFrom TODO
          * 
          * @return builder
          * 
@@ -274,8 +268,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param cacheTo
-         * Cache export destinations (e.g., &#34;user/app:cache&#34;, &#34;type=local,dest=path/to/dir&#34;)
+         * @param cacheTo TODO
          * 
          * @return builder
          * 
@@ -286,8 +279,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param cacheTo
-         * Cache export destinations (e.g., &#34;user/app:cache&#34;, &#34;type=local,dest=path/to/dir&#34;)
+         * @param cacheTo TODO
          * 
          * @return builder
          * 
@@ -297,8 +289,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param cacheTo
-         * Cache export destinations (e.g., &#34;user/app:cache&#34;, &#34;type=local,dest=path/to/dir&#34;)
+         * @param cacheTo TODO
          * 
          * @return builder
          * 
@@ -429,8 +420,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param pull
-         * Always attempt to pull all referenced images
+         * @param pull TODO
          * 
          * @return builder
          * 
@@ -441,8 +431,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param pull
-         * Always attempt to pull all referenced images
+         * @param pull TODO
          * 
          * @return builder
          * 

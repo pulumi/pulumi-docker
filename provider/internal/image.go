@@ -93,6 +93,9 @@ func (ia *ImageArgs) Annotate(a infer.Annotator) {
 		Name and optionally a tag (format: "name:tag"). If outputting to a
 		registry, the name should include the fully qualified registry address.`,
 	))
+	a.Describe(&ia.CacheFrom, "TODO")
+	a.Describe(&ia.CacheTo, "TODO")
+	a.Describe(&ia.Pull, "TODO")
 
 	a.SetDefault(&ia.File, "Dockerfile")
 }

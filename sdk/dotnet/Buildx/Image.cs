@@ -26,15 +26,13 @@ namespace Pulumi.Docker.Buildx
         public Output<ImmutableDictionary<string, string>?> BuildArgs { get; private set; } = null!;
 
         /// <summary>
-        /// 
-        /// External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
+        /// TODO
         /// </summary>
         [Output("cacheFrom")]
         public Output<ImmutableArray<string>> CacheFrom { get; private set; } = null!;
 
         /// <summary>
-        /// 
-        /// Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
+        /// TODO
         /// </summary>
         [Output("cacheTo")]
         public Output<ImmutableArray<string>> CacheTo { get; private set; } = null!;
@@ -74,8 +72,7 @@ namespace Pulumi.Docker.Buildx
         public Output<ImmutableArray<string>> Platforms { get; private set; } = null!;
 
         /// <summary>
-        /// 
-        /// Always attempt to pull all referenced images
+        /// TODO
         /// </summary>
         [Output("pull")]
         public Output<bool?> Pull { get; private set; } = null!;
@@ -153,8 +150,7 @@ namespace Pulumi.Docker.Buildx
         private InputList<string>? _cacheFrom;
 
         /// <summary>
-        /// 
-        /// External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
+        /// TODO
         /// </summary>
         public InputList<string> CacheFrom
         {
@@ -166,8 +162,7 @@ namespace Pulumi.Docker.Buildx
         private InputList<string>? _cacheTo;
 
         /// <summary>
-        /// 
-        /// Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
+        /// TODO
         /// </summary>
         public InputList<string> CacheTo
         {
@@ -219,8 +214,7 @@ namespace Pulumi.Docker.Buildx
         }
 
         /// <summary>
-        /// 
-        /// Always attempt to pull all referenced images
+        /// TODO
         /// </summary>
         [Input("pull")]
         public Input<bool>? Pull { get; set; }

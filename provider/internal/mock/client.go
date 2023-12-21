@@ -16,6 +16,7 @@ import (
 	types "github.com/docker/cli/cli/manifest/types"
 	types0 "github.com/docker/docker/api/types"
 	client "github.com/moby/buildkit/client"
+	properties "github.com/pulumi/pulumi-docker/provider/v4/internal/properties"
 	gomock "go.uber.org/mock/gomock"
 )
 
@@ -40,6 +41,20 @@ func NewMockClient(ctrl *gomock.Controller) *MockClient {
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockClient) EXPECT() *MockClientMockRecorder {
 	return m.recorder
+}
+
+// Auth mocks base method.
+func (m *MockClient) Auth(ctx context.Context, creds properties.ProviderRegistryAuth) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Auth", ctx, creds)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Auth indicates an expected call of Auth.
+func (mr *MockClientMockRecorder) Auth(ctx, creds any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Auth", reflect.TypeOf((*MockClient)(nil).Auth), ctx, creds)
 }
 
 // Build mocks base method.

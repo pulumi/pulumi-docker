@@ -21,3 +21,12 @@ func (m *Manifest) Annotate(a infer.Annotator) {
 	// a.SetToken("buildx", "Manifest")
 	a.Describe(&m.Ref, "The manifest's ref")
 }
+
+type ProviderRegistryAuth struct {
+	Address  string `pulumi:"address"`
+	Password string `pulumi:"password,optional" provider:"secret"`
+	Username string `pulumi:"username,optional"`
+}
+
+func (ra *ProviderRegistryAuth) Annotate(_ infer.Annotator) {
+}

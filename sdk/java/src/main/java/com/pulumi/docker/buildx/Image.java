@@ -45,30 +45,28 @@ public class Image extends com.pulumi.resources.CustomResource {
         return Codegen.optional(this.buildArgs);
     }
     /**
-     * External cache sources (e.g., &#34;user/app:cache&#34;, &#34;type=local,src=path/to/dir&#34;)
+     * TODO
      * 
      */
     @Export(name="cacheFrom", refs={List.class,String.class}, tree="[0,1]")
     private Output</* @Nullable */ List<String>> cacheFrom;
 
     /**
-     * @return
-     * External cache sources (e.g., &#34;user/app:cache&#34;, &#34;type=local,src=path/to/dir&#34;)
+     * @return TODO
      * 
      */
     public Output<Optional<List<String>>> cacheFrom() {
         return Codegen.optional(this.cacheFrom);
     }
     /**
-     * Cache export destinations (e.g., &#34;user/app:cache&#34;, &#34;type=local,dest=path/to/dir&#34;)
+     * TODO
      * 
      */
     @Export(name="cacheTo", refs={List.class,String.class}, tree="[0,1]")
     private Output</* @Nullable */ List<String>> cacheTo;
 
     /**
-     * @return
-     * Cache export destinations (e.g., &#34;user/app:cache&#34;, &#34;type=local,dest=path/to/dir&#34;)
+     * @return TODO
      * 
      */
     public Output<Optional<List<String>>> cacheTo() {
@@ -147,15 +145,14 @@ public class Image extends com.pulumi.resources.CustomResource {
         return Codegen.optional(this.platforms);
     }
     /**
-     * Always attempt to pull all referenced images
+     * TODO
      * 
      */
     @Export(name="pull", refs={Boolean.class}, tree="[0]")
     private Output</* @Nullable */ Boolean> pull;
 
     /**
-     * @return
-     * Always attempt to pull all referenced images
+     * @return TODO
      * 
      */
     public Output<Optional<Boolean>> pull() {

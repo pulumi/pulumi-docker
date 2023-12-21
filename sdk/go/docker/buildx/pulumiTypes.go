@@ -189,11 +189,74 @@ func (o PlatformOutput) Os() pulumi.StringOutput {
 	return o.ApplyT(func(v Platform) string { return v.Os }).(pulumi.StringOutput)
 }
 
+type ProviderRegistryAuth struct {
+	Address  string  `pulumi:"address"`
+	Password *string `pulumi:"password"`
+	Username *string `pulumi:"username"`
+}
+
+// ProviderRegistryAuthInput is an input type that accepts ProviderRegistryAuthArgs and ProviderRegistryAuthOutput values.
+// You can construct a concrete instance of `ProviderRegistryAuthInput` via:
+//
+//	ProviderRegistryAuthArgs{...}
+type ProviderRegistryAuthInput interface {
+	pulumi.Input
+
+	ToProviderRegistryAuthOutput() ProviderRegistryAuthOutput
+	ToProviderRegistryAuthOutputWithContext(context.Context) ProviderRegistryAuthOutput
+}
+
+type ProviderRegistryAuthArgs struct {
+	Address  pulumi.StringInput    `pulumi:"address"`
+	Password pulumi.StringPtrInput `pulumi:"password"`
+	Username pulumi.StringPtrInput `pulumi:"username"`
+}
+
+func (ProviderRegistryAuthArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*ProviderRegistryAuth)(nil)).Elem()
+}
+
+func (i ProviderRegistryAuthArgs) ToProviderRegistryAuthOutput() ProviderRegistryAuthOutput {
+	return i.ToProviderRegistryAuthOutputWithContext(context.Background())
+}
+
+func (i ProviderRegistryAuthArgs) ToProviderRegistryAuthOutputWithContext(ctx context.Context) ProviderRegistryAuthOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ProviderRegistryAuthOutput)
+}
+
+type ProviderRegistryAuthOutput struct{ *pulumi.OutputState }
+
+func (ProviderRegistryAuthOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*ProviderRegistryAuth)(nil)).Elem()
+}
+
+func (o ProviderRegistryAuthOutput) ToProviderRegistryAuthOutput() ProviderRegistryAuthOutput {
+	return o
+}
+
+func (o ProviderRegistryAuthOutput) ToProviderRegistryAuthOutputWithContext(ctx context.Context) ProviderRegistryAuthOutput {
+	return o
+}
+
+func (o ProviderRegistryAuthOutput) Address() pulumi.StringOutput {
+	return o.ApplyT(func(v ProviderRegistryAuth) string { return v.Address }).(pulumi.StringOutput)
+}
+
+func (o ProviderRegistryAuthOutput) Password() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v ProviderRegistryAuth) *string { return v.Password }).(pulumi.StringPtrOutput)
+}
+
+func (o ProviderRegistryAuthOutput) Username() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v ProviderRegistryAuth) *string { return v.Username }).(pulumi.StringPtrOutput)
+}
+
 func init() {
 	pulumi.RegisterInputType(reflect.TypeOf((*ManifestInput)(nil)).Elem(), ManifestArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*ManifestArrayInput)(nil)).Elem(), ManifestArray{})
 	pulumi.RegisterInputType(reflect.TypeOf((*PlatformInput)(nil)).Elem(), PlatformArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*ProviderRegistryAuthInput)(nil)).Elem(), ProviderRegistryAuthArgs{})
 	pulumi.RegisterOutputType(ManifestOutput{})
 	pulumi.RegisterOutputType(ManifestArrayOutput{})
 	pulumi.RegisterOutputType(PlatformOutput{})
+	pulumi.RegisterOutputType(ProviderRegistryAuthOutput{})
 }

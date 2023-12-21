@@ -32,6 +32,7 @@ require (
 )
 
 replace (
+    github.com/pulumi/pulumi-go-provider => /Users/bryce/src/pulumi-go-provider/
 	cloud.google.com/go/storage => cloud.google.com/go/storage v1.29.0
 	github.com/hashicorp/terraform-plugin-sdk/v2 => github.com/pulumi/terraform-plugin-sdk/v2 v2.0.0-20230912190043-e6d96b3b8f7e
 	github.com/hashicorp/vault => github.com/hashicorp/vault v1.2.0

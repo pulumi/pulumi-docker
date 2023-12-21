@@ -12,15 +12,19 @@ import (
 	controllerapi "github.com/docker/buildx/controller/pb"
 	"github.com/docker/buildx/util/progress"
 	"github.com/docker/cli/cli/command"
+	cfgtypes "github.com/docker/cli/cli/config/types"
 	"github.com/docker/cli/cli/flags"
 	manifesttypes "github.com/docker/cli/cli/manifest/types"
 	"github.com/docker/docker/api/types"
 	"github.com/moby/buildkit/client"
 	"github.com/moby/buildkit/util/progress/progressui"
+
+	"github.com/pulumi/pulumi-docker/provider/v4/internal/properties"
 )
 
 // Client handles all our Docker API calls.
 type Client interface {
+	Auth(ctx context.Context, creds properties.ProviderRegistryAuth) error
 	Build(ctx context.Context, opts controllerapi.BuildOptions) (*client.SolveResponse, error)
 	BuildKitEnabled() (bool, error)
 	Inspect(ctx context.Context, id string) ([]manifesttypes.ImageManifest, error)
@@ -48,16 +52,57 @@ func newDockerClient() (*docker, error) {
 	return &docker{cli: cli}, err
 }
 
+func (d *docker) Auth(ctx context.Context, creds properties.ProviderRegistryAuth) error {
+	cfg := d.cli.ConfigFile()
+
+	// cc := dockerutil.NewClient(d.cli)
+	// api, _ := cc.API()
+	// api.Reg
+
+	if creds.Address == "docker.io" || creds.Address == "registry-1.docker.io" {
+		creds.Address = "https://index.docker.io/v1/"
+	}
+
+	auth := cfgtypes.AuthConfig{
+		ServerAddress: creds.Address,
+		Username:      creds.Username,
+		Password:      creds.Password,
+	}
+
+	err := cfg.GetCredentialsStore(creds.Address).Store(auth)
+	if err != nil {
+		fmt.Println("SAVING TO CREDS", err.Error())
+		return err
+	}
+
+	// cfg.AuthConfigs[creds.Address] = auth
+	// cfg.AuthConfigs[creds.Address[8:]] = auth
+
+	// _, err = d.cli.Client().RegistryLogin(ctx, registry.AuthConfig{
+	// 	Username:      auth.Username,
+	// 	Password:      auth.Password,
+	// 	ServerAddress: auth.ServerAddress,
+	// })
+	// if err != nil {
+	// 	return err
+	// }
+
+	// return d.cli.ConfigFile().Save()
+	return nil
+}
+
 // Build performs a buildkit build.
 func (d *docker) Build(
 	ctx context.Context,
-	opts controllerapi.BuildOptions,
+	in controllerapi.BuildOptions,
 ) (*client.SolveResponse, error) {
 	printer, err := progress.NewPrinter(ctx, os.Stdout, progressui.PlainMode)
 	if err != nil {
 		return nil, fmt.Errorf("creating printer: %w", err)
 	}
-	solve, res, err := cbuild.RunBuild(ctx, d.cli, opts, d.cli.In(), printer, true)
+
+	// controller/build/build.go is setting its own session...
+	solve, res, err := cbuild.RunBuild(ctx, d.cli, in, d.cli.In(), printer, true)
 	if res != nil {
 		res.Done()
 	}

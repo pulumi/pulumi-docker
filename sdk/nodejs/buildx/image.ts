@@ -46,13 +46,11 @@ export class Image extends pulumi.CustomResource {
      */
     public readonly buildArgs!: pulumi.Output<{[key: string]: string} | undefined>;
     /**
-     *
-     * External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
+     * TODO
      */
     public readonly cacheFrom!: pulumi.Output<string[] | undefined>;
     /**
-     *
-     * Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
+     * TODO
      */
     public readonly cacheTo!: pulumi.Output<string[] | undefined>;
     /**
@@ -80,8 +78,7 @@ export class Image extends pulumi.CustomResource {
      */
     public readonly platforms!: pulumi.Output<string[] | undefined>;
     /**
-     *
-     * Always attempt to pull all referenced images
+     * TODO
      */
     public readonly pull!: pulumi.Output<boolean | undefined>;
     /**
@@ -145,13 +142,11 @@ export interface ImageArgs {
      */
     buildArgs?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
     /**
-     *
-     * External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
+     * TODO
      */
     cacheFrom?: pulumi.Input<pulumi.Input<string>[]>;
     /**
-     *
-     * Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
+     * TODO
      */
     cacheTo?: pulumi.Input<pulumi.Input<string>[]>;
     /**
@@ -178,8 +173,7 @@ export interface ImageArgs {
      */
     platforms?: pulumi.Input<pulumi.Input<string>[]>;
     /**
-     *
-     * Always attempt to pull all referenced images
+     * TODO
      */
     pull?: pulumi.Input<boolean>;
     /**

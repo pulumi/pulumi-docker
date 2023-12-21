@@ -21,9 +21,9 @@ type Image struct {
 	// can be accessed like environment variables inside the RUN
 	// instruction.
 	BuildArgs pulumi.StringMapOutput `pulumi:"buildArgs"`
-	// External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
+	// TODO
 	CacheFrom pulumi.StringArrayOutput `pulumi:"cacheFrom"`
-	// Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
+	// TODO
 	CacheTo pulumi.StringArrayOutput `pulumi:"cacheTo"`
 	// Contexts to use while building the image. If omitted, an empty context
 	// is used. If more than one value is specified, they should be of the
@@ -37,7 +37,7 @@ type Image struct {
 	Manifests ManifestArrayOutput    `pulumi:"manifests"`
 	// Set target platforms for the build. Defaults to the host's platform
 	Platforms pulumi.StringArrayOutput `pulumi:"platforms"`
-	// Always attempt to pull all referenced images
+	// TODO
 	Pull pulumi.BoolPtrOutput `pulumi:"pull"`
 	// Name and optionally a tag (format: "name:tag"). If outputting to a
 	// registry, the name should include the fully qualified registry address.
@@ -95,9 +95,9 @@ type imageArgs struct {
 	// can be accessed like environment variables inside the RUN
 	// instruction.
 	BuildArgs map[string]string `pulumi:"buildArgs"`
-	// External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
+	// TODO
 	CacheFrom []string `pulumi:"cacheFrom"`
-	// Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
+	// TODO
 	CacheTo []string `pulumi:"cacheTo"`
 	// Contexts to use while building the image. If omitted, an empty context
 	// is used. If more than one value is specified, they should be of the
@@ -110,7 +110,7 @@ type imageArgs struct {
 	File *string `pulumi:"file"`
 	// Set target platforms for the build. Defaults to the host's platform
 	Platforms []string `pulumi:"platforms"`
-	// Always attempt to pull all referenced images
+	// TODO
 	Pull *bool `pulumi:"pull"`
 	// Name and optionally a tag (format: "name:tag"). If outputting to a
 	// registry, the name should include the fully qualified registry address.
@@ -124,9 +124,9 @@ type ImageArgs struct {
 	// can be accessed like environment variables inside the RUN
 	// instruction.
 	BuildArgs pulumi.StringMapInput
-	// External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
+	// TODO
 	CacheFrom pulumi.StringArrayInput
-	// Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
+	// TODO
 	CacheTo pulumi.StringArrayInput
 	// Contexts to use while building the image. If omitted, an empty context
 	// is used. If more than one value is specified, they should be of the
@@ -139,7 +139,7 @@ type ImageArgs struct {
 	File pulumi.StringPtrInput
 	// Set target platforms for the build. Defaults to the host's platform
 	Platforms pulumi.StringArrayInput
-	// Always attempt to pull all referenced images
+	// TODO
 	Pull pulumi.BoolPtrInput
 	// Name and optionally a tag (format: "name:tag"). If outputting to a
 	// registry, the name should include the fully qualified registry address.
@@ -241,12 +241,12 @@ func (o ImageOutput) BuildArgs() pulumi.StringMapOutput {
 	return o.ApplyT(func(v *Image) pulumi.StringMapOutput { return v.BuildArgs }).(pulumi.StringMapOutput)
 }
 
-// External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
+// TODO
 func (o ImageOutput) CacheFrom() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v *Image) pulumi.StringArrayOutput { return v.CacheFrom }).(pulumi.StringArrayOutput)
 }
 
-// Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
+// TODO
 func (o ImageOutput) CacheTo() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v *Image) pulumi.StringArrayOutput { return v.CacheTo }).(pulumi.StringArrayOutput)
 }
@@ -278,7 +278,7 @@ func (o ImageOutput) Platforms() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v *Image) pulumi.StringArrayOutput { return v.Platforms }).(pulumi.StringArrayOutput)
 }
 
-// Always attempt to pull all referenced images
+// TODO
 func (o ImageOutput) Pull() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *Image) pulumi.BoolPtrOutput { return v.Pull }).(pulumi.BoolPtrOutput)
 }

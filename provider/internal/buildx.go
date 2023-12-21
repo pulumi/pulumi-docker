@@ -9,16 +9,20 @@ import (
 	"github.com/pulumi/pulumi/pkg/v3/codegen/schema"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/tokens"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/util/contract"
+
+	"github.com/pulumi/pulumi-docker/provider/v4/internal/properties"
 )
 
 var (
 	_ infer.CustomConfigure = (*Config)(nil)
 	_ infer.Annotated       = (infer.Annotated)((*Config)(nil))
+	_ infer.Annotated       = (infer.Annotated)((*properties.ProviderRegistryAuth)(nil))
 )
 
 // Config configures the buildx provider.
 type Config struct {
-	Host string `pulumi:"host,optional"`
+	Host         string                            `pulumi:"host,optional"`
+	RegistryAuth []properties.ProviderRegistryAuth `pulumi:"registryAuth,optional"`
 
 	client Client
 }
@@ -34,6 +38,7 @@ func (c *Config) Annotate(a infer.Annotator) {
 
 // Configure validates and processes user-provided configuration values.
 func (c *Config) Configure(ctx provider.Context) error {
+	fmt.Println("HELLO FROM CONFIGURE")
 	if client, ok := ctx.Value(_mockClientKey).(Client); ok {
 		c.client = client
 		return nil // Client has already been injected, nothing to do.
@@ -44,6 +49,14 @@ func (c *Config) Configure(ctx provider.Context) error {
 		return fmt.Errorf("getting client: %w", err)
 	}
 	c.client = client
+
+	fmt.Println("hello from auth")
+	for _, creds := range c.RegistryAuth {
+		fmt.Println("Attempting login for", creds.Address, creds.Username, creds.Password)
+		if err := client.Auth(ctx, creds); err != nil {
+			return err
+		}
+	}
 	return nil
 }
 
