@@ -15,6 +15,7 @@
 package provider
 
 import (
+	"context"
 	"fmt"
 	"path/filepath"
 	"unicode"
@@ -238,8 +239,6 @@ func Provider(version string) tfbridge.ProviderInfo {
 			},
 		},
 		ExtraResources: map[string]schema.ResourceSpec{
-			dockerResource("buildx", "Image").String(): internal.ImageSchema(),
-
 			dockerResource(dockerMod, "Image").String(): {
 				ObjectTypeSpec: schema.ObjectTypeSpec{
 					Type:        "object",
@@ -379,6 +378,15 @@ func Provider(version string) tfbridge.ProviderInfo {
 			},
 		},
 		MetadataInfo: tfbridge.NewProviderMetadata(metadata),
+	}
+
+	// Bridge pulumi-go-provider types into our provider.
+	spec := internal.Schema(context.Background(), version)
+	for k, v := range spec.Resources {
+		prov.ExtraResources[k] = v
+	}
+	for k, v := range spec.Types {
+		prov.ExtraTypes[k] = v
 	}
 
 	prov.MustComputeTokens(tfbridgetokens.SingleModule("docker_", dockerMod,
