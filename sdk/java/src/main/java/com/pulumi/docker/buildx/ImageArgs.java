@@ -6,6 +6,7 @@ package com.pulumi.docker.buildx;
 import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
 import com.pulumi.core.internal.Codegen;
+import com.pulumi.docker.buildx.inputs.RegistryAuthArgs;
 import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.Boolean;
 import java.lang.String;
@@ -173,6 +174,22 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
+     * Logins for registry outputs
+     * 
+     */
+    @Import(name="registries")
+    private @Nullable Output<List<RegistryAuthArgs>> registries;
+
+    /**
+     * @return
+     * Logins for registry outputs
+     * 
+     */
+    public Optional<Output<List<RegistryAuthArgs>>> registries() {
+        return Optional.ofNullable(this.registries);
+    }
+
+    /**
      * Name and optionally a tag (format: &#34;name:tag&#34;). If outputting to a
      * registry, the name should include the fully qualified registry address.
      * 
@@ -202,6 +219,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         this.file = $.file;
         this.platforms = $.platforms;
         this.pull = $.pull;
+        this.registries = $.registries;
         this.tags = $.tags;
     }
 
@@ -481,6 +499,40 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
          */
         public Builder pull(Boolean pull) {
             return pull(Output.of(pull));
+        }
+
+        /**
+         * @param registries
+         * Logins for registry outputs
+         * 
+         * @return builder
+         * 
+         */
+        public Builder registries(@Nullable Output<List<RegistryAuthArgs>> registries) {
+            $.registries = registries;
+            return this;
+        }
+
+        /**
+         * @param registries
+         * Logins for registry outputs
+         * 
+         * @return builder
+         * 
+         */
+        public Builder registries(List<RegistryAuthArgs> registries) {
+            return registries(Output.of(registries));
+        }
+
+        /**
+         * @param registries
+         * Logins for registry outputs
+         * 
+         * @return builder
+         * 
+         */
+        public Builder registries(RegistryAuthArgs... registries) {
+            return registries(List.of(registries));
         }
 
         /**
