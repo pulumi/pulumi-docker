@@ -10,6 +10,7 @@ import com.pulumi.core.internal.Codegen;
 import com.pulumi.docker.Utilities;
 import com.pulumi.docker.buildx.ImageArgs;
 import com.pulumi.docker.buildx.outputs.Manifest;
+import com.pulumi.docker.buildx.outputs.RegistryAuth;
 import java.lang.Boolean;
 import java.lang.String;
 import java.util.List;
@@ -175,6 +176,21 @@ public class Image extends com.pulumi.resources.CustomResource {
      */
     public Output<Optional<Boolean>> pull() {
         return Codegen.optional(this.pull);
+    }
+    /**
+     * Logins for registry outputs
+     * 
+     */
+    @Export(name="registries", refs={List.class,RegistryAuth.class}, tree="[0,1]")
+    private Output</* @Nullable */ List<RegistryAuth>> registries;
+
+    /**
+     * @return
+     * Logins for registry outputs
+     * 
+     */
+    public Output<Optional<List<RegistryAuth>>> registries() {
+        return Codegen.optional(this.registries);
     }
     /**
      * Name and optionally a tag (format: &#34;name:tag&#34;). If outputting to a

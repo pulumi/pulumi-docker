@@ -16,6 +16,7 @@ import (
 	types "github.com/docker/cli/cli/manifest/types"
 	image "github.com/docker/docker/api/types/image"
 	client "github.com/moby/buildkit/client"
+	properties "github.com/pulumi/pulumi-docker/provider/v4/internal/properties"
 	provider "github.com/pulumi/pulumi-go-provider"
 	gomock "go.uber.org/mock/gomock"
 )
@@ -41,6 +42,44 @@ func NewMockClient(ctrl *gomock.Controller) *MockClient {
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockClient) EXPECT() *MockClientMockRecorder {
 	return m.recorder
+}
+
+// Auth mocks base method.
+func (m *MockClient) Auth(ctx context.Context, creds properties.RegistryAuth) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Auth", ctx, creds)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Auth indicates an expected call of Auth.
+func (mr *MockClientMockRecorder) Auth(ctx, creds any) *ClientAuthCall {
+	mr.mock.ctrl.T.Helper()
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Auth", reflect.TypeOf((*MockClient)(nil).Auth), ctx, creds)
+	return &ClientAuthCall{Call: call}
+}
+
+// ClientAuthCall wrap *gomock.Call
+type ClientAuthCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *ClientAuthCall) Return(arg0 error) *ClientAuthCall {
+	c.Call = c.Call.Return(arg0)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *ClientAuthCall) Do(f func(context.Context, properties.RegistryAuth) error) *ClientAuthCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *ClientAuthCall) DoAndReturn(f func(context.Context, properties.RegistryAuth) error) *ClientAuthCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
 }
 
 // Build mocks base method.
@@ -117,6 +156,44 @@ func (c *ClientBuildKitEnabledCall) Do(f func() (bool, error)) *ClientBuildKitEn
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *ClientBuildKitEnabledCall) DoAndReturn(f func() (bool, error)) *ClientBuildKitEnabledCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
+// Close mocks base method.
+func (m *MockClient) Close(ctx context.Context) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Close", ctx)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Close indicates an expected call of Close.
+func (mr *MockClientMockRecorder) Close(ctx any) *ClientCloseCall {
+	mr.mock.ctrl.T.Helper()
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Close", reflect.TypeOf((*MockClient)(nil).Close), ctx)
+	return &ClientCloseCall{Call: call}
+}
+
+// ClientCloseCall wrap *gomock.Call
+type ClientCloseCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *ClientCloseCall) Return(arg0 error) *ClientCloseCall {
+	c.Call = c.Call.Return(arg0)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *ClientCloseCall) Do(f func(context.Context) error) *ClientCloseCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *ClientCloseCall) DoAndReturn(f func(context.Context) error) *ClientCloseCall {
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }
