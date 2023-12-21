@@ -9,18 +9,22 @@ import (
 	"github.com/pulumi/pulumi/pkg/v3/codegen/schema"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/tokens"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/util/contract"
+
+	"github.com/pulumi/pulumi-docker/provider/v4/internal/properties"
 )
 
 var (
 	_ infer.CustomConfigure = (*Config)(nil)
 	_ infer.Annotated       = (infer.Annotated)((*Config)(nil))
+	_ infer.Annotated       = (infer.Annotated)((*properties.RegistryAuth)(nil))
 )
 
 // Config configures the buildx provider.
 type Config struct {
-	Host string `pulumi:"host,optional"`
+	Host         string                    `pulumi:"host,optional"`
+	RegistryAuth []properties.RegistryAuth `pulumi:"registryAuth,optional"`
 
-	client Client
+	client Client // Docker CLI
 }
 
 // _mockClientKey is used by tests to inject a mock Docker client.
@@ -44,6 +48,12 @@ func (c *Config) Configure(ctx provider.Context) error {
 		return fmt.Errorf("getting client: %w", err)
 	}
 	c.client = client
+
+	for _, creds := range c.RegistryAuth {
+		if err := client.Auth(ctx, creds); err != nil {
+			return err
+		}
+	}
 	return nil
 }
 

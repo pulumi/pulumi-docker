@@ -9,6 +9,7 @@ import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
 from .. import _utilities
 from . import outputs
+from ._inputs import *
 
 __all__ = ['ImageArgs', 'Image']
 
@@ -24,7 +25,8 @@ class ImageArgs:
                  exports: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  file: Optional[pulumi.Input[str]] = None,
                  platforms: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
-                 pull: Optional[pulumi.Input[bool]] = None):
+                 pull: Optional[pulumi.Input[bool]] = None,
+                 registries: Optional[pulumi.Input[Sequence[pulumi.Input['RegistryAuthArgs']]]] = None):
         """
         The set of arguments for constructing a Image resource.
         :param pulumi.Input[Sequence[pulumi.Input[str]]] tags: 
@@ -52,6 +54,8 @@ class ImageArgs:
                Set target platforms for the build. Defaults to the host's platform
         :param pulumi.Input[bool] pull: 
                Always attempt to pull referenced images.
+        :param pulumi.Input[Sequence[pulumi.Input['RegistryAuthArgs']]] registries: 
+               Logins for registry outputs
         """
         pulumi.set(__self__, "tags", tags)
         if build_args is not None:
@@ -74,6 +78,8 @@ class ImageArgs:
             pulumi.set(__self__, "platforms", platforms)
         if pull is not None:
             pulumi.set(__self__, "pull", pull)
+        if registries is not None:
+            pulumi.set(__self__, "registries", registries)
 
     @property
     @pulumi.getter
@@ -210,6 +216,19 @@ class ImageArgs:
     def pull(self, value: Optional[pulumi.Input[bool]]):
         pulumi.set(self, "pull", value)
 
+    @property
+    @pulumi.getter
+    def registries(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['RegistryAuthArgs']]]]:
+        """
+
+        Logins for registry outputs
+        """
+        return pulumi.get(self, "registries")
+
+    @registries.setter
+    def registries(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['RegistryAuthArgs']]]]):
+        pulumi.set(self, "registries", value)
+
 
 class Image(pulumi.CustomResource):
     @overload
@@ -225,6 +244,7 @@ class Image(pulumi.CustomResource):
                  file: Optional[pulumi.Input[str]] = None,
                  platforms: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  pull: Optional[pulumi.Input[bool]] = None,
+                 registries: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['RegistryAuthArgs']]]]] = None,
                  tags: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  __props__=None):
         """
@@ -254,6 +274,8 @@ class Image(pulumi.CustomResource):
                Set target platforms for the build. Defaults to the host's platform
         :param pulumi.Input[bool] pull: 
                Always attempt to pull referenced images.
+        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['RegistryAuthArgs']]]] registries: 
+               Logins for registry outputs
         :param pulumi.Input[Sequence[pulumi.Input[str]]] tags: 
                Name and optionally a tag (format: "name:tag"). If outputting to a
                registry, the name should include the fully qualified registry address.
@@ -291,6 +313,7 @@ class Image(pulumi.CustomResource):
                  file: Optional[pulumi.Input[str]] = None,
                  platforms: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  pull: Optional[pulumi.Input[bool]] = None,
+                 registries: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['RegistryAuthArgs']]]]] = None,
                  tags: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  __props__=None):
         opts = pulumi.ResourceOptions.merge(_utilities.get_resource_opts_defaults(), opts)
@@ -312,6 +335,7 @@ class Image(pulumi.CustomResource):
             __props__.__dict__["file"] = file
             __props__.__dict__["platforms"] = platforms
             __props__.__dict__["pull"] = pull
+            __props__.__dict__["registries"] = registries
             if tags is None and not opts.urn:
                 raise TypeError("Missing required property 'tags'")
             __props__.__dict__["tags"] = tags
@@ -348,6 +372,7 @@ class Image(pulumi.CustomResource):
         __props__.__dict__["manifests"] = None
         __props__.__dict__["platforms"] = None
         __props__.__dict__["pull"] = None
+        __props__.__dict__["registries"] = None
         __props__.__dict__["tags"] = None
         return Image(resource_name, opts=opts, __props__=__props__)
 
@@ -440,6 +465,15 @@ class Image(pulumi.CustomResource):
         Always attempt to pull referenced images.
         """
         return pulumi.get(self, "pull")
+
+    @property
+    @pulumi.getter
+    def registries(self) -> pulumi.Output[Optional[Sequence['outputs.RegistryAuth']]]:
+        """
+
+        Logins for registry outputs
+        """
+        return pulumi.get(self, "registries")
 
     @property
     @pulumi.getter

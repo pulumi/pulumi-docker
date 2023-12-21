@@ -60,7 +60,8 @@ func (dp dockerHybridProvider) Call(ctx context.Context, request *rpc.CallReques
 }
 
 func (dp dockerHybridProvider) Cancel(ctx context.Context, e *empty.Empty) (*empty.Empty, error) {
-	return &empty.Empty{}, nil
+	// Only buildx implements Cancel.
+	return dp.buildxProvider.Cancel(ctx, e)
 }
 
 func (dp dockerHybridProvider) GetSchema(ctx context.Context, request *rpc.GetSchemaRequest) (
