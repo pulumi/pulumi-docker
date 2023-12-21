@@ -403,11 +403,17 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	return img.Name, pbstruct, err
 }
 
+// nodigest mimics Docker's placeholder for situations where no digests are found.
+type nodigest struct{}
+
+func (nodigest) String() string { return "<none>@<none>" }
+
 // getRepoDigest returns the repoDigest for the given image ID that matches the target image name.
 // If the image is not found in the local store, it returns an error.
 func (p *dockerNativeProvider) getRepoDigest(
 	ctx context.Context, docker *client.Client, imageID string,
-	img Image, urn resource.URN) (reference.Reference, error) {
+	img Image, urn resource.URN,
+) (reference.Reference, error) {
 	dist, _, err := docker.ImageInspectWithRaw(ctx, imageID)
 	if err != nil {
 		return nil, err
@@ -418,10 +424,9 @@ func (p *dockerNativeProvider) getRepoDigest(
 		return nil, err
 	}
 
-	var repoDigest reference.Reference
+	var repoDigest reference.Reference = nodigest{}
 	for _, d := range dist.RepoDigests {
 		ref, err := reference.ParseNormalizedNamed(d)
-
 		if err != nil {
 			_ = p.host.Log(ctx, "warning", urn, fmt.Sprintf("Error parsing digest %q: %v", d, err))
 			continue
