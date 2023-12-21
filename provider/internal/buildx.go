@@ -1,6 +1,8 @@
 package internal
 
 import (
+	"context"
+
 	provider "github.com/pulumi/pulumi-go-provider"
 	"github.com/pulumi/pulumi-go-provider/infer"
 	"github.com/pulumi/pulumi/pkg/v3/codegen/schema"
@@ -29,7 +31,7 @@ func NewBuildxProvider() provider.Provider {
 	return infer.Provider(
 		infer.Options{
 			Resources: []infer.InferredResource{
-				imageResource(),
+				infer.Resource[*Image, ImageArgs, ImageState](),
 			},
 			ModuleMap: map[tokens.ModuleName]tokens.ModuleName{
 				"internal": "buildx/image",
@@ -39,14 +41,10 @@ func NewBuildxProvider() provider.Provider {
 	)
 }
 
-// ImageSchema returns Image's schema for SDK generation.
-func ImageSchema() schema.ResourceSpec {
-	r := imageResource()
-	s, err := r.GetSchema(nil) // We don't have subtypes.
+// Schema returns our package specification.
+func Schema(ctx context.Context, version string) schema.PackageSpec {
+	p := NewBuildxProvider()
+	spec, err := provider.GetSchema(ctx, "docker", version, p)
 	contract.AssertNoErrorf(err, "missing schema")
-	return s
-}
-
-func imageResource() infer.InferredResource {
-	return infer.Resource[*Image, ImageArgs, ImageState]()
+	return spec
 }

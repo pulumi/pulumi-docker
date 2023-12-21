@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"context"
 	"testing"
 
 	"github.com/blang/semver"
@@ -33,7 +34,7 @@ func TestAnnotate(_ *testing.T) {
 
 // TestSchema sanity checks that our schema doesn't panic.
 func TestSchema(_ *testing.T) {
-	ImageSchema()
+	Schema(context.Background(), "v4")
 }
 
 type annotator struct{}
