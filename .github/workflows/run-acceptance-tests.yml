@@ -210,6 +210,14 @@ jobs:
       run: make provider
     - name: Unit-test provider code
       run: make test_provider
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        verbose: true
+        directory: provider
+        files: coverage.txt
+        functionalities: fixes
+        token: ${{ secrets.CODECOV_TOKEN }}
     - if: github.event_name == 'pull_request'
       name: Check Schema is Valid
       run: |

@@ -102,8 +102,8 @@ install_plugins: .pulumi/bin/pulumi
 lint_provider: provider
 	cd provider && golangci-lint run -c ../.golangci.yml
 
-# `make provider_no_deps` builds the provider binary directly, without ensuring that 
-# `cmd/pulumi-resource-docker/schema.json` is valid and up to date. 
+# `make provider_no_deps` builds the provider binary directly, without ensuring that
+# `cmd/pulumi-resource-docker/schema.json` is valid and up to date.
 # To create a release ready binary, you should use `make provider`.
 provider_no_deps:
 	(cd provider && go build $(PULUMI_PROVIDER_BUILD_PARALLELISM) -o $(WORKING_DIR)/bin/$(PROVIDER) -ldflags "-X $(PROJECT)/$(VERSION_PATH)=$(VERSION)" $(PROJECT)/$(PROVIDER_PATH)/cmd/$(PROVIDER))
@@ -117,7 +117,7 @@ test_provider:
 	@echo ""
 	@echo "== test_provider ==================================================================="
 	@echo ""
-	cd provider && go test -v -short ./... -parallel $(TESTPARALLELISM)
+	cd provider && go test -v -short -race -cover -coverprofile="coverage.txt" -coverpkg ./... ./... -parallel $(TESTPARALLELISM)
 
 tfgen: install_plugins upstream docs
 	(cd provider && go build $(PULUMI_PROVIDER_BUILD_PARALLELISM) -o $(WORKING_DIR)/bin/$(TFGEN) -ldflags "-X $(PROJECT)/$(VERSION_PATH)=$(VERSION)" $(PROJECT)/$(PROVIDER_PATH)/cmd/$(TFGEN))
