@@ -4,6 +4,7 @@
 package com.pulumi.docker.outputs;
 
 import com.pulumi.core.annotations.CustomType;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.String;
 import java.util.Objects;
 
@@ -56,12 +57,18 @@ public final class ContainerHost {
 
         @CustomType.Setter
         public Builder host(String host) {
-            this.host = Objects.requireNonNull(host);
+            if (host == null) {
+              throw new MissingRequiredPropertyException("ContainerHost", "host");
+            }
+            this.host = host;
             return this;
         }
         @CustomType.Setter
         public Builder ip(String ip) {
-            this.ip = Objects.requireNonNull(ip);
+            if (ip == null) {
+              throw new MissingRequiredPropertyException("ContainerHost", "ip");
+            }
+            this.ip = ip;
             return this;
         }
         public ContainerHost build() {

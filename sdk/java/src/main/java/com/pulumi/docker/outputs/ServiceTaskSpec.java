@@ -10,6 +10,7 @@ import com.pulumi.docker.outputs.ServiceTaskSpecNetworksAdvanced;
 import com.pulumi.docker.outputs.ServiceTaskSpecPlacement;
 import com.pulumi.docker.outputs.ServiceTaskSpecResources;
 import com.pulumi.docker.outputs.ServiceTaskSpecRestartPolicy;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.Integer;
 import java.lang.String;
 import java.util.List;
@@ -150,21 +151,27 @@ public final class ServiceTaskSpec {
 
         @CustomType.Setter
         public Builder containerSpec(ServiceTaskSpecContainerSpec containerSpec) {
-            this.containerSpec = Objects.requireNonNull(containerSpec);
+            if (containerSpec == null) {
+              throw new MissingRequiredPropertyException("ServiceTaskSpec", "containerSpec");
+            }
+            this.containerSpec = containerSpec;
             return this;
         }
         @CustomType.Setter
         public Builder forceUpdate(@Nullable Integer forceUpdate) {
+
             this.forceUpdate = forceUpdate;
             return this;
         }
         @CustomType.Setter
         public Builder logDriver(@Nullable ServiceTaskSpecLogDriver logDriver) {
+
             this.logDriver = logDriver;
             return this;
         }
         @CustomType.Setter
         public Builder networksAdvanceds(@Nullable List<ServiceTaskSpecNetworksAdvanced> networksAdvanceds) {
+
             this.networksAdvanceds = networksAdvanceds;
             return this;
         }
@@ -173,21 +180,25 @@ public final class ServiceTaskSpec {
         }
         @CustomType.Setter
         public Builder placement(@Nullable ServiceTaskSpecPlacement placement) {
+
             this.placement = placement;
             return this;
         }
         @CustomType.Setter
         public Builder resources(@Nullable ServiceTaskSpecResources resources) {
+
             this.resources = resources;
             return this;
         }
         @CustomType.Setter
         public Builder restartPolicy(@Nullable ServiceTaskSpecRestartPolicy restartPolicy) {
+
             this.restartPolicy = restartPolicy;
             return this;
         }
         @CustomType.Setter
         public Builder runtime(@Nullable String runtime) {
+
             this.runtime = runtime;
             return this;
         }

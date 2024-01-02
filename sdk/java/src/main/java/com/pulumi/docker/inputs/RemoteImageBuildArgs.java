@@ -7,6 +7,7 @@ import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
 import com.pulumi.docker.inputs.RemoteImageBuildAuthConfigArgs;
 import com.pulumi.docker.inputs.RemoteImageBuildUlimitArgs;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.Boolean;
 import java.lang.Integer;
 import java.lang.String;
@@ -1400,7 +1401,9 @@ public final class RemoteImageBuildArgs extends com.pulumi.resources.ResourceArg
         }
 
         public RemoteImageBuildArgs build() {
-            $.context = Objects.requireNonNull($.context, "expected parameter 'context' to be non-null");
+            if ($.context == null) {
+                throw new MissingRequiredPropertyException("RemoteImageBuildArgs", "context");
+            }
             return $;
         }
     }

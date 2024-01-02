@@ -58,11 +58,13 @@ public final class ServiceConvergeConfig {
 
         @CustomType.Setter
         public Builder delay(@Nullable String delay) {
+
             this.delay = delay;
             return this;
         }
         @CustomType.Setter
         public Builder timeout(@Nullable String timeout) {
+
             this.timeout = timeout;
             return this;
         }

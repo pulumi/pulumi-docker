@@ -8,6 +8,7 @@ import com.pulumi.core.annotations.Import;
 import com.pulumi.core.internal.Codegen;
 import com.pulumi.docker.inputs.DockerBuildArgs;
 import com.pulumi.docker.inputs.RegistryArgs;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.Boolean;
 import java.lang.String;
 import java.util.Objects;
@@ -233,7 +234,9 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
 
         public ImageArgs build() {
             $.buildOnPreview = Codegen.booleanProp("buildOnPreview").output().arg($.buildOnPreview).def(false).getNullable();
-            $.imageName = Objects.requireNonNull($.imageName, "expected parameter 'imageName' to be non-null");
+            if ($.imageName == null) {
+                throw new MissingRequiredPropertyException("ImageArgs", "imageName");
+            }
             $.skipPush = Codegen.booleanProp("skipPush").output().arg($.skipPush).def(false).getNullable();
             return $;
         }

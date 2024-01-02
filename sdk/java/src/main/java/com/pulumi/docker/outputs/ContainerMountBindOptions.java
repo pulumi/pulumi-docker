@@ -44,6 +44,7 @@ public final class ContainerMountBindOptions {
 
         @CustomType.Setter
         public Builder propagation(@Nullable String propagation) {
+
             this.propagation = propagation;
             return this;
         }

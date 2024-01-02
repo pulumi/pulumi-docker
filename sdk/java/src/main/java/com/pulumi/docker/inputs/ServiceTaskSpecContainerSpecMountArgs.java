@@ -8,6 +8,7 @@ import com.pulumi.core.annotations.Import;
 import com.pulumi.docker.inputs.ServiceTaskSpecContainerSpecMountBindOptionsArgs;
 import com.pulumi.docker.inputs.ServiceTaskSpecContainerSpecMountTmpfsOptionsArgs;
 import com.pulumi.docker.inputs.ServiceTaskSpecContainerSpecMountVolumeOptionsArgs;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.Boolean;
 import java.lang.String;
 import java.util.Objects;
@@ -302,8 +303,12 @@ public final class ServiceTaskSpecContainerSpecMountArgs extends com.pulumi.reso
         }
 
         public ServiceTaskSpecContainerSpecMountArgs build() {
-            $.target = Objects.requireNonNull($.target, "expected parameter 'target' to be non-null");
-            $.type = Objects.requireNonNull($.type, "expected parameter 'type' to be non-null");
+            if ($.target == null) {
+                throw new MissingRequiredPropertyException("ServiceTaskSpecContainerSpecMountArgs", "target");
+            }
+            if ($.type == null) {
+                throw new MissingRequiredPropertyException("ServiceTaskSpecContainerSpecMountArgs", "type");
+            }
             return $;
         }
     }

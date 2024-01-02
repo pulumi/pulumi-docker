@@ -5,6 +5,7 @@ package com.pulumi.docker.inputs;
 
 import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.Boolean;
 import java.lang.String;
 import java.util.Objects;
@@ -142,7 +143,9 @@ public final class ProviderRegistryAuthArgs extends com.pulumi.resources.Resourc
         }
 
         public ProviderRegistryAuthArgs build() {
-            $.address = Objects.requireNonNull($.address, "expected parameter 'address' to be non-null");
+            if ($.address == null) {
+                throw new MissingRequiredPropertyException("ProviderRegistryAuthArgs", "address");
+            }
             return $;
         }
     }

@@ -5,6 +5,7 @@ package com.pulumi.docker.inputs;
 
 import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.Integer;
 import java.lang.String;
 import java.util.List;
@@ -236,7 +237,9 @@ public final class ServiceTaskSpecContainerSpecHealthcheckArgs extends com.pulum
         }
 
         public ServiceTaskSpecContainerSpecHealthcheckArgs build() {
-            $.tests = Objects.requireNonNull($.tests, "expected parameter 'tests' to be non-null");
+            if ($.tests == null) {
+                throw new MissingRequiredPropertyException("ServiceTaskSpecContainerSpecHealthcheckArgs", "tests");
+            }
             return $;
         }
     }

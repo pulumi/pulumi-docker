@@ -16,6 +16,7 @@ import com.pulumi.docker.inputs.ContainerPortArgs;
 import com.pulumi.docker.inputs.ContainerUlimitArgs;
 import com.pulumi.docker.inputs.ContainerUploadArgs;
 import com.pulumi.docker.inputs.ContainerVolumeArgs;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.Boolean;
 import java.lang.Integer;
 import java.lang.Object;
@@ -2523,7 +2524,9 @@ public final class ContainerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         public ContainerArgs build() {
-            $.image = Objects.requireNonNull($.image, "expected parameter 'image' to be non-null");
+            if ($.image == null) {
+                throw new MissingRequiredPropertyException("ContainerArgs", "image");
+            }
             return $;
         }
     }

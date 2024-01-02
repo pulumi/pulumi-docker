@@ -13,6 +13,7 @@ import com.pulumi.docker.inputs.ServiceModeArgs;
 import com.pulumi.docker.inputs.ServiceRollbackConfigArgs;
 import com.pulumi.docker.inputs.ServiceTaskSpecArgs;
 import com.pulumi.docker.inputs.ServiceUpdateConfigArgs;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.String;
 import java.util.List;
 import java.util.Objects;
@@ -391,7 +392,9 @@ public final class ServiceArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         public ServiceArgs build() {
-            $.taskSpec = Objects.requireNonNull($.taskSpec, "expected parameter 'taskSpec' to be non-null");
+            if ($.taskSpec == null) {
+                throw new MissingRequiredPropertyException("ServiceArgs", "taskSpec");
+            }
             return $;
         }
     }

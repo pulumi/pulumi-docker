@@ -6,6 +6,7 @@ package com.pulumi.docker.outputs;
 import com.pulumi.core.annotations.CustomType;
 import com.pulumi.docker.outputs.RemoteImageBuildAuthConfig;
 import com.pulumi.docker.outputs.RemoteImageBuildUlimit;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.Boolean;
 import java.lang.Integer;
 import java.lang.String;
@@ -526,6 +527,7 @@ public final class RemoteImageBuild {
 
         @CustomType.Setter
         public Builder authConfigs(@Nullable List<RemoteImageBuildAuthConfig> authConfigs) {
+
             this.authConfigs = authConfigs;
             return this;
         }
@@ -534,21 +536,25 @@ public final class RemoteImageBuild {
         }
         @CustomType.Setter
         public Builder buildArg(@Nullable Map<String,String> buildArg) {
+
             this.buildArg = buildArg;
             return this;
         }
         @CustomType.Setter
         public Builder buildArgs(@Nullable Map<String,String> buildArgs) {
+
             this.buildArgs = buildArgs;
             return this;
         }
         @CustomType.Setter
         public Builder buildId(@Nullable String buildId) {
+
             this.buildId = buildId;
             return this;
         }
         @CustomType.Setter
         public Builder cacheFroms(@Nullable List<String> cacheFroms) {
+
             this.cacheFroms = cacheFroms;
             return this;
         }
@@ -557,46 +563,57 @@ public final class RemoteImageBuild {
         }
         @CustomType.Setter
         public Builder cgroupParent(@Nullable String cgroupParent) {
+
             this.cgroupParent = cgroupParent;
             return this;
         }
         @CustomType.Setter
         public Builder context(String context) {
-            this.context = Objects.requireNonNull(context);
+            if (context == null) {
+              throw new MissingRequiredPropertyException("RemoteImageBuild", "context");
+            }
+            this.context = context;
             return this;
         }
         @CustomType.Setter
         public Builder cpuPeriod(@Nullable Integer cpuPeriod) {
+
             this.cpuPeriod = cpuPeriod;
             return this;
         }
         @CustomType.Setter
         public Builder cpuQuota(@Nullable Integer cpuQuota) {
+
             this.cpuQuota = cpuQuota;
             return this;
         }
         @CustomType.Setter
         public Builder cpuSetCpus(@Nullable String cpuSetCpus) {
+
             this.cpuSetCpus = cpuSetCpus;
             return this;
         }
         @CustomType.Setter
         public Builder cpuSetMems(@Nullable String cpuSetMems) {
+
             this.cpuSetMems = cpuSetMems;
             return this;
         }
         @CustomType.Setter
         public Builder cpuShares(@Nullable Integer cpuShares) {
+
             this.cpuShares = cpuShares;
             return this;
         }
         @CustomType.Setter
         public Builder dockerfile(@Nullable String dockerfile) {
+
             this.dockerfile = dockerfile;
             return this;
         }
         @CustomType.Setter
         public Builder extraHosts(@Nullable List<String> extraHosts) {
+
             this.extraHosts = extraHosts;
             return this;
         }
@@ -605,66 +622,79 @@ public final class RemoteImageBuild {
         }
         @CustomType.Setter
         public Builder forceRemove(@Nullable Boolean forceRemove) {
+
             this.forceRemove = forceRemove;
             return this;
         }
         @CustomType.Setter
         public Builder isolation(@Nullable String isolation) {
+
             this.isolation = isolation;
             return this;
         }
         @CustomType.Setter
         public Builder label(@Nullable Map<String,String> label) {
+
             this.label = label;
             return this;
         }
         @CustomType.Setter
         public Builder labels(@Nullable Map<String,String> labels) {
+
             this.labels = labels;
             return this;
         }
         @CustomType.Setter
         public Builder memory(@Nullable Integer memory) {
+
             this.memory = memory;
             return this;
         }
         @CustomType.Setter
         public Builder memorySwap(@Nullable Integer memorySwap) {
+
             this.memorySwap = memorySwap;
             return this;
         }
         @CustomType.Setter
         public Builder networkMode(@Nullable String networkMode) {
+
             this.networkMode = networkMode;
             return this;
         }
         @CustomType.Setter
         public Builder noCache(@Nullable Boolean noCache) {
+
             this.noCache = noCache;
             return this;
         }
         @CustomType.Setter
         public Builder platform(@Nullable String platform) {
+
             this.platform = platform;
             return this;
         }
         @CustomType.Setter
         public Builder pullParent(@Nullable Boolean pullParent) {
+
             this.pullParent = pullParent;
             return this;
         }
         @CustomType.Setter
         public Builder remoteContext(@Nullable String remoteContext) {
+
             this.remoteContext = remoteContext;
             return this;
         }
         @CustomType.Setter
         public Builder remove(@Nullable Boolean remove) {
+
             this.remove = remove;
             return this;
         }
         @CustomType.Setter
         public Builder securityOpts(@Nullable List<String> securityOpts) {
+
             this.securityOpts = securityOpts;
             return this;
         }
@@ -673,26 +703,31 @@ public final class RemoteImageBuild {
         }
         @CustomType.Setter
         public Builder sessionId(@Nullable String sessionId) {
+
             this.sessionId = sessionId;
             return this;
         }
         @CustomType.Setter
         public Builder shmSize(@Nullable Integer shmSize) {
+
             this.shmSize = shmSize;
             return this;
         }
         @CustomType.Setter
         public Builder squash(@Nullable Boolean squash) {
+
             this.squash = squash;
             return this;
         }
         @CustomType.Setter
         public Builder suppressOutput(@Nullable Boolean suppressOutput) {
+
             this.suppressOutput = suppressOutput;
             return this;
         }
         @CustomType.Setter
         public Builder tags(@Nullable List<String> tags) {
+
             this.tags = tags;
             return this;
         }
@@ -701,11 +736,13 @@ public final class RemoteImageBuild {
         }
         @CustomType.Setter
         public Builder target(@Nullable String target) {
+
             this.target = target;
             return this;
         }
         @CustomType.Setter
         public Builder ulimits(@Nullable List<RemoteImageBuildUlimit> ulimits) {
+
             this.ulimits = ulimits;
             return this;
         }
@@ -714,6 +751,7 @@ public final class RemoteImageBuild {
         }
         @CustomType.Setter
         public Builder version(@Nullable String version) {
+
             this.version = version;
             return this;
         }

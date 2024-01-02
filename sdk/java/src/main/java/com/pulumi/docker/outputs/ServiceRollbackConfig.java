@@ -115,31 +115,37 @@ public final class ServiceRollbackConfig {
 
         @CustomType.Setter
         public Builder delay(@Nullable String delay) {
+
             this.delay = delay;
             return this;
         }
         @CustomType.Setter
         public Builder failureAction(@Nullable String failureAction) {
+
             this.failureAction = failureAction;
             return this;
         }
         @CustomType.Setter
         public Builder maxFailureRatio(@Nullable String maxFailureRatio) {
+
             this.maxFailureRatio = maxFailureRatio;
             return this;
         }
         @CustomType.Setter
         public Builder monitor(@Nullable String monitor) {
+
             this.monitor = monitor;
             return this;
         }
         @CustomType.Setter
         public Builder order(@Nullable String order) {
+
             this.order = order;
             return this;
         }
         @CustomType.Setter
         public Builder parallelism(@Nullable Integer parallelism) {
+
             this.parallelism = parallelism;
             return this;
         }

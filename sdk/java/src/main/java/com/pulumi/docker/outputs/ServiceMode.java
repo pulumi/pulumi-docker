@@ -59,11 +59,13 @@ public final class ServiceMode {
 
         @CustomType.Setter
         public Builder global(@Nullable Boolean global) {
+
             this.global = global;
             return this;
         }
         @CustomType.Setter
         public Builder replicated(@Nullable ServiceModeReplicated replicated) {
+
             this.replicated = replicated;
             return this;
         }

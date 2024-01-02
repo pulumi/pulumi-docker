@@ -13,6 +13,7 @@ import com.pulumi.docker.inputs.ServiceTaskSpecContainerSpecLabelArgs;
 import com.pulumi.docker.inputs.ServiceTaskSpecContainerSpecMountArgs;
 import com.pulumi.docker.inputs.ServiceTaskSpecContainerSpecPrivilegesArgs;
 import com.pulumi.docker.inputs.ServiceTaskSpecContainerSpecSecretArgs;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.Boolean;
 import java.lang.Object;
 import java.lang.String;
@@ -908,7 +909,9 @@ public final class ServiceTaskSpecContainerSpecArgs extends com.pulumi.resources
         }
 
         public ServiceTaskSpecContainerSpecArgs build() {
-            $.image = Objects.requireNonNull($.image, "expected parameter 'image' to be non-null");
+            if ($.image == null) {
+                throw new MissingRequiredPropertyException("ServiceTaskSpecContainerSpecArgs", "image");
+            }
             return $;
         }
     }

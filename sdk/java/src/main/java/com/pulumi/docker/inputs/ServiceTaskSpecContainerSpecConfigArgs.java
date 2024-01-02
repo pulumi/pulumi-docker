@@ -5,6 +5,7 @@ package com.pulumi.docker.inputs;
 
 import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.Integer;
 import java.lang.String;
 import java.util.Objects;
@@ -262,8 +263,12 @@ public final class ServiceTaskSpecContainerSpecConfigArgs extends com.pulumi.res
         }
 
         public ServiceTaskSpecContainerSpecConfigArgs build() {
-            $.configId = Objects.requireNonNull($.configId, "expected parameter 'configId' to be non-null");
-            $.fileName = Objects.requireNonNull($.fileName, "expected parameter 'fileName' to be non-null");
+            if ($.configId == null) {
+                throw new MissingRequiredPropertyException("ServiceTaskSpecContainerSpecConfigArgs", "configId");
+            }
+            if ($.fileName == null) {
+                throw new MissingRequiredPropertyException("ServiceTaskSpecContainerSpecConfigArgs", "fileName");
+            }
             return $;
         }
     }
