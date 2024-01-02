@@ -5,6 +5,7 @@ package com.pulumi.docker.inputs;
 
 import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.Integer;
 import java.lang.String;
 import java.util.Objects;
@@ -188,7 +189,9 @@ public final class ContainerPortArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         public ContainerPortArgs build() {
-            $.internal = Objects.requireNonNull($.internal, "expected parameter 'internal' to be non-null");
+            if ($.internal == null) {
+                throw new MissingRequiredPropertyException("ContainerPortArgs", "internal");
+            }
             return $;
         }
     }

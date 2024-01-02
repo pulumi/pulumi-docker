@@ -4,6 +4,7 @@
 package com.pulumi.docker.outputs;
 
 import com.pulumi.core.annotations.CustomType;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.Integer;
 import java.lang.String;
 import java.util.Objects;
@@ -115,31 +116,41 @@ public final class ServiceTaskSpecContainerSpecSecret {
 
         @CustomType.Setter
         public Builder fileGid(@Nullable String fileGid) {
+
             this.fileGid = fileGid;
             return this;
         }
         @CustomType.Setter
         public Builder fileMode(@Nullable Integer fileMode) {
+
             this.fileMode = fileMode;
             return this;
         }
         @CustomType.Setter
         public Builder fileName(String fileName) {
-            this.fileName = Objects.requireNonNull(fileName);
+            if (fileName == null) {
+              throw new MissingRequiredPropertyException("ServiceTaskSpecContainerSpecSecret", "fileName");
+            }
+            this.fileName = fileName;
             return this;
         }
         @CustomType.Setter
         public Builder fileUid(@Nullable String fileUid) {
+
             this.fileUid = fileUid;
             return this;
         }
         @CustomType.Setter
         public Builder secretId(String secretId) {
-            this.secretId = Objects.requireNonNull(secretId);
+            if (secretId == null) {
+              throw new MissingRequiredPropertyException("ServiceTaskSpecContainerSpecSecret", "secretId");
+            }
+            this.secretId = secretId;
             return this;
         }
         @CustomType.Setter
         public Builder secretName(@Nullable String secretName) {
+
             this.secretName = secretName;
             return this;
         }

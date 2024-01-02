@@ -58,11 +58,13 @@ public final class ServiceTaskSpecResourcesLimits {
 
         @CustomType.Setter
         public Builder memoryBytes(@Nullable Integer memoryBytes) {
+
             this.memoryBytes = memoryBytes;
             return this;
         }
         @CustomType.Setter
         public Builder nanoCpus(@Nullable Integer nanoCpus) {
+
             this.nanoCpus = nanoCpus;
             return this;
         }

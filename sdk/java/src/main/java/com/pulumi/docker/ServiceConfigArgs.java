@@ -5,6 +5,7 @@ package com.pulumi.docker;
 
 import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.String;
 import java.util.Objects;
 import java.util.Optional;
@@ -113,7 +114,9 @@ public final class ServiceConfigArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         public ServiceConfigArgs build() {
-            $.data = Objects.requireNonNull($.data, "expected parameter 'data' to be non-null");
+            if ($.data == null) {
+                throw new MissingRequiredPropertyException("ServiceConfigArgs", "data");
+            }
             return $;
         }
     }

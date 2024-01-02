@@ -4,6 +4,7 @@
 package com.pulumi.docker.outputs;
 
 import com.pulumi.core.annotations.CustomType;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.Integer;
 import java.lang.String;
 import java.util.List;
@@ -102,22 +103,28 @@ public final class ServiceTaskSpecContainerSpecHealthcheck {
 
         @CustomType.Setter
         public Builder interval(@Nullable String interval) {
+
             this.interval = interval;
             return this;
         }
         @CustomType.Setter
         public Builder retries(@Nullable Integer retries) {
+
             this.retries = retries;
             return this;
         }
         @CustomType.Setter
         public Builder startPeriod(@Nullable String startPeriod) {
+
             this.startPeriod = startPeriod;
             return this;
         }
         @CustomType.Setter
         public Builder tests(List<String> tests) {
-            this.tests = Objects.requireNonNull(tests);
+            if (tests == null) {
+              throw new MissingRequiredPropertyException("ServiceTaskSpecContainerSpecHealthcheck", "tests");
+            }
+            this.tests = tests;
             return this;
         }
         public Builder tests(String... tests) {
@@ -125,6 +132,7 @@ public final class ServiceTaskSpecContainerSpecHealthcheck {
         }
         @CustomType.Setter
         public Builder timeout(@Nullable String timeout) {
+
             this.timeout = timeout;
             return this;
         }

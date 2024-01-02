@@ -4,6 +4,7 @@
 package com.pulumi.docker.outputs;
 
 import com.pulumi.core.annotations.CustomType;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.String;
 import java.util.Objects;
 import java.util.Optional;
@@ -72,16 +73,21 @@ public final class ContainerDevice {
 
         @CustomType.Setter
         public Builder containerPath(@Nullable String containerPath) {
+
             this.containerPath = containerPath;
             return this;
         }
         @CustomType.Setter
         public Builder hostPath(String hostPath) {
-            this.hostPath = Objects.requireNonNull(hostPath);
+            if (hostPath == null) {
+              throw new MissingRequiredPropertyException("ContainerDevice", "hostPath");
+            }
+            this.hostPath = hostPath;
             return this;
         }
         @CustomType.Setter
         public Builder permissions(@Nullable String permissions) {
+
             this.permissions = permissions;
             return this;
         }

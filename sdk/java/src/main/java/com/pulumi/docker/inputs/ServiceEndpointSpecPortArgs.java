@@ -5,6 +5,7 @@ package com.pulumi.docker.inputs;
 
 import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.Integer;
 import java.lang.String;
 import java.util.Objects;
@@ -225,7 +226,9 @@ public final class ServiceEndpointSpecPortArgs extends com.pulumi.resources.Reso
         }
 
         public ServiceEndpointSpecPortArgs build() {
-            $.targetPort = Objects.requireNonNull($.targetPort, "expected parameter 'targetPort' to be non-null");
+            if ($.targetPort == null) {
+                throw new MissingRequiredPropertyException("ServiceEndpointSpecPortArgs", "targetPort");
+            }
             return $;
         }
     }

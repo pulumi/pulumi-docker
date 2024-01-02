@@ -11,6 +11,7 @@ import com.pulumi.docker.inputs.ServiceTaskSpecNetworksAdvancedArgs;
 import com.pulumi.docker.inputs.ServiceTaskSpecPlacementArgs;
 import com.pulumi.docker.inputs.ServiceTaskSpecResourcesArgs;
 import com.pulumi.docker.inputs.ServiceTaskSpecRestartPolicyArgs;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.Integer;
 import java.lang.String;
 import java.util.List;
@@ -353,7 +354,9 @@ public final class ServiceTaskSpecArgs extends com.pulumi.resources.ResourceArgs
         }
 
         public ServiceTaskSpecArgs build() {
-            $.containerSpec = Objects.requireNonNull($.containerSpec, "expected parameter 'containerSpec' to be non-null");
+            if ($.containerSpec == null) {
+                throw new MissingRequiredPropertyException("ServiceTaskSpecArgs", "containerSpec");
+            }
             return $;
         }
     }

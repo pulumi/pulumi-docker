@@ -12,6 +12,7 @@ import com.pulumi.docker.outputs.ServiceTaskSpecContainerSpecLabel;
 import com.pulumi.docker.outputs.ServiceTaskSpecContainerSpecMount;
 import com.pulumi.docker.outputs.ServiceTaskSpecContainerSpecPrivileges;
 import com.pulumi.docker.outputs.ServiceTaskSpecContainerSpecSecret;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.Boolean;
 import java.lang.Object;
 import java.lang.String;
@@ -336,6 +337,7 @@ public final class ServiceTaskSpecContainerSpec {
 
         @CustomType.Setter
         public Builder args(@Nullable List<String> args) {
+
             this.args = args;
             return this;
         }
@@ -344,6 +346,7 @@ public final class ServiceTaskSpecContainerSpec {
         }
         @CustomType.Setter
         public Builder commands(@Nullable List<String> commands) {
+
             this.commands = commands;
             return this;
         }
@@ -352,6 +355,7 @@ public final class ServiceTaskSpecContainerSpec {
         }
         @CustomType.Setter
         public Builder configs(@Nullable List<ServiceTaskSpecContainerSpecConfig> configs) {
+
             this.configs = configs;
             return this;
         }
@@ -360,21 +364,25 @@ public final class ServiceTaskSpecContainerSpec {
         }
         @CustomType.Setter
         public Builder dir(@Nullable String dir) {
+
             this.dir = dir;
             return this;
         }
         @CustomType.Setter
         public Builder dnsConfig(@Nullable ServiceTaskSpecContainerSpecDnsConfig dnsConfig) {
+
             this.dnsConfig = dnsConfig;
             return this;
         }
         @CustomType.Setter
         public Builder env(@Nullable Map<String,String> env) {
+
             this.env = env;
             return this;
         }
         @CustomType.Setter
         public Builder groups(@Nullable List<String> groups) {
+
             this.groups = groups;
             return this;
         }
@@ -383,16 +391,19 @@ public final class ServiceTaskSpecContainerSpec {
         }
         @CustomType.Setter
         public Builder healthcheck(@Nullable ServiceTaskSpecContainerSpecHealthcheck healthcheck) {
+
             this.healthcheck = healthcheck;
             return this;
         }
         @CustomType.Setter
         public Builder hostname(@Nullable String hostname) {
+
             this.hostname = hostname;
             return this;
         }
         @CustomType.Setter
         public Builder hosts(@Nullable List<ServiceTaskSpecContainerSpecHost> hosts) {
+
             this.hosts = hosts;
             return this;
         }
@@ -401,16 +412,21 @@ public final class ServiceTaskSpecContainerSpec {
         }
         @CustomType.Setter
         public Builder image(String image) {
-            this.image = Objects.requireNonNull(image);
+            if (image == null) {
+              throw new MissingRequiredPropertyException("ServiceTaskSpecContainerSpec", "image");
+            }
+            this.image = image;
             return this;
         }
         @CustomType.Setter
         public Builder isolation(@Nullable String isolation) {
+
             this.isolation = isolation;
             return this;
         }
         @CustomType.Setter
         public Builder labels(@Nullable List<ServiceTaskSpecContainerSpecLabel> labels) {
+
             this.labels = labels;
             return this;
         }
@@ -419,6 +435,7 @@ public final class ServiceTaskSpecContainerSpec {
         }
         @CustomType.Setter
         public Builder mounts(@Nullable List<ServiceTaskSpecContainerSpecMount> mounts) {
+
             this.mounts = mounts;
             return this;
         }
@@ -427,16 +444,19 @@ public final class ServiceTaskSpecContainerSpec {
         }
         @CustomType.Setter
         public Builder privileges(@Nullable ServiceTaskSpecContainerSpecPrivileges privileges) {
+
             this.privileges = privileges;
             return this;
         }
         @CustomType.Setter
         public Builder readOnly(@Nullable Boolean readOnly) {
+
             this.readOnly = readOnly;
             return this;
         }
         @CustomType.Setter
         public Builder secrets(@Nullable List<ServiceTaskSpecContainerSpecSecret> secrets) {
+
             this.secrets = secrets;
             return this;
         }
@@ -445,21 +465,25 @@ public final class ServiceTaskSpecContainerSpec {
         }
         @CustomType.Setter
         public Builder stopGracePeriod(@Nullable String stopGracePeriod) {
+
             this.stopGracePeriod = stopGracePeriod;
             return this;
         }
         @CustomType.Setter
         public Builder stopSignal(@Nullable String stopSignal) {
+
             this.stopSignal = stopSignal;
             return this;
         }
         @CustomType.Setter
         public Builder sysctl(@Nullable Map<String,Object> sysctl) {
+
             this.sysctl = sysctl;
             return this;
         }
         @CustomType.Setter
         public Builder user(@Nullable String user) {
+
             this.user = user;
             return this;
         }

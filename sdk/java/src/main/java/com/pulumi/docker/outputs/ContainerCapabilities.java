@@ -58,6 +58,7 @@ public final class ContainerCapabilities {
 
         @CustomType.Setter
         public Builder adds(@Nullable List<String> adds) {
+
             this.adds = adds;
             return this;
         }
@@ -66,6 +67,7 @@ public final class ContainerCapabilities {
         }
         @CustomType.Setter
         public Builder drops(@Nullable List<String> drops) {
+
             this.drops = drops;
             return this;
         }

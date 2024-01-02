@@ -4,6 +4,7 @@
 package com.pulumi.docker.config.inputs;
 
 import com.pulumi.core.annotations.CustomType;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.Boolean;
 import java.lang.String;
 import java.util.Objects;
@@ -67,31 +68,39 @@ public final class RegistryAuth {
 
         @CustomType.Setter
         public Builder address(String address) {
-            this.address = Objects.requireNonNull(address);
+            if (address == null) {
+              throw new MissingRequiredPropertyException("RegistryAuth", "address");
+            }
+            this.address = address;
             return this;
         }
         @CustomType.Setter
         public Builder authDisabled(@Nullable Boolean authDisabled) {
+
             this.authDisabled = authDisabled;
             return this;
         }
         @CustomType.Setter
         public Builder configFile(@Nullable String configFile) {
+
             this.configFile = configFile;
             return this;
         }
         @CustomType.Setter
         public Builder configFileContent(@Nullable String configFileContent) {
+
             this.configFileContent = configFileContent;
             return this;
         }
         @CustomType.Setter
         public Builder password(@Nullable String password) {
+
             this.password = password;
             return this;
         }
         @CustomType.Setter
         public Builder username(@Nullable String username) {
+
             this.username = username;
             return this;
         }

@@ -58,11 +58,13 @@ public final class ServiceTaskSpecContainerSpecPrivilegesCredentialSpec {
 
         @CustomType.Setter
         public Builder file(@Nullable String file) {
+
             this.file = file;
             return this;
         }
         @CustomType.Setter
         public Builder registry(@Nullable String registry) {
+
             this.registry = registry;
             return this;
         }

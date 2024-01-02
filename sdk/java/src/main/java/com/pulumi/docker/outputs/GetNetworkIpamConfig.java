@@ -56,21 +56,25 @@ public final class GetNetworkIpamConfig {
 
         @CustomType.Setter
         public Builder auxAddress(@Nullable Map<String,Object> auxAddress) {
+
             this.auxAddress = auxAddress;
             return this;
         }
         @CustomType.Setter
         public Builder gateway(@Nullable String gateway) {
+
             this.gateway = gateway;
             return this;
         }
         @CustomType.Setter
         public Builder ipRange(@Nullable String ipRange) {
+
             this.ipRange = ipRange;
             return this;
         }
         @CustomType.Setter
         public Builder subnet(@Nullable String subnet) {
+
             this.subnet = subnet;
             return this;
         }

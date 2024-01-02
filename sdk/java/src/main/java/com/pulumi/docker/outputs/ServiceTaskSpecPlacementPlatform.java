@@ -4,6 +4,7 @@
 package com.pulumi.docker.outputs;
 
 import com.pulumi.core.annotations.CustomType;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.String;
 import java.util.Objects;
 
@@ -56,12 +57,18 @@ public final class ServiceTaskSpecPlacementPlatform {
 
         @CustomType.Setter
         public Builder architecture(String architecture) {
-            this.architecture = Objects.requireNonNull(architecture);
+            if (architecture == null) {
+              throw new MissingRequiredPropertyException("ServiceTaskSpecPlacementPlatform", "architecture");
+            }
+            this.architecture = architecture;
             return this;
         }
         @CustomType.Setter
         public Builder os(String os) {
-            this.os = Objects.requireNonNull(os);
+            if (os == null) {
+              throw new MissingRequiredPropertyException("ServiceTaskSpecPlacementPlatform", "os");
+            }
+            this.os = os;
             return this;
         }
         public ServiceTaskSpecPlacementPlatform build() {

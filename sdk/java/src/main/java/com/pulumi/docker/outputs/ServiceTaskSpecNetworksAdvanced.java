@@ -4,6 +4,7 @@
 package com.pulumi.docker.outputs;
 
 import com.pulumi.core.annotations.CustomType;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.String;
 import java.util.List;
 import java.util.Objects;
@@ -72,6 +73,7 @@ public final class ServiceTaskSpecNetworksAdvanced {
 
         @CustomType.Setter
         public Builder aliases(@Nullable List<String> aliases) {
+
             this.aliases = aliases;
             return this;
         }
@@ -80,6 +82,7 @@ public final class ServiceTaskSpecNetworksAdvanced {
         }
         @CustomType.Setter
         public Builder driverOpts(@Nullable List<String> driverOpts) {
+
             this.driverOpts = driverOpts;
             return this;
         }
@@ -88,7 +91,10 @@ public final class ServiceTaskSpecNetworksAdvanced {
         }
         @CustomType.Setter
         public Builder name(String name) {
-            this.name = Objects.requireNonNull(name);
+            if (name == null) {
+              throw new MissingRequiredPropertyException("ServiceTaskSpecNetworksAdvanced", "name");
+            }
+            this.name = name;
             return this;
         }
         public ServiceTaskSpecNetworksAdvanced build() {

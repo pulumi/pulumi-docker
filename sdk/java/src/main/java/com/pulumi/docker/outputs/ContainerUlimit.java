@@ -4,6 +4,7 @@
 package com.pulumi.docker.outputs;
 
 import com.pulumi.core.annotations.CustomType;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.Integer;
 import java.lang.String;
 import java.util.Objects;
@@ -71,17 +72,26 @@ public final class ContainerUlimit {
 
         @CustomType.Setter
         public Builder hard(Integer hard) {
-            this.hard = Objects.requireNonNull(hard);
+            if (hard == null) {
+              throw new MissingRequiredPropertyException("ContainerUlimit", "hard");
+            }
+            this.hard = hard;
             return this;
         }
         @CustomType.Setter
         public Builder name(String name) {
-            this.name = Objects.requireNonNull(name);
+            if (name == null) {
+              throw new MissingRequiredPropertyException("ContainerUlimit", "name");
+            }
+            this.name = name;
             return this;
         }
         @CustomType.Setter
         public Builder soft(Integer soft) {
-            this.soft = Objects.requireNonNull(soft);
+            if (soft == null) {
+              throw new MissingRequiredPropertyException("ContainerUlimit", "soft");
+            }
+            this.soft = soft;
             return this;
         }
         public ContainerUlimit build() {

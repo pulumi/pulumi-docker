@@ -44,6 +44,7 @@ public final class ServiceTaskSpecContainerSpecMountBindOptions {
 
         @CustomType.Setter
         public Builder propagation(@Nullable String propagation) {
+
             this.propagation = propagation;
             return this;
         }

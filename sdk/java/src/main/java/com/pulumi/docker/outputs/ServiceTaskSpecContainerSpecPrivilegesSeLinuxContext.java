@@ -101,26 +101,31 @@ public final class ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext {
 
         @CustomType.Setter
         public Builder disable(@Nullable Boolean disable) {
+
             this.disable = disable;
             return this;
         }
         @CustomType.Setter
         public Builder level(@Nullable String level) {
+
             this.level = level;
             return this;
         }
         @CustomType.Setter
         public Builder role(@Nullable String role) {
+
             this.role = role;
             return this;
         }
         @CustomType.Setter
         public Builder type(@Nullable String type) {
+
             this.type = type;
             return this;
         }
         @CustomType.Setter
         public Builder user(@Nullable String user) {
+
             this.user = user;
             return this;
         }

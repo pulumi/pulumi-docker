@@ -5,6 +5,7 @@ package com.pulumi.docker.inputs;
 
 import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.String;
 import java.util.Objects;
 import java.util.Optional;
@@ -150,7 +151,9 @@ public final class ServiceAuthArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         public ServiceAuthArgs build() {
-            $.serverAddress = Objects.requireNonNull($.serverAddress, "expected parameter 'serverAddress' to be non-null");
+            if ($.serverAddress == null) {
+                throw new MissingRequiredPropertyException("ServiceAuthArgs", "serverAddress");
+            }
             return $;
         }
     }

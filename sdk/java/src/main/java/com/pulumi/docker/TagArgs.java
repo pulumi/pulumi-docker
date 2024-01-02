@@ -5,6 +5,7 @@ package com.pulumi.docker;
 
 import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.String;
 import java.util.Objects;
 
@@ -111,8 +112,12 @@ public final class TagArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         public TagArgs build() {
-            $.sourceImage = Objects.requireNonNull($.sourceImage, "expected parameter 'sourceImage' to be non-null");
-            $.targetImage = Objects.requireNonNull($.targetImage, "expected parameter 'targetImage' to be non-null");
+            if ($.sourceImage == null) {
+                throw new MissingRequiredPropertyException("TagArgs", "sourceImage");
+            }
+            if ($.targetImage == null) {
+                throw new MissingRequiredPropertyException("TagArgs", "targetImage");
+            }
             return $;
         }
     }

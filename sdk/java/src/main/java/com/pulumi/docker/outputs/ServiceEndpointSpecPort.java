@@ -4,6 +4,7 @@
 package com.pulumi.docker.outputs;
 
 import com.pulumi.core.annotations.CustomType;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.Integer;
 import java.lang.String;
 import java.util.Objects;
@@ -101,27 +102,34 @@ public final class ServiceEndpointSpecPort {
 
         @CustomType.Setter
         public Builder name(@Nullable String name) {
+
             this.name = name;
             return this;
         }
         @CustomType.Setter
         public Builder protocol(@Nullable String protocol) {
+
             this.protocol = protocol;
             return this;
         }
         @CustomType.Setter
         public Builder publishMode(@Nullable String publishMode) {
+
             this.publishMode = publishMode;
             return this;
         }
         @CustomType.Setter
         public Builder publishedPort(@Nullable Integer publishedPort) {
+
             this.publishedPort = publishedPort;
             return this;
         }
         @CustomType.Setter
         public Builder targetPort(Integer targetPort) {
-            this.targetPort = Objects.requireNonNull(targetPort);
+            if (targetPort == null) {
+              throw new MissingRequiredPropertyException("ServiceEndpointSpecPort", "targetPort");
+            }
+            this.targetPort = targetPort;
             return this;
         }
         public ServiceEndpointSpecPort build() {

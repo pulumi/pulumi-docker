@@ -60,11 +60,13 @@ public final class ServiceEndpointSpec {
 
         @CustomType.Setter
         public Builder mode(@Nullable String mode) {
+
             this.mode = mode;
             return this;
         }
         @CustomType.Setter
         public Builder ports(@Nullable List<ServiceEndpointSpecPort> ports) {
+
             this.ports = ports;
             return this;
         }

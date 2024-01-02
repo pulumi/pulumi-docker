@@ -89,6 +89,7 @@ public final class ServiceTaskSpecPlacement {
 
         @CustomType.Setter
         public Builder constraints(@Nullable List<String> constraints) {
+
             this.constraints = constraints;
             return this;
         }
@@ -97,11 +98,13 @@ public final class ServiceTaskSpecPlacement {
         }
         @CustomType.Setter
         public Builder maxReplicas(@Nullable Integer maxReplicas) {
+
             this.maxReplicas = maxReplicas;
             return this;
         }
         @CustomType.Setter
         public Builder platforms(@Nullable List<ServiceTaskSpecPlacementPlatform> platforms) {
+
             this.platforms = platforms;
             return this;
         }
@@ -110,6 +113,7 @@ public final class ServiceTaskSpecPlacement {
         }
         @CustomType.Setter
         public Builder prefs(@Nullable List<String> prefs) {
+
             this.prefs = prefs;
             return this;
         }
