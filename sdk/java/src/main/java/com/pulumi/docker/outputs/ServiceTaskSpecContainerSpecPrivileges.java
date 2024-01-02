@@ -59,11 +59,13 @@ public final class ServiceTaskSpecContainerSpecPrivileges {
 
         @CustomType.Setter
         public Builder credentialSpec(@Nullable ServiceTaskSpecContainerSpecPrivilegesCredentialSpec credentialSpec) {
+
             this.credentialSpec = credentialSpec;
             return this;
         }
         @CustomType.Setter
         public Builder seLinuxContext(@Nullable ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext seLinuxContext) {
+
             this.seLinuxContext = seLinuxContext;
             return this;
         }

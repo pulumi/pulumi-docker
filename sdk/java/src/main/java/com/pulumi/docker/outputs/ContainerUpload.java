@@ -4,6 +4,7 @@
 package com.pulumi.docker.outputs;
 
 import com.pulumi.core.annotations.CustomType;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.Boolean;
 import java.lang.String;
 import java.util.Objects;
@@ -107,31 +108,39 @@ public final class ContainerUpload {
 
         @CustomType.Setter
         public Builder content(@Nullable String content) {
+
             this.content = content;
             return this;
         }
         @CustomType.Setter
         public Builder contentBase64(@Nullable String contentBase64) {
+
             this.contentBase64 = contentBase64;
             return this;
         }
         @CustomType.Setter
         public Builder executable(@Nullable Boolean executable) {
+
             this.executable = executable;
             return this;
         }
         @CustomType.Setter
         public Builder file(String file) {
-            this.file = Objects.requireNonNull(file);
+            if (file == null) {
+              throw new MissingRequiredPropertyException("ContainerUpload", "file");
+            }
+            this.file = file;
             return this;
         }
         @CustomType.Setter
         public Builder source(@Nullable String source) {
+
             this.source = source;
             return this;
         }
         @CustomType.Setter
         public Builder sourceHash(@Nullable String sourceHash) {
+
             this.sourceHash = sourceHash;
             return this;
         }

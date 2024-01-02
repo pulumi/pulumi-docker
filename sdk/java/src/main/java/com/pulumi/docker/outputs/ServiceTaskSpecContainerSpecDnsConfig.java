@@ -4,6 +4,7 @@
 package com.pulumi.docker.outputs;
 
 import com.pulumi.core.annotations.CustomType;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.String;
 import java.util.List;
 import java.util.Objects;
@@ -72,7 +73,10 @@ public final class ServiceTaskSpecContainerSpecDnsConfig {
 
         @CustomType.Setter
         public Builder nameservers(List<String> nameservers) {
-            this.nameservers = Objects.requireNonNull(nameservers);
+            if (nameservers == null) {
+              throw new MissingRequiredPropertyException("ServiceTaskSpecContainerSpecDnsConfig", "nameservers");
+            }
+            this.nameservers = nameservers;
             return this;
         }
         public Builder nameservers(String... nameservers) {
@@ -80,6 +84,7 @@ public final class ServiceTaskSpecContainerSpecDnsConfig {
         }
         @CustomType.Setter
         public Builder options(@Nullable List<String> options) {
+
             this.options = options;
             return this;
         }
@@ -88,6 +93,7 @@ public final class ServiceTaskSpecContainerSpecDnsConfig {
         }
         @CustomType.Setter
         public Builder searches(@Nullable List<String> searches) {
+
             this.searches = searches;
             return this;
         }

@@ -6,6 +6,7 @@ package com.pulumi.docker;
 import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
 import com.pulumi.docker.inputs.SecretLabelArgs;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.String;
 import java.util.List;
 import java.util.Objects;
@@ -162,7 +163,9 @@ public final class SecretArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         public SecretArgs build() {
-            $.data = Objects.requireNonNull($.data, "expected parameter 'data' to be non-null");
+            if ($.data == null) {
+                throw new MissingRequiredPropertyException("SecretArgs", "data");
+            }
             return $;
         }
     }

@@ -87,21 +87,25 @@ public final class ServiceTaskSpecRestartPolicy {
 
         @CustomType.Setter
         public Builder condition(@Nullable String condition) {
+
             this.condition = condition;
             return this;
         }
         @CustomType.Setter
         public Builder delay(@Nullable String delay) {
+
             this.delay = delay;
             return this;
         }
         @CustomType.Setter
         public Builder maxAttempts(@Nullable Integer maxAttempts) {
+
             this.maxAttempts = maxAttempts;
             return this;
         }
         @CustomType.Setter
         public Builder window(@Nullable String window) {
+
             this.window = window;
             return this;
         }

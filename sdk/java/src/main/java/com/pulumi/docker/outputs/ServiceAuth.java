@@ -4,6 +4,7 @@
 package com.pulumi.docker.outputs;
 
 import com.pulumi.core.annotations.CustomType;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.String;
 import java.util.Objects;
 import java.util.Optional;
@@ -72,16 +73,21 @@ public final class ServiceAuth {
 
         @CustomType.Setter
         public Builder password(@Nullable String password) {
+
             this.password = password;
             return this;
         }
         @CustomType.Setter
         public Builder serverAddress(String serverAddress) {
-            this.serverAddress = Objects.requireNonNull(serverAddress);
+            if (serverAddress == null) {
+              throw new MissingRequiredPropertyException("ServiceAuth", "serverAddress");
+            }
+            this.serverAddress = serverAddress;
             return this;
         }
         @CustomType.Setter
         public Builder username(@Nullable String username) {
+
             this.username = username;
             return this;
         }

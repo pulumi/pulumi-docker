@@ -5,6 +5,7 @@ package com.pulumi.docker.inputs;
 
 import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.String;
 import java.util.Objects;
 
@@ -111,8 +112,12 @@ public final class ServiceTaskSpecPlacementPlatformArgs extends com.pulumi.resou
         }
 
         public ServiceTaskSpecPlacementPlatformArgs build() {
-            $.architecture = Objects.requireNonNull($.architecture, "expected parameter 'architecture' to be non-null");
-            $.os = Objects.requireNonNull($.os, "expected parameter 'os' to be non-null");
+            if ($.architecture == null) {
+                throw new MissingRequiredPropertyException("ServiceTaskSpecPlacementPlatformArgs", "architecture");
+            }
+            if ($.os == null) {
+                throw new MissingRequiredPropertyException("ServiceTaskSpecPlacementPlatformArgs", "os");
+            }
             return $;
         }
     }

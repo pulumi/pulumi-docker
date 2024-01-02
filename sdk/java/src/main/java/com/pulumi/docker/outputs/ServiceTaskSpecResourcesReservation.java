@@ -73,16 +73,19 @@ public final class ServiceTaskSpecResourcesReservation {
 
         @CustomType.Setter
         public Builder genericResources(@Nullable ServiceTaskSpecResourcesReservationGenericResources genericResources) {
+
             this.genericResources = genericResources;
             return this;
         }
         @CustomType.Setter
         public Builder memoryBytes(@Nullable Integer memoryBytes) {
+
             this.memoryBytes = memoryBytes;
             return this;
         }
         @CustomType.Setter
         public Builder nanoCpus(@Nullable Integer nanoCpus) {
+
             this.nanoCpus = nanoCpus;
             return this;
         }

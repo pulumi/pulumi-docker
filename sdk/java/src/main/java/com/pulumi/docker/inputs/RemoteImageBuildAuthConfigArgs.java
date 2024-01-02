@@ -5,6 +5,7 @@ package com.pulumi.docker.inputs;
 
 import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.String;
 import java.util.Objects;
 import java.util.Optional;
@@ -335,7 +336,9 @@ public final class RemoteImageBuildAuthConfigArgs extends com.pulumi.resources.R
         }
 
         public RemoteImageBuildAuthConfigArgs build() {
-            $.hostName = Objects.requireNonNull($.hostName, "expected parameter 'hostName' to be non-null");
+            if ($.hostName == null) {
+                throw new MissingRequiredPropertyException("RemoteImageBuildAuthConfigArgs", "hostName");
+            }
             return $;
         }
     }

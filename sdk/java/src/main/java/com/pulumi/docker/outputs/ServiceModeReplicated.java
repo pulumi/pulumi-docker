@@ -44,6 +44,7 @@ public final class ServiceModeReplicated {
 
         @CustomType.Setter
         public Builder replicas(@Nullable Integer replicas) {
+
             this.replicas = replicas;
             return this;
         }

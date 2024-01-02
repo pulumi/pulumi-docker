@@ -79,41 +79,49 @@ public final class ContainerNetworkData {
 
         @CustomType.Setter
         public Builder gateway(@Nullable String gateway) {
+
             this.gateway = gateway;
             return this;
         }
         @CustomType.Setter
         public Builder globalIpv6Address(@Nullable String globalIpv6Address) {
+
             this.globalIpv6Address = globalIpv6Address;
             return this;
         }
         @CustomType.Setter
         public Builder globalIpv6PrefixLength(@Nullable Integer globalIpv6PrefixLength) {
+
             this.globalIpv6PrefixLength = globalIpv6PrefixLength;
             return this;
         }
         @CustomType.Setter
         public Builder ipAddress(@Nullable String ipAddress) {
+
             this.ipAddress = ipAddress;
             return this;
         }
         @CustomType.Setter
         public Builder ipPrefixLength(@Nullable Integer ipPrefixLength) {
+
             this.ipPrefixLength = ipPrefixLength;
             return this;
         }
         @CustomType.Setter
         public Builder ipv6Gateway(@Nullable String ipv6Gateway) {
+
             this.ipv6Gateway = ipv6Gateway;
             return this;
         }
         @CustomType.Setter
         public Builder macAddress(@Nullable String macAddress) {
+
             this.macAddress = macAddress;
             return this;
         }
         @CustomType.Setter
         public Builder networkName(@Nullable String networkName) {
+
             this.networkName = networkName;
             return this;
         }

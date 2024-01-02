@@ -58,6 +58,7 @@ public final class ServiceTaskSpecResourcesReservationGenericResources {
 
         @CustomType.Setter
         public Builder discreteResourcesSpecs(@Nullable List<String> discreteResourcesSpecs) {
+
             this.discreteResourcesSpecs = discreteResourcesSpecs;
             return this;
         }
@@ -66,6 +67,7 @@ public final class ServiceTaskSpecResourcesReservationGenericResources {
         }
         @CustomType.Setter
         public Builder namedResourcesSpecs(@Nullable List<String> namedResourcesSpecs) {
+
             this.namedResourcesSpecs = namedResourcesSpecs;
             return this;
         }

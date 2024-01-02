@@ -4,6 +4,7 @@
 package com.pulumi.docker.outputs;
 
 import com.pulumi.core.annotations.CustomType;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.Boolean;
 import java.lang.String;
 import java.util.List;
@@ -130,17 +131,24 @@ public final class GetPluginResult {
 
         @CustomType.Setter
         public Builder alias(@Nullable String alias) {
+
             this.alias = alias;
             return this;
         }
         @CustomType.Setter
         public Builder enabled(Boolean enabled) {
-            this.enabled = Objects.requireNonNull(enabled);
+            if (enabled == null) {
+              throw new MissingRequiredPropertyException("GetPluginResult", "enabled");
+            }
+            this.enabled = enabled;
             return this;
         }
         @CustomType.Setter
         public Builder envs(List<String> envs) {
-            this.envs = Objects.requireNonNull(envs);
+            if (envs == null) {
+              throw new MissingRequiredPropertyException("GetPluginResult", "envs");
+            }
+            this.envs = envs;
             return this;
         }
         public Builder envs(String... envs) {
@@ -148,22 +156,32 @@ public final class GetPluginResult {
         }
         @CustomType.Setter
         public Builder grantAllPermissions(Boolean grantAllPermissions) {
-            this.grantAllPermissions = Objects.requireNonNull(grantAllPermissions);
+            if (grantAllPermissions == null) {
+              throw new MissingRequiredPropertyException("GetPluginResult", "grantAllPermissions");
+            }
+            this.grantAllPermissions = grantAllPermissions;
             return this;
         }
         @CustomType.Setter
         public Builder id(@Nullable String id) {
+
             this.id = id;
             return this;
         }
         @CustomType.Setter
         public Builder name(String name) {
-            this.name = Objects.requireNonNull(name);
+            if (name == null) {
+              throw new MissingRequiredPropertyException("GetPluginResult", "name");
+            }
+            this.name = name;
             return this;
         }
         @CustomType.Setter
         public Builder pluginReference(String pluginReference) {
-            this.pluginReference = Objects.requireNonNull(pluginReference);
+            if (pluginReference == null) {
+              throw new MissingRequiredPropertyException("GetPluginResult", "pluginReference");
+            }
+            this.pluginReference = pluginReference;
             return this;
         }
         public GetPluginResult build() {
