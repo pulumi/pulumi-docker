@@ -1,5 +1,6 @@
 provider: docker
 major-version: 4
+upstreamProviderOrg: kreuzwerker
 aws: true
 gcp: true
 gcpRegistry: true
