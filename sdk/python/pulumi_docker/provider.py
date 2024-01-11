@@ -208,8 +208,8 @@ class Provider(pulumi.ProviderResource):
                 host = _utilities.get_env('DOCKER_HOST')
             __props__.__dict__["host"] = host
             __props__.__dict__["key_material"] = key_material
-            __props__.__dict__["registry_auth"] = pulumi.Output.from_input(registry_auth).apply(pulumi.runtime.to_json) if registry_auth is not None else None
-            __props__.__dict__["ssh_opts"] = pulumi.Output.from_input(ssh_opts).apply(pulumi.runtime.to_json) if ssh_opts is not None else None
+            __props__.__dict__["registry_auth"] = pulumi.Output.from_input(registry_auth) if registry_auth is not None else None
+            __props__.__dict__["ssh_opts"] = pulumi.Output.from_input(ssh_opts) if ssh_opts is not None else None
         super(Provider, __self__).__init__(
             'docker',
             resource_name,
