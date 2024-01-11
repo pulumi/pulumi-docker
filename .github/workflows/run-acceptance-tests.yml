@@ -123,10 +123,6 @@ jobs:
     - name: Set PACKAGE_VERSION to Env
       run: echo "PACKAGE_VERSION=$(pulumictl get version --language generic)" >>
         "$GITHUB_ENV"
-    - name: Build SDK
-      run: make build_${{ matrix.language }}
-    - name: Check worktree clean
-      run: ./ci-scripts/ci/check-worktree-is-clean
     - name: Compress SDK folder
       run: tar -zcf sdk/${{ matrix.language }}.tar.gz -C sdk/${{ matrix.language }} .
     - name: Upload artifacts

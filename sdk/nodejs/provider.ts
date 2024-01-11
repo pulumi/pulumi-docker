@@ -65,8 +65,8 @@ export class Provider extends pulumi.ProviderResource {
             resourceInputs["certPath"] = args ? args.certPath : undefined;
             resourceInputs["host"] = (args ? args.host : undefined) ?? utilities.getEnv("DOCKER_HOST");
             resourceInputs["keyMaterial"] = args ? args.keyMaterial : undefined;
-            resourceInputs["registryAuth"] = pulumi.output(args ? args.registryAuth : undefined);
-            resourceInputs["sshOpts"] = pulumi.output(args ? args.sshOpts : undefined);
+            resourceInputs["registryAuth"] = pulumi.output(args ? args.registryAuth : undefined).apply(JSON.stringify);
+            resourceInputs["sshOpts"] = pulumi.output(args ? args.sshOpts : undefined).apply(JSON.stringify);
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
         super(Provider.__pulumiType, name, resourceInputs, opts);
