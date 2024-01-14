@@ -8,10 +8,11 @@ import (
 	"testing"
 
 	"github.com/docker/docker/api/types"
-	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/spf13/afero"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 )
 
 func TestSetRegistry(t *testing.T) {

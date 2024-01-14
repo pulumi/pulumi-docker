@@ -18,6 +18,7 @@ package main
 
 import (
 	_ "embed"
+
 	"github.com/pulumi/pulumi-docker/provider/v4"
 	"github.com/pulumi/pulumi-docker/provider/v4/pkg/version"
 )
