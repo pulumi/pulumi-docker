@@ -39,9 +39,10 @@ import (
 	"github.com/moby/buildkit/session/auth/authprovider"
 	"github.com/moby/moby/registry"
 	"github.com/opencontainers/go-digest"
+	"github.com/spf13/afero"
+
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
-	"github.com/spf13/afero"
 )
 
 const (
