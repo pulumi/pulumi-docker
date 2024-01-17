@@ -74,13 +74,11 @@ func (dp dockerHybridProvider) GetSchema(ctx context.Context, request *rpc.GetSc
 
 func (dp dockerHybridProvider) CheckConfig(ctx context.Context, request *rpc.CheckRequest) (*rpc.CheckResponse, error) {
 	// Delegate to the bridged provider, as native Provider does not implement it.
-	fmt.Println("hello from CheckConfig")
 	return dp.bridgedProvider.CheckConfig(ctx, request)
 }
 
 func (dp dockerHybridProvider) DiffConfig(ctx context.Context, request *rpc.DiffRequest) (*rpc.DiffResponse, error) {
 	// Delegate to the bridged provider, as native Provider does not implement it.
-	fmt.Println("hello from DiffConfig")
 	// should use thing's config instead?
 	return dp.bridgedProvider.DiffConfig(ctx, request)
 }
@@ -95,7 +93,6 @@ func (dp dockerHybridProvider) Configure(
 	}
 
 	for pname, p := range providers {
-		fmt.Println("configuring", pname)
 		// Native provider returns empty response and error from Configure, just call it to propagate the information.
 
 		// if pname == "buildx" {

@@ -71,8 +71,7 @@ func (d *docker) Auth(ctx context.Context, creds properties.ProviderRegistryAuth
 
 	err := cfg.GetCredentialsStore(creds.Address).Store(auth)
 	if err != nil {
-		fmt.Println("SAVING TO CREDS", err.Error())
-		return err
+		return fmt.Errorf("storing auth: %w", err)
 	}
 
 	// cfg.AuthConfigs[creds.Address] = auth

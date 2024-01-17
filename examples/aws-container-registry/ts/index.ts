@@ -62,6 +62,7 @@ new docker.buildx.Image(
     tags: [pulumi.interpolate`${repo.repositoryUrl}`],
     exports: ["type=registry"],
     file: "app/Dockerfile",
+    platforms: ["linux/arm64", "linux/amd64"],
     context: "app",
   },
   { provider: provider }

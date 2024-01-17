@@ -38,7 +38,6 @@ func (c *Config) Annotate(a infer.Annotator) {
 
 // Configure validates and processes user-provided configuration values.
 func (c *Config) Configure(ctx provider.Context) error {
-	fmt.Println("HELLO FROM CONFIGURE")
 	if client, ok := ctx.Value(_mockClientKey).(Client); ok {
 		c.client = client
 		return nil // Client has already been injected, nothing to do.
@@ -50,9 +49,7 @@ func (c *Config) Configure(ctx provider.Context) error {
 	}
 	c.client = client
 
-	fmt.Println("hello from auth")
 	for _, creds := range c.RegistryAuth {
-		fmt.Println("Attempting login for", creds.Address, creds.Username, creds.Password)
 		if err := client.Auth(ctx, creds); err != nil {
 			return err
 		}
