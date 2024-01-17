@@ -395,9 +395,6 @@ func Provider(version string) tfbridge.ProviderInfo {
 	for k, v := range spec.Types {
 		prov.ExtraTypes[k] = v
 	}
-	prov.ExtraConfig["registryAuth"] = &tfbridge.ConfigInfo{
-		Info: &tfbridge.SchemaInfo{},
-	}
 
 	// prov.SkipValidateProviderConfigForPluginFramework = true
 
