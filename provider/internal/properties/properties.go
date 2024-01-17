@@ -28,5 +28,8 @@ type ProviderRegistryAuth struct {
 	Username string `pulumi:"username,optional"`
 }
 
-func (ra *ProviderRegistryAuth) Annotate(_ infer.Annotator) {
+func (ra *ProviderRegistryAuth) Annotate(a infer.Annotator) {
+	a.Describe(&ra.Address, `The registry's address (e.g. "docker.io")`)
+	a.Describe(&ra.Username, `Username for the registry`)
+	a.Describe(&ra.Password, `Password or token for the registry`)
 }

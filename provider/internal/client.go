@@ -16,6 +16,7 @@ import (
 	"github.com/docker/cli/cli/flags"
 	manifesttypes "github.com/docker/cli/cli/manifest/types"
 	"github.com/docker/docker/api/types"
+	"github.com/docker/docker/api/types/registry"
 	"github.com/moby/buildkit/client"
 	"github.com/moby/buildkit/util/progress/progressui"
 
@@ -31,11 +32,11 @@ type Client interface {
 	Delete(ctx context.Context, id string) ([]types.ImageDeleteResponseItem, error)
 }
 
+var _ Client = (*docker)(nil)
+
 type docker struct {
 	cli *command.DockerCli
 }
-
-var _ Client = (*docker)(nil)
 
 func newDockerClient() (*docker, error) {
 	cli, err := command.NewDockerCli(
@@ -72,7 +73,16 @@ func (d *docker) Auth(ctx context.Context, creds properties.ProviderRegistryAuth
 		Password:      creds.Password,
 	}
 
-	err := cfg.GetCredentialsStore(configKey).Store(auth)
+	_, err := d.cli.Client().RegistryLogin(ctx, registry.AuthConfig{
+		ServerAddress: auth.ServerAddress,
+		Username:      auth.Username,
+		Password:      auth.Password,
+	})
+	if err != nil {
+		return fmt.Errorf("authenticating: %w", err)
+	}
+
+	err = cfg.GetCredentialsStore(configKey).Store(auth)
 	if err != nil {
 		return fmt.Errorf("storing auth: %w", err)
 	}

@@ -87,23 +87,6 @@ func Provider(version string) tfbridge.ProviderInfo {
 			"registry_auth": {
 				Name:        "registryAuth", // not plural
 				MaxItemsOne: tfbridge.False(),
-				// Type:        "array",
-				Elem: &tfbridge.SchemaInfo{
-					// Type: "object",
-					Fields: map[string]*tfbridge.SchemaInfo{
-						"address": {
-
-							// Type: "string",
-						},
-						"username": {
-							// Type: "string",
-						},
-						"password": {
-							// Type:   "string",
-							Secret: tfbridge.True(),
-						},
-					},
-				},
 			},
 		},
 		Resources: map[string]*tfbridge.ResourceInfo{

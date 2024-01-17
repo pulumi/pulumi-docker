@@ -2,12 +2,33 @@ package internal
 
 import (
 	"context"
+	"os"
 	"testing"
 
 	"github.com/docker/buildx/controller/pb"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	"github.com/pulumi/pulumi-docker/provider/v4/internal/properties"
 )
+
+func TestAuth(t *testing.T) {
+	d, err := newDockerClient()
+	require.NoError(t, err)
+
+	user := "pulumibot"
+	if u := os.Getenv("DOCKER_HUB_USER"); u != "" {
+		user = u
+	}
+	password := os.Getenv("DOCKER_HUB_PASSWORD")
+
+	err = d.Auth(context.Background(), properties.ProviderRegistryAuth{
+		Address:  "docker.io",
+		Username: user,
+		Password: password,
+	})
+	assert.NoError(t, err)
+}
 
 func TestBuild(t *testing.T) {
 	d, err := newDockerClient()

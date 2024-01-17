@@ -34,8 +34,10 @@ class ImageArgs:
                the Docker build. This flag allows you to pass build-time variables that
                can be accessed like environment variables inside the RUN
                instruction.
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] cache_from: TODO
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] cache_to: TODO
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] cache_from: 
+               External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] cache_to: 
+               Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
         :param pulumi.Input[str] context: 
                Contexts to use while building the image. If omitted, an empty context
                is used. If more than one value is specified, they should be of the
@@ -47,7 +49,8 @@ class ImageArgs:
                Name of the Dockerfile to use (default: "$PATH/Dockerfile").
         :param pulumi.Input[Sequence[pulumi.Input[str]]] platforms: 
                Set target platforms for the build. Defaults to the host's platform
-        :param pulumi.Input[bool] pull: TODO
+        :param pulumi.Input[bool] pull: 
+               Always attempt to pull all referenced images
         """
         pulumi.set(__self__, "tags", tags)
         if build_args is not None:
@@ -103,7 +106,8 @@ class ImageArgs:
     @pulumi.getter(name="cacheFrom")
     def cache_from(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
         """
-        TODO
+
+        External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
         """
         return pulumi.get(self, "cache_from")
 
@@ -115,7 +119,8 @@ class ImageArgs:
     @pulumi.getter(name="cacheTo")
     def cache_to(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
         """
-        TODO
+
+        Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
         """
         return pulumi.get(self, "cache_to")
 
@@ -182,7 +187,8 @@ class ImageArgs:
     @pulumi.getter
     def pull(self) -> Optional[pulumi.Input[bool]]:
         """
-        TODO
+
+        Always attempt to pull all referenced images
         """
         return pulumi.get(self, "pull")
 
@@ -216,8 +222,10 @@ class Image(pulumi.CustomResource):
                the Docker build. This flag allows you to pass build-time variables that
                can be accessed like environment variables inside the RUN
                instruction.
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] cache_from: TODO
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] cache_to: TODO
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] cache_from: 
+               External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] cache_to: 
+               Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
         :param pulumi.Input[str] context: 
                Contexts to use while building the image. If omitted, an empty context
                is used. If more than one value is specified, they should be of the
@@ -229,7 +237,8 @@ class Image(pulumi.CustomResource):
                Name of the Dockerfile to use (default: "$PATH/Dockerfile").
         :param pulumi.Input[Sequence[pulumi.Input[str]]] platforms: 
                Set target platforms for the build. Defaults to the host's platform
-        :param pulumi.Input[bool] pull: TODO
+        :param pulumi.Input[bool] pull: 
+               Always attempt to pull all referenced images
         :param pulumi.Input[Sequence[pulumi.Input[str]]] tags: 
                Name and optionally a tag (format: "name:tag"). If outputting to a
                registry, the name should include the fully qualified registry address.
@@ -340,7 +349,8 @@ class Image(pulumi.CustomResource):
     @pulumi.getter(name="cacheFrom")
     def cache_from(self) -> pulumi.Output[Optional[Sequence[str]]]:
         """
-        TODO
+
+        External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
         """
         return pulumi.get(self, "cache_from")
 
@@ -348,7 +358,8 @@ class Image(pulumi.CustomResource):
     @pulumi.getter(name="cacheTo")
     def cache_to(self) -> pulumi.Output[Optional[Sequence[str]]]:
         """
-        TODO
+
+        Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
         """
         return pulumi.get(self, "cache_to")
 
@@ -400,7 +411,8 @@ class Image(pulumi.CustomResource):
     @pulumi.getter
     def pull(self) -> pulumi.Output[Optional[bool]]:
         """
-        TODO
+
+        Always attempt to pull all referenced images
         """
         return pulumi.get(self, "pull")
 

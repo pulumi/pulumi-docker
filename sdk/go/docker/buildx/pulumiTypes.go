@@ -190,8 +190,11 @@ func (o PlatformOutput) Os() pulumi.StringOutput {
 }
 
 type ProviderRegistryAuth struct {
-	Address  string  `pulumi:"address"`
+	// The registry's address (e.g. "docker.io")
+	Address string `pulumi:"address"`
+	// Password or token for the registry
 	Password *string `pulumi:"password"`
+	// Username for the registry
 	Username *string `pulumi:"username"`
 }
 
@@ -207,8 +210,11 @@ type ProviderRegistryAuthInput interface {
 }
 
 type ProviderRegistryAuthArgs struct {
-	Address  pulumi.StringInput    `pulumi:"address"`
+	// The registry's address (e.g. "docker.io")
+	Address pulumi.StringInput `pulumi:"address"`
+	// Password or token for the registry
 	Password pulumi.StringPtrInput `pulumi:"password"`
+	// Username for the registry
 	Username pulumi.StringPtrInput `pulumi:"username"`
 }
 
@@ -238,14 +244,17 @@ func (o ProviderRegistryAuthOutput) ToProviderRegistryAuthOutputWithContext(ctx 
 	return o
 }
 
+// The registry's address (e.g. "docker.io")
 func (o ProviderRegistryAuthOutput) Address() pulumi.StringOutput {
 	return o.ApplyT(func(v ProviderRegistryAuth) string { return v.Address }).(pulumi.StringOutput)
 }
 
+// Password or token for the registry
 func (o ProviderRegistryAuthOutput) Password() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ProviderRegistryAuth) *string { return v.Password }).(pulumi.StringPtrOutput)
 }
 
+// Username for the registry
 func (o ProviderRegistryAuthOutput) Username() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ProviderRegistryAuth) *string { return v.Username }).(pulumi.StringPtrOutput)
 }

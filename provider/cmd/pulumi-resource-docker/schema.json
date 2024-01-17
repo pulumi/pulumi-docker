@@ -147,14 +147,17 @@
         "docker:buildx/image:ProviderRegistryAuth": {
             "properties": {
                 "address": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "The registry's address (e.g. \"docker.io\")"
                 },
                 "password": {
                     "type": "string",
+                    "description": "Password or token for the registry",
                     "secret": true
                 },
                 "username": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Username for the registry"
                 }
             },
             "type": "object",
@@ -2114,14 +2117,14 @@
                     "items": {
                         "type": "string"
                     },
-                    "description": "TODO"
+                    "description": "\nExternal cache sources (e.g., \"user/app:cache\", \"type=local,src=path/to/dir\")"
                 },
                 "cacheTo": {
                     "type": "array",
                     "items": {
                         "type": "string"
                     },
-                    "description": "TODO"
+                    "description": "\nCache export destinations (e.g., \"user/app:cache\", \"type=local,dest=path/to/dir\")"
                 },
                 "context": {
                     "type": "string",
@@ -2154,7 +2157,7 @@
                 },
                 "pull": {
                     "type": "boolean",
-                    "description": "TODO"
+                    "description": "\nAlways attempt to pull all referenced images"
                 },
                 "tags": {
                     "type": "array",
@@ -2181,14 +2184,14 @@
                     "items": {
                         "type": "string"
                     },
-                    "description": "TODO"
+                    "description": "\nExternal cache sources (e.g., \"user/app:cache\", \"type=local,src=path/to/dir\")"
                 },
                 "cacheTo": {
                     "type": "array",
                     "items": {
                         "type": "string"
                     },
-                    "description": "TODO"
+                    "description": "\nCache export destinations (e.g., \"user/app:cache\", \"type=local,dest=path/to/dir\")"
                 },
                 "context": {
                     "type": "string",
@@ -2215,7 +2218,7 @@
                 },
                 "pull": {
                     "type": "boolean",
-                    "description": "TODO"
+                    "description": "\nAlways attempt to pull all referenced images"
                 },
                 "tags": {
                     "type": "array",
