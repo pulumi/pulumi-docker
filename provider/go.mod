@@ -4,6 +4,7 @@ go 1.21
 
 require (
 	github.com/blang/semver v3.5.1+incompatible
+	github.com/distribution/reference v0.5.0
 	github.com/docker/buildx v0.12.1
 	github.com/docker/cli v24.0.7+incompatible
 	github.com/docker/distribution v2.8.2+incompatible
@@ -18,9 +19,9 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/pulumi/pulumi-go-provider v0.14.0
 	github.com/pulumi/pulumi-go-provider/integration v0.10.0
-	github.com/pulumi/pulumi-terraform-bridge/v3 v3.70.0
+	github.com/pulumi/pulumi-terraform-bridge/v3 v3.70.1-0.20240117183753-4c133c5babb0
 	github.com/pulumi/pulumi/pkg/v3 v3.99.0
-	github.com/pulumi/pulumi/sdk/v3 v3.99.0
+	github.com/pulumi/pulumi/sdk/v3 v3.101.2-0.20240110215317-7f71c9b7ba47
 	github.com/spf13/afero v1.9.5
 	github.com/stretchr/testify v1.8.4
 	github.com/terraform-providers/terraform-provider-docker v0.0.0
@@ -35,6 +36,7 @@ replace (
 	cloud.google.com/go/storage => cloud.google.com/go/storage v1.29.0
 	github.com/hashicorp/terraform-plugin-sdk/v2 => github.com/pulumi/terraform-plugin-sdk/v2 v2.0.0-20230912190043-e6d96b3b8f7e
 	github.com/hashicorp/vault => github.com/hashicorp/vault v1.2.0
+	github.com/pulumi/pulumi/pkg/v3 => github.com/pulumi/pulumi/pkg/v3 v3.78.2-0.20240110215317-7f71c9b7ba47
 	github.com/terraform-providers/terraform-provider-docker => ../upstream
 )
 
@@ -49,10 +51,10 @@ require (
 	cloud.google.com/go/storage v1.30.1 // indirect
 	dario.cat/mergo v1.0.0 // indirect
 	github.com/AdaLogics/go-fuzz-headers v0.0.0-20230811130428-ced1acdcaa24 // indirect
-	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.2.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.4.0 // indirect
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.2.0 // indirect
-	github.com/Azure/azure-sdk-for-go/sdk/internal v1.1.2 // indirect
-	github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys v0.9.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/internal v1.2.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys v0.10.0 // indirect
 	github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal v0.7.1 // indirect
 	github.com/Azure/go-ansiterm v0.0.0-20210617225240-d185dfc1b5a1 // indirect
 	github.com/AzureAD/microsoft-authentication-library-for-go v0.7.0 // indirect
@@ -64,7 +66,6 @@ require (
 	github.com/Microsoft/go-winio v0.6.1 // indirect
 	github.com/Microsoft/hcsshim v0.11.1 // indirect
 	github.com/ProtonMail/go-crypto v0.0.0-20230828082145-3c4c8a2d2371 // indirect
-	github.com/acomagu/bufpipe v1.0.4 // indirect
 	github.com/aead/chacha20 v0.0.0-20180709150244-8b13a72661da // indirect
 	github.com/agext/levenshtein v1.2.3 // indirect
 	github.com/apparentlymart/go-cidr v1.1.0 // indirect
@@ -106,7 +107,6 @@ require (
 	github.com/cyphar/filepath-securejoin v0.2.4 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/deckarep/golang-set/v2 v2.5.0 // indirect
-	github.com/distribution/reference v0.5.0 // indirect
 	github.com/djherbis/times v1.5.0 // indirect
 	github.com/docker/docker-credential-helpers v0.7.0 // indirect
 	github.com/docker/go v1.5.1-1.0.20160303222718-d30aec9fd63c // indirect
@@ -123,8 +123,8 @@ require (
 	github.com/gedex/inflector v0.0.0-20170307190818-16278e9db813 // indirect
 	github.com/go-git/gcfg v1.5.1-0.20230307220236-3a3c6141e376 // indirect
 	github.com/go-git/go-billy/v5 v5.5.0 // indirect
-	github.com/go-git/go-git/v5 v5.9.0 // indirect
-	github.com/go-logr/logr v1.2.3 // indirect
+	github.com/go-git/go-git/v5 v5.11.0 // indirect
+	github.com/go-logr/logr v1.3.0 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-openapi/jsonpointer v0.19.5 // indirect
 	github.com/go-openapi/jsonreference v0.20.0 // indirect
@@ -198,7 +198,6 @@ require (
 	github.com/kylelemons/godebug v1.1.0 // indirect
 	github.com/lucasb-eyer/go-colorful v1.2.0 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
-	github.com/matryer/is v1.4.0 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.19 // indirect
 	github.com/mattn/go-localereader v0.0.1 // indirect
@@ -249,9 +248,9 @@ require (
 	github.com/prometheus/procfs v0.9.0 // indirect
 	github.com/pulumi/appdash v0.0.0-20231130102222-75f619a67231 // indirect
 	github.com/pulumi/esc v0.6.2 // indirect
-	github.com/pulumi/pulumi-java/pkg v0.9.8 // indirect
+	github.com/pulumi/pulumi-java/pkg v0.9.9 // indirect
 	github.com/pulumi/pulumi-terraform-bridge/x/muxer v0.0.4 // indirect
-	github.com/pulumi/pulumi-yaml v1.4.4 // indirect
+	github.com/pulumi/pulumi-yaml v1.4.5 // indirect
 	github.com/pulumi/schema-tools v0.1.2 // indirect
 	github.com/pulumi/terraform-diff-reader v0.0.2 // indirect
 	github.com/rivo/uniseg v0.4.4 // indirect
@@ -268,7 +267,7 @@ require (
 	github.com/shibumi/go-pathspec v1.3.0 // indirect
 	github.com/shopspring/decimal v1.3.1 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
-	github.com/skeema/knownhosts v1.2.0 // indirect
+	github.com/skeema/knownhosts v1.2.1 // indirect
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/cobra v1.7.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
@@ -307,7 +306,7 @@ require (
 	golang.org/x/crypto v0.17.0 // indirect
 	golang.org/x/exp v0.0.0-20231110203233-9a3e6036ecaa // indirect
 	golang.org/x/mod v0.14.0 // indirect
-	golang.org/x/net v0.18.0 // indirect
+	golang.org/x/net v0.19.0 // indirect
 	golang.org/x/oauth2 v0.13.0 // indirect
 	golang.org/x/sync v0.5.0 // indirect
 	golang.org/x/sys v0.15.0 // indirect
