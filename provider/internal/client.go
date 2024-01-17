@@ -55,12 +55,15 @@ func newDockerClient() (*docker, error) {
 func (d *docker) Auth(ctx context.Context, creds properties.ProviderRegistryAuth) error {
 	cfg := d.cli.ConfigFile()
 
-	// cc := dockerutil.NewClient(d.cli)
-	// api, _ := cc.API()
-	// api.Reg
+	configKey := creds.Address
 
-	if creds.Address == "docker.io" || creds.Address == "registry-1.docker.io" {
-		creds.Address = "https://index.docker.io/v1/"
+	// Special handling for legacy DockerHub domains. The OCI-compliant
+	// registry is registry-1.docker.io but this is stored in config under the
+	// legacy name.
+	// https://github.com/docker/cli/issues/3793#issuecomment-1269051403
+	if strings.Contains(creds.Address, "docker.io") {
+		configKey = "https://index.docker.io/v1/"
+		creds.Address = "registry-1.docker.io"
 	}
 
 	auth := cfgtypes.AuthConfig{
@@ -69,24 +72,10 @@ func (d *docker) Auth(ctx context.Context, creds properties.ProviderRegistryAuth
 		Password:      creds.Password,
 	}
 
-	err := cfg.GetCredentialsStore(creds.Address).Store(auth)
+	err := cfg.GetCredentialsStore(configKey).Store(auth)
 	if err != nil {
 		return fmt.Errorf("storing auth: %w", err)
 	}
-
-	// cfg.AuthConfigs[creds.Address] = auth
-	// cfg.AuthConfigs[creds.Address[8:]] = auth
-
-	// _, err = d.cli.Client().RegistryLogin(ctx, registry.AuthConfig{
-	// 	Username:      auth.Username,
-	// 	Password:      auth.Password,
-	// 	ServerAddress: auth.ServerAddress,
-	// })
-	// if err != nil {
-	// 	return err
-	// }
-
-	// return d.cli.ConfigFile().Save()
 	return nil
 }
 
@@ -100,7 +89,6 @@ func (d *docker) Build(
 		return nil, fmt.Errorf("creating printer: %w", err)
 	}
 
-	// controller/build/build.go is setting its own session...
 	solve, res, err := cbuild.RunBuild(ctx, d.cli, in, d.cli.In(), printer, true)
 	if res != nil {
 		res.Done()

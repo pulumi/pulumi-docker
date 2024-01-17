@@ -56,10 +56,10 @@ const provider = new docker.Provider("docker", {
   ],
 });
 
-new docker.buildx.Image(
+const buildxImage = new docker.buildx.Image(
   "buildx",
   {
-    tags: [pulumi.interpolate`${repo.repositoryUrl}`],
+    tags: [pulumi.interpolate`${repo.repositoryUrl}:buildx`],
     exports: ["type=registry"],
     file: "app/Dockerfile",
     platforms: ["linux/arm64", "linux/amd64"],
@@ -67,3 +67,5 @@ new docker.buildx.Image(
   },
   { provider: provider }
 );
+
+export const manifests = buildxImage.manifests;

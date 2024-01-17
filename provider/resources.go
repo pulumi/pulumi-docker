@@ -396,8 +396,6 @@ func Provider(version string) tfbridge.ProviderInfo {
 		prov.ExtraTypes[k] = v
 	}
 
-	// prov.SkipValidateProviderConfigForPluginFramework = true
-
 	prov.MustComputeTokens(tfbridgetokens.SingleModule("docker_", dockerMod,
 		tfbridgetokens.MakeStandard(dockerPkg)))
 	prov.MustApplyAutoAliases()

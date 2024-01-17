@@ -79,7 +79,6 @@ func (dp dockerHybridProvider) CheckConfig(ctx context.Context, request *rpc.Che
 
 func (dp dockerHybridProvider) DiffConfig(ctx context.Context, request *rpc.DiffRequest) (*rpc.DiffResponse, error) {
 	// Delegate to the bridged provider, as native Provider does not implement it.
-	// should use thing's config instead?
 	return dp.bridgedProvider.DiffConfig(ctx, request)
 }
 
@@ -94,13 +93,6 @@ func (dp dockerHybridProvider) Configure(
 
 	for pname, p := range providers {
 		// Native provider returns empty response and error from Configure, just call it to propagate the information.
-
-		// if pname == "buildx" {
-		// 	request.Args = nil
-		// } else {
-		// 	request.Args = args
-		// }
-
 		r, err := p.Configure(ctx, request)
 		if err != nil {
 			return nil, fmt.Errorf("Docker %s provider returned an unexpected error from Configure: %w", pname, err)

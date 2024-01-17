@@ -89,7 +89,9 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	props *structpb.Struct,
 	isPreview bool,
 ) (string, *structpb.Struct, error) {
+
 	inputs, err := plugin.UnmarshalProperties(props, plugin.MarshalOptions{KeepUnknowns: true, SkipNulls: true})
+
 	if err != nil {
 		return "", nil, err
 	}
@@ -460,8 +462,7 @@ func (p *dockerNativeProvider) getRepoDigest(
 // 4. We only return an imageID if the image in the store matches both (1.) and (2.)
 func (p *dockerNativeProvider) runImageBuild(
 	ctx context.Context, docker *client.Client, tar io.Reader,
-	opts types.ImageBuildOptions, urn resource.URN, name string,
-) (string, error) {
+	opts types.ImageBuildOptions, urn resource.URN, name string) (string, error) {
 	if opts.Labels == nil {
 		opts.Labels = make(map[string]string)
 	}
