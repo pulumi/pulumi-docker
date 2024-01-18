@@ -16,7 +16,6 @@ import (
 	"github.com/docker/cli/cli/flags"
 	manifesttypes "github.com/docker/cli/cli/manifest/types"
 	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/api/types/registry"
 	"github.com/moby/buildkit/client"
 	"github.com/moby/buildkit/util/progress/progressui"
 
@@ -70,16 +69,7 @@ func (d *docker) Auth(ctx context.Context, creds properties.ProviderRegistryAuth
 		Password:      creds.Password,
 	}
 
-	_, err := d.cli.Client().RegistryLogin(ctx, registry.AuthConfig{
-		ServerAddress: auth.ServerAddress,
-		Username:      auth.Username,
-		Password:      auth.Password,
-	})
-	if err != nil {
-		return fmt.Errorf("authenticating: %w", err)
-	}
-
-	err = cfg.GetCredentialsStore(creds.Address).Store(auth)
+	err := cfg.GetCredentialsStore(creds.Address).Store(auth)
 	if err != nil {
 		return fmt.Errorf("storing auth: %w", err)
 	}
