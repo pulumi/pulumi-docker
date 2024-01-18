@@ -4,12 +4,13 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/pulumi/pulumi-docker/provider/v4/internal"
 	p "github.com/pulumi/pulumi-go-provider"
 	"github.com/pulumi/pulumi-terraform-bridge/v3/pkg/tfbridge"
 	"github.com/pulumi/pulumi/pkg/v3/resource/provider"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/util/cmdutil"
 	rpc "github.com/pulumi/pulumi/sdk/v3/proto/go"
+
+	"github.com/pulumi/pulumi-docker/provider/v4/internal"
 )
 
 // Serve launches the gRPC server for the resource provider.
