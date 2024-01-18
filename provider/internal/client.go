@@ -56,15 +56,12 @@ func newDockerClient() (*docker, error) {
 func (d *docker) Auth(ctx context.Context, creds properties.ProviderRegistryAuth) error {
 	cfg := d.cli.ConfigFile()
 
-	configKey := creds.Address
-
 	// Special handling for legacy DockerHub domains. The OCI-compliant
 	// registry is registry-1.docker.io but this is stored in config under the
 	// legacy name.
 	// https://github.com/docker/cli/issues/3793#issuecomment-1269051403
-	if strings.Contains(creds.Address, "docker.io") {
-		configKey = "https://index.docker.io/v1/"
-		creds.Address = "registry-1.docker.io"
+	if creds.Address == "docker.io" {
+		creds.Address = "https://index.docker.io/v1/"
 	}
 
 	auth := cfgtypes.AuthConfig{
@@ -82,7 +79,7 @@ func (d *docker) Auth(ctx context.Context, creds properties.ProviderRegistryAuth
 		return fmt.Errorf("authenticating: %w", err)
 	}
 
-	err = cfg.GetCredentialsStore(configKey).Store(auth)
+	err = cfg.GetCredentialsStore(creds.Address).Store(auth)
 	if err != nil {
 		return fmt.Errorf("storing auth: %w", err)
 	}
