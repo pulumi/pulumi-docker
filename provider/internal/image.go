@@ -2,6 +2,7 @@ package internal
 
 import (
 	"github.com/muesli/reflow/dedent"
+
 	provider "github.com/pulumi/pulumi-go-provider"
 	"github.com/pulumi/pulumi-go-provider/infer"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
