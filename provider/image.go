@@ -27,6 +27,7 @@ import (
 	"github.com/docker/cli/cli/connhelper"
 	"github.com/docker/distribution/reference"
 	"github.com/docker/docker/api/types"
+	registrytypes "github.com/docker/docker/api/types/registry"
 	"github.com/docker/docker/client"
 	"github.com/docker/docker/pkg/archive"
 	"github.com/docker/docker/pkg/idtools"
@@ -199,15 +200,15 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		return "", nil, err
 	}
 
-	authConfigs := make(map[string]types.AuthConfig)
-	var regAuth types.AuthConfig
+	authConfigs := make(map[string]registrytypes.AuthConfig)
+	var regAuth registrytypes.AuthConfig
 
 	auths, err := cfg.GetAllCredentials()
 	if err != nil {
 		return "", nil, err
 	}
 	for k, auth := range auths {
-		authConfigs[k] = types.AuthConfig(auth)
+		authConfigs[k] = registrytypes.AuthConfig(auth)
 	}
 
 	// sign into registry if we're pushing or setting CacheFrom
@@ -547,7 +548,7 @@ func (p *dockerNativeProvider) runImageBuild(
 }
 
 func pullDockerImage(ctx context.Context, p *dockerNativeProvider, urn resource.URN,
-	docker *client.Client, authConfig types.AuthConfig, cachedImage string, platform string,
+	docker *client.Client, authConfig registrytypes.AuthConfig, cachedImage string, platform string,
 ) error {
 	if cachedImage != "" {
 		_ = p.host.LogStatus(ctx, "info", urn, fmt.Sprintf("Pulling cached image %s", cachedImage))
@@ -782,11 +783,11 @@ func getDefaultDockerConfig() (*configfile.ConfigFile, error) {
 	return cfg, nil
 }
 
-func getRegistryAuth(img Image, cfg *configfile.ConfigFile) (types.AuthConfig, string, error) {
+func getRegistryAuth(img Image, cfg *configfile.ConfigFile) (registrytypes.AuthConfig, string, error) {
 	// authentication for registry push or cache pull
 	// we check if the user set creds in the Pulumi program, and use those preferentially,
 	// otherwise we use host machine creds via authConfigs.
-	var regAuthConfig types.AuthConfig
+	var regAuthConfig registrytypes.AuthConfig
 	var msg string
 
 	if img.Registry.Username != "" && img.Registry.Password != "" {
@@ -817,7 +818,7 @@ func getRegistryAuth(img Image, cfg *configfile.ConfigFile) (types.AuthConfig, s
 			return regAuthConfig, msg, err
 		}
 
-		regAuthConfig = types.AuthConfig(cliPushAuthConfig)
+		regAuthConfig = registrytypes.AuthConfig(cliPushAuthConfig)
 	}
 	return regAuthConfig, msg, nil
 }

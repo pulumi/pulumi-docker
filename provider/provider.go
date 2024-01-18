@@ -16,7 +16,7 @@ import (
 	"strings"
 
 	pbempty "github.com/golang/protobuf/ptypes/empty"
-	"github.com/moby/buildkit/frontend/dockerfile/dockerignore"
+	"github.com/moby/patternmatcher/ignorefile"
 	"github.com/pkg/errors"
 	"github.com/spf13/afero"
 	"github.com/tonistiigi/fsutil"
@@ -683,7 +683,7 @@ func getIgnorePatterns(fs afero.Fs, dockerfilePath, contextRoot string) ([]strin
 		}
 		defer f.Close()
 
-		ignorePatterns, err := dockerignore.ReadAll(f)
+		ignorePatterns, err := ignorefile.ReadAll(f)
 		if err != nil {
 			return nil, fmt.Errorf("unable to parse %q: %w", p, err)
 		}
