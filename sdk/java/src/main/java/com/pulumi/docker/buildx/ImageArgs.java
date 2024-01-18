@@ -6,6 +6,7 @@ package com.pulumi.docker.buildx;
 import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
 import com.pulumi.core.internal.Codegen;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.String;
 import java.util.List;
 import java.util.Objects;
@@ -255,7 +256,9 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
 
         public ImageArgs build() {
             $.file = Codegen.stringProp("file").output().arg($.file).def("Dockerfile").getNullable();
-            $.tags = Objects.requireNonNull($.tags, "expected parameter 'tags' to be non-null");
+            if ($.tags == null) {
+                throw new MissingRequiredPropertyException("ImageArgs", "tags");
+            }
             return $;
         }
     }
