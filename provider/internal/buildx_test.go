@@ -5,10 +5,11 @@ import (
 	"testing"
 
 	"github.com/blang/semver"
+	"github.com/stretchr/testify/assert"
+
 	provider "github.com/pulumi/pulumi-go-provider"
 	"github.com/pulumi/pulumi-go-provider/infer"
 	"github.com/pulumi/pulumi-go-provider/integration"
-	"github.com/stretchr/testify/assert"
 )
 
 func TestConfigure(t *testing.T) {

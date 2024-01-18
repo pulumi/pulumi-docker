@@ -23,14 +23,16 @@ import (
 	// embed is used to store bridge-metadata.json in the compiled binary
 	_ "embed"
 
-	"github.com/pulumi/pulumi-docker/provider/v4/internal"
+	"github.com/terraform-providers/terraform-provider-docker/shim"
+
 	"github.com/pulumi/pulumi-terraform-bridge/v3/pkg/tfbridge"
 	tfbridgetokens "github.com/pulumi/pulumi-terraform-bridge/v3/pkg/tfbridge/tokens"
 	shimv2 "github.com/pulumi/pulumi-terraform-bridge/v3/pkg/tfshim/sdk-v2"
 	"github.com/pulumi/pulumi/pkg/v3/codegen/schema"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/tokens"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/terraform-providers/terraform-provider-docker/shim"
+
+	"github.com/pulumi/pulumi-docker/provider/v4/internal"
 )
 
 const (
