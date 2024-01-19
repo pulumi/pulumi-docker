@@ -24,18 +24,18 @@ import (
 
 // Client handles all our Docker API calls.
 type Client interface {
-	Auth(ctx context.Context, creds properties.ProviderRegistryAuth) error
+	Auth(ctx context.Context, creds properties.RegistryAuth) error
 	Build(ctx context.Context, opts controllerapi.BuildOptions) (*client.SolveResponse, error)
 	BuildKitEnabled() (bool, error)
 	Inspect(ctx context.Context, id string) ([]manifesttypes.ImageManifest, error)
 	Delete(ctx context.Context, id string) ([]types.ImageDeleteResponseItem, error)
 }
 
-var _ Client = (*docker)(nil)
-
 type docker struct {
 	cli *command.DockerCli
 }
+
+var _ Client = (*docker)(nil)
 
 func newDockerClient() (*docker, error) {
 	cli, err := command.NewDockerCli(
@@ -52,7 +52,7 @@ func newDockerClient() (*docker, error) {
 	return &docker{cli: cli}, err
 }
 
-func (d *docker) Auth(ctx context.Context, creds properties.ProviderRegistryAuth) error {
+func (d *docker) Auth(_ context.Context, creds properties.RegistryAuth) error {
 	cfg := d.cli.ConfigFile()
 
 	// Special handling for legacy DockerHub domains. The OCI-compliant
@@ -69,7 +69,16 @@ func (d *docker) Auth(ctx context.Context, creds properties.ProviderRegistryAuth
 		Password:      creds.Password,
 	}
 
-	err := cfg.GetCredentialsStore(creds.Address).Store(auth)
+	// Workaround for https://github.com/docker/docker-credential-helpers/issues/37.
+	all, err := cfg.GetAllCredentials()
+	if err != nil {
+		return fmt.Errorf("getting credentials: %w", err)
+	}
+	if _, ok := all[creds.Address]; ok {
+		return nil // Already logged in.
+	}
+
+	err = cfg.GetCredentialsStore(creds.Address).Store(auth)
 	if err != nil {
 		return fmt.Errorf("storing auth: %w", err)
 	}
@@ -79,14 +88,13 @@ func (d *docker) Auth(ctx context.Context, creds properties.ProviderRegistryAuth
 // Build performs a buildkit build.
 func (d *docker) Build(
 	ctx context.Context,
-	in controllerapi.BuildOptions,
+	opts controllerapi.BuildOptions,
 ) (*client.SolveResponse, error) {
 	printer, err := progress.NewPrinter(ctx, os.Stdout, progressui.PlainMode)
 	if err != nil {
 		return nil, fmt.Errorf("creating printer: %w", err)
 	}
-
-	solve, res, err := cbuild.RunBuild(ctx, d.cli, in, d.cli.In(), printer, true)
+	solve, res, err := cbuild.RunBuild(ctx, d.cli, opts, d.cli.In(), printer, true)
 	if res != nil {
 		res.Done()
 	}

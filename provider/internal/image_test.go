@@ -42,6 +42,7 @@ func TestLifecycle(t *testing.T) {
 			client: func(t *testing.T) Client {
 				ctrl := gomock.NewController(t)
 				c := mock.NewMockClient(ctrl)
+				c.EXPECT().Auth(gomock.Any(), gomock.Any()).Return(nil).AnyTimes()
 				gomock.InOrder(
 					c.EXPECT().BuildKitEnabled().Return(true, nil), // Preview.
 					c.EXPECT().BuildKitEnabled().Return(true, nil), // Create.
@@ -79,6 +80,15 @@ func TestLifecycle(t *testing.T) {
 						"file":    resource.NewStringProperty("../testdata/Dockerfile"),
 						"exports": resource.NewArrayProperty(
 							[]resource.PropertyValue{resource.NewStringProperty("type=registry")},
+						),
+						"registries": resource.NewArrayProperty(
+							[]resource.PropertyValue{
+								resource.NewObjectProperty(resource.PropertyMap{
+									"address":  resource.NewStringProperty("fakeaddress"),
+									"username": resource.NewStringProperty("fakeuser"),
+									"password": resource.NewStringProperty("fakepass"),
+								}),
+							},
 						),
 					},
 				}

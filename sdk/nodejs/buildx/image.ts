@@ -86,6 +86,11 @@ export class Image extends pulumi.CustomResource {
     public readonly pull!: pulumi.Output<boolean | undefined>;
     /**
      *
+     * Logins for registry outputs
+     */
+    public readonly registries!: pulumi.Output<outputs.buildx.RegistryAuth[] | undefined>;
+    /**
+     *
      * Name and optionally a tag (format: "name:tag"). If outputting to a
      * registry, the name should include the fully qualified registry address.
      */
@@ -113,6 +118,7 @@ export class Image extends pulumi.CustomResource {
             resourceInputs["file"] = (args ? args.file : undefined) ?? "Dockerfile";
             resourceInputs["platforms"] = args ? args.platforms : undefined;
             resourceInputs["pull"] = args ? args.pull : undefined;
+            resourceInputs["registries"] = args ? args.registries : undefined;
             resourceInputs["tags"] = args ? args.tags : undefined;
             resourceInputs["manifests"] = undefined /*out*/;
         } else {
@@ -125,6 +131,7 @@ export class Image extends pulumi.CustomResource {
             resourceInputs["manifests"] = undefined /*out*/;
             resourceInputs["platforms"] = undefined /*out*/;
             resourceInputs["pull"] = undefined /*out*/;
+            resourceInputs["registries"] = undefined /*out*/;
             resourceInputs["tags"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
@@ -182,6 +189,11 @@ export interface ImageArgs {
      * Always attempt to pull all referenced images
      */
     pull?: pulumi.Input<boolean>;
+    /**
+     *
+     * Logins for registry outputs
+     */
+    registries?: pulumi.Input<pulumi.Input<inputs.buildx.RegistryAuth>[]>;
     /**
      *
      * Name and optionally a tag (format: "name:tag"). If outputting to a

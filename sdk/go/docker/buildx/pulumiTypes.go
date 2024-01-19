@@ -189,7 +189,7 @@ func (o PlatformOutput) Os() pulumi.StringOutput {
 	return o.ApplyT(func(v Platform) string { return v.Os }).(pulumi.StringOutput)
 }
 
-type ProviderRegistryAuth struct {
+type RegistryAuth struct {
 	// The registry's address (e.g. "docker.io")
 	Address string `pulumi:"address"`
 	// Password or token for the registry
@@ -198,18 +198,18 @@ type ProviderRegistryAuth struct {
 	Username *string `pulumi:"username"`
 }
 
-// ProviderRegistryAuthInput is an input type that accepts ProviderRegistryAuthArgs and ProviderRegistryAuthOutput values.
-// You can construct a concrete instance of `ProviderRegistryAuthInput` via:
+// RegistryAuthInput is an input type that accepts RegistryAuthArgs and RegistryAuthOutput values.
+// You can construct a concrete instance of `RegistryAuthInput` via:
 //
-//	ProviderRegistryAuthArgs{...}
-type ProviderRegistryAuthInput interface {
+//	RegistryAuthArgs{...}
+type RegistryAuthInput interface {
 	pulumi.Input
 
-	ToProviderRegistryAuthOutput() ProviderRegistryAuthOutput
-	ToProviderRegistryAuthOutputWithContext(context.Context) ProviderRegistryAuthOutput
+	ToRegistryAuthOutput() RegistryAuthOutput
+	ToRegistryAuthOutputWithContext(context.Context) RegistryAuthOutput
 }
 
-type ProviderRegistryAuthArgs struct {
+type RegistryAuthArgs struct {
 	// The registry's address (e.g. "docker.io")
 	Address pulumi.StringInput `pulumi:"address"`
 	// Password or token for the registry
@@ -218,54 +218,101 @@ type ProviderRegistryAuthArgs struct {
 	Username pulumi.StringPtrInput `pulumi:"username"`
 }
 
-func (ProviderRegistryAuthArgs) ElementType() reflect.Type {
-	return reflect.TypeOf((*ProviderRegistryAuth)(nil)).Elem()
+func (RegistryAuthArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*RegistryAuth)(nil)).Elem()
 }
 
-func (i ProviderRegistryAuthArgs) ToProviderRegistryAuthOutput() ProviderRegistryAuthOutput {
-	return i.ToProviderRegistryAuthOutputWithContext(context.Background())
+func (i RegistryAuthArgs) ToRegistryAuthOutput() RegistryAuthOutput {
+	return i.ToRegistryAuthOutputWithContext(context.Background())
 }
 
-func (i ProviderRegistryAuthArgs) ToProviderRegistryAuthOutputWithContext(ctx context.Context) ProviderRegistryAuthOutput {
-	return pulumi.ToOutputWithContext(ctx, i).(ProviderRegistryAuthOutput)
+func (i RegistryAuthArgs) ToRegistryAuthOutputWithContext(ctx context.Context) RegistryAuthOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(RegistryAuthOutput)
 }
 
-type ProviderRegistryAuthOutput struct{ *pulumi.OutputState }
+// RegistryAuthArrayInput is an input type that accepts RegistryAuthArray and RegistryAuthArrayOutput values.
+// You can construct a concrete instance of `RegistryAuthArrayInput` via:
+//
+//	RegistryAuthArray{ RegistryAuthArgs{...} }
+type RegistryAuthArrayInput interface {
+	pulumi.Input
 
-func (ProviderRegistryAuthOutput) ElementType() reflect.Type {
-	return reflect.TypeOf((*ProviderRegistryAuth)(nil)).Elem()
+	ToRegistryAuthArrayOutput() RegistryAuthArrayOutput
+	ToRegistryAuthArrayOutputWithContext(context.Context) RegistryAuthArrayOutput
 }
 
-func (o ProviderRegistryAuthOutput) ToProviderRegistryAuthOutput() ProviderRegistryAuthOutput {
+type RegistryAuthArray []RegistryAuthInput
+
+func (RegistryAuthArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]RegistryAuth)(nil)).Elem()
+}
+
+func (i RegistryAuthArray) ToRegistryAuthArrayOutput() RegistryAuthArrayOutput {
+	return i.ToRegistryAuthArrayOutputWithContext(context.Background())
+}
+
+func (i RegistryAuthArray) ToRegistryAuthArrayOutputWithContext(ctx context.Context) RegistryAuthArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(RegistryAuthArrayOutput)
+}
+
+type RegistryAuthOutput struct{ *pulumi.OutputState }
+
+func (RegistryAuthOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*RegistryAuth)(nil)).Elem()
+}
+
+func (o RegistryAuthOutput) ToRegistryAuthOutput() RegistryAuthOutput {
 	return o
 }
 
-func (o ProviderRegistryAuthOutput) ToProviderRegistryAuthOutputWithContext(ctx context.Context) ProviderRegistryAuthOutput {
+func (o RegistryAuthOutput) ToRegistryAuthOutputWithContext(ctx context.Context) RegistryAuthOutput {
 	return o
 }
 
 // The registry's address (e.g. "docker.io")
-func (o ProviderRegistryAuthOutput) Address() pulumi.StringOutput {
-	return o.ApplyT(func(v ProviderRegistryAuth) string { return v.Address }).(pulumi.StringOutput)
+func (o RegistryAuthOutput) Address() pulumi.StringOutput {
+	return o.ApplyT(func(v RegistryAuth) string { return v.Address }).(pulumi.StringOutput)
 }
 
 // Password or token for the registry
-func (o ProviderRegistryAuthOutput) Password() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v ProviderRegistryAuth) *string { return v.Password }).(pulumi.StringPtrOutput)
+func (o RegistryAuthOutput) Password() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v RegistryAuth) *string { return v.Password }).(pulumi.StringPtrOutput)
 }
 
 // Username for the registry
-func (o ProviderRegistryAuthOutput) Username() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v ProviderRegistryAuth) *string { return v.Username }).(pulumi.StringPtrOutput)
+func (o RegistryAuthOutput) Username() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v RegistryAuth) *string { return v.Username }).(pulumi.StringPtrOutput)
+}
+
+type RegistryAuthArrayOutput struct{ *pulumi.OutputState }
+
+func (RegistryAuthArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]RegistryAuth)(nil)).Elem()
+}
+
+func (o RegistryAuthArrayOutput) ToRegistryAuthArrayOutput() RegistryAuthArrayOutput {
+	return o
+}
+
+func (o RegistryAuthArrayOutput) ToRegistryAuthArrayOutputWithContext(ctx context.Context) RegistryAuthArrayOutput {
+	return o
+}
+
+func (o RegistryAuthArrayOutput) Index(i pulumi.IntInput) RegistryAuthOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) RegistryAuth {
+		return vs[0].([]RegistryAuth)[vs[1].(int)]
+	}).(RegistryAuthOutput)
 }
 
 func init() {
 	pulumi.RegisterInputType(reflect.TypeOf((*ManifestInput)(nil)).Elem(), ManifestArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*ManifestArrayInput)(nil)).Elem(), ManifestArray{})
 	pulumi.RegisterInputType(reflect.TypeOf((*PlatformInput)(nil)).Elem(), PlatformArgs{})
-	pulumi.RegisterInputType(reflect.TypeOf((*ProviderRegistryAuthInput)(nil)).Elem(), ProviderRegistryAuthArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*RegistryAuthInput)(nil)).Elem(), RegistryAuthArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*RegistryAuthArrayInput)(nil)).Elem(), RegistryAuthArray{})
 	pulumi.RegisterOutputType(ManifestOutput{})
 	pulumi.RegisterOutputType(ManifestArrayOutput{})
 	pulumi.RegisterOutputType(PlatformOutput{})
-	pulumi.RegisterOutputType(ProviderRegistryAuthOutput{})
+	pulumi.RegisterOutputType(RegistryAuthOutput{})
+	pulumi.RegisterOutputType(RegistryAuthArrayOutput{})
 }

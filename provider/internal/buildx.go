@@ -16,13 +16,13 @@ import (
 var (
 	_ infer.CustomConfigure = (*Config)(nil)
 	_ infer.Annotated       = (infer.Annotated)((*Config)(nil))
-	_ infer.Annotated       = (infer.Annotated)((*properties.ProviderRegistryAuth)(nil))
+	_ infer.Annotated       = (infer.Annotated)((*properties.RegistryAuth)(nil))
 )
 
 // Config configures the buildx provider.
 type Config struct {
-	Host         string                            `pulumi:"host,optional"`
-	RegistryAuth []properties.ProviderRegistryAuth `pulumi:"registryAuth,optional"`
+	Host         string                    `pulumi:"host,optional"`
+	RegistryAuth []properties.RegistryAuth `pulumi:"registryAuth,optional"`
 
 	client Client
 }

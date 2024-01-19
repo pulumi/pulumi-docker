@@ -22,13 +22,13 @@ func (m *Manifest) Annotate(a infer.Annotator) {
 	a.Describe(&m.Ref, "The manifest's ref")
 }
 
-type ProviderRegistryAuth struct {
+type RegistryAuth struct {
 	Address  string `pulumi:"address"`
 	Password string `pulumi:"password,optional" provider:"secret"`
 	Username string `pulumi:"username,optional"`
 }
 
-func (ra *ProviderRegistryAuth) Annotate(a infer.Annotator) {
+func (ra *RegistryAuth) Annotate(a infer.Annotator) {
 	a.Describe(&ra.Address, `The registry's address (e.g. "docker.io")`)
 	a.Describe(&ra.Username, `Username for the registry`)
 	a.Describe(&ra.Password, `Password or token for the registry`)

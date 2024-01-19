@@ -21,9 +21,14 @@ func TestAuth(t *testing.T) {
 		user = u
 	}
 	password := os.Getenv("DOCKER_HUB_PASSWORD")
+	host := "pulumi.com" // Fake host -- we don't actually hit it.
 
-	err = d.Auth(context.Background(), properties.ProviderRegistryAuth{
-		Address:  "docker.io",
+	t.Cleanup(func() {
+		_ = d.cli.ConfigFile().GetCredentialsStore(host).Erase(host)
+	})
+
+	err = d.Auth(context.Background(), properties.RegistryAuth{
+		Address:  host,
 		Username: user,
 		Password: password,
 	})

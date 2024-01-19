@@ -44,7 +44,7 @@ func (m *MockClient) EXPECT() *MockClientMockRecorder {
 }
 
 // Auth mocks base method.
-func (m *MockClient) Auth(ctx context.Context, creds properties.ProviderRegistryAuth) error {
+func (m *MockClient) Auth(ctx context.Context, creds properties.RegistryAuth) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Auth", ctx, creds)
 	ret0, _ := ret[0].(error)

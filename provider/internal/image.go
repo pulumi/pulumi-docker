@@ -46,15 +46,16 @@ func (i *Image) Annotate(a infer.Annotator) {
 
 // ImageArgs instantiates a new Image.
 type ImageArgs struct {
-	BuildArgs map[string]string `pulumi:"buildArgs,optional"`
-	CacheFrom []string          `pulumi:"cacheFrom,optional"`
-	CacheTo   []string          `pulumi:"cacheTo,optional"`
-	Context   string            `pulumi:"context,optional"`
-	Exports   []string          `pulumi:"exports,optional"`
-	File      string            `pulumi:"file,optional"`
-	Platforms []string          `pulumi:"platforms,optional"`
-	Pull      bool              `pulumi:"pull,optional"`
-	Tags      []string          `pulumi:"tags"`
+	BuildArgs  map[string]string         `pulumi:"buildArgs,optional"`
+	CacheFrom  []string                  `pulumi:"cacheFrom,optional"`
+	CacheTo    []string                  `pulumi:"cacheTo,optional"`
+	Context    string                    `pulumi:"context,optional"`
+	Exports    []string                  `pulumi:"exports,optional"`
+	File       string                    `pulumi:"file,optional"`
+	Platforms  []string                  `pulumi:"platforms,optional"`
+	Pull       bool                      `pulumi:"pull,optional"`
+	Registries []properties.RegistryAuth `pulumi:"registries,optional"`
+	Tags       []string                  `pulumi:"tags"`
 }
 
 // Annotate describes inputs to the Image resource.
@@ -93,6 +94,9 @@ func (ia *ImageArgs) Annotate(a infer.Annotator) {
 		Name and optionally a tag (format: "name:tag"). If outputting to a
 		registry, the name should include the fully qualified registry address.`,
 	))
+	a.Describe(&ia.Registries, dedent.String(`
+		Logins for registry outputs`,
+	))
 
 	a.SetDefault(&ia.File, "Dockerfile")
 }
@@ -112,7 +116,7 @@ func (is *ImageState) Annotate(a infer.Annotator) {
 // Check validates ImageArgs, sets defaults, and ensures our client is
 // authenticated.
 func (*Image) Check(
-	_ provider.Context,
+	ctx provider.Context,
 	_ string,
 	_ resource.PropertyMap,
 	news resource.PropertyMap,
@@ -137,6 +141,16 @@ func (*Image) Check(
 			if cf, ok := e.(checkFailure); ok {
 				failures = append(failures, cf.CheckFailure)
 			}
+		}
+	}
+
+	// Check is called before every operation except Read, so this ensures
+	// we're authenticated in almost all cases.
+	cfg := infer.GetConfig[Config](ctx)
+	for _, reg := range args.Registries {
+		if err = cfg.client.Auth(ctx, reg); err != nil {
+			failures = append(failures,
+				provider.CheckFailure{Property: "registries", Reason: fmt.Sprintf("unable to authenticate: %s", err.Error())})
 		}
 	}
 
@@ -268,7 +282,13 @@ func (*Image) Read(
 		return id, input, state, err
 	}
 
+	// Ensure we're authenticated.
 	cfg := infer.GetConfig[Config](ctx)
+	for _, reg := range input.Registries {
+		if err = cfg.client.Auth(ctx, reg); err != nil {
+			return id, input, state, err
+		}
+	}
 
 	manifests := []properties.Manifest{}
 	for _, export := range opts.Exports {

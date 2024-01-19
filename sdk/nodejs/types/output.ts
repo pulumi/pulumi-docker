@@ -1173,6 +1173,21 @@ export namespace buildx {
         os: string;
     }
 
+    export interface RegistryAuth {
+        /**
+         * The registry's address (e.g. "docker.io")
+         */
+        address: string;
+        /**
+         * Password or token for the registry
+         */
+        password?: string;
+        /**
+         * Username for the registry
+         */
+        username?: string;
+    }
+
 }
 
 export namespace config {

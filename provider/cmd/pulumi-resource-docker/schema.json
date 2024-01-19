@@ -144,7 +144,7 @@
                 "architecture"
             ]
         },
-        "docker:buildx/image:ProviderRegistryAuth": {
+        "docker:buildx/image:RegistryAuth": {
             "properties": {
                 "address": {
                     "type": "string",
@@ -2159,6 +2159,13 @@
                     "type": "boolean",
                     "description": "\nAlways attempt to pull all referenced images"
                 },
+                "registries": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/docker:buildx/image:RegistryAuth"
+                    },
+                    "description": "\nLogins for registry outputs"
+                },
                 "tags": {
                     "type": "array",
                     "items": {
@@ -2219,6 +2226,13 @@
                 "pull": {
                     "type": "boolean",
                     "description": "\nAlways attempt to pull all referenced images"
+                },
+                "registries": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/docker:buildx/image:RegistryAuth"
+                    },
+                    "description": "\nLogins for registry outputs"
                 },
                 "tags": {
                     "type": "array",
