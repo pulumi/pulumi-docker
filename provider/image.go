@@ -44,6 +44,8 @@ import (
 
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
+
+	"github.com/pulumi/pulumi-docker/provider/v4/internal"
 )
 
 const (
@@ -118,7 +120,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 
 	// make the build context and ensure to exclude dockerignore file patterns
 
-	initialIgnorePatterns, err := getIgnorePatterns(afero.NewOsFs(), build.Dockerfile, build.Context)
+	initialIgnorePatterns, err := internal.GetIgnorePatterns(afero.NewOsFs(), build.Dockerfile, build.Context)
 	if err != nil {
 		return "", nil, fmt.Errorf("error reading ignore file: %w", err)
 	}

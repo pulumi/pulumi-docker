@@ -113,7 +113,8 @@ func (ia *ImageArgs) Annotate(a infer.Annotator) {
 type ImageState struct {
 	ImageArgs
 
-	Manifests []properties.Manifest `pulumi:"manifests" provider:"output"`
+	ContextHash string                `pulumi:"contextHash" provider:"internal"`
+	Manifests   []properties.Manifest `pulumi:"manifests" provider:"output"`
 }
 
 // Annotate describes outputs of the Image resource.
