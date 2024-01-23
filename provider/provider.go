@@ -634,7 +634,7 @@ func hashContext(dockerContextPath string, dockerfilePath string) (string, error
 	if err != nil {
 		return "", fmt.Errorf("error hashing dockerfile %q: %w", dockerfilePath, err)
 	}
-	err = fsutil.Walk(context.Background(), dockerContextPath, &fsutil.FilterOpt{
+	err = fsutil.Walk(context.Background(), dockerContextPath, &fsutil.WalkOpt{
 		ExcludePatterns: ignorePatterns,
 	}, func(filePath string, fileInfo fs.FileInfo, err error) error {
 		if err != nil {
