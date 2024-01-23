@@ -290,3 +290,23 @@ index 333b584..478013a 100644
  	// when a service is updated/set for the first time the auth is set but empty
  	// this is why we need this additional check
  	if rawAuth, ok := d.GetOk("auth"); ok && len(rawAuth.([]interface{})) != 0 {
+diff --git a/internal/provider/provider.go b/internal/provider/provider.go
+index 29fcba3..4cb9c46 100644
+--- a/internal/provider/provider.go
++++ b/internal/provider/provider.go
+@@ -191,9 +191,12 @@ func configure(version string, p *schema.Provider) func(context.Context, *schema
+ 			return nil, diag.Errorf("Error initializing Docker client: %s", err)
+ 		}
+ 
+-		_, err = client.Ping(ctx)
+-		if err != nil {
+-			return nil, diag.Errorf("Error pinging Docker server: %s", err)
++		// Don't ping if we're using an SSH connection.
++		if client.DaemonHost() != "http://docker.example.com" {
++			_, err = client.Ping(ctx)
++			if err != nil {
++				return nil, diag.Errorf("Error pinging Docker server: %s", err)
++			}
+ 		}
+ 
+ 		authConfigs := &AuthConfigs{}
