@@ -16,6 +16,7 @@ import (
 	"github.com/docker/cli/cli/flags"
 	manifesttypes "github.com/docker/cli/cli/manifest/types"
 	"github.com/docker/docker/api/types"
+	registrytypes "github.com/docker/docker/api/types/registry"
 	"github.com/moby/buildkit/client"
 	"github.com/moby/buildkit/util/progress/progressui"
 
@@ -52,7 +53,7 @@ func newDockerClient() (*docker, error) {
 	return &docker{cli: cli}, err
 }
 
-func (d *docker) Auth(_ context.Context, creds properties.RegistryAuth) error {
+func (d *docker) Auth(ctx context.Context, creds properties.RegistryAuth) error {
 	cfg := d.cli.ConfigFile()
 
 	// Special handling for legacy DockerHub domains. The OCI-compliant
@@ -70,15 +71,24 @@ func (d *docker) Auth(_ context.Context, creds properties.RegistryAuth) error {
 	}
 
 	// Workaround for https://github.com/docker/docker-credential-helpers/issues/37.
-	all, err := cfg.GetAllCredentials()
-	if err != nil {
-		return fmt.Errorf("getting credentials: %w", err)
-	}
-	if _, ok := all[creds.Address]; ok {
-		return nil // Already logged in.
+	if existing, err := cfg.GetAuthConfig(creds.Address); err == nil && existing.ServerAddress != "" {
+		// Confirm the auth is still valid. Otherwise we'll set it to the
+		// provided config.
+		_, err = d.cli.Client().RegistryLogin(ctx, registrytypes.AuthConfig{
+			Auth:          existing.Auth,
+			Email:         existing.Email,
+			IdentityToken: existing.IdentityToken,
+			Password:      existing.Password,
+			RegistryToken: existing.RegistryToken,
+			ServerAddress: existing.ServerAddress,
+			Username:      existing.Username,
+		})
+		if err == nil {
+			return nil // Creds still work, nothing to do.
+		}
 	}
 
-	err = cfg.GetCredentialsStore(creds.Address).Store(auth)
+	err := cfg.GetCredentialsStore(creds.Address).Store(auth)
 	if err != nil {
 		return fmt.Errorf("storing auth: %w", err)
 	}
