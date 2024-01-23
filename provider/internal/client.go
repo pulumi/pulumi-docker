@@ -20,7 +20,6 @@ import (
 type Client interface {
 	Build(ctx context.Context, opts controllerapi.BuildOptions) (*client.SolveResponse, error)
 	BuildKitEnabled() (bool, error)
-	Initialize(opts *flags.ClientOptions, ops ...command.InitializeOpt) error
 	Inspect(ctx context.Context, id string) (types.ImageInspect, error)
 	Delete(ctx context.Context, id string) ([]types.ImageDeleteResponseItem, error)
 }
@@ -39,11 +38,6 @@ func newDockerClient() (Client, error) {
 
 	err = cli.Initialize(flags.NewClientOptions())
 	return &docker{cli: cli}, err
-}
-
-// Initialize the docker client.
-func (d *docker) Initialize(opts *flags.ClientOptions, ops ...command.InitializeOpt) error {
-	return d.cli.Initialize(opts, ops...)
 }
 
 // Build performs a buildkit build.

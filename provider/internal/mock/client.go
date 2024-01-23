@@ -13,8 +13,6 @@ import (
 	reflect "reflect"
 
 	pb "github.com/docker/buildx/controller/pb"
-	command "github.com/docker/cli/cli/command"
-	flags "github.com/docker/cli/cli/flags"
 	types "github.com/docker/docker/api/types"
 	client "github.com/moby/buildkit/client"
 	gomock "go.uber.org/mock/gomock"
@@ -86,25 +84,6 @@ func (m *MockClient) Delete(ctx context.Context, id string) ([]types.ImageDelete
 func (mr *MockClientMockRecorder) Delete(ctx, id any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockClient)(nil).Delete), ctx, id)
-}
-
-// Initialize mocks base method.
-func (m *MockClient) Initialize(opts *flags.ClientOptions, ops ...command.InitializeOpt) error {
-	m.ctrl.T.Helper()
-	varargs := []any{opts}
-	for _, a := range ops {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "Initialize", varargs...)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// Initialize indicates an expected call of Initialize.
-func (mr *MockClientMockRecorder) Initialize(opts any, ops ...any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{opts}, ops...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Initialize", reflect.TypeOf((*MockClient)(nil).Initialize), varargs...)
 }
 
 // Inspect mocks base method.
