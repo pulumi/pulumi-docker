@@ -15,17 +15,36 @@ namespace Pulumi.Docker.Buildx
     [DockerResourceType("docker:buildx/image:Image")]
     public partial class Image : global::Pulumi.CustomResource
     {
-        [Output("architecture")]
-        public Output<string?> Architecture { get; private set; } = null!;
+        /// <summary>
+        /// 
+        /// An optional map of named build-time argument variables to set during
+        /// the Docker build. This flag allows you to pass build-time variables that
+        /// can be accessed like environment variables inside the RUN
+        /// instruction.
+        /// </summary>
+        [Output("buildArgs")]
+        public Output<ImmutableDictionary<string, string>?> BuildArgs { get; private set; } = null!;
 
         /// <summary>
         /// 
-        /// Contexts to use while building the image. If omitted, an empty context
-        /// is used. If more than one value is specified, they should be of the
-        /// form "name=value".
+        /// External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
+        /// </summary>
+        [Output("cacheFrom")]
+        public Output<ImmutableArray<string>> CacheFrom { get; private set; } = null!;
+
+        /// <summary>
+        /// 
+        /// Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
+        /// </summary>
+        [Output("cacheTo")]
+        public Output<ImmutableArray<string>> CacheTo { get; private set; } = null!;
+
+        /// <summary>
+        /// 
+        /// Path to use for build context. If omitted, an empty context is used.
         /// </summary>
         [Output("context")]
-        public Output<ImmutableArray<string>> Context { get; private set; } = null!;
+        public Output<string?> Context { get; private set; } = null!;
 
         /// <summary>
         /// 
@@ -37,22 +56,27 @@ namespace Pulumi.Docker.Buildx
 
         /// <summary>
         /// 
-        /// Name of the Dockerfile to use (default: "$PATH/Dockerfile").
+        /// Name of the Dockerfile to use (defaults to "${context}/Dockerfile").
         /// </summary>
         [Output("file")]
         public Output<string?> File { get; private set; } = null!;
 
-        [Output("os")]
-        public Output<string?> Os { get; private set; } = null!;
+        [Output("manifests")]
+        public Output<ImmutableArray<Outputs.Manifest>> Manifests { get; private set; } = null!;
 
-        [Output("repoDigests")]
-        public Output<ImmutableArray<string>> RepoDigests { get; private set; } = null!;
+        /// <summary>
+        /// 
+        /// Set target platforms for the build. Defaults to the host's platform
+        /// </summary>
+        [Output("platforms")]
+        public Output<ImmutableArray<string>> Platforms { get; private set; } = null!;
 
-        [Output("repoTags")]
-        public Output<ImmutableArray<string>> RepoTags { get; private set; } = null!;
-
-        [Output("size")]
-        public Output<int?> Size { get; private set; } = null!;
+        /// <summary>
+        /// 
+        /// Always attempt to pull all referenced images
+        /// </summary>
+        [Output("pull")]
+        public Output<bool?> Pull { get; private set; } = null!;
 
         /// <summary>
         /// 
@@ -107,20 +131,54 @@ namespace Pulumi.Docker.Buildx
 
     public sealed class ImageArgs : global::Pulumi.ResourceArgs
     {
-        [Input("context")]
-        private InputList<string>? _context;
+        [Input("buildArgs")]
+        private InputMap<string>? _buildArgs;
 
         /// <summary>
         /// 
-        /// Contexts to use while building the image. If omitted, an empty context
-        /// is used. If more than one value is specified, they should be of the
-        /// form "name=value".
+        /// An optional map of named build-time argument variables to set during
+        /// the Docker build. This flag allows you to pass build-time variables that
+        /// can be accessed like environment variables inside the RUN
+        /// instruction.
         /// </summary>
-        public InputList<string> Context
+        public InputMap<string> BuildArgs
         {
-            get => _context ?? (_context = new InputList<string>());
-            set => _context = value;
+            get => _buildArgs ?? (_buildArgs = new InputMap<string>());
+            set => _buildArgs = value;
         }
+
+        [Input("cacheFrom")]
+        private InputList<string>? _cacheFrom;
+
+        /// <summary>
+        /// 
+        /// External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
+        /// </summary>
+        public InputList<string> CacheFrom
+        {
+            get => _cacheFrom ?? (_cacheFrom = new InputList<string>());
+            set => _cacheFrom = value;
+        }
+
+        [Input("cacheTo")]
+        private InputList<string>? _cacheTo;
+
+        /// <summary>
+        /// 
+        /// Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
+        /// </summary>
+        public InputList<string> CacheTo
+        {
+            get => _cacheTo ?? (_cacheTo = new InputList<string>());
+            set => _cacheTo = value;
+        }
+
+        /// <summary>
+        /// 
+        /// Path to use for build context. If omitted, an empty context is used.
+        /// </summary>
+        [Input("context")]
+        public Input<string>? Context { get; set; }
 
         [Input("exports")]
         private InputList<string>? _exports;
@@ -138,10 +196,30 @@ namespace Pulumi.Docker.Buildx
 
         /// <summary>
         /// 
-        /// Name of the Dockerfile to use (default: "$PATH/Dockerfile").
+        /// Name of the Dockerfile to use (defaults to "${context}/Dockerfile").
         /// </summary>
         [Input("file")]
         public Input<string>? File { get; set; }
+
+        [Input("platforms")]
+        private InputList<string>? _platforms;
+
+        /// <summary>
+        /// 
+        /// Set target platforms for the build. Defaults to the host's platform
+        /// </summary>
+        public InputList<string> Platforms
+        {
+            get => _platforms ?? (_platforms = new InputList<string>());
+            set => _platforms = value;
+        }
+
+        /// <summary>
+        /// 
+        /// Always attempt to pull all referenced images
+        /// </summary>
+        [Input("pull")]
+        public Input<bool>? Pull { get; set; }
 
         [Input("tags", required: true)]
         private InputList<string>? _tags;

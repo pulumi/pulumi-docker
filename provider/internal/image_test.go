@@ -8,8 +8,11 @@ import (
 	_ "github.com/docker/buildx/driver/docker-container"
 
 	controllerapi "github.com/docker/buildx/controller/pb"
+	manifesttypes "github.com/docker/cli/cli/manifest/types"
+	"github.com/docker/distribution/reference"
 	"github.com/docker/docker/api/types"
 	"github.com/moby/buildkit/client"
+	v1 "github.com/opencontainers/image-spec/specs-go/v1"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"go.uber.org/mock/gomock"
@@ -22,7 +25,7 @@ import (
 )
 
 func TestLifecycle(t *testing.T) {
-	realClient := func(t *testing.T) Client { return nil }
+	// realClient := func(t *testing.T) Client { return nil }
 	noClient := func(t *testing.T) Client {
 		ctrl := gomock.NewController(t)
 		return mock.NewMockClient(ctrl)
@@ -35,24 +38,47 @@ func TestLifecycle(t *testing.T) {
 		client func(t *testing.T) Client
 	}{
 		{
-			name:   "happy path builds",
-			client: realClient,
+			name: "happy path builds",
+			client: func(t *testing.T) Client {
+				ctrl := gomock.NewController(t)
+				c := mock.NewMockClient(ctrl)
+				gomock.InOrder(
+					c.EXPECT().BuildKitEnabled().Return(true, nil), // Preview.
+					c.EXPECT().BuildKitEnabled().Return(true, nil), // Create.
+					c.EXPECT().Build(gomock.Any(), gomock.AssignableToTypeOf(controllerapi.BuildOptions{})).DoAndReturn(
+						func(_ context.Context, opts controllerapi.BuildOptions) (*client.SolveResponse, error) {
+							assert.Equal(t, "../testdata/Dockerfile", opts.DockerfileName)
+							return &client.SolveResponse{ExporterResponse: map[string]string{"containerimage.digest": "SHA256:digest"}}, nil
+						},
+					),
+					c.EXPECT().Inspect(gomock.Any(), "docker.io/blampe/buildkit-e2e").Return(
+						[]manifesttypes.ImageManifest{}, nil,
+					),
+					c.EXPECT().Inspect(gomock.Any(), "docker.io/blampe/buildkit-e2e:main"),
+					c.EXPECT().Delete(gomock.Any(), "SHA256:digest").Return(
+						[]types.ImageDeleteResponseItem{{Deleted: "deleted"}, {Untagged: "untagged"}}, nil),
+				)
+				return c
+			},
 			op: func(t *testing.T) integration.Operation {
 				return integration.Operation{
 					Inputs: resource.PropertyMap{
 						"tags": resource.NewArrayProperty(
-							[]resource.PropertyValue{resource.NewStringProperty("buildkit-e2e")},
+							[]resource.PropertyValue{
+								resource.NewStringProperty("docker.io/blampe/buildkit-e2e"),
+								resource.NewStringProperty("docker.io/blampe/buildkit-e2e:main"),
+							},
 						),
-						"context": resource.NewArrayProperty(
-							[]resource.PropertyValue{resource.NewStringProperty(
-								"../testdata/ignores/basedir/",
-							)},
+						"platforms": resource.NewArrayProperty(
+							[]resource.PropertyValue{
+								resource.NewStringProperty("linux/arm64"),
+								resource.NewStringProperty("linux/amd64"),
+							},
 						),
-						"file": resource.NewStringProperty(
-							"../testdata/ignores/basedir/Dockerfile",
-						),
+						"context": resource.NewStringProperty("../testdata"),
+						"file":    resource.NewStringProperty("../testdata/Dockerfile"),
 						"exports": resource.NewArrayProperty(
-							[]resource.PropertyValue{resource.NewStringProperty("type=docker")},
+							[]resource.PropertyValue{resource.NewStringProperty("type=registry")},
 						),
 					},
 				}
@@ -79,7 +105,7 @@ func TestLifecycle(t *testing.T) {
 				return integration.Operation{
 					Inputs: resource.PropertyMap{
 						"tags":    resource.NewArrayProperty([]resource.PropertyValue{}),
-						"context": resource.NewArrayProperty([]resource.PropertyValue{}),
+						"context": resource.NewStringProperty("../testdata"),
 					},
 					ExpectFailure: true,
 					CheckFailures: []provider.CheckFailure{
@@ -164,20 +190,11 @@ func TestLifecycle(t *testing.T) {
 				gomock.InOrder(
 					c.EXPECT().BuildKitEnabled().Return(true, nil), // Preview.
 					c.EXPECT().BuildKitEnabled().Return(true, nil), // Create.
-					c.EXPECT().
-						Build(gomock.Any(), gomock.AssignableToTypeOf(controllerapi.BuildOptions{})).
-						DoAndReturn(
-							func(_ context.Context, opts controllerapi.BuildOptions) (*client.SolveResponse, error) {
-								assert.Equal(t, "Dockerfile", opts.DockerfileName)
-								return &client.SolveResponse{
-									ExporterResponse: map[string]string{
-										"image.name": "test:latest",
-									},
-								}, nil
-							},
-						),
-					c.EXPECT().Inspect(gomock.Any(), "test:latest").Return(
-						types.ImageInspect{}, nil,
+					c.EXPECT().Build(gomock.Any(), gomock.AssignableToTypeOf(controllerapi.BuildOptions{})).DoAndReturn(
+						func(_ context.Context, opts controllerapi.BuildOptions) (*client.SolveResponse, error) {
+							assert.Equal(t, "Dockerfile", opts.DockerfileName)
+							return &client.SolveResponse{ExporterResponse: map[string]string{"image.name": "test:latest"}}, nil
+						},
 					),
 					c.EXPECT().Delete(gomock.Any(), "test:latest").Return(nil, nil),
 				)
@@ -191,11 +208,7 @@ func TestLifecycle(t *testing.T) {
 								resource.NewStringProperty("default-dockerfile"),
 							},
 						),
-						"context": resource.NewArrayProperty(
-							[]resource.PropertyValue{resource.NewStringProperty(
-								"../testdata/ignores/basedir/",
-							)},
-						),
+						"context": resource.NewStringProperty("../testdata"),
 					},
 					Hook: func(_, output resource.PropertyMap) {
 						file := output["file"]
@@ -248,8 +261,68 @@ func TestDelete(t *testing.T) {
 				"tags": resource.NewArrayProperty([]resource.PropertyValue{
 					resource.NewStringProperty("tag"),
 				}),
+				"manifests": resource.NewArrayProperty([]resource.PropertyValue{}),
 			},
 		})
 		assert.NoError(t, err)
 	})
+}
+
+func TestRead(t *testing.T) {
+	tag := "docker.io/pulumi/pulumi"
+	ref, err := reference.ParseNamed(tag)
+	require.NoError(t, err)
+
+	ctrl := gomock.NewController(t)
+	client := mock.NewMockClient(ctrl)
+	client.EXPECT().Inspect(gomock.Any(), tag).Return([]manifesttypes.ImageManifest{
+		{
+			Descriptor: v1.Descriptor{Platform: &v1.Platform{Architecture: "arm64"}},
+			Ref:        &manifesttypes.SerializableNamed{Named: ref},
+		},
+		{
+			Descriptor: v1.Descriptor{Platform: &v1.Platform{Architecture: "unknown"}},
+			Ref:        &manifesttypes.SerializableNamed{Named: ref},
+		},
+		{
+			Descriptor: v1.Descriptor{},
+		},
+	}, nil)
+
+	s := newServer(client)
+	err = s.Configure(provider.ConfigureRequest{})
+	require.NoError(t, err)
+
+	state, err := s.Read(provider.ReadRequest{
+		ID:  "tag",
+		Urn: resource.NewURN("test", "provider", "a", "docker:buildx/image:Image", "test"),
+		Inputs: resource.PropertyMap{
+			"exports": resource.NewArrayProperty([]resource.PropertyValue{
+				resource.NewStringProperty("type=registry"),
+				resource.NewStringProperty("type=unrecognized"),
+			}),
+			"tags": resource.NewArrayProperty([]resource.PropertyValue{
+				resource.NewStringProperty(tag),
+			}),
+		},
+	})
+	require.NoError(t, err)
+	assert.Len(t, state.Properties["manifests"].ArrayValue(), 1)
+}
+
+func TestBuildOptionParsing(t *testing.T) {
+	args := ImageArgs{
+		Tags:      []string{"a/bad:tag:format"},
+		Exports:   []string{"badexport,-"},
+		Platforms: []string{","},
+		CacheFrom: []string{"=badcachefrom"},
+		CacheTo:   []string{"=badcacheto"},
+	}
+
+	_, err := args.toBuildOptions()
+	assert.ErrorContains(t, err, "invalid value badexport")
+	assert.ErrorContains(t, err, "platform specifier component must match")
+	assert.ErrorContains(t, err, "badcachefrom")
+	assert.ErrorContains(t, err, "badcacheto")
+	assert.ErrorContains(t, err, "invalid reference format")
 }

@@ -1156,6 +1156,24 @@ export interface VolumeLabel {
     value: string;
 }
 
+export namespace buildx {
+    export interface Manifest {
+        digest: string;
+        platform: outputs.buildx.Platform;
+        /**
+         * The manifest's ref
+         */
+        ref: string;
+        size: number;
+    }
+
+    export interface Platform {
+        architecture: string;
+        os: string;
+    }
+
+}
+
 export namespace config {
     export interface RegistryAuth {
         address: string;

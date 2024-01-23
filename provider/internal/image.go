@@ -2,17 +2,18 @@ package internal
 
 import (
 	"context"
+	"errors"
 	"fmt"
-	"slices"
 
 	// These imports are needed to register the drivers with buildkit.
-	_ "github.com/docker/buildx/driver/docker"
 	_ "github.com/docker/buildx/driver/docker-container"
 	_ "github.com/docker/buildx/driver/kubernetes"
 	_ "github.com/docker/buildx/driver/remote"
 
+	"github.com/distribution/reference"
 	controllerapi "github.com/docker/buildx/controller/pb"
 	"github.com/docker/buildx/util/buildflags"
+	"github.com/docker/buildx/util/platformutil"
 	"github.com/docker/docker/errdefs"
 	"github.com/moby/buildkit/exporter/containerimage/exptypes"
 	"github.com/muesli/reflow/dedent"
@@ -21,6 +22,8 @@ import (
 	"github.com/pulumi/pulumi-go-provider/infer"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/diag"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
+
+	"github.com/pulumi/pulumi-docker/provider/v4/internal/properties"
 )
 
 var (
@@ -43,14 +46,31 @@ func (i *Image) Annotate(a infer.Annotator) {
 
 // ImageArgs instantiates a new Image.
 type ImageArgs struct {
-	Context []string `pulumi:"context,optional"`
-	Exports []string `pulumi:"exports,optional"`
-	File    string   `pulumi:"file,optional"`
-	Tags    []string `pulumi:"tags"`
+	BuildArgs map[string]string `pulumi:"buildArgs,optional"`
+	CacheFrom []string          `pulumi:"cacheFrom,optional"`
+	CacheTo   []string          `pulumi:"cacheTo,optional"`
+	Context   string            `pulumi:"context,optional"`
+	Exports   []string          `pulumi:"exports,optional"`
+	File      string            `pulumi:"file,optional"`
+	Platforms []string          `pulumi:"platforms,optional"`
+	Pull      bool              `pulumi:"pull,optional"`
+	Tags      []string          `pulumi:"tags"`
 }
 
 // Annotate describes inputs to the Image resource.
 func (ia *ImageArgs) Annotate(a infer.Annotator) {
+	a.Describe(&ia.BuildArgs, dedent.String(`
+		An optional map of named build-time argument variables to set during
+		the Docker build. This flag allows you to pass build-time variables that
+		can be accessed like environment variables inside the RUN
+		instruction.`,
+	))
+	a.Describe(&ia.CacheFrom, dedent.String(`
+		External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")`,
+	))
+	a.Describe(&ia.CacheTo, dedent.String(`
+		Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")`,
+	))
 	a.Describe(&ia.Context, dedent.String(`
 		Contexts to use while building the image. If omitted, an empty context
 		is used. If more than one value is specified, they should be of the
@@ -63,24 +83,25 @@ func (ia *ImageArgs) Annotate(a infer.Annotator) {
 	a.Describe(&ia.File, dedent.String(`
 		Name of the Dockerfile to use (default: "$PATH/Dockerfile").`,
 	))
+	a.Describe(&ia.Platforms, dedent.String(`
+		Set target platforms for the build. Defaults to the host's platform`,
+	))
+	a.Describe(&ia.Pull, dedent.String(`
+		Always attempt to pull all referenced images`,
+	))
 	a.Describe(&ia.Tags, dedent.String(`
 		Name and optionally a tag (format: "name:tag"). If outputting to a
 		registry, the name should include the fully qualified registry address.`,
 	))
 
 	a.SetDefault(&ia.File, "Dockerfile")
-	// TODO: SetDefault host platform.
 }
 
 // ImageState is serialized to the program's state file.
 type ImageState struct {
 	ImageArgs
 
-	Architecture string   `pulumi:"architecture,optional"`
-	OS           string   `pulumi:"os,optional"`
-	RepoDigests  []string `pulumi:"repoDigests,optional"`
-	RepoTags     []string `pulumi:"repoTags,optional"`
-	Size         int64    `pulumi:"size,optional"`
+	Manifests []properties.Manifest `pulumi:"manifests" provider:"output"`
 }
 
 // Annotate describes outputs of the Image resource.
@@ -88,7 +109,8 @@ func (is *ImageState) Annotate(a infer.Annotator) {
 	is.ImageArgs.Annotate(a)
 }
 
-// Check validates ImageArgs and sets defaults.
+// Check validates ImageArgs, sets defaults, and ensures our client is
+// authenticated.
 func (*Image) Check(
 	_ provider.Context,
 	_ string,
@@ -104,17 +126,76 @@ func (*Image) Check(
 			provider.CheckFailure{Property: "tags", Reason: "at least one tag is required"},
 		)
 	}
-	if _, err := buildflags.ParseExports(args.Exports); err != nil {
-		failures = append(failures,
-			provider.CheckFailure{Property: "exports", Reason: err.Error()},
-		)
-	}
 
 	if args.File == "" {
 		args.File = "Dockerfile"
 	}
 
+	if _, err = args.toBuildOptions(); err != nil {
+		errs := err.(interface{ Unwrap() []error }).Unwrap()
+		for _, e := range errs {
+			if cf, ok := e.(checkFailure); ok {
+				failures = append(failures, cf.CheckFailure)
+			}
+		}
+	}
+
 	return args, failures, err
+}
+
+type checkFailure struct {
+	provider.CheckFailure
+}
+
+func (cf checkFailure) Error() string {
+	return cf.Reason
+}
+
+func newCheckFailure(property string, err error) checkFailure {
+	return checkFailure{provider.CheckFailure{Property: property, Reason: err.Error()}}
+}
+
+func (ia *ImageArgs) toBuildOptions() (controllerapi.BuildOptions, error) {
+	var multierr error
+	exports, err := buildflags.ParseExports(ia.Exports)
+	if err != nil {
+		multierr = errors.Join(multierr, newCheckFailure("exports", err))
+	}
+
+	_, err = platformutil.Parse(ia.Platforms)
+	if err != nil {
+		multierr = errors.Join(multierr, newCheckFailure("platforms", err))
+	}
+
+	cacheFrom, err := buildflags.ParseCacheEntry(ia.CacheFrom)
+	if err != nil {
+		multierr = errors.Join(multierr, newCheckFailure("cacheFrom", err))
+	}
+
+	cacheTo, err := buildflags.ParseCacheEntry(ia.CacheTo)
+	if err != nil {
+		multierr = errors.Join(multierr, newCheckFailure("cacheTo", err))
+	}
+
+	for _, t := range ia.Tags {
+		if _, err := reference.Parse(t); err != nil {
+			multierr = errors.Join(multierr, newCheckFailure("tags", err))
+		}
+	}
+
+	opts := controllerapi.BuildOptions{
+		BuildArgs:      ia.BuildArgs,
+		CacheFrom:      cacheFrom,
+		CacheTo:        cacheTo,
+		ContextPath:    ia.Context,
+		DockerfileName: ia.File,
+		Exports:        exports,
+		Platforms:      ia.Platforms,
+		Pull:           ia.Pull,
+		Tags:           ia.Tags,
+	}
+
+	return opts, multierr
 }
 
 // Create builds the image using buildkit.
@@ -138,20 +219,9 @@ func (i *Image) Create(
 		return name, state, fmt.Errorf("buildkit is not supported on this host")
 	}
 
-	exports, err := buildflags.ParseExports(input.Exports)
+	opts, err := input.toBuildOptions()
 	if err != nil {
-		return name, state, fmt.Errorf("parsing exports: %w", err)
-	}
-	opts := controllerapi.BuildOptions{
-		DockerfileName: input.File,
-		ContextPath:    input.Context[0],
-		Tags:           input.Tags,
-		Exports:        exports,
-		// CacheFrom:      parsedCacheFrom,
-		// CacheTo:        parsedCacheTo,
-		// BuildArgs:      args,
-		// Platforms:      []string{build.Platform},
-		// Target:         build.Target,
+		return name, state, fmt.Errorf("validating input: %w", err)
 	}
 
 	if preview {
@@ -160,14 +230,16 @@ func (i *Image) Create(
 
 	result, err := cfg.client.Build(ctx.(context.Context), opts)
 	if err != nil {
-		return name, state, fmt.Errorf("building: %w", err)
+		return name, state, fmt.Errorf("building %q: %w", input.Tags, err)
 	}
 
 	var id string
-	if digest, ok := result.ExporterResponse[exptypes.ExporterImageConfigDigestKey]; ok {
+	if digest, ok := result.ExporterResponse["containerimage.digest"]; ok {
 		id = digest
-	} else if tag, ok := result.ExporterResponse["image.name"]; ok {
-		id = tag
+	} else if digest, ok := result.ExporterResponse[exptypes.ExporterImageConfigDigestKey]; ok {
+		id = digest
+	} else if tags, ok := result.ExporterResponse["image.name"]; ok {
+		id = tags
 	} else {
 		id = name
 	}
@@ -178,6 +250,8 @@ func (i *Image) Create(
 	return id, state, err
 }
 
+// Read attempts to read manifests from an image's exports. An image without
+// exports will have no manifests.
 func (*Image) Read(
 	ctx provider.Context,
 	id string,
@@ -189,25 +263,57 @@ func (*Image) Read(
 	ImageState, // normalized state
 	error,
 ) {
-	cfg := infer.GetConfig[Config](ctx)
-	inspect, err := cfg.client.Inspect(ctx, id)
+	opts, err := input.toBuildOptions()
 	if err != nil {
-		err = fmt.Errorf("inspecting image: %w", err)
+		return id, input, state, err
 	}
-	// TODO: Handle cases where a tag has been deleted.
 
-	state.File = input.File
+	cfg := infer.GetConfig[Config](ctx)
 
-	state.Architecture = inspect.Architecture
-	state.OS = inspect.Os
-	state.RepoDigests = inspect.RepoDigests
-	state.RepoTags = inspect.RepoTags
-	state.Size = inspect.Size
+	manifests := []properties.Manifest{}
+	for _, export := range opts.Exports {
+		switch export.GetType() {
+		case "image":
+			if export.GetAttrs()["push"] != "true" {
+				// No manifest to read if we didn't push.
+				continue
+			}
+			for _, tag := range input.Tags {
+				infos, err := cfg.client.Inspect(ctx, tag)
+				if err != nil {
+					continue
+				}
+				for _, m := range infos {
+					if m.Descriptor.Platform != nil && m.Descriptor.Platform.Architecture == "unknown" {
+						// Ignore cache manifests.
+						continue
+					}
+					if m.Ref == nil {
+						// Shouldn't happen, but just in case.
+						continue
+					}
+					manifests = append(manifests, properties.Manifest{
+						Digest: m.Descriptor.Digest.String(),
+						Platform: properties.Platform{
+							OS:           m.Descriptor.Platform.OS,
+							Architecture: m.Descriptor.Platform.Architecture,
+						},
+						Ref:  m.Ref.String(),
+						Size: m.Descriptor.Size,
+					})
+				}
+			}
+		case "docker":
+			// TODO: Inspect local image and munge it into a manifest.
+		default:
+			// Other export types (e.g. file) are not supported.
+			continue
+		}
+	}
 
-	slices.Sort(state.RepoDigests)
-	slices.Sort(state.RepoTags)
+	state.Manifests = manifests
 
-	return inspect.ID, input, state, err
+	return id, input, state, nil
 }
 
 // Delete deletes an Image. If the Image was already deleted out-of-band it is treated as a success.
