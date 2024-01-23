@@ -4,8 +4,6 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/docker/cli/cli/flags"
-
 	provider "github.com/pulumi/pulumi-go-provider"
 	"github.com/pulumi/pulumi-go-provider/infer"
 	"github.com/pulumi/pulumi/pkg/v3/codegen/schema"
@@ -44,9 +42,6 @@ func (c *Config) Configure(ctx provider.Context) error {
 	client, err := newDockerClient()
 	if err != nil {
 		return fmt.Errorf("getting client: %w", err)
-	}
-	if err = client.Initialize(flags.NewClientOptions()); err != nil {
-		return fmt.Errorf("initializing client: %w", err)
 	}
 	c.client = client
 	return err
