@@ -11,17 +11,17 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/common/util/contract"
 )
 
+var (
+	_ infer.CustomConfigure = (*Config)(nil)
+	_ infer.Annotated       = (infer.Annotated)((*Config)(nil))
+)
+
 // Config configures the buildx provider.
 type Config struct {
 	Host string `pulumi:"host,optional"`
 
 	client Client
 }
-
-var (
-	_ infer.CustomConfigure = (*Config)(nil)
-	_ infer.Annotated       = (infer.Annotated)((*Config)(nil))
-)
 
 // _mockClientKey is used by tests to inject a mock Docker client.
 var _mockClientKey struct{}
@@ -44,7 +44,7 @@ func (c *Config) Configure(ctx provider.Context) error {
 		return fmt.Errorf("getting client: %w", err)
 	}
 	c.client = client
-	return err
+	return nil
 }
 
 // NewBuildxProvider returns a new buildx provider.
@@ -55,7 +55,8 @@ func NewBuildxProvider() provider.Provider {
 				infer.Resource[*Image, ImageArgs, ImageState](),
 			},
 			ModuleMap: map[tokens.ModuleName]tokens.ModuleName{
-				"internal": "buildx/image",
+				"internal":   "buildx/image",
+				"properties": "buildx/image",
 			},
 			Config: infer.Config[*Config](),
 		},

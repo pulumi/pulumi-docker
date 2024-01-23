@@ -2,6 +2,9 @@
 // *** Do not edit by hand unless you're certain you know what you are doing! ***
 
 import * as pulumi from "@pulumi/pulumi";
+import * as inputs from "../types/input";
+import * as outputs from "../types/output";
+import * as enums from "../types/enums";
 import * as utilities from "../utilities";
 
 /**
@@ -34,14 +37,29 @@ export class Image extends pulumi.CustomResource {
         return obj['__pulumiType'] === Image.__pulumiType;
     }
 
-    public /*out*/ readonly architecture!: pulumi.Output<string | undefined>;
     /**
      *
-     * Contexts to use while building the image. If omitted, an empty context
-     * is used. If more than one value is specified, they should be of the
-     * form "name=value".
+     * An optional map of named build-time argument variables to set during
+     * the Docker build. This flag allows you to pass build-time variables that
+     * can be accessed like environment variables inside the RUN
+     * instruction.
      */
-    public readonly context!: pulumi.Output<string[] | undefined>;
+    public readonly buildArgs!: pulumi.Output<{[key: string]: string} | undefined>;
+    /**
+     *
+     * External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
+     */
+    public readonly cacheFrom!: pulumi.Output<string[] | undefined>;
+    /**
+     *
+     * Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
+     */
+    public readonly cacheTo!: pulumi.Output<string[] | undefined>;
+    /**
+     *
+     * Path to use for build context. If omitted, an empty context is used.
+     */
+    public readonly context!: pulumi.Output<string | undefined>;
     /**
      *
      * Name and optionally a tag (format: "name:tag"). If outputting to a
@@ -50,13 +68,20 @@ export class Image extends pulumi.CustomResource {
     public readonly exports!: pulumi.Output<string[] | undefined>;
     /**
      *
-     * Name of the Dockerfile to use (default: "$PATH/Dockerfile").
+     * Name of the Dockerfile to use (defaults to "${context}/Dockerfile").
      */
     public readonly file!: pulumi.Output<string | undefined>;
-    public /*out*/ readonly os!: pulumi.Output<string | undefined>;
-    public /*out*/ readonly repoDigests!: pulumi.Output<string[] | undefined>;
-    public /*out*/ readonly repoTags!: pulumi.Output<string[] | undefined>;
-    public /*out*/ readonly size!: pulumi.Output<number | undefined>;
+    public /*out*/ readonly manifests!: pulumi.Output<outputs.buildx.Manifest[]>;
+    /**
+     *
+     * Set target platforms for the build. Defaults to the host's platform
+     */
+    public readonly platforms!: pulumi.Output<string[] | undefined>;
+    /**
+     *
+     * Always attempt to pull all referenced images
+     */
+    public readonly pull!: pulumi.Output<boolean | undefined>;
     /**
      *
      * Name and optionally a tag (format: "name:tag"). If outputting to a
@@ -78,24 +103,26 @@ export class Image extends pulumi.CustomResource {
             if ((!args || args.tags === undefined) && !opts.urn) {
                 throw new Error("Missing required property 'tags'");
             }
+            resourceInputs["buildArgs"] = args ? args.buildArgs : undefined;
+            resourceInputs["cacheFrom"] = args ? args.cacheFrom : undefined;
+            resourceInputs["cacheTo"] = args ? args.cacheTo : undefined;
             resourceInputs["context"] = args ? args.context : undefined;
             resourceInputs["exports"] = args ? args.exports : undefined;
             resourceInputs["file"] = (args ? args.file : undefined) ?? "Dockerfile";
+            resourceInputs["platforms"] = args ? args.platforms : undefined;
+            resourceInputs["pull"] = args ? args.pull : undefined;
             resourceInputs["tags"] = args ? args.tags : undefined;
-            resourceInputs["architecture"] = undefined /*out*/;
-            resourceInputs["os"] = undefined /*out*/;
-            resourceInputs["repoDigests"] = undefined /*out*/;
-            resourceInputs["repoTags"] = undefined /*out*/;
-            resourceInputs["size"] = undefined /*out*/;
+            resourceInputs["manifests"] = undefined /*out*/;
         } else {
-            resourceInputs["architecture"] = undefined /*out*/;
+            resourceInputs["buildArgs"] = undefined /*out*/;
+            resourceInputs["cacheFrom"] = undefined /*out*/;
+            resourceInputs["cacheTo"] = undefined /*out*/;
             resourceInputs["context"] = undefined /*out*/;
             resourceInputs["exports"] = undefined /*out*/;
             resourceInputs["file"] = undefined /*out*/;
-            resourceInputs["os"] = undefined /*out*/;
-            resourceInputs["repoDigests"] = undefined /*out*/;
-            resourceInputs["repoTags"] = undefined /*out*/;
-            resourceInputs["size"] = undefined /*out*/;
+            resourceInputs["manifests"] = undefined /*out*/;
+            resourceInputs["platforms"] = undefined /*out*/;
+            resourceInputs["pull"] = undefined /*out*/;
             resourceInputs["tags"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
@@ -109,11 +136,27 @@ export class Image extends pulumi.CustomResource {
 export interface ImageArgs {
     /**
      *
-     * Contexts to use while building the image. If omitted, an empty context
-     * is used. If more than one value is specified, they should be of the
-     * form "name=value".
+     * An optional map of named build-time argument variables to set during
+     * the Docker build. This flag allows you to pass build-time variables that
+     * can be accessed like environment variables inside the RUN
+     * instruction.
      */
-    context?: pulumi.Input<pulumi.Input<string>[]>;
+    buildArgs?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    /**
+     *
+     * External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
+     */
+    cacheFrom?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     *
+     * Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
+     */
+    cacheTo?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     *
+     * Path to use for build context. If omitted, an empty context is used.
+     */
+    context?: pulumi.Input<string>;
     /**
      *
      * Name and optionally a tag (format: "name:tag"). If outputting to a
@@ -122,9 +165,19 @@ export interface ImageArgs {
     exports?: pulumi.Input<pulumi.Input<string>[]>;
     /**
      *
-     * Name of the Dockerfile to use (default: "$PATH/Dockerfile").
+     * Name of the Dockerfile to use (defaults to "${context}/Dockerfile").
      */
     file?: pulumi.Input<string>;
+    /**
+     *
+     * Set target platforms for the build. Defaults to the host's platform
+     */
+    platforms?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     *
+     * Always attempt to pull all referenced images
+     */
+    pull?: pulumi.Input<boolean>;
     /**
      *
      * Name and optionally a tag (format: "name:tag"). If outputting to a
