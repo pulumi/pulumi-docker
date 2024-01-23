@@ -1219,5 +1219,8 @@ export interface VolumeLabel {
      */
     value: pulumi.Input<string>;
 }
+export namespace buildx {
+}
+
 export namespace config {
 }
