@@ -13,6 +13,8 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
+
+	"github.com/pulumi/pulumi-docker/provider/v4/internal"
 )
 
 func TestSetRegistry(t *testing.T) {
@@ -742,7 +744,7 @@ func TestDockerIgnore(t *testing.T) {
 				_, err = f.Write([]byte(fdata))
 				require.NoError(t, err)
 			}
-			actual, err := getIgnorePatterns(fs, tt.dockerfile, tt.context)
+			actual, err := internal.GetIgnorePatterns(fs, tt.dockerfile, tt.context)
 
 			assert.ErrorIs(t, err, tt.wantErr)
 			assert.Equal(t, tt.want, actual)
