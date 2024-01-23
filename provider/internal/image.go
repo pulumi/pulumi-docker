@@ -131,8 +131,8 @@ func (*Image) Check(
 		args.File = "Dockerfile"
 	}
 
-	if _, err = args.toBuildOptions(); err != nil {
-		errs := err.(interface{ Unwrap() []error }).Unwrap()
+	if _, berr := args.toBuildOptions(); berr != nil {
+		errs := berr.(interface{ Unwrap() []error }).Unwrap()
 		for _, e := range errs {
 			if cf, ok := e.(checkFailure); ok {
 				failures = append(failures, cf.CheckFailure)
