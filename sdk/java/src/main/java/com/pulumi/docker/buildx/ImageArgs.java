@@ -7,8 +7,10 @@ import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
 import com.pulumi.core.internal.Codegen;
 import com.pulumi.exceptions.MissingRequiredPropertyException;
+import java.lang.Boolean;
 import java.lang.String;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import javax.annotation.Nullable;
@@ -19,13 +21,67 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
     public static final ImageArgs Empty = new ImageArgs();
 
     /**
+     * An optional map of named build-time argument variables to set during
+     * the Docker build. This flag allows you to pass build-time variables that
+     * can be accessed like environment variables inside the RUN
+     * instruction.
+     * 
+     */
+    @Import(name="buildArgs")
+    private @Nullable Output<Map<String,String>> buildArgs;
+
+    /**
+     * @return
+     * An optional map of named build-time argument variables to set during
+     * the Docker build. This flag allows you to pass build-time variables that
+     * can be accessed like environment variables inside the RUN
+     * instruction.
+     * 
+     */
+    public Optional<Output<Map<String,String>>> buildArgs() {
+        return Optional.ofNullable(this.buildArgs);
+    }
+
+    /**
+     * External cache sources (e.g., &#34;user/app:cache&#34;, &#34;type=local,src=path/to/dir&#34;)
+     * 
+     */
+    @Import(name="cacheFrom")
+    private @Nullable Output<List<String>> cacheFrom;
+
+    /**
+     * @return
+     * External cache sources (e.g., &#34;user/app:cache&#34;, &#34;type=local,src=path/to/dir&#34;)
+     * 
+     */
+    public Optional<Output<List<String>>> cacheFrom() {
+        return Optional.ofNullable(this.cacheFrom);
+    }
+
+    /**
+     * Cache export destinations (e.g., &#34;user/app:cache&#34;, &#34;type=local,dest=path/to/dir&#34;)
+     * 
+     */
+    @Import(name="cacheTo")
+    private @Nullable Output<List<String>> cacheTo;
+
+    /**
+     * @return
+     * Cache export destinations (e.g., &#34;user/app:cache&#34;, &#34;type=local,dest=path/to/dir&#34;)
+     * 
+     */
+    public Optional<Output<List<String>>> cacheTo() {
+        return Optional.ofNullable(this.cacheTo);
+    }
+
+    /**
      * Contexts to use while building the image. If omitted, an empty context
      * is used. If more than one value is specified, they should be of the
      * form &#34;name=value&#34;.
      * 
      */
     @Import(name="context")
-    private @Nullable Output<List<String>> context;
+    private @Nullable Output<String> context;
 
     /**
      * @return
@@ -34,7 +90,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
      * form &#34;name=value&#34;.
      * 
      */
-    public Optional<Output<List<String>>> context() {
+    public Optional<Output<String>> context() {
         return Optional.ofNullable(this.context);
     }
 
@@ -73,6 +129,38 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
+     * Set target platforms for the build. Defaults to the host&#39;s platform
+     * 
+     */
+    @Import(name="platforms")
+    private @Nullable Output<List<String>> platforms;
+
+    /**
+     * @return
+     * Set target platforms for the build. Defaults to the host&#39;s platform
+     * 
+     */
+    public Optional<Output<List<String>>> platforms() {
+        return Optional.ofNullable(this.platforms);
+    }
+
+    /**
+     * Always attempt to pull all referenced images
+     * 
+     */
+    @Import(name="pull")
+    private @Nullable Output<Boolean> pull;
+
+    /**
+     * @return
+     * Always attempt to pull all referenced images
+     * 
+     */
+    public Optional<Output<Boolean>> pull() {
+        return Optional.ofNullable(this.pull);
+    }
+
+    /**
      * Name and optionally a tag (format: &#34;name:tag&#34;). If outputting to a
      * registry, the name should include the fully qualified registry address.
      * 
@@ -93,9 +181,14 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
     private ImageArgs() {}
 
     private ImageArgs(ImageArgs $) {
+        this.buildArgs = $.buildArgs;
+        this.cacheFrom = $.cacheFrom;
+        this.cacheTo = $.cacheTo;
         this.context = $.context;
         this.exports = $.exports;
         this.file = $.file;
+        this.platforms = $.platforms;
+        this.pull = $.pull;
         this.tags = $.tags;
     }
 
@@ -118,6 +211,103 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
+         * @param buildArgs
+         * An optional map of named build-time argument variables to set during
+         * the Docker build. This flag allows you to pass build-time variables that
+         * can be accessed like environment variables inside the RUN
+         * instruction.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder buildArgs(@Nullable Output<Map<String,String>> buildArgs) {
+            $.buildArgs = buildArgs;
+            return this;
+        }
+
+        /**
+         * @param buildArgs
+         * An optional map of named build-time argument variables to set during
+         * the Docker build. This flag allows you to pass build-time variables that
+         * can be accessed like environment variables inside the RUN
+         * instruction.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder buildArgs(Map<String,String> buildArgs) {
+            return buildArgs(Output.of(buildArgs));
+        }
+
+        /**
+         * @param cacheFrom
+         * External cache sources (e.g., &#34;user/app:cache&#34;, &#34;type=local,src=path/to/dir&#34;)
+         * 
+         * @return builder
+         * 
+         */
+        public Builder cacheFrom(@Nullable Output<List<String>> cacheFrom) {
+            $.cacheFrom = cacheFrom;
+            return this;
+        }
+
+        /**
+         * @param cacheFrom
+         * External cache sources (e.g., &#34;user/app:cache&#34;, &#34;type=local,src=path/to/dir&#34;)
+         * 
+         * @return builder
+         * 
+         */
+        public Builder cacheFrom(List<String> cacheFrom) {
+            return cacheFrom(Output.of(cacheFrom));
+        }
+
+        /**
+         * @param cacheFrom
+         * External cache sources (e.g., &#34;user/app:cache&#34;, &#34;type=local,src=path/to/dir&#34;)
+         * 
+         * @return builder
+         * 
+         */
+        public Builder cacheFrom(String... cacheFrom) {
+            return cacheFrom(List.of(cacheFrom));
+        }
+
+        /**
+         * @param cacheTo
+         * Cache export destinations (e.g., &#34;user/app:cache&#34;, &#34;type=local,dest=path/to/dir&#34;)
+         * 
+         * @return builder
+         * 
+         */
+        public Builder cacheTo(@Nullable Output<List<String>> cacheTo) {
+            $.cacheTo = cacheTo;
+            return this;
+        }
+
+        /**
+         * @param cacheTo
+         * Cache export destinations (e.g., &#34;user/app:cache&#34;, &#34;type=local,dest=path/to/dir&#34;)
+         * 
+         * @return builder
+         * 
+         */
+        public Builder cacheTo(List<String> cacheTo) {
+            return cacheTo(Output.of(cacheTo));
+        }
+
+        /**
+         * @param cacheTo
+         * Cache export destinations (e.g., &#34;user/app:cache&#34;, &#34;type=local,dest=path/to/dir&#34;)
+         * 
+         * @return builder
+         * 
+         */
+        public Builder cacheTo(String... cacheTo) {
+            return cacheTo(List.of(cacheTo));
+        }
+
+        /**
          * @param context
          * Contexts to use while building the image. If omitted, an empty context
          * is used. If more than one value is specified, they should be of the
@@ -126,7 +316,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
          * @return builder
          * 
          */
-        public Builder context(@Nullable Output<List<String>> context) {
+        public Builder context(@Nullable Output<String> context) {
             $.context = context;
             return this;
         }
@@ -140,21 +330,8 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
          * @return builder
          * 
          */
-        public Builder context(List<String> context) {
+        public Builder context(String context) {
             return context(Output.of(context));
-        }
-
-        /**
-         * @param context
-         * Contexts to use while building the image. If omitted, an empty context
-         * is used. If more than one value is specified, they should be of the
-         * form &#34;name=value&#34;.
-         * 
-         * @return builder
-         * 
-         */
-        public Builder context(String... context) {
-            return context(List.of(context));
         }
 
         /**
@@ -215,6 +392,63 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
          */
         public Builder file(String file) {
             return file(Output.of(file));
+        }
+
+        /**
+         * @param platforms
+         * Set target platforms for the build. Defaults to the host&#39;s platform
+         * 
+         * @return builder
+         * 
+         */
+        public Builder platforms(@Nullable Output<List<String>> platforms) {
+            $.platforms = platforms;
+            return this;
+        }
+
+        /**
+         * @param platforms
+         * Set target platforms for the build. Defaults to the host&#39;s platform
+         * 
+         * @return builder
+         * 
+         */
+        public Builder platforms(List<String> platforms) {
+            return platforms(Output.of(platforms));
+        }
+
+        /**
+         * @param platforms
+         * Set target platforms for the build. Defaults to the host&#39;s platform
+         * 
+         * @return builder
+         * 
+         */
+        public Builder platforms(String... platforms) {
+            return platforms(List.of(platforms));
+        }
+
+        /**
+         * @param pull
+         * Always attempt to pull all referenced images
+         * 
+         * @return builder
+         * 
+         */
+        public Builder pull(@Nullable Output<Boolean> pull) {
+            $.pull = pull;
+            return this;
+        }
+
+        /**
+         * @param pull
+         * Always attempt to pull all referenced images
+         * 
+         * @return builder
+         * 
+         */
+        public Builder pull(Boolean pull) {
+            return pull(Output.of(pull));
         }
 
         /**

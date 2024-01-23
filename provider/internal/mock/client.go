@@ -13,7 +13,8 @@ import (
 	reflect "reflect"
 
 	pb "github.com/docker/buildx/controller/pb"
-	types "github.com/docker/docker/api/types"
+	types "github.com/docker/cli/cli/manifest/types"
+	types0 "github.com/docker/docker/api/types"
 	client "github.com/moby/buildkit/client"
 	gomock "go.uber.org/mock/gomock"
 )
@@ -72,10 +73,10 @@ func (mr *MockClientMockRecorder) BuildKitEnabled() *gomock.Call {
 }
 
 // Delete mocks base method.
-func (m *MockClient) Delete(ctx context.Context, id string) ([]types.ImageDeleteResponseItem, error) {
+func (m *MockClient) Delete(ctx context.Context, id string) ([]types0.ImageDeleteResponseItem, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Delete", ctx, id)
-	ret0, _ := ret[0].([]types.ImageDeleteResponseItem)
+	ret0, _ := ret[0].([]types0.ImageDeleteResponseItem)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -87,10 +88,10 @@ func (mr *MockClientMockRecorder) Delete(ctx, id any) *gomock.Call {
 }
 
 // Inspect mocks base method.
-func (m *MockClient) Inspect(ctx context.Context, id string) (types.ImageInspect, error) {
+func (m *MockClient) Inspect(ctx context.Context, id string) ([]types.ImageManifest, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Inspect", ctx, id)
-	ret0, _ := ret[0].(types.ImageInspect)
+	ret0, _ := ret[0].([]types.ImageManifest)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

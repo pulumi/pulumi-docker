@@ -8,6 +8,7 @@ import pulumi
 import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
 from .. import _utilities
+from . import outputs
 
 __all__ = ['ImageArgs', 'Image']
 
@@ -15,15 +16,29 @@ __all__ = ['ImageArgs', 'Image']
 class ImageArgs:
     def __init__(__self__, *,
                  tags: pulumi.Input[Sequence[pulumi.Input[str]]],
-                 context: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 build_args: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
+                 cache_from: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 cache_to: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 context: Optional[pulumi.Input[str]] = None,
                  exports: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
-                 file: Optional[pulumi.Input[str]] = None):
+                 file: Optional[pulumi.Input[str]] = None,
+                 platforms: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 pull: Optional[pulumi.Input[bool]] = None):
         """
         The set of arguments for constructing a Image resource.
         :param pulumi.Input[Sequence[pulumi.Input[str]]] tags: 
                Name and optionally a tag (format: "name:tag"). If outputting to a
                registry, the name should include the fully qualified registry address.
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] context: 
+        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] build_args: 
+               An optional map of named build-time argument variables to set during
+               the Docker build. This flag allows you to pass build-time variables that
+               can be accessed like environment variables inside the RUN
+               instruction.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] cache_from: 
+               External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] cache_to: 
+               Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
+        :param pulumi.Input[str] context: 
                Contexts to use while building the image. If omitted, an empty context
                is used. If more than one value is specified, they should be of the
                form "name=value".
@@ -32,8 +47,18 @@ class ImageArgs:
                registry, the name should include the fully qualified registry address.
         :param pulumi.Input[str] file: 
                Name of the Dockerfile to use (default: "$PATH/Dockerfile").
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] platforms: 
+               Set target platforms for the build. Defaults to the host's platform
+        :param pulumi.Input[bool] pull: 
+               Always attempt to pull all referenced images
         """
         pulumi.set(__self__, "tags", tags)
+        if build_args is not None:
+            pulumi.set(__self__, "build_args", build_args)
+        if cache_from is not None:
+            pulumi.set(__self__, "cache_from", cache_from)
+        if cache_to is not None:
+            pulumi.set(__self__, "cache_to", cache_to)
         if context is not None:
             pulumi.set(__self__, "context", context)
         if exports is not None:
@@ -42,6 +67,10 @@ class ImageArgs:
             file = 'Dockerfile'
         if file is not None:
             pulumi.set(__self__, "file", file)
+        if platforms is not None:
+            pulumi.set(__self__, "platforms", platforms)
+        if pull is not None:
+            pulumi.set(__self__, "pull", pull)
 
     @property
     @pulumi.getter
@@ -58,8 +87,50 @@ class ImageArgs:
         pulumi.set(self, "tags", value)
 
     @property
+    @pulumi.getter(name="buildArgs")
+    def build_args(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]:
+        """
+
+        An optional map of named build-time argument variables to set during
+        the Docker build. This flag allows you to pass build-time variables that
+        can be accessed like environment variables inside the RUN
+        instruction.
+        """
+        return pulumi.get(self, "build_args")
+
+    @build_args.setter
+    def build_args(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]):
+        pulumi.set(self, "build_args", value)
+
+    @property
+    @pulumi.getter(name="cacheFrom")
+    def cache_from(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+        """
+
+        External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
+        """
+        return pulumi.get(self, "cache_from")
+
+    @cache_from.setter
+    def cache_from(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
+        pulumi.set(self, "cache_from", value)
+
+    @property
+    @pulumi.getter(name="cacheTo")
+    def cache_to(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+        """
+
+        Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
+        """
+        return pulumi.get(self, "cache_to")
+
+    @cache_to.setter
+    def cache_to(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
+        pulumi.set(self, "cache_to", value)
+
+    @property
     @pulumi.getter
-    def context(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+    def context(self) -> Optional[pulumi.Input[str]]:
         """
 
         Contexts to use while building the image. If omitted, an empty context
@@ -69,7 +140,7 @@ class ImageArgs:
         return pulumi.get(self, "context")
 
     @context.setter
-    def context(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
+    def context(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "context", value)
 
     @property
@@ -99,15 +170,46 @@ class ImageArgs:
     def file(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "file", value)
 
+    @property
+    @pulumi.getter
+    def platforms(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+        """
+
+        Set target platforms for the build. Defaults to the host's platform
+        """
+        return pulumi.get(self, "platforms")
+
+    @platforms.setter
+    def platforms(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
+        pulumi.set(self, "platforms", value)
+
+    @property
+    @pulumi.getter
+    def pull(self) -> Optional[pulumi.Input[bool]]:
+        """
+
+        Always attempt to pull all referenced images
+        """
+        return pulumi.get(self, "pull")
+
+    @pull.setter
+    def pull(self, value: Optional[pulumi.Input[bool]]):
+        pulumi.set(self, "pull", value)
+
 
 class Image(pulumi.CustomResource):
     @overload
     def __init__(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
-                 context: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 build_args: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
+                 cache_from: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 cache_to: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 context: Optional[pulumi.Input[str]] = None,
                  exports: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  file: Optional[pulumi.Input[str]] = None,
+                 platforms: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 pull: Optional[pulumi.Input[bool]] = None,
                  tags: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  __props__=None):
         """
@@ -115,7 +217,16 @@ class Image(pulumi.CustomResource):
 
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] context: 
+        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] build_args: 
+               An optional map of named build-time argument variables to set during
+               the Docker build. This flag allows you to pass build-time variables that
+               can be accessed like environment variables inside the RUN
+               instruction.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] cache_from: 
+               External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] cache_to: 
+               Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
+        :param pulumi.Input[str] context: 
                Contexts to use while building the image. If omitted, an empty context
                is used. If more than one value is specified, they should be of the
                form "name=value".
@@ -124,6 +235,10 @@ class Image(pulumi.CustomResource):
                registry, the name should include the fully qualified registry address.
         :param pulumi.Input[str] file: 
                Name of the Dockerfile to use (default: "$PATH/Dockerfile").
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] platforms: 
+               Set target platforms for the build. Defaults to the host's platform
+        :param pulumi.Input[bool] pull: 
+               Always attempt to pull all referenced images
         :param pulumi.Input[Sequence[pulumi.Input[str]]] tags: 
                Name and optionally a tag (format: "name:tag"). If outputting to a
                registry, the name should include the fully qualified registry address.
@@ -152,9 +267,14 @@ class Image(pulumi.CustomResource):
     def _internal_init(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
-                 context: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 build_args: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
+                 cache_from: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 cache_to: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 context: Optional[pulumi.Input[str]] = None,
                  exports: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  file: Optional[pulumi.Input[str]] = None,
+                 platforms: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 pull: Optional[pulumi.Input[bool]] = None,
                  tags: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  __props__=None):
         opts = pulumi.ResourceOptions.merge(_utilities.get_resource_opts_defaults(), opts)
@@ -165,19 +285,20 @@ class Image(pulumi.CustomResource):
                 raise TypeError('__props__ is only valid when passed in combination with a valid opts.id to get an existing resource')
             __props__ = ImageArgs.__new__(ImageArgs)
 
+            __props__.__dict__["build_args"] = build_args
+            __props__.__dict__["cache_from"] = cache_from
+            __props__.__dict__["cache_to"] = cache_to
             __props__.__dict__["context"] = context
             __props__.__dict__["exports"] = exports
             if file is None:
                 file = 'Dockerfile'
             __props__.__dict__["file"] = file
+            __props__.__dict__["platforms"] = platforms
+            __props__.__dict__["pull"] = pull
             if tags is None and not opts.urn:
                 raise TypeError("Missing required property 'tags'")
             __props__.__dict__["tags"] = tags
-            __props__.__dict__["architecture"] = None
-            __props__.__dict__["os"] = None
-            __props__.__dict__["repo_digests"] = None
-            __props__.__dict__["repo_tags"] = None
-            __props__.__dict__["size"] = None
+            __props__.__dict__["manifests"] = None
         super(Image, __self__).__init__(
             'docker:buildx/image:Image',
             resource_name,
@@ -200,25 +321,51 @@ class Image(pulumi.CustomResource):
 
         __props__ = ImageArgs.__new__(ImageArgs)
 
-        __props__.__dict__["architecture"] = None
+        __props__.__dict__["build_args"] = None
+        __props__.__dict__["cache_from"] = None
+        __props__.__dict__["cache_to"] = None
         __props__.__dict__["context"] = None
         __props__.__dict__["exports"] = None
         __props__.__dict__["file"] = None
-        __props__.__dict__["os"] = None
-        __props__.__dict__["repo_digests"] = None
-        __props__.__dict__["repo_tags"] = None
-        __props__.__dict__["size"] = None
+        __props__.__dict__["manifests"] = None
+        __props__.__dict__["platforms"] = None
+        __props__.__dict__["pull"] = None
         __props__.__dict__["tags"] = None
         return Image(resource_name, opts=opts, __props__=__props__)
 
     @property
-    @pulumi.getter
-    def architecture(self) -> pulumi.Output[Optional[str]]:
-        return pulumi.get(self, "architecture")
+    @pulumi.getter(name="buildArgs")
+    def build_args(self) -> pulumi.Output[Optional[Mapping[str, str]]]:
+        """
+
+        An optional map of named build-time argument variables to set during
+        the Docker build. This flag allows you to pass build-time variables that
+        can be accessed like environment variables inside the RUN
+        instruction.
+        """
+        return pulumi.get(self, "build_args")
+
+    @property
+    @pulumi.getter(name="cacheFrom")
+    def cache_from(self) -> pulumi.Output[Optional[Sequence[str]]]:
+        """
+
+        External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
+        """
+        return pulumi.get(self, "cache_from")
+
+    @property
+    @pulumi.getter(name="cacheTo")
+    def cache_to(self) -> pulumi.Output[Optional[Sequence[str]]]:
+        """
+
+        Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
+        """
+        return pulumi.get(self, "cache_to")
 
     @property
     @pulumi.getter
-    def context(self) -> pulumi.Output[Optional[Sequence[str]]]:
+    def context(self) -> pulumi.Output[Optional[str]]:
         """
 
         Contexts to use while building the image. If omitted, an empty context
@@ -248,23 +395,26 @@ class Image(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def os(self) -> pulumi.Output[Optional[str]]:
-        return pulumi.get(self, "os")
-
-    @property
-    @pulumi.getter(name="repoDigests")
-    def repo_digests(self) -> pulumi.Output[Optional[Sequence[str]]]:
-        return pulumi.get(self, "repo_digests")
-
-    @property
-    @pulumi.getter(name="repoTags")
-    def repo_tags(self) -> pulumi.Output[Optional[Sequence[str]]]:
-        return pulumi.get(self, "repo_tags")
+    def manifests(self) -> pulumi.Output[Sequence['outputs.Manifest']]:
+        return pulumi.get(self, "manifests")
 
     @property
     @pulumi.getter
-    def size(self) -> pulumi.Output[Optional[int]]:
-        return pulumi.get(self, "size")
+    def platforms(self) -> pulumi.Output[Optional[Sequence[str]]]:
+        """
+
+        Set target platforms for the build. Defaults to the host's platform
+        """
+        return pulumi.get(self, "platforms")
+
+    @property
+    @pulumi.getter
+    def pull(self) -> pulumi.Output[Optional[bool]]:
+        """
+
+        Always attempt to pull all referenced images
+        """
+        return pulumi.get(self, "pull")
 
     @property
     @pulumi.getter
