@@ -3,7 +3,6 @@ package internal
 import (
 	"context"
 	"fmt"
-	"os"
 
 	provider "github.com/pulumi/pulumi-go-provider"
 	"github.com/pulumi/pulumi-go-provider/infer"
@@ -43,16 +42,6 @@ func (c *Config) Configure(ctx provider.Context) error {
 	if client, ok := ctx.Value(_mockClientKey).(Client); ok {
 		c.client = client
 		return nil // Client has already been injected, nothing to do.
-	}
-
-	// We create a temporary directory for our config to not disturb the host's
-	// existing settings. The CLI only allows us to override this with an env
-	// var.
-	if os.Getenv("DOCKER_CONFIG") == "" && c.dir == "" {
-		if dir, err := os.MkdirTemp("", "pulumi-docker-"); err == nil {
-			c.dir = dir
-			os.Setenv("DOCKER_CONFIG", c.dir)
-		}
 	}
 
 	client, err := newDockerClient()

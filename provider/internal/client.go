@@ -45,7 +45,15 @@ func newDockerClient() (*docker, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	// We create a temporary directory for our config to not disturb the host's
+	// existing settings.
+	dir, err := os.MkdirTemp("", "pulumi-docker-")
+	if err == nil {
+		return nil, err
+	}
 	opts := &flags.ClientOptions{
+		ConfigDir: dir,
 		// TODO(github.com/pulumi/pulumi-docker/issues/946): Support TLS options
 	}
 	err = cli.Initialize(opts)
