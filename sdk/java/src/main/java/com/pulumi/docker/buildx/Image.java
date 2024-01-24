@@ -127,10 +127,10 @@ public class Image extends com.pulumi.resources.CustomResource {
         return Codegen.optional(this.file);
     }
     @Export(name="manifests", refs={List.class,Manifest.class}, tree="[0,1]")
-    private Output<List<Manifest>> manifests;
+    private Output</* @Nullable */ List<Manifest>> manifests;
 
-    public Output<List<Manifest>> manifests() {
-        return this.manifests;
+    public Output<Optional<List<Manifest>>> manifests() {
+        return Codegen.optional(this.manifests);
     }
     /**
      * Set target platforms for the build. Defaults to the host&#39;s platform

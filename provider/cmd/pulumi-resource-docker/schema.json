@@ -125,8 +125,7 @@
                 "digest",
                 "platform",
                 "ref",
-                "size",
-                "urls"
+                "size"
             ]
         },
         "docker:buildx/image:Platform": {
@@ -2175,8 +2174,7 @@
                 }
             },
             "required": [
-                "tags",
-                "manifests"
+                "tags"
             ],
             "inputProperties": {
                 "buildArgs": {

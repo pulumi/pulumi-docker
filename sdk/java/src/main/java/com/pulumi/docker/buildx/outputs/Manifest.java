@@ -10,6 +10,7 @@ import java.lang.Integer;
 import java.lang.String;
 import java.util.List;
 import java.util.Objects;
+import javax.annotation.Nullable;
 
 @CustomType
 public final class Manifest {
@@ -21,7 +22,7 @@ public final class Manifest {
      */
     private String ref;
     private Integer size;
-    private List<String> urls;
+    private @Nullable List<String> urls;
 
     private Manifest() {}
     public String digest() {
@@ -41,7 +42,7 @@ public final class Manifest {
         return this.size;
     }
     public List<String> urls() {
-        return this.urls;
+        return this.urls == null ? List.of() : this.urls;
     }
 
     public static Builder builder() {
@@ -57,7 +58,7 @@ public final class Manifest {
         private Platform platform;
         private String ref;
         private Integer size;
-        private List<String> urls;
+        private @Nullable List<String> urls;
         public Builder() {}
         public Builder(Manifest defaults) {
     	      Objects.requireNonNull(defaults);
@@ -101,10 +102,8 @@ public final class Manifest {
             return this;
         }
         @CustomType.Setter
-        public Builder urls(List<String> urls) {
-            if (urls == null) {
-              throw new MissingRequiredPropertyException("Manifest", "urls");
-            }
+        public Builder urls(@Nullable List<String> urls) {
+
             this.urls = urls;
             return this;
         }

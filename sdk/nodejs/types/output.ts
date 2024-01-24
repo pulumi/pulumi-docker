@@ -1165,7 +1165,7 @@ export namespace buildx {
          */
         ref: string;
         size: number;
-        urls: string[];
+        urls?: string[];
     }
 
     export interface Platform {
