@@ -223,6 +223,7 @@ func (i *Image) Create(
 
 	state := ImageState{
 		ImageArgs: input,
+		Manifests: []properties.Manifest{},
 	}
 
 	ok, err := cfg.client.BuildKitEnabled()
