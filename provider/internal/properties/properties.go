@@ -9,7 +9,6 @@ type Manifest struct {
 	Platform Platform `pulumi:"platform"`
 	Ref      string   `pulumi:"ref"`
 	Size     int64    `pulumi:"size"`
-	URLs     []string `pulumi:"urls,optional"`
 }
 
 type Platform struct {

@@ -73,7 +73,7 @@ export class Image extends pulumi.CustomResource {
      * Name of the Dockerfile to use (default: "$PATH/Dockerfile").
      */
     public readonly file!: pulumi.Output<string | undefined>;
-    public /*out*/ readonly manifests!: pulumi.Output<outputs.buildx.Manifest[] | undefined>;
+    public /*out*/ readonly manifests!: pulumi.Output<outputs.buildx.Manifest[]>;
     /**
      *
      * Set target platforms for the build. Defaults to the host's platform

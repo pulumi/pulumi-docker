@@ -420,7 +420,7 @@ class Image(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def manifests(self) -> pulumi.Output[Optional[Sequence['outputs.Manifest']]]:
+    def manifests(self) -> pulumi.Output[Sequence['outputs.Manifest']]:
         return pulumi.get(self, "manifests")
 
     @property

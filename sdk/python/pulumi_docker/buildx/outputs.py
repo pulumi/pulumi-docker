@@ -22,8 +22,7 @@ class Manifest(dict):
                  digest: str,
                  platform: 'outputs.Platform',
                  ref: str,
-                 size: int,
-                 urls: Optional[Sequence[str]] = None):
+                 size: int):
         """
         :param str ref: The manifest's ref
         """
@@ -31,8 +30,6 @@ class Manifest(dict):
         pulumi.set(__self__, "platform", platform)
         pulumi.set(__self__, "ref", ref)
         pulumi.set(__self__, "size", size)
-        if urls is not None:
-            pulumi.set(__self__, "urls", urls)
 
     @property
     @pulumi.getter
@@ -56,11 +53,6 @@ class Manifest(dict):
     @pulumi.getter
     def size(self) -> int:
         return pulumi.get(self, "size")
-
-    @property
-    @pulumi.getter
-    def urls(self) -> Optional[Sequence[str]]:
-        return pulumi.get(self, "urls")
 
 
 @pulumi.output_type

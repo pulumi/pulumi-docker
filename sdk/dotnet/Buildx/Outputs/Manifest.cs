@@ -20,7 +20,6 @@ namespace Pulumi.Docker.Buildx.Outputs
         /// </summary>
         public readonly string Ref;
         public readonly int Size;
-        public readonly ImmutableArray<string> Urls;
 
         [OutputConstructor]
         private Manifest(
@@ -30,15 +29,12 @@ namespace Pulumi.Docker.Buildx.Outputs
 
             string @ref,
 
-            int size,
-
-            ImmutableArray<string> urls)
+            int size)
         {
             Digest = digest;
             Platform = platform;
             Ref = @ref;
             Size = size;
-            Urls = urls;
         }
     }
 }

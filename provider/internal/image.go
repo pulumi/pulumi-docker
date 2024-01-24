@@ -105,7 +105,7 @@ func (ia *ImageArgs) Annotate(a infer.Annotator) {
 type ImageState struct {
 	ImageArgs
 
-	Manifests []properties.Manifest `pulumi:"manifests,optional" provider:"output"`
+	Manifests []properties.Manifest `pulumi:"manifests" provider:"output"`
 }
 
 // Annotate describes outputs of the Image resource.
@@ -321,12 +321,11 @@ func (*Image) Read(
 						},
 						Ref:  m.Ref.String(),
 						Size: m.Descriptor.Size,
-						URLs: m.Descriptor.URLs,
 					})
 				}
 			}
 		case "docker":
-			//
+			// TODO: Inspect local image and munge it into a manifest.
 		default:
 			// Other export types (e.g. file) are not supported.
 			continue
@@ -365,4 +364,9 @@ func (*Image) Delete(
 	// TODO: Delete tags from registries?
 
 	return err
+}
+
+func (*Image) Cancel(ctx provider.Context) error {
+	cfg := infer.GetConfig[Config](ctx)
+	return cfg.client.Close(ctx)
 }

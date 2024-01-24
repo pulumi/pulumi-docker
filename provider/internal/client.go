@@ -20,6 +20,7 @@ import (
 	registrytypes "github.com/docker/docker/api/types/registry"
 	"github.com/moby/buildkit/client"
 	"github.com/moby/buildkit/util/progress/progressui"
+	cp "github.com/otiai10/copy"
 
 	"github.com/pulumi/pulumi-docker/provider/v4/internal/properties"
 )
@@ -28,6 +29,7 @@ import (
 type Client interface {
 	Auth(ctx context.Context, creds properties.RegistryAuth) error
 	Build(ctx context.Context, opts controllerapi.BuildOptions) (*client.SolveResponse, error)
+	Close(ctx context.Context) error
 	BuildKitEnabled() (bool, error)
 	Inspect(ctx context.Context, id string) ([]manifesttypes.ImageManifest, error)
 	Delete(ctx context.Context, id string) ([]types.ImageDeleteResponseItem, error)
@@ -35,6 +37,7 @@ type Client interface {
 
 type docker struct {
 	cli *command.DockerCli
+	dir string
 }
 
 var _ Client = (*docker)(nil)
@@ -47,29 +50,26 @@ func newDockerClient() (*docker, error) {
 		return nil, err
 	}
 
-	// We need to load the host's configuration before we call Initialize
-	// because it sets some global state.
-	hostcfg := config.LoadDefaultConfigFile(nil)
-
 	// We create a temporary directory for our config to not disturb the host's
 	// existing settings.
 	dir, err := os.MkdirTemp("", "pulumi-docker-")
 	if err != nil {
 		return nil, err
 	}
+	// Attempt to copy the host's existing config, if it exists, over to our
+	// temporary config directory. This ensures we preserve things like
+	// credential helpers, builders, etc.
+	if _, serr := os.Stat(config.Dir()); serr == nil {
+		_ = cp.Copy(config.Dir(), dir)
+	}
+
 	opts := &flags.ClientOptions{
 		ConfigDir: dir,
 		// TODO(github.com/pulumi/pulumi-docker/issues/946): Support TLS options
 	}
 	err = cli.Initialize(opts)
 
-	// Attempt to copy the host's existing cred helpers over to our temporary
-	// config directory. This ensures we preserve things like credentialHelpers.
-	if content, err := os.ReadFile(hostcfg.Filename); err == nil {
-		_ = os.WriteFile(cli.ConfigFile().Filename, content, 0o600)
-	}
-
-	return &docker{cli: cli}, err
+	return &docker{cli: cli, dir: dir}, err
 }
 
 func (d *docker) Auth(ctx context.Context, creds properties.RegistryAuth) error {
@@ -90,17 +90,16 @@ func (d *docker) Auth(ctx context.Context, creds properties.RegistryAuth) error 
 	}
 
 	// Workaround for https://github.com/docker/docker-credential-helpers/issues/37.
-	if existing, err := cfg.GetAuthConfig(creds.Address); err == nil && existing.ServerAddress != "" {
+	if existing, err := cfg.GetAuthConfig(creds.Address); err == nil {
 		// Confirm the auth is still valid. Otherwise we'll set it to the
 		// provided config.
-		// TODO: Only do this on preview?
 		_, err = d.cli.Client().RegistryLogin(ctx, registrytypes.AuthConfig{
 			Auth:          existing.Auth,
 			Email:         existing.Email,
 			IdentityToken: existing.IdentityToken,
 			Password:      existing.Password,
 			RegistryToken: existing.RegistryToken,
-			ServerAddress: existing.ServerAddress,
+			ServerAddress: creds.Address, // ServerAddress is sometimes empty.
 			Username:      existing.Username,
 		})
 		if err == nil {
@@ -110,7 +109,7 @@ func (d *docker) Auth(ctx context.Context, creds properties.RegistryAuth) error 
 
 	err := cfg.GetCredentialsStore(creds.Address).Store(auth)
 	if err != nil {
-		return fmt.Errorf("storing auth: %w", err)
+		return fmt.Errorf("%q: %w", creds.Address, err)
 	}
 	return nil
 }
@@ -134,6 +133,11 @@ func (d *docker) Build(
 // BuildKitEnabled returns true if the client supports buildkit.
 func (d *docker) BuildKitEnabled() (bool, error) {
 	return d.cli.BuildKitEnabled()
+}
+
+// Close cleans up temporary configs.
+func (d *docker) Close(_ context.Context) error {
+	return os.RemoveAll(d.dir)
 }
 
 // Inspect inspects an image.
