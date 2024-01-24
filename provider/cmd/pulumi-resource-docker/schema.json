@@ -112,12 +112,6 @@
                 },
                 "size": {
                     "type": "integer"
-                },
-                "urls": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
                 }
             },
             "type": "object",
@@ -125,8 +119,7 @@
                 "digest",
                 "platform",
                 "ref",
-                "size",
-                "urls"
+                "size"
             ]
         },
         "docker:buildx/image:Platform": {

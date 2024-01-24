@@ -17,9 +17,8 @@ type Manifest struct {
 	Digest   string   `pulumi:"digest"`
 	Platform Platform `pulumi:"platform"`
 	// The manifest's ref
-	Ref  string   `pulumi:"ref"`
-	Size int      `pulumi:"size"`
-	Urls []string `pulumi:"urls"`
+	Ref  string `pulumi:"ref"`
+	Size int    `pulumi:"size"`
 }
 
 // ManifestInput is an input type that accepts ManifestArgs and ManifestOutput values.
@@ -37,9 +36,8 @@ type ManifestArgs struct {
 	Digest   pulumi.StringInput `pulumi:"digest"`
 	Platform PlatformInput      `pulumi:"platform"`
 	// The manifest's ref
-	Ref  pulumi.StringInput      `pulumi:"ref"`
-	Size pulumi.IntInput         `pulumi:"size"`
-	Urls pulumi.StringArrayInput `pulumi:"urls"`
+	Ref  pulumi.StringInput `pulumi:"ref"`
+	Size pulumi.IntInput    `pulumi:"size"`
 }
 
 func (ManifestArgs) ElementType() reflect.Type {
@@ -108,10 +106,6 @@ func (o ManifestOutput) Ref() pulumi.StringOutput {
 
 func (o ManifestOutput) Size() pulumi.IntOutput {
 	return o.ApplyT(func(v Manifest) int { return v.Size }).(pulumi.IntOutput)
-}
-
-func (o ManifestOutput) Urls() pulumi.StringArrayOutput {
-	return o.ApplyT(func(v Manifest) []string { return v.Urls }).(pulumi.StringArrayOutput)
 }
 
 type ManifestArrayOutput struct{ *pulumi.OutputState }
