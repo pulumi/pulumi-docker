@@ -12,6 +12,7 @@ import (
 	controllerapi "github.com/docker/buildx/controller/pb"
 	"github.com/docker/buildx/util/progress"
 	"github.com/docker/cli/cli/command"
+	"github.com/docker/cli/cli/config"
 	cfgtypes "github.com/docker/cli/cli/config/types"
 	"github.com/docker/cli/cli/flags"
 	manifesttypes "github.com/docker/cli/cli/manifest/types"
@@ -46,10 +47,14 @@ func newDockerClient() (*docker, error) {
 		return nil, err
 	}
 
+	// We need to load the host's configuration before we call Initialize
+	// because it sets some global state.
+	hostcfg := config.LoadDefaultConfigFile(nil)
+
 	// We create a temporary directory for our config to not disturb the host's
 	// existing settings.
 	dir, err := os.MkdirTemp("", "pulumi-docker-")
-	if err == nil {
+	if err != nil {
 		return nil, err
 	}
 	opts := &flags.ClientOptions{
@@ -57,6 +62,12 @@ func newDockerClient() (*docker, error) {
 		// TODO(github.com/pulumi/pulumi-docker/issues/946): Support TLS options
 	}
 	err = cli.Initialize(opts)
+
+	// Attempt to copy the host's existing cred helpers over to our temporary
+	// config directory. This ensures we preserve things like credentialHelpers.
+	if content, err := os.ReadFile(hostcfg.Filename); err == nil {
+		_ = os.WriteFile(cli.ConfigFile().Filename, content, 0o600)
+	}
 
 	return &docker{cli: cli}, err
 }
