@@ -74,6 +74,7 @@ func (d *docker) Auth(ctx context.Context, creds properties.RegistryAuth) error 
 	if existing, err := cfg.GetAuthConfig(creds.Address); err == nil && existing.ServerAddress != "" {
 		// Confirm the auth is still valid. Otherwise we'll set it to the
 		// provided config.
+		// TODO: Only do this on preview?
 		_, err = d.cli.Client().RegistryLogin(ctx, registrytypes.AuthConfig{
 			Auth:          existing.Auth,
 			Email:         existing.Email,
