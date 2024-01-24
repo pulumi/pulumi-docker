@@ -87,6 +87,20 @@ func (mr *MockClientMockRecorder) BuildKitEnabled() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BuildKitEnabled", reflect.TypeOf((*MockClient)(nil).BuildKitEnabled))
 }
 
+// Close mocks base method.
+func (m *MockClient) Close(ctx context.Context) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Close", ctx)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Close indicates an expected call of Close.
+func (mr *MockClientMockRecorder) Close(ctx any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Close", reflect.TypeOf((*MockClient)(nil).Close), ctx)
+}
+
 // Delete mocks base method.
 func (m *MockClient) Delete(ctx context.Context, id string) ([]types0.ImageDeleteResponseItem, error) {
 	m.ctrl.T.Helper()
