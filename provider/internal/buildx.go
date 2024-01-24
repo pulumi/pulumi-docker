@@ -25,7 +25,6 @@ type Config struct {
 	RegistryAuth []properties.RegistryAuth `pulumi:"registryAuth,optional"`
 
 	client Client // Docker CLI
-	dir    string // Config directory
 }
 
 // _mockClientKey is used by tests to inject a mock Docker client.
