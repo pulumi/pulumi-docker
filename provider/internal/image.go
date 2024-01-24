@@ -321,6 +321,7 @@ func (*Image) Read(
 						},
 						Ref:  m.Ref.String(),
 						Size: m.Descriptor.Size,
+						URLs: m.Descriptor.URLs,
 					})
 				}
 			}
