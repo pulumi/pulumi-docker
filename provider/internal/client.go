@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"sync"
 
 	"github.com/distribution/reference"
 	cbuild "github.com/docker/buildx/controller/build"
@@ -36,6 +37,8 @@ type Client interface {
 }
 
 type docker struct {
+	mu sync.Mutex // Guards changes to configs.
+
 	cli *command.DockerCli
 	dir string
 }
@@ -73,6 +76,9 @@ func newDockerClient() (*docker, error) {
 }
 
 func (d *docker) Auth(ctx context.Context, creds properties.RegistryAuth) error {
+	d.mu.Lock()
+	defer d.mu.Unlock()
+
 	cfg := d.cli.ConfigFile()
 
 	// Special handling for legacy DockerHub domains. The OCI-compliant
@@ -93,17 +99,19 @@ func (d *docker) Auth(ctx context.Context, creds properties.RegistryAuth) error 
 	if existing, err := cfg.GetAuthConfig(creds.Address); err == nil {
 		// Confirm the auth is still valid. Otherwise we'll set it to the
 		// provided config.
-		_, err = d.cli.Client().RegistryLogin(ctx, registrytypes.AuthConfig{
-			Auth:          existing.Auth,
-			Email:         existing.Email,
-			IdentityToken: existing.IdentityToken,
-			Password:      existing.Password,
-			RegistryToken: existing.RegistryToken,
-			ServerAddress: creds.Address, // ServerAddress is sometimes empty.
-			Username:      existing.Username,
-		})
-		if err == nil {
-			return nil // Creds still work, nothing to do.
+		if existing.Username == creds.Username {
+			_, err = d.cli.Client().RegistryLogin(ctx, registrytypes.AuthConfig{
+				Auth:          existing.Auth,
+				Email:         existing.Email,
+				IdentityToken: existing.IdentityToken,
+				Password:      existing.Password,
+				RegistryToken: existing.RegistryToken,
+				ServerAddress: creds.Address, // ServerAddress is sometimes empty?
+				Username:      existing.Username,
+			})
+			if err == nil {
+				return nil // Creds still work, nothing to do.
+			}
 		}
 	}
 

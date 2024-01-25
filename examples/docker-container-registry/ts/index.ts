@@ -29,8 +29,13 @@ export const repoDigest = image.repoDigest;
 
 // buildx
 
-const provider = new docker.Provider("docker", {
-  registryAuth: [
+const buildxImage = new docker.buildx.Image("my-buildx-image", {
+  tags: [`${imageName}:buildx`],
+  exports: ["type=registry"],
+  platforms: ["linux/arm64", "linux/amd64"],
+  context: "app",
+  file: "app/Dockerfile",
+  registries: [
     {
       address: registryInfo.server,
       username: registryInfo.username,
@@ -38,17 +43,5 @@ const provider = new docker.Provider("docker", {
     },
   ],
 });
-
-const buildxImage = new docker.buildx.Image(
-  "my-buildx-image",
-  {
-    tags: [`${imageName}:buildx`],
-    exports: ["type=registry"],
-    platforms: ["linux/arm64", "linux/amd64"],
-    context: "app",
-    file: "app/Dockerfile",
-  },
-  { provider: provider }
-);
 
 export const manifests = buildxImage.manifests;

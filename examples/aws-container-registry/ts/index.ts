@@ -46,8 +46,13 @@ export const repoDigest = image.repoDigest;
 
 // buildx
 
-const provider = new docker.Provider("docker", {
-  registryAuth: [
+const buildxImage = new docker.buildx.Image("buildx", {
+  tags: [pulumi.interpolate`${repo.repositoryUrl}:buildx`],
+  exports: ["type=registry"],
+  file: "app/Dockerfile",
+  platforms: ["linux/arm64", "linux/amd64"],
+  context: "app",
+  registries: [
     {
       address: registryInfo.server,
       username: registryInfo.username,
@@ -55,17 +60,5 @@ const provider = new docker.Provider("docker", {
     },
   ],
 });
-
-const buildxImage = new docker.buildx.Image(
-  "buildx",
-  {
-    tags: [pulumi.interpolate`${repo.repositoryUrl}:buildx`],
-    exports: ["type=registry"],
-    file: "app/Dockerfile",
-    platforms: ["linux/arm64", "linux/amd64"],
-    context: "app",
-  },
-  { provider: provider }
-);
 
 export const manifests = buildxImage.manifests;

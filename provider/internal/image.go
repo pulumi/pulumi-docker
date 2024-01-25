@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"reflect"
 
 	// These imports are needed to register the drivers with buildkit.
 	_ "github.com/docker/buildx/driver/docker-container"
@@ -32,6 +33,7 @@ var (
 	_ infer.Annotated                             = (infer.Annotated)((*ImageState)(nil))
 	_ infer.CustomCheck[ImageArgs]                = (*Image)(nil)
 	_ infer.CustomDelete[ImageState]              = (*Image)(nil)
+	_ infer.CustomDiff[ImageArgs, ImageState]     = (*Image)(nil)
 	_ infer.CustomRead[ImageArgs, ImageState]     = (*Image)(nil)
 	_ infer.CustomResource[ImageArgs, ImageState] = (*Image)(nil)
 )
@@ -148,6 +150,10 @@ func (*Image) Check(
 	// we're authenticated in almost all cases.
 	cfg := infer.GetConfig[Config](ctx)
 	for _, reg := range args.Registries {
+		// TODO(https://github.com/pulumi/pulumi-go-provider/pull/155): This is likely unresolved.
+		if reg.Address == "" {
+			continue
+		}
 		if err = cfg.client.Auth(ctx, reg); err != nil {
 			failures = append(failures,
 				provider.CheckFailure{Property: "registries", Reason: fmt.Sprintf("unable to authenticate: %s", err.Error())})
@@ -192,6 +198,10 @@ func (ia *ImageArgs) toBuildOptions() (controllerapi.BuildOptions, error) {
 	}
 
 	for _, t := range ia.Tags {
+		if t == "" {
+			// TODO(https://github.com/pulumi/pulumi-go-provider/pull/155): This is likely unresolved.
+			continue
+		}
 		if _, err := reference.Parse(t); err != nil {
 			multierr = errors.Join(multierr, newCheckFailure("tags", err))
 		}
@@ -366,6 +376,62 @@ func (*Image) Delete(
 	return err
 }
 
+// Diff re-implements most of the default diff behavior, with the exception of
+// ignoring "password" changes on registry inputs.
+func (*Image) Diff(_ provider.Context, id string, olds ImageState, news ImageArgs) (provider.DiffResponse, error) {
+	diff := map[string]provider.PropertyDiff{}
+	update := provider.PropertyDiff{Kind: provider.UpdateReplace} // TODO: Implement Update.
+
+	if !reflect.DeepEqual(olds.BuildArgs, news.BuildArgs) {
+		diff["buildArgs"] = update
+	}
+	if !reflect.DeepEqual(olds.CacheFrom, news.CacheFrom) {
+		diff["cacheFrom"] = update
+	}
+	if !reflect.DeepEqual(olds.CacheTo, news.CacheTo) {
+		diff["cacheTo"] = update
+	}
+	if olds.Context != news.Context {
+		diff["context"] = update
+	}
+	if !reflect.DeepEqual(olds.Exports, news.Exports) {
+		diff["exports"] = update
+	}
+	if olds.File != news.File {
+		diff["file"] = update
+	}
+	if !reflect.DeepEqual(olds.Platforms, news.Platforms) {
+		diff["platforms"] = update
+	}
+	if olds.Pull != news.Pull {
+		diff["pull"] = update
+	}
+	if !reflect.DeepEqual(olds.Tags, news.Tags) {
+		diff["tags"] = update
+	}
+
+	// Registries need special handling because we ignore "password" changes to not introduce unnecessary changes.
+	if len(olds.Registries) != len(news.Registries) {
+		diff["registries"] = update
+	} else {
+		for idx, oldr := range olds.Registries {
+			newr := news.Registries[idx]
+			if (oldr.Username == newr.Username) && (oldr.Address == newr.Address) {
+				continue
+			}
+			diff["registries"] = update
+			break
+		}
+	}
+
+	return provider.DiffResponse{
+		DeleteBeforeReplace: false,
+		HasChanges:          len(diff) > 0,
+		DetailedDiff:        diff,
+	}, nil
+}
+
+// Cancel cleans up temporary on-disk credentials.
 func (*Image) Cancel(ctx provider.Context) error {
 	cfg := infer.GetConfig[Config](ctx)
 	return cfg.client.Close(ctx)

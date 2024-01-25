@@ -86,7 +86,7 @@ func TestLifecycle(t *testing.T) {
 								resource.NewObjectProperty(resource.PropertyMap{
 									"address":  resource.NewStringProperty("fakeaddress"),
 									"username": resource.NewStringProperty("fakeuser"),
-									"password": resource.NewStringProperty("fakepass"),
+									"password": resource.MakeSecret(resource.NewStringProperty("password")),
 								}),
 							},
 						),
