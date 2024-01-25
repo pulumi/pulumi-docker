@@ -15,32 +15,16 @@ public final class ServiceTaskSpecContainerSpecMountTmpfsOptionsArgs extends com
 
     public static final ServiceTaskSpecContainerSpecMountTmpfsOptionsArgs Empty = new ServiceTaskSpecContainerSpecMountTmpfsOptionsArgs();
 
-    /**
-     * The mode of resolution to use for internal load balancing between tasks
-     * 
-     */
     @Import(name="mode")
     private @Nullable Output<Integer> mode;
 
-    /**
-     * @return The mode of resolution to use for internal load balancing between tasks
-     * 
-     */
     public Optional<Output<Integer>> mode() {
         return Optional.ofNullable(this.mode);
     }
 
-    /**
-     * The size for the tmpfs mount in bytes
-     * 
-     */
     @Import(name="sizeBytes")
     private @Nullable Output<Integer> sizeBytes;
 
-    /**
-     * @return The size for the tmpfs mount in bytes
-     * 
-     */
     public Optional<Output<Integer>> sizeBytes() {
         return Optional.ofNullable(this.sizeBytes);
     }
@@ -70,44 +54,20 @@ public final class ServiceTaskSpecContainerSpecMountTmpfsOptionsArgs extends com
             $ = new ServiceTaskSpecContainerSpecMountTmpfsOptionsArgs(Objects.requireNonNull(defaults));
         }
 
-        /**
-         * @param mode The mode of resolution to use for internal load balancing between tasks
-         * 
-         * @return builder
-         * 
-         */
         public Builder mode(@Nullable Output<Integer> mode) {
             $.mode = mode;
             return this;
         }
 
-        /**
-         * @param mode The mode of resolution to use for internal load balancing between tasks
-         * 
-         * @return builder
-         * 
-         */
         public Builder mode(Integer mode) {
             return mode(Output.of(mode));
         }
 
-        /**
-         * @param sizeBytes The size for the tmpfs mount in bytes
-         * 
-         * @return builder
-         * 
-         */
         public Builder sizeBytes(@Nullable Output<Integer> sizeBytes) {
             $.sizeBytes = sizeBytes;
             return this;
         }
 
-        /**
-         * @param sizeBytes The size for the tmpfs mount in bytes
-         * 
-         * @return builder
-         * 
-         */
         public Builder sizeBytes(Integer sizeBytes) {
             return sizeBytes(Output.of(sizeBytes));
         }

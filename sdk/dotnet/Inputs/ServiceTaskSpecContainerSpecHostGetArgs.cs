@@ -12,15 +12,9 @@ namespace Pulumi.Docker.Inputs
 
     public sealed class ServiceTaskSpecContainerSpecHostGetArgs : global::Pulumi.ResourceArgs
     {
-        /// <summary>
-        /// The name of the host
-        /// </summary>
         [Input("host", required: true)]
         public Input<string> Host { get; set; } = null!;
 
-        /// <summary>
-        /// The ip of the host
-        /// </summary>
         [Input("ip", required: true)]
         public Input<string> Ip { get; set; } = null!;
 

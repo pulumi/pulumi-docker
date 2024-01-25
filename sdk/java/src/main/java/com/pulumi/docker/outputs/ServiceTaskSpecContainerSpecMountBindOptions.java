@@ -11,17 +11,9 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceTaskSpecContainerSpecMountBindOptions {
-    /**
-     * @return Bind propagation refers to whether or not mounts created within a given bind-mount or named volume can be propagated to replicas of that mount. See the [docs](https://docs.docker.com/storage/bind-mounts/#configure-bind-propagation) for details. Defaults to `rprivate`
-     * 
-     */
     private @Nullable String propagation;
 
     private ServiceTaskSpecContainerSpecMountBindOptions() {}
-    /**
-     * @return Bind propagation refers to whether or not mounts created within a given bind-mount or named volume can be propagated to replicas of that mount. See the [docs](https://docs.docker.com/storage/bind-mounts/#configure-bind-propagation) for details. Defaults to `rprivate`
-     * 
-     */
     public Optional<String> propagation() {
         return Optional.ofNullable(this.propagation);
     }

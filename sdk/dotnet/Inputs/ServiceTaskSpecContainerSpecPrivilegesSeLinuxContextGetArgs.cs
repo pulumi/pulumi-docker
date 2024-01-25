@@ -12,33 +12,18 @@ namespace Pulumi.Docker.Inputs
 
     public sealed class ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextGetArgs : global::Pulumi.ResourceArgs
     {
-        /// <summary>
-        /// Disable SELinux
-        /// </summary>
         [Input("disable")]
         public Input<bool>? Disable { get; set; }
 
-        /// <summary>
-        /// SELinux level label
-        /// </summary>
         [Input("level")]
         public Input<string>? Level { get; set; }
 
-        /// <summary>
-        /// SELinux role label
-        /// </summary>
         [Input("role")]
         public Input<string>? Role { get; set; }
 
-        /// <summary>
-        /// The mount type
-        /// </summary>
         [Input("type")]
         public Input<string>? Type { get; set; }
 
-        /// <summary>
-        /// SELinux user label
-        /// </summary>
         [Input("user")]
         public Input<string>? User { get; set; }
 

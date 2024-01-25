@@ -12,15 +12,9 @@ namespace Pulumi.Docker.Inputs
 
     public sealed class ServiceTaskSpecResourcesLimitsArgs : global::Pulumi.ResourceArgs
     {
-        /// <summary>
-        /// The amounf of memory in bytes the container allocates
-        /// </summary>
         [Input("memoryBytes")]
         public Input<int>? MemoryBytes { get; set; }
 
-        /// <summary>
-        /// CPU shares in units of `1/1e9` (or `10^-9`) of the CPU. Should be at least `1000000`
-        /// </summary>
         [Input("nanoCpus")]
         public Input<int>? NanoCpus { get; set; }
 

@@ -14,53 +14,21 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceTaskSpecPlacement {
-    /**
-     * @return An array of constraints. e.g.: `node.role==manager`
-     * 
-     */
     private @Nullable List<String> constraints;
-    /**
-     * @return Maximum number of replicas for per node (default value is `0`, which is unlimited)
-     * 
-     */
     private @Nullable Integer maxReplicas;
-    /**
-     * @return Platforms stores all the platforms that the service&#39;s image can run on
-     * 
-     */
     private @Nullable List<ServiceTaskSpecPlacementPlatform> platforms;
-    /**
-     * @return Preferences provide a way to make the scheduler aware of factors such as topology. They are provided in order from highest to lowest precedence, e.g.: `spread=node.role.manager`
-     * 
-     */
     private @Nullable List<String> prefs;
 
     private ServiceTaskSpecPlacement() {}
-    /**
-     * @return An array of constraints. e.g.: `node.role==manager`
-     * 
-     */
     public List<String> constraints() {
         return this.constraints == null ? List.of() : this.constraints;
     }
-    /**
-     * @return Maximum number of replicas for per node (default value is `0`, which is unlimited)
-     * 
-     */
     public Optional<Integer> maxReplicas() {
         return Optional.ofNullable(this.maxReplicas);
     }
-    /**
-     * @return Platforms stores all the platforms that the service&#39;s image can run on
-     * 
-     */
     public List<ServiceTaskSpecPlacementPlatform> platforms() {
         return this.platforms == null ? List.of() : this.platforms;
     }
-    /**
-     * @return Preferences provide a way to make the scheduler aware of factors such as topology. They are provided in order from highest to lowest precedence, e.g.: `spread=node.role.manager`
-     * 
-     */
     public List<String> prefs() {
         return this.prefs == null ? List.of() : this.prefs;
     }

@@ -17,47 +17,23 @@ public final class ServiceTaskSpecNetworksAdvancedArgs extends com.pulumi.resour
 
     public static final ServiceTaskSpecNetworksAdvancedArgs Empty = new ServiceTaskSpecNetworksAdvancedArgs();
 
-    /**
-     * The network aliases of the container in the specific network.
-     * 
-     */
     @Import(name="aliases")
     private @Nullable Output<List<String>> aliases;
 
-    /**
-     * @return The network aliases of the container in the specific network.
-     * 
-     */
     public Optional<Output<List<String>>> aliases() {
         return Optional.ofNullable(this.aliases);
     }
 
-    /**
-     * An array of driver options for the network, e.g. `opts1=value`
-     * 
-     */
     @Import(name="driverOpts")
     private @Nullable Output<List<String>> driverOpts;
 
-    /**
-     * @return An array of driver options for the network, e.g. `opts1=value`
-     * 
-     */
     public Optional<Output<List<String>>> driverOpts() {
         return Optional.ofNullable(this.driverOpts);
     }
 
-    /**
-     * A random name for the port
-     * 
-     */
     @Import(name="name", required=true)
     private Output<String> name;
 
-    /**
-     * @return A random name for the port
-     * 
-     */
     public Output<String> name() {
         return this.name;
     }
@@ -88,85 +64,37 @@ public final class ServiceTaskSpecNetworksAdvancedArgs extends com.pulumi.resour
             $ = new ServiceTaskSpecNetworksAdvancedArgs(Objects.requireNonNull(defaults));
         }
 
-        /**
-         * @param aliases The network aliases of the container in the specific network.
-         * 
-         * @return builder
-         * 
-         */
         public Builder aliases(@Nullable Output<List<String>> aliases) {
             $.aliases = aliases;
             return this;
         }
 
-        /**
-         * @param aliases The network aliases of the container in the specific network.
-         * 
-         * @return builder
-         * 
-         */
         public Builder aliases(List<String> aliases) {
             return aliases(Output.of(aliases));
         }
 
-        /**
-         * @param aliases The network aliases of the container in the specific network.
-         * 
-         * @return builder
-         * 
-         */
         public Builder aliases(String... aliases) {
             return aliases(List.of(aliases));
         }
 
-        /**
-         * @param driverOpts An array of driver options for the network, e.g. `opts1=value`
-         * 
-         * @return builder
-         * 
-         */
         public Builder driverOpts(@Nullable Output<List<String>> driverOpts) {
             $.driverOpts = driverOpts;
             return this;
         }
 
-        /**
-         * @param driverOpts An array of driver options for the network, e.g. `opts1=value`
-         * 
-         * @return builder
-         * 
-         */
         public Builder driverOpts(List<String> driverOpts) {
             return driverOpts(Output.of(driverOpts));
         }
 
-        /**
-         * @param driverOpts An array of driver options for the network, e.g. `opts1=value`
-         * 
-         * @return builder
-         * 
-         */
         public Builder driverOpts(String... driverOpts) {
             return driverOpts(List.of(driverOpts));
         }
 
-        /**
-         * @param name A random name for the port
-         * 
-         * @return builder
-         * 
-         */
         public Builder name(Output<String> name) {
             $.name = name;
             return this;
         }
 
-        /**
-         * @param name A random name for the port
-         * 
-         * @return builder
-         * 
-         */
         public Builder name(String name) {
             return name(Output.of(name));
         }

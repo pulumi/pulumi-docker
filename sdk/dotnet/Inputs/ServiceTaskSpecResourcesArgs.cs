@@ -12,15 +12,9 @@ namespace Pulumi.Docker.Inputs
 
     public sealed class ServiceTaskSpecResourcesArgs : global::Pulumi.ResourceArgs
     {
-        /// <summary>
-        /// Describes the resources which can be advertised by a node and requested by a task
-        /// </summary>
         [Input("limits")]
         public Input<Inputs.ServiceTaskSpecResourcesLimitsArgs>? Limits { get; set; }
 
-        /// <summary>
-        /// An object describing the resources which can be advertised by a node and requested by a task
-        /// </summary>
         [Input("reservation")]
         public Input<Inputs.ServiceTaskSpecResourcesReservationArgs>? Reservation { get; set; }
 

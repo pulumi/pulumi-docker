@@ -8,6 +8,11 @@ import * as enums from "./types/enums";
 import * as utilities from "./utilities";
 
 /**
+ * <!-- Bug: Type and Name are switched -->
+ * This resource manages the lifecycle of a Docker service. By default, the creation, update and delete of services are detached.
+ *  With the Converge Config Name of the service
+ * - `taskSpec` (Block List, Min: 1, Max: 1) User modifiable task configuration (see below for nested schema)
+ *
  * ## Import
  *
  * ### Example Assuming you created a `service` as follows #!/bin/bash docker service create --name foo -p 8080:80 nginx prints th ID 4pcphbxkfn2rffhbhe6czytgi you provide the definition for the resource as follows terraform resource "docker_service" "foo" {
@@ -87,11 +92,11 @@ export class Service extends pulumi.CustomResource {
      */
     public readonly labels!: pulumi.Output<outputs.ServiceLabel[]>;
     /**
-     * The mode of resolution to use for internal load balancing between tasks
+     * Scheduling mode for the service
      */
     public readonly mode!: pulumi.Output<outputs.ServiceMode>;
     /**
-     * A random name for the port
+     * Name of the service
      */
     public readonly name!: pulumi.Output<string>;
     /**
@@ -170,11 +175,11 @@ export interface ServiceState {
      */
     labels?: pulumi.Input<pulumi.Input<inputs.ServiceLabel>[]>;
     /**
-     * The mode of resolution to use for internal load balancing between tasks
+     * Scheduling mode for the service
      */
     mode?: pulumi.Input<inputs.ServiceMode>;
     /**
-     * A random name for the port
+     * Name of the service
      */
     name?: pulumi.Input<string>;
     /**
@@ -212,11 +217,11 @@ export interface ServiceArgs {
      */
     labels?: pulumi.Input<pulumi.Input<inputs.ServiceLabel>[]>;
     /**
-     * The mode of resolution to use for internal load balancing between tasks
+     * Scheduling mode for the service
      */
     mode?: pulumi.Input<inputs.ServiceMode>;
     /**
-     * A random name for the port
+     * Name of the service
      */
     name?: pulumi.Input<string>;
     /**

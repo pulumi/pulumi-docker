@@ -13,13 +13,7 @@ namespace Pulumi.Docker.Outputs
     [OutputType]
     public sealed class ServiceTaskSpecResources
     {
-        /// <summary>
-        /// Describes the resources which can be advertised by a node and requested by a task
-        /// </summary>
         public readonly Outputs.ServiceTaskSpecResourcesLimits? Limits;
-        /// <summary>
-        /// An object describing the resources which can be advertised by a node and requested by a task
-        /// </summary>
         public readonly Outputs.ServiceTaskSpecResourcesReservation? Reservation;
 
         [OutputConstructor]

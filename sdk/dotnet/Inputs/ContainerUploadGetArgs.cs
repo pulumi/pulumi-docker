@@ -18,6 +18,9 @@ namespace Pulumi.Docker.Inputs
         [Input("content")]
         public Input<string>? Content { get; set; }
 
+        /// <summary>
+        /// Base64-encoded data that will be decoded and uploaded as raw bytes for the object content. This allows safely uploading non-UTF8 binary data, but is recommended only for larger binary content such as the result of the `base64encode` interpolation function. See here for the reason. Conflicts with `content` &amp; `source`
+        /// </summary>
         [Input("contentBase64")]
         public Input<string>? ContentBase64 { get; set; }
 

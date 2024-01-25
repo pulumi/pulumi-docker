@@ -16,32 +16,16 @@ public final class ServiceTaskSpecContainerSpecPrivilegesArgs extends com.pulumi
 
     public static final ServiceTaskSpecContainerSpecPrivilegesArgs Empty = new ServiceTaskSpecContainerSpecPrivilegesArgs();
 
-    /**
-     * CredentialSpec for managed service account (Windows only)
-     * 
-     */
     @Import(name="credentialSpec")
     private @Nullable Output<ServiceTaskSpecContainerSpecPrivilegesCredentialSpecArgs> credentialSpec;
 
-    /**
-     * @return CredentialSpec for managed service account (Windows only)
-     * 
-     */
     public Optional<Output<ServiceTaskSpecContainerSpecPrivilegesCredentialSpecArgs>> credentialSpec() {
         return Optional.ofNullable(this.credentialSpec);
     }
 
-    /**
-     * SELinux labels of the container
-     * 
-     */
     @Import(name="seLinuxContext")
     private @Nullable Output<ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgs> seLinuxContext;
 
-    /**
-     * @return SELinux labels of the container
-     * 
-     */
     public Optional<Output<ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgs>> seLinuxContext() {
         return Optional.ofNullable(this.seLinuxContext);
     }
@@ -71,44 +55,20 @@ public final class ServiceTaskSpecContainerSpecPrivilegesArgs extends com.pulumi
             $ = new ServiceTaskSpecContainerSpecPrivilegesArgs(Objects.requireNonNull(defaults));
         }
 
-        /**
-         * @param credentialSpec CredentialSpec for managed service account (Windows only)
-         * 
-         * @return builder
-         * 
-         */
         public Builder credentialSpec(@Nullable Output<ServiceTaskSpecContainerSpecPrivilegesCredentialSpecArgs> credentialSpec) {
             $.credentialSpec = credentialSpec;
             return this;
         }
 
-        /**
-         * @param credentialSpec CredentialSpec for managed service account (Windows only)
-         * 
-         * @return builder
-         * 
-         */
         public Builder credentialSpec(ServiceTaskSpecContainerSpecPrivilegesCredentialSpecArgs credentialSpec) {
             return credentialSpec(Output.of(credentialSpec));
         }
 
-        /**
-         * @param seLinuxContext SELinux labels of the container
-         * 
-         * @return builder
-         * 
-         */
         public Builder seLinuxContext(@Nullable Output<ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgs> seLinuxContext) {
             $.seLinuxContext = seLinuxContext;
             return this;
         }
 
-        /**
-         * @param seLinuxContext SELinux labels of the container
-         * 
-         * @return builder
-         * 
-         */
         public Builder seLinuxContext(ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgs seLinuxContext) {
             return seLinuxContext(Output.of(seLinuxContext));
         }

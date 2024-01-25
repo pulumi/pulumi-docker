@@ -15,17 +15,9 @@ public final class ServiceModeReplicatedArgs extends com.pulumi.resources.Resour
 
     public static final ServiceModeReplicatedArgs Empty = new ServiceModeReplicatedArgs();
 
-    /**
-     * The amount of replicas of the service. Defaults to `1`
-     * 
-     */
     @Import(name="replicas")
     private @Nullable Output<Integer> replicas;
 
-    /**
-     * @return The amount of replicas of the service. Defaults to `1`
-     * 
-     */
     public Optional<Output<Integer>> replicas() {
         return Optional.ofNullable(this.replicas);
     }
@@ -54,23 +46,11 @@ public final class ServiceModeReplicatedArgs extends com.pulumi.resources.Resour
             $ = new ServiceModeReplicatedArgs(Objects.requireNonNull(defaults));
         }
 
-        /**
-         * @param replicas The amount of replicas of the service. Defaults to `1`
-         * 
-         * @return builder
-         * 
-         */
         public Builder replicas(@Nullable Output<Integer> replicas) {
             $.replicas = replicas;
             return this;
         }
 
-        /**
-         * @param replicas The amount of replicas of the service. Defaults to `1`
-         * 
-         * @return builder
-         * 
-         */
         public Builder replicas(Integer replicas) {
             return replicas(Output.of(replicas));
         }
