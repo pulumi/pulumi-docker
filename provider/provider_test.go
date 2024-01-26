@@ -238,6 +238,24 @@ func TestHashDeepSymlinks(t *testing.T) {
 	assert.NoError(t, err)
 }
 
+func TestIgnoreIrregularFiles(t *testing.T) {
+	dir := t.TempDir()
+
+	// Create a Dockerfile
+	dockerfile := filepath.Join(dir, "Dockerfile")
+	err := os.WriteFile(dockerfile, []byte{}, 0o600)
+	require.NoError(t, err)
+
+	// Create a pipe which should be ignored.
+	// err = syscall.Mkfifo(filepath.Join(dir, "pipe"), 0o666)
+	// require.NoError(t, err)
+
+	hash, err := hashContext(dir, dockerfile)
+	assert.NoError(t, err)
+	// Expected hash of just our Dockerfile.
+	assert.Equal(t, "8b1ab751cc04d1d3ada38b648a764e9d10a20ca73981bc46555ef1f955d6964f", hash)
+}
+
 func TestHashUnignoredDirs(t *testing.T) {
 	step1Dir := "./testdata/unignores/basedir"
 	baseResult, err := hashContext(step1Dir, filepath.Join(step1Dir, defaultDockerfile))

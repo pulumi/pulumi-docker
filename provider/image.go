@@ -898,7 +898,7 @@ func processLogLine(jm jsonmessage.JSONMessage,
 				info += "failed to parse aux message: " + err.Error()
 			}
 			if err := (&resp).Unmarshal(infoBytes); err != nil {
-				info += "failed to parse aux message: " + err.Error()
+				info += "failed to parse info bytes: " + err.Error()
 			}
 			for _, vertex := range resp.Vertexes {
 				info += fmt.Sprintf("digest: %+v\n", vertex.Digest)
