@@ -52,6 +52,15 @@ func TestHashIgnoresWildcards(t *testing.T) {
 		"hash should change when modifying included (via wildcard ignore exclusion) files")
 }
 
+func BenchmarkHashContext(b *testing.B) {
+	dir := "testdata/ignores-wildcard/basedir-modified-ignored-file"
+	for n := 0; n < b.N; n++ {
+		_, err := HashContext(dir, filepath.Join(dir, _dockerfile))
+		require.NoError(b, err)
+
+	}
+}
+
 // Tests that we handle .dockerignore exclusions such as "!foo/*/bar", as above, when using a
 // relative context path.
 func TestHashIgnoresWildcardsRelative(t *testing.T) {

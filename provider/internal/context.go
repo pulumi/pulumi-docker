@@ -1,12 +1,12 @@
 package internal
 
 import (
-	"bytes"
 	"context"
 	"crypto/sha256"
 	"encoding/hex"
 	"errors"
 	"fmt"
+	"hash"
 	"io"
 	"io/fs"
 	"os"
@@ -19,22 +19,16 @@ import (
 	"github.com/tonistiigi/fsutil"
 )
 
-type contextHashAccumulator struct {
-	dockerContextPath string
-	input             bytes.Buffer // This will hold the file info and content bytes to pass to a hash object
-}
-
 // hashPath accumulates hashes for files in a directory. If the file is a symlink, the location it
 // points to is hashed. If it is a regular file, we hash the contents of the file. In order to
 // detect file renames and mode changes, we also write to the accumulator a relative name and file
 // mode.
-func (accumulator *contextHashAccumulator) hashPath(
+func hashPath(
+	h hash.Hash,
 	filePath string,
 	relativeNameOfFile string,
 	fileMode fs.FileMode,
 ) error {
-	hash := sha256.New()
-
 	if fileMode.Type() == fs.ModeSymlink {
 		// For symlinks, we hash the symlink _path_ instead of the file content.
 		// This will allow us to:
@@ -46,11 +40,11 @@ func (accumulator *contextHashAccumulator) hashPath(
 			return fmt.Errorf("could not evaluate symlink at %s: %w", filePath, err)
 		}
 		// Hashed content is the clean, os-agnostic file path:
-		_, err = io.Copy(hash, strings.NewReader(filepath.ToSlash(filepath.Clean(symLinkPath))))
+		_, err = io.Copy(h, strings.NewReader(filepath.ToSlash(filepath.Clean(symLinkPath))))
 		if err != nil {
 			return fmt.Errorf("could not copy symlink path %s to hash: %w", filePath, err)
 		}
-	} else {
+	} else if fileMode.IsRegular() {
 		// For regular files, we can hash their content.
 		// TODO: consider only hashing file metadata to improve performance
 		f, err := os.Open(filePath)
@@ -58,27 +52,16 @@ func (accumulator *contextHashAccumulator) hashPath(
 			return fmt.Errorf("could not open file %s: %w", filePath, err)
 		}
 		defer f.Close()
-		_, err = io.Copy(hash, f)
+		_, err = io.Copy(h, f)
 		if err != nil {
 			return fmt.Errorf("could not copy file %s to hash: %w", filePath, err)
 		}
 	}
 
-	// We use "filepath.ToSlash" to return an OS-agnostic path, which uses "/".
-	accumulator.input.Write([]byte(filepath.ToSlash(path.Clean(relativeNameOfFile))))
-	accumulator.input.Write([]byte(fileMode.String()))
-	accumulator.input.Write(hash.Sum(nil))
-	accumulator.input.WriteByte(0)
-	return nil
-}
+	h.Write([]byte(filepath.ToSlash(path.Clean(relativeNameOfFile))))
+	h.Write([]byte(fileMode.String()))
 
-func (accumulator *contextHashAccumulator) hexSumContext() string {
-	h := sha256.New()
-	_, err := accumulator.input.WriteTo(h)
-	if err != nil {
-		return ""
-	}
-	return hex.EncodeToString(h.Sum(nil))
+	return nil
 }
 
 func HashContext(dockerContextPath string, dockerfilePath string) (string, error) {
@@ -88,7 +71,8 @@ func HashContext(dockerContextPath string, dockerfilePath string) (string, error
 		return "", err
 	}
 
-	accumulator := contextHashAccumulator{dockerContextPath: dockerContextPath}
+	h := sha256.New()
+
 	// The dockerfile is always hashed into the digest with the same "name", regardless of its actual
 	// name.
 	//
@@ -98,7 +82,7 @@ func HashContext(dockerContextPath string, dockerfilePath string) (string, error
 	// If the dockerfile is inside the build context, we will hash it twice, but that is OK. We hash
 	// it here the first time with the name "Dockerfile", and then in the WalkDir loop on we hash it
 	// again with its actual name.
-	err = accumulator.hashPath(dockerfilePath, "Dockerfile", 0)
+	err = hashPath(h, dockerfilePath, "Dockerfile", 0)
 	if err != nil {
 		return "", fmt.Errorf("error hashing dockerfile %q: %w", dockerfilePath, err)
 	}
@@ -113,17 +97,13 @@ func HashContext(dockerContextPath string, dockerfilePath string) (string, error
 		}
 		// fsutil.Walk makes filePath relative to the root, we join it back to get an absolute path to
 		// the file to hash.
-		err = accumulator.hashPath(filepath.Join(dockerContextPath, filePath), filePath, fileInfo.Mode())
-		if err != nil {
-			return fmt.Errorf("error while hashing %q: %w", filePath, err)
-		}
-		return nil
+		return hashPath(h, filepath.Join(dockerContextPath, filePath), filePath, fileInfo.Mode())
 	})
 	if err != nil {
 		return "", fmt.Errorf("unable to hash build context: %w", err)
 	}
 	// create a hash of the entire input of the hash accumulator
-	return accumulator.hexSumContext(), nil
+	return hex.EncodeToString(h.Sum(nil)), nil
 }
 
 // GetIgnorePatterns returns all patterns to ignore when constructing a build
