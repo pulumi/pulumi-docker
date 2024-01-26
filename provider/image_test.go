@@ -1,24 +1,17 @@
 package provider
 
 import (
-	"bufio"
 	"fmt"
 	"runtime"
-	"strings"
 	"testing"
 
 	"github.com/docker/docker/api/types"
-	"github.com/spf13/afero"
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
-
-	"github.com/pulumi/pulumi-docker/provider/v4/internal"
 )
 
 func TestSetRegistry(t *testing.T) {
-
 	t.Run("Valid Registry", func(t *testing.T) {
 		expected := Registry{
 			Server:   "https://index.docker.io/v1/",
@@ -73,7 +66,6 @@ func TestSetRegistry(t *testing.T) {
 }
 
 func TestMarshalBuildAndApplyDefaults(t *testing.T) {
-
 	t.Run("Default Build on empty input", func(t *testing.T) {
 		expected := Build{
 			Context:        ".",
@@ -329,7 +321,6 @@ func TestMarshalCachedImages(t *testing.T) {
 		actual, err := marshalCachedImages(buildInput)
 		assert.NoError(t, err)
 		assert.Equal(t, expected, actual)
-
 	})
 	t.Run("Test Cached Images No Build Input Returns Nil", func(t *testing.T) {
 		expected := []string(nil)
@@ -383,7 +374,6 @@ func TestMarshalCachedImages(t *testing.T) {
 	t.Run("Test Cached Images Passes On Unknowns", func(t *testing.T) {
 		expected := []string(nil)
 		buildInput := resource.NewObjectProperty(resource.PropertyMap{
-
 			"cacheFrom": resource.NewObjectProperty(resource.PropertyMap{
 				"images": resource.NewArrayProperty([]resource.PropertyValue{
 					resource.MakeComputed(resource.NewStringProperty("looking-for-my-image")),
@@ -393,12 +383,10 @@ func TestMarshalCachedImages(t *testing.T) {
 		actual, err := marshalCachedImages(buildInput)
 		assert.NoError(t, err)
 		assert.Equal(t, expected, actual)
-
 	})
 	t.Run("Test Cached Images For Preview Passes On Unknowns And Keeps Knowns", func(t *testing.T) {
 		expected := []string{"apple", "banana", "cherry"}
 		buildInput := resource.NewObjectProperty(resource.PropertyMap{
-
 			"cacheFrom": resource.NewObjectProperty(resource.PropertyMap{
 				"images": resource.NewArrayProperty([]resource.PropertyValue{
 					resource.NewNullProperty(),
@@ -412,7 +400,6 @@ func TestMarshalCachedImages(t *testing.T) {
 		actual, err := marshalCachedImages(buildInput)
 		assert.NoError(t, err)
 		assert.Equal(t, expected, actual)
-
 	})
 	t.Run("Test Cached Images Passes On Unknown Images List", func(t *testing.T) {
 		expected := []string(nil)
@@ -454,7 +441,6 @@ func TestMarshalBuilder(t *testing.T) {
 		actual, err := marshalBuilder(input)
 		assert.Equal(t, expected, actual)
 		assert.NoError(t, err)
-
 	})
 	t.Run("Test Builder BuildKit Version", func(t *testing.T) {
 		expected := types.BuilderBuildKit
@@ -463,7 +449,6 @@ func TestMarshalBuilder(t *testing.T) {
 		actual, err := marshalBuilder(input)
 		assert.Equal(t, expected, actual)
 		assert.NoError(t, err)
-
 	})
 	t.Run("Test Builder V1 Version", func(t *testing.T) {
 		expected := types.BuilderV1
@@ -472,7 +457,6 @@ func TestMarshalBuilder(t *testing.T) {
 		actual, err := marshalBuilder(input)
 		assert.Equal(t, expected, actual)
 		assert.NoError(t, err)
-
 	})
 	t.Run("Test Invalid Builder Returns Error", func(t *testing.T) {
 		expected := types.BuilderV1
@@ -490,7 +474,6 @@ func TestMarshalSkipPush(t *testing.T) {
 		input := resource.NewPropertyValue(nil)
 		actual := marshalSkipPush(input)
 		assert.Equal(t, expected, actual)
-
 	})
 	t.Run("Test SkipPush returns true if set to true", func(t *testing.T) {
 		expected := true
@@ -509,7 +492,6 @@ func TestMarshalSkipPush(t *testing.T) {
 }
 
 func TestGetRegistryAddrFromImage(t *testing.T) {
-
 	t.Run("Returns registry name of correct spec format", func(t *testing.T) {
 		expected := "pulumi.test.registry"
 		input := "pulumi.test.registry/unicorns/swiftwind:latest"
@@ -535,7 +517,6 @@ func TestGetRegistryAddrFromImage(t *testing.T) {
 }
 
 func TestConfigureDockerClient(t *testing.T) {
-
 	t.Run("Given a host passed via pulumi config, a client should have that host", func(t *testing.T) {
 		expected := "testhost://something.sock"
 		input := map[string]string{
@@ -637,7 +618,6 @@ func TestConfigureDockerClient(t *testing.T) {
 			assert.Equal(t, actual.DaemonHost(), input["host"])
 		})
 	t.Run("When host is empty, returns default host ", func(t *testing.T) {
-
 		input := map[string]string{
 			"host": "",
 		}
@@ -651,103 +631,4 @@ func TestConfigureDockerClient(t *testing.T) {
 			assert.Equal(t, actual.DaemonHost(), "unix:///var/run/docker.sock")
 		}
 	})
-}
-
-func TestDockerIgnore(t *testing.T) {
-	tests := []struct {
-		name string
-
-		dockerfile string
-		context    string
-		fs         map[string]string
-
-		want    []string
-		wantErr error
-	}{
-		{
-			name:       "Dockerfile with root dockerignore",
-			dockerfile: "./foo/Dockerfile",
-			fs: map[string]string{
-				".dockerignore": "rootignore",
-			},
-			want: []string{"rootignore"},
-		},
-		{
-			name:       "Dockerfile with root dockerignore and custom dockerignore",
-			dockerfile: "./foo/Dockerfile",
-			fs: map[string]string{
-				"foo/Dockerfile.dockerignore": "customignore",
-				".dockerignore":               "rootignore",
-			},
-			want: []string{"customignore"},
-		},
-		{
-			name:       "Dockerfile with root dockerignore and relative context",
-			dockerfile: "./foo/Dockerfile",
-			context:    "../",
-			fs: map[string]string{
-				"../.dockerignore": "rootignore",
-			},
-			want: []string{"rootignore"},
-		},
-		{
-			name:       "Dockerfile without root dockerignore",
-			dockerfile: "./foo/Dockerfile",
-			want:       nil,
-		},
-		{
-			name:       "Dockerfile with invalid root dockerignore",
-			dockerfile: "./foo/Dockerfile",
-			fs: map[string]string{
-				".dockerignore": strings.Repeat("*", bufio.MaxScanTokenSize),
-			},
-			wantErr: bufio.ErrTooLong,
-		},
-		{
-			name:       "custom.Dockerfile without custom dockerignore and without root dockerignore",
-			dockerfile: "./foo/custom.Dockerfile",
-			want:       nil,
-		},
-		{
-			name:       "custom.Dockerfile with custom dockerignore and without root dockerignore",
-			dockerfile: "./foo/custom.Dockerfile",
-			fs: map[string]string{
-				"foo/custom.Dockerfile.dockerignore": "customignore",
-			},
-			want: []string{"customignore"},
-		},
-		{
-			name:       "custom.Dockerfile with custom dockerignore and with root dockerignore",
-			dockerfile: "foo/custom.Dockerfile",
-			fs: map[string]string{
-				"foo/custom.Dockerfile.dockerignore": "customignore",
-				".dockerignore":                      "rootignore",
-			},
-			want: []string{"customignore"},
-		},
-		{
-			name:       "custom.Dockerfile without custom dockerignore and with root dockerignore",
-			dockerfile: "foo/custom.Dockerfile",
-			fs: map[string]string{
-				".dockerignore": "rootignore",
-			},
-			want: []string{"rootignore"},
-		},
-	}
-
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			fs := afero.NewMemMapFs()
-			for fname, fdata := range tt.fs {
-				f, err := fs.Create(fname)
-				require.NoError(t, err)
-				_, err = f.Write([]byte(fdata))
-				require.NoError(t, err)
-			}
-			actual, err := internal.GetIgnorePatterns(fs, tt.dockerfile, tt.context)
-
-			assert.ErrorIs(t, err, tt.wantErr)
-			assert.Equal(t, tt.want, actual)
-		})
-	}
 }

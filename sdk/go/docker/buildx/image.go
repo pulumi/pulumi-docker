@@ -28,7 +28,8 @@ type Image struct {
 	// Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
 	CacheTo pulumi.StringArrayOutput `pulumi:"cacheTo"`
 	// Path to use for build context. If omitted, an empty context is used.
-	Context pulumi.StringPtrOutput `pulumi:"context"`
+	Context     pulumi.StringPtrOutput `pulumi:"context"`
+	ContextHash pulumi.StringPtrOutput `pulumi:"contextHash"`
 	// Name and optionally a tag (format: "name:tag"). If outputting to a
 	// registry, the name should include the fully qualified registry address.
 	Exports pulumi.StringArrayOutput `pulumi:"exports"`
@@ -265,6 +266,10 @@ func (o ImageOutput) CacheTo() pulumi.StringArrayOutput {
 // Path to use for build context. If omitted, an empty context is used.
 func (o ImageOutput) Context() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Image) pulumi.StringPtrOutput { return v.Context }).(pulumi.StringPtrOutput)
+}
+
+func (o ImageOutput) ContextHash() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *Image) pulumi.StringPtrOutput { return v.ContextHash }).(pulumi.StringPtrOutput)
 }
 
 // Name and optionally a tag (format: "name:tag"). If outputting to a
