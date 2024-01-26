@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"reflect"
 
 	// These imports are needed to register the drivers with buildkit.
 	_ "github.com/docker/buildx/driver/docker-container"
@@ -34,6 +35,7 @@ var (
 	_ infer.CustomDelete[ImageState]              = (*Image)(nil)
 	_ infer.CustomRead[ImageArgs, ImageState]     = (*Image)(nil)
 	_ infer.CustomResource[ImageArgs, ImageState] = (*Image)(nil)
+	_ infer.CustomUpdate[ImageArgs, ImageState]   = (*Image)(nil)
 )
 
 // Image is a Docker image build using buildkit.
@@ -89,7 +91,7 @@ func (ia *ImageArgs) Annotate(a infer.Annotator) {
 		Equivalent to Docker's "--platform" flag.`,
 	))
 	a.Describe(&ia.Pull, dedent.String(`
-		Always attempt to pull all referenced images`,
+		Always attempt to pull referenced images.`,
 	))
 	a.Describe(&ia.Tags, dedent.String(`
 		Name and optionally a tag (format: "name:tag"). If outputting to a
@@ -104,6 +106,8 @@ type ImageState struct {
 	ImageArgs
 
 	Manifests []properties.Manifest `pulumi:"manifests" provider:"output"`
+
+	id string
 }
 
 // Annotate describes outputs of the Image resource.
@@ -200,39 +204,38 @@ func (ia *ImageArgs) toBuildOptions() (controllerapi.BuildOptions, error) {
 	return opts, multierr
 }
 
-// Create builds the image using buildkit.
-func (i *Image) Create(
+// Update builds the image using buildkit.
+func (i *Image) Update(
 	ctx provider.Context,
 	name string,
+	state ImageState,
 	input ImageArgs,
 	preview bool,
-) (string, ImageState, error) {
+) (ImageState, error) {
 	cfg := infer.GetConfig[Config](ctx)
 
-	state := ImageState{
-		ImageArgs: input,
-	}
+	state.ImageArgs = input
 
 	ok, err := cfg.client.BuildKitEnabled()
 	if err != nil {
-		return name, state, fmt.Errorf("checking buildkit compatibility: %w", err)
+		return state, fmt.Errorf("checking buildkit compatibility: %w", err)
 	}
 	if !ok {
-		return name, state, fmt.Errorf("buildkit is not supported on this host")
+		return state, fmt.Errorf("buildkit is not supported on this host")
 	}
 
 	opts, err := input.toBuildOptions()
 	if err != nil {
-		return name, state, fmt.Errorf("validating input: %w", err)
+		return state, fmt.Errorf("validating input: %w", err)
 	}
 
 	if preview {
-		return name, state, nil
+		return state, nil
 	}
 
 	result, err := cfg.client.Build(ctx.(context.Context), opts)
 	if err != nil {
-		return name, state, err
+		return state, err
 	}
 
 	var id string
@@ -249,7 +252,21 @@ func (i *Image) Create(
 	// TODO: Handle case with no export.
 	_, _, state, err = i.Read(ctx, id, input, state)
 
-	return id, state, err
+	return state, err
+}
+
+// Create initializes a new resource and performs an Update on it.
+func (i *Image) Create(
+	ctx provider.Context,
+	name string,
+	input ImageArgs,
+	preview bool,
+) (string, ImageState, error) {
+	state := ImageState{
+		Manifests: []properties.Manifest{},
+	}
+	state, err := i.Update(ctx, name, state, input, preview)
+	return state.id, state, err
 }
 
 // Read attempts to read manifests from an image's exports. An image without
@@ -313,6 +330,7 @@ func (*Image) Read(
 		}
 	}
 
+	state.id = id
 	state.Manifests = manifests
 
 	return id, input, state, nil
@@ -345,4 +363,51 @@ func (*Image) Delete(
 	// TODO: Delete tags from registries?
 
 	return err
+}
+
+// Diff re-implements most of the default diff behavior, with the exception of
+// ignoring "password" changes on registry inputs.
+func (*Image) Diff(_ provider.Context, id string, olds ImageState, news ImageArgs) (provider.DiffResponse, error) {
+	diff := map[string]provider.PropertyDiff{}
+	update := provider.PropertyDiff{Kind: provider.Update}
+
+	if !reflect.DeepEqual(olds.BuildArgs, news.BuildArgs) {
+		diff["buildArgs"] = update
+	}
+	if !reflect.DeepEqual(olds.CacheFrom, news.CacheFrom) {
+		diff["cacheFrom"] = update
+	}
+	if !reflect.DeepEqual(olds.CacheTo, news.CacheTo) {
+		diff["cacheTo"] = update
+	}
+	if olds.Context != news.Context {
+		diff["context"] = update
+	}
+	if !reflect.DeepEqual(olds.Exports, news.Exports) {
+		diff["exports"] = update
+	}
+	if olds.File != news.File {
+		diff["file"] = update
+	}
+	if !reflect.DeepEqual(olds.Platforms, news.Platforms) {
+		diff["platforms"] = update
+	}
+	if olds.Pull != news.Pull {
+		diff["pull"] = update
+	}
+	if !reflect.DeepEqual(olds.Tags, news.Tags) {
+		diff["tags"] = update
+	}
+
+	// pull=true indicates that we want to keep base layers up-to-date. In this
+	// case we'll always perform the build.
+	if news.Pull {
+		diff["manifests"] = update
+	}
+
+	return provider.DiffResponse{
+		DeleteBeforeReplace: false,
+		HasChanges:          len(diff) > 0,
+		DetailedDiff:        diff,
+	}, nil
 }
