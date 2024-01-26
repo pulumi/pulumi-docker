@@ -57,9 +57,7 @@ export class Image extends pulumi.CustomResource {
     public readonly cacheTo!: pulumi.Output<string[] | undefined>;
     /**
      *
-     * Contexts to use while building the image. If omitted, an empty context
-     * is used. If more than one value is specified, they should be of the
-     * form "name=value".
+     * Path to use for build context. If omitted, an empty context is used.
      */
     public readonly context!: pulumi.Output<string | undefined>;
     public /*out*/ readonly contextHash!: pulumi.Output<string | undefined>;
@@ -71,7 +69,7 @@ export class Image extends pulumi.CustomResource {
     public readonly exports!: pulumi.Output<string[] | undefined>;
     /**
      *
-     * Name of the Dockerfile to use (default: "$PATH/Dockerfile").
+     * Name of the Dockerfile to use (defaults to "${context}/Dockerfile").
      */
     public readonly file!: pulumi.Output<string | undefined>;
     public /*out*/ readonly manifests!: pulumi.Output<outputs.buildx.Manifest[]>;
@@ -166,9 +164,7 @@ export interface ImageArgs {
     cacheTo?: pulumi.Input<pulumi.Input<string>[]>;
     /**
      *
-     * Contexts to use while building the image. If omitted, an empty context
-     * is used. If more than one value is specified, they should be of the
-     * form "name=value".
+     * Path to use for build context. If omitted, an empty context is used.
      */
     context?: pulumi.Input<string>;
     /**
@@ -179,7 +175,7 @@ export interface ImageArgs {
     exports?: pulumi.Input<pulumi.Input<string>[]>;
     /**
      *
-     * Name of the Dockerfile to use (default: "$PATH/Dockerfile").
+     * Name of the Dockerfile to use (defaults to "${context}/Dockerfile").
      */
     file?: pulumi.Input<string>;
     /**

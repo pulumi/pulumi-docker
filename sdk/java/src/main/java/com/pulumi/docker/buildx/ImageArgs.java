@@ -76,9 +76,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * Contexts to use while building the image. If omitted, an empty context
-     * is used. If more than one value is specified, they should be of the
-     * form &#34;name=value&#34;.
+     * Path to use for build context. If omitted, an empty context is used.
      * 
      */
     @Import(name="context")
@@ -86,9 +84,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
 
     /**
      * @return
-     * Contexts to use while building the image. If omitted, an empty context
-     * is used. If more than one value is specified, they should be of the
-     * form &#34;name=value&#34;.
+     * Path to use for build context. If omitted, an empty context is used.
      * 
      */
     public Optional<Output<String>> context() {
@@ -114,7 +110,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * Name of the Dockerfile to use (default: &#34;$PATH/Dockerfile&#34;).
+     * Name of the Dockerfile to use (defaults to &#34;${context}/Dockerfile&#34;).
      * 
      */
     @Import(name="file")
@@ -122,7 +118,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
 
     /**
      * @return
-     * Name of the Dockerfile to use (default: &#34;$PATH/Dockerfile&#34;).
+     * Name of the Dockerfile to use (defaults to &#34;${context}/Dockerfile&#34;).
      * 
      */
     public Optional<Output<String>> file() {
@@ -327,9 +323,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
 
         /**
          * @param context
-         * Contexts to use while building the image. If omitted, an empty context
-         * is used. If more than one value is specified, they should be of the
-         * form &#34;name=value&#34;.
+         * Path to use for build context. If omitted, an empty context is used.
          * 
          * @return builder
          * 
@@ -341,9 +335,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
 
         /**
          * @param context
-         * Contexts to use while building the image. If omitted, an empty context
-         * is used. If more than one value is specified, they should be of the
-         * form &#34;name=value&#34;.
+         * Path to use for build context. If omitted, an empty context is used.
          * 
          * @return builder
          * 
@@ -391,7 +383,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
 
         /**
          * @param file
-         * Name of the Dockerfile to use (default: &#34;$PATH/Dockerfile&#34;).
+         * Name of the Dockerfile to use (defaults to &#34;${context}/Dockerfile&#34;).
          * 
          * @return builder
          * 
@@ -403,7 +395,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
 
         /**
          * @param file
-         * Name of the Dockerfile to use (default: &#34;$PATH/Dockerfile&#34;).
+         * Name of the Dockerfile to use (defaults to &#34;${context}/Dockerfile&#34;).
          * 
          * @return builder
          * 

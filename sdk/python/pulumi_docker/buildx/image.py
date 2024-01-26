@@ -41,14 +41,12 @@ class ImageArgs:
         :param pulumi.Input[Sequence[pulumi.Input[str]]] cache_to: 
                Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
         :param pulumi.Input[str] context: 
-               Contexts to use while building the image. If omitted, an empty context
-               is used. If more than one value is specified, they should be of the
-               form "name=value".
+               Path to use for build context. If omitted, an empty context is used.
         :param pulumi.Input[Sequence[pulumi.Input[str]]] exports: 
                Name and optionally a tag (format: "name:tag"). If outputting to a
                registry, the name should include the fully qualified registry address.
         :param pulumi.Input[str] file: 
-               Name of the Dockerfile to use (default: "$PATH/Dockerfile").
+               Name of the Dockerfile to use (defaults to "${context}/Dockerfile").
         :param pulumi.Input[Sequence[pulumi.Input[str]]] platforms: 
                Set target platforms for the build. Defaults to the host's platform
         :param pulumi.Input[bool] pull: 
@@ -139,9 +137,7 @@ class ImageArgs:
     def context(self) -> Optional[pulumi.Input[str]]:
         """
 
-        Contexts to use while building the image. If omitted, an empty context
-        is used. If more than one value is specified, they should be of the
-        form "name=value".
+        Path to use for build context. If omitted, an empty context is used.
         """
         return pulumi.get(self, "context")
 
@@ -168,7 +164,7 @@ class ImageArgs:
     def file(self) -> Optional[pulumi.Input[str]]:
         """
 
-        Name of the Dockerfile to use (default: "$PATH/Dockerfile").
+        Name of the Dockerfile to use (defaults to "${context}/Dockerfile").
         """
         return pulumi.get(self, "file")
 
@@ -247,14 +243,12 @@ class Image(pulumi.CustomResource):
         :param pulumi.Input[Sequence[pulumi.Input[str]]] cache_to: 
                Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
         :param pulumi.Input[str] context: 
-               Contexts to use while building the image. If omitted, an empty context
-               is used. If more than one value is specified, they should be of the
-               form "name=value".
+               Path to use for build context. If omitted, an empty context is used.
         :param pulumi.Input[Sequence[pulumi.Input[str]]] exports: 
                Name and optionally a tag (format: "name:tag"). If outputting to a
                registry, the name should include the fully qualified registry address.
         :param pulumi.Input[str] file: 
-               Name of the Dockerfile to use (default: "$PATH/Dockerfile").
+               Name of the Dockerfile to use (defaults to "${context}/Dockerfile").
         :param pulumi.Input[Sequence[pulumi.Input[str]]] platforms: 
                Set target platforms for the build. Defaults to the host's platform
         :param pulumi.Input[bool] pull: 
@@ -395,9 +389,7 @@ class Image(pulumi.CustomResource):
     def context(self) -> pulumi.Output[Optional[str]]:
         """
 
-        Contexts to use while building the image. If omitted, an empty context
-        is used. If more than one value is specified, they should be of the
-        form "name=value".
+        Path to use for build context. If omitted, an empty context is used.
         """
         return pulumi.get(self, "context")
 
@@ -421,7 +413,7 @@ class Image(pulumi.CustomResource):
     def file(self) -> pulumi.Output[Optional[str]]:
         """
 
-        Name of the Dockerfile to use (default: "$PATH/Dockerfile").
+        Name of the Dockerfile to use (defaults to "${context}/Dockerfile").
         """
         return pulumi.get(self, "file")
 
