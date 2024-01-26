@@ -2123,6 +2123,9 @@
                     "type": "string",
                     "description": "\nContexts to use while building the image. If omitted, an empty context\nis used. If more than one value is specified, they should be of the\nform \"name=value\"."
                 },
+                "contextHash": {
+                    "type": "string"
+                },
                 "exports": {
                     "type": "array",
                     "items": {

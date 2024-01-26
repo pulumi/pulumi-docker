@@ -107,7 +107,7 @@ func (ia *ImageArgs) Annotate(a infer.Annotator) {
 type ImageState struct {
 	ImageArgs
 
-	ContextHash string                `pulumi:"contextHash" provider:"internal"`
+	ContextHash string                `pulumi:"contextHash,optional" provider:"internal"`
 	Manifests   []properties.Manifest `pulumi:"manifests" provider:"output"`
 }
 
@@ -252,6 +252,12 @@ func (i *Image) Create(
 	if err != nil {
 		return name, state, fmt.Errorf("validating input: %w", err)
 	}
+
+	hash, err := HashContext(input.Context, input.File)
+	if err != nil {
+		return name, state, fmt.Errorf("hashing build context: %w", err)
+	}
+	state.ContextHash = hash
 
 	if preview {
 		return name, state, nil
@@ -412,6 +418,15 @@ func (*Image) Diff(_ provider.Context, id string, olds ImageState, news ImageArg
 	}
 	if !reflect.DeepEqual(olds.Tags, news.Tags) {
 		diff["tags"] = update
+	}
+
+	// Check if anything has changed in our build context.
+	hash, err := HashContext(news.Context, news.File)
+	if err != nil {
+		return provider.DiffResponse{}, err
+	}
+	if hash != olds.ContextHash {
+		diff["manifests"] = update
 	}
 
 	// Registries need special handling because we ignore "password" changes to not introduce unnecessary changes.

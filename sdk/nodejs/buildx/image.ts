@@ -62,6 +62,7 @@ export class Image extends pulumi.CustomResource {
      * form "name=value".
      */
     public readonly context!: pulumi.Output<string | undefined>;
+    public /*out*/ readonly contextHash!: pulumi.Output<string | undefined>;
     /**
      *
      * Name and optionally a tag (format: "name:tag"). If outputting to a
@@ -120,12 +121,14 @@ export class Image extends pulumi.CustomResource {
             resourceInputs["pull"] = args ? args.pull : undefined;
             resourceInputs["registries"] = args ? args.registries : undefined;
             resourceInputs["tags"] = args ? args.tags : undefined;
+            resourceInputs["contextHash"] = undefined /*out*/;
             resourceInputs["manifests"] = undefined /*out*/;
         } else {
             resourceInputs["buildArgs"] = undefined /*out*/;
             resourceInputs["cacheFrom"] = undefined /*out*/;
             resourceInputs["cacheTo"] = undefined /*out*/;
             resourceInputs["context"] = undefined /*out*/;
+            resourceInputs["contextHash"] = undefined /*out*/;
             resourceInputs["exports"] = undefined /*out*/;
             resourceInputs["file"] = undefined /*out*/;
             resourceInputs["manifests"] = undefined /*out*/;

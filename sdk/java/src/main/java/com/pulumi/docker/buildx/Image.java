@@ -94,6 +94,12 @@ public class Image extends com.pulumi.resources.CustomResource {
     public Output<Optional<String>> context() {
         return Codegen.optional(this.context);
     }
+    @Export(name="contextHash", refs={String.class}, tree="[0]")
+    private Output</* @Nullable */ String> contextHash;
+
+    public Output<Optional<String>> contextHash() {
+        return Codegen.optional(this.contextHash);
+    }
     /**
      * Name and optionally a tag (format: &#34;name:tag&#34;). If outputting to a
      * registry, the name should include the fully qualified registry address.
