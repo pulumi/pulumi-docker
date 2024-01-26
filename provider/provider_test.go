@@ -4,6 +4,7 @@ import (
 	"context"
 	"os"
 	"path/filepath"
+	"syscall"
 	"testing"
 
 	"github.com/docker/distribution/reference"
@@ -247,8 +248,8 @@ func TestIgnoreIrregularFiles(t *testing.T) {
 	require.NoError(t, err)
 
 	// Create a pipe which should be ignored.
-	// err = syscall.Mkfifo(filepath.Join(dir, "pipe"), 0o666)
-	// require.NoError(t, err)
+	err = syscall.Mkfifo(filepath.Join(dir, "pipe"), 0o666)
+	require.NoError(t, err)
 
 	hash, err := hashContext(dir, dockerfile)
 	assert.NoError(t, err)
