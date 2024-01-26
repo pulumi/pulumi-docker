@@ -101,23 +101,29 @@
         "docker:config/registryAuth:registryAuth": {
             "properties": {
                 "address": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Address of the registry\n"
                 },
                 "authDisabled": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Setting this to `true` will tell the provider that this registry does not need authentication. Due to the docker internals, the provider will use dummy credentials (see https://github.com/kreuzwerker/terraform-provider-docker/issues/470 for more information). Defaults to `false`.\n"
                 },
                 "configFile": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `config_file` has predencen over all other options.\n"
                 },
                 "configFileContent": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Plain content of the docker json file for registry auth. `config_file_content` has precedence over username/password.\n"
                 },
                 "password": {
                     "type": "string",
+                    "description": "Password for the registry. Defaults to `DOCKER_REGISTRY_PASS` env variable if set.\n",
                     "secret": true
                 },
                 "username": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Username for the registry. Defaults to `DOCKER_REGISTRY_USER` env variable if set.\n"
                 }
             },
             "type": "object",
@@ -352,28 +358,36 @@
         "docker:index/ContainerNetworkData:ContainerNetworkData": {
             "properties": {
                 "gateway": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "The network gateway of the container.\n"
                 },
                 "globalIpv6Address": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "The IPV6 address of the container.\n"
                 },
                 "globalIpv6PrefixLength": {
-                    "type": "integer"
+                    "type": "integer",
+                    "description": "The IPV6 prefix length address of the container.\n"
                 },
                 "ipAddress": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "The IP address of the container.\n"
                 },
                 "ipPrefixLength": {
-                    "type": "integer"
+                    "type": "integer",
+                    "description": "The IP prefix length of the container.\n"
                 },
                 "ipv6Gateway": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "The IPV6 gateway of the container.\n"
                 },
                 "macAddress": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "The MAC address of the container.\n"
                 },
                 "networkName": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "The name of the network\n"
                 }
             },
             "type": "object",
@@ -493,6 +507,7 @@
                 },
                 "contentBase64": {
                     "type": "string",
+                    "description": "Base64-encoded data that will be decoded and uploaded as raw bytes for the object content. This allows safely uploading non-UTF8 binary data, but is recommended only for larger binary content such as the result of the `base64encode` interpolation function. See here for the reason. Conflicts with `content` \u0026 `source`\n",
                     "willReplaceOnChanges": true
                 },
                 "executable": {
@@ -621,23 +636,29 @@
         "docker:index/ProviderRegistryAuth:ProviderRegistryAuth": {
             "properties": {
                 "address": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Address of the registry\n"
                 },
                 "authDisabled": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Setting this to `true` will tell the provider that this registry does not need authentication. Due to the docker internals, the provider will use dummy credentials (see https://github.com/kreuzwerker/terraform-provider-docker/issues/470 for more information). Defaults to `false`.\n"
                 },
                 "configFile": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `config_file` has predencen over all other options.\n"
                 },
                 "configFileContent": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Plain content of the docker json file for registry auth. `config_file_content` has precedence over username/password.\n"
                 },
                 "password": {
                     "type": "string",
+                    "description": "Password for the registry. Defaults to `DOCKER_REGISTRY_PASS` env variable if set.\n",
                     "secret": true
                 },
                 "username": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Username for the registry. Defaults to `DOCKER_REGISTRY_USER` env variable if set.\n"
                 }
             },
             "type": "object",
@@ -1233,7 +1254,7 @@
                 },
                 "image": {
                     "type": "string",
-                    "description": "The image name to use for the containers of the service, like `nginx:1.17.6`. Also use the data-source or resource of `docker.RemoteImage` with the `repo_digest` or `docker.RegistryImage` with the `name` attribute for this, as shown in the examples.\n"
+                    "description": "The image name to use for the containers of the service, like `nginx:1.17.6`. Also use the data-source or resource of `docker_image` with the `repo_digest` or `docker_registry_image` with the `name` attribute for this, as shown in the examples.\n"
                 },
                 "isolation": {
                     "type": "string",
@@ -1259,7 +1280,7 @@
                 },
                 "readOnly": {
                     "type": "boolean",
-                    "description": "Whether the mount should be read-only\n"
+                    "description": "Mount the container's root filesystem as read only\n"
                 },
                 "secrets": {
                     "type": "array",
@@ -1286,7 +1307,7 @@
                 },
                 "user": {
                     "type": "string",
-                    "description": "SELinux user label\n"
+                    "description": "The user inside the container\n"
                 }
             },
             "type": "object",
@@ -1389,7 +1410,7 @@
                 },
                 "timeout": {
                     "type": "string",
-                    "description": "The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`\n"
+                    "description": "Maximum time to allow one check to run (ms|s|m|h). Defaults to `0s`.\n"
                 }
             },
             "type": "object",
@@ -1485,7 +1506,7 @@
             "properties": {
                 "mode": {
                     "type": "integer",
-                    "description": "The mode of resolution to use for internal load balancing between tasks\n"
+                    "description": "The permission mode for the tmpfs mount in an integer\n"
                 },
                 "sizeBytes": {
                     "type": "integer",
@@ -1582,7 +1603,7 @@
                 },
                 "type": {
                     "type": "string",
-                    "description": "The mount type\n"
+                    "description": "SELinux type label\n"
                 },
                 "user": {
                     "type": "string",
@@ -1595,11 +1616,11 @@
             "properties": {
                 "fileGid": {
                     "type": "string",
-                    "description": "Represents the file GID. Defaults to `0`.\n"
+                    "description": "Represents the file GID. Defaults to `0`\n"
                 },
                 "fileMode": {
                     "type": "integer",
-                    "description": "Represents represents the FileMode of the file. Defaults to `0o444`.\n"
+                    "description": "Represents represents the FileMode of the file. Defaults to `0o444`\n"
                 },
                 "fileName": {
                     "type": "string",
@@ -1607,7 +1628,7 @@
                 },
                 "fileUid": {
                     "type": "string",
-                    "description": "Represents the file UID. Defaults to `0`.\n"
+                    "description": "Represents the file UID. Defaults to `0`\n"
                 },
                 "secretId": {
                     "type": "string",
@@ -1628,14 +1649,14 @@
             "properties": {
                 "name": {
                     "type": "string",
-                    "description": "A random name for the port\n"
+                    "description": "The logging driver to use\n"
                 },
                 "options": {
                     "type": "object",
                     "additionalProperties": {
                         "type": "string"
                     },
-                    "description": "A list of internal resolver variables to be modified (e.g., `debug`, `ndots:3`, etc.)\n"
+                    "description": "The options for the logging driver\n"
                 }
             },
             "type": "object",
@@ -1663,7 +1684,7 @@
                 },
                 "name": {
                     "type": "string",
-                    "description": "A random name for the port\n",
+                    "description": "The name/id of the network.\n",
                     "willReplaceOnChanges": true
                 }
             },
@@ -1757,7 +1778,7 @@
                 },
                 "nanoCpus": {
                     "type": "integer",
-                    "description": "CPU shares in units of `1/1e9` (or `10^-9`) of the CPU. Should be at least `1000000`\n"
+                    "description": "CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least `1000000`\n"
                 }
             },
             "type": "object"
@@ -1789,7 +1810,7 @@
                 },
                 "delay": {
                     "type": "string",
-                    "description": "The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.\n"
+                    "description": "Delay between restart attempts (ms|s|m|h)\n"
                 },
                 "maxAttempts": {
                     "type": "integer",
@@ -1922,16 +1943,20 @@
                     "type": "object",
                     "additionalProperties": {
                         "$ref": "pulumi.json#/Any"
-                    }
+                    },
+                    "description": "Auxiliary IPv4 or IPv6 addresses used by Network driver\n"
                 },
                 "gateway": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "The IP address of the gateway\n"
                 },
                 "ipRange": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "The ip range in CIDR form\n"
                 },
                 "subnet": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "The subnet in CIDR form\n"
                 }
             },
             "type": "object"
@@ -3898,7 +3923,7 @@
             }
         },
         "docker:index/service:Service": {
-            "description": "\n\n\n## Import\n\n### Example Assuming you created a `service` as follows #!/bin/bash docker service create --name foo -p 8080:80 nginx prints th ID 4pcphbxkfn2rffhbhe6czytgi you provide the definition for the resource as follows terraform resource \"docker_service\" \"foo\" {\n\n name = \"foo\"\n\n task_spec {\n\n\n\n container_spec {\n\n\n\n\n\n image = \"nginx\"\n\n\n\n }\n\n }\n\n endpoint_spec {\n\n\n\n ports {\n\n\n\n\n\n target_port\n\n\n\n= \"80\"\n\n\n\n\n\n published_port = \"8080\"\n\n\n\n }\n\n } } then the import command is as follows #!/bin/bash\n\n```sh\n $ pulumi import docker:index/service:Service foo 4pcphbxkfn2rffhbhe6czytgi\n```\n\n ",
+            "description": "\u003c!-- Bug: Type and Name are switched --\u003e\nThis resource manages the lifecycle of a Docker service. By default, the creation, update and delete of services are detached.\n With the Converge Config Name of the service\n- `task_spec` (Block List, Min: 1, Max: 1) User modifiable task configuration (see below for nested schema)\n\n\n## Import\n\n### Example Assuming you created a `service` as follows #!/bin/bash docker service create --name foo -p 8080:80 nginx prints th ID 4pcphbxkfn2rffhbhe6czytgi you provide the definition for the resource as follows terraform resource \"docker_service\" \"foo\" {\n\n name = \"foo\"\n\n task_spec {\n\n\n\n container_spec {\n\n\n\n\n\n image = \"nginx\"\n\n\n\n }\n\n }\n\n endpoint_spec {\n\n\n\n ports {\n\n\n\n\n\n target_port\n\n\n\n= \"80\"\n\n\n\n\n\n published_port = \"8080\"\n\n\n\n }\n\n } } then the import command is as follows #!/bin/bash\n\n```sh\n $ pulumi import docker:index/service:Service foo 4pcphbxkfn2rffhbhe6czytgi\n```\n\n ",
             "properties": {
                 "auth": {
                     "$ref": "#/types/docker:index/ServiceAuth:ServiceAuth",
@@ -3921,11 +3946,11 @@
                 },
                 "mode": {
                     "$ref": "#/types/docker:index/ServiceMode:ServiceMode",
-                    "description": "The mode of resolution to use for internal load balancing between tasks\n"
+                    "description": "Scheduling mode for the service\n"
                 },
                 "name": {
                     "type": "string",
-                    "description": "A random name for the port\n"
+                    "description": "Name of the service\n"
                 },
                 "rollbackConfig": {
                     "$ref": "#/types/docker:index/ServiceRollbackConfig:ServiceRollbackConfig",
@@ -3970,12 +3995,12 @@
                 },
                 "mode": {
                     "$ref": "#/types/docker:index/ServiceMode:ServiceMode",
-                    "description": "The mode of resolution to use for internal load balancing between tasks\n",
+                    "description": "Scheduling mode for the service\n",
                     "willReplaceOnChanges": true
                 },
                 "name": {
                     "type": "string",
-                    "description": "A random name for the port\n",
+                    "description": "Name of the service\n",
                     "willReplaceOnChanges": true
                 },
                 "rollbackConfig": {
@@ -4019,12 +4044,12 @@
                     },
                     "mode": {
                         "$ref": "#/types/docker:index/ServiceMode:ServiceMode",
-                        "description": "The mode of resolution to use for internal load balancing between tasks\n",
+                        "description": "Scheduling mode for the service\n",
                         "willReplaceOnChanges": true
                     },
                     "name": {
                         "type": "string",
-                        "description": "A random name for the port\n",
+                        "description": "Name of the service\n",
                         "willReplaceOnChanges": true
                     },
                     "rollbackConfig": {
