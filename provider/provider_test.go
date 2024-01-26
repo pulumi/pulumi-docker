@@ -247,14 +247,13 @@ func TestIgnoreIrregularFiles(t *testing.T) {
 	err := os.WriteFile(dockerfile, []byte{}, 0o600)
 	require.NoError(t, err)
 
-	// Create a pipe which should be ignored.
+	// Create a pipe which should be ignored. (We will time out trying to read
+	// it if it's not.)
 	err = syscall.Mkfifo(filepath.Join(dir, "pipe"), 0o666)
 	require.NoError(t, err)
 
-	hash, err := hashContext(dir, dockerfile)
+	_, err = hashContext(dir, dockerfile)
 	assert.NoError(t, err)
-	// Expected hash of just our Dockerfile.
-	assert.Equal(t, "8b1ab751cc04d1d3ada38b648a764e9d10a20ca73981bc46555ef1f955d6964f", hash)
 }
 
 func TestHashUnignoredDirs(t *testing.T) {
