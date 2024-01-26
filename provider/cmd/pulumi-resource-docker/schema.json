@@ -2127,6 +2127,9 @@
                     "type": "string",
                     "description": "\nPath to use for build context. If omitted, an empty context is used."
                 },
+                "contextHash": {
+                    "type": "string"
+                },
                 "exports": {
                     "type": "array",
                     "items": {
