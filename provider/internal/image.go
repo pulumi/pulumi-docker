@@ -261,7 +261,7 @@ func (i *Image) Update(
 
 	hash, err := HashContext(input.Context, input.File)
 	if err != nil {
-		return name, state, fmt.Errorf("hashing build context: %w", err)
+		return state, fmt.Errorf("hashing build context: %w", err)
 	}
 	state.ContextHash = hash
 
