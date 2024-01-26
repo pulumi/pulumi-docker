@@ -27,15 +27,13 @@ type Image struct {
 	CacheFrom pulumi.StringArrayOutput `pulumi:"cacheFrom"`
 	// Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
 	CacheTo pulumi.StringArrayOutput `pulumi:"cacheTo"`
-	// Contexts to use while building the image. If omitted, an empty context
-	// is used. If more than one value is specified, they should be of the
-	// form "name=value".
+	// Path to use for build context. If omitted, an empty context is used.
 	Context     pulumi.StringPtrOutput `pulumi:"context"`
 	ContextHash pulumi.StringPtrOutput `pulumi:"contextHash"`
 	// Name and optionally a tag (format: "name:tag"). If outputting to a
 	// registry, the name should include the fully qualified registry address.
 	Exports pulumi.StringArrayOutput `pulumi:"exports"`
-	// Name of the Dockerfile to use (default: "$PATH/Dockerfile").
+	// Name of the Dockerfile to use (defaults to "${context}/Dockerfile").
 	File      pulumi.StringPtrOutput `pulumi:"file"`
 	Manifests ManifestArrayOutput    `pulumi:"manifests"`
 	// Set target platforms for the build. Defaults to the host's platform
@@ -106,14 +104,12 @@ type imageArgs struct {
 	CacheFrom []string `pulumi:"cacheFrom"`
 	// Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
 	CacheTo []string `pulumi:"cacheTo"`
-	// Contexts to use while building the image. If omitted, an empty context
-	// is used. If more than one value is specified, they should be of the
-	// form "name=value".
+	// Path to use for build context. If omitted, an empty context is used.
 	Context *string `pulumi:"context"`
 	// Name and optionally a tag (format: "name:tag"). If outputting to a
 	// registry, the name should include the fully qualified registry address.
 	Exports []string `pulumi:"exports"`
-	// Name of the Dockerfile to use (default: "$PATH/Dockerfile").
+	// Name of the Dockerfile to use (defaults to "${context}/Dockerfile").
 	File *string `pulumi:"file"`
 	// Set target platforms for the build. Defaults to the host's platform
 	Platforms []string `pulumi:"platforms"`
@@ -139,14 +135,12 @@ type ImageArgs struct {
 	CacheFrom pulumi.StringArrayInput
 	// Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
 	CacheTo pulumi.StringArrayInput
-	// Contexts to use while building the image. If omitted, an empty context
-	// is used. If more than one value is specified, they should be of the
-	// form "name=value".
+	// Path to use for build context. If omitted, an empty context is used.
 	Context pulumi.StringPtrInput
 	// Name and optionally a tag (format: "name:tag"). If outputting to a
 	// registry, the name should include the fully qualified registry address.
 	Exports pulumi.StringArrayInput
-	// Name of the Dockerfile to use (default: "$PATH/Dockerfile").
+	// Name of the Dockerfile to use (defaults to "${context}/Dockerfile").
 	File pulumi.StringPtrInput
 	// Set target platforms for the build. Defaults to the host's platform
 	Platforms pulumi.StringArrayInput
@@ -269,9 +263,7 @@ func (o ImageOutput) CacheTo() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v *Image) pulumi.StringArrayOutput { return v.CacheTo }).(pulumi.StringArrayOutput)
 }
 
-// Contexts to use while building the image. If omitted, an empty context
-// is used. If more than one value is specified, they should be of the
-// form "name=value".
+// Path to use for build context. If omitted, an empty context is used.
 func (o ImageOutput) Context() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Image) pulumi.StringPtrOutput { return v.Context }).(pulumi.StringPtrOutput)
 }
@@ -286,7 +278,7 @@ func (o ImageOutput) Exports() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v *Image) pulumi.StringArrayOutput { return v.Exports }).(pulumi.StringArrayOutput)
 }
 
-// Name of the Dockerfile to use (default: "$PATH/Dockerfile").
+// Name of the Dockerfile to use (defaults to "${context}/Dockerfile").
 func (o ImageOutput) File() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Image) pulumi.StringPtrOutput { return v.File }).(pulumi.StringPtrOutput)
 }

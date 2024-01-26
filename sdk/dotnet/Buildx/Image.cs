@@ -48,9 +48,7 @@ namespace Pulumi.Docker.Buildx
 
         /// <summary>
         /// 
-        /// Contexts to use while building the image. If omitted, an empty context
-        /// is used. If more than one value is specified, they should be of the
-        /// form "name=value".
+        /// Path to use for build context. If omitted, an empty context is used.
         /// </summary>
         [Output("context")]
         public Output<string?> Context { get; private set; } = null!;
@@ -68,7 +66,7 @@ namespace Pulumi.Docker.Buildx
 
         /// <summary>
         /// 
-        /// Name of the Dockerfile to use (default: "$PATH/Dockerfile").
+        /// Name of the Dockerfile to use (defaults to "${context}/Dockerfile").
         /// </summary>
         [Output("file")]
         public Output<string?> File { get; private set; } = null!;
@@ -201,9 +199,7 @@ namespace Pulumi.Docker.Buildx
 
         /// <summary>
         /// 
-        /// Contexts to use while building the image. If omitted, an empty context
-        /// is used. If more than one value is specified, they should be of the
-        /// form "name=value".
+        /// Path to use for build context. If omitted, an empty context is used.
         /// </summary>
         [Input("context")]
         public Input<string>? Context { get; set; }
@@ -224,7 +220,7 @@ namespace Pulumi.Docker.Buildx
 
         /// <summary>
         /// 
-        /// Name of the Dockerfile to use (default: "$PATH/Dockerfile").
+        /// Name of the Dockerfile to use (defaults to "${context}/Dockerfile").
         /// </summary>
         [Input("file")]
         public Input<string>? File { get; set; }

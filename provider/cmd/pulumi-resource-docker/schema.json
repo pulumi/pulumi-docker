@@ -2125,7 +2125,7 @@
                 },
                 "context": {
                     "type": "string",
-                    "description": "\nContexts to use while building the image. If omitted, an empty context\nis used. If more than one value is specified, they should be of the\nform \"name=value\"."
+                    "description": "\nPath to use for build context. If omitted, an empty context is used."
                 },
                 "contextHash": {
                     "type": "string"
@@ -2139,7 +2139,7 @@
                 },
                 "file": {
                     "type": "string",
-                    "description": "\nName of the Dockerfile to use (default: \"$PATH/Dockerfile\").",
+                    "description": "\nName of the Dockerfile to use (defaults to \"${context}/Dockerfile\").",
                     "default": "Dockerfile"
                 },
                 "manifests": {
@@ -2206,7 +2206,7 @@
                 },
                 "context": {
                     "type": "string",
-                    "description": "\nContexts to use while building the image. If omitted, an empty context\nis used. If more than one value is specified, they should be of the\nform \"name=value\"."
+                    "description": "\nPath to use for build context. If omitted, an empty context is used."
                 },
                 "exports": {
                     "type": "array",
@@ -2217,7 +2217,7 @@
                 },
                 "file": {
                     "type": "string",
-                    "description": "\nName of the Dockerfile to use (default: \"$PATH/Dockerfile\").",
+                    "description": "\nName of the Dockerfile to use (defaults to \"${context}/Dockerfile\").",
                     "default": "Dockerfile"
                 },
                 "platforms": {

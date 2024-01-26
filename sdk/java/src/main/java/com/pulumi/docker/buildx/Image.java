@@ -91,9 +91,7 @@ public class Image extends com.pulumi.resources.CustomResource {
         return Codegen.optional(this.cacheTo);
     }
     /**
-     * Contexts to use while building the image. If omitted, an empty context
-     * is used. If more than one value is specified, they should be of the
-     * form &#34;name=value&#34;.
+     * Path to use for build context. If omitted, an empty context is used.
      * 
      */
     @Export(name="context", refs={String.class}, tree="[0]")
@@ -101,9 +99,7 @@ public class Image extends com.pulumi.resources.CustomResource {
 
     /**
      * @return
-     * Contexts to use while building the image. If omitted, an empty context
-     * is used. If more than one value is specified, they should be of the
-     * form &#34;name=value&#34;.
+     * Path to use for build context. If omitted, an empty context is used.
      * 
      */
     public Output<Optional<String>> context() {
@@ -133,7 +129,7 @@ public class Image extends com.pulumi.resources.CustomResource {
         return Codegen.optional(this.exports);
     }
     /**
-     * Name of the Dockerfile to use (default: &#34;$PATH/Dockerfile&#34;).
+     * Name of the Dockerfile to use (defaults to &#34;${context}/Dockerfile&#34;).
      * 
      */
     @Export(name="file", refs={String.class}, tree="[0]")
@@ -141,7 +137,7 @@ public class Image extends com.pulumi.resources.CustomResource {
 
     /**
      * @return
-     * Name of the Dockerfile to use (default: &#34;$PATH/Dockerfile&#34;).
+     * Name of the Dockerfile to use (defaults to &#34;${context}/Dockerfile&#34;).
      * 
      */
     public Output<Optional<String>> file() {
