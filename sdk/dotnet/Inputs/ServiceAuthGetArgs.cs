@@ -14,10 +14,6 @@ namespace Pulumi.Docker.Inputs
     {
         [Input("password")]
         private Input<string>? _password;
-
-        /// <summary>
-        /// The password
-        /// </summary>
         public Input<string>? Password
         {
             get => _password;
@@ -28,15 +24,9 @@ namespace Pulumi.Docker.Inputs
             }
         }
 
-        /// <summary>
-        /// The address of the server for the authentication
-        /// </summary>
         [Input("serverAddress", required: true)]
         public Input<string> ServerAddress { get; set; } = null!;
 
-        /// <summary>
-        /// The username
-        /// </summary>
         [Input("username")]
         public Input<string>? Username { get; set; }
 

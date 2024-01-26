@@ -12,41 +12,17 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceTaskSpecContainerSpecDnsConfig {
-    /**
-     * @return The IP addresses of the name servers
-     * 
-     */
     private List<String> nameservers;
-    /**
-     * @return A list of internal resolver variables to be modified (e.g., `debug`, `ndots:3`, etc.)
-     * 
-     */
     private @Nullable List<String> options;
-    /**
-     * @return A search list for host-name lookup
-     * 
-     */
     private @Nullable List<String> searches;
 
     private ServiceTaskSpecContainerSpecDnsConfig() {}
-    /**
-     * @return The IP addresses of the name servers
-     * 
-     */
     public List<String> nameservers() {
         return this.nameservers;
     }
-    /**
-     * @return A list of internal resolver variables to be modified (e.g., `debug`, `ndots:3`, etc.)
-     * 
-     */
     public List<String> options() {
         return this.options == null ? List.of() : this.options;
     }
-    /**
-     * @return A search list for host-name lookup
-     * 
-     */
     public List<String> searches() {
         return this.searches == null ? List.of() : this.searches;
     }

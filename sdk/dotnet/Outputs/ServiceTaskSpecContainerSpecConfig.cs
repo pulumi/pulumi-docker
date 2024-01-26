@@ -13,29 +13,11 @@ namespace Pulumi.Docker.Outputs
     [OutputType]
     public sealed class ServiceTaskSpecContainerSpecConfig
     {
-        /// <summary>
-        /// ID of the specific config that we're referencing
-        /// </summary>
         public readonly string ConfigId;
-        /// <summary>
-        /// Name of the config that this references, but this is just provided for lookup/display purposes. The config in the reference will be identified by its ID
-        /// </summary>
         public readonly string? ConfigName;
-        /// <summary>
-        /// Represents the file GID. Defaults to `0`.
-        /// </summary>
         public readonly string? FileGid;
-        /// <summary>
-        /// Represents represents the FileMode of the file. Defaults to `0o444`.
-        /// </summary>
         public readonly int? FileMode;
-        /// <summary>
-        /// Represents the final filename in the filesystem
-        /// </summary>
         public readonly string FileName;
-        /// <summary>
-        /// Represents the file UID. Defaults to `0`.
-        /// </summary>
         public readonly string? FileUid;
 
         [OutputConstructor]

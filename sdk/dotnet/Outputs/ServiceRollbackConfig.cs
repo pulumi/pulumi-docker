@@ -13,29 +13,11 @@ namespace Pulumi.Docker.Outputs
     [OutputType]
     public sealed class ServiceRollbackConfig
     {
-        /// <summary>
-        /// Delay between task rollbacks (ns|us|ms|s|m|h). Defaults to `0s`.
-        /// </summary>
         public readonly string? Delay;
-        /// <summary>
-        /// Action on rollback failure: pause | continue. Defaults to `pause`.
-        /// </summary>
         public readonly string? FailureAction;
-        /// <summary>
-        /// Failure rate to tolerate during a rollback. Defaults to `0.0`.
-        /// </summary>
         public readonly string? MaxFailureRatio;
-        /// <summary>
-        /// Duration after each task rollback to monitor for failure (ns|us|ms|s|m|h). Defaults to `5s`.
-        /// </summary>
         public readonly string? Monitor;
-        /// <summary>
-        /// Rollback order: either 'stop-first' or 'start-first'. Defaults to `stop-first`.
-        /// </summary>
         public readonly string? Order;
-        /// <summary>
-        /// Maximum number of tasks to be rollbacked in one iteration. Defaults to `1`
-        /// </summary>
         public readonly int? Parallelism;
 
         [OutputConstructor]

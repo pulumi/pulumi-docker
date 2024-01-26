@@ -12,57 +12,32 @@ namespace Pulumi.Docker.Inputs
 
     public sealed class ServiceTaskSpecGetArgs : global::Pulumi.ResourceArgs
     {
-        /// <summary>
-        /// The spec for each container
-        /// </summary>
         [Input("containerSpec", required: true)]
         public Input<Inputs.ServiceTaskSpecContainerSpecGetArgs> ContainerSpec { get; set; } = null!;
 
-        /// <summary>
-        /// A counter that triggers an update even if no relevant parameters have been changed. See the [spec](https://github.com/docker/swarmkit/blob/master/api/specs.proto#L126).
-        /// </summary>
         [Input("forceUpdate")]
         public Input<int>? ForceUpdate { get; set; }
 
-        /// <summary>
-        /// Specifies the log driver to use for tasks created from this spec. If not present, the default one for the swarm will be used, finally falling back to the engine default if not specified
-        /// </summary>
         [Input("logDriver")]
         public Input<Inputs.ServiceTaskSpecLogDriverGetArgs>? LogDriver { get; set; }
 
         [Input("networksAdvanceds")]
         private InputList<Inputs.ServiceTaskSpecNetworksAdvancedGetArgs>? _networksAdvanceds;
-
-        /// <summary>
-        /// The networks the container is attached to
-        /// </summary>
         public InputList<Inputs.ServiceTaskSpecNetworksAdvancedGetArgs> NetworksAdvanceds
         {
             get => _networksAdvanceds ?? (_networksAdvanceds = new InputList<Inputs.ServiceTaskSpecNetworksAdvancedGetArgs>());
             set => _networksAdvanceds = value;
         }
 
-        /// <summary>
-        /// The placement preferences
-        /// </summary>
         [Input("placement")]
         public Input<Inputs.ServiceTaskSpecPlacementGetArgs>? Placement { get; set; }
 
-        /// <summary>
-        /// Resource requirements which apply to each individual container created as part of the service
-        /// </summary>
         [Input("resources")]
         public Input<Inputs.ServiceTaskSpecResourcesGetArgs>? Resources { get; set; }
 
-        /// <summary>
-        /// Specification for the restart policy which applies to containers created as part of this service.
-        /// </summary>
         [Input("restartPolicy")]
         public Input<Inputs.ServiceTaskSpecRestartPolicyGetArgs>? RestartPolicy { get; set; }
 
-        /// <summary>
-        /// Runtime is the type of runtime specified for the task executor. See the [types](https://github.com/moby/moby/blob/master/api/types/swarm/runtime.go).
-        /// </summary>
         [Input("runtime")]
         public Input<string>? Runtime { get; set; }
 

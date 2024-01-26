@@ -11,29 +11,13 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceTaskSpecContainerSpecPrivilegesCredentialSpec {
-    /**
-     * @return Load credential spec from this file
-     * 
-     */
     private @Nullable String file;
-    /**
-     * @return Load credential spec from this value in the Windows registry
-     * 
-     */
     private @Nullable String registry;
 
     private ServiceTaskSpecContainerSpecPrivilegesCredentialSpec() {}
-    /**
-     * @return Load credential spec from this file
-     * 
-     */
     public Optional<String> file() {
         return Optional.ofNullable(this.file);
     }
-    /**
-     * @return Load credential spec from this value in the Windows registry
-     * 
-     */
     public Optional<String> registry() {
         return Optional.ofNullable(this.registry);
     }

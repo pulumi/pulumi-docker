@@ -14,65 +14,25 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceTaskSpecContainerSpecHealthcheck {
-    /**
-     * @return Time between running the check (ms|s|m|h). Defaults to `0s`.
-     * 
-     */
     private @Nullable String interval;
-    /**
-     * @return Consecutive failures needed to report unhealthy. Defaults to `0`
-     * 
-     */
     private @Nullable Integer retries;
-    /**
-     * @return Start period for the container to initialize before counting retries towards unstable (ms|s|m|h). Defaults to `0s`.
-     * 
-     */
     private @Nullable String startPeriod;
-    /**
-     * @return The test to perform as list
-     * 
-     */
     private List<String> tests;
-    /**
-     * @return The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`
-     * 
-     */
     private @Nullable String timeout;
 
     private ServiceTaskSpecContainerSpecHealthcheck() {}
-    /**
-     * @return Time between running the check (ms|s|m|h). Defaults to `0s`.
-     * 
-     */
     public Optional<String> interval() {
         return Optional.ofNullable(this.interval);
     }
-    /**
-     * @return Consecutive failures needed to report unhealthy. Defaults to `0`
-     * 
-     */
     public Optional<Integer> retries() {
         return Optional.ofNullable(this.retries);
     }
-    /**
-     * @return Start period for the container to initialize before counting retries towards unstable (ms|s|m|h). Defaults to `0s`.
-     * 
-     */
     public Optional<String> startPeriod() {
         return Optional.ofNullable(this.startPeriod);
     }
-    /**
-     * @return The test to perform as list
-     * 
-     */
     public List<String> tests() {
         return this.tests;
     }
-    /**
-     * @return The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`
-     * 
-     */
     public Optional<String> timeout() {
         return Optional.ofNullable(this.timeout);
     }

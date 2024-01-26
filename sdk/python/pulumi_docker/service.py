@@ -32,8 +32,8 @@ class ServiceArgs:
         :param pulumi.Input['ServiceConvergeConfigArgs'] converge_config: A configuration to ensure that a service converges aka reaches the desired that of all task up and running
         :param pulumi.Input['ServiceEndpointSpecArgs'] endpoint_spec: Properties that can be configured to access and load balance a service
         :param pulumi.Input[Sequence[pulumi.Input['ServiceLabelArgs']]] labels: User-defined key/value metadata
-        :param pulumi.Input['ServiceModeArgs'] mode: The mode of resolution to use for internal load balancing between tasks
-        :param pulumi.Input[str] name: A random name for the port
+        :param pulumi.Input['ServiceModeArgs'] mode: Scheduling mode for the service
+        :param pulumi.Input[str] name: Name of the service
         :param pulumi.Input['ServiceRollbackConfigArgs'] rollback_config: Specification for the rollback strategy of the service
         :param pulumi.Input['ServiceUpdateConfigArgs'] update_config: Specification for the update strategy of the service
         """
@@ -119,7 +119,7 @@ class ServiceArgs:
     @pulumi.getter
     def mode(self) -> Optional[pulumi.Input['ServiceModeArgs']]:
         """
-        The mode of resolution to use for internal load balancing between tasks
+        Scheduling mode for the service
         """
         return pulumi.get(self, "mode")
 
@@ -131,7 +131,7 @@ class ServiceArgs:
     @pulumi.getter
     def name(self) -> Optional[pulumi.Input[str]]:
         """
-        A random name for the port
+        Name of the service
         """
         return pulumi.get(self, "name")
 
@@ -182,8 +182,8 @@ class _ServiceState:
         :param pulumi.Input['ServiceConvergeConfigArgs'] converge_config: A configuration to ensure that a service converges aka reaches the desired that of all task up and running
         :param pulumi.Input['ServiceEndpointSpecArgs'] endpoint_spec: Properties that can be configured to access and load balance a service
         :param pulumi.Input[Sequence[pulumi.Input['ServiceLabelArgs']]] labels: User-defined key/value metadata
-        :param pulumi.Input['ServiceModeArgs'] mode: The mode of resolution to use for internal load balancing between tasks
-        :param pulumi.Input[str] name: A random name for the port
+        :param pulumi.Input['ServiceModeArgs'] mode: Scheduling mode for the service
+        :param pulumi.Input[str] name: Name of the service
         :param pulumi.Input['ServiceRollbackConfigArgs'] rollback_config: Specification for the rollback strategy of the service
         :param pulumi.Input['ServiceTaskSpecArgs'] task_spec: User modifiable task configuration
         :param pulumi.Input['ServiceUpdateConfigArgs'] update_config: Specification for the update strategy of the service
@@ -259,7 +259,7 @@ class _ServiceState:
     @pulumi.getter
     def mode(self) -> Optional[pulumi.Input['ServiceModeArgs']]:
         """
-        The mode of resolution to use for internal load balancing between tasks
+        Scheduling mode for the service
         """
         return pulumi.get(self, "mode")
 
@@ -271,7 +271,7 @@ class _ServiceState:
     @pulumi.getter
     def name(self) -> Optional[pulumi.Input[str]]:
         """
-        A random name for the port
+        Name of the service
         """
         return pulumi.get(self, "name")
 
@@ -332,6 +332,11 @@ class Service(pulumi.CustomResource):
                  update_config: Optional[pulumi.Input[pulumi.InputType['ServiceUpdateConfigArgs']]] = None,
                  __props__=None):
         """
+        <!-- Bug: Type and Name are switched -->
+        This resource manages the lifecycle of a Docker service. By default, the creation, update and delete of services are detached.
+         With the Converge Config Name of the service
+        - `task_spec` (Block List, Min: 1, Max: 1) User modifiable task configuration (see below for nested schema)
+
         ## Import
 
         ### Example Assuming you created a `service` as follows #!/bin/bash docker service create --name foo -p 8080:80 nginx prints th ID 4pcphbxkfn2rffhbhe6czytgi you provide the definition for the resource as follows terraform resource "docker_service" "foo" {
@@ -372,8 +377,8 @@ class Service(pulumi.CustomResource):
         :param pulumi.Input[pulumi.InputType['ServiceConvergeConfigArgs']] converge_config: A configuration to ensure that a service converges aka reaches the desired that of all task up and running
         :param pulumi.Input[pulumi.InputType['ServiceEndpointSpecArgs']] endpoint_spec: Properties that can be configured to access and load balance a service
         :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ServiceLabelArgs']]]] labels: User-defined key/value metadata
-        :param pulumi.Input[pulumi.InputType['ServiceModeArgs']] mode: The mode of resolution to use for internal load balancing between tasks
-        :param pulumi.Input[str] name: A random name for the port
+        :param pulumi.Input[pulumi.InputType['ServiceModeArgs']] mode: Scheduling mode for the service
+        :param pulumi.Input[str] name: Name of the service
         :param pulumi.Input[pulumi.InputType['ServiceRollbackConfigArgs']] rollback_config: Specification for the rollback strategy of the service
         :param pulumi.Input[pulumi.InputType['ServiceTaskSpecArgs']] task_spec: User modifiable task configuration
         :param pulumi.Input[pulumi.InputType['ServiceUpdateConfigArgs']] update_config: Specification for the update strategy of the service
@@ -385,6 +390,11 @@ class Service(pulumi.CustomResource):
                  args: ServiceArgs,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
+        <!-- Bug: Type and Name are switched -->
+        This resource manages the lifecycle of a Docker service. By default, the creation, update and delete of services are detached.
+         With the Converge Config Name of the service
+        - `task_spec` (Block List, Min: 1, Max: 1) User modifiable task configuration (see below for nested schema)
+
         ## Import
 
         ### Example Assuming you created a `service` as follows #!/bin/bash docker service create --name foo -p 8080:80 nginx prints th ID 4pcphbxkfn2rffhbhe6czytgi you provide the definition for the resource as follows terraform resource "docker_service" "foo" {
@@ -493,8 +503,8 @@ class Service(pulumi.CustomResource):
         :param pulumi.Input[pulumi.InputType['ServiceConvergeConfigArgs']] converge_config: A configuration to ensure that a service converges aka reaches the desired that of all task up and running
         :param pulumi.Input[pulumi.InputType['ServiceEndpointSpecArgs']] endpoint_spec: Properties that can be configured to access and load balance a service
         :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ServiceLabelArgs']]]] labels: User-defined key/value metadata
-        :param pulumi.Input[pulumi.InputType['ServiceModeArgs']] mode: The mode of resolution to use for internal load balancing between tasks
-        :param pulumi.Input[str] name: A random name for the port
+        :param pulumi.Input[pulumi.InputType['ServiceModeArgs']] mode: Scheduling mode for the service
+        :param pulumi.Input[str] name: Name of the service
         :param pulumi.Input[pulumi.InputType['ServiceRollbackConfigArgs']] rollback_config: Specification for the rollback strategy of the service
         :param pulumi.Input[pulumi.InputType['ServiceTaskSpecArgs']] task_spec: User modifiable task configuration
         :param pulumi.Input[pulumi.InputType['ServiceUpdateConfigArgs']] update_config: Specification for the update strategy of the service
@@ -550,7 +560,7 @@ class Service(pulumi.CustomResource):
     @pulumi.getter
     def mode(self) -> pulumi.Output['outputs.ServiceMode']:
         """
-        The mode of resolution to use for internal load balancing between tasks
+        Scheduling mode for the service
         """
         return pulumi.get(self, "mode")
 
@@ -558,7 +568,7 @@ class Service(pulumi.CustomResource):
     @pulumi.getter
     def name(self) -> pulumi.Output[str]:
         """
-        A random name for the port
+        Name of the service
         """
         return pulumi.get(self, "name")
 

@@ -16,32 +16,16 @@ public final class ServiceModeArgs extends com.pulumi.resources.ResourceArgs {
 
     public static final ServiceModeArgs Empty = new ServiceModeArgs();
 
-    /**
-     * When `true`, tasks will run on every worker node. Conflicts with `replicated`
-     * 
-     */
     @Import(name="global")
     private @Nullable Output<Boolean> global;
 
-    /**
-     * @return When `true`, tasks will run on every worker node. Conflicts with `replicated`
-     * 
-     */
     public Optional<Output<Boolean>> global() {
         return Optional.ofNullable(this.global);
     }
 
-    /**
-     * The replicated service mode
-     * 
-     */
     @Import(name="replicated")
     private @Nullable Output<ServiceModeReplicatedArgs> replicated;
 
-    /**
-     * @return The replicated service mode
-     * 
-     */
     public Optional<Output<ServiceModeReplicatedArgs>> replicated() {
         return Optional.ofNullable(this.replicated);
     }
@@ -71,44 +55,20 @@ public final class ServiceModeArgs extends com.pulumi.resources.ResourceArgs {
             $ = new ServiceModeArgs(Objects.requireNonNull(defaults));
         }
 
-        /**
-         * @param global When `true`, tasks will run on every worker node. Conflicts with `replicated`
-         * 
-         * @return builder
-         * 
-         */
         public Builder global(@Nullable Output<Boolean> global) {
             $.global = global;
             return this;
         }
 
-        /**
-         * @param global When `true`, tasks will run on every worker node. Conflicts with `replicated`
-         * 
-         * @return builder
-         * 
-         */
         public Builder global(Boolean global) {
             return global(Output.of(global));
         }
 
-        /**
-         * @param replicated The replicated service mode
-         * 
-         * @return builder
-         * 
-         */
         public Builder replicated(@Nullable Output<ServiceModeReplicatedArgs> replicated) {
             $.replicated = replicated;
             return this;
         }
 
-        /**
-         * @param replicated The replicated service mode
-         * 
-         * @return builder
-         * 
-         */
         public Builder replicated(ServiceModeReplicatedArgs replicated) {
             return replicated(Output.of(replicated));
         }
