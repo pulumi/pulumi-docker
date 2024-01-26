@@ -249,8 +249,13 @@ func TestIgnoreIrregularFiles(t *testing.T) {
 
 	// Create a pipe which should be ignored. (We will time out trying to read
 	// it if it's not.)
-	err = syscall.Mkfifo(filepath.Join(dir, "pipe"), 0o666)
+	pipe := filepath.Join(dir, "pipe")
+	err = syscall.Mkfifo(pipe, 0o666)
 	require.NoError(t, err)
+	// Confirm it's irregular.
+	fi, err := os.Stat(pipe)
+	require.NoError(t, err)
+	assert.False(t, fi.Mode().IsRegular())
 
 	_, err = hashContext(dir, dockerfile)
 	assert.NoError(t, err)
