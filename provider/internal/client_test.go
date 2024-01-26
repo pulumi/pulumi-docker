@@ -37,6 +37,14 @@ func TestAuth(t *testing.T) {
 		Password: password,
 	})
 	assert.NoError(t, err)
+
+	// Perform a second auth; it should be cached.
+	err = d.Auth(context.Background(), properties.RegistryAuth{
+		Address:  host,
+		Username: user,
+		Password: password,
+	})
+	assert.NoError(t, err)
 }
 
 func TestBuild(t *testing.T) {
