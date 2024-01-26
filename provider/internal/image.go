@@ -4,6 +4,8 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"os"
+	"path/filepath"
 	"reflect"
 
 	// These imports are needed to register the drivers with buildkit.
@@ -80,16 +82,14 @@ func (ia *ImageArgs) Annotate(a infer.Annotator) {
 		Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")`,
 	))
 	a.Describe(&ia.Context, dedent.String(`
-		Contexts to use while building the image. If omitted, an empty context
-		is used. If more than one value is specified, they should be of the
-		form "name=value".`,
+		Path to use for build context. If omitted, an empty context is used.`,
 	))
 	a.Describe(&ia.Exports, dedent.String(`
 		Name and optionally a tag (format: "name:tag"). If outputting to a
 		registry, the name should include the fully qualified registry address.`,
 	))
 	a.Describe(&ia.File, dedent.String(`
-		Name of the Dockerfile to use (default: "$PATH/Dockerfile").`,
+		Name of the Dockerfile to use (defaults to "${context}/Dockerfile").`,
 	))
 	a.Describe(&ia.Platforms, dedent.String(`
 		Set target platforms for the build. Defaults to the host's platform`,
@@ -135,16 +135,6 @@ func (*Image) Check(
 	if err != nil || len(failures) != 0 {
 		return args, failures, err
 	}
-	if len(args.Tags) == 0 {
-		failures = append(failures,
-			provider.CheckFailure{Property: "tags", Reason: "at least one tag is required"},
-		)
-	}
-
-	if args.File == "" {
-		args.File = "Dockerfile"
-	}
-
 	if _, berr := args.toBuildOptions(); berr != nil {
 		errs := berr.(interface{ Unwrap() []error }).Unwrap()
 		for _, e := range errs {
@@ -205,6 +195,19 @@ func (ia *ImageArgs) toBuildOptions() (controllerapi.BuildOptions, error) {
 		multierr = errors.Join(multierr, newCheckFailure("cacheTo", err))
 	}
 
+	// TODO(https://github.com/pulumi/pulumi-docker/issues/860): Empty build context
+	if ia.Context != "" {
+		if ia.File == "" {
+			ia.File = filepath.Join(ia.Context, "Dockerfile")
+		}
+		if _, err := os.Stat(ia.File); err != nil {
+			multierr = errors.Join(multierr, newCheckFailure("context", err))
+		}
+	}
+
+	if len(ia.Tags) == 0 {
+		multierr = errors.Join(multierr, newCheckFailure("tags", errors.New("at least one tag is required")))
+	}
 	for _, t := range ia.Tags {
 		if t == "" {
 			// TODO(https://github.com/pulumi/pulumi-go-provider/pull/155): This is likely unresolved.

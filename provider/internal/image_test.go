@@ -206,7 +206,7 @@ func TestLifecycle(t *testing.T) {
 					c.EXPECT().BuildKitEnabled().Return(true, nil), // Create.
 					c.EXPECT().Build(gomock.Any(), gomock.AssignableToTypeOf(controllerapi.BuildOptions{})).DoAndReturn(
 						func(_ context.Context, opts controllerapi.BuildOptions) (*client.SolveResponse, error) {
-							assert.Equal(t, "Dockerfile", opts.DockerfileName)
+							assert.Equal(t, "../testdata/Dockerfile", opts.DockerfileName)
 							return &client.SolveResponse{ExporterResponse: map[string]string{"image.name": "test:latest"}}, nil
 						},
 					),
@@ -228,7 +228,7 @@ func TestLifecycle(t *testing.T) {
 						file := output["file"]
 						require.NotNil(t, file)
 						require.True(t, file.IsString())
-						assert.Equal(t, "Dockerfile", file.StringValue())
+						assert.Equal(t, "../testdata/Dockerfile", file.StringValue())
 					},
 				}
 			},
@@ -485,6 +485,7 @@ func TestBuildOptionParsing(t *testing.T) {
 	args := ImageArgs{
 		Tags:      []string{"a/bad:tag:format"},
 		Exports:   []string{"badexport,-"},
+		Context:   "does/not/exist",
 		Platforms: []string{","},
 		CacheFrom: []string{"=badcachefrom"},
 		CacheTo:   []string{"=badcacheto"},
@@ -496,4 +497,5 @@ func TestBuildOptionParsing(t *testing.T) {
 	assert.ErrorContains(t, err, "badcachefrom")
 	assert.ErrorContains(t, err, "badcacheto")
 	assert.ErrorContains(t, err, "invalid reference format")
+	assert.ErrorContains(t, err, "does/not/exist/Dockerfile: no such file or directory")
 }
