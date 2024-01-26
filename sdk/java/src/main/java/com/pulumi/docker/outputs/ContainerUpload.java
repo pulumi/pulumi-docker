@@ -18,6 +18,10 @@ public final class ContainerUpload {
      * 
      */
     private @Nullable String content;
+    /**
+     * @return Base64-encoded data that will be decoded and uploaded as raw bytes for the object content. This allows safely uploading non-UTF8 binary data, but is recommended only for larger binary content such as the result of the `base64encode` interpolation function. See here for the reason. Conflicts with `content` &amp; `source`
+     * 
+     */
     private @Nullable String contentBase64;
     /**
      * @return If `true`, the file will be uploaded with user executable permission. Defaults to `false`.
@@ -48,6 +52,10 @@ public final class ContainerUpload {
     public Optional<String> content() {
         return Optional.ofNullable(this.content);
     }
+    /**
+     * @return Base64-encoded data that will be decoded and uploaded as raw bytes for the object content. This allows safely uploading non-UTF8 binary data, but is recommended only for larger binary content such as the result of the `base64encode` interpolation function. See here for the reason. Conflicts with `content` &amp; `source`
+     * 
+     */
     public Optional<String> contentBase64() {
         return Optional.ofNullable(this.contentBase64);
     }

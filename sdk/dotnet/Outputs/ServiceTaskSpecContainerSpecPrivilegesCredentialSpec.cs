@@ -13,13 +13,7 @@ namespace Pulumi.Docker.Outputs
     [OutputType]
     public sealed class ServiceTaskSpecContainerSpecPrivilegesCredentialSpec
     {
-        /// <summary>
-        /// Load credential spec from this file
-        /// </summary>
         public readonly string? File;
-        /// <summary>
-        /// Load credential spec from this value in the Windows registry
-        /// </summary>
         public readonly string? Registry;
 
         [OutputConstructor]

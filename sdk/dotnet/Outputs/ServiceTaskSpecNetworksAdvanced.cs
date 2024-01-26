@@ -13,17 +13,8 @@ namespace Pulumi.Docker.Outputs
     [OutputType]
     public sealed class ServiceTaskSpecNetworksAdvanced
     {
-        /// <summary>
-        /// The network aliases of the container in the specific network.
-        /// </summary>
         public readonly ImmutableArray<string> Aliases;
-        /// <summary>
-        /// An array of driver options for the network, e.g. `opts1=value`
-        /// </summary>
         public readonly ImmutableArray<string> DriverOpts;
-        /// <summary>
-        /// A random name for the port
-        /// </summary>
         public readonly string Name;
 
         [OutputConstructor]

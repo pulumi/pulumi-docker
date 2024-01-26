@@ -10,29 +10,13 @@ import java.util.Objects;
 
 @CustomType
 public final class ServiceLabel {
-    /**
-     * @return Name of the label
-     * 
-     */
     private String label;
-    /**
-     * @return Value of the label
-     * 
-     */
     private String value;
 
     private ServiceLabel() {}
-    /**
-     * @return Name of the label
-     * 
-     */
     public String label() {
         return this.label;
     }
-    /**
-     * @return Value of the label
-     * 
-     */
     public String value() {
         return this.value;
     }

@@ -85,14 +85,14 @@ public final class ServiceState extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * The mode of resolution to use for internal load balancing between tasks
+     * Scheduling mode for the service
      * 
      */
     @Import(name="mode")
     private @Nullable Output<ServiceModeArgs> mode;
 
     /**
-     * @return The mode of resolution to use for internal load balancing between tasks
+     * @return Scheduling mode for the service
      * 
      */
     public Optional<Output<ServiceModeArgs>> mode() {
@@ -100,14 +100,14 @@ public final class ServiceState extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * A random name for the port
+     * Name of the service
      * 
      */
     @Import(name="name")
     private @Nullable Output<String> name;
 
     /**
-     * @return A random name for the port
+     * @return Name of the service
      * 
      */
     public Optional<Output<String>> name() {
@@ -286,7 +286,7 @@ public final class ServiceState extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param mode The mode of resolution to use for internal load balancing between tasks
+         * @param mode Scheduling mode for the service
          * 
          * @return builder
          * 
@@ -297,7 +297,7 @@ public final class ServiceState extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param mode The mode of resolution to use for internal load balancing between tasks
+         * @param mode Scheduling mode for the service
          * 
          * @return builder
          * 
@@ -307,7 +307,7 @@ public final class ServiceState extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param name A random name for the port
+         * @param name Name of the service
          * 
          * @return builder
          * 
@@ -318,7 +318,7 @@ public final class ServiceState extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param name A random name for the port
+         * @param name Name of the service
          * 
          * @return builder
          * 

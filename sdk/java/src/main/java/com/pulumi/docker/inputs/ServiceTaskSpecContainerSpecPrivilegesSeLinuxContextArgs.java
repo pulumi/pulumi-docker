@@ -16,77 +16,37 @@ public final class ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgs exte
 
     public static final ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgs Empty = new ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgs();
 
-    /**
-     * Disable SELinux
-     * 
-     */
     @Import(name="disable")
     private @Nullable Output<Boolean> disable;
 
-    /**
-     * @return Disable SELinux
-     * 
-     */
     public Optional<Output<Boolean>> disable() {
         return Optional.ofNullable(this.disable);
     }
 
-    /**
-     * SELinux level label
-     * 
-     */
     @Import(name="level")
     private @Nullable Output<String> level;
 
-    /**
-     * @return SELinux level label
-     * 
-     */
     public Optional<Output<String>> level() {
         return Optional.ofNullable(this.level);
     }
 
-    /**
-     * SELinux role label
-     * 
-     */
     @Import(name="role")
     private @Nullable Output<String> role;
 
-    /**
-     * @return SELinux role label
-     * 
-     */
     public Optional<Output<String>> role() {
         return Optional.ofNullable(this.role);
     }
 
-    /**
-     * The mount type
-     * 
-     */
     @Import(name="type")
     private @Nullable Output<String> type;
 
-    /**
-     * @return The mount type
-     * 
-     */
     public Optional<Output<String>> type() {
         return Optional.ofNullable(this.type);
     }
 
-    /**
-     * SELinux user label
-     * 
-     */
     @Import(name="user")
     private @Nullable Output<String> user;
 
-    /**
-     * @return SELinux user label
-     * 
-     */
     public Optional<Output<String>> user() {
         return Optional.ofNullable(this.user);
     }
@@ -119,107 +79,47 @@ public final class ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgs exte
             $ = new ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgs(Objects.requireNonNull(defaults));
         }
 
-        /**
-         * @param disable Disable SELinux
-         * 
-         * @return builder
-         * 
-         */
         public Builder disable(@Nullable Output<Boolean> disable) {
             $.disable = disable;
             return this;
         }
 
-        /**
-         * @param disable Disable SELinux
-         * 
-         * @return builder
-         * 
-         */
         public Builder disable(Boolean disable) {
             return disable(Output.of(disable));
         }
 
-        /**
-         * @param level SELinux level label
-         * 
-         * @return builder
-         * 
-         */
         public Builder level(@Nullable Output<String> level) {
             $.level = level;
             return this;
         }
 
-        /**
-         * @param level SELinux level label
-         * 
-         * @return builder
-         * 
-         */
         public Builder level(String level) {
             return level(Output.of(level));
         }
 
-        /**
-         * @param role SELinux role label
-         * 
-         * @return builder
-         * 
-         */
         public Builder role(@Nullable Output<String> role) {
             $.role = role;
             return this;
         }
 
-        /**
-         * @param role SELinux role label
-         * 
-         * @return builder
-         * 
-         */
         public Builder role(String role) {
             return role(Output.of(role));
         }
 
-        /**
-         * @param type The mount type
-         * 
-         * @return builder
-         * 
-         */
         public Builder type(@Nullable Output<String> type) {
             $.type = type;
             return this;
         }
 
-        /**
-         * @param type The mount type
-         * 
-         * @return builder
-         * 
-         */
         public Builder type(String type) {
             return type(Output.of(type));
         }
 
-        /**
-         * @param user SELinux user label
-         * 
-         * @return builder
-         * 
-         */
         public Builder user(@Nullable Output<String> user) {
             $.user = user;
             return this;
         }
 
-        /**
-         * @param user SELinux user label
-         * 
-         * @return builder
-         * 
-         */
         public Builder user(String user) {
             return user(Output.of(user));
         }

@@ -32,9 +32,17 @@ public final class ContainerUploadArgs extends com.pulumi.resources.ResourceArgs
         return Optional.ofNullable(this.content);
     }
 
+    /**
+     * Base64-encoded data that will be decoded and uploaded as raw bytes for the object content. This allows safely uploading non-UTF8 binary data, but is recommended only for larger binary content such as the result of the `base64encode` interpolation function. See here for the reason. Conflicts with `content` &amp; `source`
+     * 
+     */
     @Import(name="contentBase64")
     private @Nullable Output<String> contentBase64;
 
+    /**
+     * @return Base64-encoded data that will be decoded and uploaded as raw bytes for the object content. This allows safely uploading non-UTF8 binary data, but is recommended only for larger binary content such as the result of the `base64encode` interpolation function. See here for the reason. Conflicts with `content` &amp; `source`
+     * 
+     */
     public Optional<Output<String>> contentBase64() {
         return Optional.ofNullable(this.contentBase64);
     }
@@ -149,11 +157,23 @@ public final class ContainerUploadArgs extends com.pulumi.resources.ResourceArgs
             return content(Output.of(content));
         }
 
+        /**
+         * @param contentBase64 Base64-encoded data that will be decoded and uploaded as raw bytes for the object content. This allows safely uploading non-UTF8 binary data, but is recommended only for larger binary content such as the result of the `base64encode` interpolation function. See here for the reason. Conflicts with `content` &amp; `source`
+         * 
+         * @return builder
+         * 
+         */
         public Builder contentBase64(@Nullable Output<String> contentBase64) {
             $.contentBase64 = contentBase64;
             return this;
         }
 
+        /**
+         * @param contentBase64 Base64-encoded data that will be decoded and uploaded as raw bytes for the object content. This allows safely uploading non-UTF8 binary data, but is recommended only for larger binary content such as the result of the `base64encode` interpolation function. See here for the reason. Conflicts with `content` &amp; `source`
+         * 
+         * @return builder
+         * 
+         */
         public Builder contentBase64(String contentBase64) {
             return contentBase64(Output.of(contentBase64));
         }

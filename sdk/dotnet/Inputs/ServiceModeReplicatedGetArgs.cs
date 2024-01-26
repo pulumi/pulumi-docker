@@ -12,9 +12,6 @@ namespace Pulumi.Docker.Inputs
 
     public sealed class ServiceModeReplicatedGetArgs : global::Pulumi.ResourceArgs
     {
-        /// <summary>
-        /// The amount of replicas of the service. Defaults to `1`
-        /// </summary>
         [Input("replicas")]
         public Input<int>? Replicas { get; set; }
 

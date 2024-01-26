@@ -13,25 +13,10 @@ namespace Pulumi.Docker.Outputs
     [OutputType]
     public sealed class ServiceTaskSpecContainerSpecHealthcheck
     {
-        /// <summary>
-        /// Time between running the check (ms|s|m|h). Defaults to `0s`.
-        /// </summary>
         public readonly string? Interval;
-        /// <summary>
-        /// Consecutive failures needed to report unhealthy. Defaults to `0`
-        /// </summary>
         public readonly int? Retries;
-        /// <summary>
-        /// Start period for the container to initialize before counting retries towards unstable (ms|s|m|h). Defaults to `0s`.
-        /// </summary>
         public readonly string? StartPeriod;
-        /// <summary>
-        /// The test to perform as list
-        /// </summary>
         public readonly ImmutableArray<string> Tests;
-        /// <summary>
-        /// The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`
-        /// </summary>
         public readonly string? Timeout;
 
         [OutputConstructor]

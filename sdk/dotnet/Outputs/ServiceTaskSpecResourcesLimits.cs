@@ -13,13 +13,7 @@ namespace Pulumi.Docker.Outputs
     [OutputType]
     public sealed class ServiceTaskSpecResourcesLimits
     {
-        /// <summary>
-        /// The amounf of memory in bytes the container allocates
-        /// </summary>
         public readonly int? MemoryBytes;
-        /// <summary>
-        /// CPU shares in units of `1/1e9` (or `10^-9`) of the CPU. Should be at least `1000000`
-        /// </summary>
         public readonly int? NanoCpus;
 
         [OutputConstructor]

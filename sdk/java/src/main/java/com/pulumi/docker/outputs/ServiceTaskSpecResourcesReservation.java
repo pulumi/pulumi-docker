@@ -12,41 +12,17 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceTaskSpecResourcesReservation {
-    /**
-     * @return User-defined resources can be either Integer resources (e.g, `SSD=3`) or String resources (e.g, GPU=UUID1)
-     * 
-     */
     private @Nullable ServiceTaskSpecResourcesReservationGenericResources genericResources;
-    /**
-     * @return The amounf of memory in bytes the container allocates
-     * 
-     */
     private @Nullable Integer memoryBytes;
-    /**
-     * @return CPU shares in units of `1/1e9` (or `10^-9`) of the CPU. Should be at least `1000000`
-     * 
-     */
     private @Nullable Integer nanoCpus;
 
     private ServiceTaskSpecResourcesReservation() {}
-    /**
-     * @return User-defined resources can be either Integer resources (e.g, `SSD=3`) or String resources (e.g, GPU=UUID1)
-     * 
-     */
     public Optional<ServiceTaskSpecResourcesReservationGenericResources> genericResources() {
         return Optional.ofNullable(this.genericResources);
     }
-    /**
-     * @return The amounf of memory in bytes the container allocates
-     * 
-     */
     public Optional<Integer> memoryBytes() {
         return Optional.ofNullable(this.memoryBytes);
     }
-    /**
-     * @return CPU shares in units of `1/1e9` (or `10^-9`) of the CPU. Should be at least `1000000`
-     * 
-     */
     public Optional<Integer> nanoCpus() {
         return Optional.ofNullable(this.nanoCpus);
     }

@@ -16,89 +16,33 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceTaskSpecContainerSpecMount {
-    /**
-     * @return Optional configuration for the bind type
-     * 
-     */
     private @Nullable ServiceTaskSpecContainerSpecMountBindOptions bindOptions;
-    /**
-     * @return Whether the mount should be read-only
-     * 
-     */
     private @Nullable Boolean readOnly;
-    /**
-     * @return Mount source (e.g. a volume name, a host path)
-     * 
-     */
     private @Nullable String source;
-    /**
-     * @return Container path
-     * 
-     */
     private String target;
-    /**
-     * @return Optional configuration for the tmpfs type
-     * 
-     */
     private @Nullable ServiceTaskSpecContainerSpecMountTmpfsOptions tmpfsOptions;
-    /**
-     * @return The mount type
-     * 
-     */
     private String type;
-    /**
-     * @return Optional configuration for the volume type
-     * 
-     */
     private @Nullable ServiceTaskSpecContainerSpecMountVolumeOptions volumeOptions;
 
     private ServiceTaskSpecContainerSpecMount() {}
-    /**
-     * @return Optional configuration for the bind type
-     * 
-     */
     public Optional<ServiceTaskSpecContainerSpecMountBindOptions> bindOptions() {
         return Optional.ofNullable(this.bindOptions);
     }
-    /**
-     * @return Whether the mount should be read-only
-     * 
-     */
     public Optional<Boolean> readOnly() {
         return Optional.ofNullable(this.readOnly);
     }
-    /**
-     * @return Mount source (e.g. a volume name, a host path)
-     * 
-     */
     public Optional<String> source() {
         return Optional.ofNullable(this.source);
     }
-    /**
-     * @return Container path
-     * 
-     */
     public String target() {
         return this.target;
     }
-    /**
-     * @return Optional configuration for the tmpfs type
-     * 
-     */
     public Optional<ServiceTaskSpecContainerSpecMountTmpfsOptions> tmpfsOptions() {
         return Optional.ofNullable(this.tmpfsOptions);
     }
-    /**
-     * @return The mount type
-     * 
-     */
     public String type() {
         return this.type;
     }
-    /**
-     * @return Optional configuration for the volume type
-     * 
-     */
     public Optional<ServiceTaskSpecContainerSpecMountVolumeOptions> volumeOptions() {
         return Optional.ofNullable(this.volumeOptions);
     }

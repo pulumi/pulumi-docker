@@ -18,62 +18,30 @@ public final class ServiceTaskSpecPlacementArgs extends com.pulumi.resources.Res
 
     public static final ServiceTaskSpecPlacementArgs Empty = new ServiceTaskSpecPlacementArgs();
 
-    /**
-     * An array of constraints. e.g.: `node.role==manager`
-     * 
-     */
     @Import(name="constraints")
     private @Nullable Output<List<String>> constraints;
 
-    /**
-     * @return An array of constraints. e.g.: `node.role==manager`
-     * 
-     */
     public Optional<Output<List<String>>> constraints() {
         return Optional.ofNullable(this.constraints);
     }
 
-    /**
-     * Maximum number of replicas for per node (default value is `0`, which is unlimited)
-     * 
-     */
     @Import(name="maxReplicas")
     private @Nullable Output<Integer> maxReplicas;
 
-    /**
-     * @return Maximum number of replicas for per node (default value is `0`, which is unlimited)
-     * 
-     */
     public Optional<Output<Integer>> maxReplicas() {
         return Optional.ofNullable(this.maxReplicas);
     }
 
-    /**
-     * Platforms stores all the platforms that the service&#39;s image can run on
-     * 
-     */
     @Import(name="platforms")
     private @Nullable Output<List<ServiceTaskSpecPlacementPlatformArgs>> platforms;
 
-    /**
-     * @return Platforms stores all the platforms that the service&#39;s image can run on
-     * 
-     */
     public Optional<Output<List<ServiceTaskSpecPlacementPlatformArgs>>> platforms() {
         return Optional.ofNullable(this.platforms);
     }
 
-    /**
-     * Preferences provide a way to make the scheduler aware of factors such as topology. They are provided in order from highest to lowest precedence, e.g.: `spread=node.role.manager`
-     * 
-     */
     @Import(name="prefs")
     private @Nullable Output<List<String>> prefs;
 
-    /**
-     * @return Preferences provide a way to make the scheduler aware of factors such as topology. They are provided in order from highest to lowest precedence, e.g.: `spread=node.role.manager`
-     * 
-     */
     public Optional<Output<List<String>>> prefs() {
         return Optional.ofNullable(this.prefs);
     }
@@ -105,116 +73,50 @@ public final class ServiceTaskSpecPlacementArgs extends com.pulumi.resources.Res
             $ = new ServiceTaskSpecPlacementArgs(Objects.requireNonNull(defaults));
         }
 
-        /**
-         * @param constraints An array of constraints. e.g.: `node.role==manager`
-         * 
-         * @return builder
-         * 
-         */
         public Builder constraints(@Nullable Output<List<String>> constraints) {
             $.constraints = constraints;
             return this;
         }
 
-        /**
-         * @param constraints An array of constraints. e.g.: `node.role==manager`
-         * 
-         * @return builder
-         * 
-         */
         public Builder constraints(List<String> constraints) {
             return constraints(Output.of(constraints));
         }
 
-        /**
-         * @param constraints An array of constraints. e.g.: `node.role==manager`
-         * 
-         * @return builder
-         * 
-         */
         public Builder constraints(String... constraints) {
             return constraints(List.of(constraints));
         }
 
-        /**
-         * @param maxReplicas Maximum number of replicas for per node (default value is `0`, which is unlimited)
-         * 
-         * @return builder
-         * 
-         */
         public Builder maxReplicas(@Nullable Output<Integer> maxReplicas) {
             $.maxReplicas = maxReplicas;
             return this;
         }
 
-        /**
-         * @param maxReplicas Maximum number of replicas for per node (default value is `0`, which is unlimited)
-         * 
-         * @return builder
-         * 
-         */
         public Builder maxReplicas(Integer maxReplicas) {
             return maxReplicas(Output.of(maxReplicas));
         }
 
-        /**
-         * @param platforms Platforms stores all the platforms that the service&#39;s image can run on
-         * 
-         * @return builder
-         * 
-         */
         public Builder platforms(@Nullable Output<List<ServiceTaskSpecPlacementPlatformArgs>> platforms) {
             $.platforms = platforms;
             return this;
         }
 
-        /**
-         * @param platforms Platforms stores all the platforms that the service&#39;s image can run on
-         * 
-         * @return builder
-         * 
-         */
         public Builder platforms(List<ServiceTaskSpecPlacementPlatformArgs> platforms) {
             return platforms(Output.of(platforms));
         }
 
-        /**
-         * @param platforms Platforms stores all the platforms that the service&#39;s image can run on
-         * 
-         * @return builder
-         * 
-         */
         public Builder platforms(ServiceTaskSpecPlacementPlatformArgs... platforms) {
             return platforms(List.of(platforms));
         }
 
-        /**
-         * @param prefs Preferences provide a way to make the scheduler aware of factors such as topology. They are provided in order from highest to lowest precedence, e.g.: `spread=node.role.manager`
-         * 
-         * @return builder
-         * 
-         */
         public Builder prefs(@Nullable Output<List<String>> prefs) {
             $.prefs = prefs;
             return this;
         }
 
-        /**
-         * @param prefs Preferences provide a way to make the scheduler aware of factors such as topology. They are provided in order from highest to lowest precedence, e.g.: `spread=node.role.manager`
-         * 
-         * @return builder
-         * 
-         */
         public Builder prefs(List<String> prefs) {
             return prefs(Output.of(prefs));
         }
 
-        /**
-         * @param prefs Preferences provide a way to make the scheduler aware of factors such as topology. They are provided in order from highest to lowest precedence, e.g.: `spread=node.role.manager`
-         * 
-         * @return builder
-         * 
-         */
         public Builder prefs(String... prefs) {
             return prefs(List.of(prefs));
         }

@@ -16,32 +16,16 @@ public final class ServiceTaskSpecResourcesArgs extends com.pulumi.resources.Res
 
     public static final ServiceTaskSpecResourcesArgs Empty = new ServiceTaskSpecResourcesArgs();
 
-    /**
-     * Describes the resources which can be advertised by a node and requested by a task
-     * 
-     */
     @Import(name="limits")
     private @Nullable Output<ServiceTaskSpecResourcesLimitsArgs> limits;
 
-    /**
-     * @return Describes the resources which can be advertised by a node and requested by a task
-     * 
-     */
     public Optional<Output<ServiceTaskSpecResourcesLimitsArgs>> limits() {
         return Optional.ofNullable(this.limits);
     }
 
-    /**
-     * An object describing the resources which can be advertised by a node and requested by a task
-     * 
-     */
     @Import(name="reservation")
     private @Nullable Output<ServiceTaskSpecResourcesReservationArgs> reservation;
 
-    /**
-     * @return An object describing the resources which can be advertised by a node and requested by a task
-     * 
-     */
     public Optional<Output<ServiceTaskSpecResourcesReservationArgs>> reservation() {
         return Optional.ofNullable(this.reservation);
     }
@@ -71,44 +55,20 @@ public final class ServiceTaskSpecResourcesArgs extends com.pulumi.resources.Res
             $ = new ServiceTaskSpecResourcesArgs(Objects.requireNonNull(defaults));
         }
 
-        /**
-         * @param limits Describes the resources which can be advertised by a node and requested by a task
-         * 
-         * @return builder
-         * 
-         */
         public Builder limits(@Nullable Output<ServiceTaskSpecResourcesLimitsArgs> limits) {
             $.limits = limits;
             return this;
         }
 
-        /**
-         * @param limits Describes the resources which can be advertised by a node and requested by a task
-         * 
-         * @return builder
-         * 
-         */
         public Builder limits(ServiceTaskSpecResourcesLimitsArgs limits) {
             return limits(Output.of(limits));
         }
 
-        /**
-         * @param reservation An object describing the resources which can be advertised by a node and requested by a task
-         * 
-         * @return builder
-         * 
-         */
         public Builder reservation(@Nullable Output<ServiceTaskSpecResourcesReservationArgs> reservation) {
             $.reservation = reservation;
             return this;
         }
 
-        /**
-         * @param reservation An object describing the resources which can be advertised by a node and requested by a task
-         * 
-         * @return builder
-         * 
-         */
         public Builder reservation(ServiceTaskSpecResourcesReservationArgs reservation) {
             return reservation(Output.of(reservation));
         }

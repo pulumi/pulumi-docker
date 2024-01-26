@@ -11,29 +11,13 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceTaskSpecResourcesReservationGenericResources {
-    /**
-     * @return The Integer resources
-     * 
-     */
     private @Nullable List<String> discreteResourcesSpecs;
-    /**
-     * @return The String resources
-     * 
-     */
     private @Nullable List<String> namedResourcesSpecs;
 
     private ServiceTaskSpecResourcesReservationGenericResources() {}
-    /**
-     * @return The Integer resources
-     * 
-     */
     public List<String> discreteResourcesSpecs() {
         return this.discreteResourcesSpecs == null ? List.of() : this.discreteResourcesSpecs;
     }
-    /**
-     * @return The String resources
-     * 
-     */
     public List<String> namedResourcesSpecs() {
         return this.namedResourcesSpecs == null ? List.of() : this.namedResourcesSpecs;
     }
