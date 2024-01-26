@@ -55,6 +55,9 @@ namespace Pulumi.Docker.Buildx
         [Output("context")]
         public Output<string?> Context { get; private set; } = null!;
 
+        [Output("contextHash")]
+        public Output<string?> ContextHash { get; private set; } = null!;
+
         /// <summary>
         /// 
         /// Name and optionally a tag (format: "name:tag"). If outputting to a

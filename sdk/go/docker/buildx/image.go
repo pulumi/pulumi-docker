@@ -30,7 +30,8 @@ type Image struct {
 	// Contexts to use while building the image. If omitted, an empty context
 	// is used. If more than one value is specified, they should be of the
 	// form "name=value".
-	Context pulumi.StringPtrOutput `pulumi:"context"`
+	Context     pulumi.StringPtrOutput `pulumi:"context"`
+	ContextHash pulumi.StringPtrOutput `pulumi:"contextHash"`
 	// Name and optionally a tag (format: "name:tag"). If outputting to a
 	// registry, the name should include the fully qualified registry address.
 	Exports pulumi.StringArrayOutput `pulumi:"exports"`
@@ -273,6 +274,10 @@ func (o ImageOutput) CacheTo() pulumi.StringArrayOutput {
 // form "name=value".
 func (o ImageOutput) Context() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Image) pulumi.StringPtrOutput { return v.Context }).(pulumi.StringPtrOutput)
+}
+
+func (o ImageOutput) ContextHash() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *Image) pulumi.StringPtrOutput { return v.ContextHash }).(pulumi.StringPtrOutput)
 }
 
 // Name and optionally a tag (format: "name:tag"). If outputting to a
