@@ -2,6 +2,8 @@ package internal
 
 import (
 	"errors"
+	"os"
+	"path/filepath"
 	"testing"
 
 	_ "github.com/docker/buildx/driver/docker-container"
@@ -332,8 +334,9 @@ func TestDiff(t *testing.T) {
 		Tags:    []string{},
 	}
 	baseState := ImageState{
-		Manifests: []properties.Manifest{},
-		ImageArgs: baseArgs,
+		ContextHash: "19f13d252dcdbea4599bc579e7cfd51bcfaaea0ba6f0ba5a866f2967317a141e",
+		Manifests:   []properties.Manifest{},
+		ImageArgs:   baseArgs,
 	}
 
 	tests := []struct {
@@ -343,6 +346,24 @@ func TestDiff(t *testing.T) {
 
 		wantChanges bool
 	}{
+		{
+			name:        "no diff if build context is unchanged",
+			olds:        func(*testing.T, ImageState) ImageState { return baseState },
+			news:        func(*testing.T, ImageArgs) ImageArgs { return baseArgs },
+			wantChanges: false,
+		},
+		{
+			name: "diff if build context changes",
+			olds: func(*testing.T, ImageState) ImageState { return baseState },
+			news: func(t *testing.T, a ImageArgs) ImageArgs {
+				tmp := filepath.Join(a.Context, "tmp")
+				err := os.WriteFile(tmp, []byte{}, 0o600)
+				require.NoError(t, err)
+				t.Cleanup(func() { _ = os.Remove(tmp) })
+				return a
+			},
+			wantChanges: true,
+		},
 		{
 			name: "no diff if registry password changes",
 			olds: func(_ *testing.T, s ImageState) ImageState {
