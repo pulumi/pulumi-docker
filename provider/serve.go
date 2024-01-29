@@ -27,7 +27,7 @@ func Serve(providerName, version string, schemaBytes []byte) {
 func makeProvider(host *provider.HostClient, name, version string, schemaBytes []byte) (
 	rpc.ResourceProviderServer, error,
 ) {
-	buildxProvider, err := p.RawServer(name, version, internal.NewBuildxProvider())
+	buildxProvider, err := p.RawServer(name, version, internal.NewBuildxProvider())(host)
 	if err != nil {
 		return nil, fmt.Errorf("building raw server: %s", err)
 	}
