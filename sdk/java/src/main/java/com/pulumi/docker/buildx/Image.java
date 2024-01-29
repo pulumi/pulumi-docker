@@ -45,6 +45,21 @@ public class Image extends com.pulumi.resources.CustomResource {
         return Codegen.optional(this.buildArgs);
     }
     /**
+     * Build with a specific builder instance
+     * 
+     */
+    @Export(name="builder", refs={String.class}, tree="[0]")
+    private Output</* @Nullable */ String> builder;
+
+    /**
+     * @return
+     * Build with a specific builder instance
+     * 
+     */
+    public Output<Optional<String>> builder_() {
+        return Codegen.optional(this.builder);
+    }
+    /**
      * External cache sources (e.g., &#34;user/app:cache&#34;, &#34;type=local,src=path/to/dir&#34;)
      * 
      */
@@ -143,7 +158,7 @@ public class Image extends com.pulumi.resources.CustomResource {
         return Codegen.optional(this.platforms);
     }
     /**
-     * Always attempt to pull all referenced images
+     * Always attempt to pull referenced images.
      * 
      */
     @Export(name="pull", refs={Boolean.class}, tree="[0]")
@@ -151,7 +166,7 @@ public class Image extends com.pulumi.resources.CustomResource {
 
     /**
      * @return
-     * Always attempt to pull all referenced images
+     * Always attempt to pull referenced images.
      * 
      */
     public Output<Optional<Boolean>> pull() {
