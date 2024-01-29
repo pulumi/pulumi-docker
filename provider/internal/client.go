@@ -1,7 +1,8 @@
-//go:generate go run go.uber.org/mock/mockgen -package mock -source client.go -destination mock/client.go
+//go:generate go run go.uber.org/mock/mockgen -typed -package mock -source client.go -destination mock/client.go
 package internal
 
 import (
+	"bufio"
 	"context"
 	"fmt"
 	"os"
@@ -17,11 +18,14 @@ import (
 	"github.com/docker/docker/api/types"
 	"github.com/moby/buildkit/client"
 	"github.com/moby/buildkit/util/progress/progressui"
+
+	provider "github.com/pulumi/pulumi-go-provider"
+	"github.com/pulumi/pulumi/sdk/v3/go/common/diag"
 )
 
 // Client handles all our Docker API calls.
 type Client interface {
-	Build(ctx context.Context, opts controllerapi.BuildOptions) (*client.SolveResponse, error)
+	Build(ctx provider.Context, opts controllerapi.BuildOptions) (*client.SolveResponse, error)
 	BuildKitEnabled() (bool, error)
 	Inspect(ctx context.Context, id string) ([]manifesttypes.ImageManifest, error)
 	Delete(ctx context.Context, id string) ([]types.ImageDeleteResponseItem, error)
@@ -50,13 +54,31 @@ func newDockerClient() (*docker, error) {
 
 // Build performs a buildkit build.
 func (d *docker) Build(
-	ctx context.Context,
+	ctx provider.Context,
 	opts controllerapi.BuildOptions,
 ) (*client.SolveResponse, error) {
-	printer, err := progress.NewPrinter(ctx, os.Stdout, progressui.PlainMode)
+	// Create a pipe to forward buildx output to our HostClient.
+	r, w, err := os.Pipe()
+	if err != nil {
+		return nil, fmt.Errorf("creating pipe: %w", err)
+	}
+	go func() {
+		defer func() {
+			if err := recover(); err != nil {
+				fmt.Fprintf(os.Stderr, "Panic recovered: %s", err)
+			}
+		}()
+		s := bufio.NewScanner(r)
+		for s.Scan() {
+			ctx.LogStatus(diag.Info, s.Text())
+		}
+	}()
+	printer, err := progress.NewPrinter(ctx, w, progressui.PlainMode)
 	if err != nil {
 		return nil, fmt.Errorf("creating printer: %w", err)
 	}
+
+	// Perform the build.
 	solve, res, err := cbuild.RunBuild(ctx, d.cli, opts, d.cli.In(), printer, true)
 	if res != nil {
 		res.Done()
