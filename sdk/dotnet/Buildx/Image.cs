@@ -27,6 +27,14 @@ namespace Pulumi.Docker.Buildx
 
         /// <summary>
         /// 
+        /// When true, attempt to build the image during previews. Outputs are not
+        /// pushed to registries, however caches are still populated.
+        /// </summary>
+        [Output("buildOnPreview")]
+        public Output<bool?> BuildOnPreview { get; private set; } = null!;
+
+        /// <summary>
+        /// 
         /// Build with a specific builder instance
         /// </summary>
         [Output("builder")]
@@ -163,6 +171,14 @@ namespace Pulumi.Docker.Buildx
             get => _buildArgs ?? (_buildArgs = new InputMap<string>());
             set => _buildArgs = value;
         }
+
+        /// <summary>
+        /// 
+        /// When true, attempt to build the image during previews. Outputs are not
+        /// pushed to registries, however caches are still populated.
+        /// </summary>
+        [Input("buildOnPreview")]
+        public Input<bool>? BuildOnPreview { get; set; }
 
         /// <summary>
         /// 

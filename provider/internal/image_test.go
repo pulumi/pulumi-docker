@@ -36,6 +36,9 @@ func TestLifecycle(t *testing.T) {
 		return mock.NewMockClient(ctrl)
 	}
 
+	ref, err := reference.ParseNamed("docker.io/pulumibot/myapp")
+	require.NoError(t, err)
+
 	tests := []struct {
 		name string
 
@@ -58,7 +61,12 @@ func TestLifecycle(t *testing.T) {
 						},
 					),
 					c.EXPECT().Inspect(gomock.Any(), "docker.io/blampe/buildkit-e2e").Return(
-						[]manifesttypes.ImageManifest{}, nil,
+						[]manifesttypes.ImageManifest{
+							{
+								Ref:        &manifesttypes.SerializableNamed{Named: ref},
+								Descriptor: v1.Descriptor{Platform: &v1.Platform{}},
+							},
+						}, nil,
 					),
 					c.EXPECT().Inspect(gomock.Any(), "docker.io/blampe/buildkit-e2e:main"),
 					c.EXPECT().Delete(gomock.Any(), "SHA256:digest").Return(
@@ -501,21 +509,150 @@ func TestDiff(t *testing.T) {
 	}
 }
 
-func TestBuildOptionParsing(t *testing.T) {
-	args := ImageArgs{
-		Tags:      []string{"a/bad:tag:format"},
-		Exports:   []string{"badexport,-"},
-		Context:   "does/not/exist",
-		Platforms: []string{","},
-		CacheFrom: []string{"=badcachefrom"},
-		CacheTo:   []string{"=badcacheto"},
-	}
+func TestBuildOptions(t *testing.T) {
+	t.Run("invalid inputs", func(t *testing.T) {
+		args := ImageArgs{
+			Tags:      []string{"a/bad:tag:format"},
+			Exports:   []string{"badexport,-"},
+			Context:   "does/not/exist",
+			Platforms: []string{","},
+			CacheFrom: []string{"=badcachefrom"},
+			CacheTo:   []string{"=badcacheto"},
+		}
 
-	_, err := args.toBuildOptions()
-	assert.ErrorContains(t, err, "invalid value badexport")
-	assert.ErrorContains(t, err, "platform specifier component must match")
-	assert.ErrorContains(t, err, "badcachefrom")
-	assert.ErrorContains(t, err, "badcacheto")
-	assert.ErrorContains(t, err, "invalid reference format")
-	assert.ErrorContains(t, err, "does/not/exist/Dockerfile: no such file or directory")
+		_, err := args.toBuildOptions(false)
+		assert.ErrorContains(t, err, "invalid value badexport")
+		assert.ErrorContains(t, err, "platform specifier component must match")
+		assert.ErrorContains(t, err, "badcachefrom")
+		assert.ErrorContains(t, err, "badcacheto")
+		assert.ErrorContains(t, err, "invalid reference format")
+		assert.ErrorContains(t, err, "does/not/exist/Dockerfile: no such file or directory")
+	})
+
+	t.Run("buildOnPreview", func(t *testing.T) {
+		args := ImageArgs{
+			Tags:    []string{"my-tag"},
+			Exports: []string{"type=registry", "type=local", "type=docker"},
+		}
+		actual, err := args.toBuildOptions(true)
+		assert.NoError(t, err)
+		assert.Equal(t, "image", actual.Exports[0].Type)
+		assert.Equal(t, "false", actual.Exports[0].Attrs["push"])
+
+		actual, err = args.toBuildOptions(false)
+		assert.NoError(t, err)
+		assert.Equal(t, "image", actual.Exports[0].Type)
+		assert.Equal(t, "true", actual.Exports[0].Attrs["push"])
+	})
+
+	t.Run("unknowns", func(t *testing.T) {
+		// pulumi-go-provider gives us zero-values when a property is unknown.
+		// We can't distinguish this from user-provided zero-values, but we
+		// should:
+		// - not fail previews due to these zero values,
+		// - not attempt builds with invalid zero values,
+		// - not allow invalid zero values in non-preview operations.
+		unknowns := ImageArgs{
+			BuildArgs: map[string]string{
+				"known": "value",
+				"":      "",
+			},
+			Builder:   "",
+			CacheFrom: []string{"type=gha", ""},
+			CacheTo:   []string{"type=gha", ""},
+			Context:   "",
+			Exports:   []string{"type=gha", ""},
+			File:      "",
+			Platforms: []string{"linux/amd64", ""},
+			Registries: []properties.RegistryAuth{
+				{
+					Address:  "",
+					Password: "",
+					Username: "",
+				},
+			},
+			Tags: []string{"known", ""},
+		}
+
+		_, err := unknowns.toBuildOptions(true)
+		assert.NoError(t, err)
+		assert.False(t, unknowns.buildable())
+
+		_, err = unknowns.toBuildOptions(false)
+		assert.Error(t, err)
+	})
+}
+
+func TestBuildable(t *testing.T) {
+	tests := []struct {
+		name string
+		args ImageArgs
+
+		want bool
+	}{
+		{
+			name: "unknown tags",
+			args: ImageArgs{Tags: []string{""}},
+			want: false,
+		},
+		{
+			name: "unknown exports",
+			args: ImageArgs{
+				Tags:    []string{"known"},
+				Exports: []string{""},
+			},
+			want: false,
+		},
+		{
+			name: "unknown registry",
+			args: ImageArgs{
+				Tags:    []string{"known"},
+				Exports: []string{"type=gha"},
+				Registries: []properties.RegistryAuth{
+					{
+						Address:  "docker.io",
+						Username: "foo",
+						Password: "",
+					},
+				},
+			},
+			want: false,
+		},
+		{
+			name: "known tags",
+			args: ImageArgs{
+				Tags: []string{"known"},
+			},
+			want: true,
+		},
+		{
+			name: "known exports",
+			args: ImageArgs{
+				Tags:    []string{"known"},
+				Exports: []string{"type=registry"},
+			},
+			want: true,
+		},
+		{
+			name: "known registry",
+			args: ImageArgs{
+				Tags:    []string{"known"},
+				Exports: []string{"type=gha"},
+				Registries: []properties.RegistryAuth{
+					{
+						Address:  "docker.io",
+						Username: "foo",
+						Password: "bar",
+					},
+				},
+			},
+			want: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			actual := tt.args.buildable()
+			assert.Equal(t, tt.want, actual)
+		})
+	}
 }

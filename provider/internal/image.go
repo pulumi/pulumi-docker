@@ -51,17 +51,18 @@ func (i *Image) Annotate(a infer.Annotator) {
 
 // ImageArgs instantiates a new Image.
 type ImageArgs struct {
-	BuildArgs  map[string]string         `pulumi:"buildArgs,optional"`
-	Builder    string                    `pulumi:"builder,optional"`
-	CacheFrom  []string                  `pulumi:"cacheFrom,optional"`
-	CacheTo    []string                  `pulumi:"cacheTo,optional"`
-	Context    string                    `pulumi:"context,optional"`
-	Exports    []string                  `pulumi:"exports,optional"`
-	File       string                    `pulumi:"file,optional"`
-	Platforms  []string                  `pulumi:"platforms,optional"`
-	Pull       bool                      `pulumi:"pull,optional"`
-	Registries []properties.RegistryAuth `pulumi:"registries,optional"`
-	Tags       []string                  `pulumi:"tags"`
+	BuildArgs      map[string]string         `pulumi:"buildArgs,optional"`
+	Builder        string                    `pulumi:"builder,optional"`
+	BuildOnPreview bool                      `pulumi:"buildOnPreview,optional"`
+	CacheFrom      []string                  `pulumi:"cacheFrom,optional"`
+	CacheTo        []string                  `pulumi:"cacheTo,optional"`
+	Context        string                    `pulumi:"context,optional"`
+	Exports        []string                  `pulumi:"exports,optional"`
+	File           string                    `pulumi:"file,optional"`
+	Platforms      []string                  `pulumi:"platforms,optional"`
+	Pull           bool                      `pulumi:"pull,optional"`
+	Registries     []properties.RegistryAuth `pulumi:"registries,optional"`
+	Tags           []string                  `pulumi:"tags"`
 }
 
 // Annotate describes inputs to the Image resource.
@@ -75,6 +76,10 @@ func (ia *ImageArgs) Annotate(a infer.Annotator) {
 	a.Describe(&ia.Builder, dedent.String(`
 		Build with a specific builder instance`,
 	))
+	a.Describe(&ia.BuildOnPreview, dedent.String(`
+		When true, attempt to build the image during previews. Outputs are not
+		pushed to registries, however caches are still populated.
+	`))
 	a.Describe(&ia.CacheFrom, dedent.String(`
 		External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")`,
 	))
@@ -135,7 +140,11 @@ func (*Image) Check(
 	if err != nil || len(failures) != 0 {
 		return args, failures, err
 	}
-	if _, berr := args.toBuildOptions(); berr != nil {
+
+	// :(
+	preview := news.ContainsUnknowns()
+
+	if _, berr := args.toBuildOptions(preview); berr != nil {
 		errs := berr.(interface{ Unwrap() []error }).Unwrap()
 		for _, e := range errs {
 			if cf, ok := e.(checkFailure); ok {
@@ -173,62 +182,98 @@ func newCheckFailure(property string, err error) checkFailure {
 	return checkFailure{provider.CheckFailure{Property: property, Reason: err.Error()}}
 }
 
-func (ia *ImageArgs) toBuildOptions() (controllerapi.BuildOptions, error) {
+func (ia *ImageArgs) withoutUnknowns(preview bool) ImageArgs {
+	sk := stringKeeper{preview}
+	filtered := ImageArgs{
+		BuildArgs:      mapKeeper{preview}.keep(ia.BuildArgs),
+		Builder:        ia.Builder,
+		BuildOnPreview: ia.BuildOnPreview,
+		CacheFrom:      filter(sk, ia.CacheFrom...),
+		CacheTo:        filter(sk, ia.CacheTo...),
+		Context:        ia.Context,
+		Exports:        filter(sk, ia.Exports...),
+		File:           ia.File, //
+		Platforms:      filter(sk, ia.Platforms...),
+		Pull:           ia.Pull,
+		Registries:     filter(registryKeeper{preview}, ia.Registries...),
+		Tags:           filter(sk, ia.Tags...),
+	}
+
+	return filtered
+}
+
+func (ia *ImageArgs) buildable() bool {
+	// We can build the given inputs if filtered out unknowns is a no-op.
+	filtered := ia.withoutUnknowns(true)
+	return reflect.DeepEqual(ia, &filtered)
+}
+
+func (ia *ImageArgs) toBuildOptions(preview bool) (controllerapi.BuildOptions, error) {
 	var multierr error
-	exports, err := buildflags.ParseExports(ia.Exports)
-	if err != nil {
-		multierr = errors.Join(multierr, newCheckFailure("exports", err))
-	}
-
-	_, err = platformutil.Parse(ia.Platforms)
-	if err != nil {
-		multierr = errors.Join(multierr, newCheckFailure("platforms", err))
-	}
-
-	cacheFrom, err := buildflags.ParseCacheEntry(ia.CacheFrom)
-	if err != nil {
-		multierr = errors.Join(multierr, newCheckFailure("cacheFrom", err))
-	}
-
-	cacheTo, err := buildflags.ParseCacheEntry(ia.CacheTo)
-	if err != nil {
-		multierr = errors.Join(multierr, newCheckFailure("cacheTo", err))
-	}
-
-	// TODO(https://github.com/pulumi/pulumi-docker/issues/860): Empty build context
-	if ia.Context != "" {
-		if ia.File == "" {
-			ia.File = filepath.Join(ia.Context, "Dockerfile")
-		}
-		if _, err := os.Stat(ia.File); err != nil {
-			multierr = errors.Join(multierr, newCheckFailure("context", err))
-		}
-	}
 
 	if len(ia.Tags) == 0 {
 		multierr = errors.Join(multierr, newCheckFailure("tags", errors.New("at least one tag is required")))
 	}
-	for _, t := range ia.Tags {
-		if t == "" {
-			// TODO(https://github.com/pulumi/pulumi-go-provider/pull/155): This is likely unresolved.
-			continue
+
+	// TODO(https://github.com/pulumi/pulumi-docker/issues/860): Empty build context
+	if ia.Context != "" && !preview {
+		if ia.File == "" {
+			ia.File = filepath.Join(ia.Context, "Dockerfile")
 		}
+		if _, err := os.Stat(ia.File); err != nil {
+			multierr = errors.Join(multierr, newCheckFailure("context", fmt.Errorf("%q: %w", ia.File, err)))
+		}
+	}
+
+	// Discard any unknown inputs if this is a preview -- we don't want them to
+	// cause validation errors.
+	filtered := ia.withoutUnknowns(preview)
+
+	exports, err := buildflags.ParseExports(filtered.Exports)
+	if err != nil {
+		multierr = errors.Join(multierr, newCheckFailure("exports", err))
+	}
+	if preview {
+		// Don't perform registry pushes during previews.
+		for _, e := range exports {
+			if e.Type == "image" && e.Attrs["push"] == "true" {
+				e.Attrs["push"] = "false"
+			}
+		}
+	}
+
+	_, err = platformutil.Parse(filtered.Platforms)
+	if err != nil {
+		multierr = errors.Join(multierr, newCheckFailure("platforms", err))
+	}
+
+	cacheFrom, err := buildflags.ParseCacheEntry(filtered.CacheFrom)
+	if err != nil {
+		multierr = errors.Join(multierr, newCheckFailure("cacheFrom", err))
+	}
+
+	cacheTo, err := buildflags.ParseCacheEntry(filtered.CacheTo)
+	if err != nil {
+		multierr = errors.Join(multierr, newCheckFailure("cacheTo", err))
+	}
+
+	for _, t := range filtered.Tags {
 		if _, err := reference.Parse(t); err != nil {
 			multierr = errors.Join(multierr, newCheckFailure("tags", err))
 		}
 	}
 
 	opts := controllerapi.BuildOptions{
-		BuildArgs:      ia.BuildArgs,
-		Builder:        ia.Builder,
+		BuildArgs:      filtered.BuildArgs,
+		Builder:        filtered.Builder,
 		CacheFrom:      cacheFrom,
 		CacheTo:        cacheTo,
-		ContextPath:    ia.Context,
-		DockerfileName: ia.File,
+		ContextPath:    filtered.Context,
+		DockerfileName: filtered.File,
 		Exports:        exports,
-		Platforms:      ia.Platforms,
-		Pull:           ia.Pull,
-		Tags:           ia.Tags,
+		Platforms:      filtered.Platforms,
+		Pull:           filtered.Pull,
+		Tags:           filtered.Tags,
 	}
 
 	return opts, multierr
@@ -254,7 +299,7 @@ func (i *Image) Update(
 		return state, fmt.Errorf("buildkit is not supported on this host")
 	}
 
-	opts, err := input.toBuildOptions()
+	opts, err := input.toBuildOptions(preview)
 	if err != nil {
 		return state, fmt.Errorf("validating input: %w", err)
 	}
@@ -265,7 +310,11 @@ func (i *Image) Update(
 	}
 	state.ContextHash = hash
 
-	if preview {
+	if preview && !input.BuildOnPreview {
+		return state, nil
+	}
+	if preview && !input.buildable() {
+		ctx.Log(diag.Warning, "Skipping preview build because some inputs are unknown.")
 		return state, nil
 	}
 
@@ -318,7 +367,7 @@ func (*Image) Read(
 	ImageState, // normalized state
 	error,
 ) {
-	opts, err := input.toBuildOptions()
+	opts, err := input.toBuildOptions(false)
 	if err != nil {
 		return id, input, state, err
 	}
@@ -331,6 +380,7 @@ func (*Image) Read(
 		}
 	}
 
+	expectManifest := false
 	manifests := []properties.Manifest{}
 	for _, export := range opts.Exports {
 		switch export.GetType() {
@@ -340,6 +390,7 @@ func (*Image) Read(
 				continue
 			}
 			for _, tag := range input.Tags {
+				expectManifest = true
 				infos, err := cfg.client.Inspect(ctx, tag)
 				if err != nil {
 					continue
@@ -370,6 +421,12 @@ func (*Image) Read(
 			// Other export types (e.g. file) are not supported.
 			continue
 		}
+	}
+
+	// If we couldn't find the tags we expected then return an empty ID to
+	// delete the resource.
+	if expectManifest && len(manifests) == 0 {
+		return "", input, state, nil
 	}
 
 	state.id = id
