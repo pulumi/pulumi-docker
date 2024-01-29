@@ -137,6 +137,11 @@ func (d *docker) Build(
 		return nil, fmt.Errorf("creating pipe: %w", err)
 	}
 	go func() {
+		defer func() {
+			if err := recover(); err != nil {
+				fmt.Fprintf(os.Stderr, "Panic recovered: %s", err)
+			}
+		}()
 		s := bufio.NewScanner(r)
 		for s.Scan() {
 			ctx.LogStatus(diag.Info, s.Text())
