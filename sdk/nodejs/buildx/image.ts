@@ -47,6 +47,11 @@ export class Image extends pulumi.CustomResource {
     public readonly buildArgs!: pulumi.Output<{[key: string]: string} | undefined>;
     /**
      *
+     * Build with a specific builder instance
+     */
+    public readonly builder!: pulumi.Output<string | undefined>;
+    /**
+     *
      * External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
      */
     public readonly cacheFrom!: pulumi.Output<string[] | undefined>;
@@ -106,6 +111,7 @@ export class Image extends pulumi.CustomResource {
                 throw new Error("Missing required property 'tags'");
             }
             resourceInputs["buildArgs"] = args ? args.buildArgs : undefined;
+            resourceInputs["builder"] = args ? args.builder : undefined;
             resourceInputs["cacheFrom"] = args ? args.cacheFrom : undefined;
             resourceInputs["cacheTo"] = args ? args.cacheTo : undefined;
             resourceInputs["context"] = args ? args.context : undefined;
@@ -117,6 +123,7 @@ export class Image extends pulumi.CustomResource {
             resourceInputs["manifests"] = undefined /*out*/;
         } else {
             resourceInputs["buildArgs"] = undefined /*out*/;
+            resourceInputs["builder"] = undefined /*out*/;
             resourceInputs["cacheFrom"] = undefined /*out*/;
             resourceInputs["cacheTo"] = undefined /*out*/;
             resourceInputs["context"] = undefined /*out*/;
@@ -144,6 +151,11 @@ export interface ImageArgs {
      * instruction.
      */
     buildArgs?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    /**
+     *
+     * Build with a specific builder instance
+     */
+    builder?: pulumi.Input<string>;
     /**
      *
      * External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")

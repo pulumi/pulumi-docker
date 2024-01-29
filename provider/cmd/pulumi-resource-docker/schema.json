@@ -2091,6 +2091,10 @@
                     },
                     "description": "\nAn optional map of named build-time argument variables to set during\nthe Docker build. This flag allows you to pass build-time variables that\ncan be accessed like environment variables inside the RUN\ninstruction."
                 },
+                "builder": {
+                    "type": "string",
+                    "description": "\nBuild with a specific builder instance"
+                },
                 "cacheFrom": {
                     "type": "array",
                     "items": {
@@ -2157,6 +2161,10 @@
                         "type": "string"
                     },
                     "description": "\nAn optional map of named build-time argument variables to set during\nthe Docker build. This flag allows you to pass build-time variables that\ncan be accessed like environment variables inside the RUN\ninstruction."
+                },
+                "builder": {
+                    "type": "string",
+                    "description": "\nBuild with a specific builder instance"
                 },
                 "cacheFrom": {
                     "type": "array",

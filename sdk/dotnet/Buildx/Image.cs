@@ -27,6 +27,13 @@ namespace Pulumi.Docker.Buildx
 
         /// <summary>
         /// 
+        /// Build with a specific builder instance
+        /// </summary>
+        [Output("builder")]
+        public Output<string?> Builder { get; private set; } = null!;
+
+        /// <summary>
+        /// 
         /// External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
         /// </summary>
         [Output("cacheFrom")]
@@ -148,6 +155,13 @@ namespace Pulumi.Docker.Buildx
             get => _buildArgs ?? (_buildArgs = new InputMap<string>());
             set => _buildArgs = value;
         }
+
+        /// <summary>
+        /// 
+        /// Build with a specific builder instance
+        /// </summary>
+        [Input("builder")]
+        public Input<string>? Builder { get; set; }
 
         [Input("cacheFrom")]
         private InputList<string>? _cacheFrom;

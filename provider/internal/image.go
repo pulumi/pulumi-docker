@@ -47,6 +47,7 @@ func (i *Image) Annotate(a infer.Annotator) {
 // ImageArgs instantiates a new Image.
 type ImageArgs struct {
 	BuildArgs map[string]string `pulumi:"buildArgs,optional"`
+	Builder   string            `pulumi:"builder,optional"`
 	CacheFrom []string          `pulumi:"cacheFrom,optional"`
 	CacheTo   []string          `pulumi:"cacheTo,optional"`
 	Context   string            `pulumi:"context,optional"`
@@ -64,6 +65,9 @@ func (ia *ImageArgs) Annotate(a infer.Annotator) {
 		the Docker build. This flag allows you to pass build-time variables that
 		can be accessed like environment variables inside the RUN
 		instruction.`,
+	))
+	a.Describe(&ia.Builder, dedent.String(`
+		Build with a specific builder instance`,
 	))
 	a.Describe(&ia.CacheFrom, dedent.String(`
 		External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")`,
@@ -185,6 +189,7 @@ func (ia *ImageArgs) toBuildOptions() (controllerapi.BuildOptions, error) {
 
 	opts := controllerapi.BuildOptions{
 		BuildArgs:      ia.BuildArgs,
+		Builder:        ia.Builder,
 		CacheFrom:      cacheFrom,
 		CacheTo:        cacheTo,
 		ContextPath:    ia.Context,
