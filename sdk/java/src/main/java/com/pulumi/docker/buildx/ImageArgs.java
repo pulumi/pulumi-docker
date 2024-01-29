@@ -44,6 +44,24 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
+     * When true, attempt to build the image during previews. Outputs are not
+     * pushed to registries, however caches are still populated.
+     * 
+     */
+    @Import(name="buildOnPreview")
+    private @Nullable Output<Boolean> buildOnPreview;
+
+    /**
+     * @return
+     * When true, attempt to build the image during previews. Outputs are not
+     * pushed to registries, however caches are still populated.
+     * 
+     */
+    public Optional<Output<Boolean>> buildOnPreview() {
+        return Optional.ofNullable(this.buildOnPreview);
+    }
+
+    /**
      * Build with a specific builder instance
      * 
      */
@@ -211,6 +229,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
 
     private ImageArgs(ImageArgs $) {
         this.buildArgs = $.buildArgs;
+        this.buildOnPreview = $.buildOnPreview;
         this.builder = $.builder;
         this.cacheFrom = $.cacheFrom;
         this.cacheTo = $.cacheTo;
@@ -268,6 +287,31 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
          */
         public Builder buildArgs(Map<String,String> buildArgs) {
             return buildArgs(Output.of(buildArgs));
+        }
+
+        /**
+         * @param buildOnPreview
+         * When true, attempt to build the image during previews. Outputs are not
+         * pushed to registries, however caches are still populated.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder buildOnPreview(@Nullable Output<Boolean> buildOnPreview) {
+            $.buildOnPreview = buildOnPreview;
+            return this;
+        }
+
+        /**
+         * @param buildOnPreview
+         * When true, attempt to build the image during previews. Outputs are not
+         * pushed to registries, however caches are still populated.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder buildOnPreview(Boolean buildOnPreview) {
+            return buildOnPreview(Output.of(buildOnPreview));
         }
 
         /**

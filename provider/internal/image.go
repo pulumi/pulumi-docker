@@ -51,17 +51,18 @@ func (i *Image) Annotate(a infer.Annotator) {
 
 // ImageArgs instantiates a new Image.
 type ImageArgs struct {
-	BuildArgs  map[string]string         `pulumi:"buildArgs,optional"`
-	Builder    string                    `pulumi:"builder,optional"`
-	CacheFrom  []string                  `pulumi:"cacheFrom,optional"`
-	CacheTo    []string                  `pulumi:"cacheTo,optional"`
-	Context    string                    `pulumi:"context,optional"`
-	Exports    []string                  `pulumi:"exports,optional"`
-	File       string                    `pulumi:"file,optional"`
-	Platforms  []string                  `pulumi:"platforms,optional"`
-	Pull       bool                      `pulumi:"pull,optional"`
-	Registries []properties.RegistryAuth `pulumi:"registries,optional"`
-	Tags       []string                  `pulumi:"tags"`
+	BuildArgs      map[string]string         `pulumi:"buildArgs,optional"`
+	Builder        string                    `pulumi:"builder,optional"`
+	BuildOnPreview bool                      `pulumi:"buildOnPreview,optional"`
+	CacheFrom      []string                  `pulumi:"cacheFrom,optional"`
+	CacheTo        []string                  `pulumi:"cacheTo,optional"`
+	Context        string                    `pulumi:"context,optional"`
+	Exports        []string                  `pulumi:"exports,optional"`
+	File           string                    `pulumi:"file,optional"`
+	Platforms      []string                  `pulumi:"platforms,optional"`
+	Pull           bool                      `pulumi:"pull,optional"`
+	Registries     []properties.RegistryAuth `pulumi:"registries,optional"`
+	Tags           []string                  `pulumi:"tags"`
 }
 
 // Annotate describes inputs to the Image resource.
@@ -75,6 +76,10 @@ func (ia *ImageArgs) Annotate(a infer.Annotator) {
 	a.Describe(&ia.Builder, dedent.String(`
 		Build with a specific builder instance`,
 	))
+	a.Describe(&ia.BuildOnPreview, dedent.String(`
+		When true, attempt to build the image during previews. Outputs are not
+		pushed to registries, however caches are still populated.
+	`))
 	a.Describe(&ia.CacheFrom, dedent.String(`
 		External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")`,
 	))
@@ -135,7 +140,7 @@ func (*Image) Check(
 	if err != nil || len(failures) != 0 {
 		return args, failures, err
 	}
-	if _, berr := args.toBuildOptions(); berr != nil {
+	if _, berr := args.toBuildOptions(false); berr != nil {
 		errs := berr.(interface{ Unwrap() []error }).Unwrap()
 		for _, e := range errs {
 			if cf, ok := e.(checkFailure); ok {
@@ -173,7 +178,7 @@ func newCheckFailure(property string, err error) checkFailure {
 	return checkFailure{provider.CheckFailure{Property: property, Reason: err.Error()}}
 }
 
-func (ia *ImageArgs) toBuildOptions() (controllerapi.BuildOptions, error) {
+func (ia *ImageArgs) toBuildOptions(preview bool) (controllerapi.BuildOptions, error) {
 	var multierr error
 	exports, err := buildflags.ParseExports(ia.Exports)
 	if err != nil {
@@ -225,13 +230,29 @@ func (ia *ImageArgs) toBuildOptions() (controllerapi.BuildOptions, error) {
 		CacheTo:        cacheTo,
 		ContextPath:    ia.Context,
 		DockerfileName: ia.File,
-		Exports:        exports,
+		Exports:        prune(preview, exports),
 		Platforms:      ia.Platforms,
 		Pull:           ia.Pull,
 		Tags:           ia.Tags,
 	}
 
 	return opts, multierr
+}
+
+func prune(preview bool, e []*controllerapi.ExportEntry) []*controllerapi.ExportEntry {
+	if !preview {
+		return e // Nothing to prune.
+	}
+	exports := []*controllerapi.ExportEntry{}
+	for _, export := range e {
+		// Omit registry pushes during previews.
+		if export.Type == "image" && export.Attrs["push"] == "true" {
+			continue
+		}
+		exports = append(exports, export)
+
+	}
+	return exports
 }
 
 // Update builds the image using buildkit.
@@ -254,7 +275,7 @@ func (i *Image) Update(
 		return state, fmt.Errorf("buildkit is not supported on this host")
 	}
 
-	opts, err := input.toBuildOptions()
+	opts, err := input.toBuildOptions(preview)
 	if err != nil {
 		return state, fmt.Errorf("validating input: %w", err)
 	}
@@ -265,7 +286,7 @@ func (i *Image) Update(
 	}
 	state.ContextHash = hash
 
-	if preview {
+	if preview && !input.BuildOnPreview {
 		return state, nil
 	}
 
@@ -318,7 +339,7 @@ func (*Image) Read(
 	ImageState, // normalized state
 	error,
 ) {
-	opts, err := input.toBuildOptions()
+	opts, err := input.toBuildOptions(false)
 	if err != nil {
 		return id, input, state, err
 	}

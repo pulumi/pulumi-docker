@@ -21,6 +21,9 @@ type Image struct {
 	// can be accessed like environment variables inside the RUN
 	// instruction.
 	BuildArgs pulumi.StringMapOutput `pulumi:"buildArgs"`
+	// When true, attempt to build the image during previews. Outputs are not
+	// pushed to registries, however caches are still populated.
+	BuildOnPreview pulumi.BoolPtrOutput `pulumi:"buildOnPreview"`
 	// Build with a specific builder instance
 	Builder pulumi.StringPtrOutput `pulumi:"builder"`
 	// External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
@@ -98,6 +101,9 @@ type imageArgs struct {
 	// can be accessed like environment variables inside the RUN
 	// instruction.
 	BuildArgs map[string]string `pulumi:"buildArgs"`
+	// When true, attempt to build the image during previews. Outputs are not
+	// pushed to registries, however caches are still populated.
+	BuildOnPreview *bool `pulumi:"buildOnPreview"`
 	// Build with a specific builder instance
 	Builder *string `pulumi:"builder"`
 	// External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
@@ -129,6 +135,9 @@ type ImageArgs struct {
 	// can be accessed like environment variables inside the RUN
 	// instruction.
 	BuildArgs pulumi.StringMapInput
+	// When true, attempt to build the image during previews. Outputs are not
+	// pushed to registries, however caches are still populated.
+	BuildOnPreview pulumi.BoolPtrInput
 	// Build with a specific builder instance
 	Builder pulumi.StringPtrInput
 	// External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
@@ -246,6 +255,12 @@ func (o ImageOutput) ToImageOutputWithContext(ctx context.Context) ImageOutput {
 // instruction.
 func (o ImageOutput) BuildArgs() pulumi.StringMapOutput {
 	return o.ApplyT(func(v *Image) pulumi.StringMapOutput { return v.BuildArgs }).(pulumi.StringMapOutput)
+}
+
+// When true, attempt to build the image during previews. Outputs are not
+// pushed to registries, however caches are still populated.
+func (o ImageOutput) BuildOnPreview() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *Image) pulumi.BoolPtrOutput { return v.BuildOnPreview }).(pulumi.BoolPtrOutput)
 }
 
 // Build with a specific builder instance

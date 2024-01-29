@@ -46,6 +46,23 @@ public class Image extends com.pulumi.resources.CustomResource {
         return Codegen.optional(this.buildArgs);
     }
     /**
+     * When true, attempt to build the image during previews. Outputs are not
+     * pushed to registries, however caches are still populated.
+     * 
+     */
+    @Export(name="buildOnPreview", refs={Boolean.class}, tree="[0]")
+    private Output</* @Nullable */ Boolean> buildOnPreview;
+
+    /**
+     * @return
+     * When true, attempt to build the image during previews. Outputs are not
+     * pushed to registries, however caches are still populated.
+     * 
+     */
+    public Output<Optional<Boolean>> buildOnPreview() {
+        return Codegen.optional(this.buildOnPreview);
+    }
+    /**
      * Build with a specific builder instance
      * 
      */

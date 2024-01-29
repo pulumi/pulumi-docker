@@ -501,21 +501,40 @@ func TestDiff(t *testing.T) {
 	}
 }
 
-func TestBuildOptionParsing(t *testing.T) {
-	args := ImageArgs{
-		Tags:      []string{"a/bad:tag:format"},
-		Exports:   []string{"badexport,-"},
-		Context:   "does/not/exist",
-		Platforms: []string{","},
-		CacheFrom: []string{"=badcachefrom"},
-		CacheTo:   []string{"=badcacheto"},
-	}
+func TestBuildOptions(t *testing.T) {
+	t.Run("invalid inputs", func(t *testing.T) {
+		args := ImageArgs{
+			Tags:      []string{"a/bad:tag:format"},
+			Exports:   []string{"badexport,-"},
+			Context:   "does/not/exist",
+			Platforms: []string{","},
+			CacheFrom: []string{"=badcachefrom"},
+			CacheTo:   []string{"=badcacheto"},
+		}
 
-	_, err := args.toBuildOptions()
-	assert.ErrorContains(t, err, "invalid value badexport")
-	assert.ErrorContains(t, err, "platform specifier component must match")
-	assert.ErrorContains(t, err, "badcachefrom")
-	assert.ErrorContains(t, err, "badcacheto")
-	assert.ErrorContains(t, err, "invalid reference format")
-	assert.ErrorContains(t, err, "does/not/exist/Dockerfile: no such file or directory")
+		_, err := args.toBuildOptions(false)
+		assert.ErrorContains(t, err, "invalid value badexport")
+		assert.ErrorContains(t, err, "platform specifier component must match")
+		assert.ErrorContains(t, err, "badcachefrom")
+		assert.ErrorContains(t, err, "badcacheto")
+		assert.ErrorContains(t, err, "invalid reference format")
+		assert.ErrorContains(t, err, "does/not/exist/Dockerfile: no such file or directory")
+	})
+
+	t.Run("buildOnPreview", func(t *testing.T) {
+		args := ImageArgs{
+			Tags:    []string{"my-tag"},
+			Exports: []string{"type=registry", "type=local", "type=docker"},
+		}
+		actual, err := args.toBuildOptions(true)
+		assert.NoError(t, err)
+		assert.Len(t, actual.Exports, 2)
+		assert.Equal(t, "local", actual.Exports[0].Type)
+		assert.Equal(t, "docker", actual.Exports[1].Type)
+
+		actual, err = args.toBuildOptions(false)
+		assert.NoError(t, err)
+		assert.Len(t, actual.Exports, 3)
+		assert.Equal(t, "image", actual.Exports[0].Type)
+	})
 }
