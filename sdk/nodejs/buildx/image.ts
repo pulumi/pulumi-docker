@@ -47,6 +47,12 @@ export class Image extends pulumi.CustomResource {
     public readonly buildArgs!: pulumi.Output<{[key: string]: string} | undefined>;
     /**
      *
+     * When true, attempt to build the image during previews. Outputs are not
+     * pushed to registries, however caches are still populated.
+     */
+    public readonly buildOnPreview!: pulumi.Output<boolean | undefined>;
+    /**
+     *
      * Build with a specific builder instance
      */
     public readonly builder!: pulumi.Output<string | undefined>;
@@ -115,6 +121,7 @@ export class Image extends pulumi.CustomResource {
                 throw new Error("Missing required property 'tags'");
             }
             resourceInputs["buildArgs"] = args ? args.buildArgs : undefined;
+            resourceInputs["buildOnPreview"] = args ? args.buildOnPreview : undefined;
             resourceInputs["builder"] = args ? args.builder : undefined;
             resourceInputs["cacheFrom"] = args ? args.cacheFrom : undefined;
             resourceInputs["cacheTo"] = args ? args.cacheTo : undefined;
@@ -129,6 +136,7 @@ export class Image extends pulumi.CustomResource {
             resourceInputs["manifests"] = undefined /*out*/;
         } else {
             resourceInputs["buildArgs"] = undefined /*out*/;
+            resourceInputs["buildOnPreview"] = undefined /*out*/;
             resourceInputs["builder"] = undefined /*out*/;
             resourceInputs["cacheFrom"] = undefined /*out*/;
             resourceInputs["cacheTo"] = undefined /*out*/;
@@ -159,6 +167,12 @@ export interface ImageArgs {
      * instruction.
      */
     buildArgs?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    /**
+     *
+     * When true, attempt to build the image during previews. Outputs are not
+     * pushed to registries, however caches are still populated.
+     */
+    buildOnPreview?: pulumi.Input<boolean>;
     /**
      *
      * Build with a specific builder instance
