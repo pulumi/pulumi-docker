@@ -26,12 +26,13 @@ func TestAuth(t *testing.T) {
 	}
 	password := os.Getenv("DOCKER_HUB_PASSWORD")
 	host := "pulumi.com" // Fake host -- we don't actually hit it.
+	name := "test-resource"
 
 	t.Cleanup(func() {
 		_ = d.cli.ConfigFile().GetCredentialsStore(host).Erase(host)
 	})
 
-	err = d.Auth(context.Background(), "test-resource", properties.RegistryAuth{
+	err = d.Auth(context.Background(), name, properties.RegistryAuth{
 		Address:  host,
 		Username: user,
 		Password: password,
@@ -39,7 +40,7 @@ func TestAuth(t *testing.T) {
 	assert.NoError(t, err)
 
 	// Perform a second auth; it should be cached.
-	err = d.Auth(context.Background(), "test-resource", properties.RegistryAuth{
+	err = d.Auth(context.Background(), name, properties.RegistryAuth{
 		Address:  host,
 		Username: user,
 		Password: password,
