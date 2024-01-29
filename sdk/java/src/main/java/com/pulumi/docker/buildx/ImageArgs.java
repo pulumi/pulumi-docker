@@ -43,6 +43,22 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
+     * Build with a specific builder instance
+     * 
+     */
+    @Import(name="builder")
+    private @Nullable Output<String> builder;
+
+    /**
+     * @return
+     * Build with a specific builder instance
+     * 
+     */
+    public Optional<Output<String>> builder_() {
+        return Optional.ofNullable(this.builder);
+    }
+
+    /**
      * External cache sources (e.g., &#34;user/app:cache&#34;, &#34;type=local,src=path/to/dir&#34;)
      * 
      */
@@ -125,7 +141,9 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * Set target platforms for the build. Defaults to the host&#39;s platform
+     * Set target platforms for the build. Defaults to the host&#39;s platform.
+     * 
+     * Equivalent to Docker&#39;s &#34;--platform&#34; flag.
      * 
      */
     @Import(name="platforms")
@@ -133,7 +151,9 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
 
     /**
      * @return
-     * Set target platforms for the build. Defaults to the host&#39;s platform
+     * Set target platforms for the build. Defaults to the host&#39;s platform.
+     * 
+     * Equivalent to Docker&#39;s &#34;--platform&#34; flag.
      * 
      */
     public Optional<Output<List<String>>> platforms() {
@@ -141,7 +161,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * Always attempt to pull all referenced images
+     * Always attempt to pull referenced images.
      * 
      */
     @Import(name="pull")
@@ -149,7 +169,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
 
     /**
      * @return
-     * Always attempt to pull all referenced images
+     * Always attempt to pull referenced images.
      * 
      */
     public Optional<Output<Boolean>> pull() {
@@ -178,6 +198,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
 
     private ImageArgs(ImageArgs $) {
         this.buildArgs = $.buildArgs;
+        this.builder = $.builder;
         this.cacheFrom = $.cacheFrom;
         this.cacheTo = $.cacheTo;
         this.context = $.context;
@@ -233,6 +254,29 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
          */
         public Builder buildArgs(Map<String,String> buildArgs) {
             return buildArgs(Output.of(buildArgs));
+        }
+
+        /**
+         * @param builder
+         * Build with a specific builder instance
+         * 
+         * @return builder
+         * 
+         */
+        public Builder builder_(@Nullable Output<String> builder) {
+            $.builder = builder;
+            return this;
+        }
+
+        /**
+         * @param builder
+         * Build with a specific builder instance
+         * 
+         * @return builder
+         * 
+         */
+        public Builder builder_(String builder) {
+            return builder_(Output.of(builder));
         }
 
         /**
@@ -388,7 +432,9 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
 
         /**
          * @param platforms
-         * Set target platforms for the build. Defaults to the host&#39;s platform
+         * Set target platforms for the build. Defaults to the host&#39;s platform.
+         * 
+         * Equivalent to Docker&#39;s &#34;--platform&#34; flag.
          * 
          * @return builder
          * 
@@ -400,7 +446,9 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
 
         /**
          * @param platforms
-         * Set target platforms for the build. Defaults to the host&#39;s platform
+         * Set target platforms for the build. Defaults to the host&#39;s platform.
+         * 
+         * Equivalent to Docker&#39;s &#34;--platform&#34; flag.
          * 
          * @return builder
          * 
@@ -411,7 +459,9 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
 
         /**
          * @param platforms
-         * Set target platforms for the build. Defaults to the host&#39;s platform
+         * Set target platforms for the build. Defaults to the host&#39;s platform.
+         * 
+         * Equivalent to Docker&#39;s &#34;--platform&#34; flag.
          * 
          * @return builder
          * 
@@ -422,7 +472,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
 
         /**
          * @param pull
-         * Always attempt to pull all referenced images
+         * Always attempt to pull referenced images.
          * 
          * @return builder
          * 
@@ -434,7 +484,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
 
         /**
          * @param pull
-         * Always attempt to pull all referenced images
+         * Always attempt to pull referenced images.
          * 
          * @return builder
          * 

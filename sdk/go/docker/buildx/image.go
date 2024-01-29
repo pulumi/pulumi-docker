@@ -21,6 +21,8 @@ type Image struct {
 	// can be accessed like environment variables inside the RUN
 	// instruction.
 	BuildArgs pulumi.StringMapOutput `pulumi:"buildArgs"`
+	// Build with a specific builder instance
+	Builder pulumi.StringPtrOutput `pulumi:"builder"`
 	// External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
 	CacheFrom pulumi.StringArrayOutput `pulumi:"cacheFrom"`
 	// Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
@@ -33,9 +35,11 @@ type Image struct {
 	// Name of the Dockerfile to use (defaults to "${context}/Dockerfile").
 	File      pulumi.StringPtrOutput `pulumi:"file"`
 	Manifests ManifestArrayOutput    `pulumi:"manifests"`
-	// Set target platforms for the build. Defaults to the host's platform
+	// Set target platforms for the build. Defaults to the host's platform.
+	//
+	// Equivalent to Docker's "--platform" flag.
 	Platforms pulumi.StringArrayOutput `pulumi:"platforms"`
-	// Always attempt to pull all referenced images
+	// Always attempt to pull referenced images.
 	Pull pulumi.BoolPtrOutput `pulumi:"pull"`
 	// Name and optionally a tag (format: "name:tag"). If outputting to a
 	// registry, the name should include the fully qualified registry address.
@@ -93,6 +97,8 @@ type imageArgs struct {
 	// can be accessed like environment variables inside the RUN
 	// instruction.
 	BuildArgs map[string]string `pulumi:"buildArgs"`
+	// Build with a specific builder instance
+	Builder *string `pulumi:"builder"`
 	// External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
 	CacheFrom []string `pulumi:"cacheFrom"`
 	// Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
@@ -104,9 +110,11 @@ type imageArgs struct {
 	Exports []string `pulumi:"exports"`
 	// Name of the Dockerfile to use (defaults to "${context}/Dockerfile").
 	File *string `pulumi:"file"`
-	// Set target platforms for the build. Defaults to the host's platform
+	// Set target platforms for the build. Defaults to the host's platform.
+	//
+	// Equivalent to Docker's "--platform" flag.
 	Platforms []string `pulumi:"platforms"`
-	// Always attempt to pull all referenced images
+	// Always attempt to pull referenced images.
 	Pull *bool `pulumi:"pull"`
 	// Name and optionally a tag (format: "name:tag"). If outputting to a
 	// registry, the name should include the fully qualified registry address.
@@ -120,6 +128,8 @@ type ImageArgs struct {
 	// can be accessed like environment variables inside the RUN
 	// instruction.
 	BuildArgs pulumi.StringMapInput
+	// Build with a specific builder instance
+	Builder pulumi.StringPtrInput
 	// External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
 	CacheFrom pulumi.StringArrayInput
 	// Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
@@ -131,9 +141,11 @@ type ImageArgs struct {
 	Exports pulumi.StringArrayInput
 	// Name of the Dockerfile to use (defaults to "${context}/Dockerfile").
 	File pulumi.StringPtrInput
-	// Set target platforms for the build. Defaults to the host's platform
+	// Set target platforms for the build. Defaults to the host's platform.
+	//
+	// Equivalent to Docker's "--platform" flag.
 	Platforms pulumi.StringArrayInput
-	// Always attempt to pull all referenced images
+	// Always attempt to pull referenced images.
 	Pull pulumi.BoolPtrInput
 	// Name and optionally a tag (format: "name:tag"). If outputting to a
 	// registry, the name should include the fully qualified registry address.
@@ -235,6 +247,11 @@ func (o ImageOutput) BuildArgs() pulumi.StringMapOutput {
 	return o.ApplyT(func(v *Image) pulumi.StringMapOutput { return v.BuildArgs }).(pulumi.StringMapOutput)
 }
 
+// Build with a specific builder instance
+func (o ImageOutput) Builder() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *Image) pulumi.StringPtrOutput { return v.Builder }).(pulumi.StringPtrOutput)
+}
+
 // External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
 func (o ImageOutput) CacheFrom() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v *Image) pulumi.StringArrayOutput { return v.CacheFrom }).(pulumi.StringArrayOutput)
@@ -265,12 +282,14 @@ func (o ImageOutput) Manifests() ManifestArrayOutput {
 	return o.ApplyT(func(v *Image) ManifestArrayOutput { return v.Manifests }).(ManifestArrayOutput)
 }
 
-// Set target platforms for the build. Defaults to the host's platform
+// Set target platforms for the build. Defaults to the host's platform.
+//
+// Equivalent to Docker's "--platform" flag.
 func (o ImageOutput) Platforms() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v *Image) pulumi.StringArrayOutput { return v.Platforms }).(pulumi.StringArrayOutput)
 }
 
-// Always attempt to pull all referenced images
+// Always attempt to pull referenced images.
 func (o ImageOutput) Pull() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *Image) pulumi.BoolPtrOutput { return v.Pull }).(pulumi.BoolPtrOutput)
 }

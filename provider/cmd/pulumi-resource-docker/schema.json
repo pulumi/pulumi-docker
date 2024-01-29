@@ -2118,6 +2118,10 @@
                     },
                     "description": "\nAn optional map of named build-time argument variables to set during\nthe Docker build. This flag allows you to pass build-time variables that\ncan be accessed like environment variables inside the RUN\ninstruction."
                 },
+                "builder": {
+                    "type": "string",
+                    "description": "\nBuild with a specific builder instance"
+                },
                 "cacheFrom": {
                     "type": "array",
                     "items": {
@@ -2159,11 +2163,11 @@
                     "items": {
                         "type": "string"
                     },
-                    "description": "\nSet target platforms for the build. Defaults to the host's platform"
+                    "description": "\nSet target platforms for the build. Defaults to the host's platform.\n\nEquivalent to Docker's \"--platform\" flag."
                 },
                 "pull": {
                     "type": "boolean",
-                    "description": "\nAlways attempt to pull all referenced images"
+                    "description": "\nAlways attempt to pull referenced images."
                 },
                 "tags": {
                     "type": "array",
@@ -2184,6 +2188,10 @@
                         "type": "string"
                     },
                     "description": "\nAn optional map of named build-time argument variables to set during\nthe Docker build. This flag allows you to pass build-time variables that\ncan be accessed like environment variables inside the RUN\ninstruction."
+                },
+                "builder": {
+                    "type": "string",
+                    "description": "\nBuild with a specific builder instance"
                 },
                 "cacheFrom": {
                     "type": "array",
@@ -2220,11 +2228,11 @@
                     "items": {
                         "type": "string"
                     },
-                    "description": "\nSet target platforms for the build. Defaults to the host's platform"
+                    "description": "\nSet target platforms for the build. Defaults to the host's platform.\n\nEquivalent to Docker's \"--platform\" flag."
                 },
                 "pull": {
                     "type": "boolean",
-                    "description": "\nAlways attempt to pull all referenced images"
+                    "description": "\nAlways attempt to pull referenced images."
                 },
                 "tags": {
                     "type": "array",

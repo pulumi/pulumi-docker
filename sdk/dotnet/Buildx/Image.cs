@@ -27,6 +27,13 @@ namespace Pulumi.Docker.Buildx
 
         /// <summary>
         /// 
+        /// Build with a specific builder instance
+        /// </summary>
+        [Output("builder")]
+        public Output<string?> Builder { get; private set; } = null!;
+
+        /// <summary>
+        /// 
         /// External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
         /// </summary>
         [Output("cacheFrom")]
@@ -66,14 +73,16 @@ namespace Pulumi.Docker.Buildx
 
         /// <summary>
         /// 
-        /// Set target platforms for the build. Defaults to the host's platform
+        /// Set target platforms for the build. Defaults to the host's platform.
+        /// 
+        /// Equivalent to Docker's "--platform" flag.
         /// </summary>
         [Output("platforms")]
         public Output<ImmutableArray<string>> Platforms { get; private set; } = null!;
 
         /// <summary>
         /// 
-        /// Always attempt to pull all referenced images
+        /// Always attempt to pull referenced images.
         /// </summary>
         [Output("pull")]
         public Output<bool?> Pull { get; private set; } = null!;
@@ -147,6 +156,13 @@ namespace Pulumi.Docker.Buildx
             set => _buildArgs = value;
         }
 
+        /// <summary>
+        /// 
+        /// Build with a specific builder instance
+        /// </summary>
+        [Input("builder")]
+        public Input<string>? Builder { get; set; }
+
         [Input("cacheFrom")]
         private InputList<string>? _cacheFrom;
 
@@ -206,7 +222,9 @@ namespace Pulumi.Docker.Buildx
 
         /// <summary>
         /// 
-        /// Set target platforms for the build. Defaults to the host's platform
+        /// Set target platforms for the build. Defaults to the host's platform.
+        /// 
+        /// Equivalent to Docker's "--platform" flag.
         /// </summary>
         public InputList<string> Platforms
         {
@@ -216,7 +234,7 @@ namespace Pulumi.Docker.Buildx
 
         /// <summary>
         /// 
-        /// Always attempt to pull all referenced images
+        /// Always attempt to pull referenced images.
         /// </summary>
         [Input("pull")]
         public Input<bool>? Pull { get; set; }
