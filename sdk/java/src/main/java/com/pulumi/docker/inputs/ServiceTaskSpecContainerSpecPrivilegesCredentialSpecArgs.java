@@ -15,32 +15,16 @@ public final class ServiceTaskSpecContainerSpecPrivilegesCredentialSpecArgs exte
 
     public static final ServiceTaskSpecContainerSpecPrivilegesCredentialSpecArgs Empty = new ServiceTaskSpecContainerSpecPrivilegesCredentialSpecArgs();
 
-    /**
-     * Load credential spec from this file
-     * 
-     */
     @Import(name="file")
     private @Nullable Output<String> file;
 
-    /**
-     * @return Load credential spec from this file
-     * 
-     */
     public Optional<Output<String>> file() {
         return Optional.ofNullable(this.file);
     }
 
-    /**
-     * Load credential spec from this value in the Windows registry
-     * 
-     */
     @Import(name="registry")
     private @Nullable Output<String> registry;
 
-    /**
-     * @return Load credential spec from this value in the Windows registry
-     * 
-     */
     public Optional<Output<String>> registry() {
         return Optional.ofNullable(this.registry);
     }
@@ -70,44 +54,20 @@ public final class ServiceTaskSpecContainerSpecPrivilegesCredentialSpecArgs exte
             $ = new ServiceTaskSpecContainerSpecPrivilegesCredentialSpecArgs(Objects.requireNonNull(defaults));
         }
 
-        /**
-         * @param file Load credential spec from this file
-         * 
-         * @return builder
-         * 
-         */
         public Builder file(@Nullable Output<String> file) {
             $.file = file;
             return this;
         }
 
-        /**
-         * @param file Load credential spec from this file
-         * 
-         * @return builder
-         * 
-         */
         public Builder file(String file) {
             return file(Output.of(file));
         }
 
-        /**
-         * @param registry Load credential spec from this value in the Windows registry
-         * 
-         * @return builder
-         * 
-         */
         public Builder registry(@Nullable Output<String> registry) {
             $.registry = registry;
             return this;
         }
 
-        /**
-         * @param registry Load credential spec from this value in the Windows registry
-         * 
-         * @return builder
-         * 
-         */
         public Builder registry(String registry) {
             return registry(Output.of(registry));
         }

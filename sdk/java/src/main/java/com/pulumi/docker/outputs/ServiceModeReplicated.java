@@ -11,17 +11,9 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceModeReplicated {
-    /**
-     * @return The amount of replicas of the service. Defaults to `1`
-     * 
-     */
     private @Nullable Integer replicas;
 
     private ServiceModeReplicated() {}
-    /**
-     * @return The amount of replicas of the service. Defaults to `1`
-     * 
-     */
     public Optional<Integer> replicas() {
         return Optional.ofNullable(this.replicas);
     }
@@ -44,13 +36,14 @@ public final class ServiceModeReplicated {
 
         @CustomType.Setter
         public Builder replicas(@Nullable Integer replicas) {
+
             this.replicas = replicas;
             return this;
         }
         public ServiceModeReplicated build() {
-            final var o = new ServiceModeReplicated();
-            o.replicas = replicas;
-            return o;
+            final var _resultValue = new ServiceModeReplicated();
+            _resultValue.replicas = replicas;
+            return _resultValue;
         }
     }
 }

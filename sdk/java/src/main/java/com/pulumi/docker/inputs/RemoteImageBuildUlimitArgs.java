@@ -5,6 +5,7 @@ package com.pulumi.docker.inputs;
 
 import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.Integer;
 import java.lang.String;
 import java.util.Objects;
@@ -149,9 +150,15 @@ public final class RemoteImageBuildUlimitArgs extends com.pulumi.resources.Resou
         }
 
         public RemoteImageBuildUlimitArgs build() {
-            $.hard = Objects.requireNonNull($.hard, "expected parameter 'hard' to be non-null");
-            $.name = Objects.requireNonNull($.name, "expected parameter 'name' to be non-null");
-            $.soft = Objects.requireNonNull($.soft, "expected parameter 'soft' to be non-null");
+            if ($.hard == null) {
+                throw new MissingRequiredPropertyException("RemoteImageBuildUlimitArgs", "hard");
+            }
+            if ($.name == null) {
+                throw new MissingRequiredPropertyException("RemoteImageBuildUlimitArgs", "name");
+            }
+            if ($.soft == null) {
+                throw new MissingRequiredPropertyException("RemoteImageBuildUlimitArgs", "soft");
+            }
             return $;
         }
     }

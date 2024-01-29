@@ -24,6 +24,11 @@ import java.util.Optional;
 import javax.annotation.Nullable;
 
 /**
+ * &lt;!-- Bug: Type and Name are switched --&gt;
+ * This resource manages the lifecycle of a Docker service. By default, the creation, update and delete of services are detached.
+ *  With the Converge Config Name of the service
+ * - `task_spec` (Block List, Min: 1, Max: 1) User modifiable task configuration (see below for nested schema)
+ * 
  * ## Import
  * 
  * ### Example Assuming you created a `service` as follows #!/bin/bash docker service create --name foo -p 8080:80 nginx prints th ID 4pcphbxkfn2rffhbhe6czytgi you provide the definition for the resource as follows terraform resource &#34;docker_service&#34; &#34;foo&#34; {
@@ -118,28 +123,28 @@ public class Service extends com.pulumi.resources.CustomResource {
         return this.labels;
     }
     /**
-     * The mode of resolution to use for internal load balancing between tasks
+     * Scheduling mode for the service
      * 
      */
     @Export(name="mode", refs={ServiceMode.class}, tree="[0]")
     private Output<ServiceMode> mode;
 
     /**
-     * @return The mode of resolution to use for internal load balancing between tasks
+     * @return Scheduling mode for the service
      * 
      */
     public Output<ServiceMode> mode() {
         return this.mode;
     }
     /**
-     * A random name for the port
+     * Name of the service
      * 
      */
     @Export(name="name", refs={String.class}, tree="[0]")
     private Output<String> name;
 
     /**
-     * @return A random name for the port
+     * @return Name of the service
      * 
      */
     public Output<String> name() {

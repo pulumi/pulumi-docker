@@ -4,6 +4,7 @@
 package com.pulumi.docker.outputs;
 
 import com.pulumi.core.annotations.CustomType;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.Integer;
 import java.lang.String;
 import java.util.List;
@@ -13,65 +14,25 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceTaskSpecContainerSpecHealthcheck {
-    /**
-     * @return Time between running the check (ms|s|m|h). Defaults to `0s`.
-     * 
-     */
     private @Nullable String interval;
-    /**
-     * @return Consecutive failures needed to report unhealthy. Defaults to `0`
-     * 
-     */
     private @Nullable Integer retries;
-    /**
-     * @return Start period for the container to initialize before counting retries towards unstable (ms|s|m|h). Defaults to `0s`.
-     * 
-     */
     private @Nullable String startPeriod;
-    /**
-     * @return The test to perform as list
-     * 
-     */
     private List<String> tests;
-    /**
-     * @return The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`
-     * 
-     */
     private @Nullable String timeout;
 
     private ServiceTaskSpecContainerSpecHealthcheck() {}
-    /**
-     * @return Time between running the check (ms|s|m|h). Defaults to `0s`.
-     * 
-     */
     public Optional<String> interval() {
         return Optional.ofNullable(this.interval);
     }
-    /**
-     * @return Consecutive failures needed to report unhealthy. Defaults to `0`
-     * 
-     */
     public Optional<Integer> retries() {
         return Optional.ofNullable(this.retries);
     }
-    /**
-     * @return Start period for the container to initialize before counting retries towards unstable (ms|s|m|h). Defaults to `0s`.
-     * 
-     */
     public Optional<String> startPeriod() {
         return Optional.ofNullable(this.startPeriod);
     }
-    /**
-     * @return The test to perform as list
-     * 
-     */
     public List<String> tests() {
         return this.tests;
     }
-    /**
-     * @return The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`
-     * 
-     */
     public Optional<String> timeout() {
         return Optional.ofNullable(this.timeout);
     }
@@ -102,22 +63,28 @@ public final class ServiceTaskSpecContainerSpecHealthcheck {
 
         @CustomType.Setter
         public Builder interval(@Nullable String interval) {
+
             this.interval = interval;
             return this;
         }
         @CustomType.Setter
         public Builder retries(@Nullable Integer retries) {
+
             this.retries = retries;
             return this;
         }
         @CustomType.Setter
         public Builder startPeriod(@Nullable String startPeriod) {
+
             this.startPeriod = startPeriod;
             return this;
         }
         @CustomType.Setter
         public Builder tests(List<String> tests) {
-            this.tests = Objects.requireNonNull(tests);
+            if (tests == null) {
+              throw new MissingRequiredPropertyException("ServiceTaskSpecContainerSpecHealthcheck", "tests");
+            }
+            this.tests = tests;
             return this;
         }
         public Builder tests(String... tests) {
@@ -125,17 +92,18 @@ public final class ServiceTaskSpecContainerSpecHealthcheck {
         }
         @CustomType.Setter
         public Builder timeout(@Nullable String timeout) {
+
             this.timeout = timeout;
             return this;
         }
         public ServiceTaskSpecContainerSpecHealthcheck build() {
-            final var o = new ServiceTaskSpecContainerSpecHealthcheck();
-            o.interval = interval;
-            o.retries = retries;
-            o.startPeriod = startPeriod;
-            o.tests = tests;
-            o.timeout = timeout;
-            return o;
+            final var _resultValue = new ServiceTaskSpecContainerSpecHealthcheck();
+            _resultValue.interval = interval;
+            _resultValue.retries = retries;
+            _resultValue.startPeriod = startPeriod;
+            _resultValue.tests = tests;
+            _resultValue.timeout = timeout;
+            return _resultValue;
         }
     }
 }

@@ -4,6 +4,7 @@
 package com.pulumi.docker.outputs;
 
 import com.pulumi.core.annotations.CustomType;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.Boolean;
 import java.lang.String;
 import java.util.List;
@@ -150,32 +151,42 @@ public final class GetLogsResult {
 
         @CustomType.Setter
         public Builder details(@Nullable Boolean details) {
+
             this.details = details;
             return this;
         }
         @CustomType.Setter
         public Builder discardHeaders(@Nullable Boolean discardHeaders) {
+
             this.discardHeaders = discardHeaders;
             return this;
         }
         @CustomType.Setter
         public Builder follow(@Nullable Boolean follow) {
+
             this.follow = follow;
             return this;
         }
         @CustomType.Setter
         public Builder id(String id) {
-            this.id = Objects.requireNonNull(id);
+            if (id == null) {
+              throw new MissingRequiredPropertyException("GetLogsResult", "id");
+            }
+            this.id = id;
             return this;
         }
         @CustomType.Setter
         public Builder logsListStringEnabled(@Nullable Boolean logsListStringEnabled) {
+
             this.logsListStringEnabled = logsListStringEnabled;
             return this;
         }
         @CustomType.Setter
         public Builder logsListStrings(List<String> logsListStrings) {
-            this.logsListStrings = Objects.requireNonNull(logsListStrings);
+            if (logsListStrings == null) {
+              throw new MissingRequiredPropertyException("GetLogsResult", "logsListStrings");
+            }
+            this.logsListStrings = logsListStrings;
             return this;
         }
         public Builder logsListStrings(String... logsListStrings) {
@@ -183,55 +194,64 @@ public final class GetLogsResult {
         }
         @CustomType.Setter
         public Builder name(String name) {
-            this.name = Objects.requireNonNull(name);
+            if (name == null) {
+              throw new MissingRequiredPropertyException("GetLogsResult", "name");
+            }
+            this.name = name;
             return this;
         }
         @CustomType.Setter
         public Builder showStderr(@Nullable Boolean showStderr) {
+
             this.showStderr = showStderr;
             return this;
         }
         @CustomType.Setter
         public Builder showStdout(@Nullable Boolean showStdout) {
+
             this.showStdout = showStdout;
             return this;
         }
         @CustomType.Setter
         public Builder since(@Nullable String since) {
+
             this.since = since;
             return this;
         }
         @CustomType.Setter
         public Builder tail(@Nullable String tail) {
+
             this.tail = tail;
             return this;
         }
         @CustomType.Setter
         public Builder timestamps(@Nullable Boolean timestamps) {
+
             this.timestamps = timestamps;
             return this;
         }
         @CustomType.Setter
         public Builder until(@Nullable String until) {
+
             this.until = until;
             return this;
         }
         public GetLogsResult build() {
-            final var o = new GetLogsResult();
-            o.details = details;
-            o.discardHeaders = discardHeaders;
-            o.follow = follow;
-            o.id = id;
-            o.logsListStringEnabled = logsListStringEnabled;
-            o.logsListStrings = logsListStrings;
-            o.name = name;
-            o.showStderr = showStderr;
-            o.showStdout = showStdout;
-            o.since = since;
-            o.tail = tail;
-            o.timestamps = timestamps;
-            o.until = until;
-            return o;
+            final var _resultValue = new GetLogsResult();
+            _resultValue.details = details;
+            _resultValue.discardHeaders = discardHeaders;
+            _resultValue.follow = follow;
+            _resultValue.id = id;
+            _resultValue.logsListStringEnabled = logsListStringEnabled;
+            _resultValue.logsListStrings = logsListStrings;
+            _resultValue.name = name;
+            _resultValue.showStderr = showStderr;
+            _resultValue.showStdout = showStdout;
+            _resultValue.since = since;
+            _resultValue.tail = tail;
+            _resultValue.timestamps = timestamps;
+            _resultValue.until = until;
+            return _resultValue;
         }
     }
 }

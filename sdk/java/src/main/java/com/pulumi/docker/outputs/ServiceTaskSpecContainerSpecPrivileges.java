@@ -12,29 +12,13 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceTaskSpecContainerSpecPrivileges {
-    /**
-     * @return CredentialSpec for managed service account (Windows only)
-     * 
-     */
     private @Nullable ServiceTaskSpecContainerSpecPrivilegesCredentialSpec credentialSpec;
-    /**
-     * @return SELinux labels of the container
-     * 
-     */
     private @Nullable ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext seLinuxContext;
 
     private ServiceTaskSpecContainerSpecPrivileges() {}
-    /**
-     * @return CredentialSpec for managed service account (Windows only)
-     * 
-     */
     public Optional<ServiceTaskSpecContainerSpecPrivilegesCredentialSpec> credentialSpec() {
         return Optional.ofNullable(this.credentialSpec);
     }
-    /**
-     * @return SELinux labels of the container
-     * 
-     */
     public Optional<ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext> seLinuxContext() {
         return Optional.ofNullable(this.seLinuxContext);
     }
@@ -59,19 +43,21 @@ public final class ServiceTaskSpecContainerSpecPrivileges {
 
         @CustomType.Setter
         public Builder credentialSpec(@Nullable ServiceTaskSpecContainerSpecPrivilegesCredentialSpec credentialSpec) {
+
             this.credentialSpec = credentialSpec;
             return this;
         }
         @CustomType.Setter
         public Builder seLinuxContext(@Nullable ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext seLinuxContext) {
+
             this.seLinuxContext = seLinuxContext;
             return this;
         }
         public ServiceTaskSpecContainerSpecPrivileges build() {
-            final var o = new ServiceTaskSpecContainerSpecPrivileges();
-            o.credentialSpec = credentialSpec;
-            o.seLinuxContext = seLinuxContext;
-            return o;
+            final var _resultValue = new ServiceTaskSpecContainerSpecPrivileges();
+            _resultValue.credentialSpec = credentialSpec;
+            _resultValue.seLinuxContext = seLinuxContext;
+            return _resultValue;
         }
     }
 }

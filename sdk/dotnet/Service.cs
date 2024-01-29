@@ -10,6 +10,11 @@ using Pulumi.Serialization;
 namespace Pulumi.Docker
 {
     /// <summary>
+    /// &lt;!-- Bug: Type and Name are switched --&gt;
+    /// This resource manages the lifecycle of a Docker service. By default, the creation, update and delete of services are detached.
+    ///  With the Converge Config Name of the service
+    /// - `task_spec` (Block List, Min: 1, Max: 1) User modifiable task configuration (see below for nested schema)
+    /// 
     /// ## Import
     /// 
     /// ### Example Assuming you created a `service` as follows #!/bin/bash docker service create --name foo -p 8080:80 nginx prints th ID 4pcphbxkfn2rffhbhe6czytgi you provide the definition for the resource as follows terraform resource "docker_service" "foo" {
@@ -72,13 +77,13 @@ namespace Pulumi.Docker
         public Output<ImmutableArray<Outputs.ServiceLabel>> Labels { get; private set; } = null!;
 
         /// <summary>
-        /// The mode of resolution to use for internal load balancing between tasks
+        /// Scheduling mode for the service
         /// </summary>
         [Output("mode")]
         public Output<Outputs.ServiceMode> Mode { get; private set; } = null!;
 
         /// <summary>
-        /// A random name for the port
+        /// Name of the service
         /// </summary>
         [Output("name")]
         public Output<string> Name { get; private set; } = null!;
@@ -178,13 +183,13 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// The mode of resolution to use for internal load balancing between tasks
+        /// Scheduling mode for the service
         /// </summary>
         [Input("mode")]
         public Input<Inputs.ServiceModeArgs>? Mode { get; set; }
 
         /// <summary>
-        /// A random name for the port
+        /// Name of the service
         /// </summary>
         [Input("name")]
         public Input<string>? Name { get; set; }
@@ -246,13 +251,13 @@ namespace Pulumi.Docker
         }
 
         /// <summary>
-        /// The mode of resolution to use for internal load balancing between tasks
+        /// Scheduling mode for the service
         /// </summary>
         [Input("mode")]
         public Input<Inputs.ServiceModeGetArgs>? Mode { get; set; }
 
         /// <summary>
-        /// A random name for the port
+        /// Name of the service
         /// </summary>
         [Input("name")]
         public Input<string>? Name { get; set; }

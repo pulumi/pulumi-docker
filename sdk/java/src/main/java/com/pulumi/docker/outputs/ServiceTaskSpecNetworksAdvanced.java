@@ -4,6 +4,7 @@
 package com.pulumi.docker.outputs;
 
 import com.pulumi.core.annotations.CustomType;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.String;
 import java.util.List;
 import java.util.Objects;
@@ -11,41 +12,17 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceTaskSpecNetworksAdvanced {
-    /**
-     * @return The network aliases of the container in the specific network.
-     * 
-     */
     private @Nullable List<String> aliases;
-    /**
-     * @return An array of driver options for the network, e.g. `opts1=value`
-     * 
-     */
     private @Nullable List<String> driverOpts;
-    /**
-     * @return A random name for the port
-     * 
-     */
     private String name;
 
     private ServiceTaskSpecNetworksAdvanced() {}
-    /**
-     * @return The network aliases of the container in the specific network.
-     * 
-     */
     public List<String> aliases() {
         return this.aliases == null ? List.of() : this.aliases;
     }
-    /**
-     * @return An array of driver options for the network, e.g. `opts1=value`
-     * 
-     */
     public List<String> driverOpts() {
         return this.driverOpts == null ? List.of() : this.driverOpts;
     }
-    /**
-     * @return A random name for the port
-     * 
-     */
     public String name() {
         return this.name;
     }
@@ -72,6 +49,7 @@ public final class ServiceTaskSpecNetworksAdvanced {
 
         @CustomType.Setter
         public Builder aliases(@Nullable List<String> aliases) {
+
             this.aliases = aliases;
             return this;
         }
@@ -80,6 +58,7 @@ public final class ServiceTaskSpecNetworksAdvanced {
         }
         @CustomType.Setter
         public Builder driverOpts(@Nullable List<String> driverOpts) {
+
             this.driverOpts = driverOpts;
             return this;
         }
@@ -88,15 +67,18 @@ public final class ServiceTaskSpecNetworksAdvanced {
         }
         @CustomType.Setter
         public Builder name(String name) {
-            this.name = Objects.requireNonNull(name);
+            if (name == null) {
+              throw new MissingRequiredPropertyException("ServiceTaskSpecNetworksAdvanced", "name");
+            }
+            this.name = name;
             return this;
         }
         public ServiceTaskSpecNetworksAdvanced build() {
-            final var o = new ServiceTaskSpecNetworksAdvanced();
-            o.aliases = aliases;
-            o.driverOpts = driverOpts;
-            o.name = name;
-            return o;
+            final var _resultValue = new ServiceTaskSpecNetworksAdvanced();
+            _resultValue.aliases = aliases;
+            _resultValue.driverOpts = driverOpts;
+            _resultValue.name = name;
+            return _resultValue;
         }
     }
 }

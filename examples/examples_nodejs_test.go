@@ -52,9 +52,10 @@ func TestAzureContainerRegistry(t *testing.T) {
 	if location == "" {
 		t.Skipf("Skipping test due to missing AZURE_LOCATION environment variable")
 	}
+	dir := path.Join(getCwd(t), "azure-container-registry/ts")
 	test := getJsOptions(t).
 		With(integration.ProgramTestOptions{
-			Dir: path.Join(getCwd(t), "azure-container-registry/ts"),
+			Dir: dir,
 			Config: map[string]string{
 				"azure:environment": "public",
 				"azure:location":    location,
@@ -62,7 +63,7 @@ func TestAzureContainerRegistry(t *testing.T) {
 			ExpectRefreshChanges: true,
 			EditDirs: []integration.EditDir{
 				{
-					Dir:      "step2",
+					Dir:      path.Join(dir, "step2"),
 					Additive: true,
 				},
 			},

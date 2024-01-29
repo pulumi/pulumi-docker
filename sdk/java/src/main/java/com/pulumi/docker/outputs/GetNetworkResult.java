@@ -5,6 +5,7 @@ package com.pulumi.docker.outputs;
 
 import com.pulumi.core.annotations.CustomType;
 import com.pulumi.docker.outputs.GetNetworkIpamConfig;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.Boolean;
 import java.lang.Object;
 import java.lang.String;
@@ -131,22 +132,34 @@ public final class GetNetworkResult {
 
         @CustomType.Setter
         public Builder driver(String driver) {
-            this.driver = Objects.requireNonNull(driver);
+            if (driver == null) {
+              throw new MissingRequiredPropertyException("GetNetworkResult", "driver");
+            }
+            this.driver = driver;
             return this;
         }
         @CustomType.Setter
         public Builder id(String id) {
-            this.id = Objects.requireNonNull(id);
+            if (id == null) {
+              throw new MissingRequiredPropertyException("GetNetworkResult", "id");
+            }
+            this.id = id;
             return this;
         }
         @CustomType.Setter
         public Builder internal(Boolean internal) {
-            this.internal = Objects.requireNonNull(internal);
+            if (internal == null) {
+              throw new MissingRequiredPropertyException("GetNetworkResult", "internal");
+            }
+            this.internal = internal;
             return this;
         }
         @CustomType.Setter
         public Builder ipamConfigs(List<GetNetworkIpamConfig> ipamConfigs) {
-            this.ipamConfigs = Objects.requireNonNull(ipamConfigs);
+            if (ipamConfigs == null) {
+              throw new MissingRequiredPropertyException("GetNetworkResult", "ipamConfigs");
+            }
+            this.ipamConfigs = ipamConfigs;
             return this;
         }
         public Builder ipamConfigs(GetNetworkIpamConfig... ipamConfigs) {
@@ -154,29 +167,38 @@ public final class GetNetworkResult {
         }
         @CustomType.Setter
         public Builder name(String name) {
-            this.name = Objects.requireNonNull(name);
+            if (name == null) {
+              throw new MissingRequiredPropertyException("GetNetworkResult", "name");
+            }
+            this.name = name;
             return this;
         }
         @CustomType.Setter
         public Builder options(Map<String,Object> options) {
-            this.options = Objects.requireNonNull(options);
+            if (options == null) {
+              throw new MissingRequiredPropertyException("GetNetworkResult", "options");
+            }
+            this.options = options;
             return this;
         }
         @CustomType.Setter
         public Builder scope(String scope) {
-            this.scope = Objects.requireNonNull(scope);
+            if (scope == null) {
+              throw new MissingRequiredPropertyException("GetNetworkResult", "scope");
+            }
+            this.scope = scope;
             return this;
         }
         public GetNetworkResult build() {
-            final var o = new GetNetworkResult();
-            o.driver = driver;
-            o.id = id;
-            o.internal = internal;
-            o.ipamConfigs = ipamConfigs;
-            o.name = name;
-            o.options = options;
-            o.scope = scope;
-            return o;
+            final var _resultValue = new GetNetworkResult();
+            _resultValue.driver = driver;
+            _resultValue.id = id;
+            _resultValue.internal = internal;
+            _resultValue.ipamConfigs = ipamConfigs;
+            _resultValue.name = name;
+            _resultValue.options = options;
+            _resultValue.scope = scope;
+            return _resultValue;
         }
     }
 }

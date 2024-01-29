@@ -13,13 +13,7 @@ namespace Pulumi.Docker.Outputs
     [OutputType]
     public sealed class ServiceTaskSpecPlacementPlatform
     {
-        /// <summary>
-        /// The architecture, e.g. `amd64`
-        /// </summary>
         public readonly string Architecture;
-        /// <summary>
-        /// The operation system, e.g. `linux`
-        /// </summary>
         public readonly string Os;
 
         [OutputConstructor]

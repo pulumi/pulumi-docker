@@ -15,21 +15,23 @@
 package provider
 
 import (
-	// embed is used to store bridge-metadata.json in the compiled binary
-	_ "embed"
 	"fmt"
 	"path/filepath"
 	"unicode"
 
-	"github.com/pulumi/pulumi/pkg/v3/codegen/schema"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+	// embed is used to store bridge-metadata.json in the compiled binary
+	_ "embed"
 
-	"github.com/pulumi/pulumi-docker/provider/v4/pkg/version"
+	"github.com/terraform-providers/terraform-provider-docker/shim"
+
 	"github.com/pulumi/pulumi-terraform-bridge/v3/pkg/tfbridge"
 	tfbridgetokens "github.com/pulumi/pulumi-terraform-bridge/v3/pkg/tfbridge/tokens"
 	shimv2 "github.com/pulumi/pulumi-terraform-bridge/v3/pkg/tfshim/sdk-v2"
+	"github.com/pulumi/pulumi/pkg/v3/codegen/schema"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/tokens"
-	"github.com/terraform-providers/terraform-provider-docker/shim"
+	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+
+	"github.com/pulumi/pulumi-docker/provider/v4/pkg/version"
 )
 
 const (
@@ -74,6 +76,7 @@ func Provider() tfbridge.ProviderInfo {
 		Homepage:         "https://pulumi.io",
 		Repository:       "https://github.com/pulumi/pulumi-docker",
 		UpstreamRepoPath: "./upstream",
+		GitHubOrg:        "kreuzwerker",
 		Config: map[string]*tfbridge.SchemaInfo{
 			"host": {
 				Default: &tfbridge.DefaultInfo{

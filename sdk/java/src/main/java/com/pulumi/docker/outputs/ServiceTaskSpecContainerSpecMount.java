@@ -7,6 +7,7 @@ import com.pulumi.core.annotations.CustomType;
 import com.pulumi.docker.outputs.ServiceTaskSpecContainerSpecMountBindOptions;
 import com.pulumi.docker.outputs.ServiceTaskSpecContainerSpecMountTmpfsOptions;
 import com.pulumi.docker.outputs.ServiceTaskSpecContainerSpecMountVolumeOptions;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.Boolean;
 import java.lang.String;
 import java.util.Objects;
@@ -15,89 +16,33 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceTaskSpecContainerSpecMount {
-    /**
-     * @return Optional configuration for the bind type
-     * 
-     */
     private @Nullable ServiceTaskSpecContainerSpecMountBindOptions bindOptions;
-    /**
-     * @return Whether the mount should be read-only
-     * 
-     */
     private @Nullable Boolean readOnly;
-    /**
-     * @return Mount source (e.g. a volume name, a host path)
-     * 
-     */
     private @Nullable String source;
-    /**
-     * @return Container path
-     * 
-     */
     private String target;
-    /**
-     * @return Optional configuration for the tmpfs type
-     * 
-     */
     private @Nullable ServiceTaskSpecContainerSpecMountTmpfsOptions tmpfsOptions;
-    /**
-     * @return The mount type
-     * 
-     */
     private String type;
-    /**
-     * @return Optional configuration for the volume type
-     * 
-     */
     private @Nullable ServiceTaskSpecContainerSpecMountVolumeOptions volumeOptions;
 
     private ServiceTaskSpecContainerSpecMount() {}
-    /**
-     * @return Optional configuration for the bind type
-     * 
-     */
     public Optional<ServiceTaskSpecContainerSpecMountBindOptions> bindOptions() {
         return Optional.ofNullable(this.bindOptions);
     }
-    /**
-     * @return Whether the mount should be read-only
-     * 
-     */
     public Optional<Boolean> readOnly() {
         return Optional.ofNullable(this.readOnly);
     }
-    /**
-     * @return Mount source (e.g. a volume name, a host path)
-     * 
-     */
     public Optional<String> source() {
         return Optional.ofNullable(this.source);
     }
-    /**
-     * @return Container path
-     * 
-     */
     public String target() {
         return this.target;
     }
-    /**
-     * @return Optional configuration for the tmpfs type
-     * 
-     */
     public Optional<ServiceTaskSpecContainerSpecMountTmpfsOptions> tmpfsOptions() {
         return Optional.ofNullable(this.tmpfsOptions);
     }
-    /**
-     * @return The mount type
-     * 
-     */
     public String type() {
         return this.type;
     }
-    /**
-     * @return Optional configuration for the volume type
-     * 
-     */
     public Optional<ServiceTaskSpecContainerSpecMountVolumeOptions> volumeOptions() {
         return Optional.ofNullable(this.volumeOptions);
     }
@@ -132,49 +77,60 @@ public final class ServiceTaskSpecContainerSpecMount {
 
         @CustomType.Setter
         public Builder bindOptions(@Nullable ServiceTaskSpecContainerSpecMountBindOptions bindOptions) {
+
             this.bindOptions = bindOptions;
             return this;
         }
         @CustomType.Setter
         public Builder readOnly(@Nullable Boolean readOnly) {
+
             this.readOnly = readOnly;
             return this;
         }
         @CustomType.Setter
         public Builder source(@Nullable String source) {
+
             this.source = source;
             return this;
         }
         @CustomType.Setter
         public Builder target(String target) {
-            this.target = Objects.requireNonNull(target);
+            if (target == null) {
+              throw new MissingRequiredPropertyException("ServiceTaskSpecContainerSpecMount", "target");
+            }
+            this.target = target;
             return this;
         }
         @CustomType.Setter
         public Builder tmpfsOptions(@Nullable ServiceTaskSpecContainerSpecMountTmpfsOptions tmpfsOptions) {
+
             this.tmpfsOptions = tmpfsOptions;
             return this;
         }
         @CustomType.Setter
         public Builder type(String type) {
-            this.type = Objects.requireNonNull(type);
+            if (type == null) {
+              throw new MissingRequiredPropertyException("ServiceTaskSpecContainerSpecMount", "type");
+            }
+            this.type = type;
             return this;
         }
         @CustomType.Setter
         public Builder volumeOptions(@Nullable ServiceTaskSpecContainerSpecMountVolumeOptions volumeOptions) {
+
             this.volumeOptions = volumeOptions;
             return this;
         }
         public ServiceTaskSpecContainerSpecMount build() {
-            final var o = new ServiceTaskSpecContainerSpecMount();
-            o.bindOptions = bindOptions;
-            o.readOnly = readOnly;
-            o.source = source;
-            o.target = target;
-            o.tmpfsOptions = tmpfsOptions;
-            o.type = type;
-            o.volumeOptions = volumeOptions;
-            return o;
+            final var _resultValue = new ServiceTaskSpecContainerSpecMount();
+            _resultValue.bindOptions = bindOptions;
+            _resultValue.readOnly = readOnly;
+            _resultValue.source = source;
+            _resultValue.target = target;
+            _resultValue.tmpfsOptions = tmpfsOptions;
+            _resultValue.type = type;
+            _resultValue.volumeOptions = volumeOptions;
+            return _resultValue;
         }
     }
 }

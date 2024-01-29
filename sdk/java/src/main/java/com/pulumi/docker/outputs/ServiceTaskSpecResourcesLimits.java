@@ -11,29 +11,13 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceTaskSpecResourcesLimits {
-    /**
-     * @return The amounf of memory in bytes the container allocates
-     * 
-     */
     private @Nullable Integer memoryBytes;
-    /**
-     * @return CPU shares in units of `1/1e9` (or `10^-9`) of the CPU. Should be at least `1000000`
-     * 
-     */
     private @Nullable Integer nanoCpus;
 
     private ServiceTaskSpecResourcesLimits() {}
-    /**
-     * @return The amounf of memory in bytes the container allocates
-     * 
-     */
     public Optional<Integer> memoryBytes() {
         return Optional.ofNullable(this.memoryBytes);
     }
-    /**
-     * @return CPU shares in units of `1/1e9` (or `10^-9`) of the CPU. Should be at least `1000000`
-     * 
-     */
     public Optional<Integer> nanoCpus() {
         return Optional.ofNullable(this.nanoCpus);
     }
@@ -58,19 +42,21 @@ public final class ServiceTaskSpecResourcesLimits {
 
         @CustomType.Setter
         public Builder memoryBytes(@Nullable Integer memoryBytes) {
+
             this.memoryBytes = memoryBytes;
             return this;
         }
         @CustomType.Setter
         public Builder nanoCpus(@Nullable Integer nanoCpus) {
+
             this.nanoCpus = nanoCpus;
             return this;
         }
         public ServiceTaskSpecResourcesLimits build() {
-            final var o = new ServiceTaskSpecResourcesLimits();
-            o.memoryBytes = memoryBytes;
-            o.nanoCpus = nanoCpus;
-            return o;
+            final var _resultValue = new ServiceTaskSpecResourcesLimits();
+            _resultValue.memoryBytes = memoryBytes;
+            _resultValue.nanoCpus = nanoCpus;
+            return _resultValue;
         }
     }
 }

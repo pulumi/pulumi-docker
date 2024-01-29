@@ -4,6 +4,7 @@
 package com.pulumi.docker.outputs;
 
 import com.pulumi.core.annotations.CustomType;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.Boolean;
 import java.lang.String;
 import java.util.Objects;
@@ -87,31 +88,41 @@ public final class GetRegistryImageResult {
 
         @CustomType.Setter
         public Builder id(String id) {
-            this.id = Objects.requireNonNull(id);
+            if (id == null) {
+              throw new MissingRequiredPropertyException("GetRegistryImageResult", "id");
+            }
+            this.id = id;
             return this;
         }
         @CustomType.Setter
         public Builder insecureSkipVerify(@Nullable Boolean insecureSkipVerify) {
+
             this.insecureSkipVerify = insecureSkipVerify;
             return this;
         }
         @CustomType.Setter
         public Builder name(String name) {
-            this.name = Objects.requireNonNull(name);
+            if (name == null) {
+              throw new MissingRequiredPropertyException("GetRegistryImageResult", "name");
+            }
+            this.name = name;
             return this;
         }
         @CustomType.Setter
         public Builder sha256Digest(String sha256Digest) {
-            this.sha256Digest = Objects.requireNonNull(sha256Digest);
+            if (sha256Digest == null) {
+              throw new MissingRequiredPropertyException("GetRegistryImageResult", "sha256Digest");
+            }
+            this.sha256Digest = sha256Digest;
             return this;
         }
         public GetRegistryImageResult build() {
-            final var o = new GetRegistryImageResult();
-            o.id = id;
-            o.insecureSkipVerify = insecureSkipVerify;
-            o.name = name;
-            o.sha256Digest = sha256Digest;
-            return o;
+            final var _resultValue = new GetRegistryImageResult();
+            _resultValue.id = id;
+            _resultValue.insecureSkipVerify = insecureSkipVerify;
+            _resultValue.name = name;
+            _resultValue.sha256Digest = sha256Digest;
+            return _resultValue;
         }
     }
 }

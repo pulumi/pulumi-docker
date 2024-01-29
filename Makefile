@@ -9,7 +9,6 @@ TFGEN := pulumi-tfgen-$(PACK)
 PROVIDER := pulumi-resource-$(PACK)
 VERSION := $(shell pulumictl get version)
 JAVA_GEN := pulumi-java-gen
-JAVA_GEN_VERSION := v0.9.7
 TESTPARALLELISM := 10
 WORKING_DIR := $(shell pwd)
 PULUMI_CONVERT := 0
@@ -103,8 +102,13 @@ install_plugins: .pulumi/bin/pulumi
 lint_provider: provider
 	cd provider && golangci-lint run -c ../.golangci.yml
 
-# `make provider_no_deps` builds the provider binary directly, without ensuring that 
-# `cmd/pulumi-resource-docker/schema.json` is valid and up to date. 
+# `lint_provider.fix` is a utility target meant to be run manually
+# that will run the linter and fix errors when possible.
+lint_provider.fix:
+	cd provider && golangci-lint run -c ../.golangci.yml --fix
+
+# `make provider_no_deps` builds the provider binary directly, without ensuring that
+# `cmd/pulumi-resource-docker/schema.json` is valid and up to date.
 # To create a release ready binary, you should use `make provider`.
 provider_no_deps:
 	(cd provider && go build $(PULUMI_PROVIDER_BUILD_PARALLELISM) -o $(WORKING_DIR)/bin/$(PROVIDER) -ldflags "-X $(PROJECT)/$(VERSION_PATH)=$(VERSION)" $(PROJECT)/$(PROVIDER_PATH)/cmd/$(PROVIDER))
@@ -136,8 +140,8 @@ upstream.finalize:
 upstream.rebase:
 	scripts/upstream.sh "$@" start_rebase
 
-bin/pulumi-java-gen:
-	pulumictl download-binary -n pulumi-language-java -v $(JAVA_GEN_VERSION) -r pulumi/pulumi-java
+bin/pulumi-java-gen: .pulumi-java-gen.version
+	pulumictl download-binary -n pulumi-language-java -v v$(shell cat .pulumi-java-gen.version) -r pulumi/pulumi-java
 
 # To make an immediately observable change to .ci-mgmt.yaml:
 #
@@ -153,10 +157,10 @@ ci-mgmt: .ci-mgmt.yaml
 		--config $<
 
 .pulumi/bin/pulumi: .pulumi/version
-	curl -fsSL https://get.pulumi.com | HOME=$(WORKING_DIR) sh -s -- --version $(cat .pulumi/version)
+	curl -fsSL https://get.pulumi.com | HOME=$(WORKING_DIR) sh -s -- --version $(shell cat .pulumi/version)
 
 # Compute the version of Pulumi to use by inspecting the Go dependencies of the provider.
-.pulumi/version:
+.pulumi/version: provider/go.mod
 	@mkdir -p .pulumi
 	@cd provider && go list -f "{{slice .Version 1}}" -m github.com/pulumi/pulumi/pkg/v3 | tee ../$@
 

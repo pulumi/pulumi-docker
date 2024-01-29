@@ -10,6 +10,7 @@ import com.pulumi.docker.outputs.ServiceTaskSpecNetworksAdvanced;
 import com.pulumi.docker.outputs.ServiceTaskSpecPlacement;
 import com.pulumi.docker.outputs.ServiceTaskSpecResources;
 import com.pulumi.docker.outputs.ServiceTaskSpecRestartPolicy;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.Integer;
 import java.lang.String;
 import java.util.List;
@@ -19,101 +20,37 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceTaskSpec {
-    /**
-     * @return The spec for each container
-     * 
-     */
     private ServiceTaskSpecContainerSpec containerSpec;
-    /**
-     * @return A counter that triggers an update even if no relevant parameters have been changed. See the [spec](https://github.com/docker/swarmkit/blob/master/api/specs.proto#L126).
-     * 
-     */
     private @Nullable Integer forceUpdate;
-    /**
-     * @return Specifies the log driver to use for tasks created from this spec. If not present, the default one for the swarm will be used, finally falling back to the engine default if not specified
-     * 
-     */
     private @Nullable ServiceTaskSpecLogDriver logDriver;
-    /**
-     * @return The networks the container is attached to
-     * 
-     */
     private @Nullable List<ServiceTaskSpecNetworksAdvanced> networksAdvanceds;
-    /**
-     * @return The placement preferences
-     * 
-     */
     private @Nullable ServiceTaskSpecPlacement placement;
-    /**
-     * @return Resource requirements which apply to each individual container created as part of the service
-     * 
-     */
     private @Nullable ServiceTaskSpecResources resources;
-    /**
-     * @return Specification for the restart policy which applies to containers created as part of this service.
-     * 
-     */
     private @Nullable ServiceTaskSpecRestartPolicy restartPolicy;
-    /**
-     * @return Runtime is the type of runtime specified for the task executor. See the [types](https://github.com/moby/moby/blob/master/api/types/swarm/runtime.go).
-     * 
-     */
     private @Nullable String runtime;
 
     private ServiceTaskSpec() {}
-    /**
-     * @return The spec for each container
-     * 
-     */
     public ServiceTaskSpecContainerSpec containerSpec() {
         return this.containerSpec;
     }
-    /**
-     * @return A counter that triggers an update even if no relevant parameters have been changed. See the [spec](https://github.com/docker/swarmkit/blob/master/api/specs.proto#L126).
-     * 
-     */
     public Optional<Integer> forceUpdate() {
         return Optional.ofNullable(this.forceUpdate);
     }
-    /**
-     * @return Specifies the log driver to use for tasks created from this spec. If not present, the default one for the swarm will be used, finally falling back to the engine default if not specified
-     * 
-     */
     public Optional<ServiceTaskSpecLogDriver> logDriver() {
         return Optional.ofNullable(this.logDriver);
     }
-    /**
-     * @return The networks the container is attached to
-     * 
-     */
     public List<ServiceTaskSpecNetworksAdvanced> networksAdvanceds() {
         return this.networksAdvanceds == null ? List.of() : this.networksAdvanceds;
     }
-    /**
-     * @return The placement preferences
-     * 
-     */
     public Optional<ServiceTaskSpecPlacement> placement() {
         return Optional.ofNullable(this.placement);
     }
-    /**
-     * @return Resource requirements which apply to each individual container created as part of the service
-     * 
-     */
     public Optional<ServiceTaskSpecResources> resources() {
         return Optional.ofNullable(this.resources);
     }
-    /**
-     * @return Specification for the restart policy which applies to containers created as part of this service.
-     * 
-     */
     public Optional<ServiceTaskSpecRestartPolicy> restartPolicy() {
         return Optional.ofNullable(this.restartPolicy);
     }
-    /**
-     * @return Runtime is the type of runtime specified for the task executor. See the [types](https://github.com/moby/moby/blob/master/api/types/swarm/runtime.go).
-     * 
-     */
     public Optional<String> runtime() {
         return Optional.ofNullable(this.runtime);
     }
@@ -150,21 +87,27 @@ public final class ServiceTaskSpec {
 
         @CustomType.Setter
         public Builder containerSpec(ServiceTaskSpecContainerSpec containerSpec) {
-            this.containerSpec = Objects.requireNonNull(containerSpec);
+            if (containerSpec == null) {
+              throw new MissingRequiredPropertyException("ServiceTaskSpec", "containerSpec");
+            }
+            this.containerSpec = containerSpec;
             return this;
         }
         @CustomType.Setter
         public Builder forceUpdate(@Nullable Integer forceUpdate) {
+
             this.forceUpdate = forceUpdate;
             return this;
         }
         @CustomType.Setter
         public Builder logDriver(@Nullable ServiceTaskSpecLogDriver logDriver) {
+
             this.logDriver = logDriver;
             return this;
         }
         @CustomType.Setter
         public Builder networksAdvanceds(@Nullable List<ServiceTaskSpecNetworksAdvanced> networksAdvanceds) {
+
             this.networksAdvanceds = networksAdvanceds;
             return this;
         }
@@ -173,35 +116,39 @@ public final class ServiceTaskSpec {
         }
         @CustomType.Setter
         public Builder placement(@Nullable ServiceTaskSpecPlacement placement) {
+
             this.placement = placement;
             return this;
         }
         @CustomType.Setter
         public Builder resources(@Nullable ServiceTaskSpecResources resources) {
+
             this.resources = resources;
             return this;
         }
         @CustomType.Setter
         public Builder restartPolicy(@Nullable ServiceTaskSpecRestartPolicy restartPolicy) {
+
             this.restartPolicy = restartPolicy;
             return this;
         }
         @CustomType.Setter
         public Builder runtime(@Nullable String runtime) {
+
             this.runtime = runtime;
             return this;
         }
         public ServiceTaskSpec build() {
-            final var o = new ServiceTaskSpec();
-            o.containerSpec = containerSpec;
-            o.forceUpdate = forceUpdate;
-            o.logDriver = logDriver;
-            o.networksAdvanceds = networksAdvanceds;
-            o.placement = placement;
-            o.resources = resources;
-            o.restartPolicy = restartPolicy;
-            o.runtime = runtime;
-            return o;
+            final var _resultValue = new ServiceTaskSpec();
+            _resultValue.containerSpec = containerSpec;
+            _resultValue.forceUpdate = forceUpdate;
+            _resultValue.logDriver = logDriver;
+            _resultValue.networksAdvanceds = networksAdvanceds;
+            _resultValue.placement = placement;
+            _resultValue.resources = resources;
+            _resultValue.restartPolicy = restartPolicy;
+            _resultValue.runtime = runtime;
+            return _resultValue;
         }
     }
 }

@@ -5,6 +5,7 @@ package com.pulumi.docker.inputs;
 
 import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.String;
 import java.util.Map;
 import java.util.Objects;
@@ -16,32 +17,16 @@ public final class ServiceTaskSpecLogDriverArgs extends com.pulumi.resources.Res
 
     public static final ServiceTaskSpecLogDriverArgs Empty = new ServiceTaskSpecLogDriverArgs();
 
-    /**
-     * A random name for the port
-     * 
-     */
     @Import(name="name", required=true)
     private Output<String> name;
 
-    /**
-     * @return A random name for the port
-     * 
-     */
     public Output<String> name() {
         return this.name;
     }
 
-    /**
-     * A list of internal resolver variables to be modified (e.g., `debug`, `ndots:3`, etc.)
-     * 
-     */
     @Import(name="options")
     private @Nullable Output<Map<String,String>> options;
 
-    /**
-     * @return A list of internal resolver variables to be modified (e.g., `debug`, `ndots:3`, etc.)
-     * 
-     */
     public Optional<Output<Map<String,String>>> options() {
         return Optional.ofNullable(this.options);
     }
@@ -71,50 +56,28 @@ public final class ServiceTaskSpecLogDriverArgs extends com.pulumi.resources.Res
             $ = new ServiceTaskSpecLogDriverArgs(Objects.requireNonNull(defaults));
         }
 
-        /**
-         * @param name A random name for the port
-         * 
-         * @return builder
-         * 
-         */
         public Builder name(Output<String> name) {
             $.name = name;
             return this;
         }
 
-        /**
-         * @param name A random name for the port
-         * 
-         * @return builder
-         * 
-         */
         public Builder name(String name) {
             return name(Output.of(name));
         }
 
-        /**
-         * @param options A list of internal resolver variables to be modified (e.g., `debug`, `ndots:3`, etc.)
-         * 
-         * @return builder
-         * 
-         */
         public Builder options(@Nullable Output<Map<String,String>> options) {
             $.options = options;
             return this;
         }
 
-        /**
-         * @param options A list of internal resolver variables to be modified (e.g., `debug`, `ndots:3`, etc.)
-         * 
-         * @return builder
-         * 
-         */
         public Builder options(Map<String,String> options) {
             return options(Output.of(options));
         }
 
         public ServiceTaskSpecLogDriverArgs build() {
-            $.name = Objects.requireNonNull($.name, "expected parameter 'name' to be non-null");
+            if ($.name == null) {
+                throw new MissingRequiredPropertyException("ServiceTaskSpecLogDriverArgs", "name");
+            }
             return $;
         }
     }

@@ -6,6 +6,7 @@ package com.pulumi.docker.outputs;
 import com.pulumi.core.annotations.CustomType;
 import com.pulumi.docker.outputs.RemoteImageBuildAuthConfig;
 import com.pulumi.docker.outputs.RemoteImageBuildUlimit;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.Boolean;
 import java.lang.Integer;
 import java.lang.String;
@@ -526,6 +527,7 @@ public final class RemoteImageBuild {
 
         @CustomType.Setter
         public Builder authConfigs(@Nullable List<RemoteImageBuildAuthConfig> authConfigs) {
+
             this.authConfigs = authConfigs;
             return this;
         }
@@ -534,21 +536,25 @@ public final class RemoteImageBuild {
         }
         @CustomType.Setter
         public Builder buildArg(@Nullable Map<String,String> buildArg) {
+
             this.buildArg = buildArg;
             return this;
         }
         @CustomType.Setter
         public Builder buildArgs(@Nullable Map<String,String> buildArgs) {
+
             this.buildArgs = buildArgs;
             return this;
         }
         @CustomType.Setter
         public Builder buildId(@Nullable String buildId) {
+
             this.buildId = buildId;
             return this;
         }
         @CustomType.Setter
         public Builder cacheFroms(@Nullable List<String> cacheFroms) {
+
             this.cacheFroms = cacheFroms;
             return this;
         }
@@ -557,46 +563,57 @@ public final class RemoteImageBuild {
         }
         @CustomType.Setter
         public Builder cgroupParent(@Nullable String cgroupParent) {
+
             this.cgroupParent = cgroupParent;
             return this;
         }
         @CustomType.Setter
         public Builder context(String context) {
-            this.context = Objects.requireNonNull(context);
+            if (context == null) {
+              throw new MissingRequiredPropertyException("RemoteImageBuild", "context");
+            }
+            this.context = context;
             return this;
         }
         @CustomType.Setter
         public Builder cpuPeriod(@Nullable Integer cpuPeriod) {
+
             this.cpuPeriod = cpuPeriod;
             return this;
         }
         @CustomType.Setter
         public Builder cpuQuota(@Nullable Integer cpuQuota) {
+
             this.cpuQuota = cpuQuota;
             return this;
         }
         @CustomType.Setter
         public Builder cpuSetCpus(@Nullable String cpuSetCpus) {
+
             this.cpuSetCpus = cpuSetCpus;
             return this;
         }
         @CustomType.Setter
         public Builder cpuSetMems(@Nullable String cpuSetMems) {
+
             this.cpuSetMems = cpuSetMems;
             return this;
         }
         @CustomType.Setter
         public Builder cpuShares(@Nullable Integer cpuShares) {
+
             this.cpuShares = cpuShares;
             return this;
         }
         @CustomType.Setter
         public Builder dockerfile(@Nullable String dockerfile) {
+
             this.dockerfile = dockerfile;
             return this;
         }
         @CustomType.Setter
         public Builder extraHosts(@Nullable List<String> extraHosts) {
+
             this.extraHosts = extraHosts;
             return this;
         }
@@ -605,66 +622,79 @@ public final class RemoteImageBuild {
         }
         @CustomType.Setter
         public Builder forceRemove(@Nullable Boolean forceRemove) {
+
             this.forceRemove = forceRemove;
             return this;
         }
         @CustomType.Setter
         public Builder isolation(@Nullable String isolation) {
+
             this.isolation = isolation;
             return this;
         }
         @CustomType.Setter
         public Builder label(@Nullable Map<String,String> label) {
+
             this.label = label;
             return this;
         }
         @CustomType.Setter
         public Builder labels(@Nullable Map<String,String> labels) {
+
             this.labels = labels;
             return this;
         }
         @CustomType.Setter
         public Builder memory(@Nullable Integer memory) {
+
             this.memory = memory;
             return this;
         }
         @CustomType.Setter
         public Builder memorySwap(@Nullable Integer memorySwap) {
+
             this.memorySwap = memorySwap;
             return this;
         }
         @CustomType.Setter
         public Builder networkMode(@Nullable String networkMode) {
+
             this.networkMode = networkMode;
             return this;
         }
         @CustomType.Setter
         public Builder noCache(@Nullable Boolean noCache) {
+
             this.noCache = noCache;
             return this;
         }
         @CustomType.Setter
         public Builder platform(@Nullable String platform) {
+
             this.platform = platform;
             return this;
         }
         @CustomType.Setter
         public Builder pullParent(@Nullable Boolean pullParent) {
+
             this.pullParent = pullParent;
             return this;
         }
         @CustomType.Setter
         public Builder remoteContext(@Nullable String remoteContext) {
+
             this.remoteContext = remoteContext;
             return this;
         }
         @CustomType.Setter
         public Builder remove(@Nullable Boolean remove) {
+
             this.remove = remove;
             return this;
         }
         @CustomType.Setter
         public Builder securityOpts(@Nullable List<String> securityOpts) {
+
             this.securityOpts = securityOpts;
             return this;
         }
@@ -673,26 +703,31 @@ public final class RemoteImageBuild {
         }
         @CustomType.Setter
         public Builder sessionId(@Nullable String sessionId) {
+
             this.sessionId = sessionId;
             return this;
         }
         @CustomType.Setter
         public Builder shmSize(@Nullable Integer shmSize) {
+
             this.shmSize = shmSize;
             return this;
         }
         @CustomType.Setter
         public Builder squash(@Nullable Boolean squash) {
+
             this.squash = squash;
             return this;
         }
         @CustomType.Setter
         public Builder suppressOutput(@Nullable Boolean suppressOutput) {
+
             this.suppressOutput = suppressOutput;
             return this;
         }
         @CustomType.Setter
         public Builder tags(@Nullable List<String> tags) {
+
             this.tags = tags;
             return this;
         }
@@ -701,11 +736,13 @@ public final class RemoteImageBuild {
         }
         @CustomType.Setter
         public Builder target(@Nullable String target) {
+
             this.target = target;
             return this;
         }
         @CustomType.Setter
         public Builder ulimits(@Nullable List<RemoteImageBuildUlimit> ulimits) {
+
             this.ulimits = ulimits;
             return this;
         }
@@ -714,47 +751,48 @@ public final class RemoteImageBuild {
         }
         @CustomType.Setter
         public Builder version(@Nullable String version) {
+
             this.version = version;
             return this;
         }
         public RemoteImageBuild build() {
-            final var o = new RemoteImageBuild();
-            o.authConfigs = authConfigs;
-            o.buildArg = buildArg;
-            o.buildArgs = buildArgs;
-            o.buildId = buildId;
-            o.cacheFroms = cacheFroms;
-            o.cgroupParent = cgroupParent;
-            o.context = context;
-            o.cpuPeriod = cpuPeriod;
-            o.cpuQuota = cpuQuota;
-            o.cpuSetCpus = cpuSetCpus;
-            o.cpuSetMems = cpuSetMems;
-            o.cpuShares = cpuShares;
-            o.dockerfile = dockerfile;
-            o.extraHosts = extraHosts;
-            o.forceRemove = forceRemove;
-            o.isolation = isolation;
-            o.label = label;
-            o.labels = labels;
-            o.memory = memory;
-            o.memorySwap = memorySwap;
-            o.networkMode = networkMode;
-            o.noCache = noCache;
-            o.platform = platform;
-            o.pullParent = pullParent;
-            o.remoteContext = remoteContext;
-            o.remove = remove;
-            o.securityOpts = securityOpts;
-            o.sessionId = sessionId;
-            o.shmSize = shmSize;
-            o.squash = squash;
-            o.suppressOutput = suppressOutput;
-            o.tags = tags;
-            o.target = target;
-            o.ulimits = ulimits;
-            o.version = version;
-            return o;
+            final var _resultValue = new RemoteImageBuild();
+            _resultValue.authConfigs = authConfigs;
+            _resultValue.buildArg = buildArg;
+            _resultValue.buildArgs = buildArgs;
+            _resultValue.buildId = buildId;
+            _resultValue.cacheFroms = cacheFroms;
+            _resultValue.cgroupParent = cgroupParent;
+            _resultValue.context = context;
+            _resultValue.cpuPeriod = cpuPeriod;
+            _resultValue.cpuQuota = cpuQuota;
+            _resultValue.cpuSetCpus = cpuSetCpus;
+            _resultValue.cpuSetMems = cpuSetMems;
+            _resultValue.cpuShares = cpuShares;
+            _resultValue.dockerfile = dockerfile;
+            _resultValue.extraHosts = extraHosts;
+            _resultValue.forceRemove = forceRemove;
+            _resultValue.isolation = isolation;
+            _resultValue.label = label;
+            _resultValue.labels = labels;
+            _resultValue.memory = memory;
+            _resultValue.memorySwap = memorySwap;
+            _resultValue.networkMode = networkMode;
+            _resultValue.noCache = noCache;
+            _resultValue.platform = platform;
+            _resultValue.pullParent = pullParent;
+            _resultValue.remoteContext = remoteContext;
+            _resultValue.remove = remove;
+            _resultValue.securityOpts = securityOpts;
+            _resultValue.sessionId = sessionId;
+            _resultValue.shmSize = shmSize;
+            _resultValue.squash = squash;
+            _resultValue.suppressOutput = suppressOutput;
+            _resultValue.tags = tags;
+            _resultValue.target = target;
+            _resultValue.ulimits = ulimits;
+            _resultValue.version = version;
+            return _resultValue;
         }
     }
 }

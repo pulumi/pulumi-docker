@@ -4,6 +4,7 @@
 package com.pulumi.docker.outputs;
 
 import com.pulumi.core.annotations.CustomType;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.Integer;
 import java.lang.String;
 import java.util.Objects;
@@ -12,77 +13,29 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceTaskSpecContainerSpecConfig {
-    /**
-     * @return ID of the specific config that we&#39;re referencing
-     * 
-     */
     private String configId;
-    /**
-     * @return Name of the config that this references, but this is just provided for lookup/display purposes. The config in the reference will be identified by its ID
-     * 
-     */
     private @Nullable String configName;
-    /**
-     * @return Represents the file GID. Defaults to `0`.
-     * 
-     */
     private @Nullable String fileGid;
-    /**
-     * @return Represents represents the FileMode of the file. Defaults to `0o444`.
-     * 
-     */
     private @Nullable Integer fileMode;
-    /**
-     * @return Represents the final filename in the filesystem
-     * 
-     */
     private String fileName;
-    /**
-     * @return Represents the file UID. Defaults to `0`.
-     * 
-     */
     private @Nullable String fileUid;
 
     private ServiceTaskSpecContainerSpecConfig() {}
-    /**
-     * @return ID of the specific config that we&#39;re referencing
-     * 
-     */
     public String configId() {
         return this.configId;
     }
-    /**
-     * @return Name of the config that this references, but this is just provided for lookup/display purposes. The config in the reference will be identified by its ID
-     * 
-     */
     public Optional<String> configName() {
         return Optional.ofNullable(this.configName);
     }
-    /**
-     * @return Represents the file GID. Defaults to `0`.
-     * 
-     */
     public Optional<String> fileGid() {
         return Optional.ofNullable(this.fileGid);
     }
-    /**
-     * @return Represents represents the FileMode of the file. Defaults to `0o444`.
-     * 
-     */
     public Optional<Integer> fileMode() {
         return Optional.ofNullable(this.fileMode);
     }
-    /**
-     * @return Represents the final filename in the filesystem
-     * 
-     */
     public String fileName() {
         return this.fileName;
     }
-    /**
-     * @return Represents the file UID. Defaults to `0`.
-     * 
-     */
     public Optional<String> fileUid() {
         return Optional.ofNullable(this.fileUid);
     }
@@ -115,43 +68,53 @@ public final class ServiceTaskSpecContainerSpecConfig {
 
         @CustomType.Setter
         public Builder configId(String configId) {
-            this.configId = Objects.requireNonNull(configId);
+            if (configId == null) {
+              throw new MissingRequiredPropertyException("ServiceTaskSpecContainerSpecConfig", "configId");
+            }
+            this.configId = configId;
             return this;
         }
         @CustomType.Setter
         public Builder configName(@Nullable String configName) {
+
             this.configName = configName;
             return this;
         }
         @CustomType.Setter
         public Builder fileGid(@Nullable String fileGid) {
+
             this.fileGid = fileGid;
             return this;
         }
         @CustomType.Setter
         public Builder fileMode(@Nullable Integer fileMode) {
+
             this.fileMode = fileMode;
             return this;
         }
         @CustomType.Setter
         public Builder fileName(String fileName) {
-            this.fileName = Objects.requireNonNull(fileName);
+            if (fileName == null) {
+              throw new MissingRequiredPropertyException("ServiceTaskSpecContainerSpecConfig", "fileName");
+            }
+            this.fileName = fileName;
             return this;
         }
         @CustomType.Setter
         public Builder fileUid(@Nullable String fileUid) {
+
             this.fileUid = fileUid;
             return this;
         }
         public ServiceTaskSpecContainerSpecConfig build() {
-            final var o = new ServiceTaskSpecContainerSpecConfig();
-            o.configId = configId;
-            o.configName = configName;
-            o.fileGid = fileGid;
-            o.fileMode = fileMode;
-            o.fileName = fileName;
-            o.fileUid = fileUid;
-            return o;
+            final var _resultValue = new ServiceTaskSpecContainerSpecConfig();
+            _resultValue.configId = configId;
+            _resultValue.configName = configName;
+            _resultValue.fileGid = fileGid;
+            _resultValue.fileMode = fileMode;
+            _resultValue.fileName = fileName;
+            _resultValue.fileUid = fileUid;
+            return _resultValue;
         }
     }
 }

@@ -18,17 +18,18 @@ import (
 	pbempty "github.com/golang/protobuf/ptypes/empty"
 	"github.com/moby/buildkit/frontend/dockerfile/dockerignore"
 	"github.com/pkg/errors"
+	"github.com/spf13/afero"
+	"github.com/tonistiigi/fsutil"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/emptypb"
+
 	"github.com/pulumi/pulumi/pkg/v3/resource/provider"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/diag"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/util/logging"
 	rpc "github.com/pulumi/pulumi/sdk/v3/proto/go"
-	"github.com/spf13/afero"
-	"github.com/tonistiigi/fsutil"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
-	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 type dockerNativeProvider struct {
@@ -581,7 +582,7 @@ func (accumulator *contextHashAccumulator) hashPath(
 		if err != nil {
 			return fmt.Errorf("could not copy symlink path %s to hash: %w", filePath, err)
 		}
-	} else {
+	} else if fileMode.IsRegular() {
 		// For regular files, we can hash their content.
 		// TODO: consider only hashing file metadata to improve performance
 		f, err := os.Open(filePath)
@@ -736,7 +737,7 @@ func setConfiguration(configVars map[string]string) map[string]string {
 }
 
 func marshalBuildOnPreview(inputs resource.PropertyMap) bool {
-	//set default if not set
+	// set default if not set
 	if inputs["buildOnPreview"].IsNull() || inputs["buildOnPreview"].ContainsUnknowns() {
 		return false
 	}

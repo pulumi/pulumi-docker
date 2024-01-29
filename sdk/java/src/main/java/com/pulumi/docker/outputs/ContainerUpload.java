@@ -4,6 +4,7 @@
 package com.pulumi.docker.outputs;
 
 import com.pulumi.core.annotations.CustomType;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.Boolean;
 import java.lang.String;
 import java.util.Objects;
@@ -17,6 +18,10 @@ public final class ContainerUpload {
      * 
      */
     private @Nullable String content;
+    /**
+     * @return Base64-encoded data that will be decoded and uploaded as raw bytes for the object content. This allows safely uploading non-UTF8 binary data, but is recommended only for larger binary content such as the result of the `base64encode` interpolation function. See here for the reason. Conflicts with `content` &amp; `source`
+     * 
+     */
     private @Nullable String contentBase64;
     /**
      * @return If `true`, the file will be uploaded with user executable permission. Defaults to `false`.
@@ -47,6 +52,10 @@ public final class ContainerUpload {
     public Optional<String> content() {
         return Optional.ofNullable(this.content);
     }
+    /**
+     * @return Base64-encoded data that will be decoded and uploaded as raw bytes for the object content. This allows safely uploading non-UTF8 binary data, but is recommended only for larger binary content such as the result of the `base64encode` interpolation function. See here for the reason. Conflicts with `content` &amp; `source`
+     * 
+     */
     public Optional<String> contentBase64() {
         return Optional.ofNullable(this.contentBase64);
     }
@@ -107,43 +116,51 @@ public final class ContainerUpload {
 
         @CustomType.Setter
         public Builder content(@Nullable String content) {
+
             this.content = content;
             return this;
         }
         @CustomType.Setter
         public Builder contentBase64(@Nullable String contentBase64) {
+
             this.contentBase64 = contentBase64;
             return this;
         }
         @CustomType.Setter
         public Builder executable(@Nullable Boolean executable) {
+
             this.executable = executable;
             return this;
         }
         @CustomType.Setter
         public Builder file(String file) {
-            this.file = Objects.requireNonNull(file);
+            if (file == null) {
+              throw new MissingRequiredPropertyException("ContainerUpload", "file");
+            }
+            this.file = file;
             return this;
         }
         @CustomType.Setter
         public Builder source(@Nullable String source) {
+
             this.source = source;
             return this;
         }
         @CustomType.Setter
         public Builder sourceHash(@Nullable String sourceHash) {
+
             this.sourceHash = sourceHash;
             return this;
         }
         public ContainerUpload build() {
-            final var o = new ContainerUpload();
-            o.content = content;
-            o.contentBase64 = contentBase64;
-            o.executable = executable;
-            o.file = file;
-            o.source = source;
-            o.sourceHash = sourceHash;
-            return o;
+            final var _resultValue = new ContainerUpload();
+            _resultValue.content = content;
+            _resultValue.contentBase64 = contentBase64;
+            _resultValue.executable = executable;
+            _resultValue.file = file;
+            _resultValue.source = source;
+            _resultValue.sourceHash = sourceHash;
+            return _resultValue;
         }
     }
 }

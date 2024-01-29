@@ -14,53 +14,21 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceTaskSpecPlacement {
-    /**
-     * @return An array of constraints. e.g.: `node.role==manager`
-     * 
-     */
     private @Nullable List<String> constraints;
-    /**
-     * @return Maximum number of replicas for per node (default value is `0`, which is unlimited)
-     * 
-     */
     private @Nullable Integer maxReplicas;
-    /**
-     * @return Platforms stores all the platforms that the service&#39;s image can run on
-     * 
-     */
     private @Nullable List<ServiceTaskSpecPlacementPlatform> platforms;
-    /**
-     * @return Preferences provide a way to make the scheduler aware of factors such as topology. They are provided in order from highest to lowest precedence, e.g.: `spread=node.role.manager`
-     * 
-     */
     private @Nullable List<String> prefs;
 
     private ServiceTaskSpecPlacement() {}
-    /**
-     * @return An array of constraints. e.g.: `node.role==manager`
-     * 
-     */
     public List<String> constraints() {
         return this.constraints == null ? List.of() : this.constraints;
     }
-    /**
-     * @return Maximum number of replicas for per node (default value is `0`, which is unlimited)
-     * 
-     */
     public Optional<Integer> maxReplicas() {
         return Optional.ofNullable(this.maxReplicas);
     }
-    /**
-     * @return Platforms stores all the platforms that the service&#39;s image can run on
-     * 
-     */
     public List<ServiceTaskSpecPlacementPlatform> platforms() {
         return this.platforms == null ? List.of() : this.platforms;
     }
-    /**
-     * @return Preferences provide a way to make the scheduler aware of factors such as topology. They are provided in order from highest to lowest precedence, e.g.: `spread=node.role.manager`
-     * 
-     */
     public List<String> prefs() {
         return this.prefs == null ? List.of() : this.prefs;
     }
@@ -89,6 +57,7 @@ public final class ServiceTaskSpecPlacement {
 
         @CustomType.Setter
         public Builder constraints(@Nullable List<String> constraints) {
+
             this.constraints = constraints;
             return this;
         }
@@ -97,11 +66,13 @@ public final class ServiceTaskSpecPlacement {
         }
         @CustomType.Setter
         public Builder maxReplicas(@Nullable Integer maxReplicas) {
+
             this.maxReplicas = maxReplicas;
             return this;
         }
         @CustomType.Setter
         public Builder platforms(@Nullable List<ServiceTaskSpecPlacementPlatform> platforms) {
+
             this.platforms = platforms;
             return this;
         }
@@ -110,6 +81,7 @@ public final class ServiceTaskSpecPlacement {
         }
         @CustomType.Setter
         public Builder prefs(@Nullable List<String> prefs) {
+
             this.prefs = prefs;
             return this;
         }
@@ -117,12 +89,12 @@ public final class ServiceTaskSpecPlacement {
             return prefs(List.of(prefs));
         }
         public ServiceTaskSpecPlacement build() {
-            final var o = new ServiceTaskSpecPlacement();
-            o.constraints = constraints;
-            o.maxReplicas = maxReplicas;
-            o.platforms = platforms;
-            o.prefs = prefs;
-            return o;
+            final var _resultValue = new ServiceTaskSpecPlacement();
+            _resultValue.constraints = constraints;
+            _resultValue.maxReplicas = maxReplicas;
+            _resultValue.platforms = platforms;
+            _resultValue.prefs = prefs;
+            return _resultValue;
         }
     }
 }

@@ -13,29 +13,13 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceEndpointSpec {
-    /**
-     * @return The mode of resolution to use for internal load balancing between tasks
-     * 
-     */
     private @Nullable String mode;
-    /**
-     * @return List of exposed ports that this service is accessible on from the outside. Ports can only be provided if &#39;vip&#39; resolution mode is used
-     * 
-     */
     private @Nullable List<ServiceEndpointSpecPort> ports;
 
     private ServiceEndpointSpec() {}
-    /**
-     * @return The mode of resolution to use for internal load balancing between tasks
-     * 
-     */
     public Optional<String> mode() {
         return Optional.ofNullable(this.mode);
     }
-    /**
-     * @return List of exposed ports that this service is accessible on from the outside. Ports can only be provided if &#39;vip&#39; resolution mode is used
-     * 
-     */
     public List<ServiceEndpointSpecPort> ports() {
         return this.ports == null ? List.of() : this.ports;
     }
@@ -60,11 +44,13 @@ public final class ServiceEndpointSpec {
 
         @CustomType.Setter
         public Builder mode(@Nullable String mode) {
+
             this.mode = mode;
             return this;
         }
         @CustomType.Setter
         public Builder ports(@Nullable List<ServiceEndpointSpecPort> ports) {
+
             this.ports = ports;
             return this;
         }
@@ -72,10 +58,10 @@ public final class ServiceEndpointSpec {
             return ports(List.of(ports));
         }
         public ServiceEndpointSpec build() {
-            final var o = new ServiceEndpointSpec();
-            o.mode = mode;
-            o.ports = ports;
-            return o;
+            final var _resultValue = new ServiceEndpointSpec();
+            _resultValue.mode = mode;
+            _resultValue.ports = ports;
+            return _resultValue;
         }
     }
 }

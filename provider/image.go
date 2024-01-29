@@ -39,9 +39,10 @@ import (
 	"github.com/moby/buildkit/session/auth/authprovider"
 	"github.com/moby/moby/registry"
 	"github.com/opencontainers/go-digest"
+	"github.com/spf13/afero"
+
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
-	"github.com/spf13/afero"
 )
 
 const (
@@ -399,6 +400,11 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	return img.Name, pbstruct, err
 }
 
+// nodigest mimics Docker's placeholder for situations where no digests are found.
+type nodigest struct{}
+
+func (nodigest) String() string { return "<none>@<none>" }
+
 // getRepoDigest returns the repoDigest for the given image ID that matches the target image name.
 // If the image is not found in the local store, it returns an error.
 func (p *dockerNativeProvider) getRepoDigest(
@@ -415,7 +421,7 @@ func (p *dockerNativeProvider) getRepoDigest(
 		return nil, err
 	}
 
-	var repoDigest reference.Reference
+	var repoDigest reference.Reference = nodigest{}
 	for _, d := range dist.RepoDigests {
 		ref, err := reference.ParseNormalizedNamed(d)
 		if err != nil {
@@ -922,7 +928,7 @@ func processLogLine(jm jsonmessage.JSONMessage,
 				info += "failed to parse aux message: " + err.Error()
 			}
 			if err := (&resp).Unmarshal(infoBytes); err != nil {
-				info += "failed to parse aux message: " + err.Error()
+				info += "failed to parse info bytes: " + err.Error()
 			}
 			for _, vertex := range resp.Vertexes {
 				info += fmt.Sprintf("digest: %+v\n", vertex.Digest)

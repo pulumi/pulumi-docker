@@ -4,34 +4,19 @@
 package com.pulumi.docker.outputs;
 
 import com.pulumi.core.annotations.CustomType;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.String;
 import java.util.Objects;
 
 @CustomType
 public final class ServiceTaskSpecContainerSpecHost {
-    /**
-     * @return The name of the host
-     * 
-     */
     private String host;
-    /**
-     * @return The ip of the host
-     * 
-     */
     private String ip;
 
     private ServiceTaskSpecContainerSpecHost() {}
-    /**
-     * @return The name of the host
-     * 
-     */
     public String host() {
         return this.host;
     }
-    /**
-     * @return The ip of the host
-     * 
-     */
     public String ip() {
         return this.ip;
     }
@@ -56,19 +41,25 @@ public final class ServiceTaskSpecContainerSpecHost {
 
         @CustomType.Setter
         public Builder host(String host) {
-            this.host = Objects.requireNonNull(host);
+            if (host == null) {
+              throw new MissingRequiredPropertyException("ServiceTaskSpecContainerSpecHost", "host");
+            }
+            this.host = host;
             return this;
         }
         @CustomType.Setter
         public Builder ip(String ip) {
-            this.ip = Objects.requireNonNull(ip);
+            if (ip == null) {
+              throw new MissingRequiredPropertyException("ServiceTaskSpecContainerSpecHost", "ip");
+            }
+            this.ip = ip;
             return this;
         }
         public ServiceTaskSpecContainerSpecHost build() {
-            final var o = new ServiceTaskSpecContainerSpecHost();
-            o.host = host;
-            o.ip = ip;
-            return o;
+            final var _resultValue = new ServiceTaskSpecContainerSpecHost();
+            _resultValue.host = host;
+            _resultValue.ip = ip;
+            return _resultValue;
         }
     }
 }

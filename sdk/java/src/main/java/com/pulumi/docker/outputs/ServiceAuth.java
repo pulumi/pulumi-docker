@@ -4,6 +4,7 @@
 package com.pulumi.docker.outputs;
 
 import com.pulumi.core.annotations.CustomType;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.String;
 import java.util.Objects;
 import java.util.Optional;
@@ -11,41 +12,17 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceAuth {
-    /**
-     * @return The password
-     * 
-     */
     private @Nullable String password;
-    /**
-     * @return The address of the server for the authentication
-     * 
-     */
     private String serverAddress;
-    /**
-     * @return The username
-     * 
-     */
     private @Nullable String username;
 
     private ServiceAuth() {}
-    /**
-     * @return The password
-     * 
-     */
     public Optional<String> password() {
         return Optional.ofNullable(this.password);
     }
-    /**
-     * @return The address of the server for the authentication
-     * 
-     */
     public String serverAddress() {
         return this.serverAddress;
     }
-    /**
-     * @return The username
-     * 
-     */
     public Optional<String> username() {
         return Optional.ofNullable(this.username);
     }
@@ -72,25 +49,30 @@ public final class ServiceAuth {
 
         @CustomType.Setter
         public Builder password(@Nullable String password) {
+
             this.password = password;
             return this;
         }
         @CustomType.Setter
         public Builder serverAddress(String serverAddress) {
-            this.serverAddress = Objects.requireNonNull(serverAddress);
+            if (serverAddress == null) {
+              throw new MissingRequiredPropertyException("ServiceAuth", "serverAddress");
+            }
+            this.serverAddress = serverAddress;
             return this;
         }
         @CustomType.Setter
         public Builder username(@Nullable String username) {
+
             this.username = username;
             return this;
         }
         public ServiceAuth build() {
-            final var o = new ServiceAuth();
-            o.password = password;
-            o.serverAddress = serverAddress;
-            o.username = username;
-            return o;
+            final var _resultValue = new ServiceAuth();
+            _resultValue.password = password;
+            _resultValue.serverAddress = serverAddress;
+            _resultValue.username = username;
+            return _resultValue;
         }
     }
 }

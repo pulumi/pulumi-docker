@@ -4,34 +4,19 @@
 package com.pulumi.docker.outputs;
 
 import com.pulumi.core.annotations.CustomType;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.String;
 import java.util.Objects;
 
 @CustomType
 public final class ServiceTaskSpecContainerSpecLabel {
-    /**
-     * @return Name of the label
-     * 
-     */
     private String label;
-    /**
-     * @return Value of the label
-     * 
-     */
     private String value;
 
     private ServiceTaskSpecContainerSpecLabel() {}
-    /**
-     * @return Name of the label
-     * 
-     */
     public String label() {
         return this.label;
     }
-    /**
-     * @return Value of the label
-     * 
-     */
     public String value() {
         return this.value;
     }
@@ -56,19 +41,25 @@ public final class ServiceTaskSpecContainerSpecLabel {
 
         @CustomType.Setter
         public Builder label(String label) {
-            this.label = Objects.requireNonNull(label);
+            if (label == null) {
+              throw new MissingRequiredPropertyException("ServiceTaskSpecContainerSpecLabel", "label");
+            }
+            this.label = label;
             return this;
         }
         @CustomType.Setter
         public Builder value(String value) {
-            this.value = Objects.requireNonNull(value);
+            if (value == null) {
+              throw new MissingRequiredPropertyException("ServiceTaskSpecContainerSpecLabel", "value");
+            }
+            this.value = value;
             return this;
         }
         public ServiceTaskSpecContainerSpecLabel build() {
-            final var o = new ServiceTaskSpecContainerSpecLabel();
-            o.label = label;
-            o.value = value;
-            return o;
+            final var _resultValue = new ServiceTaskSpecContainerSpecLabel();
+            _resultValue.label = label;
+            _resultValue.value = value;
+            return _resultValue;
         }
     }
 }

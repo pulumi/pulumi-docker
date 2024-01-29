@@ -4,6 +4,7 @@
 package com.pulumi.docker.outputs;
 
 import com.pulumi.core.annotations.CustomType;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.String;
 import java.util.List;
 import java.util.Objects;
@@ -87,6 +88,7 @@ public final class ContainerNetworksAdvanced {
 
         @CustomType.Setter
         public Builder aliases(@Nullable List<String> aliases) {
+
             this.aliases = aliases;
             return this;
         }
@@ -95,26 +97,31 @@ public final class ContainerNetworksAdvanced {
         }
         @CustomType.Setter
         public Builder ipv4Address(@Nullable String ipv4Address) {
+
             this.ipv4Address = ipv4Address;
             return this;
         }
         @CustomType.Setter
         public Builder ipv6Address(@Nullable String ipv6Address) {
+
             this.ipv6Address = ipv6Address;
             return this;
         }
         @CustomType.Setter
         public Builder name(String name) {
-            this.name = Objects.requireNonNull(name);
+            if (name == null) {
+              throw new MissingRequiredPropertyException("ContainerNetworksAdvanced", "name");
+            }
+            this.name = name;
             return this;
         }
         public ContainerNetworksAdvanced build() {
-            final var o = new ContainerNetworksAdvanced();
-            o.aliases = aliases;
-            o.ipv4Address = ipv4Address;
-            o.ipv6Address = ipv6Address;
-            o.name = name;
-            return o;
+            final var _resultValue = new ContainerNetworksAdvanced();
+            _resultValue.aliases = aliases;
+            _resultValue.ipv4Address = ipv4Address;
+            _resultValue.ipv6Address = ipv6Address;
+            _resultValue.name = name;
+            return _resultValue;
         }
     }
 }

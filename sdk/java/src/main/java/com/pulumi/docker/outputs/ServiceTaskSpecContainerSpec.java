@@ -12,6 +12,7 @@ import com.pulumi.docker.outputs.ServiceTaskSpecContainerSpecLabel;
 import com.pulumi.docker.outputs.ServiceTaskSpecContainerSpecMount;
 import com.pulumi.docker.outputs.ServiceTaskSpecContainerSpecPrivileges;
 import com.pulumi.docker.outputs.ServiceTaskSpecContainerSpecSecret;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.Boolean;
 import java.lang.Object;
 import java.lang.String;
@@ -23,257 +24,89 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceTaskSpecContainerSpec {
-    /**
-     * @return Arguments to the command
-     * 
-     */
     private @Nullable List<String> args;
-    /**
-     * @return The command/entrypoint to be run in the image. According to the [docker cli](https://github.com/docker/cli/blob/v20.10.7/cli/command/service/opts.go#L705) the override of the entrypoint is also passed to the `command` property and there is no `entrypoint` attribute in the `ContainerSpec` of the service.
-     * 
-     */
     private @Nullable List<String> commands;
-    /**
-     * @return References to zero or more configs that will be exposed to the service
-     * 
-     */
     private @Nullable List<ServiceTaskSpecContainerSpecConfig> configs;
-    /**
-     * @return The working directory for commands to run in
-     * 
-     */
     private @Nullable String dir;
-    /**
-     * @return Specification for DNS related configurations in resolver configuration file (`resolv.conf`)
-     * 
-     */
     private @Nullable ServiceTaskSpecContainerSpecDnsConfig dnsConfig;
-    /**
-     * @return A list of environment variables in the form VAR=&#34;value&#34;
-     * 
-     */
     private @Nullable Map<String,String> env;
-    /**
-     * @return A list of additional groups that the container process will run as
-     * 
-     */
     private @Nullable List<String> groups;
-    /**
-     * @return A test to perform to check that the container is healthy
-     * 
-     */
     private @Nullable ServiceTaskSpecContainerSpecHealthcheck healthcheck;
-    /**
-     * @return The hostname to use for the container, as a valid RFC 1123 hostname
-     * 
-     */
     private @Nullable String hostname;
-    /**
-     * @return A list of hostname/IP mappings to add to the container&#39;s hosts file
-     * 
-     */
     private @Nullable List<ServiceTaskSpecContainerSpecHost> hosts;
-    /**
-     * @return The image name to use for the containers of the service, like `nginx:1.17.6`. Also use the data-source or resource of `docker.RemoteImage` with the `repo_digest` or `docker.RegistryImage` with the `name` attribute for this, as shown in the examples.
-     * 
-     */
     private String image;
-    /**
-     * @return Isolation technology of the containers running the service. (Windows only). Defaults to `default`.
-     * 
-     */
     private @Nullable String isolation;
-    /**
-     * @return User-defined key/value metadata
-     * 
-     */
     private @Nullable List<ServiceTaskSpecContainerSpecLabel> labels;
-    /**
-     * @return Specification for mounts to be added to containers created as part of the service
-     * 
-     */
     private @Nullable List<ServiceTaskSpecContainerSpecMount> mounts;
-    /**
-     * @return Security options for the container
-     * 
-     */
     private @Nullable ServiceTaskSpecContainerSpecPrivileges privileges;
-    /**
-     * @return Whether the mount should be read-only
-     * 
-     */
     private @Nullable Boolean readOnly;
-    /**
-     * @return References to zero or more secrets that will be exposed to the service
-     * 
-     */
     private @Nullable List<ServiceTaskSpecContainerSpecSecret> secrets;
-    /**
-     * @return Amount of time to wait for the container to terminate before forcefully removing it (ms|s|m|h). If not specified or &#39;0s&#39; the destroy will not check if all tasks/containers of the service terminate.
-     * 
-     */
     private @Nullable String stopGracePeriod;
-    /**
-     * @return Signal to stop the container
-     * 
-     */
     private @Nullable String stopSignal;
-    /**
-     * @return Sysctls config (Linux only)
-     * 
-     */
     private @Nullable Map<String,Object> sysctl;
-    /**
-     * @return SELinux user label
-     * 
-     */
     private @Nullable String user;
 
     private ServiceTaskSpecContainerSpec() {}
-    /**
-     * @return Arguments to the command
-     * 
-     */
     public List<String> args() {
         return this.args == null ? List.of() : this.args;
     }
-    /**
-     * @return The command/entrypoint to be run in the image. According to the [docker cli](https://github.com/docker/cli/blob/v20.10.7/cli/command/service/opts.go#L705) the override of the entrypoint is also passed to the `command` property and there is no `entrypoint` attribute in the `ContainerSpec` of the service.
-     * 
-     */
     public List<String> commands() {
         return this.commands == null ? List.of() : this.commands;
     }
-    /**
-     * @return References to zero or more configs that will be exposed to the service
-     * 
-     */
     public List<ServiceTaskSpecContainerSpecConfig> configs() {
         return this.configs == null ? List.of() : this.configs;
     }
-    /**
-     * @return The working directory for commands to run in
-     * 
-     */
     public Optional<String> dir() {
         return Optional.ofNullable(this.dir);
     }
-    /**
-     * @return Specification for DNS related configurations in resolver configuration file (`resolv.conf`)
-     * 
-     */
     public Optional<ServiceTaskSpecContainerSpecDnsConfig> dnsConfig() {
         return Optional.ofNullable(this.dnsConfig);
     }
-    /**
-     * @return A list of environment variables in the form VAR=&#34;value&#34;
-     * 
-     */
     public Map<String,String> env() {
         return this.env == null ? Map.of() : this.env;
     }
-    /**
-     * @return A list of additional groups that the container process will run as
-     * 
-     */
     public List<String> groups() {
         return this.groups == null ? List.of() : this.groups;
     }
-    /**
-     * @return A test to perform to check that the container is healthy
-     * 
-     */
     public Optional<ServiceTaskSpecContainerSpecHealthcheck> healthcheck() {
         return Optional.ofNullable(this.healthcheck);
     }
-    /**
-     * @return The hostname to use for the container, as a valid RFC 1123 hostname
-     * 
-     */
     public Optional<String> hostname() {
         return Optional.ofNullable(this.hostname);
     }
-    /**
-     * @return A list of hostname/IP mappings to add to the container&#39;s hosts file
-     * 
-     */
     public List<ServiceTaskSpecContainerSpecHost> hosts() {
         return this.hosts == null ? List.of() : this.hosts;
     }
-    /**
-     * @return The image name to use for the containers of the service, like `nginx:1.17.6`. Also use the data-source or resource of `docker.RemoteImage` with the `repo_digest` or `docker.RegistryImage` with the `name` attribute for this, as shown in the examples.
-     * 
-     */
     public String image() {
         return this.image;
     }
-    /**
-     * @return Isolation technology of the containers running the service. (Windows only). Defaults to `default`.
-     * 
-     */
     public Optional<String> isolation() {
         return Optional.ofNullable(this.isolation);
     }
-    /**
-     * @return User-defined key/value metadata
-     * 
-     */
     public List<ServiceTaskSpecContainerSpecLabel> labels() {
         return this.labels == null ? List.of() : this.labels;
     }
-    /**
-     * @return Specification for mounts to be added to containers created as part of the service
-     * 
-     */
     public List<ServiceTaskSpecContainerSpecMount> mounts() {
         return this.mounts == null ? List.of() : this.mounts;
     }
-    /**
-     * @return Security options for the container
-     * 
-     */
     public Optional<ServiceTaskSpecContainerSpecPrivileges> privileges() {
         return Optional.ofNullable(this.privileges);
     }
-    /**
-     * @return Whether the mount should be read-only
-     * 
-     */
     public Optional<Boolean> readOnly() {
         return Optional.ofNullable(this.readOnly);
     }
-    /**
-     * @return References to zero or more secrets that will be exposed to the service
-     * 
-     */
     public List<ServiceTaskSpecContainerSpecSecret> secrets() {
         return this.secrets == null ? List.of() : this.secrets;
     }
-    /**
-     * @return Amount of time to wait for the container to terminate before forcefully removing it (ms|s|m|h). If not specified or &#39;0s&#39; the destroy will not check if all tasks/containers of the service terminate.
-     * 
-     */
     public Optional<String> stopGracePeriod() {
         return Optional.ofNullable(this.stopGracePeriod);
     }
-    /**
-     * @return Signal to stop the container
-     * 
-     */
     public Optional<String> stopSignal() {
         return Optional.ofNullable(this.stopSignal);
     }
-    /**
-     * @return Sysctls config (Linux only)
-     * 
-     */
     public Map<String,Object> sysctl() {
         return this.sysctl == null ? Map.of() : this.sysctl;
     }
-    /**
-     * @return SELinux user label
-     * 
-     */
     public Optional<String> user() {
         return Optional.ofNullable(this.user);
     }
@@ -336,6 +169,7 @@ public final class ServiceTaskSpecContainerSpec {
 
         @CustomType.Setter
         public Builder args(@Nullable List<String> args) {
+
             this.args = args;
             return this;
         }
@@ -344,6 +178,7 @@ public final class ServiceTaskSpecContainerSpec {
         }
         @CustomType.Setter
         public Builder commands(@Nullable List<String> commands) {
+
             this.commands = commands;
             return this;
         }
@@ -352,6 +187,7 @@ public final class ServiceTaskSpecContainerSpec {
         }
         @CustomType.Setter
         public Builder configs(@Nullable List<ServiceTaskSpecContainerSpecConfig> configs) {
+
             this.configs = configs;
             return this;
         }
@@ -360,21 +196,25 @@ public final class ServiceTaskSpecContainerSpec {
         }
         @CustomType.Setter
         public Builder dir(@Nullable String dir) {
+
             this.dir = dir;
             return this;
         }
         @CustomType.Setter
         public Builder dnsConfig(@Nullable ServiceTaskSpecContainerSpecDnsConfig dnsConfig) {
+
             this.dnsConfig = dnsConfig;
             return this;
         }
         @CustomType.Setter
         public Builder env(@Nullable Map<String,String> env) {
+
             this.env = env;
             return this;
         }
         @CustomType.Setter
         public Builder groups(@Nullable List<String> groups) {
+
             this.groups = groups;
             return this;
         }
@@ -383,16 +223,19 @@ public final class ServiceTaskSpecContainerSpec {
         }
         @CustomType.Setter
         public Builder healthcheck(@Nullable ServiceTaskSpecContainerSpecHealthcheck healthcheck) {
+
             this.healthcheck = healthcheck;
             return this;
         }
         @CustomType.Setter
         public Builder hostname(@Nullable String hostname) {
+
             this.hostname = hostname;
             return this;
         }
         @CustomType.Setter
         public Builder hosts(@Nullable List<ServiceTaskSpecContainerSpecHost> hosts) {
+
             this.hosts = hosts;
             return this;
         }
@@ -401,16 +244,21 @@ public final class ServiceTaskSpecContainerSpec {
         }
         @CustomType.Setter
         public Builder image(String image) {
-            this.image = Objects.requireNonNull(image);
+            if (image == null) {
+              throw new MissingRequiredPropertyException("ServiceTaskSpecContainerSpec", "image");
+            }
+            this.image = image;
             return this;
         }
         @CustomType.Setter
         public Builder isolation(@Nullable String isolation) {
+
             this.isolation = isolation;
             return this;
         }
         @CustomType.Setter
         public Builder labels(@Nullable List<ServiceTaskSpecContainerSpecLabel> labels) {
+
             this.labels = labels;
             return this;
         }
@@ -419,6 +267,7 @@ public final class ServiceTaskSpecContainerSpec {
         }
         @CustomType.Setter
         public Builder mounts(@Nullable List<ServiceTaskSpecContainerSpecMount> mounts) {
+
             this.mounts = mounts;
             return this;
         }
@@ -427,16 +276,19 @@ public final class ServiceTaskSpecContainerSpec {
         }
         @CustomType.Setter
         public Builder privileges(@Nullable ServiceTaskSpecContainerSpecPrivileges privileges) {
+
             this.privileges = privileges;
             return this;
         }
         @CustomType.Setter
         public Builder readOnly(@Nullable Boolean readOnly) {
+
             this.readOnly = readOnly;
             return this;
         }
         @CustomType.Setter
         public Builder secrets(@Nullable List<ServiceTaskSpecContainerSpecSecret> secrets) {
+
             this.secrets = secrets;
             return this;
         }
@@ -445,48 +297,52 @@ public final class ServiceTaskSpecContainerSpec {
         }
         @CustomType.Setter
         public Builder stopGracePeriod(@Nullable String stopGracePeriod) {
+
             this.stopGracePeriod = stopGracePeriod;
             return this;
         }
         @CustomType.Setter
         public Builder stopSignal(@Nullable String stopSignal) {
+
             this.stopSignal = stopSignal;
             return this;
         }
         @CustomType.Setter
         public Builder sysctl(@Nullable Map<String,Object> sysctl) {
+
             this.sysctl = sysctl;
             return this;
         }
         @CustomType.Setter
         public Builder user(@Nullable String user) {
+
             this.user = user;
             return this;
         }
         public ServiceTaskSpecContainerSpec build() {
-            final var o = new ServiceTaskSpecContainerSpec();
-            o.args = args;
-            o.commands = commands;
-            o.configs = configs;
-            o.dir = dir;
-            o.dnsConfig = dnsConfig;
-            o.env = env;
-            o.groups = groups;
-            o.healthcheck = healthcheck;
-            o.hostname = hostname;
-            o.hosts = hosts;
-            o.image = image;
-            o.isolation = isolation;
-            o.labels = labels;
-            o.mounts = mounts;
-            o.privileges = privileges;
-            o.readOnly = readOnly;
-            o.secrets = secrets;
-            o.stopGracePeriod = stopGracePeriod;
-            o.stopSignal = stopSignal;
-            o.sysctl = sysctl;
-            o.user = user;
-            return o;
+            final var _resultValue = new ServiceTaskSpecContainerSpec();
+            _resultValue.args = args;
+            _resultValue.commands = commands;
+            _resultValue.configs = configs;
+            _resultValue.dir = dir;
+            _resultValue.dnsConfig = dnsConfig;
+            _resultValue.env = env;
+            _resultValue.groups = groups;
+            _resultValue.healthcheck = healthcheck;
+            _resultValue.hostname = hostname;
+            _resultValue.hosts = hosts;
+            _resultValue.image = image;
+            _resultValue.isolation = isolation;
+            _resultValue.labels = labels;
+            _resultValue.mounts = mounts;
+            _resultValue.privileges = privileges;
+            _resultValue.readOnly = readOnly;
+            _resultValue.secrets = secrets;
+            _resultValue.stopGracePeriod = stopGracePeriod;
+            _resultValue.stopSignal = stopSignal;
+            _resultValue.sysctl = sysctl;
+            _resultValue.user = user;
+            return _resultValue;
         }
     }
 }

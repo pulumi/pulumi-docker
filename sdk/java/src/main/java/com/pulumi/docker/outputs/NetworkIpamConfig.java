@@ -88,31 +88,35 @@ public final class NetworkIpamConfig {
 
         @CustomType.Setter
         public Builder auxAddress(@Nullable Map<String,Object> auxAddress) {
+
             this.auxAddress = auxAddress;
             return this;
         }
         @CustomType.Setter
         public Builder gateway(@Nullable String gateway) {
+
             this.gateway = gateway;
             return this;
         }
         @CustomType.Setter
         public Builder ipRange(@Nullable String ipRange) {
+
             this.ipRange = ipRange;
             return this;
         }
         @CustomType.Setter
         public Builder subnet(@Nullable String subnet) {
+
             this.subnet = subnet;
             return this;
         }
         public NetworkIpamConfig build() {
-            final var o = new NetworkIpamConfig();
-            o.auxAddress = auxAddress;
-            o.gateway = gateway;
-            o.ipRange = ipRange;
-            o.subnet = subnet;
-            return o;
+            final var _resultValue = new NetworkIpamConfig();
+            _resultValue.auxAddress = auxAddress;
+            _resultValue.gateway = gateway;
+            _resultValue.ipRange = ipRange;
+            _resultValue.subnet = subnet;
+            return _resultValue;
         }
     }
 }

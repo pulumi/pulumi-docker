@@ -4,14 +4,16 @@ import (
 	"context"
 	"os"
 	"path/filepath"
+	"syscall"
 	"testing"
 
 	"github.com/docker/distribution/reference"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
+
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
 	rpc "github.com/pulumi/pulumi/sdk/v3/proto/go"
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 )
 
 func TestDiffUpdates(t *testing.T) {
@@ -234,6 +236,28 @@ func TestHashFilemodeMatters(t *testing.T) {
 func TestHashDeepSymlinks(t *testing.T) {
 	dir := "./testdata/symlinks"
 	_, err := hashContext(dir, filepath.Join(dir, "Dockerfile"))
+	assert.NoError(t, err)
+}
+
+func TestIgnoreIrregularFiles(t *testing.T) {
+	dir := t.TempDir()
+
+	// Create a Dockerfile
+	dockerfile := filepath.Join(dir, "Dockerfile")
+	err := os.WriteFile(dockerfile, []byte{}, 0o600)
+	require.NoError(t, err)
+
+	// Create a pipe which should be ignored. (We will time out trying to read
+	// it if it's not.)
+	pipe := filepath.Join(dir, "pipe")
+	err = syscall.Mkfifo(pipe, 0o666)
+	require.NoError(t, err)
+	// Confirm it's irregular.
+	fi, err := os.Stat(pipe)
+	require.NoError(t, err)
+	assert.False(t, fi.Mode().IsRegular())
+
+	_, err = hashContext(dir, dockerfile)
 	assert.NoError(t, err)
 }
 

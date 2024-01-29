@@ -12,29 +12,13 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceTaskSpecResources {
-    /**
-     * @return Describes the resources which can be advertised by a node and requested by a task
-     * 
-     */
     private @Nullable ServiceTaskSpecResourcesLimits limits;
-    /**
-     * @return An object describing the resources which can be advertised by a node and requested by a task
-     * 
-     */
     private @Nullable ServiceTaskSpecResourcesReservation reservation;
 
     private ServiceTaskSpecResources() {}
-    /**
-     * @return Describes the resources which can be advertised by a node and requested by a task
-     * 
-     */
     public Optional<ServiceTaskSpecResourcesLimits> limits() {
         return Optional.ofNullable(this.limits);
     }
-    /**
-     * @return An object describing the resources which can be advertised by a node and requested by a task
-     * 
-     */
     public Optional<ServiceTaskSpecResourcesReservation> reservation() {
         return Optional.ofNullable(this.reservation);
     }
@@ -59,19 +43,21 @@ public final class ServiceTaskSpecResources {
 
         @CustomType.Setter
         public Builder limits(@Nullable ServiceTaskSpecResourcesLimits limits) {
+
             this.limits = limits;
             return this;
         }
         @CustomType.Setter
         public Builder reservation(@Nullable ServiceTaskSpecResourcesReservation reservation) {
+
             this.reservation = reservation;
             return this;
         }
         public ServiceTaskSpecResources build() {
-            final var o = new ServiceTaskSpecResources();
-            o.limits = limits;
-            o.reservation = reservation;
-            return o;
+            final var _resultValue = new ServiceTaskSpecResources();
+            _resultValue.limits = limits;
+            _resultValue.reservation = reservation;
+            return _resultValue;
         }
     }
 }

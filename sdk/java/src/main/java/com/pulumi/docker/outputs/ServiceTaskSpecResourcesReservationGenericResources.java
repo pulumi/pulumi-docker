@@ -11,29 +11,13 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceTaskSpecResourcesReservationGenericResources {
-    /**
-     * @return The Integer resources
-     * 
-     */
     private @Nullable List<String> discreteResourcesSpecs;
-    /**
-     * @return The String resources
-     * 
-     */
     private @Nullable List<String> namedResourcesSpecs;
 
     private ServiceTaskSpecResourcesReservationGenericResources() {}
-    /**
-     * @return The Integer resources
-     * 
-     */
     public List<String> discreteResourcesSpecs() {
         return this.discreteResourcesSpecs == null ? List.of() : this.discreteResourcesSpecs;
     }
-    /**
-     * @return The String resources
-     * 
-     */
     public List<String> namedResourcesSpecs() {
         return this.namedResourcesSpecs == null ? List.of() : this.namedResourcesSpecs;
     }
@@ -58,6 +42,7 @@ public final class ServiceTaskSpecResourcesReservationGenericResources {
 
         @CustomType.Setter
         public Builder discreteResourcesSpecs(@Nullable List<String> discreteResourcesSpecs) {
+
             this.discreteResourcesSpecs = discreteResourcesSpecs;
             return this;
         }
@@ -66,6 +51,7 @@ public final class ServiceTaskSpecResourcesReservationGenericResources {
         }
         @CustomType.Setter
         public Builder namedResourcesSpecs(@Nullable List<String> namedResourcesSpecs) {
+
             this.namedResourcesSpecs = namedResourcesSpecs;
             return this;
         }
@@ -73,10 +59,10 @@ public final class ServiceTaskSpecResourcesReservationGenericResources {
             return namedResourcesSpecs(List.of(namedResourcesSpecs));
         }
         public ServiceTaskSpecResourcesReservationGenericResources build() {
-            final var o = new ServiceTaskSpecResourcesReservationGenericResources();
-            o.discreteResourcesSpecs = discreteResourcesSpecs;
-            o.namedResourcesSpecs = namedResourcesSpecs;
-            return o;
+            final var _resultValue = new ServiceTaskSpecResourcesReservationGenericResources();
+            _resultValue.discreteResourcesSpecs = discreteResourcesSpecs;
+            _resultValue.namedResourcesSpecs = namedResourcesSpecs;
+            return _resultValue;
         }
     }
 }

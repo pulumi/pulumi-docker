@@ -90,16 +90,19 @@ public final class ContainerMountVolumeOptions {
 
         @CustomType.Setter
         public Builder driverName(@Nullable String driverName) {
+
             this.driverName = driverName;
             return this;
         }
         @CustomType.Setter
         public Builder driverOptions(@Nullable Map<String,String> driverOptions) {
+
             this.driverOptions = driverOptions;
             return this;
         }
         @CustomType.Setter
         public Builder labels(@Nullable List<ContainerMountVolumeOptionsLabel> labels) {
+
             this.labels = labels;
             return this;
         }
@@ -108,16 +111,17 @@ public final class ContainerMountVolumeOptions {
         }
         @CustomType.Setter
         public Builder noCopy(@Nullable Boolean noCopy) {
+
             this.noCopy = noCopy;
             return this;
         }
         public ContainerMountVolumeOptions build() {
-            final var o = new ContainerMountVolumeOptions();
-            o.driverName = driverName;
-            o.driverOptions = driverOptions;
-            o.labels = labels;
-            o.noCopy = noCopy;
-            return o;
+            final var _resultValue = new ContainerMountVolumeOptions();
+            _resultValue.driverName = driverName;
+            _resultValue.driverOptions = driverOptions;
+            _resultValue.labels = labels;
+            _resultValue.noCopy = noCopy;
+            return _resultValue;
         }
     }
 }

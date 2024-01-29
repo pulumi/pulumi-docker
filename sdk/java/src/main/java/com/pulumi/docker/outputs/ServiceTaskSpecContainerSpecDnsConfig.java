@@ -4,6 +4,7 @@
 package com.pulumi.docker.outputs;
 
 import com.pulumi.core.annotations.CustomType;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.String;
 import java.util.List;
 import java.util.Objects;
@@ -11,41 +12,17 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceTaskSpecContainerSpecDnsConfig {
-    /**
-     * @return The IP addresses of the name servers
-     * 
-     */
     private List<String> nameservers;
-    /**
-     * @return A list of internal resolver variables to be modified (e.g., `debug`, `ndots:3`, etc.)
-     * 
-     */
     private @Nullable List<String> options;
-    /**
-     * @return A search list for host-name lookup
-     * 
-     */
     private @Nullable List<String> searches;
 
     private ServiceTaskSpecContainerSpecDnsConfig() {}
-    /**
-     * @return The IP addresses of the name servers
-     * 
-     */
     public List<String> nameservers() {
         return this.nameservers;
     }
-    /**
-     * @return A list of internal resolver variables to be modified (e.g., `debug`, `ndots:3`, etc.)
-     * 
-     */
     public List<String> options() {
         return this.options == null ? List.of() : this.options;
     }
-    /**
-     * @return A search list for host-name lookup
-     * 
-     */
     public List<String> searches() {
         return this.searches == null ? List.of() : this.searches;
     }
@@ -72,7 +49,10 @@ public final class ServiceTaskSpecContainerSpecDnsConfig {
 
         @CustomType.Setter
         public Builder nameservers(List<String> nameservers) {
-            this.nameservers = Objects.requireNonNull(nameservers);
+            if (nameservers == null) {
+              throw new MissingRequiredPropertyException("ServiceTaskSpecContainerSpecDnsConfig", "nameservers");
+            }
+            this.nameservers = nameservers;
             return this;
         }
         public Builder nameservers(String... nameservers) {
@@ -80,6 +60,7 @@ public final class ServiceTaskSpecContainerSpecDnsConfig {
         }
         @CustomType.Setter
         public Builder options(@Nullable List<String> options) {
+
             this.options = options;
             return this;
         }
@@ -88,6 +69,7 @@ public final class ServiceTaskSpecContainerSpecDnsConfig {
         }
         @CustomType.Setter
         public Builder searches(@Nullable List<String> searches) {
+
             this.searches = searches;
             return this;
         }
@@ -95,11 +77,11 @@ public final class ServiceTaskSpecContainerSpecDnsConfig {
             return searches(List.of(searches));
         }
         public ServiceTaskSpecContainerSpecDnsConfig build() {
-            final var o = new ServiceTaskSpecContainerSpecDnsConfig();
-            o.nameservers = nameservers;
-            o.options = options;
-            o.searches = searches;
-            return o;
+            final var _resultValue = new ServiceTaskSpecContainerSpecDnsConfig();
+            _resultValue.nameservers = nameservers;
+            _resultValue.options = options;
+            _resultValue.searches = searches;
+            return _resultValue;
         }
     }
 }

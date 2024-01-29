@@ -79,55 +79,63 @@ public final class ContainerNetworkData {
 
         @CustomType.Setter
         public Builder gateway(@Nullable String gateway) {
+
             this.gateway = gateway;
             return this;
         }
         @CustomType.Setter
         public Builder globalIpv6Address(@Nullable String globalIpv6Address) {
+
             this.globalIpv6Address = globalIpv6Address;
             return this;
         }
         @CustomType.Setter
         public Builder globalIpv6PrefixLength(@Nullable Integer globalIpv6PrefixLength) {
+
             this.globalIpv6PrefixLength = globalIpv6PrefixLength;
             return this;
         }
         @CustomType.Setter
         public Builder ipAddress(@Nullable String ipAddress) {
+
             this.ipAddress = ipAddress;
             return this;
         }
         @CustomType.Setter
         public Builder ipPrefixLength(@Nullable Integer ipPrefixLength) {
+
             this.ipPrefixLength = ipPrefixLength;
             return this;
         }
         @CustomType.Setter
         public Builder ipv6Gateway(@Nullable String ipv6Gateway) {
+
             this.ipv6Gateway = ipv6Gateway;
             return this;
         }
         @CustomType.Setter
         public Builder macAddress(@Nullable String macAddress) {
+
             this.macAddress = macAddress;
             return this;
         }
         @CustomType.Setter
         public Builder networkName(@Nullable String networkName) {
+
             this.networkName = networkName;
             return this;
         }
         public ContainerNetworkData build() {
-            final var o = new ContainerNetworkData();
-            o.gateway = gateway;
-            o.globalIpv6Address = globalIpv6Address;
-            o.globalIpv6PrefixLength = globalIpv6PrefixLength;
-            o.ipAddress = ipAddress;
-            o.ipPrefixLength = ipPrefixLength;
-            o.ipv6Gateway = ipv6Gateway;
-            o.macAddress = macAddress;
-            o.networkName = networkName;
-            return o;
+            final var _resultValue = new ContainerNetworkData();
+            _resultValue.gateway = gateway;
+            _resultValue.globalIpv6Address = globalIpv6Address;
+            _resultValue.globalIpv6PrefixLength = globalIpv6PrefixLength;
+            _resultValue.ipAddress = ipAddress;
+            _resultValue.ipPrefixLength = ipPrefixLength;
+            _resultValue.ipv6Gateway = ipv6Gateway;
+            _resultValue.macAddress = macAddress;
+            _resultValue.networkName = networkName;
+            return _resultValue;
         }
     }
 }

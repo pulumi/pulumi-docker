@@ -4,6 +4,7 @@
 package com.pulumi.docker.outputs;
 
 import com.pulumi.core.annotations.CustomType;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.Integer;
 import java.lang.String;
 import java.util.Objects;
@@ -87,31 +88,37 @@ public final class ContainerPort {
 
         @CustomType.Setter
         public Builder external(@Nullable Integer external) {
+
             this.external = external;
             return this;
         }
         @CustomType.Setter
         public Builder internal(Integer internal) {
-            this.internal = Objects.requireNonNull(internal);
+            if (internal == null) {
+              throw new MissingRequiredPropertyException("ContainerPort", "internal");
+            }
+            this.internal = internal;
             return this;
         }
         @CustomType.Setter
         public Builder ip(@Nullable String ip) {
+
             this.ip = ip;
             return this;
         }
         @CustomType.Setter
         public Builder protocol(@Nullable String protocol) {
+
             this.protocol = protocol;
             return this;
         }
         public ContainerPort build() {
-            final var o = new ContainerPort();
-            o.external = external;
-            o.internal = internal;
-            o.ip = ip;
-            o.protocol = protocol;
-            return o;
+            final var _resultValue = new ContainerPort();
+            _resultValue.external = external;
+            _resultValue.internal = internal;
+            _resultValue.ip = ip;
+            _resultValue.protocol = protocol;
+            return _resultValue;
         }
     }
 }

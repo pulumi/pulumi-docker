@@ -101,37 +101,42 @@ public final class ContainerVolume {
 
         @CustomType.Setter
         public Builder containerPath(@Nullable String containerPath) {
+
             this.containerPath = containerPath;
             return this;
         }
         @CustomType.Setter
         public Builder fromContainer(@Nullable String fromContainer) {
+
             this.fromContainer = fromContainer;
             return this;
         }
         @CustomType.Setter
         public Builder hostPath(@Nullable String hostPath) {
+
             this.hostPath = hostPath;
             return this;
         }
         @CustomType.Setter
         public Builder readOnly(@Nullable Boolean readOnly) {
+
             this.readOnly = readOnly;
             return this;
         }
         @CustomType.Setter
         public Builder volumeName(@Nullable String volumeName) {
+
             this.volumeName = volumeName;
             return this;
         }
         public ContainerVolume build() {
-            final var o = new ContainerVolume();
-            o.containerPath = containerPath;
-            o.fromContainer = fromContainer;
-            o.hostPath = hostPath;
-            o.readOnly = readOnly;
-            o.volumeName = volumeName;
-            return o;
+            final var _resultValue = new ContainerVolume();
+            _resultValue.containerPath = containerPath;
+            _resultValue.fromContainer = fromContainer;
+            _resultValue.hostPath = hostPath;
+            _resultValue.readOnly = readOnly;
+            _resultValue.volumeName = volumeName;
+            return _resultValue;
         }
     }
 }

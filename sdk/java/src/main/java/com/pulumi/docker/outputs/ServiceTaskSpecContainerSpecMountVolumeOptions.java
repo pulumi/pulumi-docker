@@ -15,53 +15,21 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceTaskSpecContainerSpecMountVolumeOptions {
-    /**
-     * @return Name of the driver to use to create the volume
-     * 
-     */
     private @Nullable String driverName;
-    /**
-     * @return key/value map of driver specific options
-     * 
-     */
     private @Nullable Map<String,String> driverOptions;
-    /**
-     * @return User-defined key/value metadata
-     * 
-     */
     private @Nullable List<ServiceTaskSpecContainerSpecMountVolumeOptionsLabel> labels;
-    /**
-     * @return Populate volume with data from the target
-     * 
-     */
     private @Nullable Boolean noCopy;
 
     private ServiceTaskSpecContainerSpecMountVolumeOptions() {}
-    /**
-     * @return Name of the driver to use to create the volume
-     * 
-     */
     public Optional<String> driverName() {
         return Optional.ofNullable(this.driverName);
     }
-    /**
-     * @return key/value map of driver specific options
-     * 
-     */
     public Map<String,String> driverOptions() {
         return this.driverOptions == null ? Map.of() : this.driverOptions;
     }
-    /**
-     * @return User-defined key/value metadata
-     * 
-     */
     public List<ServiceTaskSpecContainerSpecMountVolumeOptionsLabel> labels() {
         return this.labels == null ? List.of() : this.labels;
     }
-    /**
-     * @return Populate volume with data from the target
-     * 
-     */
     public Optional<Boolean> noCopy() {
         return Optional.ofNullable(this.noCopy);
     }
@@ -90,16 +58,19 @@ public final class ServiceTaskSpecContainerSpecMountVolumeOptions {
 
         @CustomType.Setter
         public Builder driverName(@Nullable String driverName) {
+
             this.driverName = driverName;
             return this;
         }
         @CustomType.Setter
         public Builder driverOptions(@Nullable Map<String,String> driverOptions) {
+
             this.driverOptions = driverOptions;
             return this;
         }
         @CustomType.Setter
         public Builder labels(@Nullable List<ServiceTaskSpecContainerSpecMountVolumeOptionsLabel> labels) {
+
             this.labels = labels;
             return this;
         }
@@ -108,16 +79,17 @@ public final class ServiceTaskSpecContainerSpecMountVolumeOptions {
         }
         @CustomType.Setter
         public Builder noCopy(@Nullable Boolean noCopy) {
+
             this.noCopy = noCopy;
             return this;
         }
         public ServiceTaskSpecContainerSpecMountVolumeOptions build() {
-            final var o = new ServiceTaskSpecContainerSpecMountVolumeOptions();
-            o.driverName = driverName;
-            o.driverOptions = driverOptions;
-            o.labels = labels;
-            o.noCopy = noCopy;
-            return o;
+            final var _resultValue = new ServiceTaskSpecContainerSpecMountVolumeOptions();
+            _resultValue.driverName = driverName;
+            _resultValue.driverOptions = driverOptions;
+            _resultValue.labels = labels;
+            _resultValue.noCopy = noCopy;
+            return _resultValue;
         }
     }
 }

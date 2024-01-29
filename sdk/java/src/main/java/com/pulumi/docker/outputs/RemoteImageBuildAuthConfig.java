@@ -4,6 +4,7 @@
 package com.pulumi.docker.outputs;
 
 import com.pulumi.core.annotations.CustomType;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.String;
 import java.util.Objects;
 import java.util.Optional;
@@ -142,55 +143,65 @@ public final class RemoteImageBuildAuthConfig {
 
         @CustomType.Setter
         public Builder auth(@Nullable String auth) {
+
             this.auth = auth;
             return this;
         }
         @CustomType.Setter
         public Builder email(@Nullable String email) {
+
             this.email = email;
             return this;
         }
         @CustomType.Setter
         public Builder hostName(String hostName) {
-            this.hostName = Objects.requireNonNull(hostName);
+            if (hostName == null) {
+              throw new MissingRequiredPropertyException("RemoteImageBuildAuthConfig", "hostName");
+            }
+            this.hostName = hostName;
             return this;
         }
         @CustomType.Setter
         public Builder identityToken(@Nullable String identityToken) {
+
             this.identityToken = identityToken;
             return this;
         }
         @CustomType.Setter
         public Builder password(@Nullable String password) {
+
             this.password = password;
             return this;
         }
         @CustomType.Setter
         public Builder registryToken(@Nullable String registryToken) {
+
             this.registryToken = registryToken;
             return this;
         }
         @CustomType.Setter
         public Builder serverAddress(@Nullable String serverAddress) {
+
             this.serverAddress = serverAddress;
             return this;
         }
         @CustomType.Setter
         public Builder userName(@Nullable String userName) {
+
             this.userName = userName;
             return this;
         }
         public RemoteImageBuildAuthConfig build() {
-            final var o = new RemoteImageBuildAuthConfig();
-            o.auth = auth;
-            o.email = email;
-            o.hostName = hostName;
-            o.identityToken = identityToken;
-            o.password = password;
-            o.registryToken = registryToken;
-            o.serverAddress = serverAddress;
-            o.userName = userName;
-            return o;
+            final var _resultValue = new RemoteImageBuildAuthConfig();
+            _resultValue.auth = auth;
+            _resultValue.email = email;
+            _resultValue.hostName = hostName;
+            _resultValue.identityToken = identityToken;
+            _resultValue.password = password;
+            _resultValue.registryToken = registryToken;
+            _resultValue.serverAddress = serverAddress;
+            _resultValue.userName = userName;
+            return _resultValue;
         }
     }
 }

@@ -7,6 +7,11 @@ on:
       - upgrade-bridge
   workflow_dispatch:
     inputs:
+      kind:
+        description: Overrides the kind of upgrade. Must be one of `all`, `bridge`, `provider`, `code`, `pf`, or `pulumi`.
+        required: false
+        type: string
+        default: "bridge"
       target-bridge-version:
         description: pulumi-terraform-bridge version or hash reference
         required: false
@@ -48,9 +53,9 @@ jobs:
     steps:
     - name: Call upgrade provider action
       if: github.event_name == 'workflow_dispatch'
-      uses: pulumi/pulumi-upgrade-provider-action@v0.0.10
+      uses: pulumi/pulumi-upgrade-provider-action@v0.0.11
       with:
-        kind: bridge
+        kind: ${{ inputs.kind }}
         email: bot@pulumi.com
         username: pulumi-bot
         automerge: ${{ inputs.automerge }}
@@ -60,9 +65,9 @@ jobs:
         pr-description: ${{ inputs.pr-description }}
     - name: Call upgrade provider action
       if: github.event_name == 'repository_dispatch'
-      uses: pulumi/pulumi-upgrade-provider-action@v0.0.10
+      uses: pulumi/pulumi-upgrade-provider-action@v0.0.11
       with:
-        kind: bridge
+        kind: ${{ github.event.client_payload.kind || 'bridge' }}
         email: bot@pulumi.com
         username: pulumi-bot
         automerge: ${{ github.event.client_payload.automerge }}

@@ -58,19 +58,21 @@ public final class ContainerMountTmpfsOptions {
 
         @CustomType.Setter
         public Builder mode(@Nullable Integer mode) {
+
             this.mode = mode;
             return this;
         }
         @CustomType.Setter
         public Builder sizeBytes(@Nullable Integer sizeBytes) {
+
             this.sizeBytes = sizeBytes;
             return this;
         }
         public ContainerMountTmpfsOptions build() {
-            final var o = new ContainerMountTmpfsOptions();
-            o.mode = mode;
-            o.sizeBytes = sizeBytes;
-            return o;
+            final var _resultValue = new ContainerMountTmpfsOptions();
+            _resultValue.mode = mode;
+            _resultValue.sizeBytes = sizeBytes;
+            return _resultValue;
         }
     }
 }

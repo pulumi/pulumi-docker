@@ -4,6 +4,7 @@
 package com.pulumi.docker.outputs;
 
 import com.pulumi.core.annotations.CustomType;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.Integer;
 import java.lang.String;
 import java.util.List;
@@ -102,22 +103,28 @@ public final class ContainerHealthcheck {
 
         @CustomType.Setter
         public Builder interval(@Nullable String interval) {
+
             this.interval = interval;
             return this;
         }
         @CustomType.Setter
         public Builder retries(@Nullable Integer retries) {
+
             this.retries = retries;
             return this;
         }
         @CustomType.Setter
         public Builder startPeriod(@Nullable String startPeriod) {
+
             this.startPeriod = startPeriod;
             return this;
         }
         @CustomType.Setter
         public Builder tests(List<String> tests) {
-            this.tests = Objects.requireNonNull(tests);
+            if (tests == null) {
+              throw new MissingRequiredPropertyException("ContainerHealthcheck", "tests");
+            }
+            this.tests = tests;
             return this;
         }
         public Builder tests(String... tests) {
@@ -125,17 +132,18 @@ public final class ContainerHealthcheck {
         }
         @CustomType.Setter
         public Builder timeout(@Nullable String timeout) {
+
             this.timeout = timeout;
             return this;
         }
         public ContainerHealthcheck build() {
-            final var o = new ContainerHealthcheck();
-            o.interval = interval;
-            o.retries = retries;
-            o.startPeriod = startPeriod;
-            o.tests = tests;
-            o.timeout = timeout;
-            return o;
+            final var _resultValue = new ContainerHealthcheck();
+            _resultValue.interval = interval;
+            _resultValue.retries = retries;
+            _resultValue.startPeriod = startPeriod;
+            _resultValue.tests = tests;
+            _resultValue.timeout = timeout;
+            return _resultValue;
         }
     }
 }

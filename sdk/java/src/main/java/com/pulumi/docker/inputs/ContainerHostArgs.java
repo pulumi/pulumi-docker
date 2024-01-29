@@ -5,6 +5,7 @@ package com.pulumi.docker.inputs;
 
 import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.String;
 import java.util.Objects;
 
@@ -111,8 +112,12 @@ public final class ContainerHostArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         public ContainerHostArgs build() {
-            $.host = Objects.requireNonNull($.host, "expected parameter 'host' to be non-null");
-            $.ip = Objects.requireNonNull($.ip, "expected parameter 'ip' to be non-null");
+            if ($.host == null) {
+                throw new MissingRequiredPropertyException("ContainerHostArgs", "host");
+            }
+            if ($.ip == null) {
+                throw new MissingRequiredPropertyException("ContainerHostArgs", "ip");
+            }
             return $;
         }
     }

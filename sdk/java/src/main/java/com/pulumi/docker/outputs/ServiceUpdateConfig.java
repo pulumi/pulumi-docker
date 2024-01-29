@@ -12,77 +12,29 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceUpdateConfig {
-    /**
-     * @return Delay between task updates `(ns|us|ms|s|m|h)`. Defaults to `0s`.
-     * 
-     */
     private @Nullable String delay;
-    /**
-     * @return Action on update failure: `pause`, `continue` or `rollback`. Defaults to `pause`.
-     * 
-     */
     private @Nullable String failureAction;
-    /**
-     * @return Failure rate to tolerate during an update. Defaults to `0.0`.
-     * 
-     */
     private @Nullable String maxFailureRatio;
-    /**
-     * @return Duration after each task update to monitor for failure (ns|us|ms|s|m|h). Defaults to `5s`.
-     * 
-     */
     private @Nullable String monitor;
-    /**
-     * @return Update order: either &#39;stop-first&#39; or &#39;start-first&#39;. Defaults to `stop-first`.
-     * 
-     */
     private @Nullable String order;
-    /**
-     * @return Maximum number of tasks to be updated in one iteration. Defaults to `1`
-     * 
-     */
     private @Nullable Integer parallelism;
 
     private ServiceUpdateConfig() {}
-    /**
-     * @return Delay between task updates `(ns|us|ms|s|m|h)`. Defaults to `0s`.
-     * 
-     */
     public Optional<String> delay() {
         return Optional.ofNullable(this.delay);
     }
-    /**
-     * @return Action on update failure: `pause`, `continue` or `rollback`. Defaults to `pause`.
-     * 
-     */
     public Optional<String> failureAction() {
         return Optional.ofNullable(this.failureAction);
     }
-    /**
-     * @return Failure rate to tolerate during an update. Defaults to `0.0`.
-     * 
-     */
     public Optional<String> maxFailureRatio() {
         return Optional.ofNullable(this.maxFailureRatio);
     }
-    /**
-     * @return Duration after each task update to monitor for failure (ns|us|ms|s|m|h). Defaults to `5s`.
-     * 
-     */
     public Optional<String> monitor() {
         return Optional.ofNullable(this.monitor);
     }
-    /**
-     * @return Update order: either &#39;stop-first&#39; or &#39;start-first&#39;. Defaults to `stop-first`.
-     * 
-     */
     public Optional<String> order() {
         return Optional.ofNullable(this.order);
     }
-    /**
-     * @return Maximum number of tasks to be updated in one iteration. Defaults to `1`
-     * 
-     */
     public Optional<Integer> parallelism() {
         return Optional.ofNullable(this.parallelism);
     }
@@ -115,43 +67,49 @@ public final class ServiceUpdateConfig {
 
         @CustomType.Setter
         public Builder delay(@Nullable String delay) {
+
             this.delay = delay;
             return this;
         }
         @CustomType.Setter
         public Builder failureAction(@Nullable String failureAction) {
+
             this.failureAction = failureAction;
             return this;
         }
         @CustomType.Setter
         public Builder maxFailureRatio(@Nullable String maxFailureRatio) {
+
             this.maxFailureRatio = maxFailureRatio;
             return this;
         }
         @CustomType.Setter
         public Builder monitor(@Nullable String monitor) {
+
             this.monitor = monitor;
             return this;
         }
         @CustomType.Setter
         public Builder order(@Nullable String order) {
+
             this.order = order;
             return this;
         }
         @CustomType.Setter
         public Builder parallelism(@Nullable Integer parallelism) {
+
             this.parallelism = parallelism;
             return this;
         }
         public ServiceUpdateConfig build() {
-            final var o = new ServiceUpdateConfig();
-            o.delay = delay;
-            o.failureAction = failureAction;
-            o.maxFailureRatio = maxFailureRatio;
-            o.monitor = monitor;
-            o.order = order;
-            o.parallelism = parallelism;
-            return o;
+            final var _resultValue = new ServiceUpdateConfig();
+            _resultValue.delay = delay;
+            _resultValue.failureAction = failureAction;
+            _resultValue.maxFailureRatio = maxFailureRatio;
+            _resultValue.monitor = monitor;
+            _resultValue.order = order;
+            _resultValue.parallelism = parallelism;
+            return _resultValue;
         }
     }
 }

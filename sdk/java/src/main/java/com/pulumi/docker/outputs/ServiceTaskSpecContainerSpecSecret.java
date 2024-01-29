@@ -4,6 +4,7 @@
 package com.pulumi.docker.outputs;
 
 import com.pulumi.core.annotations.CustomType;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.Integer;
 import java.lang.String;
 import java.util.Objects;
@@ -12,77 +13,29 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceTaskSpecContainerSpecSecret {
-    /**
-     * @return Represents the file GID. Defaults to `0`.
-     * 
-     */
     private @Nullable String fileGid;
-    /**
-     * @return Represents represents the FileMode of the file. Defaults to `0o444`.
-     * 
-     */
     private @Nullable Integer fileMode;
-    /**
-     * @return Represents the final filename in the filesystem
-     * 
-     */
     private String fileName;
-    /**
-     * @return Represents the file UID. Defaults to `0`.
-     * 
-     */
     private @Nullable String fileUid;
-    /**
-     * @return ID of the specific secret that we&#39;re referencing
-     * 
-     */
     private String secretId;
-    /**
-     * @return Name of the secret that this references, but this is just provided for lookup/display purposes. The config in the reference will be identified by its ID
-     * 
-     */
     private @Nullable String secretName;
 
     private ServiceTaskSpecContainerSpecSecret() {}
-    /**
-     * @return Represents the file GID. Defaults to `0`.
-     * 
-     */
     public Optional<String> fileGid() {
         return Optional.ofNullable(this.fileGid);
     }
-    /**
-     * @return Represents represents the FileMode of the file. Defaults to `0o444`.
-     * 
-     */
     public Optional<Integer> fileMode() {
         return Optional.ofNullable(this.fileMode);
     }
-    /**
-     * @return Represents the final filename in the filesystem
-     * 
-     */
     public String fileName() {
         return this.fileName;
     }
-    /**
-     * @return Represents the file UID. Defaults to `0`.
-     * 
-     */
     public Optional<String> fileUid() {
         return Optional.ofNullable(this.fileUid);
     }
-    /**
-     * @return ID of the specific secret that we&#39;re referencing
-     * 
-     */
     public String secretId() {
         return this.secretId;
     }
-    /**
-     * @return Name of the secret that this references, but this is just provided for lookup/display purposes. The config in the reference will be identified by its ID
-     * 
-     */
     public Optional<String> secretName() {
         return Optional.ofNullable(this.secretName);
     }
@@ -115,43 +68,53 @@ public final class ServiceTaskSpecContainerSpecSecret {
 
         @CustomType.Setter
         public Builder fileGid(@Nullable String fileGid) {
+
             this.fileGid = fileGid;
             return this;
         }
         @CustomType.Setter
         public Builder fileMode(@Nullable Integer fileMode) {
+
             this.fileMode = fileMode;
             return this;
         }
         @CustomType.Setter
         public Builder fileName(String fileName) {
-            this.fileName = Objects.requireNonNull(fileName);
+            if (fileName == null) {
+              throw new MissingRequiredPropertyException("ServiceTaskSpecContainerSpecSecret", "fileName");
+            }
+            this.fileName = fileName;
             return this;
         }
         @CustomType.Setter
         public Builder fileUid(@Nullable String fileUid) {
+
             this.fileUid = fileUid;
             return this;
         }
         @CustomType.Setter
         public Builder secretId(String secretId) {
-            this.secretId = Objects.requireNonNull(secretId);
+            if (secretId == null) {
+              throw new MissingRequiredPropertyException("ServiceTaskSpecContainerSpecSecret", "secretId");
+            }
+            this.secretId = secretId;
             return this;
         }
         @CustomType.Setter
         public Builder secretName(@Nullable String secretName) {
+
             this.secretName = secretName;
             return this;
         }
         public ServiceTaskSpecContainerSpecSecret build() {
-            final var o = new ServiceTaskSpecContainerSpecSecret();
-            o.fileGid = fileGid;
-            o.fileMode = fileMode;
-            o.fileName = fileName;
-            o.fileUid = fileUid;
-            o.secretId = secretId;
-            o.secretName = secretName;
-            return o;
+            final var _resultValue = new ServiceTaskSpecContainerSpecSecret();
+            _resultValue.fileGid = fileGid;
+            _resultValue.fileMode = fileMode;
+            _resultValue.fileName = fileName;
+            _resultValue.fileUid = fileUid;
+            _resultValue.secretId = secretId;
+            _resultValue.secretName = secretName;
+            return _resultValue;
         }
     }
 }

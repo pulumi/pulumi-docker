@@ -7,7 +7,7 @@
     ],
     "homepage": "https://pulumi.io",
     "license": "Apache-2.0",
-    "attribution": "This Pulumi package is based on the [`docker` Terraform Provider](https://github.com/terraform-providers/terraform-provider-docker).",
+    "attribution": "This Pulumi package is based on the [`docker` Terraform Provider](https://github.com/kreuzwerker/terraform-provider-docker).",
     "repository": "https://github.com/pulumi/pulumi-docker",
     "meta": {
         "moduleFormat": "(.*)(?:/[^/]*)"
@@ -29,7 +29,7 @@
         },
         "nodejs": {
             "packageDescription": "A Pulumi package for interacting with Docker in Pulumi programs",
-            "readme": "\u003e This provider is a derived work of the [Terraform Provider](https://github.com/terraform-providers/terraform-provider-docker)\n\u003e distributed under [MPL 2.0](https://www.mozilla.org/en-US/MPL/2.0/). If you encounter a bug or missing feature,\n\u003e first check the [`pulumi-docker` repo](https://github.com/pulumi/pulumi-docker/issues); however, if that doesn't turn up anything,\n\u003e please consult the source [`terraform-provider-docker` repo](https://github.com/terraform-providers/terraform-provider-docker/issues).",
+            "readme": "\u003e This provider is a derived work of the [Terraform Provider](https://github.com/kreuzwerker/terraform-provider-docker)\n\u003e distributed under [MPL 2.0](https://www.mozilla.org/en-US/MPL/2.0/). If you encounter a bug or missing feature,\n\u003e first check the [`pulumi-docker` repo](https://github.com/pulumi/pulumi-docker/issues); however, if that doesn't turn up anything,\n\u003e please consult the source [`terraform-provider-docker` repo](https://github.com/kreuzwerker/terraform-provider-docker/issues).",
             "dependencies": {
                 "@pulumi/pulumi": "^3.0.0",
                 "semver": "^5.4.0"
@@ -45,7 +45,7 @@
             "requires": {
                 "pulumi": "\u003e=3.0.0,\u003c4.0.0"
             },
-            "readme": "\u003e This provider is a derived work of the [Terraform Provider](https://github.com/terraform-providers/terraform-provider-docker)\n\u003e distributed under [MPL 2.0](https://www.mozilla.org/en-US/MPL/2.0/). If you encounter a bug or missing feature,\n\u003e first check the [`pulumi-docker` repo](https://github.com/pulumi/pulumi-docker/issues); however, if that doesn't turn up anything,\n\u003e please consult the source [`terraform-provider-docker` repo](https://github.com/terraform-providers/terraform-provider-docker/issues).",
+            "readme": "\u003e This provider is a derived work of the [Terraform Provider](https://github.com/kreuzwerker/terraform-provider-docker)\n\u003e distributed under [MPL 2.0](https://www.mozilla.org/en-US/MPL/2.0/). If you encounter a bug or missing feature,\n\u003e first check the [`pulumi-docker` repo](https://github.com/pulumi/pulumi-docker/issues); however, if that doesn't turn up anything,\n\u003e please consult the source [`terraform-provider-docker` repo](https://github.com/kreuzwerker/terraform-provider-docker/issues).",
             "compatibility": "tfbridge20",
             "pyproject": {
                 "enabled": true
@@ -493,6 +493,7 @@
                 },
                 "contentBase64": {
                     "type": "string",
+                    "description": "Base64-encoded data that will be decoded and uploaded as raw bytes for the object content. This allows safely uploading non-UTF8 binary data, but is recommended only for larger binary content such as the result of the `base64encode` interpolation function. See here for the reason. Conflicts with `content` \u0026 `source`\n",
                     "willReplaceOnChanges": true
                 },
                 "executable": {
@@ -946,18 +947,15 @@
             "properties": {
                 "password": {
                     "type": "string",
-                    "description": "The password\n",
                     "secret": true,
                     "willReplaceOnChanges": true
                 },
                 "serverAddress": {
                     "type": "string",
-                    "description": "The address of the server for the authentication\n",
                     "willReplaceOnChanges": true
                 },
                 "username": {
                     "type": "string",
-                    "description": "The username\n",
                     "willReplaceOnChanges": true
                 }
             },
@@ -969,12 +967,10 @@
         "docker:index/ServiceConvergeConfig:ServiceConvergeConfig": {
             "properties": {
                 "delay": {
-                    "type": "string",
-                    "description": "The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.\n"
+                    "type": "string"
                 },
                 "timeout": {
-                    "type": "string",
-                    "description": "The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`\n"
+                    "type": "string"
                 }
             },
             "type": "object"
@@ -982,15 +978,13 @@
         "docker:index/ServiceEndpointSpec:ServiceEndpointSpec": {
             "properties": {
                 "mode": {
-                    "type": "string",
-                    "description": "The mode of resolution to use for internal load balancing between tasks\n"
+                    "type": "string"
                 },
                 "ports": {
                     "type": "array",
                     "items": {
                         "$ref": "#/types/docker:index/ServiceEndpointSpecPort:ServiceEndpointSpecPort"
-                    },
-                    "description": "List of exposed ports that this service is accessible on from the outside. Ports can only be provided if 'vip' resolution mode is used\n"
+                    }
                 }
             },
             "type": "object",
@@ -1005,24 +999,19 @@
         "docker:index/ServiceEndpointSpecPort:ServiceEndpointSpecPort": {
             "properties": {
                 "name": {
-                    "type": "string",
-                    "description": "A random name for the port\n"
+                    "type": "string"
                 },
                 "protocol": {
-                    "type": "string",
-                    "description": "Rrepresents the protocol of a port: `tcp`, `udp` or `sctp`. Defaults to `tcp`.\n"
+                    "type": "string"
                 },
                 "publishMode": {
-                    "type": "string",
-                    "description": "Represents the mode in which the port is to be published: 'ingress' or 'host'. Defaults to `ingress`.\n"
+                    "type": "string"
                 },
                 "publishedPort": {
-                    "type": "integer",
-                    "description": "The port on the swarm hosts\n"
+                    "type": "integer"
                 },
                 "targetPort": {
-                    "type": "integer",
-                    "description": "The port inside the container\n"
+                    "type": "integer"
                 }
             },
             "type": "object",
@@ -1042,12 +1031,10 @@
             "properties": {
                 "label": {
                     "type": "string",
-                    "description": "Name of the label\n",
                     "willReplaceOnChanges": true
                 },
                 "value": {
                     "type": "string",
-                    "description": "Value of the label\n",
                     "willReplaceOnChanges": true
                 }
             },
@@ -1060,12 +1047,10 @@
         "docker:index/ServiceMode:ServiceMode": {
             "properties": {
                 "global": {
-                    "type": "boolean",
-                    "description": "When `true`, tasks will run on every worker node. Conflicts with `replicated`\n"
+                    "type": "boolean"
                 },
                 "replicated": {
-                    "$ref": "#/types/docker:index/ServiceModeReplicated:ServiceModeReplicated",
-                    "description": "The replicated service mode\n"
+                    "$ref": "#/types/docker:index/ServiceModeReplicated:ServiceModeReplicated"
                 }
             },
             "type": "object",
@@ -1080,8 +1065,7 @@
         "docker:index/ServiceModeReplicated:ServiceModeReplicated": {
             "properties": {
                 "replicas": {
-                    "type": "integer",
-                    "description": "The amount of replicas of the service. Defaults to `1`\n"
+                    "type": "integer"
                 }
             },
             "type": "object"
@@ -1089,28 +1073,22 @@
         "docker:index/ServiceRollbackConfig:ServiceRollbackConfig": {
             "properties": {
                 "delay": {
-                    "type": "string",
-                    "description": "Delay between task rollbacks (ns|us|ms|s|m|h). Defaults to `0s`.\n"
+                    "type": "string"
                 },
                 "failureAction": {
-                    "type": "string",
-                    "description": "Action on rollback failure: pause | continue. Defaults to `pause`.\n"
+                    "type": "string"
                 },
                 "maxFailureRatio": {
-                    "type": "string",
-                    "description": "Failure rate to tolerate during a rollback. Defaults to `0.0`.\n"
+                    "type": "string"
                 },
                 "monitor": {
-                    "type": "string",
-                    "description": "Duration after each task rollback to monitor for failure (ns|us|ms|s|m|h). Defaults to `5s`.\n"
+                    "type": "string"
                 },
                 "order": {
-                    "type": "string",
-                    "description": "Rollback order: either 'stop-first' or 'start-first'. Defaults to `stop-first`.\n"
+                    "type": "string"
                 },
                 "parallelism": {
-                    "type": "integer",
-                    "description": "Maximum number of tasks to be rollbacked in one iteration. Defaults to `1`\n"
+                    "type": "integer"
                 }
             },
             "type": "object"
@@ -1118,39 +1096,31 @@
         "docker:index/ServiceTaskSpec:ServiceTaskSpec": {
             "properties": {
                 "containerSpec": {
-                    "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpec:ServiceTaskSpecContainerSpec",
-                    "description": "The spec for each container\n"
+                    "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpec:ServiceTaskSpecContainerSpec"
                 },
                 "forceUpdate": {
-                    "type": "integer",
-                    "description": "A counter that triggers an update even if no relevant parameters have been changed. See the [spec](https://github.com/docker/swarmkit/blob/master/api/specs.proto#L126).\n"
+                    "type": "integer"
                 },
                 "logDriver": {
-                    "$ref": "#/types/docker:index/ServiceTaskSpecLogDriver:ServiceTaskSpecLogDriver",
-                    "description": "Specifies the log driver to use for tasks created from this spec. If not present, the default one for the swarm will be used, finally falling back to the engine default if not specified\n"
+                    "$ref": "#/types/docker:index/ServiceTaskSpecLogDriver:ServiceTaskSpecLogDriver"
                 },
                 "networksAdvanceds": {
                     "type": "array",
                     "items": {
                         "$ref": "#/types/docker:index/ServiceTaskSpecNetworksAdvanced:ServiceTaskSpecNetworksAdvanced"
-                    },
-                    "description": "The networks the container is attached to\n"
+                    }
                 },
                 "placement": {
-                    "$ref": "#/types/docker:index/ServiceTaskSpecPlacement:ServiceTaskSpecPlacement",
-                    "description": "The placement preferences\n"
+                    "$ref": "#/types/docker:index/ServiceTaskSpecPlacement:ServiceTaskSpecPlacement"
                 },
                 "resources": {
-                    "$ref": "#/types/docker:index/ServiceTaskSpecResources:ServiceTaskSpecResources",
-                    "description": "Resource requirements which apply to each individual container created as part of the service\n"
+                    "$ref": "#/types/docker:index/ServiceTaskSpecResources:ServiceTaskSpecResources"
                 },
                 "restartPolicy": {
-                    "$ref": "#/types/docker:index/ServiceTaskSpecRestartPolicy:ServiceTaskSpecRestartPolicy",
-                    "description": "Specification for the restart policy which applies to containers created as part of this service.\n"
+                    "$ref": "#/types/docker:index/ServiceTaskSpecRestartPolicy:ServiceTaskSpecRestartPolicy"
                 },
                 "runtime": {
-                    "type": "string",
-                    "description": "Runtime is the type of runtime specified for the task executor. See the [types](https://github.com/moby/moby/blob/master/api/types/swarm/runtime.go).\n"
+                    "type": "string"
                 }
             },
             "type": "object",
@@ -1176,117 +1146,96 @@
                     "type": "array",
                     "items": {
                         "type": "string"
-                    },
-                    "description": "Arguments to the command\n"
+                    }
                 },
                 "commands": {
                     "type": "array",
                     "items": {
                         "type": "string"
-                    },
-                    "description": "The command/entrypoint to be run in the image. According to the [docker cli](https://github.com/docker/cli/blob/v20.10.7/cli/command/service/opts.go#L705) the override of the entrypoint is also passed to the `command` property and there is no `entrypoint` attribute in the `ContainerSpec` of the service.\n"
+                    }
                 },
                 "configs": {
                     "type": "array",
                     "items": {
                         "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecConfig:ServiceTaskSpecContainerSpecConfig"
-                    },
-                    "description": "References to zero or more configs that will be exposed to the service\n"
+                    }
                 },
                 "dir": {
-                    "type": "string",
-                    "description": "The working directory for commands to run in\n"
+                    "type": "string"
                 },
                 "dnsConfig": {
-                    "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecDnsConfig:ServiceTaskSpecContainerSpecDnsConfig",
-                    "description": "Specification for DNS related configurations in resolver configuration file (`resolv.conf`)\n"
+                    "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecDnsConfig:ServiceTaskSpecContainerSpecDnsConfig"
                 },
                 "env": {
                     "type": "object",
                     "additionalProperties": {
                         "type": "string"
-                    },
-                    "description": "A list of environment variables in the form VAR=\"value\"\n"
+                    }
                 },
                 "groups": {
                     "type": "array",
                     "items": {
                         "type": "string"
-                    },
-                    "description": "A list of additional groups that the container process will run as\n"
+                    }
                 },
                 "healthcheck": {
-                    "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecHealthcheck:ServiceTaskSpecContainerSpecHealthcheck",
-                    "description": "A test to perform to check that the container is healthy\n"
+                    "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecHealthcheck:ServiceTaskSpecContainerSpecHealthcheck"
                 },
                 "hostname": {
-                    "type": "string",
-                    "description": "The hostname to use for the container, as a valid RFC 1123 hostname\n"
+                    "type": "string"
                 },
                 "hosts": {
                     "type": "array",
                     "items": {
                         "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecHost:ServiceTaskSpecContainerSpecHost"
                     },
-                    "description": "A list of hostname/IP mappings to add to the container's hosts file\n",
                     "willReplaceOnChanges": true
                 },
                 "image": {
-                    "type": "string",
-                    "description": "The image name to use for the containers of the service, like `nginx:1.17.6`. Also use the data-source or resource of `docker.RemoteImage` with the `repo_digest` or `docker.RegistryImage` with the `name` attribute for this, as shown in the examples.\n"
+                    "type": "string"
                 },
                 "isolation": {
-                    "type": "string",
-                    "description": "Isolation technology of the containers running the service. (Windows only). Defaults to `default`.\n"
+                    "type": "string"
                 },
                 "labels": {
                     "type": "array",
                     "items": {
                         "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecLabel:ServiceTaskSpecContainerSpecLabel"
-                    },
-                    "description": "User-defined key/value metadata\n"
+                    }
                 },
                 "mounts": {
                     "type": "array",
                     "items": {
                         "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecMount:ServiceTaskSpecContainerSpecMount"
-                    },
-                    "description": "Specification for mounts to be added to containers created as part of the service\n"
+                    }
                 },
                 "privileges": {
-                    "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecPrivileges:ServiceTaskSpecContainerSpecPrivileges",
-                    "description": "Security options for the container\n"
+                    "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecPrivileges:ServiceTaskSpecContainerSpecPrivileges"
                 },
                 "readOnly": {
-                    "type": "boolean",
-                    "description": "Whether the mount should be read-only\n"
+                    "type": "boolean"
                 },
                 "secrets": {
                     "type": "array",
                     "items": {
                         "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecSecret:ServiceTaskSpecContainerSpecSecret"
-                    },
-                    "description": "References to zero or more secrets that will be exposed to the service\n"
+                    }
                 },
                 "stopGracePeriod": {
-                    "type": "string",
-                    "description": "Amount of time to wait for the container to terminate before forcefully removing it (ms|s|m|h). If not specified or '0s' the destroy will not check if all tasks/containers of the service terminate.\n"
+                    "type": "string"
                 },
                 "stopSignal": {
-                    "type": "string",
-                    "description": "Signal to stop the container\n"
+                    "type": "string"
                 },
                 "sysctl": {
                     "type": "object",
                     "additionalProperties": {
                         "$ref": "pulumi.json#/Any"
                     },
-                    "description": "Sysctls config (Linux only)\n",
                     "willReplaceOnChanges": true
                 },
                 "user": {
-                    "type": "string",
-                    "description": "SELinux user label\n"
+                    "type": "string"
                 }
             },
             "type": "object",
@@ -1307,28 +1256,22 @@
         "docker:index/ServiceTaskSpecContainerSpecConfig:ServiceTaskSpecContainerSpecConfig": {
             "properties": {
                 "configId": {
-                    "type": "string",
-                    "description": "ID of the specific config that we're referencing\n"
+                    "type": "string"
                 },
                 "configName": {
-                    "type": "string",
-                    "description": "Name of the config that this references, but this is just provided for lookup/display purposes. The config in the reference will be identified by its ID\n"
+                    "type": "string"
                 },
                 "fileGid": {
-                    "type": "string",
-                    "description": "Represents the file GID. Defaults to `0`.\n"
+                    "type": "string"
                 },
                 "fileMode": {
-                    "type": "integer",
-                    "description": "Represents represents the FileMode of the file. Defaults to `0o444`.\n"
+                    "type": "integer"
                 },
                 "fileName": {
-                    "type": "string",
-                    "description": "Represents the final filename in the filesystem\n"
+                    "type": "string"
                 },
                 "fileUid": {
-                    "type": "string",
-                    "description": "Represents the file UID. Defaults to `0`.\n"
+                    "type": "string"
                 }
             },
             "type": "object",
@@ -1343,22 +1286,19 @@
                     "type": "array",
                     "items": {
                         "type": "string"
-                    },
-                    "description": "The IP addresses of the name servers\n"
+                    }
                 },
                 "options": {
                     "type": "array",
                     "items": {
                         "type": "string"
-                    },
-                    "description": "A list of internal resolver variables to be modified (e.g., `debug`, `ndots:3`, etc.)\n"
+                    }
                 },
                 "searches": {
                     "type": "array",
                     "items": {
                         "type": "string"
-                    },
-                    "description": "A search list for host-name lookup\n"
+                    }
                 }
             },
             "type": "object",
@@ -1369,27 +1309,22 @@
         "docker:index/ServiceTaskSpecContainerSpecHealthcheck:ServiceTaskSpecContainerSpecHealthcheck": {
             "properties": {
                 "interval": {
-                    "type": "string",
-                    "description": "Time between running the check (ms|s|m|h). Defaults to `0s`.\n"
+                    "type": "string"
                 },
                 "retries": {
-                    "type": "integer",
-                    "description": "Consecutive failures needed to report unhealthy. Defaults to `0`\n"
+                    "type": "integer"
                 },
                 "startPeriod": {
-                    "type": "string",
-                    "description": "Start period for the container to initialize before counting retries towards unstable (ms|s|m|h). Defaults to `0s`.\n"
+                    "type": "string"
                 },
                 "tests": {
                     "type": "array",
                     "items": {
                         "type": "string"
-                    },
-                    "description": "The test to perform as list\n"
+                    }
                 },
                 "timeout": {
-                    "type": "string",
-                    "description": "The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`\n"
+                    "type": "string"
                 }
             },
             "type": "object",
@@ -1401,12 +1336,10 @@
             "properties": {
                 "host": {
                     "type": "string",
-                    "description": "The name of the host\n",
                     "willReplaceOnChanges": true
                 },
                 "ip": {
                     "type": "string",
-                    "description": "The ip of the host\n",
                     "willReplaceOnChanges": true
                 }
             },
@@ -1420,12 +1353,10 @@
             "properties": {
                 "label": {
                     "type": "string",
-                    "description": "Name of the label\n",
                     "willReplaceOnChanges": true
                 },
                 "value": {
                     "type": "string",
-                    "description": "Value of the label\n",
                     "willReplaceOnChanges": true
                 }
             },
@@ -1438,32 +1369,25 @@
         "docker:index/ServiceTaskSpecContainerSpecMount:ServiceTaskSpecContainerSpecMount": {
             "properties": {
                 "bindOptions": {
-                    "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecMountBindOptions:ServiceTaskSpecContainerSpecMountBindOptions",
-                    "description": "Optional configuration for the bind type\n"
+                    "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecMountBindOptions:ServiceTaskSpecContainerSpecMountBindOptions"
                 },
                 "readOnly": {
-                    "type": "boolean",
-                    "description": "Whether the mount should be read-only\n"
+                    "type": "boolean"
                 },
                 "source": {
-                    "type": "string",
-                    "description": "Mount source (e.g. a volume name, a host path)\n"
+                    "type": "string"
                 },
                 "target": {
-                    "type": "string",
-                    "description": "Container path\n"
+                    "type": "string"
                 },
                 "tmpfsOptions": {
-                    "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecMountTmpfsOptions:ServiceTaskSpecContainerSpecMountTmpfsOptions",
-                    "description": "Optional configuration for the tmpfs type\n"
+                    "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecMountTmpfsOptions:ServiceTaskSpecContainerSpecMountTmpfsOptions"
                 },
                 "type": {
-                    "type": "string",
-                    "description": "The mount type\n"
+                    "type": "string"
                 },
                 "volumeOptions": {
-                    "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecMountVolumeOptions:ServiceTaskSpecContainerSpecMountVolumeOptions",
-                    "description": "Optional configuration for the volume type\n"
+                    "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecMountVolumeOptions:ServiceTaskSpecContainerSpecMountVolumeOptions"
                 }
             },
             "type": "object",
@@ -1475,8 +1399,7 @@
         "docker:index/ServiceTaskSpecContainerSpecMountBindOptions:ServiceTaskSpecContainerSpecMountBindOptions": {
             "properties": {
                 "propagation": {
-                    "type": "string",
-                    "description": "Bind propagation refers to whether or not mounts created within a given bind-mount or named volume can be propagated to replicas of that mount. See the [docs](https://docs.docker.com/storage/bind-mounts/#configure-bind-propagation) for details. Defaults to `rprivate`\n"
+                    "type": "string"
                 }
             },
             "type": "object"
@@ -1484,12 +1407,10 @@
         "docker:index/ServiceTaskSpecContainerSpecMountTmpfsOptions:ServiceTaskSpecContainerSpecMountTmpfsOptions": {
             "properties": {
                 "mode": {
-                    "type": "integer",
-                    "description": "The mode of resolution to use for internal load balancing between tasks\n"
+                    "type": "integer"
                 },
                 "sizeBytes": {
-                    "type": "integer",
-                    "description": "The size for the tmpfs mount in bytes\n"
+                    "type": "integer"
                 }
             },
             "type": "object"
@@ -1497,26 +1418,22 @@
         "docker:index/ServiceTaskSpecContainerSpecMountVolumeOptions:ServiceTaskSpecContainerSpecMountVolumeOptions": {
             "properties": {
                 "driverName": {
-                    "type": "string",
-                    "description": "Name of the driver to use to create the volume\n"
+                    "type": "string"
                 },
                 "driverOptions": {
                     "type": "object",
                     "additionalProperties": {
                         "type": "string"
-                    },
-                    "description": "key/value map of driver specific options\n"
+                    }
                 },
                 "labels": {
                     "type": "array",
                     "items": {
                         "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecMountVolumeOptionsLabel:ServiceTaskSpecContainerSpecMountVolumeOptionsLabel"
-                    },
-                    "description": "User-defined key/value metadata\n"
+                    }
                 },
                 "noCopy": {
-                    "type": "boolean",
-                    "description": "Populate volume with data from the target\n"
+                    "type": "boolean"
                 }
             },
             "type": "object"
@@ -1525,12 +1442,10 @@
             "properties": {
                 "label": {
                     "type": "string",
-                    "description": "Name of the label\n",
                     "willReplaceOnChanges": true
                 },
                 "value": {
                     "type": "string",
-                    "description": "Value of the label\n",
                     "willReplaceOnChanges": true
                 }
             },
@@ -1543,12 +1458,10 @@
         "docker:index/ServiceTaskSpecContainerSpecPrivileges:ServiceTaskSpecContainerSpecPrivileges": {
             "properties": {
                 "credentialSpec": {
-                    "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecPrivilegesCredentialSpec:ServiceTaskSpecContainerSpecPrivilegesCredentialSpec",
-                    "description": "CredentialSpec for managed service account (Windows only)\n"
+                    "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecPrivilegesCredentialSpec:ServiceTaskSpecContainerSpecPrivilegesCredentialSpec"
                 },
                 "seLinuxContext": {
-                    "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext:ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext",
-                    "description": "SELinux labels of the container\n"
+                    "$ref": "#/types/docker:index/ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext:ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext"
                 }
             },
             "type": "object"
@@ -1556,12 +1469,10 @@
         "docker:index/ServiceTaskSpecContainerSpecPrivilegesCredentialSpec:ServiceTaskSpecContainerSpecPrivilegesCredentialSpec": {
             "properties": {
                 "file": {
-                    "type": "string",
-                    "description": "Load credential spec from this file\n"
+                    "type": "string"
                 },
                 "registry": {
-                    "type": "string",
-                    "description": "Load credential spec from this value in the Windows registry\n"
+                    "type": "string"
                 }
             },
             "type": "object"
@@ -1569,24 +1480,19 @@
         "docker:index/ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext:ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext": {
             "properties": {
                 "disable": {
-                    "type": "boolean",
-                    "description": "Disable SELinux\n"
+                    "type": "boolean"
                 },
                 "level": {
-                    "type": "string",
-                    "description": "SELinux level label\n"
+                    "type": "string"
                 },
                 "role": {
-                    "type": "string",
-                    "description": "SELinux role label\n"
+                    "type": "string"
                 },
                 "type": {
-                    "type": "string",
-                    "description": "The mount type\n"
+                    "type": "string"
                 },
                 "user": {
-                    "type": "string",
-                    "description": "SELinux user label\n"
+                    "type": "string"
                 }
             },
             "type": "object"
@@ -1594,28 +1500,22 @@
         "docker:index/ServiceTaskSpecContainerSpecSecret:ServiceTaskSpecContainerSpecSecret": {
             "properties": {
                 "fileGid": {
-                    "type": "string",
-                    "description": "Represents the file GID. Defaults to `0`.\n"
+                    "type": "string"
                 },
                 "fileMode": {
-                    "type": "integer",
-                    "description": "Represents represents the FileMode of the file. Defaults to `0o444`.\n"
+                    "type": "integer"
                 },
                 "fileName": {
-                    "type": "string",
-                    "description": "Represents the final filename in the filesystem\n"
+                    "type": "string"
                 },
                 "fileUid": {
-                    "type": "string",
-                    "description": "Represents the file UID. Defaults to `0`.\n"
+                    "type": "string"
                 },
                 "secretId": {
-                    "type": "string",
-                    "description": "ID of the specific secret that we're referencing\n"
+                    "type": "string"
                 },
                 "secretName": {
-                    "type": "string",
-                    "description": "Name of the secret that this references, but this is just provided for lookup/display purposes. The config in the reference will be identified by its ID\n"
+                    "type": "string"
                 }
             },
             "type": "object",
@@ -1627,15 +1527,13 @@
         "docker:index/ServiceTaskSpecLogDriver:ServiceTaskSpecLogDriver": {
             "properties": {
                 "name": {
-                    "type": "string",
-                    "description": "A random name for the port\n"
+                    "type": "string"
                 },
                 "options": {
                     "type": "object",
                     "additionalProperties": {
                         "type": "string"
-                    },
-                    "description": "A list of internal resolver variables to be modified (e.g., `debug`, `ndots:3`, etc.)\n"
+                    }
                 }
             },
             "type": "object",
@@ -1650,7 +1548,6 @@
                     "items": {
                         "type": "string"
                     },
-                    "description": "The network aliases of the container in the specific network.\n",
                     "willReplaceOnChanges": true
                 },
                 "driverOpts": {
@@ -1658,12 +1555,10 @@
                     "items": {
                         "type": "string"
                     },
-                    "description": "An array of driver options for the network, e.g. `opts1=value`\n",
                     "willReplaceOnChanges": true
                 },
                 "name": {
                     "type": "string",
-                    "description": "A random name for the port\n",
                     "willReplaceOnChanges": true
                 }
             },
@@ -1678,26 +1573,22 @@
                     "type": "array",
                     "items": {
                         "type": "string"
-                    },
-                    "description": "An array of constraints. e.g.: `node.role==manager`\n"
+                    }
                 },
                 "maxReplicas": {
-                    "type": "integer",
-                    "description": "Maximum number of replicas for per node (default value is `0`, which is unlimited)\n"
+                    "type": "integer"
                 },
                 "platforms": {
                     "type": "array",
                     "items": {
                         "$ref": "#/types/docker:index/ServiceTaskSpecPlacementPlatform:ServiceTaskSpecPlacementPlatform"
-                    },
-                    "description": "Platforms stores all the platforms that the service's image can run on\n"
+                    }
                 },
                 "prefs": {
                     "type": "array",
                     "items": {
                         "type": "string"
-                    },
-                    "description": "Preferences provide a way to make the scheduler aware of factors such as topology. They are provided in order from highest to lowest precedence, e.g.: `spread=node.role.manager`\n"
+                    }
                 }
             },
             "type": "object"
@@ -1705,12 +1596,10 @@
         "docker:index/ServiceTaskSpecPlacementPlatform:ServiceTaskSpecPlacementPlatform": {
             "properties": {
                 "architecture": {
-                    "type": "string",
-                    "description": "The architecture, e.g. `amd64`\n"
+                    "type": "string"
                 },
                 "os": {
-                    "type": "string",
-                    "description": "The operation system, e.g. `linux`\n"
+                    "type": "string"
                 }
             },
             "type": "object",
@@ -1722,12 +1611,10 @@
         "docker:index/ServiceTaskSpecResources:ServiceTaskSpecResources": {
             "properties": {
                 "limits": {
-                    "$ref": "#/types/docker:index/ServiceTaskSpecResourcesLimits:ServiceTaskSpecResourcesLimits",
-                    "description": "Describes the resources which can be advertised by a node and requested by a task\n"
+                    "$ref": "#/types/docker:index/ServiceTaskSpecResourcesLimits:ServiceTaskSpecResourcesLimits"
                 },
                 "reservation": {
-                    "$ref": "#/types/docker:index/ServiceTaskSpecResourcesReservation:ServiceTaskSpecResourcesReservation",
-                    "description": "An object describing the resources which can be advertised by a node and requested by a task\n"
+                    "$ref": "#/types/docker:index/ServiceTaskSpecResourcesReservation:ServiceTaskSpecResourcesReservation"
                 }
             },
             "type": "object"
@@ -1735,12 +1622,10 @@
         "docker:index/ServiceTaskSpecResourcesLimits:ServiceTaskSpecResourcesLimits": {
             "properties": {
                 "memoryBytes": {
-                    "type": "integer",
-                    "description": "The amounf of memory in bytes the container allocates\n"
+                    "type": "integer"
                 },
                 "nanoCpus": {
-                    "type": "integer",
-                    "description": "CPU shares in units of `1/1e9` (or `10^-9`) of the CPU. Should be at least `1000000`\n"
+                    "type": "integer"
                 }
             },
             "type": "object"
@@ -1748,16 +1633,13 @@
         "docker:index/ServiceTaskSpecResourcesReservation:ServiceTaskSpecResourcesReservation": {
             "properties": {
                 "genericResources": {
-                    "$ref": "#/types/docker:index/ServiceTaskSpecResourcesReservationGenericResources:ServiceTaskSpecResourcesReservationGenericResources",
-                    "description": "User-defined resources can be either Integer resources (e.g, `SSD=3`) or String resources (e.g, GPU=UUID1)\n"
+                    "$ref": "#/types/docker:index/ServiceTaskSpecResourcesReservationGenericResources:ServiceTaskSpecResourcesReservationGenericResources"
                 },
                 "memoryBytes": {
-                    "type": "integer",
-                    "description": "The amounf of memory in bytes the container allocates\n"
+                    "type": "integer"
                 },
                 "nanoCpus": {
-                    "type": "integer",
-                    "description": "CPU shares in units of `1/1e9` (or `10^-9`) of the CPU. Should be at least `1000000`\n"
+                    "type": "integer"
                 }
             },
             "type": "object"
@@ -1768,15 +1650,13 @@
                     "type": "array",
                     "items": {
                         "type": "string"
-                    },
-                    "description": "The Integer resources\n"
+                    }
                 },
                 "namedResourcesSpecs": {
                     "type": "array",
                     "items": {
                         "type": "string"
-                    },
-                    "description": "The String resources\n"
+                    }
                 }
             },
             "type": "object"
@@ -1784,20 +1664,16 @@
         "docker:index/ServiceTaskSpecRestartPolicy:ServiceTaskSpecRestartPolicy": {
             "properties": {
                 "condition": {
-                    "type": "string",
-                    "description": "Condition for restart\n"
+                    "type": "string"
                 },
                 "delay": {
-                    "type": "string",
-                    "description": "The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.\n"
+                    "type": "string"
                 },
                 "maxAttempts": {
-                    "type": "integer",
-                    "description": "Maximum attempts to restart a given container before giving up (default value is `0`, which is ignored)\n"
+                    "type": "integer"
                 },
                 "window": {
-                    "type": "string",
-                    "description": "The time window used to evaluate the restart policy (default value is `0`, which is unbounded) (ms|s|m|h)\n"
+                    "type": "string"
                 }
             },
             "type": "object"
@@ -1805,28 +1681,22 @@
         "docker:index/ServiceUpdateConfig:ServiceUpdateConfig": {
             "properties": {
                 "delay": {
-                    "type": "string",
-                    "description": "Delay between task updates `(ns|us|ms|s|m|h)`. Defaults to `0s`.\n"
+                    "type": "string"
                 },
                 "failureAction": {
-                    "type": "string",
-                    "description": "Action on update failure: `pause`, `continue` or `rollback`. Defaults to `pause`.\n"
+                    "type": "string"
                 },
                 "maxFailureRatio": {
-                    "type": "string",
-                    "description": "Failure rate to tolerate during an update. Defaults to `0.0`.\n"
+                    "type": "string"
                 },
                 "monitor": {
-                    "type": "string",
-                    "description": "Duration after each task update to monitor for failure (ns|us|ms|s|m|h). Defaults to `5s`.\n"
+                    "type": "string"
                 },
                 "order": {
-                    "type": "string",
-                    "description": "Update order: either 'stop-first' or 'start-first'. Defaults to `stop-first`.\n"
+                    "type": "string"
                 },
                 "parallelism": {
-                    "type": "integer",
-                    "description": "Maximum number of tasks to be updated in one iteration. Defaults to `1`\n"
+                    "type": "integer"
                 }
             },
             "type": "object"
@@ -3913,7 +3783,7 @@
             }
         },
         "docker:index/service:Service": {
-            "description": "\n\n\n## Import\n\n### Example Assuming you created a `service` as follows #!/bin/bash docker service create --name foo -p 8080:80 nginx prints th ID 4pcphbxkfn2rffhbhe6czytgi you provide the definition for the resource as follows terraform resource \"docker_service\" \"foo\" {\n\n name = \"foo\"\n\n task_spec {\n\n\n\n container_spec {\n\n\n\n\n\n image = \"nginx\"\n\n\n\n }\n\n }\n\n endpoint_spec {\n\n\n\n ports {\n\n\n\n\n\n target_port\n\n\n\n= \"80\"\n\n\n\n\n\n published_port = \"8080\"\n\n\n\n }\n\n } } then the import command is as follows #!/bin/bash\n\n```sh\n $ pulumi import docker:index/service:Service foo 4pcphbxkfn2rffhbhe6czytgi\n```\n\n ",
+            "description": "\u003c!-- Bug: Type and Name are switched --\u003e\nThis resource manages the lifecycle of a Docker service. By default, the creation, update and delete of services are detached.\n With the Converge Config Name of the service\n- `task_spec` (Block List, Min: 1, Max: 1) User modifiable task configuration (see below for nested schema)\n\n\n## Import\n\n### Example Assuming you created a `service` as follows #!/bin/bash docker service create --name foo -p 8080:80 nginx prints th ID 4pcphbxkfn2rffhbhe6czytgi you provide the definition for the resource as follows terraform resource \"docker_service\" \"foo\" {\n\n name = \"foo\"\n\n task_spec {\n\n\n\n container_spec {\n\n\n\n\n\n image = \"nginx\"\n\n\n\n }\n\n }\n\n endpoint_spec {\n\n\n\n ports {\n\n\n\n\n\n target_port\n\n\n\n= \"80\"\n\n\n\n\n\n published_port = \"8080\"\n\n\n\n }\n\n } } then the import command is as follows #!/bin/bash\n\n```sh\n $ pulumi import docker:index/service:Service foo 4pcphbxkfn2rffhbhe6czytgi\n```\n\n ",
             "properties": {
                 "auth": {
                     "$ref": "#/types/docker:index/ServiceAuth:ServiceAuth",
@@ -3936,11 +3806,11 @@
                 },
                 "mode": {
                     "$ref": "#/types/docker:index/ServiceMode:ServiceMode",
-                    "description": "The mode of resolution to use for internal load balancing between tasks\n"
+                    "description": "Scheduling mode for the service\n"
                 },
                 "name": {
                     "type": "string",
-                    "description": "A random name for the port\n"
+                    "description": "Name of the service\n"
                 },
                 "rollbackConfig": {
                     "$ref": "#/types/docker:index/ServiceRollbackConfig:ServiceRollbackConfig",
@@ -3985,12 +3855,12 @@
                 },
                 "mode": {
                     "$ref": "#/types/docker:index/ServiceMode:ServiceMode",
-                    "description": "The mode of resolution to use for internal load balancing between tasks\n",
+                    "description": "Scheduling mode for the service\n",
                     "willReplaceOnChanges": true
                 },
                 "name": {
                     "type": "string",
-                    "description": "A random name for the port\n",
+                    "description": "Name of the service\n",
                     "willReplaceOnChanges": true
                 },
                 "rollbackConfig": {
@@ -4034,12 +3904,12 @@
                     },
                     "mode": {
                         "$ref": "#/types/docker:index/ServiceMode:ServiceMode",
-                        "description": "The mode of resolution to use for internal load balancing between tasks\n",
+                        "description": "Scheduling mode for the service\n",
                         "willReplaceOnChanges": true
                     },
                     "name": {
                         "type": "string",
-                        "description": "A random name for the port\n",
+                        "description": "Name of the service\n",
                         "willReplaceOnChanges": true
                     },
                     "rollbackConfig": {
