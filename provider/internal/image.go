@@ -238,7 +238,7 @@ func (i *Image) Update(
 		return state, nil
 	}
 
-	result, err := cfg.client.Build(ctx.(context.Context), opts)
+	result, err := cfg.client.Build(ctx, opts)
 	if err != nil {
 		return state, err
 	}
