@@ -17,6 +17,7 @@ class ImageArgs:
     def __init__(__self__, *,
                  tags: pulumi.Input[Sequence[pulumi.Input[str]]],
                  build_args: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
+                 builder: Optional[pulumi.Input[str]] = None,
                  cache_from: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  cache_to: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  context: Optional[pulumi.Input[str]] = None,
@@ -34,6 +35,8 @@ class ImageArgs:
                the Docker build. This flag allows you to pass build-time variables that
                can be accessed like environment variables inside the RUN
                instruction.
+        :param pulumi.Input[str] builder: 
+               Build with a specific builder instance
         :param pulumi.Input[Sequence[pulumi.Input[str]]] cache_from: 
                External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
         :param pulumi.Input[Sequence[pulumi.Input[str]]] cache_to: 
@@ -53,6 +56,8 @@ class ImageArgs:
         pulumi.set(__self__, "tags", tags)
         if build_args is not None:
             pulumi.set(__self__, "build_args", build_args)
+        if builder is not None:
+            pulumi.set(__self__, "builder", builder)
         if cache_from is not None:
             pulumi.set(__self__, "cache_from", cache_from)
         if cache_to is not None:
@@ -99,6 +104,19 @@ class ImageArgs:
     @build_args.setter
     def build_args(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]):
         pulumi.set(self, "build_args", value)
+
+    @property
+    @pulumi.getter
+    def builder(self) -> Optional[pulumi.Input[str]]:
+        """
+
+        Build with a specific builder instance
+        """
+        return pulumi.get(self, "builder")
+
+    @builder.setter
+    def builder(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "builder", value)
 
     @property
     @pulumi.getter(name="cacheFrom")
@@ -199,6 +217,7 @@ class Image(pulumi.CustomResource):
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
                  build_args: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
+                 builder: Optional[pulumi.Input[str]] = None,
                  cache_from: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  cache_to: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  context: Optional[pulumi.Input[str]] = None,
@@ -218,6 +237,8 @@ class Image(pulumi.CustomResource):
                the Docker build. This flag allows you to pass build-time variables that
                can be accessed like environment variables inside the RUN
                instruction.
+        :param pulumi.Input[str] builder: 
+               Build with a specific builder instance
         :param pulumi.Input[Sequence[pulumi.Input[str]]] cache_from: 
                External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
         :param pulumi.Input[Sequence[pulumi.Input[str]]] cache_to: 
@@ -262,6 +283,7 @@ class Image(pulumi.CustomResource):
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
                  build_args: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
+                 builder: Optional[pulumi.Input[str]] = None,
                  cache_from: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  cache_to: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  context: Optional[pulumi.Input[str]] = None,
@@ -280,6 +302,7 @@ class Image(pulumi.CustomResource):
             __props__ = ImageArgs.__new__(ImageArgs)
 
             __props__.__dict__["build_args"] = build_args
+            __props__.__dict__["builder"] = builder
             __props__.__dict__["cache_from"] = cache_from
             __props__.__dict__["cache_to"] = cache_to
             __props__.__dict__["context"] = context
@@ -316,6 +339,7 @@ class Image(pulumi.CustomResource):
         __props__ = ImageArgs.__new__(ImageArgs)
 
         __props__.__dict__["build_args"] = None
+        __props__.__dict__["builder"] = None
         __props__.__dict__["cache_from"] = None
         __props__.__dict__["cache_to"] = None
         __props__.__dict__["context"] = None
@@ -338,6 +362,15 @@ class Image(pulumi.CustomResource):
         instruction.
         """
         return pulumi.get(self, "build_args")
+
+    @property
+    @pulumi.getter
+    def builder(self) -> pulumi.Output[Optional[str]]:
+        """
+
+        Build with a specific builder instance
+        """
+        return pulumi.get(self, "builder")
 
     @property
     @pulumi.getter(name="cacheFrom")

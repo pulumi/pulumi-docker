@@ -21,6 +21,8 @@ type Image struct {
 	// can be accessed like environment variables inside the RUN
 	// instruction.
 	BuildArgs pulumi.StringMapOutput `pulumi:"buildArgs"`
+	// Build with a specific builder instance
+	Builder pulumi.StringPtrOutput `pulumi:"builder"`
 	// External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
 	CacheFrom pulumi.StringArrayOutput `pulumi:"cacheFrom"`
 	// Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
@@ -93,6 +95,8 @@ type imageArgs struct {
 	// can be accessed like environment variables inside the RUN
 	// instruction.
 	BuildArgs map[string]string `pulumi:"buildArgs"`
+	// Build with a specific builder instance
+	Builder *string `pulumi:"builder"`
 	// External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
 	CacheFrom []string `pulumi:"cacheFrom"`
 	// Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
@@ -120,6 +124,8 @@ type ImageArgs struct {
 	// can be accessed like environment variables inside the RUN
 	// instruction.
 	BuildArgs pulumi.StringMapInput
+	// Build with a specific builder instance
+	Builder pulumi.StringPtrInput
 	// External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
 	CacheFrom pulumi.StringArrayInput
 	// Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
@@ -233,6 +239,11 @@ func (o ImageOutput) ToImageOutputWithContext(ctx context.Context) ImageOutput {
 // instruction.
 func (o ImageOutput) BuildArgs() pulumi.StringMapOutput {
 	return o.ApplyT(func(v *Image) pulumi.StringMapOutput { return v.BuildArgs }).(pulumi.StringMapOutput)
+}
+
+// Build with a specific builder instance
+func (o ImageOutput) Builder() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *Image) pulumi.StringPtrOutput { return v.Builder }).(pulumi.StringPtrOutput)
 }
 
 // External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")

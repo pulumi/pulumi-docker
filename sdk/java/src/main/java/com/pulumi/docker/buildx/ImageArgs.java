@@ -43,6 +43,22 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
+     * Build with a specific builder instance
+     * 
+     */
+    @Import(name="builder")
+    private @Nullable Output<String> builder;
+
+    /**
+     * @return
+     * Build with a specific builder instance
+     * 
+     */
+    public Optional<Output<String>> builder_() {
+        return Optional.ofNullable(this.builder);
+    }
+
+    /**
      * External cache sources (e.g., &#34;user/app:cache&#34;, &#34;type=local,src=path/to/dir&#34;)
      * 
      */
@@ -178,6 +194,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
 
     private ImageArgs(ImageArgs $) {
         this.buildArgs = $.buildArgs;
+        this.builder = $.builder;
         this.cacheFrom = $.cacheFrom;
         this.cacheTo = $.cacheTo;
         this.context = $.context;
@@ -233,6 +250,29 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
          */
         public Builder buildArgs(Map<String,String> buildArgs) {
             return buildArgs(Output.of(buildArgs));
+        }
+
+        /**
+         * @param builder
+         * Build with a specific builder instance
+         * 
+         * @return builder
+         * 
+         */
+        public Builder builder_(@Nullable Output<String> builder) {
+            $.builder = builder;
+            return this;
+        }
+
+        /**
+         * @param builder
+         * Build with a specific builder instance
+         * 
+         * @return builder
+         * 
+         */
+        public Builder builder_(String builder) {
+            return builder_(Output.of(builder));
         }
 
         /**
