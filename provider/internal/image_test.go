@@ -1,7 +1,6 @@
 package internal
 
 import (
-	"context"
 	"errors"
 	"testing"
 
@@ -50,7 +49,7 @@ func TestLifecycle(t *testing.T) {
 					c.EXPECT().BuildKitEnabled().Return(true, nil), // Preview.
 					c.EXPECT().BuildKitEnabled().Return(true, nil), // Create.
 					c.EXPECT().Build(gomock.Any(), gomock.AssignableToTypeOf(controllerapi.BuildOptions{})).DoAndReturn(
-						func(_ context.Context, opts controllerapi.BuildOptions) (*client.SolveResponse, error) {
+						func(_ provider.Context, opts controllerapi.BuildOptions) (*client.SolveResponse, error) {
 							assert.Equal(t, "../testdata/Dockerfile", opts.DockerfileName)
 							return &client.SolveResponse{ExporterResponse: map[string]string{"containerimage.digest": "SHA256:digest"}}, nil
 						},
@@ -195,7 +194,7 @@ func TestLifecycle(t *testing.T) {
 					c.EXPECT().BuildKitEnabled().Return(true, nil), // Preview.
 					c.EXPECT().BuildKitEnabled().Return(true, nil), // Create.
 					c.EXPECT().Build(gomock.Any(), gomock.AssignableToTypeOf(controllerapi.BuildOptions{})).DoAndReturn(
-						func(_ context.Context, opts controllerapi.BuildOptions) (*client.SolveResponse, error) {
+						func(_ provider.Context, opts controllerapi.BuildOptions) (*client.SolveResponse, error) {
 							assert.Equal(t, "Dockerfile", opts.DockerfileName)
 							return &client.SolveResponse{ExporterResponse: map[string]string{"image.name": "test:latest"}}, nil
 						},
