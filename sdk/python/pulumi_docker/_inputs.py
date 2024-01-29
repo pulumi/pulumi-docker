@@ -3889,23 +3889,29 @@ class CacheFromArgs:
 @pulumi.input_type
 class DockerBuildArgs:
     def __init__(__self__, *,
+                 add_hosts: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  args: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
                  builder_version: Optional[pulumi.Input['BuilderVersion']] = None,
                  cache_from: Optional[pulumi.Input['CacheFromArgs']] = None,
                  context: Optional[pulumi.Input[str]] = None,
                  dockerfile: Optional[pulumi.Input[str]] = None,
+                 network: Optional[pulumi.Input[str]] = None,
                  platform: Optional[pulumi.Input[str]] = None,
                  target: Optional[pulumi.Input[str]] = None):
         """
         The Docker build context
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] add_hosts: Custom host-to-IP mappings to use while building (format: "host:ip")
         :param pulumi.Input[Mapping[str, pulumi.Input[str]]] args: An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass build-time variables that can be accessed like environment variables inside the RUN instruction.
         :param pulumi.Input['BuilderVersion'] builder_version: The version of the Docker builder.
         :param pulumi.Input['CacheFromArgs'] cache_from: A list of image names to use as build cache. Images provided must have a cache manifest. Must provide authentication to cache registry.
         :param pulumi.Input[str] context: The path to the build context to use.
         :param pulumi.Input[str] dockerfile: The path to the Dockerfile to use.
+        :param pulumi.Input[str] network: Set the networking mode for RUN instructions
         :param pulumi.Input[str] platform: The architecture of the platform you want to build this image for, e.g. `linux/arm64`.
         :param pulumi.Input[str] target: The target of the Dockerfile to build
         """
+        if add_hosts is not None:
+            pulumi.set(__self__, "add_hosts", add_hosts)
         if args is not None:
             pulumi.set(__self__, "args", args)
         if builder_version is not None:
@@ -3916,10 +3922,24 @@ class DockerBuildArgs:
             pulumi.set(__self__, "context", context)
         if dockerfile is not None:
             pulumi.set(__self__, "dockerfile", dockerfile)
+        if network is not None:
+            pulumi.set(__self__, "network", network)
         if platform is not None:
             pulumi.set(__self__, "platform", platform)
         if target is not None:
             pulumi.set(__self__, "target", target)
+
+    @property
+    @pulumi.getter(name="addHosts")
+    def add_hosts(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+        """
+        Custom host-to-IP mappings to use while building (format: "host:ip")
+        """
+        return pulumi.get(self, "add_hosts")
+
+    @add_hosts.setter
+    def add_hosts(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
+        pulumi.set(self, "add_hosts", value)
 
     @property
     @pulumi.getter
@@ -3980,6 +4000,18 @@ class DockerBuildArgs:
     @dockerfile.setter
     def dockerfile(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "dockerfile", value)
+
+    @property
+    @pulumi.getter
+    def network(self) -> Optional[pulumi.Input[str]]:
+        """
+        Set the networking mode for RUN instructions
+        """
+        return pulumi.get(self, "network")
+
+    @network.setter
+    def network(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "network", value)
 
     @property
     @pulumi.getter

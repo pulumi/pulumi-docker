@@ -145,6 +145,10 @@ export class Image extends pulumi.CustomResource {
      */
     public readonly imageName!: pulumi.Output<string>;
     /**
+     * The image's architecture and OS
+     */
+    public /*out*/ readonly platform!: pulumi.Output<string | undefined>;
+    /**
      * The name of the registry server hosting the image.
      */
     public /*out*/ readonly registryServer!: pulumi.Output<string>;
@@ -181,6 +185,7 @@ export class Image extends pulumi.CustomResource {
             resourceInputs["baseImageName"] = undefined /*out*/;
             resourceInputs["context"] = undefined /*out*/;
             resourceInputs["dockerfile"] = undefined /*out*/;
+            resourceInputs["platform"] = undefined /*out*/;
             resourceInputs["registryServer"] = undefined /*out*/;
             resourceInputs["repoDigest"] = undefined /*out*/;
         } else {
@@ -188,6 +193,7 @@ export class Image extends pulumi.CustomResource {
             resourceInputs["context"] = undefined /*out*/;
             resourceInputs["dockerfile"] = undefined /*out*/;
             resourceInputs["imageName"] = undefined /*out*/;
+            resourceInputs["platform"] = undefined /*out*/;
             resourceInputs["registryServer"] = undefined /*out*/;
             resourceInputs["repoDigest"] = undefined /*out*/;
         }

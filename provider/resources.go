@@ -194,6 +194,14 @@ func Provider() tfbridge.ProviderInfo {
 								"e.g. `linux/arm64`.",
 							TypeSpec: schema.TypeSpec{Type: "string"},
 						},
+						"addHosts": {
+							Description: "Custom host-to-IP mappings to use while building (format: \"host:ip\")",
+							TypeSpec:    schema.TypeSpec{Type: "array", Items: &schema.TypeSpec{Type: "string"}},
+						},
+						"network": {
+							Description: "Set the networking mode for RUN instructions",
+							TypeSpec:    schema.TypeSpec{Type: "string"},
+						},
 					},
 				},
 			},
@@ -220,10 +228,12 @@ func Provider() tfbridge.ProviderInfo {
 					Type:        "string",
 				},
 				Enum: []schema.EnumValueSpec{
-					{Name: "BuilderV1", Value: "BuilderV1",
+					{
+						Name: "BuilderV1", Value: "BuilderV1",
 						Description: "The first generation builder for Docker Daemon",
 					},
-					{Name: "BuilderBuildKit", Value: "BuilderBuildKit",
+					{
+						Name: "BuilderBuildKit", Value: "BuilderBuildKit",
 						Description: "The builder based on moby/buildkit project",
 					},
 				},
@@ -271,6 +281,10 @@ func Provider() tfbridge.ProviderInfo {
 								"<algorithm>:<hash>, " +
 								"e.g `sha256:826a130323165bb0ccb0374ae774f885c067a951b51a6ee133577f4e5dbc4119` \n",
 							TypeSpec: schema.TypeSpec{Type: "string"},
+						},
+						"platform": {
+							Description: "The image's architecture and OS",
+							TypeSpec:    schema.TypeSpec{Type: "string"},
 						},
 					},
 				},
@@ -341,7 +355,8 @@ func Provider() tfbridge.ProviderInfo {
 			i := &tfbridge.PythonInfo{
 				Requires: map[string]string{
 					"pulumi": ">=3.0.0,<4.0.0",
-				}}
+				},
+			}
 			i.PyProject.Enabled = true
 			return i
 		})(),

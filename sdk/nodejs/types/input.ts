@@ -285,6 +285,10 @@ export interface ContainerVolume {
  */
 export interface DockerBuild {
     /**
+     * Custom host-to-IP mappings to use while building (format: "host:ip")
+     */
+    addHosts?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
      * An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass build-time variables that can be accessed like environment variables inside the RUN instruction.
      */
     args?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
@@ -304,6 +308,10 @@ export interface DockerBuild {
      * The path to the Dockerfile to use.
      */
     dockerfile?: pulumi.Input<string>;
+    /**
+     * Set the networking mode for RUN instructions
+     */
+    network?: pulumi.Input<string>;
     /**
      * The architecture of the platform you want to build this image for, e.g. `linux/arm64`.
      */

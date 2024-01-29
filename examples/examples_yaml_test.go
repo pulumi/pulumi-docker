@@ -152,3 +152,35 @@ func TestUnknownsBuildOnPreviewWarnsYAML(t *testing.T) {
 		},
 	})
 }
+
+func TestBuilderVersionsYAML(t *testing.T) {
+	cwd, err := os.Getwd()
+	if !assert.NoError(t, err) {
+		t.FailNow()
+	}
+
+	t.Run("v1", func(t *testing.T) {
+		integration.ProgramTest(t, &integration.ProgramTestOptions{
+			Dir:         path.Join(cwd, "test-builder-version", "v1"),
+			Quick:       true,
+			SkipRefresh: true,
+			ExtraRuntimeValidation: func(t *testing.T, stack integration.RuntimeValidationStackInfo) {
+				platform, ok := stack.Outputs["platform"]
+				assert.True(t, ok)
+				assert.NotEmpty(t, platform)
+			},
+		})
+	})
+	t.Run("v2", func(t *testing.T) {
+		integration.ProgramTest(t, &integration.ProgramTestOptions{
+			Dir:         path.Join(cwd, "test-builder-version", "v2"),
+			Quick:       true,
+			SkipRefresh: true,
+			ExtraRuntimeValidation: func(t *testing.T, stack integration.RuntimeValidationStackInfo) {
+				platform, ok := stack.Outputs["platform"]
+				assert.True(t, ok)
+				assert.NotEmpty(t, platform)
+			},
+		})
+	})
+}

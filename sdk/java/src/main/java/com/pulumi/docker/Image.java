@@ -12,6 +12,7 @@ import com.pulumi.docker.ImageArgs;
 import com.pulumi.docker.Utilities;
 import java.lang.String;
 import java.util.List;
+import java.util.Optional;
 import javax.annotation.Nullable;
 
 /**
@@ -231,6 +232,20 @@ public class Image extends com.pulumi.resources.CustomResource {
      */
     public Output<String> imageName() {
         return this.imageName;
+    }
+    /**
+     * The image&#39;s architecture and OS
+     * 
+     */
+    @Export(name="platform", refs={String.class}, tree="[0]")
+    private Output</* @Nullable */ String> platform;
+
+    /**
+     * @return The image&#39;s architecture and OS
+     * 
+     */
+    public Output<Optional<String>> platform() {
+        return Codegen.optional(this.platform);
     }
     /**
      * The name of the registry server hosting the image.
