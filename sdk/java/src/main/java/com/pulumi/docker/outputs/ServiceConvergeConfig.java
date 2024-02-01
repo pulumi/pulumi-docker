@@ -11,13 +11,29 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceConvergeConfig {
+    /**
+     * @return The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.
+     * 
+     */
     private @Nullable String delay;
+    /**
+     * @return The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`
+     * 
+     */
     private @Nullable String timeout;
 
     private ServiceConvergeConfig() {}
+    /**
+     * @return The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.
+     * 
+     */
     public Optional<String> delay() {
         return Optional.ofNullable(this.delay);
     }
+    /**
+     * @return The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`
+     * 
+     */
     public Optional<String> timeout() {
         return Optional.ofNullable(this.timeout);
     }

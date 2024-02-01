@@ -13,21 +13,53 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class GetNetworkIpamConfig {
+    /**
+     * @return Auxiliary IPv4 or IPv6 addresses used by Network driver
+     * 
+     */
     private @Nullable Map<String,Object> auxAddress;
+    /**
+     * @return The IP address of the gateway
+     * 
+     */
     private @Nullable String gateway;
+    /**
+     * @return The ip range in CIDR form
+     * 
+     */
     private @Nullable String ipRange;
+    /**
+     * @return The subnet in CIDR form
+     * 
+     */
     private @Nullable String subnet;
 
     private GetNetworkIpamConfig() {}
+    /**
+     * @return Auxiliary IPv4 or IPv6 addresses used by Network driver
+     * 
+     */
     public Map<String,Object> auxAddress() {
         return this.auxAddress == null ? Map.of() : this.auxAddress;
     }
+    /**
+     * @return The IP address of the gateway
+     * 
+     */
     public Optional<String> gateway() {
         return Optional.ofNullable(this.gateway);
     }
+    /**
+     * @return The ip range in CIDR form
+     * 
+     */
     public Optional<String> ipRange() {
         return Optional.ofNullable(this.ipRange);
     }
+    /**
+     * @return The subnet in CIDR form
+     * 
+     */
     public Optional<String> subnet() {
         return Optional.ofNullable(this.subnet);
     }

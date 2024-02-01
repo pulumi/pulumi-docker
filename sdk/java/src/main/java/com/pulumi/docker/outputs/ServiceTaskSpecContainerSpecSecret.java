@@ -13,29 +13,77 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceTaskSpecContainerSpecSecret {
+    /**
+     * @return Represents the file GID. Defaults to `0`
+     * 
+     */
     private @Nullable String fileGid;
+    /**
+     * @return Represents represents the FileMode of the file. Defaults to `0o444`
+     * 
+     */
     private @Nullable Integer fileMode;
+    /**
+     * @return Represents the final filename in the filesystem
+     * 
+     */
     private String fileName;
+    /**
+     * @return Represents the file UID. Defaults to `0`
+     * 
+     */
     private @Nullable String fileUid;
+    /**
+     * @return ID of the specific secret that we&#39;re referencing
+     * 
+     */
     private String secretId;
+    /**
+     * @return Name of the secret that this references, but this is just provided for lookup/display purposes. The config in the reference will be identified by its ID
+     * 
+     */
     private @Nullable String secretName;
 
     private ServiceTaskSpecContainerSpecSecret() {}
+    /**
+     * @return Represents the file GID. Defaults to `0`
+     * 
+     */
     public Optional<String> fileGid() {
         return Optional.ofNullable(this.fileGid);
     }
+    /**
+     * @return Represents represents the FileMode of the file. Defaults to `0o444`
+     * 
+     */
     public Optional<Integer> fileMode() {
         return Optional.ofNullable(this.fileMode);
     }
+    /**
+     * @return Represents the final filename in the filesystem
+     * 
+     */
     public String fileName() {
         return this.fileName;
     }
+    /**
+     * @return Represents the file UID. Defaults to `0`
+     * 
+     */
     public Optional<String> fileUid() {
         return Optional.ofNullable(this.fileUid);
     }
+    /**
+     * @return ID of the specific secret that we&#39;re referencing
+     * 
+     */
     public String secretId() {
         return this.secretId;
     }
+    /**
+     * @return Name of the secret that this references, but this is just provided for lookup/display purposes. The config in the reference will be identified by its ID
+     * 
+     */
     public Optional<String> secretName() {
         return Optional.ofNullable(this.secretName);
     }

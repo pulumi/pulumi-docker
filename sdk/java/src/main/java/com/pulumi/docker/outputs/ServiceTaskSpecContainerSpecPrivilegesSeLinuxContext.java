@@ -12,25 +12,65 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext {
+    /**
+     * @return Disable SELinux
+     * 
+     */
     private @Nullable Boolean disable;
+    /**
+     * @return SELinux level label
+     * 
+     */
     private @Nullable String level;
+    /**
+     * @return SELinux role label
+     * 
+     */
     private @Nullable String role;
+    /**
+     * @return SELinux type label
+     * 
+     */
     private @Nullable String type;
+    /**
+     * @return SELinux user label
+     * 
+     */
     private @Nullable String user;
 
     private ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext() {}
+    /**
+     * @return Disable SELinux
+     * 
+     */
     public Optional<Boolean> disable() {
         return Optional.ofNullable(this.disable);
     }
+    /**
+     * @return SELinux level label
+     * 
+     */
     public Optional<String> level() {
         return Optional.ofNullable(this.level);
     }
+    /**
+     * @return SELinux role label
+     * 
+     */
     public Optional<String> role() {
         return Optional.ofNullable(this.role);
     }
+    /**
+     * @return SELinux type label
+     * 
+     */
     public Optional<String> type() {
         return Optional.ofNullable(this.type);
     }
+    /**
+     * @return SELinux user label
+     * 
+     */
     public Optional<String> user() {
         return Optional.ofNullable(this.user);
     }

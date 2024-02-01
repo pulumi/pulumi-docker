@@ -14,16 +14,32 @@ public final class ServiceTaskSpecPlacementPlatformArgs extends com.pulumi.resou
 
     public static final ServiceTaskSpecPlacementPlatformArgs Empty = new ServiceTaskSpecPlacementPlatformArgs();
 
+    /**
+     * The architecture, e.g. `amd64`
+     * 
+     */
     @Import(name="architecture", required=true)
     private Output<String> architecture;
 
+    /**
+     * @return The architecture, e.g. `amd64`
+     * 
+     */
     public Output<String> architecture() {
         return this.architecture;
     }
 
+    /**
+     * The operation system, e.g. `linux`
+     * 
+     */
     @Import(name="os", required=true)
     private Output<String> os;
 
+    /**
+     * @return The operation system, e.g. `linux`
+     * 
+     */
     public Output<String> os() {
         return this.os;
     }
@@ -53,20 +69,44 @@ public final class ServiceTaskSpecPlacementPlatformArgs extends com.pulumi.resou
             $ = new ServiceTaskSpecPlacementPlatformArgs(Objects.requireNonNull(defaults));
         }
 
+        /**
+         * @param architecture The architecture, e.g. `amd64`
+         * 
+         * @return builder
+         * 
+         */
         public Builder architecture(Output<String> architecture) {
             $.architecture = architecture;
             return this;
         }
 
+        /**
+         * @param architecture The architecture, e.g. `amd64`
+         * 
+         * @return builder
+         * 
+         */
         public Builder architecture(String architecture) {
             return architecture(Output.of(architecture));
         }
 
+        /**
+         * @param os The operation system, e.g. `linux`
+         * 
+         * @return builder
+         * 
+         */
         public Builder os(Output<String> os) {
             $.os = os;
             return this;
         }
 
+        /**
+         * @param os The operation system, e.g. `linux`
+         * 
+         * @return builder
+         * 
+         */
         public Builder os(String os) {
             return os(Output.of(os));
         }

@@ -12,37 +12,101 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ContainerNetworkData {
+    /**
+     * @return The network gateway of the container.
+     * 
+     */
     private @Nullable String gateway;
+    /**
+     * @return The IPV6 address of the container.
+     * 
+     */
     private @Nullable String globalIpv6Address;
+    /**
+     * @return The IPV6 prefix length address of the container.
+     * 
+     */
     private @Nullable Integer globalIpv6PrefixLength;
+    /**
+     * @return The IP address of the container.
+     * 
+     */
     private @Nullable String ipAddress;
+    /**
+     * @return The IP prefix length of the container.
+     * 
+     */
     private @Nullable Integer ipPrefixLength;
+    /**
+     * @return The IPV6 gateway of the container.
+     * 
+     */
     private @Nullable String ipv6Gateway;
+    /**
+     * @return The MAC address of the container.
+     * 
+     */
     private @Nullable String macAddress;
+    /**
+     * @return The name of the network
+     * 
+     */
     private @Nullable String networkName;
 
     private ContainerNetworkData() {}
+    /**
+     * @return The network gateway of the container.
+     * 
+     */
     public Optional<String> gateway() {
         return Optional.ofNullable(this.gateway);
     }
+    /**
+     * @return The IPV6 address of the container.
+     * 
+     */
     public Optional<String> globalIpv6Address() {
         return Optional.ofNullable(this.globalIpv6Address);
     }
+    /**
+     * @return The IPV6 prefix length address of the container.
+     * 
+     */
     public Optional<Integer> globalIpv6PrefixLength() {
         return Optional.ofNullable(this.globalIpv6PrefixLength);
     }
+    /**
+     * @return The IP address of the container.
+     * 
+     */
     public Optional<String> ipAddress() {
         return Optional.ofNullable(this.ipAddress);
     }
+    /**
+     * @return The IP prefix length of the container.
+     * 
+     */
     public Optional<Integer> ipPrefixLength() {
         return Optional.ofNullable(this.ipPrefixLength);
     }
+    /**
+     * @return The IPV6 gateway of the container.
+     * 
+     */
     public Optional<String> ipv6Gateway() {
         return Optional.ofNullable(this.ipv6Gateway);
     }
+    /**
+     * @return The MAC address of the container.
+     * 
+     */
     public Optional<String> macAddress() {
         return Optional.ofNullable(this.macAddress);
     }
+    /**
+     * @return The name of the network
+     * 
+     */
     public Optional<String> networkName() {
         return Optional.ofNullable(this.networkName);
     }

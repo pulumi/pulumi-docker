@@ -104,11 +104,26 @@ namespace Pulumi.Docker
 
              public class RegistryAuth
              {
+            /// <summary>
+            /// Address of the registry
+            /// </summary>
                 public string Address { get; set; }
                 public bool? AuthDisabled { get; set; }
+            /// <summary>
+            /// Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `config_file` has predencen over all other options.
+            /// </summary>
                 public string? ConfigFile { get; set; } = null!;
+            /// <summary>
+            /// Plain content of the docker json file for registry auth. `config_file_content` has precedence over username/password.
+            /// </summary>
                 public string? ConfigFileContent { get; set; } = null!;
+            /// <summary>
+            /// Password for the registry. Defaults to `DOCKER_REGISTRY_PASS` env variable if set.
+            /// </summary>
                 public string? Password { get; set; } = null!;
+            /// <summary>
+            /// Username for the registry. Defaults to `DOCKER_REGISTRY_USER` env variable if set.
+            /// </summary>
                 public string? Username { get; set; } = null!;
             }
         }
