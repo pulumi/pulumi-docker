@@ -14,12 +14,17 @@ import (
 var _ = internal.GetEnvOrDefault
 
 type RegistryAuth struct {
-	Address           string  `pulumi:"address"`
-	AuthDisabled      *bool   `pulumi:"authDisabled"`
-	ConfigFile        *string `pulumi:"configFile"`
+	// Address of the registry
+	Address      string `pulumi:"address"`
+	AuthDisabled *bool  `pulumi:"authDisabled"`
+	// Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `configFile` has predencen over all other options.
+	ConfigFile *string `pulumi:"configFile"`
+	// Plain content of the docker json file for registry auth. `configFileContent` has precedence over username/password.
 	ConfigFileContent *string `pulumi:"configFileContent"`
-	Password          *string `pulumi:"password"`
-	Username          *string `pulumi:"username"`
+	// Password for the registry. Defaults to `DOCKER_REGISTRY_PASS` env variable if set.
+	Password *string `pulumi:"password"`
+	// Username for the registry. Defaults to `DOCKER_REGISTRY_USER` env variable if set.
+	Username *string `pulumi:"username"`
 }
 
 // RegistryAuthInput is an input type that accepts RegistryAuthArgs and RegistryAuthOutput values.
@@ -34,12 +39,17 @@ type RegistryAuthInput interface {
 }
 
 type RegistryAuthArgs struct {
-	Address           pulumi.StringInput    `pulumi:"address"`
-	AuthDisabled      pulumi.BoolPtrInput   `pulumi:"authDisabled"`
-	ConfigFile        pulumi.StringPtrInput `pulumi:"configFile"`
+	// Address of the registry
+	Address      pulumi.StringInput  `pulumi:"address"`
+	AuthDisabled pulumi.BoolPtrInput `pulumi:"authDisabled"`
+	// Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `configFile` has predencen over all other options.
+	ConfigFile pulumi.StringPtrInput `pulumi:"configFile"`
+	// Plain content of the docker json file for registry auth. `configFileContent` has precedence over username/password.
 	ConfigFileContent pulumi.StringPtrInput `pulumi:"configFileContent"`
-	Password          pulumi.StringPtrInput `pulumi:"password"`
-	Username          pulumi.StringPtrInput `pulumi:"username"`
+	// Password for the registry. Defaults to `DOCKER_REGISTRY_PASS` env variable if set.
+	Password pulumi.StringPtrInput `pulumi:"password"`
+	// Username for the registry. Defaults to `DOCKER_REGISTRY_USER` env variable if set.
+	Username pulumi.StringPtrInput `pulumi:"username"`
 }
 
 func (RegistryAuthArgs) ElementType() reflect.Type {
@@ -93,6 +103,7 @@ func (o RegistryAuthOutput) ToRegistryAuthOutputWithContext(ctx context.Context)
 	return o
 }
 
+// Address of the registry
 func (o RegistryAuthOutput) Address() pulumi.StringOutput {
 	return o.ApplyT(func(v RegistryAuth) string { return v.Address }).(pulumi.StringOutput)
 }
@@ -101,18 +112,22 @@ func (o RegistryAuthOutput) AuthDisabled() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v RegistryAuth) *bool { return v.AuthDisabled }).(pulumi.BoolPtrOutput)
 }
 
+// Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `configFile` has predencen over all other options.
 func (o RegistryAuthOutput) ConfigFile() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v RegistryAuth) *string { return v.ConfigFile }).(pulumi.StringPtrOutput)
 }
 
+// Plain content of the docker json file for registry auth. `configFileContent` has precedence over username/password.
 func (o RegistryAuthOutput) ConfigFileContent() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v RegistryAuth) *string { return v.ConfigFileContent }).(pulumi.StringPtrOutput)
 }
 
+// Password for the registry. Defaults to `DOCKER_REGISTRY_PASS` env variable if set.
 func (o RegistryAuthOutput) Password() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v RegistryAuth) *string { return v.Password }).(pulumi.StringPtrOutput)
 }
 
+// Username for the registry. Defaults to `DOCKER_REGISTRY_USER` env variable if set.
 func (o RegistryAuthOutput) Username() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v RegistryAuth) *string { return v.Username }).(pulumi.StringPtrOutput)
 }

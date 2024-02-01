@@ -12,9 +12,15 @@ namespace Pulumi.Docker.Inputs
 
     public sealed class ServiceTaskSpecContainerSpecMountTmpfsOptionsGetArgs : global::Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// The permission mode for the tmpfs mount in an integer
+        /// </summary>
         [Input("mode")]
         public Input<int>? Mode { get; set; }
 
+        /// <summary>
+        /// The size for the tmpfs mount in bytes
+        /// </summary>
         [Input("sizeBytes")]
         public Input<int>? SizeBytes { get; set; }
 

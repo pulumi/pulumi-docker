@@ -22,6 +22,13 @@ class RegistryAuth(dict):
                  config_file_content: Optional[str] = None,
                  password: Optional[str] = None,
                  username: Optional[str] = None):
+        """
+        :param str address: Address of the registry
+        :param str config_file: Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `config_file` has predencen over all other options.
+        :param str config_file_content: Plain content of the docker json file for registry auth. `config_file_content` has precedence over username/password.
+        :param str password: Password for the registry. Defaults to `DOCKER_REGISTRY_PASS` env variable if set.
+        :param str username: Username for the registry. Defaults to `DOCKER_REGISTRY_USER` env variable if set.
+        """
         pulumi.set(__self__, "address", address)
         if auth_disabled is not None:
             pulumi.set(__self__, "auth_disabled", auth_disabled)
@@ -37,6 +44,9 @@ class RegistryAuth(dict):
     @property
     @pulumi.getter
     def address(self) -> str:
+        """
+        Address of the registry
+        """
         return pulumi.get(self, "address")
 
     @property
@@ -47,21 +57,33 @@ class RegistryAuth(dict):
     @property
     @pulumi.getter(name="configFile")
     def config_file(self) -> Optional[str]:
+        """
+        Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `config_file` has predencen over all other options.
+        """
         return pulumi.get(self, "config_file")
 
     @property
     @pulumi.getter(name="configFileContent")
     def config_file_content(self) -> Optional[str]:
+        """
+        Plain content of the docker json file for registry auth. `config_file_content` has precedence over username/password.
+        """
         return pulumi.get(self, "config_file_content")
 
     @property
     @pulumi.getter
     def password(self) -> Optional[str]:
+        """
+        Password for the registry. Defaults to `DOCKER_REGISTRY_PASS` env variable if set.
+        """
         return pulumi.get(self, "password")
 
     @property
     @pulumi.getter
     def username(self) -> Optional[str]:
+        """
+        Username for the registry. Defaults to `DOCKER_REGISTRY_USER` env variable if set.
+        """
         return pulumi.get(self, "username")
 
 

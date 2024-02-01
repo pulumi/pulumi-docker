@@ -13,8 +13,17 @@ namespace Pulumi.Docker.Outputs
     [OutputType]
     public sealed class ServiceAuth
     {
+        /// <summary>
+        /// The password
+        /// </summary>
         public readonly string? Password;
+        /// <summary>
+        /// The address of the server for the authentication
+        /// </summary>
         public readonly string ServerAddress;
+        /// <summary>
+        /// The username
+        /// </summary>
         public readonly string? Username;
 
         [OutputConstructor]

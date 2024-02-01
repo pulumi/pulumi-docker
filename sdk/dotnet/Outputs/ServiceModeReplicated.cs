@@ -13,6 +13,9 @@ namespace Pulumi.Docker.Outputs
     [OutputType]
     public sealed class ServiceModeReplicated
     {
+        /// <summary>
+        /// The amount of replicas of the service. Defaults to `1`
+        /// </summary>
         public readonly int? Replicas;
 
         [OutputConstructor]

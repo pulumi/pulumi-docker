@@ -12,21 +12,39 @@ namespace Pulumi.Docker.Inputs
 
     public sealed class ServiceTaskSpecContainerSpecSecretArgs : global::Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Represents the file GID. Defaults to `0`
+        /// </summary>
         [Input("fileGid")]
         public Input<string>? FileGid { get; set; }
 
+        /// <summary>
+        /// Represents represents the FileMode of the file. Defaults to `0o444`
+        /// </summary>
         [Input("fileMode")]
         public Input<int>? FileMode { get; set; }
 
+        /// <summary>
+        /// Represents the final filename in the filesystem
+        /// </summary>
         [Input("fileName", required: true)]
         public Input<string> FileName { get; set; } = null!;
 
+        /// <summary>
+        /// Represents the file UID. Defaults to `0`
+        /// </summary>
         [Input("fileUid")]
         public Input<string>? FileUid { get; set; }
 
+        /// <summary>
+        /// ID of the specific secret that we're referencing
+        /// </summary>
         [Input("secretId", required: true)]
         public Input<string> SecretId { get; set; } = null!;
 
+        /// <summary>
+        /// Name of the secret that this references, but this is just provided for lookup/display purposes. The config in the reference will be identified by its ID
+        /// </summary>
         [Input("secretName")]
         public Input<string>? SecretName { get; set; }
 

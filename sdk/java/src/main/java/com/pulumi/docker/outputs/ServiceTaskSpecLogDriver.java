@@ -12,13 +12,29 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceTaskSpecLogDriver {
+    /**
+     * @return The logging driver to use
+     * 
+     */
     private String name;
+    /**
+     * @return The options for the logging driver
+     * 
+     */
     private @Nullable Map<String,String> options;
 
     private ServiceTaskSpecLogDriver() {}
+    /**
+     * @return The logging driver to use
+     * 
+     */
     public String name() {
         return this.name;
     }
+    /**
+     * @return The options for the logging driver
+     * 
+     */
     public Map<String,String> options() {
         return this.options == null ? Map.of() : this.options;
     }

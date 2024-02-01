@@ -12,13 +12,29 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceTaskSpecContainerSpecPrivileges {
+    /**
+     * @return CredentialSpec for managed service account (Windows only)
+     * 
+     */
     private @Nullable ServiceTaskSpecContainerSpecPrivilegesCredentialSpec credentialSpec;
+    /**
+     * @return SELinux labels of the container
+     * 
+     */
     private @Nullable ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext seLinuxContext;
 
     private ServiceTaskSpecContainerSpecPrivileges() {}
+    /**
+     * @return CredentialSpec for managed service account (Windows only)
+     * 
+     */
     public Optional<ServiceTaskSpecContainerSpecPrivilegesCredentialSpec> credentialSpec() {
         return Optional.ofNullable(this.credentialSpec);
     }
+    /**
+     * @return SELinux labels of the container
+     * 
+     */
     public Optional<ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext> seLinuxContext() {
         return Optional.ofNullable(this.seLinuxContext);
     }
