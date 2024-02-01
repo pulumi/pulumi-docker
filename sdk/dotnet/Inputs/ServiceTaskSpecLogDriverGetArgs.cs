@@ -12,11 +12,18 @@ namespace Pulumi.Docker.Inputs
 
     public sealed class ServiceTaskSpecLogDriverGetArgs : global::Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// The logging driver to use
+        /// </summary>
         [Input("name", required: true)]
         public Input<string> Name { get; set; } = null!;
 
         [Input("options")]
         private InputMap<string>? _options;
+
+        /// <summary>
+        /// The options for the logging driver
+        /// </summary>
         public InputMap<string> Options
         {
             get => _options ?? (_options = new InputMap<string>());

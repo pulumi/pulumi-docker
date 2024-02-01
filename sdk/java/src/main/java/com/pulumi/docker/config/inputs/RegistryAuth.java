@@ -13,29 +13,69 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class RegistryAuth {
+    /**
+     * @return Address of the registry
+     * 
+     */
     private String address;
     private @Nullable Boolean authDisabled;
+    /**
+     * @return Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `config_file` has predencen over all other options.
+     * 
+     */
     private @Nullable String configFile;
+    /**
+     * @return Plain content of the docker json file for registry auth. `config_file_content` has precedence over username/password.
+     * 
+     */
     private @Nullable String configFileContent;
+    /**
+     * @return Password for the registry. Defaults to `DOCKER_REGISTRY_PASS` env variable if set.
+     * 
+     */
     private @Nullable String password;
+    /**
+     * @return Username for the registry. Defaults to `DOCKER_REGISTRY_USER` env variable if set.
+     * 
+     */
     private @Nullable String username;
 
     private RegistryAuth() {}
+    /**
+     * @return Address of the registry
+     * 
+     */
     public String address() {
         return this.address;
     }
     public Optional<Boolean> authDisabled() {
         return Optional.ofNullable(this.authDisabled);
     }
+    /**
+     * @return Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `config_file` has predencen over all other options.
+     * 
+     */
     public Optional<String> configFile() {
         return Optional.ofNullable(this.configFile);
     }
+    /**
+     * @return Plain content of the docker json file for registry auth. `config_file_content` has precedence over username/password.
+     * 
+     */
     public Optional<String> configFileContent() {
         return Optional.ofNullable(this.configFileContent);
     }
+    /**
+     * @return Password for the registry. Defaults to `DOCKER_REGISTRY_PASS` env variable if set.
+     * 
+     */
     public Optional<String> password() {
         return Optional.ofNullable(this.password);
     }
+    /**
+     * @return Username for the registry. Defaults to `DOCKER_REGISTRY_USER` env variable if set.
+     * 
+     */
     public Optional<String> username() {
         return Optional.ofNullable(this.username);
     }

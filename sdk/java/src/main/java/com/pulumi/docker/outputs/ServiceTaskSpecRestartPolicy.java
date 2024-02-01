@@ -12,21 +12,53 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceTaskSpecRestartPolicy {
+    /**
+     * @return Condition for restart
+     * 
+     */
     private @Nullable String condition;
+    /**
+     * @return Delay between restart attempts (ms|s|m|h)
+     * 
+     */
     private @Nullable String delay;
+    /**
+     * @return Maximum attempts to restart a given container before giving up (default value is `0`, which is ignored)
+     * 
+     */
     private @Nullable Integer maxAttempts;
+    /**
+     * @return The time window used to evaluate the restart policy (default value is `0`, which is unbounded) (ms|s|m|h)
+     * 
+     */
     private @Nullable String window;
 
     private ServiceTaskSpecRestartPolicy() {}
+    /**
+     * @return Condition for restart
+     * 
+     */
     public Optional<String> condition() {
         return Optional.ofNullable(this.condition);
     }
+    /**
+     * @return Delay between restart attempts (ms|s|m|h)
+     * 
+     */
     public Optional<String> delay() {
         return Optional.ofNullable(this.delay);
     }
+    /**
+     * @return Maximum attempts to restart a given container before giving up (default value is `0`, which is ignored)
+     * 
+     */
     public Optional<Integer> maxAttempts() {
         return Optional.ofNullable(this.maxAttempts);
     }
+    /**
+     * @return The time window used to evaluate the restart policy (default value is `0`, which is unbounded) (ms|s|m|h)
+     * 
+     */
     public Optional<String> window() {
         return Optional.ofNullable(this.window);
     }

@@ -15,16 +15,32 @@ public final class ServiceTaskSpecResourcesLimitsArgs extends com.pulumi.resourc
 
     public static final ServiceTaskSpecResourcesLimitsArgs Empty = new ServiceTaskSpecResourcesLimitsArgs();
 
+    /**
+     * The amounf of memory in bytes the container allocates
+     * 
+     */
     @Import(name="memoryBytes")
     private @Nullable Output<Integer> memoryBytes;
 
+    /**
+     * @return The amounf of memory in bytes the container allocates
+     * 
+     */
     public Optional<Output<Integer>> memoryBytes() {
         return Optional.ofNullable(this.memoryBytes);
     }
 
+    /**
+     * CPU shares in units of `1/1e9` (or `10^-9`) of the CPU. Should be at least `1000000`
+     * 
+     */
     @Import(name="nanoCpus")
     private @Nullable Output<Integer> nanoCpus;
 
+    /**
+     * @return CPU shares in units of `1/1e9` (or `10^-9`) of the CPU. Should be at least `1000000`
+     * 
+     */
     public Optional<Output<Integer>> nanoCpus() {
         return Optional.ofNullable(this.nanoCpus);
     }
@@ -54,20 +70,44 @@ public final class ServiceTaskSpecResourcesLimitsArgs extends com.pulumi.resourc
             $ = new ServiceTaskSpecResourcesLimitsArgs(Objects.requireNonNull(defaults));
         }
 
+        /**
+         * @param memoryBytes The amounf of memory in bytes the container allocates
+         * 
+         * @return builder
+         * 
+         */
         public Builder memoryBytes(@Nullable Output<Integer> memoryBytes) {
             $.memoryBytes = memoryBytes;
             return this;
         }
 
+        /**
+         * @param memoryBytes The amounf of memory in bytes the container allocates
+         * 
+         * @return builder
+         * 
+         */
         public Builder memoryBytes(Integer memoryBytes) {
             return memoryBytes(Output.of(memoryBytes));
         }
 
+        /**
+         * @param nanoCpus CPU shares in units of `1/1e9` (or `10^-9`) of the CPU. Should be at least `1000000`
+         * 
+         * @return builder
+         * 
+         */
         public Builder nanoCpus(@Nullable Output<Integer> nanoCpus) {
             $.nanoCpus = nanoCpus;
             return this;
         }
 
+        /**
+         * @param nanoCpus CPU shares in units of `1/1e9` (or `10^-9`) of the CPU. Should be at least `1000000`
+         * 
+         * @return builder
+         * 
+         */
         public Builder nanoCpus(Integer nanoCpus) {
             return nanoCpus(Output.of(nanoCpus));
         }

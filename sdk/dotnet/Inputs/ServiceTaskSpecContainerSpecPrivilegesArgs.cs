@@ -12,9 +12,15 @@ namespace Pulumi.Docker.Inputs
 
     public sealed class ServiceTaskSpecContainerSpecPrivilegesArgs : global::Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// CredentialSpec for managed service account (Windows only)
+        /// </summary>
         [Input("credentialSpec")]
         public Input<Inputs.ServiceTaskSpecContainerSpecPrivilegesCredentialSpecArgs>? CredentialSpec { get; set; }
 
+        /// <summary>
+        /// SELinux labels of the container
+        /// </summary>
         [Input("seLinuxContext")]
         public Input<Inputs.ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgs>? SeLinuxContext { get; set; }
 

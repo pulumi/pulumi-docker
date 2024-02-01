@@ -11,13 +11,29 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceTaskSpecContainerSpecMountTmpfsOptions {
+    /**
+     * @return The permission mode for the tmpfs mount in an integer
+     * 
+     */
     private @Nullable Integer mode;
+    /**
+     * @return The size for the tmpfs mount in bytes
+     * 
+     */
     private @Nullable Integer sizeBytes;
 
     private ServiceTaskSpecContainerSpecMountTmpfsOptions() {}
+    /**
+     * @return The permission mode for the tmpfs mount in an integer
+     * 
+     */
     public Optional<Integer> mode() {
         return Optional.ofNullable(this.mode);
     }
+    /**
+     * @return The size for the tmpfs mount in bytes
+     * 
+     */
     public Optional<Integer> sizeBytes() {
         return Optional.ofNullable(this.sizeBytes);
     }

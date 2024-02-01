@@ -14,6 +14,10 @@ namespace Pulumi.Docker.Inputs
     {
         [Input("aliases")]
         private InputList<string>? _aliases;
+
+        /// <summary>
+        /// The network aliases of the container in the specific network.
+        /// </summary>
         public InputList<string> Aliases
         {
             get => _aliases ?? (_aliases = new InputList<string>());
@@ -22,12 +26,19 @@ namespace Pulumi.Docker.Inputs
 
         [Input("driverOpts")]
         private InputList<string>? _driverOpts;
+
+        /// <summary>
+        /// An array of driver options for the network, e.g. `opts1=value`
+        /// </summary>
         public InputList<string> DriverOpts
         {
             get => _driverOpts ?? (_driverOpts = new InputList<string>());
             set => _driverOpts = value;
         }
 
+        /// <summary>
+        /// The name/id of the network.
+        /// </summary>
         [Input("name", required: true)]
         public Input<string> Name { get; set; } = null!;
 

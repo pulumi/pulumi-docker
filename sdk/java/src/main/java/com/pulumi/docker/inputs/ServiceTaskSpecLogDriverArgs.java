@@ -17,16 +17,32 @@ public final class ServiceTaskSpecLogDriverArgs extends com.pulumi.resources.Res
 
     public static final ServiceTaskSpecLogDriverArgs Empty = new ServiceTaskSpecLogDriverArgs();
 
+    /**
+     * The logging driver to use
+     * 
+     */
     @Import(name="name", required=true)
     private Output<String> name;
 
+    /**
+     * @return The logging driver to use
+     * 
+     */
     public Output<String> name() {
         return this.name;
     }
 
+    /**
+     * The options for the logging driver
+     * 
+     */
     @Import(name="options")
     private @Nullable Output<Map<String,String>> options;
 
+    /**
+     * @return The options for the logging driver
+     * 
+     */
     public Optional<Output<Map<String,String>>> options() {
         return Optional.ofNullable(this.options);
     }
@@ -56,20 +72,44 @@ public final class ServiceTaskSpecLogDriverArgs extends com.pulumi.resources.Res
             $ = new ServiceTaskSpecLogDriverArgs(Objects.requireNonNull(defaults));
         }
 
+        /**
+         * @param name The logging driver to use
+         * 
+         * @return builder
+         * 
+         */
         public Builder name(Output<String> name) {
             $.name = name;
             return this;
         }
 
+        /**
+         * @param name The logging driver to use
+         * 
+         * @return builder
+         * 
+         */
         public Builder name(String name) {
             return name(Output.of(name));
         }
 
+        /**
+         * @param options The options for the logging driver
+         * 
+         * @return builder
+         * 
+         */
         public Builder options(@Nullable Output<Map<String,String>> options) {
             $.options = options;
             return this;
         }
 
+        /**
+         * @param options The options for the logging driver
+         * 
+         * @return builder
+         * 
+         */
         public Builder options(Map<String,String> options) {
             return options(Output.of(options));
         }

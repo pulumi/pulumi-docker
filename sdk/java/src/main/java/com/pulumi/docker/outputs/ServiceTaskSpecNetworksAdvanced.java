@@ -12,17 +12,41 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceTaskSpecNetworksAdvanced {
+    /**
+     * @return The network aliases of the container in the specific network.
+     * 
+     */
     private @Nullable List<String> aliases;
+    /**
+     * @return An array of driver options for the network, e.g. `opts1=value`
+     * 
+     */
     private @Nullable List<String> driverOpts;
+    /**
+     * @return The name/id of the network.
+     * 
+     */
     private String name;
 
     private ServiceTaskSpecNetworksAdvanced() {}
+    /**
+     * @return The network aliases of the container in the specific network.
+     * 
+     */
     public List<String> aliases() {
         return this.aliases == null ? List.of() : this.aliases;
     }
+    /**
+     * @return An array of driver options for the network, e.g. `opts1=value`
+     * 
+     */
     public List<String> driverOpts() {
         return this.driverOpts == null ? List.of() : this.driverOpts;
     }
+    /**
+     * @return The name/id of the network.
+     * 
+     */
     public String name() {
         return this.name;
     }

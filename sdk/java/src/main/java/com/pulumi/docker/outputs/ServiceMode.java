@@ -12,13 +12,29 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ServiceMode {
+    /**
+     * @return When `true`, tasks will run on every worker node. Conflicts with `replicated`
+     * 
+     */
     private @Nullable Boolean global;
+    /**
+     * @return The replicated service mode
+     * 
+     */
     private @Nullable ServiceModeReplicated replicated;
 
     private ServiceMode() {}
+    /**
+     * @return When `true`, tasks will run on every worker node. Conflicts with `replicated`
+     * 
+     */
     public Optional<Boolean> global() {
         return Optional.ofNullable(this.global);
     }
+    /**
+     * @return The replicated service mode
+     * 
+     */
     public Optional<ServiceModeReplicated> replicated() {
         return Optional.ofNullable(this.replicated);
     }

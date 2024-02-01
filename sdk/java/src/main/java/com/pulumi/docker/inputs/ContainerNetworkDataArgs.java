@@ -16,58 +16,122 @@ public final class ContainerNetworkDataArgs extends com.pulumi.resources.Resourc
 
     public static final ContainerNetworkDataArgs Empty = new ContainerNetworkDataArgs();
 
+    /**
+     * The network gateway of the container.
+     * 
+     */
     @Import(name="gateway")
     private @Nullable Output<String> gateway;
 
+    /**
+     * @return The network gateway of the container.
+     * 
+     */
     public Optional<Output<String>> gateway() {
         return Optional.ofNullable(this.gateway);
     }
 
+    /**
+     * The IPV6 address of the container.
+     * 
+     */
     @Import(name="globalIpv6Address")
     private @Nullable Output<String> globalIpv6Address;
 
+    /**
+     * @return The IPV6 address of the container.
+     * 
+     */
     public Optional<Output<String>> globalIpv6Address() {
         return Optional.ofNullable(this.globalIpv6Address);
     }
 
+    /**
+     * The IPV6 prefix length address of the container.
+     * 
+     */
     @Import(name="globalIpv6PrefixLength")
     private @Nullable Output<Integer> globalIpv6PrefixLength;
 
+    /**
+     * @return The IPV6 prefix length address of the container.
+     * 
+     */
     public Optional<Output<Integer>> globalIpv6PrefixLength() {
         return Optional.ofNullable(this.globalIpv6PrefixLength);
     }
 
+    /**
+     * The IP address of the container.
+     * 
+     */
     @Import(name="ipAddress")
     private @Nullable Output<String> ipAddress;
 
+    /**
+     * @return The IP address of the container.
+     * 
+     */
     public Optional<Output<String>> ipAddress() {
         return Optional.ofNullable(this.ipAddress);
     }
 
+    /**
+     * The IP prefix length of the container.
+     * 
+     */
     @Import(name="ipPrefixLength")
     private @Nullable Output<Integer> ipPrefixLength;
 
+    /**
+     * @return The IP prefix length of the container.
+     * 
+     */
     public Optional<Output<Integer>> ipPrefixLength() {
         return Optional.ofNullable(this.ipPrefixLength);
     }
 
+    /**
+     * The IPV6 gateway of the container.
+     * 
+     */
     @Import(name="ipv6Gateway")
     private @Nullable Output<String> ipv6Gateway;
 
+    /**
+     * @return The IPV6 gateway of the container.
+     * 
+     */
     public Optional<Output<String>> ipv6Gateway() {
         return Optional.ofNullable(this.ipv6Gateway);
     }
 
+    /**
+     * The MAC address of the container.
+     * 
+     */
     @Import(name="macAddress")
     private @Nullable Output<String> macAddress;
 
+    /**
+     * @return The MAC address of the container.
+     * 
+     */
     public Optional<Output<String>> macAddress() {
         return Optional.ofNullable(this.macAddress);
     }
 
+    /**
+     * The name of the network
+     * 
+     */
     @Import(name="networkName")
     private @Nullable Output<String> networkName;
 
+    /**
+     * @return The name of the network
+     * 
+     */
     public Optional<Output<String>> networkName() {
         return Optional.ofNullable(this.networkName);
     }
@@ -103,74 +167,170 @@ public final class ContainerNetworkDataArgs extends com.pulumi.resources.Resourc
             $ = new ContainerNetworkDataArgs(Objects.requireNonNull(defaults));
         }
 
+        /**
+         * @param gateway The network gateway of the container.
+         * 
+         * @return builder
+         * 
+         */
         public Builder gateway(@Nullable Output<String> gateway) {
             $.gateway = gateway;
             return this;
         }
 
+        /**
+         * @param gateway The network gateway of the container.
+         * 
+         * @return builder
+         * 
+         */
         public Builder gateway(String gateway) {
             return gateway(Output.of(gateway));
         }
 
+        /**
+         * @param globalIpv6Address The IPV6 address of the container.
+         * 
+         * @return builder
+         * 
+         */
         public Builder globalIpv6Address(@Nullable Output<String> globalIpv6Address) {
             $.globalIpv6Address = globalIpv6Address;
             return this;
         }
 
+        /**
+         * @param globalIpv6Address The IPV6 address of the container.
+         * 
+         * @return builder
+         * 
+         */
         public Builder globalIpv6Address(String globalIpv6Address) {
             return globalIpv6Address(Output.of(globalIpv6Address));
         }
 
+        /**
+         * @param globalIpv6PrefixLength The IPV6 prefix length address of the container.
+         * 
+         * @return builder
+         * 
+         */
         public Builder globalIpv6PrefixLength(@Nullable Output<Integer> globalIpv6PrefixLength) {
             $.globalIpv6PrefixLength = globalIpv6PrefixLength;
             return this;
         }
 
+        /**
+         * @param globalIpv6PrefixLength The IPV6 prefix length address of the container.
+         * 
+         * @return builder
+         * 
+         */
         public Builder globalIpv6PrefixLength(Integer globalIpv6PrefixLength) {
             return globalIpv6PrefixLength(Output.of(globalIpv6PrefixLength));
         }
 
+        /**
+         * @param ipAddress The IP address of the container.
+         * 
+         * @return builder
+         * 
+         */
         public Builder ipAddress(@Nullable Output<String> ipAddress) {
             $.ipAddress = ipAddress;
             return this;
         }
 
+        /**
+         * @param ipAddress The IP address of the container.
+         * 
+         * @return builder
+         * 
+         */
         public Builder ipAddress(String ipAddress) {
             return ipAddress(Output.of(ipAddress));
         }
 
+        /**
+         * @param ipPrefixLength The IP prefix length of the container.
+         * 
+         * @return builder
+         * 
+         */
         public Builder ipPrefixLength(@Nullable Output<Integer> ipPrefixLength) {
             $.ipPrefixLength = ipPrefixLength;
             return this;
         }
 
+        /**
+         * @param ipPrefixLength The IP prefix length of the container.
+         * 
+         * @return builder
+         * 
+         */
         public Builder ipPrefixLength(Integer ipPrefixLength) {
             return ipPrefixLength(Output.of(ipPrefixLength));
         }
 
+        /**
+         * @param ipv6Gateway The IPV6 gateway of the container.
+         * 
+         * @return builder
+         * 
+         */
         public Builder ipv6Gateway(@Nullable Output<String> ipv6Gateway) {
             $.ipv6Gateway = ipv6Gateway;
             return this;
         }
 
+        /**
+         * @param ipv6Gateway The IPV6 gateway of the container.
+         * 
+         * @return builder
+         * 
+         */
         public Builder ipv6Gateway(String ipv6Gateway) {
             return ipv6Gateway(Output.of(ipv6Gateway));
         }
 
+        /**
+         * @param macAddress The MAC address of the container.
+         * 
+         * @return builder
+         * 
+         */
         public Builder macAddress(@Nullable Output<String> macAddress) {
             $.macAddress = macAddress;
             return this;
         }
 
+        /**
+         * @param macAddress The MAC address of the container.
+         * 
+         * @return builder
+         * 
+         */
         public Builder macAddress(String macAddress) {
             return macAddress(Output.of(macAddress));
         }
 
+        /**
+         * @param networkName The name of the network
+         * 
+         * @return builder
+         * 
+         */
         public Builder networkName(@Nullable Output<String> networkName) {
             $.networkName = networkName;
             return this;
         }
 
+        /**
+         * @param networkName The name of the network
+         * 
+         * @return builder
+         * 
+         */
         public Builder networkName(String networkName) {
             return networkName(Output.of(networkName));
         }
