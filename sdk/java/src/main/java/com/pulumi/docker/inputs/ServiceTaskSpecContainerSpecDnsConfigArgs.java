@@ -17,23 +17,47 @@ public final class ServiceTaskSpecContainerSpecDnsConfigArgs extends com.pulumi.
 
     public static final ServiceTaskSpecContainerSpecDnsConfigArgs Empty = new ServiceTaskSpecContainerSpecDnsConfigArgs();
 
+    /**
+     * The IP addresses of the name servers
+     * 
+     */
     @Import(name="nameservers", required=true)
     private Output<List<String>> nameservers;
 
+    /**
+     * @return The IP addresses of the name servers
+     * 
+     */
     public Output<List<String>> nameservers() {
         return this.nameservers;
     }
 
+    /**
+     * A list of internal resolver variables to be modified (e.g., `debug`, `ndots:3`, etc.)
+     * 
+     */
     @Import(name="options")
     private @Nullable Output<List<String>> options;
 
+    /**
+     * @return A list of internal resolver variables to be modified (e.g., `debug`, `ndots:3`, etc.)
+     * 
+     */
     public Optional<Output<List<String>>> options() {
         return Optional.ofNullable(this.options);
     }
 
+    /**
+     * A search list for host-name lookup
+     * 
+     */
     @Import(name="searches")
     private @Nullable Output<List<String>> searches;
 
+    /**
+     * @return A search list for host-name lookup
+     * 
+     */
     public Optional<Output<List<String>>> searches() {
         return Optional.ofNullable(this.searches);
     }
@@ -64,41 +88,95 @@ public final class ServiceTaskSpecContainerSpecDnsConfigArgs extends com.pulumi.
             $ = new ServiceTaskSpecContainerSpecDnsConfigArgs(Objects.requireNonNull(defaults));
         }
 
+        /**
+         * @param nameservers The IP addresses of the name servers
+         * 
+         * @return builder
+         * 
+         */
         public Builder nameservers(Output<List<String>> nameservers) {
             $.nameservers = nameservers;
             return this;
         }
 
+        /**
+         * @param nameservers The IP addresses of the name servers
+         * 
+         * @return builder
+         * 
+         */
         public Builder nameservers(List<String> nameservers) {
             return nameservers(Output.of(nameservers));
         }
 
+        /**
+         * @param nameservers The IP addresses of the name servers
+         * 
+         * @return builder
+         * 
+         */
         public Builder nameservers(String... nameservers) {
             return nameservers(List.of(nameservers));
         }
 
+        /**
+         * @param options A list of internal resolver variables to be modified (e.g., `debug`, `ndots:3`, etc.)
+         * 
+         * @return builder
+         * 
+         */
         public Builder options(@Nullable Output<List<String>> options) {
             $.options = options;
             return this;
         }
 
+        /**
+         * @param options A list of internal resolver variables to be modified (e.g., `debug`, `ndots:3`, etc.)
+         * 
+         * @return builder
+         * 
+         */
         public Builder options(List<String> options) {
             return options(Output.of(options));
         }
 
+        /**
+         * @param options A list of internal resolver variables to be modified (e.g., `debug`, `ndots:3`, etc.)
+         * 
+         * @return builder
+         * 
+         */
         public Builder options(String... options) {
             return options(List.of(options));
         }
 
+        /**
+         * @param searches A search list for host-name lookup
+         * 
+         * @return builder
+         * 
+         */
         public Builder searches(@Nullable Output<List<String>> searches) {
             $.searches = searches;
             return this;
         }
 
+        /**
+         * @param searches A search list for host-name lookup
+         * 
+         * @return builder
+         * 
+         */
         public Builder searches(List<String> searches) {
             return searches(Output.of(searches));
         }
 
+        /**
+         * @param searches A search list for host-name lookup
+         * 
+         * @return builder
+         * 
+         */
         public Builder searches(String... searches) {
             return searches(List.of(searches));
         }

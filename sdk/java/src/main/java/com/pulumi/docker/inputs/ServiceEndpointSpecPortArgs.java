@@ -17,37 +17,77 @@ public final class ServiceEndpointSpecPortArgs extends com.pulumi.resources.Reso
 
     public static final ServiceEndpointSpecPortArgs Empty = new ServiceEndpointSpecPortArgs();
 
+    /**
+     * A random name for the port
+     * 
+     */
     @Import(name="name")
     private @Nullable Output<String> name;
 
+    /**
+     * @return A random name for the port
+     * 
+     */
     public Optional<Output<String>> name() {
         return Optional.ofNullable(this.name);
     }
 
+    /**
+     * Rrepresents the protocol of a port: `tcp`, `udp` or `sctp`. Defaults to `tcp`.
+     * 
+     */
     @Import(name="protocol")
     private @Nullable Output<String> protocol;
 
+    /**
+     * @return Rrepresents the protocol of a port: `tcp`, `udp` or `sctp`. Defaults to `tcp`.
+     * 
+     */
     public Optional<Output<String>> protocol() {
         return Optional.ofNullable(this.protocol);
     }
 
+    /**
+     * Represents the mode in which the port is to be published: &#39;ingress&#39; or &#39;host&#39;. Defaults to `ingress`.
+     * 
+     */
     @Import(name="publishMode")
     private @Nullable Output<String> publishMode;
 
+    /**
+     * @return Represents the mode in which the port is to be published: &#39;ingress&#39; or &#39;host&#39;. Defaults to `ingress`.
+     * 
+     */
     public Optional<Output<String>> publishMode() {
         return Optional.ofNullable(this.publishMode);
     }
 
+    /**
+     * The port on the swarm hosts
+     * 
+     */
     @Import(name="publishedPort")
     private @Nullable Output<Integer> publishedPort;
 
+    /**
+     * @return The port on the swarm hosts
+     * 
+     */
     public Optional<Output<Integer>> publishedPort() {
         return Optional.ofNullable(this.publishedPort);
     }
 
+    /**
+     * The port inside the container
+     * 
+     */
     @Import(name="targetPort", required=true)
     private Output<Integer> targetPort;
 
+    /**
+     * @return The port inside the container
+     * 
+     */
     public Output<Integer> targetPort() {
         return this.targetPort;
     }
@@ -80,47 +120,107 @@ public final class ServiceEndpointSpecPortArgs extends com.pulumi.resources.Reso
             $ = new ServiceEndpointSpecPortArgs(Objects.requireNonNull(defaults));
         }
 
+        /**
+         * @param name A random name for the port
+         * 
+         * @return builder
+         * 
+         */
         public Builder name(@Nullable Output<String> name) {
             $.name = name;
             return this;
         }
 
+        /**
+         * @param name A random name for the port
+         * 
+         * @return builder
+         * 
+         */
         public Builder name(String name) {
             return name(Output.of(name));
         }
 
+        /**
+         * @param protocol Rrepresents the protocol of a port: `tcp`, `udp` or `sctp`. Defaults to `tcp`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder protocol(@Nullable Output<String> protocol) {
             $.protocol = protocol;
             return this;
         }
 
+        /**
+         * @param protocol Rrepresents the protocol of a port: `tcp`, `udp` or `sctp`. Defaults to `tcp`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder protocol(String protocol) {
             return protocol(Output.of(protocol));
         }
 
+        /**
+         * @param publishMode Represents the mode in which the port is to be published: &#39;ingress&#39; or &#39;host&#39;. Defaults to `ingress`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder publishMode(@Nullable Output<String> publishMode) {
             $.publishMode = publishMode;
             return this;
         }
 
+        /**
+         * @param publishMode Represents the mode in which the port is to be published: &#39;ingress&#39; or &#39;host&#39;. Defaults to `ingress`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder publishMode(String publishMode) {
             return publishMode(Output.of(publishMode));
         }
 
+        /**
+         * @param publishedPort The port on the swarm hosts
+         * 
+         * @return builder
+         * 
+         */
         public Builder publishedPort(@Nullable Output<Integer> publishedPort) {
             $.publishedPort = publishedPort;
             return this;
         }
 
+        /**
+         * @param publishedPort The port on the swarm hosts
+         * 
+         * @return builder
+         * 
+         */
         public Builder publishedPort(Integer publishedPort) {
             return publishedPort(Output.of(publishedPort));
         }
 
+        /**
+         * @param targetPort The port inside the container
+         * 
+         * @return builder
+         * 
+         */
         public Builder targetPort(Output<Integer> targetPort) {
             $.targetPort = targetPort;
             return this;
         }
 
+        /**
+         * @param targetPort The port inside the container
+         * 
+         * @return builder
+         * 
+         */
         public Builder targetPort(Integer targetPort) {
             return targetPort(Output.of(targetPort));
         }

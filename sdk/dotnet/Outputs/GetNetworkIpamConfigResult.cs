@@ -13,9 +13,21 @@ namespace Pulumi.Docker.Outputs
     [OutputType]
     public sealed class GetNetworkIpamConfigResult
     {
+        /// <summary>
+        /// Auxiliary IPv4 or IPv6 addresses used by Network driver
+        /// </summary>
         public readonly ImmutableDictionary<string, object>? AuxAddress;
+        /// <summary>
+        /// The IP address of the gateway
+        /// </summary>
         public readonly string? Gateway;
+        /// <summary>
+        /// The ip range in CIDR form
+        /// </summary>
         public readonly string? IpRange;
+        /// <summary>
+        /// The subnet in CIDR form
+        /// </summary>
         public readonly string? Subnet;
 
         [OutputConstructor]

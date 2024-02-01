@@ -10,13 +10,29 @@ import java.util.Objects;
 
 @CustomType
 public final class ServiceTaskSpecPlacementPlatform {
+    /**
+     * @return The architecture, e.g. `amd64`
+     * 
+     */
     private String architecture;
+    /**
+     * @return The operation system, e.g. `linux`
+     * 
+     */
     private String os;
 
     private ServiceTaskSpecPlacementPlatform() {}
+    /**
+     * @return The architecture, e.g. `amd64`
+     * 
+     */
     public String architecture() {
         return this.architecture;
     }
+    /**
+     * @return The operation system, e.g. `linux`
+     * 
+     */
     public String os() {
         return this.os;
     }

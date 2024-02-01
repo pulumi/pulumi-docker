@@ -12,15 +12,27 @@ namespace Pulumi.Docker.Inputs
 
     public sealed class ServiceTaskSpecRestartPolicyArgs : global::Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Condition for restart
+        /// </summary>
         [Input("condition")]
         public Input<string>? Condition { get; set; }
 
+        /// <summary>
+        /// Delay between restart attempts (ms|s|m|h)
+        /// </summary>
         [Input("delay")]
         public Input<string>? Delay { get; set; }
 
+        /// <summary>
+        /// Maximum attempts to restart a given container before giving up (default value is `0`, which is ignored)
+        /// </summary>
         [Input("maxAttempts")]
         public Input<int>? MaxAttempts { get; set; }
 
+        /// <summary>
+        /// The time window used to evaluate the restart policy (default value is `0`, which is unbounded) (ms|s|m|h)
+        /// </summary>
         [Input("window")]
         public Input<string>? Window { get; set; }
 
