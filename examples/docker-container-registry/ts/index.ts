@@ -33,6 +33,8 @@ const buildxImage = new docker.buildx.Image("my-buildx-image", {
   tags: [`${imageName}:buildx`],
   exports: ["type=registry"],
   platforms: ["linux/arm64", "linux/amd64"],
+  cacheFrom: ["type=gha", `type=registry,ref=docker.io/${imageName}`],
+  cacheTo: ["type=gha", `type=registry,ref=docker.io/${imageName},mode=max`],
   context: "app",
   file: "app/Dockerfile",
   registries: [
