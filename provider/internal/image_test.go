@@ -656,3 +656,37 @@ func TestBuildable(t *testing.T) {
 		})
 	}
 }
+
+func TestToBuilds(t *testing.T) {
+	t.Run("multi-platform caching", func(t *testing.T) {
+		ia := ImageArgs{
+			Tags:      []string{"foo"},
+			Platforms: []string{"linux/amd64", "linux/arm64"},
+			CacheTo:   []string{"type=gha,mode=max", "type=registry,ref=foo"},
+			CacheFrom: []string{"type=s3,name=bar", "type=registry,ref=foo"},
+		}
+
+		builds, err := ia.toBuilds(nil, false)
+		assert.NoError(t, err)
+
+		assert.Len(t, builds, 3)
+
+		// Build 1
+		assert.Nil(t, builds[0].CacheTo)
+		assert.Len(t, builds[0].CacheFrom, len(ia.CacheFrom)*(1+len(ia.Platforms)))
+
+		// Build 2
+		assert.Nil(t, builds[1].CacheFrom)
+		assert.Len(t, builds[2].Platforms, 1)
+		assert.Equal(t, "linux/amd64", builds[1].Platforms[0])
+		assert.Len(t, builds[1].Exports, 1)
+		assert.Equal(t, "cacheonly", builds[1].Exports[0].Type)
+
+		// Build 3
+		assert.Nil(t, builds[2].CacheFrom)
+		assert.Len(t, builds[2].Platforms, 1)
+		assert.Equal(t, "linux/arm64", builds[2].Platforms[0])
+		assert.Len(t, builds[2].Exports, 1)
+		assert.Equal(t, "cacheonly", builds[2].Exports[0].Type)
+	})
+}
