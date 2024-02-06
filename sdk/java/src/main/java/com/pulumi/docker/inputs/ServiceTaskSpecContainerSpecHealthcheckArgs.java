@@ -79,14 +79,14 @@ public final class ServiceTaskSpecContainerSpecHealthcheckArgs extends com.pulum
     }
 
     /**
-     * The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`
+     * Maximum time to allow one check to run (ms|s|m|h). Defaults to `0s`.
      * 
      */
     @Import(name="timeout")
     private @Nullable Output<String> timeout;
 
     /**
-     * @return The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`
+     * @return Maximum time to allow one check to run (ms|s|m|h). Defaults to `0s`.
      * 
      */
     public Optional<Output<String>> timeout() {
@@ -216,7 +216,7 @@ public final class ServiceTaskSpecContainerSpecHealthcheckArgs extends com.pulum
         }
 
         /**
-         * @param timeout The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`
+         * @param timeout Maximum time to allow one check to run (ms|s|m|h). Defaults to `0s`.
          * 
          * @return builder
          * 
@@ -227,7 +227,7 @@ public final class ServiceTaskSpecContainerSpecHealthcheckArgs extends com.pulum
         }
 
         /**
-         * @param timeout The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`
+         * @param timeout Maximum time to allow one check to run (ms|s|m|h). Defaults to `0s`.
          * 
          * @return builder
          * 

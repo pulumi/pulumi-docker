@@ -22,7 +22,7 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly ImmutableArray<string> DriverOpts;
         /// <summary>
-        /// A random name for the port
+        /// The name/id of the network.
         /// </summary>
         public readonly string Name;
 

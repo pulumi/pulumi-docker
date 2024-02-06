@@ -14,7 +14,7 @@ namespace Pulumi.Docker.Outputs
     public sealed class ServiceTaskSpecContainerSpecMountTmpfsOptions
     {
         /// <summary>
-        /// The mode of resolution to use for internal load balancing between tasks
+        /// The permission mode for the tmpfs mount in an integer
         /// </summary>
         public readonly int? Mode;
         /// <summary>

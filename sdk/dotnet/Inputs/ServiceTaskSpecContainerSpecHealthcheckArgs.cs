@@ -43,7 +43,7 @@ namespace Pulumi.Docker.Inputs
         }
 
         /// <summary>
-        /// The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`
+        /// Maximum time to allow one check to run (ms|s|m|h). Defaults to `0s`.
         /// </summary>
         [Input("timeout")]
         public Input<string>? Timeout { get; set; }

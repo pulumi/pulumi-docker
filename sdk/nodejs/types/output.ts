@@ -157,13 +157,37 @@ export interface ContainerMountVolumeOptionsLabel {
 }
 
 export interface ContainerNetworkData {
+    /**
+     * The network gateway of the container.
+     */
     gateway: string;
+    /**
+     * The IPV6 address of the container.
+     */
     globalIpv6Address: string;
+    /**
+     * The IPV6 prefix length address of the container.
+     */
     globalIpv6PrefixLength: number;
+    /**
+     * The IP address of the container.
+     */
     ipAddress: string;
+    /**
+     * The IP prefix length of the container.
+     */
     ipPrefixLength: number;
+    /**
+     * The IPV6 gateway of the container.
+     */
     ipv6Gateway: string;
+    /**
+     * The MAC address of the container.
+     */
     macAddress: string;
+    /**
+     * The name of the network
+     */
     networkName: string;
 }
 
@@ -225,6 +249,9 @@ export interface ContainerUpload {
      * Literal string value to use as the object content, which will be uploaded as UTF-8-encoded text. Conflicts with `contentBase64` & `source`
      */
     content?: string;
+    /**
+     * Base64-encoded data that will be decoded and uploaded as raw bytes for the object content. This allows safely uploading non-UTF8 binary data, but is recommended only for larger binary content such as the result of the `base64encode` interpolation function. See here for the reason. Conflicts with `content` & `source`
+     */
     contentBase64?: string;
     /**
      * If `true`, the file will be uploaded with user executable permission. Defaults to `false`.
@@ -268,9 +295,21 @@ export interface ContainerVolume {
 }
 
 export interface GetNetworkIpamConfig {
+    /**
+     * Auxiliary IPv4 or IPv6 addresses used by Network driver
+     */
     auxAddress?: {[key: string]: any};
+    /**
+     * The IP address of the gateway
+     */
     gateway?: string;
+    /**
+     * The ip range in CIDR form
+     */
     ipRange?: string;
+    /**
+     * The subnet in CIDR form
+     */
     subnet?: string;
 }
 
@@ -732,7 +771,7 @@ export interface ServiceTaskSpecContainerSpec {
      */
     privileges?: outputs.ServiceTaskSpecContainerSpecPrivileges;
     /**
-     * Whether the mount should be read-only
+     * Mount the container's root filesystem as read only
      */
     readOnly?: boolean;
     /**
@@ -752,7 +791,7 @@ export interface ServiceTaskSpecContainerSpec {
      */
     sysctl?: {[key: string]: any};
     /**
-     * SELinux user label
+     * The user inside the container
      */
     user?: string;
 }
@@ -817,7 +856,7 @@ export interface ServiceTaskSpecContainerSpecHealthcheck {
      */
     tests: string[];
     /**
-     * The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`
+     * Maximum time to allow one check to run (ms|s|m|h). Defaults to `0s`.
      */
     timeout?: string;
 }
@@ -884,7 +923,7 @@ export interface ServiceTaskSpecContainerSpecMountBindOptions {
 
 export interface ServiceTaskSpecContainerSpecMountTmpfsOptions {
     /**
-     * The mode of resolution to use for internal load balancing between tasks
+     * The permission mode for the tmpfs mount in an integer
      */
     mode?: number;
     /**
@@ -959,7 +998,7 @@ export interface ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext {
      */
     role?: string;
     /**
-     * The mount type
+     * SELinux type label
      */
     type?: string;
     /**
@@ -970,11 +1009,11 @@ export interface ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext {
 
 export interface ServiceTaskSpecContainerSpecSecret {
     /**
-     * Represents the file GID. Defaults to `0`.
+     * Represents the file GID. Defaults to `0`
      */
     fileGid?: string;
     /**
-     * Represents represents the FileMode of the file. Defaults to `0o444`.
+     * Represents represents the FileMode of the file. Defaults to `0o444`
      */
     fileMode?: number;
     /**
@@ -982,7 +1021,7 @@ export interface ServiceTaskSpecContainerSpecSecret {
      */
     fileName: string;
     /**
-     * Represents the file UID. Defaults to `0`.
+     * Represents the file UID. Defaults to `0`
      */
     fileUid?: string;
     /**
@@ -997,11 +1036,11 @@ export interface ServiceTaskSpecContainerSpecSecret {
 
 export interface ServiceTaskSpecLogDriver {
     /**
-     * A random name for the port
+     * The logging driver to use
      */
     name: string;
     /**
-     * A list of internal resolver variables to be modified (e.g., `debug`, `ndots:3`, etc.)
+     * The options for the logging driver
      */
     options?: {[key: string]: string};
 }
@@ -1016,7 +1055,7 @@ export interface ServiceTaskSpecNetworksAdvanced {
      */
     driverOpts?: string[];
     /**
-     * A random name for the port
+     * The name/id of the network.
      */
     name: string;
 }
@@ -1083,7 +1122,7 @@ export interface ServiceTaskSpecResourcesReservation {
      */
     memoryBytes?: number;
     /**
-     * CPU shares in units of `1/1e9` (or `10^-9`) of the CPU. Should be at least `1000000`
+     * CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least `1000000`
      */
     nanoCpus?: number;
 }
@@ -1105,7 +1144,7 @@ export interface ServiceTaskSpecRestartPolicy {
      */
     condition?: string;
     /**
-     * The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.
+     * Delay between restart attempts (ms|s|m|h)
      */
     delay?: string;
     /**
@@ -1158,11 +1197,26 @@ export interface VolumeLabel {
 
 export namespace config {
     export interface RegistryAuth {
+        /**
+         * Address of the registry
+         */
         address: string;
         authDisabled?: boolean;
+        /**
+         * Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `configFile` has predencen over all other options.
+         */
         configFile?: string;
+        /**
+         * Plain content of the docker json file for registry auth. `configFileContent` has precedence over username/password.
+         */
         configFileContent?: string;
+        /**
+         * Password for the registry. Defaults to `DOCKER_REGISTRY_PASS` env variable if set.
+         */
         password?: string;
+        /**
+         * Username for the registry. Defaults to `DOCKER_REGISTRY_USER` env variable if set.
+         */
         username?: string;
     }
 

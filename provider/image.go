@@ -71,6 +71,8 @@ type Build struct {
 	Args           map[string]*string
 	Target         string
 	Platform       string
+	Network        string
+	ExtraHosts     []string
 	BuilderVersion types.BuilderVersion
 }
 
@@ -90,7 +92,6 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 ) (string, *structpb.Struct, error) {
 
 	inputs, err := plugin.UnmarshalProperties(props, plugin.MarshalOptions{KeepUnknowns: true, SkipNulls: true})
-
 	if err != nil {
 		return "", nil, err
 	}
@@ -107,12 +108,6 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	if err != nil {
 		return "", nil, err
 	}
-	cache, err := marshalCachedImages(inputs["build"])
-	if err != nil {
-		return "", nil, err
-	}
-
-	build.CachedImages = cache
 	img.Build = build
 
 	docker, err := configureDockerClient(p.config, true)
@@ -234,13 +229,15 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 
 	// make the build options
 	opts := types.ImageBuildOptions{
-		Dockerfile: replaceDockerfile,
-		Tags:       []string{img.Name}, // this should build the image locally, sans registry info
-		CacheFrom:  img.Build.CachedImages,
-		BuildArgs:  build.Args,
-		Version:    build.BuilderVersion,
-		Platform:   build.Platform,
-		Target:     build.Target,
+		Dockerfile:  replaceDockerfile,
+		Tags:        []string{img.Name}, // this should build the image locally, sans registry info
+		CacheFrom:   img.Build.CachedImages,
+		BuildArgs:   build.Args,
+		Version:     build.BuilderVersion,
+		Platform:    build.Platform,
+		Target:      build.Target,
+		ExtraHosts:  build.ExtraHosts,
+		NetworkMode: build.Network,
 
 		AuthConfigs: authConfigs,
 	}
@@ -307,6 +304,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		"baseImageName":  img.Name,
 		"registryServer": img.Registry.Server,
 		"imageName":      img.Name,
+		"platform":       img.Build.Platform,
 	}
 
 	imageName, err := reference.ParseNormalizedNamed(img.Name)
@@ -333,7 +331,6 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	_ = p.host.LogStatus(ctx, "info", urn, "Pushing Image to the registry")
 
 	authConfigBytes, err := json.Marshal(regAuth)
-
 	if err != nil {
 		return "", nil, fmt.Errorf("error parsing authConfig: %v", err)
 	}
@@ -343,7 +340,6 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 
 	// By default, we push our image with the qualified image name from the input, without extra tagging.
 	pushOutput, err := docker.ImagePush(ctx, img.Name, pushOpts)
-
 	if err != nil {
 		return "", nil, err
 	}
@@ -463,7 +459,8 @@ func (p *dockerNativeProvider) getRepoDigest(
 // 4. We only return an imageID if the image in the store matches both (1.) and (2.)
 func (p *dockerNativeProvider) runImageBuild(
 	ctx context.Context, docker *client.Client, tar io.Reader,
-	opts types.ImageBuildOptions, urn resource.URN, name string) (string, error) {
+	opts types.ImageBuildOptions, urn resource.URN, name string,
+) (string, error) {
 	if opts.Labels == nil {
 		opts.Labels = make(map[string]string)
 	}
@@ -550,7 +547,8 @@ func (p *dockerNativeProvider) runImageBuild(
 }
 
 func pullDockerImage(ctx context.Context, p *dockerNativeProvider, urn resource.URN,
-	docker *client.Client, authConfig types.AuthConfig, cachedImage string, platform string) error {
+	docker *client.Client, authConfig types.AuthConfig, cachedImage string, platform string,
+) error {
 	if cachedImage != "" {
 		_ = p.host.LogStatus(ctx, "info", urn, fmt.Sprintf("Pulling cached image %s", cachedImage))
 
@@ -579,7 +577,6 @@ func pullDockerImage(ctx context.Context, p *dockerNativeProvider, urn resource.
 }
 
 func marshalBuildAndApplyDefaults(b resource.PropertyValue) (Build, error) {
-
 	// build can be nil, a string or an object; we will also use reasonable defaults here.
 	var build Build
 	if b.IsNull() {
@@ -617,7 +614,6 @@ func marshalBuildAndApplyDefaults(b resource.PropertyValue) (Build, error) {
 
 	// BuildKit
 	version, err := marshalBuilder(buildObject["builderVersion"])
-
 	if err != nil {
 		return build, err
 	}
@@ -631,11 +627,46 @@ func marshalBuildAndApplyDefaults(b resource.PropertyValue) (Build, error) {
 		build.Target = buildObject["target"].StringValue()
 	}
 
+	// CacheFrom
+	cache, err := marshalCachedImages(b)
+	if err != nil {
+		return build, err
+	}
+	build.CachedImages = cache
+
+	// AddHosts
+	hosts, err := marshalExtraHosts(b)
+	if err != nil {
+		return build, err
+	}
+	build.ExtraHosts = hosts
+
+	// Network
+	if !buildObject["network"].IsNull() {
+		build.Network = buildObject["network"].StringValue()
+	}
+
 	// Platform
 	if !buildObject["platform"].IsNull() && !buildObject["platform"].ContainsUnknowns() {
 		build.Platform = buildObject["platform"].StringValue()
 	}
 	return build, nil
+}
+
+func marshalExtraHosts(b resource.PropertyValue) ([]string, error) {
+	var extraHosts []string
+	if b.IsNull() || b.ObjectValue()["addHosts"].IsNull() {
+		return extraHosts, nil
+	}
+	hosts := b.ObjectValue()["addHosts"].ArrayValue()
+
+	for _, host := range hosts {
+		if !host.IsString() {
+			continue
+		}
+		extraHosts = append(extraHosts, host.StringValue())
+	}
+	return extraHosts, nil
 }
 
 func marshalCachedImages(b resource.PropertyValue) ([]string, error) {
@@ -718,7 +749,7 @@ func marshalBuilder(builder resource.PropertyValue) (types.BuilderVersion, error
 	var version types.BuilderVersion
 
 	if builder.IsNull() {
-		//set default
+		// set default
 		return defaultBuilder, nil
 	}
 	// verify valid input
@@ -882,7 +913,6 @@ func processLogLine(jm jsonmessage.JSONMessage,
 		info += jm.Status + " " + jm.Progress.String()
 	} else if jm.Stream != "" {
 		info += jm.Stream
-
 	} else {
 		info += jm.Status
 	}
@@ -898,7 +928,7 @@ func processLogLine(jm jsonmessage.JSONMessage,
 				info += "failed to parse aux message: " + err.Error()
 			}
 			if err := (&resp).Unmarshal(infoBytes); err != nil {
-				info += "failed to parse aux message: " + err.Error()
+				info += "failed to parse info bytes: " + err.Error()
 			}
 			for _, vertex := range resp.Vertexes {
 				info += fmt.Sprintf("digest: %+v\n", vertex.Digest)
@@ -912,7 +942,6 @@ func processLogLine(jm jsonmessage.JSONMessage,
 			}
 			for _, log := range resp.Logs {
 				info += fmt.Sprintf("%s\n", string(log.Msg))
-
 			}
 			for _, warn := range resp.Warnings {
 				info += fmt.Sprintf("%s\n", string(warn.Short))
@@ -949,7 +978,6 @@ func processLogLine(jm jsonmessage.JSONMessage,
 // instead of the system-wide one.
 // `verify` is a testing affordance and will always be true in production.
 func configureDockerClient(configs map[string]string, verify bool) (*client.Client, error) {
-
 	host, isExplicitHost := configs["host"]
 
 	if !isExplicitHost {

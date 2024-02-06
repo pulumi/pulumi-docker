@@ -18,14 +18,14 @@ public final class ServiceTaskSpecContainerSpecSecretArgs extends com.pulumi.res
     public static final ServiceTaskSpecContainerSpecSecretArgs Empty = new ServiceTaskSpecContainerSpecSecretArgs();
 
     /**
-     * Represents the file GID. Defaults to `0`.
+     * Represents the file GID. Defaults to `0`
      * 
      */
     @Import(name="fileGid")
     private @Nullable Output<String> fileGid;
 
     /**
-     * @return Represents the file GID. Defaults to `0`.
+     * @return Represents the file GID. Defaults to `0`
      * 
      */
     public Optional<Output<String>> fileGid() {
@@ -33,14 +33,14 @@ public final class ServiceTaskSpecContainerSpecSecretArgs extends com.pulumi.res
     }
 
     /**
-     * Represents represents the FileMode of the file. Defaults to `0o444`.
+     * Represents represents the FileMode of the file. Defaults to `0o444`
      * 
      */
     @Import(name="fileMode")
     private @Nullable Output<Integer> fileMode;
 
     /**
-     * @return Represents represents the FileMode of the file. Defaults to `0o444`.
+     * @return Represents represents the FileMode of the file. Defaults to `0o444`
      * 
      */
     public Optional<Output<Integer>> fileMode() {
@@ -63,14 +63,14 @@ public final class ServiceTaskSpecContainerSpecSecretArgs extends com.pulumi.res
     }
 
     /**
-     * Represents the file UID. Defaults to `0`.
+     * Represents the file UID. Defaults to `0`
      * 
      */
     @Import(name="fileUid")
     private @Nullable Output<String> fileUid;
 
     /**
-     * @return Represents the file UID. Defaults to `0`.
+     * @return Represents the file UID. Defaults to `0`
      * 
      */
     public Optional<Output<String>> fileUid() {
@@ -137,7 +137,7 @@ public final class ServiceTaskSpecContainerSpecSecretArgs extends com.pulumi.res
         }
 
         /**
-         * @param fileGid Represents the file GID. Defaults to `0`.
+         * @param fileGid Represents the file GID. Defaults to `0`
          * 
          * @return builder
          * 
@@ -148,7 +148,7 @@ public final class ServiceTaskSpecContainerSpecSecretArgs extends com.pulumi.res
         }
 
         /**
-         * @param fileGid Represents the file GID. Defaults to `0`.
+         * @param fileGid Represents the file GID. Defaults to `0`
          * 
          * @return builder
          * 
@@ -158,7 +158,7 @@ public final class ServiceTaskSpecContainerSpecSecretArgs extends com.pulumi.res
         }
 
         /**
-         * @param fileMode Represents represents the FileMode of the file. Defaults to `0o444`.
+         * @param fileMode Represents represents the FileMode of the file. Defaults to `0o444`
          * 
          * @return builder
          * 
@@ -169,7 +169,7 @@ public final class ServiceTaskSpecContainerSpecSecretArgs extends com.pulumi.res
         }
 
         /**
-         * @param fileMode Represents represents the FileMode of the file. Defaults to `0o444`.
+         * @param fileMode Represents represents the FileMode of the file. Defaults to `0o444`
          * 
          * @return builder
          * 
@@ -200,7 +200,7 @@ public final class ServiceTaskSpecContainerSpecSecretArgs extends com.pulumi.res
         }
 
         /**
-         * @param fileUid Represents the file UID. Defaults to `0`.
+         * @param fileUid Represents the file UID. Defaults to `0`
          * 
          * @return builder
          * 
@@ -211,7 +211,7 @@ public final class ServiceTaskSpecContainerSpecSecretArgs extends com.pulumi.res
         }
 
         /**
-         * @param fileUid Represents the file UID. Defaults to `0`.
+         * @param fileUid Represents the file UID. Defaults to `0`
          * 
          * @return builder
          * 

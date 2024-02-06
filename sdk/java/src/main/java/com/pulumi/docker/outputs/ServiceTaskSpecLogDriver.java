@@ -13,26 +13,26 @@ import javax.annotation.Nullable;
 @CustomType
 public final class ServiceTaskSpecLogDriver {
     /**
-     * @return A random name for the port
+     * @return The logging driver to use
      * 
      */
     private String name;
     /**
-     * @return A list of internal resolver variables to be modified (e.g., `debug`, `ndots:3`, etc.)
+     * @return The options for the logging driver
      * 
      */
     private @Nullable Map<String,String> options;
 
     private ServiceTaskSpecLogDriver() {}
     /**
-     * @return A random name for the port
+     * @return The logging driver to use
      * 
      */
     public String name() {
         return this.name;
     }
     /**
-     * @return A list of internal resolver variables to be modified (e.g., `debug`, `ndots:3`, etc.)
+     * @return The options for the logging driver
      * 
      */
     public Map<String,String> options() {

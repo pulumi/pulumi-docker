@@ -23,7 +23,7 @@ public final class ServiceTaskSpecResourcesReservation {
      */
     private @Nullable Integer memoryBytes;
     /**
-     * @return CPU shares in units of `1/1e9` (or `10^-9`) of the CPU. Should be at least `1000000`
+     * @return CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least `1000000`
      * 
      */
     private @Nullable Integer nanoCpus;
@@ -44,7 +44,7 @@ public final class ServiceTaskSpecResourcesReservation {
         return Optional.ofNullable(this.memoryBytes);
     }
     /**
-     * @return CPU shares in units of `1/1e9` (or `10^-9`) of the CPU. Should be at least `1000000`
+     * @return CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least `1000000`
      * 
      */
     public Optional<Integer> nanoCpus() {

@@ -100,7 +100,7 @@ public final class ServiceTaskSpecContainerSpec {
      */
     private @Nullable ServiceTaskSpecContainerSpecPrivileges privileges;
     /**
-     * @return Whether the mount should be read-only
+     * @return Mount the container&#39;s root filesystem as read only
      * 
      */
     private @Nullable Boolean readOnly;
@@ -125,7 +125,7 @@ public final class ServiceTaskSpecContainerSpec {
      */
     private @Nullable Map<String,Object> sysctl;
     /**
-     * @return SELinux user label
+     * @return The user inside the container
      * 
      */
     private @Nullable String user;
@@ -237,7 +237,7 @@ public final class ServiceTaskSpecContainerSpec {
         return Optional.ofNullable(this.privileges);
     }
     /**
-     * @return Whether the mount should be read-only
+     * @return Mount the container&#39;s root filesystem as read only
      * 
      */
     public Optional<Boolean> readOnly() {
@@ -272,7 +272,7 @@ public final class ServiceTaskSpecContainerSpec {
         return this.sysctl == null ? Map.of() : this.sysctl;
     }
     /**
-     * @return SELinux user label
+     * @return The user inside the container
      * 
      */
     public Optional<String> user() {

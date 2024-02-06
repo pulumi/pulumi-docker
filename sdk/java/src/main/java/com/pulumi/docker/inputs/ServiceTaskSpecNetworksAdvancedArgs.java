@@ -48,14 +48,14 @@ public final class ServiceTaskSpecNetworksAdvancedArgs extends com.pulumi.resour
     }
 
     /**
-     * A random name for the port
+     * The name/id of the network.
      * 
      */
     @Import(name="name", required=true)
     private Output<String> name;
 
     /**
-     * @return A random name for the port
+     * @return The name/id of the network.
      * 
      */
     public Output<String> name() {
@@ -151,7 +151,7 @@ public final class ServiceTaskSpecNetworksAdvancedArgs extends com.pulumi.resour
         }
 
         /**
-         * @param name A random name for the port
+         * @param name The name/id of the network.
          * 
          * @return builder
          * 
@@ -162,7 +162,7 @@ public final class ServiceTaskSpecNetworksAdvancedArgs extends com.pulumi.resour
         }
 
         /**
-         * @param name A random name for the port
+         * @param name The name/id of the network.
          * 
          * @return builder
          * 

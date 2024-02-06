@@ -32,14 +32,14 @@ public final class ServiceTaskSpecRestartPolicyArgs extends com.pulumi.resources
     }
 
     /**
-     * The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.
+     * Delay between restart attempts (ms|s|m|h)
      * 
      */
     @Import(name="delay")
     private @Nullable Output<String> delay;
 
     /**
-     * @return The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.
+     * @return Delay between restart attempts (ms|s|m|h)
      * 
      */
     public Optional<Output<String>> delay() {
@@ -125,7 +125,7 @@ public final class ServiceTaskSpecRestartPolicyArgs extends com.pulumi.resources
         }
 
         /**
-         * @param delay The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.
+         * @param delay Delay between restart attempts (ms|s|m|h)
          * 
          * @return builder
          * 
@@ -136,7 +136,7 @@ public final class ServiceTaskSpecRestartPolicyArgs extends com.pulumi.resources
         }
 
         /**
-         * @param delay The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.
+         * @param delay Delay between restart attempts (ms|s|m|h)
          * 
          * @return builder
          * 

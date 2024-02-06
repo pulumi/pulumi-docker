@@ -17,6 +17,9 @@ namespace Pulumi.Docker.Outputs
         /// Literal string value to use as the object content, which will be uploaded as UTF-8-encoded text. Conflicts with `content_base64` &amp; `source`
         /// </summary>
         public readonly string? Content;
+        /// <summary>
+        /// Base64-encoded data that will be decoded and uploaded as raw bytes for the object content. This allows safely uploading non-UTF8 binary data, but is recommended only for larger binary content such as the result of the `base64encode` interpolation function. See here for the reason. Conflicts with `content` &amp; `source`
+        /// </summary>
         public readonly string? ContentBase64;
         /// <summary>
         /// If `true`, the file will be uploaded with user executable permission. Defaults to `false`.

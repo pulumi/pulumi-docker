@@ -630,6 +630,16 @@ class ContainerNetworkData(dict):
                  ipv6_gateway: Optional[str] = None,
                  mac_address: Optional[str] = None,
                  network_name: Optional[str] = None):
+        """
+        :param str gateway: The network gateway of the container.
+        :param str global_ipv6_address: The IPV6 address of the container.
+        :param int global_ipv6_prefix_length: The IPV6 prefix length address of the container.
+        :param str ip_address: The IP address of the container.
+        :param int ip_prefix_length: The IP prefix length of the container.
+        :param str ipv6_gateway: The IPV6 gateway of the container.
+        :param str mac_address: The MAC address of the container.
+        :param str network_name: The name of the network
+        """
         if gateway is not None:
             pulumi.set(__self__, "gateway", gateway)
         if global_ipv6_address is not None:
@@ -650,41 +660,65 @@ class ContainerNetworkData(dict):
     @property
     @pulumi.getter
     def gateway(self) -> Optional[str]:
+        """
+        The network gateway of the container.
+        """
         return pulumi.get(self, "gateway")
 
     @property
     @pulumi.getter(name="globalIpv6Address")
     def global_ipv6_address(self) -> Optional[str]:
+        """
+        The IPV6 address of the container.
+        """
         return pulumi.get(self, "global_ipv6_address")
 
     @property
     @pulumi.getter(name="globalIpv6PrefixLength")
     def global_ipv6_prefix_length(self) -> Optional[int]:
+        """
+        The IPV6 prefix length address of the container.
+        """
         return pulumi.get(self, "global_ipv6_prefix_length")
 
     @property
     @pulumi.getter(name="ipAddress")
     def ip_address(self) -> Optional[str]:
+        """
+        The IP address of the container.
+        """
         return pulumi.get(self, "ip_address")
 
     @property
     @pulumi.getter(name="ipPrefixLength")
     def ip_prefix_length(self) -> Optional[int]:
+        """
+        The IP prefix length of the container.
+        """
         return pulumi.get(self, "ip_prefix_length")
 
     @property
     @pulumi.getter(name="ipv6Gateway")
     def ipv6_gateway(self) -> Optional[str]:
+        """
+        The IPV6 gateway of the container.
+        """
         return pulumi.get(self, "ipv6_gateway")
 
     @property
     @pulumi.getter(name="macAddress")
     def mac_address(self) -> Optional[str]:
+        """
+        The MAC address of the container.
+        """
         return pulumi.get(self, "mac_address")
 
     @property
     @pulumi.getter(name="networkName")
     def network_name(self) -> Optional[str]:
+        """
+        The name of the network
+        """
         return pulumi.get(self, "network_name")
 
 
@@ -886,6 +920,7 @@ class ContainerUpload(dict):
         """
         :param str file: Path to the file in the container where is upload goes to
         :param str content: Literal string value to use as the object content, which will be uploaded as UTF-8-encoded text. Conflicts with `content_base64` & `source`
+        :param str content_base64: Base64-encoded data that will be decoded and uploaded as raw bytes for the object content. This allows safely uploading non-UTF8 binary data, but is recommended only for larger binary content such as the result of the `base64encode` interpolation function. See here for the reason. Conflicts with `content` & `source`
         :param bool executable: If `true`, the file will be uploaded with user executable permission. Defaults to `false`.
         :param str source: A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state. Conflicts with `content` & `content_base64`
         :param str source_hash: If using `source`, this will force an update if the file content has updated but the filename has not.
@@ -921,6 +956,9 @@ class ContainerUpload(dict):
     @property
     @pulumi.getter(name="contentBase64")
     def content_base64(self) -> Optional[str]:
+        """
+        Base64-encoded data that will be decoded and uploaded as raw bytes for the object content. This allows safely uploading non-UTF8 binary data, but is recommended only for larger binary content such as the result of the `base64encode` interpolation function. See here for the reason. Conflicts with `content` & `source`
+        """
         return pulumi.get(self, "content_base64")
 
     @property
@@ -2445,12 +2483,12 @@ class ServiceTaskSpecContainerSpec(dict):
         :param Sequence['ServiceTaskSpecContainerSpecLabelArgs'] labels: User-defined key/value metadata
         :param Sequence['ServiceTaskSpecContainerSpecMountArgs'] mounts: Specification for mounts to be added to containers created as part of the service
         :param 'ServiceTaskSpecContainerSpecPrivilegesArgs' privileges: Security options for the container
-        :param bool read_only: Whether the mount should be read-only
+        :param bool read_only: Mount the container's root filesystem as read only
         :param Sequence['ServiceTaskSpecContainerSpecSecretArgs'] secrets: References to zero or more secrets that will be exposed to the service
         :param str stop_grace_period: Amount of time to wait for the container to terminate before forcefully removing it (ms|s|m|h). If not specified or '0s' the destroy will not check if all tasks/containers of the service terminate.
         :param str stop_signal: Signal to stop the container
         :param Mapping[str, Any] sysctl: Sysctls config (Linux only)
-        :param str user: SELinux user label
+        :param str user: The user inside the container
         """
         pulumi.set(__self__, "image", image)
         if args is not None:
@@ -2618,7 +2656,7 @@ class ServiceTaskSpecContainerSpec(dict):
     @pulumi.getter(name="readOnly")
     def read_only(self) -> Optional[bool]:
         """
-        Whether the mount should be read-only
+        Mount the container's root filesystem as read only
         """
         return pulumi.get(self, "read_only")
 
@@ -2658,7 +2696,7 @@ class ServiceTaskSpecContainerSpec(dict):
     @pulumi.getter
     def user(self) -> Optional[str]:
         """
-        SELinux user label
+        The user inside the container
         """
         return pulumi.get(self, "user")
 
@@ -2839,7 +2877,7 @@ class ServiceTaskSpecContainerSpecHealthcheck(dict):
         :param str interval: Time between running the check (ms|s|m|h). Defaults to `0s`.
         :param int retries: Consecutive failures needed to report unhealthy. Defaults to `0`
         :param str start_period: Start period for the container to initialize before counting retries towards unstable (ms|s|m|h). Defaults to `0s`.
-        :param str timeout: The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`
+        :param str timeout: Maximum time to allow one check to run (ms|s|m|h). Defaults to `0s`.
         """
         pulumi.set(__self__, "tests", tests)
         if interval is not None:
@@ -2887,7 +2925,7 @@ class ServiceTaskSpecContainerSpecHealthcheck(dict):
     @pulumi.getter
     def timeout(self) -> Optional[str]:
         """
-        The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`
+        Maximum time to allow one check to run (ms|s|m|h). Defaults to `0s`.
         """
         return pulumi.get(self, "timeout")
 
@@ -3104,7 +3142,7 @@ class ServiceTaskSpecContainerSpecMountTmpfsOptions(dict):
                  mode: Optional[int] = None,
                  size_bytes: Optional[int] = None):
         """
-        :param int mode: The mode of resolution to use for internal load balancing between tasks
+        :param int mode: The permission mode for the tmpfs mount in an integer
         :param int size_bytes: The size for the tmpfs mount in bytes
         """
         if mode is not None:
@@ -3116,7 +3154,7 @@ class ServiceTaskSpecContainerSpecMountTmpfsOptions(dict):
     @pulumi.getter
     def mode(self) -> Optional[int]:
         """
-        The mode of resolution to use for internal load balancing between tasks
+        The permission mode for the tmpfs mount in an integer
         """
         return pulumi.get(self, "mode")
 
@@ -3327,7 +3365,7 @@ class ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext(dict):
         :param bool disable: Disable SELinux
         :param str level: SELinux level label
         :param str role: SELinux role label
-        :param str type: The mount type
+        :param str type: SELinux type label
         :param str user: SELinux user label
         """
         if disable is not None:
@@ -3369,7 +3407,7 @@ class ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext(dict):
     @pulumi.getter
     def type(self) -> Optional[str]:
         """
-        The mount type
+        SELinux type label
         """
         return pulumi.get(self, "type")
 
@@ -3421,9 +3459,9 @@ class ServiceTaskSpecContainerSpecSecret(dict):
         """
         :param str file_name: Represents the final filename in the filesystem
         :param str secret_id: ID of the specific secret that we're referencing
-        :param str file_gid: Represents the file GID. Defaults to `0`.
-        :param int file_mode: Represents represents the FileMode of the file. Defaults to `0o444`.
-        :param str file_uid: Represents the file UID. Defaults to `0`.
+        :param str file_gid: Represents the file GID. Defaults to `0`
+        :param int file_mode: Represents represents the FileMode of the file. Defaults to `0o444`
+        :param str file_uid: Represents the file UID. Defaults to `0`
         :param str secret_name: Name of the secret that this references, but this is just provided for lookup/display purposes. The config in the reference will be identified by its ID
         """
         pulumi.set(__self__, "file_name", file_name)
@@ -3457,7 +3495,7 @@ class ServiceTaskSpecContainerSpecSecret(dict):
     @pulumi.getter(name="fileGid")
     def file_gid(self) -> Optional[str]:
         """
-        Represents the file GID. Defaults to `0`.
+        Represents the file GID. Defaults to `0`
         """
         return pulumi.get(self, "file_gid")
 
@@ -3465,7 +3503,7 @@ class ServiceTaskSpecContainerSpecSecret(dict):
     @pulumi.getter(name="fileMode")
     def file_mode(self) -> Optional[int]:
         """
-        Represents represents the FileMode of the file. Defaults to `0o444`.
+        Represents represents the FileMode of the file. Defaults to `0o444`
         """
         return pulumi.get(self, "file_mode")
 
@@ -3473,7 +3511,7 @@ class ServiceTaskSpecContainerSpecSecret(dict):
     @pulumi.getter(name="fileUid")
     def file_uid(self) -> Optional[str]:
         """
-        Represents the file UID. Defaults to `0`.
+        Represents the file UID. Defaults to `0`
         """
         return pulumi.get(self, "file_uid")
 
@@ -3492,8 +3530,8 @@ class ServiceTaskSpecLogDriver(dict):
                  name: str,
                  options: Optional[Mapping[str, str]] = None):
         """
-        :param str name: A random name for the port
-        :param Mapping[str, str] options: A list of internal resolver variables to be modified (e.g., `debug`, `ndots:3`, etc.)
+        :param str name: The logging driver to use
+        :param Mapping[str, str] options: The options for the logging driver
         """
         pulumi.set(__self__, "name", name)
         if options is not None:
@@ -3503,7 +3541,7 @@ class ServiceTaskSpecLogDriver(dict):
     @pulumi.getter
     def name(self) -> str:
         """
-        A random name for the port
+        The logging driver to use
         """
         return pulumi.get(self, "name")
 
@@ -3511,7 +3549,7 @@ class ServiceTaskSpecLogDriver(dict):
     @pulumi.getter
     def options(self) -> Optional[Mapping[str, str]]:
         """
-        A list of internal resolver variables to be modified (e.g., `debug`, `ndots:3`, etc.)
+        The options for the logging driver
         """
         return pulumi.get(self, "options")
 
@@ -3540,7 +3578,7 @@ class ServiceTaskSpecNetworksAdvanced(dict):
                  aliases: Optional[Sequence[str]] = None,
                  driver_opts: Optional[Sequence[str]] = None):
         """
-        :param str name: A random name for the port
+        :param str name: The name/id of the network.
         :param Sequence[str] aliases: The network aliases of the container in the specific network.
         :param Sequence[str] driver_opts: An array of driver options for the network, e.g. `opts1=value`
         """
@@ -3554,7 +3592,7 @@ class ServiceTaskSpecNetworksAdvanced(dict):
     @pulumi.getter
     def name(self) -> str:
         """
-        A random name for the port
+        The name/id of the network.
         """
         return pulumi.get(self, "name")
 
@@ -3787,7 +3825,7 @@ class ServiceTaskSpecResourcesReservation(dict):
         """
         :param 'ServiceTaskSpecResourcesReservationGenericResourcesArgs' generic_resources: User-defined resources can be either Integer resources (e.g, `SSD=3`) or String resources (e.g, GPU=UUID1)
         :param int memory_bytes: The amounf of memory in bytes the container allocates
-        :param int nano_cpus: CPU shares in units of `1/1e9` (or `10^-9`) of the CPU. Should be at least `1000000`
+        :param int nano_cpus: CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least `1000000`
         """
         if generic_resources is not None:
             pulumi.set(__self__, "generic_resources", generic_resources)
@@ -3816,7 +3854,7 @@ class ServiceTaskSpecResourcesReservation(dict):
     @pulumi.getter(name="nanoCpus")
     def nano_cpus(self) -> Optional[int]:
         """
-        CPU shares in units of `1/1e9` (or `10^-9`) of the CPU. Should be at least `1000000`
+        CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least `1000000`
         """
         return pulumi.get(self, "nano_cpus")
 
@@ -3897,7 +3935,7 @@ class ServiceTaskSpecRestartPolicy(dict):
                  window: Optional[str] = None):
         """
         :param str condition: Condition for restart
-        :param str delay: The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.
+        :param str delay: Delay between restart attempts (ms|s|m|h)
         :param int max_attempts: Maximum attempts to restart a given container before giving up (default value is `0`, which is ignored)
         :param str window: The time window used to evaluate the restart policy (default value is `0`, which is unbounded) (ms|s|m|h)
         """
@@ -3922,7 +3960,7 @@ class ServiceTaskSpecRestartPolicy(dict):
     @pulumi.getter
     def delay(self) -> Optional[str]:
         """
-        The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.
+        Delay between restart attempts (ms|s|m|h)
         """
         return pulumi.get(self, "delay")
 
@@ -4077,6 +4115,12 @@ class GetNetworkIpamConfigResult(dict):
                  gateway: Optional[str] = None,
                  ip_range: Optional[str] = None,
                  subnet: Optional[str] = None):
+        """
+        :param Mapping[str, Any] aux_address: Auxiliary IPv4 or IPv6 addresses used by Network driver
+        :param str gateway: The IP address of the gateway
+        :param str ip_range: The ip range in CIDR form
+        :param str subnet: The subnet in CIDR form
+        """
         if aux_address is not None:
             pulumi.set(__self__, "aux_address", aux_address)
         if gateway is not None:
@@ -4089,21 +4133,33 @@ class GetNetworkIpamConfigResult(dict):
     @property
     @pulumi.getter(name="auxAddress")
     def aux_address(self) -> Optional[Mapping[str, Any]]:
+        """
+        Auxiliary IPv4 or IPv6 addresses used by Network driver
+        """
         return pulumi.get(self, "aux_address")
 
     @property
     @pulumi.getter
     def gateway(self) -> Optional[str]:
+        """
+        The IP address of the gateway
+        """
         return pulumi.get(self, "gateway")
 
     @property
     @pulumi.getter(name="ipRange")
     def ip_range(self) -> Optional[str]:
+        """
+        The ip range in CIDR form
+        """
         return pulumi.get(self, "ip_range")
 
     @property
     @pulumi.getter
     def subnet(self) -> Optional[str]:
+        """
+        The subnet in CIDR form
+        """
         return pulumi.get(self, "subnet")
 
 

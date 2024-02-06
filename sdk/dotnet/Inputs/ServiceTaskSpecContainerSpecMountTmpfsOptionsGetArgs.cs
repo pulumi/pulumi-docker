@@ -13,7 +13,7 @@ namespace Pulumi.Docker.Inputs
     public sealed class ServiceTaskSpecContainerSpecMountTmpfsOptionsGetArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// The mode of resolution to use for internal load balancing between tasks
+        /// The permission mode for the tmpfs mount in an integer
         /// </summary>
         [Input("mode")]
         public Input<int>? Mode { get; set; }

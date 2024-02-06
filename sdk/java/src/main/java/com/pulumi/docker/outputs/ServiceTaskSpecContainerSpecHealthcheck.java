@@ -35,7 +35,7 @@ public final class ServiceTaskSpecContainerSpecHealthcheck {
      */
     private List<String> tests;
     /**
-     * @return The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`
+     * @return Maximum time to allow one check to run (ms|s|m|h). Defaults to `0s`.
      * 
      */
     private @Nullable String timeout;
@@ -70,7 +70,7 @@ public final class ServiceTaskSpecContainerSpecHealthcheck {
         return this.tests;
     }
     /**
-     * @return The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`
+     * @return Maximum time to allow one check to run (ms|s|m|h). Defaults to `0s`.
      * 
      */
     public Optional<String> timeout() {

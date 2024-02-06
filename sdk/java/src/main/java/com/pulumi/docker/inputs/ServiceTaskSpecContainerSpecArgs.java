@@ -254,14 +254,14 @@ public final class ServiceTaskSpecContainerSpecArgs extends com.pulumi.resources
     }
 
     /**
-     * Whether the mount should be read-only
+     * Mount the container&#39;s root filesystem as read only
      * 
      */
     @Import(name="readOnly")
     private @Nullable Output<Boolean> readOnly;
 
     /**
-     * @return Whether the mount should be read-only
+     * @return Mount the container&#39;s root filesystem as read only
      * 
      */
     public Optional<Output<Boolean>> readOnly() {
@@ -329,14 +329,14 @@ public final class ServiceTaskSpecContainerSpecArgs extends com.pulumi.resources
     }
 
     /**
-     * SELinux user label
+     * The user inside the container
      * 
      */
     @Import(name="user")
     private @Nullable Output<String> user;
 
     /**
-     * @return SELinux user label
+     * @return The user inside the container
      * 
      */
     public Optional<Output<String>> user() {
@@ -773,7 +773,7 @@ public final class ServiceTaskSpecContainerSpecArgs extends com.pulumi.resources
         }
 
         /**
-         * @param readOnly Whether the mount should be read-only
+         * @param readOnly Mount the container&#39;s root filesystem as read only
          * 
          * @return builder
          * 
@@ -784,7 +784,7 @@ public final class ServiceTaskSpecContainerSpecArgs extends com.pulumi.resources
         }
 
         /**
-         * @param readOnly Whether the mount should be read-only
+         * @param readOnly Mount the container&#39;s root filesystem as read only
          * 
          * @return builder
          * 
@@ -888,7 +888,7 @@ public final class ServiceTaskSpecContainerSpecArgs extends com.pulumi.resources
         }
 
         /**
-         * @param user SELinux user label
+         * @param user The user inside the container
          * 
          * @return builder
          * 
@@ -899,7 +899,7 @@ public final class ServiceTaskSpecContainerSpecArgs extends com.pulumi.resources
         }
 
         /**
-         * @param user SELinux user label
+         * @param user The user inside the container
          * 
          * @return builder
          * 

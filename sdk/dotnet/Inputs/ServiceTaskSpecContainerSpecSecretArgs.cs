@@ -13,13 +13,13 @@ namespace Pulumi.Docker.Inputs
     public sealed class ServiceTaskSpecContainerSpecSecretArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// Represents the file GID. Defaults to `0`.
+        /// Represents the file GID. Defaults to `0`
         /// </summary>
         [Input("fileGid")]
         public Input<string>? FileGid { get; set; }
 
         /// <summary>
-        /// Represents represents the FileMode of the file. Defaults to `0o444`.
+        /// Represents represents the FileMode of the file. Defaults to `0o444`
         /// </summary>
         [Input("fileMode")]
         public Input<int>? FileMode { get; set; }
@@ -31,7 +31,7 @@ namespace Pulumi.Docker.Inputs
         public Input<string> FileName { get; set; } = null!;
 
         /// <summary>
-        /// Represents the file UID. Defaults to `0`.
+        /// Represents the file UID. Defaults to `0`
         /// </summary>
         [Input("fileUid")]
         public Input<string>? FileUid { get; set; }

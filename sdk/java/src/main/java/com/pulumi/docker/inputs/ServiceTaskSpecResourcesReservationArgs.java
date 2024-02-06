@@ -47,14 +47,14 @@ public final class ServiceTaskSpecResourcesReservationArgs extends com.pulumi.re
     }
 
     /**
-     * CPU shares in units of `1/1e9` (or `10^-9`) of the CPU. Should be at least `1000000`
+     * CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least `1000000`
      * 
      */
     @Import(name="nanoCpus")
     private @Nullable Output<Integer> nanoCpus;
 
     /**
-     * @return CPU shares in units of `1/1e9` (or `10^-9`) of the CPU. Should be at least `1000000`
+     * @return CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least `1000000`
      * 
      */
     public Optional<Output<Integer>> nanoCpus() {
@@ -130,7 +130,7 @@ public final class ServiceTaskSpecResourcesReservationArgs extends com.pulumi.re
         }
 
         /**
-         * @param nanoCpus CPU shares in units of `1/1e9` (or `10^-9`) of the CPU. Should be at least `1000000`
+         * @param nanoCpus CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least `1000000`
          * 
          * @return builder
          * 
@@ -141,7 +141,7 @@ public final class ServiceTaskSpecResourcesReservationArgs extends com.pulumi.re
         }
 
         /**
-         * @param nanoCpus CPU shares in units of `1/1e9` (or `10^-9`) of the CPU. Should be at least `1000000`
+         * @param nanoCpus CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least `1000000`
          * 
          * @return builder
          * 

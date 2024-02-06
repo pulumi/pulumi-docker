@@ -151,7 +151,7 @@ namespace Pulumi.Docker.Inputs
         public Input<Inputs.ServiceTaskSpecContainerSpecPrivilegesArgs>? Privileges { get; set; }
 
         /// <summary>
-        /// Whether the mount should be read-only
+        /// Mount the container's root filesystem as read only
         /// </summary>
         [Input("readOnly")]
         public Input<bool>? ReadOnly { get; set; }
@@ -193,7 +193,7 @@ namespace Pulumi.Docker.Inputs
         }
 
         /// <summary>
-        /// SELinux user label
+        /// The user inside the container
         /// </summary>
         [Input("user")]
         public Input<string>? User { get; set; }

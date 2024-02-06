@@ -18,7 +18,7 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly string? Condition;
         /// <summary>
-        /// The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.
+        /// Delay between restart attempts (ms|s|m|h)
         /// </summary>
         public readonly string? Delay;
         /// <summary>

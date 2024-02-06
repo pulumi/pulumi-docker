@@ -62,14 +62,14 @@ public final class ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgs exte
     }
 
     /**
-     * The mount type
+     * SELinux type label
      * 
      */
     @Import(name="type")
     private @Nullable Output<String> type;
 
     /**
-     * @return The mount type
+     * @return SELinux type label
      * 
      */
     public Optional<Output<String>> type() {
@@ -183,7 +183,7 @@ public final class ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgs exte
         }
 
         /**
-         * @param type The mount type
+         * @param type SELinux type label
          * 
          * @return builder
          * 
@@ -194,7 +194,7 @@ public final class ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgs exte
         }
 
         /**
-         * @param type The mount type
+         * @param type SELinux type label
          * 
          * @return builder
          * 

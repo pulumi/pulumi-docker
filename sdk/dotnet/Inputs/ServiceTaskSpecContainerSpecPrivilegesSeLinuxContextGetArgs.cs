@@ -31,7 +31,7 @@ namespace Pulumi.Docker.Inputs
         public Input<string>? Role { get; set; }
 
         /// <summary>
-        /// The mount type
+        /// SELinux type label
         /// </summary>
         [Input("type")]
         public Input<string>? Type { get; set; }

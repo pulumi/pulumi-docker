@@ -28,7 +28,7 @@ public final class ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext {
      */
     private @Nullable String role;
     /**
-     * @return The mount type
+     * @return SELinux type label
      * 
      */
     private @Nullable String type;
@@ -61,7 +61,7 @@ public final class ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext {
         return Optional.ofNullable(this.role);
     }
     /**
-     * @return The mount type
+     * @return SELinux type label
      * 
      */
     public Optional<String> type() {

@@ -14,12 +14,12 @@ import javax.annotation.Nullable;
 @CustomType
 public final class ServiceTaskSpecContainerSpecSecret {
     /**
-     * @return Represents the file GID. Defaults to `0`.
+     * @return Represents the file GID. Defaults to `0`
      * 
      */
     private @Nullable String fileGid;
     /**
-     * @return Represents represents the FileMode of the file. Defaults to `0o444`.
+     * @return Represents represents the FileMode of the file. Defaults to `0o444`
      * 
      */
     private @Nullable Integer fileMode;
@@ -29,7 +29,7 @@ public final class ServiceTaskSpecContainerSpecSecret {
      */
     private String fileName;
     /**
-     * @return Represents the file UID. Defaults to `0`.
+     * @return Represents the file UID. Defaults to `0`
      * 
      */
     private @Nullable String fileUid;
@@ -46,14 +46,14 @@ public final class ServiceTaskSpecContainerSpecSecret {
 
     private ServiceTaskSpecContainerSpecSecret() {}
     /**
-     * @return Represents the file GID. Defaults to `0`.
+     * @return Represents the file GID. Defaults to `0`
      * 
      */
     public Optional<String> fileGid() {
         return Optional.ofNullable(this.fileGid);
     }
     /**
-     * @return Represents represents the FileMode of the file. Defaults to `0o444`.
+     * @return Represents represents the FileMode of the file. Defaults to `0o444`
      * 
      */
     public Optional<Integer> fileMode() {
@@ -67,7 +67,7 @@ public final class ServiceTaskSpecContainerSpecSecret {
         return this.fileName;
     }
     /**
-     * @return Represents the file UID. Defaults to `0`.
+     * @return Represents the file UID. Defaults to `0`
      * 
      */
     public Optional<String> fileUid() {

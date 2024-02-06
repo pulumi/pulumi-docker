@@ -16,14 +16,14 @@ public final class ServiceTaskSpecContainerSpecMountTmpfsOptionsArgs extends com
     public static final ServiceTaskSpecContainerSpecMountTmpfsOptionsArgs Empty = new ServiceTaskSpecContainerSpecMountTmpfsOptionsArgs();
 
     /**
-     * The mode of resolution to use for internal load balancing between tasks
+     * The permission mode for the tmpfs mount in an integer
      * 
      */
     @Import(name="mode")
     private @Nullable Output<Integer> mode;
 
     /**
-     * @return The mode of resolution to use for internal load balancing between tasks
+     * @return The permission mode for the tmpfs mount in an integer
      * 
      */
     public Optional<Output<Integer>> mode() {
@@ -71,7 +71,7 @@ public final class ServiceTaskSpecContainerSpecMountTmpfsOptionsArgs extends com
         }
 
         /**
-         * @param mode The mode of resolution to use for internal load balancing between tasks
+         * @param mode The permission mode for the tmpfs mount in an integer
          * 
          * @return builder
          * 
@@ -82,7 +82,7 @@ public final class ServiceTaskSpecContainerSpecMountTmpfsOptionsArgs extends com
         }
 
         /**
-         * @param mode The mode of resolution to use for internal load balancing between tasks
+         * @param mode The permission mode for the tmpfs mount in an integer
          * 
          * @return builder
          * 

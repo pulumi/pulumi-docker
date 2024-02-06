@@ -18,14 +18,14 @@ public final class ServiceTaskSpecLogDriverArgs extends com.pulumi.resources.Res
     public static final ServiceTaskSpecLogDriverArgs Empty = new ServiceTaskSpecLogDriverArgs();
 
     /**
-     * A random name for the port
+     * The logging driver to use
      * 
      */
     @Import(name="name", required=true)
     private Output<String> name;
 
     /**
-     * @return A random name for the port
+     * @return The logging driver to use
      * 
      */
     public Output<String> name() {
@@ -33,14 +33,14 @@ public final class ServiceTaskSpecLogDriverArgs extends com.pulumi.resources.Res
     }
 
     /**
-     * A list of internal resolver variables to be modified (e.g., `debug`, `ndots:3`, etc.)
+     * The options for the logging driver
      * 
      */
     @Import(name="options")
     private @Nullable Output<Map<String,String>> options;
 
     /**
-     * @return A list of internal resolver variables to be modified (e.g., `debug`, `ndots:3`, etc.)
+     * @return The options for the logging driver
      * 
      */
     public Optional<Output<Map<String,String>>> options() {
@@ -73,7 +73,7 @@ public final class ServiceTaskSpecLogDriverArgs extends com.pulumi.resources.Res
         }
 
         /**
-         * @param name A random name for the port
+         * @param name The logging driver to use
          * 
          * @return builder
          * 
@@ -84,7 +84,7 @@ public final class ServiceTaskSpecLogDriverArgs extends com.pulumi.resources.Res
         }
 
         /**
-         * @param name A random name for the port
+         * @param name The logging driver to use
          * 
          * @return builder
          * 
@@ -94,7 +94,7 @@ public final class ServiceTaskSpecLogDriverArgs extends com.pulumi.resources.Res
         }
 
         /**
-         * @param options A list of internal resolver variables to be modified (e.g., `debug`, `ndots:3`, etc.)
+         * @param options The options for the logging driver
          * 
          * @return builder
          * 
@@ -105,7 +105,7 @@ public final class ServiceTaskSpecLogDriverArgs extends com.pulumi.resources.Res
         }
 
         /**
-         * @param options A list of internal resolver variables to be modified (e.g., `debug`, `ndots:3`, etc.)
+         * @param options The options for the logging driver
          * 
          * @return builder
          * 

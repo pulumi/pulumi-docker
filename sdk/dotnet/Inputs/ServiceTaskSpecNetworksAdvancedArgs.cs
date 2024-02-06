@@ -37,7 +37,7 @@ namespace Pulumi.Docker.Inputs
         }
 
         /// <summary>
-        /// A random name for the port
+        /// The name/id of the network.
         /// </summary>
         [Input("name", required: true)]
         public Input<string> Name { get; set; } = null!;

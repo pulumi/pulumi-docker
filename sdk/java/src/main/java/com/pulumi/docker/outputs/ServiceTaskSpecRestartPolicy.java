@@ -18,7 +18,7 @@ public final class ServiceTaskSpecRestartPolicy {
      */
     private @Nullable String condition;
     /**
-     * @return The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.
+     * @return Delay between restart attempts (ms|s|m|h)
      * 
      */
     private @Nullable String delay;
@@ -42,7 +42,7 @@ public final class ServiceTaskSpecRestartPolicy {
         return Optional.ofNullable(this.condition);
     }
     /**
-     * @return The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.
+     * @return Delay between restart attempts (ms|s|m|h)
      * 
      */
     public Optional<String> delay() {

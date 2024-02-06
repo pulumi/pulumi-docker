@@ -23,7 +23,7 @@ public final class ServiceTaskSpecNetworksAdvanced {
      */
     private @Nullable List<String> driverOpts;
     /**
-     * @return A random name for the port
+     * @return The name/id of the network.
      * 
      */
     private String name;
@@ -44,7 +44,7 @@ public final class ServiceTaskSpecNetworksAdvanced {
         return this.driverOpts == null ? List.of() : this.driverOpts;
     }
     /**
-     * @return A random name for the port
+     * @return The name/id of the network.
      * 
      */
     public String name() {

@@ -167,13 +167,37 @@ export interface ContainerMountVolumeOptionsLabel {
 }
 
 export interface ContainerNetworkData {
+    /**
+     * The network gateway of the container.
+     */
     gateway?: pulumi.Input<string>;
+    /**
+     * The IPV6 address of the container.
+     */
     globalIpv6Address?: pulumi.Input<string>;
+    /**
+     * The IPV6 prefix length address of the container.
+     */
     globalIpv6PrefixLength?: pulumi.Input<number>;
+    /**
+     * The IP address of the container.
+     */
     ipAddress?: pulumi.Input<string>;
+    /**
+     * The IP prefix length of the container.
+     */
     ipPrefixLength?: pulumi.Input<number>;
+    /**
+     * The IPV6 gateway of the container.
+     */
     ipv6Gateway?: pulumi.Input<string>;
+    /**
+     * The MAC address of the container.
+     */
     macAddress?: pulumi.Input<string>;
+    /**
+     * The name of the network
+     */
     networkName?: pulumi.Input<string>;
 }
 
@@ -235,6 +259,9 @@ export interface ContainerUpload {
      * Literal string value to use as the object content, which will be uploaded as UTF-8-encoded text. Conflicts with `contentBase64` & `source`
      */
     content?: pulumi.Input<string>;
+    /**
+     * Base64-encoded data that will be decoded and uploaded as raw bytes for the object content. This allows safely uploading non-UTF8 binary data, but is recommended only for larger binary content such as the result of the `base64encode` interpolation function. See here for the reason. Conflicts with `content` & `source`
+     */
     contentBase64?: pulumi.Input<string>;
     /**
      * If `true`, the file will be uploaded with user executable permission. Defaults to `false`.
@@ -282,6 +309,10 @@ export interface ContainerVolume {
  */
 export interface DockerBuild {
     /**
+     * Custom host-to-IP mappings to use while building (format: "host:ip")
+     */
+    addHosts?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
      * An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass build-time variables that can be accessed like environment variables inside the RUN instruction.
      */
     args?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
@@ -301,6 +332,10 @@ export interface DockerBuild {
      * The path to the Dockerfile to use.
      */
     dockerfile?: pulumi.Input<string>;
+    /**
+     * Set the networking mode for RUN instructions
+     */
+    network?: pulumi.Input<string>;
     /**
      * The architecture of the platform you want to build this image for, e.g. `linux/arm64`.
      */
@@ -353,11 +388,26 @@ export interface PluginGrantPermission {
 }
 
 export interface ProviderRegistryAuth {
+    /**
+     * Address of the registry
+     */
     address: pulumi.Input<string>;
     authDisabled?: pulumi.Input<boolean>;
+    /**
+     * Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `configFile` has predencen over all other options.
+     */
     configFile?: pulumi.Input<string>;
+    /**
+     * Plain content of the docker json file for registry auth. `configFileContent` has precedence over username/password.
+     */
     configFileContent?: pulumi.Input<string>;
+    /**
+     * Password for the registry. Defaults to `DOCKER_REGISTRY_PASS` env variable if set.
+     */
     password?: pulumi.Input<string>;
+    /**
+     * Username for the registry. Defaults to `DOCKER_REGISTRY_USER` env variable if set.
+     */
     username?: pulumi.Input<string>;
 }
 
@@ -796,7 +846,7 @@ export interface ServiceTaskSpecContainerSpec {
      */
     privileges?: pulumi.Input<inputs.ServiceTaskSpecContainerSpecPrivileges>;
     /**
-     * Whether the mount should be read-only
+     * Mount the container's root filesystem as read only
      */
     readOnly?: pulumi.Input<boolean>;
     /**
@@ -816,7 +866,7 @@ export interface ServiceTaskSpecContainerSpec {
      */
     sysctl?: pulumi.Input<{[key: string]: any}>;
     /**
-     * SELinux user label
+     * The user inside the container
      */
     user?: pulumi.Input<string>;
 }
@@ -881,7 +931,7 @@ export interface ServiceTaskSpecContainerSpecHealthcheck {
      */
     tests: pulumi.Input<pulumi.Input<string>[]>;
     /**
-     * The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`
+     * Maximum time to allow one check to run (ms|s|m|h). Defaults to `0s`.
      */
     timeout?: pulumi.Input<string>;
 }
@@ -948,7 +998,7 @@ export interface ServiceTaskSpecContainerSpecMountBindOptions {
 
 export interface ServiceTaskSpecContainerSpecMountTmpfsOptions {
     /**
-     * The mode of resolution to use for internal load balancing between tasks
+     * The permission mode for the tmpfs mount in an integer
      */
     mode?: pulumi.Input<number>;
     /**
@@ -1023,7 +1073,7 @@ export interface ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext {
      */
     role?: pulumi.Input<string>;
     /**
-     * The mount type
+     * SELinux type label
      */
     type?: pulumi.Input<string>;
     /**
@@ -1034,11 +1084,11 @@ export interface ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext {
 
 export interface ServiceTaskSpecContainerSpecSecret {
     /**
-     * Represents the file GID. Defaults to `0`.
+     * Represents the file GID. Defaults to `0`
      */
     fileGid?: pulumi.Input<string>;
     /**
-     * Represents represents the FileMode of the file. Defaults to `0o444`.
+     * Represents represents the FileMode of the file. Defaults to `0o444`
      */
     fileMode?: pulumi.Input<number>;
     /**
@@ -1046,7 +1096,7 @@ export interface ServiceTaskSpecContainerSpecSecret {
      */
     fileName: pulumi.Input<string>;
     /**
-     * Represents the file UID. Defaults to `0`.
+     * Represents the file UID. Defaults to `0`
      */
     fileUid?: pulumi.Input<string>;
     /**
@@ -1061,11 +1111,11 @@ export interface ServiceTaskSpecContainerSpecSecret {
 
 export interface ServiceTaskSpecLogDriver {
     /**
-     * A random name for the port
+     * The logging driver to use
      */
     name: pulumi.Input<string>;
     /**
-     * A list of internal resolver variables to be modified (e.g., `debug`, `ndots:3`, etc.)
+     * The options for the logging driver
      */
     options?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
 }
@@ -1080,7 +1130,7 @@ export interface ServiceTaskSpecNetworksAdvanced {
      */
     driverOpts?: pulumi.Input<pulumi.Input<string>[]>;
     /**
-     * A random name for the port
+     * The name/id of the network.
      */
     name: pulumi.Input<string>;
 }
@@ -1147,7 +1197,7 @@ export interface ServiceTaskSpecResourcesReservation {
      */
     memoryBytes?: pulumi.Input<number>;
     /**
-     * CPU shares in units of `1/1e9` (or `10^-9`) of the CPU. Should be at least `1000000`
+     * CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least `1000000`
      */
     nanoCpus?: pulumi.Input<number>;
 }
@@ -1169,7 +1219,7 @@ export interface ServiceTaskSpecRestartPolicy {
      */
     condition?: pulumi.Input<string>;
     /**
-     * The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.
+     * Delay between restart attempts (ms|s|m|h)
      */
     delay?: pulumi.Input<string>;
     /**

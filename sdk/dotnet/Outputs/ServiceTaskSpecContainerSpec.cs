@@ -74,7 +74,7 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly Outputs.ServiceTaskSpecContainerSpecPrivileges? Privileges;
         /// <summary>
-        /// Whether the mount should be read-only
+        /// Mount the container's root filesystem as read only
         /// </summary>
         public readonly bool? ReadOnly;
         /// <summary>
@@ -94,7 +94,7 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly ImmutableDictionary<string, object>? Sysctl;
         /// <summary>
-        /// SELinux user label
+        /// The user inside the container
         /// </summary>
         public readonly string? User;
 

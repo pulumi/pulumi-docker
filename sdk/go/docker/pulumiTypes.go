@@ -1454,14 +1454,22 @@ func (o ContainerMountVolumeOptionsLabelArrayOutput) Index(i pulumi.IntInput) Co
 }
 
 type ContainerNetworkData struct {
-	Gateway                *string `pulumi:"gateway"`
-	GlobalIpv6Address      *string `pulumi:"globalIpv6Address"`
-	GlobalIpv6PrefixLength *int    `pulumi:"globalIpv6PrefixLength"`
-	IpAddress              *string `pulumi:"ipAddress"`
-	IpPrefixLength         *int    `pulumi:"ipPrefixLength"`
-	Ipv6Gateway            *string `pulumi:"ipv6Gateway"`
-	MacAddress             *string `pulumi:"macAddress"`
-	NetworkName            *string `pulumi:"networkName"`
+	// The network gateway of the container.
+	Gateway *string `pulumi:"gateway"`
+	// The IPV6 address of the container.
+	GlobalIpv6Address *string `pulumi:"globalIpv6Address"`
+	// The IPV6 prefix length address of the container.
+	GlobalIpv6PrefixLength *int `pulumi:"globalIpv6PrefixLength"`
+	// The IP address of the container.
+	IpAddress *string `pulumi:"ipAddress"`
+	// The IP prefix length of the container.
+	IpPrefixLength *int `pulumi:"ipPrefixLength"`
+	// The IPV6 gateway of the container.
+	Ipv6Gateway *string `pulumi:"ipv6Gateway"`
+	// The MAC address of the container.
+	MacAddress *string `pulumi:"macAddress"`
+	// The name of the network
+	NetworkName *string `pulumi:"networkName"`
 }
 
 // ContainerNetworkDataInput is an input type that accepts ContainerNetworkDataArgs and ContainerNetworkDataOutput values.
@@ -1476,14 +1484,22 @@ type ContainerNetworkDataInput interface {
 }
 
 type ContainerNetworkDataArgs struct {
-	Gateway                pulumi.StringPtrInput `pulumi:"gateway"`
-	GlobalIpv6Address      pulumi.StringPtrInput `pulumi:"globalIpv6Address"`
-	GlobalIpv6PrefixLength pulumi.IntPtrInput    `pulumi:"globalIpv6PrefixLength"`
-	IpAddress              pulumi.StringPtrInput `pulumi:"ipAddress"`
-	IpPrefixLength         pulumi.IntPtrInput    `pulumi:"ipPrefixLength"`
-	Ipv6Gateway            pulumi.StringPtrInput `pulumi:"ipv6Gateway"`
-	MacAddress             pulumi.StringPtrInput `pulumi:"macAddress"`
-	NetworkName            pulumi.StringPtrInput `pulumi:"networkName"`
+	// The network gateway of the container.
+	Gateway pulumi.StringPtrInput `pulumi:"gateway"`
+	// The IPV6 address of the container.
+	GlobalIpv6Address pulumi.StringPtrInput `pulumi:"globalIpv6Address"`
+	// The IPV6 prefix length address of the container.
+	GlobalIpv6PrefixLength pulumi.IntPtrInput `pulumi:"globalIpv6PrefixLength"`
+	// The IP address of the container.
+	IpAddress pulumi.StringPtrInput `pulumi:"ipAddress"`
+	// The IP prefix length of the container.
+	IpPrefixLength pulumi.IntPtrInput `pulumi:"ipPrefixLength"`
+	// The IPV6 gateway of the container.
+	Ipv6Gateway pulumi.StringPtrInput `pulumi:"ipv6Gateway"`
+	// The MAC address of the container.
+	MacAddress pulumi.StringPtrInput `pulumi:"macAddress"`
+	// The name of the network
+	NetworkName pulumi.StringPtrInput `pulumi:"networkName"`
 }
 
 func (ContainerNetworkDataArgs) ElementType() reflect.Type {
@@ -1537,34 +1553,42 @@ func (o ContainerNetworkDataOutput) ToContainerNetworkDataOutputWithContext(ctx 
 	return o
 }
 
+// The network gateway of the container.
 func (o ContainerNetworkDataOutput) Gateway() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ContainerNetworkData) *string { return v.Gateway }).(pulumi.StringPtrOutput)
 }
 
+// The IPV6 address of the container.
 func (o ContainerNetworkDataOutput) GlobalIpv6Address() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ContainerNetworkData) *string { return v.GlobalIpv6Address }).(pulumi.StringPtrOutput)
 }
 
+// The IPV6 prefix length address of the container.
 func (o ContainerNetworkDataOutput) GlobalIpv6PrefixLength() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v ContainerNetworkData) *int { return v.GlobalIpv6PrefixLength }).(pulumi.IntPtrOutput)
 }
 
+// The IP address of the container.
 func (o ContainerNetworkDataOutput) IpAddress() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ContainerNetworkData) *string { return v.IpAddress }).(pulumi.StringPtrOutput)
 }
 
+// The IP prefix length of the container.
 func (o ContainerNetworkDataOutput) IpPrefixLength() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v ContainerNetworkData) *int { return v.IpPrefixLength }).(pulumi.IntPtrOutput)
 }
 
+// The IPV6 gateway of the container.
 func (o ContainerNetworkDataOutput) Ipv6Gateway() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ContainerNetworkData) *string { return v.Ipv6Gateway }).(pulumi.StringPtrOutput)
 }
 
+// The MAC address of the container.
 func (o ContainerNetworkDataOutput) MacAddress() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ContainerNetworkData) *string { return v.MacAddress }).(pulumi.StringPtrOutput)
 }
 
+// The name of the network
 func (o ContainerNetworkDataOutput) NetworkName() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ContainerNetworkData) *string { return v.NetworkName }).(pulumi.StringPtrOutput)
 }
@@ -1954,7 +1978,8 @@ func (o ContainerUlimitArrayOutput) Index(i pulumi.IntInput) ContainerUlimitOutp
 
 type ContainerUpload struct {
 	// Literal string value to use as the object content, which will be uploaded as UTF-8-encoded text. Conflicts with `contentBase64` & `source`
-	Content       *string `pulumi:"content"`
+	Content *string `pulumi:"content"`
+	// Base64-encoded data that will be decoded and uploaded as raw bytes for the object content. This allows safely uploading non-UTF8 binary data, but is recommended only for larger binary content such as the result of the `base64encode` interpolation function. See here for the reason. Conflicts with `content` & `source`
 	ContentBase64 *string `pulumi:"contentBase64"`
 	// If `true`, the file will be uploaded with user executable permission. Defaults to `false`.
 	Executable *bool `pulumi:"executable"`
@@ -1979,7 +2004,8 @@ type ContainerUploadInput interface {
 
 type ContainerUploadArgs struct {
 	// Literal string value to use as the object content, which will be uploaded as UTF-8-encoded text. Conflicts with `contentBase64` & `source`
-	Content       pulumi.StringPtrInput `pulumi:"content"`
+	Content pulumi.StringPtrInput `pulumi:"content"`
+	// Base64-encoded data that will be decoded and uploaded as raw bytes for the object content. This allows safely uploading non-UTF8 binary data, but is recommended only for larger binary content such as the result of the `base64encode` interpolation function. See here for the reason. Conflicts with `content` & `source`
 	ContentBase64 pulumi.StringPtrInput `pulumi:"contentBase64"`
 	// If `true`, the file will be uploaded with user executable permission. Defaults to `false`.
 	Executable pulumi.BoolPtrInput `pulumi:"executable"`
@@ -2047,6 +2073,7 @@ func (o ContainerUploadOutput) Content() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ContainerUpload) *string { return v.Content }).(pulumi.StringPtrOutput)
 }
 
+// Base64-encoded data that will be decoded and uploaded as raw bytes for the object content. This allows safely uploading non-UTF8 binary data, but is recommended only for larger binary content such as the result of the `base64encode` interpolation function. See here for the reason. Conflicts with `content` & `source`
 func (o ContainerUploadOutput) ContentBase64() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ContainerUpload) *string { return v.ContentBase64 }).(pulumi.StringPtrOutput)
 }
@@ -2561,12 +2588,17 @@ func (o PluginGrantPermissionArrayOutput) Index(i pulumi.IntInput) PluginGrantPe
 }
 
 type ProviderRegistryAuth struct {
-	Address           string  `pulumi:"address"`
-	AuthDisabled      *bool   `pulumi:"authDisabled"`
-	ConfigFile        *string `pulumi:"configFile"`
+	// Address of the registry
+	Address      string `pulumi:"address"`
+	AuthDisabled *bool  `pulumi:"authDisabled"`
+	// Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `configFile` has predencen over all other options.
+	ConfigFile *string `pulumi:"configFile"`
+	// Plain content of the docker json file for registry auth. `configFileContent` has precedence over username/password.
 	ConfigFileContent *string `pulumi:"configFileContent"`
-	Password          *string `pulumi:"password"`
-	Username          *string `pulumi:"username"`
+	// Password for the registry. Defaults to `DOCKER_REGISTRY_PASS` env variable if set.
+	Password *string `pulumi:"password"`
+	// Username for the registry. Defaults to `DOCKER_REGISTRY_USER` env variable if set.
+	Username *string `pulumi:"username"`
 }
 
 // ProviderRegistryAuthInput is an input type that accepts ProviderRegistryAuthArgs and ProviderRegistryAuthOutput values.
@@ -2581,12 +2613,17 @@ type ProviderRegistryAuthInput interface {
 }
 
 type ProviderRegistryAuthArgs struct {
-	Address           pulumi.StringInput    `pulumi:"address"`
-	AuthDisabled      pulumi.BoolPtrInput   `pulumi:"authDisabled"`
-	ConfigFile        pulumi.StringPtrInput `pulumi:"configFile"`
+	// Address of the registry
+	Address      pulumi.StringInput  `pulumi:"address"`
+	AuthDisabled pulumi.BoolPtrInput `pulumi:"authDisabled"`
+	// Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `configFile` has predencen over all other options.
+	ConfigFile pulumi.StringPtrInput `pulumi:"configFile"`
+	// Plain content of the docker json file for registry auth. `configFileContent` has precedence over username/password.
 	ConfigFileContent pulumi.StringPtrInput `pulumi:"configFileContent"`
-	Password          pulumi.StringPtrInput `pulumi:"password"`
-	Username          pulumi.StringPtrInput `pulumi:"username"`
+	// Password for the registry. Defaults to `DOCKER_REGISTRY_PASS` env variable if set.
+	Password pulumi.StringPtrInput `pulumi:"password"`
+	// Username for the registry. Defaults to `DOCKER_REGISTRY_USER` env variable if set.
+	Username pulumi.StringPtrInput `pulumi:"username"`
 }
 
 func (ProviderRegistryAuthArgs) ElementType() reflect.Type {
@@ -2640,6 +2677,7 @@ func (o ProviderRegistryAuthOutput) ToProviderRegistryAuthOutputWithContext(ctx 
 	return o
 }
 
+// Address of the registry
 func (o ProviderRegistryAuthOutput) Address() pulumi.StringOutput {
 	return o.ApplyT(func(v ProviderRegistryAuth) string { return v.Address }).(pulumi.StringOutput)
 }
@@ -2648,18 +2686,22 @@ func (o ProviderRegistryAuthOutput) AuthDisabled() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v ProviderRegistryAuth) *bool { return v.AuthDisabled }).(pulumi.BoolPtrOutput)
 }
 
+// Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `configFile` has predencen over all other options.
 func (o ProviderRegistryAuthOutput) ConfigFile() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ProviderRegistryAuth) *string { return v.ConfigFile }).(pulumi.StringPtrOutput)
 }
 
+// Plain content of the docker json file for registry auth. `configFileContent` has precedence over username/password.
 func (o ProviderRegistryAuthOutput) ConfigFileContent() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ProviderRegistryAuth) *string { return v.ConfigFileContent }).(pulumi.StringPtrOutput)
 }
 
+// Password for the registry. Defaults to `DOCKER_REGISTRY_PASS` env variable if set.
 func (o ProviderRegistryAuthOutput) Password() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ProviderRegistryAuth) *string { return v.Password }).(pulumi.StringPtrOutput)
 }
 
+// Username for the registry. Defaults to `DOCKER_REGISTRY_USER` env variable if set.
 func (o ProviderRegistryAuthOutput) Username() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ProviderRegistryAuth) *string { return v.Username }).(pulumi.StringPtrOutput)
 }
@@ -5400,7 +5442,7 @@ type ServiceTaskSpecContainerSpec struct {
 	Mounts []ServiceTaskSpecContainerSpecMount `pulumi:"mounts"`
 	// Security options for the container
 	Privileges *ServiceTaskSpecContainerSpecPrivileges `pulumi:"privileges"`
-	// Whether the mount should be read-only
+	// Mount the container's root filesystem as read only
 	ReadOnly *bool `pulumi:"readOnly"`
 	// References to zero or more secrets that will be exposed to the service
 	Secrets []ServiceTaskSpecContainerSpecSecret `pulumi:"secrets"`
@@ -5410,7 +5452,7 @@ type ServiceTaskSpecContainerSpec struct {
 	StopSignal *string `pulumi:"stopSignal"`
 	// Sysctls config (Linux only)
 	Sysctl map[string]interface{} `pulumi:"sysctl"`
-	// SELinux user label
+	// The user inside the container
 	User *string `pulumi:"user"`
 }
 
@@ -5456,7 +5498,7 @@ type ServiceTaskSpecContainerSpecArgs struct {
 	Mounts ServiceTaskSpecContainerSpecMountArrayInput `pulumi:"mounts"`
 	// Security options for the container
 	Privileges ServiceTaskSpecContainerSpecPrivilegesPtrInput `pulumi:"privileges"`
-	// Whether the mount should be read-only
+	// Mount the container's root filesystem as read only
 	ReadOnly pulumi.BoolPtrInput `pulumi:"readOnly"`
 	// References to zero or more secrets that will be exposed to the service
 	Secrets ServiceTaskSpecContainerSpecSecretArrayInput `pulumi:"secrets"`
@@ -5466,7 +5508,7 @@ type ServiceTaskSpecContainerSpecArgs struct {
 	StopSignal pulumi.StringPtrInput `pulumi:"stopSignal"`
 	// Sysctls config (Linux only)
 	Sysctl pulumi.MapInput `pulumi:"sysctl"`
-	// SELinux user label
+	// The user inside the container
 	User pulumi.StringPtrInput `pulumi:"user"`
 }
 
@@ -5622,7 +5664,7 @@ func (o ServiceTaskSpecContainerSpecOutput) Privileges() ServiceTaskSpecContaine
 	return o.ApplyT(func(v ServiceTaskSpecContainerSpec) *ServiceTaskSpecContainerSpecPrivileges { return v.Privileges }).(ServiceTaskSpecContainerSpecPrivilegesPtrOutput)
 }
 
-// Whether the mount should be read-only
+// Mount the container's root filesystem as read only
 func (o ServiceTaskSpecContainerSpecOutput) ReadOnly() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v ServiceTaskSpecContainerSpec) *bool { return v.ReadOnly }).(pulumi.BoolPtrOutput)
 }
@@ -5647,7 +5689,7 @@ func (o ServiceTaskSpecContainerSpecOutput) Sysctl() pulumi.MapOutput {
 	return o.ApplyT(func(v ServiceTaskSpecContainerSpec) map[string]interface{} { return v.Sysctl }).(pulumi.MapOutput)
 }
 
-// SELinux user label
+// The user inside the container
 func (o ServiceTaskSpecContainerSpecOutput) User() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ServiceTaskSpecContainerSpec) *string { return v.User }).(pulumi.StringPtrOutput)
 }
@@ -5826,7 +5868,7 @@ func (o ServiceTaskSpecContainerSpecPtrOutput) Privileges() ServiceTaskSpecConta
 	}).(ServiceTaskSpecContainerSpecPrivilegesPtrOutput)
 }
 
-// Whether the mount should be read-only
+// Mount the container's root filesystem as read only
 func (o ServiceTaskSpecContainerSpecPtrOutput) ReadOnly() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *ServiceTaskSpecContainerSpec) *bool {
 		if v == nil {
@@ -5876,7 +5918,7 @@ func (o ServiceTaskSpecContainerSpecPtrOutput) Sysctl() pulumi.MapOutput {
 	}).(pulumi.MapOutput)
 }
 
-// SELinux user label
+// The user inside the container
 func (o ServiceTaskSpecContainerSpecPtrOutput) User() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *ServiceTaskSpecContainerSpec) *string {
 		if v == nil {
@@ -6212,7 +6254,7 @@ type ServiceTaskSpecContainerSpecHealthcheck struct {
 	StartPeriod *string `pulumi:"startPeriod"`
 	// The test to perform as list
 	Tests []string `pulumi:"tests"`
-	// The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`
+	// Maximum time to allow one check to run (ms|s|m|h). Defaults to `0s`.
 	Timeout *string `pulumi:"timeout"`
 }
 
@@ -6236,7 +6278,7 @@ type ServiceTaskSpecContainerSpecHealthcheckArgs struct {
 	StartPeriod pulumi.StringPtrInput `pulumi:"startPeriod"`
 	// The test to perform as list
 	Tests pulumi.StringArrayInput `pulumi:"tests"`
-	// The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`
+	// Maximum time to allow one check to run (ms|s|m|h). Defaults to `0s`.
 	Timeout pulumi.StringPtrInput `pulumi:"timeout"`
 }
 
@@ -6337,7 +6379,7 @@ func (o ServiceTaskSpecContainerSpecHealthcheckOutput) Tests() pulumi.StringArra
 	return o.ApplyT(func(v ServiceTaskSpecContainerSpecHealthcheck) []string { return v.Tests }).(pulumi.StringArrayOutput)
 }
 
-// The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`
+// Maximum time to allow one check to run (ms|s|m|h). Defaults to `0s`.
 func (o ServiceTaskSpecContainerSpecHealthcheckOutput) Timeout() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ServiceTaskSpecContainerSpecHealthcheck) *string { return v.Timeout }).(pulumi.StringPtrOutput)
 }
@@ -6406,7 +6448,7 @@ func (o ServiceTaskSpecContainerSpecHealthcheckPtrOutput) Tests() pulumi.StringA
 	}).(pulumi.StringArrayOutput)
 }
 
-// The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`
+// Maximum time to allow one check to run (ms|s|m|h). Defaults to `0s`.
 func (o ServiceTaskSpecContainerSpecHealthcheckPtrOutput) Timeout() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *ServiceTaskSpecContainerSpecHealthcheck) *string {
 		if v == nil {
@@ -6923,7 +6965,7 @@ func (o ServiceTaskSpecContainerSpecMountBindOptionsPtrOutput) Propagation() pul
 }
 
 type ServiceTaskSpecContainerSpecMountTmpfsOptions struct {
-	// The mode of resolution to use for internal load balancing between tasks
+	// The permission mode for the tmpfs mount in an integer
 	Mode *int `pulumi:"mode"`
 	// The size for the tmpfs mount in bytes
 	SizeBytes *int `pulumi:"sizeBytes"`
@@ -6941,7 +6983,7 @@ type ServiceTaskSpecContainerSpecMountTmpfsOptionsInput interface {
 }
 
 type ServiceTaskSpecContainerSpecMountTmpfsOptionsArgs struct {
-	// The mode of resolution to use for internal load balancing between tasks
+	// The permission mode for the tmpfs mount in an integer
 	Mode pulumi.IntPtrInput `pulumi:"mode"`
 	// The size for the tmpfs mount in bytes
 	SizeBytes pulumi.IntPtrInput `pulumi:"sizeBytes"`
@@ -7024,7 +7066,7 @@ func (o ServiceTaskSpecContainerSpecMountTmpfsOptionsOutput) ToServiceTaskSpecCo
 	}).(ServiceTaskSpecContainerSpecMountTmpfsOptionsPtrOutput)
 }
 
-// The mode of resolution to use for internal load balancing between tasks
+// The permission mode for the tmpfs mount in an integer
 func (o ServiceTaskSpecContainerSpecMountTmpfsOptionsOutput) Mode() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v ServiceTaskSpecContainerSpecMountTmpfsOptions) *int { return v.Mode }).(pulumi.IntPtrOutput)
 }
@@ -7058,7 +7100,7 @@ func (o ServiceTaskSpecContainerSpecMountTmpfsOptionsPtrOutput) Elem() ServiceTa
 	}).(ServiceTaskSpecContainerSpecMountTmpfsOptionsOutput)
 }
 
-// The mode of resolution to use for internal load balancing between tasks
+// The permission mode for the tmpfs mount in an integer
 func (o ServiceTaskSpecContainerSpecMountTmpfsOptionsPtrOutput) Mode() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v *ServiceTaskSpecContainerSpecMountTmpfsOptions) *int {
 		if v == nil {
@@ -7703,7 +7745,7 @@ type ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext struct {
 	Level *string `pulumi:"level"`
 	// SELinux role label
 	Role *string `pulumi:"role"`
-	// The mount type
+	// SELinux type label
 	Type *string `pulumi:"type"`
 	// SELinux user label
 	User *string `pulumi:"user"`
@@ -7727,7 +7769,7 @@ type ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextArgs struct {
 	Level pulumi.StringPtrInput `pulumi:"level"`
 	// SELinux role label
 	Role pulumi.StringPtrInput `pulumi:"role"`
-	// The mount type
+	// SELinux type label
 	Type pulumi.StringPtrInput `pulumi:"type"`
 	// SELinux user label
 	User pulumi.StringPtrInput `pulumi:"user"`
@@ -7825,7 +7867,7 @@ func (o ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextOutput) Role() pulum
 	return o.ApplyT(func(v ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext) *string { return v.Role }).(pulumi.StringPtrOutput)
 }
 
-// The mount type
+// SELinux type label
 func (o ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextOutput) Type() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext) *string { return v.Type }).(pulumi.StringPtrOutput)
 }
@@ -7889,7 +7931,7 @@ func (o ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrOutput) Role() pu
 	}).(pulumi.StringPtrOutput)
 }
 
-// The mount type
+// SELinux type label
 func (o ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrOutput) Type() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *ServiceTaskSpecContainerSpecPrivilegesSeLinuxContext) *string {
 		if v == nil {
@@ -7910,13 +7952,13 @@ func (o ServiceTaskSpecContainerSpecPrivilegesSeLinuxContextPtrOutput) User() pu
 }
 
 type ServiceTaskSpecContainerSpecSecret struct {
-	// Represents the file GID. Defaults to `0`.
+	// Represents the file GID. Defaults to `0`
 	FileGid *string `pulumi:"fileGid"`
-	// Represents represents the FileMode of the file. Defaults to `0o444`.
+	// Represents represents the FileMode of the file. Defaults to `0o444`
 	FileMode *int `pulumi:"fileMode"`
 	// Represents the final filename in the filesystem
 	FileName string `pulumi:"fileName"`
-	// Represents the file UID. Defaults to `0`.
+	// Represents the file UID. Defaults to `0`
 	FileUid *string `pulumi:"fileUid"`
 	// ID of the specific secret that we're referencing
 	SecretId string `pulumi:"secretId"`
@@ -7936,13 +7978,13 @@ type ServiceTaskSpecContainerSpecSecretInput interface {
 }
 
 type ServiceTaskSpecContainerSpecSecretArgs struct {
-	// Represents the file GID. Defaults to `0`.
+	// Represents the file GID. Defaults to `0`
 	FileGid pulumi.StringPtrInput `pulumi:"fileGid"`
-	// Represents represents the FileMode of the file. Defaults to `0o444`.
+	// Represents represents the FileMode of the file. Defaults to `0o444`
 	FileMode pulumi.IntPtrInput `pulumi:"fileMode"`
 	// Represents the final filename in the filesystem
 	FileName pulumi.StringInput `pulumi:"fileName"`
-	// Represents the file UID. Defaults to `0`.
+	// Represents the file UID. Defaults to `0`
 	FileUid pulumi.StringPtrInput `pulumi:"fileUid"`
 	// ID of the specific secret that we're referencing
 	SecretId pulumi.StringInput `pulumi:"secretId"`
@@ -8001,12 +8043,12 @@ func (o ServiceTaskSpecContainerSpecSecretOutput) ToServiceTaskSpecContainerSpec
 	return o
 }
 
-// Represents the file GID. Defaults to `0`.
+// Represents the file GID. Defaults to `0`
 func (o ServiceTaskSpecContainerSpecSecretOutput) FileGid() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ServiceTaskSpecContainerSpecSecret) *string { return v.FileGid }).(pulumi.StringPtrOutput)
 }
 
-// Represents represents the FileMode of the file. Defaults to `0o444`.
+// Represents represents the FileMode of the file. Defaults to `0o444`
 func (o ServiceTaskSpecContainerSpecSecretOutput) FileMode() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v ServiceTaskSpecContainerSpecSecret) *int { return v.FileMode }).(pulumi.IntPtrOutput)
 }
@@ -8016,7 +8058,7 @@ func (o ServiceTaskSpecContainerSpecSecretOutput) FileName() pulumi.StringOutput
 	return o.ApplyT(func(v ServiceTaskSpecContainerSpecSecret) string { return v.FileName }).(pulumi.StringOutput)
 }
 
-// Represents the file UID. Defaults to `0`.
+// Represents the file UID. Defaults to `0`
 func (o ServiceTaskSpecContainerSpecSecretOutput) FileUid() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ServiceTaskSpecContainerSpecSecret) *string { return v.FileUid }).(pulumi.StringPtrOutput)
 }
@@ -8052,9 +8094,9 @@ func (o ServiceTaskSpecContainerSpecSecretArrayOutput) Index(i pulumi.IntInput) 
 }
 
 type ServiceTaskSpecLogDriver struct {
-	// A random name for the port
+	// The logging driver to use
 	Name string `pulumi:"name"`
-	// A list of internal resolver variables to be modified (e.g., `debug`, `ndots:3`, etc.)
+	// The options for the logging driver
 	Options map[string]string `pulumi:"options"`
 }
 
@@ -8070,9 +8112,9 @@ type ServiceTaskSpecLogDriverInput interface {
 }
 
 type ServiceTaskSpecLogDriverArgs struct {
-	// A random name for the port
+	// The logging driver to use
 	Name pulumi.StringInput `pulumi:"name"`
-	// A list of internal resolver variables to be modified (e.g., `debug`, `ndots:3`, etc.)
+	// The options for the logging driver
 	Options pulumi.StringMapInput `pulumi:"options"`
 }
 
@@ -8153,12 +8195,12 @@ func (o ServiceTaskSpecLogDriverOutput) ToServiceTaskSpecLogDriverPtrOutputWithC
 	}).(ServiceTaskSpecLogDriverPtrOutput)
 }
 
-// A random name for the port
+// The logging driver to use
 func (o ServiceTaskSpecLogDriverOutput) Name() pulumi.StringOutput {
 	return o.ApplyT(func(v ServiceTaskSpecLogDriver) string { return v.Name }).(pulumi.StringOutput)
 }
 
-// A list of internal resolver variables to be modified (e.g., `debug`, `ndots:3`, etc.)
+// The options for the logging driver
 func (o ServiceTaskSpecLogDriverOutput) Options() pulumi.StringMapOutput {
 	return o.ApplyT(func(v ServiceTaskSpecLogDriver) map[string]string { return v.Options }).(pulumi.StringMapOutput)
 }
@@ -8187,7 +8229,7 @@ func (o ServiceTaskSpecLogDriverPtrOutput) Elem() ServiceTaskSpecLogDriverOutput
 	}).(ServiceTaskSpecLogDriverOutput)
 }
 
-// A random name for the port
+// The logging driver to use
 func (o ServiceTaskSpecLogDriverPtrOutput) Name() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *ServiceTaskSpecLogDriver) *string {
 		if v == nil {
@@ -8197,7 +8239,7 @@ func (o ServiceTaskSpecLogDriverPtrOutput) Name() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
-// A list of internal resolver variables to be modified (e.g., `debug`, `ndots:3`, etc.)
+// The options for the logging driver
 func (o ServiceTaskSpecLogDriverPtrOutput) Options() pulumi.StringMapOutput {
 	return o.ApplyT(func(v *ServiceTaskSpecLogDriver) map[string]string {
 		if v == nil {
@@ -8212,7 +8254,7 @@ type ServiceTaskSpecNetworksAdvanced struct {
 	Aliases []string `pulumi:"aliases"`
 	// An array of driver options for the network, e.g. `opts1=value`
 	DriverOpts []string `pulumi:"driverOpts"`
-	// A random name for the port
+	// The name/id of the network.
 	Name string `pulumi:"name"`
 }
 
@@ -8232,7 +8274,7 @@ type ServiceTaskSpecNetworksAdvancedArgs struct {
 	Aliases pulumi.StringArrayInput `pulumi:"aliases"`
 	// An array of driver options for the network, e.g. `opts1=value`
 	DriverOpts pulumi.StringArrayInput `pulumi:"driverOpts"`
-	// A random name for the port
+	// The name/id of the network.
 	Name pulumi.StringInput `pulumi:"name"`
 }
 
@@ -8297,7 +8339,7 @@ func (o ServiceTaskSpecNetworksAdvancedOutput) DriverOpts() pulumi.StringArrayOu
 	return o.ApplyT(func(v ServiceTaskSpecNetworksAdvanced) []string { return v.DriverOpts }).(pulumi.StringArrayOutput)
 }
 
-// A random name for the port
+// The name/id of the network.
 func (o ServiceTaskSpecNetworksAdvancedOutput) Name() pulumi.StringOutput {
 	return o.ApplyT(func(v ServiceTaskSpecNetworksAdvanced) string { return v.Name }).(pulumi.StringOutput)
 }
@@ -8939,7 +8981,7 @@ type ServiceTaskSpecResourcesReservation struct {
 	GenericResources *ServiceTaskSpecResourcesReservationGenericResources `pulumi:"genericResources"`
 	// The amounf of memory in bytes the container allocates
 	MemoryBytes *int `pulumi:"memoryBytes"`
-	// CPU shares in units of `1/1e9` (or `10^-9`) of the CPU. Should be at least `1000000`
+	// CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least `1000000`
 	NanoCpus *int `pulumi:"nanoCpus"`
 }
 
@@ -8959,7 +9001,7 @@ type ServiceTaskSpecResourcesReservationArgs struct {
 	GenericResources ServiceTaskSpecResourcesReservationGenericResourcesPtrInput `pulumi:"genericResources"`
 	// The amounf of memory in bytes the container allocates
 	MemoryBytes pulumi.IntPtrInput `pulumi:"memoryBytes"`
-	// CPU shares in units of `1/1e9` (or `10^-9`) of the CPU. Should be at least `1000000`
+	// CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least `1000000`
 	NanoCpus pulumi.IntPtrInput `pulumi:"nanoCpus"`
 }
 
@@ -9052,7 +9094,7 @@ func (o ServiceTaskSpecResourcesReservationOutput) MemoryBytes() pulumi.IntPtrOu
 	return o.ApplyT(func(v ServiceTaskSpecResourcesReservation) *int { return v.MemoryBytes }).(pulumi.IntPtrOutput)
 }
 
-// CPU shares in units of `1/1e9` (or `10^-9`) of the CPU. Should be at least `1000000`
+// CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least `1000000`
 func (o ServiceTaskSpecResourcesReservationOutput) NanoCpus() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v ServiceTaskSpecResourcesReservation) *int { return v.NanoCpus }).(pulumi.IntPtrOutput)
 }
@@ -9101,7 +9143,7 @@ func (o ServiceTaskSpecResourcesReservationPtrOutput) MemoryBytes() pulumi.IntPt
 	}).(pulumi.IntPtrOutput)
 }
 
-// CPU shares in units of `1/1e9` (or `10^-9`) of the CPU. Should be at least `1000000`
+// CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least `1000000`
 func (o ServiceTaskSpecResourcesReservationPtrOutput) NanoCpus() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v *ServiceTaskSpecResourcesReservation) *int {
 		if v == nil {
@@ -9270,7 +9312,7 @@ func (o ServiceTaskSpecResourcesReservationGenericResourcesPtrOutput) NamedResou
 type ServiceTaskSpecRestartPolicy struct {
 	// Condition for restart
 	Condition *string `pulumi:"condition"`
-	// The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.
+	// Delay between restart attempts (ms|s|m|h)
 	Delay *string `pulumi:"delay"`
 	// Maximum attempts to restart a given container before giving up (default value is `0`, which is ignored)
 	MaxAttempts *int `pulumi:"maxAttempts"`
@@ -9292,7 +9334,7 @@ type ServiceTaskSpecRestartPolicyInput interface {
 type ServiceTaskSpecRestartPolicyArgs struct {
 	// Condition for restart
 	Condition pulumi.StringPtrInput `pulumi:"condition"`
-	// The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.
+	// Delay between restart attempts (ms|s|m|h)
 	Delay pulumi.StringPtrInput `pulumi:"delay"`
 	// Maximum attempts to restart a given container before giving up (default value is `0`, which is ignored)
 	MaxAttempts pulumi.IntPtrInput `pulumi:"maxAttempts"`
@@ -9382,7 +9424,7 @@ func (o ServiceTaskSpecRestartPolicyOutput) Condition() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ServiceTaskSpecRestartPolicy) *string { return v.Condition }).(pulumi.StringPtrOutput)
 }
 
-// The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.
+// Delay between restart attempts (ms|s|m|h)
 func (o ServiceTaskSpecRestartPolicyOutput) Delay() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ServiceTaskSpecRestartPolicy) *string { return v.Delay }).(pulumi.StringPtrOutput)
 }
@@ -9431,7 +9473,7 @@ func (o ServiceTaskSpecRestartPolicyPtrOutput) Condition() pulumi.StringPtrOutpu
 	}).(pulumi.StringPtrOutput)
 }
 
-// The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.
+// Delay between restart attempts (ms|s|m|h)
 func (o ServiceTaskSpecRestartPolicyPtrOutput) Delay() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *ServiceTaskSpecRestartPolicy) *string {
 		if v == nil {
@@ -9941,6 +9983,8 @@ func (o CacheFromPtrOutput) Images() pulumi.StringArrayOutput {
 
 // The Docker build context
 type DockerBuild struct {
+	// Custom host-to-IP mappings to use while building (format: "host:ip")
+	AddHosts []string `pulumi:"addHosts"`
 	// An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass build-time variables that can be accessed like environment variables inside the RUN instruction.
 	Args map[string]string `pulumi:"args"`
 	// The version of the Docker builder.
@@ -9951,6 +9995,8 @@ type DockerBuild struct {
 	Context *string `pulumi:"context"`
 	// The path to the Dockerfile to use.
 	Dockerfile *string `pulumi:"dockerfile"`
+	// Set the networking mode for RUN instructions
+	Network *string `pulumi:"network"`
 	// The architecture of the platform you want to build this image for, e.g. `linux/arm64`.
 	Platform *string `pulumi:"platform"`
 	// The target of the Dockerfile to build
@@ -9970,6 +10016,8 @@ type DockerBuildInput interface {
 
 // The Docker build context
 type DockerBuildArgs struct {
+	// Custom host-to-IP mappings to use while building (format: "host:ip")
+	AddHosts pulumi.StringArrayInput `pulumi:"addHosts"`
 	// An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass build-time variables that can be accessed like environment variables inside the RUN instruction.
 	Args pulumi.StringMapInput `pulumi:"args"`
 	// The version of the Docker builder.
@@ -9980,6 +10028,8 @@ type DockerBuildArgs struct {
 	Context pulumi.StringPtrInput `pulumi:"context"`
 	// The path to the Dockerfile to use.
 	Dockerfile pulumi.StringPtrInput `pulumi:"dockerfile"`
+	// Set the networking mode for RUN instructions
+	Network pulumi.StringPtrInput `pulumi:"network"`
 	// The architecture of the platform you want to build this image for, e.g. `linux/arm64`.
 	Platform pulumi.StringPtrInput `pulumi:"platform"`
 	// The target of the Dockerfile to build
@@ -10064,6 +10114,11 @@ func (o DockerBuildOutput) ToDockerBuildPtrOutputWithContext(ctx context.Context
 	}).(DockerBuildPtrOutput)
 }
 
+// Custom host-to-IP mappings to use while building (format: "host:ip")
+func (o DockerBuildOutput) AddHosts() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v DockerBuild) []string { return v.AddHosts }).(pulumi.StringArrayOutput)
+}
+
 // An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass build-time variables that can be accessed like environment variables inside the RUN instruction.
 func (o DockerBuildOutput) Args() pulumi.StringMapOutput {
 	return o.ApplyT(func(v DockerBuild) map[string]string { return v.Args }).(pulumi.StringMapOutput)
@@ -10087,6 +10142,11 @@ func (o DockerBuildOutput) Context() pulumi.StringPtrOutput {
 // The path to the Dockerfile to use.
 func (o DockerBuildOutput) Dockerfile() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v DockerBuild) *string { return v.Dockerfile }).(pulumi.StringPtrOutput)
+}
+
+// Set the networking mode for RUN instructions
+func (o DockerBuildOutput) Network() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v DockerBuild) *string { return v.Network }).(pulumi.StringPtrOutput)
 }
 
 // The architecture of the platform you want to build this image for, e.g. `linux/arm64`.
@@ -10121,6 +10181,16 @@ func (o DockerBuildPtrOutput) Elem() DockerBuildOutput {
 		var ret DockerBuild
 		return ret
 	}).(DockerBuildOutput)
+}
+
+// Custom host-to-IP mappings to use while building (format: "host:ip")
+func (o DockerBuildPtrOutput) AddHosts() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v *DockerBuild) []string {
+		if v == nil {
+			return nil
+		}
+		return v.AddHosts
+	}).(pulumi.StringArrayOutput)
 }
 
 // An optional map of named build-time argument variables to set during the Docker build. This flag allows you to pass build-time variables that can be accessed like environment variables inside the RUN instruction.
@@ -10173,6 +10243,16 @@ func (o DockerBuildPtrOutput) Dockerfile() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
+// Set the networking mode for RUN instructions
+func (o DockerBuildPtrOutput) Network() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *DockerBuild) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Network
+	}).(pulumi.StringPtrOutput)
+}
+
 // The architecture of the platform you want to build this image for, e.g. `linux/arm64`.
 func (o DockerBuildPtrOutput) Platform() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *DockerBuild) *string {
@@ -10194,10 +10274,14 @@ func (o DockerBuildPtrOutput) Target() pulumi.StringPtrOutput {
 }
 
 type GetNetworkIpamConfig struct {
+	// Auxiliary IPv4 or IPv6 addresses used by Network driver
 	AuxAddress map[string]interface{} `pulumi:"auxAddress"`
-	Gateway    *string                `pulumi:"gateway"`
-	IpRange    *string                `pulumi:"ipRange"`
-	Subnet     *string                `pulumi:"subnet"`
+	// The IP address of the gateway
+	Gateway *string `pulumi:"gateway"`
+	// The ip range in CIDR form
+	IpRange *string `pulumi:"ipRange"`
+	// The subnet in CIDR form
+	Subnet *string `pulumi:"subnet"`
 }
 
 // GetNetworkIpamConfigInput is an input type that accepts GetNetworkIpamConfigArgs and GetNetworkIpamConfigOutput values.
@@ -10212,10 +10296,14 @@ type GetNetworkIpamConfigInput interface {
 }
 
 type GetNetworkIpamConfigArgs struct {
-	AuxAddress pulumi.MapInput       `pulumi:"auxAddress"`
-	Gateway    pulumi.StringPtrInput `pulumi:"gateway"`
-	IpRange    pulumi.StringPtrInput `pulumi:"ipRange"`
-	Subnet     pulumi.StringPtrInput `pulumi:"subnet"`
+	// Auxiliary IPv4 or IPv6 addresses used by Network driver
+	AuxAddress pulumi.MapInput `pulumi:"auxAddress"`
+	// The IP address of the gateway
+	Gateway pulumi.StringPtrInput `pulumi:"gateway"`
+	// The ip range in CIDR form
+	IpRange pulumi.StringPtrInput `pulumi:"ipRange"`
+	// The subnet in CIDR form
+	Subnet pulumi.StringPtrInput `pulumi:"subnet"`
 }
 
 func (GetNetworkIpamConfigArgs) ElementType() reflect.Type {
@@ -10269,18 +10357,22 @@ func (o GetNetworkIpamConfigOutput) ToGetNetworkIpamConfigOutputWithContext(ctx 
 	return o
 }
 
+// Auxiliary IPv4 or IPv6 addresses used by Network driver
 func (o GetNetworkIpamConfigOutput) AuxAddress() pulumi.MapOutput {
 	return o.ApplyT(func(v GetNetworkIpamConfig) map[string]interface{} { return v.AuxAddress }).(pulumi.MapOutput)
 }
 
+// The IP address of the gateway
 func (o GetNetworkIpamConfigOutput) Gateway() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v GetNetworkIpamConfig) *string { return v.Gateway }).(pulumi.StringPtrOutput)
 }
 
+// The ip range in CIDR form
 func (o GetNetworkIpamConfigOutput) IpRange() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v GetNetworkIpamConfig) *string { return v.IpRange }).(pulumi.StringPtrOutput)
 }
 
+// The subnet in CIDR form
 func (o GetNetworkIpamConfigOutput) Subnet() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v GetNetworkIpamConfig) *string { return v.Subnet }).(pulumi.StringPtrOutput)
 }

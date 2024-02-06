@@ -14,11 +14,11 @@ namespace Pulumi.Docker.Outputs
     public sealed class ServiceTaskSpecContainerSpecSecret
     {
         /// <summary>
-        /// Represents the file GID. Defaults to `0`.
+        /// Represents the file GID. Defaults to `0`
         /// </summary>
         public readonly string? FileGid;
         /// <summary>
-        /// Represents represents the FileMode of the file. Defaults to `0o444`.
+        /// Represents represents the FileMode of the file. Defaults to `0o444`
         /// </summary>
         public readonly int? FileMode;
         /// <summary>
@@ -26,7 +26,7 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly string FileName;
         /// <summary>
-        /// Represents the file UID. Defaults to `0`.
+        /// Represents the file UID. Defaults to `0`
         /// </summary>
         public readonly string? FileUid;
         /// <summary>

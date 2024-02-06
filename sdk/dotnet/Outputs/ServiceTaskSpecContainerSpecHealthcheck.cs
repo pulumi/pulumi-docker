@@ -30,7 +30,7 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly ImmutableArray<string> Tests;
         /// <summary>
-        /// The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`
+        /// Maximum time to allow one check to run (ms|s|m|h). Defaults to `0s`.
         /// </summary>
         public readonly string? Timeout;
 

@@ -19,7 +19,7 @@ namespace Pulumi.Docker.Inputs
         public Input<string>? Condition { get; set; }
 
         /// <summary>
-        /// The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.
+        /// Delay between restart attempts (ms|s|m|h)
         /// </summary>
         [Input("delay")]
         public Input<string>? Delay { get; set; }

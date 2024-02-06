@@ -12,7 +12,7 @@ import javax.annotation.Nullable;
 @CustomType
 public final class ServiceTaskSpecContainerSpecMountTmpfsOptions {
     /**
-     * @return The mode of resolution to use for internal load balancing between tasks
+     * @return The permission mode for the tmpfs mount in an integer
      * 
      */
     private @Nullable Integer mode;
@@ -24,7 +24,7 @@ public final class ServiceTaskSpecContainerSpecMountTmpfsOptions {
 
     private ServiceTaskSpecContainerSpecMountTmpfsOptions() {}
     /**
-     * @return The mode of resolution to use for internal load balancing between tasks
+     * @return The permission mode for the tmpfs mount in an integer
      * 
      */
     public Optional<Integer> mode() {

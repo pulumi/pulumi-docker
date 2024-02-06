@@ -26,7 +26,7 @@ namespace Pulumi.Docker.Outputs
         /// </summary>
         public readonly string? Role;
         /// <summary>
-        /// The mount type
+        /// SELinux type label
         /// </summary>
         public readonly string? Type;
         /// <summary>

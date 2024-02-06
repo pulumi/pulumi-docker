@@ -15,6 +15,18 @@ namespace Pulumi.Docker.Inputs
     /// </summary>
     public sealed class DockerBuildArgs : global::Pulumi.ResourceArgs
     {
+        [Input("addHosts")]
+        private InputList<string>? _addHosts;
+
+        /// <summary>
+        /// Custom host-to-IP mappings to use while building (format: "host:ip")
+        /// </summary>
+        public InputList<string> AddHosts
+        {
+            get => _addHosts ?? (_addHosts = new InputList<string>());
+            set => _addHosts = value;
+        }
+
         [Input("args")]
         private InputMap<string>? _args;
 
@@ -50,6 +62,12 @@ namespace Pulumi.Docker.Inputs
         /// </summary>
         [Input("dockerfile")]
         public Input<string>? Dockerfile { get; set; }
+
+        /// <summary>
+        /// Set the networking mode for RUN instructions
+        /// </summary>
+        [Input("network")]
+        public Input<string>? Network { get; set; }
 
         /// <summary>
         /// The architecture of the platform you want to build this image for, e.g. `linux/arm64`.

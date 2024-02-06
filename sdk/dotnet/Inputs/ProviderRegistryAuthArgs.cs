@@ -12,20 +12,33 @@ namespace Pulumi.Docker.Inputs
 
     public sealed class ProviderRegistryAuthArgs : global::Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Address of the registry
+        /// </summary>
         [Input("address", required: true)]
         public Input<string> Address { get; set; } = null!;
 
         [Input("authDisabled")]
         public Input<bool>? AuthDisabled { get; set; }
 
+        /// <summary>
+        /// Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `config_file` has predencen over all other options.
+        /// </summary>
         [Input("configFile")]
         public Input<string>? ConfigFile { get; set; }
 
+        /// <summary>
+        /// Plain content of the docker json file for registry auth. `config_file_content` has precedence over username/password.
+        /// </summary>
         [Input("configFileContent")]
         public Input<string>? ConfigFileContent { get; set; }
 
         [Input("password")]
         private Input<string>? _password;
+
+        /// <summary>
+        /// Password for the registry. Defaults to `DOCKER_REGISTRY_PASS` env variable if set.
+        /// </summary>
         public Input<string>? Password
         {
             get => _password;
@@ -36,6 +49,9 @@ namespace Pulumi.Docker.Inputs
             }
         }
 
+        /// <summary>
+        /// Username for the registry. Defaults to `DOCKER_REGISTRY_USER` env variable if set.
+        /// </summary>
         [Input("username")]
         public Input<string>? Username { get; set; }
 
