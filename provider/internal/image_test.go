@@ -9,6 +9,7 @@ import (
 	_ "github.com/docker/buildx/driver/docker-container"
 
 	controllerapi "github.com/docker/buildx/controller/pb"
+	"github.com/docker/buildx/util/buildflags"
 	manifesttypes "github.com/docker/cli/cli/manifest/types"
 	"github.com/docker/distribution/reference"
 	"github.com/docker/docker/api/types"
@@ -685,12 +686,43 @@ func TestBuildable(t *testing.T) {
 }
 
 func TestToBuilds(t *testing.T) {
-	t.Run("multi-platform caching", func(t *testing.T) {
+	t.Run("single-platform caching", func(t *testing.T) {
 		ia := ImageArgs{
-			Tags:      []string{"foo"},
+			Tags:      []string{"foo", "bar"},
+			Platforms: []string{"linux/amd64"},
+			CacheTo: []string{
+				"type=gha,mode=max",
+				"type=registry,ref=docker.io/foo/bar",
+				"type=registry,ref=docker.io/foo/bar:baz",
+			},
+			CacheFrom: []string{
+				"type=s3,name=bar",
+				"type=registry,ref=docker.io/foo/bar",
+				"type=registry,ref=docker.io/foo/bar:baz",
+			},
+		}
+		builds, err := ia.toBuilds(nil, false)
+		assert.NoError(t, err)
+		assert.Len(t, builds, 1)
+	})
+
+	t.Run("multi-platform caching", func(t *testing.T) {
+		t.Setenv("ACTIONS_CACHE_URL", "fake-url")
+		t.Setenv("ACTIONS_RUNTIME_TOKEN", "fake-token")
+
+		ia := ImageArgs{
+			Tags:      []string{"foo", "bar"},
 			Platforms: []string{"linux/amd64", "linux/arm64"},
-			CacheTo:   []string{"type=gha,mode=max", "type=registry,ref=foo"},
-			CacheFrom: []string{"type=s3,name=bar", "type=registry,ref=foo"},
+			CacheTo: []string{
+				"type=gha,mode=max",
+				"type=registry,ref=docker.io/foo/bar",
+				"type=registry,ref=docker.io/foo/bar:baz",
+			},
+			CacheFrom: []string{
+				"type=s3,name=bar",
+				"type=registry,ref=docker.io/foo/bar",
+				"type=registry,ref=docker.io/foo/bar:baz",
+			},
 		}
 
 		builds, err := ia.toBuilds(nil, false)
@@ -701,19 +733,84 @@ func TestToBuilds(t *testing.T) {
 		// Build 1
 		assert.Nil(t, builds[0].CacheTo)
 		assert.Len(t, builds[0].CacheFrom, len(ia.CacheFrom)*(1+len(ia.Platforms)))
+		assert.Len(t, builds[0].Platforms, len(ia.Platforms))
 
 		// Build 2
-		assert.Nil(t, builds[1].CacheFrom)
-		assert.Len(t, builds[2].Platforms, 1)
+		assert.Len(t, builds[1].Platforms, 1)
 		assert.Equal(t, "linux/amd64", builds[1].Platforms[0])
 		assert.Len(t, builds[1].Exports, 1)
 		assert.Equal(t, "cacheonly", builds[1].Exports[0].Type)
+		assert.Len(t, builds[1].CacheTo, len(ia.CacheTo))
 
 		// Build 3
-		assert.Nil(t, builds[2].CacheFrom)
 		assert.Len(t, builds[2].Platforms, 1)
 		assert.Equal(t, "linux/arm64", builds[2].Platforms[0])
 		assert.Len(t, builds[2].Exports, 1)
 		assert.Equal(t, "cacheonly", builds[2].Exports[0].Type)
+		assert.Len(t, builds[2].CacheTo, len(ia.CacheTo))
 	})
+}
+
+func TestToCaches(t *testing.T) {
+	tests := []struct {
+		name      string
+		platforms []string
+		caches    []string
+
+		want []string
+	}{
+		{
+			name:      "single-platform",
+			platforms: []string{"linux/amd64"},
+			caches: []string{
+				"type=registry,ref=docker.io/foo/bar:baz",
+				"type=inline",
+				"type=local,src=/foo",
+				"type=s3",
+			},
+			want: []string{
+				"type=registry,ref=docker.io/foo/bar:baz",
+				"type=inline",
+				"type=local,src=/foo",
+				"type=s3",
+			},
+		},
+		{
+			name:      "multi-platform",
+			platforms: []string{"linux/amd64", "linux/arm64", "linux/amd64"},
+			caches: []string{
+				"type=registry,ref=docker.io/foo/bar",
+				"type=registry,ref=docker.io/foo/bar:baz",
+				"type=inline",
+				"type=local,src=/foo",
+				"type=s3",
+				"type=gha",
+			},
+			want: []string{
+				"type=registry,ref=docker.io/foo/bar:linux-amd64",
+				"type=registry,ref=docker.io/foo/bar:linux-arm64",
+				"type=registry,ref=docker.io/foo/bar:baz-linux-amd64",
+				"type=registry,ref=docker.io/foo/bar:baz-linux-arm64",
+				"type=inline",
+				"type=local,src=/foo-linux-amd64",
+				"type=local,src=/foo-linux-arm64",
+				"type=s3,name=linux-amd64",
+				"type=s3,name=linux-arm64",
+				"type=gha,scope=linux-amd64",
+				"type=gha,scope=linux-arm64",
+			},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			caches, err := buildflags.ParseCacheEntry(tt.caches)
+			require.NoError(t, err)
+			want, err := buildflags.ParseCacheEntry(tt.want)
+			require.NoError(t, err)
+
+			actual := cachesFor(nil, caches, tt.platforms...)
+			assert.Equal(t, want, actual)
+		})
+	}
 }

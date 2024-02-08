@@ -1,0 +1,9 @@
+{
+  "name": "test-buildx-caching",
+  "devDependencies": {
+    "@types/node": "^20.0.0"
+  },
+  "dependencies": {
+    "@pulumi/pulumi": "^3.0.0"
+  }
+}

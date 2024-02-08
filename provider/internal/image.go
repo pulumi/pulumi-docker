@@ -2,12 +2,12 @@ package internal
 
 import (
 	"context"
-	"crypto/sha256"
 	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
 	"reflect"
+	"slices"
 	"strings"
 
 	// These imports are needed to register the drivers with buildkit.
@@ -22,7 +22,6 @@ import (
 	"github.com/docker/docker/errdefs"
 	"github.com/moby/buildkit/exporter/containerimage/exptypes"
 	"github.com/muesli/reflow/dedent"
-	"github.com/opencontainers/go-digest"
 
 	provider "github.com/pulumi/pulumi-go-provider"
 	"github.com/pulumi/pulumi-go-provider/infer"
@@ -220,8 +219,8 @@ func (ia ImageArgs) toBuilds(
 		return nil, err
 	}
 
-	// Check if we need a workaround for https://github.com/docker/buildx/issues/1044
-	if len(ia.CacheTo) == 0 || len(ia.Platforms) <= 1 {
+	// Check if we need a workaround for multi-platform caching (https://github.com/docker/buildx/issues/1044).
+	if len(ia.Platforms) <= 1 || len(ia.CacheTo) == 0 {
 		return []controllerapi.BuildOptions{opts}, nil
 	}
 
@@ -236,7 +235,7 @@ func (ia ImageArgs) toBuilds(
 	// - Extend --cache-from with platform-specific caches, while preserving existing ones.
 	// - Preserve exports.
 	opts.CacheTo = nil
-	opts.CacheFrom = append(opts.CacheFrom, cachesFor(ctx, opts.CacheFrom, opts.Platforms...)...)
+	opts.CacheFrom = append(cachesFor(ctx, opts.CacheFrom, opts.Platforms...), opts.CacheFrom...)
 	builds = append(builds, opts)
 
 	// Build 2..P for each platform:
@@ -246,12 +245,15 @@ func (ia ImageArgs) toBuilds(
 	for _, p := range opts.Platforms {
 		// Only build for this platform.
 		opts.Platforms = []string{p}
-		// Only export caches.
+		// Don't push anything except caches.
 		opts.Exports = []*controllerapi.ExportEntry{{Type: "cacheonly"}}
-		// Rely on local build cache.
-		opts.CacheFrom = nil
 		// Cache to platform-aware tags.
 		opts.CacheTo = cachesFor(ctx, origCacheTo, p)
+		// TODO(https://github.com/docker/buildx/issues/1921): We should have
+		// everything already loaded into build context, but this doesn't work
+		// consistently with multi-platform images.
+		opts.CacheFrom = nil
+
 		builds = append(builds, opts)
 	}
 
@@ -265,11 +267,17 @@ func cachesFor(
 	existing []*controllerapi.CacheOptionsEntry,
 	platforms ...string,
 ) []*controllerapi.CacheOptionsEntry {
+	if len(platforms) <= 1 {
+		return existing
+	}
+	slices.Sort(platforms)
+
 	caches := []*controllerapi.CacheOptionsEntry{}
 
 	// Iterate over existing cache entries first to preserve precedence.
 	for _, c := range existing {
-		for _, p := range platforms {
+	platformLoop:
+		for _, p := range slices.Compact(platforms) {
 			entry := &controllerapi.CacheOptionsEntry{
 				Type:  c.Type,
 				Attrs: make(map[string]string),
@@ -281,7 +289,11 @@ func cachesFor(
 
 			switch c.Type {
 			case "gha":
-				entry.Attrs["scope"] += "-" + plat
+				if entry.Attrs["scope"] == "" {
+					entry.Attrs["scope"] = "buildkit-" + plat
+				} else {
+					entry.Attrs["scope"] += "-" + plat
+				}
 			case "s3", "azblob":
 				if entry.Attrs["name"] != "" {
 					entry.Attrs["name"] += "-" + plat
@@ -289,36 +301,27 @@ func cachesFor(
 					entry.Attrs["name"] = plat
 				}
 			case "registry":
-				// We don't want these synthetic caches to show up as tags on
-				// registries, so instead we identify them as opaque blobs
-				// whose names are derived from the base ref + platform.
-				h := sha256.New()
-				h.Write([]byte(entry.Attrs["ref"]))
-				h.Write([]byte(p))
-				dgst := digest.NewDigest(digest.SHA256, h)
-
-				ref, err := reference.Parse(entry.Attrs["ref"])
+				ref, err := reference.ParseNamed(entry.Attrs["ref"])
 				if err != nil {
-					ctx.Log(
-						diag.Warning,
-						fmt.Errorf("Unable to parse cache entry: %w", err).Error(),
-					)
+					ctx.Log(diag.Warning, fmt.Sprintf("Unable to parse cache ref: %s", err.Error()))
 					continue
 				}
-
-				if named, ok := ref.(reference.Named); ok {
-					named = reference.TrimNamed(named)
-					ref, _ = reference.WithDigest(named, dgst) // Can't error.
-				} else {
-					named, err := reference.WithName(ref.String())
-					if err != nil {
-						ctx.Log(diag.Warning, fmt.Errorf("Unable to build cache key: %w", err).Error())
-						continue
-					}
-					ref, _ = reference.WithDigest(named, dgst) // Can't error.
+				if t, ok := ref.(reference.Tagged); ok {
+					plat = t.Tag() + "-" + plat
 				}
-
-				entry.Attrs["ref"] = ref.String()
+				tagged, _ := reference.WithTag(ref, plat)
+				entry.Attrs["ref"] = tagged.String()
+			case "local":
+				if entry.Attrs["src"] != "" {
+					entry.Attrs["src"] += "-" + plat
+				}
+				if entry.Attrs["dest"] != "" {
+					entry.Attrs["dest"] += "-" + plat
+				}
+			case "inline":
+				// inline caches don't need per-platform treatment.
+				caches = append(caches, entry)
+				break platformLoop
 			default:
 			}
 			caches = append(caches, entry)
