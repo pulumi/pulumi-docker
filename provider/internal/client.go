@@ -7,9 +7,12 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
+	"sync"
 
 	"github.com/distribution/reference"
+	"github.com/docker/buildx/builder"
 	cbuild "github.com/docker/buildx/controller/build"
 	controllerapi "github.com/docker/buildx/controller/pb"
 	"github.com/docker/buildx/util/progress"
@@ -33,6 +36,8 @@ type Client interface {
 }
 
 type docker struct {
+	mu sync.Mutex
+
 	cli *command.DockerCli
 }
 
@@ -78,7 +83,18 @@ func (d *docker) Build(
 			pctx.LogStatus(diag.Info, s.Text())
 		}
 	}()
-	printer, err := progress.NewPrinter(bctx, w, progressui.PlainMode)
+
+	b, err := d.builder(opts)
+	if err != nil {
+		return nil, err
+	}
+	printer, err := progress.NewPrinter(bctx, w,
+		progressui.PlainMode,
+		progress.WithDesc(
+			fmt.Sprintf("building with %q instance using %s driver", b.Name, b.Driver),
+			fmt.Sprintf("%s:%s", b.Driver, b.Name),
+		),
+	)
 	if err != nil {
 		return nil, fmt.Errorf("creating printer: %w", err)
 	}
@@ -141,4 +157,34 @@ func normalizeReference(ref string) (reference.Named, error) {
 		return reference.TagNameOnly(namedRef), nil
 	}
 	return namedRef, nil
+}
+
+// builder ensures a builder is available and running. This is guarded by a
+// mutex to ensure other resources don't attempt to use the builder until it's
+// ready.
+func (d *docker) builder(
+	opts controllerapi.BuildOptions,
+) (*builder.Builder, error) {
+	d.mu.Lock()
+	defer d.mu.Unlock()
+
+	contextPathHash := opts.ContextPath
+	if absContextPath, err := filepath.Abs(contextPathHash); err == nil {
+		contextPathHash = absContextPath
+	}
+	b, err := builder.New(d.cli,
+		builder.WithName(opts.Builder),
+		builder.WithContextPathHash(contextPathHash),
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	// Need to load nodes in order to determine the builder's driver.
+	_, err = b.LoadNodes(context.Background())
+	if err != nil {
+		return nil, err
+	}
+
+	return b, nil
 }
