@@ -3,6 +3,7 @@ package internal
 
 import (
 	"bufio"
+	"bytes"
 	"context"
 	"fmt"
 	"os"
@@ -54,9 +55,13 @@ func newDockerClient() (*docker, error) {
 
 // Build performs a buildkit build.
 func (d *docker) Build(
-	ctx provider.Context,
+	pctx provider.Context,
 	opts controllerapi.BuildOptions,
 ) (*client.SolveResponse, error) {
+	// Use a seprate context for the build. We don't want to kill our request's
+	// context if the build fails.
+	bctx := context.Background()
+
 	// Create a pipe to forward buildx output to our HostClient.
 	r, w, err := os.Pipe()
 	if err != nil {
@@ -70,19 +75,29 @@ func (d *docker) Build(
 		}()
 		s := bufio.NewScanner(r)
 		for s.Scan() {
-			ctx.LogStatus(diag.Info, s.Text())
+			pctx.LogStatus(diag.Info, s.Text())
 		}
 	}()
-	printer, err := progress.NewPrinter(ctx, w, progressui.PlainMode)
+	printer, err := progress.NewPrinter(bctx, w, progressui.PlainMode)
 	if err != nil {
 		return nil, fmt.Errorf("creating printer: %w", err)
 	}
 
 	// Perform the build.
-	solve, res, err := cbuild.RunBuild(ctx, d.cli, opts, d.cli.In(), printer, true)
+	solve, res, err := cbuild.RunBuild(bctx, d.cli, opts, d.cli.In(), printer, true)
 	if res != nil {
 		res.Done()
 	}
+
+	for _, w := range printer.Warnings() {
+		b := &bytes.Buffer{}
+		fmt.Fprintf(b, "%s", w.Short)
+		for _, d := range w.Detail {
+			fmt.Fprintf(b, "\n%s", d)
+		}
+		pctx.Log(diag.Warning, b.String())
+	}
+
 	return solve, err
 }
 
