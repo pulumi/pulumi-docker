@@ -45,7 +45,7 @@ namespace Pulumi.Docker
     /// #!/bin/bash
     /// 
     /// ```sh
-    ///  $ pulumi import docker:index/plugin:Plugin sample-volume-plugin "$(docker plugin inspect -f {{.ID}} tiborvass/sample-volume-plugin:latest)"
+    /// $ pulumi import docker:index/plugin:Plugin sample-volume-plugin "$(docker plugin inspect -f {{.ID}} tiborvass/sample-volume-plugin:latest)"
     /// ```
     /// </summary>
     [DockerResourceType("docker:index/plugin:Plugin")]

@@ -373,7 +373,7 @@ class Plugin(pulumi.CustomResource):
         #!/bin/bash
 
         ```sh
-         $ pulumi import docker:index/plugin:Plugin sample-volume-plugin "$(docker plugin inspect -f {{.ID}} tiborvass/sample-volume-plugin:latest)"
+        $ pulumi import docker:index/plugin:Plugin sample-volume-plugin "$(docker plugin inspect -f {{.ID}} tiborvass/sample-volume-plugin:latest)"
         ```
 
         :param str resource_name: The name of the resource.
@@ -419,7 +419,7 @@ class Plugin(pulumi.CustomResource):
         #!/bin/bash
 
         ```sh
-         $ pulumi import docker:index/plugin:Plugin sample-volume-plugin "$(docker plugin inspect -f {{.ID}} tiborvass/sample-volume-plugin:latest)"
+        $ pulumi import docker:index/plugin:Plugin sample-volume-plugin "$(docker plugin inspect -f {{.ID}} tiborvass/sample-volume-plugin:latest)"
         ```
 
         :param str resource_name: The name of the resource.
