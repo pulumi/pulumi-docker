@@ -38,7 +38,6 @@ replace (
 	cloud.google.com/go/storage => cloud.google.com/go/storage v1.29.0
 	github.com/hashicorp/terraform-plugin-sdk/v2 => github.com/pulumi/terraform-plugin-sdk/v2 v2.0.0-20240202163305-e2a20ae13ef9
 	github.com/hashicorp/vault => github.com/hashicorp/vault v1.2.0
-	github.com/pulumi/pulumi/pkg/v3 => github.com/pulumi/pulumi/pkg/v3 v3.78.2-0.20240110215317-7f71c9b7ba47
 	github.com/terraform-providers/terraform-provider-docker => ../upstream
 )
 
