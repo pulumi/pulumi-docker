@@ -229,6 +229,13 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         return this.tags;
     }
 
+    @Import(name="target", required=true)
+    private Output<String> target;
+
+    public Output<String> target() {
+        return this.target;
+    }
+
     private ImageArgs() {}
 
     private ImageArgs(ImageArgs $) {
@@ -244,6 +251,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         this.pull = $.pull;
         this.registries = $.registries;
         this.tags = $.tags;
+        this.target = $.target;
     }
 
     public static Builder builder() {
@@ -626,10 +634,22 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
             return tags(List.of(tags));
         }
 
+        public Builder target(Output<String> target) {
+            $.target = target;
+            return this;
+        }
+
+        public Builder target(String target) {
+            return target(Output.of(target));
+        }
+
         public ImageArgs build() {
             $.file = Codegen.stringProp("file").output().arg($.file).def("Dockerfile").getNullable();
             if ($.tags == null) {
                 throw new MissingRequiredPropertyException("ImageArgs", "tags");
+            }
+            if ($.target == null) {
+                throw new MissingRequiredPropertyException("ImageArgs", "target");
             }
             return $;
         }

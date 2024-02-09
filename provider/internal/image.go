@@ -64,6 +64,7 @@ type ImageArgs struct {
 	Pull           bool                      `pulumi:"pull,optional"`
 	Registries     []properties.RegistryAuth `pulumi:"registries,optional"`
 	Tags           []string                  `pulumi:"tags"`
+	Target         string                    `pulumi:"target,optional"`
 }
 
 // Annotate describes inputs to the Image resource.
@@ -198,6 +199,7 @@ func (ia *ImageArgs) withoutUnknowns(preview bool) ImageArgs {
 		Pull:           ia.Pull,
 		Registries:     filter(registryKeeper{preview}, ia.Registries...),
 		Tags:           filter(sk, ia.Tags...),
+		Target:         ia.Target,
 	}
 
 	return filtered
@@ -397,6 +399,7 @@ func (ia *ImageArgs) toBuildOptions(preview bool) (controllerapi.BuildOptions, e
 		Platforms:      filtered.Platforms,
 		Pull:           filtered.Pull,
 		Tags:           filtered.Tags,
+		Target:         filtered.Target,
 	}
 
 	return opts, multierr

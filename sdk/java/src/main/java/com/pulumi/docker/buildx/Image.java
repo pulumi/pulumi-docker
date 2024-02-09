@@ -232,6 +232,12 @@ public class Image extends com.pulumi.resources.CustomResource {
     public Output<List<String>> tags() {
         return this.tags;
     }
+    @Export(name="target", refs={String.class}, tree="[0]")
+    private Output<String> target;
+
+    public Output<String> target() {
+        return this.target;
+    }
 
     /**
      *
