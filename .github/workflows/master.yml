@@ -65,7 +65,7 @@ jobs:
             sdk/go.sum
         go-version: 1.21.x
     - name: Install pulumictl
-      uses: jaxxstorm/action-install-gh-release@v1.5.0
+      uses: jaxxstorm/action-install-gh-release@v1.10.0
       with:
         repo: pulumi/pulumictl
     - name: Install Pulumi CLI
@@ -171,7 +171,7 @@ jobs:
             sdk/go.sum
         go-version: 1.21.x
     - name: Install pulumictl
-      uses: jaxxstorm/action-install-gh-release@v1.5.0
+      uses: jaxxstorm/action-install-gh-release@v1.10.0
       with:
         repo: pulumi/pulumictl
     - name: Install Pulumi CLI
@@ -180,7 +180,7 @@ jobs:
         pulumi-version: ^3
     - if: github.event_name == 'pull_request'
       name: Install Schema Tools
-      uses: jaxxstorm/action-install-gh-release@v1.5.0
+      uses: jaxxstorm/action-install-gh-release@v1.10.0
       with:
         repo: pulumi/schema-tools
     - name: Echo Coverage Output Dir
@@ -224,7 +224,7 @@ jobs:
             sdk/go.sum
         go-version: 1.21.x
     - name: Install pulumictl
-      uses: jaxxstorm/action-install-gh-release@v1.5.0
+      uses: jaxxstorm/action-install-gh-release@v1.10.0
       with:
         repo: pulumi/pulumictl
     - name: Install Pulumi CLI
@@ -233,7 +233,7 @@ jobs:
         pulumi-version: ^3
     - if: github.event_name == 'pull_request'
       name: Install Schema Tools
-      uses: jaxxstorm/action-install-gh-release@v1.5.0
+      uses: jaxxstorm/action-install-gh-release@v1.10.0
       with:
         repo: pulumi/schema-tools
     - name: Build tfgen & provider binaries
@@ -301,7 +301,7 @@ jobs:
             sdk/go.sum
         go-version: 1.21.x
     - name: Install pulumictl
-      uses: jaxxstorm/action-install-gh-release@v1.5.0
+      uses: jaxxstorm/action-install-gh-release@v1.10.0
       with:
         repo: pulumi/pulumictl
     - name: Install Pulumi CLI
@@ -395,7 +395,7 @@ jobs:
             sdk/go.sum
         go-version: 1.21.x
     - name: Install pulumictl
-      uses: jaxxstorm/action-install-gh-release@v1.5.0
+      uses: jaxxstorm/action-install-gh-release@v1.10.0
       with:
         repo: pulumi/pulumictl
     - name: Install Pulumi CLI
