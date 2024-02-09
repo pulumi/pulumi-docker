@@ -31,7 +31,23 @@ import javax.annotation.Nullable;
  * 
  * ## Import
  * 
- * ### Example Assuming you created a `service` as follows #!/bin/bash docker service create --name foo -p 8080:80 nginx prints th ID 4pcphbxkfn2rffhbhe6czytgi you provide the definition for the resource as follows terraform resource &#34;docker_service&#34; &#34;foo&#34; {
+ * ### Example
+ * 
+ *  Assuming you created a `service` as follows
+ * 
+ *  #!/bin/bash
+ * 
+ *  docker service create --name foo -p 8080:80 nginx
+ * 
+ *  prints th ID
+ * 
+ *  4pcphbxkfn2rffhbhe6czytgi
+ * 
+ *  you provide the definition for the resource as follows
+ * 
+ *  terraform
+ * 
+ *  resource &#34;docker_service&#34; &#34;foo&#34; {
  * 
  *  name = &#34;foo&#34;
  * 
@@ -57,10 +73,16 @@ import javax.annotation.Nullable;
  * 
  *  }
  * 
- *  } } then the import command is as follows #!/bin/bash
+ *  }
+ * 
+ *  }
+ * 
+ *  then the import command is as follows
+ * 
+ *  #!/bin/bash
  * 
  * ```sh
- *  $ pulumi import docker:index/service:Service foo 4pcphbxkfn2rffhbhe6czytgi
+ * $ pulumi import docker:index/service:Service foo 4pcphbxkfn2rffhbhe6czytgi
  * ```
  * 
  */

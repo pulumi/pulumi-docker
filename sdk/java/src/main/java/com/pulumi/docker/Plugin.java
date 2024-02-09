@@ -63,7 +63,7 @@ import javax.annotation.Nullable;
  * #!/bin/bash
  * 
  * ```sh
- *  $ pulumi import docker:index/plugin:Plugin sample-volume-plugin &#34;$(docker plugin inspect -f {{.ID}} tiborvass/sample-volume-plugin:latest)&#34;
+ * $ pulumi import docker:index/plugin:Plugin sample-volume-plugin &#34;$(docker plugin inspect -f {{.ID}} tiborvass/sample-volume-plugin:latest)&#34;
  * ```
  * 
  */

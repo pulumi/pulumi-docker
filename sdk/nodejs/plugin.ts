@@ -33,7 +33,7 @@ import * as utilities from "./utilities";
  * #!/bin/bash
  *
  * ```sh
- *  $ pulumi import docker:index/plugin:Plugin sample-volume-plugin "$(docker plugin inspect -f {{.ID}} tiborvass/sample-volume-plugin:latest)"
+ * $ pulumi import docker:index/plugin:Plugin sample-volume-plugin "$(docker plugin inspect -f {{.ID}} tiborvass/sample-volume-plugin:latest)"
  * ```
  */
 export class Plugin extends pulumi.CustomResource {

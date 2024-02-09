@@ -73,11 +73,23 @@ import javax.annotation.Nullable;
  * 
  * ## Import
  * 
- * ### Example Assuming you created a `container` as follows #!/bin/bash docker run --name foo -p8080:80 -d nginx
+ * ### Example
  * 
- * prints the container ID
+ *  Assuming you created a `container` as follows
  * 
- * 9a550c0f0163d39d77222d3efd58701b625d47676c25c686c95b5b92d1cba6fd you provide the definition for the resource as follows terraform resource &#34;docker_container&#34; &#34;foo&#34; {
+ *  #!/bin/bash
+ * 
+ *  docker run --name foo -p8080:80 -d nginx
+ * 
+ *  prints the container ID
+ * 
+ *  9a550c0f0163d39d77222d3efd58701b625d47676c25c686c95b5b92d1cba6fd
+ * 
+ *  you provide the definition for the resource as follows
+ * 
+ *  terraform
+ * 
+ *  resource &#34;docker_container&#34; &#34;foo&#34; {
  * 
  *  name
  * 
@@ -91,10 +103,16 @@ import javax.annotation.Nullable;
  * 
  *  external = &#34;8080&#34;
  * 
- *  } } then the import command is as follows #!/bin/bash
+ *  }
+ * 
+ *  }
+ * 
+ *  then the import command is as follows
+ * 
+ *  #!/bin/bash
  * 
  * ```sh
- *  $ pulumi import docker:index/container:Container foo 9a550c0f0163d39d77222d3efd58701b625d47676c25c686c95b5b92d1cba6fd
+ * $ pulumi import docker:index/container:Container foo 9a550c0f0163d39d77222d3efd58701b625d47676c25c686c95b5b92d1cba6fd
  * ```
  * 
  */
