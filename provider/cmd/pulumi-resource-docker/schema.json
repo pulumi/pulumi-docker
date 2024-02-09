@@ -2210,10 +2210,14 @@
                         "type": "string"
                     },
                     "description": "\nName and optionally a tag (format: \"name:tag\"). If outputting to a\nregistry, the name should include the fully qualified registry address."
+                },
+                "target": {
+                    "type": "string"
                 }
             },
             "required": [
                 "tags",
+                "target",
                 "manifests"
             ],
             "inputProperties": {
@@ -2286,10 +2290,14 @@
                         "type": "string"
                     },
                     "description": "\nName and optionally a tag (format: \"name:tag\"). If outputting to a\nregistry, the name should include the fully qualified registry address."
+                },
+                "target": {
+                    "type": "string"
                 }
             },
             "requiredInputs": [
-                "tags"
+                "tags",
+                "target"
             ]
         },
         "docker:index/container:Container": {

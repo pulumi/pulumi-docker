@@ -105,6 +105,7 @@ export class Image extends pulumi.CustomResource {
      * registry, the name should include the fully qualified registry address.
      */
     public readonly tags!: pulumi.Output<string[]>;
+    public readonly target!: pulumi.Output<string>;
 
     /**
      * Create a Image resource with the given unique name, arguments, and options.
@@ -120,6 +121,9 @@ export class Image extends pulumi.CustomResource {
             if ((!args || args.tags === undefined) && !opts.urn) {
                 throw new Error("Missing required property 'tags'");
             }
+            if ((!args || args.target === undefined) && !opts.urn) {
+                throw new Error("Missing required property 'target'");
+            }
             resourceInputs["buildArgs"] = args ? args.buildArgs : undefined;
             resourceInputs["buildOnPreview"] = args ? args.buildOnPreview : undefined;
             resourceInputs["builder"] = args ? args.builder : undefined;
@@ -132,6 +136,7 @@ export class Image extends pulumi.CustomResource {
             resourceInputs["pull"] = args ? args.pull : undefined;
             resourceInputs["registries"] = args ? args.registries : undefined;
             resourceInputs["tags"] = args ? args.tags : undefined;
+            resourceInputs["target"] = args ? args.target : undefined;
             resourceInputs["contextHash"] = undefined /*out*/;
             resourceInputs["manifests"] = undefined /*out*/;
         } else {
@@ -149,6 +154,7 @@ export class Image extends pulumi.CustomResource {
             resourceInputs["pull"] = undefined /*out*/;
             resourceInputs["registries"] = undefined /*out*/;
             resourceInputs["tags"] = undefined /*out*/;
+            resourceInputs["target"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
         super(Image.__pulumiType, name, resourceInputs, opts);
@@ -225,4 +231,5 @@ export interface ImageArgs {
      * registry, the name should include the fully qualified registry address.
      */
     tags: pulumi.Input<pulumi.Input<string>[]>;
+    target: pulumi.Input<string>;
 }

@@ -17,6 +17,7 @@ __all__ = ['ImageArgs', 'Image']
 class ImageArgs:
     def __init__(__self__, *,
                  tags: pulumi.Input[Sequence[pulumi.Input[str]]],
+                 target: pulumi.Input[str],
                  build_args: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
                  build_on_preview: Optional[pulumi.Input[bool]] = None,
                  builder: Optional[pulumi.Input[str]] = None,
@@ -62,6 +63,7 @@ class ImageArgs:
                Logins for registry outputs
         """
         pulumi.set(__self__, "tags", tags)
+        pulumi.set(__self__, "target", target)
         if build_args is not None:
             pulumi.set(__self__, "build_args", build_args)
         if build_on_preview is not None:
@@ -100,6 +102,15 @@ class ImageArgs:
     @tags.setter
     def tags(self, value: pulumi.Input[Sequence[pulumi.Input[str]]]):
         pulumi.set(self, "tags", value)
+
+    @property
+    @pulumi.getter
+    def target(self) -> pulumi.Input[str]:
+        return pulumi.get(self, "target")
+
+    @target.setter
+    def target(self, value: pulumi.Input[str]):
+        pulumi.set(self, "target", value)
 
     @property
     @pulumi.getter(name="buildArgs")
@@ -267,6 +278,7 @@ class Image(pulumi.CustomResource):
                  pull: Optional[pulumi.Input[bool]] = None,
                  registries: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['RegistryAuthArgs']]]]] = None,
                  tags: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 target: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         """
         A Docker image built using Buildkit
@@ -340,6 +352,7 @@ class Image(pulumi.CustomResource):
                  pull: Optional[pulumi.Input[bool]] = None,
                  registries: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['RegistryAuthArgs']]]]] = None,
                  tags: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 target: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         opts = pulumi.ResourceOptions.merge(_utilities.get_resource_opts_defaults(), opts)
         if not isinstance(opts, pulumi.ResourceOptions):
@@ -365,6 +378,9 @@ class Image(pulumi.CustomResource):
             if tags is None and not opts.urn:
                 raise TypeError("Missing required property 'tags'")
             __props__.__dict__["tags"] = tags
+            if target is None and not opts.urn:
+                raise TypeError("Missing required property 'target'")
+            __props__.__dict__["target"] = target
             __props__.__dict__["context_hash"] = None
             __props__.__dict__["manifests"] = None
         super(Image, __self__).__init__(
@@ -403,6 +419,7 @@ class Image(pulumi.CustomResource):
         __props__.__dict__["pull"] = None
         __props__.__dict__["registries"] = None
         __props__.__dict__["tags"] = None
+        __props__.__dict__["target"] = None
         return Image(resource_name, opts=opts, __props__=__props__)
 
     @property
@@ -528,4 +545,9 @@ class Image(pulumi.CustomResource):
         registry, the name should include the fully qualified registry address.
         """
         return pulumi.get(self, "tags")
+
+    @property
+    @pulumi.getter
+    def target(self) -> pulumi.Output[str]:
+        return pulumi.get(self, "target")
 

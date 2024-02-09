@@ -111,6 +111,9 @@ namespace Pulumi.Docker.Buildx
         [Output("tags")]
         public Output<ImmutableArray<string>> Tags { get; private set; } = null!;
 
+        [Output("target")]
+        public Output<string> Target { get; private set; } = null!;
+
 
         /// <summary>
         /// Create a Image resource with the given unique name, arguments, and options.
@@ -287,6 +290,9 @@ namespace Pulumi.Docker.Buildx
             get => _tags ?? (_tags = new InputList<string>());
             set => _tags = value;
         }
+
+        [Input("target", required: true)]
+        public Input<string> Target { get; set; } = null!;
 
         public ImageArgs()
         {

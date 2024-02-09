@@ -47,7 +47,8 @@ type Image struct {
 	Registries RegistryAuthArrayOutput `pulumi:"registries"`
 	// Name and optionally a tag (format: "name:tag"). If outputting to a
 	// registry, the name should include the fully qualified registry address.
-	Tags pulumi.StringArrayOutput `pulumi:"tags"`
+	Tags   pulumi.StringArrayOutput `pulumi:"tags"`
+	Target pulumi.StringOutput      `pulumi:"target"`
 }
 
 // NewImage registers a new resource with the given unique name, arguments, and options.
@@ -59,6 +60,9 @@ func NewImage(ctx *pulumi.Context,
 
 	if args.Tags == nil {
 		return nil, errors.New("invalid value for required argument 'Tags'")
+	}
+	if args.Target == nil {
+		return nil, errors.New("invalid value for required argument 'Target'")
 	}
 	if args.File == nil {
 		args.File = pulumi.StringPtr("Dockerfile")
@@ -125,7 +129,8 @@ type imageArgs struct {
 	Registries []RegistryAuth `pulumi:"registries"`
 	// Name and optionally a tag (format: "name:tag"). If outputting to a
 	// registry, the name should include the fully qualified registry address.
-	Tags []string `pulumi:"tags"`
+	Tags   []string `pulumi:"tags"`
+	Target string   `pulumi:"target"`
 }
 
 // The set of arguments for constructing a Image resource.
@@ -159,7 +164,8 @@ type ImageArgs struct {
 	Registries RegistryAuthArrayInput
 	// Name and optionally a tag (format: "name:tag"). If outputting to a
 	// registry, the name should include the fully qualified registry address.
-	Tags pulumi.StringArrayInput
+	Tags   pulumi.StringArrayInput
+	Target pulumi.StringInput
 }
 
 func (ImageArgs) ElementType() reflect.Type {
@@ -321,6 +327,10 @@ func (o ImageOutput) Registries() RegistryAuthArrayOutput {
 // registry, the name should include the fully qualified registry address.
 func (o ImageOutput) Tags() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v *Image) pulumi.StringArrayOutput { return v.Tags }).(pulumi.StringArrayOutput)
+}
+
+func (o ImageOutput) Target() pulumi.StringOutput {
+	return o.ApplyT(func(v *Image) pulumi.StringOutput { return v.Target }).(pulumi.StringOutput)
 }
 
 type ImageArrayOutput struct{ *pulumi.OutputState }
