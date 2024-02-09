@@ -87,6 +87,75 @@ func TestDiffUpdates(t *testing.T) {
 		assert.Equal(t, expected, actual)
 	})
 
+	t.Run("DiffConfig happens on changed address name", func(t *testing.T) {
+		expected := map[string]*rpc.PropertyDiff{
+			"registryAuth": {
+				Kind: rpc.PropertyDiff_UPDATE,
+			},
+		}
+		input := map[resource.PropertyKey]resource.ValueDiff{
+			"registryAuth": {
+				Array: &resource.ArrayDiff{
+					Updates: map[int]resource.ValueDiff{
+						0: {
+							Object: &resource.ObjectDiff{
+								Updates: map[resource.PropertyKey]resource.ValueDiff{
+									"address": {
+										Old: resource.PropertyValue{
+											V: "dockerhub",
+										},
+										New: resource.PropertyValue{
+											V: "ShinyPrivateGHCR",
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		}
+		actual := diffUpdates(input)
+		assert.Equal(t, expected, actual)
+	})
+
+	t.Run("No DiffConfig happens on changed password", func(t *testing.T) {
+		expected := map[string]*rpc.PropertyDiff{}
+		input := map[resource.PropertyKey]resource.ValueDiff{
+			"registryAuth": {
+				Array: &resource.ArrayDiff{
+					Updates: map[int]resource.ValueDiff{
+						0: {
+							Object: &resource.ObjectDiff{
+								Updates: map[resource.PropertyKey]resource.ValueDiff{
+									"password": {
+										Old: resource.PropertyValue{
+											V: "platypus",
+										},
+										New: resource.PropertyValue{
+											V: "Schnabeltier",
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		}
+		actual := diffUpdates(input)
+		assert.Equal(t, expected, actual)
+	})
+
+	t.Run("No DiffConfig happens on no changes", func(t *testing.T) {
+		expected := map[string]*rpc.PropertyDiff{}
+		input := map[resource.PropertyKey]resource.ValueDiff{
+			"registryAuth": {},
+		}
+		actual := diffUpdates(input)
+		assert.Equal(t, expected, actual)
+	})
+
 	t.Run("Diff happens on unknown new registry", func(t *testing.T) {
 		expected := map[string]*rpc.PropertyDiff{
 			"registry": {

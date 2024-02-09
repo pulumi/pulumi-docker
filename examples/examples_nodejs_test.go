@@ -192,10 +192,10 @@ func TestSecretsInExplicitProviderNode(t *testing.T) {
 		})
 	}
 	test := getJsOptions(t).With(integration.ProgramTestOptions{
-		Dir:                    path.Join(getCwd(t), "test-secrets-in-explicit-provider", "ts"),
-		Quick:                  true,
-		SkipRefresh:            true,
-		ExtraRuntimeValidation: check,
+		Dir:                      path.Join(getCwd(t), "test-secrets-in-explicit-provider", "ts"),
+		AllowEmptyPreviewChanges: false,
+		SkipEmptyPreviewUpdate:   false,
+		ExtraRuntimeValidation:   check,
 	})
 	integration.ProgramTest(t, &test)
 }
