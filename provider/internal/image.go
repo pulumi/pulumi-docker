@@ -56,8 +56,8 @@ type ImageArgs struct {
 	BuildArgs      map[string]string         `pulumi:"buildArgs,optional"`
 	Builder        string                    `pulumi:"builder,optional"`
 	BuildOnPreview bool                      `pulumi:"buildOnPreview,optional"`
-	CacheFrom      []string                  `pulumi:"cacheFrom,optional"`
-	CacheTo        []string                  `pulumi:"cacheTo,optional"`
+	CacheFrom      []CacheFromEntry          `pulumi:"cacheFrom,optional"`
+	CacheTo        []CacheToEntry            `pulumi:"cacheTo,optional"`
 	Context        string                    `pulumi:"context,optional"`
 	Exports        []string                  `pulumi:"exports,optional"`
 	File           string                    `pulumi:"file,optional"`
@@ -191,8 +191,8 @@ func (ia *ImageArgs) withoutUnknowns(preview bool) ImageArgs {
 		BuildArgs:      mapKeeper{preview}.keep(ia.BuildArgs),
 		Builder:        ia.Builder,
 		BuildOnPreview: ia.BuildOnPreview,
-		CacheFrom:      filter(sk, ia.CacheFrom...),
-		CacheTo:        filter(sk, ia.CacheTo...),
+		CacheFrom:      filter(stringerKeeper[CacheFromEntry]{preview}, ia.CacheFrom...),
+		CacheTo:        filter(stringerKeeper[CacheToEntry]{preview}, ia.CacheTo...),
 		Context:        ia.Context,
 		Exports:        filter(sk, ia.Exports...),
 		File:           ia.File, //
@@ -373,14 +373,38 @@ func (ia *ImageArgs) toBuildOptions(preview bool) (controllerapi.BuildOptions, e
 		multierr = errors.Join(multierr, newCheckFailure("platforms", err))
 	}
 
-	cacheFrom, err := buildflags.ParseCacheEntry(filtered.CacheFrom)
-	if err != nil {
-		multierr = errors.Join(multierr, newCheckFailure("cacheFrom", err))
+	cacheFrom := []*controllerapi.CacheOptionsEntry{}
+	for _, c := range filtered.CacheFrom {
+		if strings.Count(c.String(), "type=") > 1 {
+			multierr = errors.Join(multierr, newCheckFailure("cacheFrom", errors.New("cacheFrom should only specify one cache type")))
+			continue
+		}
+		parsed, err := buildflags.ParseCacheEntry([]string{c.String()})
+		if err != nil {
+			multierr = errors.Join(multierr, newCheckFailure("cacheFrom", err))
+			continue
+		}
+		if len(parsed) == 0 {
+			continue
+		}
+		cacheFrom = append(cacheFrom, parsed[0])
 	}
 
-	cacheTo, err := buildflags.ParseCacheEntry(filtered.CacheTo)
-	if err != nil {
-		multierr = errors.Join(multierr, newCheckFailure("cacheTo", err))
+	cacheTo := []*controllerapi.CacheOptionsEntry{}
+	for _, c := range filtered.CacheTo {
+		if strings.Count(c.String(), "type=") > 1 {
+			multierr = errors.Join(multierr, newCheckFailure("cacheTo", errors.New("cacheTo should only specify one cache type")))
+			continue
+		}
+		parsed, err := buildflags.ParseCacheEntry([]string{c.String()})
+		if err != nil {
+			multierr = errors.Join(multierr, newCheckFailure("cacheTo", err))
+			continue
+		}
+		if len(parsed) == 0 {
+			continue
+		}
+		cacheTo = append(cacheTo, parsed[0])
 	}
 
 	for _, t := range filtered.Tags {

@@ -437,7 +437,7 @@ func TestDiff(t *testing.T) {
 			name: "diff if cacheFrom changes",
 			olds: func(*testing.T, ImageState) ImageState { return baseState },
 			news: func(_ *testing.T, a ImageArgs) ImageArgs {
-				a.CacheFrom = []string{"a"}
+				a.CacheFrom = []CacheFromEntry{{Raw: "a"}}
 				return a
 			},
 			wantChanges: true,
@@ -446,7 +446,7 @@ func TestDiff(t *testing.T) {
 			name: "diff if cacheTo changes",
 			olds: func(*testing.T, ImageState) ImageState { return baseState },
 			news: func(_ *testing.T, a ImageArgs) ImageArgs {
-				a.CacheTo = []string{"a"}
+				a.CacheTo = []CacheToEntry{{Raw: "a"}}
 				return a
 			},
 			wantChanges: true,
@@ -544,8 +544,8 @@ func TestBuildOptions(t *testing.T) {
 			Exports:   []string{"badexport,-"},
 			Context:   "./testdata",
 			Platforms: []string{","},
-			CacheFrom: []string{"=badcachefrom"},
-			CacheTo:   []string{"=badcacheto"},
+			CacheFrom: []CacheFromEntry{{Raw: "=badcachefrom"}},
+			CacheTo:   []CacheToEntry{{Raw: "=badcacheto"}},
 		}
 
 		_, err := args.toBuildOptions(false)
@@ -586,8 +586,8 @@ func TestBuildOptions(t *testing.T) {
 				"":      "",
 			},
 			Builder:   "",
-			CacheFrom: []string{"type=gha", ""},
-			CacheTo:   []string{"type=gha", ""},
+			CacheFrom: []CacheFromEntry{{GHA: &CacheFromGitHubActions{}}, {Raw: ""}},
+			CacheTo:   []CacheToEntry{{GHA: &CacheToGitHubActions{}}, {Raw: ""}},
 			Context:   "",
 			Exports:   []string{"type=gha", ""},
 			File:      "",
@@ -690,15 +690,23 @@ func TestToBuilds(t *testing.T) {
 		ia := ImageArgs{
 			Tags:      []string{"foo", "bar"},
 			Platforms: []string{"linux/amd64"},
-			CacheTo: []string{
-				"type=gha,mode=max",
-				"type=registry,ref=docker.io/foo/bar",
-				"type=registry,ref=docker.io/foo/bar:baz",
+			CacheTo: []CacheToEntry{
+				{GHA: &CacheToGitHubActions{CacheWithMode: CacheWithMode{CacheModeMax}}},
+				{
+					Registry: &CacheToRegistry{
+						CacheFromRegistry: CacheFromRegistry{Ref: "docker.io/foo/bar"},
+					},
+				},
+				{
+					Registry: &CacheToRegistry{
+						CacheFromRegistry: CacheFromRegistry{Ref: "docker.io/foo/bar:baz"},
+					},
+				},
 			},
-			CacheFrom: []string{
-				"type=s3,name=bar",
-				"type=registry,ref=docker.io/foo/bar",
-				"type=registry,ref=docker.io/foo/bar:baz",
+			CacheFrom: []CacheFromEntry{
+				{S3: &CacheFromS3{Name: "bar"}},
+				{Registry: &CacheFromRegistry{Ref: "docker.io/foo/bar"}},
+				{Registry: &CacheFromRegistry{Ref: "docker.io/foo/bar:baz"}},
 			},
 		}
 		builds, err := ia.toBuilds(nil, false)
@@ -713,15 +721,23 @@ func TestToBuilds(t *testing.T) {
 		ia := ImageArgs{
 			Tags:      []string{"foo", "bar"},
 			Platforms: []string{"linux/amd64", "linux/arm64"},
-			CacheTo: []string{
-				"type=gha,mode=max",
-				"type=registry,ref=docker.io/foo/bar",
-				"type=registry,ref=docker.io/foo/bar:baz",
+			CacheTo: []CacheToEntry{
+				{GHA: &CacheToGitHubActions{CacheWithMode: CacheWithMode{CacheModeMax}}},
+				{
+					Registry: &CacheToRegistry{
+						CacheFromRegistry: CacheFromRegistry{Ref: "docker.io/foo/bar"},
+					},
+				},
+				{
+					Registry: &CacheToRegistry{
+						CacheFromRegistry: CacheFromRegistry{Ref: "docker.io/foo/bar:baz"},
+					},
+				},
 			},
-			CacheFrom: []string{
-				"type=s3,name=bar",
-				"type=registry,ref=docker.io/foo/bar",
-				"type=registry,ref=docker.io/foo/bar:baz",
+			CacheFrom: []CacheFromEntry{
+				{S3: &CacheFromS3{Name: "bar"}},
+				{Registry: &CacheFromRegistry{Ref: "docker.io/foo/bar"}},
+				{Registry: &CacheFromRegistry{Ref: "docker.io/foo/bar:baz"}},
 			},
 		}
 
