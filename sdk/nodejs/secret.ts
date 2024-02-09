@@ -10,7 +10,9 @@ import * as utilities from "./utilities";
 /**
  * ## Import
  *
- * #!/bin/bash Docker secret cannot be imported as the secret data, once set, is never exposed again.
+ * #!/bin/bash
+ *
+ *  Docker secret cannot be imported as the secret data, once set, is never exposed again.
  */
 export class Secret extends pulumi.CustomResource {
     /**

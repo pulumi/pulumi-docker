@@ -339,7 +339,23 @@ class Service(pulumi.CustomResource):
 
         ## Import
 
-        ### Example Assuming you created a `service` as follows #!/bin/bash docker service create --name foo -p 8080:80 nginx prints th ID 4pcphbxkfn2rffhbhe6czytgi you provide the definition for the resource as follows terraform resource "docker_service" "foo" {
+        ### Example
+
+         Assuming you created a `service` as follows
+
+         #!/bin/bash
+
+         docker service create --name foo -p 8080:80 nginx
+
+         prints th ID
+
+         4pcphbxkfn2rffhbhe6czytgi
+
+         you provide the definition for the resource as follows
+
+         terraform
+
+         resource "docker_service" "foo" {
 
          name = "foo"
 
@@ -365,10 +381,16 @@ class Service(pulumi.CustomResource):
 
          }
 
-         } } then the import command is as follows #!/bin/bash
+         }
+
+         }
+
+         then the import command is as follows
+
+         #!/bin/bash
 
         ```sh
-         $ pulumi import docker:index/service:Service foo 4pcphbxkfn2rffhbhe6czytgi
+        $ pulumi import docker:index/service:Service foo 4pcphbxkfn2rffhbhe6czytgi
         ```
 
         :param str resource_name: The name of the resource.
@@ -397,7 +419,23 @@ class Service(pulumi.CustomResource):
 
         ## Import
 
-        ### Example Assuming you created a `service` as follows #!/bin/bash docker service create --name foo -p 8080:80 nginx prints th ID 4pcphbxkfn2rffhbhe6czytgi you provide the definition for the resource as follows terraform resource "docker_service" "foo" {
+        ### Example
+
+         Assuming you created a `service` as follows
+
+         #!/bin/bash
+
+         docker service create --name foo -p 8080:80 nginx
+
+         prints th ID
+
+         4pcphbxkfn2rffhbhe6czytgi
+
+         you provide the definition for the resource as follows
+
+         terraform
+
+         resource "docker_service" "foo" {
 
          name = "foo"
 
@@ -423,10 +461,16 @@ class Service(pulumi.CustomResource):
 
          }
 
-         } } then the import command is as follows #!/bin/bash
+         }
+
+         }
+
+         then the import command is as follows
+
+         #!/bin/bash
 
         ```sh
-         $ pulumi import docker:index/service:Service foo 4pcphbxkfn2rffhbhe6czytgi
+        $ pulumi import docker:index/service:Service foo 4pcphbxkfn2rffhbhe6czytgi
         ```
 
         :param str resource_name: The name of the resource.

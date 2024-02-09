@@ -16,16 +16,36 @@ import javax.annotation.Nullable;
 /**
  * ## Import
  * 
- * ### Example Assuming you created a `config` as follows #!/bin/bash printf &#39;{&#34;a&#34;:&#34;b&#34;}&#39; | docker config create foo - prints the id
+ * ### Example
  * 
- * 08c26c477474478d971139f750984775a7f019dbe8a2e7f09d66a187c009e66d you provide the definition for the resource as follows terraform resource &#34;docker_config&#34; &#34;foo&#34; {
+ *  Assuming you created a `config` as follows
+ * 
+ *  #!/bin/bash
+ * 
+ *  printf &#39;{&#34;a&#34;:&#34;b&#34;}&#39; | docker config create foo -
+ * 
+ *  prints the id
+ * 
+ *  08c26c477474478d971139f750984775a7f019dbe8a2e7f09d66a187c009e66d
+ * 
+ *  you provide the definition for the resource as follows
+ * 
+ *  terraform
+ * 
+ *  resource &#34;docker_config&#34; &#34;foo&#34; {
  * 
  *  name = &#34;foo&#34;
  * 
- *  data = base64encode(&#34;{\&#34;a\&#34;\&#34;b\&#34;}&#34;) } then the import command is as follows #!/bin/bash
+ *  data = base64encode(&#34;{\&#34;a\&#34;: \&#34;b\&#34;}&#34;)
+ * 
+ *  }
+ * 
+ *  then the import command is as follows
+ * 
+ *  #!/bin/bash
  * 
  * ```sh
- *  $ pulumi import docker:index/serviceConfig:ServiceConfig foo 08c26c477474478d971139f750984775a7f019dbe8a2e7f09d66a187c009e66d
+ * $ pulumi import docker:index/serviceConfig:ServiceConfig foo 08c26c477474478d971139f750984775a7f019dbe8a2e7f09d66a187c009e66d
  * ```
  * 
  */

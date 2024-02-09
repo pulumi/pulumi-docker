@@ -30,12 +30,34 @@ namespace Pulumi.Docker
     /// 
     /// ## Import
     /// 
-    /// ### Example Assuming you created a `volume` as follows #!/bin/bash docker volume create prints the long ID 524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d you provide the definition for the resource as follows terraform resource "docker_volume" "foo" {
+    /// ### Example
     /// 
-    ///  name = "524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d" } then the import command is as follows #!/bin/bash
+    ///  Assuming you created a `volume` as follows
+    /// 
+    ///  #!/bin/bash
+    /// 
+    ///  docker volume create
+    /// 
+    ///  prints the long ID
+    /// 
+    ///  524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d
+    /// 
+    ///  you provide the definition for the resource as follows
+    /// 
+    ///  terraform
+    /// 
+    ///  resource "docker_volume" "foo" {
+    /// 
+    ///  name = "524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d"
+    /// 
+    ///  }
+    /// 
+    ///  then the import command is as follows
+    /// 
+    ///  #!/bin/bash
     /// 
     /// ```sh
-    ///  $ pulumi import docker:index/volume:Volume foo 524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d
+    /// $ pulumi import docker:index/volume:Volume foo 524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d
     /// ```
     /// </summary>
     [DockerResourceType("docker:index/volume:Volume")]
