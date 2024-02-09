@@ -52,10 +52,21 @@ const buildxImage = new docker.buildx.Image("buildx", {
   file: "app/Dockerfile",
   platforms: ["linux/arm64", "linux/amd64"],
   cacheTo: [
-    pulumi.interpolate`type=registry,mode=max,image-manifest=true,oci-mediatypes=true,ref=${repo.repositoryUrl}:cache`,
+    {
+      registry: {
+        mode: "max",
+        imageManifest: true,
+        ociMediaTypes: true,
+        ref: pulumi.interpolate`${repo.repositoryUrl}:cache`,
+      },
+    },
   ],
   cacheFrom: [
-    pulumi.interpolate`type=registry,ref=${repo.repositoryUrl}:cache`,
+    {
+      registry: {
+        ref: pulumi.interpolate`${repo.repositoryUrl}:cache`,
+      },
+    },
   ],
   context: "app",
   registries: [
