@@ -361,6 +361,8 @@ func diffUpdates(updates map[resource.PropertyKey]resource.ValueDiff) map[string
 			for _, u := range valueDiff.Array.Updates {
 				updates = append(updates, u.Object)
 			}
+		} else if valueDiff.Old.Diff(valueDiff.New) != nil {
+			continue
 		}
 		// Check each modified resource for server/address changes. If we don't
 		// find any, don't mark this property for update.

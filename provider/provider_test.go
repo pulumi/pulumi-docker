@@ -150,7 +150,10 @@ func TestDiffUpdates(t *testing.T) {
 	t.Run("No DiffConfig happens on no changes", func(t *testing.T) {
 		expected := map[string]*rpc.PropertyDiff{}
 		input := map[resource.PropertyKey]resource.ValueDiff{
-			"registryAuth": {},
+			"registryAuth": {
+				Old: resource.NewObjectProperty(resource.PropertyMap{}),
+				New: resource.NewObjectProperty(resource.PropertyMap{}),
+			},
 		}
 		actual := diffUpdates(input)
 		assert.Equal(t, expected, actual)
