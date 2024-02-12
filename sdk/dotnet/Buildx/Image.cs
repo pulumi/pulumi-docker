@@ -45,14 +45,14 @@ namespace Pulumi.Docker.Buildx
         /// External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
         /// </summary>
         [Output("cacheFrom")]
-        public Output<ImmutableArray<string>> CacheFrom { get; private set; } = null!;
+        public Output<ImmutableArray<Outputs.CacheFromEntry>> CacheFrom { get; private set; } = null!;
 
         /// <summary>
         /// 
         /// Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
         /// </summary>
         [Output("cacheTo")]
-        public Output<ImmutableArray<string>> CacheTo { get; private set; } = null!;
+        public Output<ImmutableArray<Outputs.CacheToEntry>> CacheTo { get; private set; } = null!;
 
         /// <summary>
         /// 
@@ -70,7 +70,7 @@ namespace Pulumi.Docker.Buildx
         /// registry, the name should include the fully qualified registry address.
         /// </summary>
         [Output("exports")]
-        public Output<ImmutableArray<string>> Exports { get; private set; } = null!;
+        public Output<ImmutableArray<Outputs.ExportEntry>> Exports { get; private set; } = null!;
 
         /// <summary>
         /// 
@@ -89,7 +89,7 @@ namespace Pulumi.Docker.Buildx
         /// Equivalent to Docker's "--platform" flag.
         /// </summary>
         [Output("platforms")]
-        public Output<ImmutableArray<string>> Platforms { get; private set; } = null!;
+        public Output<ImmutableArray<Pulumi.Docker.Buildx.Platform>> Platforms { get; private set; } = null!;
 
         /// <summary>
         /// 
@@ -114,7 +114,7 @@ namespace Pulumi.Docker.Buildx
         public Output<ImmutableArray<string>> Tags { get; private set; } = null!;
 
         [Output("target")]
-        public Output<string> Target { get; private set; } = null!;
+        public Output<string?> Target { get; private set; } = null!;
 
 
         /// <summary>
@@ -124,7 +124,7 @@ namespace Pulumi.Docker.Buildx
         /// <param name="name">The unique name of the resource</param>
         /// <param name="args">The arguments used to populate this resource's properties</param>
         /// <param name="options">A bag of options that control this resource's behavior</param>
-        public Image(string name, ImageArgs args, CustomResourceOptions? options = null)
+        public Image(string name, ImageArgs? args = null, CustomResourceOptions? options = null)
             : base("docker:buildx/image:Image", name, args ?? new ImageArgs(), MakeResourceOptions(options, ""))
         {
         }
@@ -193,28 +193,28 @@ namespace Pulumi.Docker.Buildx
         public Input<string>? Builder { get; set; }
 
         [Input("cacheFrom")]
-        private InputList<string>? _cacheFrom;
+        private InputList<Inputs.CacheFromEntryArgs>? _cacheFrom;
 
         /// <summary>
         /// 
         /// External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
         /// </summary>
-        public InputList<string> CacheFrom
+        public InputList<Inputs.CacheFromEntryArgs> CacheFrom
         {
-            get => _cacheFrom ?? (_cacheFrom = new InputList<string>());
+            get => _cacheFrom ?? (_cacheFrom = new InputList<Inputs.CacheFromEntryArgs>());
             set => _cacheFrom = value;
         }
 
         [Input("cacheTo")]
-        private InputList<string>? _cacheTo;
+        private InputList<Inputs.CacheToEntryArgs>? _cacheTo;
 
         /// <summary>
         /// 
         /// Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
         /// </summary>
-        public InputList<string> CacheTo
+        public InputList<Inputs.CacheToEntryArgs> CacheTo
         {
-            get => _cacheTo ?? (_cacheTo = new InputList<string>());
+            get => _cacheTo ?? (_cacheTo = new InputList<Inputs.CacheToEntryArgs>());
             set => _cacheTo = value;
         }
 
@@ -226,16 +226,16 @@ namespace Pulumi.Docker.Buildx
         public Input<string>? Context { get; set; }
 
         [Input("exports")]
-        private InputList<string>? _exports;
+        private InputList<Inputs.ExportEntryArgs>? _exports;
 
         /// <summary>
         /// 
         /// Name and optionally a tag (format: "name:tag"). If outputting to a
         /// registry, the name should include the fully qualified registry address.
         /// </summary>
-        public InputList<string> Exports
+        public InputList<Inputs.ExportEntryArgs> Exports
         {
-            get => _exports ?? (_exports = new InputList<string>());
+            get => _exports ?? (_exports = new InputList<Inputs.ExportEntryArgs>());
             set => _exports = value;
         }
 
@@ -247,7 +247,7 @@ namespace Pulumi.Docker.Buildx
         public Input<string>? File { get; set; }
 
         [Input("platforms")]
-        private InputList<string>? _platforms;
+        private InputList<Pulumi.Docker.Buildx.Platform>? _platforms;
 
         /// <summary>
         /// 
@@ -255,9 +255,9 @@ namespace Pulumi.Docker.Buildx
         /// 
         /// Equivalent to Docker's "--platform" flag.
         /// </summary>
-        public InputList<string> Platforms
+        public InputList<Pulumi.Docker.Buildx.Platform> Platforms
         {
-            get => _platforms ?? (_platforms = new InputList<string>());
+            get => _platforms ?? (_platforms = new InputList<Pulumi.Docker.Buildx.Platform>());
             set => _platforms = value;
         }
 
@@ -281,7 +281,7 @@ namespace Pulumi.Docker.Buildx
             set => _registries = value;
         }
 
-        [Input("tags", required: true)]
+        [Input("tags")]
         private InputList<string>? _tags;
 
         /// <summary>
@@ -295,8 +295,8 @@ namespace Pulumi.Docker.Buildx
             set => _tags = value;
         }
 
-        [Input("target", required: true)]
-        public Input<string> Target { get; set; } = null!;
+        [Input("target")]
+        public Input<string>? Target { get; set; }
 
         public ImageArgs()
         {

@@ -60,12 +60,12 @@ export class Image extends pulumi.CustomResource {
      *
      * External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
      */
-    public readonly cacheFrom!: pulumi.Output<string[] | undefined>;
+    public readonly cacheFrom!: pulumi.Output<outputs.buildx.CacheFromEntry[] | undefined>;
     /**
      *
      * Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
      */
-    public readonly cacheTo!: pulumi.Output<string[] | undefined>;
+    public readonly cacheTo!: pulumi.Output<outputs.buildx.CacheToEntry[] | undefined>;
     /**
      *
      * Path to use for build context. If omitted, an empty context is used.
@@ -77,7 +77,7 @@ export class Image extends pulumi.CustomResource {
      * Name and optionally a tag (format: "name:tag"). If outputting to a
      * registry, the name should include the fully qualified registry address.
      */
-    public readonly exports!: pulumi.Output<string[] | undefined>;
+    public readonly exports!: pulumi.Output<outputs.buildx.ExportEntry[] | undefined>;
     /**
      *
      * Name of the Dockerfile to use (defaults to "${context}/Dockerfile").
@@ -90,7 +90,7 @@ export class Image extends pulumi.CustomResource {
      *
      * Equivalent to Docker's "--platform" flag.
      */
-    public readonly platforms!: pulumi.Output<string[] | undefined>;
+    public readonly platforms!: pulumi.Output<enums.buildx.Platform[] | undefined>;
     /**
      *
      * Always attempt to pull referenced images.
@@ -106,8 +106,8 @@ export class Image extends pulumi.CustomResource {
      * Name and optionally a tag (format: "name:tag"). If outputting to a
      * registry, the name should include the fully qualified registry address.
      */
-    public readonly tags!: pulumi.Output<string[]>;
-    public readonly target!: pulumi.Output<string>;
+    public readonly tags!: pulumi.Output<string[] | undefined>;
+    public readonly target!: pulumi.Output<string | undefined>;
 
     /**
      * Create a Image resource with the given unique name, arguments, and options.
@@ -116,16 +116,10 @@ export class Image extends pulumi.CustomResource {
      * @param args The arguments to use to populate this resource's properties.
      * @param opts A bag of options that control this resource's behavior.
      */
-    constructor(name: string, args: ImageArgs, opts?: pulumi.CustomResourceOptions) {
+    constructor(name: string, args?: ImageArgs, opts?: pulumi.CustomResourceOptions) {
         let resourceInputs: pulumi.Inputs = {};
         opts = opts || {};
         if (!opts.id) {
-            if ((!args || args.tags === undefined) && !opts.urn) {
-                throw new Error("Missing required property 'tags'");
-            }
-            if ((!args || args.target === undefined) && !opts.urn) {
-                throw new Error("Missing required property 'target'");
-            }
             resourceInputs["buildArgs"] = args ? args.buildArgs : undefined;
             resourceInputs["buildOnPreview"] = args ? args.buildOnPreview : undefined;
             resourceInputs["builder"] = args ? args.builder : undefined;
@@ -190,12 +184,12 @@ export interface ImageArgs {
      *
      * External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
      */
-    cacheFrom?: pulumi.Input<pulumi.Input<string>[]>;
+    cacheFrom?: pulumi.Input<pulumi.Input<inputs.buildx.CacheFromEntry>[]>;
     /**
      *
      * Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
      */
-    cacheTo?: pulumi.Input<pulumi.Input<string>[]>;
+    cacheTo?: pulumi.Input<pulumi.Input<inputs.buildx.CacheToEntry>[]>;
     /**
      *
      * Path to use for build context. If omitted, an empty context is used.
@@ -206,7 +200,7 @@ export interface ImageArgs {
      * Name and optionally a tag (format: "name:tag"). If outputting to a
      * registry, the name should include the fully qualified registry address.
      */
-    exports?: pulumi.Input<pulumi.Input<string>[]>;
+    exports?: pulumi.Input<pulumi.Input<inputs.buildx.ExportEntry>[]>;
     /**
      *
      * Name of the Dockerfile to use (defaults to "${context}/Dockerfile").
@@ -218,7 +212,7 @@ export interface ImageArgs {
      *
      * Equivalent to Docker's "--platform" flag.
      */
-    platforms?: pulumi.Input<pulumi.Input<string>[]>;
+    platforms?: pulumi.Input<pulumi.Input<enums.buildx.Platform>[]>;
     /**
      *
      * Always attempt to pull referenced images.
@@ -234,6 +228,6 @@ export interface ImageArgs {
      * Name and optionally a tag (format: "name:tag"). If outputting to a
      * registry, the name should include the fully qualified registry address.
      */
-    tags: pulumi.Input<pulumi.Input<string>[]>;
-    target: pulumi.Input<string>;
+    tags?: pulumi.Input<pulumi.Input<string>[]>;
+    target?: pulumi.Input<string>;
 }

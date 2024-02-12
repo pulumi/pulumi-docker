@@ -11,6 +11,9 @@ export const Image: typeof import("./image").Image = null as any;
 utilities.lazyLoad(exports, ["Image"], () => require("./image"));
 
 
+// Export enums:
+export * from "../types/enums/buildx";
+
 const _module = {
     version: utilities.getVersion(),
     construct: (name: string, type: string, urn: string): pulumi.Resource => {

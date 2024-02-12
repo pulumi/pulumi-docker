@@ -9,18 +9,1880 @@ import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
 from .. import _utilities
 from . import outputs
+from ._enums import *
 
 __all__ = [
+    'CacheFromAzureBlob',
+    'CacheFromEntry',
+    'CacheFromGitHubActions',
+    'CacheFromLocal',
+    'CacheFromRegistry',
+    'CacheFromS3',
+    'CacheToAzureBlob',
+    'CacheToEntry',
+    'CacheToGitHubActions',
+    'CacheToInline',
+    'CacheToLocal',
+    'CacheToRegistry',
+    'CacheToS3',
+    'ExportDocker',
+    'ExportEntry',
+    'ExportImage',
+    'ExportLocal',
+    'ExportOCI',
+    'ExportRegistry',
+    'ExportTar',
     'Manifest',
-    'Platform',
     'RegistryAuth',
 ]
+
+@pulumi.output_type
+class CacheFromAzureBlob(dict):
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "accountUrl":
+            suggest = "account_url"
+        elif key == "secretAccessKey":
+            suggest = "secret_access_key"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in CacheFromAzureBlob. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        CacheFromAzureBlob.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        CacheFromAzureBlob.__key_warning(key)
+        return super().get(key, default)
+
+    def __init__(__self__, *,
+                 name: str,
+                 account_url: Optional[str] = None,
+                 secret_access_key: Optional[str] = None):
+        pulumi.set(__self__, "name", name)
+        if account_url is not None:
+            pulumi.set(__self__, "account_url", account_url)
+        if secret_access_key is not None:
+            pulumi.set(__self__, "secret_access_key", secret_access_key)
+
+    @property
+    @pulumi.getter
+    def name(self) -> str:
+        return pulumi.get(self, "name")
+
+    @property
+    @pulumi.getter(name="accountUrl")
+    def account_url(self) -> Optional[str]:
+        return pulumi.get(self, "account_url")
+
+    @property
+    @pulumi.getter(name="secretAccessKey")
+    def secret_access_key(self) -> Optional[str]:
+        return pulumi.get(self, "secret_access_key")
+
+
+@pulumi.output_type
+class CacheFromEntry(dict):
+    def __init__(__self__, *,
+                 azblob: Optional['outputs.CacheFromAzureBlob'] = None,
+                 disabled: Optional[bool] = None,
+                 gha: Optional['outputs.CacheFromGitHubActions'] = None,
+                 local: Optional['outputs.CacheFromLocal'] = None,
+                 raw: Optional[str] = None,
+                 registry: Optional['outputs.CacheFromRegistry'] = None,
+                 s3: Optional['outputs.CacheFromS3'] = None):
+        """
+        :param 'CacheFromAzureBlobArgs' azblob: 
+               Push cache to Azure's blob storage service.
+        :param bool disabled: 
+               When "true" this entry will be excluded. Defaults to "false".
+        :param 'CacheFromGitHubActionsArgs' gha: 
+               Recommended for use with GitHub Actions workflows.
+               
+               An action like "crazy-max/ghaction-github-runtime" is recommended to
+               expose appropriate credentials to your GitHub workflow.
+        :param 'CacheFromLocalArgs' local: 
+               A simple backend which caches imagines on your local filesystem.
+        :param str raw: 
+               A raw string as you would provide it to the Docker CLI (e.g.,
+               "type=inline")
+        :param 'CacheFromRegistryArgs' registry: 
+               Push caches to remote registries. Incompatible with the "docker" build
+               driver.
+        :param 'CacheFromS3Args' s3: 
+               Push cache to AWS S3 or S3-compatible services such as MinIO.
+        """
+        if azblob is not None:
+            pulumi.set(__self__, "azblob", azblob)
+        if disabled is not None:
+            pulumi.set(__self__, "disabled", disabled)
+        if gha is not None:
+            pulumi.set(__self__, "gha", gha)
+        if local is not None:
+            pulumi.set(__self__, "local", local)
+        if raw is not None:
+            pulumi.set(__self__, "raw", raw)
+        if registry is not None:
+            pulumi.set(__self__, "registry", registry)
+        if s3 is not None:
+            pulumi.set(__self__, "s3", s3)
+
+    @property
+    @pulumi.getter
+    def azblob(self) -> Optional['outputs.CacheFromAzureBlob']:
+        """
+
+        Push cache to Azure's blob storage service.
+        """
+        return pulumi.get(self, "azblob")
+
+    @property
+    @pulumi.getter
+    def disabled(self) -> Optional[bool]:
+        """
+
+        When "true" this entry will be excluded. Defaults to "false".
+        """
+        return pulumi.get(self, "disabled")
+
+    @property
+    @pulumi.getter
+    def gha(self) -> Optional['outputs.CacheFromGitHubActions']:
+        """
+
+        Recommended for use with GitHub Actions workflows.
+
+        An action like "crazy-max/ghaction-github-runtime" is recommended to
+        expose appropriate credentials to your GitHub workflow.
+        """
+        return pulumi.get(self, "gha")
+
+    @property
+    @pulumi.getter
+    def local(self) -> Optional['outputs.CacheFromLocal']:
+        """
+
+        A simple backend which caches imagines on your local filesystem.
+        """
+        return pulumi.get(self, "local")
+
+    @property
+    @pulumi.getter
+    def raw(self) -> Optional[str]:
+        """
+
+        A raw string as you would provide it to the Docker CLI (e.g.,
+        "type=inline")
+        """
+        return pulumi.get(self, "raw")
+
+    @property
+    @pulumi.getter
+    def registry(self) -> Optional['outputs.CacheFromRegistry']:
+        """
+
+        Push caches to remote registries. Incompatible with the "docker" build
+        driver.
+        """
+        return pulumi.get(self, "registry")
+
+    @property
+    @pulumi.getter
+    def s3(self) -> Optional['outputs.CacheFromS3']:
+        """
+
+        Push cache to AWS S3 or S3-compatible services such as MinIO.
+        """
+        return pulumi.get(self, "s3")
+
+
+@pulumi.output_type
+class CacheFromGitHubActions(dict):
+    def __init__(__self__, *,
+                 scope: Optional[str] = None,
+                 token: Optional[str] = None,
+                 url: Optional[str] = None):
+        """
+        :param str scope: Which scope cache object belongs to.
+        :param str token: Access token
+        :param str url: Cache server URL
+        """
+        if scope is None:
+            scope = (_utilities.get_env('buildkit') or '')
+        if scope is not None:
+            pulumi.set(__self__, "scope", scope)
+        if token is None:
+            token = (_utilities.get_env('ACTIONS_RUNTIME_TOKEN') or '')
+        if token is not None:
+            pulumi.set(__self__, "token", token)
+        if url is None:
+            url = (_utilities.get_env('ACTIONS_RUNTIME_URL') or '')
+        if url is not None:
+            pulumi.set(__self__, "url", url)
+
+    @property
+    @pulumi.getter
+    def scope(self) -> Optional[str]:
+        """
+        Which scope cache object belongs to.
+        """
+        return pulumi.get(self, "scope")
+
+    @property
+    @pulumi.getter
+    def token(self) -> Optional[str]:
+        """
+        Access token
+        """
+        return pulumi.get(self, "token")
+
+    @property
+    @pulumi.getter
+    def url(self) -> Optional[str]:
+        """
+        Cache server URL
+        """
+        return pulumi.get(self, "url")
+
+
+@pulumi.output_type
+class CacheFromLocal(dict):
+    def __init__(__self__, *,
+                 src: str,
+                 digest: Optional[str] = None):
+        pulumi.set(__self__, "src", src)
+        if digest is not None:
+            pulumi.set(__self__, "digest", digest)
+
+    @property
+    @pulumi.getter
+    def src(self) -> str:
+        return pulumi.get(self, "src")
+
+    @property
+    @pulumi.getter
+    def digest(self) -> Optional[str]:
+        return pulumi.get(self, "digest")
+
+
+@pulumi.output_type
+class CacheFromRegistry(dict):
+    def __init__(__self__, *,
+                 ref: str):
+        """
+        :param str ref: Full name of the cache image to import.
+        """
+        pulumi.set(__self__, "ref", ref)
+
+    @property
+    @pulumi.getter
+    def ref(self) -> str:
+        """
+        Full name of the cache image to import.
+        """
+        return pulumi.get(self, "ref")
+
+
+@pulumi.output_type
+class CacheFromS3(dict):
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "accessKeyId":
+            suggest = "access_key_id"
+        elif key == "blobsPrefix":
+            suggest = "blobs_prefix"
+        elif key == "endpointUrl":
+            suggest = "endpoint_url"
+        elif key == "manifestsPrefix":
+            suggest = "manifests_prefix"
+        elif key == "secretAccessKey":
+            suggest = "secret_access_key"
+        elif key == "sessionToken":
+            suggest = "session_token"
+        elif key == "usePathStyle":
+            suggest = "use_path_style"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in CacheFromS3. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        CacheFromS3.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        CacheFromS3.__key_warning(key)
+        return super().get(key, default)
+
+    def __init__(__self__, *,
+                 bucket: str,
+                 region: Optional[str] = None,
+                 access_key_id: Optional[str] = None,
+                 blobs_prefix: Optional[str] = None,
+                 endpoint_url: Optional[str] = None,
+                 manifests_prefix: Optional[str] = None,
+                 name: Optional[str] = None,
+                 secret_access_key: Optional[str] = None,
+                 session_token: Optional[str] = None,
+                 use_path_style: Optional[bool] = None):
+        pulumi.set(__self__, "bucket", bucket)
+        if region is None:
+            region = (_utilities.get_env('AWS_REGION') or '')
+        pulumi.set(__self__, "region", region)
+        if access_key_id is None:
+            access_key_id = (_utilities.get_env('AWS_ACCESS_KEY_ID') or '')
+        if access_key_id is not None:
+            pulumi.set(__self__, "access_key_id", access_key_id)
+        if blobs_prefix is not None:
+            pulumi.set(__self__, "blobs_prefix", blobs_prefix)
+        if endpoint_url is not None:
+            pulumi.set(__self__, "endpoint_url", endpoint_url)
+        if manifests_prefix is not None:
+            pulumi.set(__self__, "manifests_prefix", manifests_prefix)
+        if name is not None:
+            pulumi.set(__self__, "name", name)
+        if secret_access_key is None:
+            secret_access_key = (_utilities.get_env('AWS_SECRET_ACCESS_KEY') or '')
+        if secret_access_key is not None:
+            pulumi.set(__self__, "secret_access_key", secret_access_key)
+        if session_token is None:
+            session_token = (_utilities.get_env('AWS_SESSION_TOKEN') or '')
+        if session_token is not None:
+            pulumi.set(__self__, "session_token", session_token)
+        if use_path_style is not None:
+            pulumi.set(__self__, "use_path_style", use_path_style)
+
+    @property
+    @pulumi.getter
+    def bucket(self) -> str:
+        return pulumi.get(self, "bucket")
+
+    @property
+    @pulumi.getter
+    def region(self) -> str:
+        return pulumi.get(self, "region")
+
+    @property
+    @pulumi.getter(name="accessKeyId")
+    def access_key_id(self) -> Optional[str]:
+        return pulumi.get(self, "access_key_id")
+
+    @property
+    @pulumi.getter(name="blobsPrefix")
+    def blobs_prefix(self) -> Optional[str]:
+        return pulumi.get(self, "blobs_prefix")
+
+    @property
+    @pulumi.getter(name="endpointUrl")
+    def endpoint_url(self) -> Optional[str]:
+        return pulumi.get(self, "endpoint_url")
+
+    @property
+    @pulumi.getter(name="manifestsPrefix")
+    def manifests_prefix(self) -> Optional[str]:
+        return pulumi.get(self, "manifests_prefix")
+
+    @property
+    @pulumi.getter
+    def name(self) -> Optional[str]:
+        return pulumi.get(self, "name")
+
+    @property
+    @pulumi.getter(name="secretAccessKey")
+    def secret_access_key(self) -> Optional[str]:
+        return pulumi.get(self, "secret_access_key")
+
+    @property
+    @pulumi.getter(name="sessionToken")
+    def session_token(self) -> Optional[str]:
+        return pulumi.get(self, "session_token")
+
+    @property
+    @pulumi.getter(name="usePathStyle")
+    def use_path_style(self) -> Optional[bool]:
+        return pulumi.get(self, "use_path_style")
+
+
+@pulumi.output_type
+class CacheToAzureBlob(dict):
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "accountUrl":
+            suggest = "account_url"
+        elif key == "ignoreError":
+            suggest = "ignore_error"
+        elif key == "secretAccessKey":
+            suggest = "secret_access_key"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in CacheToAzureBlob. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        CacheToAzureBlob.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        CacheToAzureBlob.__key_warning(key)
+        return super().get(key, default)
+
+    def __init__(__self__, *,
+                 name: str,
+                 account_url: Optional[str] = None,
+                 ignore_error: Optional[bool] = None,
+                 mode: Optional['CacheMode'] = None,
+                 secret_access_key: Optional[str] = None):
+        """
+        :param bool ignore_error: Ignore errors caused by failed cache exports.
+        """
+        pulumi.set(__self__, "name", name)
+        if account_url is not None:
+            pulumi.set(__self__, "account_url", account_url)
+        if ignore_error is None:
+            ignore_error = False
+        if ignore_error is not None:
+            pulumi.set(__self__, "ignore_error", ignore_error)
+        if mode is None:
+            mode = 'min'
+        if mode is not None:
+            pulumi.set(__self__, "mode", mode)
+        if secret_access_key is not None:
+            pulumi.set(__self__, "secret_access_key", secret_access_key)
+
+    @property
+    @pulumi.getter
+    def name(self) -> str:
+        return pulumi.get(self, "name")
+
+    @property
+    @pulumi.getter(name="accountUrl")
+    def account_url(self) -> Optional[str]:
+        return pulumi.get(self, "account_url")
+
+    @property
+    @pulumi.getter(name="ignoreError")
+    def ignore_error(self) -> Optional[bool]:
+        """
+        Ignore errors caused by failed cache exports.
+        """
+        return pulumi.get(self, "ignore_error")
+
+    @property
+    @pulumi.getter
+    def mode(self) -> Optional['CacheMode']:
+        return pulumi.get(self, "mode")
+
+    @property
+    @pulumi.getter(name="secretAccessKey")
+    def secret_access_key(self) -> Optional[str]:
+        return pulumi.get(self, "secret_access_key")
+
+
+@pulumi.output_type
+class CacheToEntry(dict):
+    def __init__(__self__, *,
+                 azblob: Optional['outputs.CacheToAzureBlob'] = None,
+                 disabled: Optional[bool] = None,
+                 gha: Optional['outputs.CacheToGitHubActions'] = None,
+                 inline: Optional['outputs.CacheToInline'] = None,
+                 local: Optional['outputs.CacheToLocal'] = None,
+                 raw: Optional[str] = None,
+                 registry: Optional['outputs.CacheToRegistry'] = None,
+                 s3: Optional['outputs.CacheToS3'] = None):
+        """
+        :param 'CacheToAzureBlobArgs' azblob: 
+               Push cache to Azure's blob storage service.
+        :param bool disabled: 
+               When "true" this entry will be excluded. Defaults to "false".
+        :param 'CacheToGitHubActionsArgs' gha: 
+               Recommended for use with GitHub Actions workflows.
+               
+               An action like "crazy-max/ghaction-github-runtime" is recommended to
+               expose appropriate credentials to your GitHub workflow.
+        :param 'CacheToInlineArgs' inline: 
+               The inline cache storage backend is the simplest implementation to get
+               started with, but it does not handle multi-stage builds. Consider the
+               registry cache backend instead.
+        :param 'CacheToLocalArgs' local: 
+               A simple backend which caches imagines on your local filesystem.
+        :param str raw: 
+               A raw string as you would provide it to the Docker CLI (e.g.,
+               "type=inline")
+        :param 'CacheToRegistryArgs' registry: 
+               Push caches to remote registries. Incompatible with the "docker" build
+               driver.
+        :param 'CacheToS3Args' s3: 
+               Push cache to AWS S3 or S3-compatible services such as MinIO.
+        """
+        if azblob is not None:
+            pulumi.set(__self__, "azblob", azblob)
+        if disabled is not None:
+            pulumi.set(__self__, "disabled", disabled)
+        if gha is not None:
+            pulumi.set(__self__, "gha", gha)
+        if inline is not None:
+            pulumi.set(__self__, "inline", inline)
+        if local is not None:
+            pulumi.set(__self__, "local", local)
+        if raw is not None:
+            pulumi.set(__self__, "raw", raw)
+        if registry is not None:
+            pulumi.set(__self__, "registry", registry)
+        if s3 is not None:
+            pulumi.set(__self__, "s3", s3)
+
+    @property
+    @pulumi.getter
+    def azblob(self) -> Optional['outputs.CacheToAzureBlob']:
+        """
+
+        Push cache to Azure's blob storage service.
+        """
+        return pulumi.get(self, "azblob")
+
+    @property
+    @pulumi.getter
+    def disabled(self) -> Optional[bool]:
+        """
+
+        When "true" this entry will be excluded. Defaults to "false".
+        """
+        return pulumi.get(self, "disabled")
+
+    @property
+    @pulumi.getter
+    def gha(self) -> Optional['outputs.CacheToGitHubActions']:
+        """
+
+        Recommended for use with GitHub Actions workflows.
+
+        An action like "crazy-max/ghaction-github-runtime" is recommended to
+        expose appropriate credentials to your GitHub workflow.
+        """
+        return pulumi.get(self, "gha")
+
+    @property
+    @pulumi.getter
+    def inline(self) -> Optional['outputs.CacheToInline']:
+        """
+
+        The inline cache storage backend is the simplest implementation to get
+        started with, but it does not handle multi-stage builds. Consider the
+        registry cache backend instead.
+        """
+        return pulumi.get(self, "inline")
+
+    @property
+    @pulumi.getter
+    def local(self) -> Optional['outputs.CacheToLocal']:
+        """
+
+        A simple backend which caches imagines on your local filesystem.
+        """
+        return pulumi.get(self, "local")
+
+    @property
+    @pulumi.getter
+    def raw(self) -> Optional[str]:
+        """
+
+        A raw string as you would provide it to the Docker CLI (e.g.,
+        "type=inline")
+        """
+        return pulumi.get(self, "raw")
+
+    @property
+    @pulumi.getter
+    def registry(self) -> Optional['outputs.CacheToRegistry']:
+        """
+
+        Push caches to remote registries. Incompatible with the "docker" build
+        driver.
+        """
+        return pulumi.get(self, "registry")
+
+    @property
+    @pulumi.getter
+    def s3(self) -> Optional['outputs.CacheToS3']:
+        """
+
+        Push cache to AWS S3 or S3-compatible services such as MinIO.
+        """
+        return pulumi.get(self, "s3")
+
+
+@pulumi.output_type
+class CacheToGitHubActions(dict):
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "ignoreError":
+            suggest = "ignore_error"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in CacheToGitHubActions. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        CacheToGitHubActions.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        CacheToGitHubActions.__key_warning(key)
+        return super().get(key, default)
+
+    def __init__(__self__, *,
+                 ignore_error: Optional[bool] = None,
+                 mode: Optional['CacheMode'] = None,
+                 scope: Optional[str] = None,
+                 token: Optional[str] = None,
+                 url: Optional[str] = None):
+        """
+        :param bool ignore_error: Ignore errors caused by failed cache exports.
+        :param str scope: Which scope cache object belongs to.
+        :param str token: Access token
+        :param str url: Cache server URL
+        """
+        if ignore_error is None:
+            ignore_error = False
+        if ignore_error is not None:
+            pulumi.set(__self__, "ignore_error", ignore_error)
+        if mode is None:
+            mode = 'min'
+        if mode is not None:
+            pulumi.set(__self__, "mode", mode)
+        if scope is None:
+            scope = (_utilities.get_env('buildkit') or '')
+        if scope is not None:
+            pulumi.set(__self__, "scope", scope)
+        if token is None:
+            token = (_utilities.get_env('ACTIONS_RUNTIME_TOKEN') or '')
+        if token is not None:
+            pulumi.set(__self__, "token", token)
+        if url is None:
+            url = (_utilities.get_env('ACTIONS_RUNTIME_URL') or '')
+        if url is not None:
+            pulumi.set(__self__, "url", url)
+
+    @property
+    @pulumi.getter(name="ignoreError")
+    def ignore_error(self) -> Optional[bool]:
+        """
+        Ignore errors caused by failed cache exports.
+        """
+        return pulumi.get(self, "ignore_error")
+
+    @property
+    @pulumi.getter
+    def mode(self) -> Optional['CacheMode']:
+        return pulumi.get(self, "mode")
+
+    @property
+    @pulumi.getter
+    def scope(self) -> Optional[str]:
+        """
+        Which scope cache object belongs to.
+        """
+        return pulumi.get(self, "scope")
+
+    @property
+    @pulumi.getter
+    def token(self) -> Optional[str]:
+        """
+        Access token
+        """
+        return pulumi.get(self, "token")
+
+    @property
+    @pulumi.getter
+    def url(self) -> Optional[str]:
+        """
+        Cache server URL
+        """
+        return pulumi.get(self, "url")
+
+
+@pulumi.output_type
+class CacheToInline(dict):
+    def __init__(__self__):
+        pass
+
+
+@pulumi.output_type
+class CacheToLocal(dict):
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "compressionLevel":
+            suggest = "compression_level"
+        elif key == "forceCompression":
+            suggest = "force_compression"
+        elif key == "ignoreError":
+            suggest = "ignore_error"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in CacheToLocal. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        CacheToLocal.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        CacheToLocal.__key_warning(key)
+        return super().get(key, default)
+
+    def __init__(__self__, *,
+                 dest: str,
+                 compression: Optional['CompressionType'] = None,
+                 compression_level: Optional[int] = None,
+                 force_compression: Optional[bool] = None,
+                 ignore_error: Optional[bool] = None,
+                 mode: Optional['CacheMode'] = None):
+        """
+        :param 'CompressionType' compression: The compression type to use.
+        :param int compression_level: Compression level from 0 to 22.
+        :param bool force_compression: Forcefully apply compression.
+        :param bool ignore_error: Ignore errors caused by failed cache exports.
+        """
+        pulumi.set(__self__, "dest", dest)
+        if compression is None:
+            compression = 'gzip'
+        if compression is not None:
+            pulumi.set(__self__, "compression", compression)
+        if compression_level is None:
+            compression_level = 0
+        if compression_level is not None:
+            pulumi.set(__self__, "compression_level", compression_level)
+        if force_compression is None:
+            force_compression = False
+        if force_compression is not None:
+            pulumi.set(__self__, "force_compression", force_compression)
+        if ignore_error is None:
+            ignore_error = False
+        if ignore_error is not None:
+            pulumi.set(__self__, "ignore_error", ignore_error)
+        if mode is None:
+            mode = 'min'
+        if mode is not None:
+            pulumi.set(__self__, "mode", mode)
+
+    @property
+    @pulumi.getter
+    def dest(self) -> str:
+        return pulumi.get(self, "dest")
+
+    @property
+    @pulumi.getter
+    def compression(self) -> Optional['CompressionType']:
+        """
+        The compression type to use.
+        """
+        return pulumi.get(self, "compression")
+
+    @property
+    @pulumi.getter(name="compressionLevel")
+    def compression_level(self) -> Optional[int]:
+        """
+        Compression level from 0 to 22.
+        """
+        return pulumi.get(self, "compression_level")
+
+    @property
+    @pulumi.getter(name="forceCompression")
+    def force_compression(self) -> Optional[bool]:
+        """
+        Forcefully apply compression.
+        """
+        return pulumi.get(self, "force_compression")
+
+    @property
+    @pulumi.getter(name="ignoreError")
+    def ignore_error(self) -> Optional[bool]:
+        """
+        Ignore errors caused by failed cache exports.
+        """
+        return pulumi.get(self, "ignore_error")
+
+    @property
+    @pulumi.getter
+    def mode(self) -> Optional['CacheMode']:
+        return pulumi.get(self, "mode")
+
+
+@pulumi.output_type
+class CacheToRegistry(dict):
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "compressionLevel":
+            suggest = "compression_level"
+        elif key == "forceCompression":
+            suggest = "force_compression"
+        elif key == "ignoreError":
+            suggest = "ignore_error"
+        elif key == "imageManifest":
+            suggest = "image_manifest"
+        elif key == "ociMediaTypes":
+            suggest = "oci_media_types"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in CacheToRegistry. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        CacheToRegistry.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        CacheToRegistry.__key_warning(key)
+        return super().get(key, default)
+
+    def __init__(__self__, *,
+                 ref: str,
+                 compression: Optional['CompressionType'] = None,
+                 compression_level: Optional[int] = None,
+                 force_compression: Optional[bool] = None,
+                 ignore_error: Optional[bool] = None,
+                 image_manifest: Optional[bool] = None,
+                 mode: Optional['CacheMode'] = None,
+                 oci_media_types: Optional[bool] = None):
+        """
+        :param str ref: Full name of the cache image to import.
+        :param 'CompressionType' compression: The compression type to use.
+        :param int compression_level: Compression level from 0 to 22.
+        :param bool force_compression: Forcefully apply compression.
+        :param bool ignore_error: Ignore errors caused by failed cache exports.
+        :param bool image_manifest: Export cache manifest as an OCI-compatible image manifest instead of a manifest list (requires OCI media types).
+        :param bool oci_media_types: Whether to use OCI mediatypes in exported manifests.
+        """
+        pulumi.set(__self__, "ref", ref)
+        if compression is None:
+            compression = 'gzip'
+        if compression is not None:
+            pulumi.set(__self__, "compression", compression)
+        if compression_level is None:
+            compression_level = 0
+        if compression_level is not None:
+            pulumi.set(__self__, "compression_level", compression_level)
+        if force_compression is None:
+            force_compression = False
+        if force_compression is not None:
+            pulumi.set(__self__, "force_compression", force_compression)
+        if ignore_error is None:
+            ignore_error = False
+        if ignore_error is not None:
+            pulumi.set(__self__, "ignore_error", ignore_error)
+        if image_manifest is None:
+            image_manifest = False
+        if image_manifest is not None:
+            pulumi.set(__self__, "image_manifest", image_manifest)
+        if mode is None:
+            mode = 'min'
+        if mode is not None:
+            pulumi.set(__self__, "mode", mode)
+        if oci_media_types is None:
+            oci_media_types = True
+        if oci_media_types is not None:
+            pulumi.set(__self__, "oci_media_types", oci_media_types)
+
+    @property
+    @pulumi.getter
+    def ref(self) -> str:
+        """
+        Full name of the cache image to import.
+        """
+        return pulumi.get(self, "ref")
+
+    @property
+    @pulumi.getter
+    def compression(self) -> Optional['CompressionType']:
+        """
+        The compression type to use.
+        """
+        return pulumi.get(self, "compression")
+
+    @property
+    @pulumi.getter(name="compressionLevel")
+    def compression_level(self) -> Optional[int]:
+        """
+        Compression level from 0 to 22.
+        """
+        return pulumi.get(self, "compression_level")
+
+    @property
+    @pulumi.getter(name="forceCompression")
+    def force_compression(self) -> Optional[bool]:
+        """
+        Forcefully apply compression.
+        """
+        return pulumi.get(self, "force_compression")
+
+    @property
+    @pulumi.getter(name="ignoreError")
+    def ignore_error(self) -> Optional[bool]:
+        """
+        Ignore errors caused by failed cache exports.
+        """
+        return pulumi.get(self, "ignore_error")
+
+    @property
+    @pulumi.getter(name="imageManifest")
+    def image_manifest(self) -> Optional[bool]:
+        """
+        Export cache manifest as an OCI-compatible image manifest instead of a manifest list (requires OCI media types).
+        """
+        return pulumi.get(self, "image_manifest")
+
+    @property
+    @pulumi.getter
+    def mode(self) -> Optional['CacheMode']:
+        return pulumi.get(self, "mode")
+
+    @property
+    @pulumi.getter(name="ociMediaTypes")
+    def oci_media_types(self) -> Optional[bool]:
+        """
+        Whether to use OCI mediatypes in exported manifests.
+        """
+        return pulumi.get(self, "oci_media_types")
+
+
+@pulumi.output_type
+class CacheToS3(dict):
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "accessKeyId":
+            suggest = "access_key_id"
+        elif key == "blobsPrefix":
+            suggest = "blobs_prefix"
+        elif key == "endpointUrl":
+            suggest = "endpoint_url"
+        elif key == "ignoreError":
+            suggest = "ignore_error"
+        elif key == "manifestsPrefix":
+            suggest = "manifests_prefix"
+        elif key == "secretAccessKey":
+            suggest = "secret_access_key"
+        elif key == "sessionToken":
+            suggest = "session_token"
+        elif key == "usePathStyle":
+            suggest = "use_path_style"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in CacheToS3. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        CacheToS3.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        CacheToS3.__key_warning(key)
+        return super().get(key, default)
+
+    def __init__(__self__, *,
+                 bucket: str,
+                 region: Optional[str] = None,
+                 access_key_id: Optional[str] = None,
+                 blobs_prefix: Optional[str] = None,
+                 endpoint_url: Optional[str] = None,
+                 ignore_error: Optional[bool] = None,
+                 manifests_prefix: Optional[str] = None,
+                 mode: Optional['CacheMode'] = None,
+                 name: Optional[str] = None,
+                 secret_access_key: Optional[str] = None,
+                 session_token: Optional[str] = None,
+                 use_path_style: Optional[bool] = None):
+        """
+        :param bool ignore_error: Ignore errors caused by failed cache exports.
+        """
+        pulumi.set(__self__, "bucket", bucket)
+        if region is None:
+            region = (_utilities.get_env('AWS_REGION') or '')
+        pulumi.set(__self__, "region", region)
+        if access_key_id is None:
+            access_key_id = (_utilities.get_env('AWS_ACCESS_KEY_ID') or '')
+        if access_key_id is not None:
+            pulumi.set(__self__, "access_key_id", access_key_id)
+        if blobs_prefix is not None:
+            pulumi.set(__self__, "blobs_prefix", blobs_prefix)
+        if endpoint_url is not None:
+            pulumi.set(__self__, "endpoint_url", endpoint_url)
+        if ignore_error is None:
+            ignore_error = False
+        if ignore_error is not None:
+            pulumi.set(__self__, "ignore_error", ignore_error)
+        if manifests_prefix is not None:
+            pulumi.set(__self__, "manifests_prefix", manifests_prefix)
+        if mode is None:
+            mode = 'min'
+        if mode is not None:
+            pulumi.set(__self__, "mode", mode)
+        if name is not None:
+            pulumi.set(__self__, "name", name)
+        if secret_access_key is None:
+            secret_access_key = (_utilities.get_env('AWS_SECRET_ACCESS_KEY') or '')
+        if secret_access_key is not None:
+            pulumi.set(__self__, "secret_access_key", secret_access_key)
+        if session_token is None:
+            session_token = (_utilities.get_env('AWS_SESSION_TOKEN') or '')
+        if session_token is not None:
+            pulumi.set(__self__, "session_token", session_token)
+        if use_path_style is not None:
+            pulumi.set(__self__, "use_path_style", use_path_style)
+
+    @property
+    @pulumi.getter
+    def bucket(self) -> str:
+        return pulumi.get(self, "bucket")
+
+    @property
+    @pulumi.getter
+    def region(self) -> str:
+        return pulumi.get(self, "region")
+
+    @property
+    @pulumi.getter(name="accessKeyId")
+    def access_key_id(self) -> Optional[str]:
+        return pulumi.get(self, "access_key_id")
+
+    @property
+    @pulumi.getter(name="blobsPrefix")
+    def blobs_prefix(self) -> Optional[str]:
+        return pulumi.get(self, "blobs_prefix")
+
+    @property
+    @pulumi.getter(name="endpointUrl")
+    def endpoint_url(self) -> Optional[str]:
+        return pulumi.get(self, "endpoint_url")
+
+    @property
+    @pulumi.getter(name="ignoreError")
+    def ignore_error(self) -> Optional[bool]:
+        """
+        Ignore errors caused by failed cache exports.
+        """
+        return pulumi.get(self, "ignore_error")
+
+    @property
+    @pulumi.getter(name="manifestsPrefix")
+    def manifests_prefix(self) -> Optional[str]:
+        return pulumi.get(self, "manifests_prefix")
+
+    @property
+    @pulumi.getter
+    def mode(self) -> Optional['CacheMode']:
+        return pulumi.get(self, "mode")
+
+    @property
+    @pulumi.getter
+    def name(self) -> Optional[str]:
+        return pulumi.get(self, "name")
+
+    @property
+    @pulumi.getter(name="secretAccessKey")
+    def secret_access_key(self) -> Optional[str]:
+        return pulumi.get(self, "secret_access_key")
+
+    @property
+    @pulumi.getter(name="sessionToken")
+    def session_token(self) -> Optional[str]:
+        return pulumi.get(self, "session_token")
+
+    @property
+    @pulumi.getter(name="usePathStyle")
+    def use_path_style(self) -> Optional[bool]:
+        return pulumi.get(self, "use_path_style")
+
+
+@pulumi.output_type
+class ExportDocker(dict):
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "compressionLevel":
+            suggest = "compression_level"
+        elif key == "forceCompression":
+            suggest = "force_compression"
+        elif key == "ociMediaTypes":
+            suggest = "oci_media_types"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in ExportDocker. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        ExportDocker.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        ExportDocker.__key_warning(key)
+        return super().get(key, default)
+
+    def __init__(__self__, *,
+                 annotations: Optional[Mapping[str, str]] = None,
+                 compression: Optional['CompressionType'] = None,
+                 compression_level: Optional[int] = None,
+                 dest: Optional[str] = None,
+                 force_compression: Optional[bool] = None,
+                 names: Optional[Sequence[str]] = None,
+                 oci_media_types: Optional[bool] = None,
+                 tar: Optional[bool] = None):
+        """
+        :param 'CompressionType' compression: The compression type to use.
+        :param int compression_level: Compression level from 0 to 22.
+        :param str dest: The local export path.
+        :param bool force_compression: Forcefully apply compression.
+        :param Sequence[str] names: Specify images names to export. This is overridden if tags are already specified.
+        :param bool oci_media_types: Use OCI media types in exporter manifests.
+        :param bool tar: Bundle the output into a tarball layout.
+        """
+        if annotations is not None:
+            pulumi.set(__self__, "annotations", annotations)
+        if compression is None:
+            compression = 'gzip'
+        if compression is not None:
+            pulumi.set(__self__, "compression", compression)
+        if compression_level is None:
+            compression_level = 0
+        if compression_level is not None:
+            pulumi.set(__self__, "compression_level", compression_level)
+        if dest is not None:
+            pulumi.set(__self__, "dest", dest)
+        if force_compression is None:
+            force_compression = False
+        if force_compression is not None:
+            pulumi.set(__self__, "force_compression", force_compression)
+        if names is not None:
+            pulumi.set(__self__, "names", names)
+        if oci_media_types is None:
+            oci_media_types = False
+        if oci_media_types is not None:
+            pulumi.set(__self__, "oci_media_types", oci_media_types)
+        if tar is None:
+            tar = True
+        if tar is not None:
+            pulumi.set(__self__, "tar", tar)
+
+    @property
+    @pulumi.getter
+    def annotations(self) -> Optional[Mapping[str, str]]:
+        return pulumi.get(self, "annotations")
+
+    @property
+    @pulumi.getter
+    def compression(self) -> Optional['CompressionType']:
+        """
+        The compression type to use.
+        """
+        return pulumi.get(self, "compression")
+
+    @property
+    @pulumi.getter(name="compressionLevel")
+    def compression_level(self) -> Optional[int]:
+        """
+        Compression level from 0 to 22.
+        """
+        return pulumi.get(self, "compression_level")
+
+    @property
+    @pulumi.getter
+    def dest(self) -> Optional[str]:
+        """
+        The local export path.
+        """
+        return pulumi.get(self, "dest")
+
+    @property
+    @pulumi.getter(name="forceCompression")
+    def force_compression(self) -> Optional[bool]:
+        """
+        Forcefully apply compression.
+        """
+        return pulumi.get(self, "force_compression")
+
+    @property
+    @pulumi.getter
+    def names(self) -> Optional[Sequence[str]]:
+        """
+        Specify images names to export. This is overridden if tags are already specified.
+        """
+        return pulumi.get(self, "names")
+
+    @property
+    @pulumi.getter(name="ociMediaTypes")
+    def oci_media_types(self) -> Optional[bool]:
+        """
+        Use OCI media types in exporter manifests.
+        """
+        return pulumi.get(self, "oci_media_types")
+
+    @property
+    @pulumi.getter
+    def tar(self) -> Optional[bool]:
+        """
+        Bundle the output into a tarball layout.
+        """
+        return pulumi.get(self, "tar")
+
+
+@pulumi.output_type
+class ExportEntry(dict):
+    def __init__(__self__, *,
+                 disabled: Optional[bool] = None,
+                 docker: Optional['outputs.ExportDocker'] = None,
+                 image: Optional['outputs.ExportImage'] = None,
+                 local: Optional['outputs.ExportLocal'] = None,
+                 oci: Optional['outputs.ExportOCI'] = None,
+                 raw: Optional[str] = None,
+                 registry: Optional['outputs.ExportRegistry'] = None,
+                 tar: Optional['outputs.ExportTar'] = None):
+        """
+        :param bool disabled: 
+               When "true" this entry will be excluded. Defaults to "false".
+        :param 'ExportDockerArgs' docker: 
+               Export as a Docker image layout.
+        :param 'ExportImageArgs' image: 
+               Outputs the build result into a container image format.
+        :param 'ExportLocalArgs' local: 
+               Export to a local directory as files and directories.
+        :param 'ExportOCIArgs' oci: 
+               Identical to the Docker exporter but uses OCI media types by default.
+        :param str raw: 
+               A raw string as you would provide it to the Docker CLI (e.g.,
+               "type=docker")
+        :param 'ExportRegistryArgs' registry: 
+               Identical to the Image exporter, but pushes by default.
+        :param 'ExportTarArgs' tar: 
+               Export to a local directory as a tarball.
+        """
+        if disabled is not None:
+            pulumi.set(__self__, "disabled", disabled)
+        if docker is not None:
+            pulumi.set(__self__, "docker", docker)
+        if image is not None:
+            pulumi.set(__self__, "image", image)
+        if local is not None:
+            pulumi.set(__self__, "local", local)
+        if oci is not None:
+            pulumi.set(__self__, "oci", oci)
+        if raw is not None:
+            pulumi.set(__self__, "raw", raw)
+        if registry is not None:
+            pulumi.set(__self__, "registry", registry)
+        if tar is not None:
+            pulumi.set(__self__, "tar", tar)
+
+    @property
+    @pulumi.getter
+    def disabled(self) -> Optional[bool]:
+        """
+
+        When "true" this entry will be excluded. Defaults to "false".
+        """
+        return pulumi.get(self, "disabled")
+
+    @property
+    @pulumi.getter
+    def docker(self) -> Optional['outputs.ExportDocker']:
+        """
+
+        Export as a Docker image layout.
+        """
+        return pulumi.get(self, "docker")
+
+    @property
+    @pulumi.getter
+    def image(self) -> Optional['outputs.ExportImage']:
+        """
+
+        Outputs the build result into a container image format.
+        """
+        return pulumi.get(self, "image")
+
+    @property
+    @pulumi.getter
+    def local(self) -> Optional['outputs.ExportLocal']:
+        """
+
+        Export to a local directory as files and directories.
+        """
+        return pulumi.get(self, "local")
+
+    @property
+    @pulumi.getter
+    def oci(self) -> Optional['outputs.ExportOCI']:
+        """
+
+        Identical to the Docker exporter but uses OCI media types by default.
+        """
+        return pulumi.get(self, "oci")
+
+    @property
+    @pulumi.getter
+    def raw(self) -> Optional[str]:
+        """
+
+        A raw string as you would provide it to the Docker CLI (e.g.,
+        "type=docker")
+        """
+        return pulumi.get(self, "raw")
+
+    @property
+    @pulumi.getter
+    def registry(self) -> Optional['outputs.ExportRegistry']:
+        """
+
+        Identical to the Image exporter, but pushes by default.
+        """
+        return pulumi.get(self, "registry")
+
+    @property
+    @pulumi.getter
+    def tar(self) -> Optional['outputs.ExportTar']:
+        """
+
+        Export to a local directory as a tarball.
+        """
+        return pulumi.get(self, "tar")
+
+
+@pulumi.output_type
+class ExportImage(dict):
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "compressionLevel":
+            suggest = "compression_level"
+        elif key == "danglingNamePrefix":
+            suggest = "dangling_name_prefix"
+        elif key == "forceCompression":
+            suggest = "force_compression"
+        elif key == "nameCanonical":
+            suggest = "name_canonical"
+        elif key == "ociMediaTypes":
+            suggest = "oci_media_types"
+        elif key == "pushByDigest":
+            suggest = "push_by_digest"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in ExportImage. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        ExportImage.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        ExportImage.__key_warning(key)
+        return super().get(key, default)
+
+    def __init__(__self__, *,
+                 annotations: Optional[Mapping[str, str]] = None,
+                 compression: Optional['CompressionType'] = None,
+                 compression_level: Optional[int] = None,
+                 dangling_name_prefix: Optional[str] = None,
+                 force_compression: Optional[bool] = None,
+                 insecure: Optional[bool] = None,
+                 name_canonical: Optional[bool] = None,
+                 names: Optional[Sequence[str]] = None,
+                 oci_media_types: Optional[bool] = None,
+                 push: Optional[bool] = None,
+                 push_by_digest: Optional[bool] = None,
+                 store: Optional[bool] = None,
+                 unpack: Optional[bool] = None):
+        """
+        :param 'CompressionType' compression: The compression type to use.
+        :param int compression_level: Compression level from 0 to 22.
+        :param bool force_compression: Forcefully apply compression.
+        :param Sequence[str] names: Specify images names to export. This is overridden if tags are already specified.
+        :param bool oci_media_types: Use OCI media types in exporter manifests.
+        :param bool push: Push after creating the image.
+        :param bool store: 
+               Store resulting images to the worker's image store, and ensure all its
+               blobs are in the content store. Ignored if the worker doesn't have
+               image store (when using OCI workers, for example).
+        """
+        if annotations is not None:
+            pulumi.set(__self__, "annotations", annotations)
+        if compression is None:
+            compression = 'gzip'
+        if compression is not None:
+            pulumi.set(__self__, "compression", compression)
+        if compression_level is None:
+            compression_level = 0
+        if compression_level is not None:
+            pulumi.set(__self__, "compression_level", compression_level)
+        if dangling_name_prefix is not None:
+            pulumi.set(__self__, "dangling_name_prefix", dangling_name_prefix)
+        if force_compression is None:
+            force_compression = False
+        if force_compression is not None:
+            pulumi.set(__self__, "force_compression", force_compression)
+        if insecure is not None:
+            pulumi.set(__self__, "insecure", insecure)
+        if name_canonical is not None:
+            pulumi.set(__self__, "name_canonical", name_canonical)
+        if names is not None:
+            pulumi.set(__self__, "names", names)
+        if oci_media_types is None:
+            oci_media_types = False
+        if oci_media_types is not None:
+            pulumi.set(__self__, "oci_media_types", oci_media_types)
+        if push is not None:
+            pulumi.set(__self__, "push", push)
+        if push_by_digest is not None:
+            pulumi.set(__self__, "push_by_digest", push_by_digest)
+        if store is None:
+            store = True
+        if store is not None:
+            pulumi.set(__self__, "store", store)
+        if unpack is not None:
+            pulumi.set(__self__, "unpack", unpack)
+
+    @property
+    @pulumi.getter
+    def annotations(self) -> Optional[Mapping[str, str]]:
+        return pulumi.get(self, "annotations")
+
+    @property
+    @pulumi.getter
+    def compression(self) -> Optional['CompressionType']:
+        """
+        The compression type to use.
+        """
+        return pulumi.get(self, "compression")
+
+    @property
+    @pulumi.getter(name="compressionLevel")
+    def compression_level(self) -> Optional[int]:
+        """
+        Compression level from 0 to 22.
+        """
+        return pulumi.get(self, "compression_level")
+
+    @property
+    @pulumi.getter(name="danglingNamePrefix")
+    def dangling_name_prefix(self) -> Optional[str]:
+        return pulumi.get(self, "dangling_name_prefix")
+
+    @property
+    @pulumi.getter(name="forceCompression")
+    def force_compression(self) -> Optional[bool]:
+        """
+        Forcefully apply compression.
+        """
+        return pulumi.get(self, "force_compression")
+
+    @property
+    @pulumi.getter
+    def insecure(self) -> Optional[bool]:
+        return pulumi.get(self, "insecure")
+
+    @property
+    @pulumi.getter(name="nameCanonical")
+    def name_canonical(self) -> Optional[bool]:
+        return pulumi.get(self, "name_canonical")
+
+    @property
+    @pulumi.getter
+    def names(self) -> Optional[Sequence[str]]:
+        """
+        Specify images names to export. This is overridden if tags are already specified.
+        """
+        return pulumi.get(self, "names")
+
+    @property
+    @pulumi.getter(name="ociMediaTypes")
+    def oci_media_types(self) -> Optional[bool]:
+        """
+        Use OCI media types in exporter manifests.
+        """
+        return pulumi.get(self, "oci_media_types")
+
+    @property
+    @pulumi.getter
+    def push(self) -> Optional[bool]:
+        """
+        Push after creating the image.
+        """
+        return pulumi.get(self, "push")
+
+    @property
+    @pulumi.getter(name="pushByDigest")
+    def push_by_digest(self) -> Optional[bool]:
+        return pulumi.get(self, "push_by_digest")
+
+    @property
+    @pulumi.getter
+    def store(self) -> Optional[bool]:
+        """
+
+        Store resulting images to the worker's image store, and ensure all its
+        blobs are in the content store. Ignored if the worker doesn't have
+        image store (when using OCI workers, for example).
+        """
+        return pulumi.get(self, "store")
+
+    @property
+    @pulumi.getter
+    def unpack(self) -> Optional[bool]:
+        return pulumi.get(self, "unpack")
+
+
+@pulumi.output_type
+class ExportLocal(dict):
+    def __init__(__self__, *,
+                 dest: str):
+        """
+        :param str dest: Output path.
+        """
+        pulumi.set(__self__, "dest", dest)
+
+    @property
+    @pulumi.getter
+    def dest(self) -> str:
+        """
+        Output path.
+        """
+        return pulumi.get(self, "dest")
+
+
+@pulumi.output_type
+class ExportOCI(dict):
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "compressionLevel":
+            suggest = "compression_level"
+        elif key == "forceCompression":
+            suggest = "force_compression"
+        elif key == "ociMediaTypes":
+            suggest = "oci_media_types"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in ExportOCI. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        ExportOCI.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        ExportOCI.__key_warning(key)
+        return super().get(key, default)
+
+    def __init__(__self__, *,
+                 annotations: Optional[Mapping[str, str]] = None,
+                 compression: Optional['CompressionType'] = None,
+                 compression_level: Optional[int] = None,
+                 dest: Optional[str] = None,
+                 force_compression: Optional[bool] = None,
+                 names: Optional[Sequence[str]] = None,
+                 oci_media_types: Optional[bool] = None,
+                 tar: Optional[bool] = None):
+        """
+        :param 'CompressionType' compression: The compression type to use.
+        :param int compression_level: Compression level from 0 to 22.
+        :param str dest: The local export path.
+        :param bool force_compression: Forcefully apply compression.
+        :param Sequence[str] names: Specify images names to export. This is overridden if tags are already specified.
+        :param bool oci_media_types: Use OCI media types in exporter manifests.
+        :param bool tar: Bundle the output into a tarball layout.
+        """
+        if annotations is not None:
+            pulumi.set(__self__, "annotations", annotations)
+        if compression is None:
+            compression = 'gzip'
+        if compression is not None:
+            pulumi.set(__self__, "compression", compression)
+        if compression_level is None:
+            compression_level = 0
+        if compression_level is not None:
+            pulumi.set(__self__, "compression_level", compression_level)
+        if dest is not None:
+            pulumi.set(__self__, "dest", dest)
+        if force_compression is None:
+            force_compression = False
+        if force_compression is not None:
+            pulumi.set(__self__, "force_compression", force_compression)
+        if names is not None:
+            pulumi.set(__self__, "names", names)
+        if oci_media_types is None:
+            oci_media_types = True
+        if oci_media_types is not None:
+            pulumi.set(__self__, "oci_media_types", oci_media_types)
+        if tar is None:
+            tar = True
+        if tar is not None:
+            pulumi.set(__self__, "tar", tar)
+
+    @property
+    @pulumi.getter
+    def annotations(self) -> Optional[Mapping[str, str]]:
+        return pulumi.get(self, "annotations")
+
+    @property
+    @pulumi.getter
+    def compression(self) -> Optional['CompressionType']:
+        """
+        The compression type to use.
+        """
+        return pulumi.get(self, "compression")
+
+    @property
+    @pulumi.getter(name="compressionLevel")
+    def compression_level(self) -> Optional[int]:
+        """
+        Compression level from 0 to 22.
+        """
+        return pulumi.get(self, "compression_level")
+
+    @property
+    @pulumi.getter
+    def dest(self) -> Optional[str]:
+        """
+        The local export path.
+        """
+        return pulumi.get(self, "dest")
+
+    @property
+    @pulumi.getter(name="forceCompression")
+    def force_compression(self) -> Optional[bool]:
+        """
+        Forcefully apply compression.
+        """
+        return pulumi.get(self, "force_compression")
+
+    @property
+    @pulumi.getter
+    def names(self) -> Optional[Sequence[str]]:
+        """
+        Specify images names to export. This is overridden if tags are already specified.
+        """
+        return pulumi.get(self, "names")
+
+    @property
+    @pulumi.getter(name="ociMediaTypes")
+    def oci_media_types(self) -> Optional[bool]:
+        """
+        Use OCI media types in exporter manifests.
+        """
+        return pulumi.get(self, "oci_media_types")
+
+    @property
+    @pulumi.getter
+    def tar(self) -> Optional[bool]:
+        """
+        Bundle the output into a tarball layout.
+        """
+        return pulumi.get(self, "tar")
+
+
+@pulumi.output_type
+class ExportRegistry(dict):
+    @staticmethod
+    def __key_warning(key: str):
+        suggest = None
+        if key == "compressionLevel":
+            suggest = "compression_level"
+        elif key == "danglingNamePrefix":
+            suggest = "dangling_name_prefix"
+        elif key == "forceCompression":
+            suggest = "force_compression"
+        elif key == "nameCanonical":
+            suggest = "name_canonical"
+        elif key == "ociMediaTypes":
+            suggest = "oci_media_types"
+        elif key == "pushByDigest":
+            suggest = "push_by_digest"
+
+        if suggest:
+            pulumi.log.warn(f"Key '{key}' not found in ExportRegistry. Access the value via the '{suggest}' property getter instead.")
+
+    def __getitem__(self, key: str) -> Any:
+        ExportRegistry.__key_warning(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default = None) -> Any:
+        ExportRegistry.__key_warning(key)
+        return super().get(key, default)
+
+    def __init__(__self__, *,
+                 annotations: Optional[Mapping[str, str]] = None,
+                 compression: Optional['CompressionType'] = None,
+                 compression_level: Optional[int] = None,
+                 dangling_name_prefix: Optional[str] = None,
+                 force_compression: Optional[bool] = None,
+                 insecure: Optional[bool] = None,
+                 name_canonical: Optional[bool] = None,
+                 names: Optional[Sequence[str]] = None,
+                 oci_media_types: Optional[bool] = None,
+                 push: Optional[bool] = None,
+                 push_by_digest: Optional[bool] = None,
+                 store: Optional[bool] = None,
+                 unpack: Optional[bool] = None):
+        """
+        :param 'CompressionType' compression: The compression type to use.
+        :param int compression_level: Compression level from 0 to 22.
+        :param bool force_compression: Forcefully apply compression.
+        :param Sequence[str] names: Specify images names to export. This is overridden if tags are already specified.
+        :param bool oci_media_types: Use OCI media types in exporter manifests.
+        :param bool push: Push after creating the image.
+        :param bool store: 
+               Store resulting images to the worker's image store, and ensure all its
+               blobs are in the content store. Ignored if the worker doesn't have
+               image store (when using OCI workers, for example).
+        """
+        if annotations is not None:
+            pulumi.set(__self__, "annotations", annotations)
+        if compression is None:
+            compression = 'gzip'
+        if compression is not None:
+            pulumi.set(__self__, "compression", compression)
+        if compression_level is None:
+            compression_level = 0
+        if compression_level is not None:
+            pulumi.set(__self__, "compression_level", compression_level)
+        if dangling_name_prefix is not None:
+            pulumi.set(__self__, "dangling_name_prefix", dangling_name_prefix)
+        if force_compression is None:
+            force_compression = False
+        if force_compression is not None:
+            pulumi.set(__self__, "force_compression", force_compression)
+        if insecure is not None:
+            pulumi.set(__self__, "insecure", insecure)
+        if name_canonical is not None:
+            pulumi.set(__self__, "name_canonical", name_canonical)
+        if names is not None:
+            pulumi.set(__self__, "names", names)
+        if oci_media_types is None:
+            oci_media_types = False
+        if oci_media_types is not None:
+            pulumi.set(__self__, "oci_media_types", oci_media_types)
+        if push is None:
+            push = True
+        if push is not None:
+            pulumi.set(__self__, "push", push)
+        if push_by_digest is not None:
+            pulumi.set(__self__, "push_by_digest", push_by_digest)
+        if store is None:
+            store = True
+        if store is not None:
+            pulumi.set(__self__, "store", store)
+        if unpack is not None:
+            pulumi.set(__self__, "unpack", unpack)
+
+    @property
+    @pulumi.getter
+    def annotations(self) -> Optional[Mapping[str, str]]:
+        return pulumi.get(self, "annotations")
+
+    @property
+    @pulumi.getter
+    def compression(self) -> Optional['CompressionType']:
+        """
+        The compression type to use.
+        """
+        return pulumi.get(self, "compression")
+
+    @property
+    @pulumi.getter(name="compressionLevel")
+    def compression_level(self) -> Optional[int]:
+        """
+        Compression level from 0 to 22.
+        """
+        return pulumi.get(self, "compression_level")
+
+    @property
+    @pulumi.getter(name="danglingNamePrefix")
+    def dangling_name_prefix(self) -> Optional[str]:
+        return pulumi.get(self, "dangling_name_prefix")
+
+    @property
+    @pulumi.getter(name="forceCompression")
+    def force_compression(self) -> Optional[bool]:
+        """
+        Forcefully apply compression.
+        """
+        return pulumi.get(self, "force_compression")
+
+    @property
+    @pulumi.getter
+    def insecure(self) -> Optional[bool]:
+        return pulumi.get(self, "insecure")
+
+    @property
+    @pulumi.getter(name="nameCanonical")
+    def name_canonical(self) -> Optional[bool]:
+        return pulumi.get(self, "name_canonical")
+
+    @property
+    @pulumi.getter
+    def names(self) -> Optional[Sequence[str]]:
+        """
+        Specify images names to export. This is overridden if tags are already specified.
+        """
+        return pulumi.get(self, "names")
+
+    @property
+    @pulumi.getter(name="ociMediaTypes")
+    def oci_media_types(self) -> Optional[bool]:
+        """
+        Use OCI media types in exporter manifests.
+        """
+        return pulumi.get(self, "oci_media_types")
+
+    @property
+    @pulumi.getter
+    def push(self) -> Optional[bool]:
+        """
+        Push after creating the image.
+        """
+        return pulumi.get(self, "push")
+
+    @property
+    @pulumi.getter(name="pushByDigest")
+    def push_by_digest(self) -> Optional[bool]:
+        return pulumi.get(self, "push_by_digest")
+
+    @property
+    @pulumi.getter
+    def store(self) -> Optional[bool]:
+        """
+
+        Store resulting images to the worker's image store, and ensure all its
+        blobs are in the content store. Ignored if the worker doesn't have
+        image store (when using OCI workers, for example).
+        """
+        return pulumi.get(self, "store")
+
+    @property
+    @pulumi.getter
+    def unpack(self) -> Optional[bool]:
+        return pulumi.get(self, "unpack")
+
+
+@pulumi.output_type
+class ExportTar(dict):
+    def __init__(__self__, *,
+                 dest: str):
+        """
+        :param str dest: Output path.
+        """
+        pulumi.set(__self__, "dest", dest)
+
+    @property
+    @pulumi.getter
+    def dest(self) -> str:
+        """
+        Output path.
+        """
+        return pulumi.get(self, "dest")
+
 
 @pulumi.output_type
 class Manifest(dict):
     def __init__(__self__, *,
                  digest: str,
-                 platform: 'outputs.Platform',
+                 platform: 'Platform',
                  ref: str,
                  size: int):
         """
@@ -38,7 +1900,7 @@ class Manifest(dict):
 
     @property
     @pulumi.getter
-    def platform(self) -> 'outputs.Platform':
+    def platform(self) -> 'Platform':
         return pulumi.get(self, "platform")
 
     @property
@@ -53,25 +1915,6 @@ class Manifest(dict):
     @pulumi.getter
     def size(self) -> int:
         return pulumi.get(self, "size")
-
-
-@pulumi.output_type
-class Platform(dict):
-    def __init__(__self__, *,
-                 architecture: str,
-                 os: str):
-        pulumi.set(__self__, "architecture", architecture)
-        pulumi.set(__self__, "os", os)
-
-    @property
-    @pulumi.getter
-    def architecture(self) -> str:
-        return pulumi.get(self, "architecture")
-
-    @property
-    @pulumi.getter
-    def os(self) -> str:
-        return pulumi.get(self, "os")
 
 
 @pulumi.output_type

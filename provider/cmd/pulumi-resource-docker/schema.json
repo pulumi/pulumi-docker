@@ -98,6 +98,761 @@
         ]
     },
     "types": {
+        "docker:buildx/image:CacheFromAzureBlob": {
+            "properties": {
+                "accountUrl": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "secretAccessKey": {
+                    "type": "string",
+                    "secret": true
+                }
+            },
+            "type": "object",
+            "required": [
+                "name"
+            ]
+        },
+        "docker:buildx/image:CacheFromEntry": {
+            "properties": {
+                "azblob": {
+                    "$ref": "#/types/docker:buildx/image:CacheFromAzureBlob",
+                    "description": "\nPush cache to Azure's blob storage service."
+                },
+                "disabled": {
+                    "type": "boolean",
+                    "description": "\nWhen \"true\" this entry will be excluded. Defaults to \"false\".\n"
+                },
+                "gha": {
+                    "$ref": "#/types/docker:buildx/image:CacheFromGitHubActions",
+                    "description": "\nRecommended for use with GitHub Actions workflows.\n\nAn action like \"crazy-max/ghaction-github-runtime\" is recommended to\nexpose appropriate credentials to your GitHub workflow."
+                },
+                "local": {
+                    "$ref": "#/types/docker:buildx/image:CacheFromLocal",
+                    "description": "\nA simple backend which caches imagines on your local filesystem."
+                },
+                "raw": {
+                    "type": "string",
+                    "description": "\nA raw string as you would provide it to the Docker CLI (e.g.,\n\"type=inline\")"
+                },
+                "registry": {
+                    "$ref": "#/types/docker:buildx/image:CacheFromRegistry",
+                    "description": "\nPush caches to remote registries. Incompatible with the \"docker\" build\ndriver."
+                },
+                "s3": {
+                    "$ref": "#/types/docker:buildx/image:CacheFromS3",
+                    "description": "\nPush cache to AWS S3 or S3-compatible services such as MinIO."
+                }
+            },
+            "type": "object"
+        },
+        "docker:buildx/image:CacheFromGitHubActions": {
+            "properties": {
+                "scope": {
+                    "type": "string",
+                    "description": "Which scope cache object belongs to.",
+                    "default": "",
+                    "defaultInfo": {
+                        "environment": [
+                            "buildkit"
+                        ]
+                    }
+                },
+                "token": {
+                    "type": "string",
+                    "description": "Access token",
+                    "default": "",
+                    "defaultInfo": {
+                        "environment": [
+                            "ACTIONS_RUNTIME_TOKEN"
+                        ]
+                    },
+                    "secret": true
+                },
+                "url": {
+                    "type": "string",
+                    "description": "Cache server URL",
+                    "default": "",
+                    "defaultInfo": {
+                        "environment": [
+                            "ACTIONS_RUNTIME_URL"
+                        ]
+                    }
+                }
+            },
+            "type": "object"
+        },
+        "docker:buildx/image:CacheFromLocal": {
+            "properties": {
+                "digest": {
+                    "type": "string"
+                },
+                "src": {
+                    "type": "string"
+                }
+            },
+            "type": "object",
+            "required": [
+                "src"
+            ]
+        },
+        "docker:buildx/image:CacheFromRegistry": {
+            "properties": {
+                "ref": {
+                    "type": "string",
+                    "description": "Full name of the cache image to import."
+                }
+            },
+            "type": "object",
+            "required": [
+                "ref"
+            ]
+        },
+        "docker:buildx/image:CacheFromS3": {
+            "properties": {
+                "accessKeyId": {
+                    "type": "string",
+                    "default": "",
+                    "defaultInfo": {
+                        "environment": [
+                            "AWS_ACCESS_KEY_ID"
+                        ]
+                    }
+                },
+                "blobsPrefix": {
+                    "type": "string"
+                },
+                "bucket": {
+                    "type": "string"
+                },
+                "endpointUrl": {
+                    "type": "string"
+                },
+                "manifestsPrefix": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "region": {
+                    "type": "string",
+                    "default": "",
+                    "defaultInfo": {
+                        "environment": [
+                            "AWS_REGION"
+                        ]
+                    }
+                },
+                "secretAccessKey": {
+                    "type": "string",
+                    "default": "",
+                    "defaultInfo": {
+                        "environment": [
+                            "AWS_SECRET_ACCESS_KEY"
+                        ]
+                    },
+                    "secret": true
+                },
+                "sessionToken": {
+                    "type": "string",
+                    "default": "",
+                    "defaultInfo": {
+                        "environment": [
+                            "AWS_SESSION_TOKEN"
+                        ]
+                    },
+                    "secret": true
+                },
+                "usePathStyle": {
+                    "type": "boolean"
+                }
+            },
+            "type": "object",
+            "required": [
+                "region",
+                "bucket"
+            ]
+        },
+        "docker:buildx/image:CacheMode": {
+            "type": "string",
+            "enum": [
+                {
+                    "description": "Only layers that are exported into the resulting image are cached.",
+                    "value": "min"
+                },
+                {
+                    "description": "All layers are cached, even those of intermediate steps.",
+                    "value": "max"
+                }
+            ]
+        },
+        "docker:buildx/image:CacheToAzureBlob": {
+            "properties": {
+                "accountUrl": {
+                    "type": "string"
+                },
+                "ignoreError": {
+                    "type": "boolean",
+                    "description": "Ignore errors caused by failed cache exports.",
+                    "default": false
+                },
+                "mode": {
+                    "$ref": "#/types/docker:buildx/image:CacheMode",
+                    "default": "min"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "secretAccessKey": {
+                    "type": "string",
+                    "secret": true
+                }
+            },
+            "type": "object",
+            "required": [
+                "name"
+            ]
+        },
+        "docker:buildx/image:CacheToEntry": {
+            "properties": {
+                "azblob": {
+                    "$ref": "#/types/docker:buildx/image:CacheToAzureBlob",
+                    "description": "\nPush cache to Azure's blob storage service."
+                },
+                "disabled": {
+                    "type": "boolean",
+                    "description": "\nWhen \"true\" this entry will be excluded. Defaults to \"false\".\n"
+                },
+                "gha": {
+                    "$ref": "#/types/docker:buildx/image:CacheToGitHubActions",
+                    "description": "\nRecommended for use with GitHub Actions workflows.\n\nAn action like \"crazy-max/ghaction-github-runtime\" is recommended to\nexpose appropriate credentials to your GitHub workflow."
+                },
+                "inline": {
+                    "$ref": "#/types/docker:buildx/image:CacheToInline",
+                    "description": "\nThe inline cache storage backend is the simplest implementation to get\nstarted with, but it does not handle multi-stage builds. Consider the\nregistry cache backend instead."
+                },
+                "local": {
+                    "$ref": "#/types/docker:buildx/image:CacheToLocal",
+                    "description": "\nA simple backend which caches imagines on your local filesystem."
+                },
+                "raw": {
+                    "type": "string",
+                    "description": "\nA raw string as you would provide it to the Docker CLI (e.g.,\n\"type=inline\")"
+                },
+                "registry": {
+                    "$ref": "#/types/docker:buildx/image:CacheToRegistry",
+                    "description": "\nPush caches to remote registries. Incompatible with the \"docker\" build\ndriver."
+                },
+                "s3": {
+                    "$ref": "#/types/docker:buildx/image:CacheToS3",
+                    "description": "\nPush cache to AWS S3 or S3-compatible services such as MinIO."
+                }
+            },
+            "type": "object"
+        },
+        "docker:buildx/image:CacheToGitHubActions": {
+            "properties": {
+                "ignoreError": {
+                    "type": "boolean",
+                    "description": "Ignore errors caused by failed cache exports.",
+                    "default": false
+                },
+                "mode": {
+                    "$ref": "#/types/docker:buildx/image:CacheMode",
+                    "default": "min"
+                },
+                "scope": {
+                    "type": "string",
+                    "description": "Which scope cache object belongs to.",
+                    "default": "",
+                    "defaultInfo": {
+                        "environment": [
+                            "buildkit"
+                        ]
+                    }
+                },
+                "token": {
+                    "type": "string",
+                    "description": "Access token",
+                    "default": "",
+                    "defaultInfo": {
+                        "environment": [
+                            "ACTIONS_RUNTIME_TOKEN"
+                        ]
+                    },
+                    "secret": true
+                },
+                "url": {
+                    "type": "string",
+                    "description": "Cache server URL",
+                    "default": "",
+                    "defaultInfo": {
+                        "environment": [
+                            "ACTIONS_RUNTIME_URL"
+                        ]
+                    }
+                }
+            },
+            "type": "object"
+        },
+        "docker:buildx/image:CacheToInline": {
+            "type": "object"
+        },
+        "docker:buildx/image:CacheToLocal": {
+            "properties": {
+                "compression": {
+                    "$ref": "#/types/docker:buildx/image:CompressionType",
+                    "description": "The compression type to use.",
+                    "default": "gzip"
+                },
+                "compressionLevel": {
+                    "type": "integer",
+                    "description": "Compression level from 0 to 22.",
+                    "default": 0
+                },
+                "dest": {
+                    "type": "string"
+                },
+                "forceCompression": {
+                    "type": "boolean",
+                    "description": "Forcefully apply compression.",
+                    "default": false
+                },
+                "ignoreError": {
+                    "type": "boolean",
+                    "description": "Ignore errors caused by failed cache exports.",
+                    "default": false
+                },
+                "mode": {
+                    "$ref": "#/types/docker:buildx/image:CacheMode",
+                    "default": "min"
+                }
+            },
+            "type": "object",
+            "required": [
+                "dest"
+            ]
+        },
+        "docker:buildx/image:CacheToRegistry": {
+            "properties": {
+                "compression": {
+                    "$ref": "#/types/docker:buildx/image:CompressionType",
+                    "description": "The compression type to use.",
+                    "default": "gzip"
+                },
+                "compressionLevel": {
+                    "type": "integer",
+                    "description": "Compression level from 0 to 22.",
+                    "default": 0
+                },
+                "forceCompression": {
+                    "type": "boolean",
+                    "description": "Forcefully apply compression.",
+                    "default": false
+                },
+                "ignoreError": {
+                    "type": "boolean",
+                    "description": "Ignore errors caused by failed cache exports.",
+                    "default": false
+                },
+                "imageManifest": {
+                    "type": "boolean",
+                    "description": "Export cache manifest as an OCI-compatible image manifest instead of a manifest list (requires OCI media types).",
+                    "default": false
+                },
+                "mode": {
+                    "$ref": "#/types/docker:buildx/image:CacheMode",
+                    "default": "min"
+                },
+                "ociMediaTypes": {
+                    "type": "boolean",
+                    "description": "Whether to use OCI mediatypes in exported manifests.",
+                    "default": true
+                },
+                "ref": {
+                    "type": "string",
+                    "description": "Full name of the cache image to import."
+                }
+            },
+            "type": "object",
+            "required": [
+                "ref"
+            ]
+        },
+        "docker:buildx/image:CacheToS3": {
+            "properties": {
+                "accessKeyId": {
+                    "type": "string",
+                    "default": "",
+                    "defaultInfo": {
+                        "environment": [
+                            "AWS_ACCESS_KEY_ID"
+                        ]
+                    }
+                },
+                "blobsPrefix": {
+                    "type": "string"
+                },
+                "bucket": {
+                    "type": "string"
+                },
+                "endpointUrl": {
+                    "type": "string"
+                },
+                "ignoreError": {
+                    "type": "boolean",
+                    "description": "Ignore errors caused by failed cache exports.",
+                    "default": false
+                },
+                "manifestsPrefix": {
+                    "type": "string"
+                },
+                "mode": {
+                    "$ref": "#/types/docker:buildx/image:CacheMode",
+                    "default": "min"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "region": {
+                    "type": "string",
+                    "default": "",
+                    "defaultInfo": {
+                        "environment": [
+                            "AWS_REGION"
+                        ]
+                    }
+                },
+                "secretAccessKey": {
+                    "type": "string",
+                    "default": "",
+                    "defaultInfo": {
+                        "environment": [
+                            "AWS_SECRET_ACCESS_KEY"
+                        ]
+                    },
+                    "secret": true
+                },
+                "sessionToken": {
+                    "type": "string",
+                    "default": "",
+                    "defaultInfo": {
+                        "environment": [
+                            "AWS_SESSION_TOKEN"
+                        ]
+                    },
+                    "secret": true
+                },
+                "usePathStyle": {
+                    "type": "boolean"
+                }
+            },
+            "type": "object",
+            "required": [
+                "region",
+                "bucket"
+            ]
+        },
+        "docker:buildx/image:CompressionType": {
+            "type": "string",
+            "enum": [
+                {
+                    "description": "Use `gzip` for compression.",
+                    "value": "gzip"
+                },
+                {
+                    "description": "Use `estargz` for compression.",
+                    "value": "estargz"
+                },
+                {
+                    "description": "Use `zstd` for compression.",
+                    "value": "zstd"
+                }
+            ]
+        },
+        "docker:buildx/image:ExportDocker": {
+            "properties": {
+                "annotations": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                },
+                "compression": {
+                    "$ref": "#/types/docker:buildx/image:CompressionType",
+                    "description": "The compression type to use.",
+                    "default": "gzip"
+                },
+                "compressionLevel": {
+                    "type": "integer",
+                    "description": "Compression level from 0 to 22.",
+                    "default": 0
+                },
+                "dest": {
+                    "type": "string",
+                    "description": "The local export path."
+                },
+                "forceCompression": {
+                    "type": "boolean",
+                    "description": "Forcefully apply compression.",
+                    "default": false
+                },
+                "names": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Specify images names to export. This is overridden if tags are already specified."
+                },
+                "ociMediaTypes": {
+                    "type": "boolean",
+                    "description": "Use OCI media types in exporter manifests.",
+                    "default": false
+                },
+                "tar": {
+                    "type": "boolean",
+                    "description": "Bundle the output into a tarball layout.",
+                    "default": true
+                }
+            },
+            "type": "object"
+        },
+        "docker:buildx/image:ExportEntry": {
+            "properties": {
+                "disabled": {
+                    "type": "boolean",
+                    "description": "\nWhen \"true\" this entry will be excluded. Defaults to \"false\".\n"
+                },
+                "docker": {
+                    "$ref": "#/types/docker:buildx/image:ExportDocker",
+                    "description": "\nExport as a Docker image layout."
+                },
+                "image": {
+                    "$ref": "#/types/docker:buildx/image:ExportImage",
+                    "description": "\nOutputs the build result into a container image format."
+                },
+                "local": {
+                    "$ref": "#/types/docker:buildx/image:ExportLocal",
+                    "description": "\nExport to a local directory as files and directories."
+                },
+                "oci": {
+                    "$ref": "#/types/docker:buildx/image:ExportOCI",
+                    "description": "\nIdentical to the Docker exporter but uses OCI media types by default."
+                },
+                "raw": {
+                    "type": "string",
+                    "description": "\nA raw string as you would provide it to the Docker CLI (e.g.,\n\"type=docker\")"
+                },
+                "registry": {
+                    "$ref": "#/types/docker:buildx/image:ExportRegistry",
+                    "description": "\nIdentical to the Image exporter, but pushes by default."
+                },
+                "tar": {
+                    "$ref": "#/types/docker:buildx/image:ExportTar",
+                    "description": "\nExport to a local directory as a tarball."
+                }
+            },
+            "type": "object"
+        },
+        "docker:buildx/image:ExportImage": {
+            "properties": {
+                "annotations": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                },
+                "compression": {
+                    "$ref": "#/types/docker:buildx/image:CompressionType",
+                    "description": "The compression type to use.",
+                    "default": "gzip"
+                },
+                "compressionLevel": {
+                    "type": "integer",
+                    "description": "Compression level from 0 to 22.",
+                    "default": 0
+                },
+                "danglingNamePrefix": {
+                    "type": "string"
+                },
+                "forceCompression": {
+                    "type": "boolean",
+                    "description": "Forcefully apply compression.",
+                    "default": false
+                },
+                "insecure": {
+                    "type": "boolean"
+                },
+                "nameCanonical": {
+                    "type": "boolean"
+                },
+                "names": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Specify images names to export. This is overridden if tags are already specified."
+                },
+                "ociMediaTypes": {
+                    "type": "boolean",
+                    "description": "Use OCI media types in exporter manifests.",
+                    "default": false
+                },
+                "push": {
+                    "type": "boolean",
+                    "description": "Push after creating the image."
+                },
+                "pushByDigest": {
+                    "type": "boolean"
+                },
+                "store": {
+                    "type": "boolean",
+                    "description": "\nStore resulting images to the worker's image store, and ensure all its\nblobs are in the content store. Ignored if the worker doesn't have\nimage store (when using OCI workers, for example).",
+                    "default": true
+                },
+                "unpack": {
+                    "type": "boolean"
+                }
+            },
+            "type": "object"
+        },
+        "docker:buildx/image:ExportLocal": {
+            "properties": {
+                "dest": {
+                    "type": "string",
+                    "description": "Output path."
+                }
+            },
+            "type": "object",
+            "required": [
+                "dest"
+            ]
+        },
+        "docker:buildx/image:ExportOCI": {
+            "properties": {
+                "annotations": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                },
+                "compression": {
+                    "$ref": "#/types/docker:buildx/image:CompressionType",
+                    "description": "The compression type to use.",
+                    "default": "gzip"
+                },
+                "compressionLevel": {
+                    "type": "integer",
+                    "description": "Compression level from 0 to 22.",
+                    "default": 0
+                },
+                "dest": {
+                    "type": "string",
+                    "description": "The local export path."
+                },
+                "forceCompression": {
+                    "type": "boolean",
+                    "description": "Forcefully apply compression.",
+                    "default": false
+                },
+                "names": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Specify images names to export. This is overridden if tags are already specified."
+                },
+                "ociMediaTypes": {
+                    "type": "boolean",
+                    "description": "Use OCI media types in exporter manifests.",
+                    "default": true
+                },
+                "tar": {
+                    "type": "boolean",
+                    "description": "Bundle the output into a tarball layout.",
+                    "default": true
+                }
+            },
+            "type": "object"
+        },
+        "docker:buildx/image:ExportRegistry": {
+            "properties": {
+                "annotations": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                },
+                "compression": {
+                    "$ref": "#/types/docker:buildx/image:CompressionType",
+                    "description": "The compression type to use.",
+                    "default": "gzip"
+                },
+                "compressionLevel": {
+                    "type": "integer",
+                    "description": "Compression level from 0 to 22.",
+                    "default": 0
+                },
+                "danglingNamePrefix": {
+                    "type": "string"
+                },
+                "forceCompression": {
+                    "type": "boolean",
+                    "description": "Forcefully apply compression.",
+                    "default": false
+                },
+                "insecure": {
+                    "type": "boolean"
+                },
+                "nameCanonical": {
+                    "type": "boolean"
+                },
+                "names": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Specify images names to export. This is overridden if tags are already specified."
+                },
+                "ociMediaTypes": {
+                    "type": "boolean",
+                    "description": "Use OCI media types in exporter manifests.",
+                    "default": false
+                },
+                "push": {
+                    "type": "boolean",
+                    "description": "Push after creating the image.",
+                    "default": true
+                },
+                "pushByDigest": {
+                    "type": "boolean"
+                },
+                "store": {
+                    "type": "boolean",
+                    "description": "\nStore resulting images to the worker's image store, and ensure all its\nblobs are in the content store. Ignored if the worker doesn't have\nimage store (when using OCI workers, for example).",
+                    "default": true
+                },
+                "unpack": {
+                    "type": "boolean"
+                }
+            },
+            "type": "object"
+        },
+        "docker:buildx/image:ExportTar": {
+            "properties": {
+                "dest": {
+                    "type": "string",
+                    "description": "Output path."
+                }
+            },
+            "type": "object",
+            "required": [
+                "dest"
+            ]
+        },
         "docker:buildx/image:Manifest": {
             "properties": {
                 "digest": {
@@ -123,18 +878,92 @@
             ]
         },
         "docker:buildx/image:Platform": {
-            "properties": {
-                "architecture": {
-                    "type": "string"
+            "type": "string",
+            "enum": [
+                {
+                    "value": "darwin/386"
                 },
-                "os": {
-                    "type": "string"
+                {
+                    "value": "darwin/amd64"
+                },
+                {
+                    "value": "darwin/arm"
+                },
+                {
+                    "value": "darwin/arm64"
+                },
+                {
+                    "value": "dragonfly/amd64"
+                },
+                {
+                    "value": "freebsd/386"
+                },
+                {
+                    "value": "freebsd/amd64"
+                },
+                {
+                    "value": "freebsd/arm"
+                },
+                {
+                    "value": "linux/386"
+                },
+                {
+                    "value": "linux/amd64"
+                },
+                {
+                    "value": "linux/arm"
+                },
+                {
+                    "value": "linux/arm64"
+                },
+                {
+                    "value": "linux/mips64"
+                },
+                {
+                    "value": "linux/mips64le"
+                },
+                {
+                    "value": "linux/ppc64le"
+                },
+                {
+                    "value": "linux/riscv64"
+                },
+                {
+                    "value": "linux/s390x"
+                },
+                {
+                    "value": "netbsd/386"
+                },
+                {
+                    "value": "netbsd/amd64"
+                },
+                {
+                    "value": "netbsd/arm"
+                },
+                {
+                    "value": "openbsd/386"
+                },
+                {
+                    "value": "openbsd/amd64"
+                },
+                {
+                    "value": "openbsd/arm"
+                },
+                {
+                    "value": "plan9/386"
+                },
+                {
+                    "value": "plan9/amd64"
+                },
+                {
+                    "value": "solaris/amd64"
+                },
+                {
+                    "value": "windows/386"
+                },
+                {
+                    "value": "windows/amd64"
                 }
-            },
-            "type": "object",
-            "required": [
-                "os",
-                "architecture"
             ]
         },
         "docker:buildx/image:RegistryAuth": {
@@ -2150,14 +2979,14 @@
                 "cacheFrom": {
                     "type": "array",
                     "items": {
-                        "type": "string"
+                        "$ref": "#/types/docker:buildx/image:CacheFromEntry"
                     },
                     "description": "\nExternal cache sources (e.g., \"user/app:cache\", \"type=local,src=path/to/dir\")"
                 },
                 "cacheTo": {
                     "type": "array",
                     "items": {
-                        "type": "string"
+                        "$ref": "#/types/docker:buildx/image:CacheToEntry"
                     },
                     "description": "\nCache export destinations (e.g., \"user/app:cache\", \"type=local,dest=path/to/dir\")"
                 },
@@ -2171,7 +3000,7 @@
                 "exports": {
                     "type": "array",
                     "items": {
-                        "type": "string"
+                        "$ref": "#/types/docker:buildx/image:ExportEntry"
                     },
                     "description": "\nName and optionally a tag (format: \"name:tag\"). If outputting to a\nregistry, the name should include the fully qualified registry address."
                 },
@@ -2189,7 +3018,7 @@
                 "platforms": {
                     "type": "array",
                     "items": {
-                        "type": "string"
+                        "$ref": "#/types/docker:buildx/image:Platform"
                     },
                     "description": "\nSet target platforms for the build. Defaults to the host's platform.\n\nEquivalent to Docker's \"--platform\" flag."
                 },
@@ -2216,8 +3045,6 @@
                 }
             },
             "required": [
-                "tags",
-                "target",
                 "manifests"
             ],
             "inputProperties": {
@@ -2239,14 +3066,14 @@
                 "cacheFrom": {
                     "type": "array",
                     "items": {
-                        "type": "string"
+                        "$ref": "#/types/docker:buildx/image:CacheFromEntry"
                     },
                     "description": "\nExternal cache sources (e.g., \"user/app:cache\", \"type=local,src=path/to/dir\")"
                 },
                 "cacheTo": {
                     "type": "array",
                     "items": {
-                        "type": "string"
+                        "$ref": "#/types/docker:buildx/image:CacheToEntry"
                     },
                     "description": "\nCache export destinations (e.g., \"user/app:cache\", \"type=local,dest=path/to/dir\")"
                 },
@@ -2257,7 +3084,7 @@
                 "exports": {
                     "type": "array",
                     "items": {
-                        "type": "string"
+                        "$ref": "#/types/docker:buildx/image:ExportEntry"
                     },
                     "description": "\nName and optionally a tag (format: \"name:tag\"). If outputting to a\nregistry, the name should include the fully qualified registry address."
                 },
@@ -2269,7 +3096,7 @@
                 "platforms": {
                     "type": "array",
                     "items": {
-                        "type": "string"
+                        "$ref": "#/types/docker:buildx/image:Platform"
                     },
                     "description": "\nSet target platforms for the build. Defaults to the host's platform.\n\nEquivalent to Docker's \"--platform\" flag."
                 },
@@ -2294,11 +3121,7 @@
                 "target": {
                     "type": "string"
                 }
-            },
-            "requiredInputs": [
-                "tags",
-                "target"
-            ]
+            }
         },
         "docker:index/container:Container": {
             "description": "\u003c!-- Bug: Type and Name are switched --\u003e\nManages the lifecycle of a Docker container.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\n// Find the latest Ubuntu precise image.\nconst ubuntuRemoteImage = new docker.RemoteImage(\"ubuntuRemoteImage\", {name: \"ubuntu:precise\"});\n// Start a container\nconst ubuntuContainer = new docker.Container(\"ubuntuContainer\", {image: ubuntuRemoteImage.imageId});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\n# Find the latest Ubuntu precise image.\nubuntu_remote_image = docker.RemoteImage(\"ubuntuRemoteImage\", name=\"ubuntu:precise\")\n# Start a container\nubuntu_container = docker.Container(\"ubuntuContainer\", image=ubuntu_remote_image.image_id)\n```\n```csharp\nusing System.Collections.Generic;\nusing System.Linq;\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nreturn await Deployment.RunAsync(() =\u003e \n{\n    // Find the latest Ubuntu precise image.\n    var ubuntuRemoteImage = new Docker.RemoteImage(\"ubuntuRemoteImage\", new()\n    {\n        Name = \"ubuntu:precise\",\n    });\n\n    // Start a container\n    var ubuntuContainer = new Docker.Container(\"ubuntuContainer\", new()\n    {\n        Image = ubuntuRemoteImage.ImageId,\n    });\n\n});\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v4/go/docker\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t// Find the latest Ubuntu precise image.\n\t\tubuntuRemoteImage, err := docker.NewRemoteImage(ctx, \"ubuntuRemoteImage\", \u0026docker.RemoteImageArgs{\n\t\t\tName: pulumi.String(\"ubuntu:precise\"),\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\t// Start a container\n\t\t_, err = docker.NewContainer(ctx, \"ubuntuContainer\", \u0026docker.ContainerArgs{\n\t\t\tImage: ubuntuRemoteImage.ImageId,\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.RemoteImage;\nimport com.pulumi.docker.RemoteImageArgs;\nimport com.pulumi.docker.Container;\nimport com.pulumi.docker.ContainerArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var ubuntuRemoteImage = new RemoteImage(\"ubuntuRemoteImage\", RemoteImageArgs.builder()        \n            .name(\"ubuntu:precise\")\n            .build());\n\n        var ubuntuContainer = new Container(\"ubuntuContainer\", ContainerArgs.builder()        \n            .image(ubuntuRemoteImage.imageId())\n            .build());\n\n    }\n}\n```\n```yaml\nresources:\n  # Start a container\n  ubuntuContainer:\n    type: docker:Container\n    properties:\n      image: ${ubuntuRemoteImage.imageId}\n  # Find the latest Ubuntu precise image.\n  ubuntuRemoteImage:\n    type: docker:RemoteImage\n    properties:\n      name: ubuntu:precise\n```\n{{% /example %}}\n{{% /examples %}}\n\n## Import\n\n### Example\n\n Assuming you created a `container` as follows\n\n #!/bin/bash\n\n docker run --name foo -p8080:80 -d nginx\n\n prints the container ID\n\n 9a550c0f0163d39d77222d3efd58701b625d47676c25c686c95b5b92d1cba6fd\n\n you provide the definition for the resource as follows\n\n terraform\n\n resource \"docker_container\" \"foo\" {\n\n\n\n name\n\n= \"foo\"\n\n\n\n image = \"nginx\"\n\n\n\n ports {\n\n\n\n\n\n internal = \"80\"\n\n\n\n\n\n external = \"8080\"\n\n\n\n }\n\n }\n\n then the import command is as follows\n\n #!/bin/bash\n\n ```sh\n $ pulumi import docker:index/container:Container foo 9a550c0f0163d39d77222d3efd58701b625d47676c25c686c95b5b92d1cba6fd\n```\n\n ",

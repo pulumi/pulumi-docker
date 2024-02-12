@@ -13,6 +13,4915 @@ import (
 
 var _ = internal.GetEnvOrDefault
 
+type CacheFromAzureBlob struct {
+	AccountUrl      *string `pulumi:"accountUrl"`
+	Name            string  `pulumi:"name"`
+	SecretAccessKey *string `pulumi:"secretAccessKey"`
+}
+
+// CacheFromAzureBlobInput is an input type that accepts CacheFromAzureBlobArgs and CacheFromAzureBlobOutput values.
+// You can construct a concrete instance of `CacheFromAzureBlobInput` via:
+//
+//	CacheFromAzureBlobArgs{...}
+type CacheFromAzureBlobInput interface {
+	pulumi.Input
+
+	ToCacheFromAzureBlobOutput() CacheFromAzureBlobOutput
+	ToCacheFromAzureBlobOutputWithContext(context.Context) CacheFromAzureBlobOutput
+}
+
+type CacheFromAzureBlobArgs struct {
+	AccountUrl      pulumi.StringPtrInput `pulumi:"accountUrl"`
+	Name            pulumi.StringInput    `pulumi:"name"`
+	SecretAccessKey pulumi.StringPtrInput `pulumi:"secretAccessKey"`
+}
+
+func (CacheFromAzureBlobArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*CacheFromAzureBlob)(nil)).Elem()
+}
+
+func (i CacheFromAzureBlobArgs) ToCacheFromAzureBlobOutput() CacheFromAzureBlobOutput {
+	return i.ToCacheFromAzureBlobOutputWithContext(context.Background())
+}
+
+func (i CacheFromAzureBlobArgs) ToCacheFromAzureBlobOutputWithContext(ctx context.Context) CacheFromAzureBlobOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(CacheFromAzureBlobOutput)
+}
+
+func (i CacheFromAzureBlobArgs) ToCacheFromAzureBlobPtrOutput() CacheFromAzureBlobPtrOutput {
+	return i.ToCacheFromAzureBlobPtrOutputWithContext(context.Background())
+}
+
+func (i CacheFromAzureBlobArgs) ToCacheFromAzureBlobPtrOutputWithContext(ctx context.Context) CacheFromAzureBlobPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(CacheFromAzureBlobOutput).ToCacheFromAzureBlobPtrOutputWithContext(ctx)
+}
+
+// CacheFromAzureBlobPtrInput is an input type that accepts CacheFromAzureBlobArgs, CacheFromAzureBlobPtr and CacheFromAzureBlobPtrOutput values.
+// You can construct a concrete instance of `CacheFromAzureBlobPtrInput` via:
+//
+//	        CacheFromAzureBlobArgs{...}
+//
+//	or:
+//
+//	        nil
+type CacheFromAzureBlobPtrInput interface {
+	pulumi.Input
+
+	ToCacheFromAzureBlobPtrOutput() CacheFromAzureBlobPtrOutput
+	ToCacheFromAzureBlobPtrOutputWithContext(context.Context) CacheFromAzureBlobPtrOutput
+}
+
+type cacheFromAzureBlobPtrType CacheFromAzureBlobArgs
+
+func CacheFromAzureBlobPtr(v *CacheFromAzureBlobArgs) CacheFromAzureBlobPtrInput {
+	return (*cacheFromAzureBlobPtrType)(v)
+}
+
+func (*cacheFromAzureBlobPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**CacheFromAzureBlob)(nil)).Elem()
+}
+
+func (i *cacheFromAzureBlobPtrType) ToCacheFromAzureBlobPtrOutput() CacheFromAzureBlobPtrOutput {
+	return i.ToCacheFromAzureBlobPtrOutputWithContext(context.Background())
+}
+
+func (i *cacheFromAzureBlobPtrType) ToCacheFromAzureBlobPtrOutputWithContext(ctx context.Context) CacheFromAzureBlobPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(CacheFromAzureBlobPtrOutput)
+}
+
+type CacheFromAzureBlobOutput struct{ *pulumi.OutputState }
+
+func (CacheFromAzureBlobOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*CacheFromAzureBlob)(nil)).Elem()
+}
+
+func (o CacheFromAzureBlobOutput) ToCacheFromAzureBlobOutput() CacheFromAzureBlobOutput {
+	return o
+}
+
+func (o CacheFromAzureBlobOutput) ToCacheFromAzureBlobOutputWithContext(ctx context.Context) CacheFromAzureBlobOutput {
+	return o
+}
+
+func (o CacheFromAzureBlobOutput) ToCacheFromAzureBlobPtrOutput() CacheFromAzureBlobPtrOutput {
+	return o.ToCacheFromAzureBlobPtrOutputWithContext(context.Background())
+}
+
+func (o CacheFromAzureBlobOutput) ToCacheFromAzureBlobPtrOutputWithContext(ctx context.Context) CacheFromAzureBlobPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v CacheFromAzureBlob) *CacheFromAzureBlob {
+		return &v
+	}).(CacheFromAzureBlobPtrOutput)
+}
+
+func (o CacheFromAzureBlobOutput) AccountUrl() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v CacheFromAzureBlob) *string { return v.AccountUrl }).(pulumi.StringPtrOutput)
+}
+
+func (o CacheFromAzureBlobOutput) Name() pulumi.StringOutput {
+	return o.ApplyT(func(v CacheFromAzureBlob) string { return v.Name }).(pulumi.StringOutput)
+}
+
+func (o CacheFromAzureBlobOutput) SecretAccessKey() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v CacheFromAzureBlob) *string { return v.SecretAccessKey }).(pulumi.StringPtrOutput)
+}
+
+type CacheFromAzureBlobPtrOutput struct{ *pulumi.OutputState }
+
+func (CacheFromAzureBlobPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**CacheFromAzureBlob)(nil)).Elem()
+}
+
+func (o CacheFromAzureBlobPtrOutput) ToCacheFromAzureBlobPtrOutput() CacheFromAzureBlobPtrOutput {
+	return o
+}
+
+func (o CacheFromAzureBlobPtrOutput) ToCacheFromAzureBlobPtrOutputWithContext(ctx context.Context) CacheFromAzureBlobPtrOutput {
+	return o
+}
+
+func (o CacheFromAzureBlobPtrOutput) Elem() CacheFromAzureBlobOutput {
+	return o.ApplyT(func(v *CacheFromAzureBlob) CacheFromAzureBlob {
+		if v != nil {
+			return *v
+		}
+		var ret CacheFromAzureBlob
+		return ret
+	}).(CacheFromAzureBlobOutput)
+}
+
+func (o CacheFromAzureBlobPtrOutput) AccountUrl() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *CacheFromAzureBlob) *string {
+		if v == nil {
+			return nil
+		}
+		return v.AccountUrl
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o CacheFromAzureBlobPtrOutput) Name() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *CacheFromAzureBlob) *string {
+		if v == nil {
+			return nil
+		}
+		return &v.Name
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o CacheFromAzureBlobPtrOutput) SecretAccessKey() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *CacheFromAzureBlob) *string {
+		if v == nil {
+			return nil
+		}
+		return v.SecretAccessKey
+	}).(pulumi.StringPtrOutput)
+}
+
+type CacheFromEntry struct {
+	// Push cache to Azure's blob storage service.
+	Azblob *CacheFromAzureBlob `pulumi:"azblob"`
+	// When "true" this entry will be excluded. Defaults to "false".
+	Disabled *bool `pulumi:"disabled"`
+	// Recommended for use with GitHub Actions workflows.
+	//
+	// An action like "crazy-max/ghaction-github-runtime" is recommended to
+	// expose appropriate credentials to your GitHub workflow.
+	Gha *CacheFromGitHubActions `pulumi:"gha"`
+	// A simple backend which caches imagines on your local filesystem.
+	Local *CacheFromLocal `pulumi:"local"`
+	// A raw string as you would provide it to the Docker CLI (e.g.,
+	// "type=inline")
+	Raw *string `pulumi:"raw"`
+	// Push caches to remote registries. Incompatible with the "docker" build
+	// driver.
+	Registry *CacheFromRegistry `pulumi:"registry"`
+	// Push cache to AWS S3 or S3-compatible services such as MinIO.
+	S3 *CacheFromS3 `pulumi:"s3"`
+}
+
+// Defaults sets the appropriate defaults for CacheFromEntry
+func (val *CacheFromEntry) Defaults() *CacheFromEntry {
+	if val == nil {
+		return nil
+	}
+	tmp := *val
+	tmp.Gha = tmp.Gha.Defaults()
+
+	tmp.S3 = tmp.S3.Defaults()
+
+	return &tmp
+}
+
+// CacheFromEntryInput is an input type that accepts CacheFromEntryArgs and CacheFromEntryOutput values.
+// You can construct a concrete instance of `CacheFromEntryInput` via:
+//
+//	CacheFromEntryArgs{...}
+type CacheFromEntryInput interface {
+	pulumi.Input
+
+	ToCacheFromEntryOutput() CacheFromEntryOutput
+	ToCacheFromEntryOutputWithContext(context.Context) CacheFromEntryOutput
+}
+
+type CacheFromEntryArgs struct {
+	// Push cache to Azure's blob storage service.
+	Azblob CacheFromAzureBlobPtrInput `pulumi:"azblob"`
+	// When "true" this entry will be excluded. Defaults to "false".
+	Disabled pulumi.BoolPtrInput `pulumi:"disabled"`
+	// Recommended for use with GitHub Actions workflows.
+	//
+	// An action like "crazy-max/ghaction-github-runtime" is recommended to
+	// expose appropriate credentials to your GitHub workflow.
+	Gha CacheFromGitHubActionsPtrInput `pulumi:"gha"`
+	// A simple backend which caches imagines on your local filesystem.
+	Local CacheFromLocalPtrInput `pulumi:"local"`
+	// A raw string as you would provide it to the Docker CLI (e.g.,
+	// "type=inline")
+	Raw pulumi.StringPtrInput `pulumi:"raw"`
+	// Push caches to remote registries. Incompatible with the "docker" build
+	// driver.
+	Registry CacheFromRegistryPtrInput `pulumi:"registry"`
+	// Push cache to AWS S3 or S3-compatible services such as MinIO.
+	S3 CacheFromS3PtrInput `pulumi:"s3"`
+}
+
+// Defaults sets the appropriate defaults for CacheFromEntryArgs
+func (val *CacheFromEntryArgs) Defaults() *CacheFromEntryArgs {
+	if val == nil {
+		return nil
+	}
+	tmp := *val
+
+	return &tmp
+}
+func (CacheFromEntryArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*CacheFromEntry)(nil)).Elem()
+}
+
+func (i CacheFromEntryArgs) ToCacheFromEntryOutput() CacheFromEntryOutput {
+	return i.ToCacheFromEntryOutputWithContext(context.Background())
+}
+
+func (i CacheFromEntryArgs) ToCacheFromEntryOutputWithContext(ctx context.Context) CacheFromEntryOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(CacheFromEntryOutput)
+}
+
+// CacheFromEntryArrayInput is an input type that accepts CacheFromEntryArray and CacheFromEntryArrayOutput values.
+// You can construct a concrete instance of `CacheFromEntryArrayInput` via:
+//
+//	CacheFromEntryArray{ CacheFromEntryArgs{...} }
+type CacheFromEntryArrayInput interface {
+	pulumi.Input
+
+	ToCacheFromEntryArrayOutput() CacheFromEntryArrayOutput
+	ToCacheFromEntryArrayOutputWithContext(context.Context) CacheFromEntryArrayOutput
+}
+
+type CacheFromEntryArray []CacheFromEntryInput
+
+func (CacheFromEntryArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]CacheFromEntry)(nil)).Elem()
+}
+
+func (i CacheFromEntryArray) ToCacheFromEntryArrayOutput() CacheFromEntryArrayOutput {
+	return i.ToCacheFromEntryArrayOutputWithContext(context.Background())
+}
+
+func (i CacheFromEntryArray) ToCacheFromEntryArrayOutputWithContext(ctx context.Context) CacheFromEntryArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(CacheFromEntryArrayOutput)
+}
+
+type CacheFromEntryOutput struct{ *pulumi.OutputState }
+
+func (CacheFromEntryOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*CacheFromEntry)(nil)).Elem()
+}
+
+func (o CacheFromEntryOutput) ToCacheFromEntryOutput() CacheFromEntryOutput {
+	return o
+}
+
+func (o CacheFromEntryOutput) ToCacheFromEntryOutputWithContext(ctx context.Context) CacheFromEntryOutput {
+	return o
+}
+
+// Push cache to Azure's blob storage service.
+func (o CacheFromEntryOutput) Azblob() CacheFromAzureBlobPtrOutput {
+	return o.ApplyT(func(v CacheFromEntry) *CacheFromAzureBlob { return v.Azblob }).(CacheFromAzureBlobPtrOutput)
+}
+
+// When "true" this entry will be excluded. Defaults to "false".
+func (o CacheFromEntryOutput) Disabled() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v CacheFromEntry) *bool { return v.Disabled }).(pulumi.BoolPtrOutput)
+}
+
+// Recommended for use with GitHub Actions workflows.
+//
+// An action like "crazy-max/ghaction-github-runtime" is recommended to
+// expose appropriate credentials to your GitHub workflow.
+func (o CacheFromEntryOutput) Gha() CacheFromGitHubActionsPtrOutput {
+	return o.ApplyT(func(v CacheFromEntry) *CacheFromGitHubActions { return v.Gha }).(CacheFromGitHubActionsPtrOutput)
+}
+
+// A simple backend which caches imagines on your local filesystem.
+func (o CacheFromEntryOutput) Local() CacheFromLocalPtrOutput {
+	return o.ApplyT(func(v CacheFromEntry) *CacheFromLocal { return v.Local }).(CacheFromLocalPtrOutput)
+}
+
+// A raw string as you would provide it to the Docker CLI (e.g.,
+// "type=inline")
+func (o CacheFromEntryOutput) Raw() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v CacheFromEntry) *string { return v.Raw }).(pulumi.StringPtrOutput)
+}
+
+// Push caches to remote registries. Incompatible with the "docker" build
+// driver.
+func (o CacheFromEntryOutput) Registry() CacheFromRegistryPtrOutput {
+	return o.ApplyT(func(v CacheFromEntry) *CacheFromRegistry { return v.Registry }).(CacheFromRegistryPtrOutput)
+}
+
+// Push cache to AWS S3 or S3-compatible services such as MinIO.
+func (o CacheFromEntryOutput) S3() CacheFromS3PtrOutput {
+	return o.ApplyT(func(v CacheFromEntry) *CacheFromS3 { return v.S3 }).(CacheFromS3PtrOutput)
+}
+
+type CacheFromEntryArrayOutput struct{ *pulumi.OutputState }
+
+func (CacheFromEntryArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]CacheFromEntry)(nil)).Elem()
+}
+
+func (o CacheFromEntryArrayOutput) ToCacheFromEntryArrayOutput() CacheFromEntryArrayOutput {
+	return o
+}
+
+func (o CacheFromEntryArrayOutput) ToCacheFromEntryArrayOutputWithContext(ctx context.Context) CacheFromEntryArrayOutput {
+	return o
+}
+
+func (o CacheFromEntryArrayOutput) Index(i pulumi.IntInput) CacheFromEntryOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) CacheFromEntry {
+		return vs[0].([]CacheFromEntry)[vs[1].(int)]
+	}).(CacheFromEntryOutput)
+}
+
+type CacheFromGitHubActions struct {
+	// Which scope cache object belongs to.
+	Scope *string `pulumi:"scope"`
+	// Access token
+	Token *string `pulumi:"token"`
+	// Cache server URL
+	Url *string `pulumi:"url"`
+}
+
+// Defaults sets the appropriate defaults for CacheFromGitHubActions
+func (val *CacheFromGitHubActions) Defaults() *CacheFromGitHubActions {
+	if val == nil {
+		return nil
+	}
+	tmp := *val
+	if tmp.Scope == nil {
+		if d := internal.GetEnvOrDefault("", nil, "buildkit"); d != nil {
+			scope_ := d.(string)
+			tmp.Scope = &scope_
+		}
+	}
+	if tmp.Token == nil {
+		if d := internal.GetEnvOrDefault("", nil, "ACTIONS_RUNTIME_TOKEN"); d != nil {
+			token_ := d.(string)
+			tmp.Token = &token_
+		}
+	}
+	if tmp.Url == nil {
+		if d := internal.GetEnvOrDefault("", nil, "ACTIONS_RUNTIME_URL"); d != nil {
+			url_ := d.(string)
+			tmp.Url = &url_
+		}
+	}
+	return &tmp
+}
+
+// CacheFromGitHubActionsInput is an input type that accepts CacheFromGitHubActionsArgs and CacheFromGitHubActionsOutput values.
+// You can construct a concrete instance of `CacheFromGitHubActionsInput` via:
+//
+//	CacheFromGitHubActionsArgs{...}
+type CacheFromGitHubActionsInput interface {
+	pulumi.Input
+
+	ToCacheFromGitHubActionsOutput() CacheFromGitHubActionsOutput
+	ToCacheFromGitHubActionsOutputWithContext(context.Context) CacheFromGitHubActionsOutput
+}
+
+type CacheFromGitHubActionsArgs struct {
+	// Which scope cache object belongs to.
+	Scope pulumi.StringPtrInput `pulumi:"scope"`
+	// Access token
+	Token pulumi.StringPtrInput `pulumi:"token"`
+	// Cache server URL
+	Url pulumi.StringPtrInput `pulumi:"url"`
+}
+
+// Defaults sets the appropriate defaults for CacheFromGitHubActionsArgs
+func (val *CacheFromGitHubActionsArgs) Defaults() *CacheFromGitHubActionsArgs {
+	if val == nil {
+		return nil
+	}
+	tmp := *val
+	if tmp.Scope == nil {
+		if d := internal.GetEnvOrDefault("", nil, "buildkit"); d != nil {
+			tmp.Scope = pulumi.StringPtr(d.(string))
+		}
+	}
+	if tmp.Token == nil {
+		if d := internal.GetEnvOrDefault("", nil, "ACTIONS_RUNTIME_TOKEN"); d != nil {
+			tmp.Token = pulumi.StringPtr(d.(string))
+		}
+	}
+	if tmp.Url == nil {
+		if d := internal.GetEnvOrDefault("", nil, "ACTIONS_RUNTIME_URL"); d != nil {
+			tmp.Url = pulumi.StringPtr(d.(string))
+		}
+	}
+	return &tmp
+}
+func (CacheFromGitHubActionsArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*CacheFromGitHubActions)(nil)).Elem()
+}
+
+func (i CacheFromGitHubActionsArgs) ToCacheFromGitHubActionsOutput() CacheFromGitHubActionsOutput {
+	return i.ToCacheFromGitHubActionsOutputWithContext(context.Background())
+}
+
+func (i CacheFromGitHubActionsArgs) ToCacheFromGitHubActionsOutputWithContext(ctx context.Context) CacheFromGitHubActionsOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(CacheFromGitHubActionsOutput)
+}
+
+func (i CacheFromGitHubActionsArgs) ToCacheFromGitHubActionsPtrOutput() CacheFromGitHubActionsPtrOutput {
+	return i.ToCacheFromGitHubActionsPtrOutputWithContext(context.Background())
+}
+
+func (i CacheFromGitHubActionsArgs) ToCacheFromGitHubActionsPtrOutputWithContext(ctx context.Context) CacheFromGitHubActionsPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(CacheFromGitHubActionsOutput).ToCacheFromGitHubActionsPtrOutputWithContext(ctx)
+}
+
+// CacheFromGitHubActionsPtrInput is an input type that accepts CacheFromGitHubActionsArgs, CacheFromGitHubActionsPtr and CacheFromGitHubActionsPtrOutput values.
+// You can construct a concrete instance of `CacheFromGitHubActionsPtrInput` via:
+//
+//	        CacheFromGitHubActionsArgs{...}
+//
+//	or:
+//
+//	        nil
+type CacheFromGitHubActionsPtrInput interface {
+	pulumi.Input
+
+	ToCacheFromGitHubActionsPtrOutput() CacheFromGitHubActionsPtrOutput
+	ToCacheFromGitHubActionsPtrOutputWithContext(context.Context) CacheFromGitHubActionsPtrOutput
+}
+
+type cacheFromGitHubActionsPtrType CacheFromGitHubActionsArgs
+
+func CacheFromGitHubActionsPtr(v *CacheFromGitHubActionsArgs) CacheFromGitHubActionsPtrInput {
+	return (*cacheFromGitHubActionsPtrType)(v)
+}
+
+func (*cacheFromGitHubActionsPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**CacheFromGitHubActions)(nil)).Elem()
+}
+
+func (i *cacheFromGitHubActionsPtrType) ToCacheFromGitHubActionsPtrOutput() CacheFromGitHubActionsPtrOutput {
+	return i.ToCacheFromGitHubActionsPtrOutputWithContext(context.Background())
+}
+
+func (i *cacheFromGitHubActionsPtrType) ToCacheFromGitHubActionsPtrOutputWithContext(ctx context.Context) CacheFromGitHubActionsPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(CacheFromGitHubActionsPtrOutput)
+}
+
+type CacheFromGitHubActionsOutput struct{ *pulumi.OutputState }
+
+func (CacheFromGitHubActionsOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*CacheFromGitHubActions)(nil)).Elem()
+}
+
+func (o CacheFromGitHubActionsOutput) ToCacheFromGitHubActionsOutput() CacheFromGitHubActionsOutput {
+	return o
+}
+
+func (o CacheFromGitHubActionsOutput) ToCacheFromGitHubActionsOutputWithContext(ctx context.Context) CacheFromGitHubActionsOutput {
+	return o
+}
+
+func (o CacheFromGitHubActionsOutput) ToCacheFromGitHubActionsPtrOutput() CacheFromGitHubActionsPtrOutput {
+	return o.ToCacheFromGitHubActionsPtrOutputWithContext(context.Background())
+}
+
+func (o CacheFromGitHubActionsOutput) ToCacheFromGitHubActionsPtrOutputWithContext(ctx context.Context) CacheFromGitHubActionsPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v CacheFromGitHubActions) *CacheFromGitHubActions {
+		return &v
+	}).(CacheFromGitHubActionsPtrOutput)
+}
+
+// Which scope cache object belongs to.
+func (o CacheFromGitHubActionsOutput) Scope() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v CacheFromGitHubActions) *string { return v.Scope }).(pulumi.StringPtrOutput)
+}
+
+// Access token
+func (o CacheFromGitHubActionsOutput) Token() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v CacheFromGitHubActions) *string { return v.Token }).(pulumi.StringPtrOutput)
+}
+
+// Cache server URL
+func (o CacheFromGitHubActionsOutput) Url() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v CacheFromGitHubActions) *string { return v.Url }).(pulumi.StringPtrOutput)
+}
+
+type CacheFromGitHubActionsPtrOutput struct{ *pulumi.OutputState }
+
+func (CacheFromGitHubActionsPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**CacheFromGitHubActions)(nil)).Elem()
+}
+
+func (o CacheFromGitHubActionsPtrOutput) ToCacheFromGitHubActionsPtrOutput() CacheFromGitHubActionsPtrOutput {
+	return o
+}
+
+func (o CacheFromGitHubActionsPtrOutput) ToCacheFromGitHubActionsPtrOutputWithContext(ctx context.Context) CacheFromGitHubActionsPtrOutput {
+	return o
+}
+
+func (o CacheFromGitHubActionsPtrOutput) Elem() CacheFromGitHubActionsOutput {
+	return o.ApplyT(func(v *CacheFromGitHubActions) CacheFromGitHubActions {
+		if v != nil {
+			return *v
+		}
+		var ret CacheFromGitHubActions
+		return ret
+	}).(CacheFromGitHubActionsOutput)
+}
+
+// Which scope cache object belongs to.
+func (o CacheFromGitHubActionsPtrOutput) Scope() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *CacheFromGitHubActions) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Scope
+	}).(pulumi.StringPtrOutput)
+}
+
+// Access token
+func (o CacheFromGitHubActionsPtrOutput) Token() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *CacheFromGitHubActions) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Token
+	}).(pulumi.StringPtrOutput)
+}
+
+// Cache server URL
+func (o CacheFromGitHubActionsPtrOutput) Url() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *CacheFromGitHubActions) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Url
+	}).(pulumi.StringPtrOutput)
+}
+
+type CacheFromLocal struct {
+	Digest *string `pulumi:"digest"`
+	Src    string  `pulumi:"src"`
+}
+
+// CacheFromLocalInput is an input type that accepts CacheFromLocalArgs and CacheFromLocalOutput values.
+// You can construct a concrete instance of `CacheFromLocalInput` via:
+//
+//	CacheFromLocalArgs{...}
+type CacheFromLocalInput interface {
+	pulumi.Input
+
+	ToCacheFromLocalOutput() CacheFromLocalOutput
+	ToCacheFromLocalOutputWithContext(context.Context) CacheFromLocalOutput
+}
+
+type CacheFromLocalArgs struct {
+	Digest pulumi.StringPtrInput `pulumi:"digest"`
+	Src    pulumi.StringInput    `pulumi:"src"`
+}
+
+func (CacheFromLocalArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*CacheFromLocal)(nil)).Elem()
+}
+
+func (i CacheFromLocalArgs) ToCacheFromLocalOutput() CacheFromLocalOutput {
+	return i.ToCacheFromLocalOutputWithContext(context.Background())
+}
+
+func (i CacheFromLocalArgs) ToCacheFromLocalOutputWithContext(ctx context.Context) CacheFromLocalOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(CacheFromLocalOutput)
+}
+
+func (i CacheFromLocalArgs) ToCacheFromLocalPtrOutput() CacheFromLocalPtrOutput {
+	return i.ToCacheFromLocalPtrOutputWithContext(context.Background())
+}
+
+func (i CacheFromLocalArgs) ToCacheFromLocalPtrOutputWithContext(ctx context.Context) CacheFromLocalPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(CacheFromLocalOutput).ToCacheFromLocalPtrOutputWithContext(ctx)
+}
+
+// CacheFromLocalPtrInput is an input type that accepts CacheFromLocalArgs, CacheFromLocalPtr and CacheFromLocalPtrOutput values.
+// You can construct a concrete instance of `CacheFromLocalPtrInput` via:
+//
+//	        CacheFromLocalArgs{...}
+//
+//	or:
+//
+//	        nil
+type CacheFromLocalPtrInput interface {
+	pulumi.Input
+
+	ToCacheFromLocalPtrOutput() CacheFromLocalPtrOutput
+	ToCacheFromLocalPtrOutputWithContext(context.Context) CacheFromLocalPtrOutput
+}
+
+type cacheFromLocalPtrType CacheFromLocalArgs
+
+func CacheFromLocalPtr(v *CacheFromLocalArgs) CacheFromLocalPtrInput {
+	return (*cacheFromLocalPtrType)(v)
+}
+
+func (*cacheFromLocalPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**CacheFromLocal)(nil)).Elem()
+}
+
+func (i *cacheFromLocalPtrType) ToCacheFromLocalPtrOutput() CacheFromLocalPtrOutput {
+	return i.ToCacheFromLocalPtrOutputWithContext(context.Background())
+}
+
+func (i *cacheFromLocalPtrType) ToCacheFromLocalPtrOutputWithContext(ctx context.Context) CacheFromLocalPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(CacheFromLocalPtrOutput)
+}
+
+type CacheFromLocalOutput struct{ *pulumi.OutputState }
+
+func (CacheFromLocalOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*CacheFromLocal)(nil)).Elem()
+}
+
+func (o CacheFromLocalOutput) ToCacheFromLocalOutput() CacheFromLocalOutput {
+	return o
+}
+
+func (o CacheFromLocalOutput) ToCacheFromLocalOutputWithContext(ctx context.Context) CacheFromLocalOutput {
+	return o
+}
+
+func (o CacheFromLocalOutput) ToCacheFromLocalPtrOutput() CacheFromLocalPtrOutput {
+	return o.ToCacheFromLocalPtrOutputWithContext(context.Background())
+}
+
+func (o CacheFromLocalOutput) ToCacheFromLocalPtrOutputWithContext(ctx context.Context) CacheFromLocalPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v CacheFromLocal) *CacheFromLocal {
+		return &v
+	}).(CacheFromLocalPtrOutput)
+}
+
+func (o CacheFromLocalOutput) Digest() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v CacheFromLocal) *string { return v.Digest }).(pulumi.StringPtrOutput)
+}
+
+func (o CacheFromLocalOutput) Src() pulumi.StringOutput {
+	return o.ApplyT(func(v CacheFromLocal) string { return v.Src }).(pulumi.StringOutput)
+}
+
+type CacheFromLocalPtrOutput struct{ *pulumi.OutputState }
+
+func (CacheFromLocalPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**CacheFromLocal)(nil)).Elem()
+}
+
+func (o CacheFromLocalPtrOutput) ToCacheFromLocalPtrOutput() CacheFromLocalPtrOutput {
+	return o
+}
+
+func (o CacheFromLocalPtrOutput) ToCacheFromLocalPtrOutputWithContext(ctx context.Context) CacheFromLocalPtrOutput {
+	return o
+}
+
+func (o CacheFromLocalPtrOutput) Elem() CacheFromLocalOutput {
+	return o.ApplyT(func(v *CacheFromLocal) CacheFromLocal {
+		if v != nil {
+			return *v
+		}
+		var ret CacheFromLocal
+		return ret
+	}).(CacheFromLocalOutput)
+}
+
+func (o CacheFromLocalPtrOutput) Digest() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *CacheFromLocal) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Digest
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o CacheFromLocalPtrOutput) Src() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *CacheFromLocal) *string {
+		if v == nil {
+			return nil
+		}
+		return &v.Src
+	}).(pulumi.StringPtrOutput)
+}
+
+type CacheFromRegistry struct {
+	// Full name of the cache image to import.
+	Ref string `pulumi:"ref"`
+}
+
+// CacheFromRegistryInput is an input type that accepts CacheFromRegistryArgs and CacheFromRegistryOutput values.
+// You can construct a concrete instance of `CacheFromRegistryInput` via:
+//
+//	CacheFromRegistryArgs{...}
+type CacheFromRegistryInput interface {
+	pulumi.Input
+
+	ToCacheFromRegistryOutput() CacheFromRegistryOutput
+	ToCacheFromRegistryOutputWithContext(context.Context) CacheFromRegistryOutput
+}
+
+type CacheFromRegistryArgs struct {
+	// Full name of the cache image to import.
+	Ref pulumi.StringInput `pulumi:"ref"`
+}
+
+func (CacheFromRegistryArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*CacheFromRegistry)(nil)).Elem()
+}
+
+func (i CacheFromRegistryArgs) ToCacheFromRegistryOutput() CacheFromRegistryOutput {
+	return i.ToCacheFromRegistryOutputWithContext(context.Background())
+}
+
+func (i CacheFromRegistryArgs) ToCacheFromRegistryOutputWithContext(ctx context.Context) CacheFromRegistryOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(CacheFromRegistryOutput)
+}
+
+func (i CacheFromRegistryArgs) ToCacheFromRegistryPtrOutput() CacheFromRegistryPtrOutput {
+	return i.ToCacheFromRegistryPtrOutputWithContext(context.Background())
+}
+
+func (i CacheFromRegistryArgs) ToCacheFromRegistryPtrOutputWithContext(ctx context.Context) CacheFromRegistryPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(CacheFromRegistryOutput).ToCacheFromRegistryPtrOutputWithContext(ctx)
+}
+
+// CacheFromRegistryPtrInput is an input type that accepts CacheFromRegistryArgs, CacheFromRegistryPtr and CacheFromRegistryPtrOutput values.
+// You can construct a concrete instance of `CacheFromRegistryPtrInput` via:
+//
+//	        CacheFromRegistryArgs{...}
+//
+//	or:
+//
+//	        nil
+type CacheFromRegistryPtrInput interface {
+	pulumi.Input
+
+	ToCacheFromRegistryPtrOutput() CacheFromRegistryPtrOutput
+	ToCacheFromRegistryPtrOutputWithContext(context.Context) CacheFromRegistryPtrOutput
+}
+
+type cacheFromRegistryPtrType CacheFromRegistryArgs
+
+func CacheFromRegistryPtr(v *CacheFromRegistryArgs) CacheFromRegistryPtrInput {
+	return (*cacheFromRegistryPtrType)(v)
+}
+
+func (*cacheFromRegistryPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**CacheFromRegistry)(nil)).Elem()
+}
+
+func (i *cacheFromRegistryPtrType) ToCacheFromRegistryPtrOutput() CacheFromRegistryPtrOutput {
+	return i.ToCacheFromRegistryPtrOutputWithContext(context.Background())
+}
+
+func (i *cacheFromRegistryPtrType) ToCacheFromRegistryPtrOutputWithContext(ctx context.Context) CacheFromRegistryPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(CacheFromRegistryPtrOutput)
+}
+
+type CacheFromRegistryOutput struct{ *pulumi.OutputState }
+
+func (CacheFromRegistryOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*CacheFromRegistry)(nil)).Elem()
+}
+
+func (o CacheFromRegistryOutput) ToCacheFromRegistryOutput() CacheFromRegistryOutput {
+	return o
+}
+
+func (o CacheFromRegistryOutput) ToCacheFromRegistryOutputWithContext(ctx context.Context) CacheFromRegistryOutput {
+	return o
+}
+
+func (o CacheFromRegistryOutput) ToCacheFromRegistryPtrOutput() CacheFromRegistryPtrOutput {
+	return o.ToCacheFromRegistryPtrOutputWithContext(context.Background())
+}
+
+func (o CacheFromRegistryOutput) ToCacheFromRegistryPtrOutputWithContext(ctx context.Context) CacheFromRegistryPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v CacheFromRegistry) *CacheFromRegistry {
+		return &v
+	}).(CacheFromRegistryPtrOutput)
+}
+
+// Full name of the cache image to import.
+func (o CacheFromRegistryOutput) Ref() pulumi.StringOutput {
+	return o.ApplyT(func(v CacheFromRegistry) string { return v.Ref }).(pulumi.StringOutput)
+}
+
+type CacheFromRegistryPtrOutput struct{ *pulumi.OutputState }
+
+func (CacheFromRegistryPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**CacheFromRegistry)(nil)).Elem()
+}
+
+func (o CacheFromRegistryPtrOutput) ToCacheFromRegistryPtrOutput() CacheFromRegistryPtrOutput {
+	return o
+}
+
+func (o CacheFromRegistryPtrOutput) ToCacheFromRegistryPtrOutputWithContext(ctx context.Context) CacheFromRegistryPtrOutput {
+	return o
+}
+
+func (o CacheFromRegistryPtrOutput) Elem() CacheFromRegistryOutput {
+	return o.ApplyT(func(v *CacheFromRegistry) CacheFromRegistry {
+		if v != nil {
+			return *v
+		}
+		var ret CacheFromRegistry
+		return ret
+	}).(CacheFromRegistryOutput)
+}
+
+// Full name of the cache image to import.
+func (o CacheFromRegistryPtrOutput) Ref() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *CacheFromRegistry) *string {
+		if v == nil {
+			return nil
+		}
+		return &v.Ref
+	}).(pulumi.StringPtrOutput)
+}
+
+type CacheFromS3 struct {
+	AccessKeyId     *string `pulumi:"accessKeyId"`
+	BlobsPrefix     *string `pulumi:"blobsPrefix"`
+	Bucket          string  `pulumi:"bucket"`
+	EndpointUrl     *string `pulumi:"endpointUrl"`
+	ManifestsPrefix *string `pulumi:"manifestsPrefix"`
+	Name            *string `pulumi:"name"`
+	Region          string  `pulumi:"region"`
+	SecretAccessKey *string `pulumi:"secretAccessKey"`
+	SessionToken    *string `pulumi:"sessionToken"`
+	UsePathStyle    *bool   `pulumi:"usePathStyle"`
+}
+
+// Defaults sets the appropriate defaults for CacheFromS3
+func (val *CacheFromS3) Defaults() *CacheFromS3 {
+	if val == nil {
+		return nil
+	}
+	tmp := *val
+	if tmp.AccessKeyId == nil {
+		if d := internal.GetEnvOrDefault("", nil, "AWS_ACCESS_KEY_ID"); d != nil {
+			accessKeyId_ := d.(string)
+			tmp.AccessKeyId = &accessKeyId_
+		}
+	}
+	if internal.IsZero(tmp.Region) {
+		if d := internal.GetEnvOrDefault("", nil, "AWS_REGION"); d != nil {
+			tmp.Region = d.(string)
+		}
+	}
+	if tmp.SecretAccessKey == nil {
+		if d := internal.GetEnvOrDefault("", nil, "AWS_SECRET_ACCESS_KEY"); d != nil {
+			secretAccessKey_ := d.(string)
+			tmp.SecretAccessKey = &secretAccessKey_
+		}
+	}
+	if tmp.SessionToken == nil {
+		if d := internal.GetEnvOrDefault("", nil, "AWS_SESSION_TOKEN"); d != nil {
+			sessionToken_ := d.(string)
+			tmp.SessionToken = &sessionToken_
+		}
+	}
+	return &tmp
+}
+
+// CacheFromS3Input is an input type that accepts CacheFromS3Args and CacheFromS3Output values.
+// You can construct a concrete instance of `CacheFromS3Input` via:
+//
+//	CacheFromS3Args{...}
+type CacheFromS3Input interface {
+	pulumi.Input
+
+	ToCacheFromS3Output() CacheFromS3Output
+	ToCacheFromS3OutputWithContext(context.Context) CacheFromS3Output
+}
+
+type CacheFromS3Args struct {
+	AccessKeyId     pulumi.StringPtrInput `pulumi:"accessKeyId"`
+	BlobsPrefix     pulumi.StringPtrInput `pulumi:"blobsPrefix"`
+	Bucket          pulumi.StringInput    `pulumi:"bucket"`
+	EndpointUrl     pulumi.StringPtrInput `pulumi:"endpointUrl"`
+	ManifestsPrefix pulumi.StringPtrInput `pulumi:"manifestsPrefix"`
+	Name            pulumi.StringPtrInput `pulumi:"name"`
+	Region          pulumi.StringInput    `pulumi:"region"`
+	SecretAccessKey pulumi.StringPtrInput `pulumi:"secretAccessKey"`
+	SessionToken    pulumi.StringPtrInput `pulumi:"sessionToken"`
+	UsePathStyle    pulumi.BoolPtrInput   `pulumi:"usePathStyle"`
+}
+
+// Defaults sets the appropriate defaults for CacheFromS3Args
+func (val *CacheFromS3Args) Defaults() *CacheFromS3Args {
+	if val == nil {
+		return nil
+	}
+	tmp := *val
+	if tmp.AccessKeyId == nil {
+		if d := internal.GetEnvOrDefault("", nil, "AWS_ACCESS_KEY_ID"); d != nil {
+			tmp.AccessKeyId = pulumi.StringPtr(d.(string))
+		}
+	}
+	if tmp.Region == nil {
+		if d := internal.GetEnvOrDefault("", nil, "AWS_REGION"); d != nil {
+			tmp.Region = pulumi.String(d.(string))
+		}
+	}
+	if tmp.SecretAccessKey == nil {
+		if d := internal.GetEnvOrDefault("", nil, "AWS_SECRET_ACCESS_KEY"); d != nil {
+			tmp.SecretAccessKey = pulumi.StringPtr(d.(string))
+		}
+	}
+	if tmp.SessionToken == nil {
+		if d := internal.GetEnvOrDefault("", nil, "AWS_SESSION_TOKEN"); d != nil {
+			tmp.SessionToken = pulumi.StringPtr(d.(string))
+		}
+	}
+	return &tmp
+}
+func (CacheFromS3Args) ElementType() reflect.Type {
+	return reflect.TypeOf((*CacheFromS3)(nil)).Elem()
+}
+
+func (i CacheFromS3Args) ToCacheFromS3Output() CacheFromS3Output {
+	return i.ToCacheFromS3OutputWithContext(context.Background())
+}
+
+func (i CacheFromS3Args) ToCacheFromS3OutputWithContext(ctx context.Context) CacheFromS3Output {
+	return pulumi.ToOutputWithContext(ctx, i).(CacheFromS3Output)
+}
+
+func (i CacheFromS3Args) ToCacheFromS3PtrOutput() CacheFromS3PtrOutput {
+	return i.ToCacheFromS3PtrOutputWithContext(context.Background())
+}
+
+func (i CacheFromS3Args) ToCacheFromS3PtrOutputWithContext(ctx context.Context) CacheFromS3PtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(CacheFromS3Output).ToCacheFromS3PtrOutputWithContext(ctx)
+}
+
+// CacheFromS3PtrInput is an input type that accepts CacheFromS3Args, CacheFromS3Ptr and CacheFromS3PtrOutput values.
+// You can construct a concrete instance of `CacheFromS3PtrInput` via:
+//
+//	        CacheFromS3Args{...}
+//
+//	or:
+//
+//	        nil
+type CacheFromS3PtrInput interface {
+	pulumi.Input
+
+	ToCacheFromS3PtrOutput() CacheFromS3PtrOutput
+	ToCacheFromS3PtrOutputWithContext(context.Context) CacheFromS3PtrOutput
+}
+
+type cacheFromS3PtrType CacheFromS3Args
+
+func CacheFromS3Ptr(v *CacheFromS3Args) CacheFromS3PtrInput {
+	return (*cacheFromS3PtrType)(v)
+}
+
+func (*cacheFromS3PtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**CacheFromS3)(nil)).Elem()
+}
+
+func (i *cacheFromS3PtrType) ToCacheFromS3PtrOutput() CacheFromS3PtrOutput {
+	return i.ToCacheFromS3PtrOutputWithContext(context.Background())
+}
+
+func (i *cacheFromS3PtrType) ToCacheFromS3PtrOutputWithContext(ctx context.Context) CacheFromS3PtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(CacheFromS3PtrOutput)
+}
+
+type CacheFromS3Output struct{ *pulumi.OutputState }
+
+func (CacheFromS3Output) ElementType() reflect.Type {
+	return reflect.TypeOf((*CacheFromS3)(nil)).Elem()
+}
+
+func (o CacheFromS3Output) ToCacheFromS3Output() CacheFromS3Output {
+	return o
+}
+
+func (o CacheFromS3Output) ToCacheFromS3OutputWithContext(ctx context.Context) CacheFromS3Output {
+	return o
+}
+
+func (o CacheFromS3Output) ToCacheFromS3PtrOutput() CacheFromS3PtrOutput {
+	return o.ToCacheFromS3PtrOutputWithContext(context.Background())
+}
+
+func (o CacheFromS3Output) ToCacheFromS3PtrOutputWithContext(ctx context.Context) CacheFromS3PtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v CacheFromS3) *CacheFromS3 {
+		return &v
+	}).(CacheFromS3PtrOutput)
+}
+
+func (o CacheFromS3Output) AccessKeyId() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v CacheFromS3) *string { return v.AccessKeyId }).(pulumi.StringPtrOutput)
+}
+
+func (o CacheFromS3Output) BlobsPrefix() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v CacheFromS3) *string { return v.BlobsPrefix }).(pulumi.StringPtrOutput)
+}
+
+func (o CacheFromS3Output) Bucket() pulumi.StringOutput {
+	return o.ApplyT(func(v CacheFromS3) string { return v.Bucket }).(pulumi.StringOutput)
+}
+
+func (o CacheFromS3Output) EndpointUrl() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v CacheFromS3) *string { return v.EndpointUrl }).(pulumi.StringPtrOutput)
+}
+
+func (o CacheFromS3Output) ManifestsPrefix() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v CacheFromS3) *string { return v.ManifestsPrefix }).(pulumi.StringPtrOutput)
+}
+
+func (o CacheFromS3Output) Name() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v CacheFromS3) *string { return v.Name }).(pulumi.StringPtrOutput)
+}
+
+func (o CacheFromS3Output) Region() pulumi.StringOutput {
+	return o.ApplyT(func(v CacheFromS3) string { return v.Region }).(pulumi.StringOutput)
+}
+
+func (o CacheFromS3Output) SecretAccessKey() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v CacheFromS3) *string { return v.SecretAccessKey }).(pulumi.StringPtrOutput)
+}
+
+func (o CacheFromS3Output) SessionToken() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v CacheFromS3) *string { return v.SessionToken }).(pulumi.StringPtrOutput)
+}
+
+func (o CacheFromS3Output) UsePathStyle() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v CacheFromS3) *bool { return v.UsePathStyle }).(pulumi.BoolPtrOutput)
+}
+
+type CacheFromS3PtrOutput struct{ *pulumi.OutputState }
+
+func (CacheFromS3PtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**CacheFromS3)(nil)).Elem()
+}
+
+func (o CacheFromS3PtrOutput) ToCacheFromS3PtrOutput() CacheFromS3PtrOutput {
+	return o
+}
+
+func (o CacheFromS3PtrOutput) ToCacheFromS3PtrOutputWithContext(ctx context.Context) CacheFromS3PtrOutput {
+	return o
+}
+
+func (o CacheFromS3PtrOutput) Elem() CacheFromS3Output {
+	return o.ApplyT(func(v *CacheFromS3) CacheFromS3 {
+		if v != nil {
+			return *v
+		}
+		var ret CacheFromS3
+		return ret
+	}).(CacheFromS3Output)
+}
+
+func (o CacheFromS3PtrOutput) AccessKeyId() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *CacheFromS3) *string {
+		if v == nil {
+			return nil
+		}
+		return v.AccessKeyId
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o CacheFromS3PtrOutput) BlobsPrefix() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *CacheFromS3) *string {
+		if v == nil {
+			return nil
+		}
+		return v.BlobsPrefix
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o CacheFromS3PtrOutput) Bucket() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *CacheFromS3) *string {
+		if v == nil {
+			return nil
+		}
+		return &v.Bucket
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o CacheFromS3PtrOutput) EndpointUrl() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *CacheFromS3) *string {
+		if v == nil {
+			return nil
+		}
+		return v.EndpointUrl
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o CacheFromS3PtrOutput) ManifestsPrefix() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *CacheFromS3) *string {
+		if v == nil {
+			return nil
+		}
+		return v.ManifestsPrefix
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o CacheFromS3PtrOutput) Name() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *CacheFromS3) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Name
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o CacheFromS3PtrOutput) Region() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *CacheFromS3) *string {
+		if v == nil {
+			return nil
+		}
+		return &v.Region
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o CacheFromS3PtrOutput) SecretAccessKey() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *CacheFromS3) *string {
+		if v == nil {
+			return nil
+		}
+		return v.SecretAccessKey
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o CacheFromS3PtrOutput) SessionToken() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *CacheFromS3) *string {
+		if v == nil {
+			return nil
+		}
+		return v.SessionToken
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o CacheFromS3PtrOutput) UsePathStyle() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *CacheFromS3) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.UsePathStyle
+	}).(pulumi.BoolPtrOutput)
+}
+
+type CacheToAzureBlob struct {
+	AccountUrl *string `pulumi:"accountUrl"`
+	// Ignore errors caused by failed cache exports.
+	IgnoreError     *bool      `pulumi:"ignoreError"`
+	Mode            *CacheMode `pulumi:"mode"`
+	Name            string     `pulumi:"name"`
+	SecretAccessKey *string    `pulumi:"secretAccessKey"`
+}
+
+// Defaults sets the appropriate defaults for CacheToAzureBlob
+func (val *CacheToAzureBlob) Defaults() *CacheToAzureBlob {
+	if val == nil {
+		return nil
+	}
+	tmp := *val
+	if tmp.IgnoreError == nil {
+		ignoreError_ := false
+		tmp.IgnoreError = &ignoreError_
+	}
+	if tmp.Mode == nil {
+		mode_ := CacheMode("min")
+		tmp.Mode = &mode_
+	}
+	return &tmp
+}
+
+// CacheToAzureBlobInput is an input type that accepts CacheToAzureBlobArgs and CacheToAzureBlobOutput values.
+// You can construct a concrete instance of `CacheToAzureBlobInput` via:
+//
+//	CacheToAzureBlobArgs{...}
+type CacheToAzureBlobInput interface {
+	pulumi.Input
+
+	ToCacheToAzureBlobOutput() CacheToAzureBlobOutput
+	ToCacheToAzureBlobOutputWithContext(context.Context) CacheToAzureBlobOutput
+}
+
+type CacheToAzureBlobArgs struct {
+	AccountUrl pulumi.StringPtrInput `pulumi:"accountUrl"`
+	// Ignore errors caused by failed cache exports.
+	IgnoreError     pulumi.BoolPtrInput   `pulumi:"ignoreError"`
+	Mode            CacheModePtrInput     `pulumi:"mode"`
+	Name            pulumi.StringInput    `pulumi:"name"`
+	SecretAccessKey pulumi.StringPtrInput `pulumi:"secretAccessKey"`
+}
+
+// Defaults sets the appropriate defaults for CacheToAzureBlobArgs
+func (val *CacheToAzureBlobArgs) Defaults() *CacheToAzureBlobArgs {
+	if val == nil {
+		return nil
+	}
+	tmp := *val
+	if tmp.IgnoreError == nil {
+		tmp.IgnoreError = pulumi.BoolPtr(false)
+	}
+	if tmp.Mode == nil {
+		tmp.Mode = CacheMode("min")
+	}
+	return &tmp
+}
+func (CacheToAzureBlobArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*CacheToAzureBlob)(nil)).Elem()
+}
+
+func (i CacheToAzureBlobArgs) ToCacheToAzureBlobOutput() CacheToAzureBlobOutput {
+	return i.ToCacheToAzureBlobOutputWithContext(context.Background())
+}
+
+func (i CacheToAzureBlobArgs) ToCacheToAzureBlobOutputWithContext(ctx context.Context) CacheToAzureBlobOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(CacheToAzureBlobOutput)
+}
+
+func (i CacheToAzureBlobArgs) ToCacheToAzureBlobPtrOutput() CacheToAzureBlobPtrOutput {
+	return i.ToCacheToAzureBlobPtrOutputWithContext(context.Background())
+}
+
+func (i CacheToAzureBlobArgs) ToCacheToAzureBlobPtrOutputWithContext(ctx context.Context) CacheToAzureBlobPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(CacheToAzureBlobOutput).ToCacheToAzureBlobPtrOutputWithContext(ctx)
+}
+
+// CacheToAzureBlobPtrInput is an input type that accepts CacheToAzureBlobArgs, CacheToAzureBlobPtr and CacheToAzureBlobPtrOutput values.
+// You can construct a concrete instance of `CacheToAzureBlobPtrInput` via:
+//
+//	        CacheToAzureBlobArgs{...}
+//
+//	or:
+//
+//	        nil
+type CacheToAzureBlobPtrInput interface {
+	pulumi.Input
+
+	ToCacheToAzureBlobPtrOutput() CacheToAzureBlobPtrOutput
+	ToCacheToAzureBlobPtrOutputWithContext(context.Context) CacheToAzureBlobPtrOutput
+}
+
+type cacheToAzureBlobPtrType CacheToAzureBlobArgs
+
+func CacheToAzureBlobPtr(v *CacheToAzureBlobArgs) CacheToAzureBlobPtrInput {
+	return (*cacheToAzureBlobPtrType)(v)
+}
+
+func (*cacheToAzureBlobPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**CacheToAzureBlob)(nil)).Elem()
+}
+
+func (i *cacheToAzureBlobPtrType) ToCacheToAzureBlobPtrOutput() CacheToAzureBlobPtrOutput {
+	return i.ToCacheToAzureBlobPtrOutputWithContext(context.Background())
+}
+
+func (i *cacheToAzureBlobPtrType) ToCacheToAzureBlobPtrOutputWithContext(ctx context.Context) CacheToAzureBlobPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(CacheToAzureBlobPtrOutput)
+}
+
+type CacheToAzureBlobOutput struct{ *pulumi.OutputState }
+
+func (CacheToAzureBlobOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*CacheToAzureBlob)(nil)).Elem()
+}
+
+func (o CacheToAzureBlobOutput) ToCacheToAzureBlobOutput() CacheToAzureBlobOutput {
+	return o
+}
+
+func (o CacheToAzureBlobOutput) ToCacheToAzureBlobOutputWithContext(ctx context.Context) CacheToAzureBlobOutput {
+	return o
+}
+
+func (o CacheToAzureBlobOutput) ToCacheToAzureBlobPtrOutput() CacheToAzureBlobPtrOutput {
+	return o.ToCacheToAzureBlobPtrOutputWithContext(context.Background())
+}
+
+func (o CacheToAzureBlobOutput) ToCacheToAzureBlobPtrOutputWithContext(ctx context.Context) CacheToAzureBlobPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v CacheToAzureBlob) *CacheToAzureBlob {
+		return &v
+	}).(CacheToAzureBlobPtrOutput)
+}
+
+func (o CacheToAzureBlobOutput) AccountUrl() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v CacheToAzureBlob) *string { return v.AccountUrl }).(pulumi.StringPtrOutput)
+}
+
+// Ignore errors caused by failed cache exports.
+func (o CacheToAzureBlobOutput) IgnoreError() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v CacheToAzureBlob) *bool { return v.IgnoreError }).(pulumi.BoolPtrOutput)
+}
+
+func (o CacheToAzureBlobOutput) Mode() CacheModePtrOutput {
+	return o.ApplyT(func(v CacheToAzureBlob) *CacheMode { return v.Mode }).(CacheModePtrOutput)
+}
+
+func (o CacheToAzureBlobOutput) Name() pulumi.StringOutput {
+	return o.ApplyT(func(v CacheToAzureBlob) string { return v.Name }).(pulumi.StringOutput)
+}
+
+func (o CacheToAzureBlobOutput) SecretAccessKey() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v CacheToAzureBlob) *string { return v.SecretAccessKey }).(pulumi.StringPtrOutput)
+}
+
+type CacheToAzureBlobPtrOutput struct{ *pulumi.OutputState }
+
+func (CacheToAzureBlobPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**CacheToAzureBlob)(nil)).Elem()
+}
+
+func (o CacheToAzureBlobPtrOutput) ToCacheToAzureBlobPtrOutput() CacheToAzureBlobPtrOutput {
+	return o
+}
+
+func (o CacheToAzureBlobPtrOutput) ToCacheToAzureBlobPtrOutputWithContext(ctx context.Context) CacheToAzureBlobPtrOutput {
+	return o
+}
+
+func (o CacheToAzureBlobPtrOutput) Elem() CacheToAzureBlobOutput {
+	return o.ApplyT(func(v *CacheToAzureBlob) CacheToAzureBlob {
+		if v != nil {
+			return *v
+		}
+		var ret CacheToAzureBlob
+		return ret
+	}).(CacheToAzureBlobOutput)
+}
+
+func (o CacheToAzureBlobPtrOutput) AccountUrl() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *CacheToAzureBlob) *string {
+		if v == nil {
+			return nil
+		}
+		return v.AccountUrl
+	}).(pulumi.StringPtrOutput)
+}
+
+// Ignore errors caused by failed cache exports.
+func (o CacheToAzureBlobPtrOutput) IgnoreError() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *CacheToAzureBlob) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.IgnoreError
+	}).(pulumi.BoolPtrOutput)
+}
+
+func (o CacheToAzureBlobPtrOutput) Mode() CacheModePtrOutput {
+	return o.ApplyT(func(v *CacheToAzureBlob) *CacheMode {
+		if v == nil {
+			return nil
+		}
+		return v.Mode
+	}).(CacheModePtrOutput)
+}
+
+func (o CacheToAzureBlobPtrOutput) Name() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *CacheToAzureBlob) *string {
+		if v == nil {
+			return nil
+		}
+		return &v.Name
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o CacheToAzureBlobPtrOutput) SecretAccessKey() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *CacheToAzureBlob) *string {
+		if v == nil {
+			return nil
+		}
+		return v.SecretAccessKey
+	}).(pulumi.StringPtrOutput)
+}
+
+type CacheToEntry struct {
+	// Push cache to Azure's blob storage service.
+	Azblob *CacheToAzureBlob `pulumi:"azblob"`
+	// When "true" this entry will be excluded. Defaults to "false".
+	Disabled *bool `pulumi:"disabled"`
+	// Recommended for use with GitHub Actions workflows.
+	//
+	// An action like "crazy-max/ghaction-github-runtime" is recommended to
+	// expose appropriate credentials to your GitHub workflow.
+	Gha *CacheToGitHubActions `pulumi:"gha"`
+	// The inline cache storage backend is the simplest implementation to get
+	// started with, but it does not handle multi-stage builds. Consider the
+	// registry cache backend instead.
+	Inline *CacheToInline `pulumi:"inline"`
+	// A simple backend which caches imagines on your local filesystem.
+	Local *CacheToLocal `pulumi:"local"`
+	// A raw string as you would provide it to the Docker CLI (e.g.,
+	// "type=inline")
+	Raw *string `pulumi:"raw"`
+	// Push caches to remote registries. Incompatible with the "docker" build
+	// driver.
+	Registry *CacheToRegistry `pulumi:"registry"`
+	// Push cache to AWS S3 or S3-compatible services such as MinIO.
+	S3 *CacheToS3 `pulumi:"s3"`
+}
+
+// Defaults sets the appropriate defaults for CacheToEntry
+func (val *CacheToEntry) Defaults() *CacheToEntry {
+	if val == nil {
+		return nil
+	}
+	tmp := *val
+	tmp.Azblob = tmp.Azblob.Defaults()
+
+	tmp.Gha = tmp.Gha.Defaults()
+
+	tmp.Local = tmp.Local.Defaults()
+
+	tmp.Registry = tmp.Registry.Defaults()
+
+	tmp.S3 = tmp.S3.Defaults()
+
+	return &tmp
+}
+
+// CacheToEntryInput is an input type that accepts CacheToEntryArgs and CacheToEntryOutput values.
+// You can construct a concrete instance of `CacheToEntryInput` via:
+//
+//	CacheToEntryArgs{...}
+type CacheToEntryInput interface {
+	pulumi.Input
+
+	ToCacheToEntryOutput() CacheToEntryOutput
+	ToCacheToEntryOutputWithContext(context.Context) CacheToEntryOutput
+}
+
+type CacheToEntryArgs struct {
+	// Push cache to Azure's blob storage service.
+	Azblob CacheToAzureBlobPtrInput `pulumi:"azblob"`
+	// When "true" this entry will be excluded. Defaults to "false".
+	Disabled pulumi.BoolPtrInput `pulumi:"disabled"`
+	// Recommended for use with GitHub Actions workflows.
+	//
+	// An action like "crazy-max/ghaction-github-runtime" is recommended to
+	// expose appropriate credentials to your GitHub workflow.
+	Gha CacheToGitHubActionsPtrInput `pulumi:"gha"`
+	// The inline cache storage backend is the simplest implementation to get
+	// started with, but it does not handle multi-stage builds. Consider the
+	// registry cache backend instead.
+	Inline CacheToInlinePtrInput `pulumi:"inline"`
+	// A simple backend which caches imagines on your local filesystem.
+	Local CacheToLocalPtrInput `pulumi:"local"`
+	// A raw string as you would provide it to the Docker CLI (e.g.,
+	// "type=inline")
+	Raw pulumi.StringPtrInput `pulumi:"raw"`
+	// Push caches to remote registries. Incompatible with the "docker" build
+	// driver.
+	Registry CacheToRegistryPtrInput `pulumi:"registry"`
+	// Push cache to AWS S3 or S3-compatible services such as MinIO.
+	S3 CacheToS3PtrInput `pulumi:"s3"`
+}
+
+// Defaults sets the appropriate defaults for CacheToEntryArgs
+func (val *CacheToEntryArgs) Defaults() *CacheToEntryArgs {
+	if val == nil {
+		return nil
+	}
+	tmp := *val
+
+	return &tmp
+}
+func (CacheToEntryArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*CacheToEntry)(nil)).Elem()
+}
+
+func (i CacheToEntryArgs) ToCacheToEntryOutput() CacheToEntryOutput {
+	return i.ToCacheToEntryOutputWithContext(context.Background())
+}
+
+func (i CacheToEntryArgs) ToCacheToEntryOutputWithContext(ctx context.Context) CacheToEntryOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(CacheToEntryOutput)
+}
+
+// CacheToEntryArrayInput is an input type that accepts CacheToEntryArray and CacheToEntryArrayOutput values.
+// You can construct a concrete instance of `CacheToEntryArrayInput` via:
+//
+//	CacheToEntryArray{ CacheToEntryArgs{...} }
+type CacheToEntryArrayInput interface {
+	pulumi.Input
+
+	ToCacheToEntryArrayOutput() CacheToEntryArrayOutput
+	ToCacheToEntryArrayOutputWithContext(context.Context) CacheToEntryArrayOutput
+}
+
+type CacheToEntryArray []CacheToEntryInput
+
+func (CacheToEntryArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]CacheToEntry)(nil)).Elem()
+}
+
+func (i CacheToEntryArray) ToCacheToEntryArrayOutput() CacheToEntryArrayOutput {
+	return i.ToCacheToEntryArrayOutputWithContext(context.Background())
+}
+
+func (i CacheToEntryArray) ToCacheToEntryArrayOutputWithContext(ctx context.Context) CacheToEntryArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(CacheToEntryArrayOutput)
+}
+
+type CacheToEntryOutput struct{ *pulumi.OutputState }
+
+func (CacheToEntryOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*CacheToEntry)(nil)).Elem()
+}
+
+func (o CacheToEntryOutput) ToCacheToEntryOutput() CacheToEntryOutput {
+	return o
+}
+
+func (o CacheToEntryOutput) ToCacheToEntryOutputWithContext(ctx context.Context) CacheToEntryOutput {
+	return o
+}
+
+// Push cache to Azure's blob storage service.
+func (o CacheToEntryOutput) Azblob() CacheToAzureBlobPtrOutput {
+	return o.ApplyT(func(v CacheToEntry) *CacheToAzureBlob { return v.Azblob }).(CacheToAzureBlobPtrOutput)
+}
+
+// When "true" this entry will be excluded. Defaults to "false".
+func (o CacheToEntryOutput) Disabled() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v CacheToEntry) *bool { return v.Disabled }).(pulumi.BoolPtrOutput)
+}
+
+// Recommended for use with GitHub Actions workflows.
+//
+// An action like "crazy-max/ghaction-github-runtime" is recommended to
+// expose appropriate credentials to your GitHub workflow.
+func (o CacheToEntryOutput) Gha() CacheToGitHubActionsPtrOutput {
+	return o.ApplyT(func(v CacheToEntry) *CacheToGitHubActions { return v.Gha }).(CacheToGitHubActionsPtrOutput)
+}
+
+// The inline cache storage backend is the simplest implementation to get
+// started with, but it does not handle multi-stage builds. Consider the
+// registry cache backend instead.
+func (o CacheToEntryOutput) Inline() CacheToInlinePtrOutput {
+	return o.ApplyT(func(v CacheToEntry) *CacheToInline { return v.Inline }).(CacheToInlinePtrOutput)
+}
+
+// A simple backend which caches imagines on your local filesystem.
+func (o CacheToEntryOutput) Local() CacheToLocalPtrOutput {
+	return o.ApplyT(func(v CacheToEntry) *CacheToLocal { return v.Local }).(CacheToLocalPtrOutput)
+}
+
+// A raw string as you would provide it to the Docker CLI (e.g.,
+// "type=inline")
+func (o CacheToEntryOutput) Raw() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v CacheToEntry) *string { return v.Raw }).(pulumi.StringPtrOutput)
+}
+
+// Push caches to remote registries. Incompatible with the "docker" build
+// driver.
+func (o CacheToEntryOutput) Registry() CacheToRegistryPtrOutput {
+	return o.ApplyT(func(v CacheToEntry) *CacheToRegistry { return v.Registry }).(CacheToRegistryPtrOutput)
+}
+
+// Push cache to AWS S3 or S3-compatible services such as MinIO.
+func (o CacheToEntryOutput) S3() CacheToS3PtrOutput {
+	return o.ApplyT(func(v CacheToEntry) *CacheToS3 { return v.S3 }).(CacheToS3PtrOutput)
+}
+
+type CacheToEntryArrayOutput struct{ *pulumi.OutputState }
+
+func (CacheToEntryArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]CacheToEntry)(nil)).Elem()
+}
+
+func (o CacheToEntryArrayOutput) ToCacheToEntryArrayOutput() CacheToEntryArrayOutput {
+	return o
+}
+
+func (o CacheToEntryArrayOutput) ToCacheToEntryArrayOutputWithContext(ctx context.Context) CacheToEntryArrayOutput {
+	return o
+}
+
+func (o CacheToEntryArrayOutput) Index(i pulumi.IntInput) CacheToEntryOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) CacheToEntry {
+		return vs[0].([]CacheToEntry)[vs[1].(int)]
+	}).(CacheToEntryOutput)
+}
+
+type CacheToGitHubActions struct {
+	// Ignore errors caused by failed cache exports.
+	IgnoreError *bool      `pulumi:"ignoreError"`
+	Mode        *CacheMode `pulumi:"mode"`
+	// Which scope cache object belongs to.
+	Scope *string `pulumi:"scope"`
+	// Access token
+	Token *string `pulumi:"token"`
+	// Cache server URL
+	Url *string `pulumi:"url"`
+}
+
+// Defaults sets the appropriate defaults for CacheToGitHubActions
+func (val *CacheToGitHubActions) Defaults() *CacheToGitHubActions {
+	if val == nil {
+		return nil
+	}
+	tmp := *val
+	if tmp.IgnoreError == nil {
+		ignoreError_ := false
+		tmp.IgnoreError = &ignoreError_
+	}
+	if tmp.Mode == nil {
+		mode_ := CacheMode("min")
+		tmp.Mode = &mode_
+	}
+	if tmp.Scope == nil {
+		if d := internal.GetEnvOrDefault("", nil, "buildkit"); d != nil {
+			scope_ := d.(string)
+			tmp.Scope = &scope_
+		}
+	}
+	if tmp.Token == nil {
+		if d := internal.GetEnvOrDefault("", nil, "ACTIONS_RUNTIME_TOKEN"); d != nil {
+			token_ := d.(string)
+			tmp.Token = &token_
+		}
+	}
+	if tmp.Url == nil {
+		if d := internal.GetEnvOrDefault("", nil, "ACTIONS_RUNTIME_URL"); d != nil {
+			url_ := d.(string)
+			tmp.Url = &url_
+		}
+	}
+	return &tmp
+}
+
+// CacheToGitHubActionsInput is an input type that accepts CacheToGitHubActionsArgs and CacheToGitHubActionsOutput values.
+// You can construct a concrete instance of `CacheToGitHubActionsInput` via:
+//
+//	CacheToGitHubActionsArgs{...}
+type CacheToGitHubActionsInput interface {
+	pulumi.Input
+
+	ToCacheToGitHubActionsOutput() CacheToGitHubActionsOutput
+	ToCacheToGitHubActionsOutputWithContext(context.Context) CacheToGitHubActionsOutput
+}
+
+type CacheToGitHubActionsArgs struct {
+	// Ignore errors caused by failed cache exports.
+	IgnoreError pulumi.BoolPtrInput `pulumi:"ignoreError"`
+	Mode        CacheModePtrInput   `pulumi:"mode"`
+	// Which scope cache object belongs to.
+	Scope pulumi.StringPtrInput `pulumi:"scope"`
+	// Access token
+	Token pulumi.StringPtrInput `pulumi:"token"`
+	// Cache server URL
+	Url pulumi.StringPtrInput `pulumi:"url"`
+}
+
+// Defaults sets the appropriate defaults for CacheToGitHubActionsArgs
+func (val *CacheToGitHubActionsArgs) Defaults() *CacheToGitHubActionsArgs {
+	if val == nil {
+		return nil
+	}
+	tmp := *val
+	if tmp.IgnoreError == nil {
+		tmp.IgnoreError = pulumi.BoolPtr(false)
+	}
+	if tmp.Mode == nil {
+		tmp.Mode = CacheMode("min")
+	}
+	if tmp.Scope == nil {
+		if d := internal.GetEnvOrDefault("", nil, "buildkit"); d != nil {
+			tmp.Scope = pulumi.StringPtr(d.(string))
+		}
+	}
+	if tmp.Token == nil {
+		if d := internal.GetEnvOrDefault("", nil, "ACTIONS_RUNTIME_TOKEN"); d != nil {
+			tmp.Token = pulumi.StringPtr(d.(string))
+		}
+	}
+	if tmp.Url == nil {
+		if d := internal.GetEnvOrDefault("", nil, "ACTIONS_RUNTIME_URL"); d != nil {
+			tmp.Url = pulumi.StringPtr(d.(string))
+		}
+	}
+	return &tmp
+}
+func (CacheToGitHubActionsArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*CacheToGitHubActions)(nil)).Elem()
+}
+
+func (i CacheToGitHubActionsArgs) ToCacheToGitHubActionsOutput() CacheToGitHubActionsOutput {
+	return i.ToCacheToGitHubActionsOutputWithContext(context.Background())
+}
+
+func (i CacheToGitHubActionsArgs) ToCacheToGitHubActionsOutputWithContext(ctx context.Context) CacheToGitHubActionsOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(CacheToGitHubActionsOutput)
+}
+
+func (i CacheToGitHubActionsArgs) ToCacheToGitHubActionsPtrOutput() CacheToGitHubActionsPtrOutput {
+	return i.ToCacheToGitHubActionsPtrOutputWithContext(context.Background())
+}
+
+func (i CacheToGitHubActionsArgs) ToCacheToGitHubActionsPtrOutputWithContext(ctx context.Context) CacheToGitHubActionsPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(CacheToGitHubActionsOutput).ToCacheToGitHubActionsPtrOutputWithContext(ctx)
+}
+
+// CacheToGitHubActionsPtrInput is an input type that accepts CacheToGitHubActionsArgs, CacheToGitHubActionsPtr and CacheToGitHubActionsPtrOutput values.
+// You can construct a concrete instance of `CacheToGitHubActionsPtrInput` via:
+//
+//	        CacheToGitHubActionsArgs{...}
+//
+//	or:
+//
+//	        nil
+type CacheToGitHubActionsPtrInput interface {
+	pulumi.Input
+
+	ToCacheToGitHubActionsPtrOutput() CacheToGitHubActionsPtrOutput
+	ToCacheToGitHubActionsPtrOutputWithContext(context.Context) CacheToGitHubActionsPtrOutput
+}
+
+type cacheToGitHubActionsPtrType CacheToGitHubActionsArgs
+
+func CacheToGitHubActionsPtr(v *CacheToGitHubActionsArgs) CacheToGitHubActionsPtrInput {
+	return (*cacheToGitHubActionsPtrType)(v)
+}
+
+func (*cacheToGitHubActionsPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**CacheToGitHubActions)(nil)).Elem()
+}
+
+func (i *cacheToGitHubActionsPtrType) ToCacheToGitHubActionsPtrOutput() CacheToGitHubActionsPtrOutput {
+	return i.ToCacheToGitHubActionsPtrOutputWithContext(context.Background())
+}
+
+func (i *cacheToGitHubActionsPtrType) ToCacheToGitHubActionsPtrOutputWithContext(ctx context.Context) CacheToGitHubActionsPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(CacheToGitHubActionsPtrOutput)
+}
+
+type CacheToGitHubActionsOutput struct{ *pulumi.OutputState }
+
+func (CacheToGitHubActionsOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*CacheToGitHubActions)(nil)).Elem()
+}
+
+func (o CacheToGitHubActionsOutput) ToCacheToGitHubActionsOutput() CacheToGitHubActionsOutput {
+	return o
+}
+
+func (o CacheToGitHubActionsOutput) ToCacheToGitHubActionsOutputWithContext(ctx context.Context) CacheToGitHubActionsOutput {
+	return o
+}
+
+func (o CacheToGitHubActionsOutput) ToCacheToGitHubActionsPtrOutput() CacheToGitHubActionsPtrOutput {
+	return o.ToCacheToGitHubActionsPtrOutputWithContext(context.Background())
+}
+
+func (o CacheToGitHubActionsOutput) ToCacheToGitHubActionsPtrOutputWithContext(ctx context.Context) CacheToGitHubActionsPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v CacheToGitHubActions) *CacheToGitHubActions {
+		return &v
+	}).(CacheToGitHubActionsPtrOutput)
+}
+
+// Ignore errors caused by failed cache exports.
+func (o CacheToGitHubActionsOutput) IgnoreError() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v CacheToGitHubActions) *bool { return v.IgnoreError }).(pulumi.BoolPtrOutput)
+}
+
+func (o CacheToGitHubActionsOutput) Mode() CacheModePtrOutput {
+	return o.ApplyT(func(v CacheToGitHubActions) *CacheMode { return v.Mode }).(CacheModePtrOutput)
+}
+
+// Which scope cache object belongs to.
+func (o CacheToGitHubActionsOutput) Scope() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v CacheToGitHubActions) *string { return v.Scope }).(pulumi.StringPtrOutput)
+}
+
+// Access token
+func (o CacheToGitHubActionsOutput) Token() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v CacheToGitHubActions) *string { return v.Token }).(pulumi.StringPtrOutput)
+}
+
+// Cache server URL
+func (o CacheToGitHubActionsOutput) Url() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v CacheToGitHubActions) *string { return v.Url }).(pulumi.StringPtrOutput)
+}
+
+type CacheToGitHubActionsPtrOutput struct{ *pulumi.OutputState }
+
+func (CacheToGitHubActionsPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**CacheToGitHubActions)(nil)).Elem()
+}
+
+func (o CacheToGitHubActionsPtrOutput) ToCacheToGitHubActionsPtrOutput() CacheToGitHubActionsPtrOutput {
+	return o
+}
+
+func (o CacheToGitHubActionsPtrOutput) ToCacheToGitHubActionsPtrOutputWithContext(ctx context.Context) CacheToGitHubActionsPtrOutput {
+	return o
+}
+
+func (o CacheToGitHubActionsPtrOutput) Elem() CacheToGitHubActionsOutput {
+	return o.ApplyT(func(v *CacheToGitHubActions) CacheToGitHubActions {
+		if v != nil {
+			return *v
+		}
+		var ret CacheToGitHubActions
+		return ret
+	}).(CacheToGitHubActionsOutput)
+}
+
+// Ignore errors caused by failed cache exports.
+func (o CacheToGitHubActionsPtrOutput) IgnoreError() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *CacheToGitHubActions) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.IgnoreError
+	}).(pulumi.BoolPtrOutput)
+}
+
+func (o CacheToGitHubActionsPtrOutput) Mode() CacheModePtrOutput {
+	return o.ApplyT(func(v *CacheToGitHubActions) *CacheMode {
+		if v == nil {
+			return nil
+		}
+		return v.Mode
+	}).(CacheModePtrOutput)
+}
+
+// Which scope cache object belongs to.
+func (o CacheToGitHubActionsPtrOutput) Scope() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *CacheToGitHubActions) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Scope
+	}).(pulumi.StringPtrOutput)
+}
+
+// Access token
+func (o CacheToGitHubActionsPtrOutput) Token() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *CacheToGitHubActions) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Token
+	}).(pulumi.StringPtrOutput)
+}
+
+// Cache server URL
+func (o CacheToGitHubActionsPtrOutput) Url() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *CacheToGitHubActions) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Url
+	}).(pulumi.StringPtrOutput)
+}
+
+type CacheToInline struct {
+}
+
+// CacheToInlineInput is an input type that accepts CacheToInlineArgs and CacheToInlineOutput values.
+// You can construct a concrete instance of `CacheToInlineInput` via:
+//
+//	CacheToInlineArgs{...}
+type CacheToInlineInput interface {
+	pulumi.Input
+
+	ToCacheToInlineOutput() CacheToInlineOutput
+	ToCacheToInlineOutputWithContext(context.Context) CacheToInlineOutput
+}
+
+type CacheToInlineArgs struct {
+}
+
+func (CacheToInlineArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*CacheToInline)(nil)).Elem()
+}
+
+func (i CacheToInlineArgs) ToCacheToInlineOutput() CacheToInlineOutput {
+	return i.ToCacheToInlineOutputWithContext(context.Background())
+}
+
+func (i CacheToInlineArgs) ToCacheToInlineOutputWithContext(ctx context.Context) CacheToInlineOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(CacheToInlineOutput)
+}
+
+func (i CacheToInlineArgs) ToCacheToInlinePtrOutput() CacheToInlinePtrOutput {
+	return i.ToCacheToInlinePtrOutputWithContext(context.Background())
+}
+
+func (i CacheToInlineArgs) ToCacheToInlinePtrOutputWithContext(ctx context.Context) CacheToInlinePtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(CacheToInlineOutput).ToCacheToInlinePtrOutputWithContext(ctx)
+}
+
+// CacheToInlinePtrInput is an input type that accepts CacheToInlineArgs, CacheToInlinePtr and CacheToInlinePtrOutput values.
+// You can construct a concrete instance of `CacheToInlinePtrInput` via:
+//
+//	        CacheToInlineArgs{...}
+//
+//	or:
+//
+//	        nil
+type CacheToInlinePtrInput interface {
+	pulumi.Input
+
+	ToCacheToInlinePtrOutput() CacheToInlinePtrOutput
+	ToCacheToInlinePtrOutputWithContext(context.Context) CacheToInlinePtrOutput
+}
+
+type cacheToInlinePtrType CacheToInlineArgs
+
+func CacheToInlinePtr(v *CacheToInlineArgs) CacheToInlinePtrInput {
+	return (*cacheToInlinePtrType)(v)
+}
+
+func (*cacheToInlinePtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**CacheToInline)(nil)).Elem()
+}
+
+func (i *cacheToInlinePtrType) ToCacheToInlinePtrOutput() CacheToInlinePtrOutput {
+	return i.ToCacheToInlinePtrOutputWithContext(context.Background())
+}
+
+func (i *cacheToInlinePtrType) ToCacheToInlinePtrOutputWithContext(ctx context.Context) CacheToInlinePtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(CacheToInlinePtrOutput)
+}
+
+type CacheToInlineOutput struct{ *pulumi.OutputState }
+
+func (CacheToInlineOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*CacheToInline)(nil)).Elem()
+}
+
+func (o CacheToInlineOutput) ToCacheToInlineOutput() CacheToInlineOutput {
+	return o
+}
+
+func (o CacheToInlineOutput) ToCacheToInlineOutputWithContext(ctx context.Context) CacheToInlineOutput {
+	return o
+}
+
+func (o CacheToInlineOutput) ToCacheToInlinePtrOutput() CacheToInlinePtrOutput {
+	return o.ToCacheToInlinePtrOutputWithContext(context.Background())
+}
+
+func (o CacheToInlineOutput) ToCacheToInlinePtrOutputWithContext(ctx context.Context) CacheToInlinePtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v CacheToInline) *CacheToInline {
+		return &v
+	}).(CacheToInlinePtrOutput)
+}
+
+type CacheToInlinePtrOutput struct{ *pulumi.OutputState }
+
+func (CacheToInlinePtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**CacheToInline)(nil)).Elem()
+}
+
+func (o CacheToInlinePtrOutput) ToCacheToInlinePtrOutput() CacheToInlinePtrOutput {
+	return o
+}
+
+func (o CacheToInlinePtrOutput) ToCacheToInlinePtrOutputWithContext(ctx context.Context) CacheToInlinePtrOutput {
+	return o
+}
+
+func (o CacheToInlinePtrOutput) Elem() CacheToInlineOutput {
+	return o.ApplyT(func(v *CacheToInline) CacheToInline {
+		if v != nil {
+			return *v
+		}
+		var ret CacheToInline
+		return ret
+	}).(CacheToInlineOutput)
+}
+
+type CacheToLocal struct {
+	// The compression type to use.
+	Compression *CompressionType `pulumi:"compression"`
+	// Compression level from 0 to 22.
+	CompressionLevel *int   `pulumi:"compressionLevel"`
+	Dest             string `pulumi:"dest"`
+	// Forcefully apply compression.
+	ForceCompression *bool `pulumi:"forceCompression"`
+	// Ignore errors caused by failed cache exports.
+	IgnoreError *bool      `pulumi:"ignoreError"`
+	Mode        *CacheMode `pulumi:"mode"`
+}
+
+// Defaults sets the appropriate defaults for CacheToLocal
+func (val *CacheToLocal) Defaults() *CacheToLocal {
+	if val == nil {
+		return nil
+	}
+	tmp := *val
+	if tmp.Compression == nil {
+		compression_ := CompressionType("gzip")
+		tmp.Compression = &compression_
+	}
+	if tmp.CompressionLevel == nil {
+		compressionLevel_ := 0
+		tmp.CompressionLevel = &compressionLevel_
+	}
+	if tmp.ForceCompression == nil {
+		forceCompression_ := false
+		tmp.ForceCompression = &forceCompression_
+	}
+	if tmp.IgnoreError == nil {
+		ignoreError_ := false
+		tmp.IgnoreError = &ignoreError_
+	}
+	if tmp.Mode == nil {
+		mode_ := CacheMode("min")
+		tmp.Mode = &mode_
+	}
+	return &tmp
+}
+
+// CacheToLocalInput is an input type that accepts CacheToLocalArgs and CacheToLocalOutput values.
+// You can construct a concrete instance of `CacheToLocalInput` via:
+//
+//	CacheToLocalArgs{...}
+type CacheToLocalInput interface {
+	pulumi.Input
+
+	ToCacheToLocalOutput() CacheToLocalOutput
+	ToCacheToLocalOutputWithContext(context.Context) CacheToLocalOutput
+}
+
+type CacheToLocalArgs struct {
+	// The compression type to use.
+	Compression CompressionTypePtrInput `pulumi:"compression"`
+	// Compression level from 0 to 22.
+	CompressionLevel pulumi.IntPtrInput `pulumi:"compressionLevel"`
+	Dest             pulumi.StringInput `pulumi:"dest"`
+	// Forcefully apply compression.
+	ForceCompression pulumi.BoolPtrInput `pulumi:"forceCompression"`
+	// Ignore errors caused by failed cache exports.
+	IgnoreError pulumi.BoolPtrInput `pulumi:"ignoreError"`
+	Mode        CacheModePtrInput   `pulumi:"mode"`
+}
+
+// Defaults sets the appropriate defaults for CacheToLocalArgs
+func (val *CacheToLocalArgs) Defaults() *CacheToLocalArgs {
+	if val == nil {
+		return nil
+	}
+	tmp := *val
+	if tmp.Compression == nil {
+		tmp.Compression = CompressionType("gzip")
+	}
+	if tmp.CompressionLevel == nil {
+		tmp.CompressionLevel = pulumi.IntPtr(0)
+	}
+	if tmp.ForceCompression == nil {
+		tmp.ForceCompression = pulumi.BoolPtr(false)
+	}
+	if tmp.IgnoreError == nil {
+		tmp.IgnoreError = pulumi.BoolPtr(false)
+	}
+	if tmp.Mode == nil {
+		tmp.Mode = CacheMode("min")
+	}
+	return &tmp
+}
+func (CacheToLocalArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*CacheToLocal)(nil)).Elem()
+}
+
+func (i CacheToLocalArgs) ToCacheToLocalOutput() CacheToLocalOutput {
+	return i.ToCacheToLocalOutputWithContext(context.Background())
+}
+
+func (i CacheToLocalArgs) ToCacheToLocalOutputWithContext(ctx context.Context) CacheToLocalOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(CacheToLocalOutput)
+}
+
+func (i CacheToLocalArgs) ToCacheToLocalPtrOutput() CacheToLocalPtrOutput {
+	return i.ToCacheToLocalPtrOutputWithContext(context.Background())
+}
+
+func (i CacheToLocalArgs) ToCacheToLocalPtrOutputWithContext(ctx context.Context) CacheToLocalPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(CacheToLocalOutput).ToCacheToLocalPtrOutputWithContext(ctx)
+}
+
+// CacheToLocalPtrInput is an input type that accepts CacheToLocalArgs, CacheToLocalPtr and CacheToLocalPtrOutput values.
+// You can construct a concrete instance of `CacheToLocalPtrInput` via:
+//
+//	        CacheToLocalArgs{...}
+//
+//	or:
+//
+//	        nil
+type CacheToLocalPtrInput interface {
+	pulumi.Input
+
+	ToCacheToLocalPtrOutput() CacheToLocalPtrOutput
+	ToCacheToLocalPtrOutputWithContext(context.Context) CacheToLocalPtrOutput
+}
+
+type cacheToLocalPtrType CacheToLocalArgs
+
+func CacheToLocalPtr(v *CacheToLocalArgs) CacheToLocalPtrInput {
+	return (*cacheToLocalPtrType)(v)
+}
+
+func (*cacheToLocalPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**CacheToLocal)(nil)).Elem()
+}
+
+func (i *cacheToLocalPtrType) ToCacheToLocalPtrOutput() CacheToLocalPtrOutput {
+	return i.ToCacheToLocalPtrOutputWithContext(context.Background())
+}
+
+func (i *cacheToLocalPtrType) ToCacheToLocalPtrOutputWithContext(ctx context.Context) CacheToLocalPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(CacheToLocalPtrOutput)
+}
+
+type CacheToLocalOutput struct{ *pulumi.OutputState }
+
+func (CacheToLocalOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*CacheToLocal)(nil)).Elem()
+}
+
+func (o CacheToLocalOutput) ToCacheToLocalOutput() CacheToLocalOutput {
+	return o
+}
+
+func (o CacheToLocalOutput) ToCacheToLocalOutputWithContext(ctx context.Context) CacheToLocalOutput {
+	return o
+}
+
+func (o CacheToLocalOutput) ToCacheToLocalPtrOutput() CacheToLocalPtrOutput {
+	return o.ToCacheToLocalPtrOutputWithContext(context.Background())
+}
+
+func (o CacheToLocalOutput) ToCacheToLocalPtrOutputWithContext(ctx context.Context) CacheToLocalPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v CacheToLocal) *CacheToLocal {
+		return &v
+	}).(CacheToLocalPtrOutput)
+}
+
+// The compression type to use.
+func (o CacheToLocalOutput) Compression() CompressionTypePtrOutput {
+	return o.ApplyT(func(v CacheToLocal) *CompressionType { return v.Compression }).(CompressionTypePtrOutput)
+}
+
+// Compression level from 0 to 22.
+func (o CacheToLocalOutput) CompressionLevel() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v CacheToLocal) *int { return v.CompressionLevel }).(pulumi.IntPtrOutput)
+}
+
+func (o CacheToLocalOutput) Dest() pulumi.StringOutput {
+	return o.ApplyT(func(v CacheToLocal) string { return v.Dest }).(pulumi.StringOutput)
+}
+
+// Forcefully apply compression.
+func (o CacheToLocalOutput) ForceCompression() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v CacheToLocal) *bool { return v.ForceCompression }).(pulumi.BoolPtrOutput)
+}
+
+// Ignore errors caused by failed cache exports.
+func (o CacheToLocalOutput) IgnoreError() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v CacheToLocal) *bool { return v.IgnoreError }).(pulumi.BoolPtrOutput)
+}
+
+func (o CacheToLocalOutput) Mode() CacheModePtrOutput {
+	return o.ApplyT(func(v CacheToLocal) *CacheMode { return v.Mode }).(CacheModePtrOutput)
+}
+
+type CacheToLocalPtrOutput struct{ *pulumi.OutputState }
+
+func (CacheToLocalPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**CacheToLocal)(nil)).Elem()
+}
+
+func (o CacheToLocalPtrOutput) ToCacheToLocalPtrOutput() CacheToLocalPtrOutput {
+	return o
+}
+
+func (o CacheToLocalPtrOutput) ToCacheToLocalPtrOutputWithContext(ctx context.Context) CacheToLocalPtrOutput {
+	return o
+}
+
+func (o CacheToLocalPtrOutput) Elem() CacheToLocalOutput {
+	return o.ApplyT(func(v *CacheToLocal) CacheToLocal {
+		if v != nil {
+			return *v
+		}
+		var ret CacheToLocal
+		return ret
+	}).(CacheToLocalOutput)
+}
+
+// The compression type to use.
+func (o CacheToLocalPtrOutput) Compression() CompressionTypePtrOutput {
+	return o.ApplyT(func(v *CacheToLocal) *CompressionType {
+		if v == nil {
+			return nil
+		}
+		return v.Compression
+	}).(CompressionTypePtrOutput)
+}
+
+// Compression level from 0 to 22.
+func (o CacheToLocalPtrOutput) CompressionLevel() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v *CacheToLocal) *int {
+		if v == nil {
+			return nil
+		}
+		return v.CompressionLevel
+	}).(pulumi.IntPtrOutput)
+}
+
+func (o CacheToLocalPtrOutput) Dest() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *CacheToLocal) *string {
+		if v == nil {
+			return nil
+		}
+		return &v.Dest
+	}).(pulumi.StringPtrOutput)
+}
+
+// Forcefully apply compression.
+func (o CacheToLocalPtrOutput) ForceCompression() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *CacheToLocal) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.ForceCompression
+	}).(pulumi.BoolPtrOutput)
+}
+
+// Ignore errors caused by failed cache exports.
+func (o CacheToLocalPtrOutput) IgnoreError() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *CacheToLocal) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.IgnoreError
+	}).(pulumi.BoolPtrOutput)
+}
+
+func (o CacheToLocalPtrOutput) Mode() CacheModePtrOutput {
+	return o.ApplyT(func(v *CacheToLocal) *CacheMode {
+		if v == nil {
+			return nil
+		}
+		return v.Mode
+	}).(CacheModePtrOutput)
+}
+
+type CacheToRegistry struct {
+	// The compression type to use.
+	Compression *CompressionType `pulumi:"compression"`
+	// Compression level from 0 to 22.
+	CompressionLevel *int `pulumi:"compressionLevel"`
+	// Forcefully apply compression.
+	ForceCompression *bool `pulumi:"forceCompression"`
+	// Ignore errors caused by failed cache exports.
+	IgnoreError *bool `pulumi:"ignoreError"`
+	// Export cache manifest as an OCI-compatible image manifest instead of a manifest list (requires OCI media types).
+	ImageManifest *bool      `pulumi:"imageManifest"`
+	Mode          *CacheMode `pulumi:"mode"`
+	// Whether to use OCI mediatypes in exported manifests.
+	OciMediaTypes *bool `pulumi:"ociMediaTypes"`
+	// Full name of the cache image to import.
+	Ref string `pulumi:"ref"`
+}
+
+// Defaults sets the appropriate defaults for CacheToRegistry
+func (val *CacheToRegistry) Defaults() *CacheToRegistry {
+	if val == nil {
+		return nil
+	}
+	tmp := *val
+	if tmp.Compression == nil {
+		compression_ := CompressionType("gzip")
+		tmp.Compression = &compression_
+	}
+	if tmp.CompressionLevel == nil {
+		compressionLevel_ := 0
+		tmp.CompressionLevel = &compressionLevel_
+	}
+	if tmp.ForceCompression == nil {
+		forceCompression_ := false
+		tmp.ForceCompression = &forceCompression_
+	}
+	if tmp.IgnoreError == nil {
+		ignoreError_ := false
+		tmp.IgnoreError = &ignoreError_
+	}
+	if tmp.ImageManifest == nil {
+		imageManifest_ := false
+		tmp.ImageManifest = &imageManifest_
+	}
+	if tmp.Mode == nil {
+		mode_ := CacheMode("min")
+		tmp.Mode = &mode_
+	}
+	if tmp.OciMediaTypes == nil {
+		ociMediaTypes_ := true
+		tmp.OciMediaTypes = &ociMediaTypes_
+	}
+	return &tmp
+}
+
+// CacheToRegistryInput is an input type that accepts CacheToRegistryArgs and CacheToRegistryOutput values.
+// You can construct a concrete instance of `CacheToRegistryInput` via:
+//
+//	CacheToRegistryArgs{...}
+type CacheToRegistryInput interface {
+	pulumi.Input
+
+	ToCacheToRegistryOutput() CacheToRegistryOutput
+	ToCacheToRegistryOutputWithContext(context.Context) CacheToRegistryOutput
+}
+
+type CacheToRegistryArgs struct {
+	// The compression type to use.
+	Compression CompressionTypePtrInput `pulumi:"compression"`
+	// Compression level from 0 to 22.
+	CompressionLevel pulumi.IntPtrInput `pulumi:"compressionLevel"`
+	// Forcefully apply compression.
+	ForceCompression pulumi.BoolPtrInput `pulumi:"forceCompression"`
+	// Ignore errors caused by failed cache exports.
+	IgnoreError pulumi.BoolPtrInput `pulumi:"ignoreError"`
+	// Export cache manifest as an OCI-compatible image manifest instead of a manifest list (requires OCI media types).
+	ImageManifest pulumi.BoolPtrInput `pulumi:"imageManifest"`
+	Mode          CacheModePtrInput   `pulumi:"mode"`
+	// Whether to use OCI mediatypes in exported manifests.
+	OciMediaTypes pulumi.BoolPtrInput `pulumi:"ociMediaTypes"`
+	// Full name of the cache image to import.
+	Ref pulumi.StringInput `pulumi:"ref"`
+}
+
+// Defaults sets the appropriate defaults for CacheToRegistryArgs
+func (val *CacheToRegistryArgs) Defaults() *CacheToRegistryArgs {
+	if val == nil {
+		return nil
+	}
+	tmp := *val
+	if tmp.Compression == nil {
+		tmp.Compression = CompressionType("gzip")
+	}
+	if tmp.CompressionLevel == nil {
+		tmp.CompressionLevel = pulumi.IntPtr(0)
+	}
+	if tmp.ForceCompression == nil {
+		tmp.ForceCompression = pulumi.BoolPtr(false)
+	}
+	if tmp.IgnoreError == nil {
+		tmp.IgnoreError = pulumi.BoolPtr(false)
+	}
+	if tmp.ImageManifest == nil {
+		tmp.ImageManifest = pulumi.BoolPtr(false)
+	}
+	if tmp.Mode == nil {
+		tmp.Mode = CacheMode("min")
+	}
+	if tmp.OciMediaTypes == nil {
+		tmp.OciMediaTypes = pulumi.BoolPtr(true)
+	}
+	return &tmp
+}
+func (CacheToRegistryArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*CacheToRegistry)(nil)).Elem()
+}
+
+func (i CacheToRegistryArgs) ToCacheToRegistryOutput() CacheToRegistryOutput {
+	return i.ToCacheToRegistryOutputWithContext(context.Background())
+}
+
+func (i CacheToRegistryArgs) ToCacheToRegistryOutputWithContext(ctx context.Context) CacheToRegistryOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(CacheToRegistryOutput)
+}
+
+func (i CacheToRegistryArgs) ToCacheToRegistryPtrOutput() CacheToRegistryPtrOutput {
+	return i.ToCacheToRegistryPtrOutputWithContext(context.Background())
+}
+
+func (i CacheToRegistryArgs) ToCacheToRegistryPtrOutputWithContext(ctx context.Context) CacheToRegistryPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(CacheToRegistryOutput).ToCacheToRegistryPtrOutputWithContext(ctx)
+}
+
+// CacheToRegistryPtrInput is an input type that accepts CacheToRegistryArgs, CacheToRegistryPtr and CacheToRegistryPtrOutput values.
+// You can construct a concrete instance of `CacheToRegistryPtrInput` via:
+//
+//	        CacheToRegistryArgs{...}
+//
+//	or:
+//
+//	        nil
+type CacheToRegistryPtrInput interface {
+	pulumi.Input
+
+	ToCacheToRegistryPtrOutput() CacheToRegistryPtrOutput
+	ToCacheToRegistryPtrOutputWithContext(context.Context) CacheToRegistryPtrOutput
+}
+
+type cacheToRegistryPtrType CacheToRegistryArgs
+
+func CacheToRegistryPtr(v *CacheToRegistryArgs) CacheToRegistryPtrInput {
+	return (*cacheToRegistryPtrType)(v)
+}
+
+func (*cacheToRegistryPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**CacheToRegistry)(nil)).Elem()
+}
+
+func (i *cacheToRegistryPtrType) ToCacheToRegistryPtrOutput() CacheToRegistryPtrOutput {
+	return i.ToCacheToRegistryPtrOutputWithContext(context.Background())
+}
+
+func (i *cacheToRegistryPtrType) ToCacheToRegistryPtrOutputWithContext(ctx context.Context) CacheToRegistryPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(CacheToRegistryPtrOutput)
+}
+
+type CacheToRegistryOutput struct{ *pulumi.OutputState }
+
+func (CacheToRegistryOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*CacheToRegistry)(nil)).Elem()
+}
+
+func (o CacheToRegistryOutput) ToCacheToRegistryOutput() CacheToRegistryOutput {
+	return o
+}
+
+func (o CacheToRegistryOutput) ToCacheToRegistryOutputWithContext(ctx context.Context) CacheToRegistryOutput {
+	return o
+}
+
+func (o CacheToRegistryOutput) ToCacheToRegistryPtrOutput() CacheToRegistryPtrOutput {
+	return o.ToCacheToRegistryPtrOutputWithContext(context.Background())
+}
+
+func (o CacheToRegistryOutput) ToCacheToRegistryPtrOutputWithContext(ctx context.Context) CacheToRegistryPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v CacheToRegistry) *CacheToRegistry {
+		return &v
+	}).(CacheToRegistryPtrOutput)
+}
+
+// The compression type to use.
+func (o CacheToRegistryOutput) Compression() CompressionTypePtrOutput {
+	return o.ApplyT(func(v CacheToRegistry) *CompressionType { return v.Compression }).(CompressionTypePtrOutput)
+}
+
+// Compression level from 0 to 22.
+func (o CacheToRegistryOutput) CompressionLevel() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v CacheToRegistry) *int { return v.CompressionLevel }).(pulumi.IntPtrOutput)
+}
+
+// Forcefully apply compression.
+func (o CacheToRegistryOutput) ForceCompression() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v CacheToRegistry) *bool { return v.ForceCompression }).(pulumi.BoolPtrOutput)
+}
+
+// Ignore errors caused by failed cache exports.
+func (o CacheToRegistryOutput) IgnoreError() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v CacheToRegistry) *bool { return v.IgnoreError }).(pulumi.BoolPtrOutput)
+}
+
+// Export cache manifest as an OCI-compatible image manifest instead of a manifest list (requires OCI media types).
+func (o CacheToRegistryOutput) ImageManifest() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v CacheToRegistry) *bool { return v.ImageManifest }).(pulumi.BoolPtrOutput)
+}
+
+func (o CacheToRegistryOutput) Mode() CacheModePtrOutput {
+	return o.ApplyT(func(v CacheToRegistry) *CacheMode { return v.Mode }).(CacheModePtrOutput)
+}
+
+// Whether to use OCI mediatypes in exported manifests.
+func (o CacheToRegistryOutput) OciMediaTypes() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v CacheToRegistry) *bool { return v.OciMediaTypes }).(pulumi.BoolPtrOutput)
+}
+
+// Full name of the cache image to import.
+func (o CacheToRegistryOutput) Ref() pulumi.StringOutput {
+	return o.ApplyT(func(v CacheToRegistry) string { return v.Ref }).(pulumi.StringOutput)
+}
+
+type CacheToRegistryPtrOutput struct{ *pulumi.OutputState }
+
+func (CacheToRegistryPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**CacheToRegistry)(nil)).Elem()
+}
+
+func (o CacheToRegistryPtrOutput) ToCacheToRegistryPtrOutput() CacheToRegistryPtrOutput {
+	return o
+}
+
+func (o CacheToRegistryPtrOutput) ToCacheToRegistryPtrOutputWithContext(ctx context.Context) CacheToRegistryPtrOutput {
+	return o
+}
+
+func (o CacheToRegistryPtrOutput) Elem() CacheToRegistryOutput {
+	return o.ApplyT(func(v *CacheToRegistry) CacheToRegistry {
+		if v != nil {
+			return *v
+		}
+		var ret CacheToRegistry
+		return ret
+	}).(CacheToRegistryOutput)
+}
+
+// The compression type to use.
+func (o CacheToRegistryPtrOutput) Compression() CompressionTypePtrOutput {
+	return o.ApplyT(func(v *CacheToRegistry) *CompressionType {
+		if v == nil {
+			return nil
+		}
+		return v.Compression
+	}).(CompressionTypePtrOutput)
+}
+
+// Compression level from 0 to 22.
+func (o CacheToRegistryPtrOutput) CompressionLevel() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v *CacheToRegistry) *int {
+		if v == nil {
+			return nil
+		}
+		return v.CompressionLevel
+	}).(pulumi.IntPtrOutput)
+}
+
+// Forcefully apply compression.
+func (o CacheToRegistryPtrOutput) ForceCompression() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *CacheToRegistry) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.ForceCompression
+	}).(pulumi.BoolPtrOutput)
+}
+
+// Ignore errors caused by failed cache exports.
+func (o CacheToRegistryPtrOutput) IgnoreError() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *CacheToRegistry) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.IgnoreError
+	}).(pulumi.BoolPtrOutput)
+}
+
+// Export cache manifest as an OCI-compatible image manifest instead of a manifest list (requires OCI media types).
+func (o CacheToRegistryPtrOutput) ImageManifest() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *CacheToRegistry) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.ImageManifest
+	}).(pulumi.BoolPtrOutput)
+}
+
+func (o CacheToRegistryPtrOutput) Mode() CacheModePtrOutput {
+	return o.ApplyT(func(v *CacheToRegistry) *CacheMode {
+		if v == nil {
+			return nil
+		}
+		return v.Mode
+	}).(CacheModePtrOutput)
+}
+
+// Whether to use OCI mediatypes in exported manifests.
+func (o CacheToRegistryPtrOutput) OciMediaTypes() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *CacheToRegistry) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.OciMediaTypes
+	}).(pulumi.BoolPtrOutput)
+}
+
+// Full name of the cache image to import.
+func (o CacheToRegistryPtrOutput) Ref() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *CacheToRegistry) *string {
+		if v == nil {
+			return nil
+		}
+		return &v.Ref
+	}).(pulumi.StringPtrOutput)
+}
+
+type CacheToS3 struct {
+	AccessKeyId *string `pulumi:"accessKeyId"`
+	BlobsPrefix *string `pulumi:"blobsPrefix"`
+	Bucket      string  `pulumi:"bucket"`
+	EndpointUrl *string `pulumi:"endpointUrl"`
+	// Ignore errors caused by failed cache exports.
+	IgnoreError     *bool      `pulumi:"ignoreError"`
+	ManifestsPrefix *string    `pulumi:"manifestsPrefix"`
+	Mode            *CacheMode `pulumi:"mode"`
+	Name            *string    `pulumi:"name"`
+	Region          string     `pulumi:"region"`
+	SecretAccessKey *string    `pulumi:"secretAccessKey"`
+	SessionToken    *string    `pulumi:"sessionToken"`
+	UsePathStyle    *bool      `pulumi:"usePathStyle"`
+}
+
+// Defaults sets the appropriate defaults for CacheToS3
+func (val *CacheToS3) Defaults() *CacheToS3 {
+	if val == nil {
+		return nil
+	}
+	tmp := *val
+	if tmp.AccessKeyId == nil {
+		if d := internal.GetEnvOrDefault("", nil, "AWS_ACCESS_KEY_ID"); d != nil {
+			accessKeyId_ := d.(string)
+			tmp.AccessKeyId = &accessKeyId_
+		}
+	}
+	if tmp.IgnoreError == nil {
+		ignoreError_ := false
+		tmp.IgnoreError = &ignoreError_
+	}
+	if tmp.Mode == nil {
+		mode_ := CacheMode("min")
+		tmp.Mode = &mode_
+	}
+	if internal.IsZero(tmp.Region) {
+		if d := internal.GetEnvOrDefault("", nil, "AWS_REGION"); d != nil {
+			tmp.Region = d.(string)
+		}
+	}
+	if tmp.SecretAccessKey == nil {
+		if d := internal.GetEnvOrDefault("", nil, "AWS_SECRET_ACCESS_KEY"); d != nil {
+			secretAccessKey_ := d.(string)
+			tmp.SecretAccessKey = &secretAccessKey_
+		}
+	}
+	if tmp.SessionToken == nil {
+		if d := internal.GetEnvOrDefault("", nil, "AWS_SESSION_TOKEN"); d != nil {
+			sessionToken_ := d.(string)
+			tmp.SessionToken = &sessionToken_
+		}
+	}
+	return &tmp
+}
+
+// CacheToS3Input is an input type that accepts CacheToS3Args and CacheToS3Output values.
+// You can construct a concrete instance of `CacheToS3Input` via:
+//
+//	CacheToS3Args{...}
+type CacheToS3Input interface {
+	pulumi.Input
+
+	ToCacheToS3Output() CacheToS3Output
+	ToCacheToS3OutputWithContext(context.Context) CacheToS3Output
+}
+
+type CacheToS3Args struct {
+	AccessKeyId pulumi.StringPtrInput `pulumi:"accessKeyId"`
+	BlobsPrefix pulumi.StringPtrInput `pulumi:"blobsPrefix"`
+	Bucket      pulumi.StringInput    `pulumi:"bucket"`
+	EndpointUrl pulumi.StringPtrInput `pulumi:"endpointUrl"`
+	// Ignore errors caused by failed cache exports.
+	IgnoreError     pulumi.BoolPtrInput   `pulumi:"ignoreError"`
+	ManifestsPrefix pulumi.StringPtrInput `pulumi:"manifestsPrefix"`
+	Mode            CacheModePtrInput     `pulumi:"mode"`
+	Name            pulumi.StringPtrInput `pulumi:"name"`
+	Region          pulumi.StringInput    `pulumi:"region"`
+	SecretAccessKey pulumi.StringPtrInput `pulumi:"secretAccessKey"`
+	SessionToken    pulumi.StringPtrInput `pulumi:"sessionToken"`
+	UsePathStyle    pulumi.BoolPtrInput   `pulumi:"usePathStyle"`
+}
+
+// Defaults sets the appropriate defaults for CacheToS3Args
+func (val *CacheToS3Args) Defaults() *CacheToS3Args {
+	if val == nil {
+		return nil
+	}
+	tmp := *val
+	if tmp.AccessKeyId == nil {
+		if d := internal.GetEnvOrDefault("", nil, "AWS_ACCESS_KEY_ID"); d != nil {
+			tmp.AccessKeyId = pulumi.StringPtr(d.(string))
+		}
+	}
+	if tmp.IgnoreError == nil {
+		tmp.IgnoreError = pulumi.BoolPtr(false)
+	}
+	if tmp.Mode == nil {
+		tmp.Mode = CacheMode("min")
+	}
+	if tmp.Region == nil {
+		if d := internal.GetEnvOrDefault("", nil, "AWS_REGION"); d != nil {
+			tmp.Region = pulumi.String(d.(string))
+		}
+	}
+	if tmp.SecretAccessKey == nil {
+		if d := internal.GetEnvOrDefault("", nil, "AWS_SECRET_ACCESS_KEY"); d != nil {
+			tmp.SecretAccessKey = pulumi.StringPtr(d.(string))
+		}
+	}
+	if tmp.SessionToken == nil {
+		if d := internal.GetEnvOrDefault("", nil, "AWS_SESSION_TOKEN"); d != nil {
+			tmp.SessionToken = pulumi.StringPtr(d.(string))
+		}
+	}
+	return &tmp
+}
+func (CacheToS3Args) ElementType() reflect.Type {
+	return reflect.TypeOf((*CacheToS3)(nil)).Elem()
+}
+
+func (i CacheToS3Args) ToCacheToS3Output() CacheToS3Output {
+	return i.ToCacheToS3OutputWithContext(context.Background())
+}
+
+func (i CacheToS3Args) ToCacheToS3OutputWithContext(ctx context.Context) CacheToS3Output {
+	return pulumi.ToOutputWithContext(ctx, i).(CacheToS3Output)
+}
+
+func (i CacheToS3Args) ToCacheToS3PtrOutput() CacheToS3PtrOutput {
+	return i.ToCacheToS3PtrOutputWithContext(context.Background())
+}
+
+func (i CacheToS3Args) ToCacheToS3PtrOutputWithContext(ctx context.Context) CacheToS3PtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(CacheToS3Output).ToCacheToS3PtrOutputWithContext(ctx)
+}
+
+// CacheToS3PtrInput is an input type that accepts CacheToS3Args, CacheToS3Ptr and CacheToS3PtrOutput values.
+// You can construct a concrete instance of `CacheToS3PtrInput` via:
+//
+//	        CacheToS3Args{...}
+//
+//	or:
+//
+//	        nil
+type CacheToS3PtrInput interface {
+	pulumi.Input
+
+	ToCacheToS3PtrOutput() CacheToS3PtrOutput
+	ToCacheToS3PtrOutputWithContext(context.Context) CacheToS3PtrOutput
+}
+
+type cacheToS3PtrType CacheToS3Args
+
+func CacheToS3Ptr(v *CacheToS3Args) CacheToS3PtrInput {
+	return (*cacheToS3PtrType)(v)
+}
+
+func (*cacheToS3PtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**CacheToS3)(nil)).Elem()
+}
+
+func (i *cacheToS3PtrType) ToCacheToS3PtrOutput() CacheToS3PtrOutput {
+	return i.ToCacheToS3PtrOutputWithContext(context.Background())
+}
+
+func (i *cacheToS3PtrType) ToCacheToS3PtrOutputWithContext(ctx context.Context) CacheToS3PtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(CacheToS3PtrOutput)
+}
+
+type CacheToS3Output struct{ *pulumi.OutputState }
+
+func (CacheToS3Output) ElementType() reflect.Type {
+	return reflect.TypeOf((*CacheToS3)(nil)).Elem()
+}
+
+func (o CacheToS3Output) ToCacheToS3Output() CacheToS3Output {
+	return o
+}
+
+func (o CacheToS3Output) ToCacheToS3OutputWithContext(ctx context.Context) CacheToS3Output {
+	return o
+}
+
+func (o CacheToS3Output) ToCacheToS3PtrOutput() CacheToS3PtrOutput {
+	return o.ToCacheToS3PtrOutputWithContext(context.Background())
+}
+
+func (o CacheToS3Output) ToCacheToS3PtrOutputWithContext(ctx context.Context) CacheToS3PtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v CacheToS3) *CacheToS3 {
+		return &v
+	}).(CacheToS3PtrOutput)
+}
+
+func (o CacheToS3Output) AccessKeyId() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v CacheToS3) *string { return v.AccessKeyId }).(pulumi.StringPtrOutput)
+}
+
+func (o CacheToS3Output) BlobsPrefix() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v CacheToS3) *string { return v.BlobsPrefix }).(pulumi.StringPtrOutput)
+}
+
+func (o CacheToS3Output) Bucket() pulumi.StringOutput {
+	return o.ApplyT(func(v CacheToS3) string { return v.Bucket }).(pulumi.StringOutput)
+}
+
+func (o CacheToS3Output) EndpointUrl() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v CacheToS3) *string { return v.EndpointUrl }).(pulumi.StringPtrOutput)
+}
+
+// Ignore errors caused by failed cache exports.
+func (o CacheToS3Output) IgnoreError() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v CacheToS3) *bool { return v.IgnoreError }).(pulumi.BoolPtrOutput)
+}
+
+func (o CacheToS3Output) ManifestsPrefix() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v CacheToS3) *string { return v.ManifestsPrefix }).(pulumi.StringPtrOutput)
+}
+
+func (o CacheToS3Output) Mode() CacheModePtrOutput {
+	return o.ApplyT(func(v CacheToS3) *CacheMode { return v.Mode }).(CacheModePtrOutput)
+}
+
+func (o CacheToS3Output) Name() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v CacheToS3) *string { return v.Name }).(pulumi.StringPtrOutput)
+}
+
+func (o CacheToS3Output) Region() pulumi.StringOutput {
+	return o.ApplyT(func(v CacheToS3) string { return v.Region }).(pulumi.StringOutput)
+}
+
+func (o CacheToS3Output) SecretAccessKey() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v CacheToS3) *string { return v.SecretAccessKey }).(pulumi.StringPtrOutput)
+}
+
+func (o CacheToS3Output) SessionToken() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v CacheToS3) *string { return v.SessionToken }).(pulumi.StringPtrOutput)
+}
+
+func (o CacheToS3Output) UsePathStyle() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v CacheToS3) *bool { return v.UsePathStyle }).(pulumi.BoolPtrOutput)
+}
+
+type CacheToS3PtrOutput struct{ *pulumi.OutputState }
+
+func (CacheToS3PtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**CacheToS3)(nil)).Elem()
+}
+
+func (o CacheToS3PtrOutput) ToCacheToS3PtrOutput() CacheToS3PtrOutput {
+	return o
+}
+
+func (o CacheToS3PtrOutput) ToCacheToS3PtrOutputWithContext(ctx context.Context) CacheToS3PtrOutput {
+	return o
+}
+
+func (o CacheToS3PtrOutput) Elem() CacheToS3Output {
+	return o.ApplyT(func(v *CacheToS3) CacheToS3 {
+		if v != nil {
+			return *v
+		}
+		var ret CacheToS3
+		return ret
+	}).(CacheToS3Output)
+}
+
+func (o CacheToS3PtrOutput) AccessKeyId() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *CacheToS3) *string {
+		if v == nil {
+			return nil
+		}
+		return v.AccessKeyId
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o CacheToS3PtrOutput) BlobsPrefix() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *CacheToS3) *string {
+		if v == nil {
+			return nil
+		}
+		return v.BlobsPrefix
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o CacheToS3PtrOutput) Bucket() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *CacheToS3) *string {
+		if v == nil {
+			return nil
+		}
+		return &v.Bucket
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o CacheToS3PtrOutput) EndpointUrl() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *CacheToS3) *string {
+		if v == nil {
+			return nil
+		}
+		return v.EndpointUrl
+	}).(pulumi.StringPtrOutput)
+}
+
+// Ignore errors caused by failed cache exports.
+func (o CacheToS3PtrOutput) IgnoreError() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *CacheToS3) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.IgnoreError
+	}).(pulumi.BoolPtrOutput)
+}
+
+func (o CacheToS3PtrOutput) ManifestsPrefix() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *CacheToS3) *string {
+		if v == nil {
+			return nil
+		}
+		return v.ManifestsPrefix
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o CacheToS3PtrOutput) Mode() CacheModePtrOutput {
+	return o.ApplyT(func(v *CacheToS3) *CacheMode {
+		if v == nil {
+			return nil
+		}
+		return v.Mode
+	}).(CacheModePtrOutput)
+}
+
+func (o CacheToS3PtrOutput) Name() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *CacheToS3) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Name
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o CacheToS3PtrOutput) Region() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *CacheToS3) *string {
+		if v == nil {
+			return nil
+		}
+		return &v.Region
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o CacheToS3PtrOutput) SecretAccessKey() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *CacheToS3) *string {
+		if v == nil {
+			return nil
+		}
+		return v.SecretAccessKey
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o CacheToS3PtrOutput) SessionToken() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *CacheToS3) *string {
+		if v == nil {
+			return nil
+		}
+		return v.SessionToken
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o CacheToS3PtrOutput) UsePathStyle() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *CacheToS3) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.UsePathStyle
+	}).(pulumi.BoolPtrOutput)
+}
+
+type ExportDocker struct {
+	Annotations map[string]string `pulumi:"annotations"`
+	// The compression type to use.
+	Compression *CompressionType `pulumi:"compression"`
+	// Compression level from 0 to 22.
+	CompressionLevel *int `pulumi:"compressionLevel"`
+	// The local export path.
+	Dest *string `pulumi:"dest"`
+	// Forcefully apply compression.
+	ForceCompression *bool `pulumi:"forceCompression"`
+	// Specify images names to export. This is overridden if tags are already specified.
+	Names []string `pulumi:"names"`
+	// Use OCI media types in exporter manifests.
+	OciMediaTypes *bool `pulumi:"ociMediaTypes"`
+	// Bundle the output into a tarball layout.
+	Tar *bool `pulumi:"tar"`
+}
+
+// Defaults sets the appropriate defaults for ExportDocker
+func (val *ExportDocker) Defaults() *ExportDocker {
+	if val == nil {
+		return nil
+	}
+	tmp := *val
+	if tmp.Compression == nil {
+		compression_ := CompressionType("gzip")
+		tmp.Compression = &compression_
+	}
+	if tmp.CompressionLevel == nil {
+		compressionLevel_ := 0
+		tmp.CompressionLevel = &compressionLevel_
+	}
+	if tmp.ForceCompression == nil {
+		forceCompression_ := false
+		tmp.ForceCompression = &forceCompression_
+	}
+	if tmp.OciMediaTypes == nil {
+		ociMediaTypes_ := false
+		tmp.OciMediaTypes = &ociMediaTypes_
+	}
+	if tmp.Tar == nil {
+		tar_ := true
+		tmp.Tar = &tar_
+	}
+	return &tmp
+}
+
+// ExportDockerInput is an input type that accepts ExportDockerArgs and ExportDockerOutput values.
+// You can construct a concrete instance of `ExportDockerInput` via:
+//
+//	ExportDockerArgs{...}
+type ExportDockerInput interface {
+	pulumi.Input
+
+	ToExportDockerOutput() ExportDockerOutput
+	ToExportDockerOutputWithContext(context.Context) ExportDockerOutput
+}
+
+type ExportDockerArgs struct {
+	Annotations pulumi.StringMapInput `pulumi:"annotations"`
+	// The compression type to use.
+	Compression CompressionTypePtrInput `pulumi:"compression"`
+	// Compression level from 0 to 22.
+	CompressionLevel pulumi.IntPtrInput `pulumi:"compressionLevel"`
+	// The local export path.
+	Dest pulumi.StringPtrInput `pulumi:"dest"`
+	// Forcefully apply compression.
+	ForceCompression pulumi.BoolPtrInput `pulumi:"forceCompression"`
+	// Specify images names to export. This is overridden if tags are already specified.
+	Names pulumi.StringArrayInput `pulumi:"names"`
+	// Use OCI media types in exporter manifests.
+	OciMediaTypes pulumi.BoolPtrInput `pulumi:"ociMediaTypes"`
+	// Bundle the output into a tarball layout.
+	Tar pulumi.BoolPtrInput `pulumi:"tar"`
+}
+
+// Defaults sets the appropriate defaults for ExportDockerArgs
+func (val *ExportDockerArgs) Defaults() *ExportDockerArgs {
+	if val == nil {
+		return nil
+	}
+	tmp := *val
+	if tmp.Compression == nil {
+		tmp.Compression = CompressionType("gzip")
+	}
+	if tmp.CompressionLevel == nil {
+		tmp.CompressionLevel = pulumi.IntPtr(0)
+	}
+	if tmp.ForceCompression == nil {
+		tmp.ForceCompression = pulumi.BoolPtr(false)
+	}
+	if tmp.OciMediaTypes == nil {
+		tmp.OciMediaTypes = pulumi.BoolPtr(false)
+	}
+	if tmp.Tar == nil {
+		tmp.Tar = pulumi.BoolPtr(true)
+	}
+	return &tmp
+}
+func (ExportDockerArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*ExportDocker)(nil)).Elem()
+}
+
+func (i ExportDockerArgs) ToExportDockerOutput() ExportDockerOutput {
+	return i.ToExportDockerOutputWithContext(context.Background())
+}
+
+func (i ExportDockerArgs) ToExportDockerOutputWithContext(ctx context.Context) ExportDockerOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ExportDockerOutput)
+}
+
+func (i ExportDockerArgs) ToExportDockerPtrOutput() ExportDockerPtrOutput {
+	return i.ToExportDockerPtrOutputWithContext(context.Background())
+}
+
+func (i ExportDockerArgs) ToExportDockerPtrOutputWithContext(ctx context.Context) ExportDockerPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ExportDockerOutput).ToExportDockerPtrOutputWithContext(ctx)
+}
+
+// ExportDockerPtrInput is an input type that accepts ExportDockerArgs, ExportDockerPtr and ExportDockerPtrOutput values.
+// You can construct a concrete instance of `ExportDockerPtrInput` via:
+//
+//	        ExportDockerArgs{...}
+//
+//	or:
+//
+//	        nil
+type ExportDockerPtrInput interface {
+	pulumi.Input
+
+	ToExportDockerPtrOutput() ExportDockerPtrOutput
+	ToExportDockerPtrOutputWithContext(context.Context) ExportDockerPtrOutput
+}
+
+type exportDockerPtrType ExportDockerArgs
+
+func ExportDockerPtr(v *ExportDockerArgs) ExportDockerPtrInput {
+	return (*exportDockerPtrType)(v)
+}
+
+func (*exportDockerPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**ExportDocker)(nil)).Elem()
+}
+
+func (i *exportDockerPtrType) ToExportDockerPtrOutput() ExportDockerPtrOutput {
+	return i.ToExportDockerPtrOutputWithContext(context.Background())
+}
+
+func (i *exportDockerPtrType) ToExportDockerPtrOutputWithContext(ctx context.Context) ExportDockerPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ExportDockerPtrOutput)
+}
+
+type ExportDockerOutput struct{ *pulumi.OutputState }
+
+func (ExportDockerOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*ExportDocker)(nil)).Elem()
+}
+
+func (o ExportDockerOutput) ToExportDockerOutput() ExportDockerOutput {
+	return o
+}
+
+func (o ExportDockerOutput) ToExportDockerOutputWithContext(ctx context.Context) ExportDockerOutput {
+	return o
+}
+
+func (o ExportDockerOutput) ToExportDockerPtrOutput() ExportDockerPtrOutput {
+	return o.ToExportDockerPtrOutputWithContext(context.Background())
+}
+
+func (o ExportDockerOutput) ToExportDockerPtrOutputWithContext(ctx context.Context) ExportDockerPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v ExportDocker) *ExportDocker {
+		return &v
+	}).(ExportDockerPtrOutput)
+}
+
+func (o ExportDockerOutput) Annotations() pulumi.StringMapOutput {
+	return o.ApplyT(func(v ExportDocker) map[string]string { return v.Annotations }).(pulumi.StringMapOutput)
+}
+
+// The compression type to use.
+func (o ExportDockerOutput) Compression() CompressionTypePtrOutput {
+	return o.ApplyT(func(v ExportDocker) *CompressionType { return v.Compression }).(CompressionTypePtrOutput)
+}
+
+// Compression level from 0 to 22.
+func (o ExportDockerOutput) CompressionLevel() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v ExportDocker) *int { return v.CompressionLevel }).(pulumi.IntPtrOutput)
+}
+
+// The local export path.
+func (o ExportDockerOutput) Dest() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v ExportDocker) *string { return v.Dest }).(pulumi.StringPtrOutput)
+}
+
+// Forcefully apply compression.
+func (o ExportDockerOutput) ForceCompression() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v ExportDocker) *bool { return v.ForceCompression }).(pulumi.BoolPtrOutput)
+}
+
+// Specify images names to export. This is overridden if tags are already specified.
+func (o ExportDockerOutput) Names() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v ExportDocker) []string { return v.Names }).(pulumi.StringArrayOutput)
+}
+
+// Use OCI media types in exporter manifests.
+func (o ExportDockerOutput) OciMediaTypes() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v ExportDocker) *bool { return v.OciMediaTypes }).(pulumi.BoolPtrOutput)
+}
+
+// Bundle the output into a tarball layout.
+func (o ExportDockerOutput) Tar() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v ExportDocker) *bool { return v.Tar }).(pulumi.BoolPtrOutput)
+}
+
+type ExportDockerPtrOutput struct{ *pulumi.OutputState }
+
+func (ExportDockerPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**ExportDocker)(nil)).Elem()
+}
+
+func (o ExportDockerPtrOutput) ToExportDockerPtrOutput() ExportDockerPtrOutput {
+	return o
+}
+
+func (o ExportDockerPtrOutput) ToExportDockerPtrOutputWithContext(ctx context.Context) ExportDockerPtrOutput {
+	return o
+}
+
+func (o ExportDockerPtrOutput) Elem() ExportDockerOutput {
+	return o.ApplyT(func(v *ExportDocker) ExportDocker {
+		if v != nil {
+			return *v
+		}
+		var ret ExportDocker
+		return ret
+	}).(ExportDockerOutput)
+}
+
+func (o ExportDockerPtrOutput) Annotations() pulumi.StringMapOutput {
+	return o.ApplyT(func(v *ExportDocker) map[string]string {
+		if v == nil {
+			return nil
+		}
+		return v.Annotations
+	}).(pulumi.StringMapOutput)
+}
+
+// The compression type to use.
+func (o ExportDockerPtrOutput) Compression() CompressionTypePtrOutput {
+	return o.ApplyT(func(v *ExportDocker) *CompressionType {
+		if v == nil {
+			return nil
+		}
+		return v.Compression
+	}).(CompressionTypePtrOutput)
+}
+
+// Compression level from 0 to 22.
+func (o ExportDockerPtrOutput) CompressionLevel() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v *ExportDocker) *int {
+		if v == nil {
+			return nil
+		}
+		return v.CompressionLevel
+	}).(pulumi.IntPtrOutput)
+}
+
+// The local export path.
+func (o ExportDockerPtrOutput) Dest() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *ExportDocker) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Dest
+	}).(pulumi.StringPtrOutput)
+}
+
+// Forcefully apply compression.
+func (o ExportDockerPtrOutput) ForceCompression() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *ExportDocker) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.ForceCompression
+	}).(pulumi.BoolPtrOutput)
+}
+
+// Specify images names to export. This is overridden if tags are already specified.
+func (o ExportDockerPtrOutput) Names() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v *ExportDocker) []string {
+		if v == nil {
+			return nil
+		}
+		return v.Names
+	}).(pulumi.StringArrayOutput)
+}
+
+// Use OCI media types in exporter manifests.
+func (o ExportDockerPtrOutput) OciMediaTypes() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *ExportDocker) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.OciMediaTypes
+	}).(pulumi.BoolPtrOutput)
+}
+
+// Bundle the output into a tarball layout.
+func (o ExportDockerPtrOutput) Tar() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *ExportDocker) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.Tar
+	}).(pulumi.BoolPtrOutput)
+}
+
+type ExportEntry struct {
+	// When "true" this entry will be excluded. Defaults to "false".
+	Disabled *bool `pulumi:"disabled"`
+	// Export as a Docker image layout.
+	Docker *ExportDocker `pulumi:"docker"`
+	// Outputs the build result into a container image format.
+	Image *ExportImage `pulumi:"image"`
+	// Export to a local directory as files and directories.
+	Local *ExportLocal `pulumi:"local"`
+	// Identical to the Docker exporter but uses OCI media types by default.
+	Oci *ExportOCI `pulumi:"oci"`
+	// A raw string as you would provide it to the Docker CLI (e.g.,
+	// "type=docker")
+	Raw *string `pulumi:"raw"`
+	// Identical to the Image exporter, but pushes by default.
+	Registry *ExportRegistry `pulumi:"registry"`
+	// Export to a local directory as a tarball.
+	Tar *ExportTar `pulumi:"tar"`
+}
+
+// Defaults sets the appropriate defaults for ExportEntry
+func (val *ExportEntry) Defaults() *ExportEntry {
+	if val == nil {
+		return nil
+	}
+	tmp := *val
+	tmp.Docker = tmp.Docker.Defaults()
+
+	tmp.Image = tmp.Image.Defaults()
+
+	tmp.Oci = tmp.Oci.Defaults()
+
+	tmp.Registry = tmp.Registry.Defaults()
+
+	return &tmp
+}
+
+// ExportEntryInput is an input type that accepts ExportEntryArgs and ExportEntryOutput values.
+// You can construct a concrete instance of `ExportEntryInput` via:
+//
+//	ExportEntryArgs{...}
+type ExportEntryInput interface {
+	pulumi.Input
+
+	ToExportEntryOutput() ExportEntryOutput
+	ToExportEntryOutputWithContext(context.Context) ExportEntryOutput
+}
+
+type ExportEntryArgs struct {
+	// When "true" this entry will be excluded. Defaults to "false".
+	Disabled pulumi.BoolPtrInput `pulumi:"disabled"`
+	// Export as a Docker image layout.
+	Docker ExportDockerPtrInput `pulumi:"docker"`
+	// Outputs the build result into a container image format.
+	Image ExportImagePtrInput `pulumi:"image"`
+	// Export to a local directory as files and directories.
+	Local ExportLocalPtrInput `pulumi:"local"`
+	// Identical to the Docker exporter but uses OCI media types by default.
+	Oci ExportOCIPtrInput `pulumi:"oci"`
+	// A raw string as you would provide it to the Docker CLI (e.g.,
+	// "type=docker")
+	Raw pulumi.StringPtrInput `pulumi:"raw"`
+	// Identical to the Image exporter, but pushes by default.
+	Registry ExportRegistryPtrInput `pulumi:"registry"`
+	// Export to a local directory as a tarball.
+	Tar ExportTarPtrInput `pulumi:"tar"`
+}
+
+// Defaults sets the appropriate defaults for ExportEntryArgs
+func (val *ExportEntryArgs) Defaults() *ExportEntryArgs {
+	if val == nil {
+		return nil
+	}
+	tmp := *val
+
+	return &tmp
+}
+func (ExportEntryArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*ExportEntry)(nil)).Elem()
+}
+
+func (i ExportEntryArgs) ToExportEntryOutput() ExportEntryOutput {
+	return i.ToExportEntryOutputWithContext(context.Background())
+}
+
+func (i ExportEntryArgs) ToExportEntryOutputWithContext(ctx context.Context) ExportEntryOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ExportEntryOutput)
+}
+
+// ExportEntryArrayInput is an input type that accepts ExportEntryArray and ExportEntryArrayOutput values.
+// You can construct a concrete instance of `ExportEntryArrayInput` via:
+//
+//	ExportEntryArray{ ExportEntryArgs{...} }
+type ExportEntryArrayInput interface {
+	pulumi.Input
+
+	ToExportEntryArrayOutput() ExportEntryArrayOutput
+	ToExportEntryArrayOutputWithContext(context.Context) ExportEntryArrayOutput
+}
+
+type ExportEntryArray []ExportEntryInput
+
+func (ExportEntryArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]ExportEntry)(nil)).Elem()
+}
+
+func (i ExportEntryArray) ToExportEntryArrayOutput() ExportEntryArrayOutput {
+	return i.ToExportEntryArrayOutputWithContext(context.Background())
+}
+
+func (i ExportEntryArray) ToExportEntryArrayOutputWithContext(ctx context.Context) ExportEntryArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ExportEntryArrayOutput)
+}
+
+type ExportEntryOutput struct{ *pulumi.OutputState }
+
+func (ExportEntryOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*ExportEntry)(nil)).Elem()
+}
+
+func (o ExportEntryOutput) ToExportEntryOutput() ExportEntryOutput {
+	return o
+}
+
+func (o ExportEntryOutput) ToExportEntryOutputWithContext(ctx context.Context) ExportEntryOutput {
+	return o
+}
+
+// When "true" this entry will be excluded. Defaults to "false".
+func (o ExportEntryOutput) Disabled() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v ExportEntry) *bool { return v.Disabled }).(pulumi.BoolPtrOutput)
+}
+
+// Export as a Docker image layout.
+func (o ExportEntryOutput) Docker() ExportDockerPtrOutput {
+	return o.ApplyT(func(v ExportEntry) *ExportDocker { return v.Docker }).(ExportDockerPtrOutput)
+}
+
+// Outputs the build result into a container image format.
+func (o ExportEntryOutput) Image() ExportImagePtrOutput {
+	return o.ApplyT(func(v ExportEntry) *ExportImage { return v.Image }).(ExportImagePtrOutput)
+}
+
+// Export to a local directory as files and directories.
+func (o ExportEntryOutput) Local() ExportLocalPtrOutput {
+	return o.ApplyT(func(v ExportEntry) *ExportLocal { return v.Local }).(ExportLocalPtrOutput)
+}
+
+// Identical to the Docker exporter but uses OCI media types by default.
+func (o ExportEntryOutput) Oci() ExportOCIPtrOutput {
+	return o.ApplyT(func(v ExportEntry) *ExportOCI { return v.Oci }).(ExportOCIPtrOutput)
+}
+
+// A raw string as you would provide it to the Docker CLI (e.g.,
+// "type=docker")
+func (o ExportEntryOutput) Raw() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v ExportEntry) *string { return v.Raw }).(pulumi.StringPtrOutput)
+}
+
+// Identical to the Image exporter, but pushes by default.
+func (o ExportEntryOutput) Registry() ExportRegistryPtrOutput {
+	return o.ApplyT(func(v ExportEntry) *ExportRegistry { return v.Registry }).(ExportRegistryPtrOutput)
+}
+
+// Export to a local directory as a tarball.
+func (o ExportEntryOutput) Tar() ExportTarPtrOutput {
+	return o.ApplyT(func(v ExportEntry) *ExportTar { return v.Tar }).(ExportTarPtrOutput)
+}
+
+type ExportEntryArrayOutput struct{ *pulumi.OutputState }
+
+func (ExportEntryArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]ExportEntry)(nil)).Elem()
+}
+
+func (o ExportEntryArrayOutput) ToExportEntryArrayOutput() ExportEntryArrayOutput {
+	return o
+}
+
+func (o ExportEntryArrayOutput) ToExportEntryArrayOutputWithContext(ctx context.Context) ExportEntryArrayOutput {
+	return o
+}
+
+func (o ExportEntryArrayOutput) Index(i pulumi.IntInput) ExportEntryOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) ExportEntry {
+		return vs[0].([]ExportEntry)[vs[1].(int)]
+	}).(ExportEntryOutput)
+}
+
+type ExportImage struct {
+	Annotations map[string]string `pulumi:"annotations"`
+	// The compression type to use.
+	Compression *CompressionType `pulumi:"compression"`
+	// Compression level from 0 to 22.
+	CompressionLevel   *int    `pulumi:"compressionLevel"`
+	DanglingNamePrefix *string `pulumi:"danglingNamePrefix"`
+	// Forcefully apply compression.
+	ForceCompression *bool `pulumi:"forceCompression"`
+	Insecure         *bool `pulumi:"insecure"`
+	NameCanonical    *bool `pulumi:"nameCanonical"`
+	// Specify images names to export. This is overridden if tags are already specified.
+	Names []string `pulumi:"names"`
+	// Use OCI media types in exporter manifests.
+	OciMediaTypes *bool `pulumi:"ociMediaTypes"`
+	// Push after creating the image.
+	Push         *bool `pulumi:"push"`
+	PushByDigest *bool `pulumi:"pushByDigest"`
+	// Store resulting images to the worker's image store, and ensure all its
+	// blobs are in the content store. Ignored if the worker doesn't have
+	// image store (when using OCI workers, for example).
+	Store  *bool `pulumi:"store"`
+	Unpack *bool `pulumi:"unpack"`
+}
+
+// Defaults sets the appropriate defaults for ExportImage
+func (val *ExportImage) Defaults() *ExportImage {
+	if val == nil {
+		return nil
+	}
+	tmp := *val
+	if tmp.Compression == nil {
+		compression_ := CompressionType("gzip")
+		tmp.Compression = &compression_
+	}
+	if tmp.CompressionLevel == nil {
+		compressionLevel_ := 0
+		tmp.CompressionLevel = &compressionLevel_
+	}
+	if tmp.ForceCompression == nil {
+		forceCompression_ := false
+		tmp.ForceCompression = &forceCompression_
+	}
+	if tmp.OciMediaTypes == nil {
+		ociMediaTypes_ := false
+		tmp.OciMediaTypes = &ociMediaTypes_
+	}
+	if tmp.Store == nil {
+		store_ := true
+		tmp.Store = &store_
+	}
+	return &tmp
+}
+
+// ExportImageInput is an input type that accepts ExportImageArgs and ExportImageOutput values.
+// You can construct a concrete instance of `ExportImageInput` via:
+//
+//	ExportImageArgs{...}
+type ExportImageInput interface {
+	pulumi.Input
+
+	ToExportImageOutput() ExportImageOutput
+	ToExportImageOutputWithContext(context.Context) ExportImageOutput
+}
+
+type ExportImageArgs struct {
+	Annotations pulumi.StringMapInput `pulumi:"annotations"`
+	// The compression type to use.
+	Compression CompressionTypePtrInput `pulumi:"compression"`
+	// Compression level from 0 to 22.
+	CompressionLevel   pulumi.IntPtrInput    `pulumi:"compressionLevel"`
+	DanglingNamePrefix pulumi.StringPtrInput `pulumi:"danglingNamePrefix"`
+	// Forcefully apply compression.
+	ForceCompression pulumi.BoolPtrInput `pulumi:"forceCompression"`
+	Insecure         pulumi.BoolPtrInput `pulumi:"insecure"`
+	NameCanonical    pulumi.BoolPtrInput `pulumi:"nameCanonical"`
+	// Specify images names to export. This is overridden if tags are already specified.
+	Names pulumi.StringArrayInput `pulumi:"names"`
+	// Use OCI media types in exporter manifests.
+	OciMediaTypes pulumi.BoolPtrInput `pulumi:"ociMediaTypes"`
+	// Push after creating the image.
+	Push         pulumi.BoolPtrInput `pulumi:"push"`
+	PushByDigest pulumi.BoolPtrInput `pulumi:"pushByDigest"`
+	// Store resulting images to the worker's image store, and ensure all its
+	// blobs are in the content store. Ignored if the worker doesn't have
+	// image store (when using OCI workers, for example).
+	Store  pulumi.BoolPtrInput `pulumi:"store"`
+	Unpack pulumi.BoolPtrInput `pulumi:"unpack"`
+}
+
+// Defaults sets the appropriate defaults for ExportImageArgs
+func (val *ExportImageArgs) Defaults() *ExportImageArgs {
+	if val == nil {
+		return nil
+	}
+	tmp := *val
+	if tmp.Compression == nil {
+		tmp.Compression = CompressionType("gzip")
+	}
+	if tmp.CompressionLevel == nil {
+		tmp.CompressionLevel = pulumi.IntPtr(0)
+	}
+	if tmp.ForceCompression == nil {
+		tmp.ForceCompression = pulumi.BoolPtr(false)
+	}
+	if tmp.OciMediaTypes == nil {
+		tmp.OciMediaTypes = pulumi.BoolPtr(false)
+	}
+	if tmp.Store == nil {
+		tmp.Store = pulumi.BoolPtr(true)
+	}
+	return &tmp
+}
+func (ExportImageArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*ExportImage)(nil)).Elem()
+}
+
+func (i ExportImageArgs) ToExportImageOutput() ExportImageOutput {
+	return i.ToExportImageOutputWithContext(context.Background())
+}
+
+func (i ExportImageArgs) ToExportImageOutputWithContext(ctx context.Context) ExportImageOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ExportImageOutput)
+}
+
+func (i ExportImageArgs) ToExportImagePtrOutput() ExportImagePtrOutput {
+	return i.ToExportImagePtrOutputWithContext(context.Background())
+}
+
+func (i ExportImageArgs) ToExportImagePtrOutputWithContext(ctx context.Context) ExportImagePtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ExportImageOutput).ToExportImagePtrOutputWithContext(ctx)
+}
+
+// ExportImagePtrInput is an input type that accepts ExportImageArgs, ExportImagePtr and ExportImagePtrOutput values.
+// You can construct a concrete instance of `ExportImagePtrInput` via:
+//
+//	        ExportImageArgs{...}
+//
+//	or:
+//
+//	        nil
+type ExportImagePtrInput interface {
+	pulumi.Input
+
+	ToExportImagePtrOutput() ExportImagePtrOutput
+	ToExportImagePtrOutputWithContext(context.Context) ExportImagePtrOutput
+}
+
+type exportImagePtrType ExportImageArgs
+
+func ExportImagePtr(v *ExportImageArgs) ExportImagePtrInput {
+	return (*exportImagePtrType)(v)
+}
+
+func (*exportImagePtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**ExportImage)(nil)).Elem()
+}
+
+func (i *exportImagePtrType) ToExportImagePtrOutput() ExportImagePtrOutput {
+	return i.ToExportImagePtrOutputWithContext(context.Background())
+}
+
+func (i *exportImagePtrType) ToExportImagePtrOutputWithContext(ctx context.Context) ExportImagePtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ExportImagePtrOutput)
+}
+
+type ExportImageOutput struct{ *pulumi.OutputState }
+
+func (ExportImageOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*ExportImage)(nil)).Elem()
+}
+
+func (o ExportImageOutput) ToExportImageOutput() ExportImageOutput {
+	return o
+}
+
+func (o ExportImageOutput) ToExportImageOutputWithContext(ctx context.Context) ExportImageOutput {
+	return o
+}
+
+func (o ExportImageOutput) ToExportImagePtrOutput() ExportImagePtrOutput {
+	return o.ToExportImagePtrOutputWithContext(context.Background())
+}
+
+func (o ExportImageOutput) ToExportImagePtrOutputWithContext(ctx context.Context) ExportImagePtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v ExportImage) *ExportImage {
+		return &v
+	}).(ExportImagePtrOutput)
+}
+
+func (o ExportImageOutput) Annotations() pulumi.StringMapOutput {
+	return o.ApplyT(func(v ExportImage) map[string]string { return v.Annotations }).(pulumi.StringMapOutput)
+}
+
+// The compression type to use.
+func (o ExportImageOutput) Compression() CompressionTypePtrOutput {
+	return o.ApplyT(func(v ExportImage) *CompressionType { return v.Compression }).(CompressionTypePtrOutput)
+}
+
+// Compression level from 0 to 22.
+func (o ExportImageOutput) CompressionLevel() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v ExportImage) *int { return v.CompressionLevel }).(pulumi.IntPtrOutput)
+}
+
+func (o ExportImageOutput) DanglingNamePrefix() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v ExportImage) *string { return v.DanglingNamePrefix }).(pulumi.StringPtrOutput)
+}
+
+// Forcefully apply compression.
+func (o ExportImageOutput) ForceCompression() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v ExportImage) *bool { return v.ForceCompression }).(pulumi.BoolPtrOutput)
+}
+
+func (o ExportImageOutput) Insecure() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v ExportImage) *bool { return v.Insecure }).(pulumi.BoolPtrOutput)
+}
+
+func (o ExportImageOutput) NameCanonical() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v ExportImage) *bool { return v.NameCanonical }).(pulumi.BoolPtrOutput)
+}
+
+// Specify images names to export. This is overridden if tags are already specified.
+func (o ExportImageOutput) Names() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v ExportImage) []string { return v.Names }).(pulumi.StringArrayOutput)
+}
+
+// Use OCI media types in exporter manifests.
+func (o ExportImageOutput) OciMediaTypes() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v ExportImage) *bool { return v.OciMediaTypes }).(pulumi.BoolPtrOutput)
+}
+
+// Push after creating the image.
+func (o ExportImageOutput) Push() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v ExportImage) *bool { return v.Push }).(pulumi.BoolPtrOutput)
+}
+
+func (o ExportImageOutput) PushByDigest() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v ExportImage) *bool { return v.PushByDigest }).(pulumi.BoolPtrOutput)
+}
+
+// Store resulting images to the worker's image store, and ensure all its
+// blobs are in the content store. Ignored if the worker doesn't have
+// image store (when using OCI workers, for example).
+func (o ExportImageOutput) Store() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v ExportImage) *bool { return v.Store }).(pulumi.BoolPtrOutput)
+}
+
+func (o ExportImageOutput) Unpack() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v ExportImage) *bool { return v.Unpack }).(pulumi.BoolPtrOutput)
+}
+
+type ExportImagePtrOutput struct{ *pulumi.OutputState }
+
+func (ExportImagePtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**ExportImage)(nil)).Elem()
+}
+
+func (o ExportImagePtrOutput) ToExportImagePtrOutput() ExportImagePtrOutput {
+	return o
+}
+
+func (o ExportImagePtrOutput) ToExportImagePtrOutputWithContext(ctx context.Context) ExportImagePtrOutput {
+	return o
+}
+
+func (o ExportImagePtrOutput) Elem() ExportImageOutput {
+	return o.ApplyT(func(v *ExportImage) ExportImage {
+		if v != nil {
+			return *v
+		}
+		var ret ExportImage
+		return ret
+	}).(ExportImageOutput)
+}
+
+func (o ExportImagePtrOutput) Annotations() pulumi.StringMapOutput {
+	return o.ApplyT(func(v *ExportImage) map[string]string {
+		if v == nil {
+			return nil
+		}
+		return v.Annotations
+	}).(pulumi.StringMapOutput)
+}
+
+// The compression type to use.
+func (o ExportImagePtrOutput) Compression() CompressionTypePtrOutput {
+	return o.ApplyT(func(v *ExportImage) *CompressionType {
+		if v == nil {
+			return nil
+		}
+		return v.Compression
+	}).(CompressionTypePtrOutput)
+}
+
+// Compression level from 0 to 22.
+func (o ExportImagePtrOutput) CompressionLevel() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v *ExportImage) *int {
+		if v == nil {
+			return nil
+		}
+		return v.CompressionLevel
+	}).(pulumi.IntPtrOutput)
+}
+
+func (o ExportImagePtrOutput) DanglingNamePrefix() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *ExportImage) *string {
+		if v == nil {
+			return nil
+		}
+		return v.DanglingNamePrefix
+	}).(pulumi.StringPtrOutput)
+}
+
+// Forcefully apply compression.
+func (o ExportImagePtrOutput) ForceCompression() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *ExportImage) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.ForceCompression
+	}).(pulumi.BoolPtrOutput)
+}
+
+func (o ExportImagePtrOutput) Insecure() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *ExportImage) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.Insecure
+	}).(pulumi.BoolPtrOutput)
+}
+
+func (o ExportImagePtrOutput) NameCanonical() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *ExportImage) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.NameCanonical
+	}).(pulumi.BoolPtrOutput)
+}
+
+// Specify images names to export. This is overridden if tags are already specified.
+func (o ExportImagePtrOutput) Names() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v *ExportImage) []string {
+		if v == nil {
+			return nil
+		}
+		return v.Names
+	}).(pulumi.StringArrayOutput)
+}
+
+// Use OCI media types in exporter manifests.
+func (o ExportImagePtrOutput) OciMediaTypes() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *ExportImage) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.OciMediaTypes
+	}).(pulumi.BoolPtrOutput)
+}
+
+// Push after creating the image.
+func (o ExportImagePtrOutput) Push() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *ExportImage) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.Push
+	}).(pulumi.BoolPtrOutput)
+}
+
+func (o ExportImagePtrOutput) PushByDigest() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *ExportImage) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.PushByDigest
+	}).(pulumi.BoolPtrOutput)
+}
+
+// Store resulting images to the worker's image store, and ensure all its
+// blobs are in the content store. Ignored if the worker doesn't have
+// image store (when using OCI workers, for example).
+func (o ExportImagePtrOutput) Store() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *ExportImage) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.Store
+	}).(pulumi.BoolPtrOutput)
+}
+
+func (o ExportImagePtrOutput) Unpack() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *ExportImage) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.Unpack
+	}).(pulumi.BoolPtrOutput)
+}
+
+type ExportLocal struct {
+	// Output path.
+	Dest string `pulumi:"dest"`
+}
+
+// ExportLocalInput is an input type that accepts ExportLocalArgs and ExportLocalOutput values.
+// You can construct a concrete instance of `ExportLocalInput` via:
+//
+//	ExportLocalArgs{...}
+type ExportLocalInput interface {
+	pulumi.Input
+
+	ToExportLocalOutput() ExportLocalOutput
+	ToExportLocalOutputWithContext(context.Context) ExportLocalOutput
+}
+
+type ExportLocalArgs struct {
+	// Output path.
+	Dest pulumi.StringInput `pulumi:"dest"`
+}
+
+func (ExportLocalArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*ExportLocal)(nil)).Elem()
+}
+
+func (i ExportLocalArgs) ToExportLocalOutput() ExportLocalOutput {
+	return i.ToExportLocalOutputWithContext(context.Background())
+}
+
+func (i ExportLocalArgs) ToExportLocalOutputWithContext(ctx context.Context) ExportLocalOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ExportLocalOutput)
+}
+
+func (i ExportLocalArgs) ToExportLocalPtrOutput() ExportLocalPtrOutput {
+	return i.ToExportLocalPtrOutputWithContext(context.Background())
+}
+
+func (i ExportLocalArgs) ToExportLocalPtrOutputWithContext(ctx context.Context) ExportLocalPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ExportLocalOutput).ToExportLocalPtrOutputWithContext(ctx)
+}
+
+// ExportLocalPtrInput is an input type that accepts ExportLocalArgs, ExportLocalPtr and ExportLocalPtrOutput values.
+// You can construct a concrete instance of `ExportLocalPtrInput` via:
+//
+//	        ExportLocalArgs{...}
+//
+//	or:
+//
+//	        nil
+type ExportLocalPtrInput interface {
+	pulumi.Input
+
+	ToExportLocalPtrOutput() ExportLocalPtrOutput
+	ToExportLocalPtrOutputWithContext(context.Context) ExportLocalPtrOutput
+}
+
+type exportLocalPtrType ExportLocalArgs
+
+func ExportLocalPtr(v *ExportLocalArgs) ExportLocalPtrInput {
+	return (*exportLocalPtrType)(v)
+}
+
+func (*exportLocalPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**ExportLocal)(nil)).Elem()
+}
+
+func (i *exportLocalPtrType) ToExportLocalPtrOutput() ExportLocalPtrOutput {
+	return i.ToExportLocalPtrOutputWithContext(context.Background())
+}
+
+func (i *exportLocalPtrType) ToExportLocalPtrOutputWithContext(ctx context.Context) ExportLocalPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ExportLocalPtrOutput)
+}
+
+type ExportLocalOutput struct{ *pulumi.OutputState }
+
+func (ExportLocalOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*ExportLocal)(nil)).Elem()
+}
+
+func (o ExportLocalOutput) ToExportLocalOutput() ExportLocalOutput {
+	return o
+}
+
+func (o ExportLocalOutput) ToExportLocalOutputWithContext(ctx context.Context) ExportLocalOutput {
+	return o
+}
+
+func (o ExportLocalOutput) ToExportLocalPtrOutput() ExportLocalPtrOutput {
+	return o.ToExportLocalPtrOutputWithContext(context.Background())
+}
+
+func (o ExportLocalOutput) ToExportLocalPtrOutputWithContext(ctx context.Context) ExportLocalPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v ExportLocal) *ExportLocal {
+		return &v
+	}).(ExportLocalPtrOutput)
+}
+
+// Output path.
+func (o ExportLocalOutput) Dest() pulumi.StringOutput {
+	return o.ApplyT(func(v ExportLocal) string { return v.Dest }).(pulumi.StringOutput)
+}
+
+type ExportLocalPtrOutput struct{ *pulumi.OutputState }
+
+func (ExportLocalPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**ExportLocal)(nil)).Elem()
+}
+
+func (o ExportLocalPtrOutput) ToExportLocalPtrOutput() ExportLocalPtrOutput {
+	return o
+}
+
+func (o ExportLocalPtrOutput) ToExportLocalPtrOutputWithContext(ctx context.Context) ExportLocalPtrOutput {
+	return o
+}
+
+func (o ExportLocalPtrOutput) Elem() ExportLocalOutput {
+	return o.ApplyT(func(v *ExportLocal) ExportLocal {
+		if v != nil {
+			return *v
+		}
+		var ret ExportLocal
+		return ret
+	}).(ExportLocalOutput)
+}
+
+// Output path.
+func (o ExportLocalPtrOutput) Dest() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *ExportLocal) *string {
+		if v == nil {
+			return nil
+		}
+		return &v.Dest
+	}).(pulumi.StringPtrOutput)
+}
+
+type ExportOCI struct {
+	Annotations map[string]string `pulumi:"annotations"`
+	// The compression type to use.
+	Compression *CompressionType `pulumi:"compression"`
+	// Compression level from 0 to 22.
+	CompressionLevel *int `pulumi:"compressionLevel"`
+	// The local export path.
+	Dest *string `pulumi:"dest"`
+	// Forcefully apply compression.
+	ForceCompression *bool `pulumi:"forceCompression"`
+	// Specify images names to export. This is overridden if tags are already specified.
+	Names []string `pulumi:"names"`
+	// Use OCI media types in exporter manifests.
+	OciMediaTypes *bool `pulumi:"ociMediaTypes"`
+	// Bundle the output into a tarball layout.
+	Tar *bool `pulumi:"tar"`
+}
+
+// Defaults sets the appropriate defaults for ExportOCI
+func (val *ExportOCI) Defaults() *ExportOCI {
+	if val == nil {
+		return nil
+	}
+	tmp := *val
+	if tmp.Compression == nil {
+		compression_ := CompressionType("gzip")
+		tmp.Compression = &compression_
+	}
+	if tmp.CompressionLevel == nil {
+		compressionLevel_ := 0
+		tmp.CompressionLevel = &compressionLevel_
+	}
+	if tmp.ForceCompression == nil {
+		forceCompression_ := false
+		tmp.ForceCompression = &forceCompression_
+	}
+	if tmp.OciMediaTypes == nil {
+		ociMediaTypes_ := true
+		tmp.OciMediaTypes = &ociMediaTypes_
+	}
+	if tmp.Tar == nil {
+		tar_ := true
+		tmp.Tar = &tar_
+	}
+	return &tmp
+}
+
+// ExportOCIInput is an input type that accepts ExportOCIArgs and ExportOCIOutput values.
+// You can construct a concrete instance of `ExportOCIInput` via:
+//
+//	ExportOCIArgs{...}
+type ExportOCIInput interface {
+	pulumi.Input
+
+	ToExportOCIOutput() ExportOCIOutput
+	ToExportOCIOutputWithContext(context.Context) ExportOCIOutput
+}
+
+type ExportOCIArgs struct {
+	Annotations pulumi.StringMapInput `pulumi:"annotations"`
+	// The compression type to use.
+	Compression CompressionTypePtrInput `pulumi:"compression"`
+	// Compression level from 0 to 22.
+	CompressionLevel pulumi.IntPtrInput `pulumi:"compressionLevel"`
+	// The local export path.
+	Dest pulumi.StringPtrInput `pulumi:"dest"`
+	// Forcefully apply compression.
+	ForceCompression pulumi.BoolPtrInput `pulumi:"forceCompression"`
+	// Specify images names to export. This is overridden if tags are already specified.
+	Names pulumi.StringArrayInput `pulumi:"names"`
+	// Use OCI media types in exporter manifests.
+	OciMediaTypes pulumi.BoolPtrInput `pulumi:"ociMediaTypes"`
+	// Bundle the output into a tarball layout.
+	Tar pulumi.BoolPtrInput `pulumi:"tar"`
+}
+
+// Defaults sets the appropriate defaults for ExportOCIArgs
+func (val *ExportOCIArgs) Defaults() *ExportOCIArgs {
+	if val == nil {
+		return nil
+	}
+	tmp := *val
+	if tmp.Compression == nil {
+		tmp.Compression = CompressionType("gzip")
+	}
+	if tmp.CompressionLevel == nil {
+		tmp.CompressionLevel = pulumi.IntPtr(0)
+	}
+	if tmp.ForceCompression == nil {
+		tmp.ForceCompression = pulumi.BoolPtr(false)
+	}
+	if tmp.OciMediaTypes == nil {
+		tmp.OciMediaTypes = pulumi.BoolPtr(true)
+	}
+	if tmp.Tar == nil {
+		tmp.Tar = pulumi.BoolPtr(true)
+	}
+	return &tmp
+}
+func (ExportOCIArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*ExportOCI)(nil)).Elem()
+}
+
+func (i ExportOCIArgs) ToExportOCIOutput() ExportOCIOutput {
+	return i.ToExportOCIOutputWithContext(context.Background())
+}
+
+func (i ExportOCIArgs) ToExportOCIOutputWithContext(ctx context.Context) ExportOCIOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ExportOCIOutput)
+}
+
+func (i ExportOCIArgs) ToExportOCIPtrOutput() ExportOCIPtrOutput {
+	return i.ToExportOCIPtrOutputWithContext(context.Background())
+}
+
+func (i ExportOCIArgs) ToExportOCIPtrOutputWithContext(ctx context.Context) ExportOCIPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ExportOCIOutput).ToExportOCIPtrOutputWithContext(ctx)
+}
+
+// ExportOCIPtrInput is an input type that accepts ExportOCIArgs, ExportOCIPtr and ExportOCIPtrOutput values.
+// You can construct a concrete instance of `ExportOCIPtrInput` via:
+//
+//	        ExportOCIArgs{...}
+//
+//	or:
+//
+//	        nil
+type ExportOCIPtrInput interface {
+	pulumi.Input
+
+	ToExportOCIPtrOutput() ExportOCIPtrOutput
+	ToExportOCIPtrOutputWithContext(context.Context) ExportOCIPtrOutput
+}
+
+type exportOCIPtrType ExportOCIArgs
+
+func ExportOCIPtr(v *ExportOCIArgs) ExportOCIPtrInput {
+	return (*exportOCIPtrType)(v)
+}
+
+func (*exportOCIPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**ExportOCI)(nil)).Elem()
+}
+
+func (i *exportOCIPtrType) ToExportOCIPtrOutput() ExportOCIPtrOutput {
+	return i.ToExportOCIPtrOutputWithContext(context.Background())
+}
+
+func (i *exportOCIPtrType) ToExportOCIPtrOutputWithContext(ctx context.Context) ExportOCIPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ExportOCIPtrOutput)
+}
+
+type ExportOCIOutput struct{ *pulumi.OutputState }
+
+func (ExportOCIOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*ExportOCI)(nil)).Elem()
+}
+
+func (o ExportOCIOutput) ToExportOCIOutput() ExportOCIOutput {
+	return o
+}
+
+func (o ExportOCIOutput) ToExportOCIOutputWithContext(ctx context.Context) ExportOCIOutput {
+	return o
+}
+
+func (o ExportOCIOutput) ToExportOCIPtrOutput() ExportOCIPtrOutput {
+	return o.ToExportOCIPtrOutputWithContext(context.Background())
+}
+
+func (o ExportOCIOutput) ToExportOCIPtrOutputWithContext(ctx context.Context) ExportOCIPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v ExportOCI) *ExportOCI {
+		return &v
+	}).(ExportOCIPtrOutput)
+}
+
+func (o ExportOCIOutput) Annotations() pulumi.StringMapOutput {
+	return o.ApplyT(func(v ExportOCI) map[string]string { return v.Annotations }).(pulumi.StringMapOutput)
+}
+
+// The compression type to use.
+func (o ExportOCIOutput) Compression() CompressionTypePtrOutput {
+	return o.ApplyT(func(v ExportOCI) *CompressionType { return v.Compression }).(CompressionTypePtrOutput)
+}
+
+// Compression level from 0 to 22.
+func (o ExportOCIOutput) CompressionLevel() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v ExportOCI) *int { return v.CompressionLevel }).(pulumi.IntPtrOutput)
+}
+
+// The local export path.
+func (o ExportOCIOutput) Dest() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v ExportOCI) *string { return v.Dest }).(pulumi.StringPtrOutput)
+}
+
+// Forcefully apply compression.
+func (o ExportOCIOutput) ForceCompression() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v ExportOCI) *bool { return v.ForceCompression }).(pulumi.BoolPtrOutput)
+}
+
+// Specify images names to export. This is overridden if tags are already specified.
+func (o ExportOCIOutput) Names() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v ExportOCI) []string { return v.Names }).(pulumi.StringArrayOutput)
+}
+
+// Use OCI media types in exporter manifests.
+func (o ExportOCIOutput) OciMediaTypes() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v ExportOCI) *bool { return v.OciMediaTypes }).(pulumi.BoolPtrOutput)
+}
+
+// Bundle the output into a tarball layout.
+func (o ExportOCIOutput) Tar() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v ExportOCI) *bool { return v.Tar }).(pulumi.BoolPtrOutput)
+}
+
+type ExportOCIPtrOutput struct{ *pulumi.OutputState }
+
+func (ExportOCIPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**ExportOCI)(nil)).Elem()
+}
+
+func (o ExportOCIPtrOutput) ToExportOCIPtrOutput() ExportOCIPtrOutput {
+	return o
+}
+
+func (o ExportOCIPtrOutput) ToExportOCIPtrOutputWithContext(ctx context.Context) ExportOCIPtrOutput {
+	return o
+}
+
+func (o ExportOCIPtrOutput) Elem() ExportOCIOutput {
+	return o.ApplyT(func(v *ExportOCI) ExportOCI {
+		if v != nil {
+			return *v
+		}
+		var ret ExportOCI
+		return ret
+	}).(ExportOCIOutput)
+}
+
+func (o ExportOCIPtrOutput) Annotations() pulumi.StringMapOutput {
+	return o.ApplyT(func(v *ExportOCI) map[string]string {
+		if v == nil {
+			return nil
+		}
+		return v.Annotations
+	}).(pulumi.StringMapOutput)
+}
+
+// The compression type to use.
+func (o ExportOCIPtrOutput) Compression() CompressionTypePtrOutput {
+	return o.ApplyT(func(v *ExportOCI) *CompressionType {
+		if v == nil {
+			return nil
+		}
+		return v.Compression
+	}).(CompressionTypePtrOutput)
+}
+
+// Compression level from 0 to 22.
+func (o ExportOCIPtrOutput) CompressionLevel() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v *ExportOCI) *int {
+		if v == nil {
+			return nil
+		}
+		return v.CompressionLevel
+	}).(pulumi.IntPtrOutput)
+}
+
+// The local export path.
+func (o ExportOCIPtrOutput) Dest() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *ExportOCI) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Dest
+	}).(pulumi.StringPtrOutput)
+}
+
+// Forcefully apply compression.
+func (o ExportOCIPtrOutput) ForceCompression() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *ExportOCI) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.ForceCompression
+	}).(pulumi.BoolPtrOutput)
+}
+
+// Specify images names to export. This is overridden if tags are already specified.
+func (o ExportOCIPtrOutput) Names() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v *ExportOCI) []string {
+		if v == nil {
+			return nil
+		}
+		return v.Names
+	}).(pulumi.StringArrayOutput)
+}
+
+// Use OCI media types in exporter manifests.
+func (o ExportOCIPtrOutput) OciMediaTypes() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *ExportOCI) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.OciMediaTypes
+	}).(pulumi.BoolPtrOutput)
+}
+
+// Bundle the output into a tarball layout.
+func (o ExportOCIPtrOutput) Tar() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *ExportOCI) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.Tar
+	}).(pulumi.BoolPtrOutput)
+}
+
+type ExportRegistry struct {
+	Annotations map[string]string `pulumi:"annotations"`
+	// The compression type to use.
+	Compression *CompressionType `pulumi:"compression"`
+	// Compression level from 0 to 22.
+	CompressionLevel   *int    `pulumi:"compressionLevel"`
+	DanglingNamePrefix *string `pulumi:"danglingNamePrefix"`
+	// Forcefully apply compression.
+	ForceCompression *bool `pulumi:"forceCompression"`
+	Insecure         *bool `pulumi:"insecure"`
+	NameCanonical    *bool `pulumi:"nameCanonical"`
+	// Specify images names to export. This is overridden if tags are already specified.
+	Names []string `pulumi:"names"`
+	// Use OCI media types in exporter manifests.
+	OciMediaTypes *bool `pulumi:"ociMediaTypes"`
+	// Push after creating the image.
+	Push         *bool `pulumi:"push"`
+	PushByDigest *bool `pulumi:"pushByDigest"`
+	// Store resulting images to the worker's image store, and ensure all its
+	// blobs are in the content store. Ignored if the worker doesn't have
+	// image store (when using OCI workers, for example).
+	Store  *bool `pulumi:"store"`
+	Unpack *bool `pulumi:"unpack"`
+}
+
+// Defaults sets the appropriate defaults for ExportRegistry
+func (val *ExportRegistry) Defaults() *ExportRegistry {
+	if val == nil {
+		return nil
+	}
+	tmp := *val
+	if tmp.Compression == nil {
+		compression_ := CompressionType("gzip")
+		tmp.Compression = &compression_
+	}
+	if tmp.CompressionLevel == nil {
+		compressionLevel_ := 0
+		tmp.CompressionLevel = &compressionLevel_
+	}
+	if tmp.ForceCompression == nil {
+		forceCompression_ := false
+		tmp.ForceCompression = &forceCompression_
+	}
+	if tmp.OciMediaTypes == nil {
+		ociMediaTypes_ := false
+		tmp.OciMediaTypes = &ociMediaTypes_
+	}
+	if tmp.Push == nil {
+		push_ := true
+		tmp.Push = &push_
+	}
+	if tmp.Store == nil {
+		store_ := true
+		tmp.Store = &store_
+	}
+	return &tmp
+}
+
+// ExportRegistryInput is an input type that accepts ExportRegistryArgs and ExportRegistryOutput values.
+// You can construct a concrete instance of `ExportRegistryInput` via:
+//
+//	ExportRegistryArgs{...}
+type ExportRegistryInput interface {
+	pulumi.Input
+
+	ToExportRegistryOutput() ExportRegistryOutput
+	ToExportRegistryOutputWithContext(context.Context) ExportRegistryOutput
+}
+
+type ExportRegistryArgs struct {
+	Annotations pulumi.StringMapInput `pulumi:"annotations"`
+	// The compression type to use.
+	Compression CompressionTypePtrInput `pulumi:"compression"`
+	// Compression level from 0 to 22.
+	CompressionLevel   pulumi.IntPtrInput    `pulumi:"compressionLevel"`
+	DanglingNamePrefix pulumi.StringPtrInput `pulumi:"danglingNamePrefix"`
+	// Forcefully apply compression.
+	ForceCompression pulumi.BoolPtrInput `pulumi:"forceCompression"`
+	Insecure         pulumi.BoolPtrInput `pulumi:"insecure"`
+	NameCanonical    pulumi.BoolPtrInput `pulumi:"nameCanonical"`
+	// Specify images names to export. This is overridden if tags are already specified.
+	Names pulumi.StringArrayInput `pulumi:"names"`
+	// Use OCI media types in exporter manifests.
+	OciMediaTypes pulumi.BoolPtrInput `pulumi:"ociMediaTypes"`
+	// Push after creating the image.
+	Push         pulumi.BoolPtrInput `pulumi:"push"`
+	PushByDigest pulumi.BoolPtrInput `pulumi:"pushByDigest"`
+	// Store resulting images to the worker's image store, and ensure all its
+	// blobs are in the content store. Ignored if the worker doesn't have
+	// image store (when using OCI workers, for example).
+	Store  pulumi.BoolPtrInput `pulumi:"store"`
+	Unpack pulumi.BoolPtrInput `pulumi:"unpack"`
+}
+
+// Defaults sets the appropriate defaults for ExportRegistryArgs
+func (val *ExportRegistryArgs) Defaults() *ExportRegistryArgs {
+	if val == nil {
+		return nil
+	}
+	tmp := *val
+	if tmp.Compression == nil {
+		tmp.Compression = CompressionType("gzip")
+	}
+	if tmp.CompressionLevel == nil {
+		tmp.CompressionLevel = pulumi.IntPtr(0)
+	}
+	if tmp.ForceCompression == nil {
+		tmp.ForceCompression = pulumi.BoolPtr(false)
+	}
+	if tmp.OciMediaTypes == nil {
+		tmp.OciMediaTypes = pulumi.BoolPtr(false)
+	}
+	if tmp.Push == nil {
+		tmp.Push = pulumi.BoolPtr(true)
+	}
+	if tmp.Store == nil {
+		tmp.Store = pulumi.BoolPtr(true)
+	}
+	return &tmp
+}
+func (ExportRegistryArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*ExportRegistry)(nil)).Elem()
+}
+
+func (i ExportRegistryArgs) ToExportRegistryOutput() ExportRegistryOutput {
+	return i.ToExportRegistryOutputWithContext(context.Background())
+}
+
+func (i ExportRegistryArgs) ToExportRegistryOutputWithContext(ctx context.Context) ExportRegistryOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ExportRegistryOutput)
+}
+
+func (i ExportRegistryArgs) ToExportRegistryPtrOutput() ExportRegistryPtrOutput {
+	return i.ToExportRegistryPtrOutputWithContext(context.Background())
+}
+
+func (i ExportRegistryArgs) ToExportRegistryPtrOutputWithContext(ctx context.Context) ExportRegistryPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ExportRegistryOutput).ToExportRegistryPtrOutputWithContext(ctx)
+}
+
+// ExportRegistryPtrInput is an input type that accepts ExportRegistryArgs, ExportRegistryPtr and ExportRegistryPtrOutput values.
+// You can construct a concrete instance of `ExportRegistryPtrInput` via:
+//
+//	        ExportRegistryArgs{...}
+//
+//	or:
+//
+//	        nil
+type ExportRegistryPtrInput interface {
+	pulumi.Input
+
+	ToExportRegistryPtrOutput() ExportRegistryPtrOutput
+	ToExportRegistryPtrOutputWithContext(context.Context) ExportRegistryPtrOutput
+}
+
+type exportRegistryPtrType ExportRegistryArgs
+
+func ExportRegistryPtr(v *ExportRegistryArgs) ExportRegistryPtrInput {
+	return (*exportRegistryPtrType)(v)
+}
+
+func (*exportRegistryPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**ExportRegistry)(nil)).Elem()
+}
+
+func (i *exportRegistryPtrType) ToExportRegistryPtrOutput() ExportRegistryPtrOutput {
+	return i.ToExportRegistryPtrOutputWithContext(context.Background())
+}
+
+func (i *exportRegistryPtrType) ToExportRegistryPtrOutputWithContext(ctx context.Context) ExportRegistryPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ExportRegistryPtrOutput)
+}
+
+type ExportRegistryOutput struct{ *pulumi.OutputState }
+
+func (ExportRegistryOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*ExportRegistry)(nil)).Elem()
+}
+
+func (o ExportRegistryOutput) ToExportRegistryOutput() ExportRegistryOutput {
+	return o
+}
+
+func (o ExportRegistryOutput) ToExportRegistryOutputWithContext(ctx context.Context) ExportRegistryOutput {
+	return o
+}
+
+func (o ExportRegistryOutput) ToExportRegistryPtrOutput() ExportRegistryPtrOutput {
+	return o.ToExportRegistryPtrOutputWithContext(context.Background())
+}
+
+func (o ExportRegistryOutput) ToExportRegistryPtrOutputWithContext(ctx context.Context) ExportRegistryPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v ExportRegistry) *ExportRegistry {
+		return &v
+	}).(ExportRegistryPtrOutput)
+}
+
+func (o ExportRegistryOutput) Annotations() pulumi.StringMapOutput {
+	return o.ApplyT(func(v ExportRegistry) map[string]string { return v.Annotations }).(pulumi.StringMapOutput)
+}
+
+// The compression type to use.
+func (o ExportRegistryOutput) Compression() CompressionTypePtrOutput {
+	return o.ApplyT(func(v ExportRegistry) *CompressionType { return v.Compression }).(CompressionTypePtrOutput)
+}
+
+// Compression level from 0 to 22.
+func (o ExportRegistryOutput) CompressionLevel() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v ExportRegistry) *int { return v.CompressionLevel }).(pulumi.IntPtrOutput)
+}
+
+func (o ExportRegistryOutput) DanglingNamePrefix() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v ExportRegistry) *string { return v.DanglingNamePrefix }).(pulumi.StringPtrOutput)
+}
+
+// Forcefully apply compression.
+func (o ExportRegistryOutput) ForceCompression() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v ExportRegistry) *bool { return v.ForceCompression }).(pulumi.BoolPtrOutput)
+}
+
+func (o ExportRegistryOutput) Insecure() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v ExportRegistry) *bool { return v.Insecure }).(pulumi.BoolPtrOutput)
+}
+
+func (o ExportRegistryOutput) NameCanonical() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v ExportRegistry) *bool { return v.NameCanonical }).(pulumi.BoolPtrOutput)
+}
+
+// Specify images names to export. This is overridden if tags are already specified.
+func (o ExportRegistryOutput) Names() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v ExportRegistry) []string { return v.Names }).(pulumi.StringArrayOutput)
+}
+
+// Use OCI media types in exporter manifests.
+func (o ExportRegistryOutput) OciMediaTypes() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v ExportRegistry) *bool { return v.OciMediaTypes }).(pulumi.BoolPtrOutput)
+}
+
+// Push after creating the image.
+func (o ExportRegistryOutput) Push() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v ExportRegistry) *bool { return v.Push }).(pulumi.BoolPtrOutput)
+}
+
+func (o ExportRegistryOutput) PushByDigest() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v ExportRegistry) *bool { return v.PushByDigest }).(pulumi.BoolPtrOutput)
+}
+
+// Store resulting images to the worker's image store, and ensure all its
+// blobs are in the content store. Ignored if the worker doesn't have
+// image store (when using OCI workers, for example).
+func (o ExportRegistryOutput) Store() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v ExportRegistry) *bool { return v.Store }).(pulumi.BoolPtrOutput)
+}
+
+func (o ExportRegistryOutput) Unpack() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v ExportRegistry) *bool { return v.Unpack }).(pulumi.BoolPtrOutput)
+}
+
+type ExportRegistryPtrOutput struct{ *pulumi.OutputState }
+
+func (ExportRegistryPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**ExportRegistry)(nil)).Elem()
+}
+
+func (o ExportRegistryPtrOutput) ToExportRegistryPtrOutput() ExportRegistryPtrOutput {
+	return o
+}
+
+func (o ExportRegistryPtrOutput) ToExportRegistryPtrOutputWithContext(ctx context.Context) ExportRegistryPtrOutput {
+	return o
+}
+
+func (o ExportRegistryPtrOutput) Elem() ExportRegistryOutput {
+	return o.ApplyT(func(v *ExportRegistry) ExportRegistry {
+		if v != nil {
+			return *v
+		}
+		var ret ExportRegistry
+		return ret
+	}).(ExportRegistryOutput)
+}
+
+func (o ExportRegistryPtrOutput) Annotations() pulumi.StringMapOutput {
+	return o.ApplyT(func(v *ExportRegistry) map[string]string {
+		if v == nil {
+			return nil
+		}
+		return v.Annotations
+	}).(pulumi.StringMapOutput)
+}
+
+// The compression type to use.
+func (o ExportRegistryPtrOutput) Compression() CompressionTypePtrOutput {
+	return o.ApplyT(func(v *ExportRegistry) *CompressionType {
+		if v == nil {
+			return nil
+		}
+		return v.Compression
+	}).(CompressionTypePtrOutput)
+}
+
+// Compression level from 0 to 22.
+func (o ExportRegistryPtrOutput) CompressionLevel() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v *ExportRegistry) *int {
+		if v == nil {
+			return nil
+		}
+		return v.CompressionLevel
+	}).(pulumi.IntPtrOutput)
+}
+
+func (o ExportRegistryPtrOutput) DanglingNamePrefix() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *ExportRegistry) *string {
+		if v == nil {
+			return nil
+		}
+		return v.DanglingNamePrefix
+	}).(pulumi.StringPtrOutput)
+}
+
+// Forcefully apply compression.
+func (o ExportRegistryPtrOutput) ForceCompression() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *ExportRegistry) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.ForceCompression
+	}).(pulumi.BoolPtrOutput)
+}
+
+func (o ExportRegistryPtrOutput) Insecure() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *ExportRegistry) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.Insecure
+	}).(pulumi.BoolPtrOutput)
+}
+
+func (o ExportRegistryPtrOutput) NameCanonical() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *ExportRegistry) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.NameCanonical
+	}).(pulumi.BoolPtrOutput)
+}
+
+// Specify images names to export. This is overridden if tags are already specified.
+func (o ExportRegistryPtrOutput) Names() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v *ExportRegistry) []string {
+		if v == nil {
+			return nil
+		}
+		return v.Names
+	}).(pulumi.StringArrayOutput)
+}
+
+// Use OCI media types in exporter manifests.
+func (o ExportRegistryPtrOutput) OciMediaTypes() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *ExportRegistry) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.OciMediaTypes
+	}).(pulumi.BoolPtrOutput)
+}
+
+// Push after creating the image.
+func (o ExportRegistryPtrOutput) Push() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *ExportRegistry) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.Push
+	}).(pulumi.BoolPtrOutput)
+}
+
+func (o ExportRegistryPtrOutput) PushByDigest() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *ExportRegistry) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.PushByDigest
+	}).(pulumi.BoolPtrOutput)
+}
+
+// Store resulting images to the worker's image store, and ensure all its
+// blobs are in the content store. Ignored if the worker doesn't have
+// image store (when using OCI workers, for example).
+func (o ExportRegistryPtrOutput) Store() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *ExportRegistry) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.Store
+	}).(pulumi.BoolPtrOutput)
+}
+
+func (o ExportRegistryPtrOutput) Unpack() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *ExportRegistry) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.Unpack
+	}).(pulumi.BoolPtrOutput)
+}
+
+type ExportTar struct {
+	// Output path.
+	Dest string `pulumi:"dest"`
+}
+
+// ExportTarInput is an input type that accepts ExportTarArgs and ExportTarOutput values.
+// You can construct a concrete instance of `ExportTarInput` via:
+//
+//	ExportTarArgs{...}
+type ExportTarInput interface {
+	pulumi.Input
+
+	ToExportTarOutput() ExportTarOutput
+	ToExportTarOutputWithContext(context.Context) ExportTarOutput
+}
+
+type ExportTarArgs struct {
+	// Output path.
+	Dest pulumi.StringInput `pulumi:"dest"`
+}
+
+func (ExportTarArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*ExportTar)(nil)).Elem()
+}
+
+func (i ExportTarArgs) ToExportTarOutput() ExportTarOutput {
+	return i.ToExportTarOutputWithContext(context.Background())
+}
+
+func (i ExportTarArgs) ToExportTarOutputWithContext(ctx context.Context) ExportTarOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ExportTarOutput)
+}
+
+func (i ExportTarArgs) ToExportTarPtrOutput() ExportTarPtrOutput {
+	return i.ToExportTarPtrOutputWithContext(context.Background())
+}
+
+func (i ExportTarArgs) ToExportTarPtrOutputWithContext(ctx context.Context) ExportTarPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ExportTarOutput).ToExportTarPtrOutputWithContext(ctx)
+}
+
+// ExportTarPtrInput is an input type that accepts ExportTarArgs, ExportTarPtr and ExportTarPtrOutput values.
+// You can construct a concrete instance of `ExportTarPtrInput` via:
+//
+//	        ExportTarArgs{...}
+//
+//	or:
+//
+//	        nil
+type ExportTarPtrInput interface {
+	pulumi.Input
+
+	ToExportTarPtrOutput() ExportTarPtrOutput
+	ToExportTarPtrOutputWithContext(context.Context) ExportTarPtrOutput
+}
+
+type exportTarPtrType ExportTarArgs
+
+func ExportTarPtr(v *ExportTarArgs) ExportTarPtrInput {
+	return (*exportTarPtrType)(v)
+}
+
+func (*exportTarPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**ExportTar)(nil)).Elem()
+}
+
+func (i *exportTarPtrType) ToExportTarPtrOutput() ExportTarPtrOutput {
+	return i.ToExportTarPtrOutputWithContext(context.Background())
+}
+
+func (i *exportTarPtrType) ToExportTarPtrOutputWithContext(ctx context.Context) ExportTarPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ExportTarPtrOutput)
+}
+
+type ExportTarOutput struct{ *pulumi.OutputState }
+
+func (ExportTarOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*ExportTar)(nil)).Elem()
+}
+
+func (o ExportTarOutput) ToExportTarOutput() ExportTarOutput {
+	return o
+}
+
+func (o ExportTarOutput) ToExportTarOutputWithContext(ctx context.Context) ExportTarOutput {
+	return o
+}
+
+func (o ExportTarOutput) ToExportTarPtrOutput() ExportTarPtrOutput {
+	return o.ToExportTarPtrOutputWithContext(context.Background())
+}
+
+func (o ExportTarOutput) ToExportTarPtrOutputWithContext(ctx context.Context) ExportTarPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v ExportTar) *ExportTar {
+		return &v
+	}).(ExportTarPtrOutput)
+}
+
+// Output path.
+func (o ExportTarOutput) Dest() pulumi.StringOutput {
+	return o.ApplyT(func(v ExportTar) string { return v.Dest }).(pulumi.StringOutput)
+}
+
+type ExportTarPtrOutput struct{ *pulumi.OutputState }
+
+func (ExportTarPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**ExportTar)(nil)).Elem()
+}
+
+func (o ExportTarPtrOutput) ToExportTarPtrOutput() ExportTarPtrOutput {
+	return o
+}
+
+func (o ExportTarPtrOutput) ToExportTarPtrOutputWithContext(ctx context.Context) ExportTarPtrOutput {
+	return o
+}
+
+func (o ExportTarPtrOutput) Elem() ExportTarOutput {
+	return o.ApplyT(func(v *ExportTar) ExportTar {
+		if v != nil {
+			return *v
+		}
+		var ret ExportTar
+		return ret
+	}).(ExportTarOutput)
+}
+
+// Output path.
+func (o ExportTarPtrOutput) Dest() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *ExportTar) *string {
+		if v == nil {
+			return nil
+		}
+		return &v.Dest
+	}).(pulumi.StringPtrOutput)
+}
+
 type Manifest struct {
 	Digest   string   `pulumi:"digest"`
 	Platform Platform `pulumi:"platform"`
@@ -126,61 +5035,6 @@ func (o ManifestArrayOutput) Index(i pulumi.IntInput) ManifestOutput {
 	return pulumi.All(o, i).ApplyT(func(vs []interface{}) Manifest {
 		return vs[0].([]Manifest)[vs[1].(int)]
 	}).(ManifestOutput)
-}
-
-type Platform struct {
-	Architecture string `pulumi:"architecture"`
-	Os           string `pulumi:"os"`
-}
-
-// PlatformInput is an input type that accepts PlatformArgs and PlatformOutput values.
-// You can construct a concrete instance of `PlatformInput` via:
-//
-//	PlatformArgs{...}
-type PlatformInput interface {
-	pulumi.Input
-
-	ToPlatformOutput() PlatformOutput
-	ToPlatformOutputWithContext(context.Context) PlatformOutput
-}
-
-type PlatformArgs struct {
-	Architecture pulumi.StringInput `pulumi:"architecture"`
-	Os           pulumi.StringInput `pulumi:"os"`
-}
-
-func (PlatformArgs) ElementType() reflect.Type {
-	return reflect.TypeOf((*Platform)(nil)).Elem()
-}
-
-func (i PlatformArgs) ToPlatformOutput() PlatformOutput {
-	return i.ToPlatformOutputWithContext(context.Background())
-}
-
-func (i PlatformArgs) ToPlatformOutputWithContext(ctx context.Context) PlatformOutput {
-	return pulumi.ToOutputWithContext(ctx, i).(PlatformOutput)
-}
-
-type PlatformOutput struct{ *pulumi.OutputState }
-
-func (PlatformOutput) ElementType() reflect.Type {
-	return reflect.TypeOf((*Platform)(nil)).Elem()
-}
-
-func (o PlatformOutput) ToPlatformOutput() PlatformOutput {
-	return o
-}
-
-func (o PlatformOutput) ToPlatformOutputWithContext(ctx context.Context) PlatformOutput {
-	return o
-}
-
-func (o PlatformOutput) Architecture() pulumi.StringOutput {
-	return o.ApplyT(func(v Platform) string { return v.Architecture }).(pulumi.StringOutput)
-}
-
-func (o PlatformOutput) Os() pulumi.StringOutput {
-	return o.ApplyT(func(v Platform) string { return v.Os }).(pulumi.StringOutput)
 }
 
 type RegistryAuth struct {
@@ -299,14 +5153,92 @@ func (o RegistryAuthArrayOutput) Index(i pulumi.IntInput) RegistryAuthOutput {
 }
 
 func init() {
+	pulumi.RegisterInputType(reflect.TypeOf((*CacheFromAzureBlobInput)(nil)).Elem(), CacheFromAzureBlobArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*CacheFromAzureBlobPtrInput)(nil)).Elem(), CacheFromAzureBlobArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*CacheFromEntryInput)(nil)).Elem(), CacheFromEntryArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*CacheFromEntryArrayInput)(nil)).Elem(), CacheFromEntryArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*CacheFromGitHubActionsInput)(nil)).Elem(), CacheFromGitHubActionsArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*CacheFromGitHubActionsPtrInput)(nil)).Elem(), CacheFromGitHubActionsArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*CacheFromLocalInput)(nil)).Elem(), CacheFromLocalArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*CacheFromLocalPtrInput)(nil)).Elem(), CacheFromLocalArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*CacheFromRegistryInput)(nil)).Elem(), CacheFromRegistryArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*CacheFromRegistryPtrInput)(nil)).Elem(), CacheFromRegistryArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*CacheFromS3Input)(nil)).Elem(), CacheFromS3Args{})
+	pulumi.RegisterInputType(reflect.TypeOf((*CacheFromS3PtrInput)(nil)).Elem(), CacheFromS3Args{})
+	pulumi.RegisterInputType(reflect.TypeOf((*CacheToAzureBlobInput)(nil)).Elem(), CacheToAzureBlobArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*CacheToAzureBlobPtrInput)(nil)).Elem(), CacheToAzureBlobArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*CacheToEntryInput)(nil)).Elem(), CacheToEntryArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*CacheToEntryArrayInput)(nil)).Elem(), CacheToEntryArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*CacheToGitHubActionsInput)(nil)).Elem(), CacheToGitHubActionsArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*CacheToGitHubActionsPtrInput)(nil)).Elem(), CacheToGitHubActionsArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*CacheToInlineInput)(nil)).Elem(), CacheToInlineArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*CacheToInlinePtrInput)(nil)).Elem(), CacheToInlineArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*CacheToLocalInput)(nil)).Elem(), CacheToLocalArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*CacheToLocalPtrInput)(nil)).Elem(), CacheToLocalArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*CacheToRegistryInput)(nil)).Elem(), CacheToRegistryArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*CacheToRegistryPtrInput)(nil)).Elem(), CacheToRegistryArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*CacheToS3Input)(nil)).Elem(), CacheToS3Args{})
+	pulumi.RegisterInputType(reflect.TypeOf((*CacheToS3PtrInput)(nil)).Elem(), CacheToS3Args{})
+	pulumi.RegisterInputType(reflect.TypeOf((*ExportDockerInput)(nil)).Elem(), ExportDockerArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*ExportDockerPtrInput)(nil)).Elem(), ExportDockerArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*ExportEntryInput)(nil)).Elem(), ExportEntryArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*ExportEntryArrayInput)(nil)).Elem(), ExportEntryArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*ExportImageInput)(nil)).Elem(), ExportImageArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*ExportImagePtrInput)(nil)).Elem(), ExportImageArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*ExportLocalInput)(nil)).Elem(), ExportLocalArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*ExportLocalPtrInput)(nil)).Elem(), ExportLocalArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*ExportOCIInput)(nil)).Elem(), ExportOCIArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*ExportOCIPtrInput)(nil)).Elem(), ExportOCIArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*ExportRegistryInput)(nil)).Elem(), ExportRegistryArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*ExportRegistryPtrInput)(nil)).Elem(), ExportRegistryArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*ExportTarInput)(nil)).Elem(), ExportTarArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*ExportTarPtrInput)(nil)).Elem(), ExportTarArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*ManifestInput)(nil)).Elem(), ManifestArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*ManifestArrayInput)(nil)).Elem(), ManifestArray{})
-	pulumi.RegisterInputType(reflect.TypeOf((*PlatformInput)(nil)).Elem(), PlatformArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*RegistryAuthInput)(nil)).Elem(), RegistryAuthArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*RegistryAuthArrayInput)(nil)).Elem(), RegistryAuthArray{})
+	pulumi.RegisterOutputType(CacheFromAzureBlobOutput{})
+	pulumi.RegisterOutputType(CacheFromAzureBlobPtrOutput{})
+	pulumi.RegisterOutputType(CacheFromEntryOutput{})
+	pulumi.RegisterOutputType(CacheFromEntryArrayOutput{})
+	pulumi.RegisterOutputType(CacheFromGitHubActionsOutput{})
+	pulumi.RegisterOutputType(CacheFromGitHubActionsPtrOutput{})
+	pulumi.RegisterOutputType(CacheFromLocalOutput{})
+	pulumi.RegisterOutputType(CacheFromLocalPtrOutput{})
+	pulumi.RegisterOutputType(CacheFromRegistryOutput{})
+	pulumi.RegisterOutputType(CacheFromRegistryPtrOutput{})
+	pulumi.RegisterOutputType(CacheFromS3Output{})
+	pulumi.RegisterOutputType(CacheFromS3PtrOutput{})
+	pulumi.RegisterOutputType(CacheToAzureBlobOutput{})
+	pulumi.RegisterOutputType(CacheToAzureBlobPtrOutput{})
+	pulumi.RegisterOutputType(CacheToEntryOutput{})
+	pulumi.RegisterOutputType(CacheToEntryArrayOutput{})
+	pulumi.RegisterOutputType(CacheToGitHubActionsOutput{})
+	pulumi.RegisterOutputType(CacheToGitHubActionsPtrOutput{})
+	pulumi.RegisterOutputType(CacheToInlineOutput{})
+	pulumi.RegisterOutputType(CacheToInlinePtrOutput{})
+	pulumi.RegisterOutputType(CacheToLocalOutput{})
+	pulumi.RegisterOutputType(CacheToLocalPtrOutput{})
+	pulumi.RegisterOutputType(CacheToRegistryOutput{})
+	pulumi.RegisterOutputType(CacheToRegistryPtrOutput{})
+	pulumi.RegisterOutputType(CacheToS3Output{})
+	pulumi.RegisterOutputType(CacheToS3PtrOutput{})
+	pulumi.RegisterOutputType(ExportDockerOutput{})
+	pulumi.RegisterOutputType(ExportDockerPtrOutput{})
+	pulumi.RegisterOutputType(ExportEntryOutput{})
+	pulumi.RegisterOutputType(ExportEntryArrayOutput{})
+	pulumi.RegisterOutputType(ExportImageOutput{})
+	pulumi.RegisterOutputType(ExportImagePtrOutput{})
+	pulumi.RegisterOutputType(ExportLocalOutput{})
+	pulumi.RegisterOutputType(ExportLocalPtrOutput{})
+	pulumi.RegisterOutputType(ExportOCIOutput{})
+	pulumi.RegisterOutputType(ExportOCIPtrOutput{})
+	pulumi.RegisterOutputType(ExportRegistryOutput{})
+	pulumi.RegisterOutputType(ExportRegistryPtrOutput{})
+	pulumi.RegisterOutputType(ExportTarOutput{})
+	pulumi.RegisterOutputType(ExportTarPtrOutput{})
 	pulumi.RegisterOutputType(ManifestOutput{})
 	pulumi.RegisterOutputType(ManifestArrayOutput{})
-	pulumi.RegisterOutputType(PlatformOutput{})
 	pulumi.RegisterOutputType(RegistryAuthOutput{})
 	pulumi.RegisterOutputType(RegistryAuthArrayOutput{})
 }

@@ -4,7 +4,7 @@
 package com.pulumi.docker.buildx.outputs;
 
 import com.pulumi.core.annotations.CustomType;
-import com.pulumi.docker.buildx.outputs.Platform;
+import com.pulumi.docker.buildx.enums.Platform;
 import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.Integer;
 import java.lang.String;
