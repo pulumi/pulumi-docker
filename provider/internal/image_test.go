@@ -487,7 +487,7 @@ func TestDiff(t *testing.T) {
 			name: "diff if platforms change",
 			olds: func(*testing.T, ImageState) ImageState { return baseState },
 			news: func(_ *testing.T, a ImageArgs) ImageArgs {
-				a.Platforms = []string{"linux/amd64"}
+				a.Platforms = []Platform{"linux/amd64"}
 				return a
 			},
 			wantChanges: true,
@@ -557,7 +557,7 @@ func TestBuildOptions(t *testing.T) {
 			Tags:      []string{"a/bad:tag:format"},
 			Exports:   []ExportEntry{{Raw: "badexport,-"}},
 			Context:   "./testdata",
-			Platforms: []string{","},
+			Platforms: []Platform{","},
 			CacheFrom: []CacheFromEntry{{Raw: "=badcachefrom"}},
 			CacheTo:   []CacheToEntry{{Raw: "=badcacheto"}},
 		}
@@ -605,7 +605,7 @@ func TestBuildOptions(t *testing.T) {
 			Context:   "",
 			Exports:   []ExportEntry{{Raw: ""}},
 			File:      "",
-			Platforms: []string{"linux/amd64", ""},
+			Platforms: []Platform{"linux/amd64", ""},
 			Registries: []properties.RegistryAuth{
 				{
 					Address:  "",
@@ -703,7 +703,7 @@ func TestToBuilds(t *testing.T) {
 	t.Run("single-platform caching", func(t *testing.T) {
 		ia := ImageArgs{
 			Tags:      []string{"foo", "bar"},
-			Platforms: []string{"linux/amd64"},
+			Platforms: []Platform{"linux/amd64"},
 			CacheTo: []CacheToEntry{
 				{GHA: &CacheToGitHubActions{CacheWithMode: CacheWithMode{CacheModeMax}}},
 				{
@@ -734,7 +734,7 @@ func TestToBuilds(t *testing.T) {
 
 		ia := ImageArgs{
 			Tags:      []string{"foo", "bar"},
-			Platforms: []string{"linux/amd64", "linux/arm64"},
+			Platforms: []Platform{"linux/amd64", "linux/arm64"},
 			CacheTo: []CacheToEntry{
 				{GHA: &CacheToGitHubActions{CacheWithMode: CacheWithMode{CacheModeMax}}},
 				{
