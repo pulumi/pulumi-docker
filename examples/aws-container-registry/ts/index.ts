@@ -48,7 +48,7 @@ export const repoDigest = image.repoDigest;
 
 const buildxImage = new docker.buildx.Image("buildx", {
   tags: [pulumi.interpolate`${repo.repositoryUrl}:buildx`],
-  exports: ["type=registry"],
+  exports: [{ registry: {} }],
   file: "app/Dockerfile",
   platforms: ["linux/arm64", "linux/amd64"],
   cacheTo: [

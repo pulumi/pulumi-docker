@@ -79,7 +79,7 @@ func TestInspect(t *testing.T) {
 	d, err := newDockerClient()
 	require.NoError(t, err)
 
-	v2, err := d.Inspect(context.Background(), "blampe/myapp:buildx")
+	v2, err := d.Inspect(context.Background(), "pulumibot/myapp:buildx")
 	assert.NoError(t, err)
 	assert.Equal(t, 2, v2[0].OCIManifest.SchemaVersion)
 

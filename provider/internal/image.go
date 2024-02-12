@@ -59,7 +59,7 @@ type ImageArgs struct {
 	CacheFrom      []CacheFromEntry          `pulumi:"cacheFrom,optional"`
 	CacheTo        []CacheToEntry            `pulumi:"cacheTo,optional"`
 	Context        string                    `pulumi:"context,optional"`
-	Exports        []string                  `pulumi:"exports,optional"`
+	Exports        []ExportEntry             `pulumi:"exports,optional"`
 	File           string                    `pulumi:"file,optional"`
 	Platforms      []string                  `pulumi:"platforms,optional"`
 	Pull           bool                      `pulumi:"pull,optional"`
@@ -194,7 +194,7 @@ func (ia *ImageArgs) withoutUnknowns(preview bool) ImageArgs {
 		CacheFrom:      filter(stringerKeeper[CacheFromEntry]{preview}, ia.CacheFrom...),
 		CacheTo:        filter(stringerKeeper[CacheToEntry]{preview}, ia.CacheTo...),
 		Context:        ia.Context,
-		Exports:        filter(sk, ia.Exports...),
+		Exports:        filter(stringerKeeper[ExportEntry]{preview}, ia.Exports...),
 		File:           ia.File, //
 		Platforms:      filter(sk, ia.Platforms...),
 		Pull:           ia.Pull,
@@ -355,20 +355,26 @@ func (ia *ImageArgs) toBuildOptions(preview bool) (controllerapi.BuildOptions, e
 	// cause validation errors.
 	filtered := ia.withoutUnknowns(preview)
 
-	exports, err := buildflags.ParseExports(filtered.Exports)
-	if err != nil {
-		multierr = errors.Join(multierr, newCheckFailure("exports", err))
+	exports := []*controllerapi.ExportEntry{}
+	for _, e := range filtered.Exports {
+		export, err := buildflags.ParseExports([]string{e.String()})
+		if err != nil {
+			multierr = errors.Join(multierr, newCheckFailure("exports", err))
+			continue
+		}
+		exports = append(exports, export...)
+
 	}
 	if preview {
 		// Don't perform registry pushes during previews.
 		for _, e := range exports {
-			if e.Type == "image" && e.Attrs["push"] == "true" {
+			if e.Type == "image" {
 				e.Attrs["push"] = "false"
 			}
 		}
 	}
 
-	_, err = platformutil.Parse(filtered.Platforms)
+	_, err := platformutil.Parse(filtered.Platforms)
 	if err != nil {
 		multierr = errors.Join(multierr, newCheckFailure("platforms", err))
 	}

@@ -31,7 +31,7 @@ export const repoDigest = image.repoDigest;
 
 const buildxImage = new docker.buildx.Image("my-buildx-image", {
   tags: [`${imageName}:buildx`],
-  exports: ["type=registry"],
+  exports: [{ registry: {} }],
   platforms: ["linux/arm64", "linux/amd64"],
   cacheFrom: [{ gha: {} }, { registry: { ref: `docker.io/${imageName}` } }],
   cacheTo: [
