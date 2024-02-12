@@ -5,7 +5,9 @@ import (
 	"slices"
 	"strings"
 
+	controllerapi "github.com/docker/buildx/controller/pb"
 	"github.com/muesli/reflow/dedent"
+
 	"github.com/pulumi/pulumi-go-provider/infer"
 )
 
@@ -292,7 +294,7 @@ func (e ExportWithNames) String() string {
 }
 
 func (e *ExportWithNames) Annotate(a infer.Annotator) {
-	a.Describe(&e.Names, "Specify which images to export. Defaults to all registry-scoped tags.")
+	a.Describe(&e.Names, "Specify images names to export. This is overridden if tags are already specified.")
 }
 
 type ExportWithAnnotations struct {
@@ -306,4 +308,8 @@ func (e ExportWithAnnotations) String() string {
 	}
 	slices.Sort(parts)
 	return strings.Join(parts, ",")
+}
+
+func isRegistryPush(export *controllerapi.ExportEntry) bool {
+	return export.Type == "image" && export.Attrs["push"] == "true"
 }

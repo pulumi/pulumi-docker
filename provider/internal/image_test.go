@@ -115,33 +115,26 @@ func TestLifecycle(t *testing.T) {
 			},
 		},
 		{
-			name:   "tags is required",
-			client: noClient,
-			op: func(t *testing.T) integration.Operation {
-				return integration.Operation{
-					Inputs:        resource.PropertyMap{},
-					ExpectFailure: true,
-					CheckFailures: []provider.CheckFailure{{
-						Property: "tags",
-						Reason:   "Missing required field 'tags' on 'internal.ImageArgs'",
-					}},
-				}
-			},
-		},
-		{
-			name:   "non-zero tags is required",
+			name:   "tags are required when pushing",
 			client: noClient,
 			op: func(t *testing.T) integration.Operation {
 				return integration.Operation{
 					Inputs: resource.PropertyMap{
 						"tags":    resource.NewArrayProperty([]resource.PropertyValue{}),
 						"context": resource.NewStringProperty("../testdata"),
+						"exports": resource.NewArrayProperty(
+							[]resource.PropertyValue{
+								resource.NewObjectProperty(resource.PropertyMap{
+									"raw": resource.NewStringProperty("type=registry"),
+								}),
+							},
+						),
 					},
 					ExpectFailure: true,
 					CheckFailures: []provider.CheckFailure{
 						{
 							Property: "tags",
-							Reason:   "at least one tag is required",
+							Reason:   "at least one tag or export name is needed when pushing to a registry",
 						},
 					},
 				}
@@ -334,9 +327,6 @@ func TestRead(t *testing.T) {
 			"exports": resource.NewArrayProperty([]resource.PropertyValue{
 				resource.NewObjectProperty(resource.PropertyMap{
 					"raw": resource.NewStringProperty("type=registry"),
-				}),
-				resource.NewObjectProperty(resource.PropertyMap{
-					"raw": resource.NewStringProperty("type=unrecognized"),
 				}),
 			}),
 			"tags": resource.NewArrayProperty([]resource.PropertyValue{
@@ -622,6 +612,26 @@ func TestBuildOptions(t *testing.T) {
 
 		_, err = unknowns.toBuildOptions(false)
 		assert.Error(t, err)
+	})
+
+	t.Run("multiple exports aren't allowed yet", func(t *testing.T) {
+		args := ImageArgs{
+			Exports: []ExportEntry{{Raw: "type=local"}, {Raw: "type=tar"}},
+		}
+		_, err := args.toBuildOptions(false)
+		assert.ErrorContains(t, err, "multiple exports are currently unsupported")
+	})
+
+	t.Run("cache and export entries are union-ish", func(t *testing.T) {
+		args := ImageArgs{
+			Exports:   []ExportEntry{{Tar: &ExportTar{}, Local: &ExportLocal{}}},
+			CacheTo:   []CacheToEntry{{Raw: "type=tar", Local: &CacheToLocal{Dest: "/foo"}}},
+			CacheFrom: []CacheFromEntry{{Raw: "type=tar", Registry: &CacheFromRegistry{}}},
+		}
+		_, err := args.toBuildOptions(false)
+		assert.ErrorContains(t, err, "exports should only specify one export type")
+		assert.ErrorContains(t, err, "cacheFrom should only specify one cache type")
+		assert.ErrorContains(t, err, "cacheTo should only specify one cache type")
 	})
 }
 
