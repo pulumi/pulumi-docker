@@ -5,8 +5,9 @@ import (
 	"testing"
 
 	"github.com/docker/buildx/util/buildflags"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
 func TestCacheString(t *testing.T) {

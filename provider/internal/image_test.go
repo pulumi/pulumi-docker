@@ -23,6 +23,7 @@ import (
 	"github.com/pulumi/pulumi-go-provider/integration"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/util/mapper"
+	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 
 	"github.com/pulumi/pulumi-docker/provider/v4/internal/mock"
 	"github.com/pulumi/pulumi-docker/provider/v4/internal/properties"
@@ -93,7 +94,12 @@ func TestLifecycle(t *testing.T) {
 						"context": resource.NewStringProperty("../testdata"),
 						"file":    resource.NewStringProperty("../testdata/Dockerfile"),
 						"exports": resource.NewArrayProperty(
-							[]resource.PropertyValue{resource.NewStringProperty("type=registry")},
+							[]resource.PropertyValue{
+								resource.NewObjectProperty(resource.PropertyMap{
+									"raw": resource.NewStringProperty("type=registry"),
+								},
+								),
+							},
 						),
 						"registries": resource.NewArrayProperty(
 							[]resource.PropertyValue{
@@ -151,7 +157,11 @@ func TestLifecycle(t *testing.T) {
 							[]resource.PropertyValue{resource.NewStringProperty("invalid-exports")},
 						),
 						"exports": resource.NewArrayProperty(
-							[]resource.PropertyValue{resource.NewStringProperty("type=")},
+							[]resource.PropertyValue{
+								resource.NewObjectProperty(resource.PropertyMap{
+									"raw": resource.NewStringProperty("type="),
+								}),
+							},
 						),
 					},
 					ExpectFailure: true,
@@ -322,8 +332,12 @@ func TestRead(t *testing.T) {
 		Urn: _fakeURN,
 		Inputs: resource.PropertyMap{
 			"exports": resource.NewArrayProperty([]resource.PropertyValue{
-				resource.NewStringProperty("type=registry"),
-				resource.NewStringProperty("type=unrecognized"),
+				resource.NewObjectProperty(resource.PropertyMap{
+					"raw": resource.NewStringProperty("type=registry"),
+				}),
+				resource.NewObjectProperty(resource.PropertyMap{
+					"raw": resource.NewStringProperty("type=unrecognized"),
+				}),
 			}),
 			"tags": resource.NewArrayProperty([]resource.PropertyValue{
 				resource.NewStringProperty(tag),
@@ -509,7 +523,7 @@ func TestDiff(t *testing.T) {
 			name: "diff if exports change",
 			olds: func(*testing.T, ImageState) ImageState { return baseState },
 			news: func(_ *testing.T, a ImageArgs) ImageArgs {
-				a.Exports = []string{"foo"}
+				a.Exports = []ExportEntry{{Raw: "foo"}}
 				return a
 			},
 			wantChanges: true,
@@ -541,7 +555,7 @@ func TestBuildOptions(t *testing.T) {
 	t.Run("invalid inputs", func(t *testing.T) {
 		args := ImageArgs{
 			Tags:      []string{"a/bad:tag:format"},
-			Exports:   []string{"badexport,-"},
+			Exports:   []ExportEntry{{Raw: "badexport,-"}},
 			Context:   "./testdata",
 			Platforms: []string{","},
 			CacheFrom: []CacheFromEntry{{Raw: "=badcachefrom"}},
@@ -560,7 +574,7 @@ func TestBuildOptions(t *testing.T) {
 	t.Run("buildOnPreview", func(t *testing.T) {
 		args := ImageArgs{
 			Tags:    []string{"my-tag"},
-			Exports: []string{"type=registry", "type=local", "type=docker"},
+			Exports: []ExportEntry{{Registry: &ExportRegistry{ExportImage{Push: pulumi.BoolRef(true)}}}},
 		}
 		actual, err := args.toBuildOptions(true)
 		assert.NoError(t, err)
@@ -589,7 +603,7 @@ func TestBuildOptions(t *testing.T) {
 			CacheFrom: []CacheFromEntry{{GHA: &CacheFromGitHubActions{}}, {Raw: ""}},
 			CacheTo:   []CacheToEntry{{GHA: &CacheToGitHubActions{}}, {Raw: ""}},
 			Context:   "",
-			Exports:   []string{"type=gha", ""},
+			Exports:   []ExportEntry{{Raw: ""}},
 			File:      "",
 			Platforms: []string{"linux/amd64", ""},
 			Registries: []properties.RegistryAuth{
@@ -627,7 +641,7 @@ func TestBuildable(t *testing.T) {
 			name: "unknown exports",
 			args: ImageArgs{
 				Tags:    []string{"known"},
-				Exports: []string{""},
+				Exports: []ExportEntry{{Raw: ""}},
 			},
 			want: false,
 		},
@@ -635,7 +649,7 @@ func TestBuildable(t *testing.T) {
 			name: "unknown registry",
 			args: ImageArgs{
 				Tags:    []string{"known"},
-				Exports: []string{"type=gha"},
+				Exports: []ExportEntry{{Docker: &ExportDocker{}}},
 				Registries: []properties.RegistryAuth{
 					{
 						Address:  "docker.io",
@@ -657,7 +671,7 @@ func TestBuildable(t *testing.T) {
 			name: "known exports",
 			args: ImageArgs{
 				Tags:    []string{"known"},
-				Exports: []string{"type=registry"},
+				Exports: []ExportEntry{{Registry: &ExportRegistry{}}},
 			},
 			want: true,
 		},
@@ -665,7 +679,7 @@ func TestBuildable(t *testing.T) {
 			name: "known registry",
 			args: ImageArgs{
 				Tags:    []string{"known"},
-				Exports: []string{"type=gha"},
+				Exports: []ExportEntry{{Registry: &ExportRegistry{}}},
 				Registries: []properties.RegistryAuth{
 					{
 						Address:  "docker.io",
