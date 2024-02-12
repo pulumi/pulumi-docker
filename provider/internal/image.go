@@ -63,7 +63,7 @@ type ImageArgs struct {
 	Platforms      []Platform                `pulumi:"platforms,optional"`
 	Pull           bool                      `pulumi:"pull,optional"`
 	Registries     []properties.RegistryAuth `pulumi:"registries,optional"`
-	Tags           []string                  `pulumi:"tags"`
+	Tags           []string                  `pulumi:"tags,optional"`
 	Target         string                    `pulumi:"target,optional"`
 }
 
@@ -122,7 +122,7 @@ type ImageState struct {
 	ImageArgs
 
 	ContextHash string                `pulumi:"contextHash,optional" provider:"internal"`
-	Manifests   []properties.Manifest `pulumi:"manifests" provider:"output"`
+	Manifests   []properties.Manifest `pulumi:"manifests"            provider:"output"`
 }
 
 // Annotate describes outputs of the Image resource.
@@ -335,8 +335,11 @@ func cachesFor(
 func (ia *ImageArgs) toBuildOptions(preview bool) (controllerapi.BuildOptions, error) {
 	var multierr error
 
-	if len(ia.Tags) == 0 {
-		multierr = errors.Join(multierr, newCheckFailure("tags", errors.New("at least one tag is required")))
+	if len(ia.Exports) > 1 {
+		multierr = errors.Join(
+			multierr,
+			newCheckFailure("exports", fmt.Errorf("multiple exports are currently unsupported")),
+		)
 	}
 
 	// TODO(https://github.com/pulumi/pulumi-docker/issues/860): Empty build context
@@ -355,12 +358,27 @@ func (ia *ImageArgs) toBuildOptions(preview bool) (controllerapi.BuildOptions, e
 
 	exports := []*controllerapi.ExportEntry{}
 	for _, e := range filtered.Exports {
-		export, err := buildflags.ParseExports([]string{e.String()})
+		if strings.Count(e.String(), "type=") > 1 {
+			multierr = errors.Join(multierr, newCheckFailure("exports", errors.New("exports should only specify one export type")))
+			continue
+		}
+		ee, err := buildflags.ParseExports([]string{e.String()})
 		if err != nil {
 			multierr = errors.Join(multierr, newCheckFailure("exports", err))
 			continue
 		}
-		exports = append(exports, export...)
+		exp := ee[0]
+		if len(ia.Tags) == 0 && isRegistryPush(exp) && exp.Attrs["name"] == "" {
+			multierr = errors.Join(multierr,
+				newCheckFailure("tags",
+					fmt.Errorf(
+						"at least one tag or export name is needed when pushing to a registry",
+					),
+				),
+			)
+			continue
+		}
+		exports = append(exports, exp)
 
 	}
 	if preview {
@@ -533,44 +551,36 @@ func (*Image) Read(
 	expectManifest := false
 	manifests := []properties.Manifest{}
 	for _, export := range opts.Exports {
-		switch export.GetType() {
-		case "image":
-			if export.GetAttrs()["push"] != "true" {
-				// No manifest to read if we didn't push.
+		// We currently only handle pushed manifests.
+		if !isRegistryPush(export) {
+			continue
+		}
+
+		for _, tag := range input.Tags {
+			expectManifest = true
+			infos, err := cfg.client.Inspect(ctx, name, tag)
+			if err != nil {
 				continue
 			}
-
-			for _, tag := range input.Tags {
-				expectManifest = true
-				infos, err := cfg.client.Inspect(ctx, name, tag)
-				if err != nil {
+			for _, m := range infos {
+				if m.Descriptor.Platform != nil && m.Descriptor.Platform.Architecture == "unknown" {
+					// Ignore cache manifests.
 					continue
 				}
-				for _, m := range infos {
-					if m.Descriptor.Platform != nil && m.Descriptor.Platform.Architecture == "unknown" {
-						// Ignore cache manifests.
-						continue
-					}
-					if m.Ref == nil {
-						// Shouldn't happen, but just in case.
-						continue
-					}
-					manifests = append(manifests, properties.Manifest{
-						Digest: m.Descriptor.Digest.String(),
-						Platform: properties.Platform{
-							OS:           m.Descriptor.Platform.OS,
-							Architecture: m.Descriptor.Platform.Architecture,
-						},
-						Ref:  m.Ref.String(),
-						Size: m.Descriptor.Size,
-					})
+				if m.Ref == nil {
+					// Shouldn't happen, but just in case.
+					continue
 				}
+				manifests = append(manifests, properties.Manifest{
+					Digest: m.Descriptor.Digest.String(),
+					Platform: properties.Platform{
+						OS:           m.Descriptor.Platform.OS,
+						Architecture: m.Descriptor.Platform.Architecture,
+					},
+					Ref:  m.Ref.String(),
+					Size: m.Descriptor.Size,
+				})
 			}
-		case "docker":
-			// TODO: Inspect local image and munge it into a manifest.
-		default:
-			// Other export types (e.g. file) are not supported.
-			continue
 		}
 	}
 
