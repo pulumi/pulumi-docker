@@ -6,8 +6,11 @@ package com.pulumi.docker.buildx;
 import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
 import com.pulumi.core.internal.Codegen;
+import com.pulumi.docker.buildx.enums.Platform;
+import com.pulumi.docker.buildx.inputs.CacheFromEntryArgs;
+import com.pulumi.docker.buildx.inputs.CacheToEntryArgs;
+import com.pulumi.docker.buildx.inputs.ExportEntryArgs;
 import com.pulumi.docker.buildx.inputs.RegistryAuthArgs;
-import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.Boolean;
 import java.lang.String;
 import java.util.List;
@@ -82,14 +85,14 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
      * 
      */
     @Import(name="cacheFrom")
-    private @Nullable Output<List<String>> cacheFrom;
+    private @Nullable Output<List<CacheFromEntryArgs>> cacheFrom;
 
     /**
      * @return
      * External cache sources (e.g., &#34;user/app:cache&#34;, &#34;type=local,src=path/to/dir&#34;)
      * 
      */
-    public Optional<Output<List<String>>> cacheFrom() {
+    public Optional<Output<List<CacheFromEntryArgs>>> cacheFrom() {
         return Optional.ofNullable(this.cacheFrom);
     }
 
@@ -98,14 +101,14 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
      * 
      */
     @Import(name="cacheTo")
-    private @Nullable Output<List<String>> cacheTo;
+    private @Nullable Output<List<CacheToEntryArgs>> cacheTo;
 
     /**
      * @return
      * Cache export destinations (e.g., &#34;user/app:cache&#34;, &#34;type=local,dest=path/to/dir&#34;)
      * 
      */
-    public Optional<Output<List<String>>> cacheTo() {
+    public Optional<Output<List<CacheToEntryArgs>>> cacheTo() {
         return Optional.ofNullable(this.cacheTo);
     }
 
@@ -131,7 +134,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
      * 
      */
     @Import(name="exports")
-    private @Nullable Output<List<String>> exports;
+    private @Nullable Output<List<ExportEntryArgs>> exports;
 
     /**
      * @return
@@ -139,7 +142,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
      * registry, the name should include the fully qualified registry address.
      * 
      */
-    public Optional<Output<List<String>>> exports() {
+    public Optional<Output<List<ExportEntryArgs>>> exports() {
         return Optional.ofNullable(this.exports);
     }
 
@@ -164,14 +167,14 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
      * 
      */
     @Import(name="platforms")
-    private @Nullable Output<List<String>> platforms;
+    private @Nullable Output<List<Platform>> platforms;
 
     /**
      * @return
      * Set target platforms for the build. Defaults to the host&#39;s platform
      * 
      */
-    public Optional<Output<List<String>>> platforms() {
+    public Optional<Output<List<Platform>>> platforms() {
         return Optional.ofNullable(this.platforms);
     }
 
@@ -212,8 +215,8 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
      * registry, the name should include the fully qualified registry address.
      * 
      */
-    @Import(name="tags", required=true)
-    private Output<List<String>> tags;
+    @Import(name="tags")
+    private @Nullable Output<List<String>> tags;
 
     /**
      * @return
@@ -221,15 +224,15 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
      * registry, the name should include the fully qualified registry address.
      * 
      */
-    public Output<List<String>> tags() {
-        return this.tags;
+    public Optional<Output<List<String>>> tags() {
+        return Optional.ofNullable(this.tags);
     }
 
-    @Import(name="target", required=true)
-    private Output<String> target;
+    @Import(name="target")
+    private @Nullable Output<String> target;
 
-    public Output<String> target() {
-        return this.target;
+    public Optional<Output<String>> target() {
+        return Optional.ofNullable(this.target);
     }
 
     private ImageArgs() {}
@@ -352,7 +355,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
          * @return builder
          * 
          */
-        public Builder cacheFrom(@Nullable Output<List<String>> cacheFrom) {
+        public Builder cacheFrom(@Nullable Output<List<CacheFromEntryArgs>> cacheFrom) {
             $.cacheFrom = cacheFrom;
             return this;
         }
@@ -364,7 +367,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
          * @return builder
          * 
          */
-        public Builder cacheFrom(List<String> cacheFrom) {
+        public Builder cacheFrom(List<CacheFromEntryArgs> cacheFrom) {
             return cacheFrom(Output.of(cacheFrom));
         }
 
@@ -375,7 +378,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
          * @return builder
          * 
          */
-        public Builder cacheFrom(String... cacheFrom) {
+        public Builder cacheFrom(CacheFromEntryArgs... cacheFrom) {
             return cacheFrom(List.of(cacheFrom));
         }
 
@@ -386,7 +389,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
          * @return builder
          * 
          */
-        public Builder cacheTo(@Nullable Output<List<String>> cacheTo) {
+        public Builder cacheTo(@Nullable Output<List<CacheToEntryArgs>> cacheTo) {
             $.cacheTo = cacheTo;
             return this;
         }
@@ -398,7 +401,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
          * @return builder
          * 
          */
-        public Builder cacheTo(List<String> cacheTo) {
+        public Builder cacheTo(List<CacheToEntryArgs> cacheTo) {
             return cacheTo(Output.of(cacheTo));
         }
 
@@ -409,7 +412,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
          * @return builder
          * 
          */
-        public Builder cacheTo(String... cacheTo) {
+        public Builder cacheTo(CacheToEntryArgs... cacheTo) {
             return cacheTo(List.of(cacheTo));
         }
 
@@ -444,7 +447,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
          * @return builder
          * 
          */
-        public Builder exports(@Nullable Output<List<String>> exports) {
+        public Builder exports(@Nullable Output<List<ExportEntryArgs>> exports) {
             $.exports = exports;
             return this;
         }
@@ -457,7 +460,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
          * @return builder
          * 
          */
-        public Builder exports(List<String> exports) {
+        public Builder exports(List<ExportEntryArgs> exports) {
             return exports(Output.of(exports));
         }
 
@@ -469,7 +472,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
          * @return builder
          * 
          */
-        public Builder exports(String... exports) {
+        public Builder exports(ExportEntryArgs... exports) {
             return exports(List.of(exports));
         }
 
@@ -503,7 +506,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
          * @return builder
          * 
          */
-        public Builder platforms(@Nullable Output<List<String>> platforms) {
+        public Builder platforms(@Nullable Output<List<Platform>> platforms) {
             $.platforms = platforms;
             return this;
         }
@@ -515,7 +518,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
          * @return builder
          * 
          */
-        public Builder platforms(List<String> platforms) {
+        public Builder platforms(List<Platform> platforms) {
             return platforms(Output.of(platforms));
         }
 
@@ -526,7 +529,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
          * @return builder
          * 
          */
-        public Builder platforms(String... platforms) {
+        public Builder platforms(Platform... platforms) {
             return platforms(List.of(platforms));
         }
 
@@ -595,7 +598,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
          * @return builder
          * 
          */
-        public Builder tags(Output<List<String>> tags) {
+        public Builder tags(@Nullable Output<List<String>> tags) {
             $.tags = tags;
             return this;
         }
@@ -624,7 +627,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
             return tags(List.of(tags));
         }
 
-        public Builder target(Output<String> target) {
+        public Builder target(@Nullable Output<String> target) {
             $.target = target;
             return this;
         }
@@ -635,12 +638,6 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
 
         public ImageArgs build() {
             $.file = Codegen.stringProp("file").output().arg($.file).def("Dockerfile").getNullable();
-            if ($.tags == null) {
-                throw new MissingRequiredPropertyException("ImageArgs", "tags");
-            }
-            if ($.target == null) {
-                throw new MissingRequiredPropertyException("ImageArgs", "target");
-            }
             return $;
         }
     }

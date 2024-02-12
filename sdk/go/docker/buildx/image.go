@@ -7,7 +7,6 @@ import (
 	"context"
 	"reflect"
 
-	"errors"
 	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker/internal"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
@@ -27,20 +26,20 @@ type Image struct {
 	// Build with a specific builder instance
 	Builder pulumi.StringPtrOutput `pulumi:"builder"`
 	// External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
-	CacheFrom pulumi.StringArrayOutput `pulumi:"cacheFrom"`
+	CacheFrom CacheFromEntryArrayOutput `pulumi:"cacheFrom"`
 	// Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
-	CacheTo pulumi.StringArrayOutput `pulumi:"cacheTo"`
+	CacheTo CacheToEntryArrayOutput `pulumi:"cacheTo"`
 	// Path to use for build context. If omitted, an empty context is used.
 	Context     pulumi.StringPtrOutput `pulumi:"context"`
 	ContextHash pulumi.StringPtrOutput `pulumi:"contextHash"`
 	// Name and optionally a tag (format: "name:tag"). If outputting to a
 	// registry, the name should include the fully qualified registry address.
-	Exports pulumi.StringArrayOutput `pulumi:"exports"`
+	Exports ExportEntryArrayOutput `pulumi:"exports"`
 	// Name of the Dockerfile to use (defaults to "${context}/Dockerfile").
 	File      pulumi.StringPtrOutput `pulumi:"file"`
 	Manifests ManifestArrayOutput    `pulumi:"manifests"`
 	// Set target platforms for the build. Defaults to the host's platform
-	Platforms pulumi.StringArrayOutput `pulumi:"platforms"`
+	Platforms PlatformArrayOutput `pulumi:"platforms"`
 	// Always attempt to pull referenced images.
 	Pull pulumi.BoolPtrOutput `pulumi:"pull"`
 	// Logins for registry outputs
@@ -48,22 +47,16 @@ type Image struct {
 	// Name and optionally a tag (format: "name:tag"). If outputting to a
 	// registry, the name should include the fully qualified registry address.
 	Tags   pulumi.StringArrayOutput `pulumi:"tags"`
-	Target pulumi.StringOutput      `pulumi:"target"`
+	Target pulumi.StringPtrOutput   `pulumi:"target"`
 }
 
 // NewImage registers a new resource with the given unique name, arguments, and options.
 func NewImage(ctx *pulumi.Context,
 	name string, args *ImageArgs, opts ...pulumi.ResourceOption) (*Image, error) {
 	if args == nil {
-		return nil, errors.New("missing one or more required arguments")
+		args = &ImageArgs{}
 	}
 
-	if args.Tags == nil {
-		return nil, errors.New("invalid value for required argument 'Tags'")
-	}
-	if args.Target == nil {
-		return nil, errors.New("invalid value for required argument 'Target'")
-	}
 	if args.File == nil {
 		args.File = pulumi.StringPtr("Dockerfile")
 	}
@@ -111,18 +104,18 @@ type imageArgs struct {
 	// Build with a specific builder instance
 	Builder *string `pulumi:"builder"`
 	// External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
-	CacheFrom []string `pulumi:"cacheFrom"`
+	CacheFrom []CacheFromEntry `pulumi:"cacheFrom"`
 	// Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
-	CacheTo []string `pulumi:"cacheTo"`
+	CacheTo []CacheToEntry `pulumi:"cacheTo"`
 	// Path to use for build context. If omitted, an empty context is used.
 	Context *string `pulumi:"context"`
 	// Name and optionally a tag (format: "name:tag"). If outputting to a
 	// registry, the name should include the fully qualified registry address.
-	Exports []string `pulumi:"exports"`
+	Exports []ExportEntry `pulumi:"exports"`
 	// Name of the Dockerfile to use (defaults to "${context}/Dockerfile").
 	File *string `pulumi:"file"`
 	// Set target platforms for the build. Defaults to the host's platform
-	Platforms []string `pulumi:"platforms"`
+	Platforms []Platform `pulumi:"platforms"`
 	// Always attempt to pull referenced images.
 	Pull *bool `pulumi:"pull"`
 	// Logins for registry outputs
@@ -130,7 +123,7 @@ type imageArgs struct {
 	// Name and optionally a tag (format: "name:tag"). If outputting to a
 	// registry, the name should include the fully qualified registry address.
 	Tags   []string `pulumi:"tags"`
-	Target string   `pulumi:"target"`
+	Target *string  `pulumi:"target"`
 }
 
 // The set of arguments for constructing a Image resource.
@@ -146,18 +139,18 @@ type ImageArgs struct {
 	// Build with a specific builder instance
 	Builder pulumi.StringPtrInput
 	// External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
-	CacheFrom pulumi.StringArrayInput
+	CacheFrom CacheFromEntryArrayInput
 	// Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
-	CacheTo pulumi.StringArrayInput
+	CacheTo CacheToEntryArrayInput
 	// Path to use for build context. If omitted, an empty context is used.
 	Context pulumi.StringPtrInput
 	// Name and optionally a tag (format: "name:tag"). If outputting to a
 	// registry, the name should include the fully qualified registry address.
-	Exports pulumi.StringArrayInput
+	Exports ExportEntryArrayInput
 	// Name of the Dockerfile to use (defaults to "${context}/Dockerfile").
 	File pulumi.StringPtrInput
 	// Set target platforms for the build. Defaults to the host's platform
-	Platforms pulumi.StringArrayInput
+	Platforms PlatformArrayInput
 	// Always attempt to pull referenced images.
 	Pull pulumi.BoolPtrInput
 	// Logins for registry outputs
@@ -165,7 +158,7 @@ type ImageArgs struct {
 	// Name and optionally a tag (format: "name:tag"). If outputting to a
 	// registry, the name should include the fully qualified registry address.
 	Tags   pulumi.StringArrayInput
-	Target pulumi.StringInput
+	Target pulumi.StringPtrInput
 }
 
 func (ImageArgs) ElementType() reflect.Type {
@@ -275,13 +268,13 @@ func (o ImageOutput) Builder() pulumi.StringPtrOutput {
 }
 
 // External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
-func (o ImageOutput) CacheFrom() pulumi.StringArrayOutput {
-	return o.ApplyT(func(v *Image) pulumi.StringArrayOutput { return v.CacheFrom }).(pulumi.StringArrayOutput)
+func (o ImageOutput) CacheFrom() CacheFromEntryArrayOutput {
+	return o.ApplyT(func(v *Image) CacheFromEntryArrayOutput { return v.CacheFrom }).(CacheFromEntryArrayOutput)
 }
 
 // Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
-func (o ImageOutput) CacheTo() pulumi.StringArrayOutput {
-	return o.ApplyT(func(v *Image) pulumi.StringArrayOutput { return v.CacheTo }).(pulumi.StringArrayOutput)
+func (o ImageOutput) CacheTo() CacheToEntryArrayOutput {
+	return o.ApplyT(func(v *Image) CacheToEntryArrayOutput { return v.CacheTo }).(CacheToEntryArrayOutput)
 }
 
 // Path to use for build context. If omitted, an empty context is used.
@@ -295,8 +288,8 @@ func (o ImageOutput) ContextHash() pulumi.StringPtrOutput {
 
 // Name and optionally a tag (format: "name:tag"). If outputting to a
 // registry, the name should include the fully qualified registry address.
-func (o ImageOutput) Exports() pulumi.StringArrayOutput {
-	return o.ApplyT(func(v *Image) pulumi.StringArrayOutput { return v.Exports }).(pulumi.StringArrayOutput)
+func (o ImageOutput) Exports() ExportEntryArrayOutput {
+	return o.ApplyT(func(v *Image) ExportEntryArrayOutput { return v.Exports }).(ExportEntryArrayOutput)
 }
 
 // Name of the Dockerfile to use (defaults to "${context}/Dockerfile").
@@ -309,8 +302,8 @@ func (o ImageOutput) Manifests() ManifestArrayOutput {
 }
 
 // Set target platforms for the build. Defaults to the host's platform
-func (o ImageOutput) Platforms() pulumi.StringArrayOutput {
-	return o.ApplyT(func(v *Image) pulumi.StringArrayOutput { return v.Platforms }).(pulumi.StringArrayOutput)
+func (o ImageOutput) Platforms() PlatformArrayOutput {
+	return o.ApplyT(func(v *Image) PlatformArrayOutput { return v.Platforms }).(PlatformArrayOutput)
 }
 
 // Always attempt to pull referenced images.
@@ -329,8 +322,8 @@ func (o ImageOutput) Tags() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v *Image) pulumi.StringArrayOutput { return v.Tags }).(pulumi.StringArrayOutput)
 }
 
-func (o ImageOutput) Target() pulumi.StringOutput {
-	return o.ApplyT(func(v *Image) pulumi.StringOutput { return v.Target }).(pulumi.StringOutput)
+func (o ImageOutput) Target() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *Image) pulumi.StringPtrOutput { return v.Target }).(pulumi.StringPtrOutput)
 }
 
 type ImageArrayOutput struct{ *pulumi.OutputState }

@@ -6,6 +6,8 @@ import * as inputs from "../types/input";
 import * as outputs from "../types/output";
 import * as enums from "../types/enums";
 
+import * as utilities from "../utilities";
+
 export interface ContainerCapabilities {
     /**
      * List of linux capabilities to add.
@@ -1196,19 +1198,628 @@ export interface VolumeLabel {
 }
 
 export namespace buildx {
+    export interface CacheFromAzureBlob {
+        accountUrl?: string;
+        name: string;
+        secretAccessKey?: string;
+    }
+
+    export interface CacheFromEntry {
+        /**
+         *
+         * Push cache to Azure's blob storage service.
+         */
+        azblob?: outputs.buildx.CacheFromAzureBlob;
+        /**
+         *
+         * Recommended for use with GitHub Actions workflows.
+         *
+         * An action like "crazy-max/ghaction-github-runtime" is recommended to
+         * expose appropriate credentials to your GitHub workflow.
+         */
+        gha?: outputs.buildx.CacheFromGitHubActions;
+        /**
+         *
+         * The inline cache storage backend is the simplest implementation to get
+         * started with, but it does not handle multi-stage builds. Consider the
+         * registry cache backend instead.
+         */
+        inline?: outputs.buildx.CacheInline;
+        /**
+         *
+         * A simple backend which caches imagines on your local filesystem.
+         */
+        local?: outputs.buildx.CacheFromLocal;
+        /**
+         *
+         * A raw string as you would provide it to the Docker CLI (e.g.,
+         * "type=inline")
+         */
+        raw?: string;
+        /**
+         *
+         * Push caches to remote registries. Incompatible with the "docker" build
+         * driver.
+         */
+        registry?: outputs.buildx.CacheFromRegistry;
+        /**
+         *
+         * Push cache to AWS S3 or S3-compatible services such as MinIO.
+         */
+        s3?: outputs.buildx.CacheFromS3;
+    }
+    /**
+     * cacheFromEntryProvideDefaults sets the appropriate defaults for CacheFromEntry
+     */
+    export function cacheFromEntryProvideDefaults(val: CacheFromEntry): CacheFromEntry {
+        return {
+            ...val,
+            gha: (val.gha ? outputs.buildx.cacheFromGitHubActionsProvideDefaults(val.gha) : undefined),
+            s3: (val.s3 ? outputs.buildx.cacheFromS3ProvideDefaults(val.s3) : undefined),
+        };
+    }
+
+    export interface CacheFromGitHubActions {
+        /**
+         * Which scope cache object belongs to.
+         */
+        scope?: string;
+        /**
+         * Access token
+         */
+        token?: string;
+        /**
+         * Cache server URL
+         */
+        url?: string;
+    }
+    /**
+     * cacheFromGitHubActionsProvideDefaults sets the appropriate defaults for CacheFromGitHubActions
+     */
+    export function cacheFromGitHubActionsProvideDefaults(val: CacheFromGitHubActions): CacheFromGitHubActions {
+        return {
+            ...val,
+            scope: (val.scope) ?? (utilities.getEnv("buildkit") || ""),
+            token: (val.token) ?? (utilities.getEnv("ACTIONS_RUNTIME_TOKEN") || ""),
+            url: (val.url) ?? (utilities.getEnv("ACTIONS_RUNTIME_URL") || ""),
+        };
+    }
+
+    export interface CacheFromLocal {
+        digest?: string;
+        src: string;
+    }
+
+    export interface CacheFromRegistry {
+        /**
+         * Full name of the cache image to import.
+         */
+        ref: string;
+    }
+
+    export interface CacheFromS3 {
+        accessKeyId?: string;
+        blobsPrefix?: string;
+        bucket: string;
+        endpointUrl?: string;
+        manifestsPrefix?: string;
+        name?: string;
+        region: string;
+        secretAccessKey?: string;
+        sessionToken?: string;
+        usePathStyle?: boolean;
+    }
+    /**
+     * cacheFromS3ProvideDefaults sets the appropriate defaults for CacheFromS3
+     */
+    export function cacheFromS3ProvideDefaults(val: CacheFromS3): CacheFromS3 {
+        return {
+            ...val,
+            accessKeyId: (val.accessKeyId) ?? (utilities.getEnv("AWS_ACCESS_KEY_ID") || ""),
+            region: (val.region) ?? (utilities.getEnv("AWS_REGION") || ""),
+            secretAccessKey: (val.secretAccessKey) ?? (utilities.getEnv("AWS_SECRET_ACCESS_KEY") || ""),
+            sessionToken: (val.sessionToken) ?? (utilities.getEnv("AWS_SESSION_TOKEN") || ""),
+        };
+    }
+
+    export interface CacheInline {
+    }
+
+    export interface CacheToAzureBlob {
+        accountUrl?: string;
+        /**
+         * Ignore errors caused by failed cache exports.
+         */
+        ignoreError?: boolean;
+        mode?: enums.buildx.CacheMode;
+        name: string;
+        secretAccessKey?: string;
+    }
+    /**
+     * cacheToAzureBlobProvideDefaults sets the appropriate defaults for CacheToAzureBlob
+     */
+    export function cacheToAzureBlobProvideDefaults(val: CacheToAzureBlob): CacheToAzureBlob {
+        return {
+            ...val,
+            ignoreError: (val.ignoreError) ?? false,
+            mode: (val.mode) ?? "min",
+        };
+    }
+
+    export interface CacheToEntry {
+        /**
+         *
+         * Push cache to Azure's blob storage service.
+         */
+        azblob?: outputs.buildx.CacheToAzureBlob;
+        /**
+         *
+         * Recommended for use with GitHub Actions workflows.
+         *
+         * An action like "crazy-max/ghaction-github-runtime" is recommended to
+         * expose appropriate credentials to your GitHub workflow.
+         */
+        gha?: outputs.buildx.CacheToGitHubActions;
+        /**
+         *
+         * The inline cache storage backend is the simplest implementation to get
+         * started with, but it does not handle multi-stage builds. Consider the
+         * registry cache backend instead.
+         */
+        inline?: outputs.buildx.CacheInline;
+        /**
+         *
+         * A simple backend which caches imagines on your local filesystem.
+         */
+        local?: outputs.buildx.CacheToLocal;
+        /**
+         *
+         * A raw string as you would provide it to the Docker CLI (e.g.,
+         * "type=inline")
+         */
+        raw?: string;
+        /**
+         *
+         * Push caches to remote registries. Incompatible with the "docker" build
+         * driver.
+         */
+        registry?: outputs.buildx.CacheToRegistry;
+        /**
+         *
+         * Push cache to AWS S3 or S3-compatible services such as MinIO.
+         */
+        s3?: outputs.buildx.CacheToS3;
+    }
+    /**
+     * cacheToEntryProvideDefaults sets the appropriate defaults for CacheToEntry
+     */
+    export function cacheToEntryProvideDefaults(val: CacheToEntry): CacheToEntry {
+        return {
+            ...val,
+            azblob: (val.azblob ? outputs.buildx.cacheToAzureBlobProvideDefaults(val.azblob) : undefined),
+            gha: (val.gha ? outputs.buildx.cacheToGitHubActionsProvideDefaults(val.gha) : undefined),
+            local: (val.local ? outputs.buildx.cacheToLocalProvideDefaults(val.local) : undefined),
+            registry: (val.registry ? outputs.buildx.cacheToRegistryProvideDefaults(val.registry) : undefined),
+            s3: (val.s3 ? outputs.buildx.cacheToS3ProvideDefaults(val.s3) : undefined),
+        };
+    }
+
+    export interface CacheToGitHubActions {
+        /**
+         * Ignore errors caused by failed cache exports.
+         */
+        ignoreError?: boolean;
+        mode?: enums.buildx.CacheMode;
+        /**
+         * Which scope cache object belongs to.
+         */
+        scope?: string;
+        /**
+         * Access token
+         */
+        token?: string;
+        /**
+         * Cache server URL
+         */
+        url?: string;
+    }
+    /**
+     * cacheToGitHubActionsProvideDefaults sets the appropriate defaults for CacheToGitHubActions
+     */
+    export function cacheToGitHubActionsProvideDefaults(val: CacheToGitHubActions): CacheToGitHubActions {
+        return {
+            ...val,
+            ignoreError: (val.ignoreError) ?? false,
+            mode: (val.mode) ?? "min",
+            scope: (val.scope) ?? (utilities.getEnv("buildkit") || ""),
+            token: (val.token) ?? (utilities.getEnv("ACTIONS_RUNTIME_TOKEN") || ""),
+            url: (val.url) ?? (utilities.getEnv("ACTIONS_RUNTIME_URL") || ""),
+        };
+    }
+
+    export interface CacheToLocal {
+        /**
+         * The compression type to use.
+         */
+        compression?: enums.buildx.CompressionType;
+        /**
+         * Compression level from 0 to 22.
+         */
+        compressionLevel?: number;
+        dest: string;
+        /**
+         * Forcefully apply compression.
+         */
+        forceCompression?: boolean;
+        /**
+         * Ignore errors caused by failed cache exports.
+         */
+        ignoreError?: boolean;
+        mode?: enums.buildx.CacheMode;
+    }
+    /**
+     * cacheToLocalProvideDefaults sets the appropriate defaults for CacheToLocal
+     */
+    export function cacheToLocalProvideDefaults(val: CacheToLocal): CacheToLocal {
+        return {
+            ...val,
+            compression: (val.compression) ?? "gzip",
+            compressionLevel: (val.compressionLevel) ?? 0,
+            forceCompression: (val.forceCompression) ?? false,
+            ignoreError: (val.ignoreError) ?? false,
+            mode: (val.mode) ?? "min",
+        };
+    }
+
+    export interface CacheToRegistry {
+        /**
+         * The compression type to use.
+         */
+        compression?: enums.buildx.CompressionType;
+        /**
+         * Compression level from 0 to 22.
+         */
+        compressionLevel?: number;
+        /**
+         * Forcefully apply compression.
+         */
+        forceCompression?: boolean;
+        /**
+         * Ignore errors caused by failed cache exports.
+         */
+        ignoreError?: boolean;
+        /**
+         * Export cache manifest as an OCI-compatible image manifest instead of a manifest list (requires OCI media types).
+         */
+        imageManifest?: boolean;
+        mode?: enums.buildx.CacheMode;
+        /**
+         * Whether to use OCI mediatypes in exported manifests.
+         */
+        ociMediaTypes?: boolean;
+        /**
+         * Full name of the cache image to import.
+         */
+        ref: string;
+    }
+    /**
+     * cacheToRegistryProvideDefaults sets the appropriate defaults for CacheToRegistry
+     */
+    export function cacheToRegistryProvideDefaults(val: CacheToRegistry): CacheToRegistry {
+        return {
+            ...val,
+            compression: (val.compression) ?? "gzip",
+            compressionLevel: (val.compressionLevel) ?? 0,
+            forceCompression: (val.forceCompression) ?? false,
+            ignoreError: (val.ignoreError) ?? false,
+            imageManifest: (val.imageManifest) ?? false,
+            mode: (val.mode) ?? "min",
+            ociMediaTypes: (val.ociMediaTypes) ?? true,
+        };
+    }
+
+    export interface CacheToS3 {
+        accessKeyId?: string;
+        blobsPrefix?: string;
+        bucket: string;
+        endpointUrl?: string;
+        /**
+         * Ignore errors caused by failed cache exports.
+         */
+        ignoreError?: boolean;
+        manifestsPrefix?: string;
+        mode?: enums.buildx.CacheMode;
+        name?: string;
+        region: string;
+        secretAccessKey?: string;
+        sessionToken?: string;
+        usePathStyle?: boolean;
+    }
+    /**
+     * cacheToS3ProvideDefaults sets the appropriate defaults for CacheToS3
+     */
+    export function cacheToS3ProvideDefaults(val: CacheToS3): CacheToS3 {
+        return {
+            ...val,
+            accessKeyId: (val.accessKeyId) ?? (utilities.getEnv("AWS_ACCESS_KEY_ID") || ""),
+            ignoreError: (val.ignoreError) ?? false,
+            mode: (val.mode) ?? "min",
+            region: (val.region) ?? (utilities.getEnv("AWS_REGION") || ""),
+            secretAccessKey: (val.secretAccessKey) ?? (utilities.getEnv("AWS_SECRET_ACCESS_KEY") || ""),
+            sessionToken: (val.sessionToken) ?? (utilities.getEnv("AWS_SESSION_TOKEN") || ""),
+        };
+    }
+
+    export interface ExportDocker {
+        annotations?: {[key: string]: string};
+        /**
+         * The compression type to use.
+         */
+        compression?: enums.buildx.CompressionType;
+        /**
+         * Compression level from 0 to 22.
+         */
+        compressionLevel?: number;
+        /**
+         * The local export path.
+         */
+        dest?: string;
+        /**
+         * Forcefully apply compression.
+         */
+        forceCompression?: boolean;
+        /**
+         * Specify images names to export. This is overridden if tags are already specified.
+         */
+        names?: string[];
+        /**
+         * Use OCI media types in exporter manifests.
+         */
+        ociMediaTypes?: boolean;
+        /**
+         * Bundle the output into a tarball layout.
+         */
+        tar?: boolean;
+    }
+    /**
+     * exportDockerProvideDefaults sets the appropriate defaults for ExportDocker
+     */
+    export function exportDockerProvideDefaults(val: ExportDocker): ExportDocker {
+        return {
+            ...val,
+            compression: (val.compression) ?? "gzip",
+            compressionLevel: (val.compressionLevel) ?? 0,
+            forceCompression: (val.forceCompression) ?? false,
+            ociMediaTypes: (val.ociMediaTypes) ?? false,
+            tar: (val.tar) ?? true,
+        };
+    }
+
+    export interface ExportEntry {
+        /**
+         *
+         * Export as a Docker image layout.
+         */
+        docker?: outputs.buildx.ExportDocker;
+        /**
+         *
+         * Outputs the build result into a container image format.
+         */
+        image?: outputs.buildx.ExportImage;
+        /**
+         *
+         * Export to a local directory as files and directories.
+         */
+        local?: outputs.buildx.ExportLocal;
+        /**
+         *
+         * Identical to the Docker exporter but uses OCI media types by default.
+         */
+        oci?: outputs.buildx.ExportOCI;
+        /**
+         *
+         * A raw string as you would provide it to the Docker CLI (e.g.,
+         * "type=docker")
+         */
+        raw?: string;
+        /**
+         *
+         * Identical to the Image exporter, but pushes by default.
+         */
+        registry?: outputs.buildx.ExportRegistry;
+        /**
+         *
+         * Export to a local directory as a tarball.
+         */
+        tar?: outputs.buildx.ExportTar;
+    }
+    /**
+     * exportEntryProvideDefaults sets the appropriate defaults for ExportEntry
+     */
+    export function exportEntryProvideDefaults(val: ExportEntry): ExportEntry {
+        return {
+            ...val,
+            docker: (val.docker ? outputs.buildx.exportDockerProvideDefaults(val.docker) : undefined),
+            image: (val.image ? outputs.buildx.exportImageProvideDefaults(val.image) : undefined),
+            oci: (val.oci ? outputs.buildx.exportOCIProvideDefaults(val.oci) : undefined),
+            registry: (val.registry ? outputs.buildx.exportRegistryProvideDefaults(val.registry) : undefined),
+        };
+    }
+
+    export interface ExportImage {
+        annotations?: {[key: string]: string};
+        /**
+         * The compression type to use.
+         */
+        compression?: enums.buildx.CompressionType;
+        /**
+         * Compression level from 0 to 22.
+         */
+        compressionLevel?: number;
+        danglingNamePrefix?: string;
+        /**
+         * Forcefully apply compression.
+         */
+        forceCompression?: boolean;
+        insecure?: boolean;
+        nameCanonical?: boolean;
+        /**
+         * Specify images names to export. This is overridden if tags are already specified.
+         */
+        names?: string[];
+        /**
+         * Use OCI media types in exporter manifests.
+         */
+        ociMediaTypes?: boolean;
+        /**
+         * Push after creating the image.
+         */
+        push?: boolean;
+        pushByDigest?: boolean;
+        /**
+         *
+         * Store resulting images to the worker's image store, and ensure all its
+         * blobs are in the content store. Ignored if the worker doesn't have
+         * image store (when using OCI workers, for example).
+         */
+        store?: boolean;
+        unpack?: boolean;
+    }
+    /**
+     * exportImageProvideDefaults sets the appropriate defaults for ExportImage
+     */
+    export function exportImageProvideDefaults(val: ExportImage): ExportImage {
+        return {
+            ...val,
+            compression: (val.compression) ?? "gzip",
+            compressionLevel: (val.compressionLevel) ?? 0,
+            forceCompression: (val.forceCompression) ?? false,
+            ociMediaTypes: (val.ociMediaTypes) ?? false,
+            store: (val.store) ?? true,
+        };
+    }
+
+    export interface ExportLocal {
+        /**
+         * Output path.
+         */
+        dest: string;
+    }
+
+    export interface ExportOCI {
+        annotations?: {[key: string]: string};
+        /**
+         * The compression type to use.
+         */
+        compression?: enums.buildx.CompressionType;
+        /**
+         * Compression level from 0 to 22.
+         */
+        compressionLevel?: number;
+        /**
+         * The local export path.
+         */
+        dest?: string;
+        /**
+         * Forcefully apply compression.
+         */
+        forceCompression?: boolean;
+        /**
+         * Specify images names to export. This is overridden if tags are already specified.
+         */
+        names?: string[];
+        /**
+         * Use OCI media types in exporter manifests.
+         */
+        ociMediaTypes?: boolean;
+        /**
+         * Bundle the output into a tarball layout.
+         */
+        tar?: boolean;
+    }
+    /**
+     * exportOCIProvideDefaults sets the appropriate defaults for ExportOCI
+     */
+    export function exportOCIProvideDefaults(val: ExportOCI): ExportOCI {
+        return {
+            ...val,
+            compression: (val.compression) ?? "gzip",
+            compressionLevel: (val.compressionLevel) ?? 0,
+            forceCompression: (val.forceCompression) ?? false,
+            ociMediaTypes: (val.ociMediaTypes) ?? true,
+            tar: (val.tar) ?? true,
+        };
+    }
+
+    export interface ExportRegistry {
+        annotations?: {[key: string]: string};
+        /**
+         * The compression type to use.
+         */
+        compression?: enums.buildx.CompressionType;
+        /**
+         * Compression level from 0 to 22.
+         */
+        compressionLevel?: number;
+        danglingNamePrefix?: string;
+        /**
+         * Forcefully apply compression.
+         */
+        forceCompression?: boolean;
+        insecure?: boolean;
+        nameCanonical?: boolean;
+        /**
+         * Specify images names to export. This is overridden if tags are already specified.
+         */
+        names?: string[];
+        /**
+         * Use OCI media types in exporter manifests.
+         */
+        ociMediaTypes?: boolean;
+        /**
+         * Push after creating the image.
+         */
+        push?: boolean;
+        pushByDigest?: boolean;
+        /**
+         *
+         * Store resulting images to the worker's image store, and ensure all its
+         * blobs are in the content store. Ignored if the worker doesn't have
+         * image store (when using OCI workers, for example).
+         */
+        store?: boolean;
+        unpack?: boolean;
+    }
+    /**
+     * exportRegistryProvideDefaults sets the appropriate defaults for ExportRegistry
+     */
+    export function exportRegistryProvideDefaults(val: ExportRegistry): ExportRegistry {
+        return {
+            ...val,
+            compression: (val.compression) ?? "gzip",
+            compressionLevel: (val.compressionLevel) ?? 0,
+            forceCompression: (val.forceCompression) ?? false,
+            ociMediaTypes: (val.ociMediaTypes) ?? false,
+            push: (val.push) ?? true,
+            store: (val.store) ?? true,
+        };
+    }
+
+    export interface ExportTar {
+        /**
+         * Output path.
+         */
+        dest: string;
+    }
+
     export interface Manifest {
         digest: string;
-        platform: outputs.buildx.Platform;
+        platform: enums.buildx.Platform;
         /**
          * The manifest's ref
          */
         ref: string;
         size: number;
-    }
-
-    export interface Platform {
-        architecture: string;
-        os: string;
     }
 
     export interface RegistryAuth {

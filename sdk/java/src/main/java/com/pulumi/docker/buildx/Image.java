@@ -9,6 +9,10 @@ import com.pulumi.core.annotations.ResourceType;
 import com.pulumi.core.internal.Codegen;
 import com.pulumi.docker.Utilities;
 import com.pulumi.docker.buildx.ImageArgs;
+import com.pulumi.docker.buildx.enums.Platform;
+import com.pulumi.docker.buildx.outputs.CacheFromEntry;
+import com.pulumi.docker.buildx.outputs.CacheToEntry;
+import com.pulumi.docker.buildx.outputs.ExportEntry;
 import com.pulumi.docker.buildx.outputs.Manifest;
 import com.pulumi.docker.buildx.outputs.RegistryAuth;
 import java.lang.Boolean;
@@ -81,30 +85,30 @@ public class Image extends com.pulumi.resources.CustomResource {
      * External cache sources (e.g., &#34;user/app:cache&#34;, &#34;type=local,src=path/to/dir&#34;)
      * 
      */
-    @Export(name="cacheFrom", refs={List.class,String.class}, tree="[0,1]")
-    private Output</* @Nullable */ List<String>> cacheFrom;
+    @Export(name="cacheFrom", refs={List.class,CacheFromEntry.class}, tree="[0,1]")
+    private Output</* @Nullable */ List<CacheFromEntry>> cacheFrom;
 
     /**
      * @return
      * External cache sources (e.g., &#34;user/app:cache&#34;, &#34;type=local,src=path/to/dir&#34;)
      * 
      */
-    public Output<Optional<List<String>>> cacheFrom() {
+    public Output<Optional<List<CacheFromEntry>>> cacheFrom() {
         return Codegen.optional(this.cacheFrom);
     }
     /**
      * Cache export destinations (e.g., &#34;user/app:cache&#34;, &#34;type=local,dest=path/to/dir&#34;)
      * 
      */
-    @Export(name="cacheTo", refs={List.class,String.class}, tree="[0,1]")
-    private Output</* @Nullable */ List<String>> cacheTo;
+    @Export(name="cacheTo", refs={List.class,CacheToEntry.class}, tree="[0,1]")
+    private Output</* @Nullable */ List<CacheToEntry>> cacheTo;
 
     /**
      * @return
      * Cache export destinations (e.g., &#34;user/app:cache&#34;, &#34;type=local,dest=path/to/dir&#34;)
      * 
      */
-    public Output<Optional<List<String>>> cacheTo() {
+    public Output<Optional<List<CacheToEntry>>> cacheTo() {
         return Codegen.optional(this.cacheTo);
     }
     /**
@@ -133,8 +137,8 @@ public class Image extends com.pulumi.resources.CustomResource {
      * registry, the name should include the fully qualified registry address.
      * 
      */
-    @Export(name="exports", refs={List.class,String.class}, tree="[0,1]")
-    private Output</* @Nullable */ List<String>> exports;
+    @Export(name="exports", refs={List.class,ExportEntry.class}, tree="[0,1]")
+    private Output</* @Nullable */ List<ExportEntry>> exports;
 
     /**
      * @return
@@ -142,7 +146,7 @@ public class Image extends com.pulumi.resources.CustomResource {
      * registry, the name should include the fully qualified registry address.
      * 
      */
-    public Output<Optional<List<String>>> exports() {
+    public Output<Optional<List<ExportEntry>>> exports() {
         return Codegen.optional(this.exports);
     }
     /**
@@ -170,15 +174,15 @@ public class Image extends com.pulumi.resources.CustomResource {
      * Set target platforms for the build. Defaults to the host&#39;s platform
      * 
      */
-    @Export(name="platforms", refs={List.class,String.class}, tree="[0,1]")
-    private Output</* @Nullable */ List<String>> platforms;
+    @Export(name="platforms", refs={List.class,Platform.class}, tree="[0,1]")
+    private Output</* @Nullable */ List<Platform>> platforms;
 
     /**
      * @return
      * Set target platforms for the build. Defaults to the host&#39;s platform
      * 
      */
-    public Output<Optional<List<String>>> platforms() {
+    public Output<Optional<List<Platform>>> platforms() {
         return Codegen.optional(this.platforms);
     }
     /**
@@ -217,7 +221,7 @@ public class Image extends com.pulumi.resources.CustomResource {
      * 
      */
     @Export(name="tags", refs={List.class,String.class}, tree="[0,1]")
-    private Output<List<String>> tags;
+    private Output</* @Nullable */ List<String>> tags;
 
     /**
      * @return
@@ -225,14 +229,14 @@ public class Image extends com.pulumi.resources.CustomResource {
      * registry, the name should include the fully qualified registry address.
      * 
      */
-    public Output<List<String>> tags() {
-        return this.tags;
+    public Output<Optional<List<String>>> tags() {
+        return Codegen.optional(this.tags);
     }
     @Export(name="target", refs={String.class}, tree="[0]")
-    private Output<String> target;
+    private Output</* @Nullable */ String> target;
 
-    public Output<String> target() {
-        return this.target;
+    public Output<Optional<String>> target() {
+        return Codegen.optional(this.target);
     }
 
     /**
@@ -247,7 +251,7 @@ public class Image extends com.pulumi.resources.CustomResource {
      * @param name The _unique_ name of the resulting resource.
      * @param args The arguments to use to populate this resource's properties.
      */
-    public Image(String name, ImageArgs args) {
+    public Image(String name, @Nullable ImageArgs args) {
         this(name, args, null);
     }
     /**
@@ -256,7 +260,7 @@ public class Image extends com.pulumi.resources.CustomResource {
      * @param args The arguments to use to populate this resource's properties.
      * @param options A bag of options that control this resource's behavior.
      */
-    public Image(String name, ImageArgs args, @Nullable com.pulumi.resources.CustomResourceOptions options) {
+    public Image(String name, @Nullable ImageArgs args, @Nullable com.pulumi.resources.CustomResourceOptions options) {
         super("docker:buildx/image:Image", name, args == null ? ImageArgs.Empty : args, makeResourceOptions(options, Codegen.empty()));
     }
 

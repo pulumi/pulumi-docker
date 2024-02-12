@@ -11,19 +11,17 @@ namespace Pulumi.Docker.Buildx.Outputs
 {
 
     [OutputType]
-    public sealed class Platform
+    public sealed class ExportLocal
     {
-        public readonly string Architecture;
-        public readonly string Os;
+        /// <summary>
+        /// Output path.
+        /// </summary>
+        public readonly string Dest;
 
         [OutputConstructor]
-        private Platform(
-            string architecture,
-
-            string os)
+        private ExportLocal(string dest)
         {
-            Architecture = architecture;
-            Os = os;
+            Dest = dest;
         }
     }
 }

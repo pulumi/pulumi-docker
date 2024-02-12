@@ -14,7 +14,7 @@ namespace Pulumi.Docker.Buildx.Outputs
     public sealed class Manifest
     {
         public readonly string Digest;
-        public readonly Outputs.Platform Platform;
+        public readonly Pulumi.Docker.Buildx.Platform Platform;
         /// <summary>
         /// The manifest's ref
         /// </summary>
@@ -25,7 +25,7 @@ namespace Pulumi.Docker.Buildx.Outputs
         private Manifest(
             string digest,
 
-            Outputs.Platform platform,
+            Pulumi.Docker.Buildx.Platform platform,
 
             string @ref,
 

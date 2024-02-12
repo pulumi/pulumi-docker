@@ -9,6 +9,7 @@ import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
 from .. import _utilities
 from . import outputs
+from ._enums import *
 from ._inputs import *
 
 __all__ = ['ImageArgs', 'Image']
@@ -16,24 +17,21 @@ __all__ = ['ImageArgs', 'Image']
 @pulumi.input_type
 class ImageArgs:
     def __init__(__self__, *,
-                 tags: pulumi.Input[Sequence[pulumi.Input[str]]],
-                 target: pulumi.Input[str],
                  build_args: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
                  build_on_preview: Optional[pulumi.Input[bool]] = None,
                  builder: Optional[pulumi.Input[str]] = None,
-                 cache_from: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
-                 cache_to: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 cache_from: Optional[pulumi.Input[Sequence[pulumi.Input['CacheFromEntryArgs']]]] = None,
+                 cache_to: Optional[pulumi.Input[Sequence[pulumi.Input['CacheToEntryArgs']]]] = None,
                  context: Optional[pulumi.Input[str]] = None,
-                 exports: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 exports: Optional[pulumi.Input[Sequence[pulumi.Input['ExportEntryArgs']]]] = None,
                  file: Optional[pulumi.Input[str]] = None,
-                 platforms: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 platforms: Optional[pulumi.Input[Sequence[pulumi.Input['Platform']]]] = None,
                  pull: Optional[pulumi.Input[bool]] = None,
-                 registries: Optional[pulumi.Input[Sequence[pulumi.Input['RegistryAuthArgs']]]] = None):
+                 registries: Optional[pulumi.Input[Sequence[pulumi.Input['RegistryAuthArgs']]]] = None,
+                 tags: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 target: Optional[pulumi.Input[str]] = None):
         """
         The set of arguments for constructing a Image resource.
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] tags: 
-               Name and optionally a tag (format: "name:tag"). If outputting to a
-               registry, the name should include the fully qualified registry address.
         :param pulumi.Input[Mapping[str, pulumi.Input[str]]] build_args: 
                An optional map of named build-time argument variables to set during
                the Docker build. This flag allows you to pass build-time variables that
@@ -44,26 +42,27 @@ class ImageArgs:
                pushed to registries, however caches are still populated.
         :param pulumi.Input[str] builder: 
                Build with a specific builder instance
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] cache_from: 
+        :param pulumi.Input[Sequence[pulumi.Input['CacheFromEntryArgs']]] cache_from: 
                External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] cache_to: 
+        :param pulumi.Input[Sequence[pulumi.Input['CacheToEntryArgs']]] cache_to: 
                Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
         :param pulumi.Input[str] context: 
                Path to use for build context. If omitted, an empty context is used.
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] exports: 
+        :param pulumi.Input[Sequence[pulumi.Input['ExportEntryArgs']]] exports: 
                Name and optionally a tag (format: "name:tag"). If outputting to a
                registry, the name should include the fully qualified registry address.
         :param pulumi.Input[str] file: 
                Name of the Dockerfile to use (defaults to "${context}/Dockerfile").
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] platforms: 
+        :param pulumi.Input[Sequence[pulumi.Input['Platform']]] platforms: 
                Set target platforms for the build. Defaults to the host's platform
         :param pulumi.Input[bool] pull: 
                Always attempt to pull referenced images.
         :param pulumi.Input[Sequence[pulumi.Input['RegistryAuthArgs']]] registries: 
                Logins for registry outputs
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] tags: 
+               Name and optionally a tag (format: "name:tag"). If outputting to a
+               registry, the name should include the fully qualified registry address.
         """
-        pulumi.set(__self__, "tags", tags)
-        pulumi.set(__self__, "target", target)
         if build_args is not None:
             pulumi.set(__self__, "build_args", build_args)
         if build_on_preview is not None:
@@ -88,29 +87,10 @@ class ImageArgs:
             pulumi.set(__self__, "pull", pull)
         if registries is not None:
             pulumi.set(__self__, "registries", registries)
-
-    @property
-    @pulumi.getter
-    def tags(self) -> pulumi.Input[Sequence[pulumi.Input[str]]]:
-        """
-
-        Name and optionally a tag (format: "name:tag"). If outputting to a
-        registry, the name should include the fully qualified registry address.
-        """
-        return pulumi.get(self, "tags")
-
-    @tags.setter
-    def tags(self, value: pulumi.Input[Sequence[pulumi.Input[str]]]):
-        pulumi.set(self, "tags", value)
-
-    @property
-    @pulumi.getter
-    def target(self) -> pulumi.Input[str]:
-        return pulumi.get(self, "target")
-
-    @target.setter
-    def target(self, value: pulumi.Input[str]):
-        pulumi.set(self, "target", value)
+        if tags is not None:
+            pulumi.set(__self__, "tags", tags)
+        if target is not None:
+            pulumi.set(__self__, "target", target)
 
     @property
     @pulumi.getter(name="buildArgs")
@@ -157,7 +137,7 @@ class ImageArgs:
 
     @property
     @pulumi.getter(name="cacheFrom")
-    def cache_from(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+    def cache_from(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['CacheFromEntryArgs']]]]:
         """
 
         External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
@@ -165,12 +145,12 @@ class ImageArgs:
         return pulumi.get(self, "cache_from")
 
     @cache_from.setter
-    def cache_from(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
+    def cache_from(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['CacheFromEntryArgs']]]]):
         pulumi.set(self, "cache_from", value)
 
     @property
     @pulumi.getter(name="cacheTo")
-    def cache_to(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+    def cache_to(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['CacheToEntryArgs']]]]:
         """
 
         Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
@@ -178,7 +158,7 @@ class ImageArgs:
         return pulumi.get(self, "cache_to")
 
     @cache_to.setter
-    def cache_to(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
+    def cache_to(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['CacheToEntryArgs']]]]):
         pulumi.set(self, "cache_to", value)
 
     @property
@@ -196,7 +176,7 @@ class ImageArgs:
 
     @property
     @pulumi.getter
-    def exports(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+    def exports(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['ExportEntryArgs']]]]:
         """
 
         Name and optionally a tag (format: "name:tag"). If outputting to a
@@ -205,7 +185,7 @@ class ImageArgs:
         return pulumi.get(self, "exports")
 
     @exports.setter
-    def exports(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
+    def exports(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['ExportEntryArgs']]]]):
         pulumi.set(self, "exports", value)
 
     @property
@@ -223,7 +203,7 @@ class ImageArgs:
 
     @property
     @pulumi.getter
-    def platforms(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+    def platforms(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['Platform']]]]:
         """
 
         Set target platforms for the build. Defaults to the host's platform
@@ -231,7 +211,7 @@ class ImageArgs:
         return pulumi.get(self, "platforms")
 
     @platforms.setter
-    def platforms(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
+    def platforms(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['Platform']]]]):
         pulumi.set(self, "platforms", value)
 
     @property
@@ -260,6 +240,29 @@ class ImageArgs:
     def registries(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['RegistryAuthArgs']]]]):
         pulumi.set(self, "registries", value)
 
+    @property
+    @pulumi.getter
+    def tags(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+        """
+
+        Name and optionally a tag (format: "name:tag"). If outputting to a
+        registry, the name should include the fully qualified registry address.
+        """
+        return pulumi.get(self, "tags")
+
+    @tags.setter
+    def tags(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
+        pulumi.set(self, "tags", value)
+
+    @property
+    @pulumi.getter
+    def target(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "target")
+
+    @target.setter
+    def target(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "target", value)
+
 
 class Image(pulumi.CustomResource):
     @overload
@@ -269,12 +272,12 @@ class Image(pulumi.CustomResource):
                  build_args: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
                  build_on_preview: Optional[pulumi.Input[bool]] = None,
                  builder: Optional[pulumi.Input[str]] = None,
-                 cache_from: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
-                 cache_to: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 cache_from: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['CacheFromEntryArgs']]]]] = None,
+                 cache_to: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['CacheToEntryArgs']]]]] = None,
                  context: Optional[pulumi.Input[str]] = None,
-                 exports: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 exports: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ExportEntryArgs']]]]] = None,
                  file: Optional[pulumi.Input[str]] = None,
-                 platforms: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 platforms: Optional[pulumi.Input[Sequence[pulumi.Input['Platform']]]] = None,
                  pull: Optional[pulumi.Input[bool]] = None,
                  registries: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['RegistryAuthArgs']]]]] = None,
                  tags: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
@@ -295,18 +298,18 @@ class Image(pulumi.CustomResource):
                pushed to registries, however caches are still populated.
         :param pulumi.Input[str] builder: 
                Build with a specific builder instance
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] cache_from: 
+        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['CacheFromEntryArgs']]]] cache_from: 
                External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] cache_to: 
+        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['CacheToEntryArgs']]]] cache_to: 
                Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
         :param pulumi.Input[str] context: 
                Path to use for build context. If omitted, an empty context is used.
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] exports: 
+        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ExportEntryArgs']]]] exports: 
                Name and optionally a tag (format: "name:tag"). If outputting to a
                registry, the name should include the fully qualified registry address.
         :param pulumi.Input[str] file: 
                Name of the Dockerfile to use (defaults to "${context}/Dockerfile").
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] platforms: 
+        :param pulumi.Input[Sequence[pulumi.Input['Platform']]] platforms: 
                Set target platforms for the build. Defaults to the host's platform
         :param pulumi.Input[bool] pull: 
                Always attempt to pull referenced images.
@@ -320,7 +323,7 @@ class Image(pulumi.CustomResource):
     @overload
     def __init__(__self__,
                  resource_name: str,
-                 args: ImageArgs,
+                 args: Optional[ImageArgs] = None,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
         A Docker image built using Buildkit
@@ -343,12 +346,12 @@ class Image(pulumi.CustomResource):
                  build_args: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
                  build_on_preview: Optional[pulumi.Input[bool]] = None,
                  builder: Optional[pulumi.Input[str]] = None,
-                 cache_from: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
-                 cache_to: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 cache_from: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['CacheFromEntryArgs']]]]] = None,
+                 cache_to: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['CacheToEntryArgs']]]]] = None,
                  context: Optional[pulumi.Input[str]] = None,
-                 exports: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 exports: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ExportEntryArgs']]]]] = None,
                  file: Optional[pulumi.Input[str]] = None,
-                 platforms: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 platforms: Optional[pulumi.Input[Sequence[pulumi.Input['Platform']]]] = None,
                  pull: Optional[pulumi.Input[bool]] = None,
                  registries: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['RegistryAuthArgs']]]]] = None,
                  tags: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
@@ -375,11 +378,7 @@ class Image(pulumi.CustomResource):
             __props__.__dict__["platforms"] = platforms
             __props__.__dict__["pull"] = pull
             __props__.__dict__["registries"] = registries
-            if tags is None and not opts.urn:
-                raise TypeError("Missing required property 'tags'")
             __props__.__dict__["tags"] = tags
-            if target is None and not opts.urn:
-                raise TypeError("Missing required property 'target'")
             __props__.__dict__["target"] = target
             __props__.__dict__["context_hash"] = None
             __props__.__dict__["manifests"] = None
@@ -455,7 +454,7 @@ class Image(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="cacheFrom")
-    def cache_from(self) -> pulumi.Output[Optional[Sequence[str]]]:
+    def cache_from(self) -> pulumi.Output[Optional[Sequence['outputs.CacheFromEntry']]]:
         """
 
         External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
@@ -464,7 +463,7 @@ class Image(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="cacheTo")
-    def cache_to(self) -> pulumi.Output[Optional[Sequence[str]]]:
+    def cache_to(self) -> pulumi.Output[Optional[Sequence['outputs.CacheToEntry']]]:
         """
 
         Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
@@ -487,7 +486,7 @@ class Image(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def exports(self) -> pulumi.Output[Optional[Sequence[str]]]:
+    def exports(self) -> pulumi.Output[Optional[Sequence['outputs.ExportEntry']]]:
         """
 
         Name and optionally a tag (format: "name:tag"). If outputting to a
@@ -511,7 +510,7 @@ class Image(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def platforms(self) -> pulumi.Output[Optional[Sequence[str]]]:
+    def platforms(self) -> pulumi.Output[Optional[Sequence['Platform']]]:
         """
 
         Set target platforms for the build. Defaults to the host's platform
@@ -538,7 +537,7 @@ class Image(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def tags(self) -> pulumi.Output[Sequence[str]]:
+    def tags(self) -> pulumi.Output[Optional[Sequence[str]]]:
         """
 
         Name and optionally a tag (format: "name:tag"). If outputting to a
@@ -548,6 +547,6 @@ class Image(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def target(self) -> pulumi.Output[str]:
+    def target(self) -> pulumi.Output[Optional[str]]:
         return pulumi.get(self, "target")
 
