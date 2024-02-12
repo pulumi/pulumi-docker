@@ -60,7 +60,7 @@ type ImageArgs struct {
 	Context        string                    `pulumi:"context,optional"`
 	Exports        []ExportEntry             `pulumi:"exports,optional"`
 	File           string                    `pulumi:"file,optional"`
-	Platforms      []string                  `pulumi:"platforms,optional"`
+	Platforms      []Platform                `pulumi:"platforms,optional"`
 	Pull           bool                      `pulumi:"pull,optional"`
 	Registries     []properties.RegistryAuth `pulumi:"registries,optional"`
 	Tags           []string                  `pulumi:"tags"`
@@ -185,7 +185,6 @@ func newCheckFailure(property string, err error) checkFailure {
 }
 
 func (ia *ImageArgs) withoutUnknowns(preview bool) ImageArgs {
-	sk := stringKeeper{preview}
 	filtered := ImageArgs{
 		BuildArgs:      mapKeeper{preview}.keep(ia.BuildArgs),
 		Builder:        ia.Builder,
@@ -195,10 +194,10 @@ func (ia *ImageArgs) withoutUnknowns(preview bool) ImageArgs {
 		Context:        ia.Context,
 		Exports:        filter(stringerKeeper[ExportEntry]{preview}, ia.Exports...),
 		File:           ia.File, //
-		Platforms:      filter(sk, ia.Platforms...),
+		Platforms:      filter(stringerKeeper[Platform]{preview}, ia.Platforms...),
 		Pull:           ia.Pull,
 		Registries:     filter(registryKeeper{preview}, ia.Registries...),
-		Tags:           filter(sk, ia.Tags...),
+		Tags:           filter(stringKeeper{preview}, ia.Tags...),
 		Target:         ia.Target,
 	}
 
@@ -373,9 +372,14 @@ func (ia *ImageArgs) toBuildOptions(preview bool) (controllerapi.BuildOptions, e
 		}
 	}
 
-	_, err := platformutil.Parse(filtered.Platforms)
-	if err != nil {
-		multierr = errors.Join(multierr, newCheckFailure("platforms", err))
+	platforms := []string{}
+	for _, p := range filtered.Platforms {
+		_, err := platformutil.Parse([]string{string(p)})
+		if err != nil {
+			multierr = errors.Join(multierr, newCheckFailure("platforms", err))
+			continue
+		}
+		platforms = append(platforms, p.String())
 	}
 
 	cacheFrom := []*controllerapi.CacheOptionsEntry{}
@@ -426,7 +430,7 @@ func (ia *ImageArgs) toBuildOptions(preview bool) (controllerapi.BuildOptions, e
 		ContextPath:    filtered.Context,
 		DockerfileName: filtered.File,
 		Exports:        exports,
-		Platforms:      filtered.Platforms,
+		Platforms:      platforms,
 		Pull:           filtered.Pull,
 		Tags:           filtered.Tags,
 		Target:         filtered.Target,
