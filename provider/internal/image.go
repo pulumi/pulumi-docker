@@ -243,6 +243,7 @@ func (ia ImageArgs) toBuilds(
 	// - No --cache-from (rely on local build cache).
 	// - --cache-to
 	for _, p := range opts.Platforms {
+		opts := opts
 		// Only build for this platform.
 		opts.Platforms = []string{p}
 		// Don't push anything except caches.
@@ -253,6 +254,7 @@ func (ia ImageArgs) toBuilds(
 		// everything already loaded into build context, but this doesn't work
 		// consistently with multi-platform images.
 		opts.CacheFrom = nil
+		opts.Tags = nil
 
 		builds = append(builds, opts)
 	}

@@ -12,9 +12,13 @@ import (
 	"sync"
 
 	"github.com/distribution/reference"
+	"github.com/docker/buildx/build"
 	"github.com/docker/buildx/builder"
-	cbuild "github.com/docker/buildx/controller/build"
 	controllerapi "github.com/docker/buildx/controller/pb"
+	"github.com/docker/buildx/store"
+	"github.com/docker/buildx/store/storeutil"
+	"github.com/docker/buildx/util/dockerutil"
+	"github.com/docker/buildx/util/platformutil"
 	"github.com/docker/buildx/util/progress"
 	"github.com/docker/cli/cli/command"
 	"github.com/docker/cli/cli/config"
@@ -24,6 +28,8 @@ import (
 	"github.com/docker/docker/api/types"
 	registrytypes "github.com/docker/docker/api/types/registry"
 	"github.com/moby/buildkit/client"
+	"github.com/moby/buildkit/session"
+	"github.com/moby/buildkit/session/auth/authprovider"
 	"github.com/moby/buildkit/util/progress/progressui"
 	cp "github.com/otiai10/copy"
 
@@ -47,6 +53,7 @@ type docker struct {
 	mu sync.Mutex
 
 	cli *command.DockerCli
+	txn *store.Txn
 	dir string
 }
 
@@ -78,8 +85,16 @@ func newDockerClient() (*docker, error) {
 		// TODO(github.com/pulumi/pulumi-docker/issues/946): Support TLS options
 	}
 	err = cli.Initialize(opts)
+	if err != nil {
+		return nil, err
+	}
 
-	return &docker{cli: cli, dir: dir}, err
+	txn, _, err := storeutil.GetStore(cli)
+	if err != nil {
+		return nil, err
+	}
+
+	return &docker{cli: cli, txn: txn, dir: dir}, err
 }
 
 func (d *docker) Auth(ctx context.Context, creds properties.RegistryAuth) error {
@@ -134,7 +149,7 @@ func (d *docker) Build(
 	pctx provider.Context,
 	opts controllerapi.BuildOptions,
 ) (*client.SolveResponse, error) {
-	// Use a seprate context for the build. We don't want to kill our request's
+	// Use a separate context for the build. We don't want to kill our request's
 	// context if the build fails.
 	bctx := context.Background()
 
@@ -155,7 +170,7 @@ func (d *docker) Build(
 		}
 	}()
 
-	b, err := d.builder(opts)
+	b, nodes, err := d.builder(opts)
 	if err != nil {
 		return nil, err
 	}
@@ -170,11 +185,64 @@ func (d *docker) Build(
 		return nil, fmt.Errorf("creating printer: %w", err)
 	}
 
-	// Perform the build.
-	solve, res, err := cbuild.RunBuild(bctx, d.cli, opts, d.cli.In(), printer, true)
-	if res != nil {
-		res.Done()
+	cacheFrom := []client.CacheOptionsEntry{}
+	for _, c := range opts.CacheFrom {
+		cacheFrom = append(cacheFrom, client.CacheOptionsEntry{
+			Type:  c.Type,
+			Attrs: c.Attrs,
+		})
 	}
+	cacheTo := []client.CacheOptionsEntry{}
+	for _, c := range opts.CacheTo {
+		cacheTo = append(cacheTo, client.CacheOptionsEntry{
+			Type:  c.Type,
+			Attrs: c.Attrs,
+		})
+	}
+	exports := []client.ExportEntry{}
+	for _, e := range opts.Exports {
+		exports = append(exports, client.ExportEntry{
+			Type:      e.Type,
+			Attrs:     e.Attrs,
+			OutputDir: e.Destination,
+		})
+	}
+	platforms, _ := platformutil.Parse(opts.Platforms)
+	platforms = platformutil.Dedupe(platforms)
+
+	// Perform the build.
+	targets, err := build.Build(
+		bctx,
+		nodes,
+		map[string]build.Options{
+			opts.Target: {
+				Inputs: build.Inputs{
+					ContextPath:    opts.ContextPath,
+					DockerfilePath: opts.DockerfileName,
+				},
+				BuildArgs: opts.BuildArgs,
+				CacheFrom: cacheFrom,
+				CacheTo:   cacheTo,
+				Exports:   exports,
+				NoCache:   opts.NoCache,
+				Platforms: platforms,
+				Pull:      opts.Pull,
+				Tags:      opts.Tags,
+				Target:    opts.Target,
+
+				Session: []session.Attachable{
+					authprovider.NewDockerAuthProvider(d.cli.ConfigFile(), nil),
+				},
+			},
+		},
+		dockerutil.NewClient(d.cli),
+		d.dir,
+		printer,
+	)
+	if err != nil {
+		return nil, err
+	}
+	solve := targets[opts.Target]
 
 	for _, w := range printer.Warnings() {
 		b := &bytes.Buffer{}
@@ -240,7 +308,7 @@ func normalizeReference(ref string) (reference.Named, error) {
 // ready.
 func (d *docker) builder(
 	opts controllerapi.BuildOptions,
-) (*builder.Builder, error) {
+) (*builder.Builder, []builder.Node, error) {
 	d.mu.Lock()
 	defer d.mu.Unlock()
 
@@ -251,16 +319,16 @@ func (d *docker) builder(
 	b, err := builder.New(d.cli,
 		builder.WithName(opts.Builder),
 		builder.WithContextPathHash(contextPathHash),
+		builder.WithStore(d.txn),
 	)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
-	// Need to load nodes in order to determine the builder's driver.
-	_, err = b.LoadNodes(context.Background())
+	nodes, err := b.LoadNodes(context.Background())
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
-	return b, nil
+	return b, nodes, nil
 }
