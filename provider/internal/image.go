@@ -164,8 +164,13 @@ func (*Image) Check(
 			continue
 		}
 		if err = cfg.client.Auth(ctx, name, reg); err != nil {
-			failures = append(failures,
-				provider.CheckFailure{Property: "registries", Reason: fmt.Sprintf("unable to authenticate: %s", err.Error())})
+			failures = append(
+				failures,
+				provider.CheckFailure{
+					Property: "registries",
+					Reason:   fmt.Sprintf("unable to authenticate: %s", err.Error()),
+				},
+			)
 		}
 	}
 
@@ -348,7 +353,10 @@ func (ia *ImageArgs) toBuildOptions(preview bool) (controllerapi.BuildOptions, e
 			ia.File = filepath.Join(ia.Context, "Dockerfile")
 		}
 		if _, err := os.Stat(ia.File); err != nil {
-			multierr = errors.Join(multierr, newCheckFailure("context", fmt.Errorf("%q: %w", ia.File, err)))
+			multierr = errors.Join(
+				multierr,
+				newCheckFailure("context", fmt.Errorf("%q: %w", ia.File, err)),
+			)
 		}
 	}
 
@@ -359,7 +367,13 @@ func (ia *ImageArgs) toBuildOptions(preview bool) (controllerapi.BuildOptions, e
 	exports := []*controllerapi.ExportEntry{}
 	for _, e := range filtered.Exports {
 		if strings.Count(e.String(), "type=") > 1 {
-			multierr = errors.Join(multierr, newCheckFailure("exports", errors.New("exports should only specify one export type")))
+			multierr = errors.Join(
+				multierr,
+				newCheckFailure(
+					"exports",
+					errors.New("exports should only specify one export type"),
+				),
+			)
 			continue
 		}
 		ee, err := buildflags.ParseExports([]string{e.String()})
@@ -403,7 +417,13 @@ func (ia *ImageArgs) toBuildOptions(preview bool) (controllerapi.BuildOptions, e
 	cacheFrom := []*controllerapi.CacheOptionsEntry{}
 	for _, c := range filtered.CacheFrom {
 		if strings.Count(c.String(), "type=") > 1 {
-			multierr = errors.Join(multierr, newCheckFailure("cacheFrom", errors.New("cacheFrom should only specify one cache type")))
+			multierr = errors.Join(
+				multierr,
+				newCheckFailure(
+					"cacheFrom",
+					errors.New("cacheFrom should only specify one cache type"),
+				),
+			)
 			continue
 		}
 		parsed, err := buildflags.ParseCacheEntry([]string{c.String()})
@@ -420,7 +440,13 @@ func (ia *ImageArgs) toBuildOptions(preview bool) (controllerapi.BuildOptions, e
 	cacheTo := []*controllerapi.CacheOptionsEntry{}
 	for _, c := range filtered.CacheTo {
 		if strings.Count(c.String(), "type=") > 1 {
-			multierr = errors.Join(multierr, newCheckFailure("cacheTo", errors.New("cacheTo should only specify one cache type")))
+			multierr = errors.Join(
+				multierr,
+				newCheckFailure(
+					"cacheTo",
+					errors.New("cacheTo should only specify one cache type"),
+				),
+			)
 			continue
 		}
 		parsed, err := buildflags.ParseCacheEntry([]string{c.String()})
@@ -626,7 +652,12 @@ func (*Image) Delete(
 
 // Diff re-implements most of the default diff behavior, with the exception of
 // ignoring "password" changes on registry inputs.
-func (*Image) Diff(_ provider.Context, _ string, olds ImageState, news ImageArgs) (provider.DiffResponse, error) {
+func (*Image) Diff(
+	_ provider.Context,
+	_ string,
+	olds ImageState,
+	news ImageArgs,
+) (provider.DiffResponse, error) {
 	diff := map[string]provider.PropertyDiff{}
 	update := provider.PropertyDiff{Kind: provider.Update}
 

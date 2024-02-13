@@ -23,8 +23,8 @@ const img = new docker.buildx.Image(`buildx-${config.require("name")}`, {
   buildArgs: {
     SLEEP_SECONDS: config.require("SLEEP_SECONDS"),
   },
-  cacheTo: [config.require("cacheTo")],
-  cacheFrom: [config.require("cacheFrom")],
+  cacheTo: [{ raw: config.require("cacheTo") }],
+  cacheFrom: [{ raw: config.require("cacheFrom") }],
   // Set registry auth if it was provided.
   registries: config.getSecret("username").apply((a) =>
     a
