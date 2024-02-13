@@ -12,9 +12,13 @@ import (
 	"sync"
 
 	"github.com/distribution/reference"
+	"github.com/docker/buildx/build"
 	"github.com/docker/buildx/builder"
-	cbuild "github.com/docker/buildx/controller/build"
 	controllerapi "github.com/docker/buildx/controller/pb"
+	"github.com/docker/buildx/store"
+	"github.com/docker/buildx/store/storeutil"
+	"github.com/docker/buildx/util/dockerutil"
+	"github.com/docker/buildx/util/platformutil"
 	"github.com/docker/buildx/util/progress"
 	"github.com/docker/cli/cli/command"
 	"github.com/docker/cli/cli/config"
@@ -25,8 +29,11 @@ import (
 	"github.com/docker/docker/api/types/image"
 	registrytypes "github.com/docker/docker/api/types/registry"
 	"github.com/moby/buildkit/client"
+	"github.com/moby/buildkit/session"
+	"github.com/moby/buildkit/session/auth/authprovider"
 	"github.com/moby/buildkit/util/progress/progressui"
 	cp "github.com/otiai10/copy"
+	"github.com/sirupsen/logrus"
 
 	provider "github.com/pulumi/pulumi-go-provider"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/diag"
@@ -48,6 +55,7 @@ type docker struct {
 	mu sync.Mutex
 
 	cli      *command.DockerCli
+	txn      *store.Txn
 	dir      string
 	builders map[string]*cachedBuilder
 }
@@ -56,7 +64,7 @@ var _ Client = (*docker)(nil)
 
 func newDockerClient() (*docker, error) {
 	cli, err := command.NewDockerCli(
-		command.WithCombinedStreams(os.Stdout),
+		command.WithCombinedStreams(os.Stderr),
 	)
 	if err != nil {
 		return nil, err
@@ -80,8 +88,18 @@ func newDockerClient() (*docker, error) {
 		// TODO(github.com/pulumi/pulumi-docker/issues/946): Support TLS options
 	}
 	err = cli.Initialize(opts)
+	if err != nil {
+		return nil, err
+	}
+	// Disable the CLI's tendency to log randomly to stdout.
+	logrus.SetLevel(logrus.ErrorLevel)
 
-	return &docker{cli: cli, dir: dir, builders: map[string]*cachedBuilder{}}, err
+	txn, _, err := storeutil.GetStore(cli)
+	if err != nil {
+		return nil, err
+	}
+
+	return &docker{cli: cli, txn: txn, dir: dir, builders: map[string]*cachedBuilder{}}, err
 }
 
 func (d *docker) Auth(ctx context.Context, creds properties.RegistryAuth) error {
@@ -136,17 +154,23 @@ func (d *docker) Build(
 	pctx provider.Context,
 	opts controllerapi.BuildOptions,
 ) (*client.SolveResponse, error) {
-	// Use a seprate context for the build. We don't want to kill our request's
-	// context if the build fails.
-	bctx := context.Background()
+	ctx := context.Context(pctx)
 
 	// Create a pipe to forward buildx output to our HostClient.
+	doneLogging := make(chan struct{}, 1)
 	r, w, err := os.Pipe()
 	if err != nil {
 		return nil, fmt.Errorf("creating pipe: %w", err)
 	}
+	defer func() {
+		_ = w.Close()
+		_ = r.Close()
+		<-doneLogging
+	}()
+
 	go func() {
 		defer func() {
+			doneLogging <- struct{}{}
 			if err := recover(); err != nil {
 				fmt.Fprintf(os.Stderr, "Panic recovered: %s", err)
 			}
@@ -155,13 +179,15 @@ func (d *docker) Build(
 		for s.Scan() {
 			pctx.LogStatus(diag.Info, s.Text())
 		}
+		// Print a newline to clear confusing "DONE" statements.
+		pctx.LogStatus(diag.Info, "")
 	}()
 
 	b, err := d.builder(opts)
 	if err != nil {
 		return nil, err
 	}
-	printer, err := progress.NewPrinter(bctx, w,
+	printer, err := progress.NewPrinter(ctx, w,
 		progressui.PlainMode,
 		progress.WithDesc(
 			fmt.Sprintf("building with %q instance using %s driver", b.name, b.driver),
@@ -172,11 +198,64 @@ func (d *docker) Build(
 		return nil, fmt.Errorf("creating printer: %w", err)
 	}
 
-	// Perform the build.
-	solve, res, err := cbuild.RunBuild(bctx, d.cli, opts, d.cli.In(), printer, true)
-	if res != nil {
-		res.Done()
+	cacheFrom := []client.CacheOptionsEntry{}
+	for _, c := range opts.CacheFrom {
+		cacheFrom = append(cacheFrom, client.CacheOptionsEntry{
+			Type:  c.Type,
+			Attrs: c.Attrs,
+		})
 	}
+	cacheTo := []client.CacheOptionsEntry{}
+	for _, c := range opts.CacheTo {
+		cacheTo = append(cacheTo, client.CacheOptionsEntry{
+			Type:  c.Type,
+			Attrs: c.Attrs,
+		})
+	}
+	exports := []client.ExportEntry{}
+	for _, e := range opts.Exports {
+		exports = append(exports, client.ExportEntry{
+			Type:      e.Type,
+			Attrs:     e.Attrs,
+			OutputDir: e.Destination,
+		})
+	}
+	platforms, _ := platformutil.Parse(opts.Platforms)
+	platforms = platformutil.Dedupe(platforms)
+
+	// Perform the build.
+	targets, err := build.Build(
+		ctx,
+		b.nodes,
+		map[string]build.Options{
+			opts.Target: {
+				Inputs: build.Inputs{
+					ContextPath:    opts.ContextPath,
+					DockerfilePath: opts.DockerfileName,
+				},
+				BuildArgs: opts.BuildArgs,
+				CacheFrom: cacheFrom,
+				CacheTo:   cacheTo,
+				Exports:   exports,
+				NoCache:   opts.NoCache,
+				Platforms: platforms,
+				Pull:      opts.Pull,
+				Tags:      opts.Tags,
+				Target:    opts.Target,
+
+				Session: []session.Attachable{
+					authprovider.NewDockerAuthProvider(d.cli.ConfigFile(), nil),
+				},
+			},
+		},
+		dockerutil.NewClient(d.cli),
+		d.dir,
+		printer,
+	)
+	if err != nil {
+		return nil, err
+	}
+	solve := targets[opts.Target]
 
 	if printErr := printer.Wait(); printErr != nil {
 		return solve, printErr
@@ -260,6 +339,7 @@ func (d *docker) builder(
 	b, err := builder.New(d.cli,
 		builder.WithName(opts.Builder),
 		builder.WithContextPathHash(contextPathHash),
+		builder.WithStore(d.txn),
 	)
 	if err != nil {
 		return nil, err
