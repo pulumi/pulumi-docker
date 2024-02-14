@@ -64,7 +64,7 @@ type ImageArgs struct {
 	Pull           bool                      `pulumi:"pull,optional"`
 	Registries     []properties.RegistryAuth `pulumi:"registries,optional"`
 	Tags           []string                  `pulumi:"tags,optional"`
-	Target         string                    `pulumi:"target,optional"`
+	Targets        []string                  `pulumi:"targets,optional"`
 }
 
 // Annotate describes inputs to the Image resource.
@@ -109,6 +109,10 @@ func (ia *ImageArgs) Annotate(a infer.Annotator) {
 	a.Describe(&ia.Tags, dedent.String(`
 		Name and optionally a tag (format: "name:tag"). If outputting to a
 		registry, the name should include the fully qualified registry address.`,
+	))
+	a.Describe(&ia.Targets, dedent.String(`
+		Names of build stages to build. If not specified all targets will be
+		built by default.`,
 	))
 	a.Describe(&ia.Registries, dedent.String(`
 		Logins for registry outputs`,
@@ -203,7 +207,7 @@ func (ia *ImageArgs) withoutUnknowns(preview bool) ImageArgs {
 		Pull:           ia.Pull,
 		Registries:     filter(registryKeeper{preview}, ia.Registries...),
 		Tags:           filter(stringKeeper{preview}, ia.Tags...),
-		Target:         ia.Target,
+		Targets:        filter(stringKeeper{preview}, ia.Targets...),
 	}
 
 	return filtered
@@ -215,23 +219,40 @@ func (ia *ImageArgs) buildable() bool {
 	return reflect.DeepEqual(ia, &filtered)
 }
 
+type build struct {
+	opts    controllerapi.BuildOptions
+	targets []string
+}
+
+func (b build) BuildOptions() controllerapi.BuildOptions {
+	return b.opts
+}
+
+func (b build) Targets() []string {
+	return b.targets
+}
+
 func (ia ImageArgs) toBuilds(
 	ctx provider.Context,
 	preview bool,
-) ([]controllerapi.BuildOptions, error) {
+) ([]Build, error) {
 	opts, err := ia.toBuildOptions(preview)
 	if err != nil {
 		return nil, err
 	}
+	targets := ia.Targets
+	if len(targets) == 0 {
+		targets = []string{""}
+	}
 
 	// Check if we need a workaround for multi-platform caching (https://github.com/docker/buildx/issues/1044).
 	if len(ia.Platforms) <= 1 || len(ia.CacheTo) == 0 {
-		return []controllerapi.BuildOptions{opts}, nil
+		return []Build{build{opts: opts, targets: targets}}, nil
 	}
 
 	// Split the build into N pieces: one build with only local caching, and an
 	// additional cache-only build for each platform.
-	builds := []controllerapi.BuildOptions{}
+	builds := []Build{}
 
 	origCacheTo := opts.CacheTo
 
@@ -241,7 +262,7 @@ func (ia ImageArgs) toBuilds(
 	// - Preserve exports.
 	opts.CacheTo = nil
 	opts.CacheFrom = append(cachesFor(ctx, opts.CacheFrom, opts.Platforms...), opts.CacheFrom...)
-	builds = append(builds, opts)
+	builds = append(builds, build{opts: opts, targets: targets})
 
 	// Build 2..P for each platform:
 	// - --output=type=cacheonly.
@@ -261,7 +282,7 @@ func (ia ImageArgs) toBuilds(
 		opts.CacheFrom = nil
 		opts.Tags = nil
 
-		builds = append(builds, opts)
+		builds = append(builds, build{opts: opts, targets: targets})
 	}
 
 	return builds, nil
@@ -477,7 +498,7 @@ func (ia *ImageArgs) toBuildOptions(preview bool) (controllerapi.BuildOptions, e
 		Platforms:      platforms,
 		Pull:           filtered.Pull,
 		Tags:           filtered.Tags,
-		Target:         filtered.Target,
+		// Target:         filtered.Targets,
 	}
 
 	return opts, multierr

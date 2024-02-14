@@ -1,4 +1,4 @@
-//go:generate go run go.uber.org/mock/mockgen -typed -package mock -source client.go -destination mock/client.go
+//go:generate go run go.uber.org/mock/mockgen -typed -package internal -source client.go -destination mockclient_test.go --self_package github.com/pulumi/pulumi-docker/provider/v4/internal
 package internal
 
 import (
@@ -12,7 +12,7 @@ import (
 	"sync"
 
 	"github.com/distribution/reference"
-	"github.com/docker/buildx/build"
+	buildx "github.com/docker/buildx/build"
 	"github.com/docker/buildx/builder"
 	controllerapi "github.com/docker/buildx/controller/pb"
 	"github.com/docker/buildx/util/dockerutil"
@@ -44,10 +44,15 @@ import (
 // Client handles all our Docker API calls.
 type Client interface {
 	Auth(ctx context.Context, name string, creds properties.RegistryAuth) error
-	Build(ctx provider.Context, name string, opts controllerapi.BuildOptions) (*client.SolveResponse, error)
+	Build(ctx provider.Context, name string, b Build) (map[string]*client.SolveResponse, error)
 	BuildKitEnabled() (bool, error)
 	Inspect(ctx context.Context, name string, id string) ([]manifesttypes.ImageManifest, error)
 	Delete(ctx context.Context, id string) ([]image.DeleteResponse, error)
+}
+
+type Build interface {
+	BuildOptions() controllerapi.BuildOptions
+	Targets() []string
 }
 
 type docker struct {
@@ -141,9 +146,10 @@ func (d *docker) Auth(_ context.Context, name string, creds properties.RegistryA
 func (d *docker) Build(
 	pctx provider.Context,
 	name string,
-	opts controllerapi.BuildOptions,
-) (*client.SolveResponse, error) {
+	build Build,
+) (map[string]*client.SolveResponse, error) {
 	ctx := context.Context(pctx)
+	opts := build.BuildOptions()
 
 	// Create a pipe to forward buildx output to our HostClient.
 	doneLogging := make(chan struct{}, 1)
@@ -220,31 +226,38 @@ func (d *docker) Build(
 		auths[host] = cfg
 	}
 
+	payload := map[string]buildx.Options{}
+	for _, target := range build.Targets() {
+		targetName := target
+		if target == "" {
+			targetName = "default"
+		}
+		payload[targetName] = buildx.Options{
+			Inputs: buildx.Inputs{
+				ContextPath:    opts.ContextPath,
+				DockerfilePath: opts.DockerfileName,
+			},
+			BuildArgs: opts.BuildArgs,
+			CacheFrom: cacheFrom,
+			CacheTo:   cacheTo,
+			Exports:   exports,
+			NoCache:   opts.NoCache,
+			Platforms: platforms,
+			Pull:      opts.Pull,
+			Tags:      opts.Tags,
+			Target:    target,
+
+			Session: []session.Attachable{
+				authprovider.NewDockerAuthProvider(&configfile.ConfigFile{AuthConfigs: auths}, nil),
+			},
+		}
+	}
+
 	// Perform the build.
-	targets, err := build.Build(
+	results, err := buildx.Build(
 		ctx,
 		b.nodes,
-		map[string]build.Options{
-			opts.Target: {
-				Inputs: build.Inputs{
-					ContextPath:    opts.ContextPath,
-					DockerfilePath: opts.DockerfileName,
-				},
-				BuildArgs: opts.BuildArgs,
-				CacheFrom: cacheFrom,
-				CacheTo:   cacheTo,
-				Exports:   exports,
-				NoCache:   opts.NoCache,
-				Platforms: platforms,
-				Pull:      opts.Pull,
-				Tags:      opts.Tags,
-				Target:    opts.Target,
-
-				Session: []session.Attachable{
-					authprovider.NewDockerAuthProvider(&configfile.ConfigFile{AuthConfigs: auths}, nil),
-				},
-			},
-		},
+		payload,
 		dockerutil.NewClient(d.cli),
 		filepath.Dir(d.cli.ConfigFile().Filename),
 		printer,
@@ -252,10 +265,9 @@ func (d *docker) Build(
 	if err != nil {
 		return nil, err
 	}
-	solve := targets[opts.Target]
 
 	if printErr := printer.Wait(); printErr != nil {
-		return solve, printErr
+		return results, printErr
 	}
 	for _, w := range printer.Warnings() {
 		b := &bytes.Buffer{}
@@ -266,7 +278,7 @@ func (d *docker) Build(
 		pctx.Log(diag.Warning, b.String())
 	}
 
-	return solve, err
+	return results, err
 }
 
 // BuildKitEnabled returns true if the client supports buildkit.
