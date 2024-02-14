@@ -53,13 +53,14 @@ func (i *Image) Annotate(a infer.Annotator) {
 // ImageArgs instantiates a new Image.
 type ImageArgs struct {
 	BuildArgs      map[string]string         `pulumi:"buildArgs,optional"`
-	Builder        string                    `pulumi:"builder,optional"`
 	BuildOnPreview bool                      `pulumi:"buildOnPreview,optional"`
+	Builder        string                    `pulumi:"builder,optional"`
 	CacheFrom      []CacheFromEntry          `pulumi:"cacheFrom,optional"`
 	CacheTo        []CacheToEntry            `pulumi:"cacheTo,optional"`
 	Context        string                    `pulumi:"context,optional"`
 	Exports        []ExportEntry             `pulumi:"exports,optional"`
 	File           string                    `pulumi:"file,optional"`
+	NamedContexts  map[string]string         `pulumi:"namedContexts,optional"`
 	Platforms      []Platform                `pulumi:"platforms,optional"`
 	Pull           bool                      `pulumi:"pull,optional"`
 	Registries     []properties.RegistryAuth `pulumi:"registries,optional"`
@@ -105,6 +106,11 @@ func (ia *ImageArgs) Annotate(a infer.Annotator) {
 	))
 	a.Describe(&ia.Pull, dedent.String(`
 		Always attempt to pull referenced images.`,
+	))
+	a.Describe(&ia.NamedContexts, dedent.String(`
+		Additional build contexts which can be accessed with "FROM name" or
+		"--from=name" statements when using Dockerfile 1.4 syntax. Values can
+		be local paths, HTTP URLs, or  "docker-image://" images.`,
 	))
 	a.Describe(&ia.Tags, dedent.String(`
 		Name and optionally a tag (format: "name:tag"). If outputting to a
@@ -202,7 +208,8 @@ func (ia *ImageArgs) withoutUnknowns(preview bool) ImageArgs {
 		CacheTo:        filter(stringerKeeper[CacheToEntry]{preview}, ia.CacheTo...),
 		Context:        ia.Context,
 		Exports:        filter(stringerKeeper[ExportEntry]{preview}, ia.Exports...),
-		File:           ia.File, //
+		File:           ia.File,
+		NamedContexts:  mapKeeper{preview}.keep(ia.NamedContexts),
 		Platforms:      filter(stringerKeeper[Platform]{preview}, ia.Platforms...),
 		Pull:           ia.Pull,
 		Registries:     filter(registryKeeper{preview}, ia.Registries...),
@@ -495,6 +502,7 @@ func (ia *ImageArgs) toBuildOptions(preview bool) (controllerapi.BuildOptions, e
 		ContextPath:    filtered.Context,
 		DockerfileName: filtered.File,
 		Exports:        exports,
+		NamedContexts:  filtered.NamedContexts,
 		Platforms:      platforms,
 		Pull:           filtered.Pull,
 		Tags:           filtered.Tags,
@@ -529,7 +537,7 @@ func (i *Image) Update(
 		return state, fmt.Errorf("preparing: %w", err)
 	}
 
-	hash, err := BuildxContext(input.Context, input.File, nil)
+	hash, err := BuildxContext(input.Context, input.File, input.NamedContexts)
 	if err != nil {
 		return state, fmt.Errorf("hashing build context: %w", err)
 	}
@@ -703,6 +711,9 @@ func (*Image) Diff(
 	if olds.File != news.File {
 		diff["file"] = update
 	}
+	if !reflect.DeepEqual(olds.NamedContexts, news.NamedContexts) {
+		diff["namedContexts"] = update
+	}
 	if !reflect.DeepEqual(olds.Platforms, news.Platforms) {
 		diff["platforms"] = update
 	}
@@ -712,6 +723,9 @@ func (*Image) Diff(
 	if !reflect.DeepEqual(olds.Tags, news.Tags) {
 		diff["tags"] = update
 	}
+	if !reflect.DeepEqual(olds.Targets, news.Targets) {
+		diff["targets"] = update
+	}
 
 	// pull=true indicates that we want to keep base layers up-to-date. In this
 	// case we'll always perform the build.
@@ -720,7 +734,7 @@ func (*Image) Diff(
 	}
 
 	// Check if anything has changed in our build context.
-	hash, err := BuildxContext(news.Context, news.File, nil)
+	hash, err := BuildxContext(news.Context, news.File, news.NamedContexts)
 	if err != nil {
 		return provider.DiffResponse{}, err
 	}

@@ -226,6 +226,16 @@ func (d *docker) Build(
 		auths[host] = cfg
 	}
 
+	namedContexts := map[string]buildx.NamedContext{}
+	for k, v := range opts.NamedContexts {
+		ref, err := reference.ParseNormalizedNamed(k)
+		if err != nil {
+			return nil, err
+		}
+		name := strings.TrimSuffix(reference.FamiliarString(ref), ":latest")
+		namedContexts[name] = buildx.NamedContext{Path: v}
+	}
+
 	payload := map[string]buildx.Options{}
 	for _, target := range build.Targets() {
 		targetName := target
@@ -236,6 +246,7 @@ func (d *docker) Build(
 			Inputs: buildx.Inputs{
 				ContextPath:    opts.ContextPath,
 				DockerfilePath: opts.DockerfileName,
+				NamedContexts:  namedContexts,
 			},
 			BuildArgs: opts.BuildArgs,
 			CacheFrom: cacheFrom,
