@@ -64,7 +64,7 @@ func BenchmarkHashContext(b *testing.B) {
 // Tests that we handle .dockerignore exclusions such as "!foo/*/bar", as above, when using a
 // relative context path.
 func TestHashIgnoresWildcardsRelative(t *testing.T) {
-	err := os.Chdir("mock")
+	err := os.Chdir("properties")
 	require.NoError(t, err)
 	defer func() {
 		err = os.Chdir("..")

@@ -8,7 +8,6 @@ import (
 
 	_ "github.com/docker/buildx/driver/docker-container"
 
-	controllerapi "github.com/docker/buildx/controller/pb"
 	"github.com/docker/buildx/util/buildflags"
 	manifesttypes "github.com/docker/cli/cli/manifest/types"
 	"github.com/docker/distribution/reference"
@@ -25,7 +24,6 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/common/util/mapper"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 
-	"github.com/pulumi/pulumi-docker/provider/v4/internal/mock"
 	"github.com/pulumi/pulumi-docker/provider/v4/internal/properties"
 )
 
@@ -35,7 +33,7 @@ func TestLifecycle(t *testing.T) {
 	// realClient := func(t *testing.T) Client { return nil }
 	noClient := func(t *testing.T) Client {
 		ctrl := gomock.NewController(t)
-		return mock.NewMockClient(ctrl)
+		return NewMockClient(ctrl)
 	}
 
 	ref, err := reference.ParseNamed("docker.io/pulumibot/myapp")
@@ -51,15 +49,17 @@ func TestLifecycle(t *testing.T) {
 			name: "happy path builds",
 			client: func(t *testing.T) Client {
 				ctrl := gomock.NewController(t)
-				c := mock.NewMockClient(ctrl)
+				c := NewMockClient(ctrl)
 				c.EXPECT().Auth(gomock.Any(), gomock.Any()).Return(nil).AnyTimes()
 				gomock.InOrder(
 					c.EXPECT().BuildKitEnabled().Return(true, nil), // Preview.
 					c.EXPECT().BuildKitEnabled().Return(true, nil), // Create.
-					c.EXPECT().Build(gomock.Any(), gomock.AssignableToTypeOf(controllerapi.BuildOptions{})).DoAndReturn(
-						func(_ provider.Context, opts controllerapi.BuildOptions) (*client.SolveResponse, error) {
-							assert.Equal(t, "../testdata/Dockerfile", opts.DockerfileName)
-							return &client.SolveResponse{ExporterResponse: map[string]string{"containerimage.digest": "SHA256:digest"}}, nil
+					c.EXPECT().Build(gomock.Any(), gomock.AssignableToTypeOf(build{})).DoAndReturn(
+						func(_ provider.Context, b Build) (map[string]*client.SolveResponse, error) {
+							assert.Equal(t, "../testdata/Dockerfile", b.BuildOptions().DockerfileName)
+							return map[string]*client.SolveResponse{
+								b.Targets()[0]: {ExporterResponse: map[string]string{"containerimage.digest": "SHA256:digest"}},
+							}, nil
 						},
 					),
 					c.EXPECT().Inspect(gomock.Any(), "docker.io/blampe/buildkit-e2e").Return(
@@ -169,7 +169,7 @@ func TestLifecycle(t *testing.T) {
 			name: "requires buildkit",
 			client: func(t *testing.T) Client {
 				ctrl := gomock.NewController(t)
-				c := mock.NewMockClient(ctrl)
+				c := NewMockClient(ctrl)
 				gomock.InOrder(
 					c.EXPECT().BuildKitEnabled().Return(false, nil), // Preview.
 				)
@@ -190,7 +190,7 @@ func TestLifecycle(t *testing.T) {
 			name: "error reading DOCKER_BUILDKIT",
 			client: func(t *testing.T) Client {
 				ctrl := gomock.NewController(t)
-				c := mock.NewMockClient(ctrl)
+				c := NewMockClient(ctrl)
 				gomock.InOrder(
 					c.EXPECT().
 						BuildKitEnabled().
@@ -213,14 +213,16 @@ func TestLifecycle(t *testing.T) {
 			name: "file defaults to Dockerfile",
 			client: func(t *testing.T) Client {
 				ctrl := gomock.NewController(t)
-				c := mock.NewMockClient(ctrl)
+				c := NewMockClient(ctrl)
 				gomock.InOrder(
 					c.EXPECT().BuildKitEnabled().Return(true, nil), // Preview.
 					c.EXPECT().BuildKitEnabled().Return(true, nil), // Create.
-					c.EXPECT().Build(gomock.Any(), gomock.AssignableToTypeOf(controllerapi.BuildOptions{})).DoAndReturn(
-						func(_ provider.Context, opts controllerapi.BuildOptions) (*client.SolveResponse, error) {
-							assert.Equal(t, "../testdata/Dockerfile", opts.DockerfileName)
-							return &client.SolveResponse{ExporterResponse: map[string]string{"image.name": "test:latest"}}, nil
+					c.EXPECT().Build(gomock.Any(), gomock.AssignableToTypeOf(build{})).DoAndReturn(
+						func(_ provider.Context, b Build) (map[string]*client.SolveResponse, error) {
+							assert.Equal(t, "../testdata/Dockerfile", b.BuildOptions().DockerfileName)
+							return map[string]*client.SolveResponse{
+								b.Targets()[0]: {ExporterResponse: map[string]string{"image.name": "test:latest"}},
+							}, nil
 						},
 					),
 					c.EXPECT().Delete(gomock.Any(), "test:latest").Return(nil, nil),
@@ -274,7 +276,7 @@ func TestDelete(t *testing.T) {
 		imageID := "doesnt-exist"
 
 		ctrl := gomock.NewController(t)
-		client := mock.NewMockClient(ctrl)
+		client := NewMockClient(ctrl)
 		client.EXPECT().Delete(gomock.Any(), imageID).Return(nil, errNotFound{})
 
 		s := newServer(client)
@@ -301,7 +303,7 @@ func TestRead(t *testing.T) {
 	require.NoError(t, err)
 
 	ctrl := gomock.NewController(t)
-	client := mock.NewMockClient(ctrl)
+	client := NewMockClient(ctrl)
 	client.EXPECT().Inspect(gomock.Any(), tag).Return([]manifesttypes.ImageManifest{
 		{
 			Descriptor: v1.Descriptor{Platform: &v1.Platform{Architecture: "arm64"}},
@@ -770,24 +772,27 @@ func TestToBuilds(t *testing.T) {
 
 		assert.Len(t, builds, 3)
 
+		// Build 0
+		b0 := builds[0].BuildOptions()
+		assert.Nil(t, b0.CacheTo)
+		assert.Len(t, b0.CacheFrom, len(ia.CacheFrom)*(1+len(ia.Platforms)))
+		assert.Len(t, b0.Platforms, len(ia.Platforms))
+
 		// Build 1
-		assert.Nil(t, builds[0].CacheTo)
-		assert.Len(t, builds[0].CacheFrom, len(ia.CacheFrom)*(1+len(ia.Platforms)))
-		assert.Len(t, builds[0].Platforms, len(ia.Platforms))
+		b1 := builds[1].BuildOptions()
+		assert.Len(t, b1.Platforms, 1)
+		assert.Equal(t, "linux/amd64", b1.Platforms[0])
+		assert.Len(t, b1.Exports, 1)
+		assert.Equal(t, "cacheonly", b1.Exports[0].Type)
+		assert.Len(t, b1.CacheTo, len(ia.CacheTo))
 
 		// Build 2
-		assert.Len(t, builds[1].Platforms, 1)
-		assert.Equal(t, "linux/amd64", builds[1].Platforms[0])
-		assert.Len(t, builds[1].Exports, 1)
-		assert.Equal(t, "cacheonly", builds[1].Exports[0].Type)
-		assert.Len(t, builds[1].CacheTo, len(ia.CacheTo))
-
-		// Build 3
-		assert.Len(t, builds[2].Platforms, 1)
-		assert.Equal(t, "linux/arm64", builds[2].Platforms[0])
-		assert.Len(t, builds[2].Exports, 1)
-		assert.Equal(t, "cacheonly", builds[2].Exports[0].Type)
-		assert.Len(t, builds[2].CacheTo, len(ia.CacheTo))
+		b2 := builds[2].BuildOptions()
+		assert.Len(t, b2.Platforms, 1)
+		assert.Equal(t, "linux/arm64", b2.Platforms[0])
+		assert.Len(t, b2.Exports, 1)
+		assert.Equal(t, "cacheonly", b2.Exports[0].Type)
+		assert.Len(t, b2.CacheTo, len(ia.CacheTo))
 	})
 }
 
