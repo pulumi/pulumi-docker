@@ -258,7 +258,7 @@ func (i *Image) Update(
 		return state, fmt.Errorf("validating input: %w", err)
 	}
 
-	hash, err := HashContext(input.Context, input.File)
+	hash, err := BuildxContext(input.Context, input.File, nil)
 	if err != nil {
 		return state, fmt.Errorf("hashing build context: %w", err)
 	}
@@ -437,7 +437,7 @@ func (*Image) Diff(_ provider.Context, _ string, olds ImageState, news ImageArgs
 	}
 
 	// Check if anything has changed in our build context.
-	hash, err := HashContext(news.Context, news.File)
+	hash, err := BuildxContext(news.Context, news.File, nil)
 	if err != nil {
 		return provider.DiffResponse{}, err
 	}

@@ -8,102 +8,143 @@ import (
 	"fmt"
 	"hash"
 	"io"
-	"io/fs"
+	gofs "io/fs"
 	"os"
 	"path"
 	"path/filepath"
-	"strings"
+	"syscall"
 
 	"github.com/moby/patternmatcher/ignorefile"
 	"github.com/spf13/afero"
 	"github.com/tonistiigi/fsutil"
 )
 
-// hashPath accumulates hashes for files in a directory. If the file is a symlink, the location it
-// points to is hashed. If it is a regular file, we hash the contents of the file. In order to
-// detect file renames and mode changes, we also write to the accumulator a relative name and file
-// mode.
-func hashPath(
+func hashFile(
 	h hash.Hash,
-	filePath string,
-	relativeNameOfFile string,
-	fileMode fs.FileMode,
+	fs fsutil.FS,
+	relativePath string,
+	fileMode gofs.FileMode,
 ) error {
-	if fileMode.Type() == fs.ModeSymlink {
-		// For symlinks, we hash the symlink _path_ instead of the file content.
-		// This will allow us to:
-		// a) ignore changes at the symlink target
-		// b) detect if the symlink _itself_ changes
-		// c) avoid a panic on io.Copy if the symlink target is a directory
-		symLinkPath, err := filepath.EvalSymlinks(filePath)
-		if err != nil {
-			return fmt.Errorf("could not evaluate symlink at %s: %w", filePath, err)
-		}
-		// Hashed content is the clean, os-agnostic file path:
-		_, err = io.Copy(h, strings.NewReader(filepath.ToSlash(filepath.Clean(symLinkPath))))
-		if err != nil {
-			return fmt.Errorf("could not copy symlink path %s to hash: %w", filePath, err)
-		}
-	} else if fileMode.IsRegular() {
-		// For regular files, we can hash their content.
-		// TODO: consider only hashing file metadata to improve performance
-		f, err := os.Open(filePath)
-		if err != nil {
-			return fmt.Errorf("could not open file %s: %w", filePath, err)
-		}
-		defer f.Close()
-		_, err = io.Copy(h, f)
-		if err != nil {
-			return fmt.Errorf("could not copy file %s to hash: %w", filePath, err)
-		}
+	if fileMode.IsDir() {
+		return nil
+	}
+	if !(fileMode.IsRegular() || fileMode.Type() == os.ModeSymlink) {
+		return nil
 	}
 
-	h.Write([]byte(filepath.ToSlash(path.Clean(relativeNameOfFile))))
+	f, err := fs.Open(relativePath)
+	if err != nil {
+		return fmt.Errorf("could not open %q: %w", relativePath, err)
+	}
+	defer f.Close()
+	_, err = io.Copy(h, f)
+	if errors.Is(err, syscall.EISDIR) {
+		// Ignore symlinks to directories.
+		return nil
+	}
+	if err != nil {
+		return fmt.Errorf("could not copy %q to hash: %w", relativePath, err)
+	}
+
+	h.Write([]byte(filepath.ToSlash(path.Clean(relativePath))))
 	h.Write([]byte(fileMode.String()))
 
 	return nil
 }
 
-func HashContext(dockerContextPath string, dockerfilePath string) (string, error) {
-	// exclude all files listed in dockerignore
-	ignorePatterns, err := GetIgnorePatterns(afero.NewOsFs(), dockerfilePath, dockerContextPath)
-	if err != nil {
-		return "", err
-	}
-
+// BuildxContext accumulates hashes for files in a directory. If the file is a symlink, the location it
+// points to is hashed. If it is a regular file, we hash the contents of the file. In order to
+// detect file renames and mode changes, we also write to the accumulator a relative name and file
+// mode.
+func BuildxContext(contextPath, dockerfilePath string, namedContexts map[string]string) (string, error) {
 	h := sha256.New()
+	fs := afero.NewOsFs()
 
-	// The dockerfile is always hashed into the digest with the same "name", regardless of its actual
-	// name.
-	//
-	// If the dockerfile is outside the build context, this matches Docker's behavior. Whether it's
-	// "foo.Dockerfile" or "bar.Dockerfile", the builder only cares about its contents, not its name.
-	//
-	// If the dockerfile is inside the build context, we will hash it twice, but that is OK. We hash
-	// it here the first time with the name "Dockerfile", and then in the WalkDir loop on we hash it
-	// again with its actual name.
-	err = hashPath(h, dockerfilePath, "Dockerfile", 0)
-	if err != nil {
-		return "", fmt.Errorf("error hashing dockerfile %q: %w", dockerfilePath, err)
+	// Grab .dockerignore if our context and/or Dockerfile is on-disk.
+	excludes := []string{}
+	if isLocalDir(fs, contextPath) || isLocalFile(fs, dockerfilePath) {
+		e, err := GetIgnorePatterns(fs, dockerfilePath, contextPath)
+		if err != nil {
+			return "", err
+		}
+		excludes = e
 	}
-	err = fsutil.Walk(context.Background(), dockerContextPath, &fsutil.FilterOpt{
-		ExcludePatterns: ignorePatterns,
-	}, func(filePath string, fileInfo fs.FileInfo, err error) error {
+
+	if isLocalFile(fs, dockerfilePath) {
+		err := hashDockerfile(h, dockerfilePath)
+		if err != nil {
+			return "", nil
+		}
+	}
+
+	if isLocalDir(fs, contextPath) {
+		// Hash our context if it's on-disk.
+		fs, err := rootFS(contextPath, excludes)
+		if err != nil {
+			return "", err
+		}
+		if _, err := hashPath(h, fs); err != nil {
+			return "", err
+		}
+	}
+
+	// Hash any local named contexts.
+	for _, namedContext := range namedContexts {
+		if isLocalDir(fs, namedContext) {
+			fs, err := rootFS(namedContext, excludes)
+			if err != nil {
+				return "", err
+			}
+			if _, err := hashPath(h, fs); err != nil {
+				return "", err
+			}
+		}
+	}
+
+	return hex.EncodeToString(h.Sum(nil)), nil
+}
+
+// HashContext is used by the old provider.
+func HashContext(contextPath, dockerfilePath string) (string, error) {
+	return BuildxContext(contextPath, dockerfilePath, nil)
+}
+
+func hashPath(h hash.Hash, fs fsutil.FS) (string, error) {
+	err := fs.Walk(context.Background(), "/", func(filePath string, dir gofs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
-		if fileInfo.IsDir() {
+		if dir.IsDir() {
 			return nil
 		}
 		// fsutil.Walk makes filePath relative to the root, we join it back to get an absolute path to
 		// the file to hash.
-		return hashPath(h, filepath.Join(dockerContextPath, filePath), filePath, fileInfo.Mode())
+		fi, err := dir.Info()
+		if err != nil {
+			return err
+		}
+		return hashFile(h, fs, filePath, fi.Mode())
 	})
 	if err != nil {
 		return "", fmt.Errorf("unable to hash build context: %w", err)
 	}
 	// create a hash of the entire input of the hash accumulator
 	return hex.EncodeToString(h.Sum(nil)), nil
+}
+
+func hashDockerfile(h hash.Hash, path string) error {
+	// The Dockerfile might be capture by .dockerignore, so we explicitly hash
+	// its content (but not filename -- to match Docker) in order to detect
+	// changes in it.
+	df, err := os.ReadFile(path)
+	if err != nil {
+		return fmt.Errorf("error reading dockerfile %q: %w", path, err)
+	}
+	_, err = h.Write(df)
+	if err != nil {
+		return fmt.Errorf("error hashing dockerfile %q: %w", path, err)
+	}
+	return nil
 }
 
 // GetIgnorePatterns returns all patterns to ignore when constructing a build
@@ -115,8 +156,11 @@ func GetIgnorePatterns(fs afero.Fs, dockerfilePath, contextRoot string) ([]strin
 	paths := []string{
 		// Prefer <Dockerfile>.dockerignore if it's present.
 		dockerfilePath + ".dockerignore",
+	}
+
+	if isLocalDir(fs, contextRoot) {
 		// Otherwise fall back to the ignore-file at the root of our build context.
-		filepath.Join(contextRoot, ".dockerignore"),
+		paths = append(paths, filepath.Join(contextRoot, ".dockerignore"))
 	}
 
 	// Attempt to parse our candidate ignore-files, skipping any that don't
@@ -139,4 +183,24 @@ func GetIgnorePatterns(fs afero.Fs, dockerfilePath, contextRoot string) ([]strin
 	}
 
 	return nil, nil
+}
+
+func isLocalDir(fs afero.Fs, path string) bool {
+	stat, err := fs.Stat(path)
+	return err == nil && stat.IsDir()
+}
+
+func isLocalFile(fs afero.Fs, path string) bool {
+	stat, err := fs.Stat(path)
+	return err == nil && !stat.IsDir()
+}
+
+// rootFS returns a new fsutil.FS scoped to the given root and with the given
+// exclusions.
+func rootFS(root string, excludes []string) (fsutil.FS, error) {
+	fs, err := fsutil.NewFS(root)
+	if err != nil {
+		return nil, err
+	}
+	return fsutil.NewFilterFS(fs, &fsutil.FilterOpt{ExcludePatterns: excludes})
 }

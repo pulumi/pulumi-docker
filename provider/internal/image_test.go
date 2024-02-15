@@ -334,7 +334,7 @@ func TestDiff(t *testing.T) {
 		Tags:    []string{},
 	}
 	baseState := ImageState{
-		ContextHash: "19f13d252dcdbea4599bc579e7cfd51bcfaaea0ba6f0ba5a866f2967317a141e",
+		ContextHash: "f04bea490d45e7ae69d542846511e7c90eb683deaa1e0df19e9fca4d227265c2",
 		Manifests:   []properties.Manifest{},
 		ImageArgs:   baseArgs,
 	}
@@ -532,7 +532,7 @@ func TestBuildOptionParsing(t *testing.T) {
 	args := ImageArgs{
 		Tags:      []string{"a/bad:tag:format"},
 		Exports:   []string{"badexport,-"},
-		Context:   "does/not/exist",
+		Context:   "./testdata",
 		Platforms: []string{","},
 		CacheFrom: []string{"=badcachefrom"},
 		CacheTo:   []string{"=badcacheto"},
@@ -544,5 +544,5 @@ func TestBuildOptionParsing(t *testing.T) {
 	assert.ErrorContains(t, err, "badcachefrom")
 	assert.ErrorContains(t, err, "badcacheto")
 	assert.ErrorContains(t, err, "invalid reference format")
-	assert.ErrorContains(t, err, "does/not/exist/Dockerfile: no such file or directory")
+	assert.ErrorContains(t, err, "testdata/Dockerfile: no such file or directory")
 }
