@@ -16,11 +16,13 @@ import (
 	_ "github.com/docker/buildx/driver/remote"
 
 	"github.com/distribution/reference"
+	buildx "github.com/docker/buildx/build"
 	controllerapi "github.com/docker/buildx/controller/pb"
 	"github.com/docker/buildx/util/buildflags"
 	"github.com/docker/buildx/util/platformutil"
 	"github.com/docker/docker/errdefs"
 	"github.com/muesli/reflow/dedent"
+	"github.com/spf13/afero"
 
 	provider "github.com/pulumi/pulumi-go-provider"
 	"github.com/pulumi/pulumi-go-provider/infer"
@@ -60,6 +62,7 @@ type ImageArgs struct {
 	Context        string                    `pulumi:"context,optional"`
 	Exports        []ExportEntry             `pulumi:"exports,optional"`
 	File           string                    `pulumi:"file,optional"`
+	Inline         string                    `pulumi:"inline,optional"`
 	NamedContexts  map[string]string         `pulumi:"namedContexts,optional"`
 	Platforms      []Platform                `pulumi:"platforms,optional"`
 	Pull           bool                      `pulumi:"pull,optional"`
@@ -97,7 +100,14 @@ func (ia *ImageArgs) Annotate(a infer.Annotator) {
 		registry, the name should include the fully qualified registry address.`,
 	))
 	a.Describe(&ia.File, dedent.String(`
-		Name of the Dockerfile to use (defaults to "${context}/Dockerfile").`,
+		Name of the Dockerfile to use (defaults to "${context}/Dockerfile").
+		Conflicts with "inline".`,
+	))
+	a.Describe(&ia.Inline, dedent.String(`
+		Raw Dockerfile contents. Conflicts with "file".
+
+		Equivalent to invoking Docker with "-f -".
+		`,
 	))
 	a.Describe(&ia.Platforms, dedent.String(`
 		Set target platforms for the build. Defaults to the host's platform.
@@ -209,6 +219,7 @@ func (ia *ImageArgs) withoutUnknowns(preview bool) ImageArgs {
 		Context:        ia.Context,
 		Exports:        filter(stringerKeeper[ExportEntry]{preview}, ia.Exports...),
 		File:           ia.File,
+		Inline:         ia.Inline,
 		NamedContexts:  mapKeeper{preview}.keep(ia.NamedContexts),
 		Platforms:      filter(stringerKeeper[Platform]{preview}, ia.Platforms...),
 		Pull:           ia.Pull,
@@ -229,6 +240,7 @@ func (ia *ImageArgs) buildable() bool {
 type build struct {
 	opts    controllerapi.BuildOptions
 	targets []string
+	inline  string
 }
 
 func (b build) BuildOptions() controllerapi.BuildOptions {
@@ -237,6 +249,10 @@ func (b build) BuildOptions() controllerapi.BuildOptions {
 
 func (b build) Targets() []string {
 	return b.targets
+}
+
+func (b build) Inline() string {
+	return b.inline
 }
 
 func (ia ImageArgs) toBuilds(
@@ -254,7 +270,7 @@ func (ia ImageArgs) toBuilds(
 
 	// Check if we need a workaround for multi-platform caching (https://github.com/docker/buildx/issues/1044).
 	if len(ia.Platforms) <= 1 || len(ia.CacheTo) == 0 {
-		return []Build{build{opts: opts, targets: targets}}, nil
+		return []Build{build{opts: opts, targets: targets, inline: ia.Inline}}, nil
 	}
 
 	// Split the build into N pieces: one build with only local caching, and an
@@ -269,7 +285,7 @@ func (ia ImageArgs) toBuilds(
 	// - Preserve exports.
 	opts.CacheTo = nil
 	opts.CacheFrom = append(cachesFor(ctx, opts.CacheFrom, opts.Platforms...), opts.CacheFrom...)
-	builds = append(builds, build{opts: opts, targets: targets})
+	builds = append(builds, build{opts: opts, targets: targets, inline: ia.Inline})
 
 	// Build 2..P for each platform:
 	// - --output=type=cacheonly.
@@ -289,7 +305,7 @@ func (ia ImageArgs) toBuilds(
 		opts.CacheFrom = nil
 		opts.Tags = nil
 
-		builds = append(builds, build{opts: opts, targets: targets})
+		builds = append(builds, build{opts: opts, targets: targets, inline: ia.Inline})
 	}
 
 	return builds, nil
@@ -375,15 +391,22 @@ func (ia *ImageArgs) toBuildOptions(preview bool) (controllerapi.BuildOptions, e
 		)
 	}
 
-	// TODO(https://github.com/pulumi/pulumi-docker/issues/860): Empty build context
-	if ia.Context != "" && !preview {
-		if ia.File == "" {
-			ia.File = filepath.Join(ia.Context, "Dockerfile")
-		}
-		if _, err := os.Stat(ia.File); err != nil {
+	if ia.Context != "" {
+		abs, err := filepath.Abs(ia.Context)
+		if err == nil && isLocalDir(afero.NewOsFs(), abs) {
+			if ia.File == "" && ia.Inline == "" {
+				ia.File = filepath.Join(ia.Context, "Dockerfile")
+				if _, err := os.Stat(ia.File); err != nil {
+					multierr = errors.Join(
+						multierr,
+						newCheckFailure("context", err),
+					)
+				}
+			}
+		} else if !buildx.IsRemoteURL(ia.Context) && ia.Context != "-" {
 			multierr = errors.Join(
 				multierr,
-				newCheckFailure("context", fmt.Errorf("%q: %w", ia.File, err)),
+				newCheckFailure("context", fmt.Errorf("%q: not a valid directory or URL", ia.Context)),
 			)
 		}
 	}
@@ -486,6 +509,16 @@ func (ia *ImageArgs) toBuildOptions(preview bool) (controllerapi.BuildOptions, e
 			continue
 		}
 		cacheTo = append(cacheTo, parsed[0])
+	}
+
+	if filtered.File != "" && filtered.Inline != "" {
+		multierr = errors.Join(
+			multierr,
+			newCheckFailure(
+				"file",
+				errors.New(`only specify "file" or "inline", not both`),
+			),
+		)
 	}
 
 	for _, t := range filtered.Tags {
@@ -710,6 +743,9 @@ func (*Image) Diff(
 	}
 	if olds.File != news.File {
 		diff["file"] = update
+	}
+	if olds.Inline != news.Inline {
+		diff["inline"] = update
 	}
 	if !reflect.DeepEqual(olds.NamedContexts, news.NamedContexts) {
 		diff["namedContexts"] = update
