@@ -489,7 +489,7 @@ jobs:
       uses: GoTestTools/gotestfmt-action@v2
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        version: v2.4.0
+        version: v2.5.0
     - name: Setup SSH key
       uses: webfactory/ssh-agent@v0.7.0
       with:
