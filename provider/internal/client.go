@@ -52,6 +52,7 @@ type Client interface {
 type Build interface {
 	BuildOptions() controllerapi.BuildOptions
 	Targets() []string
+	Inline() string
 }
 
 type docker struct {
@@ -234,9 +235,11 @@ func (d *docker) Build(
 		}
 		payload[targetName] = buildx.Options{
 			Inputs: buildx.Inputs{
-				ContextPath:    opts.ContextPath,
-				DockerfilePath: opts.DockerfileName,
-				NamedContexts:  namedContexts,
+				ContextPath:      opts.ContextPath,
+				DockerfilePath:   opts.DockerfileName,
+				DockerfileInline: build.Inline(),
+				NamedContexts:    namedContexts,
+				InStream:         strings.NewReader(""),
 			},
 			BuildArgs: opts.BuildArgs,
 			CacheFrom: cacheFrom,
