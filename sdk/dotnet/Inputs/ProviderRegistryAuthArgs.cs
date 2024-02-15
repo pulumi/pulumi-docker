@@ -13,7 +13,7 @@ namespace Pulumi.Docker.Inputs
     public sealed class ProviderRegistryAuthArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// Address of the registry
+        /// Address of the registry.
         /// </summary>
         [Input("address", required: true)]
         public Input<string> Address { get; set; } = null!;

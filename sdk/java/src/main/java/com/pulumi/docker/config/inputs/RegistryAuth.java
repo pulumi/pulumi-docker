@@ -14,7 +14,7 @@ import javax.annotation.Nullable;
 @CustomType
 public final class RegistryAuth {
     /**
-     * @return Address of the registry
+     * @return Address of the registry.
      * 
      */
     private String address;
@@ -42,7 +42,7 @@ public final class RegistryAuth {
 
     private RegistryAuth() {}
     /**
-     * @return Address of the registry
+     * @return Address of the registry.
      * 
      */
     public String address() {

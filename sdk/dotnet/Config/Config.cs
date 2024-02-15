@@ -34,7 +34,7 @@ namespace Pulumi.Docker
 
         private static readonly __Value<string?> _caMaterial = new __Value<string?>(() => __config.Get("caMaterial"));
         /// <summary>
-        /// PEM-encoded content of Docker host CA certificate
+        /// PEM-encoded content of Docker host CA certificate.
         /// </summary>
         public static string? CaMaterial
         {
@@ -44,7 +44,7 @@ namespace Pulumi.Docker
 
         private static readonly __Value<string?> _certMaterial = new __Value<string?>(() => __config.Get("certMaterial"));
         /// <summary>
-        /// PEM-encoded content of Docker client certificate
+        /// PEM-encoded content of Docker client certificate.
         /// </summary>
         public static string? CertMaterial
         {
@@ -54,7 +54,8 @@ namespace Pulumi.Docker
 
         private static readonly __Value<string?> _certPath = new __Value<string?>(() => __config.Get("certPath"));
         /// <summary>
-        /// Path to directory with Docker TLS config
+        /// Path to a directory with Docker TLS config. This directory is expected to contain `ca.pem`, `cert.pem`, and `key.pem`
+        /// files.
         /// </summary>
         public static string? CertPath
         {
@@ -64,7 +65,7 @@ namespace Pulumi.Docker
 
         private static readonly __Value<string?> _host = new __Value<string?>(() => __config.Get("host") ?? Utilities.GetEnv("DOCKER_HOST"));
         /// <summary>
-        /// The Docker daemon address
+        /// The Docker daemon's address.
         /// </summary>
         public static string? Host
         {
@@ -74,7 +75,7 @@ namespace Pulumi.Docker
 
         private static readonly __Value<string?> _keyMaterial = new __Value<string?>(() => __config.Get("keyMaterial"));
         /// <summary>
-        /// PEM-encoded content of Docker client private key
+        /// PEM-encoded content of Docker client private key.
         /// </summary>
         public static string? KeyMaterial
         {
@@ -91,7 +92,8 @@ namespace Pulumi.Docker
 
         private static readonly __Value<ImmutableArray<string>> _sshOpts = new __Value<ImmutableArray<string>>(() => __config.GetObject<ImmutableArray<string>>("sshOpts"));
         /// <summary>
-        /// Additional SSH option flags to be appended when using `ssh://` protocol
+        /// Additional SSH option flags to be appended when using `ssh://` protocol. The `ssh://` protocol is not supported for
+        /// `buildx.Image` resources. Instead, use a [remote](https://docs.docker.com/build/drivers/remote/) driver.
         /// </summary>
         public static ImmutableArray<string> SshOpts
         {
@@ -105,7 +107,7 @@ namespace Pulumi.Docker
              public class RegistryAuth
              {
             /// <summary>
-            /// Address of the registry
+            /// Address of the registry.
             /// </summary>
                 public string Address { get; set; }
                 public bool? AuthDisabled { get; set; }

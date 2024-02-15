@@ -11,22 +11,23 @@ import (
 
 var _ = internal.GetEnvOrDefault
 
-// PEM-encoded content of Docker host CA certificate
+// PEM-encoded content of Docker host CA certificate.
 func GetCaMaterial(ctx *pulumi.Context) string {
 	return config.Get(ctx, "docker:caMaterial")
 }
 
-// PEM-encoded content of Docker client certificate
+// PEM-encoded content of Docker client certificate.
 func GetCertMaterial(ctx *pulumi.Context) string {
 	return config.Get(ctx, "docker:certMaterial")
 }
 
-// Path to directory with Docker TLS config
+// Path to a directory with Docker TLS config. This directory is expected to contain `ca.pem`, `cert.pem`, and `key.pem`
+// files.
 func GetCertPath(ctx *pulumi.Context) string {
 	return config.Get(ctx, "docker:certPath")
 }
 
-// The Docker daemon address
+// The Docker daemon's address.
 func GetHost(ctx *pulumi.Context) string {
 	v, err := config.Try(ctx, "docker:host")
 	if err == nil {
@@ -39,7 +40,7 @@ func GetHost(ctx *pulumi.Context) string {
 	return value
 }
 
-// PEM-encoded content of Docker client private key
+// PEM-encoded content of Docker client private key.
 func GetKeyMaterial(ctx *pulumi.Context) string {
 	return config.Get(ctx, "docker:keyMaterial")
 }
@@ -47,7 +48,8 @@ func GetRegistryAuth(ctx *pulumi.Context) string {
 	return config.Get(ctx, "docker:registryAuth")
 }
 
-// Additional SSH option flags to be appended when using `ssh://` protocol
+// Additional SSH option flags to be appended when using `ssh://` protocol. The `ssh://` protocol is not supported for
+// `buildx.Image` resources. Instead, use a [remote](https://docs.docker.com/build/drivers/remote/) driver.
 func GetSshOpts(ctx *pulumi.Context) string {
 	return config.Get(ctx, "docker:sshOpts")
 }

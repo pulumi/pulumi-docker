@@ -10,111 +10,611 @@ using Pulumi.Serialization;
 namespace Pulumi.Docker.Buildx
 {
     /// <summary>
-    /// A Docker image built using Buildkit
+    /// A Docker image built using buildx -- Docker's interface to the improved
+    /// BuildKit backend.
+    /// 
+    /// ## Stability
+    /// 
+    /// **This resource is experimental and subject to change.**
+    /// 
+    /// API types are unstable. Subsequent releases _may_ require manual edits
+    /// to your state file(s) in order to adopt API changes.
+    /// 
+    /// `retainOnDelete: true` is recommended with this resource until it is
+    /// stable. This enables future API changes to be adopted more easily by renaming
+    /// resources.
+    /// 
+    /// Only use this resource if you understand and accept the risks.
+    /// 
+    /// ## Migrating v3 and v4 Image resources
+    /// 
+    /// The `buildx.Image` resource provides a superset of functionality over the `Image` resources available in versions 3 and 4 of the Pulumi Docker provider.
+    /// Existing `Image` resources can be converted to `build.Image` resources with minor modifications.
+    /// 
+    /// ### Behavioral differences
+    /// 
+    /// There are several key behavioral differences to keep in mind when transitioning images to the new `buildx.Image` resource.
+    /// 
+    /// #### Previews
+    /// 
+    /// Version `3.x` of the Pulumi Docker provider always builds images during preview operations.
+    /// This is helpful as a safeguard to prevent "broken" images from merging, but users found the behavior unnecessarily redundant when running previews and updates locally.
+    /// 
+    /// Version `4.x` changed build-on-preview behavior to be opt-in.
+    /// By default, `v4.x` `Image` resources do _not_ build during previews, but this behavior can be toggled with the `buildOnPreview` option.
+    /// Some users felt this made previews in CI less helpful because they no longer detected bad images by default.
+    /// 
+    /// The default behavior of the `buildx.Image` resource has been changed to strike a better balance between CI use cases and manual updates.
+    /// By default, Pulumi will now only build `buildx.Image` resources during previews when it detects a CI environment like GitHub Actions.
+    /// Previews run in non-CI environments will not build images.
+    /// This behavior is still configurable with `buildOnPreview`.
+    /// 
+    /// #### Push behavior
+    /// 
+    /// Versions `3.x` and `4.x` of the Pulumi Docker provider attempt to push images to remote registries by default.
+    /// They expose a `skipPush: true` option to disable pushing.
+    /// 
+    /// The `buildx.Image` resource matches the Docker CLI's behavior and does not push images anywhere by default.
+    /// 
+    /// To push images to a registry you can include `push: true` (equivalent to Docker's `--push` flag) or configure an `export` of type `registry` (equivalent to Docker's `--output type=registry`).
+    /// Like Docker, if an image is configured without exports you will see a warning with instructions for how to enable pushing, but the build will still proceed normally.
+    /// 
+    /// #### Secrets
+    /// 
+    /// Version `3.x` of the Pulumi Docker provider supports secrets by way of the `extraOptions` field.
+    /// 
+    /// Version `4.x` of the Pulumi Docker provider does not support secrets.
+    /// 
+    /// The `buildx.Image` resource supports secrets but does not require those secrets to exist on-disk or in environment variables.
+    /// Instead, they should be passed directly as values.
+    /// (Please be sure to familiarize yourself with Pulumi's [native secret handling](https://www.pulumi.com/docs/concepts/secrets/).)
+    /// Pulumi also provides [ESC](https://www.pulumi.com/product/esc/) to make it easier to share secrets across stacks and environments.
+    /// 
+    /// #### Caching
+    /// 
+    /// Version `3.x` of the Pulumi Docker provider exposes `cacheFrom: bool | { stages: [...] }`.
+    /// It builds targets individually and pushes them to separate images for caching.
+    /// 
+    /// Version `4.x` exposes a similar parameter `cacheFrom: { images: [...] }` which pushes and pulls inline caches.
+    /// 
+    /// Both versions 3 and 4 require specific environment variables to be set and deviate from Docker's native caching behavior.
+    /// This can result in inefficient builds due to unnecessary image pulls, repeated file transfers, etc.
+    /// 
+    /// The `buildx.Image` resource delegates all caching behavior to Docker.
+    /// `cacheFrom` and `cacheTo` options (equivalent to Docker's `--cache-to` and `--cache-from`) are exposed and provide additional cache targets, such as local disk, S3 storage, etc.
+    /// 
+    /// #### Outputs
+    /// 
+    /// TODO:
+    /// 
+    /// #### Tag deletion and refreshes
+    /// 
+    /// Versions 3 and 4 of Pulumi Docker provider do not delete tags when the `Image` resource is deleted, nor do they confirm expected tags exist during `refresh` operations.
+    /// 
+    /// The `buidx.Image` will query your registries during `refresh` to ensure the expected tags exist.
+    /// If any are missing a subsequent `update` will push them.
+    /// 
+    /// When a `buildx.Image` is deleted, it will _attempt_ to also delete any pushed tags.
+    /// Deletion of remote tags is not guaranteed, because not all registries currently support this operation (`docker.io` in particular).
+    /// 
+    /// Use the [`retainOnDelete: true`](https://www.pulumi.com/docs/concepts/options/retainondelete/) option if you do not want tags deleted.
+    /// 
+    /// ### Example migration
+    /// 
+    /// Examples of "fully-featured" `v3` and `v4` `Image` resources are shown below, along with an example `buildx.Image` resource showing how they would look after migration.
+    /// 
+    /// The `v3` resource leverages `buildx` via a `DOCKER_BUILDKIT` environment variable and CLI flags passed in with `extraOption`.
+    /// After migration, the environment variable is no longer needed and CLI flags are now properties on the `buildx.Image`.
+    /// In almost all cases, properties of `buildx.Image` are named after the Docker CLI flag they correspond to.
+    /// 
+    /// The `v4` resource is less functional than its `v3` counterpart because it lacks the flexibility of `extraOptions`.
+    /// It it is shown with parameters similar to the `v3` example for completeness.
+    /// 
+    /// ## Example Usage
+    /// 
+    /// ## Example Usage
+    /// ### Push to AWS ECR with caching
+    /// ```csharp
+    /// using System.Collections.Generic;
+    /// using System.Linq;
+    /// using Pulumi;
+    /// using Aws = Pulumi.Aws;
+    /// using Docker = Pulumi.Docker;
+    /// 
+    /// return await Deployment.RunAsync(() =&gt; 
+    /// {
+    ///     var ecrRepository = new Aws.Ecr.Repository("ecr-repository");
+    /// 
+    ///     var authToken = Aws.Ecr.GetAuthorizationToken.Invoke(new()
+    ///     {
+    ///         RegistryId = ecrRepository.RegistryId,
+    ///     });
+    /// 
+    ///     var myImage = new Docker.Buildx.Image("my-image", new()
+    ///     {
+    ///         CacheFrom = new[]
+    ///         {
+    ///             new Docker.Buildx.Inputs.CacheFromEntryArgs
+    ///             {
+    ///                 Registry = new Docker.Buildx.Inputs.CacheFromRegistryArgs
+    ///                 {
+    ///                     Ref = ecrRepository.RepositoryUrl.Apply(repositoryUrl =&gt; $"{repositoryUrl}:cache"),
+    ///                 },
+    ///             },
+    ///         },
+    ///         CacheTo = new[]
+    ///         {
+    ///             new Docker.Buildx.Inputs.CacheToEntryArgs
+    ///             {
+    ///                 Registry = new Docker.Buildx.Inputs.CacheToRegistryArgs
+    ///                 {
+    ///                     ImageManifest = true,
+    ///                     OciMediaTypes = true,
+    ///                     Ref = ecrRepository.RepositoryUrl.Apply(repositoryUrl =&gt; $"{repositoryUrl}:cache"),
+    ///                 },
+    ///             },
+    ///         },
+    ///         Context = new Docker.Buildx.Inputs.BuildContextArgs
+    ///         {
+    ///             Location = "./app",
+    ///         },
+    ///         Dockerfile = new Docker.Buildx.Inputs.DockerfileArgs
+    ///         {
+    ///             Location = "./Dockerfile",
+    ///         },
+    ///         Push = true,
+    ///         Registries = new[]
+    ///         {
+    ///             new Docker.Buildx.Inputs.RegistryAuthArgs
+    ///             {
+    ///                 Address = ecrRepository.RepositoryUrl,
+    ///                 Password = authToken.Apply(getAuthorizationTokenResult =&gt; getAuthorizationTokenResult.Password),
+    ///                 Username = authToken.Apply(getAuthorizationTokenResult =&gt; getAuthorizationTokenResult.UserName),
+    ///             },
+    ///         },
+    ///         Tags = new[]
+    ///         {
+    ///             ecrRepository.RepositoryUrl.Apply(repositoryUrl =&gt; $"{repositoryUrl}:latest"),
+    ///         },
+    ///     });
+    /// 
+    /// });
+    /// 
+    /// ```
+    /// ### Multi-platform image
+    /// ```csharp
+    /// using System.Collections.Generic;
+    /// using System.Linq;
+    /// using Pulumi;
+    /// using Docker = Pulumi.Docker;
+    /// 
+    /// return await Deployment.RunAsync(() =&gt; 
+    /// {
+    ///     var image = new Docker.Buildx.Image("image", new()
+    ///     {
+    ///         Context = new Docker.Buildx.Inputs.BuildContextArgs
+    ///         {
+    ///             Location = "app",
+    ///         },
+    ///         Platforms = new[]
+    ///         {
+    ///             Docker.Buildx.Image.Platform.Plan9_amd64,
+    ///             Docker.Buildx.Image.Platform.Plan9_386,
+    ///         },
+    ///     });
+    /// 
+    /// });
+    /// 
+    /// ```
+    /// ### Registry export
+    /// ```csharp
+    /// using System.Collections.Generic;
+    /// using System.Linq;
+    /// using Pulumi;
+    /// using Docker = Pulumi.Docker;
+    /// 
+    /// return await Deployment.RunAsync(() =&gt; 
+    /// {
+    ///     var image = new Docker.Buildx.Image("image", new()
+    ///     {
+    ///         Context = new Docker.Buildx.Inputs.BuildContextArgs
+    ///         {
+    ///             Location = "app",
+    ///         },
+    ///         Push = true,
+    ///         Registries = new[]
+    ///         {
+    ///             new Docker.Buildx.Inputs.RegistryAuthArgs
+    ///             {
+    ///                 Address = "docker.io",
+    ///                 Password = dockerHubPassword,
+    ///                 Username = "pulumibot",
+    ///             },
+    ///         },
+    ///         Tags = new[]
+    ///         {
+    ///             "docker.io/pulumi/pulumi:3.107.0",
+    ///         },
+    ///     });
+    /// 
+    /// });
+    /// 
+    /// ```
+    /// ### Caching
+    /// ```csharp
+    /// using System.Collections.Generic;
+    /// using System.Linq;
+    /// using Pulumi;
+    /// using Docker = Pulumi.Docker;
+    /// 
+    /// return await Deployment.RunAsync(() =&gt; 
+    /// {
+    ///     var image = new Docker.Buildx.Image("image", new()
+    ///     {
+    ///         CacheFrom = new[]
+    ///         {
+    ///             new Docker.Buildx.Inputs.CacheFromEntryArgs
+    ///             {
+    ///                 Local = new Docker.Buildx.Inputs.CacheFromLocalArgs
+    ///                 {
+    ///                     Src = "tmp/cache",
+    ///                 },
+    ///             },
+    ///         },
+    ///         CacheTo = new[]
+    ///         {
+    ///             new Docker.Buildx.Inputs.CacheToEntryArgs
+    ///             {
+    ///                 Local = new Docker.Buildx.Inputs.CacheToLocalArgs
+    ///                 {
+    ///                     Dest = "tmp/cache",
+    ///                     Mode = Docker.Buildx.Image.CacheMode.Max,
+    ///                 },
+    ///             },
+    ///         },
+    ///         Context = new Docker.Buildx.Inputs.BuildContextArgs
+    ///         {
+    ///             Location = "app",
+    ///         },
+    ///     });
+    /// 
+    /// });
+    /// 
+    /// ```
+    /// ### Build arguments
+    /// ```csharp
+    /// using System.Collections.Generic;
+    /// using System.Linq;
+    /// using Pulumi;
+    /// using Docker = Pulumi.Docker;
+    /// 
+    /// return await Deployment.RunAsync(() =&gt; 
+    /// {
+    ///     var image = new Docker.Buildx.Image("image", new()
+    ///     {
+    ///         BuildArgs = 
+    ///         {
+    ///             { "SET_ME_TO_TRUE", "true" },
+    ///         },
+    ///         Context = new Docker.Buildx.Inputs.BuildContextArgs
+    ///         {
+    ///             Location = "app",
+    ///         },
+    ///     });
+    /// 
+    /// });
+    /// 
+    /// ```
+    /// ### Build targets
+    /// ```csharp
+    /// using System.Collections.Generic;
+    /// using System.Linq;
+    /// using Pulumi;
+    /// using Docker = Pulumi.Docker;
+    /// 
+    /// return await Deployment.RunAsync(() =&gt; 
+    /// {
+    ///     var image = new Docker.Buildx.Image("image", new()
+    ///     {
+    ///         Context = new Docker.Buildx.Inputs.BuildContextArgs
+    ///         {
+    ///             Location = "app",
+    ///         },
+    ///         Targets = new[]
+    ///         {
+    ///             "build-me",
+    ///             "also-build-me",
+    ///         },
+    ///     });
+    /// 
+    /// });
+    /// 
+    /// ```
+    /// ### Named contexts
+    /// ```csharp
+    /// using System.Collections.Generic;
+    /// using System.Linq;
+    /// using Pulumi;
+    /// using Docker = Pulumi.Docker;
+    /// 
+    /// return await Deployment.RunAsync(() =&gt; 
+    /// {
+    ///     var image = new Docker.Buildx.Image("image", new()
+    ///     {
+    ///         Context = new Docker.Buildx.Inputs.BuildContextArgs
+    ///         {
+    ///             Location = "app",
+    ///             Named = 
+    ///             {
+    ///                 { "golang:latest", new Docker.Buildx.Inputs.ContextArgs
+    ///                 {
+    ///                     Location = "docker-image://golang@sha256:b8e62cf593cdaff36efd90aa3a37de268e6781a2e68c6610940c48f7cdf36984",
+    ///                 } },
+    ///             },
+    ///         },
+    ///     });
+    /// 
+    /// });
+    /// 
+    /// ```
+    /// ### Remote context
+    /// ```csharp
+    /// using System.Collections.Generic;
+    /// using System.Linq;
+    /// using Pulumi;
+    /// using Docker = Pulumi.Docker;
+    /// 
+    /// return await Deployment.RunAsync(() =&gt; 
+    /// {
+    ///     var image = new Docker.Buildx.Image("image", new()
+    ///     {
+    ///         Context = new Docker.Buildx.Inputs.BuildContextArgs
+    ///         {
+    ///             Location = "https://raw.githubusercontent.com/pulumi/pulumi-docker/api-types/provider/testdata/Dockerfile",
+    ///         },
+    ///     });
+    /// 
+    /// });
+    /// 
+    /// ```
+    /// ### Inline Dockerfile
+    /// ```csharp
+    /// using System.Collections.Generic;
+    /// using System.Linq;
+    /// using Pulumi;
+    /// using Docker = Pulumi.Docker;
+    /// 
+    /// return await Deployment.RunAsync(() =&gt; 
+    /// {
+    ///     var image = new Docker.Buildx.Image("image", new()
+    ///     {
+    ///         Context = new Docker.Buildx.Inputs.BuildContextArgs
+    ///         {
+    ///             Location = "app",
+    ///         },
+    ///         Dockerfile = new Docker.Buildx.Inputs.DockerfileArgs
+    ///         {
+    ///             Inline = @"FROM busybox
+    /// COPY hello.c ./
+    /// ",
+    ///         },
+    ///     });
+    /// 
+    /// });
+    /// 
+    /// ```
+    /// ### Remote context
+    /// ```csharp
+    /// using System.Collections.Generic;
+    /// using System.Linq;
+    /// using Pulumi;
+    /// using Docker = Pulumi.Docker;
+    /// 
+    /// return await Deployment.RunAsync(() =&gt; 
+    /// {
+    ///     var image = new Docker.Buildx.Image("image", new()
+    ///     {
+    ///         Context = new Docker.Buildx.Inputs.BuildContextArgs
+    ///         {
+    ///             Location = "https://github.com/docker-library/hello-world.git",
+    ///         },
+    ///         Dockerfile = new Docker.Buildx.Inputs.DockerfileArgs
+    ///         {
+    ///             Location = "app/Dockerfile",
+    ///         },
+    ///     });
+    /// 
+    /// });
+    /// 
+    /// ```
+    /// ### Local export
+    /// ```csharp
+    /// using System.Collections.Generic;
+    /// using System.Linq;
+    /// using Pulumi;
+    /// using Docker = Pulumi.Docker;
+    /// 
+    /// return await Deployment.RunAsync(() =&gt; 
+    /// {
+    ///     var image = new Docker.Buildx.Image("image", new()
+    ///     {
+    ///         Context = new Docker.Buildx.Inputs.BuildContextArgs
+    ///         {
+    ///             Location = "app",
+    ///         },
+    ///         Exports = new[]
+    ///         {
+    ///             new Docker.Buildx.Inputs.ExportEntryArgs
+    ///             {
+    ///                 Docker = new Docker.Buildx.Inputs.ExportDockerArgs
+    ///                 {
+    ///                     Tar = true,
+    ///                 },
+    ///             },
+    ///         },
+    ///     });
+    /// 
+    /// });
+    /// 
+    /// ```
     /// </summary>
     [DockerResourceType("docker:buildx/image:Image")]
     public partial class Image : global::Pulumi.CustomResource
     {
         /// <summary>
+        /// `ARG` names and values to set during the build.
         /// 
-        /// An optional map of named build-time argument variables to set during
-        /// the Docker build. This flag allows you to pass build-time variables that
-        /// can be accessed like environment variables inside the RUN
-        /// instruction.
+        /// These variables are accessed like environment variables inside `RUN`
+        /// instructions.
+        /// 
+        /// Build arguments are persisted in the image, so you should use `secrets`
+        /// if these arguments are sensitive.
+        /// 
+        /// Equivalent to Docker's `--build-arg` flag.
         /// </summary>
         [Output("buildArgs")]
         public Output<ImmutableDictionary<string, string>?> BuildArgs { get; private set; } = null!;
 
         /// <summary>
-        /// 
-        /// When true, attempt to build the image during previews. Outputs are not
-        /// pushed to registries, however caches are still populated.
+        /// When `true`, attempt to build the image during previews. The image will
+        /// not be pushed to registries, however caches will still be populated.
         /// </summary>
         [Output("buildOnPreview")]
         public Output<bool?> BuildOnPreview { get; private set; } = null!;
 
         /// <summary>
-        /// 
-        /// Build with a specific builder instance
+        /// Builder configuration.
         /// </summary>
         [Output("builder")]
-        public Output<string?> Builder { get; private set; } = null!;
+        public Output<Outputs.BuilderConfig?> Builder { get; private set; } = null!;
 
         /// <summary>
+        /// Cache export configuration.
         /// 
-        /// External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
+        /// Equivalent to Docker's `--cache-from` flag.
         /// </summary>
         [Output("cacheFrom")]
         public Output<ImmutableArray<Outputs.CacheFromEntry>> CacheFrom { get; private set; } = null!;
 
         /// <summary>
+        /// Cache import configuration.
         /// 
-        /// Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
+        /// Equivalent to Docker's `--cache-to` flag.
         /// </summary>
         [Output("cacheTo")]
         public Output<ImmutableArray<Outputs.CacheToEntry>> CacheTo { get; private set; } = null!;
 
         /// <summary>
+        /// Build context settings.
         /// 
-        /// Path to use for build context. If omitted, an empty context is used.
+        /// Equivalent to Docker's `PATH | URL | -` positional argument.
         /// </summary>
         [Output("context")]
-        public Output<string?> Context { get; private set; } = null!;
+        public Output<Outputs.BuildContext?> Context { get; private set; } = null!;
 
+        /// <summary>
+        /// A preliminary hash of the image's build context.
+        /// 
+        /// Pulumi uses this to determine if an image _may_ need to be re-built.
+        /// </summary>
         [Output("contextHash")]
         public Output<string?> ContextHash { get; private set; } = null!;
 
         /// <summary>
+        /// A mapping of platform type to refs which were pushed to registries.
+        /// </summary>
+        [Output("digests")]
+        public Output<ImmutableDictionary<string, ImmutableArray<string>>?> Digests { get; private set; } = null!;
+
+        /// <summary>
+        /// Dockerfile settings.
         /// 
-        /// Name and optionally a tag (format: "name:tag"). If outputting to a
-        /// registry, the name should include the fully qualified registry address.
+        /// Equivalent to Docker's `--file` flag.
+        /// </summary>
+        [Output("dockerfile")]
+        public Output<Outputs.Dockerfile?> Dockerfile { get; private set; } = null!;
+
+        /// <summary>
+        /// Controls where images are persisted after building.
+        /// 
+        /// Images are only stored in the local cache unless `exports` are
+        /// explicitly configured.
+        /// 
+        /// Equivalent to Docker's `--output` flag.
         /// </summary>
         [Output("exports")]
         public Output<ImmutableArray<Outputs.ExportEntry>> Exports { get; private set; } = null!;
 
         /// <summary>
+        /// Attach arbitrary key/value metadata to the image.
         /// 
-        /// Name of the Dockerfile to use (defaults to "${context}/Dockerfile").
+        /// Equivalent to Docker's `--label` flag.
         /// </summary>
-        [Output("file")]
-        public Output<string?> File { get; private set; } = null!;
-
-        [Output("manifests")]
-        public Output<ImmutableArray<Outputs.Manifest>> Manifests { get; private set; } = null!;
+        [Output("labels")]
+        public Output<ImmutableDictionary<string, string>?> Labels { get; private set; } = null!;
 
         /// <summary>
+        /// Set target platform(s) for the build. Defaults to the host's platform.
         /// 
-        /// Set target platforms for the build. Defaults to the host's platform.
-        /// 
-        /// Equivalent to Docker's "--platform" flag.
+        /// Equivalent to Docker's `--platform` flag.
         /// </summary>
         [Output("platforms")]
         public Output<ImmutableArray<Pulumi.Docker.Buildx.Platform>> Platforms { get; private set; } = null!;
 
         /// <summary>
+        /// Always pull referenced images.
         /// 
-        /// Always attempt to pull referenced images.
+        /// Equivalent to Docker's `--pull` flag.
         /// </summary>
         [Output("pull")]
         public Output<bool?> Pull { get; private set; } = null!;
 
         /// <summary>
+        /// Registry credentials. Required if reading or exporting to private
+        /// repositories.
         /// 
-        /// Logins for registry outputs
+        /// Credentials are kept in-memory and do not pollute pre-existing
+        /// credentials on the host.
+        /// 
+        /// Similar to `docker login`.
         /// </summary>
         [Output("registries")]
         public Output<ImmutableArray<Outputs.RegistryAuth>> Registries { get; private set; } = null!;
 
         /// <summary>
+        /// A mapping of secret names to their corresponding values.
         /// 
-        /// Name and optionally a tag (format: "name:tag"). If outputting to a
-        /// registry, the name should include the fully qualified registry address.
+        /// Unlike the Docker CLI, these can be passed by value and do not need to
+        /// exist on-disk or in environment variables.
+        /// 
+        /// Build arguments and environment variables are persistent in the final
+        /// image, so you should use this for sensitive values.
+        /// 
+        /// Similar to Docker's `--secret` flag.
+        /// </summary>
+        [Output("secrets")]
+        public Output<ImmutableDictionary<string, string>?> Secrets { get; private set; } = null!;
+
+        /// <summary>
+        /// Name and optionally a tag (format: `name:tag`).
+        /// 
+        /// If exporting to a registry, the name should include the fully qualified
+        /// registry address (e.g. `docker.io/pulumi/pulumi:latest`).
+        /// 
+        /// Equivalent to Docker's `--tag` flag.
         /// </summary>
         [Output("tags")]
         public Output<ImmutableArray<string>> Tags { get; private set; } = null!;
 
-        [Output("target")]
-        public Output<string?> Target { get; private set; } = null!;
+        /// <summary>
+        /// Set the target build stage(s) to build.
+        /// 
+        /// If not specified all targets will be built by default.
+        /// 
+        /// Equivalent to Docker's `--target` flag.
+        /// </summary>
+        [Output("targets")]
+        public Output<ImmutableArray<string>> Targets { get; private set; } = null!;
 
 
         /// <summary>
@@ -139,6 +639,10 @@ namespace Pulumi.Docker.Buildx
             var defaultOptions = new CustomResourceOptions
             {
                 Version = Utilities.Version,
+                AdditionalSecretOutputs =
+                {
+                    "secrets",
+                },
             };
             var merged = CustomResourceOptions.Merge(defaultOptions, options);
             // Override the ID if one was specified for consistency with other language SDKs.
@@ -165,11 +669,15 @@ namespace Pulumi.Docker.Buildx
         private InputMap<string>? _buildArgs;
 
         /// <summary>
+        /// `ARG` names and values to set during the build.
         /// 
-        /// An optional map of named build-time argument variables to set during
-        /// the Docker build. This flag allows you to pass build-time variables that
-        /// can be accessed like environment variables inside the RUN
-        /// instruction.
+        /// These variables are accessed like environment variables inside `RUN`
+        /// instructions.
+        /// 
+        /// Build arguments are persisted in the image, so you should use `secrets`
+        /// if these arguments are sensitive.
+        /// 
+        /// Equivalent to Docker's `--build-arg` flag.
         /// </summary>
         public InputMap<string> BuildArgs
         {
@@ -178,26 +686,25 @@ namespace Pulumi.Docker.Buildx
         }
 
         /// <summary>
-        /// 
-        /// When true, attempt to build the image during previews. Outputs are not
-        /// pushed to registries, however caches are still populated.
+        /// When `true`, attempt to build the image during previews. The image will
+        /// not be pushed to registries, however caches will still be populated.
         /// </summary>
         [Input("buildOnPreview")]
         public Input<bool>? BuildOnPreview { get; set; }
 
         /// <summary>
-        /// 
-        /// Build with a specific builder instance
+        /// Builder configuration.
         /// </summary>
         [Input("builder")]
-        public Input<string>? Builder { get; set; }
+        public Input<Inputs.BuilderConfigArgs>? Builder { get; set; }
 
         [Input("cacheFrom")]
         private InputList<Inputs.CacheFromEntryArgs>? _cacheFrom;
 
         /// <summary>
+        /// Cache export configuration.
         /// 
-        /// External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
+        /// Equivalent to Docker's `--cache-from` flag.
         /// </summary>
         public InputList<Inputs.CacheFromEntryArgs> CacheFrom
         {
@@ -209,8 +716,9 @@ namespace Pulumi.Docker.Buildx
         private InputList<Inputs.CacheToEntryArgs>? _cacheTo;
 
         /// <summary>
+        /// Cache import configuration.
         /// 
-        /// Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
+        /// Equivalent to Docker's `--cache-to` flag.
         /// </summary>
         public InputList<Inputs.CacheToEntryArgs> CacheTo
         {
@@ -219,19 +727,31 @@ namespace Pulumi.Docker.Buildx
         }
 
         /// <summary>
+        /// Build context settings.
         /// 
-        /// Path to use for build context. If omitted, an empty context is used.
+        /// Equivalent to Docker's `PATH | URL | -` positional argument.
         /// </summary>
         [Input("context")]
-        public Input<string>? Context { get; set; }
+        public Input<Inputs.BuildContextArgs>? Context { get; set; }
+
+        /// <summary>
+        /// Dockerfile settings.
+        /// 
+        /// Equivalent to Docker's `--file` flag.
+        /// </summary>
+        [Input("dockerfile")]
+        public Input<Inputs.DockerfileArgs>? Dockerfile { get; set; }
 
         [Input("exports")]
         private InputList<Inputs.ExportEntryArgs>? _exports;
 
         /// <summary>
+        /// Controls where images are persisted after building.
         /// 
-        /// Name and optionally a tag (format: "name:tag"). If outputting to a
-        /// registry, the name should include the fully qualified registry address.
+        /// Images are only stored in the local cache unless `exports` are
+        /// explicitly configured.
+        /// 
+        /// Equivalent to Docker's `--output` flag.
         /// </summary>
         public InputList<Inputs.ExportEntryArgs> Exports
         {
@@ -239,21 +759,27 @@ namespace Pulumi.Docker.Buildx
             set => _exports = value;
         }
 
+        [Input("labels")]
+        private InputMap<string>? _labels;
+
         /// <summary>
+        /// Attach arbitrary key/value metadata to the image.
         /// 
-        /// Name of the Dockerfile to use (defaults to "${context}/Dockerfile").
+        /// Equivalent to Docker's `--label` flag.
         /// </summary>
-        [Input("file")]
-        public Input<string>? File { get; set; }
+        public InputMap<string> Labels
+        {
+            get => _labels ?? (_labels = new InputMap<string>());
+            set => _labels = value;
+        }
 
         [Input("platforms")]
         private InputList<Pulumi.Docker.Buildx.Platform>? _platforms;
 
         /// <summary>
+        /// Set target platform(s) for the build. Defaults to the host's platform.
         /// 
-        /// Set target platforms for the build. Defaults to the host's platform.
-        /// 
-        /// Equivalent to Docker's "--platform" flag.
+        /// Equivalent to Docker's `--platform` flag.
         /// </summary>
         public InputList<Pulumi.Docker.Buildx.Platform> Platforms
         {
@@ -262,8 +788,9 @@ namespace Pulumi.Docker.Buildx
         }
 
         /// <summary>
+        /// Always pull referenced images.
         /// 
-        /// Always attempt to pull referenced images.
+        /// Equivalent to Docker's `--pull` flag.
         /// </summary>
         [Input("pull")]
         public Input<bool>? Pull { get; set; }
@@ -272,8 +799,13 @@ namespace Pulumi.Docker.Buildx
         private InputList<Inputs.RegistryAuthArgs>? _registries;
 
         /// <summary>
+        /// Registry credentials. Required if reading or exporting to private
+        /// repositories.
         /// 
-        /// Logins for registry outputs
+        /// Credentials are kept in-memory and do not pollute pre-existing
+        /// credentials on the host.
+        /// 
+        /// Similar to `docker login`.
         /// </summary>
         public InputList<Inputs.RegistryAuthArgs> Registries
         {
@@ -281,13 +813,40 @@ namespace Pulumi.Docker.Buildx
             set => _registries = value;
         }
 
+        [Input("secrets")]
+        private InputMap<string>? _secrets;
+
+        /// <summary>
+        /// A mapping of secret names to their corresponding values.
+        /// 
+        /// Unlike the Docker CLI, these can be passed by value and do not need to
+        /// exist on-disk or in environment variables.
+        /// 
+        /// Build arguments and environment variables are persistent in the final
+        /// image, so you should use this for sensitive values.
+        /// 
+        /// Similar to Docker's `--secret` flag.
+        /// </summary>
+        public InputMap<string> Secrets
+        {
+            get => _secrets ?? (_secrets = new InputMap<string>());
+            set
+            {
+                var emptySecret = Output.CreateSecret(ImmutableDictionary.Create<string, string>());
+                _secrets = Output.All(value, emptySecret).Apply(v => v[0]);
+            }
+        }
+
         [Input("tags")]
         private InputList<string>? _tags;
 
         /// <summary>
+        /// Name and optionally a tag (format: `name:tag`).
         /// 
-        /// Name and optionally a tag (format: "name:tag"). If outputting to a
-        /// registry, the name should include the fully qualified registry address.
+        /// If exporting to a registry, the name should include the fully qualified
+        /// registry address (e.g. `docker.io/pulumi/pulumi:latest`).
+        /// 
+        /// Equivalent to Docker's `--tag` flag.
         /// </summary>
         public InputList<string> Tags
         {
@@ -295,12 +854,24 @@ namespace Pulumi.Docker.Buildx
             set => _tags = value;
         }
 
-        [Input("target")]
-        public Input<string>? Target { get; set; }
+        [Input("targets")]
+        private InputList<string>? _targets;
+
+        /// <summary>
+        /// Set the target build stage(s) to build.
+        /// 
+        /// If not specified all targets will be built by default.
+        /// 
+        /// Equivalent to Docker's `--target` flag.
+        /// </summary>
+        public InputList<string> Targets
+        {
+            get => _targets ?? (_targets = new InputList<string>());
+            set => _targets = value;
+        }
 
         public ImageArgs()
         {
-            File = "Dockerfile";
         }
         public static new ImageArgs Empty => new ImageArgs();
     }

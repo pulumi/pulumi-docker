@@ -17,14 +17,20 @@ public final class CacheFromGitHubActionsArgs extends com.pulumi.resources.Resou
     public static final CacheFromGitHubActionsArgs Empty = new CacheFromGitHubActionsArgs();
 
     /**
-     * Which scope cache object belongs to.
+     * The scope to use for cache keys. Defaults to `buildkit`.
+     * 
+     * This should be set if building and caching multiple images in one
+     * workflow, otherwise caches will overwrite each other.
      * 
      */
     @Import(name="scope")
     private @Nullable Output<String> scope;
 
     /**
-     * @return Which scope cache object belongs to.
+     * @return The scope to use for cache keys. Defaults to `buildkit`.
+     * 
+     * This should be set if building and caching multiple images in one
+     * workflow, otherwise caches will overwrite each other.
      * 
      */
     public Optional<Output<String>> scope() {
@@ -32,14 +38,24 @@ public final class CacheFromGitHubActionsArgs extends com.pulumi.resources.Resou
     }
 
     /**
-     * Access token
+     * The GitHub Actions token to use. This is not a personal access tokens
+     * and is typically generated automatically as part of each job.
+     * 
+     * Defaults to `$ACTIONS_RUNTIME_TOKEN`, although a separate action like
+     * `crazy-max/ghaction-github-runtime` is recommended to expose this
+     * environment variable to your jobs.
      * 
      */
     @Import(name="token")
     private @Nullable Output<String> token;
 
     /**
-     * @return Access token
+     * @return The GitHub Actions token to use. This is not a personal access tokens
+     * and is typically generated automatically as part of each job.
+     * 
+     * Defaults to `$ACTIONS_RUNTIME_TOKEN`, although a separate action like
+     * `crazy-max/ghaction-github-runtime` is recommended to expose this
+     * environment variable to your jobs.
      * 
      */
     public Optional<Output<String>> token() {
@@ -47,14 +63,22 @@ public final class CacheFromGitHubActionsArgs extends com.pulumi.resources.Resou
     }
 
     /**
-     * Cache server URL
+     * The cache server URL to use for artifacts.
+     * 
+     * Defaults to `$ACTIONS_RUNTIME_URL`, although a separate action like
+     * `crazy-max/ghaction-github-runtime` is recommended to expose this
+     * environment variable to your jobs.
      * 
      */
     @Import(name="url")
     private @Nullable Output<String> url;
 
     /**
-     * @return Cache server URL
+     * @return The cache server URL to use for artifacts.
+     * 
+     * Defaults to `$ACTIONS_RUNTIME_URL`, although a separate action like
+     * `crazy-max/ghaction-github-runtime` is recommended to expose this
+     * environment variable to your jobs.
      * 
      */
     public Optional<Output<String>> url() {
@@ -88,7 +112,10 @@ public final class CacheFromGitHubActionsArgs extends com.pulumi.resources.Resou
         }
 
         /**
-         * @param scope Which scope cache object belongs to.
+         * @param scope The scope to use for cache keys. Defaults to `buildkit`.
+         * 
+         * This should be set if building and caching multiple images in one
+         * workflow, otherwise caches will overwrite each other.
          * 
          * @return builder
          * 
@@ -99,7 +126,10 @@ public final class CacheFromGitHubActionsArgs extends com.pulumi.resources.Resou
         }
 
         /**
-         * @param scope Which scope cache object belongs to.
+         * @param scope The scope to use for cache keys. Defaults to `buildkit`.
+         * 
+         * This should be set if building and caching multiple images in one
+         * workflow, otherwise caches will overwrite each other.
          * 
          * @return builder
          * 
@@ -109,7 +139,12 @@ public final class CacheFromGitHubActionsArgs extends com.pulumi.resources.Resou
         }
 
         /**
-         * @param token Access token
+         * @param token The GitHub Actions token to use. This is not a personal access tokens
+         * and is typically generated automatically as part of each job.
+         * 
+         * Defaults to `$ACTIONS_RUNTIME_TOKEN`, although a separate action like
+         * `crazy-max/ghaction-github-runtime` is recommended to expose this
+         * environment variable to your jobs.
          * 
          * @return builder
          * 
@@ -120,7 +155,12 @@ public final class CacheFromGitHubActionsArgs extends com.pulumi.resources.Resou
         }
 
         /**
-         * @param token Access token
+         * @param token The GitHub Actions token to use. This is not a personal access tokens
+         * and is typically generated automatically as part of each job.
+         * 
+         * Defaults to `$ACTIONS_RUNTIME_TOKEN`, although a separate action like
+         * `crazy-max/ghaction-github-runtime` is recommended to expose this
+         * environment variable to your jobs.
          * 
          * @return builder
          * 
@@ -130,7 +170,11 @@ public final class CacheFromGitHubActionsArgs extends com.pulumi.resources.Resou
         }
 
         /**
-         * @param url Cache server URL
+         * @param url The cache server URL to use for artifacts.
+         * 
+         * Defaults to `$ACTIONS_RUNTIME_URL`, although a separate action like
+         * `crazy-max/ghaction-github-runtime` is recommended to expose this
+         * environment variable to your jobs.
          * 
          * @return builder
          * 
@@ -141,7 +185,11 @@ public final class CacheFromGitHubActionsArgs extends com.pulumi.resources.Resou
         }
 
         /**
-         * @param url Cache server URL
+         * @param url The cache server URL to use for artifacts.
+         * 
+         * Defaults to `$ACTIONS_RUNTIME_URL`, although a separate action like
+         * `crazy-max/ghaction-github-runtime` is recommended to expose this
+         * environment variable to your jobs.
          * 
          * @return builder
          * 

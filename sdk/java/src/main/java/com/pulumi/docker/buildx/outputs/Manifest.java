@@ -4,7 +4,7 @@
 package com.pulumi.docker.buildx.outputs;
 
 import com.pulumi.core.annotations.CustomType;
-import com.pulumi.docker.buildx.enums.Platform;
+import com.pulumi.docker.buildx.outputs.ManifestPlatform;
 import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.Integer;
 import java.lang.String;
@@ -12,29 +12,53 @@ import java.util.Objects;
 
 @CustomType
 public final class Manifest {
-    private String digest;
-    private Platform platform;
     /**
-     * @return The manifest&#39;s ref
+     * @return The SHA256 digest of the manifest.
+     * 
+     */
+    private String digest;
+    /**
+     * @return The manifest&#39;s platform.
+     * 
+     */
+    private ManifestPlatform platform;
+    /**
+     * @return The manifest&#39;s canonical ref.
      * 
      */
     private String ref;
+    /**
+     * @return The size of the manifest in bytes.
+     * 
+     */
     private Integer size;
 
     private Manifest() {}
+    /**
+     * @return The SHA256 digest of the manifest.
+     * 
+     */
     public String digest() {
         return this.digest;
     }
-    public Platform platform() {
+    /**
+     * @return The manifest&#39;s platform.
+     * 
+     */
+    public ManifestPlatform platform() {
         return this.platform;
     }
     /**
-     * @return The manifest&#39;s ref
+     * @return The manifest&#39;s canonical ref.
      * 
      */
     public String ref() {
         return this.ref;
     }
+    /**
+     * @return The size of the manifest in bytes.
+     * 
+     */
     public Integer size() {
         return this.size;
     }
@@ -49,7 +73,7 @@ public final class Manifest {
     @CustomType.Builder
     public static final class Builder {
         private String digest;
-        private Platform platform;
+        private ManifestPlatform platform;
         private String ref;
         private Integer size;
         public Builder() {}
@@ -70,7 +94,7 @@ public final class Manifest {
             return this;
         }
         @CustomType.Setter
-        public Builder platform(Platform platform) {
+        public Builder platform(ManifestPlatform platform) {
             if (platform == null) {
               throw new MissingRequiredPropertyException("Manifest", "platform");
             }

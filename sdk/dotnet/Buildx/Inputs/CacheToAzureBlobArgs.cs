@@ -12,6 +12,9 @@ namespace Pulumi.Docker.Buildx.Inputs
 
     public sealed class CacheToAzureBlobArgs : global::Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Base URL of the storage account.
+        /// </summary>
         [Input("accountUrl")]
         public Input<string>? AccountUrl { get; set; }
 
@@ -21,14 +24,24 @@ namespace Pulumi.Docker.Buildx.Inputs
         [Input("ignoreError")]
         public Input<bool>? IgnoreError { get; set; }
 
+        /// <summary>
+        /// The cache mode to use. Defaults to `min`.
+        /// </summary>
         [Input("mode")]
         public Input<Pulumi.Docker.Buildx.CacheMode>? Mode { get; set; }
 
+        /// <summary>
+        /// The name of the cache image.
+        /// </summary>
         [Input("name", required: true)]
         public Input<string> Name { get; set; } = null!;
 
         [Input("secretAccessKey")]
         private Input<string>? _secretAccessKey;
+
+        /// <summary>
+        /// Blob storage account key.
+        /// </summary>
         public Input<string>? SecretAccessKey
         {
             get => _secretAccessKey;

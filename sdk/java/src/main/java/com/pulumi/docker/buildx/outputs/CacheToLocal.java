@@ -26,6 +26,10 @@ public final class CacheToLocal {
      * 
      */
     private @Nullable Integer compressionLevel;
+    /**
+     * @return Path of the local directory to export the cache.
+     * 
+     */
     private String dest;
     /**
      * @return Forcefully apply compression.
@@ -37,6 +41,10 @@ public final class CacheToLocal {
      * 
      */
     private @Nullable Boolean ignoreError;
+    /**
+     * @return The cache mode to use. Defaults to `min`.
+     * 
+     */
     private @Nullable CacheMode mode;
 
     private CacheToLocal() {}
@@ -54,6 +62,10 @@ public final class CacheToLocal {
     public Optional<Integer> compressionLevel() {
         return Optional.ofNullable(this.compressionLevel);
     }
+    /**
+     * @return Path of the local directory to export the cache.
+     * 
+     */
     public String dest() {
         return this.dest;
     }
@@ -71,6 +83,10 @@ public final class CacheToLocal {
     public Optional<Boolean> ignoreError() {
         return Optional.ofNullable(this.ignoreError);
     }
+    /**
+     * @return The cache mode to use. Defaults to `min`.
+     * 
+     */
     public Optional<CacheMode> mode() {
         return Optional.ofNullable(this.mode);
     }

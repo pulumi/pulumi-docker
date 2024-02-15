@@ -11,7 +11,7 @@ declare var exports: any;
 const __config = new pulumi.Config("docker");
 
 /**
- * PEM-encoded content of Docker host CA certificate
+ * PEM-encoded content of Docker host CA certificate.
  */
 export declare const caMaterial: string | undefined;
 Object.defineProperty(exports, "caMaterial", {
@@ -22,7 +22,7 @@ Object.defineProperty(exports, "caMaterial", {
 });
 
 /**
- * PEM-encoded content of Docker client certificate
+ * PEM-encoded content of Docker client certificate.
  */
 export declare const certMaterial: string | undefined;
 Object.defineProperty(exports, "certMaterial", {
@@ -33,7 +33,8 @@ Object.defineProperty(exports, "certMaterial", {
 });
 
 /**
- * Path to directory with Docker TLS config
+ * Path to a directory with Docker TLS config. This directory is expected to contain `ca.pem`, `cert.pem`, and `key.pem`
+ * files.
  */
 export declare const certPath: string | undefined;
 Object.defineProperty(exports, "certPath", {
@@ -44,7 +45,7 @@ Object.defineProperty(exports, "certPath", {
 });
 
 /**
- * The Docker daemon address
+ * The Docker daemon's address.
  */
 export declare const host: string | undefined;
 Object.defineProperty(exports, "host", {
@@ -55,7 +56,7 @@ Object.defineProperty(exports, "host", {
 });
 
 /**
- * PEM-encoded content of Docker client private key
+ * PEM-encoded content of Docker client private key.
  */
 export declare const keyMaterial: string | undefined;
 Object.defineProperty(exports, "keyMaterial", {
@@ -74,7 +75,8 @@ Object.defineProperty(exports, "registryAuth", {
 });
 
 /**
- * Additional SSH option flags to be appended when using `ssh://` protocol
+ * Additional SSH option flags to be appended when using `ssh://` protocol. The `ssh://` protocol is not supported for
+ * `buildx.Image` resources. Instead, use a [remote](https://docs.docker.com/build/drivers/remote/) driver.
  */
 export declare const sshOpts: string[] | undefined;
 Object.defineProperty(exports, "sshOpts", {

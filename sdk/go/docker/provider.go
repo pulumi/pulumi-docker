@@ -18,15 +18,16 @@ import (
 type Provider struct {
 	pulumi.ProviderResourceState
 
-	// PEM-encoded content of Docker host CA certificate
+	// PEM-encoded content of Docker host CA certificate.
 	CaMaterial pulumi.StringPtrOutput `pulumi:"caMaterial"`
-	// PEM-encoded content of Docker client certificate
+	// PEM-encoded content of Docker client certificate.
 	CertMaterial pulumi.StringPtrOutput `pulumi:"certMaterial"`
-	// Path to directory with Docker TLS config
+	// Path to a directory with Docker TLS config. This directory is expected to contain `ca.pem`, `cert.pem`, and `key.pem`
+	// files.
 	CertPath pulumi.StringPtrOutput `pulumi:"certPath"`
-	// The Docker daemon address
+	// The Docker daemon's address.
 	Host pulumi.StringPtrOutput `pulumi:"host"`
-	// PEM-encoded content of Docker client private key
+	// PEM-encoded content of Docker client private key.
 	KeyMaterial pulumi.StringPtrOutput `pulumi:"keyMaterial"`
 }
 
@@ -52,35 +53,39 @@ func NewProvider(ctx *pulumi.Context,
 }
 
 type providerArgs struct {
-	// PEM-encoded content of Docker host CA certificate
+	// PEM-encoded content of Docker host CA certificate.
 	CaMaterial *string `pulumi:"caMaterial"`
-	// PEM-encoded content of Docker client certificate
+	// PEM-encoded content of Docker client certificate.
 	CertMaterial *string `pulumi:"certMaterial"`
-	// Path to directory with Docker TLS config
+	// Path to a directory with Docker TLS config. This directory is expected to contain `ca.pem`, `cert.pem`, and `key.pem`
+	// files.
 	CertPath *string `pulumi:"certPath"`
-	// The Docker daemon address
+	// The Docker daemon's address.
 	Host *string `pulumi:"host"`
-	// PEM-encoded content of Docker client private key
+	// PEM-encoded content of Docker client private key.
 	KeyMaterial  *string                `pulumi:"keyMaterial"`
 	RegistryAuth []ProviderRegistryAuth `pulumi:"registryAuth"`
-	// Additional SSH option flags to be appended when using `ssh://` protocol
+	// Additional SSH option flags to be appended when using `ssh://` protocol. The `ssh://` protocol is not supported for
+	// `buildx.Image` resources. Instead, use a [remote](https://docs.docker.com/build/drivers/remote/) driver.
 	SshOpts []string `pulumi:"sshOpts"`
 }
 
 // The set of arguments for constructing a Provider resource.
 type ProviderArgs struct {
-	// PEM-encoded content of Docker host CA certificate
+	// PEM-encoded content of Docker host CA certificate.
 	CaMaterial pulumi.StringPtrInput
-	// PEM-encoded content of Docker client certificate
+	// PEM-encoded content of Docker client certificate.
 	CertMaterial pulumi.StringPtrInput
-	// Path to directory with Docker TLS config
+	// Path to a directory with Docker TLS config. This directory is expected to contain `ca.pem`, `cert.pem`, and `key.pem`
+	// files.
 	CertPath pulumi.StringPtrInput
-	// The Docker daemon address
+	// The Docker daemon's address.
 	Host pulumi.StringPtrInput
-	// PEM-encoded content of Docker client private key
+	// PEM-encoded content of Docker client private key.
 	KeyMaterial  pulumi.StringPtrInput
 	RegistryAuth ProviderRegistryAuthArrayInput
-	// Additional SSH option flags to be appended when using `ssh://` protocol
+	// Additional SSH option flags to be appended when using `ssh://` protocol. The `ssh://` protocol is not supported for
+	// `buildx.Image` resources. Instead, use a [remote](https://docs.docker.com/build/drivers/remote/) driver.
 	SshOpts pulumi.StringArrayInput
 }
 
@@ -121,27 +126,28 @@ func (o ProviderOutput) ToProviderOutputWithContext(ctx context.Context) Provide
 	return o
 }
 
-// PEM-encoded content of Docker host CA certificate
+// PEM-encoded content of Docker host CA certificate.
 func (o ProviderOutput) CaMaterial() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Provider) pulumi.StringPtrOutput { return v.CaMaterial }).(pulumi.StringPtrOutput)
 }
 
-// PEM-encoded content of Docker client certificate
+// PEM-encoded content of Docker client certificate.
 func (o ProviderOutput) CertMaterial() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Provider) pulumi.StringPtrOutput { return v.CertMaterial }).(pulumi.StringPtrOutput)
 }
 
-// Path to directory with Docker TLS config
+// Path to a directory with Docker TLS config. This directory is expected to contain `ca.pem`, `cert.pem`, and `key.pem`
+// files.
 func (o ProviderOutput) CertPath() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Provider) pulumi.StringPtrOutput { return v.CertPath }).(pulumi.StringPtrOutput)
 }
 
-// The Docker daemon address
+// The Docker daemon's address.
 func (o ProviderOutput) Host() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Provider) pulumi.StringPtrOutput { return v.Host }).(pulumi.StringPtrOutput)
 }
 
-// PEM-encoded content of Docker client private key
+// PEM-encoded content of Docker client private key.
 func (o ProviderOutput) KeyMaterial() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Provider) pulumi.StringPtrOutput { return v.KeyMaterial }).(pulumi.StringPtrOutput)
 }

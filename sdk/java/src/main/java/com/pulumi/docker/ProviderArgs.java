@@ -19,14 +19,14 @@ public final class ProviderArgs extends com.pulumi.resources.ResourceArgs {
     public static final ProviderArgs Empty = new ProviderArgs();
 
     /**
-     * PEM-encoded content of Docker host CA certificate
+     * PEM-encoded content of Docker host CA certificate.
      * 
      */
     @Import(name="caMaterial")
     private @Nullable Output<String> caMaterial;
 
     /**
-     * @return PEM-encoded content of Docker host CA certificate
+     * @return PEM-encoded content of Docker host CA certificate.
      * 
      */
     public Optional<Output<String>> caMaterial() {
@@ -34,14 +34,14 @@ public final class ProviderArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * PEM-encoded content of Docker client certificate
+     * PEM-encoded content of Docker client certificate.
      * 
      */
     @Import(name="certMaterial")
     private @Nullable Output<String> certMaterial;
 
     /**
-     * @return PEM-encoded content of Docker client certificate
+     * @return PEM-encoded content of Docker client certificate.
      * 
      */
     public Optional<Output<String>> certMaterial() {
@@ -49,14 +49,16 @@ public final class ProviderArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * Path to directory with Docker TLS config
+     * Path to a directory with Docker TLS config. This directory is expected to contain `ca.pem`, `cert.pem`, and `key.pem`
+     * files.
      * 
      */
     @Import(name="certPath")
     private @Nullable Output<String> certPath;
 
     /**
-     * @return Path to directory with Docker TLS config
+     * @return Path to a directory with Docker TLS config. This directory is expected to contain `ca.pem`, `cert.pem`, and `key.pem`
+     * files.
      * 
      */
     public Optional<Output<String>> certPath() {
@@ -64,14 +66,14 @@ public final class ProviderArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * The Docker daemon address
+     * The Docker daemon&#39;s address.
      * 
      */
     @Import(name="host")
     private @Nullable Output<String> host;
 
     /**
-     * @return The Docker daemon address
+     * @return The Docker daemon&#39;s address.
      * 
      */
     public Optional<Output<String>> host() {
@@ -79,14 +81,14 @@ public final class ProviderArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * PEM-encoded content of Docker client private key
+     * PEM-encoded content of Docker client private key.
      * 
      */
     @Import(name="keyMaterial")
     private @Nullable Output<String> keyMaterial;
 
     /**
-     * @return PEM-encoded content of Docker client private key
+     * @return PEM-encoded content of Docker client private key.
      * 
      */
     public Optional<Output<String>> keyMaterial() {
@@ -101,14 +103,16 @@ public final class ProviderArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * Additional SSH option flags to be appended when using `ssh://` protocol
+     * Additional SSH option flags to be appended when using `ssh://` protocol. The `ssh://` protocol is not supported for
+     * `buildx.Image` resources. Instead, use a [remote](https://docs.docker.com/build/drivers/remote/) driver.
      * 
      */
     @Import(name="sshOpts", json=true)
     private @Nullable Output<List<String>> sshOpts;
 
     /**
-     * @return Additional SSH option flags to be appended when using `ssh://` protocol
+     * @return Additional SSH option flags to be appended when using `ssh://` protocol. The `ssh://` protocol is not supported for
+     * `buildx.Image` resources. Instead, use a [remote](https://docs.docker.com/build/drivers/remote/) driver.
      * 
      */
     public Optional<Output<List<String>>> sshOpts() {
@@ -146,7 +150,7 @@ public final class ProviderArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param caMaterial PEM-encoded content of Docker host CA certificate
+         * @param caMaterial PEM-encoded content of Docker host CA certificate.
          * 
          * @return builder
          * 
@@ -157,7 +161,7 @@ public final class ProviderArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param caMaterial PEM-encoded content of Docker host CA certificate
+         * @param caMaterial PEM-encoded content of Docker host CA certificate.
          * 
          * @return builder
          * 
@@ -167,7 +171,7 @@ public final class ProviderArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param certMaterial PEM-encoded content of Docker client certificate
+         * @param certMaterial PEM-encoded content of Docker client certificate.
          * 
          * @return builder
          * 
@@ -178,7 +182,7 @@ public final class ProviderArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param certMaterial PEM-encoded content of Docker client certificate
+         * @param certMaterial PEM-encoded content of Docker client certificate.
          * 
          * @return builder
          * 
@@ -188,7 +192,8 @@ public final class ProviderArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param certPath Path to directory with Docker TLS config
+         * @param certPath Path to a directory with Docker TLS config. This directory is expected to contain `ca.pem`, `cert.pem`, and `key.pem`
+         * files.
          * 
          * @return builder
          * 
@@ -199,7 +204,8 @@ public final class ProviderArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param certPath Path to directory with Docker TLS config
+         * @param certPath Path to a directory with Docker TLS config. This directory is expected to contain `ca.pem`, `cert.pem`, and `key.pem`
+         * files.
          * 
          * @return builder
          * 
@@ -209,7 +215,7 @@ public final class ProviderArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param host The Docker daemon address
+         * @param host The Docker daemon&#39;s address.
          * 
          * @return builder
          * 
@@ -220,7 +226,7 @@ public final class ProviderArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param host The Docker daemon address
+         * @param host The Docker daemon&#39;s address.
          * 
          * @return builder
          * 
@@ -230,7 +236,7 @@ public final class ProviderArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param keyMaterial PEM-encoded content of Docker client private key
+         * @param keyMaterial PEM-encoded content of Docker client private key.
          * 
          * @return builder
          * 
@@ -241,7 +247,7 @@ public final class ProviderArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param keyMaterial PEM-encoded content of Docker client private key
+         * @param keyMaterial PEM-encoded content of Docker client private key.
          * 
          * @return builder
          * 
@@ -264,7 +270,8 @@ public final class ProviderArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param sshOpts Additional SSH option flags to be appended when using `ssh://` protocol
+         * @param sshOpts Additional SSH option flags to be appended when using `ssh://` protocol. The `ssh://` protocol is not supported for
+         * `buildx.Image` resources. Instead, use a [remote](https://docs.docker.com/build/drivers/remote/) driver.
          * 
          * @return builder
          * 
@@ -275,7 +282,8 @@ public final class ProviderArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param sshOpts Additional SSH option flags to be appended when using `ssh://` protocol
+         * @param sshOpts Additional SSH option flags to be appended when using `ssh://` protocol. The `ssh://` protocol is not supported for
+         * `buildx.Image` resources. Instead, use a [remote](https://docs.docker.com/build/drivers/remote/) driver.
          * 
          * @return builder
          * 
@@ -285,7 +293,8 @@ public final class ProviderArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param sshOpts Additional SSH option flags to be appended when using `ssh://` protocol
+         * @param sshOpts Additional SSH option flags to be appended when using `ssh://` protocol. The `ssh://` protocol is not supported for
+         * `buildx.Image` resources. Instead, use a [remote](https://docs.docker.com/build/drivers/remote/) driver.
          * 
          * @return builder
          * 

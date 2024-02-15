@@ -14,6 +14,10 @@ namespace Pulumi.Docker.Buildx.Inputs
     {
         [Input("annotations")]
         private InputMap<string>? _annotations;
+
+        /// <summary>
+        /// Attach an arbitrary key/value annotation to the image.
+        /// </summary>
         public InputMap<string> Annotations
         {
             get => _annotations ?? (_annotations = new InputMap<string>());

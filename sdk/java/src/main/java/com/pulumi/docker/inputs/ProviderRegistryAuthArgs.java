@@ -18,14 +18,14 @@ public final class ProviderRegistryAuthArgs extends com.pulumi.resources.Resourc
     public static final ProviderRegistryAuthArgs Empty = new ProviderRegistryAuthArgs();
 
     /**
-     * Address of the registry
+     * Address of the registry.
      * 
      */
     @Import(name="address", required=true)
     private Output<String> address;
 
     /**
-     * @return Address of the registry
+     * @return Address of the registry.
      * 
      */
     public Output<String> address() {
@@ -129,7 +129,7 @@ public final class ProviderRegistryAuthArgs extends com.pulumi.resources.Resourc
         }
 
         /**
-         * @param address Address of the registry
+         * @param address Address of the registry.
          * 
          * @return builder
          * 
@@ -140,7 +140,7 @@ public final class ProviderRegistryAuthArgs extends com.pulumi.resources.Resourc
         }
 
         /**
-         * @param address Address of the registry
+         * @param address Address of the registry.
          * 
          * @return builder
          * 

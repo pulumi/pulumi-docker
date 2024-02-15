@@ -13,6 +13,9 @@ namespace Pulumi.Docker.Buildx.Outputs
     [OutputType]
     public sealed class ExportOCI
     {
+        /// <summary>
+        /// Attach an arbitrary key/value annotation to the image.
+        /// </summary>
         public readonly ImmutableDictionary<string, string>? Annotations;
         /// <summary>
         /// The compression type to use.

@@ -23,70 +23,72 @@ import javax.annotation.Nullable;
 @ResourceType(type="pulumi:providers:docker")
 public class Provider extends com.pulumi.resources.ProviderResource {
     /**
-     * PEM-encoded content of Docker host CA certificate
+     * PEM-encoded content of Docker host CA certificate.
      * 
      */
     @Export(name="caMaterial", refs={String.class}, tree="[0]")
     private Output</* @Nullable */ String> caMaterial;
 
     /**
-     * @return PEM-encoded content of Docker host CA certificate
+     * @return PEM-encoded content of Docker host CA certificate.
      * 
      */
     public Output<Optional<String>> caMaterial() {
         return Codegen.optional(this.caMaterial);
     }
     /**
-     * PEM-encoded content of Docker client certificate
+     * PEM-encoded content of Docker client certificate.
      * 
      */
     @Export(name="certMaterial", refs={String.class}, tree="[0]")
     private Output</* @Nullable */ String> certMaterial;
 
     /**
-     * @return PEM-encoded content of Docker client certificate
+     * @return PEM-encoded content of Docker client certificate.
      * 
      */
     public Output<Optional<String>> certMaterial() {
         return Codegen.optional(this.certMaterial);
     }
     /**
-     * Path to directory with Docker TLS config
+     * Path to a directory with Docker TLS config. This directory is expected to contain `ca.pem`, `cert.pem`, and `key.pem`
+     * files.
      * 
      */
     @Export(name="certPath", refs={String.class}, tree="[0]")
     private Output</* @Nullable */ String> certPath;
 
     /**
-     * @return Path to directory with Docker TLS config
+     * @return Path to a directory with Docker TLS config. This directory is expected to contain `ca.pem`, `cert.pem`, and `key.pem`
+     * files.
      * 
      */
     public Output<Optional<String>> certPath() {
         return Codegen.optional(this.certPath);
     }
     /**
-     * The Docker daemon address
+     * The Docker daemon&#39;s address.
      * 
      */
     @Export(name="host", refs={String.class}, tree="[0]")
     private Output</* @Nullable */ String> host;
 
     /**
-     * @return The Docker daemon address
+     * @return The Docker daemon&#39;s address.
      * 
      */
     public Output<Optional<String>> host() {
         return Codegen.optional(this.host);
     }
     /**
-     * PEM-encoded content of Docker client private key
+     * PEM-encoded content of Docker client private key.
      * 
      */
     @Export(name="keyMaterial", refs={String.class}, tree="[0]")
     private Output</* @Nullable */ String> keyMaterial;
 
     /**
-     * @return PEM-encoded content of Docker client private key
+     * @return PEM-encoded content of Docker client private key.
      * 
      */
     public Output<Optional<String>> keyMaterial() {

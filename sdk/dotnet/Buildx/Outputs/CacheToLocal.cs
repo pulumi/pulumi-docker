@@ -21,6 +21,9 @@ namespace Pulumi.Docker.Buildx.Outputs
         /// Compression level from 0 to 22.
         /// </summary>
         public readonly int? CompressionLevel;
+        /// <summary>
+        /// Path of the local directory to export the cache.
+        /// </summary>
         public readonly string Dest;
         /// <summary>
         /// Forcefully apply compression.
@@ -30,6 +33,9 @@ namespace Pulumi.Docker.Buildx.Outputs
         /// Ignore errors caused by failed cache exports.
         /// </summary>
         public readonly bool? IgnoreError;
+        /// <summary>
+        /// The cache mode to use. Defaults to `min`.
+        /// </summary>
         public readonly Pulumi.Docker.Buildx.CacheMode? Mode;
 
         [OutputConstructor]

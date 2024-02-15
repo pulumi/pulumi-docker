@@ -16,16 +16,32 @@ public final class CacheFromLocalArgs extends com.pulumi.resources.ResourceArgs 
 
     public static final CacheFromLocalArgs Empty = new CacheFromLocalArgs();
 
+    /**
+     * Digest of manifest to import.
+     * 
+     */
     @Import(name="digest")
     private @Nullable Output<String> digest;
 
+    /**
+     * @return Digest of manifest to import.
+     * 
+     */
     public Optional<Output<String>> digest() {
         return Optional.ofNullable(this.digest);
     }
 
+    /**
+     * Path of the local directory where cache gets imported from.
+     * 
+     */
     @Import(name="src", required=true)
     private Output<String> src;
 
+    /**
+     * @return Path of the local directory where cache gets imported from.
+     * 
+     */
     public Output<String> src() {
         return this.src;
     }
@@ -55,20 +71,44 @@ public final class CacheFromLocalArgs extends com.pulumi.resources.ResourceArgs 
             $ = new CacheFromLocalArgs(Objects.requireNonNull(defaults));
         }
 
+        /**
+         * @param digest Digest of manifest to import.
+         * 
+         * @return builder
+         * 
+         */
         public Builder digest(@Nullable Output<String> digest) {
             $.digest = digest;
             return this;
         }
 
+        /**
+         * @param digest Digest of manifest to import.
+         * 
+         * @return builder
+         * 
+         */
         public Builder digest(String digest) {
             return digest(Output.of(digest));
         }
 
+        /**
+         * @param src Path of the local directory where cache gets imported from.
+         * 
+         * @return builder
+         * 
+         */
         public Builder src(Output<String> src) {
             $.src = src;
             return this;
         }
 
+        /**
+         * @param src Path of the local directory where cache gets imported from.
+         * 
+         * @return builder
+         * 
+         */
         public Builder src(String src) {
             return src(Output.of(src));
         }

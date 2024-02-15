@@ -15,14 +15,14 @@ public final class CacheFromRegistryArgs extends com.pulumi.resources.ResourceAr
     public static final CacheFromRegistryArgs Empty = new CacheFromRegistryArgs();
 
     /**
-     * Full name of the cache image to import.
+     * Fully qualified name of the cache image to import.
      * 
      */
     @Import(name="ref", required=true)
     private Output<String> ref;
 
     /**
-     * @return Full name of the cache image to import.
+     * @return Fully qualified name of the cache image to import.
      * 
      */
     public Output<String> ref() {
@@ -54,7 +54,7 @@ public final class CacheFromRegistryArgs extends com.pulumi.resources.ResourceAr
         }
 
         /**
-         * @param ref Full name of the cache image to import.
+         * @param ref Fully qualified name of the cache image to import.
          * 
          * @return builder
          * 
@@ -65,7 +65,7 @@ public final class CacheFromRegistryArgs extends com.pulumi.resources.ResourceAr
         }
 
         /**
-         * @param ref Full name of the cache image to import.
+         * @param ref Fully qualified name of the cache image to import.
          * 
          * @return builder
          * 

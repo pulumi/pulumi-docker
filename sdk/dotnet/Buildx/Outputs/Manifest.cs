@@ -13,19 +13,28 @@ namespace Pulumi.Docker.Buildx.Outputs
     [OutputType]
     public sealed class Manifest
     {
-        public readonly string Digest;
-        public readonly Pulumi.Docker.Buildx.Platform Platform;
         /// <summary>
-        /// The manifest's ref
+        /// The SHA256 digest of the manifest.
+        /// </summary>
+        public readonly string Digest;
+        /// <summary>
+        /// The manifest's platform.
+        /// </summary>
+        public readonly Outputs.ManifestPlatform Platform;
+        /// <summary>
+        /// The manifest's canonical ref.
         /// </summary>
         public readonly string Ref;
+        /// <summary>
+        /// The size of the manifest in bytes.
+        /// </summary>
         public readonly int Size;
 
         [OutputConstructor]
         private Manifest(
             string digest,
 
-            Pulumi.Docker.Buildx.Platform platform,
+            Outputs.ManifestPlatform platform,
 
             string @ref,
 

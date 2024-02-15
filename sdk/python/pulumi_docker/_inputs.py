@@ -1286,7 +1286,7 @@ class ProviderRegistryAuthArgs:
                  password: Optional[pulumi.Input[str]] = None,
                  username: Optional[pulumi.Input[str]] = None):
         """
-        :param pulumi.Input[str] address: Address of the registry
+        :param pulumi.Input[str] address: Address of the registry.
         :param pulumi.Input[str] config_file: Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `config_file` has predencen over all other options.
         :param pulumi.Input[str] config_file_content: Plain content of the docker json file for registry auth. `config_file_content` has precedence over username/password.
         :param pulumi.Input[str] password: Password for the registry. Defaults to `DOCKER_REGISTRY_PASS` env variable if set.
@@ -1308,7 +1308,7 @@ class ProviderRegistryAuthArgs:
     @pulumi.getter
     def address(self) -> pulumi.Input[str]:
         """
-        Address of the registry
+        Address of the registry.
         """
         return pulumi.get(self, "address")
 

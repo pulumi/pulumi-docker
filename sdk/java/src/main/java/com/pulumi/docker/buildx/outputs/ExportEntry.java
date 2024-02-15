@@ -10,8 +10,10 @@ import com.pulumi.docker.buildx.outputs.ExportLocal;
 import com.pulumi.docker.buildx.outputs.ExportOCI;
 import com.pulumi.docker.buildx.outputs.ExportRegistry;
 import com.pulumi.docker.buildx.outputs.ExportTar;
+import com.pulumi.docker.buildx.outputs.Manifest;
 import java.lang.Boolean;
 import java.lang.String;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import javax.annotation.Nullable;
@@ -19,116 +21,114 @@ import javax.annotation.Nullable;
 @CustomType
 public final class ExportEntry {
     /**
-     * @return
-     * When &#34;true&#34; this entry will be excluded. Defaults to &#34;false&#34;.
+     * @return When `true` this entry will be excluded. Defaults to `false`.
      * 
      */
     private @Nullable Boolean disabled;
     /**
-     * @return
-     * Export as a Docker image layout.
+     * @return Export as a Docker image layout.
      * 
      */
     private @Nullable ExportDocker docker;
     /**
-     * @return
-     * Outputs the build result into a container image format.
+     * @return Outputs the build result into a container image format.
      * 
      */
     private @Nullable ExportImage image;
     /**
-     * @return
-     * Export to a local directory as files and directories.
+     * @return Export to a local directory as files and directories.
      * 
      */
     private @Nullable ExportLocal local;
     /**
-     * @return
-     * Identical to the Docker exporter but uses OCI media types by default.
+     * @return An output property populated for exporters that pushed image
+     * manifest(s) to a registry.
+     * 
+     */
+    private @Nullable List<Manifest> manifests;
+    /**
+     * @return Identical to the Docker exporter but uses OCI media types by default.
      * 
      */
     private @Nullable ExportOCI oci;
     /**
-     * @return
-     * A raw string as you would provide it to the Docker CLI (e.g.,
-     * &#34;type=docker&#34;)
+     * @return A raw string as you would provide it to the Docker CLI (e.g.,
+     * `type=docker`)
      * 
      */
     private @Nullable String raw;
     /**
-     * @return
-     * Identical to the Image exporter, but pushes by default.
+     * @return Identical to the Image exporter, but pushes by default.
      * 
      */
     private @Nullable ExportRegistry registry;
     /**
-     * @return
-     * Export to a local directory as a tarball.
+     * @return Export to a local directory as a tarball.
      * 
      */
     private @Nullable ExportTar tar;
 
     private ExportEntry() {}
     /**
-     * @return
-     * When &#34;true&#34; this entry will be excluded. Defaults to &#34;false&#34;.
+     * @return When `true` this entry will be excluded. Defaults to `false`.
      * 
      */
     public Optional<Boolean> disabled() {
         return Optional.ofNullable(this.disabled);
     }
     /**
-     * @return
-     * Export as a Docker image layout.
+     * @return Export as a Docker image layout.
      * 
      */
     public Optional<ExportDocker> docker() {
         return Optional.ofNullable(this.docker);
     }
     /**
-     * @return
-     * Outputs the build result into a container image format.
+     * @return Outputs the build result into a container image format.
      * 
      */
     public Optional<ExportImage> image() {
         return Optional.ofNullable(this.image);
     }
     /**
-     * @return
-     * Export to a local directory as files and directories.
+     * @return Export to a local directory as files and directories.
      * 
      */
     public Optional<ExportLocal> local() {
         return Optional.ofNullable(this.local);
     }
     /**
-     * @return
-     * Identical to the Docker exporter but uses OCI media types by default.
+     * @return An output property populated for exporters that pushed image
+     * manifest(s) to a registry.
+     * 
+     */
+    public List<Manifest> manifests() {
+        return this.manifests == null ? List.of() : this.manifests;
+    }
+    /**
+     * @return Identical to the Docker exporter but uses OCI media types by default.
      * 
      */
     public Optional<ExportOCI> oci() {
         return Optional.ofNullable(this.oci);
     }
     /**
-     * @return
-     * A raw string as you would provide it to the Docker CLI (e.g.,
-     * &#34;type=docker&#34;)
+     * @return A raw string as you would provide it to the Docker CLI (e.g.,
+     * `type=docker`)
      * 
      */
     public Optional<String> raw() {
         return Optional.ofNullable(this.raw);
     }
     /**
-     * @return
-     * Identical to the Image exporter, but pushes by default.
+     * @return Identical to the Image exporter, but pushes by default.
      * 
      */
     public Optional<ExportRegistry> registry() {
         return Optional.ofNullable(this.registry);
     }
     /**
-     * @return
-     * Export to a local directory as a tarball.
+     * @return Export to a local directory as a tarball.
      * 
      */
     public Optional<ExportTar> tar() {
@@ -148,6 +148,7 @@ public final class ExportEntry {
         private @Nullable ExportDocker docker;
         private @Nullable ExportImage image;
         private @Nullable ExportLocal local;
+        private @Nullable List<Manifest> manifests;
         private @Nullable ExportOCI oci;
         private @Nullable String raw;
         private @Nullable ExportRegistry registry;
@@ -159,6 +160,7 @@ public final class ExportEntry {
     	      this.docker = defaults.docker;
     	      this.image = defaults.image;
     	      this.local = defaults.local;
+    	      this.manifests = defaults.manifests;
     	      this.oci = defaults.oci;
     	      this.raw = defaults.raw;
     	      this.registry = defaults.registry;
@@ -190,6 +192,15 @@ public final class ExportEntry {
             return this;
         }
         @CustomType.Setter
+        public Builder manifests(@Nullable List<Manifest> manifests) {
+
+            this.manifests = manifests;
+            return this;
+        }
+        public Builder manifests(Manifest... manifests) {
+            return manifests(List.of(manifests));
+        }
+        @CustomType.Setter
         public Builder oci(@Nullable ExportOCI oci) {
 
             this.oci = oci;
@@ -219,6 +230,7 @@ public final class ExportEntry {
             _resultValue.docker = docker;
             _resultValue.image = image;
             _resultValue.local = local;
+            _resultValue.manifests = manifests;
             _resultValue.oci = oci;
             _resultValue.raw = raw;
             _resultValue.registry = registry;

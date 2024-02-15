@@ -13,7 +13,7 @@ namespace Pulumi.Docker.Buildx.Inputs
     public sealed class CacheFromRegistryArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// Full name of the cache image to import.
+        /// Fully qualified name of the cache image to import.
         /// </summary>
         [Input("ref", required: true)]
         public Input<string> Ref { get; set; } = null!;

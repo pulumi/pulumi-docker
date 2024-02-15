@@ -14,43 +14,40 @@ namespace Pulumi.Docker.Buildx.Outputs
     public sealed class ExportEntry
     {
         /// <summary>
-        /// 
-        /// When "true" this entry will be excluded. Defaults to "false".
+        /// When `true` this entry will be excluded. Defaults to `false`.
         /// </summary>
         public readonly bool? Disabled;
         /// <summary>
-        /// 
         /// Export as a Docker image layout.
         /// </summary>
         public readonly Outputs.ExportDocker? Docker;
         /// <summary>
-        /// 
         /// Outputs the build result into a container image format.
         /// </summary>
         public readonly Outputs.ExportImage? Image;
         /// <summary>
-        /// 
         /// Export to a local directory as files and directories.
         /// </summary>
         public readonly Outputs.ExportLocal? Local;
         /// <summary>
-        /// 
+        /// An output property populated for exporters that pushed image
+        /// manifest(s) to a registry.
+        /// </summary>
+        public readonly ImmutableArray<Outputs.Manifest> Manifests;
+        /// <summary>
         /// Identical to the Docker exporter but uses OCI media types by default.
         /// </summary>
         public readonly Outputs.ExportOCI? Oci;
         /// <summary>
-        /// 
         /// A raw string as you would provide it to the Docker CLI (e.g.,
-        /// "type=docker")
+        /// `type=docker`)
         /// </summary>
         public readonly string? Raw;
         /// <summary>
-        /// 
         /// Identical to the Image exporter, but pushes by default.
         /// </summary>
         public readonly Outputs.ExportRegistry? Registry;
         /// <summary>
-        /// 
         /// Export to a local directory as a tarball.
         /// </summary>
         public readonly Outputs.ExportTar? Tar;
@@ -65,6 +62,8 @@ namespace Pulumi.Docker.Buildx.Outputs
 
             Outputs.ExportLocal? local,
 
+            ImmutableArray<Outputs.Manifest> manifests,
+
             Outputs.ExportOCI? oci,
 
             string? raw,
@@ -77,6 +76,7 @@ namespace Pulumi.Docker.Buildx.Outputs
             Docker = docker;
             Image = image;
             Local = local;
+            Manifests = manifests;
             Oci = oci;
             Raw = raw;
             Registry = registry;

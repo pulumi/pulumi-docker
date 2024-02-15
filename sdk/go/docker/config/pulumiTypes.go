@@ -14,7 +14,7 @@ import (
 var _ = internal.GetEnvOrDefault
 
 type RegistryAuth struct {
-	// Address of the registry
+	// Address of the registry.
 	Address      string `pulumi:"address"`
 	AuthDisabled *bool  `pulumi:"authDisabled"`
 	// Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `configFile` has predencen over all other options.
@@ -39,7 +39,7 @@ type RegistryAuthInput interface {
 }
 
 type RegistryAuthArgs struct {
-	// Address of the registry
+	// Address of the registry.
 	Address      pulumi.StringInput  `pulumi:"address"`
 	AuthDisabled pulumi.BoolPtrInput `pulumi:"authDisabled"`
 	// Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `configFile` has predencen over all other options.
@@ -103,7 +103,7 @@ func (o RegistryAuthOutput) ToRegistryAuthOutputWithContext(ctx context.Context)
 	return o
 }
 
-// Address of the registry
+// Address of the registry.
 func (o RegistryAuthOutput) Address() pulumi.StringOutput {
 	return o.ApplyT(func(v RegistryAuth) string { return v.Address }).(pulumi.StringOutput)
 }

@@ -12,9 +12,15 @@ namespace Pulumi.Docker.Buildx.Inputs
 
     public sealed class CacheFromLocalArgs : global::Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Digest of manifest to import.
+        /// </summary>
         [Input("digest")]
         public Input<string>? Digest { get; set; }
 
+        /// <summary>
+        /// Path of the local directory where cache gets imported from.
+        /// </summary>
         [Input("src", required: true)]
         public Input<string> Src { get; set; } = null!;
 

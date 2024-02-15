@@ -13,57 +13,62 @@ namespace Pulumi.Docker.Buildx.Inputs
     public sealed class ExportEntryArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// 
-        /// When "true" this entry will be excluded. Defaults to "false".
+        /// When `true` this entry will be excluded. Defaults to `false`.
         /// </summary>
         [Input("disabled")]
         public Input<bool>? Disabled { get; set; }
 
         /// <summary>
-        /// 
         /// Export as a Docker image layout.
         /// </summary>
         [Input("docker")]
         public Input<Inputs.ExportDockerArgs>? Docker { get; set; }
 
         /// <summary>
-        /// 
         /// Outputs the build result into a container image format.
         /// </summary>
         [Input("image")]
         public Input<Inputs.ExportImageArgs>? Image { get; set; }
 
         /// <summary>
-        /// 
         /// Export to a local directory as files and directories.
         /// </summary>
         [Input("local")]
         public Input<Inputs.ExportLocalArgs>? Local { get; set; }
 
+        [Input("manifests")]
+        private InputList<Inputs.ManifestArgs>? _manifests;
+
         /// <summary>
-        /// 
+        /// An output property populated for exporters that pushed image
+        /// manifest(s) to a registry.
+        /// </summary>
+        public InputList<Inputs.ManifestArgs> Manifests
+        {
+            get => _manifests ?? (_manifests = new InputList<Inputs.ManifestArgs>());
+            set => _manifests = value;
+        }
+
+        /// <summary>
         /// Identical to the Docker exporter but uses OCI media types by default.
         /// </summary>
         [Input("oci")]
         public Input<Inputs.ExportOCIArgs>? Oci { get; set; }
 
         /// <summary>
-        /// 
         /// A raw string as you would provide it to the Docker CLI (e.g.,
-        /// "type=docker")
+        /// `type=docker`)
         /// </summary>
         [Input("raw")]
         public Input<string>? Raw { get; set; }
 
         /// <summary>
-        /// 
         /// Identical to the Image exporter, but pushes by default.
         /// </summary>
         [Input("registry")]
         public Input<Inputs.ExportRegistryArgs>? Registry { get; set; }
 
         /// <summary>
-        /// 
         /// Export to a local directory as a tarball.
         /// </summary>
         [Input("tar")]
