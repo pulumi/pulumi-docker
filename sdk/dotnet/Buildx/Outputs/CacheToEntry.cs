@@ -14,44 +14,37 @@ namespace Pulumi.Docker.Buildx.Outputs
     public sealed class CacheToEntry
     {
         /// <summary>
-        /// 
         /// Push cache to Azure's blob storage service.
         /// </summary>
         public readonly Outputs.CacheToAzureBlob? Azblob;
         /// <summary>
-        /// 
         /// Recommended for use with GitHub Actions workflows.
         /// 
-        /// An action like "crazy-max/ghaction-github-runtime" is recommended to
+        /// An action like `crazy-max/ghaction-github-runtime` is recommended to
         /// expose appropriate credentials to your GitHub workflow.
         /// </summary>
         public readonly Outputs.CacheToGitHubActions? Gha;
         /// <summary>
-        /// 
         /// The inline cache storage backend is the simplest implementation to get
         /// started with, but it does not handle multi-stage builds. Consider the
-        /// registry cache backend instead.
+        /// `registry` cache backend instead.
         /// </summary>
         public readonly Outputs.CacheInline? Inline;
         /// <summary>
-        /// 
         /// A simple backend which caches imagines on your local filesystem.
         /// </summary>
         public readonly Outputs.CacheToLocal? Local;
         /// <summary>
-        /// 
         /// A raw string as you would provide it to the Docker CLI (e.g.,
-        /// "type=inline")
+        /// `type=inline`)
         /// </summary>
         public readonly string? Raw;
         /// <summary>
-        /// 
-        /// Push caches to remote registries. Incompatible with the "docker" build
+        /// Push caches to remote registries. Incompatible with the `docker` build
         /// driver.
         /// </summary>
         public readonly Outputs.CacheToRegistry? Registry;
         /// <summary>
-        /// 
         /// Push cache to AWS S3 or S3-compatible services such as MinIO.
         /// </summary>
         public readonly Outputs.CacheToS3? S3;

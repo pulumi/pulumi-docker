@@ -82,36 +82,52 @@ public final class CacheToRegistryArgs extends com.pulumi.resources.ResourceArgs
     }
 
     /**
-     * Export cache manifest as an OCI-compatible image manifest instead of a manifest list (requires OCI media types).
+     * Export cache manifest as an OCI-compatible image manifest instead of a
+     * manifest list (requires OCI media types).
+     * 
+     * Defaults to `false`.
      * 
      */
     @Import(name="imageManifest")
     private @Nullable Output<Boolean> imageManifest;
 
     /**
-     * @return Export cache manifest as an OCI-compatible image manifest instead of a manifest list (requires OCI media types).
+     * @return Export cache manifest as an OCI-compatible image manifest instead of a
+     * manifest list (requires OCI media types).
+     * 
+     * Defaults to `false`.
      * 
      */
     public Optional<Output<Boolean>> imageManifest() {
         return Optional.ofNullable(this.imageManifest);
     }
 
+    /**
+     * The cache mode to use. Defaults to `min`.
+     * 
+     */
     @Import(name="mode")
     private @Nullable Output<CacheMode> mode;
 
+    /**
+     * @return The cache mode to use. Defaults to `min`.
+     * 
+     */
     public Optional<Output<CacheMode>> mode() {
         return Optional.ofNullable(this.mode);
     }
 
     /**
-     * Whether to use OCI mediatypes in exported manifests.
+     * Whether to use OCI mediatypes in exported manifests. Defaults to
+     * `true`.
      * 
      */
     @Import(name="ociMediaTypes")
     private @Nullable Output<Boolean> ociMediaTypes;
 
     /**
-     * @return Whether to use OCI mediatypes in exported manifests.
+     * @return Whether to use OCI mediatypes in exported manifests. Defaults to
+     * `true`.
      * 
      */
     public Optional<Output<Boolean>> ociMediaTypes() {
@@ -119,14 +135,14 @@ public final class CacheToRegistryArgs extends com.pulumi.resources.ResourceArgs
     }
 
     /**
-     * Full name of the cache image to import.
+     * Fully qualified name of the cache image to import.
      * 
      */
     @Import(name="ref", required=true)
     private Output<String> ref;
 
     /**
-     * @return Full name of the cache image to import.
+     * @return Fully qualified name of the cache image to import.
      * 
      */
     public Output<String> ref() {
@@ -249,7 +265,10 @@ public final class CacheToRegistryArgs extends com.pulumi.resources.ResourceArgs
         }
 
         /**
-         * @param imageManifest Export cache manifest as an OCI-compatible image manifest instead of a manifest list (requires OCI media types).
+         * @param imageManifest Export cache manifest as an OCI-compatible image manifest instead of a
+         * manifest list (requires OCI media types).
+         * 
+         * Defaults to `false`.
          * 
          * @return builder
          * 
@@ -260,7 +279,10 @@ public final class CacheToRegistryArgs extends com.pulumi.resources.ResourceArgs
         }
 
         /**
-         * @param imageManifest Export cache manifest as an OCI-compatible image manifest instead of a manifest list (requires OCI media types).
+         * @param imageManifest Export cache manifest as an OCI-compatible image manifest instead of a
+         * manifest list (requires OCI media types).
+         * 
+         * Defaults to `false`.
          * 
          * @return builder
          * 
@@ -269,17 +291,30 @@ public final class CacheToRegistryArgs extends com.pulumi.resources.ResourceArgs
             return imageManifest(Output.of(imageManifest));
         }
 
+        /**
+         * @param mode The cache mode to use. Defaults to `min`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder mode(@Nullable Output<CacheMode> mode) {
             $.mode = mode;
             return this;
         }
 
+        /**
+         * @param mode The cache mode to use. Defaults to `min`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder mode(CacheMode mode) {
             return mode(Output.of(mode));
         }
 
         /**
-         * @param ociMediaTypes Whether to use OCI mediatypes in exported manifests.
+         * @param ociMediaTypes Whether to use OCI mediatypes in exported manifests. Defaults to
+         * `true`.
          * 
          * @return builder
          * 
@@ -290,7 +325,8 @@ public final class CacheToRegistryArgs extends com.pulumi.resources.ResourceArgs
         }
 
         /**
-         * @param ociMediaTypes Whether to use OCI mediatypes in exported manifests.
+         * @param ociMediaTypes Whether to use OCI mediatypes in exported manifests. Defaults to
+         * `true`.
          * 
          * @return builder
          * 
@@ -300,7 +336,7 @@ public final class CacheToRegistryArgs extends com.pulumi.resources.ResourceArgs
         }
 
         /**
-         * @param ref Full name of the cache image to import.
+         * @param ref Fully qualified name of the cache image to import.
          * 
          * @return builder
          * 
@@ -311,7 +347,7 @@ public final class CacheToRegistryArgs extends com.pulumi.resources.ResourceArgs
         }
 
         /**
-         * @param ref Full name of the cache image to import.
+         * @param ref Fully qualified name of the cache image to import.
          * 
          * @return builder
          * 

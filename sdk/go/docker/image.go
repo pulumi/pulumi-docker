@@ -182,7 +182,8 @@ type Image struct {
 	// Only available for images pushed to a registry.
 	// Use when passing a reference to a pushed image to container management resources.
 	//
-	// **Local-only images**For local images, this field is the image ID of the built local image, of the format <algorithm>:<hash>, e.g `sha256:826a130323165bb0ccb0374ae774f885c067a951b51a6ee133577f4e5dbc4119`
+	// **Local-only images**:
+	// For local images, this field is the image ID of the built local image, of the format <algorithm>:<hash>, e.g `sha256:826a130323165bb0ccb0374ae774f885c067a951b51a6ee133577f4e5dbc4119`
 	RepoDigest pulumi.StringOutput `pulumi:"repoDigest"`
 }
 
@@ -392,7 +393,8 @@ func (o ImageOutput) RegistryServer() pulumi.StringOutput {
 // Only available for images pushed to a registry.
 // Use when passing a reference to a pushed image to container management resources.
 //
-// **Local-only images**For local images, this field is the image ID of the built local image, of the format <algorithm>:<hash>, e.g `sha256:826a130323165bb0ccb0374ae774f885c067a951b51a6ee133577f4e5dbc4119`
+// **Local-only images**:
+// For local images, this field is the image ID of the built local image, of the format <algorithm>:<hash>, e.g `sha256:826a130323165bb0ccb0374ae774f885c067a951b51a6ee133577f4e5dbc4119`
 func (o ImageOutput) RepoDigest() pulumi.StringOutput {
 	return o.ApplyT(func(v *Image) pulumi.StringOutput { return v.RepoDigest }).(pulumi.StringOutput)
 }

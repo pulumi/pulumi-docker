@@ -13,38 +13,38 @@ import javax.annotation.Nullable;
 @CustomType
 public final class RegistryAuth {
     /**
-     * @return The registry&#39;s address (e.g. &#34;docker.io&#34;)
+     * @return The registry&#39;s address (e.g. &#34;docker.io&#34;).
      * 
      */
     private String address;
     /**
-     * @return Password or token for the registry
+     * @return Password or token for the registry.
      * 
      */
     private @Nullable String password;
     /**
-     * @return Username for the registry
+     * @return Username for the registry.
      * 
      */
     private @Nullable String username;
 
     private RegistryAuth() {}
     /**
-     * @return The registry&#39;s address (e.g. &#34;docker.io&#34;)
+     * @return The registry&#39;s address (e.g. &#34;docker.io&#34;).
      * 
      */
     public String address() {
         return this.address;
     }
     /**
-     * @return Password or token for the registry
+     * @return Password or token for the registry.
      * 
      */
     public Optional<String> password() {
         return Optional.ofNullable(this.password);
     }
     /**
-     * @return Username for the registry
+     * @return Username for the registry.
      * 
      */
     public Optional<String> username() {

@@ -12,17 +12,41 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class CacheFromAzureBlob {
+    /**
+     * @return Base URL of the storage account.
+     * 
+     */
     private @Nullable String accountUrl;
+    /**
+     * @return The name of the cache image.
+     * 
+     */
     private String name;
+    /**
+     * @return Blob storage account key.
+     * 
+     */
     private @Nullable String secretAccessKey;
 
     private CacheFromAzureBlob() {}
+    /**
+     * @return Base URL of the storage account.
+     * 
+     */
     public Optional<String> accountUrl() {
         return Optional.ofNullable(this.accountUrl);
     }
+    /**
+     * @return The name of the cache image.
+     * 
+     */
     public String name() {
         return this.name;
     }
+    /**
+     * @return Blob storage account key.
+     * 
+     */
     public Optional<String> secretAccessKey() {
         return Optional.ofNullable(this.secretAccessKey);
     }

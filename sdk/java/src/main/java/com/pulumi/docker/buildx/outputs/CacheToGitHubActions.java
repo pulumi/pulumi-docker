@@ -18,19 +18,35 @@ public final class CacheToGitHubActions {
      * 
      */
     private @Nullable Boolean ignoreError;
+    /**
+     * @return The cache mode to use. Defaults to `min`.
+     * 
+     */
     private @Nullable CacheMode mode;
     /**
-     * @return Which scope cache object belongs to.
+     * @return The scope to use for cache keys. Defaults to `buildkit`.
+     * 
+     * This should be set if building and caching multiple images in one
+     * workflow, otherwise caches will overwrite each other.
      * 
      */
     private @Nullable String scope;
     /**
-     * @return Access token
+     * @return The GitHub Actions token to use. This is not a personal access tokens
+     * and is typically generated automatically as part of each job.
+     * 
+     * Defaults to `$ACTIONS_RUNTIME_TOKEN`, although a separate action like
+     * `crazy-max/ghaction-github-runtime` is recommended to expose this
+     * environment variable to your jobs.
      * 
      */
     private @Nullable String token;
     /**
-     * @return Cache server URL
+     * @return The cache server URL to use for artifacts.
+     * 
+     * Defaults to `$ACTIONS_RUNTIME_URL`, although a separate action like
+     * `crazy-max/ghaction-github-runtime` is recommended to expose this
+     * environment variable to your jobs.
      * 
      */
     private @Nullable String url;
@@ -43,25 +59,41 @@ public final class CacheToGitHubActions {
     public Optional<Boolean> ignoreError() {
         return Optional.ofNullable(this.ignoreError);
     }
+    /**
+     * @return The cache mode to use. Defaults to `min`.
+     * 
+     */
     public Optional<CacheMode> mode() {
         return Optional.ofNullable(this.mode);
     }
     /**
-     * @return Which scope cache object belongs to.
+     * @return The scope to use for cache keys. Defaults to `buildkit`.
+     * 
+     * This should be set if building and caching multiple images in one
+     * workflow, otherwise caches will overwrite each other.
      * 
      */
     public Optional<String> scope() {
         return Optional.ofNullable(this.scope);
     }
     /**
-     * @return Access token
+     * @return The GitHub Actions token to use. This is not a personal access tokens
+     * and is typically generated automatically as part of each job.
+     * 
+     * Defaults to `$ACTIONS_RUNTIME_TOKEN`, although a separate action like
+     * `crazy-max/ghaction-github-runtime` is recommended to expose this
+     * environment variable to your jobs.
      * 
      */
     public Optional<String> token() {
         return Optional.ofNullable(this.token);
     }
     /**
-     * @return Cache server URL
+     * @return The cache server URL to use for artifacts.
+     * 
+     * Defaults to `$ACTIONS_RUNTIME_URL`, although a separate action like
+     * `crazy-max/ghaction-github-runtime` is recommended to expose this
+     * environment variable to your jobs.
      * 
      */
     public Optional<String> url() {

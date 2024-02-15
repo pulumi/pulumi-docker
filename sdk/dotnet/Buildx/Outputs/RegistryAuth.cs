@@ -14,15 +14,15 @@ namespace Pulumi.Docker.Buildx.Outputs
     public sealed class RegistryAuth
     {
         /// <summary>
-        /// The registry's address (e.g. "docker.io")
+        /// The registry's address (e.g. "docker.io").
         /// </summary>
         public readonly string Address;
         /// <summary>
-        /// Password or token for the registry
+        /// Password or token for the registry.
         /// </summary>
         public readonly string? Password;
         /// <summary>
-        /// Username for the registry
+        /// Username for the registry.
         /// </summary>
         public readonly string? Username;
 

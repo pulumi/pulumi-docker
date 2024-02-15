@@ -11,43 +11,417 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// A Docker image built using Buildkit
+// A Docker image built using buildx -- Docker's interface to the improved
+// BuildKit backend.
+//
+// **This resource is experimental and subject to change.**
+//
+// API types are unstable. Subsequent releases _may_ require manual edits
+// to your state file(s) in order to adopt API changes.
+//
+// Only use this resource if you understand and accept the risks.
+//
+// ## Example Usage
+// ### Multi-platform image
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker/buildx"
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := buildx.NewImage(ctx, "image", &buildx.ImageArgs{
+//				Context: &buildx.BuildContextArgs{
+//					Location: pulumi.String("app"),
+//				},
+//				Dockerfile: &buildx.DockerfileArgs{
+//					Location: pulumi.String("app/Dockerfile"),
+//				},
+//				Platforms: buildx.PlatformArray{
+//					buildx.Platform_Plan9_amd64,
+//					buildx.Platform_Plan9_386,
+//				},
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
+// ### Registry export
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker/buildx"
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := buildx.NewImage(ctx, "image", &buildx.ImageArgs{
+//				Context: &buildx.BuildContextArgs{
+//					Location: pulumi.String("app"),
+//				},
+//				Dockerfile: &buildx.DockerfileArgs{
+//					Location: pulumi.String("app/Dockerfile"),
+//				},
+//				Exports: buildx.ExportEntryArray{
+//					&buildx.ExportEntryArgs{
+//						Registry: &buildx.ExportRegistryArgs{
+//							OciMediaTypes: pulumi.Bool(true),
+//						},
+//					},
+//				},
+//				Registries: buildx.RegistryAuthArray{
+//					&buildx.RegistryAuthArgs{
+//						Address:  pulumi.String("docker.io"),
+//						Password: pulumi.Any(dockerHubPassword),
+//						Username: pulumi.String("pulumibot"),
+//					},
+//				},
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
+// ### Caching
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker/buildx"
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := buildx.NewImage(ctx, "image", &buildx.ImageArgs{
+//				CacheFrom: buildx.CacheFromEntryArray{
+//					&buildx.CacheFromEntryArgs{
+//						Local: &buildx.CacheFromLocalArgs{
+//							Src: pulumi.String("tmp/cache"),
+//						},
+//					},
+//				},
+//				CacheTo: buildx.CacheToEntryArray{
+//					&buildx.CacheToEntryArgs{
+//						Local: &buildx.CacheToLocalArgs{
+//							Dest: pulumi.String("tmp/cache"),
+//							Mode: buildx.CacheModeMax,
+//						},
+//					},
+//				},
+//				Context: &buildx.BuildContextArgs{
+//					Location: pulumi.String("app"),
+//				},
+//				Dockerfile: &buildx.DockerfileArgs{
+//					Location: pulumi.String("app/Dockerfile"),
+//				},
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
+// ### Build arguments
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker/buildx"
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := buildx.NewImage(ctx, "image", &buildx.ImageArgs{
+//				BuildArgs: pulumi.StringMap{
+//					"SET_ME_TO_TRUE": pulumi.String("true"),
+//				},
+//				Context: &buildx.BuildContextArgs{
+//					Location: pulumi.String("app"),
+//				},
+//				Dockerfile: &buildx.DockerfileArgs{
+//					Location: pulumi.String("app/Dockerfile"),
+//				},
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
+// ### Build targets
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker/buildx"
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := buildx.NewImage(ctx, "image", &buildx.ImageArgs{
+//				Context: &buildx.BuildContextArgs{
+//					Location: pulumi.String("app"),
+//				},
+//				Dockerfile: &buildx.DockerfileArgs{
+//					Location: pulumi.String("app/Dockerfile"),
+//				},
+//				Targets: pulumi.StringArray{
+//					pulumi.String("build-me"),
+//					pulumi.String("also-build-me"),
+//				},
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
+// ### Named contexts
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker/buildx"
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := buildx.NewImage(ctx, "image", &buildx.ImageArgs{
+//				Context: &buildx.BuildContextArgs{
+//					Location: pulumi.String("app"),
+//					Named: buildx.ContextMap{
+//						"golang:latest": &buildx.ContextArgs{
+//							Location: pulumi.String("docker-image://golang@sha256:b8e62cf593cdaff36efd90aa3a37de268e6781a2e68c6610940c48f7cdf36984"),
+//						},
+//					},
+//				},
+//				Dockerfile: &buildx.DockerfileArgs{
+//					Location: pulumi.String("app/Dockerfile"),
+//				},
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
+// ### Remote context
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker/buildx"
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := buildx.NewImage(ctx, "image", &buildx.ImageArgs{
+//				Context: &buildx.BuildContextArgs{
+//					Location: pulumi.String("https://raw.githubusercontent.com/pulumi/pulumi-docker/api-types/provider/testdata/Dockerfile"),
+//				},
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
+// ### Inline Dockerfile
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker/buildx"
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := buildx.NewImage(ctx, "image", &buildx.ImageArgs{
+//				Context: &buildx.BuildContextArgs{
+//					Location: pulumi.String("app"),
+//				},
+//				Dockerfile: &buildx.DockerfileArgs{
+//					Inline: pulumi.String("FROM busybox\nCOPY hello.c ./\n"),
+//				},
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
+// ### Remote context
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker/buildx"
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := buildx.NewImage(ctx, "image", &buildx.ImageArgs{
+//				Context: &buildx.BuildContextArgs{
+//					Location: pulumi.String("https://github.com/docker-library/hello-world.git"),
+//				},
+//				Dockerfile: &buildx.DockerfileArgs{
+//					Location: pulumi.String("app/Dockerfile"),
+//				},
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
+// ### Local export
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker/buildx"
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := buildx.NewImage(ctx, "image", &buildx.ImageArgs{
+//				Context: &buildx.BuildContextArgs{
+//					Location: pulumi.String("app"),
+//				},
+//				Dockerfile: &buildx.DockerfileArgs{
+//					Location: pulumi.String("app/Dockerfile"),
+//				},
+//				Exports: buildx.ExportEntryArray{
+//					&buildx.ExportEntryArgs{
+//						Docker: &buildx.ExportDockerArgs{
+//							Tar: pulumi.Bool(true),
+//						},
+//					},
+//				},
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
 type Image struct {
 	pulumi.CustomResourceState
 
-	// An optional map of named build-time argument variables to set during
-	// the Docker build. This flag allows you to pass build-time variables that
-	// can be accessed like environment variables inside the RUN
-	// instruction.
+	// `ARG` names and values to set during the build.
+	//
+	// These variables are accessed like environment variables inside `RUN`
+	// instructions.
+	//
+	// Build arguments are persisted in the image, so you should use `secrets`
+	// if these arguments are sensitive.
 	BuildArgs pulumi.StringMapOutput `pulumi:"buildArgs"`
-	// When true, attempt to build the image during previews. Outputs are not
-	// pushed to registries, however caches are still populated.
+	// When `true`, attempt to build the image during previews. The image will
+	// not be pushed to registries, however caches will still populated.
 	BuildOnPreview pulumi.BoolPtrOutput `pulumi:"buildOnPreview"`
-	// Build with a specific builder instance
-	Builder pulumi.StringPtrOutput `pulumi:"builder"`
-	// External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
+	// Builder configuration.
+	Builder BuilderConfigPtrOutput `pulumi:"builder"`
+	// External cache configuration.
 	CacheFrom CacheFromEntryArrayOutput `pulumi:"cacheFrom"`
-	// Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
+	// Cache export configuration.
 	CacheTo CacheToEntryArrayOutput `pulumi:"cacheTo"`
-	// Path to use for build context. If omitted, an empty context is used.
-	Context     pulumi.StringPtrOutput `pulumi:"context"`
+	// Build context settings.
+	Context BuildContextPtrOutput `pulumi:"context"`
+	// A preliminary hash of the image's build context.
+	//
+	// Pulumi uses this to determine if an image _may_ need to be re-built.
 	ContextHash pulumi.StringPtrOutput `pulumi:"contextHash"`
-	// Name and optionally a tag (format: "name:tag"). If outputting to a
-	// registry, the name should include the fully qualified registry address.
+	// A mapping of platform type to refs which were pushed to registries.
+	Digests pulumi.StringArrayMapOutput `pulumi:"digests"`
+	// Dockerfile settings.
+	Dockerfile DockerfilePtrOutput `pulumi:"dockerfile"`
+	// Controls where images are persisted after building.
+	//
+	// Images are only stored in the local cache unless `exports` are
+	// explicitly configured.
 	Exports ExportEntryArrayOutput `pulumi:"exports"`
-	// Name of the Dockerfile to use (defaults to "${context}/Dockerfile").
-	File      pulumi.StringPtrOutput `pulumi:"file"`
-	Manifests ManifestArrayOutput    `pulumi:"manifests"`
-	// Set target platforms for the build. Defaults to the host's platform
+	// Attach arbitrary key/value metadata to the image.
+	Labels pulumi.StringMapOutput `pulumi:"labels"`
+	// Set target platform(s) for the build. Defaults to the host's platform
 	Platforms PlatformArrayOutput `pulumi:"platforms"`
-	// Always attempt to pull referenced images.
+	// Always pull referenced images.
 	Pull pulumi.BoolPtrOutput `pulumi:"pull"`
-	// Logins for registry outputs
+	// Registry credentials. Required if reading or exporting to private
+	// repositories.
 	Registries RegistryAuthArrayOutput `pulumi:"registries"`
-	// Name and optionally a tag (format: "name:tag"). If outputting to a
-	// registry, the name should include the fully qualified registry address.
-	Tags   pulumi.StringArrayOutput `pulumi:"tags"`
-	Target pulumi.StringPtrOutput   `pulumi:"target"`
+	// A mapping of secret names to their corresponding values.
+	//
+	// Unlike the Docker CLI, these can be passed by value and do not need to
+	// exist on-disk or in environment variables.
+	//
+	// Build arguments and environment variables are persistent in the final
+	// image, so you should use this for sensitive values.
+	Secrets pulumi.StringMapOutput `pulumi:"secrets"`
+	// Name and optionally a tag (format: `name:tag`).
+	//
+	// If exporting to a registry, the name should include the fully qualified
+	// registry address (e.g. `docker.io/pulumi/pulumi:latest`).
+	Tags pulumi.StringArrayOutput `pulumi:"tags"`
+	// Set the target build stage(s) to build.
+	//
+	// If not specified all targets will be built by default.
+	Targets pulumi.StringArrayOutput `pulumi:"targets"`
 }
 
 // NewImage registers a new resource with the given unique name, arguments, and options.
@@ -57,9 +431,13 @@ func NewImage(ctx *pulumi.Context,
 		args = &ImageArgs{}
 	}
 
-	if args.File == nil {
-		args.File = pulumi.StringPtr("Dockerfile")
+	if args.Secrets != nil {
+		args.Secrets = pulumi.ToSecret(args.Secrets).(pulumi.StringMapInput)
 	}
+	secrets := pulumi.AdditionalSecretOutputs([]string{
+		"secrets",
+	})
+	opts = append(opts, secrets)
 	opts = internal.PkgResourceDefaultOpts(opts)
 	var resource Image
 	err := ctx.RegisterResource("docker:buildx/image:Image", name, args, &resource, opts...)
@@ -93,72 +471,114 @@ func (ImageState) ElementType() reflect.Type {
 }
 
 type imageArgs struct {
-	// An optional map of named build-time argument variables to set during
-	// the Docker build. This flag allows you to pass build-time variables that
-	// can be accessed like environment variables inside the RUN
-	// instruction.
+	// `ARG` names and values to set during the build.
+	//
+	// These variables are accessed like environment variables inside `RUN`
+	// instructions.
+	//
+	// Build arguments are persisted in the image, so you should use `secrets`
+	// if these arguments are sensitive.
 	BuildArgs map[string]string `pulumi:"buildArgs"`
-	// When true, attempt to build the image during previews. Outputs are not
-	// pushed to registries, however caches are still populated.
+	// When `true`, attempt to build the image during previews. The image will
+	// not be pushed to registries, however caches will still populated.
 	BuildOnPreview *bool `pulumi:"buildOnPreview"`
-	// Build with a specific builder instance
-	Builder *string `pulumi:"builder"`
-	// External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
+	// Builder configuration.
+	Builder *BuilderConfig `pulumi:"builder"`
+	// External cache configuration.
 	CacheFrom []CacheFromEntry `pulumi:"cacheFrom"`
-	// Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
+	// Cache export configuration.
 	CacheTo []CacheToEntry `pulumi:"cacheTo"`
-	// Path to use for build context. If omitted, an empty context is used.
-	Context *string `pulumi:"context"`
-	// Name and optionally a tag (format: "name:tag"). If outputting to a
-	// registry, the name should include the fully qualified registry address.
+	// Build context settings.
+	Context *BuildContext `pulumi:"context"`
+	// Dockerfile settings.
+	Dockerfile *Dockerfile `pulumi:"dockerfile"`
+	// Controls where images are persisted after building.
+	//
+	// Images are only stored in the local cache unless `exports` are
+	// explicitly configured.
 	Exports []ExportEntry `pulumi:"exports"`
-	// Name of the Dockerfile to use (defaults to "${context}/Dockerfile").
-	File *string `pulumi:"file"`
-	// Set target platforms for the build. Defaults to the host's platform
+	// Attach arbitrary key/value metadata to the image.
+	Labels map[string]string `pulumi:"labels"`
+	// Set target platform(s) for the build. Defaults to the host's platform
 	Platforms []Platform `pulumi:"platforms"`
-	// Always attempt to pull referenced images.
+	// Always pull referenced images.
 	Pull *bool `pulumi:"pull"`
-	// Logins for registry outputs
+	// Registry credentials. Required if reading or exporting to private
+	// repositories.
 	Registries []RegistryAuth `pulumi:"registries"`
-	// Name and optionally a tag (format: "name:tag"). If outputting to a
-	// registry, the name should include the fully qualified registry address.
-	Tags   []string `pulumi:"tags"`
-	Target *string  `pulumi:"target"`
+	// A mapping of secret names to their corresponding values.
+	//
+	// Unlike the Docker CLI, these can be passed by value and do not need to
+	// exist on-disk or in environment variables.
+	//
+	// Build arguments and environment variables are persistent in the final
+	// image, so you should use this for sensitive values.
+	Secrets map[string]string `pulumi:"secrets"`
+	// Name and optionally a tag (format: `name:tag`).
+	//
+	// If exporting to a registry, the name should include the fully qualified
+	// registry address (e.g. `docker.io/pulumi/pulumi:latest`).
+	Tags []string `pulumi:"tags"`
+	// Set the target build stage(s) to build.
+	//
+	// If not specified all targets will be built by default.
+	Targets []string `pulumi:"targets"`
 }
 
 // The set of arguments for constructing a Image resource.
 type ImageArgs struct {
-	// An optional map of named build-time argument variables to set during
-	// the Docker build. This flag allows you to pass build-time variables that
-	// can be accessed like environment variables inside the RUN
-	// instruction.
+	// `ARG` names and values to set during the build.
+	//
+	// These variables are accessed like environment variables inside `RUN`
+	// instructions.
+	//
+	// Build arguments are persisted in the image, so you should use `secrets`
+	// if these arguments are sensitive.
 	BuildArgs pulumi.StringMapInput
-	// When true, attempt to build the image during previews. Outputs are not
-	// pushed to registries, however caches are still populated.
+	// When `true`, attempt to build the image during previews. The image will
+	// not be pushed to registries, however caches will still populated.
 	BuildOnPreview pulumi.BoolPtrInput
-	// Build with a specific builder instance
-	Builder pulumi.StringPtrInput
-	// External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
+	// Builder configuration.
+	Builder BuilderConfigPtrInput
+	// External cache configuration.
 	CacheFrom CacheFromEntryArrayInput
-	// Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
+	// Cache export configuration.
 	CacheTo CacheToEntryArrayInput
-	// Path to use for build context. If omitted, an empty context is used.
-	Context pulumi.StringPtrInput
-	// Name and optionally a tag (format: "name:tag"). If outputting to a
-	// registry, the name should include the fully qualified registry address.
+	// Build context settings.
+	Context BuildContextPtrInput
+	// Dockerfile settings.
+	Dockerfile DockerfilePtrInput
+	// Controls where images are persisted after building.
+	//
+	// Images are only stored in the local cache unless `exports` are
+	// explicitly configured.
 	Exports ExportEntryArrayInput
-	// Name of the Dockerfile to use (defaults to "${context}/Dockerfile").
-	File pulumi.StringPtrInput
-	// Set target platforms for the build. Defaults to the host's platform
+	// Attach arbitrary key/value metadata to the image.
+	Labels pulumi.StringMapInput
+	// Set target platform(s) for the build. Defaults to the host's platform
 	Platforms PlatformArrayInput
-	// Always attempt to pull referenced images.
+	// Always pull referenced images.
 	Pull pulumi.BoolPtrInput
-	// Logins for registry outputs
+	// Registry credentials. Required if reading or exporting to private
+	// repositories.
 	Registries RegistryAuthArrayInput
-	// Name and optionally a tag (format: "name:tag"). If outputting to a
-	// registry, the name should include the fully qualified registry address.
-	Tags   pulumi.StringArrayInput
-	Target pulumi.StringPtrInput
+	// A mapping of secret names to their corresponding values.
+	//
+	// Unlike the Docker CLI, these can be passed by value and do not need to
+	// exist on-disk or in environment variables.
+	//
+	// Build arguments and environment variables are persistent in the final
+	// image, so you should use this for sensitive values.
+	Secrets pulumi.StringMapInput
+	// Name and optionally a tag (format: `name:tag`).
+	//
+	// If exporting to a registry, the name should include the fully qualified
+	// registry address (e.g. `docker.io/pulumi/pulumi:latest`).
+	Tags pulumi.StringArrayInput
+	// Set the target build stage(s) to build.
+	//
+	// If not specified all targets will be built by default.
+	Targets pulumi.StringArrayInput
 }
 
 func (ImageArgs) ElementType() reflect.Type {
@@ -248,82 +668,113 @@ func (o ImageOutput) ToImageOutputWithContext(ctx context.Context) ImageOutput {
 	return o
 }
 
-// An optional map of named build-time argument variables to set during
-// the Docker build. This flag allows you to pass build-time variables that
-// can be accessed like environment variables inside the RUN
-// instruction.
+// `ARG` names and values to set during the build.
+//
+// These variables are accessed like environment variables inside `RUN`
+// instructions.
+//
+// Build arguments are persisted in the image, so you should use `secrets`
+// if these arguments are sensitive.
 func (o ImageOutput) BuildArgs() pulumi.StringMapOutput {
 	return o.ApplyT(func(v *Image) pulumi.StringMapOutput { return v.BuildArgs }).(pulumi.StringMapOutput)
 }
 
-// When true, attempt to build the image during previews. Outputs are not
-// pushed to registries, however caches are still populated.
+// When `true`, attempt to build the image during previews. The image will
+// not be pushed to registries, however caches will still populated.
 func (o ImageOutput) BuildOnPreview() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *Image) pulumi.BoolPtrOutput { return v.BuildOnPreview }).(pulumi.BoolPtrOutput)
 }
 
-// Build with a specific builder instance
-func (o ImageOutput) Builder() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v *Image) pulumi.StringPtrOutput { return v.Builder }).(pulumi.StringPtrOutput)
+// Builder configuration.
+func (o ImageOutput) Builder() BuilderConfigPtrOutput {
+	return o.ApplyT(func(v *Image) BuilderConfigPtrOutput { return v.Builder }).(BuilderConfigPtrOutput)
 }
 
-// External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
+// External cache configuration.
 func (o ImageOutput) CacheFrom() CacheFromEntryArrayOutput {
 	return o.ApplyT(func(v *Image) CacheFromEntryArrayOutput { return v.CacheFrom }).(CacheFromEntryArrayOutput)
 }
 
-// Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
+// Cache export configuration.
 func (o ImageOutput) CacheTo() CacheToEntryArrayOutput {
 	return o.ApplyT(func(v *Image) CacheToEntryArrayOutput { return v.CacheTo }).(CacheToEntryArrayOutput)
 }
 
-// Path to use for build context. If omitted, an empty context is used.
-func (o ImageOutput) Context() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v *Image) pulumi.StringPtrOutput { return v.Context }).(pulumi.StringPtrOutput)
+// Build context settings.
+func (o ImageOutput) Context() BuildContextPtrOutput {
+	return o.ApplyT(func(v *Image) BuildContextPtrOutput { return v.Context }).(BuildContextPtrOutput)
 }
 
+// A preliminary hash of the image's build context.
+//
+// Pulumi uses this to determine if an image _may_ need to be re-built.
 func (o ImageOutput) ContextHash() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Image) pulumi.StringPtrOutput { return v.ContextHash }).(pulumi.StringPtrOutput)
 }
 
-// Name and optionally a tag (format: "name:tag"). If outputting to a
-// registry, the name should include the fully qualified registry address.
+// A mapping of platform type to refs which were pushed to registries.
+func (o ImageOutput) Digests() pulumi.StringArrayMapOutput {
+	return o.ApplyT(func(v *Image) pulumi.StringArrayMapOutput { return v.Digests }).(pulumi.StringArrayMapOutput)
+}
+
+// Dockerfile settings.
+func (o ImageOutput) Dockerfile() DockerfilePtrOutput {
+	return o.ApplyT(func(v *Image) DockerfilePtrOutput { return v.Dockerfile }).(DockerfilePtrOutput)
+}
+
+// Controls where images are persisted after building.
+//
+// Images are only stored in the local cache unless `exports` are
+// explicitly configured.
 func (o ImageOutput) Exports() ExportEntryArrayOutput {
 	return o.ApplyT(func(v *Image) ExportEntryArrayOutput { return v.Exports }).(ExportEntryArrayOutput)
 }
 
-// Name of the Dockerfile to use (defaults to "${context}/Dockerfile").
-func (o ImageOutput) File() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v *Image) pulumi.StringPtrOutput { return v.File }).(pulumi.StringPtrOutput)
+// Attach arbitrary key/value metadata to the image.
+func (o ImageOutput) Labels() pulumi.StringMapOutput {
+	return o.ApplyT(func(v *Image) pulumi.StringMapOutput { return v.Labels }).(pulumi.StringMapOutput)
 }
 
-func (o ImageOutput) Manifests() ManifestArrayOutput {
-	return o.ApplyT(func(v *Image) ManifestArrayOutput { return v.Manifests }).(ManifestArrayOutput)
-}
-
-// Set target platforms for the build. Defaults to the host's platform
+// Set target platform(s) for the build. Defaults to the host's platform
 func (o ImageOutput) Platforms() PlatformArrayOutput {
 	return o.ApplyT(func(v *Image) PlatformArrayOutput { return v.Platforms }).(PlatformArrayOutput)
 }
 
-// Always attempt to pull referenced images.
+// Always pull referenced images.
 func (o ImageOutput) Pull() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *Image) pulumi.BoolPtrOutput { return v.Pull }).(pulumi.BoolPtrOutput)
 }
 
-// Logins for registry outputs
+// Registry credentials. Required if reading or exporting to private
+// repositories.
 func (o ImageOutput) Registries() RegistryAuthArrayOutput {
 	return o.ApplyT(func(v *Image) RegistryAuthArrayOutput { return v.Registries }).(RegistryAuthArrayOutput)
 }
 
-// Name and optionally a tag (format: "name:tag"). If outputting to a
-// registry, the name should include the fully qualified registry address.
+// A mapping of secret names to their corresponding values.
+//
+// Unlike the Docker CLI, these can be passed by value and do not need to
+// exist on-disk or in environment variables.
+//
+// Build arguments and environment variables are persistent in the final
+// image, so you should use this for sensitive values.
+func (o ImageOutput) Secrets() pulumi.StringMapOutput {
+	return o.ApplyT(func(v *Image) pulumi.StringMapOutput { return v.Secrets }).(pulumi.StringMapOutput)
+}
+
+// Name and optionally a tag (format: `name:tag`).
+//
+// If exporting to a registry, the name should include the fully qualified
+// registry address (e.g. `docker.io/pulumi/pulumi:latest`).
 func (o ImageOutput) Tags() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v *Image) pulumi.StringArrayOutput { return v.Tags }).(pulumi.StringArrayOutput)
 }
 
-func (o ImageOutput) Target() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v *Image) pulumi.StringPtrOutput { return v.Target }).(pulumi.StringPtrOutput)
+// Set the target build stage(s) to build.
+//
+// If not specified all targets will be built by default.
+func (o ImageOutput) Targets() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v *Image) pulumi.StringArrayOutput { return v.Targets }).(pulumi.StringArrayOutput)
 }
 
 type ImageArrayOutput struct{ *pulumi.OutputState }

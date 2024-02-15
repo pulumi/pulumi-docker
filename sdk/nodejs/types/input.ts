@@ -1272,53 +1272,88 @@ export interface VolumeLabel {
     value: pulumi.Input<string>;
 }
 export namespace buildx {
+    export interface BuildContext {
+        /**
+         * Resources to use for build context.
+         *
+         * The location can be:
+         * * A relative or absolute path to a local directory (`.`, `./app`,
+         *   `/app`, etc.).
+         * * A remote URL of a Git repository, tarball, or plain text file
+         *   (`https://github.com/user/myrepo.git`, `http://server/context.tar.gz`,
+         *   etc.).
+         */
+        location: pulumi.Input<string>;
+        /**
+         * Additional build contexts to use. 
+         *
+         * These contexts are accessed with `FROM name` or `--from=name`
+         * statements when using Dockerfile 1.4+ syntax.
+         *
+         * Values can be local paths, HTTP URLs, or  `docker-image://` images.
+         */
+        named?: pulumi.Input<{[key: string]: pulumi.Input<inputs.buildx.Context>}>;
+    }
+
+    export interface BuilderConfig {
+        /**
+         * Name of an existing buildx builder to use.
+         *
+         * Only `docker-container`, `kubernetes`, or `remote` drivers are
+         * supported. The legacy `docker` driver is not supported.
+         */
+        name?: pulumi.Input<string>;
+    }
+
     export interface CacheFromAzureBlob {
+        /**
+         * Base URL of the storage account.
+         */
         accountUrl?: pulumi.Input<string>;
+        /**
+         * The name of the cache image.
+         */
         name: pulumi.Input<string>;
+        /**
+         * Blob storage account key.
+         */
         secretAccessKey?: pulumi.Input<string>;
     }
 
     export interface CacheFromEntry {
         /**
-         *
-         * Push cache to Azure's blob storage service.
+         * Upload build caches to Azure's blob storage service.
          */
         azblob?: pulumi.Input<inputs.buildx.CacheFromAzureBlob>;
         /**
-         *
          * Recommended for use with GitHub Actions workflows.
          *
-         * An action like "crazy-max/ghaction-github-runtime" is recommended to
+         * An action like `crazy-max/ghaction-github-runtime` is recommended to
          * expose appropriate credentials to your GitHub workflow.
          */
         gha?: pulumi.Input<inputs.buildx.CacheFromGitHubActions>;
         /**
-         *
          * The inline cache storage backend is the simplest implementation to get
          * started with, but it does not handle multi-stage builds. Consider the
          * registry cache backend instead.
          */
         inline?: pulumi.Input<inputs.buildx.CacheInline>;
         /**
-         *
-         * A simple backend which caches imagines on your local filesystem.
+         * A simple backend which caches images on your local filesystem.
          */
         local?: pulumi.Input<inputs.buildx.CacheFromLocal>;
         /**
-         *
          * A raw string as you would provide it to the Docker CLI (e.g.,
-         * "type=inline")
+         * `type=inline`).
          */
         raw?: pulumi.Input<string>;
         /**
-         *
-         * Push caches to remote registries. Incompatible with the "docker" build
-         * driver.
+         * Upload build caches to remote registries.
          */
         registry?: pulumi.Input<inputs.buildx.CacheFromRegistry>;
         /**
-         *
-         * Push cache to AWS S3 or S3-compatible services such as MinIO.
+         * Upload build caches to AWS S3 or an S3-compatible services such as
+         * MinIO.
          */
         s3?: pulumi.Input<inputs.buildx.CacheFromS3>;
     }
@@ -1335,15 +1370,27 @@ export namespace buildx {
 
     export interface CacheFromGitHubActions {
         /**
-         * Which scope cache object belongs to.
+         * The scope to use for cache keys. Defaults to `buildkit`.
+         *
+         * This should be set if building and caching multiple images in one
+         * workflow, otherwise caches will overwrite each other.
          */
         scope?: pulumi.Input<string>;
         /**
-         * Access token
+         * The GitHub Actions token to use. This is not a personal access tokens
+         * and is typically generated automatically as part of each job.
+         *
+         * Defaults to `$ACTIONS_RUNTIME_TOKEN`, although a separate action like
+         * `crazy-max/ghaction-github-runtime` is recommended to expose this
+         * environment variable to your jobs.
          */
         token?: pulumi.Input<string>;
         /**
-         * Cache server URL
+         * The cache server URL to use for artifacts.
+         *
+         * Defaults to `$ACTIONS_RUNTIME_URL`, although a separate action like
+         * `crazy-max/ghaction-github-runtime` is recommended to expose this
+         * environment variable to your jobs.
          */
         url?: pulumi.Input<string>;
     }
@@ -1360,27 +1407,63 @@ export namespace buildx {
     }
 
     export interface CacheFromLocal {
+        /**
+         * Digest of manifest to import.
+         */
         digest?: pulumi.Input<string>;
+        /**
+         * Path of the local directory where cache gets imported from.
+         */
         src: pulumi.Input<string>;
     }
 
     export interface CacheFromRegistry {
         /**
-         * Full name of the cache image to import.
+         * Fully qualified name of the cache image to import.
          */
         ref: pulumi.Input<string>;
     }
 
     export interface CacheFromS3 {
+        /**
+         * Defaults to `$AWS_ACCESS_KEY_ID`.
+         */
         accessKeyId?: pulumi.Input<string>;
+        /**
+         * Prefix to prepend to blob filenames.
+         */
         blobsPrefix?: pulumi.Input<string>;
+        /**
+         * Name of the S3 bucket.
+         */
         bucket: pulumi.Input<string>;
+        /**
+         * Endpoint of the S3 bucket.
+         */
         endpointUrl?: pulumi.Input<string>;
+        /**
+         * Prefix to prepend on manifest filenames.
+         */
         manifestsPrefix?: pulumi.Input<string>;
+        /**
+         * Name of the cache image.
+         */
         name?: pulumi.Input<string>;
+        /**
+         * The geographic location of the bucket. Defaults to `$AWS_REGION`.
+         */
         region: pulumi.Input<string>;
+        /**
+         * Defaults to `$AWS_SECRET_ACCESS_KEY`.
+         */
         secretAccessKey?: pulumi.Input<string>;
+        /**
+         * Defaults to `$AWS_SESSION_TOKEN`.
+         */
         sessionToken?: pulumi.Input<string>;
+        /**
+         * Uses `bucket` in the URL instead of hostname when `true`.
+         */
         usePathStyle?: pulumi.Input<boolean>;
     }
     /**
@@ -1400,13 +1483,25 @@ export namespace buildx {
     }
 
     export interface CacheToAzureBlob {
+        /**
+         * Base URL of the storage account.
+         */
         accountUrl?: pulumi.Input<string>;
         /**
          * Ignore errors caused by failed cache exports.
          */
         ignoreError?: pulumi.Input<boolean>;
+        /**
+         * The cache mode to use. Defaults to `min`.
+         */
         mode?: pulumi.Input<enums.buildx.CacheMode>;
+        /**
+         * The name of the cache image.
+         */
         name: pulumi.Input<string>;
+        /**
+         * Blob storage account key.
+         */
         secretAccessKey?: pulumi.Input<string>;
     }
     /**
@@ -1422,44 +1517,37 @@ export namespace buildx {
 
     export interface CacheToEntry {
         /**
-         *
          * Push cache to Azure's blob storage service.
          */
         azblob?: pulumi.Input<inputs.buildx.CacheToAzureBlob>;
         /**
-         *
          * Recommended for use with GitHub Actions workflows.
          *
-         * An action like "crazy-max/ghaction-github-runtime" is recommended to
+         * An action like `crazy-max/ghaction-github-runtime` is recommended to
          * expose appropriate credentials to your GitHub workflow.
          */
         gha?: pulumi.Input<inputs.buildx.CacheToGitHubActions>;
         /**
-         *
          * The inline cache storage backend is the simplest implementation to get
          * started with, but it does not handle multi-stage builds. Consider the
-         * registry cache backend instead.
+         * `registry` cache backend instead.
          */
         inline?: pulumi.Input<inputs.buildx.CacheInline>;
         /**
-         *
          * A simple backend which caches imagines on your local filesystem.
          */
         local?: pulumi.Input<inputs.buildx.CacheToLocal>;
         /**
-         *
          * A raw string as you would provide it to the Docker CLI (e.g.,
-         * "type=inline")
+         * `type=inline`)
          */
         raw?: pulumi.Input<string>;
         /**
-         *
-         * Push caches to remote registries. Incompatible with the "docker" build
+         * Push caches to remote registries. Incompatible with the `docker` build
          * driver.
          */
         registry?: pulumi.Input<inputs.buildx.CacheToRegistry>;
         /**
-         *
          * Push cache to AWS S3 or S3-compatible services such as MinIO.
          */
         s3?: pulumi.Input<inputs.buildx.CacheToS3>;
@@ -1483,17 +1571,32 @@ export namespace buildx {
          * Ignore errors caused by failed cache exports.
          */
         ignoreError?: pulumi.Input<boolean>;
+        /**
+         * The cache mode to use. Defaults to `min`.
+         */
         mode?: pulumi.Input<enums.buildx.CacheMode>;
         /**
-         * Which scope cache object belongs to.
+         * The scope to use for cache keys. Defaults to `buildkit`.
+         *
+         * This should be set if building and caching multiple images in one
+         * workflow, otherwise caches will overwrite each other.
          */
         scope?: pulumi.Input<string>;
         /**
-         * Access token
+         * The GitHub Actions token to use. This is not a personal access tokens
+         * and is typically generated automatically as part of each job.
+         *
+         * Defaults to `$ACTIONS_RUNTIME_TOKEN`, although a separate action like
+         * `crazy-max/ghaction-github-runtime` is recommended to expose this
+         * environment variable to your jobs.
          */
         token?: pulumi.Input<string>;
         /**
-         * Cache server URL
+         * The cache server URL to use for artifacts.
+         *
+         * Defaults to `$ACTIONS_RUNTIME_URL`, although a separate action like
+         * `crazy-max/ghaction-github-runtime` is recommended to expose this
+         * environment variable to your jobs.
          */
         url?: pulumi.Input<string>;
     }
@@ -1520,6 +1623,9 @@ export namespace buildx {
          * Compression level from 0 to 22.
          */
         compressionLevel?: pulumi.Input<number>;
+        /**
+         * Path of the local directory to export the cache.
+         */
         dest: pulumi.Input<string>;
         /**
          * Forcefully apply compression.
@@ -1529,6 +1635,9 @@ export namespace buildx {
          * Ignore errors caused by failed cache exports.
          */
         ignoreError?: pulumi.Input<boolean>;
+        /**
+         * The cache mode to use. Defaults to `min`.
+         */
         mode?: pulumi.Input<enums.buildx.CacheMode>;
     }
     /**
@@ -1563,16 +1672,23 @@ export namespace buildx {
          */
         ignoreError?: pulumi.Input<boolean>;
         /**
-         * Export cache manifest as an OCI-compatible image manifest instead of a manifest list (requires OCI media types).
+         * Export cache manifest as an OCI-compatible image manifest instead of a
+         * manifest list (requires OCI media types).
+         *
+         * Defaults to `false`.
          */
         imageManifest?: pulumi.Input<boolean>;
+        /**
+         * The cache mode to use. Defaults to `min`.
+         */
         mode?: pulumi.Input<enums.buildx.CacheMode>;
         /**
-         * Whether to use OCI mediatypes in exported manifests.
+         * Whether to use OCI mediatypes in exported manifests. Defaults to
+         * `true`.
          */
         ociMediaTypes?: pulumi.Input<boolean>;
         /**
-         * Full name of the cache image to import.
+         * Fully qualified name of the cache image to import.
          */
         ref: pulumi.Input<string>;
     }
@@ -1593,20 +1709,53 @@ export namespace buildx {
     }
 
     export interface CacheToS3 {
+        /**
+         * Defaults to `$AWS_ACCESS_KEY_ID`.
+         */
         accessKeyId?: pulumi.Input<string>;
+        /**
+         * Prefix to prepend to blob filenames.
+         */
         blobsPrefix?: pulumi.Input<string>;
+        /**
+         * Name of the S3 bucket.
+         */
         bucket: pulumi.Input<string>;
+        /**
+         * Endpoint of the S3 bucket.
+         */
         endpointUrl?: pulumi.Input<string>;
         /**
          * Ignore errors caused by failed cache exports.
          */
         ignoreError?: pulumi.Input<boolean>;
+        /**
+         * Prefix to prepend on manifest filenames.
+         */
         manifestsPrefix?: pulumi.Input<string>;
+        /**
+         * The cache mode to use. Defaults to `min`.
+         */
         mode?: pulumi.Input<enums.buildx.CacheMode>;
+        /**
+         * Name of the cache image.
+         */
         name?: pulumi.Input<string>;
+        /**
+         * The geographic location of the bucket. Defaults to `$AWS_REGION`.
+         */
         region: pulumi.Input<string>;
+        /**
+         * Defaults to `$AWS_SECRET_ACCESS_KEY`.
+         */
         secretAccessKey?: pulumi.Input<string>;
+        /**
+         * Defaults to `$AWS_SESSION_TOKEN`.
+         */
         sessionToken?: pulumi.Input<string>;
+        /**
+         * Uses `bucket` in the URL instead of hostname when `true`.
+         */
         usePathStyle?: pulumi.Input<boolean>;
     }
     /**
@@ -1624,7 +1773,41 @@ export namespace buildx {
         };
     }
 
+    export interface Context {
+        /**
+         * Resources to use for build context.
+         *
+         * The location can be:
+         * * A relative or absolute path to a local directory (`.`, `./app`,
+         *   `/app`, etc.).
+         * * A remote URL of a Git repository, tarball, or plain text file
+         *   (`https://github.com/user/myrepo.git`, `http://server/context.tar.gz`,
+         *   etc.).
+         */
+        location: pulumi.Input<string>;
+    }
+
+    export interface Dockerfile {
+        /**
+         * Raw Dockerfile contents.
+         *
+         * Conflicts with `location`.
+         */
+        inline?: pulumi.Input<string>;
+        /**
+         * Location of the Dockerfile to use.
+         *
+         * Can be a relative or absolute path to a local file, or a remote URL.
+         *
+         * Conflicts with `inline`.
+         */
+        location?: pulumi.Input<string>;
+    }
+
     export interface ExportDocker {
+        /**
+         * Attach an arbitrary key/value annotation to the image.
+         */
         annotations?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
         /**
          * The compression type to use.
@@ -1671,38 +1854,36 @@ export namespace buildx {
 
     export interface ExportEntry {
         /**
-         *
          * Export as a Docker image layout.
          */
         docker?: pulumi.Input<inputs.buildx.ExportDocker>;
         /**
-         *
          * Outputs the build result into a container image format.
          */
         image?: pulumi.Input<inputs.buildx.ExportImage>;
         /**
-         *
          * Export to a local directory as files and directories.
          */
         local?: pulumi.Input<inputs.buildx.ExportLocal>;
         /**
-         *
+         * An output property populated for exporters that pushed image
+         * manifest(s) to a registry.
+         */
+        manifests?: pulumi.Input<pulumi.Input<inputs.buildx.Manifest>[]>;
+        /**
          * Identical to the Docker exporter but uses OCI media types by default.
          */
         oci?: pulumi.Input<inputs.buildx.ExportOCI>;
         /**
-         *
          * A raw string as you would provide it to the Docker CLI (e.g.,
-         * "type=docker")
+         * `type=docker`)
          */
         raw?: pulumi.Input<string>;
         /**
-         *
          * Identical to the Image exporter, but pushes by default.
          */
         registry?: pulumi.Input<inputs.buildx.ExportRegistry>;
         /**
-         *
          * Export to a local directory as a tarball.
          */
         tar?: pulumi.Input<inputs.buildx.ExportTar>;
@@ -1721,6 +1902,9 @@ export namespace buildx {
     }
 
     export interface ExportImage {
+        /**
+         * Attach an arbitrary key/value annotation to the image.
+         */
         annotations?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
         /**
          * The compression type to use.
@@ -1730,12 +1914,21 @@ export namespace buildx {
          * Compression level from 0 to 22.
          */
         compressionLevel?: pulumi.Input<number>;
+        /**
+         * Name image with `prefix@<digest>`, used for anonymous images.
+         */
         danglingNamePrefix?: pulumi.Input<string>;
         /**
          * Forcefully apply compression.
          */
         forceCompression?: pulumi.Input<boolean>;
+        /**
+         * Allow pushing to an insecure registry.
+         */
         insecure?: pulumi.Input<boolean>;
+        /**
+         * Add additional canonical name (`name@<digest>`).
+         */
         nameCanonical?: pulumi.Input<boolean>;
         /**
          * Specify images names to export. This is overridden if tags are already specified.
@@ -1749,14 +1942,24 @@ export namespace buildx {
          * Push after creating the image.
          */
         push?: pulumi.Input<boolean>;
+        /**
+         * Push image without name.
+         */
         pushByDigest?: pulumi.Input<boolean>;
         /**
+         * Store resulting images to the worker's image store and ensure all of
+         * its blobs are in the content store. 
          *
-         * Store resulting images to the worker's image store, and ensure all its
-         * blobs are in the content store. Ignored if the worker doesn't have
-         * image store (when using OCI workers, for example).
+         * Defaults to `true`.
+         *
+         * Ignored if the worker doesn't have image store (when using OCI workers,
+         * for example).
          */
         store?: pulumi.Input<boolean>;
+        /**
+         * Unpack image after creation (for use with containerd). Defaults to
+         * `false`.
+         */
         unpack?: pulumi.Input<boolean>;
     }
     /**
@@ -1781,6 +1984,9 @@ export namespace buildx {
     }
 
     export interface ExportOCI {
+        /**
+         * Attach an arbitrary key/value annotation to the image.
+         */
         annotations?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
         /**
          * The compression type to use.
@@ -1826,6 +2032,9 @@ export namespace buildx {
     }
 
     export interface ExportRegistry {
+        /**
+         * Attach an arbitrary key/value annotation to the image.
+         */
         annotations?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
         /**
          * The compression type to use.
@@ -1835,12 +2044,21 @@ export namespace buildx {
          * Compression level from 0 to 22.
          */
         compressionLevel?: pulumi.Input<number>;
+        /**
+         * Name image with `prefix@<digest>`, used for anonymous images.
+         */
         danglingNamePrefix?: pulumi.Input<string>;
         /**
          * Forcefully apply compression.
          */
         forceCompression?: pulumi.Input<boolean>;
+        /**
+         * Allow pushing to an insecure registry.
+         */
         insecure?: pulumi.Input<boolean>;
+        /**
+         * Add additional canonical name (`name@<digest>`).
+         */
         nameCanonical?: pulumi.Input<boolean>;
         /**
          * Specify images names to export. This is overridden if tags are already specified.
@@ -1854,14 +2072,24 @@ export namespace buildx {
          * Push after creating the image.
          */
         push?: pulumi.Input<boolean>;
+        /**
+         * Push image without name.
+         */
         pushByDigest?: pulumi.Input<boolean>;
         /**
+         * Store resulting images to the worker's image store and ensure all of
+         * its blobs are in the content store. 
          *
-         * Store resulting images to the worker's image store, and ensure all its
-         * blobs are in the content store. Ignored if the worker doesn't have
-         * image store (when using OCI workers, for example).
+         * Defaults to `true`.
+         *
+         * Ignored if the worker doesn't have image store (when using OCI workers,
+         * for example).
          */
         store?: pulumi.Input<boolean>;
+        /**
+         * Unpack image after creation (for use with containerd). Defaults to
+         * `false`.
+         */
         unpack?: pulumi.Input<boolean>;
     }
     /**
@@ -1886,17 +2114,47 @@ export namespace buildx {
         dest: pulumi.Input<string>;
     }
 
+    export interface Manifest {
+        /**
+         * The SHA256 digest of the manifest.
+         */
+        digest: pulumi.Input<string>;
+        /**
+         * The manifest's platform.
+         */
+        platform: pulumi.Input<inputs.buildx.ManifestPlatform>;
+        /**
+         * The manifest's canonical ref.
+         */
+        ref: pulumi.Input<string>;
+        /**
+         * The size of the manifest in bytes.
+         */
+        size: pulumi.Input<number>;
+    }
+
+    export interface ManifestPlatform {
+        /**
+         * The manifest's architecture.
+         */
+        architecture: pulumi.Input<string>;
+        /**
+         * The manifest's operating systen.
+         */
+        os: pulumi.Input<string>;
+    }
+
     export interface RegistryAuth {
         /**
-         * The registry's address (e.g. "docker.io")
+         * The registry's address (e.g. "docker.io").
          */
         address: pulumi.Input<string>;
         /**
-         * Password or token for the registry
+         * Password or token for the registry.
          */
         password?: pulumi.Input<string>;
         /**
-         * Username for the registry
+         * Username for the registry.
          */
         username?: pulumi.Input<string>;
     }

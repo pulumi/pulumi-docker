@@ -16,23 +16,47 @@ public final class CacheFromAzureBlobArgs extends com.pulumi.resources.ResourceA
 
     public static final CacheFromAzureBlobArgs Empty = new CacheFromAzureBlobArgs();
 
+    /**
+     * Base URL of the storage account.
+     * 
+     */
     @Import(name="accountUrl")
     private @Nullable Output<String> accountUrl;
 
+    /**
+     * @return Base URL of the storage account.
+     * 
+     */
     public Optional<Output<String>> accountUrl() {
         return Optional.ofNullable(this.accountUrl);
     }
 
+    /**
+     * The name of the cache image.
+     * 
+     */
     @Import(name="name", required=true)
     private Output<String> name;
 
+    /**
+     * @return The name of the cache image.
+     * 
+     */
     public Output<String> name() {
         return this.name;
     }
 
+    /**
+     * Blob storage account key.
+     * 
+     */
     @Import(name="secretAccessKey")
     private @Nullable Output<String> secretAccessKey;
 
+    /**
+     * @return Blob storage account key.
+     * 
+     */
     public Optional<Output<String>> secretAccessKey() {
         return Optional.ofNullable(this.secretAccessKey);
     }
@@ -63,29 +87,65 @@ public final class CacheFromAzureBlobArgs extends com.pulumi.resources.ResourceA
             $ = new CacheFromAzureBlobArgs(Objects.requireNonNull(defaults));
         }
 
+        /**
+         * @param accountUrl Base URL of the storage account.
+         * 
+         * @return builder
+         * 
+         */
         public Builder accountUrl(@Nullable Output<String> accountUrl) {
             $.accountUrl = accountUrl;
             return this;
         }
 
+        /**
+         * @param accountUrl Base URL of the storage account.
+         * 
+         * @return builder
+         * 
+         */
         public Builder accountUrl(String accountUrl) {
             return accountUrl(Output.of(accountUrl));
         }
 
+        /**
+         * @param name The name of the cache image.
+         * 
+         * @return builder
+         * 
+         */
         public Builder name(Output<String> name) {
             $.name = name;
             return this;
         }
 
+        /**
+         * @param name The name of the cache image.
+         * 
+         * @return builder
+         * 
+         */
         public Builder name(String name) {
             return name(Output.of(name));
         }
 
+        /**
+         * @param secretAccessKey Blob storage account key.
+         * 
+         * @return builder
+         * 
+         */
         public Builder secretAccessKey(@Nullable Output<String> secretAccessKey) {
             $.secretAccessKey = secretAccessKey;
             return this;
         }
 
+        /**
+         * @param secretAccessKey Blob storage account key.
+         * 
+         * @return builder
+         * 
+         */
         public Builder secretAccessKey(String secretAccessKey) {
             return secretAccessKey(Output.of(secretAccessKey));
         }

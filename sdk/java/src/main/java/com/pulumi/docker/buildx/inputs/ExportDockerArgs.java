@@ -21,9 +21,17 @@ public final class ExportDockerArgs extends com.pulumi.resources.ResourceArgs {
 
     public static final ExportDockerArgs Empty = new ExportDockerArgs();
 
+    /**
+     * Attach an arbitrary key/value annotation to the image.
+     * 
+     */
     @Import(name="annotations")
     private @Nullable Output<Map<String,String>> annotations;
 
+    /**
+     * @return Attach an arbitrary key/value annotation to the image.
+     * 
+     */
     public Optional<Output<Map<String,String>>> annotations() {
         return Optional.ofNullable(this.annotations);
     }
@@ -164,11 +172,23 @@ public final class ExportDockerArgs extends com.pulumi.resources.ResourceArgs {
             $ = new ExportDockerArgs(Objects.requireNonNull(defaults));
         }
 
+        /**
+         * @param annotations Attach an arbitrary key/value annotation to the image.
+         * 
+         * @return builder
+         * 
+         */
         public Builder annotations(@Nullable Output<Map<String,String>> annotations) {
             $.annotations = annotations;
             return this;
         }
 
+        /**
+         * @param annotations Attach an arbitrary key/value annotation to the image.
+         * 
+         * @return builder
+         * 
+         */
         public Builder annotations(Map<String,String> annotations) {
             return annotations(Output.of(annotations));
         }

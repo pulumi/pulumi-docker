@@ -13,7 +13,7 @@ namespace Pulumi.Docker.Buildx.Inputs
     public sealed class RegistryAuthArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// The registry's address (e.g. "docker.io")
+        /// The registry's address (e.g. "docker.io").
         /// </summary>
         [Input("address", required: true)]
         public Input<string> Address { get; set; } = null!;
@@ -22,7 +22,7 @@ namespace Pulumi.Docker.Buildx.Inputs
         private Input<string>? _password;
 
         /// <summary>
-        /// Password or token for the registry
+        /// Password or token for the registry.
         /// </summary>
         public Input<string>? Password
         {
@@ -35,7 +35,7 @@ namespace Pulumi.Docker.Buildx.Inputs
         }
 
         /// <summary>
-        /// Username for the registry
+        /// Username for the registry.
         /// </summary>
         [Input("username")]
         public Input<string>? Username { get; set; }

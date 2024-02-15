@@ -98,16 +98,47 @@
         ]
     },
     "types": {
+        "docker:buildx/image:BuildContext": {
+            "properties": {
+                "location": {
+                    "type": "string",
+                    "description": "Resources to use for build context.\n\nThe location can be:\n* A relative or absolute path to a local directory (`.`, `./app`,\n  `/app`, etc.).\n* A remote URL of a Git repository, tarball, or plain text file\n  (`https://github.com/user/myrepo.git`, `http://server/context.tar.gz`,\n  etc.)."
+                },
+                "named": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/types/docker:buildx/image:Context"
+                    },
+                    "description": "Additional build contexts to use. \n\nThese contexts are accessed with `FROM name` or `--from=name`\nstatements when using Dockerfile 1.4+ syntax.\n\nValues can be local paths, HTTP URLs, or  `docker-image://` images."
+                }
+            },
+            "type": "object",
+            "required": [
+                "location"
+            ]
+        },
+        "docker:buildx/image:BuilderConfig": {
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Name of an existing buildx builder to use.\n\nOnly `docker-container`, `kubernetes`, or `remote` drivers are\nsupported. The legacy `docker` driver is not supported."
+                }
+            },
+            "type": "object"
+        },
         "docker:buildx/image:CacheFromAzureBlob": {
             "properties": {
                 "accountUrl": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Base URL of the storage account."
                 },
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "The name of the cache image."
                 },
                 "secretAccessKey": {
                     "type": "string",
+                    "description": "Blob storage account key.",
                     "secret": true
                 }
             },
@@ -120,31 +151,31 @@
             "properties": {
                 "azblob": {
                     "$ref": "#/types/docker:buildx/image:CacheFromAzureBlob",
-                    "description": "\nPush cache to Azure's blob storage service."
+                    "description": "Upload build caches to Azure's blob storage service."
                 },
                 "gha": {
                     "$ref": "#/types/docker:buildx/image:CacheFromGitHubActions",
-                    "description": "\nRecommended for use with GitHub Actions workflows.\n\nAn action like \"crazy-max/ghaction-github-runtime\" is recommended to\nexpose appropriate credentials to your GitHub workflow."
+                    "description": "Recommended for use with GitHub Actions workflows.\n\nAn action like `crazy-max/ghaction-github-runtime` is recommended to\nexpose appropriate credentials to your GitHub workflow."
                 },
                 "inline": {
                     "$ref": "#/types/docker:buildx/image:CacheInline",
-                    "description": "\nThe inline cache storage backend is the simplest implementation to get\nstarted with, but it does not handle multi-stage builds. Consider the\nregistry cache backend instead."
+                    "description": "The inline cache storage backend is the simplest implementation to get\nstarted with, but it does not handle multi-stage builds. Consider the\nregistry cache backend instead."
                 },
                 "local": {
                     "$ref": "#/types/docker:buildx/image:CacheFromLocal",
-                    "description": "\nA simple backend which caches imagines on your local filesystem."
+                    "description": "A simple backend which caches images on your local filesystem."
                 },
                 "raw": {
                     "type": "string",
-                    "description": "\nA raw string as you would provide it to the Docker CLI (e.g.,\n\"type=inline\")"
+                    "description": "A raw string as you would provide it to the Docker CLI (e.g.,\n`type=inline`)."
                 },
                 "registry": {
                     "$ref": "#/types/docker:buildx/image:CacheFromRegistry",
-                    "description": "\nPush caches to remote registries. Incompatible with the \"docker\" build\ndriver."
+                    "description": "Upload build caches to remote registries."
                 },
                 "s3": {
                     "$ref": "#/types/docker:buildx/image:CacheFromS3",
-                    "description": "\nPush cache to AWS S3 or S3-compatible services such as MinIO."
+                    "description": "Upload build caches to AWS S3 or an S3-compatible services such as\nMinIO."
                 }
             },
             "type": "object"
@@ -153,7 +184,7 @@
             "properties": {
                 "scope": {
                     "type": "string",
-                    "description": "Which scope cache object belongs to.",
+                    "description": "The scope to use for cache keys. Defaults to `buildkit`.\n\nThis should be set if building and caching multiple images in one\nworkflow, otherwise caches will overwrite each other.",
                     "default": "",
                     "defaultInfo": {
                         "environment": [
@@ -163,7 +194,7 @@
                 },
                 "token": {
                     "type": "string",
-                    "description": "Access token",
+                    "description": "The GitHub Actions token to use. This is not a personal access tokens\nand is typically generated automatically as part of each job.\n\nDefaults to `$ACTIONS_RUNTIME_TOKEN`, although a separate action like\n`crazy-max/ghaction-github-runtime` is recommended to expose this\nenvironment variable to your jobs.",
                     "default": "",
                     "defaultInfo": {
                         "environment": [
@@ -174,7 +205,7 @@
                 },
                 "url": {
                     "type": "string",
-                    "description": "Cache server URL",
+                    "description": "The cache server URL to use for artifacts.\n\nDefaults to `$ACTIONS_RUNTIME_URL`, although a separate action like\n`crazy-max/ghaction-github-runtime` is recommended to expose this\nenvironment variable to your jobs.",
                     "default": "",
                     "defaultInfo": {
                         "environment": [
@@ -188,10 +219,12 @@
         "docker:buildx/image:CacheFromLocal": {
             "properties": {
                 "digest": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Digest of manifest to import."
                 },
                 "src": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Path of the local directory where cache gets imported from."
                 }
             },
             "type": "object",
@@ -203,7 +236,7 @@
             "properties": {
                 "ref": {
                     "type": "string",
-                    "description": "Full name of the cache image to import."
+                    "description": "Fully qualified name of the cache image to import."
                 }
             },
             "type": "object",
@@ -215,6 +248,7 @@
             "properties": {
                 "accessKeyId": {
                     "type": "string",
+                    "description": "Defaults to `$AWS_ACCESS_KEY_ID`.",
                     "default": "",
                     "defaultInfo": {
                         "environment": [
@@ -223,22 +257,28 @@
                     }
                 },
                 "blobsPrefix": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Prefix to prepend to blob filenames."
                 },
                 "bucket": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Name of the S3 bucket."
                 },
                 "endpointUrl": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Endpoint of the S3 bucket."
                 },
                 "manifestsPrefix": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Prefix to prepend on manifest filenames."
                 },
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Name of the cache image."
                 },
                 "region": {
                     "type": "string",
+                    "description": "The geographic location of the bucket. Defaults to `$AWS_REGION`.",
                     "default": "",
                     "defaultInfo": {
                         "environment": [
@@ -248,6 +288,7 @@
                 },
                 "secretAccessKey": {
                     "type": "string",
+                    "description": "Defaults to `$AWS_SECRET_ACCESS_KEY`.",
                     "default": "",
                     "defaultInfo": {
                         "environment": [
@@ -258,6 +299,7 @@
                 },
                 "sessionToken": {
                     "type": "string",
+                    "description": "Defaults to `$AWS_SESSION_TOKEN`.",
                     "default": "",
                     "defaultInfo": {
                         "environment": [
@@ -267,7 +309,8 @@
                     "secret": true
                 },
                 "usePathStyle": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Uses `bucket` in the URL instead of hostname when `true`."
                 }
             },
             "type": "object",
@@ -295,7 +338,8 @@
         "docker:buildx/image:CacheToAzureBlob": {
             "properties": {
                 "accountUrl": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Base URL of the storage account."
                 },
                 "ignoreError": {
                     "type": "boolean",
@@ -304,13 +348,16 @@
                 },
                 "mode": {
                     "$ref": "#/types/docker:buildx/image:CacheMode",
+                    "description": "The cache mode to use. Defaults to `min`.",
                     "default": "min"
                 },
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "The name of the cache image."
                 },
                 "secretAccessKey": {
                     "type": "string",
+                    "description": "Blob storage account key.",
                     "secret": true
                 }
             },
@@ -323,31 +370,31 @@
             "properties": {
                 "azblob": {
                     "$ref": "#/types/docker:buildx/image:CacheToAzureBlob",
-                    "description": "\nPush cache to Azure's blob storage service."
+                    "description": "Push cache to Azure's blob storage service."
                 },
                 "gha": {
                     "$ref": "#/types/docker:buildx/image:CacheToGitHubActions",
-                    "description": "\nRecommended for use with GitHub Actions workflows.\n\nAn action like \"crazy-max/ghaction-github-runtime\" is recommended to\nexpose appropriate credentials to your GitHub workflow."
+                    "description": "Recommended for use with GitHub Actions workflows.\n\nAn action like `crazy-max/ghaction-github-runtime` is recommended to\nexpose appropriate credentials to your GitHub workflow."
                 },
                 "inline": {
                     "$ref": "#/types/docker:buildx/image:CacheInline",
-                    "description": "\nThe inline cache storage backend is the simplest implementation to get\nstarted with, but it does not handle multi-stage builds. Consider the\nregistry cache backend instead."
+                    "description": "The inline cache storage backend is the simplest implementation to get\nstarted with, but it does not handle multi-stage builds. Consider the\n`registry` cache backend instead."
                 },
                 "local": {
                     "$ref": "#/types/docker:buildx/image:CacheToLocal",
-                    "description": "\nA simple backend which caches imagines on your local filesystem."
+                    "description": "A simple backend which caches imagines on your local filesystem."
                 },
                 "raw": {
                     "type": "string",
-                    "description": "\nA raw string as you would provide it to the Docker CLI (e.g.,\n\"type=inline\")"
+                    "description": "A raw string as you would provide it to the Docker CLI (e.g.,\n`type=inline`)"
                 },
                 "registry": {
                     "$ref": "#/types/docker:buildx/image:CacheToRegistry",
-                    "description": "\nPush caches to remote registries. Incompatible with the \"docker\" build\ndriver."
+                    "description": "Push caches to remote registries. Incompatible with the `docker` build\ndriver."
                 },
                 "s3": {
                     "$ref": "#/types/docker:buildx/image:CacheToS3",
-                    "description": "\nPush cache to AWS S3 or S3-compatible services such as MinIO."
+                    "description": "Push cache to AWS S3 or S3-compatible services such as MinIO."
                 }
             },
             "type": "object"
@@ -361,11 +408,12 @@
                 },
                 "mode": {
                     "$ref": "#/types/docker:buildx/image:CacheMode",
+                    "description": "The cache mode to use. Defaults to `min`.",
                     "default": "min"
                 },
                 "scope": {
                     "type": "string",
-                    "description": "Which scope cache object belongs to.",
+                    "description": "The scope to use for cache keys. Defaults to `buildkit`.\n\nThis should be set if building and caching multiple images in one\nworkflow, otherwise caches will overwrite each other.",
                     "default": "",
                     "defaultInfo": {
                         "environment": [
@@ -375,7 +423,7 @@
                 },
                 "token": {
                     "type": "string",
-                    "description": "Access token",
+                    "description": "The GitHub Actions token to use. This is not a personal access tokens\nand is typically generated automatically as part of each job.\n\nDefaults to `$ACTIONS_RUNTIME_TOKEN`, although a separate action like\n`crazy-max/ghaction-github-runtime` is recommended to expose this\nenvironment variable to your jobs.",
                     "default": "",
                     "defaultInfo": {
                         "environment": [
@@ -386,7 +434,7 @@
                 },
                 "url": {
                     "type": "string",
-                    "description": "Cache server URL",
+                    "description": "The cache server URL to use for artifacts.\n\nDefaults to `$ACTIONS_RUNTIME_URL`, although a separate action like\n`crazy-max/ghaction-github-runtime` is recommended to expose this\nenvironment variable to your jobs.",
                     "default": "",
                     "defaultInfo": {
                         "environment": [
@@ -410,7 +458,8 @@
                     "default": 0
                 },
                 "dest": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Path of the local directory to export the cache."
                 },
                 "forceCompression": {
                     "type": "boolean",
@@ -424,6 +473,7 @@
                 },
                 "mode": {
                     "$ref": "#/types/docker:buildx/image:CacheMode",
+                    "description": "The cache mode to use. Defaults to `min`.",
                     "default": "min"
                 }
             },
@@ -456,21 +506,22 @@
                 },
                 "imageManifest": {
                     "type": "boolean",
-                    "description": "Export cache manifest as an OCI-compatible image manifest instead of a manifest list (requires OCI media types).",
+                    "description": "Export cache manifest as an OCI-compatible image manifest instead of a\nmanifest list (requires OCI media types).\n\nDefaults to `false`.",
                     "default": false
                 },
                 "mode": {
                     "$ref": "#/types/docker:buildx/image:CacheMode",
+                    "description": "The cache mode to use. Defaults to `min`.",
                     "default": "min"
                 },
                 "ociMediaTypes": {
                     "type": "boolean",
-                    "description": "Whether to use OCI mediatypes in exported manifests.",
+                    "description": "Whether to use OCI mediatypes in exported manifests. Defaults to\n`true`.",
                     "default": true
                 },
                 "ref": {
                     "type": "string",
-                    "description": "Full name of the cache image to import."
+                    "description": "Fully qualified name of the cache image to import."
                 }
             },
             "type": "object",
@@ -482,6 +533,7 @@
             "properties": {
                 "accessKeyId": {
                     "type": "string",
+                    "description": "Defaults to `$AWS_ACCESS_KEY_ID`.",
                     "default": "",
                     "defaultInfo": {
                         "environment": [
@@ -490,13 +542,16 @@
                     }
                 },
                 "blobsPrefix": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Prefix to prepend to blob filenames."
                 },
                 "bucket": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Name of the S3 bucket."
                 },
                 "endpointUrl": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Endpoint of the S3 bucket."
                 },
                 "ignoreError": {
                     "type": "boolean",
@@ -504,17 +559,21 @@
                     "default": false
                 },
                 "manifestsPrefix": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Prefix to prepend on manifest filenames."
                 },
                 "mode": {
                     "$ref": "#/types/docker:buildx/image:CacheMode",
+                    "description": "The cache mode to use. Defaults to `min`.",
                     "default": "min"
                 },
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Name of the cache image."
                 },
                 "region": {
                     "type": "string",
+                    "description": "The geographic location of the bucket. Defaults to `$AWS_REGION`.",
                     "default": "",
                     "defaultInfo": {
                         "environment": [
@@ -524,6 +583,7 @@
                 },
                 "secretAccessKey": {
                     "type": "string",
+                    "description": "Defaults to `$AWS_SECRET_ACCESS_KEY`.",
                     "default": "",
                     "defaultInfo": {
                         "environment": [
@@ -534,6 +594,7 @@
                 },
                 "sessionToken": {
                     "type": "string",
+                    "description": "Defaults to `$AWS_SESSION_TOKEN`.",
                     "default": "",
                     "defaultInfo": {
                         "environment": [
@@ -543,7 +604,8 @@
                     "secret": true
                 },
                 "usePathStyle": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Uses `bucket` in the URL instead of hostname when `true`."
                 }
             },
             "type": "object",
@@ -569,13 +631,39 @@
                 }
             ]
         },
+        "docker:buildx/image:Context": {
+            "properties": {
+                "location": {
+                    "type": "string",
+                    "description": "Resources to use for build context.\n\nThe location can be:\n* A relative or absolute path to a local directory (`.`, `./app`,\n  `/app`, etc.).\n* A remote URL of a Git repository, tarball, or plain text file\n  (`https://github.com/user/myrepo.git`, `http://server/context.tar.gz`,\n  etc.)."
+                }
+            },
+            "type": "object",
+            "required": [
+                "location"
+            ]
+        },
+        "docker:buildx/image:Dockerfile": {
+            "properties": {
+                "inline": {
+                    "type": "string",
+                    "description": "Raw Dockerfile contents.\n\nConflicts with `location`."
+                },
+                "location": {
+                    "type": "string",
+                    "description": "Location of the Dockerfile to use.\n\nCan be a relative or absolute path to a local file, or a remote URL.\n\nConflicts with `inline`."
+                }
+            },
+            "type": "object"
+        },
         "docker:buildx/image:ExportDocker": {
             "properties": {
                 "annotations": {
                     "type": "object",
                     "additionalProperties": {
                         "type": "string"
-                    }
+                    },
+                    "description": "Attach an arbitrary key/value annotation to the image."
                 },
                 "compression": {
                     "$ref": "#/types/docker:buildx/image:CompressionType",
@@ -620,31 +708,38 @@
             "properties": {
                 "docker": {
                     "$ref": "#/types/docker:buildx/image:ExportDocker",
-                    "description": "\nExport as a Docker image layout."
+                    "description": "Export as a Docker image layout."
                 },
                 "image": {
                     "$ref": "#/types/docker:buildx/image:ExportImage",
-                    "description": "\nOutputs the build result into a container image format."
+                    "description": "Outputs the build result into a container image format."
                 },
                 "local": {
                     "$ref": "#/types/docker:buildx/image:ExportLocal",
-                    "description": "\nExport to a local directory as files and directories."
+                    "description": "Export to a local directory as files and directories."
+                },
+                "manifests": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/docker:buildx/image:Manifest"
+                    },
+                    "description": "An output property populated for exporters that pushed image\nmanifest(s) to a registry."
                 },
                 "oci": {
                     "$ref": "#/types/docker:buildx/image:ExportOCI",
-                    "description": "\nIdentical to the Docker exporter but uses OCI media types by default."
+                    "description": "Identical to the Docker exporter but uses OCI media types by default."
                 },
                 "raw": {
                     "type": "string",
-                    "description": "\nA raw string as you would provide it to the Docker CLI (e.g.,\n\"type=docker\")"
+                    "description": "A raw string as you would provide it to the Docker CLI (e.g.,\n`type=docker`)"
                 },
                 "registry": {
                     "$ref": "#/types/docker:buildx/image:ExportRegistry",
-                    "description": "\nIdentical to the Image exporter, but pushes by default."
+                    "description": "Identical to the Image exporter, but pushes by default."
                 },
                 "tar": {
                     "$ref": "#/types/docker:buildx/image:ExportTar",
-                    "description": "\nExport to a local directory as a tarball."
+                    "description": "Export to a local directory as a tarball."
                 }
             },
             "type": "object"
@@ -655,7 +750,8 @@
                     "type": "object",
                     "additionalProperties": {
                         "type": "string"
-                    }
+                    },
+                    "description": "Attach an arbitrary key/value annotation to the image."
                 },
                 "compression": {
                     "$ref": "#/types/docker:buildx/image:CompressionType",
@@ -668,7 +764,8 @@
                     "default": 0
                 },
                 "danglingNamePrefix": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Name image with `prefix@\u003cdigest\u003e`, used for anonymous images."
                 },
                 "forceCompression": {
                     "type": "boolean",
@@ -676,10 +773,12 @@
                     "default": false
                 },
                 "insecure": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Allow pushing to an insecure registry."
                 },
                 "nameCanonical": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Add additional canonical name (`name@\u003cdigest\u003e`)."
                 },
                 "names": {
                     "type": "array",
@@ -698,15 +797,17 @@
                     "description": "Push after creating the image."
                 },
                 "pushByDigest": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Push image without name."
                 },
                 "store": {
                     "type": "boolean",
-                    "description": "\nStore resulting images to the worker's image store, and ensure all its\nblobs are in the content store. Ignored if the worker doesn't have\nimage store (when using OCI workers, for example).",
+                    "description": "Store resulting images to the worker's image store and ensure all of\nits blobs are in the content store. \n\nDefaults to `true`.\n\nIgnored if the worker doesn't have image store (when using OCI workers,\nfor example).",
                     "default": true
                 },
                 "unpack": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Unpack image after creation (for use with containerd). Defaults to\n`false`."
                 }
             },
             "type": "object"
@@ -729,7 +830,8 @@
                     "type": "object",
                     "additionalProperties": {
                         "type": "string"
-                    }
+                    },
+                    "description": "Attach an arbitrary key/value annotation to the image."
                 },
                 "compression": {
                     "$ref": "#/types/docker:buildx/image:CompressionType",
@@ -776,7 +878,8 @@
                     "type": "object",
                     "additionalProperties": {
                         "type": "string"
-                    }
+                    },
+                    "description": "Attach an arbitrary key/value annotation to the image."
                 },
                 "compression": {
                     "$ref": "#/types/docker:buildx/image:CompressionType",
@@ -789,7 +892,8 @@
                     "default": 0
                 },
                 "danglingNamePrefix": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Name image with `prefix@\u003cdigest\u003e`, used for anonymous images."
                 },
                 "forceCompression": {
                     "type": "boolean",
@@ -797,10 +901,12 @@
                     "default": false
                 },
                 "insecure": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Allow pushing to an insecure registry."
                 },
                 "nameCanonical": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Add additional canonical name (`name@\u003cdigest\u003e`)."
                 },
                 "names": {
                     "type": "array",
@@ -820,15 +926,17 @@
                     "default": true
                 },
                 "pushByDigest": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Push image without name."
                 },
                 "store": {
                     "type": "boolean",
-                    "description": "\nStore resulting images to the worker's image store, and ensure all its\nblobs are in the content store. Ignored if the worker doesn't have\nimage store (when using OCI workers, for example).",
+                    "description": "Store resulting images to the worker's image store and ensure all of\nits blobs are in the content store. \n\nDefaults to `true`.\n\nIgnored if the worker doesn't have image store (when using OCI workers,\nfor example).",
                     "default": true
                 },
                 "unpack": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Unpack image after creation (for use with containerd). Defaults to\n`false`."
                 }
             },
             "type": "object"
@@ -848,17 +956,20 @@
         "docker:buildx/image:Manifest": {
             "properties": {
                 "digest": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "The SHA256 digest of the manifest."
                 },
                 "platform": {
-                    "$ref": "#/types/docker:buildx/image:Platform"
+                    "$ref": "#/types/docker:buildx/image:ManifestPlatform",
+                    "description": "The manifest's platform."
                 },
                 "ref": {
                     "type": "string",
-                    "description": "The manifest's ref"
+                    "description": "The manifest's canonical ref."
                 },
                 "size": {
-                    "type": "integer"
+                    "type": "integer",
+                    "description": "The size of the manifest in bytes."
                 }
             },
             "type": "object",
@@ -867,6 +978,23 @@
                 "platform",
                 "ref",
                 "size"
+            ]
+        },
+        "docker:buildx/image:ManifestPlatform": {
+            "properties": {
+                "architecture": {
+                    "type": "string",
+                    "description": "The manifest's architecture."
+                },
+                "os": {
+                    "type": "string",
+                    "description": "The manifest's operating systen."
+                }
+            },
+            "type": "object",
+            "required": [
+                "os",
+                "architecture"
             ]
         },
         "docker:buildx/image:Platform": {
@@ -962,16 +1090,16 @@
             "properties": {
                 "address": {
                     "type": "string",
-                    "description": "The registry's address (e.g. \"docker.io\")"
+                    "description": "The registry's address (e.g. \"docker.io\")."
                 },
                 "password": {
                     "type": "string",
-                    "description": "Password or token for the registry",
+                    "description": "Password or token for the registry.",
                     "secret": true
                 },
                 "username": {
                     "type": "string",
-                    "description": "Username for the registry"
+                    "description": "Username for the registry."
                 }
             },
             "type": "object",
@@ -2951,167 +3079,205 @@
     },
     "resources": {
         "docker:buildx/image:Image": {
-            "description": "A Docker image built using Buildkit",
+            "description": "A Docker image built using buildx -- Docker's interface to the improved\nBuildKit backend.\n\n**This resource is experimental and subject to change.**\n\nAPI types are unstable. Subsequent releases _may_ require manual edits\nto your state file(s) in order to adopt API changes.\n\nOnly use this resource if you understand and accept the risks.\n\n{{% examples %}}\n## Example Usage\n{{% example %}}\n### Multi-platform image\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst image = new docker.buildx.Image(\"image\", {\n    context: {\n        location: \"app\",\n    },\n    dockerfile: {\n        location: \"app/Dockerfile\",\n    },\n    platforms: [\n        docker.buildx.image.Platform.Plan9_amd64,\n        docker.buildx.image.Platform.Plan9_386,\n    ],\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nimage = docker.buildx.Image(\"image\",\n    context=docker.buildx.BuildContextArgs(\n        location=\"app\",\n    ),\n    dockerfile=docker.buildx.DockerfileArgs(\n        location=\"app/Dockerfile\",\n    ),\n    platforms=[\n        docker.buildx/image.Platform.PLAN9_AMD64,\n        docker.buildx/image.Platform.PLAN9_386,\n    ])\n```\n```csharp\nusing System.Collections.Generic;\nusing System.Linq;\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nreturn await Deployment.RunAsync(() =\u003e \n{\n    var image = new Docker.Buildx.Image(\"image\", new()\n    {\n        Context = new Docker.Buildx.Inputs.BuildContextArgs\n        {\n            Location = \"app\",\n        },\n        Dockerfile = new Docker.Buildx.Inputs.DockerfileArgs\n        {\n            Location = \"app/Dockerfile\",\n        },\n        Platforms = new[]\n        {\n            Docker.Buildx.Image.Platform.Plan9_amd64,\n            Docker.Buildx.Image.Platform.Plan9_386,\n        },\n    });\n\n});\n\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v4/go/docker/buildx\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := buildx.NewImage(ctx, \"image\", \u0026buildx.ImageArgs{\n\t\t\tContext: \u0026buildx.BuildContextArgs{\n\t\t\t\tLocation: pulumi.String(\"app\"),\n\t\t\t},\n\t\t\tDockerfile: \u0026buildx.DockerfileArgs{\n\t\t\t\tLocation: pulumi.String(\"app/Dockerfile\"),\n\t\t\t},\n\t\t\tPlatforms: buildx.PlatformArray{\n\t\t\t\tbuildx.Platform_Plan9_amd64,\n\t\t\t\tbuildx.Platform_Plan9_386,\n\t\t\t},\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```yaml\ndescription: Multi-platform image\nname: multi-platform\nresources:\n    image:\n        properties:\n            context:\n                location: app\n            dockerfile:\n                location: app/Dockerfile\n            platforms:\n                - plan9/amd64\n                - plan9/386\n        type: docker:buildx/image:Image\nruntime: yaml\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.buildx.Image;\nimport com.pulumi.docker.buildx.ImageArgs;\nimport com.pulumi.docker.buildx.inputs.BuildContextArgs;\nimport com.pulumi.docker.buildx.inputs.DockerfileArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var image = new Image(\"image\", ImageArgs.builder()        \n            .context(BuildContextArgs.builder()\n                .location(\"app\")\n                .build())\n            .dockerfile(DockerfileArgs.builder()\n                .location(\"app/Dockerfile\")\n                .build())\n            .platforms(            \n                \"plan9/amd64\",\n                \"plan9/386\")\n            .build());\n\n    }\n}\n```\n{{% /example %}}\n{{% example %}}\n### Registry export\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst image = new docker.buildx.Image(\"image\", {\n    context: {\n        location: \"app\",\n    },\n    dockerfile: {\n        location: \"app/Dockerfile\",\n    },\n    exports: [{\n        registry: {\n            ociMediaTypes: true,\n        },\n    }],\n    registries: [{\n        address: \"docker.io\",\n        password: dockerHubPassword,\n        username: \"pulumibot\",\n    }],\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nimage = docker.buildx.Image(\"image\",\n    context=docker.buildx.BuildContextArgs(\n        location=\"app\",\n    ),\n    dockerfile=docker.buildx.DockerfileArgs(\n        location=\"app/Dockerfile\",\n    ),\n    exports=[docker.buildx.ExportEntryArgs(\n        registry=docker.buildx.ExportRegistryArgs(\n            oci_media_types=True,\n        ),\n    )],\n    registries=[docker.buildx.RegistryAuthArgs(\n        address=\"docker.io\",\n        password=docker_hub_password,\n        username=\"pulumibot\",\n    )])\n```\n```csharp\nusing System.Collections.Generic;\nusing System.Linq;\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nreturn await Deployment.RunAsync(() =\u003e \n{\n    var image = new Docker.Buildx.Image(\"image\", new()\n    {\n        Context = new Docker.Buildx.Inputs.BuildContextArgs\n        {\n            Location = \"app\",\n        },\n        Dockerfile = new Docker.Buildx.Inputs.DockerfileArgs\n        {\n            Location = \"app/Dockerfile\",\n        },\n        Exports = new[]\n        {\n            new Docker.Buildx.Inputs.ExportEntryArgs\n            {\n                Registry = new Docker.Buildx.Inputs.ExportRegistryArgs\n                {\n                    OciMediaTypes = true,\n                },\n            },\n        },\n        Registries = new[]\n        {\n            new Docker.Buildx.Inputs.RegistryAuthArgs\n            {\n                Address = \"docker.io\",\n                Password = dockerHubPassword,\n                Username = \"pulumibot\",\n            },\n        },\n    });\n\n});\n\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v4/go/docker/buildx\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := buildx.NewImage(ctx, \"image\", \u0026buildx.ImageArgs{\n\t\t\tContext: \u0026buildx.BuildContextArgs{\n\t\t\t\tLocation: pulumi.String(\"app\"),\n\t\t\t},\n\t\t\tDockerfile: \u0026buildx.DockerfileArgs{\n\t\t\t\tLocation: pulumi.String(\"app/Dockerfile\"),\n\t\t\t},\n\t\t\tExports: buildx.ExportEntryArray{\n\t\t\t\t\u0026buildx.ExportEntryArgs{\n\t\t\t\t\tRegistry: \u0026buildx.ExportRegistryArgs{\n\t\t\t\t\t\tOciMediaTypes: pulumi.Bool(true),\n\t\t\t\t\t},\n\t\t\t\t},\n\t\t\t},\n\t\t\tRegistries: buildx.RegistryAuthArray{\n\t\t\t\t\u0026buildx.RegistryAuthArgs{\n\t\t\t\t\tAddress:  pulumi.String(\"docker.io\"),\n\t\t\t\t\tPassword: pulumi.Any(dockerHubPassword),\n\t\t\t\t\tUsername: pulumi.String(\"pulumibot\"),\n\t\t\t\t},\n\t\t\t},\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```yaml\ndescription: Registry export\nname: registry\nresources:\n    image:\n        properties:\n            context:\n                location: app\n            dockerfile:\n                location: app/Dockerfile\n            exports:\n                - registry:\n                    ociMediaTypes: true\n            registries:\n                - address: docker.io\n                  password: ${dockerHubPassword}\n                  username: pulumibot\n        type: docker:buildx/image:Image\nruntime: yaml\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.buildx.Image;\nimport com.pulumi.docker.buildx.ImageArgs;\nimport com.pulumi.docker.buildx.inputs.BuildContextArgs;\nimport com.pulumi.docker.buildx.inputs.DockerfileArgs;\nimport com.pulumi.docker.buildx.inputs.ExportEntryArgs;\nimport com.pulumi.docker.buildx.inputs.ExportRegistryArgs;\nimport com.pulumi.docker.buildx.inputs.RegistryAuthArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var image = new Image(\"image\", ImageArgs.builder()        \n            .context(BuildContextArgs.builder()\n                .location(\"app\")\n                .build())\n            .dockerfile(DockerfileArgs.builder()\n                .location(\"app/Dockerfile\")\n                .build())\n            .exports(ExportEntryArgs.builder()\n                .registry(ExportRegistryArgs.builder()\n                    .ociMediaTypes(true)\n                    .build())\n                .build())\n            .registries(RegistryAuthArgs.builder()\n                .address(\"docker.io\")\n                .password(dockerHubPassword)\n                .username(\"pulumibot\")\n                .build())\n            .build());\n\n    }\n}\n```\n{{% /example %}}\n{{% example %}}\n### Caching\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst image = new docker.buildx.Image(\"image\", {\n    cacheFrom: [{\n        local: {\n            src: \"tmp/cache\",\n        },\n    }],\n    cacheTo: [{\n        local: {\n            dest: \"tmp/cache\",\n            mode: docker.buildx.image.CacheMode.Max,\n        },\n    }],\n    context: {\n        location: \"app\",\n    },\n    dockerfile: {\n        location: \"app/Dockerfile\",\n    },\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nimage = docker.buildx.Image(\"image\",\n    cache_from=[docker.buildx.CacheFromEntryArgs(\n        local=docker.buildx.CacheFromLocalArgs(\n            src=\"tmp/cache\",\n        ),\n    )],\n    cache_to=[docker.buildx.CacheToEntryArgs(\n        local=docker.buildx.CacheToLocalArgs(\n            dest=\"tmp/cache\",\n            mode=docker.buildx/image.CacheMode.MAX,\n        ),\n    )],\n    context=docker.buildx.BuildContextArgs(\n        location=\"app\",\n    ),\n    dockerfile=docker.buildx.DockerfileArgs(\n        location=\"app/Dockerfile\",\n    ))\n```\n```csharp\nusing System.Collections.Generic;\nusing System.Linq;\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nreturn await Deployment.RunAsync(() =\u003e \n{\n    var image = new Docker.Buildx.Image(\"image\", new()\n    {\n        CacheFrom = new[]\n        {\n            new Docker.Buildx.Inputs.CacheFromEntryArgs\n            {\n                Local = new Docker.Buildx.Inputs.CacheFromLocalArgs\n                {\n                    Src = \"tmp/cache\",\n                },\n            },\n        },\n        CacheTo = new[]\n        {\n            new Docker.Buildx.Inputs.CacheToEntryArgs\n            {\n                Local = new Docker.Buildx.Inputs.CacheToLocalArgs\n                {\n                    Dest = \"tmp/cache\",\n                    Mode = Docker.Buildx.Image.CacheMode.Max,\n                },\n            },\n        },\n        Context = new Docker.Buildx.Inputs.BuildContextArgs\n        {\n            Location = \"app\",\n        },\n        Dockerfile = new Docker.Buildx.Inputs.DockerfileArgs\n        {\n            Location = \"app/Dockerfile\",\n        },\n    });\n\n});\n\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v4/go/docker/buildx\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := buildx.NewImage(ctx, \"image\", \u0026buildx.ImageArgs{\n\t\t\tCacheFrom: buildx.CacheFromEntryArray{\n\t\t\t\t\u0026buildx.CacheFromEntryArgs{\n\t\t\t\t\tLocal: \u0026buildx.CacheFromLocalArgs{\n\t\t\t\t\t\tSrc: pulumi.String(\"tmp/cache\"),\n\t\t\t\t\t},\n\t\t\t\t},\n\t\t\t},\n\t\t\tCacheTo: buildx.CacheToEntryArray{\n\t\t\t\t\u0026buildx.CacheToEntryArgs{\n\t\t\t\t\tLocal: \u0026buildx.CacheToLocalArgs{\n\t\t\t\t\t\tDest: pulumi.String(\"tmp/cache\"),\n\t\t\t\t\t\tMode: buildx.CacheModeMax,\n\t\t\t\t\t},\n\t\t\t\t},\n\t\t\t},\n\t\t\tContext: \u0026buildx.BuildContextArgs{\n\t\t\t\tLocation: pulumi.String(\"app\"),\n\t\t\t},\n\t\t\tDockerfile: \u0026buildx.DockerfileArgs{\n\t\t\t\tLocation: pulumi.String(\"app/Dockerfile\"),\n\t\t\t},\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```yaml\ndescription: Caching\nname: caching\nresources:\n    image:\n        properties:\n            cacheFrom:\n                - local:\n                    src: tmp/cache\n            cacheTo:\n                - local:\n                    dest: tmp/cache\n                    mode: max\n            context:\n                location: app\n            dockerfile:\n                location: app/Dockerfile\n        type: docker:buildx/image:Image\nruntime: yaml\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.buildx.Image;\nimport com.pulumi.docker.buildx.ImageArgs;\nimport com.pulumi.docker.buildx.inputs.CacheFromEntryArgs;\nimport com.pulumi.docker.buildx.inputs.CacheFromLocalArgs;\nimport com.pulumi.docker.buildx.inputs.CacheToEntryArgs;\nimport com.pulumi.docker.buildx.inputs.CacheToLocalArgs;\nimport com.pulumi.docker.buildx.inputs.BuildContextArgs;\nimport com.pulumi.docker.buildx.inputs.DockerfileArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var image = new Image(\"image\", ImageArgs.builder()        \n            .cacheFrom(CacheFromEntryArgs.builder()\n                .local(CacheFromLocalArgs.builder()\n                    .src(\"tmp/cache\")\n                    .build())\n                .build())\n            .cacheTo(CacheToEntryArgs.builder()\n                .local(CacheToLocalArgs.builder()\n                    .dest(\"tmp/cache\")\n                    .mode(\"max\")\n                    .build())\n                .build())\n            .context(BuildContextArgs.builder()\n                .location(\"app\")\n                .build())\n            .dockerfile(DockerfileArgs.builder()\n                .location(\"app/Dockerfile\")\n                .build())\n            .build());\n\n    }\n}\n```\n{{% /example %}}\n{{% example %}}\n### Build arguments\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst image = new docker.buildx.Image(\"image\", {\n    buildArgs: {\n        SET_ME_TO_TRUE: \"true\",\n    },\n    context: {\n        location: \"app\",\n    },\n    dockerfile: {\n        location: \"app/Dockerfile\",\n    },\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nimage = docker.buildx.Image(\"image\",\n    build_args={\n        \"SET_ME_TO_TRUE\": \"true\",\n    },\n    context=docker.buildx.BuildContextArgs(\n        location=\"app\",\n    ),\n    dockerfile=docker.buildx.DockerfileArgs(\n        location=\"app/Dockerfile\",\n    ))\n```\n```csharp\nusing System.Collections.Generic;\nusing System.Linq;\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nreturn await Deployment.RunAsync(() =\u003e \n{\n    var image = new Docker.Buildx.Image(\"image\", new()\n    {\n        BuildArgs = \n        {\n            { \"SET_ME_TO_TRUE\", \"true\" },\n        },\n        Context = new Docker.Buildx.Inputs.BuildContextArgs\n        {\n            Location = \"app\",\n        },\n        Dockerfile = new Docker.Buildx.Inputs.DockerfileArgs\n        {\n            Location = \"app/Dockerfile\",\n        },\n    });\n\n});\n\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v4/go/docker/buildx\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := buildx.NewImage(ctx, \"image\", \u0026buildx.ImageArgs{\n\t\t\tBuildArgs: pulumi.StringMap{\n\t\t\t\t\"SET_ME_TO_TRUE\": pulumi.String(\"true\"),\n\t\t\t},\n\t\t\tContext: \u0026buildx.BuildContextArgs{\n\t\t\t\tLocation: pulumi.String(\"app\"),\n\t\t\t},\n\t\t\tDockerfile: \u0026buildx.DockerfileArgs{\n\t\t\t\tLocation: pulumi.String(\"app/Dockerfile\"),\n\t\t\t},\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```yaml\ndescription: Build arguments\nname: build-args\nresources:\n    image:\n        properties:\n            buildArgs:\n                SET_ME_TO_TRUE: \"true\"\n            context:\n                location: app\n            dockerfile:\n                location: app/Dockerfile\n        type: docker:buildx/image:Image\nruntime: yaml\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.buildx.Image;\nimport com.pulumi.docker.buildx.ImageArgs;\nimport com.pulumi.docker.buildx.inputs.BuildContextArgs;\nimport com.pulumi.docker.buildx.inputs.DockerfileArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var image = new Image(\"image\", ImageArgs.builder()        \n            .buildArgs(Map.of(\"SET_ME_TO_TRUE\", \"true\"))\n            .context(BuildContextArgs.builder()\n                .location(\"app\")\n                .build())\n            .dockerfile(DockerfileArgs.builder()\n                .location(\"app/Dockerfile\")\n                .build())\n            .build());\n\n    }\n}\n```\n{{% /example %}}\n{{% example %}}\n### Build targets\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst image = new docker.buildx.Image(\"image\", {\n    context: {\n        location: \"app\",\n    },\n    dockerfile: {\n        location: \"app/Dockerfile\",\n    },\n    targets: [\n        \"build-me\",\n        \"also-build-me\",\n    ],\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nimage = docker.buildx.Image(\"image\",\n    context=docker.buildx.BuildContextArgs(\n        location=\"app\",\n    ),\n    dockerfile=docker.buildx.DockerfileArgs(\n        location=\"app/Dockerfile\",\n    ),\n    targets=[\n        \"build-me\",\n        \"also-build-me\",\n    ])\n```\n```csharp\nusing System.Collections.Generic;\nusing System.Linq;\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nreturn await Deployment.RunAsync(() =\u003e \n{\n    var image = new Docker.Buildx.Image(\"image\", new()\n    {\n        Context = new Docker.Buildx.Inputs.BuildContextArgs\n        {\n            Location = \"app\",\n        },\n        Dockerfile = new Docker.Buildx.Inputs.DockerfileArgs\n        {\n            Location = \"app/Dockerfile\",\n        },\n        Targets = new[]\n        {\n            \"build-me\",\n            \"also-build-me\",\n        },\n    });\n\n});\n\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v4/go/docker/buildx\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := buildx.NewImage(ctx, \"image\", \u0026buildx.ImageArgs{\n\t\t\tContext: \u0026buildx.BuildContextArgs{\n\t\t\t\tLocation: pulumi.String(\"app\"),\n\t\t\t},\n\t\t\tDockerfile: \u0026buildx.DockerfileArgs{\n\t\t\t\tLocation: pulumi.String(\"app/Dockerfile\"),\n\t\t\t},\n\t\t\tTargets: pulumi.StringArray{\n\t\t\t\tpulumi.String(\"build-me\"),\n\t\t\t\tpulumi.String(\"also-build-me\"),\n\t\t\t},\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```yaml\ndescription: Build targets\nname: build-targets\nresources:\n    image:\n        properties:\n            context:\n                location: app\n            dockerfile:\n                location: app/Dockerfile\n            targets:\n                - build-me\n                - also-build-me\n        type: docker:buildx/image:Image\nruntime: yaml\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.buildx.Image;\nimport com.pulumi.docker.buildx.ImageArgs;\nimport com.pulumi.docker.buildx.inputs.BuildContextArgs;\nimport com.pulumi.docker.buildx.inputs.DockerfileArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var image = new Image(\"image\", ImageArgs.builder()        \n            .context(BuildContextArgs.builder()\n                .location(\"app\")\n                .build())\n            .dockerfile(DockerfileArgs.builder()\n                .location(\"app/Dockerfile\")\n                .build())\n            .targets(            \n                \"build-me\",\n                \"also-build-me\")\n            .build());\n\n    }\n}\n```\n{{% /example %}}\n{{% example %}}\n### Named contexts\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst image = new docker.buildx.Image(\"image\", {\n    context: {\n        location: \"app\",\n        named: {\n            \"golang:latest\": {\n                location: \"docker-image://golang@sha256:b8e62cf593cdaff36efd90aa3a37de268e6781a2e68c6610940c48f7cdf36984\",\n            },\n        },\n    },\n    dockerfile: {\n        location: \"app/Dockerfile\",\n    },\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nimage = docker.buildx.Image(\"image\",\n    context=docker.buildx.BuildContextArgs(\n        location=\"app\",\n        named={\n            \"golang:latest\": docker.buildx.ContextArgs(\n                location=\"docker-image://golang@sha256:b8e62cf593cdaff36efd90aa3a37de268e6781a2e68c6610940c48f7cdf36984\",\n            ),\n        },\n    ),\n    dockerfile=docker.buildx.DockerfileArgs(\n        location=\"app/Dockerfile\",\n    ))\n```\n```csharp\nusing System.Collections.Generic;\nusing System.Linq;\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nreturn await Deployment.RunAsync(() =\u003e \n{\n    var image = new Docker.Buildx.Image(\"image\", new()\n    {\n        Context = new Docker.Buildx.Inputs.BuildContextArgs\n        {\n            Location = \"app\",\n            Named = \n            {\n                { \"golang:latest\", new Docker.Buildx.Inputs.ContextArgs\n                {\n                    Location = \"docker-image://golang@sha256:b8e62cf593cdaff36efd90aa3a37de268e6781a2e68c6610940c48f7cdf36984\",\n                } },\n            },\n        },\n        Dockerfile = new Docker.Buildx.Inputs.DockerfileArgs\n        {\n            Location = \"app/Dockerfile\",\n        },\n    });\n\n});\n\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v4/go/docker/buildx\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := buildx.NewImage(ctx, \"image\", \u0026buildx.ImageArgs{\n\t\t\tContext: \u0026buildx.BuildContextArgs{\n\t\t\t\tLocation: pulumi.String(\"app\"),\n\t\t\t\tNamed: buildx.ContextMap{\n\t\t\t\t\t\"golang:latest\": \u0026buildx.ContextArgs{\n\t\t\t\t\t\tLocation: pulumi.String(\"docker-image://golang@sha256:b8e62cf593cdaff36efd90aa3a37de268e6781a2e68c6610940c48f7cdf36984\"),\n\t\t\t\t\t},\n\t\t\t\t},\n\t\t\t},\n\t\t\tDockerfile: \u0026buildx.DockerfileArgs{\n\t\t\t\tLocation: pulumi.String(\"app/Dockerfile\"),\n\t\t\t},\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```yaml\ndescription: Named contexts\nname: named-contexts\nresources:\n    image:\n        properties:\n            context:\n                location: app\n                named:\n                    golang:latest:\n                        location: docker-image://golang@sha256:b8e62cf593cdaff36efd90aa3a37de268e6781a2e68c6610940c48f7cdf36984\n            dockerfile:\n                location: app/Dockerfile\n        type: docker:buildx/image:Image\nruntime: yaml\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.buildx.Image;\nimport com.pulumi.docker.buildx.ImageArgs;\nimport com.pulumi.docker.buildx.inputs.BuildContextArgs;\nimport com.pulumi.docker.buildx.inputs.DockerfileArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var image = new Image(\"image\", ImageArgs.builder()        \n            .context(BuildContextArgs.builder()\n                .location(\"app\")\n                .named(Map.of(\"golang:latest\", Map.of(\"location\", \"docker-image://golang@sha256:b8e62cf593cdaff36efd90aa3a37de268e6781a2e68c6610940c48f7cdf36984\")))\n                .build())\n            .dockerfile(DockerfileArgs.builder()\n                .location(\"app/Dockerfile\")\n                .build())\n            .build());\n\n    }\n}\n```\n{{% /example %}}\n{{% example %}}\n### Remote context\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst image = new docker.buildx.Image(\"image\", {context: {\n    location: \"https://raw.githubusercontent.com/pulumi/pulumi-docker/api-types/provider/testdata/Dockerfile\",\n}});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nimage = docker.buildx.Image(\"image\", context=docker.buildx.BuildContextArgs(\n    location=\"https://raw.githubusercontent.com/pulumi/pulumi-docker/api-types/provider/testdata/Dockerfile\",\n))\n```\n```csharp\nusing System.Collections.Generic;\nusing System.Linq;\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nreturn await Deployment.RunAsync(() =\u003e \n{\n    var image = new Docker.Buildx.Image(\"image\", new()\n    {\n        Context = new Docker.Buildx.Inputs.BuildContextArgs\n        {\n            Location = \"https://raw.githubusercontent.com/pulumi/pulumi-docker/api-types/provider/testdata/Dockerfile\",\n        },\n    });\n\n});\n\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v4/go/docker/buildx\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := buildx.NewImage(ctx, \"image\", \u0026buildx.ImageArgs{\n\t\t\tContext: \u0026buildx.BuildContextArgs{\n\t\t\t\tLocation: pulumi.String(\"https://raw.githubusercontent.com/pulumi/pulumi-docker/api-types/provider/testdata/Dockerfile\"),\n\t\t\t},\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```yaml\ndescription: Remote context\nname: remote-context\nresources:\n    image:\n        properties:\n            context:\n                location: https://raw.githubusercontent.com/pulumi/pulumi-docker/api-types/provider/testdata/Dockerfile\n        type: docker:buildx/image:Image\nruntime: yaml\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.buildx.Image;\nimport com.pulumi.docker.buildx.ImageArgs;\nimport com.pulumi.docker.buildx.inputs.BuildContextArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var image = new Image(\"image\", ImageArgs.builder()        \n            .context(BuildContextArgs.builder()\n                .location(\"https://raw.githubusercontent.com/pulumi/pulumi-docker/api-types/provider/testdata/Dockerfile\")\n                .build())\n            .build());\n\n    }\n}\n```\n{{% /example %}}\n{{% example %}}\n### Inline Dockerfile\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst image = new docker.buildx.Image(\"image\", {\n    context: {\n        location: \"app\",\n    },\n    dockerfile: {\n        inline: `FROM busybox\nCOPY hello.c ./\n`,\n    },\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nimage = docker.buildx.Image(\"image\",\n    context=docker.buildx.BuildContextArgs(\n        location=\"app\",\n    ),\n    dockerfile=docker.buildx.DockerfileArgs(\n        inline=\"\"\"FROM busybox\nCOPY hello.c ./\n\"\"\",\n    ))\n```\n```csharp\nusing System.Collections.Generic;\nusing System.Linq;\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nreturn await Deployment.RunAsync(() =\u003e \n{\n    var image = new Docker.Buildx.Image(\"image\", new()\n    {\n        Context = new Docker.Buildx.Inputs.BuildContextArgs\n        {\n            Location = \"app\",\n        },\n        Dockerfile = new Docker.Buildx.Inputs.DockerfileArgs\n        {\n            Inline = @\"FROM busybox\nCOPY hello.c ./\n\",\n        },\n    });\n\n});\n\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v4/go/docker/buildx\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := buildx.NewImage(ctx, \"image\", \u0026buildx.ImageArgs{\n\t\t\tContext: \u0026buildx.BuildContextArgs{\n\t\t\t\tLocation: pulumi.String(\"app\"),\n\t\t\t},\n\t\t\tDockerfile: \u0026buildx.DockerfileArgs{\n\t\t\t\tInline: pulumi.String(\"FROM busybox\\nCOPY hello.c ./\\n\"),\n\t\t\t},\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```yaml\ndescription: Inline Dockerfile\nname: inline\nresources:\n    image:\n        properties:\n            context:\n                location: app\n            dockerfile:\n                inline: |\n                    FROM busybox\n                    COPY hello.c ./\n        type: docker:buildx/image:Image\nruntime: yaml\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.buildx.Image;\nimport com.pulumi.docker.buildx.ImageArgs;\nimport com.pulumi.docker.buildx.inputs.BuildContextArgs;\nimport com.pulumi.docker.buildx.inputs.DockerfileArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var image = new Image(\"image\", ImageArgs.builder()        \n            .context(BuildContextArgs.builder()\n                .location(\"app\")\n                .build())\n            .dockerfile(DockerfileArgs.builder()\n                .inline(\"\"\"\nFROM busybox\nCOPY hello.c ./\n                \"\"\")\n                .build())\n            .build());\n\n    }\n}\n```\n{{% /example %}}\n{{% example %}}\n### Remote context\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst image = new docker.buildx.Image(\"image\", {\n    context: {\n        location: \"https://github.com/docker-library/hello-world.git\",\n    },\n    dockerfile: {\n        location: \"app/Dockerfile\",\n    },\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nimage = docker.buildx.Image(\"image\",\n    context=docker.buildx.BuildContextArgs(\n        location=\"https://github.com/docker-library/hello-world.git\",\n    ),\n    dockerfile=docker.buildx.DockerfileArgs(\n        location=\"app/Dockerfile\",\n    ))\n```\n```csharp\nusing System.Collections.Generic;\nusing System.Linq;\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nreturn await Deployment.RunAsync(() =\u003e \n{\n    var image = new Docker.Buildx.Image(\"image\", new()\n    {\n        Context = new Docker.Buildx.Inputs.BuildContextArgs\n        {\n            Location = \"https://github.com/docker-library/hello-world.git\",\n        },\n        Dockerfile = new Docker.Buildx.Inputs.DockerfileArgs\n        {\n            Location = \"app/Dockerfile\",\n        },\n    });\n\n});\n\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v4/go/docker/buildx\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := buildx.NewImage(ctx, \"image\", \u0026buildx.ImageArgs{\n\t\t\tContext: \u0026buildx.BuildContextArgs{\n\t\t\t\tLocation: pulumi.String(\"https://github.com/docker-library/hello-world.git\"),\n\t\t\t},\n\t\t\tDockerfile: \u0026buildx.DockerfileArgs{\n\t\t\t\tLocation: pulumi.String(\"app/Dockerfile\"),\n\t\t\t},\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```yaml\ndescription: Remote context\nname: remote-context\nresources:\n    image:\n        properties:\n            context:\n                location: https://github.com/docker-library/hello-world.git\n            dockerfile:\n                location: app/Dockerfile\n        type: docker:buildx/image:Image\nruntime: yaml\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.buildx.Image;\nimport com.pulumi.docker.buildx.ImageArgs;\nimport com.pulumi.docker.buildx.inputs.BuildContextArgs;\nimport com.pulumi.docker.buildx.inputs.DockerfileArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var image = new Image(\"image\", ImageArgs.builder()        \n            .context(BuildContextArgs.builder()\n                .location(\"https://github.com/docker-library/hello-world.git\")\n                .build())\n            .dockerfile(DockerfileArgs.builder()\n                .location(\"app/Dockerfile\")\n                .build())\n            .build());\n\n    }\n}\n```\n{{% /example %}}\n{{% example %}}\n### Local export\n\n```typescript\nimport * as pulumi from \"@pulumi/pulumi\";\nimport * as docker from \"@pulumi/docker\";\n\nconst image = new docker.buildx.Image(\"image\", {\n    context: {\n        location: \"app\",\n    },\n    dockerfile: {\n        location: \"app/Dockerfile\",\n    },\n    exports: [{\n        docker: {\n            tar: true,\n        },\n    }],\n});\n```\n```python\nimport pulumi\nimport pulumi_docker as docker\n\nimage = docker.buildx.Image(\"image\",\n    context=docker.buildx.BuildContextArgs(\n        location=\"app\",\n    ),\n    dockerfile=docker.buildx.DockerfileArgs(\n        location=\"app/Dockerfile\",\n    ),\n    exports=[docker.buildx.ExportEntryArgs(\n        docker=docker.buildx.ExportDockerArgs(\n            tar=True,\n        ),\n    )])\n```\n```csharp\nusing System.Collections.Generic;\nusing System.Linq;\nusing Pulumi;\nusing Docker = Pulumi.Docker;\n\nreturn await Deployment.RunAsync(() =\u003e \n{\n    var image = new Docker.Buildx.Image(\"image\", new()\n    {\n        Context = new Docker.Buildx.Inputs.BuildContextArgs\n        {\n            Location = \"app\",\n        },\n        Dockerfile = new Docker.Buildx.Inputs.DockerfileArgs\n        {\n            Location = \"app/Dockerfile\",\n        },\n        Exports = new[]\n        {\n            new Docker.Buildx.Inputs.ExportEntryArgs\n            {\n                Docker = new Docker.Buildx.Inputs.ExportDockerArgs\n                {\n                    Tar = true,\n                },\n            },\n        },\n    });\n\n});\n\n```\n```go\npackage main\n\nimport (\n\t\"github.com/pulumi/pulumi-docker/sdk/v4/go/docker/buildx\"\n\t\"github.com/pulumi/pulumi/sdk/v3/go/pulumi\"\n)\n\nfunc main() {\n\tpulumi.Run(func(ctx *pulumi.Context) error {\n\t\t_, err := buildx.NewImage(ctx, \"image\", \u0026buildx.ImageArgs{\n\t\t\tContext: \u0026buildx.BuildContextArgs{\n\t\t\t\tLocation: pulumi.String(\"app\"),\n\t\t\t},\n\t\t\tDockerfile: \u0026buildx.DockerfileArgs{\n\t\t\t\tLocation: pulumi.String(\"app/Dockerfile\"),\n\t\t\t},\n\t\t\tExports: buildx.ExportEntryArray{\n\t\t\t\t\u0026buildx.ExportEntryArgs{\n\t\t\t\t\tDocker: \u0026buildx.ExportDockerArgs{\n\t\t\t\t\t\tTar: pulumi.Bool(true),\n\t\t\t\t\t},\n\t\t\t\t},\n\t\t\t},\n\t\t})\n\t\tif err != nil {\n\t\t\treturn err\n\t\t}\n\t\treturn nil\n\t})\n}\n```\n```yaml\ndescription: Local export\nname: docker-load\nresources:\n    image:\n        properties:\n            context:\n                location: app\n            dockerfile:\n                location: app/Dockerfile\n            exports:\n                - docker:\n                    tar: true\n        type: docker:buildx/image:Image\nruntime: yaml\n```\n```java\npackage generated_program;\n\nimport com.pulumi.Context;\nimport com.pulumi.Pulumi;\nimport com.pulumi.core.Output;\nimport com.pulumi.docker.buildx.Image;\nimport com.pulumi.docker.buildx.ImageArgs;\nimport com.pulumi.docker.buildx.inputs.BuildContextArgs;\nimport com.pulumi.docker.buildx.inputs.DockerfileArgs;\nimport com.pulumi.docker.buildx.inputs.ExportEntryArgs;\nimport com.pulumi.docker.buildx.inputs.ExportDockerArgs;\nimport java.util.List;\nimport java.util.ArrayList;\nimport java.util.Map;\nimport java.io.File;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\n\npublic class App {\n    public static void main(String[] args) {\n        Pulumi.run(App::stack);\n    }\n\n    public static void stack(Context ctx) {\n        var image = new Image(\"image\", ImageArgs.builder()        \n            .context(BuildContextArgs.builder()\n                .location(\"app\")\n                .build())\n            .dockerfile(DockerfileArgs.builder()\n                .location(\"app/Dockerfile\")\n                .build())\n            .exports(ExportEntryArgs.builder()\n                .docker(ExportDockerArgs.builder()\n                    .tar(true)\n                    .build())\n                .build())\n            .build());\n\n    }\n}\n```\n{{% /example %}}\n{{% /examples %}}",
             "properties": {
                 "buildArgs": {
                     "type": "object",
                     "additionalProperties": {
                         "type": "string"
                     },
-                    "description": "\nAn optional map of named build-time argument variables to set during\nthe Docker build. This flag allows you to pass build-time variables that\ncan be accessed like environment variables inside the RUN\ninstruction."
+                    "description": "`ARG` names and values to set during the build.\n\nThese variables are accessed like environment variables inside `RUN`\ninstructions.\n\nBuild arguments are persisted in the image, so you should use `secrets`\nif these arguments are sensitive."
                 },
                 "buildOnPreview": {
                     "type": "boolean",
-                    "description": "\nWhen true, attempt to build the image during previews. Outputs are not\npushed to registries, however caches are still populated.\n"
+                    "description": "When `true`, attempt to build the image during previews. The image will\nnot be pushed to registries, however caches will still populated."
                 },
                 "builder": {
-                    "type": "string",
-                    "description": "\nBuild with a specific builder instance"
+                    "$ref": "#/types/docker:buildx/image:BuilderConfig",
+                    "description": "Builder configuration."
                 },
                 "cacheFrom": {
                     "type": "array",
                     "items": {
                         "$ref": "#/types/docker:buildx/image:CacheFromEntry"
                     },
-                    "description": "\nExternal cache sources (e.g., \"user/app:cache\", \"type=local,src=path/to/dir\")"
+                    "description": "External cache configuration."
                 },
                 "cacheTo": {
                     "type": "array",
                     "items": {
                         "$ref": "#/types/docker:buildx/image:CacheToEntry"
                     },
-                    "description": "\nCache export destinations (e.g., \"user/app:cache\", \"type=local,dest=path/to/dir\")"
+                    "description": "Cache export configuration."
                 },
                 "context": {
-                    "type": "string",
-                    "description": "\nPath to use for build context. If omitted, an empty context is used."
+                    "$ref": "#/types/docker:buildx/image:BuildContext",
+                    "description": "Build context settings."
                 },
                 "contextHash": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "A preliminary hash of the image's build context.\n\nPulumi uses this to determine if an image _may_ need to be re-built."
+                },
+                "digests": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "description": "A mapping of platform type to refs which were pushed to registries."
+                },
+                "dockerfile": {
+                    "$ref": "#/types/docker:buildx/image:Dockerfile",
+                    "description": "Dockerfile settings."
                 },
                 "exports": {
                     "type": "array",
                     "items": {
                         "$ref": "#/types/docker:buildx/image:ExportEntry"
                     },
-                    "description": "\nName and optionally a tag (format: \"name:tag\"). If outputting to a\nregistry, the name should include the fully qualified registry address."
+                    "description": "Controls where images are persisted after building.\n\nImages are only stored in the local cache unless `exports` are\nexplicitly configured."
                 },
-                "file": {
-                    "type": "string",
-                    "description": "\nName of the Dockerfile to use (defaults to \"${context}/Dockerfile\").",
-                    "default": "Dockerfile"
-                },
-                "manifests": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/types/docker:buildx/image:Manifest"
-                    }
+                "labels": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "Attach arbitrary key/value metadata to the image."
                 },
                 "platforms": {
                     "type": "array",
                     "items": {
                         "$ref": "#/types/docker:buildx/image:Platform"
                     },
-                    "description": "\nSet target platforms for the build. Defaults to the host's platform"
+                    "description": "Set target platform(s) for the build. Defaults to the host's platform"
                 },
                 "pull": {
                     "type": "boolean",
-                    "description": "\nAlways attempt to pull referenced images."
+                    "description": "Always pull referenced images."
                 },
                 "registries": {
                     "type": "array",
                     "items": {
                         "$ref": "#/types/docker:buildx/image:RegistryAuth"
                     },
-                    "description": "\nLogins for registry outputs"
+                    "description": "Registry credentials. Required if reading or exporting to private\nrepositories."
+                },
+                "secrets": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "A mapping of secret names to their corresponding values.\n\nUnlike the Docker CLI, these can be passed by value and do not need to\nexist on-disk or in environment variables.\n\nBuild arguments and environment variables are persistent in the final\nimage, so you should use this for sensitive values.",
+                    "secret": true
                 },
                 "tags": {
                     "type": "array",
                     "items": {
                         "type": "string"
                     },
-                    "description": "\nName and optionally a tag (format: \"name:tag\"). If outputting to a\nregistry, the name should include the fully qualified registry address."
+                    "description": "Name and optionally a tag (format: `name:tag`).\n\nIf exporting to a registry, the name should include the fully qualified\nregistry address (e.g. `docker.io/pulumi/pulumi:latest`)."
                 },
-                "target": {
-                    "type": "string"
+                "targets": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Set the target build stage(s) to build.\n\nIf not specified all targets will be built by default."
                 }
             },
-            "required": [
-                "manifests"
-            ],
             "inputProperties": {
                 "buildArgs": {
                     "type": "object",
                     "additionalProperties": {
                         "type": "string"
                     },
-                    "description": "\nAn optional map of named build-time argument variables to set during\nthe Docker build. This flag allows you to pass build-time variables that\ncan be accessed like environment variables inside the RUN\ninstruction."
+                    "description": "`ARG` names and values to set during the build.\n\nThese variables are accessed like environment variables inside `RUN`\ninstructions.\n\nBuild arguments are persisted in the image, so you should use `secrets`\nif these arguments are sensitive."
                 },
                 "buildOnPreview": {
                     "type": "boolean",
-                    "description": "\nWhen true, attempt to build the image during previews. Outputs are not\npushed to registries, however caches are still populated.\n"
+                    "description": "When `true`, attempt to build the image during previews. The image will\nnot be pushed to registries, however caches will still populated."
                 },
                 "builder": {
-                    "type": "string",
-                    "description": "\nBuild with a specific builder instance"
+                    "$ref": "#/types/docker:buildx/image:BuilderConfig",
+                    "description": "Builder configuration."
                 },
                 "cacheFrom": {
                     "type": "array",
                     "items": {
                         "$ref": "#/types/docker:buildx/image:CacheFromEntry"
                     },
-                    "description": "\nExternal cache sources (e.g., \"user/app:cache\", \"type=local,src=path/to/dir\")"
+                    "description": "External cache configuration."
                 },
                 "cacheTo": {
                     "type": "array",
                     "items": {
                         "$ref": "#/types/docker:buildx/image:CacheToEntry"
                     },
-                    "description": "\nCache export destinations (e.g., \"user/app:cache\", \"type=local,dest=path/to/dir\")"
+                    "description": "Cache export configuration."
                 },
                 "context": {
-                    "type": "string",
-                    "description": "\nPath to use for build context. If omitted, an empty context is used."
+                    "$ref": "#/types/docker:buildx/image:BuildContext",
+                    "description": "Build context settings."
+                },
+                "dockerfile": {
+                    "$ref": "#/types/docker:buildx/image:Dockerfile",
+                    "description": "Dockerfile settings."
                 },
                 "exports": {
                     "type": "array",
                     "items": {
                         "$ref": "#/types/docker:buildx/image:ExportEntry"
                     },
-                    "description": "\nName and optionally a tag (format: \"name:tag\"). If outputting to a\nregistry, the name should include the fully qualified registry address."
+                    "description": "Controls where images are persisted after building.\n\nImages are only stored in the local cache unless `exports` are\nexplicitly configured."
                 },
-                "file": {
-                    "type": "string",
-                    "description": "\nName of the Dockerfile to use (defaults to \"${context}/Dockerfile\").",
-                    "default": "Dockerfile"
+                "labels": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "Attach arbitrary key/value metadata to the image."
                 },
                 "platforms": {
                     "type": "array",
                     "items": {
                         "$ref": "#/types/docker:buildx/image:Platform"
                     },
-                    "description": "\nSet target platforms for the build. Defaults to the host's platform"
+                    "description": "Set target platform(s) for the build. Defaults to the host's platform"
                 },
                 "pull": {
                     "type": "boolean",
-                    "description": "\nAlways attempt to pull referenced images."
+                    "description": "Always pull referenced images."
                 },
                 "registries": {
                     "type": "array",
                     "items": {
                         "$ref": "#/types/docker:buildx/image:RegistryAuth"
                     },
-                    "description": "\nLogins for registry outputs"
+                    "description": "Registry credentials. Required if reading or exporting to private\nrepositories."
+                },
+                "secrets": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "A mapping of secret names to their corresponding values.\n\nUnlike the Docker CLI, these can be passed by value and do not need to\nexist on-disk or in environment variables.\n\nBuild arguments and environment variables are persistent in the final\nimage, so you should use this for sensitive values.",
+                    "secret": true
                 },
                 "tags": {
                     "type": "array",
                     "items": {
                         "type": "string"
                     },
-                    "description": "\nName and optionally a tag (format: \"name:tag\"). If outputting to a\nregistry, the name should include the fully qualified registry address."
+                    "description": "Name and optionally a tag (format: `name:tag`).\n\nIf exporting to a registry, the name should include the fully qualified\nregistry address (e.g. `docker.io/pulumi/pulumi:latest`)."
                 },
-                "target": {
-                    "type": "string"
+                "targets": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Set the target build stage(s) to build.\n\nIf not specified all targets will be built by default."
                 }
             }
         },
@@ -4239,7 +4405,7 @@
                 },
                 "repoDigest": {
                     "type": "string",
-                    "description": "**For pushed images:**\nThe manifest digest of an image pushed to a registry, of the format repository@\u003calgorithm\u003e:\u003chash\u003e, e.g. `username/demo-image@sha256:a6ae6dd8d39c5bb02320e41abf00cd4cb35905fec540e37d306c878be8d38bd3`.\nThis reference is unique per image build and push. \nOnly available for images pushed to a registry.\nUse when passing a reference to a pushed image to container management resources.\n\n**Local-only images**For local images, this field is the image ID of the built local image, of the format \u003calgorithm\u003e:\u003chash\u003e, e.g `sha256:826a130323165bb0ccb0374ae774f885c067a951b51a6ee133577f4e5dbc4119` \n"
+                    "description": "**For pushed images:**\nThe manifest digest of an image pushed to a registry, of the format repository@\u003calgorithm\u003e:\u003chash\u003e, e.g. `username/demo-image@sha256:a6ae6dd8d39c5bb02320e41abf00cd4cb35905fec540e37d306c878be8d38bd3`.\nThis reference is unique per image build and push. \nOnly available for images pushed to a registry.\nUse when passing a reference to a pushed image to container management resources.\n\n**Local-only images**:\nFor local images, this field is the image ID of the built local image, of the format \u003calgorithm\u003e:\u003chash\u003e, e.g `sha256:826a130323165bb0ccb0374ae774f885c067a951b51a6ee133577f4e5dbc4119` \n"
                 }
             },
             "type": "object",

@@ -19,9 +19,17 @@ public final class CacheToAzureBlobArgs extends com.pulumi.resources.ResourceArg
 
     public static final CacheToAzureBlobArgs Empty = new CacheToAzureBlobArgs();
 
+    /**
+     * Base URL of the storage account.
+     * 
+     */
     @Import(name="accountUrl")
     private @Nullable Output<String> accountUrl;
 
+    /**
+     * @return Base URL of the storage account.
+     * 
+     */
     public Optional<Output<String>> accountUrl() {
         return Optional.ofNullable(this.accountUrl);
     }
@@ -41,23 +49,47 @@ public final class CacheToAzureBlobArgs extends com.pulumi.resources.ResourceArg
         return Optional.ofNullable(this.ignoreError);
     }
 
+    /**
+     * The cache mode to use. Defaults to `min`.
+     * 
+     */
     @Import(name="mode")
     private @Nullable Output<CacheMode> mode;
 
+    /**
+     * @return The cache mode to use. Defaults to `min`.
+     * 
+     */
     public Optional<Output<CacheMode>> mode() {
         return Optional.ofNullable(this.mode);
     }
 
+    /**
+     * The name of the cache image.
+     * 
+     */
     @Import(name="name", required=true)
     private Output<String> name;
 
+    /**
+     * @return The name of the cache image.
+     * 
+     */
     public Output<String> name() {
         return this.name;
     }
 
+    /**
+     * Blob storage account key.
+     * 
+     */
     @Import(name="secretAccessKey")
     private @Nullable Output<String> secretAccessKey;
 
+    /**
+     * @return Blob storage account key.
+     * 
+     */
     public Optional<Output<String>> secretAccessKey() {
         return Optional.ofNullable(this.secretAccessKey);
     }
@@ -90,11 +122,23 @@ public final class CacheToAzureBlobArgs extends com.pulumi.resources.ResourceArg
             $ = new CacheToAzureBlobArgs(Objects.requireNonNull(defaults));
         }
 
+        /**
+         * @param accountUrl Base URL of the storage account.
+         * 
+         * @return builder
+         * 
+         */
         public Builder accountUrl(@Nullable Output<String> accountUrl) {
             $.accountUrl = accountUrl;
             return this;
         }
 
+        /**
+         * @param accountUrl Base URL of the storage account.
+         * 
+         * @return builder
+         * 
+         */
         public Builder accountUrl(String accountUrl) {
             return accountUrl(Output.of(accountUrl));
         }
@@ -120,29 +164,65 @@ public final class CacheToAzureBlobArgs extends com.pulumi.resources.ResourceArg
             return ignoreError(Output.of(ignoreError));
         }
 
+        /**
+         * @param mode The cache mode to use. Defaults to `min`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder mode(@Nullable Output<CacheMode> mode) {
             $.mode = mode;
             return this;
         }
 
+        /**
+         * @param mode The cache mode to use. Defaults to `min`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder mode(CacheMode mode) {
             return mode(Output.of(mode));
         }
 
+        /**
+         * @param name The name of the cache image.
+         * 
+         * @return builder
+         * 
+         */
         public Builder name(Output<String> name) {
             $.name = name;
             return this;
         }
 
+        /**
+         * @param name The name of the cache image.
+         * 
+         * @return builder
+         * 
+         */
         public Builder name(String name) {
             return name(Output.of(name));
         }
 
+        /**
+         * @param secretAccessKey Blob storage account key.
+         * 
+         * @return builder
+         * 
+         */
         public Builder secretAccessKey(@Nullable Output<String> secretAccessKey) {
             $.secretAccessKey = secretAccessKey;
             return this;
         }
 
+        /**
+         * @param secretAccessKey Blob storage account key.
+         * 
+         * @return builder
+         * 
+         */
         public Builder secretAccessKey(String secretAccessKey) {
             return secretAccessKey(Output.of(secretAccessKey));
         }

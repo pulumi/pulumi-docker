@@ -13,7 +13,13 @@ namespace Pulumi.Docker.Buildx.Outputs
     [OutputType]
     public sealed class CacheFromLocal
     {
+        /// <summary>
+        /// Digest of manifest to import.
+        /// </summary>
         public readonly string? Digest;
+        /// <summary>
+        /// Path of the local directory where cache gets imported from.
+        /// </summary>
         public readonly string Src;
 
         [OutputConstructor]

@@ -22,15 +22,14 @@ public final class CacheFromEntryArgs extends com.pulumi.resources.ResourceArgs 
     public static final CacheFromEntryArgs Empty = new CacheFromEntryArgs();
 
     /**
-     * Push cache to Azure&#39;s blob storage service.
+     * Upload build caches to Azure&#39;s blob storage service.
      * 
      */
     @Import(name="azblob")
     private @Nullable Output<CacheFromAzureBlobArgs> azblob;
 
     /**
-     * @return
-     * Push cache to Azure&#39;s blob storage service.
+     * @return Upload build caches to Azure&#39;s blob storage service.
      * 
      */
     public Optional<Output<CacheFromAzureBlobArgs>> azblob() {
@@ -40,7 +39,7 @@ public final class CacheFromEntryArgs extends com.pulumi.resources.ResourceArgs 
     /**
      * Recommended for use with GitHub Actions workflows.
      * 
-     * An action like &#34;crazy-max/ghaction-github-runtime&#34; is recommended to
+     * An action like `crazy-max/ghaction-github-runtime` is recommended to
      * expose appropriate credentials to your GitHub workflow.
      * 
      */
@@ -48,10 +47,9 @@ public final class CacheFromEntryArgs extends com.pulumi.resources.ResourceArgs 
     private @Nullable Output<CacheFromGitHubActionsArgs> gha;
 
     /**
-     * @return
-     * Recommended for use with GitHub Actions workflows.
+     * @return Recommended for use with GitHub Actions workflows.
      * 
-     * An action like &#34;crazy-max/ghaction-github-runtime&#34; is recommended to
+     * An action like `crazy-max/ghaction-github-runtime` is recommended to
      * expose appropriate credentials to your GitHub workflow.
      * 
      */
@@ -69,8 +67,7 @@ public final class CacheFromEntryArgs extends com.pulumi.resources.ResourceArgs 
     private @Nullable Output<CacheInlineArgs> inline;
 
     /**
-     * @return
-     * The inline cache storage backend is the simplest implementation to get
+     * @return The inline cache storage backend is the simplest implementation to get
      * started with, but it does not handle multi-stage builds. Consider the
      * registry cache backend instead.
      * 
@@ -80,15 +77,14 @@ public final class CacheFromEntryArgs extends com.pulumi.resources.ResourceArgs 
     }
 
     /**
-     * A simple backend which caches imagines on your local filesystem.
+     * A simple backend which caches images on your local filesystem.
      * 
      */
     @Import(name="local")
     private @Nullable Output<CacheFromLocalArgs> local;
 
     /**
-     * @return
-     * A simple backend which caches imagines on your local filesystem.
+     * @return A simple backend which caches images on your local filesystem.
      * 
      */
     public Optional<Output<CacheFromLocalArgs>> local() {
@@ -97,16 +93,15 @@ public final class CacheFromEntryArgs extends com.pulumi.resources.ResourceArgs 
 
     /**
      * A raw string as you would provide it to the Docker CLI (e.g.,
-     * &#34;type=inline&#34;)
+     * `type=inline`).
      * 
      */
     @Import(name="raw")
     private @Nullable Output<String> raw;
 
     /**
-     * @return
-     * A raw string as you would provide it to the Docker CLI (e.g.,
-     * &#34;type=inline&#34;)
+     * @return A raw string as you would provide it to the Docker CLI (e.g.,
+     * `type=inline`).
      * 
      */
     public Optional<Output<String>> raw() {
@@ -114,17 +109,14 @@ public final class CacheFromEntryArgs extends com.pulumi.resources.ResourceArgs 
     }
 
     /**
-     * Push caches to remote registries. Incompatible with the &#34;docker&#34; build
-     * driver.
+     * Upload build caches to remote registries.
      * 
      */
     @Import(name="registry")
     private @Nullable Output<CacheFromRegistryArgs> registry;
 
     /**
-     * @return
-     * Push caches to remote registries. Incompatible with the &#34;docker&#34; build
-     * driver.
+     * @return Upload build caches to remote registries.
      * 
      */
     public Optional<Output<CacheFromRegistryArgs>> registry() {
@@ -132,15 +124,16 @@ public final class CacheFromEntryArgs extends com.pulumi.resources.ResourceArgs 
     }
 
     /**
-     * Push cache to AWS S3 or S3-compatible services such as MinIO.
+     * Upload build caches to AWS S3 or an S3-compatible services such as
+     * MinIO.
      * 
      */
     @Import(name="s3")
     private @Nullable Output<CacheFromS3Args> s3;
 
     /**
-     * @return
-     * Push cache to AWS S3 or S3-compatible services such as MinIO.
+     * @return Upload build caches to AWS S3 or an S3-compatible services such as
+     * MinIO.
      * 
      */
     public Optional<Output<CacheFromS3Args>> s3() {
@@ -178,8 +171,7 @@ public final class CacheFromEntryArgs extends com.pulumi.resources.ResourceArgs 
         }
 
         /**
-         * @param azblob
-         * Push cache to Azure&#39;s blob storage service.
+         * @param azblob Upload build caches to Azure&#39;s blob storage service.
          * 
          * @return builder
          * 
@@ -190,8 +182,7 @@ public final class CacheFromEntryArgs extends com.pulumi.resources.ResourceArgs 
         }
 
         /**
-         * @param azblob
-         * Push cache to Azure&#39;s blob storage service.
+         * @param azblob Upload build caches to Azure&#39;s blob storage service.
          * 
          * @return builder
          * 
@@ -201,10 +192,9 @@ public final class CacheFromEntryArgs extends com.pulumi.resources.ResourceArgs 
         }
 
         /**
-         * @param gha
-         * Recommended for use with GitHub Actions workflows.
+         * @param gha Recommended for use with GitHub Actions workflows.
          * 
-         * An action like &#34;crazy-max/ghaction-github-runtime&#34; is recommended to
+         * An action like `crazy-max/ghaction-github-runtime` is recommended to
          * expose appropriate credentials to your GitHub workflow.
          * 
          * @return builder
@@ -216,10 +206,9 @@ public final class CacheFromEntryArgs extends com.pulumi.resources.ResourceArgs 
         }
 
         /**
-         * @param gha
-         * Recommended for use with GitHub Actions workflows.
+         * @param gha Recommended for use with GitHub Actions workflows.
          * 
-         * An action like &#34;crazy-max/ghaction-github-runtime&#34; is recommended to
+         * An action like `crazy-max/ghaction-github-runtime` is recommended to
          * expose appropriate credentials to your GitHub workflow.
          * 
          * @return builder
@@ -230,8 +219,7 @@ public final class CacheFromEntryArgs extends com.pulumi.resources.ResourceArgs 
         }
 
         /**
-         * @param inline
-         * The inline cache storage backend is the simplest implementation to get
+         * @param inline The inline cache storage backend is the simplest implementation to get
          * started with, but it does not handle multi-stage builds. Consider the
          * registry cache backend instead.
          * 
@@ -244,8 +232,7 @@ public final class CacheFromEntryArgs extends com.pulumi.resources.ResourceArgs 
         }
 
         /**
-         * @param inline
-         * The inline cache storage backend is the simplest implementation to get
+         * @param inline The inline cache storage backend is the simplest implementation to get
          * started with, but it does not handle multi-stage builds. Consider the
          * registry cache backend instead.
          * 
@@ -257,8 +244,7 @@ public final class CacheFromEntryArgs extends com.pulumi.resources.ResourceArgs 
         }
 
         /**
-         * @param local
-         * A simple backend which caches imagines on your local filesystem.
+         * @param local A simple backend which caches images on your local filesystem.
          * 
          * @return builder
          * 
@@ -269,8 +255,7 @@ public final class CacheFromEntryArgs extends com.pulumi.resources.ResourceArgs 
         }
 
         /**
-         * @param local
-         * A simple backend which caches imagines on your local filesystem.
+         * @param local A simple backend which caches images on your local filesystem.
          * 
          * @return builder
          * 
@@ -280,9 +265,8 @@ public final class CacheFromEntryArgs extends com.pulumi.resources.ResourceArgs 
         }
 
         /**
-         * @param raw
-         * A raw string as you would provide it to the Docker CLI (e.g.,
-         * &#34;type=inline&#34;)
+         * @param raw A raw string as you would provide it to the Docker CLI (e.g.,
+         * `type=inline`).
          * 
          * @return builder
          * 
@@ -293,9 +277,8 @@ public final class CacheFromEntryArgs extends com.pulumi.resources.ResourceArgs 
         }
 
         /**
-         * @param raw
-         * A raw string as you would provide it to the Docker CLI (e.g.,
-         * &#34;type=inline&#34;)
+         * @param raw A raw string as you would provide it to the Docker CLI (e.g.,
+         * `type=inline`).
          * 
          * @return builder
          * 
@@ -305,9 +288,7 @@ public final class CacheFromEntryArgs extends com.pulumi.resources.ResourceArgs 
         }
 
         /**
-         * @param registry
-         * Push caches to remote registries. Incompatible with the &#34;docker&#34; build
-         * driver.
+         * @param registry Upload build caches to remote registries.
          * 
          * @return builder
          * 
@@ -318,9 +299,7 @@ public final class CacheFromEntryArgs extends com.pulumi.resources.ResourceArgs 
         }
 
         /**
-         * @param registry
-         * Push caches to remote registries. Incompatible with the &#34;docker&#34; build
-         * driver.
+         * @param registry Upload build caches to remote registries.
          * 
          * @return builder
          * 
@@ -330,8 +309,8 @@ public final class CacheFromEntryArgs extends com.pulumi.resources.ResourceArgs 
         }
 
         /**
-         * @param s3
-         * Push cache to AWS S3 or S3-compatible services such as MinIO.
+         * @param s3 Upload build caches to AWS S3 or an S3-compatible services such as
+         * MinIO.
          * 
          * @return builder
          * 
@@ -342,8 +321,8 @@ public final class CacheFromEntryArgs extends com.pulumi.resources.ResourceArgs 
         }
 
         /**
-         * @param s3
-         * Push cache to AWS S3 or S3-compatible services such as MinIO.
+         * @param s3 Upload build caches to AWS S3 or an S3-compatible services such as
+         * MinIO.
          * 
          * @return builder
          * 

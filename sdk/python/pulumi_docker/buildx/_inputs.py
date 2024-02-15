@@ -11,6 +11,8 @@ from .. import _utilities
 from ._enums import *
 
 __all__ = [
+    'BuildContextArgs',
+    'BuilderConfigArgs',
     'CacheFromAzureBlobArgs',
     'CacheFromEntryArgs',
     'CacheFromGitHubActionsArgs',
@@ -24,6 +26,8 @@ __all__ = [
     'CacheToLocalArgs',
     'CacheToRegistryArgs',
     'CacheToS3Args',
+    'ContextArgs',
+    'DockerfileArgs',
     'ExportDockerArgs',
     'ExportEntryArgs',
     'ExportImageArgs',
@@ -31,8 +35,101 @@ __all__ = [
     'ExportOCIArgs',
     'ExportRegistryArgs',
     'ExportTarArgs',
+    'ManifestPlatformArgs',
+    'ManifestArgs',
     'RegistryAuthArgs',
 ]
+
+@pulumi.input_type
+class BuildContextArgs:
+    def __init__(__self__, *,
+                 location: pulumi.Input[str],
+                 named: Optional[pulumi.Input[Mapping[str, pulumi.Input['ContextArgs']]]] = None):
+        """
+        :param pulumi.Input[str] location: Resources to use for build context.
+               
+               The location can be:
+               * A relative or absolute path to a local directory (`.`, `./app`,
+                 `/app`, etc.).
+               * A remote URL of a Git repository, tarball, or plain text file
+                 (`https://github.com/user/myrepo.git`, `http://server/context.tar.gz`,
+                 etc.).
+        :param pulumi.Input[Mapping[str, pulumi.Input['ContextArgs']]] named: Additional build contexts to use. 
+               
+               These contexts are accessed with `FROM name` or `--from=name`
+               statements when using Dockerfile 1.4+ syntax.
+               
+               Values can be local paths, HTTP URLs, or  `docker-image://` images.
+        """
+        pulumi.set(__self__, "location", location)
+        if named is not None:
+            pulumi.set(__self__, "named", named)
+
+    @property
+    @pulumi.getter
+    def location(self) -> pulumi.Input[str]:
+        """
+        Resources to use for build context.
+
+        The location can be:
+        * A relative or absolute path to a local directory (`.`, `./app`,
+          `/app`, etc.).
+        * A remote URL of a Git repository, tarball, or plain text file
+          (`https://github.com/user/myrepo.git`, `http://server/context.tar.gz`,
+          etc.).
+        """
+        return pulumi.get(self, "location")
+
+    @location.setter
+    def location(self, value: pulumi.Input[str]):
+        pulumi.set(self, "location", value)
+
+    @property
+    @pulumi.getter
+    def named(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input['ContextArgs']]]]:
+        """
+        Additional build contexts to use. 
+
+        These contexts are accessed with `FROM name` or `--from=name`
+        statements when using Dockerfile 1.4+ syntax.
+
+        Values can be local paths, HTTP URLs, or  `docker-image://` images.
+        """
+        return pulumi.get(self, "named")
+
+    @named.setter
+    def named(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input['ContextArgs']]]]):
+        pulumi.set(self, "named", value)
+
+
+@pulumi.input_type
+class BuilderConfigArgs:
+    def __init__(__self__, *,
+                 name: Optional[pulumi.Input[str]] = None):
+        """
+        :param pulumi.Input[str] name: Name of an existing buildx builder to use.
+               
+               Only `docker-container`, `kubernetes`, or `remote` drivers are
+               supported. The legacy `docker` driver is not supported.
+        """
+        if name is not None:
+            pulumi.set(__self__, "name", name)
+
+    @property
+    @pulumi.getter
+    def name(self) -> Optional[pulumi.Input[str]]:
+        """
+        Name of an existing buildx builder to use.
+
+        Only `docker-container`, `kubernetes`, or `remote` drivers are
+        supported. The legacy `docker` driver is not supported.
+        """
+        return pulumi.get(self, "name")
+
+    @name.setter
+    def name(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "name", value)
+
 
 @pulumi.input_type
 class CacheFromAzureBlobArgs:
@@ -40,6 +137,11 @@ class CacheFromAzureBlobArgs:
                  name: pulumi.Input[str],
                  account_url: Optional[pulumi.Input[str]] = None,
                  secret_access_key: Optional[pulumi.Input[str]] = None):
+        """
+        :param pulumi.Input[str] name: The name of the cache image.
+        :param pulumi.Input[str] account_url: Base URL of the storage account.
+        :param pulumi.Input[str] secret_access_key: Blob storage account key.
+        """
         pulumi.set(__self__, "name", name)
         if account_url is not None:
             pulumi.set(__self__, "account_url", account_url)
@@ -49,6 +151,9 @@ class CacheFromAzureBlobArgs:
     @property
     @pulumi.getter
     def name(self) -> pulumi.Input[str]:
+        """
+        The name of the cache image.
+        """
         return pulumi.get(self, "name")
 
     @name.setter
@@ -58,6 +163,9 @@ class CacheFromAzureBlobArgs:
     @property
     @pulumi.getter(name="accountUrl")
     def account_url(self) -> Optional[pulumi.Input[str]]:
+        """
+        Base URL of the storage account.
+        """
         return pulumi.get(self, "account_url")
 
     @account_url.setter
@@ -67,6 +175,9 @@ class CacheFromAzureBlobArgs:
     @property
     @pulumi.getter(name="secretAccessKey")
     def secret_access_key(self) -> Optional[pulumi.Input[str]]:
+        """
+        Blob storage account key.
+        """
         return pulumi.get(self, "secret_access_key")
 
     @secret_access_key.setter
@@ -85,27 +196,20 @@ class CacheFromEntryArgs:
                  registry: Optional[pulumi.Input['CacheFromRegistryArgs']] = None,
                  s3: Optional[pulumi.Input['CacheFromS3Args']] = None):
         """
-        :param pulumi.Input['CacheFromAzureBlobArgs'] azblob: 
-               Push cache to Azure's blob storage service.
-        :param pulumi.Input['CacheFromGitHubActionsArgs'] gha: 
-               Recommended for use with GitHub Actions workflows.
+        :param pulumi.Input['CacheFromAzureBlobArgs'] azblob: Upload build caches to Azure's blob storage service.
+        :param pulumi.Input['CacheFromGitHubActionsArgs'] gha: Recommended for use with GitHub Actions workflows.
                
-               An action like "crazy-max/ghaction-github-runtime" is recommended to
+               An action like `crazy-max/ghaction-github-runtime` is recommended to
                expose appropriate credentials to your GitHub workflow.
-        :param pulumi.Input['CacheInlineArgs'] inline: 
-               The inline cache storage backend is the simplest implementation to get
+        :param pulumi.Input['CacheInlineArgs'] inline: The inline cache storage backend is the simplest implementation to get
                started with, but it does not handle multi-stage builds. Consider the
                registry cache backend instead.
-        :param pulumi.Input['CacheFromLocalArgs'] local: 
-               A simple backend which caches imagines on your local filesystem.
-        :param pulumi.Input[str] raw: 
-               A raw string as you would provide it to the Docker CLI (e.g.,
-               "type=inline")
-        :param pulumi.Input['CacheFromRegistryArgs'] registry: 
-               Push caches to remote registries. Incompatible with the "docker" build
-               driver.
-        :param pulumi.Input['CacheFromS3Args'] s3: 
-               Push cache to AWS S3 or S3-compatible services such as MinIO.
+        :param pulumi.Input['CacheFromLocalArgs'] local: A simple backend which caches images on your local filesystem.
+        :param pulumi.Input[str] raw: A raw string as you would provide it to the Docker CLI (e.g.,
+               `type=inline`).
+        :param pulumi.Input['CacheFromRegistryArgs'] registry: Upload build caches to remote registries.
+        :param pulumi.Input['CacheFromS3Args'] s3: Upload build caches to AWS S3 or an S3-compatible services such as
+               MinIO.
         """
         if azblob is not None:
             pulumi.set(__self__, "azblob", azblob)
@@ -126,8 +230,7 @@ class CacheFromEntryArgs:
     @pulumi.getter
     def azblob(self) -> Optional[pulumi.Input['CacheFromAzureBlobArgs']]:
         """
-
-        Push cache to Azure's blob storage service.
+        Upload build caches to Azure's blob storage service.
         """
         return pulumi.get(self, "azblob")
 
@@ -139,10 +242,9 @@ class CacheFromEntryArgs:
     @pulumi.getter
     def gha(self) -> Optional[pulumi.Input['CacheFromGitHubActionsArgs']]:
         """
-
         Recommended for use with GitHub Actions workflows.
 
-        An action like "crazy-max/ghaction-github-runtime" is recommended to
+        An action like `crazy-max/ghaction-github-runtime` is recommended to
         expose appropriate credentials to your GitHub workflow.
         """
         return pulumi.get(self, "gha")
@@ -155,7 +257,6 @@ class CacheFromEntryArgs:
     @pulumi.getter
     def inline(self) -> Optional[pulumi.Input['CacheInlineArgs']]:
         """
-
         The inline cache storage backend is the simplest implementation to get
         started with, but it does not handle multi-stage builds. Consider the
         registry cache backend instead.
@@ -170,8 +271,7 @@ class CacheFromEntryArgs:
     @pulumi.getter
     def local(self) -> Optional[pulumi.Input['CacheFromLocalArgs']]:
         """
-
-        A simple backend which caches imagines on your local filesystem.
+        A simple backend which caches images on your local filesystem.
         """
         return pulumi.get(self, "local")
 
@@ -183,9 +283,8 @@ class CacheFromEntryArgs:
     @pulumi.getter
     def raw(self) -> Optional[pulumi.Input[str]]:
         """
-
         A raw string as you would provide it to the Docker CLI (e.g.,
-        "type=inline")
+        `type=inline`).
         """
         return pulumi.get(self, "raw")
 
@@ -197,9 +296,7 @@ class CacheFromEntryArgs:
     @pulumi.getter
     def registry(self) -> Optional[pulumi.Input['CacheFromRegistryArgs']]:
         """
-
-        Push caches to remote registries. Incompatible with the "docker" build
-        driver.
+        Upload build caches to remote registries.
         """
         return pulumi.get(self, "registry")
 
@@ -211,8 +308,8 @@ class CacheFromEntryArgs:
     @pulumi.getter
     def s3(self) -> Optional[pulumi.Input['CacheFromS3Args']]:
         """
-
-        Push cache to AWS S3 or S3-compatible services such as MinIO.
+        Upload build caches to AWS S3 or an S3-compatible services such as
+        MinIO.
         """
         return pulumi.get(self, "s3")
 
@@ -228,9 +325,21 @@ class CacheFromGitHubActionsArgs:
                  token: Optional[pulumi.Input[str]] = None,
                  url: Optional[pulumi.Input[str]] = None):
         """
-        :param pulumi.Input[str] scope: Which scope cache object belongs to.
-        :param pulumi.Input[str] token: Access token
-        :param pulumi.Input[str] url: Cache server URL
+        :param pulumi.Input[str] scope: The scope to use for cache keys. Defaults to `buildkit`.
+               
+               This should be set if building and caching multiple images in one
+               workflow, otherwise caches will overwrite each other.
+        :param pulumi.Input[str] token: The GitHub Actions token to use. This is not a personal access tokens
+               and is typically generated automatically as part of each job.
+               
+               Defaults to `$ACTIONS_RUNTIME_TOKEN`, although a separate action like
+               `crazy-max/ghaction-github-runtime` is recommended to expose this
+               environment variable to your jobs.
+        :param pulumi.Input[str] url: The cache server URL to use for artifacts.
+               
+               Defaults to `$ACTIONS_RUNTIME_URL`, although a separate action like
+               `crazy-max/ghaction-github-runtime` is recommended to expose this
+               environment variable to your jobs.
         """
         if scope is None:
             scope = (_utilities.get_env('buildkit') or '')
@@ -249,7 +358,10 @@ class CacheFromGitHubActionsArgs:
     @pulumi.getter
     def scope(self) -> Optional[pulumi.Input[str]]:
         """
-        Which scope cache object belongs to.
+        The scope to use for cache keys. Defaults to `buildkit`.
+
+        This should be set if building and caching multiple images in one
+        workflow, otherwise caches will overwrite each other.
         """
         return pulumi.get(self, "scope")
 
@@ -261,7 +373,12 @@ class CacheFromGitHubActionsArgs:
     @pulumi.getter
     def token(self) -> Optional[pulumi.Input[str]]:
         """
-        Access token
+        The GitHub Actions token to use. This is not a personal access tokens
+        and is typically generated automatically as part of each job.
+
+        Defaults to `$ACTIONS_RUNTIME_TOKEN`, although a separate action like
+        `crazy-max/ghaction-github-runtime` is recommended to expose this
+        environment variable to your jobs.
         """
         return pulumi.get(self, "token")
 
@@ -273,7 +390,11 @@ class CacheFromGitHubActionsArgs:
     @pulumi.getter
     def url(self) -> Optional[pulumi.Input[str]]:
         """
-        Cache server URL
+        The cache server URL to use for artifacts.
+
+        Defaults to `$ACTIONS_RUNTIME_URL`, although a separate action like
+        `crazy-max/ghaction-github-runtime` is recommended to expose this
+        environment variable to your jobs.
         """
         return pulumi.get(self, "url")
 
@@ -287,6 +408,10 @@ class CacheFromLocalArgs:
     def __init__(__self__, *,
                  src: pulumi.Input[str],
                  digest: Optional[pulumi.Input[str]] = None):
+        """
+        :param pulumi.Input[str] src: Path of the local directory where cache gets imported from.
+        :param pulumi.Input[str] digest: Digest of manifest to import.
+        """
         pulumi.set(__self__, "src", src)
         if digest is not None:
             pulumi.set(__self__, "digest", digest)
@@ -294,6 +419,9 @@ class CacheFromLocalArgs:
     @property
     @pulumi.getter
     def src(self) -> pulumi.Input[str]:
+        """
+        Path of the local directory where cache gets imported from.
+        """
         return pulumi.get(self, "src")
 
     @src.setter
@@ -303,6 +431,9 @@ class CacheFromLocalArgs:
     @property
     @pulumi.getter
     def digest(self) -> Optional[pulumi.Input[str]]:
+        """
+        Digest of manifest to import.
+        """
         return pulumi.get(self, "digest")
 
     @digest.setter
@@ -315,7 +446,7 @@ class CacheFromRegistryArgs:
     def __init__(__self__, *,
                  ref: pulumi.Input[str]):
         """
-        :param pulumi.Input[str] ref: Full name of the cache image to import.
+        :param pulumi.Input[str] ref: Fully qualified name of the cache image to import.
         """
         pulumi.set(__self__, "ref", ref)
 
@@ -323,7 +454,7 @@ class CacheFromRegistryArgs:
     @pulumi.getter
     def ref(self) -> pulumi.Input[str]:
         """
-        Full name of the cache image to import.
+        Fully qualified name of the cache image to import.
         """
         return pulumi.get(self, "ref")
 
@@ -345,6 +476,18 @@ class CacheFromS3Args:
                  secret_access_key: Optional[pulumi.Input[str]] = None,
                  session_token: Optional[pulumi.Input[str]] = None,
                  use_path_style: Optional[pulumi.Input[bool]] = None):
+        """
+        :param pulumi.Input[str] bucket: Name of the S3 bucket.
+        :param pulumi.Input[str] region: The geographic location of the bucket. Defaults to `$AWS_REGION`.
+        :param pulumi.Input[str] access_key_id: Defaults to `$AWS_ACCESS_KEY_ID`.
+        :param pulumi.Input[str] blobs_prefix: Prefix to prepend to blob filenames.
+        :param pulumi.Input[str] endpoint_url: Endpoint of the S3 bucket.
+        :param pulumi.Input[str] manifests_prefix: Prefix to prepend on manifest filenames.
+        :param pulumi.Input[str] name: Name of the cache image.
+        :param pulumi.Input[str] secret_access_key: Defaults to `$AWS_SECRET_ACCESS_KEY`.
+        :param pulumi.Input[str] session_token: Defaults to `$AWS_SESSION_TOKEN`.
+        :param pulumi.Input[bool] use_path_style: Uses `bucket` in the URL instead of hostname when `true`.
+        """
         pulumi.set(__self__, "bucket", bucket)
         if region is None:
             region = (_utilities.get_env('AWS_REGION') or '')
@@ -375,6 +518,9 @@ class CacheFromS3Args:
     @property
     @pulumi.getter
     def bucket(self) -> pulumi.Input[str]:
+        """
+        Name of the S3 bucket.
+        """
         return pulumi.get(self, "bucket")
 
     @bucket.setter
@@ -384,6 +530,9 @@ class CacheFromS3Args:
     @property
     @pulumi.getter
     def region(self) -> pulumi.Input[str]:
+        """
+        The geographic location of the bucket. Defaults to `$AWS_REGION`.
+        """
         return pulumi.get(self, "region")
 
     @region.setter
@@ -393,6 +542,9 @@ class CacheFromS3Args:
     @property
     @pulumi.getter(name="accessKeyId")
     def access_key_id(self) -> Optional[pulumi.Input[str]]:
+        """
+        Defaults to `$AWS_ACCESS_KEY_ID`.
+        """
         return pulumi.get(self, "access_key_id")
 
     @access_key_id.setter
@@ -402,6 +554,9 @@ class CacheFromS3Args:
     @property
     @pulumi.getter(name="blobsPrefix")
     def blobs_prefix(self) -> Optional[pulumi.Input[str]]:
+        """
+        Prefix to prepend to blob filenames.
+        """
         return pulumi.get(self, "blobs_prefix")
 
     @blobs_prefix.setter
@@ -411,6 +566,9 @@ class CacheFromS3Args:
     @property
     @pulumi.getter(name="endpointUrl")
     def endpoint_url(self) -> Optional[pulumi.Input[str]]:
+        """
+        Endpoint of the S3 bucket.
+        """
         return pulumi.get(self, "endpoint_url")
 
     @endpoint_url.setter
@@ -420,6 +578,9 @@ class CacheFromS3Args:
     @property
     @pulumi.getter(name="manifestsPrefix")
     def manifests_prefix(self) -> Optional[pulumi.Input[str]]:
+        """
+        Prefix to prepend on manifest filenames.
+        """
         return pulumi.get(self, "manifests_prefix")
 
     @manifests_prefix.setter
@@ -429,6 +590,9 @@ class CacheFromS3Args:
     @property
     @pulumi.getter
     def name(self) -> Optional[pulumi.Input[str]]:
+        """
+        Name of the cache image.
+        """
         return pulumi.get(self, "name")
 
     @name.setter
@@ -438,6 +602,9 @@ class CacheFromS3Args:
     @property
     @pulumi.getter(name="secretAccessKey")
     def secret_access_key(self) -> Optional[pulumi.Input[str]]:
+        """
+        Defaults to `$AWS_SECRET_ACCESS_KEY`.
+        """
         return pulumi.get(self, "secret_access_key")
 
     @secret_access_key.setter
@@ -447,6 +614,9 @@ class CacheFromS3Args:
     @property
     @pulumi.getter(name="sessionToken")
     def session_token(self) -> Optional[pulumi.Input[str]]:
+        """
+        Defaults to `$AWS_SESSION_TOKEN`.
+        """
         return pulumi.get(self, "session_token")
 
     @session_token.setter
@@ -456,6 +626,9 @@ class CacheFromS3Args:
     @property
     @pulumi.getter(name="usePathStyle")
     def use_path_style(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Uses `bucket` in the URL instead of hostname when `true`.
+        """
         return pulumi.get(self, "use_path_style")
 
     @use_path_style.setter
@@ -478,7 +651,11 @@ class CacheToAzureBlobArgs:
                  mode: Optional[pulumi.Input['CacheMode']] = None,
                  secret_access_key: Optional[pulumi.Input[str]] = None):
         """
+        :param pulumi.Input[str] name: The name of the cache image.
+        :param pulumi.Input[str] account_url: Base URL of the storage account.
         :param pulumi.Input[bool] ignore_error: Ignore errors caused by failed cache exports.
+        :param pulumi.Input['CacheMode'] mode: The cache mode to use. Defaults to `min`.
+        :param pulumi.Input[str] secret_access_key: Blob storage account key.
         """
         pulumi.set(__self__, "name", name)
         if account_url is not None:
@@ -497,6 +674,9 @@ class CacheToAzureBlobArgs:
     @property
     @pulumi.getter
     def name(self) -> pulumi.Input[str]:
+        """
+        The name of the cache image.
+        """
         return pulumi.get(self, "name")
 
     @name.setter
@@ -506,6 +686,9 @@ class CacheToAzureBlobArgs:
     @property
     @pulumi.getter(name="accountUrl")
     def account_url(self) -> Optional[pulumi.Input[str]]:
+        """
+        Base URL of the storage account.
+        """
         return pulumi.get(self, "account_url")
 
     @account_url.setter
@@ -527,6 +710,9 @@ class CacheToAzureBlobArgs:
     @property
     @pulumi.getter
     def mode(self) -> Optional[pulumi.Input['CacheMode']]:
+        """
+        The cache mode to use. Defaults to `min`.
+        """
         return pulumi.get(self, "mode")
 
     @mode.setter
@@ -536,6 +722,9 @@ class CacheToAzureBlobArgs:
     @property
     @pulumi.getter(name="secretAccessKey")
     def secret_access_key(self) -> Optional[pulumi.Input[str]]:
+        """
+        Blob storage account key.
+        """
         return pulumi.get(self, "secret_access_key")
 
     @secret_access_key.setter
@@ -554,27 +743,20 @@ class CacheToEntryArgs:
                  registry: Optional[pulumi.Input['CacheToRegistryArgs']] = None,
                  s3: Optional[pulumi.Input['CacheToS3Args']] = None):
         """
-        :param pulumi.Input['CacheToAzureBlobArgs'] azblob: 
-               Push cache to Azure's blob storage service.
-        :param pulumi.Input['CacheToGitHubActionsArgs'] gha: 
-               Recommended for use with GitHub Actions workflows.
+        :param pulumi.Input['CacheToAzureBlobArgs'] azblob: Push cache to Azure's blob storage service.
+        :param pulumi.Input['CacheToGitHubActionsArgs'] gha: Recommended for use with GitHub Actions workflows.
                
-               An action like "crazy-max/ghaction-github-runtime" is recommended to
+               An action like `crazy-max/ghaction-github-runtime` is recommended to
                expose appropriate credentials to your GitHub workflow.
-        :param pulumi.Input['CacheInlineArgs'] inline: 
-               The inline cache storage backend is the simplest implementation to get
+        :param pulumi.Input['CacheInlineArgs'] inline: The inline cache storage backend is the simplest implementation to get
                started with, but it does not handle multi-stage builds. Consider the
-               registry cache backend instead.
-        :param pulumi.Input['CacheToLocalArgs'] local: 
-               A simple backend which caches imagines on your local filesystem.
-        :param pulumi.Input[str] raw: 
-               A raw string as you would provide it to the Docker CLI (e.g.,
-               "type=inline")
-        :param pulumi.Input['CacheToRegistryArgs'] registry: 
-               Push caches to remote registries. Incompatible with the "docker" build
+               `registry` cache backend instead.
+        :param pulumi.Input['CacheToLocalArgs'] local: A simple backend which caches imagines on your local filesystem.
+        :param pulumi.Input[str] raw: A raw string as you would provide it to the Docker CLI (e.g.,
+               `type=inline`)
+        :param pulumi.Input['CacheToRegistryArgs'] registry: Push caches to remote registries. Incompatible with the `docker` build
                driver.
-        :param pulumi.Input['CacheToS3Args'] s3: 
-               Push cache to AWS S3 or S3-compatible services such as MinIO.
+        :param pulumi.Input['CacheToS3Args'] s3: Push cache to AWS S3 or S3-compatible services such as MinIO.
         """
         if azblob is not None:
             pulumi.set(__self__, "azblob", azblob)
@@ -595,7 +777,6 @@ class CacheToEntryArgs:
     @pulumi.getter
     def azblob(self) -> Optional[pulumi.Input['CacheToAzureBlobArgs']]:
         """
-
         Push cache to Azure's blob storage service.
         """
         return pulumi.get(self, "azblob")
@@ -608,10 +789,9 @@ class CacheToEntryArgs:
     @pulumi.getter
     def gha(self) -> Optional[pulumi.Input['CacheToGitHubActionsArgs']]:
         """
-
         Recommended for use with GitHub Actions workflows.
 
-        An action like "crazy-max/ghaction-github-runtime" is recommended to
+        An action like `crazy-max/ghaction-github-runtime` is recommended to
         expose appropriate credentials to your GitHub workflow.
         """
         return pulumi.get(self, "gha")
@@ -624,10 +804,9 @@ class CacheToEntryArgs:
     @pulumi.getter
     def inline(self) -> Optional[pulumi.Input['CacheInlineArgs']]:
         """
-
         The inline cache storage backend is the simplest implementation to get
         started with, but it does not handle multi-stage builds. Consider the
-        registry cache backend instead.
+        `registry` cache backend instead.
         """
         return pulumi.get(self, "inline")
 
@@ -639,7 +818,6 @@ class CacheToEntryArgs:
     @pulumi.getter
     def local(self) -> Optional[pulumi.Input['CacheToLocalArgs']]:
         """
-
         A simple backend which caches imagines on your local filesystem.
         """
         return pulumi.get(self, "local")
@@ -652,9 +830,8 @@ class CacheToEntryArgs:
     @pulumi.getter
     def raw(self) -> Optional[pulumi.Input[str]]:
         """
-
         A raw string as you would provide it to the Docker CLI (e.g.,
-        "type=inline")
+        `type=inline`)
         """
         return pulumi.get(self, "raw")
 
@@ -666,8 +843,7 @@ class CacheToEntryArgs:
     @pulumi.getter
     def registry(self) -> Optional[pulumi.Input['CacheToRegistryArgs']]:
         """
-
-        Push caches to remote registries. Incompatible with the "docker" build
+        Push caches to remote registries. Incompatible with the `docker` build
         driver.
         """
         return pulumi.get(self, "registry")
@@ -680,7 +856,6 @@ class CacheToEntryArgs:
     @pulumi.getter
     def s3(self) -> Optional[pulumi.Input['CacheToS3Args']]:
         """
-
         Push cache to AWS S3 or S3-compatible services such as MinIO.
         """
         return pulumi.get(self, "s3")
@@ -700,9 +875,22 @@ class CacheToGitHubActionsArgs:
                  url: Optional[pulumi.Input[str]] = None):
         """
         :param pulumi.Input[bool] ignore_error: Ignore errors caused by failed cache exports.
-        :param pulumi.Input[str] scope: Which scope cache object belongs to.
-        :param pulumi.Input[str] token: Access token
-        :param pulumi.Input[str] url: Cache server URL
+        :param pulumi.Input['CacheMode'] mode: The cache mode to use. Defaults to `min`.
+        :param pulumi.Input[str] scope: The scope to use for cache keys. Defaults to `buildkit`.
+               
+               This should be set if building and caching multiple images in one
+               workflow, otherwise caches will overwrite each other.
+        :param pulumi.Input[str] token: The GitHub Actions token to use. This is not a personal access tokens
+               and is typically generated automatically as part of each job.
+               
+               Defaults to `$ACTIONS_RUNTIME_TOKEN`, although a separate action like
+               `crazy-max/ghaction-github-runtime` is recommended to expose this
+               environment variable to your jobs.
+        :param pulumi.Input[str] url: The cache server URL to use for artifacts.
+               
+               Defaults to `$ACTIONS_RUNTIME_URL`, although a separate action like
+               `crazy-max/ghaction-github-runtime` is recommended to expose this
+               environment variable to your jobs.
         """
         if ignore_error is None:
             ignore_error = False
@@ -740,6 +928,9 @@ class CacheToGitHubActionsArgs:
     @property
     @pulumi.getter
     def mode(self) -> Optional[pulumi.Input['CacheMode']]:
+        """
+        The cache mode to use. Defaults to `min`.
+        """
         return pulumi.get(self, "mode")
 
     @mode.setter
@@ -750,7 +941,10 @@ class CacheToGitHubActionsArgs:
     @pulumi.getter
     def scope(self) -> Optional[pulumi.Input[str]]:
         """
-        Which scope cache object belongs to.
+        The scope to use for cache keys. Defaults to `buildkit`.
+
+        This should be set if building and caching multiple images in one
+        workflow, otherwise caches will overwrite each other.
         """
         return pulumi.get(self, "scope")
 
@@ -762,7 +956,12 @@ class CacheToGitHubActionsArgs:
     @pulumi.getter
     def token(self) -> Optional[pulumi.Input[str]]:
         """
-        Access token
+        The GitHub Actions token to use. This is not a personal access tokens
+        and is typically generated automatically as part of each job.
+
+        Defaults to `$ACTIONS_RUNTIME_TOKEN`, although a separate action like
+        `crazy-max/ghaction-github-runtime` is recommended to expose this
+        environment variable to your jobs.
         """
         return pulumi.get(self, "token")
 
@@ -774,7 +973,11 @@ class CacheToGitHubActionsArgs:
     @pulumi.getter
     def url(self) -> Optional[pulumi.Input[str]]:
         """
-        Cache server URL
+        The cache server URL to use for artifacts.
+
+        Defaults to `$ACTIONS_RUNTIME_URL`, although a separate action like
+        `crazy-max/ghaction-github-runtime` is recommended to expose this
+        environment variable to your jobs.
         """
         return pulumi.get(self, "url")
 
@@ -793,10 +996,12 @@ class CacheToLocalArgs:
                  ignore_error: Optional[pulumi.Input[bool]] = None,
                  mode: Optional[pulumi.Input['CacheMode']] = None):
         """
+        :param pulumi.Input[str] dest: Path of the local directory to export the cache.
         :param pulumi.Input['CompressionType'] compression: The compression type to use.
         :param pulumi.Input[int] compression_level: Compression level from 0 to 22.
         :param pulumi.Input[bool] force_compression: Forcefully apply compression.
         :param pulumi.Input[bool] ignore_error: Ignore errors caused by failed cache exports.
+        :param pulumi.Input['CacheMode'] mode: The cache mode to use. Defaults to `min`.
         """
         pulumi.set(__self__, "dest", dest)
         if compression is None:
@@ -823,6 +1028,9 @@ class CacheToLocalArgs:
     @property
     @pulumi.getter
     def dest(self) -> pulumi.Input[str]:
+        """
+        Path of the local directory to export the cache.
+        """
         return pulumi.get(self, "dest")
 
     @dest.setter
@@ -880,6 +1088,9 @@ class CacheToLocalArgs:
     @property
     @pulumi.getter
     def mode(self) -> Optional[pulumi.Input['CacheMode']]:
+        """
+        The cache mode to use. Defaults to `min`.
+        """
         return pulumi.get(self, "mode")
 
     @mode.setter
@@ -899,13 +1110,18 @@ class CacheToRegistryArgs:
                  mode: Optional[pulumi.Input['CacheMode']] = None,
                  oci_media_types: Optional[pulumi.Input[bool]] = None):
         """
-        :param pulumi.Input[str] ref: Full name of the cache image to import.
+        :param pulumi.Input[str] ref: Fully qualified name of the cache image to import.
         :param pulumi.Input['CompressionType'] compression: The compression type to use.
         :param pulumi.Input[int] compression_level: Compression level from 0 to 22.
         :param pulumi.Input[bool] force_compression: Forcefully apply compression.
         :param pulumi.Input[bool] ignore_error: Ignore errors caused by failed cache exports.
-        :param pulumi.Input[bool] image_manifest: Export cache manifest as an OCI-compatible image manifest instead of a manifest list (requires OCI media types).
-        :param pulumi.Input[bool] oci_media_types: Whether to use OCI mediatypes in exported manifests.
+        :param pulumi.Input[bool] image_manifest: Export cache manifest as an OCI-compatible image manifest instead of a
+               manifest list (requires OCI media types).
+               
+               Defaults to `false`.
+        :param pulumi.Input['CacheMode'] mode: The cache mode to use. Defaults to `min`.
+        :param pulumi.Input[bool] oci_media_types: Whether to use OCI mediatypes in exported manifests. Defaults to
+               `true`.
         """
         pulumi.set(__self__, "ref", ref)
         if compression is None:
@@ -941,7 +1157,7 @@ class CacheToRegistryArgs:
     @pulumi.getter
     def ref(self) -> pulumi.Input[str]:
         """
-        Full name of the cache image to import.
+        Fully qualified name of the cache image to import.
         """
         return pulumi.get(self, "ref")
 
@@ -1001,7 +1217,10 @@ class CacheToRegistryArgs:
     @pulumi.getter(name="imageManifest")
     def image_manifest(self) -> Optional[pulumi.Input[bool]]:
         """
-        Export cache manifest as an OCI-compatible image manifest instead of a manifest list (requires OCI media types).
+        Export cache manifest as an OCI-compatible image manifest instead of a
+        manifest list (requires OCI media types).
+
+        Defaults to `false`.
         """
         return pulumi.get(self, "image_manifest")
 
@@ -1012,6 +1231,9 @@ class CacheToRegistryArgs:
     @property
     @pulumi.getter
     def mode(self) -> Optional[pulumi.Input['CacheMode']]:
+        """
+        The cache mode to use. Defaults to `min`.
+        """
         return pulumi.get(self, "mode")
 
     @mode.setter
@@ -1022,7 +1244,8 @@ class CacheToRegistryArgs:
     @pulumi.getter(name="ociMediaTypes")
     def oci_media_types(self) -> Optional[pulumi.Input[bool]]:
         """
-        Whether to use OCI mediatypes in exported manifests.
+        Whether to use OCI mediatypes in exported manifests. Defaults to
+        `true`.
         """
         return pulumi.get(self, "oci_media_types")
 
@@ -1047,7 +1270,18 @@ class CacheToS3Args:
                  session_token: Optional[pulumi.Input[str]] = None,
                  use_path_style: Optional[pulumi.Input[bool]] = None):
         """
+        :param pulumi.Input[str] bucket: Name of the S3 bucket.
+        :param pulumi.Input[str] region: The geographic location of the bucket. Defaults to `$AWS_REGION`.
+        :param pulumi.Input[str] access_key_id: Defaults to `$AWS_ACCESS_KEY_ID`.
+        :param pulumi.Input[str] blobs_prefix: Prefix to prepend to blob filenames.
+        :param pulumi.Input[str] endpoint_url: Endpoint of the S3 bucket.
         :param pulumi.Input[bool] ignore_error: Ignore errors caused by failed cache exports.
+        :param pulumi.Input[str] manifests_prefix: Prefix to prepend on manifest filenames.
+        :param pulumi.Input['CacheMode'] mode: The cache mode to use. Defaults to `min`.
+        :param pulumi.Input[str] name: Name of the cache image.
+        :param pulumi.Input[str] secret_access_key: Defaults to `$AWS_SECRET_ACCESS_KEY`.
+        :param pulumi.Input[str] session_token: Defaults to `$AWS_SESSION_TOKEN`.
+        :param pulumi.Input[bool] use_path_style: Uses `bucket` in the URL instead of hostname when `true`.
         """
         pulumi.set(__self__, "bucket", bucket)
         if region is None:
@@ -1087,6 +1321,9 @@ class CacheToS3Args:
     @property
     @pulumi.getter
     def bucket(self) -> pulumi.Input[str]:
+        """
+        Name of the S3 bucket.
+        """
         return pulumi.get(self, "bucket")
 
     @bucket.setter
@@ -1096,6 +1333,9 @@ class CacheToS3Args:
     @property
     @pulumi.getter
     def region(self) -> pulumi.Input[str]:
+        """
+        The geographic location of the bucket. Defaults to `$AWS_REGION`.
+        """
         return pulumi.get(self, "region")
 
     @region.setter
@@ -1105,6 +1345,9 @@ class CacheToS3Args:
     @property
     @pulumi.getter(name="accessKeyId")
     def access_key_id(self) -> Optional[pulumi.Input[str]]:
+        """
+        Defaults to `$AWS_ACCESS_KEY_ID`.
+        """
         return pulumi.get(self, "access_key_id")
 
     @access_key_id.setter
@@ -1114,6 +1357,9 @@ class CacheToS3Args:
     @property
     @pulumi.getter(name="blobsPrefix")
     def blobs_prefix(self) -> Optional[pulumi.Input[str]]:
+        """
+        Prefix to prepend to blob filenames.
+        """
         return pulumi.get(self, "blobs_prefix")
 
     @blobs_prefix.setter
@@ -1123,6 +1369,9 @@ class CacheToS3Args:
     @property
     @pulumi.getter(name="endpointUrl")
     def endpoint_url(self) -> Optional[pulumi.Input[str]]:
+        """
+        Endpoint of the S3 bucket.
+        """
         return pulumi.get(self, "endpoint_url")
 
     @endpoint_url.setter
@@ -1144,6 +1393,9 @@ class CacheToS3Args:
     @property
     @pulumi.getter(name="manifestsPrefix")
     def manifests_prefix(self) -> Optional[pulumi.Input[str]]:
+        """
+        Prefix to prepend on manifest filenames.
+        """
         return pulumi.get(self, "manifests_prefix")
 
     @manifests_prefix.setter
@@ -1153,6 +1405,9 @@ class CacheToS3Args:
     @property
     @pulumi.getter
     def mode(self) -> Optional[pulumi.Input['CacheMode']]:
+        """
+        The cache mode to use. Defaults to `min`.
+        """
         return pulumi.get(self, "mode")
 
     @mode.setter
@@ -1162,6 +1417,9 @@ class CacheToS3Args:
     @property
     @pulumi.getter
     def name(self) -> Optional[pulumi.Input[str]]:
+        """
+        Name of the cache image.
+        """
         return pulumi.get(self, "name")
 
     @name.setter
@@ -1171,6 +1429,9 @@ class CacheToS3Args:
     @property
     @pulumi.getter(name="secretAccessKey")
     def secret_access_key(self) -> Optional[pulumi.Input[str]]:
+        """
+        Defaults to `$AWS_SECRET_ACCESS_KEY`.
+        """
         return pulumi.get(self, "secret_access_key")
 
     @secret_access_key.setter
@@ -1180,6 +1441,9 @@ class CacheToS3Args:
     @property
     @pulumi.getter(name="sessionToken")
     def session_token(self) -> Optional[pulumi.Input[str]]:
+        """
+        Defaults to `$AWS_SESSION_TOKEN`.
+        """
         return pulumi.get(self, "session_token")
 
     @session_token.setter
@@ -1189,11 +1453,101 @@ class CacheToS3Args:
     @property
     @pulumi.getter(name="usePathStyle")
     def use_path_style(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Uses `bucket` in the URL instead of hostname when `true`.
+        """
         return pulumi.get(self, "use_path_style")
 
     @use_path_style.setter
     def use_path_style(self, value: Optional[pulumi.Input[bool]]):
         pulumi.set(self, "use_path_style", value)
+
+
+@pulumi.input_type
+class ContextArgs:
+    def __init__(__self__, *,
+                 location: pulumi.Input[str]):
+        """
+        :param pulumi.Input[str] location: Resources to use for build context.
+               
+               The location can be:
+               * A relative or absolute path to a local directory (`.`, `./app`,
+                 `/app`, etc.).
+               * A remote URL of a Git repository, tarball, or plain text file
+                 (`https://github.com/user/myrepo.git`, `http://server/context.tar.gz`,
+                 etc.).
+        """
+        pulumi.set(__self__, "location", location)
+
+    @property
+    @pulumi.getter
+    def location(self) -> pulumi.Input[str]:
+        """
+        Resources to use for build context.
+
+        The location can be:
+        * A relative or absolute path to a local directory (`.`, `./app`,
+          `/app`, etc.).
+        * A remote URL of a Git repository, tarball, or plain text file
+          (`https://github.com/user/myrepo.git`, `http://server/context.tar.gz`,
+          etc.).
+        """
+        return pulumi.get(self, "location")
+
+    @location.setter
+    def location(self, value: pulumi.Input[str]):
+        pulumi.set(self, "location", value)
+
+
+@pulumi.input_type
+class DockerfileArgs:
+    def __init__(__self__, *,
+                 inline: Optional[pulumi.Input[str]] = None,
+                 location: Optional[pulumi.Input[str]] = None):
+        """
+        :param pulumi.Input[str] inline: Raw Dockerfile contents.
+               
+               Conflicts with `location`.
+        :param pulumi.Input[str] location: Location of the Dockerfile to use.
+               
+               Can be a relative or absolute path to a local file, or a remote URL.
+               
+               Conflicts with `inline`.
+        """
+        if inline is not None:
+            pulumi.set(__self__, "inline", inline)
+        if location is not None:
+            pulumi.set(__self__, "location", location)
+
+    @property
+    @pulumi.getter
+    def inline(self) -> Optional[pulumi.Input[str]]:
+        """
+        Raw Dockerfile contents.
+
+        Conflicts with `location`.
+        """
+        return pulumi.get(self, "inline")
+
+    @inline.setter
+    def inline(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "inline", value)
+
+    @property
+    @pulumi.getter
+    def location(self) -> Optional[pulumi.Input[str]]:
+        """
+        Location of the Dockerfile to use.
+
+        Can be a relative or absolute path to a local file, or a remote URL.
+
+        Conflicts with `inline`.
+        """
+        return pulumi.get(self, "location")
+
+    @location.setter
+    def location(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "location", value)
 
 
 @pulumi.input_type
@@ -1208,6 +1562,7 @@ class ExportDockerArgs:
                  oci_media_types: Optional[pulumi.Input[bool]] = None,
                  tar: Optional[pulumi.Input[bool]] = None):
         """
+        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] annotations: Attach an arbitrary key/value annotation to the image.
         :param pulumi.Input['CompressionType'] compression: The compression type to use.
         :param pulumi.Input[int] compression_level: Compression level from 0 to 22.
         :param pulumi.Input[str] dest: The local export path.
@@ -1246,6 +1601,9 @@ class ExportDockerArgs:
     @property
     @pulumi.getter
     def annotations(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]:
+        """
+        Attach an arbitrary key/value annotation to the image.
+        """
         return pulumi.get(self, "annotations")
 
     @annotations.setter
@@ -1343,26 +1701,22 @@ class ExportEntryArgs:
                  docker: Optional[pulumi.Input['ExportDockerArgs']] = None,
                  image: Optional[pulumi.Input['ExportImageArgs']] = None,
                  local: Optional[pulumi.Input['ExportLocalArgs']] = None,
+                 manifests: Optional[pulumi.Input[Sequence[pulumi.Input['ManifestArgs']]]] = None,
                  oci: Optional[pulumi.Input['ExportOCIArgs']] = None,
                  raw: Optional[pulumi.Input[str]] = None,
                  registry: Optional[pulumi.Input['ExportRegistryArgs']] = None,
                  tar: Optional[pulumi.Input['ExportTarArgs']] = None):
         """
-        :param pulumi.Input['ExportDockerArgs'] docker: 
-               Export as a Docker image layout.
-        :param pulumi.Input['ExportImageArgs'] image: 
-               Outputs the build result into a container image format.
-        :param pulumi.Input['ExportLocalArgs'] local: 
-               Export to a local directory as files and directories.
-        :param pulumi.Input['ExportOCIArgs'] oci: 
-               Identical to the Docker exporter but uses OCI media types by default.
-        :param pulumi.Input[str] raw: 
-               A raw string as you would provide it to the Docker CLI (e.g.,
-               "type=docker")
-        :param pulumi.Input['ExportRegistryArgs'] registry: 
-               Identical to the Image exporter, but pushes by default.
-        :param pulumi.Input['ExportTarArgs'] tar: 
-               Export to a local directory as a tarball.
+        :param pulumi.Input['ExportDockerArgs'] docker: Export as a Docker image layout.
+        :param pulumi.Input['ExportImageArgs'] image: Outputs the build result into a container image format.
+        :param pulumi.Input['ExportLocalArgs'] local: Export to a local directory as files and directories.
+        :param pulumi.Input[Sequence[pulumi.Input['ManifestArgs']]] manifests: An output property populated for exporters that pushed image
+               manifest(s) to a registry.
+        :param pulumi.Input['ExportOCIArgs'] oci: Identical to the Docker exporter but uses OCI media types by default.
+        :param pulumi.Input[str] raw: A raw string as you would provide it to the Docker CLI (e.g.,
+               `type=docker`)
+        :param pulumi.Input['ExportRegistryArgs'] registry: Identical to the Image exporter, but pushes by default.
+        :param pulumi.Input['ExportTarArgs'] tar: Export to a local directory as a tarball.
         """
         if docker is not None:
             pulumi.set(__self__, "docker", docker)
@@ -1370,6 +1724,8 @@ class ExportEntryArgs:
             pulumi.set(__self__, "image", image)
         if local is not None:
             pulumi.set(__self__, "local", local)
+        if manifests is not None:
+            pulumi.set(__self__, "manifests", manifests)
         if oci is not None:
             pulumi.set(__self__, "oci", oci)
         if raw is not None:
@@ -1383,7 +1739,6 @@ class ExportEntryArgs:
     @pulumi.getter
     def docker(self) -> Optional[pulumi.Input['ExportDockerArgs']]:
         """
-
         Export as a Docker image layout.
         """
         return pulumi.get(self, "docker")
@@ -1396,7 +1751,6 @@ class ExportEntryArgs:
     @pulumi.getter
     def image(self) -> Optional[pulumi.Input['ExportImageArgs']]:
         """
-
         Outputs the build result into a container image format.
         """
         return pulumi.get(self, "image")
@@ -1409,7 +1763,6 @@ class ExportEntryArgs:
     @pulumi.getter
     def local(self) -> Optional[pulumi.Input['ExportLocalArgs']]:
         """
-
         Export to a local directory as files and directories.
         """
         return pulumi.get(self, "local")
@@ -1420,9 +1773,21 @@ class ExportEntryArgs:
 
     @property
     @pulumi.getter
+    def manifests(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['ManifestArgs']]]]:
+        """
+        An output property populated for exporters that pushed image
+        manifest(s) to a registry.
+        """
+        return pulumi.get(self, "manifests")
+
+    @manifests.setter
+    def manifests(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['ManifestArgs']]]]):
+        pulumi.set(self, "manifests", value)
+
+    @property
+    @pulumi.getter
     def oci(self) -> Optional[pulumi.Input['ExportOCIArgs']]:
         """
-
         Identical to the Docker exporter but uses OCI media types by default.
         """
         return pulumi.get(self, "oci")
@@ -1435,9 +1800,8 @@ class ExportEntryArgs:
     @pulumi.getter
     def raw(self) -> Optional[pulumi.Input[str]]:
         """
-
         A raw string as you would provide it to the Docker CLI (e.g.,
-        "type=docker")
+        `type=docker`)
         """
         return pulumi.get(self, "raw")
 
@@ -1449,7 +1813,6 @@ class ExportEntryArgs:
     @pulumi.getter
     def registry(self) -> Optional[pulumi.Input['ExportRegistryArgs']]:
         """
-
         Identical to the Image exporter, but pushes by default.
         """
         return pulumi.get(self, "registry")
@@ -1462,7 +1825,6 @@ class ExportEntryArgs:
     @pulumi.getter
     def tar(self) -> Optional[pulumi.Input['ExportTarArgs']]:
         """
-
         Export to a local directory as a tarball.
         """
         return pulumi.get(self, "tar")
@@ -1489,16 +1851,26 @@ class ExportImageArgs:
                  store: Optional[pulumi.Input[bool]] = None,
                  unpack: Optional[pulumi.Input[bool]] = None):
         """
+        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] annotations: Attach an arbitrary key/value annotation to the image.
         :param pulumi.Input['CompressionType'] compression: The compression type to use.
         :param pulumi.Input[int] compression_level: Compression level from 0 to 22.
+        :param pulumi.Input[str] dangling_name_prefix: Name image with `prefix@<digest>`, used for anonymous images.
         :param pulumi.Input[bool] force_compression: Forcefully apply compression.
+        :param pulumi.Input[bool] insecure: Allow pushing to an insecure registry.
+        :param pulumi.Input[bool] name_canonical: Add additional canonical name (`name@<digest>`).
         :param pulumi.Input[Sequence[pulumi.Input[str]]] names: Specify images names to export. This is overridden if tags are already specified.
         :param pulumi.Input[bool] oci_media_types: Use OCI media types in exporter manifests.
         :param pulumi.Input[bool] push: Push after creating the image.
-        :param pulumi.Input[bool] store: 
-               Store resulting images to the worker's image store, and ensure all its
-               blobs are in the content store. Ignored if the worker doesn't have
-               image store (when using OCI workers, for example).
+        :param pulumi.Input[bool] push_by_digest: Push image without name.
+        :param pulumi.Input[bool] store: Store resulting images to the worker's image store and ensure all of
+               its blobs are in the content store. 
+               
+               Defaults to `true`.
+               
+               Ignored if the worker doesn't have image store (when using OCI workers,
+               for example).
+        :param pulumi.Input[bool] unpack: Unpack image after creation (for use with containerd). Defaults to
+               `false`.
         """
         if annotations is not None:
             pulumi.set(__self__, "annotations", annotations)
@@ -1540,6 +1912,9 @@ class ExportImageArgs:
     @property
     @pulumi.getter
     def annotations(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]:
+        """
+        Attach an arbitrary key/value annotation to the image.
+        """
         return pulumi.get(self, "annotations")
 
     @annotations.setter
@@ -1573,6 +1948,9 @@ class ExportImageArgs:
     @property
     @pulumi.getter(name="danglingNamePrefix")
     def dangling_name_prefix(self) -> Optional[pulumi.Input[str]]:
+        """
+        Name image with `prefix@<digest>`, used for anonymous images.
+        """
         return pulumi.get(self, "dangling_name_prefix")
 
     @dangling_name_prefix.setter
@@ -1594,6 +1972,9 @@ class ExportImageArgs:
     @property
     @pulumi.getter
     def insecure(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Allow pushing to an insecure registry.
+        """
         return pulumi.get(self, "insecure")
 
     @insecure.setter
@@ -1603,6 +1984,9 @@ class ExportImageArgs:
     @property
     @pulumi.getter(name="nameCanonical")
     def name_canonical(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Add additional canonical name (`name@<digest>`).
+        """
         return pulumi.get(self, "name_canonical")
 
     @name_canonical.setter
@@ -1648,6 +2032,9 @@ class ExportImageArgs:
     @property
     @pulumi.getter(name="pushByDigest")
     def push_by_digest(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Push image without name.
+        """
         return pulumi.get(self, "push_by_digest")
 
     @push_by_digest.setter
@@ -1658,10 +2045,13 @@ class ExportImageArgs:
     @pulumi.getter
     def store(self) -> Optional[pulumi.Input[bool]]:
         """
+        Store resulting images to the worker's image store and ensure all of
+        its blobs are in the content store. 
 
-        Store resulting images to the worker's image store, and ensure all its
-        blobs are in the content store. Ignored if the worker doesn't have
-        image store (when using OCI workers, for example).
+        Defaults to `true`.
+
+        Ignored if the worker doesn't have image store (when using OCI workers,
+        for example).
         """
         return pulumi.get(self, "store")
 
@@ -1672,6 +2062,10 @@ class ExportImageArgs:
     @property
     @pulumi.getter
     def unpack(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Unpack image after creation (for use with containerd). Defaults to
+        `false`.
+        """
         return pulumi.get(self, "unpack")
 
     @unpack.setter
@@ -1713,6 +2107,7 @@ class ExportOCIArgs:
                  oci_media_types: Optional[pulumi.Input[bool]] = None,
                  tar: Optional[pulumi.Input[bool]] = None):
         """
+        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] annotations: Attach an arbitrary key/value annotation to the image.
         :param pulumi.Input['CompressionType'] compression: The compression type to use.
         :param pulumi.Input[int] compression_level: Compression level from 0 to 22.
         :param pulumi.Input[str] dest: The local export path.
@@ -1751,6 +2146,9 @@ class ExportOCIArgs:
     @property
     @pulumi.getter
     def annotations(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]:
+        """
+        Attach an arbitrary key/value annotation to the image.
+        """
         return pulumi.get(self, "annotations")
 
     @annotations.setter
@@ -1859,16 +2257,26 @@ class ExportRegistryArgs:
                  store: Optional[pulumi.Input[bool]] = None,
                  unpack: Optional[pulumi.Input[bool]] = None):
         """
+        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] annotations: Attach an arbitrary key/value annotation to the image.
         :param pulumi.Input['CompressionType'] compression: The compression type to use.
         :param pulumi.Input[int] compression_level: Compression level from 0 to 22.
+        :param pulumi.Input[str] dangling_name_prefix: Name image with `prefix@<digest>`, used for anonymous images.
         :param pulumi.Input[bool] force_compression: Forcefully apply compression.
+        :param pulumi.Input[bool] insecure: Allow pushing to an insecure registry.
+        :param pulumi.Input[bool] name_canonical: Add additional canonical name (`name@<digest>`).
         :param pulumi.Input[Sequence[pulumi.Input[str]]] names: Specify images names to export. This is overridden if tags are already specified.
         :param pulumi.Input[bool] oci_media_types: Use OCI media types in exporter manifests.
         :param pulumi.Input[bool] push: Push after creating the image.
-        :param pulumi.Input[bool] store: 
-               Store resulting images to the worker's image store, and ensure all its
-               blobs are in the content store. Ignored if the worker doesn't have
-               image store (when using OCI workers, for example).
+        :param pulumi.Input[bool] push_by_digest: Push image without name.
+        :param pulumi.Input[bool] store: Store resulting images to the worker's image store and ensure all of
+               its blobs are in the content store. 
+               
+               Defaults to `true`.
+               
+               Ignored if the worker doesn't have image store (when using OCI workers,
+               for example).
+        :param pulumi.Input[bool] unpack: Unpack image after creation (for use with containerd). Defaults to
+               `false`.
         """
         if annotations is not None:
             pulumi.set(__self__, "annotations", annotations)
@@ -1912,6 +2320,9 @@ class ExportRegistryArgs:
     @property
     @pulumi.getter
     def annotations(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]:
+        """
+        Attach an arbitrary key/value annotation to the image.
+        """
         return pulumi.get(self, "annotations")
 
     @annotations.setter
@@ -1945,6 +2356,9 @@ class ExportRegistryArgs:
     @property
     @pulumi.getter(name="danglingNamePrefix")
     def dangling_name_prefix(self) -> Optional[pulumi.Input[str]]:
+        """
+        Name image with `prefix@<digest>`, used for anonymous images.
+        """
         return pulumi.get(self, "dangling_name_prefix")
 
     @dangling_name_prefix.setter
@@ -1966,6 +2380,9 @@ class ExportRegistryArgs:
     @property
     @pulumi.getter
     def insecure(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Allow pushing to an insecure registry.
+        """
         return pulumi.get(self, "insecure")
 
     @insecure.setter
@@ -1975,6 +2392,9 @@ class ExportRegistryArgs:
     @property
     @pulumi.getter(name="nameCanonical")
     def name_canonical(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Add additional canonical name (`name@<digest>`).
+        """
         return pulumi.get(self, "name_canonical")
 
     @name_canonical.setter
@@ -2020,6 +2440,9 @@ class ExportRegistryArgs:
     @property
     @pulumi.getter(name="pushByDigest")
     def push_by_digest(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Push image without name.
+        """
         return pulumi.get(self, "push_by_digest")
 
     @push_by_digest.setter
@@ -2030,10 +2453,13 @@ class ExportRegistryArgs:
     @pulumi.getter
     def store(self) -> Optional[pulumi.Input[bool]]:
         """
+        Store resulting images to the worker's image store and ensure all of
+        its blobs are in the content store. 
 
-        Store resulting images to the worker's image store, and ensure all its
-        blobs are in the content store. Ignored if the worker doesn't have
-        image store (when using OCI workers, for example).
+        Defaults to `true`.
+
+        Ignored if the worker doesn't have image store (when using OCI workers,
+        for example).
         """
         return pulumi.get(self, "store")
 
@@ -2044,6 +2470,10 @@ class ExportRegistryArgs:
     @property
     @pulumi.getter
     def unpack(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Unpack image after creation (for use with containerd). Defaults to
+        `false`.
+        """
         return pulumi.get(self, "unpack")
 
     @unpack.setter
@@ -2074,15 +2504,119 @@ class ExportTarArgs:
 
 
 @pulumi.input_type
+class ManifestPlatformArgs:
+    def __init__(__self__, *,
+                 architecture: pulumi.Input[str],
+                 os: pulumi.Input[str]):
+        """
+        :param pulumi.Input[str] architecture: The manifest's architecture.
+        :param pulumi.Input[str] os: The manifest's operating systen.
+        """
+        pulumi.set(__self__, "architecture", architecture)
+        pulumi.set(__self__, "os", os)
+
+    @property
+    @pulumi.getter
+    def architecture(self) -> pulumi.Input[str]:
+        """
+        The manifest's architecture.
+        """
+        return pulumi.get(self, "architecture")
+
+    @architecture.setter
+    def architecture(self, value: pulumi.Input[str]):
+        pulumi.set(self, "architecture", value)
+
+    @property
+    @pulumi.getter
+    def os(self) -> pulumi.Input[str]:
+        """
+        The manifest's operating systen.
+        """
+        return pulumi.get(self, "os")
+
+    @os.setter
+    def os(self, value: pulumi.Input[str]):
+        pulumi.set(self, "os", value)
+
+
+@pulumi.input_type
+class ManifestArgs:
+    def __init__(__self__, *,
+                 digest: pulumi.Input[str],
+                 platform: pulumi.Input['ManifestPlatformArgs'],
+                 ref: pulumi.Input[str],
+                 size: pulumi.Input[int]):
+        """
+        :param pulumi.Input[str] digest: The SHA256 digest of the manifest.
+        :param pulumi.Input['ManifestPlatformArgs'] platform: The manifest's platform.
+        :param pulumi.Input[str] ref: The manifest's canonical ref.
+        :param pulumi.Input[int] size: The size of the manifest in bytes.
+        """
+        pulumi.set(__self__, "digest", digest)
+        pulumi.set(__self__, "platform", platform)
+        pulumi.set(__self__, "ref", ref)
+        pulumi.set(__self__, "size", size)
+
+    @property
+    @pulumi.getter
+    def digest(self) -> pulumi.Input[str]:
+        """
+        The SHA256 digest of the manifest.
+        """
+        return pulumi.get(self, "digest")
+
+    @digest.setter
+    def digest(self, value: pulumi.Input[str]):
+        pulumi.set(self, "digest", value)
+
+    @property
+    @pulumi.getter
+    def platform(self) -> pulumi.Input['ManifestPlatformArgs']:
+        """
+        The manifest's platform.
+        """
+        return pulumi.get(self, "platform")
+
+    @platform.setter
+    def platform(self, value: pulumi.Input['ManifestPlatformArgs']):
+        pulumi.set(self, "platform", value)
+
+    @property
+    @pulumi.getter
+    def ref(self) -> pulumi.Input[str]:
+        """
+        The manifest's canonical ref.
+        """
+        return pulumi.get(self, "ref")
+
+    @ref.setter
+    def ref(self, value: pulumi.Input[str]):
+        pulumi.set(self, "ref", value)
+
+    @property
+    @pulumi.getter
+    def size(self) -> pulumi.Input[int]:
+        """
+        The size of the manifest in bytes.
+        """
+        return pulumi.get(self, "size")
+
+    @size.setter
+    def size(self, value: pulumi.Input[int]):
+        pulumi.set(self, "size", value)
+
+
+@pulumi.input_type
 class RegistryAuthArgs:
     def __init__(__self__, *,
                  address: pulumi.Input[str],
                  password: Optional[pulumi.Input[str]] = None,
                  username: Optional[pulumi.Input[str]] = None):
         """
-        :param pulumi.Input[str] address: The registry's address (e.g. "docker.io")
-        :param pulumi.Input[str] password: Password or token for the registry
-        :param pulumi.Input[str] username: Username for the registry
+        :param pulumi.Input[str] address: The registry's address (e.g. "docker.io").
+        :param pulumi.Input[str] password: Password or token for the registry.
+        :param pulumi.Input[str] username: Username for the registry.
         """
         pulumi.set(__self__, "address", address)
         if password is not None:
@@ -2094,7 +2628,7 @@ class RegistryAuthArgs:
     @pulumi.getter
     def address(self) -> pulumi.Input[str]:
         """
-        The registry's address (e.g. "docker.io")
+        The registry's address (e.g. "docker.io").
         """
         return pulumi.get(self, "address")
 
@@ -2106,7 +2640,7 @@ class RegistryAuthArgs:
     @pulumi.getter
     def password(self) -> Optional[pulumi.Input[str]]:
         """
-        Password or token for the registry
+        Password or token for the registry.
         """
         return pulumi.get(self, "password")
 
@@ -2118,7 +2652,7 @@ class RegistryAuthArgs:
     @pulumi.getter
     def username(self) -> Optional[pulumi.Input[str]]:
         """
-        Username for the registry
+        Username for the registry.
         """
         return pulumi.get(self, "username")
 

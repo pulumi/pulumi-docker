@@ -37,22 +37,29 @@ namespace Pulumi.Docker.Buildx.Inputs
         public Input<bool>? IgnoreError { get; set; }
 
         /// <summary>
-        /// Export cache manifest as an OCI-compatible image manifest instead of a manifest list (requires OCI media types).
+        /// Export cache manifest as an OCI-compatible image manifest instead of a
+        /// manifest list (requires OCI media types).
+        /// 
+        /// Defaults to `false`.
         /// </summary>
         [Input("imageManifest")]
         public Input<bool>? ImageManifest { get; set; }
 
+        /// <summary>
+        /// The cache mode to use. Defaults to `min`.
+        /// </summary>
         [Input("mode")]
         public Input<Pulumi.Docker.Buildx.CacheMode>? Mode { get; set; }
 
         /// <summary>
-        /// Whether to use OCI mediatypes in exported manifests.
+        /// Whether to use OCI mediatypes in exported manifests. Defaults to
+        /// `true`.
         /// </summary>
         [Input("ociMediaTypes")]
         public Input<bool>? OciMediaTypes { get; set; }
 
         /// <summary>
-        /// Full name of the cache image to import.
+        /// Fully qualified name of the cache image to import.
         /// </summary>
         [Input("ref", required: true)]
         public Input<string> Ref { get; set; } = null!;

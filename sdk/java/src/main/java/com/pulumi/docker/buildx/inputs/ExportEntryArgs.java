@@ -11,7 +11,9 @@ import com.pulumi.docker.buildx.inputs.ExportLocalArgs;
 import com.pulumi.docker.buildx.inputs.ExportOCIArgs;
 import com.pulumi.docker.buildx.inputs.ExportRegistryArgs;
 import com.pulumi.docker.buildx.inputs.ExportTarArgs;
+import com.pulumi.docker.buildx.inputs.ManifestArgs;
 import java.lang.String;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import javax.annotation.Nullable;
@@ -29,8 +31,7 @@ public final class ExportEntryArgs extends com.pulumi.resources.ResourceArgs {
     private @Nullable Output<ExportDockerArgs> docker;
 
     /**
-     * @return
-     * Export as a Docker image layout.
+     * @return Export as a Docker image layout.
      * 
      */
     public Optional<Output<ExportDockerArgs>> docker() {
@@ -45,8 +46,7 @@ public final class ExportEntryArgs extends com.pulumi.resources.ResourceArgs {
     private @Nullable Output<ExportImageArgs> image;
 
     /**
-     * @return
-     * Outputs the build result into a container image format.
+     * @return Outputs the build result into a container image format.
      * 
      */
     public Optional<Output<ExportImageArgs>> image() {
@@ -61,12 +61,28 @@ public final class ExportEntryArgs extends com.pulumi.resources.ResourceArgs {
     private @Nullable Output<ExportLocalArgs> local;
 
     /**
-     * @return
-     * Export to a local directory as files and directories.
+     * @return Export to a local directory as files and directories.
      * 
      */
     public Optional<Output<ExportLocalArgs>> local() {
         return Optional.ofNullable(this.local);
+    }
+
+    /**
+     * An output property populated for exporters that pushed image
+     * manifest(s) to a registry.
+     * 
+     */
+    @Import(name="manifests")
+    private @Nullable Output<List<ManifestArgs>> manifests;
+
+    /**
+     * @return An output property populated for exporters that pushed image
+     * manifest(s) to a registry.
+     * 
+     */
+    public Optional<Output<List<ManifestArgs>>> manifests() {
+        return Optional.ofNullable(this.manifests);
     }
 
     /**
@@ -77,8 +93,7 @@ public final class ExportEntryArgs extends com.pulumi.resources.ResourceArgs {
     private @Nullable Output<ExportOCIArgs> oci;
 
     /**
-     * @return
-     * Identical to the Docker exporter but uses OCI media types by default.
+     * @return Identical to the Docker exporter but uses OCI media types by default.
      * 
      */
     public Optional<Output<ExportOCIArgs>> oci() {
@@ -87,16 +102,15 @@ public final class ExportEntryArgs extends com.pulumi.resources.ResourceArgs {
 
     /**
      * A raw string as you would provide it to the Docker CLI (e.g.,
-     * &#34;type=docker&#34;)
+     * `type=docker`)
      * 
      */
     @Import(name="raw")
     private @Nullable Output<String> raw;
 
     /**
-     * @return
-     * A raw string as you would provide it to the Docker CLI (e.g.,
-     * &#34;type=docker&#34;)
+     * @return A raw string as you would provide it to the Docker CLI (e.g.,
+     * `type=docker`)
      * 
      */
     public Optional<Output<String>> raw() {
@@ -111,8 +125,7 @@ public final class ExportEntryArgs extends com.pulumi.resources.ResourceArgs {
     private @Nullable Output<ExportRegistryArgs> registry;
 
     /**
-     * @return
-     * Identical to the Image exporter, but pushes by default.
+     * @return Identical to the Image exporter, but pushes by default.
      * 
      */
     public Optional<Output<ExportRegistryArgs>> registry() {
@@ -127,8 +140,7 @@ public final class ExportEntryArgs extends com.pulumi.resources.ResourceArgs {
     private @Nullable Output<ExportTarArgs> tar;
 
     /**
-     * @return
-     * Export to a local directory as a tarball.
+     * @return Export to a local directory as a tarball.
      * 
      */
     public Optional<Output<ExportTarArgs>> tar() {
@@ -141,6 +153,7 @@ public final class ExportEntryArgs extends com.pulumi.resources.ResourceArgs {
         this.docker = $.docker;
         this.image = $.image;
         this.local = $.local;
+        this.manifests = $.manifests;
         this.oci = $.oci;
         this.raw = $.raw;
         this.registry = $.registry;
@@ -166,8 +179,7 @@ public final class ExportEntryArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param docker
-         * Export as a Docker image layout.
+         * @param docker Export as a Docker image layout.
          * 
          * @return builder
          * 
@@ -178,8 +190,7 @@ public final class ExportEntryArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param docker
-         * Export as a Docker image layout.
+         * @param docker Export as a Docker image layout.
          * 
          * @return builder
          * 
@@ -189,8 +200,7 @@ public final class ExportEntryArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param image
-         * Outputs the build result into a container image format.
+         * @param image Outputs the build result into a container image format.
          * 
          * @return builder
          * 
@@ -201,8 +211,7 @@ public final class ExportEntryArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param image
-         * Outputs the build result into a container image format.
+         * @param image Outputs the build result into a container image format.
          * 
          * @return builder
          * 
@@ -212,8 +221,7 @@ public final class ExportEntryArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param local
-         * Export to a local directory as files and directories.
+         * @param local Export to a local directory as files and directories.
          * 
          * @return builder
          * 
@@ -224,8 +232,7 @@ public final class ExportEntryArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param local
-         * Export to a local directory as files and directories.
+         * @param local Export to a local directory as files and directories.
          * 
          * @return builder
          * 
@@ -235,8 +242,41 @@ public final class ExportEntryArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param oci
-         * Identical to the Docker exporter but uses OCI media types by default.
+         * @param manifests An output property populated for exporters that pushed image
+         * manifest(s) to a registry.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder manifests(@Nullable Output<List<ManifestArgs>> manifests) {
+            $.manifests = manifests;
+            return this;
+        }
+
+        /**
+         * @param manifests An output property populated for exporters that pushed image
+         * manifest(s) to a registry.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder manifests(List<ManifestArgs> manifests) {
+            return manifests(Output.of(manifests));
+        }
+
+        /**
+         * @param manifests An output property populated for exporters that pushed image
+         * manifest(s) to a registry.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder manifests(ManifestArgs... manifests) {
+            return manifests(List.of(manifests));
+        }
+
+        /**
+         * @param oci Identical to the Docker exporter but uses OCI media types by default.
          * 
          * @return builder
          * 
@@ -247,8 +287,7 @@ public final class ExportEntryArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param oci
-         * Identical to the Docker exporter but uses OCI media types by default.
+         * @param oci Identical to the Docker exporter but uses OCI media types by default.
          * 
          * @return builder
          * 
@@ -258,9 +297,8 @@ public final class ExportEntryArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param raw
-         * A raw string as you would provide it to the Docker CLI (e.g.,
-         * &#34;type=docker&#34;)
+         * @param raw A raw string as you would provide it to the Docker CLI (e.g.,
+         * `type=docker`)
          * 
          * @return builder
          * 
@@ -271,9 +309,8 @@ public final class ExportEntryArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param raw
-         * A raw string as you would provide it to the Docker CLI (e.g.,
-         * &#34;type=docker&#34;)
+         * @param raw A raw string as you would provide it to the Docker CLI (e.g.,
+         * `type=docker`)
          * 
          * @return builder
          * 
@@ -283,8 +320,7 @@ public final class ExportEntryArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param registry
-         * Identical to the Image exporter, but pushes by default.
+         * @param registry Identical to the Image exporter, but pushes by default.
          * 
          * @return builder
          * 
@@ -295,8 +331,7 @@ public final class ExportEntryArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param registry
-         * Identical to the Image exporter, but pushes by default.
+         * @param registry Identical to the Image exporter, but pushes by default.
          * 
          * @return builder
          * 
@@ -306,8 +341,7 @@ public final class ExportEntryArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param tar
-         * Export to a local directory as a tarball.
+         * @param tar Export to a local directory as a tarball.
          * 
          * @return builder
          * 
@@ -318,8 +352,7 @@ public final class ExportEntryArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param tar
-         * Export to a local directory as a tarball.
+         * @param tar Export to a local directory as a tarball.
          * 
          * @return builder
          * 

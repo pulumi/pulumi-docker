@@ -37,18 +37,26 @@ public final class CacheToRegistry {
      */
     private @Nullable Boolean ignoreError;
     /**
-     * @return Export cache manifest as an OCI-compatible image manifest instead of a manifest list (requires OCI media types).
+     * @return Export cache manifest as an OCI-compatible image manifest instead of a
+     * manifest list (requires OCI media types).
+     * 
+     * Defaults to `false`.
      * 
      */
     private @Nullable Boolean imageManifest;
+    /**
+     * @return The cache mode to use. Defaults to `min`.
+     * 
+     */
     private @Nullable CacheMode mode;
     /**
-     * @return Whether to use OCI mediatypes in exported manifests.
+     * @return Whether to use OCI mediatypes in exported manifests. Defaults to
+     * `true`.
      * 
      */
     private @Nullable Boolean ociMediaTypes;
     /**
-     * @return Full name of the cache image to import.
+     * @return Fully qualified name of the cache image to import.
      * 
      */
     private String ref;
@@ -83,24 +91,32 @@ public final class CacheToRegistry {
         return Optional.ofNullable(this.ignoreError);
     }
     /**
-     * @return Export cache manifest as an OCI-compatible image manifest instead of a manifest list (requires OCI media types).
+     * @return Export cache manifest as an OCI-compatible image manifest instead of a
+     * manifest list (requires OCI media types).
+     * 
+     * Defaults to `false`.
      * 
      */
     public Optional<Boolean> imageManifest() {
         return Optional.ofNullable(this.imageManifest);
     }
+    /**
+     * @return The cache mode to use. Defaults to `min`.
+     * 
+     */
     public Optional<CacheMode> mode() {
         return Optional.ofNullable(this.mode);
     }
     /**
-     * @return Whether to use OCI mediatypes in exported manifests.
+     * @return Whether to use OCI mediatypes in exported manifests. Defaults to
+     * `true`.
      * 
      */
     public Optional<Boolean> ociMediaTypes() {
         return Optional.ofNullable(this.ociMediaTypes);
     }
     /**
-     * @return Full name of the cache image to import.
+     * @return Fully qualified name of the cache image to import.
      * 
      */
     public String ref() {

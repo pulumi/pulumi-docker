@@ -13,13 +13,25 @@ namespace Pulumi.Docker.Buildx.Outputs
     [OutputType]
     public sealed class CacheToAzureBlob
     {
+        /// <summary>
+        /// Base URL of the storage account.
+        /// </summary>
         public readonly string? AccountUrl;
         /// <summary>
         /// Ignore errors caused by failed cache exports.
         /// </summary>
         public readonly bool? IgnoreError;
+        /// <summary>
+        /// The cache mode to use. Defaults to `min`.
+        /// </summary>
         public readonly Pulumi.Docker.Buildx.CacheMode? Mode;
+        /// <summary>
+        /// The name of the cache image.
+        /// </summary>
         public readonly string Name;
+        /// <summary>
+        /// Blob storage account key.
+        /// </summary>
         public readonly string? SecretAccessKey;
 
         [OutputConstructor]

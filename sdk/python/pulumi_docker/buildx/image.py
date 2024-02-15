@@ -19,49 +19,58 @@ class ImageArgs:
     def __init__(__self__, *,
                  build_args: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
                  build_on_preview: Optional[pulumi.Input[bool]] = None,
-                 builder: Optional[pulumi.Input[str]] = None,
+                 builder: Optional[pulumi.Input['BuilderConfigArgs']] = None,
                  cache_from: Optional[pulumi.Input[Sequence[pulumi.Input['CacheFromEntryArgs']]]] = None,
                  cache_to: Optional[pulumi.Input[Sequence[pulumi.Input['CacheToEntryArgs']]]] = None,
-                 context: Optional[pulumi.Input[str]] = None,
+                 context: Optional[pulumi.Input['BuildContextArgs']] = None,
+                 dockerfile: Optional[pulumi.Input['DockerfileArgs']] = None,
                  exports: Optional[pulumi.Input[Sequence[pulumi.Input['ExportEntryArgs']]]] = None,
-                 file: Optional[pulumi.Input[str]] = None,
+                 labels: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
                  platforms: Optional[pulumi.Input[Sequence[pulumi.Input['Platform']]]] = None,
                  pull: Optional[pulumi.Input[bool]] = None,
                  registries: Optional[pulumi.Input[Sequence[pulumi.Input['RegistryAuthArgs']]]] = None,
+                 secrets: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
                  tags: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
-                 target: Optional[pulumi.Input[str]] = None):
+                 targets: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None):
         """
         The set of arguments for constructing a Image resource.
-        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] build_args: 
-               An optional map of named build-time argument variables to set during
-               the Docker build. This flag allows you to pass build-time variables that
-               can be accessed like environment variables inside the RUN
-               instruction.
-        :param pulumi.Input[bool] build_on_preview: 
-               When true, attempt to build the image during previews. Outputs are not
-               pushed to registries, however caches are still populated.
-        :param pulumi.Input[str] builder: 
-               Build with a specific builder instance
-        :param pulumi.Input[Sequence[pulumi.Input['CacheFromEntryArgs']]] cache_from: 
-               External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
-        :param pulumi.Input[Sequence[pulumi.Input['CacheToEntryArgs']]] cache_to: 
-               Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
-        :param pulumi.Input[str] context: 
-               Path to use for build context. If omitted, an empty context is used.
-        :param pulumi.Input[Sequence[pulumi.Input['ExportEntryArgs']]] exports: 
-               Name and optionally a tag (format: "name:tag"). If outputting to a
-               registry, the name should include the fully qualified registry address.
-        :param pulumi.Input[str] file: 
-               Name of the Dockerfile to use (defaults to "${context}/Dockerfile").
-        :param pulumi.Input[Sequence[pulumi.Input['Platform']]] platforms: 
-               Set target platforms for the build. Defaults to the host's platform
-        :param pulumi.Input[bool] pull: 
-               Always attempt to pull referenced images.
-        :param pulumi.Input[Sequence[pulumi.Input['RegistryAuthArgs']]] registries: 
-               Logins for registry outputs
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] tags: 
-               Name and optionally a tag (format: "name:tag"). If outputting to a
-               registry, the name should include the fully qualified registry address.
+        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] build_args: `ARG` names and values to set during the build.
+               
+               These variables are accessed like environment variables inside `RUN`
+               instructions.
+               
+               Build arguments are persisted in the image, so you should use `secrets`
+               if these arguments are sensitive.
+        :param pulumi.Input[bool] build_on_preview: When `true`, attempt to build the image during previews. The image will
+               not be pushed to registries, however caches will still populated.
+        :param pulumi.Input['BuilderConfigArgs'] builder: Builder configuration.
+        :param pulumi.Input[Sequence[pulumi.Input['CacheFromEntryArgs']]] cache_from: External cache configuration.
+        :param pulumi.Input[Sequence[pulumi.Input['CacheToEntryArgs']]] cache_to: Cache export configuration.
+        :param pulumi.Input['BuildContextArgs'] context: Build context settings.
+        :param pulumi.Input['DockerfileArgs'] dockerfile: Dockerfile settings.
+        :param pulumi.Input[Sequence[pulumi.Input['ExportEntryArgs']]] exports: Controls where images are persisted after building.
+               
+               Images are only stored in the local cache unless `exports` are
+               explicitly configured.
+        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] labels: Attach arbitrary key/value metadata to the image.
+        :param pulumi.Input[Sequence[pulumi.Input['Platform']]] platforms: Set target platform(s) for the build. Defaults to the host's platform
+        :param pulumi.Input[bool] pull: Always pull referenced images.
+        :param pulumi.Input[Sequence[pulumi.Input['RegistryAuthArgs']]] registries: Registry credentials. Required if reading or exporting to private
+               repositories.
+        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] secrets: A mapping of secret names to their corresponding values.
+               
+               Unlike the Docker CLI, these can be passed by value and do not need to
+               exist on-disk or in environment variables.
+               
+               Build arguments and environment variables are persistent in the final
+               image, so you should use this for sensitive values.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] tags: Name and optionally a tag (format: `name:tag`).
+               
+               If exporting to a registry, the name should include the fully qualified
+               registry address (e.g. `docker.io/pulumi/pulumi:latest`).
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] targets: Set the target build stage(s) to build.
+               
+               If not specified all targets will be built by default.
         """
         if build_args is not None:
             pulumi.set(__self__, "build_args", build_args)
@@ -75,32 +84,36 @@ class ImageArgs:
             pulumi.set(__self__, "cache_to", cache_to)
         if context is not None:
             pulumi.set(__self__, "context", context)
+        if dockerfile is not None:
+            pulumi.set(__self__, "dockerfile", dockerfile)
         if exports is not None:
             pulumi.set(__self__, "exports", exports)
-        if file is None:
-            file = 'Dockerfile'
-        if file is not None:
-            pulumi.set(__self__, "file", file)
+        if labels is not None:
+            pulumi.set(__self__, "labels", labels)
         if platforms is not None:
             pulumi.set(__self__, "platforms", platforms)
         if pull is not None:
             pulumi.set(__self__, "pull", pull)
         if registries is not None:
             pulumi.set(__self__, "registries", registries)
+        if secrets is not None:
+            pulumi.set(__self__, "secrets", secrets)
         if tags is not None:
             pulumi.set(__self__, "tags", tags)
-        if target is not None:
-            pulumi.set(__self__, "target", target)
+        if targets is not None:
+            pulumi.set(__self__, "targets", targets)
 
     @property
     @pulumi.getter(name="buildArgs")
     def build_args(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]:
         """
+        `ARG` names and values to set during the build.
 
-        An optional map of named build-time argument variables to set during
-        the Docker build. This flag allows you to pass build-time variables that
-        can be accessed like environment variables inside the RUN
-        instruction.
+        These variables are accessed like environment variables inside `RUN`
+        instructions.
+
+        Build arguments are persisted in the image, so you should use `secrets`
+        if these arguments are sensitive.
         """
         return pulumi.get(self, "build_args")
 
@@ -112,9 +125,8 @@ class ImageArgs:
     @pulumi.getter(name="buildOnPreview")
     def build_on_preview(self) -> Optional[pulumi.Input[bool]]:
         """
-
-        When true, attempt to build the image during previews. Outputs are not
-        pushed to registries, however caches are still populated.
+        When `true`, attempt to build the image during previews. The image will
+        not be pushed to registries, however caches will still populated.
         """
         return pulumi.get(self, "build_on_preview")
 
@@ -124,23 +136,21 @@ class ImageArgs:
 
     @property
     @pulumi.getter
-    def builder(self) -> Optional[pulumi.Input[str]]:
+    def builder(self) -> Optional[pulumi.Input['BuilderConfigArgs']]:
         """
-
-        Build with a specific builder instance
+        Builder configuration.
         """
         return pulumi.get(self, "builder")
 
     @builder.setter
-    def builder(self, value: Optional[pulumi.Input[str]]):
+    def builder(self, value: Optional[pulumi.Input['BuilderConfigArgs']]):
         pulumi.set(self, "builder", value)
 
     @property
     @pulumi.getter(name="cacheFrom")
     def cache_from(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['CacheFromEntryArgs']]]]:
         """
-
-        External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
+        External cache configuration.
         """
         return pulumi.get(self, "cache_from")
 
@@ -152,8 +162,7 @@ class ImageArgs:
     @pulumi.getter(name="cacheTo")
     def cache_to(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['CacheToEntryArgs']]]]:
         """
-
-        Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
+        Cache export configuration.
         """
         return pulumi.get(self, "cache_to")
 
@@ -163,24 +172,36 @@ class ImageArgs:
 
     @property
     @pulumi.getter
-    def context(self) -> Optional[pulumi.Input[str]]:
+    def context(self) -> Optional[pulumi.Input['BuildContextArgs']]:
         """
-
-        Path to use for build context. If omitted, an empty context is used.
+        Build context settings.
         """
         return pulumi.get(self, "context")
 
     @context.setter
-    def context(self, value: Optional[pulumi.Input[str]]):
+    def context(self, value: Optional[pulumi.Input['BuildContextArgs']]):
         pulumi.set(self, "context", value)
+
+    @property
+    @pulumi.getter
+    def dockerfile(self) -> Optional[pulumi.Input['DockerfileArgs']]:
+        """
+        Dockerfile settings.
+        """
+        return pulumi.get(self, "dockerfile")
+
+    @dockerfile.setter
+    def dockerfile(self, value: Optional[pulumi.Input['DockerfileArgs']]):
+        pulumi.set(self, "dockerfile", value)
 
     @property
     @pulumi.getter
     def exports(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['ExportEntryArgs']]]]:
         """
+        Controls where images are persisted after building.
 
-        Name and optionally a tag (format: "name:tag"). If outputting to a
-        registry, the name should include the fully qualified registry address.
+        Images are only stored in the local cache unless `exports` are
+        explicitly configured.
         """
         return pulumi.get(self, "exports")
 
@@ -190,23 +211,21 @@ class ImageArgs:
 
     @property
     @pulumi.getter
-    def file(self) -> Optional[pulumi.Input[str]]:
+    def labels(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]:
         """
-
-        Name of the Dockerfile to use (defaults to "${context}/Dockerfile").
+        Attach arbitrary key/value metadata to the image.
         """
-        return pulumi.get(self, "file")
+        return pulumi.get(self, "labels")
 
-    @file.setter
-    def file(self, value: Optional[pulumi.Input[str]]):
-        pulumi.set(self, "file", value)
+    @labels.setter
+    def labels(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]):
+        pulumi.set(self, "labels", value)
 
     @property
     @pulumi.getter
     def platforms(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['Platform']]]]:
         """
-
-        Set target platforms for the build. Defaults to the host's platform
+        Set target platform(s) for the build. Defaults to the host's platform
         """
         return pulumi.get(self, "platforms")
 
@@ -218,8 +237,7 @@ class ImageArgs:
     @pulumi.getter
     def pull(self) -> Optional[pulumi.Input[bool]]:
         """
-
-        Always attempt to pull referenced images.
+        Always pull referenced images.
         """
         return pulumi.get(self, "pull")
 
@@ -231,8 +249,8 @@ class ImageArgs:
     @pulumi.getter
     def registries(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['RegistryAuthArgs']]]]:
         """
-
-        Logins for registry outputs
+        Registry credentials. Required if reading or exporting to private
+        repositories.
         """
         return pulumi.get(self, "registries")
 
@@ -242,11 +260,30 @@ class ImageArgs:
 
     @property
     @pulumi.getter
+    def secrets(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]:
+        """
+        A mapping of secret names to their corresponding values.
+
+        Unlike the Docker CLI, these can be passed by value and do not need to
+        exist on-disk or in environment variables.
+
+        Build arguments and environment variables are persistent in the final
+        image, so you should use this for sensitive values.
+        """
+        return pulumi.get(self, "secrets")
+
+    @secrets.setter
+    def secrets(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]):
+        pulumi.set(self, "secrets", value)
+
+    @property
+    @pulumi.getter
     def tags(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
         """
+        Name and optionally a tag (format: `name:tag`).
 
-        Name and optionally a tag (format: "name:tag"). If outputting to a
-        registry, the name should include the fully qualified registry address.
+        If exporting to a registry, the name should include the fully qualified
+        registry address (e.g. `docker.io/pulumi/pulumi:latest`).
         """
         return pulumi.get(self, "tags")
 
@@ -256,12 +293,17 @@ class ImageArgs:
 
     @property
     @pulumi.getter
-    def target(self) -> Optional[pulumi.Input[str]]:
-        return pulumi.get(self, "target")
+    def targets(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+        """
+        Set the target build stage(s) to build.
 
-    @target.setter
-    def target(self, value: Optional[pulumi.Input[str]]):
-        pulumi.set(self, "target", value)
+        If not specified all targets will be built by default.
+        """
+        return pulumi.get(self, "targets")
+
+    @targets.setter
+    def targets(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
+        pulumi.set(self, "targets", value)
 
 
 class Image(pulumi.CustomResource):
@@ -271,53 +313,242 @@ class Image(pulumi.CustomResource):
                  opts: Optional[pulumi.ResourceOptions] = None,
                  build_args: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
                  build_on_preview: Optional[pulumi.Input[bool]] = None,
-                 builder: Optional[pulumi.Input[str]] = None,
+                 builder: Optional[pulumi.Input[pulumi.InputType['BuilderConfigArgs']]] = None,
                  cache_from: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['CacheFromEntryArgs']]]]] = None,
                  cache_to: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['CacheToEntryArgs']]]]] = None,
-                 context: Optional[pulumi.Input[str]] = None,
+                 context: Optional[pulumi.Input[pulumi.InputType['BuildContextArgs']]] = None,
+                 dockerfile: Optional[pulumi.Input[pulumi.InputType['DockerfileArgs']]] = None,
                  exports: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ExportEntryArgs']]]]] = None,
-                 file: Optional[pulumi.Input[str]] = None,
+                 labels: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
                  platforms: Optional[pulumi.Input[Sequence[pulumi.Input['Platform']]]] = None,
                  pull: Optional[pulumi.Input[bool]] = None,
                  registries: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['RegistryAuthArgs']]]]] = None,
+                 secrets: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
                  tags: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
-                 target: Optional[pulumi.Input[str]] = None,
+                 targets: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  __props__=None):
         """
-        A Docker image built using Buildkit
+        A Docker image built using buildx -- Docker's interface to the improved
+        BuildKit backend.
+
+        **This resource is experimental and subject to change.**
+
+        API types are unstable. Subsequent releases _may_ require manual edits
+        to your state file(s) in order to adopt API changes.
+
+        Only use this resource if you understand and accept the risks.
+
+        ## Example Usage
+        ### Multi-platform image
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        image = docker.buildx.Image("image",
+            context=docker.buildx.BuildContextArgs(
+                location="app",
+            ),
+            dockerfile=docker.buildx.DockerfileArgs(
+                location="app/Dockerfile",
+            ),
+            platforms=[
+                docker.buildx/image.Platform.PLAN9_AMD64,
+                docker.buildx/image.Platform.PLAN9_386,
+            ])
+        ```
+        ### Registry export
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        image = docker.buildx.Image("image",
+            context=docker.buildx.BuildContextArgs(
+                location="app",
+            ),
+            dockerfile=docker.buildx.DockerfileArgs(
+                location="app/Dockerfile",
+            ),
+            exports=[docker.buildx.ExportEntryArgs(
+                registry=docker.buildx.ExportRegistryArgs(
+                    oci_media_types=True,
+                ),
+            )],
+            registries=[docker.buildx.RegistryAuthArgs(
+                address="docker.io",
+                password=docker_hub_password,
+                username="pulumibot",
+            )])
+        ```
+        ### Caching
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        image = docker.buildx.Image("image",
+            cache_from=[docker.buildx.CacheFromEntryArgs(
+                local=docker.buildx.CacheFromLocalArgs(
+                    src="tmp/cache",
+                ),
+            )],
+            cache_to=[docker.buildx.CacheToEntryArgs(
+                local=docker.buildx.CacheToLocalArgs(
+                    dest="tmp/cache",
+                    mode=docker.buildx/image.CacheMode.MAX,
+                ),
+            )],
+            context=docker.buildx.BuildContextArgs(
+                location="app",
+            ),
+            dockerfile=docker.buildx.DockerfileArgs(
+                location="app/Dockerfile",
+            ))
+        ```
+        ### Build arguments
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        image = docker.buildx.Image("image",
+            build_args={
+                "SET_ME_TO_TRUE": "true",
+            },
+            context=docker.buildx.BuildContextArgs(
+                location="app",
+            ),
+            dockerfile=docker.buildx.DockerfileArgs(
+                location="app/Dockerfile",
+            ))
+        ```
+        ### Build targets
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        image = docker.buildx.Image("image",
+            context=docker.buildx.BuildContextArgs(
+                location="app",
+            ),
+            dockerfile=docker.buildx.DockerfileArgs(
+                location="app/Dockerfile",
+            ),
+            targets=[
+                "build-me",
+                "also-build-me",
+            ])
+        ```
+        ### Named contexts
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        image = docker.buildx.Image("image",
+            context=docker.buildx.BuildContextArgs(
+                location="app",
+                named={
+                    "golang:latest": docker.buildx.ContextArgs(
+                        location="docker-image://golang@sha256:b8e62cf593cdaff36efd90aa3a37de268e6781a2e68c6610940c48f7cdf36984",
+                    ),
+                },
+            ),
+            dockerfile=docker.buildx.DockerfileArgs(
+                location="app/Dockerfile",
+            ))
+        ```
+        ### Remote context
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        image = docker.buildx.Image("image", context=docker.buildx.BuildContextArgs(
+            location="https://raw.githubusercontent.com/pulumi/pulumi-docker/api-types/provider/testdata/Dockerfile",
+        ))
+        ```
+        ### Inline Dockerfile
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        image = docker.buildx.Image("image",
+            context=docker.buildx.BuildContextArgs(
+                location="app",
+            ),
+            dockerfile=docker.buildx.DockerfileArgs(
+                inline=\"\"\"FROM busybox
+        COPY hello.c ./
+        \"\"\",
+            ))
+        ```
+        ### Remote context
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        image = docker.buildx.Image("image",
+            context=docker.buildx.BuildContextArgs(
+                location="https://github.com/docker-library/hello-world.git",
+            ),
+            dockerfile=docker.buildx.DockerfileArgs(
+                location="app/Dockerfile",
+            ))
+        ```
+        ### Local export
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        image = docker.buildx.Image("image",
+            context=docker.buildx.BuildContextArgs(
+                location="app",
+            ),
+            dockerfile=docker.buildx.DockerfileArgs(
+                location="app/Dockerfile",
+            ),
+            exports=[docker.buildx.ExportEntryArgs(
+                docker=docker.buildx.ExportDockerArgs(
+                    tar=True,
+                ),
+            )])
+        ```
 
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
-        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] build_args: 
-               An optional map of named build-time argument variables to set during
-               the Docker build. This flag allows you to pass build-time variables that
-               can be accessed like environment variables inside the RUN
-               instruction.
-        :param pulumi.Input[bool] build_on_preview: 
-               When true, attempt to build the image during previews. Outputs are not
-               pushed to registries, however caches are still populated.
-        :param pulumi.Input[str] builder: 
-               Build with a specific builder instance
-        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['CacheFromEntryArgs']]]] cache_from: 
-               External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
-        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['CacheToEntryArgs']]]] cache_to: 
-               Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
-        :param pulumi.Input[str] context: 
-               Path to use for build context. If omitted, an empty context is used.
-        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ExportEntryArgs']]]] exports: 
-               Name and optionally a tag (format: "name:tag"). If outputting to a
-               registry, the name should include the fully qualified registry address.
-        :param pulumi.Input[str] file: 
-               Name of the Dockerfile to use (defaults to "${context}/Dockerfile").
-        :param pulumi.Input[Sequence[pulumi.Input['Platform']]] platforms: 
-               Set target platforms for the build. Defaults to the host's platform
-        :param pulumi.Input[bool] pull: 
-               Always attempt to pull referenced images.
-        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['RegistryAuthArgs']]]] registries: 
-               Logins for registry outputs
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] tags: 
-               Name and optionally a tag (format: "name:tag"). If outputting to a
-               registry, the name should include the fully qualified registry address.
+        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] build_args: `ARG` names and values to set during the build.
+               
+               These variables are accessed like environment variables inside `RUN`
+               instructions.
+               
+               Build arguments are persisted in the image, so you should use `secrets`
+               if these arguments are sensitive.
+        :param pulumi.Input[bool] build_on_preview: When `true`, attempt to build the image during previews. The image will
+               not be pushed to registries, however caches will still populated.
+        :param pulumi.Input[pulumi.InputType['BuilderConfigArgs']] builder: Builder configuration.
+        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['CacheFromEntryArgs']]]] cache_from: External cache configuration.
+        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['CacheToEntryArgs']]]] cache_to: Cache export configuration.
+        :param pulumi.Input[pulumi.InputType['BuildContextArgs']] context: Build context settings.
+        :param pulumi.Input[pulumi.InputType['DockerfileArgs']] dockerfile: Dockerfile settings.
+        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ExportEntryArgs']]]] exports: Controls where images are persisted after building.
+               
+               Images are only stored in the local cache unless `exports` are
+               explicitly configured.
+        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] labels: Attach arbitrary key/value metadata to the image.
+        :param pulumi.Input[Sequence[pulumi.Input['Platform']]] platforms: Set target platform(s) for the build. Defaults to the host's platform
+        :param pulumi.Input[bool] pull: Always pull referenced images.
+        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['RegistryAuthArgs']]]] registries: Registry credentials. Required if reading or exporting to private
+               repositories.
+        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] secrets: A mapping of secret names to their corresponding values.
+               
+               Unlike the Docker CLI, these can be passed by value and do not need to
+               exist on-disk or in environment variables.
+               
+               Build arguments and environment variables are persistent in the final
+               image, so you should use this for sensitive values.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] tags: Name and optionally a tag (format: `name:tag`).
+               
+               If exporting to a registry, the name should include the fully qualified
+               registry address (e.g. `docker.io/pulumi/pulumi:latest`).
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] targets: Set the target build stage(s) to build.
+               
+               If not specified all targets will be built by default.
         """
         ...
     @overload
@@ -326,7 +557,187 @@ class Image(pulumi.CustomResource):
                  args: Optional[ImageArgs] = None,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
-        A Docker image built using Buildkit
+        A Docker image built using buildx -- Docker's interface to the improved
+        BuildKit backend.
+
+        **This resource is experimental and subject to change.**
+
+        API types are unstable. Subsequent releases _may_ require manual edits
+        to your state file(s) in order to adopt API changes.
+
+        Only use this resource if you understand and accept the risks.
+
+        ## Example Usage
+        ### Multi-platform image
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        image = docker.buildx.Image("image",
+            context=docker.buildx.BuildContextArgs(
+                location="app",
+            ),
+            dockerfile=docker.buildx.DockerfileArgs(
+                location="app/Dockerfile",
+            ),
+            platforms=[
+                docker.buildx/image.Platform.PLAN9_AMD64,
+                docker.buildx/image.Platform.PLAN9_386,
+            ])
+        ```
+        ### Registry export
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        image = docker.buildx.Image("image",
+            context=docker.buildx.BuildContextArgs(
+                location="app",
+            ),
+            dockerfile=docker.buildx.DockerfileArgs(
+                location="app/Dockerfile",
+            ),
+            exports=[docker.buildx.ExportEntryArgs(
+                registry=docker.buildx.ExportRegistryArgs(
+                    oci_media_types=True,
+                ),
+            )],
+            registries=[docker.buildx.RegistryAuthArgs(
+                address="docker.io",
+                password=docker_hub_password,
+                username="pulumibot",
+            )])
+        ```
+        ### Caching
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        image = docker.buildx.Image("image",
+            cache_from=[docker.buildx.CacheFromEntryArgs(
+                local=docker.buildx.CacheFromLocalArgs(
+                    src="tmp/cache",
+                ),
+            )],
+            cache_to=[docker.buildx.CacheToEntryArgs(
+                local=docker.buildx.CacheToLocalArgs(
+                    dest="tmp/cache",
+                    mode=docker.buildx/image.CacheMode.MAX,
+                ),
+            )],
+            context=docker.buildx.BuildContextArgs(
+                location="app",
+            ),
+            dockerfile=docker.buildx.DockerfileArgs(
+                location="app/Dockerfile",
+            ))
+        ```
+        ### Build arguments
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        image = docker.buildx.Image("image",
+            build_args={
+                "SET_ME_TO_TRUE": "true",
+            },
+            context=docker.buildx.BuildContextArgs(
+                location="app",
+            ),
+            dockerfile=docker.buildx.DockerfileArgs(
+                location="app/Dockerfile",
+            ))
+        ```
+        ### Build targets
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        image = docker.buildx.Image("image",
+            context=docker.buildx.BuildContextArgs(
+                location="app",
+            ),
+            dockerfile=docker.buildx.DockerfileArgs(
+                location="app/Dockerfile",
+            ),
+            targets=[
+                "build-me",
+                "also-build-me",
+            ])
+        ```
+        ### Named contexts
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        image = docker.buildx.Image("image",
+            context=docker.buildx.BuildContextArgs(
+                location="app",
+                named={
+                    "golang:latest": docker.buildx.ContextArgs(
+                        location="docker-image://golang@sha256:b8e62cf593cdaff36efd90aa3a37de268e6781a2e68c6610940c48f7cdf36984",
+                    ),
+                },
+            ),
+            dockerfile=docker.buildx.DockerfileArgs(
+                location="app/Dockerfile",
+            ))
+        ```
+        ### Remote context
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        image = docker.buildx.Image("image", context=docker.buildx.BuildContextArgs(
+            location="https://raw.githubusercontent.com/pulumi/pulumi-docker/api-types/provider/testdata/Dockerfile",
+        ))
+        ```
+        ### Inline Dockerfile
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        image = docker.buildx.Image("image",
+            context=docker.buildx.BuildContextArgs(
+                location="app",
+            ),
+            dockerfile=docker.buildx.DockerfileArgs(
+                inline=\"\"\"FROM busybox
+        COPY hello.c ./
+        \"\"\",
+            ))
+        ```
+        ### Remote context
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        image = docker.buildx.Image("image",
+            context=docker.buildx.BuildContextArgs(
+                location="https://github.com/docker-library/hello-world.git",
+            ),
+            dockerfile=docker.buildx.DockerfileArgs(
+                location="app/Dockerfile",
+            ))
+        ```
+        ### Local export
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        image = docker.buildx.Image("image",
+            context=docker.buildx.BuildContextArgs(
+                location="app",
+            ),
+            dockerfile=docker.buildx.DockerfileArgs(
+                location="app/Dockerfile",
+            ),
+            exports=[docker.buildx.ExportEntryArgs(
+                docker=docker.buildx.ExportDockerArgs(
+                    tar=True,
+                ),
+            )])
+        ```
 
         :param str resource_name: The name of the resource.
         :param ImageArgs args: The arguments to use to populate this resource's properties.
@@ -345,17 +756,19 @@ class Image(pulumi.CustomResource):
                  opts: Optional[pulumi.ResourceOptions] = None,
                  build_args: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
                  build_on_preview: Optional[pulumi.Input[bool]] = None,
-                 builder: Optional[pulumi.Input[str]] = None,
+                 builder: Optional[pulumi.Input[pulumi.InputType['BuilderConfigArgs']]] = None,
                  cache_from: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['CacheFromEntryArgs']]]]] = None,
                  cache_to: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['CacheToEntryArgs']]]]] = None,
-                 context: Optional[pulumi.Input[str]] = None,
+                 context: Optional[pulumi.Input[pulumi.InputType['BuildContextArgs']]] = None,
+                 dockerfile: Optional[pulumi.Input[pulumi.InputType['DockerfileArgs']]] = None,
                  exports: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ExportEntryArgs']]]]] = None,
-                 file: Optional[pulumi.Input[str]] = None,
+                 labels: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
                  platforms: Optional[pulumi.Input[Sequence[pulumi.Input['Platform']]]] = None,
                  pull: Optional[pulumi.Input[bool]] = None,
                  registries: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['RegistryAuthArgs']]]]] = None,
+                 secrets: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
                  tags: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
-                 target: Optional[pulumi.Input[str]] = None,
+                 targets: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  __props__=None):
         opts = pulumi.ResourceOptions.merge(_utilities.get_resource_opts_defaults(), opts)
         if not isinstance(opts, pulumi.ResourceOptions):
@@ -371,17 +784,19 @@ class Image(pulumi.CustomResource):
             __props__.__dict__["cache_from"] = cache_from
             __props__.__dict__["cache_to"] = cache_to
             __props__.__dict__["context"] = context
+            __props__.__dict__["dockerfile"] = dockerfile
             __props__.__dict__["exports"] = exports
-            if file is None:
-                file = 'Dockerfile'
-            __props__.__dict__["file"] = file
+            __props__.__dict__["labels"] = labels
             __props__.__dict__["platforms"] = platforms
             __props__.__dict__["pull"] = pull
             __props__.__dict__["registries"] = registries
+            __props__.__dict__["secrets"] = None if secrets is None else pulumi.Output.secret(secrets)
             __props__.__dict__["tags"] = tags
-            __props__.__dict__["target"] = target
+            __props__.__dict__["targets"] = targets
             __props__.__dict__["context_hash"] = None
-            __props__.__dict__["manifests"] = None
+            __props__.__dict__["digests"] = None
+        secret_opts = pulumi.ResourceOptions(additional_secret_outputs=["secrets"])
+        opts = pulumi.ResourceOptions.merge(opts, secret_opts)
         super(Image, __self__).__init__(
             'docker:buildx/image:Image',
             resource_name,
@@ -411,25 +826,29 @@ class Image(pulumi.CustomResource):
         __props__.__dict__["cache_to"] = None
         __props__.__dict__["context"] = None
         __props__.__dict__["context_hash"] = None
+        __props__.__dict__["digests"] = None
+        __props__.__dict__["dockerfile"] = None
         __props__.__dict__["exports"] = None
-        __props__.__dict__["file"] = None
-        __props__.__dict__["manifests"] = None
+        __props__.__dict__["labels"] = None
         __props__.__dict__["platforms"] = None
         __props__.__dict__["pull"] = None
         __props__.__dict__["registries"] = None
+        __props__.__dict__["secrets"] = None
         __props__.__dict__["tags"] = None
-        __props__.__dict__["target"] = None
+        __props__.__dict__["targets"] = None
         return Image(resource_name, opts=opts, __props__=__props__)
 
     @property
     @pulumi.getter(name="buildArgs")
     def build_args(self) -> pulumi.Output[Optional[Mapping[str, str]]]:
         """
+        `ARG` names and values to set during the build.
 
-        An optional map of named build-time argument variables to set during
-        the Docker build. This flag allows you to pass build-time variables that
-        can be accessed like environment variables inside the RUN
-        instruction.
+        These variables are accessed like environment variables inside `RUN`
+        instructions.
+
+        Build arguments are persisted in the image, so you should use `secrets`
+        if these arguments are sensitive.
         """
         return pulumi.get(self, "build_args")
 
@@ -437,18 +856,16 @@ class Image(pulumi.CustomResource):
     @pulumi.getter(name="buildOnPreview")
     def build_on_preview(self) -> pulumi.Output[Optional[bool]]:
         """
-
-        When true, attempt to build the image during previews. Outputs are not
-        pushed to registries, however caches are still populated.
+        When `true`, attempt to build the image during previews. The image will
+        not be pushed to registries, however caches will still populated.
         """
         return pulumi.get(self, "build_on_preview")
 
     @property
     @pulumi.getter
-    def builder(self) -> pulumi.Output[Optional[str]]:
+    def builder(self) -> pulumi.Output[Optional['outputs.BuilderConfig']]:
         """
-
-        Build with a specific builder instance
+        Builder configuration.
         """
         return pulumi.get(self, "builder")
 
@@ -456,8 +873,7 @@ class Image(pulumi.CustomResource):
     @pulumi.getter(name="cacheFrom")
     def cache_from(self) -> pulumi.Output[Optional[Sequence['outputs.CacheFromEntry']]]:
         """
-
-        External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
+        External cache configuration.
         """
         return pulumi.get(self, "cache_from")
 
@@ -465,55 +881,68 @@ class Image(pulumi.CustomResource):
     @pulumi.getter(name="cacheTo")
     def cache_to(self) -> pulumi.Output[Optional[Sequence['outputs.CacheToEntry']]]:
         """
-
-        Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
+        Cache export configuration.
         """
         return pulumi.get(self, "cache_to")
 
     @property
     @pulumi.getter
-    def context(self) -> pulumi.Output[Optional[str]]:
+    def context(self) -> pulumi.Output[Optional['outputs.BuildContext']]:
         """
-
-        Path to use for build context. If omitted, an empty context is used.
+        Build context settings.
         """
         return pulumi.get(self, "context")
 
     @property
     @pulumi.getter(name="contextHash")
     def context_hash(self) -> pulumi.Output[Optional[str]]:
+        """
+        A preliminary hash of the image's build context.
+
+        Pulumi uses this to determine if an image _may_ need to be re-built.
+        """
         return pulumi.get(self, "context_hash")
+
+    @property
+    @pulumi.getter
+    def digests(self) -> pulumi.Output[Optional[Mapping[str, Sequence[str]]]]:
+        """
+        A mapping of platform type to refs which were pushed to registries.
+        """
+        return pulumi.get(self, "digests")
+
+    @property
+    @pulumi.getter
+    def dockerfile(self) -> pulumi.Output[Optional['outputs.Dockerfile']]:
+        """
+        Dockerfile settings.
+        """
+        return pulumi.get(self, "dockerfile")
 
     @property
     @pulumi.getter
     def exports(self) -> pulumi.Output[Optional[Sequence['outputs.ExportEntry']]]:
         """
+        Controls where images are persisted after building.
 
-        Name and optionally a tag (format: "name:tag"). If outputting to a
-        registry, the name should include the fully qualified registry address.
+        Images are only stored in the local cache unless `exports` are
+        explicitly configured.
         """
         return pulumi.get(self, "exports")
 
     @property
     @pulumi.getter
-    def file(self) -> pulumi.Output[Optional[str]]:
+    def labels(self) -> pulumi.Output[Optional[Mapping[str, str]]]:
         """
-
-        Name of the Dockerfile to use (defaults to "${context}/Dockerfile").
+        Attach arbitrary key/value metadata to the image.
         """
-        return pulumi.get(self, "file")
-
-    @property
-    @pulumi.getter
-    def manifests(self) -> pulumi.Output[Sequence['outputs.Manifest']]:
-        return pulumi.get(self, "manifests")
+        return pulumi.get(self, "labels")
 
     @property
     @pulumi.getter
     def platforms(self) -> pulumi.Output[Optional[Sequence['Platform']]]:
         """
-
-        Set target platforms for the build. Defaults to the host's platform
+        Set target platform(s) for the build. Defaults to the host's platform
         """
         return pulumi.get(self, "platforms")
 
@@ -521,8 +950,7 @@ class Image(pulumi.CustomResource):
     @pulumi.getter
     def pull(self) -> pulumi.Output[Optional[bool]]:
         """
-
-        Always attempt to pull referenced images.
+        Always pull referenced images.
         """
         return pulumi.get(self, "pull")
 
@@ -530,23 +958,43 @@ class Image(pulumi.CustomResource):
     @pulumi.getter
     def registries(self) -> pulumi.Output[Optional[Sequence['outputs.RegistryAuth']]]:
         """
-
-        Logins for registry outputs
+        Registry credentials. Required if reading or exporting to private
+        repositories.
         """
         return pulumi.get(self, "registries")
 
     @property
     @pulumi.getter
+    def secrets(self) -> pulumi.Output[Optional[Mapping[str, str]]]:
+        """
+        A mapping of secret names to their corresponding values.
+
+        Unlike the Docker CLI, these can be passed by value and do not need to
+        exist on-disk or in environment variables.
+
+        Build arguments and environment variables are persistent in the final
+        image, so you should use this for sensitive values.
+        """
+        return pulumi.get(self, "secrets")
+
+    @property
+    @pulumi.getter
     def tags(self) -> pulumi.Output[Optional[Sequence[str]]]:
         """
+        Name and optionally a tag (format: `name:tag`).
 
-        Name and optionally a tag (format: "name:tag"). If outputting to a
-        registry, the name should include the fully qualified registry address.
+        If exporting to a registry, the name should include the fully qualified
+        registry address (e.g. `docker.io/pulumi/pulumi:latest`).
         """
         return pulumi.get(self, "tags")
 
     @property
     @pulumi.getter
-    def target(self) -> pulumi.Output[Optional[str]]:
-        return pulumi.get(self, "target")
+    def targets(self) -> pulumi.Output[Optional[Sequence[str]]]:
+        """
+        Set the target build stage(s) to build.
+
+        If not specified all targets will be built by default.
+        """
+        return pulumi.get(self, "targets")
 

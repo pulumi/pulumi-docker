@@ -24,6 +24,9 @@ namespace Pulumi.Docker.Buildx.Inputs
         [Input("compressionLevel")]
         public Input<int>? CompressionLevel { get; set; }
 
+        /// <summary>
+        /// Path of the local directory to export the cache.
+        /// </summary>
         [Input("dest", required: true)]
         public Input<string> Dest { get; set; } = null!;
 
@@ -39,6 +42,9 @@ namespace Pulumi.Docker.Buildx.Inputs
         [Input("ignoreError")]
         public Input<bool>? IgnoreError { get; set; }
 
+        /// <summary>
+        /// The cache mode to use. Defaults to `min`.
+        /// </summary>
         [Input("mode")]
         public Input<Pulumi.Docker.Buildx.CacheMode>? Mode { get; set; }
 

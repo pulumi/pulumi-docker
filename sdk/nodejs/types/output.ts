@@ -1198,53 +1198,88 @@ export interface VolumeLabel {
 }
 
 export namespace buildx {
+    export interface BuildContext {
+        /**
+         * Resources to use for build context.
+         *
+         * The location can be:
+         * * A relative or absolute path to a local directory (`.`, `./app`,
+         *   `/app`, etc.).
+         * * A remote URL of a Git repository, tarball, or plain text file
+         *   (`https://github.com/user/myrepo.git`, `http://server/context.tar.gz`,
+         *   etc.).
+         */
+        location: string;
+        /**
+         * Additional build contexts to use. 
+         *
+         * These contexts are accessed with `FROM name` or `--from=name`
+         * statements when using Dockerfile 1.4+ syntax.
+         *
+         * Values can be local paths, HTTP URLs, or  `docker-image://` images.
+         */
+        named?: {[key: string]: outputs.buildx.Context};
+    }
+
+    export interface BuilderConfig {
+        /**
+         * Name of an existing buildx builder to use.
+         *
+         * Only `docker-container`, `kubernetes`, or `remote` drivers are
+         * supported. The legacy `docker` driver is not supported.
+         */
+        name?: string;
+    }
+
     export interface CacheFromAzureBlob {
+        /**
+         * Base URL of the storage account.
+         */
         accountUrl?: string;
+        /**
+         * The name of the cache image.
+         */
         name: string;
+        /**
+         * Blob storage account key.
+         */
         secretAccessKey?: string;
     }
 
     export interface CacheFromEntry {
         /**
-         *
-         * Push cache to Azure's blob storage service.
+         * Upload build caches to Azure's blob storage service.
          */
         azblob?: outputs.buildx.CacheFromAzureBlob;
         /**
-         *
          * Recommended for use with GitHub Actions workflows.
          *
-         * An action like "crazy-max/ghaction-github-runtime" is recommended to
+         * An action like `crazy-max/ghaction-github-runtime` is recommended to
          * expose appropriate credentials to your GitHub workflow.
          */
         gha?: outputs.buildx.CacheFromGitHubActions;
         /**
-         *
          * The inline cache storage backend is the simplest implementation to get
          * started with, but it does not handle multi-stage builds. Consider the
          * registry cache backend instead.
          */
         inline?: outputs.buildx.CacheInline;
         /**
-         *
-         * A simple backend which caches imagines on your local filesystem.
+         * A simple backend which caches images on your local filesystem.
          */
         local?: outputs.buildx.CacheFromLocal;
         /**
-         *
          * A raw string as you would provide it to the Docker CLI (e.g.,
-         * "type=inline")
+         * `type=inline`).
          */
         raw?: string;
         /**
-         *
-         * Push caches to remote registries. Incompatible with the "docker" build
-         * driver.
+         * Upload build caches to remote registries.
          */
         registry?: outputs.buildx.CacheFromRegistry;
         /**
-         *
-         * Push cache to AWS S3 or S3-compatible services such as MinIO.
+         * Upload build caches to AWS S3 or an S3-compatible services such as
+         * MinIO.
          */
         s3?: outputs.buildx.CacheFromS3;
     }
@@ -1261,15 +1296,27 @@ export namespace buildx {
 
     export interface CacheFromGitHubActions {
         /**
-         * Which scope cache object belongs to.
+         * The scope to use for cache keys. Defaults to `buildkit`.
+         *
+         * This should be set if building and caching multiple images in one
+         * workflow, otherwise caches will overwrite each other.
          */
         scope?: string;
         /**
-         * Access token
+         * The GitHub Actions token to use. This is not a personal access tokens
+         * and is typically generated automatically as part of each job.
+         *
+         * Defaults to `$ACTIONS_RUNTIME_TOKEN`, although a separate action like
+         * `crazy-max/ghaction-github-runtime` is recommended to expose this
+         * environment variable to your jobs.
          */
         token?: string;
         /**
-         * Cache server URL
+         * The cache server URL to use for artifacts.
+         *
+         * Defaults to `$ACTIONS_RUNTIME_URL`, although a separate action like
+         * `crazy-max/ghaction-github-runtime` is recommended to expose this
+         * environment variable to your jobs.
          */
         url?: string;
     }
@@ -1286,27 +1333,63 @@ export namespace buildx {
     }
 
     export interface CacheFromLocal {
+        /**
+         * Digest of manifest to import.
+         */
         digest?: string;
+        /**
+         * Path of the local directory where cache gets imported from.
+         */
         src: string;
     }
 
     export interface CacheFromRegistry {
         /**
-         * Full name of the cache image to import.
+         * Fully qualified name of the cache image to import.
          */
         ref: string;
     }
 
     export interface CacheFromS3 {
+        /**
+         * Defaults to `$AWS_ACCESS_KEY_ID`.
+         */
         accessKeyId?: string;
+        /**
+         * Prefix to prepend to blob filenames.
+         */
         blobsPrefix?: string;
+        /**
+         * Name of the S3 bucket.
+         */
         bucket: string;
+        /**
+         * Endpoint of the S3 bucket.
+         */
         endpointUrl?: string;
+        /**
+         * Prefix to prepend on manifest filenames.
+         */
         manifestsPrefix?: string;
+        /**
+         * Name of the cache image.
+         */
         name?: string;
+        /**
+         * The geographic location of the bucket. Defaults to `$AWS_REGION`.
+         */
         region: string;
+        /**
+         * Defaults to `$AWS_SECRET_ACCESS_KEY`.
+         */
         secretAccessKey?: string;
+        /**
+         * Defaults to `$AWS_SESSION_TOKEN`.
+         */
         sessionToken?: string;
+        /**
+         * Uses `bucket` in the URL instead of hostname when `true`.
+         */
         usePathStyle?: boolean;
     }
     /**
@@ -1326,13 +1409,25 @@ export namespace buildx {
     }
 
     export interface CacheToAzureBlob {
+        /**
+         * Base URL of the storage account.
+         */
         accountUrl?: string;
         /**
          * Ignore errors caused by failed cache exports.
          */
         ignoreError?: boolean;
+        /**
+         * The cache mode to use. Defaults to `min`.
+         */
         mode?: enums.buildx.CacheMode;
+        /**
+         * The name of the cache image.
+         */
         name: string;
+        /**
+         * Blob storage account key.
+         */
         secretAccessKey?: string;
     }
     /**
@@ -1348,44 +1443,37 @@ export namespace buildx {
 
     export interface CacheToEntry {
         /**
-         *
          * Push cache to Azure's blob storage service.
          */
         azblob?: outputs.buildx.CacheToAzureBlob;
         /**
-         *
          * Recommended for use with GitHub Actions workflows.
          *
-         * An action like "crazy-max/ghaction-github-runtime" is recommended to
+         * An action like `crazy-max/ghaction-github-runtime` is recommended to
          * expose appropriate credentials to your GitHub workflow.
          */
         gha?: outputs.buildx.CacheToGitHubActions;
         /**
-         *
          * The inline cache storage backend is the simplest implementation to get
          * started with, but it does not handle multi-stage builds. Consider the
-         * registry cache backend instead.
+         * `registry` cache backend instead.
          */
         inline?: outputs.buildx.CacheInline;
         /**
-         *
          * A simple backend which caches imagines on your local filesystem.
          */
         local?: outputs.buildx.CacheToLocal;
         /**
-         *
          * A raw string as you would provide it to the Docker CLI (e.g.,
-         * "type=inline")
+         * `type=inline`)
          */
         raw?: string;
         /**
-         *
-         * Push caches to remote registries. Incompatible with the "docker" build
+         * Push caches to remote registries. Incompatible with the `docker` build
          * driver.
          */
         registry?: outputs.buildx.CacheToRegistry;
         /**
-         *
          * Push cache to AWS S3 or S3-compatible services such as MinIO.
          */
         s3?: outputs.buildx.CacheToS3;
@@ -1409,17 +1497,32 @@ export namespace buildx {
          * Ignore errors caused by failed cache exports.
          */
         ignoreError?: boolean;
+        /**
+         * The cache mode to use. Defaults to `min`.
+         */
         mode?: enums.buildx.CacheMode;
         /**
-         * Which scope cache object belongs to.
+         * The scope to use for cache keys. Defaults to `buildkit`.
+         *
+         * This should be set if building and caching multiple images in one
+         * workflow, otherwise caches will overwrite each other.
          */
         scope?: string;
         /**
-         * Access token
+         * The GitHub Actions token to use. This is not a personal access tokens
+         * and is typically generated automatically as part of each job.
+         *
+         * Defaults to `$ACTIONS_RUNTIME_TOKEN`, although a separate action like
+         * `crazy-max/ghaction-github-runtime` is recommended to expose this
+         * environment variable to your jobs.
          */
         token?: string;
         /**
-         * Cache server URL
+         * The cache server URL to use for artifacts.
+         *
+         * Defaults to `$ACTIONS_RUNTIME_URL`, although a separate action like
+         * `crazy-max/ghaction-github-runtime` is recommended to expose this
+         * environment variable to your jobs.
          */
         url?: string;
     }
@@ -1446,6 +1549,9 @@ export namespace buildx {
          * Compression level from 0 to 22.
          */
         compressionLevel?: number;
+        /**
+         * Path of the local directory to export the cache.
+         */
         dest: string;
         /**
          * Forcefully apply compression.
@@ -1455,6 +1561,9 @@ export namespace buildx {
          * Ignore errors caused by failed cache exports.
          */
         ignoreError?: boolean;
+        /**
+         * The cache mode to use. Defaults to `min`.
+         */
         mode?: enums.buildx.CacheMode;
     }
     /**
@@ -1489,16 +1598,23 @@ export namespace buildx {
          */
         ignoreError?: boolean;
         /**
-         * Export cache manifest as an OCI-compatible image manifest instead of a manifest list (requires OCI media types).
+         * Export cache manifest as an OCI-compatible image manifest instead of a
+         * manifest list (requires OCI media types).
+         *
+         * Defaults to `false`.
          */
         imageManifest?: boolean;
+        /**
+         * The cache mode to use. Defaults to `min`.
+         */
         mode?: enums.buildx.CacheMode;
         /**
-         * Whether to use OCI mediatypes in exported manifests.
+         * Whether to use OCI mediatypes in exported manifests. Defaults to
+         * `true`.
          */
         ociMediaTypes?: boolean;
         /**
-         * Full name of the cache image to import.
+         * Fully qualified name of the cache image to import.
          */
         ref: string;
     }
@@ -1519,20 +1635,53 @@ export namespace buildx {
     }
 
     export interface CacheToS3 {
+        /**
+         * Defaults to `$AWS_ACCESS_KEY_ID`.
+         */
         accessKeyId?: string;
+        /**
+         * Prefix to prepend to blob filenames.
+         */
         blobsPrefix?: string;
+        /**
+         * Name of the S3 bucket.
+         */
         bucket: string;
+        /**
+         * Endpoint of the S3 bucket.
+         */
         endpointUrl?: string;
         /**
          * Ignore errors caused by failed cache exports.
          */
         ignoreError?: boolean;
+        /**
+         * Prefix to prepend on manifest filenames.
+         */
         manifestsPrefix?: string;
+        /**
+         * The cache mode to use. Defaults to `min`.
+         */
         mode?: enums.buildx.CacheMode;
+        /**
+         * Name of the cache image.
+         */
         name?: string;
+        /**
+         * The geographic location of the bucket. Defaults to `$AWS_REGION`.
+         */
         region: string;
+        /**
+         * Defaults to `$AWS_SECRET_ACCESS_KEY`.
+         */
         secretAccessKey?: string;
+        /**
+         * Defaults to `$AWS_SESSION_TOKEN`.
+         */
         sessionToken?: string;
+        /**
+         * Uses `bucket` in the URL instead of hostname when `true`.
+         */
         usePathStyle?: boolean;
     }
     /**
@@ -1550,7 +1699,41 @@ export namespace buildx {
         };
     }
 
+    export interface Context {
+        /**
+         * Resources to use for build context.
+         *
+         * The location can be:
+         * * A relative or absolute path to a local directory (`.`, `./app`,
+         *   `/app`, etc.).
+         * * A remote URL of a Git repository, tarball, or plain text file
+         *   (`https://github.com/user/myrepo.git`, `http://server/context.tar.gz`,
+         *   etc.).
+         */
+        location: string;
+    }
+
+    export interface Dockerfile {
+        /**
+         * Raw Dockerfile contents.
+         *
+         * Conflicts with `location`.
+         */
+        inline?: string;
+        /**
+         * Location of the Dockerfile to use.
+         *
+         * Can be a relative or absolute path to a local file, or a remote URL.
+         *
+         * Conflicts with `inline`.
+         */
+        location?: string;
+    }
+
     export interface ExportDocker {
+        /**
+         * Attach an arbitrary key/value annotation to the image.
+         */
         annotations?: {[key: string]: string};
         /**
          * The compression type to use.
@@ -1597,38 +1780,36 @@ export namespace buildx {
 
     export interface ExportEntry {
         /**
-         *
          * Export as a Docker image layout.
          */
         docker?: outputs.buildx.ExportDocker;
         /**
-         *
          * Outputs the build result into a container image format.
          */
         image?: outputs.buildx.ExportImage;
         /**
-         *
          * Export to a local directory as files and directories.
          */
         local?: outputs.buildx.ExportLocal;
         /**
-         *
+         * An output property populated for exporters that pushed image
+         * manifest(s) to a registry.
+         */
+        manifests?: outputs.buildx.Manifest[];
+        /**
          * Identical to the Docker exporter but uses OCI media types by default.
          */
         oci?: outputs.buildx.ExportOCI;
         /**
-         *
          * A raw string as you would provide it to the Docker CLI (e.g.,
-         * "type=docker")
+         * `type=docker`)
          */
         raw?: string;
         /**
-         *
          * Identical to the Image exporter, but pushes by default.
          */
         registry?: outputs.buildx.ExportRegistry;
         /**
-         *
          * Export to a local directory as a tarball.
          */
         tar?: outputs.buildx.ExportTar;
@@ -1647,6 +1828,9 @@ export namespace buildx {
     }
 
     export interface ExportImage {
+        /**
+         * Attach an arbitrary key/value annotation to the image.
+         */
         annotations?: {[key: string]: string};
         /**
          * The compression type to use.
@@ -1656,12 +1840,21 @@ export namespace buildx {
          * Compression level from 0 to 22.
          */
         compressionLevel?: number;
+        /**
+         * Name image with `prefix@<digest>`, used for anonymous images.
+         */
         danglingNamePrefix?: string;
         /**
          * Forcefully apply compression.
          */
         forceCompression?: boolean;
+        /**
+         * Allow pushing to an insecure registry.
+         */
         insecure?: boolean;
+        /**
+         * Add additional canonical name (`name@<digest>`).
+         */
         nameCanonical?: boolean;
         /**
          * Specify images names to export. This is overridden if tags are already specified.
@@ -1675,14 +1868,24 @@ export namespace buildx {
          * Push after creating the image.
          */
         push?: boolean;
+        /**
+         * Push image without name.
+         */
         pushByDigest?: boolean;
         /**
+         * Store resulting images to the worker's image store and ensure all of
+         * its blobs are in the content store. 
          *
-         * Store resulting images to the worker's image store, and ensure all its
-         * blobs are in the content store. Ignored if the worker doesn't have
-         * image store (when using OCI workers, for example).
+         * Defaults to `true`.
+         *
+         * Ignored if the worker doesn't have image store (when using OCI workers,
+         * for example).
          */
         store?: boolean;
+        /**
+         * Unpack image after creation (for use with containerd). Defaults to
+         * `false`.
+         */
         unpack?: boolean;
     }
     /**
@@ -1707,6 +1910,9 @@ export namespace buildx {
     }
 
     export interface ExportOCI {
+        /**
+         * Attach an arbitrary key/value annotation to the image.
+         */
         annotations?: {[key: string]: string};
         /**
          * The compression type to use.
@@ -1752,6 +1958,9 @@ export namespace buildx {
     }
 
     export interface ExportRegistry {
+        /**
+         * Attach an arbitrary key/value annotation to the image.
+         */
         annotations?: {[key: string]: string};
         /**
          * The compression type to use.
@@ -1761,12 +1970,21 @@ export namespace buildx {
          * Compression level from 0 to 22.
          */
         compressionLevel?: number;
+        /**
+         * Name image with `prefix@<digest>`, used for anonymous images.
+         */
         danglingNamePrefix?: string;
         /**
          * Forcefully apply compression.
          */
         forceCompression?: boolean;
+        /**
+         * Allow pushing to an insecure registry.
+         */
         insecure?: boolean;
+        /**
+         * Add additional canonical name (`name@<digest>`).
+         */
         nameCanonical?: boolean;
         /**
          * Specify images names to export. This is overridden if tags are already specified.
@@ -1780,14 +1998,24 @@ export namespace buildx {
          * Push after creating the image.
          */
         push?: boolean;
+        /**
+         * Push image without name.
+         */
         pushByDigest?: boolean;
         /**
+         * Store resulting images to the worker's image store and ensure all of
+         * its blobs are in the content store. 
          *
-         * Store resulting images to the worker's image store, and ensure all its
-         * blobs are in the content store. Ignored if the worker doesn't have
-         * image store (when using OCI workers, for example).
+         * Defaults to `true`.
+         *
+         * Ignored if the worker doesn't have image store (when using OCI workers,
+         * for example).
          */
         store?: boolean;
+        /**
+         * Unpack image after creation (for use with containerd). Defaults to
+         * `false`.
+         */
         unpack?: boolean;
     }
     /**
@@ -1813,26 +2041,46 @@ export namespace buildx {
     }
 
     export interface Manifest {
-        digest: string;
-        platform: enums.buildx.Platform;
         /**
-         * The manifest's ref
+         * The SHA256 digest of the manifest.
+         */
+        digest: string;
+        /**
+         * The manifest's platform.
+         */
+        platform: outputs.buildx.ManifestPlatform;
+        /**
+         * The manifest's canonical ref.
          */
         ref: string;
+        /**
+         * The size of the manifest in bytes.
+         */
         size: number;
+    }
+
+    export interface ManifestPlatform {
+        /**
+         * The manifest's architecture.
+         */
+        architecture: string;
+        /**
+         * The manifest's operating systen.
+         */
+        os: string;
     }
 
     export interface RegistryAuth {
         /**
-         * The registry's address (e.g. "docker.io")
+         * The registry's address (e.g. "docker.io").
          */
         address: string;
         /**
-         * Password or token for the registry
+         * Password or token for the registry.
          */
         password?: string;
         /**
-         * Username for the registry
+         * Username for the registry.
          */
         username?: string;
     }
