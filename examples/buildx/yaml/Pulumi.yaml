@@ -1,0 +1,143 @@
+name: buildx-examples
+runtime: yaml
+description: Examples of buildx.Image
+
+resources:
+  # docker buildx build -f app/Dockerfile.multiPlatform --platform plan9/amd64,plan9/386 app
+  multiPlatform:
+    type: docker:buildx/image:Image
+    properties:
+      dockerfile:
+        location: "app/Dockerfile.multiPlatform"
+      context:
+        location: "app"
+      platforms:
+        - plan9/amd64
+        - plan9/386
+
+  # docker buildx build -f app/Dockerfile.generic --output=type=registry app
+  registryPush:
+    type: docker:buildx/image:Image
+    properties:
+      dockerfile:
+        location: "app/Dockerfile.generic"
+      context:
+        location: "app"
+      exports:
+        - registry:
+            ociMediaTypes: true
+            push: false # Omit this to actually push images.
+      registries:
+        - address: docker.io
+          username: pulumibot
+          password: ${dockerHubPassword}
+
+  # docker buildx build -f app/Dockerfile.generic --cache-to=type=local,dest=tmp/cache,mode=max --cache-from=type=local,src=tmp/cache app
+  cached:
+    type: docker:buildx/image:Image
+    properties:
+      dockerfile:
+        location: "app/Dockerfile.generic"
+      context:
+        location: "app"
+      cacheTo:
+        - local:
+            dest: tmp/cache
+            mode: max
+      cacheFrom:
+        - local:
+            src: tmp/cache
+
+  # docker buildx build -f app/Dockerfile.buildArgs --build-arg SET_ME_TO_TRUE=true app
+  buildArgs:
+    type: docker:buildx/image:Image
+    properties:
+      dockerfile:
+        location: "app/Dockerfile.buildArgs"
+      context:
+        location: "app"
+      buildArgs:
+        SET_ME_TO_TRUE: "true"
+
+  # docker buildx build -f app/Dockerfile.targets --target build-me --target also-build-me app
+  targets:
+    type: docker:buildx/image:Image
+    properties:
+      dockerfile:
+        location: "app/Dockerfile.targets"
+      context:
+        location: "app"
+      targets:
+        - "build-me"
+        - "also-build-me"
+
+  # docker buildx build -f app/Dockerfile.namedContexts \
+  #   --build-context golang:latest=docker-image://golang@sha256:b8e62cf593cdaff36efd90aa3a37de268e6781a2e68c6610940c48f7cdf36984 app
+  namedContexts:
+    type: docker:buildx/image:Image
+    properties:
+      dockerfile:
+        location: "app/Dockerfile.namedContexts"
+      context:
+        location: app
+        named:
+          "golang:latest":
+            location: "docker-image://golang@sha256:b8e62cf593cdaff36efd90aa3a37de268e6781a2e68c6610940c48f7cdf36984"
+
+  # docker buildx build https://raw.githubusercontent.com/pulumi/pulumi-docker/api-types/provider/testdata/Dockerfile
+  remoteContext:
+    type: docker:buildx/image:Image
+    properties:
+      context:
+        location: "https://raw.githubusercontent.com/pulumi/pulumi-docker/api-types/provider/testdata/Dockerfile"
+
+  # docker buildx build -f - https://github.com/docker-library/hello-world.git <<EOF
+  #  FROM busybox
+  #  COPY hello.c ./
+  #  EOF
+  remoteContextWithInline:
+    type: docker:buildx/image:Image
+    properties:
+      dockerfile:
+        inline: |
+          FROM busybox
+          COPY hello.c ./
+      context:
+        location: "https://github.com/docker-library/hello-world.git"
+
+  # echo "FROM alpine" | docker buildx build -f - .
+  inline:
+    type: docker:buildx/image:Image
+    properties:
+      dockerfile:
+        inline: |
+          FROM alpine
+          RUN echo "This uses an inline Dockerfile! 👍"
+      context:
+        location: "app"
+
+  # docker buildx build -f app/Dockerfile.generic --load .
+  dockerLoad:
+    type: docker:buildx/image:Image
+    properties:
+      dockerfile:
+        location: "app/Dockerfile.generic"
+      context:
+        location: "app"
+      exports:
+        - docker:
+            tar: true
+
+  # docker buildx build - < app/Dockerfile.emptyContext
+  #emptyContext:
+  #  type: docker:buildx/image:Image
+  #  properties:
+  #    file: "app/Dockerfile.emptyContext"
+  #    context: "-"
+config:
+  dockerHubPassword:
+    type: string
+    secret: true
+
+outputs:
+  platforms: ${multiPlatform.platforms}

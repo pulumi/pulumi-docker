@@ -30,6 +30,15 @@ import (
 	"github.com/pulumi/pulumi/pkg/v3/testing/integration"
 )
 
+func TestBuildxYAML(t *testing.T) {
+	integration.ProgramTest(t, &integration.ProgramTestOptions{
+		Dir: path.Join(getCwd(t), "buildx", "yaml"),
+		Secrets: map[string]string{
+			"dockerHubPassword": os.Getenv("DOCKER_HUB_PASSWORD"),
+		},
+	})
+}
+
 func TestUnknownInputsYAML(t *testing.T) {
 	cwd, err := os.Getwd()
 	if !assert.NoError(t, err) {
@@ -86,9 +95,9 @@ func TestBuildOnPreviewYAML(t *testing.T) {
 	var outputBuf bytes.Buffer
 	integration.ProgramTest(t, &integration.ProgramTestOptions{
 		Dir:                      path.Join(cwd, "test-build-on-preview", "yaml"),
-		SkipUpdate:               true, //only run Preview
+		SkipUpdate:               true, // only run Preview
 		SkipExportImport:         true,
-		Verbose:                  true, //we need this to verify the build output logs
+		Verbose:                  true, // we need this to verify the build output logs
 		AllowEmptyPreviewChanges: true,
 		Stdout:                   &outputBuf,
 		ExtraRuntimeValidation: func(t *testing.T, stack integration.RuntimeValidationStackInfo) {
@@ -97,6 +106,7 @@ func TestBuildOnPreviewYAML(t *testing.T) {
 		},
 	})
 }
+
 func TestDockerSwarmYAML(t *testing.T) {
 	cwd, err := os.Getwd()
 	if !assert.NoError(t, err) {
@@ -142,9 +152,9 @@ func TestUnknownsBuildOnPreviewWarnsYAML(t *testing.T) {
 	var outputBuf bytes.Buffer
 	integration.ProgramTest(t, &integration.ProgramTestOptions{
 		Dir:                      path.Join(cwd, "test-unknowns", "yaml-build-on-preview"),
-		SkipUpdate:               true, //only run Preview
+		SkipUpdate:               true, // only run Preview
 		SkipExportImport:         true,
-		Verbose:                  true, //we need this to verify the build output logs
+		Verbose:                  true, // we need this to verify the build output logs
 		AllowEmptyPreviewChanges: true,
 		Stderr:                   &outputBuf,
 		ExtraRuntimeValidation: func(t *testing.T, stack integration.RuntimeValidationStackInfo) {

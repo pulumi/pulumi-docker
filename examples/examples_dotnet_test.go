@@ -27,6 +27,18 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestBuildxCs(t *testing.T) {
+	test := getCsharpBaseOptions(t).
+		With(integration.ProgramTestOptions{
+			Dir: path.Join(getCwd(t), "buildx", "csharp"),
+			Secrets: map[string]string{
+				"dockerHubPassword": os.Getenv("DOCKER_HUB_PASSWORD"),
+			},
+		})
+
+	integration.ProgramTest(t, &test)
+}
+
 func TestNginxCs(t *testing.T) {
 	test := getCsharpBaseOptions(t).
 		With(integration.ProgramTestOptions{
