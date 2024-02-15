@@ -1,0 +1,3 @@
+name: buildx-examples
+runtime: go
+description: Examples of buildx.Image

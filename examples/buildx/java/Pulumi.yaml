@@ -1,0 +1,3 @@
+name: buildx-examples
+runtime: java
+description: Examples of buildx.Image

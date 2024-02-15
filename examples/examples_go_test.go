@@ -32,8 +32,21 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestNginxGo(t *testing.T) {
+func TestBuildx(t *testing.T) {
+	test := base.With(integration.ProgramTestOptions{
+		Dependencies: []string{
+			"github.com/pulumi/pulumi-docker/sdk/v4=../sdk",
+		},
+		Dir: path.Join(getCwd(t), "buildx", "go"),
+		Secrets: map[string]string{
+			"dockerHubPassword": os.Getenv("DOCKER_HUB_PASSWORD"),
+		},
+	})
 
+	integration.ProgramTest(t, &test)
+}
+
+func TestNginxGo(t *testing.T) {
 	cwd, err := os.Getwd()
 	if !assert.NoError(t, err) {
 		t.FailNow()

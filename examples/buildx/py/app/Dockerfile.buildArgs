@@ -1,0 +1,5 @@
+FROM alpine
+
+ARG SET_ME_TO_TRUE
+RUN [ "$SET_ME_TO_TRUE" = "true" ]
+RUN echo "That's the correct build arg, thanks! 👍"

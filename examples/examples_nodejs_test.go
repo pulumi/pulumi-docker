@@ -33,6 +33,18 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestBuildxTs(t *testing.T) {
+	test := getJsOptions(t).
+		With(integration.ProgramTestOptions{
+			Dir: path.Join(getCwd(t), "buildx", "ts"),
+			Secrets: map[string]string{
+				"dockerHubPassword": os.Getenv("DOCKER_HUB_PASSWORD"),
+			},
+		})
+
+	integration.ProgramTest(t, &test)
+}
+
 func TestNginxTs(t *testing.T) {
 	test := getJsOptions(t).
 		With(integration.ProgramTestOptions{
