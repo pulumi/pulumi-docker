@@ -49,7 +49,9 @@ export const repoDigest = image.repoDigest;
 const buildxImage = new docker.buildx.Image("buildx", {
   tags: [pulumi.interpolate`${repo.repositoryUrl}:buildx`],
   exports: [{ registry: {} }],
-  file: "app/Dockerfile",
+  dockerfile: {
+    location: "app/Dockerfile",
+  },
   platforms: ["linux/arm64", "linux/amd64"],
   cacheTo: [
     {
@@ -68,7 +70,9 @@ const buildxImage = new docker.buildx.Image("buildx", {
       },
     },
   ],
-  context: "app",
+  context: {
+    location: "app",
+  },
   registries: [
     {
       address: registryInfo.server,
@@ -77,5 +81,3 @@ const buildxImage = new docker.buildx.Image("buildx", {
     },
   ],
 });
-
-export const manifests = buildxImage.manifests;

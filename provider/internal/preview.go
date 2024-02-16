@@ -78,3 +78,25 @@ func (k mapKeeper) keep(m map[string]string) map[string]string {
 	}
 	return filtered
 }
+
+type contextKeeper struct{ preview bool }
+
+func (k contextKeeper) keep(bc BuildContext) BuildContext {
+	if !k.preview || len(bc.Named) == 0 {
+		return bc
+	}
+
+	named := NamedContexts{}
+	sk := stringKeeper(k)
+	for k, v := range bc.Named {
+		if !sk.keep(k) || !sk.keep(v.Location) {
+			continue
+		}
+		named[k] = v
+	}
+
+	return BuildContext{
+		Context: Context{bc.Location},
+		Named:   named,
+	}
+}

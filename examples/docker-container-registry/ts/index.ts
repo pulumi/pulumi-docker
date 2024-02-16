@@ -38,8 +38,12 @@ const buildxImage = new docker.buildx.Image("my-buildx-image", {
     { gha: {} },
     { registry: { ref: `docker.io/${imageName}`, mode: "max" } },
   ],
-  context: "app",
-  file: "app/Dockerfile",
+  context: {
+    location: "app",
+  },
+  dockerfile: {
+    location: "app/Dockerfile",
+  },
   registries: [
     {
       address: registryInfo.server,
@@ -48,5 +52,3 @@ const buildxImage = new docker.buildx.Image("my-buildx-image", {
     },
   ],
 });
-
-export const manifests = buildxImage.manifests;
