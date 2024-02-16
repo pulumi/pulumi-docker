@@ -73,7 +73,7 @@ func (p *dockerNativeProvider) CheckConfig(ctx context.Context, req *rpc.CheckRe
 
 // DiffConfig diffs the configuration for this provider.
 func (p *dockerNativeProvider) DiffConfig(ctx context.Context, req *rpc.DiffRequest) (*rpc.DiffResponse, error) {
-	return &rpc.DiffResponse{}, nil
+	return p.Diff(ctx, req)
 }
 
 // Configure configures the resource provider with "globals" that control its behavior.
@@ -338,27 +338,52 @@ func (p *dockerNativeProvider) Diff(ctx context.Context, req *rpc.DiffRequest) (
 
 func diffUpdates(updates map[resource.PropertyKey]resource.ValueDiff) map[string]*rpc.PropertyDiff {
 	updateDiff := map[string]*rpc.PropertyDiff{}
-	for key, valueDiff := range updates {
-		update := true
 
-		if string(key) == "registry" && valueDiff.Object != nil {
-			// only register a diff on "server" field, but not on "username" or "password",
-			// as they can change frequently and should not trigger a rebuild.
-			_, update = valueDiff.Object.Updates["server"]
+	for key, valueDiff := range updates {
+		// Include all the same updates by default.
+		updateDiff[string(key)] = &rpc.PropertyDiff{
+			Kind: rpc.PropertyDiff_UPDATE,
 		}
 
-		if update {
-			updateDiff[string(key)] = &rpc.PropertyDiff{
-				Kind: rpc.PropertyDiff_UPDATE,
+		// only register a diff on "server" field (or "address" in the case
+		// of provider config), but not on "username" or "password", as
+		// they can change frequently and should not trigger a rebuild.
+		if !(string(key) == "registry" || string(key) == "registryAuth") {
+			continue
+		}
+		keep := false
+		updates := []*resource.ObjectDiff{}
+		if valueDiff.Object != nil {
+			// Resource config.
+			updates = append(updates, valueDiff.Object)
+		} else if valueDiff.Array != nil {
+			// Provider config.
+			for _, u := range valueDiff.Array.Updates {
+				updates = append(updates, u.Object)
+			}
+		} else if valueDiff.Old.Diff(valueDiff.New) != nil {
+			continue
+		}
+		// Check each modified resource for server/address changes. If we don't
+		// find any, don't mark this property for update.
+		for _, u := range updates {
+			_, serverUpdate := u.Updates["server"]
+			_, addressUpdate := u.Updates["address"]
+			if serverUpdate || addressUpdate || u.Updates == nil {
+				keep = true
+				break
 			}
 		}
+		if !keep {
+			delete(updateDiff, string(key))
+		}
 	}
+
 	return updateDiff
 }
 
 // Create allocates a new instance of the provided resource and returns its unique ID afterwards.
 func (p *dockerNativeProvider) Create(ctx context.Context, req *rpc.CreateRequest) (*rpc.CreateResponse, error) {
-
 	urn := resource.URN(req.GetUrn())
 	label := fmt.Sprintf("%s.Create(%s)", p.name, urn)
 	logging.V(9).Infof("%s executing", label)
@@ -548,7 +573,9 @@ func parseCheckpointObject(obj resource.PropertyMap) resource.PropertyMap {
 
 	}
 
-	return nil
+	// If the map doesn't include __inputs then it already represents its
+	// inputs, as is the case with provider config.
+	return obj
 }
 
 type contextHashAccumulator struct {

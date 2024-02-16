@@ -65,8 +65,7 @@ func (dp dockerHybridProvider) CheckConfig(ctx context.Context, request *rpc.Che
 }
 
 func (dp dockerHybridProvider) DiffConfig(ctx context.Context, request *rpc.DiffRequest) (*rpc.DiffResponse, error) {
-	// Delegate to the bridged provider, as native Provider does not implement it.
-	return dp.bridgedProvider.DiffConfig(ctx, request)
+	return dp.nativeProvider.DiffConfig(ctx, request)
 }
 
 func (dp dockerHybridProvider) Configure(
