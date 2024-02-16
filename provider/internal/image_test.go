@@ -36,7 +36,9 @@ func TestLifecycle(t *testing.T) {
 		return NewMockClient(ctrl)
 	}
 
-	ref, err := reference.ParseNamed("docker.io/pulumibot/myapp")
+	ref, err := reference.ParseNamed("docker.io/pulumibot/buildkit-e2e")
+	require.NoError(t, err)
+	digestRef, err := reference.WithDigest(ref, "sha256:7f9fc9830dbb80a7fd23b9903d587b6433a9e87969de4868e551bc2959e63dd9")
 	require.NoError(t, err)
 
 	tests := []struct {
@@ -62,16 +64,16 @@ func TestLifecycle(t *testing.T) {
 							}, nil
 						},
 					),
-					c.EXPECT().Inspect(gomock.Any(), "test", "docker.io/blampe/buildkit-e2e").Return(
+					c.EXPECT().Inspect(gomock.Any(), "test", "docker.io/pulumibot/buildkit-e2e").Return(
 						[]manifesttypes.ImageManifest{
 							{
-								Ref:        &manifesttypes.SerializableNamed{Named: ref},
-								Descriptor: v1.Descriptor{Platform: &v1.Platform{}},
+								Ref:        &manifesttypes.SerializableNamed{Named: digestRef},
+								Descriptor: v1.Descriptor{Platform: &v1.Platform{OS: "linux", Architecture: "arm64"}},
 							},
 						}, nil,
 					),
-					c.EXPECT().Inspect(gomock.Any(), "test", "docker.io/blampe/buildkit-e2e:main"),
-					c.EXPECT().Delete(gomock.Any(), "test").Return(
+					c.EXPECT().Inspect(gomock.Any(), "test", "docker.io/pulumibot/buildkit-e2e:main"),
+					c.EXPECT().Delete(gomock.Any(), digestRef.String()).Return(
 						[]image.DeleteResponse{{Deleted: "deleted"}, {Untagged: "untagged"}}, nil),
 				)
 				return c
@@ -81,8 +83,8 @@ func TestLifecycle(t *testing.T) {
 					Inputs: resource.PropertyMap{
 						"tags": resource.NewArrayProperty(
 							[]resource.PropertyValue{
-								resource.NewStringProperty("docker.io/blampe/buildkit-e2e"),
-								resource.NewStringProperty("docker.io/blampe/buildkit-e2e:main"),
+								resource.NewStringProperty("docker.io/pulumibot/buildkit-e2e"),
+								resource.NewStringProperty("docker.io/pulumibot/buildkit-e2e:main"),
 							},
 						),
 						"platforms": resource.NewArrayProperty(
@@ -225,7 +227,6 @@ func TestLifecycle(t *testing.T) {
 							}, nil
 						},
 					),
-					c.EXPECT().Delete(gomock.Any(), "test").Return(nil, nil),
 				)
 				return c
 			},
@@ -273,24 +274,25 @@ func (errNotFound) Error() string { return "not found " }
 
 func TestDelete(t *testing.T) {
 	t.Run("image was already deleted", func(t *testing.T) {
-		imageID := "doesnt-exist"
-
 		ctrl := gomock.NewController(t)
 		client := NewMockClient(ctrl)
-		client.EXPECT().Delete(gomock.Any(), imageID).Return(nil, errNotFound{})
+		client.EXPECT().Delete(gomock.Any(), "foo").Return(nil, errNotFound{})
+		client.EXPECT().Delete(gomock.Any(), "bar").Return(nil, errNotFound{})
 
 		s := newServer(client)
 		err := s.Configure(provider.ConfigureRequest{})
 		require.NoError(t, err)
 
 		err = s.Delete(provider.DeleteRequest{
-			ID:  imageID,
+			ID:  "foo,bar",
 			Urn: _fakeURN,
 			Properties: resource.PropertyMap{
-				"tags": resource.NewArrayProperty([]resource.PropertyValue{
-					resource.NewStringProperty("tag"),
+				"digests": resource.NewObjectProperty(resource.PropertyMap{
+					"digests": resource.NewArrayProperty([]resource.PropertyValue{
+						resource.NewStringProperty("foo"),
+						resource.NewStringProperty("bar"),
+					}),
 				}),
-				"manifests": resource.NewArrayProperty([]resource.PropertyValue{}),
 			},
 		})
 		assert.NoError(t, err)
@@ -298,7 +300,7 @@ func TestDelete(t *testing.T) {
 }
 
 func TestRead(t *testing.T) {
-	tag := "docker.io/pulumi/pulumi"
+	tag := "docker.io/pulumi/pulumitest"
 	ref, err := reference.ParseNamed(tag)
 	require.NoError(t, err)
 
@@ -322,10 +324,10 @@ func TestRead(t *testing.T) {
 	err = s.Configure(provider.ConfigureRequest{})
 	require.NoError(t, err)
 
-	state, err := s.Read(provider.ReadRequest{
+	resp, err := s.Read(provider.ReadRequest{
 		ID:  "my-image",
 		Urn: _fakeURN,
-		Inputs: resource.PropertyMap{
+		Properties: resource.PropertyMap{
 			"exports": resource.NewArrayProperty([]resource.PropertyValue{
 				resource.NewObjectProperty(resource.PropertyMap{
 					"raw": resource.NewStringProperty("type=registry"),
@@ -337,7 +339,7 @@ func TestRead(t *testing.T) {
 		},
 	})
 	require.NoError(t, err)
-	assert.Len(t, state.Properties["manifests"].ArrayValue(), 1)
+	assert.NotNil(t, resp.Properties["exports"].ArrayValue()[0].ObjectValue()["manifest"])
 }
 
 func TestDiff(t *testing.T) {
@@ -350,7 +352,6 @@ func TestDiff(t *testing.T) {
 	}
 	baseState := ImageState{
 		ContextHash: "f04bea490d45e7ae69d542846511e7c90eb683deaa1e0df19e9fca4d227265c2",
-		Manifests:   []properties.Manifest{},
 		ImageArgs:   baseArgs,
 	}
 

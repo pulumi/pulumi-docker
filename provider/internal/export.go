@@ -6,9 +6,12 @@ import (
 	"strings"
 
 	controllerapi "github.com/docker/buildx/controller/pb"
+	"github.com/docker/buildx/util/buildflags"
 	"github.com/muesli/reflow/dedent"
 
 	"github.com/pulumi/pulumi-go-provider/infer"
+
+	"github.com/pulumi/pulumi-docker/provider/v4/internal/properties"
 )
 
 var (
@@ -42,6 +45,8 @@ type ExportEntry struct {
 	Raw      Raw             `pulumi:"raw,optional"`
 
 	Disabled bool `pulumi:"disabled,optional"`
+
+	Manifests []properties.Manifest `pulumi:"manifests,optional" provider:"output"`
 }
 
 func (e *ExportEntry) Annotate(a infer.Annotator) {
@@ -78,6 +83,23 @@ func (e ExportEntry) String() string {
 		return ""
 	}
 	return join(e.Tar, e.Local, e.Registry, e.Image, e.OCI, e.Docker, e.Raw)
+}
+
+func (e ExportEntry) pushed() bool {
+	if e.Raw != "" {
+		exp, err := buildflags.ParseExports([]string{e.Raw.String()})
+		if err != nil {
+			return false
+		}
+		return exp[0].Attrs["push"] == "true"
+	}
+	if e.Registry != nil {
+		return e.Registry.Push == nil || *e.Registry.Push
+	}
+	if e.Image != nil {
+		return e.Image.Push != nil && *e.Image.Push
+	}
+	return false
 }
 
 type ExportDocker struct {
