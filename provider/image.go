@@ -162,14 +162,6 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 		false,
 	)
 
-	// warn user about accidentally copying build files
-	if build.BuilderVersion == defaultBuilder && len(initialIgnorePatterns) != len(ignorePatterns) {
-		msg := "It looks like you are trying to dockerignore a build file such as `Dockerfile` or `.dockerignore`. " +
-			"To avoid accidentally copying these files to your image, please ensure any copied file systems do not " +
-			"include `Dockerfile` or `.dockerignore`."
-		_ = p.host.Log(ctx, "warning", urn, msg)
-	}
-
 	tar, err := archive.TarWithOptions(contextDir, &archive.TarOptions{
 		ExcludePatterns: ignorePatterns,
 		ChownOpts:       &idtools.Identity{UID: 0, GID: 0},
