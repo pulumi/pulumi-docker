@@ -537,7 +537,6 @@ func parseCheckpointObject(obj resource.PropertyMap) resource.PropertyMap {
 			return inputs.SecretValue().Element.ObjectValue()
 		}
 		return inputs.ObjectValue()
-
 	}
 
 	return nil

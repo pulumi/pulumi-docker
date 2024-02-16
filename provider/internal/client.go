@@ -150,7 +150,9 @@ func (d *docker) Auth(ctx context.Context, creds properties.RegistryAuth) error 
 	return nil
 }
 
-// Build performs a buildkit build.
+// Build performs a buildkit build. Returns a map of target names (or one name,
+// "default", if no targets were specified) to SolveResponses, which capture
+// the build's digest and tags (if any).
 func (d *docker) Build(
 	pctx provider.Context,
 	build Build,

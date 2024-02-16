@@ -5,13 +5,13 @@ import (
 )
 
 type Manifest struct {
-	Digest   string   `pulumi:"digest"`
-	Platform Platform `pulumi:"platform"`
-	Ref      string   `pulumi:"ref"`
-	Size     int64    `pulumi:"size"`
+	Digest   string           `pulumi:"digest"`
+	Platform ManifestPlatform `pulumi:"platform"`
+	Ref      string           `pulumi:"ref"`
+	Size     int64            `pulumi:"size"`
 }
 
-type Platform struct {
+type ManifestPlatform struct {
 	OS           string `pulumi:"os"`
 	Architecture string `pulumi:"architecture"`
 }

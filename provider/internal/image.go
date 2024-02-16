@@ -137,8 +137,8 @@ func (ia *ImageArgs) Annotate(a infer.Annotator) {
 type ImageState struct {
 	ImageArgs
 
-	ContextHash string                `pulumi:"contextHash,optional" provider:"internal"`
-	Manifests   []properties.Manifest `pulumi:"manifests"            provider:"output"`
+	Digests     map[Platform][]string `pulumi:"digests,optional" provider:"output"`
+	ContextHash string                `pulumi:"contextHash,optional" provider:"internal,output"`
 
 	id string
 }
@@ -146,6 +146,10 @@ type ImageState struct {
 // Annotate describes outputs of the Image resource.
 func (is *ImageState) Annotate(a infer.Annotator) {
 	is.ImageArgs.Annotate(a)
+
+	a.Describe(&is.Digests, dedent.String(`
+		A mapping of platform type to refs which were pushed to registries.`,
+	))
 }
 
 // Check validates ImageArgs, sets defaults, and ensures our client is
@@ -585,29 +589,32 @@ func (i *Image) Update(
 	var id string
 
 	for _, b := range builds {
+		// This returns a map of target names to exporter responses.
 		results, err := cfg.client.Build(ctx, b)
 		if err != nil {
 			return state, err
 		}
+
 		if id != "" {
+			// We already found a digest or exported tags, nothing else to do.
 			continue
 		}
 
 		for _, result := range results {
-			if digest, ok := result.ExporterResponse["containerimage.digest"]; ok {
-				id = digest
+			if tags, ok := result.ExporterResponse["image.name"]; ok {
+				// This will be a comma-delimited list if we exported anything to registries.
+				id = tags
 			} else if digest, ok := result.ExporterResponse[exptypes.ExporterImageConfigDigestKey]; ok {
 				id = digest
-			} else if tags, ok := result.ExporterResponse["image.name"]; ok {
-				id = tags
+			} else if digest, ok := result.ExporterResponse["containerimage.digest"]; ok {
+				id = digest
 			} else {
 				id = name
 			}
 		}
-
 	}
 
-	// TODO: Handle case with no export.
+	state.id = id
 	_, _, state, err = i.Read(ctx, id, input, state)
 
 	return state, err
@@ -620,10 +627,7 @@ func (i *Image) Create(
 	input ImageArgs,
 	preview bool,
 ) (string, ImageState, error) {
-	state := ImageState{
-		Manifests: []properties.Manifest{},
-	}
-	state, err := i.Update(ctx, name, state, input, preview)
+	state, err := i.Update(ctx, name, ImageState{}, input, preview)
 	return state.id, state, err
 }
 
@@ -640,33 +644,31 @@ func (*Image) Read(
 	ImageState, // normalized state
 	error,
 ) {
-	opts, err := input.toBuildOptions(false)
-	if err != nil {
-		return id, input, state, err
-	}
-
 	// Ensure we're authenticated.
 	cfg := infer.GetConfig[Config](ctx)
 	for _, reg := range input.Registries {
-		if err = cfg.client.Auth(ctx, reg); err != nil {
+		if err := cfg.client.Auth(ctx, reg); err != nil {
 			return id, input, state, err
 		}
 	}
 
-	expectManifest := false
-	manifests := []properties.Manifest{}
-	for _, export := range opts.Exports {
-		// We currently only handle pushed manifests.
-		if !isRegistryPush(export) {
+	// Do a lookup on all of the tags we expected to push and update our export
+	// with the manifest we pushed.
+	digests := map[Platform][]string{}
+	for idx, export := range state.Exports {
+		// We only care about exports that could have pushed tags.
+		if !export.pushed() {
 			continue
 		}
 
-		for _, tag := range input.Tags {
-			expectManifest = true
+		state.Exports[idx].Manifests = []Manifest{}
+		for _, tag := range state.Tags {
+			// Does the tag still exist?
 			infos, err := cfg.client.Inspect(ctx, tag)
 			if err != nil {
 				continue
 			}
+
 			for _, m := range infos {
 				if m.Descriptor.Platform != nil && m.Descriptor.Platform.Architecture == "unknown" {
 					// Ignore cache manifests.
@@ -676,9 +678,19 @@ func (*Image) Read(
 					// Shouldn't happen, but just in case.
 					continue
 				}
-				manifests = append(manifests, properties.Manifest{
+
+				os, arch := m.Descriptor.Platform.OS, m.Descriptor.Platform.Architecture
+				platform := Platform(fmt.Sprintf("%s/%s", os, arch))
+
+				if _, ok := digests[platform]; !ok {
+					digests[platform] = []string{}
+				}
+
+				digests[platform] = slices.Compact(append(digests[platform], m.Ref.String()))
+
+				state.Exports[idx].Manifests = append(state.Exports[idx].Manifests, properties.Manifest{
 					Digest: m.Descriptor.Digest.String(),
-					Platform: properties.Platform{
+					Platform: properties.ManifestPlatform{
 						OS:           m.Descriptor.Platform.OS,
 						Architecture: m.Descriptor.Platform.Architecture,
 					},
@@ -688,15 +700,13 @@ func (*Image) Read(
 			}
 		}
 	}
+	state.Digests = digests
 
 	// If we couldn't find the tags we expected then return an empty ID to
 	// delete the resource.
-	if expectManifest && len(manifests) == 0 {
+	if len(input.Tags) > 0 && len(digests) == 0 {
 		return "", input, state, nil
 	}
-
-	state.id = id
-	state.Manifests = manifests
 
 	return id, input, state, nil
 }
@@ -706,28 +716,35 @@ func (*Image) Read(
 // Any tags previously pushed to registries will not be deleted.
 func (*Image) Delete(
 	ctx provider.Context,
-	id string,
-	_ ImageState,
+	_ string,
+	state ImageState,
 ) error {
 	cfg := infer.GetConfig[Config](ctx)
 
-	deletions, err := cfg.client.Delete(ctx.(context.Context), id)
-	if errdefs.IsNotFound(err) {
-		return nil // Nothing to do.
-	}
+	var multierr error
 
-	for _, d := range deletions {
-		if d.Deleted != "" {
-			ctx.Log(diag.Info, d.Deleted)
-		}
-		if d.Untagged != "" {
-			ctx.Log(diag.Info, d.Untagged)
+	for _, refs := range state.Digests {
+		for _, ref := range refs {
+			deletions, err := cfg.client.Delete(context.Context(ctx), ref)
+			if errdefs.IsNotFound(err) {
+				continue // Nothing to do.
+			}
+			multierr = errors.Join(multierr, err)
+
+			for _, d := range deletions {
+				if d.Deleted != "" {
+					ctx.Log(diag.Info, d.Deleted)
+				}
+				if d.Untagged != "" {
+					ctx.Log(diag.Info, d.Untagged)
+				}
+			}
 		}
 	}
 
 	// TODO: Delete tags from registries?
 
-	return err
+	return multierr
 }
 
 // Diff re-implements most of the default diff behavior, with the exception of
@@ -756,7 +773,8 @@ func (*Image) Diff(
 	if olds.Context != news.Context {
 		diff["context"] = update
 	}
-	if !reflect.DeepEqual(olds.Exports, news.Exports) {
+	// Use string comparison to ignore any manifests attached to the export.
+	if fmt.Sprint(olds.Exports) != fmt.Sprint(news.Exports) {
 		diff["exports"] = update
 	}
 	if olds.File != news.File {
@@ -783,8 +801,8 @@ func (*Image) Diff(
 
 	// pull=true indicates that we want to keep base layers up-to-date. In this
 	// case we'll always perform the build.
-	if news.Pull {
-		diff["manifests"] = update
+	if news.Pull && len(news.Exports) > 0 {
+		diff["exports"] = update
 	}
 
 	// Check if anything has changed in our build context.
@@ -793,7 +811,7 @@ func (*Image) Diff(
 		return provider.DiffResponse{}, err
 	}
 	if hash != olds.ContextHash {
-		diff["manifests"] = update
+		diff["contextHash"] = update
 	}
 
 	// Registries need special handling because we ignore "password" changes to not introduce unnecessary changes.

@@ -39,6 +39,6 @@ const img = new docker.buildx.Image(`buildx-${config.require("name")}`, {
   ),
 });
 
-export const durationSeconds = img.manifests.apply(
+export const durationSeconds = img.tags.apply(
   (_) => (new Date().getTime() - start) / 1000.0
 );
