@@ -57,14 +57,12 @@ func (i *Image) Annotate(a infer.Annotator) {
 type ImageArgs struct {
 	BuildArgs      map[string]string         `pulumi:"buildArgs,optional"`
 	BuildOnPreview bool                      `pulumi:"buildOnPreview,optional"`
-	Builder        string                    `pulumi:"builder,optional"`
+	Builder        BuilderConfig             `pulumi:"builder,optional"`
 	CacheFrom      []CacheFromEntry          `pulumi:"cacheFrom,optional"`
 	CacheTo        []CacheToEntry            `pulumi:"cacheTo,optional"`
-	Context        string                    `pulumi:"context,optional"`
+	Context        BuildContext              `pulumi:"context,optional"`
+	Dockerfile     Dockerfile                `pulumi:"dockerfile,optional"`
 	Exports        []ExportEntry             `pulumi:"exports,optional"`
-	File           string                    `pulumi:"file,optional"`
-	Inline         string                    `pulumi:"inline,optional"`
-	NamedContexts  map[string]string         `pulumi:"namedContexts,optional"`
 	Platforms      []Platform                `pulumi:"platforms,optional"`
 	Pull           bool                      `pulumi:"pull,optional"`
 	Registries     []properties.RegistryAuth `pulumi:"registries,optional"`
@@ -80,13 +78,13 @@ func (ia *ImageArgs) Annotate(a infer.Annotator) {
 		can be accessed like environment variables inside the RUN
 		instruction.`,
 	))
-	a.Describe(&ia.Builder, dedent.String(`
-		Build with a specific builder instance`,
-	))
 	a.Describe(&ia.BuildOnPreview, dedent.String(`
 		When true, attempt to build the image during previews. Outputs are not
 		pushed to registries, however caches are still populated.
 	`))
+	a.Describe(&ia.Builder, dedent.String(`
+		Builder configuration.`,
+	))
 	a.Describe(&ia.CacheFrom, dedent.String(`
 		External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")`,
 	))
@@ -96,27 +94,18 @@ func (ia *ImageArgs) Annotate(a infer.Annotator) {
 	a.Describe(&ia.Context, dedent.String(`
 		Path to use for build context. If omitted, an empty context is used.`,
 	))
+	a.Describe(&ia.Dockerfile, dedent.String(`
+		Dockerfile settings.`,
+	))
 	a.Describe(&ia.Exports, dedent.String(`
 		Name and optionally a tag (format: "name:tag"). If outputting to a
 		registry, the name should include the fully qualified registry address.`,
-	))
-	a.Describe(&ia.File, dedent.String(`
-		Name of the Dockerfile to use (defaults to "${context}/Dockerfile").
-		Conflicts with "inline".`,
-	))
-	a.Describe(&ia.Inline, dedent.String(`
-		Raw Dockerfile contents. Conflicts with "file".`,
 	))
 	a.Describe(&ia.Platforms, dedent.String(`
 		Set target platforms for the build. Defaults to the host's platform`,
 	))
 	a.Describe(&ia.Pull, dedent.String(`
 		Always attempt to pull referenced images.`,
-	))
-	a.Describe(&ia.NamedContexts, dedent.String(`
-		Additional build contexts which can be accessed with "FROM name" or
-		"--from=name" statements when using Dockerfile 1.4 syntax. Values can
-		be local paths, HTTP URLs, or  "docker-image://" images.`,
 	))
 	a.Describe(&ia.Tags, dedent.String(`
 		Name and optionally a tag (format: "name:tag"). If outputting to a
@@ -129,8 +118,6 @@ func (ia *ImageArgs) Annotate(a infer.Annotator) {
 	a.Describe(&ia.Registries, dedent.String(`
 		Logins for registry outputs`,
 	))
-
-	a.SetDefault(&ia.File, "Dockerfile")
 }
 
 // ImageState is serialized to the program's state file.
@@ -218,11 +205,9 @@ func (ia *ImageArgs) withoutUnknowns(preview bool) ImageArgs {
 		BuildOnPreview: ia.BuildOnPreview,
 		CacheFrom:      filter(stringerKeeper[CacheFromEntry]{preview}, ia.CacheFrom...),
 		CacheTo:        filter(stringerKeeper[CacheToEntry]{preview}, ia.CacheTo...),
-		Context:        ia.Context,
+		Context:        contextKeeper{preview}.keep(ia.Context),
+		Dockerfile:     ia.Dockerfile,
 		Exports:        filter(stringerKeeper[ExportEntry]{preview}, ia.Exports...),
-		File:           ia.File,
-		Inline:         ia.Inline,
-		NamedContexts:  mapKeeper{preview}.keep(ia.NamedContexts),
 		Platforms:      filter(stringerKeeper[Platform]{preview}, ia.Platforms...),
 		Pull:           ia.Pull,
 		Registries:     filter(registryKeeper{preview}, ia.Registries...),
@@ -272,7 +257,7 @@ func (ia ImageArgs) toBuilds(
 
 	// Check if we need a workaround for multi-platform caching (https://github.com/docker/buildx/issues/1044).
 	if len(ia.Platforms) <= 1 || len(ia.CacheTo) == 0 {
-		return []Build{build{opts: opts, targets: targets, inline: ia.Inline}}, nil
+		return []Build{build{opts: opts, targets: targets, inline: ia.Dockerfile.Inline}}, nil
 	}
 
 	// Split the build into N pieces: one build with only local caching, and an
@@ -287,7 +272,7 @@ func (ia ImageArgs) toBuilds(
 	// - Preserve exports.
 	opts.CacheTo = nil
 	opts.CacheFrom = append(cachesFor(ctx, opts.CacheFrom, opts.Platforms...), opts.CacheFrom...)
-	builds = append(builds, build{opts: opts, targets: targets, inline: ia.Inline})
+	builds = append(builds, build{opts: opts, targets: targets, inline: ia.Dockerfile.Inline})
 
 	// Build 2..P for each platform:
 	// - --output=type=cacheonly.
@@ -307,7 +292,7 @@ func (ia ImageArgs) toBuilds(
 		opts.CacheFrom = nil
 		opts.Tags = nil
 
-		builds = append(builds, build{opts: opts, targets: targets, inline: ia.Inline})
+		builds = append(builds, build{opts: opts, targets: targets, inline: ia.Dockerfile.Inline})
 	}
 
 	return builds, nil
@@ -393,19 +378,19 @@ func (ia *ImageArgs) toBuildOptions(preview bool) (controllerapi.BuildOptions, e
 		)
 	}
 
-	if ia.Context != "" {
-		abs, err := filepath.Abs(ia.Context)
+	if ia.Context.Location != "" {
+		abs, err := filepath.Abs(ia.Context.Location)
 		if err == nil && isLocalDir(afero.NewOsFs(), abs) {
-			if ia.File == "" && ia.Inline == "" {
-				ia.File = filepath.Join(ia.Context, "Dockerfile")
-				if _, err := os.Stat(ia.File); err != nil {
+			if ia.Dockerfile.Location == "" && ia.Dockerfile.Inline == "" {
+				ia.Dockerfile.Location = filepath.Join(ia.Context.Location, "Dockerfile")
+				if _, err := os.Stat(ia.Dockerfile.Location); err != nil {
 					multierr = errors.Join(
 						multierr,
 						newCheckFailure("context", err),
 					)
 				}
 			}
-		} else if !buildx.IsRemoteURL(ia.Context) && ia.Context != "-" {
+		} else if !buildx.IsRemoteURL(ia.Context.Location) && ia.Context.Location != "-" {
 			multierr = errors.Join(
 				multierr,
 				newCheckFailure("context", fmt.Errorf("%q: not a valid directory or URL", ia.Context)),
@@ -513,7 +498,7 @@ func (ia *ImageArgs) toBuildOptions(preview bool) (controllerapi.BuildOptions, e
 		cacheTo = append(cacheTo, parsed[0])
 	}
 
-	if filtered.File != "" && filtered.Inline != "" {
+	if filtered.Dockerfile.Location != "" && filtered.Dockerfile.Inline != "" {
 		multierr = errors.Join(
 			multierr,
 			newCheckFailure(
@@ -531,13 +516,13 @@ func (ia *ImageArgs) toBuildOptions(preview bool) (controllerapi.BuildOptions, e
 
 	opts := controllerapi.BuildOptions{
 		BuildArgs:      filtered.BuildArgs,
-		Builder:        filtered.Builder,
+		Builder:        filtered.Builder.Name,
 		CacheFrom:      cacheFrom,
 		CacheTo:        cacheTo,
-		ContextPath:    filtered.Context,
-		DockerfileName: filtered.File,
+		ContextPath:    filtered.Context.Location,
+		DockerfileName: filtered.Dockerfile.Location,
 		Exports:        exports,
-		NamedContexts:  filtered.NamedContexts,
+		NamedContexts:  filtered.Context.Named.Map(),
 		Platforms:      platforms,
 		Pull:           filtered.Pull,
 		Tags:           filtered.Tags,
@@ -572,7 +557,7 @@ func (i *Image) Update(
 		return state, fmt.Errorf("preparing: %w", err)
 	}
 
-	hash, err := BuildxContext(input.Context, input.File, input.NamedContexts)
+	hash, err := BuildxContext(input.Context.Location, input.Dockerfile.Location, input.Context.Named.Map())
 	if err != nil {
 		return state, fmt.Errorf("hashing build context: %w", err)
 	}
@@ -770,21 +755,21 @@ func (*Image) Diff(
 	if !reflect.DeepEqual(olds.CacheTo, news.CacheTo) {
 		diff["cacheTo"] = update
 	}
-	if olds.Context != news.Context {
+	if olds.Context.Location != news.Context.Location {
 		diff["context"] = update
 	}
 	// Use string comparison to ignore any manifests attached to the export.
 	if fmt.Sprint(olds.Exports) != fmt.Sprint(news.Exports) {
 		diff["exports"] = update
 	}
-	if olds.File != news.File {
-		diff["file"] = update
+	if olds.Dockerfile.Location != news.Dockerfile.Location {
+		diff["dockerfile.location"] = update
 	}
-	if olds.Inline != news.Inline {
-		diff["inline"] = update
+	if olds.Dockerfile.Inline != news.Dockerfile.Inline {
+		diff["dockerfile.inline"] = update
 	}
-	if !reflect.DeepEqual(olds.NamedContexts, news.NamedContexts) {
-		diff["namedContexts"] = update
+	if !reflect.DeepEqual(olds.Context.Named, news.Context.Named) {
+		diff["context.named"] = update
 	}
 	if !reflect.DeepEqual(olds.Platforms, news.Platforms) {
 		diff["platforms"] = update
@@ -806,7 +791,7 @@ func (*Image) Diff(
 	}
 
 	// Check if anything has changed in our build context.
-	hash, err := BuildxContext(news.Context, news.File, news.NamedContexts)
+	hash, err := BuildxContext(news.Context.Location, news.Dockerfile.Location, news.Context.Named.Map())
 	if err != nil {
 		return provider.DiffResponse{}, err
 	}

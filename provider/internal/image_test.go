@@ -93,8 +93,12 @@ func TestLifecycle(t *testing.T) {
 								resource.NewStringProperty("linux/amd64"),
 							},
 						),
-						"context": resource.NewStringProperty("../testdata"),
-						"file":    resource.NewStringProperty("../testdata/Dockerfile"),
+						"context": resource.NewObjectProperty(resource.PropertyMap{
+							"location": resource.NewStringProperty("../testdata"),
+						}),
+						"dockerfile": resource.NewObjectProperty(resource.PropertyMap{
+							"location": resource.NewStringProperty("../testdata/Dockerfile"),
+						}),
 						"exports": resource.NewArrayProperty(
 							[]resource.PropertyValue{
 								resource.NewObjectProperty(resource.PropertyMap{
@@ -122,8 +126,10 @@ func TestLifecycle(t *testing.T) {
 			op: func(t *testing.T) integration.Operation {
 				return integration.Operation{
 					Inputs: resource.PropertyMap{
-						"tags":    resource.NewArrayProperty([]resource.PropertyValue{}),
-						"context": resource.NewStringProperty("../testdata"),
+						"tags": resource.NewArrayProperty([]resource.PropertyValue{}),
+						"context": resource.NewObjectProperty(resource.PropertyMap{
+							"location": resource.NewStringProperty("../testdata"),
+						}),
 						"exports": resource.NewArrayProperty(
 							[]resource.PropertyValue{
 								resource.NewObjectProperty(resource.PropertyMap{
@@ -238,13 +244,17 @@ func TestLifecycle(t *testing.T) {
 								resource.NewStringProperty("default-dockerfile"),
 							},
 						),
-						"context": resource.NewStringProperty("../testdata"),
+						"context": resource.NewObjectProperty(resource.PropertyMap{
+							"location": resource.NewStringProperty("../testdata"),
+						}),
 					},
 					Hook: func(_, output resource.PropertyMap) {
-						file := output["file"]
-						require.NotNil(t, file)
-						require.True(t, file.IsString())
-						assert.Equal(t, "../testdata/Dockerfile", file.StringValue())
+						dockerfile := output["dockerfile"]
+						require.NotNil(t, dockerfile)
+						require.True(t, dockerfile.IsObject())
+						location := dockerfile.ObjectValue()["location"]
+						require.True(t, location.IsString())
+						assert.Equal(t, "../testdata/Dockerfile", location.StringValue())
 					},
 				}
 			},
@@ -346,9 +356,9 @@ func TestDiff(t *testing.T) {
 	emptyDir := t.TempDir()
 
 	baseArgs := ImageArgs{
-		Context: emptyDir,
-		File:    "../testdata/Dockerfile",
-		Tags:    []string{},
+		Context:    BuildContext{Context: Context{Location: emptyDir}},
+		Dockerfile: Dockerfile{Location: "../testdata/Dockerfile"},
+		Tags:       []string{},
 	}
 	baseState := ImageState{
 		ContextHash: "f04bea490d45e7ae69d542846511e7c90eb683deaa1e0df19e9fca4d227265c2",
@@ -372,7 +382,7 @@ func TestDiff(t *testing.T) {
 			name: "diff if build context changes",
 			olds: func(*testing.T, ImageState) ImageState { return baseState },
 			news: func(t *testing.T, a ImageArgs) ImageArgs {
-				tmp := filepath.Join(a.Context, "tmp")
+				tmp := filepath.Join(a.Context.Location, "tmp")
 				err := os.WriteFile(tmp, []byte{}, 0o600)
 				require.NoError(t, err)
 				t.Cleanup(func() { _ = os.Remove(tmp) })
@@ -462,7 +472,7 @@ func TestDiff(t *testing.T) {
 			name: "diff if context changes",
 			olds: func(*testing.T, ImageState) ImageState { return baseState },
 			news: func(_ *testing.T, a ImageArgs) ImageArgs {
-				a.Context = "testdata/ignores"
+				a.Context.Location = "testdata/ignores"
 				return a
 			},
 			wantChanges: true,
@@ -471,7 +481,7 @@ func TestDiff(t *testing.T) {
 			name: "diff if file changes",
 			olds: func(*testing.T, ImageState) ImageState { return baseState },
 			news: func(_ *testing.T, a ImageArgs) ImageArgs {
-				a.File = "testdata/ignores/basedir/Dockerfile"
+				a.Dockerfile.Location = "testdata/ignores/basedir/Dockerfile"
 				return a
 			},
 			wantChanges: true,
@@ -498,7 +508,7 @@ func TestDiff(t *testing.T) {
 			name: "diff if builder changes",
 			olds: func(*testing.T, ImageState) ImageState { return baseState },
 			news: func(_ *testing.T, a ImageArgs) ImageArgs {
-				a.Builder = "foo"
+				a.Builder.Name = "foo"
 				return a
 			},
 			wantChanges: true,
@@ -549,7 +559,7 @@ func TestBuildOptions(t *testing.T) {
 		args := ImageArgs{
 			Tags:      []string{"a/bad:tag:format"},
 			Exports:   []ExportEntry{{Raw: "badexport,-"}},
-			Context:   "./testdata",
+			Context:   BuildContext{Context: Context{Location: "./testdata"}},
 			Platforms: []Platform{","},
 			CacheFrom: []CacheFromEntry{{Raw: "=badcachefrom"}},
 			CacheTo:   []CacheToEntry{{Raw: "=badcacheto"}},
@@ -592,13 +602,13 @@ func TestBuildOptions(t *testing.T) {
 				"known": "value",
 				"":      "",
 			},
-			Builder:   "",
-			CacheFrom: []CacheFromEntry{{GHA: &CacheFromGitHubActions{}}, {Raw: ""}},
-			CacheTo:   []CacheToEntry{{GHA: &CacheToGitHubActions{}}, {Raw: ""}},
-			Context:   "",
-			Exports:   []ExportEntry{{Raw: ""}},
-			File:      "",
-			Platforms: []Platform{"linux/amd64", ""},
+			Builder:    BuilderConfig{},
+			CacheFrom:  []CacheFromEntry{{GHA: &CacheFromGitHubActions{}}, {Raw: ""}},
+			CacheTo:    []CacheToEntry{{GHA: &CacheToGitHubActions{}}, {Raw: ""}},
+			Context:    BuildContext{},
+			Exports:    []ExportEntry{{Raw: ""}},
+			Dockerfile: Dockerfile{},
+			Platforms:  []Platform{"linux/amd64", ""},
 			Registries: []properties.RegistryAuth{
 				{
 					Address:  "",

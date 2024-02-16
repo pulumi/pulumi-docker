@@ -15,9 +15,50 @@ import (
 	"syscall"
 
 	"github.com/moby/patternmatcher/ignorefile"
+	"github.com/muesli/reflow/dedent"
 	"github.com/spf13/afero"
 	"github.com/tonistiigi/fsutil"
+
+	"github.com/pulumi/pulumi-go-provider/infer"
 )
+
+var (
+	_ = (infer.Annotated)((*Context)(nil))
+	_ = (infer.Annotated)((*BuildContext)(nil))
+)
+
+type Context struct {
+	Location string `pulumi:"location"`
+}
+
+type BuildContext struct {
+	Context
+	Named NamedContexts `pulumi:"named,optional"`
+}
+
+type NamedContexts map[string]Context
+
+func (nc NamedContexts) Map() map[string]string {
+	m := map[string]string{}
+	for k, v := range nc {
+		m[k] = v.Location
+	}
+	return m
+}
+
+func (c *Context) Annotate(a infer.Annotator) {
+	a.Describe(&c.Location, dedent.String(`
+		Path to use for build context. If omitted, an empty context is used.`,
+	))
+}
+
+func (bc *BuildContext) Annotate(a infer.Annotator) {
+	a.Describe(&bc.Named, dedent.String(`
+		Additional build contexts which can be accessed with "FROM name" or
+		"--from=name" statements when using Dockerfile 1.4 syntax. Values can
+		be local paths, HTTP URLs, or  "docker-image://" images.`,
+	))
+}
 
 func hashFile(
 	h hash.Hash,
