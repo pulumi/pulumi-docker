@@ -153,6 +153,7 @@ jobs:
         - dotnet
         - go
         - java
+        - yaml
   comment-notification:
     if: github.event_name == 'repository_dispatch'
     name: comment-notification
@@ -369,16 +370,19 @@ jobs:
         find ${{ github.workspace }} -name "pulumi-*-${{ env.PROVIDER }}" -print -exec chmod +x {} \;
     - run: dotnet nuget add source ${{ github.workspace }}/nuget
     - name: Download SDK
+      if: ${{ matrix.language != 'yaml' }}
       uses: actions/download-artifact@v4
       with:
         name: ${{ matrix.language }}-sdk.tar.gz
         path: ${{ github.workspace}}/sdk/
     - name: Uncompress SDK folder
+      if: ${{ matrix.language != 'yaml' }}
       run: tar -zxf ${{ github.workspace }}/sdk/${{ matrix.language }}.tar.gz -C ${{
         github.workspace }}/sdk/${{ matrix.language }}
     - name: Update path
       run: echo "${{ github.workspace }}/bin" >> "$GITHUB_PATH"
     - name: Install Python deps
+      if: ${{ matrix.language != 'yaml' }}
       run: |-
         pip3 install virtualenv==20.0.23
         pip3 install pipenv
@@ -406,6 +410,7 @@ jobs:
     - name: Login to Google Cloud Registry
       run: gcloud --quiet auth configure-docker
     - name: Install dependencies
+      if: ${{ matrix.language != 'yaml' }}
       run: make install_${{ matrix.language}}_sdk
     - name: Install gotestfmt
       uses: GoTestTools/gotestfmt-action@v2
@@ -435,6 +440,7 @@ jobs:
         - dotnet
         - go
         - java
+        - yaml
   license_check:
     name: License Check
     uses: ./.github/workflows/license.yml
