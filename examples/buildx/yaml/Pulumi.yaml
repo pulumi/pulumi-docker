@@ -59,6 +59,28 @@ resources:
       buildArgs:
         SET_ME_TO_TRUE: "true"
 
+  # PASSWORD=hunter2 docker buildx build -f app/Dockerfile.secrets --secret id=password,env=PASSWORD app
+  secrets:
+    type: docker:buildx/image:Image
+    properties:
+      dockerfile:
+        location: "app/Dockerfile.secrets"
+      context:
+        location: "app"
+      secrets:
+        password: hunter2
+
+  # docker buildx build -f app/Dockerfile.generic --label "description=This image will get a descriptive label 👍" app
+  labels:
+    type: docker:buildx/image:Image
+    properties:
+      dockerfile:
+        location: "app/Dockerfile.generic"
+      context:
+        location: "app"
+      labels:
+        description: "This image will get a descriptive label 👍"
+
   # docker buildx build -f app/Dockerfile.targets --target build-me --target also-build-me app
   targets:
     type: docker:buildx/image:Image

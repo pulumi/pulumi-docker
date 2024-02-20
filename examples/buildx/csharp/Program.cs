@@ -105,6 +105,38 @@ return await Deployment.RunAsync(() =>
         },
     });
 
+    var secrets = new Docker.Buildx.Image("secrets", new()
+    {
+        Dockerfile = new Docker.Buildx.Inputs.DockerfileArgs
+        {
+            Location = "app/Dockerfile.secrets",
+        },
+        Context = new Docker.Buildx.Inputs.BuildContextArgs
+        {
+            Location = "app",
+        },
+        Secrets = 
+        {
+            { "password", "hunter2" },
+        },
+    });
+
+    var labels = new Docker.Buildx.Image("labels", new()
+    {
+        Dockerfile = new Docker.Buildx.Inputs.DockerfileArgs
+        {
+            Location = "app/Dockerfile.generic",
+        },
+        Context = new Docker.Buildx.Inputs.BuildContextArgs
+        {
+            Location = "app",
+        },
+        Labels = 
+        {
+            { "description", "This image will get a descriptive label 👍" },
+        },
+    });
+
     var targets = new Docker.Buildx.Image("targets", new()
     {
         Dockerfile = new Docker.Buildx.Inputs.DockerfileArgs

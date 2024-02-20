@@ -92,6 +92,26 @@ public class App {
             .buildArgs(Map.of("SET_ME_TO_TRUE", "true"))
             .build());
 
+        var secrets = new Image("secrets", ImageArgs.builder()        
+            .dockerfile(DockerfileArgs.builder()
+                .location("app/Dockerfile.secrets")
+                .build())
+            .context(BuildContextArgs.builder()
+                .location("app")
+                .build())
+            .secrets(Map.of("password", "hunter2"))
+            .build());
+
+        var labels = new Image("labels", ImageArgs.builder()        
+            .dockerfile(DockerfileArgs.builder()
+                .location("app/Dockerfile.generic")
+                .build())
+            .context(BuildContextArgs.builder()
+                .location("app")
+                .build())
+            .labels(Map.of("description", "This image will get a descriptive label 👍"))
+            .build());
+
         var targets = new Image("targets", ImageArgs.builder()        
             .dockerfile(DockerfileArgs.builder()
                 .location("app/Dockerfile.targets")

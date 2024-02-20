@@ -91,6 +91,34 @@ func main() {
 		if err != nil {
 			return err
 		}
+		_, err = buildx.NewImage(ctx, "secrets", &buildx.ImageArgs{
+			Dockerfile: &buildx.DockerfileArgs{
+				Location: pulumi.String("app/Dockerfile.secrets"),
+			},
+			Context: &buildx.BuildContextArgs{
+				Location: pulumi.String("app"),
+			},
+			Secrets: pulumi.StringMap{
+				"password": pulumi.String("hunter2"),
+			},
+		})
+		if err != nil {
+			return err
+		}
+		_, err = buildx.NewImage(ctx, "labels", &buildx.ImageArgs{
+			Dockerfile: &buildx.DockerfileArgs{
+				Location: pulumi.String("app/Dockerfile.generic"),
+			},
+			Context: &buildx.BuildContextArgs{
+				Location: pulumi.String("app"),
+			},
+			Labels: pulumi.StringMap{
+				"description": pulumi.String("This image will get a descriptive label 👍"),
+			},
+		})
+		if err != nil {
+			return err
+		}
 		_, err = buildx.NewImage(ctx, "targets", &buildx.ImageArgs{
 			Dockerfile: &buildx.DockerfileArgs{
 				Location: pulumi.String("app/Dockerfile.targets"),
