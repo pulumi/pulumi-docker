@@ -61,6 +61,26 @@ build_args = docker.buildx.Image("buildArgs",
     build_args={
         "SET_ME_TO_TRUE": "true",
     })
+secrets = docker.buildx.Image("secrets",
+    dockerfile=docker.buildx.DockerfileArgs(
+        location="app/Dockerfile.secrets",
+    ),
+    context=docker.buildx.BuildContextArgs(
+        location="app",
+    ),
+    secrets={
+        "password": "hunter2",
+    })
+labels = docker.buildx.Image("labels",
+    dockerfile=docker.buildx.DockerfileArgs(
+        location="app/Dockerfile.generic",
+    ),
+    context=docker.buildx.BuildContextArgs(
+        location="app",
+    ),
+    labels={
+        "description": "This image will get a descriptive label 👍",
+    })
 targets = docker.buildx.Image("targets",
     dockerfile=docker.buildx.DockerfileArgs(
         location="app/Dockerfile.targets",

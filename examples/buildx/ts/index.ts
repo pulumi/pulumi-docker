@@ -65,6 +65,28 @@ const buildArgs = new docker.buildx.Image("buildArgs", {
         SET_ME_TO_TRUE: "true",
     },
 });
+const secrets = new docker.buildx.Image("secrets", {
+    dockerfile: {
+        location: "app/Dockerfile.secrets",
+    },
+    context: {
+        location: "app",
+    },
+    secrets: {
+        password: "hunter2",
+    },
+});
+const labels = new docker.buildx.Image("labels", {
+    dockerfile: {
+        location: "app/Dockerfile.generic",
+    },
+    context: {
+        location: "app",
+    },
+    labels: {
+        description: "This image will get a descriptive label 👍",
+    },
+});
 const targets = new docker.buildx.Image("targets", {
     dockerfile: {
         location: "app/Dockerfile.targets",
