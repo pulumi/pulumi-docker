@@ -53,6 +53,7 @@ type Build interface {
 	BuildOptions() controllerapi.BuildOptions
 	Targets() []string
 	Inline() string
+	Secrets() session.Attachable
 }
 
 type docker struct {
@@ -248,6 +249,7 @@ func (d *docker) Build(
 			CacheTo:   cacheTo,
 			Exports:   exports,
 			NoCache:   opts.NoCache,
+			Labels:    opts.Labels,
 			Platforms: platforms,
 			Pull:      opts.Pull,
 			Tags:      opts.Tags,
@@ -255,6 +257,7 @@ func (d *docker) Build(
 
 			Session: []session.Attachable{
 				authprovider.NewDockerAuthProvider(d.cli.ConfigFile(), nil),
+				build.Secrets(),
 			},
 		}
 	}
