@@ -21,6 +21,8 @@ import (
 	"github.com/docker/buildx/util/buildflags"
 	"github.com/docker/buildx/util/platformutil"
 	"github.com/docker/docker/errdefs"
+	"github.com/moby/buildkit/session"
+	"github.com/moby/buildkit/session/secrets/secretsprovider"
 	"github.com/muesli/reflow/dedent"
 	"github.com/spf13/afero"
 
@@ -62,9 +64,11 @@ type ImageArgs struct {
 	Context        BuildContext              `pulumi:"context,optional"`
 	Dockerfile     Dockerfile                `pulumi:"dockerfile,optional"`
 	Exports        []ExportEntry             `pulumi:"exports,optional"`
+	Labels         map[string]string         `pulumi:"labels,optional"`
 	Platforms      []Platform                `pulumi:"platforms,optional"`
 	Pull           bool                      `pulumi:"pull,optional"`
 	Registries     []properties.RegistryAuth `pulumi:"registries,optional"`
+	Secrets        map[string]string         `pulumi:"secrets,optional"        provider:"secret"`
 	Tags           []string                  `pulumi:"tags,optional"`
 	Targets        []string                  `pulumi:"targets,optional"`
 }
@@ -102,6 +106,9 @@ func (ia *ImageArgs) Annotate(a infer.Annotator) {
 		Name and optionally a tag (format: "name:tag"). If outputting to a
 		registry, the name should include the fully qualified registry address.`,
 	))
+	a.Describe(&ia.Labels, dedent.String(`
+		Attach key/value metadata to the image.`,
+	))
 	a.Describe(&ia.Platforms, dedent.String(`
 		Set target platforms for the build. Defaults to the host's platform.
 		
@@ -109,6 +116,13 @@ func (ia *ImageArgs) Annotate(a infer.Annotator) {
 	))
 	a.Describe(&ia.Pull, dedent.String(`
 		Always attempt to pull referenced images.`,
+	))
+	a.Describe(&ia.Secrets, dedent.String(`
+		A mapping of secret names to their corresponding values. Unlike Docker
+		these do not need to exist on-disk or in environment variables.
+		
+		Build arguments and environment variables are inappropriate for passing
+		secrets to your build because they persist in the final image.`,
 	))
 	a.Describe(&ia.Tags, dedent.String(`
 		Name and optionally a tag (format: "name:tag"). If outputting to a
@@ -127,7 +141,7 @@ func (ia *ImageArgs) Annotate(a infer.Annotator) {
 type ImageState struct {
 	ImageArgs
 
-	Digests     map[Platform][]string `pulumi:"digests,optional" provider:"output"`
+	Digests     map[Platform][]string `pulumi:"digests,optional"     provider:"output"`
 	ContextHash string                `pulumi:"contextHash,optional" provider:"internal,output"`
 }
 
@@ -209,9 +223,11 @@ func (ia *ImageArgs) withoutUnknowns(preview bool) ImageArgs {
 		Context:        contextKeeper{preview}.keep(ia.Context),
 		Dockerfile:     ia.Dockerfile,
 		Exports:        filter(stringerKeeper[ExportEntry]{preview}, ia.Exports...),
+		Labels:         mapKeeper{preview}.keep(ia.Labels),
 		Platforms:      filter(stringerKeeper[Platform]{preview}, ia.Platforms...),
 		Pull:           ia.Pull,
 		Registries:     filter(registryKeeper{preview}, ia.Registries...),
+		Secrets:        mapKeeper{preview}.keep(ia.Secrets),
 		Tags:           filter(stringKeeper{preview}, ia.Tags...),
 		Targets:        filter(stringKeeper{preview}, ia.Targets...),
 	}
@@ -228,6 +244,7 @@ func (ia *ImageArgs) buildable() bool {
 type build struct {
 	opts    controllerapi.BuildOptions
 	targets []string
+	secrets map[string]string
 	inline  string
 }
 
@@ -241,6 +258,14 @@ func (b build) Targets() []string {
 
 func (b build) Inline() string {
 	return b.inline
+}
+
+func (b build) Secrets() session.Attachable {
+	m := map[string][]byte{}
+	for k, v := range b.secrets {
+		m[k] = []byte(v)
+	}
+	return secretsprovider.FromMap(m)
 }
 
 func (ia ImageArgs) toBuilds(
@@ -258,7 +283,9 @@ func (ia ImageArgs) toBuilds(
 
 	// Check if we need a workaround for multi-platform caching (https://github.com/docker/buildx/issues/1044).
 	if len(ia.Platforms) <= 1 || len(ia.CacheTo) == 0 {
-		return []Build{build{opts: opts, targets: targets, inline: ia.Dockerfile.Inline}}, nil
+		return []Build{
+			build{opts: opts, targets: targets, inline: ia.Dockerfile.Inline, secrets: ia.Secrets},
+		}, nil
 	}
 
 	// Split the build into N pieces: one build with only local caching, and an
@@ -273,7 +300,10 @@ func (ia ImageArgs) toBuilds(
 	// - Preserve exports.
 	opts.CacheTo = nil
 	opts.CacheFrom = append(cachesFor(ctx, opts.CacheFrom, opts.Platforms...), opts.CacheFrom...)
-	builds = append(builds, build{opts: opts, targets: targets, inline: ia.Dockerfile.Inline})
+	builds = append(
+		builds,
+		build{opts: opts, targets: targets, inline: ia.Dockerfile.Inline, secrets: ia.Secrets},
+	)
 
 	// Build 2..P for each platform:
 	// - --output=type=cacheonly.
@@ -293,7 +323,10 @@ func (ia ImageArgs) toBuilds(
 		opts.CacheFrom = nil
 		opts.Tags = nil
 
-		builds = append(builds, build{opts: opts, targets: targets, inline: ia.Dockerfile.Inline})
+		builds = append(
+			builds,
+			build{opts: opts, targets: targets, inline: ia.Dockerfile.Inline, secrets: ia.Secrets},
+		)
 	}
 
 	return builds, nil
@@ -369,6 +402,9 @@ func cachesFor(
 	return caches
 }
 
+// toBuildOptions transforms ImageArgs into a type appropriate for building
+// with Docker.
+// TODO: This should return build.Options.
 func (ia *ImageArgs) toBuildOptions(preview bool) (controllerapi.BuildOptions, error) {
 	var multierr error
 
@@ -523,6 +559,7 @@ func (ia *ImageArgs) toBuildOptions(preview bool) (controllerapi.BuildOptions, e
 		ContextPath:    filtered.Context.Location,
 		DockerfileName: filtered.Dockerfile.Location,
 		Exports:        exports,
+		Labels:         filtered.Labels,
 		NamedContexts:  filtered.Context.Named.Map(),
 		Platforms:      platforms,
 		Pull:           filtered.Pull,
@@ -558,7 +595,11 @@ func (i *Image) Update(
 		return state, fmt.Errorf("preparing: %w", err)
 	}
 
-	hash, err := BuildxContext(input.Context.Location, input.Dockerfile.Location, input.Context.Named.Map())
+	hash, err := BuildxContext(
+		input.Context.Location,
+		input.Dockerfile.Location,
+		input.Context.Named.Map(),
+	)
 	if err != nil {
 		return state, fmt.Errorf("hashing build context: %w", err)
 	}
@@ -652,15 +693,18 @@ func (*Image) Read(
 
 				digests[platform] = slices.Compact(append(digests[platform], m.Ref.String()))
 
-				state.Exports[idx].Manifests = append(state.Exports[idx].Manifests, properties.Manifest{
-					Digest: m.Descriptor.Digest.String(),
-					Platform: properties.ManifestPlatform{
-						OS:           m.Descriptor.Platform.OS,
-						Architecture: m.Descriptor.Platform.Architecture,
+				state.Exports[idx].Manifests = append(
+					state.Exports[idx].Manifests,
+					properties.Manifest{
+						Digest: m.Descriptor.Digest.String(),
+						Platform: properties.ManifestPlatform{
+							OS:           m.Descriptor.Platform.OS,
+							Architecture: m.Descriptor.Platform.Architecture,
+						},
+						Ref:  m.Ref.String(),
+						Size: m.Descriptor.Size,
 					},
-					Ref:  m.Ref.String(),
-					Size: m.Descriptor.Size,
-				})
+				)
 			}
 		}
 	}
@@ -770,7 +814,11 @@ func (*Image) Diff(
 	}
 
 	// Check if anything has changed in our build context.
-	hash, err := BuildxContext(news.Context.Location, news.Dockerfile.Location, news.Context.Named.Map())
+	hash, err := BuildxContext(
+		news.Context.Location,
+		news.Dockerfile.Location,
+		news.Context.Named.Map(),
+	)
 	if err != nil {
 		return provider.DiffResponse{}, err
 	}
