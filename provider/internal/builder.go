@@ -1,8 +1,6 @@
 package internal
 
 import (
-	"github.com/muesli/reflow/dedent"
-
 	"github.com/pulumi/pulumi-go-provider/infer"
 )
 
@@ -13,7 +11,10 @@ type BuilderConfig struct {
 }
 
 func (b *BuilderConfig) Annotate(a infer.Annotator) {
-	a.Describe(&b.Name, dedent.String(`
-		Name of an existing builder to use.
+	a.Describe(&b.Name, dedent(`
+		Name of an existing buildx builder to use.
+		
+		Only "docker-container", "kubernetes", or "remote" drivers are
+		supported. The legacy "docker" driver is not supported.
 	`))
 }

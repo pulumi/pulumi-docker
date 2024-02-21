@@ -35,13 +35,11 @@ import (
 
 	provider "github.com/pulumi/pulumi-go-provider"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/diag"
-
-	"github.com/pulumi/pulumi-docker/provider/v4/internal/properties"
 )
 
 // Client handles all our Docker API calls.
 type Client interface {
-	Auth(ctx context.Context, creds properties.RegistryAuth) error
+	Auth(ctx context.Context, creds RegistryAuth) error
 	Build(ctx provider.Context, b Build) (map[string]*client.SolveResponse, error)
 	Close(ctx context.Context) error
 	BuildKitEnabled() (bool, error)
@@ -104,7 +102,7 @@ func newDockerClient() (*docker, error) {
 	return &docker{cli: cli, txn: txn, dir: dir}, err
 }
 
-func (d *docker) Auth(ctx context.Context, creds properties.RegistryAuth) error {
+func (d *docker) Auth(ctx context.Context, creds RegistryAuth) error {
 	d.mu.Lock()
 	defer d.mu.Unlock()
 

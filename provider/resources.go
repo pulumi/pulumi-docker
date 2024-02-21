@@ -277,7 +277,7 @@ func Provider(version string) tfbridge.ProviderInfo {
 								"This reference is unique per image build and push. \n" +
 								"Only available for images pushed to a registry.\n" +
 								"Use when passing a reference to a pushed image to container management resources.\n\n" +
-								"**Local-only images**" +
+								"**Local-only images**:\n" +
 								"For local images, this field is the image ID of the built local image, of the format " +
 								"<algorithm>:<hash>, " +
 								"e.g `sha256:826a130323165bb0ccb0374ae774f885c067a951b51a6ee133577f4e5dbc4119` \n",

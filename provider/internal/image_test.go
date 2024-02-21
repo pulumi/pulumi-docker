@@ -23,8 +23,6 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/util/mapper"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-
-	"github.com/pulumi/pulumi-docker/provider/v4/internal/properties"
 )
 
 var _fakeURN = resource.NewURN("test", "provider", "a", "docker:buildx/image:Image", "test")
@@ -393,7 +391,7 @@ func TestDiff(t *testing.T) {
 		{
 			name: "no diff if registry password changes",
 			olds: func(_ *testing.T, s ImageState) ImageState {
-				s.Registries = []properties.RegistryAuth{{
+				s.Registries = []RegistryAuth{{
 					Address:  "foo",
 					Username: "foo",
 					Password: "foo",
@@ -401,7 +399,7 @@ func TestDiff(t *testing.T) {
 				return s
 			},
 			news: func(_ *testing.T, a ImageArgs) ImageArgs {
-				a.Registries = []properties.RegistryAuth{{
+				a.Registries = []RegistryAuth{{
 					Address:  "foo",
 					Username: "foo",
 					Password: "DIFFERENT PASSWORD",
@@ -414,7 +412,7 @@ func TestDiff(t *testing.T) {
 			name: "diff if registry added",
 			olds: func(*testing.T, ImageState) ImageState { return baseState },
 			news: func(_ *testing.T, a ImageArgs) ImageArgs {
-				a.Registries = []properties.RegistryAuth{{}}
+				a.Registries = []RegistryAuth{{}}
 				return a
 			},
 			wantChanges: true,
@@ -422,7 +420,7 @@ func TestDiff(t *testing.T) {
 		{
 			name: "diff if registry user changes",
 			olds: func(_ *testing.T, s ImageState) ImageState {
-				s.Registries = []properties.RegistryAuth{{
+				s.Registries = []RegistryAuth{{
 					Address:  "foo",
 					Username: "foo",
 					Password: "foo",
@@ -430,7 +428,7 @@ func TestDiff(t *testing.T) {
 				return s
 			},
 			news: func(_ *testing.T, a ImageArgs) ImageArgs {
-				a.Registries = []properties.RegistryAuth{{
+				a.Registries = []RegistryAuth{{
 					Address:  "DIFFERENT USER",
 					Username: "foo",
 					Password: "foo",
@@ -609,7 +607,7 @@ func TestBuildOptions(t *testing.T) {
 			Exports:    []ExportEntry{{Raw: ""}},
 			Dockerfile: Dockerfile{},
 			Platforms:  []Platform{"linux/amd64", ""},
-			Registries: []properties.RegistryAuth{
+			Registries: []RegistryAuth{
 				{
 					Address:  "",
 					Password: "",
@@ -673,7 +671,7 @@ func TestBuildable(t *testing.T) {
 			args: ImageArgs{
 				Tags:    []string{"known"},
 				Exports: []ExportEntry{{Docker: &ExportDocker{}}},
-				Registries: []properties.RegistryAuth{
+				Registries: []RegistryAuth{
 					{
 						Address:  "docker.io",
 						Username: "foo",
@@ -703,7 +701,7 @@ func TestBuildable(t *testing.T) {
 			args: ImageArgs{
 				Tags:    []string{"known"},
 				Exports: []ExportEntry{{Registry: &ExportRegistry{}}},
-				Registries: []properties.RegistryAuth{
+				Registries: []RegistryAuth{
 					{
 						Address:  "docker.io",
 						Username: "foo",
