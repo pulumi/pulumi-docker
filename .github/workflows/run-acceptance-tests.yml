@@ -423,6 +423,8 @@ jobs:
       uses: webfactory/ssh-agent@v0.7.0
       with:
         ssh-private-key: ${{ secrets.PRIVATE_SSH_KEY_FOR_DIGITALOCEAN }}
+    - name: Expose GitHub Actions runtime
+      uses: crazy-max/ghaction-github-runtime@v3
     - name: Run tests
       if: matrix.testTarget == 'local'
       run: cd examples && go test -v -json -count=1 -cover -timeout 2h -tags=${{
