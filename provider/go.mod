@@ -17,7 +17,6 @@ require (
 	github.com/muesli/reflow v0.3.0
 	github.com/opencontainers/go-digest v1.0.0
 	github.com/opencontainers/image-spec v1.1.0-rc5
-	github.com/otiai10/copy v1.14.0
 	github.com/pkg/errors v0.9.1
 	github.com/pulumi/pulumi-go-provider v0.14.1-0.20240215003739-1759a7d2465b
 	github.com/pulumi/pulumi-go-provider/integration v0.10.0

@@ -164,7 +164,8 @@ type ImageState struct {
 	Digests     map[Platform][]string `pulumi:"digests,optional"     provider:"output"`
 	ContextHash string                `pulumi:"contextHash,optional" provider:"internal,output"`
 
-	id string
+	id   string
+	name string
 }
 
 // Annotate describes outputs of the Image resource.
@@ -185,7 +186,7 @@ func (is *ImageState) Annotate(a infer.Annotator) {
 // authenticated.
 func (*Image) Check(
 	ctx provider.Context,
-	_ string,
+	name string,
 	_ resource.PropertyMap,
 	news resource.PropertyMap,
 ) (ImageArgs, []provider.CheckFailure, error) {
@@ -214,7 +215,7 @@ func (*Image) Check(
 		if reg.Address == "" {
 			continue
 		}
-		if err = cfg.client.Auth(ctx, reg); err != nil {
+		if err = cfg.client.Auth(ctx, name, reg); err != nil {
 			failures = append(
 				failures,
 				provider.CheckFailure{
@@ -644,7 +645,7 @@ func (i *Image) Update(
 
 	for _, b := range builds {
 		// This returns a map of target names to exporter responses.
-		results, err := cfg.client.Build(ctx, b)
+		results, err := cfg.client.Build(ctx, name, b)
 		if err != nil {
 			return state, err
 		}
@@ -681,7 +682,7 @@ func (i *Image) Create(
 	input ImageArgs,
 	preview bool,
 ) (string, ImageState, error) {
-	state, err := i.Update(ctx, name, ImageState{}, input, preview)
+	state, err := i.Update(ctx, name, ImageState{name: name}, input, preview)
 	return state.id, state, err
 }
 
@@ -701,7 +702,7 @@ func (*Image) Read(
 	// Ensure we're authenticated.
 	cfg := infer.GetConfig[Config](ctx)
 	for _, reg := range input.Registries {
-		if err := cfg.client.Auth(ctx, reg); err != nil {
+		if err := cfg.client.Auth(ctx, state.name, reg); err != nil {
 			return id, input, state, err
 		}
 	}
@@ -894,10 +895,4 @@ func (*Image) Diff(
 		HasChanges:          len(diff) > 0,
 		DetailedDiff:        diff,
 	}, nil
-}
-
-// Cancel cleans up temporary on-disk credentials.
-func (*Image) Cancel(ctx provider.Context) error {
-	cfg := infer.GetConfig[Config](ctx)
-	return cfg.client.Close(ctx)
 }

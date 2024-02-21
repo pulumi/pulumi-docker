@@ -50,12 +50,12 @@ func TestLifecycle(t *testing.T) {
 			client: func(t *testing.T) Client {
 				ctrl := gomock.NewController(t)
 				c := NewMockClient(ctrl)
-				c.EXPECT().Auth(gomock.Any(), gomock.Any()).Return(nil).AnyTimes()
+				c.EXPECT().Auth(gomock.Any(), "test", gomock.Any()).Return(nil).AnyTimes()
 				gomock.InOrder(
 					c.EXPECT().BuildKitEnabled().Return(true, nil), // Preview.
 					c.EXPECT().BuildKitEnabled().Return(true, nil), // Create.
-					c.EXPECT().Build(gomock.Any(), gomock.AssignableToTypeOf(build{})).DoAndReturn(
-						func(_ provider.Context, b Build) (map[string]*client.SolveResponse, error) {
+					c.EXPECT().Build(gomock.Any(), "test", gomock.AssignableToTypeOf(build{})).DoAndReturn(
+						func(_ provider.Context, name string, b Build) (map[string]*client.SolveResponse, error) {
 							assert.Equal(t, "../testdata/Dockerfile", b.BuildOptions().DockerfileName)
 							return map[string]*client.SolveResponse{
 								b.Targets()[0]: {ExporterResponse: map[string]string{"containerimage.digest": "SHA256:digest"}},
@@ -223,8 +223,8 @@ func TestLifecycle(t *testing.T) {
 				gomock.InOrder(
 					c.EXPECT().BuildKitEnabled().Return(true, nil), // Preview.
 					c.EXPECT().BuildKitEnabled().Return(true, nil), // Create.
-					c.EXPECT().Build(gomock.Any(), gomock.AssignableToTypeOf(build{})).DoAndReturn(
-						func(_ provider.Context, b Build) (map[string]*client.SolveResponse, error) {
+					c.EXPECT().Build(gomock.Any(), "test", gomock.AssignableToTypeOf(build{})).DoAndReturn(
+						func(_ provider.Context, name string, b Build) (map[string]*client.SolveResponse, error) {
 							assert.Equal(t, "../testdata/Dockerfile", b.BuildOptions().DockerfileName)
 							return map[string]*client.SolveResponse{
 								b.Targets()[0]: {ExporterResponse: map[string]string{"image.name": "test:latest"}},

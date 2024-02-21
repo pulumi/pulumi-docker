@@ -49,7 +49,7 @@ func (c *Config) Configure(ctx provider.Context) error {
 	c.client = client
 
 	for _, creds := range c.RegistryAuth {
-		if err := client.Auth(ctx, creds); err != nil {
+		if err := client.Auth(ctx, _baseAuth, creds); err != nil {
 			return err
 		}
 	}

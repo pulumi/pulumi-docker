@@ -45,17 +45,17 @@ func (m *MockClient) EXPECT() *MockClientMockRecorder {
 }
 
 // Auth mocks base method.
-func (m *MockClient) Auth(ctx context.Context, creds RegistryAuth) error {
+func (m *MockClient) Auth(ctx context.Context, name string, creds RegistryAuth) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Auth", ctx, creds)
+	ret := m.ctrl.Call(m, "Auth", ctx, name, creds)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // Auth indicates an expected call of Auth.
-func (mr *MockClientMockRecorder) Auth(ctx, creds any) *ClientAuthCall {
+func (mr *MockClientMockRecorder) Auth(ctx, name, creds any) *ClientAuthCall {
 	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Auth", reflect.TypeOf((*MockClient)(nil).Auth), ctx, creds)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Auth", reflect.TypeOf((*MockClient)(nil).Auth), ctx, name, creds)
 	return &ClientAuthCall{Call: call}
 }
 
@@ -71,30 +71,30 @@ func (c *ClientAuthCall) Return(arg0 error) *ClientAuthCall {
 }
 
 // Do rewrite *gomock.Call.Do
-func (c *ClientAuthCall) Do(f func(context.Context, RegistryAuth) error) *ClientAuthCall {
+func (c *ClientAuthCall) Do(f func(context.Context, string, RegistryAuth) error) *ClientAuthCall {
 	c.Call = c.Call.Do(f)
 	return c
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
-func (c *ClientAuthCall) DoAndReturn(f func(context.Context, RegistryAuth) error) *ClientAuthCall {
+func (c *ClientAuthCall) DoAndReturn(f func(context.Context, string, RegistryAuth) error) *ClientAuthCall {
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }
 
 // Build mocks base method.
-func (m *MockClient) Build(ctx provider.Context, b Build) (map[string]*client.SolveResponse, error) {
+func (m *MockClient) Build(ctx provider.Context, name string, b Build) (map[string]*client.SolveResponse, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Build", ctx, b)
+	ret := m.ctrl.Call(m, "Build", ctx, name, b)
 	ret0, _ := ret[0].(map[string]*client.SolveResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // Build indicates an expected call of Build.
-func (mr *MockClientMockRecorder) Build(ctx, b any) *ClientBuildCall {
+func (mr *MockClientMockRecorder) Build(ctx, name, b any) *ClientBuildCall {
 	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Build", reflect.TypeOf((*MockClient)(nil).Build), ctx, b)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Build", reflect.TypeOf((*MockClient)(nil).Build), ctx, name, b)
 	return &ClientBuildCall{Call: call}
 }
 
@@ -110,13 +110,13 @@ func (c *ClientBuildCall) Return(arg0 map[string]*client.SolveResponse, arg1 err
 }
 
 // Do rewrite *gomock.Call.Do
-func (c *ClientBuildCall) Do(f func(provider.Context, Build) (map[string]*client.SolveResponse, error)) *ClientBuildCall {
+func (c *ClientBuildCall) Do(f func(provider.Context, string, Build) (map[string]*client.SolveResponse, error)) *ClientBuildCall {
 	c.Call = c.Call.Do(f)
 	return c
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
-func (c *ClientBuildCall) DoAndReturn(f func(provider.Context, Build) (map[string]*client.SolveResponse, error)) *ClientBuildCall {
+func (c *ClientBuildCall) DoAndReturn(f func(provider.Context, string, Build) (map[string]*client.SolveResponse, error)) *ClientBuildCall {
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }
@@ -156,44 +156,6 @@ func (c *ClientBuildKitEnabledCall) Do(f func() (bool, error)) *ClientBuildKitEn
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *ClientBuildKitEnabledCall) DoAndReturn(f func() (bool, error)) *ClientBuildKitEnabledCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
-}
-
-// Close mocks base method.
-func (m *MockClient) Close(ctx context.Context) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Close", ctx)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// Close indicates an expected call of Close.
-func (mr *MockClientMockRecorder) Close(ctx any) *ClientCloseCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Close", reflect.TypeOf((*MockClient)(nil).Close), ctx)
-	return &ClientCloseCall{Call: call}
-}
-
-// ClientCloseCall wrap *gomock.Call
-type ClientCloseCall struct {
-	*gomock.Call
-}
-
-// Return rewrite *gomock.Call.Return
-func (c *ClientCloseCall) Return(arg0 error) *ClientCloseCall {
-	c.Call = c.Call.Return(arg0)
-	return c
-}
-
-// Do rewrite *gomock.Call.Do
-func (c *ClientCloseCall) Do(f func(context.Context) error) *ClientCloseCall {
-	c.Call = c.Call.Do(f)
-	return c
-}
-
-// DoAndReturn rewrite *gomock.Call.DoAndReturn
-func (c *ClientCloseCall) DoAndReturn(f func(context.Context) error) *ClientCloseCall {
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }

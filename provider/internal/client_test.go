@@ -28,7 +28,7 @@ func TestAuth(t *testing.T) {
 		_ = d.cli.ConfigFile().GetCredentialsStore(host).Erase(host)
 	})
 
-	err = d.Auth(context.Background(), RegistryAuth{
+	err = d.Auth(context.Background(), "test-resource", RegistryAuth{
 		Address:  host,
 		Username: user,
 		Password: password,
@@ -36,7 +36,7 @@ func TestAuth(t *testing.T) {
 	assert.NoError(t, err)
 
 	// Perform a second auth; it should be cached.
-	err = d.Auth(context.Background(), RegistryAuth{
+	err = d.Auth(context.Background(), "test-resource", RegistryAuth{
 		Address:  host,
 		Username: user,
 		Password: password,
@@ -57,7 +57,7 @@ func TestBuild(t *testing.T) {
 	pctx.EXPECT().Err().Return(ctx.Err()).AnyTimes()
 	pctx.EXPECT().Deadline().Return(ctx.Deadline()).AnyTimes()
 
-	_, err = d.Build(pctx, build{opts: pb.BuildOptions{
+	_, err = d.Build(pctx, "resource-name", build{opts: pb.BuildOptions{
 		ContextPath:    "../testdata/",
 		DockerfileName: "../testdata/Dockerfile",
 	}})
