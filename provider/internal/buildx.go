@@ -62,17 +62,6 @@ func NewBuildxProvider() provider.Provider {
 		infer.Options{
 			Metadata: pschema.Metadata{
 				Keywords: []string{"docker", "buildkit", "buildx"},
-				Description: dedent(
-					`**This module is experimental and subject to change!**
-
-					API types should be considered unstable.
-
-					Subsequent releases _may_ require manual edits to your
-					state file in order to adopt API changes.
-
-					Only use this if you understand and accept the risks.
-					`,
-				),
 			},
 			Resources: []infer.InferredResource{
 				infer.Resource[*Image, ImageArgs, ImageState](),

@@ -10,6 +10,8 @@ import (
 	"slices"
 	"strings"
 
+	// For examples/docs.
+	_ "embed"
 	// These imports are needed to register the drivers with buildkit.
 	_ "github.com/docker/buildx/driver/docker-container"
 	_ "github.com/docker/buildx/driver/kubernetes"
@@ -43,6 +45,12 @@ var (
 	_ infer.CustomUpdate[ImageArgs, ImageState]   = (*Image)(nil)
 )
 
+//go:embed doc/buildx.md
+var _examples string
+
+//go:embed doc/migration.md
+var _migration string
+
 // Image is a Docker image build using buildkit.
 type Image struct{}
 
@@ -51,15 +59,23 @@ func (i *Image) Annotate(a infer.Annotator) {
 	a.Describe(&i, dedent(`
 		A Docker image built using buildx -- Docker's interface to the improved
 		BuildKit backend.
-		
+
+		## Stability
+
 		**This resource is experimental and subject to change.**
 
 		API types are unstable. Subsequent releases _may_ require manual edits
 		to your state file(s) in order to adopt API changes.
 
+		"retainOnDelete: true" is recommended with this resource until it is
+		stable. This enables future API changes to be adopted more easily by renaming
+		resources.
+
 		Only use this resource if you understand and accept the risks.
-		`,
-	))
+	`)+
+		"\n\n"+_migration+
+		"\n\n"+_examples,
+	)
 }
 
 // ImageArgs instantiates a new Image.

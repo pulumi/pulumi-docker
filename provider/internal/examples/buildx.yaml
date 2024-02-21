@@ -1,0 +1,171 @@
+name: ecr
+description: Push to AWS ECR with caching
+#outputs:
+#  {}
+#    ref: ${my-image.ref}
+resources:
+  ecr-repository:
+    type: aws:ecr:Repository
+  my-image:
+    type: docker:buildx/image:Image
+    properties:
+      tags:
+        - ${ecr-repository.repositoryUrl}:latest
+      push: true
+      context:
+        location: ./app
+      dockerfile:
+        location: ./Dockerfile
+      cacheFrom:
+        - registry:
+            ref: ${ecr-repository.repositoryUrl}:cache
+      cacheTo:
+        - registry:
+            ref: ${ecr-repository.repositoryUrl}:cache
+            imageManifest: true
+            ociMediaTypes: true
+      registries:
+        - username: ${auth-token.userName}
+          password: ${auth-token.password}
+          address: ${ecr-repository.repositoryUrl}
+runtime: yaml
+variables:
+  auth-token:
+    fn::aws:ecr:getAuthorizationToken:
+      registryId: ${ecr-repository.registryId}
+---
+name: multi-platform
+runtime: yaml
+description: Multi-platform image
+resources:
+  image:
+    type: docker:buildx/image:Image
+    properties:
+      context:
+        location: "app"
+      platforms:
+        - plan9/amd64
+        - plan9/386
+---
+name: registry
+runtime: yaml
+description: Registry export
+resources:
+  image:
+    type: docker:buildx/image:Image
+    properties:
+      tags:
+        - "docker.io/pulumi/pulumi:3.107.0"
+      context:
+        location: "app"
+      push: true
+      registries:
+        - address: docker.io
+          username: pulumibot
+          password: ${dockerHubPassword}
+---
+name: caching
+runtime: yaml
+description: Caching
+resources:
+  image:
+    type: docker:buildx/image:Image
+    properties:
+      context:
+        location: "app"
+      cacheTo:
+        - local:
+            dest: tmp/cache
+            mode: max
+      cacheFrom:
+        - local:
+            src: tmp/cache
+---
+name: build-args
+runtime: yaml
+description: Build arguments
+resources:
+  image:
+    type: docker:buildx/image:Image
+    properties:
+      context:
+        location: "app"
+      buildArgs:
+        SET_ME_TO_TRUE: "true"
+
+---
+name: build-targets
+runtime: yaml
+description: Build targets
+resources:
+  image:
+    type: docker:buildx/image:Image
+    properties:
+      context:
+        location: "app"
+      targets:
+        - "build-me"
+        - "also-build-me"
+---
+name: named-contexts
+runtime: yaml
+description: Named contexts
+resources:
+  image:
+    type: docker:buildx/image:Image
+    properties:
+      context:
+        location: app
+        named:
+          "golang:latest":
+            location: "docker-image://golang@sha256:b8e62cf593cdaff36efd90aa3a37de268e6781a2e68c6610940c48f7cdf36984"
+---
+name: remote-context
+runtime: yaml
+description: Remote context
+resources:
+  image:
+    type: docker:buildx/image:Image
+    properties:
+      context:
+        location: "https://raw.githubusercontent.com/pulumi/pulumi-docker/api-types/provider/testdata/Dockerfile"
+
+---
+name: inline
+runtime: yaml
+description: Inline Dockerfile
+resources:
+  image:
+    type: docker:buildx/image:Image
+    properties:
+      dockerfile:
+        inline: |
+          FROM busybox
+          COPY hello.c ./
+      context:
+        location: "app"
+---
+name: remote-context
+runtime: yaml
+description: Remote context
+resources:
+  image:
+    type: docker:buildx/image:Image
+    properties:
+      dockerfile:
+        location: app/Dockerfile
+      context:
+        location: "https://github.com/docker-library/hello-world.git"
+---
+name: docker-load
+runtime: yaml
+description: Local export
+resources:
+  image:
+    type: docker:buildx/image:Image
+    properties:
+      context:
+        location: "app"
+      exports:
+        - docker:
+            tar: true
