@@ -1,8 +1,10 @@
 // This file was modified from
-// https://github.com/moby/buildkit/blob/4e09402eed0cef2eaccbc18a859df55622ad4031/session/auth/authprovider/authprovider.go
+// https://github.com/moby/buildkit/blob/4e09402e/session/auth/authprovider/authprovider.go
 //
 // This provider uses an in-memory store for auth configs, so Pulumi programs
 // don't disturb the host's existing credentials.
+//
+// Lint errors are ignored to make upstream merges easier.
 package internal
 
 import (
@@ -79,6 +81,7 @@ func (ap *authProvider) Register(server *grpc.Server) {
 	auth.RegisterAuthServer(server, ap)
 }
 
+//nolint:lll
 func (ap *authProvider) FetchToken(ctx context.Context, req *auth.FetchTokenRequest) (rr *auth.FetchTokenResponse, err error) {
 	ac, err := ap.getAuthConfig(req.Host)
 	if err != nil {
@@ -120,6 +123,7 @@ func (ap *authProvider) FetchToken(ctx context.Context, req *auth.FetchTokenRequ
 		ap.mu.Lock()
 		name := fmt.Sprintf("[auth] %v token for %s", strings.Join(trimScopePrefix(req.Scopes), " "), req.Host)
 		if _, ok := ap.loggerCache[name]; !ok {
+			//nolint:errcheck
 			progresswriter.Wrap(name, ap.logger, done)
 		}
 		ap.mu.Unlock()
@@ -131,6 +135,7 @@ func (ap *authProvider) FetchToken(ctx context.Context, req *auth.FetchTokenRequ
 				// Registries without support for POST may return 404 for POST /v2/token.
 				// As of September 2017, GCR is known to return 404.
 				// As of February 2018, JFrog Artifactory is known to return 401.
+				//nolint:lll
 				if (errStatus.StatusCode == 405 && to.Username != "") || errStatus.StatusCode == 404 || errStatus.StatusCode == 401 {
 					resp, err := authutil.FetchToken(ctx, httpClient, nil, to)
 					if err != nil {
@@ -159,7 +164,7 @@ func (ap *authProvider) tlsConfig(host string) (*tls.Config, error) {
 	if !ok {
 		return nil, nil
 	}
-	tc := &tls.Config{}
+	tc := &tls.Config{MinVersion: tls.VersionTLS12}
 	if len(c.RootCAs) > 0 {
 		systemPool, err := x509.SystemCertPool()
 		if err != nil {
@@ -209,6 +214,7 @@ func (ap *authProvider) credentials(host string) (*auth.CredentialsResponse, err
 	return res, nil
 }
 
+//nolint:lll
 func (ap *authProvider) Credentials(ctx context.Context, req *auth.CredentialsRequest) (*auth.CredentialsResponse, error) {
 	resp, err := ap.credentials(req.Host)
 	if err != nil || resp.Secret != "" {
@@ -225,6 +231,7 @@ func (ap *authProvider) Credentials(ctx context.Context, req *auth.CredentialsRe
 	return resp, err
 }
 
+//nolint:lll
 func (ap *authProvider) GetTokenAuthority(ctx context.Context, req *auth.GetTokenAuthorityRequest) (*auth.GetTokenAuthorityResponse, error) {
 	key, err := ap.getAuthorityKey(req.Host, req.Salt)
 	if err != nil {
@@ -234,6 +241,7 @@ func (ap *authProvider) GetTokenAuthority(ctx context.Context, req *auth.GetToke
 	return &auth.GetTokenAuthorityResponse{PublicKey: key[32:]}, nil
 }
 
+//nolint:lll
 func (ap *authProvider) VerifyTokenAuthority(ctx context.Context, req *auth.VerifyTokenAuthorityRequest) (*auth.VerifyTokenAuthorityResponse, error) {
 	key, err := ap.getAuthorityKey(req.Host, req.Salt)
 	if err != nil {

@@ -100,7 +100,6 @@ func (d *docker) Auth(_ context.Context, name string, creds RegistryAuth) error 
 	d.mu.Lock()
 	defer d.mu.Unlock()
 
-
 	if _, ok := d.auths[name]; !ok {
 		d.auths[name] = map[string]cfgtypes.AuthConfig{}
 	}
