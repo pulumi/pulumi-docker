@@ -2,8 +2,6 @@ package internal
 
 import (
 	"fmt"
-
-	"github.com/pulumi/pulumi-docker/provider/v4/internal/properties"
 )
 
 // keeper decides whether an element should be included for a preview
@@ -51,7 +49,7 @@ func (k stringerKeeper[T]) keep(t T) bool {
 type registryKeeper struct{ preview bool }
 
 //nolint:unused // False positive due to generics.
-func (k registryKeeper) keep(r properties.RegistryAuth) bool {
+func (k registryKeeper) keep(r RegistryAuth) bool {
 	if !k.preview {
 		return true
 	}

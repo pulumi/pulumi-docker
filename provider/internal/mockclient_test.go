@@ -16,7 +16,7 @@ import (
 	types "github.com/docker/cli/cli/manifest/types"
 	image "github.com/docker/docker/api/types/image"
 	client "github.com/moby/buildkit/client"
-	properties "github.com/pulumi/pulumi-docker/provider/v4/internal/properties"
+	session "github.com/moby/buildkit/session"
 	provider "github.com/pulumi/pulumi-go-provider"
 	gomock "go.uber.org/mock/gomock"
 )
@@ -45,7 +45,7 @@ func (m *MockClient) EXPECT() *MockClientMockRecorder {
 }
 
 // Auth mocks base method.
-func (m *MockClient) Auth(ctx context.Context, name string, creds properties.RegistryAuth) error {
+func (m *MockClient) Auth(ctx context.Context, name string, creds RegistryAuth) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Auth", ctx, name, creds)
 	ret0, _ := ret[0].(error)
@@ -71,13 +71,13 @@ func (c *ClientAuthCall) Return(arg0 error) *ClientAuthCall {
 }
 
 // Do rewrite *gomock.Call.Do
-func (c *ClientAuthCall) Do(f func(context.Context, string, properties.RegistryAuth) error) *ClientAuthCall {
+func (c *ClientAuthCall) Do(f func(context.Context, string, RegistryAuth) error) *ClientAuthCall {
 	c.Call = c.Call.Do(f)
 	return c
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
-func (c *ClientAuthCall) DoAndReturn(f func(context.Context, string, properties.RegistryAuth) error) *ClientAuthCall {
+func (c *ClientAuthCall) DoAndReturn(f func(context.Context, string, RegistryAuth) error) *ClientAuthCall {
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }
@@ -295,6 +295,82 @@ func (c *BuildBuildOptionsCall) Do(f func() pb.BuildOptions) *BuildBuildOptionsC
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *BuildBuildOptionsCall) DoAndReturn(f func() pb.BuildOptions) *BuildBuildOptionsCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
+// Inline mocks base method.
+func (m *MockBuild) Inline() string {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Inline")
+	ret0, _ := ret[0].(string)
+	return ret0
+}
+
+// Inline indicates an expected call of Inline.
+func (mr *MockBuildMockRecorder) Inline() *BuildInlineCall {
+	mr.mock.ctrl.T.Helper()
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Inline", reflect.TypeOf((*MockBuild)(nil).Inline))
+	return &BuildInlineCall{Call: call}
+}
+
+// BuildInlineCall wrap *gomock.Call
+type BuildInlineCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *BuildInlineCall) Return(arg0 string) *BuildInlineCall {
+	c.Call = c.Call.Return(arg0)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *BuildInlineCall) Do(f func() string) *BuildInlineCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *BuildInlineCall) DoAndReturn(f func() string) *BuildInlineCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
+// Secrets mocks base method.
+func (m *MockBuild) Secrets() session.Attachable {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Secrets")
+	ret0, _ := ret[0].(session.Attachable)
+	return ret0
+}
+
+// Secrets indicates an expected call of Secrets.
+func (mr *MockBuildMockRecorder) Secrets() *BuildSecretsCall {
+	mr.mock.ctrl.T.Helper()
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Secrets", reflect.TypeOf((*MockBuild)(nil).Secrets))
+	return &BuildSecretsCall{Call: call}
+}
+
+// BuildSecretsCall wrap *gomock.Call
+type BuildSecretsCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *BuildSecretsCall) Return(arg0 session.Attachable) *BuildSecretsCall {
+	c.Call = c.Call.Return(arg0)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *BuildSecretsCall) Do(f func() session.Attachable) *BuildSecretsCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *BuildSecretsCall) DoAndReturn(f func() session.Attachable) *BuildSecretsCall {
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }

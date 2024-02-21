@@ -1,0 +1,60 @@
+diff --git a/internal/provider/provider.go b/internal/provider/provider.go
+index 29fcba3..29a01f8 100644
+--- a/internal/provider/provider.go
++++ b/internal/provider/provider.go
+@@ -51,7 +51,7 @@ func New(version string) func() *schema.Provider {
+ 						}
+ 						return "unix:///var/run/docker.sock", nil
+ 					},
+-					Description: "The Docker daemon address",
++					Description: "The Docker daemon's address.",
+ 				},
+ 				"ssh_opts": {
+ 					Type:     schema.TypeList,
+@@ -64,32 +64,32 @@ func New(version string) func() *schema.Provider {
+ 
+ 						return nil, nil
+ 					},
+-					Description: "Additional SSH option flags to be appended when using `ssh://` protocol",
++					Description: "Additional SSH option flags to be appended when using `ssh://` protocol.\n\nThe `ssh://` protocol is not supported for `buildx.Image` resources. Instead, use a [remote](https://docs.docker.com/build/drivers/remote/) driver.",
+ 				},
+ 				"ca_material": {
+ 					Type:        schema.TypeString,
+ 					Optional:    true,
+ 					DefaultFunc: schema.EnvDefaultFunc("DOCKER_CA_MATERIAL", ""),
+-					Description: "PEM-encoded content of Docker host CA certificate",
++					Description: "PEM-encoded content of Docker host CA certificate.",
+ 				},
+ 				"cert_material": {
+ 					Type:        schema.TypeString,
+ 					Optional:    true,
+ 					DefaultFunc: schema.EnvDefaultFunc("DOCKER_CERT_MATERIAL", ""),
+-					Description: "PEM-encoded content of Docker client certificate",
++					Description: "PEM-encoded content of Docker client certificate.",
+ 				},
+ 				"key_material": {
+ 					Type:        schema.TypeString,
+ 					Optional:    true,
+ 					DefaultFunc: schema.EnvDefaultFunc("DOCKER_KEY_MATERIAL", ""),
+-					Description: "PEM-encoded content of Docker client private key",
++					Description: "PEM-encoded content of Docker client private key.",
+ 				},
+ 
+ 				"cert_path": {
+ 					Type:        schema.TypeString,
+ 					Optional:    true,
+ 					DefaultFunc: schema.EnvDefaultFunc("DOCKER_CERT_PATH", ""),
+-					Description: "Path to directory with Docker TLS config",
++					Description: "Path to a directory with Docker TLS config. This directory is expected to contain `ca.pem`, `cert.pem`, and `key.pem` files.",
+ 				},
+ 
+ 				"registry_auth": {
+@@ -101,7 +101,7 @@ func New(version string) func() *schema.Provider {
+ 								Type:         schema.TypeString,
+ 								Required:     true,
+ 								ValidateFunc: validation.StringIsNotEmpty,
+-								Description:  "Address of the registry",
++								Description:  "Address of the registry.",
+ 							},
+ 
+ 							"username": {

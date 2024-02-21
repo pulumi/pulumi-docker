@@ -23,15 +23,12 @@ import (
 	"github.com/docker/docker/errdefs"
 	"github.com/moby/buildkit/session"
 	"github.com/moby/buildkit/session/secrets/secretsprovider"
-	"github.com/muesli/reflow/dedent"
 	"github.com/spf13/afero"
 
 	provider "github.com/pulumi/pulumi-go-provider"
 	"github.com/pulumi/pulumi-go-provider/infer"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/diag"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
-
-	"github.com/pulumi/pulumi-docker/provider/v4/internal/properties"
 )
 
 var (
@@ -51,90 +48,137 @@ type Image struct{}
 
 // Annotate provides a description of the Image resource.
 func (i *Image) Annotate(a infer.Annotator) {
-	a.Describe(&i, "A Docker image built using Buildkit")
+	a.Describe(&i, dedent(`
+		A Docker image built using buildx -- Docker's interface to the improved
+		BuildKit backend.
+		
+		**This resource is experimental and subject to change.**
+
+		API types are unstable. Subsequent releases _may_ require manual edits
+		to your state file(s) in order to adopt API changes.
+
+		Only use this resource if you understand and accept the risks.
+		`,
+	))
 }
 
 // ImageArgs instantiates a new Image.
 type ImageArgs struct {
-	BuildArgs      map[string]string         `pulumi:"buildArgs,optional"`
-	BuildOnPreview bool                      `pulumi:"buildOnPreview,optional"`
-	Builder        BuilderConfig             `pulumi:"builder,optional"`
-	CacheFrom      []CacheFromEntry          `pulumi:"cacheFrom,optional"`
-	CacheTo        []CacheToEntry            `pulumi:"cacheTo,optional"`
-	Context        BuildContext              `pulumi:"context,optional"`
-	Dockerfile     Dockerfile                `pulumi:"dockerfile,optional"`
-	Exports        []ExportEntry             `pulumi:"exports,optional"`
-	Labels         map[string]string         `pulumi:"labels,optional"`
-	Platforms      []Platform                `pulumi:"platforms,optional"`
-	Pull           bool                      `pulumi:"pull,optional"`
-	Registries     []properties.RegistryAuth `pulumi:"registries,optional"`
-	Secrets        map[string]string         `pulumi:"secrets,optional"        provider:"secret"`
-	Tags           []string                  `pulumi:"tags,optional"`
-	Targets        []string                  `pulumi:"targets,optional"`
+	BuildArgs      map[string]string `pulumi:"buildArgs,optional"`
+	BuildOnPreview bool              `pulumi:"buildOnPreview,optional"`
+	Builder        BuilderConfig     `pulumi:"builder,optional"`
+	CacheFrom      []CacheFromEntry  `pulumi:"cacheFrom,optional"`
+	CacheTo        []CacheToEntry    `pulumi:"cacheTo,optional"`
+	Context        BuildContext      `pulumi:"context,optional"`
+	Dockerfile     Dockerfile        `pulumi:"dockerfile,optional"`
+	Exports        []ExportEntry     `pulumi:"exports,optional"`
+	Labels         map[string]string `pulumi:"labels,optional"`
+	Platforms      []Platform        `pulumi:"platforms,optional"`
+	Pull           bool              `pulumi:"pull,optional"`
+	Registries     []RegistryAuth    `pulumi:"registries,optional"`
+	Secrets        map[string]string `pulumi:"secrets,optional"        provider:"secret"`
+	Tags           []string          `pulumi:"tags,optional"`
+	Targets        []string          `pulumi:"targets,optional"`
 }
 
 // Annotate describes inputs to the Image resource.
 func (ia *ImageArgs) Annotate(a infer.Annotator) {
-	a.Describe(&ia.BuildArgs, dedent.String(`
-		An optional map of named build-time argument variables to set during
-		the Docker build. This flag allows you to pass build-time variables that
-		can be accessed like environment variables inside the RUN
-		instruction.`,
-	))
-	a.Describe(&ia.BuildOnPreview, dedent.String(`
-		When true, attempt to build the image during previews. Outputs are not
-		pushed to registries, however caches are still populated.
+	a.Describe(&ia.BuildArgs, dedent(`
+		"ARG" names and values to set during the build.
+		
+		These variables are accessed like environment variables inside "RUN"
+		instructions.
+		
+		Build arguments are persisted in the image, so you should use "secrets"
+		if these arguments are sensitive.
+
+		Equivalent to Docker's "--build-arg" flag.
 	`))
-	a.Describe(&ia.Builder, dedent.String(`
-		Builder configuration.`,
-	))
-	a.Describe(&ia.CacheFrom, dedent.String(`
-		External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")`,
-	))
-	a.Describe(&ia.CacheTo, dedent.String(`
-		Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")`,
-	))
-	a.Describe(&ia.Context, dedent.String(`
-		Path to use for build context. If omitted, an empty context is used.`,
-	))
-	a.Describe(&ia.Dockerfile, dedent.String(`
+	a.Describe(&ia.BuildOnPreview, dedent(`
+		When "true", attempt to build the image during previews. The image will
+		not be pushed to registries, however caches will still be populated.
+	`))
+	a.Describe(&ia.Builder, dedent(`
+		Builder configuration.
+	`))
+	a.Describe(&ia.CacheFrom, dedent(`
+		Cache export configuration.
+
+		Equivalent to Docker's "--cache-from" flag.
+	`))
+	a.Describe(&ia.CacheTo, dedent(`
+		Cache import configuration.
+
+		Equivalent to Docker's "--cache-to" flag.
+	`))
+	a.Describe(&ia.Context, dedent(`
+		Build context settings.
+
+		Equivalent to Docker's "PATH | URL | -" positional argument.
+	`))
+	a.Describe(&ia.Dockerfile, dedent(`
 		Dockerfile settings.
 
 		Equivalent to Docker's "--file" flag.
 	`))
-	a.Describe(&ia.Exports, dedent.String(`
-		Name and optionally a tag (format: "name:tag"). If outputting to a
-		registry, the name should include the fully qualified registry address.`,
-	))
-	a.Describe(&ia.Labels, dedent.String(`
-		Attach key/value metadata to the image.`,
-	))
-	a.Describe(&ia.Platforms, dedent.String(`
-		Set target platforms for the build. Defaults to the host's platform.
+	a.Describe(&ia.Exports, dedent(`
+		Controls where images are persisted after building.
+
+		Images are only stored in the local cache unless "exports" are
+		explicitly configured.
+
+		Equivalent to Docker's "--output" flag.
+	`))
+	a.Describe(&ia.Labels, dedent(`
+		Attach arbitrary key/value metadata to the image.
+
+		Equivalent to Docker's "--label" flag.
+	`))
+	a.Describe(&ia.Platforms, dedent(`
+		Set target platform(s) for the build. Defaults to the host's platform.
 		
-		Equivalent to Docker's "--platform" flag.`,
-	))
-	a.Describe(&ia.Pull, dedent.String(`
-		Always attempt to pull referenced images.`,
-	))
-	a.Describe(&ia.Secrets, dedent.String(`
-		A mapping of secret names to their corresponding values. Unlike Docker
-		these do not need to exist on-disk or in environment variables.
-		
-		Build arguments and environment variables are inappropriate for passing
-		secrets to your build because they persist in the final image.`,
-	))
-	a.Describe(&ia.Tags, dedent.String(`
-		Name and optionally a tag (format: "name:tag"). If outputting to a
-		registry, the name should include the fully qualified registry address.`,
-	))
-	a.Describe(&ia.Targets, dedent.String(`
-		Names of build stages to build. If not specified all targets will be
-		built by default.`,
-	))
-	a.Describe(&ia.Registries, dedent.String(`
-		Logins for registry outputs`,
-	))
+		Equivalent to Docker's "--platform" flag.
+	`))
+	a.Describe(&ia.Pull, dedent(`
+		Always pull referenced images.
+
+		Equivalent to Docker's "--pull" flag.
+	`))
+	a.Describe(&ia.Secrets, dedent(`
+		A mapping of secret names to their corresponding values.
+
+		Unlike the Docker CLI, these can be passed by value and do not need to
+		exist on-disk or in environment variables.
+
+		Build arguments and environment variables are persistent in the final
+		image, so you should use this for sensitive values.
+
+		Similar to Docker's "--secret" flag.
+	`))
+	a.Describe(&ia.Tags, dedent(`
+		Name and optionally a tag (format: "name:tag").
+
+		If exporting to a registry, the name should include the fully qualified
+		registry address (e.g. "docker.io/pulumi/pulumi:latest").
+
+		Equivalent to Docker's "--tag" flag.
+	`))
+	a.Describe(&ia.Targets, dedent(`
+		Set the target build stage(s) to build.
+
+		If not specified all targets will be built by default.
+
+		Equivalent to Docker's "--target" flag.
+	`))
+	a.Describe(&ia.Registries, dedent(`
+		Registry credentials. Required if reading or exporting to private
+		repositories.
+
+		Credentials are kept in-memory and do not pollute pre-existing
+		credentials on the host.
+
+		Similar to "docker login".
+	`))
 }
 
 // ImageState is serialized to the program's state file.
@@ -149,9 +193,14 @@ type ImageState struct {
 func (is *ImageState) Annotate(a infer.Annotator) {
 	is.ImageArgs.Annotate(a)
 
-	a.Describe(&is.Digests, dedent.String(`
+	a.Describe(&is.Digests, dedent(`
 		A mapping of platform type to refs which were pushed to registries.`,
 	))
+	a.Describe(&is.ContextHash, dedent(`
+		A preliminary hash of the image's build context.
+
+		Pulumi uses this to determine if an image _may_ need to be re-built.
+	`))
 }
 
 // Check validates ImageArgs, sets defaults, and ensures our client is
@@ -666,7 +715,7 @@ func (*Image) Read(
 			continue
 		}
 
-		state.Exports[idx].Manifests = []properties.Manifest{}
+		state.Exports[idx].Manifests = []Manifest{}
 		for _, tag := range state.Tags {
 			// Does the tag still exist?
 			infos, err := cfg.client.Inspect(ctx, name, tag)
@@ -695,9 +744,9 @@ func (*Image) Read(
 
 				state.Exports[idx].Manifests = append(
 					state.Exports[idx].Manifests,
-					properties.Manifest{
+					Manifest{
 						Digest: m.Descriptor.Digest.String(),
-						Platform: properties.ManifestPlatform{
+						Platform: ManifestPlatform{
 							OS:           m.Descriptor.Platform.OS,
 							Architecture: m.Descriptor.Platform.Architecture,
 						},

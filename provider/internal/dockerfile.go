@@ -1,8 +1,6 @@
 package internal
 
 import (
-	"github.com/muesli/reflow/dedent"
-
 	"github.com/pulumi/pulumi-go-provider/infer"
 )
 
@@ -12,13 +10,20 @@ type Dockerfile struct {
 }
 
 func (d *Dockerfile) Annotate(a infer.Annotator) {
-	a.Describe(&d.Location, dedent.String(`
-		Name of the Dockerfile to use (defaults to "${context}/Dockerfile").
-		Conflicts with "inline".`,
-	))
-	a.Describe(&d.Inline, dedent.String(`
-		Raw Dockerfile contents. Conflicts with "location".
+	a.Describe(&d.Location, dedent(`
+		Location of the Dockerfile to use.
+
+		Can be a relative or absolute path to a local file, or a remote URL.
 		
-		Equivalent to invoking Docker with "-f -".`,
-	))
+		Defaults to "${context.location}/Dockerfile" if context is on-disk.
+
+		Conflicts with "inline".
+	`))
+	a.Describe(&d.Inline, dedent(`
+		Raw Dockerfile contents.
+		
+		Conflicts with "location".
+
+		Equivalent to invoking Docker with "-f -".
+	`))
 }

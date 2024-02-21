@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/muesli/reflow/dedent"
-
 	"github.com/pulumi/pulumi-go-provider/infer"
 )
 
@@ -52,12 +50,17 @@ func (c *CacheFromLocal) String() string {
 	return strings.Join(parts, ",")
 }
 
+func (c *CacheFromLocal) Annotate(a infer.Annotator) {
+	a.Describe(&c.Src, "Path of the local directory where cache gets imported from.")
+	a.Describe(&c.Digest, "Digest of manifest to import.")
+}
+
 type CacheFromRegistry struct {
 	Ref string `pulumi:"ref"`
 }
 
 func (c *CacheFromRegistry) Annotate(a infer.Annotator) {
-	a.Describe(&c.Ref, "Full name of the cache image to import.")
+	a.Describe(&c.Ref, "Fully qualified name of the cache image to import.")
 }
 
 func (c *CacheFromRegistry) String() string {
@@ -73,11 +76,16 @@ type CacheWithOCI struct {
 }
 
 func (c *CacheWithOCI) Annotate(a infer.Annotator) {
-	a.Describe(&c.OCI, "Whether to use OCI mediatypes in exported manifests.")
-	a.Describe(
-		&c.ImageManifest,
-		"Export cache manifest as an OCI-compatible image manifest instead of a manifest list (requires OCI media types).",
-	)
+	a.Describe(&c.OCI, dedent(`
+		Whether to use OCI media types in exported manifests. Defaults to
+		"true".
+	`))
+	a.Describe(&c.ImageManifest, dedent(`
+		Export cache manifest as an OCI-compatible image manifest instead of a
+		manifest list (requires OCI media types).
+
+		Defaults to "false".
+	`))
 
 	a.SetDefault(&c.OCI, true)
 	a.SetDefault(&c.ImageManifest, false)
@@ -105,9 +113,28 @@ func (c *CacheFromGitHubActions) Annotate(a infer.Annotator) {
 	a.SetDefault(&c.Token, "", "ACTIONS_RUNTIME_TOKEN")
 	a.SetDefault(&c.Scope, "", "buildkit")
 
-	a.Describe(&c.URL, "Cache server URL")
-	a.Describe(&c.Token, "Access token")
-	a.Describe(&c.Scope, "Which scope cache object belongs to.")
+	a.Describe(&c.URL, dedent(`
+		The cache server URL to use for artifacts.
+
+		Defaults to "$ACTIONS_RUNTIME_URL", although a separate action like
+		"crazy-max/ghaction-github-runtime" is recommended to expose this
+		environment variable to your jobs.
+	`))
+	a.Describe(&c.Token, dedent(`
+		The GitHub Actions token to use. This is not a personal access tokens
+		and is typically generated automatically as part of each job.
+
+		Defaults to "$ACTIONS_RUNTIME_TOKEN", although a separate action like
+		"crazy-max/ghaction-github-runtime" is recommended to expose this
+		environment variable to your jobs.
+
+	`))
+	a.Describe(&c.Scope, dedent(`
+		The scope to use for cache keys. Defaults to "buildkit".
+
+		This should be set if building and caching multiple images in one
+		workflow, otherwise caches will overwrite each other.
+	`))
 }
 
 func (c *CacheFromGitHubActions) String() string {
@@ -150,6 +177,12 @@ func (c *CacheFromAzureBlob) String() string {
 	return strings.Join(parts, ",")
 }
 
+func (c *CacheFromAzureBlob) Annotate(a infer.Annotator) {
+	a.Describe(&c.Name, "The name of the cache image.")
+	a.Describe(&c.AccountURL, "Base URL of the storage account.")
+	a.Describe(&c.SecretAccessKey, "Blob storage account key.")
+}
+
 type CacheToAzureBlob struct {
 	CacheWithMode
 	CacheWithIgnoreError
@@ -182,6 +215,37 @@ func (c *CacheFromS3) Annotate(a infer.Annotator) {
 	a.SetDefault(&c.AccessKeyID, "", "AWS_ACCESS_KEY_ID")
 	a.SetDefault(&c.SecretAccessKey, "", "AWS_SECRET_ACCESS_KEY")
 	a.SetDefault(&c.SessionToken, "", "AWS_SESSION_TOKEN")
+
+	a.Describe(&c.Bucket, dedent(`
+		Name of the S3 bucket.
+	`))
+	a.Describe(&c.Region, dedent(`
+		The geographic location of the bucket. Defaults to "$AWS_REGION".
+	`))
+	a.Describe(&c.AccessKeyID, dedent(`
+		Defaults to "$AWS_ACCESS_KEY_ID".
+	`))
+	a.Describe(&c.SecretAccessKey, dedent(`
+		Defaults to "$AWS_SECRET_ACCESS_KEY".
+	`))
+	a.Describe(&c.SessionToken, dedent(`
+		Defaults to "$AWS_SESSION_TOKEN".
+	`))
+	a.Describe(&c.BlobsPrefix, dedent(`
+		Prefix to prepend to blob filenames.
+	`))
+	a.Describe(&c.EndpointURL, dedent(`
+		Endpoint of the S3 bucket.
+	`))
+	a.Describe(&c.ManifestsPrefix, dedent(`
+		Prefix to prepend on manifest filenames.
+	`))
+	a.Describe(&c.Name, dedent(`
+		Name of the cache image.
+	`))
+	a.Describe(&c.UsePathStyle, dedent(`
+		Uses "bucket" in the URL instead of hostname when "true".
+	`))
 }
 
 func (c *CacheFromS3) String() string {
@@ -226,6 +290,9 @@ type CacheWithMode struct {
 
 func (c *CacheWithMode) Annotate(a infer.Annotator) {
 	a.SetDefault(&c.Mode, CacheModeMin)
+	a.Describe(&c.Mode, dedent(`
+		The cache mode to use. Defaults to "min".
+	`))
 }
 
 func (c CacheWithMode) String() string {
@@ -283,31 +350,31 @@ type CacheFromEntry struct {
 }
 
 func (c *CacheFromEntry) Annotate(a infer.Annotator) {
-	a.Describe(&c.Local, dedent.String(`
-		A simple backend which caches imagines on your local filesystem.`,
-	))
-	a.Describe(&c.Registry, dedent.String(`
-		Push caches to remote registries. Incompatible with the "docker" build
-		driver.`,
-	))
-	a.Describe(&c.GHA, dedent.String(`
+	a.Describe(&c.Local, dedent(`
+		A simple backend which caches images on your local filesystem.
+	`))
+	a.Describe(&c.Registry, dedent(`
+		Upload build caches to remote registries.
+	`))
+	a.Describe(&c.GHA, dedent(`
 		Recommended for use with GitHub Actions workflows.
 
 		An action like "crazy-max/ghaction-github-runtime" is recommended to
-		expose appropriate credentials to your GitHub workflow.`,
-	))
-	a.Describe(&c.AZBlob, dedent.String(`
-		Push cache to Azure's blob storage service.`,
-	))
-	a.Describe(&c.S3, dedent.String(`
-		Push cache to AWS S3 or S3-compatible services such as MinIO.`,
-	))
-	a.Describe(&c.Raw, dedent.String(`
+		expose appropriate credentials to your GitHub workflow.
+	`))
+	a.Describe(&c.AZBlob, dedent(`
+		Upload build caches to Azure's blob storage service.
+	`))
+	a.Describe(&c.S3, dedent(`
+		Upload build caches to AWS S3 or an S3-compatible services such as
+		MinIO.
+	`))
+	a.Describe(&c.Raw, dedent(`
 		A raw string as you would provide it to the Docker CLI (e.g.,
-		"type=inline")`,
-	))
+		"type=inline").
+	`))
 
-	a.Describe(&c.Disabled, dedent.String(`
+	a.Describe(&c.Disabled, dedent(`
 		When "true" this entry will be excluded. Defaults to "false".
 	`))
 }
@@ -334,6 +401,12 @@ type CacheToLocal struct {
 	CacheWithMode
 
 	Dest string `pulumi:"dest"`
+}
+
+func (c *CacheToLocal) Annotate(a infer.Annotator) {
+	a.Describe(&c.Dest, dedent(`
+		Path of the local directory to export the cache.
+	`))
 }
 
 func (c *CacheToLocal) String() string {
@@ -433,36 +506,36 @@ type CacheToEntry struct {
 }
 
 func (c *CacheToEntry) Annotate(a infer.Annotator) {
-	a.Describe(&c.Inline, dedent.String(`
+	a.Describe(&c.Inline, dedent(`
 		The inline cache storage backend is the simplest implementation to get
 		started with, but it does not handle multi-stage builds. Consider the
-		registry cache backend instead.`,
-	))
-	a.Describe(&c.Local, dedent.String(`
-		A simple backend which caches imagines on your local filesystem.`,
-	))
-	a.Describe(&c.Registry, dedent.String(`
+		"registry" cache backend instead.
+	`))
+	a.Describe(&c.Local, dedent(`
+		A simple backend which caches imagines on your local filesystem.
+	`))
+	a.Describe(&c.Registry, dedent(`
 		Push caches to remote registries. Incompatible with the "docker" build
-		driver.`,
-	))
-	a.Describe(&c.GHA, dedent.String(`
+		driver.
+	`))
+	a.Describe(&c.GHA, dedent(`
 		Recommended for use with GitHub Actions workflows.
 
 		An action like "crazy-max/ghaction-github-runtime" is recommended to
-		expose appropriate credentials to your GitHub workflow.`,
-	))
-	a.Describe(&c.AZBlob, dedent.String(`
-		Push cache to Azure's blob storage service.`,
-	))
-	a.Describe(&c.S3, dedent.String(`
-		Push cache to AWS S3 or S3-compatible services such as MinIO.`,
-	))
-	a.Describe(&c.Raw, dedent.String(`
+		expose appropriate credentials to your GitHub workflow.
+	`))
+	a.Describe(&c.AZBlob, dedent(`
+		Push cache to Azure's blob storage service.
+	`))
+	a.Describe(&c.S3, dedent(`
+		Push cache to AWS S3 or S3-compatible services such as MinIO.
+	`))
+	a.Describe(&c.Raw, dedent(`
 		A raw string as you would provide it to the Docker CLI (e.g.,
 		"type=inline")`,
 	))
 
-	a.Describe(&c.Disabled, dedent.String(`
+	a.Describe(&c.Disabled, dedent(`
 		When "true" this entry will be excluded. Defaults to "false".
 	`))
 }

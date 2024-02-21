@@ -15,7 +15,6 @@ import (
 	"syscall"
 
 	"github.com/moby/patternmatcher/ignorefile"
-	"github.com/muesli/reflow/dedent"
 	"github.com/spf13/afero"
 	"github.com/tonistiigi/fsutil"
 
@@ -47,17 +46,27 @@ func (nc NamedContexts) Map() map[string]string {
 }
 
 func (c *Context) Annotate(a infer.Annotator) {
-	a.Describe(&c.Location, dedent.String(`
-		Path to use for build context. If omitted, an empty context is used.`,
-	))
+	a.Describe(&c.Location, dedent(`
+		Resources to use for build context.
+		
+		The location can be:
+		* A relative or absolute path to a local directory (".", "./app",
+		  "/app", etc.).
+		* A remote URL of a Git repository, tarball, or plain text file
+		  ("https://github.com/user/myrepo.git", "http://server/context.tar.gz",
+		  etc.).
+	`))
 }
 
 func (bc *BuildContext) Annotate(a infer.Annotator) {
-	a.Describe(&bc.Named, dedent.String(`
-		Additional build contexts which can be accessed with "FROM name" or
-		"--from=name" statements when using Dockerfile 1.4 syntax. Values can
-		be local paths, HTTP URLs, or  "docker-image://" images.`,
-	))
+	a.Describe(&bc.Named, dedent(`
+		Additional build contexts to use. 
+		
+		These contexts are accessed with "FROM name" or "--from=name"
+		statements when using Dockerfile 1.4+ syntax.
+		
+		Values can be local paths, HTTP URLs, or  "docker-image://" images.
+	`))
 }
 
 func hashFile(

@@ -6,23 +6,22 @@ import (
 
 	provider "github.com/pulumi/pulumi-go-provider"
 	"github.com/pulumi/pulumi-go-provider/infer"
+	pschema "github.com/pulumi/pulumi-go-provider/middleware/schema"
 	"github.com/pulumi/pulumi/pkg/v3/codegen/schema"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/tokens"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/util/contract"
-
-	"github.com/pulumi/pulumi-docker/provider/v4/internal/properties"
 )
 
 var (
 	_ infer.CustomConfigure = (*Config)(nil)
 	_ infer.Annotated       = (infer.Annotated)((*Config)(nil))
-	_ infer.Annotated       = (infer.Annotated)((*properties.RegistryAuth)(nil))
+	_ infer.Annotated       = (infer.Annotated)((*RegistryAuth)(nil))
 )
 
 // Config configures the buildx provider.
 type Config struct {
-	Host         string                    `pulumi:"host,optional"`
-	RegistryAuth []properties.RegistryAuth `pulumi:"registryAuth,optional"`
+	Host         string         `pulumi:"host,optional"`
+	RegistryAuth []RegistryAuth `pulumi:"registryAuth,optional"`
 
 	client Client // Docker CLI
 }
@@ -61,12 +60,25 @@ func (c *Config) Configure(ctx provider.Context) error {
 func NewBuildxProvider() provider.Provider {
 	return infer.Provider(
 		infer.Options{
+			Metadata: pschema.Metadata{
+				Keywords: []string{"docker", "buildkit", "buildx"},
+				Description: dedent(
+					`**This module is experimental and subject to change!**
+
+					API types should be considered unstable.
+
+					Subsequent releases _may_ require manual edits to your
+					state file in order to adopt API changes.
+
+					Only use this if you understand and accept the risks.
+					`,
+				),
+			},
 			Resources: []infer.InferredResource{
 				infer.Resource[*Image, ImageArgs, ImageState](),
 			},
 			ModuleMap: map[tokens.ModuleName]tokens.ModuleName{
-				"internal":   "buildx/image",
-				"properties": "buildx/image",
+				"internal": "buildx/image",
 			},
 			Config: infer.Config[*Config](),
 		},
