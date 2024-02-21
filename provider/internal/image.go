@@ -125,7 +125,7 @@ func (is *ImageState) Annotate(a infer.Annotator) {
 // authenticated.
 func (*Image) Check(
 	ctx provider.Context,
-	_ string,
+	name string,
 	_ resource.PropertyMap,
 	news resource.PropertyMap,
 ) (ImageArgs, []provider.CheckFailure, error) {
@@ -150,7 +150,7 @@ func (*Image) Check(
 		if reg.Address == "" {
 			continue
 		}
-		if err = cfg.client.Auth(ctx, reg); err != nil {
+		if err = cfg.client.Auth(ctx, name, reg); err != nil {
 			failures = append(failures,
 				provider.CheckFailure{Property: "registries", Reason: fmt.Sprintf("unable to authenticate: %s", err.Error())})
 		}
@@ -261,12 +261,11 @@ func (i *Image) Update(
 		return state, nil
 	}
 
-	_, err = cfg.client.Build(ctx, opts)
+	_, err = cfg.client.Build(ctx, name, opts)
 	if err != nil {
 		return state, err
 	}
 
-	// TODO: Handle case with no export.
 	_, _, state, err = i.Read(ctx, name, input, state)
 
 	return state, err
@@ -307,7 +306,7 @@ func (*Image) Read(
 	// Ensure we're authenticated.
 	cfg := infer.GetConfig[Config](ctx)
 	for _, reg := range input.Registries {
-		if err = cfg.client.Auth(ctx, reg); err != nil {
+		if err = cfg.client.Auth(ctx, name, reg); err != nil {
 			return name, input, state, err
 		}
 	}
@@ -321,7 +320,7 @@ func (*Image) Read(
 				continue
 			}
 			for _, tag := range input.Tags {
-				infos, err := cfg.client.Inspect(ctx, tag)
+				infos, err := cfg.client.Inspect(ctx, name, tag)
 				if err != nil {
 					continue
 				}
@@ -449,10 +448,4 @@ func (*Image) Diff(_ provider.Context, _ string, olds ImageState, news ImageArgs
 		HasChanges:          len(diff) > 0,
 		DetailedDiff:        diff,
 	}, nil
-}
-
-// Cancel cleans up temporary on-disk credentials.
-func (*Image) Cancel(ctx provider.Context) error {
-	cfg := infer.GetConfig[Config](ctx)
-	return cfg.client.Close(ctx)
 }

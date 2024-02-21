@@ -45,20 +45,20 @@ func TestLifecycle(t *testing.T) {
 			client: func(t *testing.T) Client {
 				ctrl := gomock.NewController(t)
 				c := mock.NewMockClient(ctrl)
-				c.EXPECT().Auth(gomock.Any(), gomock.Any()).Return(nil).AnyTimes()
+				c.EXPECT().Auth(gomock.Any(), "test", gomock.Any()).Return(nil).AnyTimes()
 				gomock.InOrder(
 					c.EXPECT().BuildKitEnabled().Return(true, nil), // Preview.
 					c.EXPECT().BuildKitEnabled().Return(true, nil), // Create.
-					c.EXPECT().Build(gomock.Any(), gomock.AssignableToTypeOf(controllerapi.BuildOptions{})).DoAndReturn(
-						func(_ provider.Context, opts controllerapi.BuildOptions) (*client.SolveResponse, error) {
+					c.EXPECT().Build(gomock.Any(), "test", gomock.AssignableToTypeOf(controllerapi.BuildOptions{})).DoAndReturn(
+						func(_ provider.Context, name string, opts controllerapi.BuildOptions) (*client.SolveResponse, error) {
 							assert.Equal(t, "../testdata/Dockerfile", opts.DockerfileName)
 							return &client.SolveResponse{ExporterResponse: map[string]string{"containerimage.digest": "SHA256:digest"}}, nil
 						},
 					),
-					c.EXPECT().Inspect(gomock.Any(), "docker.io/blampe/buildkit-e2e").Return(
+					c.EXPECT().Inspect(gomock.Any(), "test", "docker.io/blampe/buildkit-e2e").Return(
 						[]manifesttypes.ImageManifest{}, nil,
 					),
-					c.EXPECT().Inspect(gomock.Any(), "docker.io/blampe/buildkit-e2e:main"),
+					c.EXPECT().Inspect(gomock.Any(), "test", "docker.io/blampe/buildkit-e2e:main"),
 					c.EXPECT().Delete(gomock.Any(), "test").Return(
 						[]image.DeleteResponse{{Deleted: "deleted"}, {Untagged: "untagged"}}, nil),
 				)
@@ -203,8 +203,8 @@ func TestLifecycle(t *testing.T) {
 				gomock.InOrder(
 					c.EXPECT().BuildKitEnabled().Return(true, nil), // Preview.
 					c.EXPECT().BuildKitEnabled().Return(true, nil), // Create.
-					c.EXPECT().Build(gomock.Any(), gomock.AssignableToTypeOf(controllerapi.BuildOptions{})).DoAndReturn(
-						func(_ provider.Context, opts controllerapi.BuildOptions) (*client.SolveResponse, error) {
+					c.EXPECT().Build(gomock.Any(), "test", gomock.AssignableToTypeOf(controllerapi.BuildOptions{})).DoAndReturn(
+						func(_ provider.Context, name string, opts controllerapi.BuildOptions) (*client.SolveResponse, error) {
 							assert.Equal(t, "../testdata/Dockerfile", opts.DockerfileName)
 							return &client.SolveResponse{ExporterResponse: map[string]string{"image.name": "test:latest"}}, nil
 						},
@@ -288,7 +288,7 @@ func TestRead(t *testing.T) {
 
 	ctrl := gomock.NewController(t)
 	client := mock.NewMockClient(ctrl)
-	client.EXPECT().Inspect(gomock.Any(), tag).Return([]manifesttypes.ImageManifest{
+	client.EXPECT().Inspect(gomock.Any(), "my-image", tag).Return([]manifesttypes.ImageManifest{
 		{
 			Descriptor: v1.Descriptor{Platform: &v1.Platform{Architecture: "arm64"}},
 			Ref:        &manifesttypes.SerializableNamed{Named: ref},
@@ -307,7 +307,7 @@ func TestRead(t *testing.T) {
 	require.NoError(t, err)
 
 	state, err := s.Read(provider.ReadRequest{
-		ID:  "tag",
+		ID:  "my-image",
 		Urn: _fakeURN,
 		Inputs: resource.PropertyMap{
 			"exports": resource.NewArrayProperty([]resource.PropertyValue{
