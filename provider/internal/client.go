@@ -38,7 +38,8 @@ type Client interface {
 type docker struct {
 	mu sync.Mutex
 
-	cli *command.DockerCli
+	cli      *command.DockerCli
+	builders map[string]*cachedBuilder
 }
 
 var _ Client = (*docker)(nil)
@@ -55,7 +56,7 @@ func newDockerClient() (*docker, error) {
 	}
 	err = cli.Initialize(opts)
 
-	return &docker{cli: cli}, err
+	return &docker{cli: cli, builders: map[string]*cachedBuilder{}}, err
 }
 
 // Build performs a buildkit build.
@@ -91,8 +92,8 @@ func (d *docker) Build(
 	printer, err := progress.NewPrinter(bctx, w,
 		progressui.PlainMode,
 		progress.WithDesc(
-			fmt.Sprintf("building with %q instance using %s driver", b.Name, b.Driver),
-			fmt.Sprintf("%s:%s", b.Driver, b.Name),
+			fmt.Sprintf("building with %q instance using %s driver", b.name, b.driver),
+			fmt.Sprintf("%s:%s", b.driver, b.name),
 		),
 	)
 	if err != nil {
@@ -164,9 +165,13 @@ func normalizeReference(ref string) (reference.Named, error) {
 // ready.
 func (d *docker) builder(
 	opts controllerapi.BuildOptions,
-) (*builder.Builder, error) {
+) (*cachedBuilder, error) {
 	d.mu.Lock()
 	defer d.mu.Unlock()
+
+	if b, ok := d.builders[opts.Builder]; ok {
+		return b, nil
+	}
 
 	contextPathHash := opts.ContextPath
 	if absContextPath, err := filepath.Abs(contextPathHash); err == nil {
@@ -181,10 +186,21 @@ func (d *docker) builder(
 	}
 
 	// Need to load nodes in order to determine the builder's driver.
-	_, err = b.LoadNodes(context.Background())
+	nodes, err := b.LoadNodes(context.Background())
 	if err != nil {
 		return nil, err
 	}
 
-	return b, nil
+	cached := &cachedBuilder{name: b.Name, driver: b.Driver, nodes: nodes}
+	d.builders[opts.Builder] = cached
+
+	return cached, nil
+}
+
+// cachedBuilder caches the builders we've loaded. Repeatedly fetching them can
+// sometimes result in EOF errors from the daemon, especially when under load.
+type cachedBuilder struct {
+	name   string
+	driver string
+	nodes  []builder.Node
 }
