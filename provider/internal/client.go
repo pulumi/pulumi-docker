@@ -23,7 +23,10 @@ import (
 	cfgtypes "github.com/docker/cli/cli/config/types"
 	"github.com/docker/cli/cli/flags"
 	manifesttypes "github.com/docker/cli/cli/manifest/types"
+	registryclient "github.com/docker/cli/cli/registry/client"
 	"github.com/docker/docker/api/types"
+	"github.com/docker/docker/api/types/registry"
+	registryconst "github.com/docker/docker/registry"
 	"github.com/moby/buildkit/client"
 	"github.com/moby/buildkit/session"
 	"github.com/moby/buildkit/util/progress/progressui"
@@ -37,7 +40,7 @@ type Client interface {
 	Auth(ctx context.Context, name string, creds RegistryAuth) error
 	Build(ctx provider.Context, name string, b Build) (map[string]*client.SolveResponse, error)
 	BuildKitEnabled() (bool, error)
-	Inspect(ctx context.Context, id string) ([]manifesttypes.ImageManifest, error)
+	Inspect(ctx context.Context, name string, id string) ([]manifesttypes.ImageManifest, error)
 	Delete(ctx context.Context, id string) ([]types.ImageDeleteResponseItem, error)
 }
 
@@ -113,9 +116,17 @@ func (d *docker) Auth(_ context.Context, name string, creds RegistryAuth) error 
 	if err != nil {
 		return err
 	}
-	key := u.Host
+	// If our address didn't have a scheme (as is the case with ECR), add one
+	// so we get the correct host.
+	if u.Hostname() == "" {
+		u, err = url.Parse("https://" + creds.Address)
+	}
+	if err != nil {
+		return err
+	}
+	key := u.Hostname()
 
-	if creds.Address == "registry-1.docker.io" || creds.Address == "https://index.docker.io/v1/" {
+	if key == "registry-1.docker.io" || key == "index.docker.io" || key == "docker.io" {
 		key = "https://index.docker.io/v1/"
 	}
 
@@ -287,15 +298,37 @@ func (d *docker) BuildKitEnabled() (bool, error) {
 }
 
 // Inspect inspects an image.
-func (d *docker) Inspect(ctx context.Context, id string) ([]manifesttypes.ImageManifest, error) {
+func (d *docker) Inspect(ctx context.Context, name string, id string) ([]manifesttypes.ImageManifest, error) {
 	ref, err := normalizeReference(id)
 	if err != nil {
 		return []manifesttypes.ImageManifest{}, err
 	}
 
-	rc := d.cli.RegistryClient(d.cli.DockerEndpoint().SkipTLSVerify)
+	// Constructed a RegistryClient which can use our in-memory auth.
+	insecure := d.cli.DockerEndpoint().SkipTLSVerify
+	resolver := func(_ context.Context, index *registry.IndexInfo) registry.AuthConfig {
+		configKey := index.Name
+		if index.Official {
+			configKey = registryconst.IndexServer
+		}
+
+		for _, scope := range []string{name, _baseAuth} {
+			auths, ok := d.auths[scope]
+			if !ok {
+				continue
+			}
+			if a, ok := auths[configKey]; ok {
+				return registry.AuthConfig(a)
+			}
+		}
+		return registry.AuthConfig{}
+	}
+	rc := registryclient.NewRegistryClient(resolver, command.UserAgent(), insecure)
+
 	manifests, err := rc.GetManifestList(ctx, ref)
 
+	// If the registry doesn't support manifest lists, attempt to fetch an
+	// individual one.
 	if err != nil && strings.Contains(err.Error(), "unsupported manifest format") {
 		manifest, err := rc.GetManifest(ctx, ref)
 		manifests = append(manifests, manifest)

@@ -719,8 +719,9 @@ func (*Image) Read(
 		state.Exports[idx].Manifests = []Manifest{}
 		for _, tag := range state.Tags {
 			// Does the tag still exist?
-			infos, err := cfg.client.Inspect(ctx, tag)
+			infos, err := cfg.client.Inspect(ctx, state.name, tag)
 			if err != nil {
+				ctx.Log(diag.Warning, err.Error())
 				continue
 			}
 

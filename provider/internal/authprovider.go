@@ -263,7 +263,9 @@ func (ap *authProvider) getAuthConfig(host string) (*types.AuthConfig, error) {
 	}
 
 	if _, exists := ap.authConfigCache[host]; !exists {
-		return nil, fmt.Errorf("missing auth for %q", host)
+		// No auth found. Don't error because the registry could be public and
+		// still usable.
+		return &types.AuthConfig{}, nil
 	}
 
 	return ap.authConfigCache[host], nil
