@@ -200,18 +200,18 @@ func (c *ClientDeleteCall) DoAndReturn(f func(context.Context, string) ([]types0
 }
 
 // Inspect mocks base method.
-func (m *MockClient) Inspect(ctx context.Context, id string) ([]types.ImageManifest, error) {
+func (m *MockClient) Inspect(ctx context.Context, name, id string) ([]types.ImageManifest, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Inspect", ctx, id)
+	ret := m.ctrl.Call(m, "Inspect", ctx, name, id)
 	ret0, _ := ret[0].([]types.ImageManifest)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // Inspect indicates an expected call of Inspect.
-func (mr *MockClientMockRecorder) Inspect(ctx, id any) *ClientInspectCall {
+func (mr *MockClientMockRecorder) Inspect(ctx, name, id any) *ClientInspectCall {
 	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Inspect", reflect.TypeOf((*MockClient)(nil).Inspect), ctx, id)
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Inspect", reflect.TypeOf((*MockClient)(nil).Inspect), ctx, name, id)
 	return &ClientInspectCall{Call: call}
 }
 
@@ -227,13 +227,13 @@ func (c *ClientInspectCall) Return(arg0 []types.ImageManifest, arg1 error) *Clie
 }
 
 // Do rewrite *gomock.Call.Do
-func (c *ClientInspectCall) Do(f func(context.Context, string) ([]types.ImageManifest, error)) *ClientInspectCall {
+func (c *ClientInspectCall) Do(f func(context.Context, string, string) ([]types.ImageManifest, error)) *ClientInspectCall {
 	c.Call = c.Call.Do(f)
 	return c
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
-func (c *ClientInspectCall) DoAndReturn(f func(context.Context, string) ([]types.ImageManifest, error)) *ClientInspectCall {
+func (c *ClientInspectCall) DoAndReturn(f func(context.Context, string, string) ([]types.ImageManifest, error)) *ClientInspectCall {
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }

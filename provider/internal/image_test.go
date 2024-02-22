@@ -62,7 +62,7 @@ func TestLifecycle(t *testing.T) {
 							}, nil
 						},
 					),
-					c.EXPECT().Inspect(gomock.Any(), "docker.io/pulumibot/buildkit-e2e").Return(
+					c.EXPECT().Inspect(gomock.Any(), "test", "docker.io/pulumibot/buildkit-e2e").Return(
 						[]manifesttypes.ImageManifest{
 							{
 								Ref:        &manifesttypes.SerializableNamed{Named: digestRef},
@@ -70,7 +70,7 @@ func TestLifecycle(t *testing.T) {
 							},
 						}, nil,
 					),
-					c.EXPECT().Inspect(gomock.Any(), "docker.io/pulumibot/buildkit-e2e:main"),
+					c.EXPECT().Inspect(gomock.Any(), "test", "docker.io/pulumibot/buildkit-e2e:main"),
 					c.EXPECT().Delete(gomock.Any(), digestRef.String()).Return(
 						[]types.ImageDeleteResponseItem{{Deleted: "deleted"}, {Untagged: "untagged"}}, nil),
 				)
@@ -314,7 +314,7 @@ func TestRead(t *testing.T) {
 
 	ctrl := gomock.NewController(t)
 	client := NewMockClient(ctrl)
-	client.EXPECT().Inspect(gomock.Any(), tag).Return([]manifesttypes.ImageManifest{
+	client.EXPECT().Inspect(gomock.Any(), "", tag).Return([]manifesttypes.ImageManifest{
 		{
 			Descriptor: v1.Descriptor{Platform: &v1.Platform{Architecture: "arm64"}},
 			Ref:        &manifesttypes.SerializableNamed{Named: ref},
