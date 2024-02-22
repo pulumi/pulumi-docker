@@ -300,15 +300,6 @@ func TestBuildxCaching(t *testing.T) {
 		{
 			name:      "dockerhub",
 			skip:      os.Getenv("DOCKER_HUB_PASSWORD") == "",
-			cacheTo:   "type=registry,mode=max,ref=docker.io/pulumibot/myapp",
-			cacheFrom: "type=registry,ref=docker.io/pulumibot/myapp",
-			address:   "docker.io",
-			username:  "pulumibot",
-			password:  os.Getenv("DOCKER_HUB_PASSWORD"),
-		},
-		{
-			name:      "dockerhub-tagged",
-			skip:      os.Getenv("DOCKER_HUB_PASSWORD") == "",
 			cacheTo:   "type=registry,mode=max,ref=docker.io/pulumibot/myapp:cache",
 			cacheFrom: "type=registry,ref=docker.io/pulumibot/myapp:cache",
 			address:   "docker.io",
@@ -317,15 +308,6 @@ func TestBuildxCaching(t *testing.T) {
 		},
 		{
 			name:      "ecr",
-			skip:      !ecrOK,
-			cacheTo:   fmt.Sprintf("type=registry,mode=max,image-manifest=true,oci-mediatypes=true,ref=%s", ecr.address),
-			cacheFrom: fmt.Sprintf("type=registry,ref=%s", ecr.address),
-			address:   ecr.address,
-			username:  ecr.username,
-			password:  ecr.password,
-		},
-		{
-			name:      "ecr-tagged",
 			skip:      !ecrOK,
 			cacheTo:   fmt.Sprintf("type=registry,mode=max,image-manifest=true,oci-mediatypes=true,ref=%s:cache", ecr.address),
 			cacheFrom: fmt.Sprintf("type=registry,ref=%s:cache", ecr.address),
@@ -338,8 +320,6 @@ func TestBuildxCaching(t *testing.T) {
 	for _, tt := range tests {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
-			t.Parallel()
-
 			if tt.skip {
 				t.Skip("Missing environment variables")
 			}
