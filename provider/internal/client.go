@@ -54,8 +54,9 @@ type Build interface {
 type docker struct {
 	mu sync.Mutex
 
-	cli   *command.DockerCli
-	auths map[string]map[string]cfgtypes.AuthConfig
+	cli      *command.DockerCli
+	auths    map[string]map[string]cfgtypes.AuthConfig
+	builders map[string]*cachedBuilder
 }
 
 var _ Client = (*docker)(nil)
@@ -78,7 +79,11 @@ func newDockerClient() (*docker, error) {
 		return nil, err
 	}
 
-	d := &docker{cli: cli, auths: map[string]map[string]cfgtypes.AuthConfig{}}
+	d := &docker{
+		cli:      cli,
+		auths:    map[string]map[string]cfgtypes.AuthConfig{},
+		builders: map[string]*cachedBuilder{},
+	}
 
 	// Load existing credentials into memory.
 	creds, err := cli.ConfigFile().GetAllCredentials()
@@ -175,15 +180,15 @@ func (d *docker) Build(
 		}
 	}()
 
-	b, nodes, err := d.builder(opts)
+	b, err := d.builder(opts)
 	if err != nil {
 		return nil, err
 	}
 	printer, err := progress.NewPrinter(bctx, w,
 		progressui.PlainMode,
 		progress.WithDesc(
-			fmt.Sprintf("building with %q instance using %s driver", b.Name, b.Driver),
-			fmt.Sprintf("%s:%s", b.Driver, b.Name),
+			fmt.Sprintf("building with %q instance using %s driver", b.name, b.driver),
+			fmt.Sprintf("%s:%s", b.driver, b.name),
 		),
 	)
 	if err != nil {
@@ -270,7 +275,7 @@ func (d *docker) Build(
 	// Perform the build.
 	results, err := buildx.Build(
 		bctx,
-		nodes,
+		b.nodes,
 		payload,
 		dockerutil.NewClient(d.cli),
 		filepath.Dir(d.cli.ConfigFile().Filename),
@@ -361,9 +366,13 @@ func normalizeReference(ref string) (reference.Named, error) {
 // ready.
 func (d *docker) builder(
 	opts controllerapi.BuildOptions,
-) (*builder.Builder, []builder.Node, error) {
+) (*cachedBuilder, error) {
 	d.mu.Lock()
 	defer d.mu.Unlock()
+
+	if b, ok := d.builders[opts.Builder]; ok {
+		return b, nil
+	}
 
 	contextPathHash := opts.ContextPath
 	if absContextPath, err := filepath.Abs(contextPathHash); err == nil {
@@ -374,13 +383,22 @@ func (d *docker) builder(
 		builder.WithContextPathHash(contextPathHash),
 	)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
 	nodes, err := b.LoadNodes(context.Background())
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
-	return b, nodes, nil
+	cached := &cachedBuilder{name: b.Name, driver: b.Driver, nodes: nodes}
+	d.builders[opts.Builder] = cached
+
+	return cached, nil
+}
+
+type cachedBuilder struct {
+	name   string
+	driver string
+	nodes  []builder.Node
 }
