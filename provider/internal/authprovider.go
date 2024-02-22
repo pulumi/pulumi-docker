@@ -262,13 +262,13 @@ func (ap *authProvider) getAuthConfig(host string) (*types.AuthConfig, error) {
 		host = dockerHubConfigfileKey
 	}
 
-	if _, exists := ap.authConfigCache[host]; !exists {
-		// No auth found. Don't error because the registry could be public and
-		// still usable.
-		return &types.AuthConfig{}, nil
+	if auth, exists := ap.authConfigCache[host]; exists {
+		return auth, nil
 	}
 
-	return ap.authConfigCache[host], nil
+	// No auth found. Don't error because the registry could be public and
+	// still usable.
+	return &types.AuthConfig{}, nil
 }
 
 func (ap *authProvider) getAuthorityKey(host string, salt []byte) (ed25519.PrivateKey, error) {

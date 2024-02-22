@@ -314,7 +314,7 @@ func TestRead(t *testing.T) {
 
 	ctrl := gomock.NewController(t)
 	client := NewMockClient(ctrl)
-	client.EXPECT().Inspect(gomock.Any(), "", tag).Return([]manifesttypes.ImageManifest{
+	client.EXPECT().Inspect(gomock.Any(), "my-image", tag).Return([]manifesttypes.ImageManifest{
 		{
 			Descriptor: v1.Descriptor{Platform: &v1.Platform{Architecture: "arm64"}},
 			Ref:        &manifesttypes.SerializableNamed{Named: ref},
@@ -333,7 +333,7 @@ func TestRead(t *testing.T) {
 	require.NoError(t, err)
 
 	resp, err := s.Read(provider.ReadRequest{
-		ID:  tag,
+		ID:  "my-image",
 		Urn: _fakeURN,
 		Properties: resource.PropertyMap{
 			"exports": resource.NewArrayProperty([]resource.PropertyValue{

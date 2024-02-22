@@ -23,7 +23,6 @@ import (
 	"github.com/docker/buildx/util/buildflags"
 	"github.com/docker/buildx/util/platformutil"
 	"github.com/docker/docker/errdefs"
-	"github.com/moby/buildkit/exporter/containerimage/exptypes"
 	"github.com/moby/buildkit/session"
 	"github.com/moby/buildkit/session/secrets/secretsprovider"
 	"github.com/spf13/afero"
@@ -163,9 +162,6 @@ type ImageState struct {
 
 	Digests     map[Platform][]string `pulumi:"digests,optional"     provider:"output"`
 	ContextHash string                `pulumi:"contextHash,optional" provider:"internal,output"`
-
-	id   string
-	name string
 }
 
 // Annotate describes outputs of the Image resource.
@@ -641,36 +637,15 @@ func (i *Image) Update(
 		return state, nil
 	}
 
-	var id string
-
 	for _, b := range builds {
 		// This returns a map of target names to exporter responses.
-		results, err := cfg.client.Build(ctx, name, b)
+		_, err := cfg.client.Build(ctx, name, b)
 		if err != nil {
 			return state, err
 		}
-
-		if id != "" {
-			// We already found a digest or exported tags, nothing else to do.
-			continue
-		}
-
-		for _, result := range results {
-			if tags, ok := result.ExporterResponse["image.name"]; ok {
-				// This will be a comma-delimited list if we exported anything to registries.
-				id = tags
-			} else if digest, ok := result.ExporterResponse[exptypes.ExporterImageConfigDigestKey]; ok {
-				id = digest
-			} else if digest, ok := result.ExporterResponse["containerimage.digest"]; ok {
-				id = digest
-			} else {
-				id = name
-			}
-		}
 	}
 
-	state.id = id
-	_, _, state, err = i.Read(ctx, id, input, state)
+	_, _, state, err = i.Read(ctx, name, input, state)
 
 	return state, err
 }
@@ -682,15 +657,15 @@ func (i *Image) Create(
 	input ImageArgs,
 	preview bool,
 ) (string, ImageState, error) {
-	state, err := i.Update(ctx, name, ImageState{name: name}, input, preview)
-	return state.id, state, err
+	state, err := i.Update(ctx, name, ImageState{}, input, preview)
+	return name, state, err
 }
 
 // Read attempts to read manifests from an image's exports. An image without
 // exports will have no manifests.
 func (*Image) Read(
 	ctx provider.Context,
-	id string,
+	name string,
 	input ImageArgs,
 	state ImageState,
 ) (
@@ -702,8 +677,8 @@ func (*Image) Read(
 	// Ensure we're authenticated.
 	cfg := infer.GetConfig[Config](ctx)
 	for _, reg := range input.Registries {
-		if err := cfg.client.Auth(ctx, state.name, reg); err != nil {
-			return id, input, state, err
+		if err := cfg.client.Auth(ctx, name, reg); err != nil {
+			return name, input, state, err
 		}
 	}
 
@@ -719,7 +694,7 @@ func (*Image) Read(
 		state.Exports[idx].Manifests = []Manifest{}
 		for _, tag := range state.Tags {
 			// Does the tag still exist?
-			infos, err := cfg.client.Inspect(ctx, state.name, tag)
+			infos, err := cfg.client.Inspect(ctx, name, tag)
 			if err != nil {
 				ctx.Log(diag.Warning, err.Error())
 				continue
@@ -767,7 +742,7 @@ func (*Image) Read(
 		return "", input, state, nil
 	}
 
-	return id, input, state, nil
+	return name, input, state, nil
 }
 
 // Delete deletes an Image. If the Image was already deleted out-of-band it is treated as a success.
