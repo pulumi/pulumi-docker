@@ -45,7 +45,7 @@ type dockerNativeProvider struct {
 // docker native methods
 
 // Attach sends the engine address to an already running plugin.
-func (p *dockerNativeProvider) Attach(context context.Context, req *rpc.PluginAttach) (*emptypb.Empty, error) {
+func (p *dockerNativeProvider) Attach(_ context.Context, req *rpc.PluginAttach) (*emptypb.Empty, error) {
 	host, err := provider.NewHostClient(req.GetAddress())
 	if err != nil {
 		return nil, err
@@ -55,24 +55,24 @@ func (p *dockerNativeProvider) Attach(context context.Context, req *rpc.PluginAt
 }
 
 // Call dynamically executes a method in the provider associated with a component resource.
-func (p *dockerNativeProvider) Call(ctx context.Context, req *rpc.CallRequest) (*rpc.CallResponse, error) {
+func (p *dockerNativeProvider) Call(context.Context, *rpc.CallRequest) (*rpc.CallResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "call is not yet implemented")
 }
 
 // Construct creates a new component resource.
-func (p *dockerNativeProvider) Construct(ctx context.Context, req *rpc.ConstructRequest) (
+func (p *dockerNativeProvider) Construct(context.Context, *rpc.ConstructRequest) (
 	*rpc.ConstructResponse, error,
 ) {
 	return nil, status.Error(codes.Unimplemented, "construct is not yet implemented")
 }
 
 // CheckConfig validates the configuration for this provider.
-func (p *dockerNativeProvider) CheckConfig(ctx context.Context, req *rpc.CheckRequest) (*rpc.CheckResponse, error) {
+func (p *dockerNativeProvider) CheckConfig(_ context.Context, req *rpc.CheckRequest) (*rpc.CheckResponse, error) {
 	return &rpc.CheckResponse{Inputs: req.GetNews()}, nil
 }
 
 // DiffConfig diffs the configuration for this provider.
-func (p *dockerNativeProvider) DiffConfig(ctx context.Context, req *rpc.DiffRequest) (*rpc.DiffResponse, error) {
+func (p *dockerNativeProvider) DiffConfig(context.Context, *rpc.DiffRequest) (*rpc.DiffResponse, error) {
 	return &rpc.DiffResponse{}, nil
 }
 
@@ -112,7 +112,7 @@ func (p *dockerNativeProvider) Invoke(_ context.Context, req *rpc.InvokeRequest)
 // StreamInvoke dynamically executes a built-in function in the provider. The result is streamed
 // back as a series of messages.
 func (p *dockerNativeProvider) StreamInvoke(
-	req *rpc.InvokeRequest, server rpc.ResourceProvider_StreamInvokeServer,
+	req *rpc.InvokeRequest, _ rpc.ResourceProvider_StreamInvokeServer,
 ) error {
 	tok := req.GetTok()
 	return fmt.Errorf("unknown StreamInvoke token '%s'", tok)
@@ -277,7 +277,7 @@ func (p *dockerNativeProvider) Check(ctx context.Context, req *rpc.CheckRequest)
 }
 
 // Diff checks what impacts a hypothetical update will have on the resource's properties.
-func (p *dockerNativeProvider) Diff(ctx context.Context, req *rpc.DiffRequest) (*rpc.DiffResponse, error) {
+func (p *dockerNativeProvider) Diff(_ context.Context, req *rpc.DiffRequest) (*rpc.DiffResponse, error) {
 	urn := resource.URN(req.GetUrn())
 	label := fmt.Sprintf("%s.Diff(%s)", p.name, urn)
 	logging.V(9).Infof("%s executing", label)
@@ -422,7 +422,7 @@ func (p *dockerNativeProvider) Create(ctx context.Context, req *rpc.CreateReques
 }
 
 // Read the current live state associated with a resource.
-func (p *dockerNativeProvider) Read(ctx context.Context, req *rpc.ReadRequest) (*rpc.ReadResponse, error) {
+func (p *dockerNativeProvider) Read(_ context.Context, req *rpc.ReadRequest) (*rpc.ReadResponse, error) {
 	urn := resource.URN(req.GetUrn())
 	label := fmt.Sprintf("%s.Read(%s)", p.name, urn)
 	logging.V(9).Infof("%s executing", label)
@@ -497,7 +497,7 @@ func (p *dockerNativeProvider) Update(ctx context.Context, req *rpc.UpdateReques
 
 // Delete tears down an existing resource with the given ID.  If it fails, the resource is assumed
 // to still exist.
-func (p *dockerNativeProvider) Delete(ctx context.Context, req *rpc.DeleteRequest) (*pbempty.Empty, error) {
+func (p *dockerNativeProvider) Delete(_ context.Context, req *rpc.DeleteRequest) (*pbempty.Empty, error) {
 	urn := resource.URN(req.GetUrn())
 	label := fmt.Sprintf("%s.Update(%s)", p.name, urn)
 	logging.V(9).Infof("%s executing", label)
@@ -512,7 +512,7 @@ func (p *dockerNativeProvider) GetPluginInfo(context.Context, *pbempty.Empty) (*
 }
 
 // GetSchema returns the JSON-serialized schema for the provider.
-func (p *dockerNativeProvider) GetSchema(ctx context.Context, req *rpc.GetSchemaRequest) (
+func (p *dockerNativeProvider) GetSchema(_ context.Context, req *rpc.GetSchemaRequest) (
 	*rpc.GetSchemaResponse, error,
 ) {
 	if v := req.GetVersion(); v != 0 {

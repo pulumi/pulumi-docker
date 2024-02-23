@@ -43,15 +43,15 @@ func (dp dockerHybridProvider) Attach(ctx context.Context, attach *rpc.PluginAtt
 	return dp.nativeProvider.Attach(ctx, attach)
 }
 
-func (dp dockerHybridProvider) Call(ctx context.Context, request *rpc.CallRequest) (*rpc.CallResponse, error) {
+func (dp dockerHybridProvider) Call(context.Context, *rpc.CallRequest) (*rpc.CallResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "Call is not yet implemented")
 }
 
-func (dp dockerHybridProvider) Cancel(ctx context.Context, e *empty.Empty) (*empty.Empty, error) {
+func (dp dockerHybridProvider) Cancel(context.Context, *empty.Empty) (*empty.Empty, error) {
 	return &empty.Empty{}, nil
 }
 
-func (dp dockerHybridProvider) GetSchema(ctx context.Context, request *rpc.GetSchemaRequest) (
+func (dp dockerHybridProvider) GetSchema(_ context.Context, request *rpc.GetSchemaRequest) (
 	*rpc.GetSchemaResponse, error) {
 	if v := request.GetVersion(); v != 0 {
 		return nil, fmt.Errorf("unsupported schema version %d", v)
@@ -99,8 +99,7 @@ func (dp dockerHybridProvider) Invoke(ctx context.Context, request *rpc.InvokeRe
 	return dp.bridgedProvider.Invoke(ctx, request)
 }
 
-func (dp dockerHybridProvider) StreamInvoke(
-	request *rpc.InvokeRequest, server rpc.ResourceProvider_StreamInvokeServer) error {
+func (dp dockerHybridProvider) StreamInvoke(*rpc.InvokeRequest, rpc.ResourceProvider_StreamInvokeServer) error {
 	return status.Error(codes.Unimplemented, "StreamInvoke is not yet implemented")
 }
 
@@ -158,12 +157,12 @@ func (dp dockerHybridProvider) Delete(ctx context.Context, request *rpc.DeleteRe
 	return dp.bridgedProvider.Delete(ctx, request)
 }
 
-func (dp dockerHybridProvider) Construct(ctx context.Context, request *rpc.ConstructRequest) (
+func (dp dockerHybridProvider) Construct(context.Context, *rpc.ConstructRequest) (
 	*rpc.ConstructResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "Construct is not yet implemented")
 }
 
-func (dp dockerHybridProvider) GetPluginInfo(ctx context.Context, empty *empty.Empty) (*rpc.PluginInfo, error) {
+func (dp dockerHybridProvider) GetPluginInfo(context.Context, *empty.Empty) (*rpc.PluginInfo, error) {
 	return &rpc.PluginInfo{
 		Version: dp.version,
 	}, nil
