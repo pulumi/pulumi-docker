@@ -58,7 +58,7 @@ func TestLifecycle(t *testing.T) {
 						[]manifesttypes.ImageManifest{}, nil,
 					),
 					c.EXPECT().Inspect(gomock.Any(), "docker.io/blampe/buildkit-e2e:main"),
-					c.EXPECT().Delete(gomock.Any(), "SHA256:digest").Return(
+					c.EXPECT().Delete(gomock.Any(), "test").Return(
 						[]types.ImageDeleteResponseItem{{Deleted: "deleted"}, {Untagged: "untagged"}}, nil),
 				)
 				return c
@@ -199,7 +199,7 @@ func TestLifecycle(t *testing.T) {
 							return &client.SolveResponse{ExporterResponse: map[string]string{"image.name": "test:latest"}}, nil
 						},
 					),
-					c.EXPECT().Delete(gomock.Any(), "test:latest").Return(nil, nil),
+					c.EXPECT().Delete(gomock.Any(), "test").Return(nil, nil),
 				)
 				return c
 			},

@@ -18,7 +18,6 @@ import (
 	"github.com/docker/buildx/util/buildflags"
 	"github.com/docker/buildx/util/platformutil"
 	"github.com/docker/docker/errdefs"
-	"github.com/moby/buildkit/exporter/containerimage/exptypes"
 	"github.com/muesli/reflow/dedent"
 
 	provider "github.com/pulumi/pulumi-go-provider"
@@ -110,8 +109,6 @@ type ImageState struct {
 	ImageArgs
 
 	Manifests []properties.Manifest `pulumi:"manifests" provider:"output"`
-
-	id string
 }
 
 // Annotate describes outputs of the Image resource.
@@ -241,24 +238,13 @@ func (i *Image) Update(
 		return state, nil
 	}
 
-	result, err := cfg.client.Build(ctx, opts)
+	_, err = cfg.client.Build(ctx, opts)
 	if err != nil {
 		return state, err
 	}
 
-	var id string
-	if digest, ok := result.ExporterResponse["containerimage.digest"]; ok {
-		id = digest
-	} else if digest, ok := result.ExporterResponse[exptypes.ExporterImageConfigDigestKey]; ok {
-		id = digest
-	} else if tags, ok := result.ExporterResponse["image.name"]; ok {
-		id = tags
-	} else {
-		id = name
-	}
-
 	// TODO: Handle case with no export.
-	_, _, state, err = i.Read(ctx, id, input, state)
+	_, _, state, err = i.Read(ctx, name, input, state)
 
 	return state, err
 }
@@ -274,14 +260,14 @@ func (i *Image) Create(
 		Manifests: []properties.Manifest{},
 	}
 	state, err := i.Update(ctx, name, state, input, preview)
-	return state.id, state, err
+	return name, state, err
 }
 
 // Read attempts to read manifests from an image's exports. An image without
 // exports will have no manifests.
 func (*Image) Read(
 	ctx provider.Context,
-	id string,
+	name string,
 	input ImageArgs,
 	state ImageState,
 ) (
@@ -292,7 +278,7 @@ func (*Image) Read(
 ) {
 	opts, err := input.toBuildOptions()
 	if err != nil {
-		return id, input, state, err
+		return name, input, state, err
 	}
 
 	cfg := infer.GetConfig[Config](ctx)
@@ -338,10 +324,9 @@ func (*Image) Read(
 		}
 	}
 
-	state.id = id
 	state.Manifests = manifests
 
-	return id, input, state, nil
+	return name, input, state, nil
 }
 
 // Delete deletes an Image. If the Image was already deleted out-of-band it is treated as a success.
@@ -349,12 +334,12 @@ func (*Image) Read(
 // Any tags previously pushed to registries will not be deleted.
 func (*Image) Delete(
 	ctx provider.Context,
-	id string,
+	name string,
 	_ ImageState,
 ) error {
 	cfg := infer.GetConfig[Config](ctx)
 
-	deletions, err := cfg.client.Delete(ctx.(context.Context), id)
+	deletions, err := cfg.client.Delete(ctx.(context.Context), name)
 	if errdefs.IsNotFound(err) {
 		return nil // Nothing to do.
 	}
@@ -375,7 +360,7 @@ func (*Image) Delete(
 
 // Diff re-implements most of the default diff behavior, with the exception of
 // ignoring "password" changes on registry inputs.
-func (*Image) Diff(_ provider.Context, id string, olds ImageState, news ImageArgs) (provider.DiffResponse, error) {
+func (*Image) Diff(_ provider.Context, _ string, olds ImageState, news ImageArgs) (provider.DiffResponse, error) {
 	diff := map[string]provider.PropertyDiff{}
 	update := provider.PropertyDiff{Kind: provider.Update}
 
