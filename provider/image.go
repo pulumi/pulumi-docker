@@ -293,7 +293,7 @@ func (p *dockerNativeProvider) dockerBuild(ctx context.Context,
 	}
 
 	// Print build logs to `Info` progress report
-	imageID, err := p.runImageBuild(ctx, docker, tar, opts, urn, img.Name)
+	imageID, err := p.runImageBuild(ctx, docker, tar, opts, urn)
 	if err != nil {
 		return "", nil, err
 	}
@@ -459,7 +459,7 @@ func (p *dockerNativeProvider) getRepoDigest(
 // 4. We only return an imageID if the image in the store matches both (1.) and (2.)
 func (p *dockerNativeProvider) runImageBuild(
 	ctx context.Context, docker *client.Client, tar io.Reader,
-	opts types.ImageBuildOptions, urn resource.URN, name string,
+	opts types.ImageBuildOptions, urn resource.URN,
 ) (string, error) {
 	if opts.Labels == nil {
 		opts.Labels = make(map[string]string)

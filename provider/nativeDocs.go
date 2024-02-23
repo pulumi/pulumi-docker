@@ -10,4 +10,4 @@ var docImageDescription string
 //go:embed pkg/docs-gen/examples/image.md
 var docImageExamples string
 
-var docImage string = docImageDescription + "\n\n" + docImageExamples
+var docImage = docImageDescription + "\n\n" + docImageExamples
