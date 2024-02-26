@@ -277,3 +277,16 @@ index 8c5409a..4a7e2e9 100644
  					MaximumRetryCount: d.Get("max_retry_count").(int),
  				},
  				Resources: container.Resources{
+diff --git a/internal/provider/config.go b/internal/provider/config.go
+index 7393751..5b2cabf 100644
+--- a/internal/provider/config.go
++++ b/internal/provider/config.go
+@@ -115,7 +115,7 @@ func (c *Config) NewClient() (*client.Client, error) {
+ 		return nil, err
+ 	}
+ 	if helper != nil {
+-		opts = append(opts, client.WithDialContext(helper.Dialer), client.WithHost(helper.Host))
++		opts = append(opts, client.WithHost(helper.Host), client.WithDialContext(helper.Dialer))
+ 	} else if c.Host != "" {
+ 		opts = append(opts, client.WithHost(c.Host))
+ 	}
