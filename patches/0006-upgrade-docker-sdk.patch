@@ -239,7 +239,7 @@ index bde327f..61c8e2b 100644
  		PublishAllPorts: d.Get("publish_all_ports").(bool),
  		RestartPolicy: container.RestartPolicy{
 -			Name:              d.Get("restart").(string),
-+			Name:              container.RestartPolicyMode(d.Get("restart")),
++			Name:              container.RestartPolicyMode(d.Get("restart").(string)),
  			MaximumRetryCount: d.Get("max_retry_count").(int),
  		},
  		Runtime:        d.Get("runtime").(string),
@@ -258,35 +258,22 @@ index 5c15e57..15370d8 100644
 @@ -195,7 +196,7 @@ func fetchLocalImages(ctx context.Context, data *Data, client *client.Client) er
  func pullImage(ctx context.Context, data *Data, client *client.Client, authConfig *AuthConfigs, image string, platform string) error {
  	pullOpts := parseImageOptions(image)
- 
+
 -	auth := types.AuthConfig{}
 +	auth := registry.AuthConfig{}
  	if authConfig, ok := authConfig.Configs[pullOpts.Registry]; ok {
  		auth = authConfig
  	}
 diff --git a/internal/provider/resource_docker_container_funcs.go b/internal/provider/resource_docker_container_funcs.go
-index 61c8e2b..8c5409a 100644
---- a/internal/provider/resource_docker_container_funcs.go
-+++ b/internal/provider/resource_docker_container_funcs.go
-@@ -236,7 +236,7 @@ func resourceDockerContainerCreate(ctx context.Context, d *schema.ResourceData,
- 		Privileged:      d.Get("privileged").(bool),
- 		PublishAllPorts: d.Get("publish_all_ports").(bool),
- 		RestartPolicy: container.RestartPolicy{
--			Name:              container.RestartPolicyMode(d.Get("restart")),
-+			Name:              d.Get("restart").(container.RestartPolicyMode),
- 			MaximumRetryCount: d.Get("max_retry_count").(int),
- 		},
- 		Runtime:        d.Get("runtime").(string),
-diff --git a/internal/provider/resource_docker_container_funcs.go b/internal/provider/resource_docker_container_funcs.go
 index 8c5409a..4a7e2e9 100644
 --- a/internal/provider/resource_docker_container_funcs.go
 +++ b/internal/provider/resource_docker_container_funcs.go
 @@ -835,7 +835,7 @@ func resourceDockerContainerUpdate(ctx context.Context, d *schema.ResourceData,
- 
+
  			updateConfig := container.UpdateConfig{
  				RestartPolicy: container.RestartPolicy{
 -					Name:              d.Get("restart").(string),
-+					Name:              d.Get("restart").(container.RestartPolicyMode),
++					Name:              container.RestartPolicyMode(d.Get("restart").(string)),
  					MaximumRetryCount: d.Get("max_retry_count").(int),
  				},
  				Resources: container.Resources{
