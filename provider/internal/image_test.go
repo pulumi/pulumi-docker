@@ -9,7 +9,7 @@ import (
 	controllerapi "github.com/docker/buildx/controller/pb"
 	manifesttypes "github.com/docker/cli/cli/manifest/types"
 	"github.com/docker/distribution/reference"
-	"github.com/docker/docker/api/types"
+	"github.com/docker/docker/api/types/image"
 	"github.com/moby/buildkit/client"
 	v1 "github.com/opencontainers/image-spec/specs-go/v1"
 	"github.com/stretchr/testify/assert"
@@ -59,7 +59,7 @@ func TestLifecycle(t *testing.T) {
 					),
 					c.EXPECT().Inspect(gomock.Any(), "docker.io/blampe/buildkit-e2e:main"),
 					c.EXPECT().Delete(gomock.Any(), "test").Return(
-						[]types.ImageDeleteResponseItem{{Deleted: "deleted"}, {Untagged: "untagged"}}, nil),
+						[]image.DeleteResponse{{Deleted: "deleted"}, {Untagged: "untagged"}}, nil),
 				)
 				return c
 			},

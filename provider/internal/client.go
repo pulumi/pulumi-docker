@@ -20,6 +20,7 @@ import (
 	"github.com/docker/cli/cli/flags"
 	manifesttypes "github.com/docker/cli/cli/manifest/types"
 	"github.com/docker/docker/api/types"
+	"github.com/docker/docker/api/types/image"
 	"github.com/moby/buildkit/client"
 	"github.com/moby/buildkit/util/progress/progressui"
 
@@ -32,7 +33,7 @@ type Client interface {
 	Build(ctx provider.Context, opts controllerapi.BuildOptions) (*client.SolveResponse, error)
 	BuildKitEnabled() (bool, error)
 	Inspect(ctx context.Context, id string) ([]manifesttypes.ImageManifest, error)
-	Delete(ctx context.Context, id string) ([]types.ImageDeleteResponseItem, error)
+	Delete(ctx context.Context, id string) ([]image.DeleteResponse, error)
 }
 
 type docker struct {
@@ -106,6 +107,9 @@ func (d *docker) Build(
 		res.Done()
 	}
 
+	if printErr := printer.Wait(); printErr != nil {
+		return solve, printErr
+	}
 	for _, w := range printer.Warnings() {
 		b := &bytes.Buffer{}
 		fmt.Fprintf(b, "%s", w.Short)
@@ -143,7 +147,7 @@ func (d *docker) Inspect(ctx context.Context, id string) ([]manifesttypes.ImageM
 }
 
 // Delete deletes an image with the given ID.
-func (d *docker) Delete(ctx context.Context, id string) ([]types.ImageDeleteResponseItem, error) {
+func (d *docker) Delete(ctx context.Context, id string) ([]image.DeleteResponse, error) {
 	return d.cli.Client().ImageRemove(ctx, id, types.ImageRemoveOptions{
 		Force: true, // Needed in case the image has multiple tags.
 	})

@@ -14,7 +14,7 @@ import (
 
 	pb "github.com/docker/buildx/controller/pb"
 	types "github.com/docker/cli/cli/manifest/types"
-	types0 "github.com/docker/docker/api/types"
+	image "github.com/docker/docker/api/types/image"
 	client "github.com/moby/buildkit/client"
 	provider "github.com/pulumi/pulumi-go-provider"
 	gomock "go.uber.org/mock/gomock"
@@ -122,10 +122,10 @@ func (c *ClientBuildKitEnabledCall) DoAndReturn(f func() (bool, error)) *ClientB
 }
 
 // Delete mocks base method.
-func (m *MockClient) Delete(ctx context.Context, id string) ([]types0.ImageDeleteResponseItem, error) {
+func (m *MockClient) Delete(ctx context.Context, id string) ([]image.DeleteResponse, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Delete", ctx, id)
-	ret0, _ := ret[0].([]types0.ImageDeleteResponseItem)
+	ret0, _ := ret[0].([]image.DeleteResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -143,19 +143,19 @@ type ClientDeleteCall struct {
 }
 
 // Return rewrite *gomock.Call.Return
-func (c *ClientDeleteCall) Return(arg0 []types0.ImageDeleteResponseItem, arg1 error) *ClientDeleteCall {
+func (c *ClientDeleteCall) Return(arg0 []image.DeleteResponse, arg1 error) *ClientDeleteCall {
 	c.Call = c.Call.Return(arg0, arg1)
 	return c
 }
 
 // Do rewrite *gomock.Call.Do
-func (c *ClientDeleteCall) Do(f func(context.Context, string) ([]types0.ImageDeleteResponseItem, error)) *ClientDeleteCall {
+func (c *ClientDeleteCall) Do(f func(context.Context, string) ([]image.DeleteResponse, error)) *ClientDeleteCall {
 	c.Call = c.Call.Do(f)
 	return c
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
-func (c *ClientDeleteCall) DoAndReturn(f func(context.Context, string) ([]types0.ImageDeleteResponseItem, error)) *ClientDeleteCall {
+func (c *ClientDeleteCall) DoAndReturn(f func(context.Context, string) ([]image.DeleteResponse, error)) *ClientDeleteCall {
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }
