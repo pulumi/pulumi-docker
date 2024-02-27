@@ -644,6 +644,20 @@ func TestBuildOptions(t *testing.T) {
 		assert.ErrorContains(t, err, "cacheFrom should only specify one cache type")
 		assert.ErrorContains(t, err, "cacheTo should only specify one cache type")
 	})
+
+	t.Run("dockerfile parsing", func(t *testing.T) {
+		path := "./testdata/Dockerfile.invalid"
+		data, err := os.ReadFile(path)
+		require.NoError(t, err)
+
+		for _, d := range []Dockerfile{
+			{Location: path}, {Inline: string(data)},
+		} {
+			args := ImageArgs{Dockerfile: d}
+			_, err := args.toBuildOptions(false)
+			assert.ErrorContains(t, err, "unknown instruction: RUNN (did you mean RUN?)")
+		}
+	})
 }
 
 func TestBuildable(t *testing.T) {

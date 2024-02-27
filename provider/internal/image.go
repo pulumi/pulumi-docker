@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"io"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -23,6 +24,8 @@ import (
 	"github.com/docker/buildx/util/buildflags"
 	"github.com/docker/buildx/util/platformutil"
 	"github.com/docker/docker/errdefs"
+	"github.com/moby/buildkit/frontend/dockerfile/instructions"
+	"github.com/moby/buildkit/frontend/dockerfile/parser"
 	"github.com/moby/buildkit/session"
 	"github.com/moby/buildkit/session/secrets/secretsprovider"
 	"github.com/spf13/afero"
@@ -500,6 +503,18 @@ func (ia *ImageArgs) toBuildOptions(preview bool) (controllerapi.BuildOptions, e
 		}
 	}
 
+	if ia.Dockerfile.Location != "" {
+		abs, err := filepath.Abs(ia.Dockerfile.Location)
+		if err == nil && isLocalFile(afero.NewOsFs(), abs) {
+			f, _ := os.Open(abs)
+			multierr = errors.Join(multierr, parseDockerfile(f))
+		}
+	}
+
+	if ia.Dockerfile.Inline != "" {
+		multierr = errors.Join(parseDockerfile(strings.NewReader(ia.Dockerfile.Inline)))
+	}
+
 	// Discard any unknown inputs if this is a preview -- we don't want them to
 	// cause validation errors.
 	filtered := ia.withoutUnknowns(preview)
@@ -910,4 +925,16 @@ func (*Image) Diff(
 		HasChanges:          len(diff) > 0,
 		DetailedDiff:        diff,
 	}, nil
+}
+
+func parseDockerfile(r io.Reader) error {
+	parsed, err := parser.Parse(r)
+	if err != nil {
+		return newCheckFailure("dockerfile", err)
+	}
+	_, _, err = instructions.Parse(parsed.AST)
+	if err != nil {
+		return newCheckFailure("dockerfile", err)
+	}
+	return nil
 }
