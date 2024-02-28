@@ -81,9 +81,9 @@ class RegistryAuth(dict):
                  password: Optional[str] = None,
                  username: Optional[str] = None):
         """
-        :param str address: The registry's address (e.g. "docker.io")
-        :param str password: Password or token for the registry
-        :param str username: Username for the registry
+        :param str address: The registry's address (e.g. "docker.io").
+        :param str password: Password or token for the registry.
+        :param str username: Username for the registry.
         """
         pulumi.set(__self__, "address", address)
         if password is not None:
@@ -95,7 +95,7 @@ class RegistryAuth(dict):
     @pulumi.getter
     def address(self) -> str:
         """
-        The registry's address (e.g. "docker.io")
+        The registry's address (e.g. "docker.io").
         """
         return pulumi.get(self, "address")
 
@@ -103,7 +103,7 @@ class RegistryAuth(dict):
     @pulumi.getter
     def password(self) -> Optional[str]:
         """
-        Password or token for the registry
+        Password or token for the registry.
         """
         return pulumi.get(self, "password")
 
@@ -111,7 +111,7 @@ class RegistryAuth(dict):
     @pulumi.getter
     def username(self) -> Optional[str]:
         """
-        Username for the registry
+        Username for the registry.
         """
         return pulumi.get(self, "username")
 

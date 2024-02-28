@@ -1272,15 +1272,15 @@ export interface VolumeLabel {
 export namespace buildx {
     export interface RegistryAuth {
         /**
-         * The registry's address (e.g. "docker.io")
+         * The registry's address (e.g. "docker.io").
          */
         address: pulumi.Input<string>;
         /**
-         * Password or token for the registry
+         * Password or token for the registry.
          */
         password?: pulumi.Input<string>;
         /**
-         * Username for the registry
+         * Username for the registry.
          */
         username?: pulumi.Input<string>;
     }

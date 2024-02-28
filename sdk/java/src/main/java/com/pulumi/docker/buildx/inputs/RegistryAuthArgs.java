@@ -17,14 +17,14 @@ public final class RegistryAuthArgs extends com.pulumi.resources.ResourceArgs {
     public static final RegistryAuthArgs Empty = new RegistryAuthArgs();
 
     /**
-     * The registry&#39;s address (e.g. &#34;docker.io&#34;)
+     * The registry&#39;s address (e.g. &#34;docker.io&#34;).
      * 
      */
     @Import(name="address", required=true)
     private Output<String> address;
 
     /**
-     * @return The registry&#39;s address (e.g. &#34;docker.io&#34;)
+     * @return The registry&#39;s address (e.g. &#34;docker.io&#34;).
      * 
      */
     public Output<String> address() {
@@ -32,14 +32,14 @@ public final class RegistryAuthArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * Password or token for the registry
+     * Password or token for the registry.
      * 
      */
     @Import(name="password")
     private @Nullable Output<String> password;
 
     /**
-     * @return Password or token for the registry
+     * @return Password or token for the registry.
      * 
      */
     public Optional<Output<String>> password() {
@@ -47,14 +47,14 @@ public final class RegistryAuthArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * Username for the registry
+     * Username for the registry.
      * 
      */
     @Import(name="username")
     private @Nullable Output<String> username;
 
     /**
-     * @return Username for the registry
+     * @return Username for the registry.
      * 
      */
     public Optional<Output<String>> username() {
@@ -88,7 +88,7 @@ public final class RegistryAuthArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param address The registry&#39;s address (e.g. &#34;docker.io&#34;)
+         * @param address The registry&#39;s address (e.g. &#34;docker.io&#34;).
          * 
          * @return builder
          * 
@@ -99,7 +99,7 @@ public final class RegistryAuthArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param address The registry&#39;s address (e.g. &#34;docker.io&#34;)
+         * @param address The registry&#39;s address (e.g. &#34;docker.io&#34;).
          * 
          * @return builder
          * 
@@ -109,7 +109,7 @@ public final class RegistryAuthArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param password Password or token for the registry
+         * @param password Password or token for the registry.
          * 
          * @return builder
          * 
@@ -120,7 +120,7 @@ public final class RegistryAuthArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param password Password or token for the registry
+         * @param password Password or token for the registry.
          * 
          * @return builder
          * 
@@ -130,7 +130,7 @@ public final class RegistryAuthArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param username Username for the registry
+         * @param username Username for the registry.
          * 
          * @return builder
          * 
@@ -141,7 +141,7 @@ public final class RegistryAuthArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param username Username for the registry
+         * @param username Username for the registry.
          * 
          * @return builder
          * 

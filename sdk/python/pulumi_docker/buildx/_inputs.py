@@ -20,9 +20,9 @@ class RegistryAuthArgs:
                  password: Optional[pulumi.Input[str]] = None,
                  username: Optional[pulumi.Input[str]] = None):
         """
-        :param pulumi.Input[str] address: The registry's address (e.g. "docker.io")
-        :param pulumi.Input[str] password: Password or token for the registry
-        :param pulumi.Input[str] username: Username for the registry
+        :param pulumi.Input[str] address: The registry's address (e.g. "docker.io").
+        :param pulumi.Input[str] password: Password or token for the registry.
+        :param pulumi.Input[str] username: Username for the registry.
         """
         pulumi.set(__self__, "address", address)
         if password is not None:
@@ -34,7 +34,7 @@ class RegistryAuthArgs:
     @pulumi.getter
     def address(self) -> pulumi.Input[str]:
         """
-        The registry's address (e.g. "docker.io")
+        The registry's address (e.g. "docker.io").
         """
         return pulumi.get(self, "address")
 
@@ -46,7 +46,7 @@ class RegistryAuthArgs:
     @pulumi.getter
     def password(self) -> Optional[pulumi.Input[str]]:
         """
-        Password or token for the registry
+        Password or token for the registry.
         """
         return pulumi.get(self, "password")
 
@@ -58,7 +58,7 @@ class RegistryAuthArgs:
     @pulumi.getter
     def username(self) -> Optional[pulumi.Input[str]]:
         """
-        Username for the registry
+        Username for the registry.
         """
         return pulumi.get(self, "username")
 
