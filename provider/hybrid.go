@@ -10,9 +10,12 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
-	"github.com/pulumi/pulumi/sdk/v3/go/common/util/contract"
+	"github.com/pulumi/pulumi/sdk/v3/go/common/resource/plugin"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/util/logging"
 	rpc "github.com/pulumi/pulumi/sdk/v3/proto/go"
+
+	"github.com/pulumi/pulumi-docker/provider/v4/internal"
+	"github.com/pulumi/pulumi-docker/provider/v4/internal/deprecated"
 )
 
 // Hybrid provider struct
@@ -87,36 +90,33 @@ func (dp dockerHybridProvider) Configure(
 	ctx context.Context,
 	request *rpc.ConfigureRequest,
 ) (*rpc.ConfigureResponse, error) {
-	providers := map[string]rpc.ResourceProviderServer{
-		"native": dp.nativeProvider,
-		"buildx": dp.buildxProvider,
+	_, err := dp.nativeProvider.Configure(ctx, request)
+	if err != nil {
+		return nil, fmt.Errorf("Docker native provider returned an unexpected error from Configure: %w", err)
 	}
 
-	for pname, p := range providers {
-		// Native provider returns empty response and error from Configure, just call it to propagate the information.
-		r, err := p.Configure(ctx, request)
-		if err != nil {
-			return nil, fmt.Errorf("Docker %s provider returned an unexpected error from Configure: %w", pname, err)
-		}
-
-		if pname != "native" {
-			continue
-		}
-
-		contract.Assertf(!r.AcceptOutputs,
-			fmt.Sprintf("Unexpected AcceptOutputs=true from Docker %s provider Configure", pname))
-		contract.Assertf(!r.AcceptResources,
-			fmt.Sprintf("Unexpected AcceptResources=true from Docker %s provider Configure", pname))
-		contract.Assertf(!r.AcceptSecrets,
-			fmt.Sprintf("Unexpected AcceptSecrets=true from Docker %s provider Configure", pname))
-		contract.Assertf(!r.SupportsPreview,
-			fmt.Sprintf("Unexpected SupportsPreview=true from Docker %s provider Configure", pname))
+	schema := internal.Schema(ctx, "")
+	ce := deprecated.New(schema.Config)
+	buildxReq := request
+	if props, err := ce.UnmarshalProperties(request.Args); err == nil {
+		args, _ := plugin.MarshalProperties(props, plugin.MarshalOptions{
+			Label:        "config",
+			KeepUnknowns: true,
+			SkipNulls:    true,
+			KeepSecrets:  true,
+			RejectAssets: true,
+		})
+		buildxReq.Args = args
+	}
+	_, err = dp.buildxProvider.Configure(ctx, buildxReq)
+	if err != nil {
+		return nil, fmt.Errorf("Docker buildx provider returned an unexpected error from Configure: %w", err)
 	}
 
 	// For the most part delegate Configure handling to the bridged provider.
 	resp, err := dp.bridgedProvider.Configure(ctx, request)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("Docker bridged provider returned an unexpected error from Configure: %w", err)
 	}
 
 	resp.SupportsPreview = true
