@@ -15,9 +15,6 @@ multi_platform = docker.buildx.Image("multiPlatform",
         "plan9/386",
     ])
 registry_push = docker.buildx.Image("registryPush",
-    dockerfile=docker.buildx.DockerfileArgs(
-        location="app/Dockerfile.generic",
-    ),
     context=docker.buildx.BuildContextArgs(
         location="app",
     ),
@@ -34,9 +31,6 @@ registry_push = docker.buildx.Image("registryPush",
         password=docker_hub_password,
     )])
 cached = docker.buildx.Image("cached",
-    dockerfile=docker.buildx.DockerfileArgs(
-        location="app/Dockerfile.generic",
-    ),
     context=docker.buildx.BuildContextArgs(
         location="app",
     ),
@@ -90,9 +84,6 @@ secrets = docker.buildx.Image("secrets",
         "password": "hunter2",
     })
 labels = docker.buildx.Image("labels",
-    dockerfile=docker.buildx.DockerfileArgs(
-        location="app/Dockerfile.generic",
-    ),
     context=docker.buildx.BuildContextArgs(
         location="app",
     ),
@@ -144,9 +135,6 @@ RUN echo "This uses an inline Dockerfile! 👍"
         location="app",
     ))
 docker_load = docker.buildx.Image("dockerLoad",
-    dockerfile=docker.buildx.DockerfileArgs(
-        location="app/Dockerfile.generic",
-    ),
     context=docker.buildx.BuildContextArgs(
         location="app",
     ),

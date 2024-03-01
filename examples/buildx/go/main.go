@@ -26,9 +26,6 @@ func main() {
 			return err
 		}
 		_, err = buildx.NewImage(ctx, "registryPush", &buildx.ImageArgs{
-			Dockerfile: &buildx.DockerfileArgs{
-				Location: pulumi.String("app/Dockerfile.generic"),
-			},
 			Context: &buildx.BuildContextArgs{
 				Location: pulumi.String("app"),
 			},
@@ -55,9 +52,6 @@ func main() {
 			return err
 		}
 		_, err = buildx.NewImage(ctx, "cached", &buildx.ImageArgs{
-			Dockerfile: &buildx.DockerfileArgs{
-				Location: pulumi.String("app/Dockerfile.generic"),
-			},
 			Context: &buildx.BuildContextArgs{
 				Location: pulumi.String("app"),
 			},
@@ -139,9 +133,6 @@ func main() {
 			return err
 		}
 		_, err = buildx.NewImage(ctx, "labels", &buildx.ImageArgs{
-			Dockerfile: &buildx.DockerfileArgs{
-				Location: pulumi.String("app/Dockerfile.generic"),
-			},
 			Context: &buildx.BuildContextArgs{
 				Location: pulumi.String("app"),
 			},
@@ -214,9 +205,6 @@ func main() {
 			return err
 		}
 		_, err = buildx.NewImage(ctx, "dockerLoad", &buildx.ImageArgs{
-			Dockerfile: &buildx.DockerfileArgs{
-				Location: pulumi.String("app/Dockerfile.generic"),
-			},
 			Context: &buildx.BuildContextArgs{
 				Location: pulumi.String("app"),
 			},

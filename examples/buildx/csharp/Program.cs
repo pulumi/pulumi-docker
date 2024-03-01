@@ -26,10 +26,6 @@ return await Deployment.RunAsync(() =>
 
     var registryPush = new Docker.Buildx.Image("registryPush", new()
     {
-        Dockerfile = new Docker.Buildx.Inputs.DockerfileArgs
-        {
-            Location = "app/Dockerfile.generic",
-        },
         Context = new Docker.Buildx.Inputs.BuildContextArgs
         {
             Location = "app",
@@ -62,10 +58,6 @@ return await Deployment.RunAsync(() =>
 
     var cached = new Docker.Buildx.Image("cached", new()
     {
-        Dockerfile = new Docker.Buildx.Inputs.DockerfileArgs
-        {
-            Location = "app/Dockerfile.generic",
-        },
         Context = new Docker.Buildx.Inputs.BuildContextArgs
         {
             Location = "app",
@@ -162,10 +154,6 @@ return await Deployment.RunAsync(() =>
 
     var labels = new Docker.Buildx.Image("labels", new()
     {
-        Dockerfile = new Docker.Buildx.Inputs.DockerfileArgs
-        {
-            Location = "app/Dockerfile.generic",
-        },
         Context = new Docker.Buildx.Inputs.BuildContextArgs
         {
             Location = "app",
@@ -250,10 +238,6 @@ RUN echo ""This uses an inline Dockerfile! 👍""
 
     var dockerLoad = new Docker.Buildx.Image("dockerLoad", new()
     {
-        Dockerfile = new Docker.Buildx.Inputs.DockerfileArgs
-        {
-            Location = "app/Dockerfile.generic",
-        },
         Context = new Docker.Buildx.Inputs.BuildContextArgs
         {
             Location = "app",

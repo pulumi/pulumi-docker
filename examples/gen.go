@@ -3,6 +3,7 @@
 //go:generate /bin/sh -c "export PATH=\"$(realpath ../bin):$PATH\"; pulumi convert -C buildx/yaml --from yaml --language nodejs --out ../ts     --generate-only"
 //go:generate /bin/sh -c "export PATH=\"$(realpath ../bin):$PATH\"; pulumi convert -C buildx/yaml --from yaml --language python --out ../py     --generate-only"
 //go:generate /bin/sh -c "export PATH=\"$(realpath ../bin):$PATH\"; pulumi convert -C buildx/yaml --from yaml --language java   --out ../java   --generate-only"
+//go:generate rm -rf buildx/*/app
 //go:generate cp -r buildx/app buildx/yaml/.
 //go:generate cp -r buildx/app buildx/csharp/.
 //go:generate cp -r buildx/app buildx/go/.

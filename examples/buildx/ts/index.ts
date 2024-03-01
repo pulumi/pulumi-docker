@@ -16,9 +16,6 @@ const multiPlatform = new docker.buildx.Image("multiPlatform", {
     ],
 });
 const registryPush = new docker.buildx.Image("registryPush", {
-    dockerfile: {
-        location: "app/Dockerfile.generic",
-    },
     context: {
         location: "app",
     },
@@ -36,9 +33,6 @@ const registryPush = new docker.buildx.Image("registryPush", {
     }],
 });
 const cached = new docker.buildx.Image("cached", {
-    dockerfile: {
-        location: "app/Dockerfile.generic",
-    },
     context: {
         location: "app",
     },
@@ -97,9 +91,6 @@ const secrets = new docker.buildx.Image("secrets", {
     },
 });
 const labels = new docker.buildx.Image("labels", {
-    dockerfile: {
-        location: "app/Dockerfile.generic",
-    },
     context: {
         location: "app",
     },
@@ -156,9 +147,6 @@ RUN echo "This uses an inline Dockerfile! 👍"
     },
 });
 const dockerLoad = new docker.buildx.Image("dockerLoad", {
-    dockerfile: {
-        location: "app/Dockerfile.generic",
-    },
     context: {
         location: "app",
     },

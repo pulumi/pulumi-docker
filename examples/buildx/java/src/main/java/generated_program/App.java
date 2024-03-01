@@ -43,9 +43,6 @@ public class App {
             .build());
 
         var registryPush = new Image("registryPush", ImageArgs.builder()        
-            .dockerfile(DockerfileArgs.builder()
-                .location("app/Dockerfile.generic")
-                .build())
             .context(BuildContextArgs.builder()
                 .location("app")
                 .build())
@@ -64,9 +61,6 @@ public class App {
             .build());
 
         var cached = new Image("cached", ImageArgs.builder()        
-            .dockerfile(DockerfileArgs.builder()
-                .location("app/Dockerfile.generic")
-                .build())
             .context(BuildContextArgs.builder()
                 .location("app")
                 .build())
@@ -126,9 +120,6 @@ public class App {
             .build());
 
         var labels = new Image("labels", ImageArgs.builder()        
-            .dockerfile(DockerfileArgs.builder()
-                .location("app/Dockerfile.generic")
-                .build())
             .context(BuildContextArgs.builder()
                 .location("app")
                 .build())
@@ -186,9 +177,6 @@ public class App {
             .build());
 
         var dockerLoad = new Image("dockerLoad", ImageArgs.builder()        
-            .dockerfile(DockerfileArgs.builder()
-                .location("app/Dockerfile.generic")
-                .build())
             .context(BuildContextArgs.builder()
                 .location("app")
                 .build())

@@ -15,12 +15,10 @@ resources:
         - plan9/amd64
         - plan9/386
 
-  # docker buildx build -f app/Dockerfile.generic --output=type=registry app
+  # docker buildx build --output=type=registry app
   registryPush:
     type: docker:buildx/image:Image
     properties:
-      dockerfile:
-        location: "app/Dockerfile.generic"
       context:
         location: "app"
       tags: ["docker.io/pulumibot/buildkit-e2e:example"]
@@ -33,12 +31,10 @@ resources:
           username: pulumibot
           password: ${dockerHubPassword}
 
-  # docker buildx build -f app/Dockerfile.generic --cache-to=type=local,dest=tmp/cache,mode=max --cache-from=type=local,src=tmp/cache app
+  # docker buildx build --cache-to=type=local,dest=tmp/cache,mode=max --cache-from=type=local,src=tmp/cache app
   cached:
     type: docker:buildx/image:Image
     properties:
-      dockerfile:
-        location: "app/Dockerfile.generic"
       context:
         location: "app"
       cacheTo:
@@ -93,12 +89,10 @@ resources:
       secrets:
         password: hunter2
 
-  # docker buildx build -f app/Dockerfile.generic --label "description=This image will get a descriptive label 👍" app
+  # docker buildx build --label "description=This image will get a descriptive label 👍" app
   labels:
     type: docker:buildx/image:Image
     properties:
-      dockerfile:
-        location: "app/Dockerfile.generic"
       context:
         location: "app"
       labels:
@@ -161,12 +155,10 @@ resources:
       context:
         location: "app"
 
-  # docker buildx build -f app/Dockerfile.generic --load .
+  # docker buildx build --load .
   dockerLoad:
     type: docker:buildx/image:Image
     properties:
-      dockerfile:
-        location: "app/Dockerfile.generic"
       context:
         location: "app"
       exports:
