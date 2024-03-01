@@ -83,6 +83,7 @@ func (i *Image) Annotate(a infer.Annotator) {
 
 // ImageArgs instantiates a new Image.
 type ImageArgs struct {
+	AddHosts       []string          `pulumi:"addHosts,optional"`
 	BuildArgs      map[string]string `pulumi:"buildArgs,optional"`
 	BuildOnPreview bool              `pulumi:"buildOnPreview,optional"`
 	Builder        BuilderConfig     `pulumi:"builder,optional"`
@@ -92,16 +93,23 @@ type ImageArgs struct {
 	Dockerfile     Dockerfile        `pulumi:"dockerfile,optional"`
 	Exports        []ExportEntry     `pulumi:"exports,optional"`
 	Labels         map[string]string `pulumi:"labels,optional"`
+	NoCache        bool              `pulumi:"noCache,optional"`
 	Platforms      []Platform        `pulumi:"platforms,optional"`
 	Pull           bool              `pulumi:"pull,optional"`
 	Registries     []RegistryAuth    `pulumi:"registries,optional"`
-	Secrets        map[string]string `pulumi:"secrets,optional"        provider:"secret"`
+	Secrets        map[string]string `pulumi:"secrets,optional"`
+	SSH            []SSH             `pulumi:"ssh,optional"`
 	Tags           []string          `pulumi:"tags,optional"`
 	Targets        []string          `pulumi:"targets,optional"`
 }
 
 // Annotate describes inputs to the Image resource.
 func (ia *ImageArgs) Annotate(a infer.Annotator) {
+	a.Describe(&ia.AddHosts, dedent(`
+		Custom "host:ip" mappings to use during the build.
+
+		Equivalent to Docker's "--add-host" flag.
+	`))
 	a.Describe(&ia.BuildArgs, dedent(`
 		"ARG" names and values to set during the build.
 		
@@ -153,6 +161,11 @@ func (ia *ImageArgs) Annotate(a infer.Annotator) {
 
 		Equivalent to Docker's "--label" flag.
 	`))
+	a.Describe(&ia.NoCache, dedent(`
+		Do not import cache manifests when building the image.
+
+		Equivalent to Docker's "--no-cache" flag.
+	`))
 	a.Describe(&ia.Platforms, dedent(`
 		Set target platform(s) for the build. Defaults to the host's platform.
 		
@@ -173,6 +186,11 @@ func (ia *ImageArgs) Annotate(a infer.Annotator) {
 		image, so you should use this for sensitive values.
 
 		Similar to Docker's "--secret" flag.
+	`))
+	a.Describe(&ia.SSH, dedent(`
+		SSH agent socket or keys to expose to the build.
+
+		Equivalent to Docker's "--ssh" flag.
 	`))
 	a.Describe(&ia.Tags, dedent(`
 		Name and optionally a tag (format: "name:tag").
@@ -283,18 +301,21 @@ func newCheckFailure(property string, err error) checkFailure {
 
 func (ia *ImageArgs) withoutUnknowns(preview bool) ImageArgs {
 	filtered := ImageArgs{
+		AddHosts:       filter(stringKeeper{preview}, ia.AddHosts...),
 		BuildArgs:      mapKeeper{preview}.keep(ia.BuildArgs),
-		Builder:        ia.Builder,
 		BuildOnPreview: ia.BuildOnPreview,
+		Builder:        ia.Builder,
 		CacheFrom:      filter(stringerKeeper[CacheFromEntry]{preview}, ia.CacheFrom...),
 		CacheTo:        filter(stringerKeeper[CacheToEntry]{preview}, ia.CacheTo...),
 		Context:        contextKeeper{preview}.keep(ia.Context),
 		Dockerfile:     ia.Dockerfile,
 		Exports:        filter(stringerKeeper[ExportEntry]{preview}, ia.Exports...),
 		Labels:         mapKeeper{preview}.keep(ia.Labels),
+		NoCache:        ia.NoCache,
 		Platforms:      filter(stringerKeeper[Platform]{preview}, ia.Platforms...),
 		Pull:           ia.Pull,
 		Registries:     filter(registryKeeper{preview}, ia.Registries...),
+		SSH:            filter(stringerKeeper[SSH]{preview}, ia.SSH...),
 		Secrets:        mapKeeper{preview}.keep(ia.Secrets),
 		Tags:           filter(stringKeeper{preview}, ia.Tags...),
 		Targets:        filter(stringKeeper{preview}, ia.Targets...),
@@ -615,6 +636,19 @@ func (ia *ImageArgs) toBuildOptions(preview bool) (controllerapi.BuildOptions, e
 		cacheTo = append(cacheTo, parsed[0])
 	}
 
+	ssh := []*controllerapi.SSH{}
+	for _, s := range filtered.SSH {
+		parsed, err := buildflags.ParseSSHSpecs([]string{s.String()})
+		if err != nil {
+			multierr = errors.Join(multierr, newCheckFailure("ssh", err))
+			continue
+		}
+		if len(parsed) == 0 {
+			continue
+		}
+		ssh = append(ssh, parsed[0])
+	}
+
 	if filtered.Dockerfile.Location != "" && filtered.Dockerfile.Inline != "" {
 		multierr = errors.Join(
 			multierr,
@@ -639,12 +673,14 @@ func (ia *ImageArgs) toBuildOptions(preview bool) (controllerapi.BuildOptions, e
 		ContextPath:    filtered.Context.Location,
 		DockerfileName: filtered.Dockerfile.Location,
 		Exports:        exports,
+		ExtraHosts:     filtered.AddHosts,
 		Labels:         filtered.Labels,
+		NoCache:        filtered.NoCache,
 		NamedContexts:  filtered.Context.Named.Map(),
 		Platforms:      platforms,
 		Pull:           filtered.Pull,
+		SSH:            ssh,
 		Tags:           filtered.Tags,
-		// Target:         filtered.Targets,
 	}
 
 	return opts, multierr
@@ -846,8 +882,14 @@ func (*Image) Diff(
 	diff := map[string]provider.PropertyDiff{}
 	update := provider.PropertyDiff{Kind: provider.Update}
 
+	if !reflect.DeepEqual(olds.AddHosts, news.AddHosts) {
+		diff["addHosts"] = update
+	}
 	if !reflect.DeepEqual(olds.BuildArgs, news.BuildArgs) {
 		diff["buildArgs"] = update
+	}
+	if olds.BuildOnPreview != news.BuildOnPreview {
+		diff["buildOnPreview"] = update
 	}
 	if !reflect.DeepEqual(olds.Builder, news.Builder) {
 		diff["builder"] = update
@@ -859,11 +901,10 @@ func (*Image) Diff(
 		diff["cacheTo"] = update
 	}
 	if olds.Context.Location != news.Context.Location {
-		diff["context"] = update
+		diff["context.location"] = update
 	}
-	// Use string comparison to ignore any manifests attached to the export.
-	if fmt.Sprint(olds.Exports) != fmt.Sprint(news.Exports) {
-		diff["exports"] = update
+	if !reflect.DeepEqual(olds.Context.Named, news.Context.Named) {
+		diff["context.named"] = update
 	}
 	if olds.Dockerfile.Location != news.Dockerfile.Location {
 		diff["dockerfile.location"] = update
@@ -871,14 +912,27 @@ func (*Image) Diff(
 	if olds.Dockerfile.Inline != news.Dockerfile.Inline {
 		diff["dockerfile.inline"] = update
 	}
-	if !reflect.DeepEqual(olds.Context.Named, news.Context.Named) {
-		diff["context.named"] = update
+	// Use string comparison to ignore any manifests attached to the export.
+	if fmt.Sprint(olds.Exports) != fmt.Sprint(news.Exports) {
+		diff["exports"] = update
+	}
+	if !reflect.DeepEqual(olds.Labels, news.Labels) {
+		diff["labels"] = update
+	}
+	if !reflect.DeepEqual(olds.NoCache, news.NoCache) {
+		diff["noCache"] = update
 	}
 	if !reflect.DeepEqual(olds.Platforms, news.Platforms) {
 		diff["platforms"] = update
 	}
 	if olds.Pull != news.Pull {
 		diff["pull"] = update
+	}
+	if !reflect.DeepEqual(olds.Secrets, news.Secrets) {
+		diff["secrets"] = update
+	}
+	if !reflect.DeepEqual(olds.SSH, news.SSH) {
+		diff["ssh"] = update
 	}
 	if !reflect.DeepEqual(olds.Tags, news.Tags) {
 		diff["tags"] = update
@@ -890,7 +944,7 @@ func (*Image) Diff(
 	// pull=true indicates that we want to keep base layers up-to-date. In this
 	// case we'll always perform the build.
 	if news.Pull && len(news.Exports) > 0 {
-		diff["exports"] = update
+		diff["contextHash"] = update
 	}
 
 	// Check if anything has changed in our build context.
@@ -915,7 +969,7 @@ func (*Image) Diff(
 			if (oldr.Username == newr.Username) && (oldr.Address == newr.Address) {
 				continue
 			}
-			diff["registries"] = update
+			diff[fmt.Sprintf("registries[%d]", idx)] = update
 			break
 		}
 	}

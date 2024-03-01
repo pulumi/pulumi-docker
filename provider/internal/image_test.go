@@ -476,10 +476,28 @@ func TestDiff(t *testing.T) {
 			wantChanges: true,
 		},
 		{
-			name: "diff if file changes",
+			name: "diff if named context changes",
+			olds: func(*testing.T, ImageState) ImageState { return baseState },
+			news: func(_ *testing.T, a ImageArgs) ImageArgs {
+				a.Context.Named = NamedContexts{"foo": Context{Location: "bar"}}
+				return a
+			},
+			wantChanges: true,
+		},
+		{
+			name: "diff if dockerfile location changes",
 			olds: func(*testing.T, ImageState) ImageState { return baseState },
 			news: func(_ *testing.T, a ImageArgs) ImageArgs {
 				a.Dockerfile.Location = "testdata/ignores/basedir/Dockerfile"
+				return a
+			},
+			wantChanges: true,
+		},
+		{
+			name: "diff if dockerfile inline changes",
+			olds: func(*testing.T, ImageState) ImageState { return baseState },
+			news: func(_ *testing.T, a ImageArgs) ImageArgs {
+				a.Dockerfile.Inline = "FROM scratch"
 				return a
 			},
 			wantChanges: true,
@@ -525,6 +543,51 @@ func TestDiff(t *testing.T) {
 			olds: func(*testing.T, ImageState) ImageState { return baseState },
 			news: func(_ *testing.T, a ImageArgs) ImageArgs {
 				a.Exports = []ExportEntry{{Raw: "foo"}}
+				return a
+			},
+			wantChanges: true,
+		},
+		{
+			name: "diff if targets change",
+			olds: func(*testing.T, ImageState) ImageState { return baseState },
+			news: func(_ *testing.T, a ImageArgs) ImageArgs {
+				a.Targets = []string{"foo"}
+				return a
+			},
+			wantChanges: true,
+		},
+		{
+			name: "diff if pulling",
+			olds: func(*testing.T, ImageState) ImageState { return baseState },
+			news: func(_ *testing.T, a ImageArgs) ImageArgs {
+				a.Pull = true
+				return a
+			},
+			wantChanges: true,
+		},
+		{
+			name: "diff if noCache changes",
+			olds: func(*testing.T, ImageState) ImageState { return baseState },
+			news: func(_ *testing.T, a ImageArgs) ImageArgs {
+				a.NoCache = true
+				return a
+			},
+			wantChanges: true,
+		},
+		{
+			name: "diff if labels change",
+			olds: func(*testing.T, ImageState) ImageState { return baseState },
+			news: func(_ *testing.T, a ImageArgs) ImageArgs {
+				a.Labels = map[string]string{"foo": "bar"}
+				return a
+			},
+			wantChanges: true,
+		},
+		{
+			name: "diff if secrets change",
+			olds: func(*testing.T, ImageState) ImageState { return baseState },
+			news: func(_ *testing.T, a ImageArgs) ImageArgs {
+				a.Secrets = map[string]string{"foo": "bar"}
 				return a
 			},
 			wantChanges: true,

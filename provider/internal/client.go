@@ -238,6 +238,11 @@ func (d *docker) Build(
 		namedContexts[name] = buildx.NamedContext{Path: v}
 	}
 
+	ssh, err := controllerapi.CreateSSH(opts.SSH)
+	if err != nil {
+		return nil, err
+	}
+
 	payload := map[string]buildx.Options{}
 	for _, target := range build.Targets() {
 		targetName := target
@@ -252,18 +257,20 @@ func (d *docker) Build(
 				NamedContexts:    namedContexts,
 				InStream:         strings.NewReader(""),
 			},
-			BuildArgs: opts.BuildArgs,
-			CacheFrom: cacheFrom,
-			CacheTo:   cacheTo,
-			Exports:   exports,
-			NoCache:   opts.NoCache,
-			Labels:    opts.Labels,
-			Platforms: platforms,
-			Pull:      opts.Pull,
-			Tags:      opts.Tags,
-			Target:    target,
+			BuildArgs:  opts.BuildArgs,
+			CacheFrom:  cacheFrom,
+			CacheTo:    cacheTo,
+			Exports:    exports,
+			ExtraHosts: opts.ExtraHosts,
+			NoCache:    opts.NoCache,
+			Labels:     opts.Labels,
+			Platforms:  platforms,
+			Pull:       opts.Pull,
+			Tags:       opts.Tags,
+			Target:     target,
 
 			Session: []session.Attachable{
+				ssh,
 				authprovider.NewDockerAuthProvider(&configfile.ConfigFile{AuthConfigs: auths}, nil),
 				build.Secrets(),
 			},
