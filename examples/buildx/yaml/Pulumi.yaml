@@ -60,6 +60,28 @@ resources:
       buildArgs:
         SET_ME_TO_TRUE: "true"
 
+  # docker buildx build -f app/Dockerfile.extraHosts --add-host metadata.google.internal:169.254.169.254 app
+  extraHosts:
+    type: docker:buildx/image:Image
+    properties:
+      dockerfile:
+        location: "app/Dockerfile.extraHosts"
+      context:
+        location: "app"
+      addHosts:
+        - "metadata.google.internal:169.254.169.254"
+
+  # docker buildx build -f app/Dockerfile.sshMount --ssh default app
+  sshMount:
+    type: docker:buildx/image:Image
+    properties:
+      dockerfile:
+        location: "app/Dockerfile.sshMount"
+      context:
+        location: "app"
+      ssh:
+        - id: default
+
   # PASSWORD=hunter2 docker buildx build -f app/Dockerfile.secrets --secret id=password,env=PASSWORD app
   secrets:
     type: docker:buildx/image:Image

@@ -65,6 +65,26 @@ const buildArgs = new docker.buildx.Image("buildArgs", {
         SET_ME_TO_TRUE: "true",
     },
 });
+const extraHosts = new docker.buildx.Image("extraHosts", {
+    dockerfile: {
+        location: "app/Dockerfile.extraHosts",
+    },
+    context: {
+        location: "app",
+    },
+    addHosts: ["metadata.google.internal:169.254.169.254"],
+});
+const sshMount = new docker.buildx.Image("sshMount", {
+    dockerfile: {
+        location: "app/Dockerfile.sshMount",
+    },
+    context: {
+        location: "app",
+    },
+    ssh: [{
+        id: "default",
+    }],
+});
 const secrets = new docker.buildx.Image("secrets", {
     dockerfile: {
         location: "app/Dockerfile.secrets",

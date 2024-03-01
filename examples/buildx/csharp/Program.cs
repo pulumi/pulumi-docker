@@ -109,6 +109,41 @@ return await Deployment.RunAsync(() =>
         },
     });
 
+    var extraHosts = new Docker.Buildx.Image("extraHosts", new()
+    {
+        Dockerfile = new Docker.Buildx.Inputs.DockerfileArgs
+        {
+            Location = "app/Dockerfile.extraHosts",
+        },
+        Context = new Docker.Buildx.Inputs.BuildContextArgs
+        {
+            Location = "app",
+        },
+        AddHosts = new[]
+        {
+            "metadata.google.internal:169.254.169.254",
+        },
+    });
+
+    var sshMount = new Docker.Buildx.Image("sshMount", new()
+    {
+        Dockerfile = new Docker.Buildx.Inputs.DockerfileArgs
+        {
+            Location = "app/Dockerfile.sshMount",
+        },
+        Context = new Docker.Buildx.Inputs.BuildContextArgs
+        {
+            Location = "app",
+        },
+        Ssh = new[]
+        {
+            new Docker.Buildx.Inputs.SSHArgs
+            {
+                Id = "default",
+            },
+        },
+    });
+
     var secrets = new Docker.Buildx.Image("secrets", new()
     {
         Dockerfile = new Docker.Buildx.Inputs.DockerfileArgs

@@ -94,6 +94,36 @@ func main() {
 		if err != nil {
 			return err
 		}
+		_, err = buildx.NewImage(ctx, "extraHosts", &buildx.ImageArgs{
+			Dockerfile: &buildx.DockerfileArgs{
+				Location: pulumi.String("app/Dockerfile.extraHosts"),
+			},
+			Context: &buildx.BuildContextArgs{
+				Location: pulumi.String("app"),
+			},
+			AddHosts: pulumi.StringArray{
+				pulumi.String("metadata.google.internal:169.254.169.254"),
+			},
+		})
+		if err != nil {
+			return err
+		}
+		_, err = buildx.NewImage(ctx, "sshMount", &buildx.ImageArgs{
+			Dockerfile: &buildx.DockerfileArgs{
+				Location: pulumi.String("app/Dockerfile.sshMount"),
+			},
+			Context: &buildx.BuildContextArgs{
+				Location: pulumi.String("app"),
+			},
+			Ssh: buildx.SSHArray{
+				&buildx.SSHArgs{
+					Id: pulumi.String("default"),
+				},
+			},
+		})
+		if err != nil {
+			return err
+		}
 		_, err = buildx.NewImage(ctx, "secrets", &buildx.ImageArgs{
 			Dockerfile: &buildx.DockerfileArgs{
 				Location: pulumi.String("app/Dockerfile.secrets"),

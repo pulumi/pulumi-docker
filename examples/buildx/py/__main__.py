@@ -61,6 +61,24 @@ build_args = docker.buildx.Image("buildArgs",
     build_args={
         "SET_ME_TO_TRUE": "true",
     })
+extra_hosts = docker.buildx.Image("extraHosts",
+    dockerfile=docker.buildx.DockerfileArgs(
+        location="app/Dockerfile.extraHosts",
+    ),
+    context=docker.buildx.BuildContextArgs(
+        location="app",
+    ),
+    add_hosts=["metadata.google.internal:169.254.169.254"])
+ssh_mount = docker.buildx.Image("sshMount",
+    dockerfile=docker.buildx.DockerfileArgs(
+        location="app/Dockerfile.sshMount",
+    ),
+    context=docker.buildx.BuildContextArgs(
+        location="app",
+    ),
+    ssh=[docker.buildx.SSHArgs(
+        id="default",
+    )])
 secrets = docker.buildx.Image("secrets",
     dockerfile=docker.buildx.DockerfileArgs(
         location="app/Dockerfile.secrets",

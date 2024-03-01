@@ -93,6 +93,28 @@ public class App {
             .buildArgs(Map.of("SET_ME_TO_TRUE", "true"))
             .build());
 
+        var extraHosts = new Image("extraHosts", ImageArgs.builder()        
+            .dockerfile(DockerfileArgs.builder()
+                .location("app/Dockerfile.extraHosts")
+                .build())
+            .context(BuildContextArgs.builder()
+                .location("app")
+                .build())
+            .addHosts("metadata.google.internal:169.254.169.254")
+            .build());
+
+        var sshMount = new Image("sshMount", ImageArgs.builder()        
+            .dockerfile(DockerfileArgs.builder()
+                .location("app/Dockerfile.sshMount")
+                .build())
+            .context(BuildContextArgs.builder()
+                .location("app")
+                .build())
+            .ssh(SSHArgs.builder()
+                .id("default")
+                .build())
+            .build());
+
         var secrets = new Image("secrets", ImageArgs.builder()        
             .dockerfile(DockerfileArgs.builder()
                 .location("app/Dockerfile.secrets")
