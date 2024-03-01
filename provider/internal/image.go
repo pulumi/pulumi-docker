@@ -32,6 +32,7 @@ import (
 
 	provider "github.com/pulumi/pulumi-go-provider"
 	"github.com/pulumi/pulumi-go-provider/infer"
+	"github.com/pulumi/pulumi/sdk/go/common/util/ciutil"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/diag"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 )
@@ -85,7 +86,7 @@ func (i *Image) Annotate(a infer.Annotator) {
 type ImageArgs struct {
 	AddHosts       []string          `pulumi:"addHosts,optional"`
 	BuildArgs      map[string]string `pulumi:"buildArgs,optional"`
-	BuildOnPreview bool              `pulumi:"buildOnPreview,optional"`
+	BuildOnPreview *bool             `pulumi:"buildOnPreview,optional"`
 	Builder        BuilderConfig     `pulumi:"builder,optional"`
 	CacheFrom      []CacheFromEntry  `pulumi:"cacheFrom,optional"`
 	CacheTo        []CacheToEntry    `pulumi:"cacheTo,optional"`
@@ -124,8 +125,20 @@ func (ia *ImageArgs) Annotate(a infer.Annotator) {
 		Equivalent to Docker's "--build-arg" flag.
 	`))
 	a.Describe(&ia.BuildOnPreview, dedent(`
-		When "true", attempt to build the image during previews. The image will
-		not be pushed to registries, however caches will still be populated.
+		By default, preview behavior depends on the execution environment. If
+		Pulumi detects the operation is running on a CI system (GitHub Actions,
+		Travis CI, Azure Pipelines, etc.) then it will build images during
+		previews as a safeguard. Otherwise, if not running on CI, previews will
+		not build images.
+
+		Setting this to "false" forces previews to never perform builds, and
+		setting it to "true" will always build the image during previews.
+
+		Images built during previews are never exported to registries, however
+		cache manifests are still exported.
+
+		On-disk Dockerfiles are always validated for syntactic correctness
+		regardless of this setting.
 	`))
 	a.Describe(&ia.Builder, dedent(`
 		Builder configuration.
@@ -346,6 +359,13 @@ func (ia *ImageArgs) buildable() bool {
 	// We can build the given inputs if filtered out unknowns is a no-op.
 	filtered := ia.withoutUnknowns(true)
 	return reflect.DeepEqual(ia, &filtered)
+}
+
+func (ia *ImageArgs) shouldBuildOnPreview() bool {
+	if ia.BuildOnPreview != nil {
+		return *ia.BuildOnPreview
+	}
+	return ciutil.IsCI()
 }
 
 type build struct {
@@ -761,7 +781,7 @@ func (i *Image) Update(
 	}
 	state.ContextHash = hash
 
-	if preview && !input.BuildOnPreview {
+	if preview && !input.shouldBuildOnPreview() {
 		return state, nil
 	}
 	if preview && !input.buildable() {

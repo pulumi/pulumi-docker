@@ -51,29 +51,26 @@ func TestLifecycle(t *testing.T) {
 				ctrl := gomock.NewController(t)
 				c := NewMockClient(ctrl)
 				c.EXPECT().Auth(gomock.Any(), "test", gomock.Any()).Return(nil).AnyTimes()
-				gomock.InOrder(
-					c.EXPECT().BuildKitEnabled().Return(true, nil), // Preview.
-					c.EXPECT().BuildKitEnabled().Return(true, nil), // Create.
-					c.EXPECT().Build(gomock.Any(), "test", gomock.AssignableToTypeOf(build{})).DoAndReturn(
-						func(_ provider.Context, name string, b Build) (map[string]*client.SolveResponse, error) {
-							assert.Equal(t, "../testdata/Dockerfile", b.BuildOptions().DockerfileName)
-							return map[string]*client.SolveResponse{
-								b.Targets()[0]: {ExporterResponse: map[string]string{"containerimage.digest": "SHA256:digest"}},
-							}, nil
+				c.EXPECT().BuildKitEnabled().Return(true, nil).AnyTimes()
+				c.EXPECT().Build(gomock.Any(), "test", gomock.AssignableToTypeOf(build{})).DoAndReturn(
+					func(_ provider.Context, name string, b Build) (map[string]*client.SolveResponse, error) {
+						assert.Equal(t, "../testdata/Dockerfile", b.BuildOptions().DockerfileName)
+						return map[string]*client.SolveResponse{
+							b.Targets()[0]: {ExporterResponse: map[string]string{"containerimage.digest": "SHA256:digest"}},
+						}, nil
+					},
+				).AnyTimes()
+				c.EXPECT().Inspect(gomock.Any(), "test", "docker.io/pulumibot/buildkit-e2e").Return(
+					[]manifesttypes.ImageManifest{
+						{
+							Ref:        &manifesttypes.SerializableNamed{Named: digestRef},
+							Descriptor: v1.Descriptor{Platform: &v1.Platform{OS: "linux", Architecture: "arm64"}},
 						},
-					),
-					c.EXPECT().Inspect(gomock.Any(), "test", "docker.io/pulumibot/buildkit-e2e").Return(
-						[]manifesttypes.ImageManifest{
-							{
-								Ref:        &manifesttypes.SerializableNamed{Named: digestRef},
-								Descriptor: v1.Descriptor{Platform: &v1.Platform{OS: "linux", Architecture: "arm64"}},
-							},
-						}, nil,
-					),
-					c.EXPECT().Inspect(gomock.Any(), "test", "docker.io/pulumibot/buildkit-e2e:main"),
-					c.EXPECT().Delete(gomock.Any(), digestRef.String()).Return(
-						[]image.DeleteResponse{{Deleted: "deleted"}, {Untagged: "untagged"}}, nil),
-				)
+					}, nil,
+				).AnyTimes()
+				c.EXPECT().Inspect(gomock.Any(), "test", "docker.io/pulumibot/buildkit-e2e:main").AnyTimes()
+				c.EXPECT().Delete(gomock.Any(), digestRef.String()).Return(
+					[]image.DeleteResponse{{Deleted: "deleted"}, {Untagged: "untagged"}}, nil)
 				return c
 			},
 			op: func(t *testing.T) integration.Operation {
@@ -220,18 +217,15 @@ func TestLifecycle(t *testing.T) {
 			client: func(t *testing.T) Client {
 				ctrl := gomock.NewController(t)
 				c := NewMockClient(ctrl)
-				gomock.InOrder(
-					c.EXPECT().BuildKitEnabled().Return(true, nil), // Preview.
-					c.EXPECT().BuildKitEnabled().Return(true, nil), // Create.
-					c.EXPECT().Build(gomock.Any(), "test", gomock.AssignableToTypeOf(build{})).DoAndReturn(
-						func(_ provider.Context, name string, b Build) (map[string]*client.SolveResponse, error) {
-							assert.Equal(t, "../testdata/Dockerfile", b.BuildOptions().DockerfileName)
-							return map[string]*client.SolveResponse{
-								b.Targets()[0]: {ExporterResponse: map[string]string{"image.name": "test:latest"}},
-							}, nil
-						},
-					),
-				)
+				c.EXPECT().BuildKitEnabled().Return(true, nil).AnyTimes()
+				c.EXPECT().Build(gomock.Any(), "test", gomock.AssignableToTypeOf(build{})).DoAndReturn(
+					func(_ provider.Context, name string, b Build) (map[string]*client.SolveResponse, error) {
+						assert.Equal(t, "../testdata/Dockerfile", b.BuildOptions().DockerfileName)
+						return map[string]*client.SolveResponse{
+							b.Targets()[0]: {ExporterResponse: map[string]string{"image.name": "test:latest"}},
+						}, nil
+					},
+				).AnyTimes()
 				return c
 			},
 			op: func(t *testing.T) integration.Operation {
