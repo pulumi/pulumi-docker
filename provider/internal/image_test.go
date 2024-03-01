@@ -798,6 +798,10 @@ func TestBuildable(t *testing.T) {
 }
 
 func TestToBuilds(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	pctx := NewMockProviderContext(ctrl)
+	pctx.EXPECT().Log(gomock.Any(), gomock.Any()).AnyTimes()
+
 	t.Run("single-platform caching", func(t *testing.T) {
 		ia := ImageArgs{
 			Tags:      []string{"foo", "bar"},
@@ -821,7 +825,8 @@ func TestToBuilds(t *testing.T) {
 				{Registry: &CacheFromRegistry{Ref: "docker.io/foo/bar:baz"}},
 			},
 		}
-		builds, err := ia.toBuilds(nil, false)
+
+		builds, err := ia.toBuilds(pctx, false)
 		assert.NoError(t, err)
 		assert.Len(t, builds, 1)
 	})
@@ -853,7 +858,7 @@ func TestToBuilds(t *testing.T) {
 			},
 		}
 
-		builds, err := ia.toBuilds(nil, false)
+		builds, err := ia.toBuilds(pctx, false)
 		assert.NoError(t, err)
 
 		assert.Len(t, builds, 3)

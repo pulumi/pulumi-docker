@@ -93,9 +93,11 @@ type ImageArgs struct {
 	Dockerfile     Dockerfile        `pulumi:"dockerfile,optional"`
 	Exports        []ExportEntry     `pulumi:"exports,optional"`
 	Labels         map[string]string `pulumi:"labels,optional"`
+	Load           bool              `pulumi:"load,optional"`
 	NoCache        bool              `pulumi:"noCache,optional"`
 	Platforms      []Platform        `pulumi:"platforms,optional"`
 	Pull           bool              `pulumi:"pull,optional"`
+	Push           bool              `pulumi:"push,optional"`
 	Registries     []RegistryAuth    `pulumi:"registries,optional"`
 	Secrets        map[string]string `pulumi:"secrets,optional"`
 	SSH            []SSH             `pulumi:"ssh,optional"`
@@ -161,6 +163,13 @@ func (ia *ImageArgs) Annotate(a infer.Annotator) {
 
 		Equivalent to Docker's "--label" flag.
 	`))
+	a.Describe(&ia.Load, dedent(`
+		When "true" the build will automatically include a "docker" export.
+
+		Defaults to "false".
+
+		Equivalent to Docker's "--load" flag.
+	`))
 	a.Describe(&ia.NoCache, dedent(`
 		Do not import cache manifests when building the image.
 
@@ -175,6 +184,13 @@ func (ia *ImageArgs) Annotate(a infer.Annotator) {
 		Always pull referenced images.
 
 		Equivalent to Docker's "--pull" flag.
+	`))
+	a.Describe(&ia.Push, dedent(`
+		When "true" the build will automatically include a "registry" export.
+
+		Defaults to "false".
+
+		Equivalent to Docker's "--push" flag.
 	`))
 	a.Describe(&ia.Secrets, dedent(`
 		A mapping of secret names to their corresponding values.
@@ -311,9 +327,11 @@ func (ia *ImageArgs) withoutUnknowns(preview bool) ImageArgs {
 		Dockerfile:     ia.Dockerfile,
 		Exports:        filter(stringerKeeper[ExportEntry]{preview}, ia.Exports...),
 		Labels:         mapKeeper{preview}.keep(ia.Labels),
+		Load:           ia.Load,
 		NoCache:        ia.NoCache,
 		Platforms:      filter(stringerKeeper[Platform]{preview}, ia.Platforms...),
 		Pull:           ia.Pull,
+		Push:           ia.Push,
 		Registries:     filter(registryKeeper{preview}, ia.Registries...),
 		SSH:            filter(stringerKeeper[SSH]{preview}, ia.SSH...),
 		Secrets:        mapKeeper{preview}.keep(ia.Secrets),
@@ -368,6 +386,13 @@ func (ia ImageArgs) toBuilds(
 	targets := ia.Targets
 	if len(targets) == 0 {
 		targets = []string{""}
+	}
+
+	if len(opts.Exports) == 0 {
+		ctx.Log(diag.Warning,
+			"No exports were specified so the build will only remain in the local build cache. "+
+				"Use `push` to upload the image to a registry.",
+		)
 	}
 
 	// Check if we need a workaround for multi-platform caching (https://github.com/docker/buildx/issues/1044).
@@ -498,9 +523,18 @@ func (ia *ImageArgs) toBuildOptions(preview bool) (controllerapi.BuildOptions, e
 	var multierr error
 
 	if len(ia.Exports) > 1 {
-		multierr = errors.Join(
-			multierr,
+		multierr = errors.Join(multierr,
 			newCheckFailure("exports", fmt.Errorf("multiple exports are currently unsupported")),
+		)
+	}
+	if ia.Push && ia.Load {
+		multierr = errors.Join(multierr,
+			newCheckFailure("push", fmt.Errorf("push and load may not be set together at the moment")),
+		)
+	}
+	if len(ia.Exports) > 0 && (ia.Push || ia.Load) {
+		multierr = errors.Join(multierr,
+			newCheckFailure("exports", fmt.Errorf("exports can't be provided with push or load")),
 		)
 	}
 
@@ -541,6 +575,12 @@ func (ia *ImageArgs) toBuildOptions(preview bool) (controllerapi.BuildOptions, e
 	filtered := ia.withoutUnknowns(preview)
 
 	exports := []*controllerapi.ExportEntry{}
+	if filtered.Push {
+		filtered.Exports = append(filtered.Exports, ExportEntry{Raw: "type=registry"})
+	}
+	if filtered.Load {
+		filtered.Exports = append(filtered.Exports, ExportEntry{Raw: "type=docker"})
+	}
 	for _, e := range filtered.Exports {
 		if strings.Count(e.String(), "type=") > 1 {
 			multierr = errors.Join(
@@ -569,8 +609,8 @@ func (ia *ImageArgs) toBuildOptions(preview bool) (controllerapi.BuildOptions, e
 			continue
 		}
 		exports = append(exports, exp)
-
 	}
+
 	if preview {
 		// Don't perform registry pushes during previews.
 		for _, e := range exports {
@@ -919,6 +959,9 @@ func (*Image) Diff(
 	if !reflect.DeepEqual(olds.Labels, news.Labels) {
 		diff["labels"] = update
 	}
+	if olds.Load != news.Load {
+		diff["load"] = update
+	}
 	if !reflect.DeepEqual(olds.NoCache, news.NoCache) {
 		diff["noCache"] = update
 	}
@@ -927,6 +970,9 @@ func (*Image) Diff(
 	}
 	if olds.Pull != news.Pull {
 		diff["pull"] = update
+	}
+	if olds.Push != news.Push {
+		diff["push"] = update
 	}
 	if !reflect.DeepEqual(olds.Secrets, news.Secrets) {
 		diff["secrets"] = update
@@ -943,7 +989,7 @@ func (*Image) Diff(
 
 	// pull=true indicates that we want to keep base layers up-to-date. In this
 	// case we'll always perform the build.
-	if news.Pull && len(news.Exports) > 0 {
+	if news.Pull && (len(news.Exports) > 0 || news.Push || news.Load) {
 		diff["contextHash"] = update
 	}
 
