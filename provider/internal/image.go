@@ -95,6 +95,7 @@ type ImageArgs struct {
 	Exports        []ExportEntry     `pulumi:"exports,optional"`
 	Labels         map[string]string `pulumi:"labels,optional"`
 	Load           bool              `pulumi:"load,optional"`
+	Network        NetworkMode       `pulumi:"network,optional"`
 	NoCache        bool              `pulumi:"noCache,optional"`
 	Platforms      []Platform        `pulumi:"platforms,optional"`
 	Pull           bool              `pulumi:"pull,optional"`
@@ -183,6 +184,13 @@ func (ia *ImageArgs) Annotate(a infer.Annotator) {
 
 		Equivalent to Docker's "--load" flag.
 	`))
+	a.Describe(&ia.Network, dedent(`
+		Set the network mode for "RUN" instructions. Defaults to "default".
+
+		For custom networks, configure your builder with "--driver-opt network=...".
+
+		Equivalent to Docker's "--network" flag.
+	`))
 	a.Describe(&ia.NoCache, dedent(`
 		Do not import cache manifests when building the image.
 
@@ -245,6 +253,8 @@ func (ia *ImageArgs) Annotate(a infer.Annotator) {
 
 		Similar to "docker login".
 	`))
+
+	a.SetDefault(&ia.Network, NetworkModeDefault)
 }
 
 // ImageState is serialized to the program's state file.
@@ -341,6 +351,7 @@ func (ia *ImageArgs) withoutUnknowns(preview bool) ImageArgs {
 		Exports:        filter(stringerKeeper[ExportEntry]{preview}, ia.Exports...),
 		Labels:         mapKeeper{preview}.keep(ia.Labels),
 		Load:           ia.Load,
+		Network:        ia.Network,
 		NoCache:        ia.NoCache,
 		Platforms:      filter(stringerKeeper[Platform]{preview}, ia.Platforms...),
 		Pull:           ia.Pull,
@@ -735,6 +746,7 @@ func (ia *ImageArgs) toBuildOptions(preview bool) (controllerapi.BuildOptions, e
 		Exports:        exports,
 		ExtraHosts:     filtered.AddHosts,
 		Labels:         filtered.Labels,
+		NetworkMode:    string(filtered.Network),
 		NoCache:        filtered.NoCache,
 		NamedContexts:  filtered.Context.Named.Map(),
 		Platforms:      platforms,
@@ -981,6 +993,9 @@ func (*Image) Diff(
 	}
 	if olds.Load != news.Load {
 		diff["load"] = update
+	}
+	if olds.Network != news.Network {
+		diff["network"] = update
 	}
 	if !reflect.DeepEqual(olds.NoCache, news.NoCache) {
 		diff["noCache"] = update
