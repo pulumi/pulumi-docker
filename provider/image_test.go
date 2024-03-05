@@ -619,7 +619,7 @@ func TestConfigureDockerClient(t *testing.T) {
 	t.Run("When passed an invalid ssh scheme for the host, no client is returned",
 		func(t *testing.T) {
 			input := map[string]string{
-				"host": "ssh://this/is-not-a-hostname",
+				"host": "ssh://this/is?invalid",
 			}
 			actual, err := configureDockerClient(input, false)
 			assert.Nil(t, actual)
