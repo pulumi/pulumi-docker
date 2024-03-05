@@ -42,8 +42,6 @@ type ExportEntry struct {
 	Raw      Raw             `pulumi:"raw,optional"`
 
 	Disabled bool `pulumi:"disabled,optional"`
-
-	Manifests []Manifest `pulumi:"manifests,optional" provider:"output"`
 }
 
 func (e *ExportEntry) Annotate(a infer.Annotator) {
@@ -72,10 +70,6 @@ func (e *ExportEntry) Annotate(a infer.Annotator) {
 
 	a.Describe(&e.Disabled, dedent(`
 		When "true" this entry will be excluded. Defaults to "false".
-	`))
-	a.Describe(&e.Manifests, dedent(`
-		An output property populated for exporters that pushed image
-		manifest(s) to a registry.
 	`))
 }
 

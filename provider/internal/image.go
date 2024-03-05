@@ -24,10 +24,12 @@ import (
 	"github.com/docker/buildx/util/buildflags"
 	"github.com/docker/buildx/util/platformutil"
 	"github.com/docker/docker/errdefs"
+	"github.com/moby/buildkit/exporter/containerimage/exptypes"
 	"github.com/moby/buildkit/frontend/dockerfile/instructions"
 	"github.com/moby/buildkit/frontend/dockerfile/parser"
 	"github.com/moby/buildkit/session"
 	"github.com/moby/buildkit/session/secrets/secretsprovider"
+	"github.com/opencontainers/go-digest"
 	"github.com/spf13/afero"
 
 	provider "github.com/pulumi/pulumi-go-provider"
@@ -261,8 +263,9 @@ func (ia *ImageArgs) Annotate(a infer.Annotator) {
 type ImageState struct {
 	ImageArgs
 
-	Digests     map[Platform][]string `pulumi:"digests,optional"     provider:"output"`
-	ContextHash string                `pulumi:"contextHash,optional" provider:"internal,output"`
+	Digests     map[string]string `pulumi:"digests"     provider:"output"`
+	ContextHash string            `pulumi:"contextHash" provider:"output"`
+	Ref         string            `pulumi:"ref" provider:"output"`
 }
 
 // Annotate describes outputs of the Image resource.
@@ -270,12 +273,28 @@ func (is *ImageState) Annotate(a infer.Annotator) {
 	is.ImageArgs.Annotate(a)
 
 	a.Describe(&is.Digests, dedent(`
-		A mapping of platform type to refs which were pushed to registries.`,
+		A mapping of target names to the SHA256 digest of their pushed manifest.
+
+		If no target was specified 'default' is used as the target name.
+
+		Pushed manifests can be referenced as "<tag>@<digest>".
+		`,
 	))
 	a.Describe(&is.ContextHash, dedent(`
 		A preliminary hash of the image's build context.
 
 		Pulumi uses this to determine if an image _may_ need to be re-built.
+	`))
+	a.Describe(&is.Ref, dedent(`
+		If the image was pushed to any registries then this will contain a
+		single fully-qualified tag including the build's digest.
+
+		This is only for convenience and may not be appropriate for situations
+		where multiple tags or registries are involved. In those cases this
+		output is not guaranteed to be stable.
+
+		For more control over tags consumed by downstream resources you should
+		use the "Digests" output.
 	`))
 }
 
@@ -370,6 +389,19 @@ func (ia *ImageArgs) buildable() bool {
 	// We can build the given inputs if filtered out unknowns is a no-op.
 	filtered := ia.withoutUnknowns(true)
 	return reflect.DeepEqual(ia, &filtered)
+}
+
+// isExported returns true if the args include a registry export.
+func (ia *ImageArgs) isExported() bool {
+	if ia.Push {
+		return true
+	}
+	for _, e := range ia.Exports {
+		if e.pushed() {
+			return true
+		}
+	}
+	return false
 }
 
 func (ia *ImageArgs) shouldBuildOnPreview() bool {
@@ -801,16 +833,42 @@ func (i *Image) Update(
 		return state, nil
 	}
 
-	for _, b := range builds {
+	result, err := cfg.client.Build(ctx, name, builds[0])
+	if err != nil {
+		return state, err
+	}
+	// Run any remaining cache builds.
+	for idx := 1; idx < len(builds); idx++ {
+		b := builds[idx]
 		_, err = cfg.client.Build(ctx, name, b)
 		if err != nil {
 			return state, err
 		}
 	}
 
-	_, _, state, err = i.Read(ctx, name, input, state)
+	var dgst digest.Digest
+	state.Digests = map[string]string{}
+	for target, resp := range result {
+		if d, ok := resp.ExporterResponse[exptypes.ExporterImageDigestKey]; ok {
 
-	return state, err
+			dgst = digest.Digest(d)
+			state.Digests[target] = d
+		}
+	}
+
+	// Take the first registry tag we find and add a digest to it. That becomes
+	// our simplified "ref" output.
+	for _, tag := range state.Tags {
+		ref, ok := addDigest(tag, dgst.String())
+		if !ok {
+			continue
+		}
+
+		state.Ref = ref
+		break
+	}
+
+	return state, nil
 }
 
 // Create initializes a new resource and performs an Update on it.
@@ -845,20 +903,29 @@ func (*Image) Read(
 		}
 	}
 
-	// Do a lookup on all of the tags we expected to push and update our export
-	// with the manifest we pushed.
-	digests := map[Platform][]string{}
-	for idx, export := range state.Exports {
-		// We only care about exports that could have pushed tags.
-		if !export.pushed() {
-			continue
-		}
+	if !state.isExported() {
+		// Nothing was pushed -- all done.
+		return name, input, state, nil
+	}
 
-		state.Exports[idx].Manifests = []Manifest{}
-		for _, tag := range state.Tags {
-			// Does the tag still exist?
-			infos, err := cfg.client.Inspect(ctx, name, tag)
+	tagsToKeep := []string{}
+
+	// Do a lookup on all of the tags at the digests we expect to see.
+	for _, tag := range state.Tags {
+		for _, d := range state.Digests {
+			digest := digest.Digest(d)
+
+			ref, ok := addDigest(tag, digest.String())
+			if !ok {
+				// Not a pushed tag.
+				tagsToKeep = append(tagsToKeep, tag)
+				break
+			}
+
+			// Does a tag with this digest exist?
+			infos, err := cfg.client.Inspect(ctx, name, ref)
 			if err != nil {
+				ctx.Log(diag.Warning, err.Error())
 				continue
 			}
 
@@ -872,37 +939,19 @@ func (*Image) Read(
 					continue
 				}
 
-				os, arch := m.Descriptor.Platform.OS, m.Descriptor.Platform.Architecture
-				platform := Platform(fmt.Sprintf("%s/%s", os, arch))
-
-				if _, ok := digests[platform]; !ok {
-					digests[platform] = []string{}
-				}
-
-				digests[platform] = slices.Compact(append(digests[platform], m.Ref.String()))
-
-				state.Exports[idx].Manifests = append(
-					state.Exports[idx].Manifests,
-					Manifest{
-						Digest: m.Descriptor.Digest.String(),
-						Platform: ManifestPlatform{
-							OS:           m.Descriptor.Platform.OS,
-							Architecture: m.Descriptor.Platform.Architecture,
-						},
-						Ref:  m.Ref.String(),
-						Size: m.Descriptor.Size,
-					},
-				)
+				tagsToKeep = append(tagsToKeep, tag)
+				break
 			}
 		}
 	}
-	state.Digests = digests
 
 	// If we couldn't find the tags we expected then return an empty ID to
 	// delete the resource.
-	if len(input.Tags) > 0 && len(digests) == 0 {
+	if len(input.Tags) > 0 && len(tagsToKeep) == 0 {
 		return "", input, state, nil
 	}
+
+	state.Tags = tagsToKeep
 
 	return name, input, state, nil
 }
@@ -919,21 +968,23 @@ func (*Image) Delete(
 
 	var multierr error
 
-	for _, refs := range state.Digests {
-		for _, ref := range refs {
-			deletions, err := cfg.client.Delete(context.Context(ctx), ref)
-			if errdefs.IsNotFound(err) {
-				continue // Nothing to do.
-			}
-			multierr = errors.Join(multierr, err)
+	for _, tag := range state.Tags {
+		ref, err := reference.ParseNamed(tag)
+		if err != nil {
+			continue
+		}
+		deletions, err := cfg.client.Delete(context.Context(ctx), ref.String())
+		if errdefs.IsNotFound(err) {
+			continue // Nothing to do.
+		}
+		multierr = errors.Join(multierr, err)
 
-			for _, d := range deletions {
-				if d.Deleted != "" {
-					ctx.Log(diag.Info, d.Deleted)
-				}
-				if d.Untagged != "" {
-					ctx.Log(diag.Info, d.Untagged)
-				}
+		for _, d := range deletions {
+			if d.Deleted != "" {
+				ctx.Log(diag.Info, d.Deleted)
+			}
+			if d.Untagged != "" {
+				ctx.Log(diag.Info, d.Untagged)
 			}
 		}
 	}
@@ -1072,4 +1123,27 @@ func parseDockerfile(r io.Reader) error {
 		return newCheckFailure("dockerfile", err)
 	}
 	return nil
+}
+
+// addDigest constructs a tagged ref with an "@<digest>" suffix.
+//
+// Returns false if the given ref was not fully qualified.
+func addDigest(ref, digest string) (string, bool) {
+	named, err := reference.ParseNamed(ref)
+	if err != nil {
+		return "", false
+	}
+	tag := "latest"
+	if tagged, ok := named.(reference.Tagged); ok {
+		tag = tagged.Tag()
+	}
+
+	full, err := reference.Parse(
+		fmt.Sprintf("%s:%s@%s", named.Name(), tag, digest),
+	)
+	if err != nil {
+		return "", false
+	}
+
+	return full.String(), true
 }

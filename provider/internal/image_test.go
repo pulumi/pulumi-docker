@@ -2,6 +2,7 @@ package internal
 
 import (
 	"errors"
+	"fmt"
 	"os"
 	"path/filepath"
 	"testing"
@@ -13,6 +14,7 @@ import (
 	"github.com/docker/distribution/reference"
 	"github.com/docker/docker/api/types/image"
 	"github.com/moby/buildkit/client"
+	"github.com/moby/buildkit/exporter/containerimage/exptypes"
 	v1 "github.com/opencontainers/image-spec/specs-go/v1"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -34,9 +36,7 @@ func TestLifecycle(t *testing.T) {
 		return NewMockClient(ctrl)
 	}
 
-	ref, err := reference.ParseNamed("docker.io/pulumibot/buildkit-e2e")
-	require.NoError(t, err)
-	digestRef, err := reference.WithDigest(ref, "sha256:7f9fc9830dbb80a7fd23b9903d587b6433a9e87969de4868e551bc2959e63dd9")
+	_, err := reference.ParseNamed("docker.io/pulumibot/buildkit-e2e")
 	require.NoError(t, err)
 
 	tests := []struct {
@@ -56,20 +56,17 @@ func TestLifecycle(t *testing.T) {
 					func(_ provider.Context, name string, b Build) (map[string]*client.SolveResponse, error) {
 						assert.Equal(t, "../testdata/Dockerfile", b.BuildOptions().DockerfileName)
 						return map[string]*client.SolveResponse{
-							b.Targets()[0]: {ExporterResponse: map[string]string{"containerimage.digest": "SHA256:digest"}},
+							b.Targets()[0]: {
+								ExporterResponse: map[string]string{
+									exptypes.ExporterImageDigestKey: "sha256:98ea6e4f216f2fb4b69fff9b3a44842c38686ca685f3f55dc48c5d3fb1107be4",
+								},
+							},
 						}, nil
 					},
 				).AnyTimes()
-				c.EXPECT().Inspect(gomock.Any(), "test", "docker.io/pulumibot/buildkit-e2e").Return(
-					[]manifesttypes.ImageManifest{
-						{
-							Ref:        &manifesttypes.SerializableNamed{Named: digestRef},
-							Descriptor: v1.Descriptor{Platform: &v1.Platform{OS: "linux", Architecture: "arm64"}},
-						},
-					}, nil,
-				).AnyTimes()
-				c.EXPECT().Inspect(gomock.Any(), "test", "docker.io/pulumibot/buildkit-e2e:main").AnyTimes()
-				c.EXPECT().Delete(gomock.Any(), digestRef.String()).Return(
+				c.EXPECT().Delete(gomock.Any(), "docker.io/pulumibot/buildkit-e2e").Return(
+					[]image.DeleteResponse{{Deleted: "deleted"}, {Untagged: "untagged"}}, nil)
+				c.EXPECT().Delete(gomock.Any(), "docker.io/pulumibot/buildkit-e2e:main").Return(
 					[]image.DeleteResponse{{Deleted: "deleted"}, {Untagged: "untagged"}}, nil)
 				return c
 			},
@@ -278,8 +275,7 @@ func TestDelete(t *testing.T) {
 	t.Run("image was already deleted", func(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		client := NewMockClient(ctrl)
-		client.EXPECT().Delete(gomock.Any(), "foo").Return(nil, errNotFound{})
-		client.EXPECT().Delete(gomock.Any(), "bar").Return(nil, errNotFound{})
+		client.EXPECT().Delete(gomock.Any(), "docker.io/pulumi/test:foo").Return(nil, errNotFound{})
 
 		s := newServer(client)
 		err := s.Configure(provider.ConfigureRequest{})
@@ -289,12 +285,15 @@ func TestDelete(t *testing.T) {
 			ID:  "foo,bar",
 			Urn: _fakeURN,
 			Properties: resource.PropertyMap{
-				"digests": resource.NewObjectProperty(resource.PropertyMap{
-					"digests": resource.NewArrayProperty([]resource.PropertyValue{
-						resource.NewStringProperty("foo"),
-						resource.NewStringProperty("bar"),
-					}),
+				"tags": resource.NewArrayProperty([]resource.PropertyValue{
+					resource.NewStringProperty("docker.io/pulumi/test:foo"),
 				}),
+				"push": resource.NewBoolProperty(true),
+				"digests": resource.NewObjectProperty(resource.PropertyMap{
+					"default": resource.NewStringProperty("sha256:foo"),
+				}),
+				"contextHash": resource.NewStringProperty(""),
+				"ref":         resource.NewStringProperty(""),
 			},
 		})
 		assert.NoError(t, err)
@@ -303,24 +302,26 @@ func TestDelete(t *testing.T) {
 
 func TestRead(t *testing.T) {
 	tag := "docker.io/pulumi/pulumitest"
+	digest := "sha256:3be99cafdcd80a8e620da56bdc215acab6213bb608d3d492c0ba1807128786a1"
 	ref, err := reference.ParseNamed(tag)
 	require.NoError(t, err)
 
 	ctrl := gomock.NewController(t)
 	client := NewMockClient(ctrl)
-	client.EXPECT().Inspect(gomock.Any(), "my-image", tag).Return([]manifesttypes.ImageManifest{
-		{
-			Descriptor: v1.Descriptor{Platform: &v1.Platform{Architecture: "arm64"}},
-			Ref:        &manifesttypes.SerializableNamed{Named: ref},
-		},
-		{
-			Descriptor: v1.Descriptor{Platform: &v1.Platform{Architecture: "unknown"}},
-			Ref:        &manifesttypes.SerializableNamed{Named: ref},
-		},
-		{
-			Descriptor: v1.Descriptor{},
-		},
-	}, nil)
+	client.EXPECT().Inspect(gomock.Any(), "my-image", fmt.Sprintf("%s:latest@%s", tag, digest)).Return(
+		[]manifesttypes.ImageManifest{
+			{
+				Descriptor: v1.Descriptor{Platform: &v1.Platform{Architecture: "arm64"}},
+				Ref:        &manifesttypes.SerializableNamed{Named: ref},
+			},
+			{
+				Descriptor: v1.Descriptor{Platform: &v1.Platform{Architecture: "unknown"}},
+				Ref:        &manifesttypes.SerializableNamed{Named: ref},
+			},
+			{
+				Descriptor: v1.Descriptor{},
+			},
+		}, nil)
 
 	s := newServer(client)
 	err = s.Configure(provider.ConfigureRequest{})
@@ -337,6 +338,9 @@ func TestRead(t *testing.T) {
 			}),
 			"tags": resource.NewArrayProperty([]resource.PropertyValue{
 				resource.NewStringProperty(tag),
+			}),
+			"digests": resource.NewObjectProperty(resource.PropertyMap{
+				"default": resource.NewStringProperty(digest),
 			}),
 		},
 	})
@@ -355,6 +359,7 @@ func TestDiff(t *testing.T) {
 	baseState := ImageState{
 		ContextHash: "f04bea490d45e7ae69d542846511e7c90eb683deaa1e0df19e9fca4d227265c2",
 		ImageArgs:   baseArgs,
+		Digests:     map[string]string{},
 	}
 
 	tests := []struct {
