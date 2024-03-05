@@ -45,19 +45,20 @@ func TestLifecycle(t *testing.T) {
 			client: func(t *testing.T) Client {
 				ctrl := gomock.NewController(t)
 				c := mock.NewMockClient(ctrl)
+				c.EXPECT().Auth(gomock.Any(), "test", gomock.Any()).Return(nil).AnyTimes()
 				gomock.InOrder(
 					c.EXPECT().BuildKitEnabled().Return(true, nil), // Preview.
 					c.EXPECT().BuildKitEnabled().Return(true, nil), // Create.
-					c.EXPECT().Build(gomock.Any(), gomock.AssignableToTypeOf(controllerapi.BuildOptions{})).DoAndReturn(
-						func(_ provider.Context, opts controllerapi.BuildOptions) (*client.SolveResponse, error) {
+					c.EXPECT().Build(gomock.Any(), "test", gomock.AssignableToTypeOf(controllerapi.BuildOptions{})).DoAndReturn(
+						func(_ provider.Context, name string, opts controllerapi.BuildOptions) (*client.SolveResponse, error) {
 							assert.Equal(t, "../testdata/Dockerfile", opts.DockerfileName)
 							return &client.SolveResponse{ExporterResponse: map[string]string{"containerimage.digest": "SHA256:digest"}}, nil
 						},
 					),
-					c.EXPECT().Inspect(gomock.Any(), "docker.io/blampe/buildkit-e2e").Return(
+					c.EXPECT().Inspect(gomock.Any(), "test", "docker.io/blampe/buildkit-e2e").Return(
 						[]manifesttypes.ImageManifest{}, nil,
 					),
-					c.EXPECT().Inspect(gomock.Any(), "docker.io/blampe/buildkit-e2e:main"),
+					c.EXPECT().Inspect(gomock.Any(), "test", "docker.io/blampe/buildkit-e2e:main"),
 					c.EXPECT().Delete(gomock.Any(), "test").Return(
 						[]image.DeleteResponse{{Deleted: "deleted"}, {Untagged: "untagged"}}, nil),
 				)
@@ -82,6 +83,15 @@ func TestLifecycle(t *testing.T) {
 						"file":    resource.NewStringProperty("../testdata/Dockerfile"),
 						"exports": resource.NewArrayProperty(
 							[]resource.PropertyValue{resource.NewStringProperty("type=registry")},
+						),
+						"registries": resource.NewArrayProperty(
+							[]resource.PropertyValue{
+								resource.NewObjectProperty(resource.PropertyMap{
+									"address":  resource.NewStringProperty("fakeaddress"),
+									"username": resource.NewStringProperty("fakeuser"),
+									"password": resource.MakeSecret(resource.NewStringProperty("password")),
+								}),
+							},
 						),
 					},
 				}
@@ -193,8 +203,8 @@ func TestLifecycle(t *testing.T) {
 				gomock.InOrder(
 					c.EXPECT().BuildKitEnabled().Return(true, nil), // Preview.
 					c.EXPECT().BuildKitEnabled().Return(true, nil), // Create.
-					c.EXPECT().Build(gomock.Any(), gomock.AssignableToTypeOf(controllerapi.BuildOptions{})).DoAndReturn(
-						func(_ provider.Context, opts controllerapi.BuildOptions) (*client.SolveResponse, error) {
+					c.EXPECT().Build(gomock.Any(), "test", gomock.AssignableToTypeOf(controllerapi.BuildOptions{})).DoAndReturn(
+						func(_ provider.Context, name string, opts controllerapi.BuildOptions) (*client.SolveResponse, error) {
 							assert.Equal(t, "../testdata/Dockerfile", opts.DockerfileName)
 							return &client.SolveResponse{ExporterResponse: map[string]string{"image.name": "test:latest"}}, nil
 						},
@@ -278,7 +288,7 @@ func TestRead(t *testing.T) {
 
 	ctrl := gomock.NewController(t)
 	client := mock.NewMockClient(ctrl)
-	client.EXPECT().Inspect(gomock.Any(), tag).Return([]manifesttypes.ImageManifest{
+	client.EXPECT().Inspect(gomock.Any(), "my-image", tag).Return([]manifesttypes.ImageManifest{
 		{
 			Descriptor: v1.Descriptor{Platform: &v1.Platform{Architecture: "arm64"}},
 			Ref:        &manifesttypes.SerializableNamed{Named: ref},
@@ -297,7 +307,7 @@ func TestRead(t *testing.T) {
 	require.NoError(t, err)
 
 	state, err := s.Read(provider.ReadRequest{
-		ID:  "tag",
+		ID:  "my-image",
 		Urn: _fakeURN,
 		Inputs: resource.PropertyMap{
 			"exports": resource.NewArrayProperty([]resource.PropertyValue{
@@ -333,6 +343,55 @@ func TestDiff(t *testing.T) {
 
 		wantChanges bool
 	}{
+		{
+			name: "no diff if registry password changes",
+			olds: func(_ *testing.T, s ImageState) ImageState {
+				s.Registries = []properties.RegistryAuth{{
+					Address:  "foo",
+					Username: "foo",
+					Password: "foo",
+				}}
+				return s
+			},
+			news: func(_ *testing.T, a ImageArgs) ImageArgs {
+				a.Registries = []properties.RegistryAuth{{
+					Address:  "foo",
+					Username: "foo",
+					Password: "DIFFERENT PASSWORD",
+				}}
+				return a
+			},
+			wantChanges: false,
+		},
+		{
+			name: "diff if registry added",
+			olds: func(*testing.T, ImageState) ImageState { return baseState },
+			news: func(_ *testing.T, a ImageArgs) ImageArgs {
+				a.Registries = []properties.RegistryAuth{{}}
+				return a
+			},
+			wantChanges: true,
+		},
+		{
+			name: "diff if registry user changes",
+			olds: func(_ *testing.T, s ImageState) ImageState {
+				s.Registries = []properties.RegistryAuth{{
+					Address:  "foo",
+					Username: "foo",
+					Password: "foo",
+				}}
+				return s
+			},
+			news: func(_ *testing.T, a ImageArgs) ImageArgs {
+				a.Registries = []properties.RegistryAuth{{
+					Address:  "DIFFERENT USER",
+					Username: "foo",
+					Password: "foo",
+				}}
+				return a
+			},
+			wantChanges: true,
+		},
 		{
 			name: "diff if buildArgs changes",
 			olds: func(*testing.T, ImageState) ImageState { return baseState },

@@ -59,8 +59,9 @@ func (dp dockerHybridProvider) Call(context.Context, *rpc.CallRequest) (*rpc.Cal
 	return nil, status.Error(codes.Unimplemented, "Call is not yet implemented")
 }
 
-func (dp dockerHybridProvider) Cancel(context.Context, *empty.Empty) (*empty.Empty, error) {
-	return &empty.Empty{}, nil
+func (dp dockerHybridProvider) Cancel(ctx context.Context, e *empty.Empty) (*empty.Empty, error) {
+	// Only buildx implements Cancel.
+	return dp.buildxProvider.Cancel(ctx, e)
 }
 
 func (dp dockerHybridProvider) GetSchema(_ context.Context, request *rpc.GetSchemaRequest) (

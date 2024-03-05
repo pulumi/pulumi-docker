@@ -2,6 +2,7 @@ package internal
 
 import (
 	"context"
+	"os"
 	"testing"
 
 	"github.com/docker/buildx/controller/pb"
@@ -12,7 +13,39 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/common/diag"
 
 	"github.com/pulumi/pulumi-docker/provider/v4/internal/mock"
+	"github.com/pulumi/pulumi-docker/provider/v4/internal/properties"
 )
+
+func TestAuth(t *testing.T) {
+	d, err := newDockerClient()
+	require.NoError(t, err)
+
+	user := "pulumibot"
+	if u := os.Getenv("DOCKER_HUB_USER"); u != "" {
+		user = u
+	}
+	password := os.Getenv("DOCKER_HUB_PASSWORD")
+	host := "pulumi.com" // Fake host -- we don't actually hit it.
+
+	t.Cleanup(func() {
+		_ = d.cli.ConfigFile().GetCredentialsStore(host).Erase(host)
+	})
+
+	err = d.Auth(context.Background(), "test-resource", properties.RegistryAuth{
+		Address:  host,
+		Username: user,
+		Password: password,
+	})
+	assert.NoError(t, err)
+
+	// Perform a second auth; it should be cached.
+	err = d.Auth(context.Background(), "test-resource", properties.RegistryAuth{
+		Address:  host,
+		Username: user,
+		Password: password,
+	})
+	assert.NoError(t, err)
+}
 
 func TestBuild(t *testing.T) {
 	d, err := newDockerClient()
@@ -27,7 +60,7 @@ func TestBuild(t *testing.T) {
 	pctx.EXPECT().Err().Return(ctx.Err()).AnyTimes()
 	pctx.EXPECT().Deadline().Return(ctx.Deadline()).AnyTimes()
 
-	_, err = d.Build(pctx, pb.BuildOptions{
+	_, err = d.Build(pctx, "resource-name", pb.BuildOptions{
 		ContextPath:    "../testdata/",
 		DockerfileName: "../testdata/Dockerfile",
 	})
@@ -46,11 +79,11 @@ func TestInspect(t *testing.T) {
 	d, err := newDockerClient()
 	require.NoError(t, err)
 
-	v2, err := d.Inspect(context.Background(), "blampe/myapp:buildx")
+	v2, err := d.Inspect(context.Background(), "test", "pulumibot/myapp:buildx")
 	assert.NoError(t, err)
 	assert.Equal(t, 2, v2[0].OCIManifest.SchemaVersion)
 
-	v1, err := d.Inspect(context.Background(), "pulumi/pulumi")
+	v1, err := d.Inspect(context.Background(), "test", "pulumi/pulumi")
 	assert.NoError(t, err)
 	assert.Nil(t, v1[0].OCIManifest)
 }
