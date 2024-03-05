@@ -471,6 +471,12 @@ export class Image extends pulumi.CustomResource {
     }
 
     /**
+     * Custom `host:ip` mappings to use during the build.
+     *
+     * Equivalent to Docker's `--add-host` flag.
+     */
+    public readonly addHosts!: pulumi.Output<string[] | undefined>;
+    /**
      * `ARG` names and values to set during the build.
      *
      * These variables are accessed like environment variables inside `RUN`
@@ -483,8 +489,20 @@ export class Image extends pulumi.CustomResource {
      */
     public readonly buildArgs!: pulumi.Output<{[key: string]: string} | undefined>;
     /**
-     * When `true`, attempt to build the image during previews. The image will
-     * not be pushed to registries, however caches will still be populated.
+     * By default, preview behavior depends on the execution environment. If
+     * Pulumi detects the operation is running on a CI system (GitHub Actions,
+     * Travis CI, Azure Pipelines, etc.) then it will build images during
+     * previews as a safeguard. Otherwise, if not running on CI, previews will
+     * not build images.
+     *
+     * Setting this to `false` forces previews to never perform builds, and
+     * setting it to `true` will always build the image during previews.
+     *
+     * Images built during previews are never exported to registries, however
+     * cache manifests are still exported.
+     *
+     * On-disk Dockerfiles are always validated for syntactic correctness
+     * regardless of this setting.
      */
     public readonly buildOnPreview!: pulumi.Output<boolean | undefined>;
     /**
@@ -514,11 +532,15 @@ export class Image extends pulumi.CustomResource {
      *
      * Pulumi uses this to determine if an image _may_ need to be re-built.
      */
-    public /*out*/ readonly contextHash!: pulumi.Output<string | undefined>;
+    public /*out*/ readonly contextHash!: pulumi.Output<string>;
     /**
-     * A mapping of platform type to refs which were pushed to registries.
+     * A mapping of target names to the SHA256 digest of their pushed manifest.
+     *
+     * If no target was specified 'default' is used as the target name.
+     *
+     * Pushed manifests can be referenced as `<tag>@<digest>`.
      */
-    public /*out*/ readonly digests!: pulumi.Output<{[key: string]: string[]} | undefined>;
+    public /*out*/ readonly digests!: pulumi.Output<{[key: string]: string}>;
     /**
      * Dockerfile settings.
      *
@@ -541,6 +563,28 @@ export class Image extends pulumi.CustomResource {
      */
     public readonly labels!: pulumi.Output<{[key: string]: string} | undefined>;
     /**
+     * When `true` the build will automatically include a `docker` export.
+     *
+     * Defaults to `false`.
+     *
+     * Equivalent to Docker's `--load` flag.
+     */
+    public readonly load!: pulumi.Output<boolean | undefined>;
+    /**
+     * Set the network mode for `RUN` instructions. Defaults to `default`.
+     *
+     * For custom networks, configure your builder with `--driver-opt network=...`.
+     *
+     * Equivalent to Docker's `--network` flag.
+     */
+    public readonly network!: pulumi.Output<enums.buildx.NetworkMode | undefined>;
+    /**
+     * Do not import cache manifests when building the image.
+     *
+     * Equivalent to Docker's `--no-cache` flag.
+     */
+    public readonly noCache!: pulumi.Output<boolean | undefined>;
+    /**
      * Set target platform(s) for the build. Defaults to the host's platform.
      *
      * Equivalent to Docker's `--platform` flag.
@@ -552,6 +596,26 @@ export class Image extends pulumi.CustomResource {
      * Equivalent to Docker's `--pull` flag.
      */
     public readonly pull!: pulumi.Output<boolean | undefined>;
+    /**
+     * When `true` the build will automatically include a `registry` export.
+     *
+     * Defaults to `false`.
+     *
+     * Equivalent to Docker's `--push` flag.
+     */
+    public readonly push!: pulumi.Output<boolean | undefined>;
+    /**
+     * If the image was pushed to any registries then this will contain a
+     * single fully-qualified tag including the build's digest.
+     *
+     * This is only for convenience and may not be appropriate for situations
+     * where multiple tags or registries are involved. In those cases this
+     * output is not guaranteed to be stable.
+     *
+     * For more control over tags consumed by downstream resources you should
+     * use the `Digests` output.
+     */
+    public /*out*/ readonly ref!: pulumi.Output<string>;
     /**
      * Registry credentials. Required if reading or exporting to private
      * repositories.
@@ -574,6 +638,12 @@ export class Image extends pulumi.CustomResource {
      * Similar to Docker's `--secret` flag.
      */
     public readonly secrets!: pulumi.Output<{[key: string]: string} | undefined>;
+    /**
+     * SSH agent socket or keys to expose to the build.
+     *
+     * Equivalent to Docker's `--ssh` flag.
+     */
+    public readonly ssh!: pulumi.Output<outputs.buildx.SSH[] | undefined>;
     /**
      * Name and optionally a tag (format: `name:tag`).
      *
@@ -603,6 +673,7 @@ export class Image extends pulumi.CustomResource {
         let resourceInputs: pulumi.Inputs = {};
         opts = opts || {};
         if (!opts.id) {
+            resourceInputs["addHosts"] = args ? args.addHosts : undefined;
             resourceInputs["buildArgs"] = args ? args.buildArgs : undefined;
             resourceInputs["buildOnPreview"] = args ? args.buildOnPreview : undefined;
             resourceInputs["builder"] = args ? args.builder : undefined;
@@ -612,15 +683,22 @@ export class Image extends pulumi.CustomResource {
             resourceInputs["dockerfile"] = args ? args.dockerfile : undefined;
             resourceInputs["exports"] = args ? args.exports : undefined;
             resourceInputs["labels"] = args ? args.labels : undefined;
+            resourceInputs["load"] = args ? args.load : undefined;
+            resourceInputs["network"] = (args ? args.network : undefined) ?? "default";
+            resourceInputs["noCache"] = args ? args.noCache : undefined;
             resourceInputs["platforms"] = args ? args.platforms : undefined;
             resourceInputs["pull"] = args ? args.pull : undefined;
+            resourceInputs["push"] = args ? args.push : undefined;
             resourceInputs["registries"] = args ? args.registries : undefined;
-            resourceInputs["secrets"] = args?.secrets ? pulumi.secret(args.secrets) : undefined;
+            resourceInputs["secrets"] = args ? args.secrets : undefined;
+            resourceInputs["ssh"] = args ? args.ssh : undefined;
             resourceInputs["tags"] = args ? args.tags : undefined;
             resourceInputs["targets"] = args ? args.targets : undefined;
             resourceInputs["contextHash"] = undefined /*out*/;
             resourceInputs["digests"] = undefined /*out*/;
+            resourceInputs["ref"] = undefined /*out*/;
         } else {
+            resourceInputs["addHosts"] = undefined /*out*/;
             resourceInputs["buildArgs"] = undefined /*out*/;
             resourceInputs["buildOnPreview"] = undefined /*out*/;
             resourceInputs["builder"] = undefined /*out*/;
@@ -632,16 +710,20 @@ export class Image extends pulumi.CustomResource {
             resourceInputs["dockerfile"] = undefined /*out*/;
             resourceInputs["exports"] = undefined /*out*/;
             resourceInputs["labels"] = undefined /*out*/;
+            resourceInputs["load"] = undefined /*out*/;
+            resourceInputs["network"] = undefined /*out*/;
+            resourceInputs["noCache"] = undefined /*out*/;
             resourceInputs["platforms"] = undefined /*out*/;
             resourceInputs["pull"] = undefined /*out*/;
+            resourceInputs["push"] = undefined /*out*/;
+            resourceInputs["ref"] = undefined /*out*/;
             resourceInputs["registries"] = undefined /*out*/;
             resourceInputs["secrets"] = undefined /*out*/;
+            resourceInputs["ssh"] = undefined /*out*/;
             resourceInputs["tags"] = undefined /*out*/;
             resourceInputs["targets"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
-        const secretOpts = { additionalSecretOutputs: ["secrets"] };
-        opts = pulumi.mergeOptions(opts, secretOpts);
         super(Image.__pulumiType, name, resourceInputs, opts);
     }
 }
@@ -650,6 +732,12 @@ export class Image extends pulumi.CustomResource {
  * The set of arguments for constructing a Image resource.
  */
 export interface ImageArgs {
+    /**
+     * Custom `host:ip` mappings to use during the build.
+     *
+     * Equivalent to Docker's `--add-host` flag.
+     */
+    addHosts?: pulumi.Input<pulumi.Input<string>[]>;
     /**
      * `ARG` names and values to set during the build.
      *
@@ -663,8 +751,20 @@ export interface ImageArgs {
      */
     buildArgs?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
     /**
-     * When `true`, attempt to build the image during previews. The image will
-     * not be pushed to registries, however caches will still be populated.
+     * By default, preview behavior depends on the execution environment. If
+     * Pulumi detects the operation is running on a CI system (GitHub Actions,
+     * Travis CI, Azure Pipelines, etc.) then it will build images during
+     * previews as a safeguard. Otherwise, if not running on CI, previews will
+     * not build images.
+     *
+     * Setting this to `false` forces previews to never perform builds, and
+     * setting it to `true` will always build the image during previews.
+     *
+     * Images built during previews are never exported to registries, however
+     * cache manifests are still exported.
+     *
+     * On-disk Dockerfiles are always validated for syntactic correctness
+     * regardless of this setting.
      */
     buildOnPreview?: pulumi.Input<boolean>;
     /**
@@ -711,6 +811,28 @@ export interface ImageArgs {
      */
     labels?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
     /**
+     * When `true` the build will automatically include a `docker` export.
+     *
+     * Defaults to `false`.
+     *
+     * Equivalent to Docker's `--load` flag.
+     */
+    load?: pulumi.Input<boolean>;
+    /**
+     * Set the network mode for `RUN` instructions. Defaults to `default`.
+     *
+     * For custom networks, configure your builder with `--driver-opt network=...`.
+     *
+     * Equivalent to Docker's `--network` flag.
+     */
+    network?: pulumi.Input<enums.buildx.NetworkMode>;
+    /**
+     * Do not import cache manifests when building the image.
+     *
+     * Equivalent to Docker's `--no-cache` flag.
+     */
+    noCache?: pulumi.Input<boolean>;
+    /**
      * Set target platform(s) for the build. Defaults to the host's platform.
      *
      * Equivalent to Docker's `--platform` flag.
@@ -722,6 +844,14 @@ export interface ImageArgs {
      * Equivalent to Docker's `--pull` flag.
      */
     pull?: pulumi.Input<boolean>;
+    /**
+     * When `true` the build will automatically include a `registry` export.
+     *
+     * Defaults to `false`.
+     *
+     * Equivalent to Docker's `--push` flag.
+     */
+    push?: pulumi.Input<boolean>;
     /**
      * Registry credentials. Required if reading or exporting to private
      * repositories.
@@ -744,6 +874,12 @@ export interface ImageArgs {
      * Similar to Docker's `--secret` flag.
      */
     secrets?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    /**
+     * SSH agent socket or keys to expose to the build.
+     *
+     * Equivalent to Docker's `--ssh` flag.
+     */
+    ssh?: pulumi.Input<pulumi.Input<inputs.buildx.SSH>[]>;
     /**
      * Name and optionally a tag (format: `name:tag`).
      *

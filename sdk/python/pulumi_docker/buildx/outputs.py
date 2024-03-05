@@ -36,9 +36,8 @@ __all__ = [
     'ExportOCI',
     'ExportRegistry',
     'ExportTar',
-    'Manifest',
-    'ManifestPlatform',
     'RegistryAuth',
+    'SSH',
 ]
 
 @pulumi.output_type
@@ -1575,7 +1574,6 @@ class ExportEntry(dict):
                  docker: Optional['outputs.ExportDocker'] = None,
                  image: Optional['outputs.ExportImage'] = None,
                  local: Optional['outputs.ExportLocal'] = None,
-                 manifests: Optional[Sequence['outputs.Manifest']] = None,
                  oci: Optional['outputs.ExportOCI'] = None,
                  raw: Optional[str] = None,
                  registry: Optional['outputs.ExportRegistry'] = None,
@@ -1585,8 +1583,6 @@ class ExportEntry(dict):
         :param 'ExportDockerArgs' docker: Export as a Docker image layout.
         :param 'ExportImageArgs' image: Outputs the build result into a container image format.
         :param 'ExportLocalArgs' local: Export to a local directory as files and directories.
-        :param Sequence['ManifestArgs'] manifests: An output property populated for exporters that pushed image
-               manifest(s) to a registry.
         :param 'ExportOCIArgs' oci: Identical to the Docker exporter but uses OCI media types by default.
         :param str raw: A raw string as you would provide it to the Docker CLI (e.g.,
                `type=docker`)
@@ -1601,8 +1597,6 @@ class ExportEntry(dict):
             pulumi.set(__self__, "image", image)
         if local is not None:
             pulumi.set(__self__, "local", local)
-        if manifests is not None:
-            pulumi.set(__self__, "manifests", manifests)
         if oci is not None:
             pulumi.set(__self__, "oci", oci)
         if raw is not None:
@@ -1643,15 +1637,6 @@ class ExportEntry(dict):
         Export to a local directory as files and directories.
         """
         return pulumi.get(self, "local")
-
-    @property
-    @pulumi.getter
-    def manifests(self) -> Optional[Sequence['outputs.Manifest']]:
-        """
-        An output property populated for exporters that pushed image
-        manifest(s) to a registry.
-        """
-        return pulumi.get(self, "manifests")
 
     @property
     @pulumi.getter
@@ -2288,86 +2273,6 @@ class ExportTar(dict):
 
 
 @pulumi.output_type
-class Manifest(dict):
-    def __init__(__self__, *,
-                 digest: str,
-                 platform: 'outputs.ManifestPlatform',
-                 ref: str,
-                 size: int):
-        """
-        :param str digest: The SHA256 digest of the manifest.
-        :param 'ManifestPlatformArgs' platform: The manifest's platform.
-        :param str ref: The manifest's canonical ref.
-        :param int size: The size of the manifest in bytes.
-        """
-        pulumi.set(__self__, "digest", digest)
-        pulumi.set(__self__, "platform", platform)
-        pulumi.set(__self__, "ref", ref)
-        pulumi.set(__self__, "size", size)
-
-    @property
-    @pulumi.getter
-    def digest(self) -> str:
-        """
-        The SHA256 digest of the manifest.
-        """
-        return pulumi.get(self, "digest")
-
-    @property
-    @pulumi.getter
-    def platform(self) -> 'outputs.ManifestPlatform':
-        """
-        The manifest's platform.
-        """
-        return pulumi.get(self, "platform")
-
-    @property
-    @pulumi.getter
-    def ref(self) -> str:
-        """
-        The manifest's canonical ref.
-        """
-        return pulumi.get(self, "ref")
-
-    @property
-    @pulumi.getter
-    def size(self) -> int:
-        """
-        The size of the manifest in bytes.
-        """
-        return pulumi.get(self, "size")
-
-
-@pulumi.output_type
-class ManifestPlatform(dict):
-    def __init__(__self__, *,
-                 architecture: str,
-                 os: str):
-        """
-        :param str architecture: The manifest's architecture.
-        :param str os: The manifest's operating systen.
-        """
-        pulumi.set(__self__, "architecture", architecture)
-        pulumi.set(__self__, "os", os)
-
-    @property
-    @pulumi.getter
-    def architecture(self) -> str:
-        """
-        The manifest's architecture.
-        """
-        return pulumi.get(self, "architecture")
-
-    @property
-    @pulumi.getter
-    def os(self) -> str:
-        """
-        The manifest's operating systen.
-        """
-        return pulumi.get(self, "os")
-
-
-@pulumi.output_type
 class RegistryAuth(dict):
     def __init__(__self__, *,
                  address: str,
@@ -2407,5 +2312,55 @@ class RegistryAuth(dict):
         Username for the registry.
         """
         return pulumi.get(self, "username")
+
+
+@pulumi.output_type
+class SSH(dict):
+    def __init__(__self__, *,
+                 id: str,
+                 paths: Optional[Sequence[str]] = None):
+        """
+        :param str id: Useful for distinguishing different servers that are part of the same
+               build.
+               
+               A value of `default` is appropriate if only dealing with a single host.
+        :param Sequence[str] paths: SSH agent socket or private keys to expose to the build under the given
+               identifier.
+               
+               Defaults to `[$SSH_AUTH_SOCK]`.
+               
+               Note that your keys are **not** automatically added when using an
+               agent. Run `ssh-add -l` locally to confirm which public keys are
+               visible to the agent; these will be exposed to your build.
+        """
+        pulumi.set(__self__, "id", id)
+        if paths is not None:
+            pulumi.set(__self__, "paths", paths)
+
+    @property
+    @pulumi.getter
+    def id(self) -> str:
+        """
+        Useful for distinguishing different servers that are part of the same
+        build.
+
+        A value of `default` is appropriate if only dealing with a single host.
+        """
+        return pulumi.get(self, "id")
+
+    @property
+    @pulumi.getter
+    def paths(self) -> Optional[Sequence[str]]:
+        """
+        SSH agent socket or private keys to expose to the build under the given
+        identifier.
+
+        Defaults to `[$SSH_AUTH_SOCK]`.
+
+        Note that your keys are **not** automatically added when using an
+        agent. Run `ssh-add -l` locally to confirm which public keys are
+        visible to the agent; these will be exposed to your build.
+        """
+        return pulumi.get(self, "paths")
 
 

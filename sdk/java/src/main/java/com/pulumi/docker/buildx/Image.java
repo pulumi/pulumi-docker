@@ -9,6 +9,7 @@ import com.pulumi.core.annotations.ResourceType;
 import com.pulumi.core.internal.Codegen;
 import com.pulumi.docker.Utilities;
 import com.pulumi.docker.buildx.ImageArgs;
+import com.pulumi.docker.buildx.enums.NetworkMode;
 import com.pulumi.docker.buildx.enums.Platform;
 import com.pulumi.docker.buildx.outputs.BuildContext;
 import com.pulumi.docker.buildx.outputs.BuilderConfig;
@@ -17,6 +18,7 @@ import com.pulumi.docker.buildx.outputs.CacheToEntry;
 import com.pulumi.docker.buildx.outputs.Dockerfile;
 import com.pulumi.docker.buildx.outputs.ExportEntry;
 import com.pulumi.docker.buildx.outputs.RegistryAuth;
+import com.pulumi.docker.buildx.outputs.SSH;
 import java.lang.Boolean;
 import java.lang.String;
 import java.util.List;
@@ -571,6 +573,24 @@ import javax.annotation.Nullable;
 @ResourceType(type="docker:buildx/image:Image")
 public class Image extends com.pulumi.resources.CustomResource {
     /**
+     * Custom `host:ip` mappings to use during the build.
+     * 
+     * Equivalent to Docker&#39;s `--add-host` flag.
+     * 
+     */
+    @Export(name="addHosts", refs={List.class,String.class}, tree="[0,1]")
+    private Output</* @Nullable */ List<String>> addHosts;
+
+    /**
+     * @return Custom `host:ip` mappings to use during the build.
+     * 
+     * Equivalent to Docker&#39;s `--add-host` flag.
+     * 
+     */
+    public Output<Optional<List<String>>> addHosts() {
+        return Codegen.optional(this.addHosts);
+    }
+    /**
      * `ARG` names and values to set during the build.
      * 
      * These variables are accessed like environment variables inside `RUN`
@@ -601,16 +621,40 @@ public class Image extends com.pulumi.resources.CustomResource {
         return Codegen.optional(this.buildArgs);
     }
     /**
-     * When `true`, attempt to build the image during previews. The image will
-     * not be pushed to registries, however caches will still be populated.
+     * By default, preview behavior depends on the execution environment. If
+     * Pulumi detects the operation is running on a CI system (GitHub Actions,
+     * Travis CI, Azure Pipelines, etc.) then it will build images during
+     * previews as a safeguard. Otherwise, if not running on CI, previews will
+     * not build images.
+     * 
+     * Setting this to `false` forces previews to never perform builds, and
+     * setting it to `true` will always build the image during previews.
+     * 
+     * Images built during previews are never exported to registries, however
+     * cache manifests are still exported.
+     * 
+     * On-disk Dockerfiles are always validated for syntactic correctness
+     * regardless of this setting.
      * 
      */
     @Export(name="buildOnPreview", refs={Boolean.class}, tree="[0]")
     private Output</* @Nullable */ Boolean> buildOnPreview;
 
     /**
-     * @return When `true`, attempt to build the image during previews. The image will
-     * not be pushed to registries, however caches will still be populated.
+     * @return By default, preview behavior depends on the execution environment. If
+     * Pulumi detects the operation is running on a CI system (GitHub Actions,
+     * Travis CI, Azure Pipelines, etc.) then it will build images during
+     * previews as a safeguard. Otherwise, if not running on CI, previews will
+     * not build images.
+     * 
+     * Setting this to `false` forces previews to never perform builds, and
+     * setting it to `true` will always build the image during previews.
+     * 
+     * Images built during previews are never exported to registries, however
+     * cache manifests are still exported.
+     * 
+     * On-disk Dockerfiles are always validated for syntactic correctness
+     * regardless of this setting.
      * 
      */
     public Output<Optional<Boolean>> buildOnPreview() {
@@ -691,7 +735,7 @@ public class Image extends com.pulumi.resources.CustomResource {
      * 
      */
     @Export(name="contextHash", refs={String.class}, tree="[0]")
-    private Output</* @Nullable */ String> contextHash;
+    private Output<String> contextHash;
 
     /**
      * @return A preliminary hash of the image&#39;s build context.
@@ -699,22 +743,30 @@ public class Image extends com.pulumi.resources.CustomResource {
      * Pulumi uses this to determine if an image _may_ need to be re-built.
      * 
      */
-    public Output<Optional<String>> contextHash() {
-        return Codegen.optional(this.contextHash);
+    public Output<String> contextHash() {
+        return this.contextHash;
     }
     /**
-     * A mapping of platform type to refs which were pushed to registries.
+     * A mapping of target names to the SHA256 digest of their pushed manifest.
+     * 
+     * If no target was specified &#39;default&#39; is used as the target name.
+     * 
+     * Pushed manifests can be referenced as `&lt;tag&gt;@&lt;digest&gt;`.
      * 
      */
-    @Export(name="digests", refs={Map.class,String.class,List.class}, tree="[0,1,[2,1]]")
-    private Output</* @Nullable */ Map<String,List<String>>> digests;
+    @Export(name="digests", refs={Map.class,String.class}, tree="[0,1,1]")
+    private Output<Map<String,String>> digests;
 
     /**
-     * @return A mapping of platform type to refs which were pushed to registries.
+     * @return A mapping of target names to the SHA256 digest of their pushed manifest.
+     * 
+     * If no target was specified &#39;default&#39; is used as the target name.
+     * 
+     * Pushed manifests can be referenced as `&lt;tag&gt;@&lt;digest&gt;`.
      * 
      */
-    public Output<Optional<Map<String,List<String>>>> digests() {
-        return Codegen.optional(this.digests);
+    public Output<Map<String,String>> digests() {
+        return this.digests;
     }
     /**
      * Dockerfile settings.
@@ -777,6 +829,68 @@ public class Image extends com.pulumi.resources.CustomResource {
         return Codegen.optional(this.labels);
     }
     /**
+     * When `true` the build will automatically include a `docker` export.
+     * 
+     * Defaults to `false`.
+     * 
+     * Equivalent to Docker&#39;s `--load` flag.
+     * 
+     */
+    @Export(name="load", refs={Boolean.class}, tree="[0]")
+    private Output</* @Nullable */ Boolean> load;
+
+    /**
+     * @return When `true` the build will automatically include a `docker` export.
+     * 
+     * Defaults to `false`.
+     * 
+     * Equivalent to Docker&#39;s `--load` flag.
+     * 
+     */
+    public Output<Optional<Boolean>> load() {
+        return Codegen.optional(this.load);
+    }
+    /**
+     * Set the network mode for `RUN` instructions. Defaults to `default`.
+     * 
+     * For custom networks, configure your builder with `--driver-opt network=...`.
+     * 
+     * Equivalent to Docker&#39;s `--network` flag.
+     * 
+     */
+    @Export(name="network", refs={NetworkMode.class}, tree="[0]")
+    private Output</* @Nullable */ NetworkMode> network;
+
+    /**
+     * @return Set the network mode for `RUN` instructions. Defaults to `default`.
+     * 
+     * For custom networks, configure your builder with `--driver-opt network=...`.
+     * 
+     * Equivalent to Docker&#39;s `--network` flag.
+     * 
+     */
+    public Output<Optional<NetworkMode>> network() {
+        return Codegen.optional(this.network);
+    }
+    /**
+     * Do not import cache manifests when building the image.
+     * 
+     * Equivalent to Docker&#39;s `--no-cache` flag.
+     * 
+     */
+    @Export(name="noCache", refs={Boolean.class}, tree="[0]")
+    private Output</* @Nullable */ Boolean> noCache;
+
+    /**
+     * @return Do not import cache manifests when building the image.
+     * 
+     * Equivalent to Docker&#39;s `--no-cache` flag.
+     * 
+     */
+    public Output<Optional<Boolean>> noCache() {
+        return Codegen.optional(this.noCache);
+    }
+    /**
      * Set target platform(s) for the build. Defaults to the host&#39;s platform.
      * 
      * Equivalent to Docker&#39;s `--platform` flag.
@@ -811,6 +925,58 @@ public class Image extends com.pulumi.resources.CustomResource {
      */
     public Output<Optional<Boolean>> pull() {
         return Codegen.optional(this.pull);
+    }
+    /**
+     * When `true` the build will automatically include a `registry` export.
+     * 
+     * Defaults to `false`.
+     * 
+     * Equivalent to Docker&#39;s `--push` flag.
+     * 
+     */
+    @Export(name="push", refs={Boolean.class}, tree="[0]")
+    private Output</* @Nullable */ Boolean> push;
+
+    /**
+     * @return When `true` the build will automatically include a `registry` export.
+     * 
+     * Defaults to `false`.
+     * 
+     * Equivalent to Docker&#39;s `--push` flag.
+     * 
+     */
+    public Output<Optional<Boolean>> push() {
+        return Codegen.optional(this.push);
+    }
+    /**
+     * If the image was pushed to any registries then this will contain a
+     * single fully-qualified tag including the build&#39;s digest.
+     * 
+     * This is only for convenience and may not be appropriate for situations
+     * where multiple tags or registries are involved. In those cases this
+     * output is not guaranteed to be stable.
+     * 
+     * For more control over tags consumed by downstream resources you should
+     * use the `Digests` output.
+     * 
+     */
+    @Export(name="ref", refs={String.class}, tree="[0]")
+    private Output<String> ref;
+
+    /**
+     * @return If the image was pushed to any registries then this will contain a
+     * single fully-qualified tag including the build&#39;s digest.
+     * 
+     * This is only for convenience and may not be appropriate for situations
+     * where multiple tags or registries are involved. In those cases this
+     * output is not guaranteed to be stable.
+     * 
+     * For more control over tags consumed by downstream resources you should
+     * use the `Digests` output.
+     * 
+     */
+    public Output<String> ref() {
+        return this.ref;
     }
     /**
      * Registry credentials. Required if reading or exporting to private
@@ -867,6 +1033,24 @@ public class Image extends com.pulumi.resources.CustomResource {
      */
     public Output<Optional<Map<String,String>>> secrets() {
         return Codegen.optional(this.secrets);
+    }
+    /**
+     * SSH agent socket or keys to expose to the build.
+     * 
+     * Equivalent to Docker&#39;s `--ssh` flag.
+     * 
+     */
+    @Export(name="ssh", refs={List.class,SSH.class}, tree="[0,1]")
+    private Output</* @Nullable */ List<SSH>> ssh;
+
+    /**
+     * @return SSH agent socket or keys to expose to the build.
+     * 
+     * Equivalent to Docker&#39;s `--ssh` flag.
+     * 
+     */
+    public Output<Optional<List<SSH>>> ssh() {
+        return Codegen.optional(this.ssh);
     }
     /**
      * Name and optionally a tag (format: `name:tag`).
@@ -947,9 +1131,6 @@ public class Image extends com.pulumi.resources.CustomResource {
     private static com.pulumi.resources.CustomResourceOptions makeResourceOptions(@Nullable com.pulumi.resources.CustomResourceOptions options, @Nullable Output<String> id) {
         var defaultOptions = com.pulumi.resources.CustomResourceOptions.builder()
             .version(Utilities.getVersion())
-            .additionalSecretOutputs(List.of(
-                "secrets"
-            ))
             .build();
         return com.pulumi.resources.CustomResourceOptions.merge(defaultOptions, options, id);
     }

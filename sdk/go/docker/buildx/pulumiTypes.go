@@ -4268,9 +4268,6 @@ type ExportEntry struct {
 	Image *ExportImage `pulumi:"image"`
 	// Export to a local directory as files and directories.
 	Local *ExportLocal `pulumi:"local"`
-	// An output property populated for exporters that pushed image
-	// manifest(s) to a registry.
-	Manifests []Manifest `pulumi:"manifests"`
 	// Identical to the Docker exporter but uses OCI media types by default.
 	Oci *ExportOCI `pulumi:"oci"`
 	// A raw string as you would provide it to the Docker CLI (e.g.,
@@ -4319,9 +4316,6 @@ type ExportEntryArgs struct {
 	Image ExportImagePtrInput `pulumi:"image"`
 	// Export to a local directory as files and directories.
 	Local ExportLocalPtrInput `pulumi:"local"`
-	// An output property populated for exporters that pushed image
-	// manifest(s) to a registry.
-	Manifests ManifestArrayInput `pulumi:"manifests"`
 	// Identical to the Docker exporter but uses OCI media types by default.
 	Oci ExportOCIPtrInput `pulumi:"oci"`
 	// A raw string as you would provide it to the Docker CLI (e.g.,
@@ -4411,12 +4405,6 @@ func (o ExportEntryOutput) Image() ExportImagePtrOutput {
 // Export to a local directory as files and directories.
 func (o ExportEntryOutput) Local() ExportLocalPtrOutput {
 	return o.ApplyT(func(v ExportEntry) *ExportLocal { return v.Local }).(ExportLocalPtrOutput)
-}
-
-// An output property populated for exporters that pushed image
-// manifest(s) to a registry.
-func (o ExportEntryOutput) Manifests() ManifestArrayOutput {
-	return o.ApplyT(func(v ExportEntry) []Manifest { return v.Manifests }).(ManifestArrayOutput)
 }
 
 // Identical to the Docker exporter but uses OCI media types by default.
@@ -5953,191 +5941,6 @@ func (o ExportTarPtrOutput) Dest() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
-type Manifest struct {
-	// The SHA256 digest of the manifest.
-	Digest string `pulumi:"digest"`
-	// The manifest's platform.
-	Platform ManifestPlatform `pulumi:"platform"`
-	// The manifest's canonical ref.
-	Ref string `pulumi:"ref"`
-	// The size of the manifest in bytes.
-	Size int `pulumi:"size"`
-}
-
-// ManifestInput is an input type that accepts ManifestArgs and ManifestOutput values.
-// You can construct a concrete instance of `ManifestInput` via:
-//
-//	ManifestArgs{...}
-type ManifestInput interface {
-	pulumi.Input
-
-	ToManifestOutput() ManifestOutput
-	ToManifestOutputWithContext(context.Context) ManifestOutput
-}
-
-type ManifestArgs struct {
-	// The SHA256 digest of the manifest.
-	Digest pulumi.StringInput `pulumi:"digest"`
-	// The manifest's platform.
-	Platform ManifestPlatformInput `pulumi:"platform"`
-	// The manifest's canonical ref.
-	Ref pulumi.StringInput `pulumi:"ref"`
-	// The size of the manifest in bytes.
-	Size pulumi.IntInput `pulumi:"size"`
-}
-
-func (ManifestArgs) ElementType() reflect.Type {
-	return reflect.TypeOf((*Manifest)(nil)).Elem()
-}
-
-func (i ManifestArgs) ToManifestOutput() ManifestOutput {
-	return i.ToManifestOutputWithContext(context.Background())
-}
-
-func (i ManifestArgs) ToManifestOutputWithContext(ctx context.Context) ManifestOutput {
-	return pulumi.ToOutputWithContext(ctx, i).(ManifestOutput)
-}
-
-// ManifestArrayInput is an input type that accepts ManifestArray and ManifestArrayOutput values.
-// You can construct a concrete instance of `ManifestArrayInput` via:
-//
-//	ManifestArray{ ManifestArgs{...} }
-type ManifestArrayInput interface {
-	pulumi.Input
-
-	ToManifestArrayOutput() ManifestArrayOutput
-	ToManifestArrayOutputWithContext(context.Context) ManifestArrayOutput
-}
-
-type ManifestArray []ManifestInput
-
-func (ManifestArray) ElementType() reflect.Type {
-	return reflect.TypeOf((*[]Manifest)(nil)).Elem()
-}
-
-func (i ManifestArray) ToManifestArrayOutput() ManifestArrayOutput {
-	return i.ToManifestArrayOutputWithContext(context.Background())
-}
-
-func (i ManifestArray) ToManifestArrayOutputWithContext(ctx context.Context) ManifestArrayOutput {
-	return pulumi.ToOutputWithContext(ctx, i).(ManifestArrayOutput)
-}
-
-type ManifestOutput struct{ *pulumi.OutputState }
-
-func (ManifestOutput) ElementType() reflect.Type {
-	return reflect.TypeOf((*Manifest)(nil)).Elem()
-}
-
-func (o ManifestOutput) ToManifestOutput() ManifestOutput {
-	return o
-}
-
-func (o ManifestOutput) ToManifestOutputWithContext(ctx context.Context) ManifestOutput {
-	return o
-}
-
-// The SHA256 digest of the manifest.
-func (o ManifestOutput) Digest() pulumi.StringOutput {
-	return o.ApplyT(func(v Manifest) string { return v.Digest }).(pulumi.StringOutput)
-}
-
-// The manifest's platform.
-func (o ManifestOutput) Platform() ManifestPlatformOutput {
-	return o.ApplyT(func(v Manifest) ManifestPlatform { return v.Platform }).(ManifestPlatformOutput)
-}
-
-// The manifest's canonical ref.
-func (o ManifestOutput) Ref() pulumi.StringOutput {
-	return o.ApplyT(func(v Manifest) string { return v.Ref }).(pulumi.StringOutput)
-}
-
-// The size of the manifest in bytes.
-func (o ManifestOutput) Size() pulumi.IntOutput {
-	return o.ApplyT(func(v Manifest) int { return v.Size }).(pulumi.IntOutput)
-}
-
-type ManifestArrayOutput struct{ *pulumi.OutputState }
-
-func (ManifestArrayOutput) ElementType() reflect.Type {
-	return reflect.TypeOf((*[]Manifest)(nil)).Elem()
-}
-
-func (o ManifestArrayOutput) ToManifestArrayOutput() ManifestArrayOutput {
-	return o
-}
-
-func (o ManifestArrayOutput) ToManifestArrayOutputWithContext(ctx context.Context) ManifestArrayOutput {
-	return o
-}
-
-func (o ManifestArrayOutput) Index(i pulumi.IntInput) ManifestOutput {
-	return pulumi.All(o, i).ApplyT(func(vs []interface{}) Manifest {
-		return vs[0].([]Manifest)[vs[1].(int)]
-	}).(ManifestOutput)
-}
-
-type ManifestPlatform struct {
-	// The manifest's architecture.
-	Architecture string `pulumi:"architecture"`
-	// The manifest's operating systen.
-	Os string `pulumi:"os"`
-}
-
-// ManifestPlatformInput is an input type that accepts ManifestPlatformArgs and ManifestPlatformOutput values.
-// You can construct a concrete instance of `ManifestPlatformInput` via:
-//
-//	ManifestPlatformArgs{...}
-type ManifestPlatformInput interface {
-	pulumi.Input
-
-	ToManifestPlatformOutput() ManifestPlatformOutput
-	ToManifestPlatformOutputWithContext(context.Context) ManifestPlatformOutput
-}
-
-type ManifestPlatformArgs struct {
-	// The manifest's architecture.
-	Architecture pulumi.StringInput `pulumi:"architecture"`
-	// The manifest's operating systen.
-	Os pulumi.StringInput `pulumi:"os"`
-}
-
-func (ManifestPlatformArgs) ElementType() reflect.Type {
-	return reflect.TypeOf((*ManifestPlatform)(nil)).Elem()
-}
-
-func (i ManifestPlatformArgs) ToManifestPlatformOutput() ManifestPlatformOutput {
-	return i.ToManifestPlatformOutputWithContext(context.Background())
-}
-
-func (i ManifestPlatformArgs) ToManifestPlatformOutputWithContext(ctx context.Context) ManifestPlatformOutput {
-	return pulumi.ToOutputWithContext(ctx, i).(ManifestPlatformOutput)
-}
-
-type ManifestPlatformOutput struct{ *pulumi.OutputState }
-
-func (ManifestPlatformOutput) ElementType() reflect.Type {
-	return reflect.TypeOf((*ManifestPlatform)(nil)).Elem()
-}
-
-func (o ManifestPlatformOutput) ToManifestPlatformOutput() ManifestPlatformOutput {
-	return o
-}
-
-func (o ManifestPlatformOutput) ToManifestPlatformOutputWithContext(ctx context.Context) ManifestPlatformOutput {
-	return o
-}
-
-// The manifest's architecture.
-func (o ManifestPlatformOutput) Architecture() pulumi.StringOutput {
-	return o.ApplyT(func(v ManifestPlatform) string { return v.Architecture }).(pulumi.StringOutput)
-}
-
-// The manifest's operating systen.
-func (o ManifestPlatformOutput) Os() pulumi.StringOutput {
-	return o.ApplyT(func(v ManifestPlatform) string { return v.Os }).(pulumi.StringOutput)
-}
-
 type RegistryAuth struct {
 	// The registry's address (e.g. "docker.io").
 	Address string `pulumi:"address"`
@@ -6253,6 +6056,142 @@ func (o RegistryAuthArrayOutput) Index(i pulumi.IntInput) RegistryAuthOutput {
 	}).(RegistryAuthOutput)
 }
 
+type SSH struct {
+	// Useful for distinguishing different servers that are part of the same
+	// build.
+	//
+	// A value of `default` is appropriate if only dealing with a single host.
+	Id string `pulumi:"id"`
+	// SSH agent socket or private keys to expose to the build under the given
+	// identifier.
+	//
+	// Defaults to `[$SSH_AUTH_SOCK]`.
+	//
+	// Note that your keys are **not** automatically added when using an
+	// agent. Run `ssh-add -l` locally to confirm which public keys are
+	// visible to the agent; these will be exposed to your build.
+	Paths []string `pulumi:"paths"`
+}
+
+// SSHInput is an input type that accepts SSHArgs and SSHOutput values.
+// You can construct a concrete instance of `SSHInput` via:
+//
+//	SSHArgs{...}
+type SSHInput interface {
+	pulumi.Input
+
+	ToSSHOutput() SSHOutput
+	ToSSHOutputWithContext(context.Context) SSHOutput
+}
+
+type SSHArgs struct {
+	// Useful for distinguishing different servers that are part of the same
+	// build.
+	//
+	// A value of `default` is appropriate if only dealing with a single host.
+	Id pulumi.StringInput `pulumi:"id"`
+	// SSH agent socket or private keys to expose to the build under the given
+	// identifier.
+	//
+	// Defaults to `[$SSH_AUTH_SOCK]`.
+	//
+	// Note that your keys are **not** automatically added when using an
+	// agent. Run `ssh-add -l` locally to confirm which public keys are
+	// visible to the agent; these will be exposed to your build.
+	Paths pulumi.StringArrayInput `pulumi:"paths"`
+}
+
+func (SSHArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*SSH)(nil)).Elem()
+}
+
+func (i SSHArgs) ToSSHOutput() SSHOutput {
+	return i.ToSSHOutputWithContext(context.Background())
+}
+
+func (i SSHArgs) ToSSHOutputWithContext(ctx context.Context) SSHOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(SSHOutput)
+}
+
+// SSHArrayInput is an input type that accepts SSHArray and SSHArrayOutput values.
+// You can construct a concrete instance of `SSHArrayInput` via:
+//
+//	SSHArray{ SSHArgs{...} }
+type SSHArrayInput interface {
+	pulumi.Input
+
+	ToSSHArrayOutput() SSHArrayOutput
+	ToSSHArrayOutputWithContext(context.Context) SSHArrayOutput
+}
+
+type SSHArray []SSHInput
+
+func (SSHArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]SSH)(nil)).Elem()
+}
+
+func (i SSHArray) ToSSHArrayOutput() SSHArrayOutput {
+	return i.ToSSHArrayOutputWithContext(context.Background())
+}
+
+func (i SSHArray) ToSSHArrayOutputWithContext(ctx context.Context) SSHArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(SSHArrayOutput)
+}
+
+type SSHOutput struct{ *pulumi.OutputState }
+
+func (SSHOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*SSH)(nil)).Elem()
+}
+
+func (o SSHOutput) ToSSHOutput() SSHOutput {
+	return o
+}
+
+func (o SSHOutput) ToSSHOutputWithContext(ctx context.Context) SSHOutput {
+	return o
+}
+
+// Useful for distinguishing different servers that are part of the same
+// build.
+//
+// A value of `default` is appropriate if only dealing with a single host.
+func (o SSHOutput) Id() pulumi.StringOutput {
+	return o.ApplyT(func(v SSH) string { return v.Id }).(pulumi.StringOutput)
+}
+
+// SSH agent socket or private keys to expose to the build under the given
+// identifier.
+//
+// Defaults to `[$SSH_AUTH_SOCK]`.
+//
+// Note that your keys are **not** automatically added when using an
+// agent. Run `ssh-add -l` locally to confirm which public keys are
+// visible to the agent; these will be exposed to your build.
+func (o SSHOutput) Paths() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v SSH) []string { return v.Paths }).(pulumi.StringArrayOutput)
+}
+
+type SSHArrayOutput struct{ *pulumi.OutputState }
+
+func (SSHArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]SSH)(nil)).Elem()
+}
+
+func (o SSHArrayOutput) ToSSHArrayOutput() SSHArrayOutput {
+	return o
+}
+
+func (o SSHArrayOutput) ToSSHArrayOutputWithContext(ctx context.Context) SSHArrayOutput {
+	return o
+}
+
+func (o SSHArrayOutput) Index(i pulumi.IntInput) SSHOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) SSH {
+		return vs[0].([]SSH)[vs[1].(int)]
+	}).(SSHOutput)
+}
+
 func init() {
 	pulumi.RegisterInputType(reflect.TypeOf((*BuildContextInput)(nil)).Elem(), BuildContextArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*BuildContextPtrInput)(nil)).Elem(), BuildContextArgs{})
@@ -6302,11 +6241,10 @@ func init() {
 	pulumi.RegisterInputType(reflect.TypeOf((*ExportRegistryPtrInput)(nil)).Elem(), ExportRegistryArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*ExportTarInput)(nil)).Elem(), ExportTarArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*ExportTarPtrInput)(nil)).Elem(), ExportTarArgs{})
-	pulumi.RegisterInputType(reflect.TypeOf((*ManifestInput)(nil)).Elem(), ManifestArgs{})
-	pulumi.RegisterInputType(reflect.TypeOf((*ManifestArrayInput)(nil)).Elem(), ManifestArray{})
-	pulumi.RegisterInputType(reflect.TypeOf((*ManifestPlatformInput)(nil)).Elem(), ManifestPlatformArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*RegistryAuthInput)(nil)).Elem(), RegistryAuthArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*RegistryAuthArrayInput)(nil)).Elem(), RegistryAuthArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*SSHInput)(nil)).Elem(), SSHArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*SSHArrayInput)(nil)).Elem(), SSHArray{})
 	pulumi.RegisterOutputType(BuildContextOutput{})
 	pulumi.RegisterOutputType(BuildContextPtrOutput{})
 	pulumi.RegisterOutputType(BuilderConfigOutput{})
@@ -6355,9 +6293,8 @@ func init() {
 	pulumi.RegisterOutputType(ExportRegistryPtrOutput{})
 	pulumi.RegisterOutputType(ExportTarOutput{})
 	pulumi.RegisterOutputType(ExportTarPtrOutput{})
-	pulumi.RegisterOutputType(ManifestOutput{})
-	pulumi.RegisterOutputType(ManifestArrayOutput{})
-	pulumi.RegisterOutputType(ManifestPlatformOutput{})
 	pulumi.RegisterOutputType(RegistryAuthOutput{})
 	pulumi.RegisterOutputType(RegistryAuthArrayOutput{})
+	pulumi.RegisterOutputType(SSHOutput{})
+	pulumi.RegisterOutputType(SSHArrayOutput{})
 }

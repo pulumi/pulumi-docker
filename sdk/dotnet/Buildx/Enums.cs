@@ -80,6 +80,44 @@ namespace Pulumi.Docker.Buildx
     }
 
     [EnumType]
+    public readonly struct NetworkMode : IEquatable<NetworkMode>
+    {
+        private readonly string _value;
+
+        private NetworkMode(string value)
+        {
+            _value = value ?? throw new ArgumentNullException(nameof(value));
+        }
+
+        /// <summary>
+        /// The default sandbox network mode.
+        /// </summary>
+        public static NetworkMode @Default { get; } = new NetworkMode("default");
+        /// <summary>
+        /// Host network mode.
+        /// </summary>
+        public static NetworkMode Host { get; } = new NetworkMode("host");
+        /// <summary>
+        /// Disable network access.
+        /// </summary>
+        public static NetworkMode None { get; } = new NetworkMode("none");
+
+        public static bool operator ==(NetworkMode left, NetworkMode right) => left.Equals(right);
+        public static bool operator !=(NetworkMode left, NetworkMode right) => !left.Equals(right);
+
+        public static explicit operator string(NetworkMode value) => value._value;
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public override bool Equals(object? obj) => obj is NetworkMode other && Equals(other);
+        public bool Equals(NetworkMode other) => string.Equals(_value, other._value, StringComparison.Ordinal);
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public override int GetHashCode() => _value?.GetHashCode() ?? 0;
+
+        public override string ToString() => _value;
+    }
+
+    [EnumType]
     public readonly struct Platform : IEquatable<Platform>
     {
         private readonly string _value;

@@ -35,9 +35,8 @@ __all__ = [
     'ExportOCIArgs',
     'ExportRegistryArgs',
     'ExportTarArgs',
-    'ManifestPlatformArgs',
-    'ManifestArgs',
     'RegistryAuthArgs',
+    'SSHArgs',
 ]
 
 @pulumi.input_type
@@ -1726,7 +1725,6 @@ class ExportEntryArgs:
                  docker: Optional[pulumi.Input['ExportDockerArgs']] = None,
                  image: Optional[pulumi.Input['ExportImageArgs']] = None,
                  local: Optional[pulumi.Input['ExportLocalArgs']] = None,
-                 manifests: Optional[pulumi.Input[Sequence[pulumi.Input['ManifestArgs']]]] = None,
                  oci: Optional[pulumi.Input['ExportOCIArgs']] = None,
                  raw: Optional[pulumi.Input[str]] = None,
                  registry: Optional[pulumi.Input['ExportRegistryArgs']] = None,
@@ -1736,8 +1734,6 @@ class ExportEntryArgs:
         :param pulumi.Input['ExportDockerArgs'] docker: Export as a Docker image layout.
         :param pulumi.Input['ExportImageArgs'] image: Outputs the build result into a container image format.
         :param pulumi.Input['ExportLocalArgs'] local: Export to a local directory as files and directories.
-        :param pulumi.Input[Sequence[pulumi.Input['ManifestArgs']]] manifests: An output property populated for exporters that pushed image
-               manifest(s) to a registry.
         :param pulumi.Input['ExportOCIArgs'] oci: Identical to the Docker exporter but uses OCI media types by default.
         :param pulumi.Input[str] raw: A raw string as you would provide it to the Docker CLI (e.g.,
                `type=docker`)
@@ -1752,8 +1748,6 @@ class ExportEntryArgs:
             pulumi.set(__self__, "image", image)
         if local is not None:
             pulumi.set(__self__, "local", local)
-        if manifests is not None:
-            pulumi.set(__self__, "manifests", manifests)
         if oci is not None:
             pulumi.set(__self__, "oci", oci)
         if raw is not None:
@@ -1810,19 +1804,6 @@ class ExportEntryArgs:
     @local.setter
     def local(self, value: Optional[pulumi.Input['ExportLocalArgs']]):
         pulumi.set(self, "local", value)
-
-    @property
-    @pulumi.getter
-    def manifests(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['ManifestArgs']]]]:
-        """
-        An output property populated for exporters that pushed image
-        manifest(s) to a registry.
-        """
-        return pulumi.get(self, "manifests")
-
-    @manifests.setter
-    def manifests(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['ManifestArgs']]]]):
-        pulumi.set(self, "manifests", value)
 
     @property
     @pulumi.getter
@@ -2544,110 +2525,6 @@ class ExportTarArgs:
 
 
 @pulumi.input_type
-class ManifestPlatformArgs:
-    def __init__(__self__, *,
-                 architecture: pulumi.Input[str],
-                 os: pulumi.Input[str]):
-        """
-        :param pulumi.Input[str] architecture: The manifest's architecture.
-        :param pulumi.Input[str] os: The manifest's operating systen.
-        """
-        pulumi.set(__self__, "architecture", architecture)
-        pulumi.set(__self__, "os", os)
-
-    @property
-    @pulumi.getter
-    def architecture(self) -> pulumi.Input[str]:
-        """
-        The manifest's architecture.
-        """
-        return pulumi.get(self, "architecture")
-
-    @architecture.setter
-    def architecture(self, value: pulumi.Input[str]):
-        pulumi.set(self, "architecture", value)
-
-    @property
-    @pulumi.getter
-    def os(self) -> pulumi.Input[str]:
-        """
-        The manifest's operating systen.
-        """
-        return pulumi.get(self, "os")
-
-    @os.setter
-    def os(self, value: pulumi.Input[str]):
-        pulumi.set(self, "os", value)
-
-
-@pulumi.input_type
-class ManifestArgs:
-    def __init__(__self__, *,
-                 digest: pulumi.Input[str],
-                 platform: pulumi.Input['ManifestPlatformArgs'],
-                 ref: pulumi.Input[str],
-                 size: pulumi.Input[int]):
-        """
-        :param pulumi.Input[str] digest: The SHA256 digest of the manifest.
-        :param pulumi.Input['ManifestPlatformArgs'] platform: The manifest's platform.
-        :param pulumi.Input[str] ref: The manifest's canonical ref.
-        :param pulumi.Input[int] size: The size of the manifest in bytes.
-        """
-        pulumi.set(__self__, "digest", digest)
-        pulumi.set(__self__, "platform", platform)
-        pulumi.set(__self__, "ref", ref)
-        pulumi.set(__self__, "size", size)
-
-    @property
-    @pulumi.getter
-    def digest(self) -> pulumi.Input[str]:
-        """
-        The SHA256 digest of the manifest.
-        """
-        return pulumi.get(self, "digest")
-
-    @digest.setter
-    def digest(self, value: pulumi.Input[str]):
-        pulumi.set(self, "digest", value)
-
-    @property
-    @pulumi.getter
-    def platform(self) -> pulumi.Input['ManifestPlatformArgs']:
-        """
-        The manifest's platform.
-        """
-        return pulumi.get(self, "platform")
-
-    @platform.setter
-    def platform(self, value: pulumi.Input['ManifestPlatformArgs']):
-        pulumi.set(self, "platform", value)
-
-    @property
-    @pulumi.getter
-    def ref(self) -> pulumi.Input[str]:
-        """
-        The manifest's canonical ref.
-        """
-        return pulumi.get(self, "ref")
-
-    @ref.setter
-    def ref(self, value: pulumi.Input[str]):
-        pulumi.set(self, "ref", value)
-
-    @property
-    @pulumi.getter
-    def size(self) -> pulumi.Input[int]:
-        """
-        The size of the manifest in bytes.
-        """
-        return pulumi.get(self, "size")
-
-    @size.setter
-    def size(self, value: pulumi.Input[int]):
-        pulumi.set(self, "size", value)
-
-
-@pulumi.input_type
 class RegistryAuthArgs:
     def __init__(__self__, *,
                  address: pulumi.Input[str],
@@ -2699,5 +2576,63 @@ class RegistryAuthArgs:
     @username.setter
     def username(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "username", value)
+
+
+@pulumi.input_type
+class SSHArgs:
+    def __init__(__self__, *,
+                 id: pulumi.Input[str],
+                 paths: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None):
+        """
+        :param pulumi.Input[str] id: Useful for distinguishing different servers that are part of the same
+               build.
+               
+               A value of `default` is appropriate if only dealing with a single host.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] paths: SSH agent socket or private keys to expose to the build under the given
+               identifier.
+               
+               Defaults to `[$SSH_AUTH_SOCK]`.
+               
+               Note that your keys are **not** automatically added when using an
+               agent. Run `ssh-add -l` locally to confirm which public keys are
+               visible to the agent; these will be exposed to your build.
+        """
+        pulumi.set(__self__, "id", id)
+        if paths is not None:
+            pulumi.set(__self__, "paths", paths)
+
+    @property
+    @pulumi.getter
+    def id(self) -> pulumi.Input[str]:
+        """
+        Useful for distinguishing different servers that are part of the same
+        build.
+
+        A value of `default` is appropriate if only dealing with a single host.
+        """
+        return pulumi.get(self, "id")
+
+    @id.setter
+    def id(self, value: pulumi.Input[str]):
+        pulumi.set(self, "id", value)
+
+    @property
+    @pulumi.getter
+    def paths(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+        """
+        SSH agent socket or private keys to expose to the build under the given
+        identifier.
+
+        Defaults to `[$SSH_AUTH_SOCK]`.
+
+        Note that your keys are **not** automatically added when using an
+        agent. Run `ssh-add -l` locally to confirm which public keys are
+        visible to the agent; these will be exposed to your build.
+        """
+        return pulumi.get(self, "paths")
+
+    @paths.setter
+    def paths(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
+        pulumi.set(self, "paths", value)
 
 

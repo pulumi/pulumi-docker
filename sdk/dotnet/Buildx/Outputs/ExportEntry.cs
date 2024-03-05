@@ -30,11 +30,6 @@ namespace Pulumi.Docker.Buildx.Outputs
         /// </summary>
         public readonly Outputs.ExportLocal? Local;
         /// <summary>
-        /// An output property populated for exporters that pushed image
-        /// manifest(s) to a registry.
-        /// </summary>
-        public readonly ImmutableArray<Outputs.Manifest> Manifests;
-        /// <summary>
         /// Identical to the Docker exporter but uses OCI media types by default.
         /// </summary>
         public readonly Outputs.ExportOCI? Oci;
@@ -62,8 +57,6 @@ namespace Pulumi.Docker.Buildx.Outputs
 
             Outputs.ExportLocal? local,
 
-            ImmutableArray<Outputs.Manifest> manifests,
-
             Outputs.ExportOCI? oci,
 
             string? raw,
@@ -76,7 +69,6 @@ namespace Pulumi.Docker.Buildx.Outputs
             Docker = docker;
             Image = image;
             Local = local;
-            Manifests = manifests;
             Oci = oci;
             Raw = raw;
             Registry = registry;

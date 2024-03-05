@@ -347,6 +347,176 @@ func (in *compressionTypePtr) ToCompressionTypePtrOutputWithContext(ctx context.
 	return pulumi.ToOutputWithContext(ctx, in).(CompressionTypePtrOutput)
 }
 
+type NetworkMode string
+
+const (
+	// The default sandbox network mode.
+	NetworkModeDefault = NetworkMode("default")
+	// Host network mode.
+	NetworkModeHost = NetworkMode("host")
+	// Disable network access.
+	NetworkModeNone = NetworkMode("none")
+)
+
+func (NetworkMode) ElementType() reflect.Type {
+	return reflect.TypeOf((*NetworkMode)(nil)).Elem()
+}
+
+func (e NetworkMode) ToNetworkModeOutput() NetworkModeOutput {
+	return pulumi.ToOutput(e).(NetworkModeOutput)
+}
+
+func (e NetworkMode) ToNetworkModeOutputWithContext(ctx context.Context) NetworkModeOutput {
+	return pulumi.ToOutputWithContext(ctx, e).(NetworkModeOutput)
+}
+
+func (e NetworkMode) ToNetworkModePtrOutput() NetworkModePtrOutput {
+	return e.ToNetworkModePtrOutputWithContext(context.Background())
+}
+
+func (e NetworkMode) ToNetworkModePtrOutputWithContext(ctx context.Context) NetworkModePtrOutput {
+	return NetworkMode(e).ToNetworkModeOutputWithContext(ctx).ToNetworkModePtrOutputWithContext(ctx)
+}
+
+func (e NetworkMode) ToStringOutput() pulumi.StringOutput {
+	return pulumi.ToOutput(pulumi.String(e)).(pulumi.StringOutput)
+}
+
+func (e NetworkMode) ToStringOutputWithContext(ctx context.Context) pulumi.StringOutput {
+	return pulumi.ToOutputWithContext(ctx, pulumi.String(e)).(pulumi.StringOutput)
+}
+
+func (e NetworkMode) ToStringPtrOutput() pulumi.StringPtrOutput {
+	return pulumi.String(e).ToStringPtrOutputWithContext(context.Background())
+}
+
+func (e NetworkMode) ToStringPtrOutputWithContext(ctx context.Context) pulumi.StringPtrOutput {
+	return pulumi.String(e).ToStringOutputWithContext(ctx).ToStringPtrOutputWithContext(ctx)
+}
+
+type NetworkModeOutput struct{ *pulumi.OutputState }
+
+func (NetworkModeOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*NetworkMode)(nil)).Elem()
+}
+
+func (o NetworkModeOutput) ToNetworkModeOutput() NetworkModeOutput {
+	return o
+}
+
+func (o NetworkModeOutput) ToNetworkModeOutputWithContext(ctx context.Context) NetworkModeOutput {
+	return o
+}
+
+func (o NetworkModeOutput) ToNetworkModePtrOutput() NetworkModePtrOutput {
+	return o.ToNetworkModePtrOutputWithContext(context.Background())
+}
+
+func (o NetworkModeOutput) ToNetworkModePtrOutputWithContext(ctx context.Context) NetworkModePtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v NetworkMode) *NetworkMode {
+		return &v
+	}).(NetworkModePtrOutput)
+}
+
+func (o NetworkModeOutput) ToStringOutput() pulumi.StringOutput {
+	return o.ToStringOutputWithContext(context.Background())
+}
+
+func (o NetworkModeOutput) ToStringOutputWithContext(ctx context.Context) pulumi.StringOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, e NetworkMode) string {
+		return string(e)
+	}).(pulumi.StringOutput)
+}
+
+func (o NetworkModeOutput) ToStringPtrOutput() pulumi.StringPtrOutput {
+	return o.ToStringPtrOutputWithContext(context.Background())
+}
+
+func (o NetworkModeOutput) ToStringPtrOutputWithContext(ctx context.Context) pulumi.StringPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, e NetworkMode) *string {
+		v := string(e)
+		return &v
+	}).(pulumi.StringPtrOutput)
+}
+
+type NetworkModePtrOutput struct{ *pulumi.OutputState }
+
+func (NetworkModePtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**NetworkMode)(nil)).Elem()
+}
+
+func (o NetworkModePtrOutput) ToNetworkModePtrOutput() NetworkModePtrOutput {
+	return o
+}
+
+func (o NetworkModePtrOutput) ToNetworkModePtrOutputWithContext(ctx context.Context) NetworkModePtrOutput {
+	return o
+}
+
+func (o NetworkModePtrOutput) Elem() NetworkModeOutput {
+	return o.ApplyT(func(v *NetworkMode) NetworkMode {
+		if v != nil {
+			return *v
+		}
+		var ret NetworkMode
+		return ret
+	}).(NetworkModeOutput)
+}
+
+func (o NetworkModePtrOutput) ToStringPtrOutput() pulumi.StringPtrOutput {
+	return o.ToStringPtrOutputWithContext(context.Background())
+}
+
+func (o NetworkModePtrOutput) ToStringPtrOutputWithContext(ctx context.Context) pulumi.StringPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, e *NetworkMode) *string {
+		if e == nil {
+			return nil
+		}
+		v := string(*e)
+		return &v
+	}).(pulumi.StringPtrOutput)
+}
+
+// NetworkModeInput is an input type that accepts values of the NetworkMode enum
+// A concrete instance of `NetworkModeInput` can be one of the following:
+//
+//	NetworkModeDefault
+//	NetworkModeHost
+//	NetworkModeNone
+type NetworkModeInput interface {
+	pulumi.Input
+
+	ToNetworkModeOutput() NetworkModeOutput
+	ToNetworkModeOutputWithContext(context.Context) NetworkModeOutput
+}
+
+var networkModePtrType = reflect.TypeOf((**NetworkMode)(nil)).Elem()
+
+type NetworkModePtrInput interface {
+	pulumi.Input
+
+	ToNetworkModePtrOutput() NetworkModePtrOutput
+	ToNetworkModePtrOutputWithContext(context.Context) NetworkModePtrOutput
+}
+
+type networkModePtr string
+
+func NetworkModePtr(v string) NetworkModePtrInput {
+	return (*networkModePtr)(&v)
+}
+
+func (*networkModePtr) ElementType() reflect.Type {
+	return networkModePtrType
+}
+
+func (in *networkModePtr) ToNetworkModePtrOutput() NetworkModePtrOutput {
+	return pulumi.ToOutput(in).(NetworkModePtrOutput)
+}
+
+func (in *networkModePtr) ToNetworkModePtrOutputWithContext(ctx context.Context) NetworkModePtrOutput {
+	return pulumi.ToOutputWithContext(ctx, in).(NetworkModePtrOutput)
+}
+
 type Platform string
 
 const (
@@ -614,6 +784,8 @@ func init() {
 	pulumi.RegisterInputType(reflect.TypeOf((*CacheModePtrInput)(nil)).Elem(), CacheMode("min"))
 	pulumi.RegisterInputType(reflect.TypeOf((*CompressionTypeInput)(nil)).Elem(), CompressionType("gzip"))
 	pulumi.RegisterInputType(reflect.TypeOf((*CompressionTypePtrInput)(nil)).Elem(), CompressionType("gzip"))
+	pulumi.RegisterInputType(reflect.TypeOf((*NetworkModeInput)(nil)).Elem(), NetworkMode("default"))
+	pulumi.RegisterInputType(reflect.TypeOf((*NetworkModePtrInput)(nil)).Elem(), NetworkMode("default"))
 	pulumi.RegisterInputType(reflect.TypeOf((*PlatformInput)(nil)).Elem(), Platform("darwin/386"))
 	pulumi.RegisterInputType(reflect.TypeOf((*PlatformPtrInput)(nil)).Elem(), Platform("darwin/386"))
 	pulumi.RegisterInputType(reflect.TypeOf((*PlatformArrayInput)(nil)).Elem(), PlatformArray{})
@@ -621,6 +793,8 @@ func init() {
 	pulumi.RegisterOutputType(CacheModePtrOutput{})
 	pulumi.RegisterOutputType(CompressionTypeOutput{})
 	pulumi.RegisterOutputType(CompressionTypePtrOutput{})
+	pulumi.RegisterOutputType(NetworkModeOutput{})
+	pulumi.RegisterOutputType(NetworkModePtrOutput{})
 	pulumi.RegisterOutputType(PlatformOutput{})
 	pulumi.RegisterOutputType(PlatformPtrOutput{})
 	pulumi.RegisterOutputType(PlatformArrayOutput{})
