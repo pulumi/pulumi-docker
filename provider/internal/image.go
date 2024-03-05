@@ -113,7 +113,8 @@ func (ia *ImageArgs) Annotate(a infer.Annotator) {
 type ImageState struct {
 	ImageArgs
 
-	Manifests []properties.Manifest `pulumi:"manifests" provider:"output"`
+	ContextHash string                `pulumi:"contextHash,optional" provider:"internal"`
+	Manifests   []properties.Manifest `pulumi:"manifests" provider:"output"`
 }
 
 // Annotate describes outputs of the Image resource.
@@ -256,6 +257,12 @@ func (i *Image) Update(
 	if err != nil {
 		return state, fmt.Errorf("validating input: %w", err)
 	}
+
+	hash, err := BuildxContext(input.Context, input.File, nil)
+	if err != nil {
+		return state, fmt.Errorf("hashing build context: %w", err)
+	}
+	state.ContextHash = hash
 
 	if preview {
 		return state, nil
@@ -426,6 +433,15 @@ func (*Image) Diff(_ provider.Context, _ string, olds ImageState, news ImageArgs
 	// pull=true indicates that we want to keep base layers up-to-date. In this
 	// case we'll always perform the build.
 	if news.Pull {
+		diff["manifests"] = update
+	}
+
+	// Check if anything has changed in our build context.
+	hash, err := BuildxContext(news.Context, news.File, nil)
+	if err != nil {
+		return provider.DiffResponse{}, err
+	}
+	if hash != olds.ContextHash {
 		diff["manifests"] = update
 	}
 

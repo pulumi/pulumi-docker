@@ -2,6 +2,8 @@ package internal
 
 import (
 	"errors"
+	"os"
+	"path/filepath"
 	"testing"
 
 	_ "github.com/docker/buildx/driver/docker-container"
@@ -332,8 +334,9 @@ func TestDiff(t *testing.T) {
 		Tags:    []string{},
 	}
 	baseState := ImageState{
-		Manifests: []properties.Manifest{},
-		ImageArgs: baseArgs,
+		ContextHash: "f04bea490d45e7ae69d542846511e7c90eb683deaa1e0df19e9fca4d227265c2",
+		Manifests:   []properties.Manifest{},
+		ImageArgs:   baseArgs,
 	}
 
 	tests := []struct {
@@ -343,6 +346,24 @@ func TestDiff(t *testing.T) {
 
 		wantChanges bool
 	}{
+		{
+			name:        "no diff if build context is unchanged",
+			olds:        func(*testing.T, ImageState) ImageState { return baseState },
+			news:        func(*testing.T, ImageArgs) ImageArgs { return baseArgs },
+			wantChanges: false,
+		},
+		{
+			name: "diff if build context changes",
+			olds: func(*testing.T, ImageState) ImageState { return baseState },
+			news: func(t *testing.T, a ImageArgs) ImageArgs {
+				tmp := filepath.Join(a.Context, "tmp")
+				err := os.WriteFile(tmp, []byte{}, 0o600)
+				require.NoError(t, err)
+				t.Cleanup(func() { _ = os.Remove(tmp) })
+				return a
+			},
+			wantChanges: true,
+		},
 		{
 			name: "no diff if registry password changes",
 			olds: func(_ *testing.T, s ImageState) ImageState {
@@ -511,7 +532,7 @@ func TestBuildOptionParsing(t *testing.T) {
 	args := ImageArgs{
 		Tags:      []string{"a/bad:tag:format"},
 		Exports:   []string{"badexport,-"},
-		Context:   "does/not/exist",
+		Context:   "./testdata",
 		Platforms: []string{","},
 		CacheFrom: []string{"=badcachefrom"},
 		CacheTo:   []string{"=badcacheto"},
@@ -523,5 +544,5 @@ func TestBuildOptionParsing(t *testing.T) {
 	assert.ErrorContains(t, err, "badcachefrom")
 	assert.ErrorContains(t, err, "badcacheto")
 	assert.ErrorContains(t, err, "invalid reference format")
-	assert.ErrorContains(t, err, "does/not/exist/Dockerfile: no such file or directory")
+	assert.ErrorContains(t, err, "testdata/Dockerfile: no such file or directory")
 }

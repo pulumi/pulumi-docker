@@ -345,6 +345,7 @@ class Image(pulumi.CustomResource):
             if tags is None and not opts.urn:
                 raise TypeError("Missing required property 'tags'")
             __props__.__dict__["tags"] = tags
+            __props__.__dict__["context_hash"] = None
             __props__.__dict__["manifests"] = None
         super(Image, __self__).__init__(
             'docker:buildx/image:Image',
@@ -373,6 +374,7 @@ class Image(pulumi.CustomResource):
         __props__.__dict__["cache_from"] = None
         __props__.__dict__["cache_to"] = None
         __props__.__dict__["context"] = None
+        __props__.__dict__["context_hash"] = None
         __props__.__dict__["exports"] = None
         __props__.__dict__["file"] = None
         __props__.__dict__["manifests"] = None
@@ -429,6 +431,11 @@ class Image(pulumi.CustomResource):
         Path to use for build context. If omitted, an empty context is used.
         """
         return pulumi.get(self, "context")
+
+    @property
+    @pulumi.getter(name="contextHash")
+    def context_hash(self) -> pulumi.Output[Optional[str]]:
+        return pulumi.get(self, "context_hash")
 
     @property
     @pulumi.getter
