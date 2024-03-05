@@ -1,6 +1,8 @@
 package internal
 
 import (
+	"fmt"
+
 	"github.com/pulumi/pulumi-docker/provider/v4/internal/properties"
 )
 
@@ -30,6 +32,17 @@ func (k stringKeeper) keep(s string) bool {
 		return true
 	}
 	return s != ""
+}
+
+//nolint:structcheck // False positive due to generics.
+type stringerKeeper[T fmt.Stringer] struct{ preview bool }
+
+//nolint:unused // False positive due to generics.
+func (k stringerKeeper[T]) keep(t T) bool {
+	if !k.preview {
+		return true
+	}
+	return stringKeeper(k).keep(t.String())
 }
 
 // registryKeeper preserves any registries with known values for address and

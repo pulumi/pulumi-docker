@@ -6,6 +6,8 @@ import * as inputs from "../types/input";
 import * as outputs from "../types/output";
 import * as enums from "../types/enums";
 
+import * as utilities from "../utilities";
+
 /**
  * Contains a list of images to reference when building using a cache
  */
@@ -1270,6 +1272,628 @@ export interface VolumeLabel {
     value: pulumi.Input<string>;
 }
 export namespace buildx {
+    export interface CacheFromAzureBlob {
+        accountUrl?: pulumi.Input<string>;
+        name: pulumi.Input<string>;
+        secretAccessKey?: pulumi.Input<string>;
+    }
+
+    export interface CacheFromEntry {
+        /**
+         *
+         * Push cache to Azure's blob storage service.
+         */
+        azblob?: pulumi.Input<inputs.buildx.CacheFromAzureBlob>;
+        /**
+         *
+         * When "true" this entry will be excluded. Defaults to "false".
+         */
+        disabled?: pulumi.Input<boolean>;
+        /**
+         *
+         * Recommended for use with GitHub Actions workflows.
+         *
+         * An action like "crazy-max/ghaction-github-runtime" is recommended to
+         * expose appropriate credentials to your GitHub workflow.
+         */
+        gha?: pulumi.Input<inputs.buildx.CacheFromGitHubActions>;
+        /**
+         *
+         * A simple backend which caches imagines on your local filesystem.
+         */
+        local?: pulumi.Input<inputs.buildx.CacheFromLocal>;
+        /**
+         *
+         * A raw string as you would provide it to the Docker CLI (e.g.,
+         * "type=inline")
+         */
+        raw?: pulumi.Input<string>;
+        /**
+         *
+         * Push caches to remote registries. Incompatible with the "docker" build
+         * driver.
+         */
+        registry?: pulumi.Input<inputs.buildx.CacheFromRegistry>;
+        /**
+         *
+         * Push cache to AWS S3 or S3-compatible services such as MinIO.
+         */
+        s3?: pulumi.Input<inputs.buildx.CacheFromS3>;
+    }
+    /**
+     * cacheFromEntryProvideDefaults sets the appropriate defaults for CacheFromEntry
+     */
+    export function cacheFromEntryProvideDefaults(val: CacheFromEntry): CacheFromEntry {
+        return {
+            ...val,
+            gha: (val.gha ? pulumi.output(val.gha).apply(inputs.buildx.cacheFromGitHubActionsProvideDefaults) : undefined),
+            s3: (val.s3 ? pulumi.output(val.s3).apply(inputs.buildx.cacheFromS3ProvideDefaults) : undefined),
+        };
+    }
+
+    export interface CacheFromGitHubActions {
+        /**
+         * Which scope cache object belongs to.
+         */
+        scope?: pulumi.Input<string>;
+        /**
+         * Access token
+         */
+        token?: pulumi.Input<string>;
+        /**
+         * Cache server URL
+         */
+        url?: pulumi.Input<string>;
+    }
+    /**
+     * cacheFromGitHubActionsProvideDefaults sets the appropriate defaults for CacheFromGitHubActions
+     */
+    export function cacheFromGitHubActionsProvideDefaults(val: CacheFromGitHubActions): CacheFromGitHubActions {
+        return {
+            ...val,
+            scope: (val.scope) ?? (utilities.getEnv("buildkit") || ""),
+            token: (val.token) ?? (utilities.getEnv("ACTIONS_RUNTIME_TOKEN") || ""),
+            url: (val.url) ?? (utilities.getEnv("ACTIONS_RUNTIME_URL") || ""),
+        };
+    }
+
+    export interface CacheFromLocal {
+        digest?: pulumi.Input<string>;
+        src: pulumi.Input<string>;
+    }
+
+    export interface CacheFromRegistry {
+        /**
+         * Full name of the cache image to import.
+         */
+        ref: pulumi.Input<string>;
+    }
+
+    export interface CacheFromS3 {
+        accessKeyId?: pulumi.Input<string>;
+        blobsPrefix?: pulumi.Input<string>;
+        bucket: pulumi.Input<string>;
+        endpointUrl?: pulumi.Input<string>;
+        manifestsPrefix?: pulumi.Input<string>;
+        name?: pulumi.Input<string>;
+        region: pulumi.Input<string>;
+        secretAccessKey?: pulumi.Input<string>;
+        sessionToken?: pulumi.Input<string>;
+        usePathStyle?: pulumi.Input<boolean>;
+    }
+    /**
+     * cacheFromS3ProvideDefaults sets the appropriate defaults for CacheFromS3
+     */
+    export function cacheFromS3ProvideDefaults(val: CacheFromS3): CacheFromS3 {
+        return {
+            ...val,
+            accessKeyId: (val.accessKeyId) ?? (utilities.getEnv("AWS_ACCESS_KEY_ID") || ""),
+            region: (val.region) ?? (utilities.getEnv("AWS_REGION") || ""),
+            secretAccessKey: (val.secretAccessKey) ?? (utilities.getEnv("AWS_SECRET_ACCESS_KEY") || ""),
+            sessionToken: (val.sessionToken) ?? (utilities.getEnv("AWS_SESSION_TOKEN") || ""),
+        };
+    }
+
+    export interface CacheToAzureBlob {
+        accountUrl?: pulumi.Input<string>;
+        /**
+         * Ignore errors caused by failed cache exports.
+         */
+        ignoreError?: pulumi.Input<boolean>;
+        mode?: pulumi.Input<enums.buildx.CacheMode>;
+        name: pulumi.Input<string>;
+        secretAccessKey?: pulumi.Input<string>;
+    }
+    /**
+     * cacheToAzureBlobProvideDefaults sets the appropriate defaults for CacheToAzureBlob
+     */
+    export function cacheToAzureBlobProvideDefaults(val: CacheToAzureBlob): CacheToAzureBlob {
+        return {
+            ...val,
+            ignoreError: (val.ignoreError) ?? false,
+            mode: (val.mode) ?? "min",
+        };
+    }
+
+    export interface CacheToEntry {
+        /**
+         *
+         * Push cache to Azure's blob storage service.
+         */
+        azblob?: pulumi.Input<inputs.buildx.CacheToAzureBlob>;
+        /**
+         *
+         * When "true" this entry will be excluded. Defaults to "false".
+         */
+        disabled?: pulumi.Input<boolean>;
+        /**
+         *
+         * Recommended for use with GitHub Actions workflows.
+         *
+         * An action like "crazy-max/ghaction-github-runtime" is recommended to
+         * expose appropriate credentials to your GitHub workflow.
+         */
+        gha?: pulumi.Input<inputs.buildx.CacheToGitHubActions>;
+        /**
+         *
+         * The inline cache storage backend is the simplest implementation to get
+         * started with, but it does not handle multi-stage builds. Consider the
+         * registry cache backend instead.
+         */
+        inline?: pulumi.Input<inputs.buildx.CacheToInline>;
+        /**
+         *
+         * A simple backend which caches imagines on your local filesystem.
+         */
+        local?: pulumi.Input<inputs.buildx.CacheToLocal>;
+        /**
+         *
+         * A raw string as you would provide it to the Docker CLI (e.g.,
+         * "type=inline")
+         */
+        raw?: pulumi.Input<string>;
+        /**
+         *
+         * Push caches to remote registries. Incompatible with the "docker" build
+         * driver.
+         */
+        registry?: pulumi.Input<inputs.buildx.CacheToRegistry>;
+        /**
+         *
+         * Push cache to AWS S3 or S3-compatible services such as MinIO.
+         */
+        s3?: pulumi.Input<inputs.buildx.CacheToS3>;
+    }
+    /**
+     * cacheToEntryProvideDefaults sets the appropriate defaults for CacheToEntry
+     */
+    export function cacheToEntryProvideDefaults(val: CacheToEntry): CacheToEntry {
+        return {
+            ...val,
+            azblob: (val.azblob ? pulumi.output(val.azblob).apply(inputs.buildx.cacheToAzureBlobProvideDefaults) : undefined),
+            gha: (val.gha ? pulumi.output(val.gha).apply(inputs.buildx.cacheToGitHubActionsProvideDefaults) : undefined),
+            local: (val.local ? pulumi.output(val.local).apply(inputs.buildx.cacheToLocalProvideDefaults) : undefined),
+            registry: (val.registry ? pulumi.output(val.registry).apply(inputs.buildx.cacheToRegistryProvideDefaults) : undefined),
+            s3: (val.s3 ? pulumi.output(val.s3).apply(inputs.buildx.cacheToS3ProvideDefaults) : undefined),
+        };
+    }
+
+    export interface CacheToGitHubActions {
+        /**
+         * Ignore errors caused by failed cache exports.
+         */
+        ignoreError?: pulumi.Input<boolean>;
+        mode?: pulumi.Input<enums.buildx.CacheMode>;
+        /**
+         * Which scope cache object belongs to.
+         */
+        scope?: pulumi.Input<string>;
+        /**
+         * Access token
+         */
+        token?: pulumi.Input<string>;
+        /**
+         * Cache server URL
+         */
+        url?: pulumi.Input<string>;
+    }
+    /**
+     * cacheToGitHubActionsProvideDefaults sets the appropriate defaults for CacheToGitHubActions
+     */
+    export function cacheToGitHubActionsProvideDefaults(val: CacheToGitHubActions): CacheToGitHubActions {
+        return {
+            ...val,
+            ignoreError: (val.ignoreError) ?? false,
+            mode: (val.mode) ?? "min",
+            scope: (val.scope) ?? (utilities.getEnv("buildkit") || ""),
+            token: (val.token) ?? (utilities.getEnv("ACTIONS_RUNTIME_TOKEN") || ""),
+            url: (val.url) ?? (utilities.getEnv("ACTIONS_RUNTIME_URL") || ""),
+        };
+    }
+
+    export interface CacheToInline {
+    }
+
+    export interface CacheToLocal {
+        /**
+         * The compression type to use.
+         */
+        compression?: pulumi.Input<enums.buildx.CompressionType>;
+        /**
+         * Compression level from 0 to 22.
+         */
+        compressionLevel?: pulumi.Input<number>;
+        dest: pulumi.Input<string>;
+        /**
+         * Forcefully apply compression.
+         */
+        forceCompression?: pulumi.Input<boolean>;
+        /**
+         * Ignore errors caused by failed cache exports.
+         */
+        ignoreError?: pulumi.Input<boolean>;
+        mode?: pulumi.Input<enums.buildx.CacheMode>;
+    }
+    /**
+     * cacheToLocalProvideDefaults sets the appropriate defaults for CacheToLocal
+     */
+    export function cacheToLocalProvideDefaults(val: CacheToLocal): CacheToLocal {
+        return {
+            ...val,
+            compression: (val.compression) ?? "gzip",
+            compressionLevel: (val.compressionLevel) ?? 0,
+            forceCompression: (val.forceCompression) ?? false,
+            ignoreError: (val.ignoreError) ?? false,
+            mode: (val.mode) ?? "min",
+        };
+    }
+
+    export interface CacheToRegistry {
+        /**
+         * The compression type to use.
+         */
+        compression?: pulumi.Input<enums.buildx.CompressionType>;
+        /**
+         * Compression level from 0 to 22.
+         */
+        compressionLevel?: pulumi.Input<number>;
+        /**
+         * Forcefully apply compression.
+         */
+        forceCompression?: pulumi.Input<boolean>;
+        /**
+         * Ignore errors caused by failed cache exports.
+         */
+        ignoreError?: pulumi.Input<boolean>;
+        /**
+         * Export cache manifest as an OCI-compatible image manifest instead of a manifest list (requires OCI media types).
+         */
+        imageManifest?: pulumi.Input<boolean>;
+        mode?: pulumi.Input<enums.buildx.CacheMode>;
+        /**
+         * Whether to use OCI mediatypes in exported manifests.
+         */
+        ociMediaTypes?: pulumi.Input<boolean>;
+        /**
+         * Full name of the cache image to import.
+         */
+        ref: pulumi.Input<string>;
+    }
+    /**
+     * cacheToRegistryProvideDefaults sets the appropriate defaults for CacheToRegistry
+     */
+    export function cacheToRegistryProvideDefaults(val: CacheToRegistry): CacheToRegistry {
+        return {
+            ...val,
+            compression: (val.compression) ?? "gzip",
+            compressionLevel: (val.compressionLevel) ?? 0,
+            forceCompression: (val.forceCompression) ?? false,
+            ignoreError: (val.ignoreError) ?? false,
+            imageManifest: (val.imageManifest) ?? false,
+            mode: (val.mode) ?? "min",
+            ociMediaTypes: (val.ociMediaTypes) ?? true,
+        };
+    }
+
+    export interface CacheToS3 {
+        accessKeyId?: pulumi.Input<string>;
+        blobsPrefix?: pulumi.Input<string>;
+        bucket: pulumi.Input<string>;
+        endpointUrl?: pulumi.Input<string>;
+        /**
+         * Ignore errors caused by failed cache exports.
+         */
+        ignoreError?: pulumi.Input<boolean>;
+        manifestsPrefix?: pulumi.Input<string>;
+        mode?: pulumi.Input<enums.buildx.CacheMode>;
+        name?: pulumi.Input<string>;
+        region: pulumi.Input<string>;
+        secretAccessKey?: pulumi.Input<string>;
+        sessionToken?: pulumi.Input<string>;
+        usePathStyle?: pulumi.Input<boolean>;
+    }
+    /**
+     * cacheToS3ProvideDefaults sets the appropriate defaults for CacheToS3
+     */
+    export function cacheToS3ProvideDefaults(val: CacheToS3): CacheToS3 {
+        return {
+            ...val,
+            accessKeyId: (val.accessKeyId) ?? (utilities.getEnv("AWS_ACCESS_KEY_ID") || ""),
+            ignoreError: (val.ignoreError) ?? false,
+            mode: (val.mode) ?? "min",
+            region: (val.region) ?? (utilities.getEnv("AWS_REGION") || ""),
+            secretAccessKey: (val.secretAccessKey) ?? (utilities.getEnv("AWS_SECRET_ACCESS_KEY") || ""),
+            sessionToken: (val.sessionToken) ?? (utilities.getEnv("AWS_SESSION_TOKEN") || ""),
+        };
+    }
+
+    export interface ExportDocker {
+        annotations?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+        /**
+         * The compression type to use.
+         */
+        compression?: pulumi.Input<enums.buildx.CompressionType>;
+        /**
+         * Compression level from 0 to 22.
+         */
+        compressionLevel?: pulumi.Input<number>;
+        /**
+         * The local export path.
+         */
+        dest?: pulumi.Input<string>;
+        /**
+         * Forcefully apply compression.
+         */
+        forceCompression?: pulumi.Input<boolean>;
+        /**
+         * Specify images names to export. This is overridden if tags are already specified.
+         */
+        names?: pulumi.Input<pulumi.Input<string>[]>;
+        /**
+         * Use OCI media types in exporter manifests.
+         */
+        ociMediaTypes?: pulumi.Input<boolean>;
+        /**
+         * Bundle the output into a tarball layout.
+         */
+        tar?: pulumi.Input<boolean>;
+    }
+    /**
+     * exportDockerProvideDefaults sets the appropriate defaults for ExportDocker
+     */
+    export function exportDockerProvideDefaults(val: ExportDocker): ExportDocker {
+        return {
+            ...val,
+            compression: (val.compression) ?? "gzip",
+            compressionLevel: (val.compressionLevel) ?? 0,
+            forceCompression: (val.forceCompression) ?? false,
+            ociMediaTypes: (val.ociMediaTypes) ?? false,
+            tar: (val.tar) ?? true,
+        };
+    }
+
+    export interface ExportEntry {
+        /**
+         *
+         * When "true" this entry will be excluded. Defaults to "false".
+         */
+        disabled?: pulumi.Input<boolean>;
+        /**
+         *
+         * Export as a Docker image layout.
+         */
+        docker?: pulumi.Input<inputs.buildx.ExportDocker>;
+        /**
+         *
+         * Outputs the build result into a container image format.
+         */
+        image?: pulumi.Input<inputs.buildx.ExportImage>;
+        /**
+         *
+         * Export to a local directory as files and directories.
+         */
+        local?: pulumi.Input<inputs.buildx.ExportLocal>;
+        /**
+         *
+         * Identical to the Docker exporter but uses OCI media types by default.
+         */
+        oci?: pulumi.Input<inputs.buildx.ExportOCI>;
+        /**
+         *
+         * A raw string as you would provide it to the Docker CLI (e.g.,
+         * "type=docker")
+         */
+        raw?: pulumi.Input<string>;
+        /**
+         *
+         * Identical to the Image exporter, but pushes by default.
+         */
+        registry?: pulumi.Input<inputs.buildx.ExportRegistry>;
+        /**
+         *
+         * Export to a local directory as a tarball.
+         */
+        tar?: pulumi.Input<inputs.buildx.ExportTar>;
+    }
+    /**
+     * exportEntryProvideDefaults sets the appropriate defaults for ExportEntry
+     */
+    export function exportEntryProvideDefaults(val: ExportEntry): ExportEntry {
+        return {
+            ...val,
+            docker: (val.docker ? pulumi.output(val.docker).apply(inputs.buildx.exportDockerProvideDefaults) : undefined),
+            image: (val.image ? pulumi.output(val.image).apply(inputs.buildx.exportImageProvideDefaults) : undefined),
+            oci: (val.oci ? pulumi.output(val.oci).apply(inputs.buildx.exportOCIProvideDefaults) : undefined),
+            registry: (val.registry ? pulumi.output(val.registry).apply(inputs.buildx.exportRegistryProvideDefaults) : undefined),
+        };
+    }
+
+    export interface ExportImage {
+        annotations?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+        /**
+         * The compression type to use.
+         */
+        compression?: pulumi.Input<enums.buildx.CompressionType>;
+        /**
+         * Compression level from 0 to 22.
+         */
+        compressionLevel?: pulumi.Input<number>;
+        danglingNamePrefix?: pulumi.Input<string>;
+        /**
+         * Forcefully apply compression.
+         */
+        forceCompression?: pulumi.Input<boolean>;
+        insecure?: pulumi.Input<boolean>;
+        nameCanonical?: pulumi.Input<boolean>;
+        /**
+         * Specify images names to export. This is overridden if tags are already specified.
+         */
+        names?: pulumi.Input<pulumi.Input<string>[]>;
+        /**
+         * Use OCI media types in exporter manifests.
+         */
+        ociMediaTypes?: pulumi.Input<boolean>;
+        /**
+         * Push after creating the image.
+         */
+        push?: pulumi.Input<boolean>;
+        pushByDigest?: pulumi.Input<boolean>;
+        /**
+         *
+         * Store resulting images to the worker's image store, and ensure all its
+         * blobs are in the content store. Ignored if the worker doesn't have
+         * image store (when using OCI workers, for example).
+         */
+        store?: pulumi.Input<boolean>;
+        unpack?: pulumi.Input<boolean>;
+    }
+    /**
+     * exportImageProvideDefaults sets the appropriate defaults for ExportImage
+     */
+    export function exportImageProvideDefaults(val: ExportImage): ExportImage {
+        return {
+            ...val,
+            compression: (val.compression) ?? "gzip",
+            compressionLevel: (val.compressionLevel) ?? 0,
+            forceCompression: (val.forceCompression) ?? false,
+            ociMediaTypes: (val.ociMediaTypes) ?? false,
+            store: (val.store) ?? true,
+        };
+    }
+
+    export interface ExportLocal {
+        /**
+         * Output path.
+         */
+        dest: pulumi.Input<string>;
+    }
+
+    export interface ExportOCI {
+        annotations?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+        /**
+         * The compression type to use.
+         */
+        compression?: pulumi.Input<enums.buildx.CompressionType>;
+        /**
+         * Compression level from 0 to 22.
+         */
+        compressionLevel?: pulumi.Input<number>;
+        /**
+         * The local export path.
+         */
+        dest?: pulumi.Input<string>;
+        /**
+         * Forcefully apply compression.
+         */
+        forceCompression?: pulumi.Input<boolean>;
+        /**
+         * Specify images names to export. This is overridden if tags are already specified.
+         */
+        names?: pulumi.Input<pulumi.Input<string>[]>;
+        /**
+         * Use OCI media types in exporter manifests.
+         */
+        ociMediaTypes?: pulumi.Input<boolean>;
+        /**
+         * Bundle the output into a tarball layout.
+         */
+        tar?: pulumi.Input<boolean>;
+    }
+    /**
+     * exportOCIProvideDefaults sets the appropriate defaults for ExportOCI
+     */
+    export function exportOCIProvideDefaults(val: ExportOCI): ExportOCI {
+        return {
+            ...val,
+            compression: (val.compression) ?? "gzip",
+            compressionLevel: (val.compressionLevel) ?? 0,
+            forceCompression: (val.forceCompression) ?? false,
+            ociMediaTypes: (val.ociMediaTypes) ?? true,
+            tar: (val.tar) ?? true,
+        };
+    }
+
+    export interface ExportRegistry {
+        annotations?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+        /**
+         * The compression type to use.
+         */
+        compression?: pulumi.Input<enums.buildx.CompressionType>;
+        /**
+         * Compression level from 0 to 22.
+         */
+        compressionLevel?: pulumi.Input<number>;
+        danglingNamePrefix?: pulumi.Input<string>;
+        /**
+         * Forcefully apply compression.
+         */
+        forceCompression?: pulumi.Input<boolean>;
+        insecure?: pulumi.Input<boolean>;
+        nameCanonical?: pulumi.Input<boolean>;
+        /**
+         * Specify images names to export. This is overridden if tags are already specified.
+         */
+        names?: pulumi.Input<pulumi.Input<string>[]>;
+        /**
+         * Use OCI media types in exporter manifests.
+         */
+        ociMediaTypes?: pulumi.Input<boolean>;
+        /**
+         * Push after creating the image.
+         */
+        push?: pulumi.Input<boolean>;
+        pushByDigest?: pulumi.Input<boolean>;
+        /**
+         *
+         * Store resulting images to the worker's image store, and ensure all its
+         * blobs are in the content store. Ignored if the worker doesn't have
+         * image store (when using OCI workers, for example).
+         */
+        store?: pulumi.Input<boolean>;
+        unpack?: pulumi.Input<boolean>;
+    }
+    /**
+     * exportRegistryProvideDefaults sets the appropriate defaults for ExportRegistry
+     */
+    export function exportRegistryProvideDefaults(val: ExportRegistry): ExportRegistry {
+        return {
+            ...val,
+            compression: (val.compression) ?? "gzip",
+            compressionLevel: (val.compressionLevel) ?? 0,
+            forceCompression: (val.forceCompression) ?? false,
+            ociMediaTypes: (val.ociMediaTypes) ?? false,
+            push: (val.push) ?? true,
+            store: (val.store) ?? true,
+        };
+    }
+
+    export interface ExportTar {
+        /**
+         * Output path.
+         */
+        dest: pulumi.Input<string>;
+    }
+
     export interface RegistryAuth {
         /**
          * The registry's address (e.g. "docker.io").

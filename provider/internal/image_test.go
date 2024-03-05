@@ -23,6 +23,7 @@ import (
 	"github.com/pulumi/pulumi-go-provider/integration"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/util/mapper"
+	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 
 	"github.com/pulumi/pulumi-docker/provider/v4/internal/mock"
 	"github.com/pulumi/pulumi-docker/provider/v4/internal/properties"
@@ -93,7 +94,12 @@ func TestLifecycle(t *testing.T) {
 						"context": resource.NewStringProperty("../testdata"),
 						"file":    resource.NewStringProperty("../testdata/Dockerfile"),
 						"exports": resource.NewArrayProperty(
-							[]resource.PropertyValue{resource.NewStringProperty("type=registry")},
+							[]resource.PropertyValue{
+								resource.NewObjectProperty(resource.PropertyMap{
+									"raw": resource.NewStringProperty("type=registry"),
+								},
+								),
+							},
 						),
 						"registries": resource.NewArrayProperty(
 							[]resource.PropertyValue{
@@ -109,33 +115,26 @@ func TestLifecycle(t *testing.T) {
 			},
 		},
 		{
-			name:   "tags is required",
-			client: noClient,
-			op: func(t *testing.T) integration.Operation {
-				return integration.Operation{
-					Inputs:        resource.PropertyMap{},
-					ExpectFailure: true,
-					CheckFailures: []provider.CheckFailure{{
-						Property: "tags",
-						Reason:   "Missing required field 'tags' on 'internal.ImageArgs'",
-					}},
-				}
-			},
-		},
-		{
-			name:   "non-zero tags is required",
+			name:   "tags are required when pushing",
 			client: noClient,
 			op: func(t *testing.T) integration.Operation {
 				return integration.Operation{
 					Inputs: resource.PropertyMap{
 						"tags":    resource.NewArrayProperty([]resource.PropertyValue{}),
 						"context": resource.NewStringProperty("../testdata"),
+						"exports": resource.NewArrayProperty(
+							[]resource.PropertyValue{
+								resource.NewObjectProperty(resource.PropertyMap{
+									"raw": resource.NewStringProperty("type=registry"),
+								}),
+							},
+						),
 					},
 					ExpectFailure: true,
 					CheckFailures: []provider.CheckFailure{
 						{
 							Property: "tags",
-							Reason:   "at least one tag is required",
+							Reason:   "at least one tag or export name is needed when pushing to a registry",
 						},
 					},
 				}
@@ -151,7 +150,11 @@ func TestLifecycle(t *testing.T) {
 							[]resource.PropertyValue{resource.NewStringProperty("invalid-exports")},
 						),
 						"exports": resource.NewArrayProperty(
-							[]resource.PropertyValue{resource.NewStringProperty("type=")},
+							[]resource.PropertyValue{
+								resource.NewObjectProperty(resource.PropertyMap{
+									"raw": resource.NewStringProperty("type="),
+								}),
+							},
 						),
 					},
 					ExpectFailure: true,
@@ -322,8 +325,9 @@ func TestRead(t *testing.T) {
 		Urn: _fakeURN,
 		Inputs: resource.PropertyMap{
 			"exports": resource.NewArrayProperty([]resource.PropertyValue{
-				resource.NewStringProperty("type=registry"),
-				resource.NewStringProperty("type=unrecognized"),
+				resource.NewObjectProperty(resource.PropertyMap{
+					"raw": resource.NewStringProperty("type=registry"),
+				}),
 			}),
 			"tags": resource.NewArrayProperty([]resource.PropertyValue{
 				resource.NewStringProperty(tag),
@@ -437,7 +441,7 @@ func TestDiff(t *testing.T) {
 			name: "diff if cacheFrom changes",
 			olds: func(*testing.T, ImageState) ImageState { return baseState },
 			news: func(_ *testing.T, a ImageArgs) ImageArgs {
-				a.CacheFrom = []string{"a"}
+				a.CacheFrom = []CacheFromEntry{{Raw: "a"}}
 				return a
 			},
 			wantChanges: true,
@@ -446,7 +450,7 @@ func TestDiff(t *testing.T) {
 			name: "diff if cacheTo changes",
 			olds: func(*testing.T, ImageState) ImageState { return baseState },
 			news: func(_ *testing.T, a ImageArgs) ImageArgs {
-				a.CacheTo = []string{"a"}
+				a.CacheTo = []CacheToEntry{{Raw: "a"}}
 				return a
 			},
 			wantChanges: true,
@@ -473,7 +477,7 @@ func TestDiff(t *testing.T) {
 			name: "diff if platforms change",
 			olds: func(*testing.T, ImageState) ImageState { return baseState },
 			news: func(_ *testing.T, a ImageArgs) ImageArgs {
-				a.Platforms = []string{"linux/amd64"}
+				a.Platforms = []Platform{"linux/amd64"}
 				return a
 			},
 			wantChanges: true,
@@ -509,7 +513,7 @@ func TestDiff(t *testing.T) {
 			name: "diff if exports change",
 			olds: func(*testing.T, ImageState) ImageState { return baseState },
 			news: func(_ *testing.T, a ImageArgs) ImageArgs {
-				a.Exports = []string{"foo"}
+				a.Exports = []ExportEntry{{Raw: "foo"}}
 				return a
 			},
 			wantChanges: true,
@@ -541,11 +545,11 @@ func TestBuildOptions(t *testing.T) {
 	t.Run("invalid inputs", func(t *testing.T) {
 		args := ImageArgs{
 			Tags:      []string{"a/bad:tag:format"},
-			Exports:   []string{"badexport,-"},
+			Exports:   []ExportEntry{{Raw: "badexport,-"}},
 			Context:   "./testdata",
-			Platforms: []string{","},
-			CacheFrom: []string{"=badcachefrom"},
-			CacheTo:   []string{"=badcacheto"},
+			Platforms: []Platform{","},
+			CacheFrom: []CacheFromEntry{{Raw: "=badcachefrom"}},
+			CacheTo:   []CacheToEntry{{Raw: "=badcacheto"}},
 		}
 
 		_, err := args.toBuildOptions(false)
@@ -560,7 +564,7 @@ func TestBuildOptions(t *testing.T) {
 	t.Run("buildOnPreview", func(t *testing.T) {
 		args := ImageArgs{
 			Tags:    []string{"my-tag"},
-			Exports: []string{"type=registry", "type=local", "type=docker"},
+			Exports: []ExportEntry{{Registry: &ExportRegistry{ExportImage{Push: pulumi.BoolRef(true)}}}},
 		}
 		actual, err := args.toBuildOptions(true)
 		assert.NoError(t, err)
@@ -586,12 +590,12 @@ func TestBuildOptions(t *testing.T) {
 				"":      "",
 			},
 			Builder:   "",
-			CacheFrom: []string{"type=gha", ""},
-			CacheTo:   []string{"type=gha", ""},
+			CacheFrom: []CacheFromEntry{{GHA: &CacheFromGitHubActions{}}, {Raw: ""}},
+			CacheTo:   []CacheToEntry{{GHA: &CacheToGitHubActions{}}, {Raw: ""}},
 			Context:   "",
-			Exports:   []string{"type=gha", ""},
+			Exports:   []ExportEntry{{Raw: ""}},
 			File:      "",
-			Platforms: []string{"linux/amd64", ""},
+			Platforms: []Platform{"linux/amd64", ""},
 			Registries: []properties.RegistryAuth{
 				{
 					Address:  "",
@@ -608,6 +612,26 @@ func TestBuildOptions(t *testing.T) {
 
 		_, err = unknowns.toBuildOptions(false)
 		assert.Error(t, err)
+	})
+
+	t.Run("multiple exports aren't allowed yet", func(t *testing.T) {
+		args := ImageArgs{
+			Exports: []ExportEntry{{Raw: "type=local"}, {Raw: "type=tar"}},
+		}
+		_, err := args.toBuildOptions(false)
+		assert.ErrorContains(t, err, "multiple exports are currently unsupported")
+	})
+
+	t.Run("cache and export entries are union-ish", func(t *testing.T) {
+		args := ImageArgs{
+			Exports:   []ExportEntry{{Tar: &ExportTar{}, Local: &ExportLocal{}}},
+			CacheTo:   []CacheToEntry{{Raw: "type=tar", Local: &CacheToLocal{Dest: "/foo"}}},
+			CacheFrom: []CacheFromEntry{{Raw: "type=tar", Registry: &CacheFromRegistry{}}},
+		}
+		_, err := args.toBuildOptions(false)
+		assert.ErrorContains(t, err, "exports should only specify one export type")
+		assert.ErrorContains(t, err, "cacheFrom should only specify one cache type")
+		assert.ErrorContains(t, err, "cacheTo should only specify one cache type")
 	})
 }
 
@@ -627,7 +651,7 @@ func TestBuildable(t *testing.T) {
 			name: "unknown exports",
 			args: ImageArgs{
 				Tags:    []string{"known"},
-				Exports: []string{""},
+				Exports: []ExportEntry{{Raw: ""}},
 			},
 			want: false,
 		},
@@ -635,7 +659,7 @@ func TestBuildable(t *testing.T) {
 			name: "unknown registry",
 			args: ImageArgs{
 				Tags:    []string{"known"},
-				Exports: []string{"type=gha"},
+				Exports: []ExportEntry{{Docker: &ExportDocker{}}},
 				Registries: []properties.RegistryAuth{
 					{
 						Address:  "docker.io",
@@ -657,7 +681,7 @@ func TestBuildable(t *testing.T) {
 			name: "known exports",
 			args: ImageArgs{
 				Tags:    []string{"known"},
-				Exports: []string{"type=registry"},
+				Exports: []ExportEntry{{Registry: &ExportRegistry{}}},
 			},
 			want: true,
 		},
@@ -665,7 +689,7 @@ func TestBuildable(t *testing.T) {
 			name: "known registry",
 			args: ImageArgs{
 				Tags:    []string{"known"},
-				Exports: []string{"type=gha"},
+				Exports: []ExportEntry{{Registry: &ExportRegistry{}}},
 				Registries: []properties.RegistryAuth{
 					{
 						Address:  "docker.io",
@@ -689,16 +713,24 @@ func TestToBuilds(t *testing.T) {
 	t.Run("single-platform caching", func(t *testing.T) {
 		ia := ImageArgs{
 			Tags:      []string{"foo", "bar"},
-			Platforms: []string{"linux/amd64"},
-			CacheTo: []string{
-				"type=gha,mode=max",
-				"type=registry,ref=docker.io/foo/bar",
-				"type=registry,ref=docker.io/foo/bar:baz",
+			Platforms: []Platform{"linux/amd64"},
+			CacheTo: []CacheToEntry{
+				{GHA: &CacheToGitHubActions{CacheWithMode: CacheWithMode{CacheModeMax}}},
+				{
+					Registry: &CacheToRegistry{
+						CacheFromRegistry: CacheFromRegistry{Ref: "docker.io/foo/bar"},
+					},
+				},
+				{
+					Registry: &CacheToRegistry{
+						CacheFromRegistry: CacheFromRegistry{Ref: "docker.io/foo/bar:baz"},
+					},
+				},
 			},
-			CacheFrom: []string{
-				"type=s3,name=bar",
-				"type=registry,ref=docker.io/foo/bar",
-				"type=registry,ref=docker.io/foo/bar:baz",
+			CacheFrom: []CacheFromEntry{
+				{S3: &CacheFromS3{Name: "bar"}},
+				{Registry: &CacheFromRegistry{Ref: "docker.io/foo/bar"}},
+				{Registry: &CacheFromRegistry{Ref: "docker.io/foo/bar:baz"}},
 			},
 		}
 		builds, err := ia.toBuilds(nil, false)
@@ -712,16 +744,24 @@ func TestToBuilds(t *testing.T) {
 
 		ia := ImageArgs{
 			Tags:      []string{"foo", "bar"},
-			Platforms: []string{"linux/amd64", "linux/arm64"},
-			CacheTo: []string{
-				"type=gha,mode=max",
-				"type=registry,ref=docker.io/foo/bar",
-				"type=registry,ref=docker.io/foo/bar:baz",
+			Platforms: []Platform{"linux/amd64", "linux/arm64"},
+			CacheTo: []CacheToEntry{
+				{GHA: &CacheToGitHubActions{CacheWithMode: CacheWithMode{CacheModeMax}}},
+				{
+					Registry: &CacheToRegistry{
+						CacheFromRegistry: CacheFromRegistry{Ref: "docker.io/foo/bar"},
+					},
+				},
+				{
+					Registry: &CacheToRegistry{
+						CacheFromRegistry: CacheFromRegistry{Ref: "docker.io/foo/bar:baz"},
+					},
+				},
 			},
-			CacheFrom: []string{
-				"type=s3,name=bar",
-				"type=registry,ref=docker.io/foo/bar",
-				"type=registry,ref=docker.io/foo/bar:baz",
+			CacheFrom: []CacheFromEntry{
+				{S3: &CacheFromS3{Name: "bar"}},
+				{Registry: &CacheFromRegistry{Ref: "docker.io/foo/bar"}},
+				{Registry: &CacheFromRegistry{Ref: "docker.io/foo/bar:baz"}},
 			},
 		}
 

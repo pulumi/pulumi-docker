@@ -55,15 +55,16 @@ type ImageArgs struct {
 	BuildArgs      map[string]string         `pulumi:"buildArgs,optional"`
 	Builder        string                    `pulumi:"builder,optional"`
 	BuildOnPreview bool                      `pulumi:"buildOnPreview,optional"`
-	CacheFrom      []string                  `pulumi:"cacheFrom,optional"`
-	CacheTo        []string                  `pulumi:"cacheTo,optional"`
+	CacheFrom      []CacheFromEntry          `pulumi:"cacheFrom,optional"`
+	CacheTo        []CacheToEntry            `pulumi:"cacheTo,optional"`
 	Context        string                    `pulumi:"context,optional"`
-	Exports        []string                  `pulumi:"exports,optional"`
+	Exports        []ExportEntry             `pulumi:"exports,optional"`
 	File           string                    `pulumi:"file,optional"`
-	Platforms      []string                  `pulumi:"platforms,optional"`
+	Platforms      []Platform                `pulumi:"platforms,optional"`
 	Pull           bool                      `pulumi:"pull,optional"`
 	Registries     []properties.RegistryAuth `pulumi:"registries,optional"`
-	Tags           []string                  `pulumi:"tags"`
+	Tags           []string                  `pulumi:"tags,optional"`
+	Target         string                    `pulumi:"target,optional"`
 }
 
 // Annotate describes inputs to the Image resource.
@@ -121,7 +122,7 @@ type ImageState struct {
 	ImageArgs
 
 	ContextHash string                `pulumi:"contextHash,optional" provider:"internal"`
-	Manifests   []properties.Manifest `pulumi:"manifests" provider:"output"`
+	Manifests   []properties.Manifest `pulumi:"manifests"            provider:"output"`
 }
 
 // Annotate describes outputs of the Image resource.
@@ -163,8 +164,13 @@ func (*Image) Check(
 			continue
 		}
 		if err = cfg.client.Auth(ctx, name, reg); err != nil {
-			failures = append(failures,
-				provider.CheckFailure{Property: "registries", Reason: fmt.Sprintf("unable to authenticate: %s", err.Error())})
+			failures = append(
+				failures,
+				provider.CheckFailure{
+					Property: "registries",
+					Reason:   fmt.Sprintf("unable to authenticate: %s", err.Error()),
+				},
+			)
 		}
 	}
 
@@ -184,20 +190,20 @@ func newCheckFailure(property string, err error) checkFailure {
 }
 
 func (ia *ImageArgs) withoutUnknowns(preview bool) ImageArgs {
-	sk := stringKeeper{preview}
 	filtered := ImageArgs{
 		BuildArgs:      mapKeeper{preview}.keep(ia.BuildArgs),
 		Builder:        ia.Builder,
 		BuildOnPreview: ia.BuildOnPreview,
-		CacheFrom:      filter(sk, ia.CacheFrom...),
-		CacheTo:        filter(sk, ia.CacheTo...),
+		CacheFrom:      filter(stringerKeeper[CacheFromEntry]{preview}, ia.CacheFrom...),
+		CacheTo:        filter(stringerKeeper[CacheToEntry]{preview}, ia.CacheTo...),
 		Context:        ia.Context,
-		Exports:        filter(sk, ia.Exports...),
+		Exports:        filter(stringerKeeper[ExportEntry]{preview}, ia.Exports...),
 		File:           ia.File, //
-		Platforms:      filter(sk, ia.Platforms...),
+		Platforms:      filter(stringerKeeper[Platform]{preview}, ia.Platforms...),
 		Pull:           ia.Pull,
 		Registries:     filter(registryKeeper{preview}, ia.Registries...),
-		Tags:           filter(sk, ia.Tags...),
+		Tags:           filter(stringKeeper{preview}, ia.Tags...),
+		Target:         ia.Target,
 	}
 
 	return filtered
@@ -334,8 +340,11 @@ func cachesFor(
 func (ia *ImageArgs) toBuildOptions(preview bool) (controllerapi.BuildOptions, error) {
 	var multierr error
 
-	if len(ia.Tags) == 0 {
-		multierr = errors.Join(multierr, newCheckFailure("tags", errors.New("at least one tag is required")))
+	if len(ia.Exports) > 1 {
+		multierr = errors.Join(
+			multierr,
+			newCheckFailure("exports", fmt.Errorf("multiple exports are currently unsupported")),
+		)
 	}
 
 	// TODO(https://github.com/pulumi/pulumi-docker/issues/860): Empty build context
@@ -344,7 +353,10 @@ func (ia *ImageArgs) toBuildOptions(preview bool) (controllerapi.BuildOptions, e
 			ia.File = filepath.Join(ia.Context, "Dockerfile")
 		}
 		if _, err := os.Stat(ia.File); err != nil {
-			multierr = errors.Join(multierr, newCheckFailure("context", fmt.Errorf("%q: %w", ia.File, err)))
+			multierr = errors.Join(
+				multierr,
+				newCheckFailure("context", fmt.Errorf("%q: %w", ia.File, err)),
+			)
 		}
 	}
 
@@ -352,32 +364,100 @@ func (ia *ImageArgs) toBuildOptions(preview bool) (controllerapi.BuildOptions, e
 	// cause validation errors.
 	filtered := ia.withoutUnknowns(preview)
 
-	exports, err := buildflags.ParseExports(filtered.Exports)
-	if err != nil {
-		multierr = errors.Join(multierr, newCheckFailure("exports", err))
+	exports := []*controllerapi.ExportEntry{}
+	for _, e := range filtered.Exports {
+		if strings.Count(e.String(), "type=") > 1 {
+			multierr = errors.Join(
+				multierr,
+				newCheckFailure(
+					"exports",
+					errors.New("exports should only specify one export type"),
+				),
+			)
+			continue
+		}
+		ee, err := buildflags.ParseExports([]string{e.String()})
+		if err != nil {
+			multierr = errors.Join(multierr, newCheckFailure("exports", err))
+			continue
+		}
+		exp := ee[0]
+		if len(ia.Tags) == 0 && isRegistryPush(exp) && exp.Attrs["name"] == "" {
+			multierr = errors.Join(multierr,
+				newCheckFailure("tags",
+					fmt.Errorf(
+						"at least one tag or export name is needed when pushing to a registry",
+					),
+				),
+			)
+			continue
+		}
+		exports = append(exports, exp)
+
 	}
 	if preview {
 		// Don't perform registry pushes during previews.
 		for _, e := range exports {
-			if e.Type == "image" && e.Attrs["push"] == "true" {
+			if e.Type == "image" {
 				e.Attrs["push"] = "false"
 			}
 		}
 	}
 
-	_, err = platformutil.Parse(filtered.Platforms)
-	if err != nil {
-		multierr = errors.Join(multierr, newCheckFailure("platforms", err))
+	platforms := []string{}
+	for _, p := range filtered.Platforms {
+		_, err := platformutil.Parse([]string{string(p)})
+		if err != nil {
+			multierr = errors.Join(multierr, newCheckFailure("platforms", err))
+			continue
+		}
+		platforms = append(platforms, p.String())
 	}
 
-	cacheFrom, err := buildflags.ParseCacheEntry(filtered.CacheFrom)
-	if err != nil {
-		multierr = errors.Join(multierr, newCheckFailure("cacheFrom", err))
+	cacheFrom := []*controllerapi.CacheOptionsEntry{}
+	for _, c := range filtered.CacheFrom {
+		if strings.Count(c.String(), "type=") > 1 {
+			multierr = errors.Join(
+				multierr,
+				newCheckFailure(
+					"cacheFrom",
+					errors.New("cacheFrom should only specify one cache type"),
+				),
+			)
+			continue
+		}
+		parsed, err := buildflags.ParseCacheEntry([]string{c.String()})
+		if err != nil {
+			multierr = errors.Join(multierr, newCheckFailure("cacheFrom", err))
+			continue
+		}
+		if len(parsed) == 0 {
+			continue
+		}
+		cacheFrom = append(cacheFrom, parsed[0])
 	}
 
-	cacheTo, err := buildflags.ParseCacheEntry(filtered.CacheTo)
-	if err != nil {
-		multierr = errors.Join(multierr, newCheckFailure("cacheTo", err))
+	cacheTo := []*controllerapi.CacheOptionsEntry{}
+	for _, c := range filtered.CacheTo {
+		if strings.Count(c.String(), "type=") > 1 {
+			multierr = errors.Join(
+				multierr,
+				newCheckFailure(
+					"cacheTo",
+					errors.New("cacheTo should only specify one cache type"),
+				),
+			)
+			continue
+		}
+		parsed, err := buildflags.ParseCacheEntry([]string{c.String()})
+		if err != nil {
+			multierr = errors.Join(multierr, newCheckFailure("cacheTo", err))
+			continue
+		}
+		if len(parsed) == 0 {
+			continue
+		}
+		cacheTo = append(cacheTo, parsed[0])
 	}
 
 	for _, t := range filtered.Tags {
@@ -394,9 +474,10 @@ func (ia *ImageArgs) toBuildOptions(preview bool) (controllerapi.BuildOptions, e
 		ContextPath:    filtered.Context,
 		DockerfileName: filtered.File,
 		Exports:        exports,
-		Platforms:      filtered.Platforms,
+		Platforms:      platforms,
 		Pull:           filtered.Pull,
 		Tags:           filtered.Tags,
+		Target:         filtered.Target,
 	}
 
 	return opts, multierr
@@ -496,44 +577,36 @@ func (*Image) Read(
 	expectManifest := false
 	manifests := []properties.Manifest{}
 	for _, export := range opts.Exports {
-		switch export.GetType() {
-		case "image":
-			if export.GetAttrs()["push"] != "true" {
-				// No manifest to read if we didn't push.
+		// We currently only handle pushed manifests.
+		if !isRegistryPush(export) {
+			continue
+		}
+
+		for _, tag := range input.Tags {
+			expectManifest = true
+			infos, err := cfg.client.Inspect(ctx, name, tag)
+			if err != nil {
 				continue
 			}
-
-			for _, tag := range input.Tags {
-				expectManifest = true
-				infos, err := cfg.client.Inspect(ctx, name, tag)
-				if err != nil {
+			for _, m := range infos {
+				if m.Descriptor.Platform != nil && m.Descriptor.Platform.Architecture == "unknown" {
+					// Ignore cache manifests.
 					continue
 				}
-				for _, m := range infos {
-					if m.Descriptor.Platform != nil && m.Descriptor.Platform.Architecture == "unknown" {
-						// Ignore cache manifests.
-						continue
-					}
-					if m.Ref == nil {
-						// Shouldn't happen, but just in case.
-						continue
-					}
-					manifests = append(manifests, properties.Manifest{
-						Digest: m.Descriptor.Digest.String(),
-						Platform: properties.Platform{
-							OS:           m.Descriptor.Platform.OS,
-							Architecture: m.Descriptor.Platform.Architecture,
-						},
-						Ref:  m.Ref.String(),
-						Size: m.Descriptor.Size,
-					})
+				if m.Ref == nil {
+					// Shouldn't happen, but just in case.
+					continue
 				}
+				manifests = append(manifests, properties.Manifest{
+					Digest: m.Descriptor.Digest.String(),
+					Platform: properties.Platform{
+						OS:           m.Descriptor.Platform.OS,
+						Architecture: m.Descriptor.Platform.Architecture,
+					},
+					Ref:  m.Ref.String(),
+					Size: m.Descriptor.Size,
+				})
 			}
-		case "docker":
-			// TODO: Inspect local image and munge it into a manifest.
-		default:
-			// Other export types (e.g. file) are not supported.
-			continue
 		}
 	}
 
@@ -579,7 +652,12 @@ func (*Image) Delete(
 
 // Diff re-implements most of the default diff behavior, with the exception of
 // ignoring "password" changes on registry inputs.
-func (*Image) Diff(_ provider.Context, _ string, olds ImageState, news ImageArgs) (provider.DiffResponse, error) {
+func (*Image) Diff(
+	_ provider.Context,
+	_ string,
+	olds ImageState,
+	news ImageArgs,
+) (provider.DiffResponse, error) {
 	diff := map[string]provider.PropertyDiff{}
 	update := provider.PropertyDiff{Kind: provider.Update}
 
