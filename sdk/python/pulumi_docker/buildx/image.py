@@ -18,6 +18,7 @@ class ImageArgs:
     def __init__(__self__, *,
                  tags: pulumi.Input[Sequence[pulumi.Input[str]]],
                  build_args: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
+                 build_on_preview: Optional[pulumi.Input[bool]] = None,
                  builder: Optional[pulumi.Input[str]] = None,
                  cache_from: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  cache_to: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
@@ -37,6 +38,9 @@ class ImageArgs:
                the Docker build. This flag allows you to pass build-time variables that
                can be accessed like environment variables inside the RUN
                instruction.
+        :param pulumi.Input[bool] build_on_preview: 
+               When true, attempt to build the image during previews. Outputs are not
+               pushed to registries, however caches are still populated.
         :param pulumi.Input[str] builder: 
                Build with a specific builder instance
         :param pulumi.Input[Sequence[pulumi.Input[str]]] cache_from: 
@@ -62,6 +66,8 @@ class ImageArgs:
         pulumi.set(__self__, "tags", tags)
         if build_args is not None:
             pulumi.set(__self__, "build_args", build_args)
+        if build_on_preview is not None:
+            pulumi.set(__self__, "build_on_preview", build_on_preview)
         if builder is not None:
             pulumi.set(__self__, "builder", builder)
         if cache_from is not None:
@@ -112,6 +118,20 @@ class ImageArgs:
     @build_args.setter
     def build_args(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]):
         pulumi.set(self, "build_args", value)
+
+    @property
+    @pulumi.getter(name="buildOnPreview")
+    def build_on_preview(self) -> Optional[pulumi.Input[bool]]:
+        """
+
+        When true, attempt to build the image during previews. Outputs are not
+        pushed to registries, however caches are still populated.
+        """
+        return pulumi.get(self, "build_on_preview")
+
+    @build_on_preview.setter
+    def build_on_preview(self, value: Optional[pulumi.Input[bool]]):
+        pulumi.set(self, "build_on_preview", value)
 
     @property
     @pulumi.getter
@@ -240,6 +260,7 @@ class Image(pulumi.CustomResource):
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
                  build_args: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
+                 build_on_preview: Optional[pulumi.Input[bool]] = None,
                  builder: Optional[pulumi.Input[str]] = None,
                  cache_from: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  cache_to: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
@@ -261,6 +282,9 @@ class Image(pulumi.CustomResource):
                the Docker build. This flag allows you to pass build-time variables that
                can be accessed like environment variables inside the RUN
                instruction.
+        :param pulumi.Input[bool] build_on_preview: 
+               When true, attempt to build the image during previews. Outputs are not
+               pushed to registries, however caches are still populated.
         :param pulumi.Input[str] builder: 
                Build with a specific builder instance
         :param pulumi.Input[Sequence[pulumi.Input[str]]] cache_from: 
@@ -311,6 +335,7 @@ class Image(pulumi.CustomResource):
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
                  build_args: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
+                 build_on_preview: Optional[pulumi.Input[bool]] = None,
                  builder: Optional[pulumi.Input[str]] = None,
                  cache_from: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  cache_to: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
@@ -331,6 +356,7 @@ class Image(pulumi.CustomResource):
             __props__ = ImageArgs.__new__(ImageArgs)
 
             __props__.__dict__["build_args"] = build_args
+            __props__.__dict__["build_on_preview"] = build_on_preview
             __props__.__dict__["builder"] = builder
             __props__.__dict__["cache_from"] = cache_from
             __props__.__dict__["cache_to"] = cache_to
@@ -370,6 +396,7 @@ class Image(pulumi.CustomResource):
         __props__ = ImageArgs.__new__(ImageArgs)
 
         __props__.__dict__["build_args"] = None
+        __props__.__dict__["build_on_preview"] = None
         __props__.__dict__["builder"] = None
         __props__.__dict__["cache_from"] = None
         __props__.__dict__["cache_to"] = None
@@ -395,6 +422,16 @@ class Image(pulumi.CustomResource):
         instruction.
         """
         return pulumi.get(self, "build_args")
+
+    @property
+    @pulumi.getter(name="buildOnPreview")
+    def build_on_preview(self) -> pulumi.Output[Optional[bool]]:
+        """
+
+        When true, attempt to build the image during previews. Outputs are not
+        pushed to registries, however caches are still populated.
+        """
+        return pulumi.get(self, "build_on_preview")
 
     @property
     @pulumi.getter
