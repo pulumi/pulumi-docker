@@ -22,5 +22,5 @@ import (
 )
 
 func main() {
-	tfgen.Main("docker", version.Version, docker.Provider())
+	tfgen.Main("docker", version.Version, docker.Provider(version.Version))
 }

@@ -15,6 +15,7 @@
 package provider
 
 import (
+	"context"
 	"fmt"
 	"path/filepath"
 	"unicode"
@@ -31,7 +32,7 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/common/tokens"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 
-	"github.com/pulumi/pulumi-docker/provider/v4/pkg/version"
+	"github.com/pulumi/pulumi-docker/provider/v4/internal"
 )
 
 const (
@@ -65,7 +66,7 @@ func dockerDataSource(mod string, res string) tokens.ModuleMember {
 	return dockerMember(mod+"/"+fn, res)
 }
 
-func Provider() tfbridge.ProviderInfo {
+func Provider(version string) tfbridge.ProviderInfo {
 	p := shimv2.NewProvider(shim.NewProvider())
 	prov := tfbridge.ProviderInfo{
 		P:                p,
@@ -364,7 +365,7 @@ func Provider() tfbridge.ProviderInfo {
 		Golang: &tfbridge.GolangInfo{
 			ImportBasePath: filepath.Join(
 				fmt.Sprintf("github.com/pulumi/pulumi-%[1]s/sdk/", dockerPkg),
-				tfbridge.GetModuleMajorVersion(version.Version),
+				tfbridge.GetModuleMajorVersion(version),
 				"go",
 				dockerPkg,
 			),
@@ -379,6 +380,15 @@ func Provider() tfbridge.ProviderInfo {
 			},
 		},
 		MetadataInfo: tfbridge.NewProviderMetadata(metadata),
+	}
+
+	// Bridge pulumi-go-provider types into our provider.
+	spec := internal.Schema(context.Background(), version)
+	for k, v := range spec.Resources {
+		prov.ExtraResources[k] = v
+	}
+	for k, v := range spec.Types {
+		prov.ExtraTypes[k] = v
 	}
 
 	prov.MustComputeTokens(tfbridgetokens.SingleModule("docker_", dockerMod,
