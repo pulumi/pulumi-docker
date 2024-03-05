@@ -10,10 +10,11 @@ import (
 	provider "github.com/pulumi/pulumi-go-provider"
 	"github.com/pulumi/pulumi-go-provider/infer"
 	"github.com/pulumi/pulumi-go-provider/integration"
+	mwcontext "github.com/pulumi/pulumi-go-provider/middleware/context"
 )
 
 func TestConfigure(t *testing.T) {
-	s := newServer()
+	s := newServer(nil)
 
 	err := s.Configure(
 		provider.ConfigureRequest{},
@@ -44,7 +45,15 @@ func (annotator) Describe(_ any, _ string)             {}
 func (annotator) SetDefault(_ any, _ any, _ ...string) {}
 func (annotator) SetToken(_, _ string)                 {}
 
-func newServer() integration.Server {
-	provider := NewBuildxProvider()
-	return integration.NewServer("docker", semver.Version{Major: 4}, provider)
+func newServer(client Client) integration.Server {
+	p := NewBuildxProvider()
+
+	// Inject a mock client if provided.
+	if client != nil {
+		p = mwcontext.Wrap(p, func(ctx provider.Context) provider.Context {
+			return provider.CtxWithValue(ctx, _mockClientKey, client)
+		})
+	}
+
+	return integration.NewServer("docker", semver.Version{Major: 4}, p)
 }

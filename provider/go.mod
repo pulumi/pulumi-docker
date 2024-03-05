@@ -4,6 +4,7 @@ go 1.21
 
 require (
 	github.com/blang/semver v3.5.1+incompatible
+	github.com/distribution/reference v0.5.0
 	github.com/docker/buildx v0.12.0-rc2.0.20240214233841-c9d1c41d206c
 	github.com/docker/cli v25.0.3+incompatible
 	github.com/docker/distribution v2.8.2+incompatible
@@ -15,6 +16,7 @@ require (
 	github.com/moby/patternmatcher v0.6.0
 	github.com/muesli/reflow v0.3.0
 	github.com/opencontainers/go-digest v1.0.0
+	github.com/opencontainers/image-spec v1.1.0-rc5
 	github.com/pkg/errors v0.9.1
 	github.com/pulumi/pulumi-go-provider v0.14.1-0.20240301190400-aeddefa8dc54
 	github.com/pulumi/pulumi-go-provider/integration v0.10.0
@@ -106,7 +108,6 @@ require (
 	github.com/cyphar/filepath-securejoin v0.2.4 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/deckarep/golang-set/v2 v2.5.0 // indirect
-	github.com/distribution/reference v0.5.0 // indirect
 	github.com/djherbis/times v1.5.0 // indirect
 	github.com/docker/docker-credential-helpers v0.8.0 // indirect
 	github.com/docker/go v1.5.1-1.0.20160303222718-d30aec9fd63c // indirect
@@ -119,7 +120,7 @@ require (
 	github.com/ettle/strcase v0.1.1 // indirect
 	github.com/fatih/color v1.15.0 // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
-	github.com/fvbommel/sortorder v1.0.1 // indirect
+	github.com/fvbommel/sortorder v1.1.0 // indirect
 	github.com/gedex/inflector v0.0.0-20170307190818-16278e9db813 // indirect
 	github.com/go-git/gcfg v1.5.1-0.20230307220236-3a3c6141e376 // indirect
 	github.com/go-git/go-billy/v5 v5.5.0 // indirect
@@ -215,6 +216,7 @@ require (
 	github.com/mitchellh/reflectwalk v1.0.2 // indirect
 	github.com/moby/locker v1.0.1 // indirect
 	github.com/moby/spdystream v0.2.0 // indirect
+	github.com/moby/sys/mountinfo v0.7.1 // indirect
 	github.com/moby/sys/sequential v0.5.0 // indirect
 	github.com/moby/sys/signal v0.7.0 // indirect
 	github.com/moby/sys/symlink v0.2.0 // indirect
@@ -229,7 +231,6 @@ require (
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
 	github.com/natefinch/atomic v1.0.1 // indirect
 	github.com/oklog/run v1.1.0 // indirect
-	github.com/opencontainers/image-spec v1.1.0-rc5 // indirect
 	github.com/opentracing/basictracer-go v1.1.0 // indirect
 	github.com/opentracing/opentracing-go v1.2.0 // indirect
 	github.com/pelletier/go-toml v1.9.5 // indirect
@@ -329,6 +330,7 @@ require (
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	k8s.io/api v0.26.7 // indirect
 	k8s.io/apimachinery v0.26.7 // indirect
+	k8s.io/apiserver v0.26.7 // indirect
 	k8s.io/client-go v0.26.7 // indirect
 	k8s.io/klog/v2 v2.90.1 // indirect
 	k8s.io/kube-openapi v0.0.0-20221012153701-172d655c2280 // indirect

@@ -9,8 +9,11 @@ import com.pulumi.core.annotations.ResourceType;
 import com.pulumi.core.internal.Codegen;
 import com.pulumi.docker.Utilities;
 import com.pulumi.docker.buildx.ImageArgs;
+import com.pulumi.docker.buildx.outputs.Manifest;
+import java.lang.Boolean;
 import java.lang.String;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Nullable;
 
@@ -21,22 +24,84 @@ import javax.annotation.Nullable;
 @ResourceType(type="docker:buildx/image:Image")
 public class Image extends com.pulumi.resources.CustomResource {
     /**
-     * Contexts to use while building the image. If omitted, an empty context
-     * is used. If more than one value is specified, they should be of the
-     * form &#34;name=value&#34;.
+     * An optional map of named build-time argument variables to set during
+     * the Docker build. This flag allows you to pass build-time variables that
+     * can be accessed like environment variables inside the RUN
+     * instruction.
      * 
      */
-    @Export(name="context", refs={List.class,String.class}, tree="[0,1]")
-    private Output</* @Nullable */ List<String>> context;
+    @Export(name="buildArgs", refs={Map.class,String.class}, tree="[0,1,1]")
+    private Output</* @Nullable */ Map<String,String>> buildArgs;
 
     /**
      * @return
-     * Contexts to use while building the image. If omitted, an empty context
-     * is used. If more than one value is specified, they should be of the
-     * form &#34;name=value&#34;.
+     * An optional map of named build-time argument variables to set during
+     * the Docker build. This flag allows you to pass build-time variables that
+     * can be accessed like environment variables inside the RUN
+     * instruction.
      * 
      */
-    public Output<Optional<List<String>>> context() {
+    public Output<Optional<Map<String,String>>> buildArgs() {
+        return Codegen.optional(this.buildArgs);
+    }
+    /**
+     * Build with a specific builder instance
+     * 
+     */
+    @Export(name="builder", refs={String.class}, tree="[0]")
+    private Output</* @Nullable */ String> builder;
+
+    /**
+     * @return
+     * Build with a specific builder instance
+     * 
+     */
+    public Output<Optional<String>> builder_() {
+        return Codegen.optional(this.builder);
+    }
+    /**
+     * External cache sources (e.g., &#34;user/app:cache&#34;, &#34;type=local,src=path/to/dir&#34;)
+     * 
+     */
+    @Export(name="cacheFrom", refs={List.class,String.class}, tree="[0,1]")
+    private Output</* @Nullable */ List<String>> cacheFrom;
+
+    /**
+     * @return
+     * External cache sources (e.g., &#34;user/app:cache&#34;, &#34;type=local,src=path/to/dir&#34;)
+     * 
+     */
+    public Output<Optional<List<String>>> cacheFrom() {
+        return Codegen.optional(this.cacheFrom);
+    }
+    /**
+     * Cache export destinations (e.g., &#34;user/app:cache&#34;, &#34;type=local,dest=path/to/dir&#34;)
+     * 
+     */
+    @Export(name="cacheTo", refs={List.class,String.class}, tree="[0,1]")
+    private Output</* @Nullable */ List<String>> cacheTo;
+
+    /**
+     * @return
+     * Cache export destinations (e.g., &#34;user/app:cache&#34;, &#34;type=local,dest=path/to/dir&#34;)
+     * 
+     */
+    public Output<Optional<List<String>>> cacheTo() {
+        return Codegen.optional(this.cacheTo);
+    }
+    /**
+     * Path to use for build context. If omitted, an empty context is used.
+     * 
+     */
+    @Export(name="context", refs={String.class}, tree="[0]")
+    private Output</* @Nullable */ String> context;
+
+    /**
+     * @return
+     * Path to use for build context. If omitted, an empty context is used.
+     * 
+     */
+    public Output<Optional<String>> context() {
         return Codegen.optional(this.context);
     }
     /**
@@ -57,7 +122,7 @@ public class Image extends com.pulumi.resources.CustomResource {
         return Codegen.optional(this.exports);
     }
     /**
-     * Name of the Dockerfile to use (default: &#34;$PATH/Dockerfile&#34;).
+     * Name of the Dockerfile to use (defaults to &#34;${context}/Dockerfile&#34;).
      * 
      */
     @Export(name="file", refs={String.class}, tree="[0]")
@@ -65,11 +130,51 @@ public class Image extends com.pulumi.resources.CustomResource {
 
     /**
      * @return
-     * Name of the Dockerfile to use (default: &#34;$PATH/Dockerfile&#34;).
+     * Name of the Dockerfile to use (defaults to &#34;${context}/Dockerfile&#34;).
      * 
      */
     public Output<Optional<String>> file() {
         return Codegen.optional(this.file);
+    }
+    @Export(name="manifests", refs={List.class,Manifest.class}, tree="[0,1]")
+    private Output<List<Manifest>> manifests;
+
+    public Output<List<Manifest>> manifests() {
+        return this.manifests;
+    }
+    /**
+     * Set target platforms for the build. Defaults to the host&#39;s platform.
+     * 
+     * Equivalent to Docker&#39;s &#34;--platform&#34; flag.
+     * 
+     */
+    @Export(name="platforms", refs={List.class,String.class}, tree="[0,1]")
+    private Output</* @Nullable */ List<String>> platforms;
+
+    /**
+     * @return
+     * Set target platforms for the build. Defaults to the host&#39;s platform.
+     * 
+     * Equivalent to Docker&#39;s &#34;--platform&#34; flag.
+     * 
+     */
+    public Output<Optional<List<String>>> platforms() {
+        return Codegen.optional(this.platforms);
+    }
+    /**
+     * Always attempt to pull referenced images.
+     * 
+     */
+    @Export(name="pull", refs={Boolean.class}, tree="[0]")
+    private Output</* @Nullable */ Boolean> pull;
+
+    /**
+     * @return
+     * Always attempt to pull referenced images.
+     * 
+     */
+    public Output<Optional<Boolean>> pull() {
+        return Codegen.optional(this.pull);
     }
     /**
      * Name and optionally a tag (format: &#34;name:tag&#34;). If outputting to a

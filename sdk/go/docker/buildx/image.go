@@ -16,15 +16,31 @@ import (
 type Image struct {
 	pulumi.CustomResourceState
 
-	// Contexts to use while building the image. If omitted, an empty context
-	// is used. If more than one value is specified, they should be of the
-	// form "name=value".
-	Context pulumi.StringArrayOutput `pulumi:"context"`
+	// An optional map of named build-time argument variables to set during
+	// the Docker build. This flag allows you to pass build-time variables that
+	// can be accessed like environment variables inside the RUN
+	// instruction.
+	BuildArgs pulumi.StringMapOutput `pulumi:"buildArgs"`
+	// Build with a specific builder instance
+	Builder pulumi.StringPtrOutput `pulumi:"builder"`
+	// External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
+	CacheFrom pulumi.StringArrayOutput `pulumi:"cacheFrom"`
+	// Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
+	CacheTo pulumi.StringArrayOutput `pulumi:"cacheTo"`
+	// Path to use for build context. If omitted, an empty context is used.
+	Context pulumi.StringPtrOutput `pulumi:"context"`
 	// Name and optionally a tag (format: "name:tag"). If outputting to a
 	// registry, the name should include the fully qualified registry address.
 	Exports pulumi.StringArrayOutput `pulumi:"exports"`
-	// Name of the Dockerfile to use (default: "$PATH/Dockerfile").
-	File pulumi.StringPtrOutput `pulumi:"file"`
+	// Name of the Dockerfile to use (defaults to "${context}/Dockerfile").
+	File      pulumi.StringPtrOutput `pulumi:"file"`
+	Manifests ManifestArrayOutput    `pulumi:"manifests"`
+	// Set target platforms for the build. Defaults to the host's platform.
+	//
+	// Equivalent to Docker's "--platform" flag.
+	Platforms pulumi.StringArrayOutput `pulumi:"platforms"`
+	// Always attempt to pull referenced images.
+	Pull pulumi.BoolPtrOutput `pulumi:"pull"`
 	// Name and optionally a tag (format: "name:tag"). If outputting to a
 	// registry, the name should include the fully qualified registry address.
 	Tags pulumi.StringArrayOutput `pulumi:"tags"`
@@ -76,15 +92,30 @@ func (ImageState) ElementType() reflect.Type {
 }
 
 type imageArgs struct {
-	// Contexts to use while building the image. If omitted, an empty context
-	// is used. If more than one value is specified, they should be of the
-	// form "name=value".
-	Context []string `pulumi:"context"`
+	// An optional map of named build-time argument variables to set during
+	// the Docker build. This flag allows you to pass build-time variables that
+	// can be accessed like environment variables inside the RUN
+	// instruction.
+	BuildArgs map[string]string `pulumi:"buildArgs"`
+	// Build with a specific builder instance
+	Builder *string `pulumi:"builder"`
+	// External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
+	CacheFrom []string `pulumi:"cacheFrom"`
+	// Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
+	CacheTo []string `pulumi:"cacheTo"`
+	// Path to use for build context. If omitted, an empty context is used.
+	Context *string `pulumi:"context"`
 	// Name and optionally a tag (format: "name:tag"). If outputting to a
 	// registry, the name should include the fully qualified registry address.
 	Exports []string `pulumi:"exports"`
-	// Name of the Dockerfile to use (default: "$PATH/Dockerfile").
+	// Name of the Dockerfile to use (defaults to "${context}/Dockerfile").
 	File *string `pulumi:"file"`
+	// Set target platforms for the build. Defaults to the host's platform.
+	//
+	// Equivalent to Docker's "--platform" flag.
+	Platforms []string `pulumi:"platforms"`
+	// Always attempt to pull referenced images.
+	Pull *bool `pulumi:"pull"`
 	// Name and optionally a tag (format: "name:tag"). If outputting to a
 	// registry, the name should include the fully qualified registry address.
 	Tags []string `pulumi:"tags"`
@@ -92,15 +123,30 @@ type imageArgs struct {
 
 // The set of arguments for constructing a Image resource.
 type ImageArgs struct {
-	// Contexts to use while building the image. If omitted, an empty context
-	// is used. If more than one value is specified, they should be of the
-	// form "name=value".
-	Context pulumi.StringArrayInput
+	// An optional map of named build-time argument variables to set during
+	// the Docker build. This flag allows you to pass build-time variables that
+	// can be accessed like environment variables inside the RUN
+	// instruction.
+	BuildArgs pulumi.StringMapInput
+	// Build with a specific builder instance
+	Builder pulumi.StringPtrInput
+	// External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
+	CacheFrom pulumi.StringArrayInput
+	// Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
+	CacheTo pulumi.StringArrayInput
+	// Path to use for build context. If omitted, an empty context is used.
+	Context pulumi.StringPtrInput
 	// Name and optionally a tag (format: "name:tag"). If outputting to a
 	// registry, the name should include the fully qualified registry address.
 	Exports pulumi.StringArrayInput
-	// Name of the Dockerfile to use (default: "$PATH/Dockerfile").
+	// Name of the Dockerfile to use (defaults to "${context}/Dockerfile").
 	File pulumi.StringPtrInput
+	// Set target platforms for the build. Defaults to the host's platform.
+	//
+	// Equivalent to Docker's "--platform" flag.
+	Platforms pulumi.StringArrayInput
+	// Always attempt to pull referenced images.
+	Pull pulumi.BoolPtrInput
 	// Name and optionally a tag (format: "name:tag"). If outputting to a
 	// registry, the name should include the fully qualified registry address.
 	Tags pulumi.StringArrayInput
@@ -193,11 +239,32 @@ func (o ImageOutput) ToImageOutputWithContext(ctx context.Context) ImageOutput {
 	return o
 }
 
-// Contexts to use while building the image. If omitted, an empty context
-// is used. If more than one value is specified, they should be of the
-// form "name=value".
-func (o ImageOutput) Context() pulumi.StringArrayOutput {
-	return o.ApplyT(func(v *Image) pulumi.StringArrayOutput { return v.Context }).(pulumi.StringArrayOutput)
+// An optional map of named build-time argument variables to set during
+// the Docker build. This flag allows you to pass build-time variables that
+// can be accessed like environment variables inside the RUN
+// instruction.
+func (o ImageOutput) BuildArgs() pulumi.StringMapOutput {
+	return o.ApplyT(func(v *Image) pulumi.StringMapOutput { return v.BuildArgs }).(pulumi.StringMapOutput)
+}
+
+// Build with a specific builder instance
+func (o ImageOutput) Builder() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *Image) pulumi.StringPtrOutput { return v.Builder }).(pulumi.StringPtrOutput)
+}
+
+// External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")
+func (o ImageOutput) CacheFrom() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v *Image) pulumi.StringArrayOutput { return v.CacheFrom }).(pulumi.StringArrayOutput)
+}
+
+// Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")
+func (o ImageOutput) CacheTo() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v *Image) pulumi.StringArrayOutput { return v.CacheTo }).(pulumi.StringArrayOutput)
+}
+
+// Path to use for build context. If omitted, an empty context is used.
+func (o ImageOutput) Context() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *Image) pulumi.StringPtrOutput { return v.Context }).(pulumi.StringPtrOutput)
 }
 
 // Name and optionally a tag (format: "name:tag"). If outputting to a
@@ -206,9 +273,25 @@ func (o ImageOutput) Exports() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v *Image) pulumi.StringArrayOutput { return v.Exports }).(pulumi.StringArrayOutput)
 }
 
-// Name of the Dockerfile to use (default: "$PATH/Dockerfile").
+// Name of the Dockerfile to use (defaults to "${context}/Dockerfile").
 func (o ImageOutput) File() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Image) pulumi.StringPtrOutput { return v.File }).(pulumi.StringPtrOutput)
+}
+
+func (o ImageOutput) Manifests() ManifestArrayOutput {
+	return o.ApplyT(func(v *Image) ManifestArrayOutput { return v.Manifests }).(ManifestArrayOutput)
+}
+
+// Set target platforms for the build. Defaults to the host's platform.
+//
+// Equivalent to Docker's "--platform" flag.
+func (o ImageOutput) Platforms() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v *Image) pulumi.StringArrayOutput { return v.Platforms }).(pulumi.StringArrayOutput)
+}
+
+// Always attempt to pull referenced images.
+func (o ImageOutput) Pull() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *Image) pulumi.BoolPtrOutput { return v.Pull }).(pulumi.BoolPtrOutput)
 }
 
 // Name and optionally a tag (format: "name:tag"). If outputting to a

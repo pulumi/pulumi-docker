@@ -98,6 +98,45 @@
         ]
     },
     "types": {
+        "docker:buildx/image:Manifest": {
+            "properties": {
+                "digest": {
+                    "type": "string"
+                },
+                "platform": {
+                    "$ref": "#/types/docker:buildx/image:Platform"
+                },
+                "ref": {
+                    "type": "string",
+                    "description": "The manifest's ref"
+                },
+                "size": {
+                    "type": "integer"
+                }
+            },
+            "type": "object",
+            "required": [
+                "digest",
+                "platform",
+                "ref",
+                "size"
+            ]
+        },
+        "docker:buildx/image:Platform": {
+            "properties": {
+                "architecture": {
+                    "type": "string"
+                },
+                "os": {
+                    "type": "string"
+                }
+            },
+            "type": "object",
+            "required": [
+                "os",
+                "architecture"
+            ]
+        },
         "docker:config/registryAuth:registryAuth": {
             "properties": {
                 "address": {
@@ -2072,12 +2111,34 @@
         "docker:buildx/image:Image": {
             "description": "A Docker image built using Buildkit",
             "properties": {
-                "context": {
+                "buildArgs": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "\nAn optional map of named build-time argument variables to set during\nthe Docker build. This flag allows you to pass build-time variables that\ncan be accessed like environment variables inside the RUN\ninstruction."
+                },
+                "builder": {
+                    "type": "string",
+                    "description": "\nBuild with a specific builder instance"
+                },
+                "cacheFrom": {
                     "type": "array",
                     "items": {
                         "type": "string"
                     },
-                    "description": "\nContexts to use while building the image. If omitted, an empty context\nis used. If more than one value is specified, they should be of the\nform \"name=value\"."
+                    "description": "\nExternal cache sources (e.g., \"user/app:cache\", \"type=local,src=path/to/dir\")"
+                },
+                "cacheTo": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "\nCache export destinations (e.g., \"user/app:cache\", \"type=local,dest=path/to/dir\")"
+                },
+                "context": {
+                    "type": "string",
+                    "description": "\nPath to use for build context. If omitted, an empty context is used."
                 },
                 "exports": {
                     "type": "array",
@@ -2088,8 +2149,25 @@
                 },
                 "file": {
                     "type": "string",
-                    "description": "\nName of the Dockerfile to use (default: \"$PATH/Dockerfile\").",
+                    "description": "\nName of the Dockerfile to use (defaults to \"${context}/Dockerfile\").",
                     "default": "Dockerfile"
+                },
+                "manifests": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/docker:buildx/image:Manifest"
+                    }
+                },
+                "platforms": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "\nSet target platforms for the build. Defaults to the host's platform.\n\nEquivalent to Docker's \"--platform\" flag."
+                },
+                "pull": {
+                    "type": "boolean",
+                    "description": "\nAlways attempt to pull referenced images."
                 },
                 "tags": {
                     "type": "array",
@@ -2100,15 +2178,38 @@
                 }
             },
             "required": [
-                "tags"
+                "tags",
+                "manifests"
             ],
             "inputProperties": {
-                "context": {
+                "buildArgs": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "\nAn optional map of named build-time argument variables to set during\nthe Docker build. This flag allows you to pass build-time variables that\ncan be accessed like environment variables inside the RUN\ninstruction."
+                },
+                "builder": {
+                    "type": "string",
+                    "description": "\nBuild with a specific builder instance"
+                },
+                "cacheFrom": {
                     "type": "array",
                     "items": {
                         "type": "string"
                     },
-                    "description": "\nContexts to use while building the image. If omitted, an empty context\nis used. If more than one value is specified, they should be of the\nform \"name=value\"."
+                    "description": "\nExternal cache sources (e.g., \"user/app:cache\", \"type=local,src=path/to/dir\")"
+                },
+                "cacheTo": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "\nCache export destinations (e.g., \"user/app:cache\", \"type=local,dest=path/to/dir\")"
+                },
+                "context": {
+                    "type": "string",
+                    "description": "\nPath to use for build context. If omitted, an empty context is used."
                 },
                 "exports": {
                     "type": "array",
@@ -2119,8 +2220,19 @@
                 },
                 "file": {
                     "type": "string",
-                    "description": "\nName of the Dockerfile to use (default: \"$PATH/Dockerfile\").",
+                    "description": "\nName of the Dockerfile to use (defaults to \"${context}/Dockerfile\").",
                     "default": "Dockerfile"
+                },
+                "platforms": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "\nSet target platforms for the build. Defaults to the host's platform.\n\nEquivalent to Docker's \"--platform\" flag."
+                },
+                "pull": {
+                    "type": "boolean",
+                    "description": "\nAlways attempt to pull referenced images."
                 },
                 "tags": {
                     "type": "array",

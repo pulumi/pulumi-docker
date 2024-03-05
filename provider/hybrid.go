@@ -52,7 +52,7 @@ func (dp dockerHybridProvider) Attach(ctx context.Context, attach *rpc.PluginAtt
 	if err != nil {
 		return nil, fmt.Errorf("attaching buildx provider; %w", err)
 	}
-	return nil, err
+	return &emptypb.Empty{}, err
 }
 
 func (dp dockerHybridProvider) Call(context.Context, *rpc.CallRequest) (*rpc.CallResponse, error) {
@@ -87,9 +87,8 @@ func (dp dockerHybridProvider) Configure(
 	request *rpc.ConfigureRequest,
 ) (*rpc.ConfigureResponse, error) {
 	providers := map[string]rpc.ResourceProviderServer{
-		"bridged": dp.bridgedProvider,
-		"native":  dp.nativeProvider,
-		"buildx":  dp.buildxProvider,
+		"native": dp.nativeProvider,
+		"buildx": dp.buildxProvider,
 	}
 
 	for pname, p := range providers {
@@ -120,7 +119,7 @@ func (dp dockerHybridProvider) Configure(
 	}
 
 	resp.SupportsPreview = true
-	return resp, err
+	return resp, nil
 }
 
 func (dp dockerHybridProvider) Invoke(ctx context.Context, request *rpc.InvokeRequest) (*rpc.InvokeResponse, error) {
