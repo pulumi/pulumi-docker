@@ -13,45 +13,125 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class CacheFromS3 {
+    /**
+     * @return Defaults to `$AWS_ACCESS_KEY_ID`.
+     * 
+     */
     private @Nullable String accessKeyId;
+    /**
+     * @return Prefix to prepend to blob filenames.
+     * 
+     */
     private @Nullable String blobsPrefix;
+    /**
+     * @return Name of the S3 bucket.
+     * 
+     */
     private String bucket;
+    /**
+     * @return Endpoint of the S3 bucket.
+     * 
+     */
     private @Nullable String endpointUrl;
+    /**
+     * @return Prefix to prepend on manifest filenames.
+     * 
+     */
     private @Nullable String manifestsPrefix;
+    /**
+     * @return Name of the cache image.
+     * 
+     */
     private @Nullable String name;
+    /**
+     * @return The geographic location of the bucket. Defaults to `$AWS_REGION`.
+     * 
+     */
     private String region;
+    /**
+     * @return Defaults to `$AWS_SECRET_ACCESS_KEY`.
+     * 
+     */
     private @Nullable String secretAccessKey;
+    /**
+     * @return Defaults to `$AWS_SESSION_TOKEN`.
+     * 
+     */
     private @Nullable String sessionToken;
+    /**
+     * @return Uses `bucket` in the URL instead of hostname when `true`.
+     * 
+     */
     private @Nullable Boolean usePathStyle;
 
     private CacheFromS3() {}
+    /**
+     * @return Defaults to `$AWS_ACCESS_KEY_ID`.
+     * 
+     */
     public Optional<String> accessKeyId() {
         return Optional.ofNullable(this.accessKeyId);
     }
+    /**
+     * @return Prefix to prepend to blob filenames.
+     * 
+     */
     public Optional<String> blobsPrefix() {
         return Optional.ofNullable(this.blobsPrefix);
     }
+    /**
+     * @return Name of the S3 bucket.
+     * 
+     */
     public String bucket() {
         return this.bucket;
     }
+    /**
+     * @return Endpoint of the S3 bucket.
+     * 
+     */
     public Optional<String> endpointUrl() {
         return Optional.ofNullable(this.endpointUrl);
     }
+    /**
+     * @return Prefix to prepend on manifest filenames.
+     * 
+     */
     public Optional<String> manifestsPrefix() {
         return Optional.ofNullable(this.manifestsPrefix);
     }
+    /**
+     * @return Name of the cache image.
+     * 
+     */
     public Optional<String> name() {
         return Optional.ofNullable(this.name);
     }
+    /**
+     * @return The geographic location of the bucket. Defaults to `$AWS_REGION`.
+     * 
+     */
     public String region() {
         return this.region;
     }
+    /**
+     * @return Defaults to `$AWS_SECRET_ACCESS_KEY`.
+     * 
+     */
     public Optional<String> secretAccessKey() {
         return Optional.ofNullable(this.secretAccessKey);
     }
+    /**
+     * @return Defaults to `$AWS_SESSION_TOKEN`.
+     * 
+     */
     public Optional<String> sessionToken() {
         return Optional.ofNullable(this.sessionToken);
     }
+    /**
+     * @return Uses `bucket` in the URL instead of hostname when `true`.
+     * 
+     */
     public Optional<Boolean> usePathStyle() {
         return Optional.ofNullable(this.usePathStyle);
     }

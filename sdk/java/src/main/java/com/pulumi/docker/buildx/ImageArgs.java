@@ -5,10 +5,12 @@ package com.pulumi.docker.buildx;
 
 import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
-import com.pulumi.core.internal.Codegen;
 import com.pulumi.docker.buildx.enums.Platform;
+import com.pulumi.docker.buildx.inputs.BuildContextArgs;
+import com.pulumi.docker.buildx.inputs.BuilderConfigArgs;
 import com.pulumi.docker.buildx.inputs.CacheFromEntryArgs;
 import com.pulumi.docker.buildx.inputs.CacheToEntryArgs;
+import com.pulumi.docker.buildx.inputs.DockerfileArgs;
 import com.pulumi.docker.buildx.inputs.ExportEntryArgs;
 import com.pulumi.docker.buildx.inputs.RegistryAuthArgs;
 import java.lang.Boolean;
@@ -25,21 +27,30 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
     public static final ImageArgs Empty = new ImageArgs();
 
     /**
-     * An optional map of named build-time argument variables to set during
-     * the Docker build. This flag allows you to pass build-time variables that
-     * can be accessed like environment variables inside the RUN
-     * instruction.
+     * `ARG` names and values to set during the build.
+     * 
+     * These variables are accessed like environment variables inside `RUN`
+     * instructions.
+     * 
+     * Build arguments are persisted in the image, so you should use `secrets`
+     * if these arguments are sensitive.
+     * 
+     * Equivalent to Docker&#39;s `--build-arg` flag.
      * 
      */
     @Import(name="buildArgs")
     private @Nullable Output<Map<String,String>> buildArgs;
 
     /**
-     * @return
-     * An optional map of named build-time argument variables to set during
-     * the Docker build. This flag allows you to pass build-time variables that
-     * can be accessed like environment variables inside the RUN
-     * instruction.
+     * @return `ARG` names and values to set during the build.
+     * 
+     * These variables are accessed like environment variables inside `RUN`
+     * instructions.
+     * 
+     * Build arguments are persisted in the image, so you should use `secrets`
+     * if these arguments are sensitive.
+     * 
+     * Equivalent to Docker&#39;s `--build-arg` flag.
      * 
      */
     public Optional<Output<Map<String,String>>> buildArgs() {
@@ -47,17 +58,16 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * When true, attempt to build the image during previews. Outputs are not
-     * pushed to registries, however caches are still populated.
+     * When `true`, attempt to build the image during previews. The image will
+     * not be pushed to registries, however caches will still be populated.
      * 
      */
     @Import(name="buildOnPreview")
     private @Nullable Output<Boolean> buildOnPreview;
 
     /**
-     * @return
-     * When true, attempt to build the image during previews. Outputs are not
-     * pushed to registries, however caches are still populated.
+     * @return When `true`, attempt to build the image during previews. The image will
+     * not be pushed to registries, however caches will still be populated.
      * 
      */
     public Optional<Output<Boolean>> buildOnPreview() {
@@ -65,31 +75,33 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * Build with a specific builder instance
+     * Builder configuration.
      * 
      */
     @Import(name="builder")
-    private @Nullable Output<String> builder;
+    private @Nullable Output<BuilderConfigArgs> builder;
 
     /**
-     * @return
-     * Build with a specific builder instance
+     * @return Builder configuration.
      * 
      */
-    public Optional<Output<String>> builder_() {
+    public Optional<Output<BuilderConfigArgs>> builder_() {
         return Optional.ofNullable(this.builder);
     }
 
     /**
-     * External cache sources (e.g., &#34;user/app:cache&#34;, &#34;type=local,src=path/to/dir&#34;)
+     * Cache export configuration.
+     * 
+     * Equivalent to Docker&#39;s `--cache-from` flag.
      * 
      */
     @Import(name="cacheFrom")
     private @Nullable Output<List<CacheFromEntryArgs>> cacheFrom;
 
     /**
-     * @return
-     * External cache sources (e.g., &#34;user/app:cache&#34;, &#34;type=local,src=path/to/dir&#34;)
+     * @return Cache export configuration.
+     * 
+     * Equivalent to Docker&#39;s `--cache-from` flag.
      * 
      */
     public Optional<Output<List<CacheFromEntryArgs>>> cacheFrom() {
@@ -97,15 +109,18 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * Cache export destinations (e.g., &#34;user/app:cache&#34;, &#34;type=local,dest=path/to/dir&#34;)
+     * Cache import configuration.
+     * 
+     * Equivalent to Docker&#39;s `--cache-to` flag.
      * 
      */
     @Import(name="cacheTo")
     private @Nullable Output<List<CacheToEntryArgs>> cacheTo;
 
     /**
-     * @return
-     * Cache export destinations (e.g., &#34;user/app:cache&#34;, &#34;type=local,dest=path/to/dir&#34;)
+     * @return Cache import configuration.
+     * 
+     * Equivalent to Docker&#39;s `--cache-to` flag.
      * 
      */
     public Optional<Output<List<CacheToEntryArgs>>> cacheTo() {
@@ -113,33 +128,62 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * Path to use for build context. If omitted, an empty context is used.
+     * Build context settings.
+     * 
+     * Equivalent to Docker&#39;s `PATH | URL | -` positional argument.
      * 
      */
     @Import(name="context")
-    private @Nullable Output<String> context;
+    private @Nullable Output<BuildContextArgs> context;
 
     /**
-     * @return
-     * Path to use for build context. If omitted, an empty context is used.
+     * @return Build context settings.
+     * 
+     * Equivalent to Docker&#39;s `PATH | URL | -` positional argument.
      * 
      */
-    public Optional<Output<String>> context() {
+    public Optional<Output<BuildContextArgs>> context() {
         return Optional.ofNullable(this.context);
     }
 
     /**
-     * Name and optionally a tag (format: &#34;name:tag&#34;). If outputting to a
-     * registry, the name should include the fully qualified registry address.
+     * Dockerfile settings.
+     * 
+     * Equivalent to Docker&#39;s `--file` flag.
+     * 
+     */
+    @Import(name="dockerfile")
+    private @Nullable Output<DockerfileArgs> dockerfile;
+
+    /**
+     * @return Dockerfile settings.
+     * 
+     * Equivalent to Docker&#39;s `--file` flag.
+     * 
+     */
+    public Optional<Output<DockerfileArgs>> dockerfile() {
+        return Optional.ofNullable(this.dockerfile);
+    }
+
+    /**
+     * Controls where images are persisted after building.
+     * 
+     * Images are only stored in the local cache unless `exports` are
+     * explicitly configured.
+     * 
+     * Equivalent to Docker&#39;s `--output` flag.
      * 
      */
     @Import(name="exports")
     private @Nullable Output<List<ExportEntryArgs>> exports;
 
     /**
-     * @return
-     * Name and optionally a tag (format: &#34;name:tag&#34;). If outputting to a
-     * registry, the name should include the fully qualified registry address.
+     * @return Controls where images are persisted after building.
+     * 
+     * Images are only stored in the local cache unless `exports` are
+     * explicitly configured.
+     * 
+     * Equivalent to Docker&#39;s `--output` flag.
      * 
      */
     public Optional<Output<List<ExportEntryArgs>>> exports() {
@@ -147,35 +191,37 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * Name of the Dockerfile to use (defaults to &#34;${context}/Dockerfile&#34;).
+     * Attach arbitrary key/value metadata to the image.
+     * 
+     * Equivalent to Docker&#39;s `--label` flag.
      * 
      */
-    @Import(name="file")
-    private @Nullable Output<String> file;
+    @Import(name="labels")
+    private @Nullable Output<Map<String,String>> labels;
 
     /**
-     * @return
-     * Name of the Dockerfile to use (defaults to &#34;${context}/Dockerfile&#34;).
+     * @return Attach arbitrary key/value metadata to the image.
+     * 
+     * Equivalent to Docker&#39;s `--label` flag.
      * 
      */
-    public Optional<Output<String>> file() {
-        return Optional.ofNullable(this.file);
+    public Optional<Output<Map<String,String>>> labels() {
+        return Optional.ofNullable(this.labels);
     }
 
     /**
-     * Set target platforms for the build. Defaults to the host&#39;s platform.
+     * Set target platform(s) for the build. Defaults to the host&#39;s platform.
      * 
-     * Equivalent to Docker&#39;s &#34;--platform&#34; flag.
+     * Equivalent to Docker&#39;s `--platform` flag.
      * 
      */
     @Import(name="platforms")
     private @Nullable Output<List<Platform>> platforms;
 
     /**
-     * @return
-     * Set target platforms for the build. Defaults to the host&#39;s platform.
+     * @return Set target platform(s) for the build. Defaults to the host&#39;s platform.
      * 
-     * Equivalent to Docker&#39;s &#34;--platform&#34; flag.
+     * Equivalent to Docker&#39;s `--platform` flag.
      * 
      */
     public Optional<Output<List<Platform>>> platforms() {
@@ -183,15 +229,18 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * Always attempt to pull referenced images.
+     * Always pull referenced images.
+     * 
+     * Equivalent to Docker&#39;s `--pull` flag.
      * 
      */
     @Import(name="pull")
     private @Nullable Output<Boolean> pull;
 
     /**
-     * @return
-     * Always attempt to pull referenced images.
+     * @return Always pull referenced images.
+     * 
+     * Equivalent to Docker&#39;s `--pull` flag.
      * 
      */
     public Optional<Output<Boolean>> pull() {
@@ -199,15 +248,26 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * Logins for registry outputs
+     * Registry credentials. Required if reading or exporting to private
+     * repositories.
+     * 
+     * Credentials are kept in-memory and do not pollute pre-existing
+     * credentials on the host.
+     * 
+     * Similar to `docker login`.
      * 
      */
     @Import(name="registries")
     private @Nullable Output<List<RegistryAuthArgs>> registries;
 
     /**
-     * @return
-     * Logins for registry outputs
+     * @return Registry credentials. Required if reading or exporting to private
+     * repositories.
+     * 
+     * Credentials are kept in-memory and do not pollute pre-existing
+     * credentials on the host.
+     * 
+     * Similar to `docker login`.
      * 
      */
     public Optional<Output<List<RegistryAuthArgs>>> registries() {
@@ -215,28 +275,82 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * Name and optionally a tag (format: &#34;name:tag&#34;). If outputting to a
-     * registry, the name should include the fully qualified registry address.
+     * A mapping of secret names to their corresponding values.
+     * 
+     * Unlike the Docker CLI, these can be passed by value and do not need to
+     * exist on-disk or in environment variables.
+     * 
+     * Build arguments and environment variables are persistent in the final
+     * image, so you should use this for sensitive values.
+     * 
+     * Similar to Docker&#39;s `--secret` flag.
+     * 
+     */
+    @Import(name="secrets")
+    private @Nullable Output<Map<String,String>> secrets;
+
+    /**
+     * @return A mapping of secret names to their corresponding values.
+     * 
+     * Unlike the Docker CLI, these can be passed by value and do not need to
+     * exist on-disk or in environment variables.
+     * 
+     * Build arguments and environment variables are persistent in the final
+     * image, so you should use this for sensitive values.
+     * 
+     * Similar to Docker&#39;s `--secret` flag.
+     * 
+     */
+    public Optional<Output<Map<String,String>>> secrets() {
+        return Optional.ofNullable(this.secrets);
+    }
+
+    /**
+     * Name and optionally a tag (format: `name:tag`).
+     * 
+     * If exporting to a registry, the name should include the fully qualified
+     * registry address (e.g. `docker.io/pulumi/pulumi:latest`).
+     * 
+     * Equivalent to Docker&#39;s `--tag` flag.
      * 
      */
     @Import(name="tags")
     private @Nullable Output<List<String>> tags;
 
     /**
-     * @return
-     * Name and optionally a tag (format: &#34;name:tag&#34;). If outputting to a
-     * registry, the name should include the fully qualified registry address.
+     * @return Name and optionally a tag (format: `name:tag`).
+     * 
+     * If exporting to a registry, the name should include the fully qualified
+     * registry address (e.g. `docker.io/pulumi/pulumi:latest`).
+     * 
+     * Equivalent to Docker&#39;s `--tag` flag.
      * 
      */
     public Optional<Output<List<String>>> tags() {
         return Optional.ofNullable(this.tags);
     }
 
-    @Import(name="target")
-    private @Nullable Output<String> target;
+    /**
+     * Set the target build stage(s) to build.
+     * 
+     * If not specified all targets will be built by default.
+     * 
+     * Equivalent to Docker&#39;s `--target` flag.
+     * 
+     */
+    @Import(name="targets")
+    private @Nullable Output<List<String>> targets;
 
-    public Optional<Output<String>> target() {
-        return Optional.ofNullable(this.target);
+    /**
+     * @return Set the target build stage(s) to build.
+     * 
+     * If not specified all targets will be built by default.
+     * 
+     * Equivalent to Docker&#39;s `--target` flag.
+     * 
+     */
+    public Optional<Output<List<String>>> targets() {
+        return Optional.ofNullable(this.targets);
     }
 
     private ImageArgs() {}
@@ -248,13 +362,15 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         this.cacheFrom = $.cacheFrom;
         this.cacheTo = $.cacheTo;
         this.context = $.context;
+        this.dockerfile = $.dockerfile;
         this.exports = $.exports;
-        this.file = $.file;
+        this.labels = $.labels;
         this.platforms = $.platforms;
         this.pull = $.pull;
         this.registries = $.registries;
+        this.secrets = $.secrets;
         this.tags = $.tags;
-        this.target = $.target;
+        this.targets = $.targets;
     }
 
     public static Builder builder() {
@@ -276,11 +392,15 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param buildArgs
-         * An optional map of named build-time argument variables to set during
-         * the Docker build. This flag allows you to pass build-time variables that
-         * can be accessed like environment variables inside the RUN
-         * instruction.
+         * @param buildArgs `ARG` names and values to set during the build.
+         * 
+         * These variables are accessed like environment variables inside `RUN`
+         * instructions.
+         * 
+         * Build arguments are persisted in the image, so you should use `secrets`
+         * if these arguments are sensitive.
+         * 
+         * Equivalent to Docker&#39;s `--build-arg` flag.
          * 
          * @return builder
          * 
@@ -291,11 +411,15 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param buildArgs
-         * An optional map of named build-time argument variables to set during
-         * the Docker build. This flag allows you to pass build-time variables that
-         * can be accessed like environment variables inside the RUN
-         * instruction.
+         * @param buildArgs `ARG` names and values to set during the build.
+         * 
+         * These variables are accessed like environment variables inside `RUN`
+         * instructions.
+         * 
+         * Build arguments are persisted in the image, so you should use `secrets`
+         * if these arguments are sensitive.
+         * 
+         * Equivalent to Docker&#39;s `--build-arg` flag.
          * 
          * @return builder
          * 
@@ -305,9 +429,8 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param buildOnPreview
-         * When true, attempt to build the image during previews. Outputs are not
-         * pushed to registries, however caches are still populated.
+         * @param buildOnPreview When `true`, attempt to build the image during previews. The image will
+         * not be pushed to registries, however caches will still be populated.
          * 
          * @return builder
          * 
@@ -318,9 +441,8 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param buildOnPreview
-         * When true, attempt to build the image during previews. Outputs are not
-         * pushed to registries, however caches are still populated.
+         * @param buildOnPreview When `true`, attempt to build the image during previews. The image will
+         * not be pushed to registries, however caches will still be populated.
          * 
          * @return builder
          * 
@@ -330,31 +452,30 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param builder
-         * Build with a specific builder instance
+         * @param builder Builder configuration.
          * 
          * @return builder
          * 
          */
-        public Builder builder_(@Nullable Output<String> builder) {
+        public Builder builder_(@Nullable Output<BuilderConfigArgs> builder) {
             $.builder = builder;
             return this;
         }
 
         /**
-         * @param builder
-         * Build with a specific builder instance
+         * @param builder Builder configuration.
          * 
          * @return builder
          * 
          */
-        public Builder builder_(String builder) {
+        public Builder builder_(BuilderConfigArgs builder) {
             return builder_(Output.of(builder));
         }
 
         /**
-         * @param cacheFrom
-         * External cache sources (e.g., &#34;user/app:cache&#34;, &#34;type=local,src=path/to/dir&#34;)
+         * @param cacheFrom Cache export configuration.
+         * 
+         * Equivalent to Docker&#39;s `--cache-from` flag.
          * 
          * @return builder
          * 
@@ -365,8 +486,9 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param cacheFrom
-         * External cache sources (e.g., &#34;user/app:cache&#34;, &#34;type=local,src=path/to/dir&#34;)
+         * @param cacheFrom Cache export configuration.
+         * 
+         * Equivalent to Docker&#39;s `--cache-from` flag.
          * 
          * @return builder
          * 
@@ -376,8 +498,9 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param cacheFrom
-         * External cache sources (e.g., &#34;user/app:cache&#34;, &#34;type=local,src=path/to/dir&#34;)
+         * @param cacheFrom Cache export configuration.
+         * 
+         * Equivalent to Docker&#39;s `--cache-from` flag.
          * 
          * @return builder
          * 
@@ -387,8 +510,9 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param cacheTo
-         * Cache export destinations (e.g., &#34;user/app:cache&#34;, &#34;type=local,dest=path/to/dir&#34;)
+         * @param cacheTo Cache import configuration.
+         * 
+         * Equivalent to Docker&#39;s `--cache-to` flag.
          * 
          * @return builder
          * 
@@ -399,8 +523,9 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param cacheTo
-         * Cache export destinations (e.g., &#34;user/app:cache&#34;, &#34;type=local,dest=path/to/dir&#34;)
+         * @param cacheTo Cache import configuration.
+         * 
+         * Equivalent to Docker&#39;s `--cache-to` flag.
          * 
          * @return builder
          * 
@@ -410,8 +535,9 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param cacheTo
-         * Cache export destinations (e.g., &#34;user/app:cache&#34;, &#34;type=local,dest=path/to/dir&#34;)
+         * @param cacheTo Cache import configuration.
+         * 
+         * Equivalent to Docker&#39;s `--cache-to` flag.
          * 
          * @return builder
          * 
@@ -421,32 +547,62 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param context
-         * Path to use for build context. If omitted, an empty context is used.
+         * @param context Build context settings.
+         * 
+         * Equivalent to Docker&#39;s `PATH | URL | -` positional argument.
          * 
          * @return builder
          * 
          */
-        public Builder context(@Nullable Output<String> context) {
+        public Builder context(@Nullable Output<BuildContextArgs> context) {
             $.context = context;
             return this;
         }
 
         /**
-         * @param context
-         * Path to use for build context. If omitted, an empty context is used.
+         * @param context Build context settings.
+         * 
+         * Equivalent to Docker&#39;s `PATH | URL | -` positional argument.
          * 
          * @return builder
          * 
          */
-        public Builder context(String context) {
+        public Builder context(BuildContextArgs context) {
             return context(Output.of(context));
         }
 
         /**
-         * @param exports
-         * Name and optionally a tag (format: &#34;name:tag&#34;). If outputting to a
-         * registry, the name should include the fully qualified registry address.
+         * @param dockerfile Dockerfile settings.
+         * 
+         * Equivalent to Docker&#39;s `--file` flag.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder dockerfile(@Nullable Output<DockerfileArgs> dockerfile) {
+            $.dockerfile = dockerfile;
+            return this;
+        }
+
+        /**
+         * @param dockerfile Dockerfile settings.
+         * 
+         * Equivalent to Docker&#39;s `--file` flag.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder dockerfile(DockerfileArgs dockerfile) {
+            return dockerfile(Output.of(dockerfile));
+        }
+
+        /**
+         * @param exports Controls where images are persisted after building.
+         * 
+         * Images are only stored in the local cache unless `exports` are
+         * explicitly configured.
+         * 
+         * Equivalent to Docker&#39;s `--output` flag.
          * 
          * @return builder
          * 
@@ -457,9 +613,12 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param exports
-         * Name and optionally a tag (format: &#34;name:tag&#34;). If outputting to a
-         * registry, the name should include the fully qualified registry address.
+         * @param exports Controls where images are persisted after building.
+         * 
+         * Images are only stored in the local cache unless `exports` are
+         * explicitly configured.
+         * 
+         * Equivalent to Docker&#39;s `--output` flag.
          * 
          * @return builder
          * 
@@ -469,9 +628,12 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param exports
-         * Name and optionally a tag (format: &#34;name:tag&#34;). If outputting to a
-         * registry, the name should include the fully qualified registry address.
+         * @param exports Controls where images are persisted after building.
+         * 
+         * Images are only stored in the local cache unless `exports` are
+         * explicitly configured.
+         * 
+         * Equivalent to Docker&#39;s `--output` flag.
          * 
          * @return builder
          * 
@@ -481,33 +643,34 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param file
-         * Name of the Dockerfile to use (defaults to &#34;${context}/Dockerfile&#34;).
+         * @param labels Attach arbitrary key/value metadata to the image.
+         * 
+         * Equivalent to Docker&#39;s `--label` flag.
          * 
          * @return builder
          * 
          */
-        public Builder file(@Nullable Output<String> file) {
-            $.file = file;
+        public Builder labels(@Nullable Output<Map<String,String>> labels) {
+            $.labels = labels;
             return this;
         }
 
         /**
-         * @param file
-         * Name of the Dockerfile to use (defaults to &#34;${context}/Dockerfile&#34;).
+         * @param labels Attach arbitrary key/value metadata to the image.
+         * 
+         * Equivalent to Docker&#39;s `--label` flag.
          * 
          * @return builder
          * 
          */
-        public Builder file(String file) {
-            return file(Output.of(file));
+        public Builder labels(Map<String,String> labels) {
+            return labels(Output.of(labels));
         }
 
         /**
-         * @param platforms
-         * Set target platforms for the build. Defaults to the host&#39;s platform.
+         * @param platforms Set target platform(s) for the build. Defaults to the host&#39;s platform.
          * 
-         * Equivalent to Docker&#39;s &#34;--platform&#34; flag.
+         * Equivalent to Docker&#39;s `--platform` flag.
          * 
          * @return builder
          * 
@@ -518,10 +681,9 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param platforms
-         * Set target platforms for the build. Defaults to the host&#39;s platform.
+         * @param platforms Set target platform(s) for the build. Defaults to the host&#39;s platform.
          * 
-         * Equivalent to Docker&#39;s &#34;--platform&#34; flag.
+         * Equivalent to Docker&#39;s `--platform` flag.
          * 
          * @return builder
          * 
@@ -531,10 +693,9 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param platforms
-         * Set target platforms for the build. Defaults to the host&#39;s platform.
+         * @param platforms Set target platform(s) for the build. Defaults to the host&#39;s platform.
          * 
-         * Equivalent to Docker&#39;s &#34;--platform&#34; flag.
+         * Equivalent to Docker&#39;s `--platform` flag.
          * 
          * @return builder
          * 
@@ -544,8 +705,9 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param pull
-         * Always attempt to pull referenced images.
+         * @param pull Always pull referenced images.
+         * 
+         * Equivalent to Docker&#39;s `--pull` flag.
          * 
          * @return builder
          * 
@@ -556,8 +718,9 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param pull
-         * Always attempt to pull referenced images.
+         * @param pull Always pull referenced images.
+         * 
+         * Equivalent to Docker&#39;s `--pull` flag.
          * 
          * @return builder
          * 
@@ -567,8 +730,13 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param registries
-         * Logins for registry outputs
+         * @param registries Registry credentials. Required if reading or exporting to private
+         * repositories.
+         * 
+         * Credentials are kept in-memory and do not pollute pre-existing
+         * credentials on the host.
+         * 
+         * Similar to `docker login`.
          * 
          * @return builder
          * 
@@ -579,8 +747,13 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param registries
-         * Logins for registry outputs
+         * @param registries Registry credentials. Required if reading or exporting to private
+         * repositories.
+         * 
+         * Credentials are kept in-memory and do not pollute pre-existing
+         * credentials on the host.
+         * 
+         * Similar to `docker login`.
          * 
          * @return builder
          * 
@@ -590,8 +763,13 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param registries
-         * Logins for registry outputs
+         * @param registries Registry credentials. Required if reading or exporting to private
+         * repositories.
+         * 
+         * Credentials are kept in-memory and do not pollute pre-existing
+         * credentials on the host.
+         * 
+         * Similar to `docker login`.
          * 
          * @return builder
          * 
@@ -601,9 +779,49 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param tags
-         * Name and optionally a tag (format: &#34;name:tag&#34;). If outputting to a
-         * registry, the name should include the fully qualified registry address.
+         * @param secrets A mapping of secret names to their corresponding values.
+         * 
+         * Unlike the Docker CLI, these can be passed by value and do not need to
+         * exist on-disk or in environment variables.
+         * 
+         * Build arguments and environment variables are persistent in the final
+         * image, so you should use this for sensitive values.
+         * 
+         * Similar to Docker&#39;s `--secret` flag.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder secrets(@Nullable Output<Map<String,String>> secrets) {
+            $.secrets = secrets;
+            return this;
+        }
+
+        /**
+         * @param secrets A mapping of secret names to their corresponding values.
+         * 
+         * Unlike the Docker CLI, these can be passed by value and do not need to
+         * exist on-disk or in environment variables.
+         * 
+         * Build arguments and environment variables are persistent in the final
+         * image, so you should use this for sensitive values.
+         * 
+         * Similar to Docker&#39;s `--secret` flag.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder secrets(Map<String,String> secrets) {
+            return secrets(Output.of(secrets));
+        }
+
+        /**
+         * @param tags Name and optionally a tag (format: `name:tag`).
+         * 
+         * If exporting to a registry, the name should include the fully qualified
+         * registry address (e.g. `docker.io/pulumi/pulumi:latest`).
+         * 
+         * Equivalent to Docker&#39;s `--tag` flag.
          * 
          * @return builder
          * 
@@ -614,9 +832,12 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param tags
-         * Name and optionally a tag (format: &#34;name:tag&#34;). If outputting to a
-         * registry, the name should include the fully qualified registry address.
+         * @param tags Name and optionally a tag (format: `name:tag`).
+         * 
+         * If exporting to a registry, the name should include the fully qualified
+         * registry address (e.g. `docker.io/pulumi/pulumi:latest`).
+         * 
+         * Equivalent to Docker&#39;s `--tag` flag.
          * 
          * @return builder
          * 
@@ -626,9 +847,12 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param tags
-         * Name and optionally a tag (format: &#34;name:tag&#34;). If outputting to a
-         * registry, the name should include the fully qualified registry address.
+         * @param tags Name and optionally a tag (format: `name:tag`).
+         * 
+         * If exporting to a registry, the name should include the fully qualified
+         * registry address (e.g. `docker.io/pulumi/pulumi:latest`).
+         * 
+         * Equivalent to Docker&#39;s `--tag` flag.
          * 
          * @return builder
          * 
@@ -637,17 +861,50 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
             return tags(List.of(tags));
         }
 
-        public Builder target(@Nullable Output<String> target) {
-            $.target = target;
+        /**
+         * @param targets Set the target build stage(s) to build.
+         * 
+         * If not specified all targets will be built by default.
+         * 
+         * Equivalent to Docker&#39;s `--target` flag.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder targets(@Nullable Output<List<String>> targets) {
+            $.targets = targets;
             return this;
         }
 
-        public Builder target(String target) {
-            return target(Output.of(target));
+        /**
+         * @param targets Set the target build stage(s) to build.
+         * 
+         * If not specified all targets will be built by default.
+         * 
+         * Equivalent to Docker&#39;s `--target` flag.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder targets(List<String> targets) {
+            return targets(Output.of(targets));
+        }
+
+        /**
+         * @param targets Set the target build stage(s) to build.
+         * 
+         * If not specified all targets will be built by default.
+         * 
+         * Equivalent to Docker&#39;s `--target` flag.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder targets(String... targets) {
+            return targets(List.of(targets));
         }
 
         public ImageArgs build() {
-            $.file = Codegen.stringProp("file").output().arg($.file).def("Dockerfile").getNullable();
             return $;
         }
     }

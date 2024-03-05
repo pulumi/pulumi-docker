@@ -29,23 +29,24 @@ export class Provider extends pulumi.ProviderResource {
     }
 
     /**
-     * PEM-encoded content of Docker host CA certificate
+     * PEM-encoded content of Docker host CA certificate.
      */
     public readonly caMaterial!: pulumi.Output<string | undefined>;
     /**
-     * PEM-encoded content of Docker client certificate
+     * PEM-encoded content of Docker client certificate.
      */
     public readonly certMaterial!: pulumi.Output<string | undefined>;
     /**
-     * Path to directory with Docker TLS config
+     * Path to a directory with Docker TLS config. This directory is expected to contain `ca.pem`, `cert.pem`, and `key.pem`
+     * files.
      */
     public readonly certPath!: pulumi.Output<string | undefined>;
     /**
-     * The Docker daemon address
+     * The Docker daemon's address.
      */
     public readonly host!: pulumi.Output<string | undefined>;
     /**
-     * PEM-encoded content of Docker client private key
+     * PEM-encoded content of Docker client private key.
      */
     public readonly keyMaterial!: pulumi.Output<string | undefined>;
 
@@ -78,28 +79,30 @@ export class Provider extends pulumi.ProviderResource {
  */
 export interface ProviderArgs {
     /**
-     * PEM-encoded content of Docker host CA certificate
+     * PEM-encoded content of Docker host CA certificate.
      */
     caMaterial?: pulumi.Input<string>;
     /**
-     * PEM-encoded content of Docker client certificate
+     * PEM-encoded content of Docker client certificate.
      */
     certMaterial?: pulumi.Input<string>;
     /**
-     * Path to directory with Docker TLS config
+     * Path to a directory with Docker TLS config. This directory is expected to contain `ca.pem`, `cert.pem`, and `key.pem`
+     * files.
      */
     certPath?: pulumi.Input<string>;
     /**
-     * The Docker daemon address
+     * The Docker daemon's address.
      */
     host?: pulumi.Input<string>;
     /**
-     * PEM-encoded content of Docker client private key
+     * PEM-encoded content of Docker client private key.
      */
     keyMaterial?: pulumi.Input<string>;
     registryAuth?: pulumi.Input<pulumi.Input<inputs.ProviderRegistryAuth>[]>;
     /**
-     * Additional SSH option flags to be appended when using `ssh://` protocol
+     * Additional SSH option flags to be appended when using `ssh://` protocol. The `ssh://` protocol is not supported for
+     * `buildx.Image` resources. Instead, use a [remote](https://docs.docker.com/build/drivers/remote/) driver.
      */
     sshOpts?: pulumi.Input<pulumi.Input<string>[]>;
 }

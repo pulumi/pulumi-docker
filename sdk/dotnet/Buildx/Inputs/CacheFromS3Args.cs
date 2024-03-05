@@ -12,29 +12,54 @@ namespace Pulumi.Docker.Buildx.Inputs
 
     public sealed class CacheFromS3Args : global::Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Defaults to `$AWS_ACCESS_KEY_ID`.
+        /// </summary>
         [Input("accessKeyId")]
         public Input<string>? AccessKeyId { get; set; }
 
+        /// <summary>
+        /// Prefix to prepend to blob filenames.
+        /// </summary>
         [Input("blobsPrefix")]
         public Input<string>? BlobsPrefix { get; set; }
 
+        /// <summary>
+        /// Name of the S3 bucket.
+        /// </summary>
         [Input("bucket", required: true)]
         public Input<string> Bucket { get; set; } = null!;
 
+        /// <summary>
+        /// Endpoint of the S3 bucket.
+        /// </summary>
         [Input("endpointUrl")]
         public Input<string>? EndpointUrl { get; set; }
 
+        /// <summary>
+        /// Prefix to prepend on manifest filenames.
+        /// </summary>
         [Input("manifestsPrefix")]
         public Input<string>? ManifestsPrefix { get; set; }
 
+        /// <summary>
+        /// Name of the cache image.
+        /// </summary>
         [Input("name")]
         public Input<string>? Name { get; set; }
 
+        /// <summary>
+        /// The geographic location of the bucket. Defaults to `$AWS_REGION`.
+        /// </summary>
         [Input("region", required: true)]
         public Input<string> Region { get; set; } = null!;
 
         [Input("secretAccessKey")]
         private Input<string>? _secretAccessKey;
+
+        /// <summary>
+        /// Defaults to `$AWS_SECRET_ACCESS_KEY`.
+        /// </summary>
         public Input<string>? SecretAccessKey
         {
             get => _secretAccessKey;
@@ -47,6 +72,10 @@ namespace Pulumi.Docker.Buildx.Inputs
 
         [Input("sessionToken")]
         private Input<string>? _sessionToken;
+
+        /// <summary>
+        /// Defaults to `$AWS_SESSION_TOKEN`.
+        /// </summary>
         public Input<string>? SessionToken
         {
             get => _sessionToken;
@@ -57,6 +86,9 @@ namespace Pulumi.Docker.Buildx.Inputs
             }
         }
 
+        /// <summary>
+        /// Uses `bucket` in the URL instead of hostname when `true`.
+        /// </summary>
         [Input("usePathStyle")]
         public Input<bool>? UsePathStyle { get; set; }
 

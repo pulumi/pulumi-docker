@@ -2,8 +2,6 @@ package internal
 
 import (
 	"fmt"
-
-	"github.com/pulumi/pulumi-docker/provider/v4/internal/properties"
 )
 
 // keeper decides whether an element should be included for a preview
@@ -51,7 +49,7 @@ func (k stringerKeeper[T]) keep(t T) bool {
 type registryKeeper struct{ preview bool }
 
 //nolint:unused // False positive due to generics.
-func (k registryKeeper) keep(r properties.RegistryAuth) bool {
+func (k registryKeeper) keep(r RegistryAuth) bool {
 	if !k.preview {
 		return true
 	}
@@ -77,4 +75,26 @@ func (k mapKeeper) keep(m map[string]string) map[string]string {
 		filtered[key] = val
 	}
 	return filtered
+}
+
+type contextKeeper struct{ preview bool }
+
+func (k contextKeeper) keep(bc BuildContext) BuildContext {
+	if !k.preview || len(bc.Named) == 0 {
+		return bc
+	}
+
+	named := NamedContexts{}
+	sk := stringKeeper(k)
+	for k, v := range bc.Named {
+		if !sk.keep(k) || !sk.keep(v.Location) {
+			continue
+		}
+		named[k] = v
+	}
+
+	return BuildContext{
+		Context: Context{bc.Location},
+		Named:   named,
+	}
 }

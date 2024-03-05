@@ -18,75 +18,65 @@ import javax.annotation.Nullable;
 @CustomType
 public final class CacheFromEntry {
     /**
-     * @return
-     * Push cache to Azure&#39;s blob storage service.
+     * @return Upload build caches to Azure&#39;s blob storage service.
      * 
      */
     private @Nullable CacheFromAzureBlob azblob;
     /**
-     * @return
-     * When &#34;true&#34; this entry will be excluded. Defaults to &#34;false&#34;.
+     * @return When `true` this entry will be excluded. Defaults to `false`.
      * 
      */
     private @Nullable Boolean disabled;
     /**
-     * @return
-     * Recommended for use with GitHub Actions workflows.
+     * @return Recommended for use with GitHub Actions workflows.
      * 
-     * An action like &#34;crazy-max/ghaction-github-runtime&#34; is recommended to
+     * An action like `crazy-max/ghaction-github-runtime` is recommended to
      * expose appropriate credentials to your GitHub workflow.
      * 
      */
     private @Nullable CacheFromGitHubActions gha;
     /**
-     * @return
-     * A simple backend which caches imagines on your local filesystem.
+     * @return A simple backend which caches images on your local filesystem.
      * 
      */
     private @Nullable CacheFromLocal local;
     /**
-     * @return
-     * A raw string as you would provide it to the Docker CLI (e.g.,
-     * &#34;type=inline&#34;)
+     * @return A raw string as you would provide it to the Docker CLI (e.g.,
+     * `type=inline`).
      * 
      */
     private @Nullable String raw;
     /**
-     * @return
-     * Push caches to remote registries. Incompatible with the &#34;docker&#34; build
-     * driver.
+     * @return Upload build caches to remote registries.
      * 
      */
     private @Nullable CacheFromRegistry registry;
     /**
-     * @return
-     * Push cache to AWS S3 or S3-compatible services such as MinIO.
+     * @return Upload build caches to AWS S3 or an S3-compatible services such as
+     * MinIO.
      * 
      */
     private @Nullable CacheFromS3 s3;
 
     private CacheFromEntry() {}
     /**
-     * @return
-     * Push cache to Azure&#39;s blob storage service.
+     * @return Upload build caches to Azure&#39;s blob storage service.
      * 
      */
     public Optional<CacheFromAzureBlob> azblob() {
         return Optional.ofNullable(this.azblob);
     }
     /**
-     * @return
-     * When &#34;true&#34; this entry will be excluded. Defaults to &#34;false&#34;.
+     * @return When `true` this entry will be excluded. Defaults to `false`.
      * 
      */
     public Optional<Boolean> disabled() {
         return Optional.ofNullable(this.disabled);
     }
     /**
-     * @return
-     * Recommended for use with GitHub Actions workflows.
+     * @return Recommended for use with GitHub Actions workflows.
      * 
-     * An action like &#34;crazy-max/ghaction-github-runtime&#34; is recommended to
+     * An action like `crazy-max/ghaction-github-runtime` is recommended to
      * expose appropriate credentials to your GitHub workflow.
      * 
      */
@@ -94,34 +84,30 @@ public final class CacheFromEntry {
         return Optional.ofNullable(this.gha);
     }
     /**
-     * @return
-     * A simple backend which caches imagines on your local filesystem.
+     * @return A simple backend which caches images on your local filesystem.
      * 
      */
     public Optional<CacheFromLocal> local() {
         return Optional.ofNullable(this.local);
     }
     /**
-     * @return
-     * A raw string as you would provide it to the Docker CLI (e.g.,
-     * &#34;type=inline&#34;)
+     * @return A raw string as you would provide it to the Docker CLI (e.g.,
+     * `type=inline`).
      * 
      */
     public Optional<String> raw() {
         return Optional.ofNullable(this.raw);
     }
     /**
-     * @return
-     * Push caches to remote registries. Incompatible with the &#34;docker&#34; build
-     * driver.
+     * @return Upload build caches to remote registries.
      * 
      */
     public Optional<CacheFromRegistry> registry() {
         return Optional.ofNullable(this.registry);
     }
     /**
-     * @return
-     * Push cache to AWS S3 or S3-compatible services such as MinIO.
+     * @return Upload build caches to AWS S3 or an S3-compatible services such as
+     * MinIO.
      * 
      */
     public Optional<CacheFromS3> s3() {

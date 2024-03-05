@@ -12,13 +12,29 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class CacheFromLocal {
+    /**
+     * @return Digest of manifest to import.
+     * 
+     */
     private @Nullable String digest;
+    /**
+     * @return Path of the local directory where cache gets imported from.
+     * 
+     */
     private String src;
 
     private CacheFromLocal() {}
+    /**
+     * @return Digest of manifest to import.
+     * 
+     */
     public Optional<String> digest() {
         return Optional.ofNullable(this.digest);
     }
+    /**
+     * @return Path of the local directory where cache gets imported from.
+     * 
+     */
     public String src() {
         return this.src;
     }

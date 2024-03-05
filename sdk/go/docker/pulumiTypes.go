@@ -2588,7 +2588,7 @@ func (o PluginGrantPermissionArrayOutput) Index(i pulumi.IntInput) PluginGrantPe
 }
 
 type ProviderRegistryAuth struct {
-	// Address of the registry
+	// Address of the registry.
 	Address      string `pulumi:"address"`
 	AuthDisabled *bool  `pulumi:"authDisabled"`
 	// Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `configFile` has predencen over all other options.
@@ -2613,7 +2613,7 @@ type ProviderRegistryAuthInput interface {
 }
 
 type ProviderRegistryAuthArgs struct {
-	// Address of the registry
+	// Address of the registry.
 	Address      pulumi.StringInput  `pulumi:"address"`
 	AuthDisabled pulumi.BoolPtrInput `pulumi:"authDisabled"`
 	// Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `configFile` has predencen over all other options.
@@ -2677,7 +2677,7 @@ func (o ProviderRegistryAuthOutput) ToProviderRegistryAuthOutputWithContext(ctx 
 	return o
 }
 
-// Address of the registry
+// Address of the registry.
 func (o ProviderRegistryAuthOutput) Address() pulumi.StringOutput {
 	return o.ApplyT(func(v ProviderRegistryAuth) string { return v.Address }).(pulumi.StringOutput)
 }

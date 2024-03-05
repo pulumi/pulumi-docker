@@ -14,6 +14,10 @@ namespace Pulumi.Docker.Buildx.Inputs
     {
         [Input("annotations")]
         private InputMap<string>? _annotations;
+
+        /// <summary>
+        /// Attach an arbitrary key/value annotation to the image.
+        /// </summary>
         public InputMap<string> Annotations
         {
             get => _annotations ?? (_annotations = new InputMap<string>());
@@ -32,6 +36,9 @@ namespace Pulumi.Docker.Buildx.Inputs
         [Input("compressionLevel")]
         public Input<int>? CompressionLevel { get; set; }
 
+        /// <summary>
+        /// Name image with `prefix@&lt;digest&gt;`, used for anonymous images.
+        /// </summary>
         [Input("danglingNamePrefix")]
         public Input<string>? DanglingNamePrefix { get; set; }
 
@@ -41,9 +48,15 @@ namespace Pulumi.Docker.Buildx.Inputs
         [Input("forceCompression")]
         public Input<bool>? ForceCompression { get; set; }
 
+        /// <summary>
+        /// Allow pushing to an insecure registry.
+        /// </summary>
         [Input("insecure")]
         public Input<bool>? Insecure { get; set; }
 
+        /// <summary>
+        /// Add additional canonical name (`name@&lt;digest&gt;`).
+        /// </summary>
         [Input("nameCanonical")]
         public Input<bool>? NameCanonical { get; set; }
 
@@ -71,18 +84,28 @@ namespace Pulumi.Docker.Buildx.Inputs
         [Input("push")]
         public Input<bool>? Push { get; set; }
 
+        /// <summary>
+        /// Push image without name.
+        /// </summary>
         [Input("pushByDigest")]
         public Input<bool>? PushByDigest { get; set; }
 
         /// <summary>
+        /// Store resulting images to the worker's image store and ensure all of
+        /// its blobs are in the content store.
         /// 
-        /// Store resulting images to the worker's image store, and ensure all its
-        /// blobs are in the content store. Ignored if the worker doesn't have
-        /// image store (when using OCI workers, for example).
+        /// Defaults to `true`.
+        /// 
+        /// Ignored if the worker doesn't have image store (when using OCI workers,
+        /// for example).
         /// </summary>
         [Input("store")]
         public Input<bool>? Store { get; set; }
 
+        /// <summary>
+        /// Unpack image after creation (for use with containerd). Defaults to
+        /// `false`.
+        /// </summary>
         [Input("unpack")]
         public Input<bool>? Unpack { get; set; }
 

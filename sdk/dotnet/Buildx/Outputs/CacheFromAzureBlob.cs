@@ -13,8 +13,17 @@ namespace Pulumi.Docker.Buildx.Outputs
     [OutputType]
     public sealed class CacheFromAzureBlob
     {
+        /// <summary>
+        /// Base URL of the storage account.
+        /// </summary>
         public readonly string? AccountUrl;
+        /// <summary>
+        /// The name of the cache image.
+        /// </summary>
         public readonly string Name;
+        /// <summary>
+        /// Blob storage account key.
+        /// </summary>
         public readonly string? SecretAccessKey;
 
         [OutputConstructor]

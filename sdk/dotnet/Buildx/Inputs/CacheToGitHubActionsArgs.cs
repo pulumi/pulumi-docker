@@ -18,11 +18,17 @@ namespace Pulumi.Docker.Buildx.Inputs
         [Input("ignoreError")]
         public Input<bool>? IgnoreError { get; set; }
 
+        /// <summary>
+        /// The cache mode to use. Defaults to `min`.
+        /// </summary>
         [Input("mode")]
         public Input<Pulumi.Docker.Buildx.CacheMode>? Mode { get; set; }
 
         /// <summary>
-        /// Which scope cache object belongs to.
+        /// The scope to use for cache keys. Defaults to `buildkit`.
+        /// 
+        /// This should be set if building and caching multiple images in one
+        /// workflow, otherwise caches will overwrite each other.
         /// </summary>
         [Input("scope")]
         public Input<string>? Scope { get; set; }
@@ -31,7 +37,12 @@ namespace Pulumi.Docker.Buildx.Inputs
         private Input<string>? _token;
 
         /// <summary>
-        /// Access token
+        /// The GitHub Actions token to use. This is not a personal access tokens
+        /// and is typically generated automatically as part of each job.
+        /// 
+        /// Defaults to `$ACTIONS_RUNTIME_TOKEN`, although a separate action like
+        /// `crazy-max/ghaction-github-runtime` is recommended to expose this
+        /// environment variable to your jobs.
         /// </summary>
         public Input<string>? Token
         {
@@ -44,7 +55,11 @@ namespace Pulumi.Docker.Buildx.Inputs
         }
 
         /// <summary>
-        /// Cache server URL
+        /// The cache server URL to use for artifacts.
+        /// 
+        /// Defaults to `$ACTIONS_RUNTIME_URL`, although a separate action like
+        /// `crazy-max/ghaction-github-runtime` is recommended to expose this
+        /// environment variable to your jobs.
         /// </summary>
         [Input("url")]
         public Input<string>? Url { get; set; }

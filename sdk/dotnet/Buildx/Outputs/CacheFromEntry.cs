@@ -14,43 +14,36 @@ namespace Pulumi.Docker.Buildx.Outputs
     public sealed class CacheFromEntry
     {
         /// <summary>
-        /// 
-        /// Push cache to Azure's blob storage service.
+        /// Upload build caches to Azure's blob storage service.
         /// </summary>
         public readonly Outputs.CacheFromAzureBlob? Azblob;
         /// <summary>
-        /// 
-        /// When "true" this entry will be excluded. Defaults to "false".
+        /// When `true` this entry will be excluded. Defaults to `false`.
         /// </summary>
         public readonly bool? Disabled;
         /// <summary>
-        /// 
         /// Recommended for use with GitHub Actions workflows.
         /// 
-        /// An action like "crazy-max/ghaction-github-runtime" is recommended to
+        /// An action like `crazy-max/ghaction-github-runtime` is recommended to
         /// expose appropriate credentials to your GitHub workflow.
         /// </summary>
         public readonly Outputs.CacheFromGitHubActions? Gha;
         /// <summary>
-        /// 
-        /// A simple backend which caches imagines on your local filesystem.
+        /// A simple backend which caches images on your local filesystem.
         /// </summary>
         public readonly Outputs.CacheFromLocal? Local;
         /// <summary>
-        /// 
         /// A raw string as you would provide it to the Docker CLI (e.g.,
-        /// "type=inline")
+        /// `type=inline`).
         /// </summary>
         public readonly string? Raw;
         /// <summary>
-        /// 
-        /// Push caches to remote registries. Incompatible with the "docker" build
-        /// driver.
+        /// Upload build caches to remote registries.
         /// </summary>
         public readonly Outputs.CacheFromRegistry? Registry;
         /// <summary>
-        /// 
-        /// Push cache to AWS S3 or S3-compatible services such as MinIO.
+        /// Upload build caches to AWS S3 or an S3-compatible services such as
+        /// MinIO.
         /// </summary>
         public readonly Outputs.CacheFromS3? S3;
 

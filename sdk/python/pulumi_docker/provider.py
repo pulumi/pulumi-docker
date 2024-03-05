@@ -24,12 +24,14 @@ class ProviderArgs:
                  ssh_opts: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None):
         """
         The set of arguments for constructing a Provider resource.
-        :param pulumi.Input[str] ca_material: PEM-encoded content of Docker host CA certificate
-        :param pulumi.Input[str] cert_material: PEM-encoded content of Docker client certificate
-        :param pulumi.Input[str] cert_path: Path to directory with Docker TLS config
-        :param pulumi.Input[str] host: The Docker daemon address
-        :param pulumi.Input[str] key_material: PEM-encoded content of Docker client private key
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] ssh_opts: Additional SSH option flags to be appended when using `ssh://` protocol
+        :param pulumi.Input[str] ca_material: PEM-encoded content of Docker host CA certificate.
+        :param pulumi.Input[str] cert_material: PEM-encoded content of Docker client certificate.
+        :param pulumi.Input[str] cert_path: Path to a directory with Docker TLS config. This directory is expected to contain `ca.pem`, `cert.pem`, and `key.pem`
+               files.
+        :param pulumi.Input[str] host: The Docker daemon's address.
+        :param pulumi.Input[str] key_material: PEM-encoded content of Docker client private key.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] ssh_opts: Additional SSH option flags to be appended when using `ssh://` protocol. The `ssh://` protocol is not supported for
+               `buildx.Image` resources. Instead, use a [remote](https://docs.docker.com/build/drivers/remote/) driver.
         """
         if ca_material is not None:
             pulumi.set(__self__, "ca_material", ca_material)
@@ -52,7 +54,7 @@ class ProviderArgs:
     @pulumi.getter(name="caMaterial")
     def ca_material(self) -> Optional[pulumi.Input[str]]:
         """
-        PEM-encoded content of Docker host CA certificate
+        PEM-encoded content of Docker host CA certificate.
         """
         return pulumi.get(self, "ca_material")
 
@@ -64,7 +66,7 @@ class ProviderArgs:
     @pulumi.getter(name="certMaterial")
     def cert_material(self) -> Optional[pulumi.Input[str]]:
         """
-        PEM-encoded content of Docker client certificate
+        PEM-encoded content of Docker client certificate.
         """
         return pulumi.get(self, "cert_material")
 
@@ -76,7 +78,8 @@ class ProviderArgs:
     @pulumi.getter(name="certPath")
     def cert_path(self) -> Optional[pulumi.Input[str]]:
         """
-        Path to directory with Docker TLS config
+        Path to a directory with Docker TLS config. This directory is expected to contain `ca.pem`, `cert.pem`, and `key.pem`
+        files.
         """
         return pulumi.get(self, "cert_path")
 
@@ -88,7 +91,7 @@ class ProviderArgs:
     @pulumi.getter
     def host(self) -> Optional[pulumi.Input[str]]:
         """
-        The Docker daemon address
+        The Docker daemon's address.
         """
         return pulumi.get(self, "host")
 
@@ -100,7 +103,7 @@ class ProviderArgs:
     @pulumi.getter(name="keyMaterial")
     def key_material(self) -> Optional[pulumi.Input[str]]:
         """
-        PEM-encoded content of Docker client private key
+        PEM-encoded content of Docker client private key.
         """
         return pulumi.get(self, "key_material")
 
@@ -121,7 +124,8 @@ class ProviderArgs:
     @pulumi.getter(name="sshOpts")
     def ssh_opts(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
         """
-        Additional SSH option flags to be appended when using `ssh://` protocol
+        Additional SSH option flags to be appended when using `ssh://` protocol. The `ssh://` protocol is not supported for
+        `buildx.Image` resources. Instead, use a [remote](https://docs.docker.com/build/drivers/remote/) driver.
         """
         return pulumi.get(self, "ssh_opts")
 
@@ -151,12 +155,14 @@ class Provider(pulumi.ProviderResource):
 
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
-        :param pulumi.Input[str] ca_material: PEM-encoded content of Docker host CA certificate
-        :param pulumi.Input[str] cert_material: PEM-encoded content of Docker client certificate
-        :param pulumi.Input[str] cert_path: Path to directory with Docker TLS config
-        :param pulumi.Input[str] host: The Docker daemon address
-        :param pulumi.Input[str] key_material: PEM-encoded content of Docker client private key
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] ssh_opts: Additional SSH option flags to be appended when using `ssh://` protocol
+        :param pulumi.Input[str] ca_material: PEM-encoded content of Docker host CA certificate.
+        :param pulumi.Input[str] cert_material: PEM-encoded content of Docker client certificate.
+        :param pulumi.Input[str] cert_path: Path to a directory with Docker TLS config. This directory is expected to contain `ca.pem`, `cert.pem`, and `key.pem`
+               files.
+        :param pulumi.Input[str] host: The Docker daemon's address.
+        :param pulumi.Input[str] key_material: PEM-encoded content of Docker client private key.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] ssh_opts: Additional SSH option flags to be appended when using `ssh://` protocol. The `ssh://` protocol is not supported for
+               `buildx.Image` resources. Instead, use a [remote](https://docs.docker.com/build/drivers/remote/) driver.
         """
         ...
     @overload
@@ -220,7 +226,7 @@ class Provider(pulumi.ProviderResource):
     @pulumi.getter(name="caMaterial")
     def ca_material(self) -> pulumi.Output[Optional[str]]:
         """
-        PEM-encoded content of Docker host CA certificate
+        PEM-encoded content of Docker host CA certificate.
         """
         return pulumi.get(self, "ca_material")
 
@@ -228,7 +234,7 @@ class Provider(pulumi.ProviderResource):
     @pulumi.getter(name="certMaterial")
     def cert_material(self) -> pulumi.Output[Optional[str]]:
         """
-        PEM-encoded content of Docker client certificate
+        PEM-encoded content of Docker client certificate.
         """
         return pulumi.get(self, "cert_material")
 
@@ -236,7 +242,8 @@ class Provider(pulumi.ProviderResource):
     @pulumi.getter(name="certPath")
     def cert_path(self) -> pulumi.Output[Optional[str]]:
         """
-        Path to directory with Docker TLS config
+        Path to a directory with Docker TLS config. This directory is expected to contain `ca.pem`, `cert.pem`, and `key.pem`
+        files.
         """
         return pulumi.get(self, "cert_path")
 
@@ -244,7 +251,7 @@ class Provider(pulumi.ProviderResource):
     @pulumi.getter
     def host(self) -> pulumi.Output[Optional[str]]:
         """
-        The Docker daemon address
+        The Docker daemon's address.
         """
         return pulumi.get(self, "host")
 
@@ -252,7 +259,7 @@ class Provider(pulumi.ProviderResource):
     @pulumi.getter(name="keyMaterial")
     def key_material(self) -> pulumi.Output[Optional[str]]:
         """
-        PEM-encoded content of Docker client private key
+        PEM-encoded content of Docker client private key.
         """
         return pulumi.get(self, "key_material")
 

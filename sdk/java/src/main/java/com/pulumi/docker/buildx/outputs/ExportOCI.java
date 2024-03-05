@@ -16,6 +16,10 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ExportOCI {
+    /**
+     * @return Attach an arbitrary key/value annotation to the image.
+     * 
+     */
     private @Nullable Map<String,String> annotations;
     /**
      * @return The compression type to use.
@@ -54,6 +58,10 @@ public final class ExportOCI {
     private @Nullable Boolean tar;
 
     private ExportOCI() {}
+    /**
+     * @return Attach an arbitrary key/value annotation to the image.
+     * 
+     */
     public Map<String,String> annotations() {
         return this.annotations == null ? Map.of() : this.annotations;
     }

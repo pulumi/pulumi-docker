@@ -16,6 +16,10 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class ExportRegistry {
+    /**
+     * @return Attach an arbitrary key/value annotation to the image.
+     * 
+     */
     private @Nullable Map<String,String> annotations;
     /**
      * @return The compression type to use.
@@ -27,13 +31,25 @@ public final class ExportRegistry {
      * 
      */
     private @Nullable Integer compressionLevel;
+    /**
+     * @return Name image with `prefix@&lt;digest&gt;`, used for anonymous images.
+     * 
+     */
     private @Nullable String danglingNamePrefix;
     /**
      * @return Forcefully apply compression.
      * 
      */
     private @Nullable Boolean forceCompression;
+    /**
+     * @return Allow pushing to an insecure registry.
+     * 
+     */
     private @Nullable Boolean insecure;
+    /**
+     * @return Add additional canonical name (`name@&lt;digest&gt;`).
+     * 
+     */
     private @Nullable Boolean nameCanonical;
     /**
      * @return Specify images names to export. This is overridden if tags are already specified.
@@ -50,18 +66,34 @@ public final class ExportRegistry {
      * 
      */
     private @Nullable Boolean push;
+    /**
+     * @return Push image without name.
+     * 
+     */
     private @Nullable Boolean pushByDigest;
     /**
-     * @return
-     * Store resulting images to the worker&#39;s image store, and ensure all its
-     * blobs are in the content store. Ignored if the worker doesn&#39;t have
-     * image store (when using OCI workers, for example).
+     * @return Store resulting images to the worker&#39;s image store and ensure all of
+     * its blobs are in the content store.
+     * 
+     * Defaults to `true`.
+     * 
+     * Ignored if the worker doesn&#39;t have image store (when using OCI workers,
+     * for example).
      * 
      */
     private @Nullable Boolean store;
+    /**
+     * @return Unpack image after creation (for use with containerd). Defaults to
+     * `false`.
+     * 
+     */
     private @Nullable Boolean unpack;
 
     private ExportRegistry() {}
+    /**
+     * @return Attach an arbitrary key/value annotation to the image.
+     * 
+     */
     public Map<String,String> annotations() {
         return this.annotations == null ? Map.of() : this.annotations;
     }
@@ -79,6 +111,10 @@ public final class ExportRegistry {
     public Optional<Integer> compressionLevel() {
         return Optional.ofNullable(this.compressionLevel);
     }
+    /**
+     * @return Name image with `prefix@&lt;digest&gt;`, used for anonymous images.
+     * 
+     */
     public Optional<String> danglingNamePrefix() {
         return Optional.ofNullable(this.danglingNamePrefix);
     }
@@ -89,9 +125,17 @@ public final class ExportRegistry {
     public Optional<Boolean> forceCompression() {
         return Optional.ofNullable(this.forceCompression);
     }
+    /**
+     * @return Allow pushing to an insecure registry.
+     * 
+     */
     public Optional<Boolean> insecure() {
         return Optional.ofNullable(this.insecure);
     }
+    /**
+     * @return Add additional canonical name (`name@&lt;digest&gt;`).
+     * 
+     */
     public Optional<Boolean> nameCanonical() {
         return Optional.ofNullable(this.nameCanonical);
     }
@@ -116,19 +160,31 @@ public final class ExportRegistry {
     public Optional<Boolean> push() {
         return Optional.ofNullable(this.push);
     }
+    /**
+     * @return Push image without name.
+     * 
+     */
     public Optional<Boolean> pushByDigest() {
         return Optional.ofNullable(this.pushByDigest);
     }
     /**
-     * @return
-     * Store resulting images to the worker&#39;s image store, and ensure all its
-     * blobs are in the content store. Ignored if the worker doesn&#39;t have
-     * image store (when using OCI workers, for example).
+     * @return Store resulting images to the worker&#39;s image store and ensure all of
+     * its blobs are in the content store.
+     * 
+     * Defaults to `true`.
+     * 
+     * Ignored if the worker doesn&#39;t have image store (when using OCI workers,
+     * for example).
      * 
      */
     public Optional<Boolean> store() {
         return Optional.ofNullable(this.store);
     }
+    /**
+     * @return Unpack image after creation (for use with containerd). Defaults to
+     * `false`.
+     * 
+     */
     public Optional<Boolean> unpack() {
         return Optional.ofNullable(this.unpack);
     }

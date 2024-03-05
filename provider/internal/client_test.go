@@ -11,9 +11,6 @@ import (
 	"go.uber.org/mock/gomock"
 
 	"github.com/pulumi/pulumi/sdk/v3/go/common/diag"
-
-	"github.com/pulumi/pulumi-docker/provider/v4/internal/mock"
-	"github.com/pulumi/pulumi-docker/provider/v4/internal/properties"
 )
 
 func TestAuth(t *testing.T) {
@@ -32,7 +29,7 @@ func TestAuth(t *testing.T) {
 		_ = d.cli.ConfigFile().GetCredentialsStore(host).Erase(host)
 	})
 
-	err = d.Auth(context.Background(), name, properties.RegistryAuth{
+	err = d.Auth(context.Background(), name, RegistryAuth{
 		Address:  host,
 		Username: user,
 		Password: password,
@@ -40,7 +37,7 @@ func TestAuth(t *testing.T) {
 	assert.NoError(t, err)
 
 	// Perform a second auth; it should be cached.
-	err = d.Auth(context.Background(), name, properties.RegistryAuth{
+	err = d.Auth(context.Background(), name, RegistryAuth{
 		Address:  host,
 		Username: user,
 		Password: password,
@@ -54,17 +51,17 @@ func TestBuild(t *testing.T) {
 
 	// Workaround for https://github.com/pulumi/pulumi-go-provider/issues/159
 	ctrl, ctx := gomock.WithContext(context.Background(), t)
-	pctx := mock.NewMockProviderContext(ctrl)
+	pctx := NewMockProviderContext(ctrl)
 	pctx.EXPECT().LogStatus(diag.Info, gomock.Any()).AnyTimes()
 	pctx.EXPECT().Done().Return(ctx.Done()).AnyTimes()
 	pctx.EXPECT().Value(gomock.Any()).DoAndReturn(func(key any) any { return ctx.Value(key) }).AnyTimes()
 	pctx.EXPECT().Err().Return(ctx.Err()).AnyTimes()
 	pctx.EXPECT().Deadline().Return(ctx.Deadline()).AnyTimes()
 
-	_, err = d.Build(pctx, "resource-name", pb.BuildOptions{
+	_, err = d.Build(pctx, "resource-name", build{opts: pb.BuildOptions{
 		ContextPath:    "../testdata/",
 		DockerfileName: "../testdata/Dockerfile",
-	})
+	}})
 	assert.NoError(t, err)
 }
 

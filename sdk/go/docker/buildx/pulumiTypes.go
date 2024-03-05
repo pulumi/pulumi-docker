@@ -13,9 +13,373 @@ import (
 
 var _ = internal.GetEnvOrDefault
 
+type BuildContext struct {
+	// Resources to use for build context.
+	//
+	// The location can be:
+	// * A relative or absolute path to a local directory (`.`, `./app`,
+	//   `/app`, etc.).
+	// * A remote URL of a Git repository, tarball, or plain text file
+	//   (`https://github.com/user/myrepo.git`, `http://server/context.tar.gz`,
+	//   etc.).
+	Location string `pulumi:"location"`
+	// Additional build contexts to use.
+	//
+	// These contexts are accessed with `FROM name` or `--from=name`
+	// statements when using Dockerfile 1.4+ syntax.
+	//
+	// Values can be local paths, HTTP URLs, or  `docker-image://` images.
+	Named map[string]Context `pulumi:"named"`
+}
+
+// BuildContextInput is an input type that accepts BuildContextArgs and BuildContextOutput values.
+// You can construct a concrete instance of `BuildContextInput` via:
+//
+//	BuildContextArgs{...}
+type BuildContextInput interface {
+	pulumi.Input
+
+	ToBuildContextOutput() BuildContextOutput
+	ToBuildContextOutputWithContext(context.Context) BuildContextOutput
+}
+
+type BuildContextArgs struct {
+	// Resources to use for build context.
+	//
+	// The location can be:
+	// * A relative or absolute path to a local directory (`.`, `./app`,
+	//   `/app`, etc.).
+	// * A remote URL of a Git repository, tarball, or plain text file
+	//   (`https://github.com/user/myrepo.git`, `http://server/context.tar.gz`,
+	//   etc.).
+	Location pulumi.StringInput `pulumi:"location"`
+	// Additional build contexts to use.
+	//
+	// These contexts are accessed with `FROM name` or `--from=name`
+	// statements when using Dockerfile 1.4+ syntax.
+	//
+	// Values can be local paths, HTTP URLs, or  `docker-image://` images.
+	Named ContextMapInput `pulumi:"named"`
+}
+
+func (BuildContextArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*BuildContext)(nil)).Elem()
+}
+
+func (i BuildContextArgs) ToBuildContextOutput() BuildContextOutput {
+	return i.ToBuildContextOutputWithContext(context.Background())
+}
+
+func (i BuildContextArgs) ToBuildContextOutputWithContext(ctx context.Context) BuildContextOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(BuildContextOutput)
+}
+
+func (i BuildContextArgs) ToBuildContextPtrOutput() BuildContextPtrOutput {
+	return i.ToBuildContextPtrOutputWithContext(context.Background())
+}
+
+func (i BuildContextArgs) ToBuildContextPtrOutputWithContext(ctx context.Context) BuildContextPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(BuildContextOutput).ToBuildContextPtrOutputWithContext(ctx)
+}
+
+// BuildContextPtrInput is an input type that accepts BuildContextArgs, BuildContextPtr and BuildContextPtrOutput values.
+// You can construct a concrete instance of `BuildContextPtrInput` via:
+//
+//	        BuildContextArgs{...}
+//
+//	or:
+//
+//	        nil
+type BuildContextPtrInput interface {
+	pulumi.Input
+
+	ToBuildContextPtrOutput() BuildContextPtrOutput
+	ToBuildContextPtrOutputWithContext(context.Context) BuildContextPtrOutput
+}
+
+type buildContextPtrType BuildContextArgs
+
+func BuildContextPtr(v *BuildContextArgs) BuildContextPtrInput {
+	return (*buildContextPtrType)(v)
+}
+
+func (*buildContextPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**BuildContext)(nil)).Elem()
+}
+
+func (i *buildContextPtrType) ToBuildContextPtrOutput() BuildContextPtrOutput {
+	return i.ToBuildContextPtrOutputWithContext(context.Background())
+}
+
+func (i *buildContextPtrType) ToBuildContextPtrOutputWithContext(ctx context.Context) BuildContextPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(BuildContextPtrOutput)
+}
+
+type BuildContextOutput struct{ *pulumi.OutputState }
+
+func (BuildContextOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*BuildContext)(nil)).Elem()
+}
+
+func (o BuildContextOutput) ToBuildContextOutput() BuildContextOutput {
+	return o
+}
+
+func (o BuildContextOutput) ToBuildContextOutputWithContext(ctx context.Context) BuildContextOutput {
+	return o
+}
+
+func (o BuildContextOutput) ToBuildContextPtrOutput() BuildContextPtrOutput {
+	return o.ToBuildContextPtrOutputWithContext(context.Background())
+}
+
+func (o BuildContextOutput) ToBuildContextPtrOutputWithContext(ctx context.Context) BuildContextPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v BuildContext) *BuildContext {
+		return &v
+	}).(BuildContextPtrOutput)
+}
+
+// Resources to use for build context.
+//
+// The location can be:
+//   - A relative or absolute path to a local directory (`.`, `./app`,
+//     `/app`, etc.).
+//   - A remote URL of a Git repository, tarball, or plain text file
+//     (`https://github.com/user/myrepo.git`, `http://server/context.tar.gz`,
+//     etc.).
+func (o BuildContextOutput) Location() pulumi.StringOutput {
+	return o.ApplyT(func(v BuildContext) string { return v.Location }).(pulumi.StringOutput)
+}
+
+// Additional build contexts to use.
+//
+// These contexts are accessed with `FROM name` or `--from=name`
+// statements when using Dockerfile 1.4+ syntax.
+//
+// Values can be local paths, HTTP URLs, or  `docker-image://` images.
+func (o BuildContextOutput) Named() ContextMapOutput {
+	return o.ApplyT(func(v BuildContext) map[string]Context { return v.Named }).(ContextMapOutput)
+}
+
+type BuildContextPtrOutput struct{ *pulumi.OutputState }
+
+func (BuildContextPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**BuildContext)(nil)).Elem()
+}
+
+func (o BuildContextPtrOutput) ToBuildContextPtrOutput() BuildContextPtrOutput {
+	return o
+}
+
+func (o BuildContextPtrOutput) ToBuildContextPtrOutputWithContext(ctx context.Context) BuildContextPtrOutput {
+	return o
+}
+
+func (o BuildContextPtrOutput) Elem() BuildContextOutput {
+	return o.ApplyT(func(v *BuildContext) BuildContext {
+		if v != nil {
+			return *v
+		}
+		var ret BuildContext
+		return ret
+	}).(BuildContextOutput)
+}
+
+// Resources to use for build context.
+//
+// The location can be:
+//   - A relative or absolute path to a local directory (`.`, `./app`,
+//     `/app`, etc.).
+//   - A remote URL of a Git repository, tarball, or plain text file
+//     (`https://github.com/user/myrepo.git`, `http://server/context.tar.gz`,
+//     etc.).
+func (o BuildContextPtrOutput) Location() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *BuildContext) *string {
+		if v == nil {
+			return nil
+		}
+		return &v.Location
+	}).(pulumi.StringPtrOutput)
+}
+
+// Additional build contexts to use.
+//
+// These contexts are accessed with `FROM name` or `--from=name`
+// statements when using Dockerfile 1.4+ syntax.
+//
+// Values can be local paths, HTTP URLs, or  `docker-image://` images.
+func (o BuildContextPtrOutput) Named() ContextMapOutput {
+	return o.ApplyT(func(v *BuildContext) map[string]Context {
+		if v == nil {
+			return nil
+		}
+		return v.Named
+	}).(ContextMapOutput)
+}
+
+type BuilderConfig struct {
+	// Name of an existing buildx builder to use.
+	//
+	// Only `docker-container`, `kubernetes`, or `remote` drivers are
+	// supported. The legacy `docker` driver is not supported.
+	//
+	// Equivalent to Docker's `--builder` flag.
+	Name *string `pulumi:"name"`
+}
+
+// BuilderConfigInput is an input type that accepts BuilderConfigArgs and BuilderConfigOutput values.
+// You can construct a concrete instance of `BuilderConfigInput` via:
+//
+//	BuilderConfigArgs{...}
+type BuilderConfigInput interface {
+	pulumi.Input
+
+	ToBuilderConfigOutput() BuilderConfigOutput
+	ToBuilderConfigOutputWithContext(context.Context) BuilderConfigOutput
+}
+
+type BuilderConfigArgs struct {
+	// Name of an existing buildx builder to use.
+	//
+	// Only `docker-container`, `kubernetes`, or `remote` drivers are
+	// supported. The legacy `docker` driver is not supported.
+	//
+	// Equivalent to Docker's `--builder` flag.
+	Name pulumi.StringPtrInput `pulumi:"name"`
+}
+
+func (BuilderConfigArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*BuilderConfig)(nil)).Elem()
+}
+
+func (i BuilderConfigArgs) ToBuilderConfigOutput() BuilderConfigOutput {
+	return i.ToBuilderConfigOutputWithContext(context.Background())
+}
+
+func (i BuilderConfigArgs) ToBuilderConfigOutputWithContext(ctx context.Context) BuilderConfigOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(BuilderConfigOutput)
+}
+
+func (i BuilderConfigArgs) ToBuilderConfigPtrOutput() BuilderConfigPtrOutput {
+	return i.ToBuilderConfigPtrOutputWithContext(context.Background())
+}
+
+func (i BuilderConfigArgs) ToBuilderConfigPtrOutputWithContext(ctx context.Context) BuilderConfigPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(BuilderConfigOutput).ToBuilderConfigPtrOutputWithContext(ctx)
+}
+
+// BuilderConfigPtrInput is an input type that accepts BuilderConfigArgs, BuilderConfigPtr and BuilderConfigPtrOutput values.
+// You can construct a concrete instance of `BuilderConfigPtrInput` via:
+//
+//	        BuilderConfigArgs{...}
+//
+//	or:
+//
+//	        nil
+type BuilderConfigPtrInput interface {
+	pulumi.Input
+
+	ToBuilderConfigPtrOutput() BuilderConfigPtrOutput
+	ToBuilderConfigPtrOutputWithContext(context.Context) BuilderConfigPtrOutput
+}
+
+type builderConfigPtrType BuilderConfigArgs
+
+func BuilderConfigPtr(v *BuilderConfigArgs) BuilderConfigPtrInput {
+	return (*builderConfigPtrType)(v)
+}
+
+func (*builderConfigPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**BuilderConfig)(nil)).Elem()
+}
+
+func (i *builderConfigPtrType) ToBuilderConfigPtrOutput() BuilderConfigPtrOutput {
+	return i.ToBuilderConfigPtrOutputWithContext(context.Background())
+}
+
+func (i *builderConfigPtrType) ToBuilderConfigPtrOutputWithContext(ctx context.Context) BuilderConfigPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(BuilderConfigPtrOutput)
+}
+
+type BuilderConfigOutput struct{ *pulumi.OutputState }
+
+func (BuilderConfigOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*BuilderConfig)(nil)).Elem()
+}
+
+func (o BuilderConfigOutput) ToBuilderConfigOutput() BuilderConfigOutput {
+	return o
+}
+
+func (o BuilderConfigOutput) ToBuilderConfigOutputWithContext(ctx context.Context) BuilderConfigOutput {
+	return o
+}
+
+func (o BuilderConfigOutput) ToBuilderConfigPtrOutput() BuilderConfigPtrOutput {
+	return o.ToBuilderConfigPtrOutputWithContext(context.Background())
+}
+
+func (o BuilderConfigOutput) ToBuilderConfigPtrOutputWithContext(ctx context.Context) BuilderConfigPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v BuilderConfig) *BuilderConfig {
+		return &v
+	}).(BuilderConfigPtrOutput)
+}
+
+// Name of an existing buildx builder to use.
+//
+// Only `docker-container`, `kubernetes`, or `remote` drivers are
+// supported. The legacy `docker` driver is not supported.
+//
+// Equivalent to Docker's `--builder` flag.
+func (o BuilderConfigOutput) Name() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v BuilderConfig) *string { return v.Name }).(pulumi.StringPtrOutput)
+}
+
+type BuilderConfigPtrOutput struct{ *pulumi.OutputState }
+
+func (BuilderConfigPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**BuilderConfig)(nil)).Elem()
+}
+
+func (o BuilderConfigPtrOutput) ToBuilderConfigPtrOutput() BuilderConfigPtrOutput {
+	return o
+}
+
+func (o BuilderConfigPtrOutput) ToBuilderConfigPtrOutputWithContext(ctx context.Context) BuilderConfigPtrOutput {
+	return o
+}
+
+func (o BuilderConfigPtrOutput) Elem() BuilderConfigOutput {
+	return o.ApplyT(func(v *BuilderConfig) BuilderConfig {
+		if v != nil {
+			return *v
+		}
+		var ret BuilderConfig
+		return ret
+	}).(BuilderConfigOutput)
+}
+
+// Name of an existing buildx builder to use.
+//
+// Only `docker-container`, `kubernetes`, or `remote` drivers are
+// supported. The legacy `docker` driver is not supported.
+//
+// Equivalent to Docker's `--builder` flag.
+func (o BuilderConfigPtrOutput) Name() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *BuilderConfig) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Name
+	}).(pulumi.StringPtrOutput)
+}
+
 type CacheFromAzureBlob struct {
-	AccountUrl      *string `pulumi:"accountUrl"`
-	Name            string  `pulumi:"name"`
+	// Base URL of the storage account.
+	AccountUrl *string `pulumi:"accountUrl"`
+	// The name of the cache image.
+	Name string `pulumi:"name"`
+	// Blob storage account key.
 	SecretAccessKey *string `pulumi:"secretAccessKey"`
 }
 
@@ -31,8 +395,11 @@ type CacheFromAzureBlobInput interface {
 }
 
 type CacheFromAzureBlobArgs struct {
-	AccountUrl      pulumi.StringPtrInput `pulumi:"accountUrl"`
-	Name            pulumi.StringInput    `pulumi:"name"`
+	// Base URL of the storage account.
+	AccountUrl pulumi.StringPtrInput `pulumi:"accountUrl"`
+	// The name of the cache image.
+	Name pulumi.StringInput `pulumi:"name"`
+	// Blob storage account key.
 	SecretAccessKey pulumi.StringPtrInput `pulumi:"secretAccessKey"`
 }
 
@@ -113,14 +480,17 @@ func (o CacheFromAzureBlobOutput) ToCacheFromAzureBlobPtrOutputWithContext(ctx c
 	}).(CacheFromAzureBlobPtrOutput)
 }
 
+// Base URL of the storage account.
 func (o CacheFromAzureBlobOutput) AccountUrl() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v CacheFromAzureBlob) *string { return v.AccountUrl }).(pulumi.StringPtrOutput)
 }
 
+// The name of the cache image.
 func (o CacheFromAzureBlobOutput) Name() pulumi.StringOutput {
 	return o.ApplyT(func(v CacheFromAzureBlob) string { return v.Name }).(pulumi.StringOutput)
 }
 
+// Blob storage account key.
 func (o CacheFromAzureBlobOutput) SecretAccessKey() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v CacheFromAzureBlob) *string { return v.SecretAccessKey }).(pulumi.StringPtrOutput)
 }
@@ -149,6 +519,7 @@ func (o CacheFromAzureBlobPtrOutput) Elem() CacheFromAzureBlobOutput {
 	}).(CacheFromAzureBlobOutput)
 }
 
+// Base URL of the storage account.
 func (o CacheFromAzureBlobPtrOutput) AccountUrl() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *CacheFromAzureBlob) *string {
 		if v == nil {
@@ -158,6 +529,7 @@ func (o CacheFromAzureBlobPtrOutput) AccountUrl() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
+// The name of the cache image.
 func (o CacheFromAzureBlobPtrOutput) Name() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *CacheFromAzureBlob) *string {
 		if v == nil {
@@ -167,6 +539,7 @@ func (o CacheFromAzureBlobPtrOutput) Name() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
+// Blob storage account key.
 func (o CacheFromAzureBlobPtrOutput) SecretAccessKey() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *CacheFromAzureBlob) *string {
 		if v == nil {
@@ -177,24 +550,24 @@ func (o CacheFromAzureBlobPtrOutput) SecretAccessKey() pulumi.StringPtrOutput {
 }
 
 type CacheFromEntry struct {
-	// Push cache to Azure's blob storage service.
+	// Upload build caches to Azure's blob storage service.
 	Azblob *CacheFromAzureBlob `pulumi:"azblob"`
-	// When "true" this entry will be excluded. Defaults to "false".
+	// When `true` this entry will be excluded. Defaults to `false`.
 	Disabled *bool `pulumi:"disabled"`
 	// Recommended for use with GitHub Actions workflows.
 	//
-	// An action like "crazy-max/ghaction-github-runtime" is recommended to
+	// An action like `crazy-max/ghaction-github-runtime` is recommended to
 	// expose appropriate credentials to your GitHub workflow.
 	Gha *CacheFromGitHubActions `pulumi:"gha"`
-	// A simple backend which caches imagines on your local filesystem.
+	// A simple backend which caches images on your local filesystem.
 	Local *CacheFromLocal `pulumi:"local"`
 	// A raw string as you would provide it to the Docker CLI (e.g.,
-	// "type=inline")
+	// `type=inline`).
 	Raw *string `pulumi:"raw"`
-	// Push caches to remote registries. Incompatible with the "docker" build
-	// driver.
+	// Upload build caches to remote registries.
 	Registry *CacheFromRegistry `pulumi:"registry"`
-	// Push cache to AWS S3 or S3-compatible services such as MinIO.
+	// Upload build caches to AWS S3 or an S3-compatible services such as
+	// MinIO.
 	S3 *CacheFromS3 `pulumi:"s3"`
 }
 
@@ -223,24 +596,24 @@ type CacheFromEntryInput interface {
 }
 
 type CacheFromEntryArgs struct {
-	// Push cache to Azure's blob storage service.
+	// Upload build caches to Azure's blob storage service.
 	Azblob CacheFromAzureBlobPtrInput `pulumi:"azblob"`
-	// When "true" this entry will be excluded. Defaults to "false".
+	// When `true` this entry will be excluded. Defaults to `false`.
 	Disabled pulumi.BoolPtrInput `pulumi:"disabled"`
 	// Recommended for use with GitHub Actions workflows.
 	//
-	// An action like "crazy-max/ghaction-github-runtime" is recommended to
+	// An action like `crazy-max/ghaction-github-runtime` is recommended to
 	// expose appropriate credentials to your GitHub workflow.
 	Gha CacheFromGitHubActionsPtrInput `pulumi:"gha"`
-	// A simple backend which caches imagines on your local filesystem.
+	// A simple backend which caches images on your local filesystem.
 	Local CacheFromLocalPtrInput `pulumi:"local"`
 	// A raw string as you would provide it to the Docker CLI (e.g.,
-	// "type=inline")
+	// `type=inline`).
 	Raw pulumi.StringPtrInput `pulumi:"raw"`
-	// Push caches to remote registries. Incompatible with the "docker" build
-	// driver.
+	// Upload build caches to remote registries.
 	Registry CacheFromRegistryPtrInput `pulumi:"registry"`
-	// Push cache to AWS S3 or S3-compatible services such as MinIO.
+	// Upload build caches to AWS S3 or an S3-compatible services such as
+	// MinIO.
 	S3 CacheFromS3PtrInput `pulumi:"s3"`
 }
 
@@ -304,42 +677,42 @@ func (o CacheFromEntryOutput) ToCacheFromEntryOutputWithContext(ctx context.Cont
 	return o
 }
 
-// Push cache to Azure's blob storage service.
+// Upload build caches to Azure's blob storage service.
 func (o CacheFromEntryOutput) Azblob() CacheFromAzureBlobPtrOutput {
 	return o.ApplyT(func(v CacheFromEntry) *CacheFromAzureBlob { return v.Azblob }).(CacheFromAzureBlobPtrOutput)
 }
 
-// When "true" this entry will be excluded. Defaults to "false".
+// When `true` this entry will be excluded. Defaults to `false`.
 func (o CacheFromEntryOutput) Disabled() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v CacheFromEntry) *bool { return v.Disabled }).(pulumi.BoolPtrOutput)
 }
 
 // Recommended for use with GitHub Actions workflows.
 //
-// An action like "crazy-max/ghaction-github-runtime" is recommended to
+// An action like `crazy-max/ghaction-github-runtime` is recommended to
 // expose appropriate credentials to your GitHub workflow.
 func (o CacheFromEntryOutput) Gha() CacheFromGitHubActionsPtrOutput {
 	return o.ApplyT(func(v CacheFromEntry) *CacheFromGitHubActions { return v.Gha }).(CacheFromGitHubActionsPtrOutput)
 }
 
-// A simple backend which caches imagines on your local filesystem.
+// A simple backend which caches images on your local filesystem.
 func (o CacheFromEntryOutput) Local() CacheFromLocalPtrOutput {
 	return o.ApplyT(func(v CacheFromEntry) *CacheFromLocal { return v.Local }).(CacheFromLocalPtrOutput)
 }
 
 // A raw string as you would provide it to the Docker CLI (e.g.,
-// "type=inline")
+// `type=inline`).
 func (o CacheFromEntryOutput) Raw() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v CacheFromEntry) *string { return v.Raw }).(pulumi.StringPtrOutput)
 }
 
-// Push caches to remote registries. Incompatible with the "docker" build
-// driver.
+// Upload build caches to remote registries.
 func (o CacheFromEntryOutput) Registry() CacheFromRegistryPtrOutput {
 	return o.ApplyT(func(v CacheFromEntry) *CacheFromRegistry { return v.Registry }).(CacheFromRegistryPtrOutput)
 }
 
-// Push cache to AWS S3 or S3-compatible services such as MinIO.
+// Upload build caches to AWS S3 or an S3-compatible services such as
+// MinIO.
 func (o CacheFromEntryOutput) S3() CacheFromS3PtrOutput {
 	return o.ApplyT(func(v CacheFromEntry) *CacheFromS3 { return v.S3 }).(CacheFromS3PtrOutput)
 }
@@ -365,11 +738,23 @@ func (o CacheFromEntryArrayOutput) Index(i pulumi.IntInput) CacheFromEntryOutput
 }
 
 type CacheFromGitHubActions struct {
-	// Which scope cache object belongs to.
+	// The scope to use for cache keys. Defaults to `buildkit`.
+	//
+	// This should be set if building and caching multiple images in one
+	// workflow, otherwise caches will overwrite each other.
 	Scope *string `pulumi:"scope"`
-	// Access token
+	// The GitHub Actions token to use. This is not a personal access tokens
+	// and is typically generated automatically as part of each job.
+	//
+	// Defaults to `$ACTIONS_RUNTIME_TOKEN`, although a separate action like
+	// `crazy-max/ghaction-github-runtime` is recommended to expose this
+	// environment variable to your jobs.
 	Token *string `pulumi:"token"`
-	// Cache server URL
+	// The cache server URL to use for artifacts.
+	//
+	// Defaults to `$ACTIONS_RUNTIME_URL`, although a separate action like
+	// `crazy-max/ghaction-github-runtime` is recommended to expose this
+	// environment variable to your jobs.
 	Url *string `pulumi:"url"`
 }
 
@@ -412,11 +797,23 @@ type CacheFromGitHubActionsInput interface {
 }
 
 type CacheFromGitHubActionsArgs struct {
-	// Which scope cache object belongs to.
+	// The scope to use for cache keys. Defaults to `buildkit`.
+	//
+	// This should be set if building and caching multiple images in one
+	// workflow, otherwise caches will overwrite each other.
 	Scope pulumi.StringPtrInput `pulumi:"scope"`
-	// Access token
+	// The GitHub Actions token to use. This is not a personal access tokens
+	// and is typically generated automatically as part of each job.
+	//
+	// Defaults to `$ACTIONS_RUNTIME_TOKEN`, although a separate action like
+	// `crazy-max/ghaction-github-runtime` is recommended to expose this
+	// environment variable to your jobs.
 	Token pulumi.StringPtrInput `pulumi:"token"`
-	// Cache server URL
+	// The cache server URL to use for artifacts.
+	//
+	// Defaults to `$ACTIONS_RUNTIME_URL`, although a separate action like
+	// `crazy-max/ghaction-github-runtime` is recommended to expose this
+	// environment variable to your jobs.
 	Url pulumi.StringPtrInput `pulumi:"url"`
 }
 
@@ -520,17 +917,29 @@ func (o CacheFromGitHubActionsOutput) ToCacheFromGitHubActionsPtrOutputWithConte
 	}).(CacheFromGitHubActionsPtrOutput)
 }
 
-// Which scope cache object belongs to.
+// The scope to use for cache keys. Defaults to `buildkit`.
+//
+// This should be set if building and caching multiple images in one
+// workflow, otherwise caches will overwrite each other.
 func (o CacheFromGitHubActionsOutput) Scope() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v CacheFromGitHubActions) *string { return v.Scope }).(pulumi.StringPtrOutput)
 }
 
-// Access token
+// The GitHub Actions token to use. This is not a personal access tokens
+// and is typically generated automatically as part of each job.
+//
+// Defaults to `$ACTIONS_RUNTIME_TOKEN`, although a separate action like
+// `crazy-max/ghaction-github-runtime` is recommended to expose this
+// environment variable to your jobs.
 func (o CacheFromGitHubActionsOutput) Token() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v CacheFromGitHubActions) *string { return v.Token }).(pulumi.StringPtrOutput)
 }
 
-// Cache server URL
+// The cache server URL to use for artifacts.
+//
+// Defaults to `$ACTIONS_RUNTIME_URL`, although a separate action like
+// `crazy-max/ghaction-github-runtime` is recommended to expose this
+// environment variable to your jobs.
 func (o CacheFromGitHubActionsOutput) Url() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v CacheFromGitHubActions) *string { return v.Url }).(pulumi.StringPtrOutput)
 }
@@ -559,7 +968,10 @@ func (o CacheFromGitHubActionsPtrOutput) Elem() CacheFromGitHubActionsOutput {
 	}).(CacheFromGitHubActionsOutput)
 }
 
-// Which scope cache object belongs to.
+// The scope to use for cache keys. Defaults to `buildkit`.
+//
+// This should be set if building and caching multiple images in one
+// workflow, otherwise caches will overwrite each other.
 func (o CacheFromGitHubActionsPtrOutput) Scope() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *CacheFromGitHubActions) *string {
 		if v == nil {
@@ -569,7 +981,12 @@ func (o CacheFromGitHubActionsPtrOutput) Scope() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
-// Access token
+// The GitHub Actions token to use. This is not a personal access tokens
+// and is typically generated automatically as part of each job.
+//
+// Defaults to `$ACTIONS_RUNTIME_TOKEN`, although a separate action like
+// `crazy-max/ghaction-github-runtime` is recommended to expose this
+// environment variable to your jobs.
 func (o CacheFromGitHubActionsPtrOutput) Token() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *CacheFromGitHubActions) *string {
 		if v == nil {
@@ -579,7 +996,11 @@ func (o CacheFromGitHubActionsPtrOutput) Token() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
-// Cache server URL
+// The cache server URL to use for artifacts.
+//
+// Defaults to `$ACTIONS_RUNTIME_URL`, although a separate action like
+// `crazy-max/ghaction-github-runtime` is recommended to expose this
+// environment variable to your jobs.
 func (o CacheFromGitHubActionsPtrOutput) Url() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *CacheFromGitHubActions) *string {
 		if v == nil {
@@ -590,8 +1011,10 @@ func (o CacheFromGitHubActionsPtrOutput) Url() pulumi.StringPtrOutput {
 }
 
 type CacheFromLocal struct {
+	// Digest of manifest to import.
 	Digest *string `pulumi:"digest"`
-	Src    string  `pulumi:"src"`
+	// Path of the local directory where cache gets imported from.
+	Src string `pulumi:"src"`
 }
 
 // CacheFromLocalInput is an input type that accepts CacheFromLocalArgs and CacheFromLocalOutput values.
@@ -606,8 +1029,10 @@ type CacheFromLocalInput interface {
 }
 
 type CacheFromLocalArgs struct {
+	// Digest of manifest to import.
 	Digest pulumi.StringPtrInput `pulumi:"digest"`
-	Src    pulumi.StringInput    `pulumi:"src"`
+	// Path of the local directory where cache gets imported from.
+	Src pulumi.StringInput `pulumi:"src"`
 }
 
 func (CacheFromLocalArgs) ElementType() reflect.Type {
@@ -687,10 +1112,12 @@ func (o CacheFromLocalOutput) ToCacheFromLocalPtrOutputWithContext(ctx context.C
 	}).(CacheFromLocalPtrOutput)
 }
 
+// Digest of manifest to import.
 func (o CacheFromLocalOutput) Digest() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v CacheFromLocal) *string { return v.Digest }).(pulumi.StringPtrOutput)
 }
 
+// Path of the local directory where cache gets imported from.
 func (o CacheFromLocalOutput) Src() pulumi.StringOutput {
 	return o.ApplyT(func(v CacheFromLocal) string { return v.Src }).(pulumi.StringOutput)
 }
@@ -719,6 +1146,7 @@ func (o CacheFromLocalPtrOutput) Elem() CacheFromLocalOutput {
 	}).(CacheFromLocalOutput)
 }
 
+// Digest of manifest to import.
 func (o CacheFromLocalPtrOutput) Digest() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *CacheFromLocal) *string {
 		if v == nil {
@@ -728,6 +1156,7 @@ func (o CacheFromLocalPtrOutput) Digest() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
+// Path of the local directory where cache gets imported from.
 func (o CacheFromLocalPtrOutput) Src() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *CacheFromLocal) *string {
 		if v == nil {
@@ -738,7 +1167,7 @@ func (o CacheFromLocalPtrOutput) Src() pulumi.StringPtrOutput {
 }
 
 type CacheFromRegistry struct {
-	// Full name of the cache image to import.
+	// Fully qualified name of the cache image to import.
 	Ref string `pulumi:"ref"`
 }
 
@@ -754,7 +1183,7 @@ type CacheFromRegistryInput interface {
 }
 
 type CacheFromRegistryArgs struct {
-	// Full name of the cache image to import.
+	// Fully qualified name of the cache image to import.
 	Ref pulumi.StringInput `pulumi:"ref"`
 }
 
@@ -835,7 +1264,7 @@ func (o CacheFromRegistryOutput) ToCacheFromRegistryPtrOutputWithContext(ctx con
 	}).(CacheFromRegistryPtrOutput)
 }
 
-// Full name of the cache image to import.
+// Fully qualified name of the cache image to import.
 func (o CacheFromRegistryOutput) Ref() pulumi.StringOutput {
 	return o.ApplyT(func(v CacheFromRegistry) string { return v.Ref }).(pulumi.StringOutput)
 }
@@ -864,7 +1293,7 @@ func (o CacheFromRegistryPtrOutput) Elem() CacheFromRegistryOutput {
 	}).(CacheFromRegistryOutput)
 }
 
-// Full name of the cache image to import.
+// Fully qualified name of the cache image to import.
 func (o CacheFromRegistryPtrOutput) Ref() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *CacheFromRegistry) *string {
 		if v == nil {
@@ -875,16 +1304,26 @@ func (o CacheFromRegistryPtrOutput) Ref() pulumi.StringPtrOutput {
 }
 
 type CacheFromS3 struct {
-	AccessKeyId     *string `pulumi:"accessKeyId"`
-	BlobsPrefix     *string `pulumi:"blobsPrefix"`
-	Bucket          string  `pulumi:"bucket"`
-	EndpointUrl     *string `pulumi:"endpointUrl"`
+	// Defaults to `$AWS_ACCESS_KEY_ID`.
+	AccessKeyId *string `pulumi:"accessKeyId"`
+	// Prefix to prepend to blob filenames.
+	BlobsPrefix *string `pulumi:"blobsPrefix"`
+	// Name of the S3 bucket.
+	Bucket string `pulumi:"bucket"`
+	// Endpoint of the S3 bucket.
+	EndpointUrl *string `pulumi:"endpointUrl"`
+	// Prefix to prepend on manifest filenames.
 	ManifestsPrefix *string `pulumi:"manifestsPrefix"`
-	Name            *string `pulumi:"name"`
-	Region          string  `pulumi:"region"`
+	// Name of the cache image.
+	Name *string `pulumi:"name"`
+	// The geographic location of the bucket. Defaults to `$AWS_REGION`.
+	Region string `pulumi:"region"`
+	// Defaults to `$AWS_SECRET_ACCESS_KEY`.
 	SecretAccessKey *string `pulumi:"secretAccessKey"`
-	SessionToken    *string `pulumi:"sessionToken"`
-	UsePathStyle    *bool   `pulumi:"usePathStyle"`
+	// Defaults to `$AWS_SESSION_TOKEN`.
+	SessionToken *string `pulumi:"sessionToken"`
+	// Uses `bucket` in the URL instead of hostname when `true`.
+	UsePathStyle *bool `pulumi:"usePathStyle"`
 }
 
 // Defaults sets the appropriate defaults for CacheFromS3
@@ -931,16 +1370,26 @@ type CacheFromS3Input interface {
 }
 
 type CacheFromS3Args struct {
-	AccessKeyId     pulumi.StringPtrInput `pulumi:"accessKeyId"`
-	BlobsPrefix     pulumi.StringPtrInput `pulumi:"blobsPrefix"`
-	Bucket          pulumi.StringInput    `pulumi:"bucket"`
-	EndpointUrl     pulumi.StringPtrInput `pulumi:"endpointUrl"`
+	// Defaults to `$AWS_ACCESS_KEY_ID`.
+	AccessKeyId pulumi.StringPtrInput `pulumi:"accessKeyId"`
+	// Prefix to prepend to blob filenames.
+	BlobsPrefix pulumi.StringPtrInput `pulumi:"blobsPrefix"`
+	// Name of the S3 bucket.
+	Bucket pulumi.StringInput `pulumi:"bucket"`
+	// Endpoint of the S3 bucket.
+	EndpointUrl pulumi.StringPtrInput `pulumi:"endpointUrl"`
+	// Prefix to prepend on manifest filenames.
 	ManifestsPrefix pulumi.StringPtrInput `pulumi:"manifestsPrefix"`
-	Name            pulumi.StringPtrInput `pulumi:"name"`
-	Region          pulumi.StringInput    `pulumi:"region"`
+	// Name of the cache image.
+	Name pulumi.StringPtrInput `pulumi:"name"`
+	// The geographic location of the bucket. Defaults to `$AWS_REGION`.
+	Region pulumi.StringInput `pulumi:"region"`
+	// Defaults to `$AWS_SECRET_ACCESS_KEY`.
 	SecretAccessKey pulumi.StringPtrInput `pulumi:"secretAccessKey"`
-	SessionToken    pulumi.StringPtrInput `pulumi:"sessionToken"`
-	UsePathStyle    pulumi.BoolPtrInput   `pulumi:"usePathStyle"`
+	// Defaults to `$AWS_SESSION_TOKEN`.
+	SessionToken pulumi.StringPtrInput `pulumi:"sessionToken"`
+	// Uses `bucket` in the URL instead of hostname when `true`.
+	UsePathStyle pulumi.BoolPtrInput `pulumi:"usePathStyle"`
 }
 
 // Defaults sets the appropriate defaults for CacheFromS3Args
@@ -1048,42 +1497,52 @@ func (o CacheFromS3Output) ToCacheFromS3PtrOutputWithContext(ctx context.Context
 	}).(CacheFromS3PtrOutput)
 }
 
+// Defaults to `$AWS_ACCESS_KEY_ID`.
 func (o CacheFromS3Output) AccessKeyId() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v CacheFromS3) *string { return v.AccessKeyId }).(pulumi.StringPtrOutput)
 }
 
+// Prefix to prepend to blob filenames.
 func (o CacheFromS3Output) BlobsPrefix() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v CacheFromS3) *string { return v.BlobsPrefix }).(pulumi.StringPtrOutput)
 }
 
+// Name of the S3 bucket.
 func (o CacheFromS3Output) Bucket() pulumi.StringOutput {
 	return o.ApplyT(func(v CacheFromS3) string { return v.Bucket }).(pulumi.StringOutput)
 }
 
+// Endpoint of the S3 bucket.
 func (o CacheFromS3Output) EndpointUrl() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v CacheFromS3) *string { return v.EndpointUrl }).(pulumi.StringPtrOutput)
 }
 
+// Prefix to prepend on manifest filenames.
 func (o CacheFromS3Output) ManifestsPrefix() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v CacheFromS3) *string { return v.ManifestsPrefix }).(pulumi.StringPtrOutput)
 }
 
+// Name of the cache image.
 func (o CacheFromS3Output) Name() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v CacheFromS3) *string { return v.Name }).(pulumi.StringPtrOutput)
 }
 
+// The geographic location of the bucket. Defaults to `$AWS_REGION`.
 func (o CacheFromS3Output) Region() pulumi.StringOutput {
 	return o.ApplyT(func(v CacheFromS3) string { return v.Region }).(pulumi.StringOutput)
 }
 
+// Defaults to `$AWS_SECRET_ACCESS_KEY`.
 func (o CacheFromS3Output) SecretAccessKey() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v CacheFromS3) *string { return v.SecretAccessKey }).(pulumi.StringPtrOutput)
 }
 
+// Defaults to `$AWS_SESSION_TOKEN`.
 func (o CacheFromS3Output) SessionToken() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v CacheFromS3) *string { return v.SessionToken }).(pulumi.StringPtrOutput)
 }
 
+// Uses `bucket` in the URL instead of hostname when `true`.
 func (o CacheFromS3Output) UsePathStyle() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v CacheFromS3) *bool { return v.UsePathStyle }).(pulumi.BoolPtrOutput)
 }
@@ -1112,6 +1571,7 @@ func (o CacheFromS3PtrOutput) Elem() CacheFromS3Output {
 	}).(CacheFromS3Output)
 }
 
+// Defaults to `$AWS_ACCESS_KEY_ID`.
 func (o CacheFromS3PtrOutput) AccessKeyId() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *CacheFromS3) *string {
 		if v == nil {
@@ -1121,6 +1581,7 @@ func (o CacheFromS3PtrOutput) AccessKeyId() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
+// Prefix to prepend to blob filenames.
 func (o CacheFromS3PtrOutput) BlobsPrefix() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *CacheFromS3) *string {
 		if v == nil {
@@ -1130,6 +1591,7 @@ func (o CacheFromS3PtrOutput) BlobsPrefix() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
+// Name of the S3 bucket.
 func (o CacheFromS3PtrOutput) Bucket() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *CacheFromS3) *string {
 		if v == nil {
@@ -1139,6 +1601,7 @@ func (o CacheFromS3PtrOutput) Bucket() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
+// Endpoint of the S3 bucket.
 func (o CacheFromS3PtrOutput) EndpointUrl() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *CacheFromS3) *string {
 		if v == nil {
@@ -1148,6 +1611,7 @@ func (o CacheFromS3PtrOutput) EndpointUrl() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
+// Prefix to prepend on manifest filenames.
 func (o CacheFromS3PtrOutput) ManifestsPrefix() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *CacheFromS3) *string {
 		if v == nil {
@@ -1157,6 +1621,7 @@ func (o CacheFromS3PtrOutput) ManifestsPrefix() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
+// Name of the cache image.
 func (o CacheFromS3PtrOutput) Name() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *CacheFromS3) *string {
 		if v == nil {
@@ -1166,6 +1631,7 @@ func (o CacheFromS3PtrOutput) Name() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
+// The geographic location of the bucket. Defaults to `$AWS_REGION`.
 func (o CacheFromS3PtrOutput) Region() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *CacheFromS3) *string {
 		if v == nil {
@@ -1175,6 +1641,7 @@ func (o CacheFromS3PtrOutput) Region() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
+// Defaults to `$AWS_SECRET_ACCESS_KEY`.
 func (o CacheFromS3PtrOutput) SecretAccessKey() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *CacheFromS3) *string {
 		if v == nil {
@@ -1184,6 +1651,7 @@ func (o CacheFromS3PtrOutput) SecretAccessKey() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
+// Defaults to `$AWS_SESSION_TOKEN`.
 func (o CacheFromS3PtrOutput) SessionToken() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *CacheFromS3) *string {
 		if v == nil {
@@ -1193,6 +1661,7 @@ func (o CacheFromS3PtrOutput) SessionToken() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
+// Uses `bucket` in the URL instead of hostname when `true`.
 func (o CacheFromS3PtrOutput) UsePathStyle() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *CacheFromS3) *bool {
 		if v == nil {
@@ -1203,12 +1672,16 @@ func (o CacheFromS3PtrOutput) UsePathStyle() pulumi.BoolPtrOutput {
 }
 
 type CacheToAzureBlob struct {
+	// Base URL of the storage account.
 	AccountUrl *string `pulumi:"accountUrl"`
 	// Ignore errors caused by failed cache exports.
-	IgnoreError     *bool      `pulumi:"ignoreError"`
-	Mode            *CacheMode `pulumi:"mode"`
-	Name            string     `pulumi:"name"`
-	SecretAccessKey *string    `pulumi:"secretAccessKey"`
+	IgnoreError *bool `pulumi:"ignoreError"`
+	// The cache mode to use. Defaults to `min`.
+	Mode *CacheMode `pulumi:"mode"`
+	// The name of the cache image.
+	Name string `pulumi:"name"`
+	// Blob storage account key.
+	SecretAccessKey *string `pulumi:"secretAccessKey"`
 }
 
 // Defaults sets the appropriate defaults for CacheToAzureBlob
@@ -1240,11 +1713,15 @@ type CacheToAzureBlobInput interface {
 }
 
 type CacheToAzureBlobArgs struct {
+	// Base URL of the storage account.
 	AccountUrl pulumi.StringPtrInput `pulumi:"accountUrl"`
 	// Ignore errors caused by failed cache exports.
-	IgnoreError     pulumi.BoolPtrInput   `pulumi:"ignoreError"`
-	Mode            CacheModePtrInput     `pulumi:"mode"`
-	Name            pulumi.StringInput    `pulumi:"name"`
+	IgnoreError pulumi.BoolPtrInput `pulumi:"ignoreError"`
+	// The cache mode to use. Defaults to `min`.
+	Mode CacheModePtrInput `pulumi:"mode"`
+	// The name of the cache image.
+	Name pulumi.StringInput `pulumi:"name"`
+	// Blob storage account key.
 	SecretAccessKey pulumi.StringPtrInput `pulumi:"secretAccessKey"`
 }
 
@@ -1339,6 +1816,7 @@ func (o CacheToAzureBlobOutput) ToCacheToAzureBlobPtrOutputWithContext(ctx conte
 	}).(CacheToAzureBlobPtrOutput)
 }
 
+// Base URL of the storage account.
 func (o CacheToAzureBlobOutput) AccountUrl() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v CacheToAzureBlob) *string { return v.AccountUrl }).(pulumi.StringPtrOutput)
 }
@@ -1348,14 +1826,17 @@ func (o CacheToAzureBlobOutput) IgnoreError() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v CacheToAzureBlob) *bool { return v.IgnoreError }).(pulumi.BoolPtrOutput)
 }
 
+// The cache mode to use. Defaults to `min`.
 func (o CacheToAzureBlobOutput) Mode() CacheModePtrOutput {
 	return o.ApplyT(func(v CacheToAzureBlob) *CacheMode { return v.Mode }).(CacheModePtrOutput)
 }
 
+// The name of the cache image.
 func (o CacheToAzureBlobOutput) Name() pulumi.StringOutput {
 	return o.ApplyT(func(v CacheToAzureBlob) string { return v.Name }).(pulumi.StringOutput)
 }
 
+// Blob storage account key.
 func (o CacheToAzureBlobOutput) SecretAccessKey() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v CacheToAzureBlob) *string { return v.SecretAccessKey }).(pulumi.StringPtrOutput)
 }
@@ -1384,6 +1865,7 @@ func (o CacheToAzureBlobPtrOutput) Elem() CacheToAzureBlobOutput {
 	}).(CacheToAzureBlobOutput)
 }
 
+// Base URL of the storage account.
 func (o CacheToAzureBlobPtrOutput) AccountUrl() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *CacheToAzureBlob) *string {
 		if v == nil {
@@ -1403,6 +1885,7 @@ func (o CacheToAzureBlobPtrOutput) IgnoreError() pulumi.BoolPtrOutput {
 	}).(pulumi.BoolPtrOutput)
 }
 
+// The cache mode to use. Defaults to `min`.
 func (o CacheToAzureBlobPtrOutput) Mode() CacheModePtrOutput {
 	return o.ApplyT(func(v *CacheToAzureBlob) *CacheMode {
 		if v == nil {
@@ -1412,6 +1895,7 @@ func (o CacheToAzureBlobPtrOutput) Mode() CacheModePtrOutput {
 	}).(CacheModePtrOutput)
 }
 
+// The name of the cache image.
 func (o CacheToAzureBlobPtrOutput) Name() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *CacheToAzureBlob) *string {
 		if v == nil {
@@ -1421,6 +1905,7 @@ func (o CacheToAzureBlobPtrOutput) Name() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
+// Blob storage account key.
 func (o CacheToAzureBlobPtrOutput) SecretAccessKey() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *CacheToAzureBlob) *string {
 		if v == nil {
@@ -1433,23 +1918,23 @@ func (o CacheToAzureBlobPtrOutput) SecretAccessKey() pulumi.StringPtrOutput {
 type CacheToEntry struct {
 	// Push cache to Azure's blob storage service.
 	Azblob *CacheToAzureBlob `pulumi:"azblob"`
-	// When "true" this entry will be excluded. Defaults to "false".
+	// When `true` this entry will be excluded. Defaults to `false`.
 	Disabled *bool `pulumi:"disabled"`
 	// Recommended for use with GitHub Actions workflows.
 	//
-	// An action like "crazy-max/ghaction-github-runtime" is recommended to
+	// An action like `crazy-max/ghaction-github-runtime` is recommended to
 	// expose appropriate credentials to your GitHub workflow.
 	Gha *CacheToGitHubActions `pulumi:"gha"`
 	// The inline cache storage backend is the simplest implementation to get
 	// started with, but it does not handle multi-stage builds. Consider the
-	// registry cache backend instead.
+	// `registry` cache backend instead.
 	Inline *CacheToInline `pulumi:"inline"`
 	// A simple backend which caches imagines on your local filesystem.
 	Local *CacheToLocal `pulumi:"local"`
 	// A raw string as you would provide it to the Docker CLI (e.g.,
-	// "type=inline")
+	// `type=inline`)
 	Raw *string `pulumi:"raw"`
-	// Push caches to remote registries. Incompatible with the "docker" build
+	// Push caches to remote registries. Incompatible with the `docker` build
 	// driver.
 	Registry *CacheToRegistry `pulumi:"registry"`
 	// Push cache to AWS S3 or S3-compatible services such as MinIO.
@@ -1489,23 +1974,23 @@ type CacheToEntryInput interface {
 type CacheToEntryArgs struct {
 	// Push cache to Azure's blob storage service.
 	Azblob CacheToAzureBlobPtrInput `pulumi:"azblob"`
-	// When "true" this entry will be excluded. Defaults to "false".
+	// When `true` this entry will be excluded. Defaults to `false`.
 	Disabled pulumi.BoolPtrInput `pulumi:"disabled"`
 	// Recommended for use with GitHub Actions workflows.
 	//
-	// An action like "crazy-max/ghaction-github-runtime" is recommended to
+	// An action like `crazy-max/ghaction-github-runtime` is recommended to
 	// expose appropriate credentials to your GitHub workflow.
 	Gha CacheToGitHubActionsPtrInput `pulumi:"gha"`
 	// The inline cache storage backend is the simplest implementation to get
 	// started with, but it does not handle multi-stage builds. Consider the
-	// registry cache backend instead.
+	// `registry` cache backend instead.
 	Inline CacheToInlinePtrInput `pulumi:"inline"`
 	// A simple backend which caches imagines on your local filesystem.
 	Local CacheToLocalPtrInput `pulumi:"local"`
 	// A raw string as you would provide it to the Docker CLI (e.g.,
-	// "type=inline")
+	// `type=inline`)
 	Raw pulumi.StringPtrInput `pulumi:"raw"`
-	// Push caches to remote registries. Incompatible with the "docker" build
+	// Push caches to remote registries. Incompatible with the `docker` build
 	// driver.
 	Registry CacheToRegistryPtrInput `pulumi:"registry"`
 	// Push cache to AWS S3 or S3-compatible services such as MinIO.
@@ -1577,14 +2062,14 @@ func (o CacheToEntryOutput) Azblob() CacheToAzureBlobPtrOutput {
 	return o.ApplyT(func(v CacheToEntry) *CacheToAzureBlob { return v.Azblob }).(CacheToAzureBlobPtrOutput)
 }
 
-// When "true" this entry will be excluded. Defaults to "false".
+// When `true` this entry will be excluded. Defaults to `false`.
 func (o CacheToEntryOutput) Disabled() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v CacheToEntry) *bool { return v.Disabled }).(pulumi.BoolPtrOutput)
 }
 
 // Recommended for use with GitHub Actions workflows.
 //
-// An action like "crazy-max/ghaction-github-runtime" is recommended to
+// An action like `crazy-max/ghaction-github-runtime` is recommended to
 // expose appropriate credentials to your GitHub workflow.
 func (o CacheToEntryOutput) Gha() CacheToGitHubActionsPtrOutput {
 	return o.ApplyT(func(v CacheToEntry) *CacheToGitHubActions { return v.Gha }).(CacheToGitHubActionsPtrOutput)
@@ -1592,7 +2077,7 @@ func (o CacheToEntryOutput) Gha() CacheToGitHubActionsPtrOutput {
 
 // The inline cache storage backend is the simplest implementation to get
 // started with, but it does not handle multi-stage builds. Consider the
-// registry cache backend instead.
+// `registry` cache backend instead.
 func (o CacheToEntryOutput) Inline() CacheToInlinePtrOutput {
 	return o.ApplyT(func(v CacheToEntry) *CacheToInline { return v.Inline }).(CacheToInlinePtrOutput)
 }
@@ -1603,12 +2088,12 @@ func (o CacheToEntryOutput) Local() CacheToLocalPtrOutput {
 }
 
 // A raw string as you would provide it to the Docker CLI (e.g.,
-// "type=inline")
+// `type=inline`)
 func (o CacheToEntryOutput) Raw() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v CacheToEntry) *string { return v.Raw }).(pulumi.StringPtrOutput)
 }
 
-// Push caches to remote registries. Incompatible with the "docker" build
+// Push caches to remote registries. Incompatible with the `docker` build
 // driver.
 func (o CacheToEntryOutput) Registry() CacheToRegistryPtrOutput {
 	return o.ApplyT(func(v CacheToEntry) *CacheToRegistry { return v.Registry }).(CacheToRegistryPtrOutput)
@@ -1641,13 +2126,26 @@ func (o CacheToEntryArrayOutput) Index(i pulumi.IntInput) CacheToEntryOutput {
 
 type CacheToGitHubActions struct {
 	// Ignore errors caused by failed cache exports.
-	IgnoreError *bool      `pulumi:"ignoreError"`
-	Mode        *CacheMode `pulumi:"mode"`
-	// Which scope cache object belongs to.
+	IgnoreError *bool `pulumi:"ignoreError"`
+	// The cache mode to use. Defaults to `min`.
+	Mode *CacheMode `pulumi:"mode"`
+	// The scope to use for cache keys. Defaults to `buildkit`.
+	//
+	// This should be set if building and caching multiple images in one
+	// workflow, otherwise caches will overwrite each other.
 	Scope *string `pulumi:"scope"`
-	// Access token
+	// The GitHub Actions token to use. This is not a personal access tokens
+	// and is typically generated automatically as part of each job.
+	//
+	// Defaults to `$ACTIONS_RUNTIME_TOKEN`, although a separate action like
+	// `crazy-max/ghaction-github-runtime` is recommended to expose this
+	// environment variable to your jobs.
 	Token *string `pulumi:"token"`
-	// Cache server URL
+	// The cache server URL to use for artifacts.
+	//
+	// Defaults to `$ACTIONS_RUNTIME_URL`, although a separate action like
+	// `crazy-max/ghaction-github-runtime` is recommended to expose this
+	// environment variable to your jobs.
 	Url *string `pulumi:"url"`
 }
 
@@ -1700,12 +2198,25 @@ type CacheToGitHubActionsInput interface {
 type CacheToGitHubActionsArgs struct {
 	// Ignore errors caused by failed cache exports.
 	IgnoreError pulumi.BoolPtrInput `pulumi:"ignoreError"`
-	Mode        CacheModePtrInput   `pulumi:"mode"`
-	// Which scope cache object belongs to.
+	// The cache mode to use. Defaults to `min`.
+	Mode CacheModePtrInput `pulumi:"mode"`
+	// The scope to use for cache keys. Defaults to `buildkit`.
+	//
+	// This should be set if building and caching multiple images in one
+	// workflow, otherwise caches will overwrite each other.
 	Scope pulumi.StringPtrInput `pulumi:"scope"`
-	// Access token
+	// The GitHub Actions token to use. This is not a personal access tokens
+	// and is typically generated automatically as part of each job.
+	//
+	// Defaults to `$ACTIONS_RUNTIME_TOKEN`, although a separate action like
+	// `crazy-max/ghaction-github-runtime` is recommended to expose this
+	// environment variable to your jobs.
 	Token pulumi.StringPtrInput `pulumi:"token"`
-	// Cache server URL
+	// The cache server URL to use for artifacts.
+	//
+	// Defaults to `$ACTIONS_RUNTIME_URL`, although a separate action like
+	// `crazy-max/ghaction-github-runtime` is recommended to expose this
+	// environment variable to your jobs.
 	Url pulumi.StringPtrInput `pulumi:"url"`
 }
 
@@ -1820,21 +2331,34 @@ func (o CacheToGitHubActionsOutput) IgnoreError() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v CacheToGitHubActions) *bool { return v.IgnoreError }).(pulumi.BoolPtrOutput)
 }
 
+// The cache mode to use. Defaults to `min`.
 func (o CacheToGitHubActionsOutput) Mode() CacheModePtrOutput {
 	return o.ApplyT(func(v CacheToGitHubActions) *CacheMode { return v.Mode }).(CacheModePtrOutput)
 }
 
-// Which scope cache object belongs to.
+// The scope to use for cache keys. Defaults to `buildkit`.
+//
+// This should be set if building and caching multiple images in one
+// workflow, otherwise caches will overwrite each other.
 func (o CacheToGitHubActionsOutput) Scope() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v CacheToGitHubActions) *string { return v.Scope }).(pulumi.StringPtrOutput)
 }
 
-// Access token
+// The GitHub Actions token to use. This is not a personal access tokens
+// and is typically generated automatically as part of each job.
+//
+// Defaults to `$ACTIONS_RUNTIME_TOKEN`, although a separate action like
+// `crazy-max/ghaction-github-runtime` is recommended to expose this
+// environment variable to your jobs.
 func (o CacheToGitHubActionsOutput) Token() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v CacheToGitHubActions) *string { return v.Token }).(pulumi.StringPtrOutput)
 }
 
-// Cache server URL
+// The cache server URL to use for artifacts.
+//
+// Defaults to `$ACTIONS_RUNTIME_URL`, although a separate action like
+// `crazy-max/ghaction-github-runtime` is recommended to expose this
+// environment variable to your jobs.
 func (o CacheToGitHubActionsOutput) Url() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v CacheToGitHubActions) *string { return v.Url }).(pulumi.StringPtrOutput)
 }
@@ -1873,6 +2397,7 @@ func (o CacheToGitHubActionsPtrOutput) IgnoreError() pulumi.BoolPtrOutput {
 	}).(pulumi.BoolPtrOutput)
 }
 
+// The cache mode to use. Defaults to `min`.
 func (o CacheToGitHubActionsPtrOutput) Mode() CacheModePtrOutput {
 	return o.ApplyT(func(v *CacheToGitHubActions) *CacheMode {
 		if v == nil {
@@ -1882,7 +2407,10 @@ func (o CacheToGitHubActionsPtrOutput) Mode() CacheModePtrOutput {
 	}).(CacheModePtrOutput)
 }
 
-// Which scope cache object belongs to.
+// The scope to use for cache keys. Defaults to `buildkit`.
+//
+// This should be set if building and caching multiple images in one
+// workflow, otherwise caches will overwrite each other.
 func (o CacheToGitHubActionsPtrOutput) Scope() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *CacheToGitHubActions) *string {
 		if v == nil {
@@ -1892,7 +2420,12 @@ func (o CacheToGitHubActionsPtrOutput) Scope() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
-// Access token
+// The GitHub Actions token to use. This is not a personal access tokens
+// and is typically generated automatically as part of each job.
+//
+// Defaults to `$ACTIONS_RUNTIME_TOKEN`, although a separate action like
+// `crazy-max/ghaction-github-runtime` is recommended to expose this
+// environment variable to your jobs.
 func (o CacheToGitHubActionsPtrOutput) Token() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *CacheToGitHubActions) *string {
 		if v == nil {
@@ -1902,7 +2435,11 @@ func (o CacheToGitHubActionsPtrOutput) Token() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
-// Cache server URL
+// The cache server URL to use for artifacts.
+//
+// Defaults to `$ACTIONS_RUNTIME_URL`, although a separate action like
+// `crazy-max/ghaction-github-runtime` is recommended to expose this
+// environment variable to your jobs.
 func (o CacheToGitHubActionsPtrOutput) Url() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *CacheToGitHubActions) *string {
 		if v == nil {
@@ -2034,13 +2571,15 @@ type CacheToLocal struct {
 	// The compression type to use.
 	Compression *CompressionType `pulumi:"compression"`
 	// Compression level from 0 to 22.
-	CompressionLevel *int   `pulumi:"compressionLevel"`
-	Dest             string `pulumi:"dest"`
+	CompressionLevel *int `pulumi:"compressionLevel"`
+	// Path of the local directory to export the cache.
+	Dest string `pulumi:"dest"`
 	// Forcefully apply compression.
 	ForceCompression *bool `pulumi:"forceCompression"`
 	// Ignore errors caused by failed cache exports.
-	IgnoreError *bool      `pulumi:"ignoreError"`
-	Mode        *CacheMode `pulumi:"mode"`
+	IgnoreError *bool `pulumi:"ignoreError"`
+	// The cache mode to use. Defaults to `min`.
+	Mode *CacheMode `pulumi:"mode"`
 }
 
 // Defaults sets the appropriate defaults for CacheToLocal
@@ -2088,12 +2627,14 @@ type CacheToLocalArgs struct {
 	Compression CompressionTypePtrInput `pulumi:"compression"`
 	// Compression level from 0 to 22.
 	CompressionLevel pulumi.IntPtrInput `pulumi:"compressionLevel"`
-	Dest             pulumi.StringInput `pulumi:"dest"`
+	// Path of the local directory to export the cache.
+	Dest pulumi.StringInput `pulumi:"dest"`
 	// Forcefully apply compression.
 	ForceCompression pulumi.BoolPtrInput `pulumi:"forceCompression"`
 	// Ignore errors caused by failed cache exports.
 	IgnoreError pulumi.BoolPtrInput `pulumi:"ignoreError"`
-	Mode        CacheModePtrInput   `pulumi:"mode"`
+	// The cache mode to use. Defaults to `min`.
+	Mode CacheModePtrInput `pulumi:"mode"`
 }
 
 // Defaults sets the appropriate defaults for CacheToLocalArgs
@@ -2206,6 +2747,7 @@ func (o CacheToLocalOutput) CompressionLevel() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v CacheToLocal) *int { return v.CompressionLevel }).(pulumi.IntPtrOutput)
 }
 
+// Path of the local directory to export the cache.
 func (o CacheToLocalOutput) Dest() pulumi.StringOutput {
 	return o.ApplyT(func(v CacheToLocal) string { return v.Dest }).(pulumi.StringOutput)
 }
@@ -2220,6 +2762,7 @@ func (o CacheToLocalOutput) IgnoreError() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v CacheToLocal) *bool { return v.IgnoreError }).(pulumi.BoolPtrOutput)
 }
 
+// The cache mode to use. Defaults to `min`.
 func (o CacheToLocalOutput) Mode() CacheModePtrOutput {
 	return o.ApplyT(func(v CacheToLocal) *CacheMode { return v.Mode }).(CacheModePtrOutput)
 }
@@ -2268,6 +2811,7 @@ func (o CacheToLocalPtrOutput) CompressionLevel() pulumi.IntPtrOutput {
 	}).(pulumi.IntPtrOutput)
 }
 
+// Path of the local directory to export the cache.
 func (o CacheToLocalPtrOutput) Dest() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *CacheToLocal) *string {
 		if v == nil {
@@ -2297,6 +2841,7 @@ func (o CacheToLocalPtrOutput) IgnoreError() pulumi.BoolPtrOutput {
 	}).(pulumi.BoolPtrOutput)
 }
 
+// The cache mode to use. Defaults to `min`.
 func (o CacheToLocalPtrOutput) Mode() CacheModePtrOutput {
 	return o.ApplyT(func(v *CacheToLocal) *CacheMode {
 		if v == nil {
@@ -2315,12 +2860,17 @@ type CacheToRegistry struct {
 	ForceCompression *bool `pulumi:"forceCompression"`
 	// Ignore errors caused by failed cache exports.
 	IgnoreError *bool `pulumi:"ignoreError"`
-	// Export cache manifest as an OCI-compatible image manifest instead of a manifest list (requires OCI media types).
-	ImageManifest *bool      `pulumi:"imageManifest"`
-	Mode          *CacheMode `pulumi:"mode"`
-	// Whether to use OCI mediatypes in exported manifests.
+	// Export cache manifest as an OCI-compatible image manifest instead of a
+	// manifest list (requires OCI media types).
+	//
+	// Defaults to `false`.
+	ImageManifest *bool `pulumi:"imageManifest"`
+	// The cache mode to use. Defaults to `min`.
+	Mode *CacheMode `pulumi:"mode"`
+	// Whether to use OCI media types in exported manifests. Defaults to
+	// `true`.
 	OciMediaTypes *bool `pulumi:"ociMediaTypes"`
-	// Full name of the cache image to import.
+	// Fully qualified name of the cache image to import.
 	Ref string `pulumi:"ref"`
 }
 
@@ -2381,12 +2931,17 @@ type CacheToRegistryArgs struct {
 	ForceCompression pulumi.BoolPtrInput `pulumi:"forceCompression"`
 	// Ignore errors caused by failed cache exports.
 	IgnoreError pulumi.BoolPtrInput `pulumi:"ignoreError"`
-	// Export cache manifest as an OCI-compatible image manifest instead of a manifest list (requires OCI media types).
+	// Export cache manifest as an OCI-compatible image manifest instead of a
+	// manifest list (requires OCI media types).
+	//
+	// Defaults to `false`.
 	ImageManifest pulumi.BoolPtrInput `pulumi:"imageManifest"`
-	Mode          CacheModePtrInput   `pulumi:"mode"`
-	// Whether to use OCI mediatypes in exported manifests.
+	// The cache mode to use. Defaults to `min`.
+	Mode CacheModePtrInput `pulumi:"mode"`
+	// Whether to use OCI media types in exported manifests. Defaults to
+	// `true`.
 	OciMediaTypes pulumi.BoolPtrInput `pulumi:"ociMediaTypes"`
-	// Full name of the cache image to import.
+	// Fully qualified name of the cache image to import.
 	Ref pulumi.StringInput `pulumi:"ref"`
 }
 
@@ -2516,21 +3071,26 @@ func (o CacheToRegistryOutput) IgnoreError() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v CacheToRegistry) *bool { return v.IgnoreError }).(pulumi.BoolPtrOutput)
 }
 
-// Export cache manifest as an OCI-compatible image manifest instead of a manifest list (requires OCI media types).
+// Export cache manifest as an OCI-compatible image manifest instead of a
+// manifest list (requires OCI media types).
+//
+// Defaults to `false`.
 func (o CacheToRegistryOutput) ImageManifest() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v CacheToRegistry) *bool { return v.ImageManifest }).(pulumi.BoolPtrOutput)
 }
 
+// The cache mode to use. Defaults to `min`.
 func (o CacheToRegistryOutput) Mode() CacheModePtrOutput {
 	return o.ApplyT(func(v CacheToRegistry) *CacheMode { return v.Mode }).(CacheModePtrOutput)
 }
 
-// Whether to use OCI mediatypes in exported manifests.
+// Whether to use OCI media types in exported manifests. Defaults to
+// `true`.
 func (o CacheToRegistryOutput) OciMediaTypes() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v CacheToRegistry) *bool { return v.OciMediaTypes }).(pulumi.BoolPtrOutput)
 }
 
-// Full name of the cache image to import.
+// Fully qualified name of the cache image to import.
 func (o CacheToRegistryOutput) Ref() pulumi.StringOutput {
 	return o.ApplyT(func(v CacheToRegistry) string { return v.Ref }).(pulumi.StringOutput)
 }
@@ -2599,7 +3159,10 @@ func (o CacheToRegistryPtrOutput) IgnoreError() pulumi.BoolPtrOutput {
 	}).(pulumi.BoolPtrOutput)
 }
 
-// Export cache manifest as an OCI-compatible image manifest instead of a manifest list (requires OCI media types).
+// Export cache manifest as an OCI-compatible image manifest instead of a
+// manifest list (requires OCI media types).
+//
+// Defaults to `false`.
 func (o CacheToRegistryPtrOutput) ImageManifest() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *CacheToRegistry) *bool {
 		if v == nil {
@@ -2609,6 +3172,7 @@ func (o CacheToRegistryPtrOutput) ImageManifest() pulumi.BoolPtrOutput {
 	}).(pulumi.BoolPtrOutput)
 }
 
+// The cache mode to use. Defaults to `min`.
 func (o CacheToRegistryPtrOutput) Mode() CacheModePtrOutput {
 	return o.ApplyT(func(v *CacheToRegistry) *CacheMode {
 		if v == nil {
@@ -2618,7 +3182,8 @@ func (o CacheToRegistryPtrOutput) Mode() CacheModePtrOutput {
 	}).(CacheModePtrOutput)
 }
 
-// Whether to use OCI mediatypes in exported manifests.
+// Whether to use OCI media types in exported manifests. Defaults to
+// `true`.
 func (o CacheToRegistryPtrOutput) OciMediaTypes() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *CacheToRegistry) *bool {
 		if v == nil {
@@ -2628,7 +3193,7 @@ func (o CacheToRegistryPtrOutput) OciMediaTypes() pulumi.BoolPtrOutput {
 	}).(pulumi.BoolPtrOutput)
 }
 
-// Full name of the cache image to import.
+// Fully qualified name of the cache image to import.
 func (o CacheToRegistryPtrOutput) Ref() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *CacheToRegistry) *string {
 		if v == nil {
@@ -2639,19 +3204,30 @@ func (o CacheToRegistryPtrOutput) Ref() pulumi.StringPtrOutput {
 }
 
 type CacheToS3 struct {
+	// Defaults to `$AWS_ACCESS_KEY_ID`.
 	AccessKeyId *string `pulumi:"accessKeyId"`
+	// Prefix to prepend to blob filenames.
 	BlobsPrefix *string `pulumi:"blobsPrefix"`
-	Bucket      string  `pulumi:"bucket"`
+	// Name of the S3 bucket.
+	Bucket string `pulumi:"bucket"`
+	// Endpoint of the S3 bucket.
 	EndpointUrl *string `pulumi:"endpointUrl"`
 	// Ignore errors caused by failed cache exports.
-	IgnoreError     *bool      `pulumi:"ignoreError"`
-	ManifestsPrefix *string    `pulumi:"manifestsPrefix"`
-	Mode            *CacheMode `pulumi:"mode"`
-	Name            *string    `pulumi:"name"`
-	Region          string     `pulumi:"region"`
-	SecretAccessKey *string    `pulumi:"secretAccessKey"`
-	SessionToken    *string    `pulumi:"sessionToken"`
-	UsePathStyle    *bool      `pulumi:"usePathStyle"`
+	IgnoreError *bool `pulumi:"ignoreError"`
+	// Prefix to prepend on manifest filenames.
+	ManifestsPrefix *string `pulumi:"manifestsPrefix"`
+	// The cache mode to use. Defaults to `min`.
+	Mode *CacheMode `pulumi:"mode"`
+	// Name of the cache image.
+	Name *string `pulumi:"name"`
+	// The geographic location of the bucket. Defaults to `$AWS_REGION`.
+	Region string `pulumi:"region"`
+	// Defaults to `$AWS_SECRET_ACCESS_KEY`.
+	SecretAccessKey *string `pulumi:"secretAccessKey"`
+	// Defaults to `$AWS_SESSION_TOKEN`.
+	SessionToken *string `pulumi:"sessionToken"`
+	// Uses `bucket` in the URL instead of hostname when `true`.
+	UsePathStyle *bool `pulumi:"usePathStyle"`
 }
 
 // Defaults sets the appropriate defaults for CacheToS3
@@ -2706,19 +3282,30 @@ type CacheToS3Input interface {
 }
 
 type CacheToS3Args struct {
+	// Defaults to `$AWS_ACCESS_KEY_ID`.
 	AccessKeyId pulumi.StringPtrInput `pulumi:"accessKeyId"`
+	// Prefix to prepend to blob filenames.
 	BlobsPrefix pulumi.StringPtrInput `pulumi:"blobsPrefix"`
-	Bucket      pulumi.StringInput    `pulumi:"bucket"`
+	// Name of the S3 bucket.
+	Bucket pulumi.StringInput `pulumi:"bucket"`
+	// Endpoint of the S3 bucket.
 	EndpointUrl pulumi.StringPtrInput `pulumi:"endpointUrl"`
 	// Ignore errors caused by failed cache exports.
-	IgnoreError     pulumi.BoolPtrInput   `pulumi:"ignoreError"`
+	IgnoreError pulumi.BoolPtrInput `pulumi:"ignoreError"`
+	// Prefix to prepend on manifest filenames.
 	ManifestsPrefix pulumi.StringPtrInput `pulumi:"manifestsPrefix"`
-	Mode            CacheModePtrInput     `pulumi:"mode"`
-	Name            pulumi.StringPtrInput `pulumi:"name"`
-	Region          pulumi.StringInput    `pulumi:"region"`
+	// The cache mode to use. Defaults to `min`.
+	Mode CacheModePtrInput `pulumi:"mode"`
+	// Name of the cache image.
+	Name pulumi.StringPtrInput `pulumi:"name"`
+	// The geographic location of the bucket. Defaults to `$AWS_REGION`.
+	Region pulumi.StringInput `pulumi:"region"`
+	// Defaults to `$AWS_SECRET_ACCESS_KEY`.
 	SecretAccessKey pulumi.StringPtrInput `pulumi:"secretAccessKey"`
-	SessionToken    pulumi.StringPtrInput `pulumi:"sessionToken"`
-	UsePathStyle    pulumi.BoolPtrInput   `pulumi:"usePathStyle"`
+	// Defaults to `$AWS_SESSION_TOKEN`.
+	SessionToken pulumi.StringPtrInput `pulumi:"sessionToken"`
+	// Uses `bucket` in the URL instead of hostname when `true`.
+	UsePathStyle pulumi.BoolPtrInput `pulumi:"usePathStyle"`
 }
 
 // Defaults sets the appropriate defaults for CacheToS3Args
@@ -2832,18 +3419,22 @@ func (o CacheToS3Output) ToCacheToS3PtrOutputWithContext(ctx context.Context) Ca
 	}).(CacheToS3PtrOutput)
 }
 
+// Defaults to `$AWS_ACCESS_KEY_ID`.
 func (o CacheToS3Output) AccessKeyId() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v CacheToS3) *string { return v.AccessKeyId }).(pulumi.StringPtrOutput)
 }
 
+// Prefix to prepend to blob filenames.
 func (o CacheToS3Output) BlobsPrefix() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v CacheToS3) *string { return v.BlobsPrefix }).(pulumi.StringPtrOutput)
 }
 
+// Name of the S3 bucket.
 func (o CacheToS3Output) Bucket() pulumi.StringOutput {
 	return o.ApplyT(func(v CacheToS3) string { return v.Bucket }).(pulumi.StringOutput)
 }
 
+// Endpoint of the S3 bucket.
 func (o CacheToS3Output) EndpointUrl() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v CacheToS3) *string { return v.EndpointUrl }).(pulumi.StringPtrOutput)
 }
@@ -2853,30 +3444,37 @@ func (o CacheToS3Output) IgnoreError() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v CacheToS3) *bool { return v.IgnoreError }).(pulumi.BoolPtrOutput)
 }
 
+// Prefix to prepend on manifest filenames.
 func (o CacheToS3Output) ManifestsPrefix() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v CacheToS3) *string { return v.ManifestsPrefix }).(pulumi.StringPtrOutput)
 }
 
+// The cache mode to use. Defaults to `min`.
 func (o CacheToS3Output) Mode() CacheModePtrOutput {
 	return o.ApplyT(func(v CacheToS3) *CacheMode { return v.Mode }).(CacheModePtrOutput)
 }
 
+// Name of the cache image.
 func (o CacheToS3Output) Name() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v CacheToS3) *string { return v.Name }).(pulumi.StringPtrOutput)
 }
 
+// The geographic location of the bucket. Defaults to `$AWS_REGION`.
 func (o CacheToS3Output) Region() pulumi.StringOutput {
 	return o.ApplyT(func(v CacheToS3) string { return v.Region }).(pulumi.StringOutput)
 }
 
+// Defaults to `$AWS_SECRET_ACCESS_KEY`.
 func (o CacheToS3Output) SecretAccessKey() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v CacheToS3) *string { return v.SecretAccessKey }).(pulumi.StringPtrOutput)
 }
 
+// Defaults to `$AWS_SESSION_TOKEN`.
 func (o CacheToS3Output) SessionToken() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v CacheToS3) *string { return v.SessionToken }).(pulumi.StringPtrOutput)
 }
 
+// Uses `bucket` in the URL instead of hostname when `true`.
 func (o CacheToS3Output) UsePathStyle() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v CacheToS3) *bool { return v.UsePathStyle }).(pulumi.BoolPtrOutput)
 }
@@ -2905,6 +3503,7 @@ func (o CacheToS3PtrOutput) Elem() CacheToS3Output {
 	}).(CacheToS3Output)
 }
 
+// Defaults to `$AWS_ACCESS_KEY_ID`.
 func (o CacheToS3PtrOutput) AccessKeyId() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *CacheToS3) *string {
 		if v == nil {
@@ -2914,6 +3513,7 @@ func (o CacheToS3PtrOutput) AccessKeyId() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
+// Prefix to prepend to blob filenames.
 func (o CacheToS3PtrOutput) BlobsPrefix() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *CacheToS3) *string {
 		if v == nil {
@@ -2923,6 +3523,7 @@ func (o CacheToS3PtrOutput) BlobsPrefix() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
+// Name of the S3 bucket.
 func (o CacheToS3PtrOutput) Bucket() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *CacheToS3) *string {
 		if v == nil {
@@ -2932,6 +3533,7 @@ func (o CacheToS3PtrOutput) Bucket() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
+// Endpoint of the S3 bucket.
 func (o CacheToS3PtrOutput) EndpointUrl() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *CacheToS3) *string {
 		if v == nil {
@@ -2951,6 +3553,7 @@ func (o CacheToS3PtrOutput) IgnoreError() pulumi.BoolPtrOutput {
 	}).(pulumi.BoolPtrOutput)
 }
 
+// Prefix to prepend on manifest filenames.
 func (o CacheToS3PtrOutput) ManifestsPrefix() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *CacheToS3) *string {
 		if v == nil {
@@ -2960,6 +3563,7 @@ func (o CacheToS3PtrOutput) ManifestsPrefix() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
+// The cache mode to use. Defaults to `min`.
 func (o CacheToS3PtrOutput) Mode() CacheModePtrOutput {
 	return o.ApplyT(func(v *CacheToS3) *CacheMode {
 		if v == nil {
@@ -2969,6 +3573,7 @@ func (o CacheToS3PtrOutput) Mode() CacheModePtrOutput {
 	}).(CacheModePtrOutput)
 }
 
+// Name of the cache image.
 func (o CacheToS3PtrOutput) Name() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *CacheToS3) *string {
 		if v == nil {
@@ -2978,6 +3583,7 @@ func (o CacheToS3PtrOutput) Name() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
+// The geographic location of the bucket. Defaults to `$AWS_REGION`.
 func (o CacheToS3PtrOutput) Region() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *CacheToS3) *string {
 		if v == nil {
@@ -2987,6 +3593,7 @@ func (o CacheToS3PtrOutput) Region() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
+// Defaults to `$AWS_SECRET_ACCESS_KEY`.
 func (o CacheToS3PtrOutput) SecretAccessKey() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *CacheToS3) *string {
 		if v == nil {
@@ -2996,6 +3603,7 @@ func (o CacheToS3PtrOutput) SecretAccessKey() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
+// Defaults to `$AWS_SESSION_TOKEN`.
 func (o CacheToS3PtrOutput) SessionToken() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *CacheToS3) *string {
 		if v == nil {
@@ -3005,6 +3613,7 @@ func (o CacheToS3PtrOutput) SessionToken() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
+// Uses `bucket` in the URL instead of hostname when `true`.
 func (o CacheToS3PtrOutput) UsePathStyle() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *CacheToS3) *bool {
 		if v == nil {
@@ -3014,7 +3623,322 @@ func (o CacheToS3PtrOutput) UsePathStyle() pulumi.BoolPtrOutput {
 	}).(pulumi.BoolPtrOutput)
 }
 
+type Context struct {
+	// Resources to use for build context.
+	//
+	// The location can be:
+	// * A relative or absolute path to a local directory (`.`, `./app`,
+	//   `/app`, etc.).
+	// * A remote URL of a Git repository, tarball, or plain text file
+	//   (`https://github.com/user/myrepo.git`, `http://server/context.tar.gz`,
+	//   etc.).
+	Location string `pulumi:"location"`
+}
+
+// ContextInput is an input type that accepts ContextArgs and ContextOutput values.
+// You can construct a concrete instance of `ContextInput` via:
+//
+//	ContextArgs{...}
+type ContextInput interface {
+	pulumi.Input
+
+	ToContextOutput() ContextOutput
+	ToContextOutputWithContext(context.Context) ContextOutput
+}
+
+type ContextArgs struct {
+	// Resources to use for build context.
+	//
+	// The location can be:
+	// * A relative or absolute path to a local directory (`.`, `./app`,
+	//   `/app`, etc.).
+	// * A remote URL of a Git repository, tarball, or plain text file
+	//   (`https://github.com/user/myrepo.git`, `http://server/context.tar.gz`,
+	//   etc.).
+	Location pulumi.StringInput `pulumi:"location"`
+}
+
+func (ContextArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*Context)(nil)).Elem()
+}
+
+func (i ContextArgs) ToContextOutput() ContextOutput {
+	return i.ToContextOutputWithContext(context.Background())
+}
+
+func (i ContextArgs) ToContextOutputWithContext(ctx context.Context) ContextOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ContextOutput)
+}
+
+// ContextMapInput is an input type that accepts ContextMap and ContextMapOutput values.
+// You can construct a concrete instance of `ContextMapInput` via:
+//
+//	ContextMap{ "key": ContextArgs{...} }
+type ContextMapInput interface {
+	pulumi.Input
+
+	ToContextMapOutput() ContextMapOutput
+	ToContextMapOutputWithContext(context.Context) ContextMapOutput
+}
+
+type ContextMap map[string]ContextInput
+
+func (ContextMap) ElementType() reflect.Type {
+	return reflect.TypeOf((*map[string]Context)(nil)).Elem()
+}
+
+func (i ContextMap) ToContextMapOutput() ContextMapOutput {
+	return i.ToContextMapOutputWithContext(context.Background())
+}
+
+func (i ContextMap) ToContextMapOutputWithContext(ctx context.Context) ContextMapOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ContextMapOutput)
+}
+
+type ContextOutput struct{ *pulumi.OutputState }
+
+func (ContextOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*Context)(nil)).Elem()
+}
+
+func (o ContextOutput) ToContextOutput() ContextOutput {
+	return o
+}
+
+func (o ContextOutput) ToContextOutputWithContext(ctx context.Context) ContextOutput {
+	return o
+}
+
+// Resources to use for build context.
+//
+// The location can be:
+//   - A relative or absolute path to a local directory (`.`, `./app`,
+//     `/app`, etc.).
+//   - A remote URL of a Git repository, tarball, or plain text file
+//     (`https://github.com/user/myrepo.git`, `http://server/context.tar.gz`,
+//     etc.).
+func (o ContextOutput) Location() pulumi.StringOutput {
+	return o.ApplyT(func(v Context) string { return v.Location }).(pulumi.StringOutput)
+}
+
+type ContextMapOutput struct{ *pulumi.OutputState }
+
+func (ContextMapOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*map[string]Context)(nil)).Elem()
+}
+
+func (o ContextMapOutput) ToContextMapOutput() ContextMapOutput {
+	return o
+}
+
+func (o ContextMapOutput) ToContextMapOutputWithContext(ctx context.Context) ContextMapOutput {
+	return o
+}
+
+func (o ContextMapOutput) MapIndex(k pulumi.StringInput) ContextOutput {
+	return pulumi.All(o, k).ApplyT(func(vs []interface{}) Context {
+		return vs[0].(map[string]Context)[vs[1].(string)]
+	}).(ContextOutput)
+}
+
+type Dockerfile struct {
+	// Raw Dockerfile contents.
+	//
+	// Conflicts with `location`.
+	//
+	// Equivalent to invoking Docker with `-f -`.
+	Inline *string `pulumi:"inline"`
+	// Location of the Dockerfile to use.
+	//
+	// Can be a relative or absolute path to a local file, or a remote URL.
+	//
+	// Defaults to `${context.location}/Dockerfile` if context is on-disk.
+	//
+	// Conflicts with `inline`.
+	Location *string `pulumi:"location"`
+}
+
+// DockerfileInput is an input type that accepts DockerfileArgs and DockerfileOutput values.
+// You can construct a concrete instance of `DockerfileInput` via:
+//
+//	DockerfileArgs{...}
+type DockerfileInput interface {
+	pulumi.Input
+
+	ToDockerfileOutput() DockerfileOutput
+	ToDockerfileOutputWithContext(context.Context) DockerfileOutput
+}
+
+type DockerfileArgs struct {
+	// Raw Dockerfile contents.
+	//
+	// Conflicts with `location`.
+	//
+	// Equivalent to invoking Docker with `-f -`.
+	Inline pulumi.StringPtrInput `pulumi:"inline"`
+	// Location of the Dockerfile to use.
+	//
+	// Can be a relative or absolute path to a local file, or a remote URL.
+	//
+	// Defaults to `${context.location}/Dockerfile` if context is on-disk.
+	//
+	// Conflicts with `inline`.
+	Location pulumi.StringPtrInput `pulumi:"location"`
+}
+
+func (DockerfileArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*Dockerfile)(nil)).Elem()
+}
+
+func (i DockerfileArgs) ToDockerfileOutput() DockerfileOutput {
+	return i.ToDockerfileOutputWithContext(context.Background())
+}
+
+func (i DockerfileArgs) ToDockerfileOutputWithContext(ctx context.Context) DockerfileOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(DockerfileOutput)
+}
+
+func (i DockerfileArgs) ToDockerfilePtrOutput() DockerfilePtrOutput {
+	return i.ToDockerfilePtrOutputWithContext(context.Background())
+}
+
+func (i DockerfileArgs) ToDockerfilePtrOutputWithContext(ctx context.Context) DockerfilePtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(DockerfileOutput).ToDockerfilePtrOutputWithContext(ctx)
+}
+
+// DockerfilePtrInput is an input type that accepts DockerfileArgs, DockerfilePtr and DockerfilePtrOutput values.
+// You can construct a concrete instance of `DockerfilePtrInput` via:
+//
+//	        DockerfileArgs{...}
+//
+//	or:
+//
+//	        nil
+type DockerfilePtrInput interface {
+	pulumi.Input
+
+	ToDockerfilePtrOutput() DockerfilePtrOutput
+	ToDockerfilePtrOutputWithContext(context.Context) DockerfilePtrOutput
+}
+
+type dockerfilePtrType DockerfileArgs
+
+func DockerfilePtr(v *DockerfileArgs) DockerfilePtrInput {
+	return (*dockerfilePtrType)(v)
+}
+
+func (*dockerfilePtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**Dockerfile)(nil)).Elem()
+}
+
+func (i *dockerfilePtrType) ToDockerfilePtrOutput() DockerfilePtrOutput {
+	return i.ToDockerfilePtrOutputWithContext(context.Background())
+}
+
+func (i *dockerfilePtrType) ToDockerfilePtrOutputWithContext(ctx context.Context) DockerfilePtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(DockerfilePtrOutput)
+}
+
+type DockerfileOutput struct{ *pulumi.OutputState }
+
+func (DockerfileOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*Dockerfile)(nil)).Elem()
+}
+
+func (o DockerfileOutput) ToDockerfileOutput() DockerfileOutput {
+	return o
+}
+
+func (o DockerfileOutput) ToDockerfileOutputWithContext(ctx context.Context) DockerfileOutput {
+	return o
+}
+
+func (o DockerfileOutput) ToDockerfilePtrOutput() DockerfilePtrOutput {
+	return o.ToDockerfilePtrOutputWithContext(context.Background())
+}
+
+func (o DockerfileOutput) ToDockerfilePtrOutputWithContext(ctx context.Context) DockerfilePtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v Dockerfile) *Dockerfile {
+		return &v
+	}).(DockerfilePtrOutput)
+}
+
+// Raw Dockerfile contents.
+//
+// Conflicts with `location`.
+//
+// Equivalent to invoking Docker with `-f -`.
+func (o DockerfileOutput) Inline() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v Dockerfile) *string { return v.Inline }).(pulumi.StringPtrOutput)
+}
+
+// Location of the Dockerfile to use.
+//
+// Can be a relative or absolute path to a local file, or a remote URL.
+//
+// Defaults to `${context.location}/Dockerfile` if context is on-disk.
+//
+// Conflicts with `inline`.
+func (o DockerfileOutput) Location() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v Dockerfile) *string { return v.Location }).(pulumi.StringPtrOutput)
+}
+
+type DockerfilePtrOutput struct{ *pulumi.OutputState }
+
+func (DockerfilePtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**Dockerfile)(nil)).Elem()
+}
+
+func (o DockerfilePtrOutput) ToDockerfilePtrOutput() DockerfilePtrOutput {
+	return o
+}
+
+func (o DockerfilePtrOutput) ToDockerfilePtrOutputWithContext(ctx context.Context) DockerfilePtrOutput {
+	return o
+}
+
+func (o DockerfilePtrOutput) Elem() DockerfileOutput {
+	return o.ApplyT(func(v *Dockerfile) Dockerfile {
+		if v != nil {
+			return *v
+		}
+		var ret Dockerfile
+		return ret
+	}).(DockerfileOutput)
+}
+
+// Raw Dockerfile contents.
+//
+// Conflicts with `location`.
+//
+// Equivalent to invoking Docker with `-f -`.
+func (o DockerfilePtrOutput) Inline() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *Dockerfile) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Inline
+	}).(pulumi.StringPtrOutput)
+}
+
+// Location of the Dockerfile to use.
+//
+// Can be a relative or absolute path to a local file, or a remote URL.
+//
+// Defaults to `${context.location}/Dockerfile` if context is on-disk.
+//
+// Conflicts with `inline`.
+func (o DockerfilePtrOutput) Location() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *Dockerfile) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Location
+	}).(pulumi.StringPtrOutput)
+}
+
 type ExportDocker struct {
+	// Attach an arbitrary key/value annotation to the image.
 	Annotations map[string]string `pulumi:"annotations"`
 	// The compression type to use.
 	Compression *CompressionType `pulumi:"compression"`
@@ -3073,6 +3997,7 @@ type ExportDockerInput interface {
 }
 
 type ExportDockerArgs struct {
+	// Attach an arbitrary key/value annotation to the image.
 	Annotations pulumi.StringMapInput `pulumi:"annotations"`
 	// The compression type to use.
 	Compression CompressionTypePtrInput `pulumi:"compression"`
@@ -3190,6 +4115,7 @@ func (o ExportDockerOutput) ToExportDockerPtrOutputWithContext(ctx context.Conte
 	}).(ExportDockerPtrOutput)
 }
 
+// Attach an arbitrary key/value annotation to the image.
 func (o ExportDockerOutput) Annotations() pulumi.StringMapOutput {
 	return o.ApplyT(func(v ExportDocker) map[string]string { return v.Annotations }).(pulumi.StringMapOutput)
 }
@@ -3253,6 +4179,7 @@ func (o ExportDockerPtrOutput) Elem() ExportDockerOutput {
 	}).(ExportDockerOutput)
 }
 
+// Attach an arbitrary key/value annotation to the image.
 func (o ExportDockerPtrOutput) Annotations() pulumi.StringMapOutput {
 	return o.ApplyT(func(v *ExportDocker) map[string]string {
 		if v == nil {
@@ -3333,7 +4260,7 @@ func (o ExportDockerPtrOutput) Tar() pulumi.BoolPtrOutput {
 }
 
 type ExportEntry struct {
-	// When "true" this entry will be excluded. Defaults to "false".
+	// When `true` this entry will be excluded. Defaults to `false`.
 	Disabled *bool `pulumi:"disabled"`
 	// Export as a Docker image layout.
 	Docker *ExportDocker `pulumi:"docker"`
@@ -3341,10 +4268,13 @@ type ExportEntry struct {
 	Image *ExportImage `pulumi:"image"`
 	// Export to a local directory as files and directories.
 	Local *ExportLocal `pulumi:"local"`
+	// An output property populated for exporters that pushed image
+	// manifest(s) to a registry.
+	Manifests []Manifest `pulumi:"manifests"`
 	// Identical to the Docker exporter but uses OCI media types by default.
 	Oci *ExportOCI `pulumi:"oci"`
 	// A raw string as you would provide it to the Docker CLI (e.g.,
-	// "type=docker")
+	// `type=docker`)
 	Raw *string `pulumi:"raw"`
 	// Identical to the Image exporter, but pushes by default.
 	Registry *ExportRegistry `pulumi:"registry"`
@@ -3381,7 +4311,7 @@ type ExportEntryInput interface {
 }
 
 type ExportEntryArgs struct {
-	// When "true" this entry will be excluded. Defaults to "false".
+	// When `true` this entry will be excluded. Defaults to `false`.
 	Disabled pulumi.BoolPtrInput `pulumi:"disabled"`
 	// Export as a Docker image layout.
 	Docker ExportDockerPtrInput `pulumi:"docker"`
@@ -3389,10 +4319,13 @@ type ExportEntryArgs struct {
 	Image ExportImagePtrInput `pulumi:"image"`
 	// Export to a local directory as files and directories.
 	Local ExportLocalPtrInput `pulumi:"local"`
+	// An output property populated for exporters that pushed image
+	// manifest(s) to a registry.
+	Manifests ManifestArrayInput `pulumi:"manifests"`
 	// Identical to the Docker exporter but uses OCI media types by default.
 	Oci ExportOCIPtrInput `pulumi:"oci"`
 	// A raw string as you would provide it to the Docker CLI (e.g.,
-	// "type=docker")
+	// `type=docker`)
 	Raw pulumi.StringPtrInput `pulumi:"raw"`
 	// Identical to the Image exporter, but pushes by default.
 	Registry ExportRegistryPtrInput `pulumi:"registry"`
@@ -3460,7 +4393,7 @@ func (o ExportEntryOutput) ToExportEntryOutputWithContext(ctx context.Context) E
 	return o
 }
 
-// When "true" this entry will be excluded. Defaults to "false".
+// When `true` this entry will be excluded. Defaults to `false`.
 func (o ExportEntryOutput) Disabled() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v ExportEntry) *bool { return v.Disabled }).(pulumi.BoolPtrOutput)
 }
@@ -3480,13 +4413,19 @@ func (o ExportEntryOutput) Local() ExportLocalPtrOutput {
 	return o.ApplyT(func(v ExportEntry) *ExportLocal { return v.Local }).(ExportLocalPtrOutput)
 }
 
+// An output property populated for exporters that pushed image
+// manifest(s) to a registry.
+func (o ExportEntryOutput) Manifests() ManifestArrayOutput {
+	return o.ApplyT(func(v ExportEntry) []Manifest { return v.Manifests }).(ManifestArrayOutput)
+}
+
 // Identical to the Docker exporter but uses OCI media types by default.
 func (o ExportEntryOutput) Oci() ExportOCIPtrOutput {
 	return o.ApplyT(func(v ExportEntry) *ExportOCI { return v.Oci }).(ExportOCIPtrOutput)
 }
 
 // A raw string as you would provide it to the Docker CLI (e.g.,
-// "type=docker")
+// `type=docker`)
 func (o ExportEntryOutput) Raw() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ExportEntry) *string { return v.Raw }).(pulumi.StringPtrOutput)
 }
@@ -3522,27 +4461,38 @@ func (o ExportEntryArrayOutput) Index(i pulumi.IntInput) ExportEntryOutput {
 }
 
 type ExportImage struct {
+	// Attach an arbitrary key/value annotation to the image.
 	Annotations map[string]string `pulumi:"annotations"`
 	// The compression type to use.
 	Compression *CompressionType `pulumi:"compression"`
 	// Compression level from 0 to 22.
-	CompressionLevel   *int    `pulumi:"compressionLevel"`
+	CompressionLevel *int `pulumi:"compressionLevel"`
+	// Name image with `prefix@<digest>`, used for anonymous images.
 	DanglingNamePrefix *string `pulumi:"danglingNamePrefix"`
 	// Forcefully apply compression.
 	ForceCompression *bool `pulumi:"forceCompression"`
-	Insecure         *bool `pulumi:"insecure"`
-	NameCanonical    *bool `pulumi:"nameCanonical"`
+	// Allow pushing to an insecure registry.
+	Insecure *bool `pulumi:"insecure"`
+	// Add additional canonical name (`name@<digest>`).
+	NameCanonical *bool `pulumi:"nameCanonical"`
 	// Specify images names to export. This is overridden if tags are already specified.
 	Names []string `pulumi:"names"`
 	// Use OCI media types in exporter manifests.
 	OciMediaTypes *bool `pulumi:"ociMediaTypes"`
 	// Push after creating the image.
-	Push         *bool `pulumi:"push"`
+	Push *bool `pulumi:"push"`
+	// Push image without name.
 	PushByDigest *bool `pulumi:"pushByDigest"`
-	// Store resulting images to the worker's image store, and ensure all its
-	// blobs are in the content store. Ignored if the worker doesn't have
-	// image store (when using OCI workers, for example).
-	Store  *bool `pulumi:"store"`
+	// Store resulting images to the worker's image store and ensure all of
+	// its blobs are in the content store.
+	//
+	// Defaults to `true`.
+	//
+	// Ignored if the worker doesn't have image store (when using OCI workers,
+	// for example).
+	Store *bool `pulumi:"store"`
+	// Unpack image after creation (for use with containerd). Defaults to
+	// `false`.
 	Unpack *bool `pulumi:"unpack"`
 }
 
@@ -3587,27 +4537,38 @@ type ExportImageInput interface {
 }
 
 type ExportImageArgs struct {
+	// Attach an arbitrary key/value annotation to the image.
 	Annotations pulumi.StringMapInput `pulumi:"annotations"`
 	// The compression type to use.
 	Compression CompressionTypePtrInput `pulumi:"compression"`
 	// Compression level from 0 to 22.
-	CompressionLevel   pulumi.IntPtrInput    `pulumi:"compressionLevel"`
+	CompressionLevel pulumi.IntPtrInput `pulumi:"compressionLevel"`
+	// Name image with `prefix@<digest>`, used for anonymous images.
 	DanglingNamePrefix pulumi.StringPtrInput `pulumi:"danglingNamePrefix"`
 	// Forcefully apply compression.
 	ForceCompression pulumi.BoolPtrInput `pulumi:"forceCompression"`
-	Insecure         pulumi.BoolPtrInput `pulumi:"insecure"`
-	NameCanonical    pulumi.BoolPtrInput `pulumi:"nameCanonical"`
+	// Allow pushing to an insecure registry.
+	Insecure pulumi.BoolPtrInput `pulumi:"insecure"`
+	// Add additional canonical name (`name@<digest>`).
+	NameCanonical pulumi.BoolPtrInput `pulumi:"nameCanonical"`
 	// Specify images names to export. This is overridden if tags are already specified.
 	Names pulumi.StringArrayInput `pulumi:"names"`
 	// Use OCI media types in exporter manifests.
 	OciMediaTypes pulumi.BoolPtrInput `pulumi:"ociMediaTypes"`
 	// Push after creating the image.
-	Push         pulumi.BoolPtrInput `pulumi:"push"`
+	Push pulumi.BoolPtrInput `pulumi:"push"`
+	// Push image without name.
 	PushByDigest pulumi.BoolPtrInput `pulumi:"pushByDigest"`
-	// Store resulting images to the worker's image store, and ensure all its
-	// blobs are in the content store. Ignored if the worker doesn't have
-	// image store (when using OCI workers, for example).
-	Store  pulumi.BoolPtrInput `pulumi:"store"`
+	// Store resulting images to the worker's image store and ensure all of
+	// its blobs are in the content store.
+	//
+	// Defaults to `true`.
+	//
+	// Ignored if the worker doesn't have image store (when using OCI workers,
+	// for example).
+	Store pulumi.BoolPtrInput `pulumi:"store"`
+	// Unpack image after creation (for use with containerd). Defaults to
+	// `false`.
 	Unpack pulumi.BoolPtrInput `pulumi:"unpack"`
 }
 
@@ -3711,6 +4672,7 @@ func (o ExportImageOutput) ToExportImagePtrOutputWithContext(ctx context.Context
 	}).(ExportImagePtrOutput)
 }
 
+// Attach an arbitrary key/value annotation to the image.
 func (o ExportImageOutput) Annotations() pulumi.StringMapOutput {
 	return o.ApplyT(func(v ExportImage) map[string]string { return v.Annotations }).(pulumi.StringMapOutput)
 }
@@ -3725,6 +4687,7 @@ func (o ExportImageOutput) CompressionLevel() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v ExportImage) *int { return v.CompressionLevel }).(pulumi.IntPtrOutput)
 }
 
+// Name image with `prefix@<digest>`, used for anonymous images.
 func (o ExportImageOutput) DanglingNamePrefix() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ExportImage) *string { return v.DanglingNamePrefix }).(pulumi.StringPtrOutput)
 }
@@ -3734,10 +4697,12 @@ func (o ExportImageOutput) ForceCompression() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v ExportImage) *bool { return v.ForceCompression }).(pulumi.BoolPtrOutput)
 }
 
+// Allow pushing to an insecure registry.
 func (o ExportImageOutput) Insecure() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v ExportImage) *bool { return v.Insecure }).(pulumi.BoolPtrOutput)
 }
 
+// Add additional canonical name (`name@<digest>`).
 func (o ExportImageOutput) NameCanonical() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v ExportImage) *bool { return v.NameCanonical }).(pulumi.BoolPtrOutput)
 }
@@ -3757,17 +4722,24 @@ func (o ExportImageOutput) Push() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v ExportImage) *bool { return v.Push }).(pulumi.BoolPtrOutput)
 }
 
+// Push image without name.
 func (o ExportImageOutput) PushByDigest() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v ExportImage) *bool { return v.PushByDigest }).(pulumi.BoolPtrOutput)
 }
 
-// Store resulting images to the worker's image store, and ensure all its
-// blobs are in the content store. Ignored if the worker doesn't have
-// image store (when using OCI workers, for example).
+// Store resulting images to the worker's image store and ensure all of
+// its blobs are in the content store.
+//
+// Defaults to `true`.
+//
+// Ignored if the worker doesn't have image store (when using OCI workers,
+// for example).
 func (o ExportImageOutput) Store() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v ExportImage) *bool { return v.Store }).(pulumi.BoolPtrOutput)
 }
 
+// Unpack image after creation (for use with containerd). Defaults to
+// `false`.
 func (o ExportImageOutput) Unpack() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v ExportImage) *bool { return v.Unpack }).(pulumi.BoolPtrOutput)
 }
@@ -3796,6 +4768,7 @@ func (o ExportImagePtrOutput) Elem() ExportImageOutput {
 	}).(ExportImageOutput)
 }
 
+// Attach an arbitrary key/value annotation to the image.
 func (o ExportImagePtrOutput) Annotations() pulumi.StringMapOutput {
 	return o.ApplyT(func(v *ExportImage) map[string]string {
 		if v == nil {
@@ -3825,6 +4798,7 @@ func (o ExportImagePtrOutput) CompressionLevel() pulumi.IntPtrOutput {
 	}).(pulumi.IntPtrOutput)
 }
 
+// Name image with `prefix@<digest>`, used for anonymous images.
 func (o ExportImagePtrOutput) DanglingNamePrefix() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *ExportImage) *string {
 		if v == nil {
@@ -3844,6 +4818,7 @@ func (o ExportImagePtrOutput) ForceCompression() pulumi.BoolPtrOutput {
 	}).(pulumi.BoolPtrOutput)
 }
 
+// Allow pushing to an insecure registry.
 func (o ExportImagePtrOutput) Insecure() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *ExportImage) *bool {
 		if v == nil {
@@ -3853,6 +4828,7 @@ func (o ExportImagePtrOutput) Insecure() pulumi.BoolPtrOutput {
 	}).(pulumi.BoolPtrOutput)
 }
 
+// Add additional canonical name (`name@<digest>`).
 func (o ExportImagePtrOutput) NameCanonical() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *ExportImage) *bool {
 		if v == nil {
@@ -3892,6 +4868,7 @@ func (o ExportImagePtrOutput) Push() pulumi.BoolPtrOutput {
 	}).(pulumi.BoolPtrOutput)
 }
 
+// Push image without name.
 func (o ExportImagePtrOutput) PushByDigest() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *ExportImage) *bool {
 		if v == nil {
@@ -3901,9 +4878,13 @@ func (o ExportImagePtrOutput) PushByDigest() pulumi.BoolPtrOutput {
 	}).(pulumi.BoolPtrOutput)
 }
 
-// Store resulting images to the worker's image store, and ensure all its
-// blobs are in the content store. Ignored if the worker doesn't have
-// image store (when using OCI workers, for example).
+// Store resulting images to the worker's image store and ensure all of
+// its blobs are in the content store.
+//
+// Defaults to `true`.
+//
+// Ignored if the worker doesn't have image store (when using OCI workers,
+// for example).
 func (o ExportImagePtrOutput) Store() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *ExportImage) *bool {
 		if v == nil {
@@ -3913,6 +4894,8 @@ func (o ExportImagePtrOutput) Store() pulumi.BoolPtrOutput {
 	}).(pulumi.BoolPtrOutput)
 }
 
+// Unpack image after creation (for use with containerd). Defaults to
+// `false`.
 func (o ExportImagePtrOutput) Unpack() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *ExportImage) *bool {
 		if v == nil {
@@ -4060,6 +5043,7 @@ func (o ExportLocalPtrOutput) Dest() pulumi.StringPtrOutput {
 }
 
 type ExportOCI struct {
+	// Attach an arbitrary key/value annotation to the image.
 	Annotations map[string]string `pulumi:"annotations"`
 	// The compression type to use.
 	Compression *CompressionType `pulumi:"compression"`
@@ -4118,6 +5102,7 @@ type ExportOCIInput interface {
 }
 
 type ExportOCIArgs struct {
+	// Attach an arbitrary key/value annotation to the image.
 	Annotations pulumi.StringMapInput `pulumi:"annotations"`
 	// The compression type to use.
 	Compression CompressionTypePtrInput `pulumi:"compression"`
@@ -4235,6 +5220,7 @@ func (o ExportOCIOutput) ToExportOCIPtrOutputWithContext(ctx context.Context) Ex
 	}).(ExportOCIPtrOutput)
 }
 
+// Attach an arbitrary key/value annotation to the image.
 func (o ExportOCIOutput) Annotations() pulumi.StringMapOutput {
 	return o.ApplyT(func(v ExportOCI) map[string]string { return v.Annotations }).(pulumi.StringMapOutput)
 }
@@ -4298,6 +5284,7 @@ func (o ExportOCIPtrOutput) Elem() ExportOCIOutput {
 	}).(ExportOCIOutput)
 }
 
+// Attach an arbitrary key/value annotation to the image.
 func (o ExportOCIPtrOutput) Annotations() pulumi.StringMapOutput {
 	return o.ApplyT(func(v *ExportOCI) map[string]string {
 		if v == nil {
@@ -4378,27 +5365,38 @@ func (o ExportOCIPtrOutput) Tar() pulumi.BoolPtrOutput {
 }
 
 type ExportRegistry struct {
+	// Attach an arbitrary key/value annotation to the image.
 	Annotations map[string]string `pulumi:"annotations"`
 	// The compression type to use.
 	Compression *CompressionType `pulumi:"compression"`
 	// Compression level from 0 to 22.
-	CompressionLevel   *int    `pulumi:"compressionLevel"`
+	CompressionLevel *int `pulumi:"compressionLevel"`
+	// Name image with `prefix@<digest>`, used for anonymous images.
 	DanglingNamePrefix *string `pulumi:"danglingNamePrefix"`
 	// Forcefully apply compression.
 	ForceCompression *bool `pulumi:"forceCompression"`
-	Insecure         *bool `pulumi:"insecure"`
-	NameCanonical    *bool `pulumi:"nameCanonical"`
+	// Allow pushing to an insecure registry.
+	Insecure *bool `pulumi:"insecure"`
+	// Add additional canonical name (`name@<digest>`).
+	NameCanonical *bool `pulumi:"nameCanonical"`
 	// Specify images names to export. This is overridden if tags are already specified.
 	Names []string `pulumi:"names"`
 	// Use OCI media types in exporter manifests.
 	OciMediaTypes *bool `pulumi:"ociMediaTypes"`
 	// Push after creating the image.
-	Push         *bool `pulumi:"push"`
+	Push *bool `pulumi:"push"`
+	// Push image without name.
 	PushByDigest *bool `pulumi:"pushByDigest"`
-	// Store resulting images to the worker's image store, and ensure all its
-	// blobs are in the content store. Ignored if the worker doesn't have
-	// image store (when using OCI workers, for example).
-	Store  *bool `pulumi:"store"`
+	// Store resulting images to the worker's image store and ensure all of
+	// its blobs are in the content store.
+	//
+	// Defaults to `true`.
+	//
+	// Ignored if the worker doesn't have image store (when using OCI workers,
+	// for example).
+	Store *bool `pulumi:"store"`
+	// Unpack image after creation (for use with containerd). Defaults to
+	// `false`.
 	Unpack *bool `pulumi:"unpack"`
 }
 
@@ -4447,27 +5445,38 @@ type ExportRegistryInput interface {
 }
 
 type ExportRegistryArgs struct {
+	// Attach an arbitrary key/value annotation to the image.
 	Annotations pulumi.StringMapInput `pulumi:"annotations"`
 	// The compression type to use.
 	Compression CompressionTypePtrInput `pulumi:"compression"`
 	// Compression level from 0 to 22.
-	CompressionLevel   pulumi.IntPtrInput    `pulumi:"compressionLevel"`
+	CompressionLevel pulumi.IntPtrInput `pulumi:"compressionLevel"`
+	// Name image with `prefix@<digest>`, used for anonymous images.
 	DanglingNamePrefix pulumi.StringPtrInput `pulumi:"danglingNamePrefix"`
 	// Forcefully apply compression.
 	ForceCompression pulumi.BoolPtrInput `pulumi:"forceCompression"`
-	Insecure         pulumi.BoolPtrInput `pulumi:"insecure"`
-	NameCanonical    pulumi.BoolPtrInput `pulumi:"nameCanonical"`
+	// Allow pushing to an insecure registry.
+	Insecure pulumi.BoolPtrInput `pulumi:"insecure"`
+	// Add additional canonical name (`name@<digest>`).
+	NameCanonical pulumi.BoolPtrInput `pulumi:"nameCanonical"`
 	// Specify images names to export. This is overridden if tags are already specified.
 	Names pulumi.StringArrayInput `pulumi:"names"`
 	// Use OCI media types in exporter manifests.
 	OciMediaTypes pulumi.BoolPtrInput `pulumi:"ociMediaTypes"`
 	// Push after creating the image.
-	Push         pulumi.BoolPtrInput `pulumi:"push"`
+	Push pulumi.BoolPtrInput `pulumi:"push"`
+	// Push image without name.
 	PushByDigest pulumi.BoolPtrInput `pulumi:"pushByDigest"`
-	// Store resulting images to the worker's image store, and ensure all its
-	// blobs are in the content store. Ignored if the worker doesn't have
-	// image store (when using OCI workers, for example).
-	Store  pulumi.BoolPtrInput `pulumi:"store"`
+	// Store resulting images to the worker's image store and ensure all of
+	// its blobs are in the content store.
+	//
+	// Defaults to `true`.
+	//
+	// Ignored if the worker doesn't have image store (when using OCI workers,
+	// for example).
+	Store pulumi.BoolPtrInput `pulumi:"store"`
+	// Unpack image after creation (for use with containerd). Defaults to
+	// `false`.
 	Unpack pulumi.BoolPtrInput `pulumi:"unpack"`
 }
 
@@ -4574,6 +5583,7 @@ func (o ExportRegistryOutput) ToExportRegistryPtrOutputWithContext(ctx context.C
 	}).(ExportRegistryPtrOutput)
 }
 
+// Attach an arbitrary key/value annotation to the image.
 func (o ExportRegistryOutput) Annotations() pulumi.StringMapOutput {
 	return o.ApplyT(func(v ExportRegistry) map[string]string { return v.Annotations }).(pulumi.StringMapOutput)
 }
@@ -4588,6 +5598,7 @@ func (o ExportRegistryOutput) CompressionLevel() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v ExportRegistry) *int { return v.CompressionLevel }).(pulumi.IntPtrOutput)
 }
 
+// Name image with `prefix@<digest>`, used for anonymous images.
 func (o ExportRegistryOutput) DanglingNamePrefix() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ExportRegistry) *string { return v.DanglingNamePrefix }).(pulumi.StringPtrOutput)
 }
@@ -4597,10 +5608,12 @@ func (o ExportRegistryOutput) ForceCompression() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v ExportRegistry) *bool { return v.ForceCompression }).(pulumi.BoolPtrOutput)
 }
 
+// Allow pushing to an insecure registry.
 func (o ExportRegistryOutput) Insecure() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v ExportRegistry) *bool { return v.Insecure }).(pulumi.BoolPtrOutput)
 }
 
+// Add additional canonical name (`name@<digest>`).
 func (o ExportRegistryOutput) NameCanonical() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v ExportRegistry) *bool { return v.NameCanonical }).(pulumi.BoolPtrOutput)
 }
@@ -4620,17 +5633,24 @@ func (o ExportRegistryOutput) Push() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v ExportRegistry) *bool { return v.Push }).(pulumi.BoolPtrOutput)
 }
 
+// Push image without name.
 func (o ExportRegistryOutput) PushByDigest() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v ExportRegistry) *bool { return v.PushByDigest }).(pulumi.BoolPtrOutput)
 }
 
-// Store resulting images to the worker's image store, and ensure all its
-// blobs are in the content store. Ignored if the worker doesn't have
-// image store (when using OCI workers, for example).
+// Store resulting images to the worker's image store and ensure all of
+// its blobs are in the content store.
+//
+// Defaults to `true`.
+//
+// Ignored if the worker doesn't have image store (when using OCI workers,
+// for example).
 func (o ExportRegistryOutput) Store() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v ExportRegistry) *bool { return v.Store }).(pulumi.BoolPtrOutput)
 }
 
+// Unpack image after creation (for use with containerd). Defaults to
+// `false`.
 func (o ExportRegistryOutput) Unpack() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v ExportRegistry) *bool { return v.Unpack }).(pulumi.BoolPtrOutput)
 }
@@ -4659,6 +5679,7 @@ func (o ExportRegistryPtrOutput) Elem() ExportRegistryOutput {
 	}).(ExportRegistryOutput)
 }
 
+// Attach an arbitrary key/value annotation to the image.
 func (o ExportRegistryPtrOutput) Annotations() pulumi.StringMapOutput {
 	return o.ApplyT(func(v *ExportRegistry) map[string]string {
 		if v == nil {
@@ -4688,6 +5709,7 @@ func (o ExportRegistryPtrOutput) CompressionLevel() pulumi.IntPtrOutput {
 	}).(pulumi.IntPtrOutput)
 }
 
+// Name image with `prefix@<digest>`, used for anonymous images.
 func (o ExportRegistryPtrOutput) DanglingNamePrefix() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *ExportRegistry) *string {
 		if v == nil {
@@ -4707,6 +5729,7 @@ func (o ExportRegistryPtrOutput) ForceCompression() pulumi.BoolPtrOutput {
 	}).(pulumi.BoolPtrOutput)
 }
 
+// Allow pushing to an insecure registry.
 func (o ExportRegistryPtrOutput) Insecure() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *ExportRegistry) *bool {
 		if v == nil {
@@ -4716,6 +5739,7 @@ func (o ExportRegistryPtrOutput) Insecure() pulumi.BoolPtrOutput {
 	}).(pulumi.BoolPtrOutput)
 }
 
+// Add additional canonical name (`name@<digest>`).
 func (o ExportRegistryPtrOutput) NameCanonical() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *ExportRegistry) *bool {
 		if v == nil {
@@ -4755,6 +5779,7 @@ func (o ExportRegistryPtrOutput) Push() pulumi.BoolPtrOutput {
 	}).(pulumi.BoolPtrOutput)
 }
 
+// Push image without name.
 func (o ExportRegistryPtrOutput) PushByDigest() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *ExportRegistry) *bool {
 		if v == nil {
@@ -4764,9 +5789,13 @@ func (o ExportRegistryPtrOutput) PushByDigest() pulumi.BoolPtrOutput {
 	}).(pulumi.BoolPtrOutput)
 }
 
-// Store resulting images to the worker's image store, and ensure all its
-// blobs are in the content store. Ignored if the worker doesn't have
-// image store (when using OCI workers, for example).
+// Store resulting images to the worker's image store and ensure all of
+// its blobs are in the content store.
+//
+// Defaults to `true`.
+//
+// Ignored if the worker doesn't have image store (when using OCI workers,
+// for example).
 func (o ExportRegistryPtrOutput) Store() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *ExportRegistry) *bool {
 		if v == nil {
@@ -4776,6 +5805,8 @@ func (o ExportRegistryPtrOutput) Store() pulumi.BoolPtrOutput {
 	}).(pulumi.BoolPtrOutput)
 }
 
+// Unpack image after creation (for use with containerd). Defaults to
+// `false`.
 func (o ExportRegistryPtrOutput) Unpack() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *ExportRegistry) *bool {
 		if v == nil {
@@ -4923,11 +5954,14 @@ func (o ExportTarPtrOutput) Dest() pulumi.StringPtrOutput {
 }
 
 type Manifest struct {
-	Digest   string   `pulumi:"digest"`
-	Platform Platform `pulumi:"platform"`
-	// The manifest's ref
-	Ref  string `pulumi:"ref"`
-	Size int    `pulumi:"size"`
+	// The SHA256 digest of the manifest.
+	Digest string `pulumi:"digest"`
+	// The manifest's platform.
+	Platform ManifestPlatform `pulumi:"platform"`
+	// The manifest's canonical ref.
+	Ref string `pulumi:"ref"`
+	// The size of the manifest in bytes.
+	Size int `pulumi:"size"`
 }
 
 // ManifestInput is an input type that accepts ManifestArgs and ManifestOutput values.
@@ -4942,11 +5976,14 @@ type ManifestInput interface {
 }
 
 type ManifestArgs struct {
-	Digest   pulumi.StringInput `pulumi:"digest"`
-	Platform PlatformInput      `pulumi:"platform"`
-	// The manifest's ref
-	Ref  pulumi.StringInput `pulumi:"ref"`
-	Size pulumi.IntInput    `pulumi:"size"`
+	// The SHA256 digest of the manifest.
+	Digest pulumi.StringInput `pulumi:"digest"`
+	// The manifest's platform.
+	Platform ManifestPlatformInput `pulumi:"platform"`
+	// The manifest's canonical ref.
+	Ref pulumi.StringInput `pulumi:"ref"`
+	// The size of the manifest in bytes.
+	Size pulumi.IntInput `pulumi:"size"`
 }
 
 func (ManifestArgs) ElementType() reflect.Type {
@@ -5000,19 +6037,22 @@ func (o ManifestOutput) ToManifestOutputWithContext(ctx context.Context) Manifes
 	return o
 }
 
+// The SHA256 digest of the manifest.
 func (o ManifestOutput) Digest() pulumi.StringOutput {
 	return o.ApplyT(func(v Manifest) string { return v.Digest }).(pulumi.StringOutput)
 }
 
-func (o ManifestOutput) Platform() PlatformOutput {
-	return o.ApplyT(func(v Manifest) Platform { return v.Platform }).(PlatformOutput)
+// The manifest's platform.
+func (o ManifestOutput) Platform() ManifestPlatformOutput {
+	return o.ApplyT(func(v Manifest) ManifestPlatform { return v.Platform }).(ManifestPlatformOutput)
 }
 
-// The manifest's ref
+// The manifest's canonical ref.
 func (o ManifestOutput) Ref() pulumi.StringOutput {
 	return o.ApplyT(func(v Manifest) string { return v.Ref }).(pulumi.StringOutput)
 }
 
+// The size of the manifest in bytes.
 func (o ManifestOutput) Size() pulumi.IntOutput {
 	return o.ApplyT(func(v Manifest) int { return v.Size }).(pulumi.IntOutput)
 }
@@ -5035,6 +6075,67 @@ func (o ManifestArrayOutput) Index(i pulumi.IntInput) ManifestOutput {
 	return pulumi.All(o, i).ApplyT(func(vs []interface{}) Manifest {
 		return vs[0].([]Manifest)[vs[1].(int)]
 	}).(ManifestOutput)
+}
+
+type ManifestPlatform struct {
+	// The manifest's architecture.
+	Architecture string `pulumi:"architecture"`
+	// The manifest's operating systen.
+	Os string `pulumi:"os"`
+}
+
+// ManifestPlatformInput is an input type that accepts ManifestPlatformArgs and ManifestPlatformOutput values.
+// You can construct a concrete instance of `ManifestPlatformInput` via:
+//
+//	ManifestPlatformArgs{...}
+type ManifestPlatformInput interface {
+	pulumi.Input
+
+	ToManifestPlatformOutput() ManifestPlatformOutput
+	ToManifestPlatformOutputWithContext(context.Context) ManifestPlatformOutput
+}
+
+type ManifestPlatformArgs struct {
+	// The manifest's architecture.
+	Architecture pulumi.StringInput `pulumi:"architecture"`
+	// The manifest's operating systen.
+	Os pulumi.StringInput `pulumi:"os"`
+}
+
+func (ManifestPlatformArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*ManifestPlatform)(nil)).Elem()
+}
+
+func (i ManifestPlatformArgs) ToManifestPlatformOutput() ManifestPlatformOutput {
+	return i.ToManifestPlatformOutputWithContext(context.Background())
+}
+
+func (i ManifestPlatformArgs) ToManifestPlatformOutputWithContext(ctx context.Context) ManifestPlatformOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ManifestPlatformOutput)
+}
+
+type ManifestPlatformOutput struct{ *pulumi.OutputState }
+
+func (ManifestPlatformOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*ManifestPlatform)(nil)).Elem()
+}
+
+func (o ManifestPlatformOutput) ToManifestPlatformOutput() ManifestPlatformOutput {
+	return o
+}
+
+func (o ManifestPlatformOutput) ToManifestPlatformOutputWithContext(ctx context.Context) ManifestPlatformOutput {
+	return o
+}
+
+// The manifest's architecture.
+func (o ManifestPlatformOutput) Architecture() pulumi.StringOutput {
+	return o.ApplyT(func(v ManifestPlatform) string { return v.Architecture }).(pulumi.StringOutput)
+}
+
+// The manifest's operating systen.
+func (o ManifestPlatformOutput) Os() pulumi.StringOutput {
+	return o.ApplyT(func(v ManifestPlatform) string { return v.Os }).(pulumi.StringOutput)
 }
 
 type RegistryAuth struct {
@@ -5153,6 +6254,10 @@ func (o RegistryAuthArrayOutput) Index(i pulumi.IntInput) RegistryAuthOutput {
 }
 
 func init() {
+	pulumi.RegisterInputType(reflect.TypeOf((*BuildContextInput)(nil)).Elem(), BuildContextArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*BuildContextPtrInput)(nil)).Elem(), BuildContextArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*BuilderConfigInput)(nil)).Elem(), BuilderConfigArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*BuilderConfigPtrInput)(nil)).Elem(), BuilderConfigArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*CacheFromAzureBlobInput)(nil)).Elem(), CacheFromAzureBlobArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*CacheFromAzureBlobPtrInput)(nil)).Elem(), CacheFromAzureBlobArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*CacheFromEntryInput)(nil)).Elem(), CacheFromEntryArgs{})
@@ -5179,6 +6284,10 @@ func init() {
 	pulumi.RegisterInputType(reflect.TypeOf((*CacheToRegistryPtrInput)(nil)).Elem(), CacheToRegistryArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*CacheToS3Input)(nil)).Elem(), CacheToS3Args{})
 	pulumi.RegisterInputType(reflect.TypeOf((*CacheToS3PtrInput)(nil)).Elem(), CacheToS3Args{})
+	pulumi.RegisterInputType(reflect.TypeOf((*ContextInput)(nil)).Elem(), ContextArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*ContextMapInput)(nil)).Elem(), ContextMap{})
+	pulumi.RegisterInputType(reflect.TypeOf((*DockerfileInput)(nil)).Elem(), DockerfileArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*DockerfilePtrInput)(nil)).Elem(), DockerfileArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*ExportDockerInput)(nil)).Elem(), ExportDockerArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*ExportDockerPtrInput)(nil)).Elem(), ExportDockerArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*ExportEntryInput)(nil)).Elem(), ExportEntryArgs{})
@@ -5195,8 +6304,13 @@ func init() {
 	pulumi.RegisterInputType(reflect.TypeOf((*ExportTarPtrInput)(nil)).Elem(), ExportTarArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*ManifestInput)(nil)).Elem(), ManifestArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*ManifestArrayInput)(nil)).Elem(), ManifestArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*ManifestPlatformInput)(nil)).Elem(), ManifestPlatformArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*RegistryAuthInput)(nil)).Elem(), RegistryAuthArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*RegistryAuthArrayInput)(nil)).Elem(), RegistryAuthArray{})
+	pulumi.RegisterOutputType(BuildContextOutput{})
+	pulumi.RegisterOutputType(BuildContextPtrOutput{})
+	pulumi.RegisterOutputType(BuilderConfigOutput{})
+	pulumi.RegisterOutputType(BuilderConfigPtrOutput{})
 	pulumi.RegisterOutputType(CacheFromAzureBlobOutput{})
 	pulumi.RegisterOutputType(CacheFromAzureBlobPtrOutput{})
 	pulumi.RegisterOutputType(CacheFromEntryOutput{})
@@ -5223,6 +6337,10 @@ func init() {
 	pulumi.RegisterOutputType(CacheToRegistryPtrOutput{})
 	pulumi.RegisterOutputType(CacheToS3Output{})
 	pulumi.RegisterOutputType(CacheToS3PtrOutput{})
+	pulumi.RegisterOutputType(ContextOutput{})
+	pulumi.RegisterOutputType(ContextMapOutput{})
+	pulumi.RegisterOutputType(DockerfileOutput{})
+	pulumi.RegisterOutputType(DockerfilePtrOutput{})
 	pulumi.RegisterOutputType(ExportDockerOutput{})
 	pulumi.RegisterOutputType(ExportDockerPtrOutput{})
 	pulumi.RegisterOutputType(ExportEntryOutput{})
@@ -5239,6 +6357,7 @@ func init() {
 	pulumi.RegisterOutputType(ExportTarPtrOutput{})
 	pulumi.RegisterOutputType(ManifestOutput{})
 	pulumi.RegisterOutputType(ManifestArrayOutput{})
+	pulumi.RegisterOutputType(ManifestPlatformOutput{})
 	pulumi.RegisterOutputType(RegistryAuthOutput{})
 	pulumi.RegisterOutputType(RegistryAuthArrayOutput{})
 }

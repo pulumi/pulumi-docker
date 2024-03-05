@@ -8,7 +8,6 @@ import (
 
 	_ "github.com/docker/buildx/driver/docker-container"
 
-	controllerapi "github.com/docker/buildx/controller/pb"
 	"github.com/docker/buildx/util/buildflags"
 	manifesttypes "github.com/docker/cli/cli/manifest/types"
 	"github.com/docker/distribution/reference"
@@ -24,9 +23,6 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/util/mapper"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-
-	"github.com/pulumi/pulumi-docker/provider/v4/internal/mock"
-	"github.com/pulumi/pulumi-docker/provider/v4/internal/properties"
 )
 
 var _fakeURN = resource.NewURN("test", "provider", "a", "docker:buildx/image:Image", "test")
@@ -35,10 +31,12 @@ func TestLifecycle(t *testing.T) {
 	// realClient := func(t *testing.T) Client { return nil }
 	noClient := func(t *testing.T) Client {
 		ctrl := gomock.NewController(t)
-		return mock.NewMockClient(ctrl)
+		return NewMockClient(ctrl)
 	}
 
-	ref, err := reference.ParseNamed("docker.io/pulumibot/myapp")
+	ref, err := reference.ParseNamed("docker.io/pulumibot/buildkit-e2e")
+	require.NoError(t, err)
+	digestRef, err := reference.WithDigest(ref, "sha256:7f9fc9830dbb80a7fd23b9903d587b6433a9e87969de4868e551bc2959e63dd9")
 	require.NoError(t, err)
 
 	tests := []struct {
@@ -51,27 +49,29 @@ func TestLifecycle(t *testing.T) {
 			name: "happy path builds",
 			client: func(t *testing.T) Client {
 				ctrl := gomock.NewController(t)
-				c := mock.NewMockClient(ctrl)
+				c := NewMockClient(ctrl)
 				c.EXPECT().Auth(gomock.Any(), "test", gomock.Any()).Return(nil).AnyTimes()
 				gomock.InOrder(
 					c.EXPECT().BuildKitEnabled().Return(true, nil), // Preview.
 					c.EXPECT().BuildKitEnabled().Return(true, nil), // Create.
-					c.EXPECT().Build(gomock.Any(), "test", gomock.AssignableToTypeOf(controllerapi.BuildOptions{})).DoAndReturn(
-						func(_ provider.Context, name string, opts controllerapi.BuildOptions) (*client.SolveResponse, error) {
-							assert.Equal(t, "../testdata/Dockerfile", opts.DockerfileName)
-							return &client.SolveResponse{ExporterResponse: map[string]string{"containerimage.digest": "SHA256:digest"}}, nil
+					c.EXPECT().Build(gomock.Any(), "test", gomock.AssignableToTypeOf(build{})).DoAndReturn(
+						func(_ provider.Context, name string, b Build) (map[string]*client.SolveResponse, error) {
+							assert.Equal(t, "../testdata/Dockerfile", b.BuildOptions().DockerfileName)
+							return map[string]*client.SolveResponse{
+								b.Targets()[0]: {ExporterResponse: map[string]string{"containerimage.digest": "SHA256:digest"}},
+							}, nil
 						},
 					),
-					c.EXPECT().Inspect(gomock.Any(), "test", "docker.io/blampe/buildkit-e2e").Return(
+					c.EXPECT().Inspect(gomock.Any(), "test", "docker.io/pulumibot/buildkit-e2e").Return(
 						[]manifesttypes.ImageManifest{
 							{
-								Ref:        &manifesttypes.SerializableNamed{Named: ref},
-								Descriptor: v1.Descriptor{Platform: &v1.Platform{}},
+								Ref:        &manifesttypes.SerializableNamed{Named: digestRef},
+								Descriptor: v1.Descriptor{Platform: &v1.Platform{OS: "linux", Architecture: "arm64"}},
 							},
 						}, nil,
 					),
-					c.EXPECT().Inspect(gomock.Any(), "test", "docker.io/blampe/buildkit-e2e:main"),
-					c.EXPECT().Delete(gomock.Any(), "test").Return(
+					c.EXPECT().Inspect(gomock.Any(), "test", "docker.io/pulumibot/buildkit-e2e:main"),
+					c.EXPECT().Delete(gomock.Any(), digestRef.String()).Return(
 						[]image.DeleteResponse{{Deleted: "deleted"}, {Untagged: "untagged"}}, nil),
 				)
 				return c
@@ -81,8 +81,8 @@ func TestLifecycle(t *testing.T) {
 					Inputs: resource.PropertyMap{
 						"tags": resource.NewArrayProperty(
 							[]resource.PropertyValue{
-								resource.NewStringProperty("docker.io/blampe/buildkit-e2e"),
-								resource.NewStringProperty("docker.io/blampe/buildkit-e2e:main"),
+								resource.NewStringProperty("docker.io/pulumibot/buildkit-e2e"),
+								resource.NewStringProperty("docker.io/pulumibot/buildkit-e2e:main"),
 							},
 						),
 						"platforms": resource.NewArrayProperty(
@@ -91,8 +91,12 @@ func TestLifecycle(t *testing.T) {
 								resource.NewStringProperty("linux/amd64"),
 							},
 						),
-						"context": resource.NewStringProperty("../testdata"),
-						"file":    resource.NewStringProperty("../testdata/Dockerfile"),
+						"context": resource.NewObjectProperty(resource.PropertyMap{
+							"location": resource.NewStringProperty("../testdata"),
+						}),
+						"dockerfile": resource.NewObjectProperty(resource.PropertyMap{
+							"location": resource.NewStringProperty("../testdata/Dockerfile"),
+						}),
 						"exports": resource.NewArrayProperty(
 							[]resource.PropertyValue{
 								resource.NewObjectProperty(resource.PropertyMap{
@@ -120,8 +124,10 @@ func TestLifecycle(t *testing.T) {
 			op: func(t *testing.T) integration.Operation {
 				return integration.Operation{
 					Inputs: resource.PropertyMap{
-						"tags":    resource.NewArrayProperty([]resource.PropertyValue{}),
-						"context": resource.NewStringProperty("../testdata"),
+						"tags": resource.NewArrayProperty([]resource.PropertyValue{}),
+						"context": resource.NewObjectProperty(resource.PropertyMap{
+							"location": resource.NewStringProperty("../testdata"),
+						}),
 						"exports": resource.NewArrayProperty(
 							[]resource.PropertyValue{
 								resource.NewObjectProperty(resource.PropertyMap{
@@ -169,7 +175,7 @@ func TestLifecycle(t *testing.T) {
 			name: "requires buildkit",
 			client: func(t *testing.T) Client {
 				ctrl := gomock.NewController(t)
-				c := mock.NewMockClient(ctrl)
+				c := NewMockClient(ctrl)
 				gomock.InOrder(
 					c.EXPECT().BuildKitEnabled().Return(false, nil), // Preview.
 				)
@@ -190,7 +196,7 @@ func TestLifecycle(t *testing.T) {
 			name: "error reading DOCKER_BUILDKIT",
 			client: func(t *testing.T) Client {
 				ctrl := gomock.NewController(t)
-				c := mock.NewMockClient(ctrl)
+				c := NewMockClient(ctrl)
 				gomock.InOrder(
 					c.EXPECT().
 						BuildKitEnabled().
@@ -213,17 +219,18 @@ func TestLifecycle(t *testing.T) {
 			name: "file defaults to Dockerfile",
 			client: func(t *testing.T) Client {
 				ctrl := gomock.NewController(t)
-				c := mock.NewMockClient(ctrl)
+				c := NewMockClient(ctrl)
 				gomock.InOrder(
 					c.EXPECT().BuildKitEnabled().Return(true, nil), // Preview.
 					c.EXPECT().BuildKitEnabled().Return(true, nil), // Create.
-					c.EXPECT().Build(gomock.Any(), "test", gomock.AssignableToTypeOf(controllerapi.BuildOptions{})).DoAndReturn(
-						func(_ provider.Context, name string, opts controllerapi.BuildOptions) (*client.SolveResponse, error) {
-							assert.Equal(t, "../testdata/Dockerfile", opts.DockerfileName)
-							return &client.SolveResponse{ExporterResponse: map[string]string{"image.name": "test:latest"}}, nil
+					c.EXPECT().Build(gomock.Any(), "test", gomock.AssignableToTypeOf(build{})).DoAndReturn(
+						func(_ provider.Context, name string, b Build) (map[string]*client.SolveResponse, error) {
+							assert.Equal(t, "../testdata/Dockerfile", b.BuildOptions().DockerfileName)
+							return map[string]*client.SolveResponse{
+								b.Targets()[0]: {ExporterResponse: map[string]string{"image.name": "test:latest"}},
+							}, nil
 						},
 					),
-					c.EXPECT().Delete(gomock.Any(), "test").Return(nil, nil),
 				)
 				return c
 			},
@@ -235,13 +242,17 @@ func TestLifecycle(t *testing.T) {
 								resource.NewStringProperty("default-dockerfile"),
 							},
 						),
-						"context": resource.NewStringProperty("../testdata"),
+						"context": resource.NewObjectProperty(resource.PropertyMap{
+							"location": resource.NewStringProperty("../testdata"),
+						}),
 					},
 					Hook: func(_, output resource.PropertyMap) {
-						file := output["file"]
-						require.NotNil(t, file)
-						require.True(t, file.IsString())
-						assert.Equal(t, "../testdata/Dockerfile", file.StringValue())
+						dockerfile := output["dockerfile"]
+						require.NotNil(t, dockerfile)
+						require.True(t, dockerfile.IsObject())
+						location := dockerfile.ObjectValue()["location"]
+						require.True(t, location.IsString())
+						assert.Equal(t, "../testdata/Dockerfile", location.StringValue())
 					},
 				}
 			},
@@ -271,24 +282,25 @@ func (errNotFound) Error() string { return "not found " }
 
 func TestDelete(t *testing.T) {
 	t.Run("image was already deleted", func(t *testing.T) {
-		imageID := "doesnt-exist"
-
 		ctrl := gomock.NewController(t)
-		client := mock.NewMockClient(ctrl)
-		client.EXPECT().Delete(gomock.Any(), imageID).Return(nil, errNotFound{})
+		client := NewMockClient(ctrl)
+		client.EXPECT().Delete(gomock.Any(), "foo").Return(nil, errNotFound{})
+		client.EXPECT().Delete(gomock.Any(), "bar").Return(nil, errNotFound{})
 
 		s := newServer(client)
 		err := s.Configure(provider.ConfigureRequest{})
 		require.NoError(t, err)
 
 		err = s.Delete(provider.DeleteRequest{
-			ID:  imageID,
+			ID:  "foo,bar",
 			Urn: _fakeURN,
 			Properties: resource.PropertyMap{
-				"tags": resource.NewArrayProperty([]resource.PropertyValue{
-					resource.NewStringProperty("tag"),
+				"digests": resource.NewObjectProperty(resource.PropertyMap{
+					"digests": resource.NewArrayProperty([]resource.PropertyValue{
+						resource.NewStringProperty("foo"),
+						resource.NewStringProperty("bar"),
+					}),
 				}),
-				"manifests": resource.NewArrayProperty([]resource.PropertyValue{}),
 			},
 		})
 		assert.NoError(t, err)
@@ -296,12 +308,12 @@ func TestDelete(t *testing.T) {
 }
 
 func TestRead(t *testing.T) {
-	tag := "docker.io/pulumi/pulumi"
+	tag := "docker.io/pulumi/pulumitest"
 	ref, err := reference.ParseNamed(tag)
 	require.NoError(t, err)
 
 	ctrl := gomock.NewController(t)
-	client := mock.NewMockClient(ctrl)
+	client := NewMockClient(ctrl)
 	client.EXPECT().Inspect(gomock.Any(), "my-image", tag).Return([]manifesttypes.ImageManifest{
 		{
 			Descriptor: v1.Descriptor{Platform: &v1.Platform{Architecture: "arm64"}},
@@ -320,10 +332,10 @@ func TestRead(t *testing.T) {
 	err = s.Configure(provider.ConfigureRequest{})
 	require.NoError(t, err)
 
-	state, err := s.Read(provider.ReadRequest{
+	resp, err := s.Read(provider.ReadRequest{
 		ID:  "my-image",
 		Urn: _fakeURN,
-		Inputs: resource.PropertyMap{
+		Properties: resource.PropertyMap{
 			"exports": resource.NewArrayProperty([]resource.PropertyValue{
 				resource.NewObjectProperty(resource.PropertyMap{
 					"raw": resource.NewStringProperty("type=registry"),
@@ -335,20 +347,19 @@ func TestRead(t *testing.T) {
 		},
 	})
 	require.NoError(t, err)
-	assert.Len(t, state.Properties["manifests"].ArrayValue(), 1)
+	assert.NotNil(t, resp.Properties["exports"].ArrayValue()[0].ObjectValue()["manifest"])
 }
 
 func TestDiff(t *testing.T) {
 	emptyDir := t.TempDir()
 
 	baseArgs := ImageArgs{
-		Context: emptyDir,
-		File:    "../testdata/Dockerfile",
-		Tags:    []string{},
+		Context:    BuildContext{Context: Context{Location: emptyDir}},
+		Dockerfile: Dockerfile{Location: "../testdata/Dockerfile"},
+		Tags:       []string{},
 	}
 	baseState := ImageState{
 		ContextHash: "f04bea490d45e7ae69d542846511e7c90eb683deaa1e0df19e9fca4d227265c2",
-		Manifests:   []properties.Manifest{},
 		ImageArgs:   baseArgs,
 	}
 
@@ -369,7 +380,7 @@ func TestDiff(t *testing.T) {
 			name: "diff if build context changes",
 			olds: func(*testing.T, ImageState) ImageState { return baseState },
 			news: func(t *testing.T, a ImageArgs) ImageArgs {
-				tmp := filepath.Join(a.Context, "tmp")
+				tmp := filepath.Join(a.Context.Location, "tmp")
 				err := os.WriteFile(tmp, []byte{}, 0o600)
 				require.NoError(t, err)
 				t.Cleanup(func() { _ = os.Remove(tmp) })
@@ -380,7 +391,7 @@ func TestDiff(t *testing.T) {
 		{
 			name: "no diff if registry password changes",
 			olds: func(_ *testing.T, s ImageState) ImageState {
-				s.Registries = []properties.RegistryAuth{{
+				s.Registries = []RegistryAuth{{
 					Address:  "foo",
 					Username: "foo",
 					Password: "foo",
@@ -388,7 +399,7 @@ func TestDiff(t *testing.T) {
 				return s
 			},
 			news: func(_ *testing.T, a ImageArgs) ImageArgs {
-				a.Registries = []properties.RegistryAuth{{
+				a.Registries = []RegistryAuth{{
 					Address:  "foo",
 					Username: "foo",
 					Password: "DIFFERENT PASSWORD",
@@ -401,7 +412,7 @@ func TestDiff(t *testing.T) {
 			name: "diff if registry added",
 			olds: func(*testing.T, ImageState) ImageState { return baseState },
 			news: func(_ *testing.T, a ImageArgs) ImageArgs {
-				a.Registries = []properties.RegistryAuth{{}}
+				a.Registries = []RegistryAuth{{}}
 				return a
 			},
 			wantChanges: true,
@@ -409,7 +420,7 @@ func TestDiff(t *testing.T) {
 		{
 			name: "diff if registry user changes",
 			olds: func(_ *testing.T, s ImageState) ImageState {
-				s.Registries = []properties.RegistryAuth{{
+				s.Registries = []RegistryAuth{{
 					Address:  "foo",
 					Username: "foo",
 					Password: "foo",
@@ -417,7 +428,7 @@ func TestDiff(t *testing.T) {
 				return s
 			},
 			news: func(_ *testing.T, a ImageArgs) ImageArgs {
-				a.Registries = []properties.RegistryAuth{{
+				a.Registries = []RegistryAuth{{
 					Address:  "DIFFERENT USER",
 					Username: "foo",
 					Password: "foo",
@@ -459,7 +470,7 @@ func TestDiff(t *testing.T) {
 			name: "diff if context changes",
 			olds: func(*testing.T, ImageState) ImageState { return baseState },
 			news: func(_ *testing.T, a ImageArgs) ImageArgs {
-				a.Context = "testdata/ignores"
+				a.Context.Location = "testdata/ignores"
 				return a
 			},
 			wantChanges: true,
@@ -468,7 +479,7 @@ func TestDiff(t *testing.T) {
 			name: "diff if file changes",
 			olds: func(*testing.T, ImageState) ImageState { return baseState },
 			news: func(_ *testing.T, a ImageArgs) ImageArgs {
-				a.File = "testdata/ignores/basedir/Dockerfile"
+				a.Dockerfile.Location = "testdata/ignores/basedir/Dockerfile"
 				return a
 			},
 			wantChanges: true,
@@ -495,7 +506,7 @@ func TestDiff(t *testing.T) {
 			name: "diff if builder changes",
 			olds: func(*testing.T, ImageState) ImageState { return baseState },
 			news: func(_ *testing.T, a ImageArgs) ImageArgs {
-				a.Builder = "foo"
+				a.Builder.Name = "foo"
 				return a
 			},
 			wantChanges: true,
@@ -546,7 +557,7 @@ func TestBuildOptions(t *testing.T) {
 		args := ImageArgs{
 			Tags:      []string{"a/bad:tag:format"},
 			Exports:   []ExportEntry{{Raw: "badexport,-"}},
-			Context:   "./testdata",
+			Context:   BuildContext{Context: Context{Location: "./testdata"}},
 			Platforms: []Platform{","},
 			CacheFrom: []CacheFromEntry{{Raw: "=badcachefrom"}},
 			CacheTo:   []CacheToEntry{{Raw: "=badcacheto"}},
@@ -589,14 +600,14 @@ func TestBuildOptions(t *testing.T) {
 				"known": "value",
 				"":      "",
 			},
-			Builder:   "",
-			CacheFrom: []CacheFromEntry{{GHA: &CacheFromGitHubActions{}}, {Raw: ""}},
-			CacheTo:   []CacheToEntry{{GHA: &CacheToGitHubActions{}}, {Raw: ""}},
-			Context:   "",
-			Exports:   []ExportEntry{{Raw: ""}},
-			File:      "",
-			Platforms: []Platform{"linux/amd64", ""},
-			Registries: []properties.RegistryAuth{
+			Builder:    BuilderConfig{},
+			CacheFrom:  []CacheFromEntry{{GHA: &CacheFromGitHubActions{}}, {Raw: ""}},
+			CacheTo:    []CacheToEntry{{GHA: &CacheToGitHubActions{}}, {Raw: ""}},
+			Context:    BuildContext{},
+			Exports:    []ExportEntry{{Raw: ""}},
+			Dockerfile: Dockerfile{},
+			Platforms:  []Platform{"linux/amd64", ""},
+			Registries: []RegistryAuth{
 				{
 					Address:  "",
 					Password: "",
@@ -633,6 +644,20 @@ func TestBuildOptions(t *testing.T) {
 		assert.ErrorContains(t, err, "cacheFrom should only specify one cache type")
 		assert.ErrorContains(t, err, "cacheTo should only specify one cache type")
 	})
+
+	t.Run("dockerfile parsing", func(t *testing.T) {
+		path := "./testdata/Dockerfile.invalid"
+		data, err := os.ReadFile(path)
+		require.NoError(t, err)
+
+		for _, d := range []Dockerfile{
+			{Location: path}, {Inline: string(data)},
+		} {
+			args := ImageArgs{Dockerfile: d}
+			_, err := args.toBuildOptions(false)
+			assert.ErrorContains(t, err, "unknown instruction: RUNN (did you mean RUN?)")
+		}
+	})
 }
 
 func TestBuildable(t *testing.T) {
@@ -660,7 +685,7 @@ func TestBuildable(t *testing.T) {
 			args: ImageArgs{
 				Tags:    []string{"known"},
 				Exports: []ExportEntry{{Docker: &ExportDocker{}}},
-				Registries: []properties.RegistryAuth{
+				Registries: []RegistryAuth{
 					{
 						Address:  "docker.io",
 						Username: "foo",
@@ -690,7 +715,7 @@ func TestBuildable(t *testing.T) {
 			args: ImageArgs{
 				Tags:    []string{"known"},
 				Exports: []ExportEntry{{Registry: &ExportRegistry{}}},
-				Registries: []properties.RegistryAuth{
+				Registries: []RegistryAuth{
 					{
 						Address:  "docker.io",
 						Username: "foo",
@@ -770,24 +795,27 @@ func TestToBuilds(t *testing.T) {
 
 		assert.Len(t, builds, 3)
 
+		// Build 0
+		b0 := builds[0].BuildOptions()
+		assert.Nil(t, b0.CacheTo)
+		assert.Len(t, b0.CacheFrom, len(ia.CacheFrom)*(1+len(ia.Platforms)))
+		assert.Len(t, b0.Platforms, len(ia.Platforms))
+
 		// Build 1
-		assert.Nil(t, builds[0].CacheTo)
-		assert.Len(t, builds[0].CacheFrom, len(ia.CacheFrom)*(1+len(ia.Platforms)))
-		assert.Len(t, builds[0].Platforms, len(ia.Platforms))
+		b1 := builds[1].BuildOptions()
+		assert.Len(t, b1.Platforms, 1)
+		assert.Equal(t, "linux/amd64", b1.Platforms[0])
+		assert.Len(t, b1.Exports, 1)
+		assert.Equal(t, "cacheonly", b1.Exports[0].Type)
+		assert.Len(t, b1.CacheTo, len(ia.CacheTo))
 
 		// Build 2
-		assert.Len(t, builds[1].Platforms, 1)
-		assert.Equal(t, "linux/amd64", builds[1].Platforms[0])
-		assert.Len(t, builds[1].Exports, 1)
-		assert.Equal(t, "cacheonly", builds[1].Exports[0].Type)
-		assert.Len(t, builds[1].CacheTo, len(ia.CacheTo))
-
-		// Build 3
-		assert.Len(t, builds[2].Platforms, 1)
-		assert.Equal(t, "linux/arm64", builds[2].Platforms[0])
-		assert.Len(t, builds[2].Exports, 1)
-		assert.Equal(t, "cacheonly", builds[2].Exports[0].Type)
-		assert.Len(t, builds[2].CacheTo, len(ia.CacheTo))
+		b2 := builds[2].BuildOptions()
+		assert.Len(t, b2.Platforms, 1)
+		assert.Equal(t, "linux/arm64", b2.Platforms[0])
+		assert.Len(t, b2.Exports, 1)
+		assert.Equal(t, "cacheonly", b2.Exports[0].Type)
+		assert.Len(t, b2.CacheTo, len(ia.CacheTo))
 	})
 }
 

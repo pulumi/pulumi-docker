@@ -21,9 +21,17 @@ public final class ExportRegistryArgs extends com.pulumi.resources.ResourceArgs 
 
     public static final ExportRegistryArgs Empty = new ExportRegistryArgs();
 
+    /**
+     * Attach an arbitrary key/value annotation to the image.
+     * 
+     */
     @Import(name="annotations")
     private @Nullable Output<Map<String,String>> annotations;
 
+    /**
+     * @return Attach an arbitrary key/value annotation to the image.
+     * 
+     */
     public Optional<Output<Map<String,String>>> annotations() {
         return Optional.ofNullable(this.annotations);
     }
@@ -58,9 +66,17 @@ public final class ExportRegistryArgs extends com.pulumi.resources.ResourceArgs 
         return Optional.ofNullable(this.compressionLevel);
     }
 
+    /**
+     * Name image with `prefix@&lt;digest&gt;`, used for anonymous images.
+     * 
+     */
     @Import(name="danglingNamePrefix")
     private @Nullable Output<String> danglingNamePrefix;
 
+    /**
+     * @return Name image with `prefix@&lt;digest&gt;`, used for anonymous images.
+     * 
+     */
     public Optional<Output<String>> danglingNamePrefix() {
         return Optional.ofNullable(this.danglingNamePrefix);
     }
@@ -80,16 +96,32 @@ public final class ExportRegistryArgs extends com.pulumi.resources.ResourceArgs 
         return Optional.ofNullable(this.forceCompression);
     }
 
+    /**
+     * Allow pushing to an insecure registry.
+     * 
+     */
     @Import(name="insecure")
     private @Nullable Output<Boolean> insecure;
 
+    /**
+     * @return Allow pushing to an insecure registry.
+     * 
+     */
     public Optional<Output<Boolean>> insecure() {
         return Optional.ofNullable(this.insecure);
     }
 
+    /**
+     * Add additional canonical name (`name@&lt;digest&gt;`).
+     * 
+     */
     @Import(name="nameCanonical")
     private @Nullable Output<Boolean> nameCanonical;
 
+    /**
+     * @return Add additional canonical name (`name@&lt;digest&gt;`).
+     * 
+     */
     public Optional<Output<Boolean>> nameCanonical() {
         return Optional.ofNullable(this.nameCanonical);
     }
@@ -139,36 +171,61 @@ public final class ExportRegistryArgs extends com.pulumi.resources.ResourceArgs 
         return Optional.ofNullable(this.push);
     }
 
+    /**
+     * Push image without name.
+     * 
+     */
     @Import(name="pushByDigest")
     private @Nullable Output<Boolean> pushByDigest;
 
+    /**
+     * @return Push image without name.
+     * 
+     */
     public Optional<Output<Boolean>> pushByDigest() {
         return Optional.ofNullable(this.pushByDigest);
     }
 
     /**
-     * Store resulting images to the worker&#39;s image store, and ensure all its
-     * blobs are in the content store. Ignored if the worker doesn&#39;t have
-     * image store (when using OCI workers, for example).
+     * Store resulting images to the worker&#39;s image store and ensure all of
+     * its blobs are in the content store.
+     * 
+     * Defaults to `true`.
+     * 
+     * Ignored if the worker doesn&#39;t have image store (when using OCI workers,
+     * for example).
      * 
      */
     @Import(name="store")
     private @Nullable Output<Boolean> store;
 
     /**
-     * @return
-     * Store resulting images to the worker&#39;s image store, and ensure all its
-     * blobs are in the content store. Ignored if the worker doesn&#39;t have
-     * image store (when using OCI workers, for example).
+     * @return Store resulting images to the worker&#39;s image store and ensure all of
+     * its blobs are in the content store.
+     * 
+     * Defaults to `true`.
+     * 
+     * Ignored if the worker doesn&#39;t have image store (when using OCI workers,
+     * for example).
      * 
      */
     public Optional<Output<Boolean>> store() {
         return Optional.ofNullable(this.store);
     }
 
+    /**
+     * Unpack image after creation (for use with containerd). Defaults to
+     * `false`.
+     * 
+     */
     @Import(name="unpack")
     private @Nullable Output<Boolean> unpack;
 
+    /**
+     * @return Unpack image after creation (for use with containerd). Defaults to
+     * `false`.
+     * 
+     */
     public Optional<Output<Boolean>> unpack() {
         return Optional.ofNullable(this.unpack);
     }
@@ -209,11 +266,23 @@ public final class ExportRegistryArgs extends com.pulumi.resources.ResourceArgs 
             $ = new ExportRegistryArgs(Objects.requireNonNull(defaults));
         }
 
+        /**
+         * @param annotations Attach an arbitrary key/value annotation to the image.
+         * 
+         * @return builder
+         * 
+         */
         public Builder annotations(@Nullable Output<Map<String,String>> annotations) {
             $.annotations = annotations;
             return this;
         }
 
+        /**
+         * @param annotations Attach an arbitrary key/value annotation to the image.
+         * 
+         * @return builder
+         * 
+         */
         public Builder annotations(Map<String,String> annotations) {
             return annotations(Output.of(annotations));
         }
@@ -260,11 +329,23 @@ public final class ExportRegistryArgs extends com.pulumi.resources.ResourceArgs 
             return compressionLevel(Output.of(compressionLevel));
         }
 
+        /**
+         * @param danglingNamePrefix Name image with `prefix@&lt;digest&gt;`, used for anonymous images.
+         * 
+         * @return builder
+         * 
+         */
         public Builder danglingNamePrefix(@Nullable Output<String> danglingNamePrefix) {
             $.danglingNamePrefix = danglingNamePrefix;
             return this;
         }
 
+        /**
+         * @param danglingNamePrefix Name image with `prefix@&lt;digest&gt;`, used for anonymous images.
+         * 
+         * @return builder
+         * 
+         */
         public Builder danglingNamePrefix(String danglingNamePrefix) {
             return danglingNamePrefix(Output.of(danglingNamePrefix));
         }
@@ -290,20 +371,44 @@ public final class ExportRegistryArgs extends com.pulumi.resources.ResourceArgs 
             return forceCompression(Output.of(forceCompression));
         }
 
+        /**
+         * @param insecure Allow pushing to an insecure registry.
+         * 
+         * @return builder
+         * 
+         */
         public Builder insecure(@Nullable Output<Boolean> insecure) {
             $.insecure = insecure;
             return this;
         }
 
+        /**
+         * @param insecure Allow pushing to an insecure registry.
+         * 
+         * @return builder
+         * 
+         */
         public Builder insecure(Boolean insecure) {
             return insecure(Output.of(insecure));
         }
 
+        /**
+         * @param nameCanonical Add additional canonical name (`name@&lt;digest&gt;`).
+         * 
+         * @return builder
+         * 
+         */
         public Builder nameCanonical(@Nullable Output<Boolean> nameCanonical) {
             $.nameCanonical = nameCanonical;
             return this;
         }
 
+        /**
+         * @param nameCanonical Add additional canonical name (`name@&lt;digest&gt;`).
+         * 
+         * @return builder
+         * 
+         */
         public Builder nameCanonical(Boolean nameCanonical) {
             return nameCanonical(Output.of(nameCanonical));
         }
@@ -381,20 +486,35 @@ public final class ExportRegistryArgs extends com.pulumi.resources.ResourceArgs 
             return push(Output.of(push));
         }
 
+        /**
+         * @param pushByDigest Push image without name.
+         * 
+         * @return builder
+         * 
+         */
         public Builder pushByDigest(@Nullable Output<Boolean> pushByDigest) {
             $.pushByDigest = pushByDigest;
             return this;
         }
 
+        /**
+         * @param pushByDigest Push image without name.
+         * 
+         * @return builder
+         * 
+         */
         public Builder pushByDigest(Boolean pushByDigest) {
             return pushByDigest(Output.of(pushByDigest));
         }
 
         /**
-         * @param store
-         * Store resulting images to the worker&#39;s image store, and ensure all its
-         * blobs are in the content store. Ignored if the worker doesn&#39;t have
-         * image store (when using OCI workers, for example).
+         * @param store Store resulting images to the worker&#39;s image store and ensure all of
+         * its blobs are in the content store.
+         * 
+         * Defaults to `true`.
+         * 
+         * Ignored if the worker doesn&#39;t have image store (when using OCI workers,
+         * for example).
          * 
          * @return builder
          * 
@@ -405,10 +525,13 @@ public final class ExportRegistryArgs extends com.pulumi.resources.ResourceArgs 
         }
 
         /**
-         * @param store
-         * Store resulting images to the worker&#39;s image store, and ensure all its
-         * blobs are in the content store. Ignored if the worker doesn&#39;t have
-         * image store (when using OCI workers, for example).
+         * @param store Store resulting images to the worker&#39;s image store and ensure all of
+         * its blobs are in the content store.
+         * 
+         * Defaults to `true`.
+         * 
+         * Ignored if the worker doesn&#39;t have image store (when using OCI workers,
+         * for example).
          * 
          * @return builder
          * 
@@ -417,11 +540,25 @@ public final class ExportRegistryArgs extends com.pulumi.resources.ResourceArgs 
             return store(Output.of(store));
         }
 
+        /**
+         * @param unpack Unpack image after creation (for use with containerd). Defaults to
+         * `false`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder unpack(@Nullable Output<Boolean> unpack) {
             $.unpack = unpack;
             return this;
         }
 
+        /**
+         * @param unpack Unpack image after creation (for use with containerd). Defaults to
+         * `false`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder unpack(Boolean unpack) {
             return unpack(Output.of(unpack));
         }

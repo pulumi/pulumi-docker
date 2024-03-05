@@ -23,7 +23,7 @@ class RegistryAuth(dict):
                  password: Optional[str] = None,
                  username: Optional[str] = None):
         """
-        :param str address: Address of the registry
+        :param str address: Address of the registry.
         :param str config_file: Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `config_file` has predencen over all other options.
         :param str config_file_content: Plain content of the docker json file for registry auth. `config_file_content` has precedence over username/password.
         :param str password: Password for the registry. Defaults to `DOCKER_REGISTRY_PASS` env variable if set.
@@ -45,7 +45,7 @@ class RegistryAuth(dict):
     @pulumi.getter
     def address(self) -> str:
         """
-        Address of the registry
+        Address of the registry.
         """
         return pulumi.get(self, "address")
 

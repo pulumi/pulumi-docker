@@ -195,7 +195,8 @@ namespace Pulumi.Docker
         /// Only available for images pushed to a registry.
         /// Use when passing a reference to a pushed image to container management resources.
         /// 
-        /// **Local-only images**For local images, this field is the image ID of the built local image, of the format &lt;algorithm&gt;:&lt;hash&gt;, e.g `sha256:826a130323165bb0ccb0374ae774f885c067a951b51a6ee133577f4e5dbc4119` 
+        /// **Local-only images**:
+        /// For local images, this field is the image ID of the built local image, of the format &lt;algorithm&gt;:&lt;hash&gt;, e.g `sha256:826a130323165bb0ccb0374ae774f885c067a951b51a6ee133577f4e5dbc4119` 
         /// </summary>
         [Output("repoDigest")]
         public Output<string> RepoDigest { get; private set; } = null!;

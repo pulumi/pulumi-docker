@@ -19,35 +19,36 @@ class _ExportableConfig(types.ModuleType):
     @property
     def ca_material(self) -> Optional[str]:
         """
-        PEM-encoded content of Docker host CA certificate
+        PEM-encoded content of Docker host CA certificate.
         """
         return __config__.get('caMaterial')
 
     @property
     def cert_material(self) -> Optional[str]:
         """
-        PEM-encoded content of Docker client certificate
+        PEM-encoded content of Docker client certificate.
         """
         return __config__.get('certMaterial')
 
     @property
     def cert_path(self) -> Optional[str]:
         """
-        Path to directory with Docker TLS config
+        Path to a directory with Docker TLS config. This directory is expected to contain `ca.pem`, `cert.pem`, and `key.pem`
+        files.
         """
         return __config__.get('certPath')
 
     @property
     def host(self) -> Optional[str]:
         """
-        The Docker daemon address
+        The Docker daemon's address.
         """
         return __config__.get('host') or _utilities.get_env('DOCKER_HOST')
 
     @property
     def key_material(self) -> Optional[str]:
         """
-        PEM-encoded content of Docker client private key
+        PEM-encoded content of Docker client private key.
         """
         return __config__.get('keyMaterial')
 
@@ -58,7 +59,8 @@ class _ExportableConfig(types.ModuleType):
     @property
     def ssh_opts(self) -> Optional[str]:
         """
-        Additional SSH option flags to be appended when using `ssh://` protocol
+        Additional SSH option flags to be appended when using `ssh://` protocol. The `ssh://` protocol is not supported for
+        `buildx.Image` resources. Instead, use a [remote](https://docs.docker.com/build/drivers/remote/) driver.
         """
         return __config__.get('sshOpts')
 

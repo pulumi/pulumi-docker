@@ -17,7 +17,57 @@ import (
 	"github.com/moby/patternmatcher/ignorefile"
 	"github.com/spf13/afero"
 	"github.com/tonistiigi/fsutil"
+
+	"github.com/pulumi/pulumi-go-provider/infer"
 )
+
+var (
+	_ = (infer.Annotated)((*Context)(nil))
+	_ = (infer.Annotated)((*BuildContext)(nil))
+)
+
+type Context struct {
+	Location string `pulumi:"location"`
+}
+
+type BuildContext struct {
+	Context
+	Named NamedContexts `pulumi:"named,optional"`
+}
+
+type NamedContexts map[string]Context
+
+func (nc NamedContexts) Map() map[string]string {
+	m := map[string]string{}
+	for k, v := range nc {
+		m[k] = v.Location
+	}
+	return m
+}
+
+func (c *Context) Annotate(a infer.Annotator) {
+	a.Describe(&c.Location, dedent(`
+		Resources to use for build context.
+		
+		The location can be:
+		* A relative or absolute path to a local directory (".", "./app",
+		  "/app", etc.).
+		* A remote URL of a Git repository, tarball, or plain text file
+		  ("https://github.com/user/myrepo.git", "http://server/context.tar.gz",
+		  etc.).
+	`))
+}
+
+func (bc *BuildContext) Annotate(a infer.Annotator) {
+	a.Describe(&bc.Named, dedent(`
+		Additional build contexts to use. 
+		
+		These contexts are accessed with "FROM name" or "--from=name"
+		statements when using Dockerfile 1.4+ syntax.
+		
+		Values can be local paths, HTTP URLs, or  "docker-image://" images.
+	`))
+}
 
 func hashFile(
 	h hash.Hash,

@@ -18,72 +18,152 @@ public final class CacheFromS3Args extends com.pulumi.resources.ResourceArgs {
 
     public static final CacheFromS3Args Empty = new CacheFromS3Args();
 
+    /**
+     * Defaults to `$AWS_ACCESS_KEY_ID`.
+     * 
+     */
     @Import(name="accessKeyId")
     private @Nullable Output<String> accessKeyId;
 
+    /**
+     * @return Defaults to `$AWS_ACCESS_KEY_ID`.
+     * 
+     */
     public Optional<Output<String>> accessKeyId() {
         return Optional.ofNullable(this.accessKeyId);
     }
 
+    /**
+     * Prefix to prepend to blob filenames.
+     * 
+     */
     @Import(name="blobsPrefix")
     private @Nullable Output<String> blobsPrefix;
 
+    /**
+     * @return Prefix to prepend to blob filenames.
+     * 
+     */
     public Optional<Output<String>> blobsPrefix() {
         return Optional.ofNullable(this.blobsPrefix);
     }
 
+    /**
+     * Name of the S3 bucket.
+     * 
+     */
     @Import(name="bucket", required=true)
     private Output<String> bucket;
 
+    /**
+     * @return Name of the S3 bucket.
+     * 
+     */
     public Output<String> bucket() {
         return this.bucket;
     }
 
+    /**
+     * Endpoint of the S3 bucket.
+     * 
+     */
     @Import(name="endpointUrl")
     private @Nullable Output<String> endpointUrl;
 
+    /**
+     * @return Endpoint of the S3 bucket.
+     * 
+     */
     public Optional<Output<String>> endpointUrl() {
         return Optional.ofNullable(this.endpointUrl);
     }
 
+    /**
+     * Prefix to prepend on manifest filenames.
+     * 
+     */
     @Import(name="manifestsPrefix")
     private @Nullable Output<String> manifestsPrefix;
 
+    /**
+     * @return Prefix to prepend on manifest filenames.
+     * 
+     */
     public Optional<Output<String>> manifestsPrefix() {
         return Optional.ofNullable(this.manifestsPrefix);
     }
 
+    /**
+     * Name of the cache image.
+     * 
+     */
     @Import(name="name")
     private @Nullable Output<String> name;
 
+    /**
+     * @return Name of the cache image.
+     * 
+     */
     public Optional<Output<String>> name() {
         return Optional.ofNullable(this.name);
     }
 
+    /**
+     * The geographic location of the bucket. Defaults to `$AWS_REGION`.
+     * 
+     */
     @Import(name="region", required=true)
     private Output<String> region;
 
+    /**
+     * @return The geographic location of the bucket. Defaults to `$AWS_REGION`.
+     * 
+     */
     public Output<String> region() {
         return this.region;
     }
 
+    /**
+     * Defaults to `$AWS_SECRET_ACCESS_KEY`.
+     * 
+     */
     @Import(name="secretAccessKey")
     private @Nullable Output<String> secretAccessKey;
 
+    /**
+     * @return Defaults to `$AWS_SECRET_ACCESS_KEY`.
+     * 
+     */
     public Optional<Output<String>> secretAccessKey() {
         return Optional.ofNullable(this.secretAccessKey);
     }
 
+    /**
+     * Defaults to `$AWS_SESSION_TOKEN`.
+     * 
+     */
     @Import(name="sessionToken")
     private @Nullable Output<String> sessionToken;
 
+    /**
+     * @return Defaults to `$AWS_SESSION_TOKEN`.
+     * 
+     */
     public Optional<Output<String>> sessionToken() {
         return Optional.ofNullable(this.sessionToken);
     }
 
+    /**
+     * Uses `bucket` in the URL instead of hostname when `true`.
+     * 
+     */
     @Import(name="usePathStyle")
     private @Nullable Output<Boolean> usePathStyle;
 
+    /**
+     * @return Uses `bucket` in the URL instead of hostname when `true`.
+     * 
+     */
     public Optional<Output<Boolean>> usePathStyle() {
         return Optional.ofNullable(this.usePathStyle);
     }
@@ -121,92 +201,212 @@ public final class CacheFromS3Args extends com.pulumi.resources.ResourceArgs {
             $ = new CacheFromS3Args(Objects.requireNonNull(defaults));
         }
 
+        /**
+         * @param accessKeyId Defaults to `$AWS_ACCESS_KEY_ID`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder accessKeyId(@Nullable Output<String> accessKeyId) {
             $.accessKeyId = accessKeyId;
             return this;
         }
 
+        /**
+         * @param accessKeyId Defaults to `$AWS_ACCESS_KEY_ID`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder accessKeyId(String accessKeyId) {
             return accessKeyId(Output.of(accessKeyId));
         }
 
+        /**
+         * @param blobsPrefix Prefix to prepend to blob filenames.
+         * 
+         * @return builder
+         * 
+         */
         public Builder blobsPrefix(@Nullable Output<String> blobsPrefix) {
             $.blobsPrefix = blobsPrefix;
             return this;
         }
 
+        /**
+         * @param blobsPrefix Prefix to prepend to blob filenames.
+         * 
+         * @return builder
+         * 
+         */
         public Builder blobsPrefix(String blobsPrefix) {
             return blobsPrefix(Output.of(blobsPrefix));
         }
 
+        /**
+         * @param bucket Name of the S3 bucket.
+         * 
+         * @return builder
+         * 
+         */
         public Builder bucket(Output<String> bucket) {
             $.bucket = bucket;
             return this;
         }
 
+        /**
+         * @param bucket Name of the S3 bucket.
+         * 
+         * @return builder
+         * 
+         */
         public Builder bucket(String bucket) {
             return bucket(Output.of(bucket));
         }
 
+        /**
+         * @param endpointUrl Endpoint of the S3 bucket.
+         * 
+         * @return builder
+         * 
+         */
         public Builder endpointUrl(@Nullable Output<String> endpointUrl) {
             $.endpointUrl = endpointUrl;
             return this;
         }
 
+        /**
+         * @param endpointUrl Endpoint of the S3 bucket.
+         * 
+         * @return builder
+         * 
+         */
         public Builder endpointUrl(String endpointUrl) {
             return endpointUrl(Output.of(endpointUrl));
         }
 
+        /**
+         * @param manifestsPrefix Prefix to prepend on manifest filenames.
+         * 
+         * @return builder
+         * 
+         */
         public Builder manifestsPrefix(@Nullable Output<String> manifestsPrefix) {
             $.manifestsPrefix = manifestsPrefix;
             return this;
         }
 
+        /**
+         * @param manifestsPrefix Prefix to prepend on manifest filenames.
+         * 
+         * @return builder
+         * 
+         */
         public Builder manifestsPrefix(String manifestsPrefix) {
             return manifestsPrefix(Output.of(manifestsPrefix));
         }
 
+        /**
+         * @param name Name of the cache image.
+         * 
+         * @return builder
+         * 
+         */
         public Builder name(@Nullable Output<String> name) {
             $.name = name;
             return this;
         }
 
+        /**
+         * @param name Name of the cache image.
+         * 
+         * @return builder
+         * 
+         */
         public Builder name(String name) {
             return name(Output.of(name));
         }
 
+        /**
+         * @param region The geographic location of the bucket. Defaults to `$AWS_REGION`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder region(Output<String> region) {
             $.region = region;
             return this;
         }
 
+        /**
+         * @param region The geographic location of the bucket. Defaults to `$AWS_REGION`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder region(String region) {
             return region(Output.of(region));
         }
 
+        /**
+         * @param secretAccessKey Defaults to `$AWS_SECRET_ACCESS_KEY`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder secretAccessKey(@Nullable Output<String> secretAccessKey) {
             $.secretAccessKey = secretAccessKey;
             return this;
         }
 
+        /**
+         * @param secretAccessKey Defaults to `$AWS_SECRET_ACCESS_KEY`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder secretAccessKey(String secretAccessKey) {
             return secretAccessKey(Output.of(secretAccessKey));
         }
 
+        /**
+         * @param sessionToken Defaults to `$AWS_SESSION_TOKEN`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder sessionToken(@Nullable Output<String> sessionToken) {
             $.sessionToken = sessionToken;
             return this;
         }
 
+        /**
+         * @param sessionToken Defaults to `$AWS_SESSION_TOKEN`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder sessionToken(String sessionToken) {
             return sessionToken(Output.of(sessionToken));
         }
 
+        /**
+         * @param usePathStyle Uses `bucket` in the URL instead of hostname when `true`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder usePathStyle(@Nullable Output<Boolean> usePathStyle) {
             $.usePathStyle = usePathStyle;
             return this;
         }
 
+        /**
+         * @param usePathStyle Uses `bucket` in the URL instead of hostname when `true`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder usePathStyle(Boolean usePathStyle) {
             return usePathStyle(Output.of(usePathStyle));
         }

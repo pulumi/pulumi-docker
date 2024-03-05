@@ -51,9 +51,17 @@ public final class CacheToLocalArgs extends com.pulumi.resources.ResourceArgs {
         return Optional.ofNullable(this.compressionLevel);
     }
 
+    /**
+     * Path of the local directory to export the cache.
+     * 
+     */
     @Import(name="dest", required=true)
     private Output<String> dest;
 
+    /**
+     * @return Path of the local directory to export the cache.
+     * 
+     */
     public Output<String> dest() {
         return this.dest;
     }
@@ -88,9 +96,17 @@ public final class CacheToLocalArgs extends com.pulumi.resources.ResourceArgs {
         return Optional.ofNullable(this.ignoreError);
     }
 
+    /**
+     * The cache mode to use. Defaults to `min`.
+     * 
+     */
     @Import(name="mode")
     private @Nullable Output<CacheMode> mode;
 
+    /**
+     * @return The cache mode to use. Defaults to `min`.
+     * 
+     */
     public Optional<Output<CacheMode>> mode() {
         return Optional.ofNullable(this.mode);
     }
@@ -166,11 +182,23 @@ public final class CacheToLocalArgs extends com.pulumi.resources.ResourceArgs {
             return compressionLevel(Output.of(compressionLevel));
         }
 
+        /**
+         * @param dest Path of the local directory to export the cache.
+         * 
+         * @return builder
+         * 
+         */
         public Builder dest(Output<String> dest) {
             $.dest = dest;
             return this;
         }
 
+        /**
+         * @param dest Path of the local directory to export the cache.
+         * 
+         * @return builder
+         * 
+         */
         public Builder dest(String dest) {
             return dest(Output.of(dest));
         }
@@ -217,11 +245,23 @@ public final class CacheToLocalArgs extends com.pulumi.resources.ResourceArgs {
             return ignoreError(Output.of(ignoreError));
         }
 
+        /**
+         * @param mode The cache mode to use. Defaults to `min`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder mode(@Nullable Output<CacheMode> mode) {
             $.mode = mode;
             return this;
         }
 
+        /**
+         * @param mode The cache mode to use. Defaults to `min`.
+         * 
+         * @return builder
+         * 
+         */
         public Builder mode(CacheMode mode) {
             return mode(Output.of(mode));
         }

@@ -17,8 +17,12 @@ const start = new Date().getTime();
 //  .
 const img = new docker.buildx.Image(`buildx-${config.require("name")}`, {
   tags: ["not-pushed"],
-  file: "Dockerfile",
-  context: ".",
+  dockerfile: {
+    location: "Dockerfile",
+  },
+  context: {
+    location: ".",
+  },
   platforms: ["linux/arm64", "linux/amd64"],
   buildArgs: {
     SLEEP_SECONDS: config.require("SLEEP_SECONDS"),
@@ -39,6 +43,6 @@ const img = new docker.buildx.Image(`buildx-${config.require("name")}`, {
   ),
 });
 
-export const durationSeconds = img.manifests.apply(
+export const durationSeconds = img.tags.apply(
   (_) => (new Date().getTime() - start) / 1000.0
 );

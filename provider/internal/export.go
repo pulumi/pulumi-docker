@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	controllerapi "github.com/docker/buildx/controller/pb"
-	"github.com/muesli/reflow/dedent"
+	"github.com/docker/buildx/util/buildflags"
 
 	"github.com/pulumi/pulumi-go-provider/infer"
 )
@@ -42,34 +42,40 @@ type ExportEntry struct {
 	Raw      Raw             `pulumi:"raw,optional"`
 
 	Disabled bool `pulumi:"disabled,optional"`
+
+	Manifests []Manifest `pulumi:"manifests,optional" provider:"output"`
 }
 
 func (e *ExportEntry) Annotate(a infer.Annotator) {
-	a.Describe(&e.Tar, dedent.String(`
+	a.Describe(&e.Tar, dedent(`
 		Export to a local directory as a tarball.`,
 	))
-	a.Describe(&e.Local, dedent.String(`
+	a.Describe(&e.Local, dedent(`
 		Export to a local directory as files and directories.`,
 	))
-	a.Describe(&e.Registry, dedent.String(`
+	a.Describe(&e.Registry, dedent(`
 		Identical to the Image exporter, but pushes by default.`,
 	))
-	a.Describe(&e.Image, dedent.String(`
+	a.Describe(&e.Image, dedent(`
 		Outputs the build result into a container image format.`,
 	))
-	a.Describe(&e.OCI, dedent.String(`
+	a.Describe(&e.OCI, dedent(`
 		Identical to the Docker exporter but uses OCI media types by default.`,
 	))
-	a.Describe(&e.Docker, dedent.String(`
+	a.Describe(&e.Docker, dedent(`
 		Export as a Docker image layout.`,
 	))
-	a.Describe(&e.Raw, dedent.String(`
+	a.Describe(&e.Raw, dedent(`
 		A raw string as you would provide it to the Docker CLI (e.g.,
 		"type=docker")`,
 	))
 
-	a.Describe(&e.Disabled, dedent.String(`
+	a.Describe(&e.Disabled, dedent(`
 		When "true" this entry will be excluded. Defaults to "false".
+	`))
+	a.Describe(&e.Manifests, dedent(`
+		An output property populated for exporters that pushed image
+		manifest(s) to a registry.
 	`))
 }
 
@@ -78,6 +84,23 @@ func (e ExportEntry) String() string {
 		return ""
 	}
 	return join(e.Tar, e.Local, e.Registry, e.Image, e.OCI, e.Docker, e.Raw)
+}
+
+func (e ExportEntry) pushed() bool {
+	if e.Raw != "" {
+		exp, err := buildflags.ParseExports([]string{e.Raw.String()})
+		if err != nil {
+			return false
+		}
+		return exp[0].Attrs["push"] == "true"
+	}
+	if e.Registry != nil {
+		return e.Registry.Push == nil || *e.Registry.Push
+	}
+	if e.Image != nil {
+		return e.Image.Push != nil && *e.Image.Push
+	}
+	return false
 }
 
 type ExportDocker struct {
@@ -152,12 +175,33 @@ type ExportImage struct {
 
 func (e *ExportImage) Annotate(a infer.Annotator) {
 	a.SetDefault(&e.Store, true)
-	a.Describe(&e.Store, dedent.String(`
-		Store resulting images to the worker's image store, and ensure all its
-		blobs are in the content store. Ignored if the worker doesn't have
-		image store (when using OCI workers, for example).`,
-	))
+
+	a.Describe(&e.Store, dedent(`
+		Store resulting images to the worker's image store and ensure all of
+		its blobs are in the content store.
+
+		Defaults to "true".
+
+		Ignored if the worker doesn't have image store (when using OCI workers,
+		for example).
+	`))
 	a.Describe(&e.Push, "Push after creating the image.")
+	a.Describe(&e.DanglingNamePrefix, dedent(`
+		Name image with "prefix@<digest>", used for anonymous images.
+	`))
+	a.Describe(&e.NameCanonical, dedent(`
+		Add additional canonical name ("name@<digest>").
+	`))
+	a.Describe(&e.Insecure, dedent(`
+		Allow pushing to an insecure registry.
+	`))
+	a.Describe(&e.PushByDigest, dedent(`
+		Push image without name.
+	`))
+	a.Describe(&e.Unpack, dedent(`
+		Unpack image after creation (for use with containerd). Defaults to
+		"false".
+	`))
 }
 
 func (e *ExportImage) String() string {
@@ -317,6 +361,12 @@ func (e ExportWithAnnotations) String() string {
 	}
 	slices.Sort(parts)
 	return strings.Join(parts, ",")
+}
+
+func (e *ExportWithAnnotations) Annotate(a infer.Annotator) {
+	a.Describe(&e.Annotations, dedent(`
+		Attach an arbitrary key/value annotation to the image.
+	`))
 }
 
 func isRegistryPush(export *controllerapi.ExportEntry) bool {

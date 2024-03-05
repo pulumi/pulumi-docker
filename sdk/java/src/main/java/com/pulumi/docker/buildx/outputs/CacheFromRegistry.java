@@ -11,14 +11,14 @@ import java.util.Objects;
 @CustomType
 public final class CacheFromRegistry {
     /**
-     * @return Full name of the cache image to import.
+     * @return Fully qualified name of the cache image to import.
      * 
      */
     private String ref;
 
     private CacheFromRegistry() {}
     /**
-     * @return Full name of the cache image to import.
+     * @return Fully qualified name of the cache image to import.
      * 
      */
     public String ref() {

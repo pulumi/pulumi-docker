@@ -14,17 +14,37 @@ import javax.annotation.Nullable;
 
 @CustomType
 public final class CacheToAzureBlob {
+    /**
+     * @return Base URL of the storage account.
+     * 
+     */
     private @Nullable String accountUrl;
     /**
      * @return Ignore errors caused by failed cache exports.
      * 
      */
     private @Nullable Boolean ignoreError;
+    /**
+     * @return The cache mode to use. Defaults to `min`.
+     * 
+     */
     private @Nullable CacheMode mode;
+    /**
+     * @return The name of the cache image.
+     * 
+     */
     private String name;
+    /**
+     * @return Blob storage account key.
+     * 
+     */
     private @Nullable String secretAccessKey;
 
     private CacheToAzureBlob() {}
+    /**
+     * @return Base URL of the storage account.
+     * 
+     */
     public Optional<String> accountUrl() {
         return Optional.ofNullable(this.accountUrl);
     }
@@ -35,12 +55,24 @@ public final class CacheToAzureBlob {
     public Optional<Boolean> ignoreError() {
         return Optional.ofNullable(this.ignoreError);
     }
+    /**
+     * @return The cache mode to use. Defaults to `min`.
+     * 
+     */
     public Optional<CacheMode> mode() {
         return Optional.ofNullable(this.mode);
     }
+    /**
+     * @return The name of the cache image.
+     * 
+     */
     public String name() {
         return this.name;
     }
+    /**
+     * @return Blob storage account key.
+     * 
+     */
     public Optional<String> secretAccessKey() {
         return Optional.ofNullable(this.secretAccessKey);
     }

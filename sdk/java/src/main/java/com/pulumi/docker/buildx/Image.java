@@ -10,10 +10,12 @@ import com.pulumi.core.internal.Codegen;
 import com.pulumi.docker.Utilities;
 import com.pulumi.docker.buildx.ImageArgs;
 import com.pulumi.docker.buildx.enums.Platform;
+import com.pulumi.docker.buildx.outputs.BuildContext;
+import com.pulumi.docker.buildx.outputs.BuilderConfig;
 import com.pulumi.docker.buildx.outputs.CacheFromEntry;
 import com.pulumi.docker.buildx.outputs.CacheToEntry;
+import com.pulumi.docker.buildx.outputs.Dockerfile;
 import com.pulumi.docker.buildx.outputs.ExportEntry;
-import com.pulumi.docker.buildx.outputs.Manifest;
 import com.pulumi.docker.buildx.outputs.RegistryAuth;
 import java.lang.Boolean;
 import java.lang.String;
@@ -23,224 +25,894 @@ import java.util.Optional;
 import javax.annotation.Nullable;
 
 /**
- * A Docker image built using Buildkit
+ * A Docker image built using buildx -- Docker&#39;s interface to the improved
+ * BuildKit backend.
+ * 
+ * ## Stability
+ * 
+ * **This resource is experimental and subject to change.**
+ * 
+ * API types are unstable. Subsequent releases _may_ require manual edits
+ * to your state file(s) in order to adopt API changes.
+ * 
+ * `retainOnDelete: true` is recommended with this resource until it is
+ * stable. This enables future API changes to be adopted more easily by renaming
+ * resources.
+ * 
+ * Only use this resource if you understand and accept the risks.
+ * 
+ * ## Migrating v3 and v4 Image resources
+ * 
+ * The `buildx.Image` resource provides a superset of functionality over the `Image` resources available in versions 3 and 4 of the Pulumi Docker provider.
+ * Existing `Image` resources can be converted to `build.Image` resources with minor modifications.
+ * 
+ * ### Behavioral differences
+ * 
+ * There are several key behavioral differences to keep in mind when transitioning images to the new `buildx.Image` resource.
+ * 
+ * #### Previews
+ * 
+ * Version `3.x` of the Pulumi Docker provider always builds images during preview operations.
+ * This is helpful as a safeguard to prevent &#34;broken&#34; images from merging, but users found the behavior unnecessarily redundant when running previews and updates locally.
+ * 
+ * Version `4.x` changed build-on-preview behavior to be opt-in.
+ * By default, `v4.x` `Image` resources do _not_ build during previews, but this behavior can be toggled with the `buildOnPreview` option.
+ * Some users felt this made previews in CI less helpful because they no longer detected bad images by default.
+ * 
+ * The default behavior of the `buildx.Image` resource has been changed to strike a better balance between CI use cases and manual updates.
+ * By default, Pulumi will now only build `buildx.Image` resources during previews when it detects a CI environment like GitHub Actions.
+ * Previews run in non-CI environments will not build images.
+ * This behavior is still configurable with `buildOnPreview`.
+ * 
+ * #### Push behavior
+ * 
+ * Versions `3.x` and `4.x` of the Pulumi Docker provider attempt to push images to remote registries by default.
+ * They expose a `skipPush: true` option to disable pushing.
+ * 
+ * The `buildx.Image` resource matches the Docker CLI&#39;s behavior and does not push images anywhere by default.
+ * 
+ * To push images to a registry you can include `push: true` (equivalent to Docker&#39;s `--push` flag) or configure an `export` of type `registry` (equivalent to Docker&#39;s `--output type=registry`).
+ * Like Docker, if an image is configured without exports you will see a warning with instructions for how to enable pushing, but the build will still proceed normally.
+ * 
+ * #### Secrets
+ * 
+ * Version `3.x` of the Pulumi Docker provider supports secrets by way of the `extraOptions` field.
+ * 
+ * Version `4.x` of the Pulumi Docker provider does not support secrets.
+ * 
+ * The `buildx.Image` resource supports secrets but does not require those secrets to exist on-disk or in environment variables.
+ * Instead, they should be passed directly as values.
+ * (Please be sure to familiarize yourself with Pulumi&#39;s [native secret handling](https://www.pulumi.com/docs/concepts/secrets/).)
+ * Pulumi also provides [ESC](https://www.pulumi.com/product/esc/) to make it easier to share secrets across stacks and environments.
+ * 
+ * #### Caching
+ * 
+ * Version `3.x` of the Pulumi Docker provider exposes `cacheFrom: bool | { stages: [...] }`.
+ * It builds targets individually and pushes them to separate images for caching.
+ * 
+ * Version `4.x` exposes a similar parameter `cacheFrom: { images: [...] }` which pushes and pulls inline caches.
+ * 
+ * Both versions 3 and 4 require specific environment variables to be set and deviate from Docker&#39;s native caching behavior.
+ * This can result in inefficient builds due to unnecessary image pulls, repeated file transfers, etc.
+ * 
+ * The `buildx.Image` resource delegates all caching behavior to Docker.
+ * `cacheFrom` and `cacheTo` options (equivalent to Docker&#39;s `--cache-to` and `--cache-from`) are exposed and provide additional cache targets, such as local disk, S3 storage, etc.
+ * 
+ * #### Outputs
+ * 
+ * TODO:
+ * 
+ * #### Tag deletion and refreshes
+ * 
+ * Versions 3 and 4 of Pulumi Docker provider do not delete tags when the `Image` resource is deleted, nor do they confirm expected tags exist during `refresh` operations.
+ * 
+ * The `buidx.Image` will query your registries during `refresh` to ensure the expected tags exist.
+ * If any are missing a subsequent `update` will push them.
+ * 
+ * When a `buildx.Image` is deleted, it will _attempt_ to also delete any pushed tags.
+ * Deletion of remote tags is not guaranteed, because not all registries currently support this operation (`docker.io` in particular).
+ * 
+ * Use the [`retainOnDelete: true`](https://www.pulumi.com/docs/concepts/options/retainondelete/) option if you do not want tags deleted.
+ * 
+ * ### Example migration
+ * 
+ * Examples of &#34;fully-featured&#34; `v3` and `v4` `Image` resources are shown below, along with an example `buildx.Image` resource showing how they would look after migration.
+ * 
+ * The `v3` resource leverages `buildx` via a `DOCKER_BUILDKIT` environment variable and CLI flags passed in with `extraOption`.
+ * After migration, the environment variable is no longer needed and CLI flags are now properties on the `buildx.Image`.
+ * In almost all cases, properties of `buildx.Image` are named after the Docker CLI flag they correspond to.
+ * 
+ * The `v4` resource is less functional than its `v3` counterpart because it lacks the flexibility of `extraOptions`.
+ * It it is shown with parameters similar to the `v3` example for completeness.
+ * 
+ * ## Example Usage
+ * 
+ * ## Example Usage
+ * ### Push to AWS ECR with caching
+ * ```java
+ * package generated_program;
+ * 
+ * import com.pulumi.Context;
+ * import com.pulumi.Pulumi;
+ * import com.pulumi.core.Output;
+ * import com.pulumi.aws.ecr.Repository;
+ * import com.pulumi.aws.ecr.EcrFunctions;
+ * import com.pulumi.aws.ecr.inputs.GetAuthorizationTokenArgs;
+ * import com.pulumi.docker.buildx.Image;
+ * import com.pulumi.docker.buildx.ImageArgs;
+ * import com.pulumi.docker.buildx.inputs.CacheFromEntryArgs;
+ * import com.pulumi.docker.buildx.inputs.CacheFromRegistryArgs;
+ * import com.pulumi.docker.buildx.inputs.CacheToEntryArgs;
+ * import com.pulumi.docker.buildx.inputs.CacheToRegistryArgs;
+ * import com.pulumi.docker.buildx.inputs.BuildContextArgs;
+ * import com.pulumi.docker.buildx.inputs.DockerfileArgs;
+ * import com.pulumi.docker.buildx.inputs.RegistryAuthArgs;
+ * import java.util.List;
+ * import java.util.ArrayList;
+ * import java.util.Map;
+ * import java.io.File;
+ * import java.nio.file.Files;
+ * import java.nio.file.Paths;
+ * 
+ * public class App {
+ *     public static void main(String[] args) {
+ *         Pulumi.run(App::stack);
+ *     }
+ * 
+ *     public static void stack(Context ctx) {
+ *         var ecrRepository = new Repository(&#34;ecrRepository&#34;);
+ * 
+ *         final var authToken = EcrFunctions.getAuthorizationToken(GetAuthorizationTokenArgs.builder()
+ *             .registryId(ecrRepository.registryId())
+ *             .build());
+ * 
+ *         var myImage = new Image(&#34;myImage&#34;, ImageArgs.builder()        
+ *             .cacheFrom(CacheFromEntryArgs.builder()
+ *                 .registry(CacheFromRegistryArgs.builder()
+ *                     .ref(ecrRepository.repositoryUrl().applyValue(repositoryUrl -&gt; String.format(&#34;%s:cache&#34;, repositoryUrl)))
+ *                     .build())
+ *                 .build())
+ *             .cacheTo(CacheToEntryArgs.builder()
+ *                 .registry(CacheToRegistryArgs.builder()
+ *                     .imageManifest(true)
+ *                     .ociMediaTypes(true)
+ *                     .ref(ecrRepository.repositoryUrl().applyValue(repositoryUrl -&gt; String.format(&#34;%s:cache&#34;, repositoryUrl)))
+ *                     .build())
+ *                 .build())
+ *             .context(BuildContextArgs.builder()
+ *                 .location(&#34;./app&#34;)
+ *                 .build())
+ *             .dockerfile(DockerfileArgs.builder()
+ *                 .location(&#34;./Dockerfile&#34;)
+ *                 .build())
+ *             .push(true)
+ *             .registries(RegistryAuthArgs.builder()
+ *                 .address(ecrRepository.repositoryUrl())
+ *                 .password(authToken.applyValue(getAuthorizationTokenResult -&gt; getAuthorizationTokenResult).applyValue(authToken -&gt; authToken.applyValue(getAuthorizationTokenResult -&gt; getAuthorizationTokenResult.password())))
+ *                 .username(authToken.applyValue(getAuthorizationTokenResult -&gt; getAuthorizationTokenResult).applyValue(authToken -&gt; authToken.applyValue(getAuthorizationTokenResult -&gt; getAuthorizationTokenResult.userName())))
+ *                 .build())
+ *             .tags(ecrRepository.repositoryUrl().applyValue(repositoryUrl -&gt; String.format(&#34;%s:latest&#34;, repositoryUrl)))
+ *             .build());
+ * 
+ *     }
+ * }
+ * ```
+ * ### Multi-platform image
+ * ```java
+ * package generated_program;
+ * 
+ * import com.pulumi.Context;
+ * import com.pulumi.Pulumi;
+ * import com.pulumi.core.Output;
+ * import com.pulumi.docker.buildx.Image;
+ * import com.pulumi.docker.buildx.ImageArgs;
+ * import com.pulumi.docker.buildx.inputs.BuildContextArgs;
+ * import java.util.List;
+ * import java.util.ArrayList;
+ * import java.util.Map;
+ * import java.io.File;
+ * import java.nio.file.Files;
+ * import java.nio.file.Paths;
+ * 
+ * public class App {
+ *     public static void main(String[] args) {
+ *         Pulumi.run(App::stack);
+ *     }
+ * 
+ *     public static void stack(Context ctx) {
+ *         var image = new Image(&#34;image&#34;, ImageArgs.builder()        
+ *             .context(BuildContextArgs.builder()
+ *                 .location(&#34;app&#34;)
+ *                 .build())
+ *             .platforms(            
+ *                 &#34;plan9/amd64&#34;,
+ *                 &#34;plan9/386&#34;)
+ *             .build());
+ * 
+ *     }
+ * }
+ * ```
+ * ### Registry export
+ * ```java
+ * package generated_program;
+ * 
+ * import com.pulumi.Context;
+ * import com.pulumi.Pulumi;
+ * import com.pulumi.core.Output;
+ * import com.pulumi.docker.buildx.Image;
+ * import com.pulumi.docker.buildx.ImageArgs;
+ * import com.pulumi.docker.buildx.inputs.BuildContextArgs;
+ * import com.pulumi.docker.buildx.inputs.RegistryAuthArgs;
+ * import java.util.List;
+ * import java.util.ArrayList;
+ * import java.util.Map;
+ * import java.io.File;
+ * import java.nio.file.Files;
+ * import java.nio.file.Paths;
+ * 
+ * public class App {
+ *     public static void main(String[] args) {
+ *         Pulumi.run(App::stack);
+ *     }
+ * 
+ *     public static void stack(Context ctx) {
+ *         var image = new Image(&#34;image&#34;, ImageArgs.builder()        
+ *             .context(BuildContextArgs.builder()
+ *                 .location(&#34;app&#34;)
+ *                 .build())
+ *             .push(true)
+ *             .registries(RegistryAuthArgs.builder()
+ *                 .address(&#34;docker.io&#34;)
+ *                 .password(dockerHubPassword)
+ *                 .username(&#34;pulumibot&#34;)
+ *                 .build())
+ *             .tags(&#34;docker.io/pulumi/pulumi:3.107.0&#34;)
+ *             .build());
+ * 
+ *     }
+ * }
+ * ```
+ * ### Caching
+ * ```java
+ * package generated_program;
+ * 
+ * import com.pulumi.Context;
+ * import com.pulumi.Pulumi;
+ * import com.pulumi.core.Output;
+ * import com.pulumi.docker.buildx.Image;
+ * import com.pulumi.docker.buildx.ImageArgs;
+ * import com.pulumi.docker.buildx.inputs.CacheFromEntryArgs;
+ * import com.pulumi.docker.buildx.inputs.CacheFromLocalArgs;
+ * import com.pulumi.docker.buildx.inputs.CacheToEntryArgs;
+ * import com.pulumi.docker.buildx.inputs.CacheToLocalArgs;
+ * import com.pulumi.docker.buildx.inputs.BuildContextArgs;
+ * import java.util.List;
+ * import java.util.ArrayList;
+ * import java.util.Map;
+ * import java.io.File;
+ * import java.nio.file.Files;
+ * import java.nio.file.Paths;
+ * 
+ * public class App {
+ *     public static void main(String[] args) {
+ *         Pulumi.run(App::stack);
+ *     }
+ * 
+ *     public static void stack(Context ctx) {
+ *         var image = new Image(&#34;image&#34;, ImageArgs.builder()        
+ *             .cacheFrom(CacheFromEntryArgs.builder()
+ *                 .local(CacheFromLocalArgs.builder()
+ *                     .src(&#34;tmp/cache&#34;)
+ *                     .build())
+ *                 .build())
+ *             .cacheTo(CacheToEntryArgs.builder()
+ *                 .local(CacheToLocalArgs.builder()
+ *                     .dest(&#34;tmp/cache&#34;)
+ *                     .mode(&#34;max&#34;)
+ *                     .build())
+ *                 .build())
+ *             .context(BuildContextArgs.builder()
+ *                 .location(&#34;app&#34;)
+ *                 .build())
+ *             .build());
+ * 
+ *     }
+ * }
+ * ```
+ * ### Build arguments
+ * ```java
+ * package generated_program;
+ * 
+ * import com.pulumi.Context;
+ * import com.pulumi.Pulumi;
+ * import com.pulumi.core.Output;
+ * import com.pulumi.docker.buildx.Image;
+ * import com.pulumi.docker.buildx.ImageArgs;
+ * import com.pulumi.docker.buildx.inputs.BuildContextArgs;
+ * import java.util.List;
+ * import java.util.ArrayList;
+ * import java.util.Map;
+ * import java.io.File;
+ * import java.nio.file.Files;
+ * import java.nio.file.Paths;
+ * 
+ * public class App {
+ *     public static void main(String[] args) {
+ *         Pulumi.run(App::stack);
+ *     }
+ * 
+ *     public static void stack(Context ctx) {
+ *         var image = new Image(&#34;image&#34;, ImageArgs.builder()        
+ *             .buildArgs(Map.of(&#34;SET_ME_TO_TRUE&#34;, &#34;true&#34;))
+ *             .context(BuildContextArgs.builder()
+ *                 .location(&#34;app&#34;)
+ *                 .build())
+ *             .build());
+ * 
+ *     }
+ * }
+ * ```
+ * ### Build targets
+ * ```java
+ * package generated_program;
+ * 
+ * import com.pulumi.Context;
+ * import com.pulumi.Pulumi;
+ * import com.pulumi.core.Output;
+ * import com.pulumi.docker.buildx.Image;
+ * import com.pulumi.docker.buildx.ImageArgs;
+ * import com.pulumi.docker.buildx.inputs.BuildContextArgs;
+ * import java.util.List;
+ * import java.util.ArrayList;
+ * import java.util.Map;
+ * import java.io.File;
+ * import java.nio.file.Files;
+ * import java.nio.file.Paths;
+ * 
+ * public class App {
+ *     public static void main(String[] args) {
+ *         Pulumi.run(App::stack);
+ *     }
+ * 
+ *     public static void stack(Context ctx) {
+ *         var image = new Image(&#34;image&#34;, ImageArgs.builder()        
+ *             .context(BuildContextArgs.builder()
+ *                 .location(&#34;app&#34;)
+ *                 .build())
+ *             .targets(            
+ *                 &#34;build-me&#34;,
+ *                 &#34;also-build-me&#34;)
+ *             .build());
+ * 
+ *     }
+ * }
+ * ```
+ * ### Named contexts
+ * ```java
+ * package generated_program;
+ * 
+ * import com.pulumi.Context;
+ * import com.pulumi.Pulumi;
+ * import com.pulumi.core.Output;
+ * import com.pulumi.docker.buildx.Image;
+ * import com.pulumi.docker.buildx.ImageArgs;
+ * import com.pulumi.docker.buildx.inputs.BuildContextArgs;
+ * import java.util.List;
+ * import java.util.ArrayList;
+ * import java.util.Map;
+ * import java.io.File;
+ * import java.nio.file.Files;
+ * import java.nio.file.Paths;
+ * 
+ * public class App {
+ *     public static void main(String[] args) {
+ *         Pulumi.run(App::stack);
+ *     }
+ * 
+ *     public static void stack(Context ctx) {
+ *         var image = new Image(&#34;image&#34;, ImageArgs.builder()        
+ *             .context(BuildContextArgs.builder()
+ *                 .location(&#34;app&#34;)
+ *                 .named(Map.of(&#34;golang:latest&#34;, Map.of(&#34;location&#34;, &#34;docker-image://golang@sha256:b8e62cf593cdaff36efd90aa3a37de268e6781a2e68c6610940c48f7cdf36984&#34;)))
+ *                 .build())
+ *             .build());
+ * 
+ *     }
+ * }
+ * ```
+ * ### Remote context
+ * ```java
+ * package generated_program;
+ * 
+ * import com.pulumi.Context;
+ * import com.pulumi.Pulumi;
+ * import com.pulumi.core.Output;
+ * import com.pulumi.docker.buildx.Image;
+ * import com.pulumi.docker.buildx.ImageArgs;
+ * import com.pulumi.docker.buildx.inputs.BuildContextArgs;
+ * import java.util.List;
+ * import java.util.ArrayList;
+ * import java.util.Map;
+ * import java.io.File;
+ * import java.nio.file.Files;
+ * import java.nio.file.Paths;
+ * 
+ * public class App {
+ *     public static void main(String[] args) {
+ *         Pulumi.run(App::stack);
+ *     }
+ * 
+ *     public static void stack(Context ctx) {
+ *         var image = new Image(&#34;image&#34;, ImageArgs.builder()        
+ *             .context(BuildContextArgs.builder()
+ *                 .location(&#34;https://raw.githubusercontent.com/pulumi/pulumi-docker/api-types/provider/testdata/Dockerfile&#34;)
+ *                 .build())
+ *             .build());
+ * 
+ *     }
+ * }
+ * ```
+ * ### Inline Dockerfile
+ * ```java
+ * package generated_program;
+ * 
+ * import com.pulumi.Context;
+ * import com.pulumi.Pulumi;
+ * import com.pulumi.core.Output;
+ * import com.pulumi.docker.buildx.Image;
+ * import com.pulumi.docker.buildx.ImageArgs;
+ * import com.pulumi.docker.buildx.inputs.BuildContextArgs;
+ * import com.pulumi.docker.buildx.inputs.DockerfileArgs;
+ * import java.util.List;
+ * import java.util.ArrayList;
+ * import java.util.Map;
+ * import java.io.File;
+ * import java.nio.file.Files;
+ * import java.nio.file.Paths;
+ * 
+ * public class App {
+ *     public static void main(String[] args) {
+ *         Pulumi.run(App::stack);
+ *     }
+ * 
+ *     public static void stack(Context ctx) {
+ *         var image = new Image(&#34;image&#34;, ImageArgs.builder()        
+ *             .context(BuildContextArgs.builder()
+ *                 .location(&#34;app&#34;)
+ *                 .build())
+ *             .dockerfile(DockerfileArgs.builder()
+ *                 .inline(&#34;&#34;&#34;
+ * FROM busybox
+ * COPY hello.c ./
+ *                 &#34;&#34;&#34;)
+ *                 .build())
+ *             .build());
+ * 
+ *     }
+ * }
+ * ```
+ * ### Remote context
+ * ```java
+ * package generated_program;
+ * 
+ * import com.pulumi.Context;
+ * import com.pulumi.Pulumi;
+ * import com.pulumi.core.Output;
+ * import com.pulumi.docker.buildx.Image;
+ * import com.pulumi.docker.buildx.ImageArgs;
+ * import com.pulumi.docker.buildx.inputs.BuildContextArgs;
+ * import com.pulumi.docker.buildx.inputs.DockerfileArgs;
+ * import java.util.List;
+ * import java.util.ArrayList;
+ * import java.util.Map;
+ * import java.io.File;
+ * import java.nio.file.Files;
+ * import java.nio.file.Paths;
+ * 
+ * public class App {
+ *     public static void main(String[] args) {
+ *         Pulumi.run(App::stack);
+ *     }
+ * 
+ *     public static void stack(Context ctx) {
+ *         var image = new Image(&#34;image&#34;, ImageArgs.builder()        
+ *             .context(BuildContextArgs.builder()
+ *                 .location(&#34;https://github.com/docker-library/hello-world.git&#34;)
+ *                 .build())
+ *             .dockerfile(DockerfileArgs.builder()
+ *                 .location(&#34;app/Dockerfile&#34;)
+ *                 .build())
+ *             .build());
+ * 
+ *     }
+ * }
+ * ```
+ * ### Local export
+ * ```java
+ * package generated_program;
+ * 
+ * import com.pulumi.Context;
+ * import com.pulumi.Pulumi;
+ * import com.pulumi.core.Output;
+ * import com.pulumi.docker.buildx.Image;
+ * import com.pulumi.docker.buildx.ImageArgs;
+ * import com.pulumi.docker.buildx.inputs.BuildContextArgs;
+ * import com.pulumi.docker.buildx.inputs.ExportEntryArgs;
+ * import com.pulumi.docker.buildx.inputs.ExportDockerArgs;
+ * import java.util.List;
+ * import java.util.ArrayList;
+ * import java.util.Map;
+ * import java.io.File;
+ * import java.nio.file.Files;
+ * import java.nio.file.Paths;
+ * 
+ * public class App {
+ *     public static void main(String[] args) {
+ *         Pulumi.run(App::stack);
+ *     }
+ * 
+ *     public static void stack(Context ctx) {
+ *         var image = new Image(&#34;image&#34;, ImageArgs.builder()        
+ *             .context(BuildContextArgs.builder()
+ *                 .location(&#34;app&#34;)
+ *                 .build())
+ *             .exports(ExportEntryArgs.builder()
+ *                 .docker(ExportDockerArgs.builder()
+ *                     .tar(true)
+ *                     .build())
+ *                 .build())
+ *             .build());
+ * 
+ *     }
+ * }
+ * ```
  * 
  */
 @ResourceType(type="docker:buildx/image:Image")
 public class Image extends com.pulumi.resources.CustomResource {
     /**
-     * An optional map of named build-time argument variables to set during
-     * the Docker build. This flag allows you to pass build-time variables that
-     * can be accessed like environment variables inside the RUN
-     * instruction.
+     * `ARG` names and values to set during the build.
+     * 
+     * These variables are accessed like environment variables inside `RUN`
+     * instructions.
+     * 
+     * Build arguments are persisted in the image, so you should use `secrets`
+     * if these arguments are sensitive.
+     * 
+     * Equivalent to Docker&#39;s `--build-arg` flag.
      * 
      */
     @Export(name="buildArgs", refs={Map.class,String.class}, tree="[0,1,1]")
     private Output</* @Nullable */ Map<String,String>> buildArgs;
 
     /**
-     * @return
-     * An optional map of named build-time argument variables to set during
-     * the Docker build. This flag allows you to pass build-time variables that
-     * can be accessed like environment variables inside the RUN
-     * instruction.
+     * @return `ARG` names and values to set during the build.
+     * 
+     * These variables are accessed like environment variables inside `RUN`
+     * instructions.
+     * 
+     * Build arguments are persisted in the image, so you should use `secrets`
+     * if these arguments are sensitive.
+     * 
+     * Equivalent to Docker&#39;s `--build-arg` flag.
      * 
      */
     public Output<Optional<Map<String,String>>> buildArgs() {
         return Codegen.optional(this.buildArgs);
     }
     /**
-     * When true, attempt to build the image during previews. Outputs are not
-     * pushed to registries, however caches are still populated.
+     * When `true`, attempt to build the image during previews. The image will
+     * not be pushed to registries, however caches will still be populated.
      * 
      */
     @Export(name="buildOnPreview", refs={Boolean.class}, tree="[0]")
     private Output</* @Nullable */ Boolean> buildOnPreview;
 
     /**
-     * @return
-     * When true, attempt to build the image during previews. Outputs are not
-     * pushed to registries, however caches are still populated.
+     * @return When `true`, attempt to build the image during previews. The image will
+     * not be pushed to registries, however caches will still be populated.
      * 
      */
     public Output<Optional<Boolean>> buildOnPreview() {
         return Codegen.optional(this.buildOnPreview);
     }
     /**
-     * Build with a specific builder instance
+     * Builder configuration.
      * 
      */
-    @Export(name="builder", refs={String.class}, tree="[0]")
-    private Output</* @Nullable */ String> builder;
+    @Export(name="builder", refs={BuilderConfig.class}, tree="[0]")
+    private Output</* @Nullable */ BuilderConfig> builder;
 
     /**
-     * @return
-     * Build with a specific builder instance
+     * @return Builder configuration.
      * 
      */
-    public Output<Optional<String>> builder_() {
+    public Output<Optional<BuilderConfig>> builder_() {
         return Codegen.optional(this.builder);
     }
     /**
-     * External cache sources (e.g., &#34;user/app:cache&#34;, &#34;type=local,src=path/to/dir&#34;)
+     * Cache export configuration.
+     * 
+     * Equivalent to Docker&#39;s `--cache-from` flag.
      * 
      */
     @Export(name="cacheFrom", refs={List.class,CacheFromEntry.class}, tree="[0,1]")
     private Output</* @Nullable */ List<CacheFromEntry>> cacheFrom;
 
     /**
-     * @return
-     * External cache sources (e.g., &#34;user/app:cache&#34;, &#34;type=local,src=path/to/dir&#34;)
+     * @return Cache export configuration.
+     * 
+     * Equivalent to Docker&#39;s `--cache-from` flag.
      * 
      */
     public Output<Optional<List<CacheFromEntry>>> cacheFrom() {
         return Codegen.optional(this.cacheFrom);
     }
     /**
-     * Cache export destinations (e.g., &#34;user/app:cache&#34;, &#34;type=local,dest=path/to/dir&#34;)
+     * Cache import configuration.
+     * 
+     * Equivalent to Docker&#39;s `--cache-to` flag.
      * 
      */
     @Export(name="cacheTo", refs={List.class,CacheToEntry.class}, tree="[0,1]")
     private Output</* @Nullable */ List<CacheToEntry>> cacheTo;
 
     /**
-     * @return
-     * Cache export destinations (e.g., &#34;user/app:cache&#34;, &#34;type=local,dest=path/to/dir&#34;)
+     * @return Cache import configuration.
+     * 
+     * Equivalent to Docker&#39;s `--cache-to` flag.
      * 
      */
     public Output<Optional<List<CacheToEntry>>> cacheTo() {
         return Codegen.optional(this.cacheTo);
     }
     /**
-     * Path to use for build context. If omitted, an empty context is used.
+     * Build context settings.
+     * 
+     * Equivalent to Docker&#39;s `PATH | URL | -` positional argument.
      * 
      */
-    @Export(name="context", refs={String.class}, tree="[0]")
-    private Output</* @Nullable */ String> context;
+    @Export(name="context", refs={BuildContext.class}, tree="[0]")
+    private Output</* @Nullable */ BuildContext> context;
 
     /**
-     * @return
-     * Path to use for build context. If omitted, an empty context is used.
+     * @return Build context settings.
+     * 
+     * Equivalent to Docker&#39;s `PATH | URL | -` positional argument.
      * 
      */
-    public Output<Optional<String>> context() {
+    public Output<Optional<BuildContext>> context() {
         return Codegen.optional(this.context);
     }
+    /**
+     * A preliminary hash of the image&#39;s build context.
+     * 
+     * Pulumi uses this to determine if an image _may_ need to be re-built.
+     * 
+     */
     @Export(name="contextHash", refs={String.class}, tree="[0]")
     private Output</* @Nullable */ String> contextHash;
 
+    /**
+     * @return A preliminary hash of the image&#39;s build context.
+     * 
+     * Pulumi uses this to determine if an image _may_ need to be re-built.
+     * 
+     */
     public Output<Optional<String>> contextHash() {
         return Codegen.optional(this.contextHash);
     }
     /**
-     * Name and optionally a tag (format: &#34;name:tag&#34;). If outputting to a
-     * registry, the name should include the fully qualified registry address.
+     * A mapping of platform type to refs which were pushed to registries.
+     * 
+     */
+    @Export(name="digests", refs={Map.class,String.class,List.class}, tree="[0,1,[2,1]]")
+    private Output</* @Nullable */ Map<String,List<String>>> digests;
+
+    /**
+     * @return A mapping of platform type to refs which were pushed to registries.
+     * 
+     */
+    public Output<Optional<Map<String,List<String>>>> digests() {
+        return Codegen.optional(this.digests);
+    }
+    /**
+     * Dockerfile settings.
+     * 
+     * Equivalent to Docker&#39;s `--file` flag.
+     * 
+     */
+    @Export(name="dockerfile", refs={Dockerfile.class}, tree="[0]")
+    private Output</* @Nullable */ Dockerfile> dockerfile;
+
+    /**
+     * @return Dockerfile settings.
+     * 
+     * Equivalent to Docker&#39;s `--file` flag.
+     * 
+     */
+    public Output<Optional<Dockerfile>> dockerfile() {
+        return Codegen.optional(this.dockerfile);
+    }
+    /**
+     * Controls where images are persisted after building.
+     * 
+     * Images are only stored in the local cache unless `exports` are
+     * explicitly configured.
+     * 
+     * Equivalent to Docker&#39;s `--output` flag.
      * 
      */
     @Export(name="exports", refs={List.class,ExportEntry.class}, tree="[0,1]")
     private Output</* @Nullable */ List<ExportEntry>> exports;
 
     /**
-     * @return
-     * Name and optionally a tag (format: &#34;name:tag&#34;). If outputting to a
-     * registry, the name should include the fully qualified registry address.
+     * @return Controls where images are persisted after building.
+     * 
+     * Images are only stored in the local cache unless `exports` are
+     * explicitly configured.
+     * 
+     * Equivalent to Docker&#39;s `--output` flag.
      * 
      */
     public Output<Optional<List<ExportEntry>>> exports() {
         return Codegen.optional(this.exports);
     }
     /**
-     * Name of the Dockerfile to use (defaults to &#34;${context}/Dockerfile&#34;).
+     * Attach arbitrary key/value metadata to the image.
+     * 
+     * Equivalent to Docker&#39;s `--label` flag.
      * 
      */
-    @Export(name="file", refs={String.class}, tree="[0]")
-    private Output</* @Nullable */ String> file;
+    @Export(name="labels", refs={Map.class,String.class}, tree="[0,1,1]")
+    private Output</* @Nullable */ Map<String,String>> labels;
 
     /**
-     * @return
-     * Name of the Dockerfile to use (defaults to &#34;${context}/Dockerfile&#34;).
+     * @return Attach arbitrary key/value metadata to the image.
+     * 
+     * Equivalent to Docker&#39;s `--label` flag.
      * 
      */
-    public Output<Optional<String>> file() {
-        return Codegen.optional(this.file);
-    }
-    @Export(name="manifests", refs={List.class,Manifest.class}, tree="[0,1]")
-    private Output<List<Manifest>> manifests;
-
-    public Output<List<Manifest>> manifests() {
-        return this.manifests;
+    public Output<Optional<Map<String,String>>> labels() {
+        return Codegen.optional(this.labels);
     }
     /**
-     * Set target platforms for the build. Defaults to the host&#39;s platform.
+     * Set target platform(s) for the build. Defaults to the host&#39;s platform.
      * 
-     * Equivalent to Docker&#39;s &#34;--platform&#34; flag.
+     * Equivalent to Docker&#39;s `--platform` flag.
      * 
      */
     @Export(name="platforms", refs={List.class,Platform.class}, tree="[0,1]")
     private Output</* @Nullable */ List<Platform>> platforms;
 
     /**
-     * @return
-     * Set target platforms for the build. Defaults to the host&#39;s platform.
+     * @return Set target platform(s) for the build. Defaults to the host&#39;s platform.
      * 
-     * Equivalent to Docker&#39;s &#34;--platform&#34; flag.
+     * Equivalent to Docker&#39;s `--platform` flag.
      * 
      */
     public Output<Optional<List<Platform>>> platforms() {
         return Codegen.optional(this.platforms);
     }
     /**
-     * Always attempt to pull referenced images.
+     * Always pull referenced images.
+     * 
+     * Equivalent to Docker&#39;s `--pull` flag.
      * 
      */
     @Export(name="pull", refs={Boolean.class}, tree="[0]")
     private Output</* @Nullable */ Boolean> pull;
 
     /**
-     * @return
-     * Always attempt to pull referenced images.
+     * @return Always pull referenced images.
+     * 
+     * Equivalent to Docker&#39;s `--pull` flag.
      * 
      */
     public Output<Optional<Boolean>> pull() {
         return Codegen.optional(this.pull);
     }
     /**
-     * Logins for registry outputs
+     * Registry credentials. Required if reading or exporting to private
+     * repositories.
+     * 
+     * Credentials are kept in-memory and do not pollute pre-existing
+     * credentials on the host.
+     * 
+     * Similar to `docker login`.
      * 
      */
     @Export(name="registries", refs={List.class,RegistryAuth.class}, tree="[0,1]")
     private Output</* @Nullable */ List<RegistryAuth>> registries;
 
     /**
-     * @return
-     * Logins for registry outputs
+     * @return Registry credentials. Required if reading or exporting to private
+     * repositories.
+     * 
+     * Credentials are kept in-memory and do not pollute pre-existing
+     * credentials on the host.
+     * 
+     * Similar to `docker login`.
      * 
      */
     public Output<Optional<List<RegistryAuth>>> registries() {
         return Codegen.optional(this.registries);
     }
     /**
-     * Name and optionally a tag (format: &#34;name:tag&#34;). If outputting to a
-     * registry, the name should include the fully qualified registry address.
+     * A mapping of secret names to their corresponding values.
+     * 
+     * Unlike the Docker CLI, these can be passed by value and do not need to
+     * exist on-disk or in environment variables.
+     * 
+     * Build arguments and environment variables are persistent in the final
+     * image, so you should use this for sensitive values.
+     * 
+     * Similar to Docker&#39;s `--secret` flag.
+     * 
+     */
+    @Export(name="secrets", refs={Map.class,String.class}, tree="[0,1,1]")
+    private Output</* @Nullable */ Map<String,String>> secrets;
+
+    /**
+     * @return A mapping of secret names to their corresponding values.
+     * 
+     * Unlike the Docker CLI, these can be passed by value and do not need to
+     * exist on-disk or in environment variables.
+     * 
+     * Build arguments and environment variables are persistent in the final
+     * image, so you should use this for sensitive values.
+     * 
+     * Similar to Docker&#39;s `--secret` flag.
+     * 
+     */
+    public Output<Optional<Map<String,String>>> secrets() {
+        return Codegen.optional(this.secrets);
+    }
+    /**
+     * Name and optionally a tag (format: `name:tag`).
+     * 
+     * If exporting to a registry, the name should include the fully qualified
+     * registry address (e.g. `docker.io/pulumi/pulumi:latest`).
+     * 
+     * Equivalent to Docker&#39;s `--tag` flag.
      * 
      */
     @Export(name="tags", refs={List.class,String.class}, tree="[0,1]")
     private Output</* @Nullable */ List<String>> tags;
 
     /**
-     * @return
-     * Name and optionally a tag (format: &#34;name:tag&#34;). If outputting to a
-     * registry, the name should include the fully qualified registry address.
+     * @return Name and optionally a tag (format: `name:tag`).
+     * 
+     * If exporting to a registry, the name should include the fully qualified
+     * registry address (e.g. `docker.io/pulumi/pulumi:latest`).
+     * 
+     * Equivalent to Docker&#39;s `--tag` flag.
      * 
      */
     public Output<Optional<List<String>>> tags() {
         return Codegen.optional(this.tags);
     }
-    @Export(name="target", refs={String.class}, tree="[0]")
-    private Output</* @Nullable */ String> target;
+    /**
+     * Set the target build stage(s) to build.
+     * 
+     * If not specified all targets will be built by default.
+     * 
+     * Equivalent to Docker&#39;s `--target` flag.
+     * 
+     */
+    @Export(name="targets", refs={List.class,String.class}, tree="[0,1]")
+    private Output</* @Nullable */ List<String>> targets;
 
-    public Output<Optional<String>> target() {
-        return Codegen.optional(this.target);
+    /**
+     * @return Set the target build stage(s) to build.
+     * 
+     * If not specified all targets will be built by default.
+     * 
+     * Equivalent to Docker&#39;s `--target` flag.
+     * 
+     */
+    public Output<Optional<List<String>>> targets() {
+        return Codegen.optional(this.targets);
     }
 
     /**
@@ -275,6 +947,9 @@ public class Image extends com.pulumi.resources.CustomResource {
     private static com.pulumi.resources.CustomResourceOptions makeResourceOptions(@Nullable com.pulumi.resources.CustomResourceOptions options, @Nullable Output<String> id) {
         var defaultOptions = com.pulumi.resources.CustomResourceOptions.builder()
             .version(Utilities.getVersion())
+            .additionalSecretOutputs(List.of(
+                "secrets"
+            ))
             .build();
         return com.pulumi.resources.CustomResourceOptions.merge(defaultOptions, options, id);
     }

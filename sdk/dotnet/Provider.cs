@@ -19,31 +19,32 @@ namespace Pulumi.Docker
     public partial class Provider : global::Pulumi.ProviderResource
     {
         /// <summary>
-        /// PEM-encoded content of Docker host CA certificate
+        /// PEM-encoded content of Docker host CA certificate.
         /// </summary>
         [Output("caMaterial")]
         public Output<string?> CaMaterial { get; private set; } = null!;
 
         /// <summary>
-        /// PEM-encoded content of Docker client certificate
+        /// PEM-encoded content of Docker client certificate.
         /// </summary>
         [Output("certMaterial")]
         public Output<string?> CertMaterial { get; private set; } = null!;
 
         /// <summary>
-        /// Path to directory with Docker TLS config
+        /// Path to a directory with Docker TLS config. This directory is expected to contain `ca.pem`, `cert.pem`, and `key.pem`
+        /// files.
         /// </summary>
         [Output("certPath")]
         public Output<string?> CertPath { get; private set; } = null!;
 
         /// <summary>
-        /// The Docker daemon address
+        /// The Docker daemon's address.
         /// </summary>
         [Output("host")]
         public Output<string?> Host { get; private set; } = null!;
 
         /// <summary>
-        /// PEM-encoded content of Docker client private key
+        /// PEM-encoded content of Docker client private key.
         /// </summary>
         [Output("keyMaterial")]
         public Output<string?> KeyMaterial { get; private set; } = null!;
@@ -77,31 +78,32 @@ namespace Pulumi.Docker
     public sealed class ProviderArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// PEM-encoded content of Docker host CA certificate
+        /// PEM-encoded content of Docker host CA certificate.
         /// </summary>
         [Input("caMaterial")]
         public Input<string>? CaMaterial { get; set; }
 
         /// <summary>
-        /// PEM-encoded content of Docker client certificate
+        /// PEM-encoded content of Docker client certificate.
         /// </summary>
         [Input("certMaterial")]
         public Input<string>? CertMaterial { get; set; }
 
         /// <summary>
-        /// Path to directory with Docker TLS config
+        /// Path to a directory with Docker TLS config. This directory is expected to contain `ca.pem`, `cert.pem`, and `key.pem`
+        /// files.
         /// </summary>
         [Input("certPath")]
         public Input<string>? CertPath { get; set; }
 
         /// <summary>
-        /// The Docker daemon address
+        /// The Docker daemon's address.
         /// </summary>
         [Input("host")]
         public Input<string>? Host { get; set; }
 
         /// <summary>
-        /// PEM-encoded content of Docker client private key
+        /// PEM-encoded content of Docker client private key.
         /// </summary>
         [Input("keyMaterial")]
         public Input<string>? KeyMaterial { get; set; }
@@ -118,7 +120,8 @@ namespace Pulumi.Docker
         private InputList<string>? _sshOpts;
 
         /// <summary>
-        /// Additional SSH option flags to be appended when using `ssh://` protocol
+        /// Additional SSH option flags to be appended when using `ssh://` protocol. The `ssh://` protocol is not supported for
+        /// `buildx.Image` resources. Instead, use a [remote](https://docs.docker.com/build/drivers/remote/) driver.
         /// </summary>
         public InputList<string> SshOpts
         {

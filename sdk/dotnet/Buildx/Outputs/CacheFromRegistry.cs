@@ -14,7 +14,7 @@ namespace Pulumi.Docker.Buildx.Outputs
     public sealed class CacheFromRegistry
     {
         /// <summary>
-        /// Full name of the cache image to import.
+        /// Fully qualified name of the cache image to import.
         /// </summary>
         public readonly string Ref;
 

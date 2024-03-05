@@ -13,55 +13,48 @@ namespace Pulumi.Docker.Buildx.Inputs
     public sealed class CacheFromEntryArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// 
-        /// Push cache to Azure's blob storage service.
+        /// Upload build caches to Azure's blob storage service.
         /// </summary>
         [Input("azblob")]
         public Input<Inputs.CacheFromAzureBlobArgs>? Azblob { get; set; }
 
         /// <summary>
-        /// 
-        /// When "true" this entry will be excluded. Defaults to "false".
+        /// When `true` this entry will be excluded. Defaults to `false`.
         /// </summary>
         [Input("disabled")]
         public Input<bool>? Disabled { get; set; }
 
         /// <summary>
-        /// 
         /// Recommended for use with GitHub Actions workflows.
         /// 
-        /// An action like "crazy-max/ghaction-github-runtime" is recommended to
+        /// An action like `crazy-max/ghaction-github-runtime` is recommended to
         /// expose appropriate credentials to your GitHub workflow.
         /// </summary>
         [Input("gha")]
         public Input<Inputs.CacheFromGitHubActionsArgs>? Gha { get; set; }
 
         /// <summary>
-        /// 
-        /// A simple backend which caches imagines on your local filesystem.
+        /// A simple backend which caches images on your local filesystem.
         /// </summary>
         [Input("local")]
         public Input<Inputs.CacheFromLocalArgs>? Local { get; set; }
 
         /// <summary>
-        /// 
         /// A raw string as you would provide it to the Docker CLI (e.g.,
-        /// "type=inline")
+        /// `type=inline`).
         /// </summary>
         [Input("raw")]
         public Input<string>? Raw { get; set; }
 
         /// <summary>
-        /// 
-        /// Push caches to remote registries. Incompatible with the "docker" build
-        /// driver.
+        /// Upload build caches to remote registries.
         /// </summary>
         [Input("registry")]
         public Input<Inputs.CacheFromRegistryArgs>? Registry { get; set; }
 
         /// <summary>
-        /// 
-        /// Push cache to AWS S3 or S3-compatible services such as MinIO.
+        /// Upload build caches to AWS S3 or an S3-compatible services such as
+        /// MinIO.
         /// </summary>
         [Input("s3")]
         public Input<Inputs.CacheFromS3Args>? S3 { get; set; }

@@ -1,4 +1,4 @@
-//go:generate go run go.uber.org/mock/mockgen -typed -package mock -source providercontext.go -destination mock/providercontext.go
+//go:generate go run go.uber.org/mock/mockgen -typed -package internal -source providercontext.go -destination mockprovidercontext_test.go --self_package github.com/pulumi/pulumi-docker/provider/v4/internal
 package internal
 
 import (
