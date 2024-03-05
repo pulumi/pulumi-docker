@@ -7,6 +7,8 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
+	"slices"
+	"strings"
 
 	// These imports are needed to register the drivers with buildkit.
 	_ "github.com/docker/buildx/driver/docker-container"
@@ -207,6 +209,128 @@ func (ia *ImageArgs) buildable() bool {
 	return reflect.DeepEqual(ia, &filtered)
 }
 
+func (ia ImageArgs) toBuilds(
+	ctx provider.Context,
+	preview bool,
+) ([]controllerapi.BuildOptions, error) {
+	opts, err := ia.toBuildOptions(preview)
+	if err != nil {
+		return nil, err
+	}
+
+	// Check if we need a workaround for multi-platform caching (https://github.com/docker/buildx/issues/1044).
+	if len(ia.Platforms) <= 1 || len(ia.CacheTo) == 0 {
+		return []controllerapi.BuildOptions{opts}, nil
+	}
+
+	// Split the build into N pieces: one build with only local caching, and an
+	// additional cache-only build for each platform.
+	builds := []controllerapi.BuildOptions{}
+
+	origCacheTo := opts.CacheTo
+
+	// Build 1:
+	// - No --cache-to.
+	// - Extend --cache-from with platform-specific caches, while preserving existing ones.
+	// - Preserve exports.
+	opts.CacheTo = nil
+	opts.CacheFrom = append(cachesFor(ctx, opts.CacheFrom, opts.Platforms...), opts.CacheFrom...)
+	builds = append(builds, opts)
+
+	// Build 2..P for each platform:
+	// - --output=type=cacheonly.
+	// - No --cache-from (rely on local build cache).
+	// - --cache-to
+	for _, p := range opts.Platforms {
+		opts := opts
+		// Only build for this platform.
+		opts.Platforms = []string{p}
+		// Don't push anything except caches.
+		opts.Exports = []*controllerapi.ExportEntry{{Type: "cacheonly"}}
+		// Cache to platform-aware tags.
+		opts.CacheTo = cachesFor(ctx, origCacheTo, p)
+		// TODO(https://github.com/docker/buildx/issues/1921): We should have
+		// everything already loaded into build context, but this doesn't work
+		// consistently with multi-platform images.
+		opts.CacheFrom = nil
+		opts.Tags = nil
+
+		builds = append(builds, opts)
+	}
+
+	return builds, nil
+}
+
+// cachesFor is a workaround for https://github.com/docker/buildx/issues/1044
+// which modifies the names of cache to/from entries to be platform-aware.
+func cachesFor(
+	ctx provider.Context,
+	existing []*controllerapi.CacheOptionsEntry,
+	platforms ...string,
+) []*controllerapi.CacheOptionsEntry {
+	if len(platforms) <= 1 {
+		return existing
+	}
+	slices.Sort(platforms)
+
+	caches := []*controllerapi.CacheOptionsEntry{}
+
+	// Iterate over existing cache entries first to preserve precedence.
+	for _, c := range existing {
+	platformLoop:
+		for _, p := range slices.Compact(platforms) {
+			entry := &controllerapi.CacheOptionsEntry{
+				Type:  c.Type,
+				Attrs: make(map[string]string),
+			}
+			for k, v := range c.Attrs {
+				entry.Attrs[k] = v
+			}
+			plat := strings.Replace(p, "/", "-", -1)
+
+			switch c.Type {
+			case "gha":
+				if entry.Attrs["scope"] == "" {
+					entry.Attrs["scope"] = "buildkit-" + plat
+				} else {
+					entry.Attrs["scope"] += "-" + plat
+				}
+			case "s3", "azblob":
+				if entry.Attrs["name"] != "" {
+					entry.Attrs["name"] += "-" + plat
+				} else {
+					entry.Attrs["name"] = plat
+				}
+			case "registry":
+				ref, err := reference.ParseNamed(entry.Attrs["ref"])
+				if err != nil {
+					ctx.Log(diag.Warning, fmt.Sprintf("Unable to parse cache ref: %s", err.Error()))
+					continue
+				}
+				if t, ok := ref.(reference.Tagged); ok {
+					plat = t.Tag() + "-" + plat
+				}
+				tagged, _ := reference.WithTag(ref, plat)
+				entry.Attrs["ref"] = tagged.String()
+			case "local":
+				if entry.Attrs["src"] != "" {
+					entry.Attrs["src"] += "-" + plat
+				}
+				if entry.Attrs["dest"] != "" {
+					entry.Attrs["dest"] += "-" + plat
+				}
+			case "inline":
+				// inline caches don't need per-platform treatment.
+				caches = append(caches, entry)
+				break platformLoop
+			default:
+			}
+			caches = append(caches, entry)
+		}
+	}
+	return caches
+}
+
 func (ia *ImageArgs) toBuildOptions(preview bool) (controllerapi.BuildOptions, error) {
 	var multierr error
 
@@ -298,9 +422,9 @@ func (i *Image) Update(
 		return state, fmt.Errorf("buildkit is not supported on this host")
 	}
 
-	opts, err := input.toBuildOptions(preview)
+	builds, err := input.toBuilds(ctx, preview)
 	if err != nil {
-		return state, fmt.Errorf("validating input: %w", err)
+		return state, fmt.Errorf("preparing: %w", err)
 	}
 
 	hash, err := BuildxContext(input.Context, input.File, nil)
@@ -317,9 +441,11 @@ func (i *Image) Update(
 		return state, nil
 	}
 
-	_, err = cfg.client.Build(ctx, name, opts)
-	if err != nil {
-		return state, err
+	for _, b := range builds {
+		_, err = cfg.client.Build(ctx, name, b)
+		if err != nil {
+			return state, err
+		}
 	}
 
 	_, _, state, err = i.Read(ctx, name, input, state)
@@ -376,6 +502,7 @@ func (*Image) Read(
 				// No manifest to read if we didn't push.
 				continue
 			}
+
 			for _, tag := range input.Tags {
 				expectManifest = true
 				infos, err := cfg.client.Inspect(ctx, name, tag)
