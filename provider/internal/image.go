@@ -645,6 +645,9 @@ func (ia *ImageArgs) toBuildOptions(preview bool) (controllerapi.BuildOptions, e
 		filtered.Exports = append(filtered.Exports, ExportEntry{Raw: "type=docker"})
 	}
 	for _, e := range filtered.Exports {
+		if e.String() == "" {
+			continue // Disabled
+		}
 		if strings.Count(e.String(), "type=") > 1 {
 			multierr = errors.Join(
 				multierr,
@@ -695,6 +698,9 @@ func (ia *ImageArgs) toBuildOptions(preview bool) (controllerapi.BuildOptions, e
 
 	cacheFrom := []*controllerapi.CacheOptionsEntry{}
 	for _, c := range filtered.CacheFrom {
+		if c.String() == "" {
+			continue // Disabled
+		}
 		if strings.Count(c.String(), "type=") > 1 {
 			multierr = errors.Join(
 				multierr,
@@ -718,6 +724,9 @@ func (ia *ImageArgs) toBuildOptions(preview bool) (controllerapi.BuildOptions, e
 
 	cacheTo := []*controllerapi.CacheOptionsEntry{}
 	for _, c := range filtered.CacheTo {
+		if c.String() == "" {
+			continue // Disabled
+		}
 		if strings.Count(c.String(), "type=") > 1 {
 			multierr = errors.Join(
 				multierr,

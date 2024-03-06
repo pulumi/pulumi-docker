@@ -687,6 +687,26 @@ func TestBuildOptions(t *testing.T) {
 		assert.Error(t, err)
 	})
 
+	t.Run("disabled caches", func(t *testing.T) {
+		args := ImageArgs{
+			CacheFrom: []CacheFromEntry{{Raw: "type=registry", Disabled: true}},
+			CacheTo:   []CacheToEntry{{Raw: "type=registry", Disabled: true}},
+			Exports:   []ExportEntry{{Raw: "type=registry", Disabled: true}},
+		}
+
+		opts, err := args.toBuildOptions(true)
+		assert.NoError(t, err)
+		assert.Len(t, opts.CacheTo, 0)
+		assert.Len(t, opts.CacheFrom, 0)
+		assert.Len(t, opts.Exports, 0)
+
+		opts, err = args.toBuildOptions(false)
+		assert.NoError(t, err)
+		assert.Len(t, opts.CacheTo, 0)
+		assert.Len(t, opts.CacheFrom, 0)
+		assert.Len(t, opts.Exports, 0)
+	})
+
 	t.Run("multiple exports aren't allowed yet", func(t *testing.T) {
 		args := ImageArgs{
 			Exports: []ExportEntry{{Raw: "type=local"}, {Raw: "type=tar"}},
