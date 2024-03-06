@@ -1,0 +1,2 @@
+FROM alpine
+RUN echo "This image doesn't use any local files, so it doesn't need a context parameter 👍"

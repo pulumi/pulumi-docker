@@ -1878,11 +1878,6 @@ export namespace buildx {
          */
         local?: pulumi.Input<inputs.buildx.ExportLocal>;
         /**
-         * An output property populated for exporters that pushed image
-         * manifest(s) to a registry.
-         */
-        manifests?: pulumi.Input<pulumi.Input<inputs.buildx.Manifest>[]>;
-        /**
          * Identical to the Docker exporter but uses OCI media types by default.
          */
         oci?: pulumi.Input<inputs.buildx.ExportOCI>;
@@ -2126,36 +2121,6 @@ export namespace buildx {
         dest: pulumi.Input<string>;
     }
 
-    export interface Manifest {
-        /**
-         * The SHA256 digest of the manifest.
-         */
-        digest: pulumi.Input<string>;
-        /**
-         * The manifest's platform.
-         */
-        platform: pulumi.Input<inputs.buildx.ManifestPlatform>;
-        /**
-         * The manifest's canonical ref.
-         */
-        ref: pulumi.Input<string>;
-        /**
-         * The size of the manifest in bytes.
-         */
-        size: pulumi.Input<number>;
-    }
-
-    export interface ManifestPlatform {
-        /**
-         * The manifest's architecture.
-         */
-        architecture: pulumi.Input<string>;
-        /**
-         * The manifest's operating systen.
-         */
-        os: pulumi.Input<string>;
-    }
-
     export interface RegistryAuth {
         /**
          * The registry's address (e.g. "docker.io").
@@ -2169,6 +2134,27 @@ export namespace buildx {
          * Username for the registry.
          */
         username?: pulumi.Input<string>;
+    }
+
+    export interface SSH {
+        /**
+         * Useful for distinguishing different servers that are part of the same
+         * build.
+         *
+         * A value of `default` is appropriate if only dealing with a single host.
+         */
+        id: pulumi.Input<string>;
+        /**
+         * SSH agent socket or private keys to expose to the build under the given
+         * identifier.
+         *
+         * Defaults to `[$SSH_AUTH_SOCK]`.
+         *
+         * Note that your keys are **not** automatically added when using an
+         * agent. Run `ssh-add -l` locally to confirm which public keys are
+         * visible to the agent; these will be exposed to your build.
+         */
+        paths?: pulumi.Input<pulumi.Input<string>[]>;
     }
 }
 

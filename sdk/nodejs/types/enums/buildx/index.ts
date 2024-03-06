@@ -32,6 +32,23 @@ export const CompressionType = {
 
 export type CompressionType = (typeof CompressionType)[keyof typeof CompressionType];
 
+export const NetworkMode = {
+    /**
+     * The default sandbox network mode.
+     */
+    Default: "default",
+    /**
+     * Host network mode.
+     */
+    Host: "host",
+    /**
+     * Disable network access.
+     */
+    None: "none",
+} as const;
+
+export type NetworkMode = (typeof NetworkMode)[keyof typeof NetworkMode];
+
 export const Platform = {
     Darwin_386: "darwin/386",
     Darwin_amd64: "darwin/amd64",

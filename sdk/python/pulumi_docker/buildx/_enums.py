@@ -7,6 +7,7 @@ from enum import Enum
 __all__ = [
     'CacheMode',
     'CompressionType',
+    'NetworkMode',
     'Platform',
 ]
 
@@ -34,6 +35,21 @@ class CompressionType(str, Enum):
     ZSTD = "zstd"
     """
     Use `zstd` for compression.
+    """
+
+
+class NetworkMode(str, Enum):
+    DEFAULT = "default"
+    """
+    The default sandbox network mode.
+    """
+    HOST = "host"
+    """
+    Host network mode.
+    """
+    NONE = "none"
+    """
+    Disable network access.
     """
 
 

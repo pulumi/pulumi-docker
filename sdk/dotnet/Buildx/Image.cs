@@ -462,6 +462,14 @@ namespace Pulumi.Docker.Buildx
     public partial class Image : global::Pulumi.CustomResource
     {
         /// <summary>
+        /// Custom `host:ip` mappings to use during the build.
+        /// 
+        /// Equivalent to Docker's `--add-host` flag.
+        /// </summary>
+        [Output("addHosts")]
+        public Output<ImmutableArray<string>> AddHosts { get; private set; } = null!;
+
+        /// <summary>
         /// `ARG` names and values to set during the build.
         /// 
         /// These variables are accessed like environment variables inside `RUN`
@@ -476,8 +484,20 @@ namespace Pulumi.Docker.Buildx
         public Output<ImmutableDictionary<string, string>?> BuildArgs { get; private set; } = null!;
 
         /// <summary>
-        /// When `true`, attempt to build the image during previews. The image will
-        /// not be pushed to registries, however caches will still be populated.
+        /// By default, preview behavior depends on the execution environment. If
+        /// Pulumi detects the operation is running on a CI system (GitHub Actions,
+        /// Travis CI, Azure Pipelines, etc.) then it will build images during
+        /// previews as a safeguard. Otherwise, if not running on CI, previews will
+        /// not build images.
+        /// 
+        /// Setting this to `false` forces previews to never perform builds, and
+        /// setting it to `true` will always build the image during previews.
+        /// 
+        /// Images built during previews are never exported to registries, however
+        /// cache manifests are still exported.
+        /// 
+        /// On-disk Dockerfiles are always validated for syntactic correctness
+        /// regardless of this setting.
         /// </summary>
         [Output("buildOnPreview")]
         public Output<bool?> BuildOnPreview { get; private set; } = null!;
@@ -518,13 +538,17 @@ namespace Pulumi.Docker.Buildx
         /// Pulumi uses this to determine if an image _may_ need to be re-built.
         /// </summary>
         [Output("contextHash")]
-        public Output<string?> ContextHash { get; private set; } = null!;
+        public Output<string> ContextHash { get; private set; } = null!;
 
         /// <summary>
-        /// A mapping of platform type to refs which were pushed to registries.
+        /// A mapping of target names to the SHA256 digest of their pushed manifest.
+        /// 
+        /// If no target was specified 'default' is used as the target name.
+        /// 
+        /// Pushed manifests can be referenced as `&lt;tag&gt;@&lt;digest&gt;`.
         /// </summary>
         [Output("digests")]
-        public Output<ImmutableDictionary<string, ImmutableArray<string>>?> Digests { get; private set; } = null!;
+        public Output<ImmutableDictionary<string, string>> Digests { get; private set; } = null!;
 
         /// <summary>
         /// Dockerfile settings.
@@ -554,6 +578,34 @@ namespace Pulumi.Docker.Buildx
         public Output<ImmutableDictionary<string, string>?> Labels { get; private set; } = null!;
 
         /// <summary>
+        /// When `true` the build will automatically include a `docker` export.
+        /// 
+        /// Defaults to `false`.
+        /// 
+        /// Equivalent to Docker's `--load` flag.
+        /// </summary>
+        [Output("load")]
+        public Output<bool?> Load { get; private set; } = null!;
+
+        /// <summary>
+        /// Set the network mode for `RUN` instructions. Defaults to `default`.
+        /// 
+        /// For custom networks, configure your builder with `--driver-opt network=...`.
+        /// 
+        /// Equivalent to Docker's `--network` flag.
+        /// </summary>
+        [Output("network")]
+        public Output<Pulumi.Docker.Buildx.NetworkMode?> Network { get; private set; } = null!;
+
+        /// <summary>
+        /// Do not import cache manifests when building the image.
+        /// 
+        /// Equivalent to Docker's `--no-cache` flag.
+        /// </summary>
+        [Output("noCache")]
+        public Output<bool?> NoCache { get; private set; } = null!;
+
+        /// <summary>
         /// Set target platform(s) for the build. Defaults to the host's platform.
         /// 
         /// Equivalent to Docker's `--platform` flag.
@@ -568,6 +620,30 @@ namespace Pulumi.Docker.Buildx
         /// </summary>
         [Output("pull")]
         public Output<bool?> Pull { get; private set; } = null!;
+
+        /// <summary>
+        /// When `true` the build will automatically include a `registry` export.
+        /// 
+        /// Defaults to `false`.
+        /// 
+        /// Equivalent to Docker's `--push` flag.
+        /// </summary>
+        [Output("push")]
+        public Output<bool?> Push { get; private set; } = null!;
+
+        /// <summary>
+        /// If the image was pushed to any registries then this will contain a
+        /// single fully-qualified tag including the build's digest.
+        /// 
+        /// This is only for convenience and may not be appropriate for situations
+        /// where multiple tags or registries are involved. In those cases this
+        /// output is not guaranteed to be stable.
+        /// 
+        /// For more control over tags consumed by downstream resources you should
+        /// use the `Digests` output.
+        /// </summary>
+        [Output("ref")]
+        public Output<string> Ref { get; private set; } = null!;
 
         /// <summary>
         /// Registry credentials. Required if reading or exporting to private
@@ -594,6 +670,14 @@ namespace Pulumi.Docker.Buildx
         /// </summary>
         [Output("secrets")]
         public Output<ImmutableDictionary<string, string>?> Secrets { get; private set; } = null!;
+
+        /// <summary>
+        /// SSH agent socket or keys to expose to the build.
+        /// 
+        /// Equivalent to Docker's `--ssh` flag.
+        /// </summary>
+        [Output("ssh")]
+        public Output<ImmutableArray<Outputs.SSH>> Ssh { get; private set; } = null!;
 
         /// <summary>
         /// Name and optionally a tag (format: `name:tag`).
@@ -639,10 +723,6 @@ namespace Pulumi.Docker.Buildx
             var defaultOptions = new CustomResourceOptions
             {
                 Version = Utilities.Version,
-                AdditionalSecretOutputs =
-                {
-                    "secrets",
-                },
             };
             var merged = CustomResourceOptions.Merge(defaultOptions, options);
             // Override the ID if one was specified for consistency with other language SDKs.
@@ -665,6 +745,20 @@ namespace Pulumi.Docker.Buildx
 
     public sealed class ImageArgs : global::Pulumi.ResourceArgs
     {
+        [Input("addHosts")]
+        private InputList<string>? _addHosts;
+
+        /// <summary>
+        /// Custom `host:ip` mappings to use during the build.
+        /// 
+        /// Equivalent to Docker's `--add-host` flag.
+        /// </summary>
+        public InputList<string> AddHosts
+        {
+            get => _addHosts ?? (_addHosts = new InputList<string>());
+            set => _addHosts = value;
+        }
+
         [Input("buildArgs")]
         private InputMap<string>? _buildArgs;
 
@@ -686,8 +780,20 @@ namespace Pulumi.Docker.Buildx
         }
 
         /// <summary>
-        /// When `true`, attempt to build the image during previews. The image will
-        /// not be pushed to registries, however caches will still be populated.
+        /// By default, preview behavior depends on the execution environment. If
+        /// Pulumi detects the operation is running on a CI system (GitHub Actions,
+        /// Travis CI, Azure Pipelines, etc.) then it will build images during
+        /// previews as a safeguard. Otherwise, if not running on CI, previews will
+        /// not build images.
+        /// 
+        /// Setting this to `false` forces previews to never perform builds, and
+        /// setting it to `true` will always build the image during previews.
+        /// 
+        /// Images built during previews are never exported to registries, however
+        /// cache manifests are still exported.
+        /// 
+        /// On-disk Dockerfiles are always validated for syntactic correctness
+        /// regardless of this setting.
         /// </summary>
         [Input("buildOnPreview")]
         public Input<bool>? BuildOnPreview { get; set; }
@@ -773,6 +879,34 @@ namespace Pulumi.Docker.Buildx
             set => _labels = value;
         }
 
+        /// <summary>
+        /// When `true` the build will automatically include a `docker` export.
+        /// 
+        /// Defaults to `false`.
+        /// 
+        /// Equivalent to Docker's `--load` flag.
+        /// </summary>
+        [Input("load")]
+        public Input<bool>? Load { get; set; }
+
+        /// <summary>
+        /// Set the network mode for `RUN` instructions. Defaults to `default`.
+        /// 
+        /// For custom networks, configure your builder with `--driver-opt network=...`.
+        /// 
+        /// Equivalent to Docker's `--network` flag.
+        /// </summary>
+        [Input("network")]
+        public Input<Pulumi.Docker.Buildx.NetworkMode>? Network { get; set; }
+
+        /// <summary>
+        /// Do not import cache manifests when building the image.
+        /// 
+        /// Equivalent to Docker's `--no-cache` flag.
+        /// </summary>
+        [Input("noCache")]
+        public Input<bool>? NoCache { get; set; }
+
         [Input("platforms")]
         private InputList<Pulumi.Docker.Buildx.Platform>? _platforms;
 
@@ -794,6 +928,16 @@ namespace Pulumi.Docker.Buildx
         /// </summary>
         [Input("pull")]
         public Input<bool>? Pull { get; set; }
+
+        /// <summary>
+        /// When `true` the build will automatically include a `registry` export.
+        /// 
+        /// Defaults to `false`.
+        /// 
+        /// Equivalent to Docker's `--push` flag.
+        /// </summary>
+        [Input("push")]
+        public Input<bool>? Push { get; set; }
 
         [Input("registries")]
         private InputList<Inputs.RegistryAuthArgs>? _registries;
@@ -830,11 +974,21 @@ namespace Pulumi.Docker.Buildx
         public InputMap<string> Secrets
         {
             get => _secrets ?? (_secrets = new InputMap<string>());
-            set
-            {
-                var emptySecret = Output.CreateSecret(ImmutableDictionary.Create<string, string>());
-                _secrets = Output.All(value, emptySecret).Apply(v => v[0]);
-            }
+            set => _secrets = value;
+        }
+
+        [Input("ssh")]
+        private InputList<Inputs.SSHArgs>? _ssh;
+
+        /// <summary>
+        /// SSH agent socket or keys to expose to the build.
+        /// 
+        /// Equivalent to Docker's `--ssh` flag.
+        /// </summary>
+        public InputList<Inputs.SSHArgs> Ssh
+        {
+            get => _ssh ?? (_ssh = new InputList<Inputs.SSHArgs>());
+            set => _ssh = value;
         }
 
         [Input("tags")]
@@ -872,6 +1026,7 @@ namespace Pulumi.Docker.Buildx
 
         public ImageArgs()
         {
+            Network = Pulumi.Docker.Buildx.NetworkMode.@Default;
         }
         public static new ImageArgs Empty => new ImageArgs();
     }

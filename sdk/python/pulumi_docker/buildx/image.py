@@ -17,6 +17,7 @@ __all__ = ['ImageArgs', 'Image']
 @pulumi.input_type
 class ImageArgs:
     def __init__(__self__, *,
+                 add_hosts: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  build_args: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
                  build_on_preview: Optional[pulumi.Input[bool]] = None,
                  builder: Optional[pulumi.Input['BuilderConfigArgs']] = None,
@@ -26,14 +27,22 @@ class ImageArgs:
                  dockerfile: Optional[pulumi.Input['DockerfileArgs']] = None,
                  exports: Optional[pulumi.Input[Sequence[pulumi.Input['ExportEntryArgs']]]] = None,
                  labels: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
+                 load: Optional[pulumi.Input[bool]] = None,
+                 network: Optional[pulumi.Input['NetworkMode']] = None,
+                 no_cache: Optional[pulumi.Input[bool]] = None,
                  platforms: Optional[pulumi.Input[Sequence[pulumi.Input['Platform']]]] = None,
                  pull: Optional[pulumi.Input[bool]] = None,
+                 push: Optional[pulumi.Input[bool]] = None,
                  registries: Optional[pulumi.Input[Sequence[pulumi.Input['RegistryAuthArgs']]]] = None,
                  secrets: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
+                 ssh: Optional[pulumi.Input[Sequence[pulumi.Input['SSHArgs']]]] = None,
                  tags: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  targets: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None):
         """
         The set of arguments for constructing a Image resource.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] add_hosts: Custom `host:ip` mappings to use during the build.
+               
+               Equivalent to Docker's `--add-host` flag.
         :param pulumi.Input[Mapping[str, pulumi.Input[str]]] build_args: `ARG` names and values to set during the build.
                
                These variables are accessed like environment variables inside `RUN`
@@ -43,8 +52,20 @@ class ImageArgs:
                if these arguments are sensitive.
                
                Equivalent to Docker's `--build-arg` flag.
-        :param pulumi.Input[bool] build_on_preview: When `true`, attempt to build the image during previews. The image will
-               not be pushed to registries, however caches will still be populated.
+        :param pulumi.Input[bool] build_on_preview: By default, preview behavior depends on the execution environment. If
+               Pulumi detects the operation is running on a CI system (GitHub Actions,
+               Travis CI, Azure Pipelines, etc.) then it will build images during
+               previews as a safeguard. Otherwise, if not running on CI, previews will
+               not build images.
+               
+               Setting this to `false` forces previews to never perform builds, and
+               setting it to `true` will always build the image during previews.
+               
+               Images built during previews are never exported to registries, however
+               cache manifests are still exported.
+               
+               On-disk Dockerfiles are always validated for syntactic correctness
+               regardless of this setting.
         :param pulumi.Input['BuilderConfigArgs'] builder: Builder configuration.
         :param pulumi.Input[Sequence[pulumi.Input['CacheFromEntryArgs']]] cache_from: Cache export configuration.
                
@@ -67,12 +88,30 @@ class ImageArgs:
         :param pulumi.Input[Mapping[str, pulumi.Input[str]]] labels: Attach arbitrary key/value metadata to the image.
                
                Equivalent to Docker's `--label` flag.
+        :param pulumi.Input[bool] load: When `true` the build will automatically include a `docker` export.
+               
+               Defaults to `false`.
+               
+               Equivalent to Docker's `--load` flag.
+        :param pulumi.Input['NetworkMode'] network: Set the network mode for `RUN` instructions. Defaults to `default`.
+               
+               For custom networks, configure your builder with `--driver-opt network=...`.
+               
+               Equivalent to Docker's `--network` flag.
+        :param pulumi.Input[bool] no_cache: Do not import cache manifests when building the image.
+               
+               Equivalent to Docker's `--no-cache` flag.
         :param pulumi.Input[Sequence[pulumi.Input['Platform']]] platforms: Set target platform(s) for the build. Defaults to the host's platform.
                
                Equivalent to Docker's `--platform` flag.
         :param pulumi.Input[bool] pull: Always pull referenced images.
                
                Equivalent to Docker's `--pull` flag.
+        :param pulumi.Input[bool] push: When `true` the build will automatically include a `registry` export.
+               
+               Defaults to `false`.
+               
+               Equivalent to Docker's `--push` flag.
         :param pulumi.Input[Sequence[pulumi.Input['RegistryAuthArgs']]] registries: Registry credentials. Required if reading or exporting to private
                repositories.
                
@@ -89,6 +128,9 @@ class ImageArgs:
                image, so you should use this for sensitive values.
                
                Similar to Docker's `--secret` flag.
+        :param pulumi.Input[Sequence[pulumi.Input['SSHArgs']]] ssh: SSH agent socket or keys to expose to the build.
+               
+               Equivalent to Docker's `--ssh` flag.
         :param pulumi.Input[Sequence[pulumi.Input[str]]] tags: Name and optionally a tag (format: `name:tag`).
                
                If exporting to a registry, the name should include the fully qualified
@@ -101,6 +143,8 @@ class ImageArgs:
                
                Equivalent to Docker's `--target` flag.
         """
+        if add_hosts is not None:
+            pulumi.set(__self__, "add_hosts", add_hosts)
         if build_args is not None:
             pulumi.set(__self__, "build_args", build_args)
         if build_on_preview is not None:
@@ -119,18 +163,44 @@ class ImageArgs:
             pulumi.set(__self__, "exports", exports)
         if labels is not None:
             pulumi.set(__self__, "labels", labels)
+        if load is not None:
+            pulumi.set(__self__, "load", load)
+        if network is None:
+            network = 'default'
+        if network is not None:
+            pulumi.set(__self__, "network", network)
+        if no_cache is not None:
+            pulumi.set(__self__, "no_cache", no_cache)
         if platforms is not None:
             pulumi.set(__self__, "platforms", platforms)
         if pull is not None:
             pulumi.set(__self__, "pull", pull)
+        if push is not None:
+            pulumi.set(__self__, "push", push)
         if registries is not None:
             pulumi.set(__self__, "registries", registries)
         if secrets is not None:
             pulumi.set(__self__, "secrets", secrets)
+        if ssh is not None:
+            pulumi.set(__self__, "ssh", ssh)
         if tags is not None:
             pulumi.set(__self__, "tags", tags)
         if targets is not None:
             pulumi.set(__self__, "targets", targets)
+
+    @property
+    @pulumi.getter(name="addHosts")
+    def add_hosts(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+        """
+        Custom `host:ip` mappings to use during the build.
+
+        Equivalent to Docker's `--add-host` flag.
+        """
+        return pulumi.get(self, "add_hosts")
+
+    @add_hosts.setter
+    def add_hosts(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
+        pulumi.set(self, "add_hosts", value)
 
     @property
     @pulumi.getter(name="buildArgs")
@@ -156,8 +226,20 @@ class ImageArgs:
     @pulumi.getter(name="buildOnPreview")
     def build_on_preview(self) -> Optional[pulumi.Input[bool]]:
         """
-        When `true`, attempt to build the image during previews. The image will
-        not be pushed to registries, however caches will still be populated.
+        By default, preview behavior depends on the execution environment. If
+        Pulumi detects the operation is running on a CI system (GitHub Actions,
+        Travis CI, Azure Pipelines, etc.) then it will build images during
+        previews as a safeguard. Otherwise, if not running on CI, previews will
+        not build images.
+
+        Setting this to `false` forces previews to never perform builds, and
+        setting it to `true` will always build the image during previews.
+
+        Images built during previews are never exported to registries, however
+        cache manifests are still exported.
+
+        On-disk Dockerfiles are always validated for syntactic correctness
+        regardless of this setting.
         """
         return pulumi.get(self, "build_on_preview")
 
@@ -266,6 +348,52 @@ class ImageArgs:
 
     @property
     @pulumi.getter
+    def load(self) -> Optional[pulumi.Input[bool]]:
+        """
+        When `true` the build will automatically include a `docker` export.
+
+        Defaults to `false`.
+
+        Equivalent to Docker's `--load` flag.
+        """
+        return pulumi.get(self, "load")
+
+    @load.setter
+    def load(self, value: Optional[pulumi.Input[bool]]):
+        pulumi.set(self, "load", value)
+
+    @property
+    @pulumi.getter
+    def network(self) -> Optional[pulumi.Input['NetworkMode']]:
+        """
+        Set the network mode for `RUN` instructions. Defaults to `default`.
+
+        For custom networks, configure your builder with `--driver-opt network=...`.
+
+        Equivalent to Docker's `--network` flag.
+        """
+        return pulumi.get(self, "network")
+
+    @network.setter
+    def network(self, value: Optional[pulumi.Input['NetworkMode']]):
+        pulumi.set(self, "network", value)
+
+    @property
+    @pulumi.getter(name="noCache")
+    def no_cache(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Do not import cache manifests when building the image.
+
+        Equivalent to Docker's `--no-cache` flag.
+        """
+        return pulumi.get(self, "no_cache")
+
+    @no_cache.setter
+    def no_cache(self, value: Optional[pulumi.Input[bool]]):
+        pulumi.set(self, "no_cache", value)
+
+    @property
+    @pulumi.getter
     def platforms(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['Platform']]]]:
         """
         Set target platform(s) for the build. Defaults to the host's platform.
@@ -291,6 +419,22 @@ class ImageArgs:
     @pull.setter
     def pull(self, value: Optional[pulumi.Input[bool]]):
         pulumi.set(self, "pull", value)
+
+    @property
+    @pulumi.getter
+    def push(self) -> Optional[pulumi.Input[bool]]:
+        """
+        When `true` the build will automatically include a `registry` export.
+
+        Defaults to `false`.
+
+        Equivalent to Docker's `--push` flag.
+        """
+        return pulumi.get(self, "push")
+
+    @push.setter
+    def push(self, value: Optional[pulumi.Input[bool]]):
+        pulumi.set(self, "push", value)
 
     @property
     @pulumi.getter
@@ -332,6 +476,20 @@ class ImageArgs:
 
     @property
     @pulumi.getter
+    def ssh(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['SSHArgs']]]]:
+        """
+        SSH agent socket or keys to expose to the build.
+
+        Equivalent to Docker's `--ssh` flag.
+        """
+        return pulumi.get(self, "ssh")
+
+    @ssh.setter
+    def ssh(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['SSHArgs']]]]):
+        pulumi.set(self, "ssh", value)
+
+    @property
+    @pulumi.getter
     def tags(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
         """
         Name and optionally a tag (format: `name:tag`).
@@ -369,6 +527,7 @@ class Image(pulumi.CustomResource):
     def __init__(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
+                 add_hosts: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  build_args: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
                  build_on_preview: Optional[pulumi.Input[bool]] = None,
                  builder: Optional[pulumi.Input[pulumi.InputType['BuilderConfigArgs']]] = None,
@@ -378,10 +537,15 @@ class Image(pulumi.CustomResource):
                  dockerfile: Optional[pulumi.Input[pulumi.InputType['DockerfileArgs']]] = None,
                  exports: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ExportEntryArgs']]]]] = None,
                  labels: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
+                 load: Optional[pulumi.Input[bool]] = None,
+                 network: Optional[pulumi.Input['NetworkMode']] = None,
+                 no_cache: Optional[pulumi.Input[bool]] = None,
                  platforms: Optional[pulumi.Input[Sequence[pulumi.Input['Platform']]]] = None,
                  pull: Optional[pulumi.Input[bool]] = None,
+                 push: Optional[pulumi.Input[bool]] = None,
                  registries: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['RegistryAuthArgs']]]]] = None,
                  secrets: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
+                 ssh: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['SSHArgs']]]]] = None,
                  tags: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  targets: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  __props__=None):
@@ -672,6 +836,9 @@ class Image(pulumi.CustomResource):
 
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] add_hosts: Custom `host:ip` mappings to use during the build.
+               
+               Equivalent to Docker's `--add-host` flag.
         :param pulumi.Input[Mapping[str, pulumi.Input[str]]] build_args: `ARG` names and values to set during the build.
                
                These variables are accessed like environment variables inside `RUN`
@@ -681,8 +848,20 @@ class Image(pulumi.CustomResource):
                if these arguments are sensitive.
                
                Equivalent to Docker's `--build-arg` flag.
-        :param pulumi.Input[bool] build_on_preview: When `true`, attempt to build the image during previews. The image will
-               not be pushed to registries, however caches will still be populated.
+        :param pulumi.Input[bool] build_on_preview: By default, preview behavior depends on the execution environment. If
+               Pulumi detects the operation is running on a CI system (GitHub Actions,
+               Travis CI, Azure Pipelines, etc.) then it will build images during
+               previews as a safeguard. Otherwise, if not running on CI, previews will
+               not build images.
+               
+               Setting this to `false` forces previews to never perform builds, and
+               setting it to `true` will always build the image during previews.
+               
+               Images built during previews are never exported to registries, however
+               cache manifests are still exported.
+               
+               On-disk Dockerfiles are always validated for syntactic correctness
+               regardless of this setting.
         :param pulumi.Input[pulumi.InputType['BuilderConfigArgs']] builder: Builder configuration.
         :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['CacheFromEntryArgs']]]] cache_from: Cache export configuration.
                
@@ -705,12 +884,30 @@ class Image(pulumi.CustomResource):
         :param pulumi.Input[Mapping[str, pulumi.Input[str]]] labels: Attach arbitrary key/value metadata to the image.
                
                Equivalent to Docker's `--label` flag.
+        :param pulumi.Input[bool] load: When `true` the build will automatically include a `docker` export.
+               
+               Defaults to `false`.
+               
+               Equivalent to Docker's `--load` flag.
+        :param pulumi.Input['NetworkMode'] network: Set the network mode for `RUN` instructions. Defaults to `default`.
+               
+               For custom networks, configure your builder with `--driver-opt network=...`.
+               
+               Equivalent to Docker's `--network` flag.
+        :param pulumi.Input[bool] no_cache: Do not import cache manifests when building the image.
+               
+               Equivalent to Docker's `--no-cache` flag.
         :param pulumi.Input[Sequence[pulumi.Input['Platform']]] platforms: Set target platform(s) for the build. Defaults to the host's platform.
                
                Equivalent to Docker's `--platform` flag.
         :param pulumi.Input[bool] pull: Always pull referenced images.
                
                Equivalent to Docker's `--pull` flag.
+        :param pulumi.Input[bool] push: When `true` the build will automatically include a `registry` export.
+               
+               Defaults to `false`.
+               
+               Equivalent to Docker's `--push` flag.
         :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['RegistryAuthArgs']]]] registries: Registry credentials. Required if reading or exporting to private
                repositories.
                
@@ -727,6 +924,9 @@ class Image(pulumi.CustomResource):
                image, so you should use this for sensitive values.
                
                Similar to Docker's `--secret` flag.
+        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['SSHArgs']]]] ssh: SSH agent socket or keys to expose to the build.
+               
+               Equivalent to Docker's `--ssh` flag.
         :param pulumi.Input[Sequence[pulumi.Input[str]]] tags: Name and optionally a tag (format: `name:tag`).
                
                If exporting to a registry, the name should include the fully qualified
@@ -1045,6 +1245,7 @@ class Image(pulumi.CustomResource):
     def _internal_init(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
+                 add_hosts: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  build_args: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
                  build_on_preview: Optional[pulumi.Input[bool]] = None,
                  builder: Optional[pulumi.Input[pulumi.InputType['BuilderConfigArgs']]] = None,
@@ -1054,10 +1255,15 @@ class Image(pulumi.CustomResource):
                  dockerfile: Optional[pulumi.Input[pulumi.InputType['DockerfileArgs']]] = None,
                  exports: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ExportEntryArgs']]]]] = None,
                  labels: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
+                 load: Optional[pulumi.Input[bool]] = None,
+                 network: Optional[pulumi.Input['NetworkMode']] = None,
+                 no_cache: Optional[pulumi.Input[bool]] = None,
                  platforms: Optional[pulumi.Input[Sequence[pulumi.Input['Platform']]]] = None,
                  pull: Optional[pulumi.Input[bool]] = None,
+                 push: Optional[pulumi.Input[bool]] = None,
                  registries: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['RegistryAuthArgs']]]]] = None,
                  secrets: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
+                 ssh: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['SSHArgs']]]]] = None,
                  tags: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  targets: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  __props__=None):
@@ -1069,6 +1275,7 @@ class Image(pulumi.CustomResource):
                 raise TypeError('__props__ is only valid when passed in combination with a valid opts.id to get an existing resource')
             __props__ = ImageArgs.__new__(ImageArgs)
 
+            __props__.__dict__["add_hosts"] = add_hosts
             __props__.__dict__["build_args"] = build_args
             __props__.__dict__["build_on_preview"] = build_on_preview
             __props__.__dict__["builder"] = builder
@@ -1078,16 +1285,22 @@ class Image(pulumi.CustomResource):
             __props__.__dict__["dockerfile"] = dockerfile
             __props__.__dict__["exports"] = exports
             __props__.__dict__["labels"] = labels
+            __props__.__dict__["load"] = load
+            if network is None:
+                network = 'default'
+            __props__.__dict__["network"] = network
+            __props__.__dict__["no_cache"] = no_cache
             __props__.__dict__["platforms"] = platforms
             __props__.__dict__["pull"] = pull
+            __props__.__dict__["push"] = push
             __props__.__dict__["registries"] = registries
-            __props__.__dict__["secrets"] = None if secrets is None else pulumi.Output.secret(secrets)
+            __props__.__dict__["secrets"] = secrets
+            __props__.__dict__["ssh"] = ssh
             __props__.__dict__["tags"] = tags
             __props__.__dict__["targets"] = targets
             __props__.__dict__["context_hash"] = None
             __props__.__dict__["digests"] = None
-        secret_opts = pulumi.ResourceOptions(additional_secret_outputs=["secrets"])
-        opts = pulumi.ResourceOptions.merge(opts, secret_opts)
+            __props__.__dict__["ref"] = None
         super(Image, __self__).__init__(
             'docker:buildx/image:Image',
             resource_name,
@@ -1110,6 +1323,7 @@ class Image(pulumi.CustomResource):
 
         __props__ = ImageArgs.__new__(ImageArgs)
 
+        __props__.__dict__["add_hosts"] = None
         __props__.__dict__["build_args"] = None
         __props__.__dict__["build_on_preview"] = None
         __props__.__dict__["builder"] = None
@@ -1121,13 +1335,29 @@ class Image(pulumi.CustomResource):
         __props__.__dict__["dockerfile"] = None
         __props__.__dict__["exports"] = None
         __props__.__dict__["labels"] = None
+        __props__.__dict__["load"] = None
+        __props__.__dict__["network"] = None
+        __props__.__dict__["no_cache"] = None
         __props__.__dict__["platforms"] = None
         __props__.__dict__["pull"] = None
+        __props__.__dict__["push"] = None
+        __props__.__dict__["ref"] = None
         __props__.__dict__["registries"] = None
         __props__.__dict__["secrets"] = None
+        __props__.__dict__["ssh"] = None
         __props__.__dict__["tags"] = None
         __props__.__dict__["targets"] = None
         return Image(resource_name, opts=opts, __props__=__props__)
+
+    @property
+    @pulumi.getter(name="addHosts")
+    def add_hosts(self) -> pulumi.Output[Optional[Sequence[str]]]:
+        """
+        Custom `host:ip` mappings to use during the build.
+
+        Equivalent to Docker's `--add-host` flag.
+        """
+        return pulumi.get(self, "add_hosts")
 
     @property
     @pulumi.getter(name="buildArgs")
@@ -1149,8 +1379,20 @@ class Image(pulumi.CustomResource):
     @pulumi.getter(name="buildOnPreview")
     def build_on_preview(self) -> pulumi.Output[Optional[bool]]:
         """
-        When `true`, attempt to build the image during previews. The image will
-        not be pushed to registries, however caches will still be populated.
+        By default, preview behavior depends on the execution environment. If
+        Pulumi detects the operation is running on a CI system (GitHub Actions,
+        Travis CI, Azure Pipelines, etc.) then it will build images during
+        previews as a safeguard. Otherwise, if not running on CI, previews will
+        not build images.
+
+        Setting this to `false` forces previews to never perform builds, and
+        setting it to `true` will always build the image during previews.
+
+        Images built during previews are never exported to registries, however
+        cache manifests are still exported.
+
+        On-disk Dockerfiles are always validated for syntactic correctness
+        regardless of this setting.
         """
         return pulumi.get(self, "build_on_preview")
 
@@ -1194,7 +1436,7 @@ class Image(pulumi.CustomResource):
 
     @property
     @pulumi.getter(name="contextHash")
-    def context_hash(self) -> pulumi.Output[Optional[str]]:
+    def context_hash(self) -> pulumi.Output[str]:
         """
         A preliminary hash of the image's build context.
 
@@ -1204,9 +1446,13 @@ class Image(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def digests(self) -> pulumi.Output[Optional[Mapping[str, Sequence[str]]]]:
+    def digests(self) -> pulumi.Output[Mapping[str, str]]:
         """
-        A mapping of platform type to refs which were pushed to registries.
+        A mapping of target names to the SHA256 digest of their pushed manifest.
+
+        If no target was specified 'default' is used as the target name.
+
+        Pushed manifests can be referenced as `<tag>@<digest>`.
         """
         return pulumi.get(self, "digests")
 
@@ -1245,6 +1491,40 @@ class Image(pulumi.CustomResource):
 
     @property
     @pulumi.getter
+    def load(self) -> pulumi.Output[Optional[bool]]:
+        """
+        When `true` the build will automatically include a `docker` export.
+
+        Defaults to `false`.
+
+        Equivalent to Docker's `--load` flag.
+        """
+        return pulumi.get(self, "load")
+
+    @property
+    @pulumi.getter
+    def network(self) -> pulumi.Output[Optional['NetworkMode']]:
+        """
+        Set the network mode for `RUN` instructions. Defaults to `default`.
+
+        For custom networks, configure your builder with `--driver-opt network=...`.
+
+        Equivalent to Docker's `--network` flag.
+        """
+        return pulumi.get(self, "network")
+
+    @property
+    @pulumi.getter(name="noCache")
+    def no_cache(self) -> pulumi.Output[Optional[bool]]:
+        """
+        Do not import cache manifests when building the image.
+
+        Equivalent to Docker's `--no-cache` flag.
+        """
+        return pulumi.get(self, "no_cache")
+
+    @property
+    @pulumi.getter
     def platforms(self) -> pulumi.Output[Optional[Sequence['Platform']]]:
         """
         Set target platform(s) for the build. Defaults to the host's platform.
@@ -1262,6 +1542,34 @@ class Image(pulumi.CustomResource):
         Equivalent to Docker's `--pull` flag.
         """
         return pulumi.get(self, "pull")
+
+    @property
+    @pulumi.getter
+    def push(self) -> pulumi.Output[Optional[bool]]:
+        """
+        When `true` the build will automatically include a `registry` export.
+
+        Defaults to `false`.
+
+        Equivalent to Docker's `--push` flag.
+        """
+        return pulumi.get(self, "push")
+
+    @property
+    @pulumi.getter
+    def ref(self) -> pulumi.Output[str]:
+        """
+        If the image was pushed to any registries then this will contain a
+        single fully-qualified tag including the build's digest.
+
+        This is only for convenience and may not be appropriate for situations
+        where multiple tags or registries are involved. In those cases this
+        output is not guaranteed to be stable.
+
+        For more control over tags consumed by downstream resources you should
+        use the `Digests` output.
+        """
+        return pulumi.get(self, "ref")
 
     @property
     @pulumi.getter
@@ -1292,6 +1600,16 @@ class Image(pulumi.CustomResource):
         Similar to Docker's `--secret` flag.
         """
         return pulumi.get(self, "secrets")
+
+    @property
+    @pulumi.getter
+    def ssh(self) -> pulumi.Output[Optional[Sequence['outputs.SSH']]]:
+        """
+        SSH agent socket or keys to expose to the build.
+
+        Equivalent to Docker's `--ssh` flag.
+        """
+        return pulumi.get(self, "ssh")
 
     @property
     @pulumi.getter

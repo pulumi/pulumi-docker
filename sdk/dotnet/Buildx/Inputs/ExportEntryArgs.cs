@@ -36,19 +36,6 @@ namespace Pulumi.Docker.Buildx.Inputs
         [Input("local")]
         public Input<Inputs.ExportLocalArgs>? Local { get; set; }
 
-        [Input("manifests")]
-        private InputList<Inputs.ManifestArgs>? _manifests;
-
-        /// <summary>
-        /// An output property populated for exporters that pushed image
-        /// manifest(s) to a registry.
-        /// </summary>
-        public InputList<Inputs.ManifestArgs> Manifests
-        {
-            get => _manifests ?? (_manifests = new InputList<Inputs.ManifestArgs>());
-            set => _manifests = value;
-        }
-
         /// <summary>
         /// Identical to the Docker exporter but uses OCI media types by default.
         /// </summary>

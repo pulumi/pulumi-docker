@@ -5,6 +5,8 @@ package com.pulumi.docker.buildx;
 
 import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
+import com.pulumi.core.internal.Codegen;
+import com.pulumi.docker.buildx.enums.NetworkMode;
 import com.pulumi.docker.buildx.enums.Platform;
 import com.pulumi.docker.buildx.inputs.BuildContextArgs;
 import com.pulumi.docker.buildx.inputs.BuilderConfigArgs;
@@ -13,6 +15,7 @@ import com.pulumi.docker.buildx.inputs.CacheToEntryArgs;
 import com.pulumi.docker.buildx.inputs.DockerfileArgs;
 import com.pulumi.docker.buildx.inputs.ExportEntryArgs;
 import com.pulumi.docker.buildx.inputs.RegistryAuthArgs;
+import com.pulumi.docker.buildx.inputs.SSHArgs;
 import java.lang.Boolean;
 import java.lang.String;
 import java.util.List;
@@ -25,6 +28,25 @@ import javax.annotation.Nullable;
 public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
 
     public static final ImageArgs Empty = new ImageArgs();
+
+    /**
+     * Custom `host:ip` mappings to use during the build.
+     * 
+     * Equivalent to Docker&#39;s `--add-host` flag.
+     * 
+     */
+    @Import(name="addHosts")
+    private @Nullable Output<List<String>> addHosts;
+
+    /**
+     * @return Custom `host:ip` mappings to use during the build.
+     * 
+     * Equivalent to Docker&#39;s `--add-host` flag.
+     * 
+     */
+    public Optional<Output<List<String>>> addHosts() {
+        return Optional.ofNullable(this.addHosts);
+    }
 
     /**
      * `ARG` names and values to set during the build.
@@ -58,16 +80,40 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * When `true`, attempt to build the image during previews. The image will
-     * not be pushed to registries, however caches will still be populated.
+     * By default, preview behavior depends on the execution environment. If
+     * Pulumi detects the operation is running on a CI system (GitHub Actions,
+     * Travis CI, Azure Pipelines, etc.) then it will build images during
+     * previews as a safeguard. Otherwise, if not running on CI, previews will
+     * not build images.
+     * 
+     * Setting this to `false` forces previews to never perform builds, and
+     * setting it to `true` will always build the image during previews.
+     * 
+     * Images built during previews are never exported to registries, however
+     * cache manifests are still exported.
+     * 
+     * On-disk Dockerfiles are always validated for syntactic correctness
+     * regardless of this setting.
      * 
      */
     @Import(name="buildOnPreview")
     private @Nullable Output<Boolean> buildOnPreview;
 
     /**
-     * @return When `true`, attempt to build the image during previews. The image will
-     * not be pushed to registries, however caches will still be populated.
+     * @return By default, preview behavior depends on the execution environment. If
+     * Pulumi detects the operation is running on a CI system (GitHub Actions,
+     * Travis CI, Azure Pipelines, etc.) then it will build images during
+     * previews as a safeguard. Otherwise, if not running on CI, previews will
+     * not build images.
+     * 
+     * Setting this to `false` forces previews to never perform builds, and
+     * setting it to `true` will always build the image during previews.
+     * 
+     * Images built during previews are never exported to registries, however
+     * cache manifests are still exported.
+     * 
+     * On-disk Dockerfiles are always validated for syntactic correctness
+     * regardless of this setting.
      * 
      */
     public Optional<Output<Boolean>> buildOnPreview() {
@@ -210,6 +256,71 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
+     * When `true` the build will automatically include a `docker` export.
+     * 
+     * Defaults to `false`.
+     * 
+     * Equivalent to Docker&#39;s `--load` flag.
+     * 
+     */
+    @Import(name="load")
+    private @Nullable Output<Boolean> load;
+
+    /**
+     * @return When `true` the build will automatically include a `docker` export.
+     * 
+     * Defaults to `false`.
+     * 
+     * Equivalent to Docker&#39;s `--load` flag.
+     * 
+     */
+    public Optional<Output<Boolean>> load() {
+        return Optional.ofNullable(this.load);
+    }
+
+    /**
+     * Set the network mode for `RUN` instructions. Defaults to `default`.
+     * 
+     * For custom networks, configure your builder with `--driver-opt network=...`.
+     * 
+     * Equivalent to Docker&#39;s `--network` flag.
+     * 
+     */
+    @Import(name="network")
+    private @Nullable Output<NetworkMode> network;
+
+    /**
+     * @return Set the network mode for `RUN` instructions. Defaults to `default`.
+     * 
+     * For custom networks, configure your builder with `--driver-opt network=...`.
+     * 
+     * Equivalent to Docker&#39;s `--network` flag.
+     * 
+     */
+    public Optional<Output<NetworkMode>> network() {
+        return Optional.ofNullable(this.network);
+    }
+
+    /**
+     * Do not import cache manifests when building the image.
+     * 
+     * Equivalent to Docker&#39;s `--no-cache` flag.
+     * 
+     */
+    @Import(name="noCache")
+    private @Nullable Output<Boolean> noCache;
+
+    /**
+     * @return Do not import cache manifests when building the image.
+     * 
+     * Equivalent to Docker&#39;s `--no-cache` flag.
+     * 
+     */
+    public Optional<Output<Boolean>> noCache() {
+        return Optional.ofNullable(this.noCache);
+    }
+
+    /**
      * Set target platform(s) for the build. Defaults to the host&#39;s platform.
      * 
      * Equivalent to Docker&#39;s `--platform` flag.
@@ -245,6 +356,29 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
      */
     public Optional<Output<Boolean>> pull() {
         return Optional.ofNullable(this.pull);
+    }
+
+    /**
+     * When `true` the build will automatically include a `registry` export.
+     * 
+     * Defaults to `false`.
+     * 
+     * Equivalent to Docker&#39;s `--push` flag.
+     * 
+     */
+    @Import(name="push")
+    private @Nullable Output<Boolean> push;
+
+    /**
+     * @return When `true` the build will automatically include a `registry` export.
+     * 
+     * Defaults to `false`.
+     * 
+     * Equivalent to Docker&#39;s `--push` flag.
+     * 
+     */
+    public Optional<Output<Boolean>> push() {
+        return Optional.ofNullable(this.push);
     }
 
     /**
@@ -306,6 +440,25 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
+     * SSH agent socket or keys to expose to the build.
+     * 
+     * Equivalent to Docker&#39;s `--ssh` flag.
+     * 
+     */
+    @Import(name="ssh")
+    private @Nullable Output<List<SSHArgs>> ssh;
+
+    /**
+     * @return SSH agent socket or keys to expose to the build.
+     * 
+     * Equivalent to Docker&#39;s `--ssh` flag.
+     * 
+     */
+    public Optional<Output<List<SSHArgs>>> ssh() {
+        return Optional.ofNullable(this.ssh);
+    }
+
+    /**
      * Name and optionally a tag (format: `name:tag`).
      * 
      * If exporting to a registry, the name should include the fully qualified
@@ -356,6 +509,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
     private ImageArgs() {}
 
     private ImageArgs(ImageArgs $) {
+        this.addHosts = $.addHosts;
         this.buildArgs = $.buildArgs;
         this.buildOnPreview = $.buildOnPreview;
         this.builder = $.builder;
@@ -365,10 +519,15 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         this.dockerfile = $.dockerfile;
         this.exports = $.exports;
         this.labels = $.labels;
+        this.load = $.load;
+        this.network = $.network;
+        this.noCache = $.noCache;
         this.platforms = $.platforms;
         this.pull = $.pull;
+        this.push = $.push;
         this.registries = $.registries;
         this.secrets = $.secrets;
+        this.ssh = $.ssh;
         this.tags = $.tags;
         this.targets = $.targets;
     }
@@ -389,6 +548,43 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
 
         public Builder(ImageArgs defaults) {
             $ = new ImageArgs(Objects.requireNonNull(defaults));
+        }
+
+        /**
+         * @param addHosts Custom `host:ip` mappings to use during the build.
+         * 
+         * Equivalent to Docker&#39;s `--add-host` flag.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder addHosts(@Nullable Output<List<String>> addHosts) {
+            $.addHosts = addHosts;
+            return this;
+        }
+
+        /**
+         * @param addHosts Custom `host:ip` mappings to use during the build.
+         * 
+         * Equivalent to Docker&#39;s `--add-host` flag.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder addHosts(List<String> addHosts) {
+            return addHosts(Output.of(addHosts));
+        }
+
+        /**
+         * @param addHosts Custom `host:ip` mappings to use during the build.
+         * 
+         * Equivalent to Docker&#39;s `--add-host` flag.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder addHosts(String... addHosts) {
+            return addHosts(List.of(addHosts));
         }
 
         /**
@@ -429,8 +625,20 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param buildOnPreview When `true`, attempt to build the image during previews. The image will
-         * not be pushed to registries, however caches will still be populated.
+         * @param buildOnPreview By default, preview behavior depends on the execution environment. If
+         * Pulumi detects the operation is running on a CI system (GitHub Actions,
+         * Travis CI, Azure Pipelines, etc.) then it will build images during
+         * previews as a safeguard. Otherwise, if not running on CI, previews will
+         * not build images.
+         * 
+         * Setting this to `false` forces previews to never perform builds, and
+         * setting it to `true` will always build the image during previews.
+         * 
+         * Images built during previews are never exported to registries, however
+         * cache manifests are still exported.
+         * 
+         * On-disk Dockerfiles are always validated for syntactic correctness
+         * regardless of this setting.
          * 
          * @return builder
          * 
@@ -441,8 +649,20 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param buildOnPreview When `true`, attempt to build the image during previews. The image will
-         * not be pushed to registries, however caches will still be populated.
+         * @param buildOnPreview By default, preview behavior depends on the execution environment. If
+         * Pulumi detects the operation is running on a CI system (GitHub Actions,
+         * Travis CI, Azure Pipelines, etc.) then it will build images during
+         * previews as a safeguard. Otherwise, if not running on CI, previews will
+         * not build images.
+         * 
+         * Setting this to `false` forces previews to never perform builds, and
+         * setting it to `true` will always build the image during previews.
+         * 
+         * Images built during previews are never exported to registries, however
+         * cache manifests are still exported.
+         * 
+         * On-disk Dockerfiles are always validated for syntactic correctness
+         * regardless of this setting.
          * 
          * @return builder
          * 
@@ -668,6 +888,89 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
+         * @param load When `true` the build will automatically include a `docker` export.
+         * 
+         * Defaults to `false`.
+         * 
+         * Equivalent to Docker&#39;s `--load` flag.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder load(@Nullable Output<Boolean> load) {
+            $.load = load;
+            return this;
+        }
+
+        /**
+         * @param load When `true` the build will automatically include a `docker` export.
+         * 
+         * Defaults to `false`.
+         * 
+         * Equivalent to Docker&#39;s `--load` flag.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder load(Boolean load) {
+            return load(Output.of(load));
+        }
+
+        /**
+         * @param network Set the network mode for `RUN` instructions. Defaults to `default`.
+         * 
+         * For custom networks, configure your builder with `--driver-opt network=...`.
+         * 
+         * Equivalent to Docker&#39;s `--network` flag.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder network(@Nullable Output<NetworkMode> network) {
+            $.network = network;
+            return this;
+        }
+
+        /**
+         * @param network Set the network mode for `RUN` instructions. Defaults to `default`.
+         * 
+         * For custom networks, configure your builder with `--driver-opt network=...`.
+         * 
+         * Equivalent to Docker&#39;s `--network` flag.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder network(NetworkMode network) {
+            return network(Output.of(network));
+        }
+
+        /**
+         * @param noCache Do not import cache manifests when building the image.
+         * 
+         * Equivalent to Docker&#39;s `--no-cache` flag.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder noCache(@Nullable Output<Boolean> noCache) {
+            $.noCache = noCache;
+            return this;
+        }
+
+        /**
+         * @param noCache Do not import cache manifests when building the image.
+         * 
+         * Equivalent to Docker&#39;s `--no-cache` flag.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder noCache(Boolean noCache) {
+            return noCache(Output.of(noCache));
+        }
+
+        /**
          * @param platforms Set target platform(s) for the build. Defaults to the host&#39;s platform.
          * 
          * Equivalent to Docker&#39;s `--platform` flag.
@@ -727,6 +1030,35 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
          */
         public Builder pull(Boolean pull) {
             return pull(Output.of(pull));
+        }
+
+        /**
+         * @param push When `true` the build will automatically include a `registry` export.
+         * 
+         * Defaults to `false`.
+         * 
+         * Equivalent to Docker&#39;s `--push` flag.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder push(@Nullable Output<Boolean> push) {
+            $.push = push;
+            return this;
+        }
+
+        /**
+         * @param push When `true` the build will automatically include a `registry` export.
+         * 
+         * Defaults to `false`.
+         * 
+         * Equivalent to Docker&#39;s `--push` flag.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder push(Boolean push) {
+            return push(Output.of(push));
         }
 
         /**
@@ -813,6 +1145,43 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
          */
         public Builder secrets(Map<String,String> secrets) {
             return secrets(Output.of(secrets));
+        }
+
+        /**
+         * @param ssh SSH agent socket or keys to expose to the build.
+         * 
+         * Equivalent to Docker&#39;s `--ssh` flag.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder ssh(@Nullable Output<List<SSHArgs>> ssh) {
+            $.ssh = ssh;
+            return this;
+        }
+
+        /**
+         * @param ssh SSH agent socket or keys to expose to the build.
+         * 
+         * Equivalent to Docker&#39;s `--ssh` flag.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder ssh(List<SSHArgs> ssh) {
+            return ssh(Output.of(ssh));
+        }
+
+        /**
+         * @param ssh SSH agent socket or keys to expose to the build.
+         * 
+         * Equivalent to Docker&#39;s `--ssh` flag.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder ssh(SSHArgs... ssh) {
+            return ssh(List.of(ssh));
         }
 
         /**
@@ -905,6 +1274,7 @@ public final class ImageArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         public ImageArgs build() {
+            $.network = Codegen.objectProp("network", NetworkMode.class).output().arg($.network).def(NetworkMode.Default_).getNullable();
             return $;
         }
     }

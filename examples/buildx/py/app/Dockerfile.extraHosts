@@ -1,0 +1,3 @@
+FROM bash AS base
+
+RUN getent hosts metadata.google.internal

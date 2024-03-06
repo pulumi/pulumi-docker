@@ -24,14 +24,17 @@ import (
 	"github.com/docker/buildx/util/buildflags"
 	"github.com/docker/buildx/util/platformutil"
 	"github.com/docker/docker/errdefs"
+	"github.com/moby/buildkit/exporter/containerimage/exptypes"
 	"github.com/moby/buildkit/frontend/dockerfile/instructions"
 	"github.com/moby/buildkit/frontend/dockerfile/parser"
 	"github.com/moby/buildkit/session"
 	"github.com/moby/buildkit/session/secrets/secretsprovider"
+	"github.com/opencontainers/go-digest"
 	"github.com/spf13/afero"
 
 	provider "github.com/pulumi/pulumi-go-provider"
 	"github.com/pulumi/pulumi-go-provider/infer"
+	"github.com/pulumi/pulumi/sdk/go/common/util/ciutil"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/diag"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 )
@@ -83,8 +86,9 @@ func (i *Image) Annotate(a infer.Annotator) {
 
 // ImageArgs instantiates a new Image.
 type ImageArgs struct {
+	AddHosts       []string          `pulumi:"addHosts,optional"`
 	BuildArgs      map[string]string `pulumi:"buildArgs,optional"`
-	BuildOnPreview bool              `pulumi:"buildOnPreview,optional"`
+	BuildOnPreview *bool             `pulumi:"buildOnPreview,optional"`
 	Builder        BuilderConfig     `pulumi:"builder,optional"`
 	CacheFrom      []CacheFromEntry  `pulumi:"cacheFrom,optional"`
 	CacheTo        []CacheToEntry    `pulumi:"cacheTo,optional"`
@@ -92,16 +96,26 @@ type ImageArgs struct {
 	Dockerfile     Dockerfile        `pulumi:"dockerfile,optional"`
 	Exports        []ExportEntry     `pulumi:"exports,optional"`
 	Labels         map[string]string `pulumi:"labels,optional"`
+	Load           bool              `pulumi:"load,optional"`
+	Network        NetworkMode       `pulumi:"network,optional"`
+	NoCache        bool              `pulumi:"noCache,optional"`
 	Platforms      []Platform        `pulumi:"platforms,optional"`
 	Pull           bool              `pulumi:"pull,optional"`
+	Push           bool              `pulumi:"push,optional"`
 	Registries     []RegistryAuth    `pulumi:"registries,optional"`
-	Secrets        map[string]string `pulumi:"secrets,optional"        provider:"secret"`
+	Secrets        map[string]string `pulumi:"secrets,optional"`
+	SSH            []SSH             `pulumi:"ssh,optional"`
 	Tags           []string          `pulumi:"tags,optional"`
 	Targets        []string          `pulumi:"targets,optional"`
 }
 
 // Annotate describes inputs to the Image resource.
 func (ia *ImageArgs) Annotate(a infer.Annotator) {
+	a.Describe(&ia.AddHosts, dedent(`
+		Custom "host:ip" mappings to use during the build.
+
+		Equivalent to Docker's "--add-host" flag.
+	`))
 	a.Describe(&ia.BuildArgs, dedent(`
 		"ARG" names and values to set during the build.
 		
@@ -114,8 +128,20 @@ func (ia *ImageArgs) Annotate(a infer.Annotator) {
 		Equivalent to Docker's "--build-arg" flag.
 	`))
 	a.Describe(&ia.BuildOnPreview, dedent(`
-		When "true", attempt to build the image during previews. The image will
-		not be pushed to registries, however caches will still be populated.
+		By default, preview behavior depends on the execution environment. If
+		Pulumi detects the operation is running on a CI system (GitHub Actions,
+		Travis CI, Azure Pipelines, etc.) then it will build images during
+		previews as a safeguard. Otherwise, if not running on CI, previews will
+		not build images.
+
+		Setting this to "false" forces previews to never perform builds, and
+		setting it to "true" will always build the image during previews.
+
+		Images built during previews are never exported to registries, however
+		cache manifests are still exported.
+
+		On-disk Dockerfiles are always validated for syntactic correctness
+		regardless of this setting.
 	`))
 	a.Describe(&ia.Builder, dedent(`
 		Builder configuration.
@@ -153,6 +179,25 @@ func (ia *ImageArgs) Annotate(a infer.Annotator) {
 
 		Equivalent to Docker's "--label" flag.
 	`))
+	a.Describe(&ia.Load, dedent(`
+		When "true" the build will automatically include a "docker" export.
+
+		Defaults to "false".
+
+		Equivalent to Docker's "--load" flag.
+	`))
+	a.Describe(&ia.Network, dedent(`
+		Set the network mode for "RUN" instructions. Defaults to "default".
+
+		For custom networks, configure your builder with "--driver-opt network=...".
+
+		Equivalent to Docker's "--network" flag.
+	`))
+	a.Describe(&ia.NoCache, dedent(`
+		Do not import cache manifests when building the image.
+
+		Equivalent to Docker's "--no-cache" flag.
+	`))
 	a.Describe(&ia.Platforms, dedent(`
 		Set target platform(s) for the build. Defaults to the host's platform.
 		
@@ -162,6 +207,13 @@ func (ia *ImageArgs) Annotate(a infer.Annotator) {
 		Always pull referenced images.
 
 		Equivalent to Docker's "--pull" flag.
+	`))
+	a.Describe(&ia.Push, dedent(`
+		When "true" the build will automatically include a "registry" export.
+
+		Defaults to "false".
+
+		Equivalent to Docker's "--push" flag.
 	`))
 	a.Describe(&ia.Secrets, dedent(`
 		A mapping of secret names to their corresponding values.
@@ -173,6 +225,11 @@ func (ia *ImageArgs) Annotate(a infer.Annotator) {
 		image, so you should use this for sensitive values.
 
 		Similar to Docker's "--secret" flag.
+	`))
+	a.Describe(&ia.SSH, dedent(`
+		SSH agent socket or keys to expose to the build.
+
+		Equivalent to Docker's "--ssh" flag.
 	`))
 	a.Describe(&ia.Tags, dedent(`
 		Name and optionally a tag (format: "name:tag").
@@ -198,14 +255,17 @@ func (ia *ImageArgs) Annotate(a infer.Annotator) {
 
 		Similar to "docker login".
 	`))
+
+	a.SetDefault(&ia.Network, NetworkModeDefault)
 }
 
 // ImageState is serialized to the program's state file.
 type ImageState struct {
 	ImageArgs
 
-	Digests     map[Platform][]string `pulumi:"digests,optional"     provider:"output"`
-	ContextHash string                `pulumi:"contextHash,optional" provider:"internal,output"`
+	Digests     map[string]string `pulumi:"digests"     provider:"output"`
+	ContextHash string            `pulumi:"contextHash" provider:"output"`
+	Ref         string            `pulumi:"ref" provider:"output"`
 }
 
 // Annotate describes outputs of the Image resource.
@@ -213,12 +273,28 @@ func (is *ImageState) Annotate(a infer.Annotator) {
 	is.ImageArgs.Annotate(a)
 
 	a.Describe(&is.Digests, dedent(`
-		A mapping of platform type to refs which were pushed to registries.`,
+		A mapping of target names to the SHA256 digest of their pushed manifest.
+
+		If no target was specified 'default' is used as the target name.
+
+		Pushed manifests can be referenced as "<tag>@<digest>".
+		`,
 	))
 	a.Describe(&is.ContextHash, dedent(`
 		A preliminary hash of the image's build context.
 
 		Pulumi uses this to determine if an image _may_ need to be re-built.
+	`))
+	a.Describe(&is.Ref, dedent(`
+		If the image was pushed to any registries then this will contain a
+		single fully-qualified tag including the build's digest.
+
+		This is only for convenience and may not be appropriate for situations
+		where multiple tags or registries are involved. In those cases this
+		output is not guaranteed to be stable.
+
+		For more control over tags consumed by downstream resources you should
+		use the "Digests" output.
 	`))
 }
 
@@ -283,18 +359,24 @@ func newCheckFailure(property string, err error) checkFailure {
 
 func (ia *ImageArgs) withoutUnknowns(preview bool) ImageArgs {
 	filtered := ImageArgs{
+		AddHosts:       filter(stringKeeper{preview}, ia.AddHosts...),
 		BuildArgs:      mapKeeper{preview}.keep(ia.BuildArgs),
-		Builder:        ia.Builder,
 		BuildOnPreview: ia.BuildOnPreview,
+		Builder:        ia.Builder,
 		CacheFrom:      filter(stringerKeeper[CacheFromEntry]{preview}, ia.CacheFrom...),
 		CacheTo:        filter(stringerKeeper[CacheToEntry]{preview}, ia.CacheTo...),
 		Context:        contextKeeper{preview}.keep(ia.Context),
 		Dockerfile:     ia.Dockerfile,
 		Exports:        filter(stringerKeeper[ExportEntry]{preview}, ia.Exports...),
 		Labels:         mapKeeper{preview}.keep(ia.Labels),
+		Load:           ia.Load,
+		Network:        ia.Network,
+		NoCache:        ia.NoCache,
 		Platforms:      filter(stringerKeeper[Platform]{preview}, ia.Platforms...),
 		Pull:           ia.Pull,
+		Push:           ia.Push,
 		Registries:     filter(registryKeeper{preview}, ia.Registries...),
+		SSH:            filter(stringerKeeper[SSH]{preview}, ia.SSH...),
 		Secrets:        mapKeeper{preview}.keep(ia.Secrets),
 		Tags:           filter(stringKeeper{preview}, ia.Tags...),
 		Targets:        filter(stringKeeper{preview}, ia.Targets...),
@@ -307,6 +389,26 @@ func (ia *ImageArgs) buildable() bool {
 	// We can build the given inputs if filtered out unknowns is a no-op.
 	filtered := ia.withoutUnknowns(true)
 	return reflect.DeepEqual(ia, &filtered)
+}
+
+// isExported returns true if the args include a registry export.
+func (ia *ImageArgs) isExported() bool {
+	if ia.Push {
+		return true
+	}
+	for _, e := range ia.Exports {
+		if e.pushed() {
+			return true
+		}
+	}
+	return false
+}
+
+func (ia *ImageArgs) shouldBuildOnPreview() bool {
+	if ia.BuildOnPreview != nil {
+		return *ia.BuildOnPreview
+	}
+	return ciutil.IsCI()
 }
 
 type build struct {
@@ -347,6 +449,13 @@ func (ia ImageArgs) toBuilds(
 	targets := ia.Targets
 	if len(targets) == 0 {
 		targets = []string{""}
+	}
+
+	if len(opts.Exports) == 0 {
+		ctx.Log(diag.Warning,
+			"No exports were specified so the build will only remain in the local build cache. "+
+				"Use `push` to upload the image to a registry.",
+		)
 	}
 
 	// Check if we need a workaround for multi-platform caching (https://github.com/docker/buildx/issues/1044).
@@ -477,9 +586,18 @@ func (ia *ImageArgs) toBuildOptions(preview bool) (controllerapi.BuildOptions, e
 	var multierr error
 
 	if len(ia.Exports) > 1 {
-		multierr = errors.Join(
-			multierr,
+		multierr = errors.Join(multierr,
 			newCheckFailure("exports", fmt.Errorf("multiple exports are currently unsupported")),
+		)
+	}
+	if ia.Push && ia.Load {
+		multierr = errors.Join(multierr,
+			newCheckFailure("push", fmt.Errorf("push and load may not be set together at the moment")),
+		)
+	}
+	if len(ia.Exports) > 0 && (ia.Push || ia.Load) {
+		multierr = errors.Join(multierr,
+			newCheckFailure("exports", fmt.Errorf("exports can't be provided with push or load")),
 		)
 	}
 
@@ -520,6 +638,12 @@ func (ia *ImageArgs) toBuildOptions(preview bool) (controllerapi.BuildOptions, e
 	filtered := ia.withoutUnknowns(preview)
 
 	exports := []*controllerapi.ExportEntry{}
+	if filtered.Push {
+		filtered.Exports = append(filtered.Exports, ExportEntry{Raw: "type=registry"})
+	}
+	if filtered.Load {
+		filtered.Exports = append(filtered.Exports, ExportEntry{Raw: "type=docker"})
+	}
 	for _, e := range filtered.Exports {
 		if strings.Count(e.String(), "type=") > 1 {
 			multierr = errors.Join(
@@ -548,8 +672,8 @@ func (ia *ImageArgs) toBuildOptions(preview bool) (controllerapi.BuildOptions, e
 			continue
 		}
 		exports = append(exports, exp)
-
 	}
+
 	if preview {
 		// Don't perform registry pushes during previews.
 		for _, e := range exports {
@@ -615,6 +739,19 @@ func (ia *ImageArgs) toBuildOptions(preview bool) (controllerapi.BuildOptions, e
 		cacheTo = append(cacheTo, parsed[0])
 	}
 
+	ssh := []*controllerapi.SSH{}
+	for _, s := range filtered.SSH {
+		parsed, err := buildflags.ParseSSHSpecs([]string{s.String()})
+		if err != nil {
+			multierr = errors.Join(multierr, newCheckFailure("ssh", err))
+			continue
+		}
+		if len(parsed) == 0 {
+			continue
+		}
+		ssh = append(ssh, parsed[0])
+	}
+
 	if filtered.Dockerfile.Location != "" && filtered.Dockerfile.Inline != "" {
 		multierr = errors.Join(
 			multierr,
@@ -639,12 +776,15 @@ func (ia *ImageArgs) toBuildOptions(preview bool) (controllerapi.BuildOptions, e
 		ContextPath:    filtered.Context.Location,
 		DockerfileName: filtered.Dockerfile.Location,
 		Exports:        exports,
+		ExtraHosts:     filtered.AddHosts,
 		Labels:         filtered.Labels,
+		NetworkMode:    string(filtered.Network),
+		NoCache:        filtered.NoCache,
 		NamedContexts:  filtered.Context.Named.Map(),
 		Platforms:      platforms,
 		Pull:           filtered.Pull,
+		SSH:            ssh,
 		Tags:           filtered.Tags,
-		// Target:         filtered.Targets,
 	}
 
 	return opts, multierr
@@ -685,7 +825,7 @@ func (i *Image) Update(
 	}
 	state.ContextHash = hash
 
-	if preview && !input.BuildOnPreview {
+	if preview && !input.shouldBuildOnPreview() {
 		return state, nil
 	}
 	if preview && !input.buildable() {
@@ -693,16 +833,42 @@ func (i *Image) Update(
 		return state, nil
 	}
 
-	for _, b := range builds {
+	result, err := cfg.client.Build(ctx, name, builds[0])
+	if err != nil {
+		return state, err
+	}
+	// Run any remaining cache builds.
+	for idx := 1; idx < len(builds); idx++ {
+		b := builds[idx]
 		_, err = cfg.client.Build(ctx, name, b)
 		if err != nil {
 			return state, err
 		}
 	}
 
-	_, _, state, err = i.Read(ctx, name, input, state)
+	var dgst digest.Digest
+	state.Digests = map[string]string{}
+	for target, resp := range result {
+		if d, ok := resp.ExporterResponse[exptypes.ExporterImageDigestKey]; ok {
 
-	return state, err
+			dgst = digest.Digest(d)
+			state.Digests[target] = d
+		}
+	}
+
+	// Take the first registry tag we find and add a digest to it. That becomes
+	// our simplified "ref" output.
+	for _, tag := range state.Tags {
+		ref, ok := addDigest(tag, dgst.String())
+		if !ok {
+			continue
+		}
+
+		state.Ref = ref
+		break
+	}
+
+	return state, nil
 }
 
 // Create initializes a new resource and performs an Update on it.
@@ -737,20 +903,29 @@ func (*Image) Read(
 		}
 	}
 
-	// Do a lookup on all of the tags we expected to push and update our export
-	// with the manifest we pushed.
-	digests := map[Platform][]string{}
-	for idx, export := range state.Exports {
-		// We only care about exports that could have pushed tags.
-		if !export.pushed() {
-			continue
-		}
+	if !state.isExported() {
+		// Nothing was pushed -- all done.
+		return name, input, state, nil
+	}
 
-		state.Exports[idx].Manifests = []Manifest{}
-		for _, tag := range state.Tags {
-			// Does the tag still exist?
-			infos, err := cfg.client.Inspect(ctx, name, tag)
+	tagsToKeep := []string{}
+
+	// Do a lookup on all of the tags at the digests we expect to see.
+	for _, tag := range state.Tags {
+		for _, d := range state.Digests {
+			digest := digest.Digest(d)
+
+			ref, ok := addDigest(tag, digest.String())
+			if !ok {
+				// Not a pushed tag.
+				tagsToKeep = append(tagsToKeep, tag)
+				break
+			}
+
+			// Does a tag with this digest exist?
+			infos, err := cfg.client.Inspect(ctx, name, ref)
 			if err != nil {
+				ctx.Log(diag.Warning, err.Error())
 				continue
 			}
 
@@ -764,37 +939,19 @@ func (*Image) Read(
 					continue
 				}
 
-				os, arch := m.Descriptor.Platform.OS, m.Descriptor.Platform.Architecture
-				platform := Platform(fmt.Sprintf("%s/%s", os, arch))
-
-				if _, ok := digests[platform]; !ok {
-					digests[platform] = []string{}
-				}
-
-				digests[platform] = slices.Compact(append(digests[platform], m.Ref.String()))
-
-				state.Exports[idx].Manifests = append(
-					state.Exports[idx].Manifests,
-					Manifest{
-						Digest: m.Descriptor.Digest.String(),
-						Platform: ManifestPlatform{
-							OS:           m.Descriptor.Platform.OS,
-							Architecture: m.Descriptor.Platform.Architecture,
-						},
-						Ref:  m.Ref.String(),
-						Size: m.Descriptor.Size,
-					},
-				)
+				tagsToKeep = append(tagsToKeep, tag)
+				break
 			}
 		}
 	}
-	state.Digests = digests
 
 	// If we couldn't find the tags we expected then return an empty ID to
 	// delete the resource.
-	if len(input.Tags) > 0 && len(digests) == 0 {
+	if len(input.Tags) > 0 && len(tagsToKeep) == 0 {
 		return "", input, state, nil
 	}
+
+	state.Tags = tagsToKeep
 
 	return name, input, state, nil
 }
@@ -811,21 +968,23 @@ func (*Image) Delete(
 
 	var multierr error
 
-	for _, refs := range state.Digests {
-		for _, ref := range refs {
-			deletions, err := cfg.client.Delete(context.Context(ctx), ref)
-			if errdefs.IsNotFound(err) {
-				continue // Nothing to do.
-			}
-			multierr = errors.Join(multierr, err)
+	for _, tag := range state.Tags {
+		ref, err := reference.ParseNamed(tag)
+		if err != nil {
+			continue
+		}
+		deletions, err := cfg.client.Delete(context.Context(ctx), ref.String())
+		if errdefs.IsNotFound(err) {
+			continue // Nothing to do.
+		}
+		multierr = errors.Join(multierr, err)
 
-			for _, d := range deletions {
-				if d.Deleted != "" {
-					ctx.Log(diag.Info, d.Deleted)
-				}
-				if d.Untagged != "" {
-					ctx.Log(diag.Info, d.Untagged)
-				}
+		for _, d := range deletions {
+			if d.Deleted != "" {
+				ctx.Log(diag.Info, d.Deleted)
+			}
+			if d.Untagged != "" {
+				ctx.Log(diag.Info, d.Untagged)
 			}
 		}
 	}
@@ -846,8 +1005,14 @@ func (*Image) Diff(
 	diff := map[string]provider.PropertyDiff{}
 	update := provider.PropertyDiff{Kind: provider.Update}
 
+	if !reflect.DeepEqual(olds.AddHosts, news.AddHosts) {
+		diff["addHosts"] = update
+	}
 	if !reflect.DeepEqual(olds.BuildArgs, news.BuildArgs) {
 		diff["buildArgs"] = update
+	}
+	if olds.BuildOnPreview != news.BuildOnPreview {
+		diff["buildOnPreview"] = update
 	}
 	if !reflect.DeepEqual(olds.Builder, news.Builder) {
 		diff["builder"] = update
@@ -859,11 +1024,10 @@ func (*Image) Diff(
 		diff["cacheTo"] = update
 	}
 	if olds.Context.Location != news.Context.Location {
-		diff["context"] = update
+		diff["context.location"] = update
 	}
-	// Use string comparison to ignore any manifests attached to the export.
-	if fmt.Sprint(olds.Exports) != fmt.Sprint(news.Exports) {
-		diff["exports"] = update
+	if !reflect.DeepEqual(olds.Context.Named, news.Context.Named) {
+		diff["context.named"] = update
 	}
 	if olds.Dockerfile.Location != news.Dockerfile.Location {
 		diff["dockerfile.location"] = update
@@ -871,14 +1035,36 @@ func (*Image) Diff(
 	if olds.Dockerfile.Inline != news.Dockerfile.Inline {
 		diff["dockerfile.inline"] = update
 	}
-	if !reflect.DeepEqual(olds.Context.Named, news.Context.Named) {
-		diff["context.named"] = update
+	// Use string comparison to ignore any manifests attached to the export.
+	if fmt.Sprint(olds.Exports) != fmt.Sprint(news.Exports) {
+		diff["exports"] = update
+	}
+	if !reflect.DeepEqual(olds.Labels, news.Labels) {
+		diff["labels"] = update
+	}
+	if olds.Load != news.Load {
+		diff["load"] = update
+	}
+	if olds.Network != news.Network {
+		diff["network"] = update
+	}
+	if !reflect.DeepEqual(olds.NoCache, news.NoCache) {
+		diff["noCache"] = update
 	}
 	if !reflect.DeepEqual(olds.Platforms, news.Platforms) {
 		diff["platforms"] = update
 	}
 	if olds.Pull != news.Pull {
 		diff["pull"] = update
+	}
+	if olds.Push != news.Push {
+		diff["push"] = update
+	}
+	if !reflect.DeepEqual(olds.Secrets, news.Secrets) {
+		diff["secrets"] = update
+	}
+	if !reflect.DeepEqual(olds.SSH, news.SSH) {
+		diff["ssh"] = update
 	}
 	if !reflect.DeepEqual(olds.Tags, news.Tags) {
 		diff["tags"] = update
@@ -889,8 +1075,8 @@ func (*Image) Diff(
 
 	// pull=true indicates that we want to keep base layers up-to-date. In this
 	// case we'll always perform the build.
-	if news.Pull && len(news.Exports) > 0 {
-		diff["exports"] = update
+	if news.Pull && (len(news.Exports) > 0 || news.Push || news.Load) {
+		diff["contextHash"] = update
 	}
 
 	// Check if anything has changed in our build context.
@@ -915,7 +1101,7 @@ func (*Image) Diff(
 			if (oldr.Username == newr.Username) && (oldr.Address == newr.Address) {
 				continue
 			}
-			diff["registries"] = update
+			diff[fmt.Sprintf("registries[%d]", idx)] = update
 			break
 		}
 	}
@@ -937,4 +1123,27 @@ func parseDockerfile(r io.Reader) error {
 		return newCheckFailure("dockerfile", err)
 	}
 	return nil
+}
+
+// addDigest constructs a tagged ref with an "@<digest>" suffix.
+//
+// Returns false if the given ref was not fully qualified.
+func addDigest(ref, digest string) (string, bool) {
+	named, err := reference.ParseNamed(ref)
+	if err != nil {
+		return "", false
+	}
+	tag := "latest"
+	if tagged, ok := named.(reference.Tagged); ok {
+		tag = tagged.Tag()
+	}
+
+	full, err := reference.Parse(
+		fmt.Sprintf("%s:%s@%s", named.Name(), tag, digest),
+	)
+	if err != nil {
+		return "", false
+	}
+
+	return full.String(), true
 }

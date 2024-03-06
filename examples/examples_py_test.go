@@ -24,6 +24,18 @@ import (
 	"github.com/pulumi/pulumi/pkg/v3/testing/integration"
 )
 
+func TestBuildxPy(t *testing.T) {
+	test := getPyOptions(t).
+		With(integration.ProgramTestOptions{
+			Dir: path.Join(getCwd(t), "buildx", "py"),
+			Secrets: map[string]string{
+				"dockerHubPassword": os.Getenv("DOCKER_HUB_PASSWORD"),
+			},
+		})
+
+	integration.ProgramTest(t, &test)
+}
+
 func TestAzureContainerRegistryPy(t *testing.T) {
 	location := os.Getenv("AZURE_LOCATION")
 	if location == "" {

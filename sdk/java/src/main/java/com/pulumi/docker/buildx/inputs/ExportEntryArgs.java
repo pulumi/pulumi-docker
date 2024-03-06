@@ -11,10 +11,8 @@ import com.pulumi.docker.buildx.inputs.ExportLocalArgs;
 import com.pulumi.docker.buildx.inputs.ExportOCIArgs;
 import com.pulumi.docker.buildx.inputs.ExportRegistryArgs;
 import com.pulumi.docker.buildx.inputs.ExportTarArgs;
-import com.pulumi.docker.buildx.inputs.ManifestArgs;
 import java.lang.Boolean;
 import java.lang.String;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import javax.annotation.Nullable;
@@ -82,23 +80,6 @@ public final class ExportEntryArgs extends com.pulumi.resources.ResourceArgs {
      */
     public Optional<Output<ExportLocalArgs>> local() {
         return Optional.ofNullable(this.local);
-    }
-
-    /**
-     * An output property populated for exporters that pushed image
-     * manifest(s) to a registry.
-     * 
-     */
-    @Import(name="manifests")
-    private @Nullable Output<List<ManifestArgs>> manifests;
-
-    /**
-     * @return An output property populated for exporters that pushed image
-     * manifest(s) to a registry.
-     * 
-     */
-    public Optional<Output<List<ManifestArgs>>> manifests() {
-        return Optional.ofNullable(this.manifests);
     }
 
     /**
@@ -170,7 +151,6 @@ public final class ExportEntryArgs extends com.pulumi.resources.ResourceArgs {
         this.docker = $.docker;
         this.image = $.image;
         this.local = $.local;
-        this.manifests = $.manifests;
         this.oci = $.oci;
         this.raw = $.raw;
         this.registry = $.registry;
@@ -277,40 +257,6 @@ public final class ExportEntryArgs extends com.pulumi.resources.ResourceArgs {
          */
         public Builder local(ExportLocalArgs local) {
             return local(Output.of(local));
-        }
-
-        /**
-         * @param manifests An output property populated for exporters that pushed image
-         * manifest(s) to a registry.
-         * 
-         * @return builder
-         * 
-         */
-        public Builder manifests(@Nullable Output<List<ManifestArgs>> manifests) {
-            $.manifests = manifests;
-            return this;
-        }
-
-        /**
-         * @param manifests An output property populated for exporters that pushed image
-         * manifest(s) to a registry.
-         * 
-         * @return builder
-         * 
-         */
-        public Builder manifests(List<ManifestArgs> manifests) {
-            return manifests(Output.of(manifests));
-        }
-
-        /**
-         * @param manifests An output property populated for exporters that pushed image
-         * manifest(s) to a registry.
-         * 
-         * @return builder
-         * 
-         */
-        public Builder manifests(ManifestArgs... manifests) {
-            return manifests(List.of(manifests));
         }
 
         /**

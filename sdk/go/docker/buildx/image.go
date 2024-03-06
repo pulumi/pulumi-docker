@@ -508,6 +508,10 @@ import (
 type Image struct {
 	pulumi.CustomResourceState
 
+	// Custom `host:ip` mappings to use during the build.
+	//
+	// Equivalent to Docker's `--add-host` flag.
+	AddHosts pulumi.StringArrayOutput `pulumi:"addHosts"`
 	// `ARG` names and values to set during the build.
 	//
 	// These variables are accessed like environment variables inside `RUN`
@@ -518,8 +522,20 @@ type Image struct {
 	//
 	// Equivalent to Docker's `--build-arg` flag.
 	BuildArgs pulumi.StringMapOutput `pulumi:"buildArgs"`
-	// When `true`, attempt to build the image during previews. The image will
-	// not be pushed to registries, however caches will still be populated.
+	// By default, preview behavior depends on the execution environment. If
+	// Pulumi detects the operation is running on a CI system (GitHub Actions,
+	// Travis CI, Azure Pipelines, etc.) then it will build images during
+	// previews as a safeguard. Otherwise, if not running on CI, previews will
+	// not build images.
+	//
+	// Setting this to `false` forces previews to never perform builds, and
+	// setting it to `true` will always build the image during previews.
+	//
+	// Images built during previews are never exported to registries, however
+	// cache manifests are still exported.
+	//
+	// On-disk Dockerfiles are always validated for syntactic correctness
+	// regardless of this setting.
 	BuildOnPreview pulumi.BoolPtrOutput `pulumi:"buildOnPreview"`
 	// Builder configuration.
 	Builder BuilderConfigPtrOutput `pulumi:"builder"`
@@ -538,9 +554,13 @@ type Image struct {
 	// A preliminary hash of the image's build context.
 	//
 	// Pulumi uses this to determine if an image _may_ need to be re-built.
-	ContextHash pulumi.StringPtrOutput `pulumi:"contextHash"`
-	// A mapping of platform type to refs which were pushed to registries.
-	Digests pulumi.StringArrayMapOutput `pulumi:"digests"`
+	ContextHash pulumi.StringOutput `pulumi:"contextHash"`
+	// A mapping of target names to the SHA256 digest of their pushed manifest.
+	//
+	// If no target was specified 'default' is used as the target name.
+	//
+	// Pushed manifests can be referenced as `<tag>@<digest>`.
+	Digests pulumi.StringMapOutput `pulumi:"digests"`
 	// Dockerfile settings.
 	//
 	// Equivalent to Docker's `--file` flag.
@@ -556,6 +576,22 @@ type Image struct {
 	//
 	// Equivalent to Docker's `--label` flag.
 	Labels pulumi.StringMapOutput `pulumi:"labels"`
+	// When `true` the build will automatically include a `docker` export.
+	//
+	// Defaults to `false`.
+	//
+	// Equivalent to Docker's `--load` flag.
+	Load pulumi.BoolPtrOutput `pulumi:"load"`
+	// Set the network mode for `RUN` instructions. Defaults to `default`.
+	//
+	// For custom networks, configure your builder with `--driver-opt network=...`.
+	//
+	// Equivalent to Docker's `--network` flag.
+	Network NetworkModePtrOutput `pulumi:"network"`
+	// Do not import cache manifests when building the image.
+	//
+	// Equivalent to Docker's `--no-cache` flag.
+	NoCache pulumi.BoolPtrOutput `pulumi:"noCache"`
 	// Set target platform(s) for the build. Defaults to the host's platform.
 	//
 	// Equivalent to Docker's `--platform` flag.
@@ -564,6 +600,22 @@ type Image struct {
 	//
 	// Equivalent to Docker's `--pull` flag.
 	Pull pulumi.BoolPtrOutput `pulumi:"pull"`
+	// When `true` the build will automatically include a `registry` export.
+	//
+	// Defaults to `false`.
+	//
+	// Equivalent to Docker's `--push` flag.
+	Push pulumi.BoolPtrOutput `pulumi:"push"`
+	// If the image was pushed to any registries then this will contain a
+	// single fully-qualified tag including the build's digest.
+	//
+	// This is only for convenience and may not be appropriate for situations
+	// where multiple tags or registries are involved. In those cases this
+	// output is not guaranteed to be stable.
+	//
+	// For more control over tags consumed by downstream resources you should
+	// use the `Digests` output.
+	Ref pulumi.StringOutput `pulumi:"ref"`
 	// Registry credentials. Required if reading or exporting to private
 	// repositories.
 	//
@@ -582,6 +634,10 @@ type Image struct {
 	//
 	// Similar to Docker's `--secret` flag.
 	Secrets pulumi.StringMapOutput `pulumi:"secrets"`
+	// SSH agent socket or keys to expose to the build.
+	//
+	// Equivalent to Docker's `--ssh` flag.
+	Ssh SSHArrayOutput `pulumi:"ssh"`
 	// Name and optionally a tag (format: `name:tag`).
 	//
 	// If exporting to a registry, the name should include the fully qualified
@@ -604,13 +660,9 @@ func NewImage(ctx *pulumi.Context,
 		args = &ImageArgs{}
 	}
 
-	if args.Secrets != nil {
-		args.Secrets = pulumi.ToSecret(args.Secrets).(pulumi.StringMapInput)
+	if args.Network == nil {
+		args.Network = NetworkMode("default")
 	}
-	secrets := pulumi.AdditionalSecretOutputs([]string{
-		"secrets",
-	})
-	opts = append(opts, secrets)
 	opts = internal.PkgResourceDefaultOpts(opts)
 	var resource Image
 	err := ctx.RegisterResource("docker:buildx/image:Image", name, args, &resource, opts...)
@@ -644,6 +696,10 @@ func (ImageState) ElementType() reflect.Type {
 }
 
 type imageArgs struct {
+	// Custom `host:ip` mappings to use during the build.
+	//
+	// Equivalent to Docker's `--add-host` flag.
+	AddHosts []string `pulumi:"addHosts"`
 	// `ARG` names and values to set during the build.
 	//
 	// These variables are accessed like environment variables inside `RUN`
@@ -654,8 +710,20 @@ type imageArgs struct {
 	//
 	// Equivalent to Docker's `--build-arg` flag.
 	BuildArgs map[string]string `pulumi:"buildArgs"`
-	// When `true`, attempt to build the image during previews. The image will
-	// not be pushed to registries, however caches will still be populated.
+	// By default, preview behavior depends on the execution environment. If
+	// Pulumi detects the operation is running on a CI system (GitHub Actions,
+	// Travis CI, Azure Pipelines, etc.) then it will build images during
+	// previews as a safeguard. Otherwise, if not running on CI, previews will
+	// not build images.
+	//
+	// Setting this to `false` forces previews to never perform builds, and
+	// setting it to `true` will always build the image during previews.
+	//
+	// Images built during previews are never exported to registries, however
+	// cache manifests are still exported.
+	//
+	// On-disk Dockerfiles are always validated for syntactic correctness
+	// regardless of this setting.
 	BuildOnPreview *bool `pulumi:"buildOnPreview"`
 	// Builder configuration.
 	Builder *BuilderConfig `pulumi:"builder"`
@@ -686,6 +754,22 @@ type imageArgs struct {
 	//
 	// Equivalent to Docker's `--label` flag.
 	Labels map[string]string `pulumi:"labels"`
+	// When `true` the build will automatically include a `docker` export.
+	//
+	// Defaults to `false`.
+	//
+	// Equivalent to Docker's `--load` flag.
+	Load *bool `pulumi:"load"`
+	// Set the network mode for `RUN` instructions. Defaults to `default`.
+	//
+	// For custom networks, configure your builder with `--driver-opt network=...`.
+	//
+	// Equivalent to Docker's `--network` flag.
+	Network *NetworkMode `pulumi:"network"`
+	// Do not import cache manifests when building the image.
+	//
+	// Equivalent to Docker's `--no-cache` flag.
+	NoCache *bool `pulumi:"noCache"`
 	// Set target platform(s) for the build. Defaults to the host's platform.
 	//
 	// Equivalent to Docker's `--platform` flag.
@@ -694,6 +778,12 @@ type imageArgs struct {
 	//
 	// Equivalent to Docker's `--pull` flag.
 	Pull *bool `pulumi:"pull"`
+	// When `true` the build will automatically include a `registry` export.
+	//
+	// Defaults to `false`.
+	//
+	// Equivalent to Docker's `--push` flag.
+	Push *bool `pulumi:"push"`
 	// Registry credentials. Required if reading or exporting to private
 	// repositories.
 	//
@@ -712,6 +802,10 @@ type imageArgs struct {
 	//
 	// Similar to Docker's `--secret` flag.
 	Secrets map[string]string `pulumi:"secrets"`
+	// SSH agent socket or keys to expose to the build.
+	//
+	// Equivalent to Docker's `--ssh` flag.
+	Ssh []SSH `pulumi:"ssh"`
 	// Name and optionally a tag (format: `name:tag`).
 	//
 	// If exporting to a registry, the name should include the fully qualified
@@ -729,6 +823,10 @@ type imageArgs struct {
 
 // The set of arguments for constructing a Image resource.
 type ImageArgs struct {
+	// Custom `host:ip` mappings to use during the build.
+	//
+	// Equivalent to Docker's `--add-host` flag.
+	AddHosts pulumi.StringArrayInput
 	// `ARG` names and values to set during the build.
 	//
 	// These variables are accessed like environment variables inside `RUN`
@@ -739,8 +837,20 @@ type ImageArgs struct {
 	//
 	// Equivalent to Docker's `--build-arg` flag.
 	BuildArgs pulumi.StringMapInput
-	// When `true`, attempt to build the image during previews. The image will
-	// not be pushed to registries, however caches will still be populated.
+	// By default, preview behavior depends on the execution environment. If
+	// Pulumi detects the operation is running on a CI system (GitHub Actions,
+	// Travis CI, Azure Pipelines, etc.) then it will build images during
+	// previews as a safeguard. Otherwise, if not running on CI, previews will
+	// not build images.
+	//
+	// Setting this to `false` forces previews to never perform builds, and
+	// setting it to `true` will always build the image during previews.
+	//
+	// Images built during previews are never exported to registries, however
+	// cache manifests are still exported.
+	//
+	// On-disk Dockerfiles are always validated for syntactic correctness
+	// regardless of this setting.
 	BuildOnPreview pulumi.BoolPtrInput
 	// Builder configuration.
 	Builder BuilderConfigPtrInput
@@ -771,6 +881,22 @@ type ImageArgs struct {
 	//
 	// Equivalent to Docker's `--label` flag.
 	Labels pulumi.StringMapInput
+	// When `true` the build will automatically include a `docker` export.
+	//
+	// Defaults to `false`.
+	//
+	// Equivalent to Docker's `--load` flag.
+	Load pulumi.BoolPtrInput
+	// Set the network mode for `RUN` instructions. Defaults to `default`.
+	//
+	// For custom networks, configure your builder with `--driver-opt network=...`.
+	//
+	// Equivalent to Docker's `--network` flag.
+	Network NetworkModePtrInput
+	// Do not import cache manifests when building the image.
+	//
+	// Equivalent to Docker's `--no-cache` flag.
+	NoCache pulumi.BoolPtrInput
 	// Set target platform(s) for the build. Defaults to the host's platform.
 	//
 	// Equivalent to Docker's `--platform` flag.
@@ -779,6 +905,12 @@ type ImageArgs struct {
 	//
 	// Equivalent to Docker's `--pull` flag.
 	Pull pulumi.BoolPtrInput
+	// When `true` the build will automatically include a `registry` export.
+	//
+	// Defaults to `false`.
+	//
+	// Equivalent to Docker's `--push` flag.
+	Push pulumi.BoolPtrInput
 	// Registry credentials. Required if reading or exporting to private
 	// repositories.
 	//
@@ -797,6 +929,10 @@ type ImageArgs struct {
 	//
 	// Similar to Docker's `--secret` flag.
 	Secrets pulumi.StringMapInput
+	// SSH agent socket or keys to expose to the build.
+	//
+	// Equivalent to Docker's `--ssh` flag.
+	Ssh SSHArrayInput
 	// Name and optionally a tag (format: `name:tag`).
 	//
 	// If exporting to a registry, the name should include the fully qualified
@@ -899,6 +1035,13 @@ func (o ImageOutput) ToImageOutputWithContext(ctx context.Context) ImageOutput {
 	return o
 }
 
+// Custom `host:ip` mappings to use during the build.
+//
+// Equivalent to Docker's `--add-host` flag.
+func (o ImageOutput) AddHosts() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v *Image) pulumi.StringArrayOutput { return v.AddHosts }).(pulumi.StringArrayOutput)
+}
+
 // `ARG` names and values to set during the build.
 //
 // These variables are accessed like environment variables inside `RUN`
@@ -912,8 +1055,20 @@ func (o ImageOutput) BuildArgs() pulumi.StringMapOutput {
 	return o.ApplyT(func(v *Image) pulumi.StringMapOutput { return v.BuildArgs }).(pulumi.StringMapOutput)
 }
 
-// When `true`, attempt to build the image during previews. The image will
-// not be pushed to registries, however caches will still be populated.
+// By default, preview behavior depends on the execution environment. If
+// Pulumi detects the operation is running on a CI system (GitHub Actions,
+// Travis CI, Azure Pipelines, etc.) then it will build images during
+// previews as a safeguard. Otherwise, if not running on CI, previews will
+// not build images.
+//
+// Setting this to `false` forces previews to never perform builds, and
+// setting it to `true` will always build the image during previews.
+//
+// Images built during previews are never exported to registries, however
+// cache manifests are still exported.
+//
+// On-disk Dockerfiles are always validated for syntactic correctness
+// regardless of this setting.
 func (o ImageOutput) BuildOnPreview() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *Image) pulumi.BoolPtrOutput { return v.BuildOnPreview }).(pulumi.BoolPtrOutput)
 }
@@ -947,13 +1102,17 @@ func (o ImageOutput) Context() BuildContextPtrOutput {
 // A preliminary hash of the image's build context.
 //
 // Pulumi uses this to determine if an image _may_ need to be re-built.
-func (o ImageOutput) ContextHash() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v *Image) pulumi.StringPtrOutput { return v.ContextHash }).(pulumi.StringPtrOutput)
+func (o ImageOutput) ContextHash() pulumi.StringOutput {
+	return o.ApplyT(func(v *Image) pulumi.StringOutput { return v.ContextHash }).(pulumi.StringOutput)
 }
 
-// A mapping of platform type to refs which were pushed to registries.
-func (o ImageOutput) Digests() pulumi.StringArrayMapOutput {
-	return o.ApplyT(func(v *Image) pulumi.StringArrayMapOutput { return v.Digests }).(pulumi.StringArrayMapOutput)
+// A mapping of target names to the SHA256 digest of their pushed manifest.
+//
+// If no target was specified 'default' is used as the target name.
+//
+// Pushed manifests can be referenced as `<tag>@<digest>`.
+func (o ImageOutput) Digests() pulumi.StringMapOutput {
+	return o.ApplyT(func(v *Image) pulumi.StringMapOutput { return v.Digests }).(pulumi.StringMapOutput)
 }
 
 // Dockerfile settings.
@@ -980,6 +1139,31 @@ func (o ImageOutput) Labels() pulumi.StringMapOutput {
 	return o.ApplyT(func(v *Image) pulumi.StringMapOutput { return v.Labels }).(pulumi.StringMapOutput)
 }
 
+// When `true` the build will automatically include a `docker` export.
+//
+// Defaults to `false`.
+//
+// Equivalent to Docker's `--load` flag.
+func (o ImageOutput) Load() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *Image) pulumi.BoolPtrOutput { return v.Load }).(pulumi.BoolPtrOutput)
+}
+
+// Set the network mode for `RUN` instructions. Defaults to `default`.
+//
+// For custom networks, configure your builder with `--driver-opt network=...`.
+//
+// Equivalent to Docker's `--network` flag.
+func (o ImageOutput) Network() NetworkModePtrOutput {
+	return o.ApplyT(func(v *Image) NetworkModePtrOutput { return v.Network }).(NetworkModePtrOutput)
+}
+
+// Do not import cache manifests when building the image.
+//
+// Equivalent to Docker's `--no-cache` flag.
+func (o ImageOutput) NoCache() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *Image) pulumi.BoolPtrOutput { return v.NoCache }).(pulumi.BoolPtrOutput)
+}
+
 // Set target platform(s) for the build. Defaults to the host's platform.
 //
 // Equivalent to Docker's `--platform` flag.
@@ -992,6 +1176,28 @@ func (o ImageOutput) Platforms() PlatformArrayOutput {
 // Equivalent to Docker's `--pull` flag.
 func (o ImageOutput) Pull() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *Image) pulumi.BoolPtrOutput { return v.Pull }).(pulumi.BoolPtrOutput)
+}
+
+// When `true` the build will automatically include a `registry` export.
+//
+// Defaults to `false`.
+//
+// Equivalent to Docker's `--push` flag.
+func (o ImageOutput) Push() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *Image) pulumi.BoolPtrOutput { return v.Push }).(pulumi.BoolPtrOutput)
+}
+
+// If the image was pushed to any registries then this will contain a
+// single fully-qualified tag including the build's digest.
+//
+// This is only for convenience and may not be appropriate for situations
+// where multiple tags or registries are involved. In those cases this
+// output is not guaranteed to be stable.
+//
+// For more control over tags consumed by downstream resources you should
+// use the `Digests` output.
+func (o ImageOutput) Ref() pulumi.StringOutput {
+	return o.ApplyT(func(v *Image) pulumi.StringOutput { return v.Ref }).(pulumi.StringOutput)
 }
 
 // Registry credentials. Required if reading or exporting to private
@@ -1016,6 +1222,13 @@ func (o ImageOutput) Registries() RegistryAuthArrayOutput {
 // Similar to Docker's `--secret` flag.
 func (o ImageOutput) Secrets() pulumi.StringMapOutput {
 	return o.ApplyT(func(v *Image) pulumi.StringMapOutput { return v.Secrets }).(pulumi.StringMapOutput)
+}
+
+// SSH agent socket or keys to expose to the build.
+//
+// Equivalent to Docker's `--ssh` flag.
+func (o ImageOutput) Ssh() SSHArrayOutput {
+	return o.ApplyT(func(v *Image) SSHArrayOutput { return v.Ssh }).(SSHArrayOutput)
 }
 
 // Name and optionally a tag (format: `name:tag`).

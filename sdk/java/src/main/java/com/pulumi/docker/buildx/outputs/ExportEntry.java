@@ -10,10 +10,8 @@ import com.pulumi.docker.buildx.outputs.ExportLocal;
 import com.pulumi.docker.buildx.outputs.ExportOCI;
 import com.pulumi.docker.buildx.outputs.ExportRegistry;
 import com.pulumi.docker.buildx.outputs.ExportTar;
-import com.pulumi.docker.buildx.outputs.Manifest;
 import java.lang.Boolean;
 import java.lang.String;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import javax.annotation.Nullable;
@@ -40,12 +38,6 @@ public final class ExportEntry {
      * 
      */
     private @Nullable ExportLocal local;
-    /**
-     * @return An output property populated for exporters that pushed image
-     * manifest(s) to a registry.
-     * 
-     */
-    private @Nullable List<Manifest> manifests;
     /**
      * @return Identical to the Docker exporter but uses OCI media types by default.
      * 
@@ -98,14 +90,6 @@ public final class ExportEntry {
         return Optional.ofNullable(this.local);
     }
     /**
-     * @return An output property populated for exporters that pushed image
-     * manifest(s) to a registry.
-     * 
-     */
-    public List<Manifest> manifests() {
-        return this.manifests == null ? List.of() : this.manifests;
-    }
-    /**
      * @return Identical to the Docker exporter but uses OCI media types by default.
      * 
      */
@@ -148,7 +132,6 @@ public final class ExportEntry {
         private @Nullable ExportDocker docker;
         private @Nullable ExportImage image;
         private @Nullable ExportLocal local;
-        private @Nullable List<Manifest> manifests;
         private @Nullable ExportOCI oci;
         private @Nullable String raw;
         private @Nullable ExportRegistry registry;
@@ -160,7 +143,6 @@ public final class ExportEntry {
     	      this.docker = defaults.docker;
     	      this.image = defaults.image;
     	      this.local = defaults.local;
-    	      this.manifests = defaults.manifests;
     	      this.oci = defaults.oci;
     	      this.raw = defaults.raw;
     	      this.registry = defaults.registry;
@@ -192,15 +174,6 @@ public final class ExportEntry {
             return this;
         }
         @CustomType.Setter
-        public Builder manifests(@Nullable List<Manifest> manifests) {
-
-            this.manifests = manifests;
-            return this;
-        }
-        public Builder manifests(Manifest... manifests) {
-            return manifests(List.of(manifests));
-        }
-        @CustomType.Setter
         public Builder oci(@Nullable ExportOCI oci) {
 
             this.oci = oci;
@@ -230,7 +203,6 @@ public final class ExportEntry {
             _resultValue.docker = docker;
             _resultValue.image = image;
             _resultValue.local = local;
-            _resultValue.manifests = manifests;
             _resultValue.oci = oci;
             _resultValue.raw = raw;
             _resultValue.registry = registry;

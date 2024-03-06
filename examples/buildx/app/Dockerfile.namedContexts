@@ -1,0 +1,5 @@
+# syntax=docker/dockerfile:1.4
+FROM golang:latest
+
+RUN version="$(go version)" && echo $version && [ "$version" = "go version go1.21.7 linux/amd64" ]
+RUN echo "This image uses named contexts to pin golang:latest to a specific SHA 👍"
