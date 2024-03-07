@@ -17,6 +17,7 @@ namespace Pulumi.Docker
     /// 
     /// Build an image with the `docker.RemoteImage` resource and then push it to a registry:
     /// 
+    /// &lt;!--Start PulumiCodeChooser --&gt;
     /// ```csharp
     /// using System.Collections.Generic;
     /// using System.Linq;
@@ -41,6 +42,7 @@ namespace Pulumi.Docker
     /// 
     /// });
     /// ```
+    /// &lt;!--End PulumiCodeChooser --&gt;
     /// </summary>
     [DockerResourceType("docker:index/registryImage:RegistryImage")]
     public partial class RegistryImage : global::Pulumi.CustomResource

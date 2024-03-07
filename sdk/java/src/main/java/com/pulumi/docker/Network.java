@@ -25,6 +25,8 @@ import javax.annotation.Nullable;
  * `docker.Network` provides a docker network resource.
  * 
  * ## Example Usage
+ * 
+ * &lt;!--Start PulumiCodeChooser --&gt;
  * ```java
  * package generated_program;
  * 
@@ -50,34 +52,35 @@ import javax.annotation.Nullable;
  *     }
  * }
  * ```
+ * &lt;!--End PulumiCodeChooser --&gt;
  * 
  * ## Import
  * 
  * ### Example
  * 
- *  Assuming you created a `network` as follows
+ * Assuming you created a `network` as follows
  * 
- *  #!/bin/bash
+ * #!/bin/bash
  * 
- *  docker network create foo
+ * docker network create foo
  * 
- *  prints the long ID
+ * prints the long ID
  * 
- *  87b57a9b91ecab2db2a6dbf38df74c67d7c7108cbe479d6576574ec2cd8c2d73
+ * 87b57a9b91ecab2db2a6dbf38df74c67d7c7108cbe479d6576574ec2cd8c2d73
  * 
- *  you provide the definition for the resource as follows
+ * you provide the definition for the resource as follows
  * 
- *  terraform
+ * terraform
  * 
- *  resource &#34;docker_network&#34; &#34;foo&#34; {
+ * resource &#34;docker_network&#34; &#34;foo&#34; {
  * 
- *  name = &#34;foo&#34;
+ *   name = &#34;foo&#34;
  * 
- *  }
+ * }
  * 
- *  then the import command is as follows
+ * then the import command is as follows
  * 
- *  #!/bin/bash
+ * #!/bin/bash
  * 
  * ```sh
  * $ pulumi import docker:index/network:Network foo 87b57a9b91ecab2db2a6dbf38df74c67d7c7108cbe479d6576574ec2cd8c2d73

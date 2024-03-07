@@ -303,22 +303,27 @@ class RemoteImage(pulumi.CustomResource):
          This resource will *not* pull new layers of the image automatically unless used in conjunction with RegistryImage data source to update the `pull_triggers` field.
 
         ## Example Usage
+
         ### Basic
 
         Finds and downloads the latest `ubuntu:precise` image but does not check
         for further updates of the image
 
+        <!--Start PulumiCodeChooser -->
         ```python
         import pulumi
         import pulumi_docker as docker
 
         ubuntu = docker.RemoteImage("ubuntu", name="ubuntu:precise")
         ```
+        <!--End PulumiCodeChooser -->
+
         ### Dynamic updates
 
         To be able to update an image dynamically when the `sha256` sum changes,
         you need to use it in combination with `RegistryImage` as follows:
 
+        <!--Start PulumiCodeChooser -->
         ```python
         import pulumi
         import pulumi_docker as docker
@@ -328,6 +333,34 @@ class RemoteImage(pulumi.CustomResource):
             name=ubuntu_registry_image.name,
             pull_triggers=[ubuntu_registry_image.sha256_digest])
         ```
+        <!--End PulumiCodeChooser -->
+
+        ### Build
+
+        You can also use the resource to build an image.
+        In this case the image "zoo" and "zoo:develop" are built.
+
+        <!--Start PulumiCodeChooser -->
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        zoo = docker.RemoteImage("zoo",
+            name="zoo",
+            build=docker.RemoteImageBuildArgs(
+                context=".",
+                tags=["zoo:develop"],
+                build_arg={
+                    "foo": "zoo",
+                },
+                label={
+                    "author": "zoo",
+                },
+            ))
+        ```
+        <!--End PulumiCodeChooser -->
+
+        You can use the `triggers` argument to specify when the image should be rebuild. This is for example helpful when you want to rebuild the docker image whenever the source code changes.
 
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
@@ -351,22 +384,27 @@ class RemoteImage(pulumi.CustomResource):
          This resource will *not* pull new layers of the image automatically unless used in conjunction with RegistryImage data source to update the `pull_triggers` field.
 
         ## Example Usage
+
         ### Basic
 
         Finds and downloads the latest `ubuntu:precise` image but does not check
         for further updates of the image
 
+        <!--Start PulumiCodeChooser -->
         ```python
         import pulumi
         import pulumi_docker as docker
 
         ubuntu = docker.RemoteImage("ubuntu", name="ubuntu:precise")
         ```
+        <!--End PulumiCodeChooser -->
+
         ### Dynamic updates
 
         To be able to update an image dynamically when the `sha256` sum changes,
         you need to use it in combination with `RegistryImage` as follows:
 
+        <!--Start PulumiCodeChooser -->
         ```python
         import pulumi
         import pulumi_docker as docker
@@ -376,6 +414,34 @@ class RemoteImage(pulumi.CustomResource):
             name=ubuntu_registry_image.name,
             pull_triggers=[ubuntu_registry_image.sha256_digest])
         ```
+        <!--End PulumiCodeChooser -->
+
+        ### Build
+
+        You can also use the resource to build an image.
+        In this case the image "zoo" and "zoo:develop" are built.
+
+        <!--Start PulumiCodeChooser -->
+        ```python
+        import pulumi
+        import pulumi_docker as docker
+
+        zoo = docker.RemoteImage("zoo",
+            name="zoo",
+            build=docker.RemoteImageBuildArgs(
+                context=".",
+                tags=["zoo:develop"],
+                build_arg={
+                    "foo": "zoo",
+                },
+                label={
+                    "author": "zoo",
+                },
+            ))
+        ```
+        <!--End PulumiCodeChooser -->
+
+        You can use the `triggers` argument to specify when the image should be rebuild. This is for example helpful when you want to rebuild the docker image whenever the source code changes.
 
         :param str resource_name: The name of the resource.
         :param RemoteImageArgs args: The arguments to use to populate this resource's properties.

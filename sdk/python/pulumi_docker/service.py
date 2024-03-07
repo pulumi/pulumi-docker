@@ -341,53 +341,51 @@ class Service(pulumi.CustomResource):
 
         ### Example
 
-         Assuming you created a `service` as follows
+        Assuming you created a `service` as follows
 
-         #!/bin/bash
+        #!/bin/bash
 
-         docker service create --name foo -p 8080:80 nginx
+        docker service create --name foo -p 8080:80 nginx
 
-         prints th ID
+        prints th ID
 
-         4pcphbxkfn2rffhbhe6czytgi
+        4pcphbxkfn2rffhbhe6czytgi
 
-         you provide the definition for the resource as follows
+        you provide the definition for the resource as follows
 
-         terraform
+        terraform
 
-         resource "docker_service" "foo" {
+        resource "docker_service" "foo" {
 
-         name = "foo"
+          name = "foo"
 
-         task_spec {
+          task_spec {
 
-         container_spec {
+            container_spec {
+            
+              image = "nginx"
+            
+            }
 
-         image = "nginx"
+          }
 
-         }
+          endpoint_spec {
 
-         }
+            ports {
+            
+              target_port    = "80"
+            
+              published_port = "8080"
+            
+            }
 
-         endpoint_spec {
+          }
 
-         ports {
+        }
 
-         target_port
+        then the import command is as follows
 
-        = "80"
-
-         published_port = "8080"
-
-         }
-
-         }
-
-         }
-
-         then the import command is as follows
-
-         #!/bin/bash
+        #!/bin/bash
 
         ```sh
         $ pulumi import docker:index/service:Service foo 4pcphbxkfn2rffhbhe6czytgi
@@ -421,53 +419,51 @@ class Service(pulumi.CustomResource):
 
         ### Example
 
-         Assuming you created a `service` as follows
+        Assuming you created a `service` as follows
 
-         #!/bin/bash
+        #!/bin/bash
 
-         docker service create --name foo -p 8080:80 nginx
+        docker service create --name foo -p 8080:80 nginx
 
-         prints th ID
+        prints th ID
 
-         4pcphbxkfn2rffhbhe6czytgi
+        4pcphbxkfn2rffhbhe6czytgi
 
-         you provide the definition for the resource as follows
+        you provide the definition for the resource as follows
 
-         terraform
+        terraform
 
-         resource "docker_service" "foo" {
+        resource "docker_service" "foo" {
 
-         name = "foo"
+          name = "foo"
 
-         task_spec {
+          task_spec {
 
-         container_spec {
+            container_spec {
+            
+              image = "nginx"
+            
+            }
 
-         image = "nginx"
+          }
 
-         }
+          endpoint_spec {
 
-         }
+            ports {
+            
+              target_port    = "80"
+            
+              published_port = "8080"
+            
+            }
 
-         endpoint_spec {
+          }
 
-         ports {
+        }
 
-         target_port
+        then the import command is as follows
 
-        = "80"
-
-         published_port = "8080"
-
-         }
-
-         }
-
-         }
-
-         then the import command is as follows
-
-         #!/bin/bash
+        #!/bin/bash
 
         ```sh
         $ pulumi import docker:index/service:Service foo 4pcphbxkfn2rffhbhe6czytgi
