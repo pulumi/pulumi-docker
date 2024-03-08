@@ -12,6 +12,7 @@ import * as utilities from "./utilities";
  *
  * Build an image with the `docker.RemoteImage` resource and then push it to a registry:
  *
+ * <!--Start PulumiCodeChooser -->
  * ```typescript
  * import * as pulumi from "@pulumi/pulumi";
  * import * as docker from "@pulumi/docker";
@@ -24,6 +25,7 @@ import * as utilities from "./utilities";
  *     },
  * });
  * ```
+ * <!--End PulumiCodeChooser -->
  */
 export class RegistryImage extends pulumi.CustomResource {
     /**

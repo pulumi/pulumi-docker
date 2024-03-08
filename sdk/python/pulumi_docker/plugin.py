@@ -354,6 +354,7 @@ class Plugin(pulumi.CustomResource):
 
         ## Example Usage
 
+        <!--Start PulumiCodeChooser -->
         ```python
         import pulumi
         import pulumi_docker as docker
@@ -367,6 +368,7 @@ class Plugin(pulumi.CustomResource):
             force_disable=True,
             grant_all_permissions=True)
         ```
+        <!--End PulumiCodeChooser -->
 
         ## Import
 
@@ -400,6 +402,7 @@ class Plugin(pulumi.CustomResource):
 
         ## Example Usage
 
+        <!--Start PulumiCodeChooser -->
         ```python
         import pulumi
         import pulumi_docker as docker
@@ -413,6 +416,7 @@ class Plugin(pulumi.CustomResource):
             force_disable=True,
             grant_all_permissions=True)
         ```
+        <!--End PulumiCodeChooser -->
 
         ## Import
 

@@ -189,6 +189,7 @@ class RegistryImage(pulumi.CustomResource):
 
         Build an image with the `RemoteImage` resource and then push it to a registry:
 
+        <!--Start PulumiCodeChooser -->
         ```python
         import pulumi
         import pulumi_docker as docker
@@ -200,6 +201,7 @@ class RegistryImage(pulumi.CustomResource):
                 context=f"{path['cwd']}/absolutePathToContextFolder",
             ))
         ```
+        <!--End PulumiCodeChooser -->
 
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
@@ -222,6 +224,7 @@ class RegistryImage(pulumi.CustomResource):
 
         Build an image with the `RemoteImage` resource and then push it to a registry:
 
+        <!--Start PulumiCodeChooser -->
         ```python
         import pulumi
         import pulumi_docker as docker
@@ -233,6 +236,7 @@ class RegistryImage(pulumi.CustomResource):
                 context=f"{path['cwd']}/absolutePathToContextFolder",
             ))
         ```
+        <!--End PulumiCodeChooser -->
 
         :param str resource_name: The name of the resource.
         :param RegistryImageArgs args: The arguments to use to populate this resource's properties.

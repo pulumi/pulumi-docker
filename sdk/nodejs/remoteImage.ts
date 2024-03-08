@@ -13,22 +13,27 @@ import * as utilities from "./utilities";
  *  This resource will *not* pull new layers of the image automatically unless used in conjunction with docker.RegistryImage data source to update the `pullTriggers` field.
  *
  * ## Example Usage
+ *
  * ### Basic
  *
  * Finds and downloads the latest `ubuntu:precise` image but does not check
  * for further updates of the image
  *
+ * <!--Start PulumiCodeChooser -->
  * ```typescript
  * import * as pulumi from "@pulumi/pulumi";
  * import * as docker from "@pulumi/docker";
  *
  * const ubuntu = new docker.RemoteImage("ubuntu", {name: "ubuntu:precise"});
  * ```
+ * <!--End PulumiCodeChooser -->
+ *
  * ### Dynamic updates
  *
  * To be able to update an image dynamically when the `sha256` sum changes,
  * you need to use it in combination with `docker.RegistryImage` as follows:
  *
+ * <!--Start PulumiCodeChooser -->
  * ```typescript
  * import * as pulumi from "@pulumi/pulumi";
  * import * as docker from "@pulumi/docker";
@@ -41,6 +46,35 @@ import * as utilities from "./utilities";
  *     pullTriggers: [ubuntuRegistryImage.then(ubuntuRegistryImage => ubuntuRegistryImage.sha256Digest)],
  * });
  * ```
+ * <!--End PulumiCodeChooser -->
+ *
+ * ### Build
+ *
+ * You can also use the resource to build an image.
+ * In this case the image "zoo" and "zoo:develop" are built.
+ *
+ * <!--Start PulumiCodeChooser -->
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as docker from "@pulumi/docker";
+ *
+ * const zoo = new docker.RemoteImage("zoo", {
+ *     name: "zoo",
+ *     build: {
+ *         context: ".",
+ *         tags: ["zoo:develop"],
+ *         buildArg: {
+ *             foo: "zoo",
+ *         },
+ *         label: {
+ *             author: "zoo",
+ *         },
+ *     },
+ * });
+ * ```
+ * <!--End PulumiCodeChooser -->
+ *
+ * You can use the `triggers` argument to specify when the image should be rebuild. This is for example helpful when you want to rebuild the docker image whenever the source code changes.
  */
 export class RemoteImage extends pulumi.CustomResource {
     /**

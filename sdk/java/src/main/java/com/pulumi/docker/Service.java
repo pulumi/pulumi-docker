@@ -33,53 +33,51 @@ import javax.annotation.Nullable;
  * 
  * ### Example
  * 
- *  Assuming you created a `service` as follows
+ * Assuming you created a `service` as follows
  * 
- *  #!/bin/bash
+ * #!/bin/bash
  * 
- *  docker service create --name foo -p 8080:80 nginx
+ * docker service create --name foo -p 8080:80 nginx
  * 
- *  prints th ID
+ * prints th ID
  * 
- *  4pcphbxkfn2rffhbhe6czytgi
+ * 4pcphbxkfn2rffhbhe6czytgi
  * 
- *  you provide the definition for the resource as follows
+ * you provide the definition for the resource as follows
  * 
- *  terraform
+ * terraform
  * 
- *  resource &#34;docker_service&#34; &#34;foo&#34; {
+ * resource &#34;docker_service&#34; &#34;foo&#34; {
  * 
- *  name = &#34;foo&#34;
+ *   name = &#34;foo&#34;
  * 
- *  task_spec {
+ *   task_spec {
  * 
- *  container_spec {
+ *     container_spec {
+ *     
+ *       image = &#34;nginx&#34;
+ *     
+ *     }
  * 
- *  image = &#34;nginx&#34;
+ *   }
  * 
- *  }
+ *   endpoint_spec {
  * 
- *  }
+ *     ports {
+ *     
+ *       target_port    = &#34;80&#34;
+ *     
+ *       published_port = &#34;8080&#34;
+ *     
+ *     }
  * 
- *  endpoint_spec {
+ *   }
  * 
- *  ports {
+ * }
  * 
- *  target_port
+ * then the import command is as follows
  * 
- * = &#34;80&#34;
- * 
- *  published_port = &#34;8080&#34;
- * 
- *  }
- * 
- *  }
- * 
- *  }
- * 
- *  then the import command is as follows
- * 
- *  #!/bin/bash
+ * #!/bin/bash
  * 
  * ```sh
  * $ pulumi import docker:index/service:Service foo 4pcphbxkfn2rffhbhe6czytgi

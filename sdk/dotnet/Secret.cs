@@ -14,7 +14,7 @@ namespace Pulumi.Docker
     /// 
     /// #!/bin/bash
     /// 
-    ///  Docker secret cannot be imported as the secret data, once set, is never exposed again.
+    /// Docker secret cannot be imported as the secret data, once set, is never exposed again.
     /// </summary>
     [DockerResourceType("docker:index/secret:Secret")]
     public partial class Secret : global::Pulumi.CustomResource
