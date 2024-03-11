@@ -18,11 +18,13 @@ import (
 //	This resource will *not* pull new layers of the image automatically unless used in conjunction with RegistryImage data source to update the `pullTriggers` field.
 //
 // ## Example Usage
+//
 // ### Basic
 //
 // Finds and downloads the latest `ubuntu:precise` image but does not check
 // for further updates of the image
 //
+// <!--Start PulumiCodeChooser -->
 // ```go
 // package main
 //
@@ -46,11 +48,14 @@ import (
 //	}
 //
 // ```
+// <!--End PulumiCodeChooser -->
+//
 // ### Dynamic updates
 //
 // To be able to update an image dynamically when the `sha256` sum changes,
 // you need to use it in combination with `RegistryImage` as follows:
 //
+// <!--Start PulumiCodeChooser -->
 // ```go
 // package main
 //
@@ -83,6 +88,52 @@ import (
 //	}
 //
 // ```
+// <!--End PulumiCodeChooser -->
+//
+// ### Build
+//
+// You can also use the resource to build an image.
+// In this case the image "zoo" and "zoo:develop" are built.
+//
+// <!--Start PulumiCodeChooser -->
+// ```go
+// package main
+//
+// import (
+//
+//	"github.com/pulumi/pulumi-docker/sdk/v4/go/docker"
+//	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+//
+// )
+//
+//	func main() {
+//		pulumi.Run(func(ctx *pulumi.Context) error {
+//			_, err := docker.NewRemoteImage(ctx, "zoo", &docker.RemoteImageArgs{
+//				Name: pulumi.String("zoo"),
+//				Build: &docker.RemoteImageBuildArgs{
+//					Context: pulumi.String("."),
+//					Tags: pulumi.StringArray{
+//						pulumi.String("zoo:develop"),
+//					},
+//					BuildArg: pulumi.StringMap{
+//						"foo": pulumi.String("zoo"),
+//					},
+//					Label: pulumi.StringMap{
+//						"author": pulumi.String("zoo"),
+//					},
+//				},
+//			})
+//			if err != nil {
+//				return err
+//			}
+//			return nil
+//		})
+//	}
+//
+// ```
+// <!--End PulumiCodeChooser -->
+//
+// You can use the `triggers` argument to specify when the image should be rebuild. This is for example helpful when you want to rebuild the docker image whenever the source code changes.
 type RemoteImage struct {
 	pulumi.CustomResourceState
 

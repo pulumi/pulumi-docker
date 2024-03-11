@@ -18,6 +18,7 @@ import (
 //
 // Build an image with the `RemoteImage` resource and then push it to a registry:
 //
+// <!--Start PulumiCodeChooser -->
 // ```go
 // package main
 //
@@ -52,6 +53,7 @@ import (
 //	}
 //
 // ```
+// <!--End PulumiCodeChooser -->
 type RegistryImage struct {
 	pulumi.CustomResourceState
 

@@ -20,6 +20,12 @@ import (
 //	data "Plugin" "byAlias" {
 //	  alias = "sample-volume-plugin:latest"
 //	}
+//
+// ### With ID
+//
+//	data "Plugin" "byId" {
+//	  id = "e9a9db917b3bfd6706b5d3a66d4bceb9f"
+//	}
 func LookupPlugin(ctx *pulumi.Context, args *LookupPluginArgs, opts ...pulumi.InvokeOption) (*LookupPluginResult, error) {
 	opts = internal.PkgInvokeDefaultOpts(opts)
 	var rv LookupPluginResult

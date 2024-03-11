@@ -129,6 +129,11 @@ def get_plugin(alias: Optional[str] = None,
       alias = "sample-volume-plugin:latest"
     }
 
+    ### With ID
+    data "Plugin" "by_id" {
+      id = "e9a9db917b3bfd6706b5d3a66d4bceb9f"
+    }
+
 
     :param str alias: The alias of the Docker plugin. If the tag is omitted, `:latest` is complemented to the attribute value.
     :param str id: The ID of the plugin, which has precedence over the `alias` of both are given
@@ -161,6 +166,11 @@ def get_plugin_output(alias: Optional[pulumi.Input[Optional[str]]] = None,
     ### With alias
     data "Plugin" "by_alias" {
       alias = "sample-volume-plugin:latest"
+    }
+
+    ### With ID
+    data "Plugin" "by_id" {
+      id = "e9a9db917b3bfd6706b5d3a66d4bceb9f"
     }
 
 

@@ -88,6 +88,7 @@ def get_registry_image(insecure_skip_verify: Optional[bool] = None,
 
     ## Example Usage
 
+    <!--Start PulumiCodeChooser -->
     ```python
     import pulumi
     import pulumi_docker as docker
@@ -97,6 +98,7 @@ def get_registry_image(insecure_skip_verify: Optional[bool] = None,
         name=ubuntu_registry_image.name,
         pull_triggers=[ubuntu_registry_image.sha256_digest])
     ```
+    <!--End PulumiCodeChooser -->
 
 
     :param bool insecure_skip_verify: If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`
@@ -124,6 +126,7 @@ def get_registry_image_output(insecure_skip_verify: Optional[pulumi.Input[Option
 
     ## Example Usage
 
+    <!--Start PulumiCodeChooser -->
     ```python
     import pulumi
     import pulumi_docker as docker
@@ -133,6 +136,7 @@ def get_registry_image_output(insecure_skip_verify: Optional[pulumi.Input[Option
         name=ubuntu_registry_image.name,
         pull_triggers=[ubuntu_registry_image.sha256_digest])
     ```
+    <!--End PulumiCodeChooser -->
 
 
     :param bool insecure_skip_verify: If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`

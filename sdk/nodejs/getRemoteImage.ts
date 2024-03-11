@@ -9,6 +9,7 @@ import * as utilities from "./utilities";
  *
  * ## Example Usage
  *
+ * <!--Start PulumiCodeChooser -->
  * ```typescript
  * import * as pulumi from "@pulumi/pulumi";
  * import * as docker from "@pulumi/docker";
@@ -26,6 +27,7 @@ import * as utilities from "./utilities";
  *     name: "nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2",
  * });
  * ```
+ * <!--End PulumiCodeChooser -->
  */
 export function getRemoteImage(args: GetRemoteImageArgs, opts?: pulumi.InvokeOptions): Promise<GetRemoteImageResult> {
 
@@ -67,6 +69,7 @@ export interface GetRemoteImageResult {
  *
  * ## Example Usage
  *
+ * <!--Start PulumiCodeChooser -->
  * ```typescript
  * import * as pulumi from "@pulumi/pulumi";
  * import * as docker from "@pulumi/docker";
@@ -84,6 +87,7 @@ export interface GetRemoteImageResult {
  *     name: "nginx:1.19.1@sha256:36b74457bccb56fbf8b05f79c85569501b721d4db813b684391d63e02287c0b2",
  * });
  * ```
+ * <!--End PulumiCodeChooser -->
  */
 export function getRemoteImageOutput(args: GetRemoteImageOutputArgs, opts?: pulumi.InvokeOptions): pulumi.Output<GetRemoteImageResult> {
     return pulumi.output(args).apply((a: any) => getRemoteImage(a, opts))
