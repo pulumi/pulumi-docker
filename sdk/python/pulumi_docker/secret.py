@@ -138,7 +138,7 @@ class Secret(pulumi.CustomResource):
 
         #!/bin/bash
 
-         Docker secret cannot be imported as the secret data, once set, is never exposed again.
+        Docker secret cannot be imported as the secret data, once set, is never exposed again.
 
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
@@ -157,7 +157,7 @@ class Secret(pulumi.CustomResource):
 
         #!/bin/bash
 
-         Docker secret cannot be imported as the secret data, once set, is never exposed again.
+        Docker secret cannot be imported as the secret data, once set, is never exposed again.
 
         :param str resource_name: The name of the resource.
         :param SecretArgs args: The arguments to use to populate this resource's properties.

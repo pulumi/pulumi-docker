@@ -14,14 +14,18 @@ namespace Pulumi.Docker
         /// <summary>
         /// Reads the local Docker plugin. The plugin must be installed locally.
         /// 
-        /// {{% examples %}}
         /// ## Example Usage
         /// 
         /// ### With alias
         /// data "docker.Plugin" "by_alias" {
         ///   alias = "sample-volume-plugin:latest"
         /// }
-        /// {{% /examples %}}
+        /// 
+        /// ### With ID
+        /// data "docker.Plugin" "by_id" {
+        ///   id = "e9a9db917b3bfd6706b5d3a66d4bceb9f"
+        /// }
+        /// ```
         /// </summary>
         public static Task<GetPluginResult> InvokeAsync(GetPluginArgs? args = null, InvokeOptions? options = null)
             => global::Pulumi.Deployment.Instance.InvokeAsync<GetPluginResult>("docker:index/getPlugin:getPlugin", args ?? new GetPluginArgs(), options.WithDefaults());
@@ -29,14 +33,18 @@ namespace Pulumi.Docker
         /// <summary>
         /// Reads the local Docker plugin. The plugin must be installed locally.
         /// 
-        /// {{% examples %}}
         /// ## Example Usage
         /// 
         /// ### With alias
         /// data "docker.Plugin" "by_alias" {
         ///   alias = "sample-volume-plugin:latest"
         /// }
-        /// {{% /examples %}}
+        /// 
+        /// ### With ID
+        /// data "docker.Plugin" "by_id" {
+        ///   id = "e9a9db917b3bfd6706b5d3a66d4bceb9f"
+        /// }
+        /// ```
         /// </summary>
         public static Output<GetPluginResult> Invoke(GetPluginInvokeArgs? args = null, InvokeOptions? options = null)
             => global::Pulumi.Deployment.Instance.Invoke<GetPluginResult>("docker:index/getPlugin:getPlugin", args ?? new GetPluginInvokeArgs(), options.WithDefaults());

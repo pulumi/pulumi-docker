@@ -25,10 +25,13 @@ import javax.annotation.Nullable;
  *  This resource will *not* pull new layers of the image automatically unless used in conjunction with docker.RegistryImage data source to update the `pull_triggers` field.
  * 
  * ## Example Usage
+ * 
  * ### Basic
  * 
  * Finds and downloads the latest `ubuntu:precise` image but does not check
  * for further updates of the image
+ * 
+ * &lt;!--Start PulumiCodeChooser --&gt;
  * ```java
  * package generated_program;
  * 
@@ -57,10 +60,14 @@ import javax.annotation.Nullable;
  *     }
  * }
  * ```
+ * &lt;!--End PulumiCodeChooser --&gt;
+ * 
  * ### Dynamic updates
  * 
  * To be able to update an image dynamically when the `sha256` sum changes,
  * you need to use it in combination with `docker.RegistryImage` as follows:
+ * 
+ * &lt;!--Start PulumiCodeChooser --&gt;
  * ```java
  * package generated_program;
  * 
@@ -96,6 +103,52 @@ import javax.annotation.Nullable;
  *     }
  * }
  * ```
+ * &lt;!--End PulumiCodeChooser --&gt;
+ * 
+ * ### Build
+ * 
+ * You can also use the resource to build an image.
+ * In this case the image &#34;zoo&#34; and &#34;zoo:develop&#34; are built.
+ * 
+ * &lt;!--Start PulumiCodeChooser --&gt;
+ * ```java
+ * package generated_program;
+ * 
+ * import com.pulumi.Context;
+ * import com.pulumi.Pulumi;
+ * import com.pulumi.core.Output;
+ * import com.pulumi.docker.RemoteImage;
+ * import com.pulumi.docker.RemoteImageArgs;
+ * import com.pulumi.docker.inputs.RemoteImageBuildArgs;
+ * import java.util.List;
+ * import java.util.ArrayList;
+ * import java.util.Map;
+ * import java.io.File;
+ * import java.nio.file.Files;
+ * import java.nio.file.Paths;
+ * 
+ * public class App {
+ *     public static void main(String[] args) {
+ *         Pulumi.run(App::stack);
+ *     }
+ * 
+ *     public static void stack(Context ctx) {
+ *         var zoo = new RemoteImage(&#34;zoo&#34;, RemoteImageArgs.builder()        
+ *             .name(&#34;zoo&#34;)
+ *             .build(RemoteImageBuildArgs.builder()
+ *                 .context(&#34;.&#34;)
+ *                 .tags(&#34;zoo:develop&#34;)
+ *                 .buildArg(Map.of(&#34;foo&#34;, &#34;zoo&#34;))
+ *                 .label(Map.of(&#34;author&#34;, &#34;zoo&#34;))
+ *                 .build())
+ *             .build());
+ * 
+ *     }
+ * }
+ * ```
+ * &lt;!--End PulumiCodeChooser --&gt;
+ * 
+ * You can use the `triggers` argument to specify when the image should be rebuild. This is for example helpful when you want to rebuild the docker image whenever the source code changes.
  * 
  */
 @ResourceType(type="docker:index/remoteImage:RemoteImage")

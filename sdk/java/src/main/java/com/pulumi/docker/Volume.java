@@ -23,6 +23,8 @@ import javax.annotation.Nullable;
  * Creates and destroys a volume in Docker. This can be used alongside docker.Container to prepare volumes that can be shared across containers.
  * 
  * ## Example Usage
+ * 
+ * &lt;!--Start PulumiCodeChooser --&gt;
  * ```java
  * package generated_program;
  * 
@@ -48,34 +50,35 @@ import javax.annotation.Nullable;
  *     }
  * }
  * ```
+ * &lt;!--End PulumiCodeChooser --&gt;
  * 
  * ## Import
  * 
  * ### Example
  * 
- *  Assuming you created a `volume` as follows
+ * Assuming you created a `volume` as follows
  * 
- *  #!/bin/bash
+ * #!/bin/bash
  * 
- *  docker volume create
+ * docker volume create
  * 
- *  prints the long ID
+ * prints the long ID
  * 
- *  524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d
+ * 524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d
  * 
- *  you provide the definition for the resource as follows
+ * you provide the definition for the resource as follows
  * 
- *  terraform
+ * terraform
  * 
- *  resource &#34;docker_volume&#34; &#34;foo&#34; {
+ * resource &#34;docker_volume&#34; &#34;foo&#34; {
  * 
- *  name = &#34;524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d&#34;
+ *   name = &#34;524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d&#34;
  * 
- *  }
+ * }
  * 
- *  then the import command is as follows
+ * then the import command is as follows
  * 
- *  #!/bin/bash
+ * #!/bin/bash
  * 
  * ```sh
  * $ pulumi import docker:index/volume:Volume foo 524b0457aa2a87dd2b75c74c3e4e53f406974249e63ab3ed9bf21e5644f9dc7d

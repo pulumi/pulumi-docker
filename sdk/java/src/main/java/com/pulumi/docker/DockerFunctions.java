@@ -58,6 +58,8 @@ public final class DockerFunctions {
      * `docker.Network` provides details about a specific Docker Network.
      * 
      * ## Example Usage
+     * 
+     * &lt;!--Start PulumiCodeChooser --&gt;
      * ```java
      * package generated_program;
      * 
@@ -86,6 +88,7 @@ public final class DockerFunctions {
      *     }
      * }
      * ```
+     * &lt;!--End PulumiCodeChooser --&gt;
      * 
      */
     public static Output<GetNetworkResult> getNetwork(GetNetworkArgs args) {
@@ -95,6 +98,8 @@ public final class DockerFunctions {
      * `docker.Network` provides details about a specific Docker Network.
      * 
      * ## Example Usage
+     * 
+     * &lt;!--Start PulumiCodeChooser --&gt;
      * ```java
      * package generated_program;
      * 
@@ -123,6 +128,7 @@ public final class DockerFunctions {
      *     }
      * }
      * ```
+     * &lt;!--End PulumiCodeChooser --&gt;
      * 
      */
     public static CompletableFuture<GetNetworkResult> getNetworkPlain(GetNetworkPlainArgs args) {
@@ -132,6 +138,8 @@ public final class DockerFunctions {
      * `docker.Network` provides details about a specific Docker Network.
      * 
      * ## Example Usage
+     * 
+     * &lt;!--Start PulumiCodeChooser --&gt;
      * ```java
      * package generated_program;
      * 
@@ -160,6 +168,7 @@ public final class DockerFunctions {
      *     }
      * }
      * ```
+     * &lt;!--End PulumiCodeChooser --&gt;
      * 
      */
     public static Output<GetNetworkResult> getNetwork(GetNetworkArgs args, InvokeOptions options) {
@@ -169,6 +178,8 @@ public final class DockerFunctions {
      * `docker.Network` provides details about a specific Docker Network.
      * 
      * ## Example Usage
+     * 
+     * &lt;!--Start PulumiCodeChooser --&gt;
      * ```java
      * package generated_program;
      * 
@@ -197,6 +208,7 @@ public final class DockerFunctions {
      *     }
      * }
      * ```
+     * &lt;!--End PulumiCodeChooser --&gt;
      * 
      */
     public static CompletableFuture<GetNetworkResult> getNetworkPlain(GetNetworkPlainArgs args, InvokeOptions options) {
@@ -210,6 +222,11 @@ public final class DockerFunctions {
      * ### With alias
      * data &#34;docker.Plugin&#34; &#34;by_alias&#34; {
      *   alias = &#34;sample-volume-plugin:latest&#34;
+     * }
+     * 
+     * ### With ID
+     * data &#34;docker.Plugin&#34; &#34;by_id&#34; {
+     *   id = &#34;e9a9db917b3bfd6706b5d3a66d4bceb9f&#34;
      * }
      * 
      */
@@ -226,6 +243,11 @@ public final class DockerFunctions {
      *   alias = &#34;sample-volume-plugin:latest&#34;
      * }
      * 
+     * ### With ID
+     * data &#34;docker.Plugin&#34; &#34;by_id&#34; {
+     *   id = &#34;e9a9db917b3bfd6706b5d3a66d4bceb9f&#34;
+     * }
+     * 
      */
     public static CompletableFuture<GetPluginResult> getPluginPlain() {
         return getPluginPlain(GetPluginPlainArgs.Empty, InvokeOptions.Empty);
@@ -238,6 +260,11 @@ public final class DockerFunctions {
      * ### With alias
      * data &#34;docker.Plugin&#34; &#34;by_alias&#34; {
      *   alias = &#34;sample-volume-plugin:latest&#34;
+     * }
+     * 
+     * ### With ID
+     * data &#34;docker.Plugin&#34; &#34;by_id&#34; {
+     *   id = &#34;e9a9db917b3bfd6706b5d3a66d4bceb9f&#34;
      * }
      * 
      */
@@ -254,6 +281,11 @@ public final class DockerFunctions {
      *   alias = &#34;sample-volume-plugin:latest&#34;
      * }
      * 
+     * ### With ID
+     * data &#34;docker.Plugin&#34; &#34;by_id&#34; {
+     *   id = &#34;e9a9db917b3bfd6706b5d3a66d4bceb9f&#34;
+     * }
+     * 
      */
     public static CompletableFuture<GetPluginResult> getPluginPlain(GetPluginPlainArgs args) {
         return getPluginPlain(args, InvokeOptions.Empty);
@@ -266,6 +298,11 @@ public final class DockerFunctions {
      * ### With alias
      * data &#34;docker.Plugin&#34; &#34;by_alias&#34; {
      *   alias = &#34;sample-volume-plugin:latest&#34;
+     * }
+     * 
+     * ### With ID
+     * data &#34;docker.Plugin&#34; &#34;by_id&#34; {
+     *   id = &#34;e9a9db917b3bfd6706b5d3a66d4bceb9f&#34;
      * }
      * 
      */
@@ -282,6 +319,11 @@ public final class DockerFunctions {
      *   alias = &#34;sample-volume-plugin:latest&#34;
      * }
      * 
+     * ### With ID
+     * data &#34;docker.Plugin&#34; &#34;by_id&#34; {
+     *   id = &#34;e9a9db917b3bfd6706b5d3a66d4bceb9f&#34;
+     * }
+     * 
      */
     public static CompletableFuture<GetPluginResult> getPluginPlain(GetPluginPlainArgs args, InvokeOptions options) {
         return Deployment.getInstance().invokeAsync("docker:index/getPlugin:getPlugin", TypeShape.of(GetPluginResult.class), args, Utilities.withVersion(options));
@@ -290,6 +332,8 @@ public final class DockerFunctions {
      * Reads the image metadata from a Docker Registry. Used in conjunction with the docker.RemoteImage resource to keep an image up to date on the latest available version of the tag.
      * 
      * ## Example Usage
+     * 
+     * &lt;!--Start PulumiCodeChooser --&gt;
      * ```java
      * package generated_program;
      * 
@@ -325,6 +369,7 @@ public final class DockerFunctions {
      *     }
      * }
      * ```
+     * &lt;!--End PulumiCodeChooser --&gt;
      * 
      */
     public static Output<GetRegistryImageResult> getRegistryImage(GetRegistryImageArgs args) {
@@ -334,6 +379,8 @@ public final class DockerFunctions {
      * Reads the image metadata from a Docker Registry. Used in conjunction with the docker.RemoteImage resource to keep an image up to date on the latest available version of the tag.
      * 
      * ## Example Usage
+     * 
+     * &lt;!--Start PulumiCodeChooser --&gt;
      * ```java
      * package generated_program;
      * 
@@ -369,6 +416,7 @@ public final class DockerFunctions {
      *     }
      * }
      * ```
+     * &lt;!--End PulumiCodeChooser --&gt;
      * 
      */
     public static CompletableFuture<GetRegistryImageResult> getRegistryImagePlain(GetRegistryImagePlainArgs args) {
@@ -378,6 +426,8 @@ public final class DockerFunctions {
      * Reads the image metadata from a Docker Registry. Used in conjunction with the docker.RemoteImage resource to keep an image up to date on the latest available version of the tag.
      * 
      * ## Example Usage
+     * 
+     * &lt;!--Start PulumiCodeChooser --&gt;
      * ```java
      * package generated_program;
      * 
@@ -413,6 +463,7 @@ public final class DockerFunctions {
      *     }
      * }
      * ```
+     * &lt;!--End PulumiCodeChooser --&gt;
      * 
      */
     public static Output<GetRegistryImageResult> getRegistryImage(GetRegistryImageArgs args, InvokeOptions options) {
@@ -422,6 +473,8 @@ public final class DockerFunctions {
      * Reads the image metadata from a Docker Registry. Used in conjunction with the docker.RemoteImage resource to keep an image up to date on the latest available version of the tag.
      * 
      * ## Example Usage
+     * 
+     * &lt;!--Start PulumiCodeChooser --&gt;
      * ```java
      * package generated_program;
      * 
@@ -457,6 +510,7 @@ public final class DockerFunctions {
      *     }
      * }
      * ```
+     * &lt;!--End PulumiCodeChooser --&gt;
      * 
      */
     public static CompletableFuture<GetRegistryImageResult> getRegistryImagePlain(GetRegistryImagePlainArgs args, InvokeOptions options) {
@@ -466,6 +520,8 @@ public final class DockerFunctions {
      * `docker.RemoteImage` provides details about a specific Docker Image which needs to be present on the Docker Host
      * 
      * ## Example Usage
+     * 
+     * &lt;!--Start PulumiCodeChooser --&gt;
      * ```java
      * package generated_program;
      * 
@@ -506,6 +562,7 @@ public final class DockerFunctions {
      *     }
      * }
      * ```
+     * &lt;!--End PulumiCodeChooser --&gt;
      * 
      */
     public static Output<GetRemoteImageResult> getRemoteImage(GetRemoteImageArgs args) {
@@ -515,6 +572,8 @@ public final class DockerFunctions {
      * `docker.RemoteImage` provides details about a specific Docker Image which needs to be present on the Docker Host
      * 
      * ## Example Usage
+     * 
+     * &lt;!--Start PulumiCodeChooser --&gt;
      * ```java
      * package generated_program;
      * 
@@ -555,6 +614,7 @@ public final class DockerFunctions {
      *     }
      * }
      * ```
+     * &lt;!--End PulumiCodeChooser --&gt;
      * 
      */
     public static CompletableFuture<GetRemoteImageResult> getRemoteImagePlain(GetRemoteImagePlainArgs args) {
@@ -564,6 +624,8 @@ public final class DockerFunctions {
      * `docker.RemoteImage` provides details about a specific Docker Image which needs to be present on the Docker Host
      * 
      * ## Example Usage
+     * 
+     * &lt;!--Start PulumiCodeChooser --&gt;
      * ```java
      * package generated_program;
      * 
@@ -604,6 +666,7 @@ public final class DockerFunctions {
      *     }
      * }
      * ```
+     * &lt;!--End PulumiCodeChooser --&gt;
      * 
      */
     public static Output<GetRemoteImageResult> getRemoteImage(GetRemoteImageArgs args, InvokeOptions options) {
@@ -613,6 +676,8 @@ public final class DockerFunctions {
      * `docker.RemoteImage` provides details about a specific Docker Image which needs to be present on the Docker Host
      * 
      * ## Example Usage
+     * 
+     * &lt;!--Start PulumiCodeChooser --&gt;
      * ```java
      * package generated_program;
      * 
@@ -653,6 +718,7 @@ public final class DockerFunctions {
      *     }
      * }
      * ```
+     * &lt;!--End PulumiCodeChooser --&gt;
      * 
      */
     public static CompletableFuture<GetRemoteImageResult> getRemoteImagePlain(GetRemoteImagePlainArgs args, InvokeOptions options) {
