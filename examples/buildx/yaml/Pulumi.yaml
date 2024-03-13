@@ -98,17 +98,15 @@ resources:
       labels:
         description: "This image will get a descriptive label 👍"
 
-  # docker buildx build -f app/Dockerfile.targets --target build-me --target also-build-me app
-  targets:
+  # docker buildx build -f app/Dockerfile.target --target build-me app
+  target:
     type: docker:buildx/image:Image
     properties:
       dockerfile:
-        location: "app/Dockerfile.targets"
+        location: "app/Dockerfile.target"
       context:
         location: "app"
-      targets:
-        - "build-me"
-        - "also-build-me"
+      target: "build-me"
 
   # docker buildx build -f app/Dockerfile.namedContexts \
   #   --build-context golang:latest=docker-image://golang@sha256:b8e62cf593cdaff36efd90aa3a37de268e6781a2e68c6610940c48f7cdf36984 app

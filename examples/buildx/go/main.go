@@ -32,8 +32,8 @@ func main() {
 			Tags: pulumi.StringArray{
 				pulumi.String("docker.io/pulumibot/buildkit-e2e:example"),
 			},
-			Exports: buildx.ExportEntryArray{
-				&buildx.ExportEntryArgs{
+			Exports: buildx.ExportArray{
+				&buildx.ExportArgs{
 					Registry: &buildx.ExportRegistryArgs{
 						OciMediaTypes: pulumi.Bool(true),
 						Push:          pulumi.Bool(false),
@@ -55,16 +55,16 @@ func main() {
 			Context: &buildx.BuildContextArgs{
 				Location: pulumi.String("app"),
 			},
-			CacheTo: buildx.CacheToEntryArray{
-				&buildx.CacheToEntryArgs{
+			CacheTo: buildx.CacheToArray{
+				&buildx.CacheToArgs{
 					Local: &buildx.CacheToLocalArgs{
 						Dest: pulumi.String("tmp/cache"),
 						Mode: buildx.CacheModeMax,
 					},
 				},
 			},
-			CacheFrom: buildx.CacheFromEntryArray{
-				&buildx.CacheFromEntryArgs{
+			CacheFrom: buildx.CacheFromArray{
+				&buildx.CacheFromArgs{
 					Local: &buildx.CacheFromLocalArgs{
 						Src: pulumi.String("tmp/cache"),
 					},
@@ -143,17 +143,14 @@ func main() {
 		if err != nil {
 			return err
 		}
-		_, err = buildx.NewImage(ctx, "targets", &buildx.ImageArgs{
+		_, err = buildx.NewImage(ctx, "target", &buildx.ImageArgs{
 			Dockerfile: &buildx.DockerfileArgs{
-				Location: pulumi.String("app/Dockerfile.targets"),
+				Location: pulumi.String("app/Dockerfile.target"),
 			},
 			Context: &buildx.BuildContextArgs{
 				Location: pulumi.String("app"),
 			},
-			Targets: pulumi.StringArray{
-				pulumi.String("build-me"),
-				pulumi.String("also-build-me"),
-			},
+			Target: pulumi.String("build-me"),
 		})
 		if err != nil {
 			return err
@@ -208,8 +205,8 @@ func main() {
 			Context: &buildx.BuildContextArgs{
 				Location: pulumi.String("app"),
 			},
-			Exports: buildx.ExportEntryArray{
-				&buildx.ExportEntryArgs{
+			Exports: buildx.ExportArray{
+				&buildx.ExportArgs{
 					Docker: &buildx.ExportDockerArgs{
 						Tar: pulumi.Bool(true),
 					},

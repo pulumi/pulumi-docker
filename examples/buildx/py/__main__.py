@@ -19,7 +19,7 @@ registry_push = docker.buildx.Image("registryPush",
         location="app",
     ),
     tags=["docker.io/pulumibot/buildkit-e2e:example"],
-    exports=[docker.buildx.ExportEntryArgs(
+    exports=[docker.buildx.ExportArgs(
         registry=docker.buildx.ExportRegistryArgs(
             oci_media_types=True,
             push=False,
@@ -34,13 +34,13 @@ cached = docker.buildx.Image("cached",
     context=docker.buildx.BuildContextArgs(
         location="app",
     ),
-    cache_to=[docker.buildx.CacheToEntryArgs(
+    cache_to=[docker.buildx.CacheToArgs(
         local=docker.buildx.CacheToLocalArgs(
             dest="tmp/cache",
             mode="max",
         ),
     )],
-    cache_from=[docker.buildx.CacheFromEntryArgs(
+    cache_from=[docker.buildx.CacheFromArgs(
         local=docker.buildx.CacheFromLocalArgs(
             src="tmp/cache",
         ),
@@ -90,17 +90,14 @@ labels = docker.buildx.Image("labels",
     labels={
         "description": "This image will get a descriptive label 👍",
     })
-targets = docker.buildx.Image("targets",
+target = docker.buildx.Image("target",
     dockerfile=docker.buildx.DockerfileArgs(
-        location="app/Dockerfile.targets",
+        location="app/Dockerfile.target",
     ),
     context=docker.buildx.BuildContextArgs(
         location="app",
     ),
-    targets=[
-        "build-me",
-        "also-build-me",
-    ])
+    target="build-me")
 named_contexts = docker.buildx.Image("namedContexts",
     dockerfile=docker.buildx.DockerfileArgs(
         location="app/Dockerfile.namedContexts",
@@ -138,7 +135,7 @@ docker_load = docker.buildx.Image("dockerLoad",
     context=docker.buildx.BuildContextArgs(
         location="app",
     ),
-    exports=[docker.buildx.ExportEntryArgs(
+    exports=[docker.buildx.ExportArgs(
         docker=docker.buildx.ExportDockerArgs(
             tar=True,
         ),
